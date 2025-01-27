@@ -228,22 +228,6 @@
 
 //////////////////////////////////
 
-#define MK_BINOP_EQ8_CAB(__op)                                               \
-    do                                                                       \
-    {                                                                        \
-        pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), RAX, RDI, CPUBits::B64); \
-        MK_IMMB(RCX, CPUBits::B8);                                           \
-        pp.emitOpNIndirect(0, RCX, RAX, __op, CPUBits::B8);                  \
-    } while (0)
-
-#define MK_BINOP_EQ8_CAB_OFF(__op)                                           \
-    do                                                                       \
-    {                                                                        \
-        pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), RAX, RDI, CPUBits::B64); \
-        MK_IMMB(RCX, CPUBits::B8);                                           \
-        pp.emitOpNIndirect(ip->c.u32, RCX, RAX, __op, CPUBits::B8);          \
-    } while (0)
-
 #define MK_BINOP_EQ_SCAB(__op, __numBits)                                                    \
     do                                                                                       \
     {                                                                                        \
@@ -273,6 +257,22 @@
 
 //////////////////////////////////
 
+#define MK_BINOP_EQ8_CAB(__op)                                               \
+    do                                                                       \
+    {                                                                        \
+        pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), RAX, RDI, CPUBits::B64); \
+        MK_IMMB(RCX, CPUBits::B8);                                           \
+        pp.emitOpNIndirect(0, RCX, RAX, __op, CPUBits::B8);                  \
+    } while (0)
+
+#define MK_BINOP_EQ8_CAB_OFF(__op)                                           \
+    do                                                                       \
+    {                                                                        \
+        pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), RAX, RDI, CPUBits::B64); \
+        MK_IMMB(RCX, CPUBits::B8);                                           \
+        pp.emitOpNIndirect(ip->c.u32, RCX, RAX, __op, CPUBits::B8);          \
+    } while (0)
+
 #define MK_BINOP_EQ16_CAB(__op)                                              \
     do                                                                       \
     {                                                                        \
@@ -289,8 +289,6 @@
         pp.emitOpNIndirect(ip->c.u32, RCX, RAX, __op, CPUBits::B16);         \
     } while (0)
 
-//////////////////////////////////
-
 #define MK_BINOP_EQ32_CAB(__op)                                              \
     do                                                                       \
     {                                                                        \
@@ -306,8 +304,6 @@
         MK_IMMB(RCX, CPUBits::B32);                                          \
         pp.emitOpNIndirect(ip->c.u32, RCX, RAX, __op, CPUBits::B32);         \
     } while (0)
-
-//////////////////////////////////
 
 #define MK_BINOP_EQ64_CAB(__op)                                              \
     do                                                                       \
@@ -327,50 +323,28 @@
 
 //////////////////////////////////
 
-#define MK_BINOP_EQF32_CAB(__op)                                             \
+#define MK_BINOP_EQF_CAB(__op, __numBits)                                    \
     do                                                                       \
     {                                                                        \
         pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), RCX, RDI, CPUBits::B64); \
-        MK_IMMB(XMM1, CPUBits::F32);                                         \
-        pp.emitOpF32Indirect(0, XMM1, RCX, __op);                            \
-    } while (0)
-#define MK_BINOP_EQF32_CAB_OFF(__op)                                         \
-    do                                                                       \
-    {                                                                        \
-        pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), RCX, RDI, CPUBits::B64); \
-        MK_IMMB(XMM1, CPUBits::F32);                                         \
-        pp.emitOpNIndirect(ip->c.u32, XMM1, RCX, __op, CPUBits::F32);        \
+        MK_IMMB(XMM1, __numBits);                                            \
+        pp.emitOpNIndirect(0, XMM1, RCX, __op, __numBits);                   \
     } while (0)
 
-#define MK_BINOP_EQF32_SCAB(__op)                                      \
+#define MK_BINOP_EQF_CAB_OFF(__op, __numBits)                                \
+    do                                                                       \
+    {                                                                        \
+        pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), RCX, RDI, CPUBits::B64); \
+        MK_IMMB(XMM1, __numBits);                                            \
+        pp.emitOpNIndirect(ip->c.u32, XMM1, RCX, __op, __numBits);           \
+    } while (0)
+
+#define MK_BINOP_EQF_SCAB(__op, __numBits)                             \
     do                                                                 \
     {                                                                  \
         pp.emitLoadAddressIndirect(offsetStack + ip->a.u32, RCX, RDI); \
-        MK_IMMB(XMM1, CPUBits::F32);                                   \
-        pp.emitOpNIndirect(0, XMM1, RCX, __op, CPUBits::F32);          \
-    } while (0)
-
-#define MK_BINOP_EQF64_CAB(__op)                                             \
-    do                                                                       \
-    {                                                                        \
-        pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), RCX, RDI, CPUBits::B64); \
-        MK_IMMB(XMM1, CPUBits::F64);                                         \
-        pp.emitOpNIndirect(0, XMM1, RCX, __op, CPUBits::F64);                \
-    } while (0)
-#define MK_BINOP_EQF64_CAB_OFF(__op)                                         \
-    do                                                                       \
-    {                                                                        \
-        pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), RCX, RDI, CPUBits::B64); \
-        MK_IMMB(XMM1, CPUBits::F64);                                         \
-        pp.emitOpNIndirect(ip->c.u32, XMM1, RCX, __op, CPUBits::F64);        \
-    } while (0)
-
-#define MK_BINOP_EQF64_SCAB(__op)                                      \
-    do                                                                 \
-    {                                                                  \
-        pp.emitLoadAddressIndirect(offsetStack + ip->a.u32, RCX, RDI); \
-        MK_IMMB(XMM1, CPUBits::F64);                                   \
-        pp.emitOpNIndirect(0, XMM1, RCX, __op, CPUBits::F64);          \
+        MK_IMMB(XMM1, __numBits);                                      \
+        pp.emitOpNIndirect(0, XMM1, RCX, __op, __numBits);             \
     } while (0)
 
 //////////////////////////////////
