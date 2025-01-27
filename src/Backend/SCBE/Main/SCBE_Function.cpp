@@ -581,55 +581,55 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::BinOpModuloS8:
-                emitBinOpDivIntNAtReg(pp, ip, CPUOp::IMOD, CPUBits::B8);
+                emitBinOpDivNAtReg(pp, ip, CPUOp::IMOD, CPUBits::B8);
                 break;
             case ByteCodeOp::BinOpModuloS16:
-                emitBinOpDivIntNAtReg(pp, ip, CPUOp::IMOD, CPUBits::B16);
+                emitBinOpDivNAtReg(pp, ip, CPUOp::IMOD, CPUBits::B16);
                 break;
             case ByteCodeOp::BinOpModuloS32:
-                emitBinOpDivIntNAtReg(pp, ip, CPUOp::IMOD, CPUBits::B32);
+                emitBinOpDivNAtReg(pp, ip, CPUOp::IMOD, CPUBits::B32);
                 break;
             case ByteCodeOp::BinOpModuloS64:
-                emitBinOpDivIntNAtReg(pp, ip, CPUOp::IMOD, CPUBits::B64);
+                emitBinOpDivNAtReg(pp, ip, CPUOp::IMOD, CPUBits::B64);
                 break;
             case ByteCodeOp::BinOpModuloU8:
-                emitBinOpDivIntNAtReg(pp, ip, CPUOp::MOD, CPUBits::B8);
+                emitBinOpDivNAtReg(pp, ip, CPUOp::MOD, CPUBits::B8);
                 break;
             case ByteCodeOp::BinOpModuloU16:
-                emitBinOpDivIntNAtReg(pp, ip, CPUOp::MOD, CPUBits::B16);
+                emitBinOpDivNAtReg(pp, ip, CPUOp::MOD, CPUBits::B16);
                 break;
             case ByteCodeOp::BinOpModuloU32:
-                emitBinOpDivIntNAtReg(pp, ip, CPUOp::MOD, CPUBits::B32);
+                emitBinOpDivNAtReg(pp, ip, CPUOp::MOD, CPUBits::B32);
                 break;
             case ByteCodeOp::BinOpModuloU64:
-                emitBinOpDivIntNAtReg(pp, ip, CPUOp::MOD, CPUBits::B64);
+                emitBinOpDivNAtReg(pp, ip, CPUOp::MOD, CPUBits::B64);
                 break;
 
                 /////////////////////////////////////
 
             case ByteCodeOp::BinOpDivS8:
-                emitBinOpDivIntNAtReg(pp, ip, CPUOp::IDIV, CPUBits::B8);
+                emitBinOpDivNAtReg(pp, ip, CPUOp::IDIV, CPUBits::B8);
                 break;
             case ByteCodeOp::BinOpDivS16:
-                emitBinOpDivIntNAtReg(pp, ip, CPUOp::IDIV, CPUBits::B16);
+                emitBinOpDivNAtReg(pp, ip, CPUOp::IDIV, CPUBits::B16);
                 break;
             case ByteCodeOp::BinOpDivS32:
-                emitBinOpDivIntNAtReg(pp, ip, CPUOp::IDIV, CPUBits::B32);
+                emitBinOpDivNAtReg(pp, ip, CPUOp::IDIV, CPUBits::B32);
                 break;
             case ByteCodeOp::BinOpDivS64:
-                emitBinOpDivIntNAtReg(pp, ip, CPUOp::IDIV, CPUBits::B64);
+                emitBinOpDivNAtReg(pp, ip, CPUOp::IDIV, CPUBits::B64);
                 break;
             case ByteCodeOp::BinOpDivU8:
-                emitBinOpDivIntNAtReg(pp, ip, CPUOp::DIV, CPUBits::B8);
+                emitBinOpDivNAtReg(pp, ip, CPUOp::DIV, CPUBits::B8);
                 break;
             case ByteCodeOp::BinOpDivU16:
-                emitBinOpDivIntNAtReg(pp, ip, CPUOp::DIV, CPUBits::B16);
+                emitBinOpDivNAtReg(pp, ip, CPUOp::DIV, CPUBits::B16);
                 break;
             case ByteCodeOp::BinOpDivU32:
-                emitBinOpDivIntNAtReg(pp, ip, CPUOp::DIV, CPUBits::B32);
+                emitBinOpDivNAtReg(pp, ip, CPUOp::DIV, CPUBits::B32);
                 break;
             case ByteCodeOp::BinOpDivU64:
-                emitBinOpDivIntNAtReg(pp, ip, CPUOp::DIV, CPUBits::B64);
+                emitBinOpDivNAtReg(pp, ip, CPUOp::DIV, CPUBits::B64);
                 break;
             case ByteCodeOp::BinOpDivF32:
                 emitBinOpNAtReg(pp, ip, CPUOp::FDIV, CPUBits::F32);

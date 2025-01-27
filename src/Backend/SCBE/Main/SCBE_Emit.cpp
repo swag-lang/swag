@@ -220,9 +220,10 @@ void SCBE::emitBinOpNAtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op
         pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, numBits);
 }
 
-void SCBE::emitBinOpDivIntNAtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
+void SCBE::emitBinOpDivNAtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
 {
     SWAG_ASSERT(op == CPUOp::DIV || op == CPUOp::MOD || op == CPUOp::IDIV || op == CPUOp::IMOD);
+    SWAG_ASSERT(numBits == CPUBits::B8 || numBits == CPUBits::B16 || numBits == CPUBits::B32 || numBits == CPUBits::B64);
 
     switch (numBits)
     {
