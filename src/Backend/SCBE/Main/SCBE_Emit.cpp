@@ -148,7 +148,7 @@ void SCBE::emitInternalPanic(SCBE_X64& pp, const AstNode* node, const char* msg)
     emitInternalCallExt(pp, g_LangSpec->name_priv_panic, pp.pushParams);
 }
 
-void SCBE::emitBinOpN(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
+void SCBE::emitBinOp(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
 {
     if (numBits == CPUBits::F32 || numBits == CPUBits::F64)
     {
@@ -211,16 +211,16 @@ void SCBE::emitBinOpN(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPU
     }
 }
 
-void SCBE::emitBinOpNAtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
+void SCBE::emitBinOpAtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
 {
-    emitBinOpN(pp, ip, op, numBits);
+    emitBinOp(pp, ip, op, numBits);
     if (numBits == CPUBits::F32 || numBits == CPUBits::F64)
         pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), XMM0, RDI, numBits);
     else
         pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, numBits);
 }
 
-void SCBE::emitBinOpDivNAtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
+void SCBE::emitBinOpDivAtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
 {
     SWAG_ASSERT(op == CPUOp::DIV || op == CPUOp::MOD || op == CPUOp::IDIV || op == CPUOp::IMOD);
     SWAG_ASSERT(numBits == CPUBits::B8 || numBits == CPUBits::B16 || numBits == CPUBits::B32 || numBits == CPUBits::B64);
