@@ -587,11 +587,11 @@ void SCBE_X64::emitLoadNImmediate(CPURegister reg, uint64_t value, CPUBits numBi
             break;
         case CPUBits::F32:
             emitLoad32Immediate(RAX, static_cast<uint32_t>(value));
-            emitCopyF32(reg, RAX);
+            emitCopyN(reg, RAX, CPUBits::F32);
             break;
         case CPUBits::F64:
             emitLoad64Immediate(RAX, value);
-            emitCopyF64(reg, RAX);
+            emitCopyN(reg, RAX, CPUBits::F64);
             break;
         default:
             SWAG_ASSERT(false);
@@ -612,33 +612,34 @@ void SCBE_X64::emitClearN(CPURegister reg, CPUBits numBits)
 
 void SCBE_X64::emitCopyN(CPURegister regDst, CPURegister regSrc, CPUBits numBits)
 {
-    emitREX(concat, numBits, regSrc, regDst);
-    if (numBits == CPUBits::B8)
-        concat.addU8(0x88);
+    if (numBits == CPUBits::F32)
+    {
+        SWAG_ASSERT(regSrc == RAX);
+        SWAG_ASSERT(regDst == XMM0 || regDst == XMM1 || regDst == XMM2 || regDst == XMM3);
+        concat.addU8(0x66);
+        concat.addU8(0x0F);
+        concat.addU8(0x6E);
+        concat.addU8(static_cast<uint8_t>(0xC0 | regDst << 3));
+    }
+    else if (numBits == CPUBits::F64)
+    {
+        SWAG_ASSERT(regSrc == RAX);
+        SWAG_ASSERT(regDst == XMM0 || regDst == XMM1 || regDst == XMM2 || regDst == XMM3);
+        concat.addU8(0x66);
+        emitREX(concat, CPUBits::B64);
+        concat.addU8(0x0F);
+        concat.addU8(0x6E);
+        concat.addU8(static_cast<uint8_t>(0xC0 | regDst << 3));
+    }
     else
-        concat.addU8(0x89);
-    concat.addU8(getModRM(RegReg, regSrc, regDst));
-}
-
-void SCBE_X64::emitCopyF32(CPURegister regDst, [[maybe_unused]] CPURegister regSrc)
-{
-    SWAG_ASSERT(regSrc == RAX);
-    SWAG_ASSERT(regDst == XMM0 || regDst == XMM1 || regDst == XMM2 || regDst == XMM3);
-    concat.addU8(0x66);
-    concat.addU8(0x0F);
-    concat.addU8(0x6E);
-    concat.addU8(static_cast<uint8_t>(0xC0 | regDst << 3));
-}
-
-void SCBE_X64::emitCopyF64(CPURegister regDst, [[maybe_unused]] CPURegister regSrc)
-{
-    SWAG_ASSERT(regSrc == RAX);
-    SWAG_ASSERT(regDst == XMM0 || regDst == XMM1 || regDst == XMM2 || regDst == XMM3);
-    concat.addU8(0x66);
-    emitREX(concat, CPUBits::B64);
-    concat.addU8(0x0F);
-    concat.addU8(0x6E);
-    concat.addU8(static_cast<uint8_t>(0xC0 | regDst << 3));
+    {
+        emitREX(concat, numBits, regSrc, regDst);
+        if (numBits == CPUBits::B8)
+            concat.addU8(0x88);
+        else
+            concat.addU8(0x89);
+        concat.addU8(getModRM(RegReg, regSrc, regDst));
+    }
 }
 
 void SCBE_X64::emitCopyDownUp([[maybe_unused]] CPURegister reg, [[maybe_unused]] CPUBits numBits)
@@ -789,7 +790,7 @@ void SCBE_X64::emitCmpN(CPURegister regSrc, CPURegister regDst, CPUBits numBits)
         SWAG_ASSERT(regSrc < R8 && regDst < R8);
         concat.addU8(0x0F);
         concat.addU8(0x2F);
-        concat.addU8(getModRM(RegReg, regSrc, regDst));        
+        concat.addU8(getModRM(RegReg, regSrc, regDst));
     }
     else if (numBits == CPUBits::F64)
     {
@@ -797,7 +798,7 @@ void SCBE_X64::emitCmpN(CPURegister regSrc, CPURegister regDst, CPUBits numBits)
         concat.addU8(0x66);
         concat.addU8(0x0F);
         concat.addU8(0x2F);
-        concat.addU8(getModRM(RegReg, regSrc, regDst));        
+        concat.addU8(getModRM(RegReg, regSrc, regDst));
     }
     else
     {
@@ -1875,7 +1876,7 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
                 {
                     SWAG_ASSERT(paramsRegisters[i].reg <= UINT32_MAX);
                     emitLoad32Immediate(RAX, static_cast<uint32_t>(paramsRegisters[i].reg));
-                    emitCopyF32(cc.paramByRegisterFloat[i], RAX);
+                    emitCopyN(cc.paramByRegisterFloat[i], RAX, CPUBits::F32);
                 }
                 else
                 {
@@ -1888,7 +1889,7 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
                 if (paramsRegisters[i].type == CPUPushParamType::Imm)
                 {
                     emitLoad64Immediate(RAX, paramsRegisters[i].reg);
-                    emitCopyF64(cc.paramByRegisterFloat[i], RAX);
+                    emitCopyN(cc.paramByRegisterFloat[i], RAX, CPUBits::F64);
                 }
                 else
                 {

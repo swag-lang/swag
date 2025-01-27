@@ -3982,9 +3982,9 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 {
                     pp.emitLoad64Indirect(offsetResult, cc.returnByRegisterInteger, RDI);
                     if (returnType->isNative(NativeTypeKind::F32))
-                        pp.emitCopyF32(cc.returnByRegisterFloat, RAX);
+                        pp.emitCopyN(cc.returnByRegisterFloat, RAX, CPUBits::F32);
                     else if (returnType->isNative(NativeTypeKind::F64))
-                        pp.emitCopyF64(cc.returnByRegisterFloat, RAX);
+                        pp.emitCopyN(cc.returnByRegisterFloat, RAX, CPUBits::F64);
                 }
 
                 pp.emitOpNImmediate(RSP, sizeStack + sizeParamsStack, CPUOp::ADD, CPUBits::B64);
@@ -4701,7 +4701,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                     case TokenId::IntrinsicAbs:
                         MK_IMMB_F32(XMM0);
                         pp.emitLoad64Immediate(RAX, 0x7FFFFFFF);
-                        pp.emitCopyF64(XMM1, RAX);
+                        pp.emitCopyN(XMM1, RAX, CPUBits::F64);
                         pp.emitOpF32(XMM0, XMM1, CPUOp::FAND);
                         pp.emitStoreF32Indirect(REG_OFFSET(ip->a.u32), XMM0, RDI);
                         break;
@@ -4787,7 +4787,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                     case TokenId::IntrinsicAbs:
                         MK_IMMB_F64(XMM0);
                         pp.emitLoad64Immediate(RAX, 0x7FFFFFFF'FFFFFFFF);
-                        pp.emitCopyF64(XMM1, RAX);
+                        pp.emitCopyN(XMM1, RAX, CPUBits::F64);
                         pp.emitOpF64(XMM0, XMM1, CPUOp::FAND);
                         pp.emitStoreF64Indirect(REG_OFFSET(ip->a.u32), XMM0, RDI);
                         break;

@@ -39,8 +39,6 @@ struct SCBE_X64 : SCBE_CPU
     void emitCmpNImmediate(CPURegister reg, uint64_t value, CPUBits numBits);
 
     void emitCopyN(CPURegister regDst, CPURegister regSrc, CPUBits numBits);
-    void emitCopyF32(CPURegister regDst, CPURegister regSrc);
-    void emitCopyF64(CPURegister regDst, CPURegister regSrc);
     void emitCopyX(CPURegister regDst, CPURegister regSrc, uint32_t count, uint32_t offset);
     void emitCopyDownUp(CPURegister reg, CPUBits numBits);
 
