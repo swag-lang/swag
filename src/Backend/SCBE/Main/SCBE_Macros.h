@@ -375,36 +375,12 @@
 
 //////////////////////////////////
 
-#define MK_BINOP_EQ8_LOCK_CAB(__op)                                          \
+#define MK_BINOP_EQ_LOCK_CAB(__op, __numBits)                                \
     do                                                                       \
     {                                                                        \
         pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), RCX, RDI, CPUBits::B64); \
-        MK_IMMB(RAX, CPUBits::B8);                                           \
-        pp.emitOpNIndirect(0, RAX, RCX, __op, CPUBits::B8, true);            \
-    } while (0)
-
-#define MK_BINOP_EQ16_LOCK_CAB(__op)                                         \
-    do                                                                       \
-    {                                                                        \
-        pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), RCX, RDI, CPUBits::B64); \
-        MK_IMMB(RAX, CPUBits::B16);                                          \
-        pp.emitOpNIndirect(0, RAX, RCX, __op, CPUBits::B16, true);           \
-    } while (0)
-
-#define MK_BINOP_EQ32_LOCK_CAB(__op)                                         \
-    do                                                                       \
-    {                                                                        \
-        pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), RCX, RDI, CPUBits::B64); \
-        MK_IMMB(RAX, CPUBits::B32);                                          \
-        pp.emitOpNIndirect(0, RAX, RCX, __op, CPUBits::B32, true);           \
-    } while (0)
-
-#define MK_BINOP_EQ64_LOCK_CAB(__op)                                         \
-    do                                                                       \
-    {                                                                        \
-        pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), RCX, RDI, CPUBits::B64); \
-        MK_IMMB(RAX, CPUBits::B64);                                          \
-        pp.emitOpNIndirect(0, RAX, RCX, __op, CPUBits::B64, true);           \
+        MK_IMMB(RAX, __numBits);                                             \
+        pp.emitOpNIndirect(0, RAX, RCX, __op, __numBits, true);              \
     } while (0)
 
 //////////////////////////////////

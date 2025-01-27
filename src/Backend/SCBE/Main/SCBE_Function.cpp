@@ -4018,125 +4018,125 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX, RDI);
                 pp.emitLoad8Indirect(0, RAX, RCX);
                 pp.emitStore8Indirect(REG_OFFSET(ip->c.u32), RAX, RDI);
-                MK_BINOP_EQ8_LOCK_CAB(CPUOp::ADD);
+                MK_BINOP_EQ_LOCK_CAB(CPUOp::ADD, CPUBits::B8);
                 break;
             case ByteCodeOp::IntrinsicAtomicAddS16:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX, RDI);
                 pp.emitLoad16Indirect(0, RAX, RCX);
                 pp.emitStore16Indirect(REG_OFFSET(ip->c.u32), RAX, RDI);
-                MK_BINOP_EQ16_LOCK_CAB(CPUOp::ADD);
+                MK_BINOP_EQ_LOCK_CAB(CPUOp::ADD, CPUBits::B16);
                 break;
             case ByteCodeOp::IntrinsicAtomicAddS32:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX, RDI);
                 pp.emitLoad32Indirect(0, RAX, RCX);
                 pp.emitStore32Indirect(REG_OFFSET(ip->c.u32), RAX, RDI);
-                MK_BINOP_EQ32_LOCK_CAB(CPUOp::ADD);
+                MK_BINOP_EQ_LOCK_CAB(CPUOp::ADD, CPUBits::B32);
                 break;
             case ByteCodeOp::IntrinsicAtomicAddS64:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX, RDI);
                 pp.emitLoad64Indirect(0, RAX, RCX);
                 pp.emitStore64Indirect(REG_OFFSET(ip->c.u32), RAX, RDI);
-                MK_BINOP_EQ64_LOCK_CAB(CPUOp::ADD);
+                MK_BINOP_EQ_LOCK_CAB(CPUOp::ADD, CPUBits::B64);
                 break;
 
             case ByteCodeOp::IntrinsicAtomicAndS8:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX, RDI);
                 pp.emitLoad8Indirect(0, RAX, RCX);
                 pp.emitStore8Indirect(REG_OFFSET(ip->c.u32), RAX, RDI);
-                MK_BINOP_EQ8_LOCK_CAB(CPUOp::AND);
+                MK_BINOP_EQ_LOCK_CAB(CPUOp::AND, CPUBits::B8);
                 break;
             case ByteCodeOp::IntrinsicAtomicAndS16:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX, RDI);
                 pp.emitLoad16Indirect(0, RAX, RCX);
                 pp.emitStore16Indirect(REG_OFFSET(ip->c.u32), RAX, RDI);
-                MK_BINOP_EQ16_LOCK_CAB(CPUOp::AND);
+                MK_BINOP_EQ_LOCK_CAB(CPUOp::AND, CPUBits::B16);
                 break;
             case ByteCodeOp::IntrinsicAtomicAndS32:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX, RDI);
                 pp.emitLoad32Indirect(0, RAX, RCX);
                 pp.emitStore32Indirect(REG_OFFSET(ip->c.u32), RAX, RDI);
-                MK_BINOP_EQ32_LOCK_CAB(CPUOp::AND);
+                MK_BINOP_EQ_LOCK_CAB(CPUOp::AND, CPUBits::B32);
                 break;
             case ByteCodeOp::IntrinsicAtomicAndS64:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX, RDI);
                 pp.emitLoad64Indirect(0, RAX, RCX);
                 pp.emitStore64Indirect(REG_OFFSET(ip->c.u32), RAX, RDI);
-                MK_BINOP_EQ64_LOCK_CAB(CPUOp::AND);
+                MK_BINOP_EQ_LOCK_CAB(CPUOp::AND, CPUBits::B64);
                 break;
 
             case ByteCodeOp::IntrinsicAtomicOrS8:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX, RDI);
                 pp.emitLoad8Indirect(0, RAX, RCX);
                 pp.emitStore8Indirect(REG_OFFSET(ip->c.u32), RAX, RDI);
-                MK_BINOP_EQ8_LOCK_CAB(CPUOp::OR);
+                MK_BINOP_EQ_LOCK_CAB(CPUOp::OR, CPUBits::B8);
                 break;
             case ByteCodeOp::IntrinsicAtomicOrS16:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX, RDI);
                 pp.emitLoad16Indirect(0, RAX, RCX);
                 pp.emitStore16Indirect(REG_OFFSET(ip->c.u32), RAX, RDI);
-                MK_BINOP_EQ16_LOCK_CAB(CPUOp::OR);
+                MK_BINOP_EQ_LOCK_CAB(CPUOp::OR, CPUBits::B16);
                 break;
             case ByteCodeOp::IntrinsicAtomicOrS32:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX, RDI);
                 pp.emitLoad32Indirect(0, RAX, RCX);
                 pp.emitStore32Indirect(REG_OFFSET(ip->c.u32), RAX, RDI);
-                MK_BINOP_EQ32_LOCK_CAB(CPUOp::OR);
+                MK_BINOP_EQ_LOCK_CAB(CPUOp::OR, CPUBits::B32);
                 break;
             case ByteCodeOp::IntrinsicAtomicOrS64:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX, RDI);
                 pp.emitLoad64Indirect(0, RAX, RCX);
                 pp.emitStore64Indirect(REG_OFFSET(ip->c.u32), RAX, RDI);
-                MK_BINOP_EQ64_LOCK_CAB(CPUOp::OR);
+                MK_BINOP_EQ_LOCK_CAB(CPUOp::OR, CPUBits::B64);
                 break;
 
             case ByteCodeOp::IntrinsicAtomicXorS8:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX, RDI);
                 pp.emitLoad8Indirect(0, RAX, RCX);
                 pp.emitStore8Indirect(REG_OFFSET(ip->c.u32), RAX, RDI);
-                MK_BINOP_EQ8_LOCK_CAB(CPUOp::XOR);
+                MK_BINOP_EQ_LOCK_CAB(CPUOp::XOR, CPUBits::B8);
                 break;
             case ByteCodeOp::IntrinsicAtomicXorS16:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX, RDI);
                 pp.emitLoad16Indirect(0, RAX, RCX);
                 pp.emitStore16Indirect(REG_OFFSET(ip->c.u32), RAX, RDI);
-                MK_BINOP_EQ16_LOCK_CAB(CPUOp::XOR);
+                MK_BINOP_EQ_LOCK_CAB(CPUOp::XOR, CPUBits::B16);
                 break;
             case ByteCodeOp::IntrinsicAtomicXorS32:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX, RDI);
                 pp.emitLoad32Indirect(0, RAX, RCX);
                 pp.emitStore32Indirect(REG_OFFSET(ip->c.u32), RAX, RDI);
-                MK_BINOP_EQ32_LOCK_CAB(CPUOp::XOR);
+                MK_BINOP_EQ_LOCK_CAB(CPUOp::XOR, CPUBits::B32);
                 break;
             case ByteCodeOp::IntrinsicAtomicXorS64:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX, RDI);
                 pp.emitLoad64Indirect(0, RAX, RCX);
                 pp.emitStore64Indirect(REG_OFFSET(ip->c.u32), RAX, RDI);
-                MK_BINOP_EQ64_LOCK_CAB(CPUOp::XOR);
+                MK_BINOP_EQ_LOCK_CAB(CPUOp::XOR, CPUBits::B64);
                 break;
 
             case ByteCodeOp::IntrinsicAtomicXchgS8:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX, RDI);
                 pp.emitLoad8Indirect(0, RAX, RCX);
                 pp.emitStore8Indirect(REG_OFFSET(ip->c.u32), RAX, RDI);
-                MK_BINOP_EQ8_LOCK_CAB(CPUOp::XCHG);
+                MK_BINOP_EQ_LOCK_CAB(CPUOp::XCHG, CPUBits::B8);
                 break;
             case ByteCodeOp::IntrinsicAtomicXchgS16:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX, RDI);
                 pp.emitLoad16Indirect(0, RAX, RCX);
                 pp.emitStore16Indirect(REG_OFFSET(ip->c.u32), RAX, RDI);
-                MK_BINOP_EQ16_LOCK_CAB(CPUOp::XCHG);
+                MK_BINOP_EQ_LOCK_CAB(CPUOp::XCHG, CPUBits::B16);
                 break;
             case ByteCodeOp::IntrinsicAtomicXchgS32:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX, RDI);
                 pp.emitLoad32Indirect(0, RAX, RCX);
                 pp.emitStore32Indirect(REG_OFFSET(ip->c.u32), RAX, RDI);
-                MK_BINOP_EQ32_LOCK_CAB(CPUOp::XCHG);
+                MK_BINOP_EQ_LOCK_CAB(CPUOp::XCHG, CPUBits::B32);
                 break;
             case ByteCodeOp::IntrinsicAtomicXchgS64:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX, RDI);
                 pp.emitLoad64Indirect(0, RAX, RCX);
                 pp.emitStore64Indirect(REG_OFFSET(ip->c.u32), RAX, RDI);
-                MK_BINOP_EQ64_LOCK_CAB(CPUOp::XCHG);
+                MK_BINOP_EQ_LOCK_CAB(CPUOp::XCHG, CPUBits::B64);
                 break;
 
             case ByteCodeOp::IntrinsicAtomicCmpXchgS8:
