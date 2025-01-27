@@ -1054,9 +1054,19 @@ void SCBE_X64::emitOpF64(uint32_t offsetStack, CPUOp op)
 void SCBE_X64::emitOpN(uint32_t offsetStack, CPUOp op, CPUBits numBits)
 {
     if (numBits == CPUBits::F32)
-        emitOpF32(offsetStack, op);
+    {
+        concat.addU8(0xF3);
+        concat.addU8(0x0F);
+        concat.addU8(static_cast<uint8_t>(op));
+        emitModRM(concat, offsetStack, XMM0, RDI);
+    }
     else if (numBits == CPUBits::F64)
-        emitOpF64(offsetStack, op);
+    {
+        concat.addU8(0xF2);
+        concat.addU8(0x0F);
+        concat.addU8(static_cast<uint8_t>(op));
+        emitModRM(concat, offsetStack, XMM0, RDI);
+    }
     else
     {
         emitREX(concat, numBits);
