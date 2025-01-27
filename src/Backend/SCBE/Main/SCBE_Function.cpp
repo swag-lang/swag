@@ -2530,16 +2530,16 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::JumpIfNotEqual8:
-                MK_JMPCMP_8(JNZ);
+                MK_JMPCMP(JNZ, CPUBits::B8);
                 break;
             case ByteCodeOp::JumpIfNotEqual16:
-                MK_JMPCMP_16(JNZ);
+                MK_JMPCMP(JNZ, CPUBits::B16);
                 break;
             case ByteCodeOp::JumpIfNotEqual32:
-                MK_JMPCMP_32(JNZ);
+                MK_JMPCMP(JNZ, CPUBits::B32);
                 break;
             case ByteCodeOp::JumpIfNotEqual64:
-                MK_JMPCMP_64(JNZ);
+                MK_JMPCMP(JNZ, CPUBits::B64);
                 break;
             case ByteCodeOp::JumpIfNotEqualF32:
                 MK_JMPCMP2_F32(JP, JNZ);
@@ -2551,16 +2551,16 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::JumpIfEqual8:
-                MK_JMPCMP_8(JZ);
+                MK_JMPCMP(JZ, CPUBits::B8);
                 break;
             case ByteCodeOp::JumpIfEqual16:
-                MK_JMPCMP_16(JZ);
+                MK_JMPCMP(JZ, CPUBits::B16);
                 break;
             case ByteCodeOp::JumpIfEqual32:
-                MK_JMPCMP_32(JZ);
+                MK_JMPCMP(JZ, CPUBits::B32);
                 break;
             case ByteCodeOp::JumpIfEqual64:
-                MK_JMPCMP_64(JZ);
+                MK_JMPCMP(JZ, CPUBits::B64);
                 break;
             case ByteCodeOp::JumpIfEqualF32:
                 MK_JMPCMP3_F32(JP, JZ);
@@ -2570,7 +2570,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::IncJumpIfEqual64:
                 pp.emitIncNIndirect(REG_OFFSET(ip->a.u32), RDI, CPUBits::B64);
-                MK_JMPCMP_64(JZ);
+                MK_JMPCMP(JZ, CPUBits::B64);
                 break;
 
                 /////////////////////////////////////
@@ -2642,28 +2642,28 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::JumpIfLowerS8:
-                MK_JMPCMP_8(JL);
+                MK_JMPCMP(JL, CPUBits::B8);
                 break;
             case ByteCodeOp::JumpIfLowerS16:
-                MK_JMPCMP_16(JL);
+                MK_JMPCMP(JL, CPUBits::B16);
                 break;
             case ByteCodeOp::JumpIfLowerS32:
-                MK_JMPCMP_32(JL);
+                MK_JMPCMP(JL, CPUBits::B32);
                 break;
             case ByteCodeOp::JumpIfLowerS64:
-                MK_JMPCMP_64(JL);
+                MK_JMPCMP(JL, CPUBits::B64);
                 break;
             case ByteCodeOp::JumpIfLowerU8:
-                MK_JMPCMP_8(JB);
+                MK_JMPCMP(JB, CPUBits::B8);
                 break;
             case ByteCodeOp::JumpIfLowerU16:
-                MK_JMPCMP_16(JB);
+                MK_JMPCMP(JB, CPUBits::B16);
                 break;
             case ByteCodeOp::JumpIfLowerU32:
-                MK_JMPCMP_32(JB);
+                MK_JMPCMP(JB, CPUBits::B32);
                 break;
             case ByteCodeOp::JumpIfLowerU64:
-                MK_JMPCMP_64(JB);
+                MK_JMPCMP(JB, CPUBits::B64);
                 break;
             case ByteCodeOp::JumpIfLowerF32:
                 MK_JMPCMP_F32(JB);
@@ -2675,28 +2675,28 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::JumpIfLowerEqS8:
-                MK_JMPCMP_8(JLE);
+                MK_JMPCMP(JLE, CPUBits::B8);
                 break;
             case ByteCodeOp::JumpIfLowerEqS16:
-                MK_JMPCMP_16(JLE);
+                MK_JMPCMP(JLE, CPUBits::B16);
                 break;
             case ByteCodeOp::JumpIfLowerEqS32:
-                MK_JMPCMP_32(JLE);
+                MK_JMPCMP(JLE, CPUBits::B32);
                 break;
             case ByteCodeOp::JumpIfLowerEqS64:
-                MK_JMPCMP_64(JLE);
+                MK_JMPCMP(JLE, CPUBits::B64);
                 break;
             case ByteCodeOp::JumpIfLowerEqU8:
-                MK_JMPCMP_8(JBE);
+                MK_JMPCMP(JBE, CPUBits::B8);
                 break;
             case ByteCodeOp::JumpIfLowerEqU16:
-                MK_JMPCMP_16(JBE);
+                MK_JMPCMP(JBE, CPUBits::B16);
                 break;
             case ByteCodeOp::JumpIfLowerEqU32:
-                MK_JMPCMP_32(JBE);
+                MK_JMPCMP(JBE, CPUBits::B32);
                 break;
             case ByteCodeOp::JumpIfLowerEqU64:
-                MK_JMPCMP_64(JBE);
+                MK_JMPCMP(JBE, CPUBits::B64);
                 break;
             case ByteCodeOp::JumpIfLowerEqF32:
                 MK_JMPCMP_F32(JBE);
@@ -2708,28 +2708,28 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::JumpIfGreaterS8:
-                MK_JMPCMP_8(JG);
+                MK_JMPCMP(JG, CPUBits::B8);
                 break;
             case ByteCodeOp::JumpIfGreaterS16:
-                MK_JMPCMP_16(JG);
+                MK_JMPCMP(JG, CPUBits::B16);
                 break;
             case ByteCodeOp::JumpIfGreaterS32:
-                MK_JMPCMP_32(JG);
+                MK_JMPCMP(JG, CPUBits::B32);
                 break;
             case ByteCodeOp::JumpIfGreaterS64:
-                MK_JMPCMP_64(JG);
+                MK_JMPCMP(JG, CPUBits::B64);
                 break;
             case ByteCodeOp::JumpIfGreaterU8:
-                MK_JMPCMP_8(JA);
+                MK_JMPCMP(JA, CPUBits::B8);
                 break;
             case ByteCodeOp::JumpIfGreaterU16:
-                MK_JMPCMP_16(JA);
+                MK_JMPCMP(JA, CPUBits::B16);
                 break;
             case ByteCodeOp::JumpIfGreaterU32:
-                MK_JMPCMP_32(JA);
+                MK_JMPCMP(JA, CPUBits::B32);
                 break;
             case ByteCodeOp::JumpIfGreaterU64:
-                MK_JMPCMP_64(JA);
+                MK_JMPCMP(JA, CPUBits::B64);
                 break;
             case ByteCodeOp::JumpIfGreaterF32:
                 MK_JMPCMP_F32(JA);
@@ -2741,28 +2741,28 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::JumpIfGreaterEqS8:
-                MK_JMPCMP_8(JGE);
+                MK_JMPCMP(JGE, CPUBits::B8);
                 break;
             case ByteCodeOp::JumpIfGreaterEqS16:
-                MK_JMPCMP_16(JGE);
+                MK_JMPCMP(JGE, CPUBits::B16);
                 break;
             case ByteCodeOp::JumpIfGreaterEqS32:
-                MK_JMPCMP_32(JGE);
+                MK_JMPCMP(JGE, CPUBits::B32);
                 break;
             case ByteCodeOp::JumpIfGreaterEqS64:
-                MK_JMPCMP_64(JGE);
+                MK_JMPCMP(JGE, CPUBits::B64);
                 break;
             case ByteCodeOp::JumpIfGreaterEqU8:
-                MK_JMPCMP_8(JAE);
+                MK_JMPCMP(JAE, CPUBits::B8);
                 break;
             case ByteCodeOp::JumpIfGreaterEqU16:
-                MK_JMPCMP_16(JAE);
+                MK_JMPCMP(JAE, CPUBits::B16);
                 break;
             case ByteCodeOp::JumpIfGreaterEqU32:
-                MK_JMPCMP_32(JAE);
+                MK_JMPCMP(JAE, CPUBits::B32);
                 break;
             case ByteCodeOp::JumpIfGreaterEqU64:
-                MK_JMPCMP_64(JAE);
+                MK_JMPCMP(JAE, CPUBits::B64);
                 break;
             case ByteCodeOp::JumpIfGreaterEqF32:
                 MK_JMPCMP_F32(JAE);
