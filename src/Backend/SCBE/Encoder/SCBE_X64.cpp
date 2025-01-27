@@ -810,6 +810,7 @@ void SCBE_X64::emitCmpN(CPURegister regSrc, CPURegister regDst, CPUBits numBits)
 
 void SCBE_X64::emitCmpNImmediate(CPURegister reg, uint64_t value, CPUBits numBits)
 {
+    SWAG_ASSERT(numBits == CPUBits::B8 || numBits == CPUBits::B16 || numBits == CPUBits::B32 || numBits == CPUBits::B64);
     if (value <= 0x7f)
     {
         SWAG_ASSERT(reg == RAX || reg == RCX);
@@ -840,7 +841,7 @@ void SCBE_X64::emitCmpNIndirect(uint32_t memOffset, CPURegister reg, CPURegister
         SWAG_ASSERT(reg < R8 && memReg < R8);
         concat.addU8(0x0F);
         concat.addU8(0x2E);
-        emitModRM(concat, memOffset, reg, memReg);        
+        emitModRM(concat, memOffset, reg, memReg);
     }
     else if (numBits == CPUBits::F64)
     {
@@ -848,7 +849,7 @@ void SCBE_X64::emitCmpNIndirect(uint32_t memOffset, CPURegister reg, CPURegister
         concat.addU8(0x66);
         concat.addU8(0x0F);
         concat.addU8(0x2F);
-        emitModRM(concat, memOffset, reg, memReg);        
+        emitModRM(concat, memOffset, reg, memReg);
     }
     else
     {
@@ -861,6 +862,7 @@ void SCBE_X64::emitCmpNIndirect(uint32_t memOffset, CPURegister reg, CPURegister
 
 void SCBE_X64::emitCmpNIndirectDst(uint32_t memOffset, uint32_t value, CPURegister memReg, CPUBits numBits)
 {
+    SWAG_ASSERT(numBits == CPUBits::B8 || numBits == CPUBits::B16 || numBits == CPUBits::B32 || numBits == CPUBits::B64);
     emitREX(concat, numBits);
 
     if (numBits == CPUBits::B8)
@@ -1151,6 +1153,7 @@ void SCBE_X64::emitOpNIndirect(uint32_t memOffset, CPURegister reg, CPURegister 
 
 void SCBE_X64::emitOpNIndirectDst(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBits numBits)
 {
+    SWAG_ASSERT(numBits == CPUBits::B8 || numBits == CPUBits::B16 || numBits == CPUBits::B32 || numBits == CPUBits::B64);
     emitREX(concat, numBits, regSrc, regDst);
     if (op == CPUOp::SAR ||
         op == CPUOp::SHR ||
@@ -1171,6 +1174,7 @@ void SCBE_X64::emitOpNIndirectDst(CPURegister regDst, CPURegister regSrc, CPUOp 
 
 void SCBE_X64::emitOpNIndirectDst([[maybe_unused]] CPURegister reg, uint64_t value, CPUOp op, CPUBits numBits)
 {
+    SWAG_ASSERT(numBits == CPUBits::B8 || numBits == CPUBits::B16 || numBits == CPUBits::B32 || numBits == CPUBits::B64);
     if (op == CPUOp::SAR ||
         op == CPUOp::SHR ||
         op == CPUOp::SHL)
@@ -1440,6 +1444,7 @@ void SCBE_X64::emitOpNImmediate(CPURegister reg, uint64_t value, CPUOp op, CPUBi
 
 void SCBE_X64::emitOpNIndirectDst(uint32_t memOffset, uint64_t value, CPURegister memReg, CPUOp op, CPUBits numBits)
 {
+    SWAG_ASSERT(numBits == CPUBits::B8 || numBits == CPUBits::B16 || numBits == CPUBits::B32 || numBits == CPUBits::B64);
     SWAG_ASSERT(memReg == RAX || memReg == RDI);
 
     if (value > 0x7FFFFFFF)
