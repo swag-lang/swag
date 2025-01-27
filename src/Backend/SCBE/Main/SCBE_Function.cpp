@@ -1126,7 +1126,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpMulEqF32:
-                MK_IMMB_F32(XMM1);
+                MK_IMMB(XMM1, CPUBits::F32);
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RAX, RDI);
                 pp.emitLoadF32Indirect(ip->c.u32, XMM0, RAX);
                 pp.emitOpF32(XMM0, XMM1, CPUOp::FMUL);
@@ -1134,7 +1134,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::AffectOpMulEqF32_S:
                 pp.emitLoadF32Indirect(offsetStack + ip->a.u32, XMM0, RDI);
-                MK_IMMB_F32(XMM1);
+                MK_IMMB(XMM1, CPUBits::F32);
                 pp.emitOpF32(XMM0, XMM1, CPUOp::FMUL);
                 pp.emitLoadAddressIndirect(offsetStack + ip->a.u32, RAX, RDI);
                 pp.emitStoreF32Indirect(0, XMM0, RAX);
@@ -1148,7 +1148,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpMulEqF64:
-                MK_IMMB_F64(XMM1);
+                MK_IMMB(XMM1, CPUBits::F64);
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RAX, RDI);
                 pp.emitLoadF64Indirect(ip->c.u32, XMM0, RAX);
                 pp.emitOpF64(XMM0, XMM1, CPUOp::FMUL);
@@ -1156,7 +1156,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::AffectOpMulEqF64_S:
                 pp.emitLoadF64Indirect(offsetStack + ip->a.u32, XMM0, RDI);
-                MK_IMMB_F64(XMM1);
+                MK_IMMB(XMM1, CPUBits::F64);
                 pp.emitOpF64(XMM0, XMM1, CPUOp::FMUL);
                 pp.emitLoadAddressIndirect(offsetStack + ip->a.u32, RAX, RDI);
                 pp.emitStoreF64Indirect(0, XMM0, RAX);
@@ -1374,7 +1374,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpDivEqF32:
-                MK_IMMB_F32(XMM1);
+                MK_IMMB(XMM1, CPUBits::F32);
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RAX, RDI);
                 pp.emitLoadF32Indirect(0, XMM0, RAX);
                 pp.emitOpF32(XMM0, XMM1, CPUOp::FDIV);
@@ -1382,7 +1382,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::AffectOpDivEqF32_S:
                 pp.emitLoadF32Indirect(offsetStack + ip->a.u32, XMM0, RDI);
-                MK_IMMB_F32(XMM1);
+                MK_IMMB(XMM1, CPUBits::F32);
                 pp.emitOpF32(XMM0, XMM1, CPUOp::FDIV);
                 pp.emitLoadAddressIndirect(offsetStack + ip->a.u32, RAX, RDI);
                 pp.emitStoreF32Indirect(0, XMM0, RAX);
@@ -1396,7 +1396,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpDivEqF64:
-                MK_IMMB_F64(XMM1);
+                MK_IMMB(XMM1, CPUBits::F64);
                 pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RAX, RDI);
                 pp.emitLoadF64Indirect(0, XMM0, RAX);
                 pp.emitOpF64(XMM0, XMM1, CPUOp::FDIV);
@@ -1404,7 +1404,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::AffectOpDivEqF64_S:
                 pp.emitLoadF64Indirect(offsetStack + ip->a.u32, XMM0, RDI);
-                MK_IMMB_F64(XMM1);
+                MK_IMMB(XMM1, CPUBits::F64);
                 pp.emitOpF64(XMM0, XMM1, CPUOp::FDIV);
                 pp.emitLoadAddressIndirect(offsetStack + ip->a.u32, RAX, RDI);
                 pp.emitStoreF64Indirect(0, XMM0, RAX);
@@ -2180,7 +2180,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOp3WayF32:
                 pp.emitClearN(R8, CPUBits::B32);
                 MK_IMMA(XMM0, CPUBits::F32);
-                MK_IMMB_F32(XMM1);
+                MK_IMMB(XMM1, CPUBits::F32);
                 pp.emitOpF32(XMM0, XMM1, CPUOp::UCOMIF);
                 pp.emitSetA(R8);
                 pp.emitOpF32(XMM1, XMM0, CPUOp::UCOMIF);
@@ -2191,7 +2191,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOp3WayF64:
                 pp.emitClearN(R8, CPUBits::B32);
                 MK_IMMA(XMM0, CPUBits::F64);
-                MK_IMMB_F64(XMM1);
+                MK_IMMB(XMM1, CPUBits::F64);
                 pp.emitOpF64(XMM0, XMM1, CPUOp::UCOMIF);
                 pp.emitSetA(R8);
                 pp.emitOpF64(XMM1, XMM0, CPUOp::UCOMIF);
@@ -3997,7 +3997,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::IntrinsicMulAddF32:
             {
-                MK_IMMB_F32(XMM0);
+                MK_IMMB(XMM0, CPUBits::F32);
                 MK_IMMC_F32(XMM1);
                 MK_IMMD_F32(XMM2);
                 pp.emitMulAddF32(XMM0, XMM1, XMM2);
@@ -4006,7 +4006,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
             case ByteCodeOp::IntrinsicMulAddF64:
             {
-                MK_IMMB_F64(XMM0);
+                MK_IMMB(XMM0, CPUBits::F64);
                 MK_IMMC_F64(XMM1);
                 MK_IMMD_F64(XMM2);
                 pp.emitMulAddF64(XMM0, XMM1, XMM2);
@@ -4617,13 +4617,13 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 switch (static_cast<TokenId>(ip->d.u32))
                 {
                     case TokenId::IntrinsicMin:
-                        MK_IMMB_F32(XMM0);
+                        MK_IMMB(XMM0, CPUBits::F32);
                         MK_IMMC_F32(XMM1);
                         pp.emitOpF32(XMM0, XMM1, CPUOp::FMIN);
                         pp.emitStoreF32Indirect(REG_OFFSET(ip->a.u32), XMM0, RDI);
                         break;
                     case TokenId::IntrinsicMax:
-                        MK_IMMB_F32(XMM0);
+                        MK_IMMB(XMM0, CPUBits::F32);
                         MK_IMMC_F32(XMM1);
                         pp.emitOpF32(XMM0, XMM1, CPUOp::FMAX);
                         pp.emitStoreF32Indirect(REG_OFFSET(ip->a.u32), XMM0, RDI);
@@ -4657,13 +4657,13 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 switch (static_cast<TokenId>(ip->d.u32))
                 {
                     case TokenId::IntrinsicMin:
-                        MK_IMMB_F64(XMM0);
+                        MK_IMMB(XMM0, CPUBits::F64);
                         MK_IMMC_F64(XMM1);
                         pp.emitOpF64(XMM0, XMM1, CPUOp::FMIN);
                         pp.emitStoreF64Indirect(REG_OFFSET(ip->a.u32), XMM0, RDI);
                         break;
                     case TokenId::IntrinsicMax:
-                        MK_IMMB_F64(XMM0);
+                        MK_IMMB(XMM0, CPUBits::F64);
                         MK_IMMC_F64(XMM1);
                         pp.emitOpF64(XMM0, XMM1, CPUOp::FMAX);
                         pp.emitStoreF64Indirect(REG_OFFSET(ip->a.u32), XMM0, RDI);
@@ -4694,12 +4694,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 switch (static_cast<TokenId>(ip->d.u32))
                 {
                     case TokenId::IntrinsicSqrt:
-                        MK_IMMB_F32(XMM0);
+                        MK_IMMB(XMM0, CPUBits::F32);
                         pp.emitOpF32(XMM0, XMM0, CPUOp::FSQRT);
                         pp.emitStoreF32Indirect(REG_OFFSET(ip->a.u32), XMM0, RDI);
                         break;
                     case TokenId::IntrinsicAbs:
-                        MK_IMMB_F32(XMM0);
+                        MK_IMMB(XMM0, CPUBits::F32);
                         pp.emitLoad64Immediate(RAX, 0x7FFFFFFF);
                         pp.emitCopyN(XMM1, RAX, CPUBits::F64);
                         pp.emitOpF32(XMM0, XMM1, CPUOp::FAND);
@@ -4780,12 +4780,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 switch (static_cast<TokenId>(ip->d.u32))
                 {
                     case TokenId::IntrinsicSqrt:
-                        MK_IMMB_F64(XMM0);
+                        MK_IMMB(XMM0, CPUBits::F64);
                         pp.emitOpF64(XMM0, XMM0, CPUOp::FSQRT);
                         pp.emitStoreF64Indirect(REG_OFFSET(ip->a.u32), XMM0, RDI);
                         break;
                     case TokenId::IntrinsicAbs:
-                        MK_IMMB_F64(XMM0);
+                        MK_IMMB(XMM0, CPUBits::F64);
                         pp.emitLoad64Immediate(RAX, 0x7FFFFFFF'FFFFFFFF);
                         pp.emitCopyN(XMM1, RAX, CPUBits::F64);
                         pp.emitOpF64(XMM0, XMM1, CPUOp::FAND);
