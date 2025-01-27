@@ -1978,12 +1978,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitStore8Indirect(REG_OFFSET(ip->c.u32), RAX, RDI);
                 break;
             case ByteCodeOp::CompareOpGreaterF32:
-                MK_BINOPF32_CAB(emitCmpF32Indirect, emitCmpF32);
+                MK_BINOPF32_CAB(emitCmpNIndirect, emitCmpN);
                 pp.emitSetA();
                 pp.emitStore8Indirect(REG_OFFSET(ip->c.u32), RAX, RDI);
                 break;
             case ByteCodeOp::CompareOpGreaterF64:
-                MK_BINOPF64_CAB(emitCmpF64Indirect, emitCmpF64);
+                MK_BINOPF64_CAB(emitCmpNIndirect, emitCmpN);
                 pp.emitSetA();
                 pp.emitStore8Indirect(REG_OFFSET(ip->c.u32), RAX, RDI);
                 break;
@@ -2029,12 +2029,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitStore8Indirect(REG_OFFSET(ip->c.u32), RAX, RDI);
                 break;
             case ByteCodeOp::CompareOpGreaterEqF32:
-                MK_BINOPF32_CAB(emitCmpF32Indirect, emitCmpF32);
+                MK_BINOPF32_CAB(emitCmpNIndirect, emitCmpN);
                 pp.emitSetAE();
                 pp.emitStore8Indirect(REG_OFFSET(ip->c.u32), RAX, RDI);
                 break;
             case ByteCodeOp::CompareOpGreaterEqF64:
-                MK_BINOPF64_CAB(emitCmpF64Indirect, emitCmpF64);
+                MK_BINOPF64_CAB(emitCmpNIndirect, emitCmpN);
                 pp.emitSetAE();
                 pp.emitStore8Indirect(REG_OFFSET(ip->c.u32), RAX, RDI);
                 break;
@@ -2082,12 +2082,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitStore8Indirect(REG_OFFSET(ip->c.u32), RAX, RDI);
                 break;
             case ByteCodeOp::CompareOpLowerF32:
-                MK_BINOPF32_CAB(emitCmpF32Indirect, emitCmpF32);
+                MK_BINOPF32_CAB(emitCmpNIndirect, emitCmpN);
                 pp.emitSetB();
                 pp.emitStore8Indirect(REG_OFFSET(ip->c.u32), RAX, RDI);
                 break;
             case ByteCodeOp::CompareOpLowerF64:
-                MK_BINOPF64_CAB(emitCmpF64Indirect, emitCmpF64);
+                MK_BINOPF64_CAB(emitCmpNIndirect, emitCmpN);
                 pp.emitSetB();
                 pp.emitStore8Indirect(REG_OFFSET(ip->c.u32), RAX, RDI);
                 break;
@@ -2133,12 +2133,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitStore8Indirect(REG_OFFSET(ip->c.u32), RAX, RDI);
                 break;
             case ByteCodeOp::CompareOpLowerEqF32:
-                MK_BINOPF32_CAB(emitCmpF32Indirect, emitCmpF32);
+                MK_BINOPF32_CAB(emitCmpNIndirect, emitCmpN);
                 pp.emitSetBE();
                 pp.emitStore8Indirect(REG_OFFSET(ip->c.u32), RAX, RDI);
                 break;
             case ByteCodeOp::CompareOpLowerEqF64:
-                MK_BINOPF64_CAB(emitCmpF64Indirect, emitCmpF64);
+                MK_BINOPF64_CAB(emitCmpNIndirect, emitCmpN);
                 pp.emitSetBE();
                 pp.emitStore8Indirect(REG_OFFSET(ip->c.u32), RAX, RDI);
                 break;
@@ -2223,12 +2223,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitStore8Indirect(REG_OFFSET(ip->c.u32), RAX, RDI);
                 break;
             case ByteCodeOp::CompareOpEqualF32:
-                MK_BINOPF32_CAB(emitCmpF32Indirect, emitCmpF32);
+                MK_BINOPF32_CAB(emitCmpNIndirect, emitCmpN);
                 pp.emitSetEP();
                 pp.emitStore8Indirect(REG_OFFSET(ip->c.u32), RAX, RDI);
                 break;
             case ByteCodeOp::CompareOpEqualF64:
-                MK_BINOPF64_CAB(emitCmpF64Indirect, emitCmpF64);
+                MK_BINOPF64_CAB(emitCmpNIndirect, emitCmpN);
                 pp.emitSetEP();
                 pp.emitStore8Indirect(REG_OFFSET(ip->c.u32), RAX, RDI);
                 break;
@@ -2256,12 +2256,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitStore8Indirect(REG_OFFSET(ip->c.u32), RAX, RDI);
                 break;
             case ByteCodeOp::CompareOpNotEqualF32:
-                MK_BINOPF32_CAB(emitCmpF32Indirect, emitCmpF32);
+                MK_BINOPF32_CAB(emitCmpNIndirect, emitCmpN);
                 pp.emitSetNEP();
                 pp.emitStore8Indirect(REG_OFFSET(ip->c.u32), RAX, RDI);
                 break;
             case ByteCodeOp::CompareOpNotEqualF64:
-                MK_BINOPF64_CAB(emitCmpF64Indirect, emitCmpF64);
+                MK_BINOPF64_CAB(emitCmpNIndirect, emitCmpN);
                 pp.emitSetNEP();
                 pp.emitStore8Indirect(REG_OFFSET(ip->c.u32), RAX, RDI);
                 break;

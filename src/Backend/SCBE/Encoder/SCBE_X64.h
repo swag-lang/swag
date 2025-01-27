@@ -32,8 +32,6 @@ struct SCBE_X64 : SCBE_CPU
     void emitClearX(uint32_t count, uint32_t offset, CPURegister reg);
 
     void emitCmpN(CPURegister regSrc, CPURegister regDst, CPUBits numBits);
-    void emitCmpF32(CPURegister regSrc, CPURegister regDst);
-    void emitCmpF64(CPURegister regSrc, CPURegister regDst);
     void emitCmpNIndirect(uint32_t memOffset, CPURegister reg, CPURegister memReg, CPUBits numBits);
     void emitCmpF32Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
     void emitCmpF64Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);

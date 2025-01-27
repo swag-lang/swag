@@ -314,19 +314,19 @@
         if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_B))                                  \
         {                                                                         \
             pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), XMM0, RDI, CPUBits::F32); \
-            pp.__opInd(REG_OFFSET(ip->b.u32), XMM0, RDI);                         \
+            pp.__opInd(REG_OFFSET(ip->b.u32), XMM0, RDI, CPUBits::F32);           \
         }                                                                         \
         else if (ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_B))               \
         {                                                                         \
             pp.emitLoadNImmediate(RAX, ip->a.u32, CPUBits::B32);                  \
             pp.emitCopyF32(XMM0, RAX);                                            \
-            pp.__opInd(REG_OFFSET(ip->b.u32), XMM0, RDI);                         \
+            pp.__opInd(REG_OFFSET(ip->b.u32), XMM0, RDI, CPUBits::F32);           \
         }                                                                         \
         else                                                                      \
         {                                                                         \
             MK_IMMA(XMM0, CPUBits::F32);                                          \
             MK_IMMB_F32(XMM1);                                                    \
-            pp.__op(XMM0, XMM1);                                                  \
+            pp.__op(XMM0, XMM1, CPUBits::F32);                                    \
         }                                                                         \
     } while (0)
 
@@ -336,19 +336,19 @@
         if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_B))                                  \
         {                                                                         \
             pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), XMM0, RDI, CPUBits::F64); \
-            pp.__opInd(REG_OFFSET(ip->b.u32), XMM0, RDI);                         \
+            pp.__opInd(REG_OFFSET(ip->b.u32), XMM0, RDI, CPUBits::F64);           \
         }                                                                         \
         else if (ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_B))               \
         {                                                                         \
             pp.emitLoadNImmediate(RAX, ip->a.u64, CPUBits::B64);                  \
             pp.emitCopyF64(XMM0, RAX);                                            \
-            pp.__opInd(REG_OFFSET(ip->b.u32), XMM0, RDI);                         \
+            pp.__opInd(REG_OFFSET(ip->b.u32), XMM0, RDI, CPUBits::F64);           \
         }                                                                         \
         else                                                                      \
         {                                                                         \
             MK_IMMA(XMM0, CPUBits::F64);                                          \
             MK_IMMB_F64(XMM1);                                                    \
-            pp.__op(XMM0, XMM1);                                                  \
+            pp.__op(XMM0, XMM1, CPUBits::F64);                                    \
         }                                                                         \
     } while (0)
 
