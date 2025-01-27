@@ -148,6 +148,65 @@ void SCBE::emitInternalPanic(SCBE_X64& pp, const AstNode* node, const char* msg)
     emitInternalCallExt(pp, g_LangSpec->name_priv_panic, pp.pushParams);
 }
 
+void SCBE::emitBinOpFloat32AtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op)
+{
+    emitBinOpFloat32(pp, ip, op);
+    pp.emitStoreF32Indirect(REG_OFFSET(ip->c.u32), XMM0, RDI);
+}
+
+void SCBE::emitBinOpFloat64AtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op)
+{
+    emitBinOpFloat64(pp, ip, op);
+    pp.emitStoreF64Indirect(REG_OFFSET(ip->c.u32), XMM0, RDI);
+}
+
+void SCBE::emitBinOpN(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
+{
+    if (numBits == CPUBits::F32)
+        emitBinOpFloat32(pp, ip, op);
+    else if (numBits == CPUBits::F64)
+        emitBinOpFloat64(pp, ip, op);
+    else
+    {
+        if (!ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_B))
+        {
+            pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), RAX, RDI, numBits);
+            pp.emitOpN(REG_OFFSET(ip->b.u32), op, numBits);
+        }
+        // Mul by power of 2 => shift by log2
+        else if (op == CPUOp::MUL &&
+                 !ip->hasFlag(BCI_IMM_A) &&
+                 ip->hasFlag(BCI_IMM_B) &&
+                 Math::isPowerOfTwo(ip->b.u64) &&
+                 ip->b.u64 < static_cast<uint64_t>(numBits))
+        {
+            pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), RAX, RDI, numBits);
+            pp.emitLoad8Immediate(RCX, static_cast<uint8_t>(log2(ip->b.u64)));
+            pp.emitOpN(RAX, RCX, CPUOp::SHL, numBits);
+        }
+        else if ((op == CPUOp::AND || op == CPUOp::OR || op == CPUOp::XOR || op == CPUOp::ADD || op == CPUOp::SUB) &&
+                 !ip->hasFlag(BCI_IMM_A) &&
+                 ip->hasFlag(BCI_IMM_B) &&
+                 ip->b.u64 <= 0x7FFFFFFF)
+        {
+            pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), RAX, RDI, numBits);
+            pp.emitOpNIndirectDst(RAX, ip->b.u64, op, numBits);
+        }
+        else
+        {
+            if (ip->hasFlag(BCI_IMM_A))
+                pp.emitLoadNImmediate(RAX, ip->a.u64, numBits);
+            else
+                pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), RAX, RDI, numBits);
+            if (ip->hasFlag(BCI_IMM_B))
+                pp.emitLoadNImmediate(RCX, ip->b.u64, numBits);
+            else
+                pp.emitLoadNIndirect(REG_OFFSET(ip->b.u32), RCX, RDI, numBits);
+            pp.emitOpN(RAX, RCX, op, numBits);
+        }
+    }
+}
+
 void SCBE::emitBinOpFloat32(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op)
 {
     if (!ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_B))
@@ -202,61 +261,9 @@ void SCBE::emitBinOpFloat64(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp o
     }
 }
 
-void SCBE::emitBinOpFloat32AtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op)
-{
-    emitBinOpFloat32(pp, ip, op);
-    pp.emitStoreF32Indirect(REG_OFFSET(ip->c.u32), XMM0, RDI);
-}
-
-void SCBE::emitBinOpFloat64AtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op)
-{
-    emitBinOpFloat64(pp, ip, op);
-    pp.emitStoreF64Indirect(REG_OFFSET(ip->c.u32), XMM0, RDI);
-}
-
-void SCBE::emitBinOpIntN(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
-{
-    if (!ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_B))
-    {
-        pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), RAX, RDI, numBits);
-        pp.emitOpN(REG_OFFSET(ip->b.u32), op, numBits);
-    }
-    // Mul by power of 2 => shift by log2
-    else if (op == CPUOp::MUL &&
-             !ip->hasFlag(BCI_IMM_A) &&
-             ip->hasFlag(BCI_IMM_B) &&
-             Math::isPowerOfTwo(ip->b.u64) &&
-             ip->b.u64 < static_cast<uint64_t>(numBits))
-    {
-        pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), RAX, RDI, numBits);
-        pp.emitLoad8Immediate(RCX, static_cast<uint8_t>(log2(ip->b.u64)));
-        pp.emitOpN(RAX, RCX, CPUOp::SHL, numBits);
-    }
-    else if ((op == CPUOp::AND || op == CPUOp::OR || op == CPUOp::XOR || op == CPUOp::ADD || op == CPUOp::SUB) &&
-             !ip->hasFlag(BCI_IMM_A) &&
-             ip->hasFlag(BCI_IMM_B) &&
-             ip->b.u64 <= 0x7FFFFFFF)
-    {
-        pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), RAX, RDI, numBits);
-        pp.emitOpNIndirectDst(RAX, ip->b.u64, op, numBits);
-    }
-    else
-    {
-        if (ip->hasFlag(BCI_IMM_A))
-            pp.emitLoadNImmediate(RAX, ip->a.u64, numBits);
-        else
-            pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), RAX, RDI, numBits);
-        if (ip->hasFlag(BCI_IMM_B))
-            pp.emitLoadNImmediate(RCX, ip->b.u64, numBits);
-        else
-            pp.emitLoadNIndirect(REG_OFFSET(ip->b.u32), RCX, RDI, numBits);
-        pp.emitOpN(RAX, RCX, op, numBits);
-    }
-}
-
 void SCBE::emitBinOpIntNAtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
 {
-    emitBinOpIntN(pp, ip, op, numBits);
+    emitBinOpN(pp, ip, op, numBits);
     pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, numBits);
 }
 
