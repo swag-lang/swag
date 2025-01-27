@@ -2666,10 +2666,10 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 MK_JMPCMP(JB, CPUBits::B64);
                 break;
             case ByteCodeOp::JumpIfLowerF32:
-                MK_JMPCMP_F32(JB);
+                MK_JMPCMP(JB, CPUBits::F32);
                 break;
             case ByteCodeOp::JumpIfLowerF64:
-                MK_JMPCMP_F64(JB);
+                MK_JMPCMP(JB, CPUBits::F64);
                 break;
 
                 /////////////////////////////////////
@@ -2699,10 +2699,10 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 MK_JMPCMP(JBE, CPUBits::B64);
                 break;
             case ByteCodeOp::JumpIfLowerEqF32:
-                MK_JMPCMP_F32(JBE);
+                MK_JMPCMP(JBE, CPUBits::F32);
                 break;
             case ByteCodeOp::JumpIfLowerEqF64:
-                MK_JMPCMP_F64(JBE);
+                MK_JMPCMP(JBE, CPUBits::F64);
                 break;
 
                 /////////////////////////////////////
@@ -2732,10 +2732,10 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 MK_JMPCMP(JA, CPUBits::B64);
                 break;
             case ByteCodeOp::JumpIfGreaterF32:
-                MK_JMPCMP_F32(JA);
+                MK_JMPCMP(JA, CPUBits::F32);
                 break;
             case ByteCodeOp::JumpIfGreaterF64:
-                MK_JMPCMP_F64(JA);
+                MK_JMPCMP(JA, CPUBits::F64);
                 break;
 
                 /////////////////////////////////////
@@ -2765,10 +2765,10 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 MK_JMPCMP(JAE, CPUBits::B64);
                 break;
             case ByteCodeOp::JumpIfGreaterEqF32:
-                MK_JMPCMP_F32(JAE);
+                MK_JMPCMP(JAE, CPUBits::F32);
                 break;
             case ByteCodeOp::JumpIfGreaterEqF64:
-                MK_JMPCMP_F64(JAE);
+                MK_JMPCMP(JAE, CPUBits::F64);
                 break;
 
                 /////////////////////////////////////

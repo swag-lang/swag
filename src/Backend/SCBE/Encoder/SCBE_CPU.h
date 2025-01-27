@@ -170,6 +170,9 @@ struct SCBE_CPU : BackendEncoder
     CPUFunction*    registerFunction(AstNode* node, uint32_t symbolIndex);
     static uint32_t getParamStackOffset(const CPUFunction* cpuFct, uint32_t paramIdx);
 
+    static bool isInt(CPUBits numBits) { return numBits == CPUBits::B8 || numBits == CPUBits::B16 || numBits == CPUBits::B32 || numBits == CPUBits::B64; }
+    static bool isFloat(CPUBits numBits) { return numBits == CPUBits::F32 || numBits == CPUBits::F64; }
+
     Concat concat;
     Concat postConcat;
 
