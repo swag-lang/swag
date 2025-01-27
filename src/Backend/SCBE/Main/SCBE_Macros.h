@@ -17,6 +17,26 @@
             pp.emitLoadNIndirect(REG_OFFSET(ip->b.u32), __reg, RDI, __numBits); \
     } while (0)
 
+#define MK_IMMC(__reg, __numBits)                                               \
+    do                                                                          \
+    {                                                                           \
+        if (ip->hasFlag(BCI_IMM_C))                                             \
+            pp.emitLoadNImmediate(__reg, ip->c.u64, __numBits);                 \
+        else                                                                    \
+            pp.emitLoadNIndirect(REG_OFFSET(ip->c.u32), __reg, RDI, __numBits); \
+    } while (0)
+
+#define MK_IMMD(__reg, __numBits)                                               \
+    do                                                                          \
+    {                                                                           \
+        if (ip->hasFlag(BCI_IMM_D))                                             \
+            pp.emitLoadNImmediate(__reg, ip->d.u64, __numBits);                 \
+        else                                                                    \
+            pp.emitLoadNIndirect(REG_OFFSET(ip->d.u32), __reg, RDI, __numBits); \
+    } while (0)
+
+//////////////////////////////////
+
 #define MK_IMMB_S8_TO_S32(__reg)                                         \
     do                                                                   \
     {                                                                    \
@@ -44,15 +64,6 @@
             pp.emitLoadU8U32Indirect(REG_OFFSET(ip->b.u32), __reg, RDI); \
     } while (0)
 
-#define MK_IMMC_8(__reg)                                             \
-    do                                                               \
-    {                                                                \
-        if (ip->hasFlag(BCI_IMM_C))                                  \
-            pp.emitLoad8Immediate(__reg, ip->c.u8);                  \
-        else                                                         \
-            pp.emitLoad8Indirect(REG_OFFSET(ip->c.u32), __reg, RDI); \
-    } while (0)
-
 #define MK_IMMC_S8_TO_S32(__reg)                                         \
     do                                                                   \
     {                                                                    \
@@ -69,78 +80,6 @@
             pp.emitLoad32Immediate(__reg, ip->c.u8);                     \
         else                                                             \
             pp.emitLoadU8U32Indirect(REG_OFFSET(ip->c.u32), __reg, RDI); \
-    } while (0)
-
-#define MK_IMMC_16(__reg)                                             \
-    do                                                                \
-    {                                                                 \
-        if (ip->hasFlag(BCI_IMM_C))                                   \
-            pp.emitLoad16Immediate(__reg, ip->c.u16);                 \
-        else                                                          \
-            pp.emitLoad16Indirect(REG_OFFSET(ip->c.u32), __reg, RDI); \
-    } while (0)
-
-#define MK_IMMC_32(__reg)                                             \
-    do                                                                \
-    {                                                                 \
-        if (ip->hasFlag(BCI_IMM_C))                                   \
-            pp.emitLoad32Immediate(__reg, ip->c.u32);                 \
-        else                                                          \
-            pp.emitLoad32Indirect(REG_OFFSET(ip->c.u32), __reg, RDI); \
-    } while (0)
-
-#define MK_IMMC_64(__reg)                                             \
-    do                                                                \
-    {                                                                 \
-        if (ip->hasFlag(BCI_IMM_C))                                   \
-            pp.emitLoad64Immediate(__reg, ip->c.u64);                 \
-        else                                                          \
-            pp.emitLoad64Indirect(REG_OFFSET(ip->c.u32), __reg, RDI); \
-    } while (0)
-
-#define MK_IMMC_F32(__reg)                                                         \
-    do                                                                             \
-    {                                                                              \
-        if (ip->hasFlag(BCI_IMM_C))                                                \
-            pp.emitLoadNImmediate(__reg, ip->c.u64, CPUBits::F32);                 \
-        else                                                                       \
-            pp.emitLoadNIndirect(REG_OFFSET(ip->c.u32), __reg, RDI, CPUBits::F32); \
-    } while (0)
-
-#define MK_IMMC_F64(__reg)                                                         \
-    do                                                                             \
-    {                                                                              \
-        if (ip->hasFlag(BCI_IMM_C))                                                \
-            pp.emitLoadNImmediate(__reg, ip->c.u64, CPUBits::F64);                 \
-        else                                                                       \
-            pp.emitLoadNIndirect(REG_OFFSET(ip->c.u32), __reg, RDI, CPUBits::F64); \
-    } while (0)
-
-#define MK_IMMD_64(__reg)                                             \
-    do                                                                \
-    {                                                                 \
-        if (ip->hasFlag(BCI_IMM_D))                                   \
-            pp.emitLoad64Immediate(__reg, ip->d.u64);                 \
-        else                                                          \
-            pp.emitLoad64Indirect(REG_OFFSET(ip->d.u32), __reg, RDI); \
-    } while (0)
-
-#define MK_IMMD_F32(__reg)                                                         \
-    do                                                                             \
-    {                                                                              \
-        if (ip->hasFlag(BCI_IMM_D))                                                \
-            pp.emitLoadNImmediate(RAX, ip->d.u64, CPUBits::F32);                   \
-        else                                                                       \
-            pp.emitLoadNIndirect(REG_OFFSET(ip->d.u32), __reg, RDI, CPUBits::F32); \
-    } while (0)
-
-#define MK_IMMD_F64(__reg)                                                         \
-    do                                                                             \
-    {                                                                              \
-        if (ip->hasFlag(BCI_IMM_D))                                                \
-            pp.emitLoadNImmediate(RAX, ip->d.u64, CPUBits::F64);                   \
-        else                                                                       \
-            pp.emitLoadNIndirect(REG_OFFSET(ip->d.u32), __reg, RDI, CPUBits::F64); \
     } while (0)
 
 //////////////////////////////////
@@ -190,7 +129,7 @@
         else                                                                     \
         {                                                                        \
             MK_IMMA(RAX, CPUBits::B16);                                          \
-            MK_IMMB(RCX, CPUBits::B16);                                                     \
+            MK_IMMB(RCX, CPUBits::B16);                                          \
             pp.__op(RAX, RCX, CPUBits::B16);                                     \
         }                                                                        \
     } while (0)
@@ -215,7 +154,7 @@
         else                                                                     \
         {                                                                        \
             MK_IMMA(RAX, CPUBits::B32);                                          \
-            MK_IMMB(RCX, CPUBits::B32);                                                     \
+            MK_IMMB(RCX, CPUBits::B32);                                          \
             pp.__op(RAX, RCX, CPUBits::B32);                                     \
         }                                                                        \
     } while (0)
@@ -240,7 +179,7 @@
         else                                                                                   \
         {                                                                                      \
             MK_IMMA(RAX, CPUBits::B64);                                                        \
-            MK_IMMB(RCX, CPUBits::B64);                                                                   \
+            MK_IMMB(RCX, CPUBits::B64);                                                        \
             pp.__op(RAX, RCX, CPUBits::B64);                                                   \
         }                                                                                      \
     } while (0)
@@ -261,7 +200,7 @@
         else                                                                      \
         {                                                                         \
             MK_IMMA(XMM0, CPUBits::F32);                                          \
-            MK_IMMB(XMM1, CPUBits::F32);                                                    \
+            MK_IMMB(XMM1, CPUBits::F32);                                          \
             pp.__op(XMM0, XMM1, CPUBits::F32);                                    \
         }                                                                         \
     } while (0)
@@ -282,7 +221,7 @@
         else                                                                      \
         {                                                                         \
             MK_IMMA(XMM0, CPUBits::F64);                                          \
-            MK_IMMB(XMM1, CPUBits::F64);                                                    \
+            MK_IMMB(XMM1, CPUBits::F64);                                          \
             pp.__op(XMM0, XMM1, CPUBits::F64);                                    \
         }                                                                         \
     } while (0)
@@ -338,7 +277,7 @@
     do                                                                       \
     {                                                                        \
         pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), RAX, RDI, CPUBits::B64); \
-        MK_IMMB(RCX, CPUBits::B16);                                                     \
+        MK_IMMB(RCX, CPUBits::B16);                                          \
         pp.emitOpNIndirect(0, RCX, RAX, __op, CPUBits::B16);                 \
     } while (0)
 
@@ -346,7 +285,7 @@
     do                                                                       \
     {                                                                        \
         pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), RAX, RDI, CPUBits::B64); \
-        MK_IMMB(RCX, CPUBits::B16);                                                     \
+        MK_IMMB(RCX, CPUBits::B16);                                          \
         pp.emitOpNIndirect(ip->c.u32, RCX, RAX, __op, CPUBits::B16);         \
     } while (0)
 
@@ -356,7 +295,7 @@
     do                                                                       \
     {                                                                        \
         pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), RAX, RDI, CPUBits::B64); \
-        MK_IMMB(RCX, CPUBits::B32);                                                     \
+        MK_IMMB(RCX, CPUBits::B32);                                          \
         pp.emitOpNIndirect(0, RCX, RAX, __op, CPUBits::B32);                 \
     } while (0)
 
@@ -364,7 +303,7 @@
     do                                                                       \
     {                                                                        \
         pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), RAX, RDI, CPUBits::B64); \
-        MK_IMMB(RCX, CPUBits::B32);                                                     \
+        MK_IMMB(RCX, CPUBits::B32);                                          \
         pp.emitOpNIndirect(ip->c.u32, RCX, RAX, __op, CPUBits::B32);         \
     } while (0)
 
@@ -374,7 +313,7 @@
     do                                                                       \
     {                                                                        \
         pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), RAX, RDI, CPUBits::B64); \
-        MK_IMMB(RCX, CPUBits::B64);                                                     \
+        MK_IMMB(RCX, CPUBits::B64);                                          \
         pp.emitOpNIndirect(0, RCX, RAX, __op, CPUBits::B64);                 \
     } while (0)
 
@@ -382,7 +321,7 @@
     do                                                                       \
     {                                                                        \
         pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), RAX, RDI, CPUBits::B64); \
-        MK_IMMB(RCX, CPUBits::B64);                                                     \
+        MK_IMMB(RCX, CPUBits::B64);                                          \
         pp.emitOpNIndirect(ip->c.u32, RCX, RAX, __op, CPUBits::B64);         \
     } while (0)
 
@@ -392,14 +331,14 @@
     do                                                                       \
     {                                                                        \
         pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), RCX, RDI, CPUBits::B64); \
-        MK_IMMB(XMM1, CPUBits::F32);                                                   \
+        MK_IMMB(XMM1, CPUBits::F32);                                         \
         pp.emitOpF32Indirect(0, XMM1, RCX, __op);                            \
     } while (0)
 #define MK_BINOP_EQF32_CAB_OFF(__op)                                         \
     do                                                                       \
     {                                                                        \
         pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), RCX, RDI, CPUBits::B64); \
-        MK_IMMB(XMM1, CPUBits::F32);                                                   \
+        MK_IMMB(XMM1, CPUBits::F32);                                         \
         pp.emitOpNIndirect(ip->c.u32, XMM1, RCX, __op, CPUBits::F32);        \
     } while (0)
 
@@ -407,7 +346,7 @@
     do                                                                 \
     {                                                                  \
         pp.emitLoadAddressIndirect(offsetStack + ip->a.u32, RCX, RDI); \
-        MK_IMMB(XMM1, CPUBits::F32);                                             \
+        MK_IMMB(XMM1, CPUBits::F32);                                   \
         pp.emitOpNIndirect(0, XMM1, RCX, __op, CPUBits::F32);          \
     } while (0)
 
@@ -415,14 +354,14 @@
     do                                                                       \
     {                                                                        \
         pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), RCX, RDI, CPUBits::B64); \
-        MK_IMMB(XMM1, CPUBits::F64);                                                   \
+        MK_IMMB(XMM1, CPUBits::F64);                                         \
         pp.emitOpNIndirect(0, XMM1, RCX, __op, CPUBits::F64);                \
     } while (0)
 #define MK_BINOP_EQF64_CAB_OFF(__op)                                         \
     do                                                                       \
     {                                                                        \
         pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), RCX, RDI, CPUBits::B64); \
-        MK_IMMB(XMM1, CPUBits::F64);                                                   \
+        MK_IMMB(XMM1, CPUBits::F64);                                         \
         pp.emitOpNIndirect(ip->c.u32, XMM1, RCX, __op, CPUBits::F64);        \
     } while (0)
 
@@ -430,7 +369,7 @@
     do                                                                 \
     {                                                                  \
         pp.emitLoadAddressIndirect(offsetStack + ip->a.u32, RCX, RDI); \
-        MK_IMMB(XMM1, CPUBits::F64);                                             \
+        MK_IMMB(XMM1, CPUBits::F64);                                   \
         pp.emitOpNIndirect(0, XMM1, RCX, __op, CPUBits::F64);          \
     } while (0)
 
@@ -448,7 +387,7 @@
     do                                                                       \
     {                                                                        \
         pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), RCX, RDI, CPUBits::B64); \
-        MK_IMMB(RAX, CPUBits::B16);                                                     \
+        MK_IMMB(RAX, CPUBits::B16);                                          \
         pp.emitOpNIndirect(0, RAX, RCX, __op, CPUBits::B16, true);           \
     } while (0)
 
@@ -456,7 +395,7 @@
     do                                                                       \
     {                                                                        \
         pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), RCX, RDI, CPUBits::B64); \
-        MK_IMMB(RAX, CPUBits::B32);                                                     \
+        MK_IMMB(RAX, CPUBits::B32);                                          \
         pp.emitOpNIndirect(0, RAX, RCX, __op, CPUBits::B32, true);           \
     } while (0)
 
@@ -464,7 +403,7 @@
     do                                                                       \
     {                                                                        \
         pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), RCX, RDI, CPUBits::B64); \
-        MK_IMMB(RAX, CPUBits::B64);                                                     \
+        MK_IMMB(RAX, CPUBits::B64);                                          \
         pp.emitOpNIndirect(0, RAX, RCX, __op, CPUBits::B64, true);           \
     } while (0)
 
@@ -485,7 +424,7 @@
         else                                                                           \
         {                                                                              \
             MK_IMMA(RAX, CPUBits::B8);                                                 \
-            MK_IMMC_8(RCX);                                                            \
+            MK_IMMC(RCX, CPUBits::B8);                                                 \
             pp.emitCmpN(RAX, RCX, CPUBits::B8);                                        \
         }                                                                              \
         pp.emitJump(__op, i, ip->b.s32);                                               \
@@ -506,7 +445,7 @@
         else                                                                             \
         {                                                                                \
             MK_IMMA(RAX, CPUBits::B16);                                                  \
-            MK_IMMC_16(RCX);                                                             \
+            MK_IMMC(RCX, CPUBits::B16);                                                  \
             pp.emitCmpN(RAX, RCX, CPUBits::B16);                                         \
         }                                                                                \
         pp.emitJump(__op, i, ip->b.s32);                                                 \
@@ -527,7 +466,7 @@
         else                                                                             \
         {                                                                                \
             MK_IMMA(RAX, CPUBits::B32);                                                  \
-            MK_IMMC_32(RCX);                                                             \
+            MK_IMMC(RCX, CPUBits::B32);                                                  \
             pp.emitCmpN(RAX, RCX, CPUBits::B32);                                         \
         }                                                                                \
         pp.emitJump(__op, i, ip->b.s32);                                                 \
@@ -548,7 +487,7 @@
         else                                                                                   \
         {                                                                                      \
             MK_IMMA(RAX, CPUBits::B64);                                                        \
-            MK_IMMC_64(RCX);                                                                   \
+            MK_IMMC(RCX, CPUBits::B64);                                                        \
             pp.emitCmpN(RAX, RCX, CPUBits::B64);                                               \
         }                                                                                      \
         pp.emitJump(__op, i, ip->b.s32);                                                       \
@@ -569,7 +508,7 @@
         else                                                                    \
         {                                                                       \
             pp.emitLoadNIndirect(__offset, RAX, __memReg, CPUBits::B8);         \
-            MK_IMMC_8(RCX);                                                     \
+            MK_IMMC(RCX, CPUBits::B8);                                          \
             pp.emitCmpN(RAX, RCX, CPUBits::B8);                                 \
         }                                                                       \
         pp.emitJump(__op, i, ip->b.s32);                                        \
@@ -590,7 +529,7 @@
         else                                                                     \
         {                                                                        \
             pp.emitLoadNIndirect(__offset, RAX, __memReg, CPUBits::B16);         \
-            MK_IMMC_16(RCX);                                                     \
+            MK_IMMC(RCX, CPUBits::B16);                                          \
             pp.emitCmpN(RAX, RCX, CPUBits::B16);                                 \
         }                                                                        \
         pp.emitJump(__op, i, ip->b.s32);                                         \
@@ -611,7 +550,7 @@
         else                                                                     \
         {                                                                        \
             pp.emitLoadNIndirect(__offset, RAX, __memReg, CPUBits::B32);         \
-            MK_IMMC_32(RCX);                                                     \
+            MK_IMMC(RCX, CPUBits::B32);                                          \
             pp.emitCmpN(RAX, RCX, CPUBits::B32);                                 \
         }                                                                        \
         pp.emitJump(__op, i, ip->b.s32);                                         \
@@ -632,7 +571,7 @@
         else                                                                     \
         {                                                                        \
             pp.emitLoadNIndirect(__offset, RAX, __memReg, CPUBits::B64);         \
-            MK_IMMC_64(RCX);                                                     \
+            MK_IMMC(RCX, CPUBits::B64);                                          \
             pp.emitCmpN(RAX, RCX, CPUBits::B64);                                 \
         }                                                                        \
         pp.emitJump(__op, i, ip->b.s32);                                         \
@@ -649,7 +588,7 @@
         else                                                                      \
         {                                                                         \
             MK_IMMA(XMM0, CPUBits::F32);                                          \
-            MK_IMMC_F32(XMM1);                                                    \
+            MK_IMMC(XMM1, CPUBits::F32);                                          \
             pp.emitCmpN(XMM0, XMM1, CPUBits::F32);                                \
         }                                                                         \
         pp.emitJump(__op, i, ip->b.s32);                                          \
@@ -666,7 +605,7 @@
         else                                                                      \
         {                                                                         \
             MK_IMMA(XMM0, CPUBits::F64);                                          \
-            MK_IMMC_F64(XMM1);                                                    \
+            MK_IMMC(XMM1, CPUBits::F64);                                          \
             pp.emitCmpN(XMM0, XMM1, CPUBits::F64);                                \
         }                                                                         \
         pp.emitJump(__op, i, ip->b.s32);                                          \
@@ -683,7 +622,7 @@
         else                                                                      \
         {                                                                         \
             MK_IMMA(XMM0, CPUBits::F32);                                          \
-            MK_IMMC_F32(XMM1);                                                    \
+            MK_IMMC(XMM1, CPUBits::F32);                                          \
             pp.emitCmpN(XMM0, XMM1, CPUBits::F32);                                \
         }                                                                         \
         pp.emitJump(__op1, i, ip->b.s32);                                         \
@@ -701,7 +640,7 @@
         else                                                                      \
         {                                                                         \
             MK_IMMA(XMM0, CPUBits::F64);                                          \
-            MK_IMMC_F64(XMM1);                                                    \
+            MK_IMMC(XMM1, CPUBits::F64);                                          \
             pp.emitCmpN(XMM0, XMM1, CPUBits::F64);                                \
         }                                                                         \
         pp.emitJump(__op1, i, ip->b.s32);                                         \
@@ -719,7 +658,7 @@
         else                                                                      \
         {                                                                         \
             MK_IMMA(XMM0, CPUBits::F32);                                          \
-            MK_IMMC_F32(XMM1);                                                    \
+            MK_IMMC(XMM1, CPUBits::F32);                                          \
             pp.emitCmpN(XMM0, XMM1, CPUBits::F32);                                \
         }                                                                         \
         pp.emitJump(__op1, i, 0);                                                 \
@@ -737,7 +676,7 @@
         else                                                                      \
         {                                                                         \
             MK_IMMA(XMM0, CPUBits::F64);                                          \
-            MK_IMMC_F64(XMM1);                                                    \
+            MK_IMMC(XMM1, CPUBits::F64);                                          \
             pp.emitCmpN(XMM0, XMM1, CPUBits::F64);                                \
         }                                                                         \
         pp.emitJump(__op1, i, 0);                                                 \
