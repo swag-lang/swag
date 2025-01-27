@@ -817,46 +817,46 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::AffectOpXorEqU8:
-                MK_BINOP_EQ8_CAB(CPUOp::XOR);
+                MK_BINOP_EQ_CAB(CPUOp::XOR, CPUBits::B8);
                 break;
             case ByteCodeOp::AffectOpXorEqU16:
-                MK_BINOP_EQ16_CAB(CPUOp::XOR);
+                MK_BINOP_EQ_CAB(CPUOp::XOR, CPUBits::B16);
                 break;
             case ByteCodeOp::AffectOpXorEqU32:
-                MK_BINOP_EQ32_CAB(CPUOp::XOR);
+                MK_BINOP_EQ_CAB(CPUOp::XOR, CPUBits::B32);
                 break;
             case ByteCodeOp::AffectOpXorEqU64:
-                MK_BINOP_EQ64_CAB(CPUOp::XOR);
+                MK_BINOP_EQ_CAB(CPUOp::XOR, CPUBits::B64);
                 break;
 
                 /////////////////////////////////////
 
             case ByteCodeOp::AffectOpOrEqU8:
-                MK_BINOP_EQ8_CAB(CPUOp::OR);
+                MK_BINOP_EQ_CAB(CPUOp::OR, CPUBits::B8);
                 break;
             case ByteCodeOp::AffectOpOrEqU16:
-                MK_BINOP_EQ16_CAB(CPUOp::OR);
+                MK_BINOP_EQ_CAB(CPUOp::OR, CPUBits::B16);
                 break;
             case ByteCodeOp::AffectOpOrEqU32:
-                MK_BINOP_EQ32_CAB(CPUOp::OR);
+                MK_BINOP_EQ_CAB(CPUOp::OR, CPUBits::B32);
                 break;
             case ByteCodeOp::AffectOpOrEqU64:
-                MK_BINOP_EQ64_CAB(CPUOp::OR);
+                MK_BINOP_EQ_CAB(CPUOp::OR, CPUBits::B64);
                 break;
 
                 /////////////////////////////////////
 
             case ByteCodeOp::AffectOpAndEqU8:
-                MK_BINOP_EQ8_CAB(CPUOp::AND);
+                MK_BINOP_EQ_CAB(CPUOp::AND, CPUBits::B8);
                 break;
             case ByteCodeOp::AffectOpAndEqU16:
-                MK_BINOP_EQ16_CAB(CPUOp::AND);
+                MK_BINOP_EQ_CAB(CPUOp::AND, CPUBits::B16);
                 break;
             case ByteCodeOp::AffectOpAndEqU32:
-                MK_BINOP_EQ32_CAB(CPUOp::AND);
+                MK_BINOP_EQ_CAB(CPUOp::AND, CPUBits::B32);
                 break;
             case ByteCodeOp::AffectOpAndEqU64:
-                MK_BINOP_EQ64_CAB(CPUOp::AND);
+                MK_BINOP_EQ_CAB(CPUOp::AND, CPUBits::B64);
                 break;
 
                 /////////////////////////////////////
@@ -1630,7 +1630,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::AffectOpPlusEqS8:
-                MK_BINOP_EQ8_CAB(CPUOp::ADD);
+                MK_BINOP_EQ_CAB(CPUOp::ADD, CPUBits::B8);
                 emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS8));
                 break;
             case ByteCodeOp::AffectOpPlusEqS8_Safe:
@@ -1650,7 +1650,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpPlusEqS16:
-                MK_BINOP_EQ16_CAB(CPUOp::ADD);
+                MK_BINOP_EQ_CAB(CPUOp::ADD, CPUBits::B16);
                 emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS16));
                 break;
             case ByteCodeOp::AffectOpPlusEqS16_Safe:
@@ -1670,7 +1670,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpPlusEqS32:
-                MK_BINOP_EQ32_CAB(CPUOp::ADD);
+                MK_BINOP_EQ_CAB(CPUOp::ADD, CPUBits::B32);
                 emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS32));
                 break;
             case ByteCodeOp::AffectOpPlusEqS32_Safe:
@@ -1690,7 +1690,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpPlusEqS64:
-                MK_BINOP_EQ64_CAB(CPUOp::ADD);
+                MK_BINOP_EQ_CAB(CPUOp::ADD, CPUBits::B64);
                 emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS64));
                 break;
             case ByteCodeOp::AffectOpPlusEqS64_Safe:
@@ -1710,7 +1710,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpPlusEqU8:
-                MK_BINOP_EQ8_CAB(CPUOp::ADD);
+                MK_BINOP_EQ_CAB(CPUOp::ADD, CPUBits::B8);
                 emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU8));
                 break;
             case ByteCodeOp::AffectOpPlusEqU8_Safe:
@@ -1719,7 +1719,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpPlusEqU16:
-                MK_BINOP_EQ16_CAB(CPUOp::ADD);
+                MK_BINOP_EQ_CAB(CPUOp::ADD, CPUBits::B16);
                 emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU16));
                 break;
             case ByteCodeOp::AffectOpPlusEqU16_Safe:
@@ -1728,7 +1728,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpPlusEqU32:
-                MK_BINOP_EQ32_CAB(CPUOp::ADD);
+                MK_BINOP_EQ_CAB(CPUOp::ADD, CPUBits::B32);
                 emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU32));
                 break;
             case ByteCodeOp::AffectOpPlusEqU32_Safe:
@@ -1737,7 +1737,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpPlusEqU64:
-                MK_BINOP_EQ64_CAB(CPUOp::ADD);
+                MK_BINOP_EQ_CAB(CPUOp::ADD, CPUBits::B64);
                 emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU64));
                 break;
             case ByteCodeOp::AffectOpPlusEqU64_Safe:
@@ -1768,7 +1768,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::AffectOpMinusEqS8:
-                MK_BINOP_EQ8_CAB(CPUOp::SUB);
+                MK_BINOP_EQ_CAB(CPUOp::SUB, CPUBits::B8);
                 emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS8));
                 break;
             case ByteCodeOp::AffectOpMinusEqS8_Safe:
@@ -1788,7 +1788,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpMinusEqS16:
-                MK_BINOP_EQ16_CAB(CPUOp::SUB);
+                MK_BINOP_EQ_CAB(CPUOp::SUB, CPUBits::B16);
                 emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU16));
                 break;
             case ByteCodeOp::AffectOpMinusEqS16_Safe:
@@ -1808,7 +1808,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpMinusEqS32:
-                MK_BINOP_EQ32_CAB(CPUOp::SUB);
+                MK_BINOP_EQ_CAB(CPUOp::SUB, CPUBits::B32);
                 emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS32));
                 break;
             case ByteCodeOp::AffectOpMinusEqS32_Safe:
@@ -1828,7 +1828,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpMinusEqS64:
-                MK_BINOP_EQ64_CAB(CPUOp::SUB);
+                MK_BINOP_EQ_CAB(CPUOp::SUB, CPUBits::B64);
                 emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS64));
                 break;
             case ByteCodeOp::AffectOpMinusEqS64_Safe:
@@ -1848,7 +1848,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpMinusEqU8:
-                MK_BINOP_EQ8_CAB(CPUOp::SUB);
+                MK_BINOP_EQ_CAB(CPUOp::SUB, CPUBits::B8);
                 emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU8));
                 break;
             case ByteCodeOp::AffectOpMinusEqU8_Safe:
@@ -1857,7 +1857,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpMinusEqU16:
-                MK_BINOP_EQ16_CAB(CPUOp::SUB);
+                MK_BINOP_EQ_CAB(CPUOp::SUB, CPUBits::B16);
                 emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU16));
                 break;
             case ByteCodeOp::AffectOpMinusEqU16_Safe:
@@ -1866,7 +1866,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpMinusEqU32:
-                MK_BINOP_EQ32_CAB(CPUOp::SUB);
+                MK_BINOP_EQ_CAB(CPUOp::SUB, CPUBits::B32);
                 emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU32));
                 break;
             case ByteCodeOp::AffectOpMinusEqU32_Safe:
@@ -1875,7 +1875,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpMinusEqU64:
-                MK_BINOP_EQ64_CAB(CPUOp::SUB);
+                MK_BINOP_EQ_CAB(CPUOp::SUB, CPUBits::B64);
                 emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU64));
                 break;
             case ByteCodeOp::AffectOpMinusEqU64_Safe:
