@@ -150,12 +150,11 @@
         pp.emitOpNIndirect(offsetStack + ip->a.u32, RAX, RDI, __op, __numBits); \
     } while (0)
 
-#define MK_BINOP_EQF_SSCAB(__op, __numBits)                                  \
-    do                                                                       \
-    {                                                                        \
-        pp.emitLoadAddressIndirect(offsetStack + ip->a.u32, RCX, RDI);       \
-        pp.emitLoadNIndirect(offsetStack + ip->b.u32, XMM1, RDI, __numBits); \
-        pp.emitOpNIndirect(0, XMM1, RCX, __op, __numBits);                   \
+#define MK_BINOP_EQF_SSCAB(__op, __numBits)                                      \
+    do                                                                           \
+    {                                                                            \
+        pp.emitLoadNIndirect(offsetStack + ip->b.u32, XMM1, RDI, __numBits);     \
+        pp.emitOpNIndirect(offsetStack + ip->a.u32, XMM1, RDI, __op, __numBits); \
     } while (0)
 
 #define MK_BINOP_EQ_CAB_OFF(__op, __numBits)                                \
