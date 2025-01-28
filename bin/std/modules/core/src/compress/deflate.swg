@@ -954,6 +954,7 @@ impl Deflate
                 srcBufLeft -= numBytesToProcess
                 d.lookaheadSize += numBytesToProcess
 
+                Debug.assert(pSrc != null)
                 while pSrc != pSrc_end
                 {
                     let c = dref pSrc
