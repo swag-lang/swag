@@ -890,48 +890,42 @@ void SCBE_X64::emitCmpNIndirectDst(uint32_t memOffset, uint32_t value, CPURegist
 
 /////////////////////////////////////////////////////////////////////
 
-void SCBE_X64::emitOpF32(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBits srcBits)
-{
-    if (op != CPUOp::FSQRT &&
-        op != CPUOp::FAND &&
-        op != CPUOp::UCOMIF &&
-        op != CPUOp::FXOR)
-    {
-        concat.addU8(0xF3);
-        emitREX(concat, srcBits, regSrc);
-    }
-
-    concat.addU8(0x0F);
-    concat.addU8(static_cast<uint8_t>(op));
-    concat.addU8(static_cast<uint8_t>(0xC0 | regSrc | regDst << 3));
-}
-
-void SCBE_X64::emitOpF64(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBits srcBits)
-{
-    if (op != CPUOp::FSQRT &&
-        op != CPUOp::FAND &&
-        op != CPUOp::UCOMIF &&
-        op != CPUOp::FXOR)
-    {
-        concat.addU8(0xF2);
-        emitREX(concat, srcBits, regSrc);
-    }
-    else
-    {
-        concat.addU8(0x66);
-    }
-
-    concat.addU8(0x0F);
-    concat.addU8(static_cast<uint8_t>(op));
-    concat.addU8(static_cast<uint8_t>(0xC0 | regSrc | regDst << 3));
-}
-
-void SCBE_X64::emitOpN(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBits numBits)
+void SCBE_X64::emitOpN(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBits numBits, CPUBits srcBits)
 {
     if (numBits == CPUBits::F32)
-        emitOpF32(regDst, regSrc, op, CPUBits::B32);
+    {
+        if (op != CPUOp::FSQRT &&
+            op != CPUOp::FAND &&
+            op != CPUOp::UCOMIF &&
+            op != CPUOp::FXOR)
+        {
+            concat.addU8(0xF3);
+            emitREX(concat, srcBits, regSrc);
+        }
+
+        concat.addU8(0x0F);
+        concat.addU8(static_cast<uint8_t>(op));
+        concat.addU8(static_cast<uint8_t>(0xC0 | regSrc | regDst << 3));
+    }
     else if (numBits == CPUBits::F64)
-        emitOpF64(regDst, regSrc, op, CPUBits::B64);
+    {
+        if (op != CPUOp::FSQRT &&
+            op != CPUOp::FAND &&
+            op != CPUOp::UCOMIF &&
+            op != CPUOp::FXOR)
+        {
+            concat.addU8(0xF2);
+            emitREX(concat, srcBits, regSrc);
+        }
+        else
+        {
+            concat.addU8(0x66);
+        }
+
+        concat.addU8(0x0F);
+        concat.addU8(static_cast<uint8_t>(op));
+        concat.addU8(static_cast<uint8_t>(0xC0 | regSrc | regDst << 3));
+    }
     else
     {
         if (op == CPUOp::DIV ||
