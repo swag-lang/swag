@@ -1746,7 +1746,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpPlusEqF32:
-                MK_BINOP_EQF_CAB_OFF(CPUOp::FADD, CPUBits::F32);
+                MK_BINOP_EQ_CAB_OFF(CPUOp::FADD, CPUBits::F32);
                 break;
             case ByteCodeOp::AffectOpPlusEqF32_S:
                 MK_BINOP_EQF_SCAB(CPUOp::FADD, CPUBits::F32);
@@ -1756,7 +1756,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpPlusEqF64:
-                MK_BINOP_EQF_CAB_OFF(CPUOp::FADD, CPUBits::F64);
+                MK_BINOP_EQ_CAB_OFF(CPUOp::FADD, CPUBits::F64);
                 break;
             case ByteCodeOp::AffectOpPlusEqF64_S:
                 MK_BINOP_EQF_SCAB(CPUOp::FADD, CPUBits::F64);
@@ -1884,7 +1884,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpMinusEqF32:
-                MK_BINOP_EQF_CAB_OFF(CPUOp::FSUB, CPUBits::F32);
+                MK_BINOP_EQ_CAB_OFF(CPUOp::FSUB, CPUBits::F32);
                 break;
             case ByteCodeOp::AffectOpMinusEqF32_S:
                 MK_BINOP_EQF_SCAB(CPUOp::FSUB, CPUBits::F32);
@@ -1894,7 +1894,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpMinusEqF64:
-                MK_BINOP_EQF_CAB_OFF(CPUOp::FSUB, CPUBits::F64);
+                MK_BINOP_EQ_CAB_OFF(CPUOp::FSUB, CPUBits::F64);
                 break;
             case ByteCodeOp::AffectOpMinusEqF64_S:
                 MK_BINOP_EQF_SCAB(CPUOp::FSUB, CPUBits::F64);
