@@ -126,21 +126,14 @@
 #define MK_BINOP_EQ_SCAB(__op, __numBits)                                                    \
     do                                                                                       \
     {                                                                                        \
-        if (ip->hasFlag(BCI_IMM_B))                                                          \
+        if (SCBE_CPU::isInt(__numBits) && ip->hasFlag(BCI_IMM_B))                            \
             pp.emitOpNIndirectDst(offsetStack + ip->a.u32, ip->b.u64, RDI, __op, __numBits); \
         else                                                                                 \
         {                                                                                    \
-            pp.emitLoadNIndirect(REG_OFFSET(ip->b.u32), RAX, RDI, __numBits);                \
-            pp.emitOpNIndirect(offsetStack + ip->a.u32, RAX, RDI, __op, __numBits);          \
+            const auto r1 = SCBE_CPU::isInt(__numBits) ? RAX : XMM1;                         \
+            MK_IMMB(r1, __numBits);                                                          \
+            pp.emitOpNIndirect(offsetStack + ip->a.u32, r1, RDI, __op, __numBits);           \
         }                                                                                    \
-    } while (0)
-
-#define MK_BINOP_EQF_SCAB(__op, __numBits)                             \
-    do                                                                 \
-    {                                                                  \
-        pp.emitLoadAddressIndirect(offsetStack + ip->a.u32, RCX, RDI); \
-        MK_IMMB(XMM1, __numBits);                                      \
-        pp.emitOpNIndirect(0, XMM1, RCX, __op, __numBits);             \
     } while (0)
 
 #define MK_BINOP_EQ_SSCAB(__op, __numBits)                                     \
