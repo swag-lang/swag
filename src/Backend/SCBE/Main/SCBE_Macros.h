@@ -84,30 +84,30 @@
 
 //////////////////////////////////
 
-#define MK_BINOP_CAB(__opIndDst, __opInd, __op, __numBits)                                                                   \
+#define MK_BINOP_CAB(__numBits)                                                                                              \
     do                                                                                                                       \
     {                                                                                                                        \
         const auto r0 = SCBE_CPU::isInt(__numBits) ? RAX : XMM0;                                                             \
         if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_B))                                                                             \
         {                                                                                                                    \
             pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), r0, RDI, __numBits);                                                 \
-            pp.__opInd(REG_OFFSET(ip->b.u32), r0, RDI, __numBits);                                                           \
+            pp.emitCmpNIndirect(REG_OFFSET(ip->b.u32), r0, RDI, __numBits);                                                  \
         }                                                                                                                    \
         else if (ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_B))                                                          \
         {                                                                                                                    \
             pp.emitLoadNImmediate(r0, ip->a.u64, __numBits);                                                                 \
-            pp.__opInd(REG_OFFSET(ip->b.u32), r0, RDI, __numBits);                                                           \
+            pp.emitCmpNIndirect(REG_OFFSET(ip->b.u32), r0, RDI, __numBits);                                                  \
         }                                                                                                                    \
         else if (SCBE_CPU::isInt(__numBits) && !ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_B) && ip->b.u64 <= 0x7FFFFFFF) \
         {                                                                                                                    \
-            pp.__opIndDst(REG_OFFSET(ip->a.u32), ip->b.u32, RDI, __numBits);                                                 \
+            pp.emitCmpNIndirectDst(REG_OFFSET(ip->a.u32), ip->b.u32, RDI, __numBits);                                        \
         }                                                                                                                    \
         else                                                                                                                 \
         {                                                                                                                    \
             const auto r1 = SCBE_CPU::isInt(__numBits) ? RCX : XMM1;                                                         \
             MK_IMMA(r0, __numBits);                                                                                          \
             MK_IMMB(r1, __numBits);                                                                                          \
-            pp.__op(r0, r1, __numBits);                                                                                      \
+            pp.emitCmpN(r0, r1, __numBits);                                                                                  \
         }                                                                                                                    \
     } while (0)
 
