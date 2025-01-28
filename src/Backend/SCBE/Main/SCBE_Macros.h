@@ -84,7 +84,7 @@
 
 //////////////////////////////////
 
-#define MK_BINOP_CAB(__numBits)                                                                                              \
+#define MK_BINOP(__numBits)                                                                                                  \
     do                                                                                                                       \
     {                                                                                                                        \
         const auto r0 = SCBE_CPU::isInt(__numBits) ? RAX : XMM0;                                                             \
@@ -113,17 +113,17 @@
 
 //////////////////////////////////
 
-#define MK_BINOP_EQ_CAB(__op, __numBits)                                    \
+#define MK_BINOP_EQ(__offset, __op, __numBits)                              \
     do                                                                      \
     {                                                                       \
         const auto r0 = SCBE_CPU::isInt(__numBits) ? RAX : RCX;             \
         const auto r1 = SCBE_CPU::isInt(__numBits) ? XMM1 : RCX;            \
         pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), r0, RDI, CPUBits::B64); \
         MK_IMMB(r1, __numBits);                                             \
-        pp.emitOpNIndirect(0, r1, r0, __op, __numBits);                     \
+        pp.emitOpNIndirect(__offset, r1, r0, __op, __numBits);              \
     } while (0)
 
-#define MK_BINOP_EQ_SCAB(__op, __numBits)                                                    \
+#define MK_BINOP_EQ_S(__op, __numBits)                                                       \
     do                                                                                       \
     {                                                                                        \
         if (SCBE_CPU::isInt(__numBits) && ip->hasFlag(BCI_IMM_B))                            \
@@ -136,7 +136,7 @@
         }                                                                                    \
     } while (0)
 
-#define MK_BINOP_EQ_SSCAB(__op, __numBits)                                     \
+#define MK_BINOP_EQ_SS(__op, __numBits)                                        \
     do                                                                         \
     {                                                                          \
         const auto r1 = SCBE_CPU::isInt(__numBits) ? RAX : XMM1;               \
@@ -144,17 +144,7 @@
         pp.emitOpNIndirect(offsetStack + ip->a.u32, r1, RDI, __op, __numBits); \
     } while (0)
 
-#define MK_BINOP_EQ_CAB_OFF(__op, __numBits)                                \
-    do                                                                      \
-    {                                                                       \
-        const auto r0 = SCBE_CPU::isInt(__numBits) ? RAX : RCX;             \
-        const auto r1 = SCBE_CPU::isInt(__numBits) ? RCX : XMM1;            \
-        pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), r0, RDI, CPUBits::B64); \
-        MK_IMMB(r1, __numBits);                                             \
-        pp.emitOpNIndirect(ip->c.u32, r1, r0, __op, __numBits);             \
-    } while (0)
-
-#define MK_BINOP_EQ_LOCK_CAB(__op, __numBits)                                \
+#define MK_BINOP_EQ_LOCK(__op, __numBits)                                    \
     do                                                                       \
     {                                                                        \
         pp.emitLoadNIndirect(REG_OFFSET(ip->a.u32), RCX, RDI, CPUBits::B64); \
@@ -164,7 +154,7 @@
 
 //////////////////////////////////
 
-#define MK_JMPCMP(__op, __numBits)                                                                                           \
+#define MK_JMP_CMP(__op, __numBits)                                                                                          \
     do                                                                                                                       \
     {                                                                                                                        \
         const auto r0 = SCBE_CPU::isInt(__numBits) ? RAX : XMM0;                                                             \
@@ -187,7 +177,7 @@
         pp.emitJump(__op, i, ip->b.s32);                                                                                     \
     } while (0)
 
-#define MK_JMPCMP_ADDR(__op, __offset, __memReg, __numBits)                   \
+#define MK_JMP_CMP_ADDR(__op, __offset, __memReg, __numBits)                  \
     do                                                                        \
     {                                                                         \
         SWAG_ASSERT(SCBE_CPU::isInt(__numBits));                              \
@@ -209,7 +199,7 @@
         pp.emitJump(__op, i, ip->b.s32);                                      \
     } while (0)
 
-#define MK_JMPCMP2(__op1, __op2, __numBits)                                    \
+#define MK_JMP_CMP2(__op1, __op2, __numBits)                                   \
     do                                                                         \
     {                                                                          \
         if (!ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_C))                \
@@ -227,7 +217,7 @@
         pp.emitJump(__op2, i, ip->b.s32);                                      \
     } while (0)
 
-#define MK_JMPCMP3(__op1, __op2, __numBits)                                    \
+#define MK_JMP_CMP3(__op1, __op2, __numBits)                                   \
     do                                                                         \
     {                                                                          \
         if (!ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_C))                \
