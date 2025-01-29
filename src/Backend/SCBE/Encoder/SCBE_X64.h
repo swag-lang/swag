@@ -47,7 +47,10 @@ struct SCBE_X64 : SCBE_CPU
     void      emitJump(CPUJumpType jumpType, int32_t instructionCount, int32_t jumpOffset);
     void      emitJump(CPURegister reg);
 
+    void emitLoadAddressIndirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
     void emitLoadNImmediate(CPURegister reg, uint64_t value, CPUBits numBits, bool force64Bits = false);
+    void emitStoreNImmediate(uint32_t memOffset, uint64_t value, CPURegister memReg, CPUBits numBits);
+    void emitStoreNIndirect(uint32_t memOffset, CPURegister reg, CPURegister memReg, CPUBits numBits);
 
     void emitLoad8Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
     void emitLoad16Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
@@ -56,18 +59,6 @@ struct SCBE_X64 : SCBE_CPU
     void emitLoadF32Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
     void emitLoadF64Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
     void emitLoadNIndirect(uint32_t memOffset, CPURegister reg, CPURegister memReg, CPUBits numBits);
-
-    void emitStoreNImmediate(uint32_t memOffset, uint64_t value, CPURegister memReg, CPUBits numBits);
-
-    void emitStore8Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
-    void emitStore16Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
-    void emitStore32Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
-    void emitStore64Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
-    void emitStoreF32Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
-    void emitStoreF64Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
-    void emitStoreNIndirect(uint32_t memOffset, CPURegister reg, CPURegister memReg, CPUBits numBits);
-
-    void emitLoadAddressIndirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
 
     void emitCastU8U64(CPURegister regDst, CPURegister regSrc);
     void emitCastU16U64(CPURegister regDst, CPURegister regSrc);

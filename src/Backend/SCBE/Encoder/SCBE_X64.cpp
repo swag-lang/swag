@@ -363,98 +363,74 @@ void SCBE_X64::emitLoadAddressIndirect(uint32_t memOffset, CPURegister reg, CPUR
 
 /////////////////////////////////////////////////////////////////////
 
-void SCBE_X64::emitStore8Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg)
-{
-    emitREX(concat, CPUBits::B8, reg, memReg);
-    concat.addU8(0x88);
-    emitModRM(concat, memOffset, reg, memReg);
-
-    storageRegCount = concat.totalCount();
-    storageRegStack = memOffset;
-    storageReg      = reg;
-    storageMemReg   = memReg;
-    storageRegBits  = 8;
-}
-
-void SCBE_X64::emitStore16Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg)
-{
-    emitREX(concat, CPUBits::B16, reg, memReg);
-    concat.addU8(0x89);
-    emitModRM(concat, memOffset, reg, memReg);
-
-    storageRegCount = concat.totalCount();
-    storageRegStack = memOffset;
-    storageReg      = reg;
-    storageMemReg   = memReg;
-    storageRegBits  = 16;
-}
-
-void SCBE_X64::emitStore32Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg)
-{
-    emitREX(concat, CPUBits::B32, reg, memReg);
-    concat.addU8(0x89);
-    emitModRM(concat, memOffset, reg, memReg);
-
-    storageRegCount = concat.totalCount();
-    storageRegStack = memOffset;
-    storageReg      = reg;
-    storageMemReg   = memReg;
-    storageRegBits  = 32;
-}
-
-void SCBE_X64::emitStore64Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg)
-{
-    emitREX(concat, CPUBits::B64, reg, memReg);
-    concat.addU8(0x89);
-    emitModRM(concat, memOffset, reg, memReg);
-
-    storageRegCount = concat.totalCount();
-    storageRegStack = memOffset;
-    storageReg      = reg;
-    storageMemReg   = memReg;
-    storageRegBits  = 64;
-}
-
-void SCBE_X64::emitStoreF32Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg)
-{
-    SWAG_ASSERT(reg < R8 && memReg < R8);
-    concat.addU8(0xF3);
-    concat.addU8(0x0F);
-    concat.addU8(0x11);
-    emitModRM(concat, memOffset, reg, memReg);
-}
-
-void SCBE_X64::emitStoreF64Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg)
-{
-    SWAG_ASSERT(reg < R8 && memReg < R8);
-    concat.addU8(0xF2);
-    concat.addU8(0x0F);
-    concat.addU8(0x11);
-    emitModRM(concat, memOffset, reg, memReg);
-}
-
 void SCBE_X64::emitStoreNIndirect(uint32_t memOffset, CPURegister reg, CPURegister memReg, CPUBits numBits)
 {
     switch (numBits)
     {
         case CPUBits::B8:
-            emitStore8Indirect(memOffset, reg, memReg);
+            emitREX(concat, CPUBits::B8, reg, memReg);
+            concat.addU8(0x88);
+            emitModRM(concat, memOffset, reg, memReg);
+
+            storageRegCount = concat.totalCount();
+            storageRegStack = memOffset;
+            storageReg      = reg;
+            storageMemReg   = memReg;
+            storageRegBits  = 8;
             break;
+
         case CPUBits::B16:
-            emitStore16Indirect(memOffset, reg, memReg);
+            emitREX(concat, CPUBits::B16, reg, memReg);
+            concat.addU8(0x89);
+            emitModRM(concat, memOffset, reg, memReg);
+
+            storageRegCount = concat.totalCount();
+            storageRegStack = memOffset;
+            storageReg      = reg;
+            storageMemReg   = memReg;
+            storageRegBits  = 16;
             break;
+
         case CPUBits::B32:
-            emitStore32Indirect(memOffset, reg, memReg);
+            emitREX(concat, CPUBits::B32, reg, memReg);
+            concat.addU8(0x89);
+            emitModRM(concat, memOffset, reg, memReg);
+
+            storageRegCount = concat.totalCount();
+            storageRegStack = memOffset;
+            storageReg      = reg;
+            storageMemReg   = memReg;
+            storageRegBits  = 32;
             break;
+
         case CPUBits::B64:
-            emitStore64Indirect(memOffset, reg, memReg);
+            emitREX(concat, CPUBits::B64, reg, memReg);
+            concat.addU8(0x89);
+            emitModRM(concat, memOffset, reg, memReg);
+
+            storageRegCount = concat.totalCount();
+            storageRegStack = memOffset;
+            storageReg      = reg;
+            storageMemReg   = memReg;
+            storageRegBits  = 64;
             break;
+
         case CPUBits::F32:
-            emitStoreF32Indirect(memOffset, reg, memReg);
+            SWAG_ASSERT(reg < R8 && memReg < R8);
+            concat.addU8(0xF3);
+            concat.addU8(0x0F);
+            concat.addU8(0x11);
+            emitModRM(concat, memOffset, reg, memReg);
             break;
+
         case CPUBits::F64:
-            emitStoreF64Indirect(memOffset, reg, memReg);
+            SWAG_ASSERT(reg < R8 && memReg < R8);
+            concat.addU8(0xF2);
+            concat.addU8(0x0F);
+            concat.addU8(0x11);
+            emitModRM(concat, memOffset, reg, memReg);
             break;
+
         default:
             SWAG_ASSERT(false);
             break;
@@ -1072,23 +1048,23 @@ void SCBE_X64::emitOpNIndirect(uint32_t memOffset, CPURegister reg, CPURegister 
     {
         SWAG_ASSERT(reg == XMM1);
         SWAG_ASSERT(memReg < R8);
-        emitLoadF32Indirect(memOffset, XMM0, memReg);
+        emitLoadNIndirect(memOffset, XMM0, memReg, CPUBits::F32);
         concat.addU8(0xF3);
         concat.addU8(0x0F);
         concat.addU8(static_cast<uint8_t>(op));
         concat.addU8(0xC1);
-        emitStoreF32Indirect(memOffset, XMM0, memReg);
+        emitStoreNIndirect(memOffset, XMM0, memReg, CPUBits::F32);
     }
     else if (numBits == CPUBits::F64)
     {
         SWAG_ASSERT(reg == XMM1);
         SWAG_ASSERT(memReg < R8);
-        emitLoadF64Indirect(memOffset, XMM0, memReg);
+        emitLoadNIndirect(memOffset, XMM0, memReg, CPUBits::F64);
         concat.addU8(0xF2);
         concat.addU8(0x0F);
         concat.addU8(static_cast<uint8_t>(op));
         concat.addU8(0xC1);
-        emitStoreF64Indirect(memOffset, XMM0, memReg);
+        emitStoreNIndirect(memOffset, XMM0, memReg, CPUBits::F64);
     }
     else
     {
@@ -1702,7 +1678,7 @@ void SCBE_X64::emitCopyX(CPURegister regDst, CPURegister regSrc, uint32_t count,
     while (count >= 8)
     {
         emitLoad64Indirect(offset, RAX, regSrc);
-        emitStore64Indirect(offset, RAX, regDst);
+        emitStoreNIndirect(offset, RAX, regDst, CPUBits::B64);
         count -= 8;
         offset += 8;
     }
@@ -1710,7 +1686,7 @@ void SCBE_X64::emitCopyX(CPURegister regDst, CPURegister regSrc, uint32_t count,
     while (count >= 4)
     {
         emitLoad32Indirect(offset, RAX, regSrc);
-        emitStore32Indirect(offset, RAX, regDst);
+        emitStoreNIndirect(offset, RAX, regDst, CPUBits::B32);
         count -= 4;
         offset += 4;
     }
@@ -1718,7 +1694,7 @@ void SCBE_X64::emitCopyX(CPURegister regDst, CPURegister regSrc, uint32_t count,
     while (count >= 2)
     {
         emitLoad16Indirect(offset, RAX, regSrc);
-        emitStore16Indirect(offset, RAX, regDst);
+        emitStoreNIndirect(offset, RAX, regDst, CPUBits::B16);
         count -= 2;
         offset += 2;
     }
@@ -1726,7 +1702,7 @@ void SCBE_X64::emitCopyX(CPURegister regDst, CPURegister regSrc, uint32_t count,
     while (count >= 1)
     {
         emitLoad8Indirect(offset, RAX, regSrc);
-        emitStore8Indirect(offset, RAX, regDst);
+        emitStoreNIndirect(offset, RAX, regDst, CPUBits::B8);
         count -= 1;
         offset += 1;
     }
@@ -1944,7 +1920,7 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
         if (i >= maxParamsPerRegister)
         {
             emitLoad64Indirect(REG_OFFSET(reg), RAX, RDI);
-            emitStore64Indirect(offsetStack, RAX, RSP);
+            emitStoreNIndirect(offsetStack, RAX, RSP, CPUBits::B64);
         }
 
         // This is for a return value
@@ -1957,7 +1933,7 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
                 emitLoad64Indirect(reg, RAX, RDI);
             else
                 emitLoadAddressIndirect(reg, RAX, RDI);
-            emitStore64Indirect(offsetStack, RAX, RSP);
+            emitStoreNIndirect(offsetStack, RAX, RSP, CPUBits::B64);
         }
 
         // This is for a normal parameter
@@ -1977,19 +1953,19 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
                     {
                         case 1:
                             emitLoad8Indirect(0, RAX, RAX);
-                            emitStore8Indirect(offsetStack, RAX, RSP);
+                            emitStoreNIndirect(offsetStack, RAX, RSP, CPUBits::B8);
                             break;
                         case 2:
                             emitLoad16Indirect(0, RAX, RAX);
-                            emitStore16Indirect(offsetStack, RAX, RSP);
+                            emitStoreNIndirect(offsetStack, RAX, RSP, CPUBits::B16);
                             break;
                         case 4:
                             emitLoad32Indirect(0, RAX, RAX);
-                            emitStore32Indirect(offsetStack, RAX, RSP);
+                            emitStoreNIndirect(offsetStack, RAX, RSP, CPUBits::B32);
                             break;
                         case 8:
                             emitLoad64Indirect(0, RAX, RAX);
-                            emitStore64Indirect(offsetStack, RAX, RSP);
+                            emitStoreNIndirect(offsetStack, RAX, RSP, CPUBits::B64);
                             break;
                         default:
                             break;
@@ -1999,7 +1975,7 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
                 // Store the address of the struct in the stack
                 else
                 {
-                    emitStore64Indirect(offsetStack, RAX, RSP);
+                    emitStoreNIndirect(offsetStack, RAX, RSP, CPUBits::B64);
                 }
             }
             else
@@ -2008,19 +1984,19 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
                 {
                     case 1:
                         emitLoad8Indirect(REG_OFFSET(reg), RAX, RDI);
-                        emitStore8Indirect(offsetStack, RAX, RSP);
+                        emitStoreNIndirect(offsetStack, RAX, RSP, CPUBits::B8);
                         break;
                     case 2:
                         emitLoad16Indirect(REG_OFFSET(reg), RAX, RDI);
-                        emitStore16Indirect(offsetStack, RAX, RSP);
+                        emitStoreNIndirect(offsetStack, RAX, RSP, CPUBits::B16);
                         break;
                     case 4:
                         emitLoad32Indirect(REG_OFFSET(reg), RAX, RDI);
-                        emitStore32Indirect(offsetStack, RAX, RSP);
+                        emitStoreNIndirect(offsetStack, RAX, RSP, CPUBits::B32);
                         break;
                     case 8:
                         emitLoad64Indirect(REG_OFFSET(reg), RAX, RDI);
-                        emitStore64Indirect(offsetStack, RAX, RSP);
+                        emitStoreNIndirect(offsetStack, RAX, RSP, CPUBits::B64);
                         break;
                     default:
                         SWAG_ASSERT(false);
@@ -2191,9 +2167,9 @@ void SCBE_X64::emitCallResult(const TypeInfoFuncAttr* typeFunc, uint32_t offsetR
         const auto& cc         = typeFunc->getCallConv();
         const auto  returnType = typeFunc->concreteReturnType();
         if (returnType->isNativeFloat())
-            emitStoreF64Indirect(offsetRT, cc.returnByRegisterFloat, RDI);
+            emitStoreNIndirect(offsetRT, cc.returnByRegisterFloat, RDI, CPUBits::F64);
         else
-            emitStore64Indirect(offsetRT, cc.returnByRegisterInteger, RDI);
+            emitStoreNIndirect(offsetRT, cc.returnByRegisterInteger, RDI, CPUBits::B64);
     }
 }
 

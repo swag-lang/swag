@@ -93,11 +93,11 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
     pp.emitSymbolRelocationAddr(RAX, pp.symDefaultAllocTable, 0);
     pp.emitLoadAddressIndirect(0, RCX, RIP);
     pp.emitSymbolRelocationRef(bcAlloc->getCallName());
-    pp.emitStore64Indirect(0, RCX, RAX);
+    pp.emitStoreNIndirect(0, RCX, RAX, CPUBits::B64);
 
     // mainContext.allocator.itable = &defaultAllocTable;
     pp.emitSymbolRelocationAddr(RCX, pp.symMC_mainContext_allocator_itable, 0);
-    pp.emitStore64Indirect(0, RAX, RCX);
+    pp.emitStoreNIndirect(0, RAX, RCX, CPUBits::B64);
 
     // main context flags
     pp.emitSymbolRelocationAddr(RCX, pp.symMC_mainContext_flags, 0);
@@ -111,21 +111,21 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
     //__process_infos.modules
     pp.emitSymbolRelocationAddr(RCX, pp.symPI_modulesAddr, 0);
     pp.emitSymbolRelocationAddr(RAX, pp.symCSIndex, module->modulesSliceOffset);
-    pp.emitStore64Indirect(0, RAX, RCX);
+    pp.emitStoreNIndirect(0, RAX, RCX, CPUBits::B64);
     pp.emitSymbolRelocationAddr(RAX, pp.symPI_modulesCount, 0);
     pp.emitStoreNImmediate(0, module->moduleDependencies.count + 1, RAX, CPUBits::B64);
 
     //__process_infos.args
     pp.emitClearN(RCX, CPUBits::B64);
     pp.emitSymbolRelocationAddr(RAX, pp.symPI_argsAddr, 0);
-    pp.emitStore64Indirect(0, RCX, RAX);
+    pp.emitStoreNIndirect(0, RCX, RAX, CPUBits::B64);
     pp.emitSymbolRelocationAddr(RAX, pp.symPI_argsCount, 0);
-    pp.emitStore64Indirect(0, RCX, RAX);
+    pp.emitStoreNIndirect(0, RCX, RAX, CPUBits::B64);
 
     // Set main context
     pp.emitSymbolRelocationAddr(RAX, pp.symMC_mainContext, 0);
     pp.emitSymbolRelocationAddr(RCX, pp.symPI_defaultContext, 0);
-    pp.emitStore64Indirect(0, RAX, RCX);
+    pp.emitStoreNIndirect(0, RAX, RCX, CPUBits::B64);
 
     // Set current backend as SCBE
     pp.emitSymbolRelocationAddr(RCX, pp.symPI_backendKind, 0);
@@ -299,7 +299,7 @@ void SCBE::emitGlobalPreMain(const BuildParameters& buildParameters) const
     // Store first parameter on stack (process infos ptr)
     SWAG_ASSERT(cc.paramByRegisterCount >= 1);
     pp.emitLoadAddressIndirect(0, RDI, RSP);
-    pp.emitStore64Indirect(0, cc.paramByRegisterInteger[0], RDI);
+    pp.emitStoreNIndirect(0, cc.paramByRegisterInteger[0], RDI, CPUBits::B64);
 
     // Copy process infos passed as a parameter to the process info struct of this module
     pp.pushParams.clear();
@@ -353,7 +353,7 @@ void SCBE::emitGlobalInit(const BuildParameters& buildParameters) const
     // Store first parameter on stack (process infos ptr)
     SWAG_ASSERT(cc.paramByRegisterCount >= 1);
     pp.emitLoadAddressIndirect(0, RDI, RSP);
-    pp.emitStore64Indirect(0, cc.paramByRegisterInteger[0], RDI);
+    pp.emitStoreNIndirect(0, cc.paramByRegisterInteger[0], RDI, CPUBits::B64);
 
     // Copy process infos passed as a parameter to the process info struct of this module
     pp.pushParams.clear();
@@ -381,9 +381,9 @@ void SCBE::emitGlobalInit(const BuildParameters& buildParameters) const
 
         // Count types is stored as a uint64_t at the start of the address
         pp.emitLoad64Indirect(0, R8, cc.returnByRegisterInteger);
-        pp.emitStore64Indirect(sizeof(uint64_t), R8, RCX);
+        pp.emitStoreNIndirect(sizeof(uint64_t), R8, RCX, CPUBits::B64);
         pp.emitOpNImmediate(cc.returnByRegisterInteger, sizeof(uint64_t), CPUOp::ADD, CPUBits::B64);
-        pp.emitStore64Indirect(0, cc.returnByRegisterInteger, RCX);
+        pp.emitStoreNIndirect(0, cc.returnByRegisterInteger, RCX, CPUBits::B64);
 
         pp.emitOpNImmediate(RCX, sizeof(SwagModule), CPUOp::ADD, CPUBits::B64);
     }

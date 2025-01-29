@@ -312,7 +312,7 @@ void SCBE::emitAddSubMul64(SCBE_X64& pp, const ByteCodeInstruction* ip, uint64_t
         {
             pp.emitLoad64Indirect(REG_OFFSET(ip->a.u32), RCX, RDI);
             pp.emitOpN(RCX, RAX, op, CPUBits::B64);
-            pp.emitStore64Indirect(REG_OFFSET(ip->c.u32), RCX, RDI);
+            pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RCX, RDI, CPUBits::B64);
         }
     }
 }
