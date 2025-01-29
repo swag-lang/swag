@@ -998,14 +998,14 @@ namespace OS
 
             gen.emitPush(RDI);
             gen.emitOpNImmediate(RSP, stackSize, CPUOp::SUB, CPUBits::B64);
-            gen.emitLoad64Immediate(RDI, reinterpret_cast<uint64_t>(context->sp), true);
+            gen.emitLoadNImmediate(RDI, reinterpret_cast<uint64_t>(context->sp), CPUBits::B64, true);
             gen.emitCallParameters(typeInfoFunc, pushRAParam, 0, retCopyAddr);
-            gen.emitLoad64Immediate(RAX, reinterpret_cast<uint64_t>(foreignPtr), true);
+            gen.emitLoadNImmediate(RAX, reinterpret_cast<uint64_t>(foreignPtr), CPUBits::B64, true);
             gen.emitCallIndirect(RAX);
 
             if (!returnType->isVoid() && !retCopyAddr)
             {
-                gen.emitLoad64Immediate(RDI, reinterpret_cast<uint64_t>(context->registersRR), true);
+                gen.emitLoadNImmediate(RDI, reinterpret_cast<uint64_t>(context->registersRR), CPUBits::B64, true);
                 gen.emitCallResult(typeInfoFunc, 0);
             }
 

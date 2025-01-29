@@ -44,7 +44,7 @@ void SCBE::emitOS(const BuildParameters& buildParameters) const
 
         // int _DllMainCRTStartup(void*, int, void*)
         pp.getOrAddSymbol("_DllMainCRTStartup", CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
-        pp.emitLoad64Immediate(RAX, 1);
+        pp.emitLoadNImmediate(RAX, 1, CPUBits::B64);
         pp.emitRet();
     }
     else
