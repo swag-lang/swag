@@ -1925,7 +1925,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::GreaterZeroToTrue:
                 pp.emitLoad32Indirect(REG_OFFSET(ip->a.u32), RAX, RDI);
                 pp.emitTestN(RAX, RAX, CPUBits::B32);
-                pp.emitSetG();
+                pp.emitSet(RAX, CPUSetX::SetG);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->a.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::GreaterEqZeroToTrue:
@@ -1939,22 +1939,22 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::CompareOpGreaterS8:
                 MK_BINOP(CPUBits::B8);
-                pp.emitSetG();
+                pp.emitSet(RAX, CPUSetX::SetG);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpGreaterS16:
                 MK_BINOP(CPUBits::B16);
-                pp.emitSetG();
+                pp.emitSet(RAX, CPUSetX::SetG);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpGreaterS32:
                 MK_BINOP(CPUBits::B32);
-                pp.emitSetG();
+                pp.emitSet(RAX, CPUSetX::SetG);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpGreaterS64:
                 MK_BINOP(CPUBits::B64);
-                pp.emitSetG();
+                pp.emitSet(RAX, CPUSetX::SetG);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpGreaterU8:
@@ -2148,7 +2148,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOp3Way8:
                 pp.emitClearN(R8, CPUBits::B32);
                 MK_BINOP(CPUBits::B8);
-                pp.emitSetG(R8);
+                pp.emitSet(R8, CPUSetX::SetG);
                 pp.emitLoadNImmediate(RAX, 0xFFFFFFFF, CPUBits::B32);
                 pp.emitCMovN(RAX, R8, CPUOp::CMOVGE, CPUBits::B32);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B32);
@@ -2156,7 +2156,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOp3Way16:
                 pp.emitClearN(R8, CPUBits::B32);
                 MK_BINOP(CPUBits::B16);
-                pp.emitSetG(R8);
+                pp.emitSet(R8, CPUSetX::SetG);
                 pp.emitLoadNImmediate(RAX, 0xFFFFFFFF, CPUBits::B32);
                 pp.emitCMovN(RAX, R8, CPUOp::CMOVGE, CPUBits::B32);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B32);
@@ -2164,7 +2164,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOp3Way32:
                 pp.emitClearN(R8, CPUBits::B32);
                 MK_BINOP(CPUBits::B32);
-                pp.emitSetG(R8);
+                pp.emitSet(R8, CPUSetX::SetG);
                 pp.emitLoadNImmediate(RAX, 0xFFFFFFFF, CPUBits::B32);
                 pp.emitCMovN(RAX, R8, CPUOp::CMOVGE, CPUBits::B32);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B32);
@@ -2172,7 +2172,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOp3Way64:
                 pp.emitClearN(R8, CPUBits::B32);
                 MK_BINOP(CPUBits::B64);
-                pp.emitSetG(R8);
+                pp.emitSet(R8, CPUSetX::SetG);
                 pp.emitLoadNImmediate(RAX, 0xFFFFFFFF, CPUBits::B32);
                 pp.emitCMovN(RAX, R8, CPUOp::CMOVGE, CPUBits::B32);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B32);
