@@ -1959,32 +1959,32 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::CompareOpGreaterU8:
                 MK_BINOP(CPUBits::B8);
-                pp.emitSetA();
+                pp.emitSet(RAX, CPUSetX::SetA);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpGreaterU16:
                 MK_BINOP(CPUBits::B16);
-                pp.emitSetA();
+                pp.emitSet(RAX, CPUSetX::SetA);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpGreaterU32:
                 MK_BINOP(CPUBits::B32);
-                pp.emitSetA();
+                pp.emitSet(RAX, CPUSetX::SetA);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpGreaterU64:
                 MK_BINOP(CPUBits::B64);
-                pp.emitSetA();
+                pp.emitSet(RAX, CPUSetX::SetA);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpGreaterF32:
                 MK_BINOP(CPUBits::F32);
-                pp.emitSetA();
+                pp.emitSet(RAX, CPUSetX::SetA);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpGreaterF64:
                 MK_BINOP(CPUBits::F64);
-                pp.emitSetA();
+                pp.emitSet(RAX, CPUSetX::SetA);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
 
@@ -2182,7 +2182,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 MK_IMMA(XMM0, CPUBits::F32);
                 MK_IMMB(XMM1, CPUBits::F32);
                 pp.emitOpN(XMM0, XMM1, CPUOp::UCOMIF, CPUBits::F32);
-                pp.emitSetA(R8);
+                pp.emitSet(R8, CPUSetX::SetA);
                 pp.emitOpN(XMM1, XMM0, CPUOp::UCOMIF, CPUBits::F32);
                 pp.emitLoadNImmediate(RAX, 0xFFFFFFFF, CPUBits::B32);
                 pp.emitCMovN(RAX, R8, CPUOp::CMOVBE, CPUBits::B32);
@@ -2193,7 +2193,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 MK_IMMA(XMM0, CPUBits::F64);
                 MK_IMMB(XMM1, CPUBits::F64);
                 pp.emitOpN(XMM0, XMM1, CPUOp::UCOMIF, CPUBits::F64);
-                pp.emitSetA(R8);
+                pp.emitSet(R8, CPUSetX::SetA);
                 pp.emitOpN(XMM1, XMM0, CPUOp::UCOMIF, CPUBits::F64);
                 pp.emitLoadNImmediate(RAX, 0xFFFFFFFF, CPUBits::B32);
                 pp.emitCMovN(RAX, R8, CPUOp::CMOVBE, CPUBits::B32);

@@ -620,14 +620,19 @@ void SCBE_X64::emitCopyDownUp([[maybe_unused]] CPURegister reg, [[maybe_unused]]
 
 /////////////////////////////////////////////////////////////////////
 
-void SCBE_X64::emitSetA(CPURegister reg)
+void SCBE_X64::emitSet(CPURegister reg, CPUSetX setType)
 {
-    SWAG_ASSERT(reg == RAX || reg == R8);
-    if (reg >= R8)
-        concat.addU8(0x41);
-    concat.addU8(0x0F);
-    concat.addU8(0x97);
-    concat.addU8(0xC0 | (reg & 0b111));
+    switch (setType)
+    {
+        case CPUSetX::SetA:
+            SWAG_ASSERT(reg == RAX || reg == R8);
+            if (reg >= R8)
+                concat.addU8(0x41);
+            concat.addU8(0x0F);
+            concat.addU8(0x97);
+            concat.addU8(0xC0 | (reg & 0b111));
+            break;
+    }
 }
 
 void SCBE_X64::emitSetAE(CPURegister reg)

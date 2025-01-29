@@ -87,6 +87,23 @@ enum class CPUOp : uint8_t
     IMOD   = IDIV | 2,
 };
 
+enum class CPUSetX
+{
+    SetA,
+    SetAE,
+    SetG,
+    SetB,
+    SetBE,
+    SetE,
+    SetEP,
+    SetGE,
+    SetL,
+    SetLE,
+    SetNA,
+    SetNE,
+    SetNEP,
+};
+
 enum CPUJumpType
 {
     JNO,
