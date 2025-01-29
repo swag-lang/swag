@@ -463,35 +463,36 @@ void SCBE_X64::emitStoreNIndirect(uint32_t memOffset, CPURegister reg, CPURegist
 
 /////////////////////////////////////////////////////////////////////
 
-void SCBE_X64::emitStore8Immediate(uint32_t memOffset, uint8_t val, CPURegister memReg)
+void SCBE_X64::emitStoreNImmediate(uint32_t memOffset, uint64_t value, CPURegister memReg, CPUBits numBits)
 {
-    concat.addU8(0xC6);
-    emitModRM(concat, memOffset, 0, memReg);
-    concat.addU8(val);
-}
-
-void SCBE_X64::emitStore16Immediate(uint32_t memOffset, uint16_t val, CPURegister memReg)
-{
-    concat.addU8(0x66);
-    concat.addU8(0xC7);
-    emitModRM(concat, memOffset, 0, memReg);
-    concat.addU16(val);
-}
-
-void SCBE_X64::emitStore32Immediate(uint32_t memOffset, uint32_t val, CPURegister memReg)
-{
-    concat.addU8(0xC7);
-    emitModRM(concat, memOffset, 0, memReg);
-    concat.addU32(val);
-}
-
-void SCBE_X64::emitStore64Immediate(uint32_t memOffset, uint64_t val, CPURegister memReg)
-{
-    SWAG_ASSERT(val <= 0xFFFFFFFF);
-    emitREX(concat, CPUBits::B64);
-    concat.addU8(0xC7);
-    emitModRM(concat, memOffset, 0, memReg);
-    concat.addU32(static_cast<uint32_t>(val));
+    if (numBits == CPUBits::B8)
+    {
+        concat.addU8(0xC6);
+        emitModRM(concat, memOffset, 0, memReg);
+        concat.addU8(static_cast<uint8_t>(value));
+    }
+    else if (numBits == CPUBits::B16)
+    {
+        concat.addU8(0x66);
+        concat.addU8(0xC7);
+        emitModRM(concat, memOffset, 0, memReg);
+        concat.addU16(static_cast<uint16_t>(value));
+    }
+    else if (numBits == CPUBits::B32)
+    {
+        concat.addU8(0xC7);
+        emitModRM(concat, memOffset, 0, memReg);
+        concat.addU32(static_cast<uint32_t>(value));
+    }
+    else
+    {
+        SWAG_ASSERT(numBits == CPUBits::B64);
+        SWAG_ASSERT(value <= 0xFFFFFFFF);
+        emitREX(concat, CPUBits::B64);
+        concat.addU8(0xC7);
+        emitModRM(concat, memOffset, 0, memReg);
+        concat.addU32(static_cast<uint32_t>(value));
+    }
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -1761,28 +1762,28 @@ void SCBE_X64::emitClearX(uint32_t count, uint32_t offset, CPURegister reg)
 
     while (count >= 8)
     {
-        emitStore64Immediate(offset, 0, reg);
+        emitStoreNImmediate(offset, 0, reg, CPUBits::B64);
         count -= 8;
         offset += 8;
     }
 
     while (count >= 4)
     {
-        emitStore32Immediate(offset, 0, reg);
+        emitStoreNImmediate(offset, 0, reg, CPUBits::B32);
         count -= 4;
         offset += 4;
     }
 
     while (count >= 2)
     {
-        emitStore16Immediate(offset, 0, reg);
+        emitStoreNImmediate(offset, 0, reg, CPUBits::B16);
         count -= 2;
         offset += 2;
     }
 
     while (count >= 1)
     {
-        emitStore8Immediate(offset, 0, reg);
+        emitStoreNImmediate(offset, 0, reg, CPUBits::B8);
         count -= 1;
         offset += 1;
     }

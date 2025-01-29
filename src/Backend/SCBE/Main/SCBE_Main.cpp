@@ -102,7 +102,7 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
     // main context flags
     pp.emitSymbolRelocationAddr(RCX, pp.symMC_mainContext_flags, 0);
     const uint64_t contextFlags = getDefaultContextFlags(module);
-    pp.emitStore64Immediate(0, contextFlags, RCX);
+    pp.emitStoreNImmediate(0, contextFlags, RCX, CPUBits::B64);
 
     //__process_infos.contextTlsId = swag_runtime_tlsAlloc();
     pp.emitSymbolRelocationAddr(RDI, pp.symPI_contextTlsId, 0);
@@ -113,7 +113,7 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
     pp.emitSymbolRelocationAddr(RAX, pp.symCSIndex, module->modulesSliceOffset);
     pp.emitStore64Indirect(0, RAX, RCX);
     pp.emitSymbolRelocationAddr(RAX, pp.symPI_modulesCount, 0);
-    pp.emitStore64Immediate(0, module->moduleDependencies.count + 1, RAX);
+    pp.emitStoreNImmediate(0, module->moduleDependencies.count + 1, RAX, CPUBits::B64);
 
     //__process_infos.args
     pp.emitClearN(RCX, CPUBits::B64);
@@ -129,7 +129,7 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
 
     // Set current backend as SCBE
     pp.emitSymbolRelocationAddr(RCX, pp.symPI_backendKind, 0);
-    pp.emitStore32Immediate(0, static_cast<uint32_t>(SwagBackendGenType::SCBE), RCX);
+    pp.emitStoreNImmediate(0, static_cast<uint32_t>(SwagBackendGenType::SCBE), RCX, CPUBits::B32);
 
     // Set default context in TLS
     pp.pushParams.clear();

@@ -57,10 +57,7 @@ struct SCBE_X64 : SCBE_CPU
     void emitLoadF64Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
     void emitLoadNIndirect(uint32_t memOffset, CPURegister reg, CPURegister memReg, CPUBits numBits);
 
-    void emitStore8Immediate(uint32_t memOffset, uint8_t val, CPURegister memReg);
-    void emitStore16Immediate(uint32_t memOffset, uint16_t val, CPURegister memReg);
-    void emitStore32Immediate(uint32_t memOffset, uint32_t val, CPURegister memReg);
-    void emitStore64Immediate(uint32_t memOffset, uint64_t val, CPURegister memReg);
+    void emitStoreNImmediate(uint32_t memOffset, uint64_t value, CPURegister memReg, CPUBits numBits);
 
     void emitStore8Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
     void emitStore16Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
