@@ -83,7 +83,6 @@ struct SCBE_X64 : SCBE_CPU
     void emitOpNIndirectDst(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBits numBits);
     void emitOpNIndirectDst(CPURegister reg, uint64_t value, CPUOp op, CPUBits numBits);
 
-    void emitSetAE(CPURegister reg = RAX);
     void emitSetG(CPURegister reg = RAX);
     void emitSetB();
     void emitSetBE();
