@@ -4000,7 +4000,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 MK_IMMB(XMM0, CPUBits::F32);
                 MK_IMMC(XMM1, CPUBits::F32);
                 MK_IMMD(XMM2, CPUBits::F32);
-                pp.emitMulAddF32(XMM0, XMM1, XMM2);
+                pp.emitMulAddN(XMM0, XMM1, XMM2, CPUBits::F32);
                 pp.emitStoreF32Indirect(REG_OFFSET(ip->a.u32), XMM0, RDI);
                 break;
             }
@@ -4009,7 +4009,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 MK_IMMB(XMM0, CPUBits::F64);
                 MK_IMMC(XMM1, CPUBits::F64);
                 MK_IMMD(XMM2, CPUBits::F64);
-                pp.emitMulAddF64(XMM0, XMM1, XMM2);
+                pp.emitMulAddN(XMM0, XMM1, XMM2, CPUBits::F64);
                 pp.emitStoreF64Indirect(REG_OFFSET(ip->a.u32), XMM0, RDI);
                 break;
             }

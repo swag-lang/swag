@@ -1480,7 +1480,7 @@ void SCBE_X64::emitOpNIndirectDst(uint32_t memOffset, uint64_t value, CPURegiste
 
 /////////////////////////////////////////////////////////////////////
 
-void SCBE_X64::emitExtendU8U64(CPURegister regDst, CPURegister regSrc)
+void SCBE_X64::emitCastU8U64(CPURegister regDst, CPURegister regSrc)
 {
     emitREX(concat, CPUBits::B64, regDst, regSrc);
     concat.addU8(0x0F);
@@ -1488,7 +1488,7 @@ void SCBE_X64::emitExtendU8U64(CPURegister regDst, CPURegister regSrc)
     concat.addU8(getModRM(RegReg, regDst, regSrc));
 }
 
-void SCBE_X64::emitExtendU16U64(CPURegister regDst, CPURegister regSrc)
+void SCBE_X64::emitCastU16U64(CPURegister regDst, CPURegister regSrc)
 {
     emitREX(concat, CPUBits::B64, regDst, regSrc);
     concat.addU8(0x0F);
@@ -2392,35 +2392,18 @@ void SCBE_X64::emitCastU64F64([[maybe_unused]] CPURegister regDst, [[maybe_unuse
 }
 
 // a*b+c
-void SCBE_X64::emitMulAddF32([[maybe_unused]] CPURegister a, [[maybe_unused]] CPURegister b, [[maybe_unused]] CPURegister c)
+void SCBE_X64::emitMulAddN([[maybe_unused]] CPURegister a, [[maybe_unused]] CPURegister b, [[maybe_unused]] CPURegister c, CPUBits numBits)
 {
     SWAG_ASSERT(a == XMM0);
     SWAG_ASSERT(b == XMM1);
     SWAG_ASSERT(c == XMM2);
 
-    concat.addU8(0xF3);
+    concat.addU8(numBits == CPUBits::F32 ? 0xF3 : 0xF2);
     concat.addU8(0x0F);
     concat.addU8(static_cast<uint8_t>(CPUOp::FMUL));
     concat.addU8(0xC1);
 
-    concat.addU8(0xF3);
-    concat.addU8(0x0F);
-    concat.addU8(static_cast<uint8_t>(CPUOp::FADD));
-    concat.addU8(0xC2);
-}
-
-void SCBE_X64::emitMulAddF64([[maybe_unused]] CPURegister a, [[maybe_unused]] CPURegister b, [[maybe_unused]] CPURegister c)
-{
-    SWAG_ASSERT(a == XMM0);
-    SWAG_ASSERT(b == XMM1);
-    SWAG_ASSERT(c == XMM2);
-
-    concat.addU8(0xF2);
-    concat.addU8(0x0F);
-    concat.addU8(static_cast<uint8_t>(CPUOp::FMUL));
-    concat.addU8(0xC1);
-
-    concat.addU8(0xF2);
+    concat.addU8(numBits == CPUBits::F32 ? 0xF3 : 0xF2);
     concat.addU8(0x0F);
     concat.addU8(static_cast<uint8_t>(CPUOp::FADD));
     concat.addU8(0xC2);

@@ -18,6 +18,7 @@ struct SCBE_X64 : SCBE_CPU
 
     void emitPush(CPURegister reg);
     void emitPop(CPURegister reg);
+    void emitNop();
 
     void emitCall(const Utf8& symbolName);
     void emitCallFar(const Utf8& symbolName);
@@ -45,9 +46,6 @@ struct SCBE_X64 : SCBE_CPU
     uint32_t* emitLongJumpOp(CPUJumpType jumpType);
     void      emitJump(CPUJumpType jumpType, int32_t instructionCount, int32_t jumpOffset);
     void      emitJump(CPURegister reg);
-
-    void emitExtendU16U64(CPURegister regDst, CPURegister regSrc);
-    void emitExtendU8U64(CPURegister regDst, CPURegister regSrc);
 
     void emitLoad8Immediate(CPURegister reg, uint8_t value);
     void emitLoad16Immediate(CPURegister reg, uint16_t value);
@@ -77,6 +75,10 @@ struct SCBE_X64 : SCBE_CPU
     void emitStoreNIndirect(uint32_t memOffset, CPURegister reg, CPURegister memReg, CPUBits numBits);
 
     void emitLoadAddressIndirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
+
+    void emitCastU8U64(CPURegister regDst, CPURegister regSrc);
+    void emitCastU16U64(CPURegister regDst, CPURegister regSrc);
+    void emitCastU64F64(CPURegister regDst, CPURegister regSrc);
 
     void emitLoadS16S32Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
     void emitLoadS16S64Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
@@ -126,8 +128,5 @@ struct SCBE_X64 : SCBE_CPU
     void emitCmpXChg(CPURegister regDst, CPURegister regSrc, CPUBits numBits);
     void emitBSwapN(CPURegister reg, CPUBits numBits);
     void emitRotateN(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBits numBits);
-    void emitNop();
-    void emitCastU64F64(CPURegister regDst, CPURegister regSrc);
-    void emitMulAddF32(CPURegister a, CPURegister b, CPURegister c);
-    void emitMulAddF64(CPURegister a, CPURegister b, CPURegister c);
+    void emitMulAddN(CPURegister a, CPURegister b, CPURegister c, CPUBits numBits);
 };
