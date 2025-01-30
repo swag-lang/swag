@@ -2,13 +2,6 @@
 #pragma once
 #include "Backend/SCBE/Encoder/SCBE_CPU.h"
 
-enum X64DispMode
-{
-    Disp8  = 0b01,
-    Disp32 = 0b10,
-    RegReg = 0b11,
-};
-
 struct SCBE_X64 : SCBE_CPU
 {
     void emitSymbolRelocationRef(const Utf8& name);

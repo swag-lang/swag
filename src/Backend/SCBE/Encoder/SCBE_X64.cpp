@@ -3,7 +3,13 @@
 #include "Backend/SCBE/Encoder/SCBE_X64.h"
 #include "Core/Math.h"
 #include "Semantic/Type/TypeManager.h"
-#pragma optimize("", off)
+
+enum X64DispMode
+{
+    Disp8  = 0b01,
+    Disp32 = 0b10,
+    RegReg = 0b11,
+};
 
 namespace
 {
