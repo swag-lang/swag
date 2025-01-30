@@ -975,7 +975,7 @@ namespace OS
                 gen.emitPush(RDI);
                 unwindRegs.push_back(RDI);
                 unwindOffsetRegs.push_back(gen.concat.totalCount());
-                gen.emitOpNImmediate(RSP, stackSize, CPUOp::SUB, CPUBits::B64);
+                gen.emitOpImmediate(RSP, stackSize, CPUOp::SUB, CPUBits::B64);
                 const auto sizeProlog = gen.concat.totalCount();
                 SCBE_Coff::computeUnwind(unwindRegs, unwindOffsetRegs, stackSize, sizeProlog, unwind);
 
@@ -997,19 +997,19 @@ namespace OS
             SWAG_ASSERT(startOffset < JIT_SIZE_BUFFER);
 
             gen.emitPush(RDI);
-            gen.emitOpNImmediate(RSP, stackSize, CPUOp::SUB, CPUBits::B64);
-            gen.emitLoadNImmediate(RDI, reinterpret_cast<uint64_t>(context->sp), CPUBits::B64, true);
+            gen.emitOpImmediate(RSP, stackSize, CPUOp::SUB, CPUBits::B64);
+            gen.emitLoadImmediate(RDI, reinterpret_cast<uint64_t>(context->sp), CPUBits::B64, true);
             gen.emitCallParameters(typeInfoFunc, pushRAParam, 0, retCopyAddr);
-            gen.emitLoadNImmediate(RAX, reinterpret_cast<uint64_t>(foreignPtr), CPUBits::B64, true);
+            gen.emitLoadImmediate(RAX, reinterpret_cast<uint64_t>(foreignPtr), CPUBits::B64, true);
             gen.emitCallIndirect(RAX);
 
             if (!returnType->isVoid() && !retCopyAddr)
             {
-                gen.emitLoadNImmediate(RDI, reinterpret_cast<uint64_t>(context->registersRR), CPUBits::B64, true);
+                gen.emitLoadImmediate(RDI, reinterpret_cast<uint64_t>(context->registersRR), CPUBits::B64, true);
                 gen.emitCallResult(typeInfoFunc, 0);
             }
 
-            gen.emitOpNImmediate(RSP, stackSize, CPUOp::ADD, CPUBits::B64);
+            gen.emitOpImmediate(RSP, stackSize, CPUOp::ADD, CPUBits::B64);
             gen.emitPop(RDI);
             gen.emitRet();
         }

@@ -108,7 +108,7 @@ void SCBE_X64::emitSymbolRelocationValue(CPURegister reg, uint32_t symbolIndex, 
 
 void SCBE_X64::emitSymbolGlobalString(CPURegister reg, const Utf8& str)
 {
-    emitLoadNImmediate(reg, 0, CPUBits::B64, true);
+    emitLoadImmediate(reg, 0, CPUBits::B64, true);
     const auto sym = getOrCreateGlobalString(str);
     addSymbolRelocation(concat.totalCount() - 8 - textSectionOffset, sym->index, IMAGE_REL_AMD64_ADDR64);
 }
@@ -235,7 +235,7 @@ void SCBE_X64::emitLoadIndirect(uint32_t memOffset, CPURegister reg, CPURegister
         storageRegCount == concat.totalCount())
     {
         if (numBits == CPUBits::B32 && storageRegBits > 32)
-            emitCopyN(RAX, RAX, CPUBits::B32);
+            emitCopy(RAX, RAX, CPUBits::B32);
         return;
     }
 
@@ -301,7 +301,7 @@ void SCBE_X64::emitLoadAddressIndirect(uint32_t memOffset, CPURegister reg, CPUR
     }
     else if (memOffset == 0)
     {
-        emitCopyN(reg, memReg, CPUBits::B64);
+        emitCopy(reg, memReg, CPUBits::B64);
     }
     else
     {
@@ -313,7 +313,7 @@ void SCBE_X64::emitLoadAddressIndirect(uint32_t memOffset, CPURegister reg, CPUR
 
 /////////////////////////////////////////////////////////////////////
 
-void SCBE_X64::emitStoreNIndirect(uint32_t memOffset, CPURegister reg, CPURegister memReg, CPUBits numBits)
+void SCBE_X64::emitStoreIndirect(uint32_t memOffset, CPURegister reg, CPURegister memReg, CPUBits numBits)
 {
     switch (numBits)
     {
@@ -389,7 +389,7 @@ void SCBE_X64::emitStoreNIndirect(uint32_t memOffset, CPURegister reg, CPURegist
 
 /////////////////////////////////////////////////////////////////////
 
-void SCBE_X64::emitStoreNImmediate(uint32_t memOffset, uint64_t value, CPURegister memReg, CPUBits numBits)
+void SCBE_X64::emitStoreImmediate(uint32_t memOffset, uint64_t value, CPURegister memReg, CPUBits numBits)
 {
     if (numBits == CPUBits::B8)
     {
@@ -423,7 +423,7 @@ void SCBE_X64::emitStoreNImmediate(uint32_t memOffset, uint64_t value, CPURegist
 
 /////////////////////////////////////////////////////////////////////
 
-void SCBE_X64::emitLoadNImmediate(CPURegister reg, uint64_t value, CPUBits numBits, bool force64Bits)
+void SCBE_X64::emitLoadImmediate(CPURegister reg, uint64_t value, CPUBits numBits, bool force64Bits)
 {
     if (force64Bits)
     {
@@ -438,16 +438,16 @@ void SCBE_X64::emitLoadNImmediate(CPURegister reg, uint64_t value, CPUBits numBi
     {
         if (numBits == CPUBits::F32)
         {
-            emitClearN(RAX, CPUBits::B32);
-            emitCopyN(reg, RAX, CPUBits::F32);
+            emitClear(RAX, CPUBits::B32);
+            emitCopy(reg, RAX, CPUBits::F32);
         }
         else if (numBits == CPUBits::F64)
         {
-            emitClearN(RAX, CPUBits::B64);
-            emitCopyN(reg, RAX, CPUBits::F64);
+            emitClear(RAX, CPUBits::B64);
+            emitCopy(reg, RAX, CPUBits::F64);
         }
         else
-            emitClearN(reg, numBits);
+            emitClear(reg, numBits);
         return;
     }
 
@@ -493,7 +493,7 @@ void SCBE_X64::emitLoadNImmediate(CPURegister reg, uint64_t value, CPUBits numBi
         case CPUBits::F32:
             concat.addU8(0xB8 | RAX);
             concat.addU32(static_cast<uint32_t>(value));
-            emitCopyN(reg, RAX, CPUBits::F32);
+            emitCopy(reg, RAX, CPUBits::F32);
             break;
 
         case CPUBits::F64:
@@ -509,7 +509,7 @@ void SCBE_X64::emitLoadNImmediate(CPURegister reg, uint64_t value, CPUBits numBi
                 concat.addU8(0xB8 | RAX);
                 concat.addU64(value);
             }
-            emitCopyN(reg, RAX, CPUBits::F64);
+            emitCopy(reg, RAX, CPUBits::F64);
             break;
 
         default:
@@ -520,7 +520,7 @@ void SCBE_X64::emitLoadNImmediate(CPURegister reg, uint64_t value, CPUBits numBi
 
 /////////////////////////////////////////////////////////////////////
 
-void SCBE_X64::emitClearN(CPURegister reg, CPUBits numBits)
+void SCBE_X64::emitClear(CPURegister reg, CPUBits numBits)
 {
     emitREX(concat, numBits, reg, reg);
     emitSpec8(concat, static_cast<uint8_t>(CPUOp::XOR), numBits);
@@ -529,7 +529,7 @@ void SCBE_X64::emitClearN(CPURegister reg, CPUBits numBits)
 
 /////////////////////////////////////////////////////////////////////
 
-void SCBE_X64::emitCopyN(CPURegister regDst, CPURegister regSrc, CPUBits numBits)
+void SCBE_X64::emitCopy(CPURegister regDst, CPURegister regSrc, CPUBits numBits)
 {
     if (numBits == CPUBits::F32)
     {
@@ -701,7 +701,7 @@ void SCBE_X64::emitSet(CPURegister reg, CPUSet setType)
 
 /////////////////////////////////////////////////////////////////////
 
-void SCBE_X64::emitTestN(CPURegister regDst, CPURegister regSrc, CPUBits numBits)
+void SCBE_X64::emitTest(CPURegister regDst, CPURegister regSrc, CPUBits numBits)
 {
     emitREX(concat, numBits, regDst, regSrc);
     if (numBits == CPUBits::B8)
@@ -711,7 +711,7 @@ void SCBE_X64::emitTestN(CPURegister regDst, CPURegister regSrc, CPUBits numBits
     concat.addU8(getModRM(RegReg, regDst, regSrc));
 }
 
-void SCBE_X64::emitCmpN(CPURegister regSrc, CPURegister regDst, CPUBits numBits)
+void SCBE_X64::emitCmp(CPURegister regSrc, CPURegister regDst, CPUBits numBits)
 {
     if (numBits == CPUBits::F32)
     {
@@ -736,7 +736,7 @@ void SCBE_X64::emitCmpN(CPURegister regSrc, CPURegister regDst, CPUBits numBits)
     }
 }
 
-void SCBE_X64::emitCmpNImmediate(CPURegister reg, uint64_t value, CPUBits numBits)
+void SCBE_X64::emitCmpImmediate(CPURegister reg, uint64_t value, CPUBits numBits)
 {
     SWAG_ASSERT(SCBE_CPU::isInt(numBits));
     if (value <= 0x7f)
@@ -757,12 +757,12 @@ void SCBE_X64::emitCmpNImmediate(CPURegister reg, uint64_t value, CPUBits numBit
     else
     {
         SWAG_ASSERT(reg == RAX);
-        emitLoadNImmediate(RCX, value, numBits);
-        emitCmpN(reg, RCX, numBits);
+        emitLoadImmediate(RCX, value, numBits);
+        emitCmp(reg, RCX, numBits);
     }
 }
 
-void SCBE_X64::emitCmpNIndirect(uint32_t memOffset, CPURegister reg, CPURegister memReg, CPUBits numBits)
+void SCBE_X64::emitCmpIndirect(uint32_t memOffset, CPURegister reg, CPURegister memReg, CPUBits numBits)
 {
     if (numBits == CPUBits::F32)
     {
@@ -788,7 +788,7 @@ void SCBE_X64::emitCmpNIndirect(uint32_t memOffset, CPURegister reg, CPURegister
     }
 }
 
-void SCBE_X64::emitCmpNIndirectDst(uint32_t memOffset, uint32_t value, CPURegister memReg, CPUBits numBits)
+void SCBE_X64::emitCmpIndirectDst(uint32_t memOffset, uint32_t value, CPURegister memReg, CPUBits numBits)
 {
     SWAG_ASSERT(SCBE_CPU::isInt(numBits));
     emitREX(concat, numBits);
@@ -818,7 +818,7 @@ void SCBE_X64::emitCmpNIndirectDst(uint32_t memOffset, uint32_t value, CPURegist
 
 /////////////////////////////////////////////////////////////////////
 
-void SCBE_X64::emitOpN(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBits numBits, CPUBits srcBits)
+void SCBE_X64::emitOp(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBits numBits, CPUBits srcBits)
 {
     if (numBits == CPUBits::F32)
     {
@@ -948,7 +948,7 @@ void SCBE_X64::emitOpN(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBits
     }
 }
 
-void SCBE_X64::emitOpN(uint32_t offsetStack, CPUOp op, CPUBits numBits)
+void SCBE_X64::emitOp(uint32_t offsetStack, CPUOp op, CPUBits numBits)
 {
     if (numBits == CPUBits::F32)
     {
@@ -1001,7 +1001,7 @@ void SCBE_X64::emitOpN(uint32_t offsetStack, CPUOp op, CPUBits numBits)
     }
 }
 
-void SCBE_X64::emitOpNIndirect(uint32_t memOffset, CPURegister reg, CPURegister memReg, CPUOp op, CPUBits numBits, bool lock)
+void SCBE_X64::emitOpIndirect(uint32_t memOffset, CPURegister reg, CPURegister memReg, CPUOp op, CPUBits numBits, bool lock)
 {
     if (numBits == CPUBits::F32)
     {
@@ -1012,7 +1012,7 @@ void SCBE_X64::emitOpNIndirect(uint32_t memOffset, CPURegister reg, CPURegister 
         concat.addU8(0x0F);
         concat.addU8(static_cast<uint8_t>(op));
         concat.addU8(0xC1);
-        emitStoreNIndirect(memOffset, XMM0, memReg, CPUBits::F32);
+        emitStoreIndirect(memOffset, XMM0, memReg, CPUBits::F32);
     }
     else if (numBits == CPUBits::F64)
     {
@@ -1023,7 +1023,7 @@ void SCBE_X64::emitOpNIndirect(uint32_t memOffset, CPURegister reg, CPURegister 
         concat.addU8(0x0F);
         concat.addU8(static_cast<uint8_t>(op));
         concat.addU8(0xC1);
-        emitStoreNIndirect(memOffset, XMM0, memReg, CPUBits::F64);
+        emitStoreIndirect(memOffset, XMM0, memReg, CPUBits::F64);
     }
     else
     {
@@ -1073,7 +1073,7 @@ void SCBE_X64::emitOpNIndirect(uint32_t memOffset, CPURegister reg, CPURegister 
     }
 }
 
-void SCBE_X64::emitOpNIndirectDst(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBits numBits)
+void SCBE_X64::emitOpIndirectDst(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBits numBits)
 {
     SWAG_ASSERT(SCBE_CPU::isInt(numBits));
     emitREX(concat, numBits, regSrc, regDst);
@@ -1094,7 +1094,7 @@ void SCBE_X64::emitOpNIndirectDst(CPURegister regDst, CPURegister regSrc, CPUOp 
     }
 }
 
-void SCBE_X64::emitOpNIndirectDst([[maybe_unused]] CPURegister reg, uint64_t value, CPUOp op, CPUBits numBits)
+void SCBE_X64::emitOpIndirectDst([[maybe_unused]] CPURegister reg, uint64_t value, CPUOp op, CPUBits numBits)
 {
     SWAG_ASSERT(SCBE_CPU::isInt(numBits));
     if (op == CPUOp::SAR ||
@@ -1163,7 +1163,7 @@ void SCBE_X64::emitOpNIndirectDst([[maybe_unused]] CPURegister reg, uint64_t val
     }
 }
 
-void SCBE_X64::emitOpNImmediate(CPURegister reg, uint64_t value, CPUOp op, CPUBits numBits)
+void SCBE_X64::emitOpImmediate(CPURegister reg, uint64_t value, CPUOp op, CPUBits numBits)
 {
     switch (op)
     {
@@ -1247,7 +1247,7 @@ void SCBE_X64::emitOpNImmediate(CPURegister reg, uint64_t value, CPUOp op, CPUBi
                     return;
                 if (value == 0)
                 {
-                    emitClearN(reg, numBits);
+                    emitClear(reg, numBits);
                     return;
                 }
 
@@ -1317,14 +1317,14 @@ void SCBE_X64::emitOpNImmediate(CPURegister reg, uint64_t value, CPUOp op, CPUBi
         if (op == CPUOp::IMUL)
         {
             SWAG_ASSERT(reg == RAX);
-            emitLoadNImmediate(RCX, value, CPUBits::B64);
-            emitOpN(reg, RCX, op, numBits);
+            emitLoadImmediate(RCX, value, CPUBits::B64);
+            emitOp(reg, RCX, op, numBits);
         }
         else
         {
             SWAG_ASSERT(reg != RSP);
-            emitLoadNImmediate(R8, value, CPUBits::B64);
-            emitOpN(reg, R8, op, numBits);
+            emitLoadImmediate(R8, value, CPUBits::B64);
+            emitOp(reg, R8, op, numBits);
         }
     }
     else
@@ -1364,15 +1364,15 @@ void SCBE_X64::emitOpNImmediate(CPURegister reg, uint64_t value, CPUOp op, CPUBi
     }
 }
 
-void SCBE_X64::emitOpNIndirectDst(uint32_t memOffset, uint64_t value, CPURegister memReg, CPUOp op, CPUBits numBits)
+void SCBE_X64::emitOpIndirectDst(uint32_t memOffset, uint64_t value, CPURegister memReg, CPUOp op, CPUBits numBits)
 {
     SWAG_ASSERT(SCBE_CPU::isInt(numBits));
     SWAG_ASSERT(memReg == RAX || memReg == RDI);
 
     if (value > 0x7FFFFFFF)
     {
-        emitLoadNImmediate(RCX, value, numBits);
-        emitOpNIndirect(memOffset, RCX, memReg, op, numBits);
+        emitLoadImmediate(RCX, value, numBits);
+        emitOpIndirect(memOffset, RCX, memReg, op, numBits);
         return;
     }
 
@@ -1594,7 +1594,7 @@ void SCBE_X64::emitJump([[maybe_unused]] CPURegister reg)
 
 /////////////////////////////////////////////////////////////////////
 
-void SCBE_X64::emitCopyX(CPURegister regDst, CPURegister regSrc, uint32_t count, uint32_t offset)
+void SCBE_X64::emitCopy(CPURegister regDst, CPURegister regSrc, uint32_t count, uint32_t offset)
 {
     if (!count)
         return;
@@ -1637,7 +1637,7 @@ void SCBE_X64::emitCopyX(CPURegister regDst, CPURegister regSrc, uint32_t count,
     while (count >= 8)
     {
         emitLoadIndirect(offset, RAX, regSrc, CPUBits::B64);
-        emitStoreNIndirect(offset, RAX, regDst, CPUBits::B64);
+        emitStoreIndirect(offset, RAX, regDst, CPUBits::B64);
         count -= 8;
         offset += 8;
     }
@@ -1645,7 +1645,7 @@ void SCBE_X64::emitCopyX(CPURegister regDst, CPURegister regSrc, uint32_t count,
     while (count >= 4)
     {
         emitLoadIndirect(offset, RAX, regSrc, CPUBits::B32);
-        emitStoreNIndirect(offset, RAX, regDst, CPUBits::B32);
+        emitStoreIndirect(offset, RAX, regDst, CPUBits::B32);
         count -= 4;
         offset += 4;
     }
@@ -1653,7 +1653,7 @@ void SCBE_X64::emitCopyX(CPURegister regDst, CPURegister regSrc, uint32_t count,
     while (count >= 2)
     {
         emitLoadIndirect(offset, RAX, regSrc, CPUBits::B16);
-        emitStoreNIndirect(offset, RAX, regDst, CPUBits::B16);
+        emitStoreIndirect(offset, RAX, regDst, CPUBits::B16);
         count -= 2;
         offset += 2;
     }
@@ -1661,13 +1661,13 @@ void SCBE_X64::emitCopyX(CPURegister regDst, CPURegister regSrc, uint32_t count,
     while (count >= 1)
     {
         emitLoadIndirect(offset, RAX, regSrc, CPUBits::B8);
-        emitStoreNIndirect(offset, RAX, regDst, CPUBits::B8);
+        emitStoreIndirect(offset, RAX, regDst, CPUBits::B8);
         count -= 1;
         offset += 1;
     }
 }
 
-void SCBE_X64::emitClearX(uint32_t count, uint32_t offset, CPURegister reg)
+void SCBE_X64::emitClear(uint32_t count, uint32_t offset, CPURegister reg)
 {
     if (!count)
         return;
@@ -1697,28 +1697,28 @@ void SCBE_X64::emitClearX(uint32_t count, uint32_t offset, CPURegister reg)
 
     while (count >= 8)
     {
-        emitStoreNImmediate(offset, 0, reg, CPUBits::B64);
+        emitStoreImmediate(offset, 0, reg, CPUBits::B64);
         count -= 8;
         offset += 8;
     }
 
     while (count >= 4)
     {
-        emitStoreNImmediate(offset, 0, reg, CPUBits::B32);
+        emitStoreImmediate(offset, 0, reg, CPUBits::B32);
         count -= 4;
         offset += 4;
     }
 
     while (count >= 2)
     {
-        emitStoreNImmediate(offset, 0, reg, CPUBits::B16);
+        emitStoreImmediate(offset, 0, reg, CPUBits::B16);
         count -= 2;
         offset += 2;
     }
 
     while (count >= 1)
     {
-        emitStoreNImmediate(offset, 0, reg, CPUBits::B8);
+        emitStoreImmediate(offset, 0, reg, CPUBits::B8);
         count -= 1;
         offset += 1;
     }
@@ -1774,7 +1774,7 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
         {
             SWAG_ASSERT(paramsRegisters[i].type == CPUPushParamType::Reg);
             if (retCopyAddr)
-                emitLoadNImmediate(cc.paramByRegisterInteger[i], reinterpret_cast<uint64_t>(retCopyAddr), CPUBits::B64);
+                emitLoadImmediate(cc.paramByRegisterInteger[i], reinterpret_cast<uint64_t>(retCopyAddr), CPUBits::B64);
             else if (returnByStackAddr)
                 emitLoadIndirect(reg, cc.paramByRegisterInteger[i], RDI, CPUBits::B64);
             else
@@ -1796,8 +1796,8 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
                 if (paramsRegisters[i].type == CPUPushParamType::Imm)
                 {
                     SWAG_ASSERT(paramsRegisters[i].reg <= UINT32_MAX);
-                    emitLoadNImmediate(RAX, static_cast<uint32_t>(paramsRegisters[i].reg), CPUBits::B32);
-                    emitCopyN(cc.paramByRegisterFloat[i], RAX, CPUBits::F32);
+                    emitLoadImmediate(RAX, static_cast<uint32_t>(paramsRegisters[i].reg), CPUBits::B32);
+                    emitCopy(cc.paramByRegisterFloat[i], RAX, CPUBits::F32);
                 }
                 else
                 {
@@ -1809,8 +1809,8 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
             {
                 if (paramsRegisters[i].type == CPUPushParamType::Imm)
                 {
-                    emitLoadNImmediate(RAX, paramsRegisters[i].reg, CPUBits::B64);
-                    emitCopyN(cc.paramByRegisterFloat[i], RAX, CPUBits::F64);
+                    emitLoadImmediate(RAX, paramsRegisters[i].reg, CPUBits::B64);
+                    emitCopy(cc.paramByRegisterFloat[i], RAX, CPUBits::F64);
                 }
                 else
                 {
@@ -1824,12 +1824,12 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
                 {
                     case CPUPushParamType::Imm:
                         if (paramsRegisters[i].reg == 0)
-                            emitClearN(cc.paramByRegisterInteger[i], CPUBits::B64);
+                            emitClear(cc.paramByRegisterInteger[i], CPUBits::B64);
                         else
-                            emitLoadNImmediate(cc.paramByRegisterInteger[i], paramsRegisters[i].reg, CPUBits::B64);
+                            emitLoadImmediate(cc.paramByRegisterInteger[i], paramsRegisters[i].reg, CPUBits::B64);
                         break;
                     case CPUPushParamType::Imm64:
-                        emitLoadNImmediate(cc.paramByRegisterInteger[i], paramsRegisters[i].reg, CPUBits::B64, true);
+                        emitLoadImmediate(cc.paramByRegisterInteger[i], paramsRegisters[i].reg, CPUBits::B64, true);
                         break;
                     case CPUPushParamType::RelocV:
                         emitSymbolRelocationValue(cc.paramByRegisterInteger[i], static_cast<uint32_t>(paramsRegisters[i].reg), 0);
@@ -1842,15 +1842,15 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
                         break;
                     case CPUPushParamType::RegAdd:
                         emitLoadIndirect(REG_OFFSET(reg), cc.paramByRegisterInteger[i], RDI, CPUBits::B64);
-                        emitOpNImmediate(cc.paramByRegisterInteger[i], paramsRegisters[i].val, CPUOp::ADD, CPUBits::B64);
+                        emitOpImmediate(cc.paramByRegisterInteger[i], paramsRegisters[i].val, CPUOp::ADD, CPUBits::B64);
                         break;
                     case CPUPushParamType::RegMul:
                         emitLoadIndirect(REG_OFFSET(reg), RAX, RDI, CPUBits::B64);
-                        emitOpNImmediate(RAX, paramsRegisters[i].val, CPUOp::IMUL, CPUBits::B64);
-                        emitCopyN(cc.paramByRegisterInteger[i], RAX, CPUBits::B64);
+                        emitOpImmediate(RAX, paramsRegisters[i].val, CPUOp::IMUL, CPUBits::B64);
+                        emitCopy(cc.paramByRegisterInteger[i], RAX, CPUBits::B64);
                         break;
                     case CPUPushParamType::RAX:
-                        emitCopyN(cc.paramByRegisterInteger[i], RAX, CPUBits::B64);
+                        emitCopy(cc.paramByRegisterInteger[i], RAX, CPUBits::B64);
                         break;
                     case CPUPushParamType::GlobalString:
                         emitSymbolGlobalString(cc.paramByRegisterInteger[i], reinterpret_cast<const char*>(paramsRegisters[i].reg));
@@ -1879,7 +1879,7 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
         if (i >= maxParamsPerRegister)
         {
             emitLoadIndirect(REG_OFFSET(reg), RAX, RDI, CPUBits::B64);
-            emitStoreNIndirect(offsetStack, RAX, RSP, CPUBits::B64);
+            emitStoreIndirect(offsetStack, RAX, RSP, CPUBits::B64);
         }
 
         // This is for a return value
@@ -1887,12 +1887,12 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
         {
             // r is an address to registerRR, for FFI
             if (retCopyAddr)
-                emitLoadNImmediate(RAX, reinterpret_cast<uint64_t>(retCopyAddr), CPUBits::B64);
+                emitLoadImmediate(RAX, reinterpret_cast<uint64_t>(retCopyAddr), CPUBits::B64);
             else if (returnByStackAddr)
                 emitLoadIndirect(reg, RAX, RDI, CPUBits::B64);
             else
                 emitLoadAddressIndirect(reg, RAX, RDI);
-            emitStoreNIndirect(offsetStack, RAX, RSP, CPUBits::B64);
+            emitStoreIndirect(offsetStack, RAX, RSP, CPUBits::B64);
         }
 
         // This is for a normal parameter
@@ -1912,19 +1912,19 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
                     {
                         case 1:
                             emitLoadIndirect(0, RAX, RAX, CPUBits::B8);
-                            emitStoreNIndirect(offsetStack, RAX, RSP, CPUBits::B8);
+                            emitStoreIndirect(offsetStack, RAX, RSP, CPUBits::B8);
                             break;
                         case 2:
                             emitLoadIndirect(0, RAX, RAX, CPUBits::B16);
-                            emitStoreNIndirect(offsetStack, RAX, RSP, CPUBits::B16);
+                            emitStoreIndirect(offsetStack, RAX, RSP, CPUBits::B16);
                             break;
                         case 4:
                             emitLoadIndirect(0, RAX, RAX, CPUBits::B32);
-                            emitStoreNIndirect(offsetStack, RAX, RSP, CPUBits::B32);
+                            emitStoreIndirect(offsetStack, RAX, RSP, CPUBits::B32);
                             break;
                         case 8:
                             emitLoadIndirect(0, RAX, RAX, CPUBits::B64);
-                            emitStoreNIndirect(offsetStack, RAX, RSP, CPUBits::B64);
+                            emitStoreIndirect(offsetStack, RAX, RSP, CPUBits::B64);
                             break;
                         default:
                             break;
@@ -1934,7 +1934,7 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
                 // Store the address of the struct in the stack
                 else
                 {
-                    emitStoreNIndirect(offsetStack, RAX, RSP, CPUBits::B64);
+                    emitStoreIndirect(offsetStack, RAX, RSP, CPUBits::B64);
                 }
             }
             else
@@ -1943,19 +1943,19 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
                 {
                     case 1:
                         emitLoadIndirect(REG_OFFSET(reg), RAX, RDI, CPUBits::B8);
-                        emitStoreNIndirect(offsetStack, RAX, RSP, CPUBits::B8);
+                        emitStoreIndirect(offsetStack, RAX, RSP, CPUBits::B8);
                         break;
                     case 2:
                         emitLoadIndirect(REG_OFFSET(reg), RAX, RDI, CPUBits::B16);
-                        emitStoreNIndirect(offsetStack, RAX, RSP, CPUBits::B16);
+                        emitStoreIndirect(offsetStack, RAX, RSP, CPUBits::B16);
                         break;
                     case 4:
                         emitLoadIndirect(REG_OFFSET(reg), RAX, RDI, CPUBits::B32);
-                        emitStoreNIndirect(offsetStack, RAX, RSP, CPUBits::B32);
+                        emitStoreIndirect(offsetStack, RAX, RSP, CPUBits::B32);
                         break;
                     case 8:
                         emitLoadIndirect(REG_OFFSET(reg), RAX, RDI, CPUBits::B64);
-                        emitStoreNIndirect(offsetStack, RAX, RSP, CPUBits::B64);
+                        emitStoreIndirect(offsetStack, RAX, RSP, CPUBits::B64);
                         break;
                     default:
                         SWAG_ASSERT(false);
@@ -2082,7 +2082,7 @@ void SCBE_X64::emitCallParameters(TypeInfoFuncAttr* typeFunc, const VectorNative
             reg = static_cast<uint32_t>(pushParams3[2].reg);
 
         emitLoadIndirect(REG_OFFSET(reg), RAX, RDI, CPUBits::B64);
-        emitTestN(RAX, RAX, CPUBits::B64);
+        emitTest(RAX, RAX, CPUBits::B64);
 
         // If not zero, jump to closure call
         const auto seekPtrClosure = emitLongJumpOp(JZ);
@@ -2126,9 +2126,9 @@ void SCBE_X64::emitCallResult(const TypeInfoFuncAttr* typeFunc, uint32_t offsetR
         const auto& cc         = typeFunc->getCallConv();
         const auto  returnType = typeFunc->concreteReturnType();
         if (returnType->isNativeFloat())
-            emitStoreNIndirect(offsetRT, cc.returnByRegisterFloat, RDI, CPUBits::F64);
+            emitStoreIndirect(offsetRT, cc.returnByRegisterFloat, RDI, CPUBits::F64);
         else
-            emitStoreNIndirect(offsetRT, cc.returnByRegisterInteger, RDI, CPUBits::B64);
+            emitStoreIndirect(offsetRT, cc.returnByRegisterInteger, RDI, CPUBits::B64);
     }
 }
 
@@ -2162,7 +2162,7 @@ void SCBE_X64::emitCqo()
 
 /////////////////////////////////////////////////////////////////////
 
-void SCBE_X64::emitNotN(CPURegister reg, CPUBits numBits)
+void SCBE_X64::emitNot(CPURegister reg, CPUBits numBits)
 {
     SWAG_ASSERT(reg < R8);
 
@@ -2174,7 +2174,7 @@ void SCBE_X64::emitNotN(CPURegister reg, CPUBits numBits)
     concat.addU8(0xD0 | (reg & 0b111));
 }
 
-void SCBE_X64::emitNotNIndirect(uint32_t memOffset, [[maybe_unused]] CPURegister memReg, CPUBits numBits)
+void SCBE_X64::emitNotIndirect(uint32_t memOffset, [[maybe_unused]] CPURegister memReg, CPUBits numBits)
 {
     SWAG_ASSERT(memReg == RDI);
 
@@ -2196,7 +2196,7 @@ void SCBE_X64::emitNotNIndirect(uint32_t memOffset, [[maybe_unused]] CPURegister
     }
 }
 
-void SCBE_X64::emitIncNIndirect(uint32_t memOffset, CPURegister memReg, CPUBits numBits)
+void SCBE_X64::emitIncIndirect(uint32_t memOffset, CPURegister memReg, CPUBits numBits)
 {
     SWAG_ASSERT(memReg < R8);
     emitREX(concat, numBits);
@@ -2207,7 +2207,7 @@ void SCBE_X64::emitIncNIndirect(uint32_t memOffset, CPURegister memReg, CPUBits 
     emitModRM(concat, memOffset, 0, memReg);
 }
 
-void SCBE_X64::emitDecNIndirect(uint32_t memOffset, CPURegister memReg, CPUBits numBits)
+void SCBE_X64::emitDecIndirect(uint32_t memOffset, CPURegister memReg, CPUBits numBits)
 {
     SWAG_ASSERT(memReg < R8);
     emitREX(concat, numBits);
@@ -2218,7 +2218,7 @@ void SCBE_X64::emitDecNIndirect(uint32_t memOffset, CPURegister memReg, CPUBits 
     emitModRM(concat, memOffset, 1, memReg);
 }
 
-void SCBE_X64::emitNegN(CPURegister reg, CPUBits numBits)
+void SCBE_X64::emitNeg(CPURegister reg, CPUBits numBits)
 {
     SWAG_ASSERT(reg < R8);
     SWAG_ASSERT(numBits == CPUBits::B32 || numBits == CPUBits::B64);
@@ -2228,7 +2228,7 @@ void SCBE_X64::emitNegN(CPURegister reg, CPUBits numBits)
     concat.addU8(0xD8 | (reg & 0b111));
 }
 
-void SCBE_X64::emitNegNIndirect(uint32_t memOffset, [[maybe_unused]] CPURegister memReg, CPUBits numBits)
+void SCBE_X64::emitNegIndirect(uint32_t memOffset, [[maybe_unused]] CPURegister memReg, CPUBits numBits)
 {
     SWAG_ASSERT(memReg == RDI);
     SWAG_ASSERT(numBits == CPUBits::B32 || numBits == CPUBits::B64);
@@ -2247,7 +2247,7 @@ void SCBE_X64::emitNegNIndirect(uint32_t memOffset, [[maybe_unused]] CPURegister
     }
 }
 
-void SCBE_X64::emitCMovN(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBits numBits)
+void SCBE_X64::emitCMov(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBits numBits)
 {
     if (numBits == CPUBits::B8 || numBits == CPUBits::B16)
         numBits = CPUBits::B32;
@@ -2257,7 +2257,7 @@ void SCBE_X64::emitCMovN(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBi
     concat.addU8(getModRM(RegReg, regDst, regSrc));
 }
 
-void SCBE_X64::emitRotateN(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBits numBits)
+void SCBE_X64::emitRotate(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBits numBits)
 {
     SWAG_ASSERT(numBits >= CPUBits::B32);
     SWAG_ASSERT(regDst == RAX && regSrc == RCX);
@@ -2281,7 +2281,7 @@ void SCBE_X64::emitCmpXChg([[maybe_unused]] CPURegister regDst, [[maybe_unused]]
     concat.addU8(0x11);
 }
 
-void SCBE_X64::emitBSwapN([[maybe_unused]] CPURegister reg, CPUBits numBits)
+void SCBE_X64::emitBSwap([[maybe_unused]] CPURegister reg, CPUBits numBits)
 {
     SWAG_ASSERT(reg == RAX);
     SWAG_ASSERT(numBits == CPUBits::B16 || numBits == CPUBits::B32 || numBits == CPUBits::B64);
@@ -2320,7 +2320,7 @@ void SCBE_X64::emitCastU64F64([[maybe_unused]] CPURegister regDst, [[maybe_unuse
 }
 
 // a*b+c
-void SCBE_X64::emitMulAddN([[maybe_unused]] CPURegister a, [[maybe_unused]] CPURegister b, [[maybe_unused]] CPURegister c, CPUBits numBits)
+void SCBE_X64::emitMulAdd([[maybe_unused]] CPURegister a, [[maybe_unused]] CPURegister b, [[maybe_unused]] CPURegister c, CPUBits numBits)
 {
     SWAG_ASSERT(a == XMM0);
     SWAG_ASSERT(b == XMM1);
