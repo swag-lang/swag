@@ -95,6 +95,26 @@ CPUFunction* SCBE_CPU::registerFunction(AstNode* node, uint32_t symbolIndex)
     return &functions.back();
 }
 
+uint32_t SCBE_CPU::countBits(CPUBits numBits)
+{
+    switch (numBits)
+    {
+        case CPUBits::B8:
+            return 8;
+        case CPUBits::B16:
+            return 16;
+        case CPUBits::B32:
+        case CPUBits::F32:
+            return 32;
+        case CPUBits::B64:
+        case CPUBits::F64:
+            return 64;
+    }
+
+    SWAG_ASSERT(false);
+    return 0;
+}
+
 uint32_t SCBE_CPU::getParamStackOffset(const CPUFunction* cpuFct, uint32_t paramIdx)
 {
     const auto& cc = cpuFct->typeFunc->getCallConv();
