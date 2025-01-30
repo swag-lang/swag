@@ -314,25 +314,25 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CastBool8:
                 pp.emitLoad8Indirect(REG_OFFSET(ip->b.u32), RAX, RDI);
                 pp.emitTestN(RAX, RAX, CPUBits::B8);
-                pp.emitSetNE();
+                pp.emitSet(RAX, CPUSetX::SetNE);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->a.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CastBool16:
                 pp.emitLoad16Indirect(REG_OFFSET(ip->b.u32), RAX, RDI);
                 pp.emitTestN(RAX, RAX, CPUBits::B16);
-                pp.emitSetNE();
+                pp.emitSet(RAX, CPUSetX::SetNE);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->a.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CastBool32:
                 pp.emitLoad32Indirect(REG_OFFSET(ip->b.u32), RAX, RDI);
                 pp.emitTestN(RAX, RAX, CPUBits::B32);
-                pp.emitSetNE();
+                pp.emitSet(RAX, CPUSetX::SetNE);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->a.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CastBool64:
                 pp.emitLoad64Indirect(REG_OFFSET(ip->b.u32), RAX, RDI);
                 pp.emitTestN(RAX, RAX, CPUBits::B64);
-                pp.emitSetNE();
+                pp.emitSet(RAX, CPUSetX::SetNE);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->a.u32), RAX, RDI, CPUBits::B8);
                 break;
 
@@ -1908,7 +1908,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::ZeroToTrue:
                 pp.emitLoad32Indirect(REG_OFFSET(ip->a.u32), RAX, RDI);
                 pp.emitTestN(RAX, RAX, CPUBits::B32);
-                pp.emitSetE();
+                pp.emitSet(RAX, CPUSetX::SetE);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->a.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::LowerZeroToTrue:
@@ -1919,7 +1919,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::LowerEqZeroToTrue:
                 pp.emitLoad32Indirect(REG_OFFSET(ip->a.u32), RAX, RDI);
                 pp.emitTestN(RAX, RAX, CPUBits::B32);
-                pp.emitSetLE();
+                pp.emitSet(RAX, CPUSetX::SetLE);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->a.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::GreaterZeroToTrue:
@@ -1990,22 +1990,22 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::CompareOpGreaterEqS8:
                 MK_BINOP(CPUBits::B8);
-                pp.emitSetGE();
+                pp.emitSet(RAX, CPUSetX::SetGE);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpGreaterEqS16:
                 MK_BINOP(CPUBits::B16);
-                pp.emitSetGE();
+                pp.emitSet(RAX, CPUSetX::SetGE);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpGreaterEqS32:
                 MK_BINOP(CPUBits::B32);
-                pp.emitSetGE();
+                pp.emitSet(RAX, CPUSetX::SetGE);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpGreaterEqS64:
                 MK_BINOP(CPUBits::B64);
-                pp.emitSetGE();
+                pp.emitSet(RAX, CPUSetX::SetGE);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpGreaterEqU8:
@@ -2043,103 +2043,103 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::CompareOpLowerS8:
                 MK_BINOP(CPUBits::B8);
-                pp.emitSetL();
+                pp.emitSet(RAX, CPUSetX::SetL);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpLowerS16:
                 MK_BINOP(CPUBits::B16);
-                pp.emitSetL();
+                pp.emitSet(RAX, CPUSetX::SetL);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpLowerS32:
                 MK_BINOP(CPUBits::B32);
-                pp.emitSetL();
+                pp.emitSet(RAX, CPUSetX::SetL);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpLowerS64:
                 MK_BINOP(CPUBits::B64);
-                pp.emitSetL();
+                pp.emitSet(RAX, CPUSetX::SetL);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpLowerU8:
                 MK_BINOP(CPUBits::B8);
-                pp.emitSetB();
+                pp.emitSet(RAX, CPUSetX::SetB);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpLowerU16:
                 MK_BINOP(CPUBits::B16);
-                pp.emitSetB();
+                pp.emitSet(RAX, CPUSetX::SetB);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpLowerU32:
                 MK_BINOP(CPUBits::B32);
-                pp.emitSetB();
+                pp.emitSet(RAX, CPUSetX::SetB);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpLowerU64:
                 MK_BINOP(CPUBits::B64);
-                pp.emitSetB();
+                pp.emitSet(RAX, CPUSetX::SetB);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpLowerF32:
                 MK_BINOP(CPUBits::F32);
-                pp.emitSetB();
+                pp.emitSet(RAX, CPUSetX::SetB);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpLowerF64:
                 MK_BINOP(CPUBits::F64);
-                pp.emitSetB();
+                pp.emitSet(RAX, CPUSetX::SetB);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
 
             case ByteCodeOp::CompareOpLowerEqS8:
                 MK_BINOP(CPUBits::B8);
-                pp.emitSetLE();
+                pp.emitSet(RAX, CPUSetX::SetLE);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpLowerEqS16:
                 MK_BINOP(CPUBits::B16);
-                pp.emitSetLE();
+                pp.emitSet(RAX, CPUSetX::SetLE);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpLowerEqS32:
                 MK_BINOP(CPUBits::B32);
-                pp.emitSetLE();
+                pp.emitSet(RAX, CPUSetX::SetLE);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpLowerEqS64:
                 MK_BINOP(CPUBits::B64);
-                pp.emitSetLE();
+                pp.emitSet(RAX, CPUSetX::SetLE);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpLowerEqU8:
                 MK_BINOP(CPUBits::B8);
-                pp.emitSetBE();
+                pp.emitSet(RAX, CPUSetX::SetBE);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpLowerEqU16:
                 MK_BINOP(CPUBits::B16);
-                pp.emitSetBE();
+                pp.emitSet(RAX, CPUSetX::SetBE);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpLowerEqU32:
                 MK_BINOP(CPUBits::B32);
-                pp.emitSetBE();
+                pp.emitSet(RAX, CPUSetX::SetBE);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpLowerEqU64:
                 MK_BINOP(CPUBits::B64);
-                pp.emitSetBE();
+                pp.emitSet(RAX, CPUSetX::SetBE);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpLowerEqF32:
                 MK_BINOP(CPUBits::F32);
-                pp.emitSetBE();
+                pp.emitSet(RAX, CPUSetX::SetBE);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpLowerEqF64:
                 MK_BINOP(CPUBits::F64);
-                pp.emitSetBE();
+                pp.emitSet(RAX, CPUSetX::SetBE);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
 
@@ -2204,32 +2204,32 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::CompareOpEqual8:
                 MK_BINOP(CPUBits::B8);
-                pp.emitSetE();
+                pp.emitSet(RAX, CPUSetX::SetE);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpEqual16:
                 MK_BINOP(CPUBits::B16);
-                pp.emitSetE();
+                pp.emitSet(RAX, CPUSetX::SetE);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpEqual32:
                 MK_BINOP(CPUBits::B32);
-                pp.emitSetE();
+                pp.emitSet(RAX, CPUSetX::SetE);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpEqual64:
                 MK_BINOP(CPUBits::B64);
-                pp.emitSetE();
+                pp.emitSet(RAX, CPUSetX::SetE);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpEqualF32:
                 MK_BINOP(CPUBits::F32);
-                pp.emitSetEP();
+                pp.emitSet(RAX, CPUSetX::SetEP);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpEqualF64:
                 MK_BINOP(CPUBits::F64);
-                pp.emitSetEP();
+                pp.emitSet(RAX, CPUSetX::SetEP);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
 
@@ -2237,32 +2237,32 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::CompareOpNotEqual8:
                 MK_BINOP(CPUBits::B8);
-                pp.emitSetNE();
+                pp.emitSet(RAX, CPUSetX::SetNE);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpNotEqual16:
                 MK_BINOP(CPUBits::B16);
-                pp.emitSetNE();
+                pp.emitSet(RAX, CPUSetX::SetNE);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpNotEqual32:
                 MK_BINOP(CPUBits::B32);
-                pp.emitSetNE();
+                pp.emitSet(RAX, CPUSetX::SetNE);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpNotEqual64:
                 MK_BINOP(CPUBits::B64);
-                pp.emitSetNE();
+                pp.emitSet(RAX, CPUSetX::SetNE);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpNotEqualF32:
                 MK_BINOP(CPUBits::F32);
-                pp.emitSetNEP();
+                pp.emitSet(RAX, CPUSetX::SetNEP);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::CompareOpNotEqualF64:
                 MK_BINOP(CPUBits::F64);
-                pp.emitSetNEP();
+                pp.emitSet(RAX, CPUSetX::SetNEP);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);
                 break;
 
@@ -2295,25 +2295,25 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::TestNotZero8:
                 MK_IMMB(RAX, CPUBits::B8);
                 pp.emitTestN(RAX, RAX, CPUBits::B8);
-                pp.emitSetNE();
+                pp.emitSet(RAX, CPUSetX::SetNE);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->a.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::TestNotZero16:
                 MK_IMMB(RAX, CPUBits::B16);
                 pp.emitTestN(RAX, RAX, CPUBits::B16);
-                pp.emitSetNE();
+                pp.emitSet(RAX, CPUSetX::SetNE);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->a.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::TestNotZero32:
                 MK_IMMB(RAX, CPUBits::B32);
                 pp.emitTestN(RAX, RAX, CPUBits::B32);
-                pp.emitSetNE();
+                pp.emitSet(RAX, CPUSetX::SetNE);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->a.u32), RAX, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::TestNotZero64:
                 MK_IMMB(RAX, CPUBits::B64);
                 pp.emitTestN(RAX, RAX, CPUBits::B64);
-                pp.emitSetNE();
+                pp.emitSet(RAX, CPUSetX::SetNE);
                 pp.emitStoreNIndirect(REG_OFFSET(ip->a.u32), RAX, RDI, CPUBits::B8);
                 break;
 

@@ -650,97 +650,103 @@ void SCBE_X64::emitSet(CPURegister reg, CPUSetX setType)
             concat.addU8(0x9F);
             concat.addU8(0xC0 | (reg & 0b111));
             break;
+
+        case CPUSetX::SetNE:
+            SWAG_ASSERT(reg == RAX);
+            concat.addU8(0x0F);
+            concat.addU8(0x95);
+            concat.addU8(0xC0);
+            break;
+
+        case CPUSetX::SetNA:
+            SWAG_ASSERT(reg == RAX);
+            concat.addU8(0x0F);
+            concat.addU8(0x96);
+            concat.addU8(0xC0);
+            break;
+
+        case CPUSetX::SetB:
+            SWAG_ASSERT(reg == RAX);
+            concat.addU8(0x0F);
+            concat.addU8(0x92);
+            concat.addU8(0xC0);
+            break;
+
+        case CPUSetX::SetBE:
+            SWAG_ASSERT(reg == RAX);
+            concat.addU8(0x0F);
+            concat.addU8(0x96);
+            concat.addU8(0xC0);
+            break;
+
+        case CPUSetX::SetE:
+            SWAG_ASSERT(reg == RAX);
+            concat.addU8(0x0F);
+            concat.addU8(0x94);
+            concat.addU8(0xC0);
+            break;
+
+        case CPUSetX::SetEP:
+            SWAG_ASSERT(reg == RAX);
+
+            // sete al
+            concat.addU8(0x0F);
+            concat.addU8(0x94);
+            concat.addU8(0xC0);
+
+            // setnp ah
+            concat.addU8(0x0F);
+            concat.addU8(0x9B);
+            concat.addU8(0xC4);
+
+            // and al, ah
+            concat.addU8(0x20);
+            concat.addU8(0xE0);
+            break;
+
+        case CPUSetX::SetNEP:
+            SWAG_ASSERT(reg == RAX);
+
+            // setne al
+            concat.addU8(0x0F);
+            concat.addU8(0x95);
+            concat.addU8(0xC0);
+
+            // setp ah
+            concat.addU8(0x0F);
+            concat.addU8(0x9A);
+            concat.addU8(0xC4);
+
+            // or al, ah
+            concat.addU8(0x08);
+            concat.addU8(0xE0);
+            break;
+
+        case CPUSetX::SetGE:
+            SWAG_ASSERT(reg == RAX);
+            concat.addU8(0x0F);
+            concat.addU8(0x9D);
+            concat.addU8(0xC0);
+            break;
+
+        case CPUSetX::SetL:
+            SWAG_ASSERT(reg == RAX);
+            concat.addU8(0x0F);
+            concat.addU8(0x9C);
+            concat.addU8(0xC0);
+            break;
+
+        case CPUSetX::SetLE:
+            SWAG_ASSERT(reg == RAX);
+            concat.addU8(0x0F);
+            concat.addU8(0x9E);
+            concat.addU8(0xC0);
+            break;
+
+        default:
+            SWAG_ASSERT(false);
+            break;
     }
-}
-
-void SCBE_X64::emitSetNE()
-{
-    concat.addU8(0x0F);
-    concat.addU8(0x95);
-    concat.addU8(0xC0);
-}
-
-void SCBE_X64::emitSetNA()
-{
-    concat.addU8(0x0F);
-    concat.addU8(0x96);
-    concat.addU8(0xC0);
-}
-
-void SCBE_X64::emitSetB()
-{
-    concat.addU8(0x0F);
-    concat.addU8(0x92);
-    concat.addU8(0xC0);
-}
-
-void SCBE_X64::emitSetBE()
-{
-    concat.addU8(0x0F);
-    concat.addU8(0x96);
-    concat.addU8(0xC0);
-}
-
-void SCBE_X64::emitSetE()
-{
-    concat.addU8(0x0F);
-    concat.addU8(0x94);
-    concat.addU8(0xC0);
-}
-
-void SCBE_X64::emitSetEP()
-{
-    // sete al
-    concat.addU8(0x0F);
-    concat.addU8(0x94);
-    concat.addU8(0xC0);
-
-    // setnp ah
-    concat.addU8(0x0F);
-    concat.addU8(0x9B);
-    concat.addU8(0xC4);
-
-    // and al, ah
-    concat.addU8(0x20);
-    concat.addU8(0xE0);
-}
-
-void SCBE_X64::emitSetNEP()
-{
-    // setne al
-    concat.addU8(0x0F);
-    concat.addU8(0x95);
-    concat.addU8(0xC0);
-
-    // setp ah
-    concat.addU8(0x0F);
-    concat.addU8(0x9A);
-    concat.addU8(0xC4);
-
-    // or al, ah
-    concat.addU8(0x08);
-    concat.addU8(0xE0);
-}
-
-void SCBE_X64::emitSetGE()
-{
-    concat.addU8(0x0F);
-    concat.addU8(0x9D);
-    concat.addU8(0xC0);
-}
-
-void SCBE_X64::emitSetL()
-{
-    concat.addU8(0x0F);
-    concat.addU8(0x9C);
-    concat.addU8(0xC0);
-}
-
-void SCBE_X64::emitSetLE()
-{
-    concat.addU8(0x0F);
-    concat.addU8(0x9E);
-    concat.addU8(0xC0);
 }
 
 /////////////////////////////////////////////////////////////////////
