@@ -87,7 +87,7 @@ enum class CPUOp : uint8_t
     IMOD   = IDIV | 2,
 };
 
-enum class CPUSetX
+enum class CPUSet
 {
     SetA,
     SetAE,

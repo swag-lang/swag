@@ -620,11 +620,11 @@ void SCBE_X64::emitCopyDownUp([[maybe_unused]] CPURegister reg, [[maybe_unused]]
 
 /////////////////////////////////////////////////////////////////////
 
-void SCBE_X64::emitSet(CPURegister reg, CPUSetX setType)
+void SCBE_X64::emitSet(CPURegister reg, CPUSet setType)
 {
     switch (setType)
     {
-        case CPUSetX::SetA:
+        case CPUSet::SetA:
             SWAG_ASSERT(reg == RAX || reg == R8);
             if (reg >= R8)
                 concat.addU8(0x41);
@@ -633,7 +633,7 @@ void SCBE_X64::emitSet(CPURegister reg, CPUSetX setType)
             concat.addU8(0xC0 | (reg & 0b111));
             break;
 
-        case CPUSetX::SetAE:
+        case CPUSet::SetAE:
             SWAG_ASSERT(reg == RAX || reg == R8);
             if (reg >= R8)
                 concat.addU8(0x41);
@@ -642,7 +642,7 @@ void SCBE_X64::emitSet(CPURegister reg, CPUSetX setType)
             concat.addU8(0xC0 | (reg & 0b111));
             break;
 
-        case CPUSetX::SetG:
+        case CPUSet::SetG:
             SWAG_ASSERT(reg == RAX || reg == R8);
             if (reg >= R8)
                 concat.addU8(0x41);
@@ -651,42 +651,42 @@ void SCBE_X64::emitSet(CPURegister reg, CPUSetX setType)
             concat.addU8(0xC0 | (reg & 0b111));
             break;
 
-        case CPUSetX::SetNE:
+        case CPUSet::SetNE:
             SWAG_ASSERT(reg == RAX);
             concat.addU8(0x0F);
             concat.addU8(0x95);
             concat.addU8(0xC0);
             break;
 
-        case CPUSetX::SetNA:
+        case CPUSet::SetNA:
             SWAG_ASSERT(reg == RAX);
             concat.addU8(0x0F);
             concat.addU8(0x96);
             concat.addU8(0xC0);
             break;
 
-        case CPUSetX::SetB:
+        case CPUSet::SetB:
             SWAG_ASSERT(reg == RAX);
             concat.addU8(0x0F);
             concat.addU8(0x92);
             concat.addU8(0xC0);
             break;
 
-        case CPUSetX::SetBE:
+        case CPUSet::SetBE:
             SWAG_ASSERT(reg == RAX);
             concat.addU8(0x0F);
             concat.addU8(0x96);
             concat.addU8(0xC0);
             break;
 
-        case CPUSetX::SetE:
+        case CPUSet::SetE:
             SWAG_ASSERT(reg == RAX);
             concat.addU8(0x0F);
             concat.addU8(0x94);
             concat.addU8(0xC0);
             break;
 
-        case CPUSetX::SetEP:
+        case CPUSet::SetEP:
             SWAG_ASSERT(reg == RAX);
 
             // sete al
@@ -704,7 +704,7 @@ void SCBE_X64::emitSet(CPURegister reg, CPUSetX setType)
             concat.addU8(0xE0);
             break;
 
-        case CPUSetX::SetNEP:
+        case CPUSet::SetNEP:
             SWAG_ASSERT(reg == RAX);
 
             // setne al
@@ -722,21 +722,21 @@ void SCBE_X64::emitSet(CPURegister reg, CPUSetX setType)
             concat.addU8(0xE0);
             break;
 
-        case CPUSetX::SetGE:
+        case CPUSet::SetGE:
             SWAG_ASSERT(reg == RAX);
             concat.addU8(0x0F);
             concat.addU8(0x9D);
             concat.addU8(0xC0);
             break;
 
-        case CPUSetX::SetL:
+        case CPUSet::SetL:
             SWAG_ASSERT(reg == RAX);
             concat.addU8(0x0F);
             concat.addU8(0x9C);
             concat.addU8(0xC0);
             break;
 
-        case CPUSetX::SetLE:
+        case CPUSet::SetLE:
             SWAG_ASSERT(reg == RAX);
             concat.addU8(0x0F);
             concat.addU8(0x9E);
