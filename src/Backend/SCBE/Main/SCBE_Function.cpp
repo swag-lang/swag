@@ -1640,7 +1640,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::AffectOpPlusEqS8_SSafe:
             case ByteCodeOp::AffectOpPlusEqU8_SSafe:
                 if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 == 1)
-                    pp.emitIncIndirect(offsetStack + ip->a.u32, RDI, CPUBits::B8);
+                    pp.emitIncIndirect(RDI, offsetStack + ip->a.u32, CPUBits::B8);
                 else
                     MK_BINOP_EQ_S(CPUOp::ADD, CPUBits::B8);
                 break;
@@ -1660,7 +1660,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::AffectOpPlusEqS16_SSafe:
             case ByteCodeOp::AffectOpPlusEqU16_SSafe:
                 if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 == 1)
-                    pp.emitIncIndirect(offsetStack + ip->a.u32, RDI, CPUBits::B16);
+                    pp.emitIncIndirect(RDI, offsetStack + ip->a.u32, CPUBits::B16);
                 else
                     MK_BINOP_EQ_S(CPUOp::ADD, CPUBits::B16);
                 break;
@@ -1680,7 +1680,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::AffectOpPlusEqS32_SSafe:
             case ByteCodeOp::AffectOpPlusEqU32_SSafe:
                 if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 == 1)
-                    pp.emitIncIndirect(offsetStack + ip->a.u32, RDI, CPUBits::B32);
+                    pp.emitIncIndirect(RDI, offsetStack + ip->a.u32, CPUBits::B32);
                 else
                     MK_BINOP_EQ_S(CPUOp::ADD, CPUBits::B32);
                 break;
@@ -1700,7 +1700,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::AffectOpPlusEqS64_SSafe:
             case ByteCodeOp::AffectOpPlusEqU64_SSafe:
                 if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 == 1)
-                    pp.emitIncIndirect(offsetStack + ip->a.u32, RDI, CPUBits::B64);
+                    pp.emitIncIndirect(RDI, offsetStack + ip->a.u32, CPUBits::B64);
                 else
                     MK_BINOP_EQ_S(CPUOp::ADD, CPUBits::B64);
                 break;
@@ -1778,7 +1778,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::AffectOpMinusEqS8_SSafe:
             case ByteCodeOp::AffectOpMinusEqU8_SSafe:
                 if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 == 1)
-                    pp.emitDecIndirect(offsetStack + ip->a.u32, RDI, CPUBits::B8);
+                    pp.emitDecIndirect(RDI, offsetStack + ip->a.u32, CPUBits::B8);
                 else
                     MK_BINOP_EQ_S(CPUOp::SUB, CPUBits::B8);
                 break;
@@ -1798,7 +1798,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::AffectOpMinusEqS16_SSafe:
             case ByteCodeOp::AffectOpMinusEqU16_SSafe:
                 if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 == 1)
-                    pp.emitDecIndirect(offsetStack + ip->a.u32, RDI, CPUBits::B16);
+                    pp.emitDecIndirect(RDI, offsetStack + ip->a.u32, CPUBits::B16);
                 else
                     MK_BINOP_EQ_S(CPUOp::SUB, CPUBits::B16);
                 break;
@@ -1818,7 +1818,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::AffectOpMinusEqS32_SSafe:
             case ByteCodeOp::AffectOpMinusEqU32_SSafe:
                 if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 == 1)
-                    pp.emitDecIndirect(offsetStack + ip->a.u32, RDI, CPUBits::B32);
+                    pp.emitDecIndirect(RDI, offsetStack + ip->a.u32, CPUBits::B32);
                 else
                     MK_BINOP_EQ_S(CPUOp::SUB, CPUBits::B32);
                 break;
@@ -1838,7 +1838,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::AffectOpMinusEqS64_SSafe:
             case ByteCodeOp::AffectOpMinusEqU64_SSafe:
                 if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 == 1)
-                    pp.emitDecIndirect(offsetStack + ip->a.u32, RDI, CPUBits::B64);
+                    pp.emitDecIndirect(RDI, offsetStack + ip->a.u32, CPUBits::B64);
                 else
                     MK_BINOP_EQ_S(CPUOp::SUB, CPUBits::B64);
                 break;
@@ -2326,7 +2326,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::NegS32:
                 if (ip->a.u32 == ip->b.u32)
-                    pp.emitNegIndirect(REG_OFFSET(ip->a.u32), RDI, CPUBits::B32);
+                    pp.emitNegIndirect(RDI, REG_OFFSET(ip->a.u32), CPUBits::B32);
                 else
                 {
                     pp.emitLoadIndirect(REG_OFFSET(ip->b.u32), RAX, RDI, CPUBits::B32);
@@ -2336,7 +2336,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::NegS64:
                 if (ip->a.u32 == ip->b.u32)
-                    pp.emitNegIndirect(REG_OFFSET(ip->a.u32), RDI, CPUBits::B64);
+                    pp.emitNegIndirect(RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
                 else
                 {
                     pp.emitLoadIndirect(REG_OFFSET(ip->b.u32), RAX, RDI, CPUBits::B64);
@@ -2365,7 +2365,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::InvertU8:
                 if (ip->a.u32 == ip->b.u32)
-                    pp.emitNotIndirect(REG_OFFSET(ip->a.u32), RDI, CPUBits::B8);
+                    pp.emitNotIndirect(RDI, REG_OFFSET(ip->a.u32), CPUBits::B8);
                 else
                 {
                     pp.emitLoadIndirect(REG_OFFSET(ip->b.u32), RAX, RDI, CPUBits::B8);
@@ -2375,7 +2375,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::InvertU16:
                 if (ip->a.u32 == ip->b.u32)
-                    pp.emitNotIndirect(REG_OFFSET(ip->a.u32), RDI, CPUBits::B16);
+                    pp.emitNotIndirect(RDI, REG_OFFSET(ip->a.u32), CPUBits::B16);
                 else
                 {
                     pp.emitLoadIndirect(REG_OFFSET(ip->b.u32), RAX, RDI, CPUBits::B16);
@@ -2385,7 +2385,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::InvertU32:
                 if (ip->a.u32 == ip->b.u32)
-                    pp.emitNotIndirect(REG_OFFSET(ip->a.u32), RDI, CPUBits::B32);
+                    pp.emitNotIndirect(RDI, REG_OFFSET(ip->a.u32), CPUBits::B32);
                 else
                 {
                     pp.emitLoadIndirect(REG_OFFSET(ip->b.u32), RAX, RDI, CPUBits::B32);
@@ -2395,7 +2395,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::InvertU64:
                 if (ip->a.u32 == ip->b.u32)
-                    pp.emitNotIndirect(REG_OFFSET(ip->a.u32), RDI, CPUBits::B64);
+                    pp.emitNotIndirect(RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
                 else
                 {
                     pp.emitLoadIndirect(REG_OFFSET(ip->b.u32), RAX, RDI, CPUBits::B64);
@@ -2569,7 +2569,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 MK_JMP_CMP3(JP, JZ, CPUBits::F64);
                 break;
             case ByteCodeOp::IncJumpIfEqual64:
-                pp.emitIncIndirect(REG_OFFSET(ip->a.u32), RDI, CPUBits::B64);
+                pp.emitIncIndirect(RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
                 MK_JMP_CMP(JZ, CPUBits::B64);
                 break;
 
@@ -2774,13 +2774,13 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::DecrementRA32:
-                pp.emitDecIndirect(REG_OFFSET(ip->a.u32), RDI, CPUBits::B32);
+                pp.emitDecIndirect(RDI, REG_OFFSET(ip->a.u32), CPUBits::B32);
                 break;
             case ByteCodeOp::IncrementRA64:
-                pp.emitIncIndirect(REG_OFFSET(ip->a.u32), RDI, CPUBits::B64);
+                pp.emitIncIndirect(RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
                 break;
             case ByteCodeOp::DecrementRA64:
-                pp.emitDecIndirect(REG_OFFSET(ip->a.u32), RDI, CPUBits::B64);
+                pp.emitDecIndirect(RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
                 break;
 
                 /////////////////////////////////////

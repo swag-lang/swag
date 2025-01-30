@@ -53,7 +53,7 @@ struct SCBE_X64 : SCBE_CPU
     void emitLoadU8U32Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
     void emitLoadU8U64Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
 
-    void emitCmp(CPURegister regSrc, CPURegister regDst, CPUBits numBits);
+    void emitCmp(CPURegister reg0, CPURegister reg1, CPUBits numBits);
     void emitCmpIndirect(uint32_t memOffset, CPURegister reg, CPURegister memReg, CPUBits numBits);
     void emitCmpIndirectDst(uint32_t memOffset, uint32_t value, CPURegister memReg, CPUBits numBits);
     void emitCmpImmediate(CPURegister reg, uint64_t value, CPUBits numBits);
@@ -71,14 +71,14 @@ struct SCBE_X64 : SCBE_CPU
     void emitOpIndirectDst(CPURegister reg, uint64_t value, CPUOp op, CPUBits numBits);
     void emitTest(CPURegister regDst, CPURegister regSrc, CPUBits numBits);
     void emitNot(CPURegister reg, CPUBits numBits);
-    void emitNotIndirect(uint32_t memOffset, CPURegister memReg, CPUBits numBits);
-    void emitIncIndirect(uint32_t memOffset, CPURegister memReg, CPUBits numBits);
-    void emitDecIndirect(uint32_t memOffset, CPURegister memReg, CPUBits numBits);
+    void emitNotIndirect(CPURegister memReg, uint32_t memOffset, CPUBits numBits);
+    void emitIncIndirect(CPURegister memReg, uint32_t memOffset, CPUBits numBits);
+    void emitDecIndirect(CPURegister memReg, uint32_t memOffset, CPUBits numBits);
     void emitNeg(CPURegister reg, CPUBits numBits);
-    void emitNegIndirect(uint32_t memOffset, CPURegister memReg, CPUBits numBits);
+    void emitNegIndirect(CPURegister memReg, uint32_t memOffset, CPUBits numBits);
     void emitCMov(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBits numBits);
     void emitCmpXChg(CPURegister regDst, CPURegister regSrc, CPUBits numBits);
     void emitBSwap(CPURegister reg, CPUBits numBits);
     void emitRotate(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBits numBits);
-    void emitMulAdd(CPURegister a, CPURegister b, CPURegister c, CPUBits numBits);
+    void emitMulAdd(CPURegister regDst, CPURegister regMul, CPURegister regAdd, CPUBits numBits);
 };
