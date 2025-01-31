@@ -91,18 +91,18 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
     const auto bcAlloc = static_cast<ByteCode*>(ByteCode::undoByteCodeLambda(static_cast<void**>(g_SystemAllocatorTable)[0]));
     SWAG_ASSERT(bcAlloc);
     pp.emitSymbolRelocationAddr(RAX, pp.symDefaultAllocTable, 0);
-    pp.emitLoadAddressIndirect(0, RCX, RIP);
+    pp.emitLoadAddressIndirect(RCX, RIP, 0);
     pp.emitSymbolRelocationRef(bcAlloc->getCallName());
-    pp.emitStoreIndirect(0, RCX, RAX, CPUBits::B64);
+    pp.emitStoreIndirect(RAX, 0, RCX, CPUBits::B64);
 
     // mainContext.allocator.itable = &defaultAllocTable;
     pp.emitSymbolRelocationAddr(RCX, pp.symMC_mainContext_allocator_itable, 0);
-    pp.emitStoreIndirect(0, RAX, RCX, CPUBits::B64);
+    pp.emitStoreIndirect(RCX, 0, RAX, CPUBits::B64);
 
     // main context flags
     pp.emitSymbolRelocationAddr(RCX, pp.symMC_mainContext_flags, 0);
     const uint64_t contextFlags = getDefaultContextFlags(module);
-    pp.emitStoreImmediate(0, contextFlags, RCX, CPUBits::B64);
+    pp.emitStoreImmediate(RCX, 0, contextFlags, CPUBits::B64);
 
     //__process_infos.contextTlsId = swag_runtime_tlsAlloc();
     pp.emitSymbolRelocationAddr(RDI, pp.symPI_contextTlsId, 0);
@@ -111,25 +111,25 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
     //__process_infos.modules
     pp.emitSymbolRelocationAddr(RCX, pp.symPI_modulesAddr, 0);
     pp.emitSymbolRelocationAddr(RAX, pp.symCSIndex, module->modulesSliceOffset);
-    pp.emitStoreIndirect(0, RAX, RCX, CPUBits::B64);
+    pp.emitStoreIndirect(RCX, 0, RAX, CPUBits::B64);
     pp.emitSymbolRelocationAddr(RAX, pp.symPI_modulesCount, 0);
-    pp.emitStoreImmediate(0, module->moduleDependencies.count + 1, RAX, CPUBits::B64);
+    pp.emitStoreImmediate(RAX, 0, module->moduleDependencies.count + 1, CPUBits::B64);
 
     //__process_infos.args
     pp.emitClear(RCX, CPUBits::B64);
     pp.emitSymbolRelocationAddr(RAX, pp.symPI_argsAddr, 0);
-    pp.emitStoreIndirect(0, RCX, RAX, CPUBits::B64);
+    pp.emitStoreIndirect(RAX, 0, RCX, CPUBits::B64);
     pp.emitSymbolRelocationAddr(RAX, pp.symPI_argsCount, 0);
-    pp.emitStoreIndirect(0, RCX, RAX, CPUBits::B64);
+    pp.emitStoreIndirect(RAX, 0, RCX, CPUBits::B64);
 
     // Set main context
     pp.emitSymbolRelocationAddr(RAX, pp.symMC_mainContext, 0);
     pp.emitSymbolRelocationAddr(RCX, pp.symPI_defaultContext, 0);
-    pp.emitStoreIndirect(0, RAX, RCX, CPUBits::B64);
+    pp.emitStoreIndirect(RCX, 0, RAX, CPUBits::B64);
 
     // Set current backend as SCBE
     pp.emitSymbolRelocationAddr(RCX, pp.symPI_backendKind, 0);
-    pp.emitStoreImmediate(0, static_cast<uint32_t>(SwagBackendGenType::SCBE), RCX, CPUBits::B32);
+    pp.emitStoreImmediate(RCX, 0, static_cast<uint32_t>(SwagBackendGenType::SCBE), CPUBits::B32);
 
     // Set default context in TLS
     pp.pushParams.clear();
@@ -298,8 +298,8 @@ void SCBE::emitGlobalPreMain(const BuildParameters& buildParameters) const
 
     // Store first parameter on stack (process infos ptr)
     SWAG_ASSERT(cc.paramByRegisterCount >= 1);
-    pp.emitLoadAddressIndirect(0, RDI, RSP);
-    pp.emitStoreIndirect(0, cc.paramByRegisterInteger[0], RDI, CPUBits::B64);
+    pp.emitLoadAddressIndirect(RDI, RSP, 0);
+    pp.emitStoreIndirect(RDI, 0, cc.paramByRegisterInteger[0], CPUBits::B64);
 
     // Copy process infos passed as a parameter to the process info struct of this module
     pp.pushParams.clear();
@@ -352,8 +352,8 @@ void SCBE::emitGlobalInit(const BuildParameters& buildParameters) const
 
     // Store first parameter on stack (process infos ptr)
     SWAG_ASSERT(cc.paramByRegisterCount >= 1);
-    pp.emitLoadAddressIndirect(0, RDI, RSP);
-    pp.emitStoreIndirect(0, cc.paramByRegisterInteger[0], RDI, CPUBits::B64);
+    pp.emitLoadAddressIndirect(RDI, RSP, 0);
+    pp.emitStoreIndirect(RDI, 0, cc.paramByRegisterInteger[0], CPUBits::B64);
 
     // Copy process infos passed as a parameter to the process info struct of this module
     pp.pushParams.clear();
@@ -381,9 +381,9 @@ void SCBE::emitGlobalInit(const BuildParameters& buildParameters) const
 
         // Count types is stored as a uint64_t at the start of the address
         pp.emitLoadIndirect(0, R8, cc.returnByRegisterInteger, CPUBits::B64);
-        pp.emitStoreIndirect(sizeof(uint64_t), R8, RCX, CPUBits::B64);
+        pp.emitStoreIndirect(RCX, sizeof(uint64_t), R8, CPUBits::B64);
         pp.emitOpImmediate(cc.returnByRegisterInteger, sizeof(uint64_t), CPUOp::ADD, CPUBits::B64);
-        pp.emitStoreIndirect(0, cc.returnByRegisterInteger, RCX, CPUBits::B64);
+        pp.emitStoreIndirect(RCX, 0, cc.returnByRegisterInteger, CPUBits::B64);
 
         pp.emitOpImmediate(RCX, sizeof(SwagModule), CPUOp::ADD, CPUBits::B64);
     }

@@ -25,7 +25,7 @@ void SCBE::emitGetParam(SCBE_X64& pp, const CPUFunction* cpuFct, uint32_t reg, u
                 pp.emitCastU8U64(RAX, static_cast<CPURegister>(cc.firstScratchRegister + paramIdx));
             else
                 pp.emitLoadU8U64Indirect(paramStack, RAX, RDI);
-            pp.emitStoreIndirect(REG_OFFSET(reg), RAX, RDI, CPUBits::B64);
+            pp.emitStoreIndirect(RDI, REG_OFFSET(reg), RAX, CPUBits::B64);
             return;
         case 2:
             SWAG_ASSERT(!toAdd);
@@ -33,7 +33,7 @@ void SCBE::emitGetParam(SCBE_X64& pp, const CPUFunction* cpuFct, uint32_t reg, u
                 pp.emitCastU16U64(RAX, static_cast<CPURegister>(cc.firstScratchRegister + paramIdx));
             else
                 pp.emitLoadU16U64Indirect(paramStack, RAX, RDI);
-            pp.emitStoreIndirect(REG_OFFSET(reg), RAX, RDI, CPUBits::B64);
+            pp.emitStoreIndirect(RDI, REG_OFFSET(reg), RAX, CPUBits::B64);
             return;
         case 4:
             SWAG_ASSERT(!toAdd);
@@ -41,7 +41,7 @@ void SCBE::emitGetParam(SCBE_X64& pp, const CPUFunction* cpuFct, uint32_t reg, u
                 pp.emitCopy(RAX, static_cast<CPURegister>(cc.firstScratchRegister + paramIdx), CPUBits::B32);
             else
                 pp.emitLoadIndirect(paramStack, RAX, RDI, CPUBits::B32);
-            pp.emitStoreIndirect(REG_OFFSET(reg), RAX, RDI, CPUBits::B64);
+            pp.emitStoreIndirect(RDI, REG_OFFSET(reg), RAX, CPUBits::B64);
             return;
         default:
             SWAG_ASSERT(toAdd <= 0x7FFFFFFFF);
@@ -56,7 +56,7 @@ void SCBE::emitGetParam(SCBE_X64& pp, const CPUFunction* cpuFct, uint32_t reg, u
         const auto scratch = static_cast<CPURegister>(cc.firstScratchRegister + paramIdx);
         if (toAdd == 0 && deRefSize == 0)
         {
-            pp.emitStoreIndirect(REG_OFFSET(reg), scratch, RDI, CPUBits::B64);
+            pp.emitStoreIndirect(RDI, REG_OFFSET(reg), scratch, CPUBits::B64);
         }
         else
         {
@@ -75,11 +75,11 @@ void SCBE::emitGetParam(SCBE_X64& pp, const CPUFunction* cpuFct, uint32_t reg, u
                     pp.emitLoadIndirect(static_cast<uint32_t>(toAdd), RAX, scratch, CPUBits::B64);
                     break;
                 default:
-                    pp.emitLoadAddressIndirect(static_cast<uint32_t>(toAdd), RAX, scratch);
+                    pp.emitLoadAddressIndirect(RAX, scratch, static_cast<uint32_t>(toAdd));
                     break;
             }
 
-            pp.emitStoreIndirect(REG_OFFSET(reg), RAX, RDI, CPUBits::B64);
+            pp.emitStoreIndirect(RDI, REG_OFFSET(reg), RAX, CPUBits::B64);
         }
     }
 
@@ -87,7 +87,7 @@ void SCBE::emitGetParam(SCBE_X64& pp, const CPUFunction* cpuFct, uint32_t reg, u
     else
     {
         if (structByValue)
-            pp.emitLoadAddressIndirect(paramStack, RAX, RDI);
+            pp.emitLoadAddressIndirect(RAX, RDI, paramStack);
         else
             pp.emitLoadIndirect(paramStack, RAX, RDI, CPUBits::B64);
 
@@ -110,7 +110,7 @@ void SCBE::emitGetParam(SCBE_X64& pp, const CPUFunction* cpuFct, uint32_t reg, u
                 break;
         }
 
-        pp.emitStoreIndirect(REG_OFFSET(reg), RAX, RDI, CPUBits::B64);
+        pp.emitStoreIndirect(RDI, REG_OFFSET(reg), RAX, CPUBits::B64);
     }
 }
 
@@ -187,10 +187,10 @@ void SCBE::emitByteCodeCall(SCBE_X64& pp, const TypeInfoFuncAttr* typeFuncBc, ui
         switch (idxReg)
         {
             case 0:
-                pp.emitLoadAddressIndirect(offsetRT, RDX, RDI);
+                pp.emitLoadAddressIndirect(RDX, RDI, offsetRT);
                 break;
             case 1:
-                pp.emitLoadAddressIndirect(offsetRT + sizeof(Register), R8, RDI);
+                pp.emitLoadAddressIndirect(R8, RDI, offsetRT + sizeof(Register));
                 break;
             default:
                 break;
@@ -211,7 +211,7 @@ void SCBE::emitByteCodeCall(SCBE_X64& pp, const TypeInfoFuncAttr* typeFuncBc, ui
         else
         {
             pp.emitLoadIndirect(REG_OFFSET(pushRAParams[idxParam]), RAX, RDI, CPUBits::B64);
-            pp.emitStoreIndirect(stackOffset, RAX, RSP, CPUBits::B64);
+            pp.emitStoreIndirect(RSP, stackOffset, RAX, CPUBits::B64);
         }
     }
 }
@@ -263,7 +263,7 @@ void SCBE::emitLocalCall(SCBE_X64& pp, uint32_t offsetRT, const ByteCodeInstruct
     if (ip->op == ByteCodeOp::LocalCallPopRC)
     {
         pp.emitLoadIndirect(offsetRT + REG_OFFSET(0), RAX, RDI, CPUBits::B64);
-        pp.emitStoreIndirect(REG_OFFSET(ip->d.u32), RAX, RDI, CPUBits::B64);
+        pp.emitStoreIndirect(RDI, REG_OFFSET(ip->d.u32), RAX, CPUBits::B64);
     }
 }
 

@@ -295,7 +295,7 @@ void SCBE_X64::emitLoadIndirect(uint32_t memOffset, CPURegister reg, CPURegister
 
 /////////////////////////////////////////////////////////////////////
 
-void SCBE_X64::emitLoadAddressIndirect(uint32_t memOffset, CPURegister reg, CPURegister memReg)
+void SCBE_X64::emitLoadAddressIndirect(CPURegister reg, CPURegister memReg, uint32_t memOffset)
 {
     if (memReg == RIP)
     {
@@ -319,7 +319,7 @@ void SCBE_X64::emitLoadAddressIndirect(uint32_t memOffset, CPURegister reg, CPUR
 
 /////////////////////////////////////////////////////////////////////
 
-void SCBE_X64::emitStoreIndirect(uint32_t memOffset, CPURegister reg, CPURegister memReg, CPUBits numBits)
+void SCBE_X64::emitStoreIndirect(CPURegister memReg, uint32_t memOffset, CPURegister reg, CPUBits numBits)
 {
     switch (numBits)
     {
@@ -395,7 +395,7 @@ void SCBE_X64::emitStoreIndirect(uint32_t memOffset, CPURegister reg, CPURegiste
 
 /////////////////////////////////////////////////////////////////////
 
-void SCBE_X64::emitStoreImmediate(uint32_t memOffset, uint64_t value, CPURegister memReg, CPUBits numBits)
+void SCBE_X64::emitStoreImmediate(CPURegister memReg, uint32_t memOffset, uint64_t value, CPUBits numBits)
 {
     if (numBits == CPUBits::B8)
     {
@@ -1018,7 +1018,7 @@ void SCBE_X64::emitOpIndirect(uint32_t memOffset, CPURegister reg, CPURegister m
         concat.addU8(0x0F);
         concat.addU8(static_cast<uint8_t>(op));
         concat.addU8(0xC1);
-        emitStoreIndirect(memOffset, XMM0, memReg, CPUBits::F32);
+        emitStoreIndirect(memReg, memOffset, XMM0, CPUBits::F32);
     }
     else if (numBits == CPUBits::F64)
     {
@@ -1029,7 +1029,7 @@ void SCBE_X64::emitOpIndirect(uint32_t memOffset, CPURegister reg, CPURegister m
         concat.addU8(0x0F);
         concat.addU8(static_cast<uint8_t>(op));
         concat.addU8(0xC1);
-        emitStoreIndirect(memOffset, XMM0, memReg, CPUBits::F64);
+        emitStoreIndirect(memReg, memOffset, XMM0, CPUBits::F64);
     }
     else
     {
@@ -1643,7 +1643,7 @@ void SCBE_X64::emitCopy(CPURegister regDst, CPURegister regSrc, uint32_t count, 
     while (count >= 8)
     {
         emitLoadIndirect(offset, RAX, regSrc, CPUBits::B64);
-        emitStoreIndirect(offset, RAX, regDst, CPUBits::B64);
+        emitStoreIndirect(regDst, offset, RAX, CPUBits::B64);
         count -= 8;
         offset += 8;
     }
@@ -1651,7 +1651,7 @@ void SCBE_X64::emitCopy(CPURegister regDst, CPURegister regSrc, uint32_t count, 
     while (count >= 4)
     {
         emitLoadIndirect(offset, RAX, regSrc, CPUBits::B32);
-        emitStoreIndirect(offset, RAX, regDst, CPUBits::B32);
+        emitStoreIndirect(regDst, offset, RAX, CPUBits::B32);
         count -= 4;
         offset += 4;
     }
@@ -1659,7 +1659,7 @@ void SCBE_X64::emitCopy(CPURegister regDst, CPURegister regSrc, uint32_t count, 
     while (count >= 2)
     {
         emitLoadIndirect(offset, RAX, regSrc, CPUBits::B16);
-        emitStoreIndirect(offset, RAX, regDst, CPUBits::B16);
+        emitStoreIndirect(regDst, offset, RAX, CPUBits::B16);
         count -= 2;
         offset += 2;
     }
@@ -1667,7 +1667,7 @@ void SCBE_X64::emitCopy(CPURegister regDst, CPURegister regSrc, uint32_t count, 
     while (count >= 1)
     {
         emitLoadIndirect(offset, RAX, regSrc, CPUBits::B8);
-        emitStoreIndirect(offset, RAX, regDst, CPUBits::B8);
+        emitStoreIndirect(regDst, offset, RAX, CPUBits::B8);
         count -= 1;
         offset += 1;
     }
@@ -1703,28 +1703,28 @@ void SCBE_X64::emitClear(CPURegister memReg, uint32_t memOffset, uint32_t count)
 
     while (count >= 8)
     {
-        emitStoreImmediate(memOffset, 0, memReg, CPUBits::B64);
+        emitStoreImmediate(memReg, memOffset, 0, CPUBits::B64);
         count -= 8;
         memOffset += 8;
     }
 
     while (count >= 4)
     {
-        emitStoreImmediate(memOffset, 0, memReg, CPUBits::B32);
+        emitStoreImmediate(memReg, memOffset, 0, CPUBits::B32);
         count -= 4;
         memOffset += 4;
     }
 
     while (count >= 2)
     {
-        emitStoreImmediate(memOffset, 0, memReg, CPUBits::B16);
+        emitStoreImmediate(memReg, memOffset, 0, CPUBits::B16);
         count -= 2;
         memOffset += 2;
     }
 
     while (count >= 1)
     {
-        emitStoreImmediate(memOffset, 0, memReg, CPUBits::B8);
+        emitStoreImmediate(memReg, memOffset, 0, CPUBits::B8);
         count -= 1;
         memOffset += 1;
     }
@@ -1784,7 +1784,7 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
             else if (returnByStackAddr)
                 emitLoadIndirect(reg, cc.paramByRegisterInteger[i], RDI, CPUBits::B64);
             else
-                emitLoadAddressIndirect(reg, cc.paramByRegisterInteger[i], RDI);
+                emitLoadAddressIndirect(cc.paramByRegisterInteger[i], RDI, reg);
         }
 
         // This is a normal parameter, which can be float or integer
@@ -1844,7 +1844,7 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
                         emitSymbolRelocationAddr(cc.paramByRegisterInteger[i], static_cast<uint32_t>(paramsRegisters[i].reg), 0);
                         break;
                     case CPUPushParamType::Addr:
-                        emitLoadAddressIndirect(static_cast<uint32_t>(paramsRegisters[i].reg), cc.paramByRegisterInteger[i], RDI);
+                        emitLoadAddressIndirect(cc.paramByRegisterInteger[i], RDI, static_cast<uint32_t>(paramsRegisters[i].reg));
                         break;
                     case CPUPushParamType::RegAdd:
                         emitLoadIndirect(REG_OFFSET(reg), cc.paramByRegisterInteger[i], RDI, CPUBits::B64);
@@ -1885,7 +1885,7 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
         if (i >= maxParamsPerRegister)
         {
             emitLoadIndirect(REG_OFFSET(reg), RAX, RDI, CPUBits::B64);
-            emitStoreIndirect(offsetStack, RAX, RSP, CPUBits::B64);
+            emitStoreIndirect(RSP, offsetStack, RAX, CPUBits::B64);
         }
 
         // This is for a return value
@@ -1897,8 +1897,8 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
             else if (returnByStackAddr)
                 emitLoadIndirect(reg, RAX, RDI, CPUBits::B64);
             else
-                emitLoadAddressIndirect(reg, RAX, RDI);
-            emitStoreIndirect(offsetStack, RAX, RSP, CPUBits::B64);
+                emitLoadAddressIndirect(RAX, RDI, reg);
+            emitStoreIndirect(RSP, offsetStack, RAX, CPUBits::B64);
         }
 
         // This is for a normal parameter
@@ -1918,19 +1918,19 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
                     {
                         case 1:
                             emitLoadIndirect(0, RAX, RAX, CPUBits::B8);
-                            emitStoreIndirect(offsetStack, RAX, RSP, CPUBits::B8);
+                            emitStoreIndirect(RSP, offsetStack, RAX, CPUBits::B8);
                             break;
                         case 2:
                             emitLoadIndirect(0, RAX, RAX, CPUBits::B16);
-                            emitStoreIndirect(offsetStack, RAX, RSP, CPUBits::B16);
+                            emitStoreIndirect(RSP, offsetStack, RAX, CPUBits::B16);
                             break;
                         case 4:
                             emitLoadIndirect(0, RAX, RAX, CPUBits::B32);
-                            emitStoreIndirect(offsetStack, RAX, RSP, CPUBits::B32);
+                            emitStoreIndirect(RSP, offsetStack, RAX, CPUBits::B32);
                             break;
                         case 8:
                             emitLoadIndirect(0, RAX, RAX, CPUBits::B64);
-                            emitStoreIndirect(offsetStack, RAX, RSP, CPUBits::B64);
+                            emitStoreIndirect(RSP, offsetStack, RAX, CPUBits::B64);
                             break;
                         default:
                             break;
@@ -1940,7 +1940,7 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
                 // Store the address of the struct in the stack
                 else
                 {
-                    emitStoreIndirect(offsetStack, RAX, RSP, CPUBits::B64);
+                    emitStoreIndirect(RSP, offsetStack, RAX, CPUBits::B64);
                 }
             }
             else
@@ -1949,19 +1949,19 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
                 {
                     case 1:
                         emitLoadIndirect(REG_OFFSET(reg), RAX, RDI, CPUBits::B8);
-                        emitStoreIndirect(offsetStack, RAX, RSP, CPUBits::B8);
+                        emitStoreIndirect(RSP, offsetStack, RAX, CPUBits::B8);
                         break;
                     case 2:
                         emitLoadIndirect(REG_OFFSET(reg), RAX, RDI, CPUBits::B16);
-                        emitStoreIndirect(offsetStack, RAX, RSP, CPUBits::B16);
+                        emitStoreIndirect(RSP, offsetStack, RAX, CPUBits::B16);
                         break;
                     case 4:
                         emitLoadIndirect(REG_OFFSET(reg), RAX, RDI, CPUBits::B32);
-                        emitStoreIndirect(offsetStack, RAX, RSP, CPUBits::B32);
+                        emitStoreIndirect(RSP, offsetStack, RAX, CPUBits::B32);
                         break;
                     case 8:
                         emitLoadIndirect(REG_OFFSET(reg), RAX, RDI, CPUBits::B64);
-                        emitStoreIndirect(offsetStack, RAX, RSP, CPUBits::B64);
+                        emitStoreIndirect(RSP, offsetStack, RAX, CPUBits::B64);
                         break;
                     default:
                         SWAG_ASSERT(false);
@@ -2132,9 +2132,9 @@ void SCBE_X64::emitCallResult(const TypeInfoFuncAttr* typeFunc, uint32_t offsetR
         const auto& cc         = typeFunc->getCallConv();
         const auto  returnType = typeFunc->concreteReturnType();
         if (returnType->isNativeFloat())
-            emitStoreIndirect(offsetRT, cc.returnByRegisterFloat, RDI, CPUBits::F64);
+            emitStoreIndirect(RDI, offsetRT, cc.returnByRegisterFloat, CPUBits::F64);
         else
-            emitStoreIndirect(offsetRT, cc.returnByRegisterInteger, RDI, CPUBits::B64);
+            emitStoreIndirect(RDI, offsetRT, cc.returnByRegisterInteger, CPUBits::B64);
     }
 }
 
