@@ -768,7 +768,7 @@ void SCBE_X64::emitCmpImmediate(CPURegister reg, uint64_t value, CPUBits numBits
     }
 }
 
-void SCBE_X64::emitCmpIndirect(uint32_t memOffset, CPURegister reg, CPURegister memReg, CPUBits numBits)
+void SCBE_X64::emitCmpIndirect(CPURegister memReg, uint32_t memOffset, CPURegister reg, CPUBits numBits)
 {
     if (numBits == CPUBits::F32)
     {
@@ -794,7 +794,7 @@ void SCBE_X64::emitCmpIndirect(uint32_t memOffset, CPURegister reg, CPURegister 
     }
 }
 
-void SCBE_X64::emitCmpIndirectDst(uint32_t memOffset, uint32_t value, CPURegister memReg, CPUBits numBits)
+void SCBE_X64::emitCmpIndirectDst(CPURegister memReg, uint32_t memOffset, uint32_t value, CPUBits numBits)
 {
     SWAG_ASSERT(SCBE_CPU::isInt(numBits));
     emitREX(concat, numBits);
@@ -1007,7 +1007,7 @@ void SCBE_X64::emitOp(uint32_t offsetStack, CPUOp op, CPUBits numBits)
     }
 }
 
-void SCBE_X64::emitOpIndirect(uint32_t memOffset, CPURegister reg, CPURegister memReg, CPUOp op, CPUBits numBits, bool lock)
+void SCBE_X64::emitOpIndirect(CPURegister memReg, uint32_t memOffset, CPURegister reg, CPUOp op, CPUBits numBits, bool lock)
 {
     if (numBits == CPUBits::F32)
     {
@@ -1370,7 +1370,7 @@ void SCBE_X64::emitOpImmediate(CPURegister reg, uint64_t value, CPUOp op, CPUBit
     }
 }
 
-void SCBE_X64::emitOpIndirectDst(uint32_t memOffset, uint64_t value, CPURegister memReg, CPUOp op, CPUBits numBits)
+void SCBE_X64::emitOpIndirectDst(CPURegister memReg, uint32_t memOffset, uint64_t value, CPUOp op, CPUBits numBits)
 {
     SWAG_ASSERT(SCBE_CPU::isInt(numBits));
     SWAG_ASSERT(memReg == RAX || memReg == RDI);
@@ -1378,7 +1378,7 @@ void SCBE_X64::emitOpIndirectDst(uint32_t memOffset, uint64_t value, CPURegister
     if (value > 0x7FFFFFFF)
     {
         emitLoadImmediate(RCX, value, numBits);
-        emitOpIndirect(memOffset, RCX, memReg, op, numBits);
+        emitOpIndirect(memReg, memOffset, RCX, op, numBits);
         return;
     }
 

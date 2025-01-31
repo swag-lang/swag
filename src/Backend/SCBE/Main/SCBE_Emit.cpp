@@ -282,7 +282,7 @@ void SCBE::emitBinOpDivAtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp 
     }
     else
     {
-        pp.emitOpIndirect(REG_OFFSET(ip->b.u32), RAX, RDI, op, numBits);
+        pp.emitOpIndirect(RDI, REG_OFFSET(ip->b.u32), RAX, op, numBits);
     }
 
     pp.emitStoreIndirect(RDI, REG_OFFSET(ip->c.u32), RAX, numBits);
@@ -295,7 +295,7 @@ void SCBE::emitAddSubMul64(SCBE_X64& pp, const ByteCodeInstruction* ip, uint64_t
     const auto val = ip->b.u64 * mul;
     if (ip->hasFlag(BCI_IMM_B) && val <= 0x7FFFFFFF && ip->a.u32 == ip->c.u32)
     {
-        pp.emitOpIndirectDst(REG_OFFSET(ip->a.u32), static_cast<uint32_t>(val), RDI, op, CPUBits::B64);
+        pp.emitOpIndirectDst(RDI, REG_OFFSET(ip->a.u32), static_cast<uint32_t>(val), op, CPUBits::B64);
     }
     else
     {
@@ -308,7 +308,7 @@ void SCBE::emitAddSubMul64(SCBE_X64& pp, const ByteCodeInstruction* ip, uint64_t
         }
 
         if (ip->a.u32 == ip->c.u32)
-            pp.emitOpIndirect(REG_OFFSET(ip->a.u32), RAX, RDI, op, CPUBits::B64);
+            pp.emitOpIndirect(RDI, REG_OFFSET(ip->a.u32), RAX, op, CPUBits::B64);
         else
         {
             pp.emitLoadIndirect(REG_OFFSET(ip->a.u32), RCX, RDI, CPUBits::B64);
@@ -324,16 +324,16 @@ void SCBE::emitBinOp(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUBits numBit
     if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_B))
     {
         pp.emitLoadIndirect(REG_OFFSET(ip->a.u32), r0, RDI, numBits);
-        pp.emitCmpIndirect(REG_OFFSET(ip->b.u32), r0, RDI, numBits);
+        pp.emitCmpIndirect(RDI, REG_OFFSET(ip->b.u32), r0, numBits);
     }
     else if (ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_B))
     {
         pp.emitLoadImmediate(r0, ip->a.u64, numBits);
-        pp.emitCmpIndirect(REG_OFFSET(ip->b.u32), r0, RDI, numBits);
+        pp.emitCmpIndirect(RDI, REG_OFFSET(ip->b.u32), r0, numBits);
     }
     else if (SCBE_CPU::isInt(numBits) && !ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_B) && ip->b.u64 <= 0x7FFFFFFF)
     {
-        pp.emitCmpIndirectDst(REG_OFFSET(ip->a.u32), ip->b.u32, RDI, numBits);
+        pp.emitCmpIndirectDst(RDI, REG_OFFSET(ip->a.u32), ip->b.u32, numBits);
     }
     else
     {
@@ -351,11 +351,11 @@ void SCBE::emitJumpCmp(SCBE_X64& pp, const ByteCodeInstruction* ip, int32_t inst
     if (!ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_C))
     {
         pp.emitLoadIndirect(REG_OFFSET(ip->a.u32), r0, RDI, numBits);
-        pp.emitCmpIndirect(REG_OFFSET(ip->c.u32), r0, RDI, numBits);
+        pp.emitCmpIndirect(RDI, REG_OFFSET(ip->c.u32), r0, numBits);
     }
     else if (!ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_C) && SCBE_CPU::isInt(numBits) && ip->c.u64 <= 0x7fffffff)
     {
-        pp.emitCmpIndirectDst(REG_OFFSET(ip->a.u32), ip->c.u32, RDI, numBits);
+        pp.emitCmpIndirectDst(RDI, REG_OFFSET(ip->a.u32), ip->c.u32, numBits);
     }
     else
     {
@@ -373,11 +373,11 @@ void SCBE::emitJumpCmpAddr(SCBE_X64& pp, const ByteCodeInstruction* ip, int32_t 
     if (!ip->hasFlag(BCI_IMM_C))
     {
         pp.emitLoadIndirect(memOffset, RAX, memReg, numBits);
-        pp.emitCmpIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, numBits);
+        pp.emitCmpIndirect(RDI, REG_OFFSET(ip->c.u32), RAX, numBits);
     }
     else if (ip->c.u64 <= 0x7fffffff)
     {
-        pp.emitCmpIndirectDst(memOffset, ip->c.u32, memReg, numBits);
+        pp.emitCmpIndirectDst(memReg, memOffset, ip->c.u32, numBits);
     }
     else
     {
@@ -394,7 +394,7 @@ void SCBE::emitJumpCmp2(SCBE_X64& pp, const ByteCodeInstruction* ip, int32_t ins
     if (!ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_C))
     {
         pp.emitLoadIndirect(REG_OFFSET(ip->a.u32), XMM0, RDI, numBits);
-        pp.emitCmpIndirect(REG_OFFSET(ip->c.u32), XMM0, RDI, numBits);
+        pp.emitCmpIndirect(RDI, REG_OFFSET(ip->c.u32), XMM0, numBits);
     }
     else
     {
@@ -411,7 +411,7 @@ void SCBE::emitJumpCmp3(SCBE_X64& pp, const ByteCodeInstruction* ip, int32_t ins
     if (!ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_C))
     {
         pp.emitLoadIndirect(REG_OFFSET(ip->a.u32), XMM0, RDI, numBits);
-        pp.emitCmpIndirect(REG_OFFSET(ip->c.u32), XMM0, RDI, numBits);
+        pp.emitCmpIndirect(RDI, REG_OFFSET(ip->c.u32), XMM0, numBits);
     }
     else
     {
@@ -429,18 +429,18 @@ void SCBE::emitBinOpEq(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t off
     const auto r1 = SCBE_CPU::isInt(numBits) ? XMM1 : RCX;
     pp.emitLoadIndirect(REG_OFFSET(ip->a.u32), r0, RDI, CPUBits::B64);
     MK_IMMB(r1, numBits);
-    pp.emitOpIndirect(offset, r1, r0, op, numBits);
+    pp.emitOpIndirect(r0, offset, r1, op, numBits);
 }
 
 void SCBE::emitBinOpEqS(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offset, CPUOp op, CPUBits numBits)
 {
     if (SCBE_CPU::isInt(numBits) && ip->hasFlag(BCI_IMM_B))
-        pp.emitOpIndirectDst(offset + ip->a.u32, ip->b.u64, RDI, op, numBits);
+        pp.emitOpIndirectDst(RDI, offset + ip->a.u32, ip->b.u64, op, numBits);
     else
     {
         const auto r1 = SCBE_CPU::isInt(numBits) ? RAX : XMM1;
         MK_IMMB(r1, numBits);
-        pp.emitOpIndirect(offset + ip->a.u32, r1, RDI, op, numBits);
+        pp.emitOpIndirect(RDI, offset + ip->a.u32, r1, op, numBits);
     }
 }
 
@@ -448,12 +448,12 @@ void SCBE::emitBinOpEqSS(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t o
 {
     const auto r1 = SCBE_CPU::isInt(numBits) ? RAX : XMM1;
     pp.emitLoadIndirect(offset + ip->b.u32, r1, RDI, numBits);
-    pp.emitOpIndirect(offset + ip->a.u32, r1, RDI, op, numBits);
+    pp.emitOpIndirect(RDI, offset + ip->a.u32, r1, op, numBits);
 }
 
 void SCBE::emitBinOpEqLock(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
 {
     pp.emitLoadIndirect(REG_OFFSET(ip->a.u32), RCX, RDI, CPUBits::B64);
     MK_IMMB(RAX, numBits);
-    pp.emitOpIndirect(0, RAX, RCX, op, numBits, true);
+    pp.emitOpIndirect(RCX, 0, RAX, op, numBits, true);
 }

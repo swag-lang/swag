@@ -54,8 +54,8 @@ struct SCBE_X64 : SCBE_CPU
     void emitLoadU8U64Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
 
     void emitCmp(CPURegister reg0, CPURegister reg1, CPUBits numBits);
-    void emitCmpIndirect(uint32_t memOffset, CPURegister reg, CPURegister memReg, CPUBits numBits);
-    void emitCmpIndirectDst(uint32_t memOffset, uint32_t value, CPURegister memReg, CPUBits numBits);
+    void emitCmpIndirect(CPURegister memReg, uint32_t memOffset, CPURegister reg, CPUBits numBits);
+    void emitCmpIndirectDst(CPURegister memReg, uint32_t memOffset, uint32_t value, CPUBits numBits);
     void emitCmpImmediate(CPURegister reg, uint64_t value, CPUBits numBits);
     void emitSet(CPURegister reg, CPUSet setType);
     void emitClear(CPURegister reg, CPUBits numBits);
@@ -64,9 +64,9 @@ struct SCBE_X64 : SCBE_CPU
     void emitCopy(CPURegister regDst, CPURegister regSrc, uint32_t count, uint32_t offset);
     void emitOp(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBits numBits, CPUBits srcBits = CPUBits::B32);
     void emitOp(uint32_t offsetStack, CPUOp op, CPUBits numBits);
-    void emitOpIndirect(uint32_t memOffset, CPURegister reg, CPURegister memReg, CPUOp op, CPUBits numBits, bool lock = false);
+    void emitOpIndirect(CPURegister memReg, uint32_t memOffset, CPURegister reg, CPUOp op, CPUBits numBits, bool lock = false);
     void emitOpImmediate(CPURegister reg, uint64_t value, CPUOp op, CPUBits numBits);
-    void emitOpIndirectDst(uint32_t memOffset, uint64_t value, CPURegister memReg, CPUOp op, CPUBits numBits);
+    void emitOpIndirectDst(CPURegister memReg, uint32_t memOffset, uint64_t value, CPUOp op, CPUBits numBits);
     void emitOpIndirectDst(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBits numBits);
     void emitOpIndirectDst(CPURegister reg, uint64_t value, CPUOp op, CPUBits numBits);
     void emitTest(CPURegister regDst, CPURegister regSrc, CPUBits numBits);

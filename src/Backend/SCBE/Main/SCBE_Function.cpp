@@ -251,10 +251,10 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::Add32byVB32:
-                pp.emitOpIndirectDst(REG_OFFSET(ip->a.u32), ip->b.u64, RDI, CPUOp::ADD, CPUBits::B32);
+                pp.emitOpIndirectDst(RDI, REG_OFFSET(ip->a.u32), ip->b.u64, CPUOp::ADD, CPUBits::B32);
                 break;
             case ByteCodeOp::Add64byVB64:
-                pp.emitOpIndirectDst(REG_OFFSET(ip->a.u32), ip->b.u64, RDI, CPUOp::ADD, CPUBits::B64);
+                pp.emitOpIndirectDst(RDI, REG_OFFSET(ip->a.u32), ip->b.u64, CPUOp::ADD, CPUBits::B64);
                 break;
 
                 /////////////////////////////////////
@@ -3570,7 +3570,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
                 pp.emitStoreIndirect(RDI, REG_OFFSET(ip->b.u32), RDX, CPUBits::B64);
                 pp.emitLoadImmediate(RCX, 8, CPUBits::B64);
-                pp.emitOpIndirect(0, RCX, RAX, CPUOp::ADD, CPUBits::B64);
+                pp.emitOpIndirect(RAX, 0, RCX, CPUOp::ADD, CPUBits::B64);
                 break;
 
             case ByteCodeOp::IntrinsicArguments:
