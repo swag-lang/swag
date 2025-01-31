@@ -231,9 +231,9 @@ void SCBE::emitBinOpDivAtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp 
             if (ip->hasFlag(BCI_IMM_A))
                 pp.emitLoadImmediate(RAX, ip->a.u8, CPUBits::B32);
             else if (op == CPUOp::IDIV || op == CPUOp::IMOD)
-                pp.emitLoadIndirect(CPUSignedType::S8, CPUSignedType::S32, RAX, RDI, REG_OFFSET(ip->a.u32));
+                pp.emitLoadIndirect(RAX, RDI, REG_OFFSET(ip->a.u32), CPUSignedType::S8, CPUSignedType::S32);
             else
-                pp.emitLoadIndirect(CPUSignedType::U8, CPUSignedType::U32, RAX, RDI, REG_OFFSET(ip->a.u32));
+                pp.emitLoadIndirect(RAX, RDI, REG_OFFSET(ip->a.u32), CPUSignedType::U8, CPUSignedType::U32);
             break;
 
         case CPUBits::B16:
@@ -496,14 +496,14 @@ void SCBE::emitIMMB(SCBE_X64& pp, const ByteCodeInstruction* ip, CPURegister reg
         if (ip->hasFlag(BCI_IMM_B))
             pp.emitLoadImmediate(reg, ip->b.s8, CPUBits::B32);
         else
-            pp.emitLoadIndirect(CPUSignedType::S8, CPUSignedType::S32, reg, RDI, REG_OFFSET(ip->b.u32));
+            pp.emitLoadIndirect(reg, RDI, REG_OFFSET(ip->b.u32), CPUSignedType::S8, CPUSignedType::S32);
     }
     else if (srcType == CPUSignedType::U8 && (dstType == CPUSignedType::U16 || dstType == CPUSignedType::U32))
     {
         if (ip->hasFlag(BCI_IMM_B))
             pp.emitLoadImmediate(reg, ip->b.u8, CPUBits::B32);
         else
-            pp.emitLoadIndirect(CPUSignedType::U8, CPUSignedType::U32, reg, RDI, REG_OFFSET(ip->b.u32));
+            pp.emitLoadIndirect(reg, RDI, REG_OFFSET(ip->b.u32), CPUSignedType::U8, CPUSignedType::U32);
     }      
     else
     {
@@ -518,14 +518,14 @@ void SCBE::emitIMMC(SCBE_X64& pp, const ByteCodeInstruction* ip, CPURegister reg
         if (ip->hasFlag(BCI_IMM_C))
             pp.emitLoadImmediate(reg, ip->c.s8, CPUBits::B32);
         else
-            pp.emitLoadIndirect(CPUSignedType::S8, CPUSignedType::S32, reg, RDI, REG_OFFSET(ip->c.u32));
+            pp.emitLoadIndirect(reg, RDI, REG_OFFSET(ip->c.u32), CPUSignedType::S8, CPUSignedType::S32);
     }
     else if (srcType == CPUSignedType::U8 && dstType == CPUSignedType::U32)
     {
         if (ip->hasFlag(BCI_IMM_C))
             pp.emitLoadImmediate(reg, ip->c.u8, CPUBits::B32);
         else
-            pp.emitLoadIndirect(CPUSignedType::U8, CPUSignedType::U32, reg, RDI, REG_OFFSET(ip->c.u32));
+            pp.emitLoadIndirect(reg, RDI, REG_OFFSET(ip->c.u32), CPUSignedType::U8, CPUSignedType::U32);
     }
     else
     {

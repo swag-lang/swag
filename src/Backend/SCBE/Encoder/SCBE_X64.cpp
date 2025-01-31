@@ -150,7 +150,7 @@ void SCBE_X64::emitRet()
 
 /////////////////////////////////////////////////////////////////////
 
-void SCBE_X64::emitLoadIndirect(CPUSignedType srcType, CPUSignedType dstType, CPURegister reg, CPURegister memReg, uint32_t memOffset)
+void SCBE_X64::emitLoadIndirect(CPURegister reg, CPURegister memReg, uint32_t memOffset, CPUSignedType srcType, CPUSignedType dstType)
 {
     if (srcType == CPUSignedType::S8 && dstType == CPUSignedType::S16)
     {
