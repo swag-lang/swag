@@ -2530,16 +2530,16 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::JumpIfNotEqual8:
-                emitJmpCmp(pp, ip, i, JNZ, CPUBits::B8);
+                emitJumpCmp(pp, ip, i, JNZ, CPUBits::B8);
                 break;
             case ByteCodeOp::JumpIfNotEqual16:
-                emitJmpCmp(pp, ip, i, JNZ, CPUBits::B16);
+                emitJumpCmp(pp, ip, i, JNZ, CPUBits::B16);
                 break;
             case ByteCodeOp::JumpIfNotEqual32:
-                emitJmpCmp(pp, ip, i, JNZ, CPUBits::B32);
+                emitJumpCmp(pp, ip, i, JNZ, CPUBits::B32);
                 break;
             case ByteCodeOp::JumpIfNotEqual64:
-                emitJmpCmp(pp, ip, i, JNZ, CPUBits::B64);
+                emitJumpCmp(pp, ip, i, JNZ, CPUBits::B64);
                 break;
             case ByteCodeOp::JumpIfNotEqualF32:
                 MK_JMP_CMP2(JP, JNZ, CPUBits::F32);
@@ -2551,16 +2551,16 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::JumpIfEqual8:
-                emitJmpCmp(pp, ip, i, JZ, CPUBits::B8);
+                emitJumpCmp(pp, ip, i, JZ, CPUBits::B8);
                 break;
             case ByteCodeOp::JumpIfEqual16:
-                emitJmpCmp(pp, ip, i, JZ, CPUBits::B16);
+                emitJumpCmp(pp, ip, i, JZ, CPUBits::B16);
                 break;
             case ByteCodeOp::JumpIfEqual32:
-                emitJmpCmp(pp, ip, i, JZ, CPUBits::B32);
+                emitJumpCmp(pp, ip, i, JZ, CPUBits::B32);
                 break;
             case ByteCodeOp::JumpIfEqual64:
-                emitJmpCmp(pp, ip, i, JZ, CPUBits::B64);
+                emitJumpCmp(pp, ip, i, JZ, CPUBits::B64);
                 break;
             case ByteCodeOp::JumpIfEqualF32:
                 MK_JMP_CMP3(JP, JZ, CPUBits::F32);
@@ -2570,205 +2570,205 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::IncJumpIfEqual64:
                 pp.emitIncIndirect(RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-                emitJmpCmp(pp, ip, i, JZ, CPUBits::B64);
+                emitJumpCmp(pp, ip, i, JZ, CPUBits::B64);
                 break;
 
                 /////////////////////////////////////
 
             case ByteCodeOp::JumpIfStackEqual8:
-                MK_JMP_CMP_ADDR(JZ, offsetStack + ip->a.u32, RDI, CPUBits::B8);
+                emitJumpCmpAddr(pp, ip, i, JZ, offsetStack + ip->a.u32, RDI, CPUBits::B8);
                 break;
             case ByteCodeOp::JumpIfStackNotEqual8:
-                MK_JMP_CMP_ADDR(JNZ, offsetStack + ip->a.u32, RDI, CPUBits::B8);
+                emitJumpCmpAddr(pp, ip, i, JNZ, offsetStack + ip->a.u32, RDI, CPUBits::B8);
                 break;
 
             case ByteCodeOp::JumpIfStackEqual16:
-                MK_JMP_CMP_ADDR(JZ, offsetStack + ip->a.u32, RDI, CPUBits::B16);
+                emitJumpCmpAddr(pp, ip, i, JZ, offsetStack + ip->a.u32, RDI, CPUBits::B16);
                 break;
             case ByteCodeOp::JumpIfStackNotEqual16:
-                MK_JMP_CMP_ADDR(JNZ, offsetStack + ip->a.u32, RDI, CPUBits::B16);
+                emitJumpCmpAddr(pp, ip, i, JNZ, offsetStack + ip->a.u32, RDI, CPUBits::B16);
                 break;
 
             case ByteCodeOp::JumpIfStackEqual32:
-                MK_JMP_CMP_ADDR(JZ, offsetStack + ip->a.u32, RDI, CPUBits::B32);
+                emitJumpCmpAddr(pp, ip, i, JZ, offsetStack + ip->a.u32, RDI, CPUBits::B32);
                 break;
             case ByteCodeOp::JumpIfStackNotEqual32:
-                MK_JMP_CMP_ADDR(JNZ, offsetStack + ip->a.u32, RDI, CPUBits::B32);
+                emitJumpCmpAddr(pp, ip, i, JNZ, offsetStack + ip->a.u32, RDI, CPUBits::B32);
                 break;
 
             case ByteCodeOp::JumpIfStackEqual64:
-                MK_JMP_CMP_ADDR(JZ, offsetStack + ip->a.u32, RDI, CPUBits::B64);
+                emitJumpCmpAddr(pp, ip, i, JZ, offsetStack + ip->a.u32, RDI, CPUBits::B64);
                 break;
             case ByteCodeOp::JumpIfStackNotEqual64:
-                MK_JMP_CMP_ADDR(JNZ, offsetStack + ip->a.u32, RDI, CPUBits::B64);
+                emitJumpCmpAddr(pp, ip, i, JNZ, offsetStack + ip->a.u32, RDI, CPUBits::B64);
                 break;
 
             case ByteCodeOp::JumpIfDeRefEqual8:
                 pp.emitLoadIndirect(REG_OFFSET(ip->a.u32), RCX, RDI, CPUBits::B64);
-                MK_JMP_CMP_ADDR(JZ, ip->d.u32, RCX, CPUBits::B8);
+                emitJumpCmpAddr(pp, ip, i, JZ, ip->d.u32, RCX, CPUBits::B8);
                 break;
             case ByteCodeOp::JumpIfDeRefNotEqual8:
                 pp.emitLoadIndirect(REG_OFFSET(ip->a.u32), RCX, RDI, CPUBits::B64);
-                MK_JMP_CMP_ADDR(JNZ, ip->d.u32, RCX, CPUBits::B8);
+                emitJumpCmpAddr(pp, ip, i, JNZ, ip->d.u32, RCX, CPUBits::B8);
                 break;
 
             case ByteCodeOp::JumpIfDeRefEqual16:
                 pp.emitLoadIndirect(REG_OFFSET(ip->a.u32), RCX, RDI, CPUBits::B64);
-                MK_JMP_CMP_ADDR(JZ, ip->d.u32, RCX, CPUBits::B16);
+                emitJumpCmpAddr(pp, ip, i, JZ, ip->d.u32, RCX, CPUBits::B16);
                 break;
             case ByteCodeOp::JumpIfDeRefNotEqual16:
                 pp.emitLoadIndirect(REG_OFFSET(ip->a.u32), RCX, RDI, CPUBits::B64);
-                MK_JMP_CMP_ADDR(JNZ, ip->d.u32, RCX, CPUBits::B16);
+                emitJumpCmpAddr(pp, ip, i, JNZ, ip->d.u32, RCX, CPUBits::B16);
                 break;
 
             case ByteCodeOp::JumpIfDeRefEqual32:
                 pp.emitLoadIndirect(REG_OFFSET(ip->a.u32), RCX, RDI, CPUBits::B64);
-                MK_JMP_CMP_ADDR(JZ, ip->d.u32, RCX, CPUBits::B32);
+                emitJumpCmpAddr(pp, ip, i, JZ, ip->d.u32, RCX, CPUBits::B32);
                 break;
             case ByteCodeOp::JumpIfDeRefNotEqual32:
                 pp.emitLoadIndirect(REG_OFFSET(ip->a.u32), RCX, RDI, CPUBits::B64);
-                MK_JMP_CMP_ADDR(JNZ, ip->d.u32, RCX, CPUBits::B32);
+                emitJumpCmpAddr(pp, ip, i, JNZ, ip->d.u32, RCX, CPUBits::B32);
                 break;
 
             case ByteCodeOp::JumpIfDeRefEqual64:
                 pp.emitLoadIndirect(REG_OFFSET(ip->a.u32), RCX, RDI, CPUBits::B64);
-                MK_JMP_CMP_ADDR(JZ, ip->d.u32, RCX, CPUBits::B64);
+                emitJumpCmpAddr(pp, ip, i, JZ, ip->d.u32, RCX, CPUBits::B64);
                 break;
             case ByteCodeOp::JumpIfDeRefNotEqual64:
                 pp.emitLoadIndirect(REG_OFFSET(ip->a.u32), RCX, RDI, CPUBits::B64);
-                MK_JMP_CMP_ADDR(JNZ, ip->d.u32, RCX, CPUBits::B64);
+                emitJumpCmpAddr(pp, ip, i, JNZ, ip->d.u32, RCX, CPUBits::B64);
                 break;
 
                 /////////////////////////////////////
 
             case ByteCodeOp::JumpIfLowerS8:
-                emitJmpCmp(pp, ip, i, JL, CPUBits::B8);
+                emitJumpCmp(pp, ip, i, JL, CPUBits::B8);
                 break;
             case ByteCodeOp::JumpIfLowerS16:
-                emitJmpCmp(pp, ip, i, JL, CPUBits::B16);
+                emitJumpCmp(pp, ip, i, JL, CPUBits::B16);
                 break;
             case ByteCodeOp::JumpIfLowerS32:
-                emitJmpCmp(pp, ip, i, JL, CPUBits::B32);
+                emitJumpCmp(pp, ip, i, JL, CPUBits::B32);
                 break;
             case ByteCodeOp::JumpIfLowerS64:
-                emitJmpCmp(pp, ip, i, JL, CPUBits::B64);
+                emitJumpCmp(pp, ip, i, JL, CPUBits::B64);
                 break;
             case ByteCodeOp::JumpIfLowerU8:
-                emitJmpCmp(pp, ip, i, JB, CPUBits::B8);
+                emitJumpCmp(pp, ip, i, JB, CPUBits::B8);
                 break;
             case ByteCodeOp::JumpIfLowerU16:
-                emitJmpCmp(pp, ip, i, JB, CPUBits::B16);
+                emitJumpCmp(pp, ip, i, JB, CPUBits::B16);
                 break;
             case ByteCodeOp::JumpIfLowerU32:
-                emitJmpCmp(pp, ip, i, JB, CPUBits::B32);
+                emitJumpCmp(pp, ip, i, JB, CPUBits::B32);
                 break;
             case ByteCodeOp::JumpIfLowerU64:
-                emitJmpCmp(pp, ip, i, JB, CPUBits::B64);
+                emitJumpCmp(pp, ip, i, JB, CPUBits::B64);
                 break;
             case ByteCodeOp::JumpIfLowerF32:
-                emitJmpCmp(pp, ip, i, JB, CPUBits::F32);
+                emitJumpCmp(pp, ip, i, JB, CPUBits::F32);
                 break;
             case ByteCodeOp::JumpIfLowerF64:
-                emitJmpCmp(pp, ip, i, JB, CPUBits::F64);
+                emitJumpCmp(pp, ip, i, JB, CPUBits::F64);
                 break;
 
                 /////////////////////////////////////
 
             case ByteCodeOp::JumpIfLowerEqS8:
-                emitJmpCmp(pp, ip, i, JLE, CPUBits::B8);
+                emitJumpCmp(pp, ip, i, JLE, CPUBits::B8);
                 break;
             case ByteCodeOp::JumpIfLowerEqS16:
-                emitJmpCmp(pp, ip, i, JLE, CPUBits::B16);
+                emitJumpCmp(pp, ip, i, JLE, CPUBits::B16);
                 break;
             case ByteCodeOp::JumpIfLowerEqS32:
-                emitJmpCmp(pp, ip, i, JLE, CPUBits::B32);
+                emitJumpCmp(pp, ip, i, JLE, CPUBits::B32);
                 break;
             case ByteCodeOp::JumpIfLowerEqS64:
-                emitJmpCmp(pp, ip, i, JLE, CPUBits::B64);
+                emitJumpCmp(pp, ip, i, JLE, CPUBits::B64);
                 break;
             case ByteCodeOp::JumpIfLowerEqU8:
-                emitJmpCmp(pp, ip, i, JBE, CPUBits::B8);
+                emitJumpCmp(pp, ip, i, JBE, CPUBits::B8);
                 break;
             case ByteCodeOp::JumpIfLowerEqU16:
-                emitJmpCmp(pp, ip, i, JBE, CPUBits::B16);
+                emitJumpCmp(pp, ip, i, JBE, CPUBits::B16);
                 break;
             case ByteCodeOp::JumpIfLowerEqU32:
-                emitJmpCmp(pp, ip, i, JBE, CPUBits::B32);
+                emitJumpCmp(pp, ip, i, JBE, CPUBits::B32);
                 break;
             case ByteCodeOp::JumpIfLowerEqU64:
-                emitJmpCmp(pp, ip, i, JBE, CPUBits::B64);
+                emitJumpCmp(pp, ip, i, JBE, CPUBits::B64);
                 break;
             case ByteCodeOp::JumpIfLowerEqF32:
-                emitJmpCmp(pp, ip, i, JBE, CPUBits::F32);
+                emitJumpCmp(pp, ip, i, JBE, CPUBits::F32);
                 break;
             case ByteCodeOp::JumpIfLowerEqF64:
-                emitJmpCmp(pp, ip, i, JBE, CPUBits::F64);
+                emitJumpCmp(pp, ip, i, JBE, CPUBits::F64);
                 break;
 
                 /////////////////////////////////////
 
             case ByteCodeOp::JumpIfGreaterS8:
-                emitJmpCmp(pp, ip, i, JG, CPUBits::B8);
+                emitJumpCmp(pp, ip, i, JG, CPUBits::B8);
                 break;
             case ByteCodeOp::JumpIfGreaterS16:
-                emitJmpCmp(pp, ip, i, JG, CPUBits::B16);
+                emitJumpCmp(pp, ip, i, JG, CPUBits::B16);
                 break;
             case ByteCodeOp::JumpIfGreaterS32:
-                emitJmpCmp(pp, ip, i, JG, CPUBits::B32);
+                emitJumpCmp(pp, ip, i, JG, CPUBits::B32);
                 break;
             case ByteCodeOp::JumpIfGreaterS64:
-                emitJmpCmp(pp, ip, i, JG, CPUBits::B64);
+                emitJumpCmp(pp, ip, i, JG, CPUBits::B64);
                 break;
             case ByteCodeOp::JumpIfGreaterU8:
-                emitJmpCmp(pp, ip, i, JA, CPUBits::B8);
+                emitJumpCmp(pp, ip, i, JA, CPUBits::B8);
                 break;
             case ByteCodeOp::JumpIfGreaterU16:
-                emitJmpCmp(pp, ip, i, JA, CPUBits::B16);
+                emitJumpCmp(pp, ip, i, JA, CPUBits::B16);
                 break;
             case ByteCodeOp::JumpIfGreaterU32:
-                emitJmpCmp(pp, ip, i, JA, CPUBits::B32);
+                emitJumpCmp(pp, ip, i, JA, CPUBits::B32);
                 break;
             case ByteCodeOp::JumpIfGreaterU64:
-                emitJmpCmp(pp, ip, i, JA, CPUBits::B64);
+                emitJumpCmp(pp, ip, i, JA, CPUBits::B64);
                 break;
             case ByteCodeOp::JumpIfGreaterF32:
-                emitJmpCmp(pp, ip, i, JA, CPUBits::F32);
+                emitJumpCmp(pp, ip, i, JA, CPUBits::F32);
                 break;
             case ByteCodeOp::JumpIfGreaterF64:
-                emitJmpCmp(pp, ip, i, JA, CPUBits::F64);
+                emitJumpCmp(pp, ip, i, JA, CPUBits::F64);
                 break;
 
                 /////////////////////////////////////
 
             case ByteCodeOp::JumpIfGreaterEqS8:
-                emitJmpCmp(pp, ip, i, JGE, CPUBits::B8);
+                emitJumpCmp(pp, ip, i, JGE, CPUBits::B8);
                 break;
             case ByteCodeOp::JumpIfGreaterEqS16:
-                emitJmpCmp(pp, ip, i, JGE, CPUBits::B16);
+                emitJumpCmp(pp, ip, i, JGE, CPUBits::B16);
                 break;
             case ByteCodeOp::JumpIfGreaterEqS32:
-                emitJmpCmp(pp, ip, i, JGE, CPUBits::B32);
+                emitJumpCmp(pp, ip, i, JGE, CPUBits::B32);
                 break;
             case ByteCodeOp::JumpIfGreaterEqS64:
-                emitJmpCmp(pp, ip, i, JGE, CPUBits::B64);
+                emitJumpCmp(pp, ip, i, JGE, CPUBits::B64);
                 break;
             case ByteCodeOp::JumpIfGreaterEqU8:
-                emitJmpCmp(pp, ip, i, JAE, CPUBits::B8);
+                emitJumpCmp(pp, ip, i, JAE, CPUBits::B8);
                 break;
             case ByteCodeOp::JumpIfGreaterEqU16:
-                emitJmpCmp(pp, ip, i, JAE, CPUBits::B16);
+                emitJumpCmp(pp, ip, i, JAE, CPUBits::B16);
                 break;
             case ByteCodeOp::JumpIfGreaterEqU32:
-                emitJmpCmp(pp, ip, i, JAE, CPUBits::B32);
+                emitJumpCmp(pp, ip, i, JAE, CPUBits::B32);
                 break;
             case ByteCodeOp::JumpIfGreaterEqU64:
-                emitJmpCmp(pp, ip, i, JAE, CPUBits::B64);
+                emitJumpCmp(pp, ip, i, JAE, CPUBits::B64);
                 break;
             case ByteCodeOp::JumpIfGreaterEqF32:
-                emitJmpCmp(pp, ip, i, JAE, CPUBits::F32);
+                emitJumpCmp(pp, ip, i, JAE, CPUBits::F32);
                 break;
             case ByteCodeOp::JumpIfGreaterEqF64:
-                emitJmpCmp(pp, ip, i, JAE, CPUBits::F64);
+                emitJumpCmp(pp, ip, i, JAE, CPUBits::F64);
                 break;
 
                 /////////////////////////////////////

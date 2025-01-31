@@ -125,28 +125,6 @@
 
 //////////////////////////////////
 
-#define MK_JMP_CMP_ADDR(__op, __offset, __memReg, __numBits)                 \
-    do                                                                       \
-    {                                                                        \
-        SWAG_ASSERT(SCBE_CPU::isInt(__numBits));                             \
-        if (!ip->hasFlag(BCI_IMM_C))                                         \
-        {                                                                    \
-            pp.emitLoadIndirect(__offset, RAX, __memReg, __numBits);         \
-            pp.emitCmpIndirect(REG_OFFSET(ip->c.u32), RAX, RDI, __numBits);  \
-        }                                                                    \
-        else if (ip->c.u64 <= 0x7fffffff)                                    \
-        {                                                                    \
-            pp.emitCmpIndirectDst(__offset, ip->c.u32, __memReg, __numBits); \
-        }                                                                    \
-        else                                                                 \
-        {                                                                    \
-            pp.emitLoadIndirect(__offset, RAX, __memReg, __numBits);         \
-            MK_IMMC(RCX, __numBits);                                         \
-            pp.emitCmp(RAX, RCX, __numBits);                                 \
-        }                                                                    \
-        pp.emitJump(__op, i, ip->b.s32);                                     \
-    } while (0)
-
 #define MK_JMP_CMP2(__op1, __op2, __numBits)                                  \
     do                                                                        \
     {                                                                         \
