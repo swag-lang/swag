@@ -78,6 +78,46 @@ namespace
 
 /////////////////////////////////////////////////////////////////////
 
+void SCBE_X64::emitCast(CPURegister regDst, CPURegister regSrc, CPUSignedType dstType, CPUSignedType srcType)
+{
+    if (srcType == CPUSignedType::U8 && dstType == CPUSignedType::U64)
+    {
+        emitREX(concat, CPUBits::B64, regDst, regSrc);
+        concat.addU8(0x0F);
+        concat.addU8(0xB6);
+        concat.addU8(getModRM(RegReg, regDst, regSrc));
+    }
+    else if (srcType == CPUSignedType::U16 && dstType == CPUSignedType::U64)
+    {
+        emitREX(concat, CPUBits::B64, regDst, regSrc);
+        concat.addU8(0x0F);
+        concat.addU8(0xB7);
+        concat.addU8(getModRM(RegReg, regDst, regSrc));
+    }
+    else if (srcType == CPUSignedType::U64 && dstType == CPUSignedType::F64)
+    {
+        SWAG_ASSERT(regSrc == RAX && regDst == XMM0);
+        concat.addString5("\x66\x48\x0F\x6E\xC8"); // movq xmm1, rax
+        emitSymbolRelocationAddr(RCX, symCst_U64F64, 0);
+        concat.addString4("\x66\x0F\x62\x09");     // punpckldq xmm1, xmmword ptr [rcx]
+        concat.addString5("\x66\x0F\x5C\x49\x10"); // subpd xmm1, xmmword ptr [rcx + 16]
+        concat.addString4("\x66\x0F\x28\xC1");     // movapd xmm0, xmm1
+        concat.addString4("\x66\x0F\x15\xC1");     // unpckhpd xmm0, xmm1
+        concat.addString4("\xF2\x0F\x58\xC1");     // addsd xmm0, xmm1
+    }
+    else
+    {
+        SWAG_ASSERT(false);
+    }
+}
+
+void SCBE_X64::emitCopyDownUp([[maybe_unused]] CPURegister reg, [[maybe_unused]] CPUBits numBits)
+{
+    SWAG_ASSERT(reg == RAX);
+    SWAG_ASSERT(numBits == CPUBits::B8);
+    concat.addString2("\x88\xe0"); // mov al, ah
+}
+
 void SCBE_X64::emitSymbolRelocationRef(const Utf8& name)
 {
     const auto callSym = getOrAddSymbol(name, CPUSymbolKind::Extern);
@@ -220,7 +260,7 @@ void SCBE_X64::emitLoadIndirect(CPURegister reg, CPURegister memReg, uint32_t me
         concat.addU8(0x0F);
         concat.addU8(0xB7);
         emitModRM(concat, memOffset, reg, memReg);
-    }        
+    }
     else
     {
         SWAG_ASSERT(false);
@@ -563,13 +603,6 @@ void SCBE_X64::emitCopy(CPURegister regDst, CPURegister regSrc, CPUBits numBits)
             concat.addU8(0x89);
         concat.addU8(getModRM(RegReg, regSrc, regDst));
     }
-}
-
-void SCBE_X64::emitCopyDownUp([[maybe_unused]] CPURegister reg, [[maybe_unused]] CPUBits numBits)
-{
-    SWAG_ASSERT(reg == RAX);
-    SWAG_ASSERT(numBits == CPUBits::B8);
-    concat.addString2("\x88\xe0"); // mov al, ah
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -1415,23 +1448,6 @@ void SCBE_X64::emitOpIndirectDst(CPURegister memReg, uint32_t memOffset, uint64_
 
 /////////////////////////////////////////////////////////////////////
 
-void SCBE_X64::emitCastU8U64(CPURegister regDst, CPURegister regSrc)
-{
-    emitREX(concat, CPUBits::B64, regDst, regSrc);
-    concat.addU8(0x0F);
-    concat.addU8(0xB6);
-    concat.addU8(getModRM(RegReg, regDst, regSrc));
-}
-
-void SCBE_X64::emitCastU16U64(CPURegister regDst, CPURegister regSrc)
-{
-    emitREX(concat, CPUBits::B64, regDst, regSrc);
-    concat.addU8(0x0F);
-    concat.addU8(0xB7);
-    concat.addU8(getModRM(RegReg, regDst, regSrc));
-}
-
-/////////////////////////////////////////////////////////////////////
 uint8_t* SCBE_X64::emitNearJumpOp(CPUJumpType jumpType)
 {
     switch (jumpType)
@@ -2312,18 +2328,6 @@ void SCBE_X64::emitBSwap([[maybe_unused]] CPURegister reg, CPUBits numBits)
 void SCBE_X64::emitNop()
 {
     concat.addU8(0x90);
-}
-
-void SCBE_X64::emitCastU64F64([[maybe_unused]] CPURegister regDst, [[maybe_unused]] CPURegister regSrc)
-{
-    SWAG_ASSERT(regSrc == RAX && regDst == XMM0);
-    concat.addString5("\x66\x48\x0F\x6E\xC8"); // movq xmm1, rax
-    emitSymbolRelocationAddr(RCX, symCst_U64F64, 0);
-    concat.addString4("\x66\x0F\x62\x09");     // punpckldq xmm1, xmmword ptr [rcx]
-    concat.addString5("\x66\x0F\x5C\x49\x10"); // subpd xmm1, xmmword ptr [rcx + 16]
-    concat.addString4("\x66\x0F\x28\xC1");     // movapd xmm0, xmm1
-    concat.addString4("\x66\x0F\x15\xC1");     // unpckhpd xmm0, xmm1
-    concat.addString4("\xF2\x0F\x58\xC1");     // addsd xmm0, xmm1
 }
 
 // a*b+c

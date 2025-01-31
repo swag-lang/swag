@@ -456,7 +456,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::CastU64F64:
                 pp.emitLoadIndirect(RAX, RDI, REG_OFFSET(ip->b.u32), CPUBits::B64);
-                pp.emitCastU64F64(XMM0, RAX);
+                pp.emitCast(XMM0, RAX, CPUSignedType::F64, CPUSignedType::U64);
                 pp.emitStoreIndirect(RDI, REG_OFFSET(ip->a.u32), XMM0, CPUBits::F64);
                 break;
 
