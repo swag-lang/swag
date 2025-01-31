@@ -234,7 +234,7 @@ void SCBE::emitBinOpDivAtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp 
             else if (op == CPUOp::IDIV || op == CPUOp::IMOD)
                 pp.emitLoadIndirect(CPUSignedType::S8, CPUSignedType::S32, RAX, RDI, REG_OFFSET(ip->a.u32));
             else
-                pp.emitLoadU8U32Indirect(REG_OFFSET(ip->a.u32), RAX, RDI);
+                pp.emitLoadIndirect(CPUSignedType::U8, CPUSignedType::U32, RAX, RDI, REG_OFFSET(ip->a.u32));
             break;
 
         case CPUBits::B16:

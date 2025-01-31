@@ -43,15 +43,6 @@ struct SCBE_X64 : SCBE_CPU
     void emitCdq();
     void emitCqo();
 
-    void emitLoadS16S32Indirect(CPURegister reg, CPURegister memReg, uint32_t memOffset);
-    void emitLoadS16S64Indirect(CPURegister reg, CPURegister memReg, uint32_t memOffset);
-    void emitLoadS32S64Indirect(CPURegister reg, CPURegister memReg, uint32_t memOffset);
-    void emitLoadS8S64Indirect(CPURegister reg, CPURegister memReg, uint32_t memOffset);
-    void emitLoadU16U32Indirect(CPURegister reg, CPURegister memReg, uint32_t memOffset);
-    void emitLoadU16U64Indirect(CPURegister reg, CPURegister memReg, uint32_t memOffset);
-    void emitLoadU8U64Indirect(CPURegister reg, CPURegister memReg, uint32_t memOffset);
-    void emitLoadU8U32Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
-
     void emitCmp(CPURegister reg0, CPURegister reg1, CPUBits numBits);
     void emitCmpIndirect(CPURegister memReg, uint32_t memOffset, CPURegister reg, CPUBits numBits);
     void emitCmpIndirectDst(CPURegister memReg, uint32_t memOffset, uint32_t value, CPUBits numBits);
