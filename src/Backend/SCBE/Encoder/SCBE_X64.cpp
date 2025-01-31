@@ -150,12 +150,15 @@ void SCBE_X64::emitRet()
 
 /////////////////////////////////////////////////////////////////////
 
-void SCBE_X64::emitLoadS8S16Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg)
+void SCBE_X64::emitLoadIndirect(CPUSignedType srcType, CPUSignedType dstType, CPURegister reg, CPURegister memReg, uint32_t memOffset)
 {
-    emitREX(concat, CPUBits::B16, reg, memReg);
-    concat.addU8(0x0F);
-    concat.addU8(0xBE);
-    emitModRM(concat, memOffset, reg, memReg);
+    if (srcType == CPUSignedType::S8 || dstType == CPUSignedType::S16)
+    {
+        emitREX(concat, CPUBits::B16, reg, memReg);
+        concat.addU8(0x0F);
+        concat.addU8(0xBE);
+        emitModRM(concat, memOffset, reg, memReg);
+    }
 }
 
 void SCBE_X64::emitLoadS8S32Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg)
@@ -166,7 +169,7 @@ void SCBE_X64::emitLoadS8S32Indirect(uint32_t memOffset, CPURegister reg, CPUReg
     emitModRM(concat, memOffset, reg, memReg);
 }
 
-void SCBE_X64::emitLoadS16S32Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg)
+void SCBE_X64::emitLoadS16S32Indirect(CPURegister reg, CPURegister memReg, uint32_t memOffset)
 {
     emitREX(concat, CPUBits::B32, reg, memReg);
     concat.addU8(0x0F);
@@ -174,7 +177,7 @@ void SCBE_X64::emitLoadS16S32Indirect(uint32_t memOffset, CPURegister reg, CPURe
     emitModRM(concat, memOffset, reg, memReg);
 }
 
-void SCBE_X64::emitLoadS8S64Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg)
+void SCBE_X64::emitLoadS8S64Indirect(CPURegister reg, CPURegister memReg, uint32_t memOffset)
 {
     emitREX(concat, CPUBits::B64, reg, memReg);
     concat.addU8(0x0F);
@@ -182,7 +185,7 @@ void SCBE_X64::emitLoadS8S64Indirect(uint32_t memOffset, CPURegister reg, CPUReg
     emitModRM(concat, memOffset, reg, memReg);
 }
 
-void SCBE_X64::emitLoadS16S64Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg)
+void SCBE_X64::emitLoadS16S64Indirect(CPURegister reg, CPURegister memReg, uint32_t memOffset)
 {
     emitREX(concat, CPUBits::B64, reg, memReg);
     concat.addU8(0x0F);
@@ -190,7 +193,7 @@ void SCBE_X64::emitLoadS16S64Indirect(uint32_t memOffset, CPURegister reg, CPURe
     emitModRM(concat, memOffset, reg, memReg);
 }
 
-void SCBE_X64::emitLoadS32S64Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg)
+void SCBE_X64::emitLoadS32S64Indirect(CPURegister reg, CPURegister memReg, uint32_t memOffset)
 {
     emitREX(concat, CPUBits::B64, reg, memReg);
     concat.addU8(0x63);
@@ -205,7 +208,7 @@ void SCBE_X64::emitLoadU8U32Indirect(uint32_t memOffset, CPURegister reg, CPUReg
     emitModRM(concat, memOffset, reg, memReg);
 }
 
-void SCBE_X64::emitLoadU16U32Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg)
+void SCBE_X64::emitLoadU16U32Indirect(CPURegister reg, CPURegister memReg, uint32_t memOffset)
 {
     emitREX(concat, CPUBits::B32, reg, memReg);
     concat.addU8(0x0F);
@@ -213,7 +216,7 @@ void SCBE_X64::emitLoadU16U32Indirect(uint32_t memOffset, CPURegister reg, CPURe
     emitModRM(concat, memOffset, reg, memReg);
 }
 
-void SCBE_X64::emitLoadU8U64Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg)
+void SCBE_X64::emitLoadU8U64Indirect(CPURegister reg, CPURegister memReg, uint32_t memOffset)
 {
     emitREX(concat, CPUBits::B64, reg, memReg);
     concat.addU8(0x0F);
@@ -221,7 +224,7 @@ void SCBE_X64::emitLoadU8U64Indirect(uint32_t memOffset, CPURegister reg, CPUReg
     emitModRM(concat, memOffset, reg, memReg);
 }
 
-void SCBE_X64::emitLoadU16U64Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg)
+void SCBE_X64::emitLoadU16U64Indirect(CPURegister reg, CPURegister memReg, uint32_t memOffset)
 {
     emitREX(concat, CPUBits::B64, reg, memReg);
     concat.addU8(0x0F);

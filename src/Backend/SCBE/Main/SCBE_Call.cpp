@@ -24,7 +24,7 @@ void SCBE::emitGetParam(SCBE_X64& pp, const CPUFunction* cpuFct, uint32_t reg, u
             if (paramIdx < cpuFct->numScratchRegs)
                 pp.emitCastU8U64(RAX, static_cast<CPURegister>(cc.firstScratchRegister + paramIdx));
             else
-                pp.emitLoadU8U64Indirect(paramStack, RAX, RDI);
+                pp.emitLoadU8U64Indirect(RAX, RDI, paramStack);
             pp.emitStoreIndirect(RDI, REG_OFFSET(reg), RAX, CPUBits::B64);
             return;
         case 2:
@@ -32,7 +32,7 @@ void SCBE::emitGetParam(SCBE_X64& pp, const CPUFunction* cpuFct, uint32_t reg, u
             if (paramIdx < cpuFct->numScratchRegs)
                 pp.emitCastU16U64(RAX, static_cast<CPURegister>(cc.firstScratchRegister + paramIdx));
             else
-                pp.emitLoadU16U64Indirect(paramStack, RAX, RDI);
+                pp.emitLoadU16U64Indirect(RAX, RDI, paramStack);
             pp.emitStoreIndirect(RDI, REG_OFFSET(reg), RAX, CPUBits::B64);
             return;
         case 4:
@@ -63,10 +63,10 @@ void SCBE::emitGetParam(SCBE_X64& pp, const CPUFunction* cpuFct, uint32_t reg, u
             switch (deRefSize)
             {
                 case 1:
-                    pp.emitLoadU8U64Indirect(static_cast<uint32_t>(toAdd), RAX, scratch);
+                    pp.emitLoadU8U64Indirect(RAX, scratch, static_cast<uint32_t>(toAdd));
                     break;
                 case 2:
-                    pp.emitLoadU16U64Indirect(static_cast<uint32_t>(toAdd), RAX, scratch);
+                    pp.emitLoadU16U64Indirect(RAX, scratch, static_cast<uint32_t>(toAdd));
                     break;
                 case 4:
                     pp.emitLoadIndirect(RAX, scratch, static_cast<uint32_t>(toAdd), CPUBits::B32);
@@ -94,10 +94,10 @@ void SCBE::emitGetParam(SCBE_X64& pp, const CPUFunction* cpuFct, uint32_t reg, u
         switch (deRefSize)
         {
             case 1:
-                pp.emitLoadU8U64Indirect(static_cast<uint32_t>(toAdd), RAX, RAX);
+                pp.emitLoadU8U64Indirect(RAX, RAX, static_cast<uint32_t>(toAdd));
                 break;
             case 2:
-                pp.emitLoadU16U64Indirect(static_cast<uint32_t>(toAdd), RAX, RAX);
+                pp.emitLoadU16U64Indirect(RAX, RAX, static_cast<uint32_t>(toAdd));
                 break;
             case 4:
                 pp.emitLoadIndirect(RAX, RAX, static_cast<uint32_t>(toAdd), CPUBits::B32);

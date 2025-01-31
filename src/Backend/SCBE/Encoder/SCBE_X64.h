@@ -30,6 +30,7 @@ struct SCBE_X64 : SCBE_CPU
 
     void emitLoadAddressIndirect(CPURegister reg, CPURegister memReg, uint32_t memOffset);
     void emitLoadIndirect(CPURegister reg, CPURegister memReg, uint32_t memOffset, CPUBits numBits);
+    void emitLoadIndirect(CPUSignedType srcType, CPUSignedType dstType, CPURegister reg, CPURegister memReg, uint32_t memOffset);
     void emitLoadImmediate(CPURegister reg, uint64_t value, CPUBits numBits, bool force64Bits = false);
     void emitStoreIndirect(CPURegister memReg, uint32_t memOffset, CPURegister reg, CPUBits numBits);
     void emitStoreImmediate(CPURegister memReg, uint32_t memOffset, uint64_t value, CPUBits numBits);
@@ -42,16 +43,15 @@ struct SCBE_X64 : SCBE_CPU
     void emitCdq();
     void emitCqo();
 
-    void emitLoadS16S32Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
-    void emitLoadS16S64Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
-    void emitLoadS32S64Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
-    void emitLoadS8S16Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
+    void emitLoadS16S32Indirect(CPURegister reg, CPURegister memReg, uint32_t memOffset);
+    void emitLoadS16S64Indirect(CPURegister reg, CPURegister memReg, uint32_t memOffset);
+    void emitLoadS32S64Indirect(CPURegister reg, CPURegister memReg, uint32_t memOffset);
+    void emitLoadS8S64Indirect(CPURegister reg, CPURegister memReg, uint32_t memOffset);
+    void emitLoadU16U32Indirect(CPURegister reg, CPURegister memReg, uint32_t memOffset);
+    void emitLoadU16U64Indirect(CPURegister reg, CPURegister memReg, uint32_t memOffset);
+    void emitLoadU8U64Indirect(CPURegister reg, CPURegister memReg, uint32_t memOffset);
     void emitLoadS8S32Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
-    void emitLoadS8S64Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
-    void emitLoadU16U32Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
-    void emitLoadU16U64Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
     void emitLoadU8U32Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
-    void emitLoadU8U64Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg);
 
     void emitCmp(CPURegister reg0, CPURegister reg1, CPUBits numBits);
     void emitCmpIndirect(CPURegister memReg, uint32_t memOffset, CPURegister reg, CPUBits numBits);
