@@ -338,8 +338,8 @@ void SCBE::emitBinOp(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUBits numBit
     else
     {
         const auto r1 = SCBE_CPU::isInt(numBits) ? RCX : XMM1;
-        MK_IMMA(r0, numBits);
-        MK_IMMB(r1, numBits);
+        emitIMMA(pp, ip, r0, numBits);
+        emitIMMB(pp, ip, r1, numBits);
         pp.emitCmp(r0, r1, numBits);
     }
 }
@@ -359,8 +359,8 @@ void SCBE::emitJumpCmp(SCBE_X64& pp, const ByteCodeInstruction* ip, int32_t inst
     }
     else
     {
-        MK_IMMA(r0, numBits);
-        MK_IMMC(r1, numBits);
+        emitIMMA(pp, ip, r0, numBits);
+        emitIMMC(pp, ip, r1, numBits);
         pp.emitCmp(r0, r1, numBits);
     }
 
@@ -382,7 +382,7 @@ void SCBE::emitJumpCmpAddr(SCBE_X64& pp, const ByteCodeInstruction* ip, int32_t 
     else
     {
         pp.emitLoadIndirect(memOffset, RAX, memReg, numBits);
-        MK_IMMC(RCX, numBits);
+        emitIMMC(pp, ip, RCX, numBits);
         pp.emitCmp(RAX, RCX, numBits);
     }
 
@@ -398,8 +398,8 @@ void SCBE::emitJumpCmp2(SCBE_X64& pp, const ByteCodeInstruction* ip, int32_t ins
     }
     else
     {
-        MK_IMMA(XMM0, numBits);
-        MK_IMMC(XMM1, numBits);
+        emitIMMA(pp, ip, XMM0, numBits);
+        emitIMMC(pp, ip, XMM1, numBits);
         pp.emitCmp(XMM0, XMM1, numBits);
     }
     pp.emitJump(op1, instructionCount, ip->b.s32);
@@ -415,8 +415,8 @@ void SCBE::emitJumpCmp3(SCBE_X64& pp, const ByteCodeInstruction* ip, int32_t ins
     }
     else
     {
-        MK_IMMA(XMM0, numBits);
-        MK_IMMC(XMM1, numBits);
+        emitIMMA(pp, ip, XMM0, numBits);
+        emitIMMC(pp, ip, XMM1, numBits);
         pp.emitCmp(XMM0, XMM1, numBits);
     }
     pp.emitJump(op1, instructionCount, 0);
@@ -428,7 +428,7 @@ void SCBE::emitBinOpEq(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t off
     const auto r0 = SCBE_CPU::isInt(numBits) ? RAX : RCX;
     const auto r1 = SCBE_CPU::isInt(numBits) ? XMM1 : RCX;
     pp.emitLoadIndirect(REG_OFFSET(ip->a.u32), r0, RDI, CPUBits::B64);
-    MK_IMMB(r1, numBits);
+    emitIMMB(pp, ip, r1, numBits);
     pp.emitOpIndirect(r0, offset, r1, op, numBits);
 }
 
@@ -439,7 +439,7 @@ void SCBE::emitBinOpEqS(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t of
     else
     {
         const auto r1 = SCBE_CPU::isInt(numBits) ? RAX : XMM1;
-        MK_IMMB(r1, numBits);
+        emitIMMB(pp, ip, r1, numBits);
         pp.emitOpIndirect(RDI, offset + ip->a.u32, r1, op, numBits);
     }
 }
@@ -454,6 +454,38 @@ void SCBE::emitBinOpEqSS(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t o
 void SCBE::emitBinOpEqLock(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
 {
     pp.emitLoadIndirect(REG_OFFSET(ip->a.u32), RCX, RDI, CPUBits::B64);
-    MK_IMMB(RAX, numBits);
+    emitIMMB(pp, ip, RAX, numBits);
     pp.emitOpIndirect(RCX, 0, RAX, op, numBits, true);
+}
+
+void SCBE::emitIMMA(SCBE_X64& pp, const ByteCodeInstruction* ip, CPURegister reg, CPUBits numBits)
+{
+    if (ip->hasFlag(BCI_IMM_A))
+        pp.emitLoadImmediate(reg, ip->a.u64, numBits);
+    else
+        pp.emitLoadIndirect(REG_OFFSET(ip->a.u32), reg, RDI, numBits);
+}
+
+void SCBE::emitIMMB(SCBE_X64& pp, const ByteCodeInstruction* ip, CPURegister reg, CPUBits numBits)
+{
+    if (ip->hasFlag(BCI_IMM_B))
+        pp.emitLoadImmediate(reg, ip->b.u64, numBits);
+    else
+        pp.emitLoadIndirect(REG_OFFSET(ip->b.u32), reg, RDI, numBits);
+}
+
+void SCBE::emitIMMC(SCBE_X64& pp, const ByteCodeInstruction* ip, CPURegister reg, CPUBits numBits)
+{
+    if (ip->hasFlag(BCI_IMM_C))
+        pp.emitLoadImmediate(reg, ip->c.u64, numBits);
+    else
+        pp.emitLoadIndirect(REG_OFFSET(ip->c.u32), reg, RDI, numBits);
+}
+
+void SCBE::emitIMMD(SCBE_X64& pp, const ByteCodeInstruction* ip, CPURegister reg, CPUBits numBits)
+{
+    if (ip->hasFlag(BCI_IMM_D))
+        pp.emitLoadImmediate(reg, ip->d.u64, numBits);
+    else
+        pp.emitLoadIndirect(REG_OFFSET(ip->d.u32), reg, RDI, numBits);
 }
