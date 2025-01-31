@@ -491,44 +491,26 @@ void SCBE::emitIMMD(SCBE_X64& pp, const ByteCodeInstruction* ip, CPURegister reg
 
 void SCBE::emitIMMB(SCBE_X64& pp, const ByteCodeInstruction* ip, CPURegister reg, CPUSignedType srcType, CPUSignedType dstType)
 {
-    if (srcType == CPUSignedType::S8 && dstType == CPUSignedType::S32)
+    if (ip->hasFlag(BCI_IMM_B))
     {
-        if (ip->hasFlag(BCI_IMM_B))
-            pp.emitLoadImmediate(reg, ip->b.s8, CPUBits::B32);
-        else
-            pp.emitLoadIndirect(reg, RDI, REG_OFFSET(ip->b.u32), CPUSignedType::S8, CPUSignedType::S32);
+        SWAG_ASSERT(dstType == CPUSignedType::S16 || dstType == CPUSignedType::U16 || dstType == CPUSignedType::S32 || dstType == CPUSignedType::U32);
+        pp.emitLoadImmediate(reg, ip->b.u64, CPUBits::B32);
     }
-    else if (srcType == CPUSignedType::U8 && (dstType == CPUSignedType::U16 || dstType == CPUSignedType::U32))
-    {
-        if (ip->hasFlag(BCI_IMM_B))
-            pp.emitLoadImmediate(reg, ip->b.u8, CPUBits::B32);
-        else
-            pp.emitLoadIndirect(reg, RDI, REG_OFFSET(ip->b.u32), CPUSignedType::U8, CPUSignedType::U32);
-    }      
     else
     {
-        SWAG_ASSERT(false);
+        pp.emitLoadIndirect(reg, RDI, REG_OFFSET(ip->b.u32), srcType, dstType);
     }
 }
 
 void SCBE::emitIMMC(SCBE_X64& pp, const ByteCodeInstruction* ip, CPURegister reg, CPUSignedType srcType, CPUSignedType dstType)
 {
-    if (srcType == CPUSignedType::S8 && dstType == CPUSignedType::S32)
+    if (ip->hasFlag(BCI_IMM_C))
     {
-        if (ip->hasFlag(BCI_IMM_C))
-            pp.emitLoadImmediate(reg, ip->c.s8, CPUBits::B32);
-        else
-            pp.emitLoadIndirect(reg, RDI, REG_OFFSET(ip->c.u32), CPUSignedType::S8, CPUSignedType::S32);
-    }
-    else if (srcType == CPUSignedType::U8 && dstType == CPUSignedType::U32)
-    {
-        if (ip->hasFlag(BCI_IMM_C))
-            pp.emitLoadImmediate(reg, ip->c.u8, CPUBits::B32);
-        else
-            pp.emitLoadIndirect(reg, RDI, REG_OFFSET(ip->c.u32), CPUSignedType::U8, CPUSignedType::U32);
+        SWAG_ASSERT(dstType == CPUSignedType::S16 || dstType == CPUSignedType::U16 || dstType == CPUSignedType::S32 || dstType == CPUSignedType::U32);
+        pp.emitLoadImmediate(reg, ip->c.u64, CPUBits::B32);
     }
     else
     {
-        SWAG_ASSERT(false);
+        pp.emitLoadIndirect(reg, RDI, REG_OFFSET(ip->c.u32), srcType, dstType);
     }    
 }
