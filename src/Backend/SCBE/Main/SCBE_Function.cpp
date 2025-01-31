@@ -342,7 +342,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::CastS8S32:
-                pp.emitLoadS8S32Indirect(REG_OFFSET(ip->b.u32), RAX, RDI);
+                pp.emitLoadIndirect(CPUSignedType::S8, CPUSignedType::S32, RAX, RDI, REG_OFFSET(ip->b.u32));
                 pp.emitStoreIndirect(RDI, REG_OFFSET(ip->a.u32), RAX, CPUBits::B32);
                 break;
             case ByteCodeOp::CastS16S32:
@@ -375,7 +375,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::CastS8F32:
-                pp.emitLoadS8S32Indirect(REG_OFFSET(ip->b.u32), RAX, RDI);
+                pp.emitLoadIndirect(CPUSignedType::S8, CPUSignedType::S32, RAX, RDI, REG_OFFSET(ip->b.u32));
                 pp.emitOp(RAX, XMM0, CPUOp::CVTI2F, CPUBits::F32);
                 pp.emitStoreIndirect(RDI, REG_OFFSET(ip->a.u32), XMM0, CPUBits::F32);
                 break;
@@ -421,7 +421,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::CastS8F64:
-                pp.emitLoadS8S32Indirect(REG_OFFSET(ip->b.u32), RAX, RDI);
+                pp.emitLoadIndirect(CPUSignedType::S8, CPUSignedType::S32, RAX, RDI, REG_OFFSET(ip->b.u32));
                 pp.emitOp(RAX, XMM0, CPUOp::CVTI2F, CPUBits::F64);
                 pp.emitStoreIndirect(RDI, REG_OFFSET(ip->a.u32), XMM0, CPUBits::F64);
                 break;
@@ -4349,15 +4349,15 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 switch (static_cast<TokenId>(ip->d.u32))
                 {
                     case TokenId::IntrinsicMin:
-                        MK_IMMB_S8_TO_S32(RAX);
-                        MK_IMMC_S8_TO_S32(RCX);
+                        emitIMMB(pp, ip, RAX, CPUSignedType::S8, CPUSignedType::S32);
+                        emitIMMC(pp, ip, RCX, CPUSignedType::S8, CPUSignedType::S32);
                         pp.emitCmp(RCX, RAX, CPUBits::B32);
                         pp.emitCMov(RAX, RCX, CPUOp::CMOVL, CPUBits::B32);
                         pp.emitStoreIndirect(RDI, REG_OFFSET(ip->a.u32), RAX, CPUBits::B8);
                         break;
                     case TokenId::IntrinsicMax:
-                        MK_IMMB_S8_TO_S32(RAX);
-                        MK_IMMC_S8_TO_S32(RCX);
+                        emitIMMB(pp, ip, RAX, CPUSignedType::S8, CPUSignedType::S32);
+                        emitIMMC(pp, ip, RCX, CPUSignedType::S8, CPUSignedType::S32);
                         pp.emitCmp(RAX, RCX, CPUBits::B32);
                         pp.emitCMov(RAX, RCX, CPUOp::CMOVL, CPUBits::B32);
                         pp.emitStoreIndirect(RDI, REG_OFFSET(ip->a.u32), RAX, CPUBits::B8);
@@ -4468,14 +4468,14 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         pp.emitStoreIndirect(RDI, REG_OFFSET(ip->a.u32), RAX, CPUBits::B8);
                         break;
                     case TokenId::IntrinsicRol:
-                        MK_IMMB_S8_TO_S32(RAX);
-                        MK_IMMC_S8_TO_S32(RCX);
+                        emitIMMB(pp, ip, RAX, CPUSignedType::S8, CPUSignedType::S32);
+                        emitIMMC(pp, ip, RCX, CPUSignedType::S8, CPUSignedType::S32);
                         pp.emitRotate(RAX, RCX, CPUOp::ROL, CPUBits::B32);
                         pp.emitStoreIndirect(RDI, REG_OFFSET(ip->a.u32), RAX, CPUBits::B8);
                         break;
                     case TokenId::IntrinsicRor:
-                        MK_IMMB_S8_TO_S32(RAX);
-                        MK_IMMC_S8_TO_S32(RCX);
+                        emitIMMB(pp, ip, RAX, CPUSignedType::S8, CPUSignedType::S32);
+                        emitIMMC(pp, ip, RCX, CPUSignedType::S8, CPUSignedType::S32);
                         pp.emitRotate(RAX, RCX, CPUOp::ROR, CPUBits::B32);
                         pp.emitStoreIndirect(RDI, REG_OFFSET(ip->a.u32), RAX, CPUBits::B8);
                         break;

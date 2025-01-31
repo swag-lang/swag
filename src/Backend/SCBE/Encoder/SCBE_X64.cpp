@@ -152,21 +152,24 @@ void SCBE_X64::emitRet()
 
 void SCBE_X64::emitLoadIndirect(CPUSignedType srcType, CPUSignedType dstType, CPURegister reg, CPURegister memReg, uint32_t memOffset)
 {
-    if (srcType == CPUSignedType::S8 || dstType == CPUSignedType::S16)
+    if (srcType == CPUSignedType::S8 && dstType == CPUSignedType::S16)
     {
         emitREX(concat, CPUBits::B16, reg, memReg);
         concat.addU8(0x0F);
         concat.addU8(0xBE);
         emitModRM(concat, memOffset, reg, memReg);
     }
-}
-
-void SCBE_X64::emitLoadS8S32Indirect(uint32_t memOffset, CPURegister reg, CPURegister memReg)
-{
-    emitREX(concat, CPUBits::B32, reg, memReg);
-    concat.addU8(0x0F);
-    concat.addU8(0xBE);
-    emitModRM(concat, memOffset, reg, memReg);
+    else if (srcType == CPUSignedType::S8 && dstType == CPUSignedType::S32)
+    {
+        emitREX(concat, CPUBits::B32, reg, memReg);
+        concat.addU8(0x0F);
+        concat.addU8(0xBE);
+        emitModRM(concat, memOffset, reg, memReg);
+    }
+    else
+    {
+        SWAG_ASSERT(false);
+    }
 }
 
 void SCBE_X64::emitLoadS16S32Indirect(CPURegister reg, CPURegister memReg, uint32_t memOffset)

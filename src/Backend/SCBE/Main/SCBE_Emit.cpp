@@ -232,7 +232,7 @@ void SCBE::emitBinOpDivAtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp 
             if (ip->hasFlag(BCI_IMM_A))
                 pp.emitLoadImmediate(RAX, ip->a.u8, CPUBits::B32);
             else if (op == CPUOp::IDIV || op == CPUOp::IMOD)
-                pp.emitLoadS8S32Indirect(REG_OFFSET(ip->a.u32), RAX, RDI);
+                pp.emitLoadIndirect(CPUSignedType::S8, CPUSignedType::S32, RAX, RDI, REG_OFFSET(ip->a.u32));
             else
                 pp.emitLoadU8U32Indirect(REG_OFFSET(ip->a.u32), RAX, RDI);
             break;
@@ -488,4 +488,34 @@ void SCBE::emitIMMD(SCBE_X64& pp, const ByteCodeInstruction* ip, CPURegister reg
         pp.emitLoadImmediate(reg, ip->d.u64, numBits);
     else
         pp.emitLoadIndirect(reg, RDI, REG_OFFSET(ip->d.u32), numBits);
+}
+
+void SCBE::emitIMMB(SCBE_X64& pp, const ByteCodeInstruction* ip, CPURegister reg, CPUSignedType srcType, CPUSignedType dstType)
+{
+    if (srcType == CPUSignedType::S8 && dstType == CPUSignedType::S32)
+    {
+        if (ip->hasFlag(BCI_IMM_B))
+            pp.emitLoadImmediate(reg, (int32_t) ip->b.s8, CPUBits::B32);
+        else
+            pp.emitLoadIndirect(srcType, dstType, reg, RDI, REG_OFFSET(ip->b.u32));
+    }
+    else
+    {
+        SWAG_ASSERT(false);
+    }
+}
+
+void SCBE::emitIMMC(SCBE_X64& pp, const ByteCodeInstruction* ip, CPURegister reg, CPUSignedType srcType, CPUSignedType dstType)
+{
+    if (srcType == CPUSignedType::S8 && dstType == CPUSignedType::S32)
+    {
+        if (ip->hasFlag(BCI_IMM_C))
+            pp.emitLoadImmediate(reg, (int32_t) ip->c.s8, CPUBits::B32);
+        else
+            pp.emitLoadIndirect(srcType, dstType, reg, RDI, REG_OFFSET(ip->c.u32));
+    }
+    else
+    {
+        SWAG_ASSERT(false);
+    }    
 }
