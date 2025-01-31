@@ -23,8 +23,8 @@ struct SCBE_X64 : SCBE_CPU
     void emitCallResult(const TypeInfoFuncAttr* typeFunc, uint32_t offsetRT);
 
     void      emitJumpTable(CPURegister table, CPURegister offset);
-    uint8_t*  emitNearJumpOp(CPUJumpType jumpType);
-    uint32_t* emitLongJumpOp(CPUJumpType jumpType);
+    uint8_t*  emitJumpNear(CPUJumpType jumpType);
+    uint32_t* emitJumpLong(CPUJumpType jumpType);
     void      emitJump(CPUJumpType jumpType, int32_t instructionCount, int32_t jumpOffset);
     void      emitJump(CPURegister reg);
 

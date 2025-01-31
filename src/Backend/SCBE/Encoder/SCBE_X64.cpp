@@ -1448,7 +1448,7 @@ void SCBE_X64::emitOpIndirectDst(CPURegister memReg, uint32_t memOffset, uint64_
 
 /////////////////////////////////////////////////////////////////////
 
-uint8_t* SCBE_X64::emitNearJumpOp(CPUJumpType jumpType)
+uint8_t* SCBE_X64::emitJumpNear(CPUJumpType jumpType)
 {
     switch (jumpType)
     {
@@ -1503,7 +1503,7 @@ uint8_t* SCBE_X64::emitNearJumpOp(CPUJumpType jumpType)
     return concat.getSeekPtr() - 1;
 }
 
-uint32_t* SCBE_X64::emitLongJumpOp(CPUJumpType jumpType)
+uint32_t* SCBE_X64::emitJumpLong(CPUJumpType jumpType)
 {
     switch (jumpType)
     {
@@ -1591,12 +1591,12 @@ void SCBE_X64::emitJump(CPUJumpType jumpType, int32_t instructionCount, int32_t 
         const int  relOffset     = it->second - (currentOffset + 1);
         if (relOffset >= -127 && relOffset <= 128)
         {
-            const auto offsetPtr = emitNearJumpOp(jumpType);
+            const auto offsetPtr = emitJumpNear(jumpType);
             *offsetPtr           = static_cast<uint8_t>(it->second - concat.totalCount());
         }
         else
         {
-            const auto offsetPtr = emitLongJumpOp(jumpType);
+            const auto offsetPtr = emitJumpLong(jumpType);
             *offsetPtr           = it->second - concat.totalCount();
         }
 
@@ -1604,7 +1604,7 @@ void SCBE_X64::emitJump(CPUJumpType jumpType, int32_t instructionCount, int32_t 
     }
 
     // Here we do not know the destination label, so we assume 32 bits of offset
-    label.patch         = reinterpret_cast<uint8_t*>(emitLongJumpOp(jumpType));
+    label.patch         = reinterpret_cast<uint8_t*>(emitJumpLong(jumpType));
     label.currentOffset = static_cast<int32_t>(concat.totalCount());
     labelsToSolve.push_back(label);
 }
@@ -2108,13 +2108,13 @@ void SCBE_X64::emitCallParameters(TypeInfoFuncAttr* typeFunc, const VectorNative
         emitTest(RAX, RAX, CPUBits::B64);
 
         // If not zero, jump to closure call
-        const auto seekPtrClosure = emitLongJumpOp(JZ);
+        const auto seekPtrClosure = emitJumpLong(JZ);
         const auto seekJmpClosure = concat.totalCount();
 
         emitCallParameters(typeFunc, pushParams3, pushParamsTypes, retCopyAddr);
 
         // Jump to after closure call
-        const auto seekPtrAfterClosure = emitLongJumpOp(JUMP);
+        const auto seekPtrAfterClosure = emitJumpLong(JUMP);
         const auto seekJmpAfterClosure = concat.totalCount();
 
         // Update jump to closure call

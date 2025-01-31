@@ -229,13 +229,13 @@ void SCBE::emitByteCodeCallParameters(SCBE_X64& pp, const TypeInfoFuncAttr* type
         pp.emitTest(RAX, RAX, CPUBits::B64);
 
         // If not zero, jump to closure call
-        const auto seekPtrClosure = pp.emitLongJumpOp(JZ);
+        const auto seekPtrClosure = pp.emitJumpLong(JZ);
         const auto seekJmpClosure = pp.concat.totalCount();
 
         emitByteCodeCall(pp, typeFuncBC, offsetRT, pushRAParams);
 
         // Jump to after closure call
-        const auto seekPtrAfterClosure = pp.emitLongJumpOp(JUMP);
+        const auto seekPtrAfterClosure = pp.emitJumpLong(JUMP);
         const auto seekJmpAfterClosure = pp.concat.totalCount();
 
         // Update jump to closure call
@@ -290,7 +290,7 @@ void SCBE::emitLambdaCall(SCBE_X64& pp, const Concat& concat, uint32_t offsetRT,
     // Test if it's a bytecode lambda
     pp.emitLoadIndirect(R10, RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
     pp.emitOpImmediate(R10, SWAG_LAMBDA_BC_MARKER_BIT, CPUOp::BT, CPUBits::B64);
-    const auto jumpToBCAddr   = pp.emitLongJumpOp(JB);
+    const auto jumpToBCAddr   = pp.emitJumpLong(JB);
     const auto jumpToBCOffset = concat.totalCount();
 
     // Native lambda
@@ -299,7 +299,7 @@ void SCBE::emitLambdaCall(SCBE_X64& pp, const Concat& concat, uint32_t offsetRT,
     pp.emitCallIndirect(R10);
     pp.emitCallResult(typeFuncBC, offsetRT);
 
-    const auto jumpBCToAfterAddr   = pp.emitLongJumpOp(JUMP);
+    const auto jumpBCToAfterAddr   = pp.emitJumpLong(JUMP);
     const auto jumpBCToAfterOffset = concat.totalCount();
 
     // ByteCode lambda

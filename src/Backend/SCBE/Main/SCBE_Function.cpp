@@ -3883,7 +3883,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitLoadImmediate(RCX, SWAG_LAMBDA_BC_MARKER, CPUBits::B64);
                 pp.emitOp(RCX, RAX, CPUOp::AND, CPUBits::B64);
                 pp.emitTest(RCX, RCX, CPUBits::B64);
-                auto jumpBCToAfterAddr   = pp.emitLongJumpOp(JZ);
+                auto jumpBCToAfterAddr   = pp.emitJumpLong(JZ);
                 auto jumpBCToAfterOffset = concat.totalCount();
 
                 // ByteCode lambda
