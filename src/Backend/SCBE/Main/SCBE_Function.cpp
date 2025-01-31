@@ -3045,7 +3045,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (ip->b.u32 <= 128 && !buildParameters.isDebug())
                 {
                     pp.emitLoadIndirect(REG_OFFSET(ip->a.u32), RAX, RDI, CPUBits::B64);
-                    pp.emitClear(ip->b.u32, ip->c.u32, RAX);
+                    pp.emitClear(RAX, ip->c.u32, ip->b.u32);
                 }
                 else
                 {
@@ -3102,7 +3102,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 SWAG_ASSERT(ip->c.s64 >= 0 && ip->c.s64 <= 0x7FFFFFFF);
                 if (ip->b.u32 <= 128 && !buildParameters.isDebug())
                 {
-                    pp.emitClear(ip->b.u32, ip->c.u32, RAX);
+                    pp.emitClear(RAX, ip->c.u32, ip->b.u32);
                 }
                 else
                 {
@@ -3131,7 +3131,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::SetZeroStackX:
                 if (ip->b.u32 <= 128 && !buildParameters.isDebug())
-                    pp.emitClear(ip->b.u32, offsetStack + ip->a.u32, RDI);
+                    pp.emitClear(RDI, offsetStack + ip->a.u32, ip->b.u32);
                 else
                 {
                     pp.pushParams.clear();
@@ -3444,7 +3444,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (ip->hasFlag(BCI_IMM_B) && ip->hasFlag(BCI_IMM_C) && ip->b.u8 == 0 && ip->c.u64 <= 128 && !buildParameters.isDebug())
                 {
                     pp.emitLoadIndirect(REG_OFFSET(ip->a.u32), RCX, RDI, CPUBits::B64);
-                    pp.emitClear(ip->c.u32, 0, RCX);
+                    pp.emitClear(RCX, 0, ip->c.u32);
                 }
                 else
                 {

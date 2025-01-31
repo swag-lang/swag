@@ -1673,11 +1673,11 @@ void SCBE_X64::emitCopy(CPURegister regDst, CPURegister regSrc, uint32_t count, 
     }
 }
 
-void SCBE_X64::emitClear(uint32_t count, uint32_t offset, CPURegister reg)
+void SCBE_X64::emitClear(CPURegister memReg, uint32_t memOffset, uint32_t count)
 {
     if (!count)
         return;
-    SWAG_ASSERT(reg == RAX || reg == RCX || reg == RDI);
+    SWAG_ASSERT(memReg == RAX || memReg == RCX || memReg == RDI);
 
     // SSE 16 octets
     if (count >= 16)
@@ -1686,47 +1686,47 @@ void SCBE_X64::emitClear(uint32_t count, uint32_t offset, CPURegister reg)
         while (count >= 16)
         {
             concat.addString2("\x0F\x11"); // movups [reg + ????????], xmm0
-            if (offset <= 0x7F)
+            if (memOffset <= 0x7F)
             {
-                concat.addU8(0x40 | reg);
-                concat.addU8(static_cast<uint8_t>(offset));
+                concat.addU8(0x40 | memReg);
+                concat.addU8(static_cast<uint8_t>(memOffset));
             }
             else
             {
-                concat.addU8(0x80 | reg);
-                concat.addU32(offset);
+                concat.addU8(0x80 | memReg);
+                concat.addU32(memOffset);
             }
             count -= 16;
-            offset += 16;
+            memOffset += 16;
         }
     }
 
     while (count >= 8)
     {
-        emitStoreImmediate(offset, 0, reg, CPUBits::B64);
+        emitStoreImmediate(memOffset, 0, memReg, CPUBits::B64);
         count -= 8;
-        offset += 8;
+        memOffset += 8;
     }
 
     while (count >= 4)
     {
-        emitStoreImmediate(offset, 0, reg, CPUBits::B32);
+        emitStoreImmediate(memOffset, 0, memReg, CPUBits::B32);
         count -= 4;
-        offset += 4;
+        memOffset += 4;
     }
 
     while (count >= 2)
     {
-        emitStoreImmediate(offset, 0, reg, CPUBits::B16);
+        emitStoreImmediate(memOffset, 0, memReg, CPUBits::B16);
         count -= 2;
-        offset += 2;
+        memOffset += 2;
     }
 
     while (count >= 1)
     {
-        emitStoreImmediate(offset, 0, reg, CPUBits::B8);
+        emitStoreImmediate(memOffset, 0, memReg, CPUBits::B8);
         count -= 1;
-        offset += 1;
+        memOffset += 1;
     }
 }
 

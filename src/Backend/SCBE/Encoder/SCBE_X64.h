@@ -59,7 +59,7 @@ struct SCBE_X64 : SCBE_CPU
     void emitCmpImmediate(CPURegister reg, uint64_t value, CPUBits numBits);
     void emitSet(CPURegister reg, CPUSet setType);
     void emitClear(CPURegister reg, CPUBits numBits);
-    void emitClear(uint32_t count, uint32_t offset, CPURegister reg);
+    void emitClear(CPURegister memReg, uint32_t memOffset, uint32_t count);
     void emitCopy(CPURegister regDst, CPURegister regSrc, CPUBits numBits);
     void emitCopy(CPURegister regDst, CPURegister regSrc, uint32_t count, uint32_t offset);
     void emitOp(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBits numBits, CPUBits srcBits = CPUBits::B32);
