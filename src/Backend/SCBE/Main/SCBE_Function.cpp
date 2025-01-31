@@ -2542,10 +2542,10 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitJumpCmp(pp, ip, i, JNZ, CPUBits::B64);
                 break;
             case ByteCodeOp::JumpIfNotEqualF32:
-                MK_JMP_CMP2(JP, JNZ, CPUBits::F32);
+                emitJumpCmp2(pp, ip, i, JP, JNZ, CPUBits::F32);
                 break;
             case ByteCodeOp::JumpIfNotEqualF64:
-                MK_JMP_CMP2(JP, JNZ, CPUBits::F64);
+                emitJumpCmp2(pp, ip, i, JP, JNZ, CPUBits::F64);
                 break;
 
                 /////////////////////////////////////
@@ -2563,10 +2563,10 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitJumpCmp(pp, ip, i, JZ, CPUBits::B64);
                 break;
             case ByteCodeOp::JumpIfEqualF32:
-                MK_JMP_CMP3(JP, JZ, CPUBits::F32);
+                emitJumpCmp2(pp, ip, i, JP, JZ, CPUBits::F32);
                 break;
             case ByteCodeOp::JumpIfEqualF64:
-                MK_JMP_CMP3(JP, JZ, CPUBits::F64);
+                emitJumpCmp2(pp, ip, i, JP, JZ, CPUBits::F64);
                 break;
             case ByteCodeOp::IncJumpIfEqual64:
                 pp.emitIncIndirect(RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);

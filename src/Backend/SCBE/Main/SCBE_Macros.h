@@ -125,38 +125,3 @@
 
 //////////////////////////////////
 
-#define MK_JMP_CMP2(__op1, __op2, __numBits)                                  \
-    do                                                                        \
-    {                                                                         \
-        if (!ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_C))               \
-        {                                                                     \
-            pp.emitLoadIndirect(REG_OFFSET(ip->a.u32), XMM0, RDI, __numBits); \
-            pp.emitCmpIndirect(REG_OFFSET(ip->c.u32), XMM0, RDI, __numBits);  \
-        }                                                                     \
-        else                                                                  \
-        {                                                                     \
-            MK_IMMA(XMM0, __numBits);                                         \
-            MK_IMMC(XMM1, __numBits);                                         \
-            pp.emitCmp(XMM0, XMM1, __numBits);                                \
-        }                                                                     \
-        pp.emitJump(__op1, i, ip->b.s32);                                     \
-        pp.emitJump(__op2, i, ip->b.s32);                                     \
-    } while (0)
-
-#define MK_JMP_CMP3(__op1, __op2, __numBits)                                  \
-    do                                                                        \
-    {                                                                         \
-        if (!ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_C))               \
-        {                                                                     \
-            pp.emitLoadIndirect(REG_OFFSET(ip->a.u32), XMM0, RDI, __numBits); \
-            pp.emitCmpIndirect(REG_OFFSET(ip->c.u32), XMM0, RDI, __numBits);  \
-        }                                                                     \
-        else                                                                  \
-        {                                                                     \
-            MK_IMMA(XMM0, __numBits);                                         \
-            MK_IMMC(XMM1, __numBits);                                         \
-            pp.emitCmp(XMM0, XMM1, __numBits);                                \
-        }                                                                     \
-        pp.emitJump(__op1, i, 0);                                             \
-        pp.emitJump(__op2, i, ip->b.s32);                                     \
-    } while (0)

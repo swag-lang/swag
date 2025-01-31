@@ -388,3 +388,38 @@ void SCBE::emitJumpCmpAddr(SCBE_X64& pp, const ByteCodeInstruction* ip, int32_t 
 
     pp.emitJump(op, instructionCount, ip->b.s32);
 }
+
+void SCBE::emitJumpCmp2(SCBE_X64& pp, const ByteCodeInstruction* ip, int32_t instructionCount, CPUJumpType op1, CPUJumpType op2, CPUBits numBits)
+{
+    if (!ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_C))
+    {
+        pp.emitLoadIndirect(REG_OFFSET(ip->a.u32), XMM0, RDI, numBits);
+        pp.emitCmpIndirect(REG_OFFSET(ip->c.u32), XMM0, RDI, numBits);
+    }
+    else
+    {
+        MK_IMMA(XMM0, numBits);
+        MK_IMMC(XMM1, numBits);
+        pp.emitCmp(XMM0, XMM1, numBits);
+    }
+    pp.emitJump(op1, instructionCount, ip->b.s32);
+    pp.emitJump(op2, instructionCount, ip->b.s32);
+}
+
+void SCBE::emitJumpCmp3(SCBE_X64& pp, const ByteCodeInstruction* ip, int32_t instructionCount, CPUJumpType op1, CPUJumpType op2, CPUBits numBits)
+
+{
+    if (!ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_C))
+    {
+        pp.emitLoadIndirect(REG_OFFSET(ip->a.u32), XMM0, RDI, numBits);
+        pp.emitCmpIndirect(REG_OFFSET(ip->c.u32), XMM0, RDI, numBits);
+    }
+    else
+    {
+        MK_IMMA(XMM0, numBits);
+        MK_IMMC(XMM1, numBits);
+        pp.emitCmp(XMM0, XMM1, numBits);
+    }
+    pp.emitJump(op1, instructionCount, 0);
+    pp.emitJump(op2, instructionCount, ip->b.s32);
+}
