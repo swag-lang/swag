@@ -343,3 +343,26 @@ void SCBE::emitBinOp(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUBits numBit
         pp.emitCmp(r0, r1, numBits);
     }
 }
+
+void SCBE::emitJmpCmp(SCBE_X64& pp, const ByteCodeInstruction* ip, int32_t instructionCount, CPUJumpType op, CPUBits numBits)
+{
+    const auto r0 = SCBE_CPU::isInt(numBits) ? RAX : XMM0;
+    const auto r1 = SCBE_CPU::isInt(numBits) ? RCX : XMM1;
+    if (!ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_C))
+    {
+        pp.emitLoadIndirect(REG_OFFSET(ip->a.u32), r0, RDI, numBits);
+        pp.emitCmpIndirect(REG_OFFSET(ip->c.u32), r0, RDI, numBits);
+    }
+    else if (!ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_C) && SCBE_CPU::isInt(numBits) && ip->c.u64 <= 0x7fffffff)
+    {
+        pp.emitCmpIndirectDst(REG_OFFSET(ip->a.u32), ip->c.u32, RDI, numBits);
+    }
+    else
+    {
+        MK_IMMA(r0, numBits);
+        MK_IMMC(r1, numBits);
+        pp.emitCmp(r0, r1, numBits);
+    }
+    
+    pp.emitJump(op, instructionCount, ip->b.s32);
+}

@@ -125,29 +125,6 @@
 
 //////////////////////////////////
 
-#define MK_JMP_CMP(__op, __numBits)                                                                                          \
-    do                                                                                                                       \
-    {                                                                                                                        \
-        const auto r0 = SCBE_CPU::isInt(__numBits) ? RAX : XMM0;                                                             \
-        const auto r1 = SCBE_CPU::isInt(__numBits) ? RCX : XMM1;                                                             \
-        if (!ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_C))                                                              \
-        {                                                                                                                    \
-            pp.emitLoadIndirect(REG_OFFSET(ip->a.u32), r0, RDI, __numBits);                                                  \
-            pp.emitCmpIndirect(REG_OFFSET(ip->c.u32), r0, RDI, __numBits);                                                   \
-        }                                                                                                                    \
-        else if (!ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_C) && SCBE_CPU::isInt(__numBits) && ip->c.u64 <= 0x7fffffff) \
-        {                                                                                                                    \
-            pp.emitCmpIndirectDst(REG_OFFSET(ip->a.u32), ip->c.u32, RDI, __numBits);                                         \
-        }                                                                                                                    \
-        else                                                                                                                 \
-        {                                                                                                                    \
-            MK_IMMA(r0, __numBits);                                                                                          \
-            MK_IMMC(r1, __numBits);                                                                                          \
-            pp.emitCmp(r0, r1, __numBits);                                                                                   \
-        }                                                                                                                    \
-        pp.emitJump(__op, i, ip->b.s32);                                                                                     \
-    } while (0)
-
 #define MK_JMP_CMP_ADDR(__op, __offset, __memReg, __numBits)                 \
     do                                                                       \
     {                                                                        \
