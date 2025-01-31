@@ -954,46 +954,49 @@ void SCBE_X64::emitOp(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBits 
     }
 }
 
-void SCBE_X64::emitOp(uint32_t offsetStack, CPUOp op, CPUBits numBits)
+void SCBE_X64::emitOpIndirectSrc(CPURegister reg, CPURegister memReg, uint32_t memOffset, CPUOp op, CPUBits numBits)
 {
     if (numBits == CPUBits::F32)
     {
+        SWAG_ASSERT(reg == XMM0);
         concat.addU8(0xF3);
         concat.addU8(0x0F);
         concat.addU8(static_cast<uint8_t>(op));
-        emitModRM(concat, offsetStack, XMM0, RDI);
+        emitModRM(concat, memOffset, reg, memReg);
     }
     else if (numBits == CPUBits::F64)
     {
+        SWAG_ASSERT(reg == XMM0);
         concat.addU8(0xF2);
         concat.addU8(0x0F);
         concat.addU8(static_cast<uint8_t>(op));
-        emitModRM(concat, offsetStack, XMM0, RDI);
+        emitModRM(concat, memOffset, reg, memReg);
     }
     else
     {
+        SWAG_ASSERT(reg == RAX);
         emitREX(concat, numBits);
         if (op == CPUOp::MUL)
         {
             emitSpec8(concat, 0xF7, numBits);
-            emitModRM(concat, offsetStack, 4, RDI);
+            emitModRM(concat, memOffset, 4, memReg);
         }
         else if (op == CPUOp::IMUL)
         {
             if (numBits == CPUBits::B8)
             {
                 concat.addU8(0xF6);
-                emitModRM(concat, offsetStack, 5, RDI);
+                emitModRM(concat, memOffset, 5, memReg);
             }
             else if (numBits == CPUBits::B16)
             {
                 concat.addU8(0xF7);
-                emitModRM(concat, offsetStack, 5, RDI);
+                emitModRM(concat, memOffset, 5, memReg);
             }
             else
             {
                 concat.addString2("\x0F\xAF");
-                emitModRM(concat, offsetStack, RAX, RDI);
+                emitModRM(concat, memOffset, RAX, memReg);
             }
         }
         else
@@ -1002,7 +1005,7 @@ void SCBE_X64::emitOp(uint32_t offsetStack, CPUOp op, CPUBits numBits)
                 concat.addU8(static_cast<uint8_t>(op) + 1);
             else
                 concat.addU8(static_cast<uint8_t>(op) | 2);
-            emitModRM(concat, offsetStack, RAX, RDI);
+            emitModRM(concat, memOffset, RAX, memReg);
         }
     }
 }
