@@ -2,7 +2,6 @@
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/ByteCode_Math.h"
 #include "Backend/SCBE/Main/SCBE.h"
-#include "Backend/SCBE/Main/SCBE_Macros.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 
 void SCBE::emitShiftRightArithmetic(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUBits numBits)
@@ -495,10 +494,17 @@ void SCBE::emitIMMB(SCBE_X64& pp, const ByteCodeInstruction* ip, CPURegister reg
     if (srcType == CPUSignedType::S8 && dstType == CPUSignedType::S32)
     {
         if (ip->hasFlag(BCI_IMM_B))
-            pp.emitLoadImmediate(reg, (int32_t) ip->b.s8, CPUBits::B32);
+            pp.emitLoadImmediate(reg, ip->b.s8, CPUBits::B32);
         else
-            pp.emitLoadIndirect(srcType, dstType, reg, RDI, REG_OFFSET(ip->b.u32));
+            pp.emitLoadIndirect(CPUSignedType::S8, CPUSignedType::S32, reg, RDI, REG_OFFSET(ip->b.u32));
     }
+    else if (srcType == CPUSignedType::U8 && (dstType == CPUSignedType::U16 || dstType == CPUSignedType::U32))
+    {
+        if (ip->hasFlag(BCI_IMM_B))
+            pp.emitLoadImmediate(reg, ip->b.u8, CPUBits::B32);
+        else
+            pp.emitLoadIndirect(CPUSignedType::U8, CPUSignedType::U32, reg, RDI, REG_OFFSET(ip->b.u32));
+    }      
     else
     {
         SWAG_ASSERT(false);
@@ -510,9 +516,16 @@ void SCBE::emitIMMC(SCBE_X64& pp, const ByteCodeInstruction* ip, CPURegister reg
     if (srcType == CPUSignedType::S8 && dstType == CPUSignedType::S32)
     {
         if (ip->hasFlag(BCI_IMM_C))
-            pp.emitLoadImmediate(reg, (int32_t) ip->c.s8, CPUBits::B32);
+            pp.emitLoadImmediate(reg, ip->c.s8, CPUBits::B32);
         else
-            pp.emitLoadIndirect(srcType, dstType, reg, RDI, REG_OFFSET(ip->c.u32));
+            pp.emitLoadIndirect(CPUSignedType::S8, CPUSignedType::S32, reg, RDI, REG_OFFSET(ip->c.u32));
+    }
+    else if (srcType == CPUSignedType::U8 && dstType == CPUSignedType::U32)
+    {
+        if (ip->hasFlag(BCI_IMM_C))
+            pp.emitLoadImmediate(reg, ip->c.u8, CPUBits::B32);
+        else
+            pp.emitLoadIndirect(CPUSignedType::U8, CPUSignedType::U32, reg, RDI, REG_OFFSET(ip->c.u32));
     }
     else
     {

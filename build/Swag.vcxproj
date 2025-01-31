@@ -254,7 +254,6 @@
     <ClInclude Include="..\src\Backend\SCBE\Encoder\SCBE_CPU.h" />
     <ClInclude Include="..\src\Backend\SCBE\Encoder\SCBE_X64.h" />
     <ClInclude Include="..\src\Backend\SCBE\Main\SCBE.h" />
-    <ClInclude Include="..\src\Backend\SCBE\Main\SCBE_Macros.h" />
     <ClInclude Include="..\src\Backend\SCBE\Obj\SCBE_Coff.h" />
     <ClInclude Include="..\src\Backend\SCBE\Obj\SCBE_SaveObjJob.h" />
     <ClInclude Include="..\src\Core\Allocator.h" />

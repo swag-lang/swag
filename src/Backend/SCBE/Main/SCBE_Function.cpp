@@ -5,7 +5,6 @@
 #include "Backend/SCBE/Obj/SCBE_Coff.h"
 #include "Report/Diagnostic.h"
 #include "Report/Report.h"
-#include "SCBE_Macros.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
@@ -4181,19 +4180,19 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         pp.emitStoreIndirect(RDI, REG_OFFSET(ip->a.u32), RAX, CPUBits::B8);
                         break;
                     case TokenId::IntrinsicBitCountNz:
-                        MK_IMMB_U8_TO_U32(RAX);
+                        emitIMMB(pp, ip, RAX, CPUSignedType::U8, CPUSignedType::U32);
                         pp.emitOp(RAX, RAX, CPUOp::POPCNT, CPUBits::B32);
                         pp.emitStoreIndirect(RDI, REG_OFFSET(ip->a.u32), RAX, CPUBits::B8);
                         break;
                     case TokenId::IntrinsicBitCountTz:
-                        MK_IMMB_U8_TO_U32(RAX);
+                        emitIMMB(pp, ip, RAX, CPUSignedType::U8, CPUSignedType::U32);
                         pp.emitOp(RAX, RAX, CPUOp::BSF, CPUBits::B32);
                         pp.emitLoadImmediate(RCX, 8, CPUBits::B32);
                         pp.emitCMov(RAX, RCX, CPUOp::CMOVE, CPUBits::B32);
                         pp.emitStoreIndirect(RDI, REG_OFFSET(ip->a.u32), RAX, CPUBits::B8);
                         break;
                     case TokenId::IntrinsicBitCountLz:
-                        MK_IMMB_U8_TO_U32(RAX);
+                        emitIMMB(pp, ip, RAX, CPUSignedType::U8, CPUSignedType::U32);
                         pp.emitOp(RAX, RAX, CPUOp::BSR, CPUBits::B32);
                         pp.emitLoadImmediate(RCX, 15, CPUBits::B32);
                         pp.emitCMov(RAX, RCX, CPUOp::CMOVE, CPUBits::B32);
@@ -4454,15 +4453,15 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 switch (static_cast<TokenId>(ip->d.u32))
                 {
                     case TokenId::IntrinsicMin:
-                        MK_IMMB_U8_TO_U32(RAX);
-                        MK_IMMC_U8_TO_U32(RCX);
+                        emitIMMB(pp, ip, RAX, CPUSignedType::U8, CPUSignedType::U32);
+                        emitIMMC(pp, ip, RCX, CPUSignedType::U8, CPUSignedType::U32);
                         pp.emitCmp(RCX, RAX, CPUBits::B32);
                         pp.emitCMov(RAX, RCX, CPUOp::CMOVB, CPUBits::B32);
                         pp.emitStoreIndirect(RDI, REG_OFFSET(ip->a.u32), RAX, CPUBits::B8);
                         break;
                     case TokenId::IntrinsicMax:
-                        MK_IMMB_U8_TO_U32(RAX);
-                        MK_IMMC_U8_TO_U32(RCX);
+                        emitIMMB(pp, ip, RAX, CPUSignedType::U8, CPUSignedType::U32);
+                        emitIMMC(pp, ip, RCX, CPUSignedType::U8, CPUSignedType::U32);
                         pp.emitCmp(RAX, RCX, CPUBits::B32);
                         pp.emitCMov(RAX, RCX, CPUOp::CMOVB, CPUBits::B32);
                         pp.emitStoreIndirect(RDI, REG_OFFSET(ip->a.u32), RAX, CPUBits::B8);
