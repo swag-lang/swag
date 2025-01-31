@@ -29,10 +29,10 @@ struct SCBE_X64 : SCBE_CPU
     void      emitJump(CPURegister reg);
 
     void emitLoadAddressIndirect(CPURegister reg, CPURegister memReg, uint32_t memOffset);
+    void emitLoadIndirect(CPURegister reg, CPURegister memReg, uint32_t memOffset, CPUBits numBits);
     void emitLoadImmediate(CPURegister reg, uint64_t value, CPUBits numBits, bool force64Bits = false);
-    void emitStoreImmediate(CPURegister memReg, uint32_t memOffset, uint64_t value, CPUBits numBits);
     void emitStoreIndirect(CPURegister memReg, uint32_t memOffset, CPURegister reg, CPUBits numBits);
-    void emitLoadIndirect(uint32_t memOffset, CPURegister reg, CPURegister memReg, CPUBits numBits);
+    void emitStoreImmediate(CPURegister memReg, uint32_t memOffset, uint64_t value, CPUBits numBits);
 
     void emitCastU8U64(CPURegister regDst, CPURegister regSrc);
     void emitCastU16U64(CPURegister regDst, CPURegister regSrc);

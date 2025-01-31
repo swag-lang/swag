@@ -380,7 +380,7 @@ void SCBE::emitGlobalInit(const BuildParameters& buildParameters) const
         pp.emitCall(callTable);
 
         // Count types is stored as a uint64_t at the start of the address
-        pp.emitLoadIndirect(0, R8, cc.returnByRegisterInteger, CPUBits::B64);
+        pp.emitLoadIndirect(R8, cc.returnByRegisterInteger, 0, CPUBits::B64);
         pp.emitStoreIndirect(RCX, sizeof(uint64_t), R8, CPUBits::B64);
         pp.emitOpImmediate(cc.returnByRegisterInteger, sizeof(uint64_t), CPUOp::ADD, CPUBits::B64);
         pp.emitStoreIndirect(RCX, 0, cc.returnByRegisterInteger, CPUBits::B64);
