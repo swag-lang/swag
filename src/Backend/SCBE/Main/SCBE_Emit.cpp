@@ -2,6 +2,7 @@
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/ByteCode_Math.h"
 #include "Backend/SCBE/Main/SCBE.h"
+#include "Backend/SCBE/Main/SCBE_Macros.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 
 void SCBE::emitShiftRightArithmetic(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUBits numBits)
@@ -314,5 +315,31 @@ void SCBE::emitAddSubMul64(SCBE_X64& pp, const ByteCodeInstruction* ip, uint64_t
             pp.emitOp(RCX, RAX, op, CPUBits::B64);
             pp.emitStoreIndirect(RDI, REG_OFFSET(ip->c.u32), RCX, CPUBits::B64);
         }
+    }
+}
+
+void SCBE::emitBinOp(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUBits numBits)
+{
+    const auto r0 = SCBE_CPU::isInt(numBits) ? RAX : XMM0;
+    if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_B))
+    {
+        pp.emitLoadIndirect(REG_OFFSET(ip->a.u32), r0, RDI, numBits);
+        pp.emitCmpIndirect(REG_OFFSET(ip->b.u32), r0, RDI, numBits);
+    }
+    else if (ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_B))
+    {
+        pp.emitLoadImmediate(r0, ip->a.u64, numBits);
+        pp.emitCmpIndirect(REG_OFFSET(ip->b.u32), r0, RDI, numBits);
+    }
+    else if (SCBE_CPU::isInt(numBits) && !ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_B) && ip->b.u64 <= 0x7FFFFFFF)
+    {
+        pp.emitCmpIndirectDst(REG_OFFSET(ip->a.u32), ip->b.u32, RDI, numBits);
+    }
+    else
+    {
+        const auto r1 = SCBE_CPU::isInt(numBits) ? RCX : XMM1;
+        MK_IMMA(r0, numBits);
+        MK_IMMB(r1, numBits);
+        pp.emitCmp(r0, r1, numBits);
     }
 }

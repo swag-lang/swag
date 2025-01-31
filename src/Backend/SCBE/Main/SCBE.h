@@ -15,7 +15,7 @@ struct ByteCodeInstruction;
 struct SCBE final : Backend
 {
     explicit SCBE(Module* mdl);
-             SCBE();
+    SCBE();
 
     void      createRuntime(const BuildParameters& buildParameters) const;
     JobResult prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob) override;
@@ -47,6 +47,7 @@ struct SCBE final : Backend
     static void emitCall(SCBE_X64& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, bool localCall);
     static void emitInternalCall(SCBE_X64& pp, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT = UINT32_MAX);
     static void emitInternalCallExt(SCBE_X64& pp, const Utf8& funcName, const VectorNative<CPUPushParam>& pushParams, uint32_t offsetRT = UINT32_MAX, TypeInfoFuncAttr* typeFunc = nullptr);
+    static void emitBinOp(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUBits numBits);
 
     bool        buildRelocationSegment(const BuildParameters& buildParameters, DataSegment* dataSegment, CPURelocationTable& relocTable, SegmentKind me) const;
     void        computeUnwind(const VectorNative<CPURegister>& unwindRegs, const VectorNative<uint32_t>& unwindOffsetRegs, uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind) const;
