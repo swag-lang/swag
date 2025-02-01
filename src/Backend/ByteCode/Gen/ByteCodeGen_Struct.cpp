@@ -1192,15 +1192,19 @@ bool ByteCodeGen::emitCopyStruct(ByteCodeGenContext* context, const RegisterList
         // If the current scope contains a drop for that variable, then we remove it, because we have
         // just reset the content
         bool mustReinit = true;
-        for (auto& toDrop : from->ownerScope->symTable.structVarsToDrop)
+
         {
-            if (toDrop.overload && toDrop.overload->symbol->is(SymbolKind::Function) && from->is(AstNodeKind::IdentifierRef))
+            SharedLock lk(from->ownerScope->symTable.mutexDrop);
+            for (auto& toDrop : from->ownerScope->symTable.structVarsToDrop)
             {
-                if (toDrop.overload == from->resolvedSymbolOverload() && toDrop.storageOffset == from->lastChild()->computedValue()->storageOffset)
+                if (toDrop.overload && toDrop.overload->symbol->is(SymbolKind::Function) && from->is(AstNodeKind::IdentifierRef))
                 {
-                    mustReinit        = false;
-                    toDrop.typeStruct = nullptr;
-                    break;
+                    if (toDrop.overload == from->resolvedSymbolOverload() && toDrop.storageOffset == from->lastChild()->computedValue()->storageOffset)
+                    {
+                        mustReinit        = false;
+                        toDrop.typeStruct = nullptr;
+                        break;
+                    }
                 }
             }
         }
