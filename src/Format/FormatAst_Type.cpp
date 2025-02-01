@@ -39,7 +39,7 @@ bool FormatAst::outputType(FormatContext& context, AstTypeExpression* node)
         concat->addString("nl");
         concat->addBlank();
     }
-    
+
     if (node->typeFlags.has(TYPE_FLAG_IS_CONST))
     {
         concat->addString("const");

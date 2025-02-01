@@ -772,8 +772,8 @@ AstNode* AstTypeExpression::clone(CloneContext& context)
     newNode->arrayDim        = arrayDim;
     newNode->typeFlags       = typeFlags;
     newNode->locConst        = locConst;
-    newNode->parameters = findChildRef(parameters, newNode);
-    newNode->returnType = findChildRef(returnType, newNode);
+    newNode->parameters      = findChildRef(parameters, newNode);
+    newNode->returnType      = findChildRef(returnType, newNode);
 
     // :StructParamsNoSem
     // We need to revaluate the call parameters of the struct initialization, because inside we can have some
@@ -852,7 +852,7 @@ AstNode* AstStruct::clone(CloneContext& context)
     newNode->tokenName         = tokenName;
     for (const auto it : constraints)
         newNode->constraints.push_back(it->clone(cloneContext));
-    newNode->content           = content ? content->clone(cloneContext) : nullptr;
+    newNode->content = content ? content->clone(cloneContext) : nullptr;
     newNode->addAstFlag(AST_FROM_GENERIC);
     newNode->content->removeAstFlag(AST_NO_SEMANTIC);
 

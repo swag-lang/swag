@@ -184,7 +184,7 @@ bool FormatAst::outputSwitch(FormatContext& context, AstNode* node)
                     concat->addChar(',');
                     concat->addBlank();
                 }
-                
+
                 if (const auto parse = getTokenParse(it))
                 {
                     if (parse->flags.has(TOKEN_PARSE_EOL_BEFORE))

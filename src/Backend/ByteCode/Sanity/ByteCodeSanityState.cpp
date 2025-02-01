@@ -4,9 +4,9 @@
 #include "Backend/ByteCode/Sanity/ByteCodeSanity.h"
 #include "Report/ErrorIds.h"
 
-bool ByteCodeSanityState::getImmediateA(SanityValue& result, const ByteCodeInstruction *ipn)
+bool ByteCodeSanityState::getImmediateA(SanityValue& result, const ByteCodeInstruction* ipn)
 {
-    if(!ipn)
+    if (!ipn)
         ipn = ip;
     if (ipn->hasFlag(BCI_IMM_A))
     {
@@ -21,9 +21,9 @@ bool ByteCodeSanityState::getImmediateA(SanityValue& result, const ByteCodeInstr
     return true;
 }
 
-bool ByteCodeSanityState::getImmediateB(SanityValue& result, const ByteCodeInstruction *ipn)
+bool ByteCodeSanityState::getImmediateB(SanityValue& result, const ByteCodeInstruction* ipn)
 {
-    if(!ipn)
+    if (!ipn)
         ipn = ip;
     if (ipn->hasFlag(BCI_IMM_B))
     {
@@ -38,9 +38,9 @@ bool ByteCodeSanityState::getImmediateB(SanityValue& result, const ByteCodeInstr
     return true;
 }
 
-bool ByteCodeSanityState::getImmediateC(SanityValue& result, const ByteCodeInstruction *ipn)
+bool ByteCodeSanityState::getImmediateC(SanityValue& result, const ByteCodeInstruction* ipn)
 {
-    if(!ipn)
+    if (!ipn)
         ipn = ip;
     if (ipn->hasFlag(BCI_IMM_C))
     {
@@ -55,9 +55,9 @@ bool ByteCodeSanityState::getImmediateC(SanityValue& result, const ByteCodeInstr
     return true;
 }
 
-bool ByteCodeSanityState::getImmediateD(SanityValue& result, const ByteCodeInstruction *ipn)
+bool ByteCodeSanityState::getImmediateD(SanityValue& result, const ByteCodeInstruction* ipn)
 {
-    if(!ipn)
+    if (!ipn)
         ipn = ip;
     if (ipn->hasFlag(BCI_IMM_D))
     {

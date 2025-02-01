@@ -450,13 +450,13 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
             }
         }
     }
-    
+
     for (uint32_t i = 0; i < countMatches; i++)
     {
         const auto curMatch = matches[i];
 
         // One symbol that comes from an alternative scope of a contextual call "struct".call is less
-        // prio than a symbol from direct scopes 
+        // prio than a symbol from direct scopes
         if (curMatch->altFlags.has(COLLECTED_SCOPE_CONTEXT_CALL))
         {
             for (uint32_t j = 0; j < countMatches; j++)

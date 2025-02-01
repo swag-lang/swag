@@ -173,7 +173,7 @@ bool FormatAst::outputFuncDecl(FormatContext& context, AstNode* node, uint32_t m
 
     // Constraints
     SWAG_CHECK(outputCompilerConstraints(context, funcDecl->constraints));
-    
+
     if (!funcDecl->content)
     {
         concat->addChar(';');
@@ -367,7 +367,7 @@ bool FormatAst::outputTypeLambda(FormatContext& context, AstNode* node)
         concat->addString("nl");
         concat->addBlank();
     }
-    
+
     if (node->is(AstNodeKind::TypeLambda))
         concat->addString("func");
     else

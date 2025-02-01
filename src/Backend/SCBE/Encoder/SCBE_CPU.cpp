@@ -7,8 +7,8 @@ void SCBE_CPU::clearInstructionCache()
     storageRegCount = UINT32_MAX;
     storageRegStack = 0;
     storageRegBits  = 0;
-    storageMemReg   = RAX;
-    storageReg      = RAX;
+    storageMemReg   = CPUReg::RAX;
+    storageReg      = CPUReg::RAX;
 }
 
 CPUSymbol* SCBE_CPU::getSymbol(const Utf8& name)

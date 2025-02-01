@@ -150,8 +150,8 @@ using SwagContext = struct SwagContext
 
 using FuncCB = void* (*) (void*, void*, void*, void*, void*, void*, void*, void*, void*, void*);
 
-using SwagBytecodeRun  = void    (*)(void*, ...);
-using SwagThreadRun    = void      (*)(void*);
+using SwagBytecodeRun  = void (*)(void*, ...);
+using SwagThreadRun    = void (*)(void*);
 using SwagMakeCallback = FuncCB (*)(void*);
 
 enum class SwagBackendGenType : uint32_t

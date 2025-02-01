@@ -1,7 +1,7 @@
 #include "pch.h"
+#include "Threading/RaceCondition.h"
 #include "Report/Assert.h"
 #include "Threading/Mutex.h"
-#include "Threading/RaceCondition.h"
 
 RaceCondition::RaceCondition(Instance* inst, bool read)
 {

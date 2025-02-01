@@ -202,13 +202,13 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
 
             if (cstOp->op == ByteCodeOp::CopyRBtoRA64)
             {
-                const auto reg    = cstOp->a.u32;
+                const auto reg = cstOp->a.u32;
                 if (reg >= context->vecReg.size() || context->vecReg[reg] <= 1)
                 {
                     const auto newReg = cstOp->b.u32;
                     if (newReg >= context->vecReg.size() || context->vecReg[newReg] <= 1)
                     {
-                        auto       ipT    = cstOp + 1;
+                        auto ipT = cstOp + 1;
                         while (ipT != ip + shift)
                         {
                             if (ByteCode::hasReadRefToRegA(ipT, reg) && !ByteCode::hasWriteRefToRegA(ipT, reg))
@@ -220,7 +220,7 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
                             if (ByteCode::hasReadRefToRegD(ipT, reg) && !ByteCode::hasWriteRefToRegD(ipT, reg))
                                 ipT->d.u32 = newReg;
                             if (ByteCode::hasWriteRefToReg(ipScan, newReg))
-                                break;                        
+                                break;
                             ipT += 1;
                         }
                     }

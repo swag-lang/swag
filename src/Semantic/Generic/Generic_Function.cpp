@@ -145,7 +145,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     auto cloneNode = funcNode;
     while (cloneNode->parent && cloneNode->parent->is(AstNodeKind::AttrUse))
         cloneNode = cloneNode->parent;
-    
+
     cloneNode = cloneNode->clone(cloneContext);
 
     auto newFuncNode = cloneNode;

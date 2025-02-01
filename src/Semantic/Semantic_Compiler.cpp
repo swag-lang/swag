@@ -1187,8 +1187,8 @@ bool Semantic::resolveCompilerIntrinsicRunes(SemanticContext* context)
 
     // Convert
     VectorNative<uint32_t> runes;
-    const char*      pz  = expr->computedValue()->text.buffer;
-    uint32_t         cpt = 0;
+    const char*            pz  = expr->computedValue()->text.buffer;
+    uint32_t               cpt = 0;
     while (cpt < expr->computedValue()->text.count)
     {
         uint32_t c;
@@ -1234,7 +1234,7 @@ bool Semantic::resolveCompilerIntrinsicIsConstExpr(const SemanticContext* contex
         node->setFlagsValueIsComputed();
         node->computedValue()->reg.b = expr->hasFlagComputedValue();
     }
-    
+
     return true;
 }
 

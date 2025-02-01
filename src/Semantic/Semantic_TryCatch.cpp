@@ -161,7 +161,7 @@ bool Semantic::resolveThrow(SemanticContext* context)
     return true;
 }
 
-void Semantic::setEmitTryCatchAssume(AstNode* node, const TypeInfo *typeInfo)
+void Semantic::setEmitTryCatchAssume(AstNode* node, const TypeInfo* typeInfo)
 {
     if (!node->hasOwnerTryCatchAssume())
         return;

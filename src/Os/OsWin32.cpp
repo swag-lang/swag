@@ -967,15 +967,15 @@ namespace OS
                 // We need to generate unwind stuff to get a correct callstack, and in case the runtime raises an exception
                 // with 'RaiseException' (panic, error, etc.)
                 // The function information is always the same, that's why we generate only one table per SCBE_X64.
-                VectorNative<CPURegister> unwindRegs;
-                VectorNative<uint32_t>    unwindOffsetRegs;
-                VectorNative<uint16_t>    unwind;
+                VectorNative<CPUReg>   unwindRegs;
+                VectorNative<uint32_t> unwindOffsetRegs;
+                VectorNative<uint16_t> unwind;
 
                 // Fake emit in order to compute the unwind infos
-                gen.emitPush(RDI);
-                unwindRegs.push_back(RDI);
+                gen.emitPush(CPUReg::RDI);
+                unwindRegs.push_back(CPUReg::RDI);
                 unwindOffsetRegs.push_back(gen.concat.totalCount());
-                gen.emitOpImmediate(RSP, stackSize, CPUOp::SUB, CPUBits::B64);
+                gen.emitOpImmediate(CPUReg::RSP, stackSize, CPUOp::SUB, CPUBits::B64);
                 const auto sizeProlog = gen.concat.totalCount();
                 SCBE_Coff::computeUnwind(unwindRegs, unwindOffsetRegs, stackSize, sizeProlog, unwind);
 
@@ -996,27 +996,27 @@ namespace OS
             startOffset = gen.concat.currentSP - gen.concat.firstBucket->data;
             SWAG_ASSERT(startOffset < JIT_SIZE_BUFFER);
 
-            gen.emitPush(RDI);
-            gen.emitOpImmediate(RSP, stackSize, CPUOp::SUB, CPUBits::B64);
-            gen.emitLoadImmediate(RDI, reinterpret_cast<uint64_t>(context->sp), CPUBits::B64, true);
+            gen.emitPush(CPUReg::RDI);
+            gen.emitOpImmediate(CPUReg::RSP, stackSize, CPUOp::SUB, CPUBits::B64);
+            gen.emitLoadImmediate(CPUReg::RDI, reinterpret_cast<uint64_t>(context->sp), CPUBits::B64, true);
             gen.emitCallParameters(typeInfoFunc, pushRAParam, 0, retCopyAddr);
-            gen.emitLoadImmediate(RAX, reinterpret_cast<uint64_t>(foreignPtr), CPUBits::B64, true);
-            gen.emitCallIndirect(RAX);
+            gen.emitLoadImmediate(CPUReg::RAX, reinterpret_cast<uint64_t>(foreignPtr), CPUBits::B64, true);
+            gen.emitCallIndirect(CPUReg::RAX);
 
             if (!returnType->isVoid() && !retCopyAddr)
             {
-                gen.emitLoadImmediate(RDI, reinterpret_cast<uint64_t>(context->registersRR), CPUBits::B64, true);
+                gen.emitLoadImmediate(CPUReg::RDI, reinterpret_cast<uint64_t>(context->registersRR), CPUBits::B64, true);
                 gen.emitCallResult(typeInfoFunc, 0);
             }
 
-            gen.emitOpImmediate(RSP, stackSize, CPUOp::ADD, CPUBits::B64);
-            gen.emitPop(RDI);
+            gen.emitOpImmediate(CPUReg::RSP, stackSize, CPUOp::ADD, CPUBits::B64);
+            gen.emitPop(CPUReg::RDI);
             gen.emitRet();
         }
 
         // The real deal : make the call
-        using FuncPtr            = void (*)();
-        const auto           ptr = reinterpret_cast<FuncPtr>(gen.concat.firstBucket->data + startOffset);
+        using FuncPtr  = void (*)();
+        const auto ptr = reinterpret_cast<FuncPtr>(gen.concat.firstBucket->data + startOffset);
         ptr();
 
         gen.concat.currentSP = reinterpret_cast<uint8_t*>(ptr);

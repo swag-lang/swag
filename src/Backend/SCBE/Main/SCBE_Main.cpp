@@ -44,7 +44,7 @@ void SCBE::emitOS(const BuildParameters& buildParameters) const
 
         // int _DllMainCRTStartup(void*, int, void*)
         pp.getOrAddSymbol("_DllMainCRTStartup", CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
-        pp.emitLoadImmediate(RAX, 1, CPUBits::B64);
+        pp.emitLoadImmediate(CPUReg::RAX, 1, CPUBits::B64);
         pp.emitRet();
     }
     else
@@ -82,7 +82,7 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
 
     VectorNative<uint16_t> unwind;
     const auto             beforeProlog = concat.totalCount();
-    pp.emitOpImmediate(RSP, 40, CPUOp::SUB, CPUBits::B64);
+    pp.emitOpImmediate(CPUReg::RSP, 40, CPUOp::SUB, CPUBits::B64);
     const auto sizeProlog = concat.totalCount() - beforeProlog;
     computeUnwind({}, {}, 40, sizeProlog, unwind);
 
@@ -90,46 +90,46 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
     SWAG_ASSERT(g_SystemAllocatorTable);
     const auto bcAlloc = static_cast<ByteCode*>(ByteCode::undoByteCodeLambda(static_cast<void**>(g_SystemAllocatorTable)[0]));
     SWAG_ASSERT(bcAlloc);
-    pp.emitSymbolRelocationAddr(RAX, pp.symDefaultAllocTable, 0);
-    pp.emitLoadAddressIndirect(RCX, RIP, 0);
+    pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symDefaultAllocTable, 0);
+    pp.emitLoadAddressIndirect(CPUReg::RCX, CPUReg::RIP, 0);
     pp.emitSymbolRelocationRef(bcAlloc->getCallName());
-    pp.emitStoreIndirect(RAX, 0, RCX, CPUBits::B64);
+    pp.emitStoreIndirect(CPUReg::RAX, 0, CPUReg::RCX, CPUBits::B64);
 
     // mainContext.allocator.itable = &defaultAllocTable;
-    pp.emitSymbolRelocationAddr(RCX, pp.symMC_mainContext_allocator_itable, 0);
-    pp.emitStoreIndirect(RCX, 0, RAX, CPUBits::B64);
+    pp.emitSymbolRelocationAddr(CPUReg::RCX, pp.symMC_mainContext_allocator_itable, 0);
+    pp.emitStoreIndirect(CPUReg::RCX, 0, CPUReg::RAX, CPUBits::B64);
 
     // main context flags
-    pp.emitSymbolRelocationAddr(RCX, pp.symMC_mainContext_flags, 0);
+    pp.emitSymbolRelocationAddr(CPUReg::RCX, pp.symMC_mainContext_flags, 0);
     const uint64_t contextFlags = getDefaultContextFlags(module);
-    pp.emitStoreImmediate(RCX, 0, contextFlags, CPUBits::B64);
+    pp.emitStoreImmediate(CPUReg::RCX, 0, contextFlags, CPUBits::B64);
 
     //__process_infos.contextTlsId = swag_runtime_tlsAlloc();
-    pp.emitSymbolRelocationAddr(RDI, pp.symPI_contextTlsId, 0);
+    pp.emitSymbolRelocationAddr(CPUReg::RDI, pp.symPI_contextTlsId, 0);
     emitInternalCall(pp, g_LangSpec->name_priv_tlsAlloc, {}, 0);
 
     //__process_infos.modules
-    pp.emitSymbolRelocationAddr(RCX, pp.symPI_modulesAddr, 0);
-    pp.emitSymbolRelocationAddr(RAX, pp.symCSIndex, module->modulesSliceOffset);
-    pp.emitStoreIndirect(RCX, 0, RAX, CPUBits::B64);
-    pp.emitSymbolRelocationAddr(RAX, pp.symPI_modulesCount, 0);
-    pp.emitStoreImmediate(RAX, 0, module->moduleDependencies.count + 1, CPUBits::B64);
+    pp.emitSymbolRelocationAddr(CPUReg::RCX, pp.symPI_modulesAddr, 0);
+    pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symCSIndex, module->modulesSliceOffset);
+    pp.emitStoreIndirect(CPUReg::RCX, 0, CPUReg::RAX, CPUBits::B64);
+    pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symPI_modulesCount, 0);
+    pp.emitStoreImmediate(CPUReg::RAX, 0, module->moduleDependencies.count + 1, CPUBits::B64);
 
     //__process_infos.args
-    pp.emitClear(RCX, CPUBits::B64);
-    pp.emitSymbolRelocationAddr(RAX, pp.symPI_argsAddr, 0);
-    pp.emitStoreIndirect(RAX, 0, RCX, CPUBits::B64);
-    pp.emitSymbolRelocationAddr(RAX, pp.symPI_argsCount, 0);
-    pp.emitStoreIndirect(RAX, 0, RCX, CPUBits::B64);
+    pp.emitClear(CPUReg::RCX, CPUBits::B64);
+    pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symPI_argsAddr, 0);
+    pp.emitStoreIndirect(CPUReg::RAX, 0, CPUReg::RCX, CPUBits::B64);
+    pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symPI_argsCount, 0);
+    pp.emitStoreIndirect(CPUReg::RAX, 0, CPUReg::RCX, CPUBits::B64);
 
     // Set main context
-    pp.emitSymbolRelocationAddr(RAX, pp.symMC_mainContext, 0);
-    pp.emitSymbolRelocationAddr(RCX, pp.symPI_defaultContext, 0);
-    pp.emitStoreIndirect(RCX, 0, RAX, CPUBits::B64);
+    pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symMC_mainContext, 0);
+    pp.emitSymbolRelocationAddr(CPUReg::RCX, pp.symPI_defaultContext, 0);
+    pp.emitStoreIndirect(CPUReg::RCX, 0, CPUReg::RAX, CPUBits::B64);
 
     // Set current backend as SCBE
-    pp.emitSymbolRelocationAddr(RCX, pp.symPI_backendKind, 0);
-    pp.emitStoreImmediate(RCX, 0, static_cast<uint32_t>(SwagBackendGenType::SCBE), CPUBits::B32);
+    pp.emitSymbolRelocationAddr(CPUReg::RCX, pp.symPI_backendKind, 0);
+    pp.emitStoreImmediate(CPUReg::RCX, 0, static_cast<uint32_t>(SwagBackendGenType::SCBE), CPUBits::B32);
 
     // Set default context in TLS
     pp.pushParams.clear();
@@ -228,8 +228,8 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
 
     pp.emitCall(g_LangSpec->name_priv_closeRuntime);
 
-    pp.emitClear(RAX, CPUBits::B64);
-    pp.emitOpImmediate(RSP, 40, CPUOp::ADD, CPUBits::B64);
+    pp.emitClear(CPUReg::RAX, CPUBits::B64);
+    pp.emitOpImmediate(CPUReg::RSP, 40, CPUOp::ADD, CPUBits::B64);
     pp.emitRet();
 
     const uint32_t endAddress = concat.totalCount();
@@ -259,11 +259,11 @@ void SCBE::emitGetTypeTable(const BuildParameters& buildParameters) const
 
     VectorNative<uint16_t> unwind;
     const auto             beforeProlog = concat.totalCount();
-    pp.emitOpImmediate(RSP, 40, CPUOp::SUB, CPUBits::B64);
+    pp.emitOpImmediate(CPUReg::RSP, 40, CPUOp::SUB, CPUBits::B64);
     const auto sizeProlog = concat.totalCount() - beforeProlog;
     computeUnwind({}, {}, 40, sizeProlog, unwind);
 
-    pp.emitOpImmediate(RSP, 40, CPUOp::ADD, CPUBits::B64);
+    pp.emitOpImmediate(CPUReg::RSP, 40, CPUOp::ADD, CPUBits::B64);
     pp.emitSymbolRelocationAddr(cc.returnByRegisterInteger, pp.symCSIndex, module->typesSliceOffset);
     pp.emitRet();
 
@@ -291,15 +291,15 @@ void SCBE::emitGlobalPreMain(const BuildParameters& buildParameters) const
 
     VectorNative<uint16_t> unwind;
     const auto             beforeProlog = concat.totalCount();
-    pp.emitPush(RDI);
-    pp.emitOpImmediate(RSP, 48, CPUOp::SUB, CPUBits::B64);
+    pp.emitPush(CPUReg::RDI);
+    pp.emitOpImmediate(CPUReg::RSP, 48, CPUOp::SUB, CPUBits::B64);
     const auto sizeProlog = concat.totalCount() - beforeProlog;
     computeUnwind({}, {}, 48, sizeProlog, unwind);
 
     // Store first parameter on stack (process infos ptr)
     SWAG_ASSERT(cc.paramByRegisterCount >= 1);
-    pp.emitLoadAddressIndirect(RDI, RSP, 0);
-    pp.emitStoreIndirect(RDI, 0, cc.paramByRegisterInteger[0], CPUBits::B64);
+    pp.emitLoadAddressIndirect(CPUReg::RDI, CPUReg::RSP, 0);
+    pp.emitStoreIndirect(CPUReg::RDI, 0, cc.paramByRegisterInteger[0], CPUBits::B64);
 
     // Copy process infos passed as a parameter to the process info struct of this module
     pp.pushParams.clear();
@@ -317,8 +317,8 @@ void SCBE::emitGlobalPreMain(const BuildParameters& buildParameters) const
         pp.emitCall(bc->getCallName());
     }
 
-    pp.emitOpImmediate(RSP, 48, CPUOp::ADD, CPUBits::B64);
-    pp.emitPop(RDI);
+    pp.emitOpImmediate(CPUReg::RSP, 48, CPUOp::ADD, CPUBits::B64);
+    pp.emitPop(CPUReg::RDI);
     pp.emitRet();
 
     const uint32_t endAddress = concat.totalCount();
@@ -345,15 +345,15 @@ void SCBE::emitGlobalInit(const BuildParameters& buildParameters) const
 
     VectorNative<uint16_t> unwind;
     const auto             beforeProlog = concat.totalCount();
-    pp.emitPush(RDI);
-    pp.emitOpImmediate(RSP, 48, CPUOp::SUB, CPUBits::B64);
+    pp.emitPush(CPUReg::RDI);
+    pp.emitOpImmediate(CPUReg::RSP, 48, CPUOp::SUB, CPUBits::B64);
     const auto sizeProlog = concat.totalCount() - beforeProlog;
     computeUnwind({}, {}, 48, sizeProlog, unwind);
 
     // Store first parameter on stack (process infos ptr)
     SWAG_ASSERT(cc.paramByRegisterCount >= 1);
-    pp.emitLoadAddressIndirect(RDI, RSP, 0);
-    pp.emitStoreIndirect(RDI, 0, cc.paramByRegisterInteger[0], CPUBits::B64);
+    pp.emitLoadAddressIndirect(CPUReg::RDI, CPUReg::RSP, 0);
+    pp.emitStoreIndirect(CPUReg::RDI, 0, cc.paramByRegisterInteger[0], CPUBits::B64);
 
     // Copy process infos passed as a parameter to the process info struct of this module
     pp.pushParams.clear();
@@ -363,16 +363,16 @@ void SCBE::emitGlobalInit(const BuildParameters& buildParameters) const
     emitInternalCallExt(pp, g_LangSpec->name_memcpy, pp.pushParams);
 
     // Thread local storage
-    pp.emitSymbolRelocationAddr(RDI, pp.symTls_threadLocalId, 0);
+    pp.emitSymbolRelocationAddr(CPUReg::RDI, pp.symTls_threadLocalId, 0);
     emitInternalCallExt(pp, g_LangSpec->name_priv_tlsAlloc, {}, 0);
 
     // Init type table slice for each dependency (by calling ???_getTypeTable)
-    pp.emitSymbolRelocationAddr(RCX, pp.symCSIndex, module->modulesSliceOffset + sizeof(SwagModule) + offsetof(SwagModule, types));
+    pp.emitSymbolRelocationAddr(CPUReg::RCX, pp.symCSIndex, module->modulesSliceOffset + sizeof(SwagModule) + offsetof(SwagModule, types));
     for (const auto& dep : module->moduleDependencies)
     {
         if (!dep->module->isSwag)
         {
-            pp.emitOpImmediate(RCX, sizeof(SwagModule), CPUOp::ADD, CPUBits::B64);
+            pp.emitOpImmediate(CPUReg::RCX, sizeof(SwagModule), CPUOp::ADD, CPUBits::B64);
             continue;
         }
 
@@ -380,12 +380,12 @@ void SCBE::emitGlobalInit(const BuildParameters& buildParameters) const
         pp.emitCall(callTable);
 
         // Count types is stored as a uint64_t at the start of the address
-        pp.emitLoadIndirect(R8, cc.returnByRegisterInteger, 0, CPUBits::B64);
-        pp.emitStoreIndirect(RCX, sizeof(uint64_t), R8, CPUBits::B64);
+        pp.emitLoadIndirect(CPUReg::R8, cc.returnByRegisterInteger, 0, CPUBits::B64);
+        pp.emitStoreIndirect(CPUReg::RCX, sizeof(uint64_t), CPUReg::R8, CPUBits::B64);
         pp.emitOpImmediate(cc.returnByRegisterInteger, sizeof(uint64_t), CPUOp::ADD, CPUBits::B64);
-        pp.emitStoreIndirect(RCX, 0, cc.returnByRegisterInteger, CPUBits::B64);
+        pp.emitStoreIndirect(CPUReg::RCX, 0, cc.returnByRegisterInteger, CPUBits::B64);
 
-        pp.emitOpImmediate(RCX, sizeof(SwagModule), CPUOp::ADD, CPUBits::B64);
+        pp.emitOpImmediate(CPUReg::RCX, sizeof(SwagModule), CPUOp::ADD, CPUBits::B64);
     }
 
     // Call to #init functions
@@ -397,8 +397,8 @@ void SCBE::emitGlobalInit(const BuildParameters& buildParameters) const
         pp.emitCall(bc->getCallName());
     }
 
-    pp.emitOpImmediate(RSP, 48, CPUOp::ADD, CPUBits::B64);
-    pp.emitPop(RDI);
+    pp.emitOpImmediate(CPUReg::RSP, 48, CPUOp::ADD, CPUBits::B64);
+    pp.emitPop(CPUReg::RDI);
     pp.emitRet();
 
     const uint32_t endAddress = concat.totalCount();
@@ -424,7 +424,7 @@ void SCBE::emitGlobalDrop(const BuildParameters& buildParameters) const
 
     VectorNative<uint16_t> unwind;
     const auto             beforeProlog = concat.totalCount();
-    pp.emitOpImmediate(RSP, 40, CPUOp::SUB, CPUBits::B64);
+    pp.emitOpImmediate(CPUReg::RSP, 40, CPUOp::SUB, CPUBits::B64);
     const auto sizeProlog = concat.totalCount() - beforeProlog;
     computeUnwind({}, {}, 40, sizeProlog, unwind);
 
@@ -440,7 +440,7 @@ void SCBE::emitGlobalDrop(const BuildParameters& buildParameters) const
     // __dropGlobalVariables
     emitInternalCallExt(pp, g_LangSpec->name_priv_dropGlobalVariables, pp.pushParams);
 
-    pp.emitOpImmediate(RSP, 40, CPUOp::ADD, CPUBits::B64);
+    pp.emitOpImmediate(CPUReg::RSP, 40, CPUOp::ADD, CPUBits::B64);
     pp.emitRet();
 
     const uint32_t endAddress = concat.totalCount();

@@ -501,7 +501,7 @@ namespace
         {
             if (!scope->isSameOrParentOf(localVar->ownerScope))
                 continue;
-            
+
             const SymbolOverload* overload = localVar->resolvedSymbolOverload();
             const auto            typeInfo = overload->typeInfo;
 

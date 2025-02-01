@@ -401,7 +401,7 @@ bool Parser::doInterfaceMtdDecl(AstNode* parent, AstNode** result)
         AstNode*        resultNode;
         SWAG_CHECK(doFuncDecl(stmt, &resultNode, TokenId::Invalid, FUNC_DECL_INTERFACE));
         funcNode = castAst<AstFuncDecl>(resultNode, AstNodeKind::FuncDecl);
-        if(funcNode->content)
+        if (funcNode->content)
             funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_DEFAULT_IMPL);
     }
 

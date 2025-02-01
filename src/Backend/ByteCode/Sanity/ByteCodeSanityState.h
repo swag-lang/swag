@@ -7,12 +7,12 @@ struct ByteCodeInstruction;
 
 struct ByteCodeSanityState
 {
-    bool getImmediateA(SanityValue& result, const ByteCodeInstruction *ipn = nullptr);
-    bool getImmediateB(SanityValue& result, const ByteCodeInstruction *ipn = nullptr);
-    bool getImmediateC(SanityValue& result, const ByteCodeInstruction *ipn = nullptr);
-    bool getImmediateD(SanityValue& result, const ByteCodeInstruction *ipn = nullptr);
+    bool getImmediateA(SanityValue& result, const ByteCodeInstruction* ipn = nullptr);
+    bool getImmediateB(SanityValue& result, const ByteCodeInstruction* ipn = nullptr);
+    bool getImmediateC(SanityValue& result, const ByteCodeInstruction* ipn = nullptr);
+    bool getImmediateD(SanityValue& result, const ByteCodeInstruction* ipn = nullptr);
     bool getRegister(SanityValue*& result, uint32_t reg);
-    
+
     bool checkStackOffset(uint64_t stackOffset, uint32_t sizeOf, const SanityValue* locValue) const;
     bool checkStackInitialized(void* addr, uint32_t sizeOf, const SanityValue* locValue = nullptr) const;
 

@@ -265,7 +265,7 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
         {
             SWAG_VERIFY(switchNode->expression, error(tokenParse, toErr(Err0333)));
             SWAG_VERIFY(caseNode->expressions.size() == 1, error(tokenParse, toErr(Err0332)));
-            
+
             caseNode->allocateExtension(ExtensionKind::Semantic);
             caseNode->extSemantic()->semanticBeforeFct = Semantic::resolveCaseBefore;
             SWAG_CHECK(eatToken());

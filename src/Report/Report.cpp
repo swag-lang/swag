@@ -135,7 +135,7 @@ namespace
                     continue;
                 if (!note1->display)
                     continue;
-                if(note->fromContext != note1->fromContext)
+                if (note->fromContext != note1->fromContext)
                     continue;
 
                 auto sourceFile1 = note1->sourceFile;
@@ -220,7 +220,7 @@ namespace
                 const auto note1 = notes[idxNote1];
                 if (!note1->display || !note1->hasLocation)
                     continue;
-                if(note->fromContext != note1->fromContext)
+                if (note->fromContext != note1->fromContext)
                     continue;
 
                 auto sourceFile1 = note1->sourceFile;
@@ -272,7 +272,7 @@ namespace
 
         std::ranges::sort(notes, [](auto& r1, auto& r2) { return r1->fromContext < r2->fromContext; });
         cleanNotes(notes);
-        
+
         log->writeEol();
 
         bool              marginBefore = true;
@@ -289,13 +289,13 @@ namespace
             if (n->errorLevel == DiagnosticLevel::Note && marginBefore)
             {
                 n->printMarginLineNo(log, 0);
-                
+
                 if (prevN && prevN->fromContext)
                 {
                     log->setColor(n->marginBorderColorContext);
                     log->print(LogSymbol::VerticalLineDot);
                 }
-                else if(!prevN || prevN->fromContext == n->fromContext)
+                else if (!prevN || prevN->fromContext == n->fromContext)
                 {
                     log->setColor(n->marginBorderColor);
                     log->print(LogSymbol::VerticalLine);

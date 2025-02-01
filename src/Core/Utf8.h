@@ -23,15 +23,15 @@ struct Utf8
 {
     static constexpr char32_t MAX_ENCODED_UNICODE = 0x10FFFF;
 
-             Utf8() = default;
-             Utf8(const char* from);
-             Utf8(const Utf8& from);
-             Utf8(const std::string& from);
+    Utf8() = default;
+    Utf8(const char* from);
+    Utf8(const Utf8& from);
+    Utf8(const std::string& from);
     explicit Utf8(const SwagSlice& slice);
     explicit Utf8(const char* from, uint32_t len);
     explicit Utf8(const Utf8& from, uint32_t capacity);
     explicit Utf8(Utf8&& from) noexcept;
-    ~        Utf8();
+    ~Utf8();
 
     void setView(const char* txt, uint32_t len);
     void setView(const Utf8& other);

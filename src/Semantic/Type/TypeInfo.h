@@ -101,7 +101,7 @@ enum class ComputeNameKind
 
 struct TypeInfo
 {
-             TypeInfo() = default;
+    TypeInfo()          = default;
     virtual ~TypeInfo() = default;
 
     explicit TypeInfo(const char* name, TypeInfoKind kind) :

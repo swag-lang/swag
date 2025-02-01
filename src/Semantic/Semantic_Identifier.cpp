@@ -941,7 +941,7 @@ bool Semantic::solveConstraints(SemanticContext* context, OneMatch* oneMatch, As
     for (const auto it : funcDecl->constraints)
     {
         const auto expr = it->lastChild();
-        
+
         // check is evaluated for each call, so we remove the AST_VALUE_COMPUTED computed flag.
         // where is evaluated once, so keep it.
         if (it->is(AstNodeKind::VerifyConstraint))
@@ -965,7 +965,7 @@ bool Semantic::solveConstraints(SemanticContext* context, OneMatch* oneMatch, As
                 return false;
             YIELD();
         }
-        
+
         // Result
         if (!expr->computedValue()->reg.b)
         {
@@ -1068,7 +1068,7 @@ bool Semantic::waitForSymbols(SemanticContext* context, AstIdentifier* identifie
             SWAG_CHECK(setupIdentifierRef(context, identifier));
 
             // Be sure to setup constexpr
-            if(identifier->typeInfo->isStruct() ||
+            if (identifier->typeInfo->isStruct() ||
                 identifier->typeInfo->isNamespace() ||
                 identifier->typeInfo->isEnum())
                 identifier->addAstFlag(AST_CONST_EXPR);

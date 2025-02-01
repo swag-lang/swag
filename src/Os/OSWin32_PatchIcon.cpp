@@ -105,10 +105,10 @@ namespace OS
         CloseHandle(file);
 
         icon.grpHeader.resize(3 * sizeof(WORD) + header.count * sizeof(GRPICONENTRY));
-        GRPICONHEADER* pGrpHeader = reinterpret_cast<GRPICONHEADER*>(icon.grpHeader.data());
-        pGrpHeader->reserved      = 0;
-        pGrpHeader->type          = 1;
-        pGrpHeader->count         = header.count;
+        auto pGrpHeader      = reinterpret_cast<GRPICONHEADER*>(icon.grpHeader.data());
+        pGrpHeader->reserved = 0;
+        pGrpHeader->type     = 1;
+        pGrpHeader->count    = header.count;
         for (WORD i = 0; i < header.count; ++i)
         {
             GRPICONENTRY* entry = pGrpHeader->entries + i;

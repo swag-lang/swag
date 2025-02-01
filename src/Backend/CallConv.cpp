@@ -9,16 +9,16 @@ void initCallConvKinds()
 {
     auto& ccSwag                = g_CallConv[Swag];
     ccSwag.paramByRegisterCount = 4;
-    ccSwag.paramByRegisterInteger.push_back(RCX);
-    ccSwag.paramByRegisterInteger.push_back(RDX);
-    ccSwag.paramByRegisterInteger.push_back(R8);
-    ccSwag.paramByRegisterInteger.push_back(R9);
-    ccSwag.paramByRegisterFloat.push_back(XMM0);
-    ccSwag.paramByRegisterFloat.push_back(XMM1);
-    ccSwag.paramByRegisterFloat.push_back(XMM2);
-    ccSwag.paramByRegisterFloat.push_back(XMM3);
-    ccSwag.returnByRegisterInteger = RAX;
-    ccSwag.returnByRegisterFloat   = XMM0;
+    ccSwag.paramByRegisterInteger.push_back(CPUReg::RCX);
+    ccSwag.paramByRegisterInteger.push_back(CPUReg::RDX);
+    ccSwag.paramByRegisterInteger.push_back(CPUReg::R8);
+    ccSwag.paramByRegisterInteger.push_back(CPUReg::R9);
+    ccSwag.paramByRegisterFloat.push_back(CPUReg::XMM0);
+    ccSwag.paramByRegisterFloat.push_back(CPUReg::XMM1);
+    ccSwag.paramByRegisterFloat.push_back(CPUReg::XMM2);
+    ccSwag.paramByRegisterFloat.push_back(CPUReg::XMM3);
+    ccSwag.returnByRegisterInteger = CPUReg::RAX;
+    ccSwag.returnByRegisterFloat   = CPUReg::XMM0;
     ccSwag.useRegisterFloat        = true;
     ccSwag.structParamByRegister   = true;
     ccSwag.structReturnByRegister  = true;

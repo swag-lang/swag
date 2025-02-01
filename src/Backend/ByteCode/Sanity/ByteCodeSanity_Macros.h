@@ -13,7 +13,7 @@
             STATE()->setStackKind(addr, sizeof(vb.reg.__reg), SanityValueKind::Unknown);   \
         else                                                                               \
             *(__cast*) addr __op vb.reg.__reg;                                             \
-        STATE()->setStackIps(addr, sizeof(vb.reg.__reg), false);                        \
+        STATE()->setStackIps(addr, sizeof(vb.reg.__reg), false);                           \
     }
 
 #define BINOP_EQ_OVF(__cast, __op, __reg, __ovf, __msg, __type)                                                     \
@@ -32,7 +32,7 @@
             SWAG_CHECK(checkOverflow(!__ovf(ip, ip->node, *(__cast*) addr, (__cast) vb.reg.__reg), __msg, __type)); \
             *(__cast*) addr __op vb.reg.__reg;                                                                      \
         }                                                                                                           \
-        STATE()->setStackIps(addr, sizeof(vb.reg.__reg), false);                                                 \
+        STATE()->setStackIps(addr, sizeof(vb.reg.__reg), false);                                                    \
     }
 
 #define ATOM_EQ(__cast, __op, __reg)                                                       \
@@ -53,7 +53,7 @@
             rc->reg.__reg = *(__cast*) addr;                                               \
             *(__cast*) addr __op rb->reg.__reg;                                            \
         }                                                                                  \
-        STATE()->setStackIps(addr, sizeof(vb.reg.__reg), false);                        \
+        STATE()->setStackIps(addr, sizeof(vb.reg.__reg), false);                           \
     }
 
 #define ATOM_EQ_XCHG(__cast, __reg)                                                        \
@@ -76,7 +76,7 @@
             if (rd->reg.__reg == rb->reg.__reg)                                            \
                 *(__cast*) addr = rc->reg.__reg;                                           \
         }                                                                                  \
-        STATE()->setStackIps(addr, sizeof(vb.reg.__reg), false);                        \
+        STATE()->setStackIps(addr, sizeof(vb.reg.__reg), false);                           \
     }
 
 #define BINOP_EQ_DIV(__cast, __op, __reg)                \
@@ -109,7 +109,7 @@
             __func(&r, r, vb.reg, sizeof(vb.reg.__reg) * 8, __isSigned);                   \
             *(__cast*) addr = r.__reg;                                                     \
         }                                                                                  \
-        STATE()->setStackIps(addr, sizeof(vb.reg.__reg), false);                        \
+        STATE()->setStackIps(addr, sizeof(vb.reg.__reg), false);                           \
     }
 
 #define BINOP_SHIFT(__cast, __reg, __func, __isSigned)                                                    \
@@ -117,7 +117,7 @@
     SWAG_CHECK(STATE()->getImmediateB(vb));                                                               \
     SWAG_CHECK(STATE()->getRegister(rc, ip->c.u32));                                                      \
     rc->kind = va.isConstant() && vb.isConstant() ? SanityValueKind::Constant : SanityValueKind::Unknown; \
-    rc->setIps(ip, &va, &vb, rc);                                                                      \
+    rc->setIps(ip, &va, &vb, rc);                                                                         \
     if (rc->isConstant())                                                                                 \
     {                                                                                                     \
         __func(&rc->reg, va.reg, vb.reg, sizeof(va.reg.__reg) * 8, __isSigned);                           \
@@ -128,7 +128,7 @@
     SWAG_CHECK(STATE()->getImmediateB(vb));                                                               \
     SWAG_CHECK(STATE()->getRegister(rc, ip->c.u32));                                                      \
     rc->kind = va.isConstant() && vb.isConstant() ? SanityValueKind::Constant : SanityValueKind::Unknown; \
-    rc->setIps(ip, &va, &vb, rc);                                                                      \
+    rc->setIps(ip, &va, &vb, rc);                                                                         \
     if (rc->isConstant())                                                                                 \
         rc->reg.__reg = va.reg.__reg __op vb.reg.__reg;
 
@@ -137,7 +137,7 @@
     SWAG_CHECK(STATE()->getImmediateB(vb));                                                               \
     SWAG_CHECK(STATE()->getRegister(rc, ip->c.u32));                                                      \
     rc->kind = va.isConstant() && vb.isConstant() ? SanityValueKind::Constant : SanityValueKind::Unknown; \
-    rc->setIps(ip, &va, &vb, rc);                                                                      \
+    rc->setIps(ip, &va, &vb, rc);                                                                         \
     if (rc->isConstant())                                                                                 \
     {                                                                                                     \
         SWAG_CHECK(checkOverflow(!__ovf(ip, ip->node, va.reg.__reg, vb.reg.__reg), __msg, __type));       \
@@ -152,7 +152,7 @@
     {                                                    \
         SWAG_CHECK(STATE()->getRegister(rc, ip->c.u32)); \
         rc->setUnknown();                                \
-        rc->setIps(ip, ra, &vb);                      \
+        rc->setIps(ip, ra, &vb);                         \
         break;                                           \
     }                                                    \
     BINOP(__op, __reg);
@@ -162,6 +162,6 @@
     SWAG_CHECK(STATE()->getImmediateB(vb));                                                               \
     SWAG_CHECK(STATE()->getRegister(rc, ip->c.u32));                                                      \
     rc->kind = va.isConstant() && vb.isConstant() ? SanityValueKind::Constant : SanityValueKind::Unknown; \
-    rc->setIps(ip, &va, &vb, rc);                                                                      \
+    rc->setIps(ip, &va, &vb, rc);                                                                         \
     if (rc->isConstant())                                                                                 \
         rc->reg.b = va.reg.__reg __op vb.reg.__reg;

@@ -47,7 +47,7 @@ struct TypeGen
         MapUtf8<MapType>                        exportedTypes;
         MapUtf8<TypeGenStructJob*>              exportedTypesJob;
         Map<const ExportedTypeInfo*, TypeInfo*> exportedTypesReverse;
-                                                SWAG_RACE_CONDITION_INSTANCE_TYPEGEN(raceC);
+        SWAG_RACE_CONDITION_INSTANCE_TYPEGEN(raceC);
     };
 
     void         setup(const Utf8& moduleName);
@@ -73,5 +73,5 @@ struct TypeGen
     VectorNative<MapPerSeg*> mapPerSegment;
 };
 
-#define OFFSET_OF(__field)   (storageOffset + (uint32_t) ((uint64_t) & (__field) - (uint64_t) exportedTypeInfoValue))
+#define OFFSET_OF(__field)   (storageOffset + (uint32_t) ((uint64_t) &(__field) - (uint64_t) exportedTypeInfoValue))
 #define OFFSET_OF_R(__field) (storageOffset + (uint32_t) ((uint64_t) (__field) - (uint64_t) exportedValue))

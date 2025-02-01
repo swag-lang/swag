@@ -254,7 +254,7 @@ bool FormatAst::outputCast(FormatContext& context, const AstNode* node)
         concat->addChar('<');
         concat->addString(g_LangSpec->name_unconst);
         concat->addChar('>');
-    }    
+    }
 
     concat->addChar('(');
     SWAG_CHECK(outputNode(context, node->firstChild()));

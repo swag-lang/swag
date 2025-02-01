@@ -14,7 +14,7 @@ bool SanityValue::isNotZero() const
     if (kind == SanityValueKind::Constant && reg.u64)
         return true;
     if (kind == SanityValueKind::Unknown && flags.has(SANITY_VALUE_FLAG_NOT_ZERO))
-        return true;    
+        return true;
     return false;
 }
 
@@ -80,7 +80,7 @@ void SanityValue::setConstant(double val)
 
 void SanityValue::setUnknown(SanityValueFlags fl)
 {
-    kind = SanityValueKind::Unknown;
+    kind  = SanityValueKind::Unknown;
     flags = fl;
 }
 

@@ -125,7 +125,7 @@ struct FormatAst
     bool outputTypeLambda(FormatContext& context, AstNode* node);
     bool outputFuncDeclParameters(FormatContext& context, AstNode* parameters, bool isMethod);
     bool outputFuncReturnType(FormatContext& context, const AstFuncDecl* funcNode);
-    bool outputFuncSignature(FormatContext& context, AstNode* node, AstNode* genericParameters, AstNode* parameters, const VectorNative<AstNode*> *constraints);
+    bool outputFuncSignature(FormatContext& context, AstNode* node, AstNode* genericParameters, AstNode* parameters, const VectorNative<AstNode*>* constraints);
     bool outputGenericParameters(FormatContext& context, AstNode* node);
     bool outputChildrenTypeAlias(FormatContext& context, AstNode* node, uint32_t start, uint32_t& processed);
     bool outputTypeAlias(FormatContext& context, AstNode* node, uint32_t maxLenName = 0);
@@ -135,7 +135,7 @@ struct FormatAst
     bool outputAttributesGlobalUsing(const FormatContext& context, const AstNode* node) const;
     bool outputCompilerSpecialValue(FormatContext& context, AstNode* node) const;
     bool outputCompilerIf(FormatContext& context, const Utf8& name, AstNode* node);
-    bool outputCompilerConstraints(FormatContext& context, const VectorNative<AstNode*> &constraints);
+    bool outputCompilerConstraints(FormatContext& context, const VectorNative<AstNode*>& constraints);
     bool outputCompilerExpr(FormatContext& context, const AstNode* node);
     bool outputCompilerExport(FormatContext& context, AstNode* node) const;
     bool outputCompilerCode(FormatContext& context, AstNode* node);

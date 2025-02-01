@@ -124,7 +124,7 @@ bool Parser::invalidTokenError(InvalidTokenError kind)
             else if (startToken.is(TokenId::SymRightSquare))
                 msg = toErr(Err0282);
             else if (startToken.is(TokenId::CompilerPlaceHolder))
-                msg = toErr(Err0309);        
+                msg = toErr(Err0309);
             else
             {
                 Diagnostic err{sourceFile, startToken, toErr(Err0630)};
@@ -140,7 +140,7 @@ bool Parser::invalidTokenError(InvalidTokenError kind)
 
         ///////////////////////////////////////////
         case InvalidTokenError::PrimaryExpression:
-            
+
             if (Tokenizer::isKeyword(prevTokenParse.token.id) || Tokenizer::isSymbol(prevTokenParse.token.id))
             {
                 Diagnostic err{sourceFile, tokenParse, formErr(Err0184, prevTokenParse.cstr())};

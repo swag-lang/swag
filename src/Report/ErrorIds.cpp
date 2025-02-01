@@ -856,7 +856,7 @@ void initErrors()
     SWAG_ERROR(Err0711, "unused return value                               $ cannot ignore the return value of the function [[%s]]                                                                                    $ consider prefixing the call with [[discard]] to ignore the return value");
     SWAG_ERROR(Err0712, "unused return value                               $ cannot ignore the return value of the intrinsic [[%s]]                                                                                   $ ");
     SWAG_ERROR(Err0713, "unused return value                               $ cannot ignore the return value of the lambda [[%s]]                                                                                      $ consider prefixing the call with [[discard]] to ignore the return value");
-	
+
     SWAG_ERROR(Err0714, "already defined [[#import]] location              $ cannot redefine an [[#import]] location                                                                                                  $ ");
     SWAG_ERROR(Err0715, "already defined [[#import]] location              $ cannot redefine the [[#import]] location of the module [[%s]]                                                                            $ already defined as [[%s]]");
     SWAG_ERROR(Err0716, "already defined [[#import]] version               $ cannot redefine an [[#import]] version                                                                                                   $ ");
@@ -927,7 +927,7 @@ void initErrors()
     SWAG_ERROR(Err0782, "unresolved variable type                          $ cannot deduce the type of %s [[%s]]                                                                                                      $ ");
     SWAG_ERROR(Err0783, "unsupported [[#nameof]] argument                  $ cannot evaluate the [[#nameof]] argument                                                                                                 $ ");
     SWAG_ERROR(Err0784, "unsupported [[#stringof]] argument                $ cannot evaluate the [[#stringof]] argument                                                                                               $ ");
-    
+
     SWAG_ERROR(Err0428, "type mismatch assign                              $ cannot initialize a struct member with a function pointer                                                                                $ ");
     SWAG_ERROR(Err0353, "file patch error                                  $ failed to patch icon in file [[%s]] : %s                                                                                                 $ ");
     SWAG_ERROR(Err0785, nullptr);

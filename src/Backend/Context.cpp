@@ -165,10 +165,9 @@ namespace
         return doCallback(&__callback##__idx, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10);                                          \
     }
 
-#define USE_CB(__idx)              \
-    {                              \
-        nullptr, __callback##__idx \
-    }
+#define USE_CB(__idx) \
+    {                 \
+        nullptr, __callback##__idx}
 
     // WARNING WARNING WARNING WARNING WARNING WARNING
     // WARNING WARNING WARNING WARNING WARNING WARNING

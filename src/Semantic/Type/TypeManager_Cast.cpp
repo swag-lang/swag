@@ -2360,7 +2360,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
             SWAG_ASSERT(castFlags.has(CAST_FLAG_ACCEPT_PENDING));
             return true;
         }
-        
+
         if (child)
         {
             const auto childType = concreteType(child->typeInfo, CONCRETE_FUNC);
@@ -2451,7 +2451,7 @@ bool TypeManager::castToAny(SemanticContext* context, TypeInfo* toType, TypeInfo
 {
     if (fromType->isAny())
         return true;
-        
+
     if (fromType->isPointerNull())
     {
         if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
@@ -2513,7 +2513,7 @@ bool TypeManager::castFromAny(SemanticContext* context, TypeInfo* toType, TypeIn
 {
     if (toType->isAny())
         return true;
-    
+
     const auto toRealType = concretePtrRef(toType);
 
     if (!castFlags.has(CAST_FLAG_EXPLICIT))
@@ -3110,7 +3110,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
                 toTypePointer->pointedType->isSame(fromType, castFlags.with(CAST_FLAG_CAST)))
             {
                 if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
-                {                   
+                {
                     fromNode->typeInfoCast = fromNode->typeInfo;
                     fromNode->typeInfo     = toType;
                 }

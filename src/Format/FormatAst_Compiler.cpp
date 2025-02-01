@@ -205,7 +205,7 @@ bool FormatAst::outputCompilerConstraints(FormatContext& context, const VectorNa
 
         if (i == constraints.size() - 1)
             break;
-        
+
         node = constraints[i + 1];
         concat->addEol();
         concat->addIndent(context.indent);

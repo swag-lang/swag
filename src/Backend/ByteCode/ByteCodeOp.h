@@ -1,6 +1,6 @@
 #pragma once
 
-using OpFlags                         = Flags<uint64_t>;
+using OpFlags                      = Flags<uint64_t>;
 constexpr OpFlags OPF_WRITE_A      = 0x0000000000000001;
 constexpr OpFlags OPF_WRITE_B      = 0x0000000000000002;
 constexpr OpFlags OPF_WRITE_C      = 0x0000000000000004;

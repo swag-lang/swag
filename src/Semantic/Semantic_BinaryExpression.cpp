@@ -1106,7 +1106,7 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
     if (leftTypeInfo->isPointerNull() || rightTypeInfo->isPointerNull())
     {
         const Diagnostic err{node, node->token, formErr(Err0222, node->token.cstr())};
-        return context->report(err);        
+        return context->report(err);
     }
 
     switch (node->token.id)

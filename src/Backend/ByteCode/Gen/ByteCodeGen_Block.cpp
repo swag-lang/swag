@@ -838,7 +838,7 @@ bool ByteCodeGen::emitSwitchAfterExpr(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGen::emitSwitchCaseInterface(const ByteCodeGenContext* context, const AstNode* expr, const AstSwitchCase* caseNode, RegisterList& r0, uint32_t &sizeofRet)
+bool ByteCodeGen::emitSwitchCaseInterface(const ByteCodeGenContext* context, const AstNode* expr, const AstSwitchCase* caseNode, RegisterList& r0, uint32_t& sizeofRet)
 {
     r0 = reserveRegisterRC(context);
 

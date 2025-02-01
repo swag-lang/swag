@@ -10,7 +10,7 @@ enum CallConvKind
 };
 
 // ReSharper disable CppInconsistentNaming
-enum CPURegister : uint8_t
+enum class CPUReg : uint8_t
 {
     RAX  = 0b0000,
     RBX  = 0b0011,
@@ -49,20 +49,20 @@ struct CallConv
     uint32_t paramByRegisterCount = 4;
 
     // The registers to use when passing parameter by register, and if it's integer
-    VectorNative<CPURegister> paramByRegisterInteger;
+    VectorNative<CPUReg> paramByRegisterInteger;
 
     // The registers to use when passing parameter by register, and if it's float
-    VectorNative<CPURegister> paramByRegisterFloat;
+    VectorNative<CPUReg> paramByRegisterFloat;
 
     // The register used to return an integer
-    CPURegister returnByRegisterInteger = RAX;
+    CPUReg returnByRegisterInteger = CPUReg::RAX;
 
     // The register used to return a float
-    CPURegister returnByRegisterFloat = XMM0;
+    CPUReg returnByRegisterFloat = CPUReg::XMM0;
 
     // Scratch registers used to optimized generation (x64 backend)
-    CPURegister firstScratchRegister = R12;
-    uint32_t    numScratchRegisters  = 4;
+    CPUReg   firstScratchRegister = CPUReg::R12;
+    uint32_t numScratchRegisters  = 4;
 
     // If a float is passed by register, use 'paramByRegisterFloat' instead of 'paramByRegisterInteger'
     bool useRegisterFloat = true;

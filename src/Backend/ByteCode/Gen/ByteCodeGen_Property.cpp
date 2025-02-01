@@ -156,7 +156,7 @@ bool ByteCodeGen::emitKindOfInterface(ByteCodeGenContext* context, AstNode* node
     freeRegisterRC(context, node->resultRegisterRc[0]);
     node->resultRegisterRc = rc;
     emitSafetyNullCheck(context, node->resultRegisterRc);
-    
+
     // Deref the type from the itable
     const auto inst = EMIT_INST3(context, ByteCodeOp::DecPointer64, node->resultRegisterRc, 0, node->resultRegisterRc);
     inst->b.u64     = sizeof(void*);

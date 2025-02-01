@@ -4,7 +4,7 @@ struct Job;
 struct JobThread
 {
     explicit JobThread(uint32_t rank);
-    ~        JobThread();
+    ~JobThread();
 
     void loop();
     void notifyJob();

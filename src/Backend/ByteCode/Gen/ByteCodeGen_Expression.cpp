@@ -402,7 +402,7 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, const 
         emitMakeSegPointer(context, node->computedValue()->storageSegment, node->computedValue()->storageOffset, regList[0]);
         return true;
     }
-    
+
     if (typeInfo->isNative())
     {
         switch (typeInfo->nativeType)
@@ -463,7 +463,7 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, const 
                 return Report::internalError(context->node, "emitLiteral, type not supported");
         }
     }
-    
+
     if (typeInfo->isPointerNull())
     {
         if (toType && (toType->isSlice() || toType->isString()))
@@ -479,7 +479,7 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, const 
 
         return true;
     }
-    
+
     if (typeInfo->isArray())
     {
         const auto typeArray = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
@@ -488,13 +488,13 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, const 
         EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64 = typeArray->count;
         return true;
     }
-    
+
     if (typeInfo->isStruct() || typeInfo->isListTuple() || typeInfo->isListArray())
     {
         emitMakeSegPointer(context, node->computedValue()->storageSegment, node->computedValue()->storageOffset, regList[0]);
         return true;
     }
-    
+
     if (typeInfo->isPointer() && node->typeInfoCast && node->typeInfoCast->isString())
     {
         const auto storageSegment = Semantic::getConstantSegFromContext(node);
@@ -503,7 +503,7 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, const 
         emitMakeSegPointer(context, storageSegment, storageOffset, regList[0]);
         return true;
     }
-    
+
     if (typeInfo->isSlice() && node->typeInfoCast && node->typeInfoCast->isString())
     {
         reserveLinearRegisterRC2(context, regList);
@@ -514,7 +514,7 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, const 
         EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64 = node->computedValue()->text.length();
         return true;
     }
-    
+
     if (typeInfo->isSlice())
     {
         // :SliceLiteral
@@ -525,13 +525,13 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, const 
         EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64 = slice->count;
         return true;
     }
-    
+
     if (typeInfo->isPointer())
     {
         EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList)->b.u64 = node->computedValue()->reg.u64;
         return true;
     }
-    
+
     return Report::internalError(context->node, form("emitLiteral, unsupported type [[%s]]", typeInfo->getDisplayNameC()).cstr());
 }
 

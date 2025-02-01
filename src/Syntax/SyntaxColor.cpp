@@ -560,7 +560,7 @@ Utf8 doSyntaxColor(const Utf8& line, SyntaxColorContext& context, bool force)
                     result += syntaxColorToVTS(SyntaxColor::SyntaxType, mode);
                     result += identifier;
                     result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
-                }                
+                }
                 else if (Tokenizer::isKeyword(*it))
                 {
                     result += syntaxColorToVTS(SyntaxColor::SyntaxKeyword, mode);

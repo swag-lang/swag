@@ -130,9 +130,9 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
         {
             if (kind == AstNodeKind::FuncDecl && checkNode->isEmptyFct() && !checkNode->isForeign())
                 return true;
-            if(!checkNode->isEmptyFct())
+            if (!checkNode->isEmptyFct())
                 nakedName = "defined function";
-            else if(checkNode->isForeign())
+            else if (checkNode->isForeign())
                 nakedName = "foreign function";
             specificMsg = "an empty function";
         }

@@ -28,12 +28,12 @@ bool Parser::checkIsValidVarName(AstNode* node, VarDeclFlags varDeclFlags) const
         return error(node->token, toErr(Err0269));
 
     // Special field name starts with 'item' followed by a number
-    if(varDeclFlags.has(VAR_DECL_FLAG_FOR_STRUCT) && !node->hasAstFlag(AST_GENERATED))
+    if (varDeclFlags.has(VAR_DECL_FLAG_FOR_STRUCT) && !node->hasAstFlag(AST_GENERATED))
     {
         // User cannot name its variables itemX
         if (isItemName(node->token.text))
             return context->report({node, node->token, formErr(Err0510, node->token.cstr())});
-    }      
+    }
 
     if (node->token.text[0] != '#')
         return true;
@@ -254,7 +254,7 @@ bool Parser::doVarDeclSingleIdentifier(AstNode* parent, AstNode* leftNode, AstNo
     SWAG_CHECK(checkIsSingleIdentifier(leftNode, "as a variable name"));
     const auto identifier = leftNode->lastChild();
     SWAG_CHECK(checkIsValidVarName(identifier, varDeclFlags));
-    
+
     AstVarDecl* varNode = Ast::newVarDecl(identifier->token.text, this, parent);
     *result             = varNode;
     varNode->kind       = kind;

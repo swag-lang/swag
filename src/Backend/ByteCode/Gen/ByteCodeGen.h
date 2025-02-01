@@ -213,7 +213,7 @@ namespace ByteCodeGen
     bool emitSwitchAfterExpr(ByteCodeGenContext* context);
     bool emitSwitchCaseAfterValue(ByteCodeGenContext* context);
     bool emitSwitchCaseAny(ByteCodeGenContext* context, AstNode* expr, const AstSwitchCase* caseNode, RegisterList& r0);
-    bool emitSwitchCaseInterface(const ByteCodeGenContext* context, const AstNode* expr, const AstSwitchCase* caseNode, RegisterList& r0, uint32_t &sizeofRet);
+    bool emitSwitchCaseInterface(const ByteCodeGenContext* context, const AstNode* expr, const AstSwitchCase* caseNode, RegisterList& r0, uint32_t& sizeofRet);
     bool emitSwitchCaseBeforeBlock(ByteCodeGenContext* context);
     bool emitSafetyUnreachable(ByteCodeGenContext* context);
     bool emitSafetySwitchDefault(ByteCodeGenContext* context);

@@ -50,7 +50,7 @@ struct ErrorParam
     AstFuncCallParam*  failedParam           = nullptr;
     uint32_t           badParamIdx           = 0;
     AstFuncDecl*       destFuncDecl          = nullptr;
-    AstTypeExpression*     destLambdaDecl        = nullptr;
+    AstTypeExpression* destLambdaDecl        = nullptr;
     AstAttrDecl*       destAttrDecl          = nullptr;
     AstStruct*         destStructDecl        = nullptr;
     AstNode*           destParameters        = nullptr;
