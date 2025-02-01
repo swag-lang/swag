@@ -1638,10 +1638,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::AffectOpPlusEqS8_SSafe:
             case ByteCodeOp::AffectOpPlusEqU8_SSafe:
-                if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 == 1)
-                    pp.emitInc(CPUReg::RDI, offsetStack + ip->a.u32, CPUBits::B8);
-                else
-                    emitBinOpEqS(pp, ip, offsetStack, CPUOp::ADD, CPUBits::B8);
+                emitBinOpEqS(pp, ip, offsetStack, CPUOp::ADD, CPUBits::B8);
                 break;
             case ByteCodeOp::AffectOpPlusEqS8_SSSafe:
             case ByteCodeOp::AffectOpPlusEqU8_SSSafe:
@@ -1658,10 +1655,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::AffectOpPlusEqS16_SSafe:
             case ByteCodeOp::AffectOpPlusEqU16_SSafe:
-                if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 == 1)
-                    pp.emitInc(CPUReg::RDI, offsetStack + ip->a.u32, CPUBits::B16);
-                else
-                    emitBinOpEqS(pp, ip, offsetStack, CPUOp::ADD, CPUBits::B16);
+                emitBinOpEqS(pp, ip, offsetStack, CPUOp::ADD, CPUBits::B16);
                 break;
             case ByteCodeOp::AffectOpPlusEqS16_SSSafe:
             case ByteCodeOp::AffectOpPlusEqU16_SSSafe:
@@ -1678,10 +1672,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::AffectOpPlusEqS32_SSafe:
             case ByteCodeOp::AffectOpPlusEqU32_SSafe:
-                if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 == 1)
-                    pp.emitInc(CPUReg::RDI, offsetStack + ip->a.u32, CPUBits::B32);
-                else
-                    emitBinOpEqS(pp, ip, offsetStack, CPUOp::ADD, CPUBits::B32);
+                emitBinOpEqS(pp, ip, offsetStack, CPUOp::ADD, CPUBits::B32);
                 break;
             case ByteCodeOp::AffectOpPlusEqS32_SSSafe:
             case ByteCodeOp::AffectOpPlusEqU32_SSSafe:
@@ -1698,10 +1689,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::AffectOpPlusEqS64_SSafe:
             case ByteCodeOp::AffectOpPlusEqU64_SSafe:
-                if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 == 1)
-                    pp.emitInc(CPUReg::RDI, offsetStack + ip->a.u32, CPUBits::B64);
-                else
-                    emitBinOpEqS(pp, ip, offsetStack, CPUOp::ADD, CPUBits::B64);
+                emitBinOpEqS(pp, ip, offsetStack, CPUOp::ADD, CPUBits::B64);
                 break;
             case ByteCodeOp::AffectOpPlusEqS64_SSSafe:
             case ByteCodeOp::AffectOpPlusEqU64_SSSafe:
