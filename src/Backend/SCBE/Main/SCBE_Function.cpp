@@ -1196,7 +1196,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::AffectOpDivEqS16:
                 pp.emitLoadIndirect(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
                 pp.emitLoadIndirect(CPUReg::RAX, CPUReg::RAX, 0, CPUBits::B16);
-                pp.emitCwd();
+                pp.emitConvert(CPUReg::RDX, CPUReg::RAX, CPUReg::RAX, CPUBits::B8);
                 emitIMMB(pp, ip, CPUReg::RCX, CPUBits::B16);
                 pp.emitOp(CPUReg::RCX, CPUReg::RAX, CPUOp::IDIV, CPUBits::B16);
                 pp.emitLoadIndirect(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
@@ -1204,7 +1204,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::AffectOpDivEqS16_S:
                 pp.emitLoadIndirect(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32, CPUBits::B16);
-                pp.emitCwd();
+                pp.emitConvert(CPUReg::RDX, CPUReg::RAX, CPUReg::RAX, CPUBits::B8);
                 emitIMMB(pp, ip, CPUReg::RCX, CPUBits::B16);
                 pp.emitOp(CPUReg::RCX, CPUReg::RAX, CPUOp::IDIV, CPUBits::B16);
                 pp.emitLoadAddressIndirect(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->a.u32);
@@ -1212,7 +1212,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::AffectOpDivEqS16_SS:
                 pp.emitLoadIndirect(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32, CPUBits::B16);
-                pp.emitCwd();
+                pp.emitConvert(CPUReg::RDX, CPUReg::RAX, CPUReg::RAX, CPUBits::B8);
                 pp.emitLoadIndirect(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->b.u32, CPUBits::B16);
                 pp.emitOp(CPUReg::RCX, CPUReg::RAX, CPUOp::IDIV, CPUBits::B16);
                 pp.emitLoadAddressIndirect(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->a.u32);
@@ -1222,7 +1222,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::AffectOpDivEqS32:
                 pp.emitLoadIndirect(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
                 pp.emitLoadIndirect(CPUReg::RAX, CPUReg::RAX, 0, CPUBits::B32);
-                pp.emitCdq();
+                pp.emitConvert(CPUReg::RDX, CPUReg::RAX, CPUReg::RAX, CPUBits::B16);
                 emitIMMB(pp, ip, CPUReg::RCX, CPUBits::B32);
                 pp.emitOp(CPUReg::RCX, CPUReg::RAX, CPUOp::IDIV, CPUBits::B32);
                 pp.emitLoadIndirect(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
@@ -1230,7 +1230,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::AffectOpDivEqS32_S:
                 pp.emitLoadIndirect(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32, CPUBits::B32);
-                pp.emitCdq();
+                pp.emitConvert(CPUReg::RDX, CPUReg::RAX, CPUReg::RAX, CPUBits::B16);
                 emitIMMB(pp, ip, CPUReg::RCX, CPUBits::B32);
                 pp.emitOp(CPUReg::RCX, CPUReg::RAX, CPUOp::IDIV, CPUBits::B32);
                 pp.emitLoadAddressIndirect(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->a.u32);
@@ -1238,7 +1238,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::AffectOpDivEqS32_SS:
                 pp.emitLoadIndirect(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32, CPUBits::B32);
-                pp.emitCdq();
+                pp.emitConvert(CPUReg::RDX, CPUReg::RAX, CPUReg::RAX, CPUBits::B16);
                 pp.emitLoadIndirect(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->b.u32, CPUBits::B32);
                 pp.emitOp(CPUReg::RCX, CPUReg::RAX, CPUOp::IDIV, CPUBits::B32);
                 pp.emitLoadAddressIndirect(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->a.u32);
@@ -1248,7 +1248,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::AffectOpDivEqS64:
                 pp.emitLoadIndirect(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
                 pp.emitLoadIndirect(CPUReg::RAX, CPUReg::RAX, 0, CPUBits::B64);
-                pp.emitCqo();
+                pp.emitConvert(CPUReg::RDX, CPUReg::RAX, CPUReg::RAX, CPUBits::B32);
                 emitIMMB(pp, ip, CPUReg::RCX, CPUBits::B64);
                 pp.emitOp(CPUReg::RCX, CPUReg::RAX, CPUOp::IDIV, CPUBits::B64);
                 pp.emitLoadIndirect(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
@@ -1256,7 +1256,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::AffectOpDivEqS64_S:
                 pp.emitLoadIndirect(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32, CPUBits::B64);
-                pp.emitCqo();
+                pp.emitConvert(CPUReg::RDX, CPUReg::RAX, CPUReg::RAX, CPUBits::B32);
                 emitIMMB(pp, ip, CPUReg::RCX, CPUBits::B64);
                 pp.emitOp(CPUReg::RCX, CPUReg::RAX, CPUOp::IDIV, CPUBits::B64);
                 pp.emitLoadAddressIndirect(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->a.u32);
@@ -1264,7 +1264,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::AffectOpDivEqS64_SS:
                 pp.emitLoadIndirect(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32, CPUBits::B64);
-                pp.emitCqo();
+                pp.emitConvert(CPUReg::RDX, CPUReg::RAX, CPUReg::RAX, CPUBits::B32);
                 pp.emitLoadIndirect(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->b.u32, CPUBits::B64);
                 pp.emitOp(CPUReg::RCX, CPUReg::RAX, CPUOp::IDIV, CPUBits::B64);
                 pp.emitLoadAddressIndirect(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->a.u32);
@@ -1447,7 +1447,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::AffectOpModuloEqS16:
                 pp.emitLoadIndirect(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
                 pp.emitLoadIndirect(CPUReg::RAX, CPUReg::RAX, 0, CPUBits::B16);
-                pp.emitCwd();
+                pp.emitConvert(CPUReg::RDX, CPUReg::RAX, CPUReg::RAX, CPUBits::B8);
                 emitIMMB(pp, ip, CPUReg::RCX, CPUBits::B16);
                 pp.emitOp(CPUReg::RCX, CPUReg::RAX, CPUOp::IDIV, CPUBits::B16);
                 pp.emitLoadIndirect(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
@@ -1455,7 +1455,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::AffectOpModuloEqS16_S:
                 pp.emitLoadIndirect(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32, CPUBits::B16);
-                pp.emitCwd();
+                pp.emitConvert(CPUReg::RDX, CPUReg::RAX, CPUReg::RAX, CPUBits::B8);
                 emitIMMB(pp, ip, CPUReg::RCX, CPUBits::B16);
                 pp.emitOp(CPUReg::RCX, CPUReg::RAX, CPUOp::IDIV, CPUBits::B16);
                 pp.emitLoadAddressIndirect(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->a.u32);
@@ -1463,7 +1463,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::AffectOpModuloEqS16_SS:
                 pp.emitLoadIndirect(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32, CPUBits::B16);
-                pp.emitCwd();
+                pp.emitConvert(CPUReg::RDX, CPUReg::RAX, CPUReg::RAX, CPUBits::B8);
                 pp.emitLoadIndirect(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->b.u32, CPUBits::B16);
                 pp.emitOp(CPUReg::RCX, CPUReg::RAX, CPUOp::IDIV, CPUBits::B16);
                 pp.emitLoadAddressIndirect(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->a.u32);
@@ -1473,7 +1473,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::AffectOpModuloEqS32:
                 pp.emitLoadIndirect(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
                 pp.emitLoadIndirect(CPUReg::RAX, CPUReg::RAX, 0, CPUBits::B32);
-                pp.emitCdq();
+                pp.emitConvert(CPUReg::RDX, CPUReg::RAX, CPUReg::RAX, CPUBits::B16);
                 emitIMMB(pp, ip, CPUReg::RCX, CPUBits::B32);
                 pp.emitOp(CPUReg::RCX, CPUReg::RAX, CPUOp::IDIV, CPUBits::B32);
                 pp.emitLoadIndirect(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
@@ -1481,7 +1481,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::AffectOpModuloEqS32_S:
                 pp.emitLoadIndirect(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32, CPUBits::B32);
-                pp.emitCdq();
+                pp.emitConvert(CPUReg::RDX, CPUReg::RAX, CPUReg::RAX, CPUBits::B16);
                 emitIMMB(pp, ip, CPUReg::RCX, CPUBits::B32);
                 pp.emitOp(CPUReg::RCX, CPUReg::RAX, CPUOp::IDIV, CPUBits::B32);
                 pp.emitLoadAddressIndirect(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->a.u32);
@@ -1489,7 +1489,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::AffectOpModuloEqS32_SS:
                 pp.emitLoadIndirect(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32, CPUBits::B32);
-                pp.emitCdq();
+                pp.emitConvert(CPUReg::RDX, CPUReg::RAX, CPUReg::RAX, CPUBits::B16);
                 pp.emitLoadIndirect(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->b.u32, CPUBits::B32);
                 pp.emitOp(CPUReg::RCX, CPUReg::RAX, CPUOp::IDIV, CPUBits::B32);
                 pp.emitLoadAddressIndirect(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->a.u32);
@@ -1499,7 +1499,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::AffectOpModuloEqS64:
                 pp.emitLoadIndirect(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
                 pp.emitLoadIndirect(CPUReg::RAX, CPUReg::RAX, 0, CPUBits::B64);
-                pp.emitCqo();
+                pp.emitConvert(CPUReg::RDX, CPUReg::RAX, CPUReg::RAX, CPUBits::B32);
                 emitIMMB(pp, ip, CPUReg::RCX, CPUBits::B64);
                 pp.emitOp(CPUReg::RCX, CPUReg::RAX, CPUOp::IDIV, CPUBits::B64);
                 pp.emitLoadIndirect(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
@@ -1507,7 +1507,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::AffectOpModuloEqS64_S:
                 pp.emitLoadIndirect(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32, CPUBits::B64);
-                pp.emitCqo();
+                pp.emitConvert(CPUReg::RDX, CPUReg::RAX, CPUReg::RAX, CPUBits::B32);
                 emitIMMB(pp, ip, CPUReg::RCX, CPUBits::B64);
                 pp.emitOp(CPUReg::RCX, CPUReg::RAX, CPUOp::IDIV, CPUBits::B64);
                 pp.emitLoadAddressIndirect(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->a.u32);
@@ -1515,7 +1515,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::AffectOpModuloEqS64_SS:
                 pp.emitLoadIndirect(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32, CPUBits::B64);
-                pp.emitCqo();
+                pp.emitConvert(CPUReg::RDX, CPUReg::RAX, CPUReg::RAX, CPUBits::B32);
                 pp.emitLoadIndirect(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->b.u32, CPUBits::B64);
                 pp.emitOp(CPUReg::RCX, CPUReg::RAX, CPUOp::IDIV, CPUBits::B64);
                 pp.emitLoadAddressIndirect(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->a.u32);

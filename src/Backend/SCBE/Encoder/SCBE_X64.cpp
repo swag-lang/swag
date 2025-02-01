@@ -78,6 +78,30 @@ namespace
 
 /////////////////////////////////////////////////////////////////////
 
+void SCBE_X64::emitConvert(CPUReg regDst1, CPUReg regDst0, CPUReg regSrc, CPUBits srcBits)
+{
+    SWAG_ASSERT(regSrc == CPUReg::RAX);
+    SWAG_ASSERT(regDst0 == CPUReg::RAX && regDst1 == CPUReg::RDX);
+    if (srcBits == CPUBits::B8)
+    {
+        emitREX(concat, CPUBits::B16);
+        concat.addU8(0x99);
+    }
+    else if (srcBits == CPUBits::B16)
+    {
+        concat.addU8(0x99);
+    }
+    else if (srcBits == CPUBits::B32)
+    {
+        emitREX(concat, CPUBits::B64);
+        concat.addU8(0x99);
+    }
+    else
+    {
+        SWAG_ASSERT(false);
+    }
+}
+
 void SCBE_X64::emitCast(CPUReg regDst, CPUReg regSrc, CPUSignedType dstType, CPUSignedType srcType)
 {
     if (srcType == CPUSignedType::U8 && dstType == CPUSignedType::U64)
@@ -2162,25 +2186,6 @@ void SCBE_X64::emitCallIndirect(CPUReg reg)
         concat.addU8(0x41);
     concat.addU8(0xFF);
     concat.addU8(0xD0 | (static_cast<uint8_t>(reg) & 0b111));
-}
-
-/////////////////////////////////////////////////////////////////////
-
-void SCBE_X64::emitCwd()
-{
-    emitREX(concat, CPUBits::B16);
-    concat.addU8(0x99);
-}
-
-void SCBE_X64::emitCdq()
-{
-    concat.addU8(0x99);
-}
-
-void SCBE_X64::emitCqo()
-{
-    emitREX(concat, CPUBits::B64);
-    concat.addU8(0x99);
 }
 
 /////////////////////////////////////////////////////////////////////

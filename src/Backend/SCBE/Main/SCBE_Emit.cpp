@@ -242,7 +242,7 @@ void SCBE::emitBinOpDivAtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp 
             else
                 pp.emitLoadIndirect(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B16);
             if (op == CPUOp::IDIV || op == CPUOp::IMOD)
-                pp.emitCwd();
+                pp.emitConvert(CPUReg::RDX, CPUReg::RAX, CPUReg::RAX, CPUBits::B8);
             else
                 pp.emitClear(CPUReg::RDX, CPUBits::B16);
             break;
@@ -253,7 +253,7 @@ void SCBE::emitBinOpDivAtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp 
             else
                 pp.emitLoadIndirect(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B32);
             if (op == CPUOp::IDIV || op == CPUOp::IMOD)
-                pp.emitCdq();
+                pp.emitConvert(CPUReg::RDX, CPUReg::RAX, CPUReg::RAX, CPUBits::B16);
             else
                 pp.emitClear(CPUReg::RDX, CPUBits::B32);
             break;
@@ -264,7 +264,7 @@ void SCBE::emitBinOpDivAtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp 
             else
                 pp.emitLoadIndirect(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
             if (op == CPUOp::IDIV || op == CPUOp::IMOD)
-                pp.emitCqo();
+                pp.emitConvert(CPUReg::RDX, CPUReg::RAX, CPUReg::RAX, CPUBits::B32);
             else
                 pp.emitClear(CPUReg::RDX, CPUBits::B64);
             break;

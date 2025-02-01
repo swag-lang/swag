@@ -36,10 +36,8 @@ struct SCBE_X64 : SCBE_CPU
     void emitStoreImmediate(CPUReg memReg, uint32_t memOffset, uint64_t value, CPUBits numBits);
 
     void emitCast(CPUReg regDst, CPUReg regSrc, CPUSignedType dstType, CPUSignedType srcType);
+    void emitConvert(CPUReg regDst1, CPUReg regDst0, CPUReg regSrc, CPUBits srcBits);
     void emitCopyDownUp(CPUReg reg, CPUBits numBits);
-    void emitCwd();
-    void emitCdq();
-    void emitCqo();
 
     void emitCmp(CPUReg reg0, CPUReg reg1, CPUBits numBits);
     void emitCmpIndirect(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUBits numBits);
