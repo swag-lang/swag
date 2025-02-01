@@ -48,7 +48,7 @@ void SCBE::emitShiftRightEqArithmetic(SCBE_X64& pp, const ByteCodeInstruction* i
         pp.emitCMov(CPUReg::RCX, CPUReg::RAX, CPUOp::CMOVG, numBits);
 
         pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-        pp.emitOpInd(CPUReg::RAX, CPUReg::RCX, CPUOp::SAR, numBits);
+        pp.emitOp(CPUReg::RAX, 0, CPUReg::RCX, CPUOp::SAR, numBits);
     }
 }
 
@@ -106,7 +106,7 @@ void SCBE::emitShiftEqLogical(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp
         pp.emitClear(CPUReg::RCX, numBits);
         pp.emitStore(CPUReg::RAX, 0, CPUReg::RCX, numBits);
         *seekPtr = static_cast<uint8_t>(pp.concat.totalCount() - seekJmp);
-        pp.emitOpInd(CPUReg::RAX, CPUReg::RCX, op, numBits);
+        pp.emitOp(CPUReg::RAX, 0, CPUReg::RCX, op, numBits);
     }
 }
 
