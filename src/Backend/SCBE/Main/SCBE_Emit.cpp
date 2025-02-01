@@ -431,23 +431,23 @@ void SCBE::emitBinOpEq(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t off
     pp.emitOp(r0, offset, r1, op, numBits);
 }
 
-void SCBE::emitBinOpEqS(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offset, CPUOp op, CPUBits numBits)
+void SCBE::emitBinOpEqS(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offsetStack, CPUOp op, CPUBits numBits)
 {
     if (SCBE_CPU::isInt(numBits) && ip->hasFlag(BCI_IMM_B))
-        pp.emitOp(CPUReg::RDI, offset + ip->a.u32, ip->b.u64, op, numBits);
+        pp.emitOp(CPUReg::RDI, offsetStack + ip->a.u32, ip->b.u64, op, numBits);
     else
     {
         const auto r1 = SCBE_CPU::isInt(numBits) ? CPUReg::RAX : CPUReg::XMM1;
         emitIMMB(pp, ip, r1, numBits);
-        pp.emitOp(CPUReg::RDI, offset + ip->a.u32, r1, op, numBits);
+        pp.emitOp(CPUReg::RDI, offsetStack + ip->a.u32, r1, op, numBits);
     }
 }
 
-void SCBE::emitBinOpEqSS(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offset, CPUOp op, CPUBits numBits)
+void SCBE::emitBinOpEqSS(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offsetStack, CPUOp op, CPUBits numBits)
 {
     const auto r1 = SCBE_CPU::isInt(numBits) ? CPUReg::RAX : CPUReg::XMM1;
-    pp.emitLoad(r1, CPUReg::RDI, offset + ip->b.u32, numBits);
-    pp.emitOp(CPUReg::RDI, offset + ip->a.u32, r1, op, numBits);
+    pp.emitLoad(r1, CPUReg::RDI, offsetStack + ip->b.u32, numBits);
+    pp.emitOp(CPUReg::RDI, offsetStack + ip->a.u32, r1, op, numBits);
 }
 
 void SCBE::emitBinOpEqLock(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
