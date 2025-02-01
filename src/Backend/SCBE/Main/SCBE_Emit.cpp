@@ -317,32 +317,6 @@ void SCBE::emitAddSubMul64(SCBE_X64& pp, const ByteCodeInstruction* ip, uint64_t
     }
 }
 
-void SCBE::emitBinOp(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUBits numBits)
-{
-    const auto r0 = SCBE_CPU::isInt(numBits) ? CPUReg::RAX : CPUReg::XMM0;
-    if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_B))
-    {
-        pp.emitLoad(r0, CPUReg::RDI, REG_OFFSET(ip->a.u32), numBits);
-        pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->b.u32), r0, numBits);
-    }
-    else if (ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_B))
-    {
-        pp.emitLoad(r0, ip->a.u64, numBits);
-        pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->b.u32), r0, numBits);
-    }
-    else if (SCBE_CPU::isInt(numBits) && !ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_B) && ip->b.u64 <= 0x7FFFFFFF)
-    {
-        pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->a.u32), ip->b.u32, numBits);
-    }
-    else
-    {
-        const auto r1 = SCBE_CPU::isInt(numBits) ? CPUReg::RCX : CPUReg::XMM1;
-        emitIMMA(pp, ip, r0, numBits);
-        emitIMMB(pp, ip, r1, numBits);
-        pp.emitCmp(r0, r1, numBits);
-    }
-}
-
 void SCBE::emitJumpCmp(SCBE_X64& pp, const ByteCodeInstruction* ip, int32_t instructionCount, CPUJumpType op, CPUBits numBits)
 {
     const auto r0 = SCBE_CPU::isInt(numBits) ? CPUReg::RAX : CPUReg::XMM0;
@@ -420,6 +394,32 @@ void SCBE::emitJumpCmp3(SCBE_X64& pp, const ByteCodeInstruction* ip, int32_t ins
     }
     pp.emitJump(op1, instructionCount, 0);
     pp.emitJump(op2, instructionCount, ip->b.s32);
+}
+
+void SCBE::emitBinOp(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUBits numBits)
+{
+    const auto r0 = SCBE_CPU::isInt(numBits) ? CPUReg::RAX : CPUReg::XMM0;
+    if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_B))
+    {
+        pp.emitLoad(r0, CPUReg::RDI, REG_OFFSET(ip->a.u32), numBits);
+        pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->b.u32), r0, numBits);
+    }
+    else if (ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_B))
+    {
+        pp.emitLoad(r0, ip->a.u64, numBits);
+        pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->b.u32), r0, numBits);
+    }
+    else if (SCBE_CPU::isInt(numBits) && !ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_B) && ip->b.u64 <= 0x7FFFFFFF)
+    {
+        pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->a.u32), ip->b.u32, numBits);
+    }
+    else
+    {
+        const auto r1 = SCBE_CPU::isInt(numBits) ? CPUReg::RCX : CPUReg::XMM1;
+        emitIMMA(pp, ip, r0, numBits);
+        emitIMMB(pp, ip, r1, numBits);
+        pp.emitCmp(r0, r1, numBits);
+    }
 }
 
 void SCBE::emitBinOpEq(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offset, CPUOp op, CPUBits numBits)
