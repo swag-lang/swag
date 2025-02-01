@@ -106,7 +106,7 @@ void SCBE::emitGetParam(SCBE_X64& pp, const CPUFunction* cpuFct, uint32_t reg, u
                 pp.emitLoad(CPUReg::RAX, CPUReg::RAX, static_cast<uint32_t>(toAdd), CPUBits::B64);
                 break;
             default:
-                pp.emitOpImmediate(CPUReg::RAX, toAdd, CPUOp::ADD, CPUBits::B64);
+                pp.emitOp(CPUReg::RAX, toAdd, CPUOp::ADD, CPUBits::B64);
                 break;
         }
 
@@ -289,7 +289,7 @@ void SCBE::emitLambdaCall(SCBE_X64& pp, const Concat& concat, uint32_t offsetRT,
 
     // Test if it's a bytecode lambda
     pp.emitLoad(CPUReg::R10, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-    pp.emitOpImmediate(CPUReg::R10, SWAG_LAMBDA_BC_MARKER_BIT, CPUOp::BT, CPUBits::B64);
+    pp.emitOp(CPUReg::R10, SWAG_LAMBDA_BC_MARKER_BIT, CPUOp::BT, CPUBits::B64);
     const auto jumpToBCAddr   = pp.emitJumpLong(JB);
     const auto jumpToBCOffset = concat.totalCount();
 

@@ -82,7 +82,7 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
 
     VectorNative<uint16_t> unwind;
     const auto             beforeProlog = concat.totalCount();
-    pp.emitOpImmediate(CPUReg::RSP, 40, CPUOp::SUB, CPUBits::B64);
+    pp.emitOp(CPUReg::RSP, 40, CPUOp::SUB, CPUBits::B64);
     const auto sizeProlog = concat.totalCount() - beforeProlog;
     computeUnwind({}, {}, 40, sizeProlog, unwind);
 
@@ -229,7 +229,7 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
     pp.emitCall(g_LangSpec->name_priv_closeRuntime);
 
     pp.emitClear(CPUReg::RAX, CPUBits::B64);
-    pp.emitOpImmediate(CPUReg::RSP, 40, CPUOp::ADD, CPUBits::B64);
+    pp.emitOp(CPUReg::RSP, 40, CPUOp::ADD, CPUBits::B64);
     pp.emitRet();
 
     const uint32_t endAddress = concat.totalCount();
@@ -259,11 +259,11 @@ void SCBE::emitGetTypeTable(const BuildParameters& buildParameters) const
 
     VectorNative<uint16_t> unwind;
     const auto             beforeProlog = concat.totalCount();
-    pp.emitOpImmediate(CPUReg::RSP, 40, CPUOp::SUB, CPUBits::B64);
+    pp.emitOp(CPUReg::RSP, 40, CPUOp::SUB, CPUBits::B64);
     const auto sizeProlog = concat.totalCount() - beforeProlog;
     computeUnwind({}, {}, 40, sizeProlog, unwind);
 
-    pp.emitOpImmediate(CPUReg::RSP, 40, CPUOp::ADD, CPUBits::B64);
+    pp.emitOp(CPUReg::RSP, 40, CPUOp::ADD, CPUBits::B64);
     pp.emitSymbolRelocationAddr(cc.returnByRegisterInteger, pp.symCSIndex, module->typesSliceOffset);
     pp.emitRet();
 
@@ -292,7 +292,7 @@ void SCBE::emitGlobalPreMain(const BuildParameters& buildParameters) const
     VectorNative<uint16_t> unwind;
     const auto             beforeProlog = concat.totalCount();
     pp.emitPush(CPUReg::RDI);
-    pp.emitOpImmediate(CPUReg::RSP, 48, CPUOp::SUB, CPUBits::B64);
+    pp.emitOp(CPUReg::RSP, 48, CPUOp::SUB, CPUBits::B64);
     const auto sizeProlog = concat.totalCount() - beforeProlog;
     computeUnwind({}, {}, 48, sizeProlog, unwind);
 
@@ -317,7 +317,7 @@ void SCBE::emitGlobalPreMain(const BuildParameters& buildParameters) const
         pp.emitCall(bc->getCallName());
     }
 
-    pp.emitOpImmediate(CPUReg::RSP, 48, CPUOp::ADD, CPUBits::B64);
+    pp.emitOp(CPUReg::RSP, 48, CPUOp::ADD, CPUBits::B64);
     pp.emitPop(CPUReg::RDI);
     pp.emitRet();
 
@@ -346,7 +346,7 @@ void SCBE::emitGlobalInit(const BuildParameters& buildParameters) const
     VectorNative<uint16_t> unwind;
     const auto             beforeProlog = concat.totalCount();
     pp.emitPush(CPUReg::RDI);
-    pp.emitOpImmediate(CPUReg::RSP, 48, CPUOp::SUB, CPUBits::B64);
+    pp.emitOp(CPUReg::RSP, 48, CPUOp::SUB, CPUBits::B64);
     const auto sizeProlog = concat.totalCount() - beforeProlog;
     computeUnwind({}, {}, 48, sizeProlog, unwind);
 
@@ -372,7 +372,7 @@ void SCBE::emitGlobalInit(const BuildParameters& buildParameters) const
     {
         if (!dep->module->isSwag)
         {
-            pp.emitOpImmediate(CPUReg::RCX, sizeof(SwagModule), CPUOp::ADD, CPUBits::B64);
+            pp.emitOp(CPUReg::RCX, sizeof(SwagModule), CPUOp::ADD, CPUBits::B64);
             continue;
         }
 
@@ -382,10 +382,10 @@ void SCBE::emitGlobalInit(const BuildParameters& buildParameters) const
         // Count types is stored as a uint64_t at the start of the address
         pp.emitLoad(CPUReg::R8, cc.returnByRegisterInteger, 0, CPUBits::B64);
         pp.emitStore(CPUReg::RCX, sizeof(uint64_t), CPUReg::R8, CPUBits::B64);
-        pp.emitOpImmediate(cc.returnByRegisterInteger, sizeof(uint64_t), CPUOp::ADD, CPUBits::B64);
+        pp.emitOp(cc.returnByRegisterInteger, sizeof(uint64_t), CPUOp::ADD, CPUBits::B64);
         pp.emitStore(CPUReg::RCX, 0, cc.returnByRegisterInteger, CPUBits::B64);
 
-        pp.emitOpImmediate(CPUReg::RCX, sizeof(SwagModule), CPUOp::ADD, CPUBits::B64);
+        pp.emitOp(CPUReg::RCX, sizeof(SwagModule), CPUOp::ADD, CPUBits::B64);
     }
 
     // Call to #init functions
@@ -397,7 +397,7 @@ void SCBE::emitGlobalInit(const BuildParameters& buildParameters) const
         pp.emitCall(bc->getCallName());
     }
 
-    pp.emitOpImmediate(CPUReg::RSP, 48, CPUOp::ADD, CPUBits::B64);
+    pp.emitOp(CPUReg::RSP, 48, CPUOp::ADD, CPUBits::B64);
     pp.emitPop(CPUReg::RDI);
     pp.emitRet();
 
@@ -424,7 +424,7 @@ void SCBE::emitGlobalDrop(const BuildParameters& buildParameters) const
 
     VectorNative<uint16_t> unwind;
     const auto             beforeProlog = concat.totalCount();
-    pp.emitOpImmediate(CPUReg::RSP, 40, CPUOp::SUB, CPUBits::B64);
+    pp.emitOp(CPUReg::RSP, 40, CPUOp::SUB, CPUBits::B64);
     const auto sizeProlog = concat.totalCount() - beforeProlog;
     computeUnwind({}, {}, 40, sizeProlog, unwind);
 
@@ -440,7 +440,7 @@ void SCBE::emitGlobalDrop(const BuildParameters& buildParameters) const
     // __dropGlobalVariables
     emitInternalCallExt(pp, g_LangSpec->name_priv_dropGlobalVariables, pp.pushParams);
 
-    pp.emitOpImmediate(CPUReg::RSP, 40, CPUOp::ADD, CPUBits::B64);
+    pp.emitOp(CPUReg::RSP, 40, CPUOp::ADD, CPUBits::B64);
     pp.emitRet();
 
     const uint32_t endAddress = concat.totalCount();

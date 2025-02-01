@@ -1009,7 +1009,7 @@ void SCBE_X64::emitOp(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits, C
     }
 }
 
-void SCBE_X64::emitOpIndirectSrc(CPUReg reg, CPUReg memReg, uint32_t memOffset, CPUOp op, CPUBits numBits)
+void SCBE_X64::emitOp(CPUReg reg, CPUReg memReg, uint32_t memOffset, CPUOp op, CPUBits numBits)
 {
     if (numBits == CPUBits::F32)
     {
@@ -1065,7 +1065,7 @@ void SCBE_X64::emitOpIndirectSrc(CPUReg reg, CPUReg memReg, uint32_t memOffset, 
     }
 }
 
-void SCBE_X64::emitOpIndirect(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUOp op, CPUBits numBits, bool lock)
+void SCBE_X64::emitOp(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUOp op, CPUBits numBits, bool lock)
 {
     if (numBits == CPUBits::F32)
     {
@@ -1137,15 +1137,15 @@ void SCBE_X64::emitOpIndirect(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPU
     }
 }
 
-void SCBE_X64::emitOpIndirectDst(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits)
+void SCBE_X64::emitOpInd(CPUReg memReg, CPUReg reg, CPUOp op, CPUBits numBits)
 {
     SWAG_ASSERT(SCBE_CPU::isInt(numBits));
-    emitREX(concat, numBits, regSrc, regDst);
+    emitREX(concat, numBits, reg, memReg);
     if (op == CPUOp::SAR ||
         op == CPUOp::SHR ||
         op == CPUOp::SHL)
     {
-        SWAG_ASSERT(regDst == CPUReg::RAX && regSrc == CPUReg::RCX);
+        SWAG_ASSERT(memReg == CPUReg::RAX && reg == CPUReg::RCX);
         if (numBits == CPUBits::B8)
             concat.addU8(0xD2);
         else
@@ -1158,14 +1158,14 @@ void SCBE_X64::emitOpIndirectDst(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits
     }
 }
 
-void SCBE_X64::emitOpIndirectDst([[maybe_unused]] CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits)
+void SCBE_X64::emitOpInd([[maybe_unused]] CPUReg memReg, uint64_t value, CPUOp op, CPUBits numBits)
 {
     SWAG_ASSERT(SCBE_CPU::isInt(numBits));
     if (op == CPUOp::SAR ||
         op == CPUOp::SHR ||
         op == CPUOp::SHL)
     {
-        SWAG_ASSERT(reg == CPUReg::RAX);
+        SWAG_ASSERT(memReg == CPUReg::RAX);
         value = min(value, static_cast<uint32_t>(numBits) - 1);
 
         emitREX(concat, numBits);
@@ -1227,7 +1227,7 @@ void SCBE_X64::emitOpIndirectDst([[maybe_unused]] CPUReg reg, uint64_t value, CP
     }
 }
 
-void SCBE_X64::emitOpImmediate(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits)
+void SCBE_X64::emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits)
 {
     switch (op)
     {
@@ -1428,7 +1428,7 @@ void SCBE_X64::emitOpImmediate(CPUReg reg, uint64_t value, CPUOp op, CPUBits num
     }
 }
 
-void SCBE_X64::emitOpIndirectDst(CPUReg memReg, uint32_t memOffset, uint64_t value, CPUOp op, CPUBits numBits)
+void SCBE_X64::emitOp(CPUReg memReg, uint32_t memOffset, uint64_t value, CPUOp op, CPUBits numBits)
 {
     SWAG_ASSERT(SCBE_CPU::isInt(numBits));
     SWAG_ASSERT(memReg == CPUReg::RAX || memReg == CPUReg::RDI);
@@ -1436,7 +1436,7 @@ void SCBE_X64::emitOpIndirectDst(CPUReg memReg, uint32_t memOffset, uint64_t val
     if (value > 0x7FFFFFFF)
     {
         emitLoad(CPUReg::RCX, value, numBits);
-        emitOpIndirect(memReg, memOffset, CPUReg::RCX, op, numBits);
+        emitOp(memReg, memOffset, CPUReg::RCX, op, numBits);
         return;
     }
 
@@ -1889,11 +1889,11 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
                         break;
                     case CPUPushParamType::RegAdd:
                         emitLoad(cc.paramByRegisterInteger[i], CPUReg::RDI, REG_OFFSET(reg), CPUBits::B64);
-                        emitOpImmediate(cc.paramByRegisterInteger[i], paramsRegisters[i].val, CPUOp::ADD, CPUBits::B64);
+                        emitOp(cc.paramByRegisterInteger[i], paramsRegisters[i].val, CPUOp::ADD, CPUBits::B64);
                         break;
                     case CPUPushParamType::RegMul:
                         emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), CPUBits::B64);
-                        emitOpImmediate(CPUReg::RAX, paramsRegisters[i].val, CPUOp::IMUL, CPUBits::B64);
+                        emitOp(CPUReg::RAX, paramsRegisters[i].val, CPUOp::IMUL, CPUBits::B64);
                         emitCopy(cc.paramByRegisterInteger[i], CPUReg::RAX, CPUBits::B64);
                         break;
                     case CPUPushParamType::RAX:
