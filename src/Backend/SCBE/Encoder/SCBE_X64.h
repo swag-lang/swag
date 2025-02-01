@@ -28,21 +28,21 @@ struct SCBE_X64 : SCBE_CPU
     void      emitJump(CPUJumpType jumpType, int32_t instructionCount, int32_t jumpOffset);
     void      emitJump(CPUReg reg);
 
-    void emitLoadAddressIndirect(CPUReg reg, CPUReg memReg, uint32_t memOffset);
-    void emitLoadIndirect(CPUReg reg, CPUReg memReg, uint32_t memOffset, CPUBits numBits);
-    void emitLoadIndirect(CPUReg reg, CPUReg memReg, uint32_t memOffset, CPUSignedType srcType, CPUSignedType dstType);
-    void emitLoadImmediate(CPUReg reg, uint64_t value, CPUBits numBits, bool force64Bits = false);
-    void emitStoreIndirect(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUBits numBits);
-    void emitStoreImmediate(CPUReg memReg, uint32_t memOffset, uint64_t value, CPUBits numBits);
+    void emitSetAddress(CPUReg reg, CPUReg memReg, uint32_t memOffset);
+    void emitLoad(CPUReg reg, CPUReg memReg, uint32_t memOffset, CPUBits numBits);
+    void emitLoad(CPUReg reg, CPUReg memReg, uint32_t memOffset, CPUSignedType srcType, CPUSignedType dstType);
+    void emitLoad(CPUReg reg, uint64_t value, CPUBits numBits, bool force64Bits = false);
+    void emitStore(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUBits numBits);
+    void emitStore(CPUReg memReg, uint32_t memOffset, uint64_t value, CPUBits numBits);
 
     void emitCast(CPUReg regDst, CPUReg regSrc, CPUSignedType dstType, CPUSignedType srcType);
     void emitConvert(CPUReg regDst1, CPUReg regDst0, CPUReg regSrc, CPUBits srcBits);
     void emitCopyDownUp(CPUReg reg, CPUBits numBits);
 
     void emitCmp(CPUReg reg0, CPUReg reg1, CPUBits numBits);
-    void emitCmpIndirect(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUBits numBits);
-    void emitCmpIndirectDst(CPUReg memReg, uint32_t memOffset, uint32_t value, CPUBits numBits);
-    void emitCmpImmediate(CPUReg reg, uint64_t value, CPUBits numBits);
+    void emitCmp(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUBits numBits);
+    void emitCmp(CPUReg memReg, uint32_t memOffset, uint32_t value, CPUBits numBits);
+    void emitCmp(CPUReg reg, uint64_t value, CPUBits numBits);
     void emitSet(CPUReg reg, CPUSet setType);
     void emitClear(CPUReg reg, CPUBits numBits);
     void emitClear(CPUReg memReg, uint32_t memOffset, uint32_t count);
@@ -57,11 +57,11 @@ struct SCBE_X64 : SCBE_CPU
     void emitOpIndirectDst(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits);
     void emitTest(CPUReg regDst, CPUReg regSrc, CPUBits numBits);
     void emitNot(CPUReg reg, CPUBits numBits);
-    void emitNotIndirect(CPUReg memReg, uint32_t memOffset, CPUBits numBits);
-    void emitIncIndirect(CPUReg memReg, uint32_t memOffset, CPUBits numBits);
-    void emitDecIndirect(CPUReg memReg, uint32_t memOffset, CPUBits numBits);
+    void emitNot(CPUReg memReg, uint32_t memOffset, CPUBits numBits);
+    void emitInc(CPUReg memReg, uint32_t memOffset, CPUBits numBits);
+    void emitDec(CPUReg memReg, uint32_t memOffset, CPUBits numBits);
     void emitNeg(CPUReg reg, CPUBits numBits);
-    void emitNegIndirect(CPUReg memReg, uint32_t memOffset, CPUBits numBits);
+    void emitNeg(CPUReg memReg, uint32_t memOffset, CPUBits numBits);
     void emitCMov(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits);
     void emitCmpXChg(CPUReg regDst, CPUReg regSrc, CPUBits numBits);
     void emitBSwap(CPUReg reg, CPUBits numBits);
