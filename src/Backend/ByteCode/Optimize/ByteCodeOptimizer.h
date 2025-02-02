@@ -106,3 +106,20 @@ struct ByteCodeOptimizer
         context->setDirtyPass(); \
     } while (0)
 #endif
+
+#define OPT_PASS(__func, __minLevel)                                              \
+    if (optContext.module->buildCfg.byteCodeOptimizeLevel >= (__minLevel))        \
+    {                                                                             \
+        optContext.passHasDoneSomething = false;                                  \
+        if (!__func(&optContext))                                                 \
+            return false;                                                         \
+        if (optContext.hasError)                                                  \
+            return false;                                                         \
+        optContext.allPassesHaveDoneSomething |= optContext.passHasDoneSomething; \
+    }
+
+#define OPT_SUB_PASS(__func, __minLevel)                                 \
+    if (context->module->buildCfg.byteCodeOptimizeLevel >= (__minLevel)) \
+    {                                                                    \
+        __func(context, ip);                                             \
+    }

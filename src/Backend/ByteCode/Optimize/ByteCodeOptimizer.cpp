@@ -359,7 +359,7 @@ void ByteCodeOptimizer::parseTree(ByteCodeOptContext*                           
 
 void ByteCodeOptimizer::setNop(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
-    if (ip->op == ByteCodeOp::Nop)
+    if (ip->op == ByteCodeOp::Nop || ip->op == ByteCodeOp::DebugNop)
         return;
     if (ip->op == ByteCodeOp::SaveRRtoRA)
         return;
@@ -369,7 +369,10 @@ void ByteCodeOptimizer::setNop(ByteCodeOptContext* context, ByteCodeInstruction*
 
     SWAG_ASSERT(ip->op != ByteCodeOp::End);
     context->setDirtyPass();
-    ip->op = ByteCodeOp::Nop;
+    if (context->module->buildCfg.byteCodeOptimizeLevel <= BuildCfgByteCodeOptim::O1)
+        ip->op = ByteCodeOp::DebugNop;
+    else
+        ip->op = ByteCodeOp::Nop;
     context->nops.push_back(ip);
 }
 
@@ -377,6 +380,44 @@ void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
 {
     if (context->nops.empty())
         return;
+
+    // Remove DebugNop only if it's not the only instruction for the given source line
+    for (uint32_t i = 0; i < context->nops.size(); i++)
+    {
+        const auto nop = context->nops[i];
+        if (nop->op != ByteCodeOp::DebugNop)
+            continue;
+
+        const auto loc = ByteCode::getLocation(context->bc, nop);
+        if (loc.file && loc.location)
+        {
+            if (nop != context->bc->out)
+            {
+                const auto locPrev = ByteCode::getLocation(context->bc, nop - 1);
+                if (locPrev.file == loc.file && locPrev.location && locPrev.location->line == loc.location->line)
+                {
+                    nop->op = ByteCodeOp::Nop;
+                    continue;
+                }
+            }
+
+            if (nop != context->bc->out + context->bc->numInstructions - 1)
+            {
+                const auto locNext = ByteCode::getLocation(context->bc, nop + 1);
+                if (locNext.file == loc.file && locNext.location && locNext.location->line == loc.location->line)
+                {
+                    nop->op = ByteCodeOp::Nop;
+                    continue;
+                }
+            }
+        }
+
+        context->nops.erase_unordered(i);
+        i--;
+    }
+    
+    if (context->nops.empty())
+        return;    
 
     context->allPassesHaveDoneSomething = true;
 
@@ -511,22 +552,30 @@ bool ByteCodeOptimizer::insertNopBefore(ByteCodeOptContext* context, ByteCodeIns
 
 void ByteCodeOptimizer::setJumps(ByteCodeOptContext* context)
 {
+    context->nops.clear();
     context->jumps.clear();
-    if (!context->bc->numJumps)
+
+    if (!context->bc->numJumps && !context->bc->numDebugNops)
         return;
 
     context->jumps.reserve(context->bc->numJumps);
+    context->nops.reserve(context->bc->numDebugNops);
     context->bc->numJumps = 0;
+    context->bc->numDebugNops = 0;
 
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
         ip->removeFlag(BCI_START_STMT);
         if (ByteCode::isJumpOrDyn(ip))
             context->jumps.push_back(ip);
+        else if (ip->op == ByteCodeOp::DebugNop)
+            context->nops.push_back(ip);
     }
 
+    context->bc->numJumps     = context->jumps.size();
+    context->bc->numDebugNops = context->nops.size();
+
     // Mark all instructions which are a jump destination
-    context->bc->numJumps = context->jumps.size();
     for (const auto jump : context->jumps)
     {
         if (ByteCode::isJumpDyn(jump))
@@ -624,17 +673,6 @@ bool ByteCodeOptimizer::optimize(Job* job, Module* module, bool& done)
     return true;
 }
 
-#define OPT_PASS(__func)                                                          \
-    do                                                                            \
-    {                                                                             \
-        optContext.passHasDoneSomething = false;                                  \
-        if (!__func(&optContext))                                                 \
-            return false;                                                         \
-        if (optContext.hasError)                                                  \
-            return false;                                                         \
-        optContext.allPassesHaveDoneSomething |= optContext.passHasDoneSomething; \
-    } while (0)
-
 bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, bool& restart)
 {
     SWAG_RACE_CONDITION_WRITE(bc->raceCond);
@@ -666,50 +704,44 @@ bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, b
 
         optContext.allPassesHaveDoneSomething = false;
 
-        if (optContext.module->buildCfg.byteCodeOptimizeLevel == BuildCfgByteCodeOptim::O1)
-        {
-        }
-        else
-        {
-            setJumps(&optContext);
-            genTree(&optContext, false);
-            OPT_PASS(optimizePassJumps);
-            OPT_PASS(optimizePassDeadCode);
-            OPT_PASS(optimizePassImmediate);
-            OPT_PASS(optimizePassImmediate2);
-            OPT_PASS(optimizePassConst);
-            OPT_PASS(optimizePassDupCopyRBRA);
-            OPT_PASS(optimizePassDupSetRA);
-            OPT_PASS(optimizePassRetCopyLocal);
-            OPT_PASS(optimizePassRetCopyGlobal);
-            OPT_PASS(optimizePassRetCopyStructVal);
-            OPT_PASS(optimizePassReduce);
-            OPT_PASS(optimizePassDeadStore);
-            OPT_PASS(optimizePassDeadStoreDup);
-            OPT_PASS(optimizePassSwap);
-            OPT_PASS(optimizePassParam);
-            removeNops(&optContext);
-            if (optContext.allPassesHaveDoneSomething)
-                continue;
+        setJumps(&optContext);
+        genTree(&optContext, false);
+        OPT_PASS(optimizePassJumps, BuildCfgByteCodeOptim::O2);
+        OPT_PASS(optimizePassDeadCode, BuildCfgByteCodeOptim::O2);
+        OPT_PASS(optimizePassImmediate, BuildCfgByteCodeOptim::O2);
+        OPT_PASS(optimizePassImmediate2, BuildCfgByteCodeOptim::O2);
+        OPT_PASS(optimizePassConst, BuildCfgByteCodeOptim::O2);
+        OPT_PASS(optimizePassDupCopyRBRA, BuildCfgByteCodeOptim::O2);
+        OPT_PASS(optimizePassDupSetRA, BuildCfgByteCodeOptim::O2);
+        OPT_PASS(optimizePassRetCopyLocal, BuildCfgByteCodeOptim::O2);
+        OPT_PASS(optimizePassRetCopyGlobal, BuildCfgByteCodeOptim::O2);
+        OPT_PASS(optimizePassRetCopyStructVal, BuildCfgByteCodeOptim::O2);
+        OPT_PASS(optimizePassReduce, BuildCfgByteCodeOptim::O2);
+        OPT_PASS(optimizePassDeadStore, BuildCfgByteCodeOptim::O2);
+        OPT_PASS(optimizePassDeadStoreDup, BuildCfgByteCodeOptim::O2);
+        OPT_PASS(optimizePassSwap, BuildCfgByteCodeOptim::O2);
+        OPT_PASS(optimizePassParam, BuildCfgByteCodeOptim::O2);
+        removeNops(&optContext);
+        if (optContext.allPassesHaveDoneSomething)
+            continue;
 
-            setJumps(&optContext);
-            genTree(&optContext, true);
-            OPT_PASS(optimizePassDupInstruction);
-            OPT_PASS(optimizePassErr);
-            OPT_PASS(optimizePassLoop);
-            OPT_PASS(optimizePassSwitch);
-            OPT_PASS(optimizePassDupBlocks);
-            removeNops(&optContext);
-            if (optContext.allPassesHaveDoneSomething)
-                continue;
+        setJumps(&optContext);
+        genTree(&optContext, true);
+        OPT_PASS(optimizePassDupInstruction, BuildCfgByteCodeOptim::O2);
+        OPT_PASS(optimizePassErr, BuildCfgByteCodeOptim::O2);
+        OPT_PASS(optimizePassLoop, BuildCfgByteCodeOptim::O2);
+        OPT_PASS(optimizePassSwitch, BuildCfgByteCodeOptim::O2);
+        OPT_PASS(optimizePassDupBlocks, BuildCfgByteCodeOptim::O2);
+        removeNops(&optContext);
+        if (optContext.allPassesHaveDoneSomething)
+            continue;
 
-            setJumps(&optContext);
-            genTree(&optContext, true);
-            OPT_PASS(optimizePassReduceX2);
-            removeNops(&optContext);
-            if (optContext.allPassesHaveDoneSomething)
-                continue;
-        }
+        setJumps(&optContext);
+        genTree(&optContext, true);
+        OPT_PASS(optimizePassReduceX2, BuildCfgByteCodeOptim::O1);
+        removeNops(&optContext);
+        if (optContext.allPassesHaveDoneSomething)
+            continue;
 
 #ifdef SWAG_STATS
         if (g_CommandLine.statsFreq || !g_CommandLine.statsFreqOp0.empty() || !g_CommandLine.statsFreqOp1.empty())

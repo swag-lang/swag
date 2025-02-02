@@ -160,6 +160,7 @@ struct ByteCode
     uint32_t maxSpVaargs           = 0;
     uint32_t maxReservedRegisterRC = 0;
     uint32_t numJumps              = 0;
+    uint32_t numDebugNops          = 0;
     uint32_t staticRegs            = 0;
     uint32_t registerGetContext    = UINT32_MAX;
     uint32_t registerStoreRR       = UINT32_MAX;

@@ -195,6 +195,8 @@ ByteCodeInstruction* ByteCodeGen::emitInstruction(const ByteCodeGenContext* cont
 
     if (ByteCode::isJumpOrDyn(&ins))
         bc->numJumps++;
+    if (op == ByteCodeOp::DebugNop)
+        bc->numDebugNops++;
 
     // Some operations, like IntrinsicTypeCmp for example, are in fact call to runtime functions.
     // We must be sure that we have enough room on the stack to store the parameters (x64 backend).

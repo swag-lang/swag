@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "Backend/ByteCode/Optimize/ByteCodeOptimizer.h"
+#include "Backend/Runtime.h"
+#include "Wmf/Module.h"
 
 void ByteCodeOptimizer::reduceCall(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
@@ -444,10 +446,10 @@ bool ByteCodeOptimizer::optimizePassReduceX2(ByteCodeOptContext* context)
 {
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
-        reduceCall(context, ip);
-        reduceStackJumps(context, ip);
-        reduceX2(context, ip);
-        reduceInvCopy(context, ip);
+        OPT_SUB_PASS(reduceCall, BuildCfgByteCodeOptim::O1);
+        OPT_SUB_PASS(reduceStackJumps, BuildCfgByteCodeOptim::O1);
+        OPT_SUB_PASS(reduceX2, BuildCfgByteCodeOptim::O2);
+        OPT_SUB_PASS(reduceInvCopy, BuildCfgByteCodeOptim::O2);
     }
 
     return true;

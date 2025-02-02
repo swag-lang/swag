@@ -541,9 +541,10 @@ void Workspace::computeWaitingJobs()
 
 void Workspace::checkPendingJobs()
 {
+    SharedLock lk(g_ThreadMgr.mutexAdd);
+
     if (g_ThreadMgr.waitingJobs.empty())
         return;
-
     computeWaitingJobs();
 
     // Collect unsolved jobs
