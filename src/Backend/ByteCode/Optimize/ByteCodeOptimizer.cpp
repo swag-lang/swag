@@ -656,6 +656,14 @@ bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, b
     {
         restart = restart || optContext.allPassesHaveDoneSomething;
 
+        if (!bc->isEmpty && bc->isDoingNothing())
+        {
+            bc->isEmpty = true;
+            restart     = true;
+        }
+        else if (bc->isEmpty)
+            return true;
+
         optContext.allPassesHaveDoneSomething = false;
 
         if (optContext.module->buildCfg.byteCodeOptimizeLevel == BuildCfgByteCodeOptim::O1)
@@ -663,14 +671,6 @@ bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, b
         }
         else
         {
-            if (!bc->isEmpty && bc->isDoingNothing())
-            {
-                bc->isEmpty = true;
-                restart     = true;
-            }
-            else if (bc->isEmpty)
-                return true;
-
             setJumps(&optContext);
             genTree(&optContext, false);
             OPT_PASS(optimizePassJumps);
