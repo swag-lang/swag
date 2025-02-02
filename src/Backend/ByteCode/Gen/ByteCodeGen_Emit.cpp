@@ -45,7 +45,7 @@ void ByteCodeGen::emitDebugLine(ByteCodeGenContext* context, AstNode* node)
 void ByteCodeGen::emitDebugLine(ByteCodeGenContext* context)
 {
     if (context->sourceFile->module->buildCfg.backendDebugInfos &&
-        context->sourceFile->module->buildCfg.byteCodeOptimizeLevel == BuildCfgByteCodeOptim::O0 &&
+        context->sourceFile->module->buildCfg.byteCodeOptimizeLevel <= BuildCfgByteCodeOptim::O1 &&
         !context->sourceFile->hasFlag(FILE_SCRIPT))
     {
         EMIT_INST0(context, ByteCodeOp::DebugNop);

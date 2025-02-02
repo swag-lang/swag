@@ -13,7 +13,7 @@ bool ByteCodeGen::emitLocalVarDeclBefore(ByteCodeGenContext* context)
     const auto node = castAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
 
     // No need to generate a local variable if it is never used
-    if (context->sourceFile->module->mustOptimizeBytecode(node))
+    if (context->sourceFile->module->mustOptimizeByteCode(node))
     {
         if (node->resolvedSymbolOverload() && !node->resolvedSymbolOverload()->hasFlag(OVERLOAD_USED))
         {
@@ -168,7 +168,7 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
             }
 
             // Store value to stack
-            if (!isLet || resolved->hasFlag(OVERLOAD_HAS_MAKE_POINTER) || context->sourceFile->module->buildCfg.byteCodeOptimizeLevel < BuildCfgByteCodeOptim::O2)
+            if (!isLet || resolved->hasFlag(OVERLOAD_HAS_MAKE_POINTER) || context->sourceFile->module->buildCfg.byteCodeOptimizeLevel <= BuildCfgByteCodeOptim::O2)
             {
                 node->allocateExtension(ExtensionKind::Misc);
                 emitAffectEqual(context, node->extMisc()->additionalRegisterRC, node->resultRegisterRc, node->typeInfo, node->assignment);

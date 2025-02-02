@@ -38,7 +38,7 @@ void Semantic::dealWithIntrinsic(const SemanticContext* context, AstIdentifier* 
     {
         case TokenId::IntrinsicAssert:
         {
-            if (module->mustOptimizeBytecode(context->node))
+            if (module->mustOptimizeSemantic(context->node))
             {
                 SWAG_ASSERT(identifier->callParameters && !identifier->callParameters->children.empty());
                 const auto param = identifier->callParameters->firstChild();

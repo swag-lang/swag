@@ -165,7 +165,8 @@ struct Module
     bool computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* sourceFile, AstNode* node, JobContext* callerContext, const ExecuteNodeParams* params);
     bool hasBytecodeToRun() const;
 
-    bool mustOptimizeBytecode(const AstNode* node) const;
+    bool mustOptimizeSemantic(const AstNode* node) const;
+    bool mustOptimizeByteCode(const AstNode* node) const;
     bool mustOptimizeBackend(const AstNode* node) const;
     bool mustEmitSafetyOverflow(const AstNode* node, bool compileTime = false) const;
     bool mustEmitSafety(const AstNode* node, SafetyFlags what, bool compileTime = false) const;

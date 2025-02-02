@@ -28,7 +28,7 @@ bool Semantic::resolveIf(SemanticContext* context)
     }
 
     // Do not generate backend if "if" is constant, and has already been evaluated
-    if (module->mustOptimizeBytecode(node) && node->boolExpression->hasFlagComputedValue())
+    if (module->mustOptimizeSemantic(node) && node->boolExpression->hasFlagComputedValue())
     {
         node->boolExpression->addAstFlag(AST_NO_BYTECODE);
         if (node->boolExpression->computedValue()->reg.b)
@@ -67,7 +67,7 @@ bool Semantic::resolveWhile(SemanticContext* context)
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression, CAST_FLAG_AUTO_BOOL));
 
     // Do not evaluate while if it's constant and false
-    if (module->mustOptimizeBytecode(node) && node->boolExpression->hasFlagComputedValue())
+    if (module->mustOptimizeSemantic(node) && node->boolExpression->hasFlagComputedValue())
     {
         if (!node->boolExpression->computedValue()->reg.b)
         {
@@ -573,7 +573,7 @@ bool Semantic::resolveLoop(SemanticContext* context)
             node->typeInfo = node->expression->typeInfo;
 
             // Do not evaluate loop if it's constant and 0
-            if (module->mustOptimizeBytecode(node) && node->expression->hasFlagComputedValue())
+            if (module->mustOptimizeSemantic(node) && node->expression->hasFlagComputedValue())
             {
                 if (!node->expression->computedValue()->reg.u64)
                 {

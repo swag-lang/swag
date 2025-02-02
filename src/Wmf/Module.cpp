@@ -69,7 +69,7 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
     }
     else if (g_CommandLine.buildCfg == "debug")
     {
-        buildCfg.byteCodeOptimizeLevel = BuildCfgByteCodeOptim::O0;
+        buildCfg.byteCodeOptimizeLevel = BuildCfgByteCodeOptim::O1;
         buildCfg.byteCodeInline        = false;
         buildCfg.byteCodeAutoInline    = false;
         buildCfg.byteCodeEmitAssume    = true;
@@ -82,7 +82,7 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
     }
     else if (g_CommandLine.buildCfg == "fast-debug")
     {
-        buildCfg.byteCodeOptimizeLevel = BuildCfgByteCodeOptim::O1;
+        buildCfg.byteCodeOptimizeLevel = BuildCfgByteCodeOptim::O2;
         buildCfg.byteCodeInline        = true;
         buildCfg.byteCodeAutoInline    = true;
         buildCfg.byteCodeEmitAssume    = true;
@@ -97,7 +97,7 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
     }
     else if (g_CommandLine.buildCfg == "release")
     {
-        buildCfg.byteCodeOptimizeLevel          = BuildCfgByteCodeOptim::O2;
+        buildCfg.byteCodeOptimizeLevel          = BuildCfgByteCodeOptim::O3;
         buildCfg.byteCodeInline                 = true;
         buildCfg.byteCodeAutoInline             = true;
         buildCfg.byteCodeEmitAssume             = false;
@@ -973,7 +973,24 @@ bool Module::mustEmitSafety(const AstNode* node, SafetyFlags what, bool compileT
     return buildCfg.safetyGuards.has(what);
 }
 
-bool Module::mustOptimizeBytecode(const AstNode* node) const
+bool Module::mustOptimizeSemantic(const AstNode* node) const
+{
+    if (!node)
+        return buildCfg.byteCodeOptimizeLevel > BuildCfgByteCodeOptim::O1;
+
+    while (node)
+    {
+        if (node->hasAttribute(ATTRIBUTE_OPTIM_BYTECODE_OFF))
+            return false;
+        if (node->hasAttribute(ATTRIBUTE_OPTIM_BYTECODE_ON))
+            return true;
+        node = node->ownerFct;
+    }
+
+    return buildCfg.byteCodeOptimizeLevel > BuildCfgByteCodeOptim::O1;
+}
+
+bool Module::mustOptimizeByteCode(const AstNode* node) const
 {
     if (!node)
         return buildCfg.byteCodeOptimizeLevel != BuildCfgByteCodeOptim::O0;

@@ -563,7 +563,7 @@ bool ByteCodeOptimizer::optimize(Job* job, Module* module, bool& done)
     // Determine if we need to restart the whole optim pass because something has been done
     if (module->optimPass == 1)
     {
-        if (module->buildCfg.byteCodeOptimizeLevel >= BuildCfgByteCodeOptim::O2 && module->optimNeedRestart.load() > 0)
+        if (module->buildCfg.byteCodeOptimizeLevel >= BuildCfgByteCodeOptim::O3 && module->optimNeedRestart.load() > 0)
         {
             module->optimPass = 0;
         }
@@ -648,7 +648,7 @@ bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, b
     }
 
     optContext.bc = bc;
-    if (!optContext.module->mustOptimizeBytecode(bc->node))
+    if (!optContext.module->mustOptimizeByteCode(bc->node))
         return true;
 
     restart = false;
@@ -656,54 +656,60 @@ bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, b
     {
         restart = restart || optContext.allPassesHaveDoneSomething;
 
-        if (!bc->isEmpty && bc->isDoingNothing())
-        {
-            bc->isEmpty = true;
-            restart     = true;
-        }
-        else if (bc->isEmpty)
-            return true;
-
         optContext.allPassesHaveDoneSomething = false;
 
-        setJumps(&optContext);
-        genTree(&optContext, false);
-        OPT_PASS(optimizePassJumps);
-        OPT_PASS(optimizePassDeadCode);
-        OPT_PASS(optimizePassImmediate);
-        OPT_PASS(optimizePassImmediate2);
-        OPT_PASS(optimizePassConst);
-        OPT_PASS(optimizePassDupCopyRBRA);
-        OPT_PASS(optimizePassDupSetRA);
-        OPT_PASS(optimizePassRetCopyLocal);
-        OPT_PASS(optimizePassRetCopyGlobal);
-        OPT_PASS(optimizePassRetCopyStructVal);
-        OPT_PASS(optimizePassReduce);
-        OPT_PASS(optimizePassDeadStore);
-        OPT_PASS(optimizePassDeadStoreDup);
-        OPT_PASS(optimizePassSwap);
-        OPT_PASS(optimizePassParam);
-        removeNops(&optContext);
-        if (optContext.allPassesHaveDoneSomething)
-            continue;
+        if (optContext.module->buildCfg.byteCodeOptimizeLevel == BuildCfgByteCodeOptim::O1)
+        {
+        }
+        else
+        {
+            if (!bc->isEmpty && bc->isDoingNothing())
+            {
+                bc->isEmpty = true;
+                restart     = true;
+            }
+            else if (bc->isEmpty)
+                return true;
 
-        setJumps(&optContext);
-        genTree(&optContext, true);
-        OPT_PASS(optimizePassDupInstruction);
-        OPT_PASS(optimizePassErr);
-        OPT_PASS(optimizePassLoop);
-        OPT_PASS(optimizePassSwitch);
-        OPT_PASS(optimizePassDupBlocks);
-        removeNops(&optContext);
-        if (optContext.allPassesHaveDoneSomething)
-            continue;
+            setJumps(&optContext);
+            genTree(&optContext, false);
+            OPT_PASS(optimizePassJumps);
+            OPT_PASS(optimizePassDeadCode);
+            OPT_PASS(optimizePassImmediate);
+            OPT_PASS(optimizePassImmediate2);
+            OPT_PASS(optimizePassConst);
+            OPT_PASS(optimizePassDupCopyRBRA);
+            OPT_PASS(optimizePassDupSetRA);
+            OPT_PASS(optimizePassRetCopyLocal);
+            OPT_PASS(optimizePassRetCopyGlobal);
+            OPT_PASS(optimizePassRetCopyStructVal);
+            OPT_PASS(optimizePassReduce);
+            OPT_PASS(optimizePassDeadStore);
+            OPT_PASS(optimizePassDeadStoreDup);
+            OPT_PASS(optimizePassSwap);
+            OPT_PASS(optimizePassParam);
+            removeNops(&optContext);
+            if (optContext.allPassesHaveDoneSomething)
+                continue;
 
-        setJumps(&optContext);
-        genTree(&optContext, true);
-        OPT_PASS(optimizePassReduceX2);
-        removeNops(&optContext);
-        if (optContext.allPassesHaveDoneSomething)
-            continue;
+            setJumps(&optContext);
+            genTree(&optContext, true);
+            OPT_PASS(optimizePassDupInstruction);
+            OPT_PASS(optimizePassErr);
+            OPT_PASS(optimizePassLoop);
+            OPT_PASS(optimizePassSwitch);
+            OPT_PASS(optimizePassDupBlocks);
+            removeNops(&optContext);
+            if (optContext.allPassesHaveDoneSomething)
+                continue;
+
+            setJumps(&optContext);
+            genTree(&optContext, true);
+            OPT_PASS(optimizePassReduceX2);
+            removeNops(&optContext);
+            if (optContext.allPassesHaveDoneSomething)
+                continue;
+        }
 
 #ifdef SWAG_STATS
         if (g_CommandLine.statsFreq || !g_CommandLine.statsFreqOp0.empty() || !g_CommandLine.statsFreqOp1.empty())
