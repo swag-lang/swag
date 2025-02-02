@@ -381,18 +381,7 @@ bool ByteCodeOptimizer::optimizePassDupInstruction(ByteCodeOptContext* context)
             if (ByteCode::hasReadRegInD(ip) && ByteCode::hasWriteRefToReg(ipScan, ip->d.u32))
                 break;
 
-            bool sameInst = true;
-            if (ipScan->op != ip->op)
-                sameInst = false;
-            else if (!ByteCode::hasWriteRegInA(ipScan) && (ByteCode::hasReadRegInA(ip) != ByteCode::hasReadRegInA(ipScan) || ipScan->a.u64 != ip->a.u64))
-                sameInst = false;
-            else if (!ByteCode::hasWriteRegInB(ipScan) && (ByteCode::hasReadRegInB(ip) != ByteCode::hasReadRegInB(ipScan) || ipScan->b.u64 != ip->b.u64))
-                sameInst = false;
-            else if (!ByteCode::hasWriteRegInC(ipScan) && (ByteCode::hasReadRegInC(ip) != ByteCode::hasReadRegInC(ipScan) || ipScan->c.u64 != ip->c.u64))
-                sameInst = false;
-            else if (!ByteCode::hasWriteRegInD(ipScan) && (ByteCode::hasReadRegInD(ip) != ByteCode::hasReadRegInD(ipScan) || ipScan->d.u64 != ip->d.u64))
-                sameInst = false;
-
+            const bool sameInst = ByteCode::haveSameRead(ip, ipScan);
             if (!sameInst && ByteCode::hasWriteRefToReg(ipScan, reg))
                 break;
             if (!sameInst)

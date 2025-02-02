@@ -92,6 +92,7 @@ struct ByteCode
 
     static uint32_t countWriteRegs(const ByteCodeInstruction* inst) { return hasWriteRegInA(inst) + hasWriteRegInB(inst) + hasWriteRegInC(inst) + hasWriteRegInD(inst); }
     static uint32_t countReadRegs(const ByteCodeInstruction* inst) { return hasReadRegInA(inst) + hasReadRegInB(inst) + hasReadRegInC(inst) + hasReadRegInD(inst); }
+    static bool     haveSameRead(const ByteCodeInstruction* ip0, const ByteCodeInstruction* ip1);
 
     static void*    doByteCodeLambda(void* ptr);
     static void*    undoByteCodeLambda(void* ptr);

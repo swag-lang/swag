@@ -213,6 +213,23 @@ bool ByteCode::canEmit() const
     return true;
 }
 
+bool ByteCode::haveSameRead(const ByteCodeInstruction* ip0, const ByteCodeInstruction* ip1)
+{
+    bool sameInst = true;
+    if (ip1->op != ip0->op)
+        sameInst = false;
+    else if (!hasWriteRegInA(ip1) && (hasReadRegInA(ip0) != hasReadRegInA(ip1) || ip1->a.u64 != ip0->a.u64))
+        sameInst = false;
+    else if (!hasWriteRegInB(ip1) && (hasReadRegInB(ip0) != hasReadRegInB(ip1) || ip1->b.u64 != ip0->b.u64))
+        sameInst = false;
+    else if (!hasWriteRegInC(ip1) && (hasReadRegInC(ip0) != hasReadRegInC(ip1) || ip1->c.u64 != ip0->c.u64))
+        sameInst = false;
+    else if (!hasWriteRegInD(ip1) && (hasReadRegInD(ip0) != hasReadRegInD(ip1) || ip1->d.u64 != ip0->d.u64))
+        sameInst = false;
+
+    return sameInst;
+}
+
 bool ByteCode::areSame(const ByteCodeInstruction* start0,
                        const ByteCodeInstruction* end0,
                        const ByteCodeInstruction* start1,

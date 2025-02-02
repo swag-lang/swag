@@ -41,6 +41,8 @@ bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
                     break;
                 if (ipn->op == ByteCodeOp::Nop)
                     break;
+                if (ByteCode::haveSameRead(ip, ipn))
+                    break;
 
                 // We do not want something like:
                 // PushRAParam R0
