@@ -969,8 +969,18 @@ bool Module::mustOptimizeBytecode(const AstNode* node) const
 bool Module::mustOptimizeBackend(const AstNode* node) const
 {
     if (!node)
-        return buildCfg.byteCodeOptimizeLevel > 0;
-    return buildCfg.byteCodeOptimizeLevel > 0 || (node->hasAttribute(ATTRIBUTE_OPTIM_BACKEND_ON) && !node->hasAttribute(ATTRIBUTE_OPTIM_BACKEND_OFF));
+        return buildCfg.backendOptimize != BuildCfgBackendOptim::O0;
+
+    while (node)
+    {
+        if (node->hasAttribute(ATTRIBUTE_OPTIM_BACKEND_OFF))
+            return false;
+        if (node->hasAttribute(ATTRIBUTE_OPTIM_BACKEND_ON))
+            return true;
+        node = node->ownerFct;
+    }
+
+    return buildCfg.backendOptimize != BuildCfgBackendOptim::O0;
 }
 
 bool Module::hasBytecodeToRun() const
