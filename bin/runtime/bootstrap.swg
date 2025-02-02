@@ -53,11 +53,11 @@ namespace Swag
 
     // An empty function will be generated
     #[AttrUsage(AttributeUsage.Function)]
-    attr PlaceHolder()    
+    attr PlaceHolder()
 
     // Disable '@print'
     #[AttrUsage(AttributeUsage.Function)]
-    attr NoPrint()    
+    attr NoPrint()
 
     // The following function is a 'macro'
     #[AttrUsage(AttributeUsage.Function)]
@@ -146,7 +146,7 @@ namespace Swag
 
     // Do not make a sanity pass.
     #[AttrUsage(AttributeUsage.Function)]
-    attr Sanity(what: bool)    
+    attr Sanity(what: bool)
 
     // Enable/Disable one or more safety checks.
     // For example:
@@ -456,7 +456,7 @@ namespace Swag
         UnScoped = 2
     }
 
-    
+
     // The kind of the typeinfo.
     enum TypeInfoKind: u8
     {
@@ -744,6 +744,15 @@ namespace Swag
         Console
     }
 
+    // These are the optimization levels for the bytecode.
+    enum BuildCfgByteCodeOptim
+    {
+        O0     // No optimization
+        O1     // Optimizations level 1
+        O2     // Optimizations level 2
+        O3     // Optimizations level 3
+    }
+
     // These are the optimization levels for the backend.
     // Only 'LLVM' backend uses this, as the 'X86_64' backend does not have an optimization pass.
     enum BuildCfgBackendOptim
@@ -821,7 +830,7 @@ namespace Swag
         warnDefaultDisabled:           bool                                 // All warnings are disabled, except those specified above
         warnDefaultErrors:             bool                                 // All warnings are treated as errors, except those specified above
 
-        byteCodeOptimizeLevel          = 1                                  // Optimization level of bytecode [0, 1 or 2]
+        byteCodeOptimizeLevel          = BuildCfgByteCodeOptim.O1           // Optimization level of bytecode [0, 1 or 2]
         byteCodeEmitAssume             = true                               // 'assume' will panic if an error is raised
         byteCodeInline                 = true                               // Enable bytecode inlining with #[Swag.Inline]
         byteCodeAutoInline             = true                               // Automatic inlining of some other functions

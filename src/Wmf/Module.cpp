@@ -56,7 +56,7 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
     // Setup build configuration
     if (g_CommandLine.buildCfg == "fast-compile")
     {
-        buildCfg.byteCodeOptimizeLevel = 0;
+        buildCfg.byteCodeOptimizeLevel = BuildCfgByteCodeOptim::O0;
         buildCfg.byteCodeInline        = false;
         buildCfg.byteCodeAutoInline    = false;
         buildCfg.byteCodeEmitAssume    = true;
@@ -69,7 +69,7 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
     }
     else if (g_CommandLine.buildCfg == "debug")
     {
-        buildCfg.byteCodeOptimizeLevel = 0;
+        buildCfg.byteCodeOptimizeLevel = BuildCfgByteCodeOptim::O0;
         buildCfg.byteCodeInline        = false;
         buildCfg.byteCodeAutoInline    = false;
         buildCfg.byteCodeEmitAssume    = true;
@@ -82,7 +82,7 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
     }
     else if (g_CommandLine.buildCfg == "fast-debug")
     {
-        buildCfg.byteCodeOptimizeLevel = 1;
+        buildCfg.byteCodeOptimizeLevel = BuildCfgByteCodeOptim::O1;
         buildCfg.byteCodeInline        = true;
         buildCfg.byteCodeAutoInline    = true;
         buildCfg.byteCodeEmitAssume    = true;
@@ -97,7 +97,7 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
     }
     else if (g_CommandLine.buildCfg == "release")
     {
-        buildCfg.byteCodeOptimizeLevel          = 2;
+        buildCfg.byteCodeOptimizeLevel          = BuildCfgByteCodeOptim::O2;
         buildCfg.byteCodeInline                 = true;
         buildCfg.byteCodeAutoInline             = true;
         buildCfg.byteCodeEmitAssume             = false;
@@ -116,22 +116,46 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
     // Overwrite with command line
     if (g_CommandLine.buildCfgInlineBC != "default")
         buildCfg.byteCodeInline = g_CommandLine.buildCfgInlineBC == "true";
-    if (g_CommandLine.buildCfgOptimBC != "default")
-        buildCfg.byteCodeOptimizeLevel = max(0, min(g_CommandLine.buildCfgOptimBC.toInt(), 2));
     if (g_CommandLine.buildCfgDebug != "default")
         buildCfg.backendDebugInfos = g_CommandLine.buildCfgDebug == "true";
-    if (g_CommandLine.buildCfgOptim != "default")
-        buildCfg.backendOptimize = static_cast<BuildCfgBackendOptim>(max(0, min(g_CommandLine.buildCfgOptim.toInt(), 5)));
     if (g_CommandLine.buildCfgSafety != "default")
         buildCfg.safetyGuards = g_CommandLine.buildCfgSafety == "true" ? SAFETY_ALL : 0;
     if (g_CommandLine.buildCfgSanity != "default")
-        buildCfg.sanity = g_CommandLine.buildCfgSanity == "true" ? true : false;
+        buildCfg.sanity = g_CommandLine.buildCfgSanity == "true";
     if (g_CommandLine.buildCfgStackTrace != "default")
         buildCfg.errorStackTrace = g_CommandLine.buildCfgStackTrace == "true";
     if (g_CommandLine.buildCfgDebugAlloc != "default")
         buildCfg.debugAllocator = g_CommandLine.buildCfgDebugAlloc == "true";
     if (g_CommandLine.buildCfgLlvmIR != "default")
         buildCfg.backendLLVM.outputIR = g_CommandLine.buildCfgLlvmIR == "true";
+
+    if (g_CommandLine.buildCfgOptimBC != "default")
+    {
+        if (g_CommandLine.buildCfgOptimBC == "O0")
+            buildCfg.byteCodeOptimizeLevel = BuildCfgByteCodeOptim::O0;
+        else if (g_CommandLine.buildCfgOptimBC == "O1")
+            buildCfg.byteCodeOptimizeLevel = BuildCfgByteCodeOptim::O1;
+        else if (g_CommandLine.buildCfgOptimBC == "O2")
+            buildCfg.byteCodeOptimizeLevel = BuildCfgByteCodeOptim::O2;
+        else if (g_CommandLine.buildCfgOptimBC == "O3")
+            buildCfg.byteCodeOptimizeLevel = BuildCfgByteCodeOptim::O3;
+    }
+
+    if (g_CommandLine.buildCfgOptim != "default")
+    {
+        if (g_CommandLine.buildCfgOptim == "O0")
+            buildCfg.backendOptimize = BuildCfgBackendOptim::O0;
+        else if (g_CommandLine.buildCfgOptim == "O1")
+            buildCfg.backendOptimize = BuildCfgBackendOptim::O1;
+        else if (g_CommandLine.buildCfgOptim == "O2")
+            buildCfg.backendOptimize = BuildCfgBackendOptim::O2;
+        else if (g_CommandLine.buildCfgOptim == "O3")
+            buildCfg.backendOptimize = BuildCfgBackendOptim::O3;
+        else if (g_CommandLine.buildCfgOptim == "Os")
+            buildCfg.backendOptimize = BuildCfgBackendOptim::Os;        
+        else if (g_CommandLine.buildCfgOptim == "Oz")
+            buildCfg.backendOptimize = BuildCfgBackendOptim::Oz;        
+    }
 
     if (!g_CommandLine.docCss.empty())
     {
@@ -952,7 +976,7 @@ bool Module::mustEmitSafety(const AstNode* node, SafetyFlags what, bool compileT
 bool Module::mustOptimizeBytecode(const AstNode* node) const
 {
     if (!node)
-        return buildCfg.byteCodeOptimizeLevel > 0;
+        return buildCfg.byteCodeOptimizeLevel != BuildCfgByteCodeOptim::O0;
 
     while (node)
     {
@@ -963,7 +987,7 @@ bool Module::mustOptimizeBytecode(const AstNode* node) const
         node = node->ownerFct;
     }
 
-    return buildCfg.byteCodeOptimizeLevel > 0;
+    return buildCfg.byteCodeOptimizeLevel != BuildCfgByteCodeOptim::O0;
 }
 
 bool Module::mustOptimizeBackend(const AstNode* node) const

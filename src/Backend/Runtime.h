@@ -228,6 +228,14 @@ enum class BuildCfgBackendSubKind
     Console,
 };
 
+enum class BuildCfgByteCodeOptim
+{
+    O0,
+    O1,
+    O2,
+    O3,
+};
+
 enum class BuildCfgBackendOptim
 {
     O0,
@@ -304,10 +312,10 @@ struct BuildCfg
     bool      warnDefaultErrors   = false;
 
     // Bytecode
-    uint32_t byteCodeOptimizeLevel = 1;
-    bool     byteCodeEmitAssume    = true;
-    bool     byteCodeInline        = true;
-    bool     byteCodeAutoInline    = true;
+    BuildCfgByteCodeOptim byteCodeOptimizeLevel = BuildCfgByteCodeOptim::O1;
+    bool                  byteCodeEmitAssume    = true;
+    bool                  byteCodeInline        = true;
+    bool                  byteCodeAutoInline    = true;
 
     // Backend common
     BuildCfgBackendKind    backendKind        = BuildCfgBackendKind::Executable;

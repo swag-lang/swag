@@ -168,7 +168,7 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
             }
 
             // Store value to stack
-            if (!isLet || resolved->hasFlag(OVERLOAD_HAS_MAKE_POINTER) || context->sourceFile->module->buildCfg.byteCodeOptimizeLevel != 2)
+            if (!isLet || resolved->hasFlag(OVERLOAD_HAS_MAKE_POINTER) || context->sourceFile->module->buildCfg.byteCodeOptimizeLevel < BuildCfgByteCodeOptim::O2)
             {
                 node->allocateExtension(ExtensionKind::Misc);
                 emitAffectEqual(context, node->extMisc()->additionalRegisterRC, node->resultRegisterRc, node->typeInfo, node->assignment);
