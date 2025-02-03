@@ -32,6 +32,11 @@ func day9BA()
 {
     Time.Stopwatch.scopeMeasure()
 
+    /*var x = 0
+    for 100_000_000:
+        x += 1
+    @print(x)*/
+
     let dataPath = Path.combine(Path.getDirectoryName(#curlocation.fileName), "9.txt")
     var line     = assume File.readAllText(dataPath)
 
