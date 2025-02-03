@@ -137,10 +137,10 @@ CPUBits SCBE_CPU::getCPUBits(ByteCodeOp op)
     return CPUBits::B32;
 }
 
-TypeInfo* SCBE_CPU::getCPUType(ByteCodeOp op, bool isSigned)
+TypeInfo* SCBE_CPU::getCPUType(ByteCodeOp op)
 {
     const auto flags = ByteCode::opFlags(op);
-    if (isSigned)
+    if (flags.has(OPF_SIGNED))
     {
         if (flags.has(OPF_8))
             return g_TypeMgr->typeInfoS8;

@@ -203,7 +203,7 @@ struct SCBE_CPU : BackendEncoder
     static uint32_t  getParamStackOffset(const CPUFunction* cpuFct, uint32_t paramIdx);
     static uint32_t  countBits(CPUBits numBits);
     static CPUBits   getCPUBits(ByteCodeOp op);
-    static TypeInfo* getCPUType(ByteCodeOp op, bool isSigned);
+    static TypeInfo* getCPUType(ByteCodeOp op);
 
     static bool isInt(CPUBits numBits) { return numBits == CPUBits::B8 || numBits == CPUBits::B16 || numBits == CPUBits::B32 || numBits == CPUBits::B64; }
     static bool isFloat(CPUBits numBits) { return numBits == CPUBits::F32 || numBits == CPUBits::F64; }
