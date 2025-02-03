@@ -21,7 +21,7 @@ struct ByteCodeOptimizer
 
     static void setNop(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void setContextFlags(ByteCodeOptContext* context, ByteCodeInstruction* ip);
-    static void setJumps(ByteCodeOptContext* context);
+    static void computeJumpAndNop(ByteCodeOptContext* context);
     static bool insertNopBefore(ByteCodeOptContext* context, ByteCodeInstruction* insert);
     static void removeNop(ByteCodeOptContext* context);
 
@@ -84,6 +84,9 @@ struct ByteCodeOptimizer
     static bool optimizePassReduceX2(ByteCodeOptContext* context);
 
     static bool optimize(Job* job, Module* module, bool& done);
+    static bool optimizeStep1(ByteCodeOptContext& optContext);
+    static bool optimizeStep2(ByteCodeOptContext& optContext);
+    static bool optimizeStep3(ByteCodeOptContext& optContext);
     static bool optimize(ByteCodeOptContext& optContext, ByteCode* bc, bool& restart);
 };
 
