@@ -995,36 +995,20 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitBinOpEq(pp, ip, ip->c.u32, CPUOp::FMUL, CPUBits::F32);
                 break;
             case ByteCodeOp::AffectOpMulEqF32_S:
-                pp.emitLoad(CPUReg::XMM0, CPUReg::RDI, offsetStack + ip->a.u32, CPUBits::F32);
-                emitIMMB(pp, ip, CPUReg::XMM1, CPUBits::F32);
-                pp.emitOp(CPUReg::XMM0, CPUReg::XMM1, CPUOp::FMUL, CPUBits::F32);
-                pp.emitSetAddress(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32);
-                pp.emitStore(CPUReg::RAX, 0, CPUReg::XMM0, CPUBits::F32);
+                emitBinOpEqS(pp, ip, offsetStack, CPUOp::FMUL, CPUBits::F32);
                 break;
             case ByteCodeOp::AffectOpMulEqF32_SS:
-                pp.emitLoad(CPUReg::XMM0, CPUReg::RDI, offsetStack + ip->a.u32, CPUBits::F32);
-                pp.emitLoad(CPUReg::XMM1, CPUReg::RDI, offsetStack + ip->b.u32, CPUBits::F32);
-                pp.emitOp(CPUReg::XMM0, CPUReg::XMM1, CPUOp::FMUL, CPUBits::F32);
-                pp.emitSetAddress(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32);
-                pp.emitStore(CPUReg::RAX, 0, CPUReg::XMM0, CPUBits::F32);
+                emitBinOpEqSS(pp, ip, offsetStack, CPUOp::FMUL, CPUBits::F32);
                 break;
 
             case ByteCodeOp::AffectOpMulEqF64:
                 emitBinOpEq(pp, ip, ip->c.u32, CPUOp::FMUL, CPUBits::F64);                
                 break;
             case ByteCodeOp::AffectOpMulEqF64_S:
-                pp.emitLoad(CPUReg::XMM0, CPUReg::RDI, offsetStack + ip->a.u32, CPUBits::F64);
-                emitIMMB(pp, ip, CPUReg::XMM1, CPUBits::F64);
-                pp.emitOp(CPUReg::XMM0, CPUReg::XMM1, CPUOp::FMUL, CPUBits::F64);
-                pp.emitSetAddress(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32);
-                pp.emitStore(CPUReg::RAX, 0, CPUReg::XMM0, CPUBits::F64);
+                emitBinOpEqS(pp, ip, offsetStack, CPUOp::FMUL, CPUBits::F64);
                 break;
             case ByteCodeOp::AffectOpMulEqF64_SS:
-                pp.emitLoad(CPUReg::XMM0, CPUReg::RDI, offsetStack + ip->a.u32, CPUBits::F64);
-                pp.emitLoad(CPUReg::XMM1, CPUReg::RDI, offsetStack + ip->b.u32, CPUBits::F64);
-                pp.emitOp(CPUReg::XMM0, CPUReg::XMM1, CPUOp::FMUL, CPUBits::F64);
-                pp.emitSetAddress(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32);
-                pp.emitStore(CPUReg::RAX, 0, CPUReg::XMM0, CPUBits::F64);
+                emitBinOpEqSS(pp, ip, offsetStack, CPUOp::FMUL, CPUBits::F64);
                 break;
 
                 /////////////////////////////////////
