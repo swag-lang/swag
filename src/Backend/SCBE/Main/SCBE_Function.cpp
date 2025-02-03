@@ -779,18 +779,8 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitBinOpEq(pp, ip, 0, CPUOp::DIV, SCBE_CPU::getCPUBits(ip->op));
                 break;
             case ByteCodeOp::AffectOpDivEqF32:
-                emitIMMB(pp, ip, CPUReg::XMM1, CPUBits::F32);
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-                pp.emitLoad(CPUReg::XMM0, CPUReg::RAX, 0, CPUBits::F32);
-                pp.emitOp(CPUReg::XMM0, CPUReg::XMM1, CPUOp::FDIV, CPUBits::F32);
-                pp.emitStore(CPUReg::RAX, 0, CPUReg::XMM0, CPUBits::F32);
-                break;
             case ByteCodeOp::AffectOpDivEqF64:
-                emitIMMB(pp, ip, CPUReg::XMM1, CPUBits::F64);
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-                pp.emitLoad(CPUReg::XMM0, CPUReg::RAX, 0, CPUBits::F64);
-                pp.emitOp(CPUReg::XMM0, CPUReg::XMM1, CPUOp::FDIV, CPUBits::F64);
-                pp.emitStore(CPUReg::RAX, 0, CPUReg::XMM0, CPUBits::F64);
+                emitBinOpEq(pp, ip, 0, CPUOp::FDIV, SCBE_CPU::getCPUBits(ip->op));
                 break;
 
             case ByteCodeOp::AffectOpDivEqS8_S:

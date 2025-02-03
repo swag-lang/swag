@@ -398,7 +398,15 @@ void SCBE::emitBinOpEq(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t off
         pp.emitOp(CPUReg::RAX, CPUReg::RCX, CPUOp::IDIV, numBits);
         pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
         pp.emitStore(CPUReg::RCX, offset, CPUReg::RAX, numBits);
-    }    
+    }
+    else if (op == CPUOp::FDIV)
+    {
+        pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
+        pp.emitLoad(CPUReg::XMM0, CPUReg::RCX, 0, numBits);
+        emitIMMB(pp, ip, CPUReg::XMM1, numBits);
+        pp.emitOp(CPUReg::XMM0, CPUReg::XMM1, CPUOp::FDIV, numBits);
+        pp.emitStore(CPUReg::RCX, 0, CPUReg::XMM0, numBits);
+    }         
     else if (op == CPUOp::IMUL || op == CPUOp::MUL || op == CPUOp::FMUL)
     {
         const auto r0 = SCBE_CPU::isInt(numBits) ? CPUReg::RAX : CPUReg::XMM0;
