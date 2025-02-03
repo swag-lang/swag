@@ -907,18 +907,10 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitBinOpEq(pp, ip, ip->c.u32, CPUOp::IMUL, CPUBits::B16);
                 break;
             case ByteCodeOp::AffectOpMulEqS16_SSafe:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32, CPUBits::B16);
-                emitIMMB(pp, ip, CPUReg::RCX, CPUBits::B16);
-                pp.emitOp(CPUReg::RAX, CPUReg::RCX, CPUOp::IMUL, CPUBits::B16);
-                pp.emitSetAddress(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->a.u32);
-                pp.emitStore(CPUReg::RCX, 0, CPUReg::RAX, CPUBits::B16);
+                emitBinOpEqS(pp, ip, offsetStack, CPUOp::IMUL, CPUBits::B16);
                 break;
             case ByteCodeOp::AffectOpMulEqS16_SSSafe:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32, CPUBits::B16);
-                pp.emitLoad(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->b.u32, CPUBits::B16);
-                pp.emitOp(CPUReg::RAX, CPUReg::RCX, CPUOp::IMUL, CPUBits::B16);
-                pp.emitSetAddress(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->a.u32);
-                pp.emitStore(CPUReg::RCX, 0, CPUReg::RAX, CPUBits::B16);
+                emitBinOpEqSS(pp, ip, offsetStack, CPUOp::IMUL, CPUBits::B16);
                 break;
 
             case ByteCodeOp::AffectOpMulEqS32:
@@ -928,18 +920,10 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitBinOpEq(pp, ip, ip->c.u32, CPUOp::IMUL, CPUBits::B32);
                 break;
             case ByteCodeOp::AffectOpMulEqS32_SSafe:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32, CPUBits::B32);
-                emitIMMB(pp, ip, CPUReg::RCX, CPUBits::B32);
-                pp.emitOp(CPUReg::RAX, CPUReg::RCX, CPUOp::IMUL, CPUBits::B32);
-                pp.emitSetAddress(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->a.u32);
-                pp.emitStore(CPUReg::RCX, 0, CPUReg::RAX, CPUBits::B32);
+                emitBinOpEqS(pp, ip, offsetStack, CPUOp::IMUL, CPUBits::B32);
                 break;
             case ByteCodeOp::AffectOpMulEqS32_SSSafe:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32, CPUBits::B32);
-                pp.emitLoad(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->b.u32, CPUBits::B32);
-                pp.emitOp(CPUReg::RAX, CPUReg::RCX, CPUOp::IMUL, CPUBits::B32);
-                pp.emitSetAddress(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->a.u32);
-                pp.emitStore(CPUReg::RCX, 0, CPUReg::RAX, CPUBits::B32);
+                emitBinOpEqSS(pp, ip, offsetStack, CPUOp::IMUL, CPUBits::B32);
                 break;
 
             case ByteCodeOp::AffectOpMulEqS64:
@@ -949,18 +933,10 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitBinOpEq(pp, ip, ip->c.u32, CPUOp::IMUL, CPUBits::B64);
                 break;
             case ByteCodeOp::AffectOpMulEqS64_SSafe:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32, CPUBits::B64);
-                emitIMMB(pp, ip, CPUReg::RCX, CPUBits::B64);
-                pp.emitOp(CPUReg::RAX, CPUReg::RCX, CPUOp::IMUL, CPUBits::B64);
-                pp.emitSetAddress(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->a.u32);
-                pp.emitStore(CPUReg::RCX, 0, CPUReg::RAX, CPUBits::B64);
+                emitBinOpEqS(pp, ip, offsetStack, CPUOp::IMUL, CPUBits::B64);
                 break;
             case ByteCodeOp::AffectOpMulEqS64_SSSafe:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32, CPUBits::B64);
-                pp.emitLoad(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->b.u32, CPUBits::B64);
-                pp.emitOp(CPUReg::RAX, CPUReg::RCX, CPUOp::IMUL, CPUBits::B64);
-                pp.emitSetAddress(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->a.u32);
-                pp.emitStore(CPUReg::RCX, 0, CPUReg::RAX, CPUBits::B64);
+                emitBinOpEqSS(pp, ip, offsetStack, CPUOp::IMUL, CPUBits::B64);
                 break;
 
             case ByteCodeOp::AffectOpMulEqU8:
@@ -970,18 +946,10 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitBinOpEq(pp, ip, ip->c.u32, CPUOp::MUL, CPUBits::B8);
                 break;
             case ByteCodeOp::AffectOpMulEqU8_SSafe:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32, CPUBits::B8);
-                emitIMMB(pp, ip, CPUReg::RCX, CPUBits::B8);
-                pp.emitOp(CPUReg::RAX, CPUReg::RCX, CPUOp::MUL, CPUBits::B8);
-                pp.emitSetAddress(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->a.u32);
-                pp.emitStore(CPUReg::RCX, 0, CPUReg::RAX, CPUBits::B8);
+                emitBinOpEqS(pp, ip, offsetStack, CPUOp::MUL, CPUBits::B8);
                 break;
             case ByteCodeOp::AffectOpMulEqU8_SSSafe:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32, CPUBits::B8);
-                pp.emitLoad(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->b.u32, CPUBits::B8);
-                pp.emitOp(CPUReg::RAX, CPUReg::RCX, CPUOp::MUL, CPUBits::B8);
-                pp.emitSetAddress(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->a.u32);
-                pp.emitStore(CPUReg::RCX, 0, CPUReg::RAX, CPUBits::B8);
+                emitBinOpEqSS(pp, ip, offsetStack, CPUOp::MUL, CPUBits::B8);
                 break;
 
             case ByteCodeOp::AffectOpMulEqU16:
@@ -991,18 +959,10 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitBinOpEq(pp, ip, ip->c.u32, CPUOp::MUL, CPUBits::B16);
                 break;
             case ByteCodeOp::AffectOpMulEqU16_SSafe:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32, CPUBits::B16);
-                emitIMMB(pp, ip, CPUReg::RCX, CPUBits::B16);
-                pp.emitOp(CPUReg::RAX, CPUReg::RCX, CPUOp::MUL, CPUBits::B16);
-                pp.emitSetAddress(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->a.u32);
-                pp.emitStore(CPUReg::RCX, 0, CPUReg::RAX, CPUBits::B16);
+                emitBinOpEqS(pp, ip, offsetStack, CPUOp::MUL, CPUBits::B16);
                 break;
             case ByteCodeOp::AffectOpMulEqU16_SSSafe:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32, CPUBits::B16);
-                pp.emitLoad(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->b.u32, CPUBits::B16);
-                pp.emitOp(CPUReg::RAX, CPUReg::RCX, CPUOp::MUL, CPUBits::B16);
-                pp.emitSetAddress(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->a.u32);
-                pp.emitStore(CPUReg::RCX, 0, CPUReg::RAX, CPUBits::B16);
+                emitBinOpEqSS(pp, ip, offsetStack, CPUOp::MUL, CPUBits::B16);
                 break;
 
             case ByteCodeOp::AffectOpMulEqU32:
@@ -1012,18 +972,10 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitBinOpEq(pp, ip, ip->c.u32, CPUOp::MUL, CPUBits::B32);
                 break;
             case ByteCodeOp::AffectOpMulEqU32_SSafe:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32, CPUBits::B32);
-                emitIMMB(pp, ip, CPUReg::RCX, CPUBits::B32);
-                pp.emitOp(CPUReg::RAX, CPUReg::RCX, CPUOp::MUL, CPUBits::B32);
-                pp.emitSetAddress(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->a.u32);
-                pp.emitStore(CPUReg::RCX, 0, CPUReg::RAX, CPUBits::B32);
+                emitBinOpEqS(pp, ip, offsetStack, CPUOp::MUL, CPUBits::B32);
                 break;
             case ByteCodeOp::AffectOpMulEqU32_SSSafe:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32, CPUBits::B32);
-                pp.emitLoad(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->b.u32, CPUBits::B32);
-                pp.emitOp(CPUReg::RAX, CPUReg::RCX, CPUOp::MUL, CPUBits::B32);
-                pp.emitSetAddress(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->a.u32);
-                pp.emitStore(CPUReg::RCX, 0, CPUReg::RAX, CPUBits::B32);
+                emitBinOpEqSS(pp, ip, offsetStack, CPUOp::MUL, CPUBits::B32);
                 break;
 
             case ByteCodeOp::AffectOpMulEqU64:
@@ -1033,18 +985,10 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitBinOpEq(pp, ip, ip->c.u32, CPUOp::MUL, CPUBits::B64);
                 break;
             case ByteCodeOp::AffectOpMulEqU64_SSafe:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32, CPUBits::B64);
-                emitIMMB(pp, ip, CPUReg::RCX, CPUBits::B64);
-                pp.emitOp(CPUReg::RAX, CPUReg::RCX, CPUOp::MUL, CPUBits::B64);
-                pp.emitSetAddress(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->a.u32);
-                pp.emitStore(CPUReg::RCX, 0, CPUReg::RAX, CPUBits::B64);
+                emitBinOpEqS(pp, ip, offsetStack, CPUOp::MUL, CPUBits::B64);
                 break;
             case ByteCodeOp::AffectOpMulEqU64_SSSafe:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32, CPUBits::B64);
-                pp.emitLoad(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->b.u32, CPUBits::B64);
-                pp.emitOp(CPUReg::RAX, CPUReg::RCX, CPUOp::MUL, CPUBits::B64);
-                pp.emitSetAddress(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->a.u32);
-                pp.emitStore(CPUReg::RCX, 0, CPUReg::RAX, CPUBits::B64);
+                emitBinOpEqSS(pp, ip, offsetStack, CPUOp::MUL, CPUBits::B64);
                 break;
 
             case ByteCodeOp::AffectOpMulEqF32:
