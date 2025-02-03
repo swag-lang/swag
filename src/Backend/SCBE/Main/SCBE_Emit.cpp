@@ -168,24 +168,12 @@ void SCBE::emitShiftEqLogical(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp
     }
 }
 
-void SCBE::emitOverflowSigned(SCBE_X64& pp, const ByteCodeInstruction* ip, const char* msg)
+void SCBE::emitOverflow(SCBE_X64& pp, const ByteCodeInstruction* ip, const char* msg, bool isSigned)
 {
     const bool nw = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
     if (nw && pp.module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))
     {
-        const auto seekPtr = pp.emitJumpNear(JNO);
-        const auto seekJmp = pp.concat.totalCount();
-        emitInternalPanic(pp, ip->node, msg);
-        *seekPtr = static_cast<uint8_t>(pp.concat.totalCount() - seekJmp);
-    }
-}
-
-void SCBE::emitOverflowUnsigned(SCBE_X64& pp, const ByteCodeInstruction* ip, const char* msg)
-{
-    const bool nw = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
-    if (nw && pp.module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))
-    {
-        const auto seekPtr = pp.emitJumpNear(JAE);
+        const auto seekPtr = pp.emitJumpNear(isSigned ? JNO : JAE);
         const auto seekJmp = pp.concat.totalCount();
         emitInternalPanic(pp, ip->node, msg);
         *seekPtr = static_cast<uint8_t>(pp.concat.totalCount() - seekJmp);
@@ -267,10 +255,7 @@ void SCBE::emitBinOpAtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op,
 void SCBE::emitBinOpAtRegOverflow(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits, const char* msg, bool isSigned)
 {
     emitBinOpAtReg(pp, ip, op, numBits);
-    if (isSigned)
-        emitOverflowSigned(pp, ip, msg);
-    else
-        emitOverflowUnsigned(pp, ip, msg);    
+    emitOverflow(pp, ip, msg, isSigned);
 }
 
 void SCBE::emitBinOpDivAtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
@@ -388,10 +373,7 @@ void SCBE::emitBinOpEq(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t off
 void SCBE::emitBinOpEqOverflow(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offset, CPUOp op, CPUBits numBits, const char* msg, bool isSigned)
 {
     emitBinOpEq(pp, ip, offset, op, numBits);
-    if (isSigned)
-        emitOverflowSigned(pp, ip, msg);
-    else
-        emitOverflowUnsigned(pp, ip, msg);
+    emitOverflow(pp, ip, msg, isSigned);
 }
 
 void SCBE::emitBinOpEqS(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offsetStack, CPUOp op, CPUBits numBits)

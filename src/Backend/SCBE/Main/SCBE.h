@@ -29,8 +29,7 @@ struct SCBE final : Backend
     void emitOS(const BuildParameters& buildParameters) const;
     void emitMain(const BuildParameters& buildParameters) const;
 
-    static void emitOverflowSigned(SCBE_X64& pp, const ByteCodeInstruction* ip, const char* msg);
-    static void emitOverflowUnsigned(SCBE_X64& pp, const ByteCodeInstruction* ip, const char* msg);
+    static void emitOverflow(SCBE_X64& pp, const ByteCodeInstruction* ip, const char* msg, bool isSigned);
     static void emitShiftRightArithmetic(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUBits numBits);
     static void emitShiftLogical(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits);
     static void emitShiftRightEqArithmetic(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUBits numBits);
