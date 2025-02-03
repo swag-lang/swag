@@ -1373,81 +1373,49 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitBinOpEqOverflow(pp, ip, 0, CPUOp::ADD, CPUBits::B64, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU64), false);
                 break;
             case ByteCodeOp::AffectOpPlusEqF32:
-                emitBinOpEq(pp, ip, ip->c.u32, CPUOp::FADD, CPUBits::F32);
-                break;
             case ByteCodeOp::AffectOpPlusEqF64:
-                emitBinOpEq(pp, ip, ip->c.u32, CPUOp::FADD, CPUBits::F64);
+                emitBinOpEq(pp, ip, ip->c.u32, CPUOp::FADD, SCBE_CPU::getCPUBits(ip->op));
                 break;
 
             case ByteCodeOp::AffectOpPlusEqS8_Safe:
-                emitBinOpEq(pp, ip, ip->c.u32, CPUOp::ADD, CPUBits::B8);
-                break;
             case ByteCodeOp::AffectOpPlusEqS16_Safe:
-                emitBinOpEq(pp, ip, ip->c.u32, CPUOp::ADD, CPUBits::B16);
-                break;
             case ByteCodeOp::AffectOpPlusEqS32_Safe:
-                emitBinOpEq(pp, ip, ip->c.u32, CPUOp::ADD, CPUBits::B32);
-                break;
             case ByteCodeOp::AffectOpPlusEqS64_Safe:
-                emitBinOpEq(pp, ip, ip->c.u32, CPUOp::ADD, CPUBits::B64);
-                break;
             case ByteCodeOp::AffectOpPlusEqU8_Safe:
-                emitBinOpEq(pp, ip, ip->c.u32, CPUOp::ADD, CPUBits::B8);
-                break;
             case ByteCodeOp::AffectOpPlusEqU16_Safe:
-                emitBinOpEq(pp, ip, ip->c.u32, CPUOp::ADD, CPUBits::B16);
-                break;
             case ByteCodeOp::AffectOpPlusEqU32_Safe:
-                emitBinOpEq(pp, ip, ip->c.u32, CPUOp::ADD, CPUBits::B32);
-                break;
             case ByteCodeOp::AffectOpPlusEqU64_Safe:
-                emitBinOpEq(pp, ip, ip->c.u32, CPUOp::ADD, CPUBits::B64);
+                emitBinOpEq(pp, ip, ip->c.u32, CPUOp::ADD, SCBE_CPU::getCPUBits(ip->op));
                 break;
 
             case ByteCodeOp::AffectOpPlusEqS8_SSafe:
-            case ByteCodeOp::AffectOpPlusEqU8_SSafe:
-                emitBinOpEqS(pp, ip, offsetStack, CPUOp::ADD, CPUBits::B8);
-                break;
             case ByteCodeOp::AffectOpPlusEqS16_SSafe:
-            case ByteCodeOp::AffectOpPlusEqU16_SSafe:
-                emitBinOpEqS(pp, ip, offsetStack, CPUOp::ADD, CPUBits::B16);
-                break;
             case ByteCodeOp::AffectOpPlusEqS32_SSafe:
-            case ByteCodeOp::AffectOpPlusEqU32_SSafe:
-                emitBinOpEqS(pp, ip, offsetStack, CPUOp::ADD, CPUBits::B32);
-                break;
             case ByteCodeOp::AffectOpPlusEqS64_SSafe:
+            case ByteCodeOp::AffectOpPlusEqU8_SSafe:
+            case ByteCodeOp::AffectOpPlusEqU16_SSafe:
+            case ByteCodeOp::AffectOpPlusEqU32_SSafe:
             case ByteCodeOp::AffectOpPlusEqU64_SSafe:
-                emitBinOpEqS(pp, ip, offsetStack, CPUOp::ADD, CPUBits::B64);
+                emitBinOpEqS(pp, ip, offsetStack, CPUOp::ADD, SCBE_CPU::getCPUBits(ip->op));
                 break;
             case ByteCodeOp::AffectOpPlusEqF32_S:
-                emitBinOpEqS(pp, ip, offsetStack, CPUOp::FADD, CPUBits::F32);
-                break;
             case ByteCodeOp::AffectOpPlusEqF64_S:
-                emitBinOpEqS(pp, ip, offsetStack, CPUOp::FADD, CPUBits::F64);
+                emitBinOpEqS(pp, ip, offsetStack, CPUOp::FADD, SCBE_CPU::getCPUBits(ip->op));
                 break;
 
             case ByteCodeOp::AffectOpPlusEqS8_SSSafe:
-            case ByteCodeOp::AffectOpPlusEqU8_SSSafe:
-                emitBinOpEqSS(pp, ip, offsetStack, CPUOp::ADD, CPUBits::B8);
-                break;
             case ByteCodeOp::AffectOpPlusEqS16_SSSafe:
-            case ByteCodeOp::AffectOpPlusEqU16_SSSafe:
-                emitBinOpEqSS(pp, ip, offsetStack, CPUOp::ADD, CPUBits::B16);
-                break;
             case ByteCodeOp::AffectOpPlusEqS32_SSSafe:
-            case ByteCodeOp::AffectOpPlusEqU32_SSSafe:
-                emitBinOpEqSS(pp, ip, offsetStack, CPUOp::ADD, CPUBits::B32);
-                break;
             case ByteCodeOp::AffectOpPlusEqS64_SSSafe:
+            case ByteCodeOp::AffectOpPlusEqU8_SSSafe:
+            case ByteCodeOp::AffectOpPlusEqU16_SSSafe:
+            case ByteCodeOp::AffectOpPlusEqU32_SSSafe:
             case ByteCodeOp::AffectOpPlusEqU64_SSSafe:
-                emitBinOpEqSS(pp, ip, offsetStack, CPUOp::ADD, CPUBits::B64);
+                emitBinOpEqSS(pp, ip, offsetStack, CPUOp::ADD, SCBE_CPU::getCPUBits(ip->op));
                 break;
             case ByteCodeOp::AffectOpPlusEqF32_SS:
-                emitBinOpEqSS(pp, ip, offsetStack, CPUOp::FADD, CPUBits::F32);
-                break;
             case ByteCodeOp::AffectOpPlusEqF64_SS:
-                emitBinOpEqSS(pp, ip, offsetStack, CPUOp::FADD, CPUBits::F64);
+                emitBinOpEqSS(pp, ip, offsetStack, CPUOp::FADD, SCBE_CPU::getCPUBits(ip->op));
                 break;
 
                 /////////////////////////////////////
