@@ -412,7 +412,15 @@ void SCBE::emitBinOpEqOverflow(SCBE_X64& pp, const ByteCodeInstruction* ip, uint
 
 void SCBE::emitBinOpEqS(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offsetStack, CPUOp op, CPUBits numBits)
 {
-    if (SCBE_CPU::isInt(numBits) && ip->hasFlag(BCI_IMM_B))
+    if (op == CPUOp::IMUL || op == CPUOp::MUL)
+    {
+        pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32, numBits);
+        emitIMMB(pp, ip, CPUReg::RCX, numBits);
+        pp.emitOp(CPUReg::RAX, CPUReg::RCX, op, numBits);
+        pp.emitSetAddress(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->a.u32);
+        pp.emitStore(CPUReg::RCX, 0, CPUReg::RAX, numBits);        
+    }
+    else if (SCBE_CPU::isInt(numBits) && ip->hasFlag(BCI_IMM_B))
     {
         pp.emitOp(CPUReg::RDI, offsetStack + ip->a.u32, ip->b.u64, op, numBits);
     }
@@ -426,9 +434,20 @@ void SCBE::emitBinOpEqS(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t of
 
 void SCBE::emitBinOpEqSS(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offsetStack, CPUOp op, CPUBits numBits)
 {
-    const auto r0 = SCBE_CPU::isInt(numBits) ? CPUReg::RAX : CPUReg::XMM1;
-    pp.emitLoad(r0, CPUReg::RDI, offsetStack + ip->b.u32, numBits);
-    pp.emitOp(CPUReg::RDI, offsetStack + ip->a.u32, r0, op, numBits);
+    if (op == CPUOp::IMUL || op == CPUOp::MUL)
+    {
+        pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32, numBits);
+        pp.emitLoad(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->b.u32, numBits);
+        pp.emitOp(CPUReg::RAX, CPUReg::RCX, op, numBits);
+        pp.emitSetAddress(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->a.u32);
+        pp.emitStore(CPUReg::RCX, 0, CPUReg::RAX, numBits);
+    }
+    else
+    {
+        const auto r0 = SCBE_CPU::isInt(numBits) ? CPUReg::RAX : CPUReg::XMM1;
+        pp.emitLoad(r0, CPUReg::RDI, offsetStack + ip->b.u32, numBits);
+        pp.emitOp(CPUReg::RDI, offsetStack + ip->a.u32, r0, op, numBits);
+    }
 }
 
 void SCBE::emitBinOpEqLock(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
