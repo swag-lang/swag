@@ -763,28 +763,28 @@ bool ByteCodeOptimizer::optimizeStep1(ByteCodeOptContext* context)
 
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
-        OPT_SUB_PASS_O2(reduceErr);
-        OPT_SUB_PASS_O2(reduceCallEmptyFct);
-        OPT_SUB_PASS_O2(reduceMemcpy);
-        OPT_SUB_PASS_O2(reduceFunc);
-        OPT_SUB_PASS_O2(reduceStack);
-        OPT_SUB_PASS_O2(reduceStack1);
-        OPT_SUB_PASS_O2(reduceStack2);
-        OPT_SUB_PASS_O2(reduceStack3);
-        OPT_SUB_PASS_O2(reduceIncPtr);
-        OPT_SUB_PASS_O2(reduceSetAt);
-        OPT_SUB_PASS_O2(reduceCast);
-        OPT_SUB_PASS_O2(reduceNoOp);
-        OPT_SUB_PASS_O2(reduceCmpJump);
-        OPT_SUB_PASS_O2(reduceAppend);
-        OPT_SUB_PASS_O2(reduceForceSafe);
-        OPT_SUB_PASS_O2(reduceStackOp);
-        OPT_SUB_PASS_O2(reduceLateStack);
-        OPT_SUB_PASS_O2(reduceFactor);
-        OPT_SUB_PASS_O2(reduceMath);
-        OPT_SUB_PASS_O2(reduceAffectOp);
-        OPT_SUB_PASS_O2(reduceDupInstr);
-        OPT_SUB_PASS_O2(reduceCopy);
+        OPT_REDUCE_O2(reduceErr);
+        OPT_REDUCE_O2(reduceCallEmptyFct);
+        OPT_REDUCE_O2(reduceMemcpy);
+        OPT_REDUCE_O2(reduceFunc);
+        OPT_REDUCE_O2(reduceStack);
+        OPT_REDUCE_O2(reduceStack1);
+        OPT_REDUCE_O2(reduceStack2);
+        OPT_REDUCE_O2(reduceStack3);
+        OPT_REDUCE_O2(reduceIncPtr);
+        OPT_REDUCE_O2(reduceSetAt);
+        OPT_REDUCE_O2(reduceCast);
+        OPT_REDUCE_O2(reduceNoOp);
+        OPT_REDUCE_O2(reduceCmpJump);
+        OPT_REDUCE_O2(reduceAppend);
+        OPT_REDUCE_O2(reduceForceSafe);
+        OPT_REDUCE_O2(reduceStackOp);
+        OPT_REDUCE_O2(reduceLateStack);
+        OPT_REDUCE_O2(reduceFactor);
+        OPT_REDUCE_O2(reduceMath);
+        OPT_REDUCE_O2(reduceAffectOp);
+        OPT_REDUCE_O2(reduceDupInstr);
+        OPT_REDUCE_O2(reduceCopy);
     }
 
     OPT_PASS_O2(optimizePassDeadStore);
@@ -809,11 +809,11 @@ bool ByteCodeOptimizer::optimizeStep3(ByteCodeOptContext* context)
 {
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
-        OPT_SUB_PASS_O1(reduceCall);
-        OPT_SUB_PASS_O1(reduceStackJumps);
+        OPT_REDUCE_O1(reduceCall);
+        OPT_REDUCE_O1(reduceStackJumps);
 
-        OPT_SUB_PASS_O2(reduceX2);
-        OPT_SUB_PASS_O2(reduceInvCopy);
+        OPT_REDUCE_O2(reduceX2);
+        OPT_REDUCE_O2(reduceInvCopy);
     }
 
     return true;

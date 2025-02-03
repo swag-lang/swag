@@ -122,12 +122,12 @@ struct ByteCodeOptimizer
         context->allPassesHaveDoneSomething |= context->passHasDoneSomething;         \
     }
 
-#define OPT_SUB_PASS_O1(__func)                                                       \
+#define OPT_REDUCE_O1(__func)                                                         \
     if (context->module->buildCfg.byteCodeOptimizeLevel >= BuildCfgByteCodeOptim::O1) \
     {                                                                                 \
         __func(context, ip);                                                          \
     }
-#define OPT_SUB_PASS_O2(__func)                                                       \
+#define OPT_REDUCE_O2(__func)                                                         \
     if (context->module->buildCfg.byteCodeOptimizeLevel >= BuildCfgByteCodeOptim::O2) \
     {                                                                                 \
         __func(context, ip);                                                          \
