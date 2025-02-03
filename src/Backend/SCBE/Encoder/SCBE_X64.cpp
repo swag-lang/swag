@@ -883,12 +883,12 @@ void SCBE_X64::emitOp(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits, C
             op != CPUOp::FXOR)
         {
             concat.addU8(0xF3);
-            emitREX(concat, srcBits, regDst);
+            emitREX(concat, srcBits, regSrc);
         }
 
         concat.addU8(0x0F);
         concat.addU8(static_cast<uint8_t>(op));
-        concat.addU8(static_cast<uint8_t>(0xC0 | static_cast<uint8_t>(regDst) | static_cast<uint8_t>(regSrc) << 3));
+        concat.addU8(static_cast<uint8_t>(0xC0 | static_cast<uint8_t>(regSrc) | static_cast<uint8_t>(regDst) << 3));
     }
     else if (numBits == CPUBits::F64)
     {
@@ -898,7 +898,7 @@ void SCBE_X64::emitOp(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits, C
             op != CPUOp::FXOR)
         {
             concat.addU8(0xF2);
-            emitREX(concat, srcBits, regDst);
+            emitREX(concat, srcBits, regSrc);
         }
         else
         {
@@ -907,7 +907,7 @@ void SCBE_X64::emitOp(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits, C
 
         concat.addU8(0x0F);
         concat.addU8(static_cast<uint8_t>(op));
-        concat.addU8(static_cast<uint8_t>(0xC0 | static_cast<uint8_t>(regDst) | static_cast<uint8_t>(regSrc) << 3));
+        concat.addU8(static_cast<uint8_t>(0xC0 | static_cast<uint8_t>(regSrc) | static_cast<uint8_t>(regDst) << 3));
     }
     else
     {

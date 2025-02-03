@@ -199,7 +199,7 @@ void SCBE::emitBinOp(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUB
                 pp.emitLoad(CPUReg::XMM1, ip->b.u64, numBits);
             else
                 pp.emitLoad(CPUReg::XMM1, CPUReg::RDI, REG_OFFSET(ip->b.u32), numBits);
-            pp.emitOp(CPUReg::XMM1, CPUReg::XMM0, op, numBits);
+            pp.emitOp(CPUReg::XMM0, CPUReg::XMM1, op, numBits);
         }
     }
     else
