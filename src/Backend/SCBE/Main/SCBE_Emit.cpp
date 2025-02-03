@@ -372,7 +372,7 @@ void SCBE::emitBinOpEq(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t off
 
 void SCBE::emitBinOpEqOverflow(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offset, CPUOp op, CPUBits numBits, const char* msg, bool isSigned)
 {
-    if (op == CPUOp::IMUL)
+    if (op == CPUOp::IMUL || op == CPUOp::MUL)
     {
         pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
         pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, numBits);

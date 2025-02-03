@@ -992,13 +992,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpMulEqU8:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-                pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, CPUBits::B8);
-                emitIMMB(pp, ip, CPUReg::RCX, CPUBits::B8);
-                pp.emitOp(CPUReg::RCX, CPUReg::RAX, CPUOp::MUL, CPUBits::B8);
-                emitOverflow(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU8), false);
-                pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-                pp.emitStore(CPUReg::RCX, 0, CPUReg::RAX, CPUBits::B8);
+                emitBinOpEqOverflow(pp, ip, 0, CPUOp::MUL, CPUBits::B8, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU8), false);
                 break;
             case ByteCodeOp::AffectOpMulEqU8_Safe:
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
@@ -1024,13 +1018,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpMulEqU16:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-                pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, CPUBits::B16);
-                emitIMMB(pp, ip, CPUReg::RCX, CPUBits::B16);
-                pp.emitOp(CPUReg::RCX, CPUReg::RAX, CPUOp::MUL, CPUBits::B16);
-                emitOverflow(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU16), false);
-                pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-                pp.emitStore(CPUReg::RCX, 0, CPUReg::RAX, CPUBits::B16);
+                emitBinOpEqOverflow(pp, ip, 0, CPUOp::MUL, CPUBits::B16, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU16), false);
                 break;
             case ByteCodeOp::AffectOpMulEqU16_Safe:
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
@@ -1056,13 +1044,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpMulEqU32:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-                pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, CPUBits::B32);
-                emitIMMB(pp, ip, CPUReg::RCX, CPUBits::B32);
-                pp.emitOp(CPUReg::RCX, CPUReg::RAX, CPUOp::MUL, CPUBits::B32);
-                emitOverflow(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU32), false);
-                pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-                pp.emitStore(CPUReg::RCX, 0, CPUReg::RAX, CPUBits::B32);
+                emitBinOpEqOverflow(pp, ip, 0, CPUOp::MUL, CPUBits::B32, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU32), false);
                 break;
             case ByteCodeOp::AffectOpMulEqU32_Safe:
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
@@ -1088,13 +1070,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpMulEqU64:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-                pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, CPUBits::B64);
-                emitIMMB(pp, ip, CPUReg::RCX, CPUBits::B64);
-                pp.emitOp(CPUReg::RCX, CPUReg::RAX, CPUOp::MUL, CPUBits::B64);
-                emitOverflow(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU64), false);
-                pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-                pp.emitStore(CPUReg::RCX, 0, CPUReg::RAX, CPUBits::B64);
+                emitBinOpEqOverflow(pp, ip, 0, CPUOp::MUL, CPUBits::B64, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU64), false);
                 break;
             case ByteCodeOp::AffectOpMulEqU64_Safe:
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
