@@ -1906,203 +1906,206 @@ bool ByteCodeOptimizer::optimizePassConstJump(ByteCodeOptContext* context)
     return true;
 }
 
-void ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context, ByteCodeOp op0, ByteCodeOp op1)
+namespace
 {
-    int sizeOf = 0;
-    switch (op0)
+    void optimizePassSwitchOp(ByteCodeOptContext* context, ByteCodeOp op0, ByteCodeOp op1)
     {
-        case ByteCodeOp::JumpIfEqual8:
-            sizeOf = 1;
-            break;
-        case ByteCodeOp::JumpIfEqual16:
-            sizeOf = 2;
-            break;
-        case ByteCodeOp::JumpIfEqual32:
-            sizeOf = 4;
-            break;
-        case ByteCodeOp::JumpIfEqual64:
-            sizeOf = 8;
-            break;
-        default:
-            SWAG_ASSERT(false);
-            break;
-    }
-
-    constexpr int64_t minJumpTableSize = 4;
-    constexpr int64_t maxJumpTableSize = UINT32_MAX;
-    constexpr int64_t minDensity       = 10;
-
-    for (uint32_t idx = 0; idx < context->jumps.size(); idx++)
-    {
-        const auto ip = context->jumps[idx];
-        if (!ByteCode::isJump(ip))
-            continue;
-
-        const auto orgValue0 = ip->a.u32;
-        auto       orgValue1 = UINT32_MAX;
-        if (ip[-1].op == ByteCodeOp::CopyRBtoRA64 && ip[-1].b.u32 == ip->a.u32 && !ip->hasFlag(BCI_START_STMT))
-            orgValue1 = ip[-1].a.u32;
-
-        const auto ipStart = ip;
-        context->map6432.clear();
-        context->vecInst.clear();
-
-        auto                       destIp    = ip;
-        const ByteCodeInstruction* defaultIp = nullptr;
-        while (true)
+        int sizeOf = 0;
+        switch (op0)
         {
-            defaultIp = destIp;
-
-            if (destIp->op == op0 && destIp->hasFlag(BCI_IMM_C) && destIp->b.s32 > 0 &&
-                (destIp->a.u32 == orgValue0 || destIp->a.u32 == orgValue1))
-            {
-                if (context->map6432.contains(destIp->c.u64)) // Only one value per jump
-                    break;
-
-                context->vecInst.push_back(destIp);
-                const auto offset = static_cast<uint32_t>(destIp - ipStart) + destIp->b.s32;
-                switch (sizeOf)
-                {
-                    case 1:
-                        context->map6432[destIp->c.s8] = offset;
-                        break;
-                    case 2:
-                        context->map6432[destIp->c.s16] = offset;
-                        break;
-                    case 4:
-                        context->map6432[destIp->c.s32] = offset;
-                        break;
-                    case 8:
-                        context->map6432[destIp->c.s64] = offset;
-                        break;
-                    default:
-                        break;
-                }
-
-                destIp++;
-                continue;
-            }
-
-            if (destIp->op == op1 && destIp->hasFlag(BCI_IMM_C) && destIp->b.s32 > 0 &&
-                (destIp->a.u32 == orgValue0 || destIp->a.u32 == orgValue1))
-            {
-                if (context->map6432.contains(destIp->c.u64)) // Only one value per jump
-                    break;
-
-                context->vecInst.push_back(destIp);
-                const auto offset = static_cast<uint32_t>(destIp - ipStart);
-                switch (sizeOf)
-                {
-                    case 1:
-                        context->map6432[destIp->c.s8] = offset;
-                        break;
-                    case 2:
-                        context->map6432[destIp->c.s16] = offset;
-                        break;
-                    case 4:
-                        context->map6432[destIp->c.s32] = offset;
-                        break;
-                    case 8:
-                        context->map6432[destIp->c.s64] = offset;
-                        break;
-                    default:
-                        break;
-                }
-
-                destIp = destIp + destIp->b.s32 + 1;
-                continue;
-            }
-
+            case ByteCodeOp::JumpIfEqual8:
+                sizeOf = 1;
+            break;
+            case ByteCodeOp::JumpIfEqual16:
+                sizeOf = 2;
+            break;
+            case ByteCodeOp::JumpIfEqual32:
+                sizeOf = 4;
+            break;
+            case ByteCodeOp::JumpIfEqual64:
+                sizeOf = 8;
+            break;
+            default:
+                SWAG_ASSERT(false);
             break;
         }
 
-        int64_t minValue = INT64_MAX;
-        int64_t maxValue = 0;
-        for (const auto inst : context->vecInst)
+        constexpr int64_t minJumpTableSize = 4;
+        constexpr int64_t maxJumpTableSize = UINT32_MAX;
+        constexpr int64_t minDensity       = 10;
+
+        for (uint32_t idx = 0; idx < context->jumps.size(); idx++)
         {
+            const auto ip = context->jumps[idx];
+            if (!ByteCode::isJump(ip))
+                continue;
+
+            const auto orgValue0 = ip->a.u32;
+            auto       orgValue1 = UINT32_MAX;
+            if (ip[-1].op == ByteCodeOp::CopyRBtoRA64 && ip[-1].b.u32 == ip->a.u32 && !ip->hasFlag(BCI_START_STMT))
+                orgValue1 = ip[-1].a.u32;
+
+            const auto ipStart = ip;
+            context->map6432.clear();
+            context->vecInst.clear();
+
+            auto                       destIp    = ip;
+            const ByteCodeInstruction* defaultIp = nullptr;
+            while (true)
+            {
+                defaultIp = destIp;
+
+                if (destIp->op == op0 && destIp->hasFlag(BCI_IMM_C) && destIp->b.s32 > 0 &&
+                    (destIp->a.u32 == orgValue0 || destIp->a.u32 == orgValue1))
+                {
+                    if (context->map6432.contains(destIp->c.u64)) // Only one value per jump
+                        break;
+
+                    context->vecInst.push_back(destIp);
+                    const auto offset = static_cast<uint32_t>(destIp - ipStart) + destIp->b.s32;
+                    switch (sizeOf)
+                    {
+                        case 1:
+                            context->map6432[destIp->c.s8] = offset;
+                        break;
+                        case 2:
+                            context->map6432[destIp->c.s16] = offset;
+                        break;
+                        case 4:
+                            context->map6432[destIp->c.s32] = offset;
+                        break;
+                        case 8:
+                            context->map6432[destIp->c.s64] = offset;
+                        break;
+                        default:
+                            break;
+                    }
+
+                    destIp++;
+                    continue;
+                }
+
+                if (destIp->op == op1 && destIp->hasFlag(BCI_IMM_C) && destIp->b.s32 > 0 &&
+                    (destIp->a.u32 == orgValue0 || destIp->a.u32 == orgValue1))
+                {
+                    if (context->map6432.contains(destIp->c.u64)) // Only one value per jump
+                        break;
+
+                    context->vecInst.push_back(destIp);
+                    const auto offset = static_cast<uint32_t>(destIp - ipStart);
+                    switch (sizeOf)
+                    {
+                        case 1:
+                            context->map6432[destIp->c.s8] = offset;
+                        break;
+                        case 2:
+                            context->map6432[destIp->c.s16] = offset;
+                        break;
+                        case 4:
+                            context->map6432[destIp->c.s32] = offset;
+                        break;
+                        case 8:
+                            context->map6432[destIp->c.s64] = offset;
+                        break;
+                        default:
+                            break;
+                    }
+
+                    destIp = destIp + destIp->b.s32 + 1;
+                    continue;
+                }
+
+                break;
+            }
+
+            int64_t minValue = INT64_MAX;
+            int64_t maxValue = 0;
+            for (const auto inst : context->vecInst)
+            {
+                switch (sizeOf)
+                {
+                    case 1:
+                        minValue = min(minValue, inst->c.s8);
+                    maxValue = max(maxValue, inst->c.s8);
+                    break;
+                    case 2:
+                        minValue = min(minValue, inst->c.s16);
+                    maxValue = max(maxValue, inst->c.s16);
+                    break;
+                    case 4:
+                        minValue = min(minValue, inst->c.s32);
+                    maxValue = max(maxValue, inst->c.s32);
+                    break;
+                    case 8:
+                        minValue = min(minValue, inst->c.s64);
+                    maxValue = max(maxValue, inst->c.s64);
+                    break;
+                    default:
+                        break;
+                }
+            }
+
+            // Heuristic : too much values compared to the number of cases
+            // Comes from
+            // TargetLoweringBase::getMinimumJumpTableEntries()
+            // TargetLoweringBase::isSuitableForJumpTable in llvm
+
+            const auto range    = maxValue - minValue + 1;
+            const auto numCases = static_cast<int64_t>(context->vecInst.size());
+            if (numCases < 4)
+                continue;
+            const bool canGen = range >= minJumpTableSize && range <= maxJumpTableSize && numCases * 100 >= range * minDensity;
+            if (!canGen)
+                continue;
+
+            // Create the jump table
+            // First element is always the "default" one
+            uint8_t*   addrCompiler        = nullptr;
+            const auto offsetTableCompiler = context->module->compilerSegment.reserve((static_cast<uint32_t>(range) + 1) * sizeof(uint32_t), &addrCompiler);
+            const auto patchCompiler       = reinterpret_cast<uint32_t*>(addrCompiler);
+
+            // Set table to default jump
+            for (uint32_t i = 0; i < range + 1; i++)
+                patchCompiler[i] = static_cast<uint32_t>(defaultIp - ipStart) - 1;
+
+            // Then register each value
+            for (const auto& it : context->map6432)
+            {
+                const int64_t v      = static_cast<int64_t>(it.first - minValue);
+                patchCompiler[v + 1] = it.second;
+            }
+
             switch (sizeOf)
             {
                 case 1:
-                    minValue = min(minValue, inst->c.s8);
-                    maxValue = max(maxValue, inst->c.s8);
-                    break;
+                    SET_OP(ipStart, ByteCodeOp::JumpDyn8);
+                break;
                 case 2:
-                    minValue = min(minValue, inst->c.s16);
-                    maxValue = max(maxValue, inst->c.s16);
-                    break;
+                    SET_OP(ipStart, ByteCodeOp::JumpDyn16);
+                break;
                 case 4:
-                    minValue = min(minValue, inst->c.s32);
-                    maxValue = max(maxValue, inst->c.s32);
-                    break;
+                    SET_OP(ipStart, ByteCodeOp::JumpDyn32);
+                break;
                 case 8:
-                    minValue = min(minValue, inst->c.s64);
-                    maxValue = max(maxValue, inst->c.s64);
-                    break;
+                    SET_OP(ipStart, ByteCodeOp::JumpDyn64);
+                break;
                 default:
                     break;
             }
+
+            ip->b.u64 = minValue;
+            ip->c.u64 = range + 1;
+            ip->d.u64 = offsetTableCompiler;
+            break;
         }
-
-        // Heuristic : too much values compared to the number of cases
-        // Comes from
-        // TargetLoweringBase::getMinimumJumpTableEntries()
-        // TargetLoweringBase::isSuitableForJumpTable in llvm
-
-        const auto range    = maxValue - minValue + 1;
-        const auto numCases = static_cast<int64_t>(context->vecInst.size());
-        if (numCases < 4)
-            continue;
-        const bool canGen = range >= minJumpTableSize && range <= maxJumpTableSize && numCases * 100 >= range * minDensity;
-        if (!canGen)
-            continue;
-
-        // Create the jump table
-        // First element is always the "default" one
-        uint8_t*   addrCompiler        = nullptr;
-        const auto offsetTableCompiler = context->module->compilerSegment.reserve((static_cast<uint32_t>(range) + 1) * sizeof(uint32_t), &addrCompiler);
-        const auto patchCompiler       = reinterpret_cast<uint32_t*>(addrCompiler);
-
-        // Set table to default jump
-        for (uint32_t i = 0; i < range + 1; i++)
-            patchCompiler[i] = static_cast<uint32_t>(defaultIp - ipStart) - 1;
-
-        // Then register each value
-        for (const auto& it : context->map6432)
-        {
-            const int64_t v      = static_cast<int64_t>(it.first - minValue);
-            patchCompiler[v + 1] = it.second;
-        }
-
-        switch (sizeOf)
-        {
-            case 1:
-                SET_OP(ipStart, ByteCodeOp::JumpDyn8);
-                break;
-            case 2:
-                SET_OP(ipStart, ByteCodeOp::JumpDyn16);
-                break;
-            case 4:
-                SET_OP(ipStart, ByteCodeOp::JumpDyn32);
-                break;
-            case 8:
-                SET_OP(ipStart, ByteCodeOp::JumpDyn64);
-                break;
-            default:
-                break;
-        }
-
-        ip->b.u64 = minValue;
-        ip->c.u64 = range + 1;
-        ip->d.u64 = offsetTableCompiler;
-        break;
     }
 }
 
 bool ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context)
 {
-    optimizePassSwitch(context, ByteCodeOp::JumpIfEqual8, ByteCodeOp::JumpIfNotEqual8);
-    optimizePassSwitch(context, ByteCodeOp::JumpIfEqual16, ByteCodeOp::JumpIfNotEqual16);
-    optimizePassSwitch(context, ByteCodeOp::JumpIfEqual32, ByteCodeOp::JumpIfNotEqual32);
-    optimizePassSwitch(context, ByteCodeOp::JumpIfEqual64, ByteCodeOp::JumpIfNotEqual64);
+    optimizePassSwitchOp(context, ByteCodeOp::JumpIfEqual8, ByteCodeOp::JumpIfNotEqual8);
+    optimizePassSwitchOp(context, ByteCodeOp::JumpIfEqual16, ByteCodeOp::JumpIfNotEqual16);
+    optimizePassSwitchOp(context, ByteCodeOp::JumpIfEqual32, ByteCodeOp::JumpIfNotEqual32);
+    optimizePassSwitchOp(context, ByteCodeOp::JumpIfEqual64, ByteCodeOp::JumpIfNotEqual64);
     return true;
 }

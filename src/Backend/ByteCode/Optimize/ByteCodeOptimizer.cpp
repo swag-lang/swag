@@ -675,12 +675,13 @@ bool ByteCodeOptimizer::optimize(Job* job, Module* module, bool& done)
 
 bool ByteCodeOptimizer::optimizeStep1(ByteCodeOptContext& optContext)
 {
-    OPT_PASS(optimizePassJump, BuildCfgByteCodeOptim::O2);
     OPT_PASS(optimizePassConstJump, BuildCfgByteCodeOptim::O1);
-    OPT_PASS(optimizePassDeadCode, BuildCfgByteCodeOptim::O2);
     OPT_PASS(optimizePassImmediate, BuildCfgByteCodeOptim::O1);
     OPT_PASS(optimizePassImmediate2, BuildCfgByteCodeOptim::O1);
     OPT_PASS(optimizePassConst, BuildCfgByteCodeOptim::O1);
+    
+    OPT_PASS(optimizePassJump, BuildCfgByteCodeOptim::O2);
+    OPT_PASS(optimizePassDeadCode, BuildCfgByteCodeOptim::O2);
     OPT_PASS(optimizePassDupCopyRBRA, BuildCfgByteCodeOptim::O2);
     OPT_PASS(optimizePassDupSetRA, BuildCfgByteCodeOptim::O2);
     OPT_PASS(optimizePassRetCopyLocal, BuildCfgByteCodeOptim::O2);
