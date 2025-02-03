@@ -75,13 +75,11 @@ struct ByteCodeOptimizer
     static void reduceLateStack(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceDupInstr(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceCopy(ByteCodeOptContext* context, ByteCodeInstruction* ip);
-    static bool optimizePassReduce(ByteCodeOptContext* context);
-    static bool optimizePassReduceX2(ByteCodeOptContext* context);
 
     static bool optimize(Job* job, Module* module, bool& done);
-    static bool optimizeStep1(ByteCodeOptContext& optContext);
-    static bool optimizeStep2(ByteCodeOptContext& optContext);
-    static bool optimizeStep3(ByteCodeOptContext& optContext);
+    static bool optimizeStep1(ByteCodeOptContext* context);
+    static bool optimizeStep2(ByteCodeOptContext* context);
+    static bool optimizeStep3(ByteCodeOptContext* context);
     static bool optimize(ByteCodeOptContext& optContext, ByteCode* bc, bool& restart);
 };
 
@@ -103,19 +101,34 @@ struct ByteCodeOptimizer
     } while (0)
 #endif
 
-#define OPT_PASS(__func, __minLevel)                                              \
-    if (optContext.module->buildCfg.byteCodeOptimizeLevel >= (__minLevel))        \
-    {                                                                             \
-        optContext.passHasDoneSomething = false;                                  \
-        if (!__func(&optContext))                                                 \
-            return false;                                                         \
-        if (optContext.hasError)                                                  \
-            return false;                                                         \
-        optContext.allPassesHaveDoneSomething |= optContext.passHasDoneSomething; \
+#define OPT_PASS_O1(__func)                                                           \
+    if (context->module->buildCfg.byteCodeOptimizeLevel >= BuildCfgByteCodeOptim::O1) \
+    {                                                                                 \
+        context->passHasDoneSomething = false;                                        \
+        if (!__func(context))                                                         \
+            return false;                                                             \
+        if (context->hasError)                                                        \
+            return false;                                                             \
+        context->allPassesHaveDoneSomething |= context->passHasDoneSomething;         \
+    }
+#define OPT_PASS_O2(__func)                                                           \
+    if (context->module->buildCfg.byteCodeOptimizeLevel >= BuildCfgByteCodeOptim::O2) \
+    {                                                                                 \
+        context->passHasDoneSomething = false;                                        \
+        if (!__func(context))                                                         \
+            return false;                                                             \
+        if (context->hasError)                                                        \
+            return false;                                                             \
+        context->allPassesHaveDoneSomething |= context->passHasDoneSomething;         \
     }
 
-#define OPT_SUB_PASS(__func, __minLevel)                                 \
-    if (context->module->buildCfg.byteCodeOptimizeLevel >= (__minLevel)) \
-    {                                                                    \
-        __func(context, ip);                                             \
+#define OPT_SUB_PASS_O1(__func)                                                       \
+    if (context->module->buildCfg.byteCodeOptimizeLevel >= BuildCfgByteCodeOptim::O1) \
+    {                                                                                 \
+        __func(context, ip);                                                          \
+    }
+#define OPT_SUB_PASS_O2(__func)                                                       \
+    if (context->module->buildCfg.byteCodeOptimizeLevel >= BuildCfgByteCodeOptim::O2) \
+    {                                                                                 \
+        __func(context, ip);                                                          \
     }

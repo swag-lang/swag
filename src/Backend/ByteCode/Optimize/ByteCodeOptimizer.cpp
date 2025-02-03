@@ -673,44 +673,6 @@ bool ByteCodeOptimizer::optimize(Job* job, Module* module, bool& done)
     return true;
 }
 
-bool ByteCodeOptimizer::optimizeStep1(ByteCodeOptContext& optContext)
-{
-    OPT_PASS(optimizePassConstJump, BuildCfgByteCodeOptim::O1);
-    OPT_PASS(optimizePassImmediate, BuildCfgByteCodeOptim::O1);
-    OPT_PASS(optimizePassImmediate2, BuildCfgByteCodeOptim::O1);
-    OPT_PASS(optimizePassConst, BuildCfgByteCodeOptim::O1);
-    
-    OPT_PASS(optimizePassJump, BuildCfgByteCodeOptim::O2);
-    OPT_PASS(optimizePassDeadCode, BuildCfgByteCodeOptim::O2);
-    OPT_PASS(optimizePassDupCopyRBRA, BuildCfgByteCodeOptim::O2);
-    OPT_PASS(optimizePassDupSetRA, BuildCfgByteCodeOptim::O2);
-    OPT_PASS(optimizePassRetCopyLocal, BuildCfgByteCodeOptim::O2);
-    OPT_PASS(optimizePassRetCopyGlobal, BuildCfgByteCodeOptim::O2);
-    OPT_PASS(optimizePassRetCopyStructVal, BuildCfgByteCodeOptim::O2);
-    OPT_PASS(optimizePassReduce, BuildCfgByteCodeOptim::O2);
-    OPT_PASS(optimizePassDeadStore, BuildCfgByteCodeOptim::O2);
-    OPT_PASS(optimizePassDeadStoreDup, BuildCfgByteCodeOptim::O2);
-    OPT_PASS(optimizePassSwap, BuildCfgByteCodeOptim::O2);
-    OPT_PASS(optimizePassParam, BuildCfgByteCodeOptim::O2);
-    return true;
-}
-
-bool ByteCodeOptimizer::optimizeStep2(ByteCodeOptContext& optContext)
-{
-    OPT_PASS(optimizePassDupInstruction, BuildCfgByteCodeOptim::O2);
-    OPT_PASS(optimizePassErr, BuildCfgByteCodeOptim::O2);
-    OPT_PASS(optimizePassLoop, BuildCfgByteCodeOptim::O2);
-    OPT_PASS(optimizePassSwitch, BuildCfgByteCodeOptim::O2);
-    OPT_PASS(optimizePassDupBlocks, BuildCfgByteCodeOptim::O2);
-    return true;
-}
-
-bool ByteCodeOptimizer::optimizeStep3(ByteCodeOptContext& optContext)
-{
-    OPT_PASS(optimizePassReduceX2, BuildCfgByteCodeOptim::O1);
-    return true;
-}
-
 bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, bool& restart)
 {
     SWAG_RACE_CONDITION_WRITE(bc->raceCond);
@@ -744,21 +706,21 @@ bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, b
 
         computeJumpAndNop(&optContext);
         genTree(&optContext, false);
-        SWAG_CHECK(optimizeStep1(optContext));
+        SWAG_CHECK(optimizeStep1(&optContext));
         removeNop(&optContext);
         if (optContext.allPassesHaveDoneSomething)
             continue;
 
         computeJumpAndNop(&optContext);
         genTree(&optContext, true);
-        SWAG_CHECK(optimizeStep2(optContext));
+        SWAG_CHECK(optimizeStep2(&optContext));
         removeNop(&optContext);
         if (optContext.allPassesHaveDoneSomething)
             continue;
 
         computeJumpAndNop(&optContext);
         genTree(&optContext, true);
-        SWAG_CHECK(optimizeStep3(optContext));
+        SWAG_CHECK(optimizeStep3(&optContext));
         removeNop(&optContext);
         if (optContext.allPassesHaveDoneSomething)
             continue;
@@ -779,6 +741,79 @@ bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, b
 #endif
 
         break;
+    }
+
+    return true;
+}
+
+bool ByteCodeOptimizer::optimizeStep1(ByteCodeOptContext* context)
+{
+    OPT_PASS_O1(optimizePassConstJump);
+    OPT_PASS_O1(optimizePassImmediate);
+    OPT_PASS_O1(optimizePassImmediate2);
+    OPT_PASS_O1(optimizePassConst);
+
+    OPT_PASS_O2(optimizePassJump);
+    OPT_PASS_O2(optimizePassDeadCode);
+    OPT_PASS_O2(optimizePassDupCopyRBRA);
+    OPT_PASS_O2(optimizePassDupSetRA);
+    OPT_PASS_O2(optimizePassRetCopyLocal);
+    OPT_PASS_O2(optimizePassRetCopyGlobal);
+    OPT_PASS_O2(optimizePassRetCopyStructVal);
+
+    for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
+    {
+        OPT_SUB_PASS_O2(reduceErr);
+        OPT_SUB_PASS_O2(reduceCallEmptyFct);
+        OPT_SUB_PASS_O2(reduceMemcpy);
+        OPT_SUB_PASS_O2(reduceFunc);
+        OPT_SUB_PASS_O2(reduceStack);
+        OPT_SUB_PASS_O2(reduceStack1);
+        OPT_SUB_PASS_O2(reduceStack2);
+        OPT_SUB_PASS_O2(reduceStack3);
+        OPT_SUB_PASS_O2(reduceIncPtr);
+        OPT_SUB_PASS_O2(reduceSetAt);
+        OPT_SUB_PASS_O2(reduceCast);
+        OPT_SUB_PASS_O2(reduceNoOp);
+        OPT_SUB_PASS_O2(reduceCmpJump);
+        OPT_SUB_PASS_O2(reduceAppend);
+        OPT_SUB_PASS_O2(reduceForceSafe);
+        OPT_SUB_PASS_O2(reduceStackOp);
+        OPT_SUB_PASS_O2(reduceLateStack);
+        OPT_SUB_PASS_O2(reduceFactor);
+        OPT_SUB_PASS_O2(reduceMath);
+        OPT_SUB_PASS_O2(reduceAffectOp);
+        OPT_SUB_PASS_O2(reduceDupInstr);
+        OPT_SUB_PASS_O2(reduceCopy);
+    }
+
+    OPT_PASS_O2(optimizePassDeadStore);
+    OPT_PASS_O2(optimizePassDeadStoreDup);
+    OPT_PASS_O2(optimizePassSwap);
+    OPT_PASS_O2(optimizePassParam);
+
+    return true;
+}
+
+bool ByteCodeOptimizer::optimizeStep2(ByteCodeOptContext* context)
+{
+    OPT_PASS_O2(optimizePassDupInstruction);
+    OPT_PASS_O2(optimizePassErr);
+    OPT_PASS_O2(optimizePassLoop);
+    OPT_PASS_O2(optimizePassSwitch);
+    OPT_PASS_O2(optimizePassDupBlocks);
+    return true;
+}
+
+bool ByteCodeOptimizer::optimizeStep3(ByteCodeOptContext* context)
+{
+    for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
+    {
+        OPT_SUB_PASS_O1(reduceCall);
+        OPT_SUB_PASS_O1(reduceStackJumps);
+
+        OPT_SUB_PASS_O2(reduceX2);
+        OPT_SUB_PASS_O2(reduceInvCopy);
     }
 
     return true;

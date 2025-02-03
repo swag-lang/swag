@@ -402,7 +402,6 @@
     <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer_Loop.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer_Param.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer_Reduce.cpp" />
-    <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer_ReduceX2.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer_RetCopy.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer_Swap.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Profiler\Profiler.cpp" />
