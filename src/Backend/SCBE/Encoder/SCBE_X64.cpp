@@ -883,12 +883,12 @@ void SCBE_X64::emitOp(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits, C
             op != CPUOp::FXOR)
         {
             concat.addU8(0xF3);
-            emitREX(concat, srcBits, regSrc);
+            emitREX(concat, srcBits, regDst);
         }
 
         concat.addU8(0x0F);
         concat.addU8(static_cast<uint8_t>(op));
-        concat.addU8(static_cast<uint8_t>(0xC0 | static_cast<uint8_t>(regSrc) | static_cast<uint8_t>(regDst) << 3));
+        concat.addU8(static_cast<uint8_t>(0xC0 | static_cast<uint8_t>(regDst) | static_cast<uint8_t>(regSrc) << 3));
     }
     else if (numBits == CPUBits::F64)
     {
@@ -898,7 +898,7 @@ void SCBE_X64::emitOp(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits, C
             op != CPUOp::FXOR)
         {
             concat.addU8(0xF2);
-            emitREX(concat, srcBits, regSrc);
+            emitREX(concat, srcBits, regDst);
         }
         else
         {
@@ -907,7 +907,7 @@ void SCBE_X64::emitOp(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits, C
 
         concat.addU8(0x0F);
         concat.addU8(static_cast<uint8_t>(op));
-        concat.addU8(static_cast<uint8_t>(0xC0 | static_cast<uint8_t>(regSrc) | static_cast<uint8_t>(regDst) << 3));
+        concat.addU8(static_cast<uint8_t>(0xC0 | static_cast<uint8_t>(regDst) | static_cast<uint8_t>(regSrc) << 3));
     }
     else
     {
@@ -916,7 +916,7 @@ void SCBE_X64::emitOp(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits, C
             op == CPUOp::MOD ||
             op == CPUOp::IMOD)
         {
-            emitREX(concat, numBits, regSrc, regDst);
+            emitREX(concat, numBits, regDst, regSrc);
             emitSpec8(concat, 0xF7, numBits);
             concat.addU8(static_cast<uint8_t>(op) & ~2);
 
@@ -932,8 +932,8 @@ void SCBE_X64::emitOp(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits, C
         else if (op == CPUOp::MUL ||
                  op == CPUOp::IMUL)
         {
-            emitREX(concat, numBits, regSrc, regDst);
-            if (op == CPUOp::MUL && regSrc == CPUReg::RCX && regDst == CPUReg::RAX)
+            emitREX(concat, numBits, regDst, regSrc);
+            if (op == CPUOp::MUL && regDst == CPUReg::RCX && regSrc == CPUReg::RAX)
             {
                 if (numBits == CPUBits::B8 || numBits == CPUBits::B16)
                     concat.addU8(0xF6);
@@ -941,7 +941,7 @@ void SCBE_X64::emitOp(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits, C
                     concat.addU8(0xF7);
                 concat.addU8(0xE1);
             }
-            else if (op == CPUOp::IMUL && regSrc == CPUReg::RCX && regDst == CPUReg::RAX)
+            else if (op == CPUOp::IMUL && regDst == CPUReg::RCX && regSrc == CPUReg::RAX)
             {
                 if (numBits == CPUBits::B8 || numBits == CPUBits::B16)
                     concat.addString2("\xF6\xE9");
@@ -950,7 +950,7 @@ void SCBE_X64::emitOp(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits, C
             }
             else
             {
-                SWAG_ASSERT(regSrc == CPUReg::RAX && regDst == CPUReg::RCX);
+                SWAG_ASSERT(regDst == CPUReg::RAX && regSrc == CPUReg::RCX);
                 emitSpec8(concat, 0xF7, numBits);
                 concat.addU8(op == CPUOp::IMUL ? 0xE9 : 0xE1);
             }
@@ -960,8 +960,8 @@ void SCBE_X64::emitOp(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits, C
                  op == CPUOp::SHR ||
                  op == CPUOp::SHL)
         {
-            SWAG_ASSERT(regDst == CPUReg::RAX && regSrc == CPUReg::RCX);
-            emitREX(concat, numBits, regSrc, regDst);
+            SWAG_ASSERT(regSrc == CPUReg::RAX && regDst == CPUReg::RCX);
+            emitREX(concat, numBits, regDst, regSrc);
             emitSpec8(concat, 0xD3, numBits);
             concat.addU8(static_cast<uint8_t>(op));
         }
@@ -971,27 +971,27 @@ void SCBE_X64::emitOp(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits, C
                  op == CPUOp::AND ||
                  op == CPUOp::OR)
         {
-            emitREX(concat, numBits, regSrc, regDst);
+            emitREX(concat, numBits, regDst, regSrc);
             emitSpec8(concat, static_cast<uint8_t>(op), numBits);
-            concat.addU8(getModRM(RegReg, static_cast<uint8_t>(regSrc), static_cast<uint8_t>(regDst)));
+            concat.addU8(getModRM(RegReg, static_cast<uint8_t>(regDst), static_cast<uint8_t>(regSrc)));
         }
         else if (op == CPUOp::BSF ||
                  op == CPUOp::BSR)
         {
-            SWAG_ASSERT(regSrc == CPUReg::RAX && regDst == CPUReg::RAX);
-            emitREX(concat, numBits, regSrc, regDst);
+            SWAG_ASSERT(regDst == CPUReg::RAX && regSrc == CPUReg::RAX);
+            emitREX(concat, numBits, regDst, regSrc);
             concat.addU8(0x0F);
             concat.addU8(static_cast<uint8_t>(op));
             concat.addU8(0xC0);
         }
         else if (op == CPUOp::POPCNT)
         {
-            SWAG_ASSERT(regSrc == CPUReg::RAX && regDst == CPUReg::RAX);
+            SWAG_ASSERT(regDst == CPUReg::RAX && regSrc == CPUReg::RAX);
             if (numBits == CPUBits::B16)
-                emitREX(concat, numBits, regSrc, regDst);
+                emitREX(concat, numBits, regDst, regSrc);
             concat.addU8(0xF3);
             if (numBits == CPUBits::B64)
-                emitREX(concat, numBits, regSrc, regDst);
+                emitREX(concat, numBits, regDst, regSrc);
             concat.addU8(0x0F);
             concat.addU8(static_cast<uint8_t>(op));
             concat.addU8(0xC0);
@@ -1366,13 +1366,13 @@ void SCBE_X64::emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits)
         {
             SWAG_ASSERT(reg == CPUReg::RAX);
             emitLoad(CPUReg::RCX, value, CPUBits::B64);
-            emitOp(reg, CPUReg::RCX, op, numBits);
+            emitOp(CPUReg::RCX, reg, op, numBits);
         }
         else
         {
             SWAG_ASSERT(reg != CPUReg::RSP);
             emitLoad(CPUReg::R8, value, CPUBits::B64);
-            emitOp(reg, CPUReg::R8, op, numBits);
+            emitOp(CPUReg::R8, reg, op, numBits);
         }
     }
     else
