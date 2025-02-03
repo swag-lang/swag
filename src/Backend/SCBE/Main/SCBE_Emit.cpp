@@ -264,6 +264,15 @@ void SCBE::emitBinOpAtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op,
         pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, numBits);
 }
 
+void SCBE::emitBinOpAtRegOverflow(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits, const char* msg, bool isSigned)
+{
+    emitBinOpAtReg(pp, ip, op, numBits);
+    if (isSigned)
+        emitOverflowSigned(pp, ip, msg);
+    else
+        emitOverflowUnsigned(pp, ip, msg);    
+}
+
 void SCBE::emitBinOpDivAtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
 {
     SWAG_ASSERT(op == CPUOp::DIV || op == CPUOp::MOD || op == CPUOp::IDIV || op == CPUOp::IMOD);

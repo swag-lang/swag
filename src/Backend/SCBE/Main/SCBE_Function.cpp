@@ -531,44 +531,53 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::BinOpMulS8:
+                emitBinOpAtRegOverflow(pp, ip, CPUOp::IMUL, CPUBits::B8, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS8), true);
+                break;
             case ByteCodeOp::BinOpMulS8_Safe:
                 emitBinOpAtReg(pp, ip, CPUOp::IMUL, CPUBits::B8);
-                emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS8));
                 break;
             case ByteCodeOp::BinOpMulS16:
+                emitBinOpAtRegOverflow(pp, ip, CPUOp::IMUL, CPUBits::B16, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS16), true);
+                break;
             case ByteCodeOp::BinOpMulS16_Safe:
                 emitBinOpAtReg(pp, ip, CPUOp::IMUL, CPUBits::B16);
-                emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS16));
                 break;
             case ByteCodeOp::BinOpMulS32:
+                emitBinOpAtRegOverflow(pp, ip, CPUOp::IMUL, CPUBits::B32, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS32), true);
+                break;
             case ByteCodeOp::BinOpMulS32_Safe:
                 emitBinOpAtReg(pp, ip, CPUOp::IMUL, CPUBits::B32);
-                emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS32));
                 break;
             case ByteCodeOp::BinOpMulS64:
+                emitBinOpAtRegOverflow(pp, ip, CPUOp::IMUL, CPUBits::B64, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS64), true);
+                break;
             case ByteCodeOp::BinOpMulS64_Safe:
                 emitBinOpAtReg(pp, ip, CPUOp::IMUL, CPUBits::B64);
-                emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS64));
                 break;
+
             case ByteCodeOp::BinOpMulU8:
+                emitBinOpAtRegOverflow(pp, ip, CPUOp::MUL, CPUBits::B8, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU8), false);
+                break;
             case ByteCodeOp::BinOpMulU8_Safe:
                 emitBinOpAtReg(pp, ip, CPUOp::MUL, CPUBits::B8);
-                emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU8));
                 break;
             case ByteCodeOp::BinOpMulU16:
+                emitBinOpAtRegOverflow(pp, ip, CPUOp::MUL, CPUBits::B16, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU16), false);
+                break;
             case ByteCodeOp::BinOpMulU16_Safe:
                 emitBinOpAtReg(pp, ip, CPUOp::MUL, CPUBits::B16);
-                emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU16));
                 break;
             case ByteCodeOp::BinOpMulU32:
+                emitBinOpAtRegOverflow(pp, ip, CPUOp::MUL, CPUBits::B32, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU32), false);
+                break;
             case ByteCodeOp::BinOpMulU32_Safe:
                 emitBinOpAtReg(pp, ip, CPUOp::MUL, CPUBits::B32);
-                emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU32));
                 break;
             case ByteCodeOp::BinOpMulU64:
+                emitBinOpAtRegOverflow(pp, ip, CPUOp::MUL, CPUBits::B64, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU64), false);
+                break;
             case ByteCodeOp::BinOpMulU64_Safe:
                 emitBinOpAtReg(pp, ip, CPUOp::MUL, CPUBits::B64);
-                emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU64));
                 break;
             case ByteCodeOp::BinOpMulF32:
                 emitBinOpAtReg(pp, ip, CPUOp::FMUL, CPUBits::F32);

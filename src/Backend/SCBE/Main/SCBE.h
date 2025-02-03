@@ -38,6 +38,7 @@ struct SCBE final : Backend
     static void emitInternalPanic(SCBE_X64& pp, const AstNode* node, const char* msg);
     static void emitBinOp(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits);
     static void emitBinOpAtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits);
+    static void emitBinOpAtRegOverflow(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits, const char* msg, bool isSigned);
     static void emitBinOpDivAtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits);
     static void emitAddSubMul64(SCBE_X64& pp, const ByteCodeInstruction* ip, uint64_t mul, CPUOp op);
     static void emitByteCodeCall(SCBE_X64& pp, const TypeInfoFuncAttr* typeFuncBc, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams);
