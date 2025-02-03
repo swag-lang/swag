@@ -891,12 +891,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitBinOpEqOverflow(pp, ip, 0, CPUOp::IMUL, CPUBits::B8, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS8), true);
                 break;
             case ByteCodeOp::AffectOpMulEqS8_Safe:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-                pp.emitLoad(CPUReg::RAX, CPUReg::RAX, ip->c.u32, CPUBits::B8);
-                emitIMMB(pp, ip, CPUReg::RCX, CPUBits::B8);
-                pp.emitOp(CPUReg::RCX, CPUReg::RAX, CPUOp::IMUL, CPUBits::B8);
-                pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-                pp.emitStore(CPUReg::RCX, ip->c.u32, CPUReg::RAX, CPUBits::B8);
+                emitBinOpEq(pp, ip, ip->c.u32, CPUOp::IMUL, CPUBits::B8);
                 break;
             case ByteCodeOp::AffectOpMulEqS8_SSafe:
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32, CPUBits::B8);
