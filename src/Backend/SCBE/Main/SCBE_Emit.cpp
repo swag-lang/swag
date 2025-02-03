@@ -4,6 +4,64 @@
 #include "Backend/SCBE/Main/SCBE.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 
+void SCBE::emitIMMA(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUReg reg, CPUBits numBits)
+{
+    if (ip->hasFlag(BCI_IMM_A))
+        pp.emitLoad(reg, ip->a.u64, numBits);
+    else
+        pp.emitLoad(reg, CPUReg::RDI, REG_OFFSET(ip->a.u32), numBits);
+}
+
+void SCBE::emitIMMB(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUReg reg, CPUBits numBits)
+{
+    if (ip->hasFlag(BCI_IMM_B))
+        pp.emitLoad(reg, ip->b.u64, numBits);
+    else
+        pp.emitLoad(reg, CPUReg::RDI, REG_OFFSET(ip->b.u32), numBits);
+}
+
+void SCBE::emitIMMC(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUReg reg, CPUBits numBits)
+{
+    if (ip->hasFlag(BCI_IMM_C))
+        pp.emitLoad(reg, ip->c.u64, numBits);
+    else
+        pp.emitLoad(reg, CPUReg::RDI, REG_OFFSET(ip->c.u32), numBits);
+}
+
+void SCBE::emitIMMD(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUReg reg, CPUBits numBits)
+{
+    if (ip->hasFlag(BCI_IMM_D))
+        pp.emitLoad(reg, ip->d.u64, numBits);
+    else
+        pp.emitLoad(reg, CPUReg::RDI, REG_OFFSET(ip->d.u32), numBits);
+}
+
+void SCBE::emitIMMB(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUReg reg, CPUSignedType srcType, CPUSignedType dstType)
+{
+    if (ip->hasFlag(BCI_IMM_B))
+    {
+        SWAG_ASSERT(dstType == CPUSignedType::S16 || dstType == CPUSignedType::U16 || dstType == CPUSignedType::S32 || dstType == CPUSignedType::U32);
+        pp.emitLoad(reg, ip->b.u64, CPUBits::B32);
+    }
+    else
+    {
+        pp.emitLoad(reg, CPUReg::RDI, REG_OFFSET(ip->b.u32), srcType, dstType);
+    }
+}
+
+void SCBE::emitIMMC(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUReg reg, CPUSignedType srcType, CPUSignedType dstType)
+{
+    if (ip->hasFlag(BCI_IMM_C))
+    {
+        SWAG_ASSERT(dstType == CPUSignedType::S16 || dstType == CPUSignedType::U16 || dstType == CPUSignedType::S32 || dstType == CPUSignedType::U32);
+        pp.emitLoad(reg, ip->c.u64, CPUBits::B32);
+    }
+    else
+    {
+        pp.emitLoad(reg, CPUReg::RDI, REG_OFFSET(ip->c.u32), srcType, dstType);
+    }
+}
+
 void SCBE::emitShiftRightArithmetic(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUBits numBits)
 {
     if (!ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_B))
@@ -132,20 +190,6 @@ void SCBE::emitOverflowUnsigned(SCBE_X64& pp, const ByteCodeInstruction* ip, con
         emitInternalPanic(pp, ip->node, msg);
         *seekPtr = static_cast<uint8_t>(pp.concat.totalCount() - seekJmp);
     }
-}
-
-void SCBE::emitInternalPanic(SCBE_X64& pp, const AstNode* node, const char* msg)
-{
-    const auto np = node->token.sourceFile->path;
-    pp.pushParams.clear();
-    pp.pushParams.push_back({CPUPushParamType::GlobalString, reinterpret_cast<uint64_t>(np.cstr())});
-    pp.pushParams.push_back({CPUPushParamType::Imm, node->token.startLocation.line});
-    pp.pushParams.push_back({CPUPushParamType::Imm, node->token.startLocation.column});
-    if (msg)
-        pp.pushParams.push_back({CPUPushParamType::GlobalString, reinterpret_cast<uint64_t>(msg)});
-    else
-        pp.pushParams.push_back({CPUPushParamType::Imm, 0});
-    emitInternalCallExt(pp, g_LangSpec->name_priv_panic, pp.pushParams);
 }
 
 void SCBE::emitBinOp(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
@@ -287,6 +331,88 @@ void SCBE::emitBinOpDivAtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp 
     pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, numBits);
 }
 
+void SCBE::emitBinOp(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUBits numBits)
+{
+    if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_B))
+    {
+        const auto r0 = SCBE_CPU::isInt(numBits) ? CPUReg::RAX : CPUReg::XMM0;
+        pp.emitLoad(r0, CPUReg::RDI, REG_OFFSET(ip->a.u32), numBits);
+        pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->b.u32), r0, numBits);
+    }
+    else if (ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_B))
+    {
+        const auto r0 = SCBE_CPU::isInt(numBits) ? CPUReg::RAX : CPUReg::XMM0;
+        pp.emitLoad(r0, ip->a.u64, numBits);
+        pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->b.u32), r0, numBits);
+    }
+    else if (SCBE_CPU::isInt(numBits) && !ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_B) && ip->b.u64 <= 0x7FFFFFFF)
+    {
+        pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->a.u32), ip->b.u32, numBits);
+    }
+    else
+    {
+        const auto r0 = SCBE_CPU::isInt(numBits) ? CPUReg::RAX : CPUReg::XMM0;
+        const auto r1 = SCBE_CPU::isInt(numBits) ? CPUReg::RCX : CPUReg::XMM1;
+        emitIMMA(pp, ip, r0, numBits);
+        emitIMMB(pp, ip, r1, numBits);
+        pp.emitCmp(r0, r1, numBits);
+    }
+}
+
+void SCBE::emitBinOpEq(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offset, CPUOp op, CPUBits numBits)
+{
+    if (SCBE_CPU::isInt(numBits) && ip->hasFlag(BCI_IMM_B))
+    {
+        pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
+        pp.emitOp(CPUReg::RAX, offset, ip->b.u64, op, numBits);
+    }
+    else
+    {
+        const auto r0 = SCBE_CPU::isInt(numBits) ? CPUReg::RAX : CPUReg::RCX;
+        const auto r1 = SCBE_CPU::isInt(numBits) ? CPUReg::XMM1 : CPUReg::RCX;
+        pp.emitLoad(r0, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
+        emitIMMB(pp, ip, r1, numBits);
+        pp.emitOp(r0, offset, r1, op, numBits);
+    }
+}
+
+void SCBE::emitBinOpEqOverflow(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offset, CPUOp op, CPUBits numBits, const char* msg, bool isSigned)
+{
+    emitBinOpEq(pp, ip, offset, op, numBits);
+    if (isSigned)
+        emitOverflowSigned(pp, ip, msg);
+    else
+        emitOverflowUnsigned(pp, ip, msg);
+}
+
+void SCBE::emitBinOpEqS(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offsetStack, CPUOp op, CPUBits numBits)
+{
+    if (SCBE_CPU::isInt(numBits) && ip->hasFlag(BCI_IMM_B))
+    {
+        pp.emitOp(CPUReg::RDI, offsetStack + ip->a.u32, ip->b.u64, op, numBits);
+    }
+    else
+    {
+        const auto r1 = SCBE_CPU::isInt(numBits) ? CPUReg::RAX : CPUReg::XMM1;
+        emitIMMB(pp, ip, r1, numBits);
+        pp.emitOp(CPUReg::RDI, offsetStack + ip->a.u32, r1, op, numBits);
+    }
+}
+
+void SCBE::emitBinOpEqSS(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offsetStack, CPUOp op, CPUBits numBits)
+{
+    const auto r0 = SCBE_CPU::isInt(numBits) ? CPUReg::RAX : CPUReg::XMM1;
+    pp.emitLoad(r0, CPUReg::RDI, offsetStack + ip->b.u32, numBits);
+    pp.emitOp(CPUReg::RDI, offsetStack + ip->a.u32, r0, op, numBits);
+}
+
+void SCBE::emitBinOpEqLock(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
+{
+    pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
+    emitIMMB(pp, ip, CPUReg::RAX, numBits);
+    pp.emitOp(CPUReg::RCX, 0, CPUReg::RAX, op, numBits, true);
+}
+
 void SCBE::emitAddSubMul64(SCBE_X64& pp, const ByteCodeInstruction* ip, uint64_t mul, CPUOp op)
 {
     SWAG_ASSERT(op == CPUOp::ADD || op == CPUOp::SUB);
@@ -404,133 +530,16 @@ void SCBE::emitJumpCmp3(SCBE_X64& pp, const ByteCodeInstruction* ip, int32_t ins
     pp.emitJump(op2, instructionCount, ip->b.s32);
 }
 
-void SCBE::emitBinOp(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUBits numBits)
+void SCBE::emitInternalPanic(SCBE_X64& pp, const AstNode* node, const char* msg)
 {
-    if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_B))
-    {
-        const auto r0 = SCBE_CPU::isInt(numBits) ? CPUReg::RAX : CPUReg::XMM0;
-        pp.emitLoad(r0, CPUReg::RDI, REG_OFFSET(ip->a.u32), numBits);
-        pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->b.u32), r0, numBits);
-    }
-    else if (ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_B))
-    {
-        const auto r0 = SCBE_CPU::isInt(numBits) ? CPUReg::RAX : CPUReg::XMM0;
-        pp.emitLoad(r0, ip->a.u64, numBits);
-        pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->b.u32), r0, numBits);
-    }
-    else if (SCBE_CPU::isInt(numBits) && !ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_B) && ip->b.u64 <= 0x7FFFFFFF)
-    {
-        pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->a.u32), ip->b.u32, numBits);
-    }
+    const auto np = node->token.sourceFile->path;
+    pp.pushParams.clear();
+    pp.pushParams.push_back({CPUPushParamType::GlobalString, reinterpret_cast<uint64_t>(np.cstr())});
+    pp.pushParams.push_back({CPUPushParamType::Imm, node->token.startLocation.line});
+    pp.pushParams.push_back({CPUPushParamType::Imm, node->token.startLocation.column});
+    if (msg)
+        pp.pushParams.push_back({CPUPushParamType::GlobalString, reinterpret_cast<uint64_t>(msg)});
     else
-    {
-        const auto r0 = SCBE_CPU::isInt(numBits) ? CPUReg::RAX : CPUReg::XMM0;
-        const auto r1 = SCBE_CPU::isInt(numBits) ? CPUReg::RCX : CPUReg::XMM1;
-        emitIMMA(pp, ip, r0, numBits);
-        emitIMMB(pp, ip, r1, numBits);
-        pp.emitCmp(r0, r1, numBits);
-    }
-}
-
-void SCBE::emitBinOpEq(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offset, CPUOp op, CPUBits numBits)
-{
-    if (SCBE_CPU::isInt(numBits) && ip->hasFlag(BCI_IMM_B))
-    {
-        pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-        pp.emitOp(CPUReg::RAX, offset, ip->b.u64, op, numBits);
-    }
-    else
-    {
-        const auto r0 = SCBE_CPU::isInt(numBits) ? CPUReg::RAX : CPUReg::RCX;
-        const auto r1 = SCBE_CPU::isInt(numBits) ? CPUReg::XMM1 : CPUReg::RCX;
-        pp.emitLoad(r0, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-        emitIMMB(pp, ip, r1, numBits);
-        pp.emitOp(r0, offset, r1, op, numBits);
-    }
-}
-
-void SCBE::emitBinOpEqS(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offsetStack, CPUOp op, CPUBits numBits)
-{
-    if (SCBE_CPU::isInt(numBits) && ip->hasFlag(BCI_IMM_B))
-    {
-        pp.emitOp(CPUReg::RDI, offsetStack + ip->a.u32, ip->b.u64, op, numBits);
-    }
-    else
-    {
-        const auto r1 = SCBE_CPU::isInt(numBits) ? CPUReg::RAX : CPUReg::XMM1;
-        emitIMMB(pp, ip, r1, numBits);
-        pp.emitOp(CPUReg::RDI, offsetStack + ip->a.u32, r1, op, numBits);
-    }
-}
-
-void SCBE::emitBinOpEqSS(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offsetStack, CPUOp op, CPUBits numBits)
-{
-    const auto r0 = SCBE_CPU::isInt(numBits) ? CPUReg::RAX : CPUReg::XMM1;
-    pp.emitLoad(r0, CPUReg::RDI, offsetStack + ip->b.u32, numBits);
-    pp.emitOp(CPUReg::RDI, offsetStack + ip->a.u32, r0, op, numBits);
-}
-
-void SCBE::emitBinOpEqLock(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
-{
-    pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-    emitIMMB(pp, ip, CPUReg::RAX, numBits);
-    pp.emitOp(CPUReg::RCX, 0, CPUReg::RAX, op, numBits, true);
-}
-
-void SCBE::emitIMMA(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUReg reg, CPUBits numBits)
-{
-    if (ip->hasFlag(BCI_IMM_A))
-        pp.emitLoad(reg, ip->a.u64, numBits);
-    else
-        pp.emitLoad(reg, CPUReg::RDI, REG_OFFSET(ip->a.u32), numBits);
-}
-
-void SCBE::emitIMMB(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUReg reg, CPUBits numBits)
-{
-    if (ip->hasFlag(BCI_IMM_B))
-        pp.emitLoad(reg, ip->b.u64, numBits);
-    else
-        pp.emitLoad(reg, CPUReg::RDI, REG_OFFSET(ip->b.u32), numBits);
-}
-
-void SCBE::emitIMMC(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUReg reg, CPUBits numBits)
-{
-    if (ip->hasFlag(BCI_IMM_C))
-        pp.emitLoad(reg, ip->c.u64, numBits);
-    else
-        pp.emitLoad(reg, CPUReg::RDI, REG_OFFSET(ip->c.u32), numBits);
-}
-
-void SCBE::emitIMMD(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUReg reg, CPUBits numBits)
-{
-    if (ip->hasFlag(BCI_IMM_D))
-        pp.emitLoad(reg, ip->d.u64, numBits);
-    else
-        pp.emitLoad(reg, CPUReg::RDI, REG_OFFSET(ip->d.u32), numBits);
-}
-
-void SCBE::emitIMMB(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUReg reg, CPUSignedType srcType, CPUSignedType dstType)
-{
-    if (ip->hasFlag(BCI_IMM_B))
-    {
-        SWAG_ASSERT(dstType == CPUSignedType::S16 || dstType == CPUSignedType::U16 || dstType == CPUSignedType::S32 || dstType == CPUSignedType::U32);
-        pp.emitLoad(reg, ip->b.u64, CPUBits::B32);
-    }
-    else
-    {
-        pp.emitLoad(reg, CPUReg::RDI, REG_OFFSET(ip->b.u32), srcType, dstType);
-    }
-}
-
-void SCBE::emitIMMC(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUReg reg, CPUSignedType srcType, CPUSignedType dstType)
-{
-    if (ip->hasFlag(BCI_IMM_C))
-    {
-        SWAG_ASSERT(dstType == CPUSignedType::S16 || dstType == CPUSignedType::U16 || dstType == CPUSignedType::S32 || dstType == CPUSignedType::U32);
-        pp.emitLoad(reg, ip->c.u64, CPUBits::B32);
-    }
-    else
-    {
-        pp.emitLoad(reg, CPUReg::RDI, REG_OFFSET(ip->c.u32), srcType, dstType);
-    }
+        pp.pushParams.push_back({CPUPushParamType::Imm, 0});
+    emitInternalCallExt(pp, g_LangSpec->name_priv_panic, pp.pushParams);
 }

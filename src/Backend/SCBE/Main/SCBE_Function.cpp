@@ -1621,8 +1621,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::AffectOpPlusEqS8:
-                emitBinOpEq(pp, ip, 0, CPUOp::ADD, CPUBits::B8);
-                emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS8));
+                emitBinOpEqOverflow(pp, ip, 0, CPUOp::ADD, CPUBits::B8, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS8), true);
                 break;
             case ByteCodeOp::AffectOpPlusEqS8_Safe:
                 emitBinOpEq(pp, ip, ip->c.u32, CPUOp::ADD, CPUBits::B8);
@@ -1637,8 +1636,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpPlusEqS16:
-                emitBinOpEq(pp, ip, 0, CPUOp::ADD, CPUBits::B16);
-                emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS16));
+                emitBinOpEqOverflow(pp, ip, 0, CPUOp::ADD, CPUBits::B16, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS16), true);
                 break;
             case ByteCodeOp::AffectOpPlusEqS16_Safe:
                 emitBinOpEq(pp, ip, ip->c.u32, CPUOp::ADD, CPUBits::B16);
@@ -1653,8 +1651,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpPlusEqS32:
-                emitBinOpEq(pp, ip, 0, CPUOp::ADD, CPUBits::B32);
-                emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS32));
+                emitBinOpEqOverflow(pp, ip, 0, CPUOp::ADD, CPUBits::B32, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS32), true);
                 break;
             case ByteCodeOp::AffectOpPlusEqS32_Safe:
                 emitBinOpEq(pp, ip, ip->c.u32, CPUOp::ADD, CPUBits::B32);
@@ -1669,8 +1666,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpPlusEqS64:
-                emitBinOpEq(pp, ip, 0, CPUOp::ADD, CPUBits::B64);
-                emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS64));
+                emitBinOpEqOverflow(pp, ip, 0, CPUOp::ADD, CPUBits::B64, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS64), true);
                 break;
             case ByteCodeOp::AffectOpPlusEqS64_Safe:
                 emitBinOpEq(pp, ip, ip->c.u32, CPUOp::ADD, CPUBits::B64);
@@ -1685,32 +1681,28 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpPlusEqU8:
-                emitBinOpEq(pp, ip, 0, CPUOp::ADD, CPUBits::B8);
-                emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU8));
+                emitBinOpEqOverflow(pp, ip, 0, CPUOp::ADD, CPUBits::B8, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU8), false);
                 break;
             case ByteCodeOp::AffectOpPlusEqU8_Safe:
                 emitBinOpEq(pp, ip, ip->c.u32, CPUOp::ADD, CPUBits::B8);
                 break;
 
             case ByteCodeOp::AffectOpPlusEqU16:
-                emitBinOpEq(pp, ip, 0, CPUOp::ADD, CPUBits::B16);
-                emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU16));
+                emitBinOpEqOverflow(pp, ip, 0, CPUOp::ADD, CPUBits::B16, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU16), false);
                 break;
             case ByteCodeOp::AffectOpPlusEqU16_Safe:
                 emitBinOpEq(pp, ip, ip->c.u32, CPUOp::ADD, CPUBits::B16);
                 break;
 
             case ByteCodeOp::AffectOpPlusEqU32:
-                emitBinOpEq(pp, ip, 0, CPUOp::ADD, CPUBits::B32);
-                emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU32));
+                emitBinOpEqOverflow(pp, ip, 0, CPUOp::ADD, CPUBits::B32, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU32), false);
                 break;
             case ByteCodeOp::AffectOpPlusEqU32_Safe:
                 emitBinOpEq(pp, ip, ip->c.u32, CPUOp::ADD, CPUBits::B32);
                 break;
 
             case ByteCodeOp::AffectOpPlusEqU64:
-                emitBinOpEq(pp, ip, 0, CPUOp::ADD, CPUBits::B64);
-                emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU64));
+                emitBinOpEqOverflow(pp, ip, 0, CPUOp::ADD, CPUBits::B64, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU64), false);
                 break;
             case ByteCodeOp::AffectOpPlusEqU64_Safe:
                 emitBinOpEq(pp, ip, ip->c.u32, CPUOp::ADD, CPUBits::B64);
@@ -1739,8 +1731,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::AffectOpMinusEqS8:
-                emitBinOpEq(pp, ip, 0, CPUOp::SUB, CPUBits::B8);
-                emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS8));
+                emitBinOpEqOverflow(pp, ip, 0, CPUOp::SUB, CPUBits::B8, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS8), true);
                 break;
             case ByteCodeOp::AffectOpMinusEqS8_Safe:
                 emitBinOpEq(pp, ip, ip->c.u32, CPUOp::SUB, CPUBits::B8);
@@ -1755,8 +1746,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpMinusEqS16:
-                emitBinOpEq(pp, ip, 0, CPUOp::SUB, CPUBits::B16);
-                emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU16));
+                emitBinOpEqOverflow(pp, ip, 0, CPUOp::SUB, CPUBits::B16, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS16), true);
                 break;
             case ByteCodeOp::AffectOpMinusEqS16_Safe:
                 emitBinOpEq(pp, ip, ip->c.u32, CPUOp::SUB, CPUBits::B16);
@@ -1771,8 +1761,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpMinusEqS32:
-                emitBinOpEq(pp, ip, 0, CPUOp::SUB, CPUBits::B32);
-                emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS32));
+                emitBinOpEqOverflow(pp, ip, 0, CPUOp::SUB, CPUBits::B32, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS32), true);
                 break;
             case ByteCodeOp::AffectOpMinusEqS32_Safe:
                 emitBinOpEq(pp, ip, ip->c.u32, CPUOp::SUB, CPUBits::B32);
@@ -1787,8 +1776,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpMinusEqS64:
-                emitBinOpEq(pp, ip, 0, CPUOp::SUB, CPUBits::B64);
-                emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS64));
+                emitBinOpEqOverflow(pp, ip, 0, CPUOp::SUB, CPUBits::B64, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS64), true);
                 break;
             case ByteCodeOp::AffectOpMinusEqS64_Safe:
                 emitBinOpEq(pp, ip, ip->c.u32, CPUOp::SUB, CPUBits::B64);
@@ -1803,32 +1791,28 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::AffectOpMinusEqU8:
-                emitBinOpEq(pp, ip, 0, CPUOp::SUB, CPUBits::B8);
-                emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU8));
+                emitBinOpEqOverflow(pp, ip, 0, CPUOp::SUB, CPUBits::B8, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU8), false);
                 break;
             case ByteCodeOp::AffectOpMinusEqU8_Safe:
                 emitBinOpEq(pp, ip, ip->c.u32, CPUOp::SUB, CPUBits::B8);
                 break;
 
             case ByteCodeOp::AffectOpMinusEqU16:
-                emitBinOpEq(pp, ip, 0, CPUOp::SUB, CPUBits::B16);
-                emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU16));
+                emitBinOpEqOverflow(pp, ip, 0, CPUOp::SUB, CPUBits::B16, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU16), false);
                 break;
             case ByteCodeOp::AffectOpMinusEqU16_Safe:
                 emitBinOpEq(pp, ip, ip->c.u32, CPUOp::SUB, CPUBits::B16);
                 break;
 
             case ByteCodeOp::AffectOpMinusEqU32:
-                emitBinOpEq(pp, ip, 0, CPUOp::SUB, CPUBits::B32);
-                emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU32));
+                emitBinOpEqOverflow(pp, ip, 0, CPUOp::SUB, CPUBits::B32, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU32), false);
                 break;
             case ByteCodeOp::AffectOpMinusEqU32_Safe:
                 emitBinOpEq(pp, ip, ip->c.u32, CPUOp::SUB, CPUBits::B32);
                 break;
 
             case ByteCodeOp::AffectOpMinusEqU64:
-                emitBinOpEq(pp, ip, 0, CPUOp::SUB, CPUBits::B64);
-                emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU64));
+                emitBinOpEqOverflow(pp, ip, 0, CPUOp::SUB, CPUBits::B64, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU64), false);
                 break;
             case ByteCodeOp::AffectOpMinusEqU64_Safe:
                 emitBinOpEq(pp, ip, ip->c.u32, CPUOp::SUB, CPUBits::B64);
