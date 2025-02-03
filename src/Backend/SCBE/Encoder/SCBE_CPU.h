@@ -193,16 +193,17 @@ struct CPUFunction
 
 struct SCBE_CPU : BackendEncoder
 {
-    void            clearInstructionCache();
-    CPUSymbol*      getSymbol(const Utf8& name);
-    CPUSymbol*      getOrAddSymbol(const Utf8& name, CPUSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);
-    uint32_t        getOrCreateLabel(uint32_t ip);
-    CPUSymbol*      getOrCreateGlobalString(const Utf8& str);
-    void            addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, uint16_t type);
-    CPUFunction*    registerFunction(AstNode* node, uint32_t symbolIndex);
-    static uint32_t getParamStackOffset(const CPUFunction* cpuFct, uint32_t paramIdx);
-    static uint32_t countBits(CPUBits numBits);
-    static CPUBits  getCPUBits(ByteCodeOp op);
+    void             clearInstructionCache();
+    CPUSymbol*       getSymbol(const Utf8& name);
+    CPUSymbol*       getOrAddSymbol(const Utf8& name, CPUSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);
+    uint32_t         getOrCreateLabel(uint32_t ip);
+    CPUSymbol*       getOrCreateGlobalString(const Utf8& str);
+    void             addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, uint16_t type);
+    CPUFunction*     registerFunction(AstNode* node, uint32_t symbolIndex);
+    static uint32_t  getParamStackOffset(const CPUFunction* cpuFct, uint32_t paramIdx);
+    static uint32_t  countBits(CPUBits numBits);
+    static CPUBits   getCPUBits(ByteCodeOp op);
+    static TypeInfo* getCPUType(ByteCodeOp op, bool isSigned);
 
     static bool isInt(CPUBits numBits) { return numBits == CPUBits::B8 || numBits == CPUBits::B16 || numBits == CPUBits::B32 || numBits == CPUBits::B64; }
     static bool isFloat(CPUBits numBits) { return numBits == CPUBits::F32 || numBits == CPUBits::F64; }

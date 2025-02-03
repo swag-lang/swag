@@ -3,6 +3,7 @@
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/SCBE/Encoder/SCBE_CPU.h"
 #include "Semantic/Type/TypeInfo.h"
+#include "Semantic/Type/TypeManager.h"
 
 void SCBE_CPU::clearInstructionCache()
 {
@@ -129,11 +130,40 @@ CPUBits SCBE_CPU::getCPUBits(ByteCodeOp op)
     if (flags.has(OPF_32))
         return CPUBits::B32;
     if (flags.has(OPF_64) && flags.has(OPF_FLOAT))
-        return CPUBits::F64;    
+        return CPUBits::F64;
     if (flags.has(OPF_64))
         return CPUBits::B64;
     SWAG_ASSERT(false);
     return CPUBits::B32;
+}
+
+TypeInfo* SCBE_CPU::getCPUType(ByteCodeOp op, bool isSigned)
+{
+    const auto flags = ByteCode::opFlags(op);
+    if (isSigned)
+    {
+        if (flags.has(OPF_8))
+            return g_TypeMgr->typeInfoS8;
+        if (flags.has(OPF_16))
+            return g_TypeMgr->typeInfoS16;
+        if (flags.has(OPF_32))
+            return g_TypeMgr->typeInfoS32;
+        if (flags.has(OPF_64))
+            return g_TypeMgr->typeInfoS64;
+        SWAG_ASSERT(false);
+        return nullptr;
+    }
+
+    if (flags.has(OPF_8))
+        return g_TypeMgr->typeInfoU8;
+    if (flags.has(OPF_16))
+        return g_TypeMgr->typeInfoU16;
+    if (flags.has(OPF_32))
+        return g_TypeMgr->typeInfoU32;
+    if (flags.has(OPF_64))
+        return g_TypeMgr->typeInfoU64;
+    SWAG_ASSERT(false);
+    return nullptr;
 }
 
 uint32_t SCBE_CPU::getParamStackOffset(const CPUFunction* cpuFct, uint32_t paramIdx)

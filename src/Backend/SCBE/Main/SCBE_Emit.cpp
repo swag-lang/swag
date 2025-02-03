@@ -1,7 +1,9 @@
 #include "pch.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/ByteCode_Math.h"
+#include "Backend/ByteCode/Gen/ByteCodeGen.h"
 #include "Backend/SCBE/Main/SCBE.h"
+#include "Semantic/Type/TypeInfo.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 
 void SCBE::emitIMMA(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUReg reg, CPUBits numBits)
@@ -381,9 +383,11 @@ void SCBE::emitBinOpEq(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t off
     }
 }
 
-void SCBE::emitBinOpEqOverflow(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offset, CPUOp op, CPUBits numBits, const char* msg, bool isSigned)
+void SCBE::emitBinOpEqOverflow(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offset, CPUOp op, CPUBits numBits, SafetyMsg safetyMsg, TypeInfo* safetyType)
 {
     SWAG_ASSERT(SCBE_CPU::isInt(numBits));
+    const char* msg      = ByteCodeGen::safetyMsg(safetyMsg, safetyType);
+    const bool  isSigned = safetyType->isNativeIntegerSigned();
 
     if (op == CPUOp::IMUL || op == CPUOp::MUL)
     {
@@ -420,7 +424,7 @@ void SCBE::emitBinOpEqS(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t of
         emitIMMB(pp, ip, r1, numBits);
         pp.emitOp(r0, r1, op, numBits);
         pp.emitSetAddress(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->a.u32);
-        pp.emitStore(CPUReg::RCX, 0, r0, numBits);        
+        pp.emitStore(CPUReg::RCX, 0, r0, numBits);
     }
     else if (SCBE_CPU::isInt(numBits) && ip->hasFlag(BCI_IMM_B))
     {
