@@ -82,16 +82,16 @@ void SCBE_X64::emitConvert(CPUReg regDst1, CPUReg regDst0, CPUReg regSrc, CPUBit
 {
     SWAG_ASSERT(regSrc == CPUReg::RAX);
     SWAG_ASSERT(regDst0 == CPUReg::RAX && regDst1 == CPUReg::RDX);
-    if (srcBits == CPUBits::B8)
+    if (srcBits == CPUBits::B16)
     {
         emitREX(concat, CPUBits::B16);
         concat.addU8(0x99);
     }
-    else if (srcBits == CPUBits::B16)
+    else if (srcBits == CPUBits::B32)
     {
         concat.addU8(0x99);
     }
-    else if (srcBits == CPUBits::B32)
+    else if (srcBits == CPUBits::B64)
     {
         emitREX(concat, CPUBits::B64);
         concat.addU8(0x99);
