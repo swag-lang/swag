@@ -506,28 +506,16 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::BinOpMulS8:
-                emitBinOpAtRegOverflow(pp, ip, CPUOp::IMUL, CPUBits::B8, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS8), true);
-                break;
             case ByteCodeOp::BinOpMulS16:
-                emitBinOpAtRegOverflow(pp, ip, CPUOp::IMUL, CPUBits::B16, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS16), true);
-                break;
             case ByteCodeOp::BinOpMulS32:
-                emitBinOpAtRegOverflow(pp, ip, CPUOp::IMUL, CPUBits::B32, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS32), true);
-                break;
             case ByteCodeOp::BinOpMulS64:
-                emitBinOpAtRegOverflow(pp, ip, CPUOp::IMUL, CPUBits::B64, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS64), true);
+                emitBinOpAtRegOverflow(pp, ip, CPUOp::IMUL, SCBE_CPU::getCPUBits(ip->op), SafetyMsg::Mul, SCBE_CPU::getCPUType(ip->op, true));
                 break;
             case ByteCodeOp::BinOpMulU8:
-                emitBinOpAtRegOverflow(pp, ip, CPUOp::MUL, CPUBits::B8, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU8), false);
-                break;
             case ByteCodeOp::BinOpMulU16:
-                emitBinOpAtRegOverflow(pp, ip, CPUOp::MUL, CPUBits::B16, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU16), false);
-                break;
             case ByteCodeOp::BinOpMulU32:
-                emitBinOpAtRegOverflow(pp, ip, CPUOp::MUL, CPUBits::B32, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU32), false);
-                break;
             case ByteCodeOp::BinOpMulU64:
-                emitBinOpAtRegOverflow(pp, ip, CPUOp::MUL, CPUBits::B64, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU64), false);
+                emitBinOpAtRegOverflow(pp, ip, CPUOp::IMUL, SCBE_CPU::getCPUBits(ip->op), SafetyMsg::Mul, SCBE_CPU::getCPUType(ip->op, false));
                 break;
             case ByteCodeOp::BinOpMulF32:
             case ByteCodeOp::BinOpMulF64:
@@ -584,28 +572,16 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::BinOpPlusS8:
-                emitBinOpAtRegOverflow(pp, ip, CPUOp::ADD, CPUBits::B8, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS8), true);
-                break;
             case ByteCodeOp::BinOpPlusS16:
-                emitBinOpAtRegOverflow(pp, ip, CPUOp::ADD, CPUBits::B16, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS16), true);
-                break;
             case ByteCodeOp::BinOpPlusS32:
-                emitBinOpAtRegOverflow(pp, ip, CPUOp::ADD, CPUBits::B32, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS32), true);
-                break;
             case ByteCodeOp::BinOpPlusS64:
-                emitBinOpAtRegOverflow(pp, ip, CPUOp::ADD, CPUBits::B64, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS64), true);
+                emitBinOpAtRegOverflow(pp, ip, CPUOp::ADD, SCBE_CPU::getCPUBits(ip->op), SafetyMsg::Plus, SCBE_CPU::getCPUType(ip->op, true));
                 break;
             case ByteCodeOp::BinOpPlusU8:
-                emitBinOpAtRegOverflow(pp, ip, CPUOp::ADD, CPUBits::B8, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU8), false);
-                break;
             case ByteCodeOp::BinOpPlusU16:
-                emitBinOpAtRegOverflow(pp, ip, CPUOp::ADD, CPUBits::B16, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU16), false);
-                break;
             case ByteCodeOp::BinOpPlusU32:
-                emitBinOpAtRegOverflow(pp, ip, CPUOp::ADD, CPUBits::B32, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU32), false);
-                break;
             case ByteCodeOp::BinOpPlusU64:
-                emitBinOpAtRegOverflow(pp, ip, CPUOp::ADD, CPUBits::B64, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU64), false);
+                emitBinOpAtRegOverflow(pp, ip, CPUOp::ADD, SCBE_CPU::getCPUBits(ip->op), SafetyMsg::Plus, SCBE_CPU::getCPUType(ip->op, false));
                 break;
             case ByteCodeOp::BinOpPlusF32:
             case ByteCodeOp::BinOpPlusF64:
@@ -626,28 +602,16 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::BinOpMinusS8:
-                emitBinOpAtRegOverflow(pp, ip, CPUOp::SUB, CPUBits::B8, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS8), true);
-                break;
             case ByteCodeOp::BinOpMinusS16:
-                emitBinOpAtRegOverflow(pp, ip, CPUOp::SUB, CPUBits::B16, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS16), true);
-                break;
             case ByteCodeOp::BinOpMinusS32:
-                emitBinOpAtRegOverflow(pp, ip, CPUOp::SUB, CPUBits::B32, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS32), true);
-                break;
             case ByteCodeOp::BinOpMinusS64:
-                emitBinOpAtRegOverflow(pp, ip, CPUOp::SUB, CPUBits::B64, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS64), true);
+                emitBinOpAtRegOverflow(pp, ip, CPUOp::SUB, SCBE_CPU::getCPUBits(ip->op), SafetyMsg::Minus, SCBE_CPU::getCPUType(ip->op, true));
                 break;
             case ByteCodeOp::BinOpMinusU8:
-                emitBinOpAtRegOverflow(pp, ip, CPUOp::SUB, CPUBits::B8, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU8), false);
-                break;
             case ByteCodeOp::BinOpMinusU16:
-                emitBinOpAtRegOverflow(pp, ip, CPUOp::SUB, CPUBits::B16, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU16), false);
-                break;
             case ByteCodeOp::BinOpMinusU32:
-                emitBinOpAtRegOverflow(pp, ip, CPUOp::SUB, CPUBits::B32, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU32), false);
-                break;
             case ByteCodeOp::BinOpMinusU64:
-                emitBinOpAtRegOverflow(pp, ip, CPUOp::SUB, CPUBits::B64, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU64), false);
+                emitBinOpAtRegOverflow(pp, ip, CPUOp::SUB, SCBE_CPU::getCPUBits(ip->op), SafetyMsg::Minus, SCBE_CPU::getCPUType(ip->op, false));
                 break;
             case ByteCodeOp::BinOpMinusF32:
             case ByteCodeOp::BinOpMinusF64:
