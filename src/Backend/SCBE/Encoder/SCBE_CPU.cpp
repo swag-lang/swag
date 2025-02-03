@@ -1,4 +1,6 @@
 #include "pch.h"
+
+#include "Backend/ByteCode/ByteCode.h"
 #include "Backend/SCBE/Encoder/SCBE_CPU.h"
 #include "Semantic/Type/TypeInfo.h"
 
@@ -113,6 +115,21 @@ uint32_t SCBE_CPU::countBits(CPUBits numBits)
 
     SWAG_ASSERT(false);
     return 0;
+}
+
+CPUBits SCBE_CPU::getCPUBits(ByteCodeOp op)
+{
+    const auto flags = ByteCode::opFlags(op);
+    if (flags.has(OPF_8))
+        return CPUBits::B8;
+    if (flags.has(OPF_16))
+        return CPUBits::B16;
+    if (flags.has(OPF_32))
+        return CPUBits::B32;
+    if (flags.has(OPF_64))
+        return CPUBits::B64;
+    SWAG_ASSERT(false);
+    return CPUBits::B32;
 }
 
 uint32_t SCBE_CPU::getParamStackOffset(const CPUFunction* cpuFct, uint32_t paramIdx)

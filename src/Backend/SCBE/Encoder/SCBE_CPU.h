@@ -6,6 +6,7 @@
 #include "Core/Concat.h"
 #include "Semantic/DataSegment.h"
 
+enum class ByteCodeOp : uint16_t;
 struct AstNode;
 
 #define REG_OFFSET(__r) ((__r) * sizeof(Register))
@@ -201,6 +202,7 @@ struct SCBE_CPU : BackendEncoder
     CPUFunction*    registerFunction(AstNode* node, uint32_t symbolIndex);
     static uint32_t getParamStackOffset(const CPUFunction* cpuFct, uint32_t paramIdx);
     static uint32_t countBits(CPUBits numBits);
+    static CPUBits  getCPUBits(ByteCodeOp op);
 
     static bool isInt(CPUBits numBits) { return numBits == CPUBits::B8 || numBits == CPUBits::B16 || numBits == CPUBits::B32 || numBits == CPUBits::B64; }
     static bool isFloat(CPUBits numBits) { return numBits == CPUBits::F32 || numBits == CPUBits::F64; }

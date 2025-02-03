@@ -797,73 +797,43 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::AffectOpShiftRightEqS8:
-                emitShiftRightEqArithmetic(pp, ip, CPUBits::B8);
-                break;
             case ByteCodeOp::AffectOpShiftRightEqS16:
-                emitShiftRightEqArithmetic(pp, ip, CPUBits::B16);
-                break;
             case ByteCodeOp::AffectOpShiftRightEqS32:
-                emitShiftRightEqArithmetic(pp, ip, CPUBits::B32);
-                break;
             case ByteCodeOp::AffectOpShiftRightEqS64:
-                emitShiftRightEqArithmetic(pp, ip, CPUBits::B64);
+                emitShiftRightEqArithmetic(pp, ip, SCBE_CPU::getCPUBits(ip->op));
                 break;
             case ByteCodeOp::AffectOpShiftRightEqU8:
-                emitShiftEqLogical(pp, ip, CPUOp::SHR, CPUBits::B8);
-                break;
             case ByteCodeOp::AffectOpShiftRightEqU16:
-                emitShiftEqLogical(pp, ip, CPUOp::SHR, CPUBits::B16);
-                break;
             case ByteCodeOp::AffectOpShiftRightEqU32:
-                emitShiftEqLogical(pp, ip, CPUOp::SHR, CPUBits::B32);
-                break;
             case ByteCodeOp::AffectOpShiftRightEqU64:
-                emitShiftEqLogical(pp, ip, CPUOp::SHR, CPUBits::B64);
+                emitShiftEqLogical(pp, ip, CPUOp::SHR, SCBE_CPU::getCPUBits(ip->op));
                 break;
 
                 /////////////////////////////////////
 
             case ByteCodeOp::AffectOpXorEqU8:
-                emitBinOpEq(pp, ip, 0, CPUOp::XOR, CPUBits::B8);
-                break;
             case ByteCodeOp::AffectOpXorEqU16:
-                emitBinOpEq(pp, ip, 0, CPUOp::XOR, CPUBits::B16);
-                break;
             case ByteCodeOp::AffectOpXorEqU32:
-                emitBinOpEq(pp, ip, 0, CPUOp::XOR, CPUBits::B32);
-                break;
             case ByteCodeOp::AffectOpXorEqU64:
-                emitBinOpEq(pp, ip, 0, CPUOp::XOR, CPUBits::B64);
+                emitBinOpEq(pp, ip, 0, CPUOp::XOR, SCBE_CPU::getCPUBits(ip->op));
                 break;
 
                 /////////////////////////////////////
 
             case ByteCodeOp::AffectOpOrEqU8:
-                emitBinOpEq(pp, ip, 0, CPUOp::OR, CPUBits::B8);
-                break;
             case ByteCodeOp::AffectOpOrEqU16:
-                emitBinOpEq(pp, ip, 0, CPUOp::OR, CPUBits::B16);
-                break;
             case ByteCodeOp::AffectOpOrEqU32:
-                emitBinOpEq(pp, ip, 0, CPUOp::OR, CPUBits::B32);
-                break;
             case ByteCodeOp::AffectOpOrEqU64:
-                emitBinOpEq(pp, ip, 0, CPUOp::OR, CPUBits::B64);
+                emitBinOpEq(pp, ip, 0, CPUOp::OR, SCBE_CPU::getCPUBits(ip->op));
                 break;
 
                 /////////////////////////////////////
 
             case ByteCodeOp::AffectOpAndEqU8:
-                emitBinOpEq(pp, ip, 0, CPUOp::AND, CPUBits::B8);
-                break;
             case ByteCodeOp::AffectOpAndEqU16:
-                emitBinOpEq(pp, ip, 0, CPUOp::AND, CPUBits::B16);
-                break;
             case ByteCodeOp::AffectOpAndEqU32:
-                emitBinOpEq(pp, ip, 0, CPUOp::AND, CPUBits::B32);
-                break;
             case ByteCodeOp::AffectOpAndEqU64:
-                emitBinOpEq(pp, ip, 0, CPUOp::AND, CPUBits::B64);
+                emitBinOpEq(pp, ip, 0, CPUOp::AND, SCBE_CPU::getCPUBits(ip->op));
                 break;
 
                 /////////////////////////////////////
