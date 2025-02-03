@@ -376,7 +376,7 @@ void ByteCodeOptimizer::setNop(ByteCodeOptContext* context, ByteCodeInstruction*
     context->nops.push_back(ip);
 }
 
-void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
+void ByteCodeOptimizer::removeNop(ByteCodeOptContext* context)
 {
     if (context->nops.empty())
         return;
@@ -415,9 +415,9 @@ void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
         context->nops.erase_unordered(i);
         i--;
     }
-    
+
     if (context->nops.empty())
-        return;    
+        return;
 
     context->allPassesHaveDoneSomething = true;
 
@@ -560,7 +560,7 @@ void ByteCodeOptimizer::setJumps(ByteCodeOptContext* context)
 
     context->jumps.reserve(context->bc->numJumps);
     context->nops.reserve(context->bc->numDebugNops);
-    context->bc->numJumps = 0;
+    context->bc->numJumps     = 0;
     context->bc->numDebugNops = 0;
 
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
@@ -706,11 +706,12 @@ bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, b
 
         setJumps(&optContext);
         genTree(&optContext, false);
-        OPT_PASS(optimizePassJumps, BuildCfgByteCodeOptim::O2);
+        OPT_PASS(optimizePassJump, BuildCfgByteCodeOptim::O2);
+        OPT_PASS(optimizePassConstJump, BuildCfgByteCodeOptim::O1);
         OPT_PASS(optimizePassDeadCode, BuildCfgByteCodeOptim::O2);
-        OPT_PASS(optimizePassImmediate, BuildCfgByteCodeOptim::O2);
-        OPT_PASS(optimizePassImmediate2, BuildCfgByteCodeOptim::O2);
-        OPT_PASS(optimizePassConst, BuildCfgByteCodeOptim::O2);
+        OPT_PASS(optimizePassImmediate, BuildCfgByteCodeOptim::O1);
+        OPT_PASS(optimizePassImmediate2, BuildCfgByteCodeOptim::O1);
+        OPT_PASS(optimizePassConst, BuildCfgByteCodeOptim::O1);
         OPT_PASS(optimizePassDupCopyRBRA, BuildCfgByteCodeOptim::O2);
         OPT_PASS(optimizePassDupSetRA, BuildCfgByteCodeOptim::O2);
         OPT_PASS(optimizePassRetCopyLocal, BuildCfgByteCodeOptim::O2);
@@ -721,7 +722,7 @@ bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, b
         OPT_PASS(optimizePassDeadStoreDup, BuildCfgByteCodeOptim::O2);
         OPT_PASS(optimizePassSwap, BuildCfgByteCodeOptim::O2);
         OPT_PASS(optimizePassParam, BuildCfgByteCodeOptim::O2);
-        removeNops(&optContext);
+        removeNop(&optContext);
         if (optContext.allPassesHaveDoneSomething)
             continue;
 
@@ -732,14 +733,14 @@ bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, b
         OPT_PASS(optimizePassLoop, BuildCfgByteCodeOptim::O2);
         OPT_PASS(optimizePassSwitch, BuildCfgByteCodeOptim::O2);
         OPT_PASS(optimizePassDupBlocks, BuildCfgByteCodeOptim::O2);
-        removeNops(&optContext);
+        removeNop(&optContext);
         if (optContext.allPassesHaveDoneSomething)
             continue;
 
         setJumps(&optContext);
         genTree(&optContext, true);
         OPT_PASS(optimizePassReduceX2, BuildCfgByteCodeOptim::O1);
-        removeNops(&optContext);
+        removeNop(&optContext);
         if (optContext.allPassesHaveDoneSomething)
             continue;
 

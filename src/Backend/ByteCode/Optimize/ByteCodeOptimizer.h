@@ -12,26 +12,24 @@ struct ByteCodeOptimizer
 {
     static bool hasReadRefToReg(ByteCodeOptContext* context, uint32_t regScan, uint32_t curNode, ByteCodeInstruction* curIp);
 
+    using ParseTreeCB = std::function<void(ByteCodeOptContext*, ByteCodeOptTreeParseContext&)>;
     static uint32_t newTreeNode(ByteCodeOptContext* context, ByteCodeInstruction* ip, bool& here);
     static void     genTree(ByteCodeOptContext* context, uint32_t nodeIdx, bool computeCrc);
     static void     genTree(ByteCodeOptContext* context, bool computeCrc);
     static void     parseTree(ByteCodeOptContext* context, ByteCodeOptTreeParseContext& parseCxt);
-    static void     parseTree(ByteCodeOptContext*                                                           context,
-                              uint32_t                                                                      startNode,
-                              ByteCodeInstruction*                                                          startIp,
-                              uint32_t                                                                      doneFlag,
-                              const std::function<void(ByteCodeOptContext*, ByteCodeOptTreeParseContext&)>& cb);
+    static void     parseTree(ByteCodeOptContext* context, uint32_t startNode, ByteCodeInstruction* startIp, uint32_t doneFlag, const ParseTreeCB& cb);
 
     static void setNop(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void setContextFlags(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void setJumps(ByteCodeOptContext* context);
     static bool insertNopBefore(ByteCodeOptContext* context, ByteCodeInstruction* insert);
-    static void removeNops(ByteCodeOptContext* context);
+    static void removeNop(ByteCodeOptContext* context);
 
     static void registerParamsReg(ByteCodeOptContext* context, const ByteCodeInstruction* ip);
     static void registerMakeAddr(ByteCodeOptContext* context, const ByteCodeInstruction* ip);
 
-    static bool optimizePassJumps(ByteCodeOptContext* context);
+    static bool optimizePassJump(ByteCodeOptContext* context);
+    static bool optimizePassConstJump(ByteCodeOptContext* context);
     static bool optimizePassDeadCode(ByteCodeOptContext* context);
     static bool optimizePassDeadStore(ByteCodeOptContext* context);
     static bool optimizePassDeadStoreDup(ByteCodeOptContext* context);

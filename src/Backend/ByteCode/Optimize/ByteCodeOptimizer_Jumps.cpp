@@ -4,7 +4,7 @@
 #include "Wmf/Module.h"
 
 // Eliminate unnecessary jumps
-bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
+bool ByteCodeOptimizer::optimizePassJump(ByteCodeOptContext* context)
 {
     for (uint32_t idx = 0; idx < context->jumps.size(); idx++)
     {
@@ -1655,7 +1655,13 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             default:
                 break;
         }
+    }
 
+    return true;
+}
+
+bool ByteCodeOptimizer::optimizePassConstJump(ByteCodeOptContext* context)
+{
 #define OPT_JMP_AC(__op, __val)           \
     do                                    \
     {                                     \
@@ -1668,6 +1674,12 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
             setNop(context, ip);          \
         }                                 \
     } while (0)
+
+    for (uint32_t idx = 0; idx < context->jumps.size(); idx++)
+    {
+        const auto ip = context->jumps[idx];
+        if (!ByteCode::isJump(ip))
+            continue;
 
         if (ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_C))
         {
