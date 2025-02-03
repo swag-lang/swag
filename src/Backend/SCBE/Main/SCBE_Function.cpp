@@ -470,61 +470,37 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::BinOpShiftLeftS8:
             case ByteCodeOp::BinOpShiftLeftU8:
-                emitShiftLogical(pp, ip, CPUOp::SHL, CPUBits::B8);
-                break;
             case ByteCodeOp::BinOpShiftLeftS16:
             case ByteCodeOp::BinOpShiftLeftU16:
-                emitShiftLogical(pp, ip, CPUOp::SHL, CPUBits::B16);
-                break;
             case ByteCodeOp::BinOpShiftLeftS32:
             case ByteCodeOp::BinOpShiftLeftU32:
-                emitShiftLogical(pp, ip, CPUOp::SHL, CPUBits::B32);
-                break;
             case ByteCodeOp::BinOpShiftLeftS64:
             case ByteCodeOp::BinOpShiftLeftU64:
-                emitShiftLogical(pp, ip, CPUOp::SHL, CPUBits::B64);
+                emitShiftLogical(pp, ip, CPUOp::SHL, SCBE_CPU::getCPUBits(ip->op));
                 break;
 
                 /////////////////////////////////////
 
             case ByteCodeOp::BinOpShiftRightS8:
-                emitShiftRightArithmetic(pp, ip, CPUBits::B8);
-                break;
             case ByteCodeOp::BinOpShiftRightS16:
-                emitShiftRightArithmetic(pp, ip, CPUBits::B16);
-                break;
             case ByteCodeOp::BinOpShiftRightS32:
-                emitShiftRightArithmetic(pp, ip, CPUBits::B32);
-                break;
             case ByteCodeOp::BinOpShiftRightS64:
-                emitShiftRightArithmetic(pp, ip, CPUBits::B64);
+                emitShiftRightArithmetic(pp, ip, SCBE_CPU::getCPUBits(ip->op));
                 break;
             case ByteCodeOp::BinOpShiftRightU8:
-                emitShiftLogical(pp, ip, CPUOp::SHR, CPUBits::B8);
-                break;
             case ByteCodeOp::BinOpShiftRightU16:
-                emitShiftLogical(pp, ip, CPUOp::SHR, CPUBits::B16);
-                break;
             case ByteCodeOp::BinOpShiftRightU32:
-                emitShiftLogical(pp, ip, CPUOp::SHR, CPUBits::B32);
-                break;
             case ByteCodeOp::BinOpShiftRightU64:
-                emitShiftLogical(pp, ip, CPUOp::SHR, CPUBits::B64);
+                emitShiftLogical(pp, ip, CPUOp::SHR, SCBE_CPU::getCPUBits(ip->op));
                 break;
 
                 /////////////////////////////////////
 
             case ByteCodeOp::BinOpXorU8:
-                emitBinOpAtReg(pp, ip, CPUOp::XOR, CPUBits::B8);
-                break;
             case ByteCodeOp::BinOpXorU16:
-                emitBinOpAtReg(pp, ip, CPUOp::XOR, CPUBits::B16);
-                break;
             case ByteCodeOp::BinOpXorU32:
-                emitBinOpAtReg(pp, ip, CPUOp::XOR, CPUBits::B32);
-                break;
             case ByteCodeOp::BinOpXorU64:
-                emitBinOpAtReg(pp, ip, CPUOp::XOR, CPUBits::B64);
+                emitBinOpAtReg(pp, ip, CPUOp::XOR, SCBE_CPU::getCPUBits(ip->op));
                 break;
 
                 /////////////////////////////////////
@@ -554,95 +530,55 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitBinOpAtRegOverflow(pp, ip, CPUOp::MUL, CPUBits::B64, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU64), false);
                 break;
             case ByteCodeOp::BinOpMulF32:
-                emitBinOpAtReg(pp, ip, CPUOp::FMUL, CPUBits::F32);
-                break;
             case ByteCodeOp::BinOpMulF64:
-                emitBinOpAtReg(pp, ip, CPUOp::FMUL, CPUBits::F64);
+                emitBinOpAtReg(pp, ip, CPUOp::FMUL, SCBE_CPU::getCPUBits(ip->op));
                 break;
 
             case ByteCodeOp::BinOpMulS8_Safe:
-                emitBinOpAtReg(pp, ip, CPUOp::IMUL, CPUBits::B8);
-                break;
             case ByteCodeOp::BinOpMulS16_Safe:
-                emitBinOpAtReg(pp, ip, CPUOp::IMUL, CPUBits::B16);
-                break;
             case ByteCodeOp::BinOpMulS32_Safe:
-                emitBinOpAtReg(pp, ip, CPUOp::IMUL, CPUBits::B32);
-                break;
             case ByteCodeOp::BinOpMulS64_Safe:
-                emitBinOpAtReg(pp, ip, CPUOp::IMUL, CPUBits::B64);
+                emitBinOpAtReg(pp, ip, CPUOp::IMUL, SCBE_CPU::getCPUBits(ip->op));
                 break;
             case ByteCodeOp::BinOpMulU8_Safe:
-                emitBinOpAtReg(pp, ip, CPUOp::MUL, CPUBits::B8);
-                break;
             case ByteCodeOp::BinOpMulU16_Safe:
-                emitBinOpAtReg(pp, ip, CPUOp::MUL, CPUBits::B16);
-                break;
             case ByteCodeOp::BinOpMulU32_Safe:
-                emitBinOpAtReg(pp, ip, CPUOp::MUL, CPUBits::B32);
-                break;
             case ByteCodeOp::BinOpMulU64_Safe:
-                emitBinOpAtReg(pp, ip, CPUOp::MUL, CPUBits::B64);
+                emitBinOpAtReg(pp, ip, CPUOp::MUL, SCBE_CPU::getCPUBits(ip->op));
                 break;
 
                 /////////////////////////////////////
 
             case ByteCodeOp::BinOpModuloS8:
-                emitBinOpDivAtReg(pp, ip, CPUOp::IMOD, CPUBits::B8);
-                break;
             case ByteCodeOp::BinOpModuloS16:
-                emitBinOpDivAtReg(pp, ip, CPUOp::IMOD, CPUBits::B16);
-                break;
             case ByteCodeOp::BinOpModuloS32:
-                emitBinOpDivAtReg(pp, ip, CPUOp::IMOD, CPUBits::B32);
-                break;
             case ByteCodeOp::BinOpModuloS64:
-                emitBinOpDivAtReg(pp, ip, CPUOp::IMOD, CPUBits::B64);
+                emitBinOpDivAtReg(pp, ip, CPUOp::IMOD, SCBE_CPU::getCPUBits(ip->op));
                 break;
             case ByteCodeOp::BinOpModuloU8:
-                emitBinOpDivAtReg(pp, ip, CPUOp::MOD, CPUBits::B8);
-                break;
             case ByteCodeOp::BinOpModuloU16:
-                emitBinOpDivAtReg(pp, ip, CPUOp::MOD, CPUBits::B16);
-                break;
             case ByteCodeOp::BinOpModuloU32:
-                emitBinOpDivAtReg(pp, ip, CPUOp::MOD, CPUBits::B32);
-                break;
             case ByteCodeOp::BinOpModuloU64:
-                emitBinOpDivAtReg(pp, ip, CPUOp::MOD, CPUBits::B64);
+                emitBinOpDivAtReg(pp, ip, CPUOp::MOD, SCBE_CPU::getCPUBits(ip->op));
                 break;
 
                 /////////////////////////////////////
 
             case ByteCodeOp::BinOpDivS8:
-                emitBinOpDivAtReg(pp, ip, CPUOp::IDIV, CPUBits::B8);
-                break;
             case ByteCodeOp::BinOpDivS16:
-                emitBinOpDivAtReg(pp, ip, CPUOp::IDIV, CPUBits::B16);
-                break;
             case ByteCodeOp::BinOpDivS32:
-                emitBinOpDivAtReg(pp, ip, CPUOp::IDIV, CPUBits::B32);
-                break;
             case ByteCodeOp::BinOpDivS64:
-                emitBinOpDivAtReg(pp, ip, CPUOp::IDIV, CPUBits::B64);
+                emitBinOpDivAtReg(pp, ip, CPUOp::IDIV, SCBE_CPU::getCPUBits(ip->op));
                 break;
             case ByteCodeOp::BinOpDivU8:
-                emitBinOpDivAtReg(pp, ip, CPUOp::DIV, CPUBits::B8);
-                break;
             case ByteCodeOp::BinOpDivU16:
-                emitBinOpDivAtReg(pp, ip, CPUOp::DIV, CPUBits::B16);
-                break;
             case ByteCodeOp::BinOpDivU32:
-                emitBinOpDivAtReg(pp, ip, CPUOp::DIV, CPUBits::B32);
-                break;
             case ByteCodeOp::BinOpDivU64:
-                emitBinOpDivAtReg(pp, ip, CPUOp::DIV, CPUBits::B64);
+                emitBinOpDivAtReg(pp, ip, CPUOp::DIV, SCBE_CPU::getCPUBits(ip->op));
                 break;
             case ByteCodeOp::BinOpDivF32:
-                emitBinOpAtReg(pp, ip, CPUOp::FDIV, CPUBits::F32);
-                break;
             case ByteCodeOp::BinOpDivF64:
-                emitBinOpAtReg(pp, ip, CPUOp::FDIV, CPUBits::F64);
+                emitBinOpAtReg(pp, ip, CPUOp::FDIV, SCBE_CPU::getCPUBits(ip->op));
                 break;
 
                 /////////////////////////////////////
@@ -672,27 +608,19 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitBinOpAtRegOverflow(pp, ip, CPUOp::ADD, CPUBits::B64, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU64), false);
                 break;
             case ByteCodeOp::BinOpPlusF32:
-                emitBinOpAtReg(pp, ip, CPUOp::FADD, CPUBits::F32);
-                break;
             case ByteCodeOp::BinOpPlusF64:
-                emitBinOpAtReg(pp, ip, CPUOp::FADD, CPUBits::F64);
+                emitBinOpAtReg(pp, ip, CPUOp::FADD, SCBE_CPU::getCPUBits(ip->op));
                 break;
 
             case ByteCodeOp::BinOpPlusS8_Safe:
             case ByteCodeOp::BinOpPlusU8_Safe:
-                emitBinOpAtReg(pp, ip, CPUOp::ADD, CPUBits::B8);
-                break;
             case ByteCodeOp::BinOpPlusS16_Safe:
             case ByteCodeOp::BinOpPlusU16_Safe:
-                emitBinOpAtReg(pp, ip, CPUOp::ADD, CPUBits::B16);
-                break;
             case ByteCodeOp::BinOpPlusS32_Safe:
             case ByteCodeOp::BinOpPlusU32_Safe:
-                emitBinOpAtReg(pp, ip, CPUOp::ADD, CPUBits::B32);
-                break;
             case ByteCodeOp::BinOpPlusS64_Safe:
             case ByteCodeOp::BinOpPlusU64_Safe:
-                emitBinOpAtReg(pp, ip, CPUOp::ADD, CPUBits::B64);
+                emitBinOpAtReg(pp, ip, CPUOp::ADD, SCBE_CPU::getCPUBits(ip->op));
                 break;
 
                 /////////////////////////////////////
