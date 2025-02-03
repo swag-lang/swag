@@ -355,14 +355,16 @@ void SCBE::emitBinOp(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUBits numBit
 
 void SCBE::emitBinOpEq(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offset, CPUOp op, CPUBits numBits)
 {
-    if (op == CPUOp::IMUL || op == CPUOp::MUL)
+    if (op == CPUOp::IMUL || op == CPUOp::MUL || op == CPUOp::FMUL)
     {
-        pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-        pp.emitLoad(CPUReg::RAX, CPUReg::RAX, offset, numBits);
-        emitIMMB(pp, ip, CPUReg::RCX, numBits);
-        pp.emitOp(CPUReg::RAX, CPUReg::RCX, op, numBits);
+        const auto r0 = SCBE_CPU::isInt(numBits) ? CPUReg::RAX : CPUReg::XMM0;
+        const auto r1 = SCBE_CPU::isInt(numBits) ? CPUReg::RCX : CPUReg::XMM1;
         pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-        pp.emitStore(CPUReg::RCX, offset, CPUReg::RAX, numBits);
+        pp.emitLoad(r0, CPUReg::RCX, offset, numBits);
+        emitIMMB(pp, ip, r1, numBits);
+        pp.emitOp(r0, r1, op, numBits);
+        pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
+        pp.emitStore(CPUReg::RCX, offset, r0, numBits);
     }
     else if (SCBE_CPU::isInt(numBits) && ip->hasFlag(BCI_IMM_B))
     {
@@ -383,8 +385,8 @@ void SCBE::emitBinOpEqOverflow(SCBE_X64& pp, const ByteCodeInstruction* ip, uint
 {
     if (op == CPUOp::IMUL || op == CPUOp::MUL)
     {
-        pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-        pp.emitLoad(CPUReg::RAX, CPUReg::RAX, offset, numBits);
+        pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
+        pp.emitLoad(CPUReg::RAX, CPUReg::RCX, offset, numBits);
         emitIMMB(pp, ip, CPUReg::RCX, numBits);
         pp.emitOp(CPUReg::RAX, CPUReg::RCX, op, numBits);
         emitOverflow(pp, ip, msg, isSigned);
