@@ -124,8 +124,12 @@ CPUBits SCBE_CPU::getCPUBits(ByteCodeOp op)
         return CPUBits::B8;
     if (flags.has(OPF_16))
         return CPUBits::B16;
+    if (flags.has(OPF_32) && flags.has(OPF_FLOAT))
+        return CPUBits::F32;
     if (flags.has(OPF_32))
         return CPUBits::B32;
+    if (flags.has(OPF_64) && flags.has(OPF_FLOAT))
+        return CPUBits::F64;    
     if (flags.has(OPF_64))
         return CPUBits::B64;
     SWAG_ASSERT(false);

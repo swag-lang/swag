@@ -39,6 +39,7 @@ constexpr OpFlags OPF_LAMBDA_CALL  = 0x0000000100000000;
 constexpr OpFlags OPF_FOREIGN_CALL = 0x0000000200000000;
 constexpr OpFlags OPF_CALL         = OPF_LOCAL_CALL | OPF_LAMBDA_CALL | OPF_FOREIGN_CALL;
 constexpr OpFlags OPF_REG_READ     = 0x0000000400000000;
+constexpr OpFlags OPF_FLOAT        = 0x0000000800000000;
 
 enum class ByteCodeOp : uint16_t
 {
