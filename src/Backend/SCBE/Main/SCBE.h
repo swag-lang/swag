@@ -62,8 +62,8 @@ struct SCBE final : Backend
     static void emitIMMB(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUReg reg, CPUBits numBits);
     static void emitIMMC(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUReg reg, CPUBits numBits);
     static void emitIMMD(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUReg reg, CPUBits numBits);
-    static void emitIMMB(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUReg reg, CPUSignedType srcType, CPUSignedType dstType);
-    static void emitIMMC(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUReg reg, CPUSignedType srcType, CPUSignedType dstType);
+    static void emitIMMB(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUReg reg, CPUBits numBitsSrc, CPUBits numBitsDst, bool isSigned);
+    static void emitIMMC(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUReg reg, CPUBits numBitsSrc, CPUBits numBitsDst, bool isSigned);
 
     bool        buildRelocationSegment(const BuildParameters& buildParameters, DataSegment* dataSegment, CPURelocationTable& relocTable, SegmentKind me) const;
     void        computeUnwind(const VectorNative<CPUReg>& unwindRegs, const VectorNative<uint32_t>& unwindOffsetRegs, uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind) const;

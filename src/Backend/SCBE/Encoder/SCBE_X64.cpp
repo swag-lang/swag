@@ -309,81 +309,110 @@ void SCBE_X64::emitLoad(CPUReg reg, uint64_t value, CPUBits numBits, bool force6
     }
 }
 
-void SCBE_X64::emitLoad(CPUReg reg, CPUReg memReg, uint32_t memOffset, CPUSignedType srcType, CPUSignedType dstType)
+void SCBE_X64::emitLoad(CPUReg reg, CPUReg memReg, uint32_t memOffset, CPUBits numBitsSrc, CPUBits numBitsDst, bool isSigned)
 {
-    if (srcType == CPUSignedType::S8 && dstType == CPUSignedType::S16)
+    if (numBitsSrc == numBitsDst)
     {
-        emitREX(concat, CPUBits::B16, reg, memReg);
-        concat.addU8(0x0F);
-        concat.addU8(0xBE);
-        emitModRM(concat, memOffset, reg, memReg);
+        emitLoad(reg, memReg, memOffset, numBitsSrc);
+        return;
     }
-    else if (srcType == CPUSignedType::S8 && dstType == CPUSignedType::S32)
+
+    if (numBitsSrc == CPUBits::B8)
     {
-        emitREX(concat, CPUBits::B32, reg, memReg);
-        concat.addU8(0x0F);
-        concat.addU8(0xBE);
-        emitModRM(concat, memOffset, reg, memReg);
+        switch (numBitsDst)
+        {
+            case CPUBits::B16:
+                if (isSigned)
+                {
+                    emitREX(concat, CPUBits::B16, reg, memReg);
+                    concat.addU8(0x0F);
+                    concat.addU8(0xBE);
+                    emitModRM(concat, memOffset, reg, memReg);
+                    return;
+                }
+                break;
+            case CPUBits::B32:
+                if (isSigned)
+                {
+                    emitREX(concat, CPUBits::B32, reg, memReg);
+                    concat.addU8(0x0F);
+                    concat.addU8(0xBE);
+                    emitModRM(concat, memOffset, reg, memReg);
+                    return;
+                }
+
+                emitREX(concat, CPUBits::B32, reg, memReg);
+                concat.addU8(0x0F);
+                concat.addU8(0xB6);
+                emitModRM(concat, memOffset, reg, memReg);
+                return;
+
+            case CPUBits::B64:
+                if (isSigned)
+                {
+                    emitREX(concat, CPUBits::B64, reg, memReg);
+                    concat.addU8(0x0F);
+                    concat.addU8(0xBE);
+                    emitModRM(concat, memOffset, reg, memReg);
+                    return;
+                }
+
+                emitREX(concat, CPUBits::B64, reg, memReg);
+                concat.addU8(0x0F);
+                concat.addU8(0xB6);
+                emitModRM(concat, memOffset, reg, memReg);
+                return;
+        }
     }
-    else if (srcType == CPUSignedType::S16 && dstType == CPUSignedType::S32)
+    else if (numBitsSrc == CPUBits::B16)
     {
-        emitREX(concat, CPUBits::B32, reg, memReg);
-        concat.addU8(0x0F);
-        concat.addU8(0xBF);
-        emitModRM(concat, memOffset, reg, memReg);
+        switch (numBitsDst)
+        {
+            case CPUBits::B32:
+                if (isSigned)
+                {
+                    emitREX(concat, CPUBits::B32, reg, memReg);
+                    concat.addU8(0x0F);
+                    concat.addU8(0xBF);
+                    emitModRM(concat, memOffset, reg, memReg);
+                    return;
+                }
+
+                emitREX(concat, CPUBits::B32, reg, memReg);
+                concat.addU8(0x0F);
+                concat.addU8(0xB7);
+                emitModRM(concat, memOffset, reg, memReg);
+                return;
+
+            case CPUBits::B64:
+                if (isSigned)
+                {
+                    emitREX(concat, CPUBits::B64, reg, memReg);
+                    concat.addU8(0x0F);
+                    concat.addU8(0xBF);
+                    emitModRM(concat, memOffset, reg, memReg);
+                    return;
+                }
+
+                emitREX(concat, CPUBits::B64, reg, memReg);
+                concat.addU8(0x0F);
+                concat.addU8(0xB7);
+                emitModRM(concat, memOffset, reg, memReg);
+                return;
+        }
     }
-    else if (srcType == CPUSignedType::S8 && dstType == CPUSignedType::S64)
+    else if (numBitsSrc == CPUBits::B32)
     {
-        emitREX(concat, CPUBits::B64, reg, memReg);
-        concat.addU8(0x0F);
-        concat.addU8(0xBE);
-        emitModRM(concat, memOffset, reg, memReg);
+        if (isSigned)
+        {
+            emitREX(concat, CPUBits::B64, reg, memReg);
+            concat.addU8(0x63);
+            emitModRM(concat, memOffset, reg, memReg);
+            return;
+        }
     }
-    else if (srcType == CPUSignedType::S16 && dstType == CPUSignedType::S64)
-    {
-        emitREX(concat, CPUBits::B64, reg, memReg);
-        concat.addU8(0x0F);
-        concat.addU8(0xBF);
-        emitModRM(concat, memOffset, reg, memReg);
-    }
-    else if (srcType == CPUSignedType::S32 && dstType == CPUSignedType::S64)
-    {
-        emitREX(concat, CPUBits::B64, reg, memReg);
-        concat.addU8(0x63);
-        emitModRM(concat, memOffset, reg, memReg);
-    }
-    else if (srcType == CPUSignedType::U8 && dstType == CPUSignedType::U32)
-    {
-        emitREX(concat, CPUBits::B32, reg, memReg);
-        concat.addU8(0x0F);
-        concat.addU8(0xB6);
-        emitModRM(concat, memOffset, reg, memReg);
-    }
-    else if (srcType == CPUSignedType::U16 && dstType == CPUSignedType::U32)
-    {
-        emitREX(concat, CPUBits::B32, reg, memReg);
-        concat.addU8(0x0F);
-        concat.addU8(0xB7);
-        emitModRM(concat, memOffset, reg, memReg);
-    }
-    else if (srcType == CPUSignedType::U8 && dstType == CPUSignedType::U64)
-    {
-        emitREX(concat, CPUBits::B64, reg, memReg);
-        concat.addU8(0x0F);
-        concat.addU8(0xB6);
-        emitModRM(concat, memOffset, reg, memReg);
-    }
-    else if (srcType == CPUSignedType::U16 && dstType == CPUSignedType::U64)
-    {
-        emitREX(concat, CPUBits::B64, reg, memReg);
-        concat.addU8(0x0F);
-        concat.addU8(0xB7);
-        emitModRM(concat, memOffset, reg, memReg);
-    }
-    else
-    {
-        SWAG_ASSERT(false);
-    }
+
+    SWAG_ASSERT(false);
 }
 
 void SCBE_X64::emitLoad(CPUReg reg, CPUReg memReg, uint32_t memOffset, CPUBits numBits)

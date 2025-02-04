@@ -30,7 +30,7 @@ struct SCBE_X64 : SCBE_CPU
 
     void emitSetAddress(CPUReg reg, CPUReg memReg, uint32_t memOffset);
     void emitLoad(CPUReg reg, CPUReg memReg, uint32_t memOffset, CPUBits numBits);
-    void emitLoad(CPUReg reg, CPUReg memReg, uint32_t memOffset, CPUSignedType srcType, CPUSignedType dstType);
+    void emitLoad(CPUReg reg, CPUReg memReg, uint32_t memOffset, CPUBits numBitsSrc, CPUBits numBitsDst, bool isSigned);
     void emitLoad(CPUReg reg, uint64_t value, CPUBits numBits, bool force64Bits = false);
     void emitStore(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUBits numBits);
     void emitStore(CPUReg memReg, uint32_t memOffset, uint64_t value, CPUBits numBits);
