@@ -313,35 +313,6 @@ void SCBE::emitBinOpAtRegOverflow(SCBE_X64& pp, const ByteCodeInstruction* ip, C
     emitOverflow(pp, ip, msg, isSigned);
 }
 
-void SCBE::emitCompareOp(SCBE_X64& pp, const ByteCodeInstruction* ip)
-{
-    const auto numBits = SCBE_CPU::getCPUBits(ip->op);
-    if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_B))
-    {
-        const auto r0 = SCBE_CPU::isInt(numBits) ? CPUReg::RAX : CPUReg::XMM0;
-        pp.emitLoad(r0, CPUReg::RDI, REG_OFFSET(ip->a.u32), numBits);
-        pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->b.u32), r0, numBits);
-    }
-    else if (ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_B))
-    {
-        const auto r0 = SCBE_CPU::isInt(numBits) ? CPUReg::RAX : CPUReg::XMM0;
-        pp.emitLoad(r0, ip->a.u64, numBits);
-        pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->b.u32), r0, numBits);
-    }
-    else if (SCBE_CPU::isInt(numBits) && !ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_B) && ip->b.u64 <= 0x7FFFFFFF)
-    {
-        pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->a.u32), ip->b.u32, numBits);
-    }
-    else
-    {
-        const auto r0 = SCBE_CPU::isInt(numBits) ? CPUReg::RAX : CPUReg::XMM0;
-        const auto r1 = SCBE_CPU::isInt(numBits) ? CPUReg::RCX : CPUReg::XMM1;
-        emitIMMA(pp, ip, r0, numBits);
-        emitIMMB(pp, ip, r1, numBits);
-        pp.emitCmp(r0, r1, numBits);
-    }
-}
-
 void SCBE::emitBinOpEq(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offset, CPUOp op)
 {
     const auto numBits = SCBE_CPU::getCPUBits(ip->op);
@@ -574,6 +545,35 @@ void SCBE::emitBinOpEqLock(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op
     pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
     emitIMMB(pp, ip, CPUReg::RAX, numBits);
     pp.emitOp(CPUReg::RCX, 0, CPUReg::RAX, op, numBits, true);
+}
+
+void SCBE::emitCompareOp(SCBE_X64& pp, const ByteCodeInstruction* ip)
+{
+    const auto numBits = SCBE_CPU::getCPUBits(ip->op);
+    if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_B))
+    {
+        const auto r0 = SCBE_CPU::isInt(numBits) ? CPUReg::RAX : CPUReg::XMM0;
+        pp.emitLoad(r0, CPUReg::RDI, REG_OFFSET(ip->a.u32), numBits);
+        pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->b.u32), r0, numBits);
+    }
+    else if (ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_B))
+    {
+        const auto r0 = SCBE_CPU::isInt(numBits) ? CPUReg::RAX : CPUReg::XMM0;
+        pp.emitLoad(r0, ip->a.u64, numBits);
+        pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->b.u32), r0, numBits);
+    }
+    else if (SCBE_CPU::isInt(numBits) && !ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_B) && ip->b.u64 <= 0x7FFFFFFF)
+    {
+        pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->a.u32), ip->b.u32, numBits);
+    }
+    else
+    {
+        const auto r0 = SCBE_CPU::isInt(numBits) ? CPUReg::RAX : CPUReg::XMM0;
+        const auto r1 = SCBE_CPU::isInt(numBits) ? CPUReg::RCX : CPUReg::XMM1;
+        emitIMMA(pp, ip, r0, numBits);
+        emitIMMB(pp, ip, r1, numBits);
+        pp.emitCmp(r0, r1, numBits);
+    }
 }
 
 void SCBE::emitAddSubMul64(SCBE_X64& pp, const ByteCodeInstruction* ip, uint64_t mul, CPUOp op)
