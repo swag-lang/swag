@@ -13,10 +13,11 @@ struct AstNode;
 
 enum class CPUBits : uint32_t
 {
-    B8  = 8,
-    B16 = 16,
-    B32 = 32,
-    B64 = 64,
+    INVALID = 0,
+    B8      = 8,
+    B16     = 16,
+    B32     = 32,
+    B64     = 64,
     F32,
     F64,
 };

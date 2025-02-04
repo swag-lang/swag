@@ -204,6 +204,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     auto                                        ip = bc->out;
     VectorNative<uint32_t>                      pushRAParams;
     VectorNative<std::pair<uint32_t, uint32_t>> pushRVParams;
+    CPUBits                                     numBits = CPUBits::INVALID;
     for (int32_t i = 0; i < static_cast<int32_t>(bc->numInstructions); i++, ip++)
     {
         if (ip->node->hasAstFlag(AST_NO_BACKEND))
@@ -233,6 +234,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
         }
 
+        numBits = CPUBits::INVALID;
         switch (ip->op)
         {
             case ByteCodeOp::DebugNop:
@@ -311,26 +313,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::CastBool8:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->b.u32), CPUBits::B8);
-                pp.emitTest(CPUReg::RAX, CPUReg::RAX, CPUBits::B8);
-                pp.emitSet(CPUReg::RAX, CPUSet::SetNE);
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B8);
-                break;
             case ByteCodeOp::CastBool16:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->b.u32), CPUBits::B16);
-                pp.emitTest(CPUReg::RAX, CPUReg::RAX, CPUBits::B16);
-                pp.emitSet(CPUReg::RAX, CPUSet::SetNE);
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B8);
-                break;
             case ByteCodeOp::CastBool32:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->b.u32), CPUBits::B32);
-                pp.emitTest(CPUReg::RAX, CPUReg::RAX, CPUBits::B32);
-                pp.emitSet(CPUReg::RAX, CPUSet::SetNE);
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B8);
-                break;
             case ByteCodeOp::CastBool64:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->b.u32), CPUBits::B64);
-                pp.emitTest(CPUReg::RAX, CPUReg::RAX, CPUBits::B64);
+                numBits = SCBE_CPU::getCPUBits(ip->op);
+                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->b.u32), numBits);
+                pp.emitTest(CPUReg::RAX, CPUReg::RAX, numBits);
                 pp.emitSet(CPUReg::RAX, CPUSet::SetNE);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B8);
                 break;
