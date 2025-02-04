@@ -1093,29 +1093,8 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::CompareOp3Way8:
-                pp.emitClear(CPUReg::R8, CPUBits::B32);
-                emitCompareOp(pp, ip);
-                pp.emitSet(CPUReg::R8, CPUSet::SetG);
-                pp.emitLoad(CPUReg::RAX, 0xFFFFFFFF, CPUBits::B32);
-                pp.emitCMov(CPUReg::RAX, CPUReg::R8, CPUOp::CMOVGE, CPUBits::B32);
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, CPUBits::B32);
-                break;
             case ByteCodeOp::CompareOp3Way16:
-                pp.emitClear(CPUReg::R8, CPUBits::B32);
-                emitCompareOp(pp, ip);
-                pp.emitSet(CPUReg::R8, CPUSet::SetG);
-                pp.emitLoad(CPUReg::RAX, 0xFFFFFFFF, CPUBits::B32);
-                pp.emitCMov(CPUReg::RAX, CPUReg::R8, CPUOp::CMOVGE, CPUBits::B32);
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, CPUBits::B32);
-                break;
             case ByteCodeOp::CompareOp3Way32:
-                pp.emitClear(CPUReg::R8, CPUBits::B32);
-                emitCompareOp(pp, ip);
-                pp.emitSet(CPUReg::R8, CPUSet::SetG);
-                pp.emitLoad(CPUReg::RAX, 0xFFFFFFFF, CPUBits::B32);
-                pp.emitCMov(CPUReg::RAX, CPUReg::R8, CPUOp::CMOVGE, CPUBits::B32);
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, CPUBits::B32);
-                break;
             case ByteCodeOp::CompareOp3Way64:
                 pp.emitClear(CPUReg::R8, CPUBits::B32);
                 emitCompareOp(pp, ip);
@@ -1124,6 +1103,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitCMov(CPUReg::RAX, CPUReg::R8, CPUOp::CMOVGE, CPUBits::B32);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, CPUBits::B32);
                 break;
+
             case ByteCodeOp::CompareOp3WayF32:
                 pp.emitClear(CPUReg::R8, CPUBits::B32);
                 emitIMMA(pp, ip, CPUReg::XMM0, CPUBits::F32);
