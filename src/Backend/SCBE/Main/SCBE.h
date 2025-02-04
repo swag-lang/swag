@@ -40,7 +40,6 @@ struct SCBE final : Backend
     static void emitCompareOp(SCBE_X64& pp, const ByteCodeInstruction* ip);
     static void emitBinOpAtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op);
     static void emitBinOpAtRegOverflow(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, SafetyMsg safetyMsg, TypeInfo* safetyType);
-    static void emitBinOpDivAtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op);
     static void emitBinOpEq(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offset, CPUOp op);
     static void emitBinOpEqOverflow(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offset, CPUOp op, SafetyMsg safetyMsg, TypeInfo* safetyType);
     static void emitBinOpEqS(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offsetStack, CPUOp op);

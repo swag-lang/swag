@@ -529,13 +529,13 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::BinOpModuloS16:
             case ByteCodeOp::BinOpModuloS32:
             case ByteCodeOp::BinOpModuloS64:
-                emitBinOpDivAtReg(pp, ip, CPUOp::IMOD);
+                emitBinOpAtReg(pp, ip, CPUOp::IMOD);
                 break;
             case ByteCodeOp::BinOpModuloU8:
             case ByteCodeOp::BinOpModuloU16:
             case ByteCodeOp::BinOpModuloU32:
             case ByteCodeOp::BinOpModuloU64:
-                emitBinOpDivAtReg(pp, ip, CPUOp::MOD);
+                emitBinOpAtReg(pp, ip, CPUOp::MOD);
                 break;
 
                 /////////////////////////////////////
@@ -544,13 +544,13 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::BinOpDivS16:
             case ByteCodeOp::BinOpDivS32:
             case ByteCodeOp::BinOpDivS64:
-                emitBinOpDivAtReg(pp, ip, CPUOp::IDIV);
+                emitBinOpAtReg(pp, ip, CPUOp::IDIV);
                 break;
             case ByteCodeOp::BinOpDivU8:
             case ByteCodeOp::BinOpDivU16:
             case ByteCodeOp::BinOpDivU32:
             case ByteCodeOp::BinOpDivU64:
-                emitBinOpDivAtReg(pp, ip, CPUOp::DIV);
+                emitBinOpAtReg(pp, ip, CPUOp::DIV);
                 break;
             case ByteCodeOp::BinOpDivF32:
             case ByteCodeOp::BinOpDivF64:
