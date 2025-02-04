@@ -1171,6 +1171,7 @@ void SCBE_X64::emitOp(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUOp op, C
 void SCBE_X64::emitOpInd([[maybe_unused]] CPUReg memReg, uint64_t value, CPUOp op, CPUBits numBits)
 {
     SWAG_ASSERT(SCBE_CPU::isInt(numBits));
+
     if (op == CPUOp::SAR ||
         op == CPUOp::SHR ||
         op == CPUOp::SHL)
@@ -1191,7 +1192,11 @@ void SCBE_X64::emitOpInd([[maybe_unused]] CPUReg memReg, uint64_t value, CPUOp o
             concat.addU8(static_cast<uint8_t>(value));
         }
     }
-    else if (op == CPUOp::AND || op == CPUOp::OR || op == CPUOp::XOR || op == CPUOp::ADD || op == CPUOp::SUB)
+    else if (op == CPUOp::AND ||
+             op == CPUOp::OR ||
+             op == CPUOp::XOR ||
+             op == CPUOp::ADD ||
+             op == CPUOp::SUB)
     {
         emitREX(concat, numBits);
         if (value <= 0x7F)
