@@ -264,42 +264,16 @@ void SCBE::emitBinOpAtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op)
             else
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B32, CPUBits::B8, false);
         }
-        else if (numBits == CPUBits::B16)
-        {
-            if (ip->hasFlag(BCI_IMM_A))
-                pp.emitLoad(CPUReg::RAX, ip->a.u16, CPUBits::B16);
-            else
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B16);
-            if (op == CPUOp::IDIV || op == CPUOp::IMOD)
-                pp.emitConvert(CPUReg::RDX, CPUReg::RAX, CPUReg::RAX, CPUBits::B16);
-            else
-                pp.emitClear(CPUReg::RDX, CPUBits::B16);
-        }
-        else if (numBits == CPUBits::B32)
-        {
-            if (ip->hasFlag(BCI_IMM_A))
-                pp.emitLoad(CPUReg::RAX, ip->a.u32, CPUBits::B32);
-            else
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B32);
-            if (op == CPUOp::IDIV || op == CPUOp::IMOD)
-                pp.emitConvert(CPUReg::RDX, CPUReg::RAX, CPUReg::RAX, CPUBits::B32);
-            else
-                pp.emitClear(CPUReg::RDX, CPUBits::B32);
-        }
-        else if (numBits == CPUBits::B64)
-        {
-            if (ip->hasFlag(BCI_IMM_A))
-                pp.emitLoad(CPUReg::RAX, ip->a.u64, CPUBits::B64);
-            else
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-            if (op == CPUOp::IDIV || op == CPUOp::IMOD)
-                pp.emitConvert(CPUReg::RDX, CPUReg::RAX, CPUReg::RAX, CPUBits::B64);
-            else
-                pp.emitClear(CPUReg::RDX, CPUBits::B64);
-        }
         else
         {
-            SWAG_ASSERT(false);
+            if (ip->hasFlag(BCI_IMM_A))
+                pp.emitLoad(CPUReg::RAX, ip->a.u64, numBits);
+            else
+                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), numBits);
+            if (op == CPUOp::IDIV || op == CPUOp::IMOD)
+                pp.emitConvert(CPUReg::RDX, CPUReg::RAX, CPUReg::RAX, numBits);
+            else
+                pp.emitClear(CPUReg::RDX, numBits);
         }
 
         if (ip->hasFlag(BCI_IMM_B))
