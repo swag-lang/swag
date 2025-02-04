@@ -368,15 +368,15 @@ void SCBE::emitBinOpEq(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t off
     if (op == CPUOp::IDIV)
     {
         pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-        
-        if(numBits == CPUBits::B8)
+
+        if (numBits == CPUBits::B8)
             pp.emitLoad(CPUReg::RAX, CPUReg::RCX, offset, CPUSignedType::S8, CPUSignedType::S32);
         else
         {
             pp.emitLoad(CPUReg::RAX, CPUReg::RCX, offset, numBits);
             pp.emitConvert(CPUReg::RDX, CPUReg::RAX, CPUReg::RAX, numBits);
         }
-        
+
         emitIMMB(pp, ip, CPUReg::RCX, numBits);
         pp.emitOp(CPUReg::RAX, CPUReg::RCX, CPUOp::IDIV, numBits);
         pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
@@ -385,15 +385,15 @@ void SCBE::emitBinOpEq(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t off
     else if (op == CPUOp::DIV)
     {
         pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-        
-        if(numBits == CPUBits::B8)
+
+        if (numBits == CPUBits::B8)
             pp.emitLoad(CPUReg::RAX, CPUReg::RCX, offset, CPUSignedType::U8, CPUSignedType::U32);
         else
         {
             pp.emitLoad(CPUReg::RAX, CPUReg::RCX, offset, numBits);
             pp.emitClear(CPUReg::RDX, numBits);
         }
-        
+
         emitIMMB(pp, ip, CPUReg::RCX, numBits);
         pp.emitOp(CPUReg::RAX, CPUReg::RCX, CPUOp::IDIV, numBits);
         pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
@@ -406,7 +406,7 @@ void SCBE::emitBinOpEq(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t off
         emitIMMB(pp, ip, CPUReg::XMM1, numBits);
         pp.emitOp(CPUReg::XMM0, CPUReg::XMM1, CPUOp::FDIV, numBits);
         pp.emitStore(CPUReg::RCX, 0, CPUReg::XMM0, numBits);
-    }         
+    }
     else if (op == CPUOp::IMUL || op == CPUOp::MUL || op == CPUOp::FMUL)
     {
         const auto r0 = SCBE_CPU::isInt(numBits) ? CPUReg::RAX : CPUReg::XMM0;
@@ -466,7 +466,45 @@ void SCBE::emitBinOpEqOverflow(SCBE_X64& pp, const ByteCodeInstruction* ip, uint
 
 void SCBE::emitBinOpEqS(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offsetStack, CPUOp op, CPUBits numBits)
 {
-    if (op == CPUOp::IMUL || op == CPUOp::MUL)
+    if (op == CPUOp::IDIV)
+    {
+        if (numBits == CPUBits::B8)
+            pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32, CPUSignedType::S8, CPUSignedType::S32);
+        else
+        {
+            pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32, numBits);
+            pp.emitConvert(CPUReg::RDX, CPUReg::RAX, CPUReg::RAX, numBits);
+        }
+
+        emitIMMB(pp, ip, CPUReg::RCX, numBits);
+        pp.emitOp(CPUReg::RAX, CPUReg::RCX, CPUOp::IDIV, numBits);
+        pp.emitSetAddress(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->a.u32);
+        pp.emitStore(CPUReg::RCX, 0, CPUReg::RAX, numBits);
+    }
+    else if (op == CPUOp::DIV)
+    {
+        if (numBits == CPUBits::B8)
+            pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32, CPUSignedType::U8, CPUSignedType::U32);
+        else
+        {
+            pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32, numBits);
+            pp.emitClear(CPUReg::RDX, numBits);
+        }
+
+        emitIMMB(pp, ip, CPUReg::RCX, numBits);
+        pp.emitOp(CPUReg::RAX, CPUReg::RCX, CPUOp::IDIV, numBits);
+        pp.emitSetAddress(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->a.u32);
+        pp.emitStore(CPUReg::RCX, 0, CPUReg::RAX, numBits);
+    }
+    else if (op == CPUOp::FDIV)
+    {
+        pp.emitLoad(CPUReg::XMM0, CPUReg::RDI, offsetStack + ip->a.u32, numBits);
+        emitIMMB(pp, ip, CPUReg::XMM1, numBits);
+        pp.emitOp(CPUReg::XMM0, CPUReg::XMM1, CPUOp::FDIV, numBits);
+        pp.emitSetAddress(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32);
+        pp.emitStore(CPUReg::RAX, 0, CPUReg::XMM0, numBits);
+    }
+    else if (op == CPUOp::IMUL || op == CPUOp::MUL)
     {
         const auto r0 = SCBE_CPU::isInt(numBits) ? CPUReg::RAX : CPUReg::XMM0;
         const auto r1 = SCBE_CPU::isInt(numBits) ? CPUReg::RCX : CPUReg::XMM1;
