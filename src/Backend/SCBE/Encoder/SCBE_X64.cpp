@@ -102,23 +102,23 @@ void SCBE_X64::emitConvert(CPUReg regDst1, CPUReg regDst0, CPUReg regSrc, CPUBit
     }
 }
 
-void SCBE_X64::emitCast(CPUReg regDst, CPUReg regSrc, CPUSignedType dstType, CPUSignedType srcType)
+void SCBE_X64::emitCast(CPUReg regDst, CPUReg regSrc, CPUBits numBitsDst, CPUBits numBitsSrc, bool isSigned)
 {
-    if (srcType == CPUSignedType::U8 && dstType == CPUSignedType::U64)
+    if (numBitsSrc == CPUBits::B8 && numBitsDst == CPUBits::B64 && !isSigned)
     {
         emitREX(concat, CPUBits::B64, regDst, regSrc);
         concat.addU8(0x0F);
         concat.addU8(0xB6);
         concat.addU8(getModRM(RegReg, static_cast<uint8_t>(regDst), static_cast<uint8_t>(regSrc)));
     }
-    else if (srcType == CPUSignedType::U16 && dstType == CPUSignedType::U64)
+    else if (numBitsSrc == CPUBits::B16 && numBitsDst == CPUBits::B64 && !isSigned)
     {
         emitREX(concat, CPUBits::B64, regDst, regSrc);
         concat.addU8(0x0F);
         concat.addU8(0xB7);
         concat.addU8(getModRM(RegReg, static_cast<uint8_t>(regDst), static_cast<uint8_t>(regSrc)));
     }
-    else if (srcType == CPUSignedType::U64 && dstType == CPUSignedType::F64)
+    else if (numBitsSrc == CPUBits::B64 && numBitsDst == CPUBits::F64 && !isSigned)
     {
         SWAG_ASSERT(regSrc == CPUReg::RAX && regDst == CPUReg::XMM0);
         concat.addString5("\x66\x48\x0F\x6E\xC8"); // movq xmm1, rax
@@ -309,7 +309,7 @@ void SCBE_X64::emitLoad(CPUReg reg, uint64_t value, CPUBits numBits, bool force6
     }
 }
 
-void SCBE_X64::emitLoad(CPUReg reg, CPUReg memReg, uint32_t memOffset, CPUBits numBitsSrc, CPUBits numBitsDst, bool isSigned)
+void SCBE_X64::emitLoad(CPUReg reg, CPUReg memReg, uint32_t memOffset, CPUBits numBitsDst, CPUBits numBitsSrc, bool isSigned)
 {
     if (numBitsSrc == numBitsDst)
     {

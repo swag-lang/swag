@@ -105,20 +105,6 @@ enum class CPUSet
     SetNEP,
 };
 
-enum class CPUSignedType
-{
-    S8,
-    S16,
-    S32,
-    S64,
-    U8,
-    U16,
-    U32,
-    U64,
-    F32,
-    F64,
-};
-
 enum CPUJumpType
 {
     JNO,
