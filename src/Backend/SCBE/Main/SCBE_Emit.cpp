@@ -466,7 +466,7 @@ void SCBE::emitBinOpEqOverflow(SCBE_X64& pp, const ByteCodeInstruction* ip, uint
 
 void SCBE::emitBinOpEqS(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offsetStack, CPUOp op, CPUBits numBits)
 {
-    if (op == CPUOp::IDIV)
+    if (op == CPUOp::IDIV || op == CPUOp::IMOD)
     {
         if (numBits == CPUBits::B8)
             pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32, CPUSignedType::S8, CPUSignedType::S32);
@@ -481,7 +481,7 @@ void SCBE::emitBinOpEqS(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t of
         pp.emitSetAddress(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->a.u32);
         pp.emitStore(CPUReg::RCX, 0, CPUReg::RAX, numBits);
     }
-    else if (op == CPUOp::DIV)
+    else if (op == CPUOp::DIV || op == CPUOp::MOD)
     {
         if (numBits == CPUBits::B8)
             pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32, CPUSignedType::U8, CPUSignedType::U32);
@@ -528,7 +528,7 @@ void SCBE::emitBinOpEqS(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t of
 
 void SCBE::emitBinOpEqSS(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offsetStack, CPUOp op, CPUBits numBits)
 {
-    if (op == CPUOp::IDIV)
+    if (op == CPUOp::IDIV || op == CPUOp::IMOD)
     {
         if (numBits == CPUBits::B8)
             pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32, CPUSignedType::S8, CPUSignedType::S32);
@@ -539,11 +539,11 @@ void SCBE::emitBinOpEqSS(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t o
         }
         
         pp.emitLoad(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->b.u32, numBits);
-        pp.emitOp(CPUReg::RAX, CPUReg::RCX, CPUOp::IDIV, numBits);
+        pp.emitOp(CPUReg::RAX, CPUReg::RCX, op, numBits);
         pp.emitSetAddress(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->a.u32);
         pp.emitStore(CPUReg::RCX, 0, CPUReg::RAX, numBits);        
     }
-    else if (op == CPUOp::DIV)
+    else if (op == CPUOp::DIV || op == CPUOp::MOD)
     {
         if (numBits == CPUBits::B8)
             pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32, CPUSignedType::U8, CPUSignedType::U32);
@@ -554,7 +554,7 @@ void SCBE::emitBinOpEqSS(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t o
         }
         
         pp.emitLoad(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->b.u32, numBits);
-        pp.emitOp(CPUReg::RAX, CPUReg::RCX, CPUOp::IDIV, numBits);
+        pp.emitOp(CPUReg::RAX, CPUReg::RCX, op, numBits);
         pp.emitSetAddress(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->a.u32);
         pp.emitStore(CPUReg::RCX, 0, CPUReg::RAX, numBits);        
     }
@@ -562,7 +562,7 @@ void SCBE::emitBinOpEqSS(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t o
     {
         pp.emitLoad(CPUReg::XMM0, CPUReg::RDI, offsetStack + ip->a.u32, numBits);
         pp.emitLoad(CPUReg::XMM1, CPUReg::RDI, offsetStack + ip->b.u32, numBits);
-        pp.emitOp(CPUReg::XMM0, CPUReg::XMM1, CPUOp::FDIV, numBits);
+        pp.emitOp(CPUReg::XMM0, CPUReg::XMM1, op, numBits);
         pp.emitSetAddress(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32);
         pp.emitStore(CPUReg::RAX, 0, CPUReg::XMM0, numBits);        
     }
