@@ -1385,35 +1385,34 @@ void SCBE_X64::emitOpInd([[maybe_unused]] CPUReg memReg, uint64_t value, CPUOp o
             if (numBits == CPUBits::B8)
             {
                 concat.addU8(static_cast<uint8_t>(op) + 3);
+                concat.addU8(static_cast<uint8_t>(value));
             }
             else
             {
                 concat.addU8(0x83);
-                concat.addU8(0xBF + static_cast<uint8_t>(op));
+                concat.addU8(static_cast<uint8_t>(op) + 0xBF);
+                concat.addU8(static_cast<uint8_t>(value));
             }
-
-            concat.addU8(static_cast<uint8_t>(value));
         }
         else
         {
             SWAG_ASSERT(value <= 0x7FFFFFFF);
-            switch (numBits)
+            if (numBits == CPUBits::B8)
             {
-                case CPUBits::B8:
-                    concat.addU8(static_cast<uint8_t>(op) + 3);
-                    concat.addU8(static_cast<uint8_t>(value));
-                    break;
-                case CPUBits::B16:
-                    concat.addU8(0x81);
-                    concat.addU8(0xBF + static_cast<uint8_t>(op));
-                    concat.addU16(static_cast<uint16_t>(value));
-                    break;
-                case CPUBits::B32:
-                case CPUBits::B64:
-                    concat.addU8(0x81);
-                    concat.addU8(0xBF + static_cast<uint8_t>(op));
-                    concat.addU32(static_cast<uint32_t>(value));
-                    break;
+                concat.addU8(static_cast<uint8_t>(op) + 3);
+                concat.addU8(static_cast<uint8_t>(value));
+            }
+            else if (numBits == CPUBits::B16)
+            {
+                concat.addU8(0x81);
+                concat.addU8(static_cast<uint8_t>(op) + 0xBF);
+                concat.addU16(static_cast<uint16_t>(value));
+            }
+            else if (numBits == CPUBits::B32 || numBits == CPUBits::B64)
+            {
+                concat.addU8(0x81);
+                concat.addU8(static_cast<uint8_t>(op) + 0xBF);
+                concat.addU32(static_cast<uint32_t>(value));
             }
         }
     }

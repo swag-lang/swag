@@ -309,12 +309,12 @@ void SCBE::emitBinOpAtRegOverflow(SCBE_X64& pp, const ByteCodeInstruction* ip, C
     const bool  isSigned = safetyType->isNativeIntegerSigned();
 
     emitBinOp(pp, ip, op);
+    emitOverflow(pp, ip, msg, isSigned);
+
     if (numBits == CPUBits::F32 || numBits == CPUBits::F64)
         pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::XMM0, numBits);
     else
         pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, numBits);
-
-    emitOverflow(pp, ip, msg, isSigned);
 }
 
 void SCBE::emitBinOpEq(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offset, CPUOp op)
