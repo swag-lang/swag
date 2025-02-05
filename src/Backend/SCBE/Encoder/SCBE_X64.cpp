@@ -959,6 +959,7 @@ void SCBE_X64::emitOp(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits, C
     else if (op == CPUOp::MUL ||
              op == CPUOp::IMUL)
     {
+        SWAG_ASSERT(regDst == CPUReg::RAX && regSrc == CPUReg::RCX);
         emitREX(concat, numBits, regSrc, regDst);
         emitSpec8(concat, 0xF7, numBits);
         if (op == CPUOp::MUL)

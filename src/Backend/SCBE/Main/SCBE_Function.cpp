@@ -247,7 +247,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->b.u32), CPUBits::B64);
                 pp.emitOp(CPUReg::RCX, ip->c.u8, CPUOp::ADD, CPUBits::B64);
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-                pp.emitOp(CPUReg::RCX, CPUReg::RAX, CPUOp::MUL, CPUBits::B64);
+                pp.emitOp(CPUReg::RAX, CPUReg::RCX, CPUOp::MUL, CPUBits::B64);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
                 break;
 

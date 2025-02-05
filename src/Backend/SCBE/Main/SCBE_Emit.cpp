@@ -360,7 +360,7 @@ void SCBE::emitBinOpEqOverflow(SCBE_X64& pp, const ByteCodeInstruction* ip, uint
         pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
         pp.emitLoad(CPUReg::RAX, CPUReg::RCX, offset, numBits);
         emitIMMB(pp, ip, CPUReg::RCX, numBits);
-        pp.emitOp(CPUReg::RCX, CPUReg::RAX, op, numBits);
+        pp.emitOp(CPUReg::RAX, CPUReg::RCX, op, numBits);
         emitOverflow(pp, ip, msg, isSigned);
         pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
         pp.emitStore(CPUReg::RCX, offset, CPUReg::RAX, numBits);
@@ -426,7 +426,7 @@ void SCBE::emitBinOpEqS(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t of
     {
         pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32, numBits);
         emitIMMB(pp, ip, CPUReg::RCX, numBits);
-        pp.emitOp(CPUReg::RCX, CPUReg::RAX, op, numBits);
+        pp.emitOp(CPUReg::RAX, CPUReg::RCX, op, numBits);
         pp.emitSetAddress(CPUReg::RCX, CPUReg::RDI, offsetStack + ip->a.u32);
         pp.emitStore(CPUReg::RCX, 0, CPUReg::RAX, numBits);
     }
