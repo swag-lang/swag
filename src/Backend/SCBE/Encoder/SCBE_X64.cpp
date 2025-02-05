@@ -1168,80 +1168,6 @@ void SCBE_X64::emitOp(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUOp op, C
     }
 }
 
-void SCBE_X64::emitOpInd([[maybe_unused]] CPUReg memReg, uint64_t value, CPUOp op, CPUBits numBits)
-{
-    SWAG_ASSERT(SCBE_CPU::isInt(numBits));
-
-    if (op == CPUOp::SAR ||
-        op == CPUOp::SHR ||
-        op == CPUOp::SHL)
-    {
-        SWAG_ASSERT(memReg == CPUReg::RAX);
-        value = min(value, static_cast<uint32_t>(numBits) - 1);
-
-        emitREX(concat, numBits);
-        if (value == 1)
-        {
-            emitSpec8(concat, 0xD1, numBits);
-            concat.addU8(static_cast<uint8_t>(op) & ~0xC0);
-        }
-        else
-        {
-            emitSpec8(concat, 0xC1, numBits);
-            concat.addU8(static_cast<uint8_t>(op) & ~0xC0);
-            concat.addU8(static_cast<uint8_t>(value));
-        }
-    }
-    else if (op == CPUOp::AND ||
-             op == CPUOp::OR ||
-             op == CPUOp::XOR ||
-             op == CPUOp::ADD ||
-             op == CPUOp::SUB)
-    {
-        emitREX(concat, numBits);
-        if (value <= 0x7F)
-        {
-            if (numBits == CPUBits::B8)
-            {
-                concat.addU8(static_cast<uint8_t>(op) + 3);
-            }
-            else
-            {
-                concat.addU8(0x83);
-                concat.addU8(0xBF + static_cast<uint8_t>(op));
-            }
-
-            concat.addU8(static_cast<uint8_t>(value));
-        }
-        else
-        {
-            SWAG_ASSERT(value <= 0x7FFFFFFF);
-            switch (numBits)
-            {
-                case CPUBits::B8:
-                    concat.addU8(static_cast<uint8_t>(op) + 3);
-                    concat.addU8(static_cast<uint8_t>(value));
-                    break;
-                case CPUBits::B16:
-                    concat.addU8(0x81);
-                    concat.addU8(0xBF + static_cast<uint8_t>(op));
-                    concat.addU16(static_cast<uint16_t>(value));
-                    break;
-                case CPUBits::B32:
-                case CPUBits::B64:
-                    concat.addU8(0x81);
-                    concat.addU8(0xBF + static_cast<uint8_t>(op));
-                    concat.addU32(static_cast<uint32_t>(value));
-                    break;
-            }
-        }
-    }
-    else
-    {
-        SWAG_ASSERT(false);
-    }
-}
-
 void SCBE_X64::emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits)
 {
     switch (op)
@@ -1443,6 +1369,82 @@ void SCBE_X64::emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits)
     }
 }
 
+void SCBE_X64::emitOpInd([[maybe_unused]] CPUReg memReg, uint64_t value, CPUOp op, CPUBits numBits)
+{
+    SWAG_ASSERT(SCBE_CPU::isInt(numBits));
+
+    if (op == CPUOp::SAR ||
+        op == CPUOp::SHR ||
+        op == CPUOp::SHL)
+    {
+        SWAG_ASSERT(false);
+        /*SWAG_ASSERT(memReg == CPUReg::RAX);
+        value = min(value, static_cast<uint32_t>(numBits) - 1);
+
+        emitREX(concat, numBits);
+        if (value == 1)
+        {
+            emitSpec8(concat, 0xD1, numBits);
+            concat.addU8(static_cast<uint8_t>(op) & ~0xC0);
+        }
+        else
+        {
+            emitSpec8(concat, 0xC1, numBits);
+            concat.addU8(static_cast<uint8_t>(op) & ~0xC0);
+            concat.addU8(static_cast<uint8_t>(value));
+        }*/
+    }
+    else if (op == CPUOp::AND ||
+             op == CPUOp::OR ||
+             op == CPUOp::XOR ||
+             op == CPUOp::ADD ||
+             op == CPUOp::SUB)
+    {
+        emitREX(concat, numBits);
+        if (value <= 0x7F)
+        {
+            if (numBits == CPUBits::B8)
+            {
+                concat.addU8(static_cast<uint8_t>(op) + 3);
+            }
+            else
+            {
+                concat.addU8(0x83);
+                concat.addU8(0xBF + static_cast<uint8_t>(op));
+            }
+
+            concat.addU8(static_cast<uint8_t>(value));
+        }
+        else
+        {
+            SWAG_ASSERT(value <= 0x7FFFFFFF);
+            switch (numBits)
+            {
+                case CPUBits::B8:
+                    concat.addU8(static_cast<uint8_t>(op) + 3);
+                    concat.addU8(static_cast<uint8_t>(value));
+                    break;
+                case CPUBits::B16:
+                    concat.addU8(0x81);
+                    concat.addU8(0xBF + static_cast<uint8_t>(op));
+                    concat.addU16(static_cast<uint16_t>(value));
+                    break;
+                case CPUBits::B32:
+                case CPUBits::B64:
+                    concat.addU8(0x81);
+                    concat.addU8(0xBF + static_cast<uint8_t>(op));
+                    concat.addU32(static_cast<uint32_t>(value));
+                    break;
+            }
+        }
+    }
+    else
+    {
+        SWAG_ASSERT(false);
+    }
+}
+
+#pragma optimize("", off)
 void SCBE_X64::emitOp(CPUReg memReg, uint32_t memOffset, uint64_t value, CPUOp op, CPUBits numBits)
 {
     SWAG_ASSERT(SCBE_CPU::isInt(numBits));
@@ -1455,34 +1457,57 @@ void SCBE_X64::emitOp(CPUReg memReg, uint32_t memOffset, uint64_t value, CPUOp o
         return;
     }
 
-    emitREX(concat, numBits);
-    if (numBits == CPUBits::B8)
-        concat.addU8(0x80);
-    else if (value <= 0x7F)
-        concat.addU8(0x83);
-    else
-        concat.addU8(0x81);
-    if (memOffset == 0)
+    if (op == CPUOp::SAR ||
+        op == CPUOp::SHR ||
+        op == CPUOp::SHL)
     {
-        concat.addU8(static_cast<uint8_t>(op) - 1 + static_cast<uint8_t>(memReg));
-    }
-    else if (memOffset <= 0x7F)
-    {
-        concat.addU8(0x3F + static_cast<uint8_t>(memReg) + static_cast<uint8_t>(op));
-        concat.addU8(static_cast<uint8_t>(memOffset));
-    }
-    else
-    {
-        concat.addU8(0x7F + static_cast<uint8_t>(memReg) + static_cast<uint8_t>(op));
-        concat.addU32(memOffset);
-    }
+        SWAG_ASSERT(memReg == CPUReg::RAX);
+        value = min(value, static_cast<uint32_t>(numBits) - 1);
 
-    if (value <= 0x7F || numBits == CPUBits::B8)
-        concat.addU8(static_cast<uint8_t>(value));
-    else if (numBits == CPUBits::B16)
-        concat.addU16(static_cast<uint16_t>(value));
+        emitREX(concat, numBits);
+        if (value == 1)
+        {
+            emitSpec8(concat, 0xD1, numBits);
+            concat.addU8(static_cast<uint8_t>(op) & ~0xC0);
+        }
+        else
+        {
+            emitSpec8(concat, 0xC1, numBits);
+            concat.addU8(static_cast<uint8_t>(op) & ~0xC0);
+            concat.addU8(static_cast<uint8_t>(value));
+        }        
+    }
     else
-        concat.addU32(static_cast<uint32_t>(value));
+    {
+        emitREX(concat, numBits);
+        if (numBits == CPUBits::B8)
+            concat.addU8(0x80);
+        else if (value <= 0x7F)
+            concat.addU8(0x83);
+        else
+            concat.addU8(0x81);
+        if (memOffset == 0)
+        {
+            concat.addU8(static_cast<uint8_t>(op) - 1 + static_cast<uint8_t>(memReg));
+        }
+        else if (memOffset <= 0x7F)
+        {
+            concat.addU8(0x3F + static_cast<uint8_t>(memReg) + static_cast<uint8_t>(op));
+            concat.addU8(static_cast<uint8_t>(memOffset));
+        }
+        else
+        {
+            concat.addU8(0x7F + static_cast<uint8_t>(memReg) + static_cast<uint8_t>(op));
+            concat.addU32(memOffset);
+        }
+
+        if (value <= 0x7F || numBits == CPUBits::B8)
+            concat.addU8(static_cast<uint8_t>(value));
+        else if (numBits == CPUBits::B16)
+            concat.addU16(static_cast<uint16_t>(value));
+        else
+            concat.addU32(static_cast<uint32_t>(value));
+    }
 }
 
 /////////////////////////////////////////////////////////////////////

@@ -100,7 +100,7 @@ void SCBE::emitShiftRightEqArithmetic(SCBE_X64& pp, const ByteCodeInstruction* i
     if (ip->hasFlag(BCI_IMM_B))
     {
         pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-        pp.emitOpInd(CPUReg::RAX, ip->b.u32, CPUOp::SAR, numBits);
+        pp.emitOp(CPUReg::RAX, 0, ip->b.u32, CPUOp::SAR, numBits);
     }
     else
     {
@@ -159,7 +159,7 @@ void SCBE::emitShiftEqLogical(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp
     }
     else if (ip->hasFlag(BCI_IMM_B))
     {
-        pp.emitOpInd(CPUReg::RAX, ip->b.u8, op, numBits);
+        pp.emitOp(CPUReg::RAX, 0, ip->b.u8, op, numBits);
     }
     else
     {
@@ -227,7 +227,11 @@ void SCBE::emitBinOp(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op)
             pp.emitLoad(CPUReg::RCX, static_cast<uint8_t>(log2(ip->b.u64)), CPUBits::B8);
             pp.emitOp(CPUReg::RCX, CPUReg::RAX, CPUOp::SHL, numBits);
         }
-        else if ((op == CPUOp::AND || op == CPUOp::OR || op == CPUOp::XOR || op == CPUOp::ADD || op == CPUOp::SUB) &&
+        else if ((op == CPUOp::AND ||
+                  op == CPUOp::OR ||
+                  op == CPUOp::XOR ||
+                  op == CPUOp::ADD ||
+                  op == CPUOp::SUB) &&
                  !ip->hasFlag(BCI_IMM_A) &&
                  ip->hasFlag(BCI_IMM_B) &&
                  ip->b.u64 <= 0x7FFFFFFF)
