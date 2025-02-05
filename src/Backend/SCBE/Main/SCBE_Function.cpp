@@ -488,7 +488,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::BinOpXorU16:
             case ByteCodeOp::BinOpXorU32:
             case ByteCodeOp::BinOpXorU64:
-                emitBinOpAtReg(pp, ip, CPUOp::XOR);
+                emitBinOp(pp, ip, CPUOp::XOR);
                 break;
 
                 /////////////////////////////////////
@@ -497,30 +497,30 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::BinOpMulS16:
             case ByteCodeOp::BinOpMulS32:
             case ByteCodeOp::BinOpMulS64:
-                emitBinOpAtRegOverflow(pp, ip, CPUOp::IMUL, SafetyMsg::Mul, SCBE_CPU::getCPUType(ip->op));
+                emitBinOpOverflow(pp, ip, CPUOp::IMUL, SafetyMsg::Mul, SCBE_CPU::getCPUType(ip->op));
                 break;
             case ByteCodeOp::BinOpMulU8:
             case ByteCodeOp::BinOpMulU16:
             case ByteCodeOp::BinOpMulU32:
             case ByteCodeOp::BinOpMulU64:
-                emitBinOpAtRegOverflow(pp, ip, CPUOp::MUL, SafetyMsg::Mul, SCBE_CPU::getCPUType(ip->op));
+                emitBinOpOverflow(pp, ip, CPUOp::MUL, SafetyMsg::Mul, SCBE_CPU::getCPUType(ip->op));
                 break;
             case ByteCodeOp::BinOpMulF32:
             case ByteCodeOp::BinOpMulF64:
-                emitBinOpAtReg(pp, ip, CPUOp::FMUL);
+                emitBinOp(pp, ip, CPUOp::FMUL);
                 break;
 
             case ByteCodeOp::BinOpMulS8_Safe:
             case ByteCodeOp::BinOpMulS16_Safe:
             case ByteCodeOp::BinOpMulS32_Safe:
             case ByteCodeOp::BinOpMulS64_Safe:
-                emitBinOpAtReg(pp, ip, CPUOp::IMUL);
+                emitBinOp(pp, ip, CPUOp::IMUL);
                 break;
             case ByteCodeOp::BinOpMulU8_Safe:
             case ByteCodeOp::BinOpMulU16_Safe:
             case ByteCodeOp::BinOpMulU32_Safe:
             case ByteCodeOp::BinOpMulU64_Safe:
-                emitBinOpAtReg(pp, ip, CPUOp::MUL);
+                emitBinOp(pp, ip, CPUOp::MUL);
                 break;
 
                 /////////////////////////////////////
@@ -529,13 +529,13 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::BinOpModuloS16:
             case ByteCodeOp::BinOpModuloS32:
             case ByteCodeOp::BinOpModuloS64:
-                emitBinOpAtReg(pp, ip, CPUOp::IMOD);
+                emitBinOp(pp, ip, CPUOp::IMOD);
                 break;
             case ByteCodeOp::BinOpModuloU8:
             case ByteCodeOp::BinOpModuloU16:
             case ByteCodeOp::BinOpModuloU32:
             case ByteCodeOp::BinOpModuloU64:
-                emitBinOpAtReg(pp, ip, CPUOp::MOD);
+                emitBinOp(pp, ip, CPUOp::MOD);
                 break;
 
                 /////////////////////////////////////
@@ -544,17 +544,17 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::BinOpDivS16:
             case ByteCodeOp::BinOpDivS32:
             case ByteCodeOp::BinOpDivS64:
-                emitBinOpAtReg(pp, ip, CPUOp::IDIV);
+                emitBinOp(pp, ip, CPUOp::IDIV);
                 break;
             case ByteCodeOp::BinOpDivU8:
             case ByteCodeOp::BinOpDivU16:
             case ByteCodeOp::BinOpDivU32:
             case ByteCodeOp::BinOpDivU64:
-                emitBinOpAtReg(pp, ip, CPUOp::DIV);
+                emitBinOp(pp, ip, CPUOp::DIV);
                 break;
             case ByteCodeOp::BinOpDivF32:
             case ByteCodeOp::BinOpDivF64:
-                emitBinOpAtReg(pp, ip, CPUOp::FDIV);
+                emitBinOp(pp, ip, CPUOp::FDIV);
                 break;
 
                 /////////////////////////////////////
@@ -567,11 +567,11 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::BinOpPlusU16:
             case ByteCodeOp::BinOpPlusU32:
             case ByteCodeOp::BinOpPlusU64:
-                emitBinOpAtRegOverflow(pp, ip, CPUOp::ADD, SafetyMsg::Plus, SCBE_CPU::getCPUType(ip->op));
+                emitBinOpOverflow(pp, ip, CPUOp::ADD, SafetyMsg::Plus, SCBE_CPU::getCPUType(ip->op));
                 break;
             case ByteCodeOp::BinOpPlusF32:
             case ByteCodeOp::BinOpPlusF64:
-                emitBinOpAtReg(pp, ip, CPUOp::FADD);
+                emitBinOp(pp, ip, CPUOp::FADD);
                 break;
 
             case ByteCodeOp::BinOpPlusS8_Safe:
@@ -582,7 +582,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::BinOpPlusU32_Safe:
             case ByteCodeOp::BinOpPlusS64_Safe:
             case ByteCodeOp::BinOpPlusU64_Safe:
-                emitBinOpAtReg(pp, ip, CPUOp::ADD);
+                emitBinOp(pp, ip, CPUOp::ADD);
                 break;
 
                 /////////////////////////////////////
@@ -595,11 +595,11 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::BinOpMinusU16:
             case ByteCodeOp::BinOpMinusU32:
             case ByteCodeOp::BinOpMinusU64:
-                emitBinOpAtRegOverflow(pp, ip, CPUOp::SUB, SafetyMsg::Minus, SCBE_CPU::getCPUType(ip->op));
+                emitBinOpOverflow(pp, ip, CPUOp::SUB, SafetyMsg::Minus, SCBE_CPU::getCPUType(ip->op));
                 break;
             case ByteCodeOp::BinOpMinusF32:
             case ByteCodeOp::BinOpMinusF64:
-                emitBinOpAtReg(pp, ip, CPUOp::FSUB);
+                emitBinOp(pp, ip, CPUOp::FSUB);
                 break;
 
             case ByteCodeOp::BinOpMinusS8_Safe:
@@ -610,7 +610,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::BinOpMinusU32_Safe:
             case ByteCodeOp::BinOpMinusS64_Safe:
             case ByteCodeOp::BinOpMinusU64_Safe:
-                emitBinOpAtReg(pp, ip, CPUOp::SUB);
+                emitBinOp(pp, ip, CPUOp::SUB);
                 break;
 
                 /////////////////////////////////////
@@ -619,7 +619,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::BinOpBitmaskAnd16:
             case ByteCodeOp::BinOpBitmaskAnd32:
             case ByteCodeOp::BinOpBitmaskAnd64:
-                emitBinOpAtReg(pp, ip, CPUOp::AND);
+                emitBinOp(pp, ip, CPUOp::AND);
                 break;
 
                 /////////////////////////////////////
@@ -628,7 +628,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::BinOpBitmaskOr16:
             case ByteCodeOp::BinOpBitmaskOr32:
             case ByteCodeOp::BinOpBitmaskOr64:
-                emitBinOpAtReg(pp, ip, CPUOp::OR);
+                emitBinOp(pp, ip, CPUOp::OR);
                 break;
 
                 /////////////////////////////////////

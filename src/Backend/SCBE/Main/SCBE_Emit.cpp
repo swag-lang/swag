@@ -186,7 +186,7 @@ void SCBE::emitOverflow(SCBE_X64& pp, const ByteCodeInstruction* ip, const char*
     }
 }
 
-void SCBE::emitBinOpAtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op)
+void SCBE::emitBinOp(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op)
 {
     const auto numBits = SCBE_CPU::getCPUBits(ip->op);
     if (op == CPUOp::DIV || op == CPUOp::MOD || op == CPUOp::IDIV || op == CPUOp::IMOD)
@@ -244,7 +244,7 @@ void SCBE::emitBinOpAtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op)
     }
 }
 
-void SCBE::emitBinOpAtRegOverflow(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, SafetyMsg safetyMsg, TypeInfo* safetyType)
+void SCBE::emitBinOpOverflow(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, SafetyMsg safetyMsg, TypeInfo* safetyType)
 {
     const auto  numBits  = SCBE_CPU::getCPUBits(ip->op);
     const char* msg      = ByteCodeGen::safetyMsg(safetyMsg, safetyType);
