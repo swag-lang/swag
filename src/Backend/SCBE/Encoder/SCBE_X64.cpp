@@ -1170,65 +1170,83 @@ void SCBE_X64::emitOp(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUOp op, C
 
 void SCBE_X64::emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits)
 {
-    switch (op)
+    if (op == CPUOp::ADD)
     {
-        case CPUOp::ADD:
-            SWAG_ASSERT(numBits == CPUBits::B64);
-            SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX || reg == CPUReg::RSP);
-            break;
-
-        case CPUOp::SUB:
-            SWAG_ASSERT(numBits == CPUBits::B64);
-            SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX || reg == CPUReg::RSP);
-            break;
-
-        case CPUOp::IMUL:
-            SWAG_ASSERT(numBits == CPUBits::B64);
-            SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX);
-            break;
-
-        case CPUOp::XOR:
-            SWAG_ASSERT(reg == CPUReg::RAX);
-            break;
-
-        case CPUOp::SAR:
-        case CPUOp::SHR:
-        case CPUOp::SHL:
-            SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX);
-            SWAG_ASSERT(value <= 0x7F);
-            break;
-
-        case CPUOp::BT:
-            SWAG_ASSERT(value <= 0x7F);
-            break;
-
-        default:
-            SWAG_ASSERT(false);
-            break;
+        SWAG_ASSERT(numBits == CPUBits::B64);
+        SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX || reg == CPUReg::RSP);
+        if (value <= 0x7F)
+        {
+            if (value == 0)
+                return;
+            emitREX(concat, numBits);
+            if (value == 1)
+            {
+                SWAG_ASSERT(reg != CPUReg::RSP);
+                concat.addU8(0xFF);
+                concat.addU8(0xC0 | static_cast<uint8_t>(reg)); // inc rax
+            }
+            else
+            {
+                concat.addU8(0x83);
+                concat.addU8(0xC0 | static_cast<uint8_t>(reg));
+                concat.addU8(static_cast<uint8_t>(value));
+            }            
+        }
+        else if (value > 0x7FFFFFFF)
+        {
+            SWAG_ASSERT(reg != CPUReg::RSP);
+            emitLoad(CPUReg::R8, value, CPUBits::B64);
+            emitOp(CPUReg::R8, reg, op, numBits);
+        }
+        else
+        {
+            emitREX(concat, numBits);
+            if (reg == CPUReg::RAX)
+                concat.addU8(0x05);
+            else
+            {
+                concat.addU8(0x81);
+                concat.addU8(0xC0 | static_cast<uint8_t>(reg));
+            }
+            
+            concat.addU32(static_cast<uint32_t>(value));
+        }
+        
+        return;
+    }
+    
+    if (op == CPUOp::SUB)
+    {
+        SWAG_ASSERT(numBits == CPUBits::B64);
+        SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX || reg == CPUReg::RSP);
+    }
+    else if (op == CPUOp::IMUL)
+    {
+        SWAG_ASSERT(numBits == CPUBits::B64);
+        SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX);
+    }
+    else if (op == CPUOp::XOR)
+    {
+        SWAG_ASSERT(reg == CPUReg::RAX);
+    }
+    else if (op == CPUOp::SAR || op == CPUOp::SHR || op == CPUOp::SHL)
+    {
+        SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX);
+        SWAG_ASSERT(value <= 0x7F);
+    }
+    else if (op == CPUOp::BT)
+    {
+        SWAG_ASSERT(value <= 0x7F);
+    }
+    else
+    {
+        SWAG_ASSERT(false);
     }
 
     if (value <= 0x7F)
     {
         switch (op)
         {
-            case CPUOp::ADD:
-                if (value == 0)
-                    return;
-                emitREX(concat, numBits);
-                if (value == 1)
-                {
-                    SWAG_ASSERT(reg != CPUReg::RSP);
-                    concat.addU8(0xFF);
-                    concat.addU8(0xC0 | static_cast<uint8_t>(reg)); // inc rax
-                }
-                else
-                {
-                    concat.addU8(0x83);
-                    concat.addU8(0xC0 | static_cast<uint8_t>(reg));
-                    concat.addU8(static_cast<uint8_t>(value));
-                }
-                break;
-
             case CPUOp::SUB:
                 if (value == 0)
                     return;
@@ -1337,15 +1355,6 @@ void SCBE_X64::emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits)
         emitREX(concat, numBits);
         switch (op)
         {
-            case CPUOp::ADD:
-                if (reg == CPUReg::RAX)
-                    concat.addU8(0x05);
-                else
-                {
-                    concat.addU8(0x81);
-                    concat.addU8(0xC0 | static_cast<uint8_t>(reg));
-                }
-                break;
             case CPUOp::SUB:
                 if (reg == CPUReg::RAX)
                     concat.addU8(0x2D);
