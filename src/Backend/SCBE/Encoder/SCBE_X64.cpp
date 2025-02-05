@@ -960,22 +960,11 @@ void SCBE_X64::emitOp(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits, C
              op == CPUOp::IMUL)
     {
         emitREX(concat, numBits, regSrc, regDst);
-        if (op == CPUOp::MUL && regSrc == CPUReg::RCX && regDst == CPUReg::RAX)
-        {
-            emitSpec8(concat, 0xF7, numBits);
+        emitSpec8(concat, 0xF7, numBits);
+        if (op == CPUOp::MUL)
             concat.addU8(0xE1);
-        }
-        else if (op == CPUOp::IMUL && regSrc == CPUReg::RCX && regDst == CPUReg::RAX)
-        {
-            emitSpec8(concat, 0xF7, numBits);
+        else if (op == CPUOp::IMUL)
             concat.addU8(0xE9);
-        }
-        else
-        {
-            SWAG_ASSERT(regSrc == CPUReg::RAX && regDst == CPUReg::RCX);
-            emitSpec8(concat, 0xF7, numBits);
-            concat.addU8(op == CPUOp::IMUL ? 0xE9 : 0xE1);
-        }
     }
     else if (op == CPUOp::SAR ||
              op == CPUOp::SAL ||
