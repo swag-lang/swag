@@ -1261,10 +1261,58 @@ void SCBE_X64::emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits)
 
     if (op == CPUOp::IMUL)
     {
+        if (value == 1)
+            return;
+        if (value == 0)
+        {
+            emitClear(reg, numBits);
+            return;
+        }
+
         SWAG_ASSERT(numBits == CPUBits::B64);
         SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX);
+
+        if (value <= 0x7F)
+        {
+            emitREX(concat, numBits);
+            if (value == 2)
+            {
+                concat.addU8(0xD1);
+                concat.addU8(0xE0 | static_cast<uint8_t>(reg)); // shl rax, 1
+            }
+            else if (Math::isPowerOfTwo(value))
+            {
+                concat.addU8(0xC1);
+                concat.addU8(0xE0 | static_cast<uint8_t>(reg)); // shl rax, ??
+                concat.addU8(static_cast<uint8_t>(log2(value)));
+            }
+            else
+            {
+                SWAG_ASSERT(reg == CPUReg::RAX);
+                concat.addU8(0x6B);
+                concat.addU8(0xC0);
+                concat.addU8(static_cast<uint8_t>(value));
+            }
+        }
+        else if (value > 0x7FFFFFFF)
+        {
+            SWAG_ASSERT(reg == CPUReg::RAX);
+            emitLoad(CPUReg::RCX, value, CPUBits::B64);
+            emitOp(CPUReg::RCX, reg, op, numBits);
+        }
+        else
+        {
+            SWAG_ASSERT(reg == CPUReg::RAX);
+            emitREX(concat, numBits);
+            concat.addU8(0x69);
+            concat.addU8(0xC0);
+            concat.addU32(static_cast<uint32_t>(value));
+        }
+
+        return;
     }
-    else if (op == CPUOp::XOR)
+
+    if (op == CPUOp::XOR)
     {
         SWAG_ASSERT(reg == CPUReg::RAX);
     }
@@ -1286,36 +1334,6 @@ void SCBE_X64::emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits)
     {
         switch (op)
         {
-            case CPUOp::IMUL:
-                if (value == 1)
-                    return;
-                if (value == 0)
-                {
-                    emitClear(reg, numBits);
-                    return;
-                }
-
-                emitREX(concat, numBits);
-                if (value == 2)
-                {
-                    concat.addU8(0xD1);
-                    concat.addU8(0xE0 | static_cast<uint8_t>(reg)); // shl rax, 1
-                }
-                else if (Math::isPowerOfTwo(value))
-                {
-                    concat.addU8(0xC1);
-                    concat.addU8(0xE0 | static_cast<uint8_t>(reg)); // shl rax, ??
-                    concat.addU8(static_cast<uint8_t>(log2(value)));
-                }
-                else
-                {
-                    SWAG_ASSERT(reg == CPUReg::RAX);
-                    concat.addU8(0x6B);
-                    concat.addU8(0xC0);
-                    concat.addU8(static_cast<uint8_t>(value));
-                }
-                break;
-
             case CPUOp::XOR:
                 emitREX(concat, numBits);
                 if (numBits == CPUBits::B8)
@@ -1358,35 +1376,13 @@ void SCBE_X64::emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits)
     }
     else if (value > 0x7FFFFFFF)
     {
-        if (op == CPUOp::IMUL)
-        {
-            SWAG_ASSERT(reg == CPUReg::RAX);
-            emitLoad(CPUReg::RCX, value, CPUBits::B64);
-            emitOp(CPUReg::RCX, reg, op, numBits);
-        }
-        else
-        {
-            SWAG_ASSERT(reg != CPUReg::RSP);
-            emitLoad(CPUReg::R8, value, CPUBits::B64);
-            emitOp(CPUReg::R8, reg, op, numBits);
-        }
+        SWAG_ASSERT(reg != CPUReg::RSP);
+        emitLoad(CPUReg::R8, value, CPUBits::B64);
+        emitOp(CPUReg::R8, reg, op, numBits);
     }
     else
     {
-        emitREX(concat, numBits);
-        switch (op)
-        {
-            case CPUOp::IMUL:
-                SWAG_ASSERT(reg == CPUReg::RAX);
-                concat.addU8(0x69);
-                concat.addU8(0xC0);
-                break;
-            default:
-                SWAG_ASSERT(false);
-                break;
-        }
-
-        concat.addU32(static_cast<uint32_t>(value));
+        SWAG_ASSERT(false);
     }
 }
 
