@@ -1373,32 +1373,11 @@ void SCBE_X64::emitOpInd([[maybe_unused]] CPUReg memReg, uint64_t value, CPUOp o
 {
     SWAG_ASSERT(SCBE_CPU::isInt(numBits));
 
-    if (op == CPUOp::SAR ||
-        op == CPUOp::SHR ||
-        op == CPUOp::SHL)
-    {
-        SWAG_ASSERT(false);
-        /*SWAG_ASSERT(memReg == CPUReg::RAX);
-        value = min(value, static_cast<uint32_t>(numBits) - 1);
-
-        emitREX(concat, numBits);
-        if (value == 1)
-        {
-            emitSpec8(concat, 0xD1, numBits);
-            concat.addU8(static_cast<uint8_t>(op) & ~0xC0);
-        }
-        else
-        {
-            emitSpec8(concat, 0xC1, numBits);
-            concat.addU8(static_cast<uint8_t>(op) & ~0xC0);
-            concat.addU8(static_cast<uint8_t>(value));
-        }*/
-    }
-    else if (op == CPUOp::AND ||
-             op == CPUOp::OR ||
-             op == CPUOp::XOR ||
-             op == CPUOp::ADD ||
-             op == CPUOp::SUB)
+    if (op == CPUOp::AND ||
+        op == CPUOp::OR ||
+        op == CPUOp::XOR ||
+        op == CPUOp::ADD ||
+        op == CPUOp::SUB)
     {
         emitREX(concat, numBits);
         if (value <= 0x7F)
@@ -1444,18 +1423,10 @@ void SCBE_X64::emitOpInd([[maybe_unused]] CPUReg memReg, uint64_t value, CPUOp o
     }
 }
 
-#pragma optimize("", off)
 void SCBE_X64::emitOp(CPUReg memReg, uint32_t memOffset, uint64_t value, CPUOp op, CPUBits numBits)
 {
     SWAG_ASSERT(SCBE_CPU::isInt(numBits));
     SWAG_ASSERT(memReg == CPUReg::RAX || memReg == CPUReg::RDI);
-
-    if (value > 0x7FFFFFFF)
-    {
-        emitLoad(CPUReg::RCX, value, numBits);
-        emitOp(memReg, memOffset, CPUReg::RCX, op, numBits);
-        return;
-    }
 
     if (op == CPUOp::SAR ||
         op == CPUOp::SHR ||
@@ -1475,7 +1446,12 @@ void SCBE_X64::emitOp(CPUReg memReg, uint32_t memOffset, uint64_t value, CPUOp o
             emitSpec8(concat, 0xC1, numBits);
             concat.addU8(static_cast<uint8_t>(op) & ~0xC0);
             concat.addU8(static_cast<uint8_t>(value));
-        }        
+        }
+    }
+    else if (value > 0x7FFFFFFF)
+    {
+        emitLoad(CPUReg::RCX, value, numBits);
+        emitOp(memReg, memOffset, CPUReg::RCX, op, numBits);
     }
     else
     {
