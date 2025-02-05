@@ -1172,12 +1172,12 @@ void SCBE_X64::emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits)
 {
     if (op == CPUOp::ADD)
     {
+        if (value == 0)
+            return;
         SWAG_ASSERT(numBits == CPUBits::B64);
         SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX || reg == CPUReg::RSP);
         if (value <= 0x7F)
         {
-            if (value == 0)
-                return;
             emitREX(concat, numBits);
             if (value == 1)
             {
@@ -1190,7 +1190,7 @@ void SCBE_X64::emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits)
                 concat.addU8(0x83);
                 concat.addU8(0xC0 | static_cast<uint8_t>(reg));
                 concat.addU8(static_cast<uint8_t>(value));
-            }            
+            }
         }
         else if (value > 0x7FFFFFFF)
         {
@@ -1208,19 +1208,58 @@ void SCBE_X64::emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits)
                 concat.addU8(0x81);
                 concat.addU8(0xC0 | static_cast<uint8_t>(reg));
             }
-            
+
             concat.addU32(static_cast<uint32_t>(value));
         }
-        
+
         return;
     }
-    
+
     if (op == CPUOp::SUB)
     {
+        if (value == 0)
+            return;
         SWAG_ASSERT(numBits == CPUBits::B64);
         SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX || reg == CPUReg::RSP);
+        if (value <= 0x7F)
+        {
+            emitREX(concat, numBits);
+            if (value == 1)
+            {
+                SWAG_ASSERT(reg != CPUReg::RSP);
+                concat.addU8(0xFF);
+                concat.addU8(0xC8 | static_cast<uint8_t>(reg)); // dec rax
+            }
+            else
+            {
+                concat.addU8(0x83);
+                concat.addU8(0xE8 | static_cast<uint8_t>(reg));
+                concat.addU8(static_cast<uint8_t>(value));
+            }
+        }
+        else if (value > 0x7FFFFFFF)
+        {
+            SWAG_ASSERT(reg != CPUReg::RSP);
+            emitLoad(CPUReg::R8, value, CPUBits::B64);
+            emitOp(CPUReg::R8, reg, op, numBits);
+        }
+        else
+        {
+            emitREX(concat, numBits);
+            if (reg == CPUReg::RAX)
+                concat.addU8(0x2D);
+            else
+            {
+                concat.addU8(0x81);
+                concat.addU8(0xE8 | static_cast<uint8_t>(reg));
+            }
+            concat.addU32(static_cast<uint32_t>(value));
+        }
+
+        return;
     }
-    else if (op == CPUOp::IMUL)
+
+    if (op == CPUOp::IMUL)
     {
         SWAG_ASSERT(numBits == CPUBits::B64);
         SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX);
@@ -1247,24 +1286,6 @@ void SCBE_X64::emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits)
     {
         switch (op)
         {
-            case CPUOp::SUB:
-                if (value == 0)
-                    return;
-                emitREX(concat, numBits);
-                if (value == 1)
-                {
-                    SWAG_ASSERT(reg != CPUReg::RSP);
-                    concat.addU8(0xFF);
-                    concat.addU8(0xC8 | static_cast<uint8_t>(reg)); // dec rax
-                }
-                else
-                {
-                    concat.addU8(0x83);
-                    concat.addU8(0xE8 | static_cast<uint8_t>(reg));
-                    concat.addU8(static_cast<uint8_t>(value));
-                }
-                break;
-
             case CPUOp::IMUL:
                 if (value == 1)
                     return;
@@ -1355,15 +1376,6 @@ void SCBE_X64::emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits)
         emitREX(concat, numBits);
         switch (op)
         {
-            case CPUOp::SUB:
-                if (reg == CPUReg::RAX)
-                    concat.addU8(0x2D);
-                else
-                {
-                    concat.addU8(0x81);
-                    concat.addU8(0xE8 | static_cast<uint8_t>(reg));
-                }
-                break;
             case CPUOp::IMUL:
                 SWAG_ASSERT(reg == CPUReg::RAX);
                 concat.addU8(0x69);
