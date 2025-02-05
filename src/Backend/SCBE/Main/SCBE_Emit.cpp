@@ -186,39 +186,6 @@ void SCBE::emitOverflow(SCBE_X64& pp, const ByteCodeInstruction* ip, const char*
     }
 }
 
-void SCBE::emitBinOp(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op)
-{
-    const auto numBits = SCBE_CPU::getCPUBits(ip->op);
-    if (numBits == CPUBits::F32 || numBits == CPUBits::F64)
-    {
-        if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_B))
-        {
-            pp.emitLoad(CPUReg::XMM0, CPUReg::RDI, REG_OFFSET(ip->a.u32), numBits);
-            pp.emitOp(CPUReg::XMM0, CPUReg::RDI, REG_OFFSET(ip->b.u32), op, numBits);
-        }
-        else
-        {
-            emitIMMA(pp, ip, CPUReg::XMM0, numBits);
-            emitIMMB(pp, ip, CPUReg::XMM1, numBits);
-            pp.emitOp(CPUReg::XMM0, CPUReg::XMM1, op, numBits);
-        }
-    }
-    else
-    {
-        if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_B))
-        {
-            pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), numBits);
-            pp.emitOp(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->b.u32), op, numBits);
-        }
-        else
-        {
-            emitIMMA(pp, ip, CPUReg::RAX, numBits);
-            emitIMMB(pp, ip, CPUReg::RCX, numBits);
-            pp.emitOp(CPUReg::RAX, CPUReg::RCX, op, numBits);
-        }
-    }
-}
-
 void SCBE::emitBinOpAtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op)
 {
     const auto numBits = SCBE_CPU::getCPUBits(ip->op);
@@ -259,11 +226,21 @@ void SCBE::emitBinOpAtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op)
     }
     else
     {
-        emitBinOp(pp, ip, op);
-        if (numBits == CPUBits::F32 || numBits == CPUBits::F64)
-            pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::XMM0, numBits);
+        const auto r0 = SCBE_CPU::isInt(numBits) ? CPUReg::RAX : CPUReg::XMM0;
+        if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_B))
+        {
+            pp.emitLoad(r0, CPUReg::RDI, REG_OFFSET(ip->a.u32), numBits);
+            pp.emitOp(r0, CPUReg::RDI, REG_OFFSET(ip->b.u32), op, numBits);
+        }
         else
-            pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, numBits);
+        {
+            const auto r1 = SCBE_CPU::isInt(numBits) ? CPUReg::RCX : CPUReg::XMM1;
+            emitIMMA(pp, ip, r0, numBits);
+            emitIMMB(pp, ip, r1, numBits);
+            pp.emitOp(r0, r1, op, numBits);
+        }
+
+        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), r0, numBits);
     }
 }
 
@@ -273,13 +250,23 @@ void SCBE::emitBinOpAtRegOverflow(SCBE_X64& pp, const ByteCodeInstruction* ip, C
     const char* msg      = ByteCodeGen::safetyMsg(safetyMsg, safetyType);
     const bool  isSigned = safetyType->isNativeIntegerSigned();
 
-    emitBinOp(pp, ip, op);
+    const auto r0 = SCBE_CPU::isInt(numBits) ? CPUReg::RAX : CPUReg::XMM0;
+    if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_B))
+    {
+        pp.emitLoad(r0, CPUReg::RDI, REG_OFFSET(ip->a.u32), numBits);
+        pp.emitOp(r0, CPUReg::RDI, REG_OFFSET(ip->b.u32), op, numBits);
+    }
+    else
+    {
+        const auto r1 = SCBE_CPU::isInt(numBits) ? CPUReg::RCX : CPUReg::XMM1;
+        emitIMMA(pp, ip, r0, numBits);
+        emitIMMB(pp, ip, r1, numBits);
+        pp.emitOp(r0, r1, op, numBits);
+    }
+
     emitOverflow(pp, ip, msg, isSigned);
 
-    if (numBits == CPUBits::F32 || numBits == CPUBits::F64)
-        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::XMM0, numBits);
-    else
-        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, numBits);
+    pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), r0, numBits);
 }
 
 void SCBE::emitBinOpEq(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offset, CPUOp op)

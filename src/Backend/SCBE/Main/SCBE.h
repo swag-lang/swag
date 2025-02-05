@@ -36,7 +36,6 @@ struct SCBE final : Backend
     static void emitShiftRightEqArithmetic(SCBE_X64& pp, const ByteCodeInstruction* ip);
     static void emitShiftEqLogical(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op);
     static void emitInternalPanic(SCBE_X64& pp, const AstNode* node, const char* msg);
-    static void emitBinOp(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op);
     static void emitCompareOp(SCBE_X64& pp, const ByteCodeInstruction* ip);
     static void emitBinOpAtReg(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op);
     static void emitBinOpAtRegOverflow(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, SafetyMsg safetyMsg, TypeInfo* safetyType);
