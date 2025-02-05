@@ -191,64 +191,29 @@ void SCBE::emitBinOp(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op)
     const auto numBits = SCBE_CPU::getCPUBits(ip->op);
     if (numBits == CPUBits::F32 || numBits == CPUBits::F64)
     {
-        if (!ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_B))
+        if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_B))
         {
             pp.emitLoad(CPUReg::XMM0, CPUReg::RDI, REG_OFFSET(ip->a.u32), numBits);
             pp.emitOp(CPUReg::XMM0, CPUReg::RDI, REG_OFFSET(ip->b.u32), op, numBits);
         }
         else
         {
-            if (ip->hasFlag(BCI_IMM_A))
-                pp.emitLoad(CPUReg::XMM0, ip->a.u64, numBits);
-            else
-                pp.emitLoad(CPUReg::XMM0, CPUReg::RDI, REG_OFFSET(ip->a.u32), numBits);
-            if (ip->hasFlag(BCI_IMM_B))
-                pp.emitLoad(CPUReg::XMM1, ip->b.u64, numBits);
-            else
-                pp.emitLoad(CPUReg::XMM1, CPUReg::RDI, REG_OFFSET(ip->b.u32), numBits);
+            emitIMMA(pp, ip, CPUReg::XMM0, numBits);
+            emitIMMB(pp, ip, CPUReg::XMM1, numBits);
             pp.emitOp(CPUReg::XMM0, CPUReg::XMM1, op, numBits);
         }
     }
     else
     {
-        if (!ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_B))
+        if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_B))
         {
             pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), numBits);
             pp.emitOp(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->b.u32), op, numBits);
         }
-        // Mul by power of 2 => shift by log2
-        else if (op == CPUOp::MUL &&
-                 !ip->hasFlag(BCI_IMM_A) &&
-                 ip->hasFlag(BCI_IMM_B) &&
-                 Math::isPowerOfTwo(ip->b.u64) &&
-                 ip->b.u64 < static_cast<uint64_t>(numBits))
-        {
-            pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), numBits);
-            pp.emitLoad(CPUReg::RCX, static_cast<uint8_t>(log2(ip->b.u64)), CPUBits::B8);
-            pp.emitOp(CPUReg::RCX, CPUReg::RAX, CPUOp::SHL, numBits);
-        }
-        else if ((op == CPUOp::AND ||
-                  op == CPUOp::OR ||
-                  op == CPUOp::XOR ||
-                  op == CPUOp::ADD ||
-                  op == CPUOp::SUB) &&
-                 !ip->hasFlag(BCI_IMM_A) &&
-                 ip->hasFlag(BCI_IMM_B) &&
-                 ip->b.u64 <= 0x7FFFFFFF)
-        {
-            pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), numBits);
-            pp.emitOpInd(CPUReg::RAX, ip->b.u64, op, numBits);
-        }
         else
         {
-            if (ip->hasFlag(BCI_IMM_A))
-                pp.emitLoad(CPUReg::RAX, ip->a.u64, numBits);
-            else
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), numBits);
-            if (ip->hasFlag(BCI_IMM_B))
-                pp.emitLoad(CPUReg::RCX, ip->b.u64, numBits);
-            else
-                pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->b.u32), numBits);
+            emitIMMA(pp, ip, CPUReg::RAX, numBits);
+            emitIMMB(pp, ip, CPUReg::RCX, numBits);
             pp.emitOp(CPUReg::RCX, CPUReg::RAX, op, numBits);
         }
     }
