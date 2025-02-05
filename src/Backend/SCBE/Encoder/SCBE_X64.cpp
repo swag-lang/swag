@@ -902,7 +902,7 @@ void SCBE_X64::emitCmp(CPUReg memReg, uint32_t memOffset, uint32_t value, CPUBit
 
 /////////////////////////////////////////////////////////////////////
 
-void SCBE_X64::emitOp(CPUReg regSrc, CPUReg regDst, CPUOp op, CPUBits numBits, CPUBits srcBits)
+void SCBE_X64::emitOp(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits, CPUBits srcBits)
 {
     if (numBits == CPUBits::F32)
     {
@@ -1211,7 +1211,7 @@ void SCBE_X64::emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits)
         {
             SWAG_ASSERT(reg != CPUReg::RSP);
             emitLoad(CPUReg::R8, value, CPUBits::B64);
-            emitOp(CPUReg::R8, reg, op, numBits);
+            emitOp(reg, CPUReg::R8, op, numBits);
         }
 
         return;
@@ -1243,7 +1243,7 @@ void SCBE_X64::emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits)
         {
             SWAG_ASSERT(reg != CPUReg::RSP);
             emitLoad(CPUReg::R8, value, CPUBits::B64);
-            emitOp(CPUReg::R8, reg, op, numBits);
+            emitOp(reg, CPUReg::R8, op, numBits);
         }
         else
         {
@@ -1288,7 +1288,7 @@ void SCBE_X64::emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits)
         {
             SWAG_ASSERT(reg != CPUReg::RSP);
             emitLoad(CPUReg::R8, value, CPUBits::B64);
-            emitOp(CPUReg::R8, reg, op, numBits);
+            emitOp(reg, CPUReg::R8, op, numBits);
         }
         else
         {
@@ -1345,7 +1345,7 @@ void SCBE_X64::emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits)
         {
             SWAG_ASSERT(reg == CPUReg::RAX);
             emitLoad(CPUReg::RCX, value, CPUBits::B64);
-            emitOp(CPUReg::RCX, reg, op, numBits);
+            emitOp(reg, CPUReg::RCX, op, numBits);
         }
         else
         {
@@ -1382,7 +1382,7 @@ void SCBE_X64::emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits)
         {
             SWAG_ASSERT(reg != CPUReg::RSP);
             emitLoad(CPUReg::R8, value, CPUBits::B64);
-            emitOp(CPUReg::R8, reg, op, numBits);
+            emitOp(reg, CPUReg::R8, op, numBits);
         }
         else
         {
@@ -1406,7 +1406,7 @@ void SCBE_X64::emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits)
         {
             SWAG_ASSERT(reg != CPUReg::RSP);
             emitLoad(CPUReg::R8, value, CPUBits::B64);
-            emitOp(CPUReg::R8, reg, op, numBits);
+            emitOp(reg, CPUReg::R8, op, numBits);
         }
         else
         {
