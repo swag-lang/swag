@@ -939,23 +939,25 @@ void SCBE_X64::emitOp(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits, C
         concat.addU8(static_cast<uint8_t>(0xC0 | static_cast<uint8_t>(regSrc) | static_cast<uint8_t>(regDst) << 3));
     }
     else if (op == CPUOp::DIV ||
-             op == CPUOp::IDIV ||
-             op == CPUOp::MOD ||
-             op == CPUOp::IMOD)
+             op == CPUOp::IDIV)
     {
+        SWAG_ASSERT(regDst == CPUReg::RAX && regSrc == CPUReg::RCX);
         emitREX(concat, numBits, regSrc, regDst);
         emitSpec8(concat, 0xF7, numBits);
         concat.addU8(static_cast<uint8_t>(op) & ~2);
-
-        // modulo in 8 bits stores the reminder in AH and not RDX
-        if (op == CPUOp::MOD || op == CPUOp::IMOD)
-        {
-            if (numBits == CPUBits::B8)
-                emitCopyDownUp(CPUReg::RAX, numBits);
-            else
-                emitCopy(CPUReg::RAX, CPUReg::RDX, numBits);
-        }
     }
+    else if (op == CPUOp::MOD ||
+             op == CPUOp::IMOD)
+    {
+        SWAG_ASSERT(regDst == CPUReg::RAX && regSrc == CPUReg::RCX);
+        emitREX(concat, numBits, regSrc, regDst);
+        emitSpec8(concat, 0xF7, numBits);
+        concat.addU8(static_cast<uint8_t>(op) & ~2);
+        if (numBits == CPUBits::B8)
+            emitCopyDownUp(CPUReg::RAX, numBits);
+        else
+            emitCopy(CPUReg::RAX, CPUReg::RDX, numBits);
+    }    
     else if (op == CPUOp::MUL ||
              op == CPUOp::IMUL)
     {
