@@ -84,10 +84,7 @@ void SCBE::emitShiftRightArithmetic(SCBE_X64& pp, const ByteCodeInstruction* ip)
             pp.emitCMov(CPUReg::RCX, CPUReg::RAX, CPUOp::CMOVG, numBits);
         }
 
-        if (ip->hasFlag(BCI_IMM_A))
-            pp.emitLoad(CPUReg::RAX, ip->a.u64, numBits);
-        else
-            pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), numBits);
+        emitIMMA(pp, ip, CPUReg::RAX, numBits);
         pp.emitOp(CPUReg::RAX, CPUReg::RCX, CPUOp::SAR, numBits);
     }
 
@@ -108,7 +105,6 @@ void SCBE::emitShiftRightEqArithmetic(SCBE_X64& pp, const ByteCodeInstruction* i
         pp.emitLoad(CPUReg::RAX, static_cast<uint32_t>(numBits) - 1, CPUBits::B32);
         pp.emitCmp(CPUReg::RCX, static_cast<uint32_t>(numBits) - 1, CPUBits::B32);
         pp.emitCMov(CPUReg::RCX, CPUReg::RAX, CPUOp::CMOVG, numBits);
-
         pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
         pp.emitOp(CPUReg::RAX, 0, CPUReg::RCX, CPUOp::SAR, numBits);
     }
@@ -130,17 +126,9 @@ void SCBE::emitShiftLogical(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp o
     }
     else
     {
-        if (ip->hasFlag(BCI_IMM_A))
-            pp.emitLoad(CPUReg::RAX, ip->a.u64, numBits);
-        else
-            pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), numBits);
-
-        if (ip->hasFlag(BCI_IMM_B))
-            pp.emitLoad(CPUReg::RCX, ip->b.u8, CPUBits::B8);
-        else
-            pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->b.u32), CPUBits::B32);
+        emitIMMA(pp, ip, CPUReg::RAX, numBits);
+        emitIMMB(pp, ip, CPUReg::RCX, CPUBits::B32);
         pp.emitOp(CPUReg::RAX, CPUReg::RCX, op, numBits);
-
         pp.emitClear(CPUReg::R8, numBits);
         pp.emitCmp(CPUReg::RCX, static_cast<uint32_t>(numBits) - 1, CPUBits::B32);
         pp.emitCMov(CPUReg::RAX, CPUReg::R8, CPUOp::CMOVG, numBits);
@@ -332,7 +320,6 @@ void SCBE::emitBinOpEq(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t off
 void SCBE::emitBinOpEqOverflow(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offset, CPUOp op, SafetyMsg safetyMsg, TypeInfo* safetyType)
 {
     const auto numBits = SCBE_CPU::getCPUBits(ip->op);
-
     SWAG_ASSERT(SCBE_CPU::isInt(numBits));
     const char* msg      = ByteCodeGen::safetyMsg(safetyMsg, safetyType);
     const bool  isSigned = safetyType->isNativeIntegerSigned();
