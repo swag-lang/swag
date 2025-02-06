@@ -49,7 +49,6 @@ struct SCBE_X64 : SCBE_CPU
     void emitCopy(CPUReg regDst, CPUReg regSrc, CPUBits numBits);
     void emitCopy(CPUReg regDst, CPUReg regSrc, uint32_t count, uint32_t offset);
     void emitOp(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits, CPUBits srcBits = CPUBits::B32);
-    void emitOp(CPUReg reg, CPUReg memReg, uint32_t memOffset, CPUOp op, CPUBits numBits);
     void emitOp(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUOp op, CPUBits numBits, bool lock = false);
     void emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits);
     void emitOp(CPUReg memReg, uint32_t memOffset, uint64_t value, CPUOp op, CPUBits numBits);
