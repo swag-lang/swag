@@ -1167,40 +1167,30 @@ void SCBE_X64::emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits)
 
     if (op == CPUOp::XOR || op == CPUOp::OR || op == CPUOp::AND)
     {
+        SWAG_ASSERT(reg == CPUReg::RAX);
         emitREX(concat, numBits);
-        if (value <= 0x7F)
+        if (numBits == CPUBits::B8)
         {
-            if (numBits == CPUBits::B8)
-            {
-                concat.addU8(static_cast<uint8_t>(op) + 3);
-                concat.addU8(static_cast<uint8_t>(value));
-            }
-            else
-            {
-                concat.addU8(0x83);
-                concat.addU8(static_cast<uint8_t>(op) + 0xBF);
-                concat.addU8(static_cast<uint8_t>(value));
-            }
+            concat.addU8(static_cast<uint8_t>(op) + 3);
+            concat.addU8(static_cast<uint8_t>(value));
         }
-        else
+        else if (value <= 0x7F)
         {
-            if (numBits == CPUBits::B8)
-            {
-                concat.addU8(static_cast<uint8_t>(op) + 3);
-                concat.addU8(static_cast<uint8_t>(value));
-            }
-            else if (numBits == CPUBits::B16)
-            {
-                concat.addU8(0x81);
-                concat.addU8(static_cast<uint8_t>(op) + 0xBF);
-                concat.addU16(static_cast<uint16_t>(value));
-            }
-            else if (numBits == CPUBits::B32 || numBits == CPUBits::B64)
-            {
-                concat.addU8(0x81);
-                concat.addU8(static_cast<uint8_t>(op) + 0xBF);
-                concat.addU32(static_cast<uint32_t>(value));
-            }
+            concat.addU8(0x83);
+            concat.addU8(static_cast<uint8_t>(op) + 0xBF);
+            concat.addU8(static_cast<uint8_t>(value));
+        }
+        else if (numBits == CPUBits::B16)
+        {
+            concat.addU8(0x81);
+            concat.addU8(static_cast<uint8_t>(op) + 0xBF);
+            concat.addU16(static_cast<uint16_t>(value));
+        }
+        else if (numBits == CPUBits::B32 || numBits == CPUBits::B64)
+        {
+            concat.addU8(0x81);
+            concat.addU8(static_cast<uint8_t>(op) + 0xBF);
+            concat.addU32(static_cast<uint32_t>(value));
         }
     }
     else if (op == CPUOp::ADD)
