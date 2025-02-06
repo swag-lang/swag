@@ -447,9 +447,18 @@ void SCBE::emitAddSubMul64(SCBE_X64& pp, const ByteCodeInstruction* ip, uint64_t
     SWAG_ASSERT(op == CPUOp::ADD || op == CPUOp::SUB);
 
     const auto value = ip->b.u64 * mulValue;
-    if (ip->hasFlag(BCI_IMM_B) && value <= 0x7FFFFFFF && ip->a.u32 == ip->c.u32)
+
+    if (ip->hasFlag(BCI_IMM_B) && value == 0)
     {
-        pp.emitOp(CPUReg::RDI, REG_OFFSET(ip->a.u32), static_cast<uint32_t>(value), op, CPUBits::B64);
+        if (ip->a.u32 != ip->c.u32)
+        {
+            pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
+            pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, CPUBits::B64);
+        }
+    }
+    else if (ip->hasFlag(BCI_IMM_B) && ip->a.u32 == ip->c.u32)
+    {
+        pp.emitOp(CPUReg::RDI, REG_OFFSET(ip->a.u32), value, op, CPUBits::B64);
     }
     else
     {
