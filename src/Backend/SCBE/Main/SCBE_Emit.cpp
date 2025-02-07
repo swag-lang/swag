@@ -242,8 +242,16 @@ void SCBE::emitBinOpOverflow(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp 
 void SCBE::emitBinOpEq(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offset, CPUOp op)
 {
     const auto numBits = SCBE_CPU::getCPUBits(ip->op);
-    if (op == CPUOp::IDIV || op == CPUOp::IMOD)
+    if ((op == CPUOp::IDIV || op == CPUOp::IMOD) &&  ip->hasFlag(BCI_IMM_B))
     {
+        pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
+        pp.emitOp(CPUReg::RAX, offset, ip->b.u64, op, numBits);
+    }
+    else if (op == CPUOp::IDIV || op == CPUOp::IMOD)
+    {
+        /*pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
+        emitIMMB(pp, ip, CPUReg::RAX, numBits);
+        pp.emitOp(CPUReg::RCX, offset, CPUReg::RAX, op, numBits);  */      
         pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
 
         if (numBits == CPUBits::B8)

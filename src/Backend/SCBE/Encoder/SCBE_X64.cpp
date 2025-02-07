@@ -1042,6 +1042,21 @@ void SCBE_X64::emitOp(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUOp op, C
              op == CPUOp::MOD ||
              op == CPUOp::IMOD)
     {
+        /*SWAG_ASSERT(memReg == CPUReg::RAX || memReg == CPUReg::RDI);
+        SWAG_ASSERT(reg == CPUReg::RCX);
+        emitCopy(CPUReg::R8, memReg, CPUBits::B64);
+        if (numBits == CPUBits::B8)
+            emitLoad(CPUReg::RAX, memReg, memOffset, CPUBits::B32, CPUBits::B8, true);
+        else
+        {
+            emitLoad(CPUReg::RAX, memReg, memOffset, numBits);
+            emitClear(CPUReg::RDX, numBits);
+        }
+
+        emitOp(CPUReg::RAX, reg, op, numBits);
+        emitStore(CPUReg::R8, memOffset, CPUReg::RAX, numBits);
+        return;*/
+
         SWAG_ASSERT(memReg < CPUReg::R8);
         SWAG_ASSERT(reg == CPUReg::RAX);
         if (lock)
@@ -1065,9 +1080,9 @@ void SCBE_X64::emitOp(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUOp op, C
             concat.addU32(memOffset);
         }
 
+        // modulo in 8 bits stores the reminder in AH and not RDX
         if (op == CPUOp::MOD || op == CPUOp::IMOD)
         {
-            // modulo in 8 bits stores the reminder in AH and not RDX
             if (numBits == CPUBits::B8)
                 concat.addString2("\x88\xE0"); // mov al, ah
             else
@@ -1285,8 +1300,25 @@ void SCBE_X64::emitOp(CPUReg memReg, uint32_t memOffset, uint64_t value, CPUOp o
 {
     SWAG_ASSERT(SCBE_CPU::isInt(numBits));
 
-    if (op == CPUOp::IMUL ||
-        op == CPUOp::MUL)
+    if (op == CPUOp::IDIV ||
+        op == CPUOp::IMOD)
+    {
+        SWAG_ASSERT(memReg == CPUReg::RAX);
+        emitCopy(CPUReg::R8, memReg, CPUBits::B64);
+        if (numBits == CPUBits::B8)
+            emitLoad(CPUReg::RAX, memReg, memOffset, CPUBits::B32, CPUBits::B8, true);
+        else
+        {
+            emitLoad(CPUReg::RAX, memReg, memOffset, numBits);
+            emitConvert(CPUReg::RDX, CPUReg::RAX, CPUReg::RAX, numBits);
+        }
+
+        emitLoad(CPUReg::RCX, value, numBits);
+        emitOp(CPUReg::RAX, CPUReg::RCX, op, numBits);
+        emitStore(CPUReg::R8, memOffset, CPUReg::RAX, numBits);
+    }
+    else if (op == CPUOp::IMUL ||
+             op == CPUOp::MUL)
     {
         SWAG_ASSERT(memReg == CPUReg::RAX || memReg == CPUReg::RDI);
         emitLoad(CPUReg::RCX, value, numBits);
