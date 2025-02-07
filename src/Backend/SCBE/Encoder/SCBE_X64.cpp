@@ -1042,20 +1042,23 @@ void SCBE_X64::emitOp(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUOp op, C
              op == CPUOp::MOD ||
              op == CPUOp::IMOD)
     {
-        /*SWAG_ASSERT(memReg == CPUReg::RAX || memReg == CPUReg::RDI);
+        SWAG_ASSERT(memReg == CPUReg::RAX);
         SWAG_ASSERT(reg == CPUReg::RCX);
         emitCopy(CPUReg::R8, memReg, CPUBits::B64);
         if (numBits == CPUBits::B8)
-            emitLoad(CPUReg::RAX, memReg, memOffset, CPUBits::B32, CPUBits::B8, true);
+            emitLoad(CPUReg::RAX, memReg, memOffset, CPUBits::B32, CPUBits::B8, op == CPUOp::IDIV || op == CPUOp::IMOD);
         else
         {
             emitLoad(CPUReg::RAX, memReg, memOffset, numBits);
-            emitClear(CPUReg::RDX, numBits);
+            if (op == CPUOp::IDIV || op == CPUOp::IMOD)
+                emitConvert(CPUReg::RDX, CPUReg::RAX, CPUReg::RAX, numBits);
+            else
+                emitClear(CPUReg::RDX, numBits);
         }
 
         emitOp(CPUReg::RAX, reg, op, numBits);
         emitStore(CPUReg::R8, memOffset, CPUReg::RAX, numBits);
-        return;*/
+        return;
 
         SWAG_ASSERT(memReg < CPUReg::R8);
         SWAG_ASSERT(reg == CPUReg::RAX);
