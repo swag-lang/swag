@@ -3,6 +3,7 @@
 #include "Backend/SCBE/Encoder/SCBE_X64.h"
 #include "Core/Math.h"
 #include "Semantic/Type/TypeManager.h"
+#pragma optimize("", off)
 
 enum X64DispMode
 {
@@ -1158,7 +1159,10 @@ void SCBE_X64::emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits)
                 concat.addU8(0x81);
                 concat.addU8(0xC0 | static_cast<uint8_t>(reg));
             }
-            concat.addU32(static_cast<uint32_t>(value));
+            if (numBits == CPUBits::B16)
+                concat.addU16(static_cast<uint16_t>(value));
+            else
+                concat.addU32(static_cast<uint32_t>(value));
         }
     }
     else if (op == CPUOp::SUB)
@@ -1172,16 +1176,25 @@ void SCBE_X64::emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits)
             emitSpec8(concat, 0xFF, numBits);
             concat.addU8(0xC8 | static_cast<uint8_t>(reg)); // dec rax
         }
+        else if (numBits == CPUBits::B8)
+        {
+            if (reg == CPUReg::RAX)
+                concat.addU8(0x2C);
+            else
+            {
+                concat.addU8(0x80);
+                concat.addU8(0xE8 | static_cast<uint8_t>(reg));
+            }
+            concat.addU8(static_cast<uint8_t>(value));
+        }
         else if (value <= 0x7F)
         {
-            SWAG_ASSERT(numBits == CPUBits::B64);
             concat.addU8(0x83);
             concat.addU8(0xE8 | static_cast<uint8_t>(reg));
             concat.addU8(static_cast<uint8_t>(value));
         }
         else
         {
-            SWAG_ASSERT(numBits == CPUBits::B64);
             if (reg == CPUReg::RAX)
                 concat.addU8(0x2D);
             else
@@ -1189,7 +1202,10 @@ void SCBE_X64::emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits)
                 concat.addU8(0x81);
                 concat.addU8(0xE8 | static_cast<uint8_t>(reg));
             }
-            concat.addU32(static_cast<uint32_t>(value));
+            if (numBits == CPUBits::B16)
+                concat.addU16(static_cast<uint16_t>(value));
+            else
+                concat.addU32(static_cast<uint32_t>(value));
         }
     }
     else if (op == CPUOp::IMUL)

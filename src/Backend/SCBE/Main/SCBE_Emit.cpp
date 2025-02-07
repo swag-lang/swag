@@ -175,6 +175,7 @@ void SCBE::emitOverflow(SCBE_X64& pp, const ByteCodeInstruction* ip, const char*
     }
 }
 
+#pragma optimize("", off)
 void SCBE::emitBinOp(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op)
 {
     const auto numBits = SCBE_CPU::getCPUBits(ip->op);
@@ -204,13 +205,13 @@ void SCBE::emitBinOp(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op)
         pp.emitOp(CPUReg::RAX, CPUReg::RCX, op, numBits);
         pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, numBits);
     }
-    else if (SCBE_CPU::isInt(numBits) && !ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_B) && op ==  CPUOp::ADD)
+    else if (SCBE_CPU::isInt(numBits) && !ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_B) && (op == CPUOp::ADD || op == CPUOp::SUB))
     {
         const auto r0 = SCBE_CPU::isInt(numBits) ? CPUReg::RAX : CPUReg::XMM0;
         pp.emitLoad(r0, CPUReg::RDI, REG_OFFSET(ip->a.u32), numBits);
         pp.emitOp(r0, ip->b.u64, op, numBits);
         pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), r0, numBits);
-    }    
+    }
     else
     {
         const auto r0 = SCBE_CPU::isInt(numBits) ? CPUReg::RAX : CPUReg::XMM0;
