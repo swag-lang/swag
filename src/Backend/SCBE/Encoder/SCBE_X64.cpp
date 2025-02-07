@@ -1018,7 +1018,8 @@ void SCBE_X64::emitOp(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits, C
 
 void SCBE_X64::emitOp(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUOp op, CPUBits numBits, bool lock)
 {
-    if (numBits == CPUBits::F32 || numBits == CPUBits::F64)
+    if (numBits == CPUBits::F32 ||
+        numBits == CPUBits::F64)
     {
         SWAG_ASSERT(reg == CPUReg::XMM1);
         SWAG_ASSERT(memReg < CPUReg::R8);
@@ -1026,7 +1027,8 @@ void SCBE_X64::emitOp(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUOp op, C
         emitOp(CPUReg::XMM0, reg, op, numBits, numBits);
         emitStore(memReg, memOffset, CPUReg::XMM0, numBits);
     }
-    else if (op == CPUOp::IMUL || op == CPUOp::MUL)
+    else if (op == CPUOp::IMUL ||
+             op == CPUOp::MUL)
     {
         SWAG_ASSERT(memReg == CPUReg::RAX || memReg == CPUReg::RDI);
         SWAG_ASSERT(reg == CPUReg::RCX);
@@ -1035,62 +1037,66 @@ void SCBE_X64::emitOp(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUOp op, C
         emitOp(CPUReg::RAX, reg, op, numBits);
         emitStore(CPUReg::R8, memOffset, CPUReg::RAX, numBits);
     }
+    else if (op == CPUOp::DIV ||
+             op == CPUOp::IDIV ||
+             op == CPUOp::MOD ||
+             op == CPUOp::IMOD)
+    {
+        SWAG_ASSERT(memReg < CPUReg::R8);
+        SWAG_ASSERT(reg == CPUReg::RAX);
+        if (lock)
+            concat.addU8(0xF0);
+        emitREX(concat, numBits, reg, memReg);
+
+        emitSpec8(concat, 0xF7, numBits);
+
+        if (memOffset == 0)
+        {
+            concat.addU8((static_cast<uint8_t>(op) & ~2) - 0xBA);
+        }
+        else if (memOffset <= 0x7F)
+        {
+            concat.addU8((static_cast<uint8_t>(op) & ~2) - 0x7A);
+            concat.addU8(static_cast<uint8_t>(memOffset));
+        }
+        else
+        {
+            concat.addU8((static_cast<uint8_t>(op) & ~2) - 0x3A);
+            concat.addU32(memOffset);
+        }
+
+        if (op == CPUOp::MOD || op == CPUOp::IMOD)
+        {
+            // modulo in 8 bits stores the reminder in AH and not RDX
+            if (numBits == CPUBits::B8)
+                concat.addString2("\x88\xE0"); // mov al, ah
+            else
+                concat.addString3("\x48\x89\xd0"); // mov rax, rdx
+        }
+    }
+    else if (op == CPUOp::SAR ||
+             op == CPUOp::SHR ||
+             op == CPUOp::SHL)
+    {
+        SWAG_ASSERT(memReg == CPUReg::RAX && reg == CPUReg::RCX);
+        if (lock)
+            concat.addU8(0xF0);
+        emitREX(concat, numBits, reg, memReg);
+
+        if (numBits == CPUBits::B8)
+            concat.addU8(0xD2);
+        else
+            concat.addU8(0xD3);
+        concat.addU8(static_cast<uint8_t>(op) & ~0xC0);
+    }
     else
     {
         SWAG_ASSERT(memReg < CPUReg::R8);
         if (lock)
             concat.addU8(0xF0);
-
         emitREX(concat, numBits, reg, memReg);
-        if (op == CPUOp::DIV ||
-            op == CPUOp::IDIV ||
-            op == CPUOp::MOD ||
-            op == CPUOp::IMOD)
-        {
-            SWAG_ASSERT(reg == CPUReg::RAX);
-
-            emitSpec8(concat, 0xF7, numBits);
-
-            if (memOffset == 0)
-            {
-                concat.addU8((static_cast<uint8_t>(op) & ~2) - 0xBA);
-            }
-            else if (memOffset <= 0x7F)
-            {
-                concat.addU8((static_cast<uint8_t>(op) & ~2) - 0x7A);
-                concat.addU8(static_cast<uint8_t>(memOffset));
-            }
-            else
-            {
-                concat.addU8((static_cast<uint8_t>(op) & ~2) - 0x3A);
-                concat.addU32(memOffset);
-            }
-
-            if (op == CPUOp::MOD || op == CPUOp::IMOD)
-            {
-                // modulo in 8 bits stores the reminder in AH and not RDX
-                if (numBits == CPUBits::B8)
-                    concat.addString2("\x88\xE0"); // mov al, ah
-                else
-                    concat.addString3("\x48\x89\xd0"); // mov rax, rdx
-            }
-        }
-        else if (op == CPUOp::SAR ||
-                 op == CPUOp::SHR ||
-                 op == CPUOp::SHL)
-        {
-            SWAG_ASSERT(memReg == CPUReg::RAX && reg == CPUReg::RCX);
-            if (numBits == CPUBits::B8)
-                concat.addU8(0xD2);
-            else
-                concat.addU8(0xD3);
-            concat.addU8(static_cast<uint8_t>(op) & ~0xC0);
-        }
-        else
-        {
-            emitSpec8(concat, static_cast<uint8_t>(op), numBits);
-            emitModRM(concat, memOffset, reg, memReg);
-        }
+        emitSpec8(concat, static_cast<uint8_t>(op), numBits);
+        emitModRM(concat, memOffset, reg, memReg);
     }
 }
 
