@@ -1026,7 +1026,7 @@ void SCBE_X64::emitOp(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUOp op, C
         emitOp(CPUReg::XMM0, reg, op, numBits, numBits);
         emitStore(memReg, memOffset, CPUReg::XMM0, numBits);
     }
-    /*else if (op == CPUOp::IMUL || op == CPUOp::MUL)
+    else if (op == CPUOp::IMUL || op == CPUOp::MUL)
     {
         SWAG_ASSERT(memReg == CPUReg::RAX || memReg == CPUReg::RDI);
         SWAG_ASSERT(reg == CPUReg::RCX);
@@ -1034,7 +1034,7 @@ void SCBE_X64::emitOp(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUOp op, C
         emitLoad(CPUReg::RAX, memReg, memOffset, numBits);
         emitOp(CPUReg::RAX, reg, op, numBits);
         emitStore(CPUReg::R8, memOffset, CPUReg::RAX, numBits);
-    }*/
+    }
     else
     {
         SWAG_ASSERT(memReg < CPUReg::R8);
