@@ -1018,17 +1018,6 @@ void SCBE_X64::emitOp(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits, C
 
 void SCBE_X64::emitOp(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUOp op, CPUBits numBits, bool lock)
 {
-    /*if (op == CPUOp::FDIV || op == CPUOp::IMUL || op == CPUOp::MUL || op == CPUOp::FMUL)
-    {
-        const auto r0 = SCBE_CPU::isInt(numBits) ? CPUReg::RAX : CPUReg::XMM0;
-        const auto r1 = SCBE_CPU::isInt(numBits) ? CPUReg::RCX : CPUReg::XMM1;
-        pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-        pp.emitLoad(r0, CPUReg::RCX, offset, numBits);
-        emitIMMB(pp, ip, r1, numBits);
-        pp.emitOp(r0, r1, op, numBits);
-        pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-        pp.emitStore(CPUReg::RCX, offset, r0, numBits);
-    }*/
     if (numBits == CPUBits::F32 || numBits == CPUBits::F64)
     {
         SWAG_ASSERT(reg == CPUReg::XMM1);
