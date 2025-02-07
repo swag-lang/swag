@@ -1018,27 +1018,24 @@ void SCBE_X64::emitOp(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits, C
 
 void SCBE_X64::emitOp(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUOp op, CPUBits numBits, bool lock)
 {
-    if (numBits == CPUBits::F32)
+    /*if (op == CPUOp::FDIV || op == CPUOp::IMUL || op == CPUOp::MUL || op == CPUOp::FMUL)
+    {
+        const auto r0 = SCBE_CPU::isInt(numBits) ? CPUReg::RAX : CPUReg::XMM0;
+        const auto r1 = SCBE_CPU::isInt(numBits) ? CPUReg::RCX : CPUReg::XMM1;
+        pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
+        pp.emitLoad(r0, CPUReg::RCX, offset, numBits);
+        emitIMMB(pp, ip, r1, numBits);
+        pp.emitOp(r0, r1, op, numBits);
+        pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
+        pp.emitStore(CPUReg::RCX, offset, r0, numBits);
+    }*/
+    if (numBits == CPUBits::F32 || numBits == CPUBits::F64)
     {
         SWAG_ASSERT(reg == CPUReg::XMM1);
         SWAG_ASSERT(memReg < CPUReg::R8);
-        emitLoad(CPUReg::XMM0, memReg, memOffset, CPUBits::F32);
-        concat.addU8(0xF3);
-        concat.addU8(0x0F);
-        concat.addU8(static_cast<uint8_t>(op));
-        concat.addU8(0xC1);
-        emitStore(memReg, memOffset, CPUReg::XMM0, CPUBits::F32);
-    }
-    else if (numBits == CPUBits::F64)
-    {
-        SWAG_ASSERT(reg == CPUReg::XMM1);
-        SWAG_ASSERT(memReg < CPUReg::R8);
-        emitLoad(CPUReg::XMM0, memReg, memOffset, CPUBits::F64);
-        concat.addU8(0xF2);
-        concat.addU8(0x0F);
-        concat.addU8(static_cast<uint8_t>(op));
-        concat.addU8(0xC1);
-        emitStore(memReg, memOffset, CPUReg::XMM0, CPUBits::F64);
+        emitLoad(CPUReg::XMM0, memReg, memOffset, numBits);
+        emitOp(CPUReg::XMM0, reg, op, numBits, numBits);
+        emitStore(memReg, memOffset, CPUReg::XMM0, numBits);
     }
     else
     {
