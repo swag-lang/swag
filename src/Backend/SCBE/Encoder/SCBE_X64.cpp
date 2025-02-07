@@ -1058,39 +1058,6 @@ void SCBE_X64::emitOp(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUOp op, C
 
         emitOp(CPUReg::RAX, reg, op, numBits);
         emitStore(CPUReg::R8, memOffset, CPUReg::RAX, numBits);
-        return;
-
-        SWAG_ASSERT(memReg < CPUReg::R8);
-        SWAG_ASSERT(reg == CPUReg::RAX);
-        if (lock)
-            concat.addU8(0xF0);
-        emitREX(concat, numBits, reg, memReg);
-
-        emitSpec8(concat, 0xF7, numBits);
-
-        if (memOffset == 0)
-        {
-            concat.addU8((static_cast<uint8_t>(op) & ~2) - 0xBA);
-        }
-        else if (memOffset <= 0x7F)
-        {
-            concat.addU8((static_cast<uint8_t>(op) & ~2) - 0x7A);
-            concat.addU8(static_cast<uint8_t>(memOffset));
-        }
-        else
-        {
-            concat.addU8((static_cast<uint8_t>(op) & ~2) - 0x3A);
-            concat.addU32(memOffset);
-        }
-
-        // modulo in 8 bits stores the reminder in AH and not RDX
-        if (op == CPUOp::MOD || op == CPUOp::IMOD)
-        {
-            if (numBits == CPUBits::B8)
-                concat.addString2("\x88\xE0"); // mov al, ah
-            else
-                concat.addString3("\x48\x89\xd0"); // mov rax, rdx
-        }
     }
     else if (op == CPUOp::SAR ||
              op == CPUOp::SHR ||
@@ -1304,16 +1271,21 @@ void SCBE_X64::emitOp(CPUReg memReg, uint32_t memOffset, uint64_t value, CPUOp o
     SWAG_ASSERT(SCBE_CPU::isInt(numBits));
 
     if (op == CPUOp::IDIV ||
-        op == CPUOp::IMOD)
+        op == CPUOp::IMOD ||
+        op == CPUOp::DIV ||
+        op == CPUOp::MOD)
     {
         SWAG_ASSERT(memReg == CPUReg::RAX);
         emitCopy(CPUReg::R8, memReg, CPUBits::B64);
         if (numBits == CPUBits::B8)
-            emitLoad(CPUReg::RAX, memReg, memOffset, CPUBits::B32, CPUBits::B8, true);
+            emitLoad(CPUReg::RAX, memReg, memOffset, CPUBits::B32, CPUBits::B8, op == CPUOp::IDIV || op == CPUOp::IMOD);
         else
         {
             emitLoad(CPUReg::RAX, memReg, memOffset, numBits);
-            emitConvert(CPUReg::RDX, CPUReg::RAX, CPUReg::RAX, numBits);
+            if (op == CPUOp::IDIV || op == CPUOp::IMOD)
+                emitConvert(CPUReg::RDX, CPUReg::RAX, CPUReg::RAX, numBits);
+            else
+                emitClear(CPUReg::RDX, numBits);
         }
 
         emitLoad(CPUReg::RCX, value, numBits);
