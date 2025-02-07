@@ -3,7 +3,6 @@
 #include "Backend/SCBE/Encoder/SCBE_X64.h"
 #include "Core/Math.h"
 #include "Semantic/Type/TypeManager.h"
-#pragma optimize("", off)
 
 enum X64DispMode
 {
@@ -1090,9 +1089,9 @@ void SCBE_X64::emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits)
 {
     if (value > 0x7FFFFFFF)
     {
-        SWAG_ASSERT(reg != CPUReg::RSP);
-        emitLoad(CPUReg::R8, value, CPUBits::B64);
-        emitOp(reg, CPUReg::R8, op, numBits);
+        SWAG_ASSERT(reg == CPUReg::RAX);
+        emitLoad(CPUReg::RCX, value, CPUBits::B64);
+        emitOp(reg, CPUReg::RCX, op, numBits);
     }
     else if (op == CPUOp::XOR || op == CPUOp::OR || op == CPUOp::AND)
     {
@@ -1208,7 +1207,7 @@ void SCBE_X64::emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits)
                 concat.addU32(static_cast<uint32_t>(value));
         }
     }
-    else if (op == CPUOp::IMUL)
+    else if (op == CPUOp::IMUL && numBits != CPUBits::B8)
     {
         if (value == 1)
             return;
@@ -1218,7 +1217,6 @@ void SCBE_X64::emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits)
             return;
         }
 
-        SWAG_ASSERT(numBits == CPUBits::B64);
         SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX);
         emitREX(concat, numBits);
         if (value == 2)
@@ -1285,7 +1283,9 @@ void SCBE_X64::emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits)
     }
     else
     {
-        SWAG_ASSERT(false);
+        SWAG_ASSERT(reg == CPUReg::RAX);
+        emitLoad(CPUReg::RCX, value, numBits);
+        emitOp(reg, CPUReg::RCX, op, numBits);
     }
 }
 

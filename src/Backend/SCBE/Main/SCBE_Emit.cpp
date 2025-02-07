@@ -5,7 +5,6 @@
 #include "Backend/SCBE/Main/SCBE.h"
 #include "Semantic/Type/TypeInfo.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
-#pragma optimize("", off)
 
 void SCBE::emitIMMA(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUReg reg, CPUBits numBits)
 {
@@ -175,7 +174,6 @@ void SCBE::emitOverflow(SCBE_X64& pp, const ByteCodeInstruction* ip, const char*
     }
 }
 
-#pragma optimize("", off)
 void SCBE::emitBinOp(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op)
 {
     const auto numBits = SCBE_CPU::getCPUBits(ip->op);
@@ -205,7 +203,7 @@ void SCBE::emitBinOp(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op)
         pp.emitOp(CPUReg::RAX, CPUReg::RCX, op, numBits);
         pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, numBits);
     }
-    else if (SCBE_CPU::isInt(numBits) && !ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_B) && (op == CPUOp::ADD || op == CPUOp::SUB))
+    else if (SCBE_CPU::isInt(numBits) && !ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_B))
     {
         const auto r0 = SCBE_CPU::isInt(numBits) ? CPUReg::RAX : CPUReg::XMM0;
         pp.emitLoad(r0, CPUReg::RDI, REG_OFFSET(ip->a.u32), numBits);
@@ -263,29 +261,12 @@ void SCBE::emitBinOpEqOverflow(SCBE_X64& pp, const ByteCodeInstruction* ip, uint
     const char* msg      = ByteCodeGen::safetyMsg(safetyMsg, safetyType);
     const bool  isSigned = safetyType->isNativeIntegerSigned();
 
-    if (op == CPUOp::IMUL || op == CPUOp::MUL)
-    {
-        pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-        pp.emitLoad(CPUReg::RAX, CPUReg::RCX, offset, numBits);
-        emitIMMB(pp, ip, CPUReg::RCX, numBits);
-        pp.emitOp(CPUReg::RAX, CPUReg::RCX, op, numBits);
-        emitOverflow(pp, ip, msg, isSigned);
-        pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-        pp.emitStore(CPUReg::RCX, offset, CPUReg::RAX, numBits);
-    }
-    else if (ip->hasFlag(BCI_IMM_B))
-    {
-        pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-        pp.emitOp(CPUReg::RAX, offset, ip->b.u64, op, numBits);
-        emitOverflow(pp, ip, msg, isSigned);
-    }
-    else
-    {
-        pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-        emitIMMB(pp, ip, CPUReg::RCX, numBits);
-        pp.emitOp(CPUReg::RAX, offset, CPUReg::RCX, op, numBits);
-        emitOverflow(pp, ip, msg, isSigned);
-    }
+    pp.emitLoad(CPUReg::R8, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
+    pp.emitLoad(CPUReg::RAX, CPUReg::R8, offset, numBits);
+    emitIMMB(pp, ip, CPUReg::RCX, numBits);
+    pp.emitOp(CPUReg::RAX, CPUReg::RCX, op, numBits);
+    emitOverflow(pp, ip, msg, isSigned);
+    pp.emitStore(CPUReg::R8, offset, CPUReg::RAX, numBits);
 }
 
 void SCBE::emitBinOpEqS(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offsetStack, CPUOp op)
