@@ -184,10 +184,8 @@ void SCBE::emitBinOp(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op)
         {
             if (ip->hasFlag(BCI_IMM_A))
                 pp.emitLoad(CPUReg::RAX, ip->a.u8, CPUBits::B32);
-            else if (op == CPUOp::IDIV || op == CPUOp::IMOD)
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B32, CPUBits::B8, true);
             else
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B32, CPUBits::B8, false);
+                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B32, CPUBits::B8, op == CPUOp::IDIV || op == CPUOp::IMOD);
         }
         else
         {
@@ -195,6 +193,7 @@ void SCBE::emitBinOp(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op)
                 pp.emitLoad(CPUReg::RAX, ip->a.u64, numBits);
             else
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), numBits);
+
             if (op == CPUOp::IDIV || op == CPUOp::IMOD)
                 pp.emitConvert(CPUReg::RDX, CPUReg::RAX, CPUReg::RAX, numBits);
             else
@@ -205,6 +204,13 @@ void SCBE::emitBinOp(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op)
         pp.emitOp(CPUReg::RAX, CPUReg::RCX, op, numBits);
         pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, numBits);
     }
+    else if (SCBE_CPU::isInt(numBits) && !ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_B) && op ==  CPUOp::ADD)
+    {
+        const auto r0 = SCBE_CPU::isInt(numBits) ? CPUReg::RAX : CPUReg::XMM0;
+        pp.emitLoad(r0, CPUReg::RDI, REG_OFFSET(ip->a.u32), numBits);
+        pp.emitOp(r0, ip->b.u64, op, numBits);
+        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), r0, numBits);
+    }    
     else
     {
         const auto r0 = SCBE_CPU::isInt(numBits) ? CPUReg::RAX : CPUReg::XMM0;
