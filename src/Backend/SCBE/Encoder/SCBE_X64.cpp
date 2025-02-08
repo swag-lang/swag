@@ -149,7 +149,7 @@ void SCBE_X64::emitSymbolRelocationValue(CPUReg reg, uint32_t symbolIndex, uint3
 
 void SCBE_X64::emitSymbolGlobalString(CPUReg reg, const Utf8& str)
 {
-    emitLoad(reg, 0, CPUBits::B64, true);
+    emitStore0Load64(reg);
     const auto sym = getOrCreateGlobalString(str);
     addSymbolRelocation(concat.totalCount() - 8 - textSectionOffset, sym->index, IMAGE_REL_AMD64_ADDR64);
 }
@@ -185,6 +185,13 @@ void SCBE_X64::emitRet()
 
 /////////////////////////////////////////////////////////////////////
 
+void SCBE_X64::emitStore0Load64(CPUReg reg)
+{
+    emitREX(concat, CPUBits::B64, CPUReg::RAX, reg);
+    concat.addU8(0xB8 | static_cast<uint8_t>(reg));
+    concat.addU64(0);
+}
+
 void SCBE_X64::emitLoad(CPUReg reg, CPUReg memReg, uint32_t memOffset, uint64_t value, bool isImmediate, CPUOp op, CPUBits numBits)
 {
     if (op == CPUOp::DIV || op == CPUOp::MOD || op == CPUOp::IDIV || op == CPUOp::IMOD)
@@ -207,7 +214,7 @@ void SCBE_X64::emitLoad(CPUReg reg, CPUReg memReg, uint32_t memOffset, uint64_t 
             if (op == CPUOp::IDIV || op == CPUOp::IMOD)
             {
                 emitREX(concat, numBits);
-                concat.addU8(static_cast<uint8_t>(CPUOp::CDQ));                
+                concat.addU8(static_cast<uint8_t>(CPUOp::CDQ));
             }
             else
             {
@@ -225,17 +232,8 @@ void SCBE_X64::emitLoad(CPUReg reg, CPUReg memReg, uint32_t memOffset, uint64_t 
     }
 }
 
-void SCBE_X64::emitLoad(CPUReg reg, uint64_t value, CPUBits numBits, bool force64Bits)
+void SCBE_X64::emitLoad(CPUReg reg, uint64_t value, CPUBits numBits)
 {
-    if (force64Bits)
-    {
-        SWAG_ASSERT(numBits == CPUBits::B64);
-        emitREX(concat, CPUBits::B64, CPUReg::RAX, reg);
-        concat.addU8(0xB8 | static_cast<uint8_t>(reg));
-        concat.addU64(value);
-        return;
-    }
-
     if (value == 0)
     {
         emitClear(reg, numBits);
@@ -316,7 +314,7 @@ void SCBE_X64::emitLoad(CPUReg reg, CPUReg memReg, uint32_t memOffset, CPUBits n
         emitLoad(reg, memReg, memOffset, numBitsSrc);
         return;
     }
-
+    
     if (numBitsSrc == CPUBits::B8)
     {
         switch (numBitsDst)
@@ -1789,7 +1787,7 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
                             emitLoad(cc.paramByRegisterInteger[i], paramsRegisters[i].reg, CPUBits::B64);
                         break;
                     case CPUPushParamType::Imm64:
-                        emitLoad(cc.paramByRegisterInteger[i], paramsRegisters[i].reg, CPUBits::B64, true);
+                        emitLoad(cc.paramByRegisterInteger[i], paramsRegisters[i].reg, CPUBits::B64);
                         break;
                     case CPUPushParamType::RelocV:
                         emitSymbolRelocationValue(cc.paramByRegisterInteger[i], static_cast<uint32_t>(paramsRegisters[i].reg), 0);

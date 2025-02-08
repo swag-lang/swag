@@ -2703,7 +2703,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 auto funcNode = castAst<AstFuncDecl>(reinterpret_cast<AstNode*>(ip->b.pointer), AstNodeKind::FuncDecl);
                 SWAG_ASSERT(!ip->c.pointer || (funcNode && funcNode->hasExtByteCode() && funcNode->extByteCode()->bc == reinterpret_cast<ByteCode*>(ip->c.pointer)));
                 Utf8 callName = funcNode->getCallName();
-                pp.emitLoad(CPUReg::RAX, 0, CPUBits::B64, true);
+                pp.emitStore0Load64(CPUReg::RAX);
 
                 CPURelocation reloc;
                 reloc.virtualAddress = concat.totalCount() - sizeof(uint64_t) - pp.textSectionOffset;
@@ -2711,6 +2711,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 reloc.symbolIndex    = callSym->index;
                 reloc.type           = IMAGE_REL_AMD64_ADDR64;
                 pp.relocTableTextSection.table.push_back(reloc);
+                
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
                 break;
             }
