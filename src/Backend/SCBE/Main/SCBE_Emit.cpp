@@ -329,7 +329,6 @@ void SCBE::emitAddSubMul64(SCBE_X64& pp, const ByteCodeInstruction* ip, uint64_t
     SWAG_ASSERT(op == CPUOp::ADD || op == CPUOp::SUB);
 
     const auto value = ip->b.u64 * mulValue;
-
     if (ip->hasFlag(BCI_IMM_B) && value == 0)
     {
         if (ip->a.u32 != ip->c.u32)
@@ -371,9 +370,9 @@ void SCBE::emitJumpCmp(SCBE_X64& pp, const ByteCodeInstruction* ip, int32_t inst
         pp.emitLoad(r0, CPUReg::RDI, REG_OFFSET(ip->a.u32), numBits);
         pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->c.u32), r0, numBits);
     }
-    else if (!ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_C) && SCBE_CPU::isInt(numBits) && ip->c.u64 <= 0x7fffffff)
+    else if (SCBE_CPU::isInt(numBits) && !ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_C))
     {
-        pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->a.u32), ip->c.u32, numBits);
+        pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->a.u32), ip->c.u64, numBits);
     }
     else
     {
@@ -391,20 +390,14 @@ void SCBE::emitJumpCmpAddr(SCBE_X64& pp, const ByteCodeInstruction* ip, int32_t 
 {
     SWAG_ASSERT(SCBE_CPU::isInt(numBits));
 
-    if (!ip->hasFlag(BCI_IMM_C))
+    if (ip->hasFlag(BCI_IMM_C))
     {
-        pp.emitLoad(CPUReg::RAX, memReg, memOffset, numBits);
-        pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, numBits);
-    }
-    else if (ip->c.u64 <= 0x7fffffff)
-    {
-        pp.emitCmp(memReg, memOffset, ip->c.u32, numBits);
+        pp.emitCmp(memReg, memOffset, ip->c.u64, numBits);        
     }
     else
     {
         pp.emitLoad(CPUReg::RAX, memReg, memOffset, numBits);
-        emitIMMC(pp, ip, CPUReg::RCX, numBits);
-        pp.emitCmp(CPUReg::RAX, CPUReg::RCX, numBits);
+        pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, numBits);
     }
 
     pp.emitJump(op, instructionCount, ip->b.s32);
