@@ -935,7 +935,10 @@ namespace OS
         return _byteswap_uint64(value);
     }
 
-    thread_local SCBE_X64 g_X64GenFFI;
+    namespace
+    {
+        thread_local SCBE_X64 g_X64GenFFI;
+    };
 
     void ffi(ByteCodeRunContext* context, void* foreignPtr, TypeInfoFuncAttr* typeInfoFunc, const VectorNative<uint32_t>& pushRAParam, void* retCopyAddr)
     {
