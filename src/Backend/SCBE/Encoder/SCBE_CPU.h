@@ -85,6 +85,7 @@ enum class CPUOp : uint8_t
     SHL    = 0xE0,
     SHR    = 0xE8,
     SUB    = 0x29,
+    TEST   = 0x85,
     UCOMIF = 0x2E,
     XCHG   = 0x87,
     XOR    = 0x31,

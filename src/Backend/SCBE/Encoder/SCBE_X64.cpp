@@ -768,11 +768,11 @@ void SCBE_X64::emitSet(CPUReg reg, CPUSet setType)
 
 /////////////////////////////////////////////////////////////////////
 
-void SCBE_X64::emitTest(CPUReg regDst, CPUReg regSrc, CPUBits numBits)
+void SCBE_X64::emitTest(CPUReg reg0, CPUReg reg1, CPUBits numBits)
 {
-    emitREX(concat, numBits, regDst, regSrc);
-    emitSpec8(concat, 0x85, numBits);
-    concat.addU8(getModRM(RegReg, static_cast<uint8_t>(regDst), static_cast<uint8_t>(regSrc)));
+    emitREX(concat, numBits, reg0, reg1);
+    emitSpec8(concat, static_cast<uint8_t>(CPUOp::TEST), numBits);
+    concat.addU8(getModRM(RegReg, static_cast<uint8_t>(reg0), static_cast<uint8_t>(reg1)));
 }
 
 void SCBE_X64::emitCmp(CPUReg reg0, CPUReg reg1, CPUBits numBits)
@@ -795,7 +795,7 @@ void SCBE_X64::emitCmp(CPUReg reg0, CPUReg reg1, CPUBits numBits)
     else
     {
         emitREX(concat, numBits, reg1, reg0);
-        emitSpec8(concat, 0x39, numBits);
+        emitSpec8(concat, static_cast<uint8_t>(CPUOp::CMP), numBits);
         concat.addU8(getModRM(RegReg, static_cast<uint8_t>(reg1), static_cast<uint8_t>(reg0)));
     }
 }
