@@ -238,18 +238,7 @@ void SCBE_X64::emitLoad(CPUReg reg, uint64_t value, CPUBits numBits, bool force6
 
     if (value == 0)
     {
-        if (numBits == CPUBits::F32)
-        {
-            emitClear(CPUReg::RAX, CPUBits::B32);
-            emitCopy(reg, CPUReg::RAX, CPUBits::F32);
-        }
-        else if (numBits == CPUBits::F64)
-        {
-            emitClear(CPUReg::RAX, CPUBits::B64);
-            emitCopy(reg, CPUReg::RAX, CPUBits::F64);
-        }
-        else
-            emitClear(reg, numBits);
+        emitClear(reg, numBits);
         return;
     }
 
@@ -624,9 +613,22 @@ void SCBE_X64::emitStore(CPUReg memReg, uint32_t memOffset, uint64_t value, CPUB
 
 void SCBE_X64::emitClear(CPUReg reg, CPUBits numBits)
 {
-    emitREX(concat, numBits, reg, reg);
-    emitSpec8(concat, static_cast<uint8_t>(CPUOp::XOR), numBits);
-    concat.addU8(getModRM(RegReg, static_cast<uint8_t>(reg), static_cast<uint8_t>(reg)));
+    if (numBits == CPUBits::F32)
+    {
+        emitClear(CPUReg::RAX, CPUBits::B32);
+        emitCopy(reg, CPUReg::RAX, CPUBits::F32);
+    }
+    else if (numBits == CPUBits::F64)
+    {
+        emitClear(CPUReg::RAX, CPUBits::B64);
+        emitCopy(reg, CPUReg::RAX, CPUBits::F64);
+    }
+    else
+    {
+        emitREX(concat, numBits, reg, reg);
+        emitSpec8(concat, static_cast<uint8_t>(CPUOp::XOR), numBits);
+        concat.addU8(getModRM(RegReg, static_cast<uint8_t>(reg), static_cast<uint8_t>(reg)));
+    }
 }
 
 /////////////////////////////////////////////////////////////////////
