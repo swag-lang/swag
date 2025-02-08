@@ -37,7 +37,6 @@ struct SCBE_X64 : SCBE_CPU
     void emitStore(CPUReg memReg, uint32_t memOffset, uint64_t value, CPUBits numBits);
 
     void emitCast(CPUReg regDst, CPUReg regSrc, CPUBits numBitsDst, CPUBits numBitsSrc, bool isSigned);
-    void emitConvert(CPUReg regDst1, CPUReg regDst0, CPUReg regSrc, CPUBits numBits);
 
     void emitCmp(CPUReg reg0, CPUReg reg1, CPUBits numBits);
     void emitCmp(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUBits numBits);

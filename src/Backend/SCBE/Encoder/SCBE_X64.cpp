@@ -78,14 +78,6 @@ namespace
 
 /////////////////////////////////////////////////////////////////////
 
-void SCBE_X64::emitConvert(CPUReg regDst1, CPUReg regDst0, CPUReg regSrc, CPUBits numBits)
-{
-    SWAG_ASSERT(regSrc == CPUReg::RAX);
-    SWAG_ASSERT(regDst0 == CPUReg::RAX && regDst1 == CPUReg::RDX);
-    emitREX(concat, numBits);
-    concat.addU8(static_cast<uint8_t>(CPUOp::CDQ));
-}
-
 void SCBE_X64::emitCast(CPUReg regDst, CPUReg regSrc, CPUBits numBitsDst, CPUBits numBitsSrc, bool isSigned)
 {
     if (numBitsSrc == CPUBits::B8 && numBitsDst == CPUBits::B64 && !isSigned)
@@ -213,9 +205,14 @@ void SCBE_X64::emitLoad(CPUReg reg, CPUReg memReg, uint32_t memOffset, uint64_t 
                 emitLoad(CPUReg::RAX, memReg, memOffset, numBits);
 
             if (op == CPUOp::IDIV || op == CPUOp::IMOD)
-                emitConvert(CPUReg::RDX, CPUReg::RAX, CPUReg::RAX, numBits);
+            {
+                emitREX(concat, numBits);
+                concat.addU8(static_cast<uint8_t>(CPUOp::CDQ));                
+            }
             else
+            {
                 emitClear(CPUReg::RDX, numBits);
+            }
         }
     }
     else if (isImmediate)
