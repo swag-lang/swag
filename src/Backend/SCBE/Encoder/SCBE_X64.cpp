@@ -193,6 +193,41 @@ void SCBE_X64::emitRet()
 
 /////////////////////////////////////////////////////////////////////
 
+void SCBE_X64::emitLoad(CPUReg reg, CPUReg memReg, uint32_t memOffset, uint64_t value, bool isImmediate, CPUOp op, CPUBits numBits)
+{
+    if (op == CPUOp::DIV || op == CPUOp::MOD || op == CPUOp::IDIV || op == CPUOp::IMOD)
+    {
+        SWAG_ASSERT(reg == CPUReg::RAX);
+        if (numBits == CPUBits::B8)
+        {
+            if (isImmediate)
+                emitLoad(CPUReg::RAX, value, CPUBits::B32);
+            else
+                emitLoad(CPUReg::RAX, memReg, memOffset, CPUBits::B32, CPUBits::B8, op == CPUOp::IDIV || op == CPUOp::IMOD);
+        }
+        else
+        {
+            if (isImmediate)
+                emitLoad(CPUReg::RAX, value, numBits);
+            else
+                emitLoad(CPUReg::RAX, memReg, memOffset, numBits);
+
+            if (op == CPUOp::IDIV || op == CPUOp::IMOD)
+                emitConvert(CPUReg::RDX, CPUReg::RAX, CPUReg::RAX, numBits);
+            else
+                emitClear(CPUReg::RDX, numBits);
+        }
+    }
+    else if (isImmediate)
+    {
+        emitLoad(reg, value, numBits);
+    }
+    else
+    {
+        emitLoad(reg, memReg, memOffset, numBits);
+    }
+}
+
 void SCBE_X64::emitLoad(CPUReg reg, uint64_t value, CPUBits numBits, bool force64Bits)
 {
     if (force64Bits)
