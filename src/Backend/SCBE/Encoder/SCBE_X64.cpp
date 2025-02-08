@@ -872,31 +872,38 @@ void SCBE_X64::emitCmp(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUBits nu
     }
 }
 
-void SCBE_X64::emitCmp(CPUReg memReg, uint32_t memOffset, uint32_t value, CPUBits numBits)
+void SCBE_X64::emitCmp(CPUReg memReg, uint32_t memOffset, uint64_t value, CPUBits numBits)
 {
     SWAG_ASSERT(SCBE_CPU::isInt(numBits));
-    emitREX(concat, numBits);
 
-    if (numBits == CPUBits::B8)
+    if (value > 0x7FFFFFFF)
     {
+        emitLoad(CPUReg::RAX, memReg, memOffset, numBits);
+        emitCmp(CPUReg::RAX, value, numBits);
+    }
+    else if (numBits == CPUBits::B8)
+    {
+        emitREX(concat, numBits);
         concat.addU8(0x80);
         emitModRM(concat, memOffset, memReg, memReg, 0x39);
         concat.addU8(static_cast<uint8_t>(value));
     }
     else if (value <= 0x7F)
     {
+        emitREX(concat, numBits);
         concat.addU8(0x83);
         emitModRM(concat, memOffset, memReg, memReg, 0x39);
         concat.addU8(static_cast<uint8_t>(value));
     }
     else
     {
+        emitREX(concat, numBits);
         concat.addU8(0x81);
         emitModRM(concat, memOffset, memReg, memReg, 0x39);
         if (numBits == CPUBits::B16)
             concat.addU16(static_cast<uint16_t>(value));
         else
-            concat.addU32(value);
+            concat.addU32(static_cast<uint32_t>(value));
     }
 }
 
