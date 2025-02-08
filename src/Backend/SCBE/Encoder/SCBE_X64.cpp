@@ -78,28 +78,12 @@ namespace
 
 /////////////////////////////////////////////////////////////////////
 
-void SCBE_X64::emitConvert(CPUReg regDst1, CPUReg regDst0, CPUReg regSrc, CPUBits srcBits)
+void SCBE_X64::emitConvert(CPUReg regDst1, CPUReg regDst0, CPUReg regSrc, CPUBits numBits)
 {
     SWAG_ASSERT(regSrc == CPUReg::RAX);
     SWAG_ASSERT(regDst0 == CPUReg::RAX && regDst1 == CPUReg::RDX);
-    if (srcBits == CPUBits::B16)
-    {
-        emitREX(concat, CPUBits::B16);
-        concat.addU8(0x99);
-    }
-    else if (srcBits == CPUBits::B32)
-    {
-        concat.addU8(0x99);
-    }
-    else if (srcBits == CPUBits::B64)
-    {
-        emitREX(concat, CPUBits::B64);
-        concat.addU8(0x99);
-    }
-    else
-    {
-        SWAG_ASSERT(false);
-    }
+    emitREX(concat, numBits);
+    concat.addU8(static_cast<uint8_t>(CPUOp::CDQ));
 }
 
 void SCBE_X64::emitCast(CPUReg regDst, CPUReg regSrc, CPUBits numBitsDst, CPUBits numBitsSrc, bool isSigned)
@@ -135,12 +119,7 @@ void SCBE_X64::emitCast(CPUReg regDst, CPUReg regSrc, CPUBits numBitsDst, CPUBit
     }
 }
 
-void SCBE_X64::emitCopyDownUp([[maybe_unused]] CPUReg reg, [[maybe_unused]] CPUBits numBits)
-{
-    SWAG_ASSERT(reg == CPUReg::RAX);
-    SWAG_ASSERT(numBits == CPUBits::B8);
-    concat.addString2("\x88\xe0"); // mov al, ah
-}
+/////////////////////////////////////////////////////////////////////
 
 void SCBE_X64::emitSymbolRelocationRef(const Utf8& name)
 {
@@ -652,6 +631,13 @@ void SCBE_X64::emitCopy(CPUReg regDst, CPUReg regSrc, CPUBits numBits)
     }
 }
 
+void SCBE_X64::emitCopy([[maybe_unused]] CPUReg reg, [[maybe_unused]] CPUBits numBits)
+{
+    SWAG_ASSERT(reg == CPUReg::RAX);
+    SWAG_ASSERT(numBits == CPUBits::B8);
+    concat.addString2("\x88\xe0"); // mov al, ah
+}
+
 /////////////////////////////////////////////////////////////////////
 
 void SCBE_X64::emitSet(CPUReg reg, CPUSet setType)
@@ -961,7 +947,7 @@ void SCBE_X64::emitOp(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits, C
         emitSpec8(concat, 0xF7, numBits);
         concat.addU8(static_cast<uint8_t>(op) & ~2);
         if (numBits == CPUBits::B8)
-            emitCopyDownUp(CPUReg::RAX, numBits);
+            emitCopy(CPUReg::RAX, numBits);
         else
             emitCopy(CPUReg::RAX, CPUReg::RDX, numBits);
     }

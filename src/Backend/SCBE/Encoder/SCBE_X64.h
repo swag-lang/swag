@@ -36,8 +36,7 @@ struct SCBE_X64 : SCBE_CPU
     void emitStore(CPUReg memReg, uint32_t memOffset, uint64_t value, CPUBits numBits);
 
     void emitCast(CPUReg regDst, CPUReg regSrc, CPUBits numBitsDst, CPUBits numBitsSrc, bool isSigned);
-    void emitConvert(CPUReg regDst1, CPUReg regDst0, CPUReg regSrc, CPUBits srcBits);
-    void emitCopyDownUp(CPUReg reg, CPUBits numBits);
+    void emitConvert(CPUReg regDst1, CPUReg regDst0, CPUReg regSrc, CPUBits numBits);
 
     void emitCmp(CPUReg reg0, CPUReg reg1, CPUBits numBits);
     void emitCmp(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUBits numBits);
@@ -47,6 +46,7 @@ struct SCBE_X64 : SCBE_CPU
     void emitClear(CPUReg reg, CPUBits numBits);
     void emitClear(CPUReg memReg, uint32_t memOffset, uint32_t count);
     void emitCopy(CPUReg regDst, CPUReg regSrc, CPUBits numBits);
+    void emitCopy(CPUReg reg, CPUBits numBits);
     void emitCopy(CPUReg regDst, CPUReg regSrc, uint32_t count, uint32_t offset);
     void emitOp(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits, CPUBits srcBits = CPUBits::B32);
     void emitOp(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUOp op, CPUBits numBits, bool lock = false);
