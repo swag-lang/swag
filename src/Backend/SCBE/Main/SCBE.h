@@ -37,9 +37,9 @@ struct SCBE final : Backend
     static void emitShiftEqLogical(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op);
     static void emitInternalPanic(SCBE_X64& pp, const AstNode* node, const char* msg);
     static void emitCompareOp(SCBE_X64& pp, const ByteCodeInstruction* ip);
-    static void emitBinOp(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op);
+    static void emitBinOp(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, CPUEmitFlags emitFlags = EMITF_Zero);
     static void emitBinOpOverflow(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op, SafetyMsg safetyMsg, TypeInfo* safetyType);
-    static void emitBinOpEq(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offset, CPUOp op);
+    static void emitBinOpEq(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offset, CPUOp op, CPUEmitFlags emitFlags = EMITF_Zero);
     static void emitBinOpEqOverflow(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offset, CPUOp op, SafetyMsg safetyMsg, TypeInfo* safetyType);
     static void emitBinOpEqS(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offsetStack, CPUOp op);
     static void emitBinOpEqLock(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op);
