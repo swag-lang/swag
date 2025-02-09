@@ -901,12 +901,7 @@ void SCBE_X64::emitCmp(CPUReg memReg, uint32_t memOffset, uint64_t value, CPUBit
 {
     SWAG_ASSERT(SCBE_CPU::isInt(numBits));
 
-    if (value > 0x7FFFFFFF)
-    {
-        emitLoad(CPUReg::RAX, memReg, memOffset, numBits);
-        emitCmp(CPUReg::RAX, value, numBits);
-    }
-    else if (numBits == CPUBits::B8)
+    if (numBits == CPUBits::B8)
     {
         emitREX(concat, numBits);
         concat.addU8(0x80);
@@ -919,6 +914,20 @@ void SCBE_X64::emitCmp(CPUReg memReg, uint32_t memOffset, uint64_t value, CPUBit
         concat.addU8(0x83);
         emitModRM(concat, memOffset, memReg, memReg, 0x39);
         concat.addU8(static_cast<uint8_t>(value));
+    }
+    else if ((numBits == CPUBits::B16 && value == 0xFFFF) ||
+             (numBits == CPUBits::B32 && value == 0xFFFFFFFF) ||
+             (numBits == CPUBits::B64 && value == 0xFFFFFFFFFFFFFFFF))
+    {
+        emitREX(concat, numBits);
+        concat.addU8(0x83);
+        emitModRM(concat, memOffset, memReg, memReg, 0x39);
+        concat.addU8(static_cast<uint8_t>(value));
+    }
+    else if (value > 0x7FFFFFFF)
+    {
+        emitLoad(CPUReg::RAX, memReg, memOffset, numBits);
+        emitCmp(CPUReg::RAX, value, numBits);
     }
     else
     {
