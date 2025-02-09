@@ -225,13 +225,20 @@ void SCBE::emitBinOpEq(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t off
 
 void SCBE::emitBinOpEqOverflow(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offset, CPUOp op, SafetyMsg safetyMsg, TypeInfo* safetyType)
 {
-    const auto  numBits  = SCBE_CPU::getCPUBits(ip->op);
     const char* msg      = ByteCodeGen::safetyMsg(safetyMsg, safetyType);
     const bool  isSigned = safetyType->isNativeIntegerSigned();
-    SWAG_ASSERT(SCBE_CPU::isInt(numBits));
+    SWAG_ASSERT(SCBE_CPU::isInt(SCBE_CPU::getCPUBits(ip->op)));
 
     emitBinOpEq(pp, ip, 0, op, EMITF_Overflow);
     emitOverflow(pp, ip, msg, isSigned);
+}
+
+void SCBE::emitBinOpEqLock(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op)
+{
+    const auto numBits = SCBE_CPU::getCPUBits(ip->op);
+    pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
+    emitIMMB(pp, ip, CPUReg::RAX, numBits);
+    pp.emitOp(CPUReg::RCX, 0, CPUReg::RAX, op, numBits, EMITF_Lock);
 }
 
 void SCBE::emitBinOpEqS(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offsetStack, CPUOp op)
@@ -250,14 +257,6 @@ void SCBE::emitBinOpEqS(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t of
         emitIMMB(pp, ip, r1, numBits);
         pp.emitOp(r0, 0, r1, op, numBits);
     }
-}
-
-void SCBE::emitBinOpEqLock(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op)
-{
-    const auto numBits = SCBE_CPU::getCPUBits(ip->op);
-    pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-    emitIMMB(pp, ip, CPUReg::RAX, numBits);
-    pp.emitOp(CPUReg::RCX, 0, CPUReg::RAX, op, numBits, EMITF_Lock);
 }
 
 void SCBE::emitCompareOp(SCBE_X64& pp, const ByteCodeInstruction* ip)
