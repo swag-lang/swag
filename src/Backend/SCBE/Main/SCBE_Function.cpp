@@ -315,8 +315,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CastBool32:
             case ByteCodeOp::CastBool64:
                 numBits = SCBE_CPU::getCPUBits(ip->op);
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->b.u32), numBits);
-                pp.emitTest(CPUReg::RAX, CPUReg::RAX, numBits);
+                pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->b.u32), 0, numBits);
                 pp.emitSet(CPUReg::RAX, CPUCondFlag::NE);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B8);
                 break;
@@ -886,8 +885,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::ZeroToTrue:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B32);
-                pp.emitTest(CPUReg::RAX, CPUReg::RAX, CPUBits::B32);
+                pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->a.u32), 0, CPUBits::B32);
                 pp.emitSet(CPUReg::RAX, CPUCondFlag::E);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B8);
                 break;
@@ -897,14 +895,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B8);
                 break;
             case ByteCodeOp::LowerEqZeroToTrue:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B32);
-                pp.emitTest(CPUReg::RAX, CPUReg::RAX, CPUBits::B32);
+                pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->a.u32), 0, CPUBits::B32);
                 pp.emitSet(CPUReg::RAX, CPUCondFlag::LE);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B8);
                 break;
             case ByteCodeOp::GreaterZeroToTrue:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B32);
-                pp.emitTest(CPUReg::RAX, CPUReg::RAX, CPUBits::B32);
+                pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->a.u32), 0, CPUBits::B32);                
                 pp.emitSet(CPUReg::RAX, CPUCondFlag::G);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B8);
                 break;
@@ -1300,63 +1296,51 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::JumpIfTrue:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B8);
-                pp.emitTest(CPUReg::RAX, CPUReg::RAX, CPUBits::B8);
-                pp.emitJump(JNZ, i, ip->b.s32);
-                break;
-            case ByteCodeOp::JumpIfRTTrue:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetRT + REG_OFFSET(0), CPUBits::B8);
-                pp.emitTest(CPUReg::RAX, CPUReg::RAX, CPUBits::B8);
+                pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->a.u32), 0, CPUBits::B8);
                 pp.emitJump(JNZ, i, ip->b.s32);
                 break;
             case ByteCodeOp::JumpIfFalse:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B8);
-                pp.emitTest(CPUReg::RAX, CPUReg::RAX, CPUBits::B8);
+                pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->a.u32), 0, CPUBits::B8);
                 pp.emitJump(JZ, i, ip->b.s32);
                 break;
+            case ByteCodeOp::JumpIfRTTrue:
+                pp.emitCmp(CPUReg::RDI, offsetRT + REG_OFFSET(0), 0, CPUBits::B8);
+                pp.emitJump(JNZ, i, ip->b.s32);
+                break;
             case ByteCodeOp::JumpIfRTFalse:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetRT + REG_OFFSET(0), CPUBits::B8);
-                pp.emitTest(CPUReg::RAX, CPUReg::RAX, CPUBits::B8);
+                pp.emitCmp(CPUReg::RDI, offsetRT + REG_OFFSET(0), 0, CPUBits::B8);
                 pp.emitJump(JZ, i, ip->b.s32);
                 break;
             case ByteCodeOp::JumpIfNotZero8:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B8);
-                pp.emitTest(CPUReg::RAX, CPUReg::RAX, CPUBits::B8);
+                pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->a.u32), 0, CPUBits::B8);
                 pp.emitJump(JNZ, i, ip->b.s32);
                 break;
             case ByteCodeOp::JumpIfNotZero16:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B16);
-                pp.emitTest(CPUReg::RAX, CPUReg::RAX, CPUBits::B16);
+                pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->a.u32), 0, CPUBits::B16);
                 pp.emitJump(JNZ, i, ip->b.s32);
                 break;
             case ByteCodeOp::JumpIfNotZero32:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B32);
-                pp.emitTest(CPUReg::RAX, CPUReg::RAX, CPUBits::B32);
+                pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->a.u32), 0, CPUBits::B32);
                 pp.emitJump(JNZ, i, ip->b.s32);
                 break;
             case ByteCodeOp::JumpIfNotZero64:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-                pp.emitTest(CPUReg::RAX, CPUReg::RAX, CPUBits::B64);
+                pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->a.u32), 0, CPUBits::B64);
                 pp.emitJump(JNZ, i, ip->b.s32);
                 break;
             case ByteCodeOp::JumpIfZero8:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B8);
-                pp.emitTest(CPUReg::RAX, CPUReg::RAX, CPUBits::B8);
+                pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->a.u32), 0, CPUBits::B8);
                 pp.emitJump(JZ, i, ip->b.s32);
                 break;
             case ByteCodeOp::JumpIfZero16:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B16);
-                pp.emitTest(CPUReg::RAX, CPUReg::RAX, CPUBits::B16);
+                pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->a.u32), 0, CPUBits::B16);
                 pp.emitJump(JZ, i, ip->b.s32);
                 break;
             case ByteCodeOp::JumpIfZero32:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B32);
-                pp.emitTest(CPUReg::RAX, CPUReg::RAX, CPUBits::B32);
+                pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->a.u32), 0, CPUBits::B32);
                 pp.emitJump(JZ, i, ip->b.s32);
                 break;
             case ByteCodeOp::JumpIfZero64:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-                pp.emitTest(CPUReg::RAX, CPUReg::RAX, CPUBits::B64);
+                pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->a.u32), 0, CPUBits::B64);
                 pp.emitJump(JZ, i, ip->b.s32);
                 break;
             case ByteCodeOp::Jump:
@@ -2709,7 +2693,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 reloc.symbolIndex    = callSym->index;
                 reloc.type           = IMAGE_REL_AMD64_ADDR64;
                 pp.relocTableTextSection.table.push_back(reloc);
-                
+
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
                 break;
             }
