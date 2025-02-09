@@ -205,8 +205,8 @@ void SCBE::emitBinOpOverflow(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp 
     emitIMMA(pp, ip, r0, numBits);
     emitIMMB(pp, ip, r1, numBits);
     pp.emitOp(r0, r1, op, numBits);
-    emitOverflow(pp, ip, msg, isSigned);
     pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), r0, numBits);
+    emitOverflow(pp, ip, msg, isSigned);
 }
 
 void SCBE::emitBinOpEq(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offset, CPUOp op)
@@ -234,8 +234,11 @@ void SCBE::emitBinOpEqOverflow(SCBE_X64& pp, const ByteCodeInstruction* ip, uint
     const char* msg      = ByteCodeGen::safetyMsg(safetyMsg, safetyType);
     const bool  isSigned = safetyType->isNativeIntegerSigned();
 
-    emitBinOpEq(pp, ip, offset, op);
-    pp.emitSet(CPUReg::RAX, isSigned ? CPUSet::SetO : CPUSet::SetAE);
+    pp.emitLoad(CPUReg::R8, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
+    pp.emitLoad(CPUReg::RAX, CPUReg::R8, offset, numBits);
+    emitIMMB(pp, ip, CPUReg::RCX, numBits);
+    pp.emitOp(CPUReg::RAX, CPUReg::RCX, op, numBits);
+    pp.emitStore(CPUReg::R8, offset, CPUReg::RAX, numBits);
     emitOverflow(pp, ip, msg, isSigned);
 }
 

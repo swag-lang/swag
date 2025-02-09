@@ -79,6 +79,7 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
         buildCfg.debugAllocator        = true;
         buildCfg.backendOptimize       = BuildCfgBackendOptim::O0;
         buildCfg.backendDebugInfos     = true;
+        buildCfg.backendDebugInline    = true;
     }
     else if (g_CommandLine.buildCfg == "fast-debug")
     {
@@ -152,9 +153,9 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
         else if (g_CommandLine.buildCfgOptim == "O3")
             buildCfg.backendOptimize = BuildCfgBackendOptim::O3;
         else if (g_CommandLine.buildCfgOptim == "Os")
-            buildCfg.backendOptimize = BuildCfgBackendOptim::Os;        
+            buildCfg.backendOptimize = BuildCfgBackendOptim::Os;
         else if (g_CommandLine.buildCfgOptim == "Oz")
-            buildCfg.backendOptimize = BuildCfgBackendOptim::Oz;        
+            buildCfg.backendOptimize = BuildCfgBackendOptim::Oz;
     }
 
     if (!g_CommandLine.docCss.empty())
