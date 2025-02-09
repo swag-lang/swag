@@ -900,7 +900,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B8);
                 break;
             case ByteCodeOp::GreaterZeroToTrue:
-                pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->a.u32), 0, CPUBits::B32);                
+                pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->a.u32), 0, CPUBits::B32);
                 pp.emitSet(CPUReg::RAX, CPUCondFlag::G);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B8);
                 break;
@@ -1125,26 +1125,11 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::TestNotZero8:
-                emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B8);
-                pp.emitTest(CPUReg::RAX, CPUReg::RAX, CPUBits::B8);
-                pp.emitSet(CPUReg::RAX, CPUCondFlag::NE);
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B8);
-                break;
             case ByteCodeOp::TestNotZero16:
-                emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B16);
-                pp.emitTest(CPUReg::RAX, CPUReg::RAX, CPUBits::B16);
-                pp.emitSet(CPUReg::RAX, CPUCondFlag::NE);
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B8);
-                break;
             case ByteCodeOp::TestNotZero32:
-                emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B32);
-                pp.emitTest(CPUReg::RAX, CPUReg::RAX, CPUBits::B32);
-                pp.emitSet(CPUReg::RAX, CPUCondFlag::NE);
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B8);
-                break;
             case ByteCodeOp::TestNotZero64:
-                emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B64);
-                pp.emitTest(CPUReg::RAX, CPUReg::RAX, CPUBits::B64);
+                emitIMMB(pp, ip, CPUReg::RAX, numBits);
+                pp.emitTest(CPUReg::RAX, CPUReg::RAX, numBits);
                 pp.emitSet(CPUReg::RAX, CPUCondFlag::NE);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B8);
                 break;
