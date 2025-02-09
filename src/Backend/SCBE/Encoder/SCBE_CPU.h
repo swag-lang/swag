@@ -91,25 +91,25 @@ enum class CPUOp : uint8_t
     XOR    = 0x31,
 };
 
-enum class CPUSet
+enum class CPUCondFlag
 {
-    SetA,
-    SetO,
-    SetAE,
-    SetG,
-    SetB,
-    SetBE,
-    SetE,
-    SetEP,
-    SetGE,
-    SetL,
-    SetLE,
-    SetNA,
-    SetNE,
-    SetNEP,
+    A,
+    O,
+    AE,
+    G,
+    B,
+    BE,
+    E,
+    EP,
+    GE,
+    L,
+    LE,
+    NA,
+    NE,
+    NEP,
 };
 
-enum CPUJumpType
+enum CPUCondJump
 {
     JNO,
     JNZ,

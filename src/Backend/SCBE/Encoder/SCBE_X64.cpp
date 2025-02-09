@@ -669,11 +669,11 @@ void SCBE_X64::emitCopy([[maybe_unused]] CPUReg reg, [[maybe_unused]] CPUBits nu
 
 /////////////////////////////////////////////////////////////////////
 
-void SCBE_X64::emitSet(CPUReg reg, CPUSet setType)
+void SCBE_X64::emitSet(CPUReg reg, CPUCondFlag setType)
 {
     switch (setType)
     {
-        case CPUSet::SetA:
+        case CPUCondFlag::A:
             SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::R8);
             if (reg >= CPUReg::R8)
                 concat.addU8(0x41);
@@ -682,7 +682,7 @@ void SCBE_X64::emitSet(CPUReg reg, CPUSet setType)
             concat.addU8(0xC0 | (static_cast<uint8_t>(reg) & 0b111));
             break;
 
-        case CPUSet::SetO:
+        case CPUCondFlag::O:
             SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::R8);
             if (reg >= CPUReg::R8)
                 concat.addU8(0x41);
@@ -691,7 +691,7 @@ void SCBE_X64::emitSet(CPUReg reg, CPUSet setType)
             concat.addU8(0xC0 | (static_cast<uint8_t>(reg) & 0b111));
             break;
 
-        case CPUSet::SetAE:
+        case CPUCondFlag::AE:
             SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::R8);
             if (reg >= CPUReg::R8)
                 concat.addU8(0x41);
@@ -700,7 +700,7 @@ void SCBE_X64::emitSet(CPUReg reg, CPUSet setType)
             concat.addU8(0xC0 | (static_cast<uint8_t>(reg) & 0b111));
             break;
 
-        case CPUSet::SetG:
+        case CPUCondFlag::G:
             SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::R8);
             if (reg >= CPUReg::R8)
                 concat.addU8(0x41);
@@ -709,42 +709,42 @@ void SCBE_X64::emitSet(CPUReg reg, CPUSet setType)
             concat.addU8(0xC0 | (static_cast<uint8_t>(reg) & 0b111));
             break;
 
-        case CPUSet::SetNE:
+        case CPUCondFlag::NE:
             SWAG_ASSERT(reg == CPUReg::RAX);
             concat.addU8(0x0F);
             concat.addU8(0x95);
             concat.addU8(0xC0);
             break;
 
-        case CPUSet::SetNA:
+        case CPUCondFlag::NA:
             SWAG_ASSERT(reg == CPUReg::RAX);
             concat.addU8(0x0F);
             concat.addU8(0x96);
             concat.addU8(0xC0);
             break;
 
-        case CPUSet::SetB:
+        case CPUCondFlag::B:
             SWAG_ASSERT(reg == CPUReg::RAX);
             concat.addU8(0x0F);
             concat.addU8(0x92);
             concat.addU8(0xC0);
             break;
 
-        case CPUSet::SetBE:
+        case CPUCondFlag::BE:
             SWAG_ASSERT(reg == CPUReg::RAX);
             concat.addU8(0x0F);
             concat.addU8(0x96);
             concat.addU8(0xC0);
             break;
 
-        case CPUSet::SetE:
+        case CPUCondFlag::E:
             SWAG_ASSERT(reg == CPUReg::RAX);
             concat.addU8(0x0F);
             concat.addU8(0x94);
             concat.addU8(0xC0);
             break;
 
-        case CPUSet::SetEP:
+        case CPUCondFlag::EP:
             SWAG_ASSERT(reg == CPUReg::RAX);
 
             // sete al
@@ -762,7 +762,7 @@ void SCBE_X64::emitSet(CPUReg reg, CPUSet setType)
             concat.addU8(0xE0);
             break;
 
-        case CPUSet::SetNEP:
+        case CPUCondFlag::NEP:
             SWAG_ASSERT(reg == CPUReg::RAX);
 
             // setne al
@@ -780,21 +780,21 @@ void SCBE_X64::emitSet(CPUReg reg, CPUSet setType)
             concat.addU8(0xE0);
             break;
 
-        case CPUSet::SetGE:
+        case CPUCondFlag::GE:
             SWAG_ASSERT(reg == CPUReg::RAX);
             concat.addU8(0x0F);
             concat.addU8(0x9D);
             concat.addU8(0xC0);
             break;
 
-        case CPUSet::SetL:
+        case CPUCondFlag::L:
             SWAG_ASSERT(reg == CPUReg::RAX);
             concat.addU8(0x0F);
             concat.addU8(0x9C);
             concat.addU8(0xC0);
             break;
 
-        case CPUSet::SetLE:
+        case CPUCondFlag::LE:
             SWAG_ASSERT(reg == CPUReg::RAX);
             concat.addU8(0x0F);
             concat.addU8(0x9E);
@@ -1392,7 +1392,7 @@ void SCBE_X64::emitOp(CPUReg memReg, uint32_t memOffset, uint64_t value, CPUOp o
 
 /////////////////////////////////////////////////////////////////////
 
-uint8_t* SCBE_X64::emitJumpNear(CPUJumpType jumpType)
+uint8_t* SCBE_X64::emitJumpNear(CPUCondJump jumpType)
 {
     switch (jumpType)
     {
@@ -1447,7 +1447,7 @@ uint8_t* SCBE_X64::emitJumpNear(CPUJumpType jumpType)
     return concat.getSeekPtr() - 1;
 }
 
-uint32_t* SCBE_X64::emitJumpLong(CPUJumpType jumpType)
+uint32_t* SCBE_X64::emitJumpLong(CPUCondJump jumpType)
 {
     switch (jumpType)
     {
@@ -1522,7 +1522,7 @@ void SCBE_X64::emitJumpTable([[maybe_unused]] CPUReg table, [[maybe_unused]] CPU
     concat.addString3("\x63\x0C\x81"); // movsx rcx, dword ptr [rcx + rax*4]
 }
 
-void SCBE_X64::emitJump(CPUJumpType jumpType, int32_t instructionCount, int32_t jumpOffset)
+void SCBE_X64::emitJump(CPUCondJump jumpType, int32_t instructionCount, int32_t jumpOffset)
 {
     CPULabelToSolve label;
     label.ipDest = jumpOffset + instructionCount + 1;

@@ -335,7 +335,7 @@ void SCBE::emitAddSubMul64(SCBE_X64& pp, const ByteCodeInstruction* ip, uint64_t
     }
 }
 
-void SCBE::emitJumpCmp(SCBE_X64& pp, const ByteCodeInstruction* ip, int32_t instructionCount, CPUJumpType op, CPUBits numBits)
+void SCBE::emitJumpCmp(SCBE_X64& pp, const ByteCodeInstruction* ip, int32_t instructionCount, CPUCondJump op, CPUBits numBits)
 {
     if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_C))
     {
@@ -359,7 +359,7 @@ void SCBE::emitJumpCmp(SCBE_X64& pp, const ByteCodeInstruction* ip, int32_t inst
     pp.emitJump(op, instructionCount, ip->b.s32);
 }
 
-void SCBE::emitJumpCmpAddr(SCBE_X64& pp, const ByteCodeInstruction* ip, int32_t instructionCount, CPUJumpType op, CPUReg memReg, uint32_t memOffset, CPUBits numBits)
+void SCBE::emitJumpCmpAddr(SCBE_X64& pp, const ByteCodeInstruction* ip, int32_t instructionCount, CPUCondJump op, CPUReg memReg, uint32_t memOffset, CPUBits numBits)
 {
     SWAG_ASSERT(SCBE_CPU::isInt(numBits));
 
@@ -376,7 +376,7 @@ void SCBE::emitJumpCmpAddr(SCBE_X64& pp, const ByteCodeInstruction* ip, int32_t 
     pp.emitJump(op, instructionCount, ip->b.s32);
 }
 
-void SCBE::emitJumpCmp2(SCBE_X64& pp, const ByteCodeInstruction* ip, int32_t instructionCount, CPUJumpType op1, CPUJumpType op2, CPUBits numBits)
+void SCBE::emitJumpCmp2(SCBE_X64& pp, const ByteCodeInstruction* ip, int32_t instructionCount, CPUCondJump op1, CPUCondJump op2, CPUBits numBits)
 {
     SWAG_ASSERT(SCBE_CPU::isFloat(numBits));
 
@@ -396,7 +396,7 @@ void SCBE::emitJumpCmp2(SCBE_X64& pp, const ByteCodeInstruction* ip, int32_t ins
     pp.emitJump(op2, instructionCount, ip->b.s32);
 }
 
-void SCBE::emitJumpCmp3(SCBE_X64& pp, const ByteCodeInstruction* ip, int32_t instructionCount, CPUJumpType op1, CPUJumpType op2, CPUBits numBits)
+void SCBE::emitJumpCmp3(SCBE_X64& pp, const ByteCodeInstruction* ip, int32_t instructionCount, CPUCondJump op1, CPUCondJump op2, CPUBits numBits)
 {
     SWAG_ASSERT(SCBE_CPU::isFloat(numBits));
 
