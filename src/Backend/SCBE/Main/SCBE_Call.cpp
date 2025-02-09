@@ -11,7 +11,6 @@
 void SCBE::emitGetParam(SCBE_X64& pp, const CPUFunction* cpuFct, uint32_t reg, uint32_t paramIdx, int sizeOf, uint64_t toAdd, int deRefSize)
 {
     const auto     typeFunc   = cpuFct->typeFunc;
-    const auto&    cc         = typeFunc->getCallConv();
     const uint32_t paramStack = SCBE_CPU::getParamStackOffset(cpuFct, paramIdx);
     auto           typeParam  = TypeManager::concreteType(typeFunc->parameters[typeFunc->registerIdxToParamIdx(paramIdx)]->typeInfo);
     if (typeParam->isAutoConstPointerRef())
@@ -21,26 +20,17 @@ void SCBE::emitGetParam(SCBE_X64& pp, const CPUFunction* cpuFct, uint32_t reg, u
     {
         case 1:
             SWAG_ASSERT(!toAdd);
-            if (paramIdx < cpuFct->numScratchRegs)
-                pp.emitCast(CPUReg::RAX, static_cast<CPUReg>(static_cast<int>(cc.firstScratchRegister) + paramIdx), CPUBits::B64, CPUBits::B8, false);
-            else
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, paramStack, CPUBits::B64, CPUBits::B8, false);
+            pp.emitLoad(CPUReg::RAX, CPUReg::RDI, paramStack, CPUBits::B64, CPUBits::B8, false);
             pp.emitStore(CPUReg::RDI, REG_OFFSET(reg), CPUReg::RAX, CPUBits::B64);
             return;
         case 2:
             SWAG_ASSERT(!toAdd);
-            if (paramIdx < cpuFct->numScratchRegs)
-                pp.emitCast(CPUReg::RAX, static_cast<CPUReg>(static_cast<int>(cc.firstScratchRegister) + paramIdx), CPUBits::B64, CPUBits::B16, false);
-            else
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, paramStack, CPUBits::B64, CPUBits::B16, false);
+            pp.emitLoad(CPUReg::RAX, CPUReg::RDI, paramStack, CPUBits::B64, CPUBits::B16, false);
             pp.emitStore(CPUReg::RDI, REG_OFFSET(reg), CPUReg::RAX, CPUBits::B64);
             return;
         case 4:
             SWAG_ASSERT(!toAdd);
-            if (paramIdx < cpuFct->numScratchRegs)
-                pp.emitCopy(CPUReg::RAX, static_cast<CPUReg>(static_cast<int>(cc.firstScratchRegister) + paramIdx), CPUBits::B32);
-            else
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, paramStack, CPUBits::B32);
+            pp.emitLoad(CPUReg::RAX, CPUReg::RDI, paramStack, CPUBits::B32);
             pp.emitStore(CPUReg::RDI, REG_OFFSET(reg), CPUReg::RAX, CPUBits::B64);
             return;
         default:
@@ -50,68 +40,31 @@ void SCBE::emitGetParam(SCBE_X64& pp, const CPUFunction* cpuFct, uint32_t reg, u
 
     const bool structByValue = CallConv::structParamByValue(typeFunc, typeParam);
 
-    // Use scratch registers
-    if (paramIdx < cpuFct->numScratchRegs && !structByValue)
-    {
-        const auto scratch = static_cast<CPUReg>(static_cast<int>(cc.firstScratchRegister) + paramIdx);
-        if (toAdd == 0 && deRefSize == 0)
-        {
-            pp.emitStore(CPUReg::RDI, REG_OFFSET(reg), scratch, CPUBits::B64);
-        }
-        else
-        {
-            switch (deRefSize)
-            {
-                case 1:
-                    pp.emitLoad(CPUReg::RAX, scratch, static_cast<uint32_t>(toAdd), CPUBits::B64, CPUBits::B8, false);
-                    break;
-                case 2:
-                    pp.emitLoad(CPUReg::RAX, scratch, static_cast<uint32_t>(toAdd), CPUBits::B64, CPUBits::B16, false);
-                    break;
-                case 4:
-                    pp.emitLoad(CPUReg::RAX, scratch, static_cast<uint32_t>(toAdd), CPUBits::B32);
-                    break;
-                case 8:
-                    pp.emitLoad(CPUReg::RAX, scratch, static_cast<uint32_t>(toAdd), CPUBits::B64);
-                    break;
-                default:
-                    pp.emitSetAddress(CPUReg::RAX, scratch, static_cast<uint32_t>(toAdd));
-                    break;
-            }
-
-            pp.emitStore(CPUReg::RDI, REG_OFFSET(reg), CPUReg::RAX, CPUBits::B64);
-        }
-    }
-
-    // Normal access, use stack
+    if (structByValue)
+        pp.emitSetAddress(CPUReg::RAX, CPUReg::RDI, paramStack);
     else
+        pp.emitLoad(CPUReg::RAX, CPUReg::RDI, paramStack, CPUBits::B64);
+    
+    switch (deRefSize)
     {
-        if (structByValue)
-            pp.emitSetAddress(CPUReg::RAX, CPUReg::RDI, paramStack);
-        else
-            pp.emitLoad(CPUReg::RAX, CPUReg::RDI, paramStack, CPUBits::B64);
-
-        switch (deRefSize)
-        {
-            case 1:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RAX, static_cast<uint32_t>(toAdd), CPUBits::B64, CPUBits::B8, false);
-                break;
-            case 2:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RAX, static_cast<uint32_t>(toAdd), CPUBits::B64, CPUBits::B16, false);
-                break;
-            case 4:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RAX, static_cast<uint32_t>(toAdd), CPUBits::B32);
-                break;
-            case 8:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RAX, static_cast<uint32_t>(toAdd), CPUBits::B64);
-                break;
-            default:
-                pp.emitOp(CPUReg::RAX, toAdd, CPUOp::ADD, CPUBits::B64);
-                break;
-        }
-
-        pp.emitStore(CPUReg::RDI, REG_OFFSET(reg), CPUReg::RAX, CPUBits::B64);
+        case 1:
+            pp.emitLoad(CPUReg::RAX, CPUReg::RAX, static_cast<uint32_t>(toAdd), CPUBits::B64, CPUBits::B8, false);
+            break;
+        case 2:
+            pp.emitLoad(CPUReg::RAX, CPUReg::RAX, static_cast<uint32_t>(toAdd), CPUBits::B64, CPUBits::B16, false);
+            break;
+        case 4:
+            pp.emitLoad(CPUReg::RAX, CPUReg::RAX, static_cast<uint32_t>(toAdd), CPUBits::B32);
+            break;
+        case 8:
+            pp.emitLoad(CPUReg::RAX, CPUReg::RAX, static_cast<uint32_t>(toAdd), CPUBits::B64);
+            break;
+        default:
+            pp.emitOp(CPUReg::RAX, toAdd, CPUOp::ADD, CPUBits::B64);
+            break;
     }
+
+    pp.emitStore(CPUReg::RDI, REG_OFFSET(reg), CPUReg::RAX, CPUBits::B64);
 }
 
 void SCBE::emitCall(SCBE_X64& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcName, const VectorNative<CPUPushParam>& pushParams, uint32_t offsetRT, bool localCall)

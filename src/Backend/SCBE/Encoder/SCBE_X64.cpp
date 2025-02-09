@@ -1371,6 +1371,15 @@ void SCBE_X64::emitOp(CPUReg memReg, uint32_t memOffset, uint64_t value, CPUOp o
     }
     else
     {
+        /*if (op == CPUOp::ADD)
+        {
+            SWAG_ASSERT(memReg != CPUReg::RCX);
+            emitLoad(CPUReg::RCX, memReg, memOffset, numBits);
+            emitOp(CPUReg::RCX, value, op, numBits, emitFlags);
+            emitStore(memReg, memOffset, CPUReg::RCX, numBits);
+            return;
+        }*/
+        
         SWAG_ASSERT(memReg == CPUReg::RAX || memReg == CPUReg::RDI);
         emitREX(concat, numBits);
         if (numBits == CPUBits::B8)

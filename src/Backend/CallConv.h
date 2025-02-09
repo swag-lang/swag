@@ -60,10 +60,6 @@ struct CallConv
     // The register used to return a float
     CPUReg returnByRegisterFloat = CPUReg::XMM0;
 
-    // Scratch registers used to optimized generation (x64 backend)
-    CPUReg   firstScratchRegister = CPUReg::R12;
-    uint32_t numScratchRegisters  = 4;
-
     // If a float is passed by register, use 'paramByRegisterFloat' instead of 'paramByRegisterInteger'
     bool useRegisterFloat = true;
 

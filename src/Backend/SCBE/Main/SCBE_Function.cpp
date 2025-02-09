@@ -117,16 +117,6 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     unwindRegs.push_back(CPUReg::RDI);
     unwindOffsetRegs.push_back(concat.totalCount() - beforeProlog);
 
-    // Push on scratch register per parameter
-    while (cpuFct->numScratchRegs < min(cc.numScratchRegisters, min(cc.paramByRegisterCount, numTotalRegs)))
-    {
-        auto cpuReg = static_cast<CPUReg>(static_cast<int>(cc.firstScratchRegister) + cpuFct->numScratchRegs);
-        pp.emitPush(cpuReg);
-        unwindRegs.push_back(cpuReg);
-        unwindOffsetRegs.push_back(concat.totalCount() - beforeProlog);
-        cpuFct->numScratchRegs++;
-    }
-
     // Stack align
     if ((unwindRegs.size() & 1) == 0)
         sizeStack += sizeof(void*);
@@ -167,10 +157,6 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             pp.emitStore(CPUReg::RDI, stackOffset, cc.paramByRegisterFloat[iReg], CPUBits::F64);
         else
             pp.emitStore(CPUReg::RDI, stackOffset, cc.paramByRegisterInteger[iReg], CPUBits::B64);
-
-        if (iReg < cpuFct->numScratchRegs)
-            pp.emitLoad(static_cast<CPUReg>(static_cast<int>(cc.firstScratchRegister) + iReg), CPUReg::RDI, stackOffset, CPUBits::B64);
-
         iReg++;
     }
 
