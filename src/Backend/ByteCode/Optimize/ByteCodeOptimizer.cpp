@@ -752,11 +752,10 @@ bool ByteCodeOptimizer::optimizeStep1(ByteCodeOptContext* context)
     OPT_PASS_O1(optimizePassImmediate);
     OPT_PASS_O1(optimizePassImmediate2);
     OPT_PASS_O1(optimizePassConst);
-
     OPT_PASS_O2(optimizePassJump);
     OPT_PASS_O2(optimizePassDeadCode);
-    OPT_PASS_O2(optimizePassDupCopyRBRA);
-    OPT_PASS_O2(optimizePassDupSetRA);
+    OPT_PASS_O1(optimizePassDupCopyRBRA);
+    OPT_PASS_O1(optimizePassDupSetRA);
     OPT_PASS_O2(optimizePassRetCopyLocal);
     OPT_PASS_O2(optimizePassRetCopyGlobal);
     OPT_PASS_O2(optimizePassRetCopyStructVal);
@@ -787,11 +786,10 @@ bool ByteCodeOptimizer::optimizeStep1(ByteCodeOptContext* context)
         OPT_REDUCE_O2(reduceCopy);
     }
 
-    OPT_PASS_O2(optimizePassDeadStore);
-    OPT_PASS_O2(optimizePassDeadStoreDup);
+    OPT_PASS_O1(optimizePassDeadStore);
+    OPT_PASS_O1(optimizePassDeadStoreDup);
     OPT_PASS_O2(optimizePassSwap);
     OPT_PASS_O2(optimizePassParam);
-
     return true;
 }
 
