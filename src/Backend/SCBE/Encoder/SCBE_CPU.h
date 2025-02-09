@@ -94,6 +94,7 @@ enum class CPUOp : uint8_t
 enum class CPUSet
 {
     SetA,
+    SetO,
     SetAE,
     SetG,
     SetB,

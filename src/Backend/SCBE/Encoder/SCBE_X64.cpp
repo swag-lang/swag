@@ -314,7 +314,7 @@ void SCBE_X64::emitLoad(CPUReg reg, CPUReg memReg, uint32_t memOffset, CPUBits n
         emitLoad(reg, memReg, memOffset, numBitsSrc);
         return;
     }
-    
+
     if (numBitsSrc == CPUBits::B8)
     {
         switch (numBitsDst)
@@ -679,6 +679,15 @@ void SCBE_X64::emitSet(CPUReg reg, CPUSet setType)
                 concat.addU8(0x41);
             concat.addU8(0x0F);
             concat.addU8(0x97);
+            concat.addU8(0xC0 | (static_cast<uint8_t>(reg) & 0b111));
+            break;
+
+        case CPUSet::SetO:
+            SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::R8);
+            if (reg >= CPUReg::R8)
+                concat.addU8(0x41);
+            concat.addU8(0x0F);
+            concat.addU8(0x90);
             concat.addU8(0xC0 | (static_cast<uint8_t>(reg) & 0b111));
             break;
 
