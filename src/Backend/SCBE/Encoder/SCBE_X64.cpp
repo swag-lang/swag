@@ -415,16 +415,20 @@ void SCBE_X64::emitLoad(CPUReg reg, CPUReg memReg, uint32_t memOffset, CPUBits n
 
 void SCBE_X64::emitLoad(CPUReg reg, CPUReg memReg, uint32_t memOffset, CPUBits numBits)
 {
-    if (isInt(numBits) &&
-        storageRegStack == memOffset &&
-        storageReg == reg &&
-        storageMemReg == memReg &&
-        storageRegBits >= countBits(numBits) &&
-        storageRegCount == concat.totalCount())
+    if (!buildParams.buildCfg ||
+        buildParams.buildCfg->backendOptimize != BuildCfgBackendOptim::O0)
     {
-        if (numBits == CPUBits::B32 && storageRegBits > 32)
-            emitCopy(CPUReg::RAX, CPUReg::RAX, CPUBits::B32);
-        return;
+        if (storageRegStack == memOffset &&
+            storageReg == reg &&
+            storageMemReg == memReg &&
+            storageRegCount == concat.totalCount() &&
+            isInt(numBits) &&
+            storageRegBits >= countBits(numBits))
+        {
+            if (numBits == CPUBits::B32 && storageRegBits > 32)
+                emitCopy(reg, reg, CPUBits::B32);
+            return;
+        }
     }
 
     switch (numBits)

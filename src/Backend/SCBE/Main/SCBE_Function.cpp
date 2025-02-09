@@ -48,9 +48,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     concat.align(16);
     uint32_t startAddress = concat.totalCount();
 
-    pp.clearInstructionCache();
-    pp.labels.clear();
-    pp.labelsToSolve.clear();
+    pp.init(buildParameters);
     bc->markLabels();
 
     // Get function name

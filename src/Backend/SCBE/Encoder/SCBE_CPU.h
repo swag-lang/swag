@@ -18,8 +18,8 @@ enum class CPUBits : uint32_t
     B16     = 16,
     B32     = 32,
     B64     = 64,
-    F32,
-    F64,
+    F32     = 65,
+    F64     = 66,
 };
 
 enum class CPUPushParamType
@@ -183,6 +183,7 @@ struct CPUFunction
 
 struct SCBE_CPU : BackendEncoder
 {
+    void             init(const BuildParameters& buildParameters);
     void             clearInstructionCache();
     CPUSymbol*       getSymbol(const Utf8& name);
     CPUSymbol*       getOrAddSymbol(const Utf8& name, CPUSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);
@@ -198,8 +199,9 @@ struct SCBE_CPU : BackendEncoder
     static bool isInt(CPUBits numBits) { return numBits == CPUBits::B8 || numBits == CPUBits::B16 || numBits == CPUBits::B32 || numBits == CPUBits::B64; }
     static bool isFloat(CPUBits numBits) { return numBits == CPUBits::F32 || numBits == CPUBits::F64; }
 
-    Concat concat;
-    Concat postConcat;
+    BuildParameters buildParams;
+    Concat          concat;
+    Concat          postConcat;
 
     VectorNative<const Utf8*>     stringTable;
     VectorNative<CPUPushParam>    pushParams;
