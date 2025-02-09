@@ -265,7 +265,7 @@ void SCBE::emitBinOpEqLock(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op
     const auto numBits = SCBE_CPU::getCPUBits(ip->op);
     pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
     emitIMMB(pp, ip, CPUReg::RAX, numBits);
-    pp.emitOp(CPUReg::RCX, 0, CPUReg::RAX, op, numBits, true);
+    pp.emitOp(CPUReg::RCX, 0, CPUReg::RAX, op, numBits, EMITF_Lock);
 }
 
 void SCBE::emitCompareOp(SCBE_X64& pp, const ByteCodeInstruction* ip)

@@ -127,6 +127,12 @@ enum CPUCondJump
     JUMP,
 };
 
+using CPUEmitFlags                    = Flags<uint32_t>;
+constexpr CPUEmitFlags EMITF_Zero     = 0x00000000;
+constexpr CPUEmitFlags EMITF_Overflow = 0x00000001;
+constexpr CPUEmitFlags EMITF_Lock     = 0x00000002;
+constexpr CPUEmitFlags EMITF_B64      = 0x00000004;
+
 struct CPULabelToSolve
 {
     uint32_t ipDest;

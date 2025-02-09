@@ -934,7 +934,7 @@ void SCBE_X64::emitCmp(CPUReg memReg, uint32_t memOffset, uint64_t value, CPUBit
 
 /////////////////////////////////////////////////////////////////////
 
-void SCBE_X64::emitOp(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits, CPUBits srcBits)
+void SCBE_X64::emitOp(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits, CPUEmitFlags emitFlags)
 {
     if (numBits == CPUBits::F32)
     {
@@ -944,7 +944,7 @@ void SCBE_X64::emitOp(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits, C
             op != CPUOp::FXOR)
         {
             concat.addU8(0xF3);
-            emitREX(concat, srcBits, regSrc);
+            emitREX(concat, emitFlags.has(EMITF_B64) ? CPUBits::B64 : CPUBits::B32, regSrc);
         }
 
         concat.addU8(0x0F);
@@ -959,7 +959,7 @@ void SCBE_X64::emitOp(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits, C
             op != CPUOp::FXOR)
         {
             concat.addU8(0xF2);
-            emitREX(concat, srcBits, regSrc);
+            emitREX(concat, emitFlags.has(EMITF_B64) ? CPUBits::B64 : CPUBits::B32, regSrc);
         }
         else
         {
@@ -1048,7 +1048,7 @@ void SCBE_X64::emitOp(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits, C
     }
 }
 
-void SCBE_X64::emitOp(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUOp op, CPUBits numBits, bool lock)
+void SCBE_X64::emitOp(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUOp op, CPUBits numBits, CPUEmitFlags emitFlags)
 {
     if (numBits == CPUBits::F32 ||
         numBits == CPUBits::F64)
@@ -1056,7 +1056,7 @@ void SCBE_X64::emitOp(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUOp op, C
         SWAG_ASSERT(reg == CPUReg::XMM1);
         SWAG_ASSERT(memReg < CPUReg::R8);
         emitLoad(CPUReg::XMM0, memReg, memOffset, numBits);
-        emitOp(CPUReg::XMM0, reg, op, numBits, numBits);
+        emitOp(CPUReg::XMM0, reg, op, numBits, emitFlags);
         emitStore(memReg, memOffset, CPUReg::XMM0, numBits);
     }
     else if (op == CPUOp::IMUL ||
@@ -1066,7 +1066,7 @@ void SCBE_X64::emitOp(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUOp op, C
         SWAG_ASSERT(reg == CPUReg::RCX);
         emitCopy(CPUReg::R8, memReg, CPUBits::B64);
         emitLoad(CPUReg::RAX, memReg, memOffset, numBits);
-        emitOp(CPUReg::RAX, reg, op, numBits);
+        emitOp(CPUReg::RAX, reg, op, numBits, emitFlags);
         emitStore(CPUReg::R8, memOffset, CPUReg::RAX, numBits);
     }
     else if (op == CPUOp::DIV ||
@@ -1078,7 +1078,7 @@ void SCBE_X64::emitOp(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUOp op, C
         SWAG_ASSERT(reg == CPUReg::RCX);
         emitCopy(CPUReg::R8, memReg, CPUBits::B64);
         emitLoad(CPUReg::RAX, memReg, memOffset, 0, false, op, numBits);
-        emitOp(CPUReg::RAX, reg, op, numBits);
+        emitOp(CPUReg::RAX, reg, op, numBits, emitFlags);
         emitStore(CPUReg::R8, memOffset, CPUReg::RAX, numBits);
     }
     else if (op == CPUOp::SAR ||
@@ -1086,7 +1086,7 @@ void SCBE_X64::emitOp(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUOp op, C
              op == CPUOp::SHL)
     {
         SWAG_ASSERT(memReg == CPUReg::RAX && reg == CPUReg::RCX);
-        if (lock)
+        if (emitFlags.has(EMITF_Lock))
             concat.addU8(0xF0);
         emitREX(concat, numBits, reg, memReg);
 
@@ -1099,7 +1099,7 @@ void SCBE_X64::emitOp(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUOp op, C
     else
     {
         SWAG_ASSERT(memReg < CPUReg::R8);
-        if (lock)
+        if (emitFlags.has(EMITF_Lock))
             concat.addU8(0xF0);
         emitREX(concat, numBits, reg, memReg);
         emitSpec8(concat, static_cast<uint8_t>(op), numBits);
@@ -1107,13 +1107,13 @@ void SCBE_X64::emitOp(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUOp op, C
     }
 }
 
-void SCBE_X64::emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits)
+void SCBE_X64::emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits, CPUEmitFlags emitFlags)
 {
     if (value > 0x7FFFFFFF)
     {
         SWAG_ASSERT(reg == CPUReg::RAX);
         emitLoad(CPUReg::RCX, value, CPUBits::B64);
-        emitOp(reg, CPUReg::RCX, op, numBits);
+        emitOp(reg, CPUReg::RCX, op, numBits, emitFlags);
     }
     else if (op == CPUOp::XOR || op == CPUOp::OR || op == CPUOp::AND)
     {
@@ -1307,11 +1307,11 @@ void SCBE_X64::emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits)
     {
         SWAG_ASSERT(reg == CPUReg::RAX);
         emitLoad(CPUReg::RCX, value, numBits);
-        emitOp(reg, CPUReg::RCX, op, numBits);
+        emitOp(reg, CPUReg::RCX, op, numBits, emitFlags);
     }
 }
 
-void SCBE_X64::emitOp(CPUReg memReg, uint32_t memOffset, uint64_t value, CPUOp op, CPUBits numBits)
+void SCBE_X64::emitOp(CPUReg memReg, uint32_t memOffset, uint64_t value, CPUOp op, CPUBits numBits, CPUEmitFlags emitFlags)
 {
     SWAG_ASSERT(SCBE_CPU::isInt(numBits));
 
@@ -1324,7 +1324,7 @@ void SCBE_X64::emitOp(CPUReg memReg, uint32_t memOffset, uint64_t value, CPUOp o
         emitCopy(CPUReg::R8, memReg, CPUBits::B64);
         emitLoad(CPUReg::RAX, memReg, memOffset, 0, false, op, numBits);
         emitLoad(CPUReg::RCX, value, numBits);
-        emitOp(CPUReg::RAX, CPUReg::RCX, op, numBits);
+        emitOp(CPUReg::RAX, CPUReg::RCX, op, numBits, emitFlags);
         emitStore(CPUReg::R8, memOffset, CPUReg::RAX, numBits);
     }
     else if (op == CPUOp::IMUL ||
@@ -1332,13 +1332,13 @@ void SCBE_X64::emitOp(CPUReg memReg, uint32_t memOffset, uint64_t value, CPUOp o
     {
         SWAG_ASSERT(memReg == CPUReg::RAX || memReg == CPUReg::RDI);
         emitLoad(CPUReg::RCX, value, numBits);
-        emitOp(memReg, memOffset, CPUReg::RCX, op, numBits);
+        emitOp(memReg, memOffset, CPUReg::RCX, op, numBits, emitFlags);
     }
     else if (value > 0x7FFFFFFF)
     {
         SWAG_ASSERT(memReg == CPUReg::RAX || memReg == CPUReg::RDI);
         emitLoad(CPUReg::RCX, value, numBits);
-        emitOp(memReg, memOffset, CPUReg::RCX, op, numBits);
+        emitOp(memReg, memOffset, CPUReg::RCX, op, numBits, emitFlags);
     }
     else if (op == CPUOp::SAR ||
              op == CPUOp::SHR ||
