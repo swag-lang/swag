@@ -237,25 +237,6 @@ void SCBE::emitBinOpEqOverflow(SCBE_X64& pp, const ByteCodeInstruction* ip, uint
     emitBinOpEq(pp, ip, offset, op);
     pp.emitSet(CPUReg::RAX, isSigned ? CPUSet::SetO : CPUSet::SetAE);
     emitOverflow(pp, ip, msg, isSigned);
-
-    /*
-        if (SCBE_CPU::isInt(numBits) && ip->hasFlag(BCI_IMM_B))
-        {
-            pp.emitLoad(CPUReg::R8, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-            pp.emitLoad(CPUReg::RAX, CPUReg::R8, offset, numBits);
-            pp.emitOp(CPUReg::RAX, ip->b.u64, op, numBits);
-            emitOverflow(pp, ip, msg, isSigned);
-            pp.emitStore(CPUReg::R8, offset, CPUReg::RAX, numBits);
-        }
-        else
-        {
-            pp.emitLoad(CPUReg::R8, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-            pp.emitLoad(CPUReg::RAX, CPUReg::R8, offset, numBits);
-            emitIMMB(pp, ip, CPUReg::RCX, numBits);
-            pp.emitOp(CPUReg::RAX, CPUReg::RCX, op, numBits);
-            emitOverflow(pp, ip, msg, isSigned);
-            pp.emitStore(CPUReg::R8, offset, CPUReg::RAX, numBits);
-        }*/
 }
 
 void SCBE::emitBinOpEqS(SCBE_X64& pp, const ByteCodeInstruction* ip, uint32_t offsetStack, CPUOp op)
