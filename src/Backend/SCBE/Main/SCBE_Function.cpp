@@ -2005,16 +2005,9 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::SetImmediate32:
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), ip->b.u32, CPUBits::B32);
-                break;
             case ByteCodeOp::SetImmediate64:
-                if (ip->b.u64 <= 0x7FFFFFFF || ip->b.u64 >> 32 == 0xFFFFFFFF)
-                    pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), ip->b.u32, CPUBits::B64);
-                else
-                {
-                    pp.emitLoad(CPUReg::RAX, ip->b.u64, CPUBits::B64);
-                    pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
-                }
+                numBits = SCBE_CPU::getCPUBits(ip->op);
+                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), ip->b.u64, numBits);
                 break;
 
                 /////////////////////////////////////

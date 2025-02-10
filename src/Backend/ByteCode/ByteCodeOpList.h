@@ -240,8 +240,8 @@ BYTECODE_OP(GreaterZeroToTrue, OPF_REG_ONLY | OPF_READ_A | OPF_WRITE_A, "_ra_ = 
 BYTECODE_OP(LowerEqZeroToTrue, OPF_REG_ONLY | OPF_READ_A | OPF_WRITE_A, "_ra_ = _ra_ <= 0")
 BYTECODE_OP(GreaterEqZeroToTrue, OPF_REG_ONLY | OPF_READ_A | OPF_WRITE_A, "_ra_ = _ra_ >= 0")
 
-BYTECODE_OP(SetImmediate32, OPF_REG_ONLY | OPF_WRITE_A | OPF_READ_VAL32_B, "_ra_ = _rbu32_")
-BYTECODE_OP(SetImmediate64, OPF_REG_ONLY | OPF_WRITE_A | OPF_READ_VAL64_B, "_ra_ = _rbu64_")
+BYTECODE_OP(SetImmediate32, OPF_32 | OPF_REG_ONLY | OPF_WRITE_A | OPF_READ_VAL32_B, "_ra_ = _rbu32_")
+BYTECODE_OP(SetImmediate64, OPF_64 | OPF_REG_ONLY | OPF_WRITE_A | OPF_READ_VAL64_B, "_ra_ = _rbu64_")
 
 BYTECODE_OP(MemCpy8, OPF_8 | OPF_MEMCPY | OPF_READ_A | OPF_READ_B, "memcpy(_ra_, _rb_, 1)")
 BYTECODE_OP(MemCpy16, OPF_16 | OPF_MEMCPY | OPF_READ_A | OPF_READ_B, "memcpy(_ra_, _rb_, 2)")
