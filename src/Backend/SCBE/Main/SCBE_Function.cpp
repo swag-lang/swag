@@ -1428,33 +1428,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::DeRef8:
-                SWAG_ASSERT(ip->c.u64 <= 0x7FFFFFFF); // If this triggers, see DeRef64 below
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->b.u32), CPUBits::B64);
-                pp.emitLoad(CPUReg::RAX, CPUReg::RAX, ip->c.u32, CPUBits::B64, CPUBits::B8, false);
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
-                break;
             case ByteCodeOp::DeRef16:
-                SWAG_ASSERT(ip->c.u64 <= 0x7FFFFFFF); // If this triggers, see DeRef64 below
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->b.u32), CPUBits::B64);
-                pp.emitLoad(CPUReg::RAX, CPUReg::RAX, ip->c.u32, CPUBits::B64, CPUBits::B16, false);
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
-                break;
             case ByteCodeOp::DeRef32:
-                SWAG_ASSERT(ip->c.u64 <= 0x7FFFFFFF); // If this triggers, see DeRef64 below
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->b.u32), CPUBits::B64);
-                pp.emitLoad(CPUReg::RAX, CPUReg::RAX, ip->c.u32, CPUBits::B32);
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
-                break;
             case ByteCodeOp::DeRef64:
+                numBits = SCBE_CPU::getCPUBits(ip->op);
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->b.u32), CPUBits::B64);
-                if (ip->c.u64 <= 0x7FFFFFFF)
-                    pp.emitLoad(CPUReg::RAX, CPUReg::RAX, ip->c.u32, CPUBits::B64);
-                else
-                {
-                    pp.emitLoad(CPUReg::RCX, ip->c.u64, CPUBits::B64);
-                    pp.emitOp(CPUReg::RAX, CPUReg::RCX, CPUOp::ADD, CPUBits::B64);
-                    pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, CPUBits::B64);
-                }
+                pp.emitLoad(CPUReg::RAX, CPUReg::RAX, ip->c.u64, CPUBits::B64, numBits, false);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
                 break;
 

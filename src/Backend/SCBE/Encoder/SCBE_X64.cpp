@@ -316,6 +316,14 @@ void SCBE_X64::emitLoad(CPUReg reg, CPUReg memReg, uint64_t memOffset, CPUBits n
         return;
     }
 
+    if (memOffset > 0x7FFFFFFF)
+    {
+        SWAG_ASSERT(memReg != CPUReg::RCX);
+        emitLoad(CPUReg::RCX, memOffset, CPUBits::B64);
+        emitOp(memReg, CPUReg::RCX, CPUOp::ADD, CPUBits::B64);
+        memOffset = 0;
+    }
+
     if (numBitsSrc == CPUBits::B8)
     {
         switch (numBitsDst)
@@ -436,6 +444,14 @@ void SCBE_X64::emitLoad(CPUReg reg, CPUReg memReg, uint64_t memOffset, CPUBits n
                 emitCopy(reg, reg, CPUBits::B32);
             return;
         }
+    }
+
+    if (memOffset > 0x7FFFFFFF)
+    {
+        SWAG_ASSERT(memReg != CPUReg::RCX);
+        emitLoad(CPUReg::RCX, memOffset, CPUBits::B64);
+        emitOp(memReg, CPUReg::RCX, CPUOp::ADD, CPUBits::B64);
+        memOffset = 0;
     }
 
     switch (numBits)
