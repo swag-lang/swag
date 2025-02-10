@@ -2406,16 +2406,11 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::GetParam8:
-                emitGetParam(pp, cpuFct, ip->a.u32, ip->b.mergeU64U32.high, 1);
-                break;
             case ByteCodeOp::GetParam16:
-                emitGetParam(pp, cpuFct, ip->a.u32, ip->b.mergeU64U32.high, 2);
-                break;
             case ByteCodeOp::GetParam32:
-                emitGetParam(pp, cpuFct, ip->a.u32, ip->b.mergeU64U32.high, 4);
-                break;
             case ByteCodeOp::GetParam64:
-                emitGetParam(pp, cpuFct, ip->a.u32, ip->b.mergeU64U32.high, 8);
+                numBits = SCBE_CPU::getCPUBits(ip->op);
+                emitGetParam(pp, cpuFct, ip->a.u32, ip->b.mergeU64U32.high, SCBE_CPU::getBitsCount(numBits) / 8);
                 break;
             case ByteCodeOp::GetParam64x2:
                 emitGetParam(pp, cpuFct, ip->a.u32, ip->b.mergeU64U32.high, 8);
@@ -2428,31 +2423,21 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::GetParam64DeRef8:
-                emitGetParam(pp, cpuFct, ip->a.u32, ip->b.mergeU64U32.high, 8, 0, 1);
-                break;
             case ByteCodeOp::GetParam64DeRef16:
-                emitGetParam(pp, cpuFct, ip->a.u32, ip->b.mergeU64U32.high, 8, 0, 2);
-                break;
             case ByteCodeOp::GetParam64DeRef32:
-                emitGetParam(pp, cpuFct, ip->a.u32, ip->b.mergeU64U32.high, 8, 0, 4);
-                break;
             case ByteCodeOp::GetParam64DeRef64:
-                emitGetParam(pp, cpuFct, ip->a.u32, ip->b.mergeU64U32.high, 8, 0, 8);
+                numBits = SCBE_CPU::getCPUBits(ip->op);
+                emitGetParam(pp, cpuFct, ip->a.u32, ip->b.mergeU64U32.high, 8, 0, SCBE_CPU::getBitsCount(numBits) / 8);
                 break;
 
                 /////////////////////////////////////
 
             case ByteCodeOp::GetIncParam64DeRef8:
-                emitGetParam(pp, cpuFct, ip->a.u32, ip->b.mergeU64U32.high, 8, ip->d.u64, 1);
-                break;
             case ByteCodeOp::GetIncParam64DeRef16:
-                emitGetParam(pp, cpuFct, ip->a.u32, ip->b.mergeU64U32.high, 8, ip->d.u64, 2);
-                break;
             case ByteCodeOp::GetIncParam64DeRef32:
-                emitGetParam(pp, cpuFct, ip->a.u32, ip->b.mergeU64U32.high, 8, ip->d.u64, 4);
-                break;
             case ByteCodeOp::GetIncParam64DeRef64:
-                emitGetParam(pp, cpuFct, ip->a.u32, ip->b.mergeU64U32.high, 8, ip->d.u64, 8);
+                numBits = SCBE_CPU::getCPUBits(ip->op);
+                emitGetParam(pp, cpuFct, ip->a.u32, ip->b.mergeU64U32.high, 8, ip->d.u64, SCBE_CPU::getBitsCount(numBits) / 8);
                 break;
 
                 /////////////////////////////////////

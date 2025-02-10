@@ -1177,8 +1177,6 @@ void SCBE_X64::emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits, CPU
     }
     else if (op == CPUOp::ADD)
     {
-        if (value == 0)
-            return;
         SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX || reg == CPUReg::RSP);
         emitREX(concat, numBits);
         if (value == 1 && !emitFlags.has(EMITF_Overflow))
@@ -1220,8 +1218,6 @@ void SCBE_X64::emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits, CPU
     }
     else if (op == CPUOp::SUB)
     {
-        if (value == 0)
-            return;
         SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX || reg == CPUReg::RSP);
         emitREX(concat, numBits);
         if (value == 1 && !emitFlags.has(EMITF_Overflow))
@@ -1263,8 +1259,6 @@ void SCBE_X64::emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits, CPU
     }
     else if (op == CPUOp::IMUL && numBits != CPUBits::B8)
     {
-        if (value == 1)
-            return;
         if (value == 0)
         {
             emitClear(reg, numBits);
