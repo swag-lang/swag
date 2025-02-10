@@ -803,8 +803,8 @@ BYTECODE_OP(AffectOpShiftRightEqU16, OPF_16 | OPF_READ_A | OPF_READ_B | OPF_IMM_
 BYTECODE_OP(AffectOpShiftRightEqU32, OPF_32 | OPF_READ_A | OPF_READ_B | OPF_IMM_B, "[_ra_] >>= _rbu32_")
 BYTECODE_OP(AffectOpShiftRightEqU64, OPF_64 | OPF_READ_A | OPF_READ_B | OPF_IMM_B, "[_ra_] >>= _rbu32_")
 
-BYTECODE_OP(IntrinsicMulAddF32, OPF_REG_ONLY | OPF_FACTOR | OPF_WRITE_A | OPF_READ_B | OPF_READ_C | OPF_READ_D | OPF_IMM_B | OPF_IMM_C | OPF_IMM_D, "_ra_ = (_rbf32_ * _rcf32_) + _rdf32_")
-BYTECODE_OP(IntrinsicMulAddF64, OPF_REG_ONLY | OPF_FACTOR | OPF_WRITE_A | OPF_READ_B | OPF_READ_C | OPF_READ_D | OPF_IMM_B | OPF_IMM_C | OPF_IMM_D, "_ra_ = (_rbf64_ * _rcf64_) + _rdf64_")
+BYTECODE_OP(IntrinsicMulAddF32, OPF_32 | OPF_FLOAT | OPF_REG_ONLY | OPF_FACTOR | OPF_WRITE_A | OPF_READ_B | OPF_READ_C | OPF_READ_D | OPF_IMM_B | OPF_IMM_C | OPF_IMM_D, "_ra_ = (_rbf32_ * _rcf32_) + _rdf32_")
+BYTECODE_OP(IntrinsicMulAddF64, OPF_64 | OPF_FLOAT | OPF_REG_ONLY | OPF_FACTOR | OPF_WRITE_A | OPF_READ_B | OPF_READ_C | OPF_READ_D | OPF_IMM_B | OPF_IMM_C | OPF_IMM_D, "_ra_ = (_rbf64_ * _rcf64_) + _rdf64_")
 
 BYTECODE_OP(IntrinsicS8x1, OPF_WRITE_A | OPF_READ_B | OPF_IMM_B, "_ra_ = _w0_(_rbs8_)")
 BYTECODE_OP(IntrinsicS16x1, OPF_WRITE_A | OPF_READ_B | OPF_IMM_B, "_ra_ = _w0_(_rbs16_)")
