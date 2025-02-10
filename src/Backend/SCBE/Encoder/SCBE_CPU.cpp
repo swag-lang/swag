@@ -14,9 +14,9 @@ void SCBE_CPU::init(const BuildParameters& buildParameters)
 
 void SCBE_CPU::clearInstructionCache()
 {
-    storageRegCount = UINT32_MAX;
-    storageRegStack = 0;
-    storageRegBits  = 0;
+    storageConcatCount = UINT32_MAX;
+    storageMemOffset = 0;
+    storageNumBits  = 0;
     storageMemReg   = CPUReg::RAX;
     storageReg      = CPUReg::RAX;
 }

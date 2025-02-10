@@ -410,9 +410,9 @@ void SCBE_X64::emitLoad(CPUReg reg, CPUReg memReg, uint32_t memOffset, CPUBits n
         }
         else
         {
-            emitLoad(reg, memReg, memOffset, numBitsSrc);            
+            emitLoad(reg, memReg, memOffset, numBitsSrc);
         }
-        
+
         return;
     }
 
@@ -424,14 +424,14 @@ void SCBE_X64::emitLoad(CPUReg reg, CPUReg memReg, uint32_t memOffset, CPUBits n
     if (!buildParams.buildCfg ||
         buildParams.buildCfg->backendOptimize != BuildCfgBackendOptim::O0)
     {
-        if (storageRegStack == memOffset &&
-            storageReg == reg &&
+        if (storageReg == reg &&
             storageMemReg == memReg &&
-            storageRegCount == concat.totalCount() &&
+            storageMemOffset == memOffset &&
+            storageConcatCount == concat.totalCount() &&
             isInt(numBits) &&
-            storageRegBits >= getBitsCount(numBits))
+            storageNumBits >= getBitsCount(numBits))
         {
-            if (numBits == CPUBits::B32 && storageRegBits > 32)
+            if (numBits == CPUBits::B32 && storageNumBits > 32)
                 emitCopy(reg, reg, CPUBits::B32);
             return;
         }
@@ -520,11 +520,11 @@ void SCBE_X64::emitStore(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUBits 
             concat.addU8(0x88);
             emitModRM(concat, memOffset, reg, memReg);
 
-            storageRegCount = concat.totalCount();
-            storageRegStack = memOffset;
-            storageReg      = reg;
-            storageMemReg   = memReg;
-            storageRegBits  = 8;
+            storageConcatCount  = concat.totalCount();
+            storageMemOffset = memOffset;
+            storageReg       = reg;
+            storageMemReg    = memReg;
+            storageNumBits   = 8;
             break;
 
         case CPUBits::B16:
@@ -532,11 +532,11 @@ void SCBE_X64::emitStore(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUBits 
             concat.addU8(0x89);
             emitModRM(concat, memOffset, reg, memReg);
 
-            storageRegCount = concat.totalCount();
-            storageRegStack = memOffset;
-            storageReg      = reg;
-            storageMemReg   = memReg;
-            storageRegBits  = 16;
+            storageConcatCount  = concat.totalCount();
+            storageMemOffset = memOffset;
+            storageReg       = reg;
+            storageMemReg    = memReg;
+            storageNumBits   = 16;
             break;
 
         case CPUBits::B32:
@@ -544,11 +544,11 @@ void SCBE_X64::emitStore(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUBits 
             concat.addU8(0x89);
             emitModRM(concat, memOffset, reg, memReg);
 
-            storageRegCount = concat.totalCount();
-            storageRegStack = memOffset;
-            storageReg      = reg;
-            storageMemReg   = memReg;
-            storageRegBits  = 32;
+            storageConcatCount  = concat.totalCount();
+            storageMemOffset = memOffset;
+            storageReg       = reg;
+            storageMemReg    = memReg;
+            storageNumBits   = 32;
             break;
 
         case CPUBits::B64:
@@ -556,11 +556,11 @@ void SCBE_X64::emitStore(CPUReg memReg, uint32_t memOffset, CPUReg reg, CPUBits 
             concat.addU8(0x89);
             emitModRM(concat, memOffset, reg, memReg);
 
-            storageRegCount = concat.totalCount();
-            storageRegStack = memOffset;
-            storageReg      = reg;
-            storageMemReg   = memReg;
-            storageRegBits  = 64;
+            storageConcatCount  = concat.totalCount();
+            storageMemOffset = memOffset;
+            storageReg       = reg;
+            storageMemReg    = memReg;
+            storageNumBits   = 64;
             break;
 
         case CPUBits::F32:
