@@ -3664,14 +3664,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::JumpIfError:
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-                pp.emitLoad(CPUReg::RCX, CPUReg::RAX, offsetof(SwagContext, hasError), CPUBits::B32);
-                pp.emitTest(CPUReg::RCX, CPUReg::RCX, CPUBits::B32);
+                pp.emitCmp(CPUReg::RAX, offsetof(SwagContext, hasError), 0, CPUBits::B32);
                 pp.emitJump(JNZ, i, ip->b.s32);
                 break;
             case ByteCodeOp::JumpIfNoError:
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-                pp.emitLoad(CPUReg::RCX, CPUReg::RAX, offsetof(SwagContext, hasError), CPUBits::B32);
-                pp.emitTest(CPUReg::RCX, CPUReg::RCX, CPUBits::B32);
+                pp.emitCmp(CPUReg::RAX, offsetof(SwagContext, hasError), 0, CPUBits::B32);
                 pp.emitJump(JZ, i, ip->b.s32);
                 break;
             case ByteCodeOp::InternalPushErr:
