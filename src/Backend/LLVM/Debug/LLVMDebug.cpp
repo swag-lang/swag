@@ -24,7 +24,7 @@ namespace
 void LLVMDebug::setup(LLVM* m, llvm::Module* module)
 {
     llvm                = m;
-    isOptimized         = !m->module->buildParameters.isDebug();
+    isOptimized         = m->module->buildParameters.buildCfg->backendOptimize != BuildCfgBackendOptim::O0;
     dbgBuilder          = new llvm::DIBuilder(*module, true);
     llvmModule          = module;
     llvmContext         = &module->getContext();
@@ -464,7 +464,6 @@ void LLVMDebug::startFunction(const BuildParameters& buildParameters, const LLVM
     llvm::AllocaInst*               allocaVariadic = nullptr;
     size_t                          countParams    = 0;
     uint32_t                        idxParam       = 0;
-    const bool                      isDebug        = buildParameters.isDebug();
 
     // Allocate some temporary variables linked to parameters
     if (decl && decl->parameters && !decl->hasAttribute(ATTRIBUTE_MESSAGE_FUNC))
@@ -498,7 +497,7 @@ void LLVMDebug::startFunction(const BuildParameters& buildParameters, const LLVM
             // The only way to have correct values seems to make a local copy of the parameter on the stack,
             // and make the debugger use that copy instead of the parameter.
             // So make a copy, except if we are in optimized mode...
-            else if (isDebug)
+            else if (buildParameters.buildCfg->backendOptimize <= BuildCfgBackendOptim::O1)
             {
                 auto allocA = builder.CreateAlloca(func->getArg(idxParam)->getType(), nullptr, func->getArg(idxParam)->getName());
                 allocA->setAlignment(llvm::Align{16});
@@ -568,7 +567,7 @@ void LLVMDebug::startFunction(const BuildParameters& buildParameters, const LLVM
                 const auto             type  = getType(typeParam, file);
                 llvm::DILocalVariable* value = dbgBuilder->createAutoVariable(scope, child->token.cstr(), file, loc.line + 1, type, !isOptimized);
 
-                if (isDebug)
+                if (buildParameters.buildCfg->backendOptimize <= BuildCfgBackendOptim::O1)
                 {
                     const auto v0   = builder.CreateInBoundsGEP(I64_TY(), allocA, builder.getInt64(0));
                     const auto arg0 = func->getArg(idxParam);
@@ -602,7 +601,7 @@ void LLVMDebug::startFunction(const BuildParameters& buildParameters, const LLVM
 
                 llvm::Value* value = func->getArg(idxParam);
 
-                if (isDebug)
+                if (buildParameters.buildCfg->backendOptimize <= BuildCfgBackendOptim::O1)
                 {
                     builder.CreateStore(value, allocA);
                     value = allocA;

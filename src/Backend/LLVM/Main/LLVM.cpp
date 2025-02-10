@@ -330,7 +330,6 @@ void LLVM::generateObjFile(const BuildParameters& buildParameters) const
     }
 
     Utf8 targetTriple = form("%s-%s-%s-%s", archName.bytes_begin(), vendorName.bytes_begin(), osName.bytes_begin(), abiName.bytes_begin());
-    bool isDebug      = buildParameters.isDebug();
 
     // Setup target
     modu.setTargetTriple(targetTriple.cstr());
@@ -414,11 +413,11 @@ void LLVM::generateObjFile(const BuildParameters& buildParameters) const
 
     // Pipeline configurations
     llvm::PipelineTuningOptions pipelineOptions;
-    pipelineOptions.LoopUnrolling     = !isDebug;
-    pipelineOptions.SLPVectorization  = !isDebug;
-    pipelineOptions.LoopVectorization = !isDebug;
-    pipelineOptions.LoopInterleaving  = !isDebug;
-    pipelineOptions.MergeFunctions    = !isDebug;
+    pipelineOptions.LoopUnrolling     = buildCfg->backendOptimize > BuildCfgBackendOptim::O1;
+    pipelineOptions.SLPVectorization  = buildCfg->backendOptimize > BuildCfgBackendOptim::O1;
+    pipelineOptions.LoopVectorization = buildCfg->backendOptimize > BuildCfgBackendOptim::O1;
+    pipelineOptions.LoopInterleaving  = buildCfg->backendOptimize > BuildCfgBackendOptim::O1;
+    pipelineOptions.MergeFunctions    = buildCfg->backendOptimize > BuildCfgBackendOptim::O1;
 
     llvm::PassBuilder             passBuilder(targetMachine, pipelineOptions);
     llvm::LoopAnalysisManager     loopMgr;

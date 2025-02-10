@@ -74,9 +74,4 @@ struct BuildParameters
     BuildCfg*              buildCfg        = nullptr;
     uint32_t               precompileIndex = 0;
     BackendCompileType     compileType     = Normal;
-
-    bool isDebug() const
-    {
-        return buildCfg->backendOptimize == BuildCfgBackendOptim::O0;
-    }
 };
