@@ -1841,17 +1841,17 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 else
                 {
                     pp.pushParams.clear();
-                    pp.pushParams.push_back({CPUPushParamType::RegAdd, ip->a.u32, ip->c.u64});
-                    pp.pushParams.push_back({CPUPushParamType::Imm, 0});
-                    pp.pushParams.push_back({CPUPushParamType::Imm, ip->b.u64});
+                    pp.pushParams.push_back({.type = CPUPushParamType::RegAdd, .reg = ip->a.u32, .val = ip->c.u64});
+                    pp.pushParams.push_back({.type = CPUPushParamType::Imm, .reg = 0});
+                    pp.pushParams.push_back({.type = CPUPushParamType::Imm, .reg = ip->b.u64});
                     emitInternalCallExt(pp, g_LangSpec->name_memset, pp.pushParams);
                 }
                 break;
             case ByteCodeOp::SetZeroAtPointerXRB:
                 pp.pushParams.clear();
-                pp.pushParams.push_back({CPUPushParamType::Reg, ip->a.u32});
-                pp.pushParams.push_back({CPUPushParamType::Imm, 0});
-                pp.pushParams.push_back({CPUPushParamType::RegMul, ip->b.u32, ip->c.u64});
+                pp.pushParams.push_back({.type = CPUPushParamType::Reg, .reg = ip->a.u32});
+                pp.pushParams.push_back({.type = CPUPushParamType::Imm, .reg = 0});
+                pp.pushParams.push_back({.type = CPUPushParamType::RegMul, .reg = ip->b.u32, .val = ip->c.u64});
                 emitInternalCallExt(pp, g_LangSpec->name_memset, pp.pushParams);
                 break;
 
@@ -1898,9 +1898,9 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 else
                 {
                     pp.pushParams.clear();
-                    pp.pushParams.push_back({CPUPushParamType::RAX});
-                    pp.pushParams.push_back({CPUPushParamType::Imm, 0});
-                    pp.pushParams.push_back({CPUPushParamType::Imm, ip->b.u64});
+                    pp.pushParams.push_back({.type = CPUPushParamType::RAX});
+                    pp.pushParams.push_back({.type = CPUPushParamType::Imm, .reg = 0});
+                    pp.pushParams.push_back({.type = CPUPushParamType::Imm, .reg = ip->b.u64});
                     emitInternalCallExt(pp, g_LangSpec->name_memset, pp.pushParams);
                 }
                 break;
@@ -1926,9 +1926,9 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 else
                 {
                     pp.pushParams.clear();
-                    pp.pushParams.push_back({CPUPushParamType::Addr, offsetStack + ip->a.u32});
-                    pp.pushParams.push_back({CPUPushParamType::Imm, 0});
-                    pp.pushParams.push_back({CPUPushParamType::Imm, ip->b.u32});
+                    pp.pushParams.push_back({.type = CPUPushParamType::Addr, .reg = offsetStack + ip->a.u32});
+                    pp.pushParams.push_back({.type = CPUPushParamType::Imm, .reg = 0});
+                    pp.pushParams.push_back({.type = CPUPushParamType::Imm, .reg = ip->b.u32});
                     emitInternalCallExt(pp, g_LangSpec->name_memset, pp.pushParams);
                 }
                 break;
@@ -2222,12 +2222,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 else
                 {
                     pp.pushParams.clear();
-                    pp.pushParams.push_back({CPUPushParamType::Reg, ip->a.u32});
-                    pp.pushParams.push_back({CPUPushParamType::Reg, ip->b.u32});
+                    pp.pushParams.push_back({.type = CPUPushParamType::Reg, .reg = ip->a.u32});
+                    pp.pushParams.push_back({.type = CPUPushParamType::Reg, .reg = ip->b.u32});
                     if (ip->hasFlag(BCI_IMM_C))
-                        pp.pushParams.push_back({CPUPushParamType::Imm, ip->c.u64});
+                        pp.pushParams.push_back({.type = CPUPushParamType::Imm, .reg = ip->c.u64});
                     else
-                        pp.pushParams.push_back({CPUPushParamType::Reg, ip->c.u32});
+                        pp.pushParams.push_back({.type = CPUPushParamType::Reg, .reg = ip->c.u32});
                     emitInternalCallExt(pp, g_LangSpec->name_memcpy, pp.pushParams);
                 }
                 break;
@@ -2240,36 +2240,36 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 else
                 {
                     pp.pushParams.clear();
-                    pp.pushParams.push_back({CPUPushParamType::Reg, ip->a.u32});
+                    pp.pushParams.push_back({.type = CPUPushParamType::Reg, .reg = ip->a.u32});
                     if (ip->hasFlag(BCI_IMM_B))
-                        pp.pushParams.push_back({CPUPushParamType::Imm, ip->b.u8});
+                        pp.pushParams.push_back({.type = CPUPushParamType::Imm, .reg = ip->b.u8});
                     else
-                        pp.pushParams.push_back({CPUPushParamType::Reg, ip->b.u32});
+                        pp.pushParams.push_back({.type = CPUPushParamType::Reg, .reg = ip->b.u32});
                     if (ip->hasFlag(BCI_IMM_C))
-                        pp.pushParams.push_back({CPUPushParamType::Imm, ip->c.u64});
+                        pp.pushParams.push_back({.type = CPUPushParamType::Imm, .reg = ip->c.u64});
                     else
-                        pp.pushParams.push_back({CPUPushParamType::Reg, ip->c.u32});
+                        pp.pushParams.push_back({.type = CPUPushParamType::Reg, .reg = ip->c.u32});
                     emitInternalCallExt(pp, g_LangSpec->name_memset, pp.pushParams);
                 }
                 break;
             case ByteCodeOp::IntrinsicMemMove:
                 pp.pushParams.clear();
-                pp.pushParams.push_back({CPUPushParamType::Reg, ip->a.u32});
-                pp.pushParams.push_back({CPUPushParamType::Reg, ip->b.u32});
+                pp.pushParams.push_back({.type = CPUPushParamType::Reg, .reg = ip->a.u32});
+                pp.pushParams.push_back({.type = CPUPushParamType::Reg, .reg = ip->b.u32});
                 if (ip->hasFlag(BCI_IMM_C))
-                    pp.pushParams.push_back({CPUPushParamType::Imm, ip->c.u64});
+                    pp.pushParams.push_back({.type = CPUPushParamType::Imm, .reg = ip->c.u64});
                 else
-                    pp.pushParams.push_back({CPUPushParamType::Reg, ip->c.u32});
+                    pp.pushParams.push_back({.type = CPUPushParamType::Reg, .reg = ip->c.u32});
                 emitInternalCallExt(pp, g_LangSpec->name_memmove, pp.pushParams);
                 break;
             case ByteCodeOp::IntrinsicMemCmp:
                 pp.pushParams.clear();
-                pp.pushParams.push_back({CPUPushParamType::Reg, ip->b.u32});
-                pp.pushParams.push_back({CPUPushParamType::Reg, ip->c.u32});
+                pp.pushParams.push_back({.type = CPUPushParamType::Reg, .reg = ip->b.u32});
+                pp.pushParams.push_back({.type = CPUPushParamType::Reg, .reg = ip->c.u32});
                 if (ip->hasFlag(BCI_IMM_D))
-                    pp.pushParams.push_back({CPUPushParamType::Imm, ip->d.u64});
+                    pp.pushParams.push_back({.type = CPUPushParamType::Imm, .reg = ip->d.u64});
                 else
-                    pp.pushParams.push_back({CPUPushParamType::Reg, ip->d.u32});
+                    pp.pushParams.push_back({.type = CPUPushParamType::Reg, .reg = ip->d.u32});
                 emitInternalCallExt(pp, g_LangSpec->name_memcmp, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
 
@@ -2301,20 +2301,20 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::InternalGetTlsPtr:
                 pp.pushParams.clear();
-                pp.pushParams.push_back({CPUPushParamType::RelocV, pp.symTls_threadLocalId});
-                pp.pushParams.push_back({CPUPushParamType::Imm64, module->tlsSegment.totalCount});
-                pp.pushParams.push_back({CPUPushParamType::RelocAddr, pp.symTLSIndex});
+                pp.pushParams.push_back({.type = CPUPushParamType::RelocV, .reg = pp.symTls_threadLocalId});
+                pp.pushParams.push_back({.type = CPUPushParamType::Imm64, .reg = module->tlsSegment.totalCount});
+                pp.pushParams.push_back({.type = CPUPushParamType::RelocAddr, .reg = pp.symTLSIndex});
                 emitInternalCallExt(pp, g_LangSpec->name_priv_tlsGetPtr, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case ByteCodeOp::IntrinsicGetContext:
                 pp.pushParams.clear();
-                pp.pushParams.push_back({CPUPushParamType::RelocV, pp.symPI_contextTlsId});
+                pp.pushParams.push_back({.type = CPUPushParamType::RelocV, .reg = pp.symPI_contextTlsId});
                 emitInternalCallExt(pp, g_LangSpec->name_priv_tlsGetValue, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case ByteCodeOp::IntrinsicSetContext:
                 pp.pushParams.clear();
-                pp.pushParams.push_back({CPUPushParamType::RelocV, pp.symPI_contextTlsId});
-                pp.pushParams.push_back({CPUPushParamType::Reg, ip->a.u32});
+                pp.pushParams.push_back({.type = CPUPushParamType::RelocV, .reg = pp.symPI_contextTlsId});
+                pp.pushParams.push_back({.type = CPUPushParamType::Reg, .reg = ip->a.u32});
                 emitInternalCallExt(pp, g_LangSpec->name_priv_tlsSetValue, pp.pushParams);
                 break;
 
@@ -3398,13 +3398,13 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             {
                 pp.pushParams.clear();
                 if (ip->hasFlag(BCI_IMM_B))
-                    pp.pushParams.push_back({CPUPushParamType::Imm, ip->b.u32});
+                    pp.pushParams.push_back({.type = CPUPushParamType::Imm, .reg = ip->b.u32});
                 else
-                    pp.pushParams.push_back({CPUPushParamType::Reg, ip->b.u32});
+                    pp.pushParams.push_back({.type = CPUPushParamType::Reg, .reg = ip->b.u32});
                 if (ip->hasFlag(BCI_IMM_C))
-                    pp.pushParams.push_back({CPUPushParamType::Imm, ip->c.u32});
+                    pp.pushParams.push_back({.type = CPUPushParamType::Imm, .reg = ip->c.u32});
                 else
-                    pp.pushParams.push_back({CPUPushParamType::Reg, ip->c.u32});
+                    pp.pushParams.push_back({.type = CPUPushParamType::Reg, .reg = ip->c.u32});
 
                 switch (static_cast<TokenId>(ip->d.u32))
                 {
@@ -3438,13 +3438,13 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             {
                 pp.pushParams.clear();
                 if (ip->hasFlag(BCI_IMM_B))
-                    pp.pushParams.push_back({CPUPushParamType::Imm, ip->b.u64});
+                    pp.pushParams.push_back({.type = CPUPushParamType::Imm, .reg = ip->b.u64});
                 else
-                    pp.pushParams.push_back({CPUPushParamType::Reg, ip->b.u32});
+                    pp.pushParams.push_back({.type = CPUPushParamType::Reg, .reg = ip->b.u32});
                 if (ip->hasFlag(BCI_IMM_C))
-                    pp.pushParams.push_back({CPUPushParamType::Imm, ip->c.u64});
+                    pp.pushParams.push_back({.type = CPUPushParamType::Imm, .reg = ip->c.u64});
                 else
-                    pp.pushParams.push_back({CPUPushParamType::Reg, ip->c.u32});
+                    pp.pushParams.push_back({.type = CPUPushParamType::Reg, .reg = ip->c.u32});
 
                 switch (static_cast<TokenId>(ip->d.u32))
                 {
@@ -3479,9 +3479,9 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             {
                 pp.pushParams.clear();
                 if (ip->hasFlag(BCI_IMM_B))
-                    pp.pushParams.push_back({CPUPushParamType::Imm, ip->b.u32});
+                    pp.pushParams.push_back({.type = CPUPushParamType::Imm, .reg = ip->b.u32});
                 else
-                    pp.pushParams.push_back({CPUPushParamType::Reg, ip->b.u32});
+                    pp.pushParams.push_back({.type = CPUPushParamType::Reg, .reg = ip->b.u32});
 
                 switch (static_cast<TokenId>(ip->d.u32))
                 {
@@ -3565,9 +3565,9 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             {
                 pp.pushParams.clear();
                 if (ip->hasFlag(BCI_IMM_B))
-                    pp.pushParams.push_back({CPUPushParamType::Imm, ip->b.u64});
+                    pp.pushParams.push_back({.type = CPUPushParamType::Imm, .reg = ip->b.u64});
                 else
-                    pp.pushParams.push_back({CPUPushParamType::Reg, ip->b.u32});
+                    pp.pushParams.push_back({.type = CPUPushParamType::Reg, .reg = ip->b.u32});
 
                 switch (static_cast<TokenId>(ip->d.u32))
                 {
