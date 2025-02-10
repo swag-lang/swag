@@ -423,7 +423,7 @@ void SCBE_X64::emitLoad(CPUReg reg, CPUReg memReg, uint32_t memOffset, CPUBits n
             storageMemReg == memReg &&
             storageRegCount == concat.totalCount() &&
             isInt(numBits) &&
-            storageRegBits >= countBits(numBits))
+            storageRegBits >= getBitsCount(numBits))
         {
             if (numBits == CPUBits::B32 && storageRegBits > 32)
                 emitCopy(reg, reg, CPUBits::B32);
@@ -1287,7 +1287,7 @@ void SCBE_X64::emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits, CPU
         }
         else if (value <= 0x7F)
         {
-            value = min(value, SCBE_CPU::countBits(numBits) - 1);
+            value = min(value, SCBE_CPU::getBitsCount(numBits) - 1);
             emitSpec8(concat, 0xC1, numBits);
             concat.addU8(static_cast<uint8_t>(op) | static_cast<uint8_t>(reg));
             concat.addU8(static_cast<uint8_t>(value));
@@ -1354,7 +1354,7 @@ void SCBE_X64::emitOp(CPUReg memReg, uint32_t memOffset, uint64_t value, CPUOp o
              op == CPUOp::SHL)
     {
         SWAG_ASSERT(memReg == CPUReg::RAX);
-        value = min(value, SCBE_CPU::countBits(numBits) - 1);
+        value = min(value, SCBE_CPU::getBitsCount(numBits) - 1);
 
         emitREX(concat, numBits);
         if (value == 1)

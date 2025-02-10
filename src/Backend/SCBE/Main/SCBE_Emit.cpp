@@ -75,12 +75,12 @@ void SCBE::emitShiftRightArithmetic(SCBE_X64& pp, const ByteCodeInstruction* ip)
     else
     {
         if (ip->hasFlag(BCI_IMM_B))
-            pp.emitLoad(CPUReg::RCX, min(ip->b.u8, SCBE_CPU::countBits(numBits) - 1), CPUBits::B8);
+            pp.emitLoad(CPUReg::RCX, min(ip->b.u8, SCBE_CPU::getBitsCount(numBits) - 1), CPUBits::B8);
         else
         {
             pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->b.u32), CPUBits::B32);
-            pp.emitLoad(CPUReg::RAX, SCBE_CPU::countBits(numBits) - 1, CPUBits::B32);
-            pp.emitCmp(CPUReg::RCX, SCBE_CPU::countBits(numBits) - 1, CPUBits::B32);
+            pp.emitLoad(CPUReg::RAX, SCBE_CPU::getBitsCount(numBits) - 1, CPUBits::B32);
+            pp.emitCmp(CPUReg::RCX, SCBE_CPU::getBitsCount(numBits) - 1, CPUBits::B32);
             pp.emitCMov(CPUReg::RCX, CPUReg::RAX, CPUOp::CMOVG, numBits);
         }
 
@@ -102,8 +102,8 @@ void SCBE::emitShiftRightEqArithmetic(SCBE_X64& pp, const ByteCodeInstruction* i
     else
     {
         pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->b.u32), CPUBits::B32);
-        pp.emitLoad(CPUReg::RAX, SCBE_CPU::countBits(numBits) - 1, CPUBits::B32);
-        pp.emitCmp(CPUReg::RCX, SCBE_CPU::countBits(numBits) - 1, CPUBits::B32);
+        pp.emitLoad(CPUReg::RAX, SCBE_CPU::getBitsCount(numBits) - 1, CPUBits::B32);
+        pp.emitCmp(CPUReg::RCX, SCBE_CPU::getBitsCount(numBits) - 1, CPUBits::B32);
         pp.emitCMov(CPUReg::RCX, CPUReg::RAX, CPUOp::CMOVG, numBits);
         pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
         pp.emitOp(CPUReg::RAX, 0, CPUReg::RCX, CPUOp::SAR, numBits);
@@ -113,7 +113,7 @@ void SCBE::emitShiftRightEqArithmetic(SCBE_X64& pp, const ByteCodeInstruction* i
 void SCBE::emitShiftLogical(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp op)
 {
     const auto numBits = SCBE_CPU::getCPUBits(ip->op);
-    if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 >= SCBE_CPU::countBits(numBits))
+    if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 >= SCBE_CPU::getBitsCount(numBits))
     {
         pp.emitClear(CPUReg::RAX, numBits);
         pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, numBits);
@@ -130,7 +130,7 @@ void SCBE::emitShiftLogical(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp o
         emitIMMB(pp, ip, CPUReg::RCX, CPUBits::B32);
         pp.emitOp(CPUReg::RAX, CPUReg::RCX, op, numBits);
         pp.emitClear(CPUReg::R8, numBits);
-        pp.emitCmp(CPUReg::RCX, SCBE_CPU::countBits(numBits) - 1, CPUBits::B32);
+        pp.emitCmp(CPUReg::RCX, SCBE_CPU::getBitsCount(numBits) - 1, CPUBits::B32);
         pp.emitCMov(CPUReg::RAX, CPUReg::R8, CPUOp::CMOVG, numBits);
         pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, numBits);
     }
@@ -140,7 +140,7 @@ void SCBE::emitShiftEqLogical(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp
 {
     const auto numBits = SCBE_CPU::getCPUBits(ip->op);
     pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-    if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 >= SCBE_CPU::countBits(numBits))
+    if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 >= SCBE_CPU::getBitsCount(numBits))
     {
         pp.emitClear(CPUReg::RCX, numBits);
         pp.emitStore(CPUReg::RAX, 0, CPUReg::RCX, numBits);
@@ -152,7 +152,7 @@ void SCBE::emitShiftEqLogical(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp
     else
     {
         pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->b.u32), CPUBits::B32);
-        pp.emitCmp(CPUReg::RCX, SCBE_CPU::countBits(numBits), CPUBits::B32);
+        pp.emitCmp(CPUReg::RCX, SCBE_CPU::getBitsCount(numBits), CPUBits::B32);
         const auto seekPtr = pp.emitJumpNear(JL);
         const auto seekJmp = pp.concat.totalCount();
         pp.emitClear(CPUReg::RCX, numBits);

@@ -243,10 +243,10 @@ BYTECODE_OP(GreaterEqZeroToTrue, OPF_REG_ONLY | OPF_READ_A | OPF_WRITE_A, "_ra_ 
 BYTECODE_OP(SetImmediate32, OPF_REG_ONLY | OPF_WRITE_A | OPF_READ_VAL32_B, "_ra_ = _rbu32_")
 BYTECODE_OP(SetImmediate64, OPF_REG_ONLY | OPF_WRITE_A | OPF_READ_VAL64_B, "_ra_ = _rbu64_")
 
-BYTECODE_OP(MemCpy8, OPF_MEMCPY | OPF_READ_A | OPF_READ_B, "memcpy(_ra_, _rb_, 1)")
-BYTECODE_OP(MemCpy16, OPF_MEMCPY | OPF_READ_A | OPF_READ_B, "memcpy(_ra_, _rb_, 2)")
-BYTECODE_OP(MemCpy32, OPF_MEMCPY | OPF_READ_A | OPF_READ_B, "memcpy(_ra_, _rb_, 4)")
-BYTECODE_OP(MemCpy64, OPF_MEMCPY | OPF_READ_A | OPF_READ_B, "memcpy(_ra_, _rb_, 8)")
+BYTECODE_OP(MemCpy8, OPF_8 | OPF_MEMCPY | OPF_READ_A | OPF_READ_B, "memcpy(_ra_, _rb_, 1)")
+BYTECODE_OP(MemCpy16, OPF_16 | OPF_MEMCPY | OPF_READ_A | OPF_READ_B, "memcpy(_ra_, _rb_, 2)")
+BYTECODE_OP(MemCpy32, OPF_32 | OPF_MEMCPY | OPF_READ_A | OPF_READ_B, "memcpy(_ra_, _rb_, 4)")
+BYTECODE_OP(MemCpy64, OPF_64 | OPF_MEMCPY | OPF_READ_A | OPF_READ_B, "memcpy(_ra_, _rb_, 8)")
 
 BYTECODE_OP(IntrinsicMemCpy, OPF_MEMCPY | OPF_READ_A | OPF_READ_B | OPF_READ_C | OPF_IMM_C, "@memcpy(_ra_, _rb_, _rcu64_)")
 BYTECODE_OP(IntrinsicMemMove, OPF_READ_A | OPF_READ_B | OPF_READ_C | OPF_IMM_C, "@memmove(_ra_, _rb_, _rcu64_)")

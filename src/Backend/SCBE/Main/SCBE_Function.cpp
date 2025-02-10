@@ -2020,24 +2020,13 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::MemCpy8:
-                pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-                pp.emitLoad(CPUReg::RDX, CPUReg::RDI, REG_OFFSET(ip->b.u32), CPUBits::B64);
-                pp.emitCopy(CPUReg::RCX, CPUReg::RDX, 1, 0);
-                break;
             case ByteCodeOp::MemCpy16:
-                pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-                pp.emitLoad(CPUReg::RDX, CPUReg::RDI, REG_OFFSET(ip->b.u32), CPUBits::B64);
-                pp.emitCopy(CPUReg::RCX, CPUReg::RDX, 2, 0);
-                break;
             case ByteCodeOp::MemCpy32:
-                pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-                pp.emitLoad(CPUReg::RDX, CPUReg::RDI, REG_OFFSET(ip->b.u32), CPUBits::B64);
-                pp.emitCopy(CPUReg::RCX, CPUReg::RDX, 4, 0);
-                break;
             case ByteCodeOp::MemCpy64:
+                numBits = SCBE_CPU::getCPUBits(ip->op);
                 pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
                 pp.emitLoad(CPUReg::RDX, CPUReg::RDI, REG_OFFSET(ip->b.u32), CPUBits::B64);
-                pp.emitCopy(CPUReg::RCX, CPUReg::RDX, 8, 0);
+                pp.emitCopy(CPUReg::RCX, CPUReg::RDX, SCBE_CPU::getBitsCount(numBits) / 8, 0);
                 break;
 
                 /////////////////////////////////////

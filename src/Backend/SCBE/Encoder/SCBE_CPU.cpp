@@ -105,7 +105,7 @@ CPUFunction* SCBE_CPU::registerFunction(AstNode* node, uint32_t symbolIndex)
     return &functions.back();
 }
 
-uint32_t SCBE_CPU::countBits(CPUBits numBits)
+uint32_t SCBE_CPU::getBitsCount(CPUBits numBits)
 {
     switch (numBits)
     {
