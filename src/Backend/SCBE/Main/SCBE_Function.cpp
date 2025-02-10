@@ -266,19 +266,11 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::CopyRBtoRA8:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->b.u32), CPUBits::B64, CPUBits::B8, false);
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
-                break;
             case ByteCodeOp::CopyRBtoRA16:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->b.u32), CPUBits::B64, CPUBits::B16, false);
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
-                break;
             case ByteCodeOp::CopyRBtoRA32:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->b.u32), CPUBits::B32);
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
-                break;
             case ByteCodeOp::CopyRBtoRA64:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->b.u32), CPUBits::B64);
+                numBits = SCBE_CPU::getCPUBits(ip->op);
+                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->b.u32), CPUBits::B64, numBits, false);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
                 break;
 
@@ -1146,16 +1138,9 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpDyn32:
             case ByteCodeOp::JumpDyn64:
             {
+                numBits = SCBE_CPU::getCPUBits(ip->op);
                 auto tableCompiler = reinterpret_cast<int32_t*>(buildParameters.module->compilerSegment.address(ip->d.u32));
-
-                if (ip->op == ByteCodeOp::JumpDyn8)
-                    pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64, CPUBits::B8, true);
-                else if (ip->op == ByteCodeOp::JumpDyn16)
-                    pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64, CPUBits::B16, true);
-                else if (ip->op == ByteCodeOp::JumpDyn32)
-                    pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64, CPUBits::B32, true);
-                else
-                    pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
+                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64, numBits, true);
 
                 // Note:
                 //
