@@ -1684,7 +1684,8 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::SetZeroAtPointerX:
                 SWAG_ASSERT(ip->c.s64 >= 0 && ip->c.s64 <= 0x7FFFFFFF);
-                if (ip->b.u32 <= 128 && buildParameters.buildCfg->backendOptimize > BuildCfgBackendOptim::O1)
+                if (ip->b.u32 <= buildParameters.buildCfg->backendSCBE.unrollMemLimit &&
+                    buildParameters.buildCfg->backendOptimize > BuildCfgBackendOptim::O1)
                 {
                     pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
                     pp.emitClear(CPUReg::RAX, ip->c.u32, ip->b.u32);
@@ -1726,7 +1727,8 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, stackOffset, CPUBits::B64);
 
                 SWAG_ASSERT(ip->c.s64 >= 0 && ip->c.s64 <= 0x7FFFFFFF);
-                if (ip->b.u32 <= 128 && buildParameters.buildCfg->backendOptimize > BuildCfgBackendOptim::O1)
+                if (ip->b.u32 <= buildParameters.buildCfg->backendSCBE.unrollMemLimit &&
+                    buildParameters.buildCfg->backendOptimize > BuildCfgBackendOptim::O1)
                 {
                     pp.emitClear(CPUReg::RAX, ip->c.u32, ip->b.u32);
                 }
@@ -1751,7 +1753,8 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitStore(CPUReg::RDI, offsetStack + ip->a.u32, 0, numBits);
                 break;
             case ByteCodeOp::SetZeroStackX:
-                if (ip->b.u32 <= 128 && buildParameters.buildCfg->backendOptimize > BuildCfgBackendOptim::O1)
+                if (ip->b.u32 <= buildParameters.buildCfg->backendSCBE.unrollMemLimit &&
+                    buildParameters.buildCfg->backendOptimize > BuildCfgBackendOptim::O1)
                     pp.emitClear(CPUReg::RDI, offsetStack + ip->a.u32, ip->b.u32);
                 else
                 {
@@ -2025,7 +2028,9 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::IntrinsicMemCpy:
-                if (ip->hasFlag(BCI_IMM_C) && ip->c.u64 <= 128 && buildParameters.buildCfg->backendOptimize > BuildCfgBackendOptim::O1)
+                if (ip->hasFlag(BCI_IMM_C) &&
+                    ip->c.u64 <= buildParameters.buildCfg->backendSCBE.unrollMemLimit &&
+                    buildParameters.buildCfg->backendOptimize > BuildCfgBackendOptim::O1)
                 {
                     pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
                     pp.emitLoad(CPUReg::RDX, CPUReg::RDI, REG_OFFSET(ip->b.u32), CPUBits::B64);
@@ -2036,10 +2041,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                     pp.pushParams.clear();
                     pp.pushParams.push_back({.type = CPUPushParamType::Reg, .reg = ip->a.u32});
                     pp.pushParams.push_back({.type = CPUPushParamType::Reg, .reg = ip->b.u32});
-                    if (ip->hasFlag(BCI_IMM_C))
-                        pp.pushParams.push_back({.type = CPUPushParamType::Imm, .reg = ip->c.u64});
-                    else
-                        pp.pushParams.push_back({.type = CPUPushParamType::Reg, .reg = ip->c.u32});
+                    pp.pushParams.push_back({.type = ip->hasFlag(BCI_IMM_C) ? CPUPushParamType::Imm : CPUPushParamType::Reg, .reg = ip->c.u64});
                     emitInternalCallExt(pp, g_LangSpec->name_memcpy, pp.pushParams);
                 }
                 break;
@@ -2047,7 +2049,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (ip->hasFlag(BCI_IMM_B) &&
                     ip->hasFlag(BCI_IMM_C) &&
                     ip->b.u8 == 0 &&
-                    ip->c.u64 <= 128 &&
+                    ip->c.u64 <= buildParameters.buildCfg->backendSCBE.unrollMemLimit &&
                     buildParameters.buildCfg->backendOptimize > BuildCfgBackendOptim::O1)
                 {
                     pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
@@ -2057,14 +2059,8 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 {
                     pp.pushParams.clear();
                     pp.pushParams.push_back({.type = CPUPushParamType::Reg, .reg = ip->a.u32});
-                    if (ip->hasFlag(BCI_IMM_B))
-                        pp.pushParams.push_back({.type = CPUPushParamType::Imm, .reg = ip->b.u8});
-                    else
-                        pp.pushParams.push_back({.type = CPUPushParamType::Reg, .reg = ip->b.u32});
-                    if (ip->hasFlag(BCI_IMM_C))
-                        pp.pushParams.push_back({.type = CPUPushParamType::Imm, .reg = ip->c.u64});
-                    else
-                        pp.pushParams.push_back({.type = CPUPushParamType::Reg, .reg = ip->c.u32});
+                    pp.pushParams.push_back({.type = ip->hasFlag(BCI_IMM_B) ? CPUPushParamType::Imm : CPUPushParamType::Reg, .reg = ip->b.u8});
+                    pp.pushParams.push_back({.type = ip->hasFlag(BCI_IMM_C) ? CPUPushParamType::Imm : CPUPushParamType::Reg, .reg = ip->c.u64});
                     emitInternalCallExt(pp, g_LangSpec->name_memset, pp.pushParams);
                 }
                 break;
@@ -2072,20 +2068,14 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.pushParams.clear();
                 pp.pushParams.push_back({.type = CPUPushParamType::Reg, .reg = ip->a.u32});
                 pp.pushParams.push_back({.type = CPUPushParamType::Reg, .reg = ip->b.u32});
-                if (ip->hasFlag(BCI_IMM_C))
-                    pp.pushParams.push_back({.type = CPUPushParamType::Imm, .reg = ip->c.u64});
-                else
-                    pp.pushParams.push_back({.type = CPUPushParamType::Reg, .reg = ip->c.u32});
+                pp.pushParams.push_back({.type = ip->hasFlag(BCI_IMM_C) ? CPUPushParamType::Imm : CPUPushParamType::Reg, .reg = ip->c.u64});
                 emitInternalCallExt(pp, g_LangSpec->name_memmove, pp.pushParams);
                 break;
             case ByteCodeOp::IntrinsicMemCmp:
                 pp.pushParams.clear();
                 pp.pushParams.push_back({.type = CPUPushParamType::Reg, .reg = ip->b.u32});
                 pp.pushParams.push_back({.type = CPUPushParamType::Reg, .reg = ip->c.u32});
-                if (ip->hasFlag(BCI_IMM_D))
-                    pp.pushParams.push_back({.type = CPUPushParamType::Imm, .reg = ip->d.u64});
-                else
-                    pp.pushParams.push_back({.type = CPUPushParamType::Reg, .reg = ip->d.u32});
+                pp.pushParams.push_back({.type = ip->hasFlag(BCI_IMM_D) ? CPUPushParamType::Imm : CPUPushParamType::Reg, .reg = ip->d.u64});
                 emitInternalCallExt(pp, g_LangSpec->name_memcmp, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
 

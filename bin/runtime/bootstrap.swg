@@ -724,7 +724,10 @@ namespace Swag
     }
 
     // 'SCBE' backend specific options
-    struct BuildCfgBackendSCBE {}
+    struct BuildCfgBackendSCBE
+    {
+        unrollMemLimit: u32 = 128    // Maximum number of bytes to unroll memset/cpy in optimize mode
+    }
 
     // The kind of native backend to generate.
     enum BuildCfgBackendKind

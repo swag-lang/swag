@@ -204,6 +204,7 @@ struct BuildCfgLLVM
 
 struct BuildCfgSCBE
 {
+    uint32_t unrollMemLimit = 128;
 };
 
 enum class BuildCfgBackendKind
