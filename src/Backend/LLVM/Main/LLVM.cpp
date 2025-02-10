@@ -299,37 +299,37 @@ void LLVM::generateObjFile(const BuildParameters& buildParameters) const
         pp.dbg->finalize();
 
     // Target triple
-    Utf8 archName;
+    llvm::StringRef archName;
     switch (g_CommandLine.target.arch)
     {
         case SwagTargetArch::X8664:
-            archName = reinterpret_cast<const char*>(llvm::Triple::getArchTypeName(llvm::Triple::x86_64).bytes_begin());
+            archName = llvm::Triple::getArchTypeName(llvm::Triple::x86_64);
             break;
         default:
             SWAG_ASSERT(false);
             break;
     }
 
-    Utf8 vendorName, osName, abiName;
+    llvm::StringRef vendorName, osName, abiName;
     switch (g_CommandLine.target.os)
     {
         case SwagTargetOs::Windows:
-            osName     = reinterpret_cast<const char*>(llvm::Triple::getOSTypeName(llvm::Triple::Win32).bytes_begin());
-            vendorName = reinterpret_cast<const char*>(llvm::Triple::getVendorTypeName(llvm::Triple::PC).bytes_begin());
-            abiName    = reinterpret_cast<const char*>(llvm::Triple::getEnvironmentTypeName(llvm::Triple::MSVC).bytes_begin());
+            osName     = llvm::Triple::getOSTypeName(llvm::Triple::Win32);
+            vendorName = llvm::Triple::getVendorTypeName(llvm::Triple::PC);
+            abiName    = llvm::Triple::getEnvironmentTypeName(llvm::Triple::MSVC);
             break;
         case SwagTargetOs::Linux:
-            osName = reinterpret_cast<const char*>(llvm::Triple::getOSTypeName(llvm::Triple::Linux).bytes_begin());
+            osName = llvm::Triple::getOSTypeName(llvm::Triple::Linux);
             break;
         case SwagTargetOs::MacOsX:
-            osName = reinterpret_cast<const char*>(llvm::Triple::getOSTypeName(llvm::Triple::MacOSX).bytes_begin());
+            osName = llvm::Triple::getOSTypeName(llvm::Triple::MacOSX);
             break;
         default:
             SWAG_ASSERT(false);
             break;
     }
 
-    Utf8 targetTriple = form("%s-%s-%s-%s", archName.cstr(), vendorName.cstr(), osName.cstr(), abiName.cstr()).cstr();
+    Utf8 targetTriple = form("%s-%s-%s-%s", archName.bytes_begin(), vendorName.bytes_begin(), osName.bytes_begin(), abiName.bytes_begin());
     bool isDebug      = buildParameters.isDebug();
 
     // Setup target
@@ -370,17 +370,20 @@ void LLVM::generateObjFile(const BuildParameters& buildParameters) const
     }
 
     llvm::TargetOptions opt;
-    opt.AllowFPOpFusion     = buildParameters.buildCfg->backendLLVM.fpMathFma ? llvm::FPOpFusion::Fast : llvm::FPOpFusion::Standard;
-    opt.NoNaNsFPMath        = buildParameters.buildCfg->backendLLVM.fpMathNoNaN;
-    opt.NoInfsFPMath        = buildParameters.buildCfg->backendLLVM.fpMathNoInf;
-    opt.UnsafeFPMath        = buildParameters.buildCfg->backendLLVM.fpMathUnsafe;
-    opt.NoSignedZerosFPMath = buildParameters.buildCfg->backendLLVM.fpMathNoSignedZero;
-    opt.ApproxFuncFPMath    = buildParameters.buildCfg->backendLLVM.fpMathApproxFunc;
+    auto                buildCfg     = buildParameters.buildCfg;
+    const auto&         buildCfgLLVM = buildCfg->backendLLVM;
+
+    opt.AllowFPOpFusion     = buildCfgLLVM.fpMathFma ? llvm::FPOpFusion::Fast : llvm::FPOpFusion::Standard;
+    opt.NoNaNsFPMath        = buildCfgLLVM.fpMathNoNaN;
+    opt.NoInfsFPMath        = buildCfgLLVM.fpMathNoInf;
+    opt.UnsafeFPMath        = buildCfgLLVM.fpMathUnsafe;
+    opt.NoSignedZerosFPMath = buildCfgLLVM.fpMathNoSignedZero;
+    opt.ApproxFuncFPMath    = buildCfgLLVM.fpMathApproxFunc;
 
     auto rm            = std::optional<llvm::Reloc::Model>();
     auto targetMachine = target->createTargetMachine(targetTriple.cstr(), cpu.cstr(), features.cstr(), opt, rm);
 
-    switch (buildParameters.buildCfg->backendOptimize)
+    switch (buildCfg->backendOptimize)
     {
         case BuildCfgBackendOptim::O0:
             targetMachine->setOptLevel(llvm::CodeGenOpt::None);
@@ -430,7 +433,7 @@ void LLVM::generateObjFile(const BuildParameters& buildParameters) const
     passBuilder.crossRegisterProxies(loopMgr, functionMgr, cgsccMgr, moduleMgr);
 
     llvm::OptimizationLevel optLevel;
-    switch (buildParameters.buildCfg->backendOptimize)
+    switch (buildCfg->backendOptimize)
     {
         case BuildCfgBackendOptim::O0:
             optLevel = llvm::OptimizationLevel::O0;
@@ -473,7 +476,7 @@ void LLVM::generateObjFile(const BuildParameters& buildParameters) const
     dest.close();
 
     // Output IR code
-    if (buildParameters.buildCfg->backendLLVM.outputIR)
+    if (buildCfgLLVM.outputIR)
     {
         Utf8 irName = path;
         irName.append(".ir");
