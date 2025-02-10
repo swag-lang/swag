@@ -350,7 +350,7 @@ void SCBE::emitJumpCmp(SCBE_X64& pp, const ByteCodeInstruction* ip, int32_t inst
     pp.emitJump(op, instructionCount, ip->b.s32);
 }
 
-void SCBE::emitJumpCmpAddr(SCBE_X64& pp, const ByteCodeInstruction* ip, int32_t instructionCount, CPUCondJump op, CPUReg memReg, uint32_t memOffset, CPUBits numBits)
+void SCBE::emitJumpCmpAddr(SCBE_X64& pp, const ByteCodeInstruction* ip, int32_t instructionCount, CPUCondJump op, CPUReg memReg, uint64_t memOffset, CPUBits numBits)
 {
     SWAG_ASSERT(SCBE_CPU::isInt(numBits));
 
