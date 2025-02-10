@@ -8,7 +8,7 @@
 #include "Wmf/ModuleManager.h"
 #include "Wmf/Workspace.h"
 
-void SCBE::emitGetParam(SCBE_X64& pp, const CPUFunction* cpuFct, uint32_t reg, uint32_t paramIdx, uint32_t sizeOf, uint64_t toAdd, int deRefSize)
+void SCBE::emitGetParam(SCBE_X64& pp, const CPUFunction* cpuFct, uint32_t reg, uint32_t paramIdx, CPUBits numBits, uint64_t toAdd, CPUBits derefBits)
 {
     const auto     typeFunc   = cpuFct->typeFunc;
     const uint32_t paramStack = SCBE_CPU::getParamStackOffset(cpuFct, paramIdx);
@@ -16,25 +16,28 @@ void SCBE::emitGetParam(SCBE_X64& pp, const CPUFunction* cpuFct, uint32_t reg, u
     if (typeParam->isAutoConstPointerRef())
         typeParam = TypeManager::concretePtrRefType(typeParam);
 
-    switch (sizeOf)
+    switch (numBits)
     {
-        case 1:
+        case CPUBits::B8:
             SWAG_ASSERT(!toAdd);
             pp.emitLoad(CPUReg::RAX, CPUReg::RDI, paramStack, CPUBits::B64, CPUBits::B8, false);
             pp.emitStore(CPUReg::RDI, REG_OFFSET(reg), CPUReg::RAX, CPUBits::B64);
             return;
-        case 2:
+        case CPUBits::B16:
             SWAG_ASSERT(!toAdd);
             pp.emitLoad(CPUReg::RAX, CPUReg::RDI, paramStack, CPUBits::B64, CPUBits::B16, false);
             pp.emitStore(CPUReg::RDI, REG_OFFSET(reg), CPUReg::RAX, CPUBits::B64);
             return;
-        case 4:
+        case CPUBits::B32:
             SWAG_ASSERT(!toAdd);
             pp.emitLoad(CPUReg::RAX, CPUReg::RDI, paramStack, CPUBits::B32);
             pp.emitStore(CPUReg::RDI, REG_OFFSET(reg), CPUReg::RAX, CPUBits::B64);
             return;
-        default:
+        case CPUBits::B64:
             SWAG_ASSERT(toAdd <= 0x7FFFFFFFF);
+            break;
+        default:
+            SWAG_ASSERT(false);
             break;
     }
 
@@ -45,18 +48,18 @@ void SCBE::emitGetParam(SCBE_X64& pp, const CPUFunction* cpuFct, uint32_t reg, u
     else
         pp.emitLoad(CPUReg::RAX, CPUReg::RDI, paramStack, CPUBits::B64);
     
-    switch (deRefSize)
+    switch (derefBits)
     {
-        case 1:
+        case CPUBits::B8:
             pp.emitLoad(CPUReg::RAX, CPUReg::RAX, static_cast<uint32_t>(toAdd), CPUBits::B64, CPUBits::B8, false);
             break;
-        case 2:
+        case CPUBits::B16:
             pp.emitLoad(CPUReg::RAX, CPUReg::RAX, static_cast<uint32_t>(toAdd), CPUBits::B64, CPUBits::B16, false);
             break;
-        case 4:
+        case CPUBits::B32:
             pp.emitLoad(CPUReg::RAX, CPUReg::RAX, static_cast<uint32_t>(toAdd), CPUBits::B32);
             break;
-        case 8:
+        case CPUBits::B64:
             pp.emitLoad(CPUReg::RAX, CPUReg::RAX, static_cast<uint32_t>(toAdd), CPUBits::B64);
             break;
         default:
