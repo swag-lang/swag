@@ -1138,7 +1138,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpDyn32:
             case ByteCodeOp::JumpDyn64:
             {
-                numBits = SCBE_CPU::getCPUBits(ip->op);
+                numBits            = SCBE_CPU::getCPUBits(ip->op);
                 auto tableCompiler = reinterpret_cast<int32_t*>(buildParameters.module->compilerSegment.address(ip->d.u32));
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64, numBits, true);
 
@@ -1470,63 +1470,33 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::GetFromBssSeg8:
-                pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symBSIndex, 0);
-                pp.emitLoad(CPUReg::RAX, CPUReg::RAX, ip->b.u32, CPUBits::B64, CPUBits::B8, false);
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
-                break;
             case ByteCodeOp::GetFromBssSeg16:
-                pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symBSIndex, 0);
-                pp.emitLoad(CPUReg::RAX, CPUReg::RAX, ip->b.u32, CPUBits::B64, CPUBits::B16, false);
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
-                break;
             case ByteCodeOp::GetFromBssSeg32:
-                pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symBSIndex, 0);
-                pp.emitLoad(CPUReg::RAX, CPUReg::RAX, ip->b.u32, CPUBits::B32);
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
-                break;
             case ByteCodeOp::GetFromBssSeg64:
+                numBits = SCBE_CPU::getCPUBits(ip->op);
                 pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symBSIndex, 0);
-                pp.emitLoad(CPUReg::RAX, CPUReg::RAX, ip->b.u32, CPUBits::B64);
+                pp.emitLoad(CPUReg::RAX, CPUReg::RAX, ip->b.u32, CPUBits::B64, numBits, false);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
                 break;
 
             case ByteCodeOp::GetFromMutableSeg8:
-                pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symMSIndex, 0);
-                pp.emitLoad(CPUReg::RAX, CPUReg::RAX, ip->b.u32, CPUBits::B64, CPUBits::B8, false);
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
-                break;
             case ByteCodeOp::GetFromMutableSeg16:
-                pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symMSIndex, 0);
-                pp.emitLoad(CPUReg::RAX, CPUReg::RAX, ip->b.u32, CPUBits::B64, CPUBits::B16, false);
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
-                break;
             case ByteCodeOp::GetFromMutableSeg32:
-                pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symMSIndex, 0);
-                pp.emitLoad(CPUReg::RAX, CPUReg::RAX, ip->b.u32, CPUBits::B32);
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
-                break;
             case ByteCodeOp::GetFromMutableSeg64:
+                numBits = SCBE_CPU::getCPUBits(ip->op);
                 pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symMSIndex, 0);
-                pp.emitLoad(CPUReg::RAX, CPUReg::RAX, ip->b.u32, CPUBits::B64);
+                pp.emitLoad(CPUReg::RAX, CPUReg::RAX, ip->b.u32, CPUBits::B64, numBits, false);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
                 break;
 
                 /////////////////////////////////////
 
             case ByteCodeOp::GetFromStack8:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->b.u32, CPUBits::B64, CPUBits::B8, false);
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
-                break;
             case ByteCodeOp::GetFromStack16:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->b.u32, CPUBits::B64, CPUBits::B16, false);
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
-                break;
             case ByteCodeOp::GetFromStack32:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->b.u32, CPUBits::B32);
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
-                break;
             case ByteCodeOp::GetFromStack64:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->b.u32, CPUBits::B64);
+                numBits = SCBE_CPU::getCPUBits(ip->op);
+                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->b.u32, CPUBits::B64, numBits, false);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
                 break;
             case ByteCodeOp::GetIncFromStack64:
@@ -1538,27 +1508,13 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::GetFromStack8x2:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->b.u32, CPUBits::B64, CPUBits::B8, false);
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->d.u32, CPUBits::B64, CPUBits::B8, false);
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, CPUBits::B64);
-                break;
             case ByteCodeOp::GetFromStack16x2:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->b.u32, CPUBits::B64, CPUBits::B16, false);
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->d.u32, CPUBits::B64, CPUBits::B16, false);
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, CPUBits::B64);
-                break;
             case ByteCodeOp::GetFromStack32x2:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->b.u32, CPUBits::B32);
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->d.u32, CPUBits::B32);
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, CPUBits::B64);
-                break;
             case ByteCodeOp::GetFromStack64x2:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->b.u32, CPUBits::B64);
+                numBits = SCBE_CPU::getCPUBits(ip->op);
+                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->b.u32, CPUBits::B64, numBits, false);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->d.u32, CPUBits::B64);
+                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->d.u32, CPUBits::B64, numBits, false);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, CPUBits::B64);
                 break;
 
