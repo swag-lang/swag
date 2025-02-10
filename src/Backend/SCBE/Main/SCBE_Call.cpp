@@ -19,18 +19,10 @@ void SCBE::emitGetParam(SCBE_X64& pp, const CPUFunction* cpuFct, uint32_t reg, u
     switch (numBits)
     {
         case CPUBits::B8:
-            SWAG_ASSERT(!toAdd);
-            pp.emitLoad(CPUReg::RAX, CPUReg::RDI, paramStack, CPUBits::B64, CPUBits::B8, false);
-            pp.emitStore(CPUReg::RDI, REG_OFFSET(reg), CPUReg::RAX, CPUBits::B64);
-            return;
         case CPUBits::B16:
-            SWAG_ASSERT(!toAdd);
-            pp.emitLoad(CPUReg::RAX, CPUReg::RDI, paramStack, CPUBits::B64, CPUBits::B16, false);
-            pp.emitStore(CPUReg::RDI, REG_OFFSET(reg), CPUReg::RAX, CPUBits::B64);
-            return;
         case CPUBits::B32:
             SWAG_ASSERT(!toAdd);
-            pp.emitLoad(CPUReg::RAX, CPUReg::RDI, paramStack, CPUBits::B32);
+            pp.emitLoad(CPUReg::RAX, CPUReg::RDI, paramStack, CPUBits::B64, numBits, false);
             pp.emitStore(CPUReg::RDI, REG_OFFSET(reg), CPUReg::RAX, CPUBits::B64);
             return;
         case CPUBits::B64:
@@ -47,20 +39,14 @@ void SCBE::emitGetParam(SCBE_X64& pp, const CPUFunction* cpuFct, uint32_t reg, u
         pp.emitSetAddress(CPUReg::RAX, CPUReg::RDI, paramStack);
     else
         pp.emitLoad(CPUReg::RAX, CPUReg::RDI, paramStack, CPUBits::B64);
-    
+
     switch (derefBits)
     {
         case CPUBits::B8:
-            pp.emitLoad(CPUReg::RAX, CPUReg::RAX, static_cast<uint32_t>(toAdd), CPUBits::B64, CPUBits::B8, false);
-            break;
         case CPUBits::B16:
-            pp.emitLoad(CPUReg::RAX, CPUReg::RAX, static_cast<uint32_t>(toAdd), CPUBits::B64, CPUBits::B16, false);
-            break;
         case CPUBits::B32:
-            pp.emitLoad(CPUReg::RAX, CPUReg::RAX, static_cast<uint32_t>(toAdd), CPUBits::B32);
-            break;
         case CPUBits::B64:
-            pp.emitLoad(CPUReg::RAX, CPUReg::RAX, static_cast<uint32_t>(toAdd), CPUBits::B64);
+            pp.emitLoad(CPUReg::RAX, CPUReg::RAX, static_cast<uint32_t>(toAdd), CPUBits::B64, derefBits, false);
             break;
         default:
             pp.emitOp(CPUReg::RAX, toAdd, CPUOp::ADD, CPUBits::B64);

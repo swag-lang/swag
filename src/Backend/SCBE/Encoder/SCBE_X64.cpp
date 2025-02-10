@@ -401,13 +401,19 @@ void SCBE_X64::emitLoad(CPUReg reg, CPUReg memReg, uint32_t memOffset, CPUBits n
     }
     else if (numBitsSrc == CPUBits::B32)
     {
+        SWAG_ASSERT(numBitsDst == CPUBits::B64);
         if (isSigned)
         {
             emitREX(concat, CPUBits::B64, reg, memReg);
             concat.addU8(0x63);
             emitModRM(concat, memOffset, reg, memReg);
-            return;
         }
+        else
+        {
+            emitLoad(reg, memReg, memOffset, numBitsSrc);            
+        }
+        
+        return;
     }
 
     SWAG_ASSERT(false);
