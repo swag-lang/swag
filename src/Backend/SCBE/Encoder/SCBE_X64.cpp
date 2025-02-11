@@ -760,13 +760,6 @@ void SCBE_X64::emitSet(CPUReg reg, CPUCondFlag setType)
 
 /////////////////////////////////////////////////////////////////////
 
-void SCBE_X64::emitTest(CPUReg reg0, CPUReg reg1, CPUBits numBits)
-{
-    emitREX(concat, numBits, reg0, reg1);
-    emitSpecB8(concat, static_cast<uint8_t>(CPUOp::TEST), numBits);
-    concat.addU8(getModRM(RegReg, static_cast<uint8_t>(reg0), static_cast<uint8_t>(reg1)));
-}
-
 void SCBE_X64::emitCmp(CPUReg reg0, CPUReg reg1, CPUBits numBits)
 {
     if (numBits == CPUBits::F32)

@@ -2374,7 +2374,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
                 pp.emitLoad(CPUReg::RCX, SWAG_LAMBDA_BC_MARKER, CPUBits::B64);
                 pp.emitOp(CPUReg::RCX, CPUReg::RAX, CPUOp::AND, CPUBits::B64);
-                pp.emitTest(CPUReg::RCX, CPUReg::RCX, CPUBits::B64);
+                
                 auto jumpBCToAfterAddr   = pp.emitJumpLong(JZ);
                 auto jumpBCToAfterOffset = concat.totalCount();
 
