@@ -1004,7 +1004,7 @@ namespace OS
             gen.emitLoad(CPUReg::RDI, reinterpret_cast<uint64_t>(context->sp), CPUBits::B64);
             gen.emitCallParameters(typeInfoFunc, pushRAParam, 0, retCopyAddr);
             gen.emitLoad(CPUReg::RAX, reinterpret_cast<uint64_t>(foreignPtr), CPUBits::B64);
-            gen.emitCallIndirect(CPUReg::RAX);
+            gen.emitCall(CPUReg::RAX);
 
             if (!returnType->isVoid() && !retCopyAddr)
             {

@@ -2090,7 +2090,7 @@ void SCBE_X64::emitCallResult(const TypeInfoFuncAttr* typeFunc, uint32_t offsetR
     }
 }
 
-void SCBE_X64::emitCallIndirect(CPUReg reg)
+void SCBE_X64::emitCall(CPUReg reg)
 {
     SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX || reg == CPUReg::R10);
     if (reg == CPUReg::R10)

@@ -2384,7 +2384,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitCopy(CPUReg::RCX, CPUReg::RAX, CPUBits::B64);
                 pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symPI_makeCallback, 0);
                 pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, CPUBits::B64);
-                pp.emitCallIndirect(CPUReg::RAX);
+                pp.emitCall(CPUReg::RAX);
 
                 // End
                 //////////////////

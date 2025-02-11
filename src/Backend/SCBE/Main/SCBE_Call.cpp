@@ -237,7 +237,7 @@ void SCBE::emitLambdaCall(SCBE_X64& pp, const Concat& concat, uint32_t offsetRT,
     // Native lambda
     //////////////////
     pp.emitCallParameters(typeFuncBC, pushRAParams, offsetRT);
-    pp.emitCallIndirect(CPUReg::R10);
+    pp.emitCall(CPUReg::R10);
     pp.emitCallResult(typeFuncBC, offsetRT);
 
     const auto jumpBCToAfterAddr   = pp.emitJumpLong(JUMP);
@@ -251,7 +251,7 @@ void SCBE::emitLambdaCall(SCBE_X64& pp, const Concat& concat, uint32_t offsetRT,
     emitByteCodeCallParameters(pp, typeFuncBC, offsetRT, pushRAParams);
     pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symPI_byteCodeRun, 0);
     pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, CPUBits::B64);
-    pp.emitCallIndirect(CPUReg::RAX);
+    pp.emitCall(CPUReg::RAX);
 
     // End
     //////////////////
