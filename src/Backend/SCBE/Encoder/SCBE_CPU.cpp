@@ -16,7 +16,7 @@ void SCBE_CPU::clearInstructionCache()
 {
     storageConcatCount = UINT32_MAX;
     storageMemOffset = 0;
-    storageNumBits  = 0;
+    storageNumBits  = CPUBits::INVALID;
     storageMemReg   = CPUReg::RAX;
     storageReg      = CPUReg::RAX;
 }
