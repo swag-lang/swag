@@ -167,8 +167,7 @@ void SCBE::emitByteCodeCallParameters(SCBE_X64& pp, const TypeInfoFuncAttr* type
     if (typeFuncBC->isClosure())
     {
         const auto reg = pushRAParams.back();
-        pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), CPUBits::B64);
-        pp.emitTest(CPUReg::RAX, CPUReg::RAX, CPUBits::B64);
+        pp.emitCmp(CPUReg::RDI, REG_OFFSET(reg), 0, CPUBits::B64);
 
         // If not zero, jump to closure call
         const auto seekPtrClosure = pp.emitJumpLong(JZ);

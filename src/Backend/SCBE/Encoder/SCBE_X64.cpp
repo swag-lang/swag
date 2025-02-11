@@ -2047,8 +2047,7 @@ void SCBE_X64::emitCallParameters(TypeInfoFuncAttr* typeFunc, const VectorNative
         if (typeFunc->isFctVariadic())
             reg = static_cast<uint32_t>(pushParams3[2].reg);
 
-        emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), CPUBits::B64);
-        emitTest(CPUReg::RAX, CPUReg::RAX, CPUBits::B64);
+        emitCmp(CPUReg::RDI, REG_OFFSET(reg), 0, CPUBits::B64);
 
         // If not zero, jump to closure call
         const auto seekPtrClosure = emitJumpLong(JZ);
