@@ -332,9 +332,9 @@ struct SCBE_CPU : BackendEncoder
     Map<TypeInfo*, SCBEDebugTypeIndex> dbgMapTypes;
     MapUtf8<SCBEDebugTypeIndex>        dbgMapTypesNames;
 
-    uint64_t storageMemOffset = 0;
+    uint64_t storageMemOffset   = 0;
     uint32_t storageConcatCount = UINT32_MAX;
-    uint32_t storageNumBits  = 0;
-    CPUReg   storageReg      = CPUReg::RAX;
-    CPUReg   storageMemReg   = CPUReg::RAX;
+    CPUBits  storageNumBits     = CPUBits::INVALID;
+    CPUReg   storageReg         = CPUReg::RAX;
+    CPUReg   storageMemReg      = CPUReg::RAX;
 };

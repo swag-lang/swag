@@ -438,9 +438,9 @@ void SCBE_X64::emitLoad(CPUReg reg, CPUReg memReg, uint64_t memOffset, CPUBits n
             storageMemOffset == memOffset &&
             storageConcatCount == concat.totalCount() &&
             isInt(numBits) &&
-            storageNumBits >= getBitsCount(numBits))
+            storageNumBits >= numBits)
         {
-            if (numBits == CPUBits::B32 && storageNumBits > 32)
+            if (numBits == CPUBits::B32 && storageNumBits > CPUBits::B32)
                 emitCopy(reg, reg, CPUBits::B32);
             return;
         }
@@ -541,7 +541,7 @@ void SCBE_X64::emitStore(CPUReg memReg, uint64_t memOffset, CPUReg reg, CPUBits 
             storageMemOffset   = memOffset;
             storageReg         = reg;
             storageMemReg      = memReg;
-            storageNumBits     = 8;
+            storageNumBits     = numBits;
             break;
 
         case CPUBits::B16:
@@ -553,7 +553,7 @@ void SCBE_X64::emitStore(CPUReg memReg, uint64_t memOffset, CPUReg reg, CPUBits 
             storageMemOffset   = memOffset;
             storageReg         = reg;
             storageMemReg      = memReg;
-            storageNumBits     = 16;
+            storageNumBits     = numBits;
             break;
 
         case CPUBits::B32:
@@ -565,7 +565,7 @@ void SCBE_X64::emitStore(CPUReg memReg, uint64_t memOffset, CPUReg reg, CPUBits 
             storageMemOffset   = memOffset;
             storageReg         = reg;
             storageMemReg      = memReg;
-            storageNumBits     = 32;
+            storageNumBits     = numBits;
             break;
 
         case CPUBits::B64:
@@ -577,7 +577,7 @@ void SCBE_X64::emitStore(CPUReg memReg, uint64_t memOffset, CPUReg reg, CPUBits 
             storageMemOffset   = memOffset;
             storageReg         = reg;
             storageMemReg      = memReg;
-            storageNumBits     = 64;
+            storageNumBits     = numBits;
             break;
 
         case CPUBits::F32:
@@ -2213,7 +2213,7 @@ void SCBE_X64::emitNeg(CPUReg reg, CPUBits numBits)
 {
     SWAG_ASSERT(reg < CPUReg::R8);
     SWAG_ASSERT(numBits == CPUBits::B32 || numBits == CPUBits::B64);
-    
+
     emitREX(concat, numBits);
     concat.addU8(0xF7);
     concat.addU8(0xD8 | (static_cast<uint8_t>(reg) & 0b111));
