@@ -75,6 +75,14 @@ namespace
         else
             concat.addU8(value);
     }
+
+    void emitSpecF64(Concat& concat, uint8_t value, CPUBits numBits)
+    {
+        if (numBits == CPUBits::F64)
+            concat.addU8(value & ~1);
+        else
+            concat.addU8(value);
+    }    
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -454,18 +462,10 @@ void SCBE_X64::emitLoad(CPUReg reg, CPUReg memReg, uint64_t memOffset, CPUBits n
         memOffset = 0;
     }
 
-    if (numBits == CPUBits::F32)
+    if (isFloat(numBits))
     {
         SWAG_ASSERT(reg < CPUReg::R8 && memReg < CPUReg::R8);
-        concat.addU8(0xF3);
-        concat.addU8(0x0F);
-        concat.addU8(0x10);
-        emitModRM(concat, memOffset, reg, memReg);
-    }
-    else if (numBits == CPUBits::F64)
-    {
-        SWAG_ASSERT(reg < CPUReg::R8 && memReg < CPUReg::R8);
-        concat.addU8(0xF2);
+        emitSpecF64(concat, 0xF3, numBits);
         concat.addU8(0x0F);
         concat.addU8(0x10);
         emitModRM(concat, memOffset, reg, memReg);
@@ -506,75 +506,25 @@ void SCBE_X64::emitSetAddress(CPUReg reg, CPUReg memReg, uint64_t memOffset)
 
 void SCBE_X64::emitStore(CPUReg memReg, uint64_t memOffset, CPUReg reg, CPUBits numBits)
 {
-    switch (numBits)
+    if (isFloat(numBits))
     {
-        case CPUBits::B8:
-            emitREX(concat, CPUBits::B8, reg, memReg);
-            concat.addU8(0x88);
-            emitModRM(concat, memOffset, reg, memReg);
+        SWAG_ASSERT(reg < CPUReg::R8 && memReg < CPUReg::R8);
+        emitSpecF64(concat, 0xF3, numBits);
+        concat.addU8(0x0F);
+        concat.addU8(0x11);
+        emitModRM(concat, memOffset, reg, memReg);        
+    }
+    else
+    {
+        emitREX(concat, numBits, reg, memReg);
+        emitSpecB8(concat, 0x89, numBits);
+        emitModRM(concat, memOffset, reg, memReg);
 
-            storageConcatCount = concat.totalCount();
-            storageMemOffset   = memOffset;
-            storageReg         = reg;
-            storageMemReg      = memReg;
-            storageNumBits     = numBits;
-            break;
-
-        case CPUBits::B16:
-            emitREX(concat, CPUBits::B16, reg, memReg);
-            concat.addU8(0x89);
-            emitModRM(concat, memOffset, reg, memReg);
-
-            storageConcatCount = concat.totalCount();
-            storageMemOffset   = memOffset;
-            storageReg         = reg;
-            storageMemReg      = memReg;
-            storageNumBits     = numBits;
-            break;
-
-        case CPUBits::B32:
-            emitREX(concat, CPUBits::B32, reg, memReg);
-            concat.addU8(0x89);
-            emitModRM(concat, memOffset, reg, memReg);
-
-            storageConcatCount = concat.totalCount();
-            storageMemOffset   = memOffset;
-            storageReg         = reg;
-            storageMemReg      = memReg;
-            storageNumBits     = numBits;
-            break;
-
-        case CPUBits::B64:
-            emitREX(concat, CPUBits::B64, reg, memReg);
-            concat.addU8(0x89);
-            emitModRM(concat, memOffset, reg, memReg);
-
-            storageConcatCount = concat.totalCount();
-            storageMemOffset   = memOffset;
-            storageReg         = reg;
-            storageMemReg      = memReg;
-            storageNumBits     = numBits;
-            break;
-
-        case CPUBits::F32:
-            SWAG_ASSERT(reg < CPUReg::R8 && memReg < CPUReg::R8);
-            concat.addU8(0xF3);
-            concat.addU8(0x0F);
-            concat.addU8(0x11);
-            emitModRM(concat, memOffset, reg, memReg);
-            break;
-
-        case CPUBits::F64:
-            SWAG_ASSERT(reg < CPUReg::R8 && memReg < CPUReg::R8);
-            concat.addU8(0xF2);
-            concat.addU8(0x0F);
-            concat.addU8(0x11);
-            emitModRM(concat, memOffset, reg, memReg);
-            break;
-
-        default:
-            SWAG_ASSERT(false);
-            break;
+        storageConcatCount = concat.totalCount();
+        storageMemOffset   = memOffset;
+        storageReg         = reg;
+        storageMemReg      = memReg;
+        storageNumBits     = numBits;        
     }
 }
 
