@@ -459,19 +459,6 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     SWAG_ASSERT(ip->op <= ByteCodeOp::End);
     switch (ip->op)
     {
-        case ByteCodeOp::TestNotZero8:
-            registersRC[ip->a.u32].b = IMMB_U8(ip) != 0;
-            break;
-        case ByteCodeOp::TestNotZero16:
-            registersRC[ip->a.u32].b = IMMB_U16(ip) != 0;
-            break;
-        case ByteCodeOp::TestNotZero32:
-            registersRC[ip->a.u32].b = IMMB_U32(ip) != 0;
-            break;
-        case ByteCodeOp::TestNotZero64:
-            registersRC[ip->a.u32].b = IMMB_U64(ip) != 0;
-            break;
-
         case ByteCodeOp::JumpDyn8:
         {
             auto table = reinterpret_cast<int32_t*>(context->bc->sourceFile->module->compilerSegment.address(ip->d.u32));

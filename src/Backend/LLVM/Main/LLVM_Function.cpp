@@ -3368,37 +3368,6 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
                 /////////////////////////////////////
 
-            case ByteCodeOp::TestNotZero8:
-            {
-                auto b0 = builder.CreateIsNotNull(MK_IMMB_8());
-                auto r0 = GEP64_PTR_I8(allocR, ip->a.u32);
-                builder.CreateStore(builder.CreateIntCast(b0, I8_TY(), false), r0);
-                break;
-            }
-            case ByteCodeOp::TestNotZero16:
-            {
-                auto b0 = builder.CreateIsNotNull(MK_IMMB_16());
-                auto r0 = GEP64_PTR_I8(allocR, ip->a.u32);
-                builder.CreateStore(builder.CreateIntCast(b0, I8_TY(), false), r0);
-                break;
-            }
-            case ByteCodeOp::TestNotZero32:
-            {
-                auto b0 = builder.CreateIsNotNull(MK_IMMB_32());
-                auto r0 = GEP64_PTR_I8(allocR, ip->a.u32);
-                builder.CreateStore(builder.CreateIntCast(b0, I8_TY(), false), r0);
-                break;
-            }
-            case ByteCodeOp::TestNotZero64:
-            {
-                auto b0 = builder.CreateIsNotNull(MK_IMMB_64());
-                auto r0 = GEP64_PTR_I8(allocR, ip->a.u32);
-                builder.CreateStore(builder.CreateIntCast(b0, I8_TY(), false), r0);
-                break;
-            }
-
-                /////////////////////////////////////
-
             case ByteCodeOp::JumpDyn8:
             case ByteCodeOp::JumpDyn16:
             case ByteCodeOp::JumpDyn64:

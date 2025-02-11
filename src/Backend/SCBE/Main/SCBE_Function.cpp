@@ -1060,18 +1060,6 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
                 /////////////////////////////////////
 
-            case ByteCodeOp::TestNotZero8:
-            case ByteCodeOp::TestNotZero16:
-            case ByteCodeOp::TestNotZero32:
-            case ByteCodeOp::TestNotZero64:
-                emitIMMB(pp, ip, CPUReg::RAX, numBits);
-                pp.emitTest(CPUReg::RAX, CPUReg::RAX, numBits);
-                pp.emitSet(CPUReg::RAX, CPUCondFlag::NE);
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B8);
-                break;
-
-                /////////////////////////////////////
-
             case ByteCodeOp::NegBool:
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->b.u32), CPUBits::B8);
                 pp.emitOp(CPUReg::RAX, 1, CPUOp::XOR, CPUBits::B8);

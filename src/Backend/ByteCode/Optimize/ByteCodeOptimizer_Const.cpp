@@ -1231,26 +1231,6 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                     ip->b.f32 = static_cast<float>(ip->b.f64);
                     OK();
                     break;
-                case ByteCodeOp::TestNotZero8:
-                    SET_OP(ip, ByteCodeOp::SetImmediate32);
-                    ip->b.u64 = ip->b.u8 != 0;
-                    OK();
-                    break;
-                case ByteCodeOp::TestNotZero16:
-                    SET_OP(ip, ByteCodeOp::SetImmediate32);
-                    ip->b.u64 = ip->b.u16 != 0;
-                    OK();
-                    break;
-                case ByteCodeOp::TestNotZero32:
-                    SET_OP(ip, ByteCodeOp::SetImmediate32);
-                    ip->b.u64 = ip->b.u32 != 0;
-                    OK();
-                    break;
-                case ByteCodeOp::TestNotZero64:
-                    SET_OP(ip, ByteCodeOp::SetImmediate32);
-                    ip->b.u64 = ip->b.u64 != 0;
-                    OK();
-                    break;
                 case ByteCodeOp::IntrinsicS8x1:
                 case ByteCodeOp::IntrinsicS16x1:
                 case ByteCodeOp::IntrinsicS32x1:
