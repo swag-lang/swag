@@ -448,20 +448,18 @@ void SCBE_X64::emitLoad(CPUReg reg, CPUReg memReg, uint64_t memOffset, CPUBits n
 
 void SCBE_X64::emitLoad(CPUReg reg, CPUReg memReg, uint64_t memOffset, CPUBits numBits)
 {
-    if (!buildParams.buildCfg ||
-        buildParams.buildCfg->backendOptimize != BuildCfgBackendOptim::O0)
+    if (buildParams.buildCfg &&
+        buildParams.buildCfg->backendOptimize != BuildCfgBackendOptim::O0 &&
+        storageConcatCount == concat.totalCount() &&
+        isInt(numBits) &&
+        storageReg == reg &&
+        storageMemReg == memReg &&
+        storageMemOffset == memOffset &&
+        storageNumBits >= numBits)
     {
-        if (storageReg == reg &&
-            storageMemReg == memReg &&
-            storageMemOffset == memOffset &&
-            storageConcatCount == concat.totalCount() &&
-            isInt(numBits) &&
-            storageNumBits >= numBits)
-        {
-            if (numBits == CPUBits::B32 && storageNumBits > CPUBits::B32)
-                emitCopy(reg, reg, CPUBits::B32);
-            return;
-        }
+        if (numBits == CPUBits::B32 && storageNumBits > CPUBits::B32)
+            emitCopy(reg, reg, CPUBits::B32);
+        return;
     }
 
     if (memOffset > 0x7FFFFFFF)
@@ -881,18 +879,16 @@ void SCBE_X64::emitCmp(CPUReg memReg, uint64_t memOffset, uint64_t value, CPUBit
 {
     SWAG_ASSERT(SCBE_CPU::isInt(numBits));
 
-    if (!buildParams.buildCfg ||
-        buildParams.buildCfg->backendOptimize != BuildCfgBackendOptim::O0)
+    if (buildParams.buildCfg &&
+        buildParams.buildCfg->backendOptimize != BuildCfgBackendOptim::O0 &&
+        storageConcatCount == concat.totalCount() &&
+        isInt(numBits) &&
+        storageMemReg == memReg &&
+        storageMemOffset == memOffset &&
+        storageNumBits == numBits)
     {
-        if (storageMemReg == memReg &&
-            storageMemOffset == memOffset &&
-            storageConcatCount == concat.totalCount() &&
-            isInt(numBits) &&
-            storageNumBits == numBits)
-        {
-            emitCmp(storageReg, value, numBits);
-            return;
-        }
+        emitCmp(storageReg, value, numBits);
+        return;
     }
 
     if (numBits == CPUBits::B8)
