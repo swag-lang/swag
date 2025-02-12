@@ -2190,10 +2190,9 @@ void SCBE_X64::emitCMov(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits)
 
 void SCBE_X64::emitRotate(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits)
 {
-    SWAG_ASSERT(numBits >= CPUBits::B32);
     SWAG_ASSERT(regDst == CPUReg::RAX && regSrc == CPUReg::RCX);
     emitREX(concat, numBits, regDst, regSrc);
-    concat.addU8(0xD3);
+    emitSpecB8(concat, 0xD3, numBits);
     emitCPUOp(concat, op);
 }
 

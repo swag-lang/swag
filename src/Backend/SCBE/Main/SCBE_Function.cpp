@@ -2841,148 +2841,38 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
 
             case ByteCodeOp::IntrinsicU8x2:
-            {
-                switch (static_cast<TokenId>(ip->d.u32))
-                {
-                    case TokenId::IntrinsicMin:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B8, CPUBits::B32, false);
-                        emitIMMC(pp, ip, CPUReg::RCX, CPUBits::B8, CPUBits::B32, false);
-                        pp.emitCmp(CPUReg::RCX, CPUReg::RAX, CPUBits::B32);
-                        pp.emitCMov(CPUReg::RAX, CPUReg::RCX, CPUOp::CMOVB, CPUBits::B32);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B8);
-                        break;
-                    case TokenId::IntrinsicMax:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B8, CPUBits::B32, false);
-                        emitIMMC(pp, ip, CPUReg::RCX, CPUBits::B8, CPUBits::B32, false);
-                        pp.emitCmp(CPUReg::RAX, CPUReg::RCX, CPUBits::B32);
-                        pp.emitCMov(CPUReg::RAX, CPUReg::RCX, CPUOp::CMOVB, CPUBits::B32);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B8);
-                        break;
-                    case TokenId::IntrinsicRol:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B8, CPUBits::B32, true);
-                        emitIMMC(pp, ip, CPUReg::RCX, CPUBits::B8, CPUBits::B32, true);
-                        pp.emitRotate(CPUReg::RAX, CPUReg::RCX, CPUOp::ROL, CPUBits::B32);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B8);
-                        break;
-                    case TokenId::IntrinsicRor:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B8, CPUBits::B32, true);
-                        emitIMMC(pp, ip, CPUReg::RCX, CPUBits::B8, CPUBits::B32, true);
-                        pp.emitRotate(CPUReg::RAX, CPUReg::RCX, CPUOp::ROR, CPUBits::B32);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B8);
-                        break;
-                    default:
-                        ok = false;
-                        Report::internalError(buildParameters.module, form("unknown intrinsic [[%s]] during backend generation", ByteCode::opName(ip->op)));
-                        break;
-                }
-
-                break;
-            }
             case ByteCodeOp::IntrinsicU16x2:
-            {
-                switch (static_cast<TokenId>(ip->d.u32))
-                {
-                    case TokenId::IntrinsicMin:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B16);
-                        emitIMMC(pp, ip, CPUReg::RCX, CPUBits::B16);
-                        pp.emitCmp(CPUReg::RCX, CPUReg::RAX, CPUBits::B16);
-                        pp.emitCMov(CPUReg::RAX, CPUReg::RCX, CPUOp::CMOVB, CPUBits::B16);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B16);
-                        break;
-                    case TokenId::IntrinsicMax:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B16);
-                        emitIMMC(pp, ip, CPUReg::RCX, CPUBits::B16);
-                        pp.emitCmp(CPUReg::RAX, CPUReg::RCX, CPUBits::B16);
-                        pp.emitCMov(CPUReg::RAX, CPUReg::RCX, CPUOp::CMOVB, CPUBits::B16);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B16);
-                        break;
-                    case TokenId::IntrinsicRol:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B16);
-                        emitIMMC(pp, ip, CPUReg::RCX, CPUBits::B16);
-                        pp.emitRotate(CPUReg::RAX, CPUReg::RCX, CPUOp::ROL, CPUBits::B32);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B16);
-                        break;
-                    case TokenId::IntrinsicRor:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B16);
-                        emitIMMC(pp, ip, CPUReg::RCX, CPUBits::B16);
-                        pp.emitRotate(CPUReg::RAX, CPUReg::RCX, CPUOp::ROR, CPUBits::B32);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B16);
-                        break;
-                    default:
-                        ok = false;
-                        Report::internalError(buildParameters.module, form("unknown intrinsic [[%s]] during backend generation", ByteCode::opName(ip->op)));
-                        break;
-                }
-
-                break;
-            }
             case ByteCodeOp::IntrinsicU32x2:
-            {
-                switch (static_cast<TokenId>(ip->d.u32))
-                {
-                    case TokenId::IntrinsicMin:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B32);
-                        emitIMMC(pp, ip, CPUReg::RCX, CPUBits::B32);
-                        pp.emitCmp(CPUReg::RCX, CPUReg::RAX, CPUBits::B32);
-                        pp.emitCMov(CPUReg::RAX, CPUReg::RCX, CPUOp::CMOVB, CPUBits::B32);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B32);
-                        break;
-                    case TokenId::IntrinsicMax:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B32);
-                        emitIMMC(pp, ip, CPUReg::RCX, CPUBits::B32);
-                        pp.emitCmp(CPUReg::RAX, CPUReg::RCX, CPUBits::B32);
-                        pp.emitCMov(CPUReg::RAX, CPUReg::RCX, CPUOp::CMOVB, CPUBits::B32);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B32);
-                        break;
-                    case TokenId::IntrinsicRol:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B32);
-                        emitIMMC(pp, ip, CPUReg::RCX, CPUBits::B32);
-                        pp.emitRotate(CPUReg::RAX, CPUReg::RCX, CPUOp::ROL, CPUBits::B32);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B32);
-                        break;
-                    case TokenId::IntrinsicRor:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B32);
-                        emitIMMC(pp, ip, CPUReg::RCX, CPUBits::B32);
-                        pp.emitRotate(CPUReg::RAX, CPUReg::RCX, CPUOp::ROR, CPUBits::B32);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B32);
-                        break;
-                    default:
-                        ok = false;
-                        Report::internalError(buildParameters.module, form("unknown intrinsic [[%s]] during backend generation", ByteCode::opName(ip->op)));
-                        break;
-                }
-
-                break;
-            }
             case ByteCodeOp::IntrinsicU64x2:
             {
+                numBits = SCBE_CPU::getCPUBits(ip->op);
                 switch (static_cast<TokenId>(ip->d.u32))
                 {
                     case TokenId::IntrinsicMin:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B64);
-                        emitIMMC(pp, ip, CPUReg::RCX, CPUBits::B64);
-                        pp.emitCmp(CPUReg::RCX, CPUReg::RAX, CPUBits::B64);
-                        pp.emitCMov(CPUReg::RAX, CPUReg::RCX, CPUOp::CMOVB, CPUBits::B64);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
+                        emitIMMB(pp, ip, CPUReg::RAX, numBits);
+                        emitIMMC(pp, ip, CPUReg::RCX, numBits);
+                        pp.emitCmp(CPUReg::RCX, CPUReg::RAX, numBits);
+                        pp.emitCMov(CPUReg::RAX, CPUReg::RCX, CPUOp::CMOVB, numBits);
+                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, numBits);
                         break;
                     case TokenId::IntrinsicMax:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B64);
-                        emitIMMC(pp, ip, CPUReg::RCX, CPUBits::B64);
-                        pp.emitCmp(CPUReg::RAX, CPUReg::RCX, CPUBits::B64);
-                        pp.emitCMov(CPUReg::RAX, CPUReg::RCX, CPUOp::CMOVB, CPUBits::B64);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
+                        emitIMMB(pp, ip, CPUReg::RAX, numBits);
+                        emitIMMC(pp, ip, CPUReg::RCX, numBits);
+                        pp.emitCmp(CPUReg::RAX, CPUReg::RCX, numBits);
+                        pp.emitCMov(CPUReg::RAX, CPUReg::RCX, CPUOp::CMOVB, numBits);
+                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, numBits);
                         break;
                     case TokenId::IntrinsicRol:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B64);
-                        emitIMMC(pp, ip, CPUReg::RCX, CPUBits::B64);
-                        pp.emitRotate(CPUReg::RAX, CPUReg::RCX, CPUOp::ROL, CPUBits::B64);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
+                        emitIMMB(pp, ip, CPUReg::RAX, numBits);
+                        emitIMMC(pp, ip, CPUReg::RCX, CPUBits::B8);
+                        pp.emitRotate(CPUReg::RAX, CPUReg::RCX, CPUOp::ROL, numBits);
+                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, numBits);
                         break;
                     case TokenId::IntrinsicRor:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B64);
-                        emitIMMC(pp, ip, CPUReg::RCX, CPUBits::B64);
-                        pp.emitRotate(CPUReg::RAX, CPUReg::RCX, CPUOp::ROR, CPUBits::B64);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
+                        emitIMMB(pp, ip, CPUReg::RAX, numBits);
+                        emitIMMC(pp, ip, CPUReg::RCX, CPUBits::B8);
+                        pp.emitRotate(CPUReg::RAX, CPUReg::RCX, CPUOp::ROR, numBits);
+                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, numBits);
                         break;
                     default:
                         ok = false;
