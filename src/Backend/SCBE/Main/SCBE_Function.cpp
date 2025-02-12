@@ -2331,7 +2331,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
                 emitIMMB(pp, ip, CPUReg::RAX, numBits);
                 emitIMMC(pp, ip, CPUReg::RDX, numBits);
-                pp.emitCmpXChg(CPUReg::RCX, CPUReg::RDX, numBits);
+                pp.emitOp(CPUReg::RCX, CPUReg::RDX, CPUOp::CMPXCHG, numBits);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->d.u32), CPUReg::RAX, numBits);
                 break;
 

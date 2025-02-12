@@ -55,6 +55,5 @@ struct SCBE_X64 : SCBE_CPU
     void emitOp(CPUReg memReg, uint64_t memOffset, CPUReg reg, CPUOp op, CPUBits numBits, CPUEmitFlags emitFlags = EMITF_Zero);
     void emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits, CPUEmitFlags emitFlags = EMITF_Zero);
     void emitOp(CPUReg memReg, uint64_t memOffset, uint64_t value, CPUOp op, CPUBits numBits, CPUEmitFlags emitFlags = EMITF_Zero);
-    void emitCmpXChg(CPUReg regDst, CPUReg regSrc, CPUBits numBits);
     void emitMulAdd(CPUReg regDst, CPUReg regMul, CPUReg regAdd, CPUBits numBits);
 };
