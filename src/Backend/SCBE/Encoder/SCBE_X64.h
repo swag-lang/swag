@@ -49,12 +49,12 @@ struct SCBE_X64 : SCBE_CPU
     void emitCopy(CPUReg regDst, CPUReg regSrc, CPUBits numBits);
     void emitCopy(CPUReg reg, CPUBits numBits);
     void emitCopy(CPUReg regDst, CPUReg regSrc, uint32_t count, uint32_t offset);
+    void emitOpUnary(CPUReg memReg, uint64_t memOffset, CPUOp op, CPUBits numBits);
+    void emitOpUnary(CPUReg reg, CPUOp op, CPUBits numBits);
     void emitOp(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits, CPUEmitFlags emitFlags = EMITF_Zero);
     void emitOp(CPUReg memReg, uint64_t memOffset, CPUReg reg, CPUOp op, CPUBits numBits, CPUEmitFlags emitFlags = EMITF_Zero);
     void emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits, CPUEmitFlags emitFlags = EMITF_Zero);
     void emitOp(CPUReg memReg, uint64_t memOffset, uint64_t value, CPUOp op, CPUBits numBits, CPUEmitFlags emitFlags = EMITF_Zero);
-    void emitNot(CPUReg reg, CPUBits numBits);
-    void emitNot(CPUReg memReg, uint64_t memOffset, CPUBits numBits);
     void emitNeg(CPUReg reg, CPUBits numBits);
     void emitNeg(CPUReg memReg, uint64_t memOffset, CPUBits numBits);
     void emitCMov(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits);

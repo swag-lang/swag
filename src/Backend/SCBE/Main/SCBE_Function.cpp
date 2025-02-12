@@ -884,7 +884,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::GreaterEqZeroToTrue:
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B32);
-                pp.emitNot(CPUReg::RAX, CPUBits::B32);
+                pp.emitOp(CPUReg::RAX, CPUReg::RAX, CPUOp::NOT, CPUBits::B32);
                 pp.emitOp(CPUReg::RAX, 31, CPUOp::SHR, CPUBits::B32);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B8);
                 break;
@@ -1110,11 +1110,11 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::InvertU64:
                 numBits = SCBE_CPU::getCPUBits(ip->op);
                 if (ip->a.u32 == ip->b.u32)
-                    pp.emitNot(CPUReg::RDI, REG_OFFSET(ip->a.u32), numBits);
+                    pp.emitOpUnary(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUOp::NOT, numBits);
                 else
                 {
                     pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->b.u32), numBits);
-                    pp.emitNot(CPUReg::RAX, numBits);
+                    pp.emitOpUnary(CPUReg::RAX, CPUOp::NOT, numBits);
                     pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, numBits);
                 }
                 break;
