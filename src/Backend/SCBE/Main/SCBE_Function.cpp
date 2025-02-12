@@ -2053,29 +2053,9 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::IntrinsicCVaArg:
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
                 pp.emitLoad(CPUReg::RCX, CPUReg::RAX, 0, CPUBits::B64);
-                switch (ip->c.u32)
-                {
-                    case 1:
-                        pp.emitClear(CPUReg::RDX, CPUBits::B64);
-                        pp.emitLoad(CPUReg::RDX, CPUReg::RCX, 0, CPUBits::B8);
-                        break;
-                    case 2:
-                        pp.emitClear(CPUReg::RDX, CPUBits::B64);
-                        pp.emitLoad(CPUReg::RDX, CPUReg::RCX, 0, CPUBits::B16);
-                        break;
-                    case 4:
-                        pp.emitLoad(CPUReg::RDX, CPUReg::RCX, 0, CPUBits::B32);
-                        break;
-                    case 8:
-                        pp.emitLoad(CPUReg::RDX, CPUReg::RCX, 0, CPUBits::B64);
-                        break;
-                    default:
-                        break;
-                }
-
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->b.u32), CPUReg::RDX, CPUBits::B64);
-                pp.emitLoad(CPUReg::RCX, 8, CPUBits::B64);
-                pp.emitOp(CPUReg::RAX, 0, CPUReg::RCX, CPUOp::ADD, CPUBits::B64);
+                pp.emitLoad(CPUReg::RCX, CPUReg::RCX, 0, CPUBits::B64, static_cast<CPUBits>(ip->c.u32 * 8), false);
+                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->b.u32), CPUReg::RCX, CPUBits::B64);
+                pp.emitOp(CPUReg::RAX, 0, 8, CPUOp::ADD, CPUBits::B64);
                 break;
 
             case ByteCodeOp::IntrinsicArguments:
