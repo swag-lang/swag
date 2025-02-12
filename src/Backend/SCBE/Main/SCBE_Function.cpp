@@ -1083,8 +1083,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::NegF64:
                 numBits = SCBE_CPU::getCPUBits(ip->op);
                 pp.emitLoad(CPUReg::XMM0, CPUReg::RDI, REG_OFFSET(ip->b.u32), numBits);
-                pp.emitLoad(CPUReg::RAX, numBits == CPUBits::F32 ? 0x80000000 : 0x80000000'00000000, CPUBits::B64);
-                pp.emitStore(CPUReg::RDI, offsetFLT, CPUReg::RAX, CPUBits::B64);
+                pp.emitStore(CPUReg::RDI, offsetFLT, numBits == CPUBits::F32 ? 0x80000000 : 0x80000000'00000000, CPUBits::B64);
                 pp.emitLoad(CPUReg::XMM1, CPUReg::RDI, offsetFLT, numBits);
                 pp.emitOp(CPUReg::XMM0, CPUReg::XMM1, CPUOp::FXOR, numBits);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::XMM0, numBits);
