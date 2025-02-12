@@ -2736,100 +2736,26 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
 
             case ByteCodeOp::IntrinsicS8x2:
-            {
-                switch (static_cast<TokenId>(ip->d.u32))
-                {
-                    case TokenId::IntrinsicMin:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B8, CPUBits::B32, true);
-                        emitIMMC(pp, ip, CPUReg::RCX, CPUBits::B8, CPUBits::B32, true);
-                        pp.emitCmp(CPUReg::RCX, CPUReg::RAX, CPUBits::B32);
-                        pp.emitCMov(CPUReg::RAX, CPUReg::RCX, CPUOp::CMOVL, CPUBits::B32);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B8);
-                        break;
-                    case TokenId::IntrinsicMax:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B8, CPUBits::B32, true);
-                        emitIMMC(pp, ip, CPUReg::RCX, CPUBits::B8, CPUBits::B32, true);
-                        pp.emitCmp(CPUReg::RAX, CPUReg::RCX, CPUBits::B32);
-                        pp.emitCMov(CPUReg::RAX, CPUReg::RCX, CPUOp::CMOVL, CPUBits::B32);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B8);
-                        break;
-                    default:
-                        ok = false;
-                        Report::internalError(buildParameters.module, form("unknown intrinsic [[%s]] during backend generation", ByteCode::opName(ip->op)));
-                        break;
-                }
-
-                break;
-            }
             case ByteCodeOp::IntrinsicS16x2:
-            {
-                switch (static_cast<TokenId>(ip->d.u32))
-                {
-                    case TokenId::IntrinsicMin:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B16);
-                        emitIMMC(pp, ip, CPUReg::RCX, CPUBits::B16);
-                        pp.emitCmp(CPUReg::RCX, CPUReg::RAX, CPUBits::B16);
-                        pp.emitCMov(CPUReg::RAX, CPUReg::RCX, CPUOp::CMOVL, CPUBits::B32);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B16);
-                        break;
-                    case TokenId::IntrinsicMax:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B16);
-                        emitIMMC(pp, ip, CPUReg::RCX, CPUBits::B16);
-                        pp.emitCmp(CPUReg::RAX, CPUReg::RCX, CPUBits::B16);
-                        pp.emitCMov(CPUReg::RAX, CPUReg::RCX, CPUOp::CMOVL, CPUBits::B32);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B16);
-                        break;
-                    default:
-                        ok = false;
-                        Report::internalError(buildParameters.module, form("unknown intrinsic [[%s]] during backend generation", ByteCode::opName(ip->op)));
-                        break;
-                }
-
-                break;
-            }
             case ByteCodeOp::IntrinsicS32x2:
-            {
-                switch (static_cast<TokenId>(ip->d.u32))
-                {
-                    case TokenId::IntrinsicMin:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B32);
-                        emitIMMC(pp, ip, CPUReg::RCX, CPUBits::B32);
-                        pp.emitCmp(CPUReg::RCX, CPUReg::RAX, CPUBits::B32);
-                        pp.emitCMov(CPUReg::RAX, CPUReg::RCX, CPUOp::CMOVL, CPUBits::B32);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B32);
-                        break;
-                    case TokenId::IntrinsicMax:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B32);
-                        emitIMMC(pp, ip, CPUReg::RCX, CPUBits::B32);
-                        pp.emitCmp(CPUReg::RAX, CPUReg::RCX, CPUBits::B32);
-                        pp.emitCMov(CPUReg::RAX, CPUReg::RCX, CPUOp::CMOVL, CPUBits::B32);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B32);
-                        break;
-                    default:
-                        ok = false;
-                        Report::internalError(buildParameters.module, form("unknown intrinsic [[%s]] during backend generation", ByteCode::opName(ip->op)));
-                        break;
-                }
-
-                break;
-            }
             case ByteCodeOp::IntrinsicS64x2:
             {
+                numBits = SCBE_CPU::getCPUBits(ip->op);
                 switch (static_cast<TokenId>(ip->d.u32))
                 {
                     case TokenId::IntrinsicMin:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B64);
-                        emitIMMC(pp, ip, CPUReg::RCX, CPUBits::B64);
-                        pp.emitCmp(CPUReg::RCX, CPUReg::RAX, CPUBits::B64);
-                        pp.emitCMov(CPUReg::RAX, CPUReg::RCX, CPUOp::CMOVL, CPUBits::B64);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
+                        emitIMMB(pp, ip, CPUReg::RAX, numBits);
+                        emitIMMC(pp, ip, CPUReg::RCX, numBits);
+                        pp.emitCmp(CPUReg::RCX, CPUReg::RAX, numBits);
+                        pp.emitCMov(CPUReg::RAX, CPUReg::RCX, CPUOp::CMOVL, numBits);
+                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, numBits);
                         break;
                     case TokenId::IntrinsicMax:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B64);
-                        emitIMMC(pp, ip, CPUReg::RCX, CPUBits::B64);
-                        pp.emitCmp(CPUReg::RAX, CPUReg::RCX, CPUBits::B64);
-                        pp.emitCMov(CPUReg::RAX, CPUReg::RCX, CPUOp::CMOVL, CPUBits::B64);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
+                        emitIMMB(pp, ip, CPUReg::RAX, numBits);
+                        emitIMMC(pp, ip, CPUReg::RCX, numBits);
+                        pp.emitCmp(CPUReg::RAX, CPUReg::RCX, numBits);
+                        pp.emitCMov(CPUReg::RAX, CPUReg::RCX, CPUOp::CMOVL, numBits);
+                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, numBits);
                         break;
                     default:
                         ok = false;

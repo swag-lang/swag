@@ -41,16 +41,16 @@ internal const Rev8Arr: [256] u8 = [
     func countOnes(x: u64)->u64 => @bitcountnz(x)
 
     // Rotate bits left
-    func rol(x, y: u8)  => @rol(x, y)
-    func rol(x, y: u16) => @rol(x, y)
-    func rol(x, y: u32) => @rol(x, y)
-    func rol(x, y: u64) => @rol(x, y)
+    func rol(x: u8, y: u8)  => @rol(x, y)
+    func rol(x: u16, y: u8) => @rol(x, y)
+    func rol(x: u32, y: u8) => @rol(x, y)
+    func rol(x: u64, y: u8) => @rol(x, y)
 
     // Rotate bits right
-    func ror(x, y: u8)  => @ror(x, y)
-    func ror(x, y: u16) => @ror(x, y)
-    func ror(x, y: u32) => @ror(x, y)
-    func ror(x, y: u64) => @ror(x, y)
+    func ror(x: u8, y: u8)  => @ror(x, y)
+    func ror(x: u16, y: u8) => @ror(x, y)
+    func ror(x: u32, y: u8) => @ror(x, y)
+    func ror(x: u64, y: u8) => @ror(x, y)
 
     // Swap bytes
     func byteswap(x: u16) => @byteswap(x)
