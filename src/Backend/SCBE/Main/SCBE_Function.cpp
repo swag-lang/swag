@@ -2141,20 +2141,14 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::CopyRAtoRR:
-                pp.emitSetAddress(CPUReg::RAX, CPUReg::RDI, offsetResult);
-                if (ip->hasFlag(BCI_IMM_A) && ip->a.u64 <= 0x7FFFFFFF)
+                if (ip->hasFlag(BCI_IMM_A))
                 {
-                    pp.emitStore(CPUReg::RAX, 0, ip->a.u64, CPUBits::B64);
-                }
-                else if (ip->hasFlag(BCI_IMM_A))
-                {
-                    pp.emitLoad(CPUReg::RCX, ip->a.u64, CPUBits::B64);
-                    pp.emitStore(CPUReg::RAX, 0, CPUReg::RCX, CPUBits::B64);
+                    pp.emitStore(CPUReg::RDI, offsetResult, ip->a.u64, CPUBits::B64);
                 }
                 else
                 {
                     pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-                    pp.emitStore(CPUReg::RAX, 0, CPUReg::RCX, CPUBits::B64);
+                    pp.emitStore(CPUReg::RDI, offsetResult, CPUReg::RCX, CPUBits::B64);
                 }
 
                 break;
@@ -2165,7 +2159,6 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, stackOffset, CPUBits::B64);
                 pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
                 pp.emitStore(CPUReg::RAX, 0, CPUReg::RCX, CPUBits::B64);
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, stackOffset, CPUBits::B64);
                 pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->b.u32), CPUBits::B64);
                 pp.emitStore(CPUReg::RAX, 8, CPUReg::RCX, CPUBits::B64);
                 break;
