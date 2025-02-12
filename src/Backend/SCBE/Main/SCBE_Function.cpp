@@ -1065,41 +1065,29 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitOp(CPUReg::RAX, 1, CPUOp::XOR, CPUBits::B8);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
                 break;
+
             case ByteCodeOp::NegS32:
-                if (ip->a.u32 == ip->b.u32)
-                    pp.emitNeg(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B32);
-                else
-                {
-                    pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->b.u32), CPUBits::B32);
-                    pp.emitNeg(CPUReg::RAX, CPUBits::B64);
-                    pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B32);
-                }
-                break;
             case ByteCodeOp::NegS64:
+                numBits = SCBE_CPU::getCPUBits(ip->op);
                 if (ip->a.u32 == ip->b.u32)
-                    pp.emitNeg(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
+                    pp.emitNeg(CPUReg::RDI, REG_OFFSET(ip->a.u32), numBits);
                 else
                 {
-                    pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->b.u32), CPUBits::B64);
-                    pp.emitNeg(CPUReg::RAX, CPUBits::B64);
-                    pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
+                    pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->b.u32), numBits);
+                    pp.emitNeg(CPUReg::RAX, numBits);
+                    pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, numBits);
                 }
                 break;
+
             case ByteCodeOp::NegF32:
-                pp.emitLoad(CPUReg::XMM0, CPUReg::RDI, REG_OFFSET(ip->b.u32), CPUBits::F32);
-                pp.emitLoad(CPUReg::RAX, 0x80000000, CPUBits::B64);
-                pp.emitStore(CPUReg::RDI, offsetFLT, CPUReg::RAX, CPUBits::B64);
-                pp.emitLoad(CPUReg::XMM1, CPUReg::RDI, offsetFLT, CPUBits::F32);
-                pp.emitOp(CPUReg::XMM0, CPUReg::XMM1, CPUOp::FXOR, CPUBits::F32);
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::XMM0, CPUBits::F32);
-                break;
             case ByteCodeOp::NegF64:
-                pp.emitLoad(CPUReg::XMM0, CPUReg::RDI, REG_OFFSET(ip->b.u32), CPUBits::F64);
-                pp.emitLoad(CPUReg::RAX, 0x80000000'00000000, CPUBits::B64);
+                numBits = SCBE_CPU::getCPUBits(ip->op);
+                pp.emitLoad(CPUReg::XMM0, CPUReg::RDI, REG_OFFSET(ip->b.u32), numBits);
+                pp.emitLoad(CPUReg::RAX, numBits == CPUBits::F32 ? 0x80000000 : 0x80000000'00000000, CPUBits::B64);
                 pp.emitStore(CPUReg::RDI, offsetFLT, CPUReg::RAX, CPUBits::B64);
-                pp.emitLoad(CPUReg::XMM1, CPUReg::RDI, offsetFLT, CPUBits::F64);
-                pp.emitOp(CPUReg::XMM0, CPUReg::XMM1, CPUOp::FXOR, CPUBits::F64);
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::XMM0, CPUBits::F64);
+                pp.emitLoad(CPUReg::XMM1, CPUReg::RDI, offsetFLT, numBits);
+                pp.emitOp(CPUReg::XMM0, CPUReg::XMM1, CPUOp::FXOR, numBits);
+                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::XMM0, numBits);
                 break;
 
                 /////////////////////////////////////
