@@ -1136,6 +1136,17 @@ void SCBE_X64::emitOp(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits, C
         emitSpecB8(concat, static_cast<uint8_t>(op), numBits);
         concat.addU8(0xD0 | (static_cast<uint8_t>(regSrc) & 0b111));
     }
+    else if (op == CPUOp::ROL ||
+             op == CPUOp::ROR)
+    {
+        SWAG_ASSERT(regDst == CPUReg::RAX && regSrc == CPUReg::RCX);
+        emitREX(concat, numBits, regDst, regSrc);
+        emitSpecB8(concat, 0xD3, numBits);
+        if (op == CPUOp::ROL)
+            concat.addU8(0xC0);
+        else
+            concat.addU8(0xC8);
+    }
     else
     {
         SWAG_ASSERT(false);
@@ -2232,14 +2243,6 @@ void SCBE_X64::emitCMov(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits)
     concat.addU8(0x0F);
     emitCPUOp(concat, op);
     concat.addU8(getModRM(RegReg, static_cast<uint8_t>(regDst), static_cast<uint8_t>(regSrc)));
-}
-
-void SCBE_X64::emitRotate(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits)
-{
-    SWAG_ASSERT(regDst == CPUReg::RAX && regSrc == CPUReg::RCX);
-    emitREX(concat, numBits, regDst, regSrc);
-    emitSpecB8(concat, 0xD3, numBits);
-    emitCPUOp(concat, op);
 }
 
 void SCBE_X64::emitCmpXChg([[maybe_unused]] CPUReg regDst, [[maybe_unused]] CPUReg regSrc, CPUBits numBits)

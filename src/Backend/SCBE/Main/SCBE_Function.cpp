@@ -2441,13 +2441,13 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                     case TokenId::IntrinsicRol:
                         emitIMMB(pp, ip, CPUReg::RAX, numBits);
                         emitIMMC(pp, ip, CPUReg::RCX, CPUBits::B8);
-                        pp.emitRotate(CPUReg::RAX, CPUReg::RCX, CPUOp::ROL, numBits);
+                        pp.emitOp(CPUReg::RAX, CPUReg::RCX, CPUOp::ROL, numBits);
                         pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, numBits);
                         break;
                     case TokenId::IntrinsicRor:
                         emitIMMB(pp, ip, CPUReg::RAX, numBits);
                         emitIMMC(pp, ip, CPUReg::RCX, CPUBits::B8);
-                        pp.emitRotate(CPUReg::RAX, CPUReg::RCX, CPUOp::ROR, numBits);
+                        pp.emitOp(CPUReg::RAX, CPUReg::RCX, CPUOp::ROR, numBits);
                         pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, numBits);
                         break;
                     default:
