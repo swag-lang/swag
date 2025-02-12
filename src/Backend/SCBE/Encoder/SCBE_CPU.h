@@ -87,12 +87,12 @@ enum class CPUOp : uint8_t
     SHR     = 0xE8,
     SAL     = 0xF0,
     DIV     = 0xF1,
+    MOD     = 0xF3,
     NOT     = 0xF7,
     SAR     = 0xF8,
     IDIV    = 0xF9,
     CMPXCHG = 0xFA,
-    MOD     = DIV | 2,
-    IMOD    = IDIV | 2,
+    IMOD    = 0xFB,
 };
 
 enum class CPUCondFlag

@@ -51,9 +51,9 @@ struct SCBE_X64 : SCBE_CPU
     void emitCopy(CPUReg regDst, CPUReg regSrc, uint32_t count, uint32_t offset);
     void emitOpUnary(CPUReg memReg, uint64_t memOffset, CPUOp op, CPUBits numBits);
     void emitOpUnary(CPUReg reg, CPUOp op, CPUBits numBits);
-    void emitOp(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits, CPUEmitFlags emitFlags = EMITF_Zero);
-    void emitOp(CPUReg memReg, uint64_t memOffset, CPUReg reg, CPUOp op, CPUBits numBits, CPUEmitFlags emitFlags = EMITF_Zero);
-    void emitOp(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits, CPUEmitFlags emitFlags = EMITF_Zero);
-    void emitOp(CPUReg memReg, uint64_t memOffset, uint64_t value, CPUOp op, CPUBits numBits, CPUEmitFlags emitFlags = EMITF_Zero);
+    void emitOpBinary(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits, CPUEmitFlags emitFlags = EMITF_Zero);
+    void emitOpBinary(CPUReg memReg, uint64_t memOffset, CPUReg reg, CPUOp op, CPUBits numBits, CPUEmitFlags emitFlags = EMITF_Zero);
+    void emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBits, CPUEmitFlags emitFlags = EMITF_Zero);
+    void emitOpBinary(CPUReg memReg, uint64_t memOffset, uint64_t value, CPUOp op, CPUBits numBits, CPUEmitFlags emitFlags = EMITF_Zero);
     void emitMulAdd(CPUReg regDst, CPUReg regMul, CPUReg regAdd, CPUBits numBits);
 };
