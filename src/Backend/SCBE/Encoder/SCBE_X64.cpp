@@ -1363,6 +1363,13 @@ void SCBE_X64::emitOp(CPUReg memReg, uint64_t memOffset, uint64_t value, CPUOp o
         emitSpecB8(concat, 0xFF, numBits);
         emitModRM(concat, memOffset, static_cast<CPUReg>(0), memReg);
     }
+    else if (op == CPUOp::SUB && value == 1 && !emitFlags.has(EMITF_Overflow))
+    {
+        SWAG_ASSERT(memReg < CPUReg::R8);
+        emitREX(concat, numBits);
+        emitSpecB8(concat, 0xFF, numBits);
+        emitModRM(concat, memOffset, static_cast<CPUReg>(1), memReg);
+    }
     else
     {
         SWAG_ASSERT(memReg == CPUReg::RAX || memReg == CPUReg::RDI);
@@ -2143,14 +2150,6 @@ void SCBE_X64::emitNot([[maybe_unused]] CPUReg memReg, uint64_t memOffset, CPUBi
         concat.addU8(0x97);
         emitValue(concat, memOffset, CPUBits::B32);
     }
-}
-
-void SCBE_X64::emitDec(CPUReg memReg, uint64_t memOffset, CPUBits numBits)
-{
-    SWAG_ASSERT(memReg < CPUReg::R8);
-    emitREX(concat, numBits);
-    emitSpecB8(concat, 0xFF, numBits);
-    emitModRM(concat, memOffset, static_cast<CPUReg>(1), memReg);
 }
 
 void SCBE_X64::emitNeg(CPUReg reg, CPUBits numBits)

@@ -1406,7 +1406,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::DecrementRA32:
             case ByteCodeOp::DecrementRA64:
                 numBits = SCBE_CPU::getCPUBits(ip->op);
-                pp.emitDec(CPUReg::RDI, REG_OFFSET(ip->a.u32), numBits);
+                pp.emitOp(CPUReg::RDI, REG_OFFSET(ip->a.u32), 1, CPUOp::SUB, numBits);
                 break;
 
             case ByteCodeOp::IncrementRA64:
