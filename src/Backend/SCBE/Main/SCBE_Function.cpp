@@ -1488,59 +1488,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::GetIncFromStack64DeRef8:
-                if (ip->c.u64 <= 0x7FFFFFFF)
-                {
-                    pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->b.u32, CPUBits::B64);
-                    pp.emitLoad(CPUReg::RAX, CPUReg::RAX, static_cast<uint32_t>(ip->c.u64), CPUBits::B64, CPUBits::B8, false);
-                }
-                else
-                {
-                    pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->b.u32, CPUBits::B64);
-                    pp.emitOp(CPUReg::RAX, ip->c.u64, CPUOp::ADD, CPUBits::B64);
-                    pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, CPUBits::B64, CPUBits::B8, false);
-                }
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
-                break;
             case ByteCodeOp::GetIncFromStack64DeRef16:
-                if (ip->c.u64 <= 0x7FFFFFFF)
-                {
-                    pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->b.u32, CPUBits::B64);
-                    pp.emitLoad(CPUReg::RAX, CPUReg::RAX, static_cast<uint32_t>(ip->c.u64), CPUBits::B64, CPUBits::B16, false);
-                }
-                else
-                {
-                    pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->b.u32, CPUBits::B64);
-                    pp.emitOp(CPUReg::RAX, ip->c.u64, CPUOp::ADD, CPUBits::B64);
-                    pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, CPUBits::B64, CPUBits::B16, false);
-                }
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
-                break;
             case ByteCodeOp::GetIncFromStack64DeRef32:
-                if (ip->c.u64 <= 0x7FFFFFFF)
-                {
-                    pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->b.u32, CPUBits::B64);
-                    pp.emitLoad(CPUReg::RAX, CPUReg::RAX, static_cast<uint32_t>(ip->c.u64), CPUBits::B32);
-                }
-                else
-                {
-                    pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->b.u32, CPUBits::B64);
-                    pp.emitOp(CPUReg::RAX, ip->c.u64, CPUOp::ADD, CPUBits::B64);
-                    pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, CPUBits::B32);
-                }
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
-                break;
             case ByteCodeOp::GetIncFromStack64DeRef64:
-                if (ip->c.u64 <= 0x7FFFFFFF)
-                {
-                    pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->b.u32, CPUBits::B64);
-                    pp.emitLoad(CPUReg::RAX, CPUReg::RAX, static_cast<uint32_t>(ip->c.u64), CPUBits::B64);
-                }
-                else
-                {
-                    pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->b.u32, CPUBits::B64);
-                    pp.emitOp(CPUReg::RAX, ip->c.u64, CPUOp::ADD, CPUBits::B64);
-                    pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, CPUBits::B64);
-                }
+                numBits = SCBE_CPU::getCPUBits(ip->op);
+                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->b.u32, CPUBits::B64);
+                pp.emitLoad(CPUReg::RAX, CPUReg::RAX, ip->c.u64, CPUBits::B64, numBits, false);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
                 break;
 
