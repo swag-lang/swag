@@ -2085,45 +2085,36 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::IntrinsicModules:
                 if (buildParameters.module->modulesSliceOffset == UINT32_MAX)
                 {
-                    pp.emitSetAddress(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32));
-                    pp.emitStore(CPUReg::RAX, 0, 0, CPUBits::B64);
-                    pp.emitSetAddress(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->b.u32));
-                    pp.emitStore(CPUReg::RAX, 0, 0, CPUBits::B64);
+                    pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), 0, CPUBits::B64);
+                    pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->b.u32), 0, CPUBits::B64);
                 }
                 else
                 {
                     pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symCSIndex, buildParameters.module->modulesSliceOffset);
                     pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
-                    pp.emitSetAddress(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->b.u32));
-                    pp.emitStore(CPUReg::RAX, 0, buildParameters.module->moduleDependencies.count + 1, CPUBits::B64);
+                    pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->b.u32), buildParameters.module->moduleDependencies.count + 1, CPUBits::B64);
                 }
                 break;
             case ByteCodeOp::IntrinsicGvtd:
                 if (buildParameters.module->globalVarsToDropSliceOffset == UINT32_MAX)
                 {
-                    pp.emitSetAddress(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32));
-                    pp.emitStore(CPUReg::RAX, 0, 0, CPUBits::B64);
-                    pp.emitSetAddress(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->b.u32));
-                    pp.emitStore(CPUReg::RAX, 0, 0, CPUBits::B64);
+                    pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), 0, CPUBits::B64);
+                    pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->b.u32), 0, CPUBits::B64);
                 }
                 else
                 {
                     pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symMSIndex, buildParameters.module->globalVarsToDropSliceOffset);
                     pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
-                    pp.emitSetAddress(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->b.u32));
-                    pp.emitStore(CPUReg::RAX, 0, buildParameters.module->globalVarsToDrop.count, CPUBits::B64);
+                    pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->b.u32), buildParameters.module->globalVarsToDrop.count, CPUBits::B64);
                 }
                 break;
 
             case ByteCodeOp::IntrinsicCompiler:
-                pp.emitSetAddress(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32));
-                pp.emitStore(CPUReg::RAX, 0, 0, CPUBits::B64);
-                pp.emitSetAddress(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->b.u32));
-                pp.emitStore(CPUReg::RAX, 0, 0, CPUBits::B64);
+                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), 0, CPUBits::B64);
+                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->b.u32), 0, CPUBits::B64);
                 break;
             case ByteCodeOp::IntrinsicIsByteCode:
-                pp.emitSetAddress(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32));
-                pp.emitStore(CPUReg::RAX, 0, 0, CPUBits::B32);
+                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), 0, CPUBits::B32);
                 break;
             case ByteCodeOp::IntrinsicCompilerError:
                 emitInternalCall(pp, g_LangSpec->name_at_compilererror, {ip->a.u32, ip->b.u32, ip->c.u32});
