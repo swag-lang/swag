@@ -90,8 +90,10 @@ namespace
             concat.addU8(static_cast<uint8_t>(value));
         else if (numBits == CPUBits::B16)
             concat.addU16(static_cast<uint16_t>(value));
-        else
+        else if (numBits == CPUBits::B32)
             concat.addU32(static_cast<uint32_t>(value));
+        else
+            concat.addU64(value);
     }
 }
 
@@ -794,13 +796,13 @@ void SCBE_X64::emitCmp(CPUReg reg, uint64_t value, CPUBits numBits)
         if (reg == CPUReg::RAX)
         {
             concat.addU8(0x3C);
-            emitValue(concat, value, numBits);
+            emitValue(concat, value, CPUBits::B8);
         }
         else if (reg == CPUReg::RCX)
         {
             concat.addU8(0x80);
             concat.addU8(0xF9);
-            emitValue(concat, value, numBits);
+            emitValue(concat, value, CPUBits::B8);
         }
     }
     else if (value <= 0x7f)
@@ -818,13 +820,13 @@ void SCBE_X64::emitCmp(CPUReg reg, uint64_t value, CPUBits numBits)
         if (reg == CPUReg::RAX)
         {
             concat.addU8(0x3d);
-            emitValue(concat, value, numBits);
+            emitValue(concat, value, CPUBits::B16);
         }
         else if (reg == CPUReg::RCX)
         {
             concat.addU8(0x81);
             concat.addU8(0xF9);
-            emitValue(concat, value, numBits);
+            emitValue(concat, value, CPUBits::B16);
         }
     }
     else if (value <= 0x7fffffff)
@@ -832,7 +834,7 @@ void SCBE_X64::emitCmp(CPUReg reg, uint64_t value, CPUBits numBits)
         SWAG_ASSERT(reg == CPUReg::RAX);
         emitREX(concat, numBits);
         concat.addU8(0x3d);
-        concat.addU32(static_cast<uint32_t>(value));
+        emitValue(concat, value, CPUBits::B32);
     }
     else
     {
