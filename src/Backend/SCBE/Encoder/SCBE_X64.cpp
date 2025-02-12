@@ -1147,6 +1147,20 @@ void SCBE_X64::emitOp(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits, C
         else
             concat.addU8(0xC8);
     }
+    else if (op == CPUOp::CMOVB ||
+             op == CPUOp::CMOVE ||
+             op == CPUOp::CMOVG ||
+             op == CPUOp::CMOVL ||
+             op == CPUOp::CMOVBE ||
+             op == CPUOp::CMOVGE)
+    {
+        if (numBits == CPUBits::B8 || numBits == CPUBits::B16)
+            numBits = CPUBits::B32;
+        emitREX(concat, numBits, regDst, regSrc);
+        concat.addU8(0x0F);
+        emitCPUOp(concat, op);
+        concat.addU8(getModRM(RegReg, static_cast<uint8_t>(regDst), static_cast<uint8_t>(regSrc)));
+    }
     else
     {
         SWAG_ASSERT(false);
@@ -2234,16 +2248,6 @@ void SCBE_X64::emitCall(CPUReg reg)
 }
 
 /////////////////////////////////////////////////////////////////////
-
-void SCBE_X64::emitCMov(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numBits)
-{
-    if (numBits == CPUBits::B8 || numBits == CPUBits::B16)
-        numBits = CPUBits::B32;
-    emitREX(concat, numBits, regDst, regSrc);
-    concat.addU8(0x0F);
-    emitCPUOp(concat, op);
-    concat.addU8(getModRM(RegReg, static_cast<uint8_t>(regDst), static_cast<uint8_t>(regSrc)));
-}
 
 void SCBE_X64::emitCmpXChg([[maybe_unused]] CPUReg regDst, [[maybe_unused]] CPUReg regSrc, CPUBits numBits)
 {

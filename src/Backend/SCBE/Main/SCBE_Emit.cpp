@@ -81,7 +81,7 @@ void SCBE::emitShiftRightArithmetic(SCBE_X64& pp, const ByteCodeInstruction* ip)
             pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->b.u32), CPUBits::B32);
             pp.emitLoad(CPUReg::RAX, SCBE_CPU::getBitsCount(numBits) - 1, CPUBits::B32);
             pp.emitCmp(CPUReg::RCX, SCBE_CPU::getBitsCount(numBits) - 1, CPUBits::B32);
-            pp.emitCMov(CPUReg::RCX, CPUReg::RAX, CPUOp::CMOVG, numBits);
+            pp.emitOp(CPUReg::RCX, CPUReg::RAX, CPUOp::CMOVG, numBits);
         }
 
         emitIMMA(pp, ip, CPUReg::RAX, numBits);
@@ -104,7 +104,7 @@ void SCBE::emitShiftRightEqArithmetic(SCBE_X64& pp, const ByteCodeInstruction* i
         pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->b.u32), CPUBits::B32);
         pp.emitLoad(CPUReg::RAX, SCBE_CPU::getBitsCount(numBits) - 1, CPUBits::B32);
         pp.emitCmp(CPUReg::RCX, SCBE_CPU::getBitsCount(numBits) - 1, CPUBits::B32);
-        pp.emitCMov(CPUReg::RCX, CPUReg::RAX, CPUOp::CMOVG, numBits);
+        pp.emitOp(CPUReg::RCX, CPUReg::RAX, CPUOp::CMOVG, numBits);
         pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
         pp.emitOp(CPUReg::RAX, 0, CPUReg::RCX, CPUOp::SAR, numBits);
     }
@@ -131,7 +131,7 @@ void SCBE::emitShiftLogical(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp o
         pp.emitOp(CPUReg::RAX, CPUReg::RCX, op, numBits);
         pp.emitClear(CPUReg::R8, numBits);
         pp.emitCmp(CPUReg::RCX, SCBE_CPU::getBitsCount(numBits) - 1, CPUBits::B32);
-        pp.emitCMov(CPUReg::RAX, CPUReg::R8, CPUOp::CMOVG, numBits);
+        pp.emitOp(CPUReg::RAX, CPUReg::R8, CPUOp::CMOVG, numBits);
         pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, numBits);
     }
 }
