@@ -2994,30 +2994,26 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
 
             case ByteCodeOp::IntrinsicF32x2:
+            case ByteCodeOp::IntrinsicF64x2:
             {
+                numBits = SCBE_CPU::getCPUBits(ip->op);
                 pp.pushParams.clear();
-                if (ip->hasFlag(BCI_IMM_B))
-                    pp.pushParams.push_back({.type = CPUPushParamType::Imm, .reg = ip->b.u32});
-                else
-                    pp.pushParams.push_back({.type = CPUPushParamType::Reg, .reg = ip->b.u32});
-                if (ip->hasFlag(BCI_IMM_C))
-                    pp.pushParams.push_back({.type = CPUPushParamType::Imm, .reg = ip->c.u32});
-                else
-                    pp.pushParams.push_back({.type = CPUPushParamType::Reg, .reg = ip->c.u32});
+                pp.pushParams.push_back({.type = ip->hasFlag(BCI_IMM_B) ? CPUPushParamType::Imm : CPUPushParamType::Reg, .reg = ip->b.u64});
+                pp.pushParams.push_back({.type = ip->hasFlag(BCI_IMM_C) ? CPUPushParamType::Imm : CPUPushParamType::Reg, .reg = ip->c.u64});
 
                 switch (static_cast<TokenId>(ip->d.u32))
                 {
                     case TokenId::IntrinsicMin:
-                        emitIMMB(pp, ip, CPUReg::XMM0, CPUBits::F32);
-                        emitIMMC(pp, ip, CPUReg::XMM1, CPUBits::F32);
-                        pp.emitOp(CPUReg::XMM0, CPUReg::XMM1, CPUOp::FMIN, CPUBits::F32);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::XMM0, CPUBits::F32);
+                        emitIMMB(pp, ip, CPUReg::XMM0, numBits);
+                        emitIMMC(pp, ip, CPUReg::XMM1, numBits);
+                        pp.emitOp(CPUReg::XMM0, CPUReg::XMM1, CPUOp::FMIN, numBits);
+                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::XMM0, numBits);
                         break;
                     case TokenId::IntrinsicMax:
-                        emitIMMB(pp, ip, CPUReg::XMM0, CPUBits::F32);
-                        emitIMMC(pp, ip, CPUReg::XMM1, CPUBits::F32);
-                        pp.emitOp(CPUReg::XMM0, CPUReg::XMM1, CPUOp::FMAX, CPUBits::F32);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::XMM0, CPUBits::F32);
+                        emitIMMB(pp, ip, CPUReg::XMM0, numBits);
+                        emitIMMC(pp, ip, CPUReg::XMM1, numBits);
+                        pp.emitOp(CPUReg::XMM0, CPUReg::XMM1, CPUOp::FMAX, numBits);
+                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::XMM0, numBits);
                         break;
 
                     case TokenId::IntrinsicPow:
@@ -3025,46 +3021,6 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         break;
                     case TokenId::IntrinsicATan2:
                         emitInternalCallExt(pp, g_LangSpec->name_atan2f, pp.pushParams, REG_OFFSET(ip->a.u32));
-                        break;
-                    default:
-                        ok = false;
-                        Report::internalError(buildParameters.module, form("unknown intrinsic [[%s]] during backend generation", ByteCode::opName(ip->op)));
-                        break;
-                }
-                break;
-            }
-            case ByteCodeOp::IntrinsicF64x2:
-            {
-                pp.pushParams.clear();
-                if (ip->hasFlag(BCI_IMM_B))
-                    pp.pushParams.push_back({.type = CPUPushParamType::Imm, .reg = ip->b.u64});
-                else
-                    pp.pushParams.push_back({.type = CPUPushParamType::Reg, .reg = ip->b.u32});
-                if (ip->hasFlag(BCI_IMM_C))
-                    pp.pushParams.push_back({.type = CPUPushParamType::Imm, .reg = ip->c.u64});
-                else
-                    pp.pushParams.push_back({.type = CPUPushParamType::Reg, .reg = ip->c.u32});
-
-                switch (static_cast<TokenId>(ip->d.u32))
-                {
-                    case TokenId::IntrinsicMin:
-                        emitIMMB(pp, ip, CPUReg::XMM0, CPUBits::F64);
-                        emitIMMC(pp, ip, CPUReg::XMM1, CPUBits::F64);
-                        pp.emitOp(CPUReg::XMM0, CPUReg::XMM1, CPUOp::FMIN, CPUBits::F64);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::XMM0, CPUBits::F64);
-                        break;
-                    case TokenId::IntrinsicMax:
-                        emitIMMB(pp, ip, CPUReg::XMM0, CPUBits::F64);
-                        emitIMMC(pp, ip, CPUReg::XMM1, CPUBits::F64);
-                        pp.emitOp(CPUReg::XMM0, CPUReg::XMM1, CPUOp::FMAX, CPUBits::F64);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::XMM0, CPUBits::F64);
-                        break;
-
-                    case TokenId::IntrinsicPow:
-                        emitInternalCallExt(pp, g_LangSpec->name_pow, pp.pushParams, REG_OFFSET(ip->a.u32));
-                        break;
-                    case TokenId::IntrinsicATan2:
-                        emitInternalCallExt(pp, g_LangSpec->name_atan2, pp.pushParams, REG_OFFSET(ip->a.u32));
                         break;
                     default:
                         ok = false;
