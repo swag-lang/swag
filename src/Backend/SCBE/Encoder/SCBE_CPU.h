@@ -73,6 +73,7 @@ enum class CPUOp : uint8_t
     TEST   = 0x85,
     XCHG   = 0x87,
     CDQ    = 0x99,
+    NEG    = 0x9F,
     POPCNT = 0xB8,
     BT     = 0xBA,
     BSF    = 0xBC,

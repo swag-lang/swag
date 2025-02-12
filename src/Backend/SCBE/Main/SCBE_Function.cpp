@@ -1070,11 +1070,11 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::NegS64:
                 numBits = SCBE_CPU::getCPUBits(ip->op);
                 if (ip->a.u32 == ip->b.u32)
-                    pp.emitNeg(CPUReg::RDI, REG_OFFSET(ip->a.u32), numBits);
+                    pp.emitOpUnary(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUOp::NEG, numBits);
                 else
                 {
                     pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->b.u32), numBits);
-                    pp.emitNeg(CPUReg::RAX, numBits);
+                    pp.emitOpUnary(CPUReg::RAX, CPUOp::NEG, numBits);
                     pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, numBits);
                 }
                 break;
