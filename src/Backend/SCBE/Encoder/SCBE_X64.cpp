@@ -934,7 +934,7 @@ void SCBE_X64::emitOpUnary([[maybe_unused]] CPUReg memReg, uint64_t memOffset, C
     {
         SWAG_ASSERT(memReg == CPUReg::RDI);
         SWAG_ASSERT(memOffset <= 0x7FFFFFFF);
-        
+
         emitREX(concat, numBits);
         emitSpecB8(concat, 0xF7, numBits);
         if (memOffset <= 0x7F)
@@ -964,7 +964,7 @@ void SCBE_X64::emitOpUnary([[maybe_unused]] CPUReg memReg, uint64_t memOffset, C
             concat.addU8(0x9F);
             emitValue(concat, memOffset, CPUBits::B32);
         }
-    }    
+    }
     else
     {
         SWAG_ASSERT(false);
@@ -995,6 +995,24 @@ void SCBE_X64::emitOpUnary(CPUReg reg, CPUOp op, CPUBits numBits)
             emitREX(concat, numBits);
             concat.addU8(0xF7);
             concat.addU8(0xD8 | (static_cast<uint8_t>(reg) & 0b111));
+        }
+    }
+    else if (op == CPUOp::BSWAP)
+    {
+        SWAG_ASSERT(reg == CPUReg::RAX);
+        SWAG_ASSERT(numBits == CPUBits::B16 || numBits == CPUBits::B32 || numBits == CPUBits::B64);
+
+        emitREX(concat, numBits);
+        if (numBits == CPUBits::B16)
+        {
+            concat.addU8(0xC1);
+            concat.addU8(0xC0);
+            concat.addU8(0x08);
+        }
+        else
+        {
+            concat.addU8(0x0F);
+            concat.addU8(0xC8);
         }
     }
     else
@@ -2237,25 +2255,6 @@ void SCBE_X64::emitCmpXChg([[maybe_unused]] CPUReg regDst, [[maybe_unused]] CPUR
     concat.addU8(0x0F);
     emitSpecB8(concat, 0xB1, numBits);
     concat.addU8(0x11);
-}
-
-void SCBE_X64::emitBSwap([[maybe_unused]] CPUReg reg, CPUBits numBits)
-{
-    SWAG_ASSERT(reg == CPUReg::RAX);
-    SWAG_ASSERT(numBits == CPUBits::B16 || numBits == CPUBits::B32 || numBits == CPUBits::B64);
-
-    emitREX(concat, numBits);
-    if (numBits == CPUBits::B16)
-    {
-        concat.addU8(0xC1);
-        concat.addU8(0xC0);
-        concat.addU8(8);
-    }
-    else
-    {
-        concat.addU8(0x0F);
-        concat.addU8(0xC8);
-    }
 }
 
 /////////////////////////////////////////////////////////////////////

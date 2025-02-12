@@ -2373,7 +2373,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         break;
                     case TokenId::IntrinsicByteSwap:
                         emitIMMB(pp, ip, CPUReg::RAX, numBits);
-                        pp.emitBSwap(CPUReg::RAX, numBits);
+                        pp.emitOpUnary(CPUReg::RAX, CPUOp::BSWAP, numBits);
                         pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, numBits);
                         break;
                     default:
