@@ -2560,171 +2560,45 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::IntrinsicS8x1:
-            {
-                switch (static_cast<TokenId>(ip->d.u32))
-                {
-                    case TokenId::IntrinsicAbs:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B8);
-                        pp.emitCopy(CPUReg::RCX, CPUReg::RAX, CPUBits::B8);
-                        pp.emitOp(CPUReg::RCX, 7, CPUOp::SAR, CPUBits::B8);
-                        pp.emitOp(CPUReg::RAX, CPUReg::RCX, CPUOp::XOR, CPUBits::B8);
-                        pp.emitOp(CPUReg::RAX, CPUReg::RCX, CPUOp::SUB, CPUBits::B8);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B8);
-                        break;
-                    case TokenId::IntrinsicBitCountNz:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B8, CPUBits::B32, false);
-                        pp.emitOp(CPUReg::RAX, CPUReg::RAX, CPUOp::POPCNT, CPUBits::B32);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B8);
-                        break;
-                    case TokenId::IntrinsicBitCountTz:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B8, CPUBits::B32, false);
-                        pp.emitOp(CPUReg::RAX, CPUReg::RAX, CPUOp::BSF, CPUBits::B32);
-                        pp.emitLoad(CPUReg::RCX, 8, CPUBits::B32);
-                        pp.emitCMov(CPUReg::RAX, CPUReg::RCX, CPUOp::CMOVE, CPUBits::B32);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B8);
-                        break;
-                    case TokenId::IntrinsicBitCountLz:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B8, CPUBits::B32, false);
-                        pp.emitOp(CPUReg::RAX, CPUReg::RAX, CPUOp::BSR, CPUBits::B32);
-                        pp.emitLoad(CPUReg::RCX, 15, CPUBits::B32);
-                        pp.emitCMov(CPUReg::RAX, CPUReg::RCX, CPUOp::CMOVE, CPUBits::B32);
-                        pp.emitOp(CPUReg::RAX, 7, CPUOp::XOR, CPUBits::B32);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B8);
-                        break;
-                    default:
-                        ok = false;
-                        Report::internalError(buildParameters.module, form("unknown intrinsic [[%s]] during backend generation", ByteCode::opName(ip->op)));
-                        break;
-                }
-
-                break;
-            }
             case ByteCodeOp::IntrinsicS16x1:
-            {
-                switch (static_cast<TokenId>(ip->d.u32))
-                {
-                    case TokenId::IntrinsicAbs:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B16);
-                        pp.emitCopy(CPUReg::RCX, CPUReg::RAX, CPUBits::B16);
-                        pp.emitOp(CPUReg::RCX, 15, CPUOp::SAR, CPUBits::B16);
-                        pp.emitOp(CPUReg::RAX, CPUReg::RCX, CPUOp::XOR, CPUBits::B16);
-                        pp.emitOp(CPUReg::RAX, CPUReg::RCX, CPUOp::SUB, CPUBits::B16);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B16);
-                        break;
-                    case TokenId::IntrinsicBitCountNz:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B16);
-                        pp.emitOp(CPUReg::RAX, CPUReg::RAX, CPUOp::POPCNT, CPUBits::B16);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B16);
-                        break;
-                    case TokenId::IntrinsicBitCountTz:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B16);
-                        pp.emitOp(CPUReg::RAX, CPUReg::RAX, CPUOp::BSF, CPUBits::B16);
-                        pp.emitLoad(CPUReg::RCX, 16, CPUBits::B16);
-                        pp.emitCMov(CPUReg::RAX, CPUReg::RCX, CPUOp::CMOVE, CPUBits::B16);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B16);
-                        break;
-                    case TokenId::IntrinsicBitCountLz:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B16);
-                        pp.emitOp(CPUReg::RAX, CPUReg::RAX, CPUOp::BSR, CPUBits::B16);
-                        pp.emitLoad(CPUReg::RCX, 31, CPUBits::B16);
-                        pp.emitCMov(CPUReg::RAX, CPUReg::RCX, CPUOp::CMOVE, CPUBits::B16);
-                        pp.emitOp(CPUReg::RAX, 15, CPUOp::XOR, CPUBits::B16);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B16);
-                        break;
-                    case TokenId::IntrinsicByteSwap:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B16);
-                        pp.emitBSwap(CPUReg::RAX, CPUBits::B16);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B16);
-                        break;
-                    default:
-                        ok = false;
-                        Report::internalError(buildParameters.module, form("unknown intrinsic [[%s]] during backend generation", ByteCode::opName(ip->op)));
-                        break;
-                }
-
-                break;
-            }
             case ByteCodeOp::IntrinsicS32x1:
-            {
-                switch (static_cast<TokenId>(ip->d.u32))
-                {
-                    case TokenId::IntrinsicAbs:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B32);
-                        pp.emitCopy(CPUReg::RCX, CPUReg::RAX, CPUBits::B32);
-                        pp.emitOp(CPUReg::RCX, 31, CPUOp::SAR, CPUBits::B32);
-                        pp.emitOp(CPUReg::RAX, CPUReg::RCX, CPUOp::XOR, CPUBits::B32);
-                        pp.emitOp(CPUReg::RAX, CPUReg::RCX, CPUOp::SUB, CPUBits::B32);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B32);
-                        break;
-                    case TokenId::IntrinsicBitCountNz:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B32);
-                        pp.emitOp(CPUReg::RAX, CPUReg::RAX, CPUOp::POPCNT, CPUBits::B32);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B32);
-                        break;
-                    case TokenId::IntrinsicBitCountTz:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B32);
-                        pp.emitOp(CPUReg::RAX, CPUReg::RAX, CPUOp::BSF, CPUBits::B32);
-                        pp.emitLoad(CPUReg::RCX, 32, CPUBits::B32);
-                        pp.emitCMov(CPUReg::RAX, CPUReg::RCX, CPUOp::CMOVE, CPUBits::B32);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B32);
-                        break;
-                    case TokenId::IntrinsicBitCountLz:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B32);
-                        pp.emitOp(CPUReg::RAX, CPUReg::RAX, CPUOp::BSR, CPUBits::B32);
-                        pp.emitLoad(CPUReg::RCX, 63, CPUBits::B32);
-                        pp.emitCMov(CPUReg::RAX, CPUReg::RCX, CPUOp::CMOVE, CPUBits::B32);
-                        pp.emitOp(CPUReg::RAX, 31, CPUOp::XOR, CPUBits::B32);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B32);
-                        break;
-                    case TokenId::IntrinsicByteSwap:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B32);
-                        pp.emitBSwap(CPUReg::RAX, CPUBits::B32);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B32);
-                        break;
-                    default:
-                        ok = false;
-                        Report::internalError(buildParameters.module, form("unknown intrinsic [[%s]] during backend generation", ByteCode::opName(ip->op)));
-                        break;
-                }
-
-                break;
-            }
             case ByteCodeOp::IntrinsicS64x1:
             {
+                numBits = SCBE_CPU::getCPUBits(ip->op);
                 switch (static_cast<TokenId>(ip->d.u32))
                 {
                     case TokenId::IntrinsicAbs:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B64);
-                        pp.emitCopy(CPUReg::RCX, CPUReg::RAX, CPUBits::B64);
-                        pp.emitOp(CPUReg::RCX, 63, CPUOp::SAR, CPUBits::B64);
-                        pp.emitOp(CPUReg::RAX, CPUReg::RCX, CPUOp::XOR, CPUBits::B64);
-                        pp.emitOp(CPUReg::RAX, CPUReg::RCX, CPUOp::SUB, CPUBits::B64);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
+                        emitIMMB(pp, ip, CPUReg::RAX, numBits);
+                        pp.emitCopy(CPUReg::RCX, CPUReg::RAX, numBits);
+                        pp.emitOp(CPUReg::RCX, SCBE_CPU::getBitsCount(numBits) - 1, CPUOp::SAR, numBits);
+                        pp.emitOp(CPUReg::RAX, CPUReg::RCX, CPUOp::XOR, numBits);
+                        pp.emitOp(CPUReg::RAX, CPUReg::RCX, CPUOp::SUB, numBits);
+                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, numBits);
                         break;
                     case TokenId::IntrinsicBitCountNz:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B64);
-                        pp.emitOp(CPUReg::RAX, CPUReg::RAX, CPUOp::POPCNT, CPUBits::B64);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
+                        emitIMMB(pp, ip, CPUReg::RAX, numBits);
+                        pp.emitOp(CPUReg::RAX, CPUReg::RAX, CPUOp::POPCNT, numBits);
+                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, numBits);
                         break;
                     case TokenId::IntrinsicBitCountTz:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B64);
-                        pp.emitOp(CPUReg::RAX, CPUReg::RAX, CPUOp::BSF, CPUBits::B64);
-                        pp.emitLoad(CPUReg::RCX, 64, CPUBits::B32);
-                        pp.emitCMov(CPUReg::RAX, CPUReg::RCX, CPUOp::CMOVE, CPUBits::B64);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
+                        emitIMMB(pp, ip, CPUReg::RAX, numBits);
+                        pp.emitOp(CPUReg::RAX, CPUReg::RAX, CPUOp::BSF, numBits);
+                        pp.emitLoad(CPUReg::RCX, SCBE_CPU::getBitsCount(numBits), numBits);
+                        pp.emitCMov(CPUReg::RAX, CPUReg::RCX, CPUOp::CMOVE, numBits);
+                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, numBits);
                         break;
                     case TokenId::IntrinsicBitCountLz:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B64);
-                        pp.emitOp(CPUReg::RAX, CPUReg::RAX, CPUOp::BSR, CPUBits::B64);
-                        pp.emitLoad(CPUReg::RCX, 127, CPUBits::B64);
-                        pp.emitCMov(CPUReg::RAX, CPUReg::RCX, CPUOp::CMOVE, CPUBits::B64);
-                        pp.emitOp(CPUReg::RAX, 63, CPUOp::XOR, CPUBits::B64);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
+                        emitIMMB(pp, ip, CPUReg::RAX, numBits);
+                        pp.emitOp(CPUReg::RAX, CPUReg::RAX, CPUOp::BSR, numBits);
+                        pp.emitLoad(CPUReg::RCX, (SCBE_CPU::getBitsCount(numBits) * 2) - 1, numBits);
+                        pp.emitCMov(CPUReg::RAX, CPUReg::RCX, CPUOp::CMOVE, numBits);
+                        pp.emitOp(CPUReg::RAX, SCBE_CPU::getBitsCount(numBits) - 1, CPUOp::XOR, numBits);
+                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, numBits);
                         break;
                     case TokenId::IntrinsicByteSwap:
-                        emitIMMB(pp, ip, CPUReg::RAX, CPUBits::B64);
-                        pp.emitBSwap(CPUReg::RAX, CPUBits::B64);
-                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
+                        emitIMMB(pp, ip, CPUReg::RAX, numBits);
+                        pp.emitBSwap(CPUReg::RAX, numBits);
+                        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, numBits);
                         break;
                     default:
                         ok = false;
