@@ -951,9 +951,7 @@ void SCBE_X64::emitOpUnary([[maybe_unused]] CPUReg memReg, uint64_t memOffset, C
     else if (op == CPUOp::NEG)
     {
         SWAG_ASSERT(memReg == CPUReg::RDI);
-        SWAG_ASSERT(numBits == CPUBits::B32 || numBits == CPUBits::B64);
         SWAG_ASSERT(memOffset <= 0x7FFFFFFF);
-
         emitREX(concat, numBits);
         concat.addU8(0xF7);
         if (memOffset <= 0x7F)
@@ -983,12 +981,21 @@ void SCBE_X64::emitOpUnary(CPUReg reg, CPUOp op, CPUBits numBits)
     }
     else if (op == CPUOp::NEG)
     {
-        SWAG_ASSERT(reg < CPUReg::R8);
-        SWAG_ASSERT(numBits == CPUBits::B32 || numBits == CPUBits::B64);
-
-        emitREX(concat, numBits);
-        concat.addU8(0xF7);
-        concat.addU8(0xD8 | (static_cast<uint8_t>(reg) & 0b111));
+        if (isFloat(numBits))
+        {
+            SWAG_ASSERT(reg == CPUReg::XMM0);
+            emitStore(offsetFLTReg, offsetFLT, numBits == CPUBits::F32 ? 0x80000000 : 0x80000000'00000000, CPUBits::B64);
+            emitLoad(CPUReg::XMM1, offsetFLTReg, offsetFLT, numBits);
+            emitOp(CPUReg::XMM0, CPUReg::XMM1, CPUOp::FXOR, numBits);
+        }
+        else
+        {
+            SWAG_ASSERT(reg < CPUReg::R8);
+            SWAG_ASSERT(numBits == CPUBits::B32 || numBits == CPUBits::B64);
+            emitREX(concat, numBits);
+            concat.addU8(0xF7);
+            concat.addU8(0xD8 | (static_cast<uint8_t>(reg) & 0b111));
+        }
     }
     else
     {

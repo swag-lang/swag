@@ -90,6 +90,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     // For float load (should be reserved only if we have floating point operations in that function)
     uint32_t offsetFLT = offsetStack + bc->stackSize;
+    pp.setOffsetFLT(CPUReg::RDI, offsetFLT);
 
     uint32_t sizeStack = offsetFLT + 8;
     MK_ALIGN16(sizeStack);
@@ -1083,9 +1084,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::NegF64:
                 numBits = SCBE_CPU::getCPUBits(ip->op);
                 pp.emitLoad(CPUReg::XMM0, CPUReg::RDI, REG_OFFSET(ip->b.u32), numBits);
-                pp.emitStore(CPUReg::RDI, offsetFLT, numBits == CPUBits::F32 ? 0x80000000 : 0x80000000'00000000, CPUBits::B64);
-                pp.emitLoad(CPUReg::XMM1, CPUReg::RDI, offsetFLT, numBits);
-                pp.emitOp(CPUReg::XMM0, CPUReg::XMM1, CPUOp::FXOR, numBits);
+                pp.emitOpUnary(CPUReg::XMM0, CPUOp::NEG, numBits);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::XMM0, numBits);
                 break;
 

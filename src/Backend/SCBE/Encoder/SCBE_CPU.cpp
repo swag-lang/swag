@@ -12,6 +12,12 @@ void SCBE_CPU::init(const BuildParameters& buildParameters)
     labelsToSolve.clear();
 }
 
+void SCBE_CPU::setOffsetFLT(CPUReg reg, uint32_t offset)
+{
+    offsetFLTReg = reg;
+    offsetFLT = offset;   
+}
+
 void SCBE_CPU::clearInstructionCache()
 {
     storageConcatCount = UINT32_MAX;
