@@ -1900,17 +1900,10 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::Mul64byVB64:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-                pp.emitOp(CPUReg::RAX, ip->b.u64, CPUOp::IMUL, CPUBits::B64);
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
+                pp.emitOp(CPUReg::RDI, REG_OFFSET(ip->a.u32), ip->b.u64, CPUOp::IMUL, CPUBits::B64);
                 break;
-
             case ByteCodeOp::Div64byVB64:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUBits::B64);
-                pp.emitLoad(CPUReg::RCX, ip->b.u64, CPUBits::B64);
-                pp.emitClear(CPUReg::RDX, CPUBits::B64);
-                pp.emitOp(CPUReg::RAX, CPUReg::RCX, CPUOp::IDIV, CPUBits::B64);
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, CPUBits::B64);
+                pp.emitOp(CPUReg::RDI, REG_OFFSET(ip->a.u32), ip->b.u64, CPUOp::IDIV, CPUBits::B64);
                 break;
 
                 /////////////////////////////////////

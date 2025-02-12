@@ -1309,7 +1309,7 @@ void SCBE_X64::emitOp(CPUReg memReg, uint64_t memOffset, uint64_t value, CPUOp o
         op == CPUOp::DIV ||
         op == CPUOp::MOD)
     {
-        SWAG_ASSERT(memReg == CPUReg::RAX);
+        SWAG_ASSERT(memReg == CPUReg::RAX || memReg == CPUReg::RDI);
         emitCopy(CPUReg::R8, memReg, CPUBits::B64);
         emitLoad(CPUReg::RAX, memReg, memOffset, 0, false, op, numBits);
         emitLoad(CPUReg::RCX, value, numBits);
