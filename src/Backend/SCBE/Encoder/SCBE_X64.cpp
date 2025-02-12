@@ -547,21 +547,16 @@ void SCBE_X64::emitStore(CPUReg memReg, uint64_t memOffset, uint64_t value, CPUB
 {
     if (numBits == CPUBits::B64 && value > 0x7FFFFFFF && value >> 32 != 0xFFFFFFFF)
     {
-        SWAG_ASSERT(memReg != CPUReg::RAX);
-        emitLoad(CPUReg::RAX, value, CPUBits::B64);
-        emitStore(memReg, memOffset, CPUReg::RAX, CPUBits::B64);
+        SWAG_ASSERT(memReg != CPUReg::RCX);
+        emitLoad(CPUReg::RCX, value, CPUBits::B64);
+        emitStore(memReg, memOffset, CPUReg::RCX, CPUBits::B64);
     }
     else
     {
         emitREX(concat, numBits);
         emitSpecB8(concat, 0xC7, numBits);
         emitModRM(concat, memOffset, static_cast<CPUReg>(0), memReg);
-        if (numBits == CPUBits::B8)
-            emitValue(concat, value, CPUBits::B8);
-        else if (numBits == CPUBits::B16)
-            emitValue(concat, value, CPUBits::B16);
-        else
-            emitValue(concat, value, CPUBits::B32);
+        emitValue(concat, value, min(numBits, CPUBits::B32));
     }
 }
 

@@ -568,10 +568,10 @@ BYTECODE_OP(SetAtStackPointer16, OPF_16 | OPF_READ_VAL32_A | OPF_READ_B | OPF_IM
 BYTECODE_OP(SetAtStackPointer32, OPF_32 | OPF_READ_VAL32_A | OPF_READ_B | OPF_IMM_B, "sp[_rau32_] = _rbu32_")
 BYTECODE_OP(SetAtStackPointer64, OPF_64 | OPF_READ_VAL32_A | OPF_READ_B | OPF_IMM_B, "sp[_rau32_] = _rbu64_")
 
-BYTECODE_OP(SetAtStackPointer8x2, OPF_READ_VAL32_A | OPF_READ_B | OPF_IMM_B | OPF_READ_VAL32_C | OPF_READ_D | OPF_IMM_D, "sp[_rau32_] = _rbu8_; sp[_rcu32_] = _rdu8_")
-BYTECODE_OP(SetAtStackPointer16x2, OPF_READ_VAL32_A | OPF_READ_B | OPF_IMM_B | OPF_READ_VAL32_C | OPF_READ_D | OPF_IMM_D, "sp[_rau32_] = _rbu16_; sp[_rcu32_] = _rdu16_")
-BYTECODE_OP(SetAtStackPointer32x2, OPF_READ_VAL32_A | OPF_READ_B | OPF_IMM_B | OPF_READ_VAL32_C | OPF_READ_D | OPF_IMM_D, "sp[_rau32_] = _rbu32_; sp[_rcu32_] = _rdu32_")
-BYTECODE_OP(SetAtStackPointer64x2, OPF_READ_VAL32_A | OPF_READ_B | OPF_IMM_B | OPF_READ_VAL32_C | OPF_READ_D | OPF_IMM_D, "sp[_rau32_] = _rbu64_; sp[_rcu32_] = _rdu64_")
+BYTECODE_OP(SetAtStackPointer8x2, OPF_8 | OPF_READ_VAL32_A | OPF_READ_B | OPF_IMM_B | OPF_READ_VAL32_C | OPF_READ_D | OPF_IMM_D, "sp[_rau32_] = _rbu8_; sp[_rcu32_] = _rdu8_")
+BYTECODE_OP(SetAtStackPointer16x2, OPF_16 | OPF_READ_VAL32_A | OPF_READ_B | OPF_IMM_B | OPF_READ_VAL32_C | OPF_READ_D | OPF_IMM_D, "sp[_rau32_] = _rbu16_; sp[_rcu32_] = _rdu16_")
+BYTECODE_OP(SetAtStackPointer32x2, OPF_32 | OPF_READ_VAL32_A | OPF_READ_B | OPF_IMM_B | OPF_READ_VAL32_C | OPF_READ_D | OPF_IMM_D, "sp[_rau32_] = _rbu32_; sp[_rcu32_] = _rdu32_")
+BYTECODE_OP(SetAtStackPointer64x2, OPF_64 | OPF_READ_VAL32_A | OPF_READ_B | OPF_IMM_B | OPF_READ_VAL32_C | OPF_READ_D | OPF_IMM_D, "sp[_rau32_] = _rbu64_; sp[_rcu32_] = _rdu64_")
 
 BYTECODE_OP(IncPointer64, OPF_64 | OPF_REG_ONLY | OPF_READ_A | OPF_READ_B | OPF_WRITE_C | OPF_IMM_B, "_rc_ = _ra_ + _rbs64_")
 BYTECODE_OP(IncMulPointer64, OPF_64 | OPF_REG_ONLY | OPF_READ_A | OPF_READ_B | OPF_WRITE_C | OPF_IMM_B | OPF_READ_VAL64_D, "_rc_ = _ra_ + (_rbs64_ * _rdu64_)")
