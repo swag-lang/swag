@@ -564,13 +564,18 @@ void SCBE_X64::emitClear(CPUReg reg, CPUBits numBits)
 {
     if (numBits == CPUBits::F32)
     {
-        emitClear(CPUReg::RAX, CPUBits::B32);
-        emitCopy(reg, CPUReg::RAX, CPUBits::F32);
+        SWAG_ASSERT(reg == CPUReg::XMM0 || reg == CPUReg::XMM1);
+        concat.addU8(0x0F);
+        emitCPUOp(concat, CPUOp::FXOR);
+        concat.addU8(reg == CPUReg::XMM0 ? 0xC0 : 0xC9);
     }
     else if (numBits == CPUBits::F64)
     {
-        emitClear(CPUReg::RAX, CPUBits::B64);
-        emitCopy(reg, CPUReg::RAX, CPUBits::F64);
+        SWAG_ASSERT(reg == CPUReg::XMM0 || reg == CPUReg::XMM1);
+        concat.addU8(0x66);
+        concat.addU8(0x0F);
+        emitCPUOp(concat, CPUOp::FXOR);
+        concat.addU8(reg == CPUReg::XMM0 ? 0xC0 : 0xC9);
     }
     else
     {
