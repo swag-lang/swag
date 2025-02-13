@@ -93,7 +93,7 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
         buildCfg.sanity            = true;
         buildCfg.errorStackTrace   = true;
         buildCfg.debugAllocator    = true;
-        buildCfg.backendOptimize   = BuildCfgBackendOptim::O2;
+        buildCfg.backendOptimize   = BuildCfgBackendOptim::O1;
         buildCfg.backendDebugInfos = true;
     }
     else if (g_CommandLine.buildCfg == "release")
