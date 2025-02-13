@@ -562,20 +562,13 @@ void SCBE_X64::emitStore(CPUReg memReg, uint64_t memOffset, uint64_t value, CPUB
 
 void SCBE_X64::emitClear(CPUReg reg, CPUBits numBits)
 {
-    if (numBits == CPUBits::F32)
-    {
-        SWAG_ASSERT(reg == CPUReg::XMM0 || reg == CPUReg::XMM1);
-        concat.addU8(0x0F);
-        emitCPUOp(concat, CPUOp::FXOR);
-        concat.addU8(reg == CPUReg::XMM0 ? 0xC0 : 0xC9);
-    }
-    else if (numBits == CPUBits::F64)
+    if (isFloat(numBits))
     {
         SWAG_ASSERT(reg == CPUReg::XMM0 || reg == CPUReg::XMM1);
         emitREX(concat, numBits);
         concat.addU8(0x0F);
         emitCPUOp(concat, CPUOp::FXOR);
-        concat.addU8(reg == CPUReg::XMM0 ? 0xC0 : 0xC9);
+        concat.addU8(getModRM(RegReg, static_cast<uint8_t>(reg), static_cast<uint8_t>(reg)));
     }
     else
     {
