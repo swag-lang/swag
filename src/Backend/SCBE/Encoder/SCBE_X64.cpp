@@ -34,7 +34,7 @@ namespace
 
     void emitREX(Concat& concat, CPUBits numBits, CPUReg reg1 = CPUReg::RAX, CPUReg reg2 = CPUReg::RAX)
     {
-        if (numBits == CPUBits::B16)
+        if (numBits == CPUBits::B16 || numBits == CPUBits::F64)
             concat.addU8(0x66);
         if (numBits == CPUBits::B64 || reg1 >= CPUReg::R8 || reg2 >= CPUReg::R8)
             concat.addU8(getREX(numBits == CPUBits::B64, reg1 >= CPUReg::R8, false, reg2 >= CPUReg::R8));
@@ -312,7 +312,7 @@ void SCBE_X64::emitLoad(CPUReg reg, uint64_t value, CPUBits numBits)
             break;
 
         case CPUBits::F64:
-            emitREX(concat, CPUBits::B64, CPUReg::RAX, CPUReg::RAX);
+            emitREX(concat, CPUBits::B64);
             if (value <= 0x7FFFFFFF)
             {
                 concat.addU8(0xC7);
@@ -572,7 +572,7 @@ void SCBE_X64::emitClear(CPUReg reg, CPUBits numBits)
     else if (numBits == CPUBits::F64)
     {
         SWAG_ASSERT(reg == CPUReg::XMM0 || reg == CPUReg::XMM1);
-        concat.addU8(0x66);
+        emitREX(concat, numBits);
         concat.addU8(0x0F);
         emitCPUOp(concat, CPUOp::FXOR);
         concat.addU8(reg == CPUReg::XMM0 ? 0xC0 : 0xC9);
