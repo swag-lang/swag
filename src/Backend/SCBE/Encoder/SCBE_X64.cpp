@@ -52,11 +52,6 @@ namespace
             concat.addU64(value);
     }
 
-    void emitCPUOp(Concat& concat, CPUOp op0)
-    {
-        concat.addU8(static_cast<uint8_t>(op0));
-    }
-
     void emitModRM(Concat& concat, uint64_t memOffset, CPUReg reg, CPUReg memReg, uint8_t op = 1)
     {
         if (memOffset == 0 && (memReg < CPUReg::R8 || memReg == CPUReg::R12))
@@ -99,6 +94,16 @@ namespace
             concat.addU8(value & ~1);
         else
             concat.addU8(value);
+    }
+
+    void emitCPUOp(Concat& concat, CPUOp op0)
+    {
+        concat.addU8(static_cast<uint8_t>(op0));
+    }
+
+    void emitSpecCPUOp(Concat& concat, CPUOp op, CPUBits numBits)
+    {
+        emitSpecB8(concat, static_cast<uint8_t>(op), numBits);
     }
 }
 
@@ -573,7 +578,7 @@ void SCBE_X64::emitClear(CPUReg reg, CPUBits numBits)
     else
     {
         emitREX(concat, numBits, reg, reg);
-        emitSpecB8(concat, static_cast<uint8_t>(CPUOp::XOR), numBits);
+        emitSpecCPUOp(concat, CPUOp::XOR, numBits);
         concat.addU8(getModRM(RegReg, static_cast<uint8_t>(reg), static_cast<uint8_t>(reg)));
     }
 }
