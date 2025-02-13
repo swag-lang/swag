@@ -1596,7 +1596,6 @@ void SCBE_X64::emitOpBinary(CPUReg memReg, uint64_t memOffset, uint64_t value, C
     else if (op == CPUOp::IMUL || op == CPUOp::MUL)
     {
         SWAG_ASSERT(memReg == CPUReg::RAX || memReg == CPUReg::RDI);
-        SWAG_ASSERT(memReg == CPUReg::RAX || memReg == CPUReg::RDI);
         if (memReg == CPUReg::RAX)
         {
             emitCopy(CPUReg::R8, memReg, CPUBits::B64);
@@ -1632,35 +1631,22 @@ void SCBE_X64::emitOpBinary(CPUReg memReg, uint64_t memOffset, uint64_t value, C
 
     ///////////////////////////////////////////
 
-    else if (op == CPUOp::ADD && value == 1 && !emitFlags.has(EMITF_Overflow))
+    else if (op == CPUOp::ADD)
     {
-        SWAG_ASSERT(memReg < CPUReg::R8);
-        emitREX(concat, numBits);
-        emitSpecB8(concat, 0xFF, numBits);
-        emitModRM(concat, memOffset, static_cast<CPUReg>(0), memReg);
-    }
-
-    ///////////////////////////////////////////
-
-    else if (op == CPUOp::SUB && value == 1 && !emitFlags.has(EMITF_Overflow))
-    {
-        SWAG_ASSERT(memReg < CPUReg::R8);
-        emitREX(concat, numBits);
-        emitSpecB8(concat, 0xFF, numBits);
-        emitModRM(concat, memOffset, static_cast<CPUReg>(1), memReg);
-    }
-
-    ///////////////////////////////////////////
-
-    else
-    {
-        if (numBits == CPUBits::B8)
+        if (value == 1 && !emitFlags.has(EMITF_Overflow))
+        {
+            SWAG_ASSERT(memReg < CPUReg::R8);
+            emitREX(concat, numBits);
+            emitSpecB8(concat, 0xFF, numBits);
+            emitModRM(concat, memOffset, static_cast<CPUReg>(0), memReg);
+        }
+        else if (numBits == CPUBits::B8)
         {
             SWAG_ASSERT(memReg == CPUReg::RAX || memReg == CPUReg::RDI);
             emitREX(concat, numBits);
             concat.addU8(0x80);
             emitModRM(concat, memOffset, static_cast<CPUReg>(0), memReg, static_cast<uint8_t>(op));
-            emitValue(concat, value, value <= 0x7F ? CPUBits::B8 : min(numBits, CPUBits::B32));
+            emitValue(concat, value, CPUBits::B8);
         }
         else if (value <= 0x7F)
         {
@@ -1678,6 +1664,80 @@ void SCBE_X64::emitOpBinary(CPUReg memReg, uint64_t memOffset, uint64_t value, C
             emitModRM(concat, memOffset, static_cast<CPUReg>(0), memReg, static_cast<uint8_t>(op));
             emitValue(concat, value, min(numBits, CPUBits::B32));
         }
+    }
+
+    ///////////////////////////////////////////
+
+    else if (op == CPUOp::SUB)
+    {
+        if (value == 1 && !emitFlags.has(EMITF_Overflow))
+        {
+            SWAG_ASSERT(memReg < CPUReg::R8);
+            emitREX(concat, numBits);
+            emitSpecB8(concat, 0xFF, numBits);
+            emitModRM(concat, memOffset, static_cast<CPUReg>(1), memReg);
+        }
+        else if (numBits == CPUBits::B8)
+        {
+            SWAG_ASSERT(memReg == CPUReg::RAX || memReg == CPUReg::RDI);
+            emitREX(concat, numBits);
+            concat.addU8(0x80);
+            emitModRM(concat, memOffset, static_cast<CPUReg>(0), memReg, static_cast<uint8_t>(op));
+            emitValue(concat, value, CPUBits::B8);
+        }
+        else if (value <= 0x7F)
+        {
+            SWAG_ASSERT(memReg == CPUReg::RAX || memReg == CPUReg::RDI);
+            emitREX(concat, numBits);
+            concat.addU8(0x83);
+            emitModRM(concat, memOffset, static_cast<CPUReg>(0), memReg, static_cast<uint8_t>(op));
+            emitValue(concat, value, CPUBits::B8);
+        }
+        else
+        {
+            SWAG_ASSERT(memReg == CPUReg::RAX || memReg == CPUReg::RDI);
+            emitREX(concat, numBits);
+            concat.addU8(0x81);
+            emitModRM(concat, memOffset, static_cast<CPUReg>(0), memReg, static_cast<uint8_t>(op));
+            emitValue(concat, value, min(numBits, CPUBits::B32));
+        }
+    }
+
+    ///////////////////////////////////////////
+
+    else if (op == CPUOp::OR || op == CPUOp::AND || op == CPUOp::XOR)
+    {
+        if (numBits == CPUBits::B8)
+        {
+            SWAG_ASSERT(memReg == CPUReg::RAX || memReg == CPUReg::RDI);
+            emitREX(concat, numBits);
+            concat.addU8(0x80);
+            emitModRM(concat, memOffset, static_cast<CPUReg>(0), memReg, static_cast<uint8_t>(op));
+            emitValue(concat, value, CPUBits::B8);
+        }
+        else if (value <= 0x7F)
+        {
+            SWAG_ASSERT(memReg == CPUReg::RAX || memReg == CPUReg::RDI);
+            emitREX(concat, numBits);
+            concat.addU8(0x83);
+            emitModRM(concat, memOffset, static_cast<CPUReg>(0), memReg, static_cast<uint8_t>(op));
+            emitValue(concat, value, CPUBits::B8);
+        }
+        else
+        {
+            SWAG_ASSERT(memReg == CPUReg::RAX || memReg == CPUReg::RDI);
+            emitREX(concat, numBits);
+            concat.addU8(0x81);
+            emitModRM(concat, memOffset, static_cast<CPUReg>(0), memReg, static_cast<uint8_t>(op));
+            emitValue(concat, value, min(numBits, CPUBits::B32));
+        }
+    }
+
+    ///////////////////////////////////////////
+
+    else
+    {
+        SWAG_ASSERT(false);
     }
 }
 
