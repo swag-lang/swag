@@ -77,7 +77,7 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
         buildCfg.sanity                = true;
         buildCfg.errorStackTrace       = true;
         buildCfg.debugAllocator        = true;
-        buildCfg.backendOptimize       = BuildCfgBackendOptim::O1;
+        buildCfg.backendOptimize       = BuildCfgBackendOptim::O0;
         buildCfg.backendDebugInfos     = true;
         buildCfg.backendDebugInline    = true;
     }

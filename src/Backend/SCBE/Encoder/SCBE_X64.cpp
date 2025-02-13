@@ -1172,7 +1172,7 @@ void SCBE_X64::emitOpBinary(CPUReg regDst, CPUReg regSrc, CPUOp op, CPUBits numB
             emitREX(concat, numBits);
         concat.addU8(0x0F);
         emitSpecB8(concat, 0xB1, numBits);
-        concat.addU8(0x11);        
+        concat.addU8(0x11);
     }
     else
     {
@@ -1281,6 +1281,8 @@ void SCBE_X64::emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBit
     }
     else if (op == CPUOp::ADD)
     {
+        if (value == 0)
+            return;
         SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX || reg == CPUReg::RSP);
         emitREX(concat, numBits);
         if (value == 1 && !emitFlags.has(EMITF_Overflow))
@@ -1322,6 +1324,8 @@ void SCBE_X64::emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBit
     }
     else if (op == CPUOp::SUB)
     {
+        if (value == 0)
+            return;
         SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX || reg == CPUReg::RSP);
         emitREX(concat, numBits);
         if (value == 1 && !emitFlags.has(EMITF_Overflow))
@@ -1361,11 +1365,49 @@ void SCBE_X64::emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBit
                 emitValue(concat, value, CPUBits::B32);
         }
     }
-    else if (op == CPUOp::IMUL && numBits != CPUBits::B8)
+    else if (op == CPUOp::DIV || op == CPUOp::IDIV)
     {
+        if (value == 1)
+            return;
+        SWAG_ASSERT(reg == CPUReg::RAX);
+        emitLoad(CPUReg::RCX, value, numBits);
+        emitOpBinary(reg, CPUReg::RCX, op, numBits, emitFlags);        
+    }
+    else if (op == CPUOp::MOD || op == CPUOp::IMOD)
+    {
+        SWAG_ASSERT(reg == CPUReg::RAX);
+        emitLoad(CPUReg::RCX, value, numBits);
+        emitOpBinary(reg, CPUReg::RCX, op, numBits, emitFlags);        
+    }    
+    else if (op == CPUOp::MUL)
+    {
+        if (value == 1)
+            return;
         if (value == 0)
         {
             emitClear(reg, numBits);
+            return;
+        }
+
+        SWAG_ASSERT(reg == CPUReg::RAX);
+        emitLoad(CPUReg::RCX, value, numBits);
+        emitOpBinary(reg, CPUReg::RCX, op, numBits, emitFlags);
+    }
+    else if (op == CPUOp::IMUL)
+    {
+        if (value == 1)
+            return;
+        if (value == 0)
+        {
+            emitClear(reg, numBits);
+            return;
+        }
+
+        if (numBits == CPUBits::B8)
+        {
+            SWAG_ASSERT(reg == CPUReg::RAX);
+            emitLoad(CPUReg::RCX, value, numBits);
+            emitOpBinary(reg, CPUReg::RCX, op, numBits, emitFlags);
             return;
         }
 
@@ -1399,6 +1441,8 @@ void SCBE_X64::emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBit
     }
     else if (op == CPUOp::SAR || op == CPUOp::SHR || op == CPUOp::SHL)
     {
+        if (value == 0)
+            return;
         SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX);
         emitREX(concat, numBits);
         if (value == 1)
@@ -1420,6 +1464,8 @@ void SCBE_X64::emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBit
     }
     else if (op == CPUOp::BT)
     {
+        if (value == 0)
+            return;
         if (value <= 0x7F)
         {
             emitREX(concat, numBits, CPUReg::RAX, reg);
@@ -1435,9 +1481,7 @@ void SCBE_X64::emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, CPUBits numBit
     }
     else
     {
-        SWAG_ASSERT(reg == CPUReg::RAX);
-        emitLoad(CPUReg::RCX, value, numBits);
-        emitOpBinary(reg, CPUReg::RCX, op, numBits, emitFlags);
+        SWAG_ASSERT(false);
     }
 }
 
