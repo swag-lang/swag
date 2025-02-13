@@ -519,7 +519,7 @@ void SCBE_X64::emitSetAddress(CPUReg reg, CPUReg memReg, uint64_t memOffset)
         SWAG_ASSERT(memOffset == 0);
         SWAG_ASSERT(reg == CPUReg::RCX);
         emitREX(concat, CPUBits::B64, reg, memReg);
-        concat.addU8(0x8D);
+        emitCPUOp(concat, CPUOp::LEA);
         concat.addU8(0x0D);
     }
     else if (memOffset == 0)
@@ -529,7 +529,7 @@ void SCBE_X64::emitSetAddress(CPUReg reg, CPUReg memReg, uint64_t memOffset)
     else
     {
         emitREX(concat, CPUBits::B64, reg, memReg);
-        concat.addU8(0x8D);
+        emitCPUOp(concat, CPUOp::LEA);
         emitModRM(concat, memOffset, reg, memReg);
     }
 }
