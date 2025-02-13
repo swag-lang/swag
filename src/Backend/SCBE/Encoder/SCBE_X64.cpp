@@ -54,7 +54,7 @@ namespace
 
     void emitModRM(Concat& concat, CPUReg reg, CPUReg memReg)
     {
-        concat.addU8(getModRM(RegReg, static_cast<uint8_t>(reg), static_cast<uint8_t>(reg)));
+        concat.addU8(getModRM(RegReg, static_cast<uint8_t>(reg), static_cast<uint8_t>(memReg)));
     }
     
     void emitModRM(Concat& concat, uint64_t memOffset, CPUReg reg, CPUReg memReg, uint8_t op = 1)
@@ -599,7 +599,7 @@ void SCBE_X64::emitCopy(CPUReg regDst, CPUReg regSrc, CPUBits numBits)
         concat.addU8(0x66);
         concat.addU8(0x0F);
         concat.addU8(0x6E);
-        concat.addU8(static_cast<uint8_t>(0xC0 | static_cast<uint8_t>(regDst) << 3));
+        emitModRM(concat, regDst, regSrc);
     }
     else if (numBits == CPUBits::F64)
     {
@@ -609,13 +609,14 @@ void SCBE_X64::emitCopy(CPUReg regDst, CPUReg regSrc, CPUBits numBits)
         emitREX(concat, CPUBits::B64);
         concat.addU8(0x0F);
         concat.addU8(0x6E);
-        concat.addU8(static_cast<uint8_t>(0xC0 | static_cast<uint8_t>(regDst) << 3));
+        emitModRM(concat, regDst, regSrc);
     }
     else
     {
         emitREX(concat, numBits, regSrc, regDst);
         emitSpecB8(concat, 0x89, numBits);
-        concat.addU8(getModRM(RegReg, static_cast<uint8_t>(regSrc), static_cast<uint8_t>(regDst)));
+        emitModRM(concat, regSrc, regDst);
+        //concat.addU8(getModRM(RegReg, static_cast<uint8_t>(regSrc), static_cast<uint8_t>(regDst)));
     }
 }
 
