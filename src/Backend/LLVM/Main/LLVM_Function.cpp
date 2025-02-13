@@ -530,7 +530,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-                /////////////////////////////////////
+                ///////////////////////////////////////////
 
             case ByteCodeOp::SetZeroAtPointer8:
             {
@@ -577,7 +577,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-                /////////////////////////////////////
+                ///////////////////////////////////////////
 
             case ByteCodeOp::ClearRR8:
             {
@@ -1993,7 +1993,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v0, r0);
                 break;
             }
-            
+
             case ByteCodeOp::AffectOpPlusEqS16:
             {
                 MK_BINOP_EQ16_CAB();
@@ -2161,7 +2161,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v0, r0);
                 break;
             }
-            
+
             case ByteCodeOp::AffectOpMulEqS16:
             {
                 MK_BINOP_EQ16_CAB();
@@ -2224,7 +2224,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v0, r0);
                 break;
             }
-            
+
             case ByteCodeOp::AffectOpMulEqU8:
             {
                 MK_BINOP_EQ8_CAB();
