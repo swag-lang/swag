@@ -247,7 +247,7 @@ void SCBE::emitLambdaCall(SCBE_X64& pp, const Concat& concat, uint32_t offsetRT,
     //////////////////
     *jumpToBCAddr = concat.totalCount() - jumpToBCOffset;
 
-    pp.emitCopy(CPUReg::RCX, CPUReg::R10, CPUBits::B64);
+    pp.emitLoad(CPUReg::RCX, CPUReg::R10, CPUBits::B64);
     emitByteCodeCallParameters(pp, typeFuncBC, offsetRT, pushRAParams);
     pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symPI_byteCodeRun, 0);
     pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, CPUBits::B64);

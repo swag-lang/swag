@@ -184,7 +184,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     // This is used to debug and have access to capture parameters, even if we "lose" rcx
     // which is the register that will have a pointer to the capture buffer (but rcx is volatile)
     if (typeFunc->isClosure() && debug)
-        pp.emitCopy(CPUReg::R12, CPUReg::RCX, CPUBits::B64);
+        pp.emitLoad(CPUReg::R12, CPUReg::RCX, CPUBits::B64);
 
     auto                                        ip = bc->out;
     VectorNative<uint32_t>                      pushRAParams;
@@ -2157,7 +2157,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 // ByteCode lambda
                 //////////////////
 
-                pp.emitCopy(CPUReg::RCX, CPUReg::RAX, CPUBits::B64);
+                pp.emitLoad(CPUReg::RCX, CPUReg::RAX, CPUBits::B64);
                 pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symPI_makeCallback, 0);
                 pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, CPUBits::B64);
                 pp.emitCall(CPUReg::RAX);
@@ -2243,9 +2243,9 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 {
                     pp.emitLoad(cc.returnByRegisterInteger, CPUReg::RDI, offsetResult, CPUBits::B64);
                     if (returnType->isNative(NativeTypeKind::F32))
-                        pp.emitCopy(cc.returnByRegisterFloat, CPUReg::RAX, CPUBits::F32);
+                        pp.emitLoad(cc.returnByRegisterFloat, CPUReg::RAX, CPUBits::F32);
                     else if (returnType->isNative(NativeTypeKind::F64))
-                        pp.emitCopy(cc.returnByRegisterFloat, CPUReg::RAX, CPUBits::F64);
+                        pp.emitLoad(cc.returnByRegisterFloat, CPUReg::RAX, CPUBits::F64);
                 }
 
                 pp.emitOpBinary(CPUReg::RSP, sizeStack + sizeParamsStack, CPUOp::ADD, CPUBits::B64);
@@ -2345,7 +2345,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 {
                     case TokenId::IntrinsicAbs:
                         emitIMMB(pp, ip, CPUReg::RAX, numBits);
-                        pp.emitCopy(CPUReg::RCX, CPUReg::RAX, numBits);
+                        pp.emitLoad(CPUReg::RCX, CPUReg::RAX, numBits);
                         pp.emitOpBinary(CPUReg::RCX, SCBE_CPU::getBitsCount(numBits) - 1, CPUOp::SAR, numBits);
                         pp.emitOpBinary(CPUReg::RAX, CPUReg::RCX, CPUOp::XOR, numBits);
                         pp.emitOpBinary(CPUReg::RAX, CPUReg::RCX, CPUOp::SUB, numBits);
@@ -2514,7 +2514,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         emitIMMB(pp, ip, CPUReg::XMM0, numBits);
                         pp.emitLoad(CPUReg::RAX, 0x7FFFFFFF'FFFFFFFF, CPUBits::B64);
                         pp.emitLoad(CPUReg::RAX, numBits == CPUBits::F32 ? 0x7FFFFFFF : 0x7FFFFFFF'FFFFFFFF, CPUBits::B64);
-                        pp.emitCopy(CPUReg::XMM1, CPUReg::RAX, CPUBits::F64);
+                        pp.emitLoad(CPUReg::XMM1, CPUReg::RAX, CPUBits::F64);
                         pp.emitOpBinary(CPUReg::XMM0, CPUReg::XMM1, CPUOp::FAND, numBits);
                         pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::XMM0, numBits);
                         break;
