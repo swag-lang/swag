@@ -1654,31 +1654,30 @@ void SCBE_X64::emitOpBinary(CPUReg memReg, uint64_t memOffset, uint64_t value, C
 
     else
     {
-        SWAG_ASSERT(memReg == CPUReg::RAX || memReg == CPUReg::RDI);
-        SWAG_ASSERT(memOffset <= 0x7FFFFFFF);
-
-        emitREX(concat, numBits);
         if (numBits == CPUBits::B8)
+        {
+            SWAG_ASSERT(memReg == CPUReg::RAX || memReg == CPUReg::RDI);
+            emitREX(concat, numBits);
             concat.addU8(0x80);
+            emitModRM(concat, memOffset, static_cast<CPUReg>(0), memReg, static_cast<uint8_t>(op));
+            emitValue(concat, value, value <= 0x7F ? CPUBits::B8 : min(numBits, CPUBits::B32));
+        }
+        else if (value <= 0x7F)
+        {
+            SWAG_ASSERT(memReg == CPUReg::RAX || memReg == CPUReg::RDI);
+            emitREX(concat, numBits);
+            concat.addU8(0x83);
+            emitModRM(concat, memOffset, static_cast<CPUReg>(0), memReg, static_cast<uint8_t>(op));
+            emitValue(concat, value, CPUBits::B8);
+        }
         else
-            concat.addU8(value <= 0x7F ? 0x83 : 0x81);
-
-        if (memOffset == 0)
         {
-            concat.addU8(static_cast<uint8_t>(op) - 1 + static_cast<uint8_t>(memReg));
+            SWAG_ASSERT(memReg == CPUReg::RAX || memReg == CPUReg::RDI);
+            emitREX(concat, numBits);
+            concat.addU8(0x81);
+            emitModRM(concat, memOffset, static_cast<CPUReg>(0), memReg, static_cast<uint8_t>(op));
+            emitValue(concat, value, min(numBits, CPUBits::B32));
         }
-        else if (memOffset <= 0x7F)
-        {
-            concat.addU8(static_cast<uint8_t>(op) + 0x3F + static_cast<uint8_t>(memReg));
-            emitValue(concat, memOffset, CPUBits::B8);
-        }
-        else
-        {
-            concat.addU8(static_cast<uint8_t>(op) + 0x7F + static_cast<uint8_t>(memReg));
-            emitValue(concat, memOffset, CPUBits::B32);
-        }
-
-        emitValue(concat, value, value <= 0x7F ? CPUBits::B8 : min(numBits, CPUBits::B32));
     }
 }
 
