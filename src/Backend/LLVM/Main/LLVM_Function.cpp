@@ -465,43 +465,19 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v1, r0);
                 break;
             }
+
             case ByteCodeOp::GetIncFromStack64DeRef8:
-            {
-                auto r1 = GEP8(allocStack, ip->b.u32);
-                auto v0 = builder.CreateLoad(PTR_I8_TY(), r1);
-                auto v1 = GEP8(v0, ip->c.u64);
-                auto v2 = builder.CreateLoad(I8_TY(), v1);
-                auto v3 = builder.CreateIntCast(v2, I64_TY(), false);
-                builder.CreateStore(v3, GEP64(allocR, ip->a.u32));
-                break;
-            }
             case ByteCodeOp::GetIncFromStack64DeRef16:
-            {
-                auto r1 = GEP8(allocStack, ip->b.u32);
-                auto v0 = builder.CreateLoad(PTR_I8_TY(), r1);
-                auto v1 = GEP8_PTR_I16(v0, ip->c.u64);
-                auto v2 = builder.CreateLoad(I16_TY(), v1);
-                auto v3 = builder.CreateIntCast(v2, I64_TY(), false);
-                builder.CreateStore(v3, GEP64(allocR, ip->a.u32));
-                break;
-            }
             case ByteCodeOp::GetIncFromStack64DeRef32:
-            {
-                auto r1 = GEP8(allocStack, ip->b.u32);
-                auto v0 = builder.CreateLoad(PTR_I8_TY(), r1);
-                auto v1 = GEP8_PTR_I32(v0, ip->c.u64);
-                auto v2 = builder.CreateLoad(I32_TY(), v1);
-                auto v3 = builder.CreateIntCast(v2, I64_TY(), false);
-                builder.CreateStore(v3, GEP64(allocR, ip->a.u32));
-                break;
-            }
             case ByteCodeOp::GetIncFromStack64DeRef64:
             {
-                auto r1 = GEP8(allocStack, ip->b.u32);
-                auto v0 = builder.CreateLoad(PTR_I8_TY(), r1);
-                auto v1 = GEP8_PTR_I64(v0, ip->c.u64);
-                auto v2 = builder.CreateLoad(I64_TY(), v1);
-                builder.CreateStore(v2, GEP64(allocR, ip->a.u32));
+                auto numBits = BackendEncoder::getNumBits(ip->op);
+                auto r1      = GEP8(allocStack, ip->b.u32);
+                auto v0      = builder.CreateLoad(PTR_I8_TY(), r1);
+                auto v1      = GEP8_PTR_IX(v0, ip->c.u64, numBits);
+                auto v2      = builder.CreateLoad(IX_TY(numBits), v1);
+                auto v3      = builder.CreateIntCast(v2, I64_TY(), false);
+                builder.CreateStore(v3, GEP64(allocR, ip->a.u32));
                 break;
             }
 
