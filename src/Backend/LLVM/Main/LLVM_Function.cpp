@@ -179,7 +179,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             {
                 auto r0  = GEP64(allocR, ip->b.u32);
                 auto ptr = builder.CreateInBoundsGEP(I8_TY(), builder.CreateLoad(PTR_I8_TY(), r0), builder.getInt64(ip->c.s64));
-                auto v1  = builder.CreateLoad(I8_TY(), ptr);
+                auto v1  = builder.CreateLoad(IX_TY(8), ptr);
                 auto v2  = builder.CreateIntCast(v1, I64_TY(), false);
                 builder.CreateStore(v2, GEP64(allocR, ip->a.u32));
                 break;
@@ -188,7 +188,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             {
                 auto r0  = GEP64(allocR, ip->b.u32);
                 auto ptr = builder.CreateInBoundsGEP(I8_TY(), builder.CreateLoad(PTR_I8_TY(), r0), builder.getInt64(ip->c.s64));
-                auto v1  = builder.CreateLoad(I16_TY(), ptr);
+                auto v1  = builder.CreateLoad(IX_TY(16), ptr);
                 auto v2  = builder.CreateIntCast(v1, I64_TY(), false);
                 builder.CreateStore(v2, GEP64(allocR, ip->a.u32));
                 break;
@@ -197,7 +197,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             {
                 auto r0  = GEP64(allocR, ip->b.u32);
                 auto ptr = builder.CreateInBoundsGEP(I8_TY(), builder.CreateLoad(PTR_I8_TY(), r0), builder.getInt64(ip->c.s64));
-                auto v1  = builder.CreateLoad(I32_TY(), ptr);
+                auto v1  = builder.CreateLoad(IX_TY(32), ptr);
                 auto v2  = builder.CreateIntCast(v1, I64_TY(), false);
                 builder.CreateStore(v2, GEP64(allocR, ip->a.u32));
                 break;
@@ -206,8 +206,9 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             {
                 auto r0  = GEP64(allocR, ip->b.u32);
                 auto ptr = builder.CreateInBoundsGEP(I8_TY(), builder.CreateLoad(PTR_I8_TY(), r0), builder.getInt64(ip->c.s64));
-                auto v1  = builder.CreateLoad(I64_TY(), ptr);
-                builder.CreateStore(v1, GEP64(allocR, ip->a.u32));
+                auto v1  = builder.CreateLoad(IX_TY(64), ptr);
+                auto v2  = builder.CreateIntCast(v1, I64_TY(), false);
+                builder.CreateStore(v2, GEP64(allocR, ip->a.u32));
                 break;
             }
             case ByteCodeOp::DeRefStringSlice:
