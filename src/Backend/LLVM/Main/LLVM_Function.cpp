@@ -256,7 +256,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::SetZeroStack8:
             {
                 auto r0 = GEP8(allocStack, ip->a.u32);
-                builder.CreateStore(pp.cstAi8, r0);
+                builder.CreateStore(builder.getInt8(0), r0);
                 break;
             }
             case ByteCodeOp::SetZeroStack16:
@@ -280,7 +280,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::SetZeroStackX:
             {
                 auto r0 = GEP8(allocStack, ip->a.u32);
-                builder.CreateMemSet(r0, pp.cstAi8, ip->b.u32, {});
+                builder.CreateMemSet(r0, builder.getInt8(0), ip->b.u32, {});
                 break;
             }
 
@@ -290,7 +290,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             {
                 auto r0 = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
                 auto v0 = GEP8(r0, ip->b.u32);
-                builder.CreateStore(pp.cstAi8, v0);
+                builder.CreateStore(builder.getInt8(0), v0);
                 break;
             }
             case ByteCodeOp::SetZeroAtPointer16:
@@ -319,7 +319,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 SWAG_ASSERT(ip->c.s64 >= 0 && ip->c.s64 <= 0x7FFFFFFF);
                 auto r0 = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
                 auto v0 = builder.CreateInBoundsGEP(I8_TY(), r0, CST_RC32);
-                builder.CreateMemSet(v0, pp.cstAi8, ip->b.u64, llvm::Align{});
+                builder.CreateMemSet(v0, builder.getInt8(0), ip->b.u64, llvm::Align{});
                 break;
             }
             case ByteCodeOp::SetZeroAtPointerXRB:
@@ -327,7 +327,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 auto r0 = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
                 auto r2 = builder.CreateLoad(I64_TY(), GEP64(allocR, ip->b.u32));
                 auto v2 = builder.CreateMul(r2, CST_RC64);
-                builder.CreateMemSet(r0, pp.cstAi8, v2, {});
+                builder.CreateMemSet(r0, builder.getInt8(0), v2, {});
                 break;
             }
 
@@ -342,7 +342,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 const auto numBits = BackendEncoder::getNumBits(ip->op);
                 auto       r0      = TO_PTR_I8(func->getArg(static_cast<int>(func->arg_size()) - 1));
                 auto       v0      = GEP8_PTR_IX(r0, ip->c.u32, numBits);
-                builder.CreateStore(builder.getIntN(0, numBits), v0);
+                builder.CreateStore(builder.getIntN(numBits, 0), v0);
                 break;
             }
 
@@ -351,7 +351,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 SWAG_ASSERT(ip->c.s64 >= 0 && ip->c.s64 <= 0x7FFFFFFF);
                 auto r0 = TO_PTR_I8(func->getArg(static_cast<int>(func->arg_size()) - 1));
                 auto v0 = builder.CreateInBoundsGEP(I8_TY(), r0, CST_RC32);
-                builder.CreateMemSet(v0, pp.cstAi8, ip->b.u64, llvm::Align{});
+                builder.CreateMemSet(v0, builder.getInt8(0), ip->b.u64, llvm::Align{});
                 break;
             }
 
@@ -2530,8 +2530,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 llvm::Value* r1 = MK_IMMA_8();
                 llvm::Value* r2 = MK_IMMB_8();
                 auto         v0 = builder.CreateSub(r1, r2);
-                auto         v1 = builder.CreateIntCast(builder.CreateICmpSGT(v0, pp.cstAi8), I32_TY(), false);
-                auto         v2 = builder.CreateIntCast(builder.CreateICmpSLT(v0, pp.cstAi8), I32_TY(), false);
+                auto         v1 = builder.CreateIntCast(builder.CreateICmpSGT(v0, builder.getInt8(0)), I32_TY(), false);
+                auto         v2 = builder.CreateIntCast(builder.CreateICmpSLT(v0, builder.getInt8(0)), I32_TY(), false);
                 auto         v3 = builder.CreateSub(v1, v2);
                 builder.CreateStore(v3, r0);
                 break;
@@ -3839,7 +3839,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::IntrinsicIsByteCode:
             {
                 auto r0 = GEP64_PTR_I8(allocR, ip->a.u32);
-                builder.CreateStore(pp.cstAi8, r0);
+                builder.CreateStore(builder.getInt8(0), r0);
                 break;
             }
             case ByteCodeOp::IntrinsicCompiler:
