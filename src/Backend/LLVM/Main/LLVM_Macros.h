@@ -92,6 +92,9 @@
 #define MK_IMMC_F32() ip->hasFlag(BCI_IMM_C) ? (llvm::Value*) llvm::ConstantFP::get(F32_TY(), ip->c.f32) : (llvm::Value*) builder.CreateLoad(F32_TY(), GEP64(allocR, ip->c.u32))
 #define MK_IMMC_F64() ip->hasFlag(BCI_IMM_C) ? (llvm::Value*) llvm::ConstantFP::get(F64_TY(), ip->c.f64) : (llvm::Value*) builder.CreateLoad(F64_TY(), GEP64(allocR, ip->c.u32))
 
+#define MK_IMMD_8()   ip->hasFlag(BCI_IMM_D) ? (llvm::Value*) builder.getInt8(ip->d.u8) : (llvm::Value*) builder.CreateLoad(I8_TY(), GEP64(allocR, ip->d.u32))
+#define MK_IMMD_16()  ip->hasFlag(BCI_IMM_D) ? (llvm::Value*) builder.getInt16(ip->d.u16) : (llvm::Value*) builder.CreateLoad(I16_TY(), GEP64(allocR, ip->d.u32))
+#define MK_IMMD_32()  ip->hasFlag(BCI_IMM_D) ? (llvm::Value*) builder.getInt32(ip->d.u32) : (llvm::Value*) builder.CreateLoad(I32_TY(), GEP64(allocR, ip->d.u32))
 #define MK_IMMD_64()  ip->hasFlag(BCI_IMM_D) ? (llvm::Value*) builder.getInt64(ip->d.u64) : (llvm::Value*) builder.CreateLoad(I64_TY(), GEP64(allocR, ip->d.u32))
 #define MK_IMMD_F32() ip->hasFlag(BCI_IMM_D) ? (llvm::Value*) llvm::ConstantFP::get(F32_TY(), ip->d.f32) : (llvm::Value*) builder.CreateLoad(F32_TY(), GEP64(allocR, ip->d.u32))
 #define MK_IMMD_F64() ip->hasFlag(BCI_IMM_D) ? (llvm::Value*) llvm::ConstantFP::get(F64_TY(), ip->d.f64) : (llvm::Value*) builder.CreateLoad(F64_TY(), GEP64(allocR, ip->d.u32))
