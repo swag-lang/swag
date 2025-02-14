@@ -778,34 +778,14 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::SetAtPointer8:
-            {
-                auto         ra = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
-                auto         r0 = builder.CreateInBoundsGEP(I8_TY(), ra, CST_RC32);
-                llvm::Value* r1 = MK_IMMB_8();
-                builder.CreateStore(r1, r0);
-                break;
-            }
             case ByteCodeOp::SetAtPointer16:
-            {
-                auto         ra = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
-                auto         r0 = GEP8_PTR_I16(ra, ip->c.u32);
-                llvm::Value* r1 = MK_IMMB_16();
-                builder.CreateStore(r1, r0);
-                break;
-            }
             case ByteCodeOp::SetAtPointer32:
-            {
-                auto         ra = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
-                auto         r0 = GEP8_PTR_I32(ra, ip->c.u32);
-                llvm::Value* r1 = MK_IMMB_32();
-                builder.CreateStore(r1, r0);
-                break;
-            }
             case ByteCodeOp::SetAtPointer64:
             {
-                auto         ra = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
-                auto         r0 = GEP8_PTR_I64(ra, ip->c.u32);
-                llvm::Value* r1 = MK_IMMB_64();
+                const auto   numBits = BackendEncoder::getNumBits(ip->op);
+                const auto   ra      = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
+                const auto   r0      = GEP8_PTR_IX(ra, ip->c.u32, numBits);
+                llvm::Value* r1      = MK_IMMB_IX(numBits);
                 builder.CreateStore(r1, r0);
                 break;
             }
