@@ -600,7 +600,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(builder.CreateCall(pp.fnStrlen, {r1}), r0);
                 break;
             }
-            
+
             case ByteCodeOp::IntrinsicStrCmp:
             {
                 auto r0 = GEP64(allocR, ip->a.u32);
@@ -617,7 +617,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(builder.CreateCall(pp.fnMalloc, {r1}), r0);
                 break;
             }
-            
+
             case ByteCodeOp::IntrinsicRealloc:
             {
                 auto r0 = GEP64_PTR_PTR_I8(allocR, ip->a.u32);
@@ -626,7 +626,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(builder.CreateCall(pp.fnReAlloc, {r1, r2}), r0);
                 break;
             }
-            
+
             case ByteCodeOp::IntrinsicFree:
             {
                 auto r0 = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
@@ -659,36 +659,18 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::CopyRBtoRA8:
-            {
-                auto r0 = GEP64(allocR, ip->a.u32);
-                auto r1 = GEP64(allocR, ip->b.u32);
-                auto v1 = builder.CreateIntCast(builder.CreateLoad(I8_TY(), r1), I64_TY(), false);
-                builder.CreateStore(v1, r0);
-                break;
-            }
             case ByteCodeOp::CopyRBtoRA16:
-            {
-                auto r0 = GEP64(allocR, ip->a.u32);
-                auto r1 = GEP64(allocR, ip->b.u32);
-                auto v1 = builder.CreateIntCast(builder.CreateLoad(I16_TY(), r1), I64_TY(), false);
-                builder.CreateStore(v1, r0);
-                break;
-            }
             case ByteCodeOp::CopyRBtoRA32:
-            {
-                auto r0 = GEP64(allocR, ip->a.u32);
-                auto r1 = GEP64(allocR, ip->b.u32);
-                auto v1 = builder.CreateIntCast(builder.CreateLoad(I32_TY(), r1), I64_TY(), false);
-                builder.CreateStore(v1, r0);
-                break;
-            }
             case ByteCodeOp::CopyRBtoRA64:
             {
-                auto r0 = GEP64(allocR, ip->a.u32);
-                auto r1 = GEP64(allocR, ip->b.u32);
-                builder.CreateStore(builder.CreateLoad(I64_TY(), r1), r0);
+                auto numBits = BackendEncoder::getNumBits(ip->op);
+                auto r0      = GEP64(allocR, ip->a.u32);
+                auto r1      = GEP64(allocR, ip->b.u32);
+                auto v1      = builder.CreateIntCast(builder.CreateLoad(IX_TY(numBits), r1), I64_TY(), false);
+                builder.CreateStore(v1, r0);
                 break;
             }
+
             case ByteCodeOp::CopyRBtoRA64x2:
             {
                 auto r0 = GEP64(allocR, ip->a.u32);
