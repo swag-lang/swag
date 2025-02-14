@@ -978,7 +978,7 @@ namespace OS
                 gen.emitPush(CPUReg::RDI);
                 unwindRegs.push_back(CPUReg::RDI);
                 unwindOffsetRegs.push_back(gen.concat.totalCount());
-                gen.emitOpBinary(CPUReg::RSP, stackSize, CPUOp::SUB, CPUBits::B64);
+                gen.emitOpBinary(CPUReg::RSP, stackSize, CPUOp::SUB, OpBits::B64);
                 const auto sizeProlog = gen.concat.totalCount();
                 SCBE_Coff::computeUnwind(unwindRegs, unwindOffsetRegs, stackSize, sizeProlog, unwind);
 
@@ -1000,19 +1000,19 @@ namespace OS
             SWAG_ASSERT(startOffset < JIT_SIZE_BUFFER);
 
             gen.emitPush(CPUReg::RDI);
-            gen.emitOpBinary(CPUReg::RSP, stackSize, CPUOp::SUB, CPUBits::B64);
-            gen.emitLoad(CPUReg::RDI, reinterpret_cast<uint64_t>(context->sp), CPUBits::B64);
+            gen.emitOpBinary(CPUReg::RSP, stackSize, CPUOp::SUB, OpBits::B64);
+            gen.emitLoad(CPUReg::RDI, reinterpret_cast<uint64_t>(context->sp), OpBits::B64);
             gen.emitCallParameters(typeInfoFunc, pushRAParam, 0, retCopyAddr);
-            gen.emitLoad(CPUReg::RAX, reinterpret_cast<uint64_t>(foreignPtr), CPUBits::B64);
+            gen.emitLoad(CPUReg::RAX, reinterpret_cast<uint64_t>(foreignPtr), OpBits::B64);
             gen.emitCall(CPUReg::RAX);
 
             if (!returnType->isVoid() && !retCopyAddr)
             {
-                gen.emitLoad(CPUReg::RDI, reinterpret_cast<uint64_t>(context->registersRR), CPUBits::B64);
+                gen.emitLoad(CPUReg::RDI, reinterpret_cast<uint64_t>(context->registersRR), OpBits::B64);
                 gen.emitCallResult(typeInfoFunc, 0);
             }
 
-            gen.emitOpBinary(CPUReg::RSP, stackSize, CPUOp::ADD, CPUBits::B64);
+            gen.emitOpBinary(CPUReg::RSP, stackSize, CPUOp::ADD, OpBits::B64);
             gen.emitPop(CPUReg::RDI);
             gen.emitRet();
         }

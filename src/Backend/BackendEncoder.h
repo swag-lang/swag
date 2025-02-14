@@ -12,7 +12,7 @@ enum class BackendPreCompilePass
     Release,
 };
 
-enum class CPUBits : uint32_t
+enum class OpBits : uint32_t
 {
     INVALID = 0,
     B8      = 8,
@@ -29,10 +29,10 @@ struct BackendEncoder
     Module*               module = nullptr;
     BackendPreCompilePass pass   = {BackendPreCompilePass::Init};
 
-    static uint32_t  getBitsCount(CPUBits numBits);
-    static CPUBits   getCPUBits(ByteCodeOp op);
+    static uint32_t  getBitsCount(OpBits opBits);
+    static OpBits   getCPUBits(ByteCodeOp op);
     static TypeInfo* getCPUType(ByteCodeOp op);
 
-    static bool isInt(CPUBits numBits) { return numBits == CPUBits::B8 || numBits == CPUBits::B16 || numBits == CPUBits::B32 || numBits == CPUBits::B64; }
-    static bool isFloat(CPUBits numBits) { return numBits == CPUBits::F32 || numBits == CPUBits::F64; }
+    static bool isInt(OpBits opBits) { return opBits == OpBits::B8 || opBits == OpBits::B16 || opBits == OpBits::B32 || opBits == OpBits::B64; }
+    static bool isFloat(OpBits opBits) { return opBits == OpBits::F32 || opBits == OpBits::F64; }
 };

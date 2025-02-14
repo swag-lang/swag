@@ -106,7 +106,7 @@ namespace ByteCodeGen
     bool checkEscapedThrow(ByteCodeGenContext* context);
 
     ByteCodeInstruction* emitMakeSegPointer(const ByteCodeGenContext* context, const DataSegment* storageSegment, uint32_t storageOffset, uint32_t r0);
-    ByteCodeInstruction* emitGetFromSeg(const ByteCodeGenContext* context, const DataSegment* storageSegment, uint32_t storageOffset, uint32_t r0, uint32_t numBits);
+    ByteCodeInstruction* emitGetFromSeg(const ByteCodeGenContext* context, const DataSegment* storageSegment, uint32_t storageOffset, uint32_t r0, uint32_t opBits);
     ByteCodeInstruction* emitInstruction(const ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0, uint32_t r1, uint32_t r2, uint32_t r3, const char* file, uint32_t line);
 
     bool emitDefaultParamValue(ByteCodeGenContext* context, AstNode* param, RegisterList& regList);

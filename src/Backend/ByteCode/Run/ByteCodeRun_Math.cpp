@@ -4,23 +4,23 @@
 #include "Os/Os.h"
 #include "Syntax/Tokenizer/Token.h"
 
-void ByteCodeRun::executeLeftShift(Register* regDest, const Register& regLeft, const Register& regRight, uint32_t numBits, bool /*isSigned*/)
+void ByteCodeRun::executeLeftShift(Register* regDest, const Register& regLeft, const Register& regRight, uint32_t opBits, bool /*isSigned*/)
 {
     const auto shift = regRight.u32;
-    if (shift >= numBits)
+    if (shift >= opBits)
         regDest->u64 = 0;
     else
         regDest->u64 = regLeft.u64 << shift;
 }
 
-void ByteCodeRun::executeRightShift(Register* regDest, const Register& regLeft, const Register& regRight, uint32_t numBits, bool isSigned)
+void ByteCodeRun::executeRightShift(Register* regDest, const Register& regLeft, const Register& regRight, uint32_t opBits, bool isSigned)
 {
     const auto shift = regRight.u32;
-    if (shift >= numBits)
+    if (shift >= opBits)
     {
         if (isSigned)
         {
-            switch (numBits)
+            switch (opBits)
             {
                 case 8:
                     regDest->s64 = regLeft.s8 < 0 ? -1 : 0;
@@ -45,7 +45,7 @@ void ByteCodeRun::executeRightShift(Register* regDest, const Register& regLeft, 
     }
     else if (isSigned)
     {
-        switch (numBits)
+        switch (opBits)
         {
             case 8:
                 regDest->s64 = regLeft.s8 >> shift;
@@ -65,7 +65,7 @@ void ByteCodeRun::executeRightShift(Register* regDest, const Register& regLeft, 
     }
     else
     {
-        switch (numBits)
+        switch (opBits)
         {
             case 8:
                 regDest->u64 = regLeft.u8 >> shift;

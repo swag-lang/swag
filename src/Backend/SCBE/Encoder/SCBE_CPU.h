@@ -328,7 +328,7 @@ struct SCBE_CPU : BackendEncoder
 
     uint64_t storageMemOffset   = 0;
     uint32_t storageConcatCount = UINT32_MAX;
-    CPUBits  storageNumBits     = CPUBits::INVALID;
+    OpBits  storageNumBits     = OpBits::INVALID;
     CPUReg   storageReg         = CPUReg::RAX;
     CPUReg   storageMemReg      = CPUReg::RAX;
 };

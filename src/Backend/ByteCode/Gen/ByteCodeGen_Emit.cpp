@@ -81,11 +81,11 @@ ByteCodeInstruction* ByteCodeGen::emitMakeSegPointer(const ByteCodeGenContext* c
     return nullptr;
 }
 
-ByteCodeInstruction* ByteCodeGen::emitGetFromSeg(const ByteCodeGenContext* context, const DataSegment* storageSegment, uint32_t storageOffset, uint32_t r0, uint32_t numBits)
+ByteCodeInstruction* ByteCodeGen::emitGetFromSeg(const ByteCodeGenContext* context, const DataSegment* storageSegment, uint32_t storageOffset, uint32_t r0, uint32_t opBits)
 {
     SWAG_ASSERT(storageSegment);
 
-    if (numBits == 8)
+    if (opBits == 8)
     {
         switch (storageSegment->kind)
         {
@@ -99,7 +99,7 @@ ByteCodeInstruction* ByteCodeGen::emitGetFromSeg(const ByteCodeGenContext* conte
                 SWAG_ASSERT(false);
         }
     }
-    else if (numBits == 16)
+    else if (opBits == 16)
     {
         switch (storageSegment->kind)
         {
@@ -113,7 +113,7 @@ ByteCodeInstruction* ByteCodeGen::emitGetFromSeg(const ByteCodeGenContext* conte
                 SWAG_ASSERT(false);
         }
     }
-    else if (numBits == 32)
+    else if (opBits == 32)
     {
         switch (storageSegment->kind)
         {
@@ -127,7 +127,7 @@ ByteCodeInstruction* ByteCodeGen::emitGetFromSeg(const ByteCodeGenContext* conte
                 SWAG_ASSERT(false);
         }
     }
-    else if (numBits == 64)
+    else if (opBits == 64)
     {
         switch (storageSegment->kind)
         {

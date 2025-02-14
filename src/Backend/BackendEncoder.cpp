@@ -4,19 +4,19 @@
 #include "Semantic/Type/TypeInfo.h"
 #include "Semantic/Type/TypeManager.h"
 
-uint32_t BackendEncoder::getBitsCount(CPUBits numBits)
+uint32_t BackendEncoder::getBitsCount(OpBits opBits)
 {
-    switch (numBits)
+    switch (opBits)
     {
-        case CPUBits::B8:
+        case OpBits::B8:
             return 8;
-        case CPUBits::B16:
+        case OpBits::B16:
             return 16;
-        case CPUBits::B32:
-        case CPUBits::F32:
+        case OpBits::B32:
+        case OpBits::F32:
             return 32;
-        case CPUBits::B64:
-        case CPUBits::F64:
+        case OpBits::B64:
+        case OpBits::F64:
             return 64;
     }
 
@@ -24,23 +24,23 @@ uint32_t BackendEncoder::getBitsCount(CPUBits numBits)
     return 0;
 }
 
-CPUBits BackendEncoder::getCPUBits(ByteCodeOp op)
+OpBits BackendEncoder::getCPUBits(ByteCodeOp op)
 {
     const auto flags = ByteCode::opFlags(op);
     if (flags.has(OPF_8))
-        return CPUBits::B8;
+        return OpBits::B8;
     if (flags.has(OPF_16))
-        return CPUBits::B16;
+        return OpBits::B16;
     if (flags.has(OPF_32) && flags.has(OPF_FLOAT))
-        return CPUBits::F32;
+        return OpBits::F32;
     if (flags.has(OPF_32))
-        return CPUBits::B32;
+        return OpBits::B32;
     if (flags.has(OPF_64) && flags.has(OPF_FLOAT))
-        return CPUBits::F64;
+        return OpBits::F64;
     if (flags.has(OPF_64))
-        return CPUBits::B64;
+        return OpBits::B64;
     SWAG_ASSERT(false);
-    return CPUBits::B32;
+    return OpBits::B32;
 }
 
 TypeInfo* BackendEncoder::getCPUType(ByteCodeOp op)
