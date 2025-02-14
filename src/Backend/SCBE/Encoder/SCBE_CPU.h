@@ -11,17 +11,6 @@ struct AstNode;
 
 #define REG_OFFSET(__r) ((__r) * sizeof(Register))
 
-enum class CPUBits : uint32_t
-{
-    INVALID = 0,
-    B8      = 8,
-    B16     = 16,
-    B32     = 32,
-    B64     = 64,
-    F32     = 65,
-    F64     = 66,
-};
-
 enum class CPUPushParamType
 {
     Reg,
@@ -205,12 +194,6 @@ struct SCBE_CPU : BackendEncoder
     void             addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, uint16_t type);
     CPUFunction*     registerFunction(AstNode* node, uint32_t symbolIndex);
     static uint32_t  getParamStackOffset(const CPUFunction* cpuFct, uint32_t paramIdx);
-    static uint32_t  getBitsCount(CPUBits numBits);
-    static CPUBits   getCPUBits(ByteCodeOp op);
-    static TypeInfo* getCPUType(ByteCodeOp op);
-
-    static bool isInt(CPUBits numBits) { return numBits == CPUBits::B8 || numBits == CPUBits::B16 || numBits == CPUBits::B32 || numBits == CPUBits::B64; }
-    static bool isFloat(CPUBits numBits) { return numBits == CPUBits::F32 || numBits == CPUBits::F64; }
 
     BuildParameters buildParams;
     Concat          concat;

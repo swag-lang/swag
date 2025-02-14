@@ -215,6 +215,7 @@
   <ItemGroup>
     <ClInclude Include="../src/pch.h" />
     <ClInclude Include="..\src\Backend\Backend.h" />
+    <ClInclude Include="..\src\Backend\BackendEncoder.h" />
     <ClInclude Include="..\src\Backend\BackendFunctionBodyJob.h" />
     <ClInclude Include="..\src\Backend\BackendParameters.h" />
     <ClInclude Include="..\src\Backend\ByteCode\ByteCode.h" />
@@ -353,6 +354,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseDevMode|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\src\Backend\Backend.cpp" />
+    <ClCompile Include="..\src\Backend\BackendEncoder.cpp" />
     <ClCompile Include="..\src\Backend\BackendFunctionBodyJob.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\ByteCode.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\ByteCode_Print.cpp" />

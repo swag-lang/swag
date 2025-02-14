@@ -1,5 +1,6 @@
 #pragma once
 #include "Backend/BackendParameters.h"
+#include "Backend/BackendEncoder.h"
 #include "Format/FormatConcat.h"
 
 struct AstFuncDecl;
@@ -23,22 +24,6 @@ enum class BuildCfgBackendKind;
 enum class BuildCfgOutputKind;
 
 static constexpr int MAX_PRECOMPILE_BUFFERS = 1024;
-
-enum class BackendPreCompilePass
-{
-    Init,
-    FunctionBodies,
-    End,
-    GenerateObj,
-    Release,
-};
-
-struct BackendEncoder
-{
-    Utf8                  filename;
-    Module*               module = nullptr;
-    BackendPreCompilePass pass   = {BackendPreCompilePass::Init};
-};
 
 struct Backend
 {

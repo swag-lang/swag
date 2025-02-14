@@ -49,7 +49,6 @@
     <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer_Loop.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer_Param.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer_Reduce.cpp" />
-    <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer_ReduceX2.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer_RetCopy.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Optimize\ByteCodeOptimizer_Swap.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Profiler\Profiler.cpp" />
@@ -256,7 +255,8 @@
     <ClCompile Include="..\src\Backend\ByteCode\Sanity\ByteCodeSanity_Loop.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Sanity\ByteCodeSanityValue.cpp" />
     <ClCompile Include="..\src\Backend\ByteCode\Sanity\ByteCodeSanityState.cpp" />
-    <ClCompile Include="..\src\Os\ResUpdateWin32.cpp" />
+    <ClCompile Include="..\src\Os\OSWin32_PatchIcon.cpp" />
+    <ClCompile Include="..\src\Backend\BackendEncoder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/pch.h" />
@@ -294,7 +294,6 @@
     <ClInclude Include="..\src\Backend\SCBE\Encoder\SCBE_CPU.h" />
     <ClInclude Include="..\src\Backend\SCBE\Encoder\SCBE_X64.h" />
     <ClInclude Include="..\src\Backend\SCBE\Main\SCBE.h" />
-    <ClInclude Include="..\src\Backend\SCBE\Main\SCBE_Macros.h" />
     <ClInclude Include="..\src\Backend\SCBE\Obj\SCBE_Coff.h" />
     <ClInclude Include="..\src\Backend\SCBE\Obj\SCBE_SaveObjJob.h" />
     <ClInclude Include="..\src\Core\Allocator.h" />
@@ -391,7 +390,7 @@
     <ClInclude Include="..\src\Backend\ByteCode\Sanity\ByteCodeSanity_Macros.h" />
     <ClInclude Include="..\src\Backend\ByteCode\Sanity\ByteCodeSanityValue.h" />
     <ClInclude Include="..\src\Backend\ByteCode\Sanity\ByteCodeSanityState.h" />
-    <ClInclude Include="..\src\Os\ResUpdateWin32.h" />
+    <ClInclude Include="..\src\Backend\BackendEncoder.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="swag.natvis" />
