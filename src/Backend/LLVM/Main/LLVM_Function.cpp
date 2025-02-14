@@ -508,31 +508,14 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::CopyStack8:
-            {
-                auto r0 = GEP8(allocStack, ip->a.u32);
-                auto r1 = GEP8(allocStack, ip->b.u32);
-                builder.CreateStore(builder.CreateLoad(I8_TY(), r1), r0);
-                break;
-            }
             case ByteCodeOp::CopyStack16:
-            {
-                auto r0 = GEP8_PTR_I16(allocStack, ip->a.u32);
-                auto r1 = GEP8(allocStack, ip->b.u32);
-                builder.CreateStore(builder.CreateLoad(I16_TY(), r1), r0);
-                break;
-            }
             case ByteCodeOp::CopyStack32:
-            {
-                auto r0 = GEP8_PTR_I32(allocStack, ip->a.u32);
-                auto r1 = GEP8(allocStack, ip->b.u32);
-                builder.CreateStore(builder.CreateLoad(I32_TY(), r1), r0);
-                break;
-            }
             case ByteCodeOp::CopyStack64:
             {
-                auto r0 = GEP8_PTR_I64(allocStack, ip->a.u32);
-                auto r1 = GEP8(allocStack, ip->b.u32);
-                builder.CreateStore(builder.CreateLoad(I64_TY(), r1), r0);
+                auto numBits = BackendEncoder::getNumBits(ip->op);
+                auto r0      = GEP8(allocStack, ip->a.u32);
+                auto r1      = GEP8(allocStack, ip->b.u32);
+                builder.CreateStore(builder.CreateLoad(IX_TY(numBits), r1), r0);
                 break;
             }
 
