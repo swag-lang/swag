@@ -1014,22 +1014,6 @@ const CallConv& TypeInfoFuncAttr::getCallConv() const
     return g_CallConv[callConv];
 }
 
-namespace
-{
-    void flatten(VectorNative<TypeInfoParam*>& result, TypeInfoParam* param)
-    {
-        if (!param->flags.has(TYPEINFOPARAM_HAS_USING) || !param->typeInfo->isStruct())
-        {
-            result.push_back(param);
-            return;
-        }
-
-        const auto typeStruct = castTypeInfo<TypeInfoStruct>(param->typeInfo, TypeInfoKind::Struct);
-        for (const auto p : typeStruct->fields)
-            flatten(result, p);
-    }
-}
-
 TypeInfoParam* TypeInfoStruct::findChildByNameNoLock(const Utf8& childName) const
 {
     for (const auto child : fields)
@@ -1056,6 +1040,22 @@ TypeInfoParam* TypeInfoStruct::hasInterfaceNoLock(const TypeInfoStruct* itf) con
     }
 
     return nullptr;
+}
+
+namespace
+{
+    void flatten(VectorNative<TypeInfoParam*>& result, TypeInfoParam* param)
+    {
+        if (!param->flags.has(TYPEINFOPARAM_HAS_USING) || !param->typeInfo->isStruct())
+        {
+            result.push_back(param);
+            return;
+        }
+
+        const auto typeStruct = castTypeInfo<TypeInfoStruct>(param->typeInfo, TypeInfoKind::Struct);
+        for (const auto p : typeStruct->fields)
+            flatten(result, p);
+    }
 }
 
 void TypeInfoStruct::flattenUsingFields()

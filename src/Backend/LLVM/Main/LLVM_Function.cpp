@@ -543,31 +543,14 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::MemCpy8:
-            {
-                auto r0 = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
-                auto r1 = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->b.u32));
-                builder.CreateStore(builder.CreateLoad(I8_TY(), r1), r0);
-                break;
-            }
             case ByteCodeOp::MemCpy16:
-            {
-                auto r0 = builder.CreateLoad(PTR_I16_TY(), GEP64(allocR, ip->a.u32));
-                auto r1 = builder.CreateLoad(PTR_I16_TY(), GEP64(allocR, ip->b.u32));
-                builder.CreateStore(builder.CreateLoad(I16_TY(), r1), r0);
-                break;
-            }
             case ByteCodeOp::MemCpy32:
-            {
-                auto r0 = builder.CreateLoad(PTR_I32_TY(), GEP64(allocR, ip->a.u32));
-                auto r1 = builder.CreateLoad(PTR_I32_TY(), GEP64(allocR, ip->b.u32));
-                builder.CreateStore(builder.CreateLoad(I32_TY(), r1), r0);
-                break;
-            }
             case ByteCodeOp::MemCpy64:
             {
-                auto r0 = builder.CreateLoad(PTR_I64_TY(), GEP64(allocR, ip->a.u32));
-                auto r1 = builder.CreateLoad(PTR_I64_TY(), GEP64(allocR, ip->b.u32));
-                builder.CreateStore(builder.CreateLoad(I64_TY(), r1), r0);
+                auto numBits = BackendEncoder::getNumBits(ip->op);
+                auto r0      = builder.CreateLoad(PTR_IX_TY(numBits), GEP64(allocR, ip->a.u32));
+                auto r1      = builder.CreateLoad(PTR_IX_TY(numBits), GEP64(allocR, ip->b.u32));
+                builder.CreateStore(builder.CreateLoad(IX_TY(numBits), r1), r0);
                 break;
             }
 
@@ -617,6 +600,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(builder.CreateCall(pp.fnStrlen, {r1}), r0);
                 break;
             }
+            
             case ByteCodeOp::IntrinsicStrCmp:
             {
                 auto r0 = GEP64(allocR, ip->a.u32);
@@ -633,6 +617,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(builder.CreateCall(pp.fnMalloc, {r1}), r0);
                 break;
             }
+            
             case ByteCodeOp::IntrinsicRealloc:
             {
                 auto r0 = GEP64_PTR_PTR_I8(allocR, ip->a.u32);
@@ -641,6 +626,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(builder.CreateCall(pp.fnReAlloc, {r1, r2}), r0);
                 break;
             }
+            
             case ByteCodeOp::IntrinsicFree:
             {
                 auto r0 = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
