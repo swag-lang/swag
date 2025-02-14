@@ -732,22 +732,22 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::DecrementRA32:
             {
-                auto r0 = GEP64(allocR, ip->a.u32);
-                auto v0 = builder.CreateSub(builder.CreateLoad(I32_TY(), r0), pp.cstBi32);
+                const auto r0 = GEP64(allocR, ip->a.u32);
+                const auto v0 = builder.CreateSub(builder.CreateLoad(I32_TY(), r0), pp.cstBi32);
                 builder.CreateStore(v0, r0);
                 break;
             }
             case ByteCodeOp::IncrementRA64:
             {
-                auto r0 = GEP64(allocR, ip->a.u32);
-                auto v0 = builder.CreateAdd(builder.CreateLoad(I64_TY(), r0), pp.cstBi64);
+                const auto r0 = GEP64(allocR, ip->a.u32);
+                const auto v0 = builder.CreateAdd(builder.CreateLoad(I64_TY(), r0), pp.cstBi64);
                 builder.CreateStore(v0, r0);
                 break;
             }
             case ByteCodeOp::DecrementRA64:
             {
-                auto r0 = GEP64(allocR, ip->a.u32);
-                auto v0 = builder.CreateSub(builder.CreateLoad(I64_TY(), r0), pp.cstBi64);
+                const auto r0 = GEP64(allocR, ip->a.u32);
+                const auto v0 = builder.CreateSub(builder.CreateLoad(I64_TY(), r0), pp.cstBi64);
                 builder.CreateStore(v0, r0);
                 break;
             }
@@ -756,26 +756,21 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::MulAddVC64:
             {
-                auto r0 = GEP64(allocR, ip->a.u32);
-                auto r1 = GEP64(allocR, ip->b.u32);
-                auto v1 = builder.CreateAdd(builder.CreateLoad(I64_TY(), r1), CST_RC64);
-                auto v2 = builder.CreateMul(builder.CreateLoad(I64_TY(), r0), v1);
-                auto r2 = GEP64(allocR, ip->a.u32);
+                const auto r0 = GEP64(allocR, ip->a.u32);
+                const auto r1 = GEP64(allocR, ip->b.u32);
+                const auto v1 = builder.CreateAdd(builder.CreateLoad(I64_TY(), r1), CST_RC64);
+                const auto v2 = builder.CreateMul(builder.CreateLoad(I64_TY(), r0), v1);
+                const auto r2 = GEP64(allocR, ip->a.u32);
                 builder.CreateStore(v2, r2);
                 break;
             }
 
             case ByteCodeOp::Add32byVB32:
-            {
-                auto r0 = GEP64(allocR, ip->a.u32);
-                auto v0 = builder.CreateAdd(builder.CreateLoad(I32_TY(), r0), CST_RB32);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::Add64byVB64:
             {
-                auto r0 = GEP64(allocR, ip->a.u32);
-                auto v0 = builder.CreateAdd(builder.CreateLoad(I64_TY(), r0), CST_RB64);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64(allocR, ip->a.u32);
+                const auto v0      = builder.CreateAdd(builder.CreateLoad(IX_TY(numBits), r0), CST_RB(numBits));
                 builder.CreateStore(v0, r0);
                 break;
             }

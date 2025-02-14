@@ -237,10 +237,9 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::Add32byVB32:
-                pp.emitOpBinary(CPUReg::RDI, REG_OFFSET(ip->a.u32), ip->b.u64, CPUOp::ADD, OpBits::B32);
-                break;
             case ByteCodeOp::Add64byVB64:
-                pp.emitOpBinary(CPUReg::RDI, REG_OFFSET(ip->a.u32), ip->b.u64, CPUOp::ADD, OpBits::B64);
+                opBits = SCBE_CPU::getOpBits(ip->op);
+                pp.emitOpBinary(CPUReg::RDI, REG_OFFSET(ip->a.u32), ip->b.u64, CPUOp::ADD, opBits);
                 break;
 
                 /////////////////////////////////////
