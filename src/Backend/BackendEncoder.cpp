@@ -4,7 +4,7 @@
 #include "Semantic/Type/TypeInfo.h"
 #include "Semantic/Type/TypeManager.h"
 
-uint32_t BackendEncoder::getBitsCount(OpBits opBits)
+uint32_t BackendEncoder::getNumBits(OpBits opBits)
 {
     switch (opBits)
     {
@@ -24,7 +24,7 @@ uint32_t BackendEncoder::getBitsCount(OpBits opBits)
     return 0;
 }
 
-OpBits BackendEncoder::getCPUBits(ByteCodeOp op)
+OpBits BackendEncoder::getOpBits(ByteCodeOp op)
 {
     const auto flags = ByteCode::opFlags(op);
     if (flags.has(OPF_8))
@@ -43,7 +43,7 @@ OpBits BackendEncoder::getCPUBits(ByteCodeOp op)
     return OpBits::B32;
 }
 
-TypeInfo* BackendEncoder::getCPUType(ByteCodeOp op)
+TypeInfo* BackendEncoder::getOpType(ByteCodeOp op)
 {
     const auto flags = ByteCode::opFlags(op);
     if (flags.has(OPF_SIGNED))

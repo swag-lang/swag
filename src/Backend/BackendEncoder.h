@@ -29,10 +29,11 @@ struct BackendEncoder
     Module*               module = nullptr;
     BackendPreCompilePass pass   = {BackendPreCompilePass::Init};
 
-    static uint32_t  getBitsCount(OpBits opBits);
-    static OpBits   getCPUBits(ByteCodeOp op);
-    static TypeInfo* getCPUType(ByteCodeOp op);
+    static uint32_t  getNumBits(OpBits opBits);
+    static OpBits    getOpBits(ByteCodeOp op);
+    static TypeInfo* getOpType(ByteCodeOp op);
 
-    static bool isInt(OpBits opBits) { return opBits == OpBits::B8 || opBits == OpBits::B16 || opBits == OpBits::B32 || opBits == OpBits::B64; }
-    static bool isFloat(OpBits opBits) { return opBits == OpBits::F32 || opBits == OpBits::F64; }
+    static uint32_t getNumBits(ByteCodeOp op) { return getNumBits(getOpBits(op)); }
+    static bool     isInt(OpBits opBits) { return opBits == OpBits::B8 || opBits == OpBits::B16 || opBits == OpBits::B32 || opBits == OpBits::B64; }
+    static bool     isFloat(OpBits opBits) { return opBits == OpBits::F32 || opBits == OpBits::F64; }
 };

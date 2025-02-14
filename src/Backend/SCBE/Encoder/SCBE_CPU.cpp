@@ -15,16 +15,16 @@ void SCBE_CPU::init(const BuildParameters& buildParameters)
 void SCBE_CPU::setOffsetFLT(CPUReg reg, uint32_t offset)
 {
     offsetFLTReg = reg;
-    offsetFLT = offset;   
+    offsetFLT    = offset;
 }
 
 void SCBE_CPU::clearInstructionCache()
 {
     storageConcatCount = UINT32_MAX;
-    storageMemOffset = 0;
-    storageNumBits  = OpBits::INVALID;
-    storageMemReg   = CPUReg::RAX;
-    storageReg      = CPUReg::RAX;
+    storageMemOffset   = 0;
+    storageNumBits     = OpBits::INVALID;
+    storageMemReg      = CPUReg::RAX;
+    storageReg         = CPUReg::RAX;
 }
 
 CPUSymbol* SCBE_CPU::getSymbol(const Utf8& name)

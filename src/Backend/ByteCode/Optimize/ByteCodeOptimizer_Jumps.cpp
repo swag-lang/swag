@@ -1915,19 +1915,19 @@ namespace
         {
             case ByteCodeOp::JumpIfEqual8:
                 sizeOf = 1;
-            break;
+                break;
             case ByteCodeOp::JumpIfEqual16:
                 sizeOf = 2;
-            break;
+                break;
             case ByteCodeOp::JumpIfEqual32:
                 sizeOf = 4;
-            break;
+                break;
             case ByteCodeOp::JumpIfEqual64:
                 sizeOf = 8;
-            break;
+                break;
             default:
                 SWAG_ASSERT(false);
-            break;
+                break;
         }
 
         constexpr int64_t minJumpTableSize = 4;
@@ -1967,16 +1967,16 @@ namespace
                     {
                         case 1:
                             context->map6432[destIp->c.s8] = offset;
-                        break;
+                            break;
                         case 2:
                             context->map6432[destIp->c.s16] = offset;
-                        break;
+                            break;
                         case 4:
                             context->map6432[destIp->c.s32] = offset;
-                        break;
+                            break;
                         case 8:
                             context->map6432[destIp->c.s64] = offset;
-                        break;
+                            break;
                         default:
                             break;
                     }
@@ -1997,16 +1997,16 @@ namespace
                     {
                         case 1:
                             context->map6432[destIp->c.s8] = offset;
-                        break;
+                            break;
                         case 2:
                             context->map6432[destIp->c.s16] = offset;
-                        break;
+                            break;
                         case 4:
                             context->map6432[destIp->c.s32] = offset;
-                        break;
+                            break;
                         case 8:
                             context->map6432[destIp->c.s64] = offset;
-                        break;
+                            break;
                         default:
                             break;
                     }
@@ -2026,20 +2026,20 @@ namespace
                 {
                     case 1:
                         minValue = min(minValue, inst->c.s8);
-                    maxValue = max(maxValue, inst->c.s8);
-                    break;
+                        maxValue = max(maxValue, inst->c.s8);
+                        break;
                     case 2:
                         minValue = min(minValue, inst->c.s16);
-                    maxValue = max(maxValue, inst->c.s16);
-                    break;
+                        maxValue = max(maxValue, inst->c.s16);
+                        break;
                     case 4:
                         minValue = min(minValue, inst->c.s32);
-                    maxValue = max(maxValue, inst->c.s32);
-                    break;
+                        maxValue = max(maxValue, inst->c.s32);
+                        break;
                     case 8:
                         minValue = min(minValue, inst->c.s64);
-                    maxValue = max(maxValue, inst->c.s64);
-                    break;
+                        maxValue = max(maxValue, inst->c.s64);
+                        break;
                     default:
                         break;
                 }
@@ -2079,16 +2079,16 @@ namespace
             {
                 case 1:
                     SET_OP(ipStart, ByteCodeOp::JumpDyn8);
-                break;
+                    break;
                 case 2:
                     SET_OP(ipStart, ByteCodeOp::JumpDyn16);
-                break;
+                    break;
                 case 4:
                     SET_OP(ipStart, ByteCodeOp::JumpDyn32);
-                break;
+                    break;
                 case 8:
                     SET_OP(ipStart, ByteCodeOp::JumpDyn64);
-                break;
+                    break;
                 default:
                     break;
             }
