@@ -1756,10 +1756,10 @@ bool ByteCodeSanity::loop()
             case ByteCodeOp::AffectOpMulEqU64:
                 BINOP_EQ_OVF(uint64_t, *=, u64, mulWillOverflow, "*=", g_TypeMgr->typeInfoU64);
                 break;
-            case ByteCodeOp::AffectOpMulEqF32:
+            case ByteCodeOp::AffectOpMulEqF32_Safe:
                 BINOP_EQ(float, *=, f32);
                 break;
-            case ByteCodeOp::AffectOpMulEqF64:
+            case ByteCodeOp::AffectOpMulEqF64_Safe:
                 BINOP_EQ(double, *=, f64);
                 break;
 
@@ -2164,10 +2164,10 @@ bool ByteCodeSanity::loop()
             case ByteCodeOp::BinOpMinusU64:
                 BINOP_OVF(-, u64, subWillOverflow, "-", g_TypeMgr->typeInfoU64);
                 break;
-            case ByteCodeOp::BinOpMinusF32:
+            case ByteCodeOp::BinOpMinusF32_Safe:
                 BINOP(-, f32);
                 break;
-            case ByteCodeOp::BinOpMinusF64:
+            case ByteCodeOp::BinOpMinusF64_Safe:
                 BINOP(-, f64);
                 break;
 

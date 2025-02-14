@@ -1451,14 +1451,14 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 OP_OVERFLOW(usub_with_overflow, CreateSub, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU64), false);
                 break;
             }
-            case ByteCodeOp::BinOpMinusF32:
+            case ByteCodeOp::BinOpMinusF32_Safe:
             {
                 MK_BINOPF32_CAB();
                 auto v0 = builder.CreateFSub(r1, r2);
                 builder.CreateStore(v0, r0);
                 break;
             }
-            case ByteCodeOp::BinOpMinusF64:
+            case ByteCodeOp::BinOpMinusF64_Safe:
             {
                 MK_BINOPF64_CAB();
                 auto v0 = builder.CreateFSub(r1, r2);
@@ -1948,7 +1948,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v0, r1);
                 break;
             }
-            case ByteCodeOp::AffectOpMinusEqF32_S:
+            case ByteCodeOp::AffectOpMinusEqF32_SSafe:
             {
                 MK_BINOP_EQF32_SCAB();
                 auto v0 = builder.CreateFSub(builder.CreateLoad(F32_TY(), r0), r1);
@@ -1963,7 +1963,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v0, r1);
                 break;
             }
-            case ByteCodeOp::AffectOpMinusEqF64_S:
+            case ByteCodeOp::AffectOpMinusEqF64_SSafe:
             {
                 MK_BINOP_EQF64_SCAB();
                 auto v0 = builder.CreateFSub(builder.CreateLoad(F64_TY(), r0), r1);
@@ -2084,14 +2084,14 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU64), false);
                 break;
             }
-            case ByteCodeOp::AffectOpPlusEqF32_S:
+            case ByteCodeOp::AffectOpPlusEqF32_SSafe:
             {
                 MK_BINOP_EQF32_SCAB();
                 auto v0 = builder.CreateFAdd(builder.CreateLoad(F32_TY(), r0), r1);
                 builder.CreateStore(v0, r0);
                 break;
             }
-            case ByteCodeOp::AffectOpPlusEqF64_S:
+            case ByteCodeOp::AffectOpPlusEqF64_SSafe:
             {
                 MK_BINOP_EQF64_SCAB();
                 auto v0 = builder.CreateFAdd(builder.CreateLoad(F64_TY(), r0), r1);
@@ -2182,14 +2182,14 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 OPEQ_OVERFLOW(umul_with_overflow, CreateMul, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU64), false);
                 break;
             }            
-            case ByteCodeOp::AffectOpMulEqF32:
+            case ByteCodeOp::AffectOpMulEqF32_Safe:
             {
                 MK_BINOP_EQF32_CAB_OFF();
                 auto v0 = builder.CreateFMul(builder.CreateLoad(F32_TY(), r1), r2);
                 builder.CreateStore(v0, r1);
                 break;
             }            
-            case ByteCodeOp::AffectOpMulEqF64:
+            case ByteCodeOp::AffectOpMulEqF64_Safe:
             {
                 MK_BINOP_EQF64_CAB_OFF();
                 auto v0 = builder.CreateFMul(builder.CreateLoad(F64_TY(), r1), r2);
@@ -2248,14 +2248,14 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-            case ByteCodeOp::AffectOpMulEqF32_S:
+            case ByteCodeOp::AffectOpMulEqF32_SSafe:
             {
                 MK_BINOP_EQF32_SCAB();
                 auto v0 = builder.CreateFMul(builder.CreateLoad(F32_TY(), r0), r1);
                 builder.CreateStore(v0, r0);
                 break;
             }
-            case ByteCodeOp::AffectOpMulEqF64_S:
+            case ByteCodeOp::AffectOpMulEqF64_SSafe:
             {
                 MK_BINOP_EQF64_SCAB();
                 auto v0 = builder.CreateFMul(builder.CreateLoad(F64_TY(), r0), r1);
@@ -2305,7 +2305,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v0, r1);
                 break;
             }
-            case ByteCodeOp::AffectOpDivEqS8_S:
+            case ByteCodeOp::AffectOpDivEqS8_SSafe:
             {
                 MK_BINOP_EQ8_SCAB();
                 auto v0 = builder.CreateSDiv(builder.CreateLoad(I8_TY(), r0), r1);
@@ -2327,7 +2327,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v0, r1);
                 break;
             }
-            case ByteCodeOp::AffectOpDivEqS16_S:
+            case ByteCodeOp::AffectOpDivEqS16_SSafe:
             {
                 MK_BINOP_EQ16_SCAB();
                 auto v0 = builder.CreateSDiv(builder.CreateLoad(I16_TY(), r0), r1);
@@ -2349,7 +2349,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v0, r1);
                 break;
             }
-            case ByteCodeOp::AffectOpDivEqS32_S:
+            case ByteCodeOp::AffectOpDivEqS32_SSafe:
             {
                 MK_BINOP_EQ32_SCAB();
                 auto v0 = builder.CreateSDiv(builder.CreateLoad(I32_TY(), r0), r1);
@@ -2371,7 +2371,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v0, r1);
                 break;
             }
-            case ByteCodeOp::AffectOpDivEqS64_S:
+            case ByteCodeOp::AffectOpDivEqS64_SSafe:
             {
                 MK_BINOP_EQ64_SCAB();
                 auto v0 = builder.CreateSDiv(builder.CreateLoad(I64_TY(), r0), r1);
@@ -2393,7 +2393,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v0, r1);
                 break;
             }
-            case ByteCodeOp::AffectOpDivEqU8_S:
+            case ByteCodeOp::AffectOpDivEqU8_SSafe:
             {
                 MK_BINOP_EQ8_SCAB();
                 auto v0 = builder.CreateUDiv(builder.CreateLoad(I8_TY(), r0), r1);
@@ -2415,7 +2415,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v0, r1);
                 break;
             }
-            case ByteCodeOp::AffectOpDivEqU16_S:
+            case ByteCodeOp::AffectOpDivEqU16_SSafe:
             {
                 MK_BINOP_EQ16_SCAB();
                 auto v0 = builder.CreateUDiv(builder.CreateLoad(I16_TY(), r0), r1);
@@ -2437,7 +2437,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v0, r1);
                 break;
             }
-            case ByteCodeOp::AffectOpDivEqU32_S:
+            case ByteCodeOp::AffectOpDivEqU32_SSafe:
             {
                 MK_BINOP_EQ32_SCAB();
                 auto v0 = builder.CreateUDiv(builder.CreateLoad(I32_TY(), r0), r1);
@@ -2459,7 +2459,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v0, r1);
                 break;
             }
-            case ByteCodeOp::AffectOpDivEqU64_S:
+            case ByteCodeOp::AffectOpDivEqU64_SSafe:
             {
                 MK_BINOP_EQ64_SCAB();
                 auto v0 = builder.CreateUDiv(builder.CreateLoad(I64_TY(), r0), r1);
@@ -2481,7 +2481,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v0, r1);
                 break;
             }
-            case ByteCodeOp::AffectOpDivEqF32_S:
+            case ByteCodeOp::AffectOpDivEqF32_SSafe:
             {
                 MK_BINOP_EQF32_SCAB();
                 auto v0 = builder.CreateFDiv(builder.CreateLoad(F32_TY(), r0), r1);
@@ -2503,7 +2503,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v0, r1);
                 break;
             }
-            case ByteCodeOp::AffectOpDivEqF64_S:
+            case ByteCodeOp::AffectOpDivEqF64_SSafe:
             {
                 MK_BINOP_EQF64_SCAB();
                 auto v0 = builder.CreateFDiv(builder.CreateLoad(F64_TY(), r0), r1);
@@ -2527,7 +2527,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v0, r1);
                 break;
             }
-            case ByteCodeOp::AffectOpModuloEqS8_S:
+            case ByteCodeOp::AffectOpModuloEqS8_SSafe:
             {
                 MK_BINOP_EQ8_SCAB();
                 auto v0 = builder.CreateSRem(builder.CreateLoad(I8_TY(), r0), r1);
@@ -2549,7 +2549,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v0, r1);
                 break;
             }
-            case ByteCodeOp::AffectOpModuloEqS16_S:
+            case ByteCodeOp::AffectOpModuloEqS16_SSafe:
             {
                 MK_BINOP_EQ16_SCAB();
                 auto v0 = builder.CreateSRem(builder.CreateLoad(I16_TY(), r0), r1);
@@ -2571,7 +2571,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v0, r1);
                 break;
             }
-            case ByteCodeOp::AffectOpModuloEqS32_S:
+            case ByteCodeOp::AffectOpModuloEqS32_SSafe:
             {
                 MK_BINOP_EQ32_SCAB();
                 auto v0 = builder.CreateSRem(builder.CreateLoad(I32_TY(), r0), r1);
@@ -2593,7 +2593,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v0, r1);
                 break;
             }
-            case ByteCodeOp::AffectOpModuloEqS64_S:
+            case ByteCodeOp::AffectOpModuloEqS64_SSafe:
             {
                 MK_BINOP_EQ64_SCAB();
                 auto v0 = builder.CreateSRem(builder.CreateLoad(I64_TY(), r0), r1);
@@ -2615,7 +2615,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v0, r1);
                 break;
             }
-            case ByteCodeOp::AffectOpModuloEqU8_S:
+            case ByteCodeOp::AffectOpModuloEqU8_SSafe:
             {
                 MK_BINOP_EQ8_SCAB();
                 auto v0 = builder.CreateURem(builder.CreateLoad(I8_TY(), r0), r1);
@@ -2637,7 +2637,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v0, r1);
                 break;
             }
-            case ByteCodeOp::AffectOpModuloEqU16_S:
+            case ByteCodeOp::AffectOpModuloEqU16_SSafe:
             {
                 MK_BINOP_EQ16_SCAB();
                 auto v0 = builder.CreateURem(builder.CreateLoad(I16_TY(), r0), r1);
@@ -2659,7 +2659,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v0, r1);
                 break;
             }
-            case ByteCodeOp::AffectOpModuloEqU32_S:
+            case ByteCodeOp::AffectOpModuloEqU32_SSafe:
             {
                 MK_BINOP_EQ32_SCAB();
                 auto v0 = builder.CreateURem(builder.CreateLoad(I32_TY(), r0), r1);
@@ -2681,7 +2681,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v0, r1);
                 break;
             }
-            case ByteCodeOp::AffectOpModuloEqU64_S:
+            case ByteCodeOp::AffectOpModuloEqU64_SSafe:
             {
                 MK_BINOP_EQ64_SCAB();
                 auto v0 = builder.CreateURem(builder.CreateLoad(I64_TY(), r0), r1);

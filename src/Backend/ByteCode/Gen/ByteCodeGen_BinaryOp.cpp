@@ -138,10 +138,10 @@ bool ByteCodeGen::emitBinaryOpMinus(const ByteCodeGenContext* context, const Typ
                 EMIT_INST3(context, ByteCodeOp::BinOpMinusU64, r0, r1, r2);
                 return true;
             case NativeTypeKind::F32:
-                EMIT_INST3(context, ByteCodeOp::BinOpMinusF32, r0, r1, r2);
+                EMIT_INST3(context, ByteCodeOp::BinOpMinusF32_Safe, r0, r1, r2);
                 return true;
             case NativeTypeKind::F64:
-                EMIT_INST3(context, ByteCodeOp::BinOpMinusF64, r0, r1, r2);
+                EMIT_INST3(context, ByteCodeOp::BinOpMinusF64_Safe, r0, r1, r2);
                 return true;
             default:
                 return Report::internalError(context->node, "emitBinaryOpMinus, type not supported");

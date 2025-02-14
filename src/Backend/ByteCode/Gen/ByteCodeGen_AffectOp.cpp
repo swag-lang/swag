@@ -469,10 +469,10 @@ bool ByteCodeGen::emitAffectMulEqual(const ByteCodeGenContext* context, uint32_t
             EMIT_INST2(context, ByteCodeOp::AffectOpMulEqU64, r0, r1);
             return true;
         case NativeTypeKind::F32:
-            EMIT_INST2(context, ByteCodeOp::AffectOpMulEqF32, r0, r1);
+            EMIT_INST2(context, ByteCodeOp::AffectOpMulEqF32_Safe, r0, r1);
             return true;
         case NativeTypeKind::F64:
-            EMIT_INST2(context, ByteCodeOp::AffectOpMulEqF64, r0, r1);
+            EMIT_INST2(context, ByteCodeOp::AffectOpMulEqF64_Safe, r0, r1);
             return true;
         default:
             return Report::internalError(context->node, "emitAffectMulEqual, type not supported");
