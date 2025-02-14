@@ -652,8 +652,6 @@ BYTECODE_OP(AffectOpMinusEqU8, OPF_8 | OPF_READ_A | OPF_READ_B | OPF_IMM_B, "[_r
 BYTECODE_OP(AffectOpMinusEqU16, OPF_16 | OPF_READ_A | OPF_READ_B | OPF_IMM_B, "[_ra_] -= _rbu16_")
 BYTECODE_OP(AffectOpMinusEqU32, OPF_32 | OPF_READ_A | OPF_READ_B | OPF_IMM_B, "[_ra_] -= _rbu32_")
 BYTECODE_OP(AffectOpMinusEqU64, OPF_64 | OPF_READ_A | OPF_READ_B | OPF_IMM_B, "[_ra_] -= _rbu64_")
-BYTECODE_OP(AffectOpMinusEqF32, OPF_32 | OPF_FLOAT | OPF_READ_A | OPF_READ_B | OPF_IMM_B | OPF_READ_VAL32_C, "[_ra_ + _rcu32_] -= _rbf32_")
-BYTECODE_OP(AffectOpMinusEqF64, OPF_64 | OPF_FLOAT | OPF_READ_A | OPF_READ_B | OPF_IMM_B | OPF_READ_VAL32_C, "[_ra_ + _rcu32_] -= _rbf64_")
 
 BYTECODE_OP(AffectOpMinusEqS8_Safe, OPF_8 | OPF_READ_A | OPF_READ_B | OPF_IMM_B | OPF_READ_VAL32_C, "[_ra_ + _rcu32_] -= _rbs8_")
 BYTECODE_OP(AffectOpMinusEqS16_Safe, OPF_16 | OPF_READ_A | OPF_READ_B | OPF_IMM_B | OPF_READ_VAL32_C, "[_ra_ + _rcu32_] -= _rbs16_") 
@@ -663,6 +661,8 @@ BYTECODE_OP(AffectOpMinusEqU8_Safe, OPF_8 | OPF_READ_A | OPF_READ_B | OPF_IMM_B 
 BYTECODE_OP(AffectOpMinusEqU16_Safe, OPF_16 | OPF_READ_A | OPF_READ_B | OPF_IMM_B | OPF_READ_VAL32_C, "[_ra_ + _rcu32_] -= _rbu16_") 
 BYTECODE_OP(AffectOpMinusEqU32_Safe, OPF_32 | OPF_READ_A | OPF_READ_B | OPF_IMM_B | OPF_READ_VAL32_C, "[_ra_ + _rcu32_] -= _rbu32_") 
 BYTECODE_OP(AffectOpMinusEqU64_Safe, OPF_64 | OPF_READ_A | OPF_READ_B | OPF_IMM_B | OPF_READ_VAL32_C, "[_ra_ + _rcu32_] -= _rbu64_") 
+BYTECODE_OP(AffectOpMinusEqF32_Safe, OPF_32 | OPF_FLOAT | OPF_READ_A | OPF_READ_B | OPF_IMM_B | OPF_READ_VAL32_C, "[_ra_ + _rcu32_] -= _rbf32_")
+BYTECODE_OP(AffectOpMinusEqF64_Safe, OPF_64 | OPF_FLOAT | OPF_READ_A | OPF_READ_B | OPF_IMM_B | OPF_READ_VAL32_C, "[_ra_ + _rcu32_] -= _rbf64_")
 
 BYTECODE_OP(AffectOpMinusEqS8_SSafe, OPF_8 | OPF_READ_VAL32_A | OPF_READ_B | OPF_IMM_B, "sp[_rau32_] -= _rbu8_")
 BYTECODE_OP(AffectOpMinusEqS16_SSafe, OPF_16 | OPF_READ_VAL32_A | OPF_READ_B | OPF_IMM_B, "sp[_rau32_] -= _rbu16_")
@@ -683,8 +683,6 @@ BYTECODE_OP(AffectOpMulEqU8, OPF_8 | OPF_READ_A | OPF_READ_B | OPF_IMM_B, "[_ra_
 BYTECODE_OP(AffectOpMulEqU16, OPF_16 | OPF_READ_A | OPF_READ_B | OPF_IMM_B, "[_ra_] *= _rbu16_")
 BYTECODE_OP(AffectOpMulEqU32, OPF_32 | OPF_READ_A | OPF_READ_B | OPF_IMM_B, "[_ra_] *= _rbu32_")
 BYTECODE_OP(AffectOpMulEqU64, OPF_64 | OPF_READ_A | OPF_READ_B | OPF_IMM_B, "[_ra_] *= _rbu64_")
-BYTECODE_OP(AffectOpMulEqF32_Safe, OPF_32 | OPF_FLOAT | OPF_READ_A | OPF_READ_B | OPF_IMM_B | OPF_READ_VAL32_C, "[_ra_ + _rcu32_] *= _rbf32_")
-BYTECODE_OP(AffectOpMulEqF64_Safe, OPF_64 | OPF_FLOAT | OPF_READ_A | OPF_READ_B | OPF_IMM_B | OPF_READ_VAL32_C, "[_ra_ + _rcu32_] *= _rbf64_")
 
 BYTECODE_OP(AffectOpMulEqS8_Safe, OPF_8 | OPF_READ_A | OPF_READ_B | OPF_IMM_B | OPF_READ_VAL32_C, "[_ra_ + _rcu32_] *= _rbs8_")
 BYTECODE_OP(AffectOpMulEqS16_Safe, OPF_16 | OPF_READ_A | OPF_READ_B | OPF_IMM_B | OPF_READ_VAL32_C, "[_ra_ + _rcu32_] *= _rbs16_") 
@@ -694,6 +692,8 @@ BYTECODE_OP(AffectOpMulEqU8_Safe, OPF_8 | OPF_READ_A | OPF_READ_B | OPF_IMM_B | 
 BYTECODE_OP(AffectOpMulEqU16_Safe, OPF_16 | OPF_READ_A | OPF_READ_B | OPF_IMM_B | OPF_READ_VAL32_C, "[_ra_ + _rcu32_] *= _rbu16_") 
 BYTECODE_OP(AffectOpMulEqU32_Safe, OPF_32 | OPF_READ_A | OPF_READ_B | OPF_IMM_B | OPF_READ_VAL32_C, "[_ra_ + _rcu32_] *= _rbu32_") 
 BYTECODE_OP(AffectOpMulEqU64_Safe, OPF_64 | OPF_READ_A | OPF_READ_B | OPF_IMM_B | OPF_READ_VAL32_C, "[_ra_ + _rcu32_] *= _rbu64_") 
+BYTECODE_OP(AffectOpMulEqF32_Safe, OPF_32 | OPF_FLOAT | OPF_READ_A | OPF_READ_B | OPF_IMM_B | OPF_READ_VAL32_C, "[_ra_ + _rcu32_] *= _rbf32_")
+BYTECODE_OP(AffectOpMulEqF64_Safe, OPF_64 | OPF_FLOAT | OPF_READ_A | OPF_READ_B | OPF_IMM_B | OPF_READ_VAL32_C, "[_ra_ + _rcu32_] *= _rbf64_")
 
 BYTECODE_OP(AffectOpMulEqS8_SSafe, OPF_8 | OPF_READ_VAL32_A | OPF_READ_B | OPF_IMM_B, "sp[_rau32_] *= _rbu8_")
 BYTECODE_OP(AffectOpMulEqS16_SSafe, OPF_16 | OPF_READ_VAL32_A | OPF_READ_B | OPF_IMM_B, "sp[_rau32_] *= _rbu16_")
@@ -728,17 +728,6 @@ BYTECODE_OP(AffectOpDivEqU64_SSafe, OPF_64 | OPF_READ_VAL32_A | OPF_READ_B | OPF
 BYTECODE_OP(AffectOpDivEqF32_SSafe, OPF_32 | OPF_FLOAT | OPF_READ_VAL32_A | OPF_READ_B | OPF_IMM_B, "sp[_rau32_] /= _rbf32_")
 BYTECODE_OP(AffectOpDivEqF64_SSafe, OPF_64 | OPF_FLOAT | OPF_READ_VAL32_A | OPF_READ_B | OPF_IMM_B, "sp[_rau32_] /= _rbf64_")
 
-BYTECODE_OP(AffectOpDivEqS8_SS, OPF_8 | OPF_READ_VAL32_A | OPF_READ_VAL32_B, "sp[_rau32_] /= sp[_rbu32_]")
-BYTECODE_OP(AffectOpDivEqS16_SS, OPF_16 | OPF_READ_VAL32_A | OPF_READ_VAL32_B, "sp[_rau32_] /= sp[_rbu32_]")
-BYTECODE_OP(AffectOpDivEqS32_SS, OPF_32 | OPF_READ_VAL32_A | OPF_READ_VAL32_B, "sp[_rau32_] /= sp[_rbu32_]")
-BYTECODE_OP(AffectOpDivEqS64_SS, OPF_64 | OPF_READ_VAL32_A | OPF_READ_VAL32_B, "sp[_rau32_] /= sp[_rbu32_]")
-BYTECODE_OP(AffectOpDivEqU8_SS, OPF_8 | OPF_READ_VAL32_A | OPF_READ_VAL32_B, "sp[_rau32_] /= sp[_rbu32_]")
-BYTECODE_OP(AffectOpDivEqU16_SS, OPF_16 | OPF_READ_VAL32_A | OPF_READ_VAL32_B, "sp[_rau32_] /= sp[_rbu32_]")
-BYTECODE_OP(AffectOpDivEqU32_SS, OPF_32 | OPF_READ_VAL32_A | OPF_READ_VAL32_B, "sp[_rau32_] /= sp[_rbu32_]")
-BYTECODE_OP(AffectOpDivEqU64_SS, OPF_64 | OPF_READ_VAL32_A | OPF_READ_VAL32_B, "sp[_rau32_] /= sp[_rbu32_]")
-BYTECODE_OP(AffectOpDivEqF32_SS, OPF_32 | OPF_FLOAT | OPF_READ_VAL32_A | OPF_READ_VAL32_B, "sp[_rau32_] /= sp[_rbu32_]")
-BYTECODE_OP(AffectOpDivEqF64_SS, OPF_64 | OPF_FLOAT | OPF_READ_VAL32_A | OPF_READ_VAL32_B, "sp[_rau32_] /= sp[_rbu32_]")
-
 BYTECODE_OP(AffectOpModuloEqS8, OPF_8 | OPF_SIGNED | OPF_READ_A | OPF_READ_B | OPF_IMM_B, "[_ra_] %= _rbs8_")
 BYTECODE_OP(AffectOpModuloEqS16, OPF_16 | OPF_SIGNED | OPF_READ_A | OPF_READ_B | OPF_IMM_B, "[_ra_] %= _rbs16_")
 BYTECODE_OP(AffectOpModuloEqS32, OPF_32 | OPF_SIGNED | OPF_READ_A | OPF_READ_B | OPF_IMM_B, "[_ra_] %= _rbs32_")
@@ -756,15 +745,6 @@ BYTECODE_OP(AffectOpModuloEqU8_SSafe, OPF_8 | OPF_READ_VAL32_A | OPF_READ_B | OP
 BYTECODE_OP(AffectOpModuloEqU16_SSafe, OPF_16 | OPF_READ_VAL32_A | OPF_READ_B | OPF_IMM_B, "sp[_rau32_] %= _rbu16_")
 BYTECODE_OP(AffectOpModuloEqU32_SSafe, OPF_32 | OPF_READ_VAL32_A | OPF_READ_B | OPF_IMM_B, "sp[_rau32_] %= _rbu32_")
 BYTECODE_OP(AffectOpModuloEqU64_SSafe, OPF_64 | OPF_READ_VAL32_A | OPF_READ_B | OPF_IMM_B, "sp[_rau32_] %= _rbu64_")
-
-BYTECODE_OP(AffectOpModuloEqS8_SS, OPF_8 | OPF_READ_VAL32_A | OPF_READ_VAL32_B, "sp[_rau32_] %= sp[_rbu32_]")
-BYTECODE_OP(AffectOpModuloEqS16_SS, OPF_16 | OPF_READ_VAL32_A | OPF_READ_VAL32_B, "sp[_rau32_] %= sp[_rbu32_]")
-BYTECODE_OP(AffectOpModuloEqS32_SS, OPF_32 | OPF_READ_VAL32_A | OPF_READ_VAL32_B, "sp[_rau32_] %= sp[_rbu32_]")
-BYTECODE_OP(AffectOpModuloEqS64_SS, OPF_64 | OPF_READ_VAL32_A | OPF_READ_VAL32_B, "sp[_rau32_] %= sp[_rbu32_]")
-BYTECODE_OP(AffectOpModuloEqU8_SS, OPF_8 | OPF_READ_VAL32_A | OPF_READ_VAL32_B, "sp[_rau32_] %= sp[_rbu32_]")
-BYTECODE_OP(AffectOpModuloEqU16_SS, OPF_16 | OPF_READ_VAL32_A | OPF_READ_VAL32_B, "sp[_rau32_] %= sp[_rbu32_]")
-BYTECODE_OP(AffectOpModuloEqU32_SS, OPF_32 | OPF_READ_VAL32_A | OPF_READ_VAL32_B, "sp[_rau32_] %= sp[_rbu32_]")
-BYTECODE_OP(AffectOpModuloEqU64_SS, OPF_64 | OPF_READ_VAL32_A | OPF_READ_VAL32_B, "sp[_rau32_] %= sp[_rbu32_]")
 
 BYTECODE_OP(AffectOpAndEqU8, OPF_8 | OPF_READ_A | OPF_READ_B | OPF_IMM_B, "[_ra_] &= _rbu8_")
 BYTECODE_OP(AffectOpAndEqU16, OPF_16 | OPF_READ_A | OPF_READ_B | OPF_IMM_B, "[_ra_] &= _rbu16_")

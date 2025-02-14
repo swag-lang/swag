@@ -1811,31 +1811,119 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 OPEQ_OVERFLOW(ssub_with_overflow, CreateSub, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS8), true);
                 break;
             }
-            case ByteCodeOp::AffectOpMinusEqS8_Safe:
-            {
-                MK_BINOP_EQ8_CAB_OFF();
-                OPEQ_OVERFLOW(ssub_with_overflow, CreateSub, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS8), true);
-                break;
-            }
-            case ByteCodeOp::AffectOpMinusEqS8_SSafe:
-            case ByteCodeOp::AffectOpMinusEqU8_SSafe:
-            {
-                MK_BINOP_EQ8_SCAB();
-                auto v0 = builder.CreateSub(builder.CreateLoad(I8_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
-                break;
-            }
-
             case ByteCodeOp::AffectOpMinusEqS16:
             {
                 MK_BINOP_EQ16_CAB();
                 OPEQ_OVERFLOW(ssub_with_overflow, CreateSub, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS16), true);
                 break;
             }
+            case ByteCodeOp::AffectOpMinusEqS32:
+            {
+                MK_BINOP_EQ32_CAB();
+                OPEQ_OVERFLOW(ssub_with_overflow, CreateSub, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS32), true);
+                break;
+            }
+            case ByteCodeOp::AffectOpMinusEqS64:
+            {
+                MK_BINOP_EQ64_CAB();
+                OPEQ_OVERFLOW(ssub_with_overflow, CreateSub, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS64), true);
+                break;
+            }
+            case ByteCodeOp::AffectOpMinusEqU8:
+            {
+                MK_BINOP_EQ8_CAB();
+                OPEQ_OVERFLOW(usub_with_overflow, CreateSub, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU8), false);
+                break;
+            }
+            case ByteCodeOp::AffectOpMinusEqU16:
+            {
+                MK_BINOP_EQ16_CAB();
+                OPEQ_OVERFLOW(usub_with_overflow, CreateSub, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU16), false);
+                break;
+            }
+            case ByteCodeOp::AffectOpMinusEqU32:
+            {
+                MK_BINOP_EQ32_CAB();
+                OPEQ_OVERFLOW(usub_with_overflow, CreateSub, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU32), false);
+                break;
+            }
+            case ByteCodeOp::AffectOpMinusEqU64:
+            {
+                MK_BINOP_EQ64_CAB();
+                OPEQ_OVERFLOW(usub_with_overflow, CreateSub, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU64), false);
+                break;
+            }
+
+            case ByteCodeOp::AffectOpMinusEqS8_Safe:
+            {
+                MK_BINOP_EQ8_CAB_OFF();
+                OPEQ_OVERFLOW(ssub_with_overflow, CreateSub, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS8), true);
+                break;
+            }
             case ByteCodeOp::AffectOpMinusEqS16_Safe:
             {
                 MK_BINOP_EQ16_CAB_OFF();
                 OPEQ_OVERFLOW(ssub_with_overflow, CreateSub, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS16), true);
+                break;
+            }
+            case ByteCodeOp::AffectOpMinusEqS32_Safe:
+            {
+                MK_BINOP_EQ32_CAB_OFF();
+                OPEQ_OVERFLOW(ssub_with_overflow, CreateSub, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS32), true);
+                break;
+            }
+            case ByteCodeOp::AffectOpMinusEqS64_Safe:
+            {
+                MK_BINOP_EQ64_CAB_OFF();
+                OPEQ_OVERFLOW(ssub_with_overflow, CreateSub, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS64), true);
+                break;
+            }
+            case ByteCodeOp::AffectOpMinusEqU8_Safe:
+            {
+                MK_BINOP_EQ8_CAB_OFF();
+                OPEQ_OVERFLOW(usub_with_overflow, CreateSub, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU8), false);
+                break;
+            }
+            case ByteCodeOp::AffectOpMinusEqU16_Safe:
+            {
+                MK_BINOP_EQ16_CAB_OFF();
+                OPEQ_OVERFLOW(usub_with_overflow, CreateSub, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU16), false);
+                break;
+            }
+
+            case ByteCodeOp::AffectOpMinusEqU32_Safe:
+            {
+                MK_BINOP_EQ32_CAB_OFF();
+                OPEQ_OVERFLOW(usub_with_overflow, CreateSub, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU32), false);
+                break;
+            }
+            case ByteCodeOp::AffectOpMinusEqU64_Safe:
+            {
+                MK_BINOP_EQ64_CAB_OFF();
+                OPEQ_OVERFLOW(usub_with_overflow, CreateSub, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU64), false);
+                break;
+            }
+            case ByteCodeOp::AffectOpMinusEqF32_Safe:
+            {
+                MK_BINOP_EQF32_CAB_OFF();
+                auto v0 = builder.CreateFSub(builder.CreateLoad(F32_TY(), r1), r2);
+                builder.CreateStore(v0, r1);
+                break;
+            }
+            case ByteCodeOp::AffectOpMinusEqF64_Safe:
+            {
+                MK_BINOP_EQF64_CAB_OFF();
+                auto v0 = builder.CreateFSub(builder.CreateLoad(F64_TY(), r1), r2);
+                builder.CreateStore(v0, r1);
+                break;
+            }
+
+            case ByteCodeOp::AffectOpMinusEqS8_SSafe:
+            case ByteCodeOp::AffectOpMinusEqU8_SSafe:
+            {
+                MK_BINOP_EQ8_SCAB();
+                auto v0 = builder.CreateSub(builder.CreateLoad(I8_TY(), r0), r1);
+                builder.CreateStore(v0, r0);
                 break;
             }
             case ByteCodeOp::AffectOpMinusEqS16_SSafe:
@@ -1846,38 +1934,12 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v0, r0);
                 break;
             }
-
-            case ByteCodeOp::AffectOpMinusEqS32:
-            {
-                MK_BINOP_EQ32_CAB();
-                OPEQ_OVERFLOW(ssub_with_overflow, CreateSub, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS32), true);
-                break;
-            }
-            case ByteCodeOp::AffectOpMinusEqS32_Safe:
-            {
-                MK_BINOP_EQ32_CAB_OFF();
-                OPEQ_OVERFLOW(ssub_with_overflow, CreateSub, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS32), true);
-                break;
-            }
             case ByteCodeOp::AffectOpMinusEqS32_SSafe:
             case ByteCodeOp::AffectOpMinusEqU32_SSafe:
             {
                 MK_BINOP_EQ32_SCAB();
                 auto v0 = builder.CreateSub(builder.CreateLoad(I32_TY(), r0), r1);
                 builder.CreateStore(v0, r0);
-                break;
-            }
-
-            case ByteCodeOp::AffectOpMinusEqS64:
-            {
-                MK_BINOP_EQ64_CAB();
-                OPEQ_OVERFLOW(ssub_with_overflow, CreateSub, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS64), true);
-                break;
-            }
-            case ByteCodeOp::AffectOpMinusEqS64_Safe:
-            {
-                MK_BINOP_EQ64_CAB_OFF();
-                OPEQ_OVERFLOW(ssub_with_overflow, CreateSub, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS64), true);
                 break;
             }
             case ByteCodeOp::AffectOpMinusEqS64_SSafe:
@@ -1888,79 +1950,11 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v0, r0);
                 break;
             }
-
-            case ByteCodeOp::AffectOpMinusEqU8:
-            {
-                MK_BINOP_EQ8_CAB();
-                OPEQ_OVERFLOW(usub_with_overflow, CreateSub, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU8), false);
-                break;
-            }
-            case ByteCodeOp::AffectOpMinusEqU8_Safe:
-            {
-                MK_BINOP_EQ8_CAB_OFF();
-                OPEQ_OVERFLOW(usub_with_overflow, CreateSub, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU8), false);
-                break;
-            }
-
-            case ByteCodeOp::AffectOpMinusEqU16:
-            {
-                MK_BINOP_EQ16_CAB();
-                OPEQ_OVERFLOW(usub_with_overflow, CreateSub, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU16), false);
-                break;
-            }
-            case ByteCodeOp::AffectOpMinusEqU16_Safe:
-            {
-                MK_BINOP_EQ16_CAB_OFF();
-                OPEQ_OVERFLOW(usub_with_overflow, CreateSub, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU16), false);
-                break;
-            }
-
-            case ByteCodeOp::AffectOpMinusEqU32:
-            {
-                MK_BINOP_EQ32_CAB();
-                OPEQ_OVERFLOW(usub_with_overflow, CreateSub, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU32), false);
-                break;
-            }
-            case ByteCodeOp::AffectOpMinusEqU32_Safe:
-            {
-                MK_BINOP_EQ32_CAB_OFF();
-                OPEQ_OVERFLOW(usub_with_overflow, CreateSub, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU32), false);
-                break;
-            }
-
-            case ByteCodeOp::AffectOpMinusEqU64:
-            {
-                MK_BINOP_EQ64_CAB();
-                OPEQ_OVERFLOW(usub_with_overflow, CreateSub, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU64), false);
-                break;
-            }
-            case ByteCodeOp::AffectOpMinusEqU64_Safe:
-            {
-                MK_BINOP_EQ64_CAB_OFF();
-                OPEQ_OVERFLOW(usub_with_overflow, CreateSub, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU64), false);
-                break;
-            }
-
-            case ByteCodeOp::AffectOpMinusEqF32:
-            {
-                MK_BINOP_EQF32_CAB_OFF();
-                auto v0 = builder.CreateFSub(builder.CreateLoad(F32_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
-                break;
-            }
             case ByteCodeOp::AffectOpMinusEqF32_SSafe:
             {
                 MK_BINOP_EQF32_SCAB();
                 auto v0 = builder.CreateFSub(builder.CreateLoad(F32_TY(), r0), r1);
                 builder.CreateStore(v0, r0);
-                break;
-            }
-
-            case ByteCodeOp::AffectOpMinusEqF64:
-            {
-                MK_BINOP_EQF64_CAB_OFF();
-                auto v0 = builder.CreateFSub(builder.CreateLoad(F64_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
                 break;
             }
             case ByteCodeOp::AffectOpMinusEqF64_SSafe:
@@ -2169,26 +2163,26 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 MK_BINOP_EQ16_CAB();
                 OPEQ_OVERFLOW(umul_with_overflow, CreateMul, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU16), false);
                 break;
-            }            
+            }
             case ByteCodeOp::AffectOpMulEqU32:
             {
                 MK_BINOP_EQ32_CAB();
                 OPEQ_OVERFLOW(umul_with_overflow, CreateMul, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU32), false);
                 break;
-            }            
+            }
             case ByteCodeOp::AffectOpMulEqU64:
             {
                 MK_BINOP_EQ64_CAB();
                 OPEQ_OVERFLOW(umul_with_overflow, CreateMul, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU64), false);
                 break;
-            }            
+            }
             case ByteCodeOp::AffectOpMulEqF32_Safe:
             {
                 MK_BINOP_EQF32_CAB_OFF();
                 auto v0 = builder.CreateFMul(builder.CreateLoad(F32_TY(), r1), r2);
                 builder.CreateStore(v0, r1);
                 break;
-            }            
+            }
             case ByteCodeOp::AffectOpMulEqF64_Safe:
             {
                 MK_BINOP_EQF64_CAB_OFF();
@@ -2196,7 +2190,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v0, r1);
                 break;
             }
-            
+
             case ByteCodeOp::AffectOpMulEqS8_Safe:
             {
                 MK_BINOP_EQ8_CAB_OFF();
@@ -2262,7 +2256,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v0, r0);
                 break;
             }
-            
+
             case ByteCodeOp::AffectOpMulEqS8_SSafe:
             case ByteCodeOp::AffectOpMulEqU8_SSafe:
             {
@@ -2305,26 +2299,75 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v0, r1);
                 break;
             }
-            case ByteCodeOp::AffectOpDivEqS8_SSafe:
-            {
-                MK_BINOP_EQ8_SCAB();
-                auto v0 = builder.CreateSDiv(builder.CreateLoad(I8_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
-                break;
-            }
-            case ByteCodeOp::AffectOpDivEqS8_SS:
-            {
-                MK_BINOP_EQ8_SSCAB();
-                auto v0 = builder.CreateSDiv(builder.CreateLoad(I8_TY(), r0), builder.CreateLoad(I8_TY(), r1));
-                builder.CreateStore(v0, r0);
-                break;
-            }
-
             case ByteCodeOp::AffectOpDivEqS16:
             {
                 MK_BINOP_EQ16_CAB();
                 auto v0 = builder.CreateSDiv(builder.CreateLoad(I16_TY(), r1), r2);
                 builder.CreateStore(v0, r1);
+                break;
+            }
+            case ByteCodeOp::AffectOpDivEqS32:
+            {
+                MK_BINOP_EQ32_CAB();
+                auto v0 = builder.CreateSDiv(builder.CreateLoad(I32_TY(), r1), r2);
+                builder.CreateStore(v0, r1);
+                break;
+            }
+            case ByteCodeOp::AffectOpDivEqS64:
+            {
+                MK_BINOP_EQ64_CAB();
+                auto v0 = builder.CreateSDiv(builder.CreateLoad(I64_TY(), r1), r2);
+                builder.CreateStore(v0, r1);
+                break;
+            }
+            case ByteCodeOp::AffectOpDivEqU8:
+            {
+                MK_BINOP_EQ8_CAB();
+                auto v0 = builder.CreateUDiv(builder.CreateLoad(I8_TY(), r1), r2);
+                builder.CreateStore(v0, r1);
+                break;
+            }
+            case ByteCodeOp::AffectOpDivEqU16:
+            {
+                MK_BINOP_EQ16_CAB();
+                auto v0 = builder.CreateUDiv(builder.CreateLoad(I16_TY(), r1), r2);
+                builder.CreateStore(v0, r1);
+                break;
+            }            
+            case ByteCodeOp::AffectOpDivEqU32:
+            {
+                MK_BINOP_EQ32_CAB();
+                auto v0 = builder.CreateUDiv(builder.CreateLoad(I32_TY(), r1), r2);
+                builder.CreateStore(v0, r1);
+                break;
+            }
+            case ByteCodeOp::AffectOpDivEqU64:
+            {
+                MK_BINOP_EQ64_CAB();
+                auto v0 = builder.CreateUDiv(builder.CreateLoad(I64_TY(), r1), r2);
+                builder.CreateStore(v0, r1);
+                break;
+            }            
+            case ByteCodeOp::AffectOpDivEqF32:
+            {
+                MK_BINOP_EQF32_CAB();
+                auto v0 = builder.CreateFDiv(builder.CreateLoad(F32_TY(), r1), r2);
+                builder.CreateStore(v0, r1);
+                break;
+            }
+            case ByteCodeOp::AffectOpDivEqF64:
+            {
+                MK_BINOP_EQF64_CAB();
+                auto v0 = builder.CreateFDiv(builder.CreateLoad(F64_TY(), r1), r2);
+                builder.CreateStore(v0, r1);
+                break;
+            }
+            
+            case ByteCodeOp::AffectOpDivEqS8_SSafe:
+            {
+                MK_BINOP_EQ8_SCAB();
+                auto v0 = builder.CreateSDiv(builder.CreateLoad(I8_TY(), r0), r1);
+                builder.CreateStore(v0, r0);
                 break;
             }
             case ByteCodeOp::AffectOpDivEqS16_SSafe:
@@ -2334,41 +2377,11 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v0, r0);
                 break;
             }
-            case ByteCodeOp::AffectOpDivEqS16_SS:
-            {
-                MK_BINOP_EQ16_SSCAB();
-                auto v0 = builder.CreateSDiv(builder.CreateLoad(I16_TY(), r0), builder.CreateLoad(I16_TY(), r1));
-                builder.CreateStore(v0, r0);
-                break;
-            }
-
-            case ByteCodeOp::AffectOpDivEqS32:
-            {
-                MK_BINOP_EQ32_CAB();
-                auto v0 = builder.CreateSDiv(builder.CreateLoad(I32_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
-                break;
-            }
             case ByteCodeOp::AffectOpDivEqS32_SSafe:
             {
                 MK_BINOP_EQ32_SCAB();
                 auto v0 = builder.CreateSDiv(builder.CreateLoad(I32_TY(), r0), r1);
                 builder.CreateStore(v0, r0);
-                break;
-            }
-            case ByteCodeOp::AffectOpDivEqS32_SS:
-            {
-                MK_BINOP_EQ32_SSCAB();
-                auto v0 = builder.CreateSDiv(builder.CreateLoad(I32_TY(), r0), builder.CreateLoad(I32_TY(), r1));
-                builder.CreateStore(v0, r0);
-                break;
-            }
-
-            case ByteCodeOp::AffectOpDivEqS64:
-            {
-                MK_BINOP_EQ64_CAB();
-                auto v0 = builder.CreateSDiv(builder.CreateLoad(I64_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
                 break;
             }
             case ByteCodeOp::AffectOpDivEqS64_SSafe:
@@ -2378,41 +2391,12 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v0, r0);
                 break;
             }
-            case ByteCodeOp::AffectOpDivEqS64_SS:
-            {
-                MK_BINOP_EQ64_SSCAB();
-                auto v0 = builder.CreateSDiv(builder.CreateLoad(I64_TY(), r0), builder.CreateLoad(I64_TY(), r1));
-                builder.CreateStore(v0, r0);
-                break;
-            }
 
-            case ByteCodeOp::AffectOpDivEqU8:
-            {
-                MK_BINOP_EQ8_CAB();
-                auto v0 = builder.CreateUDiv(builder.CreateLoad(I8_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
-                break;
-            }
             case ByteCodeOp::AffectOpDivEqU8_SSafe:
             {
                 MK_BINOP_EQ8_SCAB();
                 auto v0 = builder.CreateUDiv(builder.CreateLoad(I8_TY(), r0), r1);
                 builder.CreateStore(v0, r0);
-                break;
-            }
-            case ByteCodeOp::AffectOpDivEqU8_SS:
-            {
-                MK_BINOP_EQ8_SSCAB();
-                auto v0 = builder.CreateUDiv(builder.CreateLoad(I8_TY(), r0), builder.CreateLoad(I8_TY(), r1));
-                builder.CreateStore(v0, r0);
-                break;
-            }
-
-            case ByteCodeOp::AffectOpDivEqU16:
-            {
-                MK_BINOP_EQ16_CAB();
-                auto v0 = builder.CreateUDiv(builder.CreateLoad(I16_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
                 break;
             }
             case ByteCodeOp::AffectOpDivEqU16_SSafe:
@@ -2422,41 +2406,12 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v0, r0);
                 break;
             }
-            case ByteCodeOp::AffectOpDivEqU16_SS:
-            {
-                MK_BINOP_EQ16_SSCAB();
-                auto v0 = builder.CreateUDiv(builder.CreateLoad(I16_TY(), r0), builder.CreateLoad(I16_TY(), r1));
-                builder.CreateStore(v0, r0);
-                break;
-            }
 
-            case ByteCodeOp::AffectOpDivEqU32:
-            {
-                MK_BINOP_EQ32_CAB();
-                auto v0 = builder.CreateUDiv(builder.CreateLoad(I32_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
-                break;
-            }
             case ByteCodeOp::AffectOpDivEqU32_SSafe:
             {
                 MK_BINOP_EQ32_SCAB();
                 auto v0 = builder.CreateUDiv(builder.CreateLoad(I32_TY(), r0), r1);
                 builder.CreateStore(v0, r0);
-                break;
-            }
-            case ByteCodeOp::AffectOpDivEqU32_SS:
-            {
-                MK_BINOP_EQ32_SSCAB();
-                auto v0 = builder.CreateUDiv(builder.CreateLoad(I32_TY(), r0), builder.CreateLoad(I32_TY(), r1));
-                builder.CreateStore(v0, r0);
-                break;
-            }
-
-            case ByteCodeOp::AffectOpDivEqU64:
-            {
-                MK_BINOP_EQ64_CAB();
-                auto v0 = builder.CreateUDiv(builder.CreateLoad(I64_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
                 break;
             }
             case ByteCodeOp::AffectOpDivEqU64_SSafe:
@@ -2466,21 +2421,6 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v0, r0);
                 break;
             }
-            case ByteCodeOp::AffectOpDivEqU64_SS:
-            {
-                MK_BINOP_EQ64_SSCAB();
-                auto v0 = builder.CreateUDiv(builder.CreateLoad(I64_TY(), r0), builder.CreateLoad(I64_TY(), r1));
-                builder.CreateStore(v0, r0);
-                break;
-            }
-
-            case ByteCodeOp::AffectOpDivEqF32:
-            {
-                MK_BINOP_EQF32_CAB();
-                auto v0 = builder.CreateFDiv(builder.CreateLoad(F32_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
-                break;
-            }
             case ByteCodeOp::AffectOpDivEqF32_SSafe:
             {
                 MK_BINOP_EQF32_SCAB();
@@ -2488,32 +2428,10 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v0, r0);
                 break;
             }
-            case ByteCodeOp::AffectOpDivEqF32_SS:
-            {
-                MK_BINOP_EQF32_SSCAB();
-                auto v0 = builder.CreateFDiv(builder.CreateLoad(F32_TY(), r0), builder.CreateLoad(F32_TY(), r1));
-                builder.CreateStore(v0, r0);
-                break;
-            }
-
-            case ByteCodeOp::AffectOpDivEqF64:
-            {
-                MK_BINOP_EQF64_CAB();
-                auto v0 = builder.CreateFDiv(builder.CreateLoad(F64_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
-                break;
-            }
             case ByteCodeOp::AffectOpDivEqF64_SSafe:
             {
                 MK_BINOP_EQF64_SCAB();
                 auto v0 = builder.CreateFDiv(builder.CreateLoad(F64_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
-                break;
-            }
-            case ByteCodeOp::AffectOpDivEqF64_SS:
-            {
-                MK_BINOP_EQF64_SSCAB();
-                auto v0 = builder.CreateFDiv(builder.CreateLoad(F64_TY(), r0), builder.CreateLoad(F64_TY(), r1));
                 builder.CreateStore(v0, r0);
                 break;
             }
@@ -2534,13 +2452,6 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v0, r0);
                 break;
             }
-            case ByteCodeOp::AffectOpModuloEqS8_SS:
-            {
-                MK_BINOP_EQ8_SSCAB();
-                auto v0 = builder.CreateSRem(builder.CreateLoad(I8_TY(), r0), builder.CreateLoad(I8_TY(), r1));
-                builder.CreateStore(v0, r0);
-                break;
-            }
 
             case ByteCodeOp::AffectOpModuloEqS16:
             {
@@ -2553,13 +2464,6 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             {
                 MK_BINOP_EQ16_SCAB();
                 auto v0 = builder.CreateSRem(builder.CreateLoad(I16_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
-                break;
-            }
-            case ByteCodeOp::AffectOpModuloEqS16_SS:
-            {
-                MK_BINOP_EQ16_SSCAB();
-                auto v0 = builder.CreateSRem(builder.CreateLoad(I16_TY(), r0), builder.CreateLoad(I16_TY(), r1));
                 builder.CreateStore(v0, r0);
                 break;
             }
@@ -2578,13 +2482,6 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v0, r0);
                 break;
             }
-            case ByteCodeOp::AffectOpModuloEqS32_SS:
-            {
-                MK_BINOP_EQ32_SSCAB();
-                auto v0 = builder.CreateSRem(builder.CreateLoad(I32_TY(), r0), builder.CreateLoad(I32_TY(), r1));
-                builder.CreateStore(v0, r0);
-                break;
-            }
 
             case ByteCodeOp::AffectOpModuloEqS64:
             {
@@ -2597,13 +2494,6 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             {
                 MK_BINOP_EQ64_SCAB();
                 auto v0 = builder.CreateSRem(builder.CreateLoad(I64_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
-                break;
-            }
-            case ByteCodeOp::AffectOpModuloEqS64_SS:
-            {
-                MK_BINOP_EQ64_SSCAB();
-                auto v0 = builder.CreateSRem(builder.CreateLoad(I64_TY(), r0), builder.CreateLoad(I64_TY(), r1));
                 builder.CreateStore(v0, r0);
                 break;
             }
@@ -2622,13 +2512,6 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v0, r0);
                 break;
             }
-            case ByteCodeOp::AffectOpModuloEqU8_SS:
-            {
-                MK_BINOP_EQ8_SSCAB();
-                auto v0 = builder.CreateURem(builder.CreateLoad(I8_TY(), r0), builder.CreateLoad(I8_TY(), r1));
-                builder.CreateStore(v0, r0);
-                break;
-            }
 
             case ByteCodeOp::AffectOpModuloEqU16:
             {
@@ -2641,13 +2524,6 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             {
                 MK_BINOP_EQ16_SCAB();
                 auto v0 = builder.CreateURem(builder.CreateLoad(I16_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
-                break;
-            }
-            case ByteCodeOp::AffectOpModuloEqU16_SS:
-            {
-                MK_BINOP_EQ16_SSCAB();
-                auto v0 = builder.CreateURem(builder.CreateLoad(I16_TY(), r0), builder.CreateLoad(I16_TY(), r1));
                 builder.CreateStore(v0, r0);
                 break;
             }
@@ -2666,13 +2542,6 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v0, r0);
                 break;
             }
-            case ByteCodeOp::AffectOpModuloEqU32_SS:
-            {
-                MK_BINOP_EQ32_SSCAB();
-                auto v0 = builder.CreateURem(builder.CreateLoad(I32_TY(), r0), builder.CreateLoad(I32_TY(), r1));
-                builder.CreateStore(v0, r0);
-                break;
-            }
 
             case ByteCodeOp::AffectOpModuloEqU64:
             {
@@ -2685,13 +2554,6 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             {
                 MK_BINOP_EQ64_SCAB();
                 auto v0 = builder.CreateURem(builder.CreateLoad(I64_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
-                break;
-            }
-            case ByteCodeOp::AffectOpModuloEqU64_SS:
-            {
-                MK_BINOP_EQ64_SSCAB();
-                auto v0 = builder.CreateURem(builder.CreateLoad(I64_TY(), r0), builder.CreateLoad(I64_TY(), r1));
                 builder.CreateStore(v0, r0);
                 break;
             }

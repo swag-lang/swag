@@ -1725,10 +1725,10 @@ bool ByteCodeSanity::loop()
             case ByteCodeOp::AffectOpMinusEqU64:
                 BINOP_EQ_OVF(uint64_t, -=, u64, subWillOverflow, "-=", g_TypeMgr->typeInfoU64);
                 break;
-            case ByteCodeOp::AffectOpMinusEqF32:
+            case ByteCodeOp::AffectOpMinusEqF32_Safe:
                 BINOP_EQ(float, -=, f32);
                 break;
-            case ByteCodeOp::AffectOpMinusEqF64:
+            case ByteCodeOp::AffectOpMinusEqF64_Safe:
                 BINOP_EQ(double, -=, f64);
                 break;
 

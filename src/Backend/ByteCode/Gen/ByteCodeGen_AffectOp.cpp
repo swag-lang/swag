@@ -406,10 +406,10 @@ bool ByteCodeGen::emitAffectMinusEqual(const ByteCodeGenContext* context, uint32
                 EMIT_INST2(context, ByteCodeOp::AffectOpMinusEqU64, r0, r1);
                 return true;
             case NativeTypeKind::F32:
-                EMIT_INST2(context, ByteCodeOp::AffectOpMinusEqF32, r0, r1);
+                EMIT_INST2(context, ByteCodeOp::AffectOpMinusEqF32_Safe, r0, r1);
                 return true;
             case NativeTypeKind::F64:
-                EMIT_INST2(context, ByteCodeOp::AffectOpMinusEqF64, r0, r1);
+                EMIT_INST2(context, ByteCodeOp::AffectOpMinusEqF64_Safe, r0, r1);
                 return true;
             default:
                 return Report::internalError(context->node, "emitAffectMinusEqual, type not supported");
