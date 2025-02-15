@@ -2020,42 +2020,6 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-                /////////////////////////////////////
-
-            case ByteCodeOp::CompareOp3Way8:
-            case ByteCodeOp::CompareOp3Way16:
-            case ByteCodeOp::CompareOp3Way32:
-            case ByteCodeOp::CompareOp3Way64:
-            {
-                const auto numBits = BackendEncoder::getNumBits(ip->op);
-                const auto r0      = GEP64_PTR_I32(allocR, ip->c.u32);
-                const auto r1      = MK_IMMA_IX(numBits);
-                const auto r2      = MK_IMMB_IX(numBits);
-                const auto v0      = builder.CreateSub(r1, r2);
-                const auto v1      = builder.CreateIntCast(builder.CreateICmpSGT(v0, builder.getIntN(numBits, 0)), I32_TY(), false);
-                const auto v2      = builder.CreateIntCast(builder.CreateICmpSLT(v0, builder.getIntN(numBits, 0)), I32_TY(), false);
-                const auto v3      = builder.CreateSub(v1, v2);
-                builder.CreateStore(v3, r0);
-                break;
-            }
-
-            case ByteCodeOp::CompareOp3WayF32:
-            case ByteCodeOp::CompareOp3WayF64:
-            {
-                const auto numBits = BackendEncoder::getNumBits(ip->op);
-                const auto r0      = GEP64_PTR_I32(allocR, ip->c.u32);
-                const auto r1      = MK_IMMA_FX(numBits);
-                const auto r2      = MK_IMMB_FX(numBits);
-                const auto v0      = builder.CreateFSub(r1, r2);
-                const auto v1      = builder.CreateIntCast(builder.CreateFCmpUGT(v0, llvm::ConstantFP::get(FX_TY(numBits), 0)), I32_TY(), false);
-                const auto v2      = builder.CreateIntCast(builder.CreateFCmpULT(v0, llvm::ConstantFP::get(FX_TY(numBits), 0)), I32_TY(), false);
-                const auto v3      = builder.CreateSub(v1, v2);
-                builder.CreateStore(v3, r0);
-                break;
-            }
-
-                /////////////////////////////////////
-
             case ByteCodeOp::CompareOpEqual8:
             case ByteCodeOp::CompareOpEqual16:
             case ByteCodeOp::CompareOpEqual32:
@@ -2065,9 +2029,9 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
                 const auto r1      = MK_IMMA_IX(numBits);
                 const auto r2      = MK_IMMB_IX(numBits);
-                auto       v0      = builder.CreateICmpEQ(r1, r2);
-                v0                 = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
+                const auto r3      = builder.CreateICmpEQ(r1, r2);
+                const auto r4      = builder.CreateIntCast(r3, I8_TY(), false);
+                builder.CreateStore(r4, r0);
                 break;
             }
 
@@ -2078,9 +2042,9 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 const auto r0      = GEP64_PTR_FX(allocR, ip->c.u32, numBits);
                 const auto r1      = MK_IMMA_FX(numBits);
                 const auto r2      = MK_IMMB_FX(numBits);
-                auto       v0      = builder.CreateFCmpOEQ(r1, r2);
-                v0                 = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
+                const auto r3      = builder.CreateFCmpOEQ(r1, r2);
+                const auto r4      = builder.CreateIntCast(r3, I8_TY(), false);
+                builder.CreateStore(r4, r0);
                 break;
             }
 
@@ -2093,9 +2057,9 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
                 const auto r1      = MK_IMMA_IX(numBits);
                 const auto r2      = MK_IMMB_IX(numBits);
-                auto       v0      = builder.CreateICmpNE(r1, r2);
-                v0                 = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
+                const auto r3      = builder.CreateICmpNE(r1, r2);
+                const auto r4      = builder.CreateIntCast(r3, I8_TY(), false);
+                builder.CreateStore(r4, r0);
                 break;
             }
 
@@ -2106,9 +2070,43 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 const auto r0      = GEP64_PTR_FX(allocR, ip->c.u32, numBits);
                 const auto r1      = MK_IMMA_FX(numBits);
                 const auto r2      = MK_IMMB_FX(numBits);
-                auto       v0      = builder.CreateFCmpUNE(r1, r2);
-                v0                 = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
+                const auto r3      = builder.CreateFCmpUNE(r1, r2);
+                const auto r4      = builder.CreateIntCast(r3, I8_TY(), false);
+                builder.CreateStore(r4, r0);
+                break;
+            }
+
+                /////////////////////////////////////
+
+            case ByteCodeOp::CompareOp3Way8:
+            case ByteCodeOp::CompareOp3Way16:
+            case ByteCodeOp::CompareOp3Way32:
+            case ByteCodeOp::CompareOp3Way64:
+            {
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64_PTR_I32(allocR, ip->c.u32);
+                const auto r1      = MK_IMMA_IX(numBits);
+                const auto r2      = MK_IMMB_IX(numBits);
+                const auto r3      = builder.CreateSub(r1, r2);
+                const auto r4      = builder.CreateIntCast(builder.CreateICmpSGT(r3, builder.getIntN(numBits, 0)), I32_TY(), false);
+                const auto r5      = builder.CreateIntCast(builder.CreateICmpSLT(r3, builder.getIntN(numBits, 0)), I32_TY(), false);
+                const auto r6      = builder.CreateSub(r4, r5);
+                builder.CreateStore(r6, r0);
+                break;
+            }
+
+            case ByteCodeOp::CompareOp3WayF32:
+            case ByteCodeOp::CompareOp3WayF64:
+            {
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64_PTR_I32(allocR, ip->c.u32);
+                const auto r1      = MK_IMMA_FX(numBits);
+                const auto r2      = MK_IMMB_FX(numBits);
+                const auto r3      = builder.CreateFSub(r1, r2);
+                const auto r4      = builder.CreateIntCast(builder.CreateFCmpUGT(r3, llvm::ConstantFP::get(FX_TY(numBits), 0)), I32_TY(), false);
+                const auto r5      = builder.CreateIntCast(builder.CreateFCmpULT(r3, llvm::ConstantFP::get(FX_TY(numBits), 0)), I32_TY(), false);
+                const auto r6      = builder.CreateSub(r4, r5);
+                builder.CreateStore(r6, r0);
                 break;
             }
 
