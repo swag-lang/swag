@@ -1857,9 +1857,9 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
                 const auto r1      = MK_IMMA_IX(numBits);
                 const auto r2      = MK_IMMB_IX(numBits);
-                auto       v0      = builder.CreateICmpSGT(r1, r2);
-                v0                 = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
+                const auto r3      = builder.CreateICmpSGT(r1, r2);
+                const auto r4      = builder.CreateIntCast(r3, I8_TY(), false);
+                builder.CreateStore(r4, r0);
                 break;
             }
 
@@ -1872,9 +1872,9 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
                 const auto r1      = MK_IMMA_IX(numBits);
                 const auto r2      = MK_IMMB_IX(numBits);
-                auto       v0      = builder.CreateICmpUGT(r1, r2);
-                v0                 = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
+                const auto r3      = builder.CreateICmpUGT(r1, r2);
+                const auto r4      = builder.CreateIntCast(r3, I8_TY(), false);
+                builder.CreateStore(r4, r0);
                 break;
             }
 
@@ -1885,9 +1885,9 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 const auto r0      = GEP64_PTR_FX(allocR, ip->c.u32, numBits);
                 const auto r1      = MK_IMMA_FX(numBits);
                 const auto r2      = MK_IMMB_FX(numBits);
-                auto       v0      = builder.CreateFCmpUGT(r1, r2);
-                v0                 = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
+                const auto r3      = builder.CreateFCmpUGT(r1, r2);
+                const auto r4      = builder.CreateIntCast(r3, I8_TY(), false);
+                builder.CreateStore(r4, r0);
                 break;
             }
 
@@ -1900,9 +1900,9 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
                 const auto r1      = MK_IMMA_IX(numBits);
                 const auto r2      = MK_IMMB_IX(numBits);
-                auto       v0      = builder.CreateICmpSGE(r1, r2);
-                v0                 = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
+                const auto r3      = builder.CreateICmpSGE(r1, r2);
+                const auto r4      = builder.CreateIntCast(r3, I8_TY(), false);
+                builder.CreateStore(r4, r0);
                 break;
             }
 
@@ -1915,9 +1915,9 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
                 const auto r1      = MK_IMMA_IX(numBits);
                 const auto r2      = MK_IMMB_IX(numBits);
-                auto       v0      = builder.CreateICmpUGE(r1, r2);
-                v0                 = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
+                const auto r3      = builder.CreateICmpUGE(r1, r2);
+                const auto r4      = builder.CreateIntCast(r3, I8_TY(), false);
+                builder.CreateStore(r4, r0);
                 break;
             }
 
@@ -1928,9 +1928,9 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 const auto r0      = GEP64_PTR_FX(allocR, ip->c.u32, numBits);
                 const auto r1      = MK_IMMA_FX(numBits);
                 const auto r2      = MK_IMMB_FX(numBits);
-                auto       v0      = builder.CreateFCmpUGE(r1, r2);
-                v0                 = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
+                const auto r3      = builder.CreateFCmpUGE(r1, r2);
+                const auto r4      = builder.CreateIntCast(r3, I8_TY(), false);
+                builder.CreateStore(r4, r0);
                 break;
             }
 
@@ -1943,9 +1943,9 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
                 const auto r1      = MK_IMMA_IX(numBits);
                 const auto r2      = MK_IMMB_IX(numBits);
-                auto       v0      = builder.CreateICmpSLT(r1, r2);
-                v0                 = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
+                const auto r3      = builder.CreateICmpSLT(r1, r2);
+                const auto r4      = builder.CreateIntCast(r3, I8_TY(), false);
+                builder.CreateStore(r4, r0);
                 break;
             }
 
@@ -1958,9 +1958,9 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
                 const auto r1      = MK_IMMA_IX(numBits);
                 const auto r2      = MK_IMMB_IX(numBits);
-                auto       v0      = builder.CreateICmpULT(r1, r2);
-                v0                 = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
+                const auto r3      = builder.CreateICmpULT(r1, r2);
+                const auto r4      = builder.CreateIntCast(r3, I8_TY(), false);
+                builder.CreateStore(r4, r0);
                 break;
             }
 
@@ -1971,9 +1971,9 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 const auto r0      = GEP64_PTR_FX(allocR, ip->c.u32, numBits);
                 const auto r1      = MK_IMMA_FX(numBits);
                 const auto r2      = MK_IMMB_FX(numBits);
-                auto       v0      = builder.CreateFCmpULT(r1, r2);
-                v0                 = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
+                const auto r3      = builder.CreateFCmpULT(r1, r2);
+                const auto r4      = builder.CreateIntCast(r3, I8_TY(), false);
+                builder.CreateStore(r4, r0);
                 break;
             }
 
@@ -1986,9 +1986,9 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
                 const auto r1      = MK_IMMA_IX(numBits);
                 const auto r2      = MK_IMMB_IX(numBits);
-                auto       v0      = builder.CreateICmpSLE(r1, r2);
-                v0                 = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
+                const auto r3      = builder.CreateICmpSLE(r1, r2);
+                const auto r4      = builder.CreateIntCast(r3, I8_TY(), false);
+                builder.CreateStore(r4, r0);
                 break;
             }
 
@@ -2001,9 +2001,9 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
                 const auto r1      = MK_IMMA_IX(numBits);
                 const auto r2      = MK_IMMB_IX(numBits);
-                auto       v0      = builder.CreateICmpULE(r1, r2);
-                v0                 = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
+                const auto r3      = builder.CreateICmpULE(r1, r2);
+                const auto r4      = builder.CreateIntCast(r3, I8_TY(), false);
+                builder.CreateStore(r4, r0);
                 break;
             }
 
@@ -2014,9 +2014,9 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 const auto r0      = GEP64_PTR_FX(allocR, ip->c.u32, numBits);
                 const auto r1      = MK_IMMA_FX(numBits);
                 const auto r2      = MK_IMMB_FX(numBits);
-                auto       v0      = builder.CreateFCmpULE(r1, r2);
-                v0                 = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
+                const auto r3      = builder.CreateFCmpULE(r1, r2);
+                const auto r4      = builder.CreateIntCast(r3, I8_TY(), false);
+                builder.CreateStore(r4, r0);
                 break;
             }
 
