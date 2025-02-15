@@ -1707,116 +1707,56 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::AffectOpModuloEqS8:
-            {
-                MK_BINOP_EQ8_CAB();
-                auto v0 = builder.CreateSRem(builder.CreateLoad(I8_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
-                break;
-            }
             case ByteCodeOp::AffectOpModuloEqS16:
-            {
-                MK_BINOP_EQ16_CAB();
-                auto v0 = builder.CreateSRem(builder.CreateLoad(I16_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
-                break;
-            }
             case ByteCodeOp::AffectOpModuloEqS32:
-            {
-                MK_BINOP_EQ32_CAB();
-                auto v0 = builder.CreateSRem(builder.CreateLoad(I32_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
-                break;
-            }
             case ByteCodeOp::AffectOpModuloEqS64:
             {
-                MK_BINOP_EQ64_CAB();
-                auto v0 = builder.CreateSRem(builder.CreateLoad(I64_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64(allocR, ip->a.u32);
+                const auto r1      = builder.CreateLoad(PTR_IX_TY(numBits), r0);
+                const auto r2      = MK_IMMB_IX(numBits);
+                const auto r3      = builder.CreateSRem(builder.CreateLoad(IX_TY(numBits), r1), r2);
+                builder.CreateStore(r3, r1);
                 break;
             }
+
             case ByteCodeOp::AffectOpModuloEqU8:
-            {
-                MK_BINOP_EQ8_CAB();
-                auto v0 = builder.CreateURem(builder.CreateLoad(I8_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
-                break;
-            }
             case ByteCodeOp::AffectOpModuloEqU16:
-            {
-                MK_BINOP_EQ16_CAB();
-                auto v0 = builder.CreateURem(builder.CreateLoad(I16_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
-                break;
-            }
             case ByteCodeOp::AffectOpModuloEqU32:
-            {
-                MK_BINOP_EQ32_CAB();
-                auto v0 = builder.CreateURem(builder.CreateLoad(I32_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
-                break;
-            }
             case ByteCodeOp::AffectOpModuloEqU64:
             {
-                MK_BINOP_EQ64_CAB();
-                auto v0 = builder.CreateURem(builder.CreateLoad(I64_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64(allocR, ip->a.u32);
+                const auto r1      = builder.CreateLoad(PTR_IX_TY(numBits), r0);
+                const auto r2      = MK_IMMB_IX(numBits);
+                const auto r3      = builder.CreateURem(builder.CreateLoad(IX_TY(numBits), r1), r2);
+                builder.CreateStore(r3, r1);
                 break;
             }
 
             case ByteCodeOp::AffectOpModuloEqS8_SSafe:
-            {
-                MK_BINOP_EQ8_SCAB();
-                auto v0 = builder.CreateSRem(builder.CreateLoad(I8_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::AffectOpModuloEqS16_SSafe:
-            {
-                MK_BINOP_EQ16_SCAB();
-                auto v0 = builder.CreateSRem(builder.CreateLoad(I16_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::AffectOpModuloEqS32_SSafe:
-            {
-                MK_BINOP_EQ32_SCAB();
-                auto v0 = builder.CreateSRem(builder.CreateLoad(I32_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::AffectOpModuloEqS64_SSafe:
             {
-                MK_BINOP_EQ64_SCAB();
-                auto v0 = builder.CreateSRem(builder.CreateLoad(I64_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP8_PTR_IX(allocStack, ip->a.u32, numBits);
+                const auto r1      = MK_IMMB_IX(numBits);
+                auto       r2      = builder.CreateSRem(builder.CreateLoad(IX_TY(numBits), r0), r1);
+                builder.CreateStore(r2, r0);
                 break;
             }
+
             case ByteCodeOp::AffectOpModuloEqU8_SSafe:
-            {
-                MK_BINOP_EQ8_SCAB();
-                auto v0 = builder.CreateURem(builder.CreateLoad(I8_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::AffectOpModuloEqU16_SSafe:
-            {
-                MK_BINOP_EQ16_SCAB();
-                auto v0 = builder.CreateURem(builder.CreateLoad(I16_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::AffectOpModuloEqU32_SSafe:
-            {
-                MK_BINOP_EQ32_SCAB();
-                auto v0 = builder.CreateURem(builder.CreateLoad(I32_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::AffectOpModuloEqU64_SSafe:
             {
-                MK_BINOP_EQ64_SCAB();
-                auto v0 = builder.CreateURem(builder.CreateLoad(I64_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP8_PTR_IX(allocStack, ip->a.u32, numBits);
+                const auto r1      = MK_IMMB_IX(numBits);
+                auto       r2      = builder.CreateURem(builder.CreateLoad(IX_TY(numBits), r0), r1);
+                builder.CreateStore(r2, r0);
                 break;
             }
 
