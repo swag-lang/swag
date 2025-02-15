@@ -3794,9 +3794,9 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::IntrinsicS64x2:
             {
                 const auto numBits = BackendEncoder::getNumBits(ip->op);
-                auto       r0      = GEP64_PTR_IX(allocR, ip->a.u32, numBits);
-                auto       r1      = MK_IMMB_IX(numBits);
-                auto       r2      = MK_IMMC_IX(numBits);
+                const auto r0      = GEP64_PTR_IX(allocR, ip->a.u32, numBits);
+                const auto r1      = MK_IMMB_IX(numBits);
+                const auto r2      = MK_IMMC_IX(numBits);
                 switch (static_cast<TokenId>(ip->d.u32))
                 {
                     case TokenId::IntrinsicMin:
@@ -3814,101 +3814,27 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
 
             case ByteCodeOp::IntrinsicU8x2:
-            {
-                auto r0 = GEP64_PTR_I8(allocR, ip->a.u32);
-                auto r1 = MK_IMMB_8();
-                auto r2 = MK_IMMC_8();
-                switch (static_cast<TokenId>(ip->d.u32))
-                {
-                    case TokenId::IntrinsicMin:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umin, {I8_TY()}, {r1, r2}), r0);
-                        break;
-                    case TokenId::IntrinsicMax:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umax, {I8_TY()}, {r1, r2}), r0);
-                        break;
-                    case TokenId::IntrinsicRol:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::fshl, {I8_TY()}, {r1, r1, r2}), r0);
-                        break;
-                    case TokenId::IntrinsicRor:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::fshr, {I8_TY()}, {r1, r1, r2}), r0);
-                        break;
-                    default:
-                        ok = false;
-                        Report::internalError(buildParameters.module, form("unknown intrinsic [[%s]] during backend generation", ByteCode::opName(ip->op)));
-                        break;
-                }
-                break;
-            }
             case ByteCodeOp::IntrinsicU16x2:
-            {
-                auto r0 = GEP64_PTR_I16(allocR, ip->a.u32);
-                auto r1 = MK_IMMB_16();
-                auto r2 = MK_IMMC_16();
-                switch (static_cast<TokenId>(ip->d.u32))
-                {
-                    case TokenId::IntrinsicMin:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umin, {I16_TY()}, {r1, r2}), r0);
-                        break;
-                    case TokenId::IntrinsicMax:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umax, {I16_TY()}, {r1, r2}), r0);
-                        break;
-                    case TokenId::IntrinsicRol:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::fshl, {I16_TY()}, {r1, r1, r2}), r0);
-                        break;
-                    case TokenId::IntrinsicRor:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::fshr, {I16_TY()}, {r1, r1, r2}), r0);
-                        break;
-                    default:
-                        ok = false;
-                        Report::internalError(buildParameters.module, form("unknown intrinsic [[%s]] during backend generation", ByteCode::opName(ip->op)));
-                        break;
-                }
-                break;
-            }
             case ByteCodeOp::IntrinsicU32x2:
-            {
-                auto r0 = GEP64_PTR_I32(allocR, ip->a.u32);
-                auto r1 = MK_IMMB_32();
-                auto r2 = MK_IMMC_32();
-                switch (static_cast<TokenId>(ip->d.u32))
-                {
-                    case TokenId::IntrinsicMin:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umin, {I32_TY()}, {r1, r2}), r0);
-                        break;
-                    case TokenId::IntrinsicMax:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umax, {I32_TY()}, {r1, r2}), r0);
-                        break;
-                    case TokenId::IntrinsicRol:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::fshl, {I32_TY()}, {r1, r1, r2}), r0);
-                        break;
-                    case TokenId::IntrinsicRor:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::fshr, {I32_TY()}, {r1, r1, r2}), r0);
-                        break;
-                    default:
-                        ok = false;
-                        Report::internalError(buildParameters.module, form("unknown intrinsic [[%s]] during backend generation", ByteCode::opName(ip->op)));
-                        break;
-                }
-                break;
-            }
             case ByteCodeOp::IntrinsicU64x2:
             {
-                auto r0 = GEP64(allocR, ip->a.u32);
-                auto r1 = MK_IMMB_64();
-                auto r2 = MK_IMMC_64();
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64_PTR_IX(allocR, ip->a.u32, numBits);
+                const auto r1      = MK_IMMB_IX(numBits);
+                const auto r2      = MK_IMMC_IX(numBits);
                 switch (static_cast<TokenId>(ip->d.u32))
                 {
                     case TokenId::IntrinsicMin:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umin, {I64_TY()}, {r1, r2}), r0);
+                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umin, {IX_TY(numBits)}, {r1, r2}), r0);
                         break;
                     case TokenId::IntrinsicMax:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umax, {I64_TY()}, {r1, r2}), r0);
+                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umax, {IX_TY(numBits)}, {r1, r2}), r0);
                         break;
                     case TokenId::IntrinsicRol:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::fshl, {I64_TY()}, {r1, r1, r2}), r0);
+                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::fshl, {IX_TY(numBits)}, {r1, r1, r2}), r0);
                         break;
                     case TokenId::IntrinsicRor:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::fshr, {I64_TY()}, {r1, r1, r2}), r0);
+                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::fshr, {IX_TY(numBits)}, {r1, r1, r2}), r0);
                         break;
                     default:
                         ok = false;
@@ -3919,49 +3845,25 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
 
             case ByteCodeOp::IntrinsicF32x2:
-            {
-                auto r0 = GEP64_PTR_F32(allocR, ip->a.u32);
-                auto r1 = MK_IMMB_F32();
-                auto r2 = MK_IMMC_F32();
-                switch (static_cast<TokenId>(ip->d.u32))
-                {
-                    case TokenId::IntrinsicPow:
-                        builder.CreateStore(builder.CreateCall(pp.fnPowF32, {r1, r2}), r0);
-                        break;
-                    case TokenId::IntrinsicMin:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::minnum, {F32_TY()}, {r1, r2}), r0);
-                        break;
-                    case TokenId::IntrinsicMax:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::maxnum, {F32_TY()}, {r1, r2}), r0);
-                        break;
-                    case TokenId::IntrinsicATan2:
-                        builder.CreateStore(builder.CreateCall(pp.fnAtan2F32, {r1, r2}), r0);
-                        break;
-                    default:
-                        ok = false;
-                        Report::internalError(buildParameters.module, form("unknown intrinsic [[%s]] during backend generation", ByteCode::opName(ip->op)));
-                        break;
-                }
-                break;
-            }
             case ByteCodeOp::IntrinsicF64x2:
             {
-                auto r0 = GEP64_PTR_F64(allocR, ip->a.u32);
-                auto r1 = MK_IMMB_F64();
-                auto r2 = MK_IMMC_F64();
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64_PTR_FX(allocR, ip->a.u32, numBits);
+                const auto r1      = MK_IMMB_FX(numBits);
+                const auto r2      = MK_IMMC_FX(numBits);
                 switch (static_cast<TokenId>(ip->d.u32))
                 {
                     case TokenId::IntrinsicPow:
-                        builder.CreateStore(builder.CreateCall(pp.fnPowF64, {r1, r2}), r0);
+                        builder.CreateStore(builder.CreateCall(numBits == 32 ? pp.fnPowF32 : pp.fnPowF64, {r1, r2}), r0);
                         break;
                     case TokenId::IntrinsicMin:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::minnum, {F64_TY()}, {r1, r2}), r0);
+                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::minnum, {FX_TY(numBits)}, {r1, r2}), r0);
                         break;
                     case TokenId::IntrinsicMax:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::maxnum, {F64_TY()}, {r1, r2}), r0);
+                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::maxnum, {FX_TY(numBits)}, {r1, r2}), r0);
                         break;
                     case TokenId::IntrinsicATan2:
-                        builder.CreateStore(builder.CreateCall(pp.fnAtan2F64, {r1, r2}), r0);
+                        builder.CreateStore(builder.CreateCall(numBits == 32 ? pp.fnAtan2F32 : pp.fnAtan2F64, {r1, r2}), r0);
                         break;
                     default:
                         ok = false;
