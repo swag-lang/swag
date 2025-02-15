@@ -140,31 +140,6 @@
     llvm::Value* r1 = MK_IMMA_F64();                    \
     llvm::Value* r2 = MK_IMMB_F64()
 
-#define MK_BINOP8_CAB8()                               \
-    auto         r0 = GEP64_PTR_I8(allocR, ip->c.u32); \
-    llvm::Value* r1 = MK_IMMA_8();                     \
-    llvm::Value* r2 = MK_IMMB_8()
-#define MK_BINOP16_CAB8()                              \
-    auto         r0 = GEP64_PTR_I8(allocR, ip->c.u32); \
-    llvm::Value* r1 = MK_IMMA_16();                    \
-    llvm::Value* r2 = MK_IMMB_16()
-#define MK_BINOP32_CAB8()                              \
-    auto         r0 = GEP64_PTR_I8(allocR, ip->c.u32); \
-    llvm::Value* r1 = MK_IMMA_32();                    \
-    llvm::Value* r2 = MK_IMMB_32()
-#define MK_BINOP64_CAB8()                              \
-    auto         r0 = GEP64_PTR_I8(allocR, ip->c.u32); \
-    llvm::Value* r1 = MK_IMMA_64();                    \
-    llvm::Value* r2 = MK_IMMB_64()
-#define MK_BINOPF32_CAB8()                             \
-    auto         r0 = GEP64_PTR_I8(allocR, ip->c.u32); \
-    llvm::Value* r1 = MK_IMMA_F32();                   \
-    llvm::Value* r2 = MK_IMMB_F32()
-#define MK_BINOPF64_CAB8()                             \
-    auto         r0 = GEP64_PTR_I8(allocR, ip->c.u32); \
-    llvm::Value* r1 = MK_IMMA_F64();                   \
-    llvm::Value* r2 = MK_IMMB_F64()
-
 #define MK_BINOP_EQ8_CAB()                                 \
     auto         r0 = GEP64(allocR, ip->a.u32);            \
     auto         r1 = builder.CreateLoad(PTR_I8_TY(), r0); \

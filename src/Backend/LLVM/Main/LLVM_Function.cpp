@@ -986,31 +986,16 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::BinOpXorU8:
-            {
-                MK_BINOP8_CAB();
-                auto v0 = builder.CreateXor(r1, r2);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::BinOpXorU16:
-            {
-                MK_BINOP16_CAB();
-                auto v0 = builder.CreateXor(r1, r2);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::BinOpXorU32:
-            {
-                MK_BINOP32_CAB();
-                auto v0 = builder.CreateXor(r1, r2);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::BinOpXorU64:
             {
-                MK_BINOP64_CAB();
-                auto v0 = builder.CreateXor(r1, r2);
-                builder.CreateStore(v0, r0);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+                const auto r1      = MK_IMMA_IX(numBits);
+                const auto r2      = MK_IMMB_IX(numBits);
+                const auto r3      = builder.CreateXor(r1, r2);
+                builder.CreateStore(r3, r0);
                 break;
             }
 
