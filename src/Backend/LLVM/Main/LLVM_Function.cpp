@@ -1018,29 +1018,18 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::BinOpShiftLeftS8:
-                emitShiftLogical(context, builder, allocR, ip, 8, true);
-                break;
             case ByteCodeOp::BinOpShiftLeftU8:
-                emitShiftLogical(context, builder, allocR, ip, 8, true);
-                break;
             case ByteCodeOp::BinOpShiftLeftS16:
-                emitShiftLogical(context, builder, allocR, ip, 16, true);
-                break;
             case ByteCodeOp::BinOpShiftLeftU16:
-                emitShiftLogical(context, builder, allocR, ip, 16, true);
-                break;
             case ByteCodeOp::BinOpShiftLeftS32:
-                emitShiftLogical(context, builder, allocR, ip, 32, true);
-                break;
             case ByteCodeOp::BinOpShiftLeftU32:
-                emitShiftLogical(context, builder, allocR, ip, 32, true);
-                break;
             case ByteCodeOp::BinOpShiftLeftS64:
-                emitShiftLogical(context, builder, allocR, ip, 64, true);
-                break;
             case ByteCodeOp::BinOpShiftLeftU64:
-                emitShiftLogical(context, builder, allocR, ip, 64, true);
+            {
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                emitShiftLogical(context, builder, allocR, ip, numBits, true);
                 break;
+            }
 
                 /////////////////////////////////////
 
@@ -1056,6 +1045,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::BinOpShiftRightU64:
                 emitShiftLogical(context, builder, allocR, ip, 64, false);
                 break;
+            
             case ByteCodeOp::BinOpShiftRightS8:
                 emitShiftRightArithmetic(context, builder, allocR, ip, 8);
                 break;
