@@ -3950,31 +3950,16 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
 
             case ByteCodeOp::IntrinsicAtomicAddS8:
-            {
-                MK_BINOP_EQ8_CAB();
-                auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Add, r1, r2, {}, llvm::AtomicOrdering::SequentiallyConsistent);
-                builder.CreateStore(v0, GEP64_PTR_I8(allocR, ip->c.u32));
-                break;
-            }
             case ByteCodeOp::IntrinsicAtomicAddS16:
-            {
-                MK_BINOP_EQ16_CAB();
-                auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Add, r1, r2, {}, llvm::AtomicOrdering::SequentiallyConsistent);
-                builder.CreateStore(v0, GEP64_PTR_I16(allocR, ip->c.u32));
-                break;
-            }
             case ByteCodeOp::IntrinsicAtomicAddS32:
-            {
-                MK_BINOP_EQ32_CAB();
-                auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Add, r1, r2, {}, llvm::AtomicOrdering::SequentiallyConsistent);
-                builder.CreateStore(v0, GEP64_PTR_I32(allocR, ip->c.u32));
-                break;
-            }
             case ByteCodeOp::IntrinsicAtomicAddS64:
             {
-                MK_BINOP_EQ64_CAB();
-                auto v0 = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Add, r1, r2, {}, llvm::AtomicOrdering::SequentiallyConsistent);
-                builder.CreateStore(v0, GEP64(allocR, ip->c.u32));
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64(allocR, ip->a.u32);
+                const auto r1      = builder.CreateLoad(PTR_IX_TY(numBits), r0);
+                const auto r2      = MK_IMMB_IX(numBits);
+                const auto r3      = builder.CreateAtomicRMW(llvm::AtomicRMWInst::BinOp::Add, r1, r2, {}, llvm::AtomicOrdering::SequentiallyConsistent);
+                builder.CreateStore(r3, GEP64_PTR_IX(allocR, ip->c.u32, numBits));
                 break;
             }
 
