@@ -3874,144 +3874,72 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
 
             case ByteCodeOp::IntrinsicF32x1:
-            {
-                auto r0 = GEP64_PTR_F32(allocR, ip->a.u32);
-                auto r1 = MK_IMMB_F32();
-                switch (static_cast<TokenId>(ip->d.u32))
-                {
-                    case TokenId::IntrinsicTan:
-                        builder.CreateStore(builder.CreateCall(pp.fnTanF32, r1), r0);
-                        break;
-                    case TokenId::IntrinsicSinh:
-                        builder.CreateStore(builder.CreateCall(pp.fnSinhF32, r1), r0);
-                        break;
-                    case TokenId::IntrinsicCosh:
-                        builder.CreateStore(builder.CreateCall(pp.fnCoshF32, r1), r0);
-                        break;
-                    case TokenId::IntrinsicTanh:
-                        builder.CreateStore(builder.CreateCall(pp.fnTanhF32, r1), r0);
-                        break;
-                    case TokenId::IntrinsicASin:
-                        builder.CreateStore(builder.CreateCall(pp.fnAsinF32, r1), r0);
-                        break;
-                    case TokenId::IntrinsicACos:
-                        builder.CreateStore(builder.CreateCall(pp.fnAcosF32, r1), r0);
-                        break;
-                    case TokenId::IntrinsicATan:
-                        builder.CreateStore(builder.CreateCall(pp.fnAtanF32, r1), r0);
-                        break;
-                    case TokenId::IntrinsicSqrt:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::sqrt, F32_TY(), r1), r0);
-                        break;
-                    case TokenId::IntrinsicSin:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::sin, F32_TY(), r1), r0);
-                        break;
-                    case TokenId::IntrinsicCos:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cos, F32_TY(), r1), r0);
-                        break;
-                    case TokenId::IntrinsicLog:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log, F32_TY(), r1), r0);
-                        break;
-                    case TokenId::IntrinsicLog2:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log2, F32_TY(), r1), r0);
-                        break;
-                    case TokenId::IntrinsicLog10:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log10, F32_TY(), r1), r0);
-                        break;
-                    case TokenId::IntrinsicFloor:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::floor, F32_TY(), r1), r0);
-                        break;
-                    case TokenId::IntrinsicCeil:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ceil, F32_TY(), r1), r0);
-                        break;
-                    case TokenId::IntrinsicTrunc:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::trunc, F32_TY(), r1), r0);
-                        break;
-                    case TokenId::IntrinsicRound:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::round, F32_TY(), r1), r0);
-                        break;
-                    case TokenId::IntrinsicAbs:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::fabs, F32_TY(), r1), r0);
-                        break;
-                    case TokenId::IntrinsicExp:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::exp, F32_TY(), r1), r0);
-                        break;
-                    case TokenId::IntrinsicExp2:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::exp2, F32_TY(), r1), r0);
-                        break;
-                    default:
-                        ok = false;
-                        Report::internalError(buildParameters.module, form("unknown intrinsic [[%s]] during backend generation", ByteCode::opName(ip->op)));
-                        break;
-                }
-                break;
-            }
-
             case ByteCodeOp::IntrinsicF64x1:
             {
-                auto r0 = GEP64_PTR_F64(allocR, ip->a.u32);
-                auto r1 = MK_IMMB_F64();
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64_PTR_FX(allocR, ip->a.u32, numBits);
+                const auto r1      = MK_IMMB_FX(numBits);
                 switch (static_cast<TokenId>(ip->d.u32))
                 {
                     case TokenId::IntrinsicTan:
-                        builder.CreateStore(builder.CreateCall(pp.fnTanF64, r1), r0);
+                        builder.CreateStore(builder.CreateCall(numBits == 32 ? pp.fnTanF32 : pp.fnTanF64, r1), r0);
                         break;
                     case TokenId::IntrinsicSinh:
-                        builder.CreateStore(builder.CreateCall(pp.fnSinhF64, r1), r0);
+                        builder.CreateStore(builder.CreateCall(numBits == 32 ? pp.fnSinhF32 : pp.fnSinhF64, r1), r0);
                         break;
                     case TokenId::IntrinsicCosh:
-                        builder.CreateStore(builder.CreateCall(pp.fnCoshF64, r1), r0);
+                        builder.CreateStore(builder.CreateCall(numBits == 32 ? pp.fnCoshF32 : pp.fnCoshF64, r1), r0);
                         break;
                     case TokenId::IntrinsicTanh:
-                        builder.CreateStore(builder.CreateCall(pp.fnTanhF64, r1), r0);
+                        builder.CreateStore(builder.CreateCall(numBits == 32 ? pp.fnTanhF32 : pp.fnTanhF64, r1), r0);
                         break;
                     case TokenId::IntrinsicASin:
-                        builder.CreateStore(builder.CreateCall(pp.fnAsinF64, r1), r0);
+                        builder.CreateStore(builder.CreateCall(numBits == 32 ? pp.fnAsinF32 : pp.fnAsinF64, r1), r0);
                         break;
                     case TokenId::IntrinsicACos:
-                        builder.CreateStore(builder.CreateCall(pp.fnAcosF64, r1), r0);
+                        builder.CreateStore(builder.CreateCall(numBits == 32 ? pp.fnAcosF32 : pp.fnAcosF64, r1), r0);
                         break;
                     case TokenId::IntrinsicATan:
-                        builder.CreateStore(builder.CreateCall(pp.fnAtanF64, r1), r0);
+                        builder.CreateStore(builder.CreateCall(numBits == 32 ? pp.fnAtanF32 : pp.fnAtanF64, r1), r0);
                         break;
                     case TokenId::IntrinsicSqrt:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::sqrt, F64_TY(), r1), r0);
+                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::sqrt, FX_TY(numBits), r1), r0);
                         break;
                     case TokenId::IntrinsicSin:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::sin, F64_TY(), r1), r0);
+                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::sin, FX_TY(numBits), r1), r0);
                         break;
                     case TokenId::IntrinsicCos:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cos, F64_TY(), r1), r0);
+                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cos, FX_TY(numBits), r1), r0);
                         break;
                     case TokenId::IntrinsicLog:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log, F64_TY(), r1), r0);
+                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log, FX_TY(numBits), r1), r0);
                         break;
                     case TokenId::IntrinsicLog2:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log2, F64_TY(), r1), r0);
+                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log2, FX_TY(numBits), r1), r0);
                         break;
                     case TokenId::IntrinsicLog10:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log10, F64_TY(), r1), r0);
+                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::log10, FX_TY(numBits), r1), r0);
                         break;
                     case TokenId::IntrinsicFloor:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::floor, F64_TY(), r1), r0);
+                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::floor, FX_TY(numBits), r1), r0);
                         break;
                     case TokenId::IntrinsicCeil:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ceil, F64_TY(), r1), r0);
+                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ceil, FX_TY(numBits), r1), r0);
                         break;
                     case TokenId::IntrinsicTrunc:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::trunc, F64_TY(), r1), r0);
+                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::trunc, FX_TY(numBits), r1), r0);
                         break;
                     case TokenId::IntrinsicRound:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::round, F64_TY(), r1), r0);
+                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::round, FX_TY(numBits), r1), r0);
                         break;
                     case TokenId::IntrinsicAbs:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::fabs, F64_TY(), r1), r0);
+                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::fabs, FX_TY(numBits), r1), r0);
                         break;
                     case TokenId::IntrinsicExp:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::exp, F64_TY(), r1), r0);
+                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::exp, FX_TY(numBits), r1), r0);
                         break;
                     case TokenId::IntrinsicExp2:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::exp2, F64_TY(), r1), r0);
+                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::exp2, FX_TY(numBits), r1), r0);
                         break;
                     default:
                         ok = false;
