@@ -7,6 +7,7 @@
 #define I64_TY()   llvm::Type::getInt64Ty(context)
 #define F32_TY()   llvm::Type::getFloatTy(context)
 #define F64_TY()   llvm::Type::getDoubleTy(context)
+#define FX_TY(__n) ((__n) == 32 ? llvm::Type::getFloatTy(context) : llvm::Type::getDoubleTy(context))
 #define VOID_TY()  llvm::Type::getVoidTy(context)
 
 #define PTR_IX_TY(__n) llvm::Type::getIntNPtrTy(context, __n)
@@ -45,6 +46,7 @@
 #define GEP64_PTR_IX(__data, __offset, __n) builder.CreateInBoundsGEP(llvm::Type::getIntNTy(context, __n), __data, builder.getInt64((__offset) * (64 / (__n))))
 #define GEP64_PTR_F32(__data, __offset)     builder.CreateInBoundsGEP(F32_TY(), __data, builder.getInt64((__offset) * 2))
 #define GEP64_PTR_F64(__data, __offset)     builder.CreateInBoundsGEP(F64_TY(), __data, builder.getInt64(__offset))
+#define GEP64_PTR_FX(__data, __offset, __n) builder.CreateInBoundsGEP(FX_TY(__n), __data, builder.getInt64((__offset) * (64 / (__n))))
 
 #define GEP64_PTR_PTR_I8(__data, __offset)  builder.CreateInBoundsGEP(PTR_I8_TY(), __data, builder.getInt64(__offset))
 #define GEP64_PTR_PTR_I16(__data, __offset) builder.CreateInBoundsGEP(PTR_I16_TY(), __data, builder.getInt64(__offset))
@@ -73,6 +75,7 @@
 #define TO_PTR_F64(__r)        builder.CreatePointerCast(__r, PTR_F64_TY())
 #define TO_PTR_F32(__r)        builder.CreatePointerCast(__r, PTR_F32_TY())
 #define TO_PTR_IX(__r, __n)    builder.CreatePointerCast(__r, llvm::Type::getIntNPtrTy(context, __n))
+#define TO_PTR_FX(__r, __n)    builder.CreatePointerCast(__r, llvm::Type::getFloatNPtrTy(context, __n))
 #define TO_PTR_PTR_IX(__r, __numBits) TO_PTR_IX(__r, __n)->getPointerTo())
 #define TO_BOOL(__r) builder.CreateIntCast(__r, llvm::Type::getInt1Ty(context), false)
 
@@ -83,6 +86,7 @@
 #define MK_IMMA_IX(__n) ip->hasFlag(BCI_IMM_A) ? (llvm::Value*) builder.getIntN(__n, ip->a.u64) : (llvm::Value*) builder.CreateLoad(IX_TY(__n), GEP64(allocR, ip->a.u32))
 #define MK_IMMA_F32()   ip->hasFlag(BCI_IMM_A) ? (llvm::Value*) llvm::ConstantFP::get(F32_TY(), ip->a.f32) : (llvm::Value*) builder.CreateLoad(F32_TY(), GEP64(allocR, ip->a.u32))
 #define MK_IMMA_F64()   ip->hasFlag(BCI_IMM_A) ? (llvm::Value*) llvm::ConstantFP::get(F64_TY(), ip->a.f64) : (llvm::Value*) builder.CreateLoad(F64_TY(), GEP64(allocR, ip->a.u32))
+#define MK_IMMA_FX(__n) ip->hasFlag(BCI_IMM_A) ? (llvm::Value*) llvm::ConstantFP::get(FX_TY(__n), __n == 32 ? ip->a.f32 : ip->a.f64) : (llvm::Value*) builder.CreateLoad(FX_TY(__n), GEP64(allocR, ip->a.u32))
 
 #define MK_IMMB_8()     ip->hasFlag(BCI_IMM_B) ? (llvm::Value*) builder.getInt8(ip->b.u8) : (llvm::Value*) builder.CreateLoad(I8_TY(), GEP64(allocR, ip->b.u32))
 #define MK_IMMB_16()    ip->hasFlag(BCI_IMM_B) ? (llvm::Value*) builder.getInt16(ip->b.u16) : (llvm::Value*) builder.CreateLoad(I16_TY(), GEP64(allocR, ip->b.u32))
@@ -91,6 +95,7 @@
 #define MK_IMMB_IX(__n) ip->hasFlag(BCI_IMM_B) ? (llvm::Value*) builder.getIntN(__n, ip->b.u64) : (llvm::Value*) builder.CreateLoad(IX_TY(__n), GEP64(allocR, ip->b.u32))
 #define MK_IMMB_F32()   ip->hasFlag(BCI_IMM_B) ? (llvm::Value*) llvm::ConstantFP::get(F32_TY(), ip->b.f32) : (llvm::Value*) builder.CreateLoad(F32_TY(), GEP64(allocR, ip->b.u32))
 #define MK_IMMB_F64()   ip->hasFlag(BCI_IMM_B) ? (llvm::Value*) llvm::ConstantFP::get(F64_TY(), ip->b.f64) : (llvm::Value*) builder.CreateLoad(F64_TY(), GEP64(allocR, ip->b.u32))
+#define MK_IMMB_FX(__n) ip->hasFlag(BCI_IMM_B) ? (llvm::Value*) llvm::ConstantFP::get(FX_TY(__n), __n == 32 ? ip->b.f32 : ip->b.f64) : (llvm::Value*) builder.CreateLoad(FX_TY(__n), GEP64(allocR, ip->b.u32))
 
 #define MK_IMMC_8()   ip->hasFlag(BCI_IMM_C) ? (llvm::Value*) builder.getInt8(ip->c.u8) : (llvm::Value*) builder.CreateLoad(I8_TY(), GEP64(allocR, ip->c.u32))
 #define MK_IMMC_16()  ip->hasFlag(BCI_IMM_C) ? (llvm::Value*) builder.getInt16(ip->c.u16) : (llvm::Value*) builder.CreateLoad(I16_TY(), GEP64(allocR, ip->c.u32))

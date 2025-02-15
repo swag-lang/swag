@@ -1086,72 +1086,41 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::BinOpDivS8:
-            {
-                MK_BINOP8_CAB();
-                auto v0 = builder.CreateSDiv(r1, r2);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::BinOpDivS16:
-            {
-                MK_BINOP16_CAB();
-                auto v0 = builder.CreateSDiv(r1, r2);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::BinOpDivS32:
-            {
-                MK_BINOP32_CAB();
-                auto v0 = builder.CreateSDiv(r1, r2);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::BinOpDivS64:
             {
-                MK_BINOP64_CAB();
-                auto v0 = builder.CreateSDiv(r1, r2);
+                const auto   numBits = BackendEncoder::getNumBits(ip->op);
+                auto         r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+                llvm::Value* r1      = MK_IMMA_IX(numBits);
+                llvm::Value* r2      = MK_IMMB_IX(numBits);
+                auto         v0      = builder.CreateSDiv(r1, r2);
                 builder.CreateStore(v0, r0);
                 break;
             }
+
             case ByteCodeOp::BinOpDivU8:
-            {
-                MK_BINOP8_CAB();
-                auto v0 = builder.CreateUDiv(r1, r2);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::BinOpDivU16:
-            {
-                MK_BINOP16_CAB();
-                auto v0 = builder.CreateUDiv(r1, r2);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::BinOpDivU32:
-            {
-                MK_BINOP32_CAB();
-                auto v0 = builder.CreateUDiv(r1, r2);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::BinOpDivU64:
             {
-                MK_BINOP64_CAB();
-                auto v0 = builder.CreateUDiv(r1, r2);
+                const auto   numBits = BackendEncoder::getNumBits(ip->op);
+                auto         r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+                llvm::Value* r1      = MK_IMMA_IX(numBits);
+                llvm::Value* r2      = MK_IMMB_IX(numBits);
+                auto         v0      = builder.CreateUDiv(r1, r2);
                 builder.CreateStore(v0, r0);
                 break;
             }
+
             case ByteCodeOp::BinOpDivF32:
-            {
-                MK_BINOPF32_CAB();
-                auto v0 = builder.CreateFDiv(r1, r2);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::BinOpDivF64:
             {
-                MK_BINOPF64_CAB();
-                auto v0 = builder.CreateFDiv(r1, r2);
+                const auto   numBits = BackendEncoder::getNumBits(ip->op);
+                auto         r0 = GEP64_PTR_FX(allocR, ip->c.u32, numBits);
+                llvm::Value* r1 = MK_IMMA_FX(numBits);
+                llvm::Value* r2 = MK_IMMB_FX(numBits);
+                auto         v0 = builder.CreateFDiv(r1, r2);
                 builder.CreateStore(v0, r0);
                 break;
             }
