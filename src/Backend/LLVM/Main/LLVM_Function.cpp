@@ -152,7 +152,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::DecPointer64:
             {
                 const auto r0 = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
-                auto       r1 = MK_IMMB_64();
+                const auto r1 = MK_IMMB_64();
                 const auto r2 = builder.CreateNeg(r1);
                 const auto r3 = builder.CreateInBoundsGEP(I8_TY(), r0, r2);
                 builder.CreateStore(r3, GEP64_PTR_PTR_I8(allocR, ip->c.u32));
@@ -161,17 +161,10 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::IncMulPointer64:
             {
-                const auto   r1 = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
-                llvm::Value* r2;
-                if (ip->hasFlag(BCI_IMM_B))
-                    r2 = builder.getInt64(ip->b.u64 * ip->d.u64);
-                else
-                {
-                    r2 = builder.CreateLoad(I64_TY(), GEP64(allocR, ip->b.u32));
-                    r2 = builder.CreateMul(r2, builder.getInt64(ip->d.u64));
-                }
-
-                const auto r3 = builder.CreateInBoundsGEP(I8_TY(), r1, r2);
+                const auto r0 = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
+                const auto r1 = MK_IMMB_64();
+                const auto r2 = builder.CreateMul(r1, builder.getInt64(ip->d.u64));
+                const auto r3 = builder.CreateInBoundsGEP(I8_TY(), r0, r2);
                 builder.CreateStore(r3, GEP64_PTR_PTR_I8(allocR, ip->c.u32));
                 break;
             }
