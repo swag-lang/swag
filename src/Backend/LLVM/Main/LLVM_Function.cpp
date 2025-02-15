@@ -3756,106 +3756,29 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::IntrinsicS8x1:
-            {
-                auto r0 = GEP64_PTR_I8(allocR, ip->a.u32);
-                auto r1 = MK_IMMB_8();
-                switch (static_cast<TokenId>(ip->d.u32))
-                {
-                    case TokenId::IntrinsicAbs:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::abs, {I8_TY()}, {r1, pp.cstAi1}), r0);
-                        break;
-                    case TokenId::IntrinsicBitCountNz:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctpop, {I8_TY()}, {r1}), r0);
-                        break;
-                    case TokenId::IntrinsicBitCountTz:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cttz, {I8_TY()}, {r1, pp.cstAi1}), r0);
-                        break;
-                    case TokenId::IntrinsicBitCountLz:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctlz, {I8_TY()}, {r1, pp.cstAi1}), r0);
-                        break;
-                    default:
-                        ok = false;
-                        Report::internalError(buildParameters.module, form("unknown intrinsic [[%s]] during backend generation", ByteCode::opName(ip->op)));
-                        break;
-                }
-                break;
-            }
             case ByteCodeOp::IntrinsicS16x1:
-            {
-                auto r0 = GEP64_PTR_I16(allocR, ip->a.u32);
-                auto r1 = MK_IMMB_16();
-                switch (static_cast<TokenId>(ip->d.u32))
-                {
-                    case TokenId::IntrinsicAbs:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::abs, {I16_TY()}, {r1, pp.cstAi1}), r0);
-                        break;
-                    case TokenId::IntrinsicBitCountNz:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctpop, {I16_TY()}, {r1}), r0);
-                        break;
-                    case TokenId::IntrinsicBitCountTz:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cttz, {I16_TY()}, {r1, pp.cstAi1}), r0);
-                        break;
-                    case TokenId::IntrinsicBitCountLz:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctlz, {I16_TY()}, {r1, pp.cstAi1}), r0);
-                        break;
-                    case TokenId::IntrinsicByteSwap:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::bswap, {I16_TY()}, {r1}), r0);
-                        break;
-                    default:
-                        ok = false;
-                        Report::internalError(buildParameters.module, form("unknown intrinsic [[%s]] during backend generation", ByteCode::opName(ip->op)));
-                        break;
-                }
-                break;
-            }
             case ByteCodeOp::IntrinsicS32x1:
-            {
-                auto r0 = GEP64_PTR_I32(allocR, ip->a.u32);
-                auto r1 = MK_IMMB_32();
-                switch (static_cast<TokenId>(ip->d.u32))
-                {
-                    case TokenId::IntrinsicAbs:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::abs, {I32_TY()}, {r1, pp.cstAi1}), r0);
-                        break;
-                    case TokenId::IntrinsicBitCountNz:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctpop, {I32_TY()}, {r1}), r0);
-                        break;
-                    case TokenId::IntrinsicBitCountTz:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cttz, {I32_TY()}, {r1, pp.cstAi1}), r0);
-                        break;
-                    case TokenId::IntrinsicBitCountLz:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctlz, {I32_TY()}, {r1, pp.cstAi1}), r0);
-                        break;
-                    case TokenId::IntrinsicByteSwap:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::bswap, {I32_TY()}, {r1}), r0);
-                        break;
-                    default:
-                        ok = false;
-                        Report::internalError(buildParameters.module, form("unknown intrinsic [[%s]] during backend generation", ByteCode::opName(ip->op)));
-                        break;
-                }
-                break;
-            }
             case ByteCodeOp::IntrinsicS64x1:
             {
-                auto r0 = GEP64(allocR, ip->a.u32);
-                auto r1 = MK_IMMB_64();
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64_PTR_IX(allocR, ip->a.u32, numBits);
+                const auto r1      = MK_IMMB_IX(numBits);
                 switch (static_cast<TokenId>(ip->d.u32))
                 {
                     case TokenId::IntrinsicAbs:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::abs, {I64_TY()}, {r1, pp.cstAi1}), r0);
+                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::abs, {IX_TY(numBits)}, {r1, builder.getInt1(false)}), r0);
                         break;
                     case TokenId::IntrinsicBitCountNz:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctpop, {I64_TY()}, {r1}), r0);
+                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctpop, {IX_TY(numBits)}, {r1}), r0);
                         break;
                     case TokenId::IntrinsicBitCountTz:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cttz, {I64_TY()}, {r1, pp.cstAi1}), r0);
+                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::cttz, {IX_TY(numBits)}, {r1, builder.getInt1(false)}), r0);
                         break;
                     case TokenId::IntrinsicBitCountLz:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctlz, {I64_TY()}, {r1, pp.cstAi1}), r0);
+                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::ctlz, {IX_TY(numBits)}, {r1, builder.getInt1(false)}), r0);
                         break;
                     case TokenId::IntrinsicByteSwap:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::bswap, {I64_TY()}, {r1}), r0);
+                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::bswap, {IX_TY(numBits)}, {r1}), r0);
                         break;
                     default:
                         ok = false;
