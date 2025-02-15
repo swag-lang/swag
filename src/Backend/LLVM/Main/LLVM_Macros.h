@@ -102,14 +102,6 @@
     auto         r0 = GEP64(allocR, ip->c.u32); \
     llvm::Value* r1 = MK_IMMA_64();             \
     llvm::Value* r2 = MK_IMMB_64()
-#define MK_BINOPF32_CAB()                               \
-    auto         r0 = GEP64_PTR_F32(allocR, ip->c.u32); \
-    llvm::Value* r1 = MK_IMMA_F32();                    \
-    llvm::Value* r2 = MK_IMMB_F32()
-#define MK_BINOPF64_CAB()                               \
-    auto         r0 = GEP64_PTR_F64(allocR, ip->c.u32); \
-    llvm::Value* r1 = MK_IMMA_F64();                    \
-    llvm::Value* r2 = MK_IMMB_F64()
 
 #define MK_BINOP_EQ8_CAB()                                 \
     auto         r0 = GEP64(allocR, ip->a.u32);            \

@@ -43,10 +43,10 @@ bool ByteCodeGen::emitBinaryOpPlus(const ByteCodeGenContext* context, const Type
                 EMIT_INST3(context, ByteCodeOp::BinOpPlusU64, r0, r1, r2);
                 return true;
             case NativeTypeKind::F32:
-                EMIT_INST3(context, ByteCodeOp::BinOpPlusF32, r0, r1, r2);
+                EMIT_INST3(context, ByteCodeOp::BinOpPlusF32_Safe, r0, r1, r2);
                 return true;
             case NativeTypeKind::F64:
-                EMIT_INST3(context, ByteCodeOp::BinOpPlusF64, r0, r1, r2);
+                EMIT_INST3(context, ByteCodeOp::BinOpPlusF64_Safe, r0, r1, r2);
                 return true;
             default:
                 return Report::internalError(context->node, "emitBinaryOpPlus, type not supported");
@@ -210,10 +210,10 @@ bool ByteCodeGen::emitBinaryOpMul(const ByteCodeGenContext* context, const TypeI
             EMIT_INST3(context, ByteCodeOp::BinOpMulU64, r0, r1, r2);
             return true;
         case NativeTypeKind::F32:
-            EMIT_INST3(context, ByteCodeOp::BinOpMulF32, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::BinOpMulF32_Safe, r0, r1, r2);
             return true;
         case NativeTypeKind::F64:
-            EMIT_INST3(context, ByteCodeOp::BinOpMulF64, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::BinOpMulF64_Safe, r0, r1, r2);
             return true;
         default:
             return Report::internalError(context->node, "emitBinaryOpMul, type not supported");

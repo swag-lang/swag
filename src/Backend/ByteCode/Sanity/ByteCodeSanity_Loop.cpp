@@ -2133,10 +2133,10 @@ bool ByteCodeSanity::loop()
             case ByteCodeOp::BinOpPlusU64:
                 BINOP_OVF(+, u64, addWillOverflow, "+", g_TypeMgr->typeInfoU64);
                 break;
-            case ByteCodeOp::BinOpPlusF32:
+            case ByteCodeOp::BinOpPlusF32_Safe:
                 BINOP(+, f32);
                 break;
-            case ByteCodeOp::BinOpPlusF64:
+            case ByteCodeOp::BinOpPlusF64_Safe:
                 BINOP(+, f64);
                 break;
 
@@ -2195,10 +2195,10 @@ bool ByteCodeSanity::loop()
             case ByteCodeOp::BinOpMulU64:
                 BINOP_OVF(*, u64, mulWillOverflow, "*", g_TypeMgr->typeInfoU64);
                 break;
-            case ByteCodeOp::BinOpMulF32:
+            case ByteCodeOp::BinOpMulF32_Safe:
                 BINOP(*, f32);
                 break;
-            case ByteCodeOp::BinOpMulF64:
+            case ByteCodeOp::BinOpMulF64_Safe:
                 BINOP(*, f64);
                 break;
 

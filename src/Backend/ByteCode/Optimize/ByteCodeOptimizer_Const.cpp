@@ -243,10 +243,10 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 case ByteCodeOp::BinOpPlusU64_Safe:
                     BINOP_S64(+);
                     break;
-                case ByteCodeOp::BinOpPlusF32:
+                case ByteCodeOp::BinOpPlusF32_Safe:
                     BINOP_F32(+);
                     break;
-                case ByteCodeOp::BinOpPlusF64:
+                case ByteCodeOp::BinOpPlusF64_Safe:
                     BINOP_F64(+);
                     break;
 
@@ -353,10 +353,10 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 case ByteCodeOp::BinOpMulU64_Safe:
                     BINOP_S64(*);
                     break;
-                case ByteCodeOp::BinOpMulF32:
+                case ByteCodeOp::BinOpMulF32_Safe:
                     BINOP_F32(*);
                     break;
-                case ByteCodeOp::BinOpMulF64:
+                case ByteCodeOp::BinOpMulF64_Safe:
                     BINOP_F64(*);
                     break;
 

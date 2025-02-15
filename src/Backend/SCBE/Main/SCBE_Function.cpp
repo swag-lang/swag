@@ -480,8 +480,8 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::BinOpMulU64:
                 emitBinOpOverflow(pp, ip, CPUOp::MUL, SafetyMsg::Mul, SCBE_CPU::getOpType(ip->op));
                 break;
-            case ByteCodeOp::BinOpMulF32:
-            case ByteCodeOp::BinOpMulF64:
+            case ByteCodeOp::BinOpMulF32_Safe:
+            case ByteCodeOp::BinOpMulF64_Safe:
                 emitBinOp(pp, ip, CPUOp::FMUL);
                 break;
 
@@ -544,8 +544,8 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::BinOpPlusU64:
                 emitBinOpOverflow(pp, ip, CPUOp::ADD, SafetyMsg::Plus, SCBE_CPU::getOpType(ip->op));
                 break;
-            case ByteCodeOp::BinOpPlusF32:
-            case ByteCodeOp::BinOpPlusF64:
+            case ByteCodeOp::BinOpPlusF32_Safe:
+            case ByteCodeOp::BinOpPlusF64_Safe:
                 emitBinOp(pp, ip, CPUOp::FADD);
                 break;
 
