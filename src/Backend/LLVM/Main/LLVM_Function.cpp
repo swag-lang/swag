@@ -2133,16 +2133,16 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
                 const auto numBits = BackendEncoder::getNumBits(ip->op);
                 const auto r0      = MK_IMMA_IX(numBits);
-                auto       r1      = builder.getIntN(numBits, ip->b.u64);
-                auto       b0      = builder.CreateICmpEQ(r0, r1);
-                builder.CreateCondBr(b0, trueBlocks[1], falseBlocks[1]);
+                const auto r1      = builder.getIntN(numBits, ip->b.u64);
+                const auto r2      = builder.CreateICmpEQ(r0, r1);
+                builder.CreateCondBr(r2, trueBlocks[1], falseBlocks[1]);
                 builder.SetInsertPoint(falseBlocks[1]);
 
                 for (uint32_t idx = 2; idx < ip->c.u32; idx++)
                 {
-                    r1 = builder.getIntN(numBits, (idx - 1) + ip->b.u64);
-                    b0 = builder.CreateICmpEQ(r0, r1);
-                    builder.CreateCondBr(b0, trueBlocks[idx], falseBlocks[idx]);
+                    const auto r3 = builder.getIntN(numBits, (idx - 1) + ip->b.u64);
+                    const auto r4 = builder.CreateICmpEQ(r0, r3);
+                    builder.CreateCondBr(r4, trueBlocks[idx], falseBlocks[idx]);
                     builder.SetInsertPoint(falseBlocks[idx]);
                 }
 
@@ -2155,7 +2155,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::Jump:
             {
-                auto label = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+                const auto label = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
                 builder.CreateBr(label);
                 blockIsClosed = true;
                 break;
@@ -2165,41 +2165,41 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::JumpIfTrue:
             {
-                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-                auto r0         = GEP64(allocR, ip->a.u32);
-                auto b0         = builder.CreateIsNotNull(builder.CreateLoad(I8_TY(), r0));
-                builder.CreateCondBr(b0, labelTrue, labelFalse);
+                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto r0         = GEP64(allocR, ip->a.u32);
+                const auto r1         = builder.CreateIsNotNull(builder.CreateLoad(I8_TY(), r0));
+                builder.CreateCondBr(r1, labelTrue, labelFalse);
                 blockIsClosed = true;
                 break;
             }
             case ByteCodeOp::JumpIfFalse:
             {
-                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-                auto r0         = GEP64(allocR, ip->a.u32);
-                auto b0         = builder.CreateIsNull(builder.CreateLoad(I8_TY(), r0));
-                builder.CreateCondBr(b0, labelTrue, labelFalse);
+                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto r0         = GEP64(allocR, ip->a.u32);
+                const auto r1         = builder.CreateIsNull(builder.CreateLoad(I8_TY(), r0));
+                builder.CreateCondBr(r1, labelTrue, labelFalse);
                 blockIsClosed = true;
                 break;
             }
             case ByteCodeOp::JumpIfRTFalse:
             {
-                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-                auto v0         = resultFuncCall ? resultFuncCall : builder.CreateLoad(I8_TY(), GEP8(allocRR, 0));
-                auto b0         = builder.CreateIsNull(v0);
-                builder.CreateCondBr(b0, labelTrue, labelFalse);
+                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto r0         = resultFuncCall ? resultFuncCall : builder.CreateLoad(I8_TY(), GEP8(allocRR, 0));
+                const auto r1         = builder.CreateIsNull(r0);
+                builder.CreateCondBr(r1, labelTrue, labelFalse);
                 blockIsClosed = true;
                 break;
             }
             case ByteCodeOp::JumpIfRTTrue:
             {
-                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-                auto v0         = resultFuncCall ? resultFuncCall : builder.CreateLoad(I8_TY(), GEP8(allocRR, 0));
-                auto b0         = builder.CreateIsNotNull(v0);
-                builder.CreateCondBr(b0, labelTrue, labelFalse);
+                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto r0         = resultFuncCall ? resultFuncCall : builder.CreateLoad(I8_TY(), GEP8(allocRR, 0));
+                const auto r1         = builder.CreateIsNotNull(r0);
+                builder.CreateCondBr(r1, labelTrue, labelFalse);
                 blockIsClosed = true;
                 break;
             }
@@ -2215,8 +2215,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
                 const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
                 const auto r0         = GEP64(allocR, ip->a.u32);
-                const auto b0         = builder.CreateIsNull(builder.CreateLoad(IX_TY(numBits), r0));
-                builder.CreateCondBr(b0, labelTrue, labelFalse);
+                const auto r1         = builder.CreateIsNull(builder.CreateLoad(IX_TY(numBits), r0));
+                builder.CreateCondBr(r1, labelTrue, labelFalse);
                 blockIsClosed = true;
                 break;
             }
@@ -2232,8 +2232,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
                 const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
                 const auto r0         = GEP64(allocR, ip->a.u32);
-                const auto b0         = builder.CreateIsNotNull(builder.CreateLoad(IX_TY(numBits), r0));
-                builder.CreateCondBr(b0, labelTrue, labelFalse);
+                const auto r1         = builder.CreateIsNotNull(builder.CreateLoad(IX_TY(numBits), r0));
+                builder.CreateCondBr(r1, labelTrue, labelFalse);
                 blockIsClosed = true;
                 break;
             }
@@ -2250,8 +2250,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
                 const auto r0         = MK_IMMA_IX(numBits);
                 const auto r1         = MK_IMMC_IX(numBits);
-                const auto b0         = builder.CreateICmpNE(r0, r1);
-                builder.CreateCondBr(b0, labelTrue, labelFalse);
+                const auto r2         = builder.CreateICmpNE(r0, r1);
+                builder.CreateCondBr(r2, labelTrue, labelFalse);
                 blockIsClosed = true;
                 break;
             }
@@ -2264,8 +2264,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
                 const auto r0         = MK_IMMA_FX(numBits);
                 const auto r1         = MK_IMMC_FX(numBits);
-                const auto b0         = builder.CreateFCmpUNE(r0, r1);
-                builder.CreateCondBr(b0, labelTrue, labelFalse);
+                const auto r2         = builder.CreateFCmpUNE(r0, r1);
+                builder.CreateCondBr(r2, labelTrue, labelFalse);
                 blockIsClosed = true;
                 break;
             }
@@ -2610,14 +2610,14 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::IntrinsicCompilerError:
             {
-                auto bcF = ip->node->resolvedSymbolOverload()->node->extByteCode()->bc;
+                const auto bcF = ip->node->resolvedSymbolOverload()->node->extByteCode()->bc;
                 emitCall(buildParameters, bcF->getCallName().cstr(), allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
                 break;
             }
 
             case ByteCodeOp::IntrinsicCompilerWarning:
             {
-                auto bcF = ip->node->resolvedSymbolOverload()->node->extByteCode()->bc;
+                const auto bcF = ip->node->resolvedSymbolOverload()->node->extByteCode()->bc;
                 emitCall(buildParameters, bcF->getCallName().cstr(), allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
                 break;
             }
@@ -2641,48 +2641,48 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::InternalGetTlsPtr:
             {
-                auto v0     = builder.getInt64(module->tlsSegment.totalCount);
-                auto r1     = builder.CreateInBoundsGEP(I8_TY(), pp.tlsSeg, pp.cstAi64);
-                auto vid    = builder.CreateLoad(I64_TY(), pp.symTlsThreadLocalId);
-                auto result = emitCall(buildParameters, g_LangSpec->name_priv_tlsGetPtr, allocR, allocT, {UINT32_MAX, UINT32_MAX, UINT32_MAX}, {vid, v0, r1});
+                const auto r0     = builder.getInt64(module->tlsSegment.totalCount);
+                const auto r1     = builder.CreateInBoundsGEP(I8_TY(), pp.tlsSeg, pp.cstAi64);
+                const auto r2     = builder.CreateLoad(I64_TY(), pp.symTlsThreadLocalId);
+                const auto result = emitCall(buildParameters, g_LangSpec->name_priv_tlsGetPtr, allocR, allocT, {UINT32_MAX, UINT32_MAX, UINT32_MAX}, {r2, r0, r1});
                 builder.CreateStore(result, GEP64_PTR_PTR_I8(allocR, ip->a.u32));
                 break;
             }
 
             case ByteCodeOp::IntrinsicGetContext:
             {
-                auto r0     = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cstAi32, pp.cstCi32});
-                auto v0     = builder.CreateLoad(I64_TY(), r0);
-                auto result = emitCall(buildParameters, g_LangSpec->name_priv_tlsGetValue, allocR, allocT, {UINT32_MAX}, {v0});
+                const auto r0     = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cstAi32, pp.cstCi32});
+                const auto r1     = builder.CreateLoad(I64_TY(), r0);
+                auto       result = emitCall(buildParameters, g_LangSpec->name_priv_tlsGetValue, allocR, allocT, {UINT32_MAX}, {r1});
                 builder.CreateStore(builder.CreatePtrToInt(result, I64_TY()), GEP64(allocR, ip->a.u32));
                 break;
             }
 
             case ByteCodeOp::IntrinsicSetContext:
             {
-                auto r0 = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cstAi32, pp.cstCi32});
-                auto v0 = builder.CreateLoad(I64_TY(), r0);
-                emitCall(buildParameters, g_LangSpec->name_priv_tlsSetValue, allocR, allocT, {UINT32_MAX, ip->a.u32}, {v0, nullptr});
+                const auto r0 = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cstAi32, pp.cstCi32});
+                const auto r1 = builder.CreateLoad(I64_TY(), r0);
+                emitCall(buildParameters, g_LangSpec->name_priv_tlsSetValue, allocR, allocT, {UINT32_MAX, ip->a.u32}, {r1, nullptr});
                 break;
             }
 
             case ByteCodeOp::IntrinsicGetProcessInfos:
             {
-                auto v0 = TO_PTR_I8(builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, pp.cstAi64));
-                auto r0 = GEP64_PTR_PTR_I8(allocR, ip->a.u32);
-                builder.CreateStore(v0, r0);
+                const auto r0 = TO_PTR_I8(builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, pp.cstAi64));
+                const auto r1 = GEP64_PTR_PTR_I8(allocR, ip->a.u32);
+                builder.CreateStore(r0, r1);
                 break;
             }
 
             case ByteCodeOp::IntrinsicCVaStart:
             {
-                auto r0 = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
+                const auto r0 = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
                 builder.CreateIntrinsic(llvm::Intrinsic::vastart, {}, {r0});
                 break;
             }
             case ByteCodeOp::IntrinsicCVaEnd:
             {
-                auto r0 = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
+                const auto r0 = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
                 builder.CreateIntrinsic(llvm::Intrinsic::vaend, {}, {r0});
                 break;
             }
