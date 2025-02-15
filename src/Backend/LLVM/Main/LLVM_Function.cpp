@@ -1763,62 +1763,48 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::AffectOpAndEqU8:
-            {
-                MK_BINOP_EQ8_CAB();
-                auto v0 = builder.CreateAnd(builder.CreateLoad(I8_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
-                break;
-            }
             case ByteCodeOp::AffectOpAndEqU16:
-            {
-                MK_BINOP_EQ16_CAB();
-                auto v0 = builder.CreateAnd(builder.CreateLoad(I16_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
-                break;
-            }
             case ByteCodeOp::AffectOpAndEqU32:
-            {
-                MK_BINOP_EQ32_CAB();
-                auto v0 = builder.CreateAnd(builder.CreateLoad(I32_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
-                break;
-            }
             case ByteCodeOp::AffectOpAndEqU64:
             {
-                MK_BINOP_EQ64_CAB();
-                auto v0 = builder.CreateAnd(builder.CreateLoad(I64_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64(allocR, ip->a.u32);
+                const auto r1      = builder.CreateLoad(PTR_IX_TY(numBits), r0);
+                const auto r2      = MK_IMMB_IX(numBits);
+                const auto r3      = builder.CreateAnd(builder.CreateLoad(IX_TY(numBits), r1), r2);
+                builder.CreateStore(r3, r1);
                 break;
             }
 
                 /////////////////////////////////////
 
             case ByteCodeOp::AffectOpOrEqU8:
-            {
-                MK_BINOP_EQ8_CAB();
-                auto v0 = builder.CreateOr(builder.CreateLoad(I8_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
-                break;
-            }
             case ByteCodeOp::AffectOpOrEqU16:
-            {
-                MK_BINOP_EQ16_CAB();
-                auto v0 = builder.CreateOr(builder.CreateLoad(I16_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
-                break;
-            }
             case ByteCodeOp::AffectOpOrEqU32:
-            {
-                MK_BINOP_EQ32_CAB();
-                auto v0 = builder.CreateOr(builder.CreateLoad(I32_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
-                break;
-            }
             case ByteCodeOp::AffectOpOrEqU64:
             {
-                MK_BINOP_EQ64_CAB();
-                auto v0 = builder.CreateOr(builder.CreateLoad(I64_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64(allocR, ip->a.u32);
+                const auto r1      = builder.CreateLoad(PTR_IX_TY(numBits), r0);
+                const auto r2      = MK_IMMB_IX(numBits);
+                const auto r3      = builder.CreateOr(builder.CreateLoad(IX_TY(numBits), r1), r2);
+                builder.CreateStore(r3, r1);
+                break;
+            }
+
+                /////////////////////////////////////
+
+            case ByteCodeOp::AffectOpXorEqU8:
+            case ByteCodeOp::AffectOpXorEqU16:
+            case ByteCodeOp::AffectOpXorEqU32:
+            case ByteCodeOp::AffectOpXorEqU64:
+            {
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64(allocR, ip->a.u32);
+                const auto r1      = builder.CreateLoad(PTR_IX_TY(numBits), r0);
+                const auto r2      = MK_IMMB_IX(numBits);
+                const auto r3      = builder.CreateXor(builder.CreateLoad(IX_TY(numBits), r1), r2);
+                builder.CreateStore(r3, r1);
                 break;
             }
 
@@ -1857,40 +1843,6 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             {
                 const auto numBits = BackendEncoder::getNumBits(ip->op);
                 emitShiftRightEqArithmetic(context, builder, allocR, ip, numBits);
-                break;
-            }
-
-                /////////////////////////////////////
-
-            case ByteCodeOp::AffectOpXorEqU8:
-            {
-                MK_BINOP_EQ8_CAB();
-                auto v0 = builder.CreateXor(builder.CreateLoad(I8_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
-                break;
-            }
-
-            case ByteCodeOp::AffectOpXorEqU16:
-            {
-                MK_BINOP_EQ16_CAB();
-                auto v0 = builder.CreateXor(builder.CreateLoad(I16_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
-                break;
-            }
-
-            case ByteCodeOp::AffectOpXorEqU32:
-            {
-                MK_BINOP_EQ32_CAB();
-                auto v0 = builder.CreateXor(builder.CreateLoad(I32_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
-                break;
-            }
-
-            case ByteCodeOp::AffectOpXorEqU64:
-            {
-                MK_BINOP_EQ64_CAB();
-                auto v0 = builder.CreateXor(builder.CreateLoad(I64_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
                 break;
             }
 
