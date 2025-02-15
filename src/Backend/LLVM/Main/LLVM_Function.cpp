@@ -3446,29 +3446,23 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::IntrinsicMakeCallback:
             {
-                llvm::BasicBlock* blockLambdaBC = llvm::BasicBlock::Create(context, "", func);
-                llvm::BasicBlock* blockNext     = llvm::BasicBlock::Create(context, "", func);
-                auto              v0            = builder.CreateLoad(I64_TY(), GEP64(allocR, ip->a.u32));
+                const auto blockLambdaBC = llvm::BasicBlock::Create(context, "", func);
+                const auto blockNext     = llvm::BasicBlock::Create(context, "", func);
 
-                {
-                    auto v1 = builder.CreateAnd(v0, builder.getInt64(SWAG_LAMBDA_BC_MARKER));
-                    auto v2 = builder.CreateIsNotNull(v1);
-                    builder.CreateCondBr(v2, blockLambdaBC, blockNext);
-                }
-
+                const auto r0 = builder.CreateLoad(I64_TY(), GEP64(allocR, ip->a.u32));
+                const auto r1 = builder.CreateAnd(r0, builder.getInt64(SWAG_LAMBDA_BC_MARKER));
+                const auto r2 = builder.CreateIsNotNull(r1);
+                builder.CreateCondBr(r2, blockLambdaBC, blockNext);
                 builder.SetInsertPoint(blockLambdaBC);
-                {
-                    auto r0 = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cstAi32, pp.cstFi32});
-                    auto r1 = builder.CreateLoad(PTR_I8_TY(), r0);
-                    auto pt = llvm::PointerType::getUnqual(pp.makeCallbackTy);
-                    auto r2 = builder.CreatePointerCast(r1, pt);
-                    auto v2 = builder.CreateIntToPtr(v0, PTR_I8_TY());
-                    auto v1 = builder.CreateCall(pp.makeCallbackTy, r2, {v2});
-                    auto r3 = GEP64_PTR_PTR_I8(allocR, ip->a.u32);
-                    builder.CreateStore(v1, r3);
-                    builder.CreateBr(blockNext);
-                }
-
+                const auto r3 = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cstAi32, pp.cstFi32});
+                const auto r4 = builder.CreateLoad(PTR_I8_TY(), r3);
+                const auto r5 = llvm::PointerType::getUnqual(pp.makeCallbackTy);
+                const auto r6 = builder.CreatePointerCast(r4, r5);
+                const auto r7 = builder.CreateIntToPtr(r0, PTR_I8_TY());
+                const auto r8 = builder.CreateCall(pp.makeCallbackTy, r6, {r7});
+                const auto r9 = GEP64_PTR_PTR_I8(allocR, ip->a.u32);
+                builder.CreateStore(r8, r9);
+                builder.CreateBr(blockNext);
                 builder.SetInsertPoint(blockNext);
                 break;
             }
