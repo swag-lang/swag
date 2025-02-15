@@ -1,10 +1,10 @@
 #pragma once
-#define IX_TY(__n) llvm::Type::getIntNTy(context, __n)
 #define I1_TY()    llvm::Type::getInt1Ty(context)
 #define I8_TY()    llvm::Type::getInt8Ty(context)
 #define I16_TY()   llvm::Type::getInt16Ty(context)
 #define I32_TY()   llvm::Type::getInt32Ty(context)
 #define I64_TY()   llvm::Type::getInt64Ty(context)
+#define IX_TY(__n) llvm::Type::getIntNTy(context, __n)
 #define F32_TY()   llvm::Type::getFloatTy(context)
 #define F64_TY()   llvm::Type::getDoubleTy(context)
 #define FX_TY(__n) ((__n) == 32 ? llvm::Type::getFloatTy(context) : llvm::Type::getDoubleTy(context))
@@ -19,24 +19,10 @@
 #define PTR_F64_TY()   llvm::Type::getDoublePtrTy(context)
 #define PTR_FX_TY(__n) (__n) == 32 ? llvm::Type::getFloatPtrTy(context) : llvm::Type::getDoublePtrTy(context)
 
-#define PTR_PTR_I8_TY()  llvm::Type::getInt8PtrTy(context)->getPointerTo()
-#define PTR_PTR_I16_TY() llvm::Type::getInt16PtrTy(context)->getPointerTo()
-#define PTR_PTR_I32_TY() llvm::Type::getInt32PtrTy(context)->getPointerTo()
-#define PTR_PTR_I64_TY() llvm::Type::getInt64PtrTy(context)->getPointerTo()
-#define PTR_PTR_F32_TY() llvm::Type::getFloatPtrTy(context)->getPointerTo()
-#define PTR_PTR_F64_TY() llvm::Type::getDoublePtrTy(context)->getPointerTo()
-
-#define CST_RA32    builder.getInt32(ip->a.u32)
-#define CST_RB32    builder.getInt32(ip->b.u32)
 #define CST_RC32    builder.getInt32(ip->c.u32)
-#define CST_RD32    builder.getInt32(ip->d.u32)
-#define CST_RA64    builder.getInt64(ip->a.u64)
-#define CST_RB64    builder.getInt64(ip->b.u64)
 #define CST_RC64    builder.getInt64(ip->c.u64)
 #define CST_RA(__n) builder.getIntN(__n, ip->a.u64)
 #define CST_RB(__n) builder.getIntN(__n, ip->b.u64)
-#define CST_RC(__n) builder.getIntN(__n, ip->c.u64)
-#define CST_RD(__n) builder.getIntN(__n, ip->d.u64)
 
 #define GEP(__type, __data, __offset) ((__offset) ? builder.CreateInBoundsGEP(__type, __data, builder.getInt64(__offset)) : (__data))
 
@@ -63,12 +49,7 @@
 #define GEP8_PTR_F64(__data, __offset)     ((__offset) & 7) ? TO_PTR_F64(GEP8(__data, __offset)) : builder.CreateInBoundsGEP(F64_TY(), __data, builder.getInt64((__offset) / 8))
 #define GEP8_PTR_FX(__data, __offset, __n) ((__offset) & (((__n) / 8) - 1)) ? TO_PTR_FX(GEP8(__data, __offset), __n) : builder.CreateInBoundsGEP(FX_TY(__n), __data, builder.getInt64((__offset) / ((__n) / 8)))
 
-#define TO_PTR_PTR_I8(__r)  builder.CreatePointerCast(__r, PTR_I8_TY()->getPointerTo())
-#define TO_PTR_PTR_I16(__r) builder.CreatePointerCast(__r, PTR_I16_TY()->getPointerTo())
-#define TO_PTR_PTR_I32(__r) builder.CreatePointerCast(__r, PTR_I32_TY()->getPointerTo())
-#define TO_PTR_PTR_I64(__r) builder.CreatePointerCast(__r, PTR_I64_TY()->getPointerTo())
-#define TO_PTR_PTR_F32(__r) builder.CreatePointerCast(__r, PTR_F32_TY()->getPointerTo())
-#define TO_PTR_PTR_F64(__r) builder.CreatePointerCast(__r, PTR_F64_TY()->getPointerTo())
+#define TO_PTR_PTR_I8(__r) builder.CreatePointerCast(__r, PTR_I8_TY()->getPointerTo())
 
 #define TO_PTR_I8(__r)      builder.CreatePointerCast(__r, PTR_I8_TY())
 #define TO_PTR_I16(__r)     builder.CreatePointerCast(__r, PTR_I16_TY())
@@ -78,8 +59,6 @@
 #define TO_PTR_F64(__r)     builder.CreatePointerCast(__r, PTR_F64_TY())
 #define TO_PTR_F32(__r)     builder.CreatePointerCast(__r, PTR_F32_TY())
 #define TO_PTR_FX(__r, __n) builder.CreatePointerCast(__r, PTR_FX_TY(__n))
-
-#define TO_BOOL(__r) builder.CreateIntCast(__r, llvm::Type::getInt1Ty(context), false)
 
 #define MK_IMMA_8()     ip->hasFlag(BCI_IMM_A) ? (llvm::Value*) builder.getInt8(ip->a.u8) : (llvm::Value*) builder.CreateLoad(I8_TY(), GEP64(allocR, ip->a.u32))
 #define MK_IMMA_16()    ip->hasFlag(BCI_IMM_A) ? (llvm::Value*) builder.getInt16(ip->a.u16) : (llvm::Value*) builder.CreateLoad(I16_TY(), GEP64(allocR, ip->a.u32))
@@ -99,22 +78,12 @@
 #define MK_IMMB_F64()   ip->hasFlag(BCI_IMM_B) ? (llvm::Value*) llvm::ConstantFP::get(F64_TY(), ip->b.f64) : (llvm::Value*) builder.CreateLoad(F64_TY(), GEP64(allocR, ip->b.u32))
 #define MK_IMMB_FX(__n) ip->hasFlag(BCI_IMM_B) ? (llvm::Value*) llvm::ConstantFP::get(FX_TY(__n), __n == 32 ? ip->b.f32 : ip->b.f64) : (llvm::Value*) builder.CreateLoad(FX_TY(__n), GEP64(allocR, ip->b.u32))
 
-#define MK_IMMC_8()     ip->hasFlag(BCI_IMM_C) ? (llvm::Value*) builder.getInt8(ip->c.u8) : (llvm::Value*) builder.CreateLoad(I8_TY(), GEP64(allocR, ip->c.u32))
-#define MK_IMMC_16()    ip->hasFlag(BCI_IMM_C) ? (llvm::Value*) builder.getInt16(ip->c.u16) : (llvm::Value*) builder.CreateLoad(I16_TY(), GEP64(allocR, ip->c.u32))
-#define MK_IMMC_32()    ip->hasFlag(BCI_IMM_C) ? (llvm::Value*) builder.getInt32(ip->c.u32) : (llvm::Value*) builder.CreateLoad(I32_TY(), GEP64(allocR, ip->c.u32))
 #define MK_IMMC_64()    ip->hasFlag(BCI_IMM_C) ? (llvm::Value*) builder.getInt64(ip->c.u64) : (llvm::Value*) builder.CreateLoad(I64_TY(), GEP64(allocR, ip->c.u32))
 #define MK_IMMC_IX(__n) ip->hasFlag(BCI_IMM_C) ? (llvm::Value*) builder.getIntN(__n, ip->c.u64) : (llvm::Value*) builder.CreateLoad(IX_TY(__n), GEP64(allocR, ip->c.u32))
-#define MK_IMMC_F32()   ip->hasFlag(BCI_IMM_C) ? (llvm::Value*) llvm::ConstantFP::get(F32_TY(), ip->c.f32) : (llvm::Value*) builder.CreateLoad(F32_TY(), GEP64(allocR, ip->c.u32))
-#define MK_IMMC_F64()   ip->hasFlag(BCI_IMM_C) ? (llvm::Value*) llvm::ConstantFP::get(F64_TY(), ip->c.f64) : (llvm::Value*) builder.CreateLoad(F64_TY(), GEP64(allocR, ip->c.u32))
 #define MK_IMMC_FX(__n) ip->hasFlag(BCI_IMM_C) ? (llvm::Value*) llvm::ConstantFP::get(FX_TY(__n), __n == 32 ? ip->c.f32 : ip->c.f64) : (llvm::Value*) builder.CreateLoad(FX_TY(__n), GEP64(allocR, ip->c.u32))
 
-#define MK_IMMD_8()     ip->hasFlag(BCI_IMM_D) ? (llvm::Value*) builder.getInt8(ip->d.u8) : (llvm::Value*) builder.CreateLoad(I8_TY(), GEP64(allocR, ip->d.u32))
-#define MK_IMMD_16()    ip->hasFlag(BCI_IMM_D) ? (llvm::Value*) builder.getInt16(ip->d.u16) : (llvm::Value*) builder.CreateLoad(I16_TY(), GEP64(allocR, ip->d.u32))
-#define MK_IMMD_32()    ip->hasFlag(BCI_IMM_D) ? (llvm::Value*) builder.getInt32(ip->d.u32) : (llvm::Value*) builder.CreateLoad(I32_TY(), GEP64(allocR, ip->d.u32))
 #define MK_IMMD_64()    ip->hasFlag(BCI_IMM_D) ? (llvm::Value*) builder.getInt64(ip->d.u64) : (llvm::Value*) builder.CreateLoad(I64_TY(), GEP64(allocR, ip->d.u32))
 #define MK_IMMD_IX(__n) ip->hasFlag(BCI_IMM_D) ? (llvm::Value*) builder.getIntN(__n, ip->d.u64) : (llvm::Value*) builder.CreateLoad(IX_TY(__n), GEP64(allocR, ip->d.u32))
-#define MK_IMMD_F32()   ip->hasFlag(BCI_IMM_D) ? (llvm::Value*) llvm::ConstantFP::get(F32_TY(), ip->d.f32) : (llvm::Value*) builder.CreateLoad(F32_TY(), GEP64(allocR, ip->d.u32))
-#define MK_IMMD_F64()   ip->hasFlag(BCI_IMM_D) ? (llvm::Value*) llvm::ConstantFP::get(F64_TY(), ip->d.f64) : (llvm::Value*) builder.CreateLoad(F64_TY(), GEP64(allocR, ip->d.u32))
 #define MK_IMMD_FX(__n) ip->hasFlag(BCI_IMM_D) ? (llvm::Value*) llvm::ConstantFP::get(FX_TY(__n), __n == 32 ? ip->d.f32 : ip->d.f64) : (llvm::Value*) builder.CreateLoad(FX_TY(__n), GEP64(allocR, ip->d.u32))
 
 #define MK_BINOP8_CAB()                                \
@@ -156,9 +125,6 @@
 #define MK_BINOP_EQ8_SCAB()                        \
     auto         r0 = GEP8(allocStack, ip->a.u32); \
     llvm::Value* r1 = MK_IMMB_8()
-#define MK_BINOP_EQ8_SSCAB()                       \
-    auto         r0 = GEP8(allocStack, ip->a.u32); \
-    llvm::Value* r1 = builder.CreateInBoundsGEP(I8_TY(), allocStack, CST_RB32)
 
 #define MK_BINOP_EQ16_CAB()                                 \
     auto         r0 = GEP64(allocR, ip->a.u32);             \
@@ -174,9 +140,6 @@
 #define MK_BINOP_EQ16_SCAB()                               \
     auto         r0 = GEP8_PTR_I16(allocStack, ip->a.u32); \
     llvm::Value* r1 = MK_IMMB_16()
-#define MK_BINOP_EQ16_SSCAB()                              \
-    auto         r0 = GEP8_PTR_I16(allocStack, ip->a.u32); \
-    llvm::Value* r1 = GEP8_PTR_I16(allocStack, ip->b.u32)
 
 #define MK_BINOP_EQ32_CAB()                                 \
     auto         r0 = GEP64(allocR, ip->a.u32);             \
@@ -210,9 +173,6 @@
 #define MK_BINOP_EQ64_SCAB()                               \
     auto         r0 = GEP8_PTR_I64(allocStack, ip->a.u32); \
     llvm::Value* r1 = MK_IMMB_64()
-#define MK_BINOP_EQ64_SSCAB()                              \
-    auto         r0 = GEP8_PTR_I64(allocStack, ip->a.u32); \
-    llvm::Value* r1 = GEP8_PTR_I64(allocStack, ip->b.u32)
 
 #define MK_BINOP_EQF32_CAB()                                \
     auto         r0 = GEP64(allocR, ip->a.u32);             \
@@ -226,9 +186,6 @@
 #define MK_BINOP_EQF32_SCAB()                              \
     auto         r0 = GEP8_PTR_F32(allocStack, ip->a.u32); \
     llvm::Value* r1 = MK_IMMB_F32()
-#define MK_BINOP_EQF32_SSCAB()                     \
-    auto r0 = GEP8_PTR_F32(allocStack, ip->a.u32); \
-    auto r1 = GEP8_PTR_F32(allocStack, ip->b.u32)
 
 #define MK_BINOP_EQF64_CAB()                                \
     auto         r0 = GEP64(allocR, ip->a.u32);             \
@@ -242,9 +199,6 @@
 #define MK_BINOP_EQF64_SCAB()                              \
     auto         r0 = GEP8_PTR_F64(allocStack, ip->a.u32); \
     llvm::Value* r1 = MK_IMMB_F64()
-#define MK_BINOP_EQF64_SSCAB()                     \
-    auto r0 = GEP8_PTR_F64(allocStack, ip->a.u32); \
-    auto r1 = GEP8_PTR_F64(allocStack, ip->b.u32)
 
 #define OPEQ_OVERFLOW(__intr, __inst, __type, __msg, __signed)                                                         \
     do                                                                                                                 \
