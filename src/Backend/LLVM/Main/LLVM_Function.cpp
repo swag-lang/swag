@@ -381,8 +381,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 const auto numBits = BackendEncoder::getNumBits(ip->op);
                 const auto r0      = GEP64(allocR, ip->a.u32);
                 const auto r1      = GEP8(allocStack, ip->b.u32);
-                const auto v0      = builder.CreateIntCast(builder.CreateLoad(IX_TY(numBits), r1), I64_TY(), false);
-                builder.CreateStore(v0, r0);
+                const auto r2      = builder.CreateIntCast(builder.CreateLoad(IX_TY(numBits), r1), I64_TY(), false);
+                builder.CreateStore(r2, r0);
                 break;
             }
 
@@ -397,12 +397,12 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
                 const auto r0 = GEP64(allocR, ip->a.u32);
                 const auto r1 = GEP8(allocStack, ip->b.u32);
-                const auto v0 = builder.CreateIntCast(builder.CreateLoad(IX_TY(numBits), r1), I64_TY(), false);
-                builder.CreateStore(v0, r0);
-                const auto r2 = GEP64(allocR, ip->c.u32);
-                const auto r3 = GEP8(allocStack, ip->d.u32);
-                const auto v1 = builder.CreateIntCast(builder.CreateLoad(IX_TY(numBits), r3), I64_TY(), false);
-                builder.CreateStore(v1, r2);
+                const auto r2 = builder.CreateIntCast(builder.CreateLoad(IX_TY(numBits), r1), I64_TY(), false);
+                builder.CreateStore(r2, r0);
+                const auto r3 = GEP64(allocR, ip->c.u32);
+                const auto r4 = GEP8(allocStack, ip->d.u32);
+                const auto r5 = builder.CreateIntCast(builder.CreateLoad(IX_TY(numBits), r4), I64_TY(), false);
+                builder.CreateStore(r5, r3);
                 break;
             }
 
@@ -412,9 +412,9 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             {
                 const auto r0 = GEP64(allocR, ip->a.u32);
                 const auto r1 = GEP8(allocStack, ip->b.u32);
-                const auto v0 = builder.CreateLoad(I64_TY(), r1);
-                const auto v1 = builder.CreateAdd(v0, builder.getInt64(ip->c.s64));
-                builder.CreateStore(v1, r0);
+                const auto r2 = builder.CreateLoad(I64_TY(), r1);
+                const auto r3 = builder.CreateAdd(r2, builder.getInt64(ip->c.s64));
+                builder.CreateStore(r3, r0);
                 break;
             }
 
@@ -424,12 +424,12 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::GetIncFromStack64DeRef64:
             {
                 const auto numBits = BackendEncoder::getNumBits(ip->op);
-                const auto r1      = GEP8(allocStack, ip->b.u32);
-                const auto v0      = builder.CreateLoad(PTR_I8_TY(), r1);
-                const auto v1      = GEP8_PTR_IX(v0, ip->c.u64, numBits);
-                const auto v2      = builder.CreateLoad(IX_TY(numBits), v1);
-                const auto v3      = builder.CreateIntCast(v2, I64_TY(), false);
-                builder.CreateStore(v3, GEP64(allocR, ip->a.u32));
+                const auto r0      = GEP8(allocStack, ip->b.u32);
+                const auto r1      = builder.CreateLoad(PTR_I8_TY(), r0);
+                const auto r2      = GEP8_PTR_IX(r1, ip->c.u64, numBits);
+                const auto r3      = builder.CreateLoad(IX_TY(numBits), r2);
+                const auto r4      = builder.CreateIntCast(r3, I64_TY(), false);
+                builder.CreateStore(r4, GEP64(allocR, ip->a.u32));
                 break;
             }
 
@@ -614,8 +614,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 const auto numBits = BackendEncoder::getNumBits(ip->op);
                 const auto r0      = GEP64(allocR, ip->a.u32);
                 const auto r1      = GEP64(allocR, ip->b.u32);
-                const auto v1      = builder.CreateIntCast(builder.CreateLoad(IX_TY(numBits), r1), I64_TY(), false);
-                builder.CreateStore(v1, r0);
+                const auto r2      = builder.CreateIntCast(builder.CreateLoad(IX_TY(numBits), r1), I64_TY(), false);
+                builder.CreateStore(r2, r0);
                 break;
             }
 
@@ -683,16 +683,16 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             {
                 const auto numBits = BackendEncoder::getNumBits(ip->op);
                 const auto r0      = GEP64(allocR, ip->a.u32);
-                const auto v0      = builder.CreateSub(builder.CreateLoad(IX_TY(numBits), r0), builder.getIntN(numBits, 1));
-                builder.CreateStore(v0, r0);
+                const auto r1      = builder.CreateSub(builder.CreateLoad(IX_TY(numBits), r0), builder.getIntN(numBits, 1));
+                builder.CreateStore(r1, r0);
                 break;
             }
 
             case ByteCodeOp::IncrementRA64:
             {
                 const auto r0 = GEP64(allocR, ip->a.u32);
-                const auto v0 = builder.CreateAdd(builder.CreateLoad(I64_TY(), r0), builder.getInt64(1));
-                builder.CreateStore(v0, r0);
+                const auto r1 = builder.CreateAdd(builder.CreateLoad(I64_TY(), r0), builder.getInt64(1));
+                builder.CreateStore(r1, r0);
                 break;
             }
 
@@ -702,10 +702,10 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             {
                 const auto r0 = GEP64(allocR, ip->a.u32);
                 const auto r1 = GEP64(allocR, ip->b.u32);
-                const auto v1 = builder.CreateAdd(builder.CreateLoad(I64_TY(), r1), CST_RC64);
-                const auto v2 = builder.CreateMul(builder.CreateLoad(I64_TY(), r0), v1);
-                const auto r2 = GEP64(allocR, ip->a.u32);
-                builder.CreateStore(v2, r2);
+                const auto r2 = builder.CreateAdd(builder.CreateLoad(I64_TY(), r1), CST_RC64);
+                const auto r3 = builder.CreateMul(builder.CreateLoad(I64_TY(), r0), r2);
+                const auto r4 = GEP64(allocR, ip->a.u32);
+                builder.CreateStore(r3, r4);
                 break;
             }
 
@@ -714,8 +714,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             {
                 const auto numBits = BackendEncoder::getNumBits(ip->op);
                 const auto r0      = GEP64(allocR, ip->a.u32);
-                const auto v0      = builder.CreateAdd(builder.CreateLoad(IX_TY(numBits), r0), CST_RB(numBits));
-                builder.CreateStore(v0, r0);
+                const auto r1      = builder.CreateAdd(builder.CreateLoad(IX_TY(numBits), r0), CST_RB(numBits));
+                builder.CreateStore(r1, r0);
                 break;
             }
 
