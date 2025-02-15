@@ -3789,77 +3789,21 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
 
             case ByteCodeOp::IntrinsicS8x2:
-            {
-                auto r0 = GEP64_PTR_I8(allocR, ip->a.u32);
-                auto r1 = MK_IMMB_8();
-                auto r2 = MK_IMMC_8();
-                switch (static_cast<TokenId>(ip->d.u32))
-                {
-                    case TokenId::IntrinsicMin:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smin, {I8_TY()}, {r1, r2}), r0);
-                        break;
-                    case TokenId::IntrinsicMax:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smax, {I8_TY()}, {r1, r2}), r0);
-                        break;
-                    default:
-                        ok = false;
-                        Report::internalError(buildParameters.module, form("unknown intrinsic [[%s]] during backend generation", ByteCode::opName(ip->op)));
-                        break;
-                }
-                break;
-            }
             case ByteCodeOp::IntrinsicS16x2:
-            {
-                auto r0 = GEP64_PTR_I16(allocR, ip->a.u32);
-                auto r1 = MK_IMMB_16();
-                auto r2 = MK_IMMC_16();
-                switch (static_cast<TokenId>(ip->d.u32))
-                {
-                    case TokenId::IntrinsicMin:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smin, {I16_TY()}, {r1, r2}), r0);
-                        break;
-                    case TokenId::IntrinsicMax:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smax, {I16_TY()}, {r1, r2}), r0);
-                        break;
-                    default:
-                        ok = false;
-                        Report::internalError(buildParameters.module, form("unknown intrinsic [[%s]] during backend generation", ByteCode::opName(ip->op)));
-                        break;
-                }
-                break;
-            }
             case ByteCodeOp::IntrinsicS32x2:
-            {
-                auto r0 = GEP64_PTR_I32(allocR, ip->a.u32);
-                auto r1 = MK_IMMB_32();
-                auto r2 = MK_IMMC_32();
-                switch (static_cast<TokenId>(ip->d.u32))
-                {
-                    case TokenId::IntrinsicMin:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smin, {I32_TY()}, {r1, r2}), r0);
-                        break;
-                    case TokenId::IntrinsicMax:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smax, {I32_TY()}, {r1, r2}), r0);
-                        break;
-                    default:
-                        ok = false;
-                        Report::internalError(buildParameters.module, form("unknown intrinsic [[%s]] during backend generation", ByteCode::opName(ip->op)));
-                        break;
-                }
-                break;
-            }
             case ByteCodeOp::IntrinsicS64x2:
             {
-                auto r0 = GEP64(allocR, ip->a.u32);
-                auto r1 = MK_IMMB_64();
-                auto r2 = MK_IMMC_64();
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                auto       r0      = GEP64_PTR_IX(allocR, ip->a.u32, numBits);
+                auto       r1      = MK_IMMB_IX(numBits);
+                auto       r2      = MK_IMMC_IX(numBits);
                 switch (static_cast<TokenId>(ip->d.u32))
                 {
                     case TokenId::IntrinsicMin:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smin, {I64_TY()}, {r1, r2}), r0);
+                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smin, {IX_TY(numBits)}, {r1, r2}), r0);
                         break;
                     case TokenId::IntrinsicMax:
-                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smax, {I64_TY()}, {r1, r2}), r0);
+                        builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::smax, {IX_TY(numBits)}, {r1, r2}), r0);
                         break;
                     default:
                         ok = false;
