@@ -34,6 +34,7 @@ struct BackendEncoder
     static TypeInfo* getOpType(ByteCodeOp op);
 
     static uint32_t getNumBits(ByteCodeOp op) { return getNumBits(getOpBits(op)); }
+    static uint32_t getNumBytes(ByteCodeOp op) { return getNumBits(getOpBits(op)) / 8; }
     static bool     isInt(OpBits opBits) { return opBits == OpBits::B8 || opBits == OpBits::B16 || opBits == OpBits::B32 || opBits == OpBits::B64; }
     static bool     isFloat(OpBits opBits) { return opBits == OpBits::F32 || opBits == OpBits::F64; }
 };

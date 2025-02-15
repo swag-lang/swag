@@ -3348,7 +3348,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CopyRAtoRR:
                 getReturnResult(context, buildParameters, returnType, ip->hasFlag(BCI_IMM_A), ip->a, allocR, allocResult);
                 break;
-            
+
             case ByteCodeOp::CopyRARBtoRR2:
             {
                 auto r1        = builder.CreateLoad(I64_TY(), GEP64(allocR, ip->a.u32));
@@ -3358,7 +3358,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(r2, builder.CreateInBoundsGEP(I64_TY(), resultPtr, builder.getInt64(1)));
                 break;
             }
-            
+
             case ByteCodeOp::CopyRAtoRT:
             {
                 auto r0 = GEP64(allocRR, 0);
@@ -3366,7 +3366,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(r1, r0);
                 break;
             }
-            
+
             case ByteCodeOp::SaveRRtoRA:
             {
                 auto r0 = GEP64_PTR_PTR_I8(allocR, ip->a.u32);
@@ -3374,7 +3374,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(r1, r0);
                 break;
             }
-            
+
             case ByteCodeOp::CopyRRtoRA:
             {
                 auto r0 = GEP64_PTR_PTR_I8(allocR, ip->a.u32);
@@ -3397,7 +3397,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 }
                 break;
             }
-            
+
             case ByteCodeOp::CopyRT2toRARB:
                 storeRT2ToRegisters(context, buildParameters, ip->a.u32, ip->b.u32, allocR, allocRR);
                 break;
@@ -3427,32 +3427,26 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::GetParam64DeRef8:
-                SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->a.u32, ip->b.mergeU64U32.high, allocR, 0, 0, 1));
-                break;
             case ByteCodeOp::GetParam64DeRef16:
-                SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->a.u32, ip->b.mergeU64U32.high, allocR, 0, 0, 2));
-                break;
             case ByteCodeOp::GetParam64DeRef32:
-                SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->a.u32, ip->b.mergeU64U32.high, allocR, 0, 0, 4));
-                break;
             case ByteCodeOp::GetParam64DeRef64:
-                SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->a.u32, ip->b.mergeU64U32.high, allocR, 0, 0, 8));
+            {
+                const auto numBytes = BackendEncoder::getNumBytes(ip->op);
+                SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->a.u32, ip->b.mergeU64U32.high, allocR, 0, 0, numBytes));
                 break;
+            }
 
                 /////////////////////////////////////
 
             case ByteCodeOp::GetIncParam64DeRef8:
-                SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->a.u32, ip->b.mergeU64U32.high, allocR, 0, ip->d.u64, 1));
-                break;
             case ByteCodeOp::GetIncParam64DeRef16:
-                SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->a.u32, ip->b.mergeU64U32.high, allocR, 0, ip->d.u64, 2));
-                break;
             case ByteCodeOp::GetIncParam64DeRef32:
-                SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->a.u32, ip->b.mergeU64U32.high, allocR, 0, ip->d.u64, 4));
-                break;
             case ByteCodeOp::GetIncParam64DeRef64:
-                SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->a.u32, ip->b.mergeU64U32.high, allocR, 0, ip->d.u64, 8));
+            {
+                const auto numBytes = BackendEncoder::getNumBytes(ip->op);
+                SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->a.u32, ip->b.mergeU64U32.high, allocR, 0, ip->d.u64, numBytes));
                 break;
+            }
 
                 /////////////////////////////////////
 
@@ -3464,6 +3458,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(a0, r0);
                 break;
             }
+            
             case ByteCodeOp::LowerZeroToTrue:
             {
                 auto r0 = GEP64_PTR_I8(allocR, ip->a.u32);
@@ -3472,6 +3467,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(a0, r0);
                 break;
             }
+            
             case ByteCodeOp::LowerEqZeroToTrue:
             {
                 auto r0 = GEP64_PTR_I8(allocR, ip->a.u32);
@@ -3480,6 +3476,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(a0, r0);
                 break;
             }
+            
             case ByteCodeOp::GreaterZeroToTrue:
             {
                 auto r0 = GEP64_PTR_I8(allocR, ip->a.u32);
@@ -3488,6 +3485,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(a0, r0);
                 break;
             }
+            
             case ByteCodeOp::GreaterEqZeroToTrue:
             {
                 auto r0 = GEP64_PTR_I8(allocR, ip->a.u32);
