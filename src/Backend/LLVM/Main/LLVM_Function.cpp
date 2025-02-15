@@ -2054,293 +2054,158 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
 
             case ByteCodeOp::CompareOpGreaterU8:
-            {
-                MK_BINOP8_CAB8();
-                auto v0 = builder.CreateICmpUGT(r1, r2);
-                v0      = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::CompareOpGreaterU16:
-            {
-                MK_BINOP16_CAB8();
-                auto v0 = builder.CreateICmpUGT(r1, r2);
-                v0      = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::CompareOpGreaterU32:
-            {
-                MK_BINOP32_CAB8();
-                auto v0 = builder.CreateICmpUGT(r1, r2);
-                v0      = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::CompareOpGreaterU64:
             {
-                MK_BINOP64_CAB8();
-                auto v0 = builder.CreateICmpUGT(r1, r2);
-                v0      = builder.CreateIntCast(v0, I8_TY(), false);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+                const auto r1      = MK_IMMA_IX(numBits);
+                const auto r2      = MK_IMMB_IX(numBits);
+                auto       v0      = builder.CreateICmpUGT(r1, r2);
+                v0                 = builder.CreateIntCast(v0, I8_TY(), false);
                 builder.CreateStore(v0, r0);
                 break;
             }
+
             case ByteCodeOp::CompareOpGreaterF32:
-            {
-                MK_BINOPF32_CAB8();
-                auto v0 = builder.CreateFCmpUGT(r1, r2);
-                v0      = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::CompareOpGreaterF64:
             {
-                MK_BINOPF64_CAB8();
-                auto v0 = builder.CreateFCmpUGT(r1, r2);
-                v0      = builder.CreateIntCast(v0, I8_TY(), false);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64_PTR_FX(allocR, ip->c.u32, numBits);
+                const auto r1      = MK_IMMA_FX(numBits);
+                const auto r2      = MK_IMMB_FX(numBits);
+                auto       v0      = builder.CreateFCmpUGT(r1, r2);
+                v0                 = builder.CreateIntCast(v0, I8_TY(), false);
                 builder.CreateStore(v0, r0);
                 break;
             }
 
             case ByteCodeOp::CompareOpGreaterEqS8:
-            {
-                MK_BINOP8_CAB8();
-                auto v0 = builder.CreateICmpSGE(r1, r2);
-                v0      = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::CompareOpGreaterEqS16:
-            {
-                MK_BINOP16_CAB8();
-                auto v0 = builder.CreateICmpSGE(r1, r2);
-                v0      = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::CompareOpGreaterEqS32:
-            {
-                MK_BINOP32_CAB8();
-                auto v0 = builder.CreateICmpSGE(r1, r2);
-                v0      = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::CompareOpGreaterEqS64:
             {
-                MK_BINOP64_CAB8();
-                auto v0 = builder.CreateICmpSGE(r1, r2);
-                v0      = builder.CreateIntCast(v0, I8_TY(), false);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+                const auto r1      = MK_IMMA_IX(numBits);
+                const auto r2      = MK_IMMB_IX(numBits);
+                auto       v0      = builder.CreateICmpSGE(r1, r2);
+                v0                 = builder.CreateIntCast(v0, I8_TY(), false);
                 builder.CreateStore(v0, r0);
                 break;
             }
+
             case ByteCodeOp::CompareOpGreaterEqU8:
-            {
-                MK_BINOP8_CAB8();
-                auto v0 = builder.CreateICmpUGE(r1, r2);
-                v0      = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::CompareOpGreaterEqU16:
-            {
-                MK_BINOP16_CAB8();
-                auto v0 = builder.CreateICmpUGE(r1, r2);
-                v0      = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::CompareOpGreaterEqU32:
-            {
-                MK_BINOP32_CAB8();
-                auto v0 = builder.CreateICmpUGE(r1, r2);
-                v0      = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::CompareOpGreaterEqU64:
             {
-                MK_BINOP64_CAB8();
-                auto v0 = builder.CreateICmpUGE(r1, r2);
-                v0      = builder.CreateIntCast(v0, I8_TY(), false);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+                const auto r1      = MK_IMMA_IX(numBits);
+                const auto r2      = MK_IMMB_IX(numBits);
+                auto       v0      = builder.CreateICmpUGE(r1, r2);
+                v0                 = builder.CreateIntCast(v0, I8_TY(), false);
                 builder.CreateStore(v0, r0);
                 break;
             }
+
             case ByteCodeOp::CompareOpGreaterEqF32:
-            {
-                MK_BINOPF32_CAB8();
-                auto v0 = builder.CreateFCmpUGE(r1, r2);
-                v0      = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::CompareOpGreaterEqF64:
             {
-                MK_BINOPF64_CAB8();
-                auto v0 = builder.CreateFCmpUGE(r1, r2);
-                v0      = builder.CreateIntCast(v0, I8_TY(), false);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64_PTR_FX(allocR, ip->c.u32, numBits);
+                const auto r1      = MK_IMMA_FX(numBits);
+                const auto r2      = MK_IMMB_FX(numBits);
+                auto       v0      = builder.CreateFCmpUGE(r1, r2);
+                v0                 = builder.CreateIntCast(v0, I8_TY(), false);
                 builder.CreateStore(v0, r0);
                 break;
             }
 
             case ByteCodeOp::CompareOpLowerS8:
-            {
-                MK_BINOP8_CAB8();
-                auto v0 = builder.CreateICmpSLT(r1, r2);
-                v0      = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::CompareOpLowerS16:
-            {
-                MK_BINOP16_CAB8();
-                auto v0 = builder.CreateICmpSLT(r1, r2);
-                v0      = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::CompareOpLowerS32:
-            {
-                MK_BINOP32_CAB8();
-                auto v0 = builder.CreateICmpSLT(r1, r2);
-                v0      = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::CompareOpLowerS64:
             {
-                MK_BINOP64_CAB8();
-                auto v0 = builder.CreateICmpSLT(r1, r2);
-                v0      = builder.CreateIntCast(v0, I8_TY(), false);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+                const auto r1      = MK_IMMA_IX(numBits);
+                const auto r2      = MK_IMMB_IX(numBits);
+                auto       v0      = builder.CreateICmpSLT(r1, r2);
+                v0                 = builder.CreateIntCast(v0, I8_TY(), false);
                 builder.CreateStore(v0, r0);
                 break;
             }
+
             case ByteCodeOp::CompareOpLowerU8:
-            {
-                MK_BINOP8_CAB8();
-                auto v0 = builder.CreateICmpULT(r1, r2);
-                v0      = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::CompareOpLowerU16:
-            {
-                MK_BINOP16_CAB8();
-                auto v0 = builder.CreateICmpULT(r1, r2);
-                v0      = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::CompareOpLowerU32:
-            {
-                MK_BINOP32_CAB8();
-                auto v0 = builder.CreateICmpULT(r1, r2);
-                v0      = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::CompareOpLowerU64:
             {
-                MK_BINOP64_CAB8();
-                auto v0 = builder.CreateICmpULT(r1, r2);
-                v0      = builder.CreateIntCast(v0, I8_TY(), false);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+                const auto r1      = MK_IMMA_IX(numBits);
+                const auto r2      = MK_IMMB_IX(numBits);
+                auto       v0      = builder.CreateICmpULT(r1, r2);
+                v0                 = builder.CreateIntCast(v0, I8_TY(), false);
                 builder.CreateStore(v0, r0);
                 break;
             }
+
             case ByteCodeOp::CompareOpLowerF32:
-            {
-                MK_BINOPF32_CAB8();
-                auto v0 = builder.CreateFCmpULT(r1, r2);
-                v0      = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::CompareOpLowerF64:
             {
-                MK_BINOPF64_CAB8();
-                auto v0 = builder.CreateFCmpULT(r1, r2);
-                v0      = builder.CreateIntCast(v0, I8_TY(), false);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64_PTR_FX(allocR, ip->c.u32, numBits);
+                const auto r1      = MK_IMMA_FX(numBits);
+                const auto r2      = MK_IMMB_FX(numBits);
+                auto       v0      = builder.CreateFCmpULT(r1, r2);
+                v0                 = builder.CreateIntCast(v0, I8_TY(), false);
                 builder.CreateStore(v0, r0);
                 break;
             }
 
             case ByteCodeOp::CompareOpLowerEqS8:
-            {
-                MK_BINOP8_CAB8();
-                auto v0 = builder.CreateICmpSLE(r1, r2);
-                v0      = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::CompareOpLowerEqS16:
-            {
-                MK_BINOP16_CAB8();
-                auto v0 = builder.CreateICmpSLE(r1, r2);
-                v0      = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::CompareOpLowerEqS32:
-            {
-                MK_BINOP32_CAB8();
-                auto v0 = builder.CreateICmpSLE(r1, r2);
-                v0      = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::CompareOpLowerEqS64:
             {
-                MK_BINOP64_CAB8();
-                auto v0 = builder.CreateICmpSLE(r1, r2);
-                v0      = builder.CreateIntCast(v0, I8_TY(), false);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+                const auto r1      = MK_IMMA_IX(numBits);
+                const auto r2      = MK_IMMB_IX(numBits);
+                auto       v0      = builder.CreateICmpSLE(r1, r2);
+                v0                 = builder.CreateIntCast(v0, I8_TY(), false);
                 builder.CreateStore(v0, r0);
                 break;
             }
+
             case ByteCodeOp::CompareOpLowerEqU8:
-            {
-                MK_BINOP8_CAB8();
-                auto v0 = builder.CreateICmpULE(r1, r2);
-                v0      = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::CompareOpLowerEqU16:
-            {
-                MK_BINOP16_CAB8();
-                auto v0 = builder.CreateICmpULE(r1, r2);
-                v0      = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::CompareOpLowerEqU32:
-            {
-                MK_BINOP32_CAB8();
-                auto v0 = builder.CreateICmpULE(r1, r2);
-                v0      = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::CompareOpLowerEqU64:
             {
-                MK_BINOP64_CAB8();
-                auto v0 = builder.CreateICmpULE(r1, r2);
-                v0      = builder.CreateIntCast(v0, I8_TY(), false);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+                const auto r1      = MK_IMMA_IX(numBits);
+                const auto r2      = MK_IMMB_IX(numBits);
+                auto       v0      = builder.CreateICmpULE(r1, r2);
+                v0                 = builder.CreateIntCast(v0, I8_TY(), false);
                 builder.CreateStore(v0, r0);
                 break;
             }
+
             case ByteCodeOp::CompareOpLowerEqF32:
-            {
-                MK_BINOPF32_CAB8();
-                auto v0 = builder.CreateFCmpULE(r1, r2);
-                v0      = builder.CreateIntCast(v0, I8_TY(), false);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::CompareOpLowerEqF64:
             {
-                MK_BINOPF64_CAB8();
-                auto v0 = builder.CreateFCmpULE(r1, r2);
-                v0      = builder.CreateIntCast(v0, I8_TY(), false);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64_PTR_FX(allocR, ip->c.u32, numBits);
+                const auto r1      = MK_IMMA_FX(numBits);
+                const auto r2      = MK_IMMB_FX(numBits);
+                auto       v0      = builder.CreateFCmpULE(r1, r2);
+                v0                 = builder.CreateIntCast(v0, I8_TY(), false);
                 builder.CreateStore(v0, r0);
                 break;
             }
