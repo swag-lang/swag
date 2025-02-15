@@ -756,10 +756,10 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::SetAtStackPointer64x2:
             {
                 const auto   numBits = BackendEncoder::getNumBits(ip->op);
-                auto         r0      = GEP8_PTR_IX(allocStack, ip->a.u32, numBits);
+                const auto   r0      = GEP8_PTR_IX(allocStack, ip->a.u32, numBits);
                 llvm::Value* r1      = MK_IMMB_IX(numBits);
                 builder.CreateStore(r1, r0);
-                auto         r2 = GEP8_PTR_IX(allocStack, ip->c.u32, numBits);
+                const auto   r2 = GEP8_PTR_IX(allocStack, ip->c.u32, numBits);
                 llvm::Value* r3 = MK_IMMD_IX(numBits);
                 builder.CreateStore(r3, r2);
                 break;
