@@ -784,27 +784,19 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
 
             case ByteCodeOp::BinOpPlusU8:
-            {
-                MK_BINOP8_CAB();
-                OP_OVERFLOW(uadd_with_overflow, CreateAdd, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU8), false);
-                break;
-            }
             case ByteCodeOp::BinOpPlusU16:
-            {
-                MK_BINOP16_CAB();
-                OP_OVERFLOW(uadd_with_overflow, CreateAdd, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU16), false);
-                break;
-            }
             case ByteCodeOp::BinOpPlusU32:
-            {
-                MK_BINOP32_CAB();
-                OP_OVERFLOW(uadd_with_overflow, CreateAdd, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU32), false);
-                break;
-            }
             case ByteCodeOp::BinOpPlusU64:
             {
-                MK_BINOP64_CAB();
-                OP_OVERFLOW(uadd_with_overflow, CreateAdd, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU64), false);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+                const auto r1      = MK_IMMA_IX(numBits);
+                const auto r2      = MK_IMMB_IX(numBits);
+                const bool r3      = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
+                if (r3 && pp.module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))
+                    emitBinOpOverflow(buildParameters, func, allocR, allocT, ip, r0, r1, r2, llvm::Intrinsic::uadd_with_overflow, SafetyMsg::Plus);
+                else
+                    builder.CreateStore(builder.CreateAdd(r1, r2), r0);
                 break;
             }
 
@@ -841,52 +833,36 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::BinOpMinusS8:
-            {
-                MK_BINOP8_CAB();
-                OP_OVERFLOW(ssub_with_overflow, CreateSub, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS8), true);
-                break;
-            }
             case ByteCodeOp::BinOpMinusS16:
-            {
-                MK_BINOP16_CAB();
-                OP_OVERFLOW(ssub_with_overflow, CreateSub, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS16), true);
-                break;
-            }
             case ByteCodeOp::BinOpMinusS32:
-            {
-                MK_BINOP32_CAB();
-                OP_OVERFLOW(ssub_with_overflow, CreateSub, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS32), true);
-                break;
-            }
             case ByteCodeOp::BinOpMinusS64:
             {
-                MK_BINOP64_CAB();
-                OP_OVERFLOW(ssub_with_overflow, CreateSub, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS64), true);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+                const auto r1      = MK_IMMA_IX(numBits);
+                const auto r2      = MK_IMMB_IX(numBits);
+                const bool r3      = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
+                if (r3 && pp.module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))
+                    emitBinOpOverflow(buildParameters, func, allocR, allocT, ip, r0, r1, r2, llvm::Intrinsic::ssub_with_overflow, SafetyMsg::Minus);
+                else
+                    builder.CreateStore(builder.CreateSub(r1, r2), r0);
                 break;
             }
 
             case ByteCodeOp::BinOpMinusU8:
-            {
-                MK_BINOP8_CAB();
-                OP_OVERFLOW(usub_with_overflow, CreateSub, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU8), false);
-                break;
-            }
             case ByteCodeOp::BinOpMinusU16:
-            {
-                MK_BINOP16_CAB();
-                OP_OVERFLOW(usub_with_overflow, CreateSub, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU16), false);
-                break;
-            }
             case ByteCodeOp::BinOpMinusU32:
-            {
-                MK_BINOP32_CAB();
-                OP_OVERFLOW(usub_with_overflow, CreateSub, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU32), false);
-                break;
-            }
             case ByteCodeOp::BinOpMinusU64:
             {
-                MK_BINOP64_CAB();
-                OP_OVERFLOW(usub_with_overflow, CreateSub, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU64), false);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+                const auto r1      = MK_IMMA_IX(numBits);
+                const auto r2      = MK_IMMB_IX(numBits);
+                const bool r3      = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
+                if (r3 && pp.module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))
+                    emitBinOpOverflow(buildParameters, func, allocR, allocT, ip, r0, r1, r2, llvm::Intrinsic::usub_with_overflow, SafetyMsg::Minus);
+                else
+                    builder.CreateStore(builder.CreateSub(r1, r2), r0);
                 break;
             }
 
@@ -923,52 +899,36 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::BinOpMulS8:
-            {
-                MK_BINOP8_CAB();
-                OP_OVERFLOW(smul_with_overflow, CreateMul, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS8), true);
-                break;
-            }
             case ByteCodeOp::BinOpMulS16:
-            {
-                MK_BINOP16_CAB();
-                OP_OVERFLOW(smul_with_overflow, CreateMul, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS16), true);
-                break;
-            }
             case ByteCodeOp::BinOpMulS32:
-            {
-                MK_BINOP32_CAB();
-                OP_OVERFLOW(smul_with_overflow, CreateMul, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS32), true);
-                break;
-            }
             case ByteCodeOp::BinOpMulS64:
             {
-                MK_BINOP64_CAB();
-                OP_OVERFLOW(smul_with_overflow, CreateMul, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS64), true);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+                const auto r1      = MK_IMMA_IX(numBits);
+                const auto r2      = MK_IMMB_IX(numBits);
+                const bool r3      = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
+                if (r3 && pp.module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))
+                    emitBinOpOverflow(buildParameters, func, allocR, allocT, ip, r0, r1, r2, llvm::Intrinsic::smul_with_overflow, SafetyMsg::Mul);
+                else
+                    builder.CreateStore(builder.CreateMul(r1, r2), r0);
                 break;
             }
 
             case ByteCodeOp::BinOpMulU8:
-            {
-                MK_BINOP8_CAB();
-                OP_OVERFLOW(umul_with_overflow, CreateMul, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU8), false);
-                break;
-            }
             case ByteCodeOp::BinOpMulU16:
-            {
-                MK_BINOP16_CAB();
-                OP_OVERFLOW(umul_with_overflow, CreateMul, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU16), false);
-                break;
-            }
             case ByteCodeOp::BinOpMulU32:
-            {
-                MK_BINOP32_CAB();
-                OP_OVERFLOW(umul_with_overflow, CreateMul, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU32), false);
-                break;
-            }
             case ByteCodeOp::BinOpMulU64:
             {
-                MK_BINOP64_CAB();
-                OP_OVERFLOW(umul_with_overflow, CreateMul, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU64), false);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+                const auto r1      = MK_IMMA_IX(numBits);
+                const auto r2      = MK_IMMB_IX(numBits);
+                const bool r3      = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
+                if (r3 && pp.module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))
+                    emitBinOpOverflow(buildParameters, func, allocR, allocT, ip, r0, r1, r2, llvm::Intrinsic::umul_with_overflow, SafetyMsg::Mul);
+                else
+                    builder.CreateStore(builder.CreateMul(r1, r2), r0);
                 break;
             }
 
