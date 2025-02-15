@@ -2043,12 +2043,12 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOpGreaterS32:
             case ByteCodeOp::CompareOpGreaterS64:
             {
-                const auto   numBits = BackendEncoder::getNumBits(ip->op);
-                auto         r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
-                llvm::Value* r1      = MK_IMMA_IX(numBits);
-                llvm::Value* r2      = MK_IMMB_IX(numBits);
-                auto         v0      = builder.CreateICmpSGT(r1, r2);
-                v0                   = builder.CreateIntCast(v0, I8_TY(), false);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+                const auto r1      = MK_IMMA_IX(numBits);
+                const auto r2      = MK_IMMB_IX(numBits);
+                auto       v0      = builder.CreateICmpSGT(r1, r2);
+                v0                 = builder.CreateIntCast(v0, I8_TY(), false);
                 builder.CreateStore(v0, r0);
                 break;
             }
