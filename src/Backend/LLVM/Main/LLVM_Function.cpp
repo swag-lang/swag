@@ -3458,7 +3458,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(a0, r0);
                 break;
             }
-            
+
             case ByteCodeOp::LowerZeroToTrue:
             {
                 auto r0 = GEP64_PTR_I8(allocR, ip->a.u32);
@@ -3467,7 +3467,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(a0, r0);
                 break;
             }
-            
+
             case ByteCodeOp::LowerEqZeroToTrue:
             {
                 auto r0 = GEP64_PTR_I8(allocR, ip->a.u32);
@@ -3476,7 +3476,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(a0, r0);
                 break;
             }
-            
+
             case ByteCodeOp::GreaterZeroToTrue:
             {
                 auto r0 = GEP64_PTR_I8(allocR, ip->a.u32);
@@ -3485,7 +3485,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(a0, r0);
                 break;
             }
-            
+
             case ByteCodeOp::GreaterEqZeroToTrue:
             {
                 auto r0 = GEP64_PTR_I8(allocR, ip->a.u32);
@@ -3519,6 +3519,9 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pushRAParams.push_back(ip->c.u32);
                 pushRAParams.push_back(ip->d.u32);
                 break;
+
+                /////////////////////////////////////
+
             case ByteCodeOp::CopySP:
             {
                 auto r0 = GEP64_PTR_PTR_I64(allocR, ip->a.u32);
@@ -3636,6 +3639,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
+                /////////////////////////////////////
+
             case ByteCodeOp::MakeLambda:
             {
                 auto              funcNode     = castAst<AstFuncDecl>(reinterpret_cast<AstNode*>(ip->b.pointer), AstNodeKind::FuncDecl);
@@ -3681,6 +3686,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.SetInsertPoint(blockNext);
                 break;
             }
+
+                /////////////////////////////////////
 
             case ByteCodeOp::LocalCall:
             case ByteCodeOp::LocalCallPop:
@@ -3735,23 +3742,18 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::IntrinsicMulAddF32:
-            {
-                auto r0 = GEP64_PTR_F32(allocR, ip->a.u32);
-                auto r1 = MK_IMMB_F32();
-                auto r2 = MK_IMMC_F32();
-                auto r3 = MK_IMMD_F32();
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::fmuladd, {F32_TY()}, {r1, r2, r3}), r0);
-                break;
-            }
             case ByteCodeOp::IntrinsicMulAddF64:
             {
-                auto r0 = GEP64_PTR_F64(allocR, ip->a.u32);
-                auto r1 = MK_IMMB_F64();
-                auto r2 = MK_IMMC_F64();
-                auto r3 = MK_IMMD_F64();
-                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::fmuladd, {F64_TY()}, {r1, r2, r3}), r0);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64_PTR_FX(allocR, ip->a.u32, numBits);
+                const auto r1      = MK_IMMB_FX(numBits);
+                const auto r2      = MK_IMMC_FX(numBits);
+                const auto r3      = MK_IMMD_FX(numBits);
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::fmuladd, {FX_TY(numBits)}, {r1, r2, r3}), r0);
                 break;
             }
+
+                /////////////////////////////////////
 
             case ByteCodeOp::IntrinsicS8x1:
             {
