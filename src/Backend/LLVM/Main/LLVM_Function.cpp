@@ -1668,74 +1668,39 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
 
             case ByteCodeOp::AffectOpDivEqS8_SSafe:
-            {
-                MK_BINOP_EQ8_SCAB();
-                auto v0 = builder.CreateSDiv(builder.CreateLoad(I8_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::AffectOpDivEqS16_SSafe:
-            {
-                MK_BINOP_EQ16_SCAB();
-                auto v0 = builder.CreateSDiv(builder.CreateLoad(I16_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::AffectOpDivEqS32_SSafe:
-            {
-                MK_BINOP_EQ32_SCAB();
-                auto v0 = builder.CreateSDiv(builder.CreateLoad(I32_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::AffectOpDivEqS64_SSafe:
             {
-                MK_BINOP_EQ64_SCAB();
-                auto v0 = builder.CreateSDiv(builder.CreateLoad(I64_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
-                break;
-            }
-            case ByteCodeOp::AffectOpDivEqU8_SSafe:
-            {
-                MK_BINOP_EQ8_SCAB();
-                auto v0 = builder.CreateUDiv(builder.CreateLoad(I8_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
-                break;
-            }
-            case ByteCodeOp::AffectOpDivEqU16_SSafe:
-            {
-                MK_BINOP_EQ16_SCAB();
-                auto v0 = builder.CreateUDiv(builder.CreateLoad(I16_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP8_PTR_IX(allocStack, ip->a.u32, numBits);
+                const auto r1      = MK_IMMB_IX(numBits);
+                const auto r2      = builder.CreateSDiv(builder.CreateLoad(IX_TY(numBits), r0), r1);
+                builder.CreateStore(r2, r0);
                 break;
             }
 
+            case ByteCodeOp::AffectOpDivEqU8_SSafe:
+            case ByteCodeOp::AffectOpDivEqU16_SSafe:
             case ByteCodeOp::AffectOpDivEqU32_SSafe:
-            {
-                MK_BINOP_EQ32_SCAB();
-                auto v0 = builder.CreateUDiv(builder.CreateLoad(I32_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::AffectOpDivEqU64_SSafe:
             {
-                MK_BINOP_EQ64_SCAB();
-                auto v0 = builder.CreateUDiv(builder.CreateLoad(I64_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP8_PTR_IX(allocStack, ip->a.u32, numBits);
+                const auto r1      = MK_IMMB_IX(numBits);
+                const auto r2      = builder.CreateUDiv(builder.CreateLoad(IX_TY(numBits), r0), r1);
+                builder.CreateStore(r2, r0);
                 break;
             }
+
             case ByteCodeOp::AffectOpDivEqF32_SSafe:
-            {
-                MK_BINOP_EQF32_SCAB();
-                auto v0 = builder.CreateFDiv(builder.CreateLoad(F32_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::AffectOpDivEqF64_SSafe:
             {
-                MK_BINOP_EQF64_SCAB();
-                auto v0 = builder.CreateFDiv(builder.CreateLoad(F64_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP8_PTR_FX(allocStack, ip->a.u32, numBits);
+                const auto r1      = MK_IMMB_FX(numBits);
+                const auto r2      = builder.CreateFDiv(builder.CreateLoad(FX_TY(numBits), r0), r1);
+                builder.CreateStore(r2, r0);
                 break;
             }
 
