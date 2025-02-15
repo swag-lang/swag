@@ -344,10 +344,10 @@ bool ByteCodeGen::emitAffectPlusEqual(const ByteCodeGenContext* context, uint32_
                 EMIT_INST2(context, ByteCodeOp::AffectOpPlusEqU64, r0, r1);
                 return true;
             case NativeTypeKind::F32:
-                EMIT_INST2(context, ByteCodeOp::AffectOpPlusEqF32, r0, r1);
+                EMIT_INST2(context, ByteCodeOp::AffectOpPlusEqF32_Safe, r0, r1);
                 return true;
             case NativeTypeKind::F64:
-                EMIT_INST2(context, ByteCodeOp::AffectOpPlusEqF64, r0, r1);
+                EMIT_INST2(context, ByteCodeOp::AffectOpPlusEqF64_Safe, r0, r1);
                 return true;
             default:
                 return Report::internalError(context->node, "emitAffectPlusEqual, type not supported");

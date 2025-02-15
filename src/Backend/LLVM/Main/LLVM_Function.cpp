@@ -1235,49 +1235,30 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
 
             case ByteCodeOp::AffectOpMinusEqS8_SSafe:
-            case ByteCodeOp::AffectOpMinusEqU8_SSafe:
-            {
-                MK_BINOP_EQ8_SCAB();
-                auto v0 = builder.CreateSub(builder.CreateLoad(I8_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::AffectOpMinusEqS16_SSafe:
-            case ByteCodeOp::AffectOpMinusEqU16_SSafe:
-            {
-                MK_BINOP_EQ16_SCAB();
-                auto v0 = builder.CreateSub(builder.CreateLoad(I16_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::AffectOpMinusEqS32_SSafe:
-            case ByteCodeOp::AffectOpMinusEqU32_SSafe:
-            {
-                MK_BINOP_EQ32_SCAB();
-                auto v0 = builder.CreateSub(builder.CreateLoad(I32_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::AffectOpMinusEqS64_SSafe:
+            case ByteCodeOp::AffectOpMinusEqU8_SSafe:
+            case ByteCodeOp::AffectOpMinusEqU16_SSafe:
+            case ByteCodeOp::AffectOpMinusEqU32_SSafe:
             case ByteCodeOp::AffectOpMinusEqU64_SSafe:
             {
-                MK_BINOP_EQ64_SCAB();
-                auto v0 = builder.CreateSub(builder.CreateLoad(I64_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP8_PTR_IX(allocStack, ip->a.u32, numBits);
+                const auto r1      = MK_IMMB_IX(numBits);
+                const auto r2      = builder.CreateSub(builder.CreateLoad(IX_TY(numBits), r0), r1);
+                builder.CreateStore(r2, r0);
                 break;
             }
+
             case ByteCodeOp::AffectOpMinusEqF32_SSafe:
-            {
-                MK_BINOP_EQF32_SCAB();
-                auto v0 = builder.CreateFSub(builder.CreateLoad(F32_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::AffectOpMinusEqF64_SSafe:
             {
-                MK_BINOP_EQF64_SCAB();
-                auto v0 = builder.CreateFSub(builder.CreateLoad(F64_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP8_PTR_FX(allocStack, ip->a.u32, numBits);
+                const auto r1      = MK_IMMB_FX(numBits);
+                auto       r2      = builder.CreateFSub(builder.CreateLoad(FX_TY(numBits), r0), r1);
+                builder.CreateStore(r2, r0);
                 break;
             }
 
@@ -1331,20 +1312,6 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU64), false);
                 break;
             }
-            case ByteCodeOp::AffectOpPlusEqF32:
-            {
-                MK_BINOP_EQF32_CAB_OFF();
-                auto v0 = builder.CreateFAdd(builder.CreateLoad(F32_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
-                break;
-            }
-            case ByteCodeOp::AffectOpPlusEqF64:
-            {
-                MK_BINOP_EQF64_CAB_OFF();
-                auto v0 = builder.CreateFAdd(builder.CreateLoad(F64_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
-                break;
-            }
 
             case ByteCodeOp::AffectOpPlusEqS8_Safe:
             {
@@ -1394,51 +1361,46 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU64), false);
                 break;
             }
+            case ByteCodeOp::AffectOpPlusEqF32_Safe:
+            {
+                MK_BINOP_EQF32_CAB_OFF();
+                auto v0 = builder.CreateFAdd(builder.CreateLoad(F32_TY(), r1), r2);
+                builder.CreateStore(v0, r1);
+                break;
+            }
+            case ByteCodeOp::AffectOpPlusEqF64_Safe:
+            {
+                MK_BINOP_EQF64_CAB_OFF();
+                auto v0 = builder.CreateFAdd(builder.CreateLoad(F64_TY(), r1), r2);
+                builder.CreateStore(v0, r1);
+                break;
+            }
 
-            case ByteCodeOp::AffectOpPlusEqF32_SSafe:
-            {
-                MK_BINOP_EQF32_SCAB();
-                auto v0 = builder.CreateFAdd(builder.CreateLoad(F32_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
-                break;
-            }
-            case ByteCodeOp::AffectOpPlusEqF64_SSafe:
-            {
-                MK_BINOP_EQF64_SCAB();
-                auto v0 = builder.CreateFAdd(builder.CreateLoad(F64_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::AffectOpPlusEqS8_SSafe:
-            case ByteCodeOp::AffectOpPlusEqU8_SSafe:
-            {
-                MK_BINOP_EQ8_SCAB();
-                auto v0 = builder.CreateAdd(builder.CreateLoad(I8_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::AffectOpPlusEqS16_SSafe:
-            case ByteCodeOp::AffectOpPlusEqU16_SSafe:
-            {
-                MK_BINOP_EQ16_SCAB();
-                auto v0 = builder.CreateAdd(builder.CreateLoad(I16_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::AffectOpPlusEqS32_SSafe:
-            case ByteCodeOp::AffectOpPlusEqU32_SSafe:
-            {
-                MK_BINOP_EQ32_SCAB();
-                auto v0 = builder.CreateAdd(builder.CreateLoad(I32_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::AffectOpPlusEqS64_SSafe:
+            case ByteCodeOp::AffectOpPlusEqU8_SSafe:
+            case ByteCodeOp::AffectOpPlusEqU16_SSafe:
+            case ByteCodeOp::AffectOpPlusEqU32_SSafe:
             case ByteCodeOp::AffectOpPlusEqU64_SSafe:
             {
-                MK_BINOP_EQ64_SCAB();
-                auto v0 = builder.CreateAdd(builder.CreateLoad(I64_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP8_PTR_IX(allocStack, ip->a.u32, numBits);
+                const auto r1      = MK_IMMB_IX(numBits);
+                const auto r2      = builder.CreateAdd(builder.CreateLoad(IX_TY(numBits), r0), r1);
+                builder.CreateStore(r2, r0);
+                break;
+            }
+
+            case ByteCodeOp::AffectOpPlusEqF32_SSafe:
+            case ByteCodeOp::AffectOpPlusEqF64_SSafe:
+            {
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP8_PTR_FX(allocStack, ip->a.u32, numBits);
+                const auto r1      = MK_IMMB_FX(numBits);
+                const auto r2      = builder.CreateFAdd(builder.CreateLoad(FX_TY(numBits), r0), r1);
+                builder.CreateStore(r2, r0);
                 break;
             }
 
@@ -1493,21 +1455,6 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-            case ByteCodeOp::AffectOpMulEqF32_Safe:
-            {
-                MK_BINOP_EQF32_CAB_OFF();
-                auto v0 = builder.CreateFMul(builder.CreateLoad(F32_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
-                break;
-            }
-            case ByteCodeOp::AffectOpMulEqF64_Safe:
-            {
-                MK_BINOP_EQF64_CAB_OFF();
-                auto v0 = builder.CreateFMul(builder.CreateLoad(F64_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
-                break;
-            }
-
             case ByteCodeOp::AffectOpMulEqS8_Safe:
             {
                 MK_BINOP_EQ8_CAB_OFF();
@@ -1556,51 +1503,46 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 OPEQ_OVERFLOW(umul_with_overflow, CreateMul, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU64), false);
                 break;
             }
+            case ByteCodeOp::AffectOpMulEqF32_Safe:
+            {
+                MK_BINOP_EQF32_CAB_OFF();
+                auto v0 = builder.CreateFMul(builder.CreateLoad(F32_TY(), r1), r2);
+                builder.CreateStore(v0, r1);
+                break;
+            }
+            case ByteCodeOp::AffectOpMulEqF64_Safe:
+            {
+                MK_BINOP_EQF64_CAB_OFF();
+                auto v0 = builder.CreateFMul(builder.CreateLoad(F64_TY(), r1), r2);
+                builder.CreateStore(v0, r1);
+                break;
+            }
 
-            case ByteCodeOp::AffectOpMulEqF32_SSafe:
-            {
-                MK_BINOP_EQF32_SCAB();
-                auto v0 = builder.CreateFMul(builder.CreateLoad(F32_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
-                break;
-            }
-            case ByteCodeOp::AffectOpMulEqF64_SSafe:
-            {
-                MK_BINOP_EQF64_SCAB();
-                auto v0 = builder.CreateFMul(builder.CreateLoad(F64_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::AffectOpMulEqS8_SSafe:
-            case ByteCodeOp::AffectOpMulEqU8_SSafe:
-            {
-                MK_BINOP_EQ8_SCAB();
-                auto v0 = builder.CreateMul(builder.CreateLoad(I8_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::AffectOpMulEqS16_SSafe:
-            case ByteCodeOp::AffectOpMulEqU16_SSafe:
-            {
-                MK_BINOP_EQ16_SCAB();
-                auto v0 = builder.CreateMul(builder.CreateLoad(I16_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::AffectOpMulEqS32_SSafe:
-            case ByteCodeOp::AffectOpMulEqU32_SSafe:
-            {
-                MK_BINOP_EQ32_SCAB();
-                auto v0 = builder.CreateMul(builder.CreateLoad(I32_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::AffectOpMulEqS64_SSafe:
+            case ByteCodeOp::AffectOpMulEqU8_SSafe:
+            case ByteCodeOp::AffectOpMulEqU16_SSafe:
+            case ByteCodeOp::AffectOpMulEqU32_SSafe:
             case ByteCodeOp::AffectOpMulEqU64_SSafe:
             {
-                MK_BINOP_EQ64_SCAB();
-                auto v0 = builder.CreateMul(builder.CreateLoad(I64_TY(), r0), r1);
-                builder.CreateStore(v0, r0);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP8_PTR_IX(allocStack, ip->a.u32, numBits);
+                const auto r1      = MK_IMMB_IX(numBits);
+                const auto r2      = builder.CreateMul(builder.CreateLoad(IX_TY(numBits), r0), r1);
+                builder.CreateStore(r2, r0);
+                break;
+            }
+
+            case ByteCodeOp::AffectOpMulEqF32_SSafe:
+            case ByteCodeOp::AffectOpMulEqF64_SSafe:
+            {
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP8_PTR_FX(allocStack, ip->a.u32, numBits);
+                const auto r1      = MK_IMMB_FX(numBits);
+                const auto r2      = builder.CreateFMul(builder.CreateLoad(FX_TY(numBits), r0), r1);
+                builder.CreateStore(r2, r0);
                 break;
             }
 

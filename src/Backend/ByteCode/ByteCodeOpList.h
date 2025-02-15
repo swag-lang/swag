@@ -621,8 +621,8 @@ BYTECODE_OP(AffectOpPlusEqU8, OPF_8 | OPF_READ_A | OPF_READ_B | OPF_IMM_B, "[_ra
 BYTECODE_OP(AffectOpPlusEqU16, OPF_16 | OPF_READ_A | OPF_READ_B | OPF_IMM_B, "[_ra_] += _rbu16_")
 BYTECODE_OP(AffectOpPlusEqU32, OPF_32 | OPF_READ_A | OPF_READ_B | OPF_IMM_B, "[_ra_] += _rbu32_")
 BYTECODE_OP(AffectOpPlusEqU64, OPF_64 | OPF_READ_A | OPF_READ_B | OPF_IMM_B, "[_ra_] += _rbu64_")
-BYTECODE_OP(AffectOpPlusEqF32, OPF_32 | OPF_FLOAT | OPF_READ_A | OPF_READ_B | OPF_IMM_B | OPF_READ_VAL32_C, "[_ra_ + _rcu32_] += _rbf32_")
-BYTECODE_OP(AffectOpPlusEqF64, OPF_64 | OPF_FLOAT | OPF_READ_A | OPF_READ_B | OPF_IMM_B | OPF_READ_VAL32_C, "[_ra_ + _rcu32_] += _rbf64_")
+BYTECODE_OP(AffectOpPlusEqF32_Safe, OPF_32 | OPF_FLOAT | OPF_READ_A | OPF_READ_B | OPF_IMM_B | OPF_READ_VAL32_C, "[_ra_ + _rcu32_] += _rbf32_")
+BYTECODE_OP(AffectOpPlusEqF64_Safe, OPF_64 | OPF_FLOAT | OPF_READ_A | OPF_READ_B | OPF_IMM_B | OPF_READ_VAL32_C, "[_ra_ + _rcu32_] += _rbf64_")
 
 BYTECODE_OP(AffectOpPlusEqS8_Safe, OPF_8 | OPF_READ_A | OPF_READ_B | OPF_IMM_B | OPF_READ_VAL32_C, "[_ra_ + _rcu32_] += _rbs8_")
 BYTECODE_OP(AffectOpPlusEqS16_Safe, OPF_16 | OPF_READ_A | OPF_READ_B | OPF_IMM_B | OPF_READ_VAL32_C, "[_ra_ + _rcu32_] += _rbs16_")

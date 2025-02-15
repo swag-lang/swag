@@ -785,8 +785,8 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::AffectOpPlusEqU64:
                 emitBinOpEqOverflow(pp, ip, 0, CPUOp::ADD, SafetyMsg::PlusEq, SCBE_CPU::getOpType(ip->op));
                 break;
-            case ByteCodeOp::AffectOpPlusEqF32:
-            case ByteCodeOp::AffectOpPlusEqF64:
+            case ByteCodeOp::AffectOpPlusEqF32_Safe:
+            case ByteCodeOp::AffectOpPlusEqF64_Safe:
                 emitBinOpEq(pp, ip, ip->c.u32, CPUOp::FADD);
                 break;
 

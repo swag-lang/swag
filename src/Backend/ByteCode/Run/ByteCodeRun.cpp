@@ -3718,14 +3718,14 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             *reinterpret_cast<uint64_t*>(context->bp + ip->a.u32) += IMMB_S64(ip);
             break;
 
-        case ByteCodeOp::AffectOpPlusEqF32:
+        case ByteCodeOp::AffectOpPlusEqF32_Safe:
             *reinterpret_cast<float*>(registersRC[ip->a.u32].pointer + ip->c.u32) += IMMB_F32(ip);
             break;
         case ByteCodeOp::AffectOpPlusEqF32_SSafe:
             *reinterpret_cast<float*>(context->bp + ip->a.u32) += IMMB_F32(ip);
             break;
 
-        case ByteCodeOp::AffectOpPlusEqF64:
+        case ByteCodeOp::AffectOpPlusEqF64_Safe:
             *reinterpret_cast<double*>(registersRC[ip->a.u32].pointer + ip->c.u32) += IMMB_F64(ip);
             break;
         case ByteCodeOp::AffectOpPlusEqF64_SSafe:

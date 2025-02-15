@@ -41,8 +41,8 @@ void ByteCodeOptimizer::reduceAffectOp(ByteCodeOptContext*, ByteCodeInstruction*
         case ByteCodeOp::AffectOpPlusEqU16_Safe:
         case ByteCodeOp::AffectOpPlusEqU32_Safe:
         case ByteCodeOp::AffectOpPlusEqU64_Safe:
-        case ByteCodeOp::AffectOpPlusEqF32:
-        case ByteCodeOp::AffectOpPlusEqF64:
+        case ByteCodeOp::AffectOpPlusEqF32_Safe:
+        case ByteCodeOp::AffectOpPlusEqF64_Safe:
 
             ip[1].c.u32 += ip[0].b.u32;
             ByteCode::swapInstructions(ip, ip + 1);
@@ -6375,12 +6375,12 @@ void ByteCodeOptimizer::reduceStackOp(ByteCodeOptContext* context, ByteCodeInstr
                 ip[1].a.u32 = ip->b.u32 + ip[1].c.u32;
                 SET_OP(ip + 1, ByteCodeOp::AffectOpPlusEqU64_SSafe);
                 break;
-            case ByteCodeOp::AffectOpPlusEqF32:
+            case ByteCodeOp::AffectOpPlusEqF32_Safe:
                 ip[1].a.u32 = ip->b.u32 + ip[1].c.u32;
                 ip[1].c.u32 = 0;
                 SET_OP(ip + 1, ByteCodeOp::AffectOpPlusEqF32_SSafe);
                 break;
-            case ByteCodeOp::AffectOpPlusEqF64:
+            case ByteCodeOp::AffectOpPlusEqF64_Safe:
                 ip[1].a.u32 = ip->b.u32 + ip[1].c.u32;
                 ip[1].c.u32 = 0;
                 SET_OP(ip + 1, ByteCodeOp::AffectOpPlusEqF64_SSafe);
