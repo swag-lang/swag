@@ -2686,223 +2686,95 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::JumpIfGreaterEqS8:
-            {
-                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-                auto r0         = MK_IMMA_8();
-                auto r1         = MK_IMMC_8();
-                auto b0         = builder.CreateICmpSGE(r0, r1);
-                builder.CreateCondBr(b0, labelTrue, labelFalse);
-                blockIsClosed = true;
-                break;
-            }
             case ByteCodeOp::JumpIfGreaterEqS16:
-            {
-                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-                auto r0         = MK_IMMA_16();
-                auto r1         = MK_IMMC_16();
-                auto b0         = builder.CreateICmpSGE(r0, r1);
-                builder.CreateCondBr(b0, labelTrue, labelFalse);
-                blockIsClosed = true;
-                break;
-            }
             case ByteCodeOp::JumpIfGreaterEqS32:
-            {
-                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-                auto r0         = MK_IMMA_32();
-                auto r1         = MK_IMMC_32();
-                auto b0         = builder.CreateICmpSGE(r0, r1);
-                builder.CreateCondBr(b0, labelTrue, labelFalse);
-                blockIsClosed = true;
-                break;
-            }
             case ByteCodeOp::JumpIfGreaterEqS64:
             {
-                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-                auto r0         = MK_IMMA_64();
-                auto r1         = MK_IMMC_64();
-                auto b0         = builder.CreateICmpSGE(r0, r1);
-                builder.CreateCondBr(b0, labelTrue, labelFalse);
-                blockIsClosed = true;
-                break;
-            }
-            case ByteCodeOp::JumpIfGreaterEqU8:
-            {
-                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-                auto r0         = MK_IMMA_8();
-                auto r1         = MK_IMMC_8();
-                auto b0         = builder.CreateICmpUGE(r0, r1);
-                builder.CreateCondBr(b0, labelTrue, labelFalse);
-                blockIsClosed = true;
-                break;
-            }
-            case ByteCodeOp::JumpIfGreaterEqU16:
-            {
-                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-                auto r0         = MK_IMMA_16();
-                auto r1         = MK_IMMC_16();
-                auto b0         = builder.CreateICmpUGE(r0, r1);
-                builder.CreateCondBr(b0, labelTrue, labelFalse);
-                blockIsClosed = true;
-                break;
-            }
-            case ByteCodeOp::JumpIfGreaterEqU32:
-            {
-                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-                auto r0         = MK_IMMA_32();
-                auto r1         = MK_IMMC_32();
-                auto b0         = builder.CreateICmpUGE(r0, r1);
-                builder.CreateCondBr(b0, labelTrue, labelFalse);
-                blockIsClosed = true;
-                break;
-            }
-            case ByteCodeOp::JumpIfGreaterEqU64:
-            {
-                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-                auto r0         = MK_IMMA_64();
-                auto r1         = MK_IMMC_64();
-                auto b0         = builder.CreateICmpUGE(r0, r1);
-                builder.CreateCondBr(b0, labelTrue, labelFalse);
-                blockIsClosed = true;
-                break;
-            }
-            case ByteCodeOp::JumpIfGreaterEqF32:
-            {
-                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-                auto r0         = MK_IMMA_F32();
-                auto r1         = MK_IMMC_F32();
-                auto b0         = builder.CreateFCmpUGE(r0, r1);
-                builder.CreateCondBr(b0, labelTrue, labelFalse);
-                blockIsClosed = true;
-                break;
-            }
-            case ByteCodeOp::JumpIfGreaterEqF64:
-            {
-                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-                auto r0         = MK_IMMA_F64();
-                auto r1         = MK_IMMC_F64();
-                auto b0         = builder.CreateFCmpUGE(r0, r1);
-                builder.CreateCondBr(b0, labelTrue, labelFalse);
+                const auto numBits    = BackendEncoder::getNumBits(ip->op);
+                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto r0         = MK_IMMA_IX(numBits);
+                const auto r1         = MK_IMMC_IX(numBits);
+                const auto r2         = builder.CreateICmpSGE(r0, r1);
+                builder.CreateCondBr(r2, labelTrue, labelFalse);
                 blockIsClosed = true;
                 break;
             }
 
+            case ByteCodeOp::JumpIfGreaterEqU8:
+            case ByteCodeOp::JumpIfGreaterEqU16:
+            case ByteCodeOp::JumpIfGreaterEqU32:
+            case ByteCodeOp::JumpIfGreaterEqU64:
+            {
+                const auto numBits    = BackendEncoder::getNumBits(ip->op);
+                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto r0         = MK_IMMA_IX(numBits);
+                const auto r1         = MK_IMMC_IX(numBits);
+                const auto r2         = builder.CreateICmpUGE(r0, r1);
+                builder.CreateCondBr(r2, labelTrue, labelFalse);
+                blockIsClosed = true;
+                break;
+            }
+
+            case ByteCodeOp::JumpIfGreaterEqF32:
+            case ByteCodeOp::JumpIfGreaterEqF64:
+            {
+                const auto numBits    = BackendEncoder::getNumBits(ip->op);
+                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto r0         = MK_IMMA_FX(numBits);
+                const auto r1         = MK_IMMC_FX(numBits);
+                const auto r2         = builder.CreateFCmpUGE(r0, r1);
+                builder.CreateCondBr(r2, labelTrue, labelFalse);
+                blockIsClosed = true;
+                break;
+            }
+
+                /////////////////////////////////////
+
             case ByteCodeOp::JumpIfGreaterS8:
-            {
-                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-                auto r0         = MK_IMMA_8();
-                auto r1         = MK_IMMC_8();
-                auto b0         = builder.CreateICmpSGT(r0, r1);
-                builder.CreateCondBr(b0, labelTrue, labelFalse);
-                blockIsClosed = true;
-                break;
-            }
             case ByteCodeOp::JumpIfGreaterS16:
-            {
-                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-                auto r0         = MK_IMMA_16();
-                auto r1         = MK_IMMC_16();
-                auto b0         = builder.CreateICmpSGT(r0, r1);
-                builder.CreateCondBr(b0, labelTrue, labelFalse);
-                blockIsClosed = true;
-                break;
-            }
             case ByteCodeOp::JumpIfGreaterS32:
-            {
-                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-                auto r0         = MK_IMMA_32();
-                auto r1         = MK_IMMC_32();
-                auto b0         = builder.CreateICmpSGT(r0, r1);
-                builder.CreateCondBr(b0, labelTrue, labelFalse);
-                blockIsClosed = true;
-                break;
-            }
             case ByteCodeOp::JumpIfGreaterS64:
             {
-                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-                auto r0         = MK_IMMA_64();
-                auto r1         = MK_IMMC_64();
-                auto b0         = builder.CreateICmpSGT(r0, r1);
-                builder.CreateCondBr(b0, labelTrue, labelFalse);
+                const auto numBits    = BackendEncoder::getNumBits(ip->op);
+                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto r0         = MK_IMMA_IX(numBits);
+                const auto r1         = MK_IMMC_IX(numBits);
+                const auto r2         = builder.CreateICmpSGT(r0, r1);
+                builder.CreateCondBr(r2, labelTrue, labelFalse);
                 blockIsClosed = true;
                 break;
             }
+
             case ByteCodeOp::JumpIfGreaterU8:
-            {
-                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-                auto r0         = MK_IMMA_8();
-                auto r1         = MK_IMMC_8();
-                auto b0         = builder.CreateICmpUGT(r0, r1);
-                builder.CreateCondBr(b0, labelTrue, labelFalse);
-                blockIsClosed = true;
-                break;
-            }
             case ByteCodeOp::JumpIfGreaterU16:
-            {
-                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-                auto r0         = MK_IMMA_16();
-                auto r1         = MK_IMMC_16();
-                auto b0         = builder.CreateICmpUGT(r0, r1);
-                builder.CreateCondBr(b0, labelTrue, labelFalse);
-                blockIsClosed = true;
-                break;
-            }
             case ByteCodeOp::JumpIfGreaterU32:
-            {
-                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-                auto r0         = MK_IMMA_32();
-                auto r1         = MK_IMMC_32();
-                auto b0         = builder.CreateICmpUGT(r0, r1);
-                builder.CreateCondBr(b0, labelTrue, labelFalse);
-                blockIsClosed = true;
-                break;
-            }
             case ByteCodeOp::JumpIfGreaterU64:
             {
-                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-                auto r0         = MK_IMMA_64();
-                auto r1         = MK_IMMC_64();
-                auto b0         = builder.CreateICmpUGT(r0, r1);
-                builder.CreateCondBr(b0, labelTrue, labelFalse);
+                const auto numBits    = BackendEncoder::getNumBits(ip->op);
+                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto r0         = MK_IMMA_IX(numBits);
+                const auto r1         = MK_IMMC_IX(numBits);
+                const auto r2         = builder.CreateICmpUGT(r0, r1);
+                builder.CreateCondBr(r2, labelTrue, labelFalse);
                 blockIsClosed = true;
                 break;
             }
+
             case ByteCodeOp::JumpIfGreaterF32:
-            {
-                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-                auto r0         = MK_IMMA_F32();
-                auto r1         = MK_IMMC_F32();
-                auto b0         = builder.CreateFCmpUGT(r0, r1);
-                builder.CreateCondBr(b0, labelTrue, labelFalse);
-                blockIsClosed = true;
-                break;
-            }
             case ByteCodeOp::JumpIfGreaterF64:
             {
-                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-                auto r0         = MK_IMMA_F64();
-                auto r1         = MK_IMMC_F64();
-                auto b0         = builder.CreateFCmpUGT(r0, r1);
-                builder.CreateCondBr(b0, labelTrue, labelFalse);
+                const auto numBits    = BackendEncoder::getNumBits(ip->op);
+                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto r0         = MK_IMMA_FX(numBits);
+                const auto r1         = MK_IMMC_FX(numBits);
+                const auto r2         = builder.CreateFCmpUGT(r0, r1);
+                builder.CreateCondBr(r2, labelTrue, labelFalse);
                 blockIsClosed = true;
                 break;
             }
@@ -2934,6 +2806,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitCall(buildParameters, bcF->getCallName().cstr(), allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
                 break;
             }
+
             case ByteCodeOp::IntrinsicCompilerWarning:
             {
                 auto bcF = ip->node->resolvedSymbolOverload()->node->extByteCode()->bc;
@@ -2948,10 +2821,12 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::Unreachable:
                 emitInternalPanic(buildParameters, allocR, allocT, ip->node, "executing unreachable code");
                 break;
+
             case ByteCodeOp::InternalUnreachable:
                 builder.CreateUnreachable();
                 blockIsClosed = true;
                 break;
+
             case ByteCodeOp::InternalPanic:
                 emitInternalPanic(buildParameters, allocR, allocT, ip->node, reinterpret_cast<const char*>(ip->d.pointer));
                 break;
@@ -2974,6 +2849,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(builder.CreatePtrToInt(result, I64_TY()), GEP64(allocR, ip->a.u32));
                 break;
             }
+
             case ByteCodeOp::IntrinsicSetContext:
             {
                 auto r0 = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cstAi32, pp.cstCi32});
@@ -2981,6 +2857,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitCall(buildParameters, g_LangSpec->name_priv_tlsSetValue, allocR, allocT, {UINT32_MAX, ip->a.u32}, {v0, nullptr});
                 break;
             }
+
             case ByteCodeOp::IntrinsicGetProcessInfos:
             {
                 auto v0 = TO_PTR_I8(builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, pp.cstAi64));
@@ -3001,6 +2878,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateIntrinsic(llvm::Intrinsic::vaend, {}, {r0});
                 break;
             }
+
             case ByteCodeOp::IntrinsicCVaArg:
             {
                 auto         r0 = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
@@ -3039,6 +2917,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(builder.getInt8(0), r0);
                 break;
             }
+
             case ByteCodeOp::IntrinsicCompiler:
             {
                 auto r0 = GEP64(allocR, ip->a.u32);
@@ -3047,6 +2926,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(pp.cstAi64, r1);
                 break;
             }
+
             case ByteCodeOp::IntrinsicModules:
             {
                 if (buildParameters.module->modulesSliceOffset == UINT32_MAX)
@@ -3066,6 +2946,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 }
                 break;
             }
+
             case ByteCodeOp::IntrinsicGvtd:
             {
                 if (buildParameters.module->globalVarsToDropSliceOffset == UINT32_MAX)
@@ -3091,10 +2972,12 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::InternalFailedAssume:
                 emitCall(buildParameters, g_LangSpec->name_priv_failedAssume, allocR, allocT, {ip->a.u32}, {});
                 break;
+
             case ByteCodeOp::IntrinsicGetErr:
                 emitCall(buildParameters, g_LangSpec->name_at_err, allocR, allocT, {}, {});
                 storeRT2ToRegisters(context, buildParameters, ip->a.u32, ip->b.u32, allocR, allocT);
                 break;
+
             case ByteCodeOp::InternalSetErr:
                 emitCall(buildParameters, g_LangSpec->name_priv_seterr, allocR, allocT, {ip->a.u32, ip->b.u32}, {});
                 break;
@@ -3108,6 +2991,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(builder.CreateLoad(I32_TY(), v0), r1);
                 break;
             }
+
             case ByteCodeOp::JumpIfError:
             {
                 auto r0     = GEP64(allocR, ip->a.u32);
@@ -3122,6 +3006,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 blockIsClosed = true;
                 break;
             }
+
             case ByteCodeOp::JumpIfNoError:
             {
                 auto r0     = GEP64(allocR, ip->a.u32);
@@ -3136,30 +3021,36 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 blockIsClosed = true;
                 break;
             }
+
             case ByteCodeOp::InternalPushErr:
                 emitCall(buildParameters, g_LangSpec->name_priv_pusherr, allocR, allocT, {}, {});
                 break;
+
             case ByteCodeOp::InternalPopErr:
                 emitCall(buildParameters, g_LangSpec->name_priv_poperr, allocR, allocT, {}, {});
                 break;
+
             case ByteCodeOp::InternalCatchErr:
                 emitCall(buildParameters, g_LangSpec->name_priv_catcherr, allocR, allocT, {}, {});
                 break;
+
             case ByteCodeOp::InternalInitStackTrace:
             {
-                auto r0 = GEP64(allocR, ip->a.u32);
-                auto ra = builder.CreateLoad(PTR_I8_TY(), r0);
-                auto v0 = GEP8_PTR_I32(ra, offsetof(SwagContext, traceIndex));
-                builder.CreateStore(pp.cstAi32, v0);
+                const auto r0 = GEP64(allocR, ip->a.u32);
+                const auto r1 = builder.CreateLoad(PTR_I8_TY(), r0);
+                const auto r2 = GEP8_PTR_I32(r1, offsetof(SwagContext, traceIndex));
+                builder.CreateStore(pp.cstAi32, r2);
                 break;
             }
+
             case ByteCodeOp::InternalStackTraceConst:
             {
-                auto r1 = GEP8(pp.constantSeg, ip->b.u32);
-                builder.CreateStore(r1, GEP64_PTR_PTR_I8(allocR, ip->a.u32));
+                const auto r0 = GEP8(pp.constantSeg, ip->b.u32);
+                builder.CreateStore(r0, GEP64_PTR_PTR_I8(allocR, ip->a.u32));
                 emitCall(buildParameters, g_LangSpec->name_priv_stackTrace, allocR, allocT, {ip->a.u32}, {});
                 break;
             }
+
             case ByteCodeOp::InternalStackTrace:
                 emitCall(buildParameters, g_LangSpec->name_priv_stackTrace, allocR, allocT, {ip->a.u32}, {});
                 break;
@@ -3206,7 +3097,9 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(v0, r0);
                 break;
             }
-
+            
+            /////////////////////////////////////
+            
             case ByteCodeOp::InvertU8:
             {
                 auto r0 = GEP64_PTR_I8(allocR, ip->a.u32);
@@ -3240,6 +3133,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
+            /////////////////////////////////////
+            
             case ByteCodeOp::ClearMaskU32:
             {
                 auto r0 = GEP64_PTR_I32(allocR, ip->a.u32);
