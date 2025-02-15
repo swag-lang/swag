@@ -2309,7 +2309,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpDyn64:
             case ByteCodeOp::JumpDyn32:
             {
-                auto tableCompiler = reinterpret_cast<int32_t*>(buildParameters.module->compilerSegment.address(ip->d.u32));
+                const auto tableCompiler = reinterpret_cast<int32_t*>(buildParameters.module->compilerSegment.address(ip->d.u32));
 
                 VectorNative<llvm::BasicBlock*> falseBlocks;
                 VectorNative<llvm::BasicBlock*> trueBlocks;
@@ -2323,61 +2323,22 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                     trueBlocks.push_back(getOrCreateLabel(pp, func, i + static_cast<int64_t>(tableCompiler[idx]) + 1));
                 }
 
-                llvm::Value* r0 = nullptr;
-                llvm::Value* r1 = nullptr;
-                switch (ip->op)
-                {
-                    case ByteCodeOp::JumpDyn8:
-                        r0 = MK_IMMA_8();
-                        r1 = builder.getInt8(ip->b.u8);
-                        break;
-                    case ByteCodeOp::JumpDyn16:
-                        r0 = MK_IMMA_16();
-                        r1 = builder.getInt16(ip->b.u16);
-                        break;
-                    case ByteCodeOp::JumpDyn32:
-                        r0 = MK_IMMA_32();
-                        r1 = builder.getInt32(ip->b.u32);
-                        break;
-                    case ByteCodeOp::JumpDyn64:
-                        r0 = MK_IMMA_64();
-                        r1 = builder.getInt64(ip->b.u64);
-                        break;
-                    default:
-                        break;
-                }
-
-                auto b0 = builder.CreateICmpEQ(r0, r1);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = MK_IMMA_IX(numBits);
+                auto       r1      = builder.getIntN(numBits, ip->b.u64);
+                auto       b0      = builder.CreateICmpEQ(r0, r1);
                 builder.CreateCondBr(b0, trueBlocks[1], falseBlocks[1]);
                 builder.SetInsertPoint(falseBlocks[1]);
 
                 for (uint32_t idx = 2; idx < ip->c.u32; idx++)
                 {
-                    switch (ip->op)
-                    {
-                        case ByteCodeOp::JumpDyn8:
-                            r1 = builder.getInt8(static_cast<uint8_t>(idx - 1) + ip->b.u8);
-                            break;
-                        case ByteCodeOp::JumpDyn16:
-                            r1 = builder.getInt16(static_cast<uint16_t>(idx - 1) + ip->b.u16);
-                            break;
-                        case ByteCodeOp::JumpDyn32:
-                            r1 = builder.getInt32(idx - 1 + ip->b.u32);
-                            break;
-                        case ByteCodeOp::JumpDyn64:
-                            r1 = builder.getInt64(static_cast<uint64_t>(idx - 1) + ip->b.u64);
-                            break;
-                        default:
-                            break;
-                    }
-
+                    r1 = builder.getIntN(numBits, (idx - 1) + ip->b.u64);
                     b0 = builder.CreateICmpEQ(r0, r1);
                     builder.CreateCondBr(b0, trueBlocks[idx], falseBlocks[idx]);
                     builder.SetInsertPoint(falseBlocks[idx]);
                 }
 
                 builder.CreateBr(trueBlocks[0]);
-
                 blockIsClosed = true;
                 break;
             }
@@ -2388,6 +2349,19 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             {
                 auto label = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
                 builder.CreateBr(label);
+                blockIsClosed = true;
+                break;
+            }
+
+                /////////////////////////////////////
+
+            case ByteCodeOp::JumpIfTrue:
+            {
+                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                auto r0         = GEP64(allocR, ip->a.u32);
+                auto b0         = builder.CreateIsNotNull(builder.CreateLoad(I8_TY(), r0));
+                builder.CreateCondBr(b0, labelTrue, labelFalse);
                 blockIsClosed = true;
                 break;
             }
@@ -2411,16 +2385,6 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 blockIsClosed = true;
                 break;
             }
-            case ByteCodeOp::JumpIfTrue:
-            {
-                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-                auto r0         = GEP64(allocR, ip->a.u32);
-                auto b0         = builder.CreateIsNotNull(builder.CreateLoad(I8_TY(), r0));
-                builder.CreateCondBr(b0, labelTrue, labelFalse);
-                blockIsClosed = true;
-                break;
-            }
             case ByteCodeOp::JumpIfRTTrue:
             {
                 auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
@@ -2431,6 +2395,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 blockIsClosed = true;
                 break;
             }
+
+                /////////////////////////////////////
 
             case ByteCodeOp::JumpIfZero8:
             {
@@ -2472,6 +2438,9 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 blockIsClosed = true;
                 break;
             }
+
+                /////////////////////////////////////
+
             case ByteCodeOp::JumpIfNotZero8:
             {
                 auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
@@ -2512,6 +2481,9 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 blockIsClosed = true;
                 break;
             }
+
+                /////////////////////////////////////
+
             case ByteCodeOp::JumpIfNotEqual8:
             {
                 auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
@@ -2578,6 +2550,9 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 blockIsClosed = true;
                 break;
             }
+
+                /////////////////////////////////////
+
             case ByteCodeOp::JumpIfEqual8:
             {
                 auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
@@ -2644,6 +2619,9 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 blockIsClosed = true;
                 break;
             }
+
+                /////////////////////////////////////
+
             case ByteCodeOp::IncJumpIfEqual64:
             {
                 {
