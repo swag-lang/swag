@@ -2653,7 +2653,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             {
                 const auto r0     = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cstAi32, pp.cstCi32});
                 const auto r1     = builder.CreateLoad(I64_TY(), r0);
-                auto       result = emitCall(buildParameters, g_LangSpec->name_priv_tlsGetValue, allocR, allocT, {UINT32_MAX}, {r1});
+                const auto result = emitCall(buildParameters, g_LangSpec->name_priv_tlsGetValue, allocR, allocT, {UINT32_MAX}, {r1});
                 builder.CreateStore(builder.CreatePtrToInt(result, I64_TY()), GEP64(allocR, ip->a.u32));
                 break;
             }
@@ -2680,6 +2680,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateIntrinsic(llvm::Intrinsic::vastart, {}, {r0});
                 break;
             }
+
             case ByteCodeOp::IntrinsicCVaEnd:
             {
                 const auto r0 = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
@@ -2689,28 +2690,11 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::IntrinsicCVaArg:
             {
-                auto         r0 = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
-                llvm::Value* v0 = builder.CreateVAArg(r0, I64_TY());
-                switch (ip->c.u32)
-                {
-                    case 1:
-                        v0 = builder.CreateIntCast(v0, I8_TY(), false);
-                        builder.CreateStore(v0, GEP64_PTR_I8(allocR, ip->b.u32));
-                        break;
-                    case 2:
-                        v0 = builder.CreateIntCast(v0, I16_TY(), false);
-                        builder.CreateStore(v0, GEP64_PTR_I16(allocR, ip->b.u32));
-                        break;
-                    case 4:
-                        v0 = builder.CreateIntCast(v0, I32_TY(), false);
-                        builder.CreateStore(v0, GEP64_PTR_I32(allocR, ip->b.u32));
-                        break;
-                    case 8:
-                        builder.CreateStore(v0, GEP64(allocR, ip->b.u32));
-                        break;
-                    default:
-                        break;
-                }
+                const auto numBits = ip->c.u32 * 8;
+                const auto r0      = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
+                const auto r1      = builder.CreateVAArg(r0, I64_TY());
+                const auto r2      = builder.CreateIntCast(r1, IX_TY(numBits), false);
+                builder.CreateStore(r2, GEP64_PTR_IX(allocR, ip->b.u32, numBits));
                 break;
             }
 
@@ -2721,16 +2705,16 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::IntrinsicIsByteCode:
             {
-                auto r0 = GEP64_PTR_I8(allocR, ip->a.u32);
+                const auto r0 = GEP64_PTR_I8(allocR, ip->a.u32);
                 builder.CreateStore(builder.getInt8(0), r0);
                 break;
             }
 
             case ByteCodeOp::IntrinsicCompiler:
             {
-                auto r0 = GEP64(allocR, ip->a.u32);
+                const auto r0 = GEP64(allocR, ip->a.u32);
                 builder.CreateStore(pp.cstAi64, r0);
-                auto r1 = GEP64(allocR, ip->b.u32);
+                const auto r1 = GEP64(allocR, ip->b.u32);
                 builder.CreateStore(pp.cstAi64, r1);
                 break;
             }
@@ -2739,17 +2723,17 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             {
                 if (buildParameters.module->modulesSliceOffset == UINT32_MAX)
                 {
-                    auto r0 = GEP64(allocR, ip->a.u32);
+                    const auto r0 = GEP64(allocR, ip->a.u32);
                     builder.CreateStore(pp.cstAi64, r0);
-                    auto r1 = GEP64(allocR, ip->b.u32);
+                    const auto r1 = GEP64(allocR, ip->b.u32);
                     builder.CreateStore(pp.cstAi64, r1);
                 }
                 else
                 {
-                    auto r0 = GEP64_PTR_PTR_I8(allocR, ip->a.u32);
-                    auto r1 = GEP8(pp.constantSeg, buildParameters.module->modulesSliceOffset);
+                    const auto r0 = GEP64_PTR_PTR_I8(allocR, ip->a.u32);
+                    const auto r1 = GEP8(pp.constantSeg, buildParameters.module->modulesSliceOffset);
                     builder.CreateStore(r1, r0);
-                    auto r2 = GEP64(allocR, ip->b.u32);
+                    const auto r2 = GEP64(allocR, ip->b.u32);
                     builder.CreateStore(builder.getInt64(buildParameters.module->moduleDependencies.count + 1), r2);
                 }
                 break;
@@ -2759,17 +2743,17 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             {
                 if (buildParameters.module->globalVarsToDropSliceOffset == UINT32_MAX)
                 {
-                    auto r0 = GEP64(allocR, ip->a.u32);
+                    const auto r0 = GEP64(allocR, ip->a.u32);
                     builder.CreateStore(pp.cstAi64, r0);
-                    auto r1 = GEP64(allocR, ip->b.u32);
+                    const auto r1 = GEP64(allocR, ip->b.u32);
                     builder.CreateStore(pp.cstAi64, r1);
                 }
                 else
                 {
-                    auto r0 = GEP64_PTR_PTR_I8(allocR, ip->a.u32);
-                    auto r1 = GEP8(pp.mutableSeg, buildParameters.module->globalVarsToDropSliceOffset);
+                    const auto r0 = GEP64_PTR_PTR_I8(allocR, ip->a.u32);
+                    const auto r1 = GEP8(pp.mutableSeg, buildParameters.module->globalVarsToDropSliceOffset);
                     builder.CreateStore(r1, r0);
-                    auto r2 = GEP64(allocR, ip->b.u32);
+                    const auto r2 = GEP64(allocR, ip->b.u32);
                     builder.CreateStore(builder.getInt64(buildParameters.module->globalVarsToDrop.count), r2);
                 }
                 break;
