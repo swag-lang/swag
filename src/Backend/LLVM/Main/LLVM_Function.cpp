@@ -726,11 +726,11 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::SetAtPointer32:
             case ByteCodeOp::SetAtPointer64:
             {
-                const auto   numBits = BackendEncoder::getNumBits(ip->op);
-                const auto   ra      = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
-                const auto   r0      = GEP8_PTR_IX(ra, ip->c.u32, numBits);
-                llvm::Value* r1      = MK_IMMB_IX(numBits);
-                builder.CreateStore(r1, r0);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
+                const auto r1      = GEP8_PTR_IX(r0, ip->c.u32, numBits);
+                const auto r2      = MK_IMMB_IX(numBits);
+                builder.CreateStore(r2, r1);
                 break;
             }
 
@@ -741,9 +741,9 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::SetAtStackPointer32:
             case ByteCodeOp::SetAtStackPointer64:
             {
-                const auto   numBits = BackendEncoder::getNumBits(ip->op);
-                const auto   r0      = GEP8_PTR_IX(allocStack, ip->a.u32, numBits);
-                llvm::Value* r1      = MK_IMMB_IX(numBits);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP8_PTR_IX(allocStack, ip->a.u32, numBits);
+                const auto r1      = MK_IMMB_IX(numBits);
                 builder.CreateStore(r1, r0);
                 break;
             }
@@ -755,12 +755,12 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::SetAtStackPointer32x2:
             case ByteCodeOp::SetAtStackPointer64x2:
             {
-                const auto   numBits = BackendEncoder::getNumBits(ip->op);
-                const auto   r0      = GEP8_PTR_IX(allocStack, ip->a.u32, numBits);
-                llvm::Value* r1      = MK_IMMB_IX(numBits);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP8_PTR_IX(allocStack, ip->a.u32, numBits);
+                const auto r1      = MK_IMMB_IX(numBits);
                 builder.CreateStore(r1, r0);
-                const auto   r2 = GEP8_PTR_IX(allocStack, ip->c.u32, numBits);
-                llvm::Value* r3 = MK_IMMD_IX(numBits);
+                const auto r2 = GEP8_PTR_IX(allocStack, ip->c.u32, numBits);
+                const auto r3 = MK_IMMD_IX(numBits);
                 builder.CreateStore(r3, r2);
                 break;
             }
