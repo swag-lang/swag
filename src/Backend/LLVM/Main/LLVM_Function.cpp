@@ -3439,8 +3439,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 const auto llvmFct      = reinterpret_cast<llvm::Function*>(modu.getOrInsertFunction(callName.cstr(), llvmFctTy).getCallee());
                 const auto r0           = GEP64_PTR_PTR_I8(allocR, ip->a.u32);
                 builder.CreateStore(TO_PTR_I8(llvmFct), r0);
-                const auto v0 = builder.CreateLoad(I64_TY(), GEP64(allocR, ip->a.u32));
-                builder.CreateStore(v0, GEP64(allocR, ip->a.u32));
+                const auto r1 = builder.CreateLoad(I64_TY(), GEP64(allocR, ip->a.u32));
+                builder.CreateStore(r1, GEP64(allocR, ip->a.u32));
                 break;
             }
 
