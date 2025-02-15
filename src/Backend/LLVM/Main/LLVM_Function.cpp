@@ -254,29 +254,16 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::SetZeroStack8:
-            {
-                auto r0 = GEP8(allocStack, ip->a.u32);
-                builder.CreateStore(builder.getInt8(0), r0);
-                break;
-            }
             case ByteCodeOp::SetZeroStack16:
-            {
-                auto r0 = GEP8_PTR_I16(allocStack, ip->a.u32);
-                builder.CreateStore(pp.cstAi16, r0);
-                break;
-            }
             case ByteCodeOp::SetZeroStack32:
-            {
-                auto r0 = GEP8_PTR_I32(allocStack, ip->a.u32);
-                builder.CreateStore(pp.cstAi32, r0);
-                break;
-            }
             case ByteCodeOp::SetZeroStack64:
             {
-                auto r0 = GEP8_PTR_I64(allocStack, ip->a.u32);
-                builder.CreateStore(pp.cstAi64, r0);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP8_PTR_IX(allocStack, ip->a.u32, numBits);
+                builder.CreateStore(builder.getIntN(numBits, 0), r0);
                 break;
             }
+
             case ByteCodeOp::SetZeroStackX:
             {
                 auto r0 = GEP8(allocStack, ip->a.u32);
