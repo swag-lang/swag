@@ -1117,10 +1117,10 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::BinOpDivF64:
             {
                 const auto   numBits = BackendEncoder::getNumBits(ip->op);
-                auto         r0 = GEP64_PTR_FX(allocR, ip->c.u32, numBits);
-                llvm::Value* r1 = MK_IMMA_FX(numBits);
-                llvm::Value* r2 = MK_IMMB_FX(numBits);
-                auto         v0 = builder.CreateFDiv(r1, r2);
+                auto         r0      = GEP64_PTR_FX(allocR, ip->c.u32, numBits);
+                llvm::Value* r1      = MK_IMMA_FX(numBits);
+                llvm::Value* r2      = MK_IMMB_FX(numBits);
+                auto         v0      = builder.CreateFDiv(r1, r2);
                 builder.CreateStore(v0, r0);
                 break;
             }
@@ -1128,30 +1128,15 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::BinOpBitmaskAnd8:
-            {
-                MK_BINOP8_CAB();
-                auto v0 = builder.CreateAnd(r1, r2);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::BinOpBitmaskAnd16:
-            {
-                MK_BINOP16_CAB();
-                auto v0 = builder.CreateAnd(r1, r2);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::BinOpBitmaskAnd32:
-            {
-                MK_BINOP32_CAB();
-                auto v0 = builder.CreateAnd(r1, r2);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::BinOpBitmaskAnd64:
             {
-                MK_BINOP64_CAB();
-                auto v0 = builder.CreateAnd(r1, r2);
+                const auto   numBits = BackendEncoder::getNumBits(ip->op);
+                auto         r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+                llvm::Value* r1      = MK_IMMA_IX(numBits);
+                llvm::Value* r2      = MK_IMMB_IX(numBits);
+                auto         v0      = builder.CreateAnd(r1, r2);
                 builder.CreateStore(v0, r0);
                 break;
             }
@@ -1159,30 +1144,15 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::BinOpBitmaskOr8:
-            {
-                MK_BINOP8_CAB();
-                auto v0 = builder.CreateOr(r1, r2);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::BinOpBitmaskOr16:
-            {
-                MK_BINOP16_CAB();
-                auto v0 = builder.CreateOr(r1, r2);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::BinOpBitmaskOr32:
-            {
-                MK_BINOP32_CAB();
-                auto v0 = builder.CreateOr(r1, r2);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::BinOpBitmaskOr64:
             {
-                MK_BINOP64_CAB();
-                auto v0 = builder.CreateOr(r1, r2);
+                const auto   numBits = BackendEncoder::getNumBits(ip->op);
+                auto         r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+                llvm::Value* r1      = MK_IMMA_IX(numBits);
+                llvm::Value* r2      = MK_IMMB_IX(numBits);
+                auto         v0      = builder.CreateOr(r1, r2);
                 builder.CreateStore(v0, r0);
                 break;
             }
