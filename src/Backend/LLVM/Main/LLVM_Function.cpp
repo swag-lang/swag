@@ -2474,8 +2474,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
                 const auto r0         = MK_IMMA_IX(numBits);
                 const auto r1         = MK_IMMC_IX(numBits);
-                const auto b0         = builder.CreateICmpEQ(r0, r1);
-                builder.CreateCondBr(b0, labelTrue, labelFalse);
+                const auto r2         = builder.CreateICmpEQ(r0, r1);
+                builder.CreateCondBr(r2, labelTrue, labelFalse);
                 blockIsClosed = true;
                 break;
             }
@@ -2488,8 +2488,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
                 const auto r0         = MK_IMMA_FX(numBits);
                 const auto r1         = MK_IMMC_FX(numBits);
-                const auto b0         = builder.CreateFCmpOEQ(r0, r1);
-                builder.CreateCondBr(b0, labelTrue, labelFalse);
+                const auto r2         = builder.CreateFCmpOEQ(r0, r1);
+                builder.CreateCondBr(r2, labelTrue, labelFalse);
                 blockIsClosed = true;
                 break;
             }
@@ -2498,20 +2498,16 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::IncJumpIfEqual64:
             {
-                {
-                    auto r0 = GEP64(allocR, ip->a.u32);
-                    auto v0 = builder.CreateAdd(builder.CreateLoad(I64_TY(), r0), builder.getInt64(1));
-                    builder.CreateStore(v0, r0);
-                }
-                {
-                    auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                    auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-                    auto r0         = MK_IMMA_64();
-                    auto r1         = MK_IMMC_64();
-                    auto b0         = builder.CreateICmpEQ(r0, r1);
-                    builder.CreateCondBr(b0, labelTrue, labelFalse);
-                    blockIsClosed = true;
-                }
+                const auto r0 = GEP64(allocR, ip->a.u32);
+                const auto r1 = builder.CreateAdd(builder.CreateLoad(I64_TY(), r0), builder.getInt64(1));
+                builder.CreateStore(r1, r0);
+                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto r2         = MK_IMMA_64();
+                const auto r3         = MK_IMMC_64();
+                const auto r4         = builder.CreateICmpEQ(r2, r3);
+                builder.CreateCondBr(r4, labelTrue, labelFalse);
+                blockIsClosed = true;
                 break;
             }
 
