@@ -777,25 +777,9 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 const auto r2      = MK_IMMB_IX(numBits);
                 const bool r3      = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
                 if (r3 && pp.module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))
-                {
-                    const auto r4       = builder.CreateBinaryIntrinsic(llvm::Intrinsic::sadd_with_overflow, r1, r2);
-                    const auto r5       = builder.CreateExtractValue(r4, {0});
-                    const auto r6       = builder.CreateExtractValue(r4, {1});
-                    const auto blockOk  = llvm::BasicBlock::Create(context, "", func);
-                    const auto blockErr = llvm::BasicBlock::Create(context, "", func);
-                    const auto r7       = builder.CreateIsNull(r6);
-                    builder.CreateCondBr(r7, blockOk, blockErr);
-                    builder.SetInsertPoint(blockErr);
-                    emitInternalPanic(buildParameters, allocR, allocT, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::Plus, BackendEncoder::getOpType(ip->op)));
-                    builder.CreateBr(blockOk);
-                    builder.SetInsertPoint(blockOk);
-                    builder.CreateStore(r5, r0);
-                }
+                    emitBinOpOverflow(buildParameters, func, allocR, allocT, ip, r0, r1, r2, llvm::Intrinsic::sadd_with_overflow, SafetyMsg::Plus);
                 else
-                {
-                    const auto r4 = builder.CreateAdd(r1, r2);
-                    builder.CreateStore(r4, r0);
-                }
+                    builder.CreateStore(builder.CreateAdd(r1, r2), r0);
                 break;
             }
 

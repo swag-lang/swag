@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Backend/ByteCode/ByteCode.h"
+#include "Backend/ByteCode/Gen/ByteCodeGen.h"
 #include "Backend/LLVM/Main/LLVM.h"
 #include "Backend/LLVM/Main/LLVM_Macros.h"
 #include "Semantic/Type/TypeManager.h"
@@ -213,4 +214,35 @@ void LLVM::storeRT2ToRegisters(llvm::LLVMContext&     context,
     r0 = GEP64(allocR, reg1);
     r1 = builder.CreateLoad(I64_TY(), GEP64(allocRR, 1));
     builder.CreateStore(r1, r0);
+}
+
+void LLVM::emitBinOpOverflow(const BuildParameters&                 buildParameters,
+                             llvm::Function*                        func,
+                             llvm::AllocaInst*                      allocR,
+                             llvm::AllocaInst*                      allocT,
+                             const ByteCodeInstruction*             ip,
+                             llvm::Value* const                     r0,
+                             llvm::Value* const                     r1,
+                             llvm::Value* const                     r2,
+                             llvm::Intrinsic::IndependentIntrinsics op,
+                             SafetyMsg                              msg)
+{
+    const auto  ct              = buildParameters.compileType;
+    const auto  precompileIndex = buildParameters.precompileIndex;
+    const auto& pp              = encoder<LLVMEncoder>(ct, precompileIndex);
+    auto&       context         = *pp.llvmContext;
+    auto&       builder         = *pp.builder;
+
+    const auto r4       = builder.CreateBinaryIntrinsic(op, r1, r2);
+    const auto r5       = builder.CreateExtractValue(r4, {0});
+    const auto r6       = builder.CreateExtractValue(r4, {1});
+    const auto blockOk  = llvm::BasicBlock::Create(context, "", func);
+    const auto blockErr = llvm::BasicBlock::Create(context, "", func);
+    const auto r7       = builder.CreateIsNull(r6);
+    builder.CreateCondBr(r7, blockOk, blockErr);
+    builder.SetInsertPoint(blockErr);
+    emitInternalPanic(buildParameters, allocR, allocT, ip->node, ByteCodeGen::safetyMsg(msg, BackendEncoder::getOpType(ip->op)));
+    builder.CreateBr(blockOk);
+    builder.SetInsertPoint(blockOk);
+    builder.CreateStore(r5, r0);
 }
