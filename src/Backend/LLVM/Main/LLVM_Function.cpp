@@ -1967,57 +1967,40 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::AffectOpShiftLeftEqS8:
-                emitShiftEqLogical(context, builder, allocR, ip, 8, true);
-                break;
             case ByteCodeOp::AffectOpShiftLeftEqU8:
-                emitShiftEqLogical(context, builder, allocR, ip, 8, true);
-                break;
             case ByteCodeOp::AffectOpShiftLeftEqS16:
-                emitShiftEqLogical(context, builder, allocR, ip, 16, true);
-                break;
             case ByteCodeOp::AffectOpShiftLeftEqU16:
-                emitShiftEqLogical(context, builder, allocR, ip, 16, true);
-                break;
             case ByteCodeOp::AffectOpShiftLeftEqS32:
-                emitShiftEqLogical(context, builder, allocR, ip, 32, true);
-                break;
             case ByteCodeOp::AffectOpShiftLeftEqU32:
-                emitShiftEqLogical(context, builder, allocR, ip, 32, true);
-                break;
             case ByteCodeOp::AffectOpShiftLeftEqS64:
-                emitShiftEqLogical(context, builder, allocR, ip, 64, true);
-                break;
             case ByteCodeOp::AffectOpShiftLeftEqU64:
-                emitShiftEqLogical(context, builder, allocR, ip, 64, true);
+            {
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                emitShiftEqLogical(context, builder, allocR, ip, numBits, true);
                 break;
+            }
 
                 /////////////////////////////////////
 
             case ByteCodeOp::AffectOpShiftRightEqU8:
-                emitShiftEqLogical(context, builder, allocR, ip, 8, false);
-                break;
             case ByteCodeOp::AffectOpShiftRightEqU16:
-                emitShiftEqLogical(context, builder, allocR, ip, 16, false);
-                break;
             case ByteCodeOp::AffectOpShiftRightEqU32:
-                emitShiftEqLogical(context, builder, allocR, ip, 32, false);
-                break;
             case ByteCodeOp::AffectOpShiftRightEqU64:
-                emitShiftEqLogical(context, builder, allocR, ip, 64, false);
+            {
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                emitShiftEqLogical(context, builder, allocR, ip, numBits, false);
                 break;
+            }
 
             case ByteCodeOp::AffectOpShiftRightEqS8:
-                emitShiftRightEqArithmetic(context, builder, allocR, ip, 8);
-                break;
             case ByteCodeOp::AffectOpShiftRightEqS16:
-                emitShiftRightEqArithmetic(context, builder, allocR, ip, 16);
-                break;
             case ByteCodeOp::AffectOpShiftRightEqS32:
-                emitShiftRightEqArithmetic(context, builder, allocR, ip, 32);
-                break;
             case ByteCodeOp::AffectOpShiftRightEqS64:
-                emitShiftRightEqArithmetic(context, builder, allocR, ip, 64);
+            {
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                emitShiftRightEqArithmetic(context, builder, allocR, ip, numBits);
                 break;
+            }
 
                 /////////////////////////////////////
 
