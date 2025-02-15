@@ -1628,73 +1628,42 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::AffectOpDivEqS8:
-            {
-                MK_BINOP_EQ8_CAB();
-                auto v0 = builder.CreateSDiv(builder.CreateLoad(I8_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
-                break;
-            }
             case ByteCodeOp::AffectOpDivEqS16:
-            {
-                MK_BINOP_EQ16_CAB();
-                auto v0 = builder.CreateSDiv(builder.CreateLoad(I16_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
-                break;
-            }
             case ByteCodeOp::AffectOpDivEqS32:
-            {
-                MK_BINOP_EQ32_CAB();
-                auto v0 = builder.CreateSDiv(builder.CreateLoad(I32_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
-                break;
-            }
             case ByteCodeOp::AffectOpDivEqS64:
             {
-                MK_BINOP_EQ64_CAB();
-                auto v0 = builder.CreateSDiv(builder.CreateLoad(I64_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64(allocR, ip->a.u32);
+                const auto r1      = builder.CreateLoad(PTR_IX_TY(numBits), r0);
+                const auto r2      = MK_IMMB_IX(numBits);
+                const auto r3      = builder.CreateSDiv(builder.CreateLoad(IX_TY(numBits), r1), r2);
+                builder.CreateStore(r3, r1);
                 break;
             }
+
             case ByteCodeOp::AffectOpDivEqU8:
-            {
-                MK_BINOP_EQ8_CAB();
-                auto v0 = builder.CreateUDiv(builder.CreateLoad(I8_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
-                break;
-            }
             case ByteCodeOp::AffectOpDivEqU16:
-            {
-                MK_BINOP_EQ16_CAB();
-                auto v0 = builder.CreateUDiv(builder.CreateLoad(I16_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
-                break;
-            }
             case ByteCodeOp::AffectOpDivEqU32:
-            {
-                MK_BINOP_EQ32_CAB();
-                auto v0 = builder.CreateUDiv(builder.CreateLoad(I32_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
-                break;
-            }
             case ByteCodeOp::AffectOpDivEqU64:
             {
-                MK_BINOP_EQ64_CAB();
-                auto v0 = builder.CreateUDiv(builder.CreateLoad(I64_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64(allocR, ip->a.u32);
+                const auto r1      = builder.CreateLoad(PTR_IX_TY(numBits), r0);
+                const auto r2      = MK_IMMB_IX(numBits);
+                const auto r3      = builder.CreateUDiv(builder.CreateLoad(IX_TY(numBits), r1), r2);
+                builder.CreateStore(r3, r1);
                 break;
             }
+
             case ByteCodeOp::AffectOpDivEqF32:
-            {
-                MK_BINOP_EQF32_CAB();
-                auto v0 = builder.CreateFDiv(builder.CreateLoad(F32_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
-                break;
-            }
             case ByteCodeOp::AffectOpDivEqF64:
             {
-                MK_BINOP_EQF64_CAB();
-                auto v0 = builder.CreateFDiv(builder.CreateLoad(F64_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64(allocR, ip->a.u32);
+                const auto r1      = builder.CreateLoad(PTR_FX_TY(numBits), r0);
+                const auto r2      = MK_IMMB_FX(numBits);
+                const auto r3      = builder.CreateFDiv(builder.CreateLoad(FX_TY(numBits), r1), r2);
+                builder.CreateStore(r3, r1);
                 break;
             }
 

@@ -10,13 +10,14 @@
 #define FX_TY(__n) ((__n) == 32 ? llvm::Type::getFloatTy(context) : llvm::Type::getDoubleTy(context))
 #define VOID_TY()  llvm::Type::getVoidTy(context)
 
-#define PTR_IX_TY(__n) llvm::Type::getIntNPtrTy(context, __n)
 #define PTR_I8_TY()    llvm::Type::getInt8PtrTy(context)
 #define PTR_I16_TY()   llvm::Type::getInt16PtrTy(context)
 #define PTR_I32_TY()   llvm::Type::getInt32PtrTy(context)
 #define PTR_I64_TY()   llvm::Type::getInt64PtrTy(context)
+#define PTR_IX_TY(__n) llvm::Type::getIntNPtrTy(context, __n)
 #define PTR_F32_TY()   llvm::Type::getFloatPtrTy(context)
 #define PTR_F64_TY()   llvm::Type::getDoublePtrTy(context)
+#define PTR_FX_TY(__n) (__n) == 32 ? llvm::Type::getFloatPtrTy(context) : llvm::Type::getDoublePtrTy(context)
 
 #define PTR_PTR_I8_TY()  llvm::Type::getInt8PtrTy(context)->getPointerTo()
 #define PTR_PTR_I16_TY() llvm::Type::getInt16PtrTy(context)->getPointerTo()
