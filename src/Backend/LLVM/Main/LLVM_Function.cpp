@@ -1056,58 +1056,29 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::BinOpModuloS8:
-            {
-                MK_BINOP8_CAB();
-                auto v0 = builder.CreateSRem(r1, r2);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::BinOpModuloS16:
-            {
-                MK_BINOP16_CAB();
-                auto v0 = builder.CreateSRem(r1, r2);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::BinOpModuloS32:
-            {
-                MK_BINOP32_CAB();
-                auto v0 = builder.CreateSRem(r1, r2);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::BinOpModuloS64:
             {
-                MK_BINOP64_CAB();
-                auto v0 = builder.CreateSRem(r1, r2);
+                const auto   numBits = BackendEncoder::getNumBits(ip->op);
+                auto         r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+                llvm::Value* r1      = MK_IMMA_IX(numBits);
+                llvm::Value* r2      = MK_IMMB_IX(numBits);
+                auto         v0      = builder.CreateSRem(r1, r2);
                 builder.CreateStore(v0, r0);
                 break;
             }
+
             case ByteCodeOp::BinOpModuloU8:
-            {
-                MK_BINOP8_CAB();
-                auto v0 = builder.CreateURem(r1, r2);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::BinOpModuloU16:
-            {
-                MK_BINOP16_CAB();
-                auto v0 = builder.CreateURem(r1, r2);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::BinOpModuloU32:
-            {
-                MK_BINOP32_CAB();
-                auto v0 = builder.CreateURem(r1, r2);
-                builder.CreateStore(v0, r0);
-                break;
-            }
             case ByteCodeOp::BinOpModuloU64:
             {
-                MK_BINOP64_CAB();
-                auto v0 = builder.CreateURem(r1, r2);
+                const auto   numBits = BackendEncoder::getNumBits(ip->op);
+                auto         r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+                llvm::Value* r1      = MK_IMMA_IX(numBits);
+                llvm::Value* r2      = MK_IMMB_IX(numBits);
+                auto         v0      = builder.CreateURem(r1, r2);
                 builder.CreateStore(v0, r0);
                 break;
             }
