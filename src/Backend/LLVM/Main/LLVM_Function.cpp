@@ -2776,40 +2776,38 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::InternalHasErr:
             {
-                auto r0 = GEP64(allocR, ip->b.u32);
-                auto ra = builder.CreateLoad(PTR_I8_TY(), r0);
-                auto v0 = GEP8(ra, offsetof(SwagContext, hasError));
-                auto r1 = GEP64_PTR_I32(allocR, ip->a.u32);
-                builder.CreateStore(builder.CreateLoad(I32_TY(), v0), r1);
+                const auto r0 = GEP64(allocR, ip->b.u32);
+                const auto r1 = builder.CreateLoad(PTR_I8_TY(), r0);
+                const auto r2 = GEP8(r1, offsetof(SwagContext, hasError));
+                const auto r3 = GEP64_PTR_I32(allocR, ip->a.u32);
+                builder.CreateStore(builder.CreateLoad(I32_TY(), r2), r3);
                 break;
             }
 
             case ByteCodeOp::JumpIfError:
             {
-                auto r0     = GEP64(allocR, ip->a.u32);
-                auto ra     = builder.CreateLoad(PTR_I8_TY(), r0);
-                auto v0     = GEP8(ra, offsetof(SwagContext, hasError));
-                auto hasErr = builder.CreateLoad(I32_TY(), v0);
-
-                auto labelFalse = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                auto labelTrue  = getOrCreateLabel(pp, func, i + 1);
-                auto b0         = builder.CreateIsNull(hasErr);
-                builder.CreateCondBr(b0, labelTrue, labelFalse);
+                const auto r0         = GEP64(allocR, ip->a.u32);
+                const auto r1         = builder.CreateLoad(PTR_I8_TY(), r0);
+                const auto r2         = GEP8(r1, offsetof(SwagContext, hasError));
+                const auto r3         = builder.CreateLoad(I32_TY(), r2);
+                const auto labelFalse = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+                const auto labelTrue  = getOrCreateLabel(pp, func, i + 1);
+                const auto r4         = builder.CreateIsNull(r3);
+                builder.CreateCondBr(r4, labelTrue, labelFalse);
                 blockIsClosed = true;
                 break;
             }
 
             case ByteCodeOp::JumpIfNoError:
             {
-                auto r0     = GEP64(allocR, ip->a.u32);
-                auto ra     = builder.CreateLoad(PTR_I8_TY(), r0);
-                auto v0     = GEP8(ra, offsetof(SwagContext, hasError));
-                auto hasErr = builder.CreateLoad(I32_TY(), v0);
-
-                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
-                auto b0         = builder.CreateIsNull(hasErr);
-                builder.CreateCondBr(b0, labelTrue, labelFalse);
+                const auto r0         = GEP64(allocR, ip->a.u32);
+                const auto r1         = builder.CreateLoad(PTR_I8_TY(), r0);
+                const auto r2         = GEP8(r1, offsetof(SwagContext, hasError));
+                const auto r3         = builder.CreateLoad(I32_TY(), r2);
+                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto r4         = builder.CreateIsNull(r3);
+                builder.CreateCondBr(r4, labelTrue, labelFalse);
                 blockIsClosed = true;
                 break;
             }
