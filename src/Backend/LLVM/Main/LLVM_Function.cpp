@@ -767,27 +767,35 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::BinOpPlusS8:
-            {
-                MK_BINOP8_CAB();
-                OP_OVERFLOW(sadd_with_overflow, CreateAdd, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS8), true);
-                break;
-            }
             case ByteCodeOp::BinOpPlusS16:
-            {
-                MK_BINOP16_CAB();
-                OP_OVERFLOW(sadd_with_overflow, CreateAdd, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS16), true);
-                break;
-            }
             case ByteCodeOp::BinOpPlusS32:
-            {
-                MK_BINOP32_CAB();
-                OP_OVERFLOW(sadd_with_overflow, CreateAdd, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS32), true);
-                break;
-            }
             case ByteCodeOp::BinOpPlusS64:
             {
-                MK_BINOP64_CAB();
-                OP_OVERFLOW(sadd_with_overflow, CreateAdd, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS64), true);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+                const auto r1      = MK_IMMA_IX(numBits);
+                const auto r2      = MK_IMMB_IX(numBits);
+                const bool r3      = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
+                if (r3 && pp.module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))
+                {
+                    const auto r4       = builder.CreateBinaryIntrinsic(llvm::Intrinsic::sadd_with_overflow, r1, r2);
+                    const auto r5       = builder.CreateExtractValue(r4, {0});
+                    const auto r6       = builder.CreateExtractValue(r4, {1});
+                    const auto blockOk  = llvm::BasicBlock::Create(context, "", func);
+                    const auto blockErr = llvm::BasicBlock::Create(context, "", func);
+                    const auto r7       = builder.CreateIsNull(r6);
+                    builder.CreateCondBr(r7, blockOk, blockErr);
+                    builder.SetInsertPoint(blockErr);
+                    emitInternalPanic(buildParameters, allocR, allocT, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::Plus, BackendEncoder::getOpType(ip->op)));
+                    builder.CreateBr(blockOk);
+                    builder.SetInsertPoint(blockOk);
+                    builder.CreateStore(r5, r0);
+                }
+                else
+                {
+                    const auto r4 = builder.CreateAdd(r1, r2);
+                    builder.CreateStore(r4, r0);
+                }
                 break;
             }
 

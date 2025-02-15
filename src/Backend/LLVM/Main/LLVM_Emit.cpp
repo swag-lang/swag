@@ -2,7 +2,9 @@
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/LLVM/Main/LLVM.h"
 #include "Backend/LLVM/Main/LLVM_Macros.h"
+#include "Semantic/Type/TypeManager.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
+#include "Wmf/Module.h"
 #include "Wmf/SourceFile.h"
 
 void LLVM::emitShiftRightArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t opBits)
