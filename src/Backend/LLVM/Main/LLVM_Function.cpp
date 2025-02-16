@@ -966,6 +966,16 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
                 /////////////////////////////////////
 
+            case ByteCodeOp::BinOpShiftRightS8:
+            case ByteCodeOp::BinOpShiftRightS16:
+            case ByteCodeOp::BinOpShiftRightS32:
+            case ByteCodeOp::BinOpShiftRightS64:
+            {
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                emitShiftRightArithmetic(context, builder, allocR, ip, numBits);
+                break;
+            }
+            
             case ByteCodeOp::BinOpShiftRightU8:
             case ByteCodeOp::BinOpShiftRightU16:
             case ByteCodeOp::BinOpShiftRightU32:
@@ -976,42 +986,23 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             }
 
-            case ByteCodeOp::BinOpShiftRightS8:
-            case ByteCodeOp::BinOpShiftRightS16:
-            case ByteCodeOp::BinOpShiftRightS32:
-            case ByteCodeOp::BinOpShiftRightS64:
-            {
-                const auto numBits = BackendEncoder::getNumBits(ip->op);
-                emitShiftRightArithmetic(context, builder, allocR, ip, numBits);
-                break;
-            }
-
                 /////////////////////////////////////
 
             case ByteCodeOp::BinOpModuloS8:
             case ByteCodeOp::BinOpModuloS16:
             case ByteCodeOp::BinOpModuloS32:
             case ByteCodeOp::BinOpModuloS64:
-            {
-                const auto numBits = BackendEncoder::getNumBits(ip->op);
-                const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
-                const auto r1      = MK_IMMA_IX(numBits);
-                const auto r2      = MK_IMMB_IX(numBits);
-                const auto r3      = builder.CreateSRem(r1, r2);
-                builder.CreateStore(r3, r0);
-                break;
-            }
-
             case ByteCodeOp::BinOpModuloU8:
             case ByteCodeOp::BinOpModuloU16:
             case ByteCodeOp::BinOpModuloU32:
             case ByteCodeOp::BinOpModuloU64:
             {
-                const auto numBits = BackendEncoder::getNumBits(ip->op);
-                const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
-                const auto r1      = MK_IMMA_IX(numBits);
-                const auto r2      = MK_IMMB_IX(numBits);
-                const auto r3      = builder.CreateURem(r1, r2);
+                const auto numBits  = BackendEncoder::getNumBits(ip->op);
+                const auto isSigned = BackendEncoder::getOpType(ip->op)->isNativeIntegerSigned();
+                const auto r0       = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+                const auto r1       = MK_IMMA_IX(numBits);
+                const auto r2       = MK_IMMB_IX(numBits);
+                const auto r3       = isSigned ? builder.CreateSRem(r1, r2) : builder.CreateURem(r1, r2);
                 builder.CreateStore(r3, r0);
                 break;
             }
@@ -1022,26 +1013,17 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::BinOpDivS16:
             case ByteCodeOp::BinOpDivS32:
             case ByteCodeOp::BinOpDivS64:
-            {
-                const auto numBits = BackendEncoder::getNumBits(ip->op);
-                const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
-                const auto r1      = MK_IMMA_IX(numBits);
-                const auto r2      = MK_IMMB_IX(numBits);
-                const auto r3      = builder.CreateSDiv(r1, r2);
-                builder.CreateStore(r3, r0);
-                break;
-            }
-
             case ByteCodeOp::BinOpDivU8:
             case ByteCodeOp::BinOpDivU16:
             case ByteCodeOp::BinOpDivU32:
             case ByteCodeOp::BinOpDivU64:
             {
-                const auto numBits = BackendEncoder::getNumBits(ip->op);
-                const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
-                const auto r1      = MK_IMMA_IX(numBits);
-                const auto r2      = MK_IMMB_IX(numBits);
-                const auto r3      = builder.CreateUDiv(r1, r2);
+                const auto numBits  = BackendEncoder::getNumBits(ip->op);
+                const auto isSigned = BackendEncoder::getOpType(ip->op)->isNativeIntegerSigned();
+                const auto r0       = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+                const auto r1       = MK_IMMA_IX(numBits);
+                const auto r2       = MK_IMMB_IX(numBits);
+                const auto r3       = isSigned ? builder.CreateSDiv(r1, r2) : builder.CreateUDiv(r1, r2);
                 builder.CreateStore(r3, r0);
                 break;
             }
