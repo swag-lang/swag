@@ -36,8 +36,9 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     // Function prototype
     auto funcType = getOrCreateFuncType(pp, typeFunc);
-    auto func     = reinterpret_cast<llvm::Function*>(modu.getOrInsertFunction(funcName.cstr(), funcType).getCallee());
-    setFuncAttributes(pp, numPreCompileBuffers, bcFuncNode, bc, func);
+    pp.llvmFunc       = reinterpret_cast<llvm::Function*>(modu.getOrInsertFunction(funcName.cstr(), funcType).getCallee());
+    auto func     = pp.llvmFunc;
+    setFuncAttributes(pp, numPreCompileBuffers, bcFuncNode, bc);
 
     // Content
     llvm::BasicBlock* block         = llvm::BasicBlock::Create(context, "entry", func);
@@ -116,7 +117,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         // If we are the destination of a jump, be sure we have a block, and from now insert into that block
         if (ip->hasFlag(BCI_JUMP_DEST) || blockIsClosed)
         {
-            auto label = getOrCreateLabel(pp, func, i);
+            auto label = getOrCreateLabel(pp, i);
             if (!blockIsClosed)
                 builder.CreateBr(label); // Make a jump from previous block to this one
             else
@@ -794,7 +795,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (BackendEncoder::mustCheckOverflow(module, ip))
                 {
                     const auto op = isSigned ? llvm::Intrinsic::sadd_with_overflow : llvm::Intrinsic::uadd_with_overflow;
-                    emitBinOpOverflow(pp, func, r0, r1, r2, op, SafetyMsg::Plus);
+                    emitBinOpOverflow(pp, r0, r1, r2, op, SafetyMsg::Plus);
                 }
                 else
                     builder.CreateStore(builder.CreateAdd(r1, r2), r0);
@@ -850,7 +851,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (BackendEncoder::mustCheckOverflow(module, ip))
                 {
                     const auto op = isSigned ? llvm::Intrinsic::ssub_with_overflow : llvm::Intrinsic::usub_with_overflow;
-                    emitBinOpOverflow(pp, func, r0, r1, r2, op, SafetyMsg::Minus);
+                    emitBinOpOverflow(pp, r0, r1, r2, op, SafetyMsg::Minus);
                 }
                 else
                     builder.CreateStore(builder.CreateSub(r1, r2), r0);
@@ -906,7 +907,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (BackendEncoder::mustCheckOverflow(module, ip))
                 {
                     const auto op = isSigned ? llvm::Intrinsic::smul_with_overflow : llvm::Intrinsic::umul_with_overflow;
-                    emitBinOpOverflow(pp, func, r0, r1, r2, op, SafetyMsg::Mul);
+                    emitBinOpOverflow(pp, r0, r1, r2, op, SafetyMsg::Mul);
                 }
                 else
                     builder.CreateStore(builder.CreateMul(r1, r2), r0);
@@ -1102,7 +1103,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (BackendEncoder::mustCheckOverflow(module, ip))
                 {
                     const auto op = isSigned ? llvm::Intrinsic::ssub_with_overflow : llvm::Intrinsic::usub_with_overflow;
-                    emitBinOpEqOverflow(pp, func, r1, r2, op, SafetyMsg::MinusEq);
+                    emitBinOpEqOverflow(pp, r1, r2, op, SafetyMsg::MinusEq);
                 }
                 else
                 {
@@ -1191,7 +1192,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (BackendEncoder::mustCheckOverflow(module, ip))
                 {
                     const auto op = isSigned ? llvm::Intrinsic::sadd_with_overflow : llvm::Intrinsic::uadd_with_overflow;
-                    emitBinOpEqOverflow(pp, func, r1, r2, op, SafetyMsg::PlusEq);
+                    emitBinOpEqOverflow(pp, r1, r2, op, SafetyMsg::PlusEq);
                 }
                 else
                 {
@@ -1280,7 +1281,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (BackendEncoder::mustCheckOverflow(module, ip))
                 {
                     const auto op = isSigned ? llvm::Intrinsic::smul_with_overflow : llvm::Intrinsic::umul_with_overflow;
-                    emitBinOpEqOverflow(pp, func, r1, r2, op, SafetyMsg::MulEq);
+                    emitBinOpEqOverflow(pp, r1, r2, op, SafetyMsg::MulEq);
                 }
                 else
                 {
@@ -1782,8 +1783,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                     if (idx == 0)
                         falseBlocks.push_back(nullptr);
                     else
-                        falseBlocks.push_back(getOrCreateLabel(pp, func, static_cast<int64_t>(UINT32_MAX) + g_UniqueID.fetch_add(1)));
-                    trueBlocks.push_back(getOrCreateLabel(pp, func, i + static_cast<int64_t>(tableCompiler[idx]) + 1));
+                        falseBlocks.push_back(getOrCreateLabel(pp, static_cast<int64_t>(UINT32_MAX) + g_UniqueID.fetch_add(1)));
+                    trueBlocks.push_back(getOrCreateLabel(pp, i + static_cast<int64_t>(tableCompiler[idx]) + 1));
                 }
 
                 const auto numBits = BackendEncoder::getNumBits(ip->op);
@@ -1810,7 +1811,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::Jump:
             {
-                const auto label = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+                const auto label = getOrCreateLabel(pp, i + ip->b.s32 + 1);
                 builder.CreateBr(label);
                 blockIsClosed = true;
                 break;
@@ -1820,8 +1821,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::JumpIfTrue:
             {
-                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto labelTrue  = getOrCreateLabel(pp, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, i + 1);
                 const auto r0         = GEP64(allocR, ip->a.u32);
                 const auto r1         = builder.CreateIsNotNull(builder.CreateLoad(I8_TY(), r0));
                 builder.CreateCondBr(r1, labelTrue, labelFalse);
@@ -1830,8 +1831,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
             case ByteCodeOp::JumpIfFalse:
             {
-                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto labelTrue  = getOrCreateLabel(pp, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, i + 1);
                 const auto r0         = GEP64(allocR, ip->a.u32);
                 const auto r1         = builder.CreateIsNull(builder.CreateLoad(I8_TY(), r0));
                 builder.CreateCondBr(r1, labelTrue, labelFalse);
@@ -1840,8 +1841,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
             case ByteCodeOp::JumpIfRTFalse:
             {
-                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto labelTrue  = getOrCreateLabel(pp, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, i + 1);
                 const auto r0         = resultFuncCall ? resultFuncCall : builder.CreateLoad(I8_TY(), GEP8(allocRR, 0));
                 const auto r1         = builder.CreateIsNull(r0);
                 builder.CreateCondBr(r1, labelTrue, labelFalse);
@@ -1850,8 +1851,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
             case ByteCodeOp::JumpIfRTTrue:
             {
-                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto labelTrue  = getOrCreateLabel(pp, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, i + 1);
                 const auto r0         = resultFuncCall ? resultFuncCall : builder.CreateLoad(I8_TY(), GEP8(allocRR, 0));
                 const auto r1         = builder.CreateIsNotNull(r0);
                 builder.CreateCondBr(r1, labelTrue, labelFalse);
@@ -1867,8 +1868,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpIfZero64:
             {
                 const auto numBits    = BackendEncoder::getNumBits(ip->op);
-                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto labelTrue  = getOrCreateLabel(pp, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, i + 1);
                 const auto r0         = GEP64(allocR, ip->a.u32);
                 const auto r1         = builder.CreateIsNull(builder.CreateLoad(IX_TY(numBits), r0));
                 builder.CreateCondBr(r1, labelTrue, labelFalse);
@@ -1884,8 +1885,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpIfNotZero64:
             {
                 const auto numBits    = BackendEncoder::getNumBits(ip->op);
-                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto labelTrue  = getOrCreateLabel(pp, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, i + 1);
                 const auto r0         = GEP64(allocR, ip->a.u32);
                 const auto r1         = builder.CreateIsNotNull(builder.CreateLoad(IX_TY(numBits), r0));
                 builder.CreateCondBr(r1, labelTrue, labelFalse);
@@ -1901,8 +1902,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpIfNotEqual64:
             {
                 const auto numBits    = BackendEncoder::getNumBits(ip->op);
-                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto labelTrue  = getOrCreateLabel(pp, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, i + 1);
                 const auto r0         = MK_IMMA_IX(numBits);
                 const auto r1         = MK_IMMC_IX(numBits);
                 const auto r2         = builder.CreateICmpNE(r0, r1);
@@ -1915,8 +1916,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpIfNotEqualF64:
             {
                 const auto numBits    = BackendEncoder::getNumBits(ip->op);
-                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto labelTrue  = getOrCreateLabel(pp, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, i + 1);
                 const auto r0         = MK_IMMA_FX(numBits);
                 const auto r1         = MK_IMMC_FX(numBits);
                 const auto r2         = builder.CreateFCmpUNE(r0, r1);
@@ -1933,8 +1934,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpIfEqual64:
             {
                 const auto numBits    = BackendEncoder::getNumBits(ip->op);
-                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto labelTrue  = getOrCreateLabel(pp, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, i + 1);
                 const auto r0         = MK_IMMA_IX(numBits);
                 const auto r1         = MK_IMMC_IX(numBits);
                 const auto r2         = builder.CreateICmpEQ(r0, r1);
@@ -1947,8 +1948,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpIfEqualF64:
             {
                 const auto numBits    = BackendEncoder::getNumBits(ip->op);
-                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto labelTrue  = getOrCreateLabel(pp, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, i + 1);
                 const auto r0         = MK_IMMA_FX(numBits);
                 const auto r1         = MK_IMMC_FX(numBits);
                 const auto r2         = builder.CreateFCmpOEQ(r0, r1);
@@ -1964,8 +1965,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 const auto r0 = GEP64(allocR, ip->a.u32);
                 const auto r1 = builder.CreateAdd(builder.CreateLoad(I64_TY(), r0), builder.getInt64(1));
                 builder.CreateStore(r1, r0);
-                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto labelTrue  = getOrCreateLabel(pp, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, i + 1);
                 const auto r2         = MK_IMMA_64();
                 const auto r3         = MK_IMMC_64();
                 const auto r4         = builder.CreateICmpEQ(r2, r3);
@@ -1982,8 +1983,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpIfStackEqual64:
             {
                 const auto numBits    = BackendEncoder::getNumBits(ip->op);
-                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto labelTrue  = getOrCreateLabel(pp, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, i + 1);
                 const auto r0         = builder.CreateLoad(IX_TY(numBits), GEP8(allocStack, ip->a.u32));
                 const auto r1         = MK_IMMC_IX(numBits);
                 const auto r2         = builder.CreateICmpEQ(r0, r1);
@@ -2000,8 +2001,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpIfStackNotEqual64:
             {
                 const auto numBits    = BackendEncoder::getNumBits(ip->op);
-                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto labelTrue  = getOrCreateLabel(pp, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, i + 1);
                 const auto r0         = builder.CreateLoad(IX_TY(numBits), GEP8(allocStack, ip->a.u32));
                 const auto r1         = MK_IMMC_IX(numBits);
                 const auto r2         = builder.CreateICmpNE(r0, r1);
@@ -2018,8 +2019,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpIfDeRefEqual64:
             {
                 const auto numBits    = BackendEncoder::getNumBits(ip->op);
-                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto labelTrue  = getOrCreateLabel(pp, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, i + 1);
                 const auto r0         = GEP64(allocR, ip->a.u32);
                 const auto r1         = builder.CreateInBoundsGEP(I8_TY(), builder.CreateLoad(PTR_I8_TY(), r0), builder.getInt64(ip->d.s64));
                 const auto r2         = builder.CreateLoad(IX_TY(numBits), r1);
@@ -2038,8 +2039,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpIfDeRefNotEqual64:
             {
                 const auto numBits    = BackendEncoder::getNumBits(ip->op);
-                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto labelTrue  = getOrCreateLabel(pp, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, i + 1);
                 const auto r0         = GEP64(allocR, ip->a.u32);
                 const auto r1         = builder.CreateInBoundsGEP(I8_TY(), builder.CreateLoad(PTR_I8_TY(), r0), builder.getInt64(ip->d.s64));
                 const auto r2         = builder.CreateLoad(IX_TY(numBits), r1);
@@ -2058,8 +2059,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpIfLowerS64:
             {
                 const auto numBits    = BackendEncoder::getNumBits(ip->op);
-                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto labelTrue  = getOrCreateLabel(pp, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, i + 1);
                 const auto r0         = MK_IMMA_IX(numBits);
                 const auto r1         = MK_IMMC_IX(numBits);
                 const auto r2         = builder.CreateICmpSLT(r0, r1);
@@ -2074,8 +2075,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpIfLowerU64:
             {
                 const auto numBits    = BackendEncoder::getNumBits(ip->op);
-                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto labelTrue  = getOrCreateLabel(pp, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, i + 1);
                 const auto r0         = MK_IMMA_IX(numBits);
                 const auto r1         = MK_IMMC_IX(numBits);
                 const auto r2         = builder.CreateICmpULT(r0, r1);
@@ -2088,8 +2089,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpIfLowerF64:
             {
                 const auto numBits    = BackendEncoder::getNumBits(ip->op);
-                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto labelTrue  = getOrCreateLabel(pp, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, i + 1);
                 const auto r0         = MK_IMMA_FX(numBits);
                 const auto r1         = MK_IMMC_FX(numBits);
                 const auto r2         = builder.CreateFCmpULT(r0, r1);
@@ -2106,8 +2107,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpIfLowerEqS64:
             {
                 const auto numBits    = BackendEncoder::getNumBits(ip->op);
-                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto labelTrue  = getOrCreateLabel(pp, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, i + 1);
                 const auto r0         = MK_IMMA_IX(numBits);
                 const auto r1         = MK_IMMC_IX(numBits);
                 const auto r2         = builder.CreateICmpSLE(r0, r1);
@@ -2122,8 +2123,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpIfLowerEqU64:
             {
                 const auto numBits    = BackendEncoder::getNumBits(ip->op);
-                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto labelTrue  = getOrCreateLabel(pp, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, i + 1);
                 const auto r0         = MK_IMMA_IX(numBits);
                 const auto r1         = MK_IMMC_IX(numBits);
                 const auto r2         = builder.CreateICmpULE(r0, r1);
@@ -2136,8 +2137,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpIfLowerEqF64:
             {
                 const auto numBits    = BackendEncoder::getNumBits(ip->op);
-                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto labelTrue  = getOrCreateLabel(pp, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, i + 1);
                 const auto r0         = MK_IMMA_FX(numBits);
                 const auto r1         = MK_IMMC_FX(numBits);
                 const auto r2         = builder.CreateFCmpULE(r0, r1);
@@ -2154,8 +2155,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpIfGreaterEqS64:
             {
                 const auto numBits    = BackendEncoder::getNumBits(ip->op);
-                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto labelTrue  = getOrCreateLabel(pp, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, i + 1);
                 const auto r0         = MK_IMMA_IX(numBits);
                 const auto r1         = MK_IMMC_IX(numBits);
                 const auto r2         = builder.CreateICmpSGE(r0, r1);
@@ -2170,8 +2171,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpIfGreaterEqU64:
             {
                 const auto numBits    = BackendEncoder::getNumBits(ip->op);
-                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto labelTrue  = getOrCreateLabel(pp, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, i + 1);
                 const auto r0         = MK_IMMA_IX(numBits);
                 const auto r1         = MK_IMMC_IX(numBits);
                 const auto r2         = builder.CreateICmpUGE(r0, r1);
@@ -2184,8 +2185,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpIfGreaterEqF64:
             {
                 const auto numBits    = BackendEncoder::getNumBits(ip->op);
-                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto labelTrue  = getOrCreateLabel(pp, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, i + 1);
                 const auto r0         = MK_IMMA_FX(numBits);
                 const auto r1         = MK_IMMC_FX(numBits);
                 const auto r2         = builder.CreateFCmpUGE(r0, r1);
@@ -2202,8 +2203,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpIfGreaterS64:
             {
                 const auto numBits    = BackendEncoder::getNumBits(ip->op);
-                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto labelTrue  = getOrCreateLabel(pp, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, i + 1);
                 const auto r0         = MK_IMMA_IX(numBits);
                 const auto r1         = MK_IMMC_IX(numBits);
                 const auto r2         = builder.CreateICmpSGT(r0, r1);
@@ -2218,8 +2219,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpIfGreaterU64:
             {
                 const auto numBits    = BackendEncoder::getNumBits(ip->op);
-                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto labelTrue  = getOrCreateLabel(pp, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, i + 1);
                 const auto r0         = MK_IMMA_IX(numBits);
                 const auto r1         = MK_IMMC_IX(numBits);
                 const auto r2         = builder.CreateICmpUGT(r0, r1);
@@ -2232,8 +2233,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpIfGreaterF64:
             {
                 const auto numBits    = BackendEncoder::getNumBits(ip->op);
-                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto labelTrue  = getOrCreateLabel(pp, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, i + 1);
                 const auto r0         = MK_IMMA_FX(numBits);
                 const auto r1         = MK_IMMC_FX(numBits);
                 const auto r2         = builder.CreateFCmpUGT(r0, r1);
@@ -2445,8 +2446,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 const auto r1         = builder.CreateLoad(PTR_I8_TY(), r0);
                 const auto r2         = GEP8(r1, offsetof(SwagContext, hasError));
                 const auto r3         = builder.CreateLoad(I32_TY(), r2);
-                const auto labelFalse = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                const auto labelTrue  = getOrCreateLabel(pp, func, i + 1);
+                const auto labelFalse = getOrCreateLabel(pp, i + ip->b.s32 + 1);
+                const auto labelTrue  = getOrCreateLabel(pp, i + 1);
                 const auto r4         = builder.CreateIsNull(r3);
                 builder.CreateCondBr(r4, labelTrue, labelFalse);
                 blockIsClosed = true;
@@ -2459,8 +2460,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 const auto r1         = builder.CreateLoad(PTR_I8_TY(), r0);
                 const auto r2         = GEP8(r1, offsetof(SwagContext, hasError));
                 const auto r3         = builder.CreateLoad(I32_TY(), r2);
-                const auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
-                const auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                const auto labelTrue  = getOrCreateLabel(pp, i + ip->b.s32 + 1);
+                const auto labelFalse = getOrCreateLabel(pp, i + 1);
                 const auto r4         = builder.CreateIsNull(r3);
                 builder.CreateCondBr(r4, labelTrue, labelFalse);
                 blockIsClosed = true;
@@ -3551,14 +3552,14 @@ llvm::Type* LLVM::getLLVMType(LLVM_Encoder& pp, TypeInfo* typeInfo)
     return nullptr;
 }
 
-llvm::BasicBlock* LLVM::getOrCreateLabel(LLVM_Encoder& pp, llvm::Function* func, int64_t ip)
+llvm::BasicBlock* LLVM::getOrCreateLabel(LLVM_Encoder& pp, int64_t ip)
 {
     auto& context = *pp.llvmContext;
 
     const auto it = pp.labels.find(ip);
     if (it == pp.labels.end())
     {
-        llvm::BasicBlock* label = llvm::BasicBlock::Create(context, form("%lld", ip).cstr(), func);
+        llvm::BasicBlock* label = llvm::BasicBlock::Create(context, form("%lld", ip).cstr(), pp.llvmFunc);
         pp.labels[ip]           = label;
         return label;
     }
@@ -3566,8 +3567,9 @@ llvm::BasicBlock* LLVM::getOrCreateLabel(LLVM_Encoder& pp, llvm::Function* func,
     return it->second;
 }
 
-void LLVM::setFuncAttributes(LLVM_Encoder& pp, uint32_t numPreCompileBuffers, const AstFuncDecl* funcNode, const ByteCode* bc, llvm::Function* func)
+void LLVM::setFuncAttributes(LLVM_Encoder& pp, uint32_t numPreCompileBuffers, const AstFuncDecl* funcNode, const ByteCode* bc)
 {
+    const auto  func            = pp.llvmFunc;
     const auto& buildParameters = pp.buildParams;
 
     if (!buildParameters.module->mustOptimizeBackend(bc->node))

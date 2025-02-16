@@ -18,9 +18,10 @@ struct LLVM_Encoder : BackendEncoder
 {
     void init(const BuildParameters& buildParameters);
 
-    llvm::IRBuilder<>* builder;
-    llvm::LLVMContext* llvmContext;
-    llvm::Module*      llvmModule;
+    llvm::IRBuilder<>* builder     = nullptr;
+    llvm::LLVMContext* llvmContext = nullptr;
+    llvm::Module*      llvmModule  = nullptr;
+    llvm::Function*    llvmFunc    = nullptr;
 
     llvm::AllocaInst* allocR      = nullptr;
     llvm::AllocaInst* allocRR     = nullptr;

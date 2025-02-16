@@ -198,13 +198,7 @@ void LLVM::emitRT2ToRegisters(LLVM_Encoder& pp, uint32_t reg0, uint32_t reg1, ll
     builder.CreateStore(r3, r2);
 }
 
-void LLVM::emitBinOpOverflow(LLVM_Encoder&                          pp,
-                             llvm::Function*                        func,
-                             llvm::Value*                           r0,
-                             llvm::Value*                           r1,
-                             llvm::Value*                           r2,
-                             llvm::Intrinsic::IndependentIntrinsics op,
-                             SafetyMsg                              msg)
+void LLVM::emitBinOpOverflow(LLVM_Encoder& pp, llvm::Value* r0, llvm::Value* r1, llvm::Value* r2, llvm::Intrinsic::IndependentIntrinsics op, SafetyMsg msg)
 {
     const auto ip      = pp.ip;
     auto&      context = *pp.llvmContext;
@@ -213,8 +207,8 @@ void LLVM::emitBinOpOverflow(LLVM_Encoder&                          pp,
     const auto r3       = builder.CreateBinaryIntrinsic(op, r1, r2);
     const auto r4       = builder.CreateExtractValue(r3, {0});
     const auto r5       = builder.CreateExtractValue(r3, {1});
-    const auto blockOk  = llvm::BasicBlock::Create(context, "", func);
-    const auto blockErr = llvm::BasicBlock::Create(context, "", func);
+    const auto blockOk  = llvm::BasicBlock::Create(context, "", pp.llvmFunc);
+    const auto blockErr = llvm::BasicBlock::Create(context, "", pp.llvmFunc);
     const auto r6       = builder.CreateIsNull(r5);
 
     builder.CreateCondBr(r6, blockOk, blockErr);
@@ -225,12 +219,7 @@ void LLVM::emitBinOpOverflow(LLVM_Encoder&                          pp,
     builder.CreateStore(r4, r0);
 }
 
-void LLVM::emitBinOpEqOverflow(LLVM_Encoder&                          pp,
-                               llvm::Function*                        func,
-                               llvm::Value*                           r1,
-                               llvm::Value*                           r2,
-                               llvm::Intrinsic::IndependentIntrinsics op,
-                               SafetyMsg                              msg)
+void LLVM::emitBinOpEqOverflow(LLVM_Encoder& pp, llvm::Value* r1, llvm::Value* r2, llvm::Intrinsic::IndependentIntrinsics op, SafetyMsg msg)
 {
     const auto ip      = pp.ip;
     auto&      context = *pp.llvmContext;
@@ -240,8 +229,8 @@ void LLVM::emitBinOpEqOverflow(LLVM_Encoder&                          pp,
     const auto r3       = builder.CreateBinaryIntrinsic(op, builder.CreateLoad(IX_TY(numBits), r1), r2);
     const auto r4       = builder.CreateExtractValue(r3, {0});
     const auto r5       = builder.CreateExtractValue(r3, {1});
-    const auto blockOk  = llvm::BasicBlock::Create(context, "", func);
-    const auto blockErr = llvm::BasicBlock::Create(context, "", func);
+    const auto blockOk  = llvm::BasicBlock::Create(context, "", pp.llvmFunc);
+    const auto blockErr = llvm::BasicBlock::Create(context, "", pp.llvmFunc);
     const auto r6       = builder.CreateIsNull(r5);
 
     builder.CreateCondBr(r6, blockOk, blockErr);
