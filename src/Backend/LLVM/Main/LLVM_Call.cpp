@@ -163,12 +163,9 @@ void LLVM::createRet(const BuildParameters& buildParameters, const TypeInfoFuncA
     }
 }
 
-llvm::FunctionType* LLVM::getOrCreateFuncType(const BuildParameters& buildParameters, TypeInfoFuncAttr* typeFunc, bool closureToLambda)
+llvm::FunctionType* LLVM::getOrCreateFuncType(LLVM_Encoder& pp, TypeInfoFuncAttr* typeFunc, bool closureToLambda)
 {
-    const auto ct              = buildParameters.compileType;
-    const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
-    auto&      context         = *pp.llvmContext;
+    auto& context = *pp.llvmContext;
 
     // Already done ?
     if (closureToLambda)
@@ -658,18 +655,18 @@ llvm::Value* LLVM::emitCall(const BuildParameters&        buildParameters,
                             const Vector<llvm::Value*>&   values,
                             bool                          localCall)
 {
-    const auto  ct              = buildParameters.compileType;
-    const auto  precompileIndex = buildParameters.precompileIndex;
-    const auto& pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
-    auto&       builder         = *pp.builder;
-    auto&       modu            = *pp.llvmModule;
+    const auto ct              = buildParameters.compileType;
+    const auto precompileIndex = buildParameters.precompileIndex;
+    auto&      pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
+    auto&      builder         = *pp.builder;
+    auto&      modu            = *pp.llvmModule;
 
     // Get parameters
     VectorNative<llvm::Value*> params;
     emitCallParameters(buildParameters, allocR, allocRR, typeFuncBC, params, pushParams, values);
 
     // Make the call
-    const auto typeF = getOrCreateFuncType(buildParameters, typeFuncBC);
+    const auto typeF = getOrCreateFuncType(pp, typeFuncBC);
     auto       func  = modu.getOrInsertFunction(funcName.cstr(), typeF);
     const auto func1 = llvm::dyn_cast<llvm::Function>(func.getCallee());
 
@@ -687,8 +684,12 @@ llvm::Value* LLVM::emitCall(const BuildParameters&      buildParameters,
                             const Vector<uint32_t>&     regs,
                             const Vector<llvm::Value*>& values)
 {
+    const auto ct              = buildParameters.compileType;
+    const auto precompileIndex = buildParameters.precompileIndex;
+    auto&      pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
+
     const auto typeFunc = g_Workspace->runtimeModule->getRuntimeTypeFct(name);
-    getOrCreateFuncType(buildParameters, typeFunc);
+    getOrCreateFuncType(pp, typeFunc);
 
     // Invert regs
     VectorNative<uint32_t> pushRAParams;
@@ -931,7 +932,7 @@ bool LLVM::emitLambdaCall(const BuildParameters&                       buildPara
             VectorNative<llvm::Value*> fctParamsLocal;
             emitCallParameters(buildParameters, allocR, allocRR, typeFuncCall, fctParamsLocal, pushRAParams, {}, true);
 
-            ft                 = getOrCreateFuncType(buildParameters, typeFuncCall, true);
+            ft                 = getOrCreateFuncType(pp, typeFuncCall, true);
             const auto lPt     = llvm::PointerType::getUnqual(ft);
             const auto lR1     = builder.CreateIntToPtr(v1, lPt);
             const auto lResult = builder.CreateCall(ft, lR1, {fctParamsLocal.begin(), fctParamsLocal.end()});
@@ -940,7 +941,7 @@ bool LLVM::emitLambdaCall(const BuildParameters&                       buildPara
 
             // Closure call. Normal call, as the type contains the first parameter.
             builder.SetInsertPoint(blockClosure);
-            ft                 = getOrCreateFuncType(buildParameters, typeFuncCall);
+            ft                 = getOrCreateFuncType(pp, typeFuncCall);
             const auto cPt     = llvm::PointerType::getUnqual(ft);
             const auto cR1     = builder.CreateIntToPtr(v1, cPt);
             const auto cResult = builder.CreateCall(ft, cR1, {fctParams.begin(), fctParams.end()});
@@ -949,7 +950,7 @@ bool LLVM::emitLambdaCall(const BuildParameters&                       buildPara
         }
         else
         {
-            ft                      = getOrCreateFuncType(buildParameters, typeFuncCall);
+            ft                      = getOrCreateFuncType(pp, typeFuncCall);
             const auto pt           = llvm::PointerType::getUnqual(ft);
             const auto r1           = builder.CreateIntToPtr(v1, pt);
             const auto returnResult = builder.CreateCall(ft, r1, {fctParams.begin(), fctParams.end()});

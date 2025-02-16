@@ -19,7 +19,10 @@ struct LLVM final : Backend
 {
     explicit LLVM(Module* mdl);
 
+    void      createRuntime(const BuildParameters& buildParameters) const;
     JobResult prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob) override;
+
+    bool emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc) override;
 
     void generateObjFile(const BuildParameters& buildParameters) const;
     bool emitDataSegment(const BuildParameters& buildParameters, DataSegment* dataSegment) const;
@@ -34,7 +37,6 @@ struct LLVM final : Backend
     void         emitLocalCall(const BuildParameters& buildParameters, llvm::LLVMContext& context, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, const ByteCodeInstruction* ip, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams, VectorNative<uint32_t>& pushRAParams, llvm::Value*& resultFuncCall);
     void         emitForeignCall(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, const ByteCodeInstruction* ip, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams, VectorNative<uint32_t>& pushRAParams, llvm::Value*& resultFuncCall);
     bool         emitLambdaCall(const BuildParameters& buildParameters, LLVM_Encoder& pp, llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::Function* func, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, const llvm::AllocaInst* allocT, const ByteCodeInstruction* ip, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams, VectorNative<uint32_t>& pushRAParams, llvm::Value*& resultFuncCall);
-    bool         emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc) override;
     void         emitByteCodeCallParameters(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, const llvm::AllocaInst* allocT, VectorNative<llvm::Value*>& params, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& pushRAParams, const Vector<llvm::Value*>& values, bool closureToLambda = false);
     bool         emitCallParameters(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, TypeInfoFuncAttr* typeFuncBC, VectorNative<llvm::Value*>& params, const VectorNative<uint32_t>& pushParams, const Vector<llvm::Value*>& values, bool closureToLambda = false);
     bool         emitCallReturnValue(const BuildParameters& buildParameters, llvm::AllocaInst* allocRR, const TypeInfoFuncAttr* typeFuncBC, llvm::Value* callResult) const;
@@ -52,10 +54,9 @@ struct LLVM final : Backend
     void        emitBinOpOverflow(const BuildParameters& buildParameters, llvm::Function* func, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const ByteCodeInstruction* ip, llvm::Value* r0, llvm::Value* r1, llvm::Value* r2, llvm::Intrinsic::IndependentIntrinsics op, SafetyMsg msg);
     void        emitBinOpEqOverflow(const BuildParameters& buildParameters, llvm::Function* func, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const ByteCodeInstruction* ip, llvm::Value* r0, llvm::Value* r1, llvm::Value* r2, llvm::Intrinsic::IndependentIntrinsics op, SafetyMsg msg);
 
-    void                     createRuntime(const BuildParameters& buildParameters) const;
     llvm::Type*              swagTypeToLLVMType(LLVM_Encoder& pp, TypeInfo* typeInfo);
     void                     createRet(const BuildParameters& buildParameters, const TypeInfoFuncAttr* typeFunc, TypeInfo* returnType, llvm::AllocaInst* allocResult);
-    llvm::FunctionType*      getOrCreateFuncType(const BuildParameters& buildParameters, TypeInfoFuncAttr* typeFunc, bool closureToLambda = false);
+    llvm::FunctionType*      getOrCreateFuncType(LLVM_Encoder& pp, TypeInfoFuncAttr* typeFunc, bool closureToLambda = false);
     static llvm::BasicBlock* getOrCreateLabel(LLVM_Encoder& pp, llvm::Function* func, int64_t ip);
     void                     setFuncAttributes(const BuildParameters& buildParameters, const AstFuncDecl* funcNode, const ByteCode* bc, llvm::Function* func) const;
     void                     getReturnResult(LLVM_Encoder& pp, TypeInfo* returnType, bool imm, const Register& reg, llvm::AllocaInst* allocR, llvm::AllocaInst* allocResult);

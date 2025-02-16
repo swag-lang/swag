@@ -35,7 +35,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     AstFuncDecl* bcFuncNode = bc->node ? castAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl) : nullptr;
 
     // Function prototype
-    auto funcType = getOrCreateFuncType(buildParameters, typeFunc);
+    auto funcType = getOrCreateFuncType(pp, typeFunc);
     auto func     = reinterpret_cast<llvm::Function*>(modu.getOrInsertFunction(funcName.cstr(), funcType).getCallee());
     setFuncAttributes(buildParameters, bcFuncNode, bc, func);
 
@@ -3081,7 +3081,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 const auto funcNode     = castAst<AstFuncDecl>(reinterpret_cast<AstNode*>(ip->b.pointer), AstNodeKind::FuncDecl);
                 const auto callName     = funcNode->getCallName();
                 const auto typeFuncNode = castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
-                const auto llvmFctTy    = getOrCreateFuncType(buildParameters, typeFuncNode);
+                const auto llvmFctTy    = getOrCreateFuncType(pp, typeFuncNode);
                 const auto llvmFct      = reinterpret_cast<llvm::Function*>(modu.getOrInsertFunction(callName.cstr(), llvmFctTy).getCallee());
                 const auto r0           = GEP64_PTR_PTR_I8(allocR, ip->a.u32);
                 builder.CreateStore(TO_PTR_I8(llvmFct), r0);
