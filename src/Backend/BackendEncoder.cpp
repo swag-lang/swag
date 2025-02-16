@@ -3,6 +3,8 @@
 #include "Backend/SCBE/Encoder/SCBE_CPU.h"
 #include "Semantic/Type/TypeInfo.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/AstNode.h"
+#include "Wmf/Module.h"
 
 uint32_t BackendEncoder::getNumBits(OpBits opBits)
 {
@@ -70,4 +72,10 @@ TypeInfo* BackendEncoder::getOpType(ByteCodeOp op)
         return g_TypeMgr->typeInfoU64;
     SWAG_ASSERT(false);
     return nullptr;
+}
+
+bool BackendEncoder::mustCheckOverflow(const Module* module, const ByteCodeInstruction* ip)
+{
+    const bool nw = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
+    return nw && module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW);
 }

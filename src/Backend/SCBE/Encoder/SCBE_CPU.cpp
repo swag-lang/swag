@@ -2,10 +2,10 @@
 #include "Backend/SCBE/Encoder/SCBE_CPU.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Semantic/Type/TypeInfo.h"
-#include "Semantic/Type/TypeManager.h"
 
 void SCBE_CPU::init(const BuildParameters& buildParameters)
 {
+    SWAG_ASSERT(buildParameters.module);
     buildParams = buildParameters;
     clearInstructionCache();
     labels.clear();

@@ -164,8 +164,7 @@ void SCBE::emitShiftEqLogical(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUOp
 
 void SCBE::emitOverflow(SCBE_X64& pp, const ByteCodeInstruction* ip, const char* msg, bool isSigned)
 {
-    const bool nw = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
-    if (nw && pp.module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))
+    if (BackendEncoder::mustCheckOverflow(pp.buildParams.module, ip))
     {
         const auto seekPtr = pp.emitJumpNear(isSigned ? JNO : JAE);
         const auto seekJmp = pp.concat.totalCount();

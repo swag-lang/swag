@@ -1,6 +1,7 @@
 #pragma once
 struct Module;
 struct TypeInfo;
+struct ByteCodeInstruction;
 enum class ByteCodeOp : uint16_t;
 
 enum class BackendPreCompilePass
@@ -32,6 +33,7 @@ struct BackendEncoder
     static uint32_t  getNumBits(OpBits opBits);
     static OpBits    getOpBits(ByteCodeOp op);
     static TypeInfo* getOpType(ByteCodeOp op);
+    static bool      mustCheckOverflow(const Module* module, const ByteCodeInstruction* ip);
 
     static uint32_t getNumBits(ByteCodeOp op) { return getNumBits(getOpBits(op)); }
     static uint32_t getNumBytes(ByteCodeOp op) { return getNumBits(getOpBits(op)) / 8; }
