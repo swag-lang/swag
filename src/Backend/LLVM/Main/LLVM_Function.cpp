@@ -786,7 +786,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (BackendEncoder::mustCheckOverflow(module, ip))
                 {
                     const auto op = isSigned ? llvm::Intrinsic::sadd_with_overflow : llvm::Intrinsic::uadd_with_overflow;
-                    emitBinOpOverflow(pp, func, allocR, allocT, ip, r0, r1, r2, op, SafetyMsg::Plus);
+                    emitBinOpOverflow(pp, func, allocR, allocT, r0, r1, r2, op, SafetyMsg::Plus);
                 }
                 else
                     builder.CreateStore(builder.CreateAdd(r1, r2), r0);
@@ -842,7 +842,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (BackendEncoder::mustCheckOverflow(module, ip))
                 {
                     const auto op = isSigned ? llvm::Intrinsic::ssub_with_overflow : llvm::Intrinsic::usub_with_overflow;
-                    emitBinOpOverflow(pp, func, allocR, allocT, ip, r0, r1, r2, op, SafetyMsg::Minus);
+                    emitBinOpOverflow(pp, func, allocR, allocT, r0, r1, r2, op, SafetyMsg::Minus);
                 }
                 else
                     builder.CreateStore(builder.CreateSub(r1, r2), r0);
@@ -898,7 +898,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (BackendEncoder::mustCheckOverflow(module, ip))
                 {
                     const auto op = isSigned ? llvm::Intrinsic::smul_with_overflow : llvm::Intrinsic::umul_with_overflow;
-                    emitBinOpOverflow(pp, func, allocR, allocT, ip, r0, r1, r2, op, SafetyMsg::Mul);
+                    emitBinOpOverflow(pp, func, allocR, allocT, r0, r1, r2, op, SafetyMsg::Mul);
                 }
                 else
                     builder.CreateStore(builder.CreateMul(r1, r2), r0);
@@ -963,7 +963,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::BinOpShiftLeftU64:
             {
                 const auto numBits = BackendEncoder::getNumBits(ip->op);
-                emitShiftLogical(pp, allocR, ip, numBits, true);
+                emitShiftLogical(pp, allocR, numBits, true);
                 break;
             }
 
@@ -975,7 +975,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::BinOpShiftRightS64:
             {
                 const auto numBits = BackendEncoder::getNumBits(ip->op);
-                emitShiftRightArithmetic(pp, allocR, ip, numBits);
+                emitShiftRightArithmetic(pp, allocR, numBits);
                 break;
             }
 
@@ -985,7 +985,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::BinOpShiftRightU64:
             {
                 const auto numBits = BackendEncoder::getNumBits(ip->op);
-                emitShiftLogical(pp, allocR, ip, numBits, false);
+                emitShiftLogical(pp, allocR, numBits, false);
                 break;
             }
 
@@ -1094,7 +1094,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (BackendEncoder::mustCheckOverflow(module, ip))
                 {
                     const auto op = isSigned ? llvm::Intrinsic::ssub_with_overflow : llvm::Intrinsic::usub_with_overflow;
-                    emitBinOpEqOverflow(pp, func, allocR, allocT, ip, r0, r1, r2, op, SafetyMsg::MinusEq);
+                    emitBinOpEqOverflow(pp, func, allocR, allocT, r1, r2, op, SafetyMsg::MinusEq);
                 }
                 else
                 {
@@ -1183,7 +1183,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (BackendEncoder::mustCheckOverflow(module, ip))
                 {
                     const auto op = isSigned ? llvm::Intrinsic::sadd_with_overflow : llvm::Intrinsic::uadd_with_overflow;
-                    emitBinOpEqOverflow(pp, func, allocR, allocT, ip, r0, r1, r2, op, SafetyMsg::PlusEq);
+                    emitBinOpEqOverflow(pp, func, allocR, allocT, r1, r2, op, SafetyMsg::PlusEq);
                 }
                 else
                 {
@@ -1272,7 +1272,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (BackendEncoder::mustCheckOverflow(module, ip))
                 {
                     const auto op = isSigned ? llvm::Intrinsic::smul_with_overflow : llvm::Intrinsic::umul_with_overflow;
-                    emitBinOpEqOverflow(pp, func, allocR, allocT, ip, r0, r1, r2, op, SafetyMsg::MulEq);
+                    emitBinOpEqOverflow(pp, func, allocR, allocT, r1, r2, op, SafetyMsg::MulEq);
                 }
                 else
                 {
@@ -1507,7 +1507,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::AffectOpShiftLeftEqU64:
             {
                 const auto numBits = BackendEncoder::getNumBits(ip->op);
-                emitShiftEqLogical(pp, allocR, ip, numBits, true);
+                emitShiftEqLogical(pp, allocR, numBits, true);
                 break;
             }
 
@@ -1519,7 +1519,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::AffectOpShiftRightEqS64:
             {
                 const auto numBits = BackendEncoder::getNumBits(ip->op);
-                emitShiftRightEqArithmetic(pp, allocR, ip, numBits);
+                emitShiftRightEqArithmetic(pp, allocR, numBits);
                 break;
             }
 
@@ -1529,7 +1529,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::AffectOpShiftRightEqU64:
             {
                 const auto numBits = BackendEncoder::getNumBits(ip->op);
-                emitShiftEqLogical(pp, allocR, ip, numBits, false);
+                emitShiftEqLogical(pp, allocR, numBits, false);
                 break;
             }
 
@@ -3121,43 +3121,43 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::LocalCallPop16:
             case ByteCodeOp::LocalCallPop48:
             case ByteCodeOp::LocalCallPopRC:
-                emitLocalCall(pp, allocR, allocRR, ip, pushRVParams, pushRAParams, resultFuncCall);
+                emitLocalCall(pp, allocR, allocRR, pushRVParams, pushRAParams, resultFuncCall);
                 break;
             case ByteCodeOp::LocalCallPopParam:
                 pushRAParams.push_back(ip->d.u32);
-                emitLocalCall(pp, allocR, allocRR, ip, pushRVParams, pushRAParams, resultFuncCall);
+                emitLocalCall(pp, allocR, allocRR, pushRVParams, pushRAParams, resultFuncCall);
                 break;
             case ByteCodeOp::LocalCallPop0Param2:
             case ByteCodeOp::LocalCallPop16Param2:
             case ByteCodeOp::LocalCallPop48Param2:
                 pushRAParams.push_back(ip->c.u32);
                 pushRAParams.push_back(ip->d.u32);
-                emitLocalCall(pp, allocR, allocRR, ip, pushRVParams, pushRAParams, resultFuncCall);
+                emitLocalCall(pp, allocR, allocRR, pushRVParams, pushRAParams, resultFuncCall);
                 break;
 
             case ByteCodeOp::ForeignCall:
             case ByteCodeOp::ForeignCallPop:
-                emitForeignCall(pp, allocR, allocRR, ip, pushRVParams, pushRAParams, resultFuncCall);
+                emitForeignCall(pp, allocR, allocRR, pushRVParams, pushRAParams, resultFuncCall);
                 break;
             case ByteCodeOp::ForeignCallPopParam:
                 pushRAParams.push_back(ip->d.u32);
-                emitForeignCall(pp, allocR, allocRR, ip, pushRVParams, pushRAParams, resultFuncCall);
+                emitForeignCall(pp, allocR, allocRR, pushRVParams, pushRAParams, resultFuncCall);
                 break;
             case ByteCodeOp::ForeignCallPop0Param2:
             case ByteCodeOp::ForeignCallPop16Param2:
             case ByteCodeOp::ForeignCallPop48Param2:
                 pushRAParams.push_back(ip->c.u32);
                 pushRAParams.push_back(ip->d.u32);
-                emitForeignCall(pp, allocR, allocRR, ip, pushRVParams, pushRAParams, resultFuncCall);
+                emitForeignCall(pp, allocR, allocRR, pushRVParams, pushRAParams, resultFuncCall);
                 break;
 
             case ByteCodeOp::LambdaCall:
             case ByteCodeOp::LambdaCallPop:
-                SWAG_CHECK(emitLambdaCall(pp, func, allocR, allocRR, allocT, ip, pushRVParams, pushRAParams, resultFuncCall));
+                SWAG_CHECK(emitLambdaCall(pp, func, allocR, allocRR, allocT, pushRVParams, pushRAParams, resultFuncCall));
                 break;
             case ByteCodeOp::LambdaCallPopParam:
                 pushRAParams.push_back(ip->d.u32);
-                SWAG_CHECK(emitLambdaCall(pp, func, allocR, allocRR, allocT, ip, pushRVParams, pushRAParams, resultFuncCall));
+                SWAG_CHECK(emitLambdaCall(pp, func, allocR, allocRR, allocT, pushRVParams, pushRAParams, resultFuncCall));
                 break;
 
             case ByteCodeOp::IncSPPostCall:

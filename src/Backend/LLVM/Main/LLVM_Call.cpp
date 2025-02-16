@@ -810,11 +810,11 @@ void LLVM::emitByteCodeCallParameters(LLVM_Encoder&               pp,
 void LLVM::emitLocalCall(LLVM_Encoder&                                pp,
                          llvm::AllocaInst*                            allocR,
                          llvm::AllocaInst*                            allocRR,
-                         const ByteCodeInstruction*                   ip,
                          VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams,
                          VectorNative<uint32_t>&                      pushRAParams,
                          llvm::Value*&                                resultFuncCall)
 {
+    const auto ip           = pp.ip;
     const auto callBc       = reinterpret_cast<ByteCode*>(ip->a.pointer);
     const auto typeFuncCall = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
     resultFuncCall          = emitCall(pp, callBc->getCallNameFromDecl(), typeFuncCall, allocR, allocRR, pushRAParams, {}, true);
@@ -831,11 +831,11 @@ void LLVM::emitLocalCall(LLVM_Encoder&                                pp,
 void LLVM::emitForeignCall(LLVM_Encoder&                                pp,
                            llvm::AllocaInst*                            allocR,
                            llvm::AllocaInst*                            allocRR,
-                           const ByteCodeInstruction*                   ip,
                            VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams,
                            VectorNative<uint32_t>&                      pushRAParams,
                            llvm::Value*&                                resultFuncCall)
 {
+    const auto ip           = pp.ip;
     const auto funcNode     = reinterpret_cast<AstFuncDecl*>(ip->a.pointer);
     const auto typeFuncCall = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
     resultFuncCall          = emitCall(pp, funcNode->getFullNameForeignImport(), typeFuncCall, allocR, allocRR, pushRAParams, {}, false);
@@ -848,11 +848,11 @@ bool LLVM::emitLambdaCall(LLVM_Encoder&                                pp,
                           llvm::AllocaInst*                            allocR,
                           llvm::AllocaInst*                            allocRR,
                           const llvm::AllocaInst*                      allocT,
-                          const ByteCodeInstruction*                   ip,
                           VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams,
                           VectorNative<uint32_t>&                      pushRAParams,
                           llvm::Value*&                                resultFuncCall)
 {
+    const auto ip           = pp.ip;
     auto&      builder      = *pp.builder;
     auto&      context      = *pp.llvmContext;
     const auto typeFuncCall = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);

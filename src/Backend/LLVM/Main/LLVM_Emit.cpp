@@ -8,8 +8,9 @@
 #include "Wmf/Module.h"
 #include "Wmf/SourceFile.h"
 
-void LLVM::emitShiftRightArithmetic(LLVM_Encoder& pp, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t numBits)
+void LLVM::emitShiftRightArithmetic(LLVM_Encoder& pp, llvm::AllocaInst* allocR, uint32_t numBits)
 {
+    const auto ip = pp.ip;
     auto& builder = *pp.builder;
     auto& context = *pp.llvmContext;
 
@@ -36,8 +37,9 @@ void LLVM::emitShiftRightArithmetic(LLVM_Encoder& pp, llvm::AllocaInst* allocR, 
     }
 }
 
-void LLVM::emitShiftRightEqArithmetic(LLVM_Encoder& pp, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t numBits)
+void LLVM::emitShiftRightEqArithmetic(LLVM_Encoder& pp, llvm::AllocaInst* allocR, uint32_t numBits)
 {
+    const auto ip = pp.ip;
     auto& builder = *pp.builder;
     auto& context = *pp.llvmContext;
 
@@ -64,8 +66,9 @@ void LLVM::emitShiftRightEqArithmetic(LLVM_Encoder& pp, llvm::AllocaInst* allocR
     }
 }
 
-void LLVM::emitShiftLogical(LLVM_Encoder& pp, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t numBits, bool left)
+void LLVM::emitShiftLogical(LLVM_Encoder& pp, llvm::AllocaInst* allocR, uint32_t numBits, bool left)
 {
+    const auto ip = pp.ip;
     auto& builder = *pp.builder;
     auto& context = *pp.llvmContext;
 
@@ -97,8 +100,9 @@ void LLVM::emitShiftLogical(LLVM_Encoder& pp, llvm::AllocaInst* allocR, const By
     }
 }
 
-void LLVM::emitShiftEqLogical(LLVM_Encoder& pp, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t numBits, bool left)
+void LLVM::emitShiftEqLogical(LLVM_Encoder& pp, llvm::AllocaInst* allocR, uint32_t numBits, bool left)
 {
+    const auto ip = pp.ip;
     auto& builder = *pp.builder;
     auto& context = *pp.llvmContext;
 
@@ -197,13 +201,13 @@ void LLVM::emitBinOpOverflow(LLVM_Encoder&                          pp,
                              llvm::Function*                        func,
                              llvm::AllocaInst*                      allocR,
                              llvm::AllocaInst*                      allocT,
-                             const ByteCodeInstruction*             ip,
                              llvm::Value*                           r0,
                              llvm::Value*                           r1,
                              llvm::Value*                           r2,
                              llvm::Intrinsic::IndependentIntrinsics op,
                              SafetyMsg                              msg)
 {
+    const auto ip = pp.ip;
     auto& context = *pp.llvmContext;
     auto& builder = *pp.builder;
 
@@ -226,13 +230,12 @@ void LLVM::emitBinOpEqOverflow(LLVM_Encoder&                          pp,
                                llvm::Function*                        func,
                                llvm::AllocaInst*                      allocR,
                                llvm::AllocaInst*                      allocT,
-                               const ByteCodeInstruction*             ip,
-                               llvm::Value*                           r0,
                                llvm::Value*                           r1,
                                llvm::Value*                           r2,
                                llvm::Intrinsic::IndependentIntrinsics op,
                                SafetyMsg                              msg)
 {
+    const auto ip = pp.ip;
     auto&      context = *pp.llvmContext;
     auto&      builder = *pp.builder;
     const auto numBits = BackendEncoder::getNumBits(ip->op);
