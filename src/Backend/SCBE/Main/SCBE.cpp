@@ -19,8 +19,9 @@ SCBE::SCBE() :
     memset(perThread, 0, sizeof(perThread));
 }
 
-void SCBE::createRuntime(SCBE_X64& pp) const
+void SCBE::createRuntime(SCBE_X64& pp)
 {
+    const auto module          = pp.module;
     const auto precompileIndex = pp.buildParams.precompileIndex;
     if (precompileIndex == 0)
     {

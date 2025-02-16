@@ -6,7 +6,7 @@
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 
-void SCBE::emitOS(SCBE_X64& pp) const
+void SCBE::emitOS(SCBE_X64& pp)
 {
     auto& concat = pp.concat;
 
@@ -50,10 +50,11 @@ void SCBE::emitOS(SCBE_X64& pp) const
     }
 }
 
-void SCBE::emitMain(SCBE_X64& pp) const
+void SCBE::emitMain(SCBE_X64& pp)
 {
     auto&       concat          = pp.concat;
     const auto& buildParameters = pp.buildParams;
+    const auto  module          = pp.module;
 
     concat.align(16);
     const auto startAddress = concat.totalCount();
@@ -231,9 +232,10 @@ void SCBE::emitMain(SCBE_X64& pp) const
     initFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
 }
 
-void SCBE::emitGetTypeTable(SCBE_X64& pp) const
+void SCBE::emitGetTypeTable(SCBE_X64& pp)
 {
     const auto& buildParameters = pp.buildParams;
+    const auto  module          = pp.module;
     if (buildParameters.buildCfg->backendKind != BuildCfgBackendKind::Library)
         return;
 
@@ -264,10 +266,11 @@ void SCBE::emitGetTypeTable(SCBE_X64& pp) const
     initFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
 }
 
-void SCBE::emitGlobalPreMain(SCBE_X64& pp) const
+void SCBE::emitGlobalPreMain(SCBE_X64& pp)
 {
     auto&       concat          = pp.concat;
     const auto& buildParameters = pp.buildParams;
+    const auto  module          = pp.module;
     const auto& cc              = g_TypeMgr->typeInfoModuleCall->getCallConv();
 
     concat.align(16);
@@ -316,10 +319,11 @@ void SCBE::emitGlobalPreMain(SCBE_X64& pp) const
     initFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
 }
 
-void SCBE::emitGlobalInit(SCBE_X64& pp) const
+void SCBE::emitGlobalInit(SCBE_X64& pp)
 {
     auto&       concat          = pp.concat;
     const auto& buildParameters = pp.buildParams;
+    const auto  module          = pp.module;
     const auto& cc              = g_TypeMgr->typeInfoModuleCall->getCallConv();
 
     concat.align(16);
@@ -394,9 +398,10 @@ void SCBE::emitGlobalInit(SCBE_X64& pp) const
     initFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
 }
 
-void SCBE::emitGlobalDrop(SCBE_X64& pp) const
+void SCBE::emitGlobalDrop(SCBE_X64& pp)
 {
     auto&       concat          = pp.concat;
+    const auto  module          = pp.module;
     const auto& buildParameters = pp.buildParams;
 
     concat.align(16);
