@@ -245,6 +245,7 @@
     <ClInclude Include="..\src\Backend\Context.h" />
     <ClInclude Include="..\src\Backend\Linker\BackendLinker.h" />
     <ClInclude Include="..\src\Backend\LLVM\Debug\LLVMDebug.h" />
+    <ClInclude Include="..\src\Backend\LLVM\Encoder\LLVM_Encoder.h" />
     <ClInclude Include="..\src\Backend\LLVM\LLVM_Inc.h" />
     <ClInclude Include="..\src\Backend\LLVM\LLVM_Setup.h" />
     <ClInclude Include="..\src\Backend\LLVM\Main\LLVM.h" />
@@ -423,6 +424,7 @@
     <ClCompile Include="..\src\Backend\Linker\BackendLinker.cpp" />
     <ClCompile Include="..\src\Backend\Linker\BackendLinker_Coff.cpp" />
     <ClCompile Include="..\src\Backend\LLVM\Debug\LLVMDebug.cpp" />
+    <ClCompile Include="..\src\Backend\LLVM\Encoder\LLVM_Encoder.cpp" />
     <ClCompile Include="..\src\Backend\LLVM\LLVM_Setup.cpp" />
     <ClCompile Include="..\src\Backend\LLVM\Main\LLVM.cpp" />
     <ClCompile Include="..\src\Backend\LLVM\Main\LLVM_Call.cpp" />

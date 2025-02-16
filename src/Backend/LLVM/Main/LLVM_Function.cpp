@@ -28,6 +28,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     auto       returnType      = typeFunc->concreteReturnType();
     bool       ok              = true;
 
+    pp.init(buildParameters);
+
     // Get function name
     Utf8         funcName   = bc->getCallNameFromDecl();
     AstFuncDecl* bcFuncNode = bc->node ? castAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl) : nullptr;
