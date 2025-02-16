@@ -221,9 +221,9 @@ void LLVM::emitBinOpOverflow(const BuildParameters&                 buildParamet
                              llvm::AllocaInst*                      allocR,
                              llvm::AllocaInst*                      allocT,
                              const ByteCodeInstruction*             ip,
-                             llvm::Value* const                     r0,
-                             llvm::Value* const                     r1,
-                             llvm::Value* const                     r2,
+                             llvm::Value*                           r0,
+                             llvm::Value*                           r1,
+                             llvm::Value*                           r2,
                              llvm::Intrinsic::IndependentIntrinsics op,
                              SafetyMsg                              msg)
 {
@@ -233,18 +233,19 @@ void LLVM::emitBinOpOverflow(const BuildParameters&                 buildParamet
     auto&       context         = *pp.llvmContext;
     auto&       builder         = *pp.builder;
 
-    const auto r4       = builder.CreateBinaryIntrinsic(op, r1, r2);
-    const auto r5       = builder.CreateExtractValue(r4, {0});
-    const auto r6       = builder.CreateExtractValue(r4, {1});
+    const auto r3       = builder.CreateBinaryIntrinsic(op, r1, r2);
+    const auto r4       = builder.CreateExtractValue(r3, {0});
+    const auto r5       = builder.CreateExtractValue(r3, {1});
     const auto blockOk  = llvm::BasicBlock::Create(context, "", func);
     const auto blockErr = llvm::BasicBlock::Create(context, "", func);
-    const auto r7       = builder.CreateIsNull(r6);
-    builder.CreateCondBr(r7, blockOk, blockErr);
+    const auto r6       = builder.CreateIsNull(r5);
+
+    builder.CreateCondBr(r6, blockOk, blockErr);
     builder.SetInsertPoint(blockErr);
     emitInternalPanic(buildParameters, allocR, allocT, ip->node, ByteCodeGen::safetyMsg(msg, BackendEncoder::getOpType(ip->op)));
     builder.CreateBr(blockOk);
     builder.SetInsertPoint(blockOk);
-    builder.CreateStore(r5, r0);
+    builder.CreateStore(r4, r0);
 }
 
 void LLVM::emitBinOpEqOverflow(const BuildParameters&                 buildParameters,
@@ -252,9 +253,9 @@ void LLVM::emitBinOpEqOverflow(const BuildParameters&                 buildParam
                                llvm::AllocaInst*                      allocR,
                                llvm::AllocaInst*                      allocT,
                                const ByteCodeInstruction*             ip,
-                               llvm::Value* const                     r0,
-                               llvm::Value* const                     r1,
-                               llvm::Value* const                     r2,
+                               llvm::Value*                           r0,
+                               llvm::Value*                           r1,
+                               llvm::Value*                           r2,
                                llvm::Intrinsic::IndependentIntrinsics op,
                                SafetyMsg                              msg)
 {
@@ -265,18 +266,17 @@ void LLVM::emitBinOpEqOverflow(const BuildParameters&                 buildParam
     auto&       builder         = *pp.builder;
     const auto  numBits         = BackendEncoder::getNumBits(ip->op);
 
-    const auto vs = builder.CreateBinaryIntrinsic(op, builder.CreateLoad(IX_TY(numBits), r1), r2);
-    const auto v0 = builder.CreateExtractValue(vs, {0});
-    const auto v1 = builder.CreateExtractValue(vs, {1});
+    const auto r3       = builder.CreateBinaryIntrinsic(op, builder.CreateLoad(IX_TY(numBits), r1), r2);
+    const auto r4       = builder.CreateExtractValue(r3, {0});
+    const auto r5       = builder.CreateExtractValue(r3, {1});
+    const auto blockOk  = llvm::BasicBlock::Create(context, "", func);
+    const auto blockErr = llvm::BasicBlock::Create(context, "", func);
+    const auto r6       = builder.CreateIsNull(r5);
 
-    llvm::BasicBlock* blockOk  = llvm::BasicBlock::Create(context, "", func);
-    llvm::BasicBlock* blockErr = llvm::BasicBlock::Create(context, "", func);
-
-    const auto v2 = builder.CreateIsNull(v1);
-    builder.CreateCondBr(v2, blockOk, blockErr);
+    builder.CreateCondBr(r6, blockOk, blockErr);
     builder.SetInsertPoint(blockErr);
     emitInternalPanic(buildParameters, allocR, allocT, ip->node, ByteCodeGen::safetyMsg(msg, BackendEncoder::getOpType(ip->op)));
     builder.CreateBr(blockOk);
     builder.SetInsertPoint(blockOk);
-    builder.CreateStore(v0, r1);
+    builder.CreateStore(r4, r1);
 }
