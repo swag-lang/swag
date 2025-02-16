@@ -952,7 +952,7 @@ TypeInfo* TypeInfoFuncAttr::concreteReturnType() const
 }
 
 // argIdx is the argument index of a function, starting after the return arguments
-uint32_t TypeInfoFuncAttr::registerIdxToParamIdx(uint32_t argIdx)
+uint32_t TypeInfoFuncAttr::registerIdxToParamIdx(uint32_t argIdx) const
 {
     if (hasFlag(TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
     {
@@ -979,7 +979,7 @@ uint32_t TypeInfoFuncAttr::registerIdxToParamIdx(uint32_t argIdx)
     }
 }
 
-TypeInfo* TypeInfoFuncAttr::registerIdxToType(uint32_t argIdx)
+TypeInfo* TypeInfoFuncAttr::registerIdxToType(uint32_t argIdx) const
 {
     const auto argNo = registerIdxToParamIdx(argIdx);
     if (argNo >= parameters.size())

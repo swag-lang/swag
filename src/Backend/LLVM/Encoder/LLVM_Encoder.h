@@ -74,11 +74,11 @@ struct LLVM_Encoder : BackendEncoder
     llvm::FunctionCallee fnReAlloc;
     llvm::FunctionCallee fnFree;
 
-    Map<int64_t, llvm::BasicBlock*>             labels;
-    Map<TypeInfoFuncAttr*, llvm::FunctionType*> mapFctTypeInternal;
-    Map<TypeInfoFuncAttr*, llvm::FunctionType*> mapFctTypeInternalClosure;
-    Map<TypeInfoFuncAttr*, llvm::FunctionType*> mapFctTypeForeign;
-    Map<TypeInfoFuncAttr*, llvm::FunctionType*> mapFctTypeForeignClosure;
+    Map<int64_t, llvm::BasicBlock*>                   labels;
+    Map<const TypeInfoFuncAttr*, llvm::FunctionType*> mapFctTypeInternal;
+    Map<const TypeInfoFuncAttr*, llvm::FunctionType*> mapFctTypeInternalClosure;
+    Map<const TypeInfoFuncAttr*, llvm::FunctionType*> mapFctTypeForeign;
+    Map<const TypeInfoFuncAttr*, llvm::FunctionType*> mapFctTypeForeignClosure;
 
     // Debug infos
     LLVMDebug* dbg = nullptr;

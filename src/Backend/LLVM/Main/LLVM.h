@@ -33,16 +33,16 @@ struct LLVM final : Backend
     static void emitOS(LLVM_Encoder& pp);
     static void emitMain(LLVM_Encoder& pp);
 
-    static void         emitLocalCall(LLVM_Encoder& pp, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams, VectorNative<uint32_t>& pushRAParams, llvm::Value*& resultFuncCall);
-    static void         emitForeignCall(LLVM_Encoder& pp, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams, VectorNative<uint32_t>& pushRAParams, llvm::Value*& resultFuncCall);
-    static bool         emitLambdaCall(LLVM_Encoder& pp, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, const llvm::AllocaInst* allocT, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams, VectorNative<uint32_t>& pushRAParams, llvm::Value*& resultFuncCall);
-    static void         emitByteCodeCallParameters(LLVM_Encoder& pp, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, const llvm::AllocaInst* allocT, VectorNative<llvm::Value*>& params, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& pushRAParams, const Vector<llvm::Value*>& values, bool closureToLambda = false);
-    static bool         emitCallParameters(LLVM_Encoder& pp, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, TypeInfoFuncAttr* typeFuncBC, VectorNative<llvm::Value*>& params, const VectorNative<uint32_t>& pushParams, const Vector<llvm::Value*>& values, bool closureToLambda = false);
-    static bool         emitCallReturnValue(LLVM_Encoder& pp, llvm::AllocaInst* allocRR, const TypeInfoFuncAttr* typeFuncBC, llvm::Value* callResult);
-    static llvm::Value* emitCall(LLVM_Encoder& pp, const Utf8& funcName, TypeInfoFuncAttr* typeFuncBC, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, const VectorNative<uint32_t>& pushParams, const Vector<llvm::Value*>& values, bool localCall);
-    static llvm::Value* emitCall(LLVM_Encoder& pp, const char* name, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const Vector<uint32_t>& regs, const Vector<llvm::Value*>& values);
-    static bool         emitGetParam(LLVM_Encoder& pp, TypeInfoFuncAttr* typeFunc, uint32_t rDest, uint32_t paramIdx, llvm::AllocaInst* allocR, int sizeOf = 0, uint64_t toAdd = 0, int deRefSize = 0);
-    static void         emitRet(LLVM_Encoder& pp, const TypeInfoFuncAttr* typeFunc, TypeInfo* returnType, llvm::AllocaInst* allocResult);
+    static void         emitLocalCall(LLVM_Encoder& pp, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, VectorNative<uint32_t>& pushRAParams, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams, llvm::Value*& resultFuncCall);
+    static void         emitForeignCall(LLVM_Encoder& pp, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, VectorNative<uint32_t>& pushRAParams, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams, llvm::Value*& resultFuncCall);
+    static bool         emitLambdaCall(LLVM_Encoder& pp, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, const llvm::AllocaInst* allocT, VectorNative<uint32_t>& pushRAParams, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams, llvm::Value*& resultFuncCall);
+    static void         emitByteCodeCallParameters(LLVM_Encoder& pp, TypeInfoFuncAttr* typeFuncBc, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, const llvm::AllocaInst* allocT, VectorNative<llvm::Value*>& params, VectorNative<uint32_t>& pushRAParams, const Vector<llvm::Value*>& values, bool closureToLambda = false);
+    static bool         emitCallParameters(LLVM_Encoder& pp, const TypeInfoFuncAttr* typeFuncBc, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, VectorNative<llvm::Value*>& params, const VectorNative<uint32_t>& pushParams, const Vector<llvm::Value*>& values, bool closureToLambda = false);
+    static bool         emitCallReturnValue(LLVM_Encoder& pp, const TypeInfoFuncAttr* typeFuncBc, llvm::AllocaInst* allocRR, llvm::Value* callResult);
+    static llvm::Value* emitCall(LLVM_Encoder& pp, const Utf8& funcName, const TypeInfoFuncAttr* typeFuncBc, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, const VectorNative<uint32_t>& pushParams, const Vector<llvm::Value*>& values, bool localCall);
+    static llvm::Value* emitCall(LLVM_Encoder& pp, const Utf8& funcName, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const Vector<uint32_t>& regs, const Vector<llvm::Value*>& values);
+    static bool         emitGetParam(LLVM_Encoder& pp, const TypeInfoFuncAttr* typeFuncBc, uint32_t rDest, uint32_t paramIdx, llvm::AllocaInst* allocR, int sizeOf = 0, uint64_t toAdd = 0, int deRefSize = 0);
+    static void         emitRet(LLVM_Encoder& pp, const TypeInfoFuncAttr* typeFuncBc, TypeInfo* returnType, llvm::AllocaInst* allocResult);
 
     static void emitShiftRightArithmetic(const LLVM_Encoder& pp, llvm::AllocaInst* allocR, uint32_t numBits);
     static void emitShiftRightEqArithmetic(const LLVM_Encoder& pp, llvm::AllocaInst* allocR, uint32_t numBits);
@@ -55,7 +55,7 @@ struct LLVM final : Backend
     static void emitBinOpEqOverflow(LLVM_Encoder& pp, llvm::Value* r1, llvm::Value* r2, llvm::Intrinsic::IndependentIntrinsics op, SafetyMsg msg);
 
     static llvm::Type*         getLLVMType(LLVM_Encoder& pp, TypeInfo* typeInfo);
-    static llvm::FunctionType* getOrCreateFuncType(LLVM_Encoder& pp, TypeInfoFuncAttr* typeFunc, bool closureToLambda = false);
+    static llvm::FunctionType* getOrCreateFuncType(LLVM_Encoder& pp, const TypeInfoFuncAttr* typeFuncBc, bool closureToLambda = false);
     static llvm::BasicBlock*   getOrCreateLabel(LLVM_Encoder& pp, int64_t ip);
     static void                getReturnResult(LLVM_Encoder& pp, TypeInfo* returnType, bool imm, const Register& reg, llvm::AllocaInst* allocR, llvm::AllocaInst* allocResult);
     static void                setFuncAttributes(const LLVM_Encoder& pp, uint32_t numPreComp, const AstFuncDecl* funcNode, const ByteCode* bc);

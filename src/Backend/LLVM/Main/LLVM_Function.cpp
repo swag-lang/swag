@@ -3130,43 +3130,43 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::LocalCallPop16:
             case ByteCodeOp::LocalCallPop48:
             case ByteCodeOp::LocalCallPopRC:
-                emitLocalCall(pp, allocR, allocRR, pushRVParams, pushRAParams, resultFuncCall);
+                emitLocalCall(pp, allocR, allocRR, pushRAParams, pushRVParams, resultFuncCall);
                 break;
             case ByteCodeOp::LocalCallPopParam:
                 pushRAParams.push_back(ip->d.u32);
-                emitLocalCall(pp, allocR, allocRR, pushRVParams, pushRAParams, resultFuncCall);
+                emitLocalCall(pp, allocR, allocRR, pushRAParams, pushRVParams, resultFuncCall);
                 break;
             case ByteCodeOp::LocalCallPop0Param2:
             case ByteCodeOp::LocalCallPop16Param2:
             case ByteCodeOp::LocalCallPop48Param2:
                 pushRAParams.push_back(ip->c.u32);
                 pushRAParams.push_back(ip->d.u32);
-                emitLocalCall(pp, allocR, allocRR, pushRVParams, pushRAParams, resultFuncCall);
+                emitLocalCall(pp, allocR, allocRR, pushRAParams, pushRVParams, resultFuncCall);
                 break;
 
             case ByteCodeOp::ForeignCall:
             case ByteCodeOp::ForeignCallPop:
-                emitForeignCall(pp, allocR, allocRR, pushRVParams, pushRAParams, resultFuncCall);
+                emitForeignCall(pp, allocR, allocRR, pushRAParams, pushRVParams, resultFuncCall);
                 break;
             case ByteCodeOp::ForeignCallPopParam:
                 pushRAParams.push_back(ip->d.u32);
-                emitForeignCall(pp, allocR, allocRR, pushRVParams, pushRAParams, resultFuncCall);
+                emitForeignCall(pp, allocR, allocRR, pushRAParams, pushRVParams, resultFuncCall);
                 break;
             case ByteCodeOp::ForeignCallPop0Param2:
             case ByteCodeOp::ForeignCallPop16Param2:
             case ByteCodeOp::ForeignCallPop48Param2:
                 pushRAParams.push_back(ip->c.u32);
                 pushRAParams.push_back(ip->d.u32);
-                emitForeignCall(pp, allocR, allocRR, pushRVParams, pushRAParams, resultFuncCall);
+                emitForeignCall(pp, allocR, allocRR, pushRAParams, pushRVParams, resultFuncCall);
                 break;
 
             case ByteCodeOp::LambdaCall:
             case ByteCodeOp::LambdaCallPop:
-                SWAG_CHECK(emitLambdaCall(pp, allocR, allocRR, allocT, pushRVParams, pushRAParams, resultFuncCall));
+                SWAG_CHECK(emitLambdaCall(pp, allocR, allocRR, allocT, pushRAParams, pushRVParams, resultFuncCall));
                 break;
             case ByteCodeOp::LambdaCallPopParam:
                 pushRAParams.push_back(ip->d.u32);
-                SWAG_CHECK(emitLambdaCall(pp, allocR, allocRR, allocT, pushRVParams, pushRAParams, resultFuncCall));
+                SWAG_CHECK(emitLambdaCall(pp, allocR, allocRR, allocT, pushRAParams, pushRVParams, resultFuncCall));
                 break;
 
             case ByteCodeOp::IncSPPostCall:
