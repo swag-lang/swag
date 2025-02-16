@@ -193,8 +193,9 @@ void SCBE::emitByteCodeCallParameters(SCBE_X64& pp, const TypeInfoFuncAttr* type
     }
 }
 
-void SCBE::emitLocalCall(SCBE_X64& pp, uint32_t offsetRT, const ByteCodeInstruction* ip, VectorNative<uint32_t>& pushRAParams, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams)
+void SCBE::emitLocalCall(SCBE_X64& pp, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams)
 {
+    const auto ip      = pp.ip;
     const auto callBc  = reinterpret_cast<ByteCode*>(ip->a.pointer);
     const auto typeFct = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
     emitCall(pp, typeFct, callBc->getCallNameFromDecl(), pushRAParams, offsetRT, true);
@@ -208,8 +209,9 @@ void SCBE::emitLocalCall(SCBE_X64& pp, uint32_t offsetRT, const ByteCodeInstruct
     }
 }
 
-void SCBE::emitForeignCall(SCBE_X64& pp, uint32_t offsetRT, const ByteCodeInstruction* ip, VectorNative<uint32_t>& pushRAParams, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams)
+void SCBE::emitForeignCall(SCBE_X64& pp, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams)
 {
+    const auto ip       = pp.ip;
     const auto funcNode = reinterpret_cast<AstFuncDecl*>(ip->a.pointer);
     const auto typeFct  = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
 
@@ -224,8 +226,9 @@ void SCBE::emitForeignCall(SCBE_X64& pp, uint32_t offsetRT, const ByteCodeInstru
     pushRVParams.clear();
 }
 
-void SCBE::emitLambdaCall(SCBE_X64& pp, const Concat& concat, uint32_t offsetRT, const ByteCodeInstruction* ip, VectorNative<uint32_t>& pushRAParams, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams)
+void SCBE::emitLambdaCall(SCBE_X64& pp, const Concat& concat, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams)
 {
+    const auto ip         = pp.ip;
     const auto typeFuncBC = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
 
     // Test if it's a bytecode lambda

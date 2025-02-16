@@ -103,7 +103,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             continue;
         if (ip->hasFlag(BCI_NO_BACKEND))
             continue;
-
+        pp.ip = ip;
+        
         // If we are the destination of a jump, be sure we have a block, and from now insert into that block
         if (ip->hasFlag(BCI_JUMP_DEST) || blockIsClosed)
         {
