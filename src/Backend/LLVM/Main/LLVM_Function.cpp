@@ -770,29 +770,21 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::BinOpPlusS16:
             case ByteCodeOp::BinOpPlusS32:
             case ByteCodeOp::BinOpPlusS64:
-            {
-                const auto numBits = BackendEncoder::getNumBits(ip->op);
-                const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
-                const auto r1      = MK_IMMA_IX(numBits);
-                const auto r2      = MK_IMMB_IX(numBits);
-                if (BackendEncoder::mustCheckOverflow(module, ip))
-                    emitBinOpOverflow(buildParameters, func, allocR, allocT, ip, r0, r1, r2, llvm::Intrinsic::sadd_with_overflow, SafetyMsg::Plus);
-                else
-                    builder.CreateStore(builder.CreateAdd(r1, r2), r0);
-                break;
-            }
-
             case ByteCodeOp::BinOpPlusU8:
             case ByteCodeOp::BinOpPlusU16:
             case ByteCodeOp::BinOpPlusU32:
             case ByteCodeOp::BinOpPlusU64:
             {
-                const auto numBits = BackendEncoder::getNumBits(ip->op);
-                const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
-                const auto r1      = MK_IMMA_IX(numBits);
-                const auto r2      = MK_IMMB_IX(numBits);
+                const auto numBits  = BackendEncoder::getNumBits(ip->op);
+                const auto isSigned = BackendEncoder::getOpType(ip->op)->isNativeIntegerSigned();
+                const auto r0       = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+                const auto r1       = MK_IMMA_IX(numBits);
+                const auto r2       = MK_IMMB_IX(numBits);
                 if (BackendEncoder::mustCheckOverflow(module, ip))
-                    emitBinOpOverflow(buildParameters, func, allocR, allocT, ip, r0, r1, r2, llvm::Intrinsic::uadd_with_overflow, SafetyMsg::Plus);
+                {
+                    const auto op = isSigned ? llvm::Intrinsic::sadd_with_overflow : llvm::Intrinsic::uadd_with_overflow;
+                    emitBinOpOverflow(buildParameters, func, allocR, allocT, ip, r0, r1, r2, op, SafetyMsg::Plus);
+                }
                 else
                     builder.CreateStore(builder.CreateAdd(r1, r2), r0);
                 break;
@@ -834,29 +826,21 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::BinOpMinusS16:
             case ByteCodeOp::BinOpMinusS32:
             case ByteCodeOp::BinOpMinusS64:
-            {
-                const auto numBits = BackendEncoder::getNumBits(ip->op);
-                const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
-                const auto r1      = MK_IMMA_IX(numBits);
-                const auto r2      = MK_IMMB_IX(numBits);
-                if (BackendEncoder::mustCheckOverflow(module, ip))
-                    emitBinOpOverflow(buildParameters, func, allocR, allocT, ip, r0, r1, r2, llvm::Intrinsic::ssub_with_overflow, SafetyMsg::Minus);
-                else
-                    builder.CreateStore(builder.CreateSub(r1, r2), r0);
-                break;
-            }
-
             case ByteCodeOp::BinOpMinusU8:
             case ByteCodeOp::BinOpMinusU16:
             case ByteCodeOp::BinOpMinusU32:
             case ByteCodeOp::BinOpMinusU64:
             {
-                const auto numBits = BackendEncoder::getNumBits(ip->op);
-                const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
-                const auto r1      = MK_IMMA_IX(numBits);
-                const auto r2      = MK_IMMB_IX(numBits);
+                const auto numBits  = BackendEncoder::getNumBits(ip->op);
+                const auto isSigned = BackendEncoder::getOpType(ip->op)->isNativeIntegerSigned();
+                const auto r0       = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+                const auto r1       = MK_IMMA_IX(numBits);
+                const auto r2       = MK_IMMB_IX(numBits);
                 if (BackendEncoder::mustCheckOverflow(module, ip))
-                    emitBinOpOverflow(buildParameters, func, allocR, allocT, ip, r0, r1, r2, llvm::Intrinsic::usub_with_overflow, SafetyMsg::Minus);
+                {
+                    const auto op = isSigned ? llvm::Intrinsic::ssub_with_overflow : llvm::Intrinsic::usub_with_overflow;
+                    emitBinOpOverflow(buildParameters, func, allocR, allocT, ip, r0, r1, r2, op, SafetyMsg::Minus);
+                }
                 else
                     builder.CreateStore(builder.CreateSub(r1, r2), r0);
                 break;
@@ -898,29 +882,21 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::BinOpMulS16:
             case ByteCodeOp::BinOpMulS32:
             case ByteCodeOp::BinOpMulS64:
-            {
-                const auto numBits = BackendEncoder::getNumBits(ip->op);
-                const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
-                const auto r1      = MK_IMMA_IX(numBits);
-                const auto r2      = MK_IMMB_IX(numBits);
-                if (BackendEncoder::mustCheckOverflow(module, ip))
-                    emitBinOpOverflow(buildParameters, func, allocR, allocT, ip, r0, r1, r2, llvm::Intrinsic::smul_with_overflow, SafetyMsg::Mul);
-                else
-                    builder.CreateStore(builder.CreateMul(r1, r2), r0);
-                break;
-            }
-
             case ByteCodeOp::BinOpMulU8:
             case ByteCodeOp::BinOpMulU16:
             case ByteCodeOp::BinOpMulU32:
             case ByteCodeOp::BinOpMulU64:
             {
-                const auto numBits = BackendEncoder::getNumBits(ip->op);
-                const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
-                const auto r1      = MK_IMMA_IX(numBits);
-                const auto r2      = MK_IMMB_IX(numBits);
+                const auto numBits  = BackendEncoder::getNumBits(ip->op);
+                const auto isSigned = BackendEncoder::getOpType(ip->op)->isNativeIntegerSigned();
+                const auto r0       = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+                const auto r1       = MK_IMMA_IX(numBits);
+                const auto r2       = MK_IMMB_IX(numBits);
                 if (BackendEncoder::mustCheckOverflow(module, ip))
-                    emitBinOpOverflow(buildParameters, func, allocR, allocT, ip, r0, r1, r2, llvm::Intrinsic::umul_with_overflow, SafetyMsg::Mul);
+                {
+                    const auto op = isSigned ? llvm::Intrinsic::smul_with_overflow : llvm::Intrinsic::umul_with_overflow;
+                    emitBinOpOverflow(buildParameters, func, allocR, allocT, ip, r0, r1, r2, op, SafetyMsg::Mul);
+                }
                 else
                     builder.CreateStore(builder.CreateMul(r1, r2), r0);
                 break;
