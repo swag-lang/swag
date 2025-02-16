@@ -101,6 +101,7 @@ struct LLVM final : Backend
     void      emitForeignCall(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, const ByteCodeInstruction* ip, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams, VectorNative<uint32_t>& pushRAParams, llvm::Value*& resultFuncCall);
     bool      emitLambdaCall(const BuildParameters& buildParameters, LLVMEncoder& pp, llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::Function* func, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, const llvm::AllocaInst* allocT, const ByteCodeInstruction* ip, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams, VectorNative<uint32_t>& pushRAParams, llvm::Value*& resultFuncCall);
     void      emitBinOpOverflow(const BuildParameters& buildParameters, llvm::Function* func, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const ByteCodeInstruction* ip, llvm::Value* r0, llvm::Value* r1, llvm::Value* r2, llvm::Intrinsic::IndependentIntrinsics op, SafetyMsg msg);
+    void      emitBinOpEqOverflow(const BuildParameters& buildParameters, llvm::Function* func, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const ByteCodeInstruction* ip, llvm::Value* r0, llvm::Value* r1, llvm::Value* r2, llvm::Intrinsic::IndependentIntrinsics op, SafetyMsg msg);
     bool      emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc) override;
 
     void                createRuntime(const BuildParameters& buildParameters) const;

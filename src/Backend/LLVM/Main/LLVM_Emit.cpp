@@ -246,3 +246,37 @@ void LLVM::emitBinOpOverflow(const BuildParameters&                 buildParamet
     builder.SetInsertPoint(blockOk);
     builder.CreateStore(r5, r0);
 }
+
+void LLVM::emitBinOpEqOverflow(const BuildParameters&                 buildParameters,
+                               llvm::Function*                        func,
+                               llvm::AllocaInst*                      allocR,
+                               llvm::AllocaInst*                      allocT,
+                               const ByteCodeInstruction*             ip,
+                               llvm::Value* const                     r0,
+                               llvm::Value* const                     r1,
+                               llvm::Value* const                     r2,
+                               llvm::Intrinsic::IndependentIntrinsics op,
+                               SafetyMsg                              msg)
+{
+    const auto  ct              = buildParameters.compileType;
+    const auto  precompileIndex = buildParameters.precompileIndex;
+    const auto& pp              = encoder<LLVMEncoder>(ct, precompileIndex);
+    auto&       context         = *pp.llvmContext;
+    auto&       builder         = *pp.builder;
+    const auto  numBits         = BackendEncoder::getNumBits(ip->op);
+
+    const auto vs = builder.CreateBinaryIntrinsic(op, builder.CreateLoad(IX_TY(numBits), r1), r2);
+    const auto v0 = builder.CreateExtractValue(vs, {0});
+    const auto v1 = builder.CreateExtractValue(vs, {1});
+
+    llvm::BasicBlock* blockOk  = llvm::BasicBlock::Create(context, "", func);
+    llvm::BasicBlock* blockErr = llvm::BasicBlock::Create(context, "", func);
+
+    const auto v2 = builder.CreateIsNull(v1);
+    builder.CreateCondBr(v2, blockOk, blockErr);
+    builder.SetInsertPoint(blockErr);
+    emitInternalPanic(buildParameters, allocR, allocT, ip->node, ByteCodeGen::safetyMsg(msg, BackendEncoder::getOpType(ip->op)));
+    builder.CreateBr(blockOk);
+    builder.SetInsertPoint(blockOk);
+    builder.CreateStore(v0, r1);
+}
