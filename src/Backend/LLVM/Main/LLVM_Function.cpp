@@ -20,7 +20,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     const auto ct              = buildParameters.compileType;
     const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = encoder<LLVMEncoder>(ct, precompileIndex);
+    auto&      pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
     auto&      context         = *pp.llvmContext;
     auto&      builder         = *pp.builder;
     auto&      modu            = *pp.llvmModule;
@@ -3480,7 +3480,7 @@ llvm::Type* LLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Typ
 {
     const auto  ct              = buildParameters.compileType;
     const auto  precompileIndex = buildParameters.precompileIndex;
-    const auto& pp              = encoder<LLVMEncoder>(ct, precompileIndex);
+    const auto& pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
     auto&       context         = *pp.llvmContext;
 
     typeInfo = typeInfo->getConcreteAlias();
@@ -3545,7 +3545,7 @@ llvm::Type* LLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Typ
     return nullptr;
 }
 
-llvm::BasicBlock* LLVM::getOrCreateLabel(LLVMEncoder& pp, llvm::Function* func, int64_t ip)
+llvm::BasicBlock* LLVM::getOrCreateLabel(LLVM_Encoder& pp, llvm::Function* func, int64_t ip)
 {
     auto& context = *pp.llvmContext;
 

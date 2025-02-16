@@ -21,9 +21,19 @@ struct LLVM final : Backend
 
     JobResult prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob) override;
 
+    void generateObjFile(const BuildParameters& buildParameters) const;
+    bool emitDataSegment(const BuildParameters& buildParameters, DataSegment* dataSegment) const;
+    bool emitInitSeg(const BuildParameters& buildParameters, DataSegment* dataSegment, SegmentKind me) const;
+    void emitGetTypeTable(const BuildParameters& buildParameters) const;
+    void emitGlobalPreMain(const BuildParameters& buildParameters) const;
+    void emitGlobalInit(const BuildParameters& buildParameters);
+    void emitGlobalDrop(const BuildParameters& buildParameters);
+    void emitOS(const BuildParameters& buildParameters) const;
+    void emitMain(const BuildParameters& buildParameters);
+
     void         emitLocalCall(const BuildParameters& buildParameters, llvm::LLVMContext& context, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, const ByteCodeInstruction* ip, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams, VectorNative<uint32_t>& pushRAParams, llvm::Value*& resultFuncCall);
     void         emitForeignCall(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, const ByteCodeInstruction* ip, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams, VectorNative<uint32_t>& pushRAParams, llvm::Value*& resultFuncCall);
-    bool         emitLambdaCall(const BuildParameters& buildParameters, LLVMEncoder& pp, llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::Function* func, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, const llvm::AllocaInst* allocT, const ByteCodeInstruction* ip, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams, VectorNative<uint32_t>& pushRAParams, llvm::Value*& resultFuncCall);
+    bool         emitLambdaCall(const BuildParameters& buildParameters, LLVM_Encoder& pp, llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::Function* func, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, const llvm::AllocaInst* allocT, const ByteCodeInstruction* ip, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams, VectorNative<uint32_t>& pushRAParams, llvm::Value*& resultFuncCall);
     bool         emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc) override;
     void         emitByteCodeCallParameters(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, const llvm::AllocaInst* allocT, VectorNative<llvm::Value*>& params, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& pushRAParams, const Vector<llvm::Value*>& values, bool closureToLambda = false);
     bool         emitCallParameters(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, TypeInfoFuncAttr* typeFuncBC, VectorNative<llvm::Value*>& params, const VectorNative<uint32_t>& pushParams, const Vector<llvm::Value*>& values, bool closureToLambda = false);
@@ -46,17 +56,7 @@ struct LLVM final : Backend
     llvm::Type*              swagTypeToLLVMType(const BuildParameters& buildParameters, TypeInfo* typeInfo);
     void                     createRet(const BuildParameters& buildParameters, const TypeInfoFuncAttr* typeFunc, TypeInfo* returnType, llvm::AllocaInst* allocResult);
     llvm::FunctionType*      getOrCreateFuncType(const BuildParameters& buildParameters, TypeInfoFuncAttr* typeFunc, bool closureToLambda = false);
-    static llvm::BasicBlock* getOrCreateLabel(LLVMEncoder& pp, llvm::Function* func, int64_t ip);
+    static llvm::BasicBlock* getOrCreateLabel(LLVM_Encoder& pp, llvm::Function* func, int64_t ip);
     void                     setFuncAttributes(const BuildParameters& buildParameters, const AstFuncDecl* funcNode, const ByteCode* bc, llvm::Function* func) const;
     void                     getReturnResult(llvm::LLVMContext& context, const BuildParameters& buildParameters, TypeInfo* returnType, bool imm, const Register& reg, llvm::AllocaInst* allocR, llvm::AllocaInst* allocResult);
-
-    void generateObjFile(const BuildParameters& buildParameters) const;
-    bool emitDataSegment(const BuildParameters& buildParameters, DataSegment* dataSegment) const;
-    bool emitInitSeg(const BuildParameters& buildParameters, DataSegment* dataSegment, SegmentKind me) const;
-    void emitGetTypeTable(const BuildParameters& buildParameters) const;
-    void emitGlobalPreMain(const BuildParameters& buildParameters) const;
-    void emitGlobalInit(const BuildParameters& buildParameters);
-    void emitGlobalDrop(const BuildParameters& buildParameters);
-    void emitOS(const BuildParameters& buildParameters) const;
-    void emitMain(const BuildParameters& buildParameters);
 };

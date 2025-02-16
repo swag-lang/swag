@@ -13,7 +13,7 @@ bool LLVM::emitDataSegment(const BuildParameters& buildParameters, DataSegment* 
 
     const auto ct              = buildParameters.compileType;
     const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = encoder<LLVMEncoder>(ct, precompileIndex);
+    auto&      pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
     auto&      context         = *pp.llvmContext;
     auto&      modu            = *pp.llvmModule;
 
@@ -109,7 +109,7 @@ bool LLVM::emitInitSeg(const BuildParameters& buildParameters, DataSegment* data
     const auto precompileIndex = buildParameters.precompileIndex;
     SWAG_ASSERT(precompileIndex == 0);
 
-    const auto& pp      = encoder<LLVMEncoder>(ct, precompileIndex);
+    const auto& pp      = encoder<LLVM_Encoder>(ct, precompileIndex);
     auto&       context = *pp.llvmContext;
     auto&       builder = *pp.builder;
     auto&       modu    = *pp.llvmModule;

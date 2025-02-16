@@ -438,7 +438,7 @@ llvm::DISubprogram* LLVMDebug::startFunction(const ByteCode* bc, AstFuncDecl** r
     return sp;
 }
 
-void LLVMDebug::startFunction(const BuildParameters& buildParameters, const LLVMEncoder& pp, ByteCode* bc, llvm::Function* func, llvm::AllocaInst* stack)
+void LLVMDebug::startFunction(const BuildParameters& buildParameters, const LLVM_Encoder& pp, ByteCode* bc, llvm::Function* func, llvm::AllocaInst* stack)
 {
     if (bc->node && bc->node->isSpecialFunctionGenerated())
         return;
@@ -759,7 +759,7 @@ void LLVMDebug::createGlobalVariablesForSegment(const BuildParameters& buildPara
 {
     const auto  ct              = buildParameters.compileType;
     const auto  precompileIndex = buildParameters.precompileIndex;
-    const auto& pp              = llvm->encoder<LLVMEncoder>(ct, precompileIndex);
+    const auto& pp              = llvm->encoder<LLVM_Encoder>(ct, precompileIndex);
     auto&       builder         = *pp.builder;
     auto&       context         = *pp.llvmContext;
     auto&       modu            = *pp.llvmModule;

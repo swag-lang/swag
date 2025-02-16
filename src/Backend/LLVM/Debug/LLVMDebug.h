@@ -5,7 +5,7 @@ struct LLVM;
 struct BuildParameters;
 struct ByteCode;
 struct ByteCodeInstruction;
-struct LLVMEncoder;
+struct LLVM_Encoder;
 struct Scope;
 struct SourceFile;
 struct TypeInfo;
@@ -15,7 +15,7 @@ struct LLVMDebug
 {
     void                    setup(LLVM* m, llvm::Module* module);
     llvm::DISubprogram*     startFunction(const ByteCode* bc, AstFuncDecl** resultDecl = nullptr);
-    void                    startFunction(const BuildParameters& buildParameters, const LLVMEncoder& pp, ByteCode* bc, llvm::Function* func, llvm::AllocaInst* stack);
+    void                    startFunction(const BuildParameters& buildParameters, const LLVM_Encoder& pp, ByteCode* bc, llvm::Function* func, llvm::AllocaInst* stack);
     void                    finalize() const;
     void                    setLocation(llvm::IRBuilder<>* builder, const ByteCode* bc, const ByteCodeInstruction* ip);
     void                    createGlobalVariablesForSegment(const BuildParameters& buildParameters, llvm::Type* type, llvm::GlobalVariable* var);

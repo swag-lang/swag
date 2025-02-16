@@ -18,7 +18,7 @@ void LLVM::createRuntime(const BuildParameters& buildParameters) const
 {
     const auto ct              = buildParameters.compileType;
     const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = encoder<LLVMEncoder>(ct, precompileIndex);
+    auto&      pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
     auto&      context         = *pp.llvmContext;
     auto&      modu            = *pp.llvmModule;
 
@@ -209,8 +209,8 @@ JobResult LLVM::prepareOutput(const BuildParameters& buildParameters, int stage,
     const auto ct              = buildParameters.compileType;
     const auto precompileIndex = buildParameters.precompileIndex;
 
-    allocatePerObj<LLVMEncoder>(buildParameters);
-    auto& pp = encoder<LLVMEncoder>(ct, precompileIndex);
+    allocatePerObj<LLVM_Encoder>(buildParameters);
+    auto& pp = encoder<LLVM_Encoder>(ct, precompileIndex);
 
     // Message
     if (pp.pass == BackendPreCompilePass::Init && buildParameters.precompileIndex == 0)
@@ -291,7 +291,7 @@ void LLVM::generateObjFile(const BuildParameters& buildParameters) const
 {
     const auto ct              = buildParameters.compileType;
     const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = encoder<LLVMEncoder>(ct, precompileIndex);
+    auto&      pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
     auto&      modu            = *pp.llvmModule;
 
     // Debug infos

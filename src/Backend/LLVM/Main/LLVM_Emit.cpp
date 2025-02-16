@@ -122,7 +122,7 @@ void LLVM::emitInternalPanic(const BuildParameters& buildParameters, llvm::Alloc
 {
     const auto ct              = buildParameters.compileType;
     const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = encoder<LLVMEncoder>(ct, precompileIndex);
+    auto&      pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
     auto&      context         = *pp.llvmContext;
     auto&      builder         = *pp.builder;
 
@@ -191,7 +191,7 @@ void LLVM::emitBinOpOverflow(const BuildParameters&                 buildParamet
 {
     const auto  ct              = buildParameters.compileType;
     const auto  precompileIndex = buildParameters.precompileIndex;
-    const auto& pp              = encoder<LLVMEncoder>(ct, precompileIndex);
+    const auto& pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
     auto&       context         = *pp.llvmContext;
     auto&       builder         = *pp.builder;
 
@@ -223,7 +223,7 @@ void LLVM::emitBinOpEqOverflow(const BuildParameters&                 buildParam
 {
     const auto  ct              = buildParameters.compileType;
     const auto  precompileIndex = buildParameters.precompileIndex;
-    const auto& pp              = encoder<LLVMEncoder>(ct, precompileIndex);
+    const auto& pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
     auto&       context         = *pp.llvmContext;
     auto&       builder         = *pp.builder;
     const auto  numBits         = BackendEncoder::getNumBits(ip->op);

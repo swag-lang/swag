@@ -14,7 +14,7 @@ union Register;
 enum class SegmentKind;
 enum class SafetyMsg;
 
-struct LLVMEncoder : BackendEncoder
+struct LLVM_Encoder : BackendEncoder
 {
     void init(const BuildParameters& buildParameters);
     

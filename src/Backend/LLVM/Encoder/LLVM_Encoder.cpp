@@ -3,7 +3,7 @@
 #include "Backend/BackendParameters.h"
 #include "Backend/LLVM/Encoder/LLVM_Encoder.h"
 
-void LLVMEncoder::init(const BuildParameters& buildParameters)
+void LLVM_Encoder::init(const BuildParameters& buildParameters)
 {
     BackendEncoder::init(buildParameters);
 }
