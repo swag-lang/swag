@@ -1536,28 +1536,18 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOpGreaterS16:
             case ByteCodeOp::CompareOpGreaterS32:
             case ByteCodeOp::CompareOpGreaterS64:
-            {
-                const auto numBits = BackendEncoder::getNumBits(ip->op);
-                const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
-                const auto r1      = MK_IMMA_IX(numBits);
-                const auto r2      = MK_IMMB_IX(numBits);
-                const auto r3      = builder.CreateICmpSGT(r1, r2);
-                const auto r4      = builder.CreateIntCast(r3, I8_TY(), false);
-                builder.CreateStore(r4, r0);
-                break;
-            }
-
             case ByteCodeOp::CompareOpGreaterU8:
             case ByteCodeOp::CompareOpGreaterU16:
             case ByteCodeOp::CompareOpGreaterU32:
             case ByteCodeOp::CompareOpGreaterU64:
             {
-                const auto numBits = BackendEncoder::getNumBits(ip->op);
-                const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
-                const auto r1      = MK_IMMA_IX(numBits);
-                const auto r2      = MK_IMMB_IX(numBits);
-                const auto r3      = builder.CreateICmpUGT(r1, r2);
-                const auto r4      = builder.CreateIntCast(r3, I8_TY(), false);
+                const auto numBits  = BackendEncoder::getNumBits(ip->op);
+                const auto isSigned = BackendEncoder::getOpType(ip->op)->isNativeIntegerSigned();
+                const auto r0       = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+                const auto r1       = MK_IMMA_IX(numBits);
+                const auto r2       = MK_IMMB_IX(numBits);
+                const auto r3       = isSigned ? builder.CreateICmpSGT(r1, r2) : builder.CreateICmpUGT(r1, r2);
+                const auto r4       = builder.CreateIntCast(r3, I8_TY(), false);
                 builder.CreateStore(r4, r0);
                 break;
             }
@@ -1579,28 +1569,18 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOpGreaterEqS16:
             case ByteCodeOp::CompareOpGreaterEqS32:
             case ByteCodeOp::CompareOpGreaterEqS64:
-            {
-                const auto numBits = BackendEncoder::getNumBits(ip->op);
-                const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
-                const auto r1      = MK_IMMA_IX(numBits);
-                const auto r2      = MK_IMMB_IX(numBits);
-                const auto r3      = builder.CreateICmpSGE(r1, r2);
-                const auto r4      = builder.CreateIntCast(r3, I8_TY(), false);
-                builder.CreateStore(r4, r0);
-                break;
-            }
-
             case ByteCodeOp::CompareOpGreaterEqU8:
             case ByteCodeOp::CompareOpGreaterEqU16:
             case ByteCodeOp::CompareOpGreaterEqU32:
             case ByteCodeOp::CompareOpGreaterEqU64:
             {
-                const auto numBits = BackendEncoder::getNumBits(ip->op);
-                const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
-                const auto r1      = MK_IMMA_IX(numBits);
-                const auto r2      = MK_IMMB_IX(numBits);
-                const auto r3      = builder.CreateICmpUGE(r1, r2);
-                const auto r4      = builder.CreateIntCast(r3, I8_TY(), false);
+                const auto numBits  = BackendEncoder::getNumBits(ip->op);
+                const auto isSigned = BackendEncoder::getOpType(ip->op)->isNativeIntegerSigned();
+                const auto r0       = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+                const auto r1       = MK_IMMA_IX(numBits);
+                const auto r2       = MK_IMMB_IX(numBits);
+                const auto r3       = isSigned ? builder.CreateICmpSGE(r1, r2) : builder.CreateICmpUGE(r1, r2);
+                const auto r4       = builder.CreateIntCast(r3, I8_TY(), false);
                 builder.CreateStore(r4, r0);
                 break;
             }
@@ -1622,28 +1602,18 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOpLowerS16:
             case ByteCodeOp::CompareOpLowerS32:
             case ByteCodeOp::CompareOpLowerS64:
-            {
-                const auto numBits = BackendEncoder::getNumBits(ip->op);
-                const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
-                const auto r1      = MK_IMMA_IX(numBits);
-                const auto r2      = MK_IMMB_IX(numBits);
-                const auto r3      = builder.CreateICmpSLT(r1, r2);
-                const auto r4      = builder.CreateIntCast(r3, I8_TY(), false);
-                builder.CreateStore(r4, r0);
-                break;
-            }
-
             case ByteCodeOp::CompareOpLowerU8:
             case ByteCodeOp::CompareOpLowerU16:
             case ByteCodeOp::CompareOpLowerU32:
             case ByteCodeOp::CompareOpLowerU64:
             {
-                const auto numBits = BackendEncoder::getNumBits(ip->op);
-                const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
-                const auto r1      = MK_IMMA_IX(numBits);
-                const auto r2      = MK_IMMB_IX(numBits);
-                const auto r3      = builder.CreateICmpULT(r1, r2);
-                const auto r4      = builder.CreateIntCast(r3, I8_TY(), false);
+                const auto numBits  = BackendEncoder::getNumBits(ip->op);
+                const auto isSigned = BackendEncoder::getOpType(ip->op)->isNativeIntegerSigned();
+                const auto r0       = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+                const auto r1       = MK_IMMA_IX(numBits);
+                const auto r2       = MK_IMMB_IX(numBits);
+                const auto r3       = isSigned ? builder.CreateICmpSLT(r1, r2) : builder.CreateICmpULT(r1, r2);
+                const auto r4       = builder.CreateIntCast(r3, I8_TY(), false);
                 builder.CreateStore(r4, r0);
                 break;
             }
@@ -1665,28 +1635,18 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOpLowerEqS16:
             case ByteCodeOp::CompareOpLowerEqS32:
             case ByteCodeOp::CompareOpLowerEqS64:
-            {
-                const auto numBits = BackendEncoder::getNumBits(ip->op);
-                const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
-                const auto r1      = MK_IMMA_IX(numBits);
-                const auto r2      = MK_IMMB_IX(numBits);
-                const auto r3      = builder.CreateICmpSLE(r1, r2);
-                const auto r4      = builder.CreateIntCast(r3, I8_TY(), false);
-                builder.CreateStore(r4, r0);
-                break;
-            }
-
             case ByteCodeOp::CompareOpLowerEqU8:
             case ByteCodeOp::CompareOpLowerEqU16:
             case ByteCodeOp::CompareOpLowerEqU32:
             case ByteCodeOp::CompareOpLowerEqU64:
             {
-                const auto numBits = BackendEncoder::getNumBits(ip->op);
-                const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
-                const auto r1      = MK_IMMA_IX(numBits);
-                const auto r2      = MK_IMMB_IX(numBits);
-                const auto r3      = builder.CreateICmpULE(r1, r2);
-                const auto r4      = builder.CreateIntCast(r3, I8_TY(), false);
+                const auto numBits  = BackendEncoder::getNumBits(ip->op);
+                const auto isSigned = BackendEncoder::getOpType(ip->op)->isNativeIntegerSigned();
+                const auto r0       = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+                const auto r1       = MK_IMMA_IX(numBits);
+                const auto r2       = MK_IMMB_IX(numBits);
+                const auto r3       = isSigned ? builder.CreateICmpSLE(r1, r2) : builder.CreateICmpULE(r1, r2);
+                const auto r4       = builder.CreateIntCast(r3, I8_TY(), false);
                 builder.CreateStore(r4, r0);
                 break;
             }
