@@ -2275,7 +2275,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::Unreachable:
-                emitInternalPanic(pp, allocR, allocT, ip->node, "executing unreachable code");
+                emitInternalPanic(pp, allocR, allocT, "executing unreachable code");
                 break;
 
             case ByteCodeOp::InternalUnreachable:
@@ -2284,7 +2284,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::InternalPanic:
-                emitInternalPanic(pp, allocR, allocT, ip->node, reinterpret_cast<const char*>(ip->d.pointer));
+                emitInternalPanic(pp, allocR, allocT, reinterpret_cast<const char*>(ip->d.pointer));
                 break;
 
             case ByteCodeOp::InternalGetTlsPtr:

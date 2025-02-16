@@ -50,7 +50,7 @@ struct LLVM final : Backend
     static void emitShiftEqLogical(LLVM_Encoder& pp, llvm::AllocaInst* allocR, uint32_t numBits, bool left);
     static void emitRT2ToRegisters(LLVM_Encoder& pp, uint32_t reg0, uint32_t reg1, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR);
     static void emitTypedValueToRegister(LLVM_Encoder& pp, llvm::Value* value, uint32_t reg, llvm::AllocaInst* allocR);
-    static void emitInternalPanic(LLVM_Encoder& pp, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const AstNode* node, const char* message);
+    static void emitInternalPanic(LLVM_Encoder& pp, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const char* message);
     static void emitBinOpOverflow(LLVM_Encoder& pp, llvm::Function* func, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, llvm::Value* r0, llvm::Value* r1, llvm::Value* r2, llvm::Intrinsic::IndependentIntrinsics op, SafetyMsg msg);
     static void emitBinOpEqOverflow(LLVM_Encoder& pp, llvm::Function* func, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, llvm::Value* r1, llvm::Value* r2, llvm::Intrinsic::IndependentIntrinsics op, SafetyMsg msg);
 

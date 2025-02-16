@@ -179,7 +179,7 @@ void SCBE::emitOverflow(SCBE_X64& pp, const char* msg, bool isSigned)
     {
         const auto seekPtr = pp.emitJumpNear(isSigned ? JNO : JAE);
         const auto seekJmp = pp.concat.totalCount();
-        emitInternalPanic(pp, ip->node, msg);
+        emitInternalPanic(pp, msg);
         *seekPtr = static_cast<uint8_t>(pp.concat.totalCount() - seekJmp);
     }
 }
@@ -429,9 +429,10 @@ void SCBE::emitJumpCmp3(SCBE_X64& pp, CPUCondJump op1, CPUCondJump op2, OpBits o
     pp.emitJump(op2, pp.ipIndex, ip->b.s32);
 }
 
-void SCBE::emitInternalPanic(SCBE_X64& pp, const AstNode* node, const char* msg)
+void SCBE::emitInternalPanic(SCBE_X64& pp, const char* msg)
 {
-    const auto np = node->token.sourceFile->path;
+    const auto node = pp.ip->node;
+    const auto np   = node->token.sourceFile->path;
     pp.pushParams.clear();
     pp.pushParams.push_back({.type = CPUPushParamType::GlobalString, .reg = reinterpret_cast<uint64_t>(np.cstr())});
     pp.pushParams.push_back({.type = CPUPushParamType::Imm, .reg = node->token.startLocation.line});

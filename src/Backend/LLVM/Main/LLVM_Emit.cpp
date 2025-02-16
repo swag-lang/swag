@@ -10,9 +10,9 @@
 
 void LLVM::emitShiftRightArithmetic(LLVM_Encoder& pp, llvm::AllocaInst* allocR, uint32_t numBits)
 {
-    const auto ip = pp.ip;
-    auto& builder = *pp.builder;
-    auto& context = *pp.llvmContext;
+    const auto ip      = pp.ip;
+    auto&      builder = *pp.builder;
+    auto&      context = *pp.llvmContext;
 
     if (ip->hasFlag(BCI_IMM_B))
     {
@@ -39,9 +39,9 @@ void LLVM::emitShiftRightArithmetic(LLVM_Encoder& pp, llvm::AllocaInst* allocR, 
 
 void LLVM::emitShiftRightEqArithmetic(LLVM_Encoder& pp, llvm::AllocaInst* allocR, uint32_t numBits)
 {
-    const auto ip = pp.ip;
-    auto& builder = *pp.builder;
-    auto& context = *pp.llvmContext;
+    const auto ip      = pp.ip;
+    auto&      builder = *pp.builder;
+    auto&      context = *pp.llvmContext;
 
     if (ip->hasFlag(BCI_IMM_B))
     {
@@ -68,9 +68,9 @@ void LLVM::emitShiftRightEqArithmetic(LLVM_Encoder& pp, llvm::AllocaInst* allocR
 
 void LLVM::emitShiftLogical(LLVM_Encoder& pp, llvm::AllocaInst* allocR, uint32_t numBits, bool left)
 {
-    const auto ip = pp.ip;
-    auto& builder = *pp.builder;
-    auto& context = *pp.llvmContext;
+    const auto ip      = pp.ip;
+    auto&      builder = *pp.builder;
+    auto&      context = *pp.llvmContext;
 
     if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 >= numBits)
     {
@@ -102,9 +102,9 @@ void LLVM::emitShiftLogical(LLVM_Encoder& pp, llvm::AllocaInst* allocR, uint32_t
 
 void LLVM::emitShiftEqLogical(LLVM_Encoder& pp, llvm::AllocaInst* allocR, uint32_t numBits, bool left)
 {
-    const auto ip = pp.ip;
-    auto& builder = *pp.builder;
-    auto& context = *pp.llvmContext;
+    const auto ip      = pp.ip;
+    auto&      builder = *pp.builder;
+    auto&      context = *pp.llvmContext;
 
     if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 >= numBits)
     {
@@ -134,10 +134,11 @@ void LLVM::emitShiftEqLogical(LLVM_Encoder& pp, llvm::AllocaInst* allocR, uint32
     }
 }
 
-void LLVM::emitInternalPanic(LLVM_Encoder& pp, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const AstNode* node, const char* message)
+void LLVM::emitInternalPanic(LLVM_Encoder& pp, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const char* message)
 {
-    auto& context = *pp.llvmContext;
-    auto& builder = *pp.builder;
+    const auto node    = pp.ip->node;
+    auto&      context = *pp.llvmContext;
+    auto&      builder = *pp.builder;
 
     // Filename
     const auto r1 = builder.CreateGlobalString(node->token.sourceFile->path.cstr());
@@ -207,9 +208,9 @@ void LLVM::emitBinOpOverflow(LLVM_Encoder&                          pp,
                              llvm::Intrinsic::IndependentIntrinsics op,
                              SafetyMsg                              msg)
 {
-    const auto ip = pp.ip;
-    auto& context = *pp.llvmContext;
-    auto& builder = *pp.builder;
+    const auto ip      = pp.ip;
+    auto&      context = *pp.llvmContext;
+    auto&      builder = *pp.builder;
 
     const auto r3       = builder.CreateBinaryIntrinsic(op, r1, r2);
     const auto r4       = builder.CreateExtractValue(r3, {0});
@@ -220,7 +221,7 @@ void LLVM::emitBinOpOverflow(LLVM_Encoder&                          pp,
 
     builder.CreateCondBr(r6, blockOk, blockErr);
     builder.SetInsertPoint(blockErr);
-    emitInternalPanic(pp, allocR, allocT, ip->node, ByteCodeGen::safetyMsg(msg, BackendEncoder::getOpType(ip->op)));
+    emitInternalPanic(pp, allocR, allocT, ByteCodeGen::safetyMsg(msg, BackendEncoder::getOpType(ip->op)));
     builder.CreateBr(blockOk);
     builder.SetInsertPoint(blockOk);
     builder.CreateStore(r4, r0);
@@ -235,7 +236,7 @@ void LLVM::emitBinOpEqOverflow(LLVM_Encoder&                          pp,
                                llvm::Intrinsic::IndependentIntrinsics op,
                                SafetyMsg                              msg)
 {
-    const auto ip = pp.ip;
+    const auto ip      = pp.ip;
     auto&      context = *pp.llvmContext;
     auto&      builder = *pp.builder;
     const auto numBits = BackendEncoder::getNumBits(ip->op);
@@ -249,7 +250,7 @@ void LLVM::emitBinOpEqOverflow(LLVM_Encoder&                          pp,
 
     builder.CreateCondBr(r6, blockOk, blockErr);
     builder.SetInsertPoint(blockErr);
-    emitInternalPanic(pp, allocR, allocT, ip->node, ByteCodeGen::safetyMsg(msg, BackendEncoder::getOpType(ip->op)));
+    emitInternalPanic(pp, allocR, allocT, ByteCodeGen::safetyMsg(msg, BackendEncoder::getOpType(ip->op)));
     builder.CreateBr(blockOk);
     builder.SetInsertPoint(blockOk);
     builder.CreateStore(r4, r1);

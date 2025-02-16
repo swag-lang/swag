@@ -1805,12 +1805,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::InternalPanic:
-                emitInternalPanic(pp, ip->node, reinterpret_cast<const char*>(ip->d.pointer));
+                emitInternalPanic(pp, reinterpret_cast<const char*>(ip->d.pointer));
                 break;
             case ByteCodeOp::InternalUnreachable:
                 break;
             case ByteCodeOp::Unreachable:
-                emitInternalPanic(pp, ip->node, "executing unreachable code");
+                emitInternalPanic(pp, "executing unreachable code");
                 break;
 
             case ByteCodeOp::InternalGetTlsPtr:
