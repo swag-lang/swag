@@ -1229,51 +1229,46 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::AffectOpPlusEqS8:
-            {
-                MK_BINOP_EQ8_CAB();
-                OPEQ_OVERFLOW(sadd_with_overflow, CreateAdd, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS8), true);
-                break;
-            }
             case ByteCodeOp::AffectOpPlusEqS16:
-            {
-                MK_BINOP_EQ16_CAB();
-                OPEQ_OVERFLOW(sadd_with_overflow, CreateAdd, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS16), true);
-                break;
-            }
             case ByteCodeOp::AffectOpPlusEqS32:
-            {
-                MK_BINOP_EQ32_CAB();
-                OPEQ_OVERFLOW(sadd_with_overflow, CreateAdd, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS32), true);
-                break;
-            }
             case ByteCodeOp::AffectOpPlusEqS64:
             {
-                MK_BINOP_EQ64_CAB();
-                OPEQ_OVERFLOW(sadd_with_overflow, CreateAdd, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS64), true);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64(allocR, ip->a.u32);
+                const auto r1      = builder.CreateLoad(PTR_IX_TY(numBits), r0);
+                const auto r2      = MK_IMMB_IX(numBits);
+                bool       nw      = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
+                if (nw && module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))
+                {
+                    emitBinOpEqOverflow(buildParameters, func, allocR, allocT, ip, r0, r1, r2, llvm::Intrinsic::sadd_with_overflow, SafetyMsg::PlusEq);
+                }
+                else
+                {
+                    auto r3 = builder.CreateLoad(IX_TY(numBits), r1);
+                    builder.CreateStore(builder.CreateAdd(r3, r2), r1);
+                }
                 break;
             }
+
             case ByteCodeOp::AffectOpPlusEqU8:
-            {
-                MK_BINOP_EQ8_CAB();
-                OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU8), false);
-                break;
-            }
             case ByteCodeOp::AffectOpPlusEqU16:
-            {
-                MK_BINOP_EQ16_CAB();
-                OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU16), false);
-                break;
-            }
             case ByteCodeOp::AffectOpPlusEqU32:
-            {
-                MK_BINOP_EQ32_CAB();
-                OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU32), false);
-                break;
-            }
             case ByteCodeOp::AffectOpPlusEqU64:
             {
-                MK_BINOP_EQ64_CAB();
-                OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU64), false);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64(allocR, ip->a.u32);
+                const auto r1      = builder.CreateLoad(PTR_IX_TY(numBits), r0);
+                const auto r2      = MK_IMMB_IX(numBits);
+                bool       nw      = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
+                if (nw && module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))
+                {
+                    emitBinOpEqOverflow(buildParameters, func, allocR, allocT, ip, r0, r1, r2, llvm::Intrinsic::uadd_with_overflow, SafetyMsg::PlusEq);
+                }
+                else
+                {
+                    auto r3 = builder.CreateLoad(IX_TY(numBits), r1);
+                    builder.CreateStore(builder.CreateAdd(r3, r2), r1);
+                }
                 break;
             }
 
@@ -1340,51 +1335,46 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::AffectOpMulEqS8:
-            {
-                MK_BINOP_EQ8_CAB();
-                OPEQ_OVERFLOW(smul_with_overflow, CreateMul, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS8), true);
-                break;
-            }
             case ByteCodeOp::AffectOpMulEqS16:
-            {
-                MK_BINOP_EQ16_CAB();
-                OPEQ_OVERFLOW(smul_with_overflow, CreateMul, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS16), true);
-                break;
-            }
             case ByteCodeOp::AffectOpMulEqS32:
-            {
-                MK_BINOP_EQ32_CAB();
-                OPEQ_OVERFLOW(smul_with_overflow, CreateMul, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS32), true);
-                break;
-            }
             case ByteCodeOp::AffectOpMulEqS64:
             {
-                MK_BINOP_EQ64_CAB();
-                OPEQ_OVERFLOW(smul_with_overflow, CreateMul, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS64), true);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64(allocR, ip->a.u32);
+                const auto r1      = builder.CreateLoad(PTR_IX_TY(numBits), r0);
+                const auto r2      = MK_IMMB_IX(numBits);
+                bool       nw      = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
+                if (nw && module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))
+                {
+                    emitBinOpEqOverflow(buildParameters, func, allocR, allocT, ip, r0, r1, r2, llvm::Intrinsic::smul_with_overflow, SafetyMsg::MulEq);
+                }
+                else
+                {
+                    auto r3 = builder.CreateLoad(IX_TY(numBits), r1);
+                    builder.CreateStore(builder.CreateMul(r3, r2), r1);
+                }
                 break;
             }
+
             case ByteCodeOp::AffectOpMulEqU8:
-            {
-                MK_BINOP_EQ8_CAB();
-                OPEQ_OVERFLOW(umul_with_overflow, CreateMul, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU8), false);
-                break;
-            }
             case ByteCodeOp::AffectOpMulEqU16:
-            {
-                MK_BINOP_EQ16_CAB();
-                OPEQ_OVERFLOW(umul_with_overflow, CreateMul, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU16), false);
-                break;
-            }
             case ByteCodeOp::AffectOpMulEqU32:
-            {
-                MK_BINOP_EQ32_CAB();
-                OPEQ_OVERFLOW(umul_with_overflow, CreateMul, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU32), false);
-                break;
-            }
             case ByteCodeOp::AffectOpMulEqU64:
             {
-                MK_BINOP_EQ64_CAB();
-                OPEQ_OVERFLOW(umul_with_overflow, CreateMul, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU64), false);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64(allocR, ip->a.u32);
+                const auto r1      = builder.CreateLoad(PTR_IX_TY(numBits), r0);
+                const auto r2      = MK_IMMB_IX(numBits);
+                bool       nw      = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
+                if (nw && module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))
+                {
+                    emitBinOpEqOverflow(buildParameters, func, allocR, allocT, ip, r0, r1, r2, llvm::Intrinsic::umul_with_overflow, SafetyMsg::MulEq);
+                }
+                else
+                {
+                    auto r3 = builder.CreateLoad(IX_TY(numBits), r1);
+                    builder.CreateStore(builder.CreateMul(r3, r2), r1);
+                }
                 break;
             }
 

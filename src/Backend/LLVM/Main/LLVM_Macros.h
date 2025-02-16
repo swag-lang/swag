@@ -41,12 +41,9 @@
 #define GEP64_PTR_PTR_I64(__data, __offset) builder.CreateInBoundsGEP(PTR_I64_TY(), __data, builder.getInt64(__offset))
 
 #define GEP8(__data, __offset)             ((__offset) ? builder.CreateInBoundsGEP(I8_TY(), __data, builder.getInt64(__offset)) : (__data))
-#define GEP8_PTR_I16(__data, __offset)     ((__offset) & 1) ? TO_PTR_I16(GEP8(__data, __offset)) : builder.CreateInBoundsGEP(I16_TY(), __data, builder.getInt64((__offset) / 2))
 #define GEP8_PTR_I32(__data, __offset)     ((__offset) & 3) ? TO_PTR_I32(GEP8(__data, __offset)) : builder.CreateInBoundsGEP(I32_TY(), __data, builder.getInt64((__offset) / 4))
 #define GEP8_PTR_I64(__data, __offset)     ((__offset) & 7) ? TO_PTR_I64(GEP8(__data, __offset)) : builder.CreateInBoundsGEP(I64_TY(), __data, builder.getInt64((__offset) / 8))
 #define GEP8_PTR_IX(__data, __offset, __n) ((__offset) & (((__n) / 8) - 1)) ? TO_PTR_IX(GEP8(__data, __offset), __n) : builder.CreateInBoundsGEP(IX_TY(__n), __data, builder.getInt64((__offset) / ((__n) / 8)))
-#define GEP8_PTR_F32(__data, __offset)     ((__offset) & 3) ? TO_PTR_F32(GEP8(__data, __offset)) : builder.CreateInBoundsGEP(F32_TY(), __data, builder.getInt64((__offset) / 4))
-#define GEP8_PTR_F64(__data, __offset)     ((__offset) & 7) ? TO_PTR_F64(GEP8(__data, __offset)) : builder.CreateInBoundsGEP(F64_TY(), __data, builder.getInt64((__offset) / 8))
 #define GEP8_PTR_FX(__data, __offset, __n) ((__offset) & (((__n) / 8) - 1)) ? TO_PTR_FX(GEP8(__data, __offset), __n) : builder.CreateInBoundsGEP(FX_TY(__n), __data, builder.getInt64((__offset) / ((__n) / 8)))
 
 #define TO_PTR_PTR_I8(__r) builder.CreatePointerCast(__r, PTR_I8_TY()->getPointerTo())
@@ -60,22 +57,13 @@
 #define TO_PTR_F32(__r)     builder.CreatePointerCast(__r, PTR_F32_TY())
 #define TO_PTR_FX(__r, __n) builder.CreatePointerCast(__r, PTR_FX_TY(__n))
 
-#define MK_IMMA_8()     ip->hasFlag(BCI_IMM_A) ? (llvm::Value*) builder.getInt8(ip->a.u8) : (llvm::Value*) builder.CreateLoad(I8_TY(), GEP64(allocR, ip->a.u32))
-#define MK_IMMA_16()    ip->hasFlag(BCI_IMM_A) ? (llvm::Value*) builder.getInt16(ip->a.u16) : (llvm::Value*) builder.CreateLoad(I16_TY(), GEP64(allocR, ip->a.u32))
-#define MK_IMMA_32()    ip->hasFlag(BCI_IMM_A) ? (llvm::Value*) builder.getInt32(ip->a.u32) : (llvm::Value*) builder.CreateLoad(I32_TY(), GEP64(allocR, ip->a.u32))
 #define MK_IMMA_64()    ip->hasFlag(BCI_IMM_A) ? (llvm::Value*) builder.getInt64(ip->a.u64) : (llvm::Value*) builder.CreateLoad(I64_TY(), GEP64(allocR, ip->a.u32))
 #define MK_IMMA_IX(__n) ip->hasFlag(BCI_IMM_A) ? (llvm::Value*) builder.getIntN(__n, ip->a.u64) : (llvm::Value*) builder.CreateLoad(IX_TY(__n), GEP64(allocR, ip->a.u32))
-#define MK_IMMA_F32()   ip->hasFlag(BCI_IMM_A) ? (llvm::Value*) llvm::ConstantFP::get(F32_TY(), ip->a.f32) : (llvm::Value*) builder.CreateLoad(F32_TY(), GEP64(allocR, ip->a.u32))
-#define MK_IMMA_F64()   ip->hasFlag(BCI_IMM_A) ? (llvm::Value*) llvm::ConstantFP::get(F64_TY(), ip->a.f64) : (llvm::Value*) builder.CreateLoad(F64_TY(), GEP64(allocR, ip->a.u32))
 #define MK_IMMA_FX(__n) ip->hasFlag(BCI_IMM_A) ? (llvm::Value*) llvm::ConstantFP::get(FX_TY(__n), __n == 32 ? ip->a.f32 : ip->a.f64) : (llvm::Value*) builder.CreateLoad(FX_TY(__n), GEP64(allocR, ip->a.u32))
 
 #define MK_IMMB_8()     ip->hasFlag(BCI_IMM_B) ? (llvm::Value*) builder.getInt8(ip->b.u8) : (llvm::Value*) builder.CreateLoad(I8_TY(), GEP64(allocR, ip->b.u32))
-#define MK_IMMB_16()    ip->hasFlag(BCI_IMM_B) ? (llvm::Value*) builder.getInt16(ip->b.u16) : (llvm::Value*) builder.CreateLoad(I16_TY(), GEP64(allocR, ip->b.u32))
-#define MK_IMMB_32()    ip->hasFlag(BCI_IMM_B) ? (llvm::Value*) builder.getInt32(ip->b.u32) : (llvm::Value*) builder.CreateLoad(I32_TY(), GEP64(allocR, ip->b.u32))
 #define MK_IMMB_64()    ip->hasFlag(BCI_IMM_B) ? (llvm::Value*) builder.getInt64(ip->b.u64) : (llvm::Value*) builder.CreateLoad(I64_TY(), GEP64(allocR, ip->b.u32))
 #define MK_IMMB_IX(__n) ip->hasFlag(BCI_IMM_B) ? (llvm::Value*) builder.getIntN(__n, ip->b.u64) : (llvm::Value*) builder.CreateLoad(IX_TY(__n), GEP64(allocR, ip->b.u32))
-#define MK_IMMB_F32()   ip->hasFlag(BCI_IMM_B) ? (llvm::Value*) llvm::ConstantFP::get(F32_TY(), ip->b.f32) : (llvm::Value*) builder.CreateLoad(F32_TY(), GEP64(allocR, ip->b.u32))
-#define MK_IMMB_F64()   ip->hasFlag(BCI_IMM_B) ? (llvm::Value*) llvm::ConstantFP::get(F64_TY(), ip->b.f64) : (llvm::Value*) builder.CreateLoad(F64_TY(), GEP64(allocR, ip->b.u32))
 #define MK_IMMB_FX(__n) ip->hasFlag(BCI_IMM_B) ? (llvm::Value*) llvm::ConstantFP::get(FX_TY(__n), __n == 32 ? ip->b.f32 : ip->b.f64) : (llvm::Value*) builder.CreateLoad(FX_TY(__n), GEP64(allocR, ip->b.u32))
 
 #define MK_IMMC_64()    ip->hasFlag(BCI_IMM_C) ? (llvm::Value*) builder.getInt64(ip->c.u64) : (llvm::Value*) builder.CreateLoad(I64_TY(), GEP64(allocR, ip->c.u32))
@@ -86,165 +74,3 @@
 #define MK_IMMD_IX(__n) ip->hasFlag(BCI_IMM_D) ? (llvm::Value*) builder.getIntN(__n, ip->d.u64) : (llvm::Value*) builder.CreateLoad(IX_TY(__n), GEP64(allocR, ip->d.u32))
 #define MK_IMMD_FX(__n) ip->hasFlag(BCI_IMM_D) ? (llvm::Value*) llvm::ConstantFP::get(FX_TY(__n), __n == 32 ? ip->d.f32 : ip->d.f64) : (llvm::Value*) builder.CreateLoad(FX_TY(__n), GEP64(allocR, ip->d.u32))
 
-#define MK_BINOP8_CAB()                                \
-    auto         r0 = GEP64_PTR_I8(allocR, ip->c.u32); \
-    llvm::Value* r1 = MK_IMMA_8();                     \
-    llvm::Value* r2 = MK_IMMB_8()
-#define MK_BINOP16_CAB()                                \
-    auto         r0 = GEP64_PTR_I16(allocR, ip->c.u32); \
-    llvm::Value* r1 = MK_IMMA_16();                     \
-    llvm::Value* r2 = MK_IMMB_16()
-#define MK_BINOP32_CAB()                                \
-    auto         r0 = GEP64_PTR_I32(allocR, ip->c.u32); \
-    llvm::Value* r1 = MK_IMMA_32();                     \
-    llvm::Value* r2 = MK_IMMB_32()
-#define MK_BINOP64_CAB()                        \
-    auto         r0 = GEP64(allocR, ip->c.u32); \
-    llvm::Value* r1 = MK_IMMA_64();             \
-    llvm::Value* r2 = MK_IMMB_64()
-
-#define MK_BINOP_EQ8_CAB()                                 \
-    auto         r0 = GEP64(allocR, ip->a.u32);            \
-    auto         r1 = builder.CreateLoad(PTR_I8_TY(), r0); \
-    llvm::Value* r2 = MK_IMMB_8()
-
-#define MK_BINOP_EQ8_CAB_OFF()                             \
-    auto         r0 = GEP64(allocR, ip->a.u32);            \
-    auto         rt = builder.CreateLoad(PTR_I8_TY(), r0); \
-    auto         r1 = GEP8(rt, ip->c.u32);                 \
-    llvm::Value* r2 = MK_IMMB_8()
-
-#define MK_BINOP_EQ8_SCAB()                        \
-    auto         r0 = GEP8(allocStack, ip->a.u32); \
-    llvm::Value* r1 = MK_IMMB_8()
-
-#define MK_BINOP_EQ16_CAB()                                 \
-    auto         r0 = GEP64(allocR, ip->a.u32);             \
-    auto         r1 = builder.CreateLoad(PTR_I16_TY(), r0); \
-    llvm::Value* r2 = MK_IMMB_16()
-
-#define MK_BINOP_EQ16_CAB_OFF()                             \
-    auto         r0 = GEP64(allocR, ip->a.u32);             \
-    auto         rt = builder.CreateLoad(PTR_I16_TY(), r0); \
-    auto         r1 = GEP8_PTR_I16(rt, ip->c.u32);          \
-    llvm::Value* r2 = MK_IMMB_16()
-
-#define MK_BINOP_EQ16_SCAB()                               \
-    auto         r0 = GEP8_PTR_I16(allocStack, ip->a.u32); \
-    llvm::Value* r1 = MK_IMMB_16()
-
-#define MK_BINOP_EQ32_CAB()                                 \
-    auto         r0 = GEP64(allocR, ip->a.u32);             \
-    auto         r1 = builder.CreateLoad(PTR_I32_TY(), r0); \
-    llvm::Value* r2 = MK_IMMB_32()
-
-#define MK_BINOP_EQ32_CAB_OFF()                             \
-    auto         r0 = GEP64(allocR, ip->a.u32);             \
-    auto         rt = builder.CreateLoad(PTR_I32_TY(), r0); \
-    auto         r1 = GEP8_PTR_I32(rt, ip->c.u32);          \
-    llvm::Value* r2 = MK_IMMB_32()
-
-#define MK_BINOP_EQ32_SCAB()                               \
-    auto         r0 = GEP8_PTR_I32(allocStack, ip->a.u32); \
-    llvm::Value* r1 = MK_IMMB_32()
-#define MK_BINOP_EQ32_SSCAB()                              \
-    auto         r0 = GEP8_PTR_I32(allocStack, ip->a.u32); \
-    llvm::Value* r1 = GEP8_PTR_I32(allocStack, ip->b.u32)
-
-#define MK_BINOP_EQ64_CAB()                                 \
-    auto         r0 = GEP64(allocR, ip->a.u32);             \
-    auto         r1 = builder.CreateLoad(PTR_I64_TY(), r0); \
-    llvm::Value* r2 = MK_IMMB_64()
-
-#define MK_BINOP_EQ64_CAB_OFF()                             \
-    auto         r0 = GEP64(allocR, ip->a.u32);             \
-    auto         rt = builder.CreateLoad(PTR_I64_TY(), r0); \
-    auto         r1 = GEP8_PTR_I64(rt, ip->c.u32);          \
-    llvm::Value* r2 = MK_IMMB_64()
-
-#define MK_BINOP_EQ64_SCAB()                               \
-    auto         r0 = GEP8_PTR_I64(allocStack, ip->a.u32); \
-    llvm::Value* r1 = MK_IMMB_64()
-
-#define MK_BINOP_EQF32_CAB()                                \
-    auto         r0 = GEP64(allocR, ip->a.u32);             \
-    auto         r1 = builder.CreateLoad(PTR_F32_TY(), r0); \
-    llvm::Value* r2 = MK_IMMB_F32()
-#define MK_BINOP_EQF32_CAB_OFF()                            \
-    auto         r0 = GEP64(allocR, ip->a.u32);             \
-    auto         rt = builder.CreateLoad(PTR_F32_TY(), r0); \
-    auto         r1 = GEP8_PTR_F32(rt, ip->c.u32);          \
-    llvm::Value* r2 = MK_IMMB_F32()
-#define MK_BINOP_EQF32_SCAB()                              \
-    auto         r0 = GEP8_PTR_F32(allocStack, ip->a.u32); \
-    llvm::Value* r1 = MK_IMMB_F32()
-
-#define MK_BINOP_EQF64_CAB()                                \
-    auto         r0 = GEP64(allocR, ip->a.u32);             \
-    auto         r1 = builder.CreateLoad(PTR_F64_TY(), r0); \
-    llvm::Value* r2 = MK_IMMB_F64()
-#define MK_BINOP_EQF64_CAB_OFF()                            \
-    auto         r0 = GEP64(allocR, ip->a.u32);             \
-    auto         rt = builder.CreateLoad(PTR_F64_TY(), r0); \
-    auto         r1 = GEP8_PTR_F64(rt, ip->c.u32);          \
-    llvm::Value* r2 = MK_IMMB_F64()
-#define MK_BINOP_EQF64_SCAB()                              \
-    auto         r0 = GEP8_PTR_F64(allocStack, ip->a.u32); \
-    llvm::Value* r1 = MK_IMMB_F64()
-
-#define OPEQ_OVERFLOW(__intr, __inst, __type, __msg, __signed)                                                         \
-    do                                                                                                                 \
-    {                                                                                                                  \
-        bool nw = (ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON)) || ip->hasFlag(BCI_CAN_OVERFLOW) ? false : true; \
-        if (nw && module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))                         \
-        {                                                                                                              \
-            auto vs = builder.CreateBinaryIntrinsic(llvm::Intrinsic::__intr, builder.CreateLoad(__type, r1), r2);      \
-            auto v0 = builder.CreateExtractValue(vs, {0});                                                             \
-            auto v1 = builder.CreateExtractValue(vs, {1});                                                             \
-                                                                                                                       \
-            llvm::BasicBlock* blockOk  = llvm::BasicBlock::Create(context, "", func);                                  \
-            llvm::BasicBlock* blockErr = llvm::BasicBlock::Create(context, "", func);                                  \
-                                                                                                                       \
-            auto v2 = builder.CreateIsNull(v1);                                                                        \
-            builder.CreateCondBr(v2, blockOk, blockErr);                                                               \
-            builder.SetInsertPoint(blockErr);                                                                          \
-            emitInternalPanic(buildParameters, allocR, allocT, ip->node, __msg);                                       \
-            builder.CreateBr(blockOk);                                                                                 \
-            builder.SetInsertPoint(blockOk);                                                                           \
-            builder.CreateStore(v0, r1);                                                                               \
-        }                                                                                                              \
-        else                                                                                                           \
-        {                                                                                                              \
-            auto r3 = builder.CreateLoad(__type, r1);                                                                  \
-            auto v0 = builder.__inst(r3, r2, "", __signed ? false : nw, __signed ? nw : false);                        \
-            builder.CreateStore(v0, r1);                                                                               \
-        }                                                                                                              \
-    } while (0)
-
-#define OP_OVERFLOW(__intr, __inst, __type, __msg, __signed)                                                           \
-    do                                                                                                                 \
-    {                                                                                                                  \
-        bool nw = (ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON)) || ip->hasFlag(BCI_CAN_OVERFLOW) ? false : true; \
-        if (nw && module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))                         \
-        {                                                                                                              \
-            auto vs = builder.CreateBinaryIntrinsic(llvm::Intrinsic::__intr, r1, r2);                                  \
-            auto v0 = builder.CreateExtractValue(vs, {0});                                                             \
-            auto v1 = builder.CreateExtractValue(vs, {1});                                                             \
-                                                                                                                       \
-            llvm::BasicBlock* blockOk  = llvm::BasicBlock::Create(context, "", func);                                  \
-            llvm::BasicBlock* blockErr = llvm::BasicBlock::Create(context, "", func);                                  \
-                                                                                                                       \
-            auto v2 = builder.CreateIsNull(v1);                                                                        \
-            builder.CreateCondBr(v2, blockOk, blockErr);                                                               \
-            builder.SetInsertPoint(blockErr);                                                                          \
-            emitInternalPanic(buildParameters, allocR, allocT, ip->node, __msg);                                       \
-            builder.CreateBr(blockOk);                                                                                 \
-            builder.SetInsertPoint(blockOk);                                                                           \
-            builder.CreateStore(v0, r0);                                                                               \
-        }                                                                                                              \
-        else                                                                                                           \
-        {                                                                                                              \
-            auto v0 = builder.__inst(r1, r2, "", __signed ? false : nw, __signed ? nw : false);                        \
-            builder.CreateStore(v0, r0);                                                                               \
-        }                                                                                                              \
-    } while (0)
