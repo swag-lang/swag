@@ -1283,65 +1283,34 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
 
             case ByteCodeOp::AffectOpPlusEqS8_Safe:
-            {
-                MK_BINOP_EQ8_CAB_OFF();
-                OPEQ_OVERFLOW(sadd_with_overflow, CreateAdd, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS8), true);
-                break;
-            }
             case ByteCodeOp::AffectOpPlusEqS16_Safe:
-            {
-                MK_BINOP_EQ16_CAB_OFF();
-                OPEQ_OVERFLOW(sadd_with_overflow, CreateAdd, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS16), true);
-                break;
-            }
             case ByteCodeOp::AffectOpPlusEqS32_Safe:
-            {
-                MK_BINOP_EQ32_CAB_OFF();
-                OPEQ_OVERFLOW(sadd_with_overflow, CreateAdd, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS32), true);
-                break;
-            }
             case ByteCodeOp::AffectOpPlusEqS64_Safe:
-            {
-                MK_BINOP_EQ64_CAB_OFF();
-                OPEQ_OVERFLOW(sadd_with_overflow, CreateAdd, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS64), true);
-                break;
-            }
             case ByteCodeOp::AffectOpPlusEqU8_Safe:
-            {
-                MK_BINOP_EQ8_CAB_OFF();
-                OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU8), false);
-                break;
-            }
             case ByteCodeOp::AffectOpPlusEqU16_Safe:
-            {
-                MK_BINOP_EQ16_CAB_OFF();
-                OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU16), false);
-                break;
-            }
             case ByteCodeOp::AffectOpPlusEqU32_Safe:
-            {
-                MK_BINOP_EQ32_CAB_OFF();
-                OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU32), false);
-                break;
-            }
             case ByteCodeOp::AffectOpPlusEqU64_Safe:
             {
-                MK_BINOP_EQ64_CAB_OFF();
-                OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU64), false);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64(allocR, ip->a.u32);
+                const auto r1      = builder.CreateLoad(PTR_IX_TY(numBits), r0);
+                const auto r2      = GEP8_PTR_IX(r1, ip->c.u32, numBits);
+                const auto r3      = MK_IMMB_IX(numBits);
+                const auto r4      = builder.CreateAdd(builder.CreateLoad(IX_TY(numBits), r2), r3);
+                builder.CreateStore(r4, r2);
                 break;
             }
+
             case ByteCodeOp::AffectOpPlusEqF32_Safe:
-            {
-                MK_BINOP_EQF32_CAB_OFF();
-                auto v0 = builder.CreateFAdd(builder.CreateLoad(F32_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
-                break;
-            }
             case ByteCodeOp::AffectOpPlusEqF64_Safe:
             {
-                MK_BINOP_EQF64_CAB_OFF();
-                auto v0 = builder.CreateFAdd(builder.CreateLoad(F64_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64(allocR, ip->a.u32);
+                const auto r1      = builder.CreateLoad(PTR_FX_TY(numBits), r0);
+                const auto r2      = GEP8_PTR_FX(r1, ip->c.u32, numBits);
+                const auto r3      = MK_IMMB_FX(numBits);
+                const auto r4      = builder.CreateFAdd(builder.CreateLoad(FX_TY(numBits), r2), r3);
+                builder.CreateStore(r4, r2);
                 break;
             }
 
@@ -1425,65 +1394,34 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
 
             case ByteCodeOp::AffectOpMulEqS8_Safe:
-            {
-                MK_BINOP_EQ8_CAB_OFF();
-                OPEQ_OVERFLOW(smul_with_overflow, CreateMul, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS8), true);
-                break;
-            }
             case ByteCodeOp::AffectOpMulEqS16_Safe:
-            {
-                MK_BINOP_EQ16_CAB_OFF();
-                OPEQ_OVERFLOW(smul_with_overflow, CreateMul, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS16), true);
-                break;
-            }
             case ByteCodeOp::AffectOpMulEqS32_Safe:
-            {
-                MK_BINOP_EQ32_CAB_OFF();
-                OPEQ_OVERFLOW(smul_with_overflow, CreateMul, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS32), true);
-                break;
-            }
             case ByteCodeOp::AffectOpMulEqS64_Safe:
-            {
-                MK_BINOP_EQ64_CAB_OFF();
-                OPEQ_OVERFLOW(smul_with_overflow, CreateMul, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS64), true);
-                break;
-            }
             case ByteCodeOp::AffectOpMulEqU8_Safe:
-            {
-                MK_BINOP_EQ8_CAB_OFF();
-                OPEQ_OVERFLOW(umul_with_overflow, CreateMul, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU8), false);
-                break;
-            }
             case ByteCodeOp::AffectOpMulEqU16_Safe:
-            {
-                MK_BINOP_EQ16_CAB_OFF();
-                OPEQ_OVERFLOW(umul_with_overflow, CreateMul, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU16), false);
-                break;
-            }
             case ByteCodeOp::AffectOpMulEqU32_Safe:
-            {
-                MK_BINOP_EQ32_CAB_OFF();
-                OPEQ_OVERFLOW(umul_with_overflow, CreateMul, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU32), false);
-                break;
-            }
             case ByteCodeOp::AffectOpMulEqU64_Safe:
             {
-                MK_BINOP_EQ64_CAB_OFF();
-                OPEQ_OVERFLOW(umul_with_overflow, CreateMul, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU64), false);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64(allocR, ip->a.u32);
+                const auto r1      = builder.CreateLoad(PTR_IX_TY(numBits), r0);
+                const auto r2      = GEP8_PTR_IX(r1, ip->c.u32, numBits);
+                const auto r3      = MK_IMMB_IX(numBits);
+                const auto r4      = builder.CreateMul(builder.CreateLoad(IX_TY(numBits), r2), r3);
+                builder.CreateStore(r4, r2);
                 break;
             }
+
             case ByteCodeOp::AffectOpMulEqF32_Safe:
-            {
-                MK_BINOP_EQF32_CAB_OFF();
-                auto v0 = builder.CreateFMul(builder.CreateLoad(F32_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
-                break;
-            }
             case ByteCodeOp::AffectOpMulEqF64_Safe:
             {
-                MK_BINOP_EQF64_CAB_OFF();
-                auto v0 = builder.CreateFMul(builder.CreateLoad(F64_TY(), r1), r2);
-                builder.CreateStore(v0, r1);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64(allocR, ip->a.u32);
+                const auto r1      = builder.CreateLoad(PTR_FX_TY(numBits), r0);
+                const auto r2      = GEP8_PTR_FX(r1, ip->c.u32, numBits);
+                const auto r3      = MK_IMMB_FX(numBits);
+                const auto r4      = builder.CreateFMul(builder.CreateLoad(FX_TY(numBits), r2), r3);
+                builder.CreateStore(r4, r2);
                 break;
             }
 
