@@ -83,10 +83,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     uint32_t offsetS4     = offsetRT + bc->maxCallResults * sizeof(Register);
     uint32_t offsetResult = offsetS4 + cc.paramByRegisterCount * sizeof(Register);
     uint32_t offsetStack  = offsetResult + sizeof(Register);
+    pp.offsetStack        = offsetStack;
 
     // For float load (should be reserved only if we have floating point operations in that function)
     uint32_t offsetFLT = offsetStack + bc->stackSize;
-    pp.setOffsetFLT(CPUReg::RDI, offsetFLT);
+    pp.offsetFLTReg    = CPUReg::RDI;
+    pp.offsetFLT       = offsetFLT;
 
     uint32_t sizeStack = offsetFLT + 8;
     MK_ALIGN16(sizeStack);
@@ -694,17 +696,17 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::AffectOpMulEqS16_SSafe:
             case ByteCodeOp::AffectOpMulEqS32_SSafe:
             case ByteCodeOp::AffectOpMulEqS64_SSafe:
-                emitBinOpEqS(pp, offsetStack, CPUOp::IMUL);
+                emitBinOpEqS(pp, CPUOp::IMUL);
                 break;
             case ByteCodeOp::AffectOpMulEqU8_SSafe:
             case ByteCodeOp::AffectOpMulEqU16_SSafe:
             case ByteCodeOp::AffectOpMulEqU32_SSafe:
             case ByteCodeOp::AffectOpMulEqU64_SSafe:
-                emitBinOpEqS(pp, offsetStack, CPUOp::MUL);
+                emitBinOpEqS(pp, CPUOp::MUL);
                 break;
             case ByteCodeOp::AffectOpMulEqF32_SSafe:
             case ByteCodeOp::AffectOpMulEqF64_SSafe:
-                emitBinOpEqS(pp, offsetStack, CPUOp::FMUL);
+                emitBinOpEqS(pp, CPUOp::FMUL);
                 break;
 
                 /////////////////////////////////////
@@ -730,17 +732,17 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::AffectOpDivEqS16_SSafe:
             case ByteCodeOp::AffectOpDivEqS32_SSafe:
             case ByteCodeOp::AffectOpDivEqS64_SSafe:
-                emitBinOpEqS(pp, offsetStack, CPUOp::IDIV);
+                emitBinOpEqS(pp, CPUOp::IDIV);
                 break;
             case ByteCodeOp::AffectOpDivEqU8_SSafe:
             case ByteCodeOp::AffectOpDivEqU16_SSafe:
             case ByteCodeOp::AffectOpDivEqU32_SSafe:
             case ByteCodeOp::AffectOpDivEqU64_SSafe:
-                emitBinOpEqS(pp, offsetStack, CPUOp::DIV);
+                emitBinOpEqS(pp, CPUOp::DIV);
                 break;
             case ByteCodeOp::AffectOpDivEqF32_SSafe:
             case ByteCodeOp::AffectOpDivEqF64_SSafe:
-                emitBinOpEqS(pp, offsetStack, CPUOp::FDIV);
+                emitBinOpEqS(pp, CPUOp::FDIV);
                 break;
 
                 /////////////////////////////////////
@@ -762,13 +764,13 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::AffectOpModuloEqS16_SSafe:
             case ByteCodeOp::AffectOpModuloEqS32_SSafe:
             case ByteCodeOp::AffectOpModuloEqS64_SSafe:
-                emitBinOpEqS(pp, offsetStack, CPUOp::IMOD);
+                emitBinOpEqS(pp, CPUOp::IMOD);
                 break;
             case ByteCodeOp::AffectOpModuloEqU8_SSafe:
             case ByteCodeOp::AffectOpModuloEqU16_SSafe:
             case ByteCodeOp::AffectOpModuloEqU32_SSafe:
             case ByteCodeOp::AffectOpModuloEqU64_SSafe:
-                emitBinOpEqS(pp, offsetStack, CPUOp::MOD);
+                emitBinOpEqS(pp, CPUOp::MOD);
                 break;
 
                 /////////////////////////////////////
@@ -807,11 +809,11 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::AffectOpPlusEqU16_SSafe:
             case ByteCodeOp::AffectOpPlusEqU32_SSafe:
             case ByteCodeOp::AffectOpPlusEqU64_SSafe:
-                emitBinOpEqS(pp, offsetStack, CPUOp::ADD);
+                emitBinOpEqS(pp, CPUOp::ADD);
                 break;
             case ByteCodeOp::AffectOpPlusEqF32_SSafe:
             case ByteCodeOp::AffectOpPlusEqF64_SSafe:
-                emitBinOpEqS(pp, offsetStack, CPUOp::FADD);
+                emitBinOpEqS(pp, CPUOp::FADD);
                 break;
 
                 /////////////////////////////////////
@@ -850,11 +852,11 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::AffectOpMinusEqU16_SSafe:
             case ByteCodeOp::AffectOpMinusEqU32_SSafe:
             case ByteCodeOp::AffectOpMinusEqU64_SSafe:
-                emitBinOpEqS(pp, offsetStack, CPUOp::SUB);
+                emitBinOpEqS(pp, CPUOp::SUB);
                 break;
             case ByteCodeOp::AffectOpMinusEqF32_SSafe:
             case ByteCodeOp::AffectOpMinusEqF64_SSafe:
-                emitBinOpEqS(pp, offsetStack, CPUOp::FSUB);
+                emitBinOpEqS(pp, CPUOp::FSUB);
                 break;
 
                 /////////////////////////////////////

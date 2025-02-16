@@ -2166,7 +2166,7 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
     }
 
     // Store all parameters after N on the stack, with an offset of N * sizeof(uint64_t)
-    uint32_t offsetStack = min(callConvRegisters, maxParamsPerRegister) * sizeof(uint64_t);
+    uint32_t memOffset = min(callConvRegisters, maxParamsPerRegister) * sizeof(uint64_t);
     for (; i < paramsRegisters.size(); i++)
     {
         auto type = paramsTypes[i];
@@ -2180,7 +2180,7 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
         if (i >= maxParamsPerRegister)
         {
             emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
-            emitStore(CPUReg::RSP, offsetStack, CPUReg::RAX, OpBits::B64);
+            emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
         }
 
         // This is for a return value
@@ -2193,7 +2193,7 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
                 emitLoad(CPUReg::RAX, CPUReg::RDI, reg, OpBits::B64);
             else
                 emitSetAddress(CPUReg::RAX, CPUReg::RDI, reg);
-            emitStore(CPUReg::RSP, offsetStack, CPUReg::RAX, OpBits::B64);
+            emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
         }
 
         // This is for a normal parameter
@@ -2213,19 +2213,19 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
                     {
                         case 1:
                             emitLoad(CPUReg::RAX, CPUReg::RAX, 0, OpBits::B8);
-                            emitStore(CPUReg::RSP, offsetStack, CPUReg::RAX, OpBits::B8);
+                            emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B8);
                             break;
                         case 2:
                             emitLoad(CPUReg::RAX, CPUReg::RAX, 0, OpBits::B16);
-                            emitStore(CPUReg::RSP, offsetStack, CPUReg::RAX, OpBits::B16);
+                            emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B16);
                             break;
                         case 4:
                             emitLoad(CPUReg::RAX, CPUReg::RAX, 0, OpBits::B32);
-                            emitStore(CPUReg::RSP, offsetStack, CPUReg::RAX, OpBits::B32);
+                            emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B32);
                             break;
                         case 8:
                             emitLoad(CPUReg::RAX, CPUReg::RAX, 0, OpBits::B64);
-                            emitStore(CPUReg::RSP, offsetStack, CPUReg::RAX, OpBits::B64);
+                            emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
                             break;
                         default:
                             break;
@@ -2235,7 +2235,7 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
                 // Store the address of the struct in the stack
                 else
                 {
-                    emitStore(CPUReg::RSP, offsetStack, CPUReg::RAX, OpBits::B64);
+                    emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
                 }
             }
             else
@@ -2244,19 +2244,19 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
                 {
                     case 1:
                         emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B8);
-                        emitStore(CPUReg::RSP, offsetStack, CPUReg::RAX, OpBits::B8);
+                        emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B8);
                         break;
                     case 2:
                         emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B16);
-                        emitStore(CPUReg::RSP, offsetStack, CPUReg::RAX, OpBits::B16);
+                        emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B16);
                         break;
                     case 4:
                         emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B32);
-                        emitStore(CPUReg::RSP, offsetStack, CPUReg::RAX, OpBits::B32);
+                        emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B32);
                         break;
                     case 8:
                         emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
-                        emitStore(CPUReg::RSP, offsetStack, CPUReg::RAX, OpBits::B64);
+                        emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
                         break;
                     default:
                         SWAG_ASSERT(false);
@@ -2266,7 +2266,7 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
         }
 
         // Push is always aligned
-        offsetStack += 8;
+        memOffset += 8;
     }
 }
 

@@ -185,7 +185,6 @@ struct CPUFunction
 struct SCBE_CPU : BackendEncoder
 {
     void            init(const BuildParameters& buildParameters);
-    void            setOffsetFLT(CPUReg reg, uint32_t offset);
     void            clearInstructionCache();
     CPUSymbol*      getSymbol(const Utf8& name);
     CPUSymbol*      getOrAddSymbol(const Utf8& name, CPUSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);
@@ -272,6 +271,7 @@ struct SCBE_CPU : BackendEncoder
 
     CPUReg   offsetFLTReg = CPUReg::RDI;
     uint32_t offsetFLT    = 0;
+    uint32_t offsetStack  = 0;
 
     uint32_t symCOIndex  = 0;
     uint32_t symBSIndex  = 0;

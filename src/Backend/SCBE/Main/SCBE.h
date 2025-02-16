@@ -57,7 +57,7 @@ struct SCBE final : Backend
     static void emitBinOpEq(SCBE_X64& pp, uint32_t offset, CPUOp op, CPUEmitFlags emitFlags = EMITF_Zero);
     static void emitBinOpEqOverflow(SCBE_X64& pp, uint32_t offset, CPUOp op, SafetyMsg safetyMsg, TypeInfo* safetyType);
     static void emitBinOpEqLock(SCBE_X64& pp, CPUOp op);
-    static void emitBinOpEqS(SCBE_X64& pp, uint32_t offsetStack, CPUOp op);
+    static void emitBinOpEqS(SCBE_X64& pp, CPUOp op);
     static void emitAddSubMul64(SCBE_X64& pp, uint64_t mulValue, CPUOp op);
     static void emitJumpCmp(SCBE_X64& pp, CPUCondJump op, OpBits opBits);
     static void emitJumpCmpAddr(SCBE_X64& pp, CPUCondJump op, CPUReg memReg, uint64_t memOffset, OpBits opBits);

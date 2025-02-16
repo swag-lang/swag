@@ -256,20 +256,20 @@ void SCBE::emitBinOpEqLock(SCBE_X64& pp, CPUOp op)
     pp.emitOpBinary(CPUReg::RCX, 0, CPUReg::RAX, op, opBits, EMITF_Lock);
 }
 
-void SCBE::emitBinOpEqS(SCBE_X64& pp, uint32_t offsetStack, CPUOp op)
+void SCBE::emitBinOpEqS(SCBE_X64& pp, CPUOp op)
 {
     const auto ip     = pp.ip;
     const auto opBits = SCBE_CPU::getOpBits(ip->op);
     if (SCBE_CPU::isInt(opBits) && ip->hasFlag(BCI_IMM_B))
     {
-        pp.emitSetAddress(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->a.u32);
+        pp.emitSetAddress(CPUReg::RAX, CPUReg::RDI, pp.offsetStack + ip->a.u32);
         pp.emitOpBinary(CPUReg::RAX, 0, ip->b.u64, op, opBits);
     }
     else
     {
         const auto r0 = SCBE_CPU::isInt(opBits) ? CPUReg::RAX : CPUReg::RCX;
         const auto r1 = SCBE_CPU::isInt(opBits) ? CPUReg::RCX : CPUReg::XMM1;
-        pp.emitSetAddress(r0, CPUReg::RDI, offsetStack + ip->a.u32);
+        pp.emitSetAddress(r0, CPUReg::RDI, pp.offsetStack + ip->a.u32);
         emitIMMB(pp, r1, opBits);
         pp.emitOpBinary(r0, 0, r1, op, opBits);
     }
