@@ -226,7 +226,7 @@ void SCBE::emitForeignCall(SCBE_X64& pp, uint32_t offsetRT, VectorNative<uint32_
     pushRVParams.clear();
 }
 
-void SCBE::emitLambdaCall(SCBE_X64& pp, const Concat& concat, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams)
+void SCBE::emitLambdaCall(SCBE_X64& pp, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams)
 {
     const auto ip         = pp.ip;
     const auto typeFuncBC = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
@@ -235,7 +235,7 @@ void SCBE::emitLambdaCall(SCBE_X64& pp, const Concat& concat, uint32_t offsetRT,
     pp.emitLoad(CPUReg::R10, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);
     pp.emitOpBinary(CPUReg::R10, SWAG_LAMBDA_BC_MARKER_BIT, CPUOp::BT, OpBits::B64);
     const auto jumpToBCAddr   = pp.emitJumpLong(JB);
-    const auto jumpToBCOffset = concat.totalCount();
+    const auto jumpToBCOffset = pp.concat.totalCount();
 
     // Native lambda
     //////////////////
@@ -244,11 +244,11 @@ void SCBE::emitLambdaCall(SCBE_X64& pp, const Concat& concat, uint32_t offsetRT,
     pp.emitCallResult(typeFuncBC, offsetRT);
 
     const auto jumpBCToAfterAddr   = pp.emitJumpLong(JUMP);
-    const auto jumpBCToAfterOffset = concat.totalCount();
+    const auto jumpBCToAfterOffset = pp.concat.totalCount();
 
     // ByteCode lambda
     //////////////////
-    *jumpToBCAddr = concat.totalCount() - jumpToBCOffset;
+    *jumpToBCAddr = pp.concat.totalCount() - jumpToBCOffset;
 
     pp.emitLoad(CPUReg::RCX, CPUReg::R10, OpBits::B64);
     emitByteCodeCallParameters(pp, typeFuncBC, offsetRT, pushRAParams);
@@ -258,7 +258,7 @@ void SCBE::emitLambdaCall(SCBE_X64& pp, const Concat& concat, uint32_t offsetRT,
 
     // End
     //////////////////
-    *jumpBCToAfterAddr = concat.totalCount() - jumpBCToAfterOffset;
+    *jumpBCToAfterAddr = pp.concat.totalCount() - jumpBCToAfterOffset;
 
     pushRAParams.clear();
     pushRVParams.clear();

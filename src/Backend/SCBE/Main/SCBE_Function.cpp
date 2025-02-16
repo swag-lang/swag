@@ -2199,11 +2199,11 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::LambdaCall:
             case ByteCodeOp::LambdaCallPop:
-                emitLambdaCall(pp, concat, offsetRT, pushRAParams, pushRVParams);
+                emitLambdaCall(pp, offsetRT, pushRAParams, pushRVParams);
                 break;
             case ByteCodeOp::LambdaCallPopParam:
                 pushRAParams.push_back(ip->d.u32);
-                emitLambdaCall(pp, concat, offsetRT, pushRAParams, pushRVParams);
+                emitLambdaCall(pp, offsetRT, pushRAParams, pushRVParams);
                 break;
 
                 /////////////////////////////////////
