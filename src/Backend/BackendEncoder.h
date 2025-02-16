@@ -1,4 +1,5 @@
 #pragma once
+#include "BackendParameters.h"
 struct Module;
 struct TypeInfo;
 struct ByteCodeInstruction;
@@ -26,9 +27,12 @@ enum class OpBits : uint32_t
 
 struct BackendEncoder
 {
+    BuildParameters       buildParams;
     Utf8                  filename;
     Module*               module = nullptr;
     BackendPreCompilePass pass   = {BackendPreCompilePass::Init};
+
+    void init(const BuildParameters& buildParameters);
 
     static uint32_t  getNumBits(OpBits opBits);
     static OpBits    getOpBits(ByteCodeOp op);

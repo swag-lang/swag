@@ -6,6 +6,12 @@
 #include "Syntax/AstNode.h"
 #include "Wmf/Module.h"
 
+void BackendEncoder::init(const BuildParameters& buildParameters)
+{
+    SWAG_ASSERT(buildParameters.module);
+    buildParams = buildParameters;
+}
+
 uint32_t BackendEncoder::getNumBits(OpBits opBits)
 {
     switch (opBits)

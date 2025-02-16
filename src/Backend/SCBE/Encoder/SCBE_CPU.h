@@ -195,9 +195,8 @@ struct SCBE_CPU : BackendEncoder
     CPUFunction*    registerFunction(AstNode* node, uint32_t symbolIndex);
     static uint32_t getParamStackOffset(const CPUFunction* cpuFct, uint32_t paramIdx);
 
-    BuildParameters buildParams;
-    Concat          concat;
-    Concat          postConcat;
+    Concat concat;
+    Concat postConcat;
 
     VectorNative<const Utf8*>     stringTable;
     VectorNative<CPUPushParam>    pushParams;

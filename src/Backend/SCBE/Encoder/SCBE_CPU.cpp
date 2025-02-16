@@ -5,8 +5,7 @@
 
 void SCBE_CPU::init(const BuildParameters& buildParameters)
 {
-    SWAG_ASSERT(buildParameters.module);
-    buildParams = buildParameters;
+    BackendEncoder::init(buildParameters);
     clearInstructionCache();
     labels.clear();
     labelsToSolve.clear();
