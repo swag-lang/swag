@@ -127,24 +127,24 @@ void LLVM::emitInternalPanic(const BuildParameters& buildParameters, llvm::Alloc
     auto&      builder         = *pp.builder;
 
     // Filename
-    llvm::Value* r1 = builder.CreateGlobalString(node->token.sourceFile->path.cstr());
-    r1              = builder.CreateInBoundsGEP(I8_TY(), r1, {pp.cstAi32});
+    const auto r1 = builder.CreateGlobalString(node->token.sourceFile->path.cstr());
+    const auto r2 = builder.CreateInBoundsGEP(I8_TY(), r1, {pp.cstAi32});
 
     // Line & column
-    auto r2 = builder.getInt32(node->token.startLocation.line);
-    auto r3 = builder.getInt32(node->token.startLocation.column);
+    const auto r3 = builder.getInt32(node->token.startLocation.line);
+    const auto r4 = builder.getInt32(node->token.startLocation.column);
 
     // Message
-    llvm::Value* r4;
+    llvm::Value* r5;
     if (message)
     {
-        r4 = builder.CreateGlobalString(message);
-        r4 = builder.CreateInBoundsGEP(I8_TY(), r4, {pp.cstAi32});
+        r5 = builder.CreateGlobalString(message);
+        r5 = builder.CreateInBoundsGEP(I8_TY(), r5, {pp.cstAi32});
     }
     else
-        r4 = builder.CreateIntToPtr(pp.cstAi64, PTR_I8_TY());
+        r5 = builder.CreateIntToPtr(pp.cstAi64, PTR_I8_TY());
 
-    emitCall(buildParameters, g_LangSpec->name_priv_panic, allocR, allocT, {UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX}, {r1, r2, r3, r4});
+    emitCall(buildParameters, g_LangSpec->name_priv_panic, allocR, allocT, {UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX}, {r2, r3, r4, r5});
 }
 
 void LLVM::storeTypedValueToRegister(llvm::LLVMContext& context, const BuildParameters& buildParameters, llvm::Value* value, uint32_t reg, llvm::AllocaInst* allocR) const
@@ -173,18 +173,13 @@ void LLVM::storeTypedValueToRegister(llvm::LLVMContext& context, const BuildPara
         builder.CreateStore(r1, GEP64(allocR, reg));
 }
 
-void LLVM::emitRT2ToRegisters(llvm::LLVMContext&     context,
-                              const BuildParameters& buildParameters,
-                              uint32_t               reg0,
-                              uint32_t               reg1,
-                              llvm::AllocaInst*      allocR,
-                              llvm::AllocaInst*      allocRR) const
+void LLVM::emitRT2ToRegisters(llvm::LLVMContext& context,
+                              llvm::IRBuilder<>& builder,
+                              uint32_t           reg0,
+                              uint32_t           reg1,
+                              llvm::AllocaInst*  allocR,
+                              llvm::AllocaInst*  allocRR)
 {
-    const auto  ct              = buildParameters.compileType;
-    const auto  precompileIndex = buildParameters.precompileIndex;
-    const auto& pp              = encoder<LLVMEncoder>(ct, precompileIndex);
-    auto&       builder         = *pp.builder;
-
     const auto r0 = GEP64(allocR, reg0);
     const auto r1 = builder.CreateLoad(I64_TY(), GEP64(allocRR, 0));
     builder.CreateStore(r1, r0);

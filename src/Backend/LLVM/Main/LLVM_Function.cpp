@@ -2344,7 +2344,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::IntrinsicArguments:
                 emitCall(buildParameters, g_LangSpec->name_at_args, allocR, allocT, {}, {});
-                emitRT2ToRegisters(context, buildParameters, ip->a.u32, ip->b.u32, allocR, allocT);
+                emitRT2ToRegisters(context, builder, ip->a.u32, ip->b.u32, allocR, allocT);
                 break;
 
             case ByteCodeOp::IntrinsicIsByteCode:
@@ -2411,7 +2411,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::IntrinsicGetErr:
                 emitCall(buildParameters, g_LangSpec->name_at_err, allocR, allocT, {}, {});
-                emitRT2ToRegisters(context, buildParameters, ip->a.u32, ip->b.u32, allocR, allocT);
+                emitRT2ToRegisters(context, builder, ip->a.u32, ip->b.u32, allocR, allocT);
                 break;
 
             case ByteCodeOp::InternalSetErr:
@@ -2832,7 +2832,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
 
             case ByteCodeOp::CopyRT2toRARB:
-                emitRT2ToRegisters(context, buildParameters, ip->a.u32, ip->b.u32, allocR, allocRR);
+                emitRT2ToRegisters(context, builder, ip->a.u32, ip->b.u32, allocR, allocRR);
                 break;
 
                 /////////////////////////////////////
