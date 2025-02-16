@@ -2507,7 +2507,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             {
                 const auto r0 = GEP64_PTR_I8(allocR, ip->a.u32);
                 const auto r1 = GEP64(allocR, ip->b.u32);
-                const auto r2 = builder.CreateXor(builder.CreateLoad(I8_TY(), r1), pp.cstBi8);
+                const auto r2 = builder.CreateXor(builder.CreateLoad(I8_TY(), r1), builder.getInt8(1));
                 builder.CreateStore(r2, r0);
                 break;
             }

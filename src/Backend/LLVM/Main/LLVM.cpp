@@ -184,11 +184,6 @@ void LLVM::createRuntime(LLVM_Encoder& pp)
     }
 
     // Cache things
-    pp.cstAi1  = llvm::ConstantInt::get(llvm::Type::getInt1Ty(context), 0);
-    pp.cstBi1  = llvm::ConstantInt::get(llvm::Type::getInt1Ty(context), 1);
-    pp.cstAi8  = llvm::ConstantInt::get(I8_TY(), 0);
-    pp.cstBi8  = llvm::ConstantInt::get(I8_TY(), 1);
-    pp.cstAi16 = llvm::ConstantInt::get(I16_TY(), 0);
     pp.cstAi32 = llvm::ConstantInt::get(I32_TY(), 0);
     pp.cstBi32 = llvm::ConstantInt::get(I32_TY(), 1);
     pp.cstCi32 = llvm::ConstantInt::get(I32_TY(), 2);
@@ -197,10 +192,6 @@ void LLVM::createRuntime(LLVM_Encoder& pp)
     pp.cstFi32 = llvm::ConstantInt::get(I32_TY(), 5);
     pp.cstGi32 = llvm::ConstantInt::get(I32_TY(), 6);
     pp.cstAi64 = llvm::ConstantInt::get(I64_TY(), 0);
-    pp.cstBi64 = llvm::ConstantInt::get(I64_TY(), 1);
-    pp.cstAf32 = llvm::ConstantFP::get(F32_TY(), 0);
-    pp.cstAf64 = llvm::ConstantFP::get(F64_TY(), 0);
-    pp.cstNull = llvm::ConstantPointerNull::get(PTR_I64_TY());
 }
 
 JobResult LLVM::prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob)
