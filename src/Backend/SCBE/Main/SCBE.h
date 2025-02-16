@@ -18,21 +18,20 @@ struct SCBE final : Backend
     explicit SCBE(Module* mdl);
     SCBE();
 
-    void      createRuntime(const BuildParameters& buildParameters) const;
     JobResult prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob) override;
+    bool      emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc) override;
+    void      saveObjFile(const BuildParameters& buildParameters) const;
 
-    bool emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc) override;
-
-    void        saveObjFile(const BuildParameters& buildParameters) const;
-    void        emitGetTypeTable(const BuildParameters& buildParameters) const;
-    void        emitGlobalPreMain(const BuildParameters& buildParameters) const;
-    void        emitGlobalInit(const BuildParameters& buildParameters) const;
-    void        emitGlobalDrop(const BuildParameters& buildParameters) const;
-    void        emitOS(const BuildParameters& buildParameters) const;
-    void        emitMain(const BuildParameters& buildParameters) const;
+    void        createRuntime(SCBE_X64& pp) const;
     static void initFunction(CPUFunction* fct, uint32_t startAddress, uint32_t endAddress, uint32_t sizeProlog, VectorNative<uint16_t>& unwind);
+    bool        buildRelocationSegment(SCBE_X64& pp, DataSegment* dataSegment, CPURelocationTable& relocTable, SegmentKind me) const;
 
-    bool buildRelocationSegment(const BuildParameters& buildParameters, DataSegment* dataSegment, CPURelocationTable& relocTable, SegmentKind me) const;
+    void emitGetTypeTable(SCBE_X64& pp) const;
+    void emitGlobalPreMain(SCBE_X64& pp) const;
+    void emitGlobalInit(SCBE_X64& pp) const;
+    void emitGlobalDrop(SCBE_X64& pp) const;
+    void emitOS(SCBE_X64& pp) const;
+    void emitMain(SCBE_X64& pp) const;
 
     static void emitByteCodeCall(SCBE_X64& pp, const TypeInfoFuncAttr* typeFuncBc, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams);
     static void emitByteCodeCallParameters(SCBE_X64& pp, const TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams);

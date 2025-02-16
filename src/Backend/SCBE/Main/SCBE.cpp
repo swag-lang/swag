@@ -19,12 +19,9 @@ SCBE::SCBE() :
     memset(perThread, 0, sizeof(perThread));
 }
 
-void SCBE::createRuntime(const BuildParameters& buildParameters) const
+void SCBE::createRuntime(SCBE_X64& pp) const
 {
-    const auto ct              = buildParameters.compileType;
-    const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = encoder<SCBE_CPU>(ct, precompileIndex);
-
+    const auto precompileIndex = pp.buildParams.precompileIndex;
     if (precompileIndex == 0)
     {
         pp.globalSegment.setup(SegmentKind::Global, module);
@@ -135,7 +132,9 @@ JobResult SCBE::prepareOutput(const BuildParameters& buildParameters, int stage,
             break;
     }
 
-    auto& pp     = encoder<SCBE_CPU>(ct, precompileIndex);
+    auto& pp = encoder<SCBE_X64>(ct, precompileIndex);
+    pp.init(buildParameters);
+
     auto& concat = pp.concat;
 
     // Message
@@ -161,7 +160,7 @@ JobResult SCBE::prepareOutput(const BuildParameters& buildParameters, int stage,
                 break;
         }
 
-        createRuntime(buildParameters);
+        createRuntime(pp);
         pp.pass = BackendPreCompilePass::FunctionBodies;
     }
 
@@ -187,16 +186,16 @@ JobResult SCBE::prepareOutput(const BuildParameters& buildParameters, int stage,
         // Specific functions in the main file
         if (precompileIndex == 0)
         {
-            buildRelocationSegment(buildParameters, &module->constantSegment, pp.relocTableCSSection, SegmentKind::Constant);
-            buildRelocationSegment(buildParameters, &module->mutableSegment, pp.relocTableMSSection, SegmentKind::Data);
-            buildRelocationSegment(buildParameters, &module->tlsSegment, pp.relocTableTLSSection, SegmentKind::Tls);
+            buildRelocationSegment(pp, &module->constantSegment, pp.relocTableCSSection, SegmentKind::Constant);
+            buildRelocationSegment(pp, &module->mutableSegment, pp.relocTableMSSection, SegmentKind::Data);
+            buildRelocationSegment(pp, &module->tlsSegment, pp.relocTableTLSSection, SegmentKind::Tls);
             module->constantSegment.applyPatchPtr();
-            emitGetTypeTable(buildParameters);
-            emitGlobalInit(buildParameters);
-            emitGlobalDrop(buildParameters);
-            emitGlobalPreMain(buildParameters);
-            emitOS(buildParameters);
-            emitMain(buildParameters);
+            emitGetTypeTable(pp);
+            emitGlobalInit(pp);
+            emitGlobalDrop(pp);
+            emitGlobalPreMain(pp);
+            emitOS(pp);
+            emitMain(pp);
         }
 
         // This is it for functions
@@ -212,7 +211,7 @@ JobResult SCBE::prepareOutput(const BuildParameters& buildParameters, int stage,
         switch (objFileType)
         {
             case BackendObjType::Coff:
-                SCBE_Coff::emitPostFunc(buildParameters, pp);
+                SCBE_Coff::emitPostFunc(pp.buildParams, pp);
                 break;
             default:
                 Report::internalError(module, "SCBE::prepareOutput, unsupported output");
@@ -248,7 +247,7 @@ void SCBE::saveObjFile(const BuildParameters& buildParameters) const
 {
     const auto ct              = buildParameters.compileType;
     const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = encoder<SCBE_CPU>(ct, precompileIndex);
+    auto&      pp              = encoder<SCBE_X64>(ct, precompileIndex);
 
     auto path = getCacheFolder();
     path.append(pp.filename);
@@ -265,7 +264,7 @@ void SCBE::saveObjFile(const BuildParameters& buildParameters) const
     switch (objFileType)
     {
         case BackendObjType::Coff:
-            SCBE_Coff::saveFileBuffer(f, buildParameters, pp);
+            SCBE_Coff::saveFileBuffer(f, pp.buildParams, pp);
             break;
         default:
             Report::internalError(module, "SCBE::saveObjFile, unsupported output");

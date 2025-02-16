@@ -211,6 +211,7 @@ JobResult LLVM::prepareOutput(const BuildParameters& buildParameters, int stage,
 
     allocatePerObj<LLVM_Encoder>(buildParameters);
     auto& pp = encoder<LLVM_Encoder>(ct, precompileIndex);
+    pp.init(buildParameters);
 
     // Message
     if (pp.pass == BackendPreCompilePass::Init && buildParameters.precompileIndex == 0)

@@ -1,19 +1,15 @@
 #include "pch.h"
 #include "Backend/SCBE/Main/SCBE.h"
 
-bool SCBE::buildRelocationSegment(const BuildParameters& buildParameters, DataSegment* dataSegment, CPURelocationTable& relocTable, SegmentKind me) const
+bool SCBE::buildRelocationSegment(SCBE_X64& pp, DataSegment* dataSegment, CPURelocationTable& relocTable, SegmentKind me) const
 {
     if (dataSegment->buckets.empty())
         return true;
     if (!dataSegment->totalCount)
         return true;
 
-    const auto    ct              = buildParameters.compileType;
-    const auto    precompileIndex = buildParameters.precompileIndex;
-    auto&         pp              = encoder<SCBE_CPU>(ct, precompileIndex);
     CPURelocation reloc;
 
-    SWAG_ASSERT(precompileIndex == 0);
     for (const auto& k : dataSegment->initPtr)
     {
         uint32_t sym;

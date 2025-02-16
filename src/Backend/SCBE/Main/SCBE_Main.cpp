@@ -6,12 +6,9 @@
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 
-void SCBE::emitOS(const BuildParameters& buildParameters) const
+void SCBE::emitOS(SCBE_X64& pp) const
 {
-    const auto ct              = buildParameters.compileType;
-    const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = encoder<SCBE_X64>(ct, precompileIndex);
-    auto&      concat          = pp.concat;
+    auto& concat = pp.concat;
 
     concat.align(16);
     if (g_CommandLine.target.os == SwagTargetOs::Windows)
@@ -53,12 +50,10 @@ void SCBE::emitOS(const BuildParameters& buildParameters) const
     }
 }
 
-void SCBE::emitMain(const BuildParameters& buildParameters) const
+void SCBE::emitMain(SCBE_X64& pp) const
 {
-    const auto ct              = buildParameters.compileType;
-    const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = encoder<SCBE_X64>(ct, precompileIndex);
-    auto&      concat          = pp.concat;
+    auto&       concat          = pp.concat;
+    const auto& buildParameters = pp.buildParams;
 
     concat.align(16);
     const auto startAddress = concat.totalCount();
@@ -236,16 +231,14 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
     initFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
 }
 
-void SCBE::emitGetTypeTable(const BuildParameters& buildParameters) const
+void SCBE::emitGetTypeTable(SCBE_X64& pp) const
 {
+    const auto& buildParameters = pp.buildParams;
     if (buildParameters.buildCfg->backendKind != BuildCfgBackendKind::Library)
         return;
 
-    const auto  ct              = buildParameters.compileType;
-    const auto  precompileIndex = buildParameters.precompileIndex;
-    auto&       pp              = encoder<SCBE_X64>(ct, precompileIndex);
-    auto&       concat          = pp.concat;
-    const auto& cc              = g_TypeMgr->typeInfoModuleCall->getCallConv();
+    auto&       concat = pp.concat;
+    const auto& cc     = g_TypeMgr->typeInfoModuleCall->getCallConv();
 
     concat.align(16);
     const auto startAddress = concat.totalCount();
@@ -271,12 +264,10 @@ void SCBE::emitGetTypeTable(const BuildParameters& buildParameters) const
     initFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
 }
 
-void SCBE::emitGlobalPreMain(const BuildParameters& buildParameters) const
+void SCBE::emitGlobalPreMain(SCBE_X64& pp) const
 {
-    const auto  ct              = buildParameters.compileType;
-    const auto  precompileIndex = buildParameters.precompileIndex;
-    auto&       pp              = encoder<SCBE_X64>(ct, precompileIndex);
     auto&       concat          = pp.concat;
+    const auto& buildParameters = pp.buildParams;
     const auto& cc              = g_TypeMgr->typeInfoModuleCall->getCallConv();
 
     concat.align(16);
@@ -325,12 +316,10 @@ void SCBE::emitGlobalPreMain(const BuildParameters& buildParameters) const
     initFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
 }
 
-void SCBE::emitGlobalInit(const BuildParameters& buildParameters) const
+void SCBE::emitGlobalInit(SCBE_X64& pp) const
 {
-    const auto  ct              = buildParameters.compileType;
-    const auto  precompileIndex = buildParameters.precompileIndex;
-    auto&       pp              = encoder<SCBE_X64>(ct, precompileIndex);
     auto&       concat          = pp.concat;
+    const auto& buildParameters = pp.buildParams;
     const auto& cc              = g_TypeMgr->typeInfoModuleCall->getCallConv();
 
     concat.align(16);
@@ -405,12 +394,10 @@ void SCBE::emitGlobalInit(const BuildParameters& buildParameters) const
     initFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
 }
 
-void SCBE::emitGlobalDrop(const BuildParameters& buildParameters) const
+void SCBE::emitGlobalDrop(SCBE_X64& pp) const
 {
-    const auto ct              = buildParameters.compileType;
-    const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = encoder<SCBE_X64>(ct, precompileIndex);
-    auto&      concat          = pp.concat;
+    auto&       concat          = pp.concat;
+    const auto& buildParameters = pp.buildParams;
 
     concat.align(16);
     const auto startAddress = concat.totalCount();
