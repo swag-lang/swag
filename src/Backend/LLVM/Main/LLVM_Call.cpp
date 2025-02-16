@@ -568,10 +568,7 @@ bool LLVM::emitCallParameters(LLVM_Encoder&                 pp,
     return true;
 }
 
-bool LLVM::emitCallReturnValue(LLVM_Encoder&           pp,
-                               llvm::AllocaInst*       allocRR,
-                               const TypeInfoFuncAttr* typeFuncBC,
-                               llvm::Value*            callResult) const
+bool LLVM::emitCallReturnValue(LLVM_Encoder& pp, llvm::AllocaInst* allocRR, const TypeInfoFuncAttr* typeFuncBC, llvm::Value* callResult)
 {
     auto& context = *pp.llvmContext;
     auto& builder = *pp.builder;
@@ -662,12 +659,7 @@ llvm::Value* LLVM::emitCall(LLVM_Encoder&                 pp,
     return builder.CreateCall(func, {params.begin(), params.end()});
 }
 
-llvm::Value* LLVM::emitCall(LLVM_Encoder&               pp,
-                            const char*                 name,
-                            llvm::AllocaInst*           allocR,
-                            llvm::AllocaInst*           allocT,
-                            const Vector<uint32_t>&     regs,
-                            const Vector<llvm::Value*>& values)
+llvm::Value* LLVM::emitCall(LLVM_Encoder& pp, const char* name, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const Vector<uint32_t>& regs, const Vector<llvm::Value*>& values)
 {
     const auto typeFunc = g_Workspace->runtimeModule->getRuntimeTypeFct(name);
     getOrCreateFuncType(pp, typeFunc);

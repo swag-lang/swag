@@ -37,7 +37,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     // Function prototype
     auto funcType = getOrCreateFuncType(pp, typeFunc);
     auto func     = reinterpret_cast<llvm::Function*>(modu.getOrInsertFunction(funcName.cstr(), funcType).getCallee());
-    setFuncAttributes(pp, bcFuncNode, bc, func);
+    setFuncAttributes(pp, numPreCompileBuffers, bcFuncNode, bc, func);
 
     // Content
     llvm::BasicBlock* block         = llvm::BasicBlock::Create(context, "entry", func);
@@ -3557,7 +3557,7 @@ llvm::BasicBlock* LLVM::getOrCreateLabel(LLVM_Encoder& pp, llvm::Function* func,
     return it->second;
 }
 
-void LLVM::setFuncAttributes(LLVM_Encoder& pp, const AstFuncDecl* funcNode, const ByteCode* bc, llvm::Function* func) const
+void LLVM::setFuncAttributes(LLVM_Encoder& pp, uint32_t numPreCompileBuffers, const AstFuncDecl* funcNode, const ByteCode* bc, llvm::Function* func)
 {
     const auto& buildParameters = pp.buildParams;
 
