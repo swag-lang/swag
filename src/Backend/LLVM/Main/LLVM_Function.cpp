@@ -775,8 +775,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
                 const auto r1      = MK_IMMA_IX(numBits);
                 const auto r2      = MK_IMMB_IX(numBits);
-                const bool r3      = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
-                if (r3 && pp.module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))
+                const bool nw      = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
+                if (nw && pp.module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))
                     emitBinOpOverflow(buildParameters, func, allocR, allocT, ip, r0, r1, r2, llvm::Intrinsic::sadd_with_overflow, SafetyMsg::Plus);
                 else
                     builder.CreateStore(builder.CreateAdd(r1, r2), r0);
@@ -792,8 +792,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
                 const auto r1      = MK_IMMA_IX(numBits);
                 const auto r2      = MK_IMMB_IX(numBits);
-                const bool r3      = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
-                if (r3 && pp.module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))
+                const bool nw      = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
+                if (nw && pp.module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))
                     emitBinOpOverflow(buildParameters, func, allocR, allocT, ip, r0, r1, r2, llvm::Intrinsic::uadd_with_overflow, SafetyMsg::Plus);
                 else
                     builder.CreateStore(builder.CreateAdd(r1, r2), r0);
@@ -841,8 +841,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
                 const auto r1      = MK_IMMA_IX(numBits);
                 const auto r2      = MK_IMMB_IX(numBits);
-                const bool r3      = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
-                if (r3 && pp.module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))
+                const bool nw      = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
+                if (nw && pp.module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))
                     emitBinOpOverflow(buildParameters, func, allocR, allocT, ip, r0, r1, r2, llvm::Intrinsic::ssub_with_overflow, SafetyMsg::Minus);
                 else
                     builder.CreateStore(builder.CreateSub(r1, r2), r0);
@@ -858,8 +858,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
                 const auto r1      = MK_IMMA_IX(numBits);
                 const auto r2      = MK_IMMB_IX(numBits);
-                const bool r3      = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
-                if (r3 && pp.module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))
+                const bool nw      = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
+                if (nw && pp.module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))
                     emitBinOpOverflow(buildParameters, func, allocR, allocT, ip, r0, r1, r2, llvm::Intrinsic::usub_with_overflow, SafetyMsg::Minus);
                 else
                     builder.CreateStore(builder.CreateSub(r1, r2), r0);
@@ -907,8 +907,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
                 const auto r1      = MK_IMMA_IX(numBits);
                 const auto r2      = MK_IMMB_IX(numBits);
-                const bool r3      = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
-                if (r3 && pp.module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))
+                const bool nw      = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
+                if (nw && pp.module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))
                     emitBinOpOverflow(buildParameters, func, allocR, allocT, ip, r0, r1, r2, llvm::Intrinsic::smul_with_overflow, SafetyMsg::Mul);
                 else
                     builder.CreateStore(builder.CreateMul(r1, r2), r0);
@@ -924,8 +924,8 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
                 const auto r1      = MK_IMMA_IX(numBits);
                 const auto r2      = MK_IMMB_IX(numBits);
-                const bool r3      = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
-                if (r3 && pp.module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))
+                const bool nw      = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
+                if (nw && pp.module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))
                     emitBinOpOverflow(buildParameters, func, allocR, allocT, ip, r0, r1, r2, llvm::Intrinsic::umul_with_overflow, SafetyMsg::Mul);
                 else
                     builder.CreateStore(builder.CreateMul(r1, r2), r0);
@@ -1126,37 +1126,21 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::AffectOpMinusEqS16:
             case ByteCodeOp::AffectOpMinusEqS32:
             case ByteCodeOp::AffectOpMinusEqS64:
-            {
-                const auto numBits = BackendEncoder::getNumBits(ip->op);
-                const auto r0      = GEP64(allocR, ip->a.u32);
-                const auto r1      = builder.CreateLoad(PTR_IX_TY(numBits), r0);
-                const auto r2      = MK_IMMB_IX(numBits);
-                bool       nw      = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
-                if (nw && module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))
-                {
-                    emitBinOpEqOverflow(buildParameters, func, allocR, allocT, ip, r0, r1, r2, llvm::Intrinsic::ssub_with_overflow, SafetyMsg::MinusEq);
-                }
-                else
-                {
-                    auto r3 = builder.CreateLoad(IX_TY(numBits), r1);
-                    builder.CreateStore(builder.CreateSub(r3, r2), r1);
-                }
-                break;
-            }
-
             case ByteCodeOp::AffectOpMinusEqU8:
             case ByteCodeOp::AffectOpMinusEqU16:
             case ByteCodeOp::AffectOpMinusEqU32:
             case ByteCodeOp::AffectOpMinusEqU64:
             {
-                const auto numBits = BackendEncoder::getNumBits(ip->op);
-                const auto r0      = GEP64(allocR, ip->a.u32);
-                const auto r1      = builder.CreateLoad(PTR_IX_TY(numBits), r0);
-                const auto r2      = MK_IMMB_IX(numBits);
-                bool       nw      = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
+                const auto numBits  = BackendEncoder::getNumBits(ip->op);
+                const auto isSigned = BackendEncoder::getOpType(ip->op)->isNativeIntegerSigned();
+                const auto r0       = GEP64(allocR, ip->a.u32);
+                const auto r1       = builder.CreateLoad(PTR_IX_TY(numBits), r0);
+                const auto r2       = MK_IMMB_IX(numBits);
+                bool       nw       = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
                 if (nw && module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))
                 {
-                    emitBinOpEqOverflow(buildParameters, func, allocR, allocT, ip, r0, r1, r2, llvm::Intrinsic::usub_with_overflow, SafetyMsg::MinusEq);
+                    const auto op = isSigned ? llvm::Intrinsic::ssub_with_overflow : llvm::Intrinsic::usub_with_overflow;
+                    emitBinOpEqOverflow(buildParameters, func, allocR, allocT, ip, r0, r1, r2, op, SafetyMsg::MinusEq);
                 }
                 else
                 {
@@ -1232,37 +1216,21 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::AffectOpPlusEqS16:
             case ByteCodeOp::AffectOpPlusEqS32:
             case ByteCodeOp::AffectOpPlusEqS64:
-            {
-                const auto numBits = BackendEncoder::getNumBits(ip->op);
-                const auto r0      = GEP64(allocR, ip->a.u32);
-                const auto r1      = builder.CreateLoad(PTR_IX_TY(numBits), r0);
-                const auto r2      = MK_IMMB_IX(numBits);
-                bool       nw      = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
-                if (nw && module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))
-                {
-                    emitBinOpEqOverflow(buildParameters, func, allocR, allocT, ip, r0, r1, r2, llvm::Intrinsic::sadd_with_overflow, SafetyMsg::PlusEq);
-                }
-                else
-                {
-                    auto r3 = builder.CreateLoad(IX_TY(numBits), r1);
-                    builder.CreateStore(builder.CreateAdd(r3, r2), r1);
-                }
-                break;
-            }
-
             case ByteCodeOp::AffectOpPlusEqU8:
             case ByteCodeOp::AffectOpPlusEqU16:
             case ByteCodeOp::AffectOpPlusEqU32:
             case ByteCodeOp::AffectOpPlusEqU64:
             {
-                const auto numBits = BackendEncoder::getNumBits(ip->op);
-                const auto r0      = GEP64(allocR, ip->a.u32);
-                const auto r1      = builder.CreateLoad(PTR_IX_TY(numBits), r0);
-                const auto r2      = MK_IMMB_IX(numBits);
-                bool       nw      = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
+                const auto numBits  = BackendEncoder::getNumBits(ip->op);
+                const auto isSigned = BackendEncoder::getOpType(ip->op)->isNativeIntegerSigned();
+                const auto r0       = GEP64(allocR, ip->a.u32);
+                const auto r1       = builder.CreateLoad(PTR_IX_TY(numBits), r0);
+                const auto r2       = MK_IMMB_IX(numBits);
+                bool       nw       = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
                 if (nw && module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))
                 {
-                    emitBinOpEqOverflow(buildParameters, func, allocR, allocT, ip, r0, r1, r2, llvm::Intrinsic::uadd_with_overflow, SafetyMsg::PlusEq);
+                    const auto op = isSigned ? llvm::Intrinsic::sadd_with_overflow : llvm::Intrinsic::uadd_with_overflow;
+                    emitBinOpEqOverflow(buildParameters, func, allocR, allocT, ip, r0, r1, r2, op, SafetyMsg::PlusEq);
                 }
                 else
                 {
@@ -1338,37 +1306,21 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::AffectOpMulEqS16:
             case ByteCodeOp::AffectOpMulEqS32:
             case ByteCodeOp::AffectOpMulEqS64:
-            {
-                const auto numBits = BackendEncoder::getNumBits(ip->op);
-                const auto r0      = GEP64(allocR, ip->a.u32);
-                const auto r1      = builder.CreateLoad(PTR_IX_TY(numBits), r0);
-                const auto r2      = MK_IMMB_IX(numBits);
-                bool       nw      = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
-                if (nw && module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))
-                {
-                    emitBinOpEqOverflow(buildParameters, func, allocR, allocT, ip, r0, r1, r2, llvm::Intrinsic::smul_with_overflow, SafetyMsg::MulEq);
-                }
-                else
-                {
-                    auto r3 = builder.CreateLoad(IX_TY(numBits), r1);
-                    builder.CreateStore(builder.CreateMul(r3, r2), r1);
-                }
-                break;
-            }
-
             case ByteCodeOp::AffectOpMulEqU8:
             case ByteCodeOp::AffectOpMulEqU16:
             case ByteCodeOp::AffectOpMulEqU32:
             case ByteCodeOp::AffectOpMulEqU64:
             {
-                const auto numBits = BackendEncoder::getNumBits(ip->op);
-                const auto r0      = GEP64(allocR, ip->a.u32);
-                const auto r1      = builder.CreateLoad(PTR_IX_TY(numBits), r0);
-                const auto r2      = MK_IMMB_IX(numBits);
-                bool       nw      = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
+                const auto numBits  = BackendEncoder::getNumBits(ip->op);
+                const auto isSigned = BackendEncoder::getOpType(ip->op)->isNativeIntegerSigned();
+                const auto r0       = GEP64(allocR, ip->a.u32);
+                const auto r1       = builder.CreateLoad(PTR_IX_TY(numBits), r0);
+                const auto r2       = MK_IMMB_IX(numBits);
+                bool       nw       = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
                 if (nw && module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))
                 {
-                    emitBinOpEqOverflow(buildParameters, func, allocR, allocT, ip, r0, r1, r2, llvm::Intrinsic::umul_with_overflow, SafetyMsg::MulEq);
+                    const auto op = isSigned ? llvm::Intrinsic::smul_with_overflow : llvm::Intrinsic::umul_with_overflow;
+                    emitBinOpEqOverflow(buildParameters, func, allocR, allocT, ip, r0, r1, r2, op, SafetyMsg::MulEq);
                 }
                 else
                 {
