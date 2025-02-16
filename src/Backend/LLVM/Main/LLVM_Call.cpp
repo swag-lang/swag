@@ -263,21 +263,18 @@ llvm::FunctionType* LLVM::getOrCreateFuncType(LLVM_Encoder& pp, TypeInfoFuncAttr
     return result;
 }
 
-bool LLVM::emitGetParam(llvm::LLVMContext&     context,
-                        const BuildParameters& buildParameters,
-                        const llvm::Function*  func,
-                        TypeInfoFuncAttr*      typeFunc,
-                        uint32_t               rDest,
-                        uint32_t               paramIdx,
-                        llvm::AllocaInst*      allocR,
-                        int                    sizeOf,
-                        uint64_t               toAdd,
-                        int                    deRefSize)
+bool LLVM::emitGetParam(LLVM_Encoder&         pp,
+                        const llvm::Function* func,
+                        TypeInfoFuncAttr*     typeFunc,
+                        uint32_t              rDest,
+                        uint32_t              paramIdx,
+                        llvm::AllocaInst*     allocR,
+                        int                   sizeOf,
+                        uint64_t              toAdd,
+                        int                   deRefSize)
 {
-    const auto ct              = buildParameters.compileType;
-    const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
-    auto&      builder         = *pp.builder;
+    auto& builder = *pp.builder;
+    auto& context = *pp.llvmContext;
 
     auto param = typeFunc->registerIdxToType(paramIdx);
     if (param->isAutoConstPointerRef())
@@ -451,7 +448,7 @@ bool LLVM::emitGetParam(llvm::LLVMContext&     context,
     return true;
 }
 
-bool LLVM::emitCallParameters(const BuildParameters&        buildParameters,
+bool LLVM::emitCallParameters(LLVM_Encoder&                 pp,
                               llvm::AllocaInst*             allocR,
                               llvm::AllocaInst*             allocRR,
                               TypeInfoFuncAttr*             typeFuncBC,
@@ -460,11 +457,8 @@ bool LLVM::emitCallParameters(const BuildParameters&        buildParameters,
                               const Vector<llvm::Value*>&   values,
                               bool                          closureToLambda)
 {
-    const auto ct              = buildParameters.compileType;
-    const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
-    auto&      context         = *pp.llvmContext;
-    auto&      builder         = *pp.builder;
+    auto& context = *pp.llvmContext;
+    auto& builder = *pp.builder;
 
     uint32_t numCallParams = typeFuncBC->parameters.size();
     uint32_t idxParam      = pushParams.size() - 1;
@@ -574,16 +568,13 @@ bool LLVM::emitCallParameters(const BuildParameters&        buildParameters,
     return true;
 }
 
-bool LLVM::emitCallReturnValue(const BuildParameters&  buildParameters,
+bool LLVM::emitCallReturnValue(LLVM_Encoder&           pp,
                                llvm::AllocaInst*       allocRR,
                                const TypeInfoFuncAttr* typeFuncBC,
                                llvm::Value*            callResult) const
 {
-    const auto  ct              = buildParameters.compileType;
-    const auto  precompileIndex = buildParameters.precompileIndex;
-    const auto& pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
-    auto&       context         = *pp.llvmContext;
-    auto&       builder         = *pp.builder;
+    auto& context = *pp.llvmContext;
+    auto& builder = *pp.builder;
 
     const auto returnType = typeFuncBC->concreteReturnType();
     if (!returnType->isVoid() && !CallConv::returnByAddress(typeFuncBC))
@@ -643,7 +634,7 @@ bool LLVM::emitCallReturnValue(const BuildParameters&  buildParameters,
     return true;
 }
 
-llvm::Value* LLVM::emitCall(const BuildParameters&        buildParameters,
+llvm::Value* LLVM::emitCall(LLVM_Encoder&                 pp,
                             const Utf8&                   funcName,
                             TypeInfoFuncAttr*             typeFuncBC,
                             llvm::AllocaInst*             allocR,
@@ -652,15 +643,12 @@ llvm::Value* LLVM::emitCall(const BuildParameters&        buildParameters,
                             const Vector<llvm::Value*>&   values,
                             bool                          localCall)
 {
-    const auto ct              = buildParameters.compileType;
-    const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
-    auto&      builder         = *pp.builder;
-    auto&      modu            = *pp.llvmModule;
+    auto& builder = *pp.builder;
+    auto& modu    = *pp.llvmModule;
 
     // Get parameters
     VectorNative<llvm::Value*> params;
-    emitCallParameters(buildParameters, allocR, allocRR, typeFuncBC, params, pushParams, values);
+    emitCallParameters(pp, allocR, allocRR, typeFuncBC, params, pushParams, values);
 
     // Make the call
     const auto typeF = getOrCreateFuncType(pp, typeFuncBC);
@@ -674,17 +662,13 @@ llvm::Value* LLVM::emitCall(const BuildParameters&        buildParameters,
     return builder.CreateCall(func, {params.begin(), params.end()});
 }
 
-llvm::Value* LLVM::emitCall(const BuildParameters&      buildParameters,
+llvm::Value* LLVM::emitCall(LLVM_Encoder&               pp,
                             const char*                 name,
                             llvm::AllocaInst*           allocR,
                             llvm::AllocaInst*           allocT,
                             const Vector<uint32_t>&     regs,
                             const Vector<llvm::Value*>& values)
 {
-    const auto ct              = buildParameters.compileType;
-    const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
-
     const auto typeFunc = g_Workspace->runtimeModule->getRuntimeTypeFct(name);
     getOrCreateFuncType(pp, typeFunc);
 
@@ -696,10 +680,10 @@ llvm::Value* LLVM::emitCall(const BuildParameters&      buildParameters,
     for (uint32_t i = values.size() - 1; i != UINT32_MAX; i--)
         pushVParams.push_back(values[i]);
 
-    return emitCall(buildParameters, name, typeFunc, allocR, allocT, pushRAParams, pushVParams, true);
+    return emitCall(pp, name, typeFunc, allocR, allocT, pushRAParams, pushVParams, true);
 }
 
-void LLVM::emitByteCodeCallParameters(const BuildParameters&      buildParameters,
+void LLVM::emitByteCodeCallParameters(LLVM_Encoder&               pp,
                                       llvm::AllocaInst*           allocR,
                                       llvm::AllocaInst*           allocRR,
                                       const llvm::AllocaInst*     allocT,
@@ -709,13 +693,11 @@ void LLVM::emitByteCodeCallParameters(const BuildParameters&      buildParameter
                                       const Vector<llvm::Value*>& values,
                                       bool                        closureToLambda)
 {
-    const auto ct              = buildParameters.compileType;
-    const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
-    auto&      builder         = *pp.builder;
-    auto&      context         = *pp.llvmContext;
-    uint32_t   popRAidx        = pushRAParams.size() - 1;
-    uint32_t   numCallParams   = typeFuncBC->parameters.size();
+    auto& builder = *pp.builder;
+    auto& context = *pp.llvmContext;
+
+    uint32_t popRAidx      = pushRAParams.size() - 1;
+    uint32_t numCallParams = typeFuncBC->parameters.size();
 
     // Return value
     // Normal user case
@@ -833,8 +815,7 @@ void LLVM::emitByteCodeCallParameters(const BuildParameters&      buildParameter
     }
 }
 
-void LLVM::emitLocalCall(const BuildParameters&                       buildParameters,
-                         llvm::LLVMContext&                           context,
+void LLVM::emitLocalCall(LLVM_Encoder&                                pp,
                          llvm::AllocaInst*                            allocR,
                          llvm::AllocaInst*                            allocRR,
                          const ByteCodeInstruction*                   ip,
@@ -844,22 +825,18 @@ void LLVM::emitLocalCall(const BuildParameters&                       buildParam
 {
     const auto callBc       = reinterpret_cast<ByteCode*>(ip->a.pointer);
     const auto typeFuncCall = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
-    resultFuncCall          = emitCall(buildParameters, callBc->getCallNameFromDecl(), typeFuncCall, allocR, allocRR, pushRAParams, {}, true);
+    resultFuncCall          = emitCall(pp, callBc->getCallNameFromDecl(), typeFuncCall, allocR, allocRR, pushRAParams, {}, true);
 
     if (ip->op == ByteCodeOp::LocalCallPopRC)
     {
-        const auto  ct              = buildParameters.compileType;
-        const auto  precompileIndex = buildParameters.precompileIndex;
-        const auto& pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
-        auto&       builder         = *pp.builder;
-        emitTypedValueToRegister(context, builder, resultFuncCall, ip->d.u32, allocR);
+        emitTypedValueToRegister(pp, resultFuncCall, ip->d.u32, allocR);
     }
 
     pushRAParams.clear();
     pushRVParams.clear();
 }
 
-void LLVM::emitForeignCall(const BuildParameters&                       buildParameters,
+void LLVM::emitForeignCall(LLVM_Encoder&                                pp,
                            llvm::AllocaInst*                            allocR,
                            llvm::AllocaInst*                            allocRR,
                            const ByteCodeInstruction*                   ip,
@@ -869,15 +846,12 @@ void LLVM::emitForeignCall(const BuildParameters&                       buildPar
 {
     const auto funcNode     = reinterpret_cast<AstFuncDecl*>(ip->a.pointer);
     const auto typeFuncCall = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
-    resultFuncCall          = emitCall(buildParameters, funcNode->getFullNameForeignImport(), typeFuncCall, allocR, allocRR, pushRAParams, {}, false);
+    resultFuncCall          = emitCall(pp, funcNode->getFullNameForeignImport(), typeFuncCall, allocR, allocRR, pushRAParams, {}, false);
     pushRAParams.clear();
     pushRVParams.clear();
 }
 
-bool LLVM::emitLambdaCall(const BuildParameters&                       buildParameters,
-                          LLVM_Encoder&                                pp,
-                          llvm::LLVMContext&                           context,
-                          llvm::IRBuilder<>&                           builder,
+bool LLVM::emitLambdaCall(LLVM_Encoder&                                pp,
                           llvm::Function*                              func,
                           llvm::AllocaInst*                            allocR,
                           llvm::AllocaInst*                            allocRR,
@@ -887,6 +861,8 @@ bool LLVM::emitLambdaCall(const BuildParameters&                       buildPara
                           VectorNative<uint32_t>&                      pushRAParams,
                           llvm::Value*&                                resultFuncCall)
 {
+    auto&      builder      = *pp.builder;
+    auto&      context      = *pp.llvmContext;
     const auto typeFuncCall = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
 
     llvm::BasicBlock* blockLambdaBC     = llvm::BasicBlock::Create(context, "", func);
@@ -907,7 +883,7 @@ bool LLVM::emitLambdaCall(const BuildParameters&                       buildPara
         llvm::FunctionType*        ft = nullptr;
         const auto                 v1 = builder.CreateLoad(I64_TY(), GEP64(allocR, ip->a.u32));
         VectorNative<llvm::Value*> fctParams;
-        emitCallParameters(buildParameters, allocR, allocRR, typeFuncCall, fctParams, pushRAParams, {});
+        emitCallParameters(pp, allocR, allocRR, typeFuncCall, fctParams, pushRAParams, {});
 
         if (typeFuncCall->isClosure())
         {
@@ -927,13 +903,13 @@ bool LLVM::emitLambdaCall(const BuildParameters&                       buildPara
             // Lambda call. We must eliminate the first parameter (closure context)
             builder.SetInsertPoint(blockLambda);
             VectorNative<llvm::Value*> fctParamsLocal;
-            emitCallParameters(buildParameters, allocR, allocRR, typeFuncCall, fctParamsLocal, pushRAParams, {}, true);
+            emitCallParameters(pp, allocR, allocRR, typeFuncCall, fctParamsLocal, pushRAParams, {}, true);
 
             ft                 = getOrCreateFuncType(pp, typeFuncCall, true);
             const auto lPt     = llvm::PointerType::getUnqual(ft);
             const auto lR1     = builder.CreateIntToPtr(v1, lPt);
             const auto lResult = builder.CreateCall(ft, lR1, {fctParamsLocal.begin(), fctParamsLocal.end()});
-            SWAG_CHECK(emitCallReturnValue(buildParameters, allocRR, typeFuncCall, lResult));
+            SWAG_CHECK(emitCallReturnValue(pp, allocRR, typeFuncCall, lResult));
             builder.CreateBr(blockNext);
 
             // Closure call. Normal call, as the type contains the first parameter.
@@ -942,7 +918,7 @@ bool LLVM::emitLambdaCall(const BuildParameters&                       buildPara
             const auto cPt     = llvm::PointerType::getUnqual(ft);
             const auto cR1     = builder.CreateIntToPtr(v1, cPt);
             const auto cResult = builder.CreateCall(ft, cR1, {fctParams.begin(), fctParams.end()});
-            SWAG_CHECK(emitCallReturnValue(buildParameters, allocRR, typeFuncCall, cResult));
+            SWAG_CHECK(emitCallReturnValue(pp, allocRR, typeFuncCall, cResult));
             builder.CreateBr(blockNext);
         }
         else
@@ -951,7 +927,7 @@ bool LLVM::emitLambdaCall(const BuildParameters&                       buildPara
             const auto pt           = llvm::PointerType::getUnqual(ft);
             const auto r1           = builder.CreateIntToPtr(v1, pt);
             const auto returnResult = builder.CreateCall(ft, r1, {fctParams.begin(), fctParams.end()});
-            SWAG_CHECK(emitCallReturnValue(buildParameters, allocRR, typeFuncCall, returnResult));
+            SWAG_CHECK(emitCallReturnValue(pp, allocRR, typeFuncCall, returnResult));
             builder.CreateBr(blockNext);
         }
     }
@@ -963,7 +939,7 @@ bool LLVM::emitLambdaCall(const BuildParameters&                       buildPara
         const auto                 r0 = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
         VectorNative<llvm::Value*> fctParams;
         fctParams.push_front(r0);
-        emitByteCodeCallParameters(buildParameters, allocR, allocRR, allocT, fctParams, typeFuncCall, pushRAParams, {});
+        emitByteCodeCallParameters(pp, allocR, allocRR, allocT, fctParams, typeFuncCall, pushRAParams, {});
 
         const auto ra = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cstAi32, pp.cstEi32});
         const auto r1 = builder.CreateLoad(PTR_I8_TY(), ra);
@@ -984,7 +960,7 @@ bool LLVM::emitLambdaCall(const BuildParameters&                       buildPara
             builder.SetInsertPoint(blockLambda);
             VectorNative<llvm::Value*> fctParamsLocal;
             fctParamsLocal.push_front(r0);
-            emitByteCodeCallParameters(buildParameters, allocR, allocRR, allocT, fctParamsLocal, typeFuncCall, pushRAParams, {}, true);
+            emitByteCodeCallParameters(pp, allocR, allocRR, allocT, fctParamsLocal, typeFuncCall, pushRAParams, {}, true);
             builder.CreateCall(pp.bytecodeRunTy, r2, {fctParamsLocal.begin(), fctParamsLocal.end()});
             builder.CreateBr(blockNext);
 

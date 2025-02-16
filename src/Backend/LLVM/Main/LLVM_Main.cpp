@@ -143,7 +143,7 @@ void LLVM::emitMain(const BuildParameters& buildParameters)
 
     // __process_infos.contextTlsId = swag_runtime_tlsAlloc()
     {
-        const auto result  = emitCall(buildParameters, g_LangSpec->name_priv_tlsAlloc, nullptr, allocT, {}, {});
+        const auto result  = emitCall(pp, g_LangSpec->name_priv_tlsAlloc, nullptr, allocT, {}, {});
         const auto toTlsId = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cstAi32, pp.cstCi32});
         builder.CreateStore(result, TO_PTR_I64(toTlsId));
     }
@@ -165,7 +165,7 @@ void LLVM::emitMain(const BuildParameters& buildParameters)
         const auto v0        = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cstAi32, pp.cstCi32});
         auto       toTlsId   = builder.CreateLoad(I64_TY(), v0);
         auto       toContext = builder.CreatePointerCast(pp.mainContext, PTR_I8_TY());
-        emitCall(buildParameters, g_LangSpec->name_priv_tlsSetValue, nullptr, allocT, {UINT32_MAX, UINT32_MAX}, {toTlsId, toContext});
+        emitCall(pp, g_LangSpec->name_priv_tlsSetValue, nullptr, allocT, {UINT32_MAX, UINT32_MAX}, {toTlsId, toContext});
     }
 
     // Initialize constant segment because we need to have correct pointers to DebugAllocator...
@@ -175,7 +175,7 @@ void LLVM::emitMain(const BuildParameters& buildParameters)
     // __setupRuntime
     {
         auto rtFlags = builder.getInt64(getRuntimeFlags());
-        emitCall(buildParameters, g_LangSpec->name_priv_setupRuntime, nullptr, allocT, {UINT32_MAX}, {rtFlags});
+        emitCall(pp, g_LangSpec->name_priv_setupRuntime, nullptr, allocT, {UINT32_MAX}, {rtFlags});
     }
 
     // Load all dependencies
@@ -190,7 +190,7 @@ void LLVM::emitMain(const BuildParameters& buildParameters)
         {
             nameLib     = nameLib.filename();
             auto ptrStr = builder.CreateGlobalStringPtr(nameLib.cstr());
-            emitCall(buildParameters, g_LangSpec->name_priv_loaddll, nullptr, allocT, {UINT32_MAX, UINT32_MAX}, {ptrStr, builder.getInt64(nameLib.length())});
+            emitCall(pp, g_LangSpec->name_priv_loaddll, nullptr, allocT, {UINT32_MAX, UINT32_MAX}, {ptrStr, builder.getInt64(nameLib.length())});
         }
     }
 
@@ -269,7 +269,7 @@ void LLVM::emitMain(const BuildParameters& buildParameters)
     }
 
     // __closeRuntime
-    emitCall(buildParameters, g_LangSpec->name_priv_closeRuntime, nullptr, allocT, {}, {});
+    emitCall(pp, g_LangSpec->name_priv_closeRuntime, nullptr, allocT, {}, {});
 
     builder.CreateRetVoid();
 }
@@ -367,7 +367,7 @@ void LLVM::emitGlobalInit(const BuildParameters& buildParameters)
     {
         const auto allocT = builder.CreateAlloca(I64_TY(), builder.getInt64(1));
         allocT->setAlignment(llvm::Align{16});
-        emitCall(buildParameters, g_LangSpec->name_priv_tlsAlloc, nullptr, allocT, {UINT32_MAX}, {pp.symTlsThreadLocalId});
+        emitCall(pp, g_LangSpec->name_priv_tlsAlloc, nullptr, allocT, {UINT32_MAX}, {pp.symTlsThreadLocalId});
     }
 
     // Initialize data segments
@@ -420,10 +420,10 @@ void LLVM::emitGlobalDrop(const BuildParameters& buildParameters)
     const auto ct              = buildParameters.compileType;
     const auto precompileIndex = buildParameters.precompileIndex;
 
-    const auto& pp      = encoder<LLVM_Encoder>(ct, precompileIndex);
-    auto&       context = *pp.llvmContext;
-    auto&       builder = *pp.builder;
-    auto&       modu    = *pp.llvmModule;
+    auto& pp      = encoder<LLVM_Encoder>(ct, precompileIndex);
+    auto& context = *pp.llvmContext;
+    auto& builder = *pp.builder;
+    auto& modu    = *pp.llvmModule;
 
     const auto      fctType = llvm::FunctionType::get(VOID_TY(), false);
     const auto      nameFct = module->getGlobalPrivateFct(g_LangSpec->name_globalDrop);
@@ -446,7 +446,7 @@ void LLVM::emitGlobalDrop(const BuildParameters& buildParameters)
 
     // __dropGlobalVariables
     {
-        emitCall(buildParameters, g_LangSpec->name_priv_dropGlobalVariables, nullptr, nullptr, {}, {});
+        emitCall(pp, g_LangSpec->name_priv_dropGlobalVariables, nullptr, nullptr, {}, {});
     }
 
     builder.CreateRetVoid();

@@ -8,8 +8,11 @@
 #include "Wmf/Module.h"
 #include "Wmf/SourceFile.h"
 
-void LLVM::emitShiftRightArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t numBits)
+void LLVM::emitShiftRightArithmetic(LLVM_Encoder& pp, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t numBits)
 {
+    auto& builder = *pp.builder;
+    auto& context = *pp.llvmContext;
+
     if (ip->hasFlag(BCI_IMM_B))
     {
         const auto r0 = MK_IMMA_IX(numBits);
@@ -33,8 +36,11 @@ void LLVM::emitShiftRightArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<
     }
 }
 
-void LLVM::emitShiftRightEqArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t numBits)
+void LLVM::emitShiftRightEqArithmetic(LLVM_Encoder& pp, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t numBits)
 {
+    auto& builder = *pp.builder;
+    auto& context = *pp.llvmContext;
+
     if (ip->hasFlag(BCI_IMM_B))
     {
         const auto r0 = builder.getIntN(numBits, min(ip->b.u32, numBits - 1));
@@ -58,8 +64,11 @@ void LLVM::emitShiftRightEqArithmetic(llvm::LLVMContext& context, llvm::IRBuilde
     }
 }
 
-void LLVM::emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t numBits, bool left)
+void LLVM::emitShiftLogical(LLVM_Encoder& pp, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t numBits, bool left)
 {
+    auto& builder = *pp.builder;
+    auto& context = *pp.llvmContext;
+
     if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 >= numBits)
     {
         const auto r0 = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
@@ -88,8 +97,11 @@ void LLVM::emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& build
     }
 }
 
-void LLVM::emitShiftEqLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t numBits, bool left)
+void LLVM::emitShiftEqLogical(LLVM_Encoder& pp, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t numBits, bool left)
 {
+    auto& builder = *pp.builder;
+    auto& context = *pp.llvmContext;
+
     if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 >= numBits)
     {
         const auto r0 = builder.CreateLoad(PTR_IX_TY(numBits), GEP64(allocR, ip->a.u32));
@@ -118,13 +130,10 @@ void LLVM::emitShiftEqLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& bui
     }
 }
 
-void LLVM::emitInternalPanic(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const AstNode* node, const char* message)
+void LLVM::emitInternalPanic(LLVM_Encoder& pp, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const AstNode* node, const char* message)
 {
-    const auto ct              = buildParameters.compileType;
-    const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
-    auto&      context         = *pp.llvmContext;
-    auto&      builder         = *pp.builder;
+    auto& context = *pp.llvmContext;
+    auto& builder = *pp.builder;
 
     // Filename
     const auto r1 = builder.CreateGlobalString(node->token.sourceFile->path.cstr());
@@ -144,13 +153,16 @@ void LLVM::emitInternalPanic(const BuildParameters& buildParameters, llvm::Alloc
     else
         r5 = builder.CreateIntToPtr(pp.cstAi64, PTR_I8_TY());
 
-    emitCall(buildParameters, g_LangSpec->name_priv_panic, allocR, allocT, {UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX}, {r2, r3, r4, r5});
+    emitCall(pp, g_LangSpec->name_priv_panic, allocR, allocT, {UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX}, {r2, r3, r4, r5});
 }
 
-void LLVM::emitTypedValueToRegister(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::Value* value, uint32_t reg, llvm::AllocaInst* allocR)
+void LLVM::emitTypedValueToRegister(LLVM_Encoder& pp, llvm::Value* value, uint32_t reg, llvm::AllocaInst* allocR)
 {
     SWAG_ASSERT(value);
     const auto r1 = value;
+
+    auto& builder = *pp.builder;
+    auto& context = *pp.llvmContext;
 
     if (value->getType()->isPointerTy())
         builder.CreateStore(builder.CreatePtrToInt(r1, I64_TY()), GEP64(allocR, reg));
@@ -168,8 +180,11 @@ void LLVM::emitTypedValueToRegister(llvm::LLVMContext& context, llvm::IRBuilder<
         builder.CreateStore(r1, GEP64(allocR, reg));
 }
 
-void LLVM::emitRT2ToRegisters(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, uint32_t reg0, uint32_t reg1, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR)
+void LLVM::emitRT2ToRegisters(LLVM_Encoder& pp, uint32_t reg0, uint32_t reg1, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR)
 {
+    auto& context = *pp.llvmContext;
+    auto& builder = *pp.builder;
+
     const auto r0 = GEP64(allocR, reg0);
     const auto r1 = builder.CreateLoad(I64_TY(), GEP64(allocRR, 0));
     builder.CreateStore(r1, r0);
@@ -178,7 +193,7 @@ void LLVM::emitRT2ToRegisters(llvm::LLVMContext& context, llvm::IRBuilder<>& bui
     builder.CreateStore(r3, r2);
 }
 
-void LLVM::emitBinOpOverflow(const BuildParameters&                 buildParameters,
+void LLVM::emitBinOpOverflow(LLVM_Encoder&                          pp,
                              llvm::Function*                        func,
                              llvm::AllocaInst*                      allocR,
                              llvm::AllocaInst*                      allocT,
@@ -189,11 +204,8 @@ void LLVM::emitBinOpOverflow(const BuildParameters&                 buildParamet
                              llvm::Intrinsic::IndependentIntrinsics op,
                              SafetyMsg                              msg)
 {
-    const auto  ct              = buildParameters.compileType;
-    const auto  precompileIndex = buildParameters.precompileIndex;
-    const auto& pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
-    auto&       context         = *pp.llvmContext;
-    auto&       builder         = *pp.builder;
+    auto& context = *pp.llvmContext;
+    auto& builder = *pp.builder;
 
     const auto r3       = builder.CreateBinaryIntrinsic(op, r1, r2);
     const auto r4       = builder.CreateExtractValue(r3, {0});
@@ -204,13 +216,13 @@ void LLVM::emitBinOpOverflow(const BuildParameters&                 buildParamet
 
     builder.CreateCondBr(r6, blockOk, blockErr);
     builder.SetInsertPoint(blockErr);
-    emitInternalPanic(buildParameters, allocR, allocT, ip->node, ByteCodeGen::safetyMsg(msg, BackendEncoder::getOpType(ip->op)));
+    emitInternalPanic(pp, allocR, allocT, ip->node, ByteCodeGen::safetyMsg(msg, BackendEncoder::getOpType(ip->op)));
     builder.CreateBr(blockOk);
     builder.SetInsertPoint(blockOk);
     builder.CreateStore(r4, r0);
 }
 
-void LLVM::emitBinOpEqOverflow(const BuildParameters&                 buildParameters,
+void LLVM::emitBinOpEqOverflow(LLVM_Encoder&                          pp,
                                llvm::Function*                        func,
                                llvm::AllocaInst*                      allocR,
                                llvm::AllocaInst*                      allocT,
@@ -221,12 +233,9 @@ void LLVM::emitBinOpEqOverflow(const BuildParameters&                 buildParam
                                llvm::Intrinsic::IndependentIntrinsics op,
                                SafetyMsg                              msg)
 {
-    const auto  ct              = buildParameters.compileType;
-    const auto  precompileIndex = buildParameters.precompileIndex;
-    const auto& pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
-    auto&       context         = *pp.llvmContext;
-    auto&       builder         = *pp.builder;
-    const auto  numBits         = BackendEncoder::getNumBits(ip->op);
+    auto&      context = *pp.llvmContext;
+    auto&      builder = *pp.builder;
+    const auto numBits = BackendEncoder::getNumBits(ip->op);
 
     const auto r3       = builder.CreateBinaryIntrinsic(op, builder.CreateLoad(IX_TY(numBits), r1), r2);
     const auto r4       = builder.CreateExtractValue(r3, {0});
@@ -237,7 +246,7 @@ void LLVM::emitBinOpEqOverflow(const BuildParameters&                 buildParam
 
     builder.CreateCondBr(r6, blockOk, blockErr);
     builder.SetInsertPoint(blockErr);
-    emitInternalPanic(buildParameters, allocR, allocT, ip->node, ByteCodeGen::safetyMsg(msg, BackendEncoder::getOpType(ip->op)));
+    emitInternalPanic(pp, allocR, allocT, ip->node, ByteCodeGen::safetyMsg(msg, BackendEncoder::getOpType(ip->op)));
     builder.CreateBr(blockOk);
     builder.SetInsertPoint(blockOk);
     builder.CreateStore(r4, r1);
