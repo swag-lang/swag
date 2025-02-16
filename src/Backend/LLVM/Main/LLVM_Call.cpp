@@ -9,18 +9,10 @@
 #include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
 
-void LLVM::getReturnResult(llvm::LLVMContext&     context,
-                           const BuildParameters& buildParameters,
-                           TypeInfo*              returnType,
-                           bool                   imm,
-                           const Register&        reg,
-                           llvm::AllocaInst*      allocR,
-                           llvm::AllocaInst*      allocResult)
+void LLVM::getReturnResult(LLVM_Encoder& pp, TypeInfo* returnType, bool imm, const Register& reg, llvm::AllocaInst* allocR, llvm::AllocaInst* allocResult)
 {
-    const auto  ct              = buildParameters.compileType;
-    const auto  precompileIndex = buildParameters.precompileIndex;
-    const auto& pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
-    auto&       builder         = *pp.builder;
+    auto& context = *pp.llvmContext;
+    auto& builder = *pp.builder;
 
     llvm::Value* returnResult = nullptr;
     if (returnType->isNative())
@@ -82,7 +74,7 @@ void LLVM::getReturnResult(llvm::LLVMContext&     context,
     }
     else if (returnType->isPointer() || returnType->isLambdaClosure())
     {
-        const auto llvmType = swagTypeToLLVMType(buildParameters, returnType);
+        const auto llvmType = swagTypeToLLVMType(pp, returnType);
         if (imm)
             returnResult = builder.CreateIntToPtr(builder.getInt64(reg.u64), llvmType);
         else
@@ -107,11 +99,11 @@ void LLVM::getReturnResult(llvm::LLVMContext&     context,
 
 void LLVM::createRet(const BuildParameters& buildParameters, const TypeInfoFuncAttr* typeFunc, TypeInfo* returnType, llvm::AllocaInst* allocResult)
 {
-    const auto  ct              = buildParameters.compileType;
-    const auto  precompileIndex = buildParameters.precompileIndex;
-    const auto& pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
-    auto&       context         = *pp.llvmContext;
-    auto&       builder         = *pp.builder;
+    const auto ct              = buildParameters.compileType;
+    const auto precompileIndex = buildParameters.precompileIndex;
+    auto&      pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
+    auto&      context         = *pp.llvmContext;
+    auto&      builder         = *pp.builder;
 
     // Emit result
     if (!returnType->isVoid() && !CallConv::returnByAddress(typeFunc))
@@ -151,7 +143,7 @@ void LLVM::createRet(const BuildParameters& buildParameters, const TypeInfoFuncA
         }
         else if (returnType->isPointer() || returnType->isLambdaClosure())
         {
-            const auto llvmType = swagTypeToLLVMType(buildParameters, returnType);
+            const auto llvmType = swagTypeToLLVMType(pp, returnType);
             builder.CreateRet(builder.CreateLoad(llvmType, allocResult));
         }
         // :ReturnStructByValue
@@ -193,7 +185,7 @@ llvm::FunctionType* LLVM::getOrCreateFuncType(const BuildParameters& buildParame
     }
 
     VectorNative<llvm::Type*> params;
-    llvm::Type*               llvmRealReturnType = swagTypeToLLVMType(buildParameters, typeFunc->returnType);
+    llvm::Type*               llvmRealReturnType = swagTypeToLLVMType(pp, typeFunc->returnType);
     const bool                returnByAddress    = CallConv::returnByAddress(typeFunc);
     const auto                returnType         = typeFunc->concreteReturnType();
 
@@ -245,19 +237,19 @@ llvm::FunctionType* LLVM::getOrCreateFuncType(const BuildParameters& buildParame
             }
             else if (param->isString() || param->isSlice())
             {
-                auto cType = swagTypeToLLVMType(buildParameters, param);
+                auto cType = swagTypeToLLVMType(pp, param);
                 params.push_back(cType);
                 params.push_back(I64_TY());
             }
             else if (param->isAny() || param->isInterface())
             {
-                auto cType = swagTypeToLLVMType(buildParameters, param);
+                auto cType = swagTypeToLLVMType(pp, param);
                 params.push_back(cType);
                 params.push_back(PTR_I8_TY());
             }
             else
             {
-                auto cType = swagTypeToLLVMType(buildParameters, param);
+                auto cType = swagTypeToLLVMType(pp, param);
                 params.push_back(cType);
             }
         }
@@ -288,10 +280,10 @@ bool LLVM::emitGetParam(llvm::LLVMContext&     context,
                         uint64_t               toAdd,
                         int                    deRefSize)
 {
-    const auto  ct              = buildParameters.compileType;
-    const auto  precompileIndex = buildParameters.precompileIndex;
-    const auto& pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
-    auto&       builder         = *pp.builder;
+    const auto ct              = buildParameters.compileType;
+    const auto precompileIndex = buildParameters.precompileIndex;
+    auto&      pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
+    auto&      builder         = *pp.builder;
 
     auto param = typeFunc->registerIdxToType(paramIdx);
     if (param->isAutoConstPointerRef())
@@ -432,7 +424,7 @@ bool LLVM::emitGetParam(llvm::LLVMContext&     context,
             }
             else
             {
-                const auto ty = swagTypeToLLVMType(buildParameters, param);
+                const auto ty = swagTypeToLLVMType(pp, param);
                 r0            = builder.CreatePointerCast(r0, ty->getPointerTo());
                 builder.CreateStore(arg, r0);
             }
@@ -441,7 +433,7 @@ bool LLVM::emitGetParam(llvm::LLVMContext&     context,
         // Real type
         else
         {
-            const auto ty = swagTypeToLLVMType(buildParameters, param);
+            const auto ty = swagTypeToLLVMType(pp, param);
             auto       r0 = GEP64(allocR, rDest);
             r0            = builder.CreatePointerCast(r0, ty->getPointerTo());
             builder.CreateStore(arg, r0);
@@ -474,11 +466,11 @@ bool LLVM::emitCallParameters(const BuildParameters&        buildParameters,
                               const Vector<llvm::Value*>&   values,
                               bool                          closureToLambda)
 {
-    const auto  ct              = buildParameters.compileType;
-    const auto  precompileIndex = buildParameters.precompileIndex;
-    const auto& pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
-    auto&       context         = *pp.llvmContext;
-    auto&       builder         = *pp.builder;
+    const auto ct              = buildParameters.compileType;
+    const auto precompileIndex = buildParameters.precompileIndex;
+    auto&      pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
+    auto&      context         = *pp.llvmContext;
+    auto&      builder         = *pp.builder;
 
     uint32_t numCallParams = typeFuncBC->parameters.size();
     uint32_t idxParam      = pushParams.size() - 1;
@@ -526,7 +518,7 @@ bool LLVM::emitCallParameters(const BuildParameters&        buildParameters,
         else if (typeParam->isPointer())
         {
             const auto typePtr  = castTypeInfo<TypeInfoPointer>(typeParam, TypeInfoKind::Pointer);
-            const auto llvmType = swagTypeToLLVMType(buildParameters, typePtr);
+            const auto llvmType = swagTypeToLLVMType(pp, typePtr);
             params.push_back(builder.CreateLoad(llvmType, GEP64(allocR, index)));
         }
         else if (CallConv::structParamByValue(typeFuncBC, typeParam))
@@ -556,7 +548,7 @@ bool LLVM::emitCallParameters(const BuildParameters&        buildParameters,
         }
         else if (typeParam->isNative())
         {
-            const auto llvmType = swagTypeToLLVMType(buildParameters, typeParam);
+            const auto llvmType = swagTypeToLLVMType(pp, typeParam);
             params.push_back(builder.CreateLoad(llvmType, GEP64(allocR, index)));
         }
         else
@@ -719,13 +711,13 @@ void LLVM::emitByteCodeCallParameters(const BuildParameters&      buildParameter
                                       const Vector<llvm::Value*>& values,
                                       bool                        closureToLambda)
 {
-    const auto  ct              = buildParameters.compileType;
-    const auto  precompileIndex = buildParameters.precompileIndex;
-    const auto& pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
-    auto&       builder         = *pp.builder;
-    auto&       context         = *pp.llvmContext;
-    uint32_t    popRAidx        = pushRAParams.size() - 1;
-    uint32_t    numCallParams   = typeFuncBC->parameters.size();
+    const auto ct              = buildParameters.compileType;
+    const auto precompileIndex = buildParameters.precompileIndex;
+    auto&      pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
+    auto&      builder         = *pp.builder;
+    auto&      context         = *pp.llvmContext;
+    uint32_t   popRAidx        = pushRAParams.size() - 1;
+    uint32_t   numCallParams   = typeFuncBC->parameters.size();
 
     // Return value
     // Normal user case
@@ -787,7 +779,7 @@ void LLVM::emitByteCodeCallParameters(const BuildParameters&      buildParameter
             // By value
             if (typeParam->numRegisters() == 1)
             {
-                const auto ty = swagTypeToLLVMType(buildParameters, typeParam);
+                const auto ty = swagTypeToLLVMType(pp, typeParam);
                 if (index == UINT32_MAX)
                 {
                     auto v0 = values[popRAidx + 1];
@@ -885,7 +877,7 @@ void LLVM::emitForeignCall(const BuildParameters&                       buildPar
 }
 
 bool LLVM::emitLambdaCall(const BuildParameters&                       buildParameters,
-                          LLVM_Encoder&                                 pp,
+                          LLVM_Encoder&                                pp,
                           llvm::LLVMContext&                           context,
                           llvm::IRBuilder<>&                           builder,
                           llvm::Function*                              func,

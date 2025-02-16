@@ -2236,7 +2236,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::CopyRAtoRRRet:
-                getReturnResult(context, buildParameters, returnType, ip->hasFlag(BCI_IMM_A), ip->a, allocR, allocResult);
+                getReturnResult(pp, returnType, ip->hasFlag(BCI_IMM_A), ip->a, allocR, allocResult);
                 [[fallthrough]];
             case ByteCodeOp::Ret:
                 // :OptimizedAwayDebugCrap
@@ -2782,7 +2782,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::CopyRAtoRR:
-                getReturnResult(context, buildParameters, returnType, ip->hasFlag(BCI_IMM_A), ip->a, allocR, allocResult);
+                getReturnResult(pp, returnType, ip->hasFlag(BCI_IMM_A), ip->a, allocR, allocResult);
                 break;
 
             case ByteCodeOp::CopyRARBtoRR2:
@@ -3476,19 +3476,16 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     return ok;
 }
 
-llvm::Type* LLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, TypeInfo* typeInfo)
+llvm::Type* LLVM::swagTypeToLLVMType(LLVM_Encoder& pp, TypeInfo* typeInfo)
 {
-    const auto  ct              = buildParameters.compileType;
-    const auto  precompileIndex = buildParameters.precompileIndex;
-    const auto& pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
-    auto&       context         = *pp.llvmContext;
+    auto& context = *pp.llvmContext;
 
     typeInfo = typeInfo->getConcreteAlias();
 
     if (typeInfo->isEnum())
     {
         const auto typeInfoEnum = castTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
-        return swagTypeToLLVMType(buildParameters, typeInfoEnum->rawType);
+        return swagTypeToLLVMType(pp, typeInfoEnum->rawType);
     }
 
     if (typeInfo->isPointer())
@@ -3497,7 +3494,7 @@ llvm::Type* LLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Typ
         const auto pointedType     = TypeManager::concreteType(typeInfoPointer->pointedType);
         if (pointedType->isVoid())
             return PTR_I8_TY();
-        return swagTypeToLLVMType(buildParameters, pointedType)->getPointerTo();
+        return swagTypeToLLVMType(pp, pointedType)->getPointerTo();
     }
 
     if (typeInfo->isSlice() ||

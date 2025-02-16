@@ -757,13 +757,13 @@ llvm::DIScope* LLVMDebug::getOrCreateScope(llvm::DIFile* file, Scope* scope)
 
 void LLVMDebug::createGlobalVariablesForSegment(const BuildParameters& buildParameters, llvm::Type* type, llvm::GlobalVariable* var)
 {
-    const auto  ct              = buildParameters.compileType;
-    const auto  precompileIndex = buildParameters.precompileIndex;
-    const auto& pp              = llvm->encoder<LLVM_Encoder>(ct, precompileIndex);
-    auto&       builder         = *pp.builder;
-    auto&       context         = *pp.llvmContext;
-    auto&       modu            = *pp.llvmModule;
-    const auto  module          = llvm->module;
+    const auto ct              = buildParameters.compileType;
+    const auto precompileIndex = buildParameters.precompileIndex;
+    auto&      pp              = llvm->encoder<LLVM_Encoder>(ct, precompileIndex);
+    auto&      builder         = *pp.builder;
+    auto&      context         = *pp.llvmContext;
+    auto&      modu            = *pp.llvmModule;
+    const auto module          = llvm->module;
 
     VectorNative<llvm::Value*> offset;
     offset.reserve(2);
@@ -788,7 +788,7 @@ void LLVMDebug::createGlobalVariablesForSegment(const BuildParameters& buildPara
             continue;
 
         // Cast to the correct type
-        auto varType = llvm->swagTypeToLLVMType(buildParameters, typeInfo);
+        auto varType = llvm->swagTypeToLLVMType(pp, typeInfo);
         if (!varType)
             continue;
 
