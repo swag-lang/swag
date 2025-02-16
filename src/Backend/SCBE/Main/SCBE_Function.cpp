@@ -11,11 +11,7 @@
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 
-void SCBE::computeUnwind(const VectorNative<CPUReg>&   unwindRegs,
-                         const VectorNative<uint32_t>& unwindOffsetRegs,
-                         uint32_t                      sizeStack,
-                         uint32_t                      offsetSubRSP,
-                         VectorNative<uint16_t>&       unwind) const
+void SCBE::computeUnwind(SCBE_X64& pp, const VectorNative<CPUReg>& unwindRegs, const VectorNative<uint32_t>& unwindOffsetRegs, uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind)
 {
     const auto objFileType = getObjType(g_CommandLine.target);
     switch (objFileType)
@@ -24,7 +20,7 @@ void SCBE::computeUnwind(const VectorNative<CPUReg>&   unwindRegs,
             SCBE_Coff::computeUnwind(unwindRegs, unwindOffsetRegs, sizeStack, offsetSubRSP, unwind);
             break;
         default:
-            Report::internalError(module, "SCBE::computeUnwind, unsupported output");
+            Report::internalError(pp.module, "SCBE::computeUnwind, unsupported output");
             break;
     }
 }
@@ -143,7 +139,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     // Unwind information (with the pushed registers)
     VectorNative<uint16_t> unwind;
     auto                   sizeProlog = concat.totalCount() - beforeProlog;
-    computeUnwind(unwindRegs, unwindOffsetRegs, sizeStack + sizeParamsStack, sizeProlog, unwind);
+    computeUnwind(pp, unwindRegs, unwindOffsetRegs, sizeStack + sizeParamsStack, sizeProlog, unwind);
 
     // Registers are stored after the sizeParamsStack area, which is used to store parameters for function calls
     pp.emitSetAddress(CPUReg::RDI, CPUReg::RSP, sizeParamsStack);

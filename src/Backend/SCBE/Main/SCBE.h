@@ -44,6 +44,7 @@ struct SCBE final : Backend
     static void emitLocalCall(SCBE_X64& pp, uint32_t offsetRT, const ByteCodeInstruction* ip, VectorNative<uint32_t>& pushRAParams, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams);
     static void emitForeignCall(SCBE_X64& pp, uint32_t offsetRT, const ByteCodeInstruction* ip, VectorNative<uint32_t>& pushRAParams, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams);
     static void emitLambdaCall(SCBE_X64& pp, const Concat& concat, uint32_t offsetRT, const ByteCodeInstruction* ip, VectorNative<uint32_t>& pushRAParams, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams);
+    static void computeUnwind(SCBE_X64& pp, const VectorNative<CPUReg>& unwindRegs, const VectorNative<uint32_t>& unwindOffsetRegs, uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind);
 
     static void emitOverflow(SCBE_X64& pp, const ByteCodeInstruction* ip, const char* msg, bool isSigned);
     static void emitShiftRightArithmetic(SCBE_X64& pp, const ByteCodeInstruction* ip);
@@ -69,6 +70,4 @@ struct SCBE final : Backend
     static void emitIMMD(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUReg reg, OpBits opBits);
     static void emitIMMB(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUReg reg, OpBits numBitsSrc, OpBits numBitsDst, bool isSigned);
     static void emitIMMC(SCBE_X64& pp, const ByteCodeInstruction* ip, CPUReg reg, OpBits numBitsSrc, OpBits numBitsDst, bool isSigned);
-
-    void computeUnwind(const VectorNative<CPUReg>& unwindRegs, const VectorNative<uint32_t>& unwindOffsetRegs, uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind) const;
 };

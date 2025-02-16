@@ -84,7 +84,7 @@ void SCBE::emitMain(const BuildParameters& buildParameters) const
     const auto             beforeProlog = concat.totalCount();
     pp.emitOpBinary(CPUReg::RSP, 40, CPUOp::SUB, OpBits::B64);
     const auto sizeProlog = concat.totalCount() - beforeProlog;
-    computeUnwind({}, {}, 40, sizeProlog, unwind);
+    computeUnwind(pp, {}, {}, 40, sizeProlog, unwind);
 
     // Set default system allocator function
     SWAG_ASSERT(g_SystemAllocatorTable);
@@ -261,7 +261,7 @@ void SCBE::emitGetTypeTable(const BuildParameters& buildParameters) const
     const auto             beforeProlog = concat.totalCount();
     pp.emitOpBinary(CPUReg::RSP, 40, CPUOp::SUB, OpBits::B64);
     const auto sizeProlog = concat.totalCount() - beforeProlog;
-    computeUnwind({}, {}, 40, sizeProlog, unwind);
+    computeUnwind(pp, {}, {}, 40, sizeProlog, unwind);
 
     pp.emitOpBinary(CPUReg::RSP, 40, CPUOp::ADD, OpBits::B64);
     pp.emitSymbolRelocationAddr(cc.returnByRegisterInteger, pp.symCSIndex, module->typesSliceOffset);
@@ -294,7 +294,7 @@ void SCBE::emitGlobalPreMain(const BuildParameters& buildParameters) const
     pp.emitPush(CPUReg::RDI);
     pp.emitOpBinary(CPUReg::RSP, 48, CPUOp::SUB, OpBits::B64);
     const auto sizeProlog = concat.totalCount() - beforeProlog;
-    computeUnwind({}, {}, 48, sizeProlog, unwind);
+    computeUnwind(pp, {}, {}, 48, sizeProlog, unwind);
 
     // Store first parameter on stack (process infos ptr)
     SWAG_ASSERT(cc.paramByRegisterCount >= 1);
@@ -348,7 +348,7 @@ void SCBE::emitGlobalInit(const BuildParameters& buildParameters) const
     pp.emitPush(CPUReg::RDI);
     pp.emitOpBinary(CPUReg::RSP, 48, CPUOp::SUB, OpBits::B64);
     const auto sizeProlog = concat.totalCount() - beforeProlog;
-    computeUnwind({}, {}, 48, sizeProlog, unwind);
+    computeUnwind(pp, {}, {}, 48, sizeProlog, unwind);
 
     // Store first parameter on stack (process infos ptr)
     SWAG_ASSERT(cc.paramByRegisterCount >= 1);
@@ -426,7 +426,7 @@ void SCBE::emitGlobalDrop(const BuildParameters& buildParameters) const
     const auto             beforeProlog = concat.totalCount();
     pp.emitOpBinary(CPUReg::RSP, 40, CPUOp::SUB, OpBits::B64);
     const auto sizeProlog = concat.totalCount() - beforeProlog;
-    computeUnwind({}, {}, 40, sizeProlog, unwind);
+    computeUnwind(pp, {}, {}, 40, sizeProlog, unwind);
 
     // Call to #drop functions
     for (const auto bc : module->byteCodeDropFunc)
