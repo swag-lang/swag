@@ -2821,7 +2821,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CopyRTtoRA:
             {
                 if (resultFuncCall)
-                    storeTypedValueToRegister(context, buildParameters, resultFuncCall, ip->a.u32, allocR);
+                    emitTypedValueToRegister(context, builder, resultFuncCall, ip->a.u32, allocR);
                 else
                 {
                     const auto r0 = GEP64(allocR, ip->a.u32);

@@ -858,7 +858,11 @@ void LLVM::emitLocalCall(const BuildParameters&                       buildParam
 
     if (ip->op == ByteCodeOp::LocalCallPopRC)
     {
-        storeTypedValueToRegister(context, buildParameters, resultFuncCall, ip->d.u32, allocR);
+        const auto  ct              = buildParameters.compileType;
+        const auto  precompileIndex = buildParameters.precompileIndex;
+        const auto& pp              = encoder<LLVMEncoder>(ct, precompileIndex);
+        auto&       builder         = *pp.builder;
+        emitTypedValueToRegister(context, builder, resultFuncCall, ip->d.u32, allocR);
     }
 
     pushRAParams.clear();
