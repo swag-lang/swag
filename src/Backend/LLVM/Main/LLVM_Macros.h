@@ -73,4 +73,3 @@
 #define MK_IMMD_64()    ip->hasFlag(BCI_IMM_D) ? (llvm::Value*) builder.getInt64(ip->d.u64) : (llvm::Value*) builder.CreateLoad(I64_TY(), GEP64(allocR, ip->d.u32))
 #define MK_IMMD_IX(__n) ip->hasFlag(BCI_IMM_D) ? (llvm::Value*) builder.getIntN(__n, ip->d.u64) : (llvm::Value*) builder.CreateLoad(IX_TY(__n), GEP64(allocR, ip->d.u32))
 #define MK_IMMD_FX(__n) ip->hasFlag(BCI_IMM_D) ? (llvm::Value*) llvm::ConstantFP::get(FX_TY(__n), __n == 32 ? ip->d.f32 : ip->d.f64) : (llvm::Value*) builder.CreateLoad(FX_TY(__n), GEP64(allocR, ip->d.u32))
-

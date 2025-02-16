@@ -189,7 +189,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     auto                                        ip = bc->out;
     VectorNative<uint32_t>                      pushRAParams;
     VectorNative<std::pair<uint32_t, uint32_t>> pushRVParams;
-    OpBits                                      opBits = OpBits::INVALID;
+    auto                                        opBits = OpBits::INVALID;
     for (int32_t i = 0; i < static_cast<int32_t>(bc->numInstructions); i++, ip++)
     {
         if (ip->node->hasAstFlag(AST_NO_BACKEND))
