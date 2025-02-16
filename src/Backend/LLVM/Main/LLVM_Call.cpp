@@ -74,7 +74,7 @@ void LLVM::getReturnResult(LLVM_Encoder& pp, TypeInfo* returnType, bool imm, con
     }
     else if (returnType->isPointer() || returnType->isLambdaClosure())
     {
-        const auto llvmType = swagTypeToLLVMType(pp, returnType);
+        const auto llvmType = getLLVMType(pp, returnType);
         if (imm)
             returnResult = builder.CreateIntToPtr(builder.getInt64(reg.u64), llvmType);
         else
@@ -140,7 +140,7 @@ void LLVM::emitRet(LLVM_Encoder& pp, const TypeInfoFuncAttr* typeFunc, TypeInfo*
         }
         else if (returnType->isPointer() || returnType->isLambdaClosure())
         {
-            const auto llvmType = swagTypeToLLVMType(pp, returnType);
+            const auto llvmType = getLLVMType(pp, returnType);
             builder.CreateRet(builder.CreateLoad(llvmType, allocResult));
         }
         // :ReturnStructByValue
@@ -179,7 +179,7 @@ llvm::FunctionType* LLVM::getOrCreateFuncType(LLVM_Encoder& pp, TypeInfoFuncAttr
     }
 
     VectorNative<llvm::Type*> params;
-    llvm::Type*               llvmRealReturnType = swagTypeToLLVMType(pp, typeFunc->returnType);
+    llvm::Type*               llvmRealReturnType = getLLVMType(pp, typeFunc->returnType);
     const bool                returnByAddress    = CallConv::returnByAddress(typeFunc);
     const auto                returnType         = typeFunc->concreteReturnType();
 
@@ -231,19 +231,19 @@ llvm::FunctionType* LLVM::getOrCreateFuncType(LLVM_Encoder& pp, TypeInfoFuncAttr
             }
             else if (param->isString() || param->isSlice())
             {
-                auto cType = swagTypeToLLVMType(pp, param);
+                auto cType = getLLVMType(pp, param);
                 params.push_back(cType);
                 params.push_back(I64_TY());
             }
             else if (param->isAny() || param->isInterface())
             {
-                auto cType = swagTypeToLLVMType(pp, param);
+                auto cType = getLLVMType(pp, param);
                 params.push_back(cType);
                 params.push_back(PTR_I8_TY());
             }
             else
             {
-                auto cType = swagTypeToLLVMType(pp, param);
+                auto cType = getLLVMType(pp, param);
                 params.push_back(cType);
             }
         }
@@ -415,7 +415,7 @@ bool LLVM::emitGetParam(LLVM_Encoder&         pp,
             }
             else
             {
-                const auto ty = swagTypeToLLVMType(pp, param);
+                const auto ty = getLLVMType(pp, param);
                 r0            = builder.CreatePointerCast(r0, ty->getPointerTo());
                 builder.CreateStore(arg, r0);
             }
@@ -424,7 +424,7 @@ bool LLVM::emitGetParam(LLVM_Encoder&         pp,
         // Real type
         else
         {
-            const auto ty = swagTypeToLLVMType(pp, param);
+            const auto ty = getLLVMType(pp, param);
             auto       r0 = GEP64(allocR, rDest);
             r0            = builder.CreatePointerCast(r0, ty->getPointerTo());
             builder.CreateStore(arg, r0);
@@ -506,7 +506,7 @@ bool LLVM::emitCallParameters(LLVM_Encoder&                 pp,
         else if (typeParam->isPointer())
         {
             const auto typePtr  = castTypeInfo<TypeInfoPointer>(typeParam, TypeInfoKind::Pointer);
-            const auto llvmType = swagTypeToLLVMType(pp, typePtr);
+            const auto llvmType = getLLVMType(pp, typePtr);
             params.push_back(builder.CreateLoad(llvmType, GEP64(allocR, index)));
         }
         else if (CallConv::structParamByValue(typeFuncBC, typeParam))
@@ -536,7 +536,7 @@ bool LLVM::emitCallParameters(LLVM_Encoder&                 pp,
         }
         else if (typeParam->isNative())
         {
-            const auto llvmType = swagTypeToLLVMType(pp, typeParam);
+            const auto llvmType = getLLVMType(pp, typeParam);
             params.push_back(builder.CreateLoad(llvmType, GEP64(allocR, index)));
         }
         else
@@ -751,7 +751,7 @@ void LLVM::emitByteCodeCallParameters(LLVM_Encoder&               pp,
             // By value
             if (typeParam->numRegisters() == 1)
             {
-                const auto ty = swagTypeToLLVMType(pp, typeParam);
+                const auto ty = getLLVMType(pp, typeParam);
                 if (index == UINT32_MAX)
                 {
                     auto v0 = values[popRAidx + 1];

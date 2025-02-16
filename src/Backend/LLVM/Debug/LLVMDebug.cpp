@@ -788,7 +788,7 @@ void LLVMDebug::createGlobalVariablesForSegment(const BuildParameters& buildPara
             continue;
 
         // Cast to the correct type
-        auto varType = llvm->swagTypeToLLVMType(pp, typeInfo);
+        auto varType = llvm->getLLVMType(pp, typeInfo);
         if (!varType)
             continue;
 

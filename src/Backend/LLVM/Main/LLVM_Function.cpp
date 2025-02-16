@@ -3476,7 +3476,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     return ok;
 }
 
-llvm::Type* LLVM::swagTypeToLLVMType(LLVM_Encoder& pp, TypeInfo* typeInfo)
+llvm::Type* LLVM::getLLVMType(LLVM_Encoder& pp, TypeInfo* typeInfo)
 {
     auto& context = *pp.llvmContext;
 
@@ -3485,7 +3485,7 @@ llvm::Type* LLVM::swagTypeToLLVMType(LLVM_Encoder& pp, TypeInfo* typeInfo)
     if (typeInfo->isEnum())
     {
         const auto typeInfoEnum = castTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
-        return swagTypeToLLVMType(pp, typeInfoEnum->rawType);
+        return getLLVMType(pp, typeInfoEnum->rawType);
     }
 
     if (typeInfo->isPointer())
@@ -3494,7 +3494,7 @@ llvm::Type* LLVM::swagTypeToLLVMType(LLVM_Encoder& pp, TypeInfo* typeInfo)
         const auto pointedType     = TypeManager::concreteType(typeInfoPointer->pointedType);
         if (pointedType->isVoid())
             return PTR_I8_TY();
-        return swagTypeToLLVMType(pp, pointedType)->getPointerTo();
+        return getLLVMType(pp, pointedType)->getPointerTo();
     }
 
     if (typeInfo->isSlice() ||

@@ -54,9 +54,9 @@ struct LLVM final : Backend
     static void emitBinOpOverflow(LLVM_Encoder& pp, llvm::Function* func, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const ByteCodeInstruction* ip, llvm::Value* r0, llvm::Value* r1, llvm::Value* r2, llvm::Intrinsic::IndependentIntrinsics op, SafetyMsg msg);
     static void emitBinOpEqOverflow(LLVM_Encoder& pp, llvm::Function* func, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const ByteCodeInstruction* ip, llvm::Value* r0, llvm::Value* r1, llvm::Value* r2, llvm::Intrinsic::IndependentIntrinsics op, SafetyMsg msg);
 
-    static llvm::Type*         swagTypeToLLVMType(LLVM_Encoder& pp, TypeInfo* typeInfo);
+    static llvm::Type*         getLLVMType(LLVM_Encoder& pp, TypeInfo* typeInfo);
     static llvm::FunctionType* getOrCreateFuncType(LLVM_Encoder& pp, TypeInfoFuncAttr* typeFunc, bool closureToLambda = false);
     static llvm::BasicBlock*   getOrCreateLabel(LLVM_Encoder& pp, llvm::Function* func, int64_t ip);
-    static void                setFuncAttributes(LLVM_Encoder& pp, uint32_t numPreCompileBuffers, const AstFuncDecl* funcNode, const ByteCode* bc, llvm::Function* func);
     static void                getReturnResult(LLVM_Encoder& pp, TypeInfo* returnType, bool imm, const Register& reg, llvm::AllocaInst* allocR, llvm::AllocaInst* allocResult);
+    static void                setFuncAttributes(LLVM_Encoder& pp, uint32_t numPreCompileBuffers, const AstFuncDecl* funcNode, const ByteCode* bc, llvm::Function* func);
 };
