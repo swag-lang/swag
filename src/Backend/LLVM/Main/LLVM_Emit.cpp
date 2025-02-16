@@ -8,7 +8,7 @@
 #include "Wmf/Module.h"
 #include "Wmf/SourceFile.h"
 
-void LLVM::emitShiftRightArithmetic(LLVM_Encoder& pp, llvm::AllocaInst* allocR, uint32_t numBits)
+void LLVM::emitShiftRightArithmetic(const LLVM_Encoder& pp, llvm::AllocaInst* allocR, uint32_t numBits)
 {
     const auto ip      = pp.ip;
     auto&      builder = *pp.builder;
@@ -37,7 +37,7 @@ void LLVM::emitShiftRightArithmetic(LLVM_Encoder& pp, llvm::AllocaInst* allocR, 
     }
 }
 
-void LLVM::emitShiftRightEqArithmetic(LLVM_Encoder& pp, llvm::AllocaInst* allocR, uint32_t numBits)
+void LLVM::emitShiftRightEqArithmetic(const LLVM_Encoder& pp, llvm::AllocaInst* allocR, uint32_t numBits)
 {
     const auto ip      = pp.ip;
     auto&      builder = *pp.builder;
@@ -66,7 +66,7 @@ void LLVM::emitShiftRightEqArithmetic(LLVM_Encoder& pp, llvm::AllocaInst* allocR
     }
 }
 
-void LLVM::emitShiftLogical(LLVM_Encoder& pp, llvm::AllocaInst* allocR, uint32_t numBits, bool left)
+void LLVM::emitShiftLogical(const LLVM_Encoder& pp, llvm::AllocaInst* allocR, uint32_t numBits, bool left)
 {
     const auto ip      = pp.ip;
     auto&      builder = *pp.builder;
@@ -100,7 +100,7 @@ void LLVM::emitShiftLogical(LLVM_Encoder& pp, llvm::AllocaInst* allocR, uint32_t
     }
 }
 
-void LLVM::emitShiftEqLogical(LLVM_Encoder& pp, llvm::AllocaInst* allocR, uint32_t numBits, bool left)
+void LLVM::emitShiftEqLogical(const LLVM_Encoder& pp, llvm::AllocaInst* allocR, uint32_t numBits, bool left)
 {
     const auto ip      = pp.ip;
     auto&      builder = *pp.builder;
@@ -142,7 +142,7 @@ void LLVM::emitInternalPanic(LLVM_Encoder& pp, llvm::AllocaInst* allocR, llvm::A
 
     // Filename
     const auto r1 = builder.CreateGlobalString(node->token.sourceFile->path.cstr());
-    const auto r2 = builder.CreateInBoundsGEP(I8_TY(), r1, {pp.cstAi32});
+    const auto r2 = builder.CreateInBoundsGEP(I8_TY(), r1, {builder.getInt32(0)});
 
     // Line & column
     const auto r3 = builder.getInt32(node->token.startLocation.line);
@@ -153,15 +153,15 @@ void LLVM::emitInternalPanic(LLVM_Encoder& pp, llvm::AllocaInst* allocR, llvm::A
     if (message)
     {
         r5 = builder.CreateGlobalString(message);
-        r5 = builder.CreateInBoundsGEP(I8_TY(), r5, {pp.cstAi32});
+        r5 = builder.CreateInBoundsGEP(I8_TY(), r5, {builder.getInt32(0)});
     }
     else
-        r5 = builder.CreateIntToPtr(pp.cstAi64, PTR_I8_TY());
+        r5 = builder.CreateIntToPtr(builder.getInt64(0), PTR_I8_TY());
 
     emitCall(pp, g_LangSpec->name_priv_panic, allocR, allocT, {UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX}, {r2, r3, r4, r5});
 }
 
-void LLVM::emitTypedValueToRegister(LLVM_Encoder& pp, llvm::Value* value, uint32_t reg, llvm::AllocaInst* allocR)
+void LLVM::emitTypedValueToRegister(const LLVM_Encoder& pp, llvm::Value* value, uint32_t reg, llvm::AllocaInst* allocR)
 {
     SWAG_ASSERT(value);
     const auto r1 = value;
@@ -185,7 +185,7 @@ void LLVM::emitTypedValueToRegister(LLVM_Encoder& pp, llvm::Value* value, uint32
         builder.CreateStore(r1, GEP64(allocR, reg));
 }
 
-void LLVM::emitRT2ToRegisters(LLVM_Encoder& pp, uint32_t reg0, uint32_t reg1, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR)
+void LLVM::emitRT2ToRegisters(const LLVM_Encoder& pp, uint32_t reg0, uint32_t reg1, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR)
 {
     auto& context = *pp.llvmContext;
     auto& builder = *pp.builder;

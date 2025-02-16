@@ -137,12 +137,7 @@ void LLVM::createRuntime(LLVM_Encoder& pp)
     if (precompileIndex == 0)
     {
         pp.mainContext       = new llvm::GlobalVariable(modu, pp.contextTy, false, llvm::GlobalValue::WeakAnyLinkage, llvm::ConstantAggregateZero::get(pp.contextTy), "swag_mainContext");
-        pp.defaultAllocTable = new llvm::GlobalVariable(modu,
-                                                        pp.allocatorTy->getPointerTo(),
-                                                        false,
-                                                        llvm::GlobalValue::WeakAnyLinkage,
-                                                        llvm::ConstantPointerNull::get(pp.allocatorTy->getPointerTo()),
-                                                        "swag_defaultAllocTable");
+        pp.defaultAllocTable = new llvm::GlobalVariable(modu, pp.allocatorTy->getPointerTo(), false, llvm::GlobalValue::WeakAnyLinkage, llvm::ConstantPointerNull::get(pp.allocatorTy->getPointerTo()), "swag_defaultAllocTable");
         pp.processInfos =
         new llvm::GlobalVariable(modu, pp.processInfosTy, false, llvm::GlobalValue::WeakAnyLinkage, llvm::ConstantAggregateZero::get(pp.processInfosTy), "swag_processInfos");
         pp.symTlsThreadLocalId = new llvm::GlobalVariable(modu, I64_TY(), false, llvm::GlobalValue::WeakAnyLinkage, llvm::ConstantInt::get(I64_TY(), 0), "swag_tls_threadLocalId");
@@ -182,16 +177,6 @@ void LLVM::createRuntime(LLVM_Encoder& pp)
         pp.fnReAlloc  = modu.getOrInsertFunction(g_LangSpec->name_realloc.cstr(), llvm::FunctionType::get(PTR_I8_TY(), {PTR_I8_TY(), I64_TY()}, false));
         pp.fnFree     = modu.getOrInsertFunction(g_LangSpec->name_free.cstr(), llvm::FunctionType::get(VOID_TY(), {PTR_I8_TY()}, false));
     }
-
-    // Cache things
-    pp.cstAi32 = llvm::ConstantInt::get(I32_TY(), 0);
-    pp.cstBi32 = llvm::ConstantInt::get(I32_TY(), 1);
-    pp.cstCi32 = llvm::ConstantInt::get(I32_TY(), 2);
-    pp.cstDi32 = llvm::ConstantInt::get(I32_TY(), 3);
-    pp.cstEi32 = llvm::ConstantInt::get(I32_TY(), 4);
-    pp.cstFi32 = llvm::ConstantInt::get(I32_TY(), 5);
-    pp.cstGi32 = llvm::ConstantInt::get(I32_TY(), 6);
-    pp.cstAi64 = llvm::ConstantInt::get(I64_TY(), 0);
 }
 
 JobResult LLVM::prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob)

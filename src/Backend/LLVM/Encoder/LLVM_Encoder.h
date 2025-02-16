@@ -49,15 +49,6 @@ struct LLVM_Encoder : BackendEncoder
     llvm::FunctionType* bytecodeRunTy  = nullptr;
     llvm::FunctionType* makeCallbackTy = nullptr;
 
-    llvm::Value* cstAi32 = nullptr;
-    llvm::Value* cstBi32 = nullptr;
-    llvm::Value* cstCi32 = nullptr;
-    llvm::Value* cstDi32 = nullptr;
-    llvm::Value* cstEi32 = nullptr;
-    llvm::Value* cstFi32 = nullptr;
-    llvm::Value* cstGi32 = nullptr;
-    llvm::Value* cstAi64 = nullptr;
-
     llvm::FunctionCallee fnAcosF32;
     llvm::FunctionCallee fnAcosF64;
     llvm::FunctionCallee fnAsinF32;

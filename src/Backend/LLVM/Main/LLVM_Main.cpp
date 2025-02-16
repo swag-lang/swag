@@ -107,14 +107,14 @@ void LLVM::emitMain(LLVM_Encoder& pp)
 
     // mainContext.allocator.itable = &defaultAllocTable
     {
-        const auto toTable   = builder.CreateInBoundsGEP(pp.contextTy, pp.mainContext, {pp.cstAi32, pp.cstAi32, pp.cstBi32});
+        const auto toTable   = builder.CreateInBoundsGEP(pp.contextTy, pp.mainContext, {builder.getInt32(0), builder.getInt32(0), builder.getInt32(1)});
         const auto fromTable = builder.CreatePointerCast(pp.defaultAllocTable, PTR_I8_TY());
         builder.CreateStore(fromTable, toTable);
     }
 
     // mainContext.flags = 0
     {
-        const auto     toFlags      = builder.CreateInBoundsGEP(pp.contextTy, pp.mainContext, {pp.cstAi32, pp.cstBi32});
+        const auto     toFlags      = builder.CreateInBoundsGEP(pp.contextTy, pp.mainContext, {builder.getInt32(0), builder.getInt32(1)});
         const uint64_t contextFlags = getDefaultContextFlags(module);
         builder.CreateStore(builder.getInt64(contextFlags), toFlags);
     }
@@ -132,33 +132,33 @@ void LLVM::emitMain(LLVM_Encoder& pp)
     // __process_infos.args
     {
         const auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(I8_TY(), pp.processInfos, builder.getInt32(16)));
-        builder.CreateStore(pp.cstAi64, r0);
+        builder.CreateStore(builder.getInt64(0), r0);
         const auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(I8_TY(), pp.processInfos, builder.getInt32(24)));
-        builder.CreateStore(pp.cstAi64, r1);
+        builder.CreateStore(builder.getInt64(0), r1);
     }
 
     // __process_infos.contextTlsId = swag_runtime_tlsAlloc()
     {
         const auto result  = emitCall(pp, g_LangSpec->name_priv_tlsAlloc, nullptr, allocT, {}, {});
-        const auto toTlsId = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cstAi32, pp.cstCi32});
+        const auto toTlsId = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {builder.getInt32(0), builder.getInt32(2)});
         builder.CreateStore(result, TO_PTR_I64(toTlsId));
     }
 
     // Set main context
     {
-        const auto toContext = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cstAi32, pp.cstDi32});
+        const auto toContext = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {builder.getInt32(0), builder.getInt32(3)});
         builder.CreateStore(pp.mainContext, toContext);
     }
 
     // Set current backend as LLVM
     {
-        const auto toBackendKind = TO_PTR_I32(builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cstAi32, pp.cstGi32}));
+        const auto toBackendKind = TO_PTR_I32(builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {builder.getInt32(0), builder.getInt32(6)}));
         builder.CreateStore(builder.getInt32(static_cast<uint32_t>(SwagBackendGenType::LLVM)), toBackendKind);
     }
 
     // Set default context in TLS
     {
-        const auto v0        = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {pp.cstAi32, pp.cstCi32});
+        const auto v0        = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {builder.getInt32(0), builder.getInt32(2)});
         auto       toTlsId   = builder.CreateLoad(I64_TY(), v0);
         auto       toContext = builder.CreatePointerCast(pp.mainContext, PTR_I8_TY());
         emitCall(pp, g_LangSpec->name_priv_tlsSetValue, nullptr, allocT, {UINT32_MAX, UINT32_MAX}, {toTlsId, toContext});

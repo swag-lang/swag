@@ -44,12 +44,12 @@ struct LLVM final : Backend
     static bool         emitGetParam(LLVM_Encoder& pp, TypeInfoFuncAttr* typeFunc, uint32_t rDest, uint32_t paramIdx, llvm::AllocaInst* allocR, int sizeOf = 0, uint64_t toAdd = 0, int deRefSize = 0);
     static void         emitRet(LLVM_Encoder& pp, const TypeInfoFuncAttr* typeFunc, TypeInfo* returnType, llvm::AllocaInst* allocResult);
 
-    static void emitShiftRightArithmetic(LLVM_Encoder& pp, llvm::AllocaInst* allocR, uint32_t numBits);
-    static void emitShiftRightEqArithmetic(LLVM_Encoder& pp, llvm::AllocaInst* allocR, uint32_t numBits);
-    static void emitShiftLogical(LLVM_Encoder& pp, llvm::AllocaInst* allocR, uint32_t numBits, bool left);
-    static void emitShiftEqLogical(LLVM_Encoder& pp, llvm::AllocaInst* allocR, uint32_t numBits, bool left);
-    static void emitRT2ToRegisters(LLVM_Encoder& pp, uint32_t reg0, uint32_t reg1, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR);
-    static void emitTypedValueToRegister(LLVM_Encoder& pp, llvm::Value* value, uint32_t reg, llvm::AllocaInst* allocR);
+    static void emitShiftRightArithmetic(const LLVM_Encoder& pp, llvm::AllocaInst* allocR, uint32_t numBits);
+    static void emitShiftRightEqArithmetic(const LLVM_Encoder& pp, llvm::AllocaInst* allocR, uint32_t numBits);
+    static void emitShiftLogical(const LLVM_Encoder& pp, llvm::AllocaInst* allocR, uint32_t numBits, bool left);
+    static void emitShiftEqLogical(const LLVM_Encoder& pp, llvm::AllocaInst* allocR, uint32_t numBits, bool left);
+    static void emitRT2ToRegisters(const LLVM_Encoder& pp, uint32_t reg0, uint32_t reg1, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR);
+    static void emitTypedValueToRegister(const LLVM_Encoder& pp, llvm::Value* value, uint32_t reg, llvm::AllocaInst* allocR);
     static void emitInternalPanic(LLVM_Encoder& pp, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const char* message);
     static void emitBinOpOverflow(LLVM_Encoder& pp, llvm::Value* r0, llvm::Value* r1, llvm::Value* r2, llvm::Intrinsic::IndependentIntrinsics op, SafetyMsg msg);
     static void emitBinOpEqOverflow(LLVM_Encoder& pp, llvm::Value* r1, llvm::Value* r2, llvm::Intrinsic::IndependentIntrinsics op, SafetyMsg msg);
@@ -58,5 +58,5 @@ struct LLVM final : Backend
     static llvm::FunctionType* getOrCreateFuncType(LLVM_Encoder& pp, TypeInfoFuncAttr* typeFunc, bool closureToLambda = false);
     static llvm::BasicBlock*   getOrCreateLabel(LLVM_Encoder& pp, int64_t ip);
     static void                getReturnResult(LLVM_Encoder& pp, TypeInfo* returnType, bool imm, const Register& reg, llvm::AllocaInst* allocR, llvm::AllocaInst* allocResult);
-    static void                setFuncAttributes(LLVM_Encoder& pp, uint32_t numPreCompileBuffers, const AstFuncDecl* funcNode, const ByteCode* bc);
+    static void                setFuncAttributes(const LLVM_Encoder& pp, uint32_t numPreComp, const AstFuncDecl* funcNode, const ByteCode* bc);
 };
