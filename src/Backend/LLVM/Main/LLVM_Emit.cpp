@@ -8,113 +8,113 @@
 #include "Wmf/Module.h"
 #include "Wmf/SourceFile.h"
 
-void LLVM::emitShiftRightArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t opBits)
+void LLVM::emitShiftRightArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t numBits)
 {
     if (ip->hasFlag(BCI_IMM_B))
     {
-        llvm::Value* r1 = getImmediateConstantA(context, builder, allocR, ip, opBits);
-        const auto   r2 = builder.getIntN(opBits, min(ip->b.u32, opBits - 1));
-        const auto   v0 = builder.CreateAShr(r1, r2);
-        const auto   r0 = GEP64_PTR_IX(allocR, ip->c.u32, opBits);
-        builder.CreateStore(v0, r0);
+        const auto r0 = MK_IMMA_IX(numBits);
+        const auto r1 = builder.getIntN(numBits, min(ip->b.u32, numBits - 1));
+        const auto r2 = builder.CreateAShr(r0, r1);
+        const auto r3 = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+        builder.CreateStore(r2, r3);
     }
     else
     {
-        llvm::Value* r1      = getImmediateConstantA(context, builder, allocR, ip, opBits);
-        const auto   v0      = builder.CreateLoad(I32_TY(), GEP64(allocR, ip->b.u32));
-        const auto   cond    = builder.CreateICmpULT(v0, builder.getInt32(opBits));
-        const auto   iftrue  = v0;
-        const auto   iffalse = builder.getInt32(opBits - 1);
-        auto         r2      = builder.CreateSelect(cond, iftrue, iffalse);
-        r2                   = builder.CreateIntCast(r2, IX_TY(opBits), false);
-        const auto v1        = builder.CreateAShr(r1, r2);
-        const auto r0        = GEP64_PTR_IX(allocR, ip->c.u32, opBits);
-        builder.CreateStore(v1, r0);
+        const auto r0      = MK_IMMA_IX(numBits);
+        const auto r1      = builder.CreateLoad(I32_TY(), GEP64(allocR, ip->b.u32));
+        const auto r2      = builder.CreateICmpULT(r1, builder.getInt32(numBits));
+        const auto ifTrue  = r1;
+        const auto ifFalse = builder.getInt32(numBits - 1);
+        const auto r3      = builder.CreateSelect(r2, ifTrue, ifFalse);
+        const auto r4      = builder.CreateIntCast(r3, IX_TY(numBits), false);
+        const auto r5      = builder.CreateAShr(r0, r4);
+        const auto r6      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+        builder.CreateStore(r5, r6);
     }
 }
 
-void LLVM::emitShiftRightEqArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t opBits)
+void LLVM::emitShiftRightEqArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t numBits)
 {
     if (ip->hasFlag(BCI_IMM_B))
     {
-        const auto r2 = builder.getIntN(opBits, min(ip->b.u32, opBits - 1));
-        const auto r0 = builder.CreateLoad(PTR_IX_TY(opBits), GEP64(allocR, ip->a.u32));
-        const auto v1 = builder.CreateLoad(IX_TY(opBits), r0);
-        const auto v0 = builder.CreateAShr(v1, r2);
-        builder.CreateStore(v0, r0);
+        const auto r0 = builder.getIntN(numBits, min(ip->b.u32, numBits - 1));
+        const auto r1 = builder.CreateLoad(PTR_IX_TY(numBits), GEP64(allocR, ip->a.u32));
+        const auto r2 = builder.CreateLoad(IX_TY(numBits), r1);
+        const auto r3 = builder.CreateAShr(r2, r0);
+        builder.CreateStore(r3, r1);
     }
     else
     {
-        const auto v0      = builder.CreateLoad(I32_TY(), GEP64(allocR, ip->b.u32));
-        const auto cond    = builder.CreateICmpULT(v0, builder.getInt32(opBits));
-        const auto iftrue  = v0;
-        const auto iffalse = builder.getInt32(opBits - 1);
-        auto       r2      = builder.CreateSelect(cond, iftrue, iffalse);
-        r2                 = builder.CreateIntCast(r2, IX_TY(opBits), false);
-        const auto r0      = builder.CreateLoad(PTR_IX_TY(opBits), GEP64(allocR, ip->a.u32));
-        const auto v1      = builder.CreateLoad(IX_TY(opBits), r0);
-        const auto v2      = builder.CreateAShr(v1, r2);
-        builder.CreateStore(v2, r0);
+        const auto r0      = builder.CreateLoad(I32_TY(), GEP64(allocR, ip->b.u32));
+        const auto r1      = builder.CreateICmpULT(r0, builder.getInt32(numBits));
+        const auto ifTrue  = r0;
+        const auto ifFalse = builder.getInt32(numBits - 1);
+        const auto r2      = builder.CreateSelect(r1, ifTrue, ifFalse);
+        const auto r3      = builder.CreateIntCast(r2, IX_TY(numBits), false);
+        const auto r4      = builder.CreateLoad(PTR_IX_TY(numBits), GEP64(allocR, ip->a.u32));
+        const auto r5      = builder.CreateLoad(IX_TY(numBits), r4);
+        const auto r6      = builder.CreateAShr(r5, r3);
+        builder.CreateStore(r6, r4);
     }
 }
 
-void LLVM::emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t opBits, bool left)
+void LLVM::emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t numBits, bool left)
 {
-    if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 >= opBits)
+    if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 >= numBits)
     {
-        const auto r0 = GEP64_PTR_IX(allocR, ip->c.u32, opBits);
-        const auto v0 = llvm::ConstantInt::get(IX_TY(opBits), 0);
-        builder.CreateStore(v0, r0);
+        const auto r0 = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+        const auto r1 = llvm::ConstantInt::get(IX_TY(numBits), 0);
+        builder.CreateStore(r1, r0);
     }
     else if (ip->hasFlag(BCI_IMM_B))
     {
-        const auto   r0 = GEP64_PTR_IX(allocR, ip->c.u32, opBits);
-        llvm::Value* r1 = getImmediateConstantA(context, builder, allocR, ip, opBits);
-        const auto   r2 = builder.getIntN(opBits, ip->b.u8);
-        const auto   v0 = left ? builder.CreateShl(r1, r2) : builder.CreateLShr(r1, r2);
-        builder.CreateStore(v0, r0);
+        const auto r0 = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+        const auto r1 = MK_IMMA_IX(numBits);
+        const auto r2 = builder.getIntN(numBits, ip->b.u8);
+        const auto r3 = left ? builder.CreateShl(r1, r2) : builder.CreateLShr(r1, r2);
+        builder.CreateStore(r3, r0);
     }
     else
     {
-        const auto   r0      = GEP64_PTR_IX(allocR, ip->c.u32, opBits);
-        llvm::Value* r1      = getImmediateConstantA(context, builder, allocR, ip, opBits);
-        const auto   r2      = builder.CreateLoad(I32_TY(), GEP64(allocR, ip->b.u32));
-        const auto   cond    = builder.CreateICmpULT(r2, builder.getInt32(opBits));
-        const auto   l1      = builder.CreateIntCast(r2, IX_TY(opBits), false);
-        const auto   iftrue  = left ? builder.CreateShl(r1, l1) : builder.CreateLShr(r1, l1);
-        const auto   iffalse = llvm::ConstantInt::get(IX_TY(opBits), 0);
-        const auto   v0      = builder.CreateSelect(cond, iftrue, iffalse);
-        builder.CreateStore(v0, r0);
+        const auto r0      = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
+        const auto r1      = MK_IMMA_IX(numBits);
+        const auto r2      = builder.CreateLoad(I32_TY(), GEP64(allocR, ip->b.u32));
+        const auto r3      = builder.CreateICmpULT(r2, builder.getInt32(numBits));
+        const auto r4      = builder.CreateIntCast(r2, IX_TY(numBits), false);
+        const auto ifTrue  = left ? builder.CreateShl(r1, r4) : builder.CreateLShr(r1, r4);
+        const auto ifFalse = llvm::ConstantInt::get(IX_TY(numBits), 0);
+        const auto r5      = builder.CreateSelect(r3, ifTrue, ifFalse);
+        builder.CreateStore(r5, r0);
     }
 }
 
-void LLVM::emitShiftEqLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t opBits, bool left)
+void LLVM::emitShiftEqLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t numBits, bool left)
 {
-    if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 >= opBits)
+    if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 >= numBits)
     {
-        const auto r0 = builder.CreateLoad(PTR_IX_TY(opBits), GEP64(allocR, ip->a.u32));
-        const auto v0 = llvm::ConstantInt::get(IX_TY(opBits), 0);
-        builder.CreateStore(v0, r0);
+        const auto r0 = builder.CreateLoad(PTR_IX_TY(numBits), GEP64(allocR, ip->a.u32));
+        const auto r1 = llvm::ConstantInt::get(IX_TY(numBits), 0);
+        builder.CreateStore(r1, r0);
     }
     else if (ip->hasFlag(BCI_IMM_B))
     {
-        const auto r0 = builder.CreateLoad(PTR_IX_TY(opBits), GEP64(allocR, ip->a.u32));
-        const auto r2 = builder.getIntN(opBits, ip->b.u8);
-        const auto v1 = builder.CreateLoad(IX_TY(opBits), r0);
-        const auto v0 = left ? builder.CreateShl(v1, r2) : builder.CreateLShr(v1, r2);
-        builder.CreateStore(v0, r0);
+        const auto r0 = builder.CreateLoad(PTR_IX_TY(numBits), GEP64(allocR, ip->a.u32));
+        const auto r1 = builder.getIntN(numBits, ip->b.u8);
+        const auto r2 = builder.CreateLoad(IX_TY(numBits), r0);
+        const auto r3 = left ? builder.CreateShl(r2, r1) : builder.CreateLShr(r2, r1);
+        builder.CreateStore(r3, r0);
     }
     else
     {
-        const auto r0      = builder.CreateLoad(PTR_IX_TY(opBits), GEP64(allocR, ip->a.u32));
-        const auto r2      = builder.CreateLoad(I32_TY(), GEP64(allocR, ip->b.u8));
-        const auto cond    = builder.CreateICmpULT(r2, builder.getInt32(opBits));
-        const auto l0      = builder.CreateLoad(IX_TY(opBits), r0);
-        const auto l1      = builder.CreateIntCast(r2, IX_TY(opBits), false);
-        const auto iftrue  = left ? builder.CreateShl(l0, l1) : builder.CreateLShr(l0, l1);
-        const auto iffalse = llvm::ConstantInt::get(IX_TY(opBits), 0);
-        const auto v0      = builder.CreateSelect(cond, iftrue, iffalse);
-        builder.CreateStore(v0, r0);
+        const auto r0      = builder.CreateLoad(PTR_IX_TY(numBits), GEP64(allocR, ip->a.u32));
+        const auto r1      = builder.CreateLoad(I32_TY(), GEP64(allocR, ip->b.u8));
+        const auto r2      = builder.CreateICmpULT(r1, builder.getInt32(numBits));
+        const auto r3      = builder.CreateLoad(IX_TY(numBits), r0);
+        const auto r4      = builder.CreateIntCast(r1, IX_TY(numBits), false);
+        const auto ifTrue  = left ? builder.CreateShl(r3, r4) : builder.CreateLShr(r3, r4);
+        const auto ifFalse = llvm::ConstantInt::get(IX_TY(numBits), 0);
+        const auto r5      = builder.CreateSelect(r2, ifTrue, ifFalse);
+        builder.CreateStore(r5, r0);
     }
 }
 
@@ -145,29 +145,6 @@ void LLVM::emitInternalPanic(const BuildParameters& buildParameters, llvm::Alloc
         r4 = builder.CreateIntToPtr(pp.cstAi64, PTR_I8_TY());
 
     emitCall(buildParameters, g_LangSpec->name_priv_panic, allocR, allocT, {UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX}, {r1, r2, r3, r4});
-}
-
-llvm::Value* LLVM::getImmediateConstantA(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, const ByteCodeInstruction* ip, uint32_t opBits)
-{
-    if (ip->hasFlag(BCI_IMM_A))
-    {
-        switch (opBits)
-        {
-            case 8:
-                return builder.getInt8(ip->a.u8);
-            case 16:
-                return builder.getInt16(ip->a.u16);
-            case 32:
-                return builder.getInt32(ip->a.u32);
-            case 64:
-                return builder.getInt64(ip->a.u64);
-            default:
-                break;
-        }
-    }
-
-    const auto r0 = GEP64_PTR_IX(allocR, ip->a.u32, opBits);
-    return builder.CreateLoad(IX_TY(opBits), r0);
 }
 
 void LLVM::storeTypedValueToRegister(llvm::LLVMContext& context, const BuildParameters& buildParameters, llvm::Value* value, uint32_t reg, llvm::AllocaInst* allocR) const
