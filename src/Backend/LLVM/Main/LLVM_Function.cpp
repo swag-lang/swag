@@ -1377,26 +1377,18 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::AffectOpDivEqS16_SSafe:
             case ByteCodeOp::AffectOpDivEqS32_SSafe:
             case ByteCodeOp::AffectOpDivEqS64_SSafe:
-            {
-                const auto numBits = BackendEncoder::getNumBits(ip->op);
-                const auto r0      = GEP8_PTR_IX(allocStack, ip->a.u32, numBits);
-                const auto r1      = MK_IMMB_IX(numBits);
-                const auto r2      = builder.CreateLoad(IX_TY(numBits), r0);
-                const auto r3      = builder.CreateSDiv(r2, r1);
-                builder.CreateStore(r3, r0);
-                break;
-            }
-
             case ByteCodeOp::AffectOpDivEqU8_SSafe:
             case ByteCodeOp::AffectOpDivEqU16_SSafe:
             case ByteCodeOp::AffectOpDivEqU32_SSafe:
             case ByteCodeOp::AffectOpDivEqU64_SSafe:
             {
-                const auto numBits = BackendEncoder::getNumBits(ip->op);
-                const auto r0      = GEP8_PTR_IX(allocStack, ip->a.u32, numBits);
-                const auto r1      = MK_IMMB_IX(numBits);
-                const auto r2      = builder.CreateUDiv(builder.CreateLoad(IX_TY(numBits), r0), r1);
-                builder.CreateStore(r2, r0);
+                const auto numBits  = BackendEncoder::getNumBits(ip->op);
+                const auto isSigned = BackendEncoder::getOpType(ip->op)->isNativeIntegerSigned();
+                const auto r0       = GEP8_PTR_IX(allocStack, ip->a.u32, numBits);
+                const auto r1       = MK_IMMB_IX(numBits);
+                const auto r2       = builder.CreateLoad(IX_TY(numBits), r0);
+                const auto r3       = isSigned ? builder.CreateSDiv(r2, r1) : builder.CreateUDiv(r2, r1);
+                builder.CreateStore(r3, r0);
                 break;
             }
 
@@ -1417,27 +1409,19 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::AffectOpModuloEqS16:
             case ByteCodeOp::AffectOpModuloEqS32:
             case ByteCodeOp::AffectOpModuloEqS64:
-            {
-                const auto numBits = BackendEncoder::getNumBits(ip->op);
-                const auto r0      = GEP64(allocR, ip->a.u32);
-                const auto r1      = builder.CreateLoad(PTR_IX_TY(numBits), r0);
-                const auto r2      = MK_IMMB_IX(numBits);
-                const auto r3      = builder.CreateSRem(builder.CreateLoad(IX_TY(numBits), r1), r2);
-                builder.CreateStore(r3, r1);
-                break;
-            }
-
             case ByteCodeOp::AffectOpModuloEqU8:
             case ByteCodeOp::AffectOpModuloEqU16:
             case ByteCodeOp::AffectOpModuloEqU32:
             case ByteCodeOp::AffectOpModuloEqU64:
             {
-                const auto numBits = BackendEncoder::getNumBits(ip->op);
-                const auto r0      = GEP64(allocR, ip->a.u32);
-                const auto r1      = builder.CreateLoad(PTR_IX_TY(numBits), r0);
-                const auto r2      = MK_IMMB_IX(numBits);
-                const auto r3      = builder.CreateURem(builder.CreateLoad(IX_TY(numBits), r1), r2);
-                builder.CreateStore(r3, r1);
+                const auto numBits  = BackendEncoder::getNumBits(ip->op);
+                const auto isSigned = BackendEncoder::getOpType(ip->op)->isNativeIntegerSigned();
+                const auto r0       = GEP64(allocR, ip->a.u32);
+                const auto r1       = builder.CreateLoad(PTR_IX_TY(numBits), r0);
+                const auto r2       = MK_IMMB_IX(numBits);
+                const auto r3       = builder.CreateLoad(IX_TY(numBits), r1);
+                const auto r4       = isSigned ? builder.CreateSRem(r3, r2) : builder.CreateURem(r3, r2);
+                builder.CreateStore(r4, r1);
                 break;
             }
 
@@ -1445,25 +1429,18 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::AffectOpModuloEqS16_SSafe:
             case ByteCodeOp::AffectOpModuloEqS32_SSafe:
             case ByteCodeOp::AffectOpModuloEqS64_SSafe:
-            {
-                const auto numBits = BackendEncoder::getNumBits(ip->op);
-                const auto r0      = GEP8_PTR_IX(allocStack, ip->a.u32, numBits);
-                const auto r1      = MK_IMMB_IX(numBits);
-                auto       r2      = builder.CreateSRem(builder.CreateLoad(IX_TY(numBits), r0), r1);
-                builder.CreateStore(r2, r0);
-                break;
-            }
-
             case ByteCodeOp::AffectOpModuloEqU8_SSafe:
             case ByteCodeOp::AffectOpModuloEqU16_SSafe:
             case ByteCodeOp::AffectOpModuloEqU32_SSafe:
             case ByteCodeOp::AffectOpModuloEqU64_SSafe:
             {
-                const auto numBits = BackendEncoder::getNumBits(ip->op);
-                const auto r0      = GEP8_PTR_IX(allocStack, ip->a.u32, numBits);
-                const auto r1      = MK_IMMB_IX(numBits);
-                auto       r2      = builder.CreateURem(builder.CreateLoad(IX_TY(numBits), r0), r1);
-                builder.CreateStore(r2, r0);
+                const auto numBits  = BackendEncoder::getNumBits(ip->op);
+                const auto isSigned = BackendEncoder::getOpType(ip->op)->isNativeIntegerSigned();
+                const auto r0       = GEP8_PTR_IX(allocStack, ip->a.u32, numBits);
+                const auto r1       = MK_IMMB_IX(numBits);
+                const auto r2       = builder.CreateLoad(IX_TY(numBits), r0);
+                const auto r3       = isSigned ? builder.CreateSRem(r2, r1) : builder.CreateURem(r2, r1);
+                builder.CreateStore(r3, r0);
                 break;
             }
 
@@ -1533,16 +1510,6 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
                 /////////////////////////////////////
 
-            case ByteCodeOp::AffectOpShiftRightEqU8:
-            case ByteCodeOp::AffectOpShiftRightEqU16:
-            case ByteCodeOp::AffectOpShiftRightEqU32:
-            case ByteCodeOp::AffectOpShiftRightEqU64:
-            {
-                const auto numBits = BackendEncoder::getNumBits(ip->op);
-                emitShiftEqLogical(context, builder, allocR, ip, numBits, false);
-                break;
-            }
-
             case ByteCodeOp::AffectOpShiftRightEqS8:
             case ByteCodeOp::AffectOpShiftRightEqS16:
             case ByteCodeOp::AffectOpShiftRightEqS32:
@@ -1550,6 +1517,16 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             {
                 const auto numBits = BackendEncoder::getNumBits(ip->op);
                 emitShiftRightEqArithmetic(context, builder, allocR, ip, numBits);
+                break;
+            }
+
+            case ByteCodeOp::AffectOpShiftRightEqU8:
+            case ByteCodeOp::AffectOpShiftRightEqU16:
+            case ByteCodeOp::AffectOpShiftRightEqU32:
+            case ByteCodeOp::AffectOpShiftRightEqU64:
+            {
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                emitShiftEqLogical(context, builder, allocR, ip, numBits, false);
                 break;
             }
 
