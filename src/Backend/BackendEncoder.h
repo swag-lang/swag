@@ -29,9 +29,10 @@ struct BackendEncoder
 {
     BuildParameters       buildParams;
     Utf8                  filename;
-    ByteCodeInstruction*  ip     = nullptr;
-    Module*               module = nullptr;
-    BackendPreCompilePass pass   = {BackendPreCompilePass::Init};
+    ByteCodeInstruction*  ip      = nullptr;
+    int32_t               ipIndex = 0;
+    Module*               module  = nullptr;
+    BackendPreCompilePass pass    = {BackendPreCompilePass::Init};
 
     void init(const BuildParameters& buildParameters);
 

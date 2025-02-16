@@ -189,7 +189,7 @@ struct SCBE_CPU : BackendEncoder
     void            clearInstructionCache();
     CPUSymbol*      getSymbol(const Utf8& name);
     CPUSymbol*      getOrAddSymbol(const Utf8& name, CPUSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);
-    uint32_t        getOrCreateLabel(uint32_t ip);
+    uint32_t        getOrCreateLabel(uint32_t instructionIndex);
     CPUSymbol*      getOrCreateGlobalString(const Utf8& str);
     void            addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, uint16_t type);
     CPUFunction*    registerFunction(AstNode* node, uint32_t symbolIndex);

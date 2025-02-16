@@ -88,13 +88,13 @@ CPUSymbol* SCBE_CPU::getOrCreateGlobalString(const Utf8& str)
     return sym;
 }
 
-uint32_t SCBE_CPU::getOrCreateLabel(uint32_t ip)
+uint32_t SCBE_CPU::getOrCreateLabel(uint32_t instructionIndex)
 {
-    const auto it = labels.find(ip);
+    const auto it = labels.find(instructionIndex);
     if (it == labels.end())
     {
-        const auto count = concat.totalCount();
-        labels[ip]       = static_cast<int32_t>(count);
+        const auto count         = concat.totalCount();
+        labels[instructionIndex] = static_cast<int32_t>(count);
         return count;
     }
 

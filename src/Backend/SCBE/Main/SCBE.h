@@ -59,10 +59,10 @@ struct SCBE final : Backend
     static void emitBinOpEqLock(SCBE_X64& pp, CPUOp op);
     static void emitBinOpEqS(SCBE_X64& pp, uint32_t offsetStack, CPUOp op);
     static void emitAddSubMul64(SCBE_X64& pp, uint64_t mulValue, CPUOp op);
-    static void emitJumpCmp(SCBE_X64& pp, int32_t instructionCount, CPUCondJump op, OpBits opBits);
-    static void emitJumpCmpAddr(SCBE_X64& pp, int32_t instructionCount, CPUCondJump op, CPUReg memReg, uint64_t memOffset, OpBits opBits);
-    static void emitJumpCmp2(SCBE_X64& pp, int32_t instructionCount, CPUCondJump op1, CPUCondJump op2, OpBits opBits);
-    static void emitJumpCmp3(SCBE_X64& pp, int32_t instructionCount, CPUCondJump op1, CPUCondJump op2, OpBits opBits);
+    static void emitJumpCmp(SCBE_X64& pp, CPUCondJump op, OpBits opBits);
+    static void emitJumpCmpAddr(SCBE_X64& pp, CPUCondJump op, CPUReg memReg, uint64_t memOffset, OpBits opBits);
+    static void emitJumpCmp2(SCBE_X64& pp, CPUCondJump op1, CPUCondJump op2, OpBits opBits);
+    static void emitJumpCmp3(SCBE_X64& pp, CPUCondJump op1, CPUCondJump op2, OpBits opBits);
     static void emitIMMA(SCBE_X64& pp, CPUReg reg, OpBits opBits);
     static void emitIMMB(SCBE_X64& pp, CPUReg reg, OpBits opBits);
     static void emitIMMC(SCBE_X64& pp, CPUReg reg, OpBits opBits);

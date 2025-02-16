@@ -192,7 +192,8 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             continue;
         if (ip->hasFlag(BCI_NO_BACKEND))
             continue;
-        pp.ip = ip;
+        pp.ip      = ip;
+        pp.ipIndex = i;
 
         if (debug)
             SCBEDebug::setLocation(cpuFct, bc, ip, concat.totalCount() - beforeProlog);
@@ -1194,113 +1195,113 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::JumpIfNotEqual8:
-                emitJumpCmp(pp, i, JNZ, OpBits::B8);
+                emitJumpCmp(pp, JNZ, OpBits::B8);
                 break;
             case ByteCodeOp::JumpIfNotEqual16:
-                emitJumpCmp(pp, i, JNZ, OpBits::B16);
+                emitJumpCmp(pp, JNZ, OpBits::B16);
                 break;
             case ByteCodeOp::JumpIfNotEqual32:
-                emitJumpCmp(pp, i, JNZ, OpBits::B32);
+                emitJumpCmp(pp, JNZ, OpBits::B32);
                 break;
             case ByteCodeOp::JumpIfNotEqual64:
-                emitJumpCmp(pp, i, JNZ, OpBits::B64);
+                emitJumpCmp(pp, JNZ, OpBits::B64);
                 break;
             case ByteCodeOp::JumpIfNotEqualF32:
-                emitJumpCmp2(pp, i, JP, JNZ, OpBits::F32);
+                emitJumpCmp2(pp, JP, JNZ, OpBits::F32);
                 break;
             case ByteCodeOp::JumpIfNotEqualF64:
-                emitJumpCmp2(pp, i, JP, JNZ, OpBits::F64);
+                emitJumpCmp2(pp, JP, JNZ, OpBits::F64);
                 break;
 
                 /////////////////////////////////////
 
             case ByteCodeOp::JumpIfEqual8:
-                emitJumpCmp(pp, i, JZ, OpBits::B8);
+                emitJumpCmp(pp, JZ, OpBits::B8);
                 break;
             case ByteCodeOp::JumpIfEqual16:
-                emitJumpCmp(pp, i, JZ, OpBits::B16);
+                emitJumpCmp(pp, JZ, OpBits::B16);
                 break;
             case ByteCodeOp::JumpIfEqual32:
-                emitJumpCmp(pp, i, JZ, OpBits::B32);
+                emitJumpCmp(pp, JZ, OpBits::B32);
                 break;
             case ByteCodeOp::JumpIfEqual64:
-                emitJumpCmp(pp, i, JZ, OpBits::B64);
+                emitJumpCmp(pp, JZ, OpBits::B64);
                 break;
             case ByteCodeOp::JumpIfEqualF32:
-                emitJumpCmp2(pp, i, JP, JZ, OpBits::F32);
+                emitJumpCmp2(pp, JP, JZ, OpBits::F32);
                 break;
             case ByteCodeOp::JumpIfEqualF64:
-                emitJumpCmp2(pp, i, JP, JZ, OpBits::F64);
+                emitJumpCmp2(pp, JP, JZ, OpBits::F64);
                 break;
             case ByteCodeOp::IncJumpIfEqual64:
                 pp.emitOpBinary(CPUReg::RDI, REG_OFFSET(ip->a.u32), 1, CPUOp::ADD, OpBits::B64);
-                emitJumpCmp(pp, i, JZ, OpBits::B64);
+                emitJumpCmp(pp, JZ, OpBits::B64);
                 break;
 
                 /////////////////////////////////////
 
             case ByteCodeOp::JumpIfStackEqual8:
-                emitJumpCmpAddr(pp, i, JZ, CPUReg::RDI, offsetStack + ip->a.u32, OpBits::B8);
+                emitJumpCmpAddr(pp, JZ, CPUReg::RDI, offsetStack + ip->a.u32, OpBits::B8);
                 break;
             case ByteCodeOp::JumpIfStackNotEqual8:
-                emitJumpCmpAddr(pp, i, JNZ, CPUReg::RDI, offsetStack + ip->a.u32, OpBits::B8);
+                emitJumpCmpAddr(pp, JNZ, CPUReg::RDI, offsetStack + ip->a.u32, OpBits::B8);
                 break;
 
             case ByteCodeOp::JumpIfStackEqual16:
-                emitJumpCmpAddr(pp, i, JZ, CPUReg::RDI, offsetStack + ip->a.u32, OpBits::B16);
+                emitJumpCmpAddr(pp, JZ, CPUReg::RDI, offsetStack + ip->a.u32, OpBits::B16);
                 break;
             case ByteCodeOp::JumpIfStackNotEqual16:
-                emitJumpCmpAddr(pp, i, JNZ, CPUReg::RDI, offsetStack + ip->a.u32, OpBits::B16);
+                emitJumpCmpAddr(pp, JNZ, CPUReg::RDI, offsetStack + ip->a.u32, OpBits::B16);
                 break;
 
             case ByteCodeOp::JumpIfStackEqual32:
-                emitJumpCmpAddr(pp, i, JZ, CPUReg::RDI, offsetStack + ip->a.u32, OpBits::B32);
+                emitJumpCmpAddr(pp, JZ, CPUReg::RDI, offsetStack + ip->a.u32, OpBits::B32);
                 break;
             case ByteCodeOp::JumpIfStackNotEqual32:
-                emitJumpCmpAddr(pp, i, JNZ, CPUReg::RDI, offsetStack + ip->a.u32, OpBits::B32);
+                emitJumpCmpAddr(pp, JNZ, CPUReg::RDI, offsetStack + ip->a.u32, OpBits::B32);
                 break;
 
             case ByteCodeOp::JumpIfStackEqual64:
-                emitJumpCmpAddr(pp, i, JZ, CPUReg::RDI, offsetStack + ip->a.u32, OpBits::B64);
+                emitJumpCmpAddr(pp, JZ, CPUReg::RDI, offsetStack + ip->a.u32, OpBits::B64);
                 break;
             case ByteCodeOp::JumpIfStackNotEqual64:
-                emitJumpCmpAddr(pp, i, JNZ, CPUReg::RDI, offsetStack + ip->a.u32, OpBits::B64);
+                emitJumpCmpAddr(pp, JNZ, CPUReg::RDI, offsetStack + ip->a.u32, OpBits::B64);
                 break;
 
             case ByteCodeOp::JumpIfDeRefEqual8:
                 pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);
-                emitJumpCmpAddr(pp, i, JZ, CPUReg::RCX, ip->d.u32, OpBits::B8);
+                emitJumpCmpAddr(pp, JZ, CPUReg::RCX, ip->d.u32, OpBits::B8);
                 break;
             case ByteCodeOp::JumpIfDeRefNotEqual8:
                 pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);
-                emitJumpCmpAddr(pp, i, JNZ, CPUReg::RCX, ip->d.u32, OpBits::B8);
+                emitJumpCmpAddr(pp, JNZ, CPUReg::RCX, ip->d.u32, OpBits::B8);
                 break;
 
             case ByteCodeOp::JumpIfDeRefEqual16:
                 pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);
-                emitJumpCmpAddr(pp, i, JZ, CPUReg::RCX, ip->d.u32, OpBits::B16);
+                emitJumpCmpAddr(pp, JZ, CPUReg::RCX, ip->d.u32, OpBits::B16);
                 break;
             case ByteCodeOp::JumpIfDeRefNotEqual16:
                 pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);
-                emitJumpCmpAddr(pp, i, JNZ, CPUReg::RCX, ip->d.u32, OpBits::B16);
+                emitJumpCmpAddr(pp, JNZ, CPUReg::RCX, ip->d.u32, OpBits::B16);
                 break;
 
             case ByteCodeOp::JumpIfDeRefEqual32:
                 pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);
-                emitJumpCmpAddr(pp, i, JZ, CPUReg::RCX, ip->d.u32, OpBits::B32);
+                emitJumpCmpAddr(pp, JZ, CPUReg::RCX, ip->d.u32, OpBits::B32);
                 break;
             case ByteCodeOp::JumpIfDeRefNotEqual32:
                 pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);
-                emitJumpCmpAddr(pp, i, JNZ, CPUReg::RCX, ip->d.u32, OpBits::B32);
+                emitJumpCmpAddr(pp, JNZ, CPUReg::RCX, ip->d.u32, OpBits::B32);
                 break;
 
             case ByteCodeOp::JumpIfDeRefEqual64:
                 pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);
-                emitJumpCmpAddr(pp, i, JZ, CPUReg::RCX, ip->d.u32, OpBits::B64);
+                emitJumpCmpAddr(pp, JZ, CPUReg::RCX, ip->d.u32, OpBits::B64);
                 break;
             case ByteCodeOp::JumpIfDeRefNotEqual64:
                 pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);
-                emitJumpCmpAddr(pp, i, JNZ, CPUReg::RCX, ip->d.u32, OpBits::B64);
+                emitJumpCmpAddr(pp, JNZ, CPUReg::RCX, ip->d.u32, OpBits::B64);
                 break;
 
                 /////////////////////////////////////
@@ -1310,7 +1311,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpIfLowerS32:
             case ByteCodeOp::JumpIfLowerS64:
                 opBits = SCBE_CPU::getOpBits(ip->op);
-                emitJumpCmp(pp, i, JL, opBits);
+                emitJumpCmp(pp, JL, opBits);
                 break;
             case ByteCodeOp::JumpIfLowerU8:
             case ByteCodeOp::JumpIfLowerU16:
@@ -1319,7 +1320,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpIfLowerF32:
             case ByteCodeOp::JumpIfLowerF64:
                 opBits = SCBE_CPU::getOpBits(ip->op);
-                emitJumpCmp(pp, i, JB, opBits);
+                emitJumpCmp(pp, JB, opBits);
                 break;
 
                 /////////////////////////////////////
@@ -1329,7 +1330,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpIfLowerEqS32:
             case ByteCodeOp::JumpIfLowerEqS64:
                 opBits = SCBE_CPU::getOpBits(ip->op);
-                emitJumpCmp(pp, i, JLE, opBits);
+                emitJumpCmp(pp, JLE, opBits);
                 break;
 
             case ByteCodeOp::JumpIfLowerEqU8:
@@ -1339,7 +1340,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpIfLowerEqF32:
             case ByteCodeOp::JumpIfLowerEqF64:
                 opBits = SCBE_CPU::getOpBits(ip->op);
-                emitJumpCmp(pp, i, JBE, opBits);
+                emitJumpCmp(pp, JBE, opBits);
                 break;
 
                 /////////////////////////////////////
@@ -1349,7 +1350,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpIfGreaterS32:
             case ByteCodeOp::JumpIfGreaterS64:
                 opBits = SCBE_CPU::getOpBits(ip->op);
-                emitJumpCmp(pp, i, JG, opBits);
+                emitJumpCmp(pp, JG, opBits);
                 break;
 
             case ByteCodeOp::JumpIfGreaterU8:
@@ -1359,7 +1360,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpIfGreaterF32:
             case ByteCodeOp::JumpIfGreaterF64:
                 opBits = SCBE_CPU::getOpBits(ip->op);
-                emitJumpCmp(pp, i, JA, opBits);
+                emitJumpCmp(pp, JA, opBits);
                 break;
 
                 /////////////////////////////////////
@@ -1369,7 +1370,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpIfGreaterEqS32:
             case ByteCodeOp::JumpIfGreaterEqS64:
                 opBits = SCBE_CPU::getOpBits(ip->op);
-                emitJumpCmp(pp, i, JGE, opBits);
+                emitJumpCmp(pp, JGE, opBits);
                 break;
 
             case ByteCodeOp::JumpIfGreaterEqU8:
@@ -1379,7 +1380,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpIfGreaterEqF32:
             case ByteCodeOp::JumpIfGreaterEqF64:
                 opBits = SCBE_CPU::getOpBits(ip->op);
-                emitJumpCmp(pp, i, JAE, opBits);
+                emitJumpCmp(pp, JAE, opBits);
                 break;
 
                 /////////////////////////////////////
