@@ -1,5 +1,7 @@
 #pragma once
 #include "BackendParameters.h"
+
+struct CPUFunction;
 struct Module;
 struct TypeInfo;
 struct ByteCodeInstruction;
@@ -30,6 +32,7 @@ struct BackendEncoder
     BuildParameters       buildParams;
     Utf8                  filename;
     ByteCodeInstruction*  ip      = nullptr;
+    CPUFunction*          cpuFct  = nullptr;
     int32_t               ipIndex = 0;
     Module*               module  = nullptr;
     BackendPreCompilePass pass    = {BackendPreCompilePass::Init};

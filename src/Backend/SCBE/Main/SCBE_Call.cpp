@@ -8,8 +8,9 @@
 #include "Wmf/ModuleManager.h"
 #include "Wmf/Workspace.h"
 
-void SCBE::emitGetParam(SCBE_X64& pp, const CPUFunction* cpuFct, uint32_t reg, uint32_t paramIdx, OpBits opBits, uint64_t toAdd, OpBits derefBits)
+void SCBE::emitGetParam(SCBE_X64& pp, uint32_t reg, uint32_t paramIdx, OpBits opBits, uint64_t toAdd, OpBits derefBits)
 {
+    const auto     cpuFct     = pp.cpuFct;
     const auto     typeFunc   = cpuFct->typeFunc;
     const uint32_t paramStack = SCBE_CPU::getParamStackOffset(cpuFct, paramIdx);
     auto           typeParam  = TypeManager::concreteType(typeFunc->parameters[typeFunc->registerIdxToParamIdx(paramIdx)]->typeInfo);

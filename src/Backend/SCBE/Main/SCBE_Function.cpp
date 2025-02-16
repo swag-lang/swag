@@ -65,6 +65,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     cpuFct->startAddress = startAddress;
     if (debug)
         SCBEDebug::setLocation(cpuFct, bc, nullptr, 0);
+    pp.cpuFct = cpuFct;
 
     // In order, starting at RSP, we have :
     //
@@ -2084,14 +2085,14 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::GetParam32:
             case ByteCodeOp::GetParam64:
                 opBits = SCBE_CPU::getOpBits(ip->op);
-                emitGetParam(pp, cpuFct, ip->a.u32, ip->b.mergeU64U32.high, opBits);
+                emitGetParam(pp, ip->a.u32, ip->b.mergeU64U32.high, opBits);
                 break;
             case ByteCodeOp::GetParam64x2:
-                emitGetParam(pp, cpuFct, ip->a.u32, ip->b.mergeU64U32.high, OpBits::B64);
-                emitGetParam(pp, cpuFct, ip->c.u32, ip->d.mergeU64U32.high, OpBits::B64);
+                emitGetParam(pp, ip->a.u32, ip->b.mergeU64U32.high, OpBits::B64);
+                emitGetParam(pp, ip->c.u32, ip->d.mergeU64U32.high, OpBits::B64);
                 break;
             case ByteCodeOp::GetIncParam64:
-                emitGetParam(pp, cpuFct, ip->a.u32, ip->b.mergeU64U32.high, OpBits::B64, ip->d.u64);
+                emitGetParam(pp, ip->a.u32, ip->b.mergeU64U32.high, OpBits::B64, ip->d.u64);
                 break;
 
                 /////////////////////////////////////
@@ -2101,7 +2102,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::GetParam64DeRef32:
             case ByteCodeOp::GetParam64DeRef64:
                 opBits = SCBE_CPU::getOpBits(ip->op);
-                emitGetParam(pp, cpuFct, ip->a.u32, ip->b.mergeU64U32.high, OpBits::B64, 0, opBits);
+                emitGetParam(pp, ip->a.u32, ip->b.mergeU64U32.high, OpBits::B64, 0, opBits);
                 break;
 
                 /////////////////////////////////////
@@ -2111,7 +2112,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::GetIncParam64DeRef32:
             case ByteCodeOp::GetIncParam64DeRef64:
                 opBits = SCBE_CPU::getOpBits(ip->op);
-                emitGetParam(pp, cpuFct, ip->a.u32, ip->b.mergeU64U32.high, OpBits::B64, ip->d.u64, opBits);
+                emitGetParam(pp, ip->a.u32, ip->b.mergeU64U32.high, OpBits::B64, ip->d.u64, opBits);
                 break;
 
                 /////////////////////////////////////
