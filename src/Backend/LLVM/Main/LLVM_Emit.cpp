@@ -200,8 +200,6 @@ void LLVM::emitRT2ToRegisters(LLVM_Encoder& pp, uint32_t reg0, uint32_t reg1, ll
 
 void LLVM::emitBinOpOverflow(LLVM_Encoder&                          pp,
                              llvm::Function*                        func,
-                             llvm::AllocaInst*                      allocR,
-                             llvm::AllocaInst*                      allocT,
                              llvm::Value*                           r0,
                              llvm::Value*                           r1,
                              llvm::Value*                           r2,
@@ -221,7 +219,7 @@ void LLVM::emitBinOpOverflow(LLVM_Encoder&                          pp,
 
     builder.CreateCondBr(r6, blockOk, blockErr);
     builder.SetInsertPoint(blockErr);
-    emitInternalPanic(pp, allocR, allocT, ByteCodeGen::safetyMsg(msg, BackendEncoder::getOpType(ip->op)));
+    emitInternalPanic(pp, pp.allocR, pp.allocT, ByteCodeGen::safetyMsg(msg, BackendEncoder::getOpType(ip->op)));
     builder.CreateBr(blockOk);
     builder.SetInsertPoint(blockOk);
     builder.CreateStore(r4, r0);
@@ -229,8 +227,6 @@ void LLVM::emitBinOpOverflow(LLVM_Encoder&                          pp,
 
 void LLVM::emitBinOpEqOverflow(LLVM_Encoder&                          pp,
                                llvm::Function*                        func,
-                               llvm::AllocaInst*                      allocR,
-                               llvm::AllocaInst*                      allocT,
                                llvm::Value*                           r1,
                                llvm::Value*                           r2,
                                llvm::Intrinsic::IndependentIntrinsics op,
@@ -250,7 +246,7 @@ void LLVM::emitBinOpEqOverflow(LLVM_Encoder&                          pp,
 
     builder.CreateCondBr(r6, blockOk, blockErr);
     builder.SetInsertPoint(blockErr);
-    emitInternalPanic(pp, allocR, allocT, ByteCodeGen::safetyMsg(msg, BackendEncoder::getOpType(ip->op)));
+    emitInternalPanic(pp, pp.allocR, pp.allocT, ByteCodeGen::safetyMsg(msg, BackendEncoder::getOpType(ip->op)));
     builder.CreateBr(blockOk);
     builder.SetInsertPoint(blockOk);
     builder.CreateStore(r4, r1);

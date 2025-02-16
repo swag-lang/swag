@@ -47,43 +47,50 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     bc->markLabels();
 
     // Reserve registers
-    llvm::AllocaInst* allocR = nullptr;
+    pp.allocR = nullptr;
     if (bc->maxReservedRegisterRC)
     {
-        allocR = builder.CreateAlloca(I64_TY(), builder.getInt32(bc->maxReservedRegisterRC));
-        allocR->setAlignment(llvm::Align{16});
+        pp.allocR = builder.CreateAlloca(I64_TY(), builder.getInt32(bc->maxReservedRegisterRC));
+        pp.allocR->setAlignment(llvm::Align{16});
     }
 
-    llvm::AllocaInst* allocRR = nullptr;
+    pp.allocRR = nullptr;
     if (bc->maxCallResults)
     {
-        allocRR = builder.CreateAlloca(I64_TY(), builder.getInt32(bc->maxCallResults));
-        allocRR->setAlignment(llvm::Align{16});
+        pp.allocRR = builder.CreateAlloca(I64_TY(), builder.getInt32(bc->maxCallResults));
+        pp.allocRR->setAlignment(llvm::Align{16});
     }
 
-    llvm::AllocaInst* allocResult = builder.CreateAlloca(I64_TY(), builder.getInt32(1));
-    allocResult->setAlignment(llvm::Align{16});
+    pp.allocResult = builder.CreateAlloca(I64_TY(), builder.getInt32(1));
+    pp.allocResult->setAlignment(llvm::Align{16});
 
     // To store variadic
-    llvm::AllocaInst* allocVa = nullptr;
+    pp.allocVa = nullptr;
     if (bc->maxSpVaargs)
     {
-        allocVa = builder.CreateAlloca(I64_TY(), builder.getInt64(bc->maxSpVaargs));
-        allocVa->setAlignment(llvm::Align{16});
+        pp.allocVa = builder.CreateAlloca(I64_TY(), builder.getInt64(bc->maxSpVaargs));
+        pp.allocVa->setAlignment(llvm::Align{16});
     }
 
     // Stack
-    llvm::AllocaInst* allocStack = nullptr;
+    pp.allocStack = nullptr;
     if (bc->stackSize)
     {
-        allocStack = builder.CreateAlloca(I8_TY(), builder.getInt32(bc->stackSize));
-        allocStack->setAlignment(llvm::Align(2 * sizeof(void*)));
+        pp.allocStack = builder.CreateAlloca(I8_TY(), builder.getInt32(bc->stackSize));
+        pp.allocStack->setAlignment(llvm::Align(2 * sizeof(void*)));
     }
 
     // Reserve room to pass parameters to embedded intrinsics
     static constexpr int ALLOC_T_NUM = 5;
-    auto                 allocT      = builder.CreateAlloca(I64_TY(), builder.getInt64(ALLOC_T_NUM));
-    allocT->setAlignment(llvm::Align{16});
+    pp.allocT                        = builder.CreateAlloca(I64_TY(), builder.getInt64(ALLOC_T_NUM));
+    pp.allocT->setAlignment(llvm::Align{16});
+
+    const auto allocR      = pp.allocR;
+    const auto allocRR     = pp.allocRR;
+    const auto allocResult = pp.allocResult;
+    const auto allocVa     = pp.allocVa;
+    const auto allocStack  = pp.allocStack;
+    const auto allocT      = pp.allocT;
 
     // Debug infos
     if (pp.dbg && bc->node)
@@ -103,9 +110,9 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             continue;
         if (ip->hasFlag(BCI_NO_BACKEND))
             continue;
-        pp.ip = ip;
+        pp.ip      = ip;
         pp.ipIndex = i;
-        
+
         // If we are the destination of a jump, be sure we have a block, and from now insert into that block
         if (ip->hasFlag(BCI_JUMP_DEST) || blockIsClosed)
         {
@@ -787,7 +794,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (BackendEncoder::mustCheckOverflow(module, ip))
                 {
                     const auto op = isSigned ? llvm::Intrinsic::sadd_with_overflow : llvm::Intrinsic::uadd_with_overflow;
-                    emitBinOpOverflow(pp, func, allocR, allocT, r0, r1, r2, op, SafetyMsg::Plus);
+                    emitBinOpOverflow(pp, func, r0, r1, r2, op, SafetyMsg::Plus);
                 }
                 else
                     builder.CreateStore(builder.CreateAdd(r1, r2), r0);
@@ -843,7 +850,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (BackendEncoder::mustCheckOverflow(module, ip))
                 {
                     const auto op = isSigned ? llvm::Intrinsic::ssub_with_overflow : llvm::Intrinsic::usub_with_overflow;
-                    emitBinOpOverflow(pp, func, allocR, allocT, r0, r1, r2, op, SafetyMsg::Minus);
+                    emitBinOpOverflow(pp, func, r0, r1, r2, op, SafetyMsg::Minus);
                 }
                 else
                     builder.CreateStore(builder.CreateSub(r1, r2), r0);
@@ -899,7 +906,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (BackendEncoder::mustCheckOverflow(module, ip))
                 {
                     const auto op = isSigned ? llvm::Intrinsic::smul_with_overflow : llvm::Intrinsic::umul_with_overflow;
-                    emitBinOpOverflow(pp, func, allocR, allocT, r0, r1, r2, op, SafetyMsg::Mul);
+                    emitBinOpOverflow(pp, func, r0, r1, r2, op, SafetyMsg::Mul);
                 }
                 else
                     builder.CreateStore(builder.CreateMul(r1, r2), r0);
@@ -1095,7 +1102,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (BackendEncoder::mustCheckOverflow(module, ip))
                 {
                     const auto op = isSigned ? llvm::Intrinsic::ssub_with_overflow : llvm::Intrinsic::usub_with_overflow;
-                    emitBinOpEqOverflow(pp, func, allocR, allocT, r1, r2, op, SafetyMsg::MinusEq);
+                    emitBinOpEqOverflow(pp, func, r1, r2, op, SafetyMsg::MinusEq);
                 }
                 else
                 {
@@ -1184,7 +1191,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (BackendEncoder::mustCheckOverflow(module, ip))
                 {
                     const auto op = isSigned ? llvm::Intrinsic::sadd_with_overflow : llvm::Intrinsic::uadd_with_overflow;
-                    emitBinOpEqOverflow(pp, func, allocR, allocT, r1, r2, op, SafetyMsg::PlusEq);
+                    emitBinOpEqOverflow(pp, func, r1, r2, op, SafetyMsg::PlusEq);
                 }
                 else
                 {
@@ -1273,7 +1280,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (BackendEncoder::mustCheckOverflow(module, ip))
                 {
                     const auto op = isSigned ? llvm::Intrinsic::smul_with_overflow : llvm::Intrinsic::umul_with_overflow;
-                    emitBinOpEqOverflow(pp, func, allocR, allocT, r1, r2, op, SafetyMsg::MulEq);
+                    emitBinOpEqOverflow(pp, func, r1, r2, op, SafetyMsg::MulEq);
                 }
                 else
                 {

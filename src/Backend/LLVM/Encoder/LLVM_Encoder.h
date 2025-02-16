@@ -17,10 +17,17 @@ enum class SafetyMsg;
 struct LLVM_Encoder : BackendEncoder
 {
     void init(const BuildParameters& buildParameters);
-    
+
     llvm::IRBuilder<>* builder;
     llvm::LLVMContext* llvmContext;
     llvm::Module*      llvmModule;
+
+    llvm::AllocaInst* allocR      = nullptr;
+    llvm::AllocaInst* allocRR     = nullptr;
+    llvm::AllocaInst* allocResult = nullptr;
+    llvm::AllocaInst* allocVa     = nullptr;
+    llvm::AllocaInst* allocStack  = nullptr;
+    llvm::AllocaInst* allocT      = nullptr;
 
     llvm::GlobalVariable* bssSeg              = nullptr;
     llvm::GlobalVariable* mutableSeg          = nullptr;
