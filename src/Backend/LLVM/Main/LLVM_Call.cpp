@@ -263,15 +263,14 @@ llvm::FunctionType* LLVM::getOrCreateFuncType(LLVM_Encoder& pp, TypeInfoFuncAttr
     return result;
 }
 
-bool LLVM::emitGetParam(LLVM_Encoder&         pp,
-                        const llvm::Function* func,
-                        TypeInfoFuncAttr*     typeFunc,
-                        uint32_t              rDest,
-                        uint32_t              paramIdx,
-                        llvm::AllocaInst*     allocR,
-                        int                   sizeOf,
-                        uint64_t              toAdd,
-                        int                   deRefSize)
+bool LLVM::emitGetParam(LLVM_Encoder&     pp,
+                        TypeInfoFuncAttr* typeFunc,
+                        uint32_t          rDest,
+                        uint32_t          paramIdx,
+                        llvm::AllocaInst* allocR,
+                        int               sizeOf,
+                        uint64_t          toAdd,
+                        int               deRefSize)
 {
     auto& builder = *pp.builder;
     auto& context = *pp.llvmContext;
@@ -280,7 +279,7 @@ bool LLVM::emitGetParam(LLVM_Encoder&         pp,
     if (param->isAutoConstPointerRef())
         param = TypeManager::concretePtrRef(param);
 
-    const auto arg = func->getArg(paramIdx);
+    const auto arg = pp.llvmFunc->getArg(paramIdx);
 
     if (toAdd || deRefSize)
     {
@@ -844,7 +843,6 @@ void LLVM::emitForeignCall(LLVM_Encoder&                                pp,
 }
 
 bool LLVM::emitLambdaCall(LLVM_Encoder&                                pp,
-                          llvm::Function*                              func,
                           llvm::AllocaInst*                            allocR,
                           llvm::AllocaInst*                            allocRR,
                           const llvm::AllocaInst*                      allocT,
@@ -857,9 +855,9 @@ bool LLVM::emitLambdaCall(LLVM_Encoder&                                pp,
     auto&      context      = *pp.llvmContext;
     const auto typeFuncCall = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
 
-    llvm::BasicBlock* blockLambdaBC     = llvm::BasicBlock::Create(context, "", func);
-    llvm::BasicBlock* blockLambdaNative = llvm::BasicBlock::Create(context, "", func);
-    llvm::BasicBlock* blockNext         = llvm::BasicBlock::Create(context, "", func);
+    const auto blockLambdaBC     = llvm::BasicBlock::Create(context, "", pp.llvmFunc);
+    const auto blockLambdaNative = llvm::BasicBlock::Create(context, "", pp.llvmFunc);
+    const auto blockNext         = llvm::BasicBlock::Create(context, "", pp.llvmFunc);
 
     {
         const auto v0 = builder.CreateLoad(I64_TY(), GEP64(allocR, ip->a.u32));
@@ -879,8 +877,8 @@ bool LLVM::emitLambdaCall(LLVM_Encoder&                                pp,
 
         if (typeFuncCall->isClosure())
         {
-            llvm::BasicBlock* blockLambda  = llvm::BasicBlock::Create(context, "", func);
-            llvm::BasicBlock* blockClosure = llvm::BasicBlock::Create(context, "", func);
+            const auto blockLambda  = llvm::BasicBlock::Create(context, "", pp.llvmFunc);
+            const auto blockClosure = llvm::BasicBlock::Create(context, "", pp.llvmFunc);
 
             // Test closure context pointer. If null, this is a lambda.
             // :VariadicAndClosure
@@ -940,8 +938,8 @@ bool LLVM::emitLambdaCall(LLVM_Encoder&                                pp,
 
         if (typeFuncCall->isClosure())
         {
-            llvm::BasicBlock* blockLambda  = llvm::BasicBlock::Create(context, "", func);
-            llvm::BasicBlock* blockClosure = llvm::BasicBlock::Create(context, "", func);
+            const auto blockLambda  = llvm::BasicBlock::Create(context, "", pp.llvmFunc);
+            const auto blockClosure = llvm::BasicBlock::Create(context, "", pp.llvmFunc);
 
             // Test closure context pointer. If null, this is a lambda.
             const auto v0 = builder.CreateLoad(I64_TY(), GEP64(allocR, pushRAParams.back()));
