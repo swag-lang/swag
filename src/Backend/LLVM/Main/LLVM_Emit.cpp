@@ -196,24 +196,24 @@ void LLVM::storeTypedValueToRegister(llvm::LLVMContext& context, const BuildPara
         builder.CreateStore(r1, GEP64(allocR, reg));
 }
 
-void LLVM::storeRT2ToRegisters(llvm::LLVMContext&     context,
-                               const BuildParameters& buildParameters,
-                               uint32_t               reg0,
-                               uint32_t               reg1,
-                               llvm::AllocaInst*      allocR,
-                               llvm::AllocaInst*      allocRR) const
+void LLVM::emitRT2ToRegisters(llvm::LLVMContext&     context,
+                              const BuildParameters& buildParameters,
+                              uint32_t               reg0,
+                              uint32_t               reg1,
+                              llvm::AllocaInst*      allocR,
+                              llvm::AllocaInst*      allocRR) const
 {
     const auto  ct              = buildParameters.compileType;
     const auto  precompileIndex = buildParameters.precompileIndex;
     const auto& pp              = encoder<LLVMEncoder>(ct, precompileIndex);
     auto&       builder         = *pp.builder;
 
-    auto r0 = GEP64(allocR, reg0);
-    auto r1 = builder.CreateLoad(I64_TY(), GEP64(allocRR, 0));
+    const auto r0 = GEP64(allocR, reg0);
+    const auto r1 = builder.CreateLoad(I64_TY(), GEP64(allocRR, 0));
     builder.CreateStore(r1, r0);
-    r0 = GEP64(allocR, reg1);
-    r1 = builder.CreateLoad(I64_TY(), GEP64(allocRR, 1));
-    builder.CreateStore(r1, r0);
+    const auto r2 = GEP64(allocR, reg1);
+    const auto r3 = builder.CreateLoad(I64_TY(), GEP64(allocRR, 1));
+    builder.CreateStore(r3, r2);
 }
 
 void LLVM::emitBinOpOverflow(const BuildParameters&                 buildParameters,
