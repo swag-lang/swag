@@ -97,13 +97,10 @@ void LLVM::getReturnResult(LLVM_Encoder& pp, TypeInfo* returnType, bool imm, con
     }
 }
 
-void LLVM::createRet(const BuildParameters& buildParameters, const TypeInfoFuncAttr* typeFunc, TypeInfo* returnType, llvm::AllocaInst* allocResult)
+void LLVM::emitRet(LLVM_Encoder& pp, const TypeInfoFuncAttr* typeFunc, TypeInfo* returnType, llvm::AllocaInst* allocResult)
 {
-    const auto ct              = buildParameters.compileType;
-    const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
-    auto&      context         = *pp.llvmContext;
-    auto&      builder         = *pp.builder;
+    auto& context = *pp.llvmContext;
+    auto& builder = *pp.builder;
 
     // Emit result
     if (!returnType->isVoid() && !CallConv::returnByAddress(typeFunc))

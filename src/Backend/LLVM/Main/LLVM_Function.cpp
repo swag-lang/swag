@@ -2248,7 +2248,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 // RIDICULOUS !!
                 //
                 // If we request an optimized code, do not do that crap.
-                createRet(buildParameters, typeFunc, returnType, allocResult);
+                emitRet(pp, typeFunc, returnType, allocResult);
                 blockIsClosed = true;
                 break;
 
@@ -3470,7 +3470,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     if (!blockIsClosed)
     {
-        createRet(buildParameters, typeFunc, returnType, allocResult);
+        emitRet(pp, typeFunc, returnType, allocResult);
     }
 
     return ok;
