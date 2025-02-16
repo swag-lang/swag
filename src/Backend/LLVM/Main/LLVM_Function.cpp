@@ -1145,27 +1145,24 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
 
             case ByteCodeOp::AffectOpMinusEqU8:
-            {
-                MK_BINOP_EQ8_CAB();
-                OPEQ_OVERFLOW(usub_with_overflow, CreateSub, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU8), false);
-                break;
-            }
             case ByteCodeOp::AffectOpMinusEqU16:
-            {
-                MK_BINOP_EQ16_CAB();
-                OPEQ_OVERFLOW(usub_with_overflow, CreateSub, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU16), false);
-                break;
-            }
             case ByteCodeOp::AffectOpMinusEqU32:
-            {
-                MK_BINOP_EQ32_CAB();
-                OPEQ_OVERFLOW(usub_with_overflow, CreateSub, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU32), false);
-                break;
-            }
             case ByteCodeOp::AffectOpMinusEqU64:
             {
-                MK_BINOP_EQ64_CAB();
-                OPEQ_OVERFLOW(usub_with_overflow, CreateSub, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU64), false);
+                const auto numBits = BackendEncoder::getNumBits(ip->op);
+                const auto r0      = GEP64(allocR, ip->a.u32);
+                const auto r1      = builder.CreateLoad(PTR_IX_TY(numBits), r0);
+                const auto r2      = MK_IMMB_IX(numBits);
+                bool       nw      = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
+                if (nw && module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW))
+                {
+                    emitBinOpEqOverflow(buildParameters, func, allocR, allocT, ip, r0, r1, r2, llvm::Intrinsic::usub_with_overflow, SafetyMsg::MinusEq);
+                }
+                else
+                {
+                    auto r3 = builder.CreateLoad(IX_TY(numBits), r1);
+                    builder.CreateStore(builder.CreateSub(r3, r2), r1);
+                }
                 break;
             }
 
