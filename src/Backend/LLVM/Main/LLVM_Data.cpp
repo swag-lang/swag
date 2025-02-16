@@ -4,18 +4,18 @@
 #include "Backend/LLVM/Main/LLVM_Macros.h"
 #include "Wmf/Module.h"
 
-bool LLVM::emitDataSegment(const BuildParameters& buildParameters, DataSegment* dataSegment) const
+bool LLVM::emitDataSegment(LLVM_Encoder& pp, DataSegment* dataSegment)
 {
     if (dataSegment->buckets.empty())
         return true;
     if (!dataSegment->totalCount)
         return true;
 
-    const auto ct              = buildParameters.compileType;
-    const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
-    auto&      context         = *pp.llvmContext;
-    auto&      modu            = *pp.llvmModule;
+    const auto& buildParameters = pp.buildParams;
+    const auto  precompileIndex = buildParameters.precompileIndex;
+    const auto  module          = pp.module;
+    auto&       context         = *pp.llvmContext;
+    auto&       modu            = *pp.llvmModule;
 
     llvm::Type* type       = I64_TY();
     auto        totalCount = dataSegment->totalCount / 8;
@@ -103,16 +103,11 @@ bool LLVM::emitDataSegment(const BuildParameters& buildParameters, DataSegment* 
     return true;
 }
 
-bool LLVM::emitInitSeg(const BuildParameters& buildParameters, DataSegment* dataSegment, SegmentKind me) const
+bool LLVM::emitInitSeg(LLVM_Encoder& pp, DataSegment* dataSegment, SegmentKind me)
 {
-    const auto ct              = buildParameters.compileType;
-    const auto precompileIndex = buildParameters.precompileIndex;
-    SWAG_ASSERT(precompileIndex == 0);
-
-    const auto& pp      = encoder<LLVM_Encoder>(ct, precompileIndex);
-    auto&       context = *pp.llvmContext;
-    auto&       builder = *pp.builder;
-    auto&       modu    = *pp.llvmModule;
+    auto& context = *pp.llvmContext;
+    auto& builder = *pp.builder;
+    auto& modu    = *pp.llvmModule;
 
     const auto            fctType = llvm::FunctionType::get(VOID_TY(), false);
     const char*           name    = nullptr;

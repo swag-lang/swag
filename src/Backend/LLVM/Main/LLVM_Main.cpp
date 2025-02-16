@@ -6,16 +6,13 @@
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 
-void LLVM::emitOS(const BuildParameters& buildParameters) const
+void LLVM::emitOS(LLVM_Encoder& pp)
 {
     if (g_CommandLine.target.os == SwagTargetOs::Windows)
     {
-        const auto  ct              = buildParameters.compileType;
-        const auto  precompileIndex = buildParameters.precompileIndex;
-        const auto& pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
-        auto&       context         = *pp.llvmContext;
-        auto&       builder         = *pp.builder;
-        auto&       modu            = *pp.llvmModule;
+        auto& context = *pp.llvmContext;
+        auto& builder = *pp.builder;
+        auto& modu    = *pp.llvmModule;
 
         // int _DllMainCRTStartup(void*, int, void*)
         {
@@ -67,16 +64,15 @@ void LLVM::emitOS(const BuildParameters& buildParameters) const
     }
 }
 
-void LLVM::emitMain(const BuildParameters& buildParameters)
+void LLVM::emitMain(LLVM_Encoder& pp)
 {
-    const auto ct              = buildParameters.compileType;
-    const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
-    auto&      context         = *pp.llvmContext;
-    auto&      builder         = *pp.builder;
-    auto&      modu            = *pp.llvmModule;
+    auto&       context         = *pp.llvmContext;
+    auto&       builder         = *pp.builder;
+    auto&       modu            = *pp.llvmModule;
+    auto        module          = pp.module;
+    const auto& buildParameters = pp.buildParams;
 
-    emitOS(buildParameters);
+    emitOS(pp);
 
     const char* entryPoint = nullptr;
     switch (g_CommandLine.target.os)
@@ -274,15 +270,13 @@ void LLVM::emitMain(const BuildParameters& buildParameters)
     builder.CreateRetVoid();
 }
 
-void LLVM::emitGetTypeTable(const BuildParameters& buildParameters) const
+void LLVM::emitGetTypeTable(LLVM_Encoder& pp)
 {
-    const auto ct              = buildParameters.compileType;
-    const auto precompileIndex = buildParameters.precompileIndex;
-
-    const auto& pp      = encoder<LLVM_Encoder>(ct, precompileIndex);
-    auto&       context = *pp.llvmContext;
-    auto&       builder = *pp.builder;
-    auto&       modu    = *pp.llvmModule;
+    const auto& buildParameters = pp.buildParams;
+    const auto  module          = pp.module;
+    auto&       context         = *pp.llvmContext;
+    auto&       builder         = *pp.builder;
+    auto&       modu            = *pp.llvmModule;
 
     const auto      fctType  = llvm::FunctionType::get(PTR_I8_TY(), {}, false);
     const auto      funcName = module->getGlobalPrivateFct(g_LangSpec->name_getTypeTable);
@@ -297,15 +291,13 @@ void LLVM::emitGetTypeTable(const BuildParameters& buildParameters) const
     builder.CreateRet(TO_PTR_I8(r1));
 }
 
-void LLVM::emitGlobalPreMain(const BuildParameters& buildParameters) const
+void LLVM::emitGlobalPreMain(LLVM_Encoder& pp)
 {
-    const auto ct              = buildParameters.compileType;
-    const auto precompileIndex = buildParameters.precompileIndex;
-
-    const auto& pp      = encoder<LLVM_Encoder>(ct, precompileIndex);
-    auto&       context = *pp.llvmContext;
-    auto&       builder = *pp.builder;
-    auto&       modu    = *pp.llvmModule;
+    const auto& buildParameters = pp.buildParams;
+    const auto  module          = pp.module;
+    auto&       context         = *pp.llvmContext;
+    auto&       builder         = *pp.builder;
+    auto&       modu            = *pp.llvmModule;
 
     const auto      fctType = llvm::FunctionType::get(VOID_TY(), {pp.processInfosTy->getPointerTo()}, false);
     const auto      nameFct = module->getGlobalPrivateFct(g_LangSpec->name_globalPreMain);
@@ -337,15 +329,13 @@ void LLVM::emitGlobalPreMain(const BuildParameters& buildParameters) const
     builder.CreateRetVoid();
 }
 
-void LLVM::emitGlobalInit(const BuildParameters& buildParameters)
+void LLVM::emitGlobalInit(LLVM_Encoder& pp)
 {
-    const auto ct              = buildParameters.compileType;
-    const auto precompileIndex = buildParameters.precompileIndex;
-
-    auto& pp      = encoder<LLVM_Encoder>(ct, precompileIndex);
-    auto& context = *pp.llvmContext;
-    auto& builder = *pp.builder;
-    auto& modu    = *pp.llvmModule;
+    const auto& buildParameters = pp.buildParams;
+    const auto  module          = pp.module;
+    auto&       context         = *pp.llvmContext;
+    auto&       builder         = *pp.builder;
+    auto&       modu            = *pp.llvmModule;
 
     const auto      fctType = llvm::FunctionType::get(VOID_TY(), {pp.processInfosTy->getPointerTo()}, false);
     const auto      nameFct = module->getGlobalPrivateFct(g_LangSpec->name_globalInit);
@@ -415,15 +405,13 @@ void LLVM::emitGlobalInit(const BuildParameters& buildParameters)
     builder.CreateRetVoid();
 }
 
-void LLVM::emitGlobalDrop(const BuildParameters& buildParameters)
+void LLVM::emitGlobalDrop(LLVM_Encoder& pp)
 {
-    const auto ct              = buildParameters.compileType;
-    const auto precompileIndex = buildParameters.precompileIndex;
-
-    auto& pp      = encoder<LLVM_Encoder>(ct, precompileIndex);
-    auto& context = *pp.llvmContext;
-    auto& builder = *pp.builder;
-    auto& modu    = *pp.llvmModule;
+    const auto& buildParameters = pp.buildParams;
+    const auto  module          = pp.module;
+    auto&       context         = *pp.llvmContext;
+    auto&       builder         = *pp.builder;
+    auto&       modu            = *pp.llvmModule;
 
     const auto      fctType = llvm::FunctionType::get(VOID_TY(), false);
     const auto      nameFct = module->getGlobalPrivateFct(g_LangSpec->name_globalDrop);

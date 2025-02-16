@@ -14,13 +14,12 @@ LLVM::LLVM(Module* mdl) :
 {
 }
 
-void LLVM::createRuntime(const BuildParameters& buildParameters) const
+void LLVM::createRuntime(LLVM_Encoder& pp)
 {
-    const auto ct              = buildParameters.compileType;
-    const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
-    auto&      context         = *pp.llvmContext;
-    auto&      modu            = *pp.llvmModule;
+    const auto& buildParameters = pp.buildParams;
+    const auto  precompileIndex = buildParameters.precompileIndex;
+    auto&       context         = *pp.llvmContext;
+    auto&       modu            = *pp.llvmModule;
 
     // SwagInterface
     {
@@ -240,17 +239,17 @@ JobResult LLVM::prepareOutput(const BuildParameters& buildParameters, int stage,
             pp.dbg->setup(this, pp.llvmModule);
         }
 
-        createRuntime(buildParameters);
-        emitDataSegment(buildParameters, &module->bssSegment);
-        emitDataSegment(buildParameters, &module->mutableSegment);
-        emitDataSegment(buildParameters, &module->constantSegment);
-        emitDataSegment(buildParameters, &module->tlsSegment);
+        createRuntime(pp);
+        emitDataSegment(pp, &module->bssSegment);
+        emitDataSegment(pp, &module->mutableSegment);
+        emitDataSegment(pp, &module->constantSegment);
+        emitDataSegment(pp, &module->tlsSegment);
     }
 
     if (pp.pass == BackendPreCompilePass::FunctionBodies)
     {
         pp.pass = BackendPreCompilePass::End;
-        emitAllFunctionBodies(buildParameters, ownerJob);
+        emitAllFunctionBodies(pp.buildParams, ownerJob);
 
         return JobResult::KeepJobAlive;
     }
@@ -266,18 +265,18 @@ JobResult LLVM::prepareOutput(const BuildParameters& buildParameters, int stage,
 
         if (precompileIndex == 0)
         {
-            emitInitSeg(buildParameters, &module->mutableSegment, SegmentKind::Data);
-            emitInitSeg(buildParameters, &module->constantSegment, SegmentKind::Constant);
-            emitInitSeg(buildParameters, &module->tlsSegment, SegmentKind::Tls);
-            emitGetTypeTable(buildParameters);
-            emitGlobalInit(buildParameters);
-            emitGlobalDrop(buildParameters);
-            emitGlobalPreMain(buildParameters);
-            emitMain(buildParameters);
+            emitInitSeg(pp, &module->mutableSegment, SegmentKind::Data);
+            emitInitSeg(pp, &module->constantSegment, SegmentKind::Constant);
+            emitInitSeg(pp, &module->tlsSegment, SegmentKind::Tls);
+            emitGetTypeTable(pp);
+            emitGlobalInit(pp);
+            emitGlobalDrop(pp);
+            emitGlobalPreMain(pp);
+            emitMain(pp);
         }
 
         // Output file
-        generateObjFile(buildParameters);
+        generateObjFile(pp);
 
         delete pp.llvmModule;
         delete pp.llvmContext;
@@ -288,12 +287,9 @@ JobResult LLVM::prepareOutput(const BuildParameters& buildParameters, int stage,
     return JobResult::ReleaseJob;
 }
 
-void LLVM::generateObjFile(const BuildParameters& buildParameters) const
+void LLVM::generateObjFile(LLVM_Encoder& pp)
 {
-    const auto ct              = buildParameters.compileType;
-    const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
-    auto&      modu            = *pp.llvmModule;
+    auto& modu = *pp.llvmModule;
 
     // Debug infos
     if (pp.dbg)
@@ -337,7 +333,7 @@ void LLVM::generateObjFile(const BuildParameters& buildParameters) const
     std::string error;
     auto        target = llvm::TargetRegistry::lookupTarget(targetTriple.cstr(), error);
     if (!target)
-        Report::internalError(buildParameters.module, form("the LLVM backend failed to create the target [[%s]]", targetTriple.cstr()));
+        Report::internalError(pp.module, form("the LLVM backend failed to create the target [[%s]]", targetTriple.cstr()));
 
     // Create target machine
     Utf8 cpu = "generic";
@@ -370,7 +366,7 @@ void LLVM::generateObjFile(const BuildParameters& buildParameters) const
     }
 
     llvm::TargetOptions opt;
-    auto                buildCfg     = buildParameters.buildCfg;
+    auto                buildCfg     = pp.buildParams.buildCfg;
     const auto&         buildCfgLLVM = buildCfg->backendLLVM;
 
     opt.AllowFPOpFusion     = buildCfgLLVM.fpMathFma ? llvm::FPOpFusion::Fast : llvm::FPOpFusion::Standard;

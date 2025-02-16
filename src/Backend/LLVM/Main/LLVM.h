@@ -19,20 +19,19 @@ struct LLVM final : Backend
 {
     explicit LLVM(Module* mdl);
 
-    void      createRuntime(const BuildParameters& buildParameters) const;
     JobResult prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob) override;
+    bool      emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc) override;
 
-    bool emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc) override;
-
-    void generateObjFile(const BuildParameters& buildParameters) const;
-    bool emitDataSegment(const BuildParameters& buildParameters, DataSegment* dataSegment) const;
-    bool emitInitSeg(const BuildParameters& buildParameters, DataSegment* dataSegment, SegmentKind me) const;
-    void emitGetTypeTable(const BuildParameters& buildParameters) const;
-    void emitGlobalPreMain(const BuildParameters& buildParameters) const;
-    void emitGlobalInit(const BuildParameters& buildParameters);
-    void emitGlobalDrop(const BuildParameters& buildParameters);
-    void emitOS(const BuildParameters& buildParameters) const;
-    void emitMain(const BuildParameters& buildParameters);
+    static void createRuntime(LLVM_Encoder& pp);
+    static void generateObjFile(LLVM_Encoder& pp);
+    static bool emitDataSegment(LLVM_Encoder& pp, DataSegment* dataSegment);
+    static bool emitInitSeg(LLVM_Encoder& pp, DataSegment* dataSegment, SegmentKind me);
+    static void emitGetTypeTable(LLVM_Encoder& pp);
+    static void emitGlobalPreMain(LLVM_Encoder& pp);
+    static void emitGlobalInit(LLVM_Encoder& pp);
+    static void emitGlobalDrop(LLVM_Encoder& pp);
+    static void emitOS(LLVM_Encoder& pp);
+    static void emitMain(LLVM_Encoder& pp);
 
     static void         emitLocalCall(LLVM_Encoder& pp, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, const ByteCodeInstruction* ip, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams, VectorNative<uint32_t>& pushRAParams, llvm::Value*& resultFuncCall);
     static void         emitForeignCall(LLVM_Encoder& pp, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, const ByteCodeInstruction* ip, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams, VectorNative<uint32_t>& pushRAParams, llvm::Value*& resultFuncCall);
