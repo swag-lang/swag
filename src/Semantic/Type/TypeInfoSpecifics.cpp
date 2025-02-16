@@ -987,7 +987,7 @@ TypeInfo* TypeInfoFuncAttr::registerIdxToType(uint32_t argIdx)
     return TypeManager::concreteType(parameters[argNo]->typeInfo);
 }
 
-uint32_t TypeInfoFuncAttr::numParamsRegisters()
+uint32_t TypeInfoFuncAttr::numParamsRegisters() const
 {
     uint32_t total = 0;
     for (const auto param : parameters)
@@ -1004,7 +1004,7 @@ uint32_t TypeInfoFuncAttr::numReturnRegisters() const
     return returnType ? returnType->numRegisters() : 0;
 }
 
-uint32_t TypeInfoFuncAttr::numTotalRegisters()
+uint32_t TypeInfoFuncAttr::numTotalRegisters() const
 {
     return numReturnRegisters() + numParamsRegisters();
 }

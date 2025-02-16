@@ -57,7 +57,7 @@ void SCBE::emitGetParam(SCBE_X64& pp, uint32_t reg, uint32_t paramIdx, OpBits op
     pp.emitStore(CPUReg::RDI, REG_OFFSET(reg), CPUReg::RAX, OpBits::B64);
 }
 
-void SCBE::emitCall(SCBE_X64& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcName, const VectorNative<CPUPushParam>& pushParams, uint32_t offsetRT, bool localCall)
+void SCBE::emitCall(SCBE_X64& pp, const TypeInfoFuncAttr* typeFunc, const Utf8& funcName, const VectorNative<CPUPushParam>& pushParams, uint32_t offsetRT, bool localCall)
 {
     // Push parameters
     pp.emitCallParameters(typeFunc, pushParams, offsetRT);
@@ -87,11 +87,11 @@ void SCBE::emitCall(SCBE_X64& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcNa
     }
 }
 
-void SCBE::emitCall(SCBE_X64& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, bool localCall)
+void SCBE::emitCall(SCBE_X64& pp, const TypeInfoFuncAttr* typeFunc, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, bool localCall)
 {
     VectorNative<CPUPushParam> p;
     for (const auto r : pushRAParams)
-        p.push_back({CPUPushParamType::Reg, r});
+        p.push_back({.type = CPUPushParamType::Reg, .reg = r});
     emitCall(pp, typeFunc, funcName, p, offsetRT, localCall);
 }
 
@@ -103,12 +103,12 @@ void SCBE::emitInternalCall(SCBE_X64& pp, const Utf8& funcName, const VectorNati
     // Invert order
     VectorNative<CPUPushParam> p;
     for (uint32_t i = pushRAParams.size() - 1; i != UINT32_MAX; i--)
-        p.push_back({CPUPushParamType::Reg, pushRAParams[i]});
+        p.push_back({.type = CPUPushParamType::Reg, .reg = pushRAParams[i]});
 
     emitCall(pp, typeFunc, funcName, p, offsetRT, true);
 }
 
-void SCBE::emitInternalCallExt(SCBE_X64& pp, const Utf8& funcName, const VectorNative<CPUPushParam>& pushParams, uint32_t offsetRT, TypeInfoFuncAttr* typeFunc)
+void SCBE::emitInternalCallExt(SCBE_X64& pp, const Utf8& funcName, const VectorNative<CPUPushParam>& pushParams, uint32_t offsetRT, const TypeInfoFuncAttr* typeFunc)
 {
     if (!typeFunc)
         typeFunc = g_Workspace->runtimeModule->getRuntimeTypeFct(funcName);

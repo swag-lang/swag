@@ -2270,7 +2270,7 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
     }
 }
 
-void SCBE_X64::emitCallParameters(TypeInfoFuncAttr* typeFunc, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, void* retCopyAddr)
+void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFunc, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, void* retCopyAddr)
 {
     pushParams2.clear();
     for (const auto r : pushRAParams)
@@ -2278,7 +2278,7 @@ void SCBE_X64::emitCallParameters(TypeInfoFuncAttr* typeFunc, const VectorNative
     emitCallParameters(typeFunc, pushParams2, offsetRT, retCopyAddr);
 }
 
-void SCBE_X64::emitCallParameters(TypeInfoFuncAttr* typeFunc, const VectorNative<CPUPushParam>& pushRAParams, uint32_t offsetRT, void* retCopyAddr)
+void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFunc, const VectorNative<CPUPushParam>& pushRAParams, uint32_t offsetRT, void* retCopyAddr)
 {
     uint32_t numCallParams = typeFunc->parameters.size();
     pushParams3.clear();

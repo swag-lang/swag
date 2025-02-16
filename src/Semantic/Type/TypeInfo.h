@@ -334,9 +334,9 @@ struct TypeInfoFuncAttr final : TypeInfo
     bool            isFctCVariadic() const;
     uint32_t        registerIdxToParamIdx(uint32_t argIdx);
     TypeInfo*       registerIdxToType(uint32_t argIdx);
-    uint32_t        numParamsRegisters();
+    uint32_t        numParamsRegisters() const;
     uint32_t        numReturnRegisters() const;
-    uint32_t        numTotalRegisters();
+    uint32_t        numTotalRegisters() const;
     const CallConv& getCallConv() const;
 
     VectorNative<TypeInfoParam*>        capture;
