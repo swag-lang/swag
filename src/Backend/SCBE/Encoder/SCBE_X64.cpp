@@ -2052,7 +2052,7 @@ void SCBE_X64::emitCall(const Utf8& symbolName)
     }
 }
 
-void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, VectorNative<CPUPushParam>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes, void* retCopyAddr)
+void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& paramsRegisters, const VectorNative<TypeInfo*>& paramsTypes, void* retCopyAddr)
 {
     const auto& cc                = typeFuncBc->getCallConv();
     const bool  returnByStackAddr = CallConv::returnByStackAddress(typeFuncBc);

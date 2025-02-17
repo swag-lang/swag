@@ -19,7 +19,7 @@ struct SCBE_X64 : SCBE_CPU
     void emitCall(CPUReg reg);
     void emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<uint32_t>& params, uint32_t offset, void* retCopyAddr = nullptr);
     void emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& params, uint32_t offset, void* retCopyAddr = nullptr);
-    void emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, VectorNative<CPUPushParam>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes, void* retCopyAddr = nullptr);
+    void emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& paramsRegisters, const VectorNative<TypeInfo*>& paramsTypes, void* retCopyAddr = nullptr);
     void emitStoreCallResult(CPUReg memReg, uint32_t memOffset, const TypeInfoFuncAttr* typeFuncBc);
 
     void      emitJumpTable(CPUReg table, CPUReg offset);
