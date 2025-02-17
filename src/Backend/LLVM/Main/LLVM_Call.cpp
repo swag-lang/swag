@@ -806,33 +806,33 @@ void LLVM::emitByteCodeCallParameters(LLVM_Encoder&               pp,
     }
 }
 
-void LLVM::emitLocalCall(LLVM_Encoder& pp, VectorNative<uint32_t>& pushRAParams, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams, llvm::Value*& resultFuncCall)
+void LLVM::emitLocalCall(LLVM_Encoder& pp, llvm::Value*& resultFuncCall)
 {
     const auto ip           = pp.ip;
     const auto callBc       = reinterpret_cast<ByteCode*>(ip->a.pointer);
     const auto typeFuncCall = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
-    resultFuncCall          = emitCall(pp, callBc->getCallNameFromDecl(), typeFuncCall, pp.allocR, pp.allocRR, pushRAParams, {}, true);
+    resultFuncCall          = emitCall(pp, callBc->getCallNameFromDecl(), typeFuncCall, pp.allocR, pp.allocRR, pp.pushRAParams, {}, true);
 
     if (ip->op == ByteCodeOp::LocalCallPopRC)
     {
         emitTypedValueToRegister(pp, resultFuncCall, ip->d.u32, pp.allocR);
     }
 
-    pushRAParams.clear();
-    pushRVParams.clear();
+    pp.pushRAParams.clear();
+    pp.pushRVParams.clear();
 }
 
-void LLVM::emitForeignCall(LLVM_Encoder& pp, VectorNative<uint32_t>& pushRAParams, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams, llvm::Value*& resultFuncCall)
+void LLVM::emitForeignCall(LLVM_Encoder& pp, llvm::Value*& resultFuncCall)
 {
     const auto ip           = pp.ip;
     const auto funcNode     = reinterpret_cast<AstFuncDecl*>(ip->a.pointer);
     const auto typeFuncCall = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
-    resultFuncCall          = emitCall(pp, funcNode->getFullNameForeignImport(), typeFuncCall, pp.allocR, pp.allocRR, pushRAParams, {}, false);
-    pushRAParams.clear();
-    pushRVParams.clear();
+    resultFuncCall          = emitCall(pp, funcNode->getFullNameForeignImport(), typeFuncCall, pp.allocR, pp.allocRR, pp.pushRAParams, {}, false);
+    pp.pushRAParams.clear();
+    pp.pushRVParams.clear();
 }
 
-bool LLVM::emitLambdaCall(LLVM_Encoder& pp, VectorNative<uint32_t>& pushRAParams, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams, llvm::Value*& resultFuncCall)
+bool LLVM::emitLambdaCall(LLVM_Encoder& pp, llvm::Value*& resultFuncCall)
 {
     const auto ip           = pp.ip;
     auto&      builder      = *pp.builder;
@@ -857,7 +857,7 @@ bool LLVM::emitLambdaCall(LLVM_Encoder& pp, VectorNative<uint32_t>& pushRAParams
         llvm::FunctionType*        ft = nullptr;
         const auto                 v1 = builder.CreateLoad(I64_TY(), GEP64(pp.allocR, ip->a.u32));
         VectorNative<llvm::Value*> fctParams;
-        emitCallParameters(pp, typeFuncCall, pp.allocR, pp.allocRR, fctParams, pushRAParams, {});
+        emitCallParameters(pp, typeFuncCall, pp.allocR, pp.allocRR, fctParams, pp.pushRAParams, {});
 
         if (typeFuncCall->isClosure())
         {
@@ -866,9 +866,9 @@ bool LLVM::emitLambdaCall(LLVM_Encoder& pp, VectorNative<uint32_t>& pushRAParams
 
             // Test closure context pointer. If null, this is a lambda.
             // :VariadicAndClosure
-            auto rc = pushRAParams[pushRAParams.size() - 1];
+            auto rc = pp.pushRAParams[pp.pushRAParams.size() - 1];
             if (typeFuncCall->isFctVariadic())
-                rc = pushRAParams[pushRAParams.size() - 3];
+                rc = pp.pushRAParams[pp.pushRAParams.size() - 3];
 
             const auto v0 = builder.CreateLoad(I64_TY(), GEP64(pp.allocR, rc));
             const auto v2 = builder.CreateIsNotNull(v0);
@@ -877,7 +877,7 @@ bool LLVM::emitLambdaCall(LLVM_Encoder& pp, VectorNative<uint32_t>& pushRAParams
             // Lambda call. We must eliminate the first parameter (closure context)
             builder.SetInsertPoint(blockLambda);
             VectorNative<llvm::Value*> fctParamsLocal;
-            emitCallParameters(pp, typeFuncCall, pp.allocR, pp.allocRR, fctParamsLocal, pushRAParams, {}, true);
+            emitCallParameters(pp, typeFuncCall, pp.allocR, pp.allocRR, fctParamsLocal, pp.pushRAParams, {}, true);
 
             ft                 = getOrCreateFuncType(pp, typeFuncCall, true);
             const auto lPt     = llvm::PointerType::getUnqual(ft);
@@ -913,7 +913,7 @@ bool LLVM::emitLambdaCall(LLVM_Encoder& pp, VectorNative<uint32_t>& pushRAParams
         const auto                 r0 = builder.CreateLoad(PTR_I8_TY(), GEP64(pp.allocR, ip->a.u32));
         VectorNative<llvm::Value*> fctParams;
         fctParams.push_front(r0);
-        emitByteCodeCallParameters(pp, typeFuncCall, pp.allocR, pp.allocRR, pp.allocT, fctParams, pushRAParams, {});
+        emitByteCodeCallParameters(pp, typeFuncCall, pp.allocR, pp.allocRR, pp.allocT, fctParams, pp.pushRAParams, {});
 
         const auto ra = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {builder.getInt32(0), builder.getInt32(4)});
         const auto r1 = builder.CreateLoad(PTR_I8_TY(), ra);
@@ -926,7 +926,7 @@ bool LLVM::emitLambdaCall(LLVM_Encoder& pp, VectorNative<uint32_t>& pushRAParams
             const auto blockClosure = llvm::BasicBlock::Create(context, "", pp.llvmFunc);
 
             // Test closure context pointer. If null, this is a lambda.
-            const auto v0 = builder.CreateLoad(I64_TY(), GEP64(pp.allocR, pushRAParams.back()));
+            const auto v0 = builder.CreateLoad(I64_TY(), GEP64(pp.allocR, pp.pushRAParams.back()));
             const auto v2 = builder.CreateIsNotNull(v0);
             builder.CreateCondBr(v2, blockClosure, blockLambda);
 
@@ -934,7 +934,7 @@ bool LLVM::emitLambdaCall(LLVM_Encoder& pp, VectorNative<uint32_t>& pushRAParams
             builder.SetInsertPoint(blockLambda);
             VectorNative<llvm::Value*> fctParamsLocal;
             fctParamsLocal.push_front(r0);
-            emitByteCodeCallParameters(pp, typeFuncCall, pp.allocR, pp.allocRR, pp.allocT, fctParamsLocal, pushRAParams, {}, true);
+            emitByteCodeCallParameters(pp, typeFuncCall, pp.allocR, pp.allocRR, pp.allocT, fctParamsLocal, pp.pushRAParams, {}, true);
             builder.CreateCall(pp.bytecodeRunTy, r2, {fctParamsLocal.begin(), fctParamsLocal.end()});
             builder.CreateBr(blockNext);
 
@@ -951,8 +951,8 @@ bool LLVM::emitLambdaCall(LLVM_Encoder& pp, VectorNative<uint32_t>& pushRAParams
     }
 
     builder.SetInsertPoint(blockNext);
-    pushRAParams.clear();
-    pushRVParams.clear();
+    pp.pushRAParams.clear();
+    pp.pushRVParams.clear();
     resultFuncCall = nullptr;
     return true;
 }

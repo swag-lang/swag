@@ -74,6 +74,9 @@ struct LLVM_Encoder : BackendEncoder
     llvm::FunctionCallee fnReAlloc;
     llvm::FunctionCallee fnFree;
 
+    VectorNative<std::pair<uint32_t, uint32_t>> pushRVParams;
+    VectorNative<uint32_t>                      pushRAParams;
+
     Map<int64_t, llvm::BasicBlock*>                   labels;
     Map<const TypeInfoFuncAttr*, llvm::FunctionType*> mapFctTypeInternal;
     Map<const TypeInfoFuncAttr*, llvm::FunctionType*> mapFctTypeInternalClosure;
