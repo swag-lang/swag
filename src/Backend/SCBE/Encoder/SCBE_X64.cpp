@@ -2270,30 +2270,30 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
     }
 }
 
-void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFunc, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, void* retCopyAddr)
+void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFunc, const VectorNative<uint32_t>& params, uint32_t offset, void* retCopyAddr)
 {
     pushParams2.clear();
-    for (const auto r : pushRAParams)
+    for (const auto r : params)
         pushParams2.push_back({CPUPushParamType::Reg, r});
-    emitCallParameters(typeFunc, pushParams2, offsetRT, retCopyAddr);
+    emitCallParameters(typeFunc, pushParams2, offset, retCopyAddr);
 }
 
-void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFunc, const VectorNative<CPUPushParam>& pushRAParams, uint32_t offsetRT, void* retCopyAddr)
+void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFunc, const VectorNative<CPUPushParam>& params, uint32_t offset, void* retCopyAddr)
 {
     uint32_t numCallParams = typeFunc->parameters.size();
     pushParams3.clear();
     pushParamsTypes.clear();
 
-    uint32_t indexParam = pushRAParams.size() - 1;
+    uint32_t indexParam = params.size() - 1;
 
     // Variadic are first
     if (typeFunc->isFctVariadic())
     {
-        auto index = pushRAParams[indexParam--];
+        auto index = params[indexParam--];
         pushParams3.push_back(index);
         pushParamsTypes.push_back(g_TypeMgr->typeInfoU64);
 
-        index = pushRAParams[indexParam--];
+        index = params[indexParam--];
         pushParams3.push_back(index);
         pushParamsTypes.push_back(g_TypeMgr->typeInfoU64);
         numCallParams--;
@@ -2310,7 +2310,7 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFunc, const Vector
         if (typeParam->isAutoConstPointerRef())
             typeParam = TypeManager::concretePtrRef(typeParam);
 
-        auto index = pushRAParams[indexParam--];
+        auto index = params[indexParam--];
 
         if (typeParam->isPointer() ||
             typeParam->isLambdaClosure() ||
@@ -2329,7 +2329,7 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFunc, const Vector
         {
             pushParams3.push_back(index);
             pushParamsTypes.push_back(g_TypeMgr->typeInfoU64);
-            index = pushRAParams[indexParam--];
+            index = params[indexParam--];
             pushParams3.push_back(index);
             pushParamsTypes.push_back(g_TypeMgr->typeInfoU64);
         }
@@ -2338,7 +2338,7 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFunc, const Vector
         {
             pushParams3.push_back(index);
             pushParamsTypes.push_back(g_TypeMgr->typeInfoU64);
-            index = pushRAParams[indexParam--];
+            index = params[indexParam--];
             pushParams3.push_back(index);
             pushParamsTypes.push_back(g_TypeMgr->typeInfoU64);
         }
@@ -2353,16 +2353,16 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFunc, const Vector
     // Return by parameter
     if (CallConv::returnByAddress(typeFunc))
     {
-        pushParams3.push_back({CPUPushParamType::Reg, offsetRT});
+        pushParams3.push_back({CPUPushParamType::Reg, offset});
         pushParamsTypes.push_back(g_TypeMgr->typeInfoUndefined);
     }
 
     // Add all C variadic parameters
     if (typeFunc->isFctCVariadic())
     {
-        for (uint32_t i = typeFunc->numParamsRegisters(); i < pushRAParams.size(); i++)
+        for (uint32_t i = typeFunc->numParamsRegisters(); i < params.size(); i++)
         {
-            auto index = pushRAParams[indexParam--];
+            auto index = params[indexParam--];
             pushParams3.push_back(index);
             pushParamsTypes.push_back(g_TypeMgr->typeInfoU64);
         }
@@ -2419,16 +2419,16 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFunc, const Vector
     }
 }
 
-void SCBE_X64::emitCallResult(const TypeInfoFuncAttr* typeFunc, uint32_t offsetRT)
+void SCBE_X64::emitCallResult(const TypeInfoFuncAttr* typeFunc, uint32_t offset)
 {
     if (CallConv::returnByValue(typeFunc))
     {
         const auto& cc         = typeFunc->getCallConv();
         const auto  returnType = typeFunc->concreteReturnType();
         if (returnType->isNativeFloat())
-            emitStore(CPUReg::RDI, offsetRT, cc.returnByRegisterFloat, OpBits::F64);
+            emitStore(CPUReg::RDI, offset, cc.returnByRegisterFloat, OpBits::F64);
         else
-            emitStore(CPUReg::RDI, offsetRT, cc.returnByRegisterInteger, OpBits::B64);
+            emitStore(CPUReg::RDI, offset, cc.returnByRegisterInteger, OpBits::B64);
     }
 }
 

@@ -40,9 +40,9 @@ struct SCBE final : Backend
     static void emitCall(SCBE_X64& pp, const Utf8& funcName, const TypeInfoFuncAttr* typeFuncBc, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, bool localCall);
     static void emitInternalCall(SCBE_X64& pp, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT = UINT32_MAX);
     static void emitInternalCallExt(SCBE_X64& pp, const Utf8& funcName, const VectorNative<CPUPushParam>& pushParams, uint32_t offsetRT = UINT32_MAX, const TypeInfoFuncAttr* typeFunc = nullptr);
-    static void emitLocalCall(SCBE_X64& pp, VectorNative<uint32_t>& pushRAParams, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams);
-    static void emitForeignCall(SCBE_X64& pp, VectorNative<uint32_t>& pushRAParams, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams);
-    static void emitLambdaCall(SCBE_X64& pp, VectorNative<uint32_t>& pushRAParams, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams);
+    static void emitLocalCall(SCBE_X64& pp);
+    static void emitForeignCall(SCBE_X64& pp);
+    static void emitLambdaCall(SCBE_X64& pp);
     static void computeUnwind(SCBE_X64& pp, const VectorNative<CPUReg>& unwindRegs, const VectorNative<uint32_t>& unwindOffsetRegs, uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind);
 
     static void emitOverflow(SCBE_X64& pp, const char* msg, bool isSigned);

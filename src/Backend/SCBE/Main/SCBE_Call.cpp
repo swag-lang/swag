@@ -194,14 +194,14 @@ void SCBE::emitByteCodeCallParameters(SCBE_X64& pp, const TypeInfoFuncAttr* type
     }
 }
 
-void SCBE::emitLocalCall(SCBE_X64& pp, VectorNative<uint32_t>& pushRAParams, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams)
+void SCBE::emitLocalCall(SCBE_X64& pp)
 {
     const auto ip      = pp.ip;
     const auto callBc  = reinterpret_cast<ByteCode*>(ip->a.pointer);
     const auto typeFct = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
-    emitCall(pp, callBc->getCallNameFromDecl(), typeFct, pushRAParams, pp.offsetRT, true);
-    pushRAParams.clear();
-    pushRVParams.clear();
+    emitCall(pp, callBc->getCallNameFromDecl(), typeFct, pp.pushRAParams, pp.offsetRT, true);
+    pp.pushRAParams.clear();
+    pp.pushRVParams.clear();
 
     if (ip->op == ByteCodeOp::LocalCallPopRC)
     {
@@ -210,7 +210,7 @@ void SCBE::emitLocalCall(SCBE_X64& pp, VectorNative<uint32_t>& pushRAParams, Vec
     }
 }
 
-void SCBE::emitForeignCall(SCBE_X64& pp, VectorNative<uint32_t>& pushRAParams, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams)
+void SCBE::emitForeignCall(SCBE_X64& pp)
 {
     const auto ip       = pp.ip;
     const auto funcNode = reinterpret_cast<AstFuncDecl*>(ip->a.pointer);
@@ -222,12 +222,12 @@ void SCBE::emitForeignCall(SCBE_X64& pp, VectorNative<uint32_t>& pushRAParams, V
     auto callFuncName = funcNode->getFullNameForeignImport();
     callFuncName      = "__imp_" + callFuncName;
 
-    emitCall(pp, callFuncName, typeFct, pushRAParams, pp.offsetRT, false);
-    pushRAParams.clear();
-    pushRVParams.clear();
+    emitCall(pp, callFuncName, typeFct, pp.pushRAParams, pp.offsetRT, false);
+    pp.pushRAParams.clear();
+    pp.pushRVParams.clear();
 }
 
-void SCBE::emitLambdaCall(SCBE_X64& pp, VectorNative<uint32_t>& pushRAParams, VectorNative<std::pair<uint32_t, uint32_t>>& pushRVParams)
+void SCBE::emitLambdaCall(SCBE_X64& pp)
 {
     const auto ip         = pp.ip;
     const auto typeFuncBC = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
@@ -240,7 +240,7 @@ void SCBE::emitLambdaCall(SCBE_X64& pp, VectorNative<uint32_t>& pushRAParams, Ve
 
     // Native lambda
     //////////////////
-    pp.emitCallParameters(typeFuncBC, pushRAParams, pp.offsetRT);
+    pp.emitCallParameters(typeFuncBC, pp.pushRAParams, pp.offsetRT);
     pp.emitCall(CPUReg::R10);
     pp.emitCallResult(typeFuncBC, pp.offsetRT);
 
@@ -252,7 +252,7 @@ void SCBE::emitLambdaCall(SCBE_X64& pp, VectorNative<uint32_t>& pushRAParams, Ve
     *jumpToBCAddr = pp.concat.totalCount() - jumpToBCOffset;
 
     pp.emitLoad(CPUReg::RCX, CPUReg::R10, OpBits::B64);
-    emitByteCodeCallParameters(pp, typeFuncBC, pushRAParams);
+    emitByteCodeCallParameters(pp, typeFuncBC, pp.pushRAParams);
     pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symPI_byteCodeRun, 0);
     pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, OpBits::B64);
     pp.emitCall(CPUReg::RAX);
@@ -261,6 +261,6 @@ void SCBE::emitLambdaCall(SCBE_X64& pp, VectorNative<uint32_t>& pushRAParams, Ve
     //////////////////
     *jumpBCToAfterAddr = pp.concat.totalCount() - jumpBCToAfterOffset;
 
-    pushRAParams.clear();
-    pushRVParams.clear();
+    pp.pushRAParams.clear();
+    pp.pushRVParams.clear();
 }

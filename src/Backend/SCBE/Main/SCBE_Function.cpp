@@ -186,10 +186,8 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     if (typeFunc->isClosure() && debug)
         pp.emitLoad(CPUReg::R12, CPUReg::RCX, OpBits::B64);
 
-    auto                                        ip     = bc->out;
-    auto                                        opBits = OpBits::INVALID;
-    VectorNative<uint32_t>                      pushRAParams;
-    VectorNative<std::pair<uint32_t, uint32_t>> pushRVParams;
+    auto ip     = bc->out;
+    auto opBits = OpBits::INVALID;
     for (int32_t i = 0; i < static_cast<int32_t>(bc->numInstructions); i++, ip++)
     {
         if (ip->node->hasAstFlag(AST_NO_BACKEND))
@@ -1985,10 +1983,10 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CopySPVaargs:
             {
                 auto typeFuncCall = castTypeInfo<TypeInfoFuncAttr>(reinterpret_cast<TypeInfo*>(ip->d.pointer), TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
-                if (!pushRVParams.empty())
+                if (!pp.pushRVParams.empty())
                 {
-                    auto     sizeOf   = pushRVParams[0].second;
-                    uint32_t idxParam = pushRVParams.size() - 1;
+                    auto     sizeOf   = pp.pushRVParams[0].second;
+                    uint32_t idxParam = pp.pushRVParams.size() - 1;
 
                     uint32_t variadicStackSize = idxParam * sizeOf;
                     MK_ALIGN16(variadicStackSize);
@@ -1996,7 +1994,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
                     while (idxParam != UINT32_MAX)
                     {
-                        auto reg = pushRVParams[idxParam].first;
+                        auto reg = pp.pushRVParams[idxParam].first;
                         switch (sizeOf)
                         {
                             case 1:
@@ -2036,13 +2034,13 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
                     // We need to flatten all variadic registers, in order, in the stack, and emit the address of that array
                     // We compute the number of variadic registers by removing registers of normal parameters (ip->b.u32)
-                    uint32_t idxParam          = pushRAParams.size() - sizeB / sizeof(Register) - 1;
+                    uint32_t idxParam          = pp.pushRAParams.size() - sizeB / sizeof(Register) - 1;
                     uint32_t variadicStackSize = (idxParam + 1) * sizeof(Register);
                     MK_ALIGN16(variadicStackSize);
                     uint32_t offset = sizeParamsStack - variadicStackSize;
                     while (idxParam != UINT32_MAX)
                     {
-                        pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(pushRAParams[idxParam]), OpBits::B64);
+                        pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(pp.pushRAParams[idxParam]), OpBits::B64);
                         pp.emitStore(CPUReg::RSP, offset, CPUReg::RAX, OpBits::B64);
                         idxParam--;
                         offset += 8;
@@ -2057,26 +2055,26 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::PushRVParam:
-                pushRVParams.push_back({ip->a.u32, ip->b.u32});
+                pp.pushRVParams.push_back({ip->a.u32, ip->b.u32});
                 break;
             case ByteCodeOp::PushRAParam:
             case ByteCodeOp::PushRAParamCond:
-                pushRAParams.push_back(ip->a.u32);
+                pp.pushRAParams.push_back(ip->a.u32);
                 break;
             case ByteCodeOp::PushRAParam2:
-                pushRAParams.push_back(ip->a.u32);
-                pushRAParams.push_back(ip->b.u32);
+                pp.pushRAParams.push_back(ip->a.u32);
+                pp.pushRAParams.push_back(ip->b.u32);
                 break;
             case ByteCodeOp::PushRAParam3:
-                pushRAParams.push_back(ip->a.u32);
-                pushRAParams.push_back(ip->b.u32);
-                pushRAParams.push_back(ip->c.u32);
+                pp.pushRAParams.push_back(ip->a.u32);
+                pp.pushRAParams.push_back(ip->b.u32);
+                pp.pushRAParams.push_back(ip->c.u32);
                 break;
             case ByteCodeOp::PushRAParam4:
-                pushRAParams.push_back(ip->a.u32);
-                pushRAParams.push_back(ip->b.u32);
-                pushRAParams.push_back(ip->c.u32);
-                pushRAParams.push_back(ip->d.u32);
+                pp.pushRAParams.push_back(ip->a.u32);
+                pp.pushRAParams.push_back(ip->b.u32);
+                pp.pushRAParams.push_back(ip->c.u32);
+                pp.pushRAParams.push_back(ip->d.u32);
                 break;
 
                 /////////////////////////////////////
@@ -2169,51 +2167,51 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::LocalCallPop16:
             case ByteCodeOp::LocalCallPop48:
             case ByteCodeOp::LocalCallPopRC:
-                emitLocalCall(pp, pushRAParams, pushRVParams);
+                emitLocalCall(pp);
                 break;
             case ByteCodeOp::LocalCallPopParam:
-                pushRAParams.push_back(ip->d.u32);
-                emitLocalCall(pp, pushRAParams, pushRVParams);
+                pp.pushRAParams.push_back(ip->d.u32);
+                emitLocalCall(pp);
                 break;
             case ByteCodeOp::LocalCallPop0Param2:
             case ByteCodeOp::LocalCallPop16Param2:
             case ByteCodeOp::LocalCallPop48Param2:
-                pushRAParams.push_back(ip->c.u32);
-                pushRAParams.push_back(ip->d.u32);
-                emitLocalCall(pp, pushRAParams, pushRVParams);
+                pp.pushRAParams.push_back(ip->c.u32);
+                pp.pushRAParams.push_back(ip->d.u32);
+                emitLocalCall(pp);
                 break;
 
             case ByteCodeOp::ForeignCall:
             case ByteCodeOp::ForeignCallPop:
-                emitForeignCall(pp, pushRAParams, pushRVParams);
+                emitForeignCall(pp);
                 break;
             case ByteCodeOp::ForeignCallPopParam:
-                pushRAParams.push_back(ip->d.u32);
-                emitForeignCall(pp, pushRAParams, pushRVParams);
+                pp.pushRAParams.push_back(ip->d.u32);
+                emitForeignCall(pp);
                 break;
             case ByteCodeOp::ForeignCallPop0Param2:
             case ByteCodeOp::ForeignCallPop16Param2:
             case ByteCodeOp::ForeignCallPop48Param2:
-                pushRAParams.push_back(ip->c.u32);
-                pushRAParams.push_back(ip->d.u32);
-                emitForeignCall(pp, pushRAParams, pushRVParams);
+                pp.pushRAParams.push_back(ip->c.u32);
+                pp.pushRAParams.push_back(ip->d.u32);
+                emitForeignCall(pp);
                 break;
 
             case ByteCodeOp::LambdaCall:
             case ByteCodeOp::LambdaCallPop:
-                emitLambdaCall(pp, pushRAParams, pushRVParams);
+                emitLambdaCall(pp);
                 break;
             case ByteCodeOp::LambdaCallPopParam:
-                pushRAParams.push_back(ip->d.u32);
-                emitLambdaCall(pp, pushRAParams, pushRVParams);
+                pp.pushRAParams.push_back(ip->d.u32);
+                emitLambdaCall(pp);
                 break;
 
                 /////////////////////////////////////
 
             case ByteCodeOp::IncSPPostCall:
             case ByteCodeOp::IncSPPostCallCond:
-                pushRAParams.clear();
-                pushRVParams.clear();
+                pp.pushRAParams.clear();
+                pp.pushRVParams.clear();
                 break;
 
             case ByteCodeOp::CopyRAtoRRRet:

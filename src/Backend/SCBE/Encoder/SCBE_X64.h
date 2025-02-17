@@ -17,10 +17,10 @@ struct SCBE_X64 : SCBE_CPU
     void emitCall(const Utf8& symbolName);
     void emitCallFar(const Utf8& symbolName);
     void emitCall(CPUReg reg);
-    void emitCallParameters(const TypeInfoFuncAttr* typeFunc, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, void* retCopyAddr = nullptr);
-    void emitCallParameters(const TypeInfoFuncAttr* typeFunc, const VectorNative<CPUPushParam>& pushRAParams, uint32_t offsetRT, void* retCopyAddr = nullptr);
+    void emitCallParameters(const TypeInfoFuncAttr* typeFunc, const VectorNative<uint32_t>& params, uint32_t offset, void* retCopyAddr = nullptr);
+    void emitCallParameters(const TypeInfoFuncAttr* typeFunc, const VectorNative<CPUPushParam>& params, uint32_t offset, void* retCopyAddr = nullptr);
     void emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNative<CPUPushParam>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes, void* retCopyAddr = nullptr);
-    void emitCallResult(const TypeInfoFuncAttr* typeFunc, uint32_t offsetRT);
+    void emitCallResult(const TypeInfoFuncAttr* typeFunc, uint32_t offset);
 
     void      emitJumpTable(CPUReg table, CPUReg offset);
     uint8_t*  emitJumpNear(CPUCondJump jumpType);
