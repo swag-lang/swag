@@ -674,18 +674,13 @@ llvm::Value* LLVM::emitCall(LLVM_Encoder& pp, const Utf8& funcName, llvm::Alloca
     return emitCall(pp, funcName, typeFunc, allocR, allocT, pushRAParams, pushVParams, true);
 }
 
-void LLVM::emitByteCodeCallParameters(LLVM_Encoder&               pp,
-                                      TypeInfoFuncAttr*           typeFuncBc,
-                                      llvm::AllocaInst*           allocR,
-                                      llvm::AllocaInst*           allocRR,
-                                      const llvm::AllocaInst*     allocT,
-                                      VectorNative<llvm::Value*>& params,
-                                      VectorNative<uint32_t>&     pushRAParams,
-                                      const Vector<llvm::Value*>& values,
-                                      bool                        closureToLambda)
+void LLVM::emitByteCodeCallParameters(LLVM_Encoder& pp, TypeInfoFuncAttr* typeFuncBc, VectorNative<llvm::Value*>& params, VectorNative<uint32_t>& pushRAParams, const Vector<llvm::Value*>& values, bool closureToLambda)
 {
-    auto& builder = *pp.builder;
-    auto& context = *pp.llvmContext;
+    const auto allocR  = pp.allocR;
+    const auto allocT  = pp.allocT;
+    const auto allocRR = pp.allocRR;
+    auto&      builder = *pp.builder;
+    auto&      context = *pp.llvmContext;
 
     uint32_t popRAidx      = pushRAParams.size() - 1;
     uint32_t numCallParams = typeFuncBc->parameters.size();
@@ -913,7 +908,7 @@ bool LLVM::emitLambdaCall(LLVM_Encoder& pp, llvm::Value*& resultFuncCall)
         const auto                 r0 = builder.CreateLoad(PTR_I8_TY(), GEP64(pp.allocR, ip->a.u32));
         VectorNative<llvm::Value*> fctParams;
         fctParams.push_front(r0);
-        emitByteCodeCallParameters(pp, typeFuncCall, pp.allocR, pp.allocRR, pp.allocT, fctParams, pp.pushRAParams, {});
+        emitByteCodeCallParameters(pp, typeFuncCall, fctParams, pp.pushRAParams, {});
 
         const auto ra = builder.CreateInBoundsGEP(pp.processInfosTy, pp.processInfos, {builder.getInt32(0), builder.getInt32(4)});
         const auto r1 = builder.CreateLoad(PTR_I8_TY(), ra);
@@ -934,7 +929,7 @@ bool LLVM::emitLambdaCall(LLVM_Encoder& pp, llvm::Value*& resultFuncCall)
             builder.SetInsertPoint(blockLambda);
             VectorNative<llvm::Value*> fctParamsLocal;
             fctParamsLocal.push_front(r0);
-            emitByteCodeCallParameters(pp, typeFuncCall, pp.allocR, pp.allocRR, pp.allocT, fctParamsLocal, pp.pushRAParams, {}, true);
+            emitByteCodeCallParameters(pp, typeFuncCall, fctParamsLocal, pp.pushRAParams, {}, true);
             builder.CreateCall(pp.bytecodeRunTy, r2, {fctParamsLocal.begin(), fctParamsLocal.end()});
             builder.CreateBr(blockNext);
 
