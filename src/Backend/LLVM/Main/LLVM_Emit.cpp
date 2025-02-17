@@ -245,3 +245,116 @@ void LLVM::emitBinOpEqOverflow(LLVM_Encoder& pp, llvm::Value* r1, llvm::Value* r
     builder.SetInsertPoint(blockOk);
     builder.CreateStore(r4, r1);
 }
+
+void LLVM::emitVaargs(LLVM_Encoder& pp)
+{
+    const auto allocR  = pp.allocR;
+    const auto allocVa = pp.allocVa;
+    const auto ip      = pp.ip;
+    auto&      builder = *pp.builder;
+    auto&      context = *pp.llvmContext;
+
+    SWAG_ASSERT(allocVa);
+
+    // We need to make all variadic parameters contiguous in stack, and point to that address
+    // Two cases here :
+    // pushRVParams has something: then we have a typed param, of 1/2/4 bytes each
+    // pushRVParams is empty: we make an array of registers
+
+    if (!pp.pushRVParams.empty())
+    {
+        const auto sizeOf = pp.pushRVParams[0].second;
+        switch (sizeOf)
+        {
+            case 1:
+            {
+                const auto r0 = GEP64_PTR_PTR_I8(allocR, ip->a.u32);
+                const auto r1 = builder.CreateInBoundsGEP(I8_TY(), allocVa, builder.getInt32(0));
+                builder.CreateStore(r1, r0);
+                break;
+            }
+            case 2:
+            {
+                const auto r0 = GEP64_PTR_PTR_I16(allocR, ip->a.u32);
+                const auto r1 = builder.CreateInBoundsGEP(I16_TY(), allocVa, builder.getInt32(0));
+                builder.CreateStore(r1, r0);
+                break;
+            }
+            case 4:
+            {
+                const auto r0 = GEP64_PTR_PTR_I32(allocR, ip->a.u32);
+                const auto r1 = builder.CreateInBoundsGEP(I32_TY(), allocVa, builder.getInt32(0));
+                builder.CreateStore(r1, r0);
+                break;
+            }
+            default:
+                break;
+        }
+
+        uint32_t idx      = 0;
+        uint32_t idxParam = pp.pushRVParams.size() - 1;
+        while (idxParam != UINT32_MAX)
+        {
+            const auto reg = pp.pushRVParams[idxParam].first;
+            switch (sizeOf)
+            {
+                case 1:
+                {
+                    const auto r0 = GEP(I8_TY(), allocVa, idx);
+                    const auto r1 = GEP64(allocR, reg);
+                    builder.CreateStore(builder.CreateLoad(I8_TY(), r1), r0);
+                    break;
+                }
+                case 2:
+                {
+                    const auto r0 = GEP(I16_TY(), allocVa, idx);
+                    const auto r1 = GEP64(allocR, reg);
+                    builder.CreateStore(builder.CreateLoad(I16_TY(), r1), r0);
+                    break;
+                }
+                case 4:
+                {
+                    const auto r0 = GEP(I32_TY(), allocVa, idx);
+                    const auto r1 = GEP64(allocR, reg);
+                    builder.CreateStore(builder.CreateLoad(I32_TY(), r1), r0);
+                    break;
+                }
+                default:
+                    break;
+            }
+
+            idx++;
+            idxParam--;
+        }
+    }
+    else
+    {
+        // All of this is complicated. But ip->b.u32 has been reduced by one register in case of closure, and
+        // we have a dynamic test for bytecode execution. But for runtime, be put it back.
+        const auto typeFuncCall = castTypeInfo<TypeInfoFuncAttr>(reinterpret_cast<TypeInfo*>(ip->d.pointer), TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+        auto       sizeB        = ip->b.u32;
+        if (typeFuncCall->isClosure())
+            sizeB += sizeof(Register);
+
+        // In the pushRAParams array, we have first all the variadic registers
+        //
+        // And then, we have all normal parameters. So we start at pushRAParams.size() less the number of registers
+        // used to pass the normal parameters.
+        //
+        // The number of normal parameters is deduced from the 'offset' of the CopySPVaargs instruction (ip->b.u32)
+        uint32_t idx      = 0;
+        uint32_t idxParam = pp.pushRAParams.size() - sizeB / static_cast<uint32_t>(sizeof(Register)) - 1;
+        while (idxParam != UINT32_MAX)
+        {
+            const auto r0 = GEP64(allocVa, idx);
+            const auto r1 = GEP64(allocR, pp.pushRAParams[idxParam]);
+            builder.CreateStore(builder.CreateLoad(I64_TY(), r1), r0);
+            idx++;
+            idxParam--;
+        }
+
+        const auto r0 = GEP64_PTR_PTR_I64(allocR, ip->a.u32);
+        const auto r1 = builder.CreateInBoundsGEP(I64_TY(), allocVa, builder.getInt32(0));
+        builder.CreateStore(r1, r0);
+    }
+}

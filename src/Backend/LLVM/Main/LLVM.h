@@ -55,6 +55,7 @@ struct LLVM final : Backend
     static void emitRT2ToRegisters(const LLVM_Encoder& pp, uint32_t reg0, uint32_t reg1, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR);
     static void emitTypedValueToRegister(const LLVM_Encoder& pp, llvm::Value* value, uint32_t reg);
     static void emitInternalPanic(LLVM_Encoder& pp, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const char* message);
+    static void emitVaargs(LLVM_Encoder& pp);
 
     static llvm::Type*         getLLVMType(LLVM_Encoder& pp, TypeInfo* typeInfo);
     static llvm::FunctionType* getOrCreateFuncType(LLVM_Encoder& pp, const TypeInfoFuncAttr* typeFuncBc, bool closureToLambda = false);
