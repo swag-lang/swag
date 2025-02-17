@@ -197,26 +197,27 @@ struct SCBE_CPU : BackendEncoder
     Concat concat;
     Concat postConcat;
 
-    VectorNative<const Utf8*>     stringTable;
-    VectorNative<CPUPushParam>    pushParams;
-    VectorNative<CPUPushParam>    pushParams3;
-    VectorNative<TypeInfo*>       pushParamsTypes;
-    CPURelocationTable            relocTableTextSection;
-    CPURelocationTable            relocTableCSSection;
-    CPURelocationTable            relocTableMSSection;
-    CPURelocationTable            relocTableTSSection;
-    CPURelocationTable            relocTableTLSSection;
-    CPURelocationTable            relocTablePDSection;
-    CPURelocationTable            relocTableDBGSSection;
-    Vector<CPUSymbol>             allSymbols;
-    MapUtf8<uint32_t>             mapSymbols;
-    MapUtf8<uint32_t>             globalStrings;
-    Map<uint32_t, int32_t>        labels;
-    DataSegment                   globalSegment;
-    DataSegment                   stringSegment;
-    VectorNative<CPULabelToSolve> labelsToSolve;
-    Utf8                          directives;
-    Vector<CPUFunction>           functions;
+    VectorNative<const Utf8*>                   stringTable;
+    VectorNative<uint32_t>                      pushRAParams;
+    VectorNative<std::pair<uint32_t, uint32_t>> pushRVParams;
+    VectorNative<CPUPushParam>                  pushParams;
+    VectorNative<TypeInfo*>                     pushParamsTypes;
+    CPURelocationTable                          relocTableTextSection;
+    CPURelocationTable                          relocTableCSSection;
+    CPURelocationTable                          relocTableMSSection;
+    CPURelocationTable                          relocTableTSSection;
+    CPURelocationTable                          relocTableTLSSection;
+    CPURelocationTable                          relocTablePDSection;
+    CPURelocationTable                          relocTableDBGSSection;
+    Vector<CPUSymbol>                           allSymbols;
+    MapUtf8<uint32_t>                           mapSymbols;
+    MapUtf8<uint32_t>                           globalStrings;
+    Map<uint32_t, int32_t>                      labels;
+    DataSegment                                 globalSegment;
+    DataSegment                                 stringSegment;
+    VectorNative<CPULabelToSolve>               labelsToSolve;
+    Utf8                                        directives;
+    Vector<CPUFunction>                         functions;
 
     uint32_t* patchSymbolTableOffset = nullptr;
     uint32_t* patchSymbolTableCount  = nullptr;
@@ -268,12 +269,10 @@ struct SCBE_CPU : BackendEncoder
     uint32_t* patchTLSOffset  = nullptr;
     uint32_t* patchTLSCount   = nullptr;
 
-    VectorNative<uint32_t>                      pushRAParams;
-    VectorNative<std::pair<uint32_t, uint32_t>> pushRVParams;
-    CPUReg                                      offsetFLTReg = CPUReg::RDI;
-    uint32_t                                    offsetFLT    = 0;
-    uint32_t                                    offsetRT     = 0;
-    uint32_t                                    offsetStack  = 0;
+    CPUReg   offsetFLTReg = CPUReg::RDI;
+    uint32_t offsetFLT    = 0;
+    uint32_t offsetRT     = 0;
+    uint32_t offsetStack  = 0;
 
     uint32_t symCOIndex  = 0;
     uint32_t symBSIndex  = 0;

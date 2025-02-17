@@ -2273,7 +2273,7 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
 void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& params, uint32_t offset, void* retCopyAddr)
 {
     uint32_t numCallParams = typeFuncBc->parameters.size();
-    pushParams3.clear();
+    pushParams.clear();
     pushParamsTypes.clear();
 
     uint32_t indexParam = params.size() - 1;
@@ -2282,11 +2282,11 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
     if (typeFuncBc->isFctVariadic())
     {
         auto index = params[indexParam--];
-        pushParams3.push_back(index);
+        pushParams.push_back(index);
         pushParamsTypes.push_back(g_TypeMgr->typeInfoU64);
 
         index = params[indexParam--];
-        pushParams3.push_back(index);
+        pushParams.push_back(index);
         pushParamsTypes.push_back(g_TypeMgr->typeInfoU64);
         numCallParams--;
     }
@@ -2308,36 +2308,36 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
             typeParam->isLambdaClosure() ||
             typeParam->isArray())
         {
-            pushParams3.push_back(index);
+            pushParams.push_back(index);
             pushParamsTypes.push_back(g_TypeMgr->typeInfoU64);
         }
         else if (typeParam->isStruct())
         {
-            pushParams3.push_back(index);
+            pushParams.push_back(index);
             pushParamsTypes.push_back(typeParam);
         }
         else if (typeParam->isSlice() ||
                  typeParam->isString())
         {
-            pushParams3.push_back(index);
+            pushParams.push_back(index);
             pushParamsTypes.push_back(g_TypeMgr->typeInfoU64);
             index = params[indexParam--];
-            pushParams3.push_back(index);
+            pushParams.push_back(index);
             pushParamsTypes.push_back(g_TypeMgr->typeInfoU64);
         }
         else if (typeParam->isAny() ||
                  typeParam->isInterface())
         {
-            pushParams3.push_back(index);
+            pushParams.push_back(index);
             pushParamsTypes.push_back(g_TypeMgr->typeInfoU64);
             index = params[indexParam--];
-            pushParams3.push_back(index);
+            pushParams.push_back(index);
             pushParamsTypes.push_back(g_TypeMgr->typeInfoU64);
         }
         else
         {
             SWAG_ASSERT(typeParam->sizeOf <= sizeof(void*));
-            pushParams3.push_back(index);
+            pushParams.push_back(index);
             pushParamsTypes.push_back(typeParam);
         }
     }
@@ -2345,7 +2345,7 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
     // Return by parameter
     if (CallConv::returnByAddress(typeFuncBc))
     {
-        pushParams3.push_back({CPUPushParamType::Reg, offset});
+        pushParams.push_back({CPUPushParamType::Reg, offset});
         pushParamsTypes.push_back(g_TypeMgr->typeInfoUndefined);
     }
 
@@ -2355,7 +2355,7 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
         for (uint32_t i = typeFuncBc->numParamsRegisters(); i < params.size(); i++)
         {
             auto index = params[indexParam--];
-            pushParams3.push_back(index);
+            pushParams.push_back(index);
             pushParamsTypes.push_back(g_TypeMgr->typeInfoU64);
         }
     }
@@ -2366,13 +2366,13 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
     // one for the lambda (omit first parameter)
     if (typeFuncBc->isClosure())
     {
-        SWAG_ASSERT(pushParams3[0].type == CPUPushParamType::Reg);
+        SWAG_ASSERT(pushParams[0].type == CPUPushParamType::Reg);
 
         // First register is closure context, except if variadic, where we have 2 registers for the slice first
         // :VariadicAndClosure
-        uint32_t reg = static_cast<uint32_t>(pushParams3[0].reg);
+        uint32_t reg = static_cast<uint32_t>(pushParams[0].reg);
         if (typeFuncBc->isFctVariadic())
-            reg = static_cast<uint32_t>(pushParams3[2].reg);
+            reg = static_cast<uint32_t>(pushParams[2].reg);
 
         emitCmp(CPUReg::RDI, REG_OFFSET(reg), 0, OpBits::B64);
 
@@ -2380,7 +2380,7 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
         const auto seekPtrClosure = emitJumpLong(JZ);
         const auto seekJmpClosure = concat.totalCount();
 
-        emitCallParameters(typeFuncBc, pushParams3, pushParamsTypes, retCopyAddr);
+        emitCallParameters(typeFuncBc, pushParams, pushParamsTypes, retCopyAddr);
 
         // Jump to after closure call
         const auto seekPtrAfterClosure = emitJumpLong(JUMP);
@@ -2393,21 +2393,21 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
         // :VariadicAndClosure
         if (typeFuncBc->isFctVariadic())
         {
-            pushParams3.erase(2);
+            pushParams.erase(2);
             pushParamsTypes.erase(2);
         }
         else
         {
-            pushParams3.erase(0);
+            pushParams.erase(0);
             pushParamsTypes.erase(0);
         }
-        emitCallParameters(typeFuncBc, pushParams3, pushParamsTypes, retCopyAddr);
+        emitCallParameters(typeFuncBc, pushParams, pushParamsTypes, retCopyAddr);
 
         *seekPtrAfterClosure = static_cast<uint8_t>(concat.totalCount() - seekJmpAfterClosure);
     }
     else
     {
-        emitCallParameters(typeFuncBc, pushParams3, pushParamsTypes, retCopyAddr);
+        emitCallParameters(typeFuncBc, pushParams, pushParamsTypes, retCopyAddr);
     }
 }
 

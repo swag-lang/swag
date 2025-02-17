@@ -108,18 +108,18 @@ void SCBE::emitInternalCall(SCBE_X64& pp, const Utf8& funcName, const VectorNati
     emitCall(pp, funcName, typeFunc, p, offsetRT, true);
 }
 
-void SCBE::emitInternalCallExt(SCBE_X64& pp, const Utf8& funcName, const VectorNative<CPUPushParam>& pushCPUParams, uint32_t offsetRT, const TypeInfoFuncAttr* typeFunc)
+void SCBE::emitInternalCallExt(SCBE_X64& pp, const Utf8& funcName, const VectorNative<CPUPushParam>& pushCPUParams, uint32_t offsetRT, const TypeInfoFuncAttr* typeFuncBc)
 {
-    if (!typeFunc)
-        typeFunc = g_Workspace->runtimeModule->getRuntimeTypeFct(funcName);
-    SWAG_ASSERT(typeFunc);
+    if (!typeFuncBc)
+        typeFuncBc = g_Workspace->runtimeModule->getRuntimeTypeFct(funcName);
+    SWAG_ASSERT(typeFuncBc);
 
     // Invert order
     VectorNative<CPUPushParam> p;
     for (uint32_t i = pushCPUParams.size() - 1; i != UINT32_MAX; i--)
         p.push_back({pushCPUParams[i]});
 
-    emitCall(pp, funcName, typeFunc, p, offsetRT, true);
+    emitCall(pp, funcName, typeFuncBc, p, offsetRT, true);
 }
 
 void SCBE::emitByteCodeCall(SCBE_X64& pp, const TypeInfoFuncAttr* typeFuncBc)
@@ -230,7 +230,7 @@ void SCBE::emitForeignCall(SCBE_X64& pp)
 void SCBE::emitLambdaCall(SCBE_X64& pp)
 {
     const auto ip         = pp.ip;
-    const auto typeFuncBC = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
+    const auto typeFuncBc = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
 
     // Test if it's a bytecode lambda
     pp.emitLoad(CPUReg::R10, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);
@@ -244,10 +244,10 @@ void SCBE::emitLambdaCall(SCBE_X64& pp)
     VectorNative<CPUPushParam> pushCPUParams;
     for (const auto r : pp.pushRAParams)
         pushCPUParams.push_back({.type = CPUPushParamType::Reg, .reg = r});
-    pp.emitCallParameters(typeFuncBC, pushCPUParams, pp.offsetRT);
+    pp.emitCallParameters(typeFuncBc, pushCPUParams, pp.offsetRT);
 
     pp.emitCall(CPUReg::R10);
-    pp.emitStoreCallResult(CPUReg::RDI, pp.offsetRT, typeFuncBC);
+    pp.emitStoreCallResult(CPUReg::RDI, pp.offsetRT, typeFuncBc);
 
     const auto jumpBCToAfterAddr   = pp.emitJumpLong(JUMP);
     const auto jumpBCToAfterOffset = pp.concat.totalCount();
@@ -258,7 +258,8 @@ void SCBE::emitLambdaCall(SCBE_X64& pp)
     *jumpToBCAddr = pp.concat.totalCount() - jumpToBCOffset;
 
     pp.emitLoad(CPUReg::RCX, CPUReg::R10, OpBits::B64);
-    emitByteCodeCallParameters(pp, typeFuncBC);
+    emitByteCodeCallParameters(pp, typeFuncBc);
+    
     pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symPI_byteCodeRun, 0);
     pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, OpBits::B64);
     pp.emitCall(CPUReg::RAX);
