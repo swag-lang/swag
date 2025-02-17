@@ -2052,10 +2052,10 @@ void SCBE_X64::emitCall(const Utf8& symbolName)
     }
 }
 
-void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNative<CPUPushParam>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes, void* retCopyAddr)
+void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, VectorNative<CPUPushParam>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes, void* retCopyAddr)
 {
-    const auto& cc                = typeFuncBC->getCallConv();
-    const bool  returnByStackAddr = CallConv::returnByStackAddress(typeFuncBC);
+    const auto& cc                = typeFuncBc->getCallConv();
+    const bool  returnByStackAddr = CallConv::returnByStackAddress(typeFuncBc);
 
     const uint32_t callConvRegisters    = cc.paramByRegisterCount;
     const uint32_t maxParamsPerRegister = paramsRegisters.size();
@@ -2086,7 +2086,7 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
         else
         {
             // Pass struct in a register if small enough
-            if (CallConv::structParamByValue(typeFuncBC, type))
+            if (CallConv::structParamByValue(typeFuncBc, type))
             {
                 SWAG_ASSERT(paramsRegisters[i].type == CPUPushParamType::Reg);
                 emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
@@ -2207,7 +2207,7 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
                 emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
 
                 // Store the content of the struct in the stack
-                if (CallConv::structParamByValue(typeFuncBC, type))
+                if (CallConv::structParamByValue(typeFuncBc, type))
                 {
                     switch (sizeOf)
                     {
@@ -2270,24 +2270,24 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBC, VectorNati
     }
 }
 
-void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFunc, const VectorNative<uint32_t>& params, uint32_t offset, void* retCopyAddr)
+void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<uint32_t>& params, uint32_t offset, void* retCopyAddr)
 {
     pushParams2.clear();
     for (const auto r : params)
         pushParams2.push_back({CPUPushParamType::Reg, r});
-    emitCallParameters(typeFunc, pushParams2, offset, retCopyAddr);
+    emitCallParameters(typeFuncBc, pushParams2, offset, retCopyAddr);
 }
 
-void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFunc, const VectorNative<CPUPushParam>& params, uint32_t offset, void* retCopyAddr)
+void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& params, uint32_t offset, void* retCopyAddr)
 {
-    uint32_t numCallParams = typeFunc->parameters.size();
+    uint32_t numCallParams = typeFuncBc->parameters.size();
     pushParams3.clear();
     pushParamsTypes.clear();
 
     uint32_t indexParam = params.size() - 1;
 
     // Variadic are first
-    if (typeFunc->isFctVariadic())
+    if (typeFuncBc->isFctVariadic())
     {
         auto index = params[indexParam--];
         pushParams3.push_back(index);
@@ -2298,7 +2298,7 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFunc, const Vector
         pushParamsTypes.push_back(g_TypeMgr->typeInfoU64);
         numCallParams--;
     }
-    else if (typeFunc->isFctCVariadic())
+    else if (typeFuncBc->isFctCVariadic())
     {
         numCallParams--;
     }
@@ -2306,7 +2306,7 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFunc, const Vector
     // All parameters
     for (uint32_t i = 0; i < numCallParams; i++)
     {
-        auto typeParam = TypeManager::concreteType(typeFunc->parameters[i]->typeInfo);
+        auto typeParam = TypeManager::concreteType(typeFuncBc->parameters[i]->typeInfo);
         if (typeParam->isAutoConstPointerRef())
             typeParam = TypeManager::concretePtrRef(typeParam);
 
@@ -2351,16 +2351,16 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFunc, const Vector
     }
 
     // Return by parameter
-    if (CallConv::returnByAddress(typeFunc))
+    if (CallConv::returnByAddress(typeFuncBc))
     {
         pushParams3.push_back({CPUPushParamType::Reg, offset});
         pushParamsTypes.push_back(g_TypeMgr->typeInfoUndefined);
     }
 
     // Add all C variadic parameters
-    if (typeFunc->isFctCVariadic())
+    if (typeFuncBc->isFctCVariadic())
     {
-        for (uint32_t i = typeFunc->numParamsRegisters(); i < params.size(); i++)
+        for (uint32_t i = typeFuncBc->numParamsRegisters(); i < params.size(); i++)
         {
             auto index = params[indexParam--];
             pushParams3.push_back(index);
@@ -2372,14 +2372,14 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFunc, const Vector
     // parameter is the capture context, which does not exist in a normal lambda function).
     // But as this is dynamic, we need to have two call path : one for the closure (normal call), and
     // one for the lambda (omit first parameter)
-    if (typeFunc->isClosure())
+    if (typeFuncBc->isClosure())
     {
         SWAG_ASSERT(pushParams3[0].type == CPUPushParamType::Reg);
 
         // First register is closure context, except if variadic, where we have 2 registers for the slice first
         // :VariadicAndClosure
         uint32_t reg = static_cast<uint32_t>(pushParams3[0].reg);
-        if (typeFunc->isFctVariadic())
+        if (typeFuncBc->isFctVariadic())
             reg = static_cast<uint32_t>(pushParams3[2].reg);
 
         emitCmp(CPUReg::RDI, REG_OFFSET(reg), 0, OpBits::B64);
@@ -2388,7 +2388,7 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFunc, const Vector
         const auto seekPtrClosure = emitJumpLong(JZ);
         const auto seekJmpClosure = concat.totalCount();
 
-        emitCallParameters(typeFunc, pushParams3, pushParamsTypes, retCopyAddr);
+        emitCallParameters(typeFuncBc, pushParams3, pushParamsTypes, retCopyAddr);
 
         // Jump to after closure call
         const auto seekPtrAfterClosure = emitJumpLong(JUMP);
@@ -2399,7 +2399,7 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFunc, const Vector
 
         // First register is closure context, except if variadic, where we have 2 registers for the slice first
         // :VariadicAndClosure
-        if (typeFunc->isFctVariadic())
+        if (typeFuncBc->isFctVariadic())
         {
             pushParams3.erase(2);
             pushParamsTypes.erase(2);
@@ -2409,26 +2409,27 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFunc, const Vector
             pushParams3.erase(0);
             pushParamsTypes.erase(0);
         }
-        emitCallParameters(typeFunc, pushParams3, pushParamsTypes, retCopyAddr);
+        emitCallParameters(typeFuncBc, pushParams3, pushParamsTypes, retCopyAddr);
 
         *seekPtrAfterClosure = static_cast<uint8_t>(concat.totalCount() - seekJmpAfterClosure);
     }
     else
     {
-        emitCallParameters(typeFunc, pushParams3, pushParamsTypes, retCopyAddr);
+        emitCallParameters(typeFuncBc, pushParams3, pushParamsTypes, retCopyAddr);
     }
 }
 
-void SCBE_X64::emitCallResult(const TypeInfoFuncAttr* typeFunc, uint32_t offset)
+void SCBE_X64::emitStoreCallResult(CPUReg memReg, uint32_t memOffset, const TypeInfoFuncAttr* typeFuncBc)
 {
-    if (CallConv::returnByValue(typeFunc))
+    if (CallConv::returnByValue(typeFuncBc))
     {
-        const auto& cc         = typeFunc->getCallConv();
-        const auto  returnType = typeFunc->concreteReturnType();
+        SWAG_ASSERT(memReg == CPUReg::RDI);
+        const auto& cc         = typeFuncBc->getCallConv();
+        const auto  returnType = typeFuncBc->concreteReturnType();
         if (returnType->isNativeFloat())
-            emitStore(CPUReg::RDI, offset, cc.returnByRegisterFloat, OpBits::F64);
+            emitStore(memReg, memOffset, cc.returnByRegisterFloat, OpBits::F64);
         else
-            emitStore(CPUReg::RDI, offset, cc.returnByRegisterInteger, OpBits::B64);
+            emitStore(memReg, memOffset, cc.returnByRegisterInteger, OpBits::B64);
     }
 }
 

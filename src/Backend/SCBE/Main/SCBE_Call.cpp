@@ -68,7 +68,7 @@ void SCBE::emitCall(SCBE_X64& pp, const Utf8& funcName, const TypeInfoFuncAttr* 
         pp.emitCall(funcName);
 
     // Store result
-    pp.emitCallResult(typeFuncBc, offsetRT);
+    pp.emitStoreCallResult(CPUReg::RDI, offsetRT, typeFuncBc);
 
     // In case of stack trace, we force a "nop" just after the function call, in order
     // to be sure that there's at least one instruction before the potential next line.
@@ -242,7 +242,7 @@ void SCBE::emitLambdaCall(SCBE_X64& pp)
     //////////////////
     pp.emitCallParameters(typeFuncBC, pp.pushRAParams, pp.offsetRT);
     pp.emitCall(CPUReg::R10);
-    pp.emitCallResult(typeFuncBC, pp.offsetRT);
+    pp.emitStoreCallResult(CPUReg::RDI, pp.offsetRT, typeFuncBC);
 
     const auto jumpBCToAfterAddr   = pp.emitJumpLong(JUMP);
     const auto jumpBCToAfterOffset = pp.concat.totalCount();

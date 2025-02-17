@@ -1009,7 +1009,7 @@ namespace OS
             if (!returnType->isVoid() && !retCopyAddr)
             {
                 gen.emitLoad(CPUReg::RDI, reinterpret_cast<uint64_t>(context->registersRR), OpBits::B64);
-                gen.emitCallResult(typeInfoFunc, 0);
+                gen.emitStoreCallResult(CPUReg::RDI, 0, typeInfoFunc);
             }
 
             gen.emitOpBinary(CPUReg::RSP, stackSize, CPUOp::ADD, OpBits::B64);
