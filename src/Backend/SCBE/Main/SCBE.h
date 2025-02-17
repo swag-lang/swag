@@ -24,7 +24,8 @@ struct SCBE final : Backend
 
     static void createRuntime(SCBE_X64& pp);
     static void initFunction(CPUFunction* fct, uint32_t startAddress, uint32_t endAddress, uint32_t sizeProlog, VectorNative<uint16_t>& unwind);
-    static bool buildRelocationSegment(SCBE_X64& pp, DataSegment* dataSegment, CPURelocationTable& relocTable, SegmentKind me);
+    static void computeUnwind(const SCBE_X64& pp, const VectorNative<CPUReg>& unwindRegs, const VectorNative<uint32_t>& unwindOffsetRegs, uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind);
+    static bool buildRelocationSegment(SCBE_X64& pp, DataSegment* dataSegment, CPURelocationTable& relocationTable, SegmentKind me);
 
     static void emitGetTypeTable(SCBE_X64& pp);
     static void emitGlobalPreMain(SCBE_X64& pp);
@@ -33,17 +34,16 @@ struct SCBE final : Backend
     static void emitOS(SCBE_X64& pp);
     static void emitMain(SCBE_X64& pp);
 
+    static void emitCall(SCBE_X64& pp, const Utf8& funcName, const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& pushCPUParams, uint32_t offsetRT, bool localCall);
+    static void emitCall(SCBE_X64& pp, const Utf8& funcName, const TypeInfoFuncAttr* typeFuncBc, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, bool localCall);
+    static void emitInternalCall(SCBE_X64& pp, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT = UINT32_MAX);
+    static void emitInternalCallExt(SCBE_X64& pp, const Utf8& funcName, const VectorNative<CPUPushParam>& pushCPUParams, uint32_t offsetRT = UINT32_MAX, const TypeInfoFuncAttr* typeFunc = nullptr);
     static void emitByteCodeCall(SCBE_X64& pp, const TypeInfoFuncAttr* typeFuncBc);
     static void emitByteCodeCallParameters(SCBE_X64& pp, const TypeInfoFuncAttr* typeFuncBc);
     static void emitGetParam(SCBE_X64& pp, uint32_t reg, uint32_t paramIdx, OpBits opBits, uint64_t toAdd = 0, OpBits derefBits = OpBits::INVALID);
-    static void emitCall(SCBE_X64& pp, const Utf8& funcName, const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& pushParams, uint32_t offsetRT, bool localCall);
-    static void emitCall(SCBE_X64& pp, const Utf8& funcName, const TypeInfoFuncAttr* typeFuncBc, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, bool localCall);
-    static void emitInternalCall(SCBE_X64& pp, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT = UINT32_MAX);
-    static void emitInternalCallExt(SCBE_X64& pp, const Utf8& funcName, const VectorNative<CPUPushParam>& pushParams, uint32_t offsetRT = UINT32_MAX, const TypeInfoFuncAttr* typeFunc = nullptr);
     static void emitLocalCall(SCBE_X64& pp);
     static void emitForeignCall(SCBE_X64& pp);
     static void emitLambdaCall(SCBE_X64& pp);
-    static void computeUnwind(SCBE_X64& pp, const VectorNative<CPUReg>& unwindRegs, const VectorNative<uint32_t>& unwindOffsetRegs, uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind);
 
     static void emitOverflow(SCBE_X64& pp, const char* msg, bool isSigned);
     static void emitShiftRightArithmetic(SCBE_X64& pp);

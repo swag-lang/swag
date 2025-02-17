@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Backend/SCBE/Main/SCBE.h"
 
-bool SCBE::buildRelocationSegment(SCBE_X64& pp, DataSegment* dataSegment, CPURelocationTable& relocTable, SegmentKind me)
+bool SCBE::buildRelocationSegment(SCBE_X64& pp, DataSegment* dataSegment, CPURelocationTable& relocationTable, SegmentKind me)
 {
     if (dataSegment->buckets.empty())
         return true;
@@ -43,7 +43,7 @@ bool SCBE::buildRelocationSegment(SCBE_X64& pp, DataSegment* dataSegment, CPURel
         reloc.virtualAddress = k.patchOffset;
         reloc.symbolIndex    = sym;
         reloc.type           = IMAGE_REL_AMD64_ADDR64;
-        relocTable.table.push_back(reloc);
+        relocationTable.table.push_back(reloc);
     }
 
     for (auto& k : dataSegment->initFuncPtr)
@@ -54,7 +54,7 @@ bool SCBE::buildRelocationSegment(SCBE_X64& pp, DataSegment* dataSegment, CPURel
         reloc.virtualAddress = k.first;
         reloc.symbolIndex    = sym->index;
         reloc.type           = IMAGE_REL_AMD64_ADDR64;
-        relocTable.table.push_back(reloc);
+        relocationTable.table.push_back(reloc);
     }
 
     return true;

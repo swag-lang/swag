@@ -57,10 +57,10 @@ void SCBE::emitGetParam(SCBE_X64& pp, uint32_t reg, uint32_t paramIdx, OpBits op
     pp.emitStore(CPUReg::RDI, REG_OFFSET(reg), CPUReg::RAX, OpBits::B64);
 }
 
-void SCBE::emitCall(SCBE_X64& pp, const Utf8& funcName, const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& pushParams, uint32_t offsetRT, bool localCall)
+void SCBE::emitCall(SCBE_X64& pp, const Utf8& funcName, const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& pushCPUParams, uint32_t offsetRT, bool localCall)
 {
     // Push parameters
-    pp.emitCallParameters(typeFuncBc, pushParams, offsetRT);
+    pp.emitCallParameters(typeFuncBc, pushCPUParams, offsetRT);
 
     if (!localCall)
         pp.emitCallFar(funcName);
@@ -108,7 +108,7 @@ void SCBE::emitInternalCall(SCBE_X64& pp, const Utf8& funcName, const VectorNati
     emitCall(pp, funcName, typeFunc, p, offsetRT, true);
 }
 
-void SCBE::emitInternalCallExt(SCBE_X64& pp, const Utf8& funcName, const VectorNative<CPUPushParam>& pushParams, uint32_t offsetRT, const TypeInfoFuncAttr* typeFunc)
+void SCBE::emitInternalCallExt(SCBE_X64& pp, const Utf8& funcName, const VectorNative<CPUPushParam>& pushCPUParams, uint32_t offsetRT, const TypeInfoFuncAttr* typeFunc)
 {
     if (!typeFunc)
         typeFunc = g_Workspace->runtimeModule->getRuntimeTypeFct(funcName);
@@ -116,8 +116,8 @@ void SCBE::emitInternalCallExt(SCBE_X64& pp, const Utf8& funcName, const VectorN
 
     // Invert order
     VectorNative<CPUPushParam> p;
-    for (uint32_t i = pushParams.size() - 1; i != UINT32_MAX; i--)
-        p.push_back({pushParams[i]});
+    for (uint32_t i = pushCPUParams.size() - 1; i != UINT32_MAX; i--)
+        p.push_back({pushCPUParams[i]});
 
     emitCall(pp, funcName, typeFunc, p, offsetRT, true);
 }

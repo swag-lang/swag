@@ -236,6 +236,25 @@ JobResult SCBE::prepareOutput(const BuildParameters& buildParameters, int stage,
     return JobResult::ReleaseJob;
 }
 
+void SCBE::computeUnwind(const SCBE_X64&               pp,
+                         const VectorNative<CPUReg>&   unwindRegs,
+                         const VectorNative<uint32_t>& unwindOffsetRegs,
+                         uint32_t                      sizeStack,
+                         uint32_t                      offsetSubRSP,
+                         VectorNative<uint16_t>&       unwind)
+{
+    const auto objFileType = getObjType(g_CommandLine.target);
+    switch (objFileType)
+    {
+        case BackendObjType::Coff:
+            SCBE_Coff::computeUnwind(unwindRegs, unwindOffsetRegs, sizeStack, offsetSubRSP, unwind);
+            break;
+        default:
+            Report::internalError(pp.module, "SCBE::computeUnwind, unsupported output");
+            break;
+    }
+}
+
 void SCBE::initFunction(CPUFunction* fct, uint32_t startAddress, uint32_t endAddress, uint32_t sizeProlog, VectorNative<uint16_t>& unwind)
 {
     fct->startAddress = startAddress;
