@@ -8,9 +8,10 @@
 #include "Wmf/Module.h"
 #include "Wmf/SourceFile.h"
 
-void LLVM::emitShiftRightArithmetic(const LLVM_Encoder& pp, llvm::AllocaInst* allocR, uint32_t numBits)
+void LLVM::emitShiftRightArithmetic(const LLVM_Encoder& pp, uint32_t numBits)
 {
     const auto ip      = pp.ip;
+    const auto allocR  = pp.allocR;
     auto&      builder = *pp.builder;
     auto&      context = *pp.llvmContext;
 
@@ -37,9 +38,10 @@ void LLVM::emitShiftRightArithmetic(const LLVM_Encoder& pp, llvm::AllocaInst* al
     }
 }
 
-void LLVM::emitShiftRightEqArithmetic(const LLVM_Encoder& pp, llvm::AllocaInst* allocR, uint32_t numBits)
+void LLVM::emitShiftRightEqArithmetic(const LLVM_Encoder& pp, uint32_t numBits)
 {
     const auto ip      = pp.ip;
+    const auto allocR  = pp.allocR;
     auto&      builder = *pp.builder;
     auto&      context = *pp.llvmContext;
 
@@ -66,9 +68,10 @@ void LLVM::emitShiftRightEqArithmetic(const LLVM_Encoder& pp, llvm::AllocaInst* 
     }
 }
 
-void LLVM::emitShiftLogical(const LLVM_Encoder& pp, llvm::AllocaInst* allocR, uint32_t numBits, bool left)
+void LLVM::emitShiftLogical(const LLVM_Encoder& pp, uint32_t numBits, bool left)
 {
     const auto ip      = pp.ip;
+    const auto allocR  = pp.allocR;
     auto&      builder = *pp.builder;
     auto&      context = *pp.llvmContext;
 
@@ -100,9 +103,10 @@ void LLVM::emitShiftLogical(const LLVM_Encoder& pp, llvm::AllocaInst* allocR, ui
     }
 }
 
-void LLVM::emitShiftEqLogical(const LLVM_Encoder& pp, llvm::AllocaInst* allocR, uint32_t numBits, bool left)
+void LLVM::emitShiftEqLogical(const LLVM_Encoder& pp, uint32_t numBits, bool left)
 {
     const auto ip      = pp.ip;
+    const auto allocR  = pp.allocR;
     auto&      builder = *pp.builder;
     auto&      context = *pp.llvmContext;
 

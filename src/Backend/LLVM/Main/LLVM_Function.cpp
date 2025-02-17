@@ -970,7 +970,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::BinOpShiftLeftU64:
             {
                 const auto numBits = BackendEncoder::getNumBits(ip->op);
-                emitShiftLogical(pp, allocR, numBits, true);
+                emitShiftLogical(pp, numBits, true);
                 break;
             }
 
@@ -982,7 +982,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::BinOpShiftRightS64:
             {
                 const auto numBits = BackendEncoder::getNumBits(ip->op);
-                emitShiftRightArithmetic(pp, allocR, numBits);
+                emitShiftRightArithmetic(pp, numBits);
                 break;
             }
 
@@ -992,7 +992,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::BinOpShiftRightU64:
             {
                 const auto numBits = BackendEncoder::getNumBits(ip->op);
-                emitShiftLogical(pp, allocR, numBits, false);
+                emitShiftLogical(pp, numBits, false);
                 break;
             }
 
@@ -1514,7 +1514,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::AffectOpShiftLeftEqU64:
             {
                 const auto numBits = BackendEncoder::getNumBits(ip->op);
-                emitShiftEqLogical(pp, allocR, numBits, true);
+                emitShiftEqLogical(pp, numBits, true);
                 break;
             }
 
@@ -1526,7 +1526,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::AffectOpShiftRightEqS64:
             {
                 const auto numBits = BackendEncoder::getNumBits(ip->op);
-                emitShiftRightEqArithmetic(pp, allocR, numBits);
+                emitShiftRightEqArithmetic(pp, numBits);
                 break;
             }
 
@@ -1536,7 +1536,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::AffectOpShiftRightEqU64:
             {
                 const auto numBits = BackendEncoder::getNumBits(ip->op);
-                emitShiftEqLogical(pp, allocR, numBits, false);
+                emitShiftEqLogical(pp, numBits, false);
                 break;
             }
 
