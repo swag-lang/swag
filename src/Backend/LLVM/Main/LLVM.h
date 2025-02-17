@@ -34,7 +34,7 @@ struct LLVM final : Backend
     static void emitMain(LLVM_Encoder& pp);
 
     static bool         emitCallParameters(LLVM_Encoder& pp, const TypeInfoFuncAttr* typeFuncBc, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, VectorNative<llvm::Value*>& params, const VectorNative<uint32_t>& pushParams, const Vector<llvm::Value*>& values, bool closureToLambda = false);
-    static bool         emitCallResult(LLVM_Encoder& pp, const TypeInfoFuncAttr* typeFuncBc, llvm::AllocaInst* allocRR, llvm::Value* callResult);
+    static bool         emitCallResult(const LLVM_Encoder& pp, const TypeInfoFuncAttr* typeFuncBc, llvm::Value* callResult);
     static llvm::Value* emitCall(LLVM_Encoder& pp, const Utf8& funcName, const TypeInfoFuncAttr* typeFuncBc, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, const VectorNative<uint32_t>& pushParams, const Vector<llvm::Value*>& values, bool localCall);
     static llvm::Value* emitCall(LLVM_Encoder& pp, const Utf8& funcName, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const Vector<uint32_t>& regs, const Vector<llvm::Value*>& values);
 
@@ -53,7 +53,7 @@ struct LLVM final : Backend
     static void emitBinOpEqOverflow(LLVM_Encoder& pp, llvm::Value* r1, llvm::Value* r2, llvm::Intrinsic::IndependentIntrinsics op, SafetyMsg msg);
 
     static void emitRT2ToRegisters(const LLVM_Encoder& pp, uint32_t reg0, uint32_t reg1, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR);
-    static void emitTypedValueToRegister(const LLVM_Encoder& pp, llvm::Value* value, uint32_t reg, llvm::AllocaInst* allocR);
+    static void emitTypedValueToRegister(const LLVM_Encoder& pp, llvm::Value* value, uint32_t reg);
     static void emitInternalPanic(LLVM_Encoder& pp, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const char* message);
 
     static llvm::Type*         getLLVMType(LLVM_Encoder& pp, TypeInfo* typeInfo);

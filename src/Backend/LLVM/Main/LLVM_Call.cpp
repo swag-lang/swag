@@ -567,10 +567,11 @@ bool LLVM::emitCallParameters(LLVM_Encoder&                 pp,
     return true;
 }
 
-bool LLVM::emitCallResult(LLVM_Encoder& pp, const TypeInfoFuncAttr* typeFuncBc, llvm::AllocaInst* allocRR, llvm::Value* callResult)
+bool LLVM::emitCallResult(const LLVM_Encoder& pp, const TypeInfoFuncAttr* typeFuncBc, llvm::Value* callResult)
 {
-    auto& context = *pp.llvmContext;
-    auto& builder = *pp.builder;
+    const auto allocRR = pp.allocRR;
+    auto&      context = *pp.llvmContext;
+    auto&      builder = *pp.builder;
 
     const auto returnType = typeFuncBc->concreteReturnType();
     if (!returnType->isVoid() && !CallConv::returnByAddress(typeFuncBc))
@@ -810,7 +811,7 @@ void LLVM::emitLocalCall(LLVM_Encoder& pp, llvm::Value*& resultFuncCall)
 
     if (ip->op == ByteCodeOp::LocalCallPopRC)
     {
-        emitTypedValueToRegister(pp, resultFuncCall, ip->d.u32, pp.allocR);
+        emitTypedValueToRegister(pp, resultFuncCall, ip->d.u32);
     }
 
     pp.pushRAParams.clear();
@@ -878,7 +879,7 @@ bool LLVM::emitLambdaCall(LLVM_Encoder& pp, llvm::Value*& resultFuncCall)
             const auto lPt     = llvm::PointerType::getUnqual(ft);
             const auto lR1     = builder.CreateIntToPtr(v1, lPt);
             const auto lResult = builder.CreateCall(ft, lR1, {fctParamsLocal.begin(), fctParamsLocal.end()});
-            SWAG_CHECK(emitCallResult(pp, typeFuncCall, pp.allocRR, lResult));
+            SWAG_CHECK(emitCallResult(pp, typeFuncCall, lResult));
             builder.CreateBr(blockNext);
 
             // Closure call. Normal call, as the type contains the first parameter.
@@ -887,7 +888,7 @@ bool LLVM::emitLambdaCall(LLVM_Encoder& pp, llvm::Value*& resultFuncCall)
             const auto cPt     = llvm::PointerType::getUnqual(ft);
             const auto cR1     = builder.CreateIntToPtr(v1, cPt);
             const auto cResult = builder.CreateCall(ft, cR1, {fctParams.begin(), fctParams.end()});
-            SWAG_CHECK(emitCallResult(pp, typeFuncCall, pp.allocRR, cResult));
+            SWAG_CHECK(emitCallResult(pp, typeFuncCall, cResult));
             builder.CreateBr(blockNext);
         }
         else
@@ -896,7 +897,7 @@ bool LLVM::emitLambdaCall(LLVM_Encoder& pp, llvm::Value*& resultFuncCall)
             const auto pt           = llvm::PointerType::getUnqual(ft);
             const auto r1           = builder.CreateIntToPtr(v1, pt);
             const auto returnResult = builder.CreateCall(ft, r1, {fctParams.begin(), fctParams.end()});
-            SWAG_CHECK(emitCallResult(pp, typeFuncCall, pp.allocRR, returnResult));
+            SWAG_CHECK(emitCallResult(pp, typeFuncCall, returnResult));
             builder.CreateBr(blockNext);
         }
     }

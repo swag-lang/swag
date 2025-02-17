@@ -165,10 +165,11 @@ void LLVM::emitInternalPanic(LLVM_Encoder& pp, llvm::AllocaInst* allocR, llvm::A
     emitCall(pp, g_LangSpec->name_priv_panic, allocR, allocT, {UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX}, {r2, r3, r4, r5});
 }
 
-void LLVM::emitTypedValueToRegister(const LLVM_Encoder& pp, llvm::Value* value, uint32_t reg, llvm::AllocaInst* allocR)
+void LLVM::emitTypedValueToRegister(const LLVM_Encoder& pp, llvm::Value* value, uint32_t reg)
 {
     SWAG_ASSERT(value);
-    const auto r1 = value;
+    const auto allocR = pp.allocR;
+    const auto r1     = value;
 
     auto& builder = *pp.builder;
     auto& context = *pp.llvmContext;
