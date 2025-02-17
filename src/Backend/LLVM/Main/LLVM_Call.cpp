@@ -567,7 +567,7 @@ bool LLVM::emitCallParameters(LLVM_Encoder&                 pp,
     return true;
 }
 
-bool LLVM::emitCallReturnValue(LLVM_Encoder& pp, const TypeInfoFuncAttr* typeFuncBc, llvm::AllocaInst* allocRR, llvm::Value* callResult)
+bool LLVM::emitCallResult(LLVM_Encoder& pp, const TypeInfoFuncAttr* typeFuncBc, llvm::AllocaInst* allocRR, llvm::Value* callResult)
 {
     auto& context = *pp.llvmContext;
     auto& builder = *pp.builder;
@@ -899,7 +899,7 @@ bool LLVM::emitLambdaCall(LLVM_Encoder&                                pp,
             const auto lPt     = llvm::PointerType::getUnqual(ft);
             const auto lR1     = builder.CreateIntToPtr(v1, lPt);
             const auto lResult = builder.CreateCall(ft, lR1, {fctParamsLocal.begin(), fctParamsLocal.end()});
-            SWAG_CHECK(emitCallReturnValue(pp, typeFuncCall, allocRR, lResult));
+            SWAG_CHECK(emitCallResult(pp, typeFuncCall, allocRR, lResult));
             builder.CreateBr(blockNext);
 
             // Closure call. Normal call, as the type contains the first parameter.
@@ -908,7 +908,7 @@ bool LLVM::emitLambdaCall(LLVM_Encoder&                                pp,
             const auto cPt     = llvm::PointerType::getUnqual(ft);
             const auto cR1     = builder.CreateIntToPtr(v1, cPt);
             const auto cResult = builder.CreateCall(ft, cR1, {fctParams.begin(), fctParams.end()});
-            SWAG_CHECK(emitCallReturnValue(pp, typeFuncCall, allocRR, cResult));
+            SWAG_CHECK(emitCallResult(pp, typeFuncCall, allocRR, cResult));
             builder.CreateBr(blockNext);
         }
         else
@@ -917,7 +917,7 @@ bool LLVM::emitLambdaCall(LLVM_Encoder&                                pp,
             const auto pt           = llvm::PointerType::getUnqual(ft);
             const auto r1           = builder.CreateIntToPtr(v1, pt);
             const auto returnResult = builder.CreateCall(ft, r1, {fctParams.begin(), fctParams.end()});
-            SWAG_CHECK(emitCallReturnValue(pp, typeFuncCall, allocRR, returnResult));
+            SWAG_CHECK(emitCallResult(pp, typeFuncCall, allocRR, returnResult));
             builder.CreateBr(blockNext);
         }
     }
