@@ -240,7 +240,12 @@ void SCBE::emitLambdaCall(SCBE_X64& pp)
 
     // Native lambda
     //////////////////
-    pp.emitCallParameters(typeFuncBC, pp.pushRAParams, pp.offsetRT);
+
+    VectorNative<CPUPushParam> pushCPUParams;
+    for (const auto r : pp.pushRAParams)
+        pushCPUParams.push_back({.type = CPUPushParamType::Reg, .reg = r});
+    pp.emitCallParameters(typeFuncBC, pushCPUParams, pp.offsetRT);
+
     pp.emitCall(CPUReg::R10);
     pp.emitStoreCallResult(CPUReg::RDI, pp.offsetRT, typeFuncBC);
 
@@ -249,6 +254,7 @@ void SCBE::emitLambdaCall(SCBE_X64& pp)
 
     // ByteCode lambda
     //////////////////
+
     *jumpToBCAddr = pp.concat.totalCount() - jumpToBCOffset;
 
     pp.emitLoad(CPUReg::RCX, CPUReg::R10, OpBits::B64);

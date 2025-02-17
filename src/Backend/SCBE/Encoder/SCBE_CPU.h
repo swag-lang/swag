@@ -199,7 +199,6 @@ struct SCBE_CPU : BackendEncoder
 
     VectorNative<const Utf8*>     stringTable;
     VectorNative<CPUPushParam>    pushParams;
-    VectorNative<CPUPushParam>    pushParams2;
     VectorNative<CPUPushParam>    pushParams3;
     VectorNative<TypeInfo*>       pushParamsTypes;
     CPURelocationTable            relocTableTextSection;
