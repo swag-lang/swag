@@ -84,12 +84,13 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     uint32_t offsetS4     = offsetRT + bc->maxCallResults * sizeof(Register);
     uint32_t offsetResult = offsetS4 + cc.paramByRegisterCount * sizeof(Register);
     uint32_t offsetStack  = offsetResult + sizeof(Register);
-    pp.offsetStack        = offsetStack;
-
     // For float load (should be reserved only if we have floating point operations in that function)
     uint32_t offsetFLT = offsetStack + bc->stackSize;
-    pp.offsetFLTReg    = CPUReg::RDI;
-    pp.offsetFLT       = offsetFLT;
+
+    pp.offsetStack  = offsetStack;
+    pp.offsetFLTReg = CPUReg::RDI;
+    pp.offsetFLT    = offsetFLT;
+    pp.offsetRT     = offsetRT;
 
     uint32_t sizeStack = offsetFLT + 8;
     MK_ALIGN16(sizeStack);
@@ -185,10 +186,10 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     if (typeFunc->isClosure() && debug)
         pp.emitLoad(CPUReg::R12, CPUReg::RCX, OpBits::B64);
 
-    auto                                        ip = bc->out;
+    auto                                        ip     = bc->out;
+    auto                                        opBits = OpBits::INVALID;
     VectorNative<uint32_t>                      pushRAParams;
     VectorNative<std::pair<uint32_t, uint32_t>> pushRVParams;
-    auto                                        opBits = OpBits::INVALID;
     for (int32_t i = 0; i < static_cast<int32_t>(bc->numInstructions); i++, ip++)
     {
         if (ip->node->hasAstFlag(AST_NO_BACKEND))
@@ -2168,43 +2169,43 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::LocalCallPop16:
             case ByteCodeOp::LocalCallPop48:
             case ByteCodeOp::LocalCallPopRC:
-                emitLocalCall(pp, offsetRT, pushRAParams, pushRVParams);
+                emitLocalCall(pp, pushRAParams, pushRVParams);
                 break;
             case ByteCodeOp::LocalCallPopParam:
                 pushRAParams.push_back(ip->d.u32);
-                emitLocalCall(pp, offsetRT, pushRAParams, pushRVParams);
+                emitLocalCall(pp, pushRAParams, pushRVParams);
                 break;
             case ByteCodeOp::LocalCallPop0Param2:
             case ByteCodeOp::LocalCallPop16Param2:
             case ByteCodeOp::LocalCallPop48Param2:
                 pushRAParams.push_back(ip->c.u32);
                 pushRAParams.push_back(ip->d.u32);
-                emitLocalCall(pp, offsetRT, pushRAParams, pushRVParams);
+                emitLocalCall(pp, pushRAParams, pushRVParams);
                 break;
 
             case ByteCodeOp::ForeignCall:
             case ByteCodeOp::ForeignCallPop:
-                emitForeignCall(pp, offsetRT, pushRAParams, pushRVParams);
+                emitForeignCall(pp, pushRAParams, pushRVParams);
                 break;
             case ByteCodeOp::ForeignCallPopParam:
                 pushRAParams.push_back(ip->d.u32);
-                emitForeignCall(pp, offsetRT, pushRAParams, pushRVParams);
+                emitForeignCall(pp, pushRAParams, pushRVParams);
                 break;
             case ByteCodeOp::ForeignCallPop0Param2:
             case ByteCodeOp::ForeignCallPop16Param2:
             case ByteCodeOp::ForeignCallPop48Param2:
                 pushRAParams.push_back(ip->c.u32);
                 pushRAParams.push_back(ip->d.u32);
-                emitForeignCall(pp, offsetRT, pushRAParams, pushRVParams);
+                emitForeignCall(pp, pushRAParams, pushRVParams);
                 break;
 
             case ByteCodeOp::LambdaCall:
             case ByteCodeOp::LambdaCallPop:
-                emitLambdaCall(pp, offsetRT, pushRAParams, pushRVParams);
+                emitLambdaCall(pp, pushRAParams, pushRVParams);
                 break;
             case ByteCodeOp::LambdaCallPopParam:
                 pushRAParams.push_back(ip->d.u32);
-                emitLambdaCall(pp, offsetRT, pushRAParams, pushRVParams);
+                emitLambdaCall(pp, pushRAParams, pushRVParams);
                 break;
 
                 /////////////////////////////////////

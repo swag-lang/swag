@@ -271,6 +271,7 @@ struct SCBE_CPU : BackendEncoder
 
     CPUReg   offsetFLTReg = CPUReg::RDI;
     uint32_t offsetFLT    = 0;
+    uint32_t offsetRT     = 0;
     uint32_t offsetStack  = 0;
 
     uint32_t symCOIndex  = 0;
