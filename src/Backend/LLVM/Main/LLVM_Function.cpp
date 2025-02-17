@@ -2852,19 +2852,19 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::GetParam32:
             {
                 const auto numBytes = BackendEncoder::getNumBytes(ip->op);
-                SWAG_CHECK(emitGetParam(pp, typeFunc, ip->a.u32, ip->b.mergeU64U32.high, allocR, numBytes));
+                SWAG_CHECK(emitGetParam(pp, typeFunc, ip->a.u32, ip->b.mergeU64U32.high, numBytes));
                 break;
             }
 
             case ByteCodeOp::GetParam64:
-                SWAG_CHECK(emitGetParam(pp, typeFunc, ip->a.u32, ip->b.mergeU64U32.high, allocR));
+                SWAG_CHECK(emitGetParam(pp, typeFunc, ip->a.u32, ip->b.mergeU64U32.high));
                 break;
             case ByteCodeOp::GetParam64x2:
-                SWAG_CHECK(emitGetParam(pp, typeFunc, ip->a.u32, ip->b.mergeU64U32.high, allocR));
-                SWAG_CHECK(emitGetParam(pp, typeFunc, ip->c.u32, ip->d.mergeU64U32.high, allocR));
+                SWAG_CHECK(emitGetParam(pp, typeFunc, ip->a.u32, ip->b.mergeU64U32.high));
+                SWAG_CHECK(emitGetParam(pp, typeFunc, ip->c.u32, ip->d.mergeU64U32.high));
                 break;
             case ByteCodeOp::GetIncParam64:
-                SWAG_CHECK(emitGetParam(pp, typeFunc, ip->a.u32, ip->b.mergeU64U32.high, allocR, 0, ip->d.u64));
+                SWAG_CHECK(emitGetParam(pp, typeFunc, ip->a.u32, ip->b.mergeU64U32.high, 0, ip->d.u64));
                 break;
 
                 /////////////////////////////////////
@@ -2875,7 +2875,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::GetParam64DeRef64:
             {
                 const auto numBytes = BackendEncoder::getNumBytes(ip->op);
-                SWAG_CHECK(emitGetParam(pp, typeFunc, ip->a.u32, ip->b.mergeU64U32.high, allocR, 0, 0, numBytes));
+                SWAG_CHECK(emitGetParam(pp, typeFunc, ip->a.u32, ip->b.mergeU64U32.high, 0, 0, numBytes));
                 break;
             }
 
@@ -2887,7 +2887,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::GetIncParam64DeRef64:
             {
                 const auto numBytes = BackendEncoder::getNumBytes(ip->op);
-                SWAG_CHECK(emitGetParam(pp, typeFunc, ip->a.u32, ip->b.mergeU64U32.high, allocR, 0, ip->d.u64, numBytes));
+                SWAG_CHECK(emitGetParam(pp, typeFunc, ip->a.u32, ip->b.mergeU64U32.high, 0, ip->d.u64, numBytes));
                 break;
             }
 

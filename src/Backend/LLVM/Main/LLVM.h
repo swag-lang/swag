@@ -39,7 +39,7 @@ struct LLVM final : Backend
     static llvm::Value* emitCall(LLVM_Encoder& pp, const Utf8& funcName, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const Vector<uint32_t>& regs, const Vector<llvm::Value*>& values);
 
     static void emitByteCodeCallParameters(LLVM_Encoder& pp, TypeInfoFuncAttr* typeFuncBc, VectorNative<llvm::Value*>& params, VectorNative<uint32_t>& pushRAParams, const Vector<llvm::Value*>& values, bool closureToLambda = false);
-    static bool emitGetParam(LLVM_Encoder& pp, const TypeInfoFuncAttr* typeFuncBc, uint32_t rDest, uint32_t paramIdx, llvm::AllocaInst* allocR, int sizeOf = 0, uint64_t toAdd = 0, int deRefSize = 0);
+    static bool emitGetParam(LLVM_Encoder& pp, const TypeInfoFuncAttr* typeFuncBc, uint32_t rDest, uint32_t paramIdx, int sizeOf = 0, uint64_t toAdd = 0, int deRefSize = 0);
     static void emitRet(LLVM_Encoder& pp, const TypeInfoFuncAttr* typeFuncBc, TypeInfo* returnType, llvm::AllocaInst* allocResult);
     static void emitLocalCall(LLVM_Encoder& pp, llvm::Value*& resultFuncCall);
     static void emitForeignCall(LLVM_Encoder& pp, llvm::Value*& resultFuncCall);

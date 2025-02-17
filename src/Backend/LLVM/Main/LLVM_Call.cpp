@@ -263,17 +263,11 @@ llvm::FunctionType* LLVM::getOrCreateFuncType(LLVM_Encoder& pp, const TypeInfoFu
     return result;
 }
 
-bool LLVM::emitGetParam(LLVM_Encoder&           pp,
-                        const TypeInfoFuncAttr* typeFuncBc,
-                        uint32_t                rDest,
-                        uint32_t                paramIdx,
-                        llvm::AllocaInst*       allocR,
-                        int                     sizeOf,
-                        uint64_t                toAdd,
-                        int                     deRefSize)
+bool LLVM::emitGetParam(LLVM_Encoder& pp, const TypeInfoFuncAttr* typeFuncBc, uint32_t rDest, uint32_t paramIdx, int sizeOf, uint64_t toAdd, int deRefSize)
 {
-    auto& builder = *pp.builder;
-    auto& context = *pp.llvmContext;
+    const auto allocR  = pp.allocR;
+    auto&      builder = *pp.builder;
+    auto&      context = *pp.llvmContext;
 
     auto param = typeFuncBc->registerIdxToType(paramIdx);
     if (param->isAutoConstPointerRef())
