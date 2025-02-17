@@ -23,7 +23,7 @@ void SCBE::emitGetParam(SCBE_X64& pp, uint32_t reg, uint32_t paramIdx, OpBits op
         case OpBits::B16:
         case OpBits::B32:
             SWAG_ASSERT(!toAdd);
-            pp.emitLoad(CPUReg::RAX, CPUReg::RDI, paramStack, OpBits::B64, opBits, false);
+            pp.emitLoadExtend(CPUReg::RAX, CPUReg::RDI, paramStack, OpBits::B64, opBits, false);
             pp.emitStore(CPUReg::RDI, REG_OFFSET(reg), CPUReg::RAX, OpBits::B64);
             return;
         case OpBits::B64:
@@ -37,7 +37,7 @@ void SCBE::emitGetParam(SCBE_X64& pp, uint32_t reg, uint32_t paramIdx, OpBits op
     const bool structByValue = CallConv::structParamByValue(typeFunc, typeParam);
 
     if (structByValue)
-        pp.emitSetAddress(CPUReg::RAX, CPUReg::RDI, paramStack);
+        pp.emitLoadAddress(CPUReg::RAX, CPUReg::RDI, paramStack);
     else
         pp.emitLoad(CPUReg::RAX, CPUReg::RDI, paramStack, OpBits::B64);
 
@@ -47,7 +47,7 @@ void SCBE::emitGetParam(SCBE_X64& pp, uint32_t reg, uint32_t paramIdx, OpBits op
         case OpBits::B16:
         case OpBits::B32:
         case OpBits::B64:
-            pp.emitLoad(CPUReg::RAX, CPUReg::RAX, static_cast<uint32_t>(toAdd), OpBits::B64, derefBits, false);
+            pp.emitLoadExtend(CPUReg::RAX, CPUReg::RAX, static_cast<uint32_t>(toAdd), OpBits::B64, derefBits, false);
             break;
         default:
             pp.emitOpBinary(CPUReg::RAX, toAdd, CPUOp::ADD, OpBits::B64);
@@ -130,10 +130,10 @@ void SCBE::emitByteCodeCall(SCBE_X64& pp, const TypeInfoFuncAttr* typeFuncBc)
         switch (idxReg)
         {
             case 0:
-                pp.emitSetAddress(CPUReg::RDX, CPUReg::RDI, pp.offsetRT);
+                pp.emitLoadAddress(CPUReg::RDX, CPUReg::RDI, pp.offsetRT);
                 break;
             case 1:
-                pp.emitSetAddress(CPUReg::R8, CPUReg::RDI, pp.offsetRT + sizeof(Register));
+                pp.emitLoadAddress(CPUReg::R8, CPUReg::RDI, pp.offsetRT + sizeof(Register));
                 break;
             default:
                 break;

@@ -28,14 +28,16 @@ struct SCBE_X64 : SCBE_CPU
     void      emitJump(CPUCondJump jumpType, int32_t instructionCount, int32_t jumpOffset);
     void      emitJump(CPUReg reg);
 
-    void emitSetAddress(CPUReg reg, CPUReg memReg, uint64_t memOffset);
     void emitLoad(CPUReg reg, CPUReg memReg, uint64_t memOffset, uint64_t value, bool isImmediate, CPUOp op, OpBits opBits);
     void emitLoad(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits opBits);
-    void emitLoad(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc, bool isSigned);
     void emitLoad(CPUReg reg, uint64_t value, OpBits opBits);
     void emitLoad(CPUReg regDst, CPUReg regSrc, OpBits opBits);
-    void emitLoad(CPUReg reg, OpBits opBits);
-    void emitStore0Load64(CPUReg reg);
+    void emitLoad(CPUReg regDstSrc, OpBits opBits);
+
+    void emitLoad64(CPUReg reg, uint64_t value);
+    void emitLoadExtend(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc, bool isSigned);
+    void emitLoadAddress(CPUReg reg, CPUReg memReg, uint64_t memOffset);
+
     void emitStore(CPUReg memReg, uint64_t memOffset, CPUReg reg, OpBits opBits);
     void emitStore(CPUReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits);
 

@@ -185,7 +185,7 @@ void SCBE_X64::emitSymbolRelocationValue(CPUReg reg, uint32_t symbolIndex, uint3
 
 void SCBE_X64::emitSymbolGlobalString(CPUReg reg, const Utf8& str)
 {
-    emitStore0Load64(reg);
+    emitLoad64(reg, 0);
     const auto sym = getOrCreateGlobalString(str);
     addSymbolRelocation(concat.totalCount() - 8 - textSectionOffset, sym->index, IMAGE_REL_AMD64_ADDR64);
 }
@@ -241,9 +241,9 @@ void SCBE_X64::emitLoad(CPUReg regDst, CPUReg regSrc, OpBits opBits)
     }
 }
 
-void SCBE_X64::emitLoad([[maybe_unused]] CPUReg reg, [[maybe_unused]] OpBits opBits)
+void SCBE_X64::emitLoad([[maybe_unused]] CPUReg regDstSrc, [[maybe_unused]] OpBits opBits)
 {
-    SWAG_ASSERT(reg == CPUReg::RAX);
+    SWAG_ASSERT(regDstSrc == CPUReg::RAX);
     SWAG_ASSERT(opBits == OpBits::B8);
     emitSpecCPUOp(concat, CPUOp::MOV, opBits);
     concat.addU8(0xE0);
@@ -259,7 +259,7 @@ void SCBE_X64::emitLoad(CPUReg reg, CPUReg memReg, uint64_t memOffset, uint64_t 
             if (isImmediate)
                 emitLoad(CPUReg::RAX, value, OpBits::B32);
             else
-                emitLoad(CPUReg::RAX, memReg, memOffset, OpBits::B32, OpBits::B8, op == CPUOp::IDIV || op == CPUOp::IMOD);
+                emitLoadExtend(CPUReg::RAX, memReg, memOffset, OpBits::B32, OpBits::B8, op == CPUOp::IDIV || op == CPUOp::IMOD);
         }
         else
         {
@@ -287,6 +287,13 @@ void SCBE_X64::emitLoad(CPUReg reg, CPUReg memReg, uint64_t memOffset, uint64_t 
     {
         emitLoad(reg, memReg, memOffset, opBits);
     }
+}
+
+void SCBE_X64::emitLoad64(CPUReg reg, uint64_t value)
+{
+    emitREX(concat, OpBits::B64, CPUReg::RAX, reg);
+    concat.addU8(0xB8 | static_cast<uint8_t>(reg));
+    concat.addU64(value);
 }
 
 void SCBE_X64::emitLoad(CPUReg reg, uint64_t value, OpBits opBits)
@@ -352,7 +359,7 @@ void SCBE_X64::emitLoad(CPUReg reg, uint64_t value, OpBits opBits)
     }
 }
 
-void SCBE_X64::emitLoad(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc, bool isSigned)
+void SCBE_X64::emitLoadExtend(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc, bool isSigned)
 {
     if (numBitsSrc == numBitsDst)
     {
@@ -512,7 +519,7 @@ void SCBE_X64::emitLoad(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits op
 
 /////////////////////////////////////////////////////////////////////
 
-void SCBE_X64::emitSetAddress(CPUReg reg, CPUReg memReg, uint64_t memOffset)
+void SCBE_X64::emitLoadAddress(CPUReg reg, CPUReg memReg, uint64_t memOffset)
 {
     if (memReg == CPUReg::RIP)
     {
@@ -535,13 +542,6 @@ void SCBE_X64::emitSetAddress(CPUReg reg, CPUReg memReg, uint64_t memOffset)
 }
 
 /////////////////////////////////////////////////////////////////////
-
-void SCBE_X64::emitStore0Load64(CPUReg reg)
-{
-    emitREX(concat, OpBits::B64, CPUReg::RAX, reg);
-    concat.addU8(0xB8 | static_cast<uint8_t>(reg));
-    concat.addU64(0);
-}
 
 void SCBE_X64::emitStore(CPUReg memReg, uint64_t memOffset, CPUReg reg, OpBits opBits)
 {
@@ -2079,7 +2079,7 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
             else if (returnByStackAddr)
                 emitLoad(cc.paramByRegisterInteger[i], CPUReg::RDI, reg, OpBits::B64);
             else
-                emitSetAddress(cc.paramByRegisterInteger[i], CPUReg::RDI, reg);
+                emitLoadAddress(cc.paramByRegisterInteger[i], CPUReg::RDI, reg);
         }
 
         // This is a normal parameter, which can be float or integer
@@ -2139,7 +2139,7 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
                         emitSymbolRelocationAddr(cc.paramByRegisterInteger[i], static_cast<uint32_t>(paramsRegisters[i].reg), 0);
                         break;
                     case CPUPushParamType::Addr:
-                        emitSetAddress(cc.paramByRegisterInteger[i], CPUReg::RDI, static_cast<uint32_t>(paramsRegisters[i].reg));
+                        emitLoadAddress(cc.paramByRegisterInteger[i], CPUReg::RDI, static_cast<uint32_t>(paramsRegisters[i].reg));
                         break;
                     case CPUPushParamType::RegAdd:
                         emitLoad(cc.paramByRegisterInteger[i], CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
@@ -2192,7 +2192,7 @@ void SCBE_X64::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
             else if (returnByStackAddr)
                 emitLoad(CPUReg::RAX, CPUReg::RDI, reg, OpBits::B64);
             else
-                emitSetAddress(CPUReg::RAX, CPUReg::RDI, reg);
+                emitLoadAddress(CPUReg::RAX, CPUReg::RDI, reg);
             emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
         }
 

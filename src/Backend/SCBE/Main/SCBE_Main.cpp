@@ -87,7 +87,7 @@ void SCBE::emitMain(SCBE_X64& pp)
     const auto bcAlloc = static_cast<ByteCode*>(ByteCode::undoByteCodeLambda(static_cast<void**>(g_SystemAllocatorTable)[0]));
     SWAG_ASSERT(bcAlloc);
     pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symDefaultAllocTable, 0);
-    pp.emitSetAddress(CPUReg::RCX, CPUReg::RIP, 0);
+    pp.emitLoadAddress(CPUReg::RCX, CPUReg::RIP, 0);
     pp.emitSymbolRelocationRef(bcAlloc->getCallName());
     pp.emitStore(CPUReg::RAX, 0, CPUReg::RCX, OpBits::B64);
 
@@ -292,7 +292,7 @@ void SCBE::emitGlobalPreMain(SCBE_X64& pp)
 
     // Store first parameter on stack (process infos ptr)
     SWAG_ASSERT(cc.paramByRegisterCount >= 1);
-    pp.emitSetAddress(CPUReg::RDI, CPUReg::RSP, 0);
+    pp.emitLoadAddress(CPUReg::RDI, CPUReg::RSP, 0);
     pp.emitStore(CPUReg::RDI, 0, cc.paramByRegisterInteger[0], OpBits::B64);
 
     // Copy process infos passed as a parameter to the process info struct of this module
@@ -345,7 +345,7 @@ void SCBE::emitGlobalInit(SCBE_X64& pp)
 
     // Store first parameter on stack (process infos ptr)
     SWAG_ASSERT(cc.paramByRegisterCount >= 1);
-    pp.emitSetAddress(CPUReg::RDI, CPUReg::RSP, 0);
+    pp.emitLoadAddress(CPUReg::RDI, CPUReg::RSP, 0);
     pp.emitStore(CPUReg::RDI, 0, cc.paramByRegisterInteger[0], OpBits::B64);
 
     // Copy process infos passed as a parameter to the process info struct of this module
