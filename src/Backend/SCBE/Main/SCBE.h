@@ -33,8 +33,8 @@ struct SCBE final : Backend
     static void emitOS(SCBE_X64& pp);
     static void emitMain(SCBE_X64& pp);
 
-    static void emitByteCodeCall(SCBE_X64& pp, const TypeInfoFuncAttr* typeFuncBc, VectorNative<uint32_t>& pushRAParams);
-    static void emitByteCodeCallParameters(SCBE_X64& pp, const TypeInfoFuncAttr* typeFuncBc, VectorNative<uint32_t>& pushRAParams);
+    static void emitByteCodeCall(SCBE_X64& pp, const TypeInfoFuncAttr* typeFuncBc);
+    static void emitByteCodeCallParameters(SCBE_X64& pp, const TypeInfoFuncAttr* typeFuncBc);
     static void emitGetParam(SCBE_X64& pp, uint32_t reg, uint32_t paramIdx, OpBits opBits, uint64_t toAdd = 0, OpBits derefBits = OpBits::INVALID);
     static void emitCall(SCBE_X64& pp, const Utf8& funcName, const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& pushParams, uint32_t offsetRT, bool localCall);
     static void emitCall(SCBE_X64& pp, const Utf8& funcName, const TypeInfoFuncAttr* typeFuncBc, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, bool localCall);
