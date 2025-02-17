@@ -108,10 +108,11 @@ void SCBE::emitInternalCall(SCBE_X64& pp, const Utf8& funcName, const VectorNati
     emitCall(pp, funcName, typeFunc, p, offsetRT, true);
 }
 
-void SCBE::emitInternalCallExt(SCBE_X64& pp, const Utf8& funcName, const VectorNative<CPUPushParam>& pushCPUParams, uint32_t offsetRT, const TypeInfoFuncAttr* typeFuncBc)
+void SCBE::emitInternalCallExt(SCBE_X64& pp, const Utf8& funcName, const VectorNative<CPUPushParam>& pushCPUParams, uint32_t offsetRT)
 {
+    auto typeFuncBc = g_Workspace->runtimeModule->getRuntimeTypeFct(funcName);
     if (!typeFuncBc)
-        typeFuncBc = g_Workspace->runtimeModule->getRuntimeTypeFct(funcName);
+        typeFuncBc = g_TypeMgr->typeInfoModuleCall;
     SWAG_ASSERT(typeFuncBc);
 
     // Invert order
@@ -259,7 +260,7 @@ void SCBE::emitLambdaCall(SCBE_X64& pp)
 
     pp.emitLoad(CPUReg::RCX, CPUReg::R10, OpBits::B64);
     emitByteCodeCallParameters(pp, typeFuncBc);
-    
+
     pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symPI_byteCodeRun, 0);
     pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, OpBits::B64);
     pp.emitCall(CPUReg::RAX);

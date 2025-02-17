@@ -167,12 +167,12 @@ void SCBE::emitMain(SCBE_X64& pp)
         if (!dep->module->isSwag)
             continue;
         auto nameFct = dep->module->getGlobalPrivateFct(g_LangSpec->name_globalInit);
-        emitInternalCallExt(pp, nameFct, pp.pushParams, UINT32_MAX, g_TypeMgr->typeInfoModuleCall);
+        emitInternalCallExt(pp, nameFct, pp.pushParams);
     }
 
     // Call to global init of this module
     auto thisInit = module->getGlobalPrivateFct(g_LangSpec->name_globalInit);
-    emitInternalCallExt(pp, thisInit, pp.pushParams, UINT32_MAX, g_TypeMgr->typeInfoModuleCall);
+    emitInternalCallExt(pp, thisInit, pp.pushParams);
 
     // Call to global premain of all dependencies
     for (const auto dep : moduleDependencies)
@@ -182,12 +182,12 @@ void SCBE::emitMain(SCBE_X64& pp)
             continue;
 
         auto nameFct = dep->module->getGlobalPrivateFct(g_LangSpec->name_globalPreMain);
-        emitInternalCallExt(pp, nameFct, pp.pushParams, UINT32_MAX, g_TypeMgr->typeInfoModuleCall);
+        emitInternalCallExt(pp, nameFct, pp.pushParams);
     }
 
     // Call to global premain of this module
     thisInit = module->getGlobalPrivateFct(g_LangSpec->name_globalPreMain);
-    emitInternalCallExt(pp, thisInit, pp.pushParams, UINT32_MAX, g_TypeMgr->typeInfoModuleCall);
+    emitInternalCallExt(pp, thisInit, pp.pushParams);
 
     // Call to test functions
     if (buildParameters.compileType == Test)
@@ -357,7 +357,8 @@ void SCBE::emitGlobalInit(SCBE_X64& pp)
 
     // Thread local storage
     pp.emitSymbolRelocationAddr(CPUReg::RDI, pp.symTls_threadLocalId, 0);
-    emitInternalCallExt(pp, g_LangSpec->name_priv_tlsAlloc, {}, 0);
+    pp.pushParams.clear();
+    emitInternalCallExt(pp, g_LangSpec->name_priv_tlsAlloc, pp.pushParams, 0);
 
     // Init type table slice for each dependency (by calling ???_getTypeTable)
     pp.emitSymbolRelocationAddr(CPUReg::RCX, pp.symCSIndex, module->modulesSliceOffset + sizeof(SwagModule) + offsetof(SwagModule, types));
