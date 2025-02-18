@@ -1009,7 +1009,7 @@ namespace OS
             gen.emitCallParameters(typeInfoFunc, pushCPUParams, 0, retCopyAddr);
 
             gen.emitLoad(CPUReg::RAX, reinterpret_cast<uint64_t>(foreignPtr), OpBits::B64);
-            gen.emitCall(CPUReg::RAX);
+            gen.emitCallIndirect(CPUReg::RAX);
 
             if (!returnType->isVoid() && !retCopyAddr)
             {

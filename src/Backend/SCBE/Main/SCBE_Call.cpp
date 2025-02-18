@@ -63,9 +63,9 @@ void SCBE::emitCallCPUParams(SCBE_X64& pp, const Utf8& funcName, const TypeInfoF
     pp.emitCallParameters(typeFuncBc, pushCPUParams, offsetRT);
 
     if (!localCall)
-        pp.emitCallFar(funcName);
+        pp.emitCallExtern(funcName);
     else
-        pp.emitCall(funcName);
+        pp.emitCallLocal(funcName);
 
     // Store result
     pp.emitStoreCallResult(CPUReg::RDI, offsetRT, typeFuncBc);
@@ -247,7 +247,7 @@ void SCBE::emitLambdaCall(SCBE_X64& pp)
         pushCPUParams.push_back({.type = CPUPushParamType::Reg, .reg = r});
     pp.emitCallParameters(typeFuncBc, pushCPUParams, pp.offsetRT);
 
-    pp.emitCall(CPUReg::R10);
+    pp.emitCallIndirect(CPUReg::R10);
     pp.emitStoreCallResult(CPUReg::RDI, pp.offsetRT, typeFuncBc);
 
     const auto jumpBCToAfterAddr   = pp.emitJumpLong(JUMP);
@@ -263,7 +263,7 @@ void SCBE::emitLambdaCall(SCBE_X64& pp)
 
     pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symPI_byteCodeRun, 0);
     pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, OpBits::B64);
-    pp.emitCall(CPUReg::RAX);
+    pp.emitCallIndirect(CPUReg::RAX);
 
     // End
     //////////////////

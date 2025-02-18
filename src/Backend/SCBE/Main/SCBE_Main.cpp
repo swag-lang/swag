@@ -198,19 +198,19 @@ void SCBE::emitMain(SCBE_X64& pp)
             if (node && node->hasAttribute(ATTRIBUTE_COMPILER))
                 continue;
 
-            pp.emitCall(bc->getCallName());
+            pp.emitCallLocal(bc->getCallName());
         }
     }
 
     // Call to main
     if (module->byteCodeMainFunc)
     {
-        pp.emitCall(module->byteCodeMainFunc->getCallName());
+        pp.emitCallLocal(module->byteCodeMainFunc->getCallName());
     }
 
     // Call to global drop of this module
     const auto thisDrop = module->getGlobalPrivateFct(g_LangSpec->name_globalDrop);
-    pp.emitCall(thisDrop);
+    pp.emitCallLocal(thisDrop);
 
     // Call to global drop of all dependencies
     for (uint32_t i = moduleDependencies.size() - 1; i != UINT32_MAX; i--)
@@ -219,10 +219,10 @@ void SCBE::emitMain(SCBE_X64& pp)
         if (!dep->module->isSwag)
             continue;
         auto nameFct = dep->module->getGlobalPrivateFct(g_LangSpec->name_globalDrop);
-        pp.emitCall(nameFct);
+        pp.emitCallLocal(nameFct);
     }
 
-    pp.emitCall(g_LangSpec->name_priv_closeRuntime);
+    pp.emitCallLocal(g_LangSpec->name_priv_closeRuntime);
 
     pp.emitClear(CPUReg::RAX, OpBits::B64);
     pp.emitOpBinary(CPUReg::RSP, 40, CPUOp::ADD, OpBits::B64);
@@ -308,7 +308,7 @@ void SCBE::emitGlobalPreMain(SCBE_X64& pp)
         const auto node = bc->node;
         if (node && node->hasAttribute(ATTRIBUTE_COMPILER))
             continue;
-        pp.emitCall(bc->getCallName());
+        pp.emitCallLocal(bc->getCallName());
     }
 
     pp.emitOpBinary(CPUReg::RSP, 48, CPUOp::ADD, OpBits::B64);
@@ -371,7 +371,7 @@ void SCBE::emitGlobalInit(SCBE_X64& pp)
         }
 
         auto callTable = dep->module->getGlobalPrivateFct(g_LangSpec->name_getTypeTable);
-        pp.emitCall(callTable);
+        pp.emitCallLocal(callTable);
 
         // Count types is stored as a uint64_t at the start of the address
         pp.emitLoad(CPUReg::R8, cc.returnByRegisterInteger, 0, OpBits::B64);
@@ -388,7 +388,7 @@ void SCBE::emitGlobalInit(SCBE_X64& pp)
         const auto node = bc->node;
         if (node && node->hasAttribute(ATTRIBUTE_COMPILER))
             continue;
-        pp.emitCall(bc->getCallName());
+        pp.emitCallLocal(bc->getCallName());
     }
 
     pp.emitOpBinary(CPUReg::RSP, 48, CPUOp::ADD, OpBits::B64);
@@ -427,7 +427,7 @@ void SCBE::emitGlobalDrop(SCBE_X64& pp)
         const auto node = bc->node;
         if (node && node->hasAttribute(ATTRIBUTE_COMPILER))
             continue;
-        pp.emitCall(bc->getCallName());
+        pp.emitCallLocal(bc->getCallName());
     }
 
     // __dropGlobalVariables

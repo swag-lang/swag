@@ -114,7 +114,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         if (sizeStack + sizeParamsStack >= SWAG_LIMIT_PAGE_STACK)
         {
             pp.emitLoad(CPUReg::RAX, sizeStack + sizeParamsStack, OpBits::B64);
-            pp.emitCall(R"(__chkstk)");
+            pp.emitCallLocal(R"(__chkstk)");
         }
     }
 
@@ -2136,7 +2136,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitLoad(CPUReg::RCX, CPUReg::RAX, OpBits::B64);
                 pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symPI_makeCallback, 0);
                 pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, OpBits::B64);
-                pp.emitCall(CPUReg::RAX);
+                pp.emitCallIndirect(CPUReg::RAX);
 
                 // End
                 //////////////////
@@ -2584,13 +2584,13 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitJump(JZ, i, ip->b.s32);
                 break;
             case ByteCodeOp::InternalPushErr:
-                pp.emitCall(g_LangSpec->name_priv_pusherr);
+                pp.emitCallLocal(g_LangSpec->name_priv_pusherr);
                 break;
             case ByteCodeOp::InternalPopErr:
-                pp.emitCall(g_LangSpec->name_priv_poperr);
+                pp.emitCallLocal(g_LangSpec->name_priv_poperr);
                 break;
             case ByteCodeOp::InternalCatchErr:
-                pp.emitCall(g_LangSpec->name_priv_catcherr);
+                pp.emitCallLocal(g_LangSpec->name_priv_catcherr);
                 break;
             case ByteCodeOp::InternalInitStackTrace:
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);

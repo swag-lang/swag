@@ -2043,7 +2043,7 @@ void SCBE_X64::emitClear(CPUReg memReg, uint64_t memOffset, uint32_t count)
 
 /////////////////////////////////////////////////////////////////////
 
-void SCBE_X64::emitCallFar(const Utf8& symbolName)
+void SCBE_X64::emitCallExtern(const Utf8& symbolName)
 {
     concat.addU8(0xFF);
     concat.addU8(0x15);
@@ -2052,7 +2052,7 @@ void SCBE_X64::emitCallFar(const Utf8& symbolName)
     concat.addU32(0);
 }
 
-void SCBE_X64::emitCall(const Utf8& symbolName)
+void SCBE_X64::emitCallLocal(const Utf8& symbolName)
 {
     concat.addU8(0xE8);
 
@@ -2441,7 +2441,7 @@ void SCBE_X64::emitStoreCallResult(CPUReg memReg, uint32_t memOffset, const Type
     }
 }
 
-void SCBE_X64::emitCall(CPUReg reg)
+void SCBE_X64::emitCallIndirect(CPUReg reg)
 {
     SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX || reg == CPUReg::R10);
     if (reg == CPUReg::R10)
