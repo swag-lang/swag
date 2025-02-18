@@ -940,7 +940,7 @@ namespace OS
         thread_local SCBE_X64 g_X64GenFFI;
     };
 
-    void ffi(ByteCodeRunContext* context, void* foreignPtr, TypeInfoFuncAttr* typeInfoFunc, const VectorNative<uint32_t>& pushRAParams, void* retCopyAddr)
+    void ffi(ByteCodeRunContext* context, void* foreignPtr, const TypeInfoFuncAttr* typeInfoFunc, const VectorNative<uint32_t>& pushRAParams, void* retCopyAddr)
     {
         const auto& cc         = typeInfoFunc->getCallConv();
         const auto  returnType = TypeManager::concreteType(typeInfoFunc->returnType);
