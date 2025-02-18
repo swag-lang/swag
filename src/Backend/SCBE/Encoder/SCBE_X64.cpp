@@ -775,6 +775,13 @@ void SCBE_X64::emitCmp(CPUReg reg, uint64_t value, OpBits opBits)
 {
     SWAG_ASSERT(SCBE_CPU::isInt(opBits));
     if (opBits == OpBits::B8)
+        value &= 0xFF;
+    else if (opBits == OpBits::B16)
+        value &= 0xFFFF;
+    else if (opBits == OpBits::B32)
+        value &= 0xFFFFFFFF;
+
+    if (opBits == OpBits::B8)
     {
         SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX);
         if (reg == CPUReg::RAX)
@@ -789,15 +796,18 @@ void SCBE_X64::emitCmp(CPUReg reg, uint64_t value, OpBits opBits)
             emitValue(concat, value, OpBits::B8);
         }
     }
-    else if (value <= 0x7f)
+    else if (value <= 0x7F ||
+             (opBits == OpBits::B16 && value >= 0xFF80) ||
+             (opBits == OpBits::B32 && value >= 0xFFFFFF80) ||
+             (opBits == OpBits::B64 && value >= 0xFFFFFFFFFFFFFF80))
     {
         SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX);
         emitREX(concat, opBits);
         concat.addU8(0x83);
         concat.addU8(0xF8 | static_cast<uint8_t>(reg));
-        emitValue(concat, value, OpBits::B8);
+        emitValue(concat, value & 0xFF, OpBits::B8);
     }
-    else if (opBits == OpBits::B16 && value <= 0x7fff)
+    else if (opBits == OpBits::B16 && value <= 0x7FFF)
     {
         SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX);
         emitREX(concat, opBits);
@@ -813,7 +823,7 @@ void SCBE_X64::emitCmp(CPUReg reg, uint64_t value, OpBits opBits)
             emitValue(concat, value, OpBits::B16);
         }
     }
-    else if (value <= 0x7fffffff)
+    else if (value <= 0x7FFFFFFF)
     {
         SWAG_ASSERT(reg == CPUReg::RAX);
         emitREX(concat, opBits);
@@ -857,6 +867,12 @@ void SCBE_X64::emitCmp(CPUReg memReg, uint64_t memOffset, CPUReg reg, OpBits opB
 void SCBE_X64::emitCmp(CPUReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits)
 {
     SWAG_ASSERT(SCBE_CPU::isInt(opBits));
+    if (opBits == OpBits::B8)
+        value &= 0xFF;
+    else if (opBits == OpBits::B16)
+        value &= 0xFFFF;
+    else if (opBits == OpBits::B32)
+        value &= 0xFFFFFFFF;
 
     if (storageConcatCount == concat.totalCount() &&
         isInt(opBits) &&
@@ -1548,7 +1564,13 @@ void SCBE_X64::emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, OpBits opBits,
 void SCBE_X64::emitOpBinary(CPUReg memReg, uint64_t memOffset, uint64_t value, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags)
 {
     SWAG_ASSERT(SCBE_CPU::isInt(opBits));
-
+    if (opBits == OpBits::B8)
+        value &= 0xFF;
+    else if (opBits == OpBits::B16)
+        value &= 0xFFFF;
+    else if (opBits == OpBits::B32)
+        value &= 0xFFFFFFFF;
+    
     ///////////////////////////////////////////
 
     if (value > 0x7FFFFFFF)
