@@ -19,7 +19,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     auto        ct              = buildParameters.compileType;
     auto        precompileIndex = buildParameters.precompileIndex;
-    auto&       pp              = encoder<SCBE_X64>(ct, precompileIndex);
+    auto&       pp              = encoder<SCBE_CPU>(ct, precompileIndex);
     auto&       concat          = pp.concat;
     auto        typeFunc        = bc->getCallType();
     auto        returnType      = typeFunc->concreteReturnType();

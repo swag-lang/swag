@@ -1,4 +1,6 @@
 #include "pch.h"
+
+#include "Backend/SCBE/Encoder/SCBE_X64.h"
 #ifdef _WIN32
 #include "Backend/Context.h"
 #include "Backend/SCBE/Main/SCBE.h"

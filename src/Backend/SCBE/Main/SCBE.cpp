@@ -1,4 +1,6 @@
 #include "pch.h"
+
+#include "Backend/SCBE/Encoder/SCBE_X64.h"
 #include "Backend/SCBE/Main/SCBE.h"
 #include "Backend/SCBE/Obj/SCBE_Coff.h"
 #include "Backend/SCBE/Obj/SCBE_SaveObjJob.h"
@@ -19,7 +21,7 @@ SCBE::SCBE() :
     memset(perThread, 0, sizeof(perThread));
 }
 
-void SCBE::createRuntime(SCBE_X64& pp)
+void SCBE::createRuntime(SCBE_CPU& pp)
 {
     const auto module          = pp.module;
     const auto precompileIndex = pp.buildParams.precompileIndex;
@@ -133,7 +135,7 @@ JobResult SCBE::prepareOutput(const BuildParameters& buildParameters, int stage,
             break;
     }
 
-    auto& pp = encoder<SCBE_X64>(ct, precompileIndex);
+    auto& pp = encoder<SCBE_CPU>(ct, precompileIndex);
     pp.init(buildParameters);
 
     auto& concat = pp.concat;
@@ -236,7 +238,7 @@ JobResult SCBE::prepareOutput(const BuildParameters& buildParameters, int stage,
     return JobResult::ReleaseJob;
 }
 
-void SCBE::computeUnwind(const SCBE_X64&               pp,
+void SCBE::computeUnwind(const SCBE_CPU&               pp,
                          const VectorNative<CPUReg>&   unwindRegs,
                          const VectorNative<uint32_t>& unwindOffsetRegs,
                          uint32_t                      sizeStack,
@@ -267,7 +269,7 @@ void SCBE::saveObjFile(const BuildParameters& buildParameters) const
 {
     const auto ct              = buildParameters.compileType;
     const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = encoder<SCBE_X64>(ct, precompileIndex);
+    auto&      pp              = encoder<SCBE_CPU>(ct, precompileIndex);
 
     auto path = getCacheFolder();
     path.append(pp.filename);

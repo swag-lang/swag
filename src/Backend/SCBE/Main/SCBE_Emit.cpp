@@ -6,7 +6,7 @@
 #include "Semantic/Type/TypeInfo.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 
-void SCBE::emitIMMA(SCBE_X64& pp, CPUReg reg, OpBits opBits)
+void SCBE::emitIMMA(SCBE_CPU& pp, CPUReg reg, OpBits opBits)
 {
     const auto ip = pp.ip;
     if (ip->hasFlag(BCI_IMM_A))
@@ -15,7 +15,7 @@ void SCBE::emitIMMA(SCBE_X64& pp, CPUReg reg, OpBits opBits)
         pp.emitLoad(reg, CPUReg::RDI, REG_OFFSET(ip->a.u32), opBits);
 }
 
-void SCBE::emitIMMB(SCBE_X64& pp, CPUReg reg, OpBits opBits)
+void SCBE::emitIMMB(SCBE_CPU& pp, CPUReg reg, OpBits opBits)
 {
     const auto ip = pp.ip;
     if (ip->hasFlag(BCI_IMM_B))
@@ -24,7 +24,7 @@ void SCBE::emitIMMB(SCBE_X64& pp, CPUReg reg, OpBits opBits)
         pp.emitLoad(reg, CPUReg::RDI, REG_OFFSET(ip->b.u32), opBits);
 }
 
-void SCBE::emitIMMC(SCBE_X64& pp, CPUReg reg, OpBits opBits)
+void SCBE::emitIMMC(SCBE_CPU& pp, CPUReg reg, OpBits opBits)
 {
     const auto ip = pp.ip;
     if (ip->hasFlag(BCI_IMM_C))
@@ -33,7 +33,7 @@ void SCBE::emitIMMC(SCBE_X64& pp, CPUReg reg, OpBits opBits)
         pp.emitLoad(reg, CPUReg::RDI, REG_OFFSET(ip->c.u32), opBits);
 }
 
-void SCBE::emitIMMD(SCBE_X64& pp, CPUReg reg, OpBits opBits)
+void SCBE::emitIMMD(SCBE_CPU& pp, CPUReg reg, OpBits opBits)
 {
     const auto ip = pp.ip;
     if (ip->hasFlag(BCI_IMM_D))
@@ -42,7 +42,7 @@ void SCBE::emitIMMD(SCBE_X64& pp, CPUReg reg, OpBits opBits)
         pp.emitLoad(reg, CPUReg::RDI, REG_OFFSET(ip->d.u32), opBits);
 }
 
-void SCBE::emitIMMB(SCBE_X64& pp, CPUReg reg, OpBits numBitsSrc, OpBits numBitsDst, bool isSigned)
+void SCBE::emitIMMB(SCBE_CPU& pp, CPUReg reg, OpBits numBitsSrc, OpBits numBitsDst, bool isSigned)
 {
     const auto ip = pp.ip;
     if (ip->hasFlag(BCI_IMM_B))
@@ -56,7 +56,7 @@ void SCBE::emitIMMB(SCBE_X64& pp, CPUReg reg, OpBits numBitsSrc, OpBits numBitsD
     }
 }
 
-void SCBE::emitIMMC(SCBE_X64& pp, CPUReg reg, OpBits numBitsSrc, OpBits numBitsDst, bool isSigned)
+void SCBE::emitIMMC(SCBE_CPU& pp, CPUReg reg, OpBits numBitsSrc, OpBits numBitsDst, bool isSigned)
 {
     const auto ip = pp.ip;
     if (ip->hasFlag(BCI_IMM_C))
@@ -70,7 +70,7 @@ void SCBE::emitIMMC(SCBE_X64& pp, CPUReg reg, OpBits numBitsSrc, OpBits numBitsD
     }
 }
 
-void SCBE::emitShiftRightArithmetic(SCBE_X64& pp)
+void SCBE::emitShiftRightArithmetic(SCBE_CPU& pp)
 {
     const auto ip     = pp.ip;
     const auto opBits = SCBE_CPU::getOpBits(ip->op);
@@ -98,7 +98,7 @@ void SCBE::emitShiftRightArithmetic(SCBE_X64& pp)
     pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, opBits);
 }
 
-void SCBE::emitShiftRightEqArithmetic(SCBE_X64& pp)
+void SCBE::emitShiftRightEqArithmetic(SCBE_CPU& pp)
 {
     const auto ip     = pp.ip;
     const auto opBits = SCBE_CPU::getOpBits(ip->op);
@@ -118,7 +118,7 @@ void SCBE::emitShiftRightEqArithmetic(SCBE_X64& pp)
     }
 }
 
-void SCBE::emitShiftLogical(SCBE_X64& pp, CPUOp op)
+void SCBE::emitShiftLogical(SCBE_CPU& pp, CPUOp op)
 {
     const auto ip     = pp.ip;
     const auto opBits = SCBE_CPU::getOpBits(ip->op);
@@ -145,7 +145,7 @@ void SCBE::emitShiftLogical(SCBE_X64& pp, CPUOp op)
     }
 }
 
-void SCBE::emitShiftEqLogical(SCBE_X64& pp, CPUOp op)
+void SCBE::emitShiftEqLogical(SCBE_CPU& pp, CPUOp op)
 {
     const auto ip     = pp.ip;
     const auto opBits = SCBE_CPU::getOpBits(ip->op);
@@ -172,7 +172,7 @@ void SCBE::emitShiftEqLogical(SCBE_X64& pp, CPUOp op)
     }
 }
 
-void SCBE::emitOverflow(SCBE_X64& pp, const char* msg, bool isSigned)
+void SCBE::emitOverflow(SCBE_CPU& pp, const char* msg, bool isSigned)
 {
     const auto ip = pp.ip;
     if (BackendEncoder::mustCheckOverflow(pp.buildParams.module, ip))
@@ -184,7 +184,7 @@ void SCBE::emitOverflow(SCBE_X64& pp, const char* msg, bool isSigned)
     }
 }
 
-void SCBE::emitBinOp(SCBE_X64& pp, CPUOp op, CPUEmitFlags emitFlags)
+void SCBE::emitBinOp(SCBE_CPU& pp, CPUOp op, CPUEmitFlags emitFlags)
 {
     const auto ip     = pp.ip;
     const auto opBits = SCBE_CPU::getOpBits(ip->op);
@@ -205,7 +205,7 @@ void SCBE::emitBinOp(SCBE_X64& pp, CPUOp op, CPUEmitFlags emitFlags)
     }
 }
 
-void SCBE::emitBinOpOverflow(SCBE_X64& pp, CPUOp op, SafetyMsg safetyMsg, TypeInfo* safetyType)
+void SCBE::emitBinOpOverflow(SCBE_CPU& pp, CPUOp op, SafetyMsg safetyMsg, TypeInfo* safetyType)
 {
     const auto  ip       = pp.ip;
     const auto  opBits   = SCBE_CPU::getOpBits(ip->op);
@@ -217,7 +217,7 @@ void SCBE::emitBinOpOverflow(SCBE_X64& pp, CPUOp op, SafetyMsg safetyMsg, TypeIn
     emitOverflow(pp, msg, isSigned);
 }
 
-void SCBE::emitBinOpEq(SCBE_X64& pp, uint32_t offset, CPUOp op, CPUEmitFlags emitFlags)
+void SCBE::emitBinOpEq(SCBE_CPU& pp, uint32_t offset, CPUOp op, CPUEmitFlags emitFlags)
 {
     const auto ip     = pp.ip;
     const auto opBits = SCBE_CPU::getOpBits(ip->op);
@@ -236,7 +236,7 @@ void SCBE::emitBinOpEq(SCBE_X64& pp, uint32_t offset, CPUOp op, CPUEmitFlags emi
     }
 }
 
-void SCBE::emitBinOpEqOverflow(SCBE_X64& pp, uint32_t offset, CPUOp op, SafetyMsg safetyMsg, TypeInfo* safetyType)
+void SCBE::emitBinOpEqOverflow(SCBE_CPU& pp, uint32_t offset, CPUOp op, SafetyMsg safetyMsg, TypeInfo* safetyType)
 {
     const auto  ip       = pp.ip;
     const char* msg      = ByteCodeGen::safetyMsg(safetyMsg, safetyType);
@@ -247,7 +247,7 @@ void SCBE::emitBinOpEqOverflow(SCBE_X64& pp, uint32_t offset, CPUOp op, SafetyMs
     emitOverflow(pp, msg, isSigned);
 }
 
-void SCBE::emitBinOpEqLock(SCBE_X64& pp, CPUOp op)
+void SCBE::emitBinOpEqLock(SCBE_CPU& pp, CPUOp op)
 {
     const auto ip     = pp.ip;
     const auto opBits = SCBE_CPU::getOpBits(ip->op);
@@ -256,7 +256,7 @@ void SCBE::emitBinOpEqLock(SCBE_X64& pp, CPUOp op)
     pp.emitOpBinary(CPUReg::RCX, 0, CPUReg::RAX, op, opBits, EMITF_Lock);
 }
 
-void SCBE::emitBinOpEqS(SCBE_X64& pp, CPUOp op)
+void SCBE::emitBinOpEqS(SCBE_CPU& pp, CPUOp op)
 {
     const auto ip     = pp.ip;
     const auto opBits = SCBE_CPU::getOpBits(ip->op);
@@ -275,7 +275,7 @@ void SCBE::emitBinOpEqS(SCBE_X64& pp, CPUOp op)
     }
 }
 
-void SCBE::emitCompareOp(SCBE_X64& pp)
+void SCBE::emitCompareOp(SCBE_CPU& pp)
 {
     const auto ip     = pp.ip;
     const auto opBits = SCBE_CPU::getOpBits(ip->op);
@@ -305,7 +305,7 @@ void SCBE::emitCompareOp(SCBE_X64& pp)
     }
 }
 
-void SCBE::emitAddSubMul64(SCBE_X64& pp, uint64_t mulValue, CPUOp op)
+void SCBE::emitAddSubMul64(SCBE_CPU& pp, uint64_t mulValue, CPUOp op)
 {
     SWAG_ASSERT(op == CPUOp::ADD || op == CPUOp::SUB);
 
@@ -344,7 +344,7 @@ void SCBE::emitAddSubMul64(SCBE_X64& pp, uint64_t mulValue, CPUOp op)
     }
 }
 
-void SCBE::emitJumpCmp(SCBE_X64& pp, CPUCondJump op, OpBits opBits)
+void SCBE::emitJumpCmp(SCBE_CPU& pp, CPUCondJump op, OpBits opBits)
 {
     const auto ip = pp.ip;
     if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_C))
@@ -369,7 +369,7 @@ void SCBE::emitJumpCmp(SCBE_X64& pp, CPUCondJump op, OpBits opBits)
     pp.emitJump(op, pp.ipIndex, ip->b.s32);
 }
 
-void SCBE::emitJumpCmpAddr(SCBE_X64& pp, CPUCondJump op, CPUReg memReg, uint64_t memOffset, OpBits opBits)
+void SCBE::emitJumpCmpAddr(SCBE_CPU& pp, CPUCondJump op, CPUReg memReg, uint64_t memOffset, OpBits opBits)
 {
     const auto ip = pp.ip;
     SWAG_ASSERT(SCBE_CPU::isInt(opBits));
@@ -387,7 +387,7 @@ void SCBE::emitJumpCmpAddr(SCBE_X64& pp, CPUCondJump op, CPUReg memReg, uint64_t
     pp.emitJump(op, pp.ipIndex, ip->b.s32);
 }
 
-void SCBE::emitJumpCmp2(SCBE_X64& pp, CPUCondJump op1, CPUCondJump op2, OpBits opBits)
+void SCBE::emitJumpCmp2(SCBE_CPU& pp, CPUCondJump op1, CPUCondJump op2, OpBits opBits)
 {
     const auto ip = pp.ip;
     SWAG_ASSERT(SCBE_CPU::isFloat(opBits));
@@ -408,7 +408,7 @@ void SCBE::emitJumpCmp2(SCBE_X64& pp, CPUCondJump op1, CPUCondJump op2, OpBits o
     pp.emitJump(op2, pp.ipIndex, ip->b.s32);
 }
 
-void SCBE::emitJumpCmp3(SCBE_X64& pp, CPUCondJump op1, CPUCondJump op2, OpBits opBits)
+void SCBE::emitJumpCmp3(SCBE_CPU& pp, CPUCondJump op1, CPUCondJump op2, OpBits opBits)
 {
     const auto ip = pp.ip;
     SWAG_ASSERT(SCBE_CPU::isFloat(opBits));
@@ -429,7 +429,7 @@ void SCBE::emitJumpCmp3(SCBE_X64& pp, CPUCondJump op1, CPUCondJump op2, OpBits o
     pp.emitJump(op2, pp.ipIndex, ip->b.s32);
 }
 
-void SCBE::emitInternalPanic(SCBE_X64& pp, const char* msg)
+void SCBE::emitInternalPanic(SCBE_CPU& pp, const char* msg)
 {
     const auto node = pp.ip->node;
     const auto np   = node->token.sourceFile->path;

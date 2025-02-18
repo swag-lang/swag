@@ -8,7 +8,7 @@
 #include "Wmf/ModuleManager.h"
 #include "Wmf/Workspace.h"
 
-void SCBE::emitGetParam(SCBE_X64& pp, uint32_t reg, uint32_t paramIdx, OpBits opBits, uint64_t toAdd, OpBits derefBits)
+void SCBE::emitGetParam(SCBE_CPU& pp, uint32_t reg, uint32_t paramIdx, OpBits opBits, uint64_t toAdd, OpBits derefBits)
 {
     const auto     cpuFct     = pp.cpuFct;
     const auto     typeFunc   = cpuFct->typeFunc;
@@ -57,7 +57,7 @@ void SCBE::emitGetParam(SCBE_X64& pp, uint32_t reg, uint32_t paramIdx, OpBits op
     pp.emitStore(CPUReg::RDI, REG_OFFSET(reg), CPUReg::RAX, OpBits::B64);
 }
 
-void SCBE::emitCallCPUParams(SCBE_X64& pp, const Utf8& funcName, const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& pushCPUParams, uint32_t offsetRT, bool localCall)
+void SCBE::emitCallCPUParams(SCBE_CPU& pp, const Utf8& funcName, const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& pushCPUParams, uint32_t offsetRT, bool localCall)
 {
     // Push parameters
     pp.emitCallParameters(typeFuncBc, pushCPUParams, offsetRT);
@@ -87,7 +87,7 @@ void SCBE::emitCallCPUParams(SCBE_X64& pp, const Utf8& funcName, const TypeInfoF
     }
 }
 
-void SCBE::emitCallRAParams(SCBE_X64& pp, const Utf8& funcName, const TypeInfoFuncAttr* typeFuncBc, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, bool localCall)
+void SCBE::emitCallRAParams(SCBE_CPU& pp, const Utf8& funcName, const TypeInfoFuncAttr* typeFuncBc, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, bool localCall)
 {
     VectorNative<CPUPushParam> p;
     for (const auto r : pushRAParams)
@@ -95,7 +95,7 @@ void SCBE::emitCallRAParams(SCBE_X64& pp, const Utf8& funcName, const TypeInfoFu
     emitCallCPUParams(pp, funcName, typeFuncBc, p, offsetRT, localCall);
 }
 
-void SCBE::emitRuntimeCallRAParams(SCBE_X64& pp, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT)
+void SCBE::emitRuntimeCallRAParams(SCBE_CPU& pp, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT)
 {
     const auto typeFunc = g_Workspace->runtimeModule->getRuntimeTypeFct(funcName);
     SWAG_ASSERT(typeFunc);
@@ -108,7 +108,7 @@ void SCBE::emitRuntimeCallRAParams(SCBE_X64& pp, const Utf8& funcName, const Vec
     emitCallCPUParams(pp, funcName, typeFunc, p, offsetRT, true);
 }
 
-void SCBE::emitRuntimeCallCPUParams(SCBE_X64& pp, const Utf8& funcName, const VectorNative<CPUPushParam>& pushCPUParams, uint32_t offsetRT)
+void SCBE::emitRuntimeCallCPUParams(SCBE_CPU& pp, const Utf8& funcName, const VectorNative<CPUPushParam>& pushCPUParams, uint32_t offsetRT)
 {
     auto typeFuncBc = g_Workspace->runtimeModule->getRuntimeTypeFct(funcName);
     if (!typeFuncBc)
@@ -123,7 +123,7 @@ void SCBE::emitRuntimeCallCPUParams(SCBE_X64& pp, const Utf8& funcName, const Ve
     emitCallCPUParams(pp, funcName, typeFuncBc, p, offsetRT, true);
 }
 
-void SCBE::emitByteCodeCall(SCBE_X64& pp, const TypeInfoFuncAttr* typeFuncBc)
+void SCBE::emitByteCodeCall(SCBE_CPU& pp, const TypeInfoFuncAttr* typeFuncBc)
 {
     int idxReg = 0;
     for (uint32_t idxParam = typeFuncBc->numReturnRegisters() - 1; idxParam != UINT32_MAX; idxParam--, idxReg++)
@@ -160,7 +160,7 @@ void SCBE::emitByteCodeCall(SCBE_X64& pp, const TypeInfoFuncAttr* typeFuncBc)
     }
 }
 
-void SCBE::emitByteCodeCallParameters(SCBE_X64& pp, const TypeInfoFuncAttr* typeFuncBc)
+void SCBE::emitByteCodeCallParameters(SCBE_CPU& pp, const TypeInfoFuncAttr* typeFuncBc)
 {
     // If the closure is assigned to a lambda, then we must not use the first parameter (the first
     // parameter is the capture context, which does not exist in a normal function)
@@ -195,7 +195,7 @@ void SCBE::emitByteCodeCallParameters(SCBE_X64& pp, const TypeInfoFuncAttr* type
     }
 }
 
-void SCBE::emitLocalCall(SCBE_X64& pp)
+void SCBE::emitLocalCall(SCBE_CPU& pp)
 {
     const auto ip      = pp.ip;
     const auto callBc  = reinterpret_cast<ByteCode*>(ip->a.pointer);
@@ -211,7 +211,7 @@ void SCBE::emitLocalCall(SCBE_X64& pp)
     }
 }
 
-void SCBE::emitForeignCall(SCBE_X64& pp)
+void SCBE::emitForeignCall(SCBE_CPU& pp)
 {
     const auto ip       = pp.ip;
     const auto funcNode = reinterpret_cast<AstFuncDecl*>(ip->a.pointer);
@@ -228,7 +228,7 @@ void SCBE::emitForeignCall(SCBE_X64& pp)
     pp.pushRVParams.clear();
 }
 
-void SCBE::emitLambdaCall(SCBE_X64& pp)
+void SCBE::emitLambdaCall(SCBE_CPU& pp)
 {
     const auto ip         = pp.ip;
     const auto typeFuncBc = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
