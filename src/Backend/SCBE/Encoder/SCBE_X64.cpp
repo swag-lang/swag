@@ -891,16 +891,10 @@ void SCBE_X64::emitCmp(CPUReg memReg, uint64_t memOffset, uint64_t value, OpBits
         emitModRM(concat, memOffset, memReg, memReg, 0x39);
         emitValue(concat, value, OpBits::B8);
     }
-    else if (value <= 0x7F)
-    {
-        emitREX(concat, opBits);
-        concat.addU8(0x83);
-        emitModRM(concat, memOffset, memReg, memReg, 0x39);
-        emitValue(concat, value, OpBits::B8);
-    }
-    else if ((opBits == OpBits::B16 && value == 0xFFFF) ||
-             (opBits == OpBits::B32 && value == 0xFFFFFFFF) ||
-             (opBits == OpBits::B64 && value == 0xFFFFFFFFFFFFFFFF))
+    else if (value <= 0x7F ||
+             (opBits == OpBits::B16 && value >= 0xFF80) ||
+             (opBits == OpBits::B32 && value >= 0xFFFFFF80) ||
+             (opBits == OpBits::B64 && value >= 0xFFFFFFFFFFFFFF80))
     {
         emitREX(concat, opBits);
         concat.addU8(0x83);
@@ -1570,7 +1564,7 @@ void SCBE_X64::emitOpBinary(CPUReg memReg, uint64_t memOffset, uint64_t value, C
         value &= 0xFFFF;
     else if (opBits == OpBits::B32)
         value &= 0xFFFFFFFF;
-    
+
     ///////////////////////////////////////////
 
     if (value > 0x7FFFFFFF)
