@@ -89,7 +89,6 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     const auto allocR      = pp.allocR;
     const auto allocRR     = pp.allocRR;
     const auto allocResult = pp.allocResult;
-    const auto allocVa     = pp.allocVa;
     const auto allocStack  = pp.allocStack;
     const auto allocT      = pp.allocT;
 

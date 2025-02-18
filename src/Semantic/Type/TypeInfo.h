@@ -83,6 +83,7 @@ constexpr TypeInfoFlagsV TYPEINFO_GHOST_TUPLE              = 0x00080000'00000000
 constexpr TypeInfoFlagsV TYPEINFO_GENERATED_OP_EQUALS      = 0x00100000'00000000;
 constexpr TypeInfoFlagsV TYPEINFO_WAS_UNTYPED              = 0x00200000'00000000;
 constexpr TypeInfoFlagsV TYPEINFO_NULLABLE                 = 0x00400000'00000000;
+constexpr TypeInfoFlagsV TYPEINFO_FLATTEN_DONE             = 0x00800000'00000000;
 
 constexpr TypeParamFlags TYPEINFOPARAM_DEFINED_VALUE    = 0x00000001;
 constexpr TypeParamFlags TYPEINFOPARAM_HAS_USING        = 0x00000002;

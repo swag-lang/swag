@@ -1063,8 +1063,9 @@ void TypeInfoStruct::flattenUsingFields()
     ScopedLock lk(mutexCache);
     SWAG_RACE_CONDITION_READ(raceFields);
 
-    if (!flattenFields.empty())
+    if (hasFlag(TYPEINFO_FLATTEN_DONE))
         return;
+    addFlag(TYPEINFO_FLATTEN_DONE);
     if (fields.empty())
         return;
 
@@ -1152,6 +1153,8 @@ TypeInfo* TypeInfoStruct::clone()
     }
 
     newType->copyFrom(this);
+    newType->removeFlag(TYPEINFO_FLATTEN_DONE);
+
     return newType;
 }
 
