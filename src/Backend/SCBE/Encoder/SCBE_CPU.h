@@ -27,9 +27,10 @@ enum class CPUPushParamType
 
 struct CPUPushParam
 {
-    CPUPushParamType type = CPUPushParamType::Reg;
-    uint64_t         reg  = 0;
-    uint64_t         val  = 0;
+    CPUPushParamType type     = CPUPushParamType::Reg;
+    uint64_t         reg      = 0;
+    uint64_t         val      = 0;
+    TypeInfo*        typeInfo = nullptr;
 };
 
 enum class CPUOp : uint8_t
@@ -192,7 +193,7 @@ struct SCBE_CPU : BackendEncoder
     void         addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, uint16_t type);
     CPUFunction* registerFunction(AstNode* node, uint32_t symbolIndex);
 
-    static uint32_t getParamStackOffset(const CPUFunction* cpuFct, uint32_t paramIdx);
+    static uint32_t getParamStackOffset(const CPUFunction* cpuFunction, uint32_t paramIdx);
     void            emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& params, uint32_t offset, void* retCopyAddr = nullptr);
     void            emitStoreCallResult(CPUReg memReg, uint32_t memOffset, const TypeInfoFuncAttr* typeFuncBc);
 
@@ -246,7 +247,6 @@ struct SCBE_CPU : BackendEncoder
     VectorNative<uint32_t>                      pushRAParams;
     VectorNative<std::pair<uint32_t, uint32_t>> pushRVParams;
     VectorNative<CPUPushParam>                  pushParams;
-    VectorNative<TypeInfo*>                     pushParamsTypes;
     CPURelocationTable                          relocTableTextSection;
     CPURelocationTable                          relocTableCSSection;
     CPURelocationTable                          relocTableMSSection;

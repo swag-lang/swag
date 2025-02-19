@@ -433,6 +433,7 @@ void SCBE::emitInternalPanic(SCBE_CPU& pp, const char* msg)
 {
     const auto node = pp.ip->node;
     const auto np   = node->token.sourceFile->path;
+
     pp.pushParams.clear();
     pp.pushParams.push_back({.type = CPUPushParamType::GlobalString, .reg = reinterpret_cast<uint64_t>(np.cstr())});
     pp.pushParams.push_back({.type = CPUPushParamType::Imm, .reg = node->token.startLocation.line});
