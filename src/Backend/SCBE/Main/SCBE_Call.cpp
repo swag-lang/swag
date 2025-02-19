@@ -87,17 +87,17 @@ void SCBE::emitCallCPUParams(SCBE_CPU& pp, const Utf8& funcName, const TypeInfoF
     }
 }
 
-void SCBE::emitCallRAParams(SCBE_CPU& pp, const Utf8& funcName, const TypeInfoFuncAttr* typeFuncBc, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, bool localCall)
+void SCBE::emitCallRAParams(SCBE_CPU& pp, const Utf8& funcName, const TypeInfoFuncAttr* typeFuncBc, bool localCall)
 {
     // Invert order
     VectorNative<CPUPushParam> p;
-    for (uint32_t i = pushRAParams.size() - 1; i != UINT32_MAX; i--)
-        p.push_back({.type = CPUPushParamType::Reg, .reg = pushRAParams[i]});
+    for (uint32_t i = pp.pushRAParams.size() - 1; i != UINT32_MAX; i--)
+        p.push_back({.type = CPUPushParamType::Reg, .reg = pp.pushRAParams[i]});
     
-    emitCallCPUParams(pp, funcName, typeFuncBc, p, offsetRT, localCall);
+    emitCallCPUParams(pp, funcName, typeFuncBc, p, pp.offsetRT, localCall);
 }
 
-void SCBE::emitRuntimeCallRAParams(SCBE_CPU& pp, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT)
+void SCBE::emitInternalCallRAParams(SCBE_CPU& pp, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT)
 {
     const auto typeFunc = g_Workspace->runtimeModule->getRuntimeTypeFct(funcName);
     SWAG_ASSERT(typeFunc);
@@ -109,12 +109,13 @@ void SCBE::emitRuntimeCallRAParams(SCBE_CPU& pp, const Utf8& funcName, const Vec
     emitCallCPUParams(pp, funcName, typeFunc, p, offsetRT, true);
 }
 
-void SCBE::emitRuntimeCallCPUParams(SCBE_CPU& pp, const Utf8& funcName, const VectorNative<CPUPushParam>& pushCPUParams, uint32_t offsetRT)
+void SCBE::emitInternalCallCPUParams(SCBE_CPU& pp, const Utf8& funcName, const VectorNative<CPUPushParam>& pushCPUParams, uint32_t offsetRT)
 {
     auto typeFuncBc = g_Workspace->runtimeModule->getRuntimeTypeFct(funcName);
     if (!typeFuncBc)
         typeFuncBc = g_TypeMgr->typeInfoModuleCall;
     SWAG_ASSERT(typeFuncBc);
+    
     emitCallCPUParams(pp, funcName, typeFuncBc, pushCPUParams, offsetRT, true);
 }
 
@@ -195,7 +196,7 @@ void SCBE::emitLocalCall(SCBE_CPU& pp)
     const auto ip      = pp.ip;
     const auto callBc  = reinterpret_cast<ByteCode*>(ip->a.pointer);
     const auto typeFct = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
-    emitCallRAParams(pp, callBc->getCallNameFromDecl(), typeFct, pp.pushRAParams, pp.offsetRT, true);
+    emitCallRAParams(pp, callBc->getCallNameFromDecl(), typeFct, true);
     pp.pushRAParams.clear();
     pp.pushRVParams.clear();
 
@@ -218,7 +219,7 @@ void SCBE::emitForeignCall(SCBE_CPU& pp)
     auto callFuncName = funcNode->getFullNameForeignImport();
     callFuncName      = "__imp_" + callFuncName;
 
-    emitCallRAParams(pp, callFuncName, typeFct, pp.pushRAParams, pp.offsetRT, false);
+    emitCallRAParams(pp, callFuncName, typeFct, false);
     pp.pushRAParams.clear();
     pp.pushRVParams.clear();
 }
@@ -243,7 +244,6 @@ void SCBE::emitLambdaCall(SCBE_CPU& pp)
         pushCPUParams.push_back({.type = CPUPushParamType::Reg, .reg = pp.pushRAParams[i]});
     
     pp.emitCallParameters(typeFuncBc, pushCPUParams, pp.offsetRT);
-
     pp.emitCallIndirect(CPUReg::R10);
     pp.emitStoreCallResult(CPUReg::RDI, pp.offsetRT, typeFuncBc);
 

@@ -442,5 +442,5 @@ void SCBE::emitInternalPanic(SCBE_CPU& pp, const char* msg)
         pp.pushParams.push_back({.type = CPUPushParamType::GlobalString, .reg = reinterpret_cast<uint64_t>(msg)});
     else
         pp.pushParams.push_back({.type = CPUPushParamType::Imm, .reg = 0});
-    emitRuntimeCallCPUParams(pp, g_LangSpec->name_priv_panic, pp.pushParams);
+    emitInternalCallCPUParams(pp, g_LangSpec->name_priv_panic, pp.pushParams);
 }

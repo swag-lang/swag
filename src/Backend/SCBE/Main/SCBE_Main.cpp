@@ -102,7 +102,7 @@ void SCBE::emitMain(SCBE_CPU& pp)
 
     //__process_infos.contextTlsId = swag_runtime_tlsAlloc();
     pp.emitSymbolRelocationAddr(CPUReg::RDI, pp.symPI_contextTlsId, 0);
-    emitRuntimeCallRAParams(pp, g_LangSpec->name_priv_tlsAlloc, {}, 0);
+    emitInternalCallRAParams(pp, g_LangSpec->name_priv_tlsAlloc, {}, 0);
 
     //__process_infos.modules
     pp.emitSymbolRelocationAddr(CPUReg::RCX, pp.symPI_modulesAddr, 0);
@@ -131,13 +131,13 @@ void SCBE::emitMain(SCBE_CPU& pp)
     pp.pushParams.clear();
     pp.pushParams.push_back({CPUPushParamType::RelocV, pp.symPI_contextTlsId});
     pp.pushParams.push_back({CPUPushParamType::RelocV, pp.symPI_defaultContext});
-    emitRuntimeCallCPUParams(pp, g_LangSpec->name_priv_tlsSetValue, pp.pushParams);
+    emitInternalCallCPUParams(pp, g_LangSpec->name_priv_tlsSetValue, pp.pushParams);
 
     // Setup runtime
     const auto rtFlags = getRuntimeFlags();
     pp.pushParams.clear();
     pp.pushParams.push_back({CPUPushParamType::Imm64, rtFlags});
-    emitRuntimeCallCPUParams(pp, g_LangSpec->name_priv_setupRuntime, pp.pushParams);
+    emitInternalCallCPUParams(pp, g_LangSpec->name_priv_setupRuntime, pp.pushParams);
 
     // Load all dependencies
     VectorNative<ModuleDependency*> moduleDependencies;
@@ -153,7 +153,7 @@ void SCBE::emitMain(SCBE_CPU& pp)
             pp.pushParams.clear();
             pp.pushParams.push_back({CPUPushParamType::GlobalString, reinterpret_cast<uint64_t>(nameLib.cstr())});
             pp.pushParams.push_back({CPUPushParamType::Imm, nameLib.length()});
-            emitRuntimeCallCPUParams(pp, g_LangSpec->name_priv_loaddll, pp.pushParams);
+            emitInternalCallCPUParams(pp, g_LangSpec->name_priv_loaddll, pp.pushParams);
         }
     }
 
@@ -167,12 +167,12 @@ void SCBE::emitMain(SCBE_CPU& pp)
         if (!dep->module->isSwag)
             continue;
         auto nameFct = dep->module->getGlobalPrivateFct(g_LangSpec->name_globalInit);
-        emitRuntimeCallCPUParams(pp, nameFct, pp.pushParams);
+        emitInternalCallCPUParams(pp, nameFct, pp.pushParams);
     }
 
     // Call to global init of this module
     auto thisInit = module->getGlobalPrivateFct(g_LangSpec->name_globalInit);
-    emitRuntimeCallCPUParams(pp, thisInit, pp.pushParams);
+    emitInternalCallCPUParams(pp, thisInit, pp.pushParams);
 
     // Call to global premain of all dependencies
     for (const auto dep : moduleDependencies)
@@ -182,12 +182,12 @@ void SCBE::emitMain(SCBE_CPU& pp)
             continue;
 
         auto nameFct = dep->module->getGlobalPrivateFct(g_LangSpec->name_globalPreMain);
-        emitRuntimeCallCPUParams(pp, nameFct, pp.pushParams);
+        emitInternalCallCPUParams(pp, nameFct, pp.pushParams);
     }
 
     // Call to global premain of this module
     thisInit = module->getGlobalPrivateFct(g_LangSpec->name_globalPreMain);
-    emitRuntimeCallCPUParams(pp, thisInit, pp.pushParams);
+    emitInternalCallCPUParams(pp, thisInit, pp.pushParams);
 
     // Call to test functions
     if (buildParameters.compileType == Test)
@@ -300,7 +300,7 @@ void SCBE::emitGlobalPreMain(SCBE_CPU& pp)
     pp.pushParams.push_back({CPUPushParamType::RelocAddr, pp.symPI_processInfos});
     pp.pushParams.push_back({CPUPushParamType::Reg, 0});
     pp.pushParams.push_back({CPUPushParamType::Imm, sizeof(SwagProcessInfos)});
-    emitRuntimeCallCPUParams(pp, g_LangSpec->name_memcpy, pp.pushParams);
+    emitInternalCallCPUParams(pp, g_LangSpec->name_memcpy, pp.pushParams);
 
     // Call to #premain functions
     for (const auto bc : module->byteCodePreMainFunc)
@@ -353,12 +353,12 @@ void SCBE::emitGlobalInit(SCBE_CPU& pp)
     pp.pushParams.push_back({CPUPushParamType::RelocAddr, pp.symPI_processInfos});
     pp.pushParams.push_back({CPUPushParamType::Reg, 0});
     pp.pushParams.push_back({CPUPushParamType::Imm, sizeof(SwagProcessInfos)});
-    emitRuntimeCallCPUParams(pp, g_LangSpec->name_memcpy, pp.pushParams);
+    emitInternalCallCPUParams(pp, g_LangSpec->name_memcpy, pp.pushParams);
 
     // Thread local storage
     pp.emitSymbolRelocationAddr(CPUReg::RDI, pp.symTls_threadLocalId, 0);
     pp.pushParams.clear();
-    emitRuntimeCallCPUParams(pp, g_LangSpec->name_priv_tlsAlloc, pp.pushParams, 0);
+    emitInternalCallCPUParams(pp, g_LangSpec->name_priv_tlsAlloc, pp.pushParams, 0);
 
     // Init type table slice for each dependency (by calling ???_getTypeTable)
     pp.emitSymbolRelocationAddr(CPUReg::RCX, pp.symCSIndex, module->modulesSliceOffset + sizeof(SwagModule) + offsetof(SwagModule, types));
@@ -431,7 +431,7 @@ void SCBE::emitGlobalDrop(SCBE_CPU& pp)
     }
 
     // __dropGlobalVariables
-    emitRuntimeCallCPUParams(pp, g_LangSpec->name_priv_dropGlobalVariables, pp.pushParams);
+    emitInternalCallCPUParams(pp, g_LangSpec->name_priv_dropGlobalVariables, pp.pushParams);
 
     pp.emitOpBinary(CPUReg::RSP, 40, CPUOp::ADD, OpBits::B64);
     pp.emitRet();
