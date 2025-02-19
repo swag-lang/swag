@@ -21,17 +21,20 @@ void SCBE_CPU::clearInstructionCache()
     storageReg         = CPUReg::RAX;
 }
 
-CPUSymbol* SCBE_CPU::getSymbol(const Utf8& name)
+namespace
 {
-    const auto it = mapSymbols.find(name);
-    if (it != mapSymbols.end())
-        return &allSymbols[it->second];
-    return nullptr;
+    CPUSymbol* getSymbol(SCBE_CPU& pp, const Utf8& name)
+    {
+        const auto it = pp.mapSymbols.find(name);
+        if (it != pp.mapSymbols.end())
+            return &pp.allSymbols[it->second];
+        return nullptr;
+    }
 }
 
 CPUSymbol* SCBE_CPU::getOrAddSymbol(const Utf8& name, CPUSymbolKind kind, uint32_t value, uint16_t sectionIdx)
 {
-    const auto it = getSymbol(name);
+    const auto it = getSymbol(*this, name);
     if (it)
     {
         if (it->kind == kind)
