@@ -128,68 +128,74 @@ namespace
                 type = TypeManager::concretePtrRef(type);
             const auto reg = static_cast<uint32_t>(params[idxParam].reg);
 
-            if (type == g_TypeMgr->typeInfoUndefined)
+            switch (params[idxParam].type)
             {
-                SWAG_ASSERT(params[idxParam].type == CPUPushParamType::Reg);
-                if (retCopyAddr)
-                    pp.emitLoad(cc.paramByRegisterInteger[idxParam], reinterpret_cast<uint64_t>(retCopyAddr), OpBits::B64);
-                else if (returnByStackAddr)
-                    pp.emitLoad(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, reg, OpBits::B64);
-                else
-                    pp.emitLoadAddress(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, reg);
-            }
-            else
-            {
-                switch (params[idxParam].type)
-                {
-                    case CPUPushParamType::Reg:
-                        if (CallConv::structParamByValue(typeFuncBc, type))
-                        {
-                            pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
-                            pp.emitLoad(cc.paramByRegisterInteger[idxParam], CPUReg::RAX, 0, OpBits::B64);
-                        }
-                        else if (cc.useRegisterFloat && type->isNativeFloat())
-                            pp.emitLoad(cc.paramByRegisterFloat[idxParam], CPUReg::RDI, REG_OFFSET(reg), BackendEncoder::getOpBitsByBytes(type->sizeOf, true));
-                        else
-                            pp.emitLoad(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
-                        break;
-                    case CPUPushParamType::Imm:
-                        if (cc.useRegisterFloat && type->isNativeFloat())
-                            pp.emitLoad(cc.paramByRegisterFloat[idxParam], params[idxParam].reg, BackendEncoder::getOpBitsByBytes(type->sizeOf, true));
-                        else
-                            pp.emitLoad(cc.paramByRegisterInteger[idxParam], params[idxParam].reg, OpBits::B64);
-                        break;
-                    case CPUPushParamType::Imm64:
-                        pp.emitLoad(cc.paramByRegisterInteger[idxParam], params[idxParam].reg, OpBits::B64);
-                        break;
-                    case CPUPushParamType::RelocV:
-                        pp.emitSymbolRelocationValue(cc.paramByRegisterInteger[idxParam], static_cast<uint32_t>(params[idxParam].reg), 0);
-                        break;
-                    case CPUPushParamType::RelocAddr:
-                        pp.emitSymbolRelocationAddr(cc.paramByRegisterInteger[idxParam], static_cast<uint32_t>(params[idxParam].reg), 0);
-                        break;
-                    case CPUPushParamType::Addr:
-                        pp.emitLoadAddress(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, static_cast<uint32_t>(params[idxParam].reg));
-                        break;
-                    case CPUPushParamType::RegAdd:
-                        pp.emitLoad(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
-                        pp.emitOpBinary(cc.paramByRegisterInteger[idxParam], params[idxParam].val, CPUOp::ADD, OpBits::B64);
-                        break;
-                    case CPUPushParamType::RegMul:
+                case CPUPushParamType::Return:
+                    if (retCopyAddr)
+                        pp.emitLoad(cc.paramByRegisterInteger[idxParam], reinterpret_cast<uint64_t>(retCopyAddr), OpBits::B64);
+                    else if (returnByStackAddr)
+                        pp.emitLoad(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, reg, OpBits::B64);
+                    else
+                        pp.emitLoadAddress(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, reg);
+                    break;
+                
+                case CPUPushParamType::Reg:
+                    if (CallConv::structParamByValue(typeFuncBc, type))
+                    {
                         pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
-                        pp.emitOpBinary(CPUReg::RAX, params[idxParam].val, CPUOp::IMUL, OpBits::B64);
-                        pp.emitLoad(cc.paramByRegisterInteger[idxParam], CPUReg::RAX, OpBits::B64);
-                        break;
-                    case CPUPushParamType::RAX:
-                        pp.emitLoad(cc.paramByRegisterInteger[idxParam], CPUReg::RAX, OpBits::B64);
-                        break;
-                    case CPUPushParamType::GlobalString:
-                        pp.emitSymbolGlobalString(cc.paramByRegisterInteger[idxParam], reinterpret_cast<const char*>(params[idxParam].reg));
-                        break;
-                    default:
-                        SWAG_ASSERT(false);
-                        break;
-                }
+                        pp.emitLoad(cc.paramByRegisterInteger[idxParam], CPUReg::RAX, 0, OpBits::B64);
+                    }
+                    else if (cc.useRegisterFloat && type->isNativeFloat())
+                        pp.emitLoad(cc.paramByRegisterFloat[idxParam], CPUReg::RDI, REG_OFFSET(reg), BackendEncoder::getOpBitsByBytes(type->sizeOf, true));
+                    else
+                        pp.emitLoad(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
+                    break;
+                
+                case CPUPushParamType::Imm:
+                    if (cc.useRegisterFloat && type->isNativeFloat())
+                        pp.emitLoad(cc.paramByRegisterFloat[idxParam], params[idxParam].reg, BackendEncoder::getOpBitsByBytes(type->sizeOf, true));
+                    else
+                        pp.emitLoad(cc.paramByRegisterInteger[idxParam], params[idxParam].reg, OpBits::B64);
+                    break;
+                
+                case CPUPushParamType::Imm64:
+                    pp.emitLoad(cc.paramByRegisterInteger[idxParam], params[idxParam].reg, OpBits::B64);
+                    break;
+                
+                case CPUPushParamType::RelocV:
+                    pp.emitSymbolRelocationValue(cc.paramByRegisterInteger[idxParam], static_cast<uint32_t>(params[idxParam].reg), 0);
+                    break;
+                
+                case CPUPushParamType::RelocAddr:
+                    pp.emitSymbolRelocationAddr(cc.paramByRegisterInteger[idxParam], static_cast<uint32_t>(params[idxParam].reg), 0);
+                    break;
+                
+                case CPUPushParamType::Addr:
+                    pp.emitLoadAddress(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, static_cast<uint32_t>(params[idxParam].reg));
+                    break;
+                
+                case CPUPushParamType::RegAdd:
+                    pp.emitLoad(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
+                    pp.emitOpBinary(cc.paramByRegisterInteger[idxParam], params[idxParam].val, CPUOp::ADD, OpBits::B64);
+                    break;
+                
+                case CPUPushParamType::RegMul:
+                    pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
+                    pp.emitOpBinary(CPUReg::RAX, params[idxParam].val, CPUOp::IMUL, OpBits::B64);
+                    pp.emitLoad(cc.paramByRegisterInteger[idxParam], CPUReg::RAX, OpBits::B64);
+                    break;
+                
+                case CPUPushParamType::RAX:
+                    pp.emitLoad(cc.paramByRegisterInteger[idxParam], CPUReg::RAX, OpBits::B64);
+                    break;
+                
+                case CPUPushParamType::GlobalString:
+                    pp.emitSymbolGlobalString(cc.paramByRegisterInteger[idxParam], reinterpret_cast<const char*>(params[idxParam].reg));
+                    break;
+                
+                default:
+                    SWAG_ASSERT(false);
+                    break;
             }
 
             idxParam++;
@@ -204,9 +210,7 @@ namespace
                 type = TypeManager::concretePtrRef(type);
             const auto reg = params[idxParam].reg;
 
-            SWAG_ASSERT(params[idxParam].type == CPUPushParamType::Reg);
-
-            if (type == g_TypeMgr->typeInfoUndefined)
+            if (params[idxParam].type == CPUPushParamType::Return)
             {
                 if (retCopyAddr)
                     pp.emitLoad(CPUReg::RAX, reinterpret_cast<uint64_t>(retCopyAddr), OpBits::B64);
@@ -218,17 +222,20 @@ namespace
             }
             else if (CallConv::structParamByValue(typeFuncBc, type))
             {
+                SWAG_ASSERT(params[idxParam].type == CPUPushParamType::Reg);
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
                 pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, BackendEncoder::getOpBitsByBytes(type->sizeOf));
                 pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, BackendEncoder::getOpBitsByBytes(type->sizeOf));
             }
             else if (type->isStruct())
             {
+                SWAG_ASSERT(params[idxParam].type == CPUPushParamType::Reg);
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
                 pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
             }
             else
             {
+                SWAG_ASSERT(params[idxParam].type == CPUPushParamType::Reg);
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), BackendEncoder::getOpBitsByBytes(type->sizeOf));
                 pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, BackendEncoder::getOpBitsByBytes(type->sizeOf));
             }
@@ -313,7 +320,7 @@ void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
     // Return by parameter
     if (CallConv::returnByAddress(typeFuncBc))
     {
-        pushParams.push_back({.type = CPUPushParamType::Reg, .reg = offset, .typeInfo = g_TypeMgr->typeInfoUndefined});
+        pushParams.push_back({.type = CPUPushParamType::Return, .reg = offset, .typeInfo = g_TypeMgr->typeInfoUndefined});
     }
 
     // Add all C variadic parameters

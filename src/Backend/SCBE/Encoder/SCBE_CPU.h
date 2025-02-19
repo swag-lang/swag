@@ -23,6 +23,7 @@ enum class CPUPushParamType
     RelocAddr,
     Addr,
     GlobalString,
+    Return,
 };
 
 struct CPUPushParam
