@@ -15,9 +15,6 @@ struct SCBE_X64 : SCBE_CPU
     void      emitCallLocal(const Utf8& symbolName) override;
     void      emitCallExtern(const Utf8& symbolName) override;
     void      emitCallIndirect(CPUReg reg) override;
-    void      emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& params, uint32_t offset, void* retCopyAddr = nullptr) override;
-    void      emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& paramsRegisters, const VectorNative<TypeInfo*>& paramsTypes, void* retCopyAddr = nullptr) override;
-    void      emitStoreCallResult(CPUReg memReg, uint32_t memOffset, const TypeInfoFuncAttr* typeFuncBc) override;
     void      emitJumpTable(CPUReg table, CPUReg offset) override;
     uint8_t*  emitJumpNear(CPUCondJump jumpType) override;
     uint32_t* emitJumpLong(CPUCondJump jumpType) override;
