@@ -114,8 +114,8 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, [[maybe_unused]] const By
     // Variadic parameters are first on the stack, so need to treat them before
     if (typeInfoFunc->isFctVariadic())
     {
-        context->ffiPushRAParam.push_front(cptParam++);
-        context->ffiPushRAParam.push_front(cptParam++);
+        context->ffiPushRAParam.push_back(cptParam++);
+        context->ffiPushRAParam.push_back(cptParam++);
         numParameters--;
     }
     else if (typeInfoFunc->isFctCVariadic())
@@ -133,12 +133,12 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, [[maybe_unused]] const By
             typeParam->isAny() ||
             typeParam->isString())
         {
-            context->ffiPushRAParam.push_front(cptParam++);
-            context->ffiPushRAParam.push_front(cptParam++);
+            context->ffiPushRAParam.push_back(cptParam++);
+            context->ffiPushRAParam.push_back(cptParam++);
         }
         else
         {
-            context->ffiPushRAParam.push_front(cptParam++);
+            context->ffiPushRAParam.push_back(cptParam++);
         }
     }
 
@@ -153,13 +153,13 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, [[maybe_unused]] const By
     {
         for (int i = 0; i < numCVariadicParams; i++)
         {
-            context->ffiPushRAParam.push_front(cptParam++);
+            context->ffiPushRAParam.push_back(cptParam++);
         }
     }
 
     VectorNative<CPUPushParam> pushCPUParams;
-    for (const auto r : context->ffiPushRAParam)
-        pushCPUParams.push_back({.type = CPUPushParamType::Reg, .reg = r});
+    for (uint32_t i = context->ffiPushRAParam.size() - 1; i != UINT32_MAX; i--)
+        pushCPUParams.push_back({.type = CPUPushParamType::Reg, .reg = context->ffiPushRAParam[i]});
 
 #ifdef SWAG_STATS
     if (g_CommandLine.profile)
