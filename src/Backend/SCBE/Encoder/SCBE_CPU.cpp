@@ -118,221 +118,224 @@ uint32_t SCBE_CPU::getParamStackOffset(const CPUFunction* cpuFct, uint32_t param
     return REG_OFFSET(paramIdx) + cpuFct->offsetCallerStackParams;
 }
 
-void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& paramsRegisters, const VectorNative<TypeInfo*>& paramsTypes, void* retCopyAddr)
+namespace
 {
-    const auto& cc                = typeFuncBc->getCallConv();
-    const bool  returnByStackAddr = CallConv::returnByStackAddress(typeFuncBc);
-
-    const uint32_t callConvRegisters    = cc.paramByRegisterCount;
-    const uint32_t maxParamsPerRegister = paramsRegisters.size();
-
-    // Set the first N parameters. Can be return register, or function parameter.
-    uint32_t i = 0;
-    for (; i < min(callConvRegisters, maxParamsPerRegister); i++)
+    void emitParameters(SCBE_CPU& pp, const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& paramsRegisters, const VectorNative<TypeInfo*>& paramsTypes, void* retCopyAddr)
     {
-        auto       type = paramsTypes[i];
-        const auto reg  = static_cast<uint32_t>(paramsRegisters[i].reg);
+        const auto& cc                = typeFuncBc->getCallConv();
+        const bool  returnByStackAddr = CallConv::returnByStackAddress(typeFuncBc);
 
-        if (type->isAutoConstPointerRef())
-            type = TypeManager::concretePtrRef(type);
+        const uint32_t callConvRegisters    = cc.paramByRegisterCount;
+        const uint32_t maxParamsPerRegister = paramsRegisters.size();
 
-        // This is a return register
-        if (type == g_TypeMgr->typeInfoUndefined)
+        // Set the first N parameters. Can be return register, or function parameter.
+        uint32_t i = 0;
+        for (; i < min(callConvRegisters, maxParamsPerRegister); i++)
         {
-            SWAG_ASSERT(paramsRegisters[i].type == CPUPushParamType::Reg);
-            if (retCopyAddr)
-                emitLoad(cc.paramByRegisterInteger[i], reinterpret_cast<uint64_t>(retCopyAddr), OpBits::B64);
-            else if (returnByStackAddr)
-                emitLoad(cc.paramByRegisterInteger[i], CPUReg::RDI, reg, OpBits::B64);
-            else
-                emitLoadAddress(cc.paramByRegisterInteger[i], CPUReg::RDI, reg);
-        }
+            auto       type = paramsTypes[i];
+            const auto reg  = static_cast<uint32_t>(paramsRegisters[i].reg);
 
-        // This is a normal parameter, which can be float or integer
-        else
-        {
-            // Pass struct in a register if small enough
-            if (CallConv::structParamByValue(typeFuncBc, type))
+            if (type->isAutoConstPointerRef())
+                type = TypeManager::concretePtrRef(type);
+
+            // This is a return register
+            if (type == g_TypeMgr->typeInfoUndefined)
             {
                 SWAG_ASSERT(paramsRegisters[i].type == CPUPushParamType::Reg);
-                emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
-                emitLoad(cc.paramByRegisterInteger[i], CPUReg::RAX, 0, OpBits::B64);
-            }
-            else if (cc.useRegisterFloat && type->isNative(NativeTypeKind::F32))
-            {
-                if (paramsRegisters[i].type == CPUPushParamType::Imm)
-                {
-                    SWAG_ASSERT(paramsRegisters[i].reg <= UINT32_MAX);
-                    emitLoad(CPUReg::RAX, static_cast<uint32_t>(paramsRegisters[i].reg), OpBits::B32);
-                    emitLoad(cc.paramByRegisterFloat[i], CPUReg::RAX, OpBits::F32);
-                }
+                if (retCopyAddr)
+                    pp.emitLoad(cc.paramByRegisterInteger[i], reinterpret_cast<uint64_t>(retCopyAddr), OpBits::B64);
+                else if (returnByStackAddr)
+                    pp.emitLoad(cc.paramByRegisterInteger[i], CPUReg::RDI, reg, OpBits::B64);
                 else
-                {
-                    SWAG_ASSERT(paramsRegisters[i].type == CPUPushParamType::Reg);
-                    emitLoad(cc.paramByRegisterFloat[i], CPUReg::RDI, REG_OFFSET(reg), OpBits::F32);
-                }
+                    pp.emitLoadAddress(cc.paramByRegisterInteger[i], CPUReg::RDI, reg);
             }
-            else if (cc.useRegisterFloat && type->isNative(NativeTypeKind::F64))
-            {
-                if (paramsRegisters[i].type == CPUPushParamType::Imm)
-                {
-                    emitLoad(CPUReg::RAX, paramsRegisters[i].reg, OpBits::B64);
-                    emitLoad(cc.paramByRegisterFloat[i], CPUReg::RAX, OpBits::F64);
-                }
-                else
-                {
-                    SWAG_ASSERT(paramsRegisters[i].type == CPUPushParamType::Reg);
-                    emitLoad(cc.paramByRegisterFloat[i], CPUReg::RDI, REG_OFFSET(reg), OpBits::F64);
-                }
-            }
+
+            // This is a normal parameter, which can be float or integer
             else
             {
-                switch (paramsRegisters[i].type)
-                {
-                    case CPUPushParamType::Imm:
-                        if (paramsRegisters[i].reg == 0)
-                            emitClear(cc.paramByRegisterInteger[i], OpBits::B64);
-                        else
-                            emitLoad(cc.paramByRegisterInteger[i], paramsRegisters[i].reg, OpBits::B64);
-                        break;
-                    case CPUPushParamType::Imm64:
-                        emitLoad(cc.paramByRegisterInteger[i], paramsRegisters[i].reg, OpBits::B64);
-                        break;
-                    case CPUPushParamType::RelocV:
-                        emitSymbolRelocationValue(cc.paramByRegisterInteger[i], static_cast<uint32_t>(paramsRegisters[i].reg), 0);
-                        break;
-                    case CPUPushParamType::RelocAddr:
-                        emitSymbolRelocationAddr(cc.paramByRegisterInteger[i], static_cast<uint32_t>(paramsRegisters[i].reg), 0);
-                        break;
-                    case CPUPushParamType::Addr:
-                        emitLoadAddress(cc.paramByRegisterInteger[i], CPUReg::RDI, static_cast<uint32_t>(paramsRegisters[i].reg));
-                        break;
-                    case CPUPushParamType::RegAdd:
-                        emitLoad(cc.paramByRegisterInteger[i], CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
-                        emitOpBinary(cc.paramByRegisterInteger[i], paramsRegisters[i].val, CPUOp::ADD, OpBits::B64);
-                        break;
-                    case CPUPushParamType::RegMul:
-                        emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
-                        emitOpBinary(CPUReg::RAX, paramsRegisters[i].val, CPUOp::IMUL, OpBits::B64);
-                        emitLoad(cc.paramByRegisterInteger[i], CPUReg::RAX, OpBits::B64);
-                        break;
-                    case CPUPushParamType::RAX:
-                        emitLoad(cc.paramByRegisterInteger[i], CPUReg::RAX, OpBits::B64);
-                        break;
-                    case CPUPushParamType::GlobalString:
-                        emitSymbolGlobalString(cc.paramByRegisterInteger[i], reinterpret_cast<const char*>(paramsRegisters[i].reg));
-                        break;
-                    default:
-                        SWAG_ASSERT(paramsRegisters[i].type == CPUPushParamType::Reg);
-                        emitLoad(cc.paramByRegisterInteger[i], CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
-                        break;
-                }
-            }
-        }
-    }
-
-    // Store all parameters after N on the stack, with an offset of N * sizeof(uint64_t)
-    uint32_t memOffset = min(callConvRegisters, maxParamsPerRegister) * sizeof(uint64_t);
-    for (; i < paramsRegisters.size(); i++)
-    {
-        auto type = paramsTypes[i];
-        if (type->isAutoConstPointerRef())
-            type = TypeManager::concretePtrRef(type);
-
-        const auto reg = static_cast<uint32_t>(paramsRegisters[i].reg);
-        SWAG_ASSERT(paramsRegisters[i].type == CPUPushParamType::Reg);
-
-        // This is a C variadic parameter
-        if (i >= maxParamsPerRegister)
-        {
-            emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
-            emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
-        }
-
-        // This is for a return value
-        else if (type == g_TypeMgr->typeInfoUndefined)
-        {
-            // r is an address to registerRR, for FFI
-            if (retCopyAddr)
-                emitLoad(CPUReg::RAX, reinterpret_cast<uint64_t>(retCopyAddr), OpBits::B64);
-            else if (returnByStackAddr)
-                emitLoad(CPUReg::RAX, CPUReg::RDI, reg, OpBits::B64);
-            else
-                emitLoadAddress(CPUReg::RAX, CPUReg::RDI, reg);
-            emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
-        }
-
-        // This is for a normal parameter
-        else
-        {
-            const auto sizeOf = type->sizeOf;
-
-            // Struct by copy. Will be a pointer to the stack
-            if (type->isStruct())
-            {
-                emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
-
-                // Store the content of the struct in the stack
+                // Pass struct in a register if small enough
                 if (CallConv::structParamByValue(typeFuncBc, type))
+                {
+                    SWAG_ASSERT(paramsRegisters[i].type == CPUPushParamType::Reg);
+                    pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
+                    pp.emitLoad(cc.paramByRegisterInteger[i], CPUReg::RAX, 0, OpBits::B64);
+                }
+                else if (cc.useRegisterFloat && type->isNative(NativeTypeKind::F32))
+                {
+                    if (paramsRegisters[i].type == CPUPushParamType::Imm)
+                    {
+                        SWAG_ASSERT(paramsRegisters[i].reg <= UINT32_MAX);
+                        pp.emitLoad(CPUReg::RAX, static_cast<uint32_t>(paramsRegisters[i].reg), OpBits::B32);
+                        pp.emitLoad(cc.paramByRegisterFloat[i], CPUReg::RAX, OpBits::F32);
+                    }
+                    else
+                    {
+                        SWAG_ASSERT(paramsRegisters[i].type == CPUPushParamType::Reg);
+                        pp.emitLoad(cc.paramByRegisterFloat[i], CPUReg::RDI, REG_OFFSET(reg), OpBits::F32);
+                    }
+                }
+                else if (cc.useRegisterFloat && type->isNative(NativeTypeKind::F64))
+                {
+                    if (paramsRegisters[i].type == CPUPushParamType::Imm)
+                    {
+                        pp.emitLoad(CPUReg::RAX, paramsRegisters[i].reg, OpBits::B64);
+                        pp.emitLoad(cc.paramByRegisterFloat[i], CPUReg::RAX, OpBits::F64);
+                    }
+                    else
+                    {
+                        SWAG_ASSERT(paramsRegisters[i].type == CPUPushParamType::Reg);
+                        pp.emitLoad(cc.paramByRegisterFloat[i], CPUReg::RDI, REG_OFFSET(reg), OpBits::F64);
+                    }
+                }
+                else
+                {
+                    switch (paramsRegisters[i].type)
+                    {
+                        case CPUPushParamType::Imm:
+                            if (paramsRegisters[i].reg == 0)
+                                pp.emitClear(cc.paramByRegisterInteger[i], OpBits::B64);
+                            else
+                                pp.emitLoad(cc.paramByRegisterInteger[i], paramsRegisters[i].reg, OpBits::B64);
+                            break;
+                        case CPUPushParamType::Imm64:
+                            pp.emitLoad(cc.paramByRegisterInteger[i], paramsRegisters[i].reg, OpBits::B64);
+                            break;
+                        case CPUPushParamType::RelocV:
+                            pp.emitSymbolRelocationValue(cc.paramByRegisterInteger[i], static_cast<uint32_t>(paramsRegisters[i].reg), 0);
+                            break;
+                        case CPUPushParamType::RelocAddr:
+                            pp.emitSymbolRelocationAddr(cc.paramByRegisterInteger[i], static_cast<uint32_t>(paramsRegisters[i].reg), 0);
+                            break;
+                        case CPUPushParamType::Addr:
+                            pp.emitLoadAddress(cc.paramByRegisterInteger[i], CPUReg::RDI, static_cast<uint32_t>(paramsRegisters[i].reg));
+                            break;
+                        case CPUPushParamType::RegAdd:
+                            pp.emitLoad(cc.paramByRegisterInteger[i], CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
+                            pp.emitOpBinary(cc.paramByRegisterInteger[i], paramsRegisters[i].val, CPUOp::ADD, OpBits::B64);
+                            break;
+                        case CPUPushParamType::RegMul:
+                            pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
+                            pp.emitOpBinary(CPUReg::RAX, paramsRegisters[i].val, CPUOp::IMUL, OpBits::B64);
+                            pp.emitLoad(cc.paramByRegisterInteger[i], CPUReg::RAX, OpBits::B64);
+                            break;
+                        case CPUPushParamType::RAX:
+                            pp.emitLoad(cc.paramByRegisterInteger[i], CPUReg::RAX, OpBits::B64);
+                            break;
+                        case CPUPushParamType::GlobalString:
+                            pp.emitSymbolGlobalString(cc.paramByRegisterInteger[i], reinterpret_cast<const char*>(paramsRegisters[i].reg));
+                            break;
+                        default:
+                            SWAG_ASSERT(paramsRegisters[i].type == CPUPushParamType::Reg);
+                            pp.emitLoad(cc.paramByRegisterInteger[i], CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
+                            break;
+                    }
+                }
+            }
+        }
+
+        // Store all parameters after N on the stack, with an offset of N * sizeof(uint64_t)
+        uint32_t memOffset = min(callConvRegisters, maxParamsPerRegister) * sizeof(uint64_t);
+        for (; i < paramsRegisters.size(); i++)
+        {
+            auto type = paramsTypes[i];
+            if (type->isAutoConstPointerRef())
+                type = TypeManager::concretePtrRef(type);
+
+            const auto reg = static_cast<uint32_t>(paramsRegisters[i].reg);
+            SWAG_ASSERT(paramsRegisters[i].type == CPUPushParamType::Reg);
+
+            // This is a C variadic parameter
+            if (i >= maxParamsPerRegister)
+            {
+                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
+                pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
+            }
+
+            // This is for a return value
+            else if (type == g_TypeMgr->typeInfoUndefined)
+            {
+                // r is an address to registerRR, for FFI
+                if (retCopyAddr)
+                    pp.emitLoad(CPUReg::RAX, reinterpret_cast<uint64_t>(retCopyAddr), OpBits::B64);
+                else if (returnByStackAddr)
+                    pp.emitLoad(CPUReg::RAX, CPUReg::RDI, reg, OpBits::B64);
+                else
+                    pp.emitLoadAddress(CPUReg::RAX, CPUReg::RDI, reg);
+                pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
+            }
+
+            // This is for a normal parameter
+            else
+            {
+                const auto sizeOf = type->sizeOf;
+
+                // Struct by copy. Will be a pointer to the stack
+                if (type->isStruct())
+                {
+                    pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
+
+                    // Store the content of the struct in the stack
+                    if (CallConv::structParamByValue(typeFuncBc, type))
+                    {
+                        switch (sizeOf)
+                        {
+                            case 1:
+                                pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, OpBits::B8);
+                                pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B8);
+                                break;
+                            case 2:
+                                pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, OpBits::B16);
+                                pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B16);
+                                break;
+                            case 4:
+                                pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, OpBits::B32);
+                                pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B32);
+                                break;
+                            case 8:
+                                pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, OpBits::B64);
+                                pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+
+                    // Store the address of the struct in the stack
+                    else
+                    {
+                        pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
+                    }
+                }
+                else
                 {
                     switch (sizeOf)
                     {
                         case 1:
-                            emitLoad(CPUReg::RAX, CPUReg::RAX, 0, OpBits::B8);
-                            emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B8);
+                            pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B8);
+                            pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B8);
                             break;
                         case 2:
-                            emitLoad(CPUReg::RAX, CPUReg::RAX, 0, OpBits::B16);
-                            emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B16);
+                            pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B16);
+                            pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B16);
                             break;
                         case 4:
-                            emitLoad(CPUReg::RAX, CPUReg::RAX, 0, OpBits::B32);
-                            emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B32);
+                            pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B32);
+                            pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B32);
                             break;
                         case 8:
-                            emitLoad(CPUReg::RAX, CPUReg::RAX, 0, OpBits::B64);
-                            emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
+                            pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
+                            pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
                             break;
                         default:
-                            break;
+                            SWAG_ASSERT(false);
+                            return;
                     }
                 }
+            }
 
-                // Store the address of the struct in the stack
-                else
-                {
-                    emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
-                }
-            }
-            else
-            {
-                switch (sizeOf)
-                {
-                    case 1:
-                        emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B8);
-                        emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B8);
-                        break;
-                    case 2:
-                        emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B16);
-                        emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B16);
-                        break;
-                    case 4:
-                        emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B32);
-                        emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B32);
-                        break;
-                    case 8:
-                        emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
-                        emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
-                        break;
-                    default:
-                        SWAG_ASSERT(false);
-                        return;
-                }
-            }
+            // Push is always aligned
+            memOffset += 8;
         }
-
-        // Push is always aligned
-        memOffset += 8;
     }
 }
 
@@ -446,7 +449,7 @@ void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
         const auto seekPtrClosure = emitJumpLong(JZ);
         const auto seekJmpClosure = concat.totalCount();
 
-        emitCallParameters(typeFuncBc, pushParams, pushParamsTypes, retCopyAddr);
+        emitParameters(*this, typeFuncBc, pushParams, pushParamsTypes, retCopyAddr);
 
         // Jump to after closure call
         const auto seekPtrAfterClosure = emitJumpLong(JUMP);
@@ -467,13 +470,13 @@ void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
             pushParams.erase(0);
             pushParamsTypes.erase(0);
         }
-        emitCallParameters(typeFuncBc, pushParams, pushParamsTypes, retCopyAddr);
+        emitParameters(*this, typeFuncBc, pushParams, pushParamsTypes, retCopyAddr);
 
         *seekPtrAfterClosure = static_cast<uint8_t>(concat.totalCount() - seekJmpAfterClosure);
     }
     else
     {
-        emitCallParameters(typeFuncBc, pushParams, pushParamsTypes, retCopyAddr);
+        emitParameters(*this, typeFuncBc, pushParams, pushParamsTypes, retCopyAddr);
     }
 }
 
