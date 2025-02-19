@@ -46,6 +46,7 @@ struct SCBE final : Backend
     static void emitForeignCall(SCBE_CPU& pp);
     static void emitLambdaCall(SCBE_CPU& pp);
 
+    static void emitJump(SCBE_CPU& pp, CPUCondJump jumpType, int32_t instructionCount, int32_t jumpOffset);
     static void emitOverflow(SCBE_CPU& pp, const char* msg, bool isSigned);
     static void emitShiftRightArithmetic(SCBE_CPU& pp);
     static void emitShiftLogical(SCBE_CPU& pp, CPUOp op);
