@@ -12,6 +12,26 @@ void BackendEncoder::init(const BuildParameters& buildParameters)
     buildParams = buildParameters;
 }
 
+OpBits BackendEncoder::getOpBitsByBytes(uint32_t numBytes)
+{
+    switch (numBytes)
+    {
+        case 1:
+            return OpBits::B8;
+        case 2:
+            return OpBits::B16;
+        case 4:
+            return OpBits::B32;
+        case 8:
+            return OpBits::B64;
+        default:
+            SWAG_ASSERT(false);
+            break;
+    }
+    
+    return OpBits::INVALID;
+}
+
 uint32_t BackendEncoder::getNumBits(OpBits opBits)
 {
     switch (opBits)

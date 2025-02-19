@@ -130,7 +130,6 @@ namespace
 
             if (type == g_TypeMgr->typeInfoUndefined)
             {
-                // This is a return register
                 SWAG_ASSERT(params[idxParam].type == CPUPushParamType::Reg);
                 if (retCopyAddr)
                     pp.emitLoad(cc.paramByRegisterInteger[idxParam], reinterpret_cast<uint64_t>(retCopyAddr), OpBits::B64);
@@ -226,14 +225,12 @@ namespace
             auto type = params[idxParam].typeInfo;
             if (type->isAutoConstPointerRef())
                 type = TypeManager::concretePtrRef(type);
-            const auto reg = static_cast<uint32_t>(params[idxParam].reg);
+            const auto reg = params[idxParam].reg;
 
             SWAG_ASSERT(params[idxParam].type == CPUPushParamType::Reg);
 
-            // This is for a return value
             if (type == g_TypeMgr->typeInfoUndefined)
             {
-                // r is an address to registerRR, for FFI
                 if (retCopyAddr)
                     pp.emitLoad(CPUReg::RAX, reinterpret_cast<uint64_t>(retCopyAddr), OpBits::B64);
                 else if (returnByStackAddr)
@@ -242,73 +239,24 @@ namespace
                     pp.emitLoadAddress(CPUReg::RAX, CPUReg::RDI, reg);
                 pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
             }
-
-            // Struct by copy. Will be a pointer to memory
+            else if (type->isStruct() && CallConv::structParamByValue(typeFuncBc, type))
+            {
+                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
+                pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, BackendEncoder::getOpBitsByBytes(type->sizeOf));
+                pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, BackendEncoder::getOpBitsByBytes(type->sizeOf));
+            }
             else if (type->isStruct())
             {
-                const auto sizeOf = type->sizeOf;
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
-
-                // Store the content of the struct in the stack
-                if (CallConv::structParamByValue(typeFuncBc, type))
-                {
-                    switch (sizeOf)
-                    {
-                        case 1:
-                            pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, OpBits::B8);
-                            pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B8);
-                            break;
-                        case 2:
-                            pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, OpBits::B16);
-                            pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B16);
-                            break;
-                        case 4:
-                            pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, OpBits::B32);
-                            pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B32);
-                            break;
-                        case 8:
-                            pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, OpBits::B64);
-                            pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
-                            break;
-                        default:
-                            break;
-                    }
-                }
-
-                // Store the address of the struct in the stack
-                else
-                {
-                    pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
-                }
+                pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
             }
             else
             {
-                const auto sizeOf = type->sizeOf;
-                switch (sizeOf)
-                {
-                    case 1:
-                        pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B8);
-                        pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B8);
-                        break;
-                    case 2:
-                        pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B16);
-                        pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B16);
-                        break;
-                    case 4:
-                        pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B32);
-                        pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B32);
-                        break;
-                    case 8:
-                        pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
-                        pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
-                        break;
-                    default:
-                        SWAG_ASSERT(false);
-                        return;
-                }
+                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), BackendEncoder::getOpBitsByBytes(type->sizeOf));
+                pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, BackendEncoder::getOpBitsByBytes(type->sizeOf));
             }
 
-            memOffset += 8; // Push is always aligned
+            memOffset += sizeof(uint64_t); // Push is always aligned
             idxParam++;
         }
     }
