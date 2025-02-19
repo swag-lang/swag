@@ -155,6 +155,9 @@ namespace
             {
                 switch (params[idxParam].type)
                 {
+                    case CPUPushParamType::Reg:
+                        pp.emitLoad(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
+                        break;
                     case CPUPushParamType::Imm:
                         pp.emitLoad(cc.paramByRegisterInteger[idxParam], params[idxParam].reg, OpBits::B64);
                         break;
@@ -186,8 +189,7 @@ namespace
                         pp.emitSymbolGlobalString(cc.paramByRegisterInteger[idxParam], reinterpret_cast<const char*>(params[idxParam].reg));
                         break;
                     default:
-                        SWAG_ASSERT(params[idxParam].type == CPUPushParamType::Reg);
-                        pp.emitLoad(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
+                        SWAG_ASSERT(false);
                         break;
                 }
             }
