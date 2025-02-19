@@ -144,22 +144,21 @@ namespace
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
                 pp.emitLoad(cc.paramByRegisterInteger[idxParam], CPUReg::RAX, 0, OpBits::B64);
             }
-            else if (cc.useRegisterFloat && type->isNativeFloat())
-            {
-                if (params[idxParam].type == CPUPushParamType::Imm)
-                    pp.emitLoad(cc.paramByRegisterFloat[idxParam], params[idxParam].reg, BackendEncoder::getOpBitsByBytes(type->sizeOf, true));
-                else
-                    pp.emitLoad(cc.paramByRegisterFloat[idxParam], CPUReg::RDI, REG_OFFSET(reg), BackendEncoder::getOpBitsByBytes(type->sizeOf, true));
-            }
             else
             {
                 switch (params[idxParam].type)
                 {
                     case CPUPushParamType::Reg:
-                        pp.emitLoad(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
+                        if (cc.useRegisterFloat && type->isNativeFloat())
+                            pp.emitLoad(cc.paramByRegisterFloat[idxParam], CPUReg::RDI, REG_OFFSET(reg), BackendEncoder::getOpBitsByBytes(type->sizeOf, true));
+                        else
+                            pp.emitLoad(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
                         break;
                     case CPUPushParamType::Imm:
-                        pp.emitLoad(cc.paramByRegisterInteger[idxParam], params[idxParam].reg, OpBits::B64);
+                        if (cc.useRegisterFloat && type->isNativeFloat())
+                            pp.emitLoad(cc.paramByRegisterFloat[idxParam], params[idxParam].reg, BackendEncoder::getOpBitsByBytes(type->sizeOf, true));
+                        else
+                            pp.emitLoad(cc.paramByRegisterInteger[idxParam], params[idxParam].reg, OpBits::B64);
                         break;
                     case CPUPushParamType::Imm64:
                         pp.emitLoad(cc.paramByRegisterInteger[idxParam], params[idxParam].reg, OpBits::B64);
