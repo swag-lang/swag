@@ -118,6 +118,40 @@ void SCBE::emitInternalCallCPUParams(SCBE_CPU& pp, const Utf8& funcName, const V
     emitCallCPUParams(pp, funcName, typeFuncBc, pushCPUParams, offsetRT, true);
 }
 
+void SCBE::emitLocalCall(SCBE_CPU& pp)
+{
+    const auto ip      = pp.ip;
+    const auto callBc  = reinterpret_cast<ByteCode*>(ip->a.pointer);
+    const auto typeFct = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
+
+    emitCallRAParams(pp, callBc->getCallNameFromDecl(), typeFct, true);
+    pp.pushRAParams.clear();
+    pp.pushRVParams.clear();
+
+    if (ip->op == ByteCodeOp::LocalCallPopRC)
+    {
+        pp.emitLoad(CPUReg::RAX, CPUReg::RDI, pp.offsetRT + REG_OFFSET(0), OpBits::B64);
+        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->d.u32), CPUReg::RAX, OpBits::B64);
+    }
+}
+
+void SCBE::emitForeignCall(SCBE_CPU& pp)
+{
+    const auto ip       = pp.ip;
+    const auto funcNode = reinterpret_cast<AstFuncDecl*>(ip->a.pointer);
+    const auto typeFct  = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
+
+    auto moduleName = ModuleManager::getForeignModuleName(funcNode);
+
+    // Dll imported function name will have "__imp_" before (imported mangled name)
+    auto callFuncName = funcNode->getFullNameForeignImport();
+    callFuncName      = "__imp_" + callFuncName;
+
+    emitCallRAParams(pp, callFuncName, typeFct, false);
+    pp.pushRAParams.clear();
+    pp.pushRVParams.clear();
+}
+
 void SCBE::emitByteCodeCallParameters(SCBE_CPU& pp, const TypeInfoFuncAttr* typeFuncBc, const VectorNative<uint32_t>& pushRAParams)
 {
     uint32_t idxReg = 0;
@@ -185,40 +219,6 @@ void SCBE::emitByteCodeCallParameters(SCBE_CPU& pp, const TypeInfoFuncAttr* type
     {
         emitByteCodeCallParameters(pp, typeFuncBc, pp.pushRAParams);
     }
-}
-
-void SCBE::emitLocalCall(SCBE_CPU& pp)
-{
-    const auto ip      = pp.ip;
-    const auto callBc  = reinterpret_cast<ByteCode*>(ip->a.pointer);
-    const auto typeFct = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
-
-    emitCallRAParams(pp, callBc->getCallNameFromDecl(), typeFct, true);
-    pp.pushRAParams.clear();
-    pp.pushRVParams.clear();
-
-    if (ip->op == ByteCodeOp::LocalCallPopRC)
-    {
-        pp.emitLoad(CPUReg::RAX, CPUReg::RDI, pp.offsetRT + REG_OFFSET(0), OpBits::B64);
-        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->d.u32), CPUReg::RAX, OpBits::B64);
-    }
-}
-
-void SCBE::emitForeignCall(SCBE_CPU& pp)
-{
-    const auto ip       = pp.ip;
-    const auto funcNode = reinterpret_cast<AstFuncDecl*>(ip->a.pointer);
-    const auto typeFct  = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
-
-    auto moduleName = ModuleManager::getForeignModuleName(funcNode);
-
-    // Dll imported function name will have "__imp_" before (imported mangled name)
-    auto callFuncName = funcNode->getFullNameForeignImport();
-    callFuncName      = "__imp_" + callFuncName;
-
-    emitCallRAParams(pp, callFuncName, typeFct, false);
-    pp.pushRAParams.clear();
-    pp.pushRVParams.clear();
 }
 
 void SCBE::emitLambdaCall(SCBE_CPU& pp)
