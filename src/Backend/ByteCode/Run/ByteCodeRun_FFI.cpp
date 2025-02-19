@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include "Backend/ByteCode/ByteCode.h"
+#include "Backend/SCBE/Encoder/SCBE_CPU.h"
 #include "ByteCodeStack.h"
 #include "Os/Os.h"
 #include "Report/Diagnostic.h"
@@ -156,6 +157,10 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, [[maybe_unused]] const By
         }
     }
 
+    VectorNative<CPUPushParam> pushCPUParams;
+    for (const auto r : context->ffiPushRAParam)
+        pushCPUParams.push_back({.type = CPUPushParamType::Reg, .reg = r});
+
 #ifdef SWAG_STATS
     if (g_CommandLine.profile)
     {
@@ -163,7 +168,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, [[maybe_unused]] const By
         context->bc->profileCumTime += now - context->bc->profileStart;
         context->bc->profileStart = now;
 
-        OS::ffi(context, foreignPtr, typeInfoFunc, context->ffiPushRAParam, retCopyAddr);
+        OS::ffi(context, foreignPtr, typeInfoFunc, pushCPUParams, retCopyAddr);
 
         now = OS::timerNow();
         context->bc->profileCumTime += now - context->bc->profileStart;
@@ -181,9 +186,9 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, [[maybe_unused]] const By
     }
     else
     {
-        OS::ffi(context, foreignPtr, typeInfoFunc, context->ffiPushRAParam, retCopyAddr);
+        OS::ffi(context, foreignPtr, typeInfoFunc, pushCPUParams, retCopyAddr);
     }
 #else
-    OS::ffi(context, foreignPtr, typeInfoFunc, context->ffiPushRAParam, retCopyAddr);
+    OS::ffi(context, foreignPtr, typeInfoFunc, pushCPUParams, retCopyAddr);
 #endif
 }

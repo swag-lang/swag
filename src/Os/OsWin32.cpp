@@ -942,12 +942,12 @@ namespace OS
         thread_local SCBE_X64 g_X64GenFFI;
     };
 
-    void ffi(ByteCodeRunContext* context, void* foreignPtr, const TypeInfoFuncAttr* typeInfoFunc, const VectorNative<uint32_t>& pushRAParams, void* retCopyAddr)
+    void ffi(ByteCodeRunContext* context, void* foreignPtr, const TypeInfoFuncAttr* typeInfoFunc, const VectorNative<CPUPushParam>& pushCPUParams, void* retCopyAddr)
     {
         const auto& cc         = typeInfoFunc->getCallConv();
         const auto  returnType = TypeManager::concreteType(typeInfoFunc->returnType);
 
-        uint32_t stackSize = (max(cc.paramByRegisterCount, pushRAParams.size())) * sizeof(void*);
+        uint32_t stackSize = (max(cc.paramByRegisterCount, pushCPUParams.size())) * sizeof(void*);
         stackSize += sizeof(void*);
         MK_ALIGN16(stackSize);
 
@@ -1005,9 +1005,6 @@ namespace OS
             gen.emitOpBinary(CPUReg::RSP, stackSize, CPUOp::SUB, OpBits::B64);
             gen.emitLoad(CPUReg::RDI, reinterpret_cast<uint64_t>(context->sp), OpBits::B64);
 
-            VectorNative<CPUPushParam> pushCPUParams;
-            for (const auto r : pushRAParams)
-                pushCPUParams.push_back({.type = CPUPushParamType::Reg, .reg = r});
             gen.emitCallParameters(typeInfoFunc, pushCPUParams, 0, retCopyAddr);
 
             gen.emitLoad(CPUReg::RAX, reinterpret_cast<uint64_t>(foreignPtr), OpBits::B64);

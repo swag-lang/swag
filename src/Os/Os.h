@@ -1,4 +1,5 @@
 #pragma once
+#include "Backend/SCBE/Encoder/SCBE_CPU.h"
 
 struct BackendTarget;
 struct BuildParameters;
@@ -61,7 +62,7 @@ namespace OS
     uint64_t timerNow();
     double   timerToSeconds(uint64_t timer);
 
-    void ffi(ByteCodeRunContext* context, void* foreignPtr, const TypeInfoFuncAttr* typeInfoFunc, const VectorNative<uint32_t>& pushRAParams, void* retCopyAddr);
+    void ffi(ByteCodeRunContext* context, void* foreignPtr, const TypeInfoFuncAttr* typeInfoFunc, const VectorNative<CPUPushParam>& pushCPUParams, void* retCopyAddr);
 
     bool    atomicTestNull(void** ptr);
     void    atomicSetIfNotNull(void** ptr, void* what);
