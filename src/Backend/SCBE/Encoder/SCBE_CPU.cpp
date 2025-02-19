@@ -7,18 +7,8 @@
 void SCBE_CPU::init(const BuildParameters& buildParameters)
 {
     BackendEncoder::init(buildParameters);
-    clearInstructionCache();
     labels.clear();
     labelsToSolve.clear();
-}
-
-void SCBE_CPU::clearInstructionCache()
-{
-    storageConcatCount = UINT32_MAX;
-    storageMemOffset   = 0;
-    storageNumBits     = OpBits::INVALID;
-    storageMemReg      = CPUReg::RAX;
-    storageReg         = CPUReg::RAX;
 }
 
 namespace

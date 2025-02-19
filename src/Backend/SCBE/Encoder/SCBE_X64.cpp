@@ -481,18 +481,6 @@ void SCBE_X64::emitLoadExtend(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpB
 
 void SCBE_X64::emitLoad(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits opBits)
 {
-    if (storageConcatCount == concat.totalCount() &&
-        isInt(opBits) &&
-        storageReg == reg &&
-        storageMemReg == memReg &&
-        storageMemOffset == memOffset &&
-        storageNumBits >= opBits)
-    {
-        if (opBits == OpBits::B32 && storageNumBits > OpBits::B32)
-            emitLoad(reg, reg, OpBits::B32);
-        return;
-    }
-
     if (memOffset > 0x7FFFFFFF)
     {
         SWAG_ASSERT(memReg != CPUReg::RCX);
@@ -558,12 +546,6 @@ void SCBE_X64::emitStore(CPUReg memReg, uint64_t memOffset, CPUReg reg, OpBits o
         emitREX(concat, opBits, reg, memReg);
         emitSpecB8(concat, 0x89, opBits);
         emitModRM(concat, memOffset, reg, memReg);
-
-        storageConcatCount = concat.totalCount();
-        storageMemOffset   = memOffset;
-        storageReg         = reg;
-        storageMemReg      = memReg;
-        storageNumBits     = opBits;
     }
 }
 
@@ -873,16 +855,6 @@ void SCBE_X64::emitCmp(CPUReg memReg, uint64_t memOffset, uint64_t value, OpBits
         value &= 0xFFFF;
     else if (opBits == OpBits::B32)
         value &= 0xFFFFFFFF;
-
-    if (storageConcatCount == concat.totalCount() &&
-        isInt(opBits) &&
-        storageMemReg == memReg &&
-        storageMemOffset == memOffset &&
-        storageNumBits == opBits)
-    {
-        emitCmp(storageReg, value, opBits);
-        return;
-    }
 
     if (opBits == OpBits::B8)
     {

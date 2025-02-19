@@ -189,9 +189,6 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         if (ip->hasFlag(BCI_JUMP_DEST))
             pp.getOrCreateLabel(i);
 
-        if (ip->hasFlag(BCI_START_STMT | BCI_JUMP_DEST))
-            pp.clearInstructionCache();
-
         switch (ip->op)
         {
             case ByteCodeOp::End:
@@ -2624,7 +2621,5 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     uint32_t endAddress = concat.totalCount();
     initFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
-    pp.clearInstructionCache();
-
     return ok;
 }

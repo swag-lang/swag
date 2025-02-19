@@ -184,13 +184,14 @@ struct CPUFunction
 
 struct SCBE_CPU : BackendEncoder
 {
-    void            init(const BuildParameters& buildParameters);
-    void            clearInstructionCache();
-    CPUSymbol*      getOrAddSymbol(const Utf8& name, CPUSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);
-    uint32_t        getOrCreateLabel(uint32_t instructionIndex);
-    CPUSymbol*      getOrCreateGlobalString(const Utf8& str);
-    void            addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, uint16_t type);
-    CPUFunction*    registerFunction(AstNode* node, uint32_t symbolIndex);
+    void init(const BuildParameters& buildParameters);
+
+    CPUSymbol*   getOrAddSymbol(const Utf8& name, CPUSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);
+    uint32_t     getOrCreateLabel(uint32_t instructionIndex);
+    CPUSymbol*   getOrCreateGlobalString(const Utf8& str);
+    void         addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, uint16_t type);
+    CPUFunction* registerFunction(AstNode* node, uint32_t symbolIndex);
+
     static uint32_t getParamStackOffset(const CPUFunction* cpuFct, uint32_t paramIdx);
     void            emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& params, uint32_t offset, void* retCopyAddr = nullptr);
     void            emitStoreCallResult(CPUReg memReg, uint32_t memOffset, const TypeInfoFuncAttr* typeFuncBc);
@@ -369,10 +370,4 @@ struct SCBE_CPU : BackendEncoder
     Concat                             dbgTypeRecords;
     Map<TypeInfo*, SCBEDebugTypeIndex> dbgMapTypes;
     MapUtf8<SCBEDebugTypeIndex>        dbgMapTypesNames;
-
-    uint64_t storageMemOffset   = 0;
-    uint32_t storageConcatCount = UINT32_MAX;
-    OpBits   storageNumBits     = OpBits::INVALID;
-    CPUReg   storageReg         = CPUReg::RAX;
-    CPUReg   storageMemReg      = CPUReg::RAX;
 };
