@@ -123,10 +123,8 @@ namespace
         // Set the first N parameters. Can be a return register, or a function parameter.
         while (idxParam < numParamsPerRegister)
         {
-            auto type = params[idxParam].typeInfo;
-            if (type->isAutoConstPointerRef())
-                type = TypeManager::concretePtrRef(type);
-            const auto reg = static_cast<uint32_t>(params[idxParam].reg);
+            const auto type = params[idxParam].typeInfo;
+            const auto reg  = static_cast<uint32_t>(params[idxParam].reg);
 
             switch (params[idxParam].type)
             {
@@ -138,7 +136,7 @@ namespace
                     else
                         pp.emitLoadAddress(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, reg);
                     break;
-                
+
                 case CPUPushParamType::Reg:
                     if (CallConv::structParamByValue(typeFuncBc, type))
                     {
@@ -150,49 +148,49 @@ namespace
                     else
                         pp.emitLoad(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
                     break;
-                
+
                 case CPUPushParamType::Imm:
                     if (cc.useRegisterFloat && type->isNativeFloat())
                         pp.emitLoad(cc.paramByRegisterFloat[idxParam], params[idxParam].reg, BackendEncoder::getOpBitsByBytes(type->sizeOf, true));
                     else
                         pp.emitLoad(cc.paramByRegisterInteger[idxParam], params[idxParam].reg, OpBits::B64);
                     break;
-                
+
                 case CPUPushParamType::Imm64:
                     pp.emitLoad(cc.paramByRegisterInteger[idxParam], params[idxParam].reg, OpBits::B64);
                     break;
-                
+
                 case CPUPushParamType::RelocV:
                     pp.emitSymbolRelocationValue(cc.paramByRegisterInteger[idxParam], static_cast<uint32_t>(params[idxParam].reg), 0);
                     break;
-                
+
                 case CPUPushParamType::RelocAddr:
                     pp.emitSymbolRelocationAddr(cc.paramByRegisterInteger[idxParam], static_cast<uint32_t>(params[idxParam].reg), 0);
                     break;
-                
+
                 case CPUPushParamType::Addr:
                     pp.emitLoadAddress(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, static_cast<uint32_t>(params[idxParam].reg));
                     break;
-                
+
                 case CPUPushParamType::RegAdd:
                     pp.emitLoad(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
                     pp.emitOpBinary(cc.paramByRegisterInteger[idxParam], params[idxParam].val, CPUOp::ADD, OpBits::B64);
                     break;
-                
+
                 case CPUPushParamType::RegMul:
                     pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
                     pp.emitOpBinary(CPUReg::RAX, params[idxParam].val, CPUOp::IMUL, OpBits::B64);
                     pp.emitLoad(cc.paramByRegisterInteger[idxParam], CPUReg::RAX, OpBits::B64);
                     break;
-                
+
                 case CPUPushParamType::RAX:
                     pp.emitLoad(cc.paramByRegisterInteger[idxParam], CPUReg::RAX, OpBits::B64);
                     break;
-                
+
                 case CPUPushParamType::GlobalString:
                     pp.emitSymbolGlobalString(cc.paramByRegisterInteger[idxParam], reinterpret_cast<const char*>(params[idxParam].reg));
                     break;
-                
+
                 default:
                     SWAG_ASSERT(false);
                     break;
@@ -205,10 +203,8 @@ namespace
         uint32_t memOffset = numParamsPerRegister * sizeof(uint64_t);
         while (idxParam < params.size())
         {
-            auto type = params[idxParam].typeInfo;
-            if (type->isAutoConstPointerRef())
-                type = TypeManager::concretePtrRef(type);
-            const auto reg = params[idxParam].reg;
+            const auto type = params[idxParam].typeInfo;
+            const auto reg  = params[idxParam].reg;
 
             if (params[idxParam].type == CPUPushParamType::Return)
             {
@@ -320,7 +316,7 @@ void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
     // Return by parameter
     if (CallConv::returnByAddress(typeFuncBc))
     {
-        pushParams.push_back({.type = CPUPushParamType::Return, .reg = offset, .typeInfo = g_TypeMgr->typeInfoUndefined});
+        pushParams.push_back({.type = CPUPushParamType::Return, .reg = offset});
     }
 
     // Add all C variadic parameters
