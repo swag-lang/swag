@@ -104,7 +104,7 @@ void SCBE_CPU::solveLabels()
     {
         auto it = labels.find(toSolve.ipDest);
         SWAG_ASSERT(it != labels.end());
-        emitJumpDestination(toSolve.jump, it->second);
+        emitJump(toSolve.jump, it->second);
     }
 
     labels.clear();
@@ -340,7 +340,7 @@ void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
         const auto jumpAfterClosure = emitJump(JUMP, OpBits::B8);
 
         // Update jump to closure call
-        emitJumpDestination(jumpClosure, concat.totalCount());
+        emitJump(jumpClosure, concat.totalCount());
 
         // First register is closure context, except if variadic, where we have 2 registers for the slice first
         // :VariadicAndClosure
@@ -350,7 +350,7 @@ void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
             pushParams.erase(0);
         emitParameters(*this, typeFuncBc, pushParams, retCopyAddr);
 
-        emitJumpDestination(jumpAfterClosure, concat.totalCount());
+        emitJump(jumpAfterClosure, concat.totalCount());
     }
     else
     {

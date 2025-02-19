@@ -2137,7 +2137,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
                 // End
                 //////////////////
-                pp.emitJumpDestination(jump, concat.totalCount());
+                pp.emitJump(jump, concat.totalCount());
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, OpBits::B64);
 
                 break;

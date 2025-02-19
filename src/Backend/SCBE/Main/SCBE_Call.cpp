@@ -176,12 +176,12 @@ void SCBE::emitByteCodeCallParameters(SCBE_CPU& pp, const TypeInfoFuncAttr* type
         const auto jumpAfterClosure = pp.emitJump(JUMP, OpBits::B32);
 
         // Update jump to closure call
-        pp.emitJumpDestination(jumpClosure, pp.concat.totalCount());
+        pp.emitJump(jumpClosure, pp.concat.totalCount());
 
         pp.pushRAParams.pop_back();
         emitByteCodeCall(pp, typeFuncBc);
 
-        pp.emitJumpDestination(jumpAfterClosure, pp.concat.totalCount());
+        pp.emitJump(jumpAfterClosure, pp.concat.totalCount());
     }
     else
     {
@@ -249,7 +249,7 @@ void SCBE::emitLambdaCall(SCBE_CPU& pp)
     // ByteCode lambda
     //////////////////
 
-    pp.emitJumpDestination(jumpBC, pp.concat.totalCount());
+    pp.emitJump(jumpBC, pp.concat.totalCount());
 
     pp.emitLoad(CPUReg::RCX, CPUReg::R10, OpBits::B64);
     emitByteCodeCallParameters(pp, typeFuncBc);
@@ -260,7 +260,7 @@ void SCBE::emitLambdaCall(SCBE_CPU& pp)
 
     // End
     //////////////////
-    pp.emitJumpDestination(jumpBCAfter, pp.concat.totalCount());
+    pp.emitJump(jumpBCAfter, pp.concat.totalCount());
 
     pp.pushRAParams.clear();
     pp.pushRVParams.clear();
