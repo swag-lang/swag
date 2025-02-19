@@ -108,14 +108,14 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, [[maybe_unused]] const By
     uint32_t cptParam = 0;
 
     // Function call parameters
-    context->ffiPushRAParam.clear();
+    context->ffiPushCPUParams.clear();
     int numParameters = static_cast<int>(typeInfoFunc->parameters.size());
 
     // Variadic parameters are first on the stack, so need to treat them before
     if (typeInfoFunc->isFctVariadic())
     {
-        context->ffiPushRAParam.push_back(cptParam++);
-        context->ffiPushRAParam.push_back(cptParam++);
+        context->ffiPushCPUParams.push_front({.type = CPUPushParamType::Reg, .reg = cptParam++});
+        context->ffiPushCPUParams.push_front({.type = CPUPushParamType::Reg, .reg = cptParam++});
         numParameters--;
     }
     else if (typeInfoFunc->isFctCVariadic())
@@ -133,33 +133,25 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, [[maybe_unused]] const By
             typeParam->isAny() ||
             typeParam->isString())
         {
-            context->ffiPushRAParam.push_back(cptParam++);
-            context->ffiPushRAParam.push_back(cptParam++);
+            context->ffiPushCPUParams.push_front({.type = CPUPushParamType::Reg, .reg = cptParam++});
         }
-        else
-        {
-            context->ffiPushRAParam.push_back(cptParam++);
-        }
-    }
 
-    // Function return type
-    void* retCopyAddr = nullptr;
-    if (CallConv::returnByStackAddress(typeInfoFunc))
-        retCopyAddr = context->registersRR[0].pointer;
-    else if (CallConv::returnByAddress(typeInfoFunc))
-        retCopyAddr = context->registersRR;
+        context->ffiPushCPUParams.push_front({.type = CPUPushParamType::Reg, .reg = cptParam++});
+    }
 
     if (typeInfoFunc->isFctCVariadic())
     {
         for (int i = 0; i < numCVariadicParams; i++)
         {
-            context->ffiPushRAParam.push_back(cptParam++);
+            context->ffiPushCPUParams.push_front({.type = CPUPushParamType::Reg, .reg = cptParam++});
         }
     }
 
-    VectorNative<CPUPushParam> pushCPUParams;
-    for (uint32_t i = context->ffiPushRAParam.size() - 1; i != UINT32_MAX; i--)
-        pushCPUParams.push_back({.type = CPUPushParamType::Reg, .reg = context->ffiPushRAParam[i]});
+    void* retCopyAddr = nullptr;
+    if (CallConv::returnByStackAddress(typeInfoFunc))
+        retCopyAddr = context->registersRR[0].pointer;
+    else if (CallConv::returnByAddress(typeInfoFunc))
+        retCopyAddr = context->registersRR;
 
 #ifdef SWAG_STATS
     if (g_CommandLine.profile)
@@ -168,7 +160,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, [[maybe_unused]] const By
         context->bc->profileCumTime += now - context->bc->profileStart;
         context->bc->profileStart = now;
 
-        OS::ffi(context, foreignPtr, typeInfoFunc, pushCPUParams, retCopyAddr);
+        OS::ffi(context, foreignPtr, typeInfoFunc, context->ffiPushCPUParams, retCopyAddr);
 
         now = OS::timerNow();
         context->bc->profileCumTime += now - context->bc->profileStart;
@@ -186,9 +178,9 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, [[maybe_unused]] const By
     }
     else
     {
-        OS::ffi(context, foreignPtr, typeInfoFunc, pushCPUParams, retCopyAddr);
+        OS::ffi(context, foreignPtr, typeInfoFunc, context->ffiPushCPUParams, retCopyAddr);
     }
 #else
-    OS::ffi(context, foreignPtr, typeInfoFunc, pushCPUParams, retCopyAddr);
+    OS::ffi(context, foreignPtr, typeInfoFunc, context->ffiPushCPUParams, retCopyAddr);
 #endif
 }
