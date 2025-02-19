@@ -334,17 +334,17 @@ void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
         emitCmp(CPUReg::RDI, REG_OFFSET(reg), 0, OpBits::B64);
 
         // If not zero, jump to closure call
-        const auto seekPtrClosure = emitJumpLong(JZ);
+        const auto seekPtrClosure = emitJump(JZ, OpBits::B8);
         const auto seekJmpClosure = concat.totalCount();
 
         emitParameters(*this, typeFuncBc, pushParams, retCopyAddr);
 
         // Jump to after closure call
-        const auto seekPtrAfterClosure = emitJumpLong(JUMP);
+        const auto seekPtrAfterClosure = emitJump(JUMP, OpBits::B8);
         const auto seekJmpAfterClosure = concat.totalCount();
 
         // Update jump to closure call
-        *seekPtrClosure = static_cast<uint8_t>(concat.totalCount() - seekJmpClosure);
+        *static_cast<uint8_t*>(seekPtrClosure) = static_cast<uint8_t>(concat.totalCount() - seekJmpClosure);
 
         // First register is closure context, except if variadic, where we have 2 registers for the slice first
         // :VariadicAndClosure
@@ -354,7 +354,7 @@ void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
             pushParams.erase(0);
         emitParameters(*this, typeFuncBc, pushParams, retCopyAddr);
 
-        *seekPtrAfterClosure = static_cast<uint8_t>(concat.totalCount() - seekJmpAfterClosure);
+        *static_cast<uint8_t*>(seekPtrAfterClosure) = static_cast<uint8_t>(concat.totalCount() - seekJmpAfterClosure);
     }
     else
     {

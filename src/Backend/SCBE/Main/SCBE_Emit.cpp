@@ -163,11 +163,11 @@ void SCBE::emitShiftEqLogical(SCBE_CPU& pp, CPUOp op)
     {
         pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->b.u32), OpBits::B32);
         pp.emitCmp(CPUReg::RCX, SCBE_CPU::getNumBits(opBits), OpBits::B32);
-        const auto seekPtr = pp.emitJumpNear(JL);
+        const auto seekPtr = pp.emitJump(JL, OpBits::B8);
         const auto seekJmp = pp.concat.totalCount();
         pp.emitClear(CPUReg::RCX, opBits);
         pp.emitStore(CPUReg::RAX, 0, CPUReg::RCX, opBits);
-        *seekPtr = static_cast<uint8_t>(pp.concat.totalCount() - seekJmp);
+        *static_cast<uint8_t*>(seekPtr) = static_cast<uint8_t>(pp.concat.totalCount() - seekJmp);
         pp.emitOpBinary(CPUReg::RAX, 0, CPUReg::RCX, op, opBits);
     }
 }
@@ -177,10 +177,10 @@ void SCBE::emitOverflow(SCBE_CPU& pp, const char* msg, bool isSigned)
     const auto ip = pp.ip;
     if (BackendEncoder::mustCheckOverflow(pp.buildParams.module, ip))
     {
-        const auto seekPtr = pp.emitJumpNear(isSigned ? JNO : JAE);
+        const auto seekPtr = pp.emitJump(isSigned ? JNO : JAE, OpBits::B8);
         const auto seekJmp = pp.concat.totalCount();
         emitInternalPanic(pp, msg);
-        *seekPtr = static_cast<uint8_t>(pp.concat.totalCount() - seekJmp);
+        *static_cast<uint8_t*>(seekPtr) = static_cast<uint8_t>(pp.concat.totalCount() - seekJmp);
     }
 }
 

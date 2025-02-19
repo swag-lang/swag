@@ -1713,63 +1713,65 @@ void SCBE_X64::emitOpBinary(CPUReg memReg, uint64_t memOffset, uint64_t value, C
 
 /////////////////////////////////////////////////////////////////////
 
-uint8_t* SCBE_X64::emitJumpNear(CPUCondJump jumpType)
+void* SCBE_X64::emitJump(CPUCondJump jumpType, OpBits opBits)
 {
-    switch (jumpType)
+    SWAG_ASSERT(opBits == OpBits::B8 || opBits == OpBits::B32);
+
+    if (opBits == OpBits::B8)
     {
-        case JNO:
-            concat.addU8(0x71);
-            break;
-        case JB:
-            concat.addU8(0x72);
-            break;
-        case JAE:
-            concat.addU8(0x73);
-            break;
-        case JZ:
-            concat.addU8(0x74);
-            break;
-        case JNZ:
-            concat.addU8(0x75);
-            break;
-        case JBE:
-            concat.addU8(0x76);
-            break;
-        case JA:
-            concat.addU8(0x77);
-            break;
-        case JP:
-            concat.addU8(0x7A);
-            break;
-        case JNP:
-            concat.addU8(0x7B);
-            break;
-        case JL:
-            concat.addU8(0x7C);
-            break;
-        case JGE:
-            concat.addU8(0x7D);
-            break;
-        case JLE:
-            concat.addU8(0x7E);
-            break;
-        case JG:
-            concat.addU8(0x7F);
-            break;
-        case JUMP:
-            concat.addU8(0xEB);
-            break;
-        default:
-            SWAG_ASSERT(false);
-            break;
+        switch (jumpType)
+        {
+            case JNO:
+                concat.addU8(0x71);
+                break;
+            case JB:
+                concat.addU8(0x72);
+                break;
+            case JAE:
+                concat.addU8(0x73);
+                break;
+            case JZ:
+                concat.addU8(0x74);
+                break;
+            case JNZ:
+                concat.addU8(0x75);
+                break;
+            case JBE:
+                concat.addU8(0x76);
+                break;
+            case JA:
+                concat.addU8(0x77);
+                break;
+            case JP:
+                concat.addU8(0x7A);
+                break;
+            case JNP:
+                concat.addU8(0x7B);
+                break;
+            case JL:
+                concat.addU8(0x7C);
+                break;
+            case JGE:
+                concat.addU8(0x7D);
+                break;
+            case JLE:
+                concat.addU8(0x7E);
+                break;
+            case JG:
+                concat.addU8(0x7F);
+                break;
+            case JUMP:
+                concat.addU8(0xEB);
+                break;
+            default:
+                SWAG_ASSERT(false);
+                break;
+        }
+
+        concat.addU8(0);
+        return concat.getSeekPtr() - 1;
     }
 
-    concat.addU8(0);
-    return concat.getSeekPtr() - 1;
-}
-
-uint32_t* SCBE_X64::emitJumpLong(CPUCondJump jumpType)
-{
     switch (jumpType)
     {
         case JNO:
@@ -1856,20 +1858,20 @@ void SCBE_X64::emitJump(CPUCondJump jumpType, int32_t instructionCount, int32_t 
         const int  relOffset     = it->second - (currentOffset + 1);
         if (relOffset >= -127 && relOffset <= 128)
         {
-            const auto offsetPtr = emitJumpNear(jumpType);
-            *offsetPtr           = static_cast<uint8_t>(it->second - concat.totalCount());
+            const auto offsetPtr              = emitJump(jumpType, OpBits::B8);
+            *static_cast<uint8_t*>(offsetPtr) = static_cast<uint8_t>(it->second - concat.totalCount());
         }
         else
         {
-            const auto offsetPtr = emitJumpLong(jumpType);
-            *offsetPtr           = it->second - concat.totalCount();
+            const auto offsetPtr               = emitJump(jumpType, OpBits::B32);
+            *static_cast<uint32_t*>(offsetPtr) = it->second - concat.totalCount();
         }
 
         return;
     }
 
     // Here we do not know the destination label, so we assume 32 bits of offset
-    label.patch         = reinterpret_cast<uint8_t*>(emitJumpLong(jumpType));
+    label.patch         = static_cast<uint8_t*>(emitJump(jumpType, OpBits::B32));
     label.currentOffset = static_cast<int32_t>(concat.totalCount());
     labelsToSolve.push_back(label);
 }

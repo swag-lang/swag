@@ -2124,7 +2124,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitLoad(CPUReg::RCX, SWAG_LAMBDA_BC_MARKER, OpBits::B64);
                 pp.emitOpBinary(CPUReg::RCX, CPUReg::RAX, CPUOp::AND, OpBits::B64);
 
-                auto jumpBCToAfterAddr   = pp.emitJumpLong(JZ);
+                auto jumpBCToAfterAddr   = pp.emitJump(JZ, OpBits::B32);
                 auto jumpBCToAfterOffset = concat.totalCount();
 
                 // ByteCode lambda
@@ -2137,7 +2137,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
                 // End
                 //////////////////
-                *jumpBCToAfterAddr = concat.totalCount() - jumpBCToAfterOffset;
+                *static_cast<uint32_t*>(jumpBCToAfterAddr) = concat.totalCount() - jumpBCToAfterOffset;
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, OpBits::B64);
 
                 break;
