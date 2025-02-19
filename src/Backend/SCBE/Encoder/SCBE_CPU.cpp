@@ -318,30 +318,26 @@ namespace
     }
 }
 
-void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& params1, uint32_t offset, void* retCopyAddr)
+void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& params, uint32_t offset, void* retCopyAddr)
 {
-    VectorNative<CPUPushParam> params;
-    for (uint32_t i = params1.size() - 1; i != UINT32_MAX; i--)
-        params.push_back(params1[i]);
-    
     uint32_t numCallParams = typeFuncBc->parameters.size();
-    uint32_t indexParam    = params.size() - 1;
+    uint32_t indexParam    = 0;
 
     pushParams.clear();
 
     // Variadic are first
     if (typeFuncBc->isFctVariadic())
     {
-        auto param     = params[indexParam--];
+        auto param     = params[indexParam++];
         param.typeInfo = g_TypeMgr->typeInfoU64;
         pushParams.push_back(param);
 
-        param          = params[indexParam--];
+        param          = params[indexParam++];
         param.typeInfo = g_TypeMgr->typeInfoU64;
         pushParams.push_back(param);
-        numCallParams--;
     }
-    else if (typeFuncBc->isFctCVariadic())
+
+    if (typeFuncBc->isFctVariadic() || typeFuncBc->isFctCVariadic())
     {
         numCallParams--;
     }
@@ -353,7 +349,7 @@ void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
         if (typeParam->isAutoConstPointerRef())
             typeParam = TypeManager::concretePtrRef(typeParam);
 
-        auto param = params[indexParam--];
+        auto param = params[indexParam++];
 
         if (typeParam->isPointer() ||
             typeParam->isLambdaClosure() ||
@@ -372,7 +368,7 @@ void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
         {
             param.typeInfo = g_TypeMgr->typeInfoU64;
             pushParams.push_back(param);
-            param          = params[indexParam--];
+            param          = params[indexParam++];
             param.typeInfo = g_TypeMgr->typeInfoU64;
             pushParams.push_back(param);
         }
@@ -381,7 +377,7 @@ void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
         {
             param.typeInfo = g_TypeMgr->typeInfoU64;
             pushParams.push_back(param);
-            param          = params[indexParam--];
+            param          = params[indexParam++];
             param.typeInfo = g_TypeMgr->typeInfoU64;
             pushParams.push_back(param);
         }
@@ -404,7 +400,7 @@ void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
     {
         for (uint32_t i = typeFuncBc->numParamsRegisters(); i < params.size(); i++)
         {
-            auto param     = params[indexParam--];
+            auto param     = params[indexParam++];
             param.typeInfo = g_TypeMgr->typeInfoU64;
             pushParams.push_back(param);
         }
