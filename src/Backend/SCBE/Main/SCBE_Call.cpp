@@ -35,7 +35,6 @@ void SCBE::emitGetParam(SCBE_CPU& pp, uint32_t reg, uint32_t paramIdx, OpBits op
     }
 
     const bool structByValue = CallConv::structParamByValue(typeFunc, typeParam);
-
     if (structByValue)
         pp.emitLoadAddress(CPUReg::RAX, CPUReg::RDI, paramStack);
     else
@@ -176,12 +175,12 @@ void SCBE::emitByteCodeCallParameters(SCBE_CPU& pp, const TypeInfoFuncAttr* type
         const auto jumpAfterClosure = pp.emitJump(JUMP, OpBits::B32);
 
         // Update jump to closure call
-        pp.emitJump(jumpClosure, pp.concat.totalCount());
+        pp.patchJump(jumpClosure, pp.concat.totalCount());
 
         pp.pushRAParams.pop_back();
         emitByteCodeCall(pp, typeFuncBc);
 
-        pp.emitJump(jumpAfterClosure, pp.concat.totalCount());
+        pp.patchJump(jumpAfterClosure, pp.concat.totalCount());
     }
     else
     {
@@ -249,7 +248,7 @@ void SCBE::emitLambdaCall(SCBE_CPU& pp)
     // ByteCode lambda
     //////////////////
 
-    pp.emitJump(jumpBC, pp.concat.totalCount());
+    pp.patchJump(jumpBC, pp.concat.totalCount());
 
     pp.emitLoad(CPUReg::RCX, CPUReg::R10, OpBits::B64);
     emitByteCodeCallParameters(pp, typeFuncBc);
@@ -260,7 +259,7 @@ void SCBE::emitLambdaCall(SCBE_CPU& pp)
 
     // End
     //////////////////
-    pp.emitJump(jumpBCAfter, pp.concat.totalCount());
+    pp.patchJump(jumpBCAfter, pp.concat.totalCount());
 
     pp.pushRAParams.clear();
     pp.pushRVParams.clear();

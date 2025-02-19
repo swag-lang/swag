@@ -1855,7 +1855,7 @@ CPUJump SCBE_X64::emitJump(CPUCondJump jumpType, OpBits opBits)
     return jump;
 }
 
-void SCBE_X64::emitJump(const CPUJump& jump, uint64_t offsetDestination)
+void SCBE_X64::patchJump(const CPUJump& jump, uint64_t offsetDestination)
 {
     const int32_t offset = static_cast<int32_t>(offsetDestination - jump.offset);
     if (jump.opBits == OpBits::B8)

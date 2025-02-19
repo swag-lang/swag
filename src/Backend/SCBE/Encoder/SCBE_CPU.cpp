@@ -104,24 +104,11 @@ void SCBE_CPU::solveLabels()
     {
         auto it = labels.find(toSolve.ipDest);
         SWAG_ASSERT(it != labels.end());
-        emitJump(toSolve.jump, it->second);
+        patchJump(toSolve.jump, it->second);
     }
 
     labels.clear();
     labelsToSolve.clear();
-}
-
-uint32_t SCBE_CPU::getParamStackOffset(const CPUFunction* cpuFunction, uint32_t paramIdx)
-{
-    const auto& cc = cpuFunction->typeFunc->getCallConv();
-
-    // If this was passed as a register, then get the value from storeS4 (where input registers have been saved)
-    // instead of value from the stack
-    if (paramIdx < cc.paramByRegisterCount)
-        return REG_OFFSET(paramIdx) + cpuFunction->offsetLocalStackParams;
-
-    // Value from the caller stack
-    return REG_OFFSET(paramIdx) + cpuFunction->offsetCallerStackParams;
 }
 
 namespace
@@ -331,26 +318,21 @@ void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
         const auto reg = typeFuncBc->isFctVariadic() ? pushParams[2].reg : pushParams[0].reg;
         emitCmp(CPUReg::RDI, REG_OFFSET(reg), 0, OpBits::B64);
 
-        // If not zero, jump to closure call
-        const auto jumpClosure = emitJump(JZ, OpBits::B8);
+        // If zero, jump to parameters for a non closure call
+        const auto jumpToNoClosure = emitJump(JZ, OpBits::B8);
 
+        // Emit parameters for the closure call (with the pointer to context)
         emitParameters(*this, typeFuncBc, pushParams, retCopyAddr);
+        const auto jumpAfterParameters = emitJump(JUMP, OpBits::B8);
 
-        // Jump to after closure call
-        const auto jumpAfterClosure = emitJump(JUMP, OpBits::B8);
-
-        // Update jump to closure call
-        emitJump(jumpClosure, concat.totalCount());
-
-        // First register is closure context, except if variadic, where we have 2 registers for the slice first
+        // First register is closure, except if variadic, where we have 2 registers for the slice first.
+        // We must remove it as we are in the "not closure" call path.
         // :VariadicAndClosure
-        if (typeFuncBc->isFctVariadic())
-            pushParams.erase(2);
-        else
-            pushParams.erase(0);
+        patchJump(jumpToNoClosure, concat.totalCount());
+        pushParams.erase(typeFuncBc->isFctVariadic() ? 2 : 0);
         emitParameters(*this, typeFuncBc, pushParams, retCopyAddr);
 
-        emitJump(jumpAfterClosure, concat.totalCount());
+        patchJump(jumpAfterParameters, concat.totalCount());
     }
     else
     {
@@ -370,4 +352,17 @@ void SCBE_CPU::emitStoreCallResult(CPUReg memReg, uint32_t memOffset, const Type
         emitStore(memReg, memOffset, cc.returnByRegisterFloat, OpBits::F64);
     else
         emitStore(memReg, memOffset, cc.returnByRegisterInteger, OpBits::B64);
+}
+
+uint32_t SCBE_CPU::getParamStackOffset(const CPUFunction* cpuFunction, uint32_t paramIdx)
+{
+    const auto& cc = cpuFunction->typeFunc->getCallConv();
+
+    // If this was passed as a register, then get the value from storeS4 (where input registers have been saved)
+    // instead of value from the stack
+    if (paramIdx < cc.paramByRegisterCount)
+        return REG_OFFSET(paramIdx) + cpuFunction->offsetLocalStackParams;
+
+    // Value from the caller stack
+    return REG_OFFSET(paramIdx) + cpuFunction->offsetCallerStackParams;
 }
