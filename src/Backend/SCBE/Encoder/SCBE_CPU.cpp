@@ -123,8 +123,8 @@ namespace
         // Set the first N parameters. Can be a return register, or a function parameter.
         while (idxParam < numParamsPerRegister)
         {
-            const auto type = params[idxParam].typeInfo;
-            const auto reg  = static_cast<uint32_t>(params[idxParam].reg);
+            const auto type = params[idxParam].typeInfo ? params[idxParam].typeInfo : g_TypeMgr->typeInfoU64;
+            const auto reg  = params[idxParam].reg;
 
             switch (params[idxParam].type)
             {
@@ -203,7 +203,7 @@ namespace
         uint32_t memOffset = numParamsPerRegister * sizeof(uint64_t);
         while (idxParam < params.size())
         {
-            const auto type = params[idxParam].typeInfo;
+            const auto type = params[idxParam].typeInfo ? params[idxParam].typeInfo : g_TypeMgr->typeInfoU64;
             const auto reg  = params[idxParam].reg;
 
             if (params[idxParam].type == CPUPushParamType::Return)
@@ -252,13 +252,8 @@ void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
     // Variadic are first
     if (typeFuncBc->isFctVariadic())
     {
-        auto param     = params[indexParam++];
-        param.typeInfo = g_TypeMgr->typeInfoU64;
-        pushParams.push_back(param);
-
-        param          = params[indexParam++];
-        param.typeInfo = g_TypeMgr->typeInfoU64;
-        pushParams.push_back(param);
+        pushParams.push_back(params[indexParam++]);
+        pushParams.push_back(params[indexParam++]);
     }
 
     if (typeFuncBc->isFctVariadic() || typeFuncBc->isFctCVariadic())
@@ -273,41 +268,23 @@ void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
         if (typeParam->isAutoConstPointerRef())
             typeParam = TypeManager::concretePtrRef(typeParam);
 
-        auto param = params[indexParam++];
-
         if (typeParam->isPointer() ||
             typeParam->isLambdaClosure() ||
             typeParam->isArray())
         {
-            param.typeInfo = g_TypeMgr->typeInfoU64;
-            pushParams.push_back(param);
-        }
-        else if (typeParam->isStruct())
-        {
-            param.typeInfo = typeParam;
-            pushParams.push_back(param);
+            pushParams.push_back(params[indexParam++]);
         }
         else if (typeParam->isSlice() ||
-                 typeParam->isString())
-        {
-            param.typeInfo = g_TypeMgr->typeInfoU64;
-            pushParams.push_back(param);
-            param          = params[indexParam++];
-            param.typeInfo = g_TypeMgr->typeInfoU64;
-            pushParams.push_back(param);
-        }
-        else if (typeParam->isAny() ||
+                 typeParam->isString() ||
+                 typeParam->isAny() ||
                  typeParam->isInterface())
         {
-            param.typeInfo = g_TypeMgr->typeInfoU64;
-            pushParams.push_back(param);
-            param          = params[indexParam++];
-            param.typeInfo = g_TypeMgr->typeInfoU64;
-            pushParams.push_back(param);
+            pushParams.push_back(params[indexParam++]);
+            pushParams.push_back(params[indexParam++]);
         }
         else
         {
-            SWAG_ASSERT(typeParam->sizeOf <= sizeof(void*));
+            auto param     = params[indexParam++];
             param.typeInfo = typeParam;
             pushParams.push_back(param);
         }
@@ -324,9 +301,7 @@ void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
     {
         for (uint32_t i = typeFuncBc->numParamsRegisters(); i < params.size(); i++)
         {
-            auto param     = params[indexParam++];
-            param.typeInfo = g_TypeMgr->typeInfoU64;
-            pushParams.push_back(param);
+            pushParams.push_back(params[indexParam++]);
         }
     }
 
