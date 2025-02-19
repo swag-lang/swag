@@ -118,9 +118,9 @@ void SCBE::emitInternalCallCPUParams(SCBE_CPU& pp, const Utf8& funcName, const V
     emitCallCPUParams(pp, funcName, typeFuncBc, pushCPUParams, offsetRT, true);
 }
 
-void SCBE::emitByteCodeCall(SCBE_CPU& pp, const TypeInfoFuncAttr* typeFuncBc)
+void SCBE::emitByteCodeCallParameters(SCBE_CPU& pp, const TypeInfoFuncAttr* typeFuncBc, const VectorNative<uint32_t>& pushRAParams)
 {
-    int idxReg = 0;
+    uint32_t idxReg = 0;
     for (uint32_t idxParam = typeFuncBc->numReturnRegisters() - 1; idxParam != UINT32_MAX; idxParam--, idxReg++)
     {
         switch (idxReg)
@@ -137,7 +137,7 @@ void SCBE::emitByteCodeCall(SCBE_CPU& pp, const TypeInfoFuncAttr* typeFuncBc)
     }
 
     uint32_t stackOffset = typeFuncBc->numReturnRegisters() * sizeof(Register);
-    for (uint32_t idxParam = pp.pushRAParams.size() - 1; idxParam != UINT32_MAX; idxParam--, idxReg++)
+    for (uint32_t idxParam = pushRAParams.size() - 1; idxParam != UINT32_MAX; idxParam--, idxReg++)
     {
         static constexpr CPUReg IDX_TO_REG[4] = {CPUReg::RDX, CPUReg::R8, CPUReg::R9};
 
@@ -145,11 +145,11 @@ void SCBE::emitByteCodeCall(SCBE_CPU& pp, const TypeInfoFuncAttr* typeFuncBc)
         stackOffset += sizeof(Register);
         if (idxReg <= 2)
         {
-            pp.emitLoad(IDX_TO_REG[idxReg], CPUReg::RDI, REG_OFFSET(pp.pushRAParams[idxParam]), OpBits::B64);
+            pp.emitLoad(IDX_TO_REG[idxReg], CPUReg::RDI, REG_OFFSET(pushRAParams[idxParam]), OpBits::B64);
         }
         else
         {
-            pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(pp.pushRAParams[idxParam]), OpBits::B64);
+            pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(pushRAParams[idxParam]), OpBits::B64);
             pp.emitStore(CPUReg::RSP, stackOffset, CPUReg::RAX, OpBits::B64);
         }
     }
@@ -166,25 +166,24 @@ void SCBE::emitByteCodeCallParameters(SCBE_CPU& pp, const TypeInfoFuncAttr* type
         const auto reg = pp.pushRAParams.back();
         pp.emitCmp(CPUReg::RDI, REG_OFFSET(reg), 0, OpBits::B64);
 
-        // If not zero, jump to closure call
+        // If zero, jump to non closure call
         const auto jumpClosure = pp.emitJump(JZ, OpBits::B32);
 
-        emitByteCodeCall(pp, typeFuncBc);
-
-        // Jump to after closure call
+        // Closure call
+        emitByteCodeCallParameters(pp, typeFuncBc, pp.pushRAParams);
         const auto jumpAfterClosure = pp.emitJump(JUMP, OpBits::B32);
 
-        // Update jump to closure call
+        // Lambda call (not a closure)
+        // Jump without the first parameter which is the pointer to the context (reverse order)
         pp.patchJump(jumpClosure, pp.concat.totalCount());
-
         pp.pushRAParams.pop_back();
-        emitByteCodeCall(pp, typeFuncBc);
+        emitByteCodeCallParameters(pp, typeFuncBc, pp.pushRAParams);
 
         pp.patchJump(jumpAfterClosure, pp.concat.totalCount());
     }
     else
     {
-        emitByteCodeCall(pp, typeFuncBc);
+        emitByteCodeCallParameters(pp, typeFuncBc, pp.pushRAParams);
     }
 }
 
@@ -193,6 +192,7 @@ void SCBE::emitLocalCall(SCBE_CPU& pp)
     const auto ip      = pp.ip;
     const auto callBc  = reinterpret_cast<ByteCode*>(ip->a.pointer);
     const auto typeFct = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
+
     emitCallRAParams(pp, callBc->getCallNameFromDecl(), typeFct, true);
     pp.pushRAParams.clear();
     pp.pushRVParams.clear();
