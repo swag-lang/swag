@@ -131,11 +131,17 @@ constexpr CPUEmitFlags EMITF_Overflow = 0x00000001;
 constexpr CPUEmitFlags EMITF_Lock     = 0x00000002;
 constexpr CPUEmitFlags EMITF_B64      = 0x00000004;
 
+struct CPUJump
+{
+    void*    addr;
+    uint64_t offset;
+    OpBits   opBits;
+};
+
 struct CPULabelToSolve
 {
     uint32_t ipDest;
-    int32_t  currentOffset;
-    uint8_t* patch;
+    CPUJump  jump;
 };
 
 enum class CPUSymbolKind
@@ -199,47 +205,48 @@ struct SCBE_CPU : BackendEncoder
     void            emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& params, uint32_t offset, void* retCopyAddr = nullptr);
     void            emitStoreCallResult(CPUReg memReg, uint32_t memOffset, const TypeInfoFuncAttr* typeFuncBc);
 
-    virtual void  emitSymbolRelocationRef(const Utf8& name)                                                                                     = 0;
-    virtual void  emitSymbolRelocationAddr(CPUReg reg, uint32_t symbolIndex, uint32_t offset)                                                   = 0;
-    virtual void  emitSymbolRelocationValue(CPUReg reg, uint32_t symbolIndex, uint32_t offset)                                                  = 0;
-    virtual void  emitSymbolGlobalString(CPUReg reg, const Utf8& str)                                                                           = 0;
-    virtual void  emitPush(CPUReg reg)                                                                                                          = 0;
-    virtual void  emitPop(CPUReg reg)                                                                                                           = 0;
-    virtual void  emitNop()                                                                                                                     = 0;
-    virtual void  emitRet()                                                                                                                     = 0;
-    virtual void  emitCallLocal(const Utf8& symbolName)                                                                                         = 0;
-    virtual void  emitCallExtern(const Utf8& symbolName)                                                                                        = 0;
-    virtual void  emitCallIndirect(CPUReg reg)                                                                                                  = 0;
-    virtual void  emitJumpTable(CPUReg table, CPUReg offset)                                                                                    = 0;
-    virtual void* emitJump(CPUCondJump jumpType, OpBits opBits)                                                                                 = 0;
-    virtual void  emitJump(CPUCondJump jumpType, int32_t instructionCount, int32_t jumpOffset)                                                  = 0;
-    virtual void  emitJump(CPUReg reg)                                                                                                          = 0;
-    virtual void  emitLoad(CPUReg reg, CPUReg memReg, uint64_t memOffset, uint64_t value, bool isImmediate, CPUOp op, OpBits opBits)            = 0;
-    virtual void  emitLoad(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits opBits)                                                        = 0;
-    virtual void  emitLoad(CPUReg reg, uint64_t value, OpBits opBits)                                                                           = 0;
-    virtual void  emitLoad(CPUReg regDst, CPUReg regSrc, OpBits opBits)                                                                         = 0;
-    virtual void  emitLoad(CPUReg regDstSrc, OpBits opBits)                                                                                     = 0;
-    virtual void  emitLoad64(CPUReg reg, uint64_t value)                                                                                        = 0;
-    virtual void  emitLoadExtend(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc, bool isSigned)            = 0;
-    virtual void  emitLoadAddress(CPUReg reg, CPUReg memReg, uint64_t memOffset)                                                                = 0;
-    virtual void  emitStore(CPUReg memReg, uint64_t memOffset, CPUReg reg, OpBits opBits)                                                       = 0;
-    virtual void  emitStore(CPUReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits)                                                   = 0;
-    virtual void  emitCast(CPUReg regDst, CPUReg regSrc, OpBits numBitsDst, OpBits numBitsSrc, bool isSigned)                                   = 0;
-    virtual void  emitCmp(CPUReg reg0, CPUReg reg1, OpBits opBits)                                                                              = 0;
-    virtual void  emitCmp(CPUReg memReg, uint64_t memOffset, CPUReg reg, OpBits opBits)                                                         = 0;
-    virtual void  emitCmp(CPUReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits)                                                     = 0;
-    virtual void  emitCmp(CPUReg reg, uint64_t value, OpBits opBits)                                                                            = 0;
-    virtual void  emitSet(CPUReg reg, CPUCondFlag setType)                                                                                      = 0;
-    virtual void  emitClear(CPUReg reg, OpBits opBits)                                                                                          = 0;
-    virtual void  emitClear(CPUReg memReg, uint64_t memOffset, uint32_t count)                                                                  = 0;
-    virtual void  emitCopy(CPUReg regDst, CPUReg regSrc, uint32_t count, uint32_t offset)                                                       = 0;
-    virtual void  emitOpUnary(CPUReg memReg, uint64_t memOffset, CPUOp op, OpBits opBits)                                                       = 0;
-    virtual void  emitOpUnary(CPUReg reg, CPUOp op, OpBits opBits)                                                                              = 0;
-    virtual void  emitOpBinary(CPUReg regDst, CPUReg regSrc, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags = EMITF_Zero)                      = 0;
-    virtual void  emitOpBinary(CPUReg memReg, uint64_t memOffset, CPUReg reg, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags = EMITF_Zero)     = 0;
-    virtual void  emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags = EMITF_Zero)                        = 0;
-    virtual void  emitOpBinary(CPUReg memReg, uint64_t memOffset, uint64_t value, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags = EMITF_Zero) = 0;
-    virtual void  emitMulAdd(CPUReg regDst, CPUReg regMul, CPUReg regAdd, OpBits opBits)                                                        = 0;
+    virtual void    emitSymbolRelocationRef(const Utf8& name)                                                                                     = 0;
+    virtual void    emitSymbolRelocationAddr(CPUReg reg, uint32_t symbolIndex, uint32_t offset)                                                   = 0;
+    virtual void    emitSymbolRelocationValue(CPUReg reg, uint32_t symbolIndex, uint32_t offset)                                                  = 0;
+    virtual void    emitSymbolGlobalString(CPUReg reg, const Utf8& str)                                                                           = 0;
+    virtual void    emitPush(CPUReg reg)                                                                                                          = 0;
+    virtual void    emitPop(CPUReg reg)                                                                                                           = 0;
+    virtual void    emitNop()                                                                                                                     = 0;
+    virtual void    emitRet()                                                                                                                     = 0;
+    virtual void    emitCallLocal(const Utf8& symbolName)                                                                                         = 0;
+    virtual void    emitCallExtern(const Utf8& symbolName)                                                                                        = 0;
+    virtual void    emitCallIndirect(CPUReg reg)                                                                                                  = 0;
+    virtual void    emitJumpTable(CPUReg table, CPUReg offset)                                                                                    = 0;
+    virtual CPUJump emitJump(CPUCondJump jumpType, OpBits opBits)                                                                                 = 0;
+    virtual void    emitJumpDestination(const CPUJump& jump, uint64_t offsetDestination)                                                           = 0;
+    virtual void    emitJump(CPUCondJump jumpType, int32_t instructionCount, int32_t jumpOffset)                                                  = 0;
+    virtual void    emitJump(CPUReg reg)                                                                                                          = 0;
+    virtual void    emitLoad(CPUReg reg, CPUReg memReg, uint64_t memOffset, uint64_t value, bool isImmediate, CPUOp op, OpBits opBits)            = 0;
+    virtual void    emitLoad(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits opBits)                                                        = 0;
+    virtual void    emitLoad(CPUReg reg, uint64_t value, OpBits opBits)                                                                           = 0;
+    virtual void    emitLoad(CPUReg regDst, CPUReg regSrc, OpBits opBits)                                                                         = 0;
+    virtual void    emitLoad(CPUReg regDstSrc, OpBits opBits)                                                                                     = 0;
+    virtual void    emitLoad64(CPUReg reg, uint64_t value)                                                                                        = 0;
+    virtual void    emitLoadExtend(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc, bool isSigned)            = 0;
+    virtual void    emitLoadAddress(CPUReg reg, CPUReg memReg, uint64_t memOffset)                                                                = 0;
+    virtual void    emitStore(CPUReg memReg, uint64_t memOffset, CPUReg reg, OpBits opBits)                                                       = 0;
+    virtual void    emitStore(CPUReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits)                                                   = 0;
+    virtual void    emitCast(CPUReg regDst, CPUReg regSrc, OpBits numBitsDst, OpBits numBitsSrc, bool isSigned)                                   = 0;
+    virtual void    emitCmp(CPUReg reg0, CPUReg reg1, OpBits opBits)                                                                              = 0;
+    virtual void    emitCmp(CPUReg memReg, uint64_t memOffset, CPUReg reg, OpBits opBits)                                                         = 0;
+    virtual void    emitCmp(CPUReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits)                                                     = 0;
+    virtual void    emitCmp(CPUReg reg, uint64_t value, OpBits opBits)                                                                            = 0;
+    virtual void    emitSet(CPUReg reg, CPUCondFlag setType)                                                                                      = 0;
+    virtual void    emitClear(CPUReg reg, OpBits opBits)                                                                                          = 0;
+    virtual void    emitClear(CPUReg memReg, uint64_t memOffset, uint32_t count)                                                                  = 0;
+    virtual void    emitCopy(CPUReg regDst, CPUReg regSrc, uint32_t count, uint32_t offset)                                                       = 0;
+    virtual void    emitOpUnary(CPUReg memReg, uint64_t memOffset, CPUOp op, OpBits opBits)                                                       = 0;
+    virtual void    emitOpUnary(CPUReg reg, CPUOp op, OpBits opBits)                                                                              = 0;
+    virtual void    emitOpBinary(CPUReg regDst, CPUReg regSrc, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags = EMITF_Zero)                      = 0;
+    virtual void    emitOpBinary(CPUReg memReg, uint64_t memOffset, CPUReg reg, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags = EMITF_Zero)     = 0;
+    virtual void    emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags = EMITF_Zero)                        = 0;
+    virtual void    emitOpBinary(CPUReg memReg, uint64_t memOffset, uint64_t value, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags = EMITF_Zero) = 0;
+    virtual void    emitMulAdd(CPUReg regDst, CPUReg regMul, CPUReg regAdd, OpBits opBits)                                                        = 0;
 
     Concat concat;
     Concat postConcat;

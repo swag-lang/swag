@@ -3,6 +3,7 @@
 #include "Backend/SCBE/Encoder/SCBE_X64.h"
 #include "Core/Math.h"
 #include "Semantic/Type/TypeManager.h"
+#pragma optimize("", off)
 
 enum X64DispMode
 {
@@ -1713,7 +1714,14 @@ void SCBE_X64::emitOpBinary(CPUReg memReg, uint64_t memOffset, uint64_t value, C
 
 /////////////////////////////////////////////////////////////////////
 
-void* SCBE_X64::emitJump(CPUCondJump jumpType, OpBits opBits)
+void SCBE_X64::emitJumpTable([[maybe_unused]] CPUReg table, [[maybe_unused]] CPUReg offset)
+{
+    SWAG_ASSERT(table == CPUReg::RCX && offset == CPUReg::RAX);
+    emitREX(concat, OpBits::B64);
+    concat.addString3("\x63\x0C\x81"); // movsx rcx, dword ptr [rcx + rax*4]
+}
+
+CPUJump SCBE_X64::emitJump(CPUCondJump jumpType, OpBits opBits)
 {
     SWAG_ASSERT(opBits == OpBits::B8 || opBits == OpBits::B32);
 
@@ -1769,7 +1777,12 @@ void* SCBE_X64::emitJump(CPUCondJump jumpType, OpBits opBits)
         }
 
         concat.addU8(0);
-        return concat.getSeekPtr() - 1;
+
+        CPUJump jump;
+        jump.addr   = concat.getSeekPtr() - 1;
+        jump.offset = concat.totalCount();
+        jump.opBits = opBits;
+        return jump;
     }
 
     switch (jumpType)
@@ -1835,14 +1848,25 @@ void* SCBE_X64::emitJump(CPUCondJump jumpType, OpBits opBits)
     }
 
     concat.addU32(0);
-    return reinterpret_cast<uint32_t*>(concat.getSeekPtr()) - 1;
+    CPUJump jump;
+    jump.addr   = concat.getSeekPtr() - sizeof(uint32_t);
+    jump.offset = concat.totalCount();
+    jump.opBits = opBits;
+    return jump;
 }
 
-void SCBE_X64::emitJumpTable([[maybe_unused]] CPUReg table, [[maybe_unused]] CPUReg offset)
+void SCBE_X64::emitJumpDestination(const CPUJump& jump, uint64_t offsetDestination)
 {
-    SWAG_ASSERT(table == CPUReg::RCX && offset == CPUReg::RAX);
-    emitREX(concat, OpBits::B64);
-    concat.addString3("\x63\x0C\x81"); // movsx rcx, dword ptr [rcx + rax*4]
+    const int32_t offset = static_cast<int32_t>(offsetDestination - jump.offset);
+    if (jump.opBits == OpBits::B8)
+    {
+        SWAG_ASSERT(offset >= -127 && offset <= 128);
+        *static_cast<uint8_t*>(jump.addr) = static_cast<int8_t>(offset);
+    }
+    else
+    {
+        *static_cast<uint32_t*>(jump.addr) = static_cast<int32_t>(offset);
+    }
 }
 
 void SCBE_X64::emitJump(CPUCondJump jumpType, int32_t instructionCount, int32_t jumpOffset)
@@ -1858,21 +1882,20 @@ void SCBE_X64::emitJump(CPUCondJump jumpType, int32_t instructionCount, int32_t 
         const int  relOffset     = it->second - (currentOffset + 1);
         if (relOffset >= -127 && relOffset <= 128)
         {
-            const auto offsetPtr              = emitJump(jumpType, OpBits::B8);
-            *static_cast<uint8_t*>(offsetPtr) = static_cast<uint8_t>(it->second - concat.totalCount());
+            const auto jump = emitJump(jumpType, OpBits::B8);
+            emitJumpDestination(jump, it->second);
         }
         else
         {
-            const auto offsetPtr               = emitJump(jumpType, OpBits::B32);
-            *static_cast<uint32_t*>(offsetPtr) = it->second - concat.totalCount();
+            const auto jump = emitJump(jumpType, OpBits::B32);
+            emitJumpDestination(jump, it->second);
         }
 
         return;
     }
 
     // Here we do not know the destination label, so we assume 32 bits of offset
-    label.patch         = static_cast<uint8_t*>(emitJump(jumpType, OpBits::B32));
-    label.currentOffset = static_cast<int32_t>(concat.totalCount());
+    label.jump = emitJump(jumpType, OpBits::B32);
     labelsToSolve.push_back(label);
 }
 

@@ -1127,9 +1127,10 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 CPULabelToSolve label;
                 for (uint32_t idx = 0; idx < ip->c.u32; idx++)
                 {
-                    label.ipDest        = tableCompiler[idx] + i + 1;
-                    label.currentOffset = currentOffset;
-                    label.patch         = reinterpret_cast<uint8_t*>(tableConstant + idx);
+                    label.ipDest      = tableCompiler[idx] + i + 1;
+                    label.jump.opBits = OpBits::B32;
+                    label.jump.offset = currentOffset;
+                    label.jump.addr   = tableConstant + idx;
                     pp.labelsToSolve.push_back(label);
                 }
 
@@ -2124,8 +2125,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitLoad(CPUReg::RCX, SWAG_LAMBDA_BC_MARKER, OpBits::B64);
                 pp.emitOpBinary(CPUReg::RCX, CPUReg::RAX, CPUOp::AND, OpBits::B64);
 
-                auto jumpBCToAfterAddr   = pp.emitJump(JZ, OpBits::B32);
-                auto jumpBCToAfterOffset = concat.totalCount();
+                auto jump = pp.emitJump(JZ, OpBits::B32);
 
                 // ByteCode lambda
                 //////////////////
@@ -2137,7 +2137,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
                 // End
                 //////////////////
-                *static_cast<uint32_t*>(jumpBCToAfterAddr) = concat.totalCount() - jumpBCToAfterOffset;
+                pp.emitJumpDestination(jump, concat.totalCount());
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, OpBits::B64);
 
                 break;

@@ -93,7 +93,7 @@ void SCBE::emitCallRAParams(SCBE_CPU& pp, const Utf8& funcName, const TypeInfoFu
     VectorNative<CPUPushParam> p;
     for (uint32_t i = pp.pushRAParams.size() - 1; i != UINT32_MAX; i--)
         p.push_back({.type = CPUPushParamType::Reg, .reg = pp.pushRAParams[i]});
-    
+
     emitCallCPUParams(pp, funcName, typeFuncBc, p, pp.offsetRT, localCall);
 }
 
@@ -115,7 +115,7 @@ void SCBE::emitInternalCallCPUParams(SCBE_CPU& pp, const Utf8& funcName, const V
     if (!typeFuncBc)
         typeFuncBc = g_TypeMgr->typeInfoModuleCall;
     SWAG_ASSERT(typeFuncBc);
-    
+
     emitCallCPUParams(pp, funcName, typeFuncBc, pushCPUParams, offsetRT, true);
 }
 
@@ -168,22 +168,20 @@ void SCBE::emitByteCodeCallParameters(SCBE_CPU& pp, const TypeInfoFuncAttr* type
         pp.emitCmp(CPUReg::RDI, REG_OFFSET(reg), 0, OpBits::B64);
 
         // If not zero, jump to closure call
-        const auto seekPtrClosure = pp.emitJump(JZ, OpBits::B32);
-        const auto seekJmpClosure = pp.concat.totalCount();
+        const auto jumpClosure = pp.emitJump(JZ, OpBits::B32);
 
         emitByteCodeCall(pp, typeFuncBc);
 
         // Jump to after closure call
-        const auto seekPtrAfterClosure = pp.emitJump(JUMP, OpBits::B32);
-        const auto seekJmpAfterClosure = pp.concat.totalCount();
+        const auto jumpAfterClosure = pp.emitJump(JUMP, OpBits::B32);
 
         // Update jump to closure call
-        *static_cast<uint32_t*>(seekPtrClosure) = static_cast<uint8_t>(pp.concat.totalCount() - seekJmpClosure);
+        pp.emitJumpDestination(jumpClosure, pp.concat.totalCount());
 
         pp.pushRAParams.pop_back();
         emitByteCodeCall(pp, typeFuncBc);
 
-        *static_cast<uint32_t*>(seekPtrAfterClosure) = static_cast<uint8_t>(pp.concat.totalCount() - seekJmpAfterClosure);
+        pp.emitJumpDestination(jumpAfterClosure, pp.concat.totalCount());
     }
     else
     {
@@ -232,8 +230,7 @@ void SCBE::emitLambdaCall(SCBE_CPU& pp)
     // Test if it's a bytecode lambda
     pp.emitLoad(CPUReg::R10, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);
     pp.emitOpBinary(CPUReg::R10, SWAG_LAMBDA_BC_MARKER_BIT, CPUOp::BT, OpBits::B64);
-    const auto jumpToBCAddr   = pp.emitJump(JB, OpBits::B32);
-    const auto jumpToBCOffset = pp.concat.totalCount();
+    const auto jumpBC = pp.emitJump(JB, OpBits::B32);
 
     // Native lambda
     //////////////////
@@ -242,18 +239,17 @@ void SCBE::emitLambdaCall(SCBE_CPU& pp)
     VectorNative<CPUPushParam> pushCPUParams;
     for (uint32_t i = pp.pushRAParams.size() - 1; i != UINT32_MAX; i--)
         pushCPUParams.push_back({.type = CPUPushParamType::Reg, .reg = pp.pushRAParams[i]});
-    
+
     pp.emitCallParameters(typeFuncBc, pushCPUParams, pp.offsetRT);
     pp.emitCallIndirect(CPUReg::R10);
     pp.emitStoreCallResult(CPUReg::RDI, pp.offsetRT, typeFuncBc);
 
-    const auto jumpBCToAfterAddr   = pp.emitJump(JUMP, OpBits::B32);
-    const auto jumpBCToAfterOffset = pp.concat.totalCount();
+    const auto jumpBCAfter = pp.emitJump(JUMP, OpBits::B32);
 
     // ByteCode lambda
     //////////////////
 
-    *static_cast<uint32_t*>(jumpToBCAddr) = pp.concat.totalCount() - jumpToBCOffset;
+    pp.emitJumpDestination(jumpBC, pp.concat.totalCount());
 
     pp.emitLoad(CPUReg::RCX, CPUReg::R10, OpBits::B64);
     emitByteCodeCallParameters(pp, typeFuncBc);
@@ -264,7 +260,7 @@ void SCBE::emitLambdaCall(SCBE_CPU& pp)
 
     // End
     //////////////////
-    *static_cast<uint32_t*>(jumpBCToAfterAddr) = pp.concat.totalCount() - jumpBCToAfterOffset;
+    pp.emitJumpDestination(jumpBCAfter, pp.concat.totalCount());
 
     pp.pushRAParams.clear();
     pp.pushRVParams.clear();
