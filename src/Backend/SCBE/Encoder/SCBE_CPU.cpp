@@ -138,18 +138,17 @@ namespace
                 else
                     pp.emitLoadAddress(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, reg);
             }
-            else if (CallConv::structParamByValue(typeFuncBc, type))
-            {
-                SWAG_ASSERT(params[idxParam].type == CPUPushParamType::Reg);
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
-                pp.emitLoad(cc.paramByRegisterInteger[idxParam], CPUReg::RAX, 0, OpBits::B64);
-            }
             else
             {
                 switch (params[idxParam].type)
                 {
                     case CPUPushParamType::Reg:
-                        if (cc.useRegisterFloat && type->isNativeFloat())
+                        if (CallConv::structParamByValue(typeFuncBc, type))
+                        {
+                            pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
+                            pp.emitLoad(cc.paramByRegisterInteger[idxParam], CPUReg::RAX, 0, OpBits::B64);
+                        }
+                        else if (cc.useRegisterFloat && type->isNativeFloat())
                             pp.emitLoad(cc.paramByRegisterFloat[idxParam], CPUReg::RDI, REG_OFFSET(reg), BackendEncoder::getOpBitsByBytes(type->sizeOf, true));
                         else
                             pp.emitLoad(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
