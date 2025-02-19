@@ -105,46 +105,36 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, const ByteCodeInstruction
 
 void ByteCodeRun::ffiCall(ByteCodeRunContext* context, [[maybe_unused]] const ByteCodeInstruction* ip, void* foreignPtr, TypeInfoFuncAttr* typeInfoFunc, int numCVariadicParams)
 {
-    uint32_t cptParam = 0;
-
-    // Function call parameters
-    context->ffiPushCPUParams.clear();
-    int numParameters = static_cast<int>(typeInfoFunc->parameters.size());
+    uint32_t cptParam      = 0;
+    auto     numParameters = typeInfoFunc->parameters.size();
 
     // Variadic parameters are first on the stack, so need to treat them before
     if (typeInfoFunc->isFctVariadic())
-    {
-        context->ffiPushCPUParams.push_front({.type = CPUPushParamType::Reg, .reg = cptParam++});
-        context->ffiPushCPUParams.push_front({.type = CPUPushParamType::Reg, .reg = cptParam++});
+        cptParam += 2;
+    if (typeInfoFunc->isFctVariadic() || typeInfoFunc->isFctCVariadic())
         numParameters--;
-    }
-    else if (typeInfoFunc->isFctCVariadic())
-    {
-        numParameters--;
-    }
+    if (typeInfoFunc->isFctCVariadic())
+        cptParam += numCVariadicParams;
 
-    for (int i = 0; i < numParameters; i++)
+    cptParam += numParameters;
+    for (uint32_t i = 0; i < numParameters; i++)
     {
-        auto typeParam = typeInfoFunc->parameters[i]->typeInfo;
-        typeParam      = TypeManager::concreteType(typeParam);
-
+        const auto typeParam = TypeManager::concreteType(typeInfoFunc->parameters[i]->typeInfo);
         if (typeParam->isSlice() ||
             typeParam->isInterface() ||
             typeParam->isAny() ||
             typeParam->isString())
         {
-            context->ffiPushCPUParams.push_front({.type = CPUPushParamType::Reg, .reg = cptParam++});
+            cptParam++;
         }
-
-        context->ffiPushCPUParams.push_front({.type = CPUPushParamType::Reg, .reg = cptParam++});
     }
 
-    if (typeInfoFunc->isFctCVariadic())
+    context->ffiPushCPUParams.reserve(cptParam);
+    context->ffiPushCPUParams.count = cptParam;
+    for (auto& param : context->ffiPushCPUParams)
     {
-        for (int i = 0; i < numCVariadicParams; i++)
-        {
-            context->ffiPushCPUParams.push_front({.type = CPUPushParamType::Reg, .reg = cptParam++});
-        }
+        param.type = CPUPushParamType::Reg;
+        param.reg  = --cptParam;
     }
 
     void* retCopyAddr = nullptr;
