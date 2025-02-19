@@ -147,39 +147,23 @@ namespace
             else if (cc.useRegisterFloat && type->isNative(NativeTypeKind::F32))
             {
                 if (params[idxParam].type == CPUPushParamType::Imm)
-                {
-                    SWAG_ASSERT(params[idxParam].reg <= UINT32_MAX);
-                    pp.emitLoad(CPUReg::RAX, static_cast<uint32_t>(params[idxParam].reg), OpBits::B32);
-                    pp.emitLoad(cc.paramByRegisterFloat[idxParam], CPUReg::RAX, OpBits::F32);
-                }
+                    pp.emitLoad(cc.paramByRegisterFloat[idxParam], params[idxParam].reg, OpBits::F32);
                 else
-                {
-                    SWAG_ASSERT(params[idxParam].type == CPUPushParamType::Reg);
                     pp.emitLoad(cc.paramByRegisterFloat[idxParam], CPUReg::RDI, REG_OFFSET(reg), OpBits::F32);
-                }
             }
             else if (cc.useRegisterFloat && type->isNative(NativeTypeKind::F64))
             {
                 if (params[idxParam].type == CPUPushParamType::Imm)
-                {
-                    pp.emitLoad(CPUReg::RAX, params[idxParam].reg, OpBits::B64);
-                    pp.emitLoad(cc.paramByRegisterFloat[idxParam], CPUReg::RAX, OpBits::F64);
-                }
+                    pp.emitLoad(cc.paramByRegisterFloat[idxParam], params[idxParam].reg, OpBits::F64);
                 else
-                {
-                    SWAG_ASSERT(params[idxParam].type == CPUPushParamType::Reg);
                     pp.emitLoad(cc.paramByRegisterFloat[idxParam], CPUReg::RDI, REG_OFFSET(reg), OpBits::F64);
-                }
             }
             else
             {
                 switch (params[idxParam].type)
                 {
                     case CPUPushParamType::Imm:
-                        if (params[idxParam].reg == 0)
-                            pp.emitClear(cc.paramByRegisterInteger[idxParam], OpBits::B64);
-                        else
-                            pp.emitLoad(cc.paramByRegisterInteger[idxParam], params[idxParam].reg, OpBits::B64);
+                        pp.emitLoad(cc.paramByRegisterInteger[idxParam], params[idxParam].reg, OpBits::B64);
                         break;
                     case CPUPushParamType::Imm64:
                         pp.emitLoad(cc.paramByRegisterInteger[idxParam], params[idxParam].reg, OpBits::B64);
@@ -239,7 +223,7 @@ namespace
                     pp.emitLoadAddress(CPUReg::RAX, CPUReg::RDI, reg);
                 pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
             }
-            else if (type->isStruct() && CallConv::structParamByValue(typeFuncBc, type))
+            else if (CallConv::structParamByValue(typeFuncBc, type))
             {
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
                 pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, BackendEncoder::getOpBitsByBytes(type->sizeOf));
