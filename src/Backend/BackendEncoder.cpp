@@ -12,7 +12,7 @@ void BackendEncoder::init(const BuildParameters& buildParameters)
     buildParams = buildParameters;
 }
 
-OpBits BackendEncoder::getOpBitsByBytes(uint32_t numBytes)
+OpBits BackendEncoder::getOpBitsByBytes(uint32_t numBytes, bool forFloat)
 {
     switch (numBytes)
     {
@@ -21,9 +21,9 @@ OpBits BackendEncoder::getOpBitsByBytes(uint32_t numBytes)
         case 2:
             return OpBits::B16;
         case 4:
-            return OpBits::B32;
+            return forFloat ? OpBits::F32 : OpBits::B32;
         case 8:
-            return OpBits::B64;
+            return forFloat ? OpBits::F64 : OpBits::B64;
         default:
             SWAG_ASSERT(false);
             break;

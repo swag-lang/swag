@@ -144,19 +144,12 @@ namespace
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
                 pp.emitLoad(cc.paramByRegisterInteger[idxParam], CPUReg::RAX, 0, OpBits::B64);
             }
-            else if (cc.useRegisterFloat && type->isNative(NativeTypeKind::F32))
+            else if (cc.useRegisterFloat && type->isNativeFloat())
             {
                 if (params[idxParam].type == CPUPushParamType::Imm)
-                    pp.emitLoad(cc.paramByRegisterFloat[idxParam], params[idxParam].reg, OpBits::F32);
+                    pp.emitLoad(cc.paramByRegisterFloat[idxParam], params[idxParam].reg, BackendEncoder::getOpBitsByBytes(type->sizeOf, true));
                 else
-                    pp.emitLoad(cc.paramByRegisterFloat[idxParam], CPUReg::RDI, REG_OFFSET(reg), OpBits::F32);
-            }
-            else if (cc.useRegisterFloat && type->isNative(NativeTypeKind::F64))
-            {
-                if (params[idxParam].type == CPUPushParamType::Imm)
-                    pp.emitLoad(cc.paramByRegisterFloat[idxParam], params[idxParam].reg, OpBits::F64);
-                else
-                    pp.emitLoad(cc.paramByRegisterFloat[idxParam], CPUReg::RDI, REG_OFFSET(reg), OpBits::F64);
+                    pp.emitLoad(cc.paramByRegisterFloat[idxParam], CPUReg::RDI, REG_OFFSET(reg), BackendEncoder::getOpBitsByBytes(type->sizeOf, true));
             }
             else
             {

@@ -40,7 +40,7 @@ struct BackendEncoder
     void init(const BuildParameters& buildParameters);
 
     static uint32_t  getNumBits(OpBits opBits);
-    static OpBits    getOpBitsByBytes(uint32_t numBytes);
+    static OpBits    getOpBitsByBytes(uint32_t numBytes, bool forFloat = false);
     static OpBits    getOpBits(ByteCodeOp op);
     static TypeInfo* getOpType(ByteCodeOp op);
     static bool      mustCheckOverflow(const Module* module, const ByteCodeInstruction* ip);
