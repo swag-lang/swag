@@ -315,10 +315,7 @@ void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
 
         // First register is closure context, except if variadic, where we have 2 registers for the slice first
         // :VariadicAndClosure
-        uint32_t reg = static_cast<uint32_t>(pushParams[0].reg);
-        if (typeFuncBc->isFctVariadic())
-            reg = static_cast<uint32_t>(pushParams[2].reg);
-
+        const auto reg = typeFuncBc->isFctVariadic() ? pushParams[2].reg : pushParams[0].reg;
         emitCmp(CPUReg::RDI, REG_OFFSET(reg), 0, OpBits::B64);
 
         // If not zero, jump to closure call
