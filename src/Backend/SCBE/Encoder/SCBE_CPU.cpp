@@ -318,8 +318,12 @@ namespace
     }
 }
 
-void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& params, uint32_t offset, void* retCopyAddr)
+void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& params1, uint32_t offset, void* retCopyAddr)
 {
+    VectorNative<CPUPushParam> params;
+    for (uint32_t i = params1.size() - 1; i != UINT32_MAX; i--)
+        params.push_back(params1[i]);
+    
     uint32_t numCallParams = typeFuncBc->parameters.size();
     uint32_t indexParam    = params.size() - 1;
 

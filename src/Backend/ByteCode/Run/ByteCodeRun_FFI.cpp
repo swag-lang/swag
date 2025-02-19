@@ -131,10 +131,12 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, [[maybe_unused]] const By
 
     context->ffiPushCPUParams.reserve(cptParam);
     context->ffiPushCPUParams.count = cptParam;
+
+    cptParam = 0;
     for (auto& param : context->ffiPushCPUParams)
     {
         param.type = CPUPushParamType::Reg;
-        param.reg  = --cptParam;
+        param.reg  = cptParam++;
     }
 
     void* retCopyAddr = nullptr;

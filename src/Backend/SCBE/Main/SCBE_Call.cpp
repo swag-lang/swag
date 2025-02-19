@@ -89,9 +89,11 @@ void SCBE::emitCallCPUParams(SCBE_CPU& pp, const Utf8& funcName, const TypeInfoF
 
 void SCBE::emitCallRAParams(SCBE_CPU& pp, const Utf8& funcName, const TypeInfoFuncAttr* typeFuncBc, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, bool localCall)
 {
+    // Invert order
     VectorNative<CPUPushParam> p;
-    for (const auto r : pushRAParams)
-        p.push_back({.type = CPUPushParamType::Reg, .reg = r});
+    for (uint32_t i = pushRAParams.size() - 1; i != UINT32_MAX; i--)
+        p.push_back({.type = CPUPushParamType::Reg, .reg = pushRAParams[i]});
+    
     emitCallCPUParams(pp, funcName, typeFuncBc, p, offsetRT, localCall);
 }
 
@@ -100,10 +102,9 @@ void SCBE::emitRuntimeCallRAParams(SCBE_CPU& pp, const Utf8& funcName, const Vec
     const auto typeFunc = g_Workspace->runtimeModule->getRuntimeTypeFct(funcName);
     SWAG_ASSERT(typeFunc);
 
-    // Invert order
     VectorNative<CPUPushParam> p;
-    for (uint32_t i = pushRAParams.size() - 1; i != UINT32_MAX; i--)
-        p.push_back({.type = CPUPushParamType::Reg, .reg = pushRAParams[i]});
+    for (const auto r : pushRAParams)
+        p.push_back({.type = CPUPushParamType::Reg, .reg = r});
 
     emitCallCPUParams(pp, funcName, typeFunc, p, offsetRT, true);
 }
@@ -114,13 +115,7 @@ void SCBE::emitRuntimeCallCPUParams(SCBE_CPU& pp, const Utf8& funcName, const Ve
     if (!typeFuncBc)
         typeFuncBc = g_TypeMgr->typeInfoModuleCall;
     SWAG_ASSERT(typeFuncBc);
-
-    // Invert order
-    VectorNative<CPUPushParam> p;
-    for (uint32_t i = pushCPUParams.size() - 1; i != UINT32_MAX; i--)
-        p.push_back({pushCPUParams[i]});
-
-    emitCallCPUParams(pp, funcName, typeFuncBc, p, offsetRT, true);
+    emitCallCPUParams(pp, funcName, typeFuncBc, pushCPUParams, offsetRT, true);
 }
 
 void SCBE::emitByteCodeCall(SCBE_CPU& pp, const TypeInfoFuncAttr* typeFuncBc)
@@ -242,9 +237,11 @@ void SCBE::emitLambdaCall(SCBE_CPU& pp)
     // Native lambda
     //////////////////
 
+    // Invert order
     VectorNative<CPUPushParam> pushCPUParams;
-    for (const auto r : pp.pushRAParams)
-        pushCPUParams.push_back({.type = CPUPushParamType::Reg, .reg = r});
+    for (uint32_t i = pp.pushRAParams.size() - 1; i != UINT32_MAX; i--)
+        pushCPUParams.push_back({.type = CPUPushParamType::Reg, .reg = pp.pushRAParams[i]});
+    
     pp.emitCallParameters(typeFuncBc, pushCPUParams, pp.offsetRT);
 
     pp.emitCallIndirect(CPUReg::R10);
