@@ -193,6 +193,7 @@ struct SCBE_CPU : BackendEncoder
     CPUSymbol*   getOrCreateGlobalString(const Utf8& str);
     void         addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, uint16_t type);
     CPUFunction* registerFunction(AstNode* node, uint32_t symbolIndex);
+    void         solveLabels();
 
     static uint32_t getParamStackOffset(const CPUFunction* cpuFunction, uint32_t paramIdx);
     void            emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& params, uint32_t offset, void* retCopyAddr = nullptr);

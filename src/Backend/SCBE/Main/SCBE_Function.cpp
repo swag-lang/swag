@@ -2609,15 +2609,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         }
     }
 
-    // Solve labels
-    for (auto& toSolve : pp.labelsToSolve)
-    {
-        auto it = pp.labels.find(toSolve.ipDest);
-        SWAG_ASSERT(it != pp.labels.end());
-
-        auto relOffset                              = it->second - toSolve.currentOffset;
-        *reinterpret_cast<uint32_t*>(toSolve.patch) = relOffset;
-    }
+    pp.solveLabels();
 
     uint32_t endAddress = concat.totalCount();
     initFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);

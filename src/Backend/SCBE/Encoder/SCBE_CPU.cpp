@@ -360,3 +360,18 @@ void SCBE_CPU::emitStoreCallResult(CPUReg memReg, uint32_t memOffset, const Type
     else
         emitStore(memReg, memOffset, cc.returnByRegisterInteger, OpBits::B64);
 }
+
+void SCBE_CPU::solveLabels()
+{
+    for (auto& toSolve : labelsToSolve)
+    {
+        auto it = labels.find(toSolve.ipDest);
+        SWAG_ASSERT(it != labels.end());
+
+        const auto relOffset                        = it->second - toSolve.currentOffset;
+        *reinterpret_cast<uint32_t*>(toSolve.patch) = relOffset;
+    }
+
+    labels.clear();
+    labelsToSolve.clear();
+}
