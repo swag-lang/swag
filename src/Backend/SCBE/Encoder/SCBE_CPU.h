@@ -28,8 +28,8 @@ enum class CPUPushParamType
 struct CPUPushParam
 {
     CPUPushParamType type     = CPUPushParamType::SwagRegister;
-    uint64_t         value      = 0;
-    uint64_t         value2      = 0;
+    uint64_t         value    = 0;
+    uint64_t         value2   = 0;
     TypeInfo*        typeInfo = nullptr;
 };
 
@@ -201,7 +201,8 @@ struct SCBE_CPU : BackendEncoder
     void         solveLabels();
 
     static uint32_t getParamStackOffset(const CPUFunction* cpuFunction, uint32_t paramIdx);
-    void            emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& params, uint32_t offset, void* retCopyAddr = nullptr);
+    void            emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& cpuParams, void* retCopyAddr = nullptr);;
+    void            emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& cpuParams, uint32_t offset, void* retCopyAddr = nullptr);
     void            emitStoreCallResult(CPUReg memReg, uint32_t memOffset, const TypeInfoFuncAttr* typeFuncBc);
 
     virtual void    emitSymbolRelocationRef(const Utf8& name)                                                                                     = 0;
@@ -217,7 +218,7 @@ struct SCBE_CPU : BackendEncoder
     virtual void    emitCallIndirect(CPUReg reg)                                                                                                  = 0;
     virtual void    emitJumpTable(CPUReg table, CPUReg offset)                                                                                    = 0;
     virtual CPUJump emitJump(CPUCondJump jumpType, OpBits opBits)                                                                                 = 0;
-    virtual void    patchJump(const CPUJump& jump, uint64_t offsetDestination)                                                          = 0;
+    virtual void    patchJump(const CPUJump& jump, uint64_t offsetDestination)                                                                    = 0;
     virtual void    emitJump(CPUReg reg)                                                                                                          = 0;
     virtual void    emitLoad(CPUReg reg, CPUReg memReg, uint64_t memOffset, uint64_t value, bool isImmediate, CPUOp op, OpBits opBits)            = 0;
     virtual void    emitLoad(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits opBits)                                                        = 0;

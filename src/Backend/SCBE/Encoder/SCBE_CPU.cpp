@@ -238,7 +238,58 @@ namespace
     }
 }
 
-void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& params, uint32_t offset, void* retCopyAddr)
+void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& cpuParams, void* retCopyAddr)
+{
+    // If a lambda is assigned to a closure, then we must not use the first parameter (the first
+    // parameter is the capture context, which does not exist in a normal lambda function).
+    // But as this is dynamic, we need to have two call path : one for the closure (normal call), and
+    // one for the lambda (omit first parameter)
+    if (typeFuncBc->isClosure())
+    {
+        uint32_t idxParamContext = 0;
+        if (cpuParams[0].type == CPUPushParamType::CPURegister) // Bytecode
+        {
+            idxParamContext++;
+            idxParamContext += typeFuncBc->numReturnRegisters();
+        }
+        else if (typeFuncBc->isFctVariadic())
+        {
+            idxParamContext += 2;
+        }
+
+        SWAG_ASSERT(cpuParams[idxParamContext].type == CPUPushParamType::SwagRegister);
+
+        // First register is closure context, except if variadic, where we have 2 registers for the slice first
+        // :VariadicAndClosure
+        const auto reg = cpuParams[idxParamContext].value;
+        emitCmp(CPUReg::RDI, REG_OFFSET(reg), 0, OpBits::B64);
+
+        // If zero, jump to parameters for a non closure call
+        const auto jumpToNoClosure = emitJump(JZ, OpBits::B32);
+
+        // Emit parameters for the closure call (with the pointer to context)
+        emitParameters(*this, typeFuncBc, cpuParams, retCopyAddr);
+        const auto jumpAfterParameters = emitJump(JUMP, OpBits::B32);
+
+        patchJump(jumpToNoClosure, concat.totalCount());
+
+        // First register is closure, except if variadic, where we have 2 registers for the slice before.
+        // We must remove it as we are in the "not closure" call path.
+        // :VariadicAndClosure
+        auto params = cpuParams;
+        params.erase(idxParamContext);
+
+        emitParameters(*this, typeFuncBc, params, retCopyAddr);
+
+        patchJump(jumpAfterParameters, concat.totalCount());
+    }
+    else
+    {
+        emitParameters(*this, typeFuncBc, cpuParams, retCopyAddr);
+    }
+}
+
+void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& cpuParams, uint32_t offset, void* retCopyAddr)
 {
     uint32_t numCallParams = typeFuncBc->parameters.size();
     uint32_t indexParam    = 0;
@@ -248,8 +299,8 @@ void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
     // Variadic are first
     if (typeFuncBc->isFctVariadic())
     {
-        pushParams.push_back(params[indexParam++]);
-        pushParams.push_back(params[indexParam++]);
+        pushParams.push_back(cpuParams[indexParam++]);
+        pushParams.push_back(cpuParams[indexParam++]);
     }
 
     if (typeFuncBc->isFctVariadic() || typeFuncBc->isFctCVariadic())
@@ -268,19 +319,19 @@ void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
             typeParam->isLambdaClosure() ||
             typeParam->isArray())
         {
-            pushParams.push_back(params[indexParam++]);
+            pushParams.push_back(cpuParams[indexParam++]);
         }
         else if (typeParam->isSlice() ||
                  typeParam->isString() ||
                  typeParam->isAny() ||
                  typeParam->isInterface())
         {
-            pushParams.push_back(params[indexParam++]);
-            pushParams.push_back(params[indexParam++]);
+            pushParams.push_back(cpuParams[indexParam++]);
+            pushParams.push_back(cpuParams[indexParam++]);
         }
         else
         {
-            auto param     = params[indexParam++];
+            auto param     = cpuParams[indexParam++];
             param.typeInfo = typeParam;
             pushParams.push_back(param);
         }
@@ -295,45 +346,13 @@ void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
     // Add all C variadic parameters
     if (typeFuncBc->isFctCVariadic())
     {
-        for (uint32_t i = typeFuncBc->numParamsRegisters(); i < params.size(); i++)
+        for (uint32_t i = typeFuncBc->numParamsRegisters(); i < cpuParams.size(); i++)
         {
-            pushParams.push_back(params[indexParam++]);
+            pushParams.push_back(cpuParams[indexParam++]);
         }
     }
 
-    // If a lambda is assigned to a closure, then we must not use the first parameter (the first
-    // parameter is the capture context, which does not exist in a normal lambda function).
-    // But as this is dynamic, we need to have two call path : one for the closure (normal call), and
-    // one for the lambda (omit first parameter)
-    if (typeFuncBc->isClosure())
-    {
-        SWAG_ASSERT(pushParams[0].type == CPUPushParamType::SwagRegister);
-
-        // First register is closure context, except if variadic, where we have 2 registers for the slice first
-        // :VariadicAndClosure
-        const auto reg = typeFuncBc->isFctVariadic() ? pushParams[2].value : pushParams[0].value;
-        emitCmp(CPUReg::RDI, REG_OFFSET(reg), 0, OpBits::B64);
-
-        // If zero, jump to parameters for a non closure call
-        const auto jumpToNoClosure = emitJump(JZ, OpBits::B8);
-
-        // Emit parameters for the closure call (with the pointer to context)
-        emitParameters(*this, typeFuncBc, pushParams, retCopyAddr);
-        const auto jumpAfterParameters = emitJump(JUMP, OpBits::B8);
-
-        // First register is closure, except if variadic, where we have 2 registers for the slice first.
-        // We must remove it as we are in the "not closure" call path.
-        // :VariadicAndClosure
-        patchJump(jumpToNoClosure, concat.totalCount());
-        pushParams.erase(typeFuncBc->isFctVariadic() ? 2 : 0);
-        emitParameters(*this, typeFuncBc, pushParams, retCopyAddr);
-
-        patchJump(jumpAfterParameters, concat.totalCount());
-    }
-    else
-    {
-        emitParameters(*this, typeFuncBc, pushParams, retCopyAddr);
-    }
+    emitCallParameters(typeFuncBc, pushParams, retCopyAddr);
 }
 
 void SCBE_CPU::emitStoreCallResult(CPUReg memReg, uint32_t memOffset, const TypeInfoFuncAttr* typeFuncBc)

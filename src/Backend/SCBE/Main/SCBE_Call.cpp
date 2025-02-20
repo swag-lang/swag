@@ -152,75 +152,6 @@ void SCBE::emitForeignCall(SCBE_CPU& pp)
     pp.pushRVParams.clear();
 }
 
-void SCBE::emitByteCodeCallParameters(SCBE_CPU& pp, const TypeInfoFuncAttr* typeFuncBc, const VectorNative<uint32_t>& pushRAParams)
-{
-    uint32_t idxReg = 0;
-    for (uint32_t idxParam = typeFuncBc->numReturnRegisters() - 1; idxParam != UINT32_MAX; idxParam--, idxReg++)
-    {
-        switch (idxReg)
-        {
-            case 0:
-                pp.emitLoadAddress(CPUReg::RDX, CPUReg::RDI, pp.offsetRT);
-                break;
-            case 1:
-                pp.emitLoadAddress(CPUReg::R8, CPUReg::RDI, pp.offsetRT + sizeof(Register));
-                break;
-            default:
-                break;
-        }
-    }
-
-    uint32_t stackOffset = typeFuncBc->numReturnRegisters() * sizeof(Register);
-    for (uint32_t idxParam = pushRAParams.size() - 1; idxParam != UINT32_MAX; idxParam--, idxReg++)
-    {
-        static constexpr CPUReg IDX_TO_REG[4] = {CPUReg::RDX, CPUReg::R8, CPUReg::R9};
-
-        // Pass by value
-        stackOffset += sizeof(Register);
-        if (idxReg <= 2)
-        {
-            pp.emitLoad(IDX_TO_REG[idxReg], CPUReg::RDI, REG_OFFSET(pushRAParams[idxParam]), OpBits::B64);
-        }
-        else
-        {
-            pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(pushRAParams[idxParam]), OpBits::B64);
-            pp.emitStore(CPUReg::RSP, stackOffset, CPUReg::RAX, OpBits::B64);
-        }
-    }
-}
-
-void SCBE::emitByteCodeCallParameters(SCBE_CPU& pp, const TypeInfoFuncAttr* typeFuncBc)
-{
-    // If the closure is assigned to a lambda, then we must not use the first parameter (the first
-    // parameter is the capture context, which does not exist in a normal function)
-    // But as this is dynamic, we need to have two call path : one for the closure (normal call), and
-    // one for the lambda (omit first parameter)
-    if (typeFuncBc->isClosure())
-    {
-        const auto reg = pp.pushRAParams.back();
-        pp.emitCmp(CPUReg::RDI, REG_OFFSET(reg), 0, OpBits::B64);
-
-        // If zero, jump to non closure call
-        const auto jumpClosure = pp.emitJump(JZ, OpBits::B32);
-
-        // Closure call
-        emitByteCodeCallParameters(pp, typeFuncBc, pp.pushRAParams);
-        const auto jumpAfterClosure = pp.emitJump(JUMP, OpBits::B32);
-
-        // Lambda call (not a closure)
-        // Jump without the first parameter which is the pointer to the context (reverse order)
-        pp.patchJump(jumpClosure, pp.concat.totalCount());
-        pp.pushRAParams.pop_back();
-        emitByteCodeCallParameters(pp, typeFuncBc, pp.pushRAParams);
-
-        pp.patchJump(jumpAfterClosure, pp.concat.totalCount());
-    }
-    else
-    {
-        emitByteCodeCallParameters(pp, typeFuncBc, pp.pushRAParams);
-    }
-}
-
 void SCBE::emitLambdaCall(SCBE_CPU& pp)
 {
     const auto ip         = pp.ip;
@@ -250,8 +181,12 @@ void SCBE::emitLambdaCall(SCBE_CPU& pp)
 
     pp.patchJump(jumpBC, pp.concat.totalCount());
 
-    pp.emitLoad(CPUReg::RCX, CPUReg::R10, OpBits::B64);
-    emitByteCodeCallParameters(pp, typeFuncBc);
+    pushCPUParams.insert_at_index({.type = CPUPushParamType::CPURegister, .value = static_cast<uint64_t>(CPUReg::R10)}, 0);
+    if (typeFuncBc->numReturnRegisters() >= 1)
+        pushCPUParams.insert_at_index({.type = CPUPushParamType::LoadAddress, .value = pp.offsetRT}, 1);
+    if (typeFuncBc->numReturnRegisters() >= 2)
+        pushCPUParams.insert_at_index({.type = CPUPushParamType::LoadAddress, .value = pp.offsetRT + sizeof(Register)}, 2);
+    pp.emitCallParameters(typeFuncBc, pushCPUParams);
 
     pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symPI_byteCodeRun, 0);
     pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, OpBits::B64);
