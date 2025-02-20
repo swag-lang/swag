@@ -3,8 +3,10 @@
 struct TypeInfo;
 struct TypeInfoFuncAttr;
 
-enum CallConvKind
+enum class CallConvKind
 {
+    X86_64,
+    ByteCode,
     Swag,
     Max
 };
@@ -70,5 +72,5 @@ struct CallConv
     bool structReturnByRegister = true;
 };
 
-extern CallConv g_CallConv[Max];
+extern CallConv g_CallConv[static_cast<int>(CallConvKind::Max)];
 extern void     initCallConvKinds();

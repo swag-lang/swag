@@ -3,11 +3,11 @@
 #include "Semantic/Type/TypeInfo.h"
 #include "Syntax/Ast.h"
 
-CallConv g_CallConv[Max];
+CallConv g_CallConv[static_cast<int>(CallConvKind::Max)];
 
 void initCallConvKinds()
 {
-    auto& ccSwag                = g_CallConv[Swag];
+    auto& ccSwag                = g_CallConv[static_cast<int>(CallConvKind::X86_64)];
     ccSwag.paramByRegisterCount = 4;
     ccSwag.paramByRegisterInteger.push_back(CPUReg::RCX);
     ccSwag.paramByRegisterInteger.push_back(CPUReg::RDX);
@@ -22,6 +22,9 @@ void initCallConvKinds()
     ccSwag.useRegisterFloat        = true;
     ccSwag.structParamByRegister   = true;
     ccSwag.structReturnByRegister  = true;
+
+    g_CallConv[static_cast<int>(CallConvKind::Swag)]     = g_CallConv[static_cast<int>(CallConvKind::X86_64)];
+    g_CallConv[static_cast<int>(CallConvKind::ByteCode)] = g_CallConv[static_cast<int>(CallConvKind::X86_64)];
 }
 
 bool CallConv::structParamByValue(const TypeInfoFuncAttr* typeFunc, const TypeInfo* typeParam)

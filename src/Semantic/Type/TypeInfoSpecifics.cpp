@@ -1011,7 +1011,7 @@ uint32_t TypeInfoFuncAttr::numTotalRegisters() const
 
 const CallConv& TypeInfoFuncAttr::getCallConv() const
 {
-    return g_CallConv[callConv];
+    return g_CallConv[static_cast<int>(callConv)];
 }
 
 TypeInfoParam* TypeInfoStruct::findChildByNameNoLock(const Utf8& childName) const
