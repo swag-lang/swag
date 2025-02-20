@@ -358,74 +358,8 @@ void SCBE_CPU::computeCallParameters(const TypeInfoFuncAttr* typeFuncBc, VectorN
 
 void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& cpuParams, uint32_t resultOffsetRT, void* resultAddr)
 {
-    uint32_t numCallParams = typeFuncBc->parameters.size();
-    uint32_t indexParam    = 0;
-
     pushParams = cpuParams;
     computeCallParameters(typeFuncBc, pushParams, resultOffsetRT, resultAddr);
-
-    /*
-    // Variadic are first
-    if (typeFuncBc->isFctVariadic())
-    {
-        pushParams.push_back(cpuParams[indexParam++]);
-        pushParams.push_back(cpuParams[indexParam++]);
-    }
-
-    if (typeFuncBc->isFctVariadic() || typeFuncBc->isFctCVariadic())
-    {
-        numCallParams--;
-    }
-
-    // All parameters
-    for (uint32_t i = 0; i < numCallParams; i++)
-    {
-        auto typeParam = TypeManager::concreteType(typeFuncBc->parameters[i]->typeInfo);
-        if (typeParam->isAutoConstPointerRef())
-            typeParam = TypeManager::concretePtrRef(typeParam);
-
-        if (typeParam->isPointer() ||
-            typeParam->isLambdaClosure() ||
-            typeParam->isArray())
-        {
-            pushParams.push_back(cpuParams[indexParam++]);
-        }
-        else if (typeParam->isSlice() ||
-                 typeParam->isString() ||
-                 typeParam->isAny() ||
-                 typeParam->isInterface())
-        {
-            pushParams.push_back(cpuParams[indexParam++]);
-            pushParams.push_back(cpuParams[indexParam++]);
-        }
-        else
-        {
-            auto param     = cpuParams[indexParam++];
-            param.typeInfo = typeParam;
-            pushParams.push_back(param);
-        }
-    }
-
-    // Return by parameter
-    if (CallConv::returnByAddress(typeFuncBc))
-    {
-        if (resultAddr)
-            pushParams.push_back({.type = CPUPushParamType::Constant64, .value = reinterpret_cast<uint64_t>(resultAddr)});
-        else if (CallConv::returnByStackAddress(typeFuncBc))
-            pushParams.push_back({.type = CPUPushParamType::Load, .value = resultOffsetRT});
-        else
-            pushParams.push_back({.type = CPUPushParamType::LoadAddress, .value = resultOffsetRT});
-    }
-
-    // Add all C variadic parameters
-    if (typeFuncBc->isFctCVariadic())
-    {
-        for (uint32_t i = typeFuncBc->numParamsRegisters(); i < cpuParams.size(); i++)
-        {
-            pushParams.push_back(cpuParams[indexParam++]);
-        }
-    }
-*/
     emitCallParameters(typeFuncBc->getCallConv(), typeFuncBc, pushParams);
 }
 
