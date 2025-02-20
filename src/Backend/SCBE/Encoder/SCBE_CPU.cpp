@@ -113,7 +113,7 @@ void SCBE_CPU::solveLabels()
 
 namespace
 {
-    void emitParameters(SCBE_CPU& pp, const CallConv& cc, const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& params)
+    void emitParameters(SCBE_CPU& pp, const CallConv& cc, const VectorNative<CPUPushParam>& params)
     {
         const uint32_t numParamsPerRegister = min(cc.paramByRegisterCount, params.size());
         uint32_t       idxParam             = 0;
@@ -130,11 +130,12 @@ namespace
                     pp.emitLoad(cc.paramByRegisterInteger[idxParam], value, OpBits::B64);
                     break;
 
+                case CPUPushParamType::ReturnStackAddress:
+                    pp.emitLoad(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, value, OpBits::B64);
+                    break;
+
                 case CPUPushParamType::Return:
-                    if (CallConv::returnByStackAddress(typeFuncBc))
-                        pp.emitLoad(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, value, OpBits::B64);
-                    else
-                        pp.emitLoadAddress(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, value);
+                    pp.emitLoadAddress(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, value);
                     break;
 
                 case CPUPushParamType::SwagRegister:
@@ -207,12 +208,14 @@ namespace
                 pp.emitLoad(CPUReg::RAX, value, OpBits::B64);
                 pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
             }
+            else if (params[idxParam].type == CPUPushParamType::ReturnStackAddress)
+            {
+                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, value, OpBits::B64);
+                pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
+            }
             else if (params[idxParam].type == CPUPushParamType::Return)
             {
-                if (CallConv::returnByStackAddress(typeFuncBc))
-                    pp.emitLoad(CPUReg::RAX, CPUReg::RDI, value, OpBits::B64);
-                else
-                    pp.emitLoadAddress(CPUReg::RAX, CPUReg::RDI, value);
+                pp.emitLoadAddress(CPUReg::RAX, CPUReg::RDI, value);
                 pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
             }
             else if (cc.structParamByValue(type))
@@ -271,7 +274,7 @@ void SCBE_CPU::emitCallParameters(const CallConv& callConv, const TypeInfoFuncAt
         const auto jumpToNoClosure = emitJump(JZ, OpBits::B32);
 
         // Emit parameters for the closure call (with the pointer to context)
-        emitParameters(*this, callConv, typeFuncBc, cpuParams);
+        emitParameters(*this, callConv, cpuParams);
         const auto jumpAfterParameters = emitJump(JUMP, OpBits::B32);
 
         patchJump(jumpToNoClosure, concat.totalCount());
@@ -282,13 +285,13 @@ void SCBE_CPU::emitCallParameters(const CallConv& callConv, const TypeInfoFuncAt
         auto params = cpuParams;
         params.erase(idxParamContext);
 
-        emitParameters(*this, callConv, typeFuncBc, params);
+        emitParameters(*this, callConv, params);
 
         patchJump(jumpAfterParameters, concat.totalCount());
     }
     else
     {
-        emitParameters(*this, callConv, typeFuncBc, cpuParams);
+        emitParameters(*this, callConv, cpuParams);
     }
 }
 
@@ -345,6 +348,8 @@ void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
     {
         if (resultAddr)
             pushParams.push_back({.type = CPUPushParamType::ReturnAddress, .value = reinterpret_cast<uint64_t>(resultAddr)});
+        else if (CallConv::returnByStackAddress(typeFuncBc))
+            pushParams.push_back({.type = CPUPushParamType::ReturnStackAddress, .value = resultOffsetRT});
         else
             pushParams.push_back({.type = CPUPushParamType::Return, .value = resultOffsetRT});
     }

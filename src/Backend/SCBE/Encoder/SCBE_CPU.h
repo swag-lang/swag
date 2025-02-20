@@ -24,6 +24,7 @@ enum class CPUPushParamType
     GlobalString,
     Return,
     ReturnAddress,
+    ReturnStackAddress,
 };
 
 struct CPUPushParam
