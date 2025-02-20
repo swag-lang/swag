@@ -2435,7 +2435,8 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::IntrinsicF32x2:
             case ByteCodeOp::IntrinsicF64x2:
             {
-                opBits = SCBE_CPU::getOpBits(ip->op);
+                opBits          = SCBE_CPU::getOpBits(ip->op);
+                const bool is32 = opBits == OpBits::F32;
                 pp.pushParams.clear();
                 pp.pushParams.push_back({.type = ip->hasFlag(BCI_IMM_B) ? CPUPushParamType::Constant : CPUPushParamType::SwagRegister, .value = ip->b.u64});
                 pp.pushParams.push_back({.type = ip->hasFlag(BCI_IMM_C) ? CPUPushParamType::Constant : CPUPushParamType::SwagRegister, .value = ip->c.u64});
@@ -2456,10 +2457,10 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         break;
 
                     case TokenId::IntrinsicPow:
-                        emitInternalCallCPUParams(pp, g_LangSpec->name_powf, pp.pushParams, REG_OFFSET(ip->a.u32));
+                        emitInternalCallCPUParams(pp, is32 ? g_LangSpec->name_powf : g_LangSpec->name_pow, pp.pushParams, REG_OFFSET(ip->a.u32));
                         break;
                     case TokenId::IntrinsicATan2:
-                        emitInternalCallCPUParams(pp, g_LangSpec->name_atan2f, pp.pushParams, REG_OFFSET(ip->a.u32));
+                        emitInternalCallCPUParams(pp, is32 ? g_LangSpec->name_atan2f : g_LangSpec->name_atan2, pp.pushParams, REG_OFFSET(ip->a.u32));
                         break;
                     default:
                         ok = false;
@@ -2472,7 +2473,8 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::IntrinsicF32x1:
             case ByteCodeOp::IntrinsicF64x1:
             {
-                opBits = SCBE_CPU::getOpBits(ip->op);
+                opBits          = SCBE_CPU::getOpBits(ip->op);
+                const bool is32 = opBits == OpBits::F32;
                 pp.pushParams.clear();
                 pp.pushParams.push_back({.type = ip->hasFlag(BCI_IMM_B) ? CPUPushParamType::Constant : CPUPushParamType::SwagRegister, .value = ip->b.u64});
 
@@ -2485,7 +2487,6 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         break;
                     case TokenId::IntrinsicAbs:
                         emitIMMB(pp, CPUReg::XMM0, opBits);
-                        pp.emitLoad(CPUReg::RAX, 0x7FFFFFFF'FFFFFFFF, OpBits::B64);
                         pp.emitLoad(CPUReg::RAX, opBits == OpBits::F32 ? 0x7FFFFFFF : 0x7FFFFFFF'FFFFFFFF, OpBits::B64);
                         pp.emitLoad(CPUReg::XMM1, CPUReg::RAX, OpBits::F64);
                         pp.emitOpBinary(CPUReg::XMM0, CPUReg::XMM1, CPUOp::FAND, opBits);
@@ -2493,58 +2494,58 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         break;
 
                     case TokenId::IntrinsicSin:
-                        emitInternalCallCPUParams(pp, g_LangSpec->name_sinf, pp.pushParams, REG_OFFSET(ip->a.u32));
+                        emitInternalCallCPUParams(pp, is32 ? g_LangSpec->name_sinf : g_LangSpec->name_sin, pp.pushParams, REG_OFFSET(ip->a.u32));
                         break;
                     case TokenId::IntrinsicCos:
-                        emitInternalCallCPUParams(pp, g_LangSpec->name_cosf, pp.pushParams, REG_OFFSET(ip->a.u32));
+                        emitInternalCallCPUParams(pp, is32 ? g_LangSpec->name_cosf : g_LangSpec->name_cos, pp.pushParams, REG_OFFSET(ip->a.u32));
                         break;
                     case TokenId::IntrinsicTan:
-                        emitInternalCallCPUParams(pp, g_LangSpec->name_tanf, pp.pushParams, REG_OFFSET(ip->a.u32));
+                        emitInternalCallCPUParams(pp, is32 ? g_LangSpec->name_tanf : g_LangSpec->name_tan, pp.pushParams, REG_OFFSET(ip->a.u32));
                         break;
                     case TokenId::IntrinsicSinh:
-                        emitInternalCallCPUParams(pp, g_LangSpec->name_sinhf, pp.pushParams, REG_OFFSET(ip->a.u32));
+                        emitInternalCallCPUParams(pp, is32 ? g_LangSpec->name_sinhf : g_LangSpec->name_sinh, pp.pushParams, REG_OFFSET(ip->a.u32));
                         break;
                     case TokenId::IntrinsicCosh:
-                        emitInternalCallCPUParams(pp, g_LangSpec->name_coshf, pp.pushParams, REG_OFFSET(ip->a.u32));
+                        emitInternalCallCPUParams(pp, is32 ? g_LangSpec->name_coshf : g_LangSpec->name_cosh, pp.pushParams, REG_OFFSET(ip->a.u32));
                         break;
                     case TokenId::IntrinsicTanh:
-                        emitInternalCallCPUParams(pp, g_LangSpec->name_tanhf, pp.pushParams, REG_OFFSET(ip->a.u32));
+                        emitInternalCallCPUParams(pp, is32 ? g_LangSpec->name_tanhf : g_LangSpec->name_tanh, pp.pushParams, REG_OFFSET(ip->a.u32));
                         break;
                     case TokenId::IntrinsicASin:
-                        emitInternalCallCPUParams(pp, g_LangSpec->name_asinf, pp.pushParams, REG_OFFSET(ip->a.u32));
+                        emitInternalCallCPUParams(pp, is32 ? g_LangSpec->name_asinf : g_LangSpec->name_asin, pp.pushParams, REG_OFFSET(ip->a.u32));
                         break;
                     case TokenId::IntrinsicACos:
-                        emitInternalCallCPUParams(pp, g_LangSpec->name_acosf, pp.pushParams, REG_OFFSET(ip->a.u32));
+                        emitInternalCallCPUParams(pp, is32 ? g_LangSpec->name_acosf : g_LangSpec->name_acos, pp.pushParams, REG_OFFSET(ip->a.u32));
                         break;
                     case TokenId::IntrinsicATan:
-                        emitInternalCallCPUParams(pp, g_LangSpec->name_atanf, pp.pushParams, REG_OFFSET(ip->a.u32));
+                        emitInternalCallCPUParams(pp, is32 ? g_LangSpec->name_atanf : g_LangSpec->name_atan, pp.pushParams, REG_OFFSET(ip->a.u32));
                         break;
                     case TokenId::IntrinsicLog:
-                        emitInternalCallCPUParams(pp, g_LangSpec->name_logf, pp.pushParams, REG_OFFSET(ip->a.u32));
+                        emitInternalCallCPUParams(pp, is32 ? g_LangSpec->name_logf : g_LangSpec->name_log, pp.pushParams, REG_OFFSET(ip->a.u32));
                         break;
                     case TokenId::IntrinsicLog2:
-                        emitInternalCallCPUParams(pp, g_LangSpec->name_log2f, pp.pushParams, REG_OFFSET(ip->a.u32));
+                        emitInternalCallCPUParams(pp, is32 ? g_LangSpec->name_log2f : g_LangSpec->name_log2, pp.pushParams, REG_OFFSET(ip->a.u32));
                         break;
                     case TokenId::IntrinsicLog10:
-                        emitInternalCallCPUParams(pp, g_LangSpec->name_log10f, pp.pushParams, REG_OFFSET(ip->a.u32));
+                        emitInternalCallCPUParams(pp, is32 ? g_LangSpec->name_log10f : g_LangSpec->name_log10, pp.pushParams, REG_OFFSET(ip->a.u32));
                         break;
                     case TokenId::IntrinsicFloor:
-                        emitInternalCallCPUParams(pp, g_LangSpec->name_floorf, pp.pushParams, REG_OFFSET(ip->a.u32));
+                        emitInternalCallCPUParams(pp, is32 ? g_LangSpec->name_floorf : g_LangSpec->name_floor, pp.pushParams, REG_OFFSET(ip->a.u32));
                         break;
                     case TokenId::IntrinsicCeil:
-                        emitInternalCallCPUParams(pp, g_LangSpec->name_ceilf, pp.pushParams, REG_OFFSET(ip->a.u32));
+                        emitInternalCallCPUParams(pp, is32 ? g_LangSpec->name_ceilf : g_LangSpec->name_ceil, pp.pushParams, REG_OFFSET(ip->a.u32));
                         break;
                     case TokenId::IntrinsicTrunc:
-                        emitInternalCallCPUParams(pp, g_LangSpec->name_truncf, pp.pushParams, REG_OFFSET(ip->a.u32));
+                        emitInternalCallCPUParams(pp, is32 ? g_LangSpec->name_truncf : g_LangSpec->name_trunc, pp.pushParams, REG_OFFSET(ip->a.u32));
                         break;
                     case TokenId::IntrinsicRound:
-                        emitInternalCallCPUParams(pp, g_LangSpec->name_roundf, pp.pushParams, REG_OFFSET(ip->a.u32));
+                        emitInternalCallCPUParams(pp, is32 ? g_LangSpec->name_roundf : g_LangSpec->name_round, pp.pushParams, REG_OFFSET(ip->a.u32));
                         break;
                     case TokenId::IntrinsicExp:
-                        emitInternalCallCPUParams(pp, g_LangSpec->name_expf, pp.pushParams, REG_OFFSET(ip->a.u32));
+                        emitInternalCallCPUParams(pp, is32 ? g_LangSpec->name_expf : g_LangSpec->name_exp, pp.pushParams, REG_OFFSET(ip->a.u32));
                         break;
                     case TokenId::IntrinsicExp2:
-                        emitInternalCallCPUParams(pp, g_LangSpec->name_exp2f, pp.pushParams, REG_OFFSET(ip->a.u32));
+                        emitInternalCallCPUParams(pp, is32 ? g_LangSpec->name_exp2f : g_LangSpec->name_exp2, pp.pushParams, REG_OFFSET(ip->a.u32));
                         break;
                     default:
                         ok = false;
