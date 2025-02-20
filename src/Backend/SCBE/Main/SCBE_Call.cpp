@@ -58,7 +58,7 @@ void SCBE::emitGetParam(SCBE_CPU& pp, uint32_t reg, uint32_t paramIdx, OpBits op
 void SCBE::emitCallCPUParams(SCBE_CPU& pp, const Utf8& funcName, const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& pushCPUParams, uint32_t offsetRT, bool localCall)
 {
     // Push parameters
-    pp.emitCallParameters(typeFuncBc, pushCPUParams, offsetRT);
+    pp.emitComputeCallParameters(typeFuncBc, pushCPUParams, offsetRT, nullptr);
 
     if (!localCall)
         pp.emitCallExtern(funcName);
@@ -169,7 +169,7 @@ void SCBE::emitLambdaCall(SCBE_CPU& pp)
     for (uint32_t i = pp.pushRAParams.size() - 1; i != UINT32_MAX; i--)
         pushCPUParams.push_back({.type = CPUPushParamType::SwagRegister, .value = pp.pushRAParams[i]});
 
-    pp.emitCallParameters(typeFuncBc, pushCPUParams, pp.offsetRT);
+    pp.emitComputeCallParameters(typeFuncBc, pushCPUParams, pp.offsetRT, nullptr);
     pp.emitCallIndirect(CPUReg::R10);
     pp.emitStoreCallResult(CPUReg::RDI, pp.offsetRT, typeFuncBc);
 

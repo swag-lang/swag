@@ -1005,7 +1005,7 @@ namespace OS
             gen.emitOpBinary(CPUReg::RSP, stackSize, CPUOp::SUB, OpBits::B64);
             gen.emitLoad(CPUReg::RDI, reinterpret_cast<uint64_t>(context->sp), OpBits::B64);
 
-            gen.emitCallParameters(typeInfoFunc, pushCPUParams, 0, retCopyAddr);
+            gen.emitComputeCallParameters(typeInfoFunc, pushCPUParams, 0, retCopyAddr);
 
             gen.emitLoad(CPUReg::RAX, reinterpret_cast<uint64_t>(foreignPtr), OpBits::B64);
             gen.emitCallIndirect(CPUReg::RAX);

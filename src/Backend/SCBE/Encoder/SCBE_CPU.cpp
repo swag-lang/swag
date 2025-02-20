@@ -312,12 +312,13 @@ void SCBE_CPU::emitCallParameters(const CallConv& callConv, const TypeInfoFuncAt
     }
 }
 
-void SCBE_CPU::computeCallParameters(const TypeInfoFuncAttr* typeFuncBc, VectorNative<CPUPushParam>& cpuParams, uint32_t resultOffsetRT, void* resultAddr)
+void SCBE_CPU::emitComputeCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& cpuParams, uint32_t resultOffsetRT, void* resultAddr)
 {
+    
     uint32_t numCallParams = typeFuncBc->parameters.size();
     uint32_t indexParam    = 0;
 
-    // For variadics, we have a slice at the start
+    // For variadic, we have a slice at the start
     if (typeFuncBc->isFctVariadic())
         indexParam += 2;
     // We should not count the variadic parameter as a real parameter
@@ -325,12 +326,13 @@ void SCBE_CPU::computeCallParameters(const TypeInfoFuncAttr* typeFuncBc, VectorN
         numCallParams--;
 
     // Set type of all parameters
+    pushParams = cpuParams;
     for (uint32_t i = 0; i < numCallParams; i++)
     {
         auto typeParam = TypeManager::concreteType(typeFuncBc->parameters[i]->typeInfo);
         if (typeParam->isAutoConstPointerRef())
             typeParam = TypeManager::concretePtrRef(typeParam);
-        cpuParams[indexParam].typeInfo = typeParam;
+        pushParams[indexParam].typeInfo = typeParam;
         indexParam += typeParam->numRegisters();
     }
 
@@ -344,12 +346,7 @@ void SCBE_CPU::computeCallParameters(const TypeInfoFuncAttr* typeFuncBc, VectorN
         else
             pushParams.insert_at_index({.type = CPUPushParamType::LoadAddress, .value = resultOffsetRT}, indexParam);
     }
-}
-
-void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& cpuParams, uint32_t resultOffsetRT, void* resultAddr)
-{
-    pushParams = cpuParams;
-    computeCallParameters(typeFuncBc, pushParams, resultOffsetRT, resultAddr);
+    
     emitCallParameters(typeFuncBc->getCallConv(), typeFuncBc, pushParams);
 }
 
