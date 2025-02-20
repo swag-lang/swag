@@ -1514,7 +1514,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 else
                 {
                     pp.pushParams.clear();
-                    pp.pushParams.push_back({.type = CPUPushParamType::RegAdd, .value = ip->a.u32, .value2 = ip->c.u64});
+                    pp.pushParams.push_back({.type = CPUPushParamType::SwagRegisterAdd, .value = ip->a.u32, .value2 = ip->c.u64});
                     pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = 0});
                     pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = ip->b.u64});
                     emitInternalCallCPUParams(pp, g_LangSpec->name_memset, pp.pushParams);
@@ -1524,7 +1524,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.pushParams.clear();
                 pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .value = ip->a.u32});
                 pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = 0});
-                pp.pushParams.push_back({.type = CPUPushParamType::RegMul, .value = ip->b.u32, .value2 = ip->c.u64});
+                pp.pushParams.push_back({.type = CPUPushParamType::SwagRegisterMul, .value = ip->b.u32, .value2 = ip->c.u64});
                 emitInternalCallCPUParams(pp, g_LangSpec->name_memset, pp.pushParams);
                 break;
 
@@ -1580,7 +1580,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 else
                 {
                     pp.pushParams.clear();
-                    pp.pushParams.push_back({.type = CPUPushParamType::Addr, .value = offsetStack + ip->a.u32});
+                    pp.pushParams.push_back({.type = CPUPushParamType::LoadAddress, .value = offsetStack + ip->a.u32});
                     pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = 0});
                     pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = ip->b.u32});
                     emitInternalCallCPUParams(pp, g_LangSpec->name_memset, pp.pushParams);
@@ -1801,19 +1801,19 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::InternalGetTlsPtr:
                 pp.pushParams.clear();
-                pp.pushParams.push_back({.type = CPUPushParamType::RelocV, .value = pp.symTls_threadLocalId});
+                pp.pushParams.push_back({.type = CPUPushParamType::SymRelationValue, .value = pp.symTls_threadLocalId});
                 pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = module->tlsSegment.totalCount, .typeInfo = g_TypeMgr->typeInfoU64});
-                pp.pushParams.push_back({.type = CPUPushParamType::RelocAddr, .value = pp.symTLSIndex});
+                pp.pushParams.push_back({.type = CPUPushParamType::SymRelocationAddress, .value = pp.symTLSIndex});
                 emitInternalCallCPUParams(pp, g_LangSpec->name_priv_tlsGetPtr, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case ByteCodeOp::IntrinsicGetContext:
                 pp.pushParams.clear();
-                pp.pushParams.push_back({.type = CPUPushParamType::RelocV, .value = pp.symPI_contextTlsId});
+                pp.pushParams.push_back({.type = CPUPushParamType::SymRelationValue, .value = pp.symPI_contextTlsId});
                 emitInternalCallCPUParams(pp, g_LangSpec->name_priv_tlsGetValue, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case ByteCodeOp::IntrinsicSetContext:
                 pp.pushParams.clear();
-                pp.pushParams.push_back({.type = CPUPushParamType::RelocV, .value = pp.symPI_contextTlsId});
+                pp.pushParams.push_back({.type = CPUPushParamType::SymRelationValue, .value = pp.symPI_contextTlsId});
                 pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .value = ip->a.u32});
                 emitInternalCallCPUParams(pp, g_LangSpec->name_priv_tlsSetValue, pp.pushParams);
                 break;

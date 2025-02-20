@@ -160,24 +160,24 @@ namespace
                         pp.emitLoad(cc.paramByRegisterInteger[idxParam], params[idxParam].value, OpBits::B64);
                     break;
 
-                case CPUPushParamType::RelocV:
+                case CPUPushParamType::SymRelationValue:
                     pp.emitSymbolRelocationValue(cc.paramByRegisterInteger[idxParam], static_cast<uint32_t>(params[idxParam].value), 0);
                     break;
 
-                case CPUPushParamType::RelocAddr:
+                case CPUPushParamType::SymRelocationAddress:
                     pp.emitSymbolRelocationAddr(cc.paramByRegisterInteger[idxParam], static_cast<uint32_t>(params[idxParam].value), 0);
                     break;
 
-                case CPUPushParamType::Addr:
+                case CPUPushParamType::LoadAddress:
                     pp.emitLoadAddress(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, static_cast<uint32_t>(params[idxParam].value));
                     break;
 
-                case CPUPushParamType::RegAdd:
+                case CPUPushParamType::SwagRegisterAdd:
                     pp.emitLoad(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
                     pp.emitOpBinary(cc.paramByRegisterInteger[idxParam], params[idxParam].value2, CPUOp::ADD, OpBits::B64);
                     break;
 
-                case CPUPushParamType::RegMul:
+                case CPUPushParamType::SwagRegisterMul:
                     pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
                     pp.emitOpBinary(CPUReg::RAX, params[idxParam].value2, CPUOp::IMUL, OpBits::B64);
                     pp.emitLoad(cc.paramByRegisterInteger[idxParam], CPUReg::RAX, OpBits::B64);

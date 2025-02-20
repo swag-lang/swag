@@ -14,13 +14,13 @@ struct AstNode;
 enum class CPUPushParamType
 {
     SwagRegister,
-    RegAdd,
-    RegMul,
+    SwagRegisterAdd,
+    SwagRegisterMul,
     CPURegister,
     Constant,
-    RelocV,
-    RelocAddr,
-    Addr,
+    SymRelationValue,
+    SymRelocationAddress,
+    LoadAddress,
     GlobalString,
     Return,
 };

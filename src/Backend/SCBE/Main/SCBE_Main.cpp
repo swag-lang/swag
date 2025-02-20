@@ -129,8 +129,8 @@ void SCBE::emitMain(SCBE_CPU& pp)
 
     // Set default context in TLS
     pp.pushParams.clear();
-    pp.pushParams.push_back({.type = CPUPushParamType::RelocV, .value = pp.symPI_contextTlsId});
-    pp.pushParams.push_back({.type = CPUPushParamType::RelocV, .value = pp.symPI_defaultContext});
+    pp.pushParams.push_back({.type = CPUPushParamType::SymRelationValue, .value = pp.symPI_contextTlsId});
+    pp.pushParams.push_back({.type = CPUPushParamType::SymRelationValue, .value = pp.symPI_defaultContext});
     emitInternalCallCPUParams(pp, g_LangSpec->name_priv_tlsSetValue, pp.pushParams);
 
     // Setup runtime
@@ -158,7 +158,7 @@ void SCBE::emitMain(SCBE_CPU& pp)
     }
 
     pp.pushParams.clear();
-    pp.pushParams.push_back({.type = CPUPushParamType::RelocAddr, .value = pp.symPI_processInfos});
+    pp.pushParams.push_back({.type = CPUPushParamType::SymRelocationAddress, .value = pp.symPI_processInfos});
 
     // Call to global init of all dependencies
     for (const auto dep : moduleDependencies)
@@ -297,7 +297,7 @@ void SCBE::emitGlobalPreMain(SCBE_CPU& pp)
 
     // Copy process infos passed as a parameter to the process info struct of this module
     pp.pushParams.clear();
-    pp.pushParams.push_back({.type = CPUPushParamType::RelocAddr, .value = pp.symPI_processInfos});
+    pp.pushParams.push_back({.type = CPUPushParamType::SymRelocationAddress, .value = pp.symPI_processInfos});
     pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .value = 0});
     pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = sizeof(SwagProcessInfos)});
     emitInternalCallCPUParams(pp, g_LangSpec->name_memcpy, pp.pushParams);
@@ -350,7 +350,7 @@ void SCBE::emitGlobalInit(SCBE_CPU& pp)
 
     // Copy process infos passed as a parameter to the process info struct of this module
     pp.pushParams.clear();
-    pp.pushParams.push_back({.type = CPUPushParamType::RelocAddr, .value = pp.symPI_processInfos});
+    pp.pushParams.push_back({.type = CPUPushParamType::SymRelocationAddress, .value = pp.symPI_processInfos});
     pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .value = 0});
     pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = sizeof(SwagProcessInfos)});
     emitInternalCallCPUParams(pp, g_LangSpec->name_memcpy, pp.pushParams);
