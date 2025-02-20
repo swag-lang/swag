@@ -103,7 +103,7 @@ bool LLVM::emitDataSegment(LLVM_Encoder& pp, DataSegment* dataSegment)
     return true;
 }
 
-bool LLVM::emitInitSeg(LLVM_Encoder& pp, DataSegment* dataSegment, SegmentKind me)
+bool LLVM::emitInitSeg(const LLVM_Encoder& pp, DataSegment* dataSegment, SegmentKind me)
 {
     auto& context = *pp.llvmContext;
     auto& builder = *pp.builder;

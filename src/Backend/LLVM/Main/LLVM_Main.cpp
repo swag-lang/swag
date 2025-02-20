@@ -6,7 +6,7 @@
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 
-void LLVM::emitOS(LLVM_Encoder& pp)
+void LLVM::emitOS(const LLVM_Encoder& pp)
 {
     if (g_CommandLine.target.os == SwagTargetOs::Windows)
     {
@@ -270,7 +270,7 @@ void LLVM::emitMain(LLVM_Encoder& pp)
     builder.CreateRetVoid();
 }
 
-void LLVM::emitGetTypeTable(LLVM_Encoder& pp)
+void LLVM::emitGetTypeTable(const LLVM_Encoder& pp)
 {
     const auto& buildParameters = pp.buildParams;
     const auto  module          = pp.module;
@@ -291,7 +291,7 @@ void LLVM::emitGetTypeTable(LLVM_Encoder& pp)
     builder.CreateRet(TO_PTR_I8(r1));
 }
 
-void LLVM::emitGlobalPreMain(LLVM_Encoder& pp)
+void LLVM::emitGlobalPreMain(const LLVM_Encoder& pp)
 {
     const auto& buildParameters = pp.buildParams;
     const auto  module          = pp.module;

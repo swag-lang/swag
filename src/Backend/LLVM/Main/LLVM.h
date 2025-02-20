@@ -25,12 +25,12 @@ struct LLVM final : Backend
     static void createRuntime(LLVM_Encoder& pp);
     static void generateObjFile(LLVM_Encoder& pp);
     static bool emitDataSegment(LLVM_Encoder& pp, DataSegment* dataSegment);
-    static bool emitInitSeg(LLVM_Encoder& pp, DataSegment* dataSegment, SegmentKind me);
-    static void emitGetTypeTable(LLVM_Encoder& pp);
-    static void emitGlobalPreMain(LLVM_Encoder& pp);
+    static bool emitInitSeg(const LLVM_Encoder& pp, DataSegment* dataSegment, SegmentKind me);
+    static void emitGetTypeTable(const LLVM_Encoder& pp);
+    static void emitGlobalPreMain(const LLVM_Encoder& pp);
     static void emitGlobalInit(LLVM_Encoder& pp);
     static void emitGlobalDrop(LLVM_Encoder& pp);
-    static void emitOS(LLVM_Encoder& pp);
+    static void emitOS(const LLVM_Encoder& pp);
     static void emitMain(LLVM_Encoder& pp);
 
     static bool         emitCallParameters(LLVM_Encoder& pp, const TypeInfoFuncAttr* typeFuncBc, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, VectorNative<llvm::Value*>& params, const VectorNative<uint32_t>& pushParams, const Vector<llvm::Value*>& values, bool closureToLambda = false);

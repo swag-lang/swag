@@ -262,7 +262,7 @@ namespace ByteCodeGen
     bool emitIntrinsicCountOf(ByteCodeGenContext* context, AstNode* node, AstNode* expr);
     bool emitIntrinsicCountOf(ByteCodeGenContext* context);
     bool emitIntrinsicDataOf(ByteCodeGenContext* context);
-    bool emitKindOfAny(ByteCodeGenContext* context, AstNode* node);
+    bool emitKindOfAny(const ByteCodeGenContext* context, AstNode* node);
     bool emitKindOfInterface(ByteCodeGenContext* context, AstNode* node);
     bool emitKindOfAny(ByteCodeGenContext* context);
     bool emitKindOfInterface(ByteCodeGenContext* context);

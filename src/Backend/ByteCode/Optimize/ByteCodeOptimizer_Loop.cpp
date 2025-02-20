@@ -107,7 +107,7 @@ namespace
         return ipStart;
     }
 
-    void replaceReg(ByteCodeOptContext* context, ByteCodeInstruction* ipScan, ByteCodeInstruction* ipEnd, uint32_t reg, uint32_t newReg)
+    void replaceReg(ByteCodeOptContext* context, ByteCodeInstruction* ipScan, const ByteCodeInstruction* ipEnd, uint32_t reg, uint32_t newReg)
     {
         while (ipScan != ipEnd)
         {

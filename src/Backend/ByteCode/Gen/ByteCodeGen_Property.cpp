@@ -138,7 +138,7 @@ bool ByteCodeGen::emitIntrinsicIsConstExprSI(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGen::emitKindOfAny(ByteCodeGenContext* context, AstNode* node)
+bool ByteCodeGen::emitKindOfAny(const ByteCodeGenContext* context, AstNode* node)
 {
     SWAG_ASSERT(node->resultRegisterRc.size() == 2);
     ensureCanBeChangedRC(context, node->resultRegisterRc);

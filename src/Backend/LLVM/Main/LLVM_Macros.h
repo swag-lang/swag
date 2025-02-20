@@ -59,17 +59,17 @@
 
 #define MK_IMMA_64()    ip->hasFlag(BCI_IMM_A) ? (llvm::Value*) builder.getInt64(ip->a.u64) : (llvm::Value*) builder.CreateLoad(I64_TY(), GEP64(allocR, ip->a.u32))
 #define MK_IMMA_IX(__n) ip->hasFlag(BCI_IMM_A) ? (llvm::Value*) builder.getIntN(__n, ip->a.u64) : (llvm::Value*) builder.CreateLoad(IX_TY(__n), GEP64(allocR, ip->a.u32))
-#define MK_IMMA_FX(__n) ip->hasFlag(BCI_IMM_A) ? (llvm::Value*) llvm::ConstantFP::get(FX_TY(__n), __n == 32 ? ip->a.f32 : ip->a.f64) : (llvm::Value*) builder.CreateLoad(FX_TY(__n), GEP64(allocR, ip->a.u32))
+#define MK_IMMA_FX(__n) ip->hasFlag(BCI_IMM_A) ? (llvm::Value*) llvm::ConstantFP::get(FX_TY(__n), (__n) == 32 ? ip->a.f32 : ip->a.f64) : (llvm::Value*) builder.CreateLoad(FX_TY(__n), GEP64(allocR, ip->a.u32))
 
 #define MK_IMMB_8()     ip->hasFlag(BCI_IMM_B) ? (llvm::Value*) builder.getInt8(ip->b.u8) : (llvm::Value*) builder.CreateLoad(I8_TY(), GEP64(allocR, ip->b.u32))
 #define MK_IMMB_64()    ip->hasFlag(BCI_IMM_B) ? (llvm::Value*) builder.getInt64(ip->b.u64) : (llvm::Value*) builder.CreateLoad(I64_TY(), GEP64(allocR, ip->b.u32))
 #define MK_IMMB_IX(__n) ip->hasFlag(BCI_IMM_B) ? (llvm::Value*) builder.getIntN(__n, ip->b.u64) : (llvm::Value*) builder.CreateLoad(IX_TY(__n), GEP64(allocR, ip->b.u32))
-#define MK_IMMB_FX(__n) ip->hasFlag(BCI_IMM_B) ? (llvm::Value*) llvm::ConstantFP::get(FX_TY(__n), __n == 32 ? ip->b.f32 : ip->b.f64) : (llvm::Value*) builder.CreateLoad(FX_TY(__n), GEP64(allocR, ip->b.u32))
+#define MK_IMMB_FX(__n) ip->hasFlag(BCI_IMM_B) ? (llvm::Value*) llvm::ConstantFP::get(FX_TY(__n), (__n) == 32 ? ip->b.f32 : ip->b.f64) : (llvm::Value*) builder.CreateLoad(FX_TY(__n), GEP64(allocR, ip->b.u32))
 
 #define MK_IMMC_64()    ip->hasFlag(BCI_IMM_C) ? (llvm::Value*) builder.getInt64(ip->c.u64) : (llvm::Value*) builder.CreateLoad(I64_TY(), GEP64(allocR, ip->c.u32))
 #define MK_IMMC_IX(__n) ip->hasFlag(BCI_IMM_C) ? (llvm::Value*) builder.getIntN(__n, ip->c.u64) : (llvm::Value*) builder.CreateLoad(IX_TY(__n), GEP64(allocR, ip->c.u32))
-#define MK_IMMC_FX(__n) ip->hasFlag(BCI_IMM_C) ? (llvm::Value*) llvm::ConstantFP::get(FX_TY(__n), __n == 32 ? ip->c.f32 : ip->c.f64) : (llvm::Value*) builder.CreateLoad(FX_TY(__n), GEP64(allocR, ip->c.u32))
+#define MK_IMMC_FX(__n) ip->hasFlag(BCI_IMM_C) ? (llvm::Value*) llvm::ConstantFP::get(FX_TY(__n), (__n) == 32 ? ip->c.f32 : ip->c.f64) : (llvm::Value*) builder.CreateLoad(FX_TY(__n), GEP64(allocR, ip->c.u32))
 
 #define MK_IMMD_64()    ip->hasFlag(BCI_IMM_D) ? (llvm::Value*) builder.getInt64(ip->d.u64) : (llvm::Value*) builder.CreateLoad(I64_TY(), GEP64(allocR, ip->d.u32))
 #define MK_IMMD_IX(__n) ip->hasFlag(BCI_IMM_D) ? (llvm::Value*) builder.getIntN(__n, ip->d.u64) : (llvm::Value*) builder.CreateLoad(IX_TY(__n), GEP64(allocR, ip->d.u32))
-#define MK_IMMD_FX(__n) ip->hasFlag(BCI_IMM_D) ? (llvm::Value*) llvm::ConstantFP::get(FX_TY(__n), __n == 32 ? ip->d.f32 : ip->d.f64) : (llvm::Value*) builder.CreateLoad(FX_TY(__n), GEP64(allocR, ip->d.u32))
+#define MK_IMMD_FX(__n) ip->hasFlag(BCI_IMM_D) ? (llvm::Value*) llvm::ConstantFP::get(FX_TY(__n), (__n) == 32 ? ip->d.f32 : ip->d.f64) : (llvm::Value*) builder.CreateLoad(FX_TY(__n), GEP64(allocR, ip->d.u32))
