@@ -24,6 +24,7 @@ enum class CPUPushParamType
     LoadAddress,
     GlobalString,
     Load,
+    CaptureContext,
 };
 
 struct CPUPushParam

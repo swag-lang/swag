@@ -169,6 +169,11 @@ void SCBE::emitLambdaCall(SCBE_CPU& pp)
     for (uint32_t i = pp.pushRAParams.size() - 1; i != UINT32_MAX; i--)
         pushCPUParams.push_back({.type = CPUPushParamType::SwagRegister, .value = pp.pushRAParams[i]});
 
+    // Mark the first parameter as the capture context.
+    // The "first" parameter has index 2 in case of a variadic function, as the 2 first parameters are the variadic slice
+    if (typeFuncBc->isClosure())
+        pushCPUParams[typeFuncBc->isFctVariadic() ? 2 : 0].type = CPUPushParamType::CaptureContext;
+
     pp.emitComputeCallParameters(typeFuncBc, pushCPUParams, pp.offsetRT, nullptr);
     pp.emitCallIndirect(CPUReg::R10);
     pp.emitStoreCallResult(CPUReg::RDI, pp.offsetRT, typeFuncBc);

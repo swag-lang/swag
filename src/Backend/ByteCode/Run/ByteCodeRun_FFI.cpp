@@ -103,24 +103,24 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, const ByteCodeInstruction
     ffiCall(context, ip, nodeFunc->ffiAddress, typeInfoFunc, ip->numVariadicParams);
 }
 
-void ByteCodeRun::ffiCall(ByteCodeRunContext* context, [[maybe_unused]] const ByteCodeInstruction* ip, void* foreignPtr, TypeInfoFuncAttr* typeInfoFunc, int numCVariadicParams)
+void ByteCodeRun::ffiCall(ByteCodeRunContext* context, [[maybe_unused]] const ByteCodeInstruction* ip, void* foreignPtr, TypeInfoFuncAttr* typeFuncBc, int numCVariadicParams)
 {
     uint32_t cptParam      = 0;
-    auto     numParameters = typeInfoFunc->parameters.size();
+    auto     numParameters = typeFuncBc->parameters.size();
 
     // For variadics, we have a slice at the start
-    if (typeInfoFunc->isFctVariadic())
+    if (typeFuncBc->isFctVariadic())
         cptParam += 2;
     // We should not count the variadic parameter as a real parameter
-    if (typeInfoFunc->isFctVariadic() || typeInfoFunc->isFctCVariadic())
+    if (typeFuncBc->isFctVariadic() || typeFuncBc->isFctCVariadic())
         numParameters--;
-    if (typeInfoFunc->isFctCVariadic())
+    if (typeFuncBc->isFctCVariadic())
         cptParam += numCVariadicParams;
 
-    //cptParam += numParameters;
+    // cptParam += numParameters;
     for (uint32_t i = 0; i < numParameters; i++)
     {
-        const auto typeParam = TypeManager::concreteType(typeInfoFunc->parameters[i]->typeInfo);
+        const auto typeParam = TypeManager::concreteType(typeFuncBc->parameters[i]->typeInfo);
         cptParam += typeParam->numRegisters();
     }
 
@@ -136,10 +136,15 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, [[maybe_unused]] const By
         param.typeInfo = nullptr;
     }
 
+    // Mark the first parameter as the capture context.
+    // The "first" parameter has index 2 in case of a variadic function, as the 2 first parameters are the variadic slice
+    if (typeFuncBc->isClosure())
+        cpuParams[typeFuncBc->isFctVariadic() ? 2 : 0].type = CPUPushParamType::CaptureContext;
+
     void* retCopyAddr = nullptr;
-    if (CallConv::returnByStackAddress(typeInfoFunc))
+    if (CallConv::returnByStackAddress(typeFuncBc))
         retCopyAddr = context->registersRR[0].pointer;
-    else if (CallConv::returnByAddress(typeInfoFunc))
+    else if (CallConv::returnByAddress(typeFuncBc))
         retCopyAddr = context->registersRR;
 
 #ifdef SWAG_STATS
@@ -149,7 +154,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, [[maybe_unused]] const By
         context->bc->profileCumTime += now - context->bc->profileStart;
         context->bc->profileStart = now;
 
-        OS::ffi(context, foreignPtr, typeInfoFunc, cpuParams, retCopyAddr);
+        OS::ffi(context, foreignPtr, typeFuncBc, cpuParams, retCopyAddr);
 
         now = OS::timerNow();
         context->bc->profileCumTime += now - context->bc->profileStart;
@@ -167,7 +172,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, [[maybe_unused]] const By
     }
     else
     {
-        OS::ffi(context, foreignPtr, typeInfoFunc, cpuParams, retCopyAddr);
+        OS::ffi(context, foreignPtr, typeFuncBc, cpuParams, retCopyAddr);
     }
 #else
     OS::ffi(context, foreignPtr, typeInfoFunc, context->ffiPushCPUParams, retCopyAddr);

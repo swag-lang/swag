@@ -145,6 +145,10 @@ namespace
                     pp.emitLoad64(cc.paramByRegisterInteger[idxParam], value);
                     break;
 
+                case CPUPushParamType::CaptureContext:
+                    pp.emitLoad(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, REG_OFFSET(value), OpBits::B64);
+                    break;
+
                 case CPUPushParamType::SwagRegister:
                     if (cc.structParamByValue(type))
                     {
@@ -226,6 +230,11 @@ namespace
                     pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
                     break;
 
+                case CPUPushParamType::CaptureContext:
+                    pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(value), OpBits::B64);
+                    pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
+                    break;
+
                 case CPUPushParamType::SwagRegister:
                     if (cc.structParamByValue(type))
                     {
@@ -269,18 +278,12 @@ void SCBE_CPU::emitCallParameters(const CallConv& callConv, const TypeInfoFuncAt
     // one for the lambda (omit first parameter)
     if (typeFuncBc->isClosure())
     {
+        // Get the capture context index, as we will have to remove it when calling a normal lambda
         uint32_t idxParamContext = 0;
-        if (cpuParams[0].type == CPUPushParamType::CPURegister) // Bytecode
-        {
+        while (idxParamContext < cpuParams.size() && cpuParams[idxParamContext].type != CPUPushParamType::CaptureContext)
             idxParamContext++;
-            idxParamContext += typeFuncBc->numReturnRegisters();
-        }
-        else if (typeFuncBc->isFctVariadic())
-        {
-            idxParamContext += 2;
-        }
-
-        SWAG_ASSERT(cpuParams[idxParamContext].type == CPUPushParamType::SwagRegister);
+        SWAG_ASSERT(idxParamContext < cpuParams.size());
+        SWAG_ASSERT(cpuParams[idxParamContext].type == CPUPushParamType::CaptureContext);
 
         // First register is closure context, except if variadic, where we have 2 registers for the slice first
         // :VariadicAndClosure
@@ -314,7 +317,6 @@ void SCBE_CPU::emitCallParameters(const CallConv& callConv, const TypeInfoFuncAt
 
 void SCBE_CPU::emitComputeCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& cpuParams, uint32_t resultOffsetRT, void* resultAddr)
 {
-    
     uint32_t numCallParams = typeFuncBc->parameters.size();
     uint32_t indexParam    = 0;
 
