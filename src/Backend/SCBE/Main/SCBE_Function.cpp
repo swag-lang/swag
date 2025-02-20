@@ -172,7 +172,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         pp.emitLoad(CPUReg::R12, CPUReg::RCX, OpBits::B64);
 
     auto ip     = bc->out;
-    auto opBits = OpBits::INVALID;
+    auto opBits = OpBits::Invalid;
     for (int32_t i = 0; i < static_cast<int32_t>(bc->numInstructions); i++, ip++)
     {
         if (ip->node->hasAstFlag(AST_NO_BACKEND))
@@ -201,7 +201,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
         }
 
-        opBits = OpBits::INVALID;
+        opBits = OpBits::Invalid;
         switch (ip->op)
         {
             case ByteCodeOp::DebugNop:
@@ -648,13 +648,13 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::AffectOpMulEqS16:
             case ByteCodeOp::AffectOpMulEqS32:
             case ByteCodeOp::AffectOpMulEqS64:
-                emitBinOpEqOverflow(pp, 0, CPUOp::IMUL, SafetyMsg::MulEq, SCBE_CPU::getOpType(ip->op));
+                emitBinOpEqOverflow(pp, CPUOp::IMUL, SafetyMsg::MulEq, SCBE_CPU::getOpType(ip->op));
                 break;
             case ByteCodeOp::AffectOpMulEqU8:
             case ByteCodeOp::AffectOpMulEqU16:
             case ByteCodeOp::AffectOpMulEqU32:
             case ByteCodeOp::AffectOpMulEqU64:
-                emitBinOpEqOverflow(pp, 0, CPUOp::MUL, SafetyMsg::MulEq, SCBE_CPU::getOpType(ip->op));
+                emitBinOpEqOverflow(pp, CPUOp::MUL, SafetyMsg::MulEq, SCBE_CPU::getOpType(ip->op));
                 break;
 
             case ByteCodeOp::AffectOpMulEqS8_Safe:
@@ -765,7 +765,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::AffectOpPlusEqU16:
             case ByteCodeOp::AffectOpPlusEqU32:
             case ByteCodeOp::AffectOpPlusEqU64:
-                emitBinOpEqOverflow(pp, 0, CPUOp::ADD, SafetyMsg::PlusEq, SCBE_CPU::getOpType(ip->op));
+                emitBinOpEqOverflow(pp, CPUOp::ADD, SafetyMsg::PlusEq, SCBE_CPU::getOpType(ip->op));
                 break;
             case ByteCodeOp::AffectOpPlusEqF32_Safe:
             case ByteCodeOp::AffectOpPlusEqF64_Safe:
@@ -808,7 +808,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::AffectOpMinusEqU16:
             case ByteCodeOp::AffectOpMinusEqU32:
             case ByteCodeOp::AffectOpMinusEqU64:
-                emitBinOpEqOverflow(pp, 0, CPUOp::SUB, SafetyMsg::MinusEq, SCBE_CPU::getOpType(ip->op));
+                emitBinOpEqOverflow(pp, CPUOp::SUB, SafetyMsg::MinusEq, SCBE_CPU::getOpType(ip->op));
                 break;
             case ByteCodeOp::AffectOpMinusEqF32_Safe:
             case ByteCodeOp::AffectOpMinusEqF64_Safe:

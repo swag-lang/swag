@@ -18,18 +18,44 @@
 
 #pragma comment(lib, "dbghelp.lib")
 
-namespace OS
+namespace
 {
-    namespace
+    BackendTarget      g_NativeTarget;
+    HANDLE             g_ConsoleHandle     = nullptr;
+    WORD               g_DefaultAttributes = 0;
+    thread_local void* g_ExceptionParams[4];
+    Path               g_WinSdkFolder;
+
+    constexpr DWORD MS_VC_EXCEPTION = 0x406D1388;
+
+#pragma pack(push, 8)
+    struct ThreadNameInfo
     {
-        BackendTarget      g_NativeTarget;
-        HANDLE             g_ConsoleHandle     = nullptr;
-        WORD               g_DefaultAttributes = 0;
-        thread_local void* g_ExceptionParams[4];
-        Path               g_WinSdkFolder;
+        DWORD  dwType;     // Must be 0x1000.
+        LPCSTR szName;     // Pointer to name (in user address space).
+        DWORD  dwThreadID; // Thread ID (-1=caller thread).
+        DWORD  dwFlags;    // Reserved for future use, must be zero.
+    };
+#pragma pack(pop)
+
+    void setThreadNamePriv(uint32_t dwThreadID, const char* threadName)
+    {
+        ThreadNameInfo info;
+        info.dwType     = 0x1000;
+        info.szName     = threadName;
+        info.dwThreadID = dwThreadID;
+        info.dwFlags    = 0;
+
+        SWAG_TRY
+        {
+            RaiseException(MS_VC_EXCEPTION, 0, sizeof(info) / sizeof(ULONG_PTR), reinterpret_cast<ULONG_PTR*>(&info));
+        }
+        SWAG_EXCEPT(SWAG_EXCEPTION_EXECUTE_HANDLER)
+        {
+        }
     }
 
-    static bool getWinSdk()
+    bool getWinSdk()
     {
         static Mutex mt;
         ScopedLock   lk(mt);
@@ -69,7 +95,7 @@ namespace OS
 
         int  bestVersion[4] = {};
         Utf8 bestName;
-        visitFolders(g_WinSdkFolder, [&](const char* cFileName) {
+        OS::visitFolders(g_WinSdkFolder, [&](const char* cFileName) {
             int        i0, i1, i2, i3;
             const auto success = sscanf_s(cFileName, "%d.%d.%d.%d", &i0, &i1, &i2, &i3);
             if (success < 4)
@@ -109,7 +135,10 @@ namespace OS
 
         return true;
     }
+}
 
+namespace OS
+{
     bool setupBuild()
     {
         if (g_CommandLine.target.os != SwagTargetOs::Windows)
@@ -513,40 +542,11 @@ namespace OS
         }
     }
 
-    constexpr DWORD MS_VC_EXCEPTION = 0x406D1388;
-
-#pragma pack(push, 8)
-    struct ThreadNameInfo
-    {
-        DWORD  dwType;     // Must be 0x1000.
-        LPCSTR szName;     // Pointer to name (in user address space).
-        DWORD  dwThreadID; // Thread ID (-1=caller thread).
-        DWORD  dwFlags;    // Reserved for future use, must be zero.
-    };
-#pragma pack(pop)
-
-    static void setThreadName(uint32_t dwThreadID, const char* threadName)
-    {
-        ThreadNameInfo info;
-        info.dwType     = 0x1000;
-        info.szName     = threadName;
-        info.dwThreadID = dwThreadID;
-        info.dwFlags    = 0;
-
-        SWAG_TRY
-        {
-            RaiseException(MS_VC_EXCEPTION, 0, sizeof(info) / sizeof(ULONG_PTR), reinterpret_cast<ULONG_PTR*>(&info));
-        }
-        SWAG_EXCEPT(SWAG_EXCEPTION_EXECUTE_HANDLER)
-        {
-        }
-    }
-
     void setThreadName(std::thread* thread, const char* threadName)
     {
         const auto  handle   = thread->native_handle();
         const DWORD threadId = GetThreadId(handle);
-        setThreadName(threadId, threadName);
+        setThreadNamePriv(threadId, threadName);
         // SetThreadPriority(handle, THREAD_PRIORITY_TIME_CRITICAL);
     }
 

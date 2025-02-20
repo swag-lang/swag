@@ -234,7 +234,7 @@ void SCBE::emitBinOpEq(SCBE_CPU& pp, uint32_t offset, CPUOp op, CPUEmitFlags emi
     }
 }
 
-void SCBE::emitBinOpEqOverflow(SCBE_CPU& pp, uint32_t offset, CPUOp op, SafetyMsg safetyMsg, TypeInfo* safetyType)
+void SCBE::emitBinOpEqOverflow(SCBE_CPU& pp, CPUOp op, SafetyMsg safetyMsg, TypeInfo* safetyType)
 {
     const auto  ip       = pp.ip;
     const char* msg      = ByteCodeGen::safetyMsg(safetyMsg, safetyType);

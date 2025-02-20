@@ -29,7 +29,7 @@ OpBits BackendEncoder::getOpBitsByBytes(uint32_t numBytes, bool forFloat)
             break;
     }
     
-    return OpBits::INVALID;
+    return OpBits::Invalid;
 }
 
 uint32_t BackendEncoder::getNumBits(OpBits opBits)

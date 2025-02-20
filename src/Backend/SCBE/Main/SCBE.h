@@ -39,7 +39,7 @@ struct SCBE final : Backend
     static void emitInternalCallCPUParams(SCBE_CPU& pp, const Utf8& funcName, const VectorNative<CPUPushParam>& pushCPUParams, uint32_t offsetRT = UINT32_MAX);
     static void emitInternalCallRAParams(SCBE_CPU& pp, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT = UINT32_MAX);
 
-    static void emitGetParam(SCBE_CPU& pp, uint32_t reg, uint32_t paramIdx, OpBits opBits, uint64_t toAdd = 0, OpBits derefBits = OpBits::INVALID);
+    static void emitGetParam(SCBE_CPU& pp, uint32_t reg, uint32_t paramIdx, OpBits opBits, uint64_t toAdd = 0, OpBits derefBits = OpBits::Invalid);
     static void emitLocalCall(SCBE_CPU& pp);
     static void emitForeignCall(SCBE_CPU& pp);
     static void emitLambdaCall(SCBE_CPU& pp);
@@ -55,7 +55,7 @@ struct SCBE final : Backend
     static void emitBinOp(SCBE_CPU& pp, CPUOp op, CPUEmitFlags emitFlags = EMITF_Zero);
     static void emitBinOpOverflow(SCBE_CPU& pp, CPUOp op, SafetyMsg safetyMsg, TypeInfo* safetyType);
     static void emitBinOpEq(SCBE_CPU& pp, uint32_t offset, CPUOp op, CPUEmitFlags emitFlags = EMITF_Zero);
-    static void emitBinOpEqOverflow(SCBE_CPU& pp, uint32_t offset, CPUOp op, SafetyMsg safetyMsg, TypeInfo* safetyType);
+    static void emitBinOpEqOverflow(SCBE_CPU& pp, CPUOp op, SafetyMsg safetyMsg, TypeInfo* safetyType);
     static void emitBinOpEqLock(SCBE_CPU& pp, CPUOp op);
     static void emitBinOpEqS(SCBE_CPU& pp, CPUOp op);
     static void emitAddSubMul64(SCBE_CPU& pp, uint64_t mulValue, CPUOp op);

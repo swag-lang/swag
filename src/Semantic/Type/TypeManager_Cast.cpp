@@ -2509,7 +2509,7 @@ bool TypeManager::castToAny(SemanticContext* context, TypeInfo* toType, TypeInfo
     return true;
 }
 
-bool TypeManager::castFromAny(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, CastFlags castFlags)
+bool TypeManager::castFromAny(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* /*toNode*/, AstNode* fromNode, CastFlags castFlags)
 {
     if (toType->isAny())
         return true;

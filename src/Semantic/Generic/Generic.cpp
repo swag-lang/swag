@@ -414,7 +414,7 @@ Vector<Utf8> Generic::computeGenericParametersReplacement(const VectorMap<Utf8, 
             continue;
         if (!p.second)
             continue;
-        if (p.second->text.empty() || p.second->text.empty())
+        if (p.second->text.empty())
             continue;
 
         Utf8 rem = "with ";
