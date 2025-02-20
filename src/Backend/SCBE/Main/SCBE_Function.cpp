@@ -2,7 +2,6 @@
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
 #include "Backend/SCBE/Main/SCBE.h"
-#include "Backend/SCBE/Obj/SCBE_Coff.h"
 #include "Report/Diagnostic.h"
 #include "Report/Report.h"
 #include "Semantic/Type/TypeManager.h"
