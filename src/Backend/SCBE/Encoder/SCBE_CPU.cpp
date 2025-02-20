@@ -138,6 +138,10 @@ namespace
                     pp.emitLoadAddress(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, value);
                     break;
 
+                case CPUPushParamType::LoadAddress:
+                    pp.emitLoadAddress(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, value);
+                    break;
+
                 case CPUPushParamType::SwagRegister:
                     if (cc.structParamByValue(type))
                     {
@@ -162,15 +166,13 @@ namespace
                     break;
 
                 case CPUPushParamType::SymRelationValue:
-                    pp.emitSymbolRelocationValue(cc.paramByRegisterInteger[idxParam], static_cast<uint32_t>(params[idxParam].value), 0);
+                    SWAG_ASSERT(value < UINT32_MAX);
+                    pp.emitSymbolRelocationValue(cc.paramByRegisterInteger[idxParam], static_cast<uint32_t>(value), 0);
                     break;
 
                 case CPUPushParamType::SymRelocationAddress:
-                    pp.emitSymbolRelocationAddr(cc.paramByRegisterInteger[idxParam], static_cast<uint32_t>(params[idxParam].value), 0);
-                    break;
-
-                case CPUPushParamType::LoadAddress:
-                    pp.emitLoadAddress(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, static_cast<uint32_t>(params[idxParam].value));
+                    SWAG_ASSERT(value < UINT32_MAX);
+                    pp.emitSymbolRelocationAddr(cc.paramByRegisterInteger[idxParam], static_cast<uint32_t>(value), 0);
                     break;
 
                 case CPUPushParamType::SwagRegisterAdd:
