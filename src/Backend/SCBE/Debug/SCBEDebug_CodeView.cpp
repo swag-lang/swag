@@ -638,7 +638,7 @@ namespace
             switch (typeParam->kind)
             {
                 case TypeInfoKind::Struct:
-                    if (CallConv::structParamByValue(typeFunc, typeParam))
+                    if (typeFunc->getCallConv().structParamByValue(typeParam))
                         typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
                     else
                         typeIdx = SCBEDebug::getOrCreatePointerToType(pp, typeParam, true);
@@ -648,7 +648,7 @@ namespace
                     if (typeParam->isAutoConstPointerRef())
                     {
                         const auto typeRef = TypeManager::concretePtrRefType(typeParam);
-                        if (CallConv::structParamByValue(typeFunc, typeRef))
+                        if (typeFunc->getCallConv().structParamByValue(typeRef))
                             typeIdx = SCBEDebug::getOrCreateType(pp, typeRef);
                         else
                             typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);

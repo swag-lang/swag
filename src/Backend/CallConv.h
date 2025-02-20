@@ -40,7 +40,8 @@ enum class CPUReg : uint8_t
 
 struct CallConv
 {
-    static bool structParamByValue(const TypeInfoFuncAttr* typeFunc, const TypeInfo* typeParam);
+    bool structParamByValue(const TypeInfo* typeParam) const;
+
     static bool returnByAddress(const TypeInfoFuncAttr* typeFunc);
     static bool returnByStackAddress(const TypeInfoFuncAttr* typeFunc);
     static bool returnNeedsStack(const TypeInfoFuncAttr* typeFunc);

@@ -27,10 +27,9 @@ void initCallConvKinds()
     g_CallConv[static_cast<int>(CallConvKind::ByteCode)] = g_CallConv[static_cast<int>(CallConvKind::X86_64)];
 }
 
-bool CallConv::structParamByValue(const TypeInfoFuncAttr* typeFunc, const TypeInfo* typeParam)
+bool CallConv::structParamByValue(const TypeInfo* typeParam) const
 {
-    const auto& cc = typeFunc->getCallConv();
-    return cc.structParamByRegister && typeParam->isStruct() && typeParam->sizeOf <= sizeof(void*);
+    return structParamByRegister && typeParam->isStruct() && typeParam->sizeOf <= sizeof(void*);
 }
 
 bool CallConv::returnByAddress(const TypeInfoFuncAttr* typeFunc)

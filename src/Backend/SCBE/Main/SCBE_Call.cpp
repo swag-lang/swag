@@ -34,8 +34,7 @@ void SCBE::emitGetParam(SCBE_CPU& pp, uint32_t reg, uint32_t paramIdx, OpBits op
             break;
     }
 
-    const bool structByValue = CallConv::structParamByValue(typeFunc, typeParam);
-    if (structByValue)
+    if (typeFunc->getCallConv().structParamByValue(typeParam))
         pp.emitLoadAddress(CPUReg::RAX, CPUReg::RDI, paramStack);
     else
         pp.emitLoad(CPUReg::RAX, CPUReg::RDI, paramStack, OpBits::B64);

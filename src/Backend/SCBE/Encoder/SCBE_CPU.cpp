@@ -115,7 +115,6 @@ namespace
 {
     void emitParameters(SCBE_CPU& pp, const CallConv& cc, const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& params)
     {
-        const bool     returnByStackAddr    = CallConv::returnByStackAddress(typeFuncBc);
         const uint32_t numParamsPerRegister = min(cc.paramByRegisterCount, params.size());
         uint32_t       idxParam             = 0;
 
@@ -132,14 +131,14 @@ namespace
                     break;
 
                 case CPUPushParamType::Return:
-                    if (returnByStackAddr)
+                    if (CallConv::returnByStackAddress(typeFuncBc))
                         pp.emitLoad(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, value, OpBits::B64);
                     else
                         pp.emitLoadAddress(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, value);
                     break;
 
                 case CPUPushParamType::SwagRegister:
-                    if (CallConv::structParamByValue(typeFuncBc, type))
+                    if (cc.structParamByValue(type))
                     {
                         pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(value), OpBits::B64);
                         pp.emitLoad(cc.paramByRegisterInteger[idxParam], CPUReg::RAX, 0, OpBits::B64);
@@ -210,13 +209,13 @@ namespace
             }
             else if (params[idxParam].type == CPUPushParamType::Return)
             {
-                if (returnByStackAddr)
+                if (CallConv::returnByStackAddress(typeFuncBc))
                     pp.emitLoad(CPUReg::RAX, CPUReg::RDI, value, OpBits::B64);
                 else
                     pp.emitLoadAddress(CPUReg::RAX, CPUReg::RDI, value);
                 pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
             }
-            else if (CallConv::structParamByValue(typeFuncBc, type))
+            else if (cc.structParamByValue(type))
             {
                 SWAG_ASSERT(params[idxParam].type == CPUPushParamType::SwagRegister);
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(value), OpBits::B64);

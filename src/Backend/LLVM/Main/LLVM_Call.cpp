@@ -225,7 +225,7 @@ llvm::FunctionType* LLVM::getOrCreateFuncType(LLVM_Encoder& pp, const TypeInfoFu
             if (param->isAutoConstPointerRef())
                 param = TypeManager::concretePtrRef(param);
 
-            if (CallConv::structParamByValue(typeFuncBc, param))
+            if (typeFuncBc->getCallConv().structParamByValue(param))
             {
                 params.push_back(IX_TY(param->sizeOf * 8));
             }
@@ -277,7 +277,7 @@ bool LLVM::emitGetParam(LLVM_Encoder& pp, const TypeInfoFuncAttr* typeFuncBc, ui
 
     if (toAdd || deRefSize)
     {
-        if (CallConv::structParamByValue(typeFuncBc, param))
+        if (typeFuncBc->getCallConv().structParamByValue(param))
         {
             auto ra = builder.CreateIntCast(arg, I64_TY(), false);
 
@@ -381,7 +381,7 @@ bool LLVM::emitGetParam(LLVM_Encoder& pp, const TypeInfoFuncAttr* typeFuncBc, ui
         }
 
         // Struct by copy
-        else if (CallConv::structParamByValue(typeFuncBc, param))
+        else if (typeFuncBc->getCallConv().structParamByValue(param))
         {
             // Make a copy of the value on the stack, and get the address
             const auto allocR1 = builder.CreateAlloca(I64_TY(), builder.getInt32(1));
@@ -502,7 +502,7 @@ bool LLVM::emitCallParameters(LLVM_Encoder&                 pp,
             const auto llvmType = getLLVMType(pp, typePtr);
             params.push_back(builder.CreateLoad(llvmType, GEP64(allocR, index)));
         }
-        else if (CallConv::structParamByValue(typeFuncBc, typeParam))
+        else if (typeFuncBc->getCallConv().structParamByValue(typeParam))
         {
             const auto v0 = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, index));
             params.push_back(builder.CreateLoad(IX_TY(typeParam->sizeOf * 8), v0));
