@@ -18,11 +18,11 @@ SourceFile* EnumerateModuleJob::addFileToModule(Module*              theModule,
                                                 uint64_t             writeTime,
                                                 const SourceFile*    prePass,
                                                 Module*              imported,
-                                                FileFlags            flags)
+                                                FileFlags            fileFlags)
 {
     const auto file = Allocator::alloc<SourceFile>();
     file->addFlag(theModule->is(ModuleKind::Test) ? FILE_FROM_TESTS : 0);
-    file->addFlag(flags);
+    file->addFlag(fileFlags);
     file->name     = fileName;
     file->imported = imported;
 

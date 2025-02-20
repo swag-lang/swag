@@ -105,7 +105,7 @@ namespace OS
         CloseHandle(file);
 
         icon.grpHeader.resize(3 * sizeof(WORD) + header.count * sizeof(GRPICONENTRY));
-        auto pGrpHeader      = reinterpret_cast<GRPICONHEADER*>(icon.grpHeader.data());
+        const auto pGrpHeader      = reinterpret_cast<GRPICONHEADER*>(icon.grpHeader.data());
         pGrpHeader->reserved = 0;
         pGrpHeader->type     = 1;
         pGrpHeader->count    = header.count;
@@ -139,6 +139,6 @@ namespace OS
         const BOOL result1 = EndUpdateResourceW(handle, FALSE);
         return result0 && result1;
     }
-};
+}
 
 #endif

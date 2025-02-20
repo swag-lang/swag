@@ -1,6 +1,5 @@
 #pragma once
 #include "Report/ErrorContext.h"
-#include "Report/ErrorIds.h"
 #include "Semantic/Scope.h"
 #include "Syntax/AstNode.h"
 #include "Syntax/Tokenizer/Tokenizer.h"

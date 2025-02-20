@@ -113,7 +113,7 @@ void ByteCode::printSourceCode(const ByteCodePrintOptions& options, const ByteCo
 Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
 {
     Utf8       str   = g_ByteCodeOpDesc[static_cast<int>(ip->op)].display;
-    const auto flags = ByteCode::opFlags(ip->op);
+    const auto flags = opFlags(ip->op);
 
     if (ip->hasFlag(BCI_IMM_A) || flags.has(OPF_READ_VAL32_A) || flags.has(OPF_READ_VAL64_A))
     {
@@ -351,14 +351,14 @@ void ByteCode::fillPrintInstruction(const ByteCodePrintOptions& options, ByteCod
     line.rank += form("%08d", i);
 
     // Instruction name
-    line.name += ByteCode::opName(ip->op);
+    line.name += opName(ip->op);
 
     // Parameters
-    const auto opFlags = ByteCode::opFlags(ip->op);
-    line.instRef += getInstructionReg("A", ip->a, opFlags.has(OPF_WRITE_A), opFlags.has(OPF_READ_A), opFlags.has(OPF_READ_VAL32_A | OPF_READ_VAL64_A) || (opFlags.has(OPF_IMM_A) && ip->hasFlag(BCI_IMM_A)));
-    line.instRef += getInstructionReg("B", ip->b, opFlags.has(OPF_WRITE_B), opFlags.has(OPF_READ_B), opFlags.has(OPF_READ_VAL32_B | OPF_READ_VAL64_B) || (opFlags.has(OPF_IMM_B) && ip->hasFlag(BCI_IMM_B)));
-    line.instRef += getInstructionReg("C", ip->c, opFlags.has(OPF_WRITE_C), opFlags.has(OPF_READ_C), opFlags.has(OPF_READ_VAL32_C | OPF_READ_VAL64_C) || (opFlags.has(OPF_IMM_C) && ip->hasFlag(BCI_IMM_C)));
-    line.instRef += getInstructionReg("D", ip->d, opFlags.has(OPF_WRITE_D), opFlags.has(OPF_READ_D), opFlags.has(OPF_READ_VAL32_D | OPF_READ_VAL64_D) || (opFlags.has(OPF_IMM_D) && ip->hasFlag(BCI_IMM_D)));
+    const auto flags = opFlags(ip->op);
+    line.instRef += getInstructionReg("A", ip->a, flags.has(OPF_WRITE_A), flags.has(OPF_READ_A), flags.has(OPF_READ_VAL32_A | OPF_READ_VAL64_A) || (flags.has(OPF_IMM_A) && ip->hasFlag(BCI_IMM_A)));
+    line.instRef += getInstructionReg("B", ip->b, flags.has(OPF_WRITE_B), flags.has(OPF_READ_B), flags.has(OPF_READ_VAL32_B | OPF_READ_VAL64_B) || (flags.has(OPF_IMM_B) && ip->hasFlag(BCI_IMM_B)));
+    line.instRef += getInstructionReg("C", ip->c, flags.has(OPF_WRITE_C), flags.has(OPF_READ_C), flags.has(OPF_READ_VAL32_C | OPF_READ_VAL64_C) || (flags.has(OPF_IMM_C) && ip->hasFlag(BCI_IMM_C)));
+    line.instRef += getInstructionReg("D", ip->d, flags.has(OPF_WRITE_D), flags.has(OPF_READ_D), flags.has(OPF_READ_VAL32_D | OPF_READ_VAL64_D) || (flags.has(OPF_IMM_D) && ip->hasFlag(BCI_IMM_D)));
     line.instRef.trim();
 
     // Flags

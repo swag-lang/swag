@@ -289,7 +289,7 @@ void Log::write(const char* message, const LogWriteContext* logContext)
 
 void Log::print(const Utf8& message, const LogWriteContext* logContext)
 {
-    if (message.length() == 0)
+    if (message.empty())
         return;
     write(message.cstr(), logContext);
 }
@@ -339,7 +339,7 @@ void Log::printHeaderCentered(const Utf8& header, const Utf8& message, LogColor 
     write(" ");
     setColor(msgColor);
     print(message);
-    if (!message.length() || message.back() != '\n')
+    if (message.empty() || message.back() != '\n')
         writeEol();
 }
 

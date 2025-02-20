@@ -8,8 +8,11 @@
 #include "Syntax/AstNode.h"
 #include "Wmf/Module.h"
 
-Mutex g_FreeStackMutex;
-void* g_FirstFreeStack = nullptr;
+namespace
+{
+    Mutex g_FreeStackMutex;
+    void* g_FirstFreeStack = nullptr;
+}
 
 ByteCodeRunContext::~ByteCodeRunContext()
 {

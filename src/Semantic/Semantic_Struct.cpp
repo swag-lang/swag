@@ -892,25 +892,25 @@ bool Semantic::postResolveStruct(SemanticContext* context)
         typeInfo->collectUsingFields(usingFields);
         VectorNative<TypeInfoStruct*> here;
         VectorNative<AstNode*>        where;
-        for (const auto c : usingFields)
+        for (const auto key : usingFields | std::views::keys)
         {
-            const auto     typeStruct = c.first->typeInfo->getStructOrPointedStruct();
+            const auto     typeStruct = key->typeInfo->getStructOrPointedStruct();
             const uint32_t idx        = here.find(typeStruct);
             if (idx != UINT32_MAX)
             {
-                Diagnostic err(c.first->declNode, formErr(Err0019, typeStruct->getDisplayNameC()));
+                Diagnostic err(key->declNode, formErr(Err0019, typeStruct->getDisplayNameC()));
                 err.addNote(where[idx], toNte(Nte0194));
                 err.addNote(formNte(Nte0011, typeInfo->getDisplayNameC(), typeStruct->getDisplayNameC()));
                 return context->report(err);
             }
 
             here.push_back(typeStruct);
-            where.push_back(c.first->declNode);
+            where.push_back(key->declNode);
         }
     }
 
     // Generate all functions associated with a struct
-    auto sourceFile = context->sourceFile;
+    const auto sourceFile = context->sourceFile;
     if (!typeInfo->isGeneric())
     {
         node->removeAstFlag(AST_NO_BYTECODE);
@@ -918,7 +918,7 @@ bool Semantic::postResolveStruct(SemanticContext* context)
         SWAG_ASSERT(!node->hasExtByteCode() || !node->extByteCode()->byteCodeJob);
 
         node->allocateExtension(ExtensionKind::ByteCode);
-        auto extByteCode         = node->extByteCode();
+        const auto extByteCode         = node->extByteCode();
         extByteCode->byteCodeJob = ByteCodeGenJob::newJob(context->baseJob->dependentJob, sourceFile, node);
         node->byteCodeFct        = ByteCodeGen::emitStruct;
 

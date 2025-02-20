@@ -6,18 +6,20 @@
 #include "Report/Report.h"
 #include "Wmf/Workspace.h"
 
-void newScriptFile()
+namespace
 {
-    if (Path{g_CommandLine.fileName}.extension().empty())
-        g_CommandLine.fileName.append(".swgs");
-    std::ofstream file(g_CommandLine.fileName);
-    if (!file.is_open())
+    void newScriptFile()
     {
-        Report::errorOS(formErr(Fat0020, g_CommandLine.fileName.cstr()));
-        OS::exit(-1);
-    }
+        if (Path{g_CommandLine.fileName}.extension().empty())
+            g_CommandLine.fileName.append(".swgs");
+        std::ofstream file(g_CommandLine.fileName);
+        if (!file.is_open())
+        {
+            Report::errorOS(formErr(Fat0020, g_CommandLine.fileName.cstr()));
+            OS::exit(-1);
+        }
 
-    const auto content = R"(
+        const auto content = R"(
 // Swag script file
 #dependencies
 {
@@ -31,11 +33,10 @@ void newScriptFile()
 }
 
 )";
-
-    file << content;
-
-    g_Log.messageInfo(form("=> script file [[%s]] has been created", g_CommandLine.fileName.cstr()));
-    g_Log.messageInfo(form("=> type [[swag script -f:%s]] or [[swag %s]] to run that script", g_CommandLine.fileName.cstr(), g_CommandLine.fileName.cstr()));
+        file << content;
+        g_Log.messageInfo(form("=> script file [[%s]] has been created", g_CommandLine.fileName.cstr()));
+        g_Log.messageInfo(form("=> type [[swag script -f:%s]] or [[swag %s]] to run that script", g_CommandLine.fileName.cstr(), g_CommandLine.fileName.cstr()));
+    }
 }
 
 void Workspace::newModule(const Utf8& moduleName) const

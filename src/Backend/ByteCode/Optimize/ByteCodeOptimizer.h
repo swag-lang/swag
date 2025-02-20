@@ -1,7 +1,7 @@
 #pragma once
 #include "Backend/ByteCode/ByteCode.h"
-#include "Backend/ByteCode/ByteCodeOp.h"
 #include "ByteCodeOptContext.h"
+
 struct ByteCode;
 struct ByteCodeGenContext;
 struct ByteCodeInstruction;

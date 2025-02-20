@@ -28,7 +28,7 @@ namespace
             return err;
         }
 
-        AstIdentifier* prevIdentifier = nullptr;
+        const AstIdentifier* prevIdentifier = nullptr;
         if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->is(AstNodeKind::Identifier))
             prevIdentifier = castAst<AstIdentifier>(identifierRef->previousResolvedNode, AstNodeKind::Identifier);
 

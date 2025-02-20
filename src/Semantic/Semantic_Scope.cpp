@@ -230,7 +230,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
     {
         if (startScope->is(ScopeKind::Impl))
         {
-            Semantic::waitAllStructInterfaces(job, startScope->parentScope->owner->typeInfo);
+            waitAllStructInterfaces(job, startScope->parentScope->owner->typeInfo);
             YIELD();
         }
 

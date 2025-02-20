@@ -29,7 +29,7 @@ namespace OS
         Path               g_WinSdkFolder;
     }
 
-    bool getWinSdk()
+    static bool getWinSdk()
     {
         static Mutex mt;
         ScopedLock   lk(mt);
@@ -367,7 +367,7 @@ namespace OS
 
         Utf8 message(messageBuffer, static_cast<uint32_t>(size));
         message.trim();
-        if (message.length() && message.back() == '.')
+        if (!message.empty() && message.back() == '.')
             message.removeBack();
 
         // Free the buffer.
@@ -525,7 +525,7 @@ namespace OS
     };
 #pragma pack(pop)
 
-    void setThreadName(uint32_t dwThreadID, const char* threadName)
+    static void setThreadName(uint32_t dwThreadID, const char* threadName)
     {
         ThreadNameInfo info;
         info.dwType     = 0x1000;
@@ -540,11 +540,6 @@ namespace OS
         SWAG_EXCEPT(SWAG_EXCEPTION_EXECUTE_HANDLER)
         {
         }
-    }
-
-    void setThreadName(const char* threadName)
-    {
-        setThreadName(GetCurrentThreadId(), threadName);
     }
 
     void setThreadName(std::thread* thread, const char* threadName)
@@ -668,6 +663,7 @@ namespace OS
         {
             case IDCANCEL:
                 exit(-1);
+                break;
             case IDTRYAGAIN:
                 DebugBreak();
                 break;
@@ -940,7 +936,7 @@ namespace OS
     namespace
     {
         thread_local SCBE_X64 g_X64GenFFI;
-    };
+    }
 
     void ffi(ByteCodeRunContext* context, void* foreignPtr, const TypeInfoFuncAttr* typeInfoFunc, const VectorNative<CPUPushParam>& pushCPUParams, void* retCopyAddr)
     {

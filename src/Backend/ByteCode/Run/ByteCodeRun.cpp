@@ -414,13 +414,11 @@ namespace
 
 bool ByteCodeRun::run(ByteCodeRunContext* runContext)
 {
-    const auto module = runContext->jc.sourceFile->module;
-
     while (true)
     {
         SWAG_TRY
         {
-            return module->runner.runLoop(runContext);
+            return runLoop(runContext);
         }
         SWAG_EXCEPT(exceptionHandler(runContext, SWAG_GET_EXCEPTION_INFOS()))
         {

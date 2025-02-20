@@ -669,7 +669,7 @@ void ByteCodeDebugger::enterDebugger(const ByteCodeRunContext* context)
 
     g_Log.print(form("build configuration            = [[%s]]\n", g_CommandLine.buildCfg.cstr()));
 
-    Module* module = nullptr;
+    const Module* module = nullptr;
     if (context->bc->sourceFile)
         module = context->bc->sourceFile->module;
     if (!module && context->bc->node && context->bc->node->token.sourceFile)

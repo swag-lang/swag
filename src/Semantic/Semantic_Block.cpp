@@ -250,6 +250,7 @@ bool Semantic::resolveFor(SemanticContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveSwitchAfterExpr(SemanticContext* context)
 {
     const auto node       = context->node;

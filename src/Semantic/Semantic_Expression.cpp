@@ -25,9 +25,9 @@ bool Semantic::checkIsConstExpr(JobContext* context, bool test, AstNode* express
     }
 
     Utf8 message;
-    if (errMsg.length() && errParam.length())
+    if (!errMsg.empty() && !errParam.empty())
         message = form(errMsg.cstr(), errParam.cstr());
-    else if (errMsg.length())
+    else if (!errMsg.empty())
         message = errMsg;
     else
         message = toErr(Err0040);

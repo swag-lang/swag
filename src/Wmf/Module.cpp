@@ -237,7 +237,7 @@ bool Module::isValidName(const Utf8& name, Utf8& errorStr)
     Utf8 reason;
     bool error = false;
 
-    if (name.length() == 0)
+    if (name.empty())
     {
         error  = true;
         reason = "name is empty";

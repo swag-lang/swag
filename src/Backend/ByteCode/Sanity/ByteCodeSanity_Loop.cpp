@@ -27,9 +27,9 @@ bool ByteCodeSanity::backTrace(ByteCodeSanityState* state, uint32_t reg)
 
         // Store the last value of a given register, to restore it at the end, once the backtrace is done
         bool here = false;
-        for (const auto& it : map)
+        for (const auto& key : map | std::views::keys)
         {
-            if (it.first == reg)
+            if (key == reg)
             {
                 here = true;
                 break;

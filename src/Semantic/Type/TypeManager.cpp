@@ -7,11 +7,15 @@
 #include "Wmf/Workspace.h"
 
 TypeManager* g_TypeMgr = nullptr;
-TypeInfo*    g_LiteralTypeToType[static_cast<int>(LiteralType::TypeMax)];
 
-thread_local Map<uint32_t, TypeInfoNative*> g_MapUntypedValuesI;
-thread_local Map<uint32_t, TypeInfoNative*> g_MapUntypedValuesB;
-thread_local Map<uint32_t, TypeInfoNative*> g_MapUntypedValuesF;
+namespace
+{
+    TypeInfo* g_LiteralTypeToType[static_cast<int>(LiteralType::TypeMax)];
+
+    thread_local Map<uint32_t, TypeInfoNative*> g_MapUntypedValuesI;
+    thread_local Map<uint32_t, TypeInfoNative*> g_MapUntypedValuesB;
+    thread_local Map<uint32_t, TypeInfoNative*> g_MapUntypedValuesF;
+}
 
 void TypeManager::setup()
 {

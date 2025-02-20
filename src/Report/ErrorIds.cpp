@@ -1,12 +1,15 @@
 #include "pch.h"
 #include "Report/ErrorIds.h"
 
+namespace
+{
 #undef SWAG_ERROR
 #define SWAG_ERROR(__enum) #__enum
-const char* g_ErrList[] = {
+    const char* g_ErrList[] = {
 #include "ErrorList.h"
 
-};
+    };
+}
 
 Utf8 g_E[MaxErrors];
 #undef SWAG_ERROR

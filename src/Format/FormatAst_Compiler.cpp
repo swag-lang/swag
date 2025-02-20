@@ -181,7 +181,7 @@ bool FormatAst::outputCompilerConstraints(FormatContext& context, const VectorNa
 
     for (uint32_t i = 0; i < constraints.size(); i++)
     {
-        auto node = constraints[i];
+        const auto node = constraints[i];
 
         if (node->is(AstNodeKind::WhereConstraint))
             concat->addString("where");
@@ -206,7 +206,6 @@ bool FormatAst::outputCompilerConstraints(FormatContext& context, const VectorNa
         if (i == constraints.size() - 1)
             break;
 
-        node = constraints[i + 1];
         concat->addEol();
         concat->addIndent(context.indent);
     }

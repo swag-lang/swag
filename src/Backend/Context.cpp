@@ -28,8 +28,8 @@ namespace
 #ifdef SWAG_DEV_MODE
         SWAG_ASSERT(byteCodePtr != g_SwagPatchMarker);
 #endif
-        const auto        bc       = static_cast<ByteCode*>(ByteCode::undoByteCodeLambda(byteCodePtr));
-        TypeInfoFuncAttr* typeFunc = castTypeInfo<TypeInfoFuncAttr>(bc->node ? bc->node->typeInfo : bc->typeInfoFunc, TypeInfoKind::FuncAttr);
+        const auto              bc       = static_cast<ByteCode*>(ByteCode::undoByteCodeLambda(byteCodePtr));
+        const TypeInfoFuncAttr* typeFunc = castTypeInfo<TypeInfoFuncAttr>(bc->node ? bc->node->typeInfo : bc->typeInfoFunc, TypeInfoKind::FuncAttr);
 
         VectorNative<Register*> returnRegisters;
         VectorNative<Register*> paramRegisters;
@@ -47,8 +47,7 @@ namespace
         const auto node = bc->node ? bc->node : saveNode;
         SWAG_ASSERT(node);
 
-        const auto module         = node->token.sourceFile->module;
-        bool       stackAllocated = false;
+        bool stackAllocated = false;
 
         if (!g_RunContext->stack)
         {
@@ -103,8 +102,8 @@ namespace
         g_RunContext->firstRC = g_RunContext->curRC;
         ByteCodeRun::enterByteCode(g_RunContext, g_RunContext->bc);
 
-        g_ByteCodeStackTrace->push({nullptr, nullptr});
-        const auto result = module->runner.run(g_RunContext);
+        g_ByteCodeStackTrace->push({.bc = nullptr, .ip = nullptr});
+        const auto result = ByteCodeRun::run(g_RunContext);
 
         g_RunContext->sp            = saveSp;
         g_RunContext->spAlt         = saveSpAlt;

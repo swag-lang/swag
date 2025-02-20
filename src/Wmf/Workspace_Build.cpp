@@ -359,28 +359,31 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, const Job* depJob)
     return note;
 }
 
-bool errorPendingCycle(Job* pendingJob, VectorNative<Job*>& waitingJobs, Set<Job*>& done, VectorNative<Job*>& cycle)
+namespace
 {
-    if (waitingJobs.empty())
-        return false;
-
-    for (auto depJob : waitingJobs)
+    bool errorPendingCycle(Job* pendingJob, VectorNative<Job*>& waitingJobs, Set<Job*>& done, VectorNative<Job*>& cycle)
     {
-        if (depJob == pendingJob)
-            return true;
-
-        if (done.contains(depJob))
+        if (waitingJobs.empty())
             return false;
-        done.insert(depJob);
 
-        if (errorPendingCycle(pendingJob, depJob->waitingJobs, done, cycle))
+        for (auto depJob : waitingJobs)
         {
-            cycle.push_front(depJob);
-            return true;
-        }
-    }
+            if (depJob == pendingJob)
+                return true;
 
-    return false;
+            if (done.contains(depJob))
+                return false;
+            done.insert(depJob);
+
+            if (errorPendingCycle(pendingJob, depJob->waitingJobs, done, cycle))
+            {
+                cycle.push_front(depJob);
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
 
 void Workspace::errorPendingJobs(const Vector<PendingJob>& pendingJobs)
@@ -847,13 +850,13 @@ bool Workspace::build()
                 g_Log.messageHeaderCentered("Workspace", workspacePath.filename());
             else
             {
-                const auto targetFullName = g_Workspace->getTargetFullName(g_CommandLine.buildCfg, g_CommandLine.target);
+                const auto targetFullName = getTargetFullName(g_CommandLine.buildCfg, g_CommandLine.target);
                 g_Log.messageHeaderCentered("Workspace", form("%s [%s]", workspacePath.filename().cstr(), targetFullName.cstr()));
             }
         }
         else
         {
-            const auto targetFullName = g_Workspace->getTargetFullName(g_CommandLine.buildCfg, g_CommandLine.target);
+            const auto targetFullName = getTargetFullName(g_CommandLine.buildCfg, g_CommandLine.target);
             const Path p              = g_CommandLine.fileName;
             g_Log.messageHeaderCentered("Script", form("%s [%s]", p.filename().cstr(), targetFullName.cstr()));
         }

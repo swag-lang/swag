@@ -636,7 +636,7 @@ void Semantic::disableCompilerIfBlock(SemanticContext* context, AstCompilerIfBlo
     // Do this after the clean, to avoid race conditions on the 'methods' array
     for (const auto& typeStructPair : block->methodsCount)
     {
-        auto typeStruct = typeStructPair.typeInfo;
+        const auto typeStruct = typeStructPair.typeInfo;
         decreaseMethodCount(typeStructPair.funcNode, typeStruct);
     }
 

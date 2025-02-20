@@ -1584,7 +1584,6 @@ void SCBE_X64::emitOpBinary(CPUReg memReg, uint64_t memOffset, uint64_t value, C
         if (value == 1)
         {
             SWAG_ASSERT(memReg == CPUReg::RAX);
-            value = min(value, SCBE_CPU::getNumBits(opBits) - 1);
             emitREX(concat, opBits);
             emitSpecB8(concat, 0xD1, opBits);
             concat.addU8(static_cast<uint8_t>(op) & ~0xC0);

@@ -100,7 +100,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdSet(ByteCodeRunContext* context, const B
 
     if (arg.split.size() == 1)
     {
-        g_ByteCodeDebugger.printSet(context);
+        printSet(context);
         return BcDbgCommandResult::Continue;
     }
 

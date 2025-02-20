@@ -1145,7 +1145,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
         {
             Vector<Utf8> tkn;
             Utf8::tokenize(line, '|', tkn);
-            if (tkn.size() == 0)
+            if (tkn.empty())
                 continue;
 
             if (tkn.back().empty())
