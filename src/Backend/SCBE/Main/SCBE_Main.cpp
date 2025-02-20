@@ -129,14 +129,14 @@ void SCBE::emitMain(SCBE_CPU& pp)
 
     // Set default context in TLS
     pp.pushParams.clear();
-    pp.pushParams.push_back({CPUPushParamType::RelocV, pp.symPI_contextTlsId});
-    pp.pushParams.push_back({CPUPushParamType::RelocV, pp.symPI_defaultContext});
+    pp.pushParams.push_back({.type = CPUPushParamType::RelocV, .value = pp.symPI_contextTlsId});
+    pp.pushParams.push_back({.type = CPUPushParamType::RelocV, .value = pp.symPI_defaultContext});
     emitInternalCallCPUParams(pp, g_LangSpec->name_priv_tlsSetValue, pp.pushParams);
 
     // Setup runtime
     const auto rtFlags = getRuntimeFlags();
     pp.pushParams.clear();
-    pp.pushParams.push_back({CPUPushParamType::Imm64, rtFlags});
+    pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = rtFlags, .typeInfo = g_TypeMgr->typeInfoU64});
     emitInternalCallCPUParams(pp, g_LangSpec->name_priv_setupRuntime, pp.pushParams);
 
     // Load all dependencies
@@ -151,14 +151,14 @@ void SCBE::emitMain(SCBE_CPU& pp)
         {
             nameLib = nameLib.filename();
             pp.pushParams.clear();
-            pp.pushParams.push_back({CPUPushParamType::GlobalString, reinterpret_cast<uint64_t>(nameLib.cstr())});
-            pp.pushParams.push_back({CPUPushParamType::Imm, nameLib.length()});
+            pp.pushParams.push_back({.type = CPUPushParamType::GlobalString, .value = reinterpret_cast<uint64_t>(nameLib.cstr())});
+            pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = nameLib.length()});
             emitInternalCallCPUParams(pp, g_LangSpec->name_priv_loaddll, pp.pushParams);
         }
     }
 
     pp.pushParams.clear();
-    pp.pushParams.push_back({CPUPushParamType::RelocAddr, pp.symPI_processInfos});
+    pp.pushParams.push_back({.type = CPUPushParamType::RelocAddr, .value = pp.symPI_processInfos});
 
     // Call to global init of all dependencies
     for (const auto dep : moduleDependencies)
@@ -297,9 +297,9 @@ void SCBE::emitGlobalPreMain(SCBE_CPU& pp)
 
     // Copy process infos passed as a parameter to the process info struct of this module
     pp.pushParams.clear();
-    pp.pushParams.push_back({CPUPushParamType::RelocAddr, pp.symPI_processInfos});
-    pp.pushParams.push_back({CPUPushParamType::Reg, 0});
-    pp.pushParams.push_back({CPUPushParamType::Imm, sizeof(SwagProcessInfos)});
+    pp.pushParams.push_back({.type = CPUPushParamType::RelocAddr, .value = pp.symPI_processInfos});
+    pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .value = 0});
+    pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = sizeof(SwagProcessInfos)});
     emitInternalCallCPUParams(pp, g_LangSpec->name_memcpy, pp.pushParams);
 
     // Call to #premain functions
@@ -350,9 +350,9 @@ void SCBE::emitGlobalInit(SCBE_CPU& pp)
 
     // Copy process infos passed as a parameter to the process info struct of this module
     pp.pushParams.clear();
-    pp.pushParams.push_back({CPUPushParamType::RelocAddr, pp.symPI_processInfos});
-    pp.pushParams.push_back({CPUPushParamType::Reg, 0});
-    pp.pushParams.push_back({CPUPushParamType::Imm, sizeof(SwagProcessInfos)});
+    pp.pushParams.push_back({.type = CPUPushParamType::RelocAddr, .value = pp.symPI_processInfos});
+    pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .value = 0});
+    pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = sizeof(SwagProcessInfos)});
     emitInternalCallCPUParams(pp, g_LangSpec->name_memcpy, pp.pushParams);
 
     // Thread local storage

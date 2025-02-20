@@ -1,6 +1,5 @@
 #pragma once
 #include "Backend/ByteCode/Register.h"
-#include "Backend/SCBE/Encoder/SCBE_CPU.h"
 #include "Threading/Job.h"
 #include "Wmf/SourceFile.h"
 
@@ -119,8 +118,6 @@ struct ByteCodeRunContext
 
     VectorNative<uint32_t> registersRC;
     VectorNative<Register> registers;
-
-    VectorNative<CPUPushParam> ffiPushCPUParams;
 
     JobContext* callerContext = nullptr;
 

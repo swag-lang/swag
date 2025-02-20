@@ -13,12 +13,11 @@ struct AstNode;
 
 enum class CPUPushParamType
 {
-    Reg,
+    SwagRegister,
     RegAdd,
     RegMul,
-    RAX,
-    Imm,
-    Imm64,
+    CPURegister,
+    Constant,
     RelocV,
     RelocAddr,
     Addr,
@@ -28,9 +27,9 @@ enum class CPUPushParamType
 
 struct CPUPushParam
 {
-    CPUPushParamType type     = CPUPushParamType::Reg;
-    uint64_t         reg      = 0;
-    uint64_t         val      = 0;
+    CPUPushParamType type     = CPUPushParamType::SwagRegister;
+    uint64_t         value      = 0;
+    uint64_t         value2      = 0;
     TypeInfo*        typeInfo = nullptr;
 };
 

@@ -1,5 +1,4 @@
 #pragma once
-#include "Backend/SCBE/Encoder/SCBE_CPU.h"
 
 struct BackendTarget;
 struct BuildParameters;
@@ -7,6 +6,7 @@ struct ByteCodeRunContext;
 struct Module;
 struct TypeInfoFuncAttr;
 struct BuildCfg;
+struct CPUPushParam;
 
 namespace OS
 {

@@ -433,13 +433,13 @@ void SCBE::emitInternalPanic(SCBE_CPU& pp, const char* msg)
     const auto np   = node->token.sourceFile->path;
 
     pp.pushParams.clear();
-    pp.pushParams.push_back({.type = CPUPushParamType::GlobalString, .reg = reinterpret_cast<uint64_t>(np.cstr())});
-    pp.pushParams.push_back({.type = CPUPushParamType::Imm, .reg = node->token.startLocation.line});
-    pp.pushParams.push_back({.type = CPUPushParamType::Imm, .reg = node->token.startLocation.column});
+    pp.pushParams.push_back({.type = CPUPushParamType::GlobalString, .value = reinterpret_cast<uint64_t>(np.cstr())});
+    pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = node->token.startLocation.line});
+    pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = node->token.startLocation.column});
     if (msg)
-        pp.pushParams.push_back({.type = CPUPushParamType::GlobalString, .reg = reinterpret_cast<uint64_t>(msg)});
+        pp.pushParams.push_back({.type = CPUPushParamType::GlobalString, .value = reinterpret_cast<uint64_t>(msg)});
     else
-        pp.pushParams.push_back({.type = CPUPushParamType::Imm, .reg = 0});
+        pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = 0});
     emitInternalCallCPUParams(pp, g_LangSpec->name_priv_panic, pp.pushParams);
 }
 
