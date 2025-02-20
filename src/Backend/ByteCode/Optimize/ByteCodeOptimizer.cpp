@@ -754,8 +754,8 @@ bool ByteCodeOptimizer::optimizeStep1(ByteCodeOptContext* context)
     OPT_PASS_O1(optimizePassConst);
     
     OPT_PASS_O2(optimizePassJump);
-    OPT_PASS_O2(optimizePassDeadCode);
     
+    OPT_PASS_O1(optimizePassDeadCode);
     OPT_PASS_O1(optimizePassDupCopyRBRA);
     OPT_PASS_O1(optimizePassDupSetRA);
     
