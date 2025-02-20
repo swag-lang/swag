@@ -134,10 +134,6 @@ namespace
                     pp.emitLoad(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, value, OpBits::B64);
                     break;
 
-                case CPUPushParamType::Return:
-                    pp.emitLoadAddress(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, value);
-                    break;
-
                 case CPUPushParamType::LoadAddress:
                     pp.emitLoadAddress(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, value);
                     break;
@@ -205,39 +201,45 @@ namespace
             const auto type  = params[idxParam].typeInfo ? params[idxParam].typeInfo : g_TypeMgr->typeInfoU64;
             const auto value = params[idxParam].value;
 
-            if (params[idxParam].type == CPUPushParamType::ReturnAddress)
+            switch (params[idxParam].type)
             {
-                pp.emitLoad(CPUReg::RAX, value, OpBits::B64);
-                pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
-            }
-            else if (params[idxParam].type == CPUPushParamType::ReturnStackAddress)
-            {
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, value, OpBits::B64);
-                pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
-            }
-            else if (params[idxParam].type == CPUPushParamType::Return)
-            {
-                pp.emitLoadAddress(CPUReg::RAX, CPUReg::RDI, value);
-                pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
-            }
-            else if (cc.structParamByValue(type))
-            {
-                SWAG_ASSERT(params[idxParam].type == CPUPushParamType::SwagRegister);
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(value), OpBits::B64);
-                pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, BackendEncoder::getOpBitsByBytes(type->sizeOf));
-                pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, BackendEncoder::getOpBitsByBytes(type->sizeOf));
-            }
-            else if (type->isStruct())
-            {
-                SWAG_ASSERT(params[idxParam].type == CPUPushParamType::SwagRegister);
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(value), OpBits::B64);
-                pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
-            }
-            else
-            {
-                SWAG_ASSERT(params[idxParam].type == CPUPushParamType::SwagRegister);
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(value), BackendEncoder::getOpBitsByBytes(type->sizeOf));
-                pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, BackendEncoder::getOpBitsByBytes(type->sizeOf));
+                case CPUPushParamType::ReturnAddress:
+                    pp.emitLoad(CPUReg::RAX, value, OpBits::B64);
+                    pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
+                    break;
+
+                case CPUPushParamType::ReturnStackAddress:
+                    pp.emitLoad(CPUReg::RAX, CPUReg::RDI, value, OpBits::B64);
+                    pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
+                    break;
+
+                case CPUPushParamType::LoadAddress:
+                    pp.emitLoadAddress(CPUReg::RAX, CPUReg::RDI, value);
+                    pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
+                    break;
+
+                case CPUPushParamType::SwagRegister:
+                    if (cc.structParamByValue(type))
+                    {
+                        pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(value), OpBits::B64);
+                        pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, BackendEncoder::getOpBitsByBytes(type->sizeOf));
+                        pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, BackendEncoder::getOpBitsByBytes(type->sizeOf));
+                    }
+                    else if (type->isStruct())
+                    {
+                        pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(value), OpBits::B64);
+                        pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
+                    }
+                    else
+                    {
+                        pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(value), BackendEncoder::getOpBitsByBytes(type->sizeOf));
+                        pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, BackendEncoder::getOpBitsByBytes(type->sizeOf));
+                    }
+                    break;
+
+                default:
+                    SWAG_ASSERT(false);
+                    break;
             }
 
             memOffset += sizeof(uint64_t); // Push is always aligned
@@ -353,7 +355,7 @@ void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
         else if (CallConv::returnByStackAddress(typeFuncBc))
             pushParams.push_back({.type = CPUPushParamType::ReturnStackAddress, .value = resultOffsetRT});
         else
-            pushParams.push_back({.type = CPUPushParamType::Return, .value = resultOffsetRT});
+            pushParams.push_back({.type = CPUPushParamType::LoadAddress, .value = resultOffsetRT});
     }
 
     // Add all C variadic parameters

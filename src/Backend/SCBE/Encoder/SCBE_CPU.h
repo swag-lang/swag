@@ -22,7 +22,6 @@ enum class CPUPushParamType
     SymRelocationAddress,
     LoadAddress,
     GlobalString,
-    Return,
     ReturnAddress,
     ReturnStackAddress,
 };
