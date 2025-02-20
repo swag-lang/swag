@@ -2601,7 +2601,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context,
     context->castStructStructFields.clear();
     auto& stack = context->castStructStructFields;
 
-    stack.push_back({fromStruct, 0, nullptr});
+    stack.push_back({.typeStruct = fromStruct, .offset = 0, .field = nullptr});
     while (!stack.empty())
     {
         const auto it = stack.back();
@@ -2695,7 +2695,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context,
 
                 foundField  = field;
                 foundStruct = typeStruct;
-                stack.push_back({typeStruct, it.offset + field->offset, field});
+                stack.push_back({.typeStruct = typeStruct, .offset = it.offset + field->offset, .field = field});
             }
         }
     }
@@ -2710,7 +2710,7 @@ bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fro
     context->castCollectInterfaceField.clear();
     auto& stack = context->castCollectInterfaceField;
 
-    stack.push_back({fromTypeStruct, 0, nullptr, nullptr});
+    stack.push_back({.typeStruct = fromTypeStruct, .offset = 0, .field = nullptr, .fieldAccessName = nullptr});
     while (!stack.empty())
     {
         const auto it = stack.back();
@@ -2764,7 +2764,7 @@ bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fro
                 accessName += ".";
             accessName += field->name;
 
-            stack.push_back({typeStruct, it.offset + field->offset, field, accessName});
+            stack.push_back({.typeStruct = typeStruct, .offset = it.offset + field->offset, .field = field, .fieldAccessName = accessName});
         }
     }
 

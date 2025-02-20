@@ -1263,7 +1263,7 @@ AstNode* AstRefSubDecl::clone(CloneContext& context)
     const auto newNode = Ast::newNode<AstRefSubDecl>();
     newNode->copyFrom(context, this);
     newNode->refSubDecl = refSubDecl;
-    context.nodeRefsToUpdate.push_back({newNode, &newNode->refSubDecl});
+    context.nodeRefsToUpdate.push_back({.node = newNode, .ref = &newNode->refSubDecl});
     return newNode;
 }
 
@@ -1290,7 +1290,7 @@ AstNode* AstMakePointer::clone(CloneContext& context)
         }
 
         newNode->lambda = lambda;
-        context.nodeRefsToUpdate.push_back({newNode, reinterpret_cast<AstNode**>(&newNode->lambda)});
+        context.nodeRefsToUpdate.push_back({.node = newNode, .ref = reinterpret_cast<AstNode**>(&newNode->lambda)});
     }
 
     return newNode;

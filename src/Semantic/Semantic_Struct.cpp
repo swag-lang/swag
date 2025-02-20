@@ -222,7 +222,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
             Diagnostic err{childFct, childFct->tokenName, formErr(Err0685, childFct->token.text.cstr(), typeInterface->getDisplayNameC())};
             if (childFct->hasSpecFlag(AstFuncDecl::SPEC_FLAG_IMPL))
                 err.addNote(childFct->implLoc, childFct->implLoc, toNte(Nte0126));
-            err.addNote(SemanticError::findClosestMatchesMsg(childFct->token.text, {{typeInterface->scope, 0}}, IdentifierSearchFor::Whatever));
+            err.addNote(SemanticError::findClosestMatchesMsg(childFct->token.text, {{.scope = typeInterface->scope, .flags = 0}}, IdentifierSearchFor::Whatever));
             return context->report(err);
         }
 

@@ -426,7 +426,7 @@ bool Semantic::hasUserOp(SemanticContext* context, const Utf8& name, TypeInfoStr
 
     const auto symbol = leftStruct->scope->symTable.find(name);
     if (symbol)
-        result.push_back({symbol, leftStruct, parentField});
+        result.push_back({.symbol = symbol, .parentStruct = leftStruct, .usingField = parentField});
 
     if (!symbol && name != g_LangSpec->name_opPostCopy && name != g_LangSpec->name_opPostMove && name != g_LangSpec->name_opDrop)
     {

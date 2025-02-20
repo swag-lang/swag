@@ -627,7 +627,7 @@ void Module::addGlobalVarToDrop(const AstNode* node, uint32_t storageOffset, Dat
 
     TypeInfoStruct* typeStruct = castTypeInfo<TypeInfoStruct>(typeNode, TypeInfoKind::Struct);
     SWAG_ASSERT(typeStruct->opDrop || (typeStruct->opUserDropFct && typeStruct->opUserDropFct->isForeign()));
-    globalVarsToDrop.push_back({typeStruct, storageOffset, storageSegment, count});
+    globalVarsToDrop.push_back({.type = typeStruct, .storageOffset = storageOffset, .storageSegment = storageSegment, .count = count});
 }
 
 void Module::addCompilerFunc(ByteCode* bc)

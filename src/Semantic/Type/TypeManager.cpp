@@ -510,9 +510,9 @@ TypeInfoPointer* TypeManager::makePointerTo(TypeInfo* toType, const TypeInfoFlag
     ptrType->computeName();
 
     if (it == mapPointers.end())
-        mapPointers[toType] = {{ptrFlags, ptrType}};
+        mapPointers[toType] = {{.flags = ptrFlags, .pointerTo = ptrType}};
     else
-        mapPointers[toType].push_back({ptrFlags, ptrType});
+        mapPointers[toType].push_back({.flags = ptrFlags, .pointerTo = ptrType});
 
     return ptrType;
 }

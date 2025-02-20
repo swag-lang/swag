@@ -525,7 +525,7 @@ void Diagnostic::collectRanges()
     // The main hint is transformed to a range
     if (hasLocation)
     {
-        ranges.push_back({startLocation, endLocation, hint, errorLevel});
+        ranges.push_back({.startLocation = startLocation, .endLocation = endLocation, .hint = hint, .errorLevel = errorLevel});
         hint.clear();
     }
 

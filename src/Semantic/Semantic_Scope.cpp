@@ -76,7 +76,7 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Collected
             if (!hasEnum.empty())
             {
                 Diagnostic err{identifierRef, formErr(Err0675, identifier->token.cstr(), hasEnum[0].second->getDisplayNameC())};
-                const auto closest = SemanticError::findClosestMatchesMsg(identifier->token.text, {{hasEnum[0].second->scope, 0}}, IdentifierSearchFor::Whatever);
+                const auto closest = SemanticError::findClosestMatchesMsg(identifier->token.text, {{.scope = hasEnum[0].second->scope, .flags = 0}}, IdentifierSearchFor::Whatever);
                 if (!closest.empty())
                     err.addNote(closest);
                 if (hasEnum[0].first)
@@ -336,7 +336,7 @@ void Semantic::collectAlternativeScopes(const AstNode* startNode, VectorNative<C
                     {
                         SharedLock lk1(it0.scope->owner->extMisc()->mutexAltScopes);
                         for (const auto& it1 : it0.scope->owner->extMisc()->alternativeScopes)
-                            toAdd.push_back({it1.scope, it1.flags});
+                            toAdd.push_back({.scope = it1.scope, .flags = it1.flags});
                     }
                 }
             }
@@ -378,7 +378,7 @@ void Semantic::collectAlternativeScopeVars(const AstNode* startNode, VectorNativ
                     {
                         SharedLock lk1(it0.scope->owner->extMisc()->mutexAltScopes);
                         for (const auto& it1 : it0.scope->owner->extMisc()->alternativeScopesVars)
-                            toAdd.push_back({it0.node, it1.node, it1.scope, it1.flags});
+                            toAdd.push_back({.node = it0.node, .leafNode = it1.node, .scope = it1.scope, .flags = it1.flags});
                     }
 
                     // If this is a struct that comes from a generic, we need to also register the generic scope in order

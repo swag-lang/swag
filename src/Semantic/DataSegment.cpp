@@ -306,19 +306,19 @@ uint32_t DataSegment::addComputedValue(const TypeInfo* typeInfo, ComputedValue& 
     {
         case 1:
             *addr                               = computedValue.reg.u8;
-            storedValues8[computedValue.reg.u8] = {storageOffset, addr};
+            storedValues8[computedValue.reg.u8] = {.offset = storageOffset, .addr = addr};
             break;
         case 2:
             *reinterpret_cast<uint16_t*>(addr)    = computedValue.reg.u16;
-            storedValues16[computedValue.reg.u16] = {storageOffset, addr};
+            storedValues16[computedValue.reg.u16] = {.offset = storageOffset, .addr = addr};
             break;
         case 4:
             *reinterpret_cast<uint32_t*>(addr)    = computedValue.reg.u32;
-            storedValues32[computedValue.reg.u32] = {storageOffset, addr};
+            storedValues32[computedValue.reg.u32] = {.offset = storageOffset, .addr = addr};
             break;
         case 8:
             *reinterpret_cast<uint64_t*>(addr)    = computedValue.reg.u64;
-            storedValues64[computedValue.reg.u64] = {storageOffset, addr};
+            storedValues64[computedValue.reg.u64] = {.offset = storageOffset, .addr = addr};
             break;
     }
 
@@ -352,7 +352,7 @@ uint32_t DataSegment::addStringNoLock(const Utf8& str, uint8_t** resultPtr)
     std::copy_n(str.buffer, str.count, addr);
     addr[str.count] = 0;
 
-    iter.first->second = {offset, addr};
+    iter.first->second = {.offset = offset, .addr = addr};
     return offset;
 }
 

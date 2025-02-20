@@ -549,13 +549,13 @@ void SCBEDebug::setLocation(CPUFunction* cpuFct, const ByteCode* bc, const ByteC
     auto& lines = cpuFct->dbgLines.back().lines;
     if (lines.empty())
     {
-        lines.push_back({loc.location->line + 1, byteOffset});
+        lines.push_back({.line = loc.location->line + 1, .byteOffset = byteOffset});
     }
     else if (lines.back().line != loc.location->line + 1)
     {
         if (lines.back().byteOffset == byteOffset)
             lines.back().line = loc.location->line + 1;
         else
-            lines.push_back({loc.location->line + 1, byteOffset});
+            lines.push_back({.line = loc.location->line + 1, .byteOffset = byteOffset});
     }
 }

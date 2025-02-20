@@ -166,50 +166,50 @@ uint32_t getSyntaxColorRgb(SyntaxColorMode /*mode*/, SyntaxColor color, float lu
     switch (color)
     {
         case SyntaxColor::SyntaxCode:
-            rgb = {0xCC, 0xCC, 0xCC};
+            rgb = {.r = 0xCC, .g = 0xCC, .b = 0xCC};
             break;
         case SyntaxColor::SyntaxComment:
-            rgb = {0x6A, 0x99, 0x55};
+            rgb = {.r = 0x6A, .g = 0x99, .b = 0x55};
             break;
         case SyntaxColor::SyntaxCompiler:
-            rgb = {0xAA, 0xAA, 0xAA};
+            rgb = {.r = 0xAA, .g = 0xAA, .b = 0xAA};
             break;
         case SyntaxColor::SyntaxFunction:
-            rgb = {0xFF, 0x74, 0x11};
+            rgb = {.r = 0xFF, .g = 0x74, .b = 0x11};
             break;
         case SyntaxColor::SyntaxConstant:
-            rgb = {0x4E, 0xC9, 0xB0};
+            rgb = {.r = 0x4E, .g = 0xC9, .b = 0xB0};
             break;
         case SyntaxColor::SyntaxIntrinsic:
-            rgb = {0xdc, 0xdc, 0xaa};
+            rgb = {.r = 0xdc, .g = 0xdc, .b = 0xaa};
             break;
         case SyntaxColor::SyntaxType:
-            rgb = {0xf6, 0xcc, 0x86};
+            rgb = {.r = 0xf6, .g = 0xcc, .b = 0x86};
             break;
         case SyntaxColor::SyntaxKeyword:
-            rgb = {0x56, 0x9c, 0xd6};
+            rgb = {.r = 0x56, .g = 0x9c, .b = 0xd6};
             break;
         case SyntaxColor::SyntaxLogic:
-            rgb = {0xd8, 0xa0, 0xdf};
+            rgb = {.r = 0xd8, .g = 0xa0, .b = 0xdf};
             break;
         case SyntaxColor::SyntaxNumber:
-            rgb = {0xb5, 0xce, 0xa8};
+            rgb = {.r = 0xb5, .g = 0xce, .b = 0xa8};
             break;
         case SyntaxColor::SyntaxString:
-            rgb = {0xce, 0x91, 0x78};
+            rgb = {.r = 0xce, .g = 0x91, .b = 0x78};
             break;
         case SyntaxColor::SyntaxAttribute:
-            rgb = {0xaa, 0xaa, 0xaa};
+            rgb = {.r = 0xaa, .g = 0xaa, .b = 0xaa};
             break;
         case SyntaxColor::SyntaxRegister:
-            rgb = {0xBC, 0xB6, 0x58};
+            rgb = {.r = 0xBC, .g = 0xB6, .b = 0x58};
             break;
 
         case SyntaxColor::SyntaxInvalid:
-            rgb = {0xFF, 0x47, 0x47};
+            rgb = {.r = 0xFF, .g = 0x47, .b = 0x47};
             break;
         default:
-            rgb = {0x00, 0x00, 0x00};
+            rgb = {.r = 0x00, .g = 0x00, .b = 0x00};
             SWAG_ASSERT(false);
             break;
     }
