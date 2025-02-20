@@ -202,7 +202,8 @@ struct SCBE_CPU : BackendEncoder
     void         solveLabels();
 
     static uint32_t getParamStackOffset(const CPUFunction* cpuFunction, uint32_t paramIdx);
-    void            emitCallParameters(const CallConv& callConv, const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& cpuParams);;
+    void            emitCallParameters(const CallConv& callConv, const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& cpuParams);
+    void            computeCallParameters(const TypeInfoFuncAttr* typeFuncBc, VectorNative<CPUPushParam>& cpuParams, uint32_t resultOffsetRT, void* resultAddr);
     void            emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& cpuParams, uint32_t resultOffsetRT, void* resultAddr = nullptr);
     void            emitStoreCallResult(CPUReg memReg, uint32_t memOffset, const TypeInfoFuncAttr* typeFuncBc);
 

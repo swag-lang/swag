@@ -303,13 +303,68 @@ void SCBE_CPU::emitCallParameters(const CallConv& callConv, const TypeInfoFuncAt
     }
 }
 
+void SCBE_CPU::computeCallParameters(const TypeInfoFuncAttr* typeFuncBc, VectorNative<CPUPushParam>& cpuParams, uint32_t resultOffsetRT, void* resultAddr)
+{
+    uint32_t numCallParams = typeFuncBc->parameters.size();
+    uint32_t indexParam    = 0;
+
+    // Variadic are first
+    if (typeFuncBc->isFctVariadic())
+        indexParam += 2;
+
+    if (typeFuncBc->isFctVariadic() || typeFuncBc->isFctCVariadic())
+    {
+        numCallParams--;
+    }
+
+    // All parameters
+    for (uint32_t i = 0; i < numCallParams; i++)
+    {
+        auto typeParam = TypeManager::concreteType(typeFuncBc->parameters[i]->typeInfo);
+        if (typeParam->isAutoConstPointerRef())
+            typeParam = TypeManager::concretePtrRef(typeParam);
+
+        if (typeParam->isPointer() ||
+            typeParam->isLambdaClosure() ||
+            typeParam->isArray())
+        {
+            indexParam++;
+        }
+        else if (typeParam->isSlice() ||
+                 typeParam->isString() ||
+                 typeParam->isAny() ||
+                 typeParam->isInterface())
+        {
+            indexParam += 2;
+        }
+        else
+        {
+            cpuParams[indexParam].typeInfo = typeParam;
+            indexParam++;
+        }
+    }
+
+    // Return by parameter
+    if (CallConv::returnByAddress(typeFuncBc))
+    {
+        if (resultAddr)
+            pushParams.insert_at_index({.type = CPUPushParamType::Constant64, .value = reinterpret_cast<uint64_t>(resultAddr)}, indexParam);
+        else if (CallConv::returnByStackAddress(typeFuncBc))
+            pushParams.insert_at_index({.type = CPUPushParamType::Load, .value = resultOffsetRT}, indexParam);
+        else
+            pushParams.insert_at_index({.type = CPUPushParamType::LoadAddress, .value = resultOffsetRT}, indexParam);
+    }
+}
+
 void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& cpuParams, uint32_t resultOffsetRT, void* resultAddr)
 {
     uint32_t numCallParams = typeFuncBc->parameters.size();
     uint32_t indexParam    = 0;
 
-    pushParams.clear();
+    pushParams = cpuParams;
+    computeCallParameters(typeFuncBc, pushParams, resultOffsetRT, resultAddr);
 
+    /*
     // Variadic are first
     if (typeFuncBc->isFctVariadic())
     {
@@ -370,7 +425,7 @@ void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
             pushParams.push_back(cpuParams[indexParam++]);
         }
     }
-
+*/
     emitCallParameters(typeFuncBc->getCallConv(), typeFuncBc, pushParams);
 }
 
