@@ -308,14 +308,10 @@ void SCBE_CPU::computeCallParameters(const TypeInfoFuncAttr* typeFuncBc, VectorN
     uint32_t numCallParams = typeFuncBc->parameters.size();
     uint32_t indexParam    = 0;
 
-    // Variadic are first
     if (typeFuncBc->isFctVariadic())
         indexParam += 2;
-
     if (typeFuncBc->isFctVariadic() || typeFuncBc->isFctCVariadic())
-    {
         numCallParams--;
-    }
 
     // All parameters
     for (uint32_t i = 0; i < numCallParams; i++)

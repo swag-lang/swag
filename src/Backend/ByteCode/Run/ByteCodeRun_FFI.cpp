@@ -129,15 +129,15 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, [[maybe_unused]] const By
         }
     }
 
-    VectorNative<CPUPushParam> ffiPushCPUParams;
-    ffiPushCPUParams.reserve(cptParam);
-    ffiPushCPUParams.count = cptParam;
+    VectorNative<CPUPushParam> cpuParams;
+    cpuParams.reserve(cptParam);
+    cpuParams.count = cptParam;
 
     cptParam = 0;
-    for (auto& param : ffiPushCPUParams)
+    for (auto& param : cpuParams)
     {
         param.type     = CPUPushParamType::SwagRegister;
-        param.value      = cptParam++;
+        param.value    = cptParam++;
         param.typeInfo = nullptr;
     }
 
@@ -154,7 +154,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, [[maybe_unused]] const By
         context->bc->profileCumTime += now - context->bc->profileStart;
         context->bc->profileStart = now;
 
-        OS::ffi(context, foreignPtr, typeInfoFunc, ffiPushCPUParams, retCopyAddr);
+        OS::ffi(context, foreignPtr, typeInfoFunc, cpuParams, retCopyAddr);
 
         now = OS::timerNow();
         context->bc->profileCumTime += now - context->bc->profileStart;
@@ -172,7 +172,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, [[maybe_unused]] const By
     }
     else
     {
-        OS::ffi(context, foreignPtr, typeInfoFunc, ffiPushCPUParams, retCopyAddr);
+        OS::ffi(context, foreignPtr, typeInfoFunc, cpuParams, retCopyAddr);
     }
 #else
     OS::ffi(context, foreignPtr, typeInfoFunc, context->ffiPushCPUParams, retCopyAddr);
