@@ -126,16 +126,23 @@ namespace
 
             switch (params[idxParam].type)
             {
-                case CPUPushParamType::ReturnAddress:
-                    pp.emitLoad(cc.paramByRegisterInteger[idxParam], value, OpBits::B64);
-                    break;
-
-                case CPUPushParamType::ReturnStackAddress:
+                case CPUPushParamType::Load:
                     pp.emitLoad(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, value, OpBits::B64);
                     break;
 
                 case CPUPushParamType::LoadAddress:
                     pp.emitLoadAddress(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, value);
+                    break;
+
+                case CPUPushParamType::Constant:
+                    if (cc.useRegisterFloat && type->isNativeFloat())
+                        pp.emitLoad(cc.paramByRegisterFloat[idxParam], value, BackendEncoder::getOpBitsByBytes(type->sizeOf, true));
+                    else
+                        pp.emitLoad(cc.paramByRegisterInteger[idxParam], value, OpBits::B64);
+                    break;
+
+                case CPUPushParamType::Constant64:
+                    pp.emitLoad64(cc.paramByRegisterInteger[idxParam], value);
                     break;
 
                 case CPUPushParamType::SwagRegister:
@@ -152,13 +159,6 @@ namespace
 
                 case CPUPushParamType::CPURegister:
                     pp.emitLoad(cc.paramByRegisterInteger[idxParam], static_cast<CPUReg>(value), OpBits::B64);
-                    break;
-
-                case CPUPushParamType::Constant:
-                    if (cc.useRegisterFloat && type->isNativeFloat())
-                        pp.emitLoad(cc.paramByRegisterFloat[idxParam], params[idxParam].value, BackendEncoder::getOpBitsByBytes(type->sizeOf, true));
-                    else
-                        pp.emitLoad(cc.paramByRegisterInteger[idxParam], params[idxParam].value, OpBits::B64);
                     break;
 
                 case CPUPushParamType::SymRelationValue:
@@ -183,7 +183,7 @@ namespace
                     break;
 
                 case CPUPushParamType::GlobalString:
-                    pp.emitSymbolGlobalString(cc.paramByRegisterInteger[idxParam], reinterpret_cast<const char*>(params[idxParam].value));
+                    pp.emitSymbolGlobalString(cc.paramByRegisterInteger[idxParam], reinterpret_cast<const char*>(value));
                     break;
 
                 default:
@@ -203,18 +203,22 @@ namespace
 
             switch (params[idxParam].type)
             {
-                case CPUPushParamType::ReturnAddress:
-                    pp.emitLoad(CPUReg::RAX, value, OpBits::B64);
-                    pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
-                    break;
-
-                case CPUPushParamType::ReturnStackAddress:
+                case CPUPushParamType::Load:
                     pp.emitLoad(CPUReg::RAX, CPUReg::RDI, value, OpBits::B64);
                     pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
                     break;
 
                 case CPUPushParamType::LoadAddress:
                     pp.emitLoadAddress(CPUReg::RAX, CPUReg::RDI, value);
+                    pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
+                    break;
+
+                case CPUPushParamType::Constant:
+                    pp.emitStore(CPUReg::RSP, memOffset, value, BackendEncoder::getOpBitsByBytes(type->sizeOf));
+                    break;
+
+                case CPUPushParamType::Constant64:
+                    pp.emitLoad64(CPUReg::RAX, value);
                     pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
                     break;
 
@@ -351,9 +355,9 @@ void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
     if (CallConv::returnByAddress(typeFuncBc))
     {
         if (resultAddr)
-            pushParams.push_back({.type = CPUPushParamType::ReturnAddress, .value = reinterpret_cast<uint64_t>(resultAddr)});
+            pushParams.push_back({.type = CPUPushParamType::Constant64, .value = reinterpret_cast<uint64_t>(resultAddr)});
         else if (CallConv::returnByStackAddress(typeFuncBc))
-            pushParams.push_back({.type = CPUPushParamType::ReturnStackAddress, .value = resultOffsetRT});
+            pushParams.push_back({.type = CPUPushParamType::Load, .value = resultOffsetRT});
         else
             pushParams.push_back({.type = CPUPushParamType::LoadAddress, .value = resultOffsetRT});
     }

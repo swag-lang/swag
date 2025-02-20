@@ -18,12 +18,12 @@ enum class CPUPushParamType
     SwagRegisterMul,
     CPURegister,
     Constant,
+    Constant64,
     SymRelationValue,
     SymRelocationAddress,
     LoadAddress,
     GlobalString,
-    ReturnAddress,
-    ReturnStackAddress,
+    Load,
 };
 
 struct CPUPushParam
