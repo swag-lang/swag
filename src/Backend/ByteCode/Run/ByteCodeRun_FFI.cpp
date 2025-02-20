@@ -108,25 +108,20 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, [[maybe_unused]] const By
     uint32_t cptParam      = 0;
     auto     numParameters = typeInfoFunc->parameters.size();
 
-    // Variadic parameters are first on the stack, so need to treat them before
+    // For variadics, we have a slice at the start
     if (typeInfoFunc->isFctVariadic())
         cptParam += 2;
+    // We should not count the variadic parameter as a real parameter
     if (typeInfoFunc->isFctVariadic() || typeInfoFunc->isFctCVariadic())
         numParameters--;
     if (typeInfoFunc->isFctCVariadic())
         cptParam += numCVariadicParams;
 
-    cptParam += numParameters;
+    //cptParam += numParameters;
     for (uint32_t i = 0; i < numParameters; i++)
     {
         const auto typeParam = TypeManager::concreteType(typeInfoFunc->parameters[i]->typeInfo);
-        if (typeParam->isSlice() ||
-            typeParam->isInterface() ||
-            typeParam->isAny() ||
-            typeParam->isString())
-        {
-            cptParam++;
-        }
+        cptParam += typeParam->numRegisters();
     }
 
     VectorNative<CPUPushParam> cpuParams;

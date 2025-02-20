@@ -152,9 +152,13 @@ namespace
                         pp.emitLoad(cc.paramByRegisterInteger[idxParam], CPUReg::RAX, 0, OpBits::B64);
                     }
                     else if (cc.useRegisterFloat && type->isNativeFloat())
+                    {
                         pp.emitLoad(cc.paramByRegisterFloat[idxParam], CPUReg::RDI, REG_OFFSET(value), BackendEncoder::getOpBitsByBytes(type->sizeOf, true));
+                    }
                     else
+                    {
                         pp.emitLoad(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, REG_OFFSET(value), OpBits::B64);
+                    }
                     break;
 
                 case CPUPushParamType::CPURegister:
@@ -234,6 +238,11 @@ namespace
                         pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(value), OpBits::B64);
                         pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
                     }
+                    else if (type->sizeOf > sizeof(uint64_t))
+                    {
+                        pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(value), OpBits::B64);
+                        pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
+                    }
                     else
                     {
                         pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(value), BackendEncoder::getOpBitsByBytes(type->sizeOf));
@@ -308,36 +317,21 @@ void SCBE_CPU::computeCallParameters(const TypeInfoFuncAttr* typeFuncBc, VectorN
     uint32_t numCallParams = typeFuncBc->parameters.size();
     uint32_t indexParam    = 0;
 
+    // For variadics, we have a slice at the start
     if (typeFuncBc->isFctVariadic())
         indexParam += 2;
+    // We should not count the variadic parameter as a real parameter
     if (typeFuncBc->isFctVariadic() || typeFuncBc->isFctCVariadic())
         numCallParams--;
 
-    // All parameters
+    // Set type of all parameters
     for (uint32_t i = 0; i < numCallParams; i++)
     {
         auto typeParam = TypeManager::concreteType(typeFuncBc->parameters[i]->typeInfo);
         if (typeParam->isAutoConstPointerRef())
             typeParam = TypeManager::concretePtrRef(typeParam);
-
-        if (typeParam->isPointer() ||
-            typeParam->isLambdaClosure() ||
-            typeParam->isArray())
-        {
-            indexParam++;
-        }
-        else if (typeParam->isSlice() ||
-                 typeParam->isString() ||
-                 typeParam->isAny() ||
-                 typeParam->isInterface())
-        {
-            indexParam += 2;
-        }
-        else
-        {
-            cpuParams[indexParam].typeInfo = typeParam;
-            indexParam++;
-        }
+        cpuParams[indexParam].typeInfo = typeParam;
+        indexParam += typeParam->numRegisters();
     }
 
     // Return by parameter
