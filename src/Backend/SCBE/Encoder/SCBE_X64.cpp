@@ -1514,6 +1514,7 @@ void SCBE_X64::emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, OpBits opBits,
     }
 }
 
+#pragma optimize("", off)
 void SCBE_X64::emitOpBinary(CPUReg memReg, uint64_t memOffset, uint64_t value, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags)
 {
     SWAG_ASSERT(SCBE_CPU::isInt(opBits));
@@ -1570,7 +1571,7 @@ void SCBE_X64::emitOpBinary(CPUReg memReg, uint64_t memOffset, uint64_t value, C
             SWAG_ASSERT(memReg == CPUReg::RAX);
             emitREX(concat, opBits);
             emitSpecB8(concat, 0xD1, opBits);
-            concat.addU8(static_cast<uint8_t>(op) & ~0xC0);
+            emitModRM(concat, memOffset, static_cast<CPUReg>(0), memReg, 1 + static_cast<uint8_t>(op) & 0x3F);
         }
         else
         {
@@ -1578,7 +1579,7 @@ void SCBE_X64::emitOpBinary(CPUReg memReg, uint64_t memOffset, uint64_t value, C
             value = min(value, SCBE_CPU::getNumBits(opBits) - 1);
             emitREX(concat, opBits);
             emitSpecB8(concat, 0xC1, opBits);
-            concat.addU8(static_cast<uint8_t>(op) & ~0xC0);
+            emitModRM(concat, memOffset, static_cast<CPUReg>(0), memReg, 1 + static_cast<uint8_t>(op) & 0x3F);
             emitValue(concat, value, OpBits::B8);
         }
     }
