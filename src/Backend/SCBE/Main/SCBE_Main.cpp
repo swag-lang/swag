@@ -16,7 +16,7 @@ void SCBE::emitOS(SCBE_CPU& pp)
         // :ChkStk Stack probing
         // See SWAG_LIMIT_PAGE_STACK
         const auto symbolFuncIndex = pp.getOrAddSymbol(R"(__chkstk)", CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
-        const auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
+        const auto cpuFct          = pp.addFunction(nullptr, symbolFuncIndex);
         SWAG_ASSERT(g_CommandLine.target.arch == SwagTargetArch::X8664);
         cpuFct->startAddress = concat.totalCount();
         if (g_CommandLine.target.arch == SwagTargetArch::X8664)
@@ -74,7 +74,7 @@ void SCBE::emitMain(SCBE_CPU& pp)
     }
 
     const auto symbolFuncIndex = pp.getOrAddSymbol(entryPoint, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
-    const auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
+    const auto cpuFct          = pp.addFunction(nullptr, symbolFuncIndex);
 
     VectorNative<uint16_t> unwind;
     const auto             beforeProlog = concat.totalCount();
@@ -247,7 +247,7 @@ void SCBE::emitGetTypeTable(SCBE_CPU& pp)
 
     const auto thisInit        = module->getGlobalPrivateFct(g_LangSpec->name_getTypeTable);
     const auto symbolFuncIndex = pp.getOrAddSymbol(thisInit, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
-    const auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
+    const auto cpuFct          = pp.addFunction(nullptr, symbolFuncIndex);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         pp.directives += form("/EXPORT:%s ", thisInit.cstr());
@@ -278,7 +278,7 @@ void SCBE::emitGlobalPreMain(SCBE_CPU& pp)
 
     const auto thisInit        = module->getGlobalPrivateFct(g_LangSpec->name_globalPreMain);
     const auto symbolFuncIndex = pp.getOrAddSymbol(thisInit, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
-    const auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
+    const auto cpuFct          = pp.addFunction(nullptr, symbolFuncIndex);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         pp.directives += form("/EXPORT:%s ", thisInit.cstr());
@@ -331,7 +331,7 @@ void SCBE::emitGlobalInit(SCBE_CPU& pp)
 
     const auto thisInit        = module->getGlobalPrivateFct(g_LangSpec->name_globalInit);
     const auto symbolFuncIndex = pp.getOrAddSymbol(thisInit, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
-    const auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
+    const auto cpuFct          = pp.addFunction(nullptr, symbolFuncIndex);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         pp.directives += form("/EXPORT:%s ", thisInit.cstr());
@@ -410,7 +410,7 @@ void SCBE::emitGlobalDrop(SCBE_CPU& pp)
 
     const auto thisDrop        = module->getGlobalPrivateFct(g_LangSpec->name_globalDrop);
     const auto symbolFuncIndex = pp.getOrAddSymbol(thisDrop, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
-    const auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
+    const auto cpuFct          = pp.addFunction(nullptr, symbolFuncIndex);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         pp.directives += form("/EXPORT:%s ", thisDrop.cstr());

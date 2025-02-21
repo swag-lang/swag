@@ -45,7 +45,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     // Symbol
     auto symbolFuncIndex = pp.getOrAddSymbol(funcName, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
-    auto cpuFct          = pp.registerFunction(bc->node, symbolFuncIndex);
+    auto cpuFct          = pp.addFunction(bc->node, symbolFuncIndex);
     cpuFct->typeFunc     = typeFunc;
     cpuFct->startAddress = startAddress;
     if (debug)

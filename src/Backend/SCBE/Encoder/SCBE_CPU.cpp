@@ -89,7 +89,7 @@ uint32_t SCBE_CPU::getOrCreateLabel(uint32_t instructionIndex)
     return it->second;
 }
 
-CPUFunction* SCBE_CPU::registerFunction(AstNode* node, uint32_t symbolIndex)
+CPUFunction* SCBE_CPU::addFunction(AstNode* node, uint32_t symbolIndex)
 {
     CPUFunction cf;
     cf.node        = node;
@@ -109,6 +109,39 @@ void SCBE_CPU::solveLabels()
 
     labels.clear();
     labelsToSolve.clear();
+}
+
+void SCBE_CPU::maskValue(uint64_t& value, OpBits opBits)
+{
+    if (opBits == OpBits::B8)
+        value &= 0xFF;
+    else if (opBits == OpBits::B16)
+        value &= 0xFFFF;
+    else if (opBits == OpBits::B32 || opBits == OpBits::F32)
+        value &= 0xFFFFFFFF;
+}
+
+bool SCBE_CPU::isNoOp(uint64_t value, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags) const
+{
+    if (emitFlags.has(EMITF_Overflow))
+        return false;
+    if (isFloat(opBits))
+        return false;
+    if (buildParams.buildCfg && buildParams.buildCfg->backendOptimize <= BuildCfgBackendOptim::O1)
+        return false;
+
+    maskValue(value, opBits);
+    switch (value)
+    {
+        case 0:
+            return op == CPUOp::ADD || op == CPUOp::SUB || op == CPUOp::SAR || op == CPUOp::SHL || op == CPUOp::SHR || op == CPUOp::ROL || op == CPUOp::ROR || op == CPUOp::BT;
+        case 1:
+            return op == CPUOp::MUL || op == CPUOp::IMUL || op == CPUOp::DIV || op == CPUOp::IDIV;
+        default:
+            break;
+    }
+
+    return false;
 }
 
 namespace
@@ -348,7 +381,7 @@ void SCBE_CPU::emitComputeCallParameters(const TypeInfoFuncAttr* typeFuncBc, con
         else
             pushParams.insert_at_index({.type = CPUPushParamType::LoadAddress, .value = resultOffsetRT}, indexParam);
     }
-    
+
     emitCallParameters(typeFuncBc->getCallConv(), typeFuncBc, pushParams);
 }
 
