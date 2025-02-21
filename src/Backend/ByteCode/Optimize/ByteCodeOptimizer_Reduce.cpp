@@ -2901,32 +2901,6 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
 
             break;
     }
-
-    // Init stack just before a return
-    if (ip[1].op == ByteCodeOp::Ret)
-    {
-        switch (ip[0].op)
-        {
-            case ByteCodeOp::SetAtStackPointer8:
-            case ByteCodeOp::SetAtStackPointer16:
-            case ByteCodeOp::SetAtStackPointer32:
-            case ByteCodeOp::SetAtStackPointer64:
-            case ByteCodeOp::SetAtStackPointer8x2:
-            case ByteCodeOp::SetAtStackPointer16x2:
-            case ByteCodeOp::SetAtStackPointer32x2:
-            case ByteCodeOp::SetAtStackPointer64x2:
-            case ByteCodeOp::SetZeroStack8:
-            case ByteCodeOp::SetZeroStack16:
-            case ByteCodeOp::SetZeroStack32:
-            case ByteCodeOp::SetZeroStack64:
-            case ByteCodeOp::SetZeroStackX:
-                setNop(context, ip);
-                break;
-
-            default:
-                break;
-        }
-    }
 }
 
 void ByteCodeOptimizer::reduceStack1(ByteCodeOptContext* context, ByteCodeInstruction* ip)
