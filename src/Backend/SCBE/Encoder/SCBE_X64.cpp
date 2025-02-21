@@ -1202,7 +1202,7 @@ void SCBE_X64::emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, OpBits opBits,
 {
     if (isNoOp(value, op, opBits, emitFlags))
         return;
-    
+
     ///////////////////////////////////////////
 
     if (value > 0x7FFFFFFF)
@@ -1351,7 +1351,7 @@ void SCBE_X64::emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, OpBits opBits,
 
     ///////////////////////////////////////////
 
-    else if (op == CPUOp::DIV || op == CPUOp::IDIV)
+    else if (op == CPUOp::MOD || op == CPUOp::IMOD)
     {
         SWAG_ASSERT(reg == CPUReg::RAX);
         emitLoad(CPUReg::RCX, value, opBits);
@@ -1360,11 +1360,42 @@ void SCBE_X64::emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, OpBits opBits,
 
     ///////////////////////////////////////////
 
-    else if (op == CPUOp::MOD || op == CPUOp::IMOD)
+    else if (op == CPUOp::DIV)
     {
-        SWAG_ASSERT(reg == CPUReg::RAX);
-        emitLoad(CPUReg::RCX, value, opBits);
-        emitOpBinary(reg, CPUReg::RCX, op, opBits, emitFlags);
+        if (value == 2)
+        {
+            emitOpBinary(reg, 1, CPUOp::SHR, opBits, emitFlags);
+        }
+        else if (value <= 0x7F && Math::isPowerOfTwo(value))
+        {
+            emitOpBinary(reg, static_cast<uint32_t>(log2(value)), CPUOp::SHR, opBits, emitFlags);
+        }
+        else
+        {
+            SWAG_ASSERT(reg == CPUReg::RAX);
+            emitLoad(CPUReg::RCX, value, opBits);
+            emitOpBinary(reg, CPUReg::RCX, op, opBits, emitFlags);
+        }
+    }
+
+    ///////////////////////////////////////////
+
+    else if (op == CPUOp::IDIV)
+    {
+        if (value == 2)
+        {
+            emitOpBinary(reg, 1, CPUOp::SAR, opBits, emitFlags);
+        }
+        else if (value <= 0x7F && Math::isPowerOfTwo(value))
+        {
+            emitOpBinary(reg, static_cast<uint32_t>(log2(value)), CPUOp::SAR, opBits, emitFlags);
+        }
+        else
+        {
+            SWAG_ASSERT(reg == CPUReg::RAX);
+            emitLoad(CPUReg::RCX, value, opBits);
+            emitOpBinary(reg, CPUReg::RCX, op, opBits, emitFlags);
+        }
     }
 
     ///////////////////////////////////////////
@@ -1377,18 +1408,11 @@ void SCBE_X64::emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, OpBits opBits,
         }
         else if (value == 2)
         {
-            SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX);
-            emitREX(concat, opBits);
-            concat.addU8(0xD1);
-            concat.addU8(0xE0 | static_cast<uint8_t>(reg)); // shl rax, 1
+            emitOpBinary(reg, 1, CPUOp::SHL, opBits, emitFlags);
         }
         else if (value <= 0x7F && Math::isPowerOfTwo(value))
         {
-            SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX);
-            emitREX(concat, opBits);
-            concat.addU8(0xC1);
-            concat.addU8(0xE0 | static_cast<uint8_t>(reg)); // shl rax, ??
-            concat.addU8(static_cast<uint8_t>(log2(value)));
+            emitOpBinary(reg, static_cast<uint32_t>(log2(value)), CPUOp::SHL, opBits, emitFlags);
         }
         else
         {
@@ -1406,26 +1430,19 @@ void SCBE_X64::emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, OpBits opBits,
         {
             emitClear(reg, opBits);
         }
+        else if (value == 2)
+        {
+            emitOpBinary(reg, 1, CPUOp::SHL, opBits, emitFlags);
+        }
+        else if (value <= 0x7F && Math::isPowerOfTwo(value))
+        {
+            emitOpBinary(reg, static_cast<uint32_t>(log2(value)), CPUOp::SHL, opBits, emitFlags);
+        }
         else if (opBits == OpBits::B8)
         {
             SWAG_ASSERT(reg == CPUReg::RAX);
             emitLoad(CPUReg::RCX, value, opBits);
             emitOpBinary(reg, CPUReg::RCX, op, opBits, emitFlags);
-        }
-        else if (value == 2)
-        {
-            SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX);
-            emitREX(concat, opBits);
-            concat.addU8(0xD1);
-            concat.addU8(0xE0 | static_cast<uint8_t>(reg)); // shl rax, 1
-        }
-        else if (value <= 0x7F && Math::isPowerOfTwo(value))
-        {
-            SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX);
-            emitREX(concat, opBits);
-            concat.addU8(0xC1);
-            concat.addU8(0xE0 | static_cast<uint8_t>(reg)); // shl rax, ??
-            concat.addU8(static_cast<uint8_t>(log2(value)));
         }
         else if (value <= 0x7F)
         {
@@ -1547,6 +1564,7 @@ void SCBE_X64::emitOpBinary(CPUReg memReg, uint64_t memOffset, uint64_t value, C
 
     else if (op == CPUOp::SAR || op == CPUOp::SHR || op == CPUOp::SHL)
     {
+        SWAG_ASSERT(memOffset == 0);
         if (value == 1)
         {
             SWAG_ASSERT(memReg == CPUReg::RAX);
