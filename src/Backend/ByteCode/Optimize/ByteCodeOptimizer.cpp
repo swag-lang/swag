@@ -773,7 +773,7 @@ bool ByteCodeOptimizer::optimizeStep1(ByteCodeOptContext* context)
         OPT_REDUCE_O1(reduceStack);
         OPT_REDUCE_O1(reduceStack1);
         OPT_REDUCE_O1(reduceStack2);
-        OPT_REDUCE_O1(reduceStack3);
+        OPT_REDUCE_O2(reduceStackLastWrite);
         OPT_REDUCE_O1(reduceIncPtr);
         
         OPT_REDUCE_O2(reduceSetAt);

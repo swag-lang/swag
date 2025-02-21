@@ -3069,7 +3069,7 @@ void ByteCodeOptimizer::reduceStack2(ByteCodeOptContext* context, ByteCodeInstru
     }
 }
 
-void ByteCodeOptimizer::reduceStack3(ByteCodeOptContext* context, ByteCodeInstruction* ip)
+void ByteCodeOptimizer::reduceStackLastWrite(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
     if (ip[0].op == ByteCodeOp::SetAtStackPointer8 ||
         ip[0].op == ByteCodeOp::SetAtStackPointer16 ||
