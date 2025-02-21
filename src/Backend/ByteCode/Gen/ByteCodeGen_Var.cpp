@@ -13,25 +13,24 @@ bool ByteCodeGen::emitLocalVarDeclBefore(ByteCodeGenContext* context)
     const auto node = castAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
 
     // No need to generate a local variable if it is never used
-    if (context->sourceFile->module->mustOptimizeByteCode(node))
+    if (context->sourceFile->module->mustOptimizeSemantic(node) &&
+        node->resolvedSymbolOverload() &&
+        !node->resolvedSymbolOverload()->hasFlag(OVERLOAD_USED))
     {
-        if (node->resolvedSymbolOverload() && !node->resolvedSymbolOverload()->hasFlag(OVERLOAD_USED))
+        // Keep structs, because of opDrop
+        const auto typeInfo = TypeManager::concreteType(node->resolvedSymbolOverload()->typeInfo);
+        if (!typeInfo->isStruct() && !typeInfo->isArrayOfStruct())
         {
-            // Keep structs, because of opDrop
-            const auto typeInfo = TypeManager::concreteType(node->resolvedSymbolOverload()->typeInfo);
-            if (!typeInfo->isStruct() && !typeInfo->isArrayOfStruct())
+            if (!node->assignment)
             {
-                if (!node->assignment)
-                {
-                    node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
-                    return true;
-                }
+                node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
+                return true;
+            }
 
-                if (node->assignment->hasFlagComputedValue() || !node->assignment->hasAstFlag(AST_SIDE_EFFECTS))
-                {
-                    SWAG_CHECK(skipNodes(context, node));
-                    return true;
-                }
+            if (node->assignment->hasFlagComputedValue() || !node->assignment->hasAstFlag(AST_SIDE_EFFECTS))
+            {
+                SWAG_CHECK(skipNodes(context, node));
+                return true;
             }
         }
     }
