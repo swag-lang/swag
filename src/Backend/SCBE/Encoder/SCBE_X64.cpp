@@ -1353,9 +1353,16 @@ void SCBE_X64::emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, OpBits opBits,
 
     else if (op == CPUOp::MOD || op == CPUOp::IMOD)
     {
-        SWAG_ASSERT(reg == CPUReg::RAX);
-        emitLoad(CPUReg::RCX, value, opBits);
-        emitOpBinary(reg, CPUReg::RCX, op, opBits, emitFlags);
+        if (Math::isPowerOfTwo(value))
+        {
+            emitOpBinary(reg, value - 1, CPUOp::AND, opBits, emitFlags);
+        }
+        else
+        {
+            SWAG_ASSERT(reg == CPUReg::RAX);
+            emitLoad(CPUReg::RCX, value, opBits);
+            emitOpBinary(reg, CPUReg::RCX, op, opBits, emitFlags);
+        }
     }
 
     ///////////////////////////////////////////
