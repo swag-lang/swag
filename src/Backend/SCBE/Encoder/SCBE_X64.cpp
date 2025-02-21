@@ -1292,10 +1292,7 @@ void SCBE_X64::emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, OpBits opBits,
                 concat.addU8(0x81);
                 concat.addU8(0xC0 | static_cast<uint8_t>(reg));
             }
-            if (opBits == OpBits::B16)
-                emitValue(concat, value, OpBits::B16);
-            else
-                emitValue(concat, value, OpBits::B32);
+            emitValue(concat, value, opBits == OpBits::B16 ? OpBits::B16 : OpBits::B32);
         }
     }
 
@@ -1342,10 +1339,7 @@ void SCBE_X64::emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, OpBits opBits,
                 concat.addU8(0x81);
                 concat.addU8(0xE8 | static_cast<uint8_t>(reg));
             }
-            if (opBits == OpBits::B16)
-                emitValue(concat, value, OpBits::B16);
-            else
-                emitValue(concat, value, OpBits::B32);
+            emitValue(concat, value, opBits == OpBits::B16 ? OpBits::B16 : OpBits::B32);
         }
     }
 
