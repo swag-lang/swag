@@ -1519,15 +1519,22 @@ void SCBE_X64::emitOpBinary(CPUReg memReg, uint64_t memOffset, uint64_t value, C
 
     else if (op == CPUOp::IMOD || op == CPUOp::MOD)
     {
-        SWAG_ASSERT(memReg == CPUReg::RAX || memReg == CPUReg::RDI);
-        if (memReg == CPUReg::RAX)
+        if (Math::isPowerOfTwo(value))
         {
-            emitLoad(CPUReg::R8, memReg, OpBits::B64);
-            memReg = CPUReg::R8;
+            emitOpBinary(memReg, memOffset, value - 1, CPUOp::AND, opBits, emitFlags);
         }
-        emitLoad(CPUReg::RAX, memReg, memOffset, 0, false, op, opBits);
-        emitOpBinary(CPUReg::RAX, value, op, opBits, emitFlags);
-        emitStore(memReg, memOffset, CPUReg::RAX, opBits);
+        else
+        {
+            SWAG_ASSERT(memReg == CPUReg::RAX || memReg == CPUReg::RDI);
+            if (memReg == CPUReg::RAX)
+            {
+                emitLoad(CPUReg::R8, memReg, OpBits::B64);
+                memReg = CPUReg::R8;
+            }
+            emitLoad(CPUReg::RAX, memReg, memOffset, 0, false, op, opBits);
+            emitOpBinary(CPUReg::RAX, value, op, opBits, emitFlags);
+            emitStore(memReg, memOffset, CPUReg::RAX, opBits);
+        }
     }
 
     ///////////////////////////////////////////
