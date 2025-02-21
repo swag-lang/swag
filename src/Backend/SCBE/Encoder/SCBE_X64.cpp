@@ -530,6 +530,27 @@ void SCBE_X64::emitLoadAddress(CPUReg reg, CPUReg memReg, uint64_t memOffset)
     }
 }
 
+void SCBE_X64::emitLoadAddress(CPUReg regDst, CPUReg regSrc1, CPUReg regSrc2, uint64_t mulValue, OpBits opBits)
+{
+    SWAG_ASSERT(regDst == CPUReg::RAX);
+    SWAG_ASSERT(regSrc1 == CPUReg::RAX);
+    SWAG_ASSERT(regSrc2 == CPUReg::RAX);
+    SWAG_ASSERT(opBits == OpBits::B32 || opBits == OpBits::B64);
+
+    // lea regDst, [regSrc1 + regSrc2 * mulValue]
+    concat.addU8(opBits == OpBits::B32 ? 0x67 : 0x48);
+    concat.addU8(0x8D);
+    concat.addU8(0x04);
+    if (mulValue == 2)
+        concat.addU8(0x40);
+    else if (mulValue == 4)
+        concat.addU8(0x80);
+    else if (mulValue == 8)
+        concat.addU8(0xC0);
+    else
+        SWAG_ASSERT(false);
+}
+
 /////////////////////////////////////////////////////////////////////
 
 void SCBE_X64::emitStore(CPUReg memReg, uint64_t memOffset, CPUReg reg, OpBits opBits)
@@ -1393,43 +1414,46 @@ void SCBE_X64::emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, OpBits opBits,
 
     ///////////////////////////////////////////
 
-    else if (op == CPUOp::MUL)
+    else if (op == CPUOp::MUL || op == CPUOp::IMUL)
     {
+        const bool canFactorize = (opBits == OpBits::B32 || opBits == OpBits::B64) && optLevel >= BuildCfgBackendOptim::O1 && !emitFlags.has(EMITF_Overflow);
         if (value == 0 && optLevel >= BuildCfgBackendOptim::O1)
         {
             emitClear(reg, opBits);
+        }
+        else if (value == 3 && canFactorize)
+        {
+            emitLoadAddress(reg, reg, reg, 2, opBits);
+        }
+        else if (value == 5 && canFactorize)
+        {
+            emitLoadAddress(reg, reg, reg, 4, opBits);
+        }
+        else if (value == 6 && canFactorize)
+        {
+            emitOpBinary(reg, reg, CPUOp::ADD, opBits, emitFlags);
+            emitLoadAddress(reg, reg, reg, 2, opBits);
+        }
+        else if (value == 9 && canFactorize)
+        {
+            emitLoadAddress(reg, reg, reg, 8, opBits);
+        }
+        else if (value == 10 && canFactorize)
+        {
+            emitLoadAddress(reg, reg, reg, 4, opBits);
+            emitOpBinary(reg, reg, CPUOp::ADD, opBits, emitFlags);
         }
         else if (value <= 0x7F && Math::isPowerOfTwo(value) && optLevel >= BuildCfgBackendOptim::O1)
         {
             emitOpBinary(reg, static_cast<uint32_t>(log2(value)), CPUOp::SHL, opBits, emitFlags);
         }
-        else
+        else if (op == CPUOp::IMUL && opBits == OpBits::B8)
         {
             SWAG_ASSERT(reg == CPUReg::RAX);
             emitLoad(CPUReg::RCX, value, opBits);
             emitOpBinary(reg, CPUReg::RCX, op, opBits, emitFlags);
         }
-    }
-
-    ///////////////////////////////////////////
-
-    else if (op == CPUOp::IMUL)
-    {
-        if (value == 0 && optLevel >= BuildCfgBackendOptim::O1)
-        {
-            emitClear(reg, opBits);
-        }
-        else if (value <= 0x7F && Math::isPowerOfTwo(value) && optLevel >= BuildCfgBackendOptim::O1)
-        {
-            emitOpBinary(reg, static_cast<uint32_t>(log2(value)), CPUOp::SHL, opBits, emitFlags);
-        }
-        else if (opBits == OpBits::B8)
-        {
-            SWAG_ASSERT(reg == CPUReg::RAX);
-            emitLoad(CPUReg::RCX, value, opBits);
-            emitOpBinary(reg, CPUReg::RCX, op, opBits, emitFlags);
-        }
-        else if (value <= 0x7F)
+        else if (op == CPUOp::IMUL && value <= 0x7F)
         {
             SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX);
             emitREX(concat, opBits);
@@ -1437,13 +1461,19 @@ void SCBE_X64::emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, OpBits opBits,
             concat.addU8(reg == CPUReg::RAX ? 0xC0 : 0xC9);
             emitValue(concat, value, OpBits::B8);
         }
-        else
+        else if (op == CPUOp::IMUL)
         {
             SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX);
             emitREX(concat, opBits);
             concat.addU8(0x69);
             concat.addU8(reg == CPUReg::RAX ? 0xC0 : 0xC9);
             emitValue(concat, value, OpBits::B32);
+        }
+        else
+        {
+            SWAG_ASSERT(reg == CPUReg::RAX);
+            emitLoad(CPUReg::RCX, value, opBits);
+            emitOpBinary(reg, CPUReg::RCX, op, opBits, emitFlags);
         }
     }
 
