@@ -1253,7 +1253,7 @@ void SCBE_X64::emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, OpBits opBits,
 
     else if (op == CPUOp::ADD)
     {
-        if (value == 1 && !emitFlags.has(EMITF_Overflow))
+        if (value == 1 && !emitFlags.has(EMITF_Overflow) && optLevel >= BuildCfgBackendOptim::O1)
         {
             SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX || reg == CPUReg::RSP);
             emitREX(concat, opBits);
@@ -1300,7 +1300,7 @@ void SCBE_X64::emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, OpBits opBits,
 
     else if (op == CPUOp::SUB)
     {
-        if (value == 1 && !emitFlags.has(EMITF_Overflow))
+        if (value == 1 && !emitFlags.has(EMITF_Overflow) && optLevel >= BuildCfgBackendOptim::O1)
         {
             SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX || reg == CPUReg::RSP);
             emitREX(concat, opBits);
@@ -1347,7 +1347,7 @@ void SCBE_X64::emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, OpBits opBits,
 
     else if (op == CPUOp::MOD || op == CPUOp::IMOD)
     {
-        if (Math::isPowerOfTwo(value))
+        if (Math::isPowerOfTwo(value) && optLevel >= BuildCfgBackendOptim::O1)
         {
             emitOpBinary(reg, value - 1, CPUOp::AND, opBits, emitFlags);
         }
@@ -1363,7 +1363,7 @@ void SCBE_X64::emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, OpBits opBits,
 
     else if (op == CPUOp::DIV)
     {
-        if (value <= 0x7F && Math::isPowerOfTwo(value))
+        if (value <= 0x7F && Math::isPowerOfTwo(value) && optLevel >= BuildCfgBackendOptim::O1)
         {
             emitOpBinary(reg, static_cast<uint32_t>(log2(value)), CPUOp::SHR, opBits, emitFlags);
         }
@@ -1379,7 +1379,7 @@ void SCBE_X64::emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, OpBits opBits,
 
     else if (op == CPUOp::IDIV)
     {
-        if (value <= 0x7F && Math::isPowerOfTwo(value))
+        if (value <= 0x7F && Math::isPowerOfTwo(value) && optLevel >= BuildCfgBackendOptim::O1)
         {
             emitOpBinary(reg, static_cast<uint32_t>(log2(value)), CPUOp::SAR, opBits, emitFlags);
         }
@@ -1395,11 +1395,11 @@ void SCBE_X64::emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, OpBits opBits,
 
     else if (op == CPUOp::MUL)
     {
-        if (value == 0)
+        if (value == 0 && optLevel >= BuildCfgBackendOptim::O1)
         {
             emitClear(reg, opBits);
         }
-        else if (value <= 0x7F && Math::isPowerOfTwo(value))
+        else if (value <= 0x7F && Math::isPowerOfTwo(value) && optLevel >= BuildCfgBackendOptim::O1)
         {
             emitOpBinary(reg, static_cast<uint32_t>(log2(value)), CPUOp::SHL, opBits, emitFlags);
         }
@@ -1415,11 +1415,11 @@ void SCBE_X64::emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, OpBits opBits,
 
     else if (op == CPUOp::IMUL)
     {
-        if (value == 0)
+        if (value == 0 && optLevel >= BuildCfgBackendOptim::O1)
         {
             emitClear(reg, opBits);
         }
-        else if (value <= 0x7F && Math::isPowerOfTwo(value))
+        else if (value <= 0x7F && Math::isPowerOfTwo(value) && optLevel >= BuildCfgBackendOptim::O1)
         {
             emitOpBinary(reg, static_cast<uint32_t>(log2(value)), CPUOp::SHL, opBits, emitFlags);
         }
@@ -1451,7 +1451,11 @@ void SCBE_X64::emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, OpBits opBits,
 
     else if (op == CPUOp::SAR || op == CPUOp::SHR || op == CPUOp::SHL)
     {
-        if (value == 1)
+        if (op == CPUOp::SHL && value == 1 && optLevel >= BuildCfgBackendOptim::O1)
+        {
+            emitOpBinary(reg, reg, CPUOp::ADD, opBits);
+        }
+        else if (value == 1)
         {
             SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX);
             emitREX(concat, opBits);
@@ -1519,7 +1523,7 @@ void SCBE_X64::emitOpBinary(CPUReg memReg, uint64_t memOffset, uint64_t value, C
 
     else if (op == CPUOp::IMOD || op == CPUOp::MOD)
     {
-        if (Math::isPowerOfTwo(value))
+        if (Math::isPowerOfTwo(value) && optLevel >= BuildCfgBackendOptim::O1)
         {
             emitOpBinary(memReg, memOffset, value - 1, CPUOp::AND, opBits, emitFlags);
         }
@@ -1541,7 +1545,7 @@ void SCBE_X64::emitOpBinary(CPUReg memReg, uint64_t memOffset, uint64_t value, C
 
     else if (op == CPUOp::IDIV || op == CPUOp::DIV)
     {
-        if (value <= 0x7F && Math::isPowerOfTwo(value))
+        if (value <= 0x7F && Math::isPowerOfTwo(value) && optLevel >= BuildCfgBackendOptim::O1)
         {
             emitOpBinary(memReg, memOffset, static_cast<uint32_t>(log2(value)), op == CPUOp::IDIV ? CPUOp::SAR : CPUOp::SHR, opBits, emitFlags);
         }
@@ -1564,7 +1568,7 @@ void SCBE_X64::emitOpBinary(CPUReg memReg, uint64_t memOffset, uint64_t value, C
     else if (op == CPUOp::IMUL || op == CPUOp::MUL)
     {
         SWAG_ASSERT(memReg == CPUReg::RAX || memReg == CPUReg::RDI);
-        if (value <= 0x7F && Math::isPowerOfTwo(value))
+        if (value <= 0x7F && Math::isPowerOfTwo(value) && optLevel >= BuildCfgBackendOptim::O1)
         {
             emitOpBinary(memReg, memOffset, static_cast<uint32_t>(log2(value)), CPUOp::SHL, opBits, emitFlags);
         }
@@ -1607,7 +1611,7 @@ void SCBE_X64::emitOpBinary(CPUReg memReg, uint64_t memOffset, uint64_t value, C
 
     else if (op == CPUOp::ADD)
     {
-        if (value == 1 && !emitFlags.has(EMITF_Overflow))
+        if (value == 1 && !emitFlags.has(EMITF_Overflow) && optLevel >= BuildCfgBackendOptim::O1)
         {
             SWAG_ASSERT(memReg < CPUReg::R8);
             emitREX(concat, opBits);
@@ -1644,7 +1648,7 @@ void SCBE_X64::emitOpBinary(CPUReg memReg, uint64_t memOffset, uint64_t value, C
 
     else if (op == CPUOp::SUB)
     {
-        if (value == 1 && !emitFlags.has(EMITF_Overflow))
+        if (value == 1 && !emitFlags.has(EMITF_Overflow) && optLevel >= BuildCfgBackendOptim::O1)
         {
             SWAG_ASSERT(memReg < CPUReg::R8);
             emitREX(concat, opBits);

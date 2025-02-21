@@ -7,6 +7,8 @@
 void SCBE_CPU::init(const BuildParameters& buildParameters)
 {
     BackendEncoder::init(buildParameters);
+    if (buildParameters.buildCfg)
+        optLevel = buildParameters.buildCfg->backendOptimize;
     labels.clear();
     labelsToSolve.clear();
 }
@@ -127,7 +129,7 @@ bool SCBE_CPU::isNoOp(uint64_t value, CPUOp op, OpBits opBits, CPUEmitFlags emit
         return false;
     if (isFloat(opBits))
         return false;
-    if (buildParams.buildCfg && buildParams.buildCfg->backendOptimize <= BuildCfgBackendOptim::O1)
+    if (optLevel <= BuildCfgBackendOptim::O1)
         return false;
 
     maskValue(value, opBits);
@@ -214,12 +216,14 @@ namespace
 
                 case CPUPushParamType::SwagRegisterAdd:
                     pp.emitLoad(cc.paramByRegisterInteger[idxParam], CPUReg::RDI, REG_OFFSET(value), OpBits::B64);
-                    pp.emitOpBinary(cc.paramByRegisterInteger[idxParam], params[idxParam].value2, CPUOp::ADD, OpBits::B64);
+                    if (params[idxParam].value2)
+                        pp.emitOpBinary(cc.paramByRegisterInteger[idxParam], params[idxParam].value2, CPUOp::ADD, OpBits::B64);
                     break;
 
                 case CPUPushParamType::SwagRegisterMul:
                     pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(value), OpBits::B64);
-                    pp.emitOpBinary(CPUReg::RAX, params[idxParam].value2, CPUOp::IMUL, OpBits::B64);
+                    if (params[idxParam].value2 != 1)
+                        pp.emitOpBinary(CPUReg::RAX, params[idxParam].value2, CPUOp::IMUL, OpBits::B64);
                     pp.emitLoad(cc.paramByRegisterInteger[idxParam], CPUReg::RAX, OpBits::B64);
                     break;
 

@@ -1435,7 +1435,8 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::GetIncFromStack64:
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetStack + ip->b.u32, OpBits::B64);
-                pp.emitOpBinary(CPUReg::RAX, ip->c.u64, CPUOp::ADD, OpBits::B64);
+                if (ip->c.u64)
+                    pp.emitOpBinary(CPUReg::RAX, ip->c.u64, CPUOp::ADD, OpBits::B64);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, OpBits::B64);
                 break;
 

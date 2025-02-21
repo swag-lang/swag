@@ -325,10 +325,11 @@ struct SCBE_CPU : BackendEncoder
     uint32_t* patchTLSOffset  = nullptr;
     uint32_t* patchTLSCount   = nullptr;
 
-    CPUReg   offsetFLTReg = CPUReg::RDI;
-    uint32_t offsetFLT    = 0;
-    uint32_t offsetRT     = 0;
-    uint32_t offsetStack  = 0;
+    BuildCfgBackendOptim optLevel     = BuildCfgBackendOptim::O0;
+    CPUReg               offsetFLTReg = CPUReg::RDI;
+    uint32_t             offsetFLT    = 0;
+    uint32_t             offsetRT     = 0;
+    uint32_t             offsetStack  = 0;
 
     uint32_t symCOIndex  = 0;
     uint32_t symBSIndex  = 0;
