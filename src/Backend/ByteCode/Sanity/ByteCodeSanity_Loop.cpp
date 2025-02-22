@@ -1819,42 +1819,42 @@ bool ByteCodeSanity::loop()
                 BINOP_EQ_DIV(uint64_t, %=, u64);
                 break;
 
-            case ByteCodeOp::AffectOpAndEqU8:
+            case ByteCodeOp::AffectOpAndEq8:
                 BINOP_EQ(uint8_t, &=, u8);
                 break;
-            case ByteCodeOp::AffectOpAndEqU16:
+            case ByteCodeOp::AffectOpAndEq16:
                 BINOP_EQ(uint16_t, &=, u16);
                 break;
-            case ByteCodeOp::AffectOpAndEqU32:
+            case ByteCodeOp::AffectOpAndEq32:
                 BINOP_EQ(uint32_t, &=, u32);
                 break;
-            case ByteCodeOp::AffectOpAndEqU64:
+            case ByteCodeOp::AffectOpAndEq64:
                 BINOP_EQ(uint64_t, &=, u64);
                 break;
 
-            case ByteCodeOp::AffectOpOrEqU8:
+            case ByteCodeOp::AffectOpOrEq8:
                 BINOP_EQ(uint8_t, |=, u8);
                 break;
-            case ByteCodeOp::AffectOpOrEqU16:
+            case ByteCodeOp::AffectOpOrEq16:
                 BINOP_EQ(uint16_t, |=, u16);
                 break;
-            case ByteCodeOp::AffectOpOrEqU32:
+            case ByteCodeOp::AffectOpOrEq32:
                 BINOP_EQ(uint32_t, |=, u32);
                 break;
-            case ByteCodeOp::AffectOpOrEqU64:
+            case ByteCodeOp::AffectOpOrEq64:
                 BINOP_EQ(uint64_t, |=, u64);
                 break;
 
-            case ByteCodeOp::AffectOpXorEqU8:
+            case ByteCodeOp::AffectOpXorEq8:
                 BINOP_EQ(uint8_t, ^=, u8);
                 break;
-            case ByteCodeOp::AffectOpXorEqU16:
+            case ByteCodeOp::AffectOpXorEq16:
                 BINOP_EQ(uint16_t, ^=, u16);
                 break;
-            case ByteCodeOp::AffectOpXorEqU32:
+            case ByteCodeOp::AffectOpXorEq32:
                 BINOP_EQ(uint32_t, ^=, u32);
                 break;
-            case ByteCodeOp::AffectOpXorEqU64:
+            case ByteCodeOp::AffectOpXorEq64:
                 BINOP_EQ(uint64_t, ^=, u64);
                 break;
 
@@ -2096,16 +2096,16 @@ bool ByteCodeSanity::loop()
                 BINOP(|, u64);
                 break;
 
-            case ByteCodeOp::BinOpXorU8:
+            case ByteCodeOp::BinOpXor8:
                 BINOP(^, u8);
                 break;
-            case ByteCodeOp::BinOpXorU16:
+            case ByteCodeOp::BinOpXor16:
                 BINOP(^, u16);
                 break;
-            case ByteCodeOp::BinOpXorU32:
+            case ByteCodeOp::BinOpXor32:
                 BINOP(^, u32);
                 break;
-            case ByteCodeOp::BinOpXorU64:
+            case ByteCodeOp::BinOpXor64:
                 BINOP(^, u64);
                 break;
 

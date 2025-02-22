@@ -496,20 +496,20 @@ bool ByteCodeGen::emitAffectAndEqual(const ByteCodeGenContext* context, uint32_t
         case NativeTypeKind::S8:
         case NativeTypeKind::U8:
         case NativeTypeKind::Bool:
-            EMIT_INST2(context, ByteCodeOp::AffectOpAndEqU8, r0, r1);
+            EMIT_INST2(context, ByteCodeOp::AffectOpAndEq8, r0, r1);
             return true;
         case NativeTypeKind::S16:
         case NativeTypeKind::U16:
-            EMIT_INST2(context, ByteCodeOp::AffectOpAndEqU16, r0, r1);
+            EMIT_INST2(context, ByteCodeOp::AffectOpAndEq16, r0, r1);
             return true;
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            EMIT_INST2(context, ByteCodeOp::AffectOpAndEqU32, r0, r1);
+            EMIT_INST2(context, ByteCodeOp::AffectOpAndEq32, r0, r1);
             return true;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
-            EMIT_INST2(context, ByteCodeOp::AffectOpAndEqU64, r0, r1);
+            EMIT_INST2(context, ByteCodeOp::AffectOpAndEq64, r0, r1);
             return true;
         default:
             return Report::internalError(context->node, "emitAffectAndEqual, type not supported");
@@ -533,20 +533,20 @@ bool ByteCodeGen::emitAffectOrEqual(const ByteCodeGenContext* context, uint32_t 
         case NativeTypeKind::S8:
         case NativeTypeKind::U8:
         case NativeTypeKind::Bool:
-            EMIT_INST2(context, ByteCodeOp::AffectOpOrEqU8, r0, r1);
+            EMIT_INST2(context, ByteCodeOp::AffectOpOrEq8, r0, r1);
             return true;
         case NativeTypeKind::S16:
         case NativeTypeKind::U16:
-            EMIT_INST2(context, ByteCodeOp::AffectOpOrEqU16, r0, r1);
+            EMIT_INST2(context, ByteCodeOp::AffectOpOrEq16, r0, r1);
             return true;
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            EMIT_INST2(context, ByteCodeOp::AffectOpOrEqU32, r0, r1);
+            EMIT_INST2(context, ByteCodeOp::AffectOpOrEq32, r0, r1);
             return true;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
-            EMIT_INST2(context, ByteCodeOp::AffectOpOrEqU64, r0, r1);
+            EMIT_INST2(context, ByteCodeOp::AffectOpOrEq64, r0, r1);
             return true;
         default:
             return Report::internalError(context->node, "emitAffectOrEqual, type not supported");
@@ -570,20 +570,20 @@ bool ByteCodeGen::emitAffectXorEqual(const ByteCodeGenContext* context, uint32_t
         case NativeTypeKind::S8:
         case NativeTypeKind::U8:
         case NativeTypeKind::Bool:
-            EMIT_INST2(context, ByteCodeOp::AffectOpXorEqU8, r0, r1);
+            EMIT_INST2(context, ByteCodeOp::AffectOpXorEq8, r0, r1);
             return true;
         case NativeTypeKind::S16:
         case NativeTypeKind::U16:
-            EMIT_INST2(context, ByteCodeOp::AffectOpXorEqU16, r0, r1);
+            EMIT_INST2(context, ByteCodeOp::AffectOpXorEq16, r0, r1);
             return true;
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            EMIT_INST2(context, ByteCodeOp::AffectOpXorEqU32, r0, r1);
+            EMIT_INST2(context, ByteCodeOp::AffectOpXorEq32, r0, r1);
             return true;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
-            EMIT_INST2(context, ByteCodeOp::AffectOpXorEqU64, r0, r1);
+            EMIT_INST2(context, ByteCodeOp::AffectOpXorEq64, r0, r1);
             return true;
         default:
             return Report::internalError(context->node, "emitAffectXorEqual, type not supported");

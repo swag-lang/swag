@@ -484,20 +484,20 @@ bool ByteCodeGen::emitXor(const ByteCodeGenContext* context, const TypeInfo* typ
         case NativeTypeKind::Bool:
         case NativeTypeKind::S8:
         case NativeTypeKind::U8:
-            EMIT_INST3(context, ByteCodeOp::BinOpXorU8, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::BinOpXor8, r0, r1, r2);
             return true;
         case NativeTypeKind::S16:
         case NativeTypeKind::U16:
-            EMIT_INST3(context, ByteCodeOp::BinOpXorU16, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::BinOpXor16, r0, r1, r2);
             return true;
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            EMIT_INST3(context, ByteCodeOp::BinOpXorU32, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::BinOpXor32, r0, r1, r2);
             return true;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
-            EMIT_INST3(context, ByteCodeOp::BinOpXorU64, r0, r1, r2);
+            EMIT_INST3(context, ByteCodeOp::BinOpXor64, r0, r1, r2);
             return true;
         default:
             return Report::internalError(context->node, "emitXor, type not supported");

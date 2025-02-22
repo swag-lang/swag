@@ -441,10 +441,10 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
                 /////////////////////////////////////
 
-            case ByteCodeOp::BinOpXorU8:
-            case ByteCodeOp::BinOpXorU16:
-            case ByteCodeOp::BinOpXorU32:
-            case ByteCodeOp::BinOpXorU64:
+            case ByteCodeOp::BinOpXor8:
+            case ByteCodeOp::BinOpXor16:
+            case ByteCodeOp::BinOpXor32:
+            case ByteCodeOp::BinOpXor64:
                 emitBinOp(pp, CPUOp::XOR);
                 break;
 
@@ -617,28 +617,28 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
                 /////////////////////////////////////
 
-            case ByteCodeOp::AffectOpXorEqU8:
-            case ByteCodeOp::AffectOpXorEqU16:
-            case ByteCodeOp::AffectOpXorEqU32:
-            case ByteCodeOp::AffectOpXorEqU64:
+            case ByteCodeOp::AffectOpXorEq8:
+            case ByteCodeOp::AffectOpXorEq16:
+            case ByteCodeOp::AffectOpXorEq32:
+            case ByteCodeOp::AffectOpXorEq64:
                 emitBinOpEq(pp, 0, CPUOp::XOR);
                 break;
 
                 /////////////////////////////////////
 
-            case ByteCodeOp::AffectOpOrEqU8:
-            case ByteCodeOp::AffectOpOrEqU16:
-            case ByteCodeOp::AffectOpOrEqU32:
-            case ByteCodeOp::AffectOpOrEqU64:
+            case ByteCodeOp::AffectOpOrEq8:
+            case ByteCodeOp::AffectOpOrEq16:
+            case ByteCodeOp::AffectOpOrEq32:
+            case ByteCodeOp::AffectOpOrEq64:
                 emitBinOpEq(pp, 0, CPUOp::OR);
                 break;
 
                 /////////////////////////////////////
 
-            case ByteCodeOp::AffectOpAndEqU8:
-            case ByteCodeOp::AffectOpAndEqU16:
-            case ByteCodeOp::AffectOpAndEqU32:
-            case ByteCodeOp::AffectOpAndEqU64:
+            case ByteCodeOp::AffectOpAndEq8:
+            case ByteCodeOp::AffectOpAndEq16:
+            case ByteCodeOp::AffectOpAndEq32:
+            case ByteCodeOp::AffectOpAndEq64:
                 emitBinOpEq(pp, 0, CPUOp::AND);
                 break;
 

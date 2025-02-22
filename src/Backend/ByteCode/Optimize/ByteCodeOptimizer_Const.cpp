@@ -407,12 +407,12 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 case ByteCodeOp::BinOpBitmaskOr64:
                     BINOP_U64(|);
                     break;
-                case ByteCodeOp::BinOpXorU8:
-                case ByteCodeOp::BinOpXorU16:
-                case ByteCodeOp::BinOpXorU32:
+                case ByteCodeOp::BinOpXor8:
+                case ByteCodeOp::BinOpXor16:
+                case ByteCodeOp::BinOpXor32:
                     BINOP_U32(^);
                     break;
-                case ByteCodeOp::BinOpXorU64:
+                case ByteCodeOp::BinOpXor64:
                     BINOP_U64(^);
                     break;
 
@@ -915,6 +915,40 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
         {
             switch (ip->op)
             {
+                case ByteCodeOp::AffectOpOrEq8:
+                    if (ip->b.u8 == 0)
+                        setNop(context, ip);
+                    break;
+                case ByteCodeOp::AffectOpOrEq16:
+                    if (ip->b.u16 == 0)
+                        setNop(context, ip);
+                    break;
+                case ByteCodeOp::AffectOpOrEq32:
+                    if (ip->b.u32 == 0)
+                        setNop(context, ip);
+                    break;
+                case ByteCodeOp::AffectOpOrEq64:
+                    if (ip->b.u64 == 0)
+                        setNop(context, ip);
+                    break;
+
+                case ByteCodeOp::AffectOpAndEq8:
+                    if (ip->b.u8 == 0xFF)
+                        setNop(context, ip);
+                    break;
+                case ByteCodeOp::AffectOpAndEq16:
+                    if (ip->b.u16 == 0xFFFF)
+                        setNop(context, ip);
+                    break;
+                case ByteCodeOp::AffectOpAndEq32:
+                    if (ip->b.u32 == 0xFFFFFFFF)
+                        setNop(context, ip);
+                    break;
+                case ByteCodeOp::AffectOpAndEq64:
+                    if (ip->b.u64 == 0xFFFFFFFFFFFFFFFF)
+                        setNop(context, ip);
+                    break;
+
                 case ByteCodeOp::BinOpBitmaskAnd8:
                     if (ip->b.u8 == 0xFF)
                     {
