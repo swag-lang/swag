@@ -1431,8 +1431,6 @@ void SCBE_X64::emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, OpBits opBits,
         }
     }
 
-    ///////////////////////////////////////////
-
     else if (op == CPUOp::IDIV)
     {
         SWAG_ASSERT(reg == CPUReg::RAX);
