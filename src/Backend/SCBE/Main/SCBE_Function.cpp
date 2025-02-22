@@ -401,7 +401,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::CastU64F64:
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->b.u32), OpBits::B64);
-                pp.emitCast(CPUReg::XMM0, CPUReg::RAX, OpBits::F64, OpBits::B64, false);
+                pp.emitLoadExtend(CPUReg::XMM0, CPUReg::RAX, OpBits::F64, OpBits::B64, false);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::XMM0, OpBits::F64);
                 break;
 

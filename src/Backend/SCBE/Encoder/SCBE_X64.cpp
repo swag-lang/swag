@@ -3,7 +3,6 @@
 #include "Backend/SCBE/Encoder/SCBE_X64.h"
 #include "Core/Math.h"
 #include "Semantic/Type/TypeManager.h"
-#pragma optimize("", off)
 
 enum X64DispMode
 {
@@ -110,41 +109,6 @@ namespace
     void emitSpecCPUOp(Concat& concat, CPUOp op, OpBits opBits)
     {
         emitSpecB8(concat, static_cast<uint8_t>(op), opBits);
-    }
-}
-
-/////////////////////////////////////////////////////////////////////
-
-void SCBE_X64::emitCast(CPUReg regDst, CPUReg regSrc, OpBits numBitsDst, OpBits numBitsSrc, bool isSigned)
-{
-    if (numBitsSrc == OpBits::B8 && numBitsDst == OpBits::B64 && !isSigned)
-    {
-        emitREX(concat, OpBits::B64, regDst, regSrc);
-        concat.addU8(0x0F);
-        concat.addU8(0xB6);
-        concat.addU8(getModRM(RegReg, static_cast<uint8_t>(regDst), static_cast<uint8_t>(regSrc)));
-    }
-    else if (numBitsSrc == OpBits::B16 && numBitsDst == OpBits::B64 && !isSigned)
-    {
-        emitREX(concat, OpBits::B64, regDst, regSrc);
-        concat.addU8(0x0F);
-        concat.addU8(0xB7);
-        concat.addU8(getModRM(RegReg, static_cast<uint8_t>(regDst), static_cast<uint8_t>(regSrc)));
-    }
-    else if (numBitsSrc == OpBits::B64 && numBitsDst == OpBits::F64 && !isSigned)
-    {
-        SWAG_ASSERT(regSrc == CPUReg::RAX && regDst == CPUReg::XMM0);
-        concat.addString5("\x66\x48\x0F\x6E\xC8"); // movq xmm1, rax
-        emitSymbolRelocationAddr(CPUReg::RCX, symCst_U64F64, 0);
-        concat.addString4("\x66\x0F\x62\x09");     // punpckldq xmm1, xmmword ptr [rcx]
-        concat.addString5("\x66\x0F\x5C\x49\x10"); // subpd xmm1, xmmword ptr [rcx + 16]
-        concat.addString4("\x66\x0F\x28\xC1");     // movapd xmm0, xmm1
-        concat.addString4("\x66\x0F\x15\xC1");     // unpckhpd xmm0, xmm1
-        concat.addString4("\xF2\x0F\x58\xC1");     // addsd xmm0, xmm1
-    }
-    else
-    {
-        SWAG_ASSERT(false);
     }
 }
 
@@ -360,6 +324,32 @@ void SCBE_X64::emitLoad(CPUReg reg, uint64_t value, OpBits opBits)
     }
 }
 
+void SCBE_X64::emitLoad(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits opBits)
+{
+    if (memOffset > 0x7FFFFFFF)
+    {
+        SWAG_ASSERT(memReg != CPUReg::RCX);
+        emitLoad(CPUReg::RCX, memOffset, OpBits::B64);
+        emitOpBinary(memReg, CPUReg::RCX, CPUOp::ADD, OpBits::B64);
+        memOffset = 0;
+    }
+
+    if (isFloat(opBits))
+    {
+        SWAG_ASSERT(reg < CPUReg::R8 && memReg < CPUReg::R8);
+        emitSpecF64(concat, 0xF3, opBits);
+        concat.addU8(0x0F);
+        concat.addU8(0x10);
+        emitModRM(concat, memOffset, reg, memReg);
+    }
+    else
+    {
+        emitREX(concat, opBits, reg, memReg);
+        emitSpecB8(concat, 0x8B, opBits);
+        emitModRM(concat, memOffset, reg, memReg);
+    }
+}
+
 void SCBE_X64::emitLoadExtend(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc, bool isSigned)
 {
     if (numBitsSrc == numBitsDst)
@@ -480,29 +470,36 @@ void SCBE_X64::emitLoadExtend(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpB
     SWAG_ASSERT(false);
 }
 
-void SCBE_X64::emitLoad(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits opBits)
+void SCBE_X64::emitLoadExtend(CPUReg regDst, CPUReg regSrc, OpBits numBitsDst, OpBits numBitsSrc, bool isSigned)
 {
-    if (memOffset > 0x7FFFFFFF)
+    if (numBitsSrc == OpBits::B8 && numBitsDst == OpBits::B64 && !isSigned)
     {
-        SWAG_ASSERT(memReg != CPUReg::RCX);
-        emitLoad(CPUReg::RCX, memOffset, OpBits::B64);
-        emitOpBinary(memReg, CPUReg::RCX, CPUOp::ADD, OpBits::B64);
-        memOffset = 0;
-    }
-
-    if (isFloat(opBits))
-    {
-        SWAG_ASSERT(reg < CPUReg::R8 && memReg < CPUReg::R8);
-        emitSpecF64(concat, 0xF3, opBits);
+        emitREX(concat, OpBits::B64, regDst, regSrc);
         concat.addU8(0x0F);
-        concat.addU8(0x10);
-        emitModRM(concat, memOffset, reg, memReg);
+        concat.addU8(0xB6);
+        concat.addU8(getModRM(RegReg, static_cast<uint8_t>(regDst), static_cast<uint8_t>(regSrc)));
+    }
+    else if (numBitsSrc == OpBits::B16 && numBitsDst == OpBits::B64 && !isSigned)
+    {
+        emitREX(concat, OpBits::B64, regDst, regSrc);
+        concat.addU8(0x0F);
+        concat.addU8(0xB7);
+        concat.addU8(getModRM(RegReg, static_cast<uint8_t>(regDst), static_cast<uint8_t>(regSrc)));
+    }
+    else if (numBitsSrc == OpBits::B64 && numBitsDst == OpBits::F64 && !isSigned)
+    {
+        SWAG_ASSERT(regSrc == CPUReg::RAX && regDst == CPUReg::XMM0);
+        concat.addString5("\x66\x48\x0F\x6E\xC8"); // movq xmm1, rax
+        emitSymbolRelocationAddr(CPUReg::RCX, symCst_U64F64, 0);
+        concat.addString4("\x66\x0F\x62\x09");     // punpckldq xmm1, xmmword ptr [rcx]
+        concat.addString5("\x66\x0F\x5C\x49\x10"); // subpd xmm1, xmmword ptr [rcx + 16]
+        concat.addString4("\x66\x0F\x28\xC1");     // movapd xmm0, xmm1
+        concat.addString4("\x66\x0F\x15\xC1");     // unpckhpd xmm0, xmm1
+        concat.addString4("\xF2\x0F\x58\xC1");     // addsd xmm0, xmm1
     }
     else
     {
-        emitREX(concat, opBits, reg, memReg);
-        emitSpecB8(concat, 0x8B, opBits);
-        emitModRM(concat, memOffset, reg, memReg);
+        SWAG_ASSERT(false);
     }
 }
 
@@ -1221,7 +1218,7 @@ void SCBE_X64::emitOpBinary(CPUReg memReg, uint64_t memOffset, CPUReg reg, CPUOp
 
 namespace
 {
-    bool decompose(uint32_t value, uint32_t& factor1, uint32_t& factor2)
+    bool decomposeMul(uint32_t value, uint32_t& factor1, uint32_t& factor2)
     {
         // [3, 5, 9] * [3, 5, 9]
         for (uint32_t i = 3; i <= value; i += 2)
@@ -1430,7 +1427,6 @@ void SCBE_X64::emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, OpBits opBits,
             emitOpBinary(reg, CPUReg::RCX, op, opBits, emitFlags);
         }
     }
-
     else if (op == CPUOp::IDIV)
     {
         SWAG_ASSERT(reg == CPUReg::RAX);
@@ -1464,7 +1460,7 @@ void SCBE_X64::emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, OpBits opBits,
         {
             emitOpBinary(reg, static_cast<uint32_t>(log2(value)), CPUOp::SHL, opBits, emitFlags);
         }
-        else if (canFactorize && decompose(static_cast<uint32_t>(value), factor1, factor2))
+        else if (canFactorize && decomposeMul(static_cast<uint32_t>(value), factor1, factor2))
         {
             if (factor1 != 1)
                 emitOpBinary(reg, factor1, CPUOp::MUL, opBits, emitFlags);
@@ -1511,18 +1507,18 @@ void SCBE_X64::emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, OpBits opBits,
         }
         else if (value == 1)
         {
-            SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX);
-            emitREX(concat, opBits);
+            SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX || reg == CPUReg::R9);
+            emitREX(concat, opBits, reg, reg);
             emitSpecB8(concat, 0xD1, opBits);
-            concat.addU8(static_cast<uint8_t>(op) | static_cast<uint8_t>(reg));
+            concat.addU8(static_cast<uint8_t>(op) | static_cast<uint8_t>(reg) & 0b111);
         }
         else if (value <= 0x7F)
         {
-            SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX);
-            emitREX(concat, opBits);
+            SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX || reg == CPUReg::R9);
+            emitREX(concat, opBits, reg, reg);
             value = min(value, SCBE_CPU::getNumBits(opBits) - 1);
             emitSpecB8(concat, 0xC1, opBits);
-            concat.addU8(static_cast<uint8_t>(op) | static_cast<uint8_t>(reg));
+            concat.addU8(static_cast<uint8_t>(op) | static_cast<uint8_t>(reg) & 0b111);
             emitValue(concat, value, OpBits::B8);
         }
         else
