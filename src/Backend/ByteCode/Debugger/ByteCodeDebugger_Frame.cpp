@@ -21,7 +21,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBackTrace(ByteCodeRunContext* context, c
         }
 
         maxSteps = arg.split[1].toInt();
-        maxSteps = min(maxSteps, g_ByteCodeStackTrace->maxLevel(context));
+        maxSteps = std::min(maxSteps, g_ByteCodeStackTrace->maxLevel(context));
     }
 
     printLong(g_ByteCodeStackTrace->log(context, maxSteps, g_ByteCodeDebugger.printBtCode));
@@ -46,7 +46,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrame(ByteCodeRunContext* context, const
 
     uint32_t       off      = arg.split[1].toInt();
     const uint32_t maxLevel = g_ByteCodeStackTrace->maxLevel(context);
-    off                     = min(off, maxLevel);
+    off                     = std::min(off, maxLevel);
 
     const auto oldIndex            = context->debugStackFrameOffset;
     context->debugStackFrameOffset = maxLevel - off;
@@ -125,7 +125,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrameDown(ByteCodeRunContext* context, c
     }
 
     const auto oldIndex = context->debugStackFrameOffset;
-    context->debugStackFrameOffset -= min(context->debugStackFrameOffset, off);
+    context->debugStackFrameOffset -= std::min(context->debugStackFrameOffset, off);
     g_ByteCodeDebugger.computeDebugContext(context);
     if (!g_ByteCodeDebugger.cxtIp)
     {

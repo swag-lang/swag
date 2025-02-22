@@ -82,7 +82,7 @@ void SCBE::emitShiftRightArithmetic(SCBE_CPU& pp)
     else
     {
         if (ip->hasFlag(BCI_IMM_B))
-            pp.emitLoad(CPUReg::RCX, min(ip->b.u8, SCBE_CPU::getNumBits(opBits) - 1), OpBits::B8);
+            pp.emitLoad(CPUReg::RCX, std::min(static_cast<uint32_t>(ip->b.u8), SCBE_CPU::getNumBits(opBits) - 1), OpBits::B8);
         else
         {
             pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->b.u32), OpBits::B32);

@@ -147,7 +147,7 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
                 }
                 else
                 {
-                    theModule->moreRecentSourceFile = max(theModule->moreRecentSourceFile, f->writeTime);
+                    theModule->moreRecentSourceFile = std::max(theModule->moreRecentSourceFile, f->writeTime);
                 }
             }
         }
@@ -191,7 +191,7 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
                         // to the rebuild detection (in case file is #load by another for example)
                         else
                         {
-                            theModule->moreRecentSourceFile = max(theModule->moreRecentSourceFile, writeTime);
+                            theModule->moreRecentSourceFile = std::max(theModule->moreRecentSourceFile, writeTime);
                         }
                     }
                 }

@@ -1463,7 +1463,7 @@ bool ByteCodeGen::emitReturnByCopyAddress(const ByteCodeGenContext* context, Ast
                 EMIT_INST1(context, ByteCodeOp::CopyRAtoRT, node->resultRegisterRc);
             }
 
-            context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
+            context->bc->maxCallResults = std::max(context->bc->maxCallResults, static_cast<uint32_t>(1));
             parentReturn->addSemFlag(SEMFLAG_RETVAL);
             return true;
         }
@@ -1493,7 +1493,7 @@ bool ByteCodeGen::emitReturnByCopyAddress(const ByteCodeGenContext* context, Ast
 
             emitRetValRef(context, resolved, node->resultRegisterRc, false, resolved->computedValue.storageOffset + typeParam->offset);
             EMIT_INST1(context, ByteCodeOp::CopyRAtoRT, node->resultRegisterRc);
-            context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
+            context->bc->maxCallResults = std::max(context->bc->maxCallResults, static_cast<uint32_t>(1));
 
             testReturn->parent->addSemFlag(SEMFLAG_FIELD_STRUCT);
             return true;
@@ -1504,7 +1504,7 @@ bool ByteCodeGen::emitReturnByCopyAddress(const ByteCodeGenContext* context, Ast
     const auto inst = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRc);
     inst->b.u64     = node->computedValue()->storageOffset;
     EMIT_INST1(context, ByteCodeOp::CopyRAtoRT, node->resultRegisterRc);
-    context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
+    context->bc->maxCallResults = std::max(context->bc->maxCallResults, static_cast<uint32_t>(1));
 
     if (node->resolvedSymbolOverload())
         node->resolvedSymbolOverload()->flags.add(OVERLOAD_EMITTED);
@@ -1942,7 +1942,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
 
         auto inst                = EMIT_INST1(context, ByteCodeOp::CopySPVaargs, r0[0]);
         inst->b.u32              = offset * sizeof(Register);
-        context->bc->maxSpVaargs = max(context->bc->maxSpVaargs, maxCallParams + 2);
+        context->bc->maxSpVaargs = std::max(context->bc->maxSpVaargs, maxCallParams + 2);
 
         // If this is a closure, the first parameter is optional, depending on node->additionalRegisterRC[1] content
         // So we remove the first parameter by default, and will add it below is necessary
@@ -1982,7 +1982,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
 
         auto inst                = EMIT_INST1(context, ByteCodeOp::CopySPVaargs, r0[0]);
         inst->b.u32              = offset * sizeof(Register);
-        context->bc->maxSpVaargs = max(context->bc->maxSpVaargs, maxCallParams + 2);
+        context->bc->maxSpVaargs = std::max(context->bc->maxSpVaargs, maxCallParams + 2);
 
         // If this is a closure, the first parameter is optional, depending on node->additionalRegisterRC[1] content
         // So we remove the first parameter by default, and will add it below is necessary
@@ -2049,7 +2049,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
         auto numRegs = typeInfoFunc->returnType->numRegisters();
 
         // Need to do that even if discard, not sure why
-        context->bc->maxCallResults = max(context->bc->maxCallResults, numRegs);
+        context->bc->maxCallResults = std::max(context->bc->maxCallResults, numRegs);
 
         if (!node->hasAstFlag(AST_DISCARD))
         {
@@ -2086,7 +2086,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     }
 
     // Save the maximum number of push params in that bytecode
-    context->bc->maxCallParams = max(context->bc->maxCallParams, maxCallParams);
+    context->bc->maxCallParams = std::max(context->bc->maxCallParams, maxCallParams);
 
     // Restore stack as it was before the call, before the parameters
     if (precallStack)

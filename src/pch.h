@@ -1,5 +1,6 @@
 // ReSharper disable CppInconsistentNaming
 #pragma once
+#define NOMINMAX
 
 #ifdef __clang__
 

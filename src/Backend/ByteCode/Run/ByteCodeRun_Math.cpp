@@ -202,10 +202,10 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext*, ByteCodeInstruction* ip, Reg
             switch (static_cast<TokenId>(ip->d.u32))
             {
                 case TokenId::IntrinsicMin:
-                    ra.s8 = min(rb.s8, rc.s8);
+                    ra.s8 = std::min(rb.s8, rc.s8);
                     break;
                 case TokenId::IntrinsicMax:
-                    ra.s8 = max(rb.s8, rc.s8);
+                    ra.s8 = std::max(rb.s8, rc.s8);
                     break;
                 default:
                     SWAG_ASSERT(false);
@@ -219,10 +219,10 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext*, ByteCodeInstruction* ip, Reg
             switch (static_cast<TokenId>(ip->d.u32))
             {
                 case TokenId::IntrinsicMin:
-                    ra.s16 = min(rb.s16, rc.s16);
+                    ra.s16 = std::min(rb.s16, rc.s16);
                     break;
                 case TokenId::IntrinsicMax:
-                    ra.s16 = max(rb.s16, rc.s16);
+                    ra.s16 = std::max(rb.s16, rc.s16);
                     break;
                 default:
                     SWAG_ASSERT(false);
@@ -236,10 +236,10 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext*, ByteCodeInstruction* ip, Reg
             switch (static_cast<TokenId>(ip->d.u32))
             {
                 case TokenId::IntrinsicMin:
-                    ra.s32 = min(rb.s32, rc.s32);
+                    ra.s32 = std::min(rb.s32, rc.s32);
                     break;
                 case TokenId::IntrinsicMax:
-                    ra.s32 = max(rb.s32, rc.s32);
+                    ra.s32 = std::max(rb.s32, rc.s32);
                     break;
                 default:
                     SWAG_ASSERT(false);
@@ -253,10 +253,10 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext*, ByteCodeInstruction* ip, Reg
             switch (static_cast<TokenId>(ip->d.u32))
             {
                 case TokenId::IntrinsicMin:
-                    ra.s64 = min(rb.s64, rc.s64);
+                    ra.s64 = std::min(rb.s64, rc.s64);
                     break;
                 case TokenId::IntrinsicMax:
-                    ra.s64 = max(rb.s64, rc.s64);
+                    ra.s64 = std::max(rb.s64, rc.s64);
                     break;
                 default:
                     SWAG_ASSERT(false);
@@ -270,10 +270,10 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext*, ByteCodeInstruction* ip, Reg
             switch (static_cast<TokenId>(ip->d.u32))
             {
                 case TokenId::IntrinsicMin:
-                    ra.u8 = min(rb.u8, rc.u8);
+                    ra.u8 = std::min(rb.u8, rc.u8);
                     break;
                 case TokenId::IntrinsicMax:
-                    ra.u8 = max(rb.u8, rc.u8);
+                    ra.u8 = std::max(rb.u8, rc.u8);
                     break;
                 case TokenId::IntrinsicRol:
                     ra.u8 = static_cast<uint8_t>((rb.u8 << rc.u32) | (rb.u8 >> (8 - rc.u32)));
@@ -293,10 +293,10 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext*, ByteCodeInstruction* ip, Reg
             switch (static_cast<TokenId>(ip->d.u32))
             {
                 case TokenId::IntrinsicMin:
-                    ra.u16 = min(rb.u16, rc.u16);
+                    ra.u16 = std::min(rb.u16, rc.u16);
                     break;
                 case TokenId::IntrinsicMax:
-                    ra.u16 = max(rb.u16, rc.u16);
+                    ra.u16 = std::max(rb.u16, rc.u16);
                     break;
                 case TokenId::IntrinsicRol:
                     ra.u16 = static_cast<uint16_t>((rb.u16 << rc.u32) | (rb.u16 >> (16 - rc.u32)));
@@ -316,10 +316,10 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext*, ByteCodeInstruction* ip, Reg
             switch (static_cast<TokenId>(ip->d.u32))
             {
                 case TokenId::IntrinsicMin:
-                    ra.u32 = min(rb.u32, rc.u32);
+                    ra.u32 = std::min(rb.u32, rc.u32);
                     break;
                 case TokenId::IntrinsicMax:
-                    ra.u32 = max(rb.u32, rc.u32);
+                    ra.u32 = std::max(rb.u32, rc.u32);
                     break;
                 case TokenId::IntrinsicRol:
                     ra.u32 = (rb.u32 << rc.u32) | (rb.u32 >> (32 - rc.u32));
@@ -339,10 +339,10 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext*, ByteCodeInstruction* ip, Reg
             switch (static_cast<TokenId>(ip->d.u32))
             {
                 case TokenId::IntrinsicMin:
-                    ra.u64 = min(rb.u64, rc.u64);
+                    ra.u64 = std::min(rb.u64, rc.u64);
                     break;
                 case TokenId::IntrinsicMax:
-                    ra.u64 = max(rb.u64, rc.u64);
+                    ra.u64 = std::max(rb.u64, rc.u64);
                     break;
                 case TokenId::IntrinsicRol:
                     ra.u64 = (rb.u64 << rc.u32) | (rb.u64 >> (64 - rc.u32));
@@ -365,10 +365,10 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext*, ByteCodeInstruction* ip, Reg
                     ra.f32 = powf(rb.f32, rc.f32);
                     break;
                 case TokenId::IntrinsicMin:
-                    ra.f32 = min(rb.f32, rc.f32);
+                    ra.f32 = std::min(rb.f32, rc.f32);
                     break;
                 case TokenId::IntrinsicMax:
-                    ra.f32 = max(rb.f32, rc.f32);
+                    ra.f32 = std::max(rb.f32, rc.f32);
                     break;
                 case TokenId::IntrinsicATan2:
                     ra.f32 = atan2f(rb.f32, rc.f32);
@@ -388,10 +388,10 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext*, ByteCodeInstruction* ip, Reg
                     ra.f64 = pow(rb.f64, rc.f64);
                     break;
                 case TokenId::IntrinsicMin:
-                    ra.f64 = min(rb.f64, rc.f64);
+                    ra.f64 = std::min(rb.f64, rc.f64);
                     break;
                 case TokenId::IntrinsicMax:
-                    ra.f64 = max(rb.f64, rc.f64);
+                    ra.f64 = std::max(rb.f64, rc.f64);
                     break;
                 case TokenId::IntrinsicATan2:
                     ra.f64 = atan2(rb.f64, rc.f64);

@@ -101,7 +101,7 @@ Utf8::Utf8(const Utf8& from, uint32_t capacity)
         return;
     }
 
-    reserve(max(len + 1, capacity));
+    reserve(std::max(len + 1, capacity));
     std::copy_n(from.buffer, len + 1, buffer);
     count = len;
 }
@@ -124,7 +124,7 @@ void Utf8::reserve(uint32_t newSize)
 
     const auto lastAllocated = allocated;
     allocated *= 2;
-    allocated            = max(allocated, newSize);
+    allocated            = std::max(allocated, newSize);
     const auto newBuffer = Allocator::allocN<char>(allocated);
     if (count)
         std::copy_n(buffer, count + 1, newBuffer);

@@ -472,7 +472,7 @@ bool FormatAst::outputChildrenFuncDecl(FormatContext& context, AstNode* node, ui
             const auto funcDecl = castAst<AstFuncDecl>(child, AstNodeKind::FuncDecl);
             tmpConcat.clear();
             SWAG_CHECK(outputFuncSignature(fmt.cxt, funcDecl, funcDecl->genericParameters, funcDecl->parameters, nullptr));
-            maxLenSignature = max(maxLenSignature, tmpConcat.length());
+            maxLenSignature = std::max(maxLenSignature, tmpConcat.length());
         }
     }
 

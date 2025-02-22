@@ -160,7 +160,7 @@ uint32_t DataSegment::reserveNoLock(uint32_t size, uint8_t** resultPtr)
     else
     {
         Bucket bucket;
-        bucket.size = max(size, granularity);
+        bucket.size = std::max(size, granularity);
         granularity *= 2;
         bucket.size   = Allocator::alignSize(bucket.size);
         bucket.buffer = Allocator::allocN<uint8_t>(bucket.size);

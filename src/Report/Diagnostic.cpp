@@ -564,7 +564,7 @@ void Diagnostic::collectRanges()
             r.width = lineCode.length() - r.startLocation.column;
         }
 
-        r.width = max(1, r.width);
+        r.width = std::max(static_cast<uint32_t>(1), r.width);
 
         // Special case for a range == 1.
         if (r.width == 1 && r.startLocation.column < lineCode.count)
@@ -636,7 +636,7 @@ void Diagnostic::collectSourceCode()
                 {
                     const uint32_t countPrevBlanks = lineCodePrev.countStartBlanks();
                     if (countPrevBlanks > MAX_INDENT_BLANKS)
-                        minBlanks = min(minBlanks, countPrevBlanks - MAX_INDENT_BLANKS);
+                        minBlanks = std::min(minBlanks, countPrevBlanks - MAX_INDENT_BLANKS);
                     break;
                 }
             }
@@ -760,7 +760,7 @@ void Diagnostic::printLastRangeHint(Log* log, uint32_t curColumn)
 
     Vector<Utf8>   tokens;
     const uint32_t maxLength = g_CommandLine.errorRightColumn - leftColumn + minBlanks;
-    Utf8::wordWrap(r.hint, tokens, max(maxLength, g_CommandLine.errorRightColumn / 2));
+    Utf8::wordWrap(r.hint, tokens, std::max(maxLength, g_CommandLine.errorRightColumn / 2));
 
     for (uint32_t i = 0; i < tokens.size(); i++)
     {

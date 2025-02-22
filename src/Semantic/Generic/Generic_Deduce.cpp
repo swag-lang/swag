@@ -23,7 +23,7 @@ void Generic::deduceSubType(SymbolMatchContext&      context,
                 const auto callStruct = castTypeInfo<TypeInfoStruct>(callTypeInfo, TypeInfoKind::Struct);
                 if (!callStruct->genericParameters.empty())
                 {
-                    const auto num = min(wantedStruct->genericParameters.size(), callStruct->genericParameters.size());
+                    const auto num = std::min(wantedStruct->genericParameters.size(), callStruct->genericParameters.size());
                     for (uint32_t idx = 0; idx < num; idx++)
                     {
                         wantedTypeInfos.push_back(wantedStruct->genericParameters[idx]->typeInfo);
@@ -32,7 +32,7 @@ void Generic::deduceSubType(SymbolMatchContext&      context,
                 }
                 else
                 {
-                    const auto num = min(wantedStruct->genericParameters.size(), callStruct->deducedGenericParameters.size());
+                    const auto num = std::min(wantedStruct->genericParameters.size(), callStruct->deducedGenericParameters.size());
                     for (uint32_t idx = 0; idx < num; idx++)
                     {
                         wantedTypeInfos.push_back(wantedStruct->genericParameters[idx]->typeInfo);
@@ -43,7 +43,7 @@ void Generic::deduceSubType(SymbolMatchContext&      context,
             else if (callTypeInfo->isListTuple())
             {
                 const auto callList = castTypeInfo<TypeInfoList>(callTypeInfo, TypeInfoKind::TypeListTuple);
-                const auto num      = min(wantedStruct->genericParameters.size(), callList->subTypes.size());
+                const auto num      = std::min(wantedStruct->genericParameters.size(), callList->subTypes.size());
                 for (uint32_t idx = 0; idx < num; idx++)
                 {
                     // A tuple typelist like {a: 1, b: 2} can have named parameters, which means that the order of

@@ -52,11 +52,11 @@ JobResult ModuleOutputJob::execute()
         if (backend->numPreCompileBuffers == 0)
         {
             const auto perWorker          = module->byteCodeFunc.size() / g_ThreadMgr.numWorkers;
-            backend->numPreCompileBuffers = module->byteCodeFunc.size() / max(perWorker, 32);
+            backend->numPreCompileBuffers = module->byteCodeFunc.size() / std::max(perWorker, static_cast<uint32_t>(32));
         }
 
-        backend->numPreCompileBuffers = max(backend->numPreCompileBuffers, 2); // :SegZeroIsData
-        backend->numPreCompileBuffers = min(backend->numPreCompileBuffers, MAX_PRECOMPILE_BUFFERS);
+        backend->numPreCompileBuffers = std::max(backend->numPreCompileBuffers, static_cast<uint32_t>(2)); // :SegZeroIsData
+        backend->numPreCompileBuffers = std::min(backend->numPreCompileBuffers, MAX_PRECOMPILE_BUFFERS);
 
         for (uint32_t i = 0; i < backend->numPreCompileBuffers; i++)
         {

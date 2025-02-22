@@ -276,8 +276,8 @@ void SymTable::disabledIfBlockOverloadNoLock(AstNode* node, SymbolName* symbol)
 {
     SWAG_ASSERT(symbol->cptIfBlock);
     symbol->cptIfBlock--;
-    symbol->cptOverloadsInit = min(symbol->cptIfBlock, symbol->cptOverloadsInit);
-    symbol->cptOverloads     = min(symbol->cptOverloads, symbol->cptOverloadsInit);
+    symbol->cptOverloadsInit = std::min(symbol->cptIfBlock, symbol->cptOverloadsInit);
+    symbol->cptOverloads     = std::min(symbol->cptOverloads, symbol->cptOverloadsInit);
     symbol->unregisterNode(node);
     if (symbol->cptOverloads == 0)
         symbol->dependentJobs.setRunning();

@@ -413,7 +413,7 @@ uint32_t TypeManager::alignOf(TypeInfo* typeInfo)
         return sizeof(void*);
     }
 
-    return max(1, typeInfo->sizeOf);
+    return std::max(static_cast<uint32_t>(1), typeInfo->sizeOf);
 }
 
 void TypeManager::registerTypeType()

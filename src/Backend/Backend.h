@@ -23,7 +23,7 @@ enum class JobResult;
 enum class BuildCfgBackendKind;
 enum class BuildCfgOutputKind;
 
-static constexpr int MAX_PRECOMPILE_BUFFERS = 1024;
+static constexpr uint32_t MAX_PRECOMPILE_BUFFERS = 1024;
 
 struct Backend
 {

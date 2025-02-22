@@ -282,7 +282,7 @@ namespace
         {
             const auto type1 = castTypeInfo<TypeInfoFuncAttr>(bi.badSignatureRequestedType, TypeInfoKind::LambdaClosure);
             const auto type2 = castTypeInfo<TypeInfoFuncAttr>(bi.badSignatureGivenType, TypeInfoKind::LambdaClosure);
-            for (uint32_t i = 0; i < min(type1->parameters.count, type2->parameters.count); i++)
+            for (uint32_t i = 0; i < std::min(type1->parameters.count, type2->parameters.count); i++)
             {
                 if (type2->parameters[i]->typeInfo->isUndefined())
                     type2->parameters[i]->typeInfo = type1->parameters[i]->typeInfo;

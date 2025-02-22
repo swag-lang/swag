@@ -48,8 +48,8 @@ bool Module::prepareCompilerMessages(const JobContext* context, uint32_t pass)
 
     // Batch prepare
     auto count          = compilerMessages[pass].size() / g_ThreadMgr.numWorkers;
-    count               = max(count, 1);
-    count               = min(count, compilerMessages[pass].size());
+    count               = std::max(count, static_cast<uint32_t>(1));
+    count               = std::min(count, compilerMessages[pass].size());
     uint32_t startIndex = 0;
     while (startIndex < compilerMessages[pass].size())
     {
@@ -57,7 +57,7 @@ bool Module::prepareCompilerMessages(const JobContext* context, uint32_t pass)
         newJob->module       = this;
         newJob->pass         = pass;
         newJob->startIndex   = startIndex;
-        newJob->endIndex     = min(startIndex + count, compilerMessages[pass].size());
+        newJob->endIndex     = std::min(startIndex + count, compilerMessages[pass].size());
         newJob->dependentJob = context->baseJob;
         startIndex += count;
         context->baseJob->jobsToAdd.push_back(newJob);

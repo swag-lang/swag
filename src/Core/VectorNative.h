@@ -72,8 +72,8 @@ struct VectorNative
             return;
 
         const auto oldAllocated = allocated;
-        allocated               = max(allocated * 2, 4);
-        allocated               = max(allocated, newCapacity);
+        allocated               = std::max(allocated * 2, static_cast<uint32_t>(4));
+        allocated               = std::max(allocated, newCapacity);
         auto newPtr             = Allocator::allocAlignedN<T>(allocated);
         if (copy && count)
             std::copy_n(buffer, count, newPtr);
@@ -166,7 +166,7 @@ struct VectorNative
                 memset(buffer + count, 0, (num - count) * sizeof(T));
         }
 
-        count = max(count, static_cast<uint32_t>(num));
+        count = std::max(count, static_cast<uint32_t>(num));
     }
 
     void set_size_clear(size_t num)

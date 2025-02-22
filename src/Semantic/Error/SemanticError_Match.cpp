@@ -41,8 +41,8 @@ namespace
         if (tryResult.empty())
             return hasCorrectResult;
 
-        static constexpr int MAX_OVERLOADS = 5;
-        Diagnostic*          note          = nullptr;
+        static constexpr uint32_t MAX_OVERLOADS = 5;
+        Diagnostic*               note          = nullptr;
 
         switch (result)
         {
@@ -84,7 +84,7 @@ namespace
                 break;
         }
 
-        const auto maxOverloads = min(tryResult.size(), MAX_OVERLOADS);
+        const auto maxOverloads = std::min(tryResult.size(), MAX_OVERLOADS);
 
         // Additional error message per overload
         Vector<Utf8> addMsg;

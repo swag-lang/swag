@@ -606,7 +606,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakMemory(ByteCodeRunContext* context,
         {
             count = res.type->sizeOf;
             count &= ~1;
-            count = min(count, 8);
+            count = std::min(count, static_cast<uint32_t>(8));
         }
     }
     else if (res.type->isPointer())
@@ -617,7 +617,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakMemory(ByteCodeRunContext* context,
             const auto typePtr = castTypeInfo<TypeInfoPointer>(res.type, TypeInfoKind::Pointer);
             count              = typePtr->pointedType->sizeOf;
             count &= ~1;
-            count = min(count, 8);
+            count = std::min(count, static_cast<uint32_t>(8));
         }
     }
 

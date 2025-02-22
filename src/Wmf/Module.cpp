@@ -564,7 +564,7 @@ void Module::addFileNoLock(SourceFile* file)
     // Keep track of the most recent file
     if (!file->writeTime)
         file->writeTime = OS::getFileWriteTime(file->path);
-    moreRecentSourceFile = max(moreRecentSourceFile, file->writeTime);
+    moreRecentSourceFile = std::max(moreRecentSourceFile, file->writeTime);
 
     // If the file is flagged as '#global export', register it
     if (file->hasFlag(FILE_FORCE_EXPORT))
@@ -915,8 +915,8 @@ void Module::sortDependenciesByInitOrder(VectorNative<ModuleDependency*>& result
 void Module::setBuildPass(BuildPass buildP)
 {
     ScopedLock lk(mutexBuildPass);
-    buildPass = static_cast<BuildPass>(min((int) buildP, (int) buildPass));
-    buildPass = static_cast<BuildPass>(min((int) g_CommandLine.buildPass, (int) buildPass));
+    buildPass = static_cast<BuildPass>(std::min(static_cast<int>(buildP), static_cast<int>(buildPass)));
+    buildPass = static_cast<BuildPass>(std::min(static_cast<int>(g_CommandLine.buildPass), static_cast<int>(buildPass)));
 }
 
 void Module::setHasBeenBuilt(uint32_t buildResult)

@@ -28,13 +28,13 @@ bool FormatAst::outputChildrenEnumValues(FormatContext& context, AstNode* node, 
         PushConcatFormatTmp fmt{this, context};
         for (const auto child : nodes)
         {
-            maxLenName = max(maxLenName, child->token.text.length());
+            maxLenName = std::max(maxLenName, child->token.text.length());
 
             if (child->childCount())
             {
                 tmpConcat.clear();
                 SWAG_CHECK(outputNode(fmt.cxt, child->firstChild()));
-                maxLenValue = max(maxLenValue, tmpConcat.length());
+                maxLenValue = std::max(maxLenValue, tmpConcat.length());
             }
         }
     }

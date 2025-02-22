@@ -10,7 +10,7 @@
 
 bool Semantic::reserveAndStoreToSegment(JobContext* context, DataSegment* storageSegment, uint32_t& storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment)
 {
-    storageOffset = storageSegment->reserve(max(1, typeInfo->sizeOf), nullptr, TypeManager::alignOf(typeInfo));
+    storageOffset = storageSegment->reserve(std::max(static_cast<uint32_t>(1), typeInfo->sizeOf), nullptr, TypeManager::alignOf(typeInfo));
     return storeToSegment(context, storageSegment, storageOffset, value, typeInfo, assignment);
 }
 

@@ -3454,7 +3454,7 @@ void ByteCodeOptimizer::reduceCast(ByteCodeOptContext* context, ByteCodeInstruct
                 ip[1].a.u32 == ip[0].a.u32 &&
                 !ip[1].hasFlag(BCI_START_STMT))
             {
-                ip[1].b.u64 = min(ip[0].b.u64, ip[1].b.u64);
+                ip[1].b.u64 = std::min(ip[0].b.u64, ip[1].b.u64);
                 setNop(context, ip);
                 break;
             }
@@ -3465,7 +3465,7 @@ void ByteCodeOptimizer::reduceCast(ByteCodeOptContext* context, ByteCodeInstruct
                 ip[1].a.u32 == ip[0].a.u32 &&
                 !ip[1].hasFlag(BCI_START_STMT))
             {
-                ip[0].b.u64 = min(ip[0].b.u64, ip[1].b.u64);
+                ip[0].b.u64 = std::min(ip[0].b.u64, ip[1].b.u64);
                 setNop(context, ip + 1);
                 break;
             }

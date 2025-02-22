@@ -212,13 +212,13 @@ void CommandLineParser::logArguments(const Utf8& cmd) const
         if (!isArgValidFor(cmd, oneArg))
             continue;
 
-        columns[0] = max(columns[0], arg.first.length() + SPACE);
-        columns[1] = max(columns[1], oneArg->shortName.length() + SPACE);
+        columns[0] = std::max(columns[0], arg.first.length() + SPACE);
+        columns[1] = std::max(columns[1], oneArg->shortName.length() + SPACE);
 
         Utf8 value, defaultVal;
         getArgValue(oneArg, value, defaultVal);
-        columns[2] = max(columns[2], value.length() + SPACE);
-        columns[3] = max(columns[3], defaultVal.length() + SPACE);
+        columns[2] = std::max(columns[2], value.length() + SPACE);
+        columns[3] = std::max(columns[3], defaultVal.length() + SPACE);
     }
 
     size_t total = 0;

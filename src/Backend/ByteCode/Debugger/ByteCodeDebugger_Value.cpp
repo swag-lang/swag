@@ -483,7 +483,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
                 else
                 {
                     ptr = static_cast<char**>(addr)[0];
-                    len = min(static_cast<uint64_t*>(addr)[1], 128);
+                    len = std::min(static_cast<uint64_t*>(addr)[1], static_cast<uint64_t>(128));
                 }
 
                 if (!ptr)

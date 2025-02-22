@@ -56,8 +56,8 @@ struct LangHashTable
         }
 
         firstLetter[static_cast<uint32_t>(key[0])] = true;
-        minLetters                                 = min(minLetters, keyLen);
-        maxLetters                                 = max(maxLetters, keyLen);
+        minLetters                                 = std::min(minLetters, keyLen);
+        maxLetters                                 = std::max(maxLetters, keyLen);
         buffer[idx].hash                           = crc;
         buffer[idx].key                            = key;
         buffer[idx].keyLen                         = keyLen;

@@ -18,7 +18,7 @@ void LLVM::emitShiftRightArithmetic(const LLVM_Encoder& pp, uint32_t numBits)
     if (ip->hasFlag(BCI_IMM_B))
     {
         const auto r0 = MK_IMMA_IX(numBits);
-        const auto r1 = builder.getIntN(numBits, min(ip->b.u32, numBits - 1));
+        const auto r1 = builder.getIntN(numBits, std::min(ip->b.u32, numBits - 1));
         const auto r2 = builder.CreateAShr(r0, r1);
         const auto r3 = GEP64_PTR_IX(allocR, ip->c.u32, numBits);
         builder.CreateStore(r2, r3);
@@ -47,7 +47,7 @@ void LLVM::emitShiftRightEqArithmetic(const LLVM_Encoder& pp, uint32_t numBits)
 
     if (ip->hasFlag(BCI_IMM_B))
     {
-        const auto r0 = builder.getIntN(numBits, min(ip->b.u32, numBits - 1));
+        const auto r0 = builder.getIntN(numBits, std::min(ip->b.u32, numBits - 1));
         const auto r1 = builder.CreateLoad(PTR_IX_TY(numBits), GEP64(allocR, ip->a.u32));
         const auto r2 = builder.CreateLoad(IX_TY(numBits), r1);
         const auto r3 = builder.CreateAShr(r2, r0);

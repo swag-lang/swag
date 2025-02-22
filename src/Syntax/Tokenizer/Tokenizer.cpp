@@ -120,7 +120,7 @@ void Tokenizer::processChar(uint32_t c, unsigned offset)
     {
         // Don't really know why if this is utf8 of 3 bytes, we should just increase by 2
         // for consoles to have a correct column indentation. Is this because of windows UTF16 ?
-        location.column += min(offset, 2);
+        location.column += std::min(offset, static_cast<uint32_t>(2));
     }
 }
 

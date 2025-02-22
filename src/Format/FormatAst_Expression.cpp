@@ -77,7 +77,7 @@ bool FormatAst::outputChildrenAffectEqual(FormatContext& context, AstNode* node,
         {
             tmpConcat.clear();
             SWAG_CHECK(outputNode(fmt.cxt, child->firstChild()));
-            maxLenName = max(maxLenName, tmpConcat.length());
+            maxLenName = std::max(maxLenName, tmpConcat.length());
         }
     }
 

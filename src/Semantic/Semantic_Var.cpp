@@ -765,7 +765,7 @@ bool Semantic::resolveLocalVar(SemanticContext* context, AstVarDecl* node, Overl
         }
         else
         {
-            const auto mySize = typeInfo->isStruct() ? max(typeInfo->sizeOf, 8) : typeInfo->sizeOf;
+            const auto mySize = typeInfo->isStruct() ? std::max(typeInfo->sizeOf, static_cast<uint32_t>(8)) : typeInfo->sizeOf;
             if (node->hasSpecFlag(AstVarDecl::SPEC_FLAG_POST_STACK))
             {
                 storageOffset = node->ownerFct->stackSize;
@@ -776,7 +776,7 @@ bool Semantic::resolveLocalVar(SemanticContext* context, AstVarDecl* node, Overl
             {
                 // Because of 'visit' (at least), it can happen that this is not up-to-date because of order of evaluation.
                 // So update it just in case (5294)
-                node->ownerScope->startStackSize = max(node->ownerScope->startStackSize, node->ownerScope->parentScope->startStackSize);
+                node->ownerScope->startStackSize = std::max(node->ownerScope->startStackSize, node->ownerScope->parentScope->startStackSize);
                 node->ownerScope->startStackSize = static_cast<uint32_t>(TypeManager::align(node->ownerScope->startStackSize, alignOf(node)));
 
                 storageOffset = node->ownerScope->startStackSize;
@@ -790,7 +790,7 @@ bool Semantic::resolveLocalVar(SemanticContext* context, AstVarDecl* node, Overl
                 auto parentScope = node->ownerScope;
                 while (parentScope != node->ownerFct->scope)
                 {
-                    parentScope->startStackSize = max(parentScope->startStackSize, node->ownerFct->stackSize);
+                    parentScope->startStackSize = std::max(parentScope->startStackSize, node->ownerFct->stackSize);
                     parentScope->startStackSize = static_cast<uint32_t>(TypeManager::align(parentScope->startStackSize, alignOf(node)));
                     parentScope                 = parentScope->parentScope;
                 }

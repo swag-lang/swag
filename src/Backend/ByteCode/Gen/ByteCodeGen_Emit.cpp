@@ -201,6 +201,6 @@ ByteCodeInstruction* ByteCodeGen::emitInstruction(const ByteCodeGenContext* cont
     // Some operations, like IntrinsicTypeCmp for example, are in fact call to runtime functions.
     // We must be sure that we have enough room on the stack to store the parameters (x64 backend).
     // 5 is the maximum registers needed for a given op call (4 registers + 1 return).
-    context->bc->maxCallParams = max(context->bc->maxCallParams, 5);
+    context->bc->maxCallParams = std::max(context->bc->maxCallParams, static_cast<uint32_t>(5));
     return &ins;
 }

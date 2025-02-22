@@ -218,7 +218,7 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
                 EMIT_INST1(context, ByteCodeOp::CopyRRtoRA, node->resultRegisterRc);
             }
 
-            context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
+            context->bc->maxCallResults = std::max(context->bc->maxCallResults, static_cast<uint32_t>(1));
             parentReturn->addSemFlag(SEMFLAG_RETVAL);
             canDrop = false;
         }

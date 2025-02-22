@@ -150,7 +150,7 @@ namespace
 {
     void emitParameters(SCBE_CPU& pp, const CallConv& cc, const VectorNative<CPUPushParam>& params)
     {
-        const uint32_t numParamsPerRegister = min(cc.paramByRegisterCount, params.size());
+        const uint32_t numParamsPerRegister = std::min(cc.paramByRegisterCount, params.size());
         uint32_t       idxParam             = 0;
 
         // Set the first N parameters. Can be a return register, or a function parameter.

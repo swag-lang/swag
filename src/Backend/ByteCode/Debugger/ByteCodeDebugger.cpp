@@ -165,7 +165,7 @@ void ByteCodeDebugger::computeDebugContext(ByteCodeRunContext* context)
         return;
 
     const uint32_t maxLevel        = g_ByteCodeStackTrace->maxLevel(context);
-    context->debugStackFrameOffset = min(context->debugStackFrameOffset, maxLevel);
+    context->debugStackFrameOffset = std::min(context->debugStackFrameOffset, maxLevel);
     uint32_t ns                    = 0;
 
     for (uint32_t i = maxLevel; i != UINT32_MAX; i--)

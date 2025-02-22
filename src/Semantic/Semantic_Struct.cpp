@@ -344,7 +344,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
     const auto     constSegment = getConstantSegFromContext(node);
     void**         ptrITable;
     constexpr int  sizeOfHeader = 2 * sizeof(void*);
-    const uint32_t itableOffset = constSegment->reserve(sizeOfHeader + (max(numFctInterface, 1) * sizeof(void*)), reinterpret_cast<uint8_t**>(&ptrITable), sizeof(void*));
+    const uint32_t itableOffset = constSegment->reserve(sizeOfHeader + (std::max(numFctInterface, static_cast<uint32_t>(1)) * sizeof(void*)), reinterpret_cast<uint8_t**>(&ptrITable), sizeof(void*));
     auto           offset       = itableOffset;
 
     // :itableHeader
@@ -1201,7 +1201,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
 
             // Compute struct alignment
             auto alignOf      = TypeManager::alignOf(child->typeInfo);
-            typeInfo->alignOf = max(typeInfo->alignOf, alignOf);
+            typeInfo->alignOf = std::max(typeInfo->alignOf, alignOf);
 
             // Compute padding before the current field
             if (!relocated && node->packing > 1 && alignOf)
@@ -1210,7 +1210,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
                 if (userAlignOf)
                     alignOf = userAlignOf->reg.u8;
                 else
-                    alignOf = min(alignOf, node->packing);
+                    alignOf = std::min(alignOf, node->packing);
                 realStorageOffset = static_cast<uint32_t>(TypeManager::align(realStorageOffset, alignOf));
                 storageOffset     = static_cast<uint32_t>(TypeManager::align(storageOffset, alignOf));
             }
@@ -1220,10 +1220,10 @@ bool Semantic::resolveStruct(SemanticContext* context)
             child->resolvedSymbolOverload()->storageIndex                = storageIndexField;
 
             auto childType   = TypeManager::concreteType(child->typeInfo, CONCRETE_FUNC);
-            typeInfo->sizeOf = max(typeInfo->sizeOf, (int) realStorageOffset + childType->sizeOf);
+            typeInfo->sizeOf = std::max(typeInfo->sizeOf, (int) realStorageOffset + childType->sizeOf);
 
             if (relocated)
-                storageOffset = max(storageOffset, realStorageOffset + childType->sizeOf);
+                storageOffset = std::max(storageOffset, realStorageOffset + childType->sizeOf);
             else if (node->packing)
                 storageOffset += childType->sizeOf;
 
@@ -1266,8 +1266,8 @@ bool Semantic::resolveStruct(SemanticContext* context)
     if (userAlignOf)
         typeInfo->alignOf = userAlignOf->reg.u8;
     else if (node->packing)
-        typeInfo->alignOf = min(typeInfo->alignOf, node->packing);
-    typeInfo->alignOf = max(1, typeInfo->alignOf);
+        typeInfo->alignOf = std::min(typeInfo->alignOf, node->packing);
+    typeInfo->alignOf = std::max(static_cast<uint32_t>(1), typeInfo->alignOf);
 
     // An opaque struct will be exported as an array of bytes.
     // We need to be sure that alignment will be respected, so we force "Swag.Align" attribute

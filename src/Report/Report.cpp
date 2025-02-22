@@ -239,8 +239,8 @@ namespace
 
         for (const auto note : notes)
         {
-            lineCodeMaxDigits = max(lineCodeMaxDigits, note->lineCodeNumDigits);
-            minBlanks         = min(minBlanks, note->minBlanks);
+            lineCodeMaxDigits = std::max(lineCodeMaxDigits, note->lineCodeNumDigits);
+            minBlanks         = std::min(minBlanks, note->minBlanks);
         }
 
         for (const auto note : notes)

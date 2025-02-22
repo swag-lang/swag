@@ -92,7 +92,7 @@ void Concat::ensureSpace(uint32_t numBytes)
     lastBucket->nextBucket = newBucket;
     lastBucket             = newBucket;
 
-    lastBucket->capacity = max(numBytes, bucketSize);
+    lastBucket->capacity = std::max(numBytes, bucketSize);
     lastBucket->capacity = Allocator::alignSize(lastBucket->capacity);
     lastBucket->data     = Allocator::allocN<uint8_t>(lastBucket->capacity);
 

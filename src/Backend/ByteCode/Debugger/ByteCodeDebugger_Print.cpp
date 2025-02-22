@@ -62,8 +62,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
         exprCmds.pop_back();
     }
 
-    count = max(count, 1);
-    count = min(count, 4096);
+    count = std::max(count, 1);
+    count = std::min(count, 4096);
 
     // Expression
     Utf8 expr;
@@ -115,7 +115,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
         g_Log.print(form("0x%016llx ", addrLine), LogColor::DarkYellow);
         g_Log.setColor(LogColor::Gray);
 
-        for (int i = 0; i < min(count, perLine); i++)
+        for (int i = 0; i < std::min(count, perLine); i++)
         {
             Utf8 str;
             appendLiteralValue(context, str, g_ByteCodeDebugger.examineFormat, addrB);
@@ -127,7 +127,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
         if (g_ByteCodeDebugger.examineFormat.bitCount == 8)
         {
             // Align to the right
-            for (int i = 0; i < perLine - min(count, perLine); i++)
+            for (int i = 0; i < perLine - std::min(count, perLine); i++)
             {
                 if (g_ByteCodeDebugger.examineFormat.isHexa)
                     g_Log.write("   ");
@@ -139,7 +139,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
 
             // Print as 'char'
             g_Log.write(" ");
-            for (int i = 0; i < min(count, perLine); i++)
+            for (int i = 0; i < std::min(count, perLine); i++)
             {
                 auto c = getAddrValue<uint8_t>(addrB);
                 if (c < 32 || c > 127)
@@ -152,8 +152,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
         g_Log.writeEol();
 
         addrB = addrLine;
-        addrB += static_cast<int64_t>(min(count, perLine)) * (g_ByteCodeDebugger.examineFormat.bitCount / 8);
-        count -= min(count, perLine);
+        addrB += static_cast<int64_t>(std::min(count, perLine)) * (g_ByteCodeDebugger.examineFormat.bitCount / 8);
+        count -= std::min(count, perLine);
         if (!count)
             break;
     }

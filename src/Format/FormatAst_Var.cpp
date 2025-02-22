@@ -100,8 +100,8 @@ bool FormatAst::outputChildrenVar(FormatContext& context, AstNode* node, uint32_
                     lenType += 1; // Because of the blank after the type, and before '='
             }
 
-            maxLenName = max(maxLenName, lenName);
-            maxLenType = max(maxLenType, lenType);
+            maxLenName = std::max(maxLenName, lenName);
+            maxLenType = std::max(maxLenType, lenType);
         }
     }
 

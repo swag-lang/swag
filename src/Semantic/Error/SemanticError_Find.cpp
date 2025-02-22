@@ -60,7 +60,7 @@ void SemanticError::findClosestMatchesInList(const Utf8& searchName, const Vecto
     for (const auto& word : searchList)
     {
         const auto  distance        = Utf8::fuzzyCompare(searchName, word);
-        const auto  maxLength       = max(searchName.count, word.count);
+        const auto  maxLength       = std::max(searchName.count, word.count);
         const float normalizedScore = static_cast<float>(distance) / static_cast<float>(maxLength);
         matches.emplace_back(static_cast<uint32_t>(normalizedScore * 100), word);
     }

@@ -943,7 +943,7 @@ namespace OS
         const auto& cc         = typeInfoFunc->getCallConv();
         const auto  returnType = TypeManager::concreteType(typeInfoFunc->returnType);
 
-        uint32_t stackSize = (max(cc.paramByRegisterCount, pushCPUParams.size())) * sizeof(void*);
+        uint32_t stackSize = (std::max(cc.paramByRegisterCount, pushCPUParams.size())) * sizeof(void*);
         stackSize += sizeof(void*);
         MK_ALIGN16(stackSize);
 

@@ -2025,20 +2025,20 @@ namespace
                 switch (sizeOf)
                 {
                     case 1:
-                        minValue = min(minValue, inst->c.s8);
-                        maxValue = max(maxValue, inst->c.s8);
+                        minValue = std::min(minValue, static_cast<int64_t>(inst->c.s8));
+                        maxValue = std::max(maxValue, static_cast<int64_t>(inst->c.s8));
                         break;
                     case 2:
-                        minValue = min(minValue, inst->c.s16);
-                        maxValue = max(maxValue, inst->c.s16);
+                        minValue = std::min(minValue, static_cast<int64_t>(inst->c.s16));
+                        maxValue = std::max(maxValue, static_cast<int64_t>(inst->c.s16));
                         break;
                     case 4:
-                        minValue = min(minValue, inst->c.s32);
-                        maxValue = max(maxValue, inst->c.s32);
+                        minValue = std::min(minValue, static_cast<int64_t>(inst->c.s32));
+                        maxValue = std::max(maxValue, static_cast<int64_t>(inst->c.s32));
                         break;
                     case 8:
-                        minValue = min(minValue, inst->c.s64);
-                        maxValue = max(maxValue, inst->c.s64);
+                        minValue = std::min(minValue, static_cast<int64_t>(inst->c.s64));
+                        maxValue = std::max(maxValue, static_cast<int64_t>(inst->c.s64));
                         break;
                     default:
                         break;

@@ -542,29 +542,29 @@ namespace
             switch (what)
             {
                 case RankStr::Rank:
-                    len = max(len, line.rank.length());
+                    len = std::max(len, line.rank.length());
                     break;
                 case RankStr::Name:
-                    len = max(len, line.name.length());
+                    len = std::max(len, line.name.length());
                     break;
                 case RankStr::InstRef:
-                    len = max(len, line.instRef.length());
+                    len = std::max(len, line.instRef.length());
                     break;
                 case RankStr::Flags:
-                    len = max(len, line.flags.length());
+                    len = std::max(len, line.flags.length());
                     break;
                 case RankStr::Pretty:
-                    len = max(len, line.pretty.length());
+                    len = std::max(len, line.pretty.length());
                     break;
 #ifdef SWAG_DEV_MODE
                 case RankStr::DevMode:
-                    len = max(len, line.devMode.length());
+                    len = std::max(len, line.devMode.length());
                     break;
 #endif
             }
         }
 
-        len = max(len, defaultLen);
+        len = std::max(len, defaultLen);
 
         for (auto& line : lines)
         {

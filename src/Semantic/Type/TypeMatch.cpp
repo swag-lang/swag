@@ -12,7 +12,7 @@ namespace
     void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& parameters, CastFlags forceCastFlags = 0)
     {
         // One boolean per used parameter
-        const auto maxParams = max(parameters.size(), context.parameters.size());
+        const auto maxParams = std::max(parameters.size(), context.parameters.size());
         context.doneParameters.set_size_clear(maxParams);
         context.solvedParameters.set_size_clear(maxParams);
         context.solvedCastFlags.set_size_clear(maxParams);
@@ -671,7 +671,7 @@ void Match::match(TypeInfoFuncAttr* typeFunc, SymbolMatchContext& context)
         }
     }
 
-    context.cptResolved = min(context.cptResolved, cptDone);
+    context.cptResolved = std::min(context.cptResolved, cptDone);
 
     // Not enough parameters
     const uint32_t firstDefault = typeFunc->firstDefaultValueIdx == UINT32_MAX ? typeFunc->parameters.size() : typeFunc->firstDefaultValueIdx;
@@ -685,7 +685,7 @@ void Match::match(TypeInfoFuncAttr* typeFunc, SymbolMatchContext& context)
             return;
         }
 
-        if (typeFunc->parameters.size() > 1 && context.cptResolved < min(typeFunc->parameters.size() - 1, firstDefault))
+        if (typeFunc->parameters.size() > 1 && context.cptResolved < std::min(typeFunc->parameters.size() - 1, firstDefault))
         {
             context.result = MatchResult::NotEnoughArguments;
             return;

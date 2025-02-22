@@ -386,8 +386,8 @@ void ByteCodeDebugger::printSourceLines(const ByteCodeRunContext*, SourceFile* f
 void ByteCodeDebugger::printSourceLinesAround(const ByteCodeRunContext* context, SourceFile* file, int line, int num) const
 {
     (void) file->getLine(0);
-    const int startLine = max(line - num, 0);
-    const int endLine   = min(line + num, static_cast<int>(file->allLines.size()) - 1);
+    const int startLine = std::max(line - num, 0);
+    const int endLine   = std::min(line + num, static_cast<int>(file->allLines.size()) - 1);
     printSourceLines(context, file, startLine, endLine);
 }
 

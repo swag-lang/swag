@@ -349,7 +349,7 @@ uint32_t TypeInfo::numRegisters() const
 {
     if (sizeOf == 0)
         return 0;
-    const uint32_t result = max(sizeOf, sizeof(void*)) / sizeof(void*);
+    const uint32_t result = std::max(sizeOf, static_cast<uint32_t>(sizeof(void*))) / sizeof(void*);
     SWAG_ASSERT(result <= 2);
     return result;
 }

@@ -636,7 +636,7 @@ bool ByteCodeOptimizer::optimize(Job* job, Module* module, bool& done)
         }
 
         totalInstructions /= g_ThreadMgr.numWorkers * 4;
-        totalInstructions = max(totalInstructions, 1);
+        totalInstructions = std::max(totalInstructions, static_cast<uint32_t>(1));
 
         uint32_t startIndex = 0;
         while (startIndex < module->byteCodeFunc.size())
@@ -645,7 +645,7 @@ bool ByteCodeOptimizer::optimize(Job* job, Module* module, bool& done)
             newJob->module       = module;
             newJob->dependentJob = job;
             newJob->startIndex   = startIndex;
-            newJob->endIndex     = min(startIndex + 1, module->byteCodeFunc.size());
+            newJob->endIndex     = std::min(startIndex + 1, module->byteCodeFunc.size());
             startIndex           = newJob->endIndex;
 
             auto curInst = module->byteCodeFunc[newJob->startIndex]->numInstructions;

@@ -215,7 +215,7 @@ bool FormatAst::outputChildrenTypeAlias(FormatContext& context, AstNode* node, u
     uint32_t maxLenName = 0;
     for (const auto child : nodes)
     {
-        maxLenName = max(maxLenName, child->token.text.length());
+        maxLenName = std::max(maxLenName, child->token.text.length());
     }
 
     for (const auto child : nodes)

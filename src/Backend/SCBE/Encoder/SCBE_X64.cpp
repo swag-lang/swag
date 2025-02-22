@@ -1,8 +1,41 @@
 // ReSharper disable CommentTypo
 #include "pch.h"
+
+template<typename Integer, bool Signed, template <typename I, bool S> class DivisionPolicy>
+class constant_divider_base
+{
+public:
+    constexpr static const auto word_size = sizeof(Integer) * 8;
+    using division_policy = DivisionPolicy<Integer, Signed>;
+
+    Integer multiplier_;
+    Integer shift_1_;
+    Integer shift_2_;
+    
+    explicit constant_divider_base(Integer divisor)
+    {
+        Integer l = static_cast<Integer>(std::log2(divisor - 1)) + 1;
+
+        constexpr auto max = std::numeric_limits<Integer>::max();
+        auto q_1 = max / divisor;
+        auto r_1 = max % divisor;
+        auto inter = max == l ? (max - divisor + Integer(1)) : ((Integer(1) << l) - divisor);
+        auto q_2 = inter / divisor;
+        auto r_2 = inter % divisor;
+        return Integer(1) + q_1 * inter + q_2*(r_1 + Integer(1)) + (r_1 * r_2) / divisor;
+        
+        //multiplier_ = division_policy::calculate_multiplier(divisor, l);
+        
+        shift_1_ = std::min(l, Integer(1));
+        shift_2_ = l - shift_1_;  //max(l - 1, 0)
+    }
+};
+
 #include "Backend/SCBE/Encoder/SCBE_X64.h"
 #include "Core/Math.h"
 #include "Semantic/Type/TypeManager.h"
+
+
 
 enum X64DispMode
 {
@@ -581,7 +614,7 @@ void SCBE_X64::emitStore(CPUReg memReg, uint64_t memOffset, uint64_t value, OpBi
         emitREX(concat, opBits);
         emitSpecB8(concat, 0xC7, opBits);
         emitModRM(concat, memOffset, static_cast<CPUReg>(0), memReg);
-        emitValue(concat, value, min(opBits, OpBits::B32));
+        emitValue(concat, value, std::min(opBits, OpBits::B32));
     }
 }
 
@@ -1516,7 +1549,7 @@ void SCBE_X64::emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, OpBits opBits,
         {
             SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX || reg == CPUReg::R9);
             emitREX(concat, opBits, reg, reg);
-            value = min(value, SCBE_CPU::getNumBits(opBits) - 1);
+            value = std::min(static_cast<uint32_t>(value), SCBE_CPU::getNumBits(opBits) - 1);
             emitSpecB8(concat, 0xC1, opBits);
             concat.addU8(static_cast<uint8_t>(op) | static_cast<uint8_t>(reg) & 0b111);
             emitValue(concat, value, OpBits::B8);
@@ -1662,7 +1695,7 @@ void SCBE_X64::emitOpBinary(CPUReg memReg, uint64_t memOffset, uint64_t value, C
         else
         {
             SWAG_ASSERT(memReg == CPUReg::RAX || memReg == CPUReg::RDI);
-            value = min(value, SCBE_CPU::getNumBits(opBits) - 1);
+            value = std::min(static_cast<uint32_t>(value), getNumBits(opBits) - 1);
             emitREX(concat, opBits);
             emitSpecB8(concat, 0xC1, opBits);
             emitModRM(concat, memOffset, static_cast<CPUReg>(0), memReg, 1 + static_cast<uint8_t>(op) & 0x3F);
@@ -1703,7 +1736,7 @@ void SCBE_X64::emitOpBinary(CPUReg memReg, uint64_t memOffset, uint64_t value, C
             emitREX(concat, opBits);
             concat.addU8(0x81);
             emitModRM(concat, memOffset, static_cast<CPUReg>(0), memReg, static_cast<uint8_t>(op));
-            emitValue(concat, value, min(opBits, OpBits::B32));
+            emitValue(concat, value, std::min(opBits, OpBits::B32));
         }
     }
 
@@ -1740,7 +1773,7 @@ void SCBE_X64::emitOpBinary(CPUReg memReg, uint64_t memOffset, uint64_t value, C
             emitREX(concat, opBits);
             concat.addU8(0x81);
             emitModRM(concat, memOffset, static_cast<CPUReg>(0), memReg, static_cast<uint8_t>(op));
-            emitValue(concat, value, min(opBits, OpBits::B32));
+            emitValue(concat, value, std::min(opBits, OpBits::B32));
         }
     }
 
@@ -1770,7 +1803,7 @@ void SCBE_X64::emitOpBinary(CPUReg memReg, uint64_t memOffset, uint64_t value, C
             emitREX(concat, opBits);
             concat.addU8(0x81);
             emitModRM(concat, memOffset, static_cast<CPUReg>(0), memReg, static_cast<uint8_t>(op));
-            emitValue(concat, value, min(opBits, OpBits::B32));
+            emitValue(concat, value, std::min(opBits, OpBits::B32));
         }
     }
 

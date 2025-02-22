@@ -45,7 +45,7 @@ void Semantic::allocateOnStack(AstNode* node, const TypeInfo* typeInfo)
 {
     node->allocateComputedValue();
     node->computedValue()->storageOffset = node->ownerScope->startStackSize;
-    node->ownerScope->startStackSize += typeInfo->isStruct() ? max(typeInfo->sizeOf, 8) : typeInfo->sizeOf;
+    node->ownerScope->startStackSize += typeInfo->isStruct() ? std::max(typeInfo->sizeOf, static_cast<uint32_t>(8)) : typeInfo->sizeOf;
     setOwnerMaxStackSize(node, node->ownerScope->startStackSize);
 }
 
@@ -1698,25 +1698,25 @@ uint32_t Semantic::getMaxStackSize(AstNode* node)
     if (!node->ownerFct)
     {
         const auto p = castAst<AstFile>(node->findParentOrMe(AstNodeKind::File), AstNodeKind::File);
-        return max(decSP, p->getStackSize());
+        return std::max(decSP, p->getStackSize());
     }
 
-    return max(decSP, node->ownerFct->stackSize);
+    return std::max(decSP, node->ownerFct->stackSize);
 }
 
 void Semantic::setOwnerMaxStackSize(AstNode* node, uint32_t size)
 {
-    size = max(size, 1);
+    size = std::max(size, static_cast<uint32_t>(1));
     size = static_cast<uint32_t>(TypeManager::align(size, sizeof(void*)));
 
     if (!node->ownerFct)
     {
         const auto p = castAst<AstFile>(node->findParentOrMe(AstNodeKind::File), AstNodeKind::File);
-        p->setStackSize(max(p->getStackSize(), size));
+        p->setStackSize(std::max(p->getStackSize(), size));
     }
     else
     {
-        node->ownerFct->stackSize = max(node->ownerFct->stackSize, size);
+        node->ownerFct->stackSize = std::max(node->ownerFct->stackSize, size);
     }
 }
 
