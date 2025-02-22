@@ -1233,24 +1233,21 @@ namespace
                 {
                     factor1 = i;
                     factor2 = otherFactor;
-                    return true;
+                    if (factor1 * factor2 == value)
+                        return true;
                 }
             }
         }
 
         // powerOf2 * [3, 5, 9]
-        for (uint32_t i = 1; i <= value; i <<= 1)
+        const uint32_t pow2        = 1 << std::countr_zero(value);
+        const uint32_t otherFactor = value / pow2;
+        if ((otherFactor == 3) || (otherFactor == 5) || (otherFactor == 9))
         {
-            if (value % i == 0)
-            {
-                const uint32_t otherFactor = value / i;
-                if ((otherFactor == 3) || (otherFactor == 5) || (otherFactor == 9))
-                {
-                    factor1 = i;
-                    factor2 = otherFactor;
-                    return true;
-                }
-            }
+            factor1 = pow2;
+            factor2 = otherFactor;
+            if (factor1 * factor2 == value)
+                return true;
         }
 
         return false;
