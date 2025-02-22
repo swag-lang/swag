@@ -489,7 +489,7 @@ Utf8 Naming::aNiceArgumentRank(uint32_t idx)
         case 2:
         case 3:
             result = "a ";
-        break;
+            break;
     }
 
     result += niceArgumentRank(idx);

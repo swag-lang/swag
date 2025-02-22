@@ -1,41 +1,39 @@
 // ReSharper disable CommentTypo
 #include "pch.h"
 
-template<typename Integer, bool Signed, template <typename I, bool S> class DivisionPolicy>
+template<typename Integer, bool Signed, template<typename I, bool S> class DivisionPolicy>
 class constant_divider_base
 {
 public:
     constexpr static const auto word_size = sizeof(Integer) * 8;
-    using division_policy = DivisionPolicy<Integer, Signed>;
+    using division_policy                 = DivisionPolicy<Integer, Signed>;
 
     Integer multiplier_;
     Integer shift_1_;
     Integer shift_2_;
-    
+
     explicit constant_divider_base(Integer divisor)
     {
         Integer l = static_cast<Integer>(std::log2(divisor - 1)) + 1;
 
-        constexpr auto max = std::numeric_limits<Integer>::max();
-        auto q_1 = max / divisor;
-        auto r_1 = max % divisor;
-        auto inter = max == l ? (max - divisor + Integer(1)) : ((Integer(1) << l) - divisor);
-        auto q_2 = inter / divisor;
-        auto r_2 = inter % divisor;
-        return Integer(1) + q_1 * inter + q_2*(r_1 + Integer(1)) + (r_1 * r_2) / divisor;
-        
-        //multiplier_ = division_policy::calculate_multiplier(divisor, l);
-        
+        constexpr auto max   = std::numeric_limits<Integer>::max();
+        auto           q_1   = max / divisor;
+        auto           r_1   = max % divisor;
+        auto           inter = max == l ? (max - divisor + Integer(1)) : ((Integer(1) << l) - divisor);
+        auto           q_2   = inter / divisor;
+        auto           r_2   = inter % divisor;
+        return Integer(1) + q_1 * inter + q_2 * (r_1 + Integer(1)) + (r_1 * r_2) / divisor;
+
+        // multiplier_ = division_policy::calculate_multiplier(divisor, l);
+
         shift_1_ = std::min(l, Integer(1));
-        shift_2_ = l - shift_1_;  //max(l - 1, 0)
+        shift_2_ = l - shift_1_; // max(l - 1, 0)
     }
 };
 
 #include "Backend/SCBE/Encoder/SCBE_X64.h"
 #include "Core/Math.h"
 #include "Semantic/Type/TypeManager.h"
-
-
 
 enum X64DispMode
 {

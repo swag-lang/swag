@@ -28,7 +28,7 @@ OpBits BackendEncoder::getOpBitsByBytes(uint32_t numBytes, bool forFloat)
             SWAG_ASSERT(false);
             break;
     }
-    
+
     return OpBits::Invalid;
 }
 

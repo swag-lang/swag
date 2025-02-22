@@ -65,7 +65,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
 
     // Semantic
     const auto child                 = parent.firstChild();
-    const auto semanticJob                 = SemanticJob::newJob(nullptr, sourceFile, child, false);
+    const auto semanticJob           = SemanticJob::newJob(nullptr, sourceFile, child, false);
     semanticJob->context.forDebugger = true;
     g_ThreadMgr.debuggerMode         = true;
     g_ThreadMgr.addJob(semanticJob);
@@ -97,13 +97,13 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
         return true;
 
     // Gen bytecode for expression
-    const auto genJob        = Allocator::alloc<ByteCodeGenJob>();
+    const auto genJob  = Allocator::alloc<ByteCodeGenJob>();
     genJob->sourceFile = sourceFile;
     genJob->module     = sourceFile->module;
     genJob->context.contextFlags |= BCC_FLAG_FOR_DEBUGGER;
     genJob->nodes.push_back(child);
     child->allocateExtension(ExtensionKind::ByteCode);
-    const auto ext                 = child->extByteCode();
+    const auto ext           = child->extByteCode();
     ext->bc                  = Allocator::alloc<ByteCode>();
     ext->bc->node            = child;
     ext->bc->sourceFile      = sourceFile;

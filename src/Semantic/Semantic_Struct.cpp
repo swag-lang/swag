@@ -918,7 +918,7 @@ bool Semantic::postResolveStruct(SemanticContext* context)
         SWAG_ASSERT(!node->hasExtByteCode() || !node->extByteCode()->byteCodeJob);
 
         node->allocateExtension(ExtensionKind::ByteCode);
-        const auto extByteCode         = node->extByteCode();
+        const auto extByteCode   = node->extByteCode();
         extByteCode->byteCodeJob = ByteCodeGenJob::newJob(context->baseJob->dependentJob, sourceFile, node);
         node->byteCodeFct        = ByteCodeGen::emitStruct;
 
