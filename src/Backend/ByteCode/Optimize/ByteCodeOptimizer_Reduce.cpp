@@ -68,14 +68,6 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
                 ip->removeFlag(BCI_IMM_B);
                 break;
             }
-
-            if (Math::isPowerOfTwo(ip->b.u8))
-            {
-                SET_OP(ip, ByteCodeOp::BinOpShiftRightS8);
-                ip->b.u32 = static_cast<uint32_t>(log2(ip->b.u8));
-                ip->addFlag(BCI_CAN_OVERFLOW);
-                break;
-            }
             break;
         case ByteCodeOp::BinOpDivS16:
             if (ip->b.u16 == 1)
@@ -84,14 +76,6 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
                 ip->b.u32 = ip->a.u32;
                 ip->a.u32 = ip->c.u32;
                 ip->removeFlag(BCI_IMM_B);
-                break;
-            }
-
-            if (Math::isPowerOfTwo(ip->b.u16))
-            {
-                SET_OP(ip, ByteCodeOp::BinOpShiftRightS16);
-                ip->b.u32 = static_cast<uint32_t>(log2(ip->b.u16));
-                ip->addFlag(BCI_CAN_OVERFLOW);
                 break;
             }
             break;
@@ -104,14 +88,6 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
                 ip->removeFlag(BCI_IMM_B);
                 break;
             }
-
-            if (Math::isPowerOfTwo(ip->b.u32))
-            {
-                SET_OP(ip, ByteCodeOp::BinOpShiftRightS32);
-                ip->b.u32 = static_cast<uint32_t>(log2(ip->b.u32));
-                ip->addFlag(BCI_CAN_OVERFLOW);
-                break;
-            }
             break;
         case ByteCodeOp::BinOpDivS64:
             if (ip->b.u64 == 1)
@@ -120,14 +96,6 @@ void ByteCodeOptimizer::reduceMath(ByteCodeOptContext* context, ByteCodeInstruct
                 ip->b.u32 = ip->a.u32;
                 ip->a.u32 = ip->c.u32;
                 ip->removeFlag(BCI_IMM_B);
-                break;
-            }
-
-            if (Math::isPowerOfTwo(ip->b.u64))
-            {
-                SET_OP(ip, ByteCodeOp::BinOpShiftRightS64);
-                ip->b.u64 = static_cast<uint64_t>(log2(ip->b.u64));
-                ip->addFlag(BCI_CAN_OVERFLOW);
                 break;
             }
             break;
