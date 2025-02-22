@@ -13,4 +13,7 @@ func(C: s64) toto(a: s64)->s64
     @assert(toto'4(2) == 8)
     @assert(toto'5(2) == 10)
     @assert(toto'6(2) == 12)
+    @assert(toto'7(2) == 14)
+    @assert(toto'8(2) == 16)
+    @assert(toto'27(2) == 54)
 }
