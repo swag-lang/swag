@@ -1219,6 +1219,27 @@ void SCBE_X64::emitOpBinary(CPUReg memReg, uint64_t memOffset, CPUReg reg, CPUOp
     }
 }
 
+namespace
+{
+    bool decomposeShiftLea(uint32_t value, uint32_t& factor1, uint32_t& factor2)
+    {
+        for (uint32_t i = 1; i <= value; i <<= 1)
+        { 
+            if (value % i == 0)
+            {
+                const uint32_t otherFactor = value / i;
+                if ((otherFactor == 3) || (otherFactor == 5) || (otherFactor == 9))
+                {
+                    factor1 = i;
+                    factor2 = otherFactor;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}
+
 void SCBE_X64::emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags)
 {
     if (isNoOp(value, op, opBits, emitFlags))
@@ -1416,6 +1437,7 @@ void SCBE_X64::emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, OpBits opBits,
 
     else if (op == CPUOp::MUL || op == CPUOp::IMUL)
     {
+        uint32_t factor1, factor2;
         const bool canFactorize = (opBits == OpBits::B32 || opBits == OpBits::B64) && optLevel >= BuildCfgBackendOptim::O1 && !emitFlags.has(EMITF_Overflow);
         if (value == 0 && optLevel >= BuildCfgBackendOptim::O1)
         {
@@ -1429,24 +1451,21 @@ void SCBE_X64::emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, OpBits opBits,
         {
             emitLoadAddress(reg, reg, reg, 4, opBits);
         }
-        else if (value == 6 && canFactorize)
-        {
-            emitOpBinary(reg, reg, CPUOp::ADD, opBits, emitFlags);
-            emitLoadAddress(reg, reg, reg, 2, opBits);
-        }
         else if (value == 9 && canFactorize)
         {
             emitLoadAddress(reg, reg, reg, 8, opBits);
-        }
-        else if (value == 10 && canFactorize)
-        {
-            emitLoadAddress(reg, reg, reg, 4, opBits);
-            emitOpBinary(reg, reg, CPUOp::ADD, opBits, emitFlags);
         }
         else if (value <= 0x7F && Math::isPowerOfTwo(value) && optLevel >= BuildCfgBackendOptim::O1)
         {
             emitOpBinary(reg, static_cast<uint32_t>(log2(value)), CPUOp::SHL, opBits, emitFlags);
         }
+        else if (canFactorize && value <= 128 && decomposeShiftLea(static_cast<uint32_t>(value), factor1, factor2))
+        {
+            if (factor1 != 1)
+                emitOpBinary(reg, factor1, CPUOp::MUL, opBits, emitFlags);
+            if (factor2 != 1)
+                emitOpBinary(reg, factor2, CPUOp::MUL, opBits, emitFlags);
+        }         
         else if (op == CPUOp::IMUL && opBits == OpBits::B8)
         {
             SWAG_ASSERT(reg == CPUReg::RAX);
