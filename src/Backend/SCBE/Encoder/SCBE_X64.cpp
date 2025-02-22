@@ -1473,7 +1473,7 @@ void SCBE_X64::emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, OpBits opBits,
         {
             emitOpBinary(reg, static_cast<uint32_t>(log2(value)), CPUOp::SHL, opBits, emitFlags);
         }
-        else if (canFactorize && value <= 128 && decompose(static_cast<uint32_t>(value), factor1, factor2))
+        else if (canFactorize && decompose(static_cast<uint32_t>(value), factor1, factor2))
         {
             if (factor1 != 1)
                 emitOpBinary(reg, factor1, CPUOp::MUL, opBits, emitFlags);
