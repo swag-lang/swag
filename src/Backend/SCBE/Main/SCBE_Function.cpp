@@ -26,15 +26,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     bool        debug           = buildParameters.buildCfg->backendDebugInfos;
     const auto& cc              = typeFunc->getCallConv();
 
-    concat.align(16);
-    uint32_t startAddress = concat.totalCount();
-
     pp.init(buildParameters);
     bc->markLabels();
 
     // Get function name
-    Utf8         funcName   = bc->getCallNameFromDecl();
-    AstFuncDecl* bcFuncNode = bc->node ? castAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl) : nullptr;
+    const auto&        funcName   = bc->getCallNameFromDecl();
+    const AstFuncDecl* bcFuncNode = bc->node ? castAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl) : nullptr;
 
     // Export symbol
     if (bcFuncNode && bcFuncNode->hasAttribute(ATTRIBUTE_PUBLIC))
@@ -44,10 +41,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     }
 
     // Symbol
-    auto symbolFuncIndex = pp.getOrAddSymbol(funcName, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
-    auto cpuFct          = pp.addFunction(bc->node, symbolFuncIndex);
-    cpuFct->typeFunc     = typeFunc;
-    cpuFct->startAddress = startAddress;
+    concat.align(16);
+    const uint32_t startAddress    = concat.totalCount();
+    auto           symbolFuncIndex = pp.getOrAddSymbol(funcName, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
+    auto           cpuFct          = pp.addFunction(bc->node, symbolFuncIndex);
+    cpuFct->typeFunc               = typeFunc;
+    cpuFct->startAddress           = startAddress;
     if (debug)
         SCBE_Debug::setLocation(cpuFct, bc, nullptr, 0);
     pp.cpuFct = cpuFct;
@@ -69,8 +68,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     uint32_t offsetS4     = offsetRT + bc->maxCallResults * sizeof(Register);
     uint32_t offsetResult = offsetS4 + cc.paramByRegisterCount * sizeof(Register);
     uint32_t offsetStack  = offsetResult + sizeof(Register);
-    // For float load (should be reserved only if we have floating point operations in that function)
-    uint32_t offsetFLT = offsetStack + bc->stackSize;
+    uint32_t offsetFLT    = offsetStack + bc->stackSize; // For float load (should be reserved only if we have floating point operations in that function)
 
     pp.offsetStack  = offsetStack;
     pp.offsetFLTReg = CPUReg::RDI;
@@ -88,7 +86,6 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     // We want to be sure to have the room to flatten the array of variadic (make all params contiguous). That's
     // why we multiply by 2.
     sizeParamsStack *= 2;
-
     MK_ALIGN16(sizeParamsStack);
 
     auto     beforeProlog = concat.totalCount();
@@ -2612,7 +2609,6 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     emitJumps(pp);
 
-    uint32_t endAddress = concat.totalCount();
-    initFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
+    setupFunction(cpuFct, startAddress, concat.totalCount(), sizeProlog, unwind);
     return ok;
 }

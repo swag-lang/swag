@@ -229,7 +229,7 @@ void SCBE::emitMain(SCBE_CPU& pp)
     pp.emitRet();
 
     const uint32_t endAddress = concat.totalCount();
-    initFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
+    setupFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
 }
 
 void SCBE::emitGetTypeTable(SCBE_CPU& pp)
@@ -263,7 +263,7 @@ void SCBE::emitGetTypeTable(SCBE_CPU& pp)
     pp.emitRet();
 
     const uint32_t endAddress = concat.totalCount();
-    initFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
+    setupFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
 }
 
 void SCBE::emitGlobalPreMain(SCBE_CPU& pp)
@@ -316,7 +316,7 @@ void SCBE::emitGlobalPreMain(SCBE_CPU& pp)
     pp.emitRet();
 
     const uint32_t endAddress = concat.totalCount();
-    initFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
+    setupFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
 }
 
 void SCBE::emitGlobalInit(SCBE_CPU& pp)
@@ -396,7 +396,7 @@ void SCBE::emitGlobalInit(SCBE_CPU& pp)
     pp.emitRet();
 
     const uint32_t endAddress = concat.totalCount();
-    initFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
+    setupFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
 }
 
 void SCBE::emitGlobalDrop(SCBE_CPU& pp)
@@ -437,5 +437,5 @@ void SCBE::emitGlobalDrop(SCBE_CPU& pp)
     pp.emitRet();
 
     const uint32_t endAddress = concat.totalCount();
-    initFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
+    setupFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
 }

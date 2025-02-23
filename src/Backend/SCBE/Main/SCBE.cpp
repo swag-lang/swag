@@ -257,7 +257,7 @@ void SCBE::computeUnwind(const SCBE_CPU&               pp,
     }
 }
 
-void SCBE::initFunction(CPUFunction* fct, uint32_t startAddress, uint32_t endAddress, uint32_t sizeProlog, VectorNative<uint16_t>& unwind)
+void SCBE::setupFunction(CPUFunction* fct, uint32_t startAddress, uint32_t endAddress, uint32_t sizeProlog, VectorNative<uint16_t>& unwind)
 {
     fct->startAddress = startAddress;
     fct->endAddress   = endAddress;
