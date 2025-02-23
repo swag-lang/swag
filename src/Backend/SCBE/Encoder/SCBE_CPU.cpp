@@ -106,7 +106,7 @@ void SCBE_CPU::solveLabels()
     {
         auto it = labels.find(toSolve.ipDest);
         SWAG_ASSERT(it != labels.end());
-        patchJump(toSolve.jump, it->second);
+        emitPatchJump(toSolve.jump, it->second);
     }
 
     labels.clear();
@@ -334,7 +334,7 @@ void SCBE_CPU::emitCallParameters(const CallConv& callConv, const TypeInfoFuncAt
         emitParameters(*this, callConv, cpuParams);
         const auto jumpAfterParameters = emitJump(JUMP, OpBits::B32);
 
-        patchJump(jumpToNoClosure, concat.totalCount());
+        emitPatchJump(jumpToNoClosure, concat.totalCount());
 
         // First register is closure, except if variadic, where we have 2 registers for the slice before.
         // We must remove it as we are in the "not closure" call path.
@@ -344,7 +344,7 @@ void SCBE_CPU::emitCallParameters(const CallConv& callConv, const TypeInfoFuncAt
 
         emitParameters(*this, callConv, params);
 
-        patchJump(jumpAfterParameters, concat.totalCount());
+        emitPatchJump(jumpAfterParameters, concat.totalCount());
     }
     else
     {

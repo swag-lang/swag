@@ -184,7 +184,7 @@ void SCBE::emitLambdaCall(SCBE_CPU& pp)
     // ByteCode lambda
     //////////////////
 
-    pp.patchJump(jumpBC, pp.concat.totalCount());
+    pp.emitPatchJump(jumpBC, pp.concat.totalCount());
 
     pushCPUParams.insert_at_index({.type = CPUPushParamType::CPURegister, .value = static_cast<uint64_t>(CPUReg::R10)}, 0);
     if (typeFuncBc->numReturnRegisters() >= 1)
@@ -199,7 +199,7 @@ void SCBE::emitLambdaCall(SCBE_CPU& pp)
 
     // End
     //////////////////
-    pp.patchJump(jumpBCAfter, pp.concat.totalCount());
+    pp.emitPatchJump(jumpBCAfter, pp.concat.totalCount());
 
     pp.pushRAParams.clear();
     pp.pushRVParams.clear();

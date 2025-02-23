@@ -82,7 +82,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     // Calling convention, space for at least 'cc.paramByRegisterCount' parameters when calling a function
     // (should ideally be reserved only if we have a call)
-    uint32_t sizeParamsStack = std::max(cc.paramByRegisterCount * sizeof(Register), (bc->maxCallParams + 1) * sizeof(Register));
+    uint32_t sizeParamsStack = static_cast<uint32_t>(std::max(cc.paramByRegisterCount * sizeof(Register), (bc->maxCallParams + 1) * sizeof(Register)));
 
     // Because of variadic parameters in fct calls, we need to add some extra room, in case we have to flatten them
     // We want to be sure to have the room to flatten the array of variadic (make all params contiguous). That's
@@ -2137,7 +2137,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
                 // End
                 //////////////////
-                pp.patchJump(jump, concat.totalCount());
+                pp.emitPatchJump(jump, concat.totalCount());
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, OpBits::B64);
 
                 break;

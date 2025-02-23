@@ -64,8 +64,8 @@ struct SCBE_MicroInstruction
     CPUEmitFlags emitFlags;
     bool         boolA;
 
-    uint64_t value64A;
-    uint64_t value64B;
+    uint64_t valueA;
+    uint64_t valueB;
 };
 
 struct SCBE_Micro final : SCBE_CPU
@@ -83,7 +83,7 @@ struct SCBE_Micro final : SCBE_CPU
     void    emitCallIndirect(CPUReg reg) override;
     void    emitJumpTable(CPUReg table, CPUReg offset) override;
     CPUJump emitJump(CPUCondJump jumpType, OpBits opBits) override;
-    void    patchJump(const CPUJump& jump, uint64_t offsetDestination) override;
+    void    emitPatchJump(const CPUJump& jump, uint64_t offsetDestination) override;
     void    emitJump(CPUReg reg) override;
     void    emitLoad(CPUReg reg, CPUReg memReg, uint64_t memOffset, uint64_t value, bool isImmediate, CPUOp op, OpBits opBits) override;
     void    emitLoad(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits opBits) override;

@@ -166,7 +166,7 @@ void SCBE::emitShiftEqLogical(SCBE_CPU& pp, CPUOp op)
         const auto jump = pp.emitJump(JL, OpBits::B8);
         pp.emitClear(CPUReg::RCX, opBits);
         pp.emitStore(CPUReg::RAX, 0, CPUReg::RCX, opBits);
-        pp.patchJump(jump, pp.concat.totalCount());
+        pp.emitPatchJump(jump, pp.concat.totalCount());
         pp.emitOpBinary(CPUReg::RAX, 0, CPUReg::RCX, op, opBits);
     }
 }
@@ -178,7 +178,7 @@ void SCBE::emitOverflow(SCBE_CPU& pp, const char* msg, bool isSigned)
     {
         const auto jump = pp.emitJump(isSigned ? JNO : JAE, OpBits::B8);
         emitInternalPanic(pp, msg);
-        pp.patchJump(jump, pp.concat.totalCount());
+        pp.emitPatchJump(jump, pp.concat.totalCount());
     }
 }
 
@@ -457,12 +457,12 @@ void SCBE::emitJump(SCBE_CPU& pp, CPUCondJump jumpType, int32_t instructionCount
         if (relOffset >= -127 && relOffset <= 128)
         {
             const auto jump = pp.emitJump(jumpType, OpBits::B8);
-            pp.patchJump(jump, it->second);
+            pp.emitPatchJump(jump, it->second);
         }
         else
         {
             const auto jump = pp.emitJump(jumpType, OpBits::B32);
-            pp.patchJump(jump, it->second);
+            pp.emitPatchJump(jump, it->second);
         }
 
         return;
