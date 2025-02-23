@@ -240,7 +240,6 @@ void SCBE::emitGetTypeTable(SCBE_CPU& pp)
 
 void SCBE::emitGlobalPreMain(SCBE_CPU& pp)
 {
-    const auto& concat          = pp.concat;
     const auto& buildParameters = pp.buildParams;
     const auto  module          = pp.module;
     const auto& cc              = g_TypeMgr->typeInfoModuleCall->getCallConv();
@@ -248,9 +247,7 @@ void SCBE::emitGlobalPreMain(SCBE_CPU& pp)
     const auto thisInit = module->getGlobalPrivateFct(g_LangSpec->name_globalPreMain);
     pp.cpuFct           = pp.addFunction(thisInit, nullptr);
 
-    pp.emitPush(CPUReg::RDI);
     pp.unwindRegs.push_back(CPUReg::RDI);
-    pp.unwindOffsetRegs.push_back(concat.totalCount() - pp.cpuFct->startAddress);
     pp.emitEnter(48, 0);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
@@ -284,7 +281,6 @@ void SCBE::emitGlobalPreMain(SCBE_CPU& pp)
 
 void SCBE::emitGlobalInit(SCBE_CPU& pp)
 {
-    const auto& concat          = pp.concat;
     const auto& buildParameters = pp.buildParams;
     const auto  module          = pp.module;
     const auto& cc              = g_TypeMgr->typeInfoModuleCall->getCallConv();
@@ -292,9 +288,7 @@ void SCBE::emitGlobalInit(SCBE_CPU& pp)
     const auto thisInit = module->getGlobalPrivateFct(g_LangSpec->name_globalInit);
     pp.cpuFct           = pp.addFunction(thisInit, nullptr);
 
-    pp.emitPush(CPUReg::RDI);
     pp.unwindRegs.push_back(CPUReg::RDI);
-    pp.unwindOffsetRegs.push_back(concat.totalCount() - pp.cpuFct->startAddress);
     pp.emitEnter(48, 0);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)

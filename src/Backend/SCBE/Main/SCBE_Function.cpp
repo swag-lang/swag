@@ -84,9 +84,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     pp.cpuFct->offsetStoreRegisterParameters = offsetCallConvParamsAsRegisters;
 
     // RDI will be a pointer to the stack, and the list of registers is stored at the start of the stack
-    pp.emitPush(CPUReg::RDI);
     pp.unwindRegs.push_back(CPUReg::RDI);
-    pp.unwindOffsetRegs.push_back(concat.totalCount() - pp.cpuFct->startAddress);
     pp.emitEnter(sizeStack, sizeParamsStack);
 
     // Registers are stored after the sizeParamsStack area, which is used to store parameters for function calls

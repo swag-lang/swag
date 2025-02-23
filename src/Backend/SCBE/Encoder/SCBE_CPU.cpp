@@ -402,6 +402,13 @@ uint32_t SCBE_CPU::getParamStackOffset(const CPUFunction* cpuFunction, uint32_t 
 
 void SCBE_CPU::emitEnter(uint32_t sizeStack, uint32_t sizeParamsStack)
 {
+    // Push all registers
+    for (const auto &reg: unwindRegs)
+    {
+        emitPush(reg);
+        unwindOffsetRegs.push_back(concat.totalCount() - cpuFct->startAddress);
+    }
+    
     if (!unwindRegs.empty() && (unwindRegs.size() & 1) == 0)
         sizeStack += sizeof(void*);
     
