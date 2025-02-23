@@ -215,8 +215,7 @@ void SCBE::emitMain(SCBE_CPU& pp)
     pp.emitCallLocal(g_LangSpec->name_priv_closeRuntime);
 
     pp.emitClear(CPUReg::RAX, OpBits::B64);
-    pp.emitOpBinary(CPUReg::RSP, pp.cpuFct->frameSize, CPUOp::ADD, OpBits::B64);
-    pp.emitRet();
+    pp.emitPopEnd();
 
     endFunction(pp);
 }
@@ -241,9 +240,8 @@ void SCBE::emitGetTypeTable(SCBE_CPU& pp)
     pp.emitOpBinary(CPUReg::RSP, pp.cpuFct->frameSize, CPUOp::SUB, OpBits::B64);
     pp.cpuFct->sizeProlog = concat.totalCount() - pp.cpuFct->startAddress;
 
-    pp.emitOpBinary(CPUReg::RSP, pp.cpuFct->frameSize, CPUOp::ADD, OpBits::B64);
     pp.emitSymbolRelocationAddr(cc.returnByRegisterInteger, pp.symCSIndex, module->typesSliceOffset);
-    pp.emitRet();
+    pp.emitPopEnd();
 
     endFunction(pp);
 }
@@ -263,6 +261,9 @@ void SCBE::emitGlobalPreMain(SCBE_CPU& pp)
 
     pp.cpuFct->frameSize = 48;
     pp.emitPush(CPUReg::RDI);
+    pp.unwindRegs.push_back(CPUReg::RDI);
+    pp.unwindOffsetRegs.push_back(concat.totalCount() - pp.cpuFct->startAddress);
+    
     pp.emitOpBinary(CPUReg::RSP, pp.cpuFct->frameSize, CPUOp::SUB, OpBits::B64);
     pp.cpuFct->sizeProlog = concat.totalCount() - pp.cpuFct->startAddress;
 
@@ -287,9 +288,7 @@ void SCBE::emitGlobalPreMain(SCBE_CPU& pp)
         pp.emitCallLocal(bc->getCallName());
     }
 
-    pp.emitOpBinary(CPUReg::RSP, pp.cpuFct->frameSize, CPUOp::ADD, OpBits::B64);
-    pp.emitPop(CPUReg::RDI);
-    pp.emitRet();
+    pp.emitPopEnd();
 
     endFunction(pp);
 }
@@ -309,6 +308,9 @@ void SCBE::emitGlobalInit(SCBE_CPU& pp)
 
     pp.cpuFct->frameSize = 48;
     pp.emitPush(CPUReg::RDI);
+    pp.unwindRegs.push_back(CPUReg::RDI);
+    pp.unwindOffsetRegs.push_back(concat.totalCount() - pp.cpuFct->startAddress);
+    
     pp.emitOpBinary(CPUReg::RSP, pp.cpuFct->frameSize, CPUOp::SUB, OpBits::B64);
     pp.cpuFct->sizeProlog = concat.totalCount() - pp.cpuFct->startAddress;
 
@@ -360,9 +362,7 @@ void SCBE::emitGlobalInit(SCBE_CPU& pp)
         pp.emitCallLocal(bc->getCallName());
     }
 
-    pp.emitOpBinary(CPUReg::RSP, pp.cpuFct->frameSize, CPUOp::ADD, OpBits::B64);
-    pp.emitPop(CPUReg::RDI);
-    pp.emitRet();
+    pp.emitPopEnd();
 
     endFunction(pp);
 }
@@ -395,8 +395,7 @@ void SCBE::emitGlobalDrop(SCBE_CPU& pp)
     // __dropGlobalVariables
     emitInternalCallCPUParams(pp, g_LangSpec->name_priv_dropGlobalVariables, pp.pushParams);
 
-    pp.emitOpBinary(CPUReg::RSP, pp.cpuFct->frameSize, CPUOp::ADD, OpBits::B64);
-    pp.emitRet();
+    pp.emitPopEnd();
 
     endFunction(pp);
 }

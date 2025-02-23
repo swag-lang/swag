@@ -8,10 +8,6 @@ void SCBE_CPU::init(const BuildParameters& buildParameters)
 {
     BackendEncoder::init(buildParameters);
     optLevel = buildParameters.buildCfg ? buildParameters.buildCfg->backendOptimize : BuildCfgBackendOptim::O0;
-    labels.clear();
-    labelsToSolve.clear();
-    unwindRegs.clear();
-    unwindOffsetRegs.clear();
 }
 
 namespace
@@ -95,6 +91,11 @@ uint32_t SCBE_CPU::getOrCreateLabel(uint32_t instructionIndex)
 CPUFunction* SCBE_CPU::addFunction(const Utf8& funcName, AstNode* node)
 {
     concat.align(16);
+
+    labels.clear();
+    labelsToSolve.clear();
+    unwindRegs.clear();
+    unwindOffsetRegs.clear();
 
     CPUFunction cf;
     cf.node         = node;

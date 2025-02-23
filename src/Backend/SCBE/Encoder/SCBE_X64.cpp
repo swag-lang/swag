@@ -181,8 +181,10 @@ void SCBE_X64::emitPop(CPUReg reg)
 
 void SCBE_X64::emitPopEnd()
 {
+    emitOpBinary(CPUReg::RSP, cpuFct->frameSize, CPUOp::ADD, OpBits::B64);
     for (auto idxReg = unwindRegs.size() - 1; idxReg != UINT32_MAX; idxReg--)
         emitPop(unwindRegs[idxReg]);
+    emitRet();
 }
 
 void SCBE_X64::emitRet()

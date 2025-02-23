@@ -2204,9 +2204,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         pp.emitLoad(cc.returnByRegisterFloat, CPUReg::RAX, OpBits::F64);
                 }
 
-                pp.emitOpBinary(CPUReg::RSP, pp.cpuFct->frameSize, CPUOp::ADD, OpBits::B64);
                 pp.emitPopEnd();
-                pp.emitRet();
                 break;
 
                 /////////////////////////////////////
