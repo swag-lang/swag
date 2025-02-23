@@ -24,7 +24,7 @@ struct SCBE_X64 final : SCBE_CPU
     void    emitLoad(CPUReg reg, uint64_t value, OpBits opBits) override;
     void    emitLoad(CPUReg regDst, CPUReg regSrc, OpBits opBits) override;
     void    emitLoad(CPUReg regDstSrc, OpBits opBits) override;
-    void    emitLoad64(CPUReg reg, uint64_t value) override;
+    void    emitLoad(CPUReg reg, uint64_t value) override;
     void    emitLoadExtend(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc, bool isSigned) override;
     void    emitLoadExtend(CPUReg regDst, CPUReg regSrc, OpBits numBitsDst, OpBits numBitsSrc, bool isSigned) override;
     void    emitLoadAddress(CPUReg reg, CPUReg memReg, uint64_t memOffset) override;

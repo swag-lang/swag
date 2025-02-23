@@ -177,7 +177,7 @@ namespace
                     break;
 
                 case CPUPushParamType::Constant64:
-                    pp.emitLoad64(cc.paramByRegisterInteger[idxParam], value);
+                    pp.emitLoad(cc.paramByRegisterInteger[idxParam], value);
                     break;
 
                 case CPUPushParamType::CaptureContext:
@@ -263,7 +263,7 @@ namespace
                     break;
 
                 case CPUPushParamType::Constant64:
-                    pp.emitLoad64(CPUReg::RAX, value);
+                    pp.emitLoad(CPUReg::RAX, value);
                     pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
                     break;
 

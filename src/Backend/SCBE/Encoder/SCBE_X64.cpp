@@ -150,7 +150,7 @@ void SCBE_X64::emitSymbolRelocationValue(CPUReg reg, uint32_t symbolIndex, uint3
 
 void SCBE_X64::emitSymbolGlobalString(CPUReg reg, const Utf8& str)
 {
-    emitLoad64(reg, 0);
+    emitLoad(reg, 0);
     const auto sym = getOrCreateGlobalString(str);
     addSymbolRelocation(concat.totalCount() - 8 - textSectionOffset, sym->index, IMAGE_REL_AMD64_ADDR64);
 }
@@ -254,7 +254,7 @@ void SCBE_X64::emitLoad(CPUReg reg, CPUReg memReg, uint64_t memOffset, uint64_t 
     }
 }
 
-void SCBE_X64::emitLoad64(CPUReg reg, uint64_t value)
+void SCBE_X64::emitLoad(CPUReg reg, uint64_t value)
 {
     emitREX(concat, OpBits::B64, CPUReg::RAX, reg);
     concat.addU8(0xB8 | static_cast<uint8_t>(reg));

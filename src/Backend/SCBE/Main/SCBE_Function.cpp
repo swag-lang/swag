@@ -2105,7 +2105,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 auto funcNode = castAst<AstFuncDecl>(reinterpret_cast<AstNode*>(ip->b.pointer), AstNodeKind::FuncDecl);
                 SWAG_ASSERT(!ip->c.pointer || (funcNode && funcNode->hasExtByteCode() && funcNode->extByteCode()->bc == reinterpret_cast<ByteCode*>(ip->c.pointer)));
                 Utf8 callName = funcNode->getCallName();
-                pp.emitLoad64(CPUReg::RAX, 0);
+                pp.emitLoad(CPUReg::RAX, 0);
 
                 CPURelocation relocation;
                 relocation.virtualAddress = concat.totalCount() - sizeof(uint64_t) - pp.textSectionOffset;

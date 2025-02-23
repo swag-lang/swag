@@ -222,14 +222,14 @@ struct SCBE_CPU : BackendEncoder
     virtual void    emitCallIndirect(CPUReg reg)                                                                                                  = 0;
     virtual void    emitJumpTable(CPUReg table, CPUReg offset)                                                                                    = 0;
     virtual CPUJump emitJump(CPUCondJump jumpType, OpBits opBits)                                                                                 = 0;
-    virtual void    emitPatchJump(const CPUJump& jump, uint64_t offsetDestination)                                                                    = 0;
+    virtual void    emitPatchJump(const CPUJump& jump, uint64_t offsetDestination)                                                                = 0;
     virtual void    emitJump(CPUReg reg)                                                                                                          = 0;
     virtual void    emitLoad(CPUReg reg, CPUReg memReg, uint64_t memOffset, uint64_t value, bool isImmediate, CPUOp op, OpBits opBits)            = 0;
     virtual void    emitLoad(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits opBits)                                                        = 0;
     virtual void    emitLoad(CPUReg reg, uint64_t value, OpBits opBits)                                                                           = 0;
     virtual void    emitLoad(CPUReg regDst, CPUReg regSrc, OpBits opBits)                                                                         = 0;
     virtual void    emitLoad(CPUReg regDstSrc, OpBits opBits)                                                                                     = 0;
-    virtual void    emitLoad64(CPUReg reg, uint64_t value)                                                                                        = 0;
+    virtual void    emitLoad(CPUReg reg, uint64_t value)                                                                                          = 0;
     virtual void    emitLoadExtend(CPUReg regDst, CPUReg regSrc, OpBits numBitsDst, OpBits numBitsSrc, bool isSigned)                             = 0;
     virtual void    emitLoadExtend(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc, bool isSigned)            = 0;
     virtual void    emitLoadAddress(CPUReg regDst, CPUReg regSrc1, CPUReg regSrc2, uint64_t mulValue, OpBits opBits)                              = 0;
