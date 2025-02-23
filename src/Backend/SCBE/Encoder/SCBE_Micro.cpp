@@ -380,3 +380,103 @@ void SCBE_Micro::emitMulAdd(CPUReg regDst, CPUReg regMul, CPUReg regAdd, OpBits 
     inst->regC      = regAdd;
     inst->opBitsA   = opBits;
 }
+
+void SCBE_Micro::encode(SCBE_CPU& encoder) const
+{
+    const auto num  = concat.totalCount() / sizeof(SCBE_MicroInstruction);
+    auto       inst = reinterpret_cast<SCBE_MicroInstruction*>(concat.firstBucket->data);
+    for (uint32_t i = 0; i < num; i++, inst++)
+    {
+        switch (inst->op)
+        {
+            case SCBE_MicroOp::SymbolRelocationRef:
+                encoder.emitSymbolRelocationRef(inst->name);
+                break;
+            case SCBE_MicroOp::SymbolRelocationAddr:
+                break;
+            case SCBE_MicroOp::SymbolRelocationValue:
+                break;
+            case SCBE_MicroOp::SymbolGlobalString:
+                break;
+            case SCBE_MicroOp::Push:
+                break;
+            case SCBE_MicroOp::Pop:
+                break;
+            case SCBE_MicroOp::Nop:
+                break;
+            case SCBE_MicroOp::Ret:
+                break;
+            case SCBE_MicroOp::CallLocal:
+                break;
+            case SCBE_MicroOp::CallExtern:
+                break;
+            case SCBE_MicroOp::CallIndirect:
+                break;
+            case SCBE_MicroOp::JumpTable:
+                break;
+            case SCBE_MicroOp::Jump0:
+                break;
+            case SCBE_MicroOp::Jump1:
+                break;
+            case SCBE_MicroOp::PatchJump:
+                break;
+            case SCBE_MicroOp::Load0:
+                break;
+            case SCBE_MicroOp::Load1:
+                break;
+            case SCBE_MicroOp::Load2:
+                break;
+            case SCBE_MicroOp::Load3:
+                break;
+            case SCBE_MicroOp::Load4:
+                break;
+            case SCBE_MicroOp::LoadExtend0:
+                break;
+            case SCBE_MicroOp::LoadExtend1:
+                break;
+            case SCBE_MicroOp::LoadAddress0:
+                break;
+            case SCBE_MicroOp::LoadAddress1:
+                break;
+            case SCBE_MicroOp::Store0:
+                break;
+            case SCBE_MicroOp::Store1:
+                break;
+            case SCBE_MicroOp::Store2:
+                break;
+            case SCBE_MicroOp::Cmp0:
+                break;
+            case SCBE_MicroOp::Cmp1:
+                break;
+            case SCBE_MicroOp::Cmp2:
+                break;
+            case SCBE_MicroOp::Cmp3:
+                break;
+            case SCBE_MicroOp::Set:
+                break;
+            case SCBE_MicroOp::Clear0:
+                break;
+            case SCBE_MicroOp::Clear1:
+                break;
+            case SCBE_MicroOp::Copy:
+                break;
+            case SCBE_MicroOp::OpUnary0:
+                break;
+            case SCBE_MicroOp::OpUnary1:
+                break;
+            case SCBE_MicroOp::OpBinary0:
+                break;
+            case SCBE_MicroOp::OpBinary1:
+                break;
+            case SCBE_MicroOp::OpBinary2:
+                break;
+            case SCBE_MicroOp::OpBinary3:
+                break;
+            case SCBE_MicroOp::MulAdd:
+                break;
+            default:
+                SWAG_ASSERT(false);
+                break;
+        }
+    }
+}

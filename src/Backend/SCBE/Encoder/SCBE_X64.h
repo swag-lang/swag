@@ -2,7 +2,7 @@
 #pragma once
 #include "Backend/SCBE/Encoder/SCBE_CPU.h"
 
-struct SCBE_X64 : SCBE_CPU
+struct SCBE_X64 final : SCBE_CPU
 {
     void    emitSymbolRelocationRef(const Utf8& name) override;
     void    emitSymbolRelocationAddr(CPUReg reg, uint32_t symbolIndex, uint32_t offset) override;

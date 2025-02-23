@@ -7,6 +7,9 @@ struct CPUFunction;
 struct SCBE_CPU;
 struct SCBE;
 struct SourceFile;
+struct AstFuncDecl;
+struct TypeInfoStruct;
+struct ByteCode;
 
 using SCBEDebugTypeIndex = uint32_t;
 

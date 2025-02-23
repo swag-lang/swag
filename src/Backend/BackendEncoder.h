@@ -37,7 +37,8 @@ struct BackendEncoder
     Module*               module  = nullptr;
     BackendPreCompilePass pass    = {BackendPreCompilePass::Init};
 
-    void init(const BuildParameters& buildParameters);
+    virtual ~BackendEncoder() = default;
+    virtual void init(const BuildParameters& buildParameters);
 
     static uint32_t  getNumBits(OpBits opBits);
     static OpBits    getOpBitsByBytes(uint32_t numBytes, bool forFloat = false);

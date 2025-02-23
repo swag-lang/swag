@@ -23,6 +23,7 @@ struct Concat
     uint32_t bucketCount(const ConcatBucket* b) const;
     bool     hasEnoughSpace(uint32_t numBytes) const;
     bool     flushToFile(const Path& path);
+    void     makeLinear();
 
     uint32_t* addU32Addr(uint32_t v);
     uint16_t* addU16Addr(uint16_t v);
