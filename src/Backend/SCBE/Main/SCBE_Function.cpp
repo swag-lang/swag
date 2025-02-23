@@ -99,28 +99,28 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     if ((unwindRegs.size() & 1) == 0)
         sizeStack += sizeof(void*);
 
-    // Check stack
-    if (g_CommandLine.target.os == SwagTargetOs::Windows)
-    {
-        if (sizeStack + sizeParamsStack >= SWAG_LIMIT_PAGE_STACK)
-        {
-            pp.emitLoad(CPUReg::RAX, sizeStack + sizeParamsStack, OpBits::B64);
-            pp.emitCallLocal(R"(__chkstk)");
-        }
-    }
-
-    pp.emitOpBinary(CPUReg::RSP, sizeStack + sizeParamsStack, CPUOp::SUB, OpBits::B64);
-
     // We need to start at sizeof(void*) because the call has pushed one register on the stack
     pp.cpuFct->offsetCallerStackParams = static_cast<uint32_t>(sizeof(void*) + unwindRegs.size() * sizeof(void*) + sizeStack);
     pp.cpuFct->offsetStack             = offsetStack;
     pp.cpuFct->offsetLocalStackParams  = offsetS4;
     pp.cpuFct->frameSize               = sizeStack + sizeParamsStack;
 
+    // Check stack
+    if (g_CommandLine.target.os == SwagTargetOs::Windows)
+    {
+        if (pp.cpuFct->frameSize >= SWAG_LIMIT_PAGE_STACK)
+        {
+            pp.emitLoad(CPUReg::RAX, pp.cpuFct->frameSize, OpBits::B64);
+            pp.emitCallLocal(R"(__chkstk)");
+        }
+    }
+
+    pp.emitOpBinary(CPUReg::RSP, pp.cpuFct->frameSize, CPUOp::SUB, OpBits::B64);
+
     // Unwind information (with the pushed registers)
     VectorNative<uint16_t> unwind;
     auto                   sizeProlog = concat.totalCount() - pp.cpuFct->startAddress;
-    computeUnwind(pp, unwindRegs, unwindOffsetRegs, sizeStack + sizeParamsStack, sizeProlog, unwind);
+    computeUnwind(pp, unwindRegs, unwindOffsetRegs, pp.cpuFct->frameSize, sizeProlog, unwind);
 
     // Registers are stored after the sizeParamsStack area, which is used to store parameters for function calls
     pp.emitLoadAddress(CPUReg::RDI, CPUReg::RSP, sizeParamsStack);
@@ -2213,7 +2213,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         pp.emitLoad(cc.returnByRegisterFloat, CPUReg::RAX, OpBits::F64);
                 }
 
-                pp.emitOpBinary(CPUReg::RSP, sizeStack + sizeParamsStack, CPUOp::ADD, OpBits::B64);
+                pp.emitOpBinary(CPUReg::RSP, pp.cpuFct->frameSize, CPUOp::ADD, OpBits::B64);
                 for (int32_t rRet = static_cast<int32_t>(unwindRegs.size()) - 1; rRet >= 0; rRet--)
                     pp.emitPop(unwindRegs[rRet]);
                 pp.emitRet();
