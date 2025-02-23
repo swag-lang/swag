@@ -160,8 +160,8 @@ void SCBE_Micro::emitStore(CPUReg memReg, uint64_t memOffset, CPUReg reg, OpBits
     const auto inst = concat.addObj<SCBE_MicroInstruction>();
     inst->op        = SCBE_MicroOp::Store0;
     inst->regA      = memReg;
-    inst->regB      = reg;
     inst->valueA    = memOffset;
+    inst->regB      = reg;
     inst->opBitsA   = opBits;
 }
 
@@ -180,6 +180,7 @@ void SCBE_Micro::emitClear(CPUReg reg, OpBits opBits)
     const auto inst = concat.addObj<SCBE_MicroInstruction>();
     inst->op        = SCBE_MicroOp::Clear0;
     inst->regA      = reg;
+    inst->opBitsA   = opBits;
 }
 
 void SCBE_Micro::emitClear(CPUReg memReg, uint64_t memOffset, uint32_t count)
@@ -462,48 +463,67 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
                 encoder.emitLoad(inst->regA, inst->valueA, inst->opBitsA);
                 break;
             case SCBE_MicroOp::LoadExtend0:
+                encoder.emitLoadExtend(inst->regA, inst->regB, inst->valueA, inst->opBitsA, inst->opBitsB, inst->boolA);
                 break;
             case SCBE_MicroOp::LoadExtend1:
+                encoder.emitLoadExtend(inst->regA, inst->regB, inst->opBitsA, inst->opBitsB, inst->boolA);
                 break;
             case SCBE_MicroOp::LoadAddress0:
+                encoder.emitLoadAddress(inst->regA, inst->regB, inst->valueA);
                 break;
             case SCBE_MicroOp::LoadAddress1:
+                encoder.emitLoadAddress(inst->regA, inst->regB, inst->regC, inst->valueA, inst->opBitsA);
                 break;
             case SCBE_MicroOp::Store0:
+                encoder.emitStore(inst->regA, inst->valueA, inst->regB, inst->opBitsA);
                 break;
             case SCBE_MicroOp::Store1:
-                break;
-            case SCBE_MicroOp::Store2:
+                encoder.emitStore(inst->regA, inst->valueA, inst->valueB, inst->opBitsA);
                 break;
             case SCBE_MicroOp::Cmp0:
+                encoder.emitCmp(inst->regA, inst->regB, inst->opBitsA);
                 break;
             case SCBE_MicroOp::Cmp1:
+                encoder.emitCmp(inst->regA, inst->valueA, inst->opBitsA);
                 break;
             case SCBE_MicroOp::Cmp2:
+                encoder.emitCmp(inst->regA, inst->valueA, inst->regB, inst->opBitsA);
                 break;
             case SCBE_MicroOp::Cmp3:
+                encoder.emitCmp(inst->regA, inst->valueA, inst->valueB, inst->opBitsA);
                 break;
             case SCBE_MicroOp::Set:
+                encoder.emitSet(inst->regA, inst->cpuCond);
                 break;
             case SCBE_MicroOp::Clear0:
+                encoder.emitClear(inst->regA, inst->opBitsA);
                 break;
             case SCBE_MicroOp::Clear1:
+                encoder.emitClear(inst->regA, inst->valueA, static_cast<uint32_t>(inst->valueB));
                 break;
             case SCBE_MicroOp::Copy:
+                encoder.emitCopy(inst->regA, inst->regB, static_cast<uint32_t>(inst->valueA), static_cast<uint32_t>(inst->valueB));
                 break;
             case SCBE_MicroOp::OpUnary0:
+                encoder.emitOpUnary(inst->regA, inst->valueA, inst->cpuOp, inst->opBitsA);
                 break;
             case SCBE_MicroOp::OpUnary1:
+                encoder.emitOpUnary(inst->regA, inst->cpuOp, inst->opBitsA);
                 break;
             case SCBE_MicroOp::OpBinary0:
+                encoder.emitOpBinary(inst->regA, inst->regB, inst->cpuOp, inst->opBitsA, inst->emitFlags);
                 break;
             case SCBE_MicroOp::OpBinary1:
+                encoder.emitOpBinary(inst->regA, inst->valueA, inst->regB, inst->cpuOp, inst->opBitsA, inst->emitFlags);
                 break;
             case SCBE_MicroOp::OpBinary2:
+                encoder.emitOpBinary(inst->regA, inst->valueA, inst->cpuOp, inst->opBitsA, inst->emitFlags);
                 break;
             case SCBE_MicroOp::OpBinary3:
+                encoder.emitOpBinary(inst->regA, inst->valueA, inst->valueB, inst->cpuOp, inst->opBitsA, inst->emitFlags);
                 break;
             case SCBE_MicroOp::MulAdd:
+                encoder.emitMulAdd(inst->regA, inst->regB, inst->regC, inst->opBitsA);
                 break;
             default:
                 SWAG_ASSERT(false);

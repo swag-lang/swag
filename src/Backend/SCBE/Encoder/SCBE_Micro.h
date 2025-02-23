@@ -30,7 +30,6 @@ enum class SCBE_MicroOp : uint8_t
     LoadAddress1,
     Store0,
     Store1,
-    Store2,
     Cmp0,
     Cmp1,
     Cmp2,
