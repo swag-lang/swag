@@ -199,7 +199,7 @@ struct SCBE_CPU : BackendEncoder
     uint32_t     getOrCreateLabel(uint32_t instructionIndex);
     CPUSymbol*   getOrCreateGlobalString(const Utf8& str);
     void         addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, uint16_t type);
-    CPUFunction* addFunction(AstNode* node, uint32_t symbolIndex);
+    CPUFunction* addFunction(const Utf8& funcName, AstNode* node);
     bool         isNoOp(uint64_t value, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags = EMITF_Zero) const;
 
     static uint32_t getParamStackOffset(const CPUFunction* cpuFunction, uint32_t paramIdx);

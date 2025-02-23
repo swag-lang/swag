@@ -41,9 +41,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     }
 
     // Symbol
-    concat.align(16);
-    auto symbolFuncIndex    = pp.getOrAddSymbol(funcName, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
-    pp.cpuFct               = pp.addFunction(bc->node, symbolFuncIndex);
+    pp.cpuFct               = pp.addFunction(funcName, bc->node);
     pp.cpuFct->typeFunc     = typeFunc;
     pp.cpuFct->startAddress = concat.totalCount();
     if (debug)
@@ -116,12 +114,11 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     }
 
     pp.emitOpBinary(CPUReg::RSP, pp.cpuFct->frameSize, CPUOp::SUB, OpBits::B64);
-
-    const auto sizeProlog = concat.totalCount() - pp.cpuFct->startAddress;
+    pp.cpuFct->sizeProlog = concat.totalCount() - pp.cpuFct->startAddress;
 
     // Unwind information (with the pushed registers)
     VectorNative<uint16_t> unwind;
-    computeUnwind(pp, unwindRegs, unwindOffsetRegs, pp.cpuFct->frameSize, sizeProlog, unwind);
+    computeUnwind(pp, unwindRegs, unwindOffsetRegs, pp.cpuFct->frameSize, pp.cpuFct->sizeProlog, unwind);
 
     // Registers are stored after the sizeParamsStack area, which is used to store parameters for function calls
     pp.emitLoadAddress(CPUReg::RDI, CPUReg::RSP, sizeParamsStack);
@@ -1109,7 +1106,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
                 // + 5 for the two following instructions
                 // + 7 for this instruction
-                pp.emitSymbolRelocationAddr(CPUReg::RAX, symbolFuncIndex, concat.totalCount() - pp.cpuFct->startAddress + 5 + 7);
+                pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.cpuFct->symbolIndex, concat.totalCount() - pp.cpuFct->startAddress + 5 + 7);
                 pp.emitOpBinary(CPUReg::RAX, CPUReg::RCX, CPUOp::ADD, OpBits::B64);
                 pp.emitJump(CPUReg::RAX);
 
@@ -2605,6 +2602,6 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     emitJumps(pp);
 
-    setupFunction(pp.cpuFct, concat.totalCount(), sizeProlog, unwind);
+    setupFunction(pp.cpuFct, concat.totalCount(), unwind);
     return ok;
 }

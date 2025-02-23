@@ -91,12 +91,15 @@ uint32_t SCBE_CPU::getOrCreateLabel(uint32_t instructionIndex)
     return it->second;
 }
 
-CPUFunction* SCBE_CPU::addFunction(AstNode* node, uint32_t symbolIndex)
+CPUFunction* SCBE_CPU::addFunction(const Utf8& funcName, AstNode* node)
 {
+    concat.align(16);
+
     CPUFunction cf;
     cf.node         = node;
-    cf.symbolIndex  = symbolIndex;
+    cf.symbolIndex  = getOrAddSymbol(funcName, CPUSymbolKind::Function, concat.totalCount() - textSectionOffset)->index;
     cf.startAddress = concat.totalCount();
+
     functions.push_back(cf);
     return &functions.back();
 }
