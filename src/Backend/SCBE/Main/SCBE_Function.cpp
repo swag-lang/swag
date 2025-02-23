@@ -65,24 +65,24 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     uint32_t offsetResult = offsetS4 + cc.paramByRegisterCount * sizeof(Register);
     uint32_t offsetStack  = offsetResult + sizeof(Register);
     uint32_t offsetFLT    = offsetStack + bc->stackSize; // For float load (should be reserved only if we have floating point operations in that function)
-
-    pp.offsetStack  = offsetStack;
-    pp.offsetFLTReg = CPUReg::RDI;
-    pp.offsetFLT    = offsetFLT;
-    pp.offsetRT     = offsetRT;
-
-    uint32_t sizeStack = offsetFLT + 8;
+    uint32_t sizeStack    = offsetFLT + 8;
     MK_ALIGN16(sizeStack);
 
     // Calling convention, space for at least 'cc.paramByRegisterCount' parameters when calling a function
     // (should ideally be reserved only if we have a call)
-    uint32_t sizeParamsStack = static_cast<uint32_t>(std::max(cc.paramByRegisterCount * sizeof(Register), (bc->maxCallParams + 1) * sizeof(Register)));
-
+    //
     // Because of variadic parameters in fct calls, we need to add some extra room, in case we have to flatten them
     // We want to be sure to have the room to flatten the array of variadic (make all params contiguous). That's
     // why we multiply by 2.
-    sizeParamsStack *= 2;
+    uint32_t sizeParamsStack = 2 * static_cast<uint32_t>(std::max(cc.paramByRegisterCount * sizeof(Register), (bc->maxCallParams + 1) * sizeof(Register)));
     MK_ALIGN16(sizeParamsStack);
+
+    pp.offsetStack                    = offsetStack;
+    pp.offsetFLTReg                   = CPUReg::RDI;
+    pp.offsetFLT                      = offsetFLT;
+    pp.offsetRT                       = offsetRT;
+    pp.cpuFct->offsetStack            = offsetStack;
+    pp.cpuFct->offsetLocalStackParams = offsetS4;
 
     // RDI will be a pointer to the stack, and the list of registers is stored at the start
     // of the stack
@@ -94,8 +94,6 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     // We need to start at sizeof(void*) because the call has pushed one register on the stack
     pp.cpuFct->offsetCallerStackParams = static_cast<uint32_t>(sizeof(void*) + pp.unwindRegs.size() * sizeof(void*) + sizeStack);
-    pp.cpuFct->offsetStack             = offsetStack;
-    pp.cpuFct->offsetLocalStackParams  = offsetS4;
     pp.cpuFct->frameSize               = sizeStack + sizeParamsStack;
 
     // Check stack
