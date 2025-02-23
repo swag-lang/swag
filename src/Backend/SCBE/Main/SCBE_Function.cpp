@@ -94,9 +94,8 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     // We need to start at sizeof(void*) because the call has pushed one register on the stack
     pp.cpuFct->offsetCallerStackParams = static_cast<uint32_t>(sizeof(void*) + pp.unwindRegs.size() * sizeof(void*) + sizeStack);
-    pp.cpuFct->frameSize               = sizeStack + sizeParamsStack;
 
-    pp.emitEnter();
+    pp.emitEnter(sizeStack + sizeParamsStack);
 
     // Registers are stored after the sizeParamsStack area, which is used to store parameters for function calls
     pp.emitLoadAddress(CPUReg::RDI, CPUReg::RSP, sizeParamsStack);

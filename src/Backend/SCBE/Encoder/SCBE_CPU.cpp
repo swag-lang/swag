@@ -400,8 +400,10 @@ uint32_t SCBE_CPU::getParamStackOffset(const CPUFunction* cpuFunction, uint32_t 
     return REG_OFFSET(paramIdx) + cpuFunction->offsetCallerStackParams;
 }
 
-void SCBE_CPU::emitEnter()
+void SCBE_CPU::emitEnter(uint32_t frameSize)
 {
+    cpuFct->frameSize = frameSize;
+    
     if (g_CommandLine.target.os == SwagTargetOs::Windows)
     {
         if (cpuFct->frameSize >= SWAG_LIMIT_PAGE_STACK)

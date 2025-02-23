@@ -66,9 +66,8 @@ void SCBE::emitMain(SCBE_CPU& pp)
             return;
     }
 
-    pp.cpuFct            = pp.addFunction(entryPoint, nullptr);
-    pp.cpuFct->frameSize = 40;
-    pp.emitEnter();
+    pp.cpuFct = pp.addFunction(entryPoint, nullptr);
+    pp.emitEnter(40);
 
     // Set default system allocator function
     SWAG_ASSERT(g_SystemAllocatorTable);
@@ -227,12 +226,10 @@ void SCBE::emitGetTypeTable(SCBE_CPU& pp)
 
     const auto thisInit = module->getGlobalPrivateFct(g_LangSpec->name_getTypeTable);
     pp.cpuFct           = pp.addFunction(thisInit, nullptr);
+    pp.emitEnter(40);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         pp.directives += form("/EXPORT:%s ", thisInit.cstr());
-
-    pp.cpuFct->frameSize = 40;
-    pp.emitEnter();
 
     const auto& cc = g_TypeMgr->typeInfoModuleCall->getCallConv();
     pp.emitSymbolRelocationAddr(cc.returnByRegisterInteger, pp.symCSIndex, module->typesSliceOffset);
@@ -251,14 +248,13 @@ void SCBE::emitGlobalPreMain(SCBE_CPU& pp)
     const auto thisInit = module->getGlobalPrivateFct(g_LangSpec->name_globalPreMain);
     pp.cpuFct           = pp.addFunction(thisInit, nullptr);
 
-    if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
-        pp.directives += form("/EXPORT:%s ", thisInit.cstr());
-
-    pp.cpuFct->frameSize = 48;
     pp.emitPush(CPUReg::RDI);
     pp.unwindRegs.push_back(CPUReg::RDI);
     pp.unwindOffsetRegs.push_back(concat.totalCount() - pp.cpuFct->startAddress);
-    pp.emitEnter();
+    pp.emitEnter(48);
+
+    if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
+        pp.directives += form("/EXPORT:%s ", thisInit.cstr());
 
     // Store first parameter on stack (process infos ptr)
     SWAG_ASSERT(cc.paramByRegisterCount >= 1);
@@ -296,14 +292,13 @@ void SCBE::emitGlobalInit(SCBE_CPU& pp)
     const auto thisInit = module->getGlobalPrivateFct(g_LangSpec->name_globalInit);
     pp.cpuFct           = pp.addFunction(thisInit, nullptr);
 
-    if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
-        pp.directives += form("/EXPORT:%s ", thisInit.cstr());
-
-    pp.cpuFct->frameSize = 48;
     pp.emitPush(CPUReg::RDI);
     pp.unwindRegs.push_back(CPUReg::RDI);
     pp.unwindOffsetRegs.push_back(concat.totalCount() - pp.cpuFct->startAddress);
-    pp.emitEnter();
+    pp.emitEnter(48);
+
+    if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
+        pp.directives += form("/EXPORT:%s ", thisInit.cstr());
 
     // Store first parameter on stack (process infos ptr)
     SWAG_ASSERT(cc.paramByRegisterCount >= 1);
@@ -365,12 +360,10 @@ void SCBE::emitGlobalDrop(SCBE_CPU& pp)
 
     const auto thisDrop = module->getGlobalPrivateFct(g_LangSpec->name_globalDrop);
     pp.cpuFct           = pp.addFunction(thisDrop, nullptr);
+    pp.emitEnter(40);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         pp.directives += form("/EXPORT:%s ", thisDrop.cstr());
-
-    pp.cpuFct->frameSize = 40;
-    pp.emitEnter();
 
     // Call to #drop functions
     for (const auto bc : module->byteCodeDropFunc)
