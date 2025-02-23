@@ -418,19 +418,22 @@ uint32_t SCBE_CPU::getParamStackOffset(const CPUFunction* cpuFunction, uint32_t 
 
 void SCBE_CPU::emitEnter(uint32_t sizeStack)
 {
+    // We need to start at sizeof(void*) because the call has pushed one register on the stack
+    cpuFct->offsetCallerStackParams = sizeof(void*);
+
     // Push all registers
     for (const auto& reg : unwindRegs)
     {
         emitPush(reg);
         unwindOffsetRegs.push_back(concat.totalCount() - cpuFct->startAddress);
+        cpuFct->offsetCallerStackParams += sizeof(void*);
     }
 
     if (!unwindRegs.empty() && (unwindRegs.size() & 1) == 0)
         sizeStack += sizeof(void*);
 
-    // We need to start at sizeof(void*) because the call has pushed one register on the stack
-    cpuFct->offsetCallerStackParams = sizeof(void*) + static_cast<uint32_t>(unwindRegs.size() * sizeof(void*)) + sizeStack;
-    cpuFct->frameSize               = sizeStack + cpuFct->sizeStackCallParams;
+    cpuFct->offsetCallerStackParams += sizeStack;
+    cpuFct->frameSize = sizeStack + cpuFct->sizeStackCallParams;
 
     if (g_CommandLine.target.os == SwagTargetOs::Windows)
     {
