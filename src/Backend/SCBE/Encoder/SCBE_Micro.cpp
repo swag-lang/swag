@@ -49,10 +49,16 @@ void SCBE_Micro::emitPop(CPUReg reg)
     inst->regA      = reg;
 }
 
-void SCBE_Micro::emitPopEnd()
+void SCBE_Micro::emitEnter()
 {
     const auto inst = concat.addObj<SCBE_MicroInstruction>();
-    inst->op        = SCBE_MicroOp::PopEnd;
+    inst->op        = SCBE_MicroOp::Enter;
+}
+
+void SCBE_Micro::emitLeave()
+{
+    const auto inst = concat.addObj<SCBE_MicroInstruction>();
+    inst->op        = SCBE_MicroOp::Leave;
 }
 
 void SCBE_Micro::emitRet()
@@ -414,9 +420,12 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
             case SCBE_MicroOp::Pop:
                 encoder.emitPop(inst->regA);
                 break;
-            case SCBE_MicroOp::PopEnd:
-                encoder.emitPopEnd();
-            break;            
+            case SCBE_MicroOp::Enter:
+                encoder.emitEnter();
+                break;
+            case SCBE_MicroOp::Leave:
+                encoder.emitLeave();
+                break;
             case SCBE_MicroOp::Nop:
                 encoder.emitNop();
                 break;

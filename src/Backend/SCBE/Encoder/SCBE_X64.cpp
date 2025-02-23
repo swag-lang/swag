@@ -179,7 +179,13 @@ void SCBE_X64::emitPop(CPUReg reg)
     }
 }
 
-void SCBE_X64::emitPopEnd()
+void SCBE_X64::emitEnter()
+{
+    emitOpBinary(CPUReg::RSP, cpuFct->frameSize, CPUOp::SUB, OpBits::B64);
+    cpuFct->sizeProlog = concat.totalCount() - cpuFct->startAddress;
+}
+
+void SCBE_X64::emitLeave()
 {
     emitOpBinary(CPUReg::RSP, cpuFct->frameSize, CPUOp::ADD, OpBits::B64);
     for (auto idxReg = unwindRegs.size() - 1; idxReg != UINT32_MAX; idxReg--)

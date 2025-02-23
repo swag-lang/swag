@@ -89,8 +89,6 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     pp.emitPush(CPUReg::RDI);
     pp.unwindRegs.push_back(CPUReg::RDI);
     pp.unwindOffsetRegs.push_back(concat.totalCount() - pp.cpuFct->startAddress);
-
-    // Stack align
     if ((pp.unwindRegs.size() & 1) == 0)
         sizeStack += sizeof(void*);
 
@@ -110,8 +108,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         }
     }
 
-    pp.emitOpBinary(CPUReg::RSP, pp.cpuFct->frameSize, CPUOp::SUB, OpBits::B64);
-    pp.cpuFct->sizeProlog = concat.totalCount() - pp.cpuFct->startAddress;
+    pp.emitEnter();
 
     // Registers are stored after the sizeParamsStack area, which is used to store parameters for function calls
     pp.emitLoadAddress(CPUReg::RDI, CPUReg::RSP, sizeParamsStack);
@@ -2204,7 +2201,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         pp.emitLoad(cc.returnByRegisterFloat, CPUReg::RAX, OpBits::F64);
                 }
 
-                pp.emitPopEnd();
+                pp.emitLeave();
                 break;
 
                 /////////////////////////////////////
