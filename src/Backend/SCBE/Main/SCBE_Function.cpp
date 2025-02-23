@@ -49,23 +49,23 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     // In order, starting at RSP, we have :
     //
-    // sizeParamsStack to store function call parameters
+    // sizeStackCallParams to store function call parameters
     // ...padding to 16...
 
-    // All registers:                   bc->maxReservedRegisterRC, contains all Swag bytecode registers
+    // all registers = RDI:             bc->maxReservedRegisterRC, contains all Swag bytecode registers
     // offsetRT:                        bc->maxCallResults, contains registers for result
-    // offsetCallConvParamsAsRegisters: To store all parameters passed as register in the current calling convention
+    // offsetParamsAsRegisters:         To store all parameters passed as register in the current calling convention
     // offsetResult:                    sizeof(Register) to store return value
     // offsetStack:                     stackSize, function local stack
     // offsetFLT:                       sizeof(Register) to make some float computation
     // ...padding to 16... => total is sizeStack
 
-    uint32_t offsetRT                        = bc->maxReservedRegisterRC * sizeof(Register);
-    uint32_t offsetCallConvParamsAsRegisters = offsetRT + bc->maxCallResults * sizeof(Register);
-    uint32_t offsetResult                    = offsetCallConvParamsAsRegisters + cc.paramByRegisterCount * sizeof(Register);
-    uint32_t offsetByteCodeStack             = offsetResult + sizeof(Register);
-    uint32_t offsetFLT                       = offsetByteCodeStack + bc->stackSize; // For float load (should be reserved only if we have floating point operations in that function)
-    uint32_t sizeStack                       = offsetFLT + 8;
+    uint32_t offsetRT                = bc->maxReservedRegisterRC * sizeof(Register);
+    uint32_t offsetParamsAsRegisters = offsetRT + bc->maxCallResults * sizeof(Register);
+    uint32_t offsetResult            = offsetParamsAsRegisters + cc.paramByRegisterCount * sizeof(Register);
+    uint32_t offsetByteCodeStack     = offsetResult + sizeof(Register);
+    uint32_t offsetFLT               = offsetByteCodeStack + bc->stackSize; // For float load (should be reserved only if we have floating point operations in that function)
+    uint32_t sizeStack               = offsetFLT + 8;
     MK_ALIGN16(sizeStack);
 
     // Calling convention, space for at least 'cc.paramByRegisterCount' parameters when calling a function
@@ -74,21 +74,21 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     // Because of variadic parameters in fct calls, we need to add some extra room, in case we have to flatten them
     // We want to be sure to have the room to flatten the array of variadic (make all params contiguous). That's
     // why we multiply by 2.
-    uint32_t sizeParamsStack = 2 * static_cast<uint32_t>(std::max(cc.paramByRegisterCount * sizeof(Register), (bc->maxCallParams + 1) * sizeof(Register)));
-    MK_ALIGN16(sizeParamsStack);
+    uint32_t sizeStackCallParams = 2 * static_cast<uint32_t>(std::max(cc.paramByRegisterCount * sizeof(Register), (bc->maxCallParams + 1) * sizeof(Register)));
+    MK_ALIGN16(sizeStackCallParams);
 
-    pp.offsetFLTReg                          = CPUReg::RDI;
-    pp.offsetFLT                             = offsetFLT;
-    pp.offsetRT                              = offsetRT;
-    pp.cpuFct->offsetByteCodeStack           = offsetByteCodeStack;
-    pp.cpuFct->offsetStoreRegisterParameters = offsetCallConvParamsAsRegisters;
+    pp.offsetFLTReg                    = CPUReg::RDI;
+    pp.offsetFLT                       = offsetFLT;
+    pp.offsetRT                        = offsetRT;
+    pp.cpuFct->offsetByteCodeStack     = offsetByteCodeStack;
+    pp.cpuFct->offsetParamsAsRegisters = offsetParamsAsRegisters;
 
     // RDI will be a pointer to the stack, and the list of registers is stored at the start of the stack
     pp.unwindRegs.push_back(CPUReg::RDI);
-    pp.emitEnter(sizeStack, sizeParamsStack);
+    pp.emitEnter(sizeStack, sizeStackCallParams);
 
     // Registers are stored after the sizeParamsStack area, which is used to store parameters for function calls
-    pp.emitLoadAddress(CPUReg::RDI, CPUReg::RSP, sizeParamsStack);
+    pp.emitLoadAddress(CPUReg::RDI, CPUReg::RSP, sizeStackCallParams);
 
     // Save register parameters
     uint32_t idxReg = 0;
@@ -1931,7 +1931,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
                     uint32_t variadicStackSize = idxParam * sizeOf;
                     MK_ALIGN16(variadicStackSize);
-                    uint32_t offset = sizeParamsStack - variadicStackSize;
+                    uint32_t offset = sizeStackCallParams - variadicStackSize;
 
                     while (idxParam != UINT32_MAX)
                     {
@@ -1962,7 +1962,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         offset += sizeOf;
                     }
 
-                    pp.emitLoadAddress(CPUReg::RAX, CPUReg::RSP, sizeParamsStack - variadicStackSize);
+                    pp.emitLoadAddress(CPUReg::RAX, CPUReg::RSP, sizeStackCallParams - variadicStackSize);
                     pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, OpBits::B64);
                 }
                 else
@@ -1978,7 +1978,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                     uint32_t idxParam          = pp.pushRAParams.size() - sizeB / sizeof(Register) - 1;
                     uint32_t variadicStackSize = (idxParam + 1) * sizeof(Register);
                     MK_ALIGN16(variadicStackSize);
-                    uint32_t offset = sizeParamsStack - variadicStackSize;
+                    uint32_t offset = sizeStackCallParams - variadicStackSize;
                     while (idxParam != UINT32_MAX)
                     {
                         pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(pp.pushRAParams[idxParam]), OpBits::B64);
@@ -1987,7 +1987,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         offset += 8;
                     }
 
-                    pp.emitLoadAddress(CPUReg::RAX, CPUReg::RSP, sizeParamsStack - variadicStackSize);
+                    pp.emitLoadAddress(CPUReg::RAX, CPUReg::RSP, sizeStackCallParams - variadicStackSize);
                     pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, OpBits::B64);
                 }
                 break;

@@ -391,27 +391,27 @@ uint32_t SCBE_CPU::getParamStackOffset(const CPUFunction* cpuFunction, uint32_t 
 {
     const auto& cc = cpuFunction->typeFunc->getCallConv();
 
-    // If this was passed as a register, then get the value from storeS4 (where input registers have been saved)
-    // instead of value from the stack
+    // If the parameter has been passed as a CPU register, then we get the value from 'offsetParamsAsRegisters'
+    // (where input registers have been saved) instead of the value from the caller stack
     if (paramIdx < cc.paramByRegisterCount)
-        return REG_OFFSET(paramIdx) + cpuFunction->offsetStoreRegisterParameters;
+        return cpuFunction->offsetParamsAsRegisters + REG_OFFSET(paramIdx);
 
-    // Value from the caller stack
-    return REG_OFFSET(paramIdx) + cpuFunction->offsetCallerStackParams;
+    // The parameter has been passed by stack, so we get the value for the caller stack offset 
+    return cpuFunction->offsetCallerStackParams + REG_OFFSET(paramIdx);
 }
 
 void SCBE_CPU::emitEnter(uint32_t sizeStack, uint32_t sizeParamsStack)
 {
     // Push all registers
-    for (const auto &reg: unwindRegs)
+    for (const auto& reg : unwindRegs)
     {
         emitPush(reg);
         unwindOffsetRegs.push_back(concat.totalCount() - cpuFct->startAddress);
     }
-    
+
     if (!unwindRegs.empty() && (unwindRegs.size() & 1) == 0)
         sizeStack += sizeof(void*);
-    
+
     // We need to start at sizeof(void*) because the call has pushed one register on the stack
     cpuFct->offsetCallerStackParams = static_cast<uint32_t>(sizeof(void*) + unwindRegs.size() * sizeof(void*) + sizeStack);
     cpuFct->frameSize               = sizeStack + sizeParamsStack;
