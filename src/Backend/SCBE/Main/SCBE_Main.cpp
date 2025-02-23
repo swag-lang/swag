@@ -67,10 +67,10 @@ void SCBE::emitMain(SCBE_CPU& pp)
             return;
     }
 
-    const auto cpuFct = pp.addFunction(entryPoint, nullptr);
-    cpuFct->frameSize = 40;
-    pp.emitOpBinary(CPUReg::RSP, cpuFct->frameSize, CPUOp::SUB, OpBits::B64);
-    cpuFct->sizeProlog = concat.totalCount() - cpuFct->startAddress;
+    pp.cpuFct            = pp.addFunction(entryPoint, nullptr);
+    pp.cpuFct->frameSize = 40;
+    pp.emitOpBinary(CPUReg::RSP, pp.cpuFct->frameSize, CPUOp::SUB, OpBits::B64);
+    pp.cpuFct->sizeProlog = concat.totalCount() - pp.cpuFct->startAddress;
 
     // Set default system allocator function
     SWAG_ASSERT(g_SystemAllocatorTable);
@@ -215,11 +215,10 @@ void SCBE::emitMain(SCBE_CPU& pp)
     pp.emitCallLocal(g_LangSpec->name_priv_closeRuntime);
 
     pp.emitClear(CPUReg::RAX, OpBits::B64);
-    pp.emitOpBinary(CPUReg::RSP, cpuFct->frameSize, CPUOp::ADD, OpBits::B64);
+    pp.emitOpBinary(CPUReg::RSP, pp.cpuFct->frameSize, CPUOp::ADD, OpBits::B64);
     pp.emitRet();
 
-    computeUnwind(pp, {}, {}, cpuFct->frameSize, cpuFct->sizeProlog, cpuFct->unwind);
-    cpuFct->endAddress = concat.totalCount();
+    endFunction(pp);
 }
 
 void SCBE::emitGetTypeTable(SCBE_CPU& pp)
@@ -233,21 +232,20 @@ void SCBE::emitGetTypeTable(SCBE_CPU& pp)
     const auto& cc     = g_TypeMgr->typeInfoModuleCall->getCallConv();
 
     const auto thisInit = module->getGlobalPrivateFct(g_LangSpec->name_getTypeTable);
-    const auto cpuFct   = pp.addFunction(thisInit, nullptr);
+    pp.cpuFct           = pp.addFunction(thisInit, nullptr);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         pp.directives += form("/EXPORT:%s ", thisInit.cstr());
 
-    cpuFct->frameSize = 40;
-    pp.emitOpBinary(CPUReg::RSP, cpuFct->frameSize, CPUOp::SUB, OpBits::B64);
-    cpuFct->sizeProlog = concat.totalCount() - cpuFct->startAddress;
+    pp.cpuFct->frameSize = 40;
+    pp.emitOpBinary(CPUReg::RSP, pp.cpuFct->frameSize, CPUOp::SUB, OpBits::B64);
+    pp.cpuFct->sizeProlog = concat.totalCount() - pp.cpuFct->startAddress;
 
-    pp.emitOpBinary(CPUReg::RSP, cpuFct->frameSize, CPUOp::ADD, OpBits::B64);
+    pp.emitOpBinary(CPUReg::RSP, pp.cpuFct->frameSize, CPUOp::ADD, OpBits::B64);
     pp.emitSymbolRelocationAddr(cc.returnByRegisterInteger, pp.symCSIndex, module->typesSliceOffset);
     pp.emitRet();
 
-    computeUnwind(pp, {}, {}, cpuFct->frameSize, cpuFct->sizeProlog, cpuFct->unwind);
-    cpuFct->endAddress = concat.totalCount();
+    endFunction(pp);
 }
 
 void SCBE::emitGlobalPreMain(SCBE_CPU& pp)
@@ -258,15 +256,15 @@ void SCBE::emitGlobalPreMain(SCBE_CPU& pp)
     const auto& cc              = g_TypeMgr->typeInfoModuleCall->getCallConv();
 
     const auto thisInit = module->getGlobalPrivateFct(g_LangSpec->name_globalPreMain);
-    const auto cpuFct   = pp.addFunction(thisInit, nullptr);
+    pp.cpuFct           = pp.addFunction(thisInit, nullptr);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         pp.directives += form("/EXPORT:%s ", thisInit.cstr());
 
-    cpuFct->frameSize = 48;
+    pp.cpuFct->frameSize = 48;
     pp.emitPush(CPUReg::RDI);
-    pp.emitOpBinary(CPUReg::RSP, cpuFct->frameSize, CPUOp::SUB, OpBits::B64);
-    cpuFct->sizeProlog = concat.totalCount() - cpuFct->startAddress;
+    pp.emitOpBinary(CPUReg::RSP, pp.cpuFct->frameSize, CPUOp::SUB, OpBits::B64);
+    pp.cpuFct->sizeProlog = concat.totalCount() - pp.cpuFct->startAddress;
 
     // Store first parameter on stack (process infos ptr)
     SWAG_ASSERT(cc.paramByRegisterCount >= 1);
@@ -289,12 +287,11 @@ void SCBE::emitGlobalPreMain(SCBE_CPU& pp)
         pp.emitCallLocal(bc->getCallName());
     }
 
-    pp.emitOpBinary(CPUReg::RSP, cpuFct->frameSize, CPUOp::ADD, OpBits::B64);
+    pp.emitOpBinary(CPUReg::RSP, pp.cpuFct->frameSize, CPUOp::ADD, OpBits::B64);
     pp.emitPop(CPUReg::RDI);
     pp.emitRet();
 
-    computeUnwind(pp, {}, {}, cpuFct->frameSize, cpuFct->sizeProlog, cpuFct->unwind);
-    cpuFct->endAddress = concat.totalCount();
+    endFunction(pp);
 }
 
 void SCBE::emitGlobalInit(SCBE_CPU& pp)
@@ -305,15 +302,15 @@ void SCBE::emitGlobalInit(SCBE_CPU& pp)
     const auto& cc              = g_TypeMgr->typeInfoModuleCall->getCallConv();
 
     const auto thisInit = module->getGlobalPrivateFct(g_LangSpec->name_globalInit);
-    const auto cpuFct   = pp.addFunction(thisInit, nullptr);
+    pp.cpuFct   = pp.addFunction(thisInit, nullptr);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         pp.directives += form("/EXPORT:%s ", thisInit.cstr());
 
-    cpuFct->frameSize = 48;
+    pp.cpuFct->frameSize = 48;
     pp.emitPush(CPUReg::RDI);
-    pp.emitOpBinary(CPUReg::RSP, cpuFct->frameSize, CPUOp::SUB, OpBits::B64);
-    cpuFct->sizeProlog = concat.totalCount() - cpuFct->startAddress;
+    pp.emitOpBinary(CPUReg::RSP, pp.cpuFct->frameSize, CPUOp::SUB, OpBits::B64);
+    pp.cpuFct->sizeProlog = concat.totalCount() - pp.cpuFct->startAddress;
 
     // Store first parameter on stack (process infos ptr)
     SWAG_ASSERT(cc.paramByRegisterCount >= 1);
@@ -363,12 +360,11 @@ void SCBE::emitGlobalInit(SCBE_CPU& pp)
         pp.emitCallLocal(bc->getCallName());
     }
 
-    pp.emitOpBinary(CPUReg::RSP, cpuFct->frameSize, CPUOp::ADD, OpBits::B64);
+    pp.emitOpBinary(CPUReg::RSP, pp.cpuFct->frameSize, CPUOp::ADD, OpBits::B64);
     pp.emitPop(CPUReg::RDI);
     pp.emitRet();
 
-    computeUnwind(pp, {}, {}, cpuFct->frameSize, cpuFct->sizeProlog, cpuFct->unwind);
-    cpuFct->endAddress = concat.totalCount();
+    endFunction(pp);
 }
 
 void SCBE::emitGlobalDrop(SCBE_CPU& pp)
@@ -378,14 +374,14 @@ void SCBE::emitGlobalDrop(SCBE_CPU& pp)
     const auto& buildParameters = pp.buildParams;
 
     const auto thisDrop = module->getGlobalPrivateFct(g_LangSpec->name_globalDrop);
-    const auto cpuFct   = pp.addFunction(thisDrop, nullptr);
+    pp.cpuFct   = pp.addFunction(thisDrop, nullptr);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         pp.directives += form("/EXPORT:%s ", thisDrop.cstr());
 
-    cpuFct->frameSize = 40;
-    pp.emitOpBinary(CPUReg::RSP, cpuFct->frameSize, CPUOp::SUB, OpBits::B64);
-    cpuFct->sizeProlog = concat.totalCount() - cpuFct->startAddress;
+    pp.cpuFct->frameSize = 40;
+    pp.emitOpBinary(CPUReg::RSP, pp.cpuFct->frameSize, CPUOp::SUB, OpBits::B64);
+    pp.cpuFct->sizeProlog = concat.totalCount() - pp.cpuFct->startAddress;
 
     // Call to #drop functions
     for (const auto bc : module->byteCodeDropFunc)
@@ -399,9 +395,8 @@ void SCBE::emitGlobalDrop(SCBE_CPU& pp)
     // __dropGlobalVariables
     emitInternalCallCPUParams(pp, g_LangSpec->name_priv_dropGlobalVariables, pp.pushParams);
 
-    pp.emitOpBinary(CPUReg::RSP, cpuFct->frameSize, CPUOp::ADD, OpBits::B64);
+    pp.emitOpBinary(CPUReg::RSP, pp.cpuFct->frameSize, CPUOp::ADD, OpBits::B64);
     pp.emitRet();
 
-    computeUnwind(pp, {}, {}, cpuFct->frameSize, cpuFct->sizeProlog, cpuFct->unwind);
-    cpuFct->endAddress = concat.totalCount();
+    endFunction(pp);
 }

@@ -2595,7 +2595,6 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     emitJumps(pp);
 
-    computeUnwind(pp, pp.unwindRegs, pp.unwindOffsetRegs, pp.cpuFct->frameSize, pp.cpuFct->sizeProlog, pp.cpuFct->unwind);
-    pp.cpuFct->endAddress = concat.totalCount();
+    endFunction(pp);
     return ok;
 }
