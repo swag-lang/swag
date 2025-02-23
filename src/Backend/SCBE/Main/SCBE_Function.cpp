@@ -117,43 +117,44 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     pp.emitOpBinary(CPUReg::RSP, pp.cpuFct->frameSize, CPUOp::SUB, OpBits::B64);
 
+    const auto sizeProlog = concat.totalCount() - pp.cpuFct->startAddress;
+
     // Unwind information (with the pushed registers)
     VectorNative<uint16_t> unwind;
-    auto                   sizeProlog = concat.totalCount() - pp.cpuFct->startAddress;
     computeUnwind(pp, unwindRegs, unwindOffsetRegs, pp.cpuFct->frameSize, sizeProlog, unwind);
 
     // Registers are stored after the sizeParamsStack area, which is used to store parameters for function calls
     pp.emitLoadAddress(CPUReg::RDI, CPUReg::RSP, sizeParamsStack);
 
     // Save register parameters
-    uint32_t iReg = 0;
-    while (iReg < std::min(cc.paramByRegisterCount, typeFunc->numParamsRegisters()))
+    uint32_t idxReg = 0;
+    while (idxReg < std::min(cc.paramByRegisterCount, typeFunc->numParamsRegisters()))
     {
-        auto     typeParam   = typeFunc->registerIdxToType(iReg);
-        uint32_t stackOffset = SCBE_CPU::getParamStackOffset(pp.cpuFct, iReg);
+        const auto     typeParam   = typeFunc->registerIdxToType(idxReg);
+        const uint32_t stackOffset = SCBE_CPU::getParamStackOffset(pp.cpuFct, idxReg);
         if (cc.useRegisterFloat && typeParam->isNativeFloat())
-            pp.emitStore(CPUReg::RDI, stackOffset, cc.paramByRegisterFloat[iReg], OpBits::F64);
+            pp.emitStore(CPUReg::RDI, stackOffset, cc.paramByRegisterFloat[idxReg], OpBits::F64);
         else
-            pp.emitStore(CPUReg::RDI, stackOffset, cc.paramByRegisterInteger[iReg], OpBits::B64);
-        iReg++;
+            pp.emitStore(CPUReg::RDI, stackOffset, cc.paramByRegisterInteger[idxReg], OpBits::B64);
+        idxReg++;
     }
 
     // Save pointer to return value if this is a return by copy
-    if (CallConv::returnByAddress(typeFunc) && iReg < cc.paramByRegisterCount)
+    if (CallConv::returnByAddress(typeFunc) && idxReg < cc.paramByRegisterCount)
     {
-        uint32_t stackOffset = SCBE_CPU::getParamStackOffset(pp.cpuFct, iReg);
-        pp.emitStore(CPUReg::RDI, stackOffset, cc.paramByRegisterInteger[iReg], OpBits::B64);
-        iReg++;
+        const uint32_t stackOffset = SCBE_CPU::getParamStackOffset(pp.cpuFct, idxReg);
+        pp.emitStore(CPUReg::RDI, stackOffset, cc.paramByRegisterInteger[idxReg], OpBits::B64);
+        idxReg++;
     }
 
     // Save C variadic
     if (typeFunc->isFctCVariadic())
     {
-        while (iReg < cc.paramByRegisterCount)
+        while (idxReg < cc.paramByRegisterCount)
         {
-            uint32_t stackOffset = pp.cpuFct->offsetCallerStackParams + REG_OFFSET(iReg);
-            pp.emitStore(CPUReg::RDI, stackOffset, cc.paramByRegisterInteger[iReg], OpBits::B64);
-            iReg++;
+            const uint32_t stackOffset = pp.cpuFct->offsetCallerStackParams + REG_OFFSET(idxReg);
+            pp.emitStore(CPUReg::RDI, stackOffset, cc.paramByRegisterInteger[idxReg], OpBits::B64);
+            idxReg++;
         }
     }
 
