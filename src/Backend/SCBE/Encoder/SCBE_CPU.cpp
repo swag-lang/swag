@@ -100,16 +100,6 @@ CPUFunction* SCBE_CPU::addFunction(AstNode* node, uint32_t symbolIndex)
     return &functions.back();
 }
 
-void SCBE_CPU::maskValue(uint64_t& value, OpBits opBits)
-{
-    if (opBits == OpBits::B8)
-        value &= 0xFF;
-    else if (opBits == OpBits::B16)
-        value &= 0xFFFF;
-    else if (opBits == OpBits::B32 || opBits == OpBits::F32)
-        value &= 0xFFFFFFFF;
-}
-
 bool SCBE_CPU::isNoOp(uint64_t value, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags) const
 {
     if (emitFlags.has(EMITF_Overflow))

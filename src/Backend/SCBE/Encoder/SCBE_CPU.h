@@ -201,7 +201,6 @@ struct SCBE_CPU : BackendEncoder
     void         addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, uint16_t type);
     CPUFunction* addFunction(AstNode* node, uint32_t symbolIndex);
     bool         isNoOp(uint64_t value, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags = EMITF_Zero) const;
-    static void  maskValue(uint64_t& value, OpBits opBits);
 
     static uint32_t getParamStackOffset(const CPUFunction* cpuFunction, uint32_t paramIdx);
     void            emitCallParameters(const CallConv& callConv, const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& cpuParams);
