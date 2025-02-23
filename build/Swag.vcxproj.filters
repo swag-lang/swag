@@ -258,6 +258,7 @@
     <ClCompile Include="..\src\Os\OSWin32_PatchIcon.cpp" />
     <ClCompile Include="..\src\Backend\BackendEncoder.cpp" />
     <ClCompile Include="..\src\Backend\LLVM\Encoder\LLVM_Encoder.cpp" />
+    <ClCompile Include="..\src\Backend\SCBE\Encoder\SCBE_Micro.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/pch.h" />
@@ -393,6 +394,7 @@
     <ClInclude Include="..\src\Backend\ByteCode\Sanity\ByteCodeSanityState.h" />
     <ClInclude Include="..\src\Backend\BackendEncoder.h" />
     <ClInclude Include="..\src\Backend\LLVM\Encoder\LLVM_Encoder.h" />
+    <ClInclude Include="..\src\Backend\SCBE\Encoder\SCBE_Micro.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="swag.natvis" />
