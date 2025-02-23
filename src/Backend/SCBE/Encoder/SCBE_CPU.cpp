@@ -413,7 +413,7 @@ void SCBE_CPU::emitEnter(uint32_t sizeStack, uint32_t sizeParamsStack)
         sizeStack += sizeof(void*);
 
     // We need to start at sizeof(void*) because the call has pushed one register on the stack
-    cpuFct->offsetCallerStackParams = static_cast<uint32_t>(sizeof(void*) + unwindRegs.size() * sizeof(void*) + sizeStack);
+    cpuFct->offsetCallerStackParams = sizeof(void*) + static_cast<uint32_t>(unwindRegs.size() * sizeof(void*)) + sizeStack;
     cpuFct->frameSize               = sizeStack + sizeParamsStack;
 
     if (g_CommandLine.target.os == SwagTargetOs::Windows)
