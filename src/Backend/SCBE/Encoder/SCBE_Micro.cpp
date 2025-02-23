@@ -105,7 +105,7 @@ void SCBE_Micro::emitLoad(CPUReg reg, uint64_t value, OpBits opBits)
 void SCBE_Micro::emitLoad(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits opBits)
 {
     const auto inst = concat.addObj<SCBE_MicroInstruction>();
-    inst->op        = SCBE_MicroOp::Load4;
+    inst->op        = SCBE_MicroOp::Load5;
     inst->regA      = reg;
     inst->regB      = memReg;
     inst->valueA    = memOffset;
@@ -368,7 +368,7 @@ void SCBE_Micro::emitCallExtern(const Utf8& symbolName)
 void SCBE_Micro::emitCallIndirect(CPUReg reg)
 {
     const auto inst = concat.addObj<SCBE_MicroInstruction>();
-    inst->op        = SCBE_MicroOp::Nop;
+    inst->op        = SCBE_MicroOp::CallIndirect;
     inst->regA      = reg;
 }
 
@@ -462,6 +462,9 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
             case SCBE_MicroOp::Load4:
                 encoder.emitLoad(inst->regA, inst->valueA, inst->opBitsA);
                 break;
+            case SCBE_MicroOp::Load5:
+                encoder.emitLoad(inst->regA, inst->regB, inst->valueA, inst->opBitsA);
+            break;            
             case SCBE_MicroOp::LoadExtend0:
                 encoder.emitLoadExtend(inst->regA, inst->regB, inst->valueA, inst->opBitsA, inst->opBitsB, inst->boolA);
                 break;

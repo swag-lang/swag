@@ -24,6 +24,7 @@ enum class SCBE_MicroOp : uint8_t
     Load2,
     Load3,
     Load4,
+    Load5,
     LoadExtend0,
     LoadExtend1,
     LoadAddress0,
