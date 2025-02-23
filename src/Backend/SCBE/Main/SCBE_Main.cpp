@@ -49,7 +49,6 @@ void SCBE::emitOS(SCBE_CPU& pp)
 
 void SCBE::emitMain(SCBE_CPU& pp)
 {
-    const auto& concat          = pp.concat;
     const auto& buildParameters = pp.buildParams;
     const auto  module          = pp.module;
 
@@ -226,9 +225,6 @@ void SCBE::emitGetTypeTable(SCBE_CPU& pp)
     if (buildParameters.buildCfg->backendKind != BuildCfgBackendKind::Library)
         return;
 
-    const auto& concat = pp.concat;
-    const auto& cc     = g_TypeMgr->typeInfoModuleCall->getCallConv();
-
     const auto thisInit = module->getGlobalPrivateFct(g_LangSpec->name_getTypeTable);
     pp.cpuFct           = pp.addFunction(thisInit, nullptr);
 
@@ -238,6 +234,7 @@ void SCBE::emitGetTypeTable(SCBE_CPU& pp)
     pp.cpuFct->frameSize = 40;
     pp.emitEnter();
 
+    const auto& cc = g_TypeMgr->typeInfoModuleCall->getCallConv();
     pp.emitSymbolRelocationAddr(cc.returnByRegisterInteger, pp.symCSIndex, module->typesSliceOffset);
     pp.emitLeave();
 
@@ -363,7 +360,6 @@ void SCBE::emitGlobalInit(SCBE_CPU& pp)
 
 void SCBE::emitGlobalDrop(SCBE_CPU& pp)
 {
-    const auto& concat          = pp.concat;
     const auto  module          = pp.module;
     const auto& buildParameters = pp.buildParams;
 

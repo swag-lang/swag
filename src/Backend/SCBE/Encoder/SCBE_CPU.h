@@ -207,14 +207,15 @@ struct SCBE_CPU : BackendEncoder
     void            emitComputeCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& cpuParams, uint32_t resultOffsetRT, void* resultAddr);
     void            emitStoreCallResult(CPUReg memReg, uint32_t memOffset, const TypeInfoFuncAttr* typeFuncBc);
 
+    virtual void emitEnter();
+    virtual void emitLeave();
+
     virtual void    emitSymbolRelocationRef(const Utf8& name)                                                                                     = 0;
     virtual void    emitSymbolRelocationAddr(CPUReg reg, uint32_t symbolIndex, uint32_t offset)                                                   = 0;
     virtual void    emitSymbolRelocationValue(CPUReg reg, uint32_t symbolIndex, uint32_t offset)                                                  = 0;
     virtual void    emitSymbolGlobalString(CPUReg reg, const Utf8& str)                                                                           = 0;
     virtual void    emitPush(CPUReg reg)                                                                                                          = 0;
     virtual void    emitPop(CPUReg reg)                                                                                                           = 0;
-    virtual void    emitEnter()                                                                                                                   = 0;
-    virtual void    emitLeave()                                                                                                                   = 0;
     virtual void    emitNop()                                                                                                                     = 0;
     virtual void    emitRet()                                                                                                                     = 0;
     virtual void    emitCallLocal(const Utf8& symbolName)                                                                                         = 0;

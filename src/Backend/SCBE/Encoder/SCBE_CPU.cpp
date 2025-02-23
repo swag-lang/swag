@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Backend/SCBE/Encoder/SCBE_CPU.h"
 #include "Backend/ByteCode/ByteCode.h"
+#include "Main/CommandLine.h"
 #include "Semantic/Type/TypeInfo.h"
 #include "Semantic/Type/TypeManager.h"
 
@@ -397,4 +398,27 @@ uint32_t SCBE_CPU::getParamStackOffset(const CPUFunction* cpuFunction, uint32_t 
 
     // Value from the caller stack
     return REG_OFFSET(paramIdx) + cpuFunction->offsetCallerStackParams;
+}
+
+void SCBE_CPU::emitEnter()
+{
+    if (g_CommandLine.target.os == SwagTargetOs::Windows)
+    {
+        if (cpuFct->frameSize >= SWAG_LIMIT_PAGE_STACK)
+        {
+            emitLoad(CPUReg::RAX, cpuFct->frameSize, OpBits::B64);
+            emitCallLocal(R"(__chkstk)");
+        }
+    }
+
+    emitOpBinary(CPUReg::RSP, cpuFct->frameSize, CPUOp::SUB, OpBits::B64);
+    cpuFct->sizeProlog = concat.totalCount() - cpuFct->startAddress;
+}
+
+void SCBE_CPU::emitLeave()
+{
+    emitOpBinary(CPUReg::RSP, cpuFct->frameSize, CPUOp::ADD, OpBits::B64);
+    for (auto idxReg = unwindRegs.size() - 1; idxReg != UINT32_MAX; idxReg--)
+        emitPop(unwindRegs[idxReg]);
+    emitRet();
 }

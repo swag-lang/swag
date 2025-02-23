@@ -96,16 +96,6 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     pp.cpuFct->offsetCallerStackParams = static_cast<uint32_t>(sizeof(void*) + pp.unwindRegs.size() * sizeof(void*) + sizeStack);
     pp.cpuFct->frameSize               = sizeStack + sizeParamsStack;
 
-    // Check stack
-    if (g_CommandLine.target.os == SwagTargetOs::Windows)
-    {
-        if (pp.cpuFct->frameSize >= SWAG_LIMIT_PAGE_STACK)
-        {
-            pp.emitLoad(CPUReg::RAX, pp.cpuFct->frameSize, OpBits::B64);
-            pp.emitCallLocal(R"(__chkstk)");
-        }
-    }
-
     pp.emitEnter();
 
     // Registers are stored after the sizeParamsStack area, which is used to store parameters for function calls
