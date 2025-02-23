@@ -40,6 +40,8 @@ enum class CPUReg : uint8_t
 
 struct CallConv
 {
+    constexpr static uint32_t MAX_CALL_CONV_REGISTERS = 4;
+
     bool                   structParamByValue(const TypeInfo* typeParam) const;
     static const CallConv* get(CallConvKind kind);
     static bool            returnByAddress(const TypeInfoFuncAttr* typeFunc);

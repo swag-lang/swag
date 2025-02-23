@@ -190,6 +190,7 @@ struct CPUFunction
     uint32_t               offsetByteCodeStack     = 0;
     uint32_t               offsetCallerStackParams = 0;
     uint32_t               offsetParamsAsRegisters = 0;
+    uint32_t               sizeStackCallParams     = 0;
     uint32_t               frameSize               = 0;
 };
 
@@ -209,7 +210,7 @@ struct SCBE_CPU : BackendEncoder
     void            emitComputeCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& cpuParams, uint32_t resultOffsetRT, void* resultAddr);
     void            emitStoreCallResult(CPUReg memReg, uint32_t memOffset, const TypeInfoFuncAttr* typeFuncBc);
 
-    virtual void emitEnter(uint32_t sizeStack, uint32_t sizeParamsStack);
+    virtual void emitEnter(uint32_t sizeStack);
     virtual void emitLeave();
 
     virtual void    emitSymbolRelocationRef(const Utf8& name)                                                                                     = 0;

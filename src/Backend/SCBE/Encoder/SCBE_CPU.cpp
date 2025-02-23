@@ -101,10 +101,23 @@ CPUFunction* SCBE_CPU::addFunction(const Utf8& funcName, const CallConv* cc, Byt
     CPUFunction* cf  = Allocator::alloc<CPUFunction>();
     cf->cc           = cc;
     cf->bc           = bc;
-    cf->node         = bc ? bc->node : nullptr;
-    cf->typeFunc     = bc ? bc->getCallType() : nullptr;
     cf->symbolIndex  = getOrAddSymbol(funcName, CPUSymbolKind::Function, concat.totalCount() - textSectionOffset)->index;
     cf->startAddress = concat.totalCount();
+
+    if (bc)
+    {
+        cf->node     = bc->node;
+        cf->typeFunc = bc->getCallType();
+
+        // Calling convention, space for at least 'cc.paramByRegisterCount' parameters when calling a function
+        // (should ideally be reserved only if we have a call)
+        //
+        // Because of variadic parameters in fct calls, we need to add some extra room, in case we have to flatten them
+        // We want to be sure to have the room to flatten the array of variadic (make all params contiguous). That's
+        // why we multiply by 2.
+        cf->sizeStackCallParams = 2 * std::max(static_cast<uint32_t>(CallConv::MAX_CALL_CONV_REGISTERS * sizeof(void*)), static_cast<uint32_t>((bc->maxCallParams + 1) * sizeof(void*)));
+        MK_ALIGN16(cf->sizeStackCallParams);
+    }
 
     functions.push_back(cf);
     return cf;
@@ -403,7 +416,7 @@ uint32_t SCBE_CPU::getParamStackOffset(const CPUFunction* cpuFunction, uint32_t 
     return cpuFunction->offsetCallerStackParams + REG_OFFSET(paramIdx);
 }
 
-void SCBE_CPU::emitEnter(uint32_t sizeStack, uint32_t sizeParamsStack)
+void SCBE_CPU::emitEnter(uint32_t sizeStack)
 {
     // Push all registers
     for (const auto& reg : unwindRegs)
@@ -417,7 +430,7 @@ void SCBE_CPU::emitEnter(uint32_t sizeStack, uint32_t sizeParamsStack)
 
     // We need to start at sizeof(void*) because the call has pushed one register on the stack
     cpuFct->offsetCallerStackParams = sizeof(void*) + static_cast<uint32_t>(unwindRegs.size() * sizeof(void*)) + sizeStack;
-    cpuFct->frameSize               = sizeStack + sizeParamsStack;
+    cpuFct->frameSize               = sizeStack + cpuFct->sizeStackCallParams;
 
     if (g_CommandLine.target.os == SwagTargetOs::Windows)
     {

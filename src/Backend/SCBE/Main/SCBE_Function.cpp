@@ -61,15 +61,6 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     uint32_t sizeStack               = offsetFLT + 8;
     MK_ALIGN16(sizeStack);
 
-    // Calling convention, space for at least 'cc.paramByRegisterCount' parameters when calling a function
-    // (should ideally be reserved only if we have a call)
-    //
-    // Because of variadic parameters in fct calls, we need to add some extra room, in case we have to flatten them
-    // We want to be sure to have the room to flatten the array of variadic (make all params contiguous). That's
-    // why we multiply by 2.
-    uint32_t sizeStackCallParams = 2 * static_cast<uint32_t>(std::max(cc.paramByRegisterCount * sizeof(Register), (bc->maxCallParams + 1) * sizeof(Register)));
-    MK_ALIGN16(sizeStackCallParams);
-
     pp.offsetFLTReg = CPUReg::RDI;
     pp.offsetFLT    = offsetFLT;
     pp.offsetRT     = offsetRT;
@@ -83,10 +74,10 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     // RDI will be a pointer to the stack, and the list of registers is stored at the start of the stack
     pp.unwindRegs.push_back(CPUReg::RDI);
-    pp.emitEnter(sizeStack, sizeStackCallParams);
+    pp.emitEnter(sizeStack);
 
     // Registers are stored after the sizeParamsStack area, which is used to store parameters for function calls
-    pp.emitLoadAddress(CPUReg::RDI, CPUReg::RSP, sizeStackCallParams);
+    pp.emitLoadAddress(CPUReg::RDI, CPUReg::RSP, pp.cpuFct->sizeStackCallParams);
 
     // Save register parameters
     uint32_t idxReg = 0;
@@ -1929,7 +1920,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
                     uint32_t variadicStackSize = idxParam * sizeOf;
                     MK_ALIGN16(variadicStackSize);
-                    uint32_t offset = sizeStackCallParams - variadicStackSize;
+                    uint32_t offset = pp.cpuFct->sizeStackCallParams - variadicStackSize;
 
                     while (idxParam != UINT32_MAX)
                     {
@@ -1960,7 +1951,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         offset += sizeOf;
                     }
 
-                    pp.emitLoadAddress(CPUReg::RAX, CPUReg::RSP, sizeStackCallParams - variadicStackSize);
+                    pp.emitLoadAddress(CPUReg::RAX, CPUReg::RSP, pp.cpuFct->sizeStackCallParams - variadicStackSize);
                     pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, OpBits::B64);
                 }
                 else
@@ -1976,7 +1967,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                     uint32_t idxParam          = pp.pushRAParams.size() - sizeB / sizeof(Register) - 1;
                     uint32_t variadicStackSize = (idxParam + 1) * sizeof(Register);
                     MK_ALIGN16(variadicStackSize);
-                    uint32_t offset = sizeStackCallParams - variadicStackSize;
+                    uint32_t offset = pp.cpuFct->sizeStackCallParams - variadicStackSize;
                     while (idxParam != UINT32_MAX)
                     {
                         pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(pp.pushRAParams[idxParam]), OpBits::B64);
@@ -1985,7 +1976,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         offset += 8;
                     }
 
-                    pp.emitLoadAddress(CPUReg::RAX, CPUReg::RSP, sizeStackCallParams - variadicStackSize);
+                    pp.emitLoadAddress(CPUReg::RAX, CPUReg::RSP, pp.cpuFct->sizeStackCallParams - variadicStackSize);
                     pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, OpBits::B64);
                 }
                 break;
