@@ -42,14 +42,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     // Symbol
     concat.align(16);
-    const uint32_t startAddress    = concat.totalCount();
-    auto           symbolFuncIndex = pp.getOrAddSymbol(funcName, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
-    auto           cpuFct          = pp.addFunction(bc->node, symbolFuncIndex);
-    cpuFct->typeFunc               = typeFunc;
-    cpuFct->startAddress           = startAddress;
+    auto symbolFuncIndex    = pp.getOrAddSymbol(funcName, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
+    pp.cpuFct               = pp.addFunction(bc->node, symbolFuncIndex);
+    pp.cpuFct->typeFunc     = typeFunc;
+    pp.cpuFct->startAddress = concat.totalCount();
     if (debug)
-        SCBE_Debug::setLocation(cpuFct, bc, nullptr, 0);
-    pp.cpuFct = cpuFct;
+        SCBE_Debug::setLocation(pp.cpuFct, bc, nullptr, 0);
 
     // In order, starting at RSP, we have :
     //
@@ -88,17 +86,14 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     sizeParamsStack *= 2;
     MK_ALIGN16(sizeParamsStack);
 
-    auto     beforeProlog = concat.totalCount();
-    uint32_t numTotalRegs = typeFunc->numParamsRegisters();
-
-    VectorNative<CPUReg>   unwindRegs;
-    VectorNative<uint32_t> unwindOffsetRegs;
-
     // RDI will be a pointer to the stack, and the list of registers is stored at the start
     // of the stack
     pp.emitPush(CPUReg::RDI);
+
+    VectorNative<CPUReg>   unwindRegs;
+    VectorNative<uint32_t> unwindOffsetRegs;
     unwindRegs.push_back(CPUReg::RDI);
-    unwindOffsetRegs.push_back(concat.totalCount() - beforeProlog);
+    unwindOffsetRegs.push_back(concat.totalCount() - pp.cpuFct->startAddress);
 
     // Stack align
     if ((unwindRegs.size() & 1) == 0)
@@ -117,14 +112,14 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     pp.emitOpBinary(CPUReg::RSP, sizeStack + sizeParamsStack, CPUOp::SUB, OpBits::B64);
 
     // We need to start at sizeof(void*) because the call has pushed one register on the stack
-    cpuFct->offsetCallerStackParams = static_cast<uint32_t>(sizeof(void*) + unwindRegs.size() * sizeof(void*) + sizeStack);
-    cpuFct->offsetStack             = offsetStack;
-    cpuFct->offsetLocalStackParams  = offsetS4;
-    cpuFct->frameSize               = sizeStack + sizeParamsStack;
+    pp.cpuFct->offsetCallerStackParams = static_cast<uint32_t>(sizeof(void*) + unwindRegs.size() * sizeof(void*) + sizeStack);
+    pp.cpuFct->offsetStack             = offsetStack;
+    pp.cpuFct->offsetLocalStackParams  = offsetS4;
+    pp.cpuFct->frameSize               = sizeStack + sizeParamsStack;
 
     // Unwind information (with the pushed registers)
     VectorNative<uint16_t> unwind;
-    auto                   sizeProlog = concat.totalCount() - beforeProlog;
+    auto                   sizeProlog = concat.totalCount() - pp.cpuFct->startAddress;
     computeUnwind(pp, unwindRegs, unwindOffsetRegs, sizeStack + sizeParamsStack, sizeProlog, unwind);
 
     // Registers are stored after the sizeParamsStack area, which is used to store parameters for function calls
@@ -132,10 +127,10 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     // Save register parameters
     uint32_t iReg = 0;
-    while (iReg < std::min(cc.paramByRegisterCount, numTotalRegs))
+    while (iReg < std::min(cc.paramByRegisterCount, typeFunc->numParamsRegisters()))
     {
         auto     typeParam   = typeFunc->registerIdxToType(iReg);
-        uint32_t stackOffset = SCBE_CPU::getParamStackOffset(cpuFct, iReg);
+        uint32_t stackOffset = SCBE_CPU::getParamStackOffset(pp.cpuFct, iReg);
         if (cc.useRegisterFloat && typeParam->isNativeFloat())
             pp.emitStore(CPUReg::RDI, stackOffset, cc.paramByRegisterFloat[iReg], OpBits::F64);
         else
@@ -146,7 +141,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     // Save pointer to return value if this is a return by copy
     if (CallConv::returnByAddress(typeFunc) && iReg < cc.paramByRegisterCount)
     {
-        uint32_t stackOffset = SCBE_CPU::getParamStackOffset(cpuFct, iReg);
+        uint32_t stackOffset = SCBE_CPU::getParamStackOffset(pp.cpuFct, iReg);
         pp.emitStore(CPUReg::RDI, stackOffset, cc.paramByRegisterInteger[iReg], OpBits::B64);
         iReg++;
     }
@@ -156,7 +151,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     {
         while (iReg < cc.paramByRegisterCount)
         {
-            uint32_t stackOffset = cpuFct->offsetCallerStackParams + REG_OFFSET(iReg);
+            uint32_t stackOffset = pp.cpuFct->offsetCallerStackParams + REG_OFFSET(iReg);
             pp.emitStore(CPUReg::RDI, stackOffset, cc.paramByRegisterInteger[iReg], OpBits::B64);
             iReg++;
         }
@@ -180,7 +175,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         pp.ipIndex = i;
 
         if (debug)
-            SCBE_Debug::setLocation(cpuFct, bc, ip, concat.totalCount() - beforeProlog);
+            SCBE_Debug::setLocation(pp.cpuFct, bc, ip, concat.totalCount() - pp.cpuFct->startAddress);
 
         if (ip->hasFlag(BCI_JUMP_DEST))
             pp.getOrCreateLabel(i);
@@ -1113,7 +1108,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
                 // + 5 for the two following instructions
                 // + 7 for this instruction
-                pp.emitSymbolRelocationAddr(CPUReg::RAX, symbolFuncIndex, concat.totalCount() - startAddress + 5 + 7);
+                pp.emitSymbolRelocationAddr(CPUReg::RAX, symbolFuncIndex, concat.totalCount() - pp.cpuFct->startAddress + 5 + 7);
                 pp.emitOpBinary(CPUReg::RAX, CPUReg::RCX, CPUOp::ADD, OpBits::B64);
                 pp.emitJump(CPUReg::RAX);
 
@@ -1533,7 +1528,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::ClearRR64:
             {
                 opBits               = SCBE_CPU::getOpBits(ip->op);
-                uint32_t stackOffset = SCBE_CPU::getParamStackOffset(cpuFct, typeFunc->numParamsRegisters());
+                uint32_t stackOffset = SCBE_CPU::getParamStackOffset(pp.cpuFct, typeFunc->numParamsRegisters());
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, stackOffset, OpBits::B64);
                 pp.emitStore(CPUReg::RAX, ip->c.u32, 0, opBits);
                 break;
@@ -1541,7 +1536,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::ClearRRX:
             {
-                uint32_t stackOffset = SCBE_CPU::getParamStackOffset(cpuFct, typeFunc->numParamsRegisters());
+                uint32_t stackOffset = SCBE_CPU::getParamStackOffset(pp.cpuFct, typeFunc->numParamsRegisters());
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, stackOffset, OpBits::B64);
 
                 SWAG_ASSERT(ip->c.s64 >= 0 && ip->c.s64 <= 0x7FFFFFFF);
@@ -1825,7 +1820,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 uint32_t paramIdx = typeFunc->numParamsRegisters();
                 if (CallConv::returnByAddress(typeFunc))
                     paramIdx += 1;
-                uint32_t stackOffset = cpuFct->offsetCallerStackParams + REG_OFFSET(paramIdx);
+                uint32_t stackOffset = pp.cpuFct->offsetCallerStackParams + REG_OFFSET(paramIdx);
                 pp.emitLoadAddress(CPUReg::RAX, CPUReg::RDI, stackOffset);
                 pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);
                 pp.emitStore(CPUReg::RCX, 0, CPUReg::RAX, OpBits::B64);
@@ -1909,7 +1904,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::CopyRARBtoRR2:
             {
-                uint32_t stackOffset = SCBE_CPU::getParamStackOffset(cpuFct, typeFunc->numParamsRegisters());
+                uint32_t stackOffset = SCBE_CPU::getParamStackOffset(pp.cpuFct, typeFunc->numParamsRegisters());
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, stackOffset, OpBits::B64);
                 pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);
                 pp.emitStore(CPUReg::RAX, 0, CPUReg::RCX, OpBits::B64);
@@ -1925,14 +1920,14 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::SaveRRtoRA:
             {
-                uint32_t stackOffset = SCBE_CPU::getParamStackOffset(cpuFct, typeFunc->numParamsRegisters());
+                uint32_t stackOffset = SCBE_CPU::getParamStackOffset(pp.cpuFct, typeFunc->numParamsRegisters());
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, stackOffset, OpBits::B64);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, OpBits::B64);
                 break;
             }
             case ByteCodeOp::CopyRRtoRA:
             {
-                uint32_t stackOffset = SCBE_CPU::getParamStackOffset(cpuFct, typeFunc->numParamsRegisters());
+                uint32_t stackOffset = SCBE_CPU::getParamStackOffset(pp.cpuFct, typeFunc->numParamsRegisters());
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, stackOffset, OpBits::B64);
                 if (ip->b.u64)
                 {
@@ -2609,6 +2604,6 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     emitJumps(pp);
 
-    setupFunction(cpuFct, startAddress, concat.totalCount(), sizeProlog, unwind);
+    setupFunction(pp.cpuFct, pp.cpuFct->startAddress, concat.totalCount(), sizeProlog, unwind);
     return ok;
 }
