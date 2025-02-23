@@ -57,7 +57,6 @@ void SCBE::emitMain(SCBE_CPU& pp)
     const auto  module          = pp.module;
 
     concat.align(16);
-    const auto startAddress = concat.totalCount();
 
     const char* entryPoint = nullptr;
     switch (g_CommandLine.target.os)
@@ -228,8 +227,7 @@ void SCBE::emitMain(SCBE_CPU& pp)
     pp.emitOpBinary(CPUReg::RSP, 40, CPUOp::ADD, OpBits::B64);
     pp.emitRet();
 
-    const uint32_t endAddress = concat.totalCount();
-    setupFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
+    setupFunction(cpuFct, concat.totalCount(), sizeProlog, unwind);
 }
 
 void SCBE::emitGetTypeTable(SCBE_CPU& pp)
@@ -243,7 +241,6 @@ void SCBE::emitGetTypeTable(SCBE_CPU& pp)
     const auto& cc     = g_TypeMgr->typeInfoModuleCall->getCallConv();
 
     concat.align(16);
-    const auto startAddress = concat.totalCount();
 
     const auto thisInit        = module->getGlobalPrivateFct(g_LangSpec->name_getTypeTable);
     const auto symbolFuncIndex = pp.getOrAddSymbol(thisInit, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
@@ -262,8 +259,7 @@ void SCBE::emitGetTypeTable(SCBE_CPU& pp)
     pp.emitSymbolRelocationAddr(cc.returnByRegisterInteger, pp.symCSIndex, module->typesSliceOffset);
     pp.emitRet();
 
-    const uint32_t endAddress = concat.totalCount();
-    setupFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
+    setupFunction(cpuFct, concat.totalCount(), sizeProlog, unwind);
 }
 
 void SCBE::emitGlobalPreMain(SCBE_CPU& pp)
@@ -274,7 +270,6 @@ void SCBE::emitGlobalPreMain(SCBE_CPU& pp)
     const auto& cc              = g_TypeMgr->typeInfoModuleCall->getCallConv();
 
     concat.align(16);
-    const auto startAddress = concat.totalCount();
 
     const auto thisInit        = module->getGlobalPrivateFct(g_LangSpec->name_globalPreMain);
     const auto symbolFuncIndex = pp.getOrAddSymbol(thisInit, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
@@ -315,8 +310,7 @@ void SCBE::emitGlobalPreMain(SCBE_CPU& pp)
     pp.emitPop(CPUReg::RDI);
     pp.emitRet();
 
-    const uint32_t endAddress = concat.totalCount();
-    setupFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
+    setupFunction(cpuFct, concat.totalCount(), sizeProlog, unwind);
 }
 
 void SCBE::emitGlobalInit(SCBE_CPU& pp)
@@ -327,7 +321,6 @@ void SCBE::emitGlobalInit(SCBE_CPU& pp)
     const auto& cc              = g_TypeMgr->typeInfoModuleCall->getCallConv();
 
     concat.align(16);
-    const auto startAddress = concat.totalCount();
 
     const auto thisInit        = module->getGlobalPrivateFct(g_LangSpec->name_globalInit);
     const auto symbolFuncIndex = pp.getOrAddSymbol(thisInit, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
@@ -395,8 +388,7 @@ void SCBE::emitGlobalInit(SCBE_CPU& pp)
     pp.emitPop(CPUReg::RDI);
     pp.emitRet();
 
-    const uint32_t endAddress = concat.totalCount();
-    setupFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
+    setupFunction(cpuFct, concat.totalCount(), sizeProlog, unwind);
 }
 
 void SCBE::emitGlobalDrop(SCBE_CPU& pp)
@@ -406,7 +398,6 @@ void SCBE::emitGlobalDrop(SCBE_CPU& pp)
     const auto& buildParameters = pp.buildParams;
 
     concat.align(16);
-    const auto startAddress = concat.totalCount();
 
     const auto thisDrop        = module->getGlobalPrivateFct(g_LangSpec->name_globalDrop);
     const auto symbolFuncIndex = pp.getOrAddSymbol(thisDrop, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
@@ -436,6 +427,5 @@ void SCBE::emitGlobalDrop(SCBE_CPU& pp)
     pp.emitOpBinary(CPUReg::RSP, 40, CPUOp::ADD, OpBits::B64);
     pp.emitRet();
 
-    const uint32_t endAddress = concat.totalCount();
-    setupFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
+    setupFunction(cpuFct, concat.totalCount(), sizeProlog, unwind);
 }

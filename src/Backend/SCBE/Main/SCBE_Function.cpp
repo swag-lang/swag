@@ -2605,6 +2605,6 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     emitJumps(pp);
 
-    setupFunction(pp.cpuFct, pp.cpuFct->startAddress, concat.totalCount(), sizeProlog, unwind);
+    setupFunction(pp.cpuFct, concat.totalCount(), sizeProlog, unwind);
     return ok;
 }

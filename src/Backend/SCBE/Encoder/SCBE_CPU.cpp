@@ -94,8 +94,9 @@ uint32_t SCBE_CPU::getOrCreateLabel(uint32_t instructionIndex)
 CPUFunction* SCBE_CPU::addFunction(AstNode* node, uint32_t symbolIndex)
 {
     CPUFunction cf;
-    cf.node        = node;
-    cf.symbolIndex = symbolIndex;
+    cf.node         = node;
+    cf.symbolIndex  = symbolIndex;
+    cf.startAddress = concat.totalCount();
     functions.push_back(cf);
     return &functions.back();
 }
