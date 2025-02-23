@@ -49,7 +49,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     cpuFct->typeFunc     = typeFunc;
     cpuFct->startAddress = startAddress;
     if (debug)
-        SCBEDebug::setLocation(cpuFct, bc, nullptr, 0);
+        SCBE_Debug::setLocation(cpuFct, bc, nullptr, 0);
     pp.cpuFct = cpuFct;
 
     // In order, starting at RSP, we have :
@@ -183,7 +183,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         pp.ipIndex = i;
 
         if (debug)
-            SCBEDebug::setLocation(cpuFct, bc, ip, concat.totalCount() - beforeProlog);
+            SCBE_Debug::setLocation(cpuFct, bc, ip, concat.totalCount() - beforeProlog);
 
         if (ip->hasFlag(BCI_JUMP_DEST))
             pp.getOrCreateLabel(i);
@@ -2104,12 +2104,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             {
                 auto funcNode = castAst<AstFuncDecl>(reinterpret_cast<AstNode*>(ip->b.pointer), AstNodeKind::FuncDecl);
                 SWAG_ASSERT(!ip->c.pointer || (funcNode && funcNode->hasExtByteCode() && funcNode->extByteCode()->bc == reinterpret_cast<ByteCode*>(ip->c.pointer)));
-                Utf8 callName = funcNode->getCallName();
+
                 pp.emitLoad(CPUReg::RAX, 0);
 
                 CPURelocation relocation;
                 relocation.virtualAddress = concat.totalCount() - sizeof(uint64_t) - pp.textSectionOffset;
-                auto callSym              = pp.getOrAddSymbol(callName, CPUSymbolKind::Extern);
+                auto callSym              = pp.getOrAddSymbol(funcNode->getCallName(), CPUSymbolKind::Extern);
                 relocation.symbolIndex    = callSym->index;
                 relocation.type           = IMAGE_REL_AMD64_ADDR64;
                 pp.relocTableTextSection.table.push_back(relocation);

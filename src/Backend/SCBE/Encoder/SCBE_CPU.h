@@ -2,7 +2,7 @@
 #pragma once
 #include "Backend/Backend.h"
 #include "Backend/CallConv.h"
-#include "Backend/SCBE/Debug/SCBEDebug.h"
+#include "Backend/SCBE/Debug/SCBE_Debug.h"
 #include "Core/Concat.h"
 #include "Semantic/DataSegment.h"
 

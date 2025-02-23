@@ -251,8 +251,8 @@
     <ClInclude Include="..\src\Backend\LLVM\Main\LLVM.h" />
     <ClInclude Include="..\src\Backend\LLVM\Main\LLVM_Macros.h" />
     <ClInclude Include="..\src\Backend\Runtime.h" />
-    <ClInclude Include="..\src\Backend\SCBE\Debug\SCBEDebug.h" />
-    <ClInclude Include="..\src\Backend\SCBE\Debug\SCBEDebug_CodeView.h" />
+    <ClInclude Include="..\src\Backend\SCBE\Debug\SCBE_Debug.h" />
+    <ClInclude Include="..\src\Backend\SCBE\Debug\SCBE_Debug_CodeView.h" />
     <ClInclude Include="..\src\Backend\SCBE\Encoder\SCBE_CPU.h" />
     <ClInclude Include="..\src\Backend\SCBE\Encoder\SCBE_Micro.h" />
     <ClInclude Include="..\src\Backend\SCBE\Encoder\SCBE_X64.h" />
@@ -433,8 +433,8 @@
     <ClCompile Include="..\src\Backend\LLVM\Main\LLVM_Emit.cpp" />
     <ClCompile Include="..\src\Backend\LLVM\Main\LLVM_Function.cpp" />
     <ClCompile Include="..\src\Backend\LLVM\Main\LLVM_Main.cpp" />
-    <ClCompile Include="..\src\Backend\SCBE\Debug\SCBEDebug.cpp" />
-    <ClCompile Include="..\src\Backend\SCBE\Debug\SCBEDebug_CodeView.cpp" />
+    <ClCompile Include="..\src\Backend\SCBE\Debug\SCBE_Debug.cpp" />
+    <ClCompile Include="..\src\Backend\SCBE\Debug\SCBE_Debug_CodeView.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Encoder\SCBE_CPU.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Encoder\SCBE_Micro.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Encoder\SCBE_X64.cpp" />
