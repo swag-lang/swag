@@ -257,12 +257,6 @@ void SCBE::computeUnwind(const SCBE_CPU&               pp,
     }
 }
 
-void SCBE::setupFunction(CPUFunction* fct, uint32_t endAddress, VectorNative<uint16_t>& unwind)
-{
-    fct->endAddress   = endAddress;
-    fct->unwind       = std::move(unwind);
-}
-
 void SCBE::saveObjFile(const BuildParameters& buildParameters) const
 {
     const auto ct              = buildParameters.compileType;

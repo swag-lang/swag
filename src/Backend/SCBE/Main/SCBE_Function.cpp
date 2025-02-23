@@ -2598,8 +2598,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     emitJumps(pp);
 
-    VectorNative<uint16_t> unwind;
-    computeUnwind(pp, unwindRegs, unwindOffsetRegs, pp.cpuFct->frameSize, pp.cpuFct->sizeProlog, unwind);
-    setupFunction(pp.cpuFct, concat.totalCount(), unwind);
+    computeUnwind(pp, unwindRegs, unwindOffsetRegs, pp.cpuFct->frameSize, pp.cpuFct->sizeProlog, pp.cpuFct->unwind);
+    pp.cpuFct->endAddress = concat.totalCount();
     return ok;
 }

@@ -23,7 +23,6 @@ struct SCBE final : Backend
     void      saveObjFile(const BuildParameters& buildParameters) const;
 
     static void createRuntime(SCBE_CPU& pp);
-    static void setupFunction(CPUFunction* fct, uint32_t endAddress, VectorNative<uint16_t>& unwind);
     static void computeUnwind(const SCBE_CPU& pp, const VectorNative<CPUReg>& unwindRegs, const VectorNative<uint32_t>& unwindOffsetRegs, uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind);
     static bool buildRelocationSegment(SCBE_CPU& pp, DataSegment* dataSegment, CPURelocationTable& relocationTable, SegmentKind me);
 

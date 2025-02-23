@@ -218,9 +218,8 @@ void SCBE::emitMain(SCBE_CPU& pp)
     pp.emitOpBinary(CPUReg::RSP, cpuFct->frameSize, CPUOp::ADD, OpBits::B64);
     pp.emitRet();
 
-    VectorNative<uint16_t> unwind;
-    computeUnwind(pp, {}, {}, cpuFct->frameSize, cpuFct->sizeProlog, unwind);
-    setupFunction(cpuFct, concat.totalCount(), unwind);
+    computeUnwind(pp, {}, {}, cpuFct->frameSize, cpuFct->sizeProlog, cpuFct->unwind);
+    cpuFct->endAddress = concat.totalCount();
 }
 
 void SCBE::emitGetTypeTable(SCBE_CPU& pp)
@@ -247,9 +246,8 @@ void SCBE::emitGetTypeTable(SCBE_CPU& pp)
     pp.emitSymbolRelocationAddr(cc.returnByRegisterInteger, pp.symCSIndex, module->typesSliceOffset);
     pp.emitRet();
 
-    VectorNative<uint16_t> unwind;
-    computeUnwind(pp, {}, {}, cpuFct->frameSize, cpuFct->sizeProlog, unwind);
-    setupFunction(cpuFct, concat.totalCount(), unwind);
+    computeUnwind(pp, {}, {}, cpuFct->frameSize, cpuFct->sizeProlog, cpuFct->unwind);
+    cpuFct->endAddress = concat.totalCount();
 }
 
 void SCBE::emitGlobalPreMain(SCBE_CPU& pp)
@@ -295,9 +293,8 @@ void SCBE::emitGlobalPreMain(SCBE_CPU& pp)
     pp.emitPop(CPUReg::RDI);
     pp.emitRet();
 
-    VectorNative<uint16_t> unwind;
-    computeUnwind(pp, {}, {}, cpuFct->frameSize, cpuFct->sizeProlog, unwind);
-    setupFunction(cpuFct, concat.totalCount(), unwind);
+    computeUnwind(pp, {}, {}, cpuFct->frameSize, cpuFct->sizeProlog, cpuFct->unwind);
+    cpuFct->endAddress = concat.totalCount();
 }
 
 void SCBE::emitGlobalInit(SCBE_CPU& pp)
@@ -370,9 +367,8 @@ void SCBE::emitGlobalInit(SCBE_CPU& pp)
     pp.emitPop(CPUReg::RDI);
     pp.emitRet();
 
-    VectorNative<uint16_t> unwind;
-    computeUnwind(pp, {}, {}, cpuFct->frameSize, cpuFct->sizeProlog, unwind);
-    setupFunction(cpuFct, concat.totalCount(), unwind);
+    computeUnwind(pp, {}, {}, cpuFct->frameSize, cpuFct->sizeProlog, cpuFct->unwind);
+    cpuFct->endAddress = concat.totalCount();
 }
 
 void SCBE::emitGlobalDrop(SCBE_CPU& pp)
@@ -406,7 +402,6 @@ void SCBE::emitGlobalDrop(SCBE_CPU& pp)
     pp.emitOpBinary(CPUReg::RSP, cpuFct->frameSize, CPUOp::ADD, OpBits::B64);
     pp.emitRet();
 
-    VectorNative<uint16_t> unwind;
-    computeUnwind(pp, {}, {}, cpuFct->frameSize, cpuFct->sizeProlog, unwind);
-    setupFunction(cpuFct, concat.totalCount(), unwind);
+    computeUnwind(pp, {}, {}, cpuFct->frameSize, cpuFct->sizeProlog, cpuFct->unwind);
+    cpuFct->endAddress = concat.totalCount();
 }
