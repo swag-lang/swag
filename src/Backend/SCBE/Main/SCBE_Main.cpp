@@ -14,9 +14,8 @@ void SCBE::emitOS(SCBE_CPU& pp)
     {
         // :ChkStk Stack probing
         // See SWAG_LIMIT_PAGE_STACK
-        const auto cpuFct = pp.addFunction(R"(__chkstk)", nullptr);
-        SWAG_ASSERT(g_CommandLine.target.arch == SwagTargetArch::X8664);
-        if (g_CommandLine.target.arch == SwagTargetArch::X8664)
+        const auto cpuFct = pp.addFunction(R"(__chkstk)", CallConv::get(CallConvKind::X86_64), nullptr);
+        if (g_CommandLine.target.arch == SwagTargetArch::X86_64)
         {
             concat.addString1("\x51");                            // push rcx  // NOLINT(modernize-raw-string-literal)
             concat.addString1("\x50");                            // push rax  // NOLINT(modernize-raw-string-literal)
@@ -33,6 +32,10 @@ void SCBE::emitOS(SCBE_CPU& pp)
             concat.addString1("\x58");                            // pop rax  // NOLINT(modernize-raw-string-literal)
             concat.addString1("\x59");                            // pop rcx  // NOLINT(modernize-raw-string-literal)
             concat.addString1("\xc3");                            // ret
+        }
+        else
+        {
+            SWAG_ASSERT(false);
         }
         cpuFct->endAddress = concat.totalCount();
 
@@ -52,7 +55,8 @@ void SCBE::emitMain(SCBE_CPU& pp)
     const auto& buildParameters = pp.buildParams;
     const auto  module          = pp.module;
 
-    const char* entryPoint = nullptr;
+    const char*     entryPoint = nullptr;
+    const CallConv* callConv   = nullptr;
     switch (g_CommandLine.target.os)
     {
         case SwagTargetOs::Windows:
@@ -60,13 +64,14 @@ void SCBE::emitMain(SCBE_CPU& pp)
                 entryPoint = "mainCRTStartup";
             else
                 entryPoint = "WinMainCRTStartup";
+            callConv = CallConv::get(CallConvKind::X86_64);
             break;
         default:
             SWAG_ASSERT(false);
             return;
     }
 
-    pp.cpuFct = pp.addFunction(entryPoint, nullptr);
+    pp.cpuFct = pp.addFunction(entryPoint, callConv, nullptr);
     pp.emitEnter(40, 0);
 
     // Set default system allocator function
@@ -224,14 +229,14 @@ void SCBE::emitGetTypeTable(SCBE_CPU& pp)
     if (buildParameters.buildCfg->backendKind != BuildCfgBackendKind::Library)
         return;
 
-    const auto thisInit = module->getGlobalPrivateFct(g_LangSpec->name_getTypeTable);
-    pp.cpuFct           = pp.addFunction(thisInit, nullptr);
+    const auto& cc       = g_TypeMgr->typeInfoModuleCall->getCallConv();
+    const auto  thisInit = module->getGlobalPrivateFct(g_LangSpec->name_getTypeTable);
+    pp.cpuFct            = pp.addFunction(thisInit, &cc, nullptr);
     pp.emitEnter(40, 0);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         pp.directives += form("/EXPORT:%s ", thisInit.cstr());
 
-    const auto& cc = g_TypeMgr->typeInfoModuleCall->getCallConv();
     pp.emitSymbolRelocationAddr(cc.returnByRegisterInteger, pp.symCSIndex, module->typesSliceOffset);
     pp.emitLeave();
 
@@ -242,10 +247,10 @@ void SCBE::emitGlobalPreMain(SCBE_CPU& pp)
 {
     const auto& buildParameters = pp.buildParams;
     const auto  module          = pp.module;
-    const auto& cc              = g_TypeMgr->typeInfoModuleCall->getCallConv();
 
-    const auto thisInit = module->getGlobalPrivateFct(g_LangSpec->name_globalPreMain);
-    pp.cpuFct           = pp.addFunction(thisInit, nullptr);
+    const auto& cc       = g_TypeMgr->typeInfoModuleCall->getCallConv();
+    const auto  thisInit = module->getGlobalPrivateFct(g_LangSpec->name_globalPreMain);
+    pp.cpuFct            = pp.addFunction(thisInit, &cc, nullptr);
 
     pp.unwindRegs.push_back(CPUReg::RDI);
     pp.emitEnter(48, 0);
@@ -283,10 +288,10 @@ void SCBE::emitGlobalInit(SCBE_CPU& pp)
 {
     const auto& buildParameters = pp.buildParams;
     const auto  module          = pp.module;
-    const auto& cc              = g_TypeMgr->typeInfoModuleCall->getCallConv();
 
-    const auto thisInit = module->getGlobalPrivateFct(g_LangSpec->name_globalInit);
-    pp.cpuFct           = pp.addFunction(thisInit, nullptr);
+    const auto& cc       = g_TypeMgr->typeInfoModuleCall->getCallConv();
+    const auto  thisInit = module->getGlobalPrivateFct(g_LangSpec->name_globalInit);
+    pp.cpuFct            = pp.addFunction(thisInit, &cc, nullptr);
 
     pp.unwindRegs.push_back(CPUReg::RDI);
     pp.emitEnter(48, 0);
@@ -352,8 +357,9 @@ void SCBE::emitGlobalDrop(SCBE_CPU& pp)
     const auto  module          = pp.module;
     const auto& buildParameters = pp.buildParams;
 
-    const auto thisDrop = module->getGlobalPrivateFct(g_LangSpec->name_globalDrop);
-    pp.cpuFct           = pp.addFunction(thisDrop, nullptr);
+    const auto& cc       = g_TypeMgr->typeInfoModuleCall->getCallConv();
+    const auto  thisDrop = module->getGlobalPrivateFct(g_LangSpec->name_globalDrop);
+    pp.cpuFct            = pp.addFunction(thisDrop, &cc, nullptr);
     pp.emitEnter(40, 0);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)

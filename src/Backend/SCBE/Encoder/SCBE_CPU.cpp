@@ -89,7 +89,7 @@ uint32_t SCBE_CPU::getOrCreateLabel(uint32_t instructionIndex)
     return it->second;
 }
 
-CPUFunction* SCBE_CPU::addFunction(const Utf8& funcName, AstNode* node)
+CPUFunction* SCBE_CPU::addFunction(const Utf8& funcName, const CallConv* cc, ByteCode* bc)
 {
     concat.align(16);
 
@@ -99,7 +99,10 @@ CPUFunction* SCBE_CPU::addFunction(const Utf8& funcName, AstNode* node)
     unwindOffsetRegs.clear();
 
     CPUFunction* cf  = Allocator::alloc<CPUFunction>();
-    cf->node         = node;
+    cf->cc           = cc;
+    cf->bc           = bc;
+    cf->node         = bc ? bc->node : nullptr;
+    cf->typeFunc     = bc ? bc->getCallType() : nullptr;
     cf->symbolIndex  = getOrAddSymbol(funcName, CPUSymbolKind::Function, concat.totalCount() - textSectionOffset)->index;
     cf->startAddress = concat.totalCount();
 

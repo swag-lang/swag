@@ -229,7 +229,7 @@ const char* Backend::getArchName(const BackendTarget& target)
 {
     switch (target.arch)
     {
-        case SwagTargetArch::X8664:
+        case SwagTargetArch::X86_64:
             return "x86_64";
     }
 

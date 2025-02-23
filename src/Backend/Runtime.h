@@ -163,7 +163,7 @@ enum class SwagBackendGenType : uint32_t
 
 enum class SwagTargetArch : uint32_t
 {
-    X8664,
+    X86_64,
 };
 
 enum class SwagTargetOs : uint32_t

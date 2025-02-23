@@ -275,7 +275,7 @@ void LLVM::generateObjFile(LLVM_Encoder& pp)
     llvm::StringRef archName;
     switch (g_CommandLine.target.arch)
     {
-        case SwagTargetArch::X8664:
+        case SwagTargetArch::X86_64:
             archName = llvm::Triple::getArchTypeName(llvm::Triple::x86_64);
             break;
         default:

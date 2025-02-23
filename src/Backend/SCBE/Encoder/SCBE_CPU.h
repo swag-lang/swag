@@ -178,8 +178,10 @@ struct CPUFunction
 {
     VectorNative<uint16_t> unwind;
     Vector<SCBEDebugLines> dbgLines;
+    ByteCode*              bc                      = nullptr;
     AstNode*               node                    = nullptr;
     TypeInfoFuncAttr*      typeFunc                = nullptr;
+    const CallConv*        cc                      = nullptr;
     uint32_t               symbolIndex             = 0;
     uint32_t               startAddress            = 0;
     uint32_t               endAddress              = 0;
@@ -199,7 +201,7 @@ struct SCBE_CPU : BackendEncoder
     uint32_t     getOrCreateLabel(uint32_t instructionIndex);
     CPUSymbol*   getOrCreateGlobalString(const Utf8& str);
     void         addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, uint16_t type);
-    CPUFunction* addFunction(const Utf8& funcName, AstNode* node);
+    CPUFunction* addFunction(const Utf8& funcName, const CallConv* cc, ByteCode* bc);
     bool         isNoOp(uint64_t value, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags = EMITF_Zero) const;
 
     static uint32_t getParamStackOffset(const CPUFunction* cpuFunction, uint32_t paramIdx);

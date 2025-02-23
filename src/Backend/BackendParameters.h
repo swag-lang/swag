@@ -17,7 +17,7 @@ constexpr uint32_t SWAG_LIMIT_CLOSURE_SIZEOF      = 8 * sizeof(void*);
 
 struct BackendTarget
 {
-    SwagTargetArch arch = SwagTargetArch::X8664;
+    SwagTargetArch arch = SwagTargetArch::X86_64;
     SwagTargetOs   os   = SwagTargetOs::Windows;
     Utf8           cpu;
 };
@@ -59,7 +59,7 @@ inline bool isArchArm(SwagTargetArch arch)
 {
     switch (arch)
     {
-        case SwagTargetArch::X8664:
+        case SwagTargetArch::X86_64:
             return false;
     }
 

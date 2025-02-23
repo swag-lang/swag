@@ -156,7 +156,7 @@ namespace OS
             return false;
         }
 
-        SWAG_ASSERT(g_CommandLine.target.arch == SwagTargetArch::X8664);
+        SWAG_ASSERT(g_CommandLine.target.arch == SwagTargetArch::X86_64);
 
         Path p0 = g_WinSdkFolder;
         p0.append("um\\x64");
@@ -171,7 +171,7 @@ namespace OS
     {
         // Current target
         g_NativeTarget.os   = SwagTargetOs::Windows;
-        g_NativeTarget.arch = SwagTargetArch::X8664;
+        g_NativeTarget.arch = SwagTargetArch::X86_64;
         g_NativeTarget.cpu  = llvm::sys::getHostCPUName().str().c_str();
 
         // We do not want to assert, but just reports of the CRT

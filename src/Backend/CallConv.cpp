@@ -107,3 +107,8 @@ bool CallConv::returnByStackAddress(const TypeInfoFuncAttr* typeFunc)
 
     return true;
 }
+
+const CallConv* CallConv::get(CallConvKind kind)
+{
+    return &g_CallConv[static_cast<int>(kind)];
+}

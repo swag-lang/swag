@@ -76,7 +76,7 @@ void SCBE::createRuntime(SCBE_CPU& pp)
         pp.symPI_backendKind    = pp.getOrAddSymbol("swag_process_infos_backendKind", CPUSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
 
         // Constant stuff needed to convert U64 to F64 (code from clang)
-        if (g_CommandLine.target.arch == SwagTargetArch::X8664)
+        if (g_CommandLine.target.arch == SwagTargetArch::X86_64)
         {
             offset                                  = pp.globalSegment.reserve(32, nullptr, 2 * sizeof(uint64_t));
             pp.symCst_U64F64                        = pp.getOrAddSymbol("swag_cast_u64f64", CPUSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
@@ -127,7 +127,7 @@ JobResult SCBE::prepareOutput(const BuildParameters& buildParameters, int stage,
 
     switch (g_CommandLine.target.arch)
     {
-        case SwagTargetArch::X8664:
+        case SwagTargetArch::X86_64:
             allocatePerObj<SCBE_X64>(buildParameters);
             break;
         default:

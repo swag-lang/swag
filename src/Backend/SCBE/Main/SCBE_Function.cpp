@@ -75,8 +75,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     pp.offsetRT     = offsetRT;
 
     // Register function
-    pp.cpuFct           = pp.addFunction(funcName, bc->node);
-    pp.cpuFct->typeFunc = typeFunc;
+    pp.cpuFct = pp.addFunction(funcName, &cc, bc);
     if (debug)
         SCBE_Debug::setLocation(pp.cpuFct, bc, nullptr, 0);
     pp.cpuFct->offsetByteCodeStack     = offsetByteCodeStack;

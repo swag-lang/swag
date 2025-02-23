@@ -50,7 +50,7 @@ bool CommandLine::check()
             return false;
         }
 
-        if (target.arch != SwagTargetArch::X8664)
+        if (target.arch != SwagTargetArch::X86_64)
         {
             Report::error(formErr(Fat0008, Backend::getArchName(target)));
             return false;
