@@ -87,18 +87,15 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     // RDI will be a pointer to the stack, and the list of registers is stored at the start
     // of the stack
     pp.emitPush(CPUReg::RDI);
-
-    VectorNative<CPUReg>   unwindRegs;
-    VectorNative<uint32_t> unwindOffsetRegs;
-    unwindRegs.push_back(CPUReg::RDI);
-    unwindOffsetRegs.push_back(concat.totalCount() - pp.cpuFct->startAddress);
+    pp.unwindRegs.push_back(CPUReg::RDI);
+    pp.unwindOffsetRegs.push_back(concat.totalCount() - pp.cpuFct->startAddress);
 
     // Stack align
-    if ((unwindRegs.size() & 1) == 0)
+    if ((pp.unwindRegs.size() & 1) == 0)
         sizeStack += sizeof(void*);
 
     // We need to start at sizeof(void*) because the call has pushed one register on the stack
-    pp.cpuFct->offsetCallerStackParams = static_cast<uint32_t>(sizeof(void*) + unwindRegs.size() * sizeof(void*) + sizeStack);
+    pp.cpuFct->offsetCallerStackParams = static_cast<uint32_t>(sizeof(void*) + pp.unwindRegs.size() * sizeof(void*) + sizeStack);
     pp.cpuFct->offsetStack             = offsetStack;
     pp.cpuFct->offsetLocalStackParams  = offsetS4;
     pp.cpuFct->frameSize               = sizeStack + sizeParamsStack;
@@ -2208,8 +2205,8 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 }
 
                 pp.emitOpBinary(CPUReg::RSP, pp.cpuFct->frameSize, CPUOp::ADD, OpBits::B64);
-                for (int32_t rRet = static_cast<int32_t>(unwindRegs.size()) - 1; rRet >= 0; rRet--)
-                    pp.emitPop(unwindRegs[rRet]);
+                for (int32_t rRet = static_cast<int32_t>(pp.unwindRegs.size()) - 1; rRet >= 0; rRet--)
+                    pp.emitPop(pp.unwindRegs[rRet]);
                 pp.emitRet();
                 break;
 
@@ -2598,7 +2595,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     emitJumps(pp);
 
-    computeUnwind(pp, unwindRegs, unwindOffsetRegs, pp.cpuFct->frameSize, pp.cpuFct->sizeProlog, pp.cpuFct->unwind);
+    computeUnwind(pp, pp.unwindRegs, pp.unwindOffsetRegs, pp.cpuFct->frameSize, pp.cpuFct->sizeProlog, pp.cpuFct->unwind);
     pp.cpuFct->endAddress = concat.totalCount();
     return ok;
 }

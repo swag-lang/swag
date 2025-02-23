@@ -7,10 +7,11 @@
 void SCBE_CPU::init(const BuildParameters& buildParameters)
 {
     BackendEncoder::init(buildParameters);
-    if (buildParameters.buildCfg)
-        optLevel = buildParameters.buildCfg->backendOptimize;
+    optLevel = buildParameters.buildCfg ? buildParameters.buildCfg->backendOptimize : BuildCfgBackendOptim::O0;
     labels.clear();
     labelsToSolve.clear();
+    unwindRegs.clear();
+    unwindOffsetRegs.clear();
 }
 
 namespace

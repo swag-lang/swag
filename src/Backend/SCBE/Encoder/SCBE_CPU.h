@@ -273,6 +273,8 @@ struct SCBE_CPU : BackendEncoder
     VectorNative<CPULabelToSolve>               labelsToSolve;
     Utf8                                        directives;
     Vector<CPUFunction>                         functions;
+    VectorNative<CPUReg>                        unwindRegs;
+    VectorNative<uint32_t>                      unwindOffsetRegs;
 
     uint32_t* patchSymbolTableOffset = nullptr;
     uint32_t* patchSymbolTableCount  = nullptr;
