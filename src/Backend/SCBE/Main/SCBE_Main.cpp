@@ -68,11 +68,9 @@ void SCBE::emitMain(SCBE_CPU& pp)
     }
 
     const auto cpuFct = pp.addFunction(entryPoint, nullptr);
-
-    pp.emitOpBinary(CPUReg::RSP, 40, CPUOp::SUB, OpBits::B64);
+    cpuFct->frameSize = 40;
+    pp.emitOpBinary(CPUReg::RSP, cpuFct->frameSize, CPUOp::SUB, OpBits::B64);
     cpuFct->sizeProlog = concat.totalCount() - cpuFct->startAddress;
-    VectorNative<uint16_t> unwind;
-    computeUnwind(pp, {}, {}, 40, cpuFct->sizeProlog, unwind);
 
     // Set default system allocator function
     SWAG_ASSERT(g_SystemAllocatorTable);
@@ -217,9 +215,11 @@ void SCBE::emitMain(SCBE_CPU& pp)
     pp.emitCallLocal(g_LangSpec->name_priv_closeRuntime);
 
     pp.emitClear(CPUReg::RAX, OpBits::B64);
-    pp.emitOpBinary(CPUReg::RSP, 40, CPUOp::ADD, OpBits::B64);
+    pp.emitOpBinary(CPUReg::RSP, cpuFct->frameSize, CPUOp::ADD, OpBits::B64);
     pp.emitRet();
 
+    VectorNative<uint16_t> unwind;
+    computeUnwind(pp, {}, {}, cpuFct->frameSize, cpuFct->sizeProlog, unwind);
     setupFunction(cpuFct, concat.totalCount(), unwind);
 }
 
@@ -239,15 +239,16 @@ void SCBE::emitGetTypeTable(SCBE_CPU& pp)
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         pp.directives += form("/EXPORT:%s ", thisInit.cstr());
 
-    pp.emitOpBinary(CPUReg::RSP, 40, CPUOp::SUB, OpBits::B64);
+    cpuFct->frameSize = 40;
+    pp.emitOpBinary(CPUReg::RSP, cpuFct->frameSize, CPUOp::SUB, OpBits::B64);
     cpuFct->sizeProlog = concat.totalCount() - cpuFct->startAddress;
-    VectorNative<uint16_t> unwind;
-    computeUnwind(pp, {}, {}, 40, cpuFct->sizeProlog, unwind);
 
-    pp.emitOpBinary(CPUReg::RSP, 40, CPUOp::ADD, OpBits::B64);
+    pp.emitOpBinary(CPUReg::RSP, cpuFct->frameSize, CPUOp::ADD, OpBits::B64);
     pp.emitSymbolRelocationAddr(cc.returnByRegisterInteger, pp.symCSIndex, module->typesSliceOffset);
     pp.emitRet();
 
+    VectorNative<uint16_t> unwind;
+    computeUnwind(pp, {}, {}, cpuFct->frameSize, cpuFct->sizeProlog, unwind);
     setupFunction(cpuFct, concat.totalCount(), unwind);
 }
 
@@ -264,11 +265,10 @@ void SCBE::emitGlobalPreMain(SCBE_CPU& pp)
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         pp.directives += form("/EXPORT:%s ", thisInit.cstr());
 
+    cpuFct->frameSize = 48;
     pp.emitPush(CPUReg::RDI);
-    pp.emitOpBinary(CPUReg::RSP, 48, CPUOp::SUB, OpBits::B64);
+    pp.emitOpBinary(CPUReg::RSP, cpuFct->frameSize, CPUOp::SUB, OpBits::B64);
     cpuFct->sizeProlog = concat.totalCount() - cpuFct->startAddress;
-    VectorNative<uint16_t> unwind;
-    computeUnwind(pp, {}, {}, 48, cpuFct->sizeProlog, unwind);
 
     // Store first parameter on stack (process infos ptr)
     SWAG_ASSERT(cc.paramByRegisterCount >= 1);
@@ -291,10 +291,12 @@ void SCBE::emitGlobalPreMain(SCBE_CPU& pp)
         pp.emitCallLocal(bc->getCallName());
     }
 
-    pp.emitOpBinary(CPUReg::RSP, 48, CPUOp::ADD, OpBits::B64);
+    pp.emitOpBinary(CPUReg::RSP, cpuFct->frameSize, CPUOp::ADD, OpBits::B64);
     pp.emitPop(CPUReg::RDI);
     pp.emitRet();
 
+    VectorNative<uint16_t> unwind;
+    computeUnwind(pp, {}, {}, cpuFct->frameSize, cpuFct->sizeProlog, unwind);
     setupFunction(cpuFct, concat.totalCount(), unwind);
 }
 
@@ -311,11 +313,10 @@ void SCBE::emitGlobalInit(SCBE_CPU& pp)
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         pp.directives += form("/EXPORT:%s ", thisInit.cstr());
 
+    cpuFct->frameSize = 48;
     pp.emitPush(CPUReg::RDI);
-    pp.emitOpBinary(CPUReg::RSP, 48, CPUOp::SUB, OpBits::B64);
+    pp.emitOpBinary(CPUReg::RSP, cpuFct->frameSize, CPUOp::SUB, OpBits::B64);
     cpuFct->sizeProlog = concat.totalCount() - cpuFct->startAddress;
-    VectorNative<uint16_t> unwind;
-    computeUnwind(pp, {}, {}, 48, cpuFct->sizeProlog, unwind);
 
     // Store first parameter on stack (process infos ptr)
     SWAG_ASSERT(cc.paramByRegisterCount >= 1);
@@ -365,10 +366,12 @@ void SCBE::emitGlobalInit(SCBE_CPU& pp)
         pp.emitCallLocal(bc->getCallName());
     }
 
-    pp.emitOpBinary(CPUReg::RSP, 48, CPUOp::ADD, OpBits::B64);
+    pp.emitOpBinary(CPUReg::RSP, cpuFct->frameSize, CPUOp::ADD, OpBits::B64);
     pp.emitPop(CPUReg::RDI);
     pp.emitRet();
 
+    VectorNative<uint16_t> unwind;
+    computeUnwind(pp, {}, {}, cpuFct->frameSize, cpuFct->sizeProlog, unwind);
     setupFunction(cpuFct, concat.totalCount(), unwind);
 }
 
@@ -384,10 +387,9 @@ void SCBE::emitGlobalDrop(SCBE_CPU& pp)
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         pp.directives += form("/EXPORT:%s ", thisDrop.cstr());
 
-    pp.emitOpBinary(CPUReg::RSP, 40, CPUOp::SUB, OpBits::B64);
+    cpuFct->frameSize = 40;
+    pp.emitOpBinary(CPUReg::RSP, cpuFct->frameSize, CPUOp::SUB, OpBits::B64);
     cpuFct->sizeProlog = concat.totalCount() - cpuFct->startAddress;
-    VectorNative<uint16_t> unwind;
-    computeUnwind(pp, {}, {}, 40, cpuFct->sizeProlog, unwind);
 
     // Call to #drop functions
     for (const auto bc : module->byteCodeDropFunc)
@@ -401,8 +403,10 @@ void SCBE::emitGlobalDrop(SCBE_CPU& pp)
     // __dropGlobalVariables
     emitInternalCallCPUParams(pp, g_LangSpec->name_priv_dropGlobalVariables, pp.pushParams);
 
-    pp.emitOpBinary(CPUReg::RSP, 40, CPUOp::ADD, OpBits::B64);
+    pp.emitOpBinary(CPUReg::RSP, cpuFct->frameSize, CPUOp::ADD, OpBits::B64);
     pp.emitRet();
 
+    VectorNative<uint16_t> unwind;
+    computeUnwind(pp, {}, {}, cpuFct->frameSize, cpuFct->sizeProlog, unwind);
     setupFunction(cpuFct, concat.totalCount(), unwind);
 }
