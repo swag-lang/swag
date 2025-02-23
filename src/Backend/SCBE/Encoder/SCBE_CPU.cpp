@@ -394,7 +394,7 @@ uint32_t SCBE_CPU::getParamStackOffset(const CPUFunction* cpuFunction, uint32_t 
     // If this was passed as a register, then get the value from storeS4 (where input registers have been saved)
     // instead of value from the stack
     if (paramIdx < cc.paramByRegisterCount)
-        return REG_OFFSET(paramIdx) + cpuFunction->offsetLocalStackParams;
+        return REG_OFFSET(paramIdx) + cpuFunction->offsetStoreRegisterParameters;
 
     // Value from the caller stack
     return REG_OFFSET(paramIdx) + cpuFunction->offsetCallerStackParams;

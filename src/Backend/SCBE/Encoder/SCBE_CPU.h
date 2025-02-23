@@ -185,9 +185,9 @@ struct CPUFunction
     uint32_t               endAddress              = 0;
     uint32_t               xdataOffset             = 0;
     uint32_t               sizeProlog              = 0;
-    uint32_t               offsetStack             = 0;
+    uint32_t               offsetByteCodeStack             = 0;
     uint32_t               offsetCallerStackParams = 0;
-    uint32_t               offsetLocalStackParams  = 0;
+    uint32_t               offsetStoreRegisterParameters  = 0;
     uint32_t               frameSize               = 0;
 };
 
@@ -333,7 +333,6 @@ struct SCBE_CPU : BackendEncoder
     CPUReg               offsetFLTReg = CPUReg::RDI;
     uint32_t             offsetFLT    = 0;
     uint32_t             offsetRT     = 0;
-    uint32_t             offsetStack  = 0;
 
     uint32_t symCOIndex  = 0;
     uint32_t symBSIndex  = 0;
