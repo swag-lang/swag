@@ -67,7 +67,7 @@ void SCBE::emitMain(SCBE_CPU& pp)
     }
 
     pp.cpuFct = pp.addFunction(entryPoint, nullptr);
-    pp.emitEnter(40);
+    pp.emitEnter(40, 0);
 
     // Set default system allocator function
     SWAG_ASSERT(g_SystemAllocatorTable);
@@ -226,7 +226,7 @@ void SCBE::emitGetTypeTable(SCBE_CPU& pp)
 
     const auto thisInit = module->getGlobalPrivateFct(g_LangSpec->name_getTypeTable);
     pp.cpuFct           = pp.addFunction(thisInit, nullptr);
-    pp.emitEnter(40);
+    pp.emitEnter(40, 0);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         pp.directives += form("/EXPORT:%s ", thisInit.cstr());
@@ -251,7 +251,7 @@ void SCBE::emitGlobalPreMain(SCBE_CPU& pp)
     pp.emitPush(CPUReg::RDI);
     pp.unwindRegs.push_back(CPUReg::RDI);
     pp.unwindOffsetRegs.push_back(concat.totalCount() - pp.cpuFct->startAddress);
-    pp.emitEnter(48);
+    pp.emitEnter(48, 0);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         pp.directives += form("/EXPORT:%s ", thisInit.cstr());
@@ -295,7 +295,7 @@ void SCBE::emitGlobalInit(SCBE_CPU& pp)
     pp.emitPush(CPUReg::RDI);
     pp.unwindRegs.push_back(CPUReg::RDI);
     pp.unwindOffsetRegs.push_back(concat.totalCount() - pp.cpuFct->startAddress);
-    pp.emitEnter(48);
+    pp.emitEnter(48, 0);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         pp.directives += form("/EXPORT:%s ", thisInit.cstr());
@@ -360,7 +360,7 @@ void SCBE::emitGlobalDrop(SCBE_CPU& pp)
 
     const auto thisDrop = module->getGlobalPrivateFct(g_LangSpec->name_globalDrop);
     pp.cpuFct           = pp.addFunction(thisDrop, nullptr);
-    pp.emitEnter(40);
+    pp.emitEnter(40, 0);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         pp.directives += form("/EXPORT:%s ", thisDrop.cstr());

@@ -49,11 +49,12 @@ void SCBE_Micro::emitPop(CPUReg reg)
     inst->regA      = reg;
 }
 
-void SCBE_Micro::emitEnter(uint32_t frameSize)
+void SCBE_Micro::emitEnter(uint32_t sizeStack, uint32_t sizeParamsStack)
 {
     const auto inst = concat.addObj<SCBE_MicroInstruction>();
     inst->op        = SCBE_MicroOp::Enter;
-    inst->valueA    = frameSize;
+    inst->valueA    = sizeStack;
+    inst->valueB    = sizeParamsStack;
 }
 
 void SCBE_Micro::emitLeave()
@@ -422,7 +423,7 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
                 encoder.emitPop(inst->regA);
                 break;
             case SCBE_MicroOp::Enter:
-                encoder.emitEnter(static_cast<uint32_t>(inst->valueA));
+                encoder.emitEnter(static_cast<uint32_t>(inst->valueA), static_cast<uint32_t>(inst->valueB));
                 break;
             case SCBE_MicroOp::Leave:
                 encoder.emitLeave();

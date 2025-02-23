@@ -78,7 +78,7 @@ struct SCBE_Micro final : SCBE_CPU
     void    emitSymbolGlobalString(CPUReg reg, const Utf8& str) override;
     void    emitPush(CPUReg reg) override;
     void    emitPop(CPUReg reg) override;
-    void    emitEnter(uint32_t frameSize) override;
+    void    emitEnter(uint32_t sizeStack, uint32_t sizeParamsStack) override;
     void    emitLeave() override;
     void    emitNop() override;
     void    emitRet() override;

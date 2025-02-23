@@ -84,18 +84,11 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     pp.cpuFct->offsetStack            = offsetStack;
     pp.cpuFct->offsetLocalStackParams = offsetS4;
 
-    // RDI will be a pointer to the stack, and the list of registers is stored at the start
-    // of the stack
+    // RDI will be a pointer to the stack, and the list of registers is stored at the start of the stack
     pp.emitPush(CPUReg::RDI);
     pp.unwindRegs.push_back(CPUReg::RDI);
     pp.unwindOffsetRegs.push_back(concat.totalCount() - pp.cpuFct->startAddress);
-    if ((pp.unwindRegs.size() & 1) == 0)
-        sizeStack += sizeof(void*);
-
-    // We need to start at sizeof(void*) because the call has pushed one register on the stack
-    pp.cpuFct->offsetCallerStackParams = static_cast<uint32_t>(sizeof(void*) + pp.unwindRegs.size() * sizeof(void*) + sizeStack);
-
-    pp.emitEnter(sizeStack + sizeParamsStack);
+    pp.emitEnter(sizeStack, sizeParamsStack);
 
     // Registers are stored after the sizeParamsStack area, which is used to store parameters for function calls
     pp.emitLoadAddress(CPUReg::RDI, CPUReg::RSP, sizeParamsStack);
