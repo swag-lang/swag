@@ -2205,8 +2205,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 }
 
                 pp.emitOpBinary(CPUReg::RSP, pp.cpuFct->frameSize, CPUOp::ADD, OpBits::B64);
-                for (int32_t rRet = static_cast<int32_t>(pp.unwindRegs.size()) - 1; rRet >= 0; rRet--)
-                    pp.emitPop(pp.unwindRegs[rRet]);
+                pp.emitPopEnd();
                 pp.emitRet();
                 break;
 

@@ -179,6 +179,12 @@ void SCBE_X64::emitPop(CPUReg reg)
     }
 }
 
+void SCBE_X64::emitPopEnd()
+{
+    for (auto idxReg = unwindRegs.size() - 1; idxReg != UINT32_MAX; idxReg--)
+        emitPop(unwindRegs[idxReg]);
+}
+
 void SCBE_X64::emitRet()
 {
     concat.addU8(0xC3);

@@ -10,6 +10,7 @@ struct SCBE_X64 final : SCBE_CPU
     void    emitSymbolGlobalString(CPUReg reg, const Utf8& str) override;
     void    emitPush(CPUReg reg) override;
     void    emitPop(CPUReg reg) override;
+    void    emitPopEnd() override;
     void    emitNop() override;
     void    emitRet() override;
     void    emitCallLocal(const Utf8& symbolName) override;
