@@ -40,13 +40,6 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             pp.directives += form("/EXPORT:%s ", funcName.cstr());
     }
 
-    // Symbol
-    pp.cpuFct               = pp.addFunction(funcName, bc->node);
-    pp.cpuFct->typeFunc     = typeFunc;
-    pp.cpuFct->startAddress = concat.totalCount();
-    if (debug)
-        SCBE_Debug::setLocation(pp.cpuFct, bc, nullptr, 0);
-
     // In order, starting at RSP, we have :
     //
     // sizeStackCallParams to store function call parameters
@@ -77,9 +70,15 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     uint32_t sizeStackCallParams = 2 * static_cast<uint32_t>(std::max(cc.paramByRegisterCount * sizeof(Register), (bc->maxCallParams + 1) * sizeof(Register)));
     MK_ALIGN16(sizeStackCallParams);
 
-    pp.offsetFLTReg                    = CPUReg::RDI;
-    pp.offsetFLT                       = offsetFLT;
-    pp.offsetRT                        = offsetRT;
+    pp.offsetFLTReg = CPUReg::RDI;
+    pp.offsetFLT    = offsetFLT;
+    pp.offsetRT     = offsetRT;
+
+    // Register function
+    pp.cpuFct           = pp.addFunction(funcName, bc->node);
+    pp.cpuFct->typeFunc = typeFunc;
+    if (debug)
+        SCBE_Debug::setLocation(pp.cpuFct, bc, nullptr, 0);
     pp.cpuFct->offsetByteCodeStack     = offsetByteCodeStack;
     pp.cpuFct->offsetParamsAsRegisters = offsetParamsAsRegisters;
 
