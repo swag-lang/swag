@@ -178,17 +178,17 @@ struct CPUFunction
 {
     VectorNative<uint16_t> unwind;
     Vector<SCBEDebugLines> dbgLines;
-    AstNode*               node                          = nullptr;
-    TypeInfoFuncAttr*      typeFunc                      = nullptr;
-    uint32_t               symbolIndex                   = 0;
-    uint32_t               startAddress                  = 0;
-    uint32_t               endAddress                    = 0;
-    uint32_t               xdataOffset                   = 0;
-    uint32_t               sizeProlog                    = 0;
-    uint32_t               offsetByteCodeStack           = 0;
-    uint32_t               offsetCallerStackParams       = 0;
+    AstNode*               node                    = nullptr;
+    TypeInfoFuncAttr*      typeFunc                = nullptr;
+    uint32_t               symbolIndex             = 0;
+    uint32_t               startAddress            = 0;
+    uint32_t               endAddress              = 0;
+    uint32_t               xdataOffset             = 0;
+    uint32_t               sizeProlog              = 0;
+    uint32_t               offsetByteCodeStack     = 0;
+    uint32_t               offsetCallerStackParams = 0;
     uint32_t               offsetParamsAsRegisters = 0;
-    uint32_t               frameSize                     = 0;
+    uint32_t               frameSize               = 0;
 };
 
 struct SCBE_CPU : BackendEncoder
@@ -275,7 +275,7 @@ struct SCBE_CPU : BackendEncoder
     DataSegment                                 stringSegment;
     VectorNative<CPULabelToSolve>               labelsToSolve;
     Utf8                                        directives;
-    Vector<CPUFunction>                         functions;
+    Vector<CPUFunction*>                        functions;
     VectorNative<CPUReg>                        unwindRegs;
     VectorNative<uint32_t>                      unwindOffsetRegs;
 

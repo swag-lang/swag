@@ -103,7 +103,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     }
 
     // Save pointer to return value if this is a return by copy
-    if (CallConv::returnByAddress(typeFunc) && idxReg < cc.paramByRegisterCount)
+    if (idxReg < cc.paramByRegisterCount && CallConv::returnByAddress(typeFunc))
     {
         const uint32_t stackOffset = SCBE_CPU::getParamStackOffset(pp.cpuFct, idxReg);
         pp.emitStore(CPUReg::RDI, stackOffset, cc.paramByRegisterInteger[idxReg], OpBits::B64);
@@ -111,7 +111,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     }
 
     // Save C variadic
-    if (typeFunc->isFctCVariadic())
+    if (idxReg < cc.paramByRegisterCount && typeFunc->isFctCVariadic())
     {
         while (idxReg < cc.paramByRegisterCount)
         {

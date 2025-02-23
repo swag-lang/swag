@@ -98,13 +98,13 @@ CPUFunction* SCBE_CPU::addFunction(const Utf8& funcName, AstNode* node)
     unwindRegs.clear();
     unwindOffsetRegs.clear();
 
-    CPUFunction cf;
-    cf.node         = node;
-    cf.symbolIndex  = getOrAddSymbol(funcName, CPUSymbolKind::Function, concat.totalCount() - textSectionOffset)->index;
-    cf.startAddress = concat.totalCount();
+    CPUFunction* cf  = Allocator::alloc<CPUFunction>();
+    cf->node         = node;
+    cf->symbolIndex  = getOrAddSymbol(funcName, CPUSymbolKind::Function, concat.totalCount() - textSectionOffset)->index;
+    cf->startAddress = concat.totalCount();
 
     functions.push_back(cf);
-    return &functions.back();
+    return cf;
 }
 
 bool SCBE_CPU::isNoOp(uint64_t value, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags) const
@@ -396,7 +396,7 @@ uint32_t SCBE_CPU::getParamStackOffset(const CPUFunction* cpuFunction, uint32_t 
     if (paramIdx < cc.paramByRegisterCount)
         return cpuFunction->offsetParamsAsRegisters + REG_OFFSET(paramIdx);
 
-    // The parameter has been passed by stack, so we get the value for the caller stack offset 
+    // The parameter has been passed by stack, so we get the value for the caller stack offset
     return cpuFunction->offsetCallerStackParams + REG_OFFSET(paramIdx);
 }
 

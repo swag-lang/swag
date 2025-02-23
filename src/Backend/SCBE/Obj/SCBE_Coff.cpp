@@ -18,10 +18,10 @@ namespace
 
         // https://docs.microsoft.com/en-us/cpp/build/exception-handling-x64?view=vs-2019
         uint32_t offset = 0;
-        for (auto& f : pp.functions)
+        for (auto f : pp.functions)
         {
-            f.xdataOffset = offset;
-            SCBE_Coff::emitUnwind(pp.concat, offset, f.sizeProlog, f.unwind);
+            f->xdataOffset = offset;
+            SCBE_Coff::emitUnwind(pp.concat, offset, f->sizeProlog, f->unwind);
         }
 
         *pp.patchXDCount = concat.totalCount() - *pp.patchXDOffset;
@@ -36,29 +36,29 @@ namespace
         *pp.patchPDOffset = concat.totalCount();
 
         uint32_t offset = 0;
-        for (const auto& f : pp.functions)
+        for (const auto f : pp.functions)
         {
-            SWAG_ASSERT(f.symbolIndex < pp.allSymbols.size());
-            SWAG_ASSERT(f.endAddress > f.startAddress);
+            SWAG_ASSERT(f->symbolIndex < pp.allSymbols.size());
+            SWAG_ASSERT(f->endAddress > f->startAddress);
 
             CPURelocation reloc;
             reloc.type = IMAGE_REL_AMD64_ADDR32NB;
 
             reloc.virtualAddress = offset;
-            reloc.symbolIndex    = f.symbolIndex;
+            reloc.symbolIndex    = f->symbolIndex;
             pp.relocTablePDSection.table.push_back(reloc);
             concat.addU32(0);
 
             reloc.virtualAddress = offset + 4;
-            reloc.symbolIndex    = f.symbolIndex;
+            reloc.symbolIndex    = f->symbolIndex;
             pp.relocTablePDSection.table.push_back(reloc);
-            concat.addU32(f.endAddress - f.startAddress);
+            concat.addU32(f->endAddress - f->startAddress);
 
             reloc.virtualAddress = offset + 8;
             reloc.symbolIndex    = pp.symXDIndex;
             pp.relocTablePDSection.table.push_back(reloc);
-            concat.addU32(f.xdataOffset);
-            SWAG_ASSERT(f.xdataOffset < *pp.patchXDCount);
+            concat.addU32(f->xdataOffset);
+            SWAG_ASSERT(f->xdataOffset < *pp.patchXDCount);
 
             offset += 12;
         }
