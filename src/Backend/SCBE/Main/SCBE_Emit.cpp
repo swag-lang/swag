@@ -472,3 +472,16 @@ void SCBE::emitJump(SCBE_CPU& pp, CPUCondJump jumpType, int32_t instructionCount
     label.jump = pp.emitJump(jumpType, OpBits::B32);
     pp.labelsToSolve.push_back(label);
 }
+
+void SCBE::emitJumps(SCBE_CPU& pp)
+{
+    for (auto& toSolve : pp.labelsToSolve)
+    {
+        auto it = pp.labels.find(toSolve.ipDest);
+        SWAG_ASSERT(it != pp.labels.end());
+        pp.emitPatchJump(toSolve.jump, it->second);
+    }
+
+    pp.labels.clear();
+    pp.labelsToSolve.clear();
+}

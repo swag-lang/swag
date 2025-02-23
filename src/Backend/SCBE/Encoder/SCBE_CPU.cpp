@@ -100,19 +100,6 @@ CPUFunction* SCBE_CPU::addFunction(AstNode* node, uint32_t symbolIndex)
     return &functions.back();
 }
 
-void SCBE_CPU::solveLabels()
-{
-    for (auto& toSolve : labelsToSolve)
-    {
-        auto it = labels.find(toSolve.ipDest);
-        SWAG_ASSERT(it != labels.end());
-        emitPatchJump(toSolve.jump, it->second);
-    }
-
-    labels.clear();
-    labelsToSolve.clear();
-}
-
 void SCBE_CPU::maskValue(uint64_t& value, OpBits opBits)
 {
     if (opBits == OpBits::B8)

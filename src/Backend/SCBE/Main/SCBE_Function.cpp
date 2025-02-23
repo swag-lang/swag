@@ -2610,7 +2610,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         }
     }
 
-    pp.solveLabels();
+    emitJumps(pp);
 
     uint32_t endAddress = concat.totalCount();
     initFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
