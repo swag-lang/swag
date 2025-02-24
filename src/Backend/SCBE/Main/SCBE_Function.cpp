@@ -61,14 +61,14 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     uint32_t offsetFLT               = offsetByteCodeStack + bc->stackSize; // For float load (should be reserved only if we have floating point operations in that function)
     uint32_t sizeStack               = offsetFLT + 8;
 
-    pp.offsetFLTReg = CPUReg::RDI;
-    pp.offsetFLT    = offsetFLT;
-    pp.offsetRT     = offsetRT;
-
     // Register function
     pp.cpuFct = pp.addFunction(funcName, &cc, bc);
     if (debug)
         SCBE_Debug::setLocation(pp.cpuFct, bc, nullptr, 0);
+
+    pp.cpuFct->offsetFLTReg            = CPUReg::RDI;
+    pp.cpuFct->offsetFLT               = offsetFLT;
+    pp.cpuFct->offsetRT                = offsetRT;
     pp.cpuFct->offsetByteCodeStack     = offsetByteCodeStack;
     pp.cpuFct->offsetParamsAsRegisters = offsetParamsAsRegisters;
 

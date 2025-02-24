@@ -192,6 +192,9 @@ struct CPUFunction
     uint32_t               offsetParamsAsRegisters = 0;
     uint32_t               sizeStackCallParams     = 0;
     uint32_t               frameSize               = 0;
+    CPUReg                 offsetFLTReg            = CPUReg::RDI;
+    uint32_t               offsetFLT               = 0;
+    uint32_t               offsetRT                = 0;
 };
 
 struct SCBE_CPU : BackendEncoder
@@ -332,10 +335,7 @@ struct SCBE_CPU : BackendEncoder
     uint32_t* patchTLSOffset  = nullptr;
     uint32_t* patchTLSCount   = nullptr;
 
-    BuildCfgBackendOptim optLevel     = BuildCfgBackendOptim::O0;
-    CPUReg               offsetFLTReg = CPUReg::RDI;
-    uint32_t             offsetFLT    = 0;
-    uint32_t             offsetRT     = 0;
+    BuildCfgBackendOptim optLevel = BuildCfgBackendOptim::O0;
 
     uint32_t symCOIndex  = 0;
     uint32_t symBSIndex  = 0;

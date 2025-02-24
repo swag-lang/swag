@@ -110,13 +110,15 @@ CPUFunction* SCBE_CPU::addFunction(const Utf8& funcName, const CallConv* cc, Byt
         cf->node     = bc->node;
         cf->typeFunc = bc->getCallType();
 
-        // Calling convention, space for at least 'cc.paramByRegisterCount' parameters when calling a function
+        // Calling convention, space for at least 'MAX_CALL_CONV_REGISTERS' parameters when calling a function
         // (should ideally be reserved only if we have a call)
         //
         // Because of variadic parameters in fct calls, we need to add some extra room, in case we have to flatten them
         // We want to be sure to have the room to flatten the array of variadic (make all params contiguous). That's
         // why we multiply by 2.
-        cf->sizeStackCallParams = 2 * std::max(static_cast<uint32_t>(CallConv::MAX_CALL_CONV_REGISTERS * sizeof(void*)), static_cast<uint32_t>((bc->maxCallParams + 1) * sizeof(void*)));
+        //
+        // Why 2 ?? magic number ??
+        cf->sizeStackCallParams = 2 * static_cast<uint32_t>(std::max(CallConv::MAX_CALL_CONV_REGISTERS, (bc->maxCallParams + 1)) * sizeof(void*));
         cf->sizeStackCallParams = Math::align(cf->sizeStackCallParams, cc->stackAlign);
     }
 

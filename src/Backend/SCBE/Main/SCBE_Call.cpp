@@ -93,7 +93,7 @@ void SCBE::emitCallRAParams(SCBE_CPU& pp, const Utf8& funcName, const TypeInfoFu
     for (uint32_t i = pp.pushRAParams.size() - 1; i != UINT32_MAX; i--)
         p.push_back({.type = CPUPushParamType::SwagRegister, .value = pp.pushRAParams[i]});
 
-    emitCallCPUParams(pp, funcName, typeFuncBc, p, pp.offsetRT, localCall);
+    emitCallCPUParams(pp, funcName, typeFuncBc, p, pp.cpuFct->offsetRT, localCall);
 }
 
 void SCBE::emitInternalCallRAParams(SCBE_CPU& pp, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT)
@@ -130,7 +130,7 @@ void SCBE::emitLocalCall(SCBE_CPU& pp)
 
     if (ip->op == ByteCodeOp::LocalCallPopRC)
     {
-        pp.emitLoad(CPUReg::RAX, CPUReg::RDI, pp.offsetRT + REG_OFFSET(0), OpBits::B64);
+        pp.emitLoad(CPUReg::RAX, CPUReg::RDI, pp.cpuFct->offsetRT + REG_OFFSET(0), OpBits::B64);
         pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->d.u32), CPUReg::RAX, OpBits::B64);
     }
 }
@@ -175,9 +175,9 @@ void SCBE::emitLambdaCall(SCBE_CPU& pp)
     if (typeFuncBc->isClosure())
         pushCPUParams[typeFuncBc->isFctVariadic() ? 2 : 0].type = CPUPushParamType::CaptureContext;
 
-    pp.emitComputeCallParameters(typeFuncBc, pushCPUParams, pp.offsetRT, nullptr);
+    pp.emitComputeCallParameters(typeFuncBc, pushCPUParams, pp.cpuFct->offsetRT, nullptr);
     pp.emitCallIndirect(CPUReg::R10);
-    pp.emitStoreCallResult(CPUReg::RDI, pp.offsetRT, typeFuncBc);
+    pp.emitStoreCallResult(CPUReg::RDI, pp.cpuFct->offsetRT, typeFuncBc);
 
     const auto jumpBCAfter = pp.emitJump(JUMP, OpBits::B32);
 
@@ -188,9 +188,9 @@ void SCBE::emitLambdaCall(SCBE_CPU& pp)
 
     pushCPUParams.insert_at_index({.type = CPUPushParamType::CPURegister, .value = static_cast<uint64_t>(CPUReg::R10)}, 0);
     if (typeFuncBc->numReturnRegisters() >= 1)
-        pushCPUParams.insert_at_index({.type = CPUPushParamType::LoadAddress, .value = pp.offsetRT}, 1);
+        pushCPUParams.insert_at_index({.type = CPUPushParamType::LoadAddress, .value = pp.cpuFct->offsetRT}, 1);
     if (typeFuncBc->numReturnRegisters() >= 2)
-        pushCPUParams.insert_at_index({.type = CPUPushParamType::LoadAddress, .value = pp.offsetRT + sizeof(Register)}, 2);
+        pushCPUParams.insert_at_index({.type = CPUPushParamType::LoadAddress, .value = pp.cpuFct->offsetRT + sizeof(Register)}, 2);
     pp.emitCallParameters(g_CallConv[static_cast<int>(CallConvKind::ByteCode)], typeFuncBc, pushCPUParams);
 
     pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symPI_byteCodeRun, 0);
