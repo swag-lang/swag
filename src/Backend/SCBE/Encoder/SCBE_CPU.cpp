@@ -406,19 +406,6 @@ void SCBE_CPU::emitStoreCallResult(CPUReg memReg, uint32_t memOffset, const Type
         emitStore(memReg, memOffset, cc.returnByRegisterInteger, OpBits::B64);
 }
 
-uint32_t SCBE_CPU::getParamStackOffset(const CPUFunction* cpuFunction, uint32_t paramIdx)
-{
-    const auto& cc = cpuFunction->typeFunc->getCallConv();
-
-    // If the parameter has been passed as a CPU register, then we get the value from 'offsetParamsAsRegisters'
-    // (where input registers have been saved) instead of the value from the caller stack
-    if (paramIdx < cc.paramByRegisterCount)
-        return cpuFunction->offsetParamsAsRegisters + REG_OFFSET(paramIdx);
-
-    // The parameter has been passed by stack, so we get the value for the caller stack offset
-    return cpuFunction->offsetCallerStackParams + REG_OFFSET(paramIdx);
-}
-
 void SCBE_CPU::emitEnter(uint32_t sizeStack)
 {
     // Minimal size stack depends on calling convention
@@ -469,4 +456,19 @@ void SCBE_CPU::emitLeave()
     for (auto idxReg = unwindRegs.size() - 1; idxReg != UINT32_MAX; idxReg--)
         emitPop(unwindRegs[idxReg]);
     emitRet();
+}
+
+uint32_t CPUFunction::getParamStackOffset(uint32_t paramIdx) const
+{
+    uint32_t offset = 0;
+
+    // If the parameter has been passed as a CPU register, then we get the value from 'offsetParamsAsRegisters'
+    // (where input registers have been saved) instead of the value from the caller stack
+    if (paramIdx < cc->paramByRegisterCount)
+        offset = offsetParamsAsRegisters + REG_OFFSET(paramIdx);
+
+    // The parameter has been passed by stack, so we get the value for the caller stack offset
+    else
+        offset = offsetCallerStackParams + REG_OFFSET(paramIdx);
+    return offset;
 }

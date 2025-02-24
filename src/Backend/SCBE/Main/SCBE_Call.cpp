@@ -12,7 +12,7 @@ void SCBE::emitGetParam(SCBE_CPU& pp, uint32_t reg, uint32_t paramIdx, OpBits op
 {
     const auto     cpuFct     = pp.cpuFct;
     const auto     typeFunc   = cpuFct->typeFunc;
-    const uint32_t paramStack = SCBE_CPU::getParamStackOffset(cpuFct, paramIdx);
+    const uint32_t paramStack = cpuFct->getParamStackOffset(paramIdx);
     auto           typeParam  = TypeManager::concreteType(typeFunc->parameters[typeFunc->registerIdxToParamIdx(paramIdx)]->typeInfo);
     if (typeParam->isAutoConstPointerRef())
         typeParam = TypeManager::concretePtrRefType(typeParam);

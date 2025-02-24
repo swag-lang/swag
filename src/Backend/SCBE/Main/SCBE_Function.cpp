@@ -84,7 +84,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     while (idxReg < std::min(cc.paramByRegisterCount, typeFunc->numParamsRegisters()))
     {
         const auto     typeParam   = typeFunc->registerIdxToType(idxReg);
-        const uint32_t stackOffset = SCBE_CPU::getParamStackOffset(pp.cpuFct, idxReg);
+        const uint32_t stackOffset = pp.cpuFct->getParamStackOffset(idxReg);
         if (cc.useRegisterFloat && typeParam->isNativeFloat())
             pp.emitStore(CPUReg::RDI, stackOffset, cc.paramByRegisterFloat[idxReg], OpBits::F64);
         else
@@ -95,7 +95,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     // Save pointer to return value if this is a return by copy
     if (idxReg < cc.paramByRegisterCount && CallConv::returnByAddress(typeFunc))
     {
-        const uint32_t stackOffset = SCBE_CPU::getParamStackOffset(pp.cpuFct, idxReg);
+        const uint32_t stackOffset = pp.cpuFct->getParamStackOffset(idxReg);
         pp.emitStore(CPUReg::RDI, stackOffset, cc.paramByRegisterInteger[idxReg], OpBits::B64);
         idxReg++;
     }
@@ -1482,7 +1482,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::ClearRR64:
             {
                 opBits               = SCBE_CPU::getOpBits(ip->op);
-                uint32_t stackOffset = SCBE_CPU::getParamStackOffset(pp.cpuFct, typeFunc->numParamsRegisters());
+                uint32_t stackOffset = pp.cpuFct->getParamStackOffset(typeFunc->numParamsRegisters());
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, stackOffset, OpBits::B64);
                 pp.emitStore(CPUReg::RAX, ip->c.u32, 0, opBits);
                 break;
@@ -1490,7 +1490,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::ClearRRX:
             {
-                uint32_t stackOffset = SCBE_CPU::getParamStackOffset(pp.cpuFct, typeFunc->numParamsRegisters());
+                uint32_t stackOffset = pp.cpuFct->getParamStackOffset(typeFunc->numParamsRegisters());
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, stackOffset, OpBits::B64);
 
                 SWAG_ASSERT(ip->c.s64 >= 0 && ip->c.s64 <= 0x7FFFFFFF);
@@ -1858,7 +1858,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::CopyRARBtoRR2:
             {
-                uint32_t stackOffset = SCBE_CPU::getParamStackOffset(pp.cpuFct, typeFunc->numParamsRegisters());
+                uint32_t stackOffset = pp.cpuFct->getParamStackOffset(typeFunc->numParamsRegisters());
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, stackOffset, OpBits::B64);
                 pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);
                 pp.emitStore(CPUReg::RAX, 0, CPUReg::RCX, OpBits::B64);
@@ -1874,14 +1874,14 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::SaveRRtoRA:
             {
-                uint32_t stackOffset = SCBE_CPU::getParamStackOffset(pp.cpuFct, typeFunc->numParamsRegisters());
+                uint32_t stackOffset = pp.cpuFct->getParamStackOffset(typeFunc->numParamsRegisters());
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, stackOffset, OpBits::B64);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, OpBits::B64);
                 break;
             }
             case ByteCodeOp::CopyRRtoRA:
             {
-                uint32_t stackOffset = SCBE_CPU::getParamStackOffset(pp.cpuFct, typeFunc->numParamsRegisters());
+                uint32_t stackOffset = pp.cpuFct->getParamStackOffset(typeFunc->numParamsRegisters());
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, stackOffset, OpBits::B64);
                 if (ip->b.u64)
                 {

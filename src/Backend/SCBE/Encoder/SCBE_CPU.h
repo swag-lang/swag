@@ -195,6 +195,8 @@ struct CPUFunction
     CPUReg                 offsetFLTReg            = CPUReg::RDI;
     uint32_t               offsetFLT               = 0;
     uint32_t               offsetRT                = 0;
+
+    uint32_t getParamStackOffset(uint32_t paramIdx) const;
 };
 
 struct SCBE_CPU : BackendEncoder
@@ -208,10 +210,9 @@ struct SCBE_CPU : BackendEncoder
     CPUFunction* addFunction(const Utf8& funcName, const CallConv* cc, ByteCode* bc);
     bool         isNoOp(uint64_t value, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags = EMITF_Zero) const;
 
-    static uint32_t getParamStackOffset(const CPUFunction* cpuFunction, uint32_t paramIdx);
-    void            emitCallParameters(const CallConv& callConv, const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& cpuParams);
-    void            emitComputeCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& cpuParams, uint32_t resultOffsetRT, void* resultAddr);
-    void            emitStoreCallResult(CPUReg memReg, uint32_t memOffset, const TypeInfoFuncAttr* typeFuncBc);
+    void emitCallParameters(const CallConv& callConv, const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& cpuParams);
+    void emitComputeCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& cpuParams, uint32_t resultOffsetRT, void* resultAddr);
+    void emitStoreCallResult(CPUReg memReg, uint32_t memOffset, const TypeInfoFuncAttr* typeFuncBc);
 
     virtual void emitEnter(uint32_t sizeStack);
     virtual void emitLeave();
