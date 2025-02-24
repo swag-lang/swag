@@ -363,6 +363,13 @@ void SCBE_Micro::emitJumpTable(CPUReg table, CPUReg offset)
     inst->regB      = offset;
 }
 
+void SCBE_Micro::emitJump(CPUReg reg)
+{
+    const auto inst = concat.addObj<SCBE_MicroInstruction>();
+    inst->op        = SCBE_MicroOp::Jump1;
+    inst->regA      = reg;
+}
+
 CPUJump SCBE_Micro::emitJump(CPUCondJump jumpType, OpBits opBits)
 {
     const auto inst = concat.addObj<SCBE_MicroInstruction>();
@@ -370,13 +377,6 @@ CPUJump SCBE_Micro::emitJump(CPUCondJump jumpType, OpBits opBits)
     inst->jumpType  = jumpType;
     inst->opBitsA   = opBits;
     return CPUJump{.addr = inst};
-}
-
-void SCBE_Micro::emitJump(CPUReg reg)
-{
-    const auto inst = concat.addObj<SCBE_MicroInstruction>();
-    inst->op        = SCBE_MicroOp::Jump1;
-    inst->regA      = reg;
 }
 
 void SCBE_Micro::emitPatchJump(const CPUJump& jump, uint64_t offsetDestination)

@@ -135,9 +135,9 @@ constexpr CPUEmitFlags EMITF_B64      = 0x00000004;
 
 struct CPUJump
 {
-    void*    addr;
-    uint64_t offset;
-    OpBits   opBits;
+    void*    addr   = nullptr;
+    uint64_t offset = 0;
+    OpBits   opBits = OpBits::Invalid;
 };
 
 struct CPULabelToSolve
