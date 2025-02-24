@@ -447,6 +447,7 @@ void SCBE_CPU::emitEnter(uint32_t sizeStack)
     cpuFct->offsetCallerStackParams += sizeStack;
     cpuFct->frameSize = sizeStack + cpuFct->sizeStackCallParams;
 
+    // Stack size check
     if (g_CommandLine.target.os == SwagTargetOs::Windows)
     {
         if (cpuFct->frameSize >= SWAG_LIMIT_PAGE_STACK)

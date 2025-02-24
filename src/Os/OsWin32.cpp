@@ -936,7 +936,11 @@ namespace OS
 
     namespace
     {
-        thread_local SCBE_X64 g_X64GenFFI;
+#ifdef _M_X64
+        thread_local SCBE_X64 g_GenFFI;
+#else
+        static_assert(false, "unsupported architecture");
+#endif
     }
 
     void ffi(ByteCodeRunContext* context, void* foreignPtr, const TypeInfoFuncAttr* typeInfoFunc, const VectorNative<CPUPushParam>& pushCPUParams, void* retCopyAddr)
@@ -950,7 +954,7 @@ namespace OS
         stackSize = Math::align(stackSize, cc.stackAlign);
 
         static constexpr int JIT_SIZE_BUFFER = 16 * 1024;
-        auto&                gen             = g_X64GenFFI;
+        auto&                gen             = g_GenFFI;
         uint64_t             startOffset     = 0;
 
         {

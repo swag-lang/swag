@@ -14,9 +14,9 @@ void SCBE::emitOS(SCBE_CPU& pp)
     {
         // :ChkStk Stack probing
         // See SWAG_LIMIT_PAGE_STACK
-        const auto cpuFct = pp.addFunction(R"(__chkstk)", CallConv::get(CallConvKind::X86_64), nullptr);
         if (g_CommandLine.target.arch == SwagTargetArch::X86_64)
         {
+            const auto cpuFct = pp.addFunction(R"(__chkstk)", CallConv::get(CallConvKind::X86_64), nullptr);
             concat.addString1("\x51");                            // push rcx  // NOLINT(modernize-raw-string-literal)
             concat.addString1("\x50");                            // push rax  // NOLINT(modernize-raw-string-literal)
             concat.addStringN("\x48\x3d\x00\x10\x00\x00", 6);     // cmp rax, 1000h
@@ -32,12 +32,12 @@ void SCBE::emitOS(SCBE_CPU& pp)
             concat.addString1("\x58");                            // pop rax  // NOLINT(modernize-raw-string-literal)
             concat.addString1("\x59");                            // pop rcx  // NOLINT(modernize-raw-string-literal)
             concat.addString1("\xc3");                            // ret
+            cpuFct->endAddress = concat.totalCount();
         }
         else
         {
             SWAG_ASSERT(false);
         }
-        cpuFct->endAddress = concat.totalCount();
 
         // int _DllMainCRTStartup(void*, int, void*)
         pp.getOrAddSymbol("_DllMainCRTStartup", CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
