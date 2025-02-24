@@ -2,6 +2,7 @@
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
 #include "Backend/SCBE/Main/SCBE.h"
+#include "Core/Math.h"
 #include "Report/Diagnostic.h"
 #include "Report/Report.h"
 #include "Semantic/Type/TypeManager.h"
@@ -59,7 +60,6 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     uint32_t offsetByteCodeStack     = offsetResult + sizeof(Register);
     uint32_t offsetFLT               = offsetByteCodeStack + bc->stackSize; // For float load (should be reserved only if we have floating point operations in that function)
     uint32_t sizeStack               = offsetFLT + 8;
-    MK_ALIGN16(sizeStack);
 
     pp.offsetFLTReg = CPUReg::RDI;
     pp.offsetFLT    = offsetFLT;

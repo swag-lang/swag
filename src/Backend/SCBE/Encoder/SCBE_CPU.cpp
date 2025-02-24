@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Backend/SCBE/Encoder/SCBE_CPU.h"
 #include "Backend/ByteCode/ByteCode.h"
+#include "Core/Math.h"
 #include "Main/CommandLine.h"
 #include "Semantic/Type/TypeInfo.h"
 #include "Semantic/Type/TypeManager.h"
@@ -418,6 +419,10 @@ uint32_t SCBE_CPU::getParamStackOffset(const CPUFunction* cpuFunction, uint32_t 
 
 void SCBE_CPU::emitEnter(uint32_t sizeStack)
 {
+    // Minimal size stack depends on calling convention
+    sizeStack = std::max(sizeStack, cpuFct->cc->minStackSize);
+    sizeStack = Math::align(sizeStack, cpuFct->cc->stackAlign);
+
     // We need to start at sizeof(void*) because the call has pushed one register on the stack
     cpuFct->offsetCallerStackParams = sizeof(void*);
 
@@ -429,8 +434,15 @@ void SCBE_CPU::emitEnter(uint32_t sizeStack)
         cpuFct->offsetCallerStackParams += sizeof(void*);
     }
 
-    if (!unwindRegs.empty() && (unwindRegs.size() & 1) == 0)
-        sizeStack += sizeof(void*);
+    SWAG_ASSERT(!cpuFct->sizeStackCallParams || Math::isAligned(cpuFct->sizeStackCallParams, cpuFct->cc->stackAlign));
+
+    // Be sure that total alignment is respected
+    auto total = cpuFct->offsetCallerStackParams + cpuFct->sizeStackCallParams + sizeStack;
+    if (!Math::isAligned(total, cpuFct->cc->stackAlign))
+    {
+        total = Math::align(total, cpuFct->cc->stackAlign);
+        sizeStack += (cpuFct->offsetCallerStackParams + cpuFct->sizeStackCallParams + sizeStack) - total;
+    }
 
     cpuFct->offsetCallerStackParams += sizeStack;
     cpuFct->frameSize = sizeStack + cpuFct->sizeStackCallParams;

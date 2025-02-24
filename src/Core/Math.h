@@ -9,6 +9,16 @@ namespace Math
         return (v & v - 1) == 0;
     }
 
+    inline bool isAligned(uint32_t v, uint32_t align)
+    {
+        return (v & (align - 1)) == 0;
+    }
+
+    inline uint32_t align(uint32_t v, uint32_t align)
+    {
+        return (v + align - 1) & ~(align - 1);
+    }
+
     inline bool addWillOverflow(int8_t x, int8_t y)
     {
         const int32_t result = static_cast<int32_t>(x) + static_cast<int32_t>(y);
