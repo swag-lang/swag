@@ -605,20 +605,19 @@ void SCBE::emitCopyVaargs(SCBE_CPU& pp)
 
 void SCBE::emitMakeLambda(SCBE_CPU& pp)
 {
-    const auto  ip       = pp.ip;
-    const auto& concat   = pp.concat;
-    const auto  funcNode = castAst<AstFuncDecl>(reinterpret_cast<AstNode*>(ip->b.pointer), AstNodeKind::FuncDecl);
-    SWAG_ASSERT(!ip->c.pointer || (funcNode && funcNode->hasExtByteCode() && funcNode->extByteCode()->bc == reinterpret_cast<ByteCode*>(ip->c.pointer)));
+    const auto funcNode = castAst<AstFuncDecl>(reinterpret_cast<AstNode*>(pp.ip->b.pointer), AstNodeKind::FuncDecl);
+    SWAG_ASSERT(!pp.ip->c.pointer || (funcNode && funcNode->hasExtByteCode() && funcNode->extByteCode()->bc == reinterpret_cast<ByteCode*>(pp.ip->c.pointer)));
 
     CPURelocation relocation;
     pp.emitLoad(CPUReg::RAX, 0);
+    const auto& concat        = pp.concat;
     relocation.virtualAddress = concat.totalCount() - sizeof(uint64_t) - pp.textSectionOffset;
     const auto callSym        = pp.getOrAddSymbol(funcNode->getCallName(), CPUSymbolKind::Extern);
     relocation.symbolIndex    = callSym->index;
     relocation.type           = IMAGE_REL_AMD64_ADDR64;
     pp.relocTableTextSection.table.push_back(relocation);
 
-    pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, OpBits::B64);
+    pp.emitStore(CPUReg::RDI, REG_OFFSET(pp.ip->a.u32), CPUReg::RAX, OpBits::B64);
 }
 
 void SCBE::emitMakeCallback(SCBE_CPU& pp)
