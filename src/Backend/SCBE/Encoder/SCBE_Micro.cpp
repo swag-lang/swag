@@ -379,10 +379,17 @@ CPUJump SCBE_Micro::emitJump(CPUCondJump jumpType, OpBits opBits)
     return CPUJump{.addr = inst};
 }
 
+void SCBE_Micro::emitPatchJump(const CPUJump& jump)
+{
+    const auto inst = concat.addObj<SCBE_MicroInstruction>();
+    inst->op        = SCBE_MicroOp::PatchJump0;
+    inst->valueA    = reinterpret_cast<uint64_t>(jump.addr);
+}
+
 void SCBE_Micro::emitPatchJump(const CPUJump& jump, uint64_t offsetDestination)
 {
     const auto inst = concat.addObj<SCBE_MicroInstruction>();
-    inst->op        = SCBE_MicroOp::PatchJump;
+    inst->op        = SCBE_MicroOp::PatchJump1;
     inst->valueA    = reinterpret_cast<uint64_t>(jump.addr);
     inst->valueB    = offsetDestination;
 }
@@ -492,10 +499,17 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
                 inst->opBitsA      = cmpJump.opBits;
                 break;
             }
-            case SCBE_MicroOp::Jump1:
-                encoder.emitJump(inst->regA);
+            case SCBE_MicroOp::PatchJump0:
+            {
+                const SCBE_MicroInstruction* jump = reinterpret_cast<SCBE_MicroInstruction*>(inst->valueA);
+                CPUJump                      cpuJump;
+                cpuJump.addr   = reinterpret_cast<void*>(jump->valueA);
+                cpuJump.offset = jump->valueB;
+                cpuJump.opBits = jump->opBitsA;
+                encoder.emitPatchJump(cpuJump);
                 break;
-            case SCBE_MicroOp::PatchJump:
+            }               
+            case SCBE_MicroOp::PatchJump1:
             {
                 const SCBE_MicroInstruction* jump = reinterpret_cast<SCBE_MicroInstruction*>(inst->valueA);
                 CPUJump                      cpuJump;
@@ -505,6 +519,10 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
                 encoder.emitPatchJump(cpuJump, inst->valueB);
                 break;
             }
+            case SCBE_MicroOp::Jump1:
+                encoder.emitJump(inst->regA);
+            break;            
+            
             case SCBE_MicroOp::LoadParam:
                 encoder.emitLoadParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->opBitsA);
                 break;

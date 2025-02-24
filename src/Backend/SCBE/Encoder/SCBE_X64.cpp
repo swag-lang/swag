@@ -1939,6 +1939,20 @@ void SCBE_X64::emitPatchJump(const CPUJump& jump, uint64_t offsetDestination)
     }
 }
 
+void SCBE_X64::emitPatchJump(const CPUJump& jump)
+{
+    const int32_t offset = static_cast<int32_t>(concat.totalCount() - jump.offset);
+    if (jump.opBits == OpBits::B8)
+    {
+        SWAG_ASSERT(offset >= -127 && offset <= 128);
+        *static_cast<uint8_t*>(jump.addr) = static_cast<int8_t>(offset);
+    }
+    else
+    {
+        *static_cast<uint32_t*>(jump.addr) = static_cast<int32_t>(offset);
+    }
+}
+
 void SCBE_X64::emitJump([[maybe_unused]] CPUReg reg)
 {
     SWAG_ASSERT(reg == CPUReg::RAX);

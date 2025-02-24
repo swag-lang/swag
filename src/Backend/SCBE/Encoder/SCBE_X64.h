@@ -18,6 +18,7 @@ struct SCBE_X64 final : SCBE_CPU
     void    emitJumpTable(CPUReg table, CPUReg offset) override;
     CPUJump emitJump(CPUCondJump jumpType, OpBits opBits) override;
     void    emitPatchJump(const CPUJump& jump, uint64_t offsetDestination) override;
+    void    emitPatchJump(const CPUJump& jump) override;
     void    emitJump(CPUReg reg) override;
     void    emitLoad(CPUReg reg, CPUReg memReg, uint64_t memOffset, uint64_t value, bool isImmediate, CPUOp op, OpBits opBits) override;
     void    emitLoad(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits opBits) override;

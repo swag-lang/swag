@@ -333,7 +333,7 @@ void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
         emitParameters(*this, cpuParams, callConv);
         const auto jumpAfterParameters = emitJump(JUMP, OpBits::B32);
 
-        emitPatchJump(jumpToNoClosure, concat.totalCount());
+        emitPatchJump(jumpToNoClosure);
 
         // First register is closure, except if variadic, where we have 2 registers for the slice before.
         // We must remove it as we are in the "not closure" call path.
@@ -343,7 +343,7 @@ void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
 
         emitParameters(*this, params, callConv);
 
-        emitPatchJump(jumpAfterParameters, concat.totalCount());
+        emitPatchJump(jumpAfterParameters);
     }
     else
     {

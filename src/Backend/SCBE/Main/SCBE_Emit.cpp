@@ -167,7 +167,7 @@ void SCBE::emitShiftEqLogical(SCBE_CPU& pp, CPUOp op)
         const auto jump = pp.emitJump(JL, OpBits::B8);
         pp.emitClear(CPUReg::RCX, opBits);
         pp.emitStore(CPUReg::RAX, 0, CPUReg::RCX, opBits);
-        pp.emitPatchJump(jump, pp.concat.totalCount());
+        pp.emitPatchJump(jump);
         pp.emitOpBinary(CPUReg::RAX, 0, CPUReg::RCX, op, opBits);
     }
 }
@@ -179,7 +179,7 @@ void SCBE::emitOverflow(SCBE_CPU& pp, const char* msg, bool isSigned)
     {
         const auto jump = pp.emitJump(isSigned ? JNO : JAE, OpBits::B8);
         emitInternalPanic(pp, msg);
-        pp.emitPatchJump(jump, pp.concat.totalCount());
+        pp.emitPatchJump(jump);
     }
 }
 
@@ -623,11 +623,8 @@ void SCBE::emitMakeLambda(SCBE_CPU& pp)
 
 void SCBE::emitMakeCallback(SCBE_CPU& pp)
 {
-    const auto  ip     = pp.ip;
-    const auto& concat = pp.concat;
-
     // Test if it's a bytecode lambda
-    pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);
+    pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(pp.ip->a.u32), OpBits::B64);
     pp.emitLoad(CPUReg::RCX, SWAG_LAMBDA_BC_MARKER, OpBits::B64);
     pp.emitOpBinary(CPUReg::RCX, CPUReg::RAX, CPUOp::AND, OpBits::B64);
 
@@ -643,6 +640,6 @@ void SCBE::emitMakeCallback(SCBE_CPU& pp)
 
     // End
     //////////////////
-    pp.emitPatchJump(jump, concat.totalCount());
-    pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, OpBits::B64);
+    pp.emitPatchJump(jump);
+    pp.emitStore(CPUReg::RDI, REG_OFFSET(pp.ip->a.u32), CPUReg::RAX, OpBits::B64);
 }
