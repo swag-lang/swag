@@ -407,7 +407,7 @@ void SCBE_CPU::emitStoreCallResult(CPUReg memReg, uint32_t memOffset, const Type
 void SCBE_CPU::emitEnter(uint32_t sizeStack)
 {
     // Minimal size stack depends on calling convention
-    sizeStack = std::max(sizeStack, cpuFct->cc->minStackSize);
+    sizeStack = std::max(sizeStack, static_cast<uint32_t>(cpuFct->cc->paramByRegisterCount * sizeof(void*)));
     sizeStack = Math::align(sizeStack, cpuFct->cc->stackAlign);
 
     // We need to start at sizeof(void*) because the call has pushed one register on the stack

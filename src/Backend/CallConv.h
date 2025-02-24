@@ -46,9 +46,6 @@ struct CallConv
     // The number of parameters to pass by register
     uint32_t paramByRegisterCount = 4;
 
-    // Minimal size of stack in a function
-    uint32_t minStackSize = 32;
-
     // Stack align
     uint32_t stackAlign = 16;
 

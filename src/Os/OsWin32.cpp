@@ -950,7 +950,7 @@ namespace OS
 
         uint32_t stackSize = sizeof(void*);
         stackSize += pushCPUParams.size() * sizeof(void*);
-        stackSize = std::max(stackSize, cc.minStackSize);
+        stackSize = std::max(stackSize, static_cast<uint32_t>(cc.paramByRegisterCount * sizeof(void*)));
         stackSize = Math::align(stackSize, cc.stackAlign);
 
         static constexpr int JIT_SIZE_BUFFER = 16 * 1024;
