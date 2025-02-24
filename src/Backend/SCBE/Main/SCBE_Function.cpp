@@ -1481,19 +1481,16 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::ClearRR32:
             case ByteCodeOp::ClearRR64:
             {
-                opBits               = SCBE_CPU::getOpBits(ip->op);
-                uint32_t stackOffset = pp.cpuFct->getParamStackOffset(typeFunc->numParamsRegisters());
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, stackOffset, OpBits::B64);
+                opBits = SCBE_CPU::getOpBits(ip->op);
+                pp.emitLoadParam(CPUReg::RAX, typeFunc->numParamsRegisters(), OpBits::B64);
                 pp.emitStore(CPUReg::RAX, ip->c.u32, 0, opBits);
                 break;
             }
 
             case ByteCodeOp::ClearRRX:
             {
-                uint32_t stackOffset = pp.cpuFct->getParamStackOffset(typeFunc->numParamsRegisters());
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, stackOffset, OpBits::B64);
-
                 SWAG_ASSERT(ip->c.s64 >= 0 && ip->c.s64 <= 0x7FFFFFFF);
+                pp.emitLoadParam(CPUReg::RAX, typeFunc->numParamsRegisters(), OpBits::B64);
                 if (ip->b.u32 <= buildParameters.buildCfg->backendSCBE.unrollMemLimit &&
                     buildParameters.buildCfg->backendOptimize > BuildCfgBackendOptim::O1)
                 {
@@ -1858,8 +1855,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::CopyRARBtoRR2:
             {
-                uint32_t stackOffset = pp.cpuFct->getParamStackOffset(typeFunc->numParamsRegisters());
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, stackOffset, OpBits::B64);
+                pp.emitLoadParam(CPUReg::RAX, typeFunc->numParamsRegisters(), OpBits::B64);
                 pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);
                 pp.emitStore(CPUReg::RAX, 0, CPUReg::RCX, OpBits::B64);
                 pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->b.u32), OpBits::B64);
@@ -1874,15 +1870,13 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::SaveRRtoRA:
             {
-                uint32_t stackOffset = pp.cpuFct->getParamStackOffset(typeFunc->numParamsRegisters());
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, stackOffset, OpBits::B64);
+                pp.emitLoadParam(CPUReg::RAX, typeFunc->numParamsRegisters(), OpBits::B64);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, OpBits::B64);
                 break;
             }
             case ByteCodeOp::CopyRRtoRA:
             {
-                uint32_t stackOffset = pp.cpuFct->getParamStackOffset(typeFunc->numParamsRegisters());
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, stackOffset, OpBits::B64);
+                pp.emitLoadParam(CPUReg::RAX, typeFunc->numParamsRegisters(), OpBits::B64);
                 if (ip->b.u64)
                 {
                     pp.emitLoad(CPUReg::RCX, ip->b.u64, OpBits::B64);

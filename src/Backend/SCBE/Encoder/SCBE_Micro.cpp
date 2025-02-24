@@ -68,6 +68,14 @@ void SCBE_Micro::emitRet()
     inst->op        = SCBE_MicroOp::Ret;
 }
 
+void SCBE_Micro::emitLoadParam(CPUReg reg, uint32_t paramIdx, OpBits opBits)
+{
+    const auto inst = concat.addObj<SCBE_MicroInstruction>();
+    inst->op        = SCBE_MicroOp::LoadParam;
+    inst->valueA    = paramIdx;
+    inst->opBitsA   = opBits;
+}
+
 void SCBE_Micro::emitLoad(CPUReg regDst, CPUReg regSrc, OpBits opBits)
 {
     const auto inst = concat.addObj<SCBE_MicroInstruction>();
@@ -466,6 +474,9 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
                 encoder.emitPatchJump(cpuJump, inst->valueB);
                 break;
             }
+            case SCBE_MicroOp::LoadParam:
+                encoder.emitLoadParam(inst->regA, inst->valueA, inst->opBitsA);
+                break;
             case SCBE_MicroOp::Load0:
                 encoder.emitLoad(inst->regA, inst->regB, inst->opBitsA);
                 break;

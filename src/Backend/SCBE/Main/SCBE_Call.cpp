@@ -10,10 +10,10 @@
 
 void SCBE::emitGetParam(SCBE_CPU& pp, uint32_t reg, uint32_t paramIdx, OpBits opBits, uint64_t toAdd, OpBits derefBits)
 {
-    const auto     cpuFct     = pp.cpuFct;
-    const auto     typeFunc   = cpuFct->typeFunc;
-    const uint32_t paramStack = cpuFct->getParamStackOffset(paramIdx);
-    auto           typeParam  = TypeManager::concreteType(typeFunc->parameters[typeFunc->registerIdxToParamIdx(paramIdx)]->typeInfo);
+    const auto     cpuFct      = pp.cpuFct;
+    const auto     typeFunc    = cpuFct->typeFunc;
+    const uint32_t stackOffset = cpuFct->getParamStackOffset(paramIdx);
+    auto           typeParam   = TypeManager::concreteType(typeFunc->parameters[typeFunc->registerIdxToParamIdx(paramIdx)]->typeInfo);
     if (typeParam->isAutoConstPointerRef())
         typeParam = TypeManager::concretePtrRefType(typeParam);
 
@@ -23,7 +23,7 @@ void SCBE::emitGetParam(SCBE_CPU& pp, uint32_t reg, uint32_t paramIdx, OpBits op
         case OpBits::B16:
         case OpBits::B32:
             SWAG_ASSERT(!toAdd);
-            pp.emitLoadExtend(CPUReg::RAX, CPUReg::RDI, paramStack, OpBits::B64, opBits, false);
+            pp.emitLoadExtend(CPUReg::RAX, CPUReg::RDI, stackOffset, OpBits::B64, opBits, false);
             pp.emitStore(CPUReg::RDI, REG_OFFSET(reg), CPUReg::RAX, OpBits::B64);
             return;
         case OpBits::B64:
@@ -35,9 +35,9 @@ void SCBE::emitGetParam(SCBE_CPU& pp, uint32_t reg, uint32_t paramIdx, OpBits op
     }
 
     if (typeFunc->structParamByValue(typeParam))
-        pp.emitLoadAddress(CPUReg::RAX, CPUReg::RDI, paramStack);
+        pp.emitLoadAddress(CPUReg::RAX, CPUReg::RDI, stackOffset);
     else
-        pp.emitLoad(CPUReg::RAX, CPUReg::RDI, paramStack, OpBits::B64);
+        pp.emitLoad(CPUReg::RAX, CPUReg::RDI, stackOffset, OpBits::B64);
 
     switch (derefBits)
     {
