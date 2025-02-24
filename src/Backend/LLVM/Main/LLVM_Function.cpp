@@ -2981,7 +2981,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
 
             case ByteCodeOp::CopySPVaargs:
-                emitVaargs(pp);
+                emitCopyVaargs(pp);
                 break;
 
                 /////////////////////////////////////

@@ -1859,73 +1859,8 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::CopySPVaargs:
-            {
-                auto typeFuncCall = castTypeInfo<TypeInfoFuncAttr>(reinterpret_cast<TypeInfo*>(ip->d.pointer), TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
-                if (!pp.pushRVParams.empty())
-                {
-                    auto     sizeOf            = pp.pushRVParams[0].second;
-                    uint32_t idxParam          = pp.pushRVParams.size() - 1;
-                    uint32_t variadicStackSize = Math::align(idxParam * sizeOf, 16);
-                    uint32_t offset            = pp.cpuFct->sizeStackCallParams - variadicStackSize;
-
-                    while (idxParam != UINT32_MAX)
-                    {
-                        auto reg = pp.pushRVParams[idxParam].first;
-                        switch (sizeOf)
-                        {
-                            case 1:
-                                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B8);
-                                pp.emitStore(CPUReg::RSP, offset, CPUReg::RAX, OpBits::B8);
-                                break;
-                            case 2:
-                                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B16);
-                                pp.emitStore(CPUReg::RSP, offset, CPUReg::RAX, OpBits::B16);
-                                break;
-                            case 4:
-                                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B32);
-                                pp.emitStore(CPUReg::RSP, offset, CPUReg::RAX, OpBits::B32);
-                                break;
-                            case 8:
-                                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
-                                pp.emitStore(CPUReg::RSP, offset, CPUReg::RAX, OpBits::B64);
-                                break;
-                            default:
-                                break;
-                        }
-
-                        idxParam--;
-                        offset += sizeOf;
-                    }
-
-                    pp.emitLoadAddress(CPUReg::RAX, CPUReg::RSP, pp.cpuFct->sizeStackCallParams - variadicStackSize);
-                    pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, OpBits::B64);
-                }
-                else
-                {
-                    // All of this is complicated. But ip->b.u32 has been reduced by one register in case of closure, and
-                    // we have a dynamic test for bytecode execution. But for runtime, be put it back.
-                    auto sizeB = ip->b.u32;
-                    if (typeFuncCall->isClosure())
-                        sizeB += sizeof(Register);
-
-                    // We need to flatten all variadic registers, in order, in the stack, and emit the address of that array
-                    // We compute the number of variadic registers by removing registers of normal parameters (ip->b.u32)
-                    uint32_t idxParam          = pp.pushRAParams.size() - sizeB / sizeof(Register) - 1;
-                    uint32_t variadicStackSize = Math::align((idxParam + 1) * sizeof(Register), 16);
-                    uint32_t offset            = pp.cpuFct->sizeStackCallParams - variadicStackSize;
-                    while (idxParam != UINT32_MAX)
-                    {
-                        pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(pp.pushRAParams[idxParam]), OpBits::B64);
-                        pp.emitStore(CPUReg::RSP, offset, CPUReg::RAX, OpBits::B64);
-                        idxParam--;
-                        offset += 8;
-                    }
-
-                    pp.emitLoadAddress(CPUReg::RAX, CPUReg::RSP, pp.cpuFct->sizeStackCallParams - variadicStackSize);
-                    pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, OpBits::B64);
-                }
+                emitCopyVaargs(pp);
                 break;
-            }
 
                 /////////////////////////////////////
 

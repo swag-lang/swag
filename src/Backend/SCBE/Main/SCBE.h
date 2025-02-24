@@ -70,4 +70,5 @@ struct SCBE final : Backend
     static void emitJump(SCBE_CPU& pp, CPUCondJump jumpType, int32_t jumpOffset);
     static void emitJumps(SCBE_CPU& pp);
     static void emitJumpDyn(SCBE_CPU& pp);
+    static void emitCopyVaargs(SCBE_CPU& pp);
 };

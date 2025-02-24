@@ -246,7 +246,7 @@ void LLVM::emitBinOpEqOverflow(LLVM_Encoder& pp, llvm::Value* r1, llvm::Value* r
     builder.CreateStore(r4, r1);
 }
 
-void LLVM::emitVaargs(LLVM_Encoder& pp)
+void LLVM::emitCopyVaargs(LLVM_Encoder& pp)
 {
     const auto allocR  = pp.allocR;
     const auto allocVa = pp.allocVa;
