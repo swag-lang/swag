@@ -72,7 +72,17 @@ void SCBE_Micro::emitLoadParam(CPUReg reg, uint32_t paramIdx, OpBits opBits)
 {
     const auto inst = concat.addObj<SCBE_MicroInstruction>();
     inst->op        = SCBE_MicroOp::LoadParam;
+    inst->regA      = reg;
     inst->valueA    = paramIdx;
+    inst->opBitsA   = opBits;
+}
+
+void SCBE_Micro::emitStoreParam(uint32_t paramIdx, CPUReg reg, OpBits opBits)
+{
+    const auto inst = concat.addObj<SCBE_MicroInstruction>();
+    inst->op        = SCBE_MicroOp::StoreParam;
+    inst->valueA    = paramIdx;
+    inst->regA      = reg;
     inst->opBitsA   = opBits;
 }
 
@@ -476,6 +486,9 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
             }
             case SCBE_MicroOp::LoadParam:
                 encoder.emitLoadParam(inst->regA, inst->valueA, inst->opBitsA);
+                break;
+            case SCBE_MicroOp::StoreParam:
+                encoder.emitStoreParam(inst->valueA, inst->regA, inst->opBitsA);
                 break;
             case SCBE_MicroOp::Load0:
                 encoder.emitLoad(inst->regA, inst->regB, inst->opBitsA);
