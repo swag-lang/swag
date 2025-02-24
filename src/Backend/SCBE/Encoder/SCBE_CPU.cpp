@@ -458,27 +458,27 @@ void SCBE_CPU::emitLeave()
 
 void SCBE_CPU::emitLoadParam(CPUReg reg, uint32_t paramIdx, OpBits opBits)
 {
-    const uint32_t stackOffset = cpuFct->getParamStackOffset(paramIdx);
+    const uint32_t stackOffset = cpuFct->getParamStackOffset(paramIdx, false);
     emitLoad(reg, CPUReg::RDI, stackOffset, opBits);
 }
 
-void SCBE_CPU::emitStoreParam(uint32_t paramIdx, CPUReg reg, OpBits opBits)
+void SCBE_CPU::emitStoreParam(uint32_t paramIdx, CPUReg reg, OpBits opBits, bool forceStack)
 {
-    const uint32_t stackOffset = cpuFct->getParamStackOffset(paramIdx);
+    const uint32_t stackOffset = cpuFct->getParamStackOffset(paramIdx, forceStack);
     emitStore(CPUReg::RDI, stackOffset, reg, opBits);
 }
 
-uint32_t CPUFunction::getParamStackOffset(uint32_t paramIdx) const
+uint32_t CPUFunction::getParamStackOffset(uint32_t paramIdx, bool forceStack) const
 {
-    uint32_t offset = 0;
-
     // If the parameter has been passed as a CPU register, then we get the value from 'offsetParamsAsRegisters'
     // (where input registers have been saved) instead of the value from the caller stack
-    if (paramIdx < cc->paramByRegisterCount)
+    uint32_t offset = 0;
+    if (!forceStack && paramIdx < cc->paramByRegisterCount)
         offset = offsetParamsAsRegisters + REG_OFFSET(paramIdx);
 
     // The parameter has been passed by stack, so we get the value for the caller stack offset
     else
         offset = offsetCallerStackParams + REG_OFFSET(paramIdx);
+
     return offset;
 }

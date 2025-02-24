@@ -85,26 +85,26 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     {
         const auto typeParam = typeFunc->registerIdxToType(idxReg);
         if (cc.useRegisterFloat && typeParam->isNativeFloat())
-            pp.emitStoreParam(idxReg, cc.paramByRegisterFloat[idxReg], OpBits::F64);
+            pp.emitStoreParam(idxReg, cc.paramByRegisterFloat[idxReg], OpBits::F64, false);
         else
-            pp.emitStoreParam(idxReg, cc.paramByRegisterInteger[idxReg], OpBits::B64);
+            pp.emitStoreParam(idxReg, cc.paramByRegisterInteger[idxReg], OpBits::B64, false);
         idxReg++;
     }
 
     // Save pointer to return value if this is a return by copy
     if (idxReg < cc.paramByRegisterCount && typeFunc->returnByAddress())
     {
-        pp.emitStoreParam(idxReg, cc.paramByRegisterInteger[idxReg], OpBits::B64);
+        pp.emitStoreParam(idxReg, cc.paramByRegisterInteger[idxReg], OpBits::B64, false);
         idxReg++;
     }
 
-    // Save C variadic
+    // Save C variadic on the caller stack, to be sure that everything is stored there, even if it's
+    // passed by registers
     if (idxReg < cc.paramByRegisterCount && typeFunc->isFctCVariadic())
     {
         while (idxReg < cc.paramByRegisterCount)
         {
-            const uint32_t stackOffset = pp.cpuFct->offsetCallerStackParams + REG_OFFSET(idxReg);
-            pp.emitStore(CPUReg::RDI, stackOffset, cc.paramByRegisterInteger[idxReg], OpBits::B64);
+            pp.emitStoreParam(idxReg, cc.paramByRegisterInteger[idxReg], OpBits::B64, true);
             idxReg++;
         }
     }
