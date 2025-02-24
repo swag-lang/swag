@@ -490,8 +490,8 @@ void SCBE::emitJumps(SCBE_CPU& pp)
 void SCBE::emitJumpDyn(SCBE_CPU& pp)
 {
     const auto  ip     = pp.ip;
-    const auto  opBits = SCBE_CPU::getOpBits(ip->op);
     const auto& concat = pp.concat;
+    const auto  opBits = SCBE_CPU::getOpBits(ip->op);
 
     const auto tableCompiler = reinterpret_cast<int32_t*>(pp.buildParams.module->compilerSegment.address(ip->d.u32));
     pp.emitLoadExtend(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64, opBits, true);
