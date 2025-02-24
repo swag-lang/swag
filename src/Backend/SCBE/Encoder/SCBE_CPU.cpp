@@ -459,7 +459,13 @@ void SCBE_CPU::emitLeave()
 void SCBE_CPU::emitLoadParam(CPUReg reg, uint32_t paramIdx, OpBits opBits)
 {
     const uint32_t stackOffset = cpuFct->getParamStackOffset(paramIdx);
-    emitLoad(reg, CPUReg::RDI, stackOffset, OpBits::B64);
+    emitLoad(reg, CPUReg::RDI, stackOffset, opBits);
+}
+
+void SCBE_CPU::emitStoreParam(uint32_t paramIdx, CPUReg reg, OpBits opBits)
+{
+    const uint32_t stackOffset = cpuFct->getParamStackOffset(paramIdx);
+    emitStore(CPUReg::RDI, stackOffset, reg, opBits);
 }
 
 uint32_t CPUFunction::getParamStackOffset(uint32_t paramIdx) const
