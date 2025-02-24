@@ -724,7 +724,7 @@ bool Semantic::resolveLocalVar(SemanticContext* context, AstVarDecl* node, Overl
             waitStructGenerated(context->baseJob, returnType);
             YIELD();
 
-            if (!CallConv::returnStructByValue(typeFunc))
+            if (!typeFunc->returnStructByValue())
                 overFlags.add(OVERLOAD_RETVAL);
         }
     }

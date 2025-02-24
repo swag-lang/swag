@@ -339,6 +339,12 @@ struct TypeInfoFuncAttr final : TypeInfo
     uint32_t        numReturnRegisters() const;
     uint32_t        numTotalRegisters() const;
     const CallConv& getCallConv() const;
+    bool            structParamByValue(const TypeInfo* typeParam) const;
+    bool            returnByAddress() const;
+    bool            returnByStackAddress() const;
+    bool            returnNeedsStack() const;
+    bool            returnByValue() const;
+    bool            returnStructByValue() const;
 
     VectorNative<TypeInfoParam*>        capture;
     VectorNative<TypeInfoParam*>        genericParameters;

@@ -1292,7 +1292,7 @@ bool Semantic::resolveRetVal(SemanticContext* context)
 
     // If this is a simple return type, remove the retval stuff.
     // Variable will behaves normally, in the stack
-    if (!CallConv::returnByStackAddress(typeFct))
+    if (!typeFct->returnByStackAddress())
     {
         auto parentNode = node;
         if (parentNode->is(AstNodeKind::Identifier))

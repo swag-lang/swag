@@ -142,9 +142,9 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, [[maybe_unused]] const By
         cpuParams[typeFuncBc->isFctVariadic() ? 2 : 0].type = CPUPushParamType::CaptureContext;
 
     void* retCopyAddr = nullptr;
-    if (CallConv::returnByStackAddress(typeFuncBc))
+    if (typeFuncBc->returnByStackAddress())
         retCopyAddr = context->registersRR[0].pointer;
-    else if (CallConv::returnByAddress(typeFuncBc))
+    else if (typeFuncBc->returnByAddress())
         retCopyAddr = context->registersRR;
 
 #ifdef SWAG_STATS

@@ -189,7 +189,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
                 const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
 
                 // :ReturnStructByValue
-                if (CallConv::returnStructByValue(typeFunc))
+                if (typeFunc->returnStructByValue())
                 {
                     if (!typeFunc->returnType->hasFlag(TYPEINFO_STRUCT_EMPTY))
                     {
@@ -1452,13 +1452,13 @@ bool ByteCodeGen::emitReturnByCopyAddress(const ByteCodeGenContext* context, Ast
             if (node->hasOwnerInline())
             {
                 SWAG_IF_ASSERT(const auto parentTypeFunc = castTypeInfo<TypeInfoFuncAttr>(node->ownerInline()->func->typeInfo, TypeInfoKind::FuncAttr));
-                SWAG_ASSERT(CallConv::returnByStackAddress(parentTypeFunc));
+                SWAG_ASSERT(parentTypeFunc->returnByStackAddress());
                 EMIT_INST1(context, ByteCodeOp::CopyRAtoRT, node->ownerInline()->resultRegisterRc);
             }
             else
             {
                 SWAG_IF_ASSERT(const auto parentTypeFunc = castTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr));
-                SWAG_ASSERT(CallConv::returnByStackAddress(parentTypeFunc));
+                SWAG_ASSERT(parentTypeFunc->returnByStackAddress());
                 EMIT_INST1(context, ByteCodeOp::CopyRRtoRA, node->resultRegisterRc);
                 EMIT_INST1(context, ByteCodeOp::CopyRAtoRT, node->resultRegisterRc);
             }
@@ -1605,7 +1605,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     }
 
     // Return by copy
-    if (CallConv::returnByStackAddress(typeInfoFunc))
+    if (typeInfoFunc->returnByStackAddress())
     {
         SWAG_CHECK(emitReturnByCopyAddress(context, node, typeInfoFunc));
     }
@@ -2044,7 +2044,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     // Copy result in a computing register
     if (typeInfoFunc->returnType &&
         !typeInfoFunc->returnType->isVoid() &&
-        !CallConv::returnByStackAddress(typeInfoFunc))
+        !typeInfoFunc->returnByStackAddress())
     {
         auto numRegs = typeInfoFunc->returnType->numRegisters();
 
@@ -2205,7 +2205,7 @@ bool ByteCodeGen::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
     const auto ownerReturnType   = ownerTypeInfoFunc->concreteReturnType();
     if (!ownerReturnType->isVoid())
     {
-        if (CallConv::returnByStackAddress(ownerTypeInfoFunc))
+        if (ownerTypeInfoFunc->returnByStackAddress())
         {
             SWAG_ASSERT(funcNode->registerStoreRR == UINT32_MAX);
             funcNode->registerStoreRR = reserveRegisterRC(context);

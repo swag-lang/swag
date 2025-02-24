@@ -88,7 +88,7 @@ namespace
         }
 
         // Return value, in case of an address to the result
-        if (CallConv::returnByStackAddress(typeFunc))
+        if (typeFunc->returnByStackAddress())
             g_RunContext->registersRR[0] = *returnRegisters[0];
 
         // Simulate a LocalCall

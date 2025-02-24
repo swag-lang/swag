@@ -700,7 +700,7 @@ bool Semantic::setSymbolMatchVar(SemanticContext* context, const OneMatch& oneMa
         SWAG_CHECK(Semantic::setSymbolMatchCallParams(context, oneMatch, identifier));
 
         // For a return by copy, need to reserve room on the stack for the return result
-        if (CallConv::returnNeedsStack(funcType))
+        if (funcType->returnNeedsStack())
         {
             identifier->addAstFlag(AST_TRANSIENT);
             allocateOnStack(identifier, funcType->concreteReturnType());
@@ -902,7 +902,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
                 if (returnType->isStruct())
                     identifier->addSemFlag(SEMFLAG_CONST_ASSIGN_INHERIT | SEMFLAG_CONST_ASSIGN);
 
-                if (CallConv::returnNeedsStack(typeFunc))
+                if (typeFunc->returnNeedsStack())
                     identifier->addAstFlag(AST_TRANSIENT);
 
                 identifier->addAstFlag(AST_FUNC_INLINE_CALL);
@@ -935,7 +935,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
 
     // For a return by copy, need to reserve room on the stack for the return result
     // Order is important, because otherwise this could call isPlainOldData, which could be not resolved
-    if (CallConv::returnNeedsStack(typeFunc))
+    if (typeFunc->returnNeedsStack())
     {
         identifier->addAstFlag(AST_TRANSIENT);
         allocateOnStack(identifier, returnType);

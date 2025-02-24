@@ -34,7 +34,7 @@ void SCBE::emitGetParam(SCBE_CPU& pp, uint32_t reg, uint32_t paramIdx, OpBits op
             break;
     }
 
-    if (typeFunc->getCallConv().structParamByValue(typeParam))
+    if (typeFunc->structParamByValue(typeParam))
         pp.emitLoadAddress(CPUReg::RAX, CPUReg::RDI, paramStack);
     else
         pp.emitLoad(CPUReg::RAX, CPUReg::RDI, paramStack, OpBits::B64);
@@ -191,7 +191,7 @@ void SCBE::emitLambdaCall(SCBE_CPU& pp)
         pushCPUParams.insert_at_index({.type = CPUPushParamType::LoadAddress, .value = pp.cpuFct->offsetRT}, 1);
     if (typeFuncBc->numReturnRegisters() >= 2)
         pushCPUParams.insert_at_index({.type = CPUPushParamType::LoadAddress, .value = pp.cpuFct->offsetRT + sizeof(Register)}, 2);
-    pp.emitCallParameters(g_CallConv[static_cast<int>(CallConvKind::ByteCode)], typeFuncBc, pushCPUParams);
+    pp.emitCallParameters(typeFuncBc, pushCPUParams, CallConv::get(CallConvKind::ByteCode));
 
     pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symPI_byteCodeRun, 0);
     pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, OpBits::B64);

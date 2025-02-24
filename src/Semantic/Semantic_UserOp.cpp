@@ -775,7 +775,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
 
     // Allocate room on the stack to store the result of the function call
     const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
-    if (CallConv::returnNeedsStack(typeFunc))
+    if (typeFunc->returnNeedsStack())
         allocateOnStack(node, typeFunc->concreteReturnType());
 
     return true;

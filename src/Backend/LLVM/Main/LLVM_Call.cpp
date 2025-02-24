@@ -103,7 +103,7 @@ void LLVM::emitRet(LLVM_Encoder& pp, const TypeInfoFuncAttr* typeFuncBc, TypeInf
     auto& builder = *pp.builder;
 
     // Emit result
-    if (!returnType->isVoid() && !CallConv::returnByAddress(typeFuncBc))
+    if (!returnType->isVoid() && !typeFuncBc->returnByAddress())
     {
         if (returnType->isNative())
         {
@@ -180,7 +180,7 @@ llvm::FunctionType* LLVM::getOrCreateFuncType(LLVM_Encoder& pp, const TypeInfoFu
 
     VectorNative<llvm::Type*> params;
     llvm::Type*               llvmRealReturnType = getLLVMType(pp, typeFuncBc->returnType);
-    const bool                returnByAddress    = CallConv::returnByAddress(typeFuncBc);
+    const bool                returnByAddress    = typeFuncBc->returnByAddress();
     const auto                returnType         = typeFuncBc->concreteReturnType();
 
     llvm::Type* llvmReturnType = nullptr;
@@ -225,7 +225,7 @@ llvm::FunctionType* LLVM::getOrCreateFuncType(LLVM_Encoder& pp, const TypeInfoFu
             if (param->isAutoConstPointerRef())
                 param = TypeManager::concretePtrRef(param);
 
-            if (typeFuncBc->getCallConv().structParamByValue(param))
+            if (typeFuncBc->structParamByValue(param))
             {
                 params.push_back(IX_TY(param->sizeOf * 8));
             }
@@ -277,7 +277,7 @@ bool LLVM::emitGetParam(LLVM_Encoder& pp, const TypeInfoFuncAttr* typeFuncBc, ui
 
     if (toAdd || deRefSize)
     {
-        if (typeFuncBc->getCallConv().structParamByValue(param))
+        if (typeFuncBc->structParamByValue(param))
         {
             auto ra = builder.CreateIntCast(arg, I64_TY(), false);
 
@@ -381,7 +381,7 @@ bool LLVM::emitGetParam(LLVM_Encoder& pp, const TypeInfoFuncAttr* typeFuncBc, ui
         }
 
         // Struct by copy
-        else if (typeFuncBc->getCallConv().structParamByValue(param))
+        else if (typeFuncBc->structParamByValue(param))
         {
             // Make a copy of the value on the stack, and get the address
             const auto allocR1 = builder.CreateAlloca(I64_TY(), builder.getInt32(1));
@@ -502,7 +502,7 @@ bool LLVM::emitCallParameters(LLVM_Encoder&                 pp,
             const auto llvmType = getLLVMType(pp, typePtr);
             params.push_back(builder.CreateLoad(llvmType, GEP64(allocR, index)));
         }
-        else if (typeFuncBc->getCallConv().structParamByValue(typeParam))
+        else if (typeFuncBc->structParamByValue(typeParam))
         {
             const auto v0 = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, index));
             params.push_back(builder.CreateLoad(IX_TY(typeParam->sizeOf * 8), v0));
@@ -539,11 +539,11 @@ bool LLVM::emitCallParameters(LLVM_Encoder&                 pp,
     }
 
     // Return by parameter
-    if (CallConv::returnByAddress(typeFuncBc) && !CallConv::returnByStackAddress(typeFuncBc))
+    if (typeFuncBc->returnByAddress() && !typeFuncBc->returnByStackAddress())
     {
         params.push_back(TO_PTR_I8(allocRR));
     }
-    else if (CallConv::returnByAddress(typeFuncBc))
+    else if (typeFuncBc->returnByAddress())
     {
         params.push_back(builder.CreateLoad(PTR_I8_TY(), allocRR));
     }
@@ -568,7 +568,7 @@ bool LLVM::emitCallResult(const LLVM_Encoder& pp, const TypeInfoFuncAttr* typeFu
     auto&      builder = *pp.builder;
 
     const auto returnType = typeFuncBc->concreteReturnType();
-    if (!returnType->isVoid() && !CallConv::returnByAddress(typeFuncBc))
+    if (!returnType->isVoid() && !typeFuncBc->returnByAddress())
     {
         if (returnType->isPointer())
         {

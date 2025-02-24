@@ -1014,6 +1014,88 @@ const CallConv& TypeInfoFuncAttr::getCallConv() const
     return g_CallConv[static_cast<int>(callConv)];
 }
 
+bool TypeInfoFuncAttr::structParamByValue(const TypeInfo* typeParam) const
+{
+    const auto& cc = getCallConv();
+    return cc.structParamByRegister && typeParam->isStruct() && typeParam->sizeOf <= sizeof(void*);
+}
+
+bool TypeInfoFuncAttr::returnByAddress() const
+{
+    if (!returnType || returnType->isVoid())
+        return false;
+
+    const auto type = concreteReturnType();
+    if (type->isSlice() ||
+        type->isInterface() ||
+        type->isAny() ||
+        type->isString())
+    {
+        return true;
+    }
+
+    return returnByStackAddress();
+}
+
+bool TypeInfoFuncAttr::returnNeedsStack() const
+{
+    if (!returnType || returnType->isVoid())
+        return false;
+    const auto type = concreteReturnType();
+    if (type->isStruct())
+        return true;
+    return returnByStackAddress();
+}
+
+bool TypeInfoFuncAttr::returnByValue() const
+{
+    if (!returnType || returnType->isVoid())
+        return false;
+
+    return !returnByAddress();
+}
+
+bool TypeInfoFuncAttr::returnStructByValue() const
+{
+    if (!returnType || returnType->isVoid())
+        return false;
+    if (!declNode)
+        return false;
+    if (hasFlag(TYPEINFO_CAN_THROW))
+        return false;
+
+    const auto type = concreteReturnType();
+    if (!type->isStruct())
+        return false;
+
+    const auto typeStruct = castTypeInfo<TypeInfoStruct>(type, TypeInfoKind::Struct);
+    if (!typeStruct->isPlainOldData())
+        return false;
+
+    const auto& cc = getCallConv();
+    if (cc.structReturnByRegister && type->isStruct() && type->sizeOf <= sizeof(void*))
+        return true;
+
+    return false;
+}
+
+bool TypeInfoFuncAttr::returnByStackAddress() const
+{
+    if (!returnType || returnType->isVoid())
+        return false;
+
+    const auto type = concreteReturnType();
+    if (type->isArray() || type->isClosure())
+        return true;
+
+    if (!type->isStruct())
+        return false;
+    if (returnStructByValue())
+        return false;
+
+    return true;
+}
+
 TypeInfoParam* TypeInfoStruct::findChildByNameNoLock(const Utf8& childName) const
 {
     for (const auto child : fields)

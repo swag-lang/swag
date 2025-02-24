@@ -93,7 +93,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     }
 
     // Save pointer to return value if this is a return by copy
-    if (idxReg < cc.paramByRegisterCount && CallConv::returnByAddress(typeFunc))
+    if (idxReg < cc.paramByRegisterCount && typeFunc->returnByAddress())
     {
         const uint32_t stackOffset = pp.cpuFct->getParamStackOffset(idxReg);
         pp.emitStore(CPUReg::RDI, stackOffset, cc.paramByRegisterInteger[idxReg], OpBits::B64);
@@ -1772,7 +1772,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::IntrinsicCVaStart:
             {
                 uint32_t paramIdx = typeFunc->numParamsRegisters();
-                if (CallConv::returnByAddress(typeFunc))
+                if (typeFunc->returnByAddress())
                     paramIdx += 1;
                 uint32_t stackOffset = pp.cpuFct->offsetCallerStackParams + REG_OFFSET(paramIdx);
                 pp.emitLoadAddress(CPUReg::RAX, CPUReg::RDI, stackOffset);
@@ -2155,7 +2155,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::Ret:
 
                 // Emit result
-                if (!returnType->isVoid() && !CallConv::returnByAddress(typeFunc))
+                if (!returnType->isVoid() && !typeFunc->returnByAddress())
                 {
                     pp.emitLoad(cc.returnByRegisterInteger, CPUReg::RDI, offsetResult, OpBits::B64);
                     if (returnType->isNative(NativeTypeKind::F32))
