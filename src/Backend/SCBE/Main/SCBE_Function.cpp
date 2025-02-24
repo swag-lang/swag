@@ -1036,50 +1036,8 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpDyn16:
             case ByteCodeOp::JumpDyn32:
             case ByteCodeOp::JumpDyn64:
-            {
-                opBits             = SCBE_CPU::getOpBits(ip->op);
-                auto tableCompiler = reinterpret_cast<int32_t*>(buildParameters.module->compilerSegment.address(ip->d.u32));
-                pp.emitLoadExtend(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64, opBits, true);
-
-                // Note:
-                //
-                // This is not optimal yet.
-                // The sub could be removed by baking it in the 'cmp', and by changing the jump table address by subtracting the min value
-                // Also, if the jump table was encoded in the text segment, then there will be no need to have two relocations
-                //
-                // We could in the end remove two instructions and be as the llvm generation
-
-                pp.emitOpBinary(CPUReg::RAX, ip->b.u64 - 1, CPUOp::SUB, OpBits::B64);
-                pp.emitCmp(CPUReg::RAX, ip->c.u64, OpBits::B64);
-                emitJump(pp, JAE, tableCompiler[0]);
-
-                uint8_t* addrConstant        = nullptr;
-                auto     offsetTableConstant = buildParameters.module->constantSegment.reserve(static_cast<uint32_t>(ip->c.u64) * sizeof(uint32_t), &addrConstant);
-
-                pp.emitSymbolRelocationAddr(CPUReg::RCX, pp.symCSIndex, offsetTableConstant); // rcx = jump table
-                pp.emitJumpTable(CPUReg::RCX, CPUReg::RAX);
-
-                // + 5 for the two following instructions
-                // + 7 for this instruction
-                pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.cpuFct->symbolIndex, concat.totalCount() - pp.cpuFct->startAddress + 5 + 7);
-                pp.emitOpBinary(CPUReg::RAX, CPUReg::RCX, CPUOp::ADD, OpBits::B64);
-                pp.emitJump(CPUReg::RAX);
-
-                auto currentOffset = static_cast<int32_t>(pp.concat.totalCount());
-
-                auto            tableConstant = reinterpret_cast<int32_t*>(addrConstant);
-                CPULabelToSolve label;
-                for (uint32_t idx = 0; idx < ip->c.u32; idx++)
-                {
-                    label.ipDest      = tableCompiler[idx] + i + 1;
-                    label.jump.opBits = OpBits::B32;
-                    label.jump.offset = currentOffset;
-                    label.jump.addr   = tableConstant + idx;
-                    pp.labelsToSolve.push_back(label);
-                }
-
+                emitJumpDyn(buildParameters, pp, concat, ip, opBits, i);
                 break;
-            }
 
                 /////////////////////////////////////
 
