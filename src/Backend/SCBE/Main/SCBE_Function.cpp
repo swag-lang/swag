@@ -1915,12 +1915,10 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 auto typeFuncCall = castTypeInfo<TypeInfoFuncAttr>(reinterpret_cast<TypeInfo*>(ip->d.pointer), TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
                 if (!pp.pushRVParams.empty())
                 {
-                    auto     sizeOf   = pp.pushRVParams[0].second;
-                    uint32_t idxParam = pp.pushRVParams.size() - 1;
-
-                    uint32_t variadicStackSize = idxParam * sizeOf;
-                    MK_ALIGN16(variadicStackSize);
-                    uint32_t offset = pp.cpuFct->sizeStackCallParams - variadicStackSize;
+                    auto     sizeOf            = pp.pushRVParams[0].second;
+                    uint32_t idxParam          = pp.pushRVParams.size() - 1;
+                    uint32_t variadicStackSize = Math::align(idxParam * sizeOf, 16);
+                    uint32_t offset            = pp.cpuFct->sizeStackCallParams - variadicStackSize;
 
                     while (idxParam != UINT32_MAX)
                     {
@@ -1965,9 +1963,8 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                     // We need to flatten all variadic registers, in order, in the stack, and emit the address of that array
                     // We compute the number of variadic registers by removing registers of normal parameters (ip->b.u32)
                     uint32_t idxParam          = pp.pushRAParams.size() - sizeB / sizeof(Register) - 1;
-                    uint32_t variadicStackSize = (idxParam + 1) * sizeof(Register);
-                    MK_ALIGN16(variadicStackSize);
-                    uint32_t offset = pp.cpuFct->sizeStackCallParams - variadicStackSize;
+                    uint32_t variadicStackSize = Math::align((idxParam + 1) * sizeof(Register), 16);
+                    uint32_t offset            = pp.cpuFct->sizeStackCallParams - variadicStackSize;
                     while (idxParam != UINT32_MAX)
                     {
                         pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(pp.pushRAParams[idxParam]), OpBits::B64);

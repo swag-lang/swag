@@ -117,7 +117,7 @@ CPUFunction* SCBE_CPU::addFunction(const Utf8& funcName, const CallConv* cc, Byt
         // We want to be sure to have the room to flatten the array of variadic (make all params contiguous). That's
         // why we multiply by 2.
         cf->sizeStackCallParams = 2 * std::max(static_cast<uint32_t>(CallConv::MAX_CALL_CONV_REGISTERS * sizeof(void*)), static_cast<uint32_t>((bc->maxCallParams + 1) * sizeof(void*)));
-        MK_ALIGN16(cf->sizeStackCallParams);
+        cf->sizeStackCallParams = Math::align(cf->sizeStackCallParams, cc->stackAlign);
     }
 
     functions.push_back(cf);

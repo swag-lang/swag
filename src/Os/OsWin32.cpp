@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include "Backend/SCBE/Encoder/SCBE_X64.h"
+#include "Core/Math.h"
 #ifdef _WIN32
 #include "Backend/Context.h"
 #include "Backend/SCBE/Main/SCBE.h"
@@ -943,9 +944,10 @@ namespace OS
         const auto& cc         = typeInfoFunc->getCallConv();
         const auto  returnType = TypeManager::concreteType(typeInfoFunc->returnType);
 
-        uint32_t stackSize = (std::max(cc.paramByRegisterCount, pushCPUParams.size())) * sizeof(void*);
-        stackSize += sizeof(void*);
-        MK_ALIGN16(stackSize);
+        uint32_t stackSize = sizeof(void*);
+        stackSize += pushCPUParams.size() * sizeof(void*);
+        stackSize = std::max(stackSize, cc.minStackSize);
+        stackSize = Math::align(stackSize, cc.stackAlign);
 
         static constexpr int JIT_SIZE_BUFFER = 16 * 1024;
         auto&                gen             = g_X64GenFFI;

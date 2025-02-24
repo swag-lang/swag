@@ -1,10 +1,6 @@
 #pragma once
 #include "Flags.h"
 
-#define MK_ALIGN16(__s) \
-    if ((__s) % 16)     \
-    (__s) += 16 - ((__s) % 16)
-
 using AllocFlags = Flags<uint32_t>;
 
 constexpr AllocFlags ALLOC_STD = 0x00000001;
