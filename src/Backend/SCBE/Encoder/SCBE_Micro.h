@@ -8,6 +8,7 @@ enum class SCBE_MicroOp : uint8_t
     SymbolRelocationAddr,
     SymbolRelocationValue,
     SymbolGlobalString,
+    SymbolRelocationPtr,
     Push,
     Pop,
     Enter,
@@ -81,6 +82,7 @@ struct SCBE_Micro final : SCBE_CPU
     void    emitSymbolRelocationAddr(CPUReg reg, uint32_t symbolIndex, uint32_t offset) override;
     void    emitSymbolRelocationValue(CPUReg reg, uint32_t symbolIndex, uint32_t offset) override;
     void    emitSymbolGlobalString(CPUReg reg, const Utf8& str) override;
+    void    emitSymbolRelocationPtr(CPUReg reg, const Utf8& name) override;
     void    emitPush(CPUReg reg) override;
     void    emitPop(CPUReg reg) override;
     void    emitEnter(uint32_t sizeStack) override;

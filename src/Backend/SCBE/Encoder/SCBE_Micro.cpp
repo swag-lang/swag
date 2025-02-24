@@ -35,6 +35,14 @@ void SCBE_Micro::emitSymbolGlobalString(CPUReg reg, const Utf8& str)
     inst->name      = str;
 }
 
+void SCBE_Micro::emitSymbolRelocationPtr(CPUReg reg, const Utf8& name)
+{
+    const auto inst = concat.addObj<SCBE_MicroInstruction>();
+    inst->op        = SCBE_MicroOp::SymbolRelocationRef;
+    inst->regA      = reg;
+    inst->name      = name;
+}
+
 void SCBE_Micro::emitPush(CPUReg reg)
 {
     const auto inst = concat.addObj<SCBE_MicroInstruction>();
@@ -461,6 +469,9 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
             case SCBE_MicroOp::SymbolGlobalString:
                 encoder.emitSymbolGlobalString(inst->regA, inst->name);
                 break;
+            case SCBE_MicroOp::SymbolRelocationPtr:
+                encoder.emitSymbolRelocationPtr(inst->regA, inst->name);
+                break;
             case SCBE_MicroOp::Push:
                 encoder.emitPush(inst->regA);
                 break;
@@ -508,7 +519,7 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
                 cpuJump.opBits = jump->opBitsA;
                 encoder.emitPatchJump(cpuJump);
                 break;
-            }               
+            }
             case SCBE_MicroOp::PatchJump1:
             {
                 const SCBE_MicroInstruction* jump = reinterpret_cast<SCBE_MicroInstruction*>(inst->valueA);
@@ -521,8 +532,8 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
             }
             case SCBE_MicroOp::Jump1:
                 encoder.emitJump(inst->regA);
-            break;            
-            
+                break;
+
             case SCBE_MicroOp::LoadParam:
                 encoder.emitLoadParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->opBitsA);
                 break;

@@ -221,6 +221,7 @@ struct SCBE_CPU : BackendEncoder
     virtual void emitLoadExtendParam(CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc, bool isSigned);
     virtual void emitLoadAddressParam(CPUReg reg, uint32_t paramIdx, bool forceStack);
     virtual void emitStoreParam(uint32_t paramIdx, CPUReg reg, OpBits opBits, bool forceStack);
+    virtual void emitSymbolRelocationPtr(CPUReg reg, const Utf8& name);
 
     virtual void    emitSymbolRelocationRef(const Utf8& name)                                                                                     = 0;
     virtual void    emitSymbolRelocationAddr(CPUReg reg, uint32_t symbolIndex, uint32_t offset)                                                   = 0;

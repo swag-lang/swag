@@ -6,6 +6,21 @@
 #include "Semantic/Type/TypeInfo.h"
 #include "Semantic/Type/TypeManager.h"
 
+uint32_t CPUFunction::getParamStackOffset(uint32_t paramIdx, bool forceStack) const
+{
+    // If the parameter has been passed as a CPU register, then we get the value from 'offsetParamsAsRegisters'
+    // (where input registers have been saved) instead of the value from the caller stack
+    uint32_t offset = 0;
+    if (!forceStack && paramIdx < cc->paramByRegisterCount)
+        offset = offsetParamsAsRegisters + REG_OFFSET(paramIdx);
+
+    // The parameter has been passed by stack, so we get the value for the caller stack offset
+    else
+        offset = offsetCallerStackParams + REG_OFFSET(paramIdx);
+
+    return offset;
+}
+
 void SCBE_CPU::init(const BuildParameters& buildParameters)
 {
     BackendEncoder::init(buildParameters);
@@ -465,7 +480,7 @@ void SCBE_CPU::emitLoadParam(CPUReg reg, uint32_t paramIdx, OpBits opBits)
 void SCBE_CPU::emitLoadExtendParam(CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc, bool isSigned)
 {
     const uint32_t stackOffset = cpuFct->getParamStackOffset(paramIdx, false);
-    emitLoadExtend(reg, CPUReg::RDI, stackOffset, numBitsDst, numBitsSrc, isSigned);    
+    emitLoadExtend(reg, CPUReg::RDI, stackOffset, numBitsDst, numBitsSrc, isSigned);
 }
 
 void SCBE_CPU::emitLoadAddressParam(CPUReg reg, uint32_t paramIdx, bool forceStack)
@@ -480,17 +495,16 @@ void SCBE_CPU::emitStoreParam(uint32_t paramIdx, CPUReg reg, OpBits opBits, bool
     emitStore(CPUReg::RDI, stackOffset, reg, opBits);
 }
 
-uint32_t CPUFunction::getParamStackOffset(uint32_t paramIdx, bool forceStack) const
+void SCBE_CPU::emitSymbolRelocationPtr(CPUReg reg, const Utf8& name)
 {
-    // If the parameter has been passed as a CPU register, then we get the value from 'offsetParamsAsRegisters'
-    // (where input registers have been saved) instead of the value from the caller stack
-    uint32_t offset = 0;
-    if (!forceStack && paramIdx < cc->paramByRegisterCount)
-        offset = offsetParamsAsRegisters + REG_OFFSET(paramIdx);
+    SWAG_ASSERT(reg == CPUReg::RAX);
 
-    // The parameter has been passed by stack, so we get the value for the caller stack offset
-    else
-        offset = offsetCallerStackParams + REG_OFFSET(paramIdx);
+    emitLoad(reg, 0);
 
-    return offset;
+    CPURelocation relocation;
+    relocation.virtualAddress = concat.totalCount() - sizeof(uint64_t) - textSectionOffset;
+    const auto callSym        = getOrAddSymbol(name, CPUSymbolKind::Extern);
+    relocation.symbolIndex    = callSym->index;
+    relocation.type           = IMAGE_REL_AMD64_ADDR64;
+    relocTableTextSection.table.push_back(relocation);
 }

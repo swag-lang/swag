@@ -607,16 +607,7 @@ void SCBE::emitMakeLambda(SCBE_CPU& pp)
 {
     const auto funcNode = castAst<AstFuncDecl>(reinterpret_cast<AstNode*>(pp.ip->b.pointer), AstNodeKind::FuncDecl);
     SWAG_ASSERT(!pp.ip->c.pointer || (funcNode && funcNode->hasExtByteCode() && funcNode->extByteCode()->bc == reinterpret_cast<ByteCode*>(pp.ip->c.pointer)));
-
-    CPURelocation relocation;
-    pp.emitLoad(CPUReg::RAX, 0);
-    const auto& concat        = pp.concat;
-    relocation.virtualAddress = concat.totalCount() - sizeof(uint64_t) - pp.textSectionOffset;
-    const auto callSym        = pp.getOrAddSymbol(funcNode->getCallName(), CPUSymbolKind::Extern);
-    relocation.symbolIndex    = callSym->index;
-    relocation.type           = IMAGE_REL_AMD64_ADDR64;
-    pp.relocTableTextSection.table.push_back(relocation);
-
+    pp.emitSymbolRelocationPtr(CPUReg::RAX, funcNode->getCallName());
     pp.emitStore(CPUReg::RDI, REG_OFFSET(pp.ip->a.u32), CPUReg::RAX, OpBits::B64);
 }
 
