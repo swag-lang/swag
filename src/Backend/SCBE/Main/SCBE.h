@@ -69,5 +69,5 @@ struct SCBE final : Backend
     static void emitIMMC(SCBE_CPU& pp, CPUReg reg, OpBits numBitsSrc, OpBits numBitsDst, bool isSigned);
     static void emitJump(SCBE_CPU& pp, CPUCondJump jumpType, int32_t jumpOffset);
     static void emitJumps(SCBE_CPU& pp);
-    static void emitJumpDyn(const BuildParameters& buildParameters, SCBE_CPU& pp, Concat& concat, ByteCodeInstruction* ip, OpBits& opBits, uint32_t i);
+    static void emitJumpDyn(SCBE_CPU& pp);
 };

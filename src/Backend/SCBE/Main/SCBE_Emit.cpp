@@ -486,10 +486,13 @@ void SCBE::emitJumps(SCBE_CPU& pp)
     pp.labelsToSolve.clear();
 }
 
-void SCBE::emitJumpDyn(const BuildParameters& buildParameters, SCBE_CPU& pp, Concat& concat, ByteCodeInstruction* ip, OpBits& opBits, uint32_t i)
+void SCBE::emitJumpDyn(SCBE_CPU& pp)
 {
-    opBits             = SCBE_CPU::getOpBits(ip->op);
-    auto tableCompiler = reinterpret_cast<int32_t*>(buildParameters.module->compilerSegment.address(ip->d.u32));
+    const auto  ip     = pp.ip;
+    const auto  opBits = SCBE_CPU::getOpBits(ip->op);
+    const auto& concat = pp.concat;
+
+    const auto tableCompiler = reinterpret_cast<int32_t*>(pp.buildParams.module->compilerSegment.address(ip->d.u32));
     pp.emitLoadExtend(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64, opBits, true);
 
     // Note:
@@ -504,8 +507,8 @@ void SCBE::emitJumpDyn(const BuildParameters& buildParameters, SCBE_CPU& pp, Con
     pp.emitCmp(CPUReg::RAX, ip->c.u64, OpBits::B64);
     emitJump(pp, JAE, tableCompiler[0]);
 
-    uint8_t* addrConstant        = nullptr;
-    auto     offsetTableConstant = buildParameters.module->constantSegment.reserve(static_cast<uint32_t>(ip->c.u64) * sizeof(uint32_t), &addrConstant);
+    uint8_t*   addrConstant        = nullptr;
+    const auto offsetTableConstant = pp.buildParams.module->constantSegment.reserve(static_cast<uint32_t>(ip->c.u64) * sizeof(uint32_t), &addrConstant);
 
     pp.emitSymbolRelocationAddr(CPUReg::RCX, pp.symCSIndex, offsetTableConstant); // rcx = jump table
     pp.emitJumpTable(CPUReg::RCX, CPUReg::RAX);
@@ -516,13 +519,13 @@ void SCBE::emitJumpDyn(const BuildParameters& buildParameters, SCBE_CPU& pp, Con
     pp.emitOpBinary(CPUReg::RAX, CPUReg::RCX, CPUOp::ADD, OpBits::B64);
     pp.emitJump(CPUReg::RAX);
 
-    auto currentOffset = static_cast<int32_t>(pp.concat.totalCount());
+    const auto currentOffset = static_cast<int32_t>(pp.concat.totalCount());
+    const auto tableConstant = reinterpret_cast<int32_t*>(addrConstant);
 
-    auto            tableConstant = reinterpret_cast<int32_t*>(addrConstant);
     CPULabelToSolve label;
     for (uint32_t idx = 0; idx < ip->c.u32; idx++)
     {
-        label.ipDest      = tableCompiler[idx] + i + 1;
+        label.ipDest      = tableCompiler[idx] + pp.ipIndex + 1;
         label.jump.opBits = OpBits::B32;
         label.jump.offset = currentOffset;
         label.jump.addr   = tableConstant + idx;
