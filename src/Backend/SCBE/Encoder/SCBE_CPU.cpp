@@ -92,17 +92,11 @@ CPUSymbol* SCBE_CPU::getOrCreateGlobalString(const Utf8& str)
     return sym;
 }
 
-uint32_t SCBE_CPU::getOrCreateLabel(uint32_t instructionIndex)
+void SCBE_CPU::addLabel(uint32_t instructionIndex)
 {
     const auto it = labels.find(instructionIndex);
     if (it == labels.end())
-    {
-        const auto count         = concat.totalCount();
-        labels[instructionIndex] = static_cast<int32_t>(count);
-        return count;
-    }
-
-    return it->second;
+        labels[instructionIndex] = static_cast<int32_t>(concat.totalCount());
 }
 
 CPUFunction* SCBE_CPU::addFunction(const Utf8& funcName, const CallConv* cc, ByteCode* bc)

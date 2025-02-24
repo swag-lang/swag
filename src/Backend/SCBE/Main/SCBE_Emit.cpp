@@ -343,6 +343,22 @@ void SCBE::emitAddSubMul64(SCBE_CPU& pp, uint64_t mulValue, CPUOp op)
     }
 }
 
+void SCBE::emitInternalPanic(SCBE_CPU& pp, const char* msg)
+{
+    const auto node = pp.ip->node;
+    const auto np   = node->token.sourceFile->path;
+
+    pp.pushParams.clear();
+    pp.pushParams.push_back({.type = CPUPushParamType::GlobalString, .value = reinterpret_cast<uint64_t>(np.cstr())});
+    pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = node->token.startLocation.line});
+    pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = node->token.startLocation.column});
+    if (msg)
+        pp.pushParams.push_back({.type = CPUPushParamType::GlobalString, .value = reinterpret_cast<uint64_t>(msg)});
+    else
+        pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = 0});
+    emitInternalCallCPUParams(pp, g_LangSpec->name_priv_panic, pp.pushParams);
+}
+
 void SCBE::emitJumpCmp(SCBE_CPU& pp, CPUCondJump op, OpBits opBits)
 {
     const auto ip = pp.ip;
@@ -426,22 +442,6 @@ void SCBE::emitJumpCmp3(SCBE_CPU& pp, CPUCondJump op1, CPUCondJump op2, OpBits o
 
     emitJump(pp, op1, 0);
     emitJump(pp, op2, ip->b.s32);
-}
-
-void SCBE::emitInternalPanic(SCBE_CPU& pp, const char* msg)
-{
-    const auto node = pp.ip->node;
-    const auto np   = node->token.sourceFile->path;
-
-    pp.pushParams.clear();
-    pp.pushParams.push_back({.type = CPUPushParamType::GlobalString, .value = reinterpret_cast<uint64_t>(np.cstr())});
-    pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = node->token.startLocation.line});
-    pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = node->token.startLocation.column});
-    if (msg)
-        pp.pushParams.push_back({.type = CPUPushParamType::GlobalString, .value = reinterpret_cast<uint64_t>(msg)});
-    else
-        pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = 0});
-    emitInternalCallCPUParams(pp, g_LangSpec->name_priv_panic, pp.pushParams);
 }
 
 void SCBE::emitJump(SCBE_CPU& pp, CPUCondJump jumpType, int32_t jumpOffset)

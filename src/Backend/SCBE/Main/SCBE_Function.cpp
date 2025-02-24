@@ -122,7 +122,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             continue;
         if (ip->hasFlag(BCI_NO_BACKEND))
             continue;
-
+        
         pp.ip      = ip;
         pp.ipIndex = static_cast<int32_t>(i);
 
@@ -130,7 +130,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             SCBE_Debug::setLocation(pp.cpuFct, bc, ip, concat.totalCount() - pp.cpuFct->startAddress);
 
         if (ip->hasFlag(BCI_JUMP_DEST))
-            pp.getOrCreateLabel(i);
+            pp.addLabel(i);
 
         switch (ip->op)
         {
