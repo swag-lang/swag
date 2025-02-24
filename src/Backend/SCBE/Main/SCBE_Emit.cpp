@@ -4,6 +4,7 @@
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
 #include "Backend/SCBE/Main/SCBE.h"
 #include "Semantic/Type/TypeInfo.h"
+#include "Syntax/Ast.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 
 void SCBE::emitIMMA(SCBE_CPU& pp, CPUReg reg, OpBits opBits)
@@ -600,4 +601,49 @@ void SCBE::emitCopyVaargs(SCBE_CPU& pp)
         pp.emitLoadAddress(CPUReg::RAX, CPUReg::RSP, pp.cpuFct->sizeStackCallParams - variadicStackSize);
         pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, OpBits::B64);
     }
+}
+
+void SCBE::emitMakeLambda(SCBE_CPU& pp)
+{
+    const auto  ip       = pp.ip;
+    const auto& concat   = pp.concat;
+    const auto  funcNode = castAst<AstFuncDecl>(reinterpret_cast<AstNode*>(ip->b.pointer), AstNodeKind::FuncDecl);
+    SWAG_ASSERT(!ip->c.pointer || (funcNode && funcNode->hasExtByteCode() && funcNode->extByteCode()->bc == reinterpret_cast<ByteCode*>(ip->c.pointer)));
+
+    pp.emitLoad(CPUReg::RAX, 0);
+
+    CPURelocation relocation;
+    relocation.virtualAddress = concat.totalCount() - sizeof(uint64_t) - pp.textSectionOffset;
+    const auto callSym        = pp.getOrAddSymbol(funcNode->getCallName(), CPUSymbolKind::Extern);
+    relocation.symbolIndex    = callSym->index;
+    relocation.type           = IMAGE_REL_AMD64_ADDR64;
+    pp.relocTableTextSection.table.push_back(relocation);
+
+    pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, OpBits::B64);
+}
+
+void SCBE::emitMakeCallback(SCBE_CPU& pp)
+{
+    const auto  ip     = pp.ip;
+    const auto& concat = pp.concat;
+
+    // Test if it's a bytecode lambda
+    pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);
+    pp.emitLoad(CPUReg::RCX, SWAG_LAMBDA_BC_MARKER, OpBits::B64);
+    pp.emitOpBinary(CPUReg::RCX, CPUReg::RAX, CPUOp::AND, OpBits::B64);
+
+    const auto jump = pp.emitJump(JZ, OpBits::B32);
+
+    // ByteCode lambda
+    //////////////////
+
+    pp.emitLoad(CPUReg::RCX, CPUReg::RAX, OpBits::B64);
+    pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symPI_makeCallback, 0);
+    pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, OpBits::B64);
+    pp.emitCallIndirect(CPUReg::RAX);
+
+    // End
+    //////////////////
+    pp.emitPatchJump(jump, concat.totalCount());
+    pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, OpBits::B64);
 }

@@ -2,7 +2,6 @@
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
 #include "Backend/SCBE/Main/SCBE.h"
-#include "Core/Math.h"
 #include "Report/Diagnostic.h"
 #include "Report/Report.h"
 #include "Semantic/Type/TypeManager.h"
@@ -17,15 +16,15 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     if (bc->node && bc->node->hasAttribute(ATTRIBUTE_TEST_FUNC) && buildParameters.compileType != Test)
         return true;
 
-    auto        ct              = buildParameters.compileType;
-    auto        precompileIndex = buildParameters.precompileIndex;
+    const auto  ct              = buildParameters.compileType;
+    const auto  precompileIndex = buildParameters.precompileIndex;
     auto&       pp              = encoder<SCBE_CPU>(ct, precompileIndex);
-    auto&       concat          = pp.concat;
-    auto        typeFunc        = bc->getCallType();
-    auto        returnType      = typeFunc->concreteReturnType();
-    bool        ok              = true;
-    bool        debug           = buildParameters.buildCfg->backendDebugInfos;
+    const auto& concat          = pp.concat;
+    const auto  typeFunc        = bc->getCallType();
+    const auto  returnType      = typeFunc->concreteReturnType();
+    const bool  debug           = buildParameters.buildCfg->backendDebugInfos;
     const auto& cc              = typeFunc->getCallConv();
+    bool        ok              = true;
 
     pp.init(buildParameters);
     bc->markLabels();
@@ -54,12 +53,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     // offsetFLT:                       sizeof(Register) to make some float computation
     // ...padding to 16... => total is sizeStack
 
-    uint32_t offsetRT                = bc->maxReservedRegisterRC * sizeof(Register);
-    uint32_t offsetParamsAsRegisters = offsetRT + bc->maxCallResults * sizeof(Register);
-    uint32_t offsetResult            = offsetParamsAsRegisters + cc.paramByRegisterCount * sizeof(Register);
-    uint32_t offsetByteCodeStack     = offsetResult + sizeof(Register);
-    uint32_t offsetFLT               = offsetByteCodeStack + bc->stackSize; // For float load (should be reserved only if we have floating point operations in that function)
-    uint32_t sizeStack               = offsetFLT + 8;
+    const uint32_t offsetRT                = bc->maxReservedRegisterRC * sizeof(Register);
+    const uint32_t offsetParamsAsRegisters = offsetRT + bc->maxCallResults * sizeof(Register);
+    const uint32_t offsetResult            = offsetParamsAsRegisters + cc.paramByRegisterCount * sizeof(Register);
+    const uint32_t offsetByteCodeStack     = offsetResult + sizeof(Register);
+    const uint32_t offsetFLT               = offsetByteCodeStack + bc->stackSize; // For float load (should be reserved only if we have floating point operations in that function)
+    const uint32_t sizeStack               = offsetFLT + 8;
 
     // Register function
     pp.cpuFct = pp.addFunction(funcName, &cc, bc);
@@ -1725,7 +1724,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::IntrinsicCVaStart:
             {
-                uint32_t paramIdx = typeFunc->numParamsRegisters() + (typeFunc->returnByAddress() ? 1 : 0);
+                const uint32_t paramIdx = typeFunc->numParamsRegisters() + (typeFunc->returnByAddress() ? 1 : 0);
                 pp.emitLoadAddressParam(CPUReg::RAX, paramIdx, true);
                 pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);
                 pp.emitStore(CPUReg::RCX, 0, CPUReg::RAX, OpBits::B64);
@@ -1927,47 +1926,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::MakeLambda:
-            {
-                auto funcNode = castAst<AstFuncDecl>(reinterpret_cast<AstNode*>(ip->b.pointer), AstNodeKind::FuncDecl);
-                SWAG_ASSERT(!ip->c.pointer || (funcNode && funcNode->hasExtByteCode() && funcNode->extByteCode()->bc == reinterpret_cast<ByteCode*>(ip->c.pointer)));
-
-                pp.emitLoad(CPUReg::RAX, 0);
-
-                CPURelocation relocation;
-                relocation.virtualAddress = concat.totalCount() - sizeof(uint64_t) - pp.textSectionOffset;
-                auto callSym              = pp.getOrAddSymbol(funcNode->getCallName(), CPUSymbolKind::Extern);
-                relocation.symbolIndex    = callSym->index;
-                relocation.type           = IMAGE_REL_AMD64_ADDR64;
-                pp.relocTableTextSection.table.push_back(relocation);
-
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, OpBits::B64);
+                emitMakeLambda(pp);
                 break;
-            }
 
             case ByteCodeOp::IntrinsicMakeCallback:
-            {
-                // Test if it's a bytecode lambda
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);
-                pp.emitLoad(CPUReg::RCX, SWAG_LAMBDA_BC_MARKER, OpBits::B64);
-                pp.emitOpBinary(CPUReg::RCX, CPUReg::RAX, CPUOp::AND, OpBits::B64);
-
-                auto jump = pp.emitJump(JZ, OpBits::B32);
-
-                // ByteCode lambda
-                //////////////////
-
-                pp.emitLoad(CPUReg::RCX, CPUReg::RAX, OpBits::B64);
-                pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symPI_makeCallback, 0);
-                pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, OpBits::B64);
-                pp.emitCallIndirect(CPUReg::RAX);
-
-                // End
-                //////////////////
-                pp.emitPatchJump(jump, concat.totalCount());
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, OpBits::B64);
-
+                emitMakeCallback(pp);
                 break;
-            }
 
                 /////////////////////////////////////
 
