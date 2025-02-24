@@ -1766,11 +1766,8 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::IntrinsicCVaStart:
             {
-                uint32_t paramIdx = typeFunc->numParamsRegisters();
-                if (typeFunc->returnByAddress())
-                    paramIdx += 1;
-                uint32_t stackOffset = pp.cpuFct->offsetCallerStackParams + REG_OFFSET(paramIdx);
-                pp.emitLoadAddress(CPUReg::RAX, CPUReg::RDI, stackOffset);
+                uint32_t paramIdx = typeFunc->numParamsRegisters() + (typeFunc->returnByAddress() ? 1 : 0);
+                pp.emitLoadAddressParam(CPUReg::RAX, paramIdx, true);
                 pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);
                 pp.emitStore(CPUReg::RCX, 0, CPUReg::RAX, OpBits::B64);
                 break;
