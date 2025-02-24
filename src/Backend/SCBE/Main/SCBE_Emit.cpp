@@ -364,7 +364,7 @@ void SCBE::emitJumpCmp(SCBE_CPU& pp, CPUCondJump op, OpBits opBits)
         pp.emitCmp(r0, r1, opBits);
     }
 
-    emitJump(pp, op, pp.ipIndex, ip->b.s32);
+    emitJump(pp, op, ip->b.s32);
 }
 
 void SCBE::emitJumpCmpAddr(SCBE_CPU& pp, CPUCondJump op, CPUReg memReg, uint64_t memOffset, OpBits opBits)
@@ -382,7 +382,7 @@ void SCBE::emitJumpCmpAddr(SCBE_CPU& pp, CPUCondJump op, CPUReg memReg, uint64_t
         pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, opBits);
     }
 
-    emitJump(pp, op, pp.ipIndex, ip->b.s32);
+    emitJump(pp, op, ip->b.s32);
 }
 
 void SCBE::emitJumpCmp2(SCBE_CPU& pp, CPUCondJump op1, CPUCondJump op2, OpBits opBits)
@@ -402,8 +402,8 @@ void SCBE::emitJumpCmp2(SCBE_CPU& pp, CPUCondJump op1, CPUCondJump op2, OpBits o
         pp.emitCmp(CPUReg::XMM0, CPUReg::XMM1, opBits);
     }
 
-    emitJump(pp, op1, pp.ipIndex, ip->b.s32);
-    emitJump(pp, op2, pp.ipIndex, ip->b.s32);
+    emitJump(pp, op1, ip->b.s32);
+    emitJump(pp, op2, ip->b.s32);
 }
 
 void SCBE::emitJumpCmp3(SCBE_CPU& pp, CPUCondJump op1, CPUCondJump op2, OpBits opBits)
@@ -423,8 +423,8 @@ void SCBE::emitJumpCmp3(SCBE_CPU& pp, CPUCondJump op1, CPUCondJump op2, OpBits o
         pp.emitCmp(CPUReg::XMM0, CPUReg::XMM1, opBits);
     }
 
-    emitJump(pp, op1, pp.ipIndex, 0);
-    emitJump(pp, op2, pp.ipIndex, ip->b.s32);
+    emitJump(pp, op1, 0);
+    emitJump(pp, op2, ip->b.s32);
 }
 
 void SCBE::emitInternalPanic(SCBE_CPU& pp, const char* msg)
@@ -443,10 +443,10 @@ void SCBE::emitInternalPanic(SCBE_CPU& pp, const char* msg)
     emitInternalCallCPUParams(pp, g_LangSpec->name_priv_panic, pp.pushParams);
 }
 
-void SCBE::emitJump(SCBE_CPU& pp, CPUCondJump jumpType, int32_t instructionCount, int32_t jumpOffset)
+void SCBE::emitJump(SCBE_CPU& pp, CPUCondJump jumpType, int32_t jumpOffset)
 {
     CPULabelToSolve label;
-    label.ipDest = jumpOffset + instructionCount + 1;
+    label.ipDest = jumpOffset + pp.ipIndex + 1;
 
     // Can we solve the label now ?
     const auto it = pp.labels.find(label.ipDest);

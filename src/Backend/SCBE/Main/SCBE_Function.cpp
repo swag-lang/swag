@@ -117,14 +117,15 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     auto ip     = bc->out;
     auto opBits = OpBits::Invalid;
-    for (int32_t i = 0; i < static_cast<int32_t>(bc->numInstructions); i++, ip++)
+    for (uint32_t i = 0; i < bc->numInstructions; i++, ip++)
     {
         if (ip->node->hasAstFlag(AST_NO_BACKEND))
             continue;
         if (ip->hasFlag(BCI_NO_BACKEND))
             continue;
+
         pp.ip      = ip;
-        pp.ipIndex = i;
+        pp.ipIndex = static_cast<int32_t>(i);
 
         if (debug)
             SCBE_Debug::setLocation(pp.cpuFct, bc, ip, concat.totalCount() - pp.cpuFct->startAddress);
@@ -1050,7 +1051,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
                 pp.emitOpBinary(CPUReg::RAX, ip->b.u64 - 1, CPUOp::SUB, OpBits::B64);
                 pp.emitCmp(CPUReg::RAX, ip->c.u64, OpBits::B64);
-                emitJump(pp, JAE, i, tableCompiler[0]);
+                emitJump(pp, JAE, tableCompiler[0]);
 
                 uint8_t* addrConstant        = nullptr;
                 auto     offsetTableConstant = buildParameters.module->constantSegment.reserve(static_cast<uint32_t>(ip->c.u64) * sizeof(uint32_t), &addrConstant);
@@ -1084,19 +1085,19 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::JumpIfTrue:
                 pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->a.u32), 0, OpBits::B8);
-                emitJump(pp, JNZ, i, ip->b.s32);
+                emitJump(pp, JNZ, ip->b.s32);
                 break;
             case ByteCodeOp::JumpIfFalse:
                 pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->a.u32), 0, OpBits::B8);
-                emitJump(pp, JZ, i, ip->b.s32);
+                emitJump(pp, JZ, ip->b.s32);
                 break;
             case ByteCodeOp::JumpIfRTTrue:
                 pp.emitCmp(CPUReg::RDI, offsetRT + REG_OFFSET(0), 0, OpBits::B8);
-                emitJump(pp, JNZ, i, ip->b.s32);
+                emitJump(pp, JNZ, ip->b.s32);
                 break;
             case ByteCodeOp::JumpIfRTFalse:
                 pp.emitCmp(CPUReg::RDI, offsetRT + REG_OFFSET(0), 0, OpBits::B8);
-                emitJump(pp, JZ, i, ip->b.s32);
+                emitJump(pp, JZ, ip->b.s32);
                 break;
 
             case ByteCodeOp::JumpIfNotZero8:
@@ -1105,7 +1106,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpIfNotZero64:
                 opBits = SCBE_CPU::getOpBits(ip->op);
                 pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->a.u32), 0, opBits);
-                emitJump(pp, JNZ, i, ip->b.s32);
+                emitJump(pp, JNZ, ip->b.s32);
                 break;
 
             case ByteCodeOp::JumpIfZero8:
@@ -1114,11 +1115,11 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpIfZero64:
                 opBits = SCBE_CPU::getOpBits(ip->op);
                 pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->a.u32), 0, opBits);
-                emitJump(pp, JZ, i, ip->b.s32);
+                emitJump(pp, JZ, ip->b.s32);
                 break;
 
             case ByteCodeOp::Jump:
-                emitJump(pp, JUMP, i, ip->b.s32);
+                emitJump(pp, JUMP, ip->b.s32);
                 break;
 
                 /////////////////////////////////////
@@ -2503,12 +2504,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpIfError:
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);
                 pp.emitCmp(CPUReg::RAX, offsetof(SwagContext, hasError), 0, OpBits::B32);
-                emitJump(pp, JNZ, i, ip->b.s32);
+                emitJump(pp, JNZ, ip->b.s32);
                 break;
             case ByteCodeOp::JumpIfNoError:
                 pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);
                 pp.emitCmp(CPUReg::RAX, offsetof(SwagContext, hasError), 0, OpBits::B32);
-                emitJump(pp, JZ, i, ip->b.s32);
+                emitJump(pp, JZ, ip->b.s32);
                 break;
             case ByteCodeOp::InternalPushErr:
                 pp.emitCallLocal(g_LangSpec->name_priv_pusherr);
