@@ -77,6 +77,17 @@ void SCBE_Micro::emitLoadParam(CPUReg reg, uint32_t paramIdx, OpBits opBits)
     inst->opBitsA   = opBits;
 }
 
+void SCBE_Micro::emitLoadExtendParam(CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc, bool isSigned)
+{
+    const auto inst = concat.addObj<SCBE_MicroInstruction>();
+    inst->op        = SCBE_MicroOp::LoadExtendParam;
+    inst->regA      = reg;
+    inst->valueA    = paramIdx;
+    inst->opBitsA   = numBitsDst;
+    inst->opBitsB   = numBitsSrc;
+    inst->boolA     = isSigned;
+}
+
 void SCBE_Micro::emitLoadAddressParam(CPUReg reg, uint32_t paramIdx, bool forceStack)
 {
     const auto inst = concat.addObj<SCBE_MicroInstruction>();
@@ -497,9 +508,12 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
             case SCBE_MicroOp::LoadParam:
                 encoder.emitLoadParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->opBitsA);
                 break;
+            case SCBE_MicroOp::LoadExtendParam:
+                encoder.emitLoadExtendParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->opBitsA, inst->opBitsB, inst->boolA);
+                break;
             case SCBE_MicroOp::LoadAddressParam:
                 encoder.emitLoadAddressParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->boolA);
-            break;                
+                break;
             case SCBE_MicroOp::StoreParam:
                 encoder.emitStoreParam(static_cast<uint32_t>(inst->valueA), inst->regA, inst->opBitsA, inst->boolA);
                 break;

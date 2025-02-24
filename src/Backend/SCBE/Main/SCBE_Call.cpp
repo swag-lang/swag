@@ -22,8 +22,7 @@ void SCBE::emitGetParam(SCBE_CPU& pp, uint32_t reg, uint32_t paramIdx, OpBits op
         case OpBits::B32:
         {
             SWAG_ASSERT(!toAdd);
-            const uint32_t stackOffset = pp.cpuFct->getParamStackOffset(paramIdx, false);
-            pp.emitLoadExtend(CPUReg::RAX, CPUReg::RDI, stackOffset, OpBits::B64, opBits, false);
+            pp.emitLoadExtendParam(CPUReg::RAX, paramIdx, OpBits::B64, opBits, false);
             pp.emitStore(CPUReg::RDI, REG_OFFSET(reg), CPUReg::RAX, OpBits::B64);
             return;
         }
