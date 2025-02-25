@@ -16,6 +16,7 @@ enum class ModRMMode : uint8_t
 constexpr auto    MODRM_REG_NONE = static_cast<CPUReg>(0);
 constexpr auto    MODRM_REG_2    = static_cast<CPUReg>(2);
 constexpr uint8_t MODRM_RM_SID   = 0b100;
+constexpr uint8_t MODRM_RM_RIP   = 0b101;
 
 namespace
 {
@@ -2119,8 +2120,9 @@ void SCBE_X64::emitClear(CPUReg memReg, uint64_t memOffset, uint32_t count)
 
 void SCBE_X64::emitCallExtern(const Utf8& symbolName)
 {
-    concat.addU8(0xFF);
-    concat.addU8(0x15);
+    emitCPUOp(concat, static_cast<CPUOp>(0xFF));
+    emitModRM(concat, ModRMMode::Memory, MODRM_REG_2, MODRM_RM_RIP);
+
     const auto callSym = getOrAddSymbol(symbolName, CPUSymbolKind::Extern);
     addSymbolRelocation(concat.totalCount() - textSectionOffset, callSym->index, IMAGE_REL_AMD64_REL32);
     concat.addU32(0);
