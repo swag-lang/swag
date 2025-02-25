@@ -160,8 +160,8 @@ void SCBE_X64::emitSymbolRelocationAddr(CPUReg reg, uint32_t symbolIndex, uint32
 {
     SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX || reg == CPUReg::RDX || reg == CPUReg::R8 || reg == CPUReg::R9 || reg == CPUReg::RDI);
     emitREX(concat, OpBits::B64, reg);
-    concat.addU8(0x8D);
-    concat.addU8(static_cast<uint8_t>(0x05 | ((static_cast<uint8_t>(reg) & 0b111)) << 3));
+    emitCPUOp(concat, 0x8D); // LEA
+    emitModRM(concat, ModRMMode::Memory, reg, MODRM_RM_RIP);
     addSymbolRelocation(concat.totalCount() - textSectionOffset, symbolIndex, IMAGE_REL_AMD64_REL32);
     concat.addU32(offset);
 }
@@ -170,8 +170,8 @@ void SCBE_X64::emitSymbolRelocationValue(CPUReg reg, uint32_t symbolIndex, uint3
 {
     SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX || reg == CPUReg::RDX || reg == CPUReg::R8 || reg == CPUReg::R9);
     emitREX(concat, OpBits::B64, reg);
-    concat.addU8(0x8B);
-    concat.addU8(static_cast<uint8_t>(0x05 | ((static_cast<uint8_t>(reg) & 0b111)) << 3));
+    emitCPUOp(concat, 0x8B); // MOV
+    emitModRM(concat, ModRMMode::Memory, reg, MODRM_RM_RIP);
     addSymbolRelocation(concat.totalCount() - textSectionOffset, symbolIndex, IMAGE_REL_AMD64_REL32);
     concat.addU32(offset);
 }
@@ -540,7 +540,7 @@ void SCBE_X64::emitLoadAddress(CPUReg reg, CPUReg memReg, uint64_t memOffset)
         SWAG_ASSERT(memOffset == 0);
         SWAG_ASSERT(reg == CPUReg::RCX);
         emitREX(concat, OpBits::B64, reg, memReg);
-        emitCPUOp(concat, CPUOp::LEA);
+        emitCPUOp(concat, 0x8D);
         concat.addU8(0x0D);
     }
     else if (memOffset == 0)
@@ -550,7 +550,7 @@ void SCBE_X64::emitLoadAddress(CPUReg reg, CPUReg memReg, uint64_t memOffset)
     else
     {
         emitREX(concat, OpBits::B64, reg, memReg);
-        emitCPUOp(concat, CPUOp::LEA);
+        emitCPUOp(concat, 0x8D);
         emitModRM(concat, memOffset, reg, memReg);
     }
 }
@@ -2129,7 +2129,7 @@ void SCBE_X64::emitClear(CPUReg memReg, uint64_t memOffset, uint32_t count)
                 concat.addU8(0x80 | static_cast<uint8_t>(memReg));
                 emitValue(concat, memOffset, OpBits::B32);
             }
-            
+
             count -= 16;
             memOffset += 16;
         }
