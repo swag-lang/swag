@@ -389,7 +389,7 @@ bool AstNode::isSpecialFunctionName() const
     return true;
 }
 
-void AstNode::setBcNotifyBefore(ByteCodeNotifyFct fct, [[maybe_unused]] ByteCodeNotifyFct checkIf)
+void AstNode::setBcNotifyBefore(ByteCodeNotifyFct fct, ByteCodeNotifyFct checkIf)
 {
     allocateExtension(ExtensionKind::ByteCode);
 
@@ -405,7 +405,7 @@ void AstNode::setBcNotifyBefore(ByteCodeNotifyFct fct, [[maybe_unused]] ByteCode
     extByteCode()->byteCodeBeforeFct = fct;
 }
 
-void AstNode::setBcNotifyAfter(ByteCodeNotifyFct fct, [[maybe_unused]] ByteCodeNotifyFct checkIf)
+void AstNode::setBcNotifyAfter(ByteCodeNotifyFct fct, ByteCodeNotifyFct checkIf)
 {
     allocateExtension(ExtensionKind::ByteCode);
 

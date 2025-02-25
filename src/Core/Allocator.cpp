@@ -27,7 +27,7 @@ void operator delete(void* block) noexcept
     Allocator::free(p, *p, ALLOC_NEW);
 }
 
-void* Allocator::alloc(size_t size, [[maybe_unused]] size_t align, [[maybe_unused]] AllocFlags flags)
+void* Allocator::alloc(size_t size, size_t align, AllocFlags flags)
 {
 #ifdef SWAG_HAS_MEMORY_CHECK
     auto result = mi_malloc_aligned(size + 3 * sizeof(uint64_t), align);
@@ -51,7 +51,7 @@ void* Allocator::alloc(size_t size, [[maybe_unused]] size_t align, [[maybe_unuse
     return result;
 }
 
-void Allocator::free(void* ptr, size_t size, [[maybe_unused]] AllocFlags flags)
+void Allocator::free(void* ptr, size_t size, AllocFlags flags)
 {
     if (!ptr || !size)
         return;

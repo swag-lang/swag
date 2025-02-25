@@ -83,7 +83,7 @@ void ByteCodeRun::enterByteCode(ByteCodeRunContext* context, ByteCode* bc, uint3
     context->pushAlt<uint32_t>(popParamsOnRet * sizeof(void*) + incSPPostCall);
 }
 
-void ByteCodeRun::leaveByteCode(ByteCodeRunContext* context, [[maybe_unused]] ByteCode* bc, bool& leave)
+void ByteCodeRun::leaveByteCode(ByteCodeRunContext* context, ByteCode* bc, bool& leave)
 {
     if (--context->curRC != UINT32_MAX)
     {

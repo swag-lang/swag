@@ -233,7 +233,7 @@ void SCBE_X64::emitLoad(CPUReg regDst, CPUReg regSrc, OpBits opBits)
     }
 }
 
-void SCBE_X64::emitLoad([[maybe_unused]] CPUReg regDstSrc, [[maybe_unused]] OpBits opBits)
+void SCBE_X64::emitLoad(CPUReg regDstSrc, OpBits opBits)
 {
     SWAG_ASSERT(regDstSrc == CPUReg::RAX);
     SWAG_ASSERT(opBits == OpBits::B8);
@@ -928,7 +928,7 @@ void SCBE_X64::emitCmp(CPUReg memReg, uint64_t memOffset, uint64_t value, OpBits
 
 /////////////////////////////////////////////////////////////////////
 
-void SCBE_X64::emitOpUnary([[maybe_unused]] CPUReg memReg, uint64_t memOffset, CPUOp op, OpBits opBits)
+void SCBE_X64::emitOpUnary(CPUReg memReg, uint64_t memOffset, CPUOp op, OpBits opBits)
 {
     if (op == CPUOp::NOT)
     {
@@ -2010,7 +2010,7 @@ void SCBE_X64::emitPatchJump(const CPUJump& jump)
     }
 }
 
-void SCBE_X64::emitJump([[maybe_unused]] CPUReg reg)
+void SCBE_X64::emitJump(CPUReg reg)
 {
     SWAG_ASSERT(reg == CPUReg::RAX);
     concat.addString2("\xFF\xE0"); // jmp rax
@@ -2193,7 +2193,7 @@ void SCBE_X64::emitNop()
 }
 
 // a*b+c
-void SCBE_X64::emitMulAdd([[maybe_unused]] CPUReg regDst, [[maybe_unused]] CPUReg regMul, [[maybe_unused]] CPUReg regAdd, OpBits opBits)
+void SCBE_X64::emitMulAdd(CPUReg regDst, CPUReg regMul, CPUReg regAdd, OpBits opBits)
 {
     SWAG_ASSERT(regDst == CPUReg::XMM0);
     SWAG_ASSERT(regMul == CPUReg::XMM1);
