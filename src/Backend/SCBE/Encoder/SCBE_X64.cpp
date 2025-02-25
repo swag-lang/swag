@@ -187,29 +187,19 @@ void SCBE_X64::emitSymbolGlobalString(CPUReg reg, const Utf8& str)
 
 void SCBE_X64::emitPush(CPUReg reg)
 {
-    if (reg < CPUReg::R8)
-        concat.addU8(0x50 | (static_cast<uint8_t>(reg) & 0b111));
-    else
-    {
-        concat.addU8(getREX(false, false, false, true));
-        concat.addU8(0x50 | (static_cast<uint8_t>(reg) & 0b111));
-    }
+    emitREX(concat, OpBits::NONE, REX_REG_NONE, reg);
+    concat.addU8(0x50 | (static_cast<uint8_t>(reg) & 0b111));
 }
 
 void SCBE_X64::emitPop(CPUReg reg)
 {
-    if (reg < CPUReg::R8)
-        concat.addU8(0x58 | (static_cast<uint8_t>(reg) & 0b111));
-    else
-    {
-        concat.addU8(getREX(false, false, false, true));
-        concat.addU8(0x58 | (static_cast<uint8_t>(reg) & 0b111));
-    }
+    emitREX(concat, OpBits::NONE, REX_REG_NONE, reg);
+    concat.addU8(0x58 | (static_cast<uint8_t>(reg) & 0b111));
 }
 
 void SCBE_X64::emitRet()
 {
-    concat.addU8(0xC3);
+    emitCPUOp(concat, 0xC3);
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -284,8 +274,8 @@ void SCBE_X64::emitLoad(CPUReg reg, CPUReg memReg, uint64_t memOffset, uint64_t 
 
 void SCBE_X64::emitLoad(CPUReg reg, uint64_t value)
 {
-    emitREX(concat, OpBits::B64, CPUReg::RAX, reg);
-    concat.addU8(0xB8 | static_cast<uint8_t>(reg));
+    emitREX(concat, OpBits::B64, REX_REG_NONE, reg);
+    concat.addU8(0xB8 | (static_cast<uint8_t>(reg) & 0b111));
     concat.addU64(value);
 }
 
