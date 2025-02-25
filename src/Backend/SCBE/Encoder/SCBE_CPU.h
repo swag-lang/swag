@@ -235,7 +235,7 @@ struct SCBE_CPU : BackendEncoder
     virtual void    emitCallLocal(const Utf8& symbolName)                                                                                         = 0;
     virtual void    emitCallExtern(const Utf8& symbolName)                                                                                        = 0;
     virtual void    emitCallIndirect(CPUReg reg)                                                                                                  = 0;
-    virtual void    emitJumpTable(CPUReg table, CPUReg offset)                                                                                    = 0;
+    virtual void    emitJumpTable(CPUReg table, CPUReg offset, uint32_t offsetTable, uint32_t numEntries)                                         = 0;
     virtual CPUJump emitJump(CPUCondJump jumpType, OpBits opBits)                                                                                 = 0;
     virtual void    emitPatchJump(const CPUJump& jump)                                                                                            = 0;
     virtual void    emitPatchJump(const CPUJump& jump, uint64_t offsetDestination)                                                                = 0;

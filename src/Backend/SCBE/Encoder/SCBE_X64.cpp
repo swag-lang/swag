@@ -3,6 +3,7 @@
 #include "Backend/SCBE/Encoder/SCBE_X64.h"
 #include "Core/Math.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Wmf/Module.h"
 #pragma optimize("", off)
 
 enum class ModRMMode : uint8_t
@@ -1809,9 +1810,14 @@ void SCBE_X64::emitOpBinary(CPUReg memReg, uint64_t memOffset, uint64_t value, C
 }
 
 /////////////////////////////////////////////////////////////////////
-void SCBE_X64::emitJumpTable([[maybe_unused]] CPUReg table, [[maybe_unused]] CPUReg offset)
+void SCBE_X64::emitJumpTable(CPUReg table, CPUReg offset, uint32_t offsetTable, uint32_t numEntries)
 {
     SWAG_ASSERT(table == CPUReg::RCX && offset == CPUReg::RAX);
+    
+    uint8_t*   addrConstant        = nullptr;
+    const auto offsetTableConstant = buildParams.module->constantSegment.reserve(numEntries * sizeof(uint32_t), &addrConstant);
+    emitSymbolRelocationAddr(table, symCSIndex, offsetTableConstant); // rcx = jump table
+    
     emitREX(concat, OpBits::B64);
 
     // movsxd rcx, dword ptr [rcx + rax*4]
@@ -1827,6 +1833,19 @@ void SCBE_X64::emitJumpTable([[maybe_unused]] CPUReg table, [[maybe_unused]] CPU
     emitJump(CPUReg::RAX);
     const auto endIdx = concat.totalCount();
     SWAG_ASSERT(endIdx - startIdx == 12);
+
+    const auto tableCompiler = reinterpret_cast<int32_t*>(buildParams.module->compilerSegment.address(offsetTable));
+    const auto currentOffset = static_cast<int32_t>(concat.totalCount());
+
+    CPULabelToSolve label;
+    for (uint32_t idx = 0; idx < numEntries; idx++)
+    {
+        label.ipDest      = tableCompiler[idx] + ipIndex + 1;
+        label.jump.opBits = OpBits::B32;
+        label.jump.offset = currentOffset;
+        label.jump.addr   = addrConstant + idx * sizeof(uint32_t);
+        labelsToSolve.push_back(label);
+    }    
 }
 
 CPUJump SCBE_X64::emitJump(CPUCondJump jumpType, OpBits opBits)

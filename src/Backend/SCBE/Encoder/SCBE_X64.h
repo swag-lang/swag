@@ -15,7 +15,7 @@ struct SCBE_X64 final : SCBE_CPU
     void    emitCallLocal(const Utf8& symbolName) override;
     void    emitCallExtern(const Utf8& symbolName) override;
     void    emitCallIndirect(CPUReg reg) override;
-    void    emitJumpTable(CPUReg table, CPUReg offset) override;
+    void    emitJumpTable(CPUReg table, CPUReg offset, uint32_t offsetTable, uint32_t numEntries) override;
     CPUJump emitJump(CPUCondJump jumpType, OpBits opBits) override;
     void    emitPatchJump(const CPUJump& jump, uint64_t offsetDestination) override;
     void    emitPatchJump(const CPUJump& jump) override;

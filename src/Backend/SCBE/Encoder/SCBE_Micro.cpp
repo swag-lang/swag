@@ -363,12 +363,14 @@ void SCBE_Micro::emitOpBinary(CPUReg memReg, uint64_t memOffset, uint64_t value,
     inst->emitFlags = emitFlags;
 }
 
-void SCBE_Micro::emitJumpTable(CPUReg table, CPUReg offset)
+void SCBE_Micro::emitJumpTable(CPUReg table, CPUReg offset, uint32_t offsetTable, uint32_t numEntries)
 {
     const auto inst = concat.addObj<SCBE_MicroInstruction>();
     inst->op        = SCBE_MicroOp::JumpTable;
     inst->regA      = table;
     inst->regB      = offset;
+    inst->valueA    = offsetTable;
+    inst->valueB    = numEntries;
 }
 
 void SCBE_Micro::emitJump(CPUReg reg)
@@ -508,7 +510,7 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
                 encoder.emitCallIndirect(inst->regA);
                 break;
             case SCBE_MicroOp::JumpTable:
-                encoder.emitJumpTable(inst->regA, inst->regB);
+                encoder.emitJumpTable(inst->regA, inst->regB, static_cast<uint32_t>(inst->valueA), static_cast<uint32_t>(inst->valueB));
                 break;
             case SCBE_MicroOp::Jump0:
             {

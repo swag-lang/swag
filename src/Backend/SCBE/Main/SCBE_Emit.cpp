@@ -459,11 +459,9 @@ void SCBE::emitJumps(SCBE_CPU& pp)
 
 void SCBE::emitJumpDyn(SCBE_CPU& pp)
 {
-    const auto  ip     = pp.ip;
-    const auto& concat = pp.concat;
-    const auto  opBits = SCBE_CPU::getOpBits(ip->op);
+    const auto ip     = pp.ip;
+    const auto opBits = SCBE_CPU::getOpBits(ip->op);
 
-    const auto tableCompiler = reinterpret_cast<int32_t*>(pp.buildParams.module->compilerSegment.address(ip->d.u32));
     pp.emitLoadExtend(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64, opBits, true);
 
     // Note:
@@ -476,32 +474,15 @@ void SCBE::emitJumpDyn(SCBE_CPU& pp)
 
     pp.emitOpBinary(CPUReg::RAX, ip->b.u64 - 1, CPUOp::SUB, OpBits::B64);
     pp.emitCmp(CPUReg::RAX, ip->c.u64, OpBits::B64);
+    const auto tableCompiler = reinterpret_cast<int32_t*>(pp.buildParams.module->compilerSegment.address(ip->d.u32));
     pp.emitJump(JAE, tableCompiler[0]);
 
-    uint8_t*   addrConstant        = nullptr;
-    const auto offsetTableConstant = pp.buildParams.module->constantSegment.reserve(static_cast<uint32_t>(ip->c.u64) * sizeof(uint32_t), &addrConstant);
-
-    pp.emitSymbolRelocationAddr(CPUReg::RCX, pp.symCSIndex, offsetTableConstant); // rcx = jump table
-    pp.emitJumpTable(CPUReg::RCX, CPUReg::RAX);
-
-    const auto currentOffset = static_cast<int32_t>(pp.concat.totalCount());
-    const auto tableConstant = reinterpret_cast<int32_t*>(addrConstant);
-
-    CPULabelToSolve label;
-    for (uint32_t idx = 0; idx < ip->c.u32; idx++)
-    {
-        label.ipDest      = tableCompiler[idx] + pp.ipIndex + 1;
-        label.jump.opBits = OpBits::B32;
-        label.jump.offset = currentOffset;
-        label.jump.addr   = tableConstant + idx;
-        pp.labelsToSolve.push_back(label);
-    }
+    pp.emitJumpTable(CPUReg::RCX, CPUReg::RAX, ip->d.u32, ip->c.u32);
 }
 
 void SCBE::emitCopyVaargs(SCBE_CPU& pp)
 {
-    const auto ip           = pp.ip;
-    const auto typeFuncCall = castTypeInfo<TypeInfoFuncAttr>(reinterpret_cast<TypeInfo*>(ip->d.pointer), TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+    const auto ip = pp.ip;
     if (!pp.pushRVParams.empty())
     {
         const auto     sizeOf            = pp.pushRVParams[0].second;
@@ -543,9 +524,11 @@ void SCBE::emitCopyVaargs(SCBE_CPU& pp)
     }
     else
     {
-        // All of this is complicated. But ip->b.u32 has been reduced by one register in case of closure, and
-        // we have a dynamic test for bytecode execution. But for runtime, be put it back.
+        // All of this is complicated. But ip->b.u32 has been reduced by one register in case of a closure, and
+        // we have a dynamic test for bytecode execution. But for runtime, we put it back.
         auto sizeB = ip->b.u32;
+
+        const auto typeFuncCall = castTypeInfo<TypeInfoFuncAttr>(reinterpret_cast<TypeInfo*>(ip->d.pointer), TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
         if (typeFuncCall->isClosure())
             sizeB += sizeof(Register);
 
