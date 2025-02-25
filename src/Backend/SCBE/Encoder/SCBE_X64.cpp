@@ -13,9 +13,9 @@ enum class ModRMMode : uint8_t
     Register       = 0b11,
 };
 
-constexpr uint8_t RM_SID     = 0b100;
-constexpr auto    RMREG_NONE = static_cast<CPUReg>(0);
-constexpr auto    MODRM_2    = static_cast<CPUReg>(2);
+constexpr auto    MODRM_REG_NONE = static_cast<CPUReg>(0);
+constexpr auto    MODRM_REG_2    = static_cast<CPUReg>(2);
+constexpr uint8_t MODRM_RM_SID   = 0b100;
 
 namespace
 {
@@ -1810,7 +1810,7 @@ void SCBE_X64::emitJumpTable([[maybe_unused]] CPUReg table, [[maybe_unused]] CPU
 
     // movsxd rcx, dword ptr [rcx + rax*4]
     emitCPUOp(concat, CPUOp::MOVSXD);
-    concat.addU8(getModRM(ModRMMode::Memory, CPUReg::RCX, RM_SID));
+    concat.addU8(getModRM(ModRMMode::Memory, CPUReg::RCX, MODRM_RM_SID));
     concat.addU8(getSid(2, CPUReg::RAX, CPUReg::RCX));
 }
 
@@ -2128,7 +2128,7 @@ void SCBE_X64::emitCallExtern(const Utf8& symbolName)
 
 void SCBE_X64::emitCallLocal(const Utf8& symbolName)
 {
-    concat.addU8(0xE8);
+    emitCPUOp(concat, static_cast<CPUOp>(0xE8));
 
     const auto callSym = getOrAddSymbol(symbolName, CPUSymbolKind::Extern);
     if (callSym->kind == CPUSymbolKind::Function)
@@ -2145,9 +2145,9 @@ void SCBE_X64::emitCallLocal(const Utf8& symbolName)
 void SCBE_X64::emitCallIndirect(CPUReg reg)
 {
     SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX || reg == CPUReg::R10);
-    emitREX(concat, OpBits::NONE, RMREG_NONE, reg);
-    concat.addU8(0xFF);
-    emitModRM(concat, ModRMMode::Register, MODRM_2, static_cast<uint8_t>(reg));
+    emitREX(concat, OpBits::NONE, MODRM_REG_NONE, reg);
+    emitCPUOp(concat, static_cast<CPUOp>(0xFF));
+    emitModRM(concat, ModRMMode::Register, MODRM_REG_2, static_cast<uint8_t>(reg));
 }
 
 /////////////////////////////////////////////////////////////////////
