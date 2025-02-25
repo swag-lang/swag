@@ -122,10 +122,15 @@ namespace
             concat.addU8(value);
     }
 
-    void emitCPUOp(Concat& concat, CPUOp op0)
+    void emitCPUOp(Concat& concat, CPUOp op)
     {
-        concat.addU8(static_cast<uint8_t>(op0));
+        concat.addU8(static_cast<uint8_t>(op));
     }
+
+    void emitCPUOp(Concat& concat, uint8_t op)
+    {
+        concat.addU8(op);
+    }    
 
     void emitSpecCPUOp(Concat& concat, CPUOp op, OpBits opBits)
     {
@@ -2120,7 +2125,7 @@ void SCBE_X64::emitClear(CPUReg memReg, uint64_t memOffset, uint32_t count)
 
 void SCBE_X64::emitCallExtern(const Utf8& symbolName)
 {
-    emitCPUOp(concat, static_cast<CPUOp>(0xFF));
+    emitCPUOp(concat, 0xFF);
     emitModRM(concat, ModRMMode::Memory, MODRM_REG_2, MODRM_RM_RIP);
 
     const auto callSym = getOrAddSymbol(symbolName, CPUSymbolKind::Extern);
@@ -2130,7 +2135,7 @@ void SCBE_X64::emitCallExtern(const Utf8& symbolName)
 
 void SCBE_X64::emitCallLocal(const Utf8& symbolName)
 {
-    emitCPUOp(concat, static_cast<CPUOp>(0xE8));
+    emitCPUOp(concat, 0xE8);
 
     const auto callSym = getOrAddSymbol(symbolName, CPUSymbolKind::Extern);
     if (callSym->kind == CPUSymbolKind::Function)
@@ -2148,7 +2153,7 @@ void SCBE_X64::emitCallIndirect(CPUReg reg)
 {
     SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX || reg == CPUReg::R10);
     emitREX(concat, OpBits::NONE, MODRM_REG_NONE, reg);
-    emitCPUOp(concat, static_cast<CPUOp>(0xFF));
+    emitCPUOp(concat, 0xFF);
     emitModRM(concat, ModRMMode::Register, MODRM_REG_2, static_cast<uint8_t>(reg));
 }
 
@@ -2156,7 +2161,7 @@ void SCBE_X64::emitCallIndirect(CPUReg reg)
 
 void SCBE_X64::emitNop()
 {
-    emitCPUOp(concat, CPUOp::NOP);
+    emitCPUOp(concat, 0x90);
 }
 
 // a*b+c
