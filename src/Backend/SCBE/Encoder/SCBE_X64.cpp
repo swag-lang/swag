@@ -482,7 +482,7 @@ void SCBE_X64::emitLoadExtend(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpB
         if (isSigned)
         {
             emitREX(concat, OpBits::B64, reg, memReg);
-            emitCPUOp(concat, CPUOp::MOVSXD);
+            emitCPUOp(concat, 0x63);
             emitModRM(concat, memOffset, reg, memReg);
         }
         else
@@ -1815,8 +1815,8 @@ void SCBE_X64::emitJumpTable([[maybe_unused]] CPUReg table, [[maybe_unused]] CPU
     emitREX(concat, OpBits::B64);
 
     // movsxd rcx, dword ptr [rcx + rax*4]
-    emitCPUOp(concat, CPUOp::MOVSXD);
-    concat.addU8(getModRM(ModRMMode::Memory, CPUReg::RCX, MODRM_RM_SID));
+    emitCPUOp(concat, 0x63);
+    emitModRM(concat, ModRMMode::Memory, CPUReg::RCX, MODRM_RM_SID);
     concat.addU8(getSid(2, CPUReg::RAX, CPUReg::RCX));
 }
 
