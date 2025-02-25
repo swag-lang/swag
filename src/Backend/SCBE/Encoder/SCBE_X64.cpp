@@ -2033,27 +2033,32 @@ void SCBE_X64::emitCopy(CPUReg regDst, CPUReg regSrc, uint32_t count, uint32_t o
     {
         while (count >= 16)
         {
-            concat.addString2("\x0F\x10"); // movups xmm0, [rdx+??]
+            emitCPUOp(concat, 0x0F);
+            emitCPUOp(concat, 0x10); // movups xmm0, [rdx+??]
+
             if (offset <= 0x7F)
             {
                 concat.addU8(0x40 | static_cast<uint8_t>(regSrc));
-                concat.addU8(static_cast<uint8_t>(offset));
+                emitValue(concat, offset, OpBits::B8);
             }
             else
             {
                 concat.addU8(0x80 | static_cast<uint8_t>(regSrc));
-                concat.addU32(offset);
+                emitValue(concat, offset, OpBits::B32);
             }
-            concat.addString2("\x0F\x11"); // movups [rcx+??], xmm0
+
+            emitCPUOp(concat, 0x0F);
+            emitCPUOp(concat, 0x11); // movups [rcx+??], xmm0
+
             if (offset <= 0x7F)
             {
                 concat.addU8(0x40 | static_cast<uint8_t>(regDst));
-                concat.addU8(static_cast<uint8_t>(offset));
+                emitValue(concat, offset, OpBits::B8);
             }
             else
             {
                 concat.addU8(0x80 | static_cast<uint8_t>(regDst));
-                concat.addU32(offset);
+                emitValue(concat, offset, OpBits::B32);
             }
 
             count -= 16;
@@ -2104,10 +2109,16 @@ void SCBE_X64::emitClear(CPUReg memReg, uint64_t memOffset, uint32_t count)
     // SSE 16 octets
     if (count >= 16)
     {
-        concat.addString3("\x0F\x57\xC0"); // xorps xmm0, xmm0
+        // xorps xmm0, xmm0
+        emitCPUOp(concat, 0x0F);
+        emitCPUOp(concat, 0x57);
+        concat.addU8(0xC0);
+
         while (count >= 16)
         {
-            concat.addString2("\x0F\x11"); // movups [reg + ????????], xmm0
+            emitCPUOp(concat, 0x0F);
+            emitCPUOp(concat, 0x11); // movups [rcx+??], xmm0
+
             if (memOffset <= 0x7F)
             {
                 concat.addU8(0x40 | static_cast<uint8_t>(memReg));
@@ -2118,6 +2129,7 @@ void SCBE_X64::emitClear(CPUReg memReg, uint64_t memOffset, uint32_t count)
                 concat.addU8(0x80 | static_cast<uint8_t>(memReg));
                 emitValue(concat, memOffset, OpBits::B32);
             }
+            
             count -= 16;
             memOffset += 16;
         }
