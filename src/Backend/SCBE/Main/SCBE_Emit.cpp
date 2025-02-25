@@ -381,7 +381,7 @@ void SCBE::emitJumpCmp(SCBE_CPU& pp, CPUCondJump op, OpBits opBits)
         pp.emitCmp(r0, r1, opBits);
     }
 
-    emitJump(pp, op, ip->b.s32);
+    pp.emitJump(op, ip->b.s32);
 }
 
 void SCBE::emitJumpCmpAddr(SCBE_CPU& pp, CPUCondJump op, CPUReg memReg, uint64_t memOffset, OpBits opBits)
@@ -399,7 +399,7 @@ void SCBE::emitJumpCmpAddr(SCBE_CPU& pp, CPUCondJump op, CPUReg memReg, uint64_t
         pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, opBits);
     }
 
-    emitJump(pp, op, ip->b.s32);
+    pp.emitJump(op, ip->b.s32);
 }
 
 void SCBE::emitJumpCmp2(SCBE_CPU& pp, CPUCondJump op1, CPUCondJump op2, OpBits opBits)
@@ -419,8 +419,8 @@ void SCBE::emitJumpCmp2(SCBE_CPU& pp, CPUCondJump op1, CPUCondJump op2, OpBits o
         pp.emitCmp(CPUReg::XMM0, CPUReg::XMM1, opBits);
     }
 
-    emitJump(pp, op1, ip->b.s32);
-    emitJump(pp, op2, ip->b.s32);
+    pp.emitJump(op1, ip->b.s32);
+    pp.emitJump(op2, ip->b.s32);
 }
 
 void SCBE::emitJumpCmp3(SCBE_CPU& pp, CPUCondJump op1, CPUCondJump op2, OpBits opBits)
@@ -440,38 +440,8 @@ void SCBE::emitJumpCmp3(SCBE_CPU& pp, CPUCondJump op1, CPUCondJump op2, OpBits o
         pp.emitCmp(CPUReg::XMM0, CPUReg::XMM1, opBits);
     }
 
-    emitJump(pp, op1, 0);
-    emitJump(pp, op2, ip->b.s32);
-}
-
-void SCBE::emitJump(SCBE_CPU& pp, CPUCondJump jumpType, int32_t jumpOffset)
-{
-    CPULabelToSolve label;
-    label.ipDest = jumpOffset + pp.ipIndex + 1;
-
-    // Can we solve the label now ?
-    const auto it = pp.labels.find(label.ipDest);
-    if (it != pp.labels.end())
-    {
-        const auto currentOffset = static_cast<int32_t>(pp.concat.totalCount()) + 1;
-        const int  relOffset     = it->second - (currentOffset + 1);
-        if (relOffset >= -127 && relOffset <= 128)
-        {
-            const auto jump = pp.emitJump(jumpType, OpBits::B8);
-            pp.emitPatchJump(jump, it->second);
-        }
-        else
-        {
-            const auto jump = pp.emitJump(jumpType, OpBits::B32);
-            pp.emitPatchJump(jump, it->second);
-        }
-
-        return;
-    }
-
-    // Here we do not know the destination label, so we assume 32 bits of offset
-    label.jump = pp.emitJump(jumpType, OpBits::B32);
-    pp.labelsToSolve.push_back(label);
+    pp.emitJump(op1, 0);
+    pp.emitJump(op2, ip->b.s32);
 }
 
 void SCBE::emitJumps(SCBE_CPU& pp)
@@ -506,7 +476,7 @@ void SCBE::emitJumpDyn(SCBE_CPU& pp)
 
     pp.emitOpBinary(CPUReg::RAX, ip->b.u64 - 1, CPUOp::SUB, OpBits::B64);
     pp.emitCmp(CPUReg::RAX, ip->c.u64, OpBits::B64);
-    emitJump(pp, JAE, tableCompiler[0]);
+    pp.emitJump(JAE, tableCompiler[0]);
 
     uint8_t*   addrConstant        = nullptr;
     const auto offsetTableConstant = pp.buildParams.module->constantSegment.reserve(static_cast<uint32_t>(ip->c.u64) * sizeof(uint32_t), &addrConstant);

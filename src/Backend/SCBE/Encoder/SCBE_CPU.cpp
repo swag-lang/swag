@@ -502,3 +502,33 @@ void SCBE_CPU::emitSymbolRelocationPtr(CPUReg reg, const Utf8& name)
     relocation.type           = IMAGE_REL_AMD64_ADDR64;
     relocTableTextSection.table.push_back(relocation);
 }
+
+void SCBE_CPU::emitJump(CPUCondJump jumpType, int32_t jumpOffset)
+{
+    CPULabelToSolve label;
+    label.ipDest = jumpOffset + ipIndex + 1;
+
+    // Can we solve the label now ?
+    const auto it = labels.find(label.ipDest);
+    if (it != labels.end())
+    {
+        const auto currentOffset = static_cast<int32_t>(concat.totalCount()) + 1;
+        const int  relOffset     = it->second - (currentOffset + 1);
+        if (relOffset >= -127 && relOffset <= 128)
+        {
+            const auto jump = emitJump(jumpType, OpBits::B8);
+            emitPatchJump(jump, it->second);
+        }
+        else
+        {
+            const auto jump = emitJump(jumpType, OpBits::B32);
+            emitPatchJump(jump, it->second);
+        }
+
+        return;
+    }
+
+    // Here we do not know the destination label, so we assume 32 bits of offset
+    label.jump = emitJump(jumpType, OpBits::B32);
+    labelsToSolve.push_back(label);
+}

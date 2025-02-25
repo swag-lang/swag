@@ -21,6 +21,7 @@ enum class SCBE_MicroOp : uint8_t
     JumpTable,
     Jump0,
     Jump1,
+    Jump2,
     PatchJump0,
     PatchJump1,
     LoadParam,
@@ -94,6 +95,7 @@ struct SCBE_Micro final : SCBE_CPU
     void    emitCallIndirect(CPUReg reg) override;
     void    emitJumpTable(CPUReg table, CPUReg offset) override;
     CPUJump emitJump(CPUCondJump jumpType, OpBits opBits) override;
+    void    emitJump(CPUCondJump jumpType, int32_t jumpOffset) override;
     void    emitPatchJump(const CPUJump& jump) override;
     void    emitPatchJump(const CPUJump& jump, uint64_t offsetDestination) override;
     void    emitJump(CPUReg reg) override;

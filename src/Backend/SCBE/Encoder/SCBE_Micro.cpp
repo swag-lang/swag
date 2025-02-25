@@ -378,6 +378,14 @@ void SCBE_Micro::emitJump(CPUReg reg)
     inst->regA      = reg;
 }
 
+void SCBE_Micro::emitJump(CPUCondJump jumpType, int32_t jumpOffset)
+{
+    const auto inst = concat.addObj<SCBE_MicroInstruction>();
+    inst->op        = SCBE_MicroOp::Jump2;
+    inst->jumpType  = jumpType;
+    inst->valueA    = jumpOffset;
+}
+
 CPUJump SCBE_Micro::emitJump(CPUCondJump jumpType, OpBits opBits)
 {
     const auto inst = concat.addObj<SCBE_MicroInstruction>();
@@ -533,7 +541,9 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
             case SCBE_MicroOp::Jump1:
                 encoder.emitJump(inst->regA);
                 break;
-
+            case SCBE_MicroOp::Jump2:
+                encoder.emitJump(inst->jumpType, static_cast<int32_t>(inst->valueA));
+                break;
             case SCBE_MicroOp::LoadParam:
                 encoder.emitLoadParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->opBitsA);
                 break;
