@@ -18,13 +18,13 @@ enum class BackendPreCompilePass
 
 enum class OpBits : uint32_t
 {
-    Invalid = 0,
-    B8      = 8,
-    B16     = 16,
-    B32     = 32,
-    B64     = 64,
-    F32     = 65,
-    F64     = 66,
+    NONE = 0,
+    B8   = 8,
+    B16  = 16,
+    B32  = 32,
+    B64  = 64,
+    F32  = 65,
+    F64  = 66,
 };
 
 struct BackendEncoder

@@ -13,7 +13,9 @@ enum class ModRMMode : uint8_t
     Register       = 0b11,
 };
 
-constexpr uint8_t SID_CONSTANT = 0b100;
+constexpr uint8_t RM_SID     = 0b100;
+constexpr auto    RMREG_NONE = static_cast<CPUReg>(0);
+constexpr auto    MODRM_2    = static_cast<CPUReg>(2);
 
 namespace
 {
@@ -1808,7 +1810,7 @@ void SCBE_X64::emitJumpTable([[maybe_unused]] CPUReg table, [[maybe_unused]] CPU
 
     // movsxd rcx, dword ptr [rcx + rax*4]
     emitCPUOp(concat, CPUOp::MOVSXD);
-    concat.addU8(getModRM(ModRMMode::Memory, CPUReg::RCX, SID_CONSTANT));
+    concat.addU8(getModRM(ModRMMode::Memory, CPUReg::RCX, RM_SID));
     concat.addU8(getSid(2, CPUReg::RAX, CPUReg::RCX));
 }
 
@@ -2143,10 +2145,9 @@ void SCBE_X64::emitCallLocal(const Utf8& symbolName)
 void SCBE_X64::emitCallIndirect(CPUReg reg)
 {
     SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX || reg == CPUReg::R10);
-    if (reg == CPUReg::R10)
-        concat.addU8(0x41);
+    emitREX(concat, OpBits::NONE, RMREG_NONE, reg);
     concat.addU8(0xFF);
-    concat.addU8(0xD0 | (static_cast<uint8_t>(reg) & 0b111));
+    emitModRM(concat, ModRMMode::Register, MODRM_2, static_cast<uint8_t>(reg));
 }
 
 /////////////////////////////////////////////////////////////////////

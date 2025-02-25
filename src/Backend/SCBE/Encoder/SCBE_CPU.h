@@ -139,7 +139,7 @@ struct CPUJump
 {
     void*    addr   = nullptr;
     uint64_t offset = 0;
-    OpBits   opBits = OpBits::Invalid;
+    OpBits   opBits = OpBits::NONE;
 };
 
 struct CPULabelToSolve
