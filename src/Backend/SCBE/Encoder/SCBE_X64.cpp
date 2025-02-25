@@ -14,10 +14,11 @@ enum class ModRMMode : uint8_t
     Register       = 0b11,
 };
 
-constexpr auto    MODRM_REG_NONE = static_cast<CPUReg>(0);
-constexpr auto    MODRM_REG_2    = static_cast<CPUReg>(2);
-constexpr uint8_t MODRM_RM_SID   = 0b100;
-constexpr uint8_t MODRM_RM_RIP   = 0b101;
+constexpr auto    REX_REG_NONE = static_cast<CPUReg>(0);
+constexpr auto    MODRM_REG_2  = static_cast<CPUReg>(2);
+constexpr auto    MODRM_REG_4  = static_cast<CPUReg>(4);
+constexpr uint8_t MODRM_RM_SID = 0b100;
+constexpr uint8_t MODRM_RM_RIP = 0b101;
 
 namespace
 {
@@ -49,12 +50,12 @@ namespace
         return static_cast<uint8_t>(result);
     }
 
-    void emitREX(Concat& concat, OpBits opBits, CPUReg reg1 = CPUReg::RAX, CPUReg reg2 = CPUReg::RAX)
+    void emitREX(Concat& concat, OpBits opBits, CPUReg reg0 = CPUReg::RAX, CPUReg reg1 = CPUReg::RAX)
     {
         if (opBits == OpBits::B16 || opBits == OpBits::F64)
             concat.addU8(0x66);
-        if (opBits == OpBits::B64 || reg1 >= CPUReg::R8 || reg2 >= CPUReg::R8)
-            concat.addU8(getREX(opBits == OpBits::B64, reg1 >= CPUReg::R8, false, reg2 >= CPUReg::R8));
+        if (opBits == OpBits::B64 || reg0 >= CPUReg::R8 || reg1 >= CPUReg::R8)
+            concat.addU8(getREX(opBits == OpBits::B64, reg0 >= CPUReg::R8, false, reg1 >= CPUReg::R8));
     }
 
     void emitValue(Concat& concat, uint64_t value, OpBits opBits)
@@ -131,7 +132,7 @@ namespace
     void emitCPUOp(Concat& concat, uint8_t op)
     {
         concat.addU8(op);
-    }    
+    }
 
     void emitSpecCPUOp(Concat& concat, CPUOp op, OpBits opBits)
     {
@@ -1813,11 +1814,11 @@ void SCBE_X64::emitOpBinary(CPUReg memReg, uint64_t memOffset, uint64_t value, C
 void SCBE_X64::emitJumpTable(CPUReg table, CPUReg offset, uint32_t offsetTable, uint32_t numEntries)
 {
     SWAG_ASSERT(table == CPUReg::RCX && offset == CPUReg::RAX);
-    
+
     uint8_t*   addrConstant        = nullptr;
     const auto offsetTableConstant = buildParams.module->constantSegment.reserve(numEntries * sizeof(uint32_t), &addrConstant);
     emitSymbolRelocationAddr(table, symCSIndex, offsetTableConstant); // rcx = jump table
-    
+
     emitREX(concat, OpBits::B64);
 
     // movsxd rcx, dword ptr [rcx + rax*4]
@@ -1845,7 +1846,7 @@ void SCBE_X64::emitJumpTable(CPUReg table, CPUReg offset, uint32_t offsetTable, 
         label.jump.offset = currentOffset;
         label.jump.addr   = addrConstant + idx * sizeof(uint32_t);
         labelsToSolve.push_back(label);
-    }    
+    }
 }
 
 CPUJump SCBE_X64::emitJump(CPUCondJump jumpType, OpBits opBits)
@@ -2013,7 +2014,9 @@ void SCBE_X64::emitPatchJump(const CPUJump& jump)
 void SCBE_X64::emitJump(CPUReg reg)
 {
     SWAG_ASSERT(reg == CPUReg::RAX);
-    concat.addString2("\xFF\xE0"); // jmp rax
+    emitREX(concat, OpBits::NONE, REX_REG_NONE, reg);
+    emitCPUOp(concat, 0xFF);
+    emitModRM(concat, ModRMMode::Register, MODRM_REG_4, static_cast<uint8_t>(reg));
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -2180,7 +2183,7 @@ void SCBE_X64::emitCallLocal(const Utf8& symbolName)
 void SCBE_X64::emitCallIndirect(CPUReg reg)
 {
     SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX || reg == CPUReg::R10);
-    emitREX(concat, OpBits::NONE, MODRM_REG_NONE, reg);
+    emitREX(concat, OpBits::NONE, REX_REG_NONE, reg);
     emitCPUOp(concat, 0xFF);
     emitModRM(concat, ModRMMode::Register, MODRM_REG_2, static_cast<uint8_t>(reg));
 }
