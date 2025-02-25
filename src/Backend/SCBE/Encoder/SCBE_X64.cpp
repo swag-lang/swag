@@ -456,7 +456,7 @@ void SCBE_X64::emitLoadExtend(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpB
         if (isSigned)
         {
             emitREX(concat, OpBits::B64, reg, memReg);
-            concat.addU8(0x63);
+            emitCPUOp(concat, CPUOp::MOVSXD);
             emitModRM(concat, memOffset, reg, memReg);
         }
         else
@@ -1788,7 +1788,11 @@ void SCBE_X64::emitJumpTable([[maybe_unused]] CPUReg table, [[maybe_unused]] CPU
 {
     SWAG_ASSERT(table == CPUReg::RCX && offset == CPUReg::RAX);
     emitREX(concat, OpBits::B64);
-    concat.addString3("\x63\x0C\x81"); // movsx rcx, dword ptr [rcx + rax*4]
+
+    // movsxd rcx, dword ptr [rcx + rax*4]
+    emitCPUOp(concat, CPUOp::MOVSXD);
+    concat.addU8(0x0C);
+    concat.addU8(0x81);
 }
 
 CPUJump SCBE_X64::emitJump(CPUCondJump jumpType, OpBits opBits)

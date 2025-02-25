@@ -63,6 +63,7 @@ enum class CPUOp : uint8_t
     FMIN    = 0x5D,
     FDIV    = 0x5E,
     FMAX    = 0x5F,
+    MOVSXD  = 0x63,
     MOVD    = 0x6E,
     TEST    = 0x85,
     XCHG    = 0x87,
