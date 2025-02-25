@@ -1818,6 +1818,15 @@ void SCBE_X64::emitJumpTable([[maybe_unused]] CPUReg table, [[maybe_unused]] CPU
     emitCPUOp(concat, 0x63);
     emitModRM(concat, ModRMMode::Memory, CPUReg::RCX, MODRM_RM_SID);
     concat.addU8(getSid(2, CPUReg::RAX, CPUReg::RCX));
+
+    // + 7 for this instruction
+    // + 5 for the two following instructions
+    const auto startIdx = concat.totalCount();
+    emitSymbolRelocationAddr(CPUReg::RAX, cpuFct->symbolIndex, concat.totalCount() - cpuFct->startAddress + 5 + 7);
+    emitOpBinary(CPUReg::RAX, CPUReg::RCX, CPUOp::ADD, OpBits::B64);
+    emitJump(CPUReg::RAX);
+    const auto endIdx = concat.totalCount();
+    SWAG_ASSERT(endIdx - startIdx == 12);
 }
 
 CPUJump SCBE_X64::emitJump(CPUCondJump jumpType, OpBits opBits)

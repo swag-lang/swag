@@ -484,12 +484,6 @@ void SCBE::emitJumpDyn(SCBE_CPU& pp)
     pp.emitSymbolRelocationAddr(CPUReg::RCX, pp.symCSIndex, offsetTableConstant); // rcx = jump table
     pp.emitJumpTable(CPUReg::RCX, CPUReg::RAX);
 
-    // + 5 for the two following instructions
-    // + 7 for this instruction
-    pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.cpuFct->symbolIndex, concat.totalCount() - pp.cpuFct->startAddress + 5 + 7);
-    pp.emitOpBinary(CPUReg::RAX, CPUReg::RCX, CPUOp::ADD, OpBits::B64);
-    pp.emitJump(CPUReg::RAX);
-
     const auto currentOffset = static_cast<int32_t>(pp.concat.totalCount());
     const auto tableConstant = reinterpret_cast<int32_t*>(addrConstant);
 
