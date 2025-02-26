@@ -56,7 +56,6 @@ enum class SCBE_MicroOp : uint8_t
     OpBinary3,
     MulAdd,
     AddLabel,
-    ComputeLabels,
     Debug,
 };
 
@@ -87,7 +86,6 @@ struct SCBE_Micro final : SCBE_CPU
 
     void    emitDebug(ByteCodeInstruction* ipAddr) override;
     void    emitLabel(uint32_t instructionIndex) override;
-    void    emitLabels() override;
     void    emitSymbolRelocationRef(const Utf8& name) override;
     void    emitSymbolRelocationAddr(CPUReg reg, uint32_t symbolIndex, uint32_t offset) override;
     void    emitSymbolRelocationValue(CPUReg reg, uint32_t symbolIndex, uint32_t offset) override;

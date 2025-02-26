@@ -22,12 +22,6 @@ void SCBE_Micro::emitLabel(uint32_t instructionIndex)
     inst->valueA    = instructionIndex;
 }
 
-void SCBE_Micro::emitLabels()
-{
-    const auto inst = concat.addObj<SCBE_MicroInstruction>();
-    inst->op        = SCBE_MicroOp::ComputeLabels;
-}
-
 void SCBE_Micro::emitSymbolRelocationRef(const Utf8& name)
 {
     const auto inst = concat.addObj<SCBE_MicroInstruction>();
@@ -492,7 +486,6 @@ void SCBE_Micro::emitMulAdd(CPUReg regDst, CPUReg regMul, CPUReg regAdd, OpBits 
 
 void SCBE_Micro::process()
 {
-    emitLabels();
     concat.makeLinear();
 }
 
@@ -509,9 +502,6 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
                 break;
             case SCBE_MicroOp::AddLabel:
                 encoder.emitLabel(static_cast<int32_t>(inst->valueA));
-                break;
-            case SCBE_MicroOp::ComputeLabels:
-                encoder.emitLabels();
                 break;
             case SCBE_MicroOp::SymbolRelocationRef:
                 encoder.emitSymbolRelocationRef(inst->name);
@@ -690,4 +680,6 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
                 break;
         }
     }
+
+    encoder.emitLabels();
 }
