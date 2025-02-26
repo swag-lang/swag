@@ -501,7 +501,7 @@ void SCBE_Micro::encode(SCBE_CPU& encoder)
         switch (inst->op)
         {
             case SCBE_MicroOp::Debug:
-                //encoder.emitDebug(reinterpret_cast<ByteCodeInstruction*>(inst->valueA));
+                encoder.emitDebug(reinterpret_cast<ByteCodeInstruction*>(inst->valueA));
                 break;
             case SCBE_MicroOp::AddLabel:
                 encoder.emitLabel(static_cast<int32_t>(inst->valueA));

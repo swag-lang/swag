@@ -1,10 +1,24 @@
 #include "pch.h"
 #include "Backend/SCBE/Encoder/SCBE_CPU.h"
 #include "Backend/ByteCode/ByteCode.h"
+#include "Backend/SCBE/Main/SCBE.h"
+#include "Backend/SCBE/Obj/SCBE_Coff.h"
 #include "Core/Math.h"
 #include "Main/CommandLine.h"
+#include "Report/Report.h"
 #include "Semantic/Type/TypeInfo.h"
 #include "Semantic/Type/TypeManager.h"
+
+namespace
+{
+    CPUSymbol* getSymbol(SCBE_CPU& pp, const Utf8& name)
+    {
+        const auto it = pp.mapSymbols.find(name);
+        if (it != pp.mapSymbols.end())
+            return &pp.allSymbols[it->second];
+        return nullptr;
+    }
+}
 
 uint32_t CPUFunction::getParamStackOffset(uint32_t paramIdx, bool forceStack) const
 {
@@ -25,17 +39,6 @@ void SCBE_CPU::init(const BuildParameters& buildParameters)
 {
     BackendEncoder::init(buildParameters);
     optLevel = buildParameters.buildCfg ? buildParameters.buildCfg->backendOptimize : BuildCfgBackendOptim::O0;
-}
-
-namespace
-{
-    CPUSymbol* getSymbol(SCBE_CPU& pp, const Utf8& name)
-    {
-        const auto it = pp.mapSymbols.find(name);
-        if (it != pp.mapSymbols.end())
-            return &pp.allSymbols[it->second];
-        return nullptr;
-    }
 }
 
 CPUSymbol* SCBE_CPU::getOrAddSymbol(const Utf8& name, CPUSymbolKind kind, uint32_t value, uint16_t sectionIdx)
@@ -128,6 +131,22 @@ CPUFunction* SCBE_CPU::addFunction(const Utf8& funcName, const CallConv* cc, Byt
 
     functions.push_back(cf);
     return cf;
+}
+
+void SCBE_CPU::endFunction() const
+{
+    cpuFct->endAddress = concat.totalCount();
+
+    const auto objFileType = SCBE::getObjType(g_CommandLine.target);
+    switch (objFileType)
+    {
+        case BackendObjType::Coff:
+            SCBE_Coff::computeUnwind(cpuFct->unwindRegs, cpuFct->unwindOffsetRegs, cpuFct->frameSize, cpuFct->sizeProlog, cpuFct->unwind);
+            break;
+        default:
+            Report::internalError(module, "SCBE::computeUnwind, unsupported output");
+            break;
+    }
 }
 
 bool SCBE_CPU::isNoOp(uint64_t value, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags) const

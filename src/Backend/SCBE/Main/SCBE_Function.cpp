@@ -2415,7 +2415,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     pp.emitLabels();
 
     pp.encode(ppCPU);
-    endFunction(ppCPU);
-
+    
+    ppCPU.endFunction();
     return ok;
 }
