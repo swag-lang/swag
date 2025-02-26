@@ -56,6 +56,7 @@ enum class SCBE_MicroOp : uint8_t
     OpBinary3,
     MulAdd,
     AddLabel,
+    ComputeLabels,
 };
 
 struct SCBE_MicroInstruction
@@ -80,7 +81,10 @@ struct SCBE_MicroInstruction
 
 struct SCBE_Micro final : SCBE_CPU
 {
+    void init(const BuildParameters& buildParameters) override;
+
     void    emitLabel(uint32_t instructionIndex) override;
+    void    emitLabels() override;
     void    emitSymbolRelocationRef(const Utf8& name) override;
     void    emitSymbolRelocationAddr(CPUReg reg, uint32_t symbolIndex, uint32_t offset) override;
     void    emitSymbolRelocationValue(CPUReg reg, uint32_t symbolIndex, uint32_t offset) override;
@@ -133,5 +137,5 @@ struct SCBE_Micro final : SCBE_CPU
     void    emitOpBinary(CPUReg memReg, uint64_t memOffset, uint64_t value, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags = EMITF_Zero) override;
     void    emitMulAdd(CPUReg regDst, CPUReg regMul, CPUReg regAdd, OpBits opBits) override;
 
-    void encode(SCBE_CPU& encoder) const;
+    void encode(SCBE_CPU& encoder);
 };

@@ -252,7 +252,7 @@ void SCBE::emitGlobalPreMain(SCBE_CPU& pp)
     const auto  thisInit = module->getGlobalPrivateFct(g_LangSpec->name_globalPreMain);
     pp.cpuFct            = pp.addFunction(thisInit, &cc, nullptr);
 
-    pp.unwindRegs.push_back(CPUReg::RDI);
+    pp.cpuFct->unwindRegs.push_back(CPUReg::RDI);
     pp.emitEnter(0);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
@@ -293,7 +293,7 @@ void SCBE::emitGlobalInit(SCBE_CPU& pp)
     const auto  thisInit = module->getGlobalPrivateFct(g_LangSpec->name_globalInit);
     pp.cpuFct            = pp.addFunction(thisInit, &cc, nullptr);
 
-    pp.unwindRegs.push_back(CPUReg::RDI);
+    pp.cpuFct->unwindRegs.push_back(CPUReg::RDI);
     pp.emitEnter(0);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)

@@ -67,7 +67,6 @@ struct SCBE final : Backend
     static void emitIMMD(SCBE_CPU& pp, CPUReg reg, OpBits opBits);
     static void emitIMMB(SCBE_CPU& pp, CPUReg reg, OpBits numBitsSrc, OpBits numBitsDst, bool isSigned);
     static void emitIMMC(SCBE_CPU& pp, CPUReg reg, OpBits numBitsSrc, OpBits numBitsDst, bool isSigned);
-    static void emitJumps(SCBE_CPU& pp);
     static void emitJumpDyn(SCBE_CPU& pp);
     static void emitCopyVaargs(SCBE_CPU& pp);
     static void emitMakeLambda(SCBE_CPU& pp);

@@ -1834,7 +1834,7 @@ void SCBE_X64::emitJumpTable(CPUReg table, CPUReg offset, uint32_t offsetTable, 
         label.jump.opBits = OpBits::B32;
         label.jump.offset = currentOffset;
         label.jump.addr   = addrConstant + idx * sizeof(uint32_t);
-        labelsToSolve.push_back(label);
+        cpuFct->labelsToSolve.push_back(label);
     }
 }
 

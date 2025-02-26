@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
+#include "Backend/SCBE/Encoder/SCBE_Micro.h"
 #include "Backend/SCBE/Main/SCBE.h"
 #include "Report/Diagnostic.h"
 #include "Report/Report.h"
@@ -18,8 +19,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     const auto  ct              = buildParameters.compileType;
     const auto  precompileIndex = buildParameters.precompileIndex;
-    auto&       pp              = encoder<SCBE_CPU>(ct, precompileIndex);
-    const auto& concat          = pp.concat;
+    auto&       pp           = encoder<SCBE_CPU>(ct, precompileIndex);
     const auto  typeFunc        = bc->getCallType();
     const auto  returnType      = typeFunc->concreteReturnType();
     const bool  debug           = buildParameters.buildCfg->backendDebugInfos;
@@ -71,8 +71,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     pp.cpuFct->offsetByteCodeStack     = offsetByteCodeStack;
     pp.cpuFct->offsetParamsAsRegisters = offsetParamsAsRegisters;
 
+    //SCBE_Micro pp;
+    //pp.init(buildParameters);
+    //pp.cpuFct = ppCPU.cpuFct;
+
     // RDI will be a pointer to the stack, and the list of registers is stored at the start of the stack
-    pp.unwindRegs.push_back(CPUReg::RDI);
+    pp.cpuFct->unwindRegs.push_back(CPUReg::RDI);
     pp.emitEnter(sizeStack);
 
     // Registers are stored after the sizeParamsStack area, which is used to store parameters for function calls
@@ -122,12 +126,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             continue;
         if (ip->hasFlag(BCI_NO_BACKEND))
             continue;
-        
+
         pp.ip      = ip;
         pp.ipIndex = static_cast<int32_t>(i);
 
         if (debug)
-            SCBE_Debug::setLocation(pp.cpuFct, bc, ip, concat.totalCount() - pp.cpuFct->startAddress);
+            SCBE_Debug::setLocation(pp.cpuFct, bc, ip, pp.concat.totalCount() - pp.cpuFct->startAddress);
 
         if (ip->hasFlag(BCI_JUMP_DEST))
             pp.emitLabel(i);
@@ -2397,8 +2401,11 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         }
     }
 
-    emitJumps(pp);
+    pp.emitLabels();
 
+    //pp.encode(ppCPU);
+    //endFunction(ppCPU);
     endFunction(pp);
+    
     return ok;
 }

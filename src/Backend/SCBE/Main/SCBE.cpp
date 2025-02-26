@@ -246,7 +246,7 @@ void SCBE::endFunction(const SCBE_CPU& pp)
     switch (objFileType)
     {
         case BackendObjType::Coff:
-            SCBE_Coff::computeUnwind(pp.unwindRegs, pp.unwindOffsetRegs, pp.cpuFct->frameSize, pp.cpuFct->sizeProlog, pp.cpuFct->unwind);
+            SCBE_Coff::computeUnwind(pp.cpuFct->unwindRegs, pp.cpuFct->unwindOffsetRegs, pp.cpuFct->frameSize, pp.cpuFct->sizeProlog, pp.cpuFct->unwind);
             break;
         default:
             Report::internalError(pp.module, "SCBE::computeUnwind, unsupported output");

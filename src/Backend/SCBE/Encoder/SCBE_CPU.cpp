@@ -94,19 +94,14 @@ CPUSymbol* SCBE_CPU::getOrCreateGlobalString(const Utf8& str)
 
 void SCBE_CPU::emitLabel(uint32_t instructionIndex)
 {
-    const auto it = labels.find(instructionIndex);
-    if (it == labels.end())
-        labels[instructionIndex] = static_cast<int32_t>(concat.totalCount());
+    const auto it = cpuFct->labels.find(instructionIndex);
+    if (it == cpuFct->labels.end())
+        cpuFct->labels[instructionIndex] = static_cast<int32_t>(concat.totalCount());
 }
 
 CPUFunction* SCBE_CPU::addFunction(const Utf8& funcName, const CallConv* cc, ByteCode* bc)
 {
     concat.align(16);
-
-    labels.clear();
-    labelsToSolve.clear();
-    unwindRegs.clear();
-    unwindOffsetRegs.clear();
 
     CPUFunction* cf  = Allocator::alloc<CPUFunction>();
     cf->cc           = cc;
@@ -423,10 +418,10 @@ void SCBE_CPU::emitEnter(uint32_t sizeStack)
     cpuFct->offsetCallerStackParams = sizeof(void*);
 
     // Push all registers
-    for (const auto& reg : unwindRegs)
+    for (const auto& reg : cpuFct->unwindRegs)
     {
         emitPush(reg);
-        unwindOffsetRegs.push_back(concat.totalCount() - cpuFct->startAddress);
+        cpuFct->unwindOffsetRegs.push_back(concat.totalCount() - cpuFct->startAddress);
         cpuFct->offsetCallerStackParams += sizeof(void*);
     }
 
@@ -460,8 +455,8 @@ void SCBE_CPU::emitEnter(uint32_t sizeStack)
 void SCBE_CPU::emitLeave()
 {
     emitOpBinary(CPUReg::RSP, cpuFct->frameSize, CPUOp::ADD, OpBits::B64);
-    for (auto idxReg = unwindRegs.size() - 1; idxReg != UINT32_MAX; idxReg--)
-        emitPop(unwindRegs[idxReg]);
+    for (auto idxReg = cpuFct->unwindRegs.size() - 1; idxReg != UINT32_MAX; idxReg--)
+        emitPop(cpuFct->unwindRegs[idxReg]);
     emitRet();
 }
 
@@ -509,8 +504,8 @@ void SCBE_CPU::emitJump(CPUCondJump jumpType, int32_t jumpOffset)
     label.ipDest = jumpOffset + ipIndex + 1;
 
     // Can we solve the label now ?
-    const auto it = labels.find(label.ipDest);
-    if (it != labels.end())
+    const auto it = cpuFct->labels.find(label.ipDest);
+    if (it != cpuFct->labels.end())
     {
         const auto currentOffset = static_cast<int32_t>(concat.totalCount()) + 1;
         const int  relOffset     = it->second - (currentOffset + 1);
@@ -530,5 +525,15 @@ void SCBE_CPU::emitJump(CPUCondJump jumpType, int32_t jumpOffset)
 
     // Here we do not know the destination label, so we assume 32 bits of offset
     label.jump = emitJump(jumpType, OpBits::B32);
-    labelsToSolve.push_back(label);
+    cpuFct->labelsToSolve.push_back(label);
+}
+
+void SCBE_CPU::emitLabels()
+{
+    for (auto& toSolve : cpuFct->labelsToSolve)
+    {
+        auto it = cpuFct->labels.find(toSolve.ipDest);
+        SWAG_ASSERT(it != cpuFct->labels.end());
+        emitPatchJump(toSolve.jump, it->second);
+    }
 }

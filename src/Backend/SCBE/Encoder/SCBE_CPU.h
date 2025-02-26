@@ -176,25 +176,30 @@ struct CPURelocationTable
 
 struct CPUFunction
 {
-    VectorNative<uint16_t> unwind;
-    Vector<SCBEDebugLines> dbgLines;
-    ByteCode*              bc                      = nullptr;
-    AstNode*               node                    = nullptr;
-    TypeInfoFuncAttr*      typeFunc                = nullptr;
-    const CallConv*        cc                      = nullptr;
-    uint32_t               symbolIndex             = 0;
-    uint32_t               startAddress            = 0;
-    uint32_t               endAddress              = 0;
-    uint32_t               xdataOffset             = 0;
-    uint32_t               sizeProlog              = 0;
-    uint32_t               offsetByteCodeStack     = 0;
-    uint32_t               offsetCallerStackParams = 0;
-    uint32_t               offsetParamsAsRegisters = 0;
-    uint32_t               sizeStackCallParams     = 0;
-    uint32_t               frameSize               = 0;
-    CPUReg                 offsetFLTReg            = CPUReg::RDI;
-    uint32_t               offsetFLT               = 0;
-    uint32_t               offsetRT                = 0;
+    Map<uint32_t, int32_t>        labels;
+    VectorNative<CPULabelToSolve> labelsToSolve;
+    VectorNative<CPUReg>          unwindRegs;
+    VectorNative<uint32_t>        unwindOffsetRegs;
+    VectorNative<uint16_t>        unwind;
+    Vector<SCBEDebugLines>        dbgLines;
+
+    ByteCode*         bc                      = nullptr;
+    AstNode*          node                    = nullptr;
+    TypeInfoFuncAttr* typeFunc                = nullptr;
+    const CallConv*   cc                      = nullptr;
+    uint32_t          symbolIndex             = 0;
+    uint32_t          startAddress            = 0;
+    uint32_t          endAddress              = 0;
+    uint32_t          xdataOffset             = 0;
+    uint32_t          sizeProlog              = 0;
+    uint32_t          offsetByteCodeStack     = 0;
+    uint32_t          offsetCallerStackParams = 0;
+    uint32_t          offsetParamsAsRegisters = 0;
+    uint32_t          sizeStackCallParams     = 0;
+    uint32_t          frameSize               = 0;
+    CPUReg            offsetFLTReg            = CPUReg::RDI;
+    uint32_t          offsetFLT               = 0;
+    uint32_t          offsetRT                = 0;
 
     uint32_t getParamStackOffset(uint32_t paramIdx, bool forceStack) const;
 };
@@ -213,7 +218,6 @@ struct SCBE_CPU : BackendEncoder
     void emitComputeCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& cpuParams, uint32_t resultOffsetRT, void* resultAddr);
     void emitStoreCallResult(CPUReg memReg, uint32_t memOffset, const TypeInfoFuncAttr* typeFuncBc);
 
-    virtual void emitLabel(uint32_t instructionIndex);
     virtual void emitEnter(uint32_t sizeStack);
     virtual void emitLeave();
     virtual void emitLoadParam(CPUReg reg, uint32_t paramIdx, OpBits opBits);
@@ -221,6 +225,8 @@ struct SCBE_CPU : BackendEncoder
     virtual void emitLoadAddressParam(CPUReg reg, uint32_t paramIdx, bool forceStack);
     virtual void emitStoreParam(uint32_t paramIdx, CPUReg reg, OpBits opBits, bool forceStack);
     virtual void emitSymbolRelocationPtr(CPUReg reg, const Utf8& name);
+    virtual void emitLabel(uint32_t instructionIndex);
+    virtual void emitLabels();
     virtual void emitJump(CPUCondJump jumpType, int32_t jumpOffset);
 
     virtual void    emitSymbolRelocationRef(const Utf8& name)                                                                                     = 0;
@@ -284,14 +290,10 @@ struct SCBE_CPU : BackendEncoder
     Vector<CPUSymbol>                           allSymbols;
     MapUtf8<uint32_t>                           mapSymbols;
     MapUtf8<uint32_t>                           globalStrings;
-    Map<uint32_t, int32_t>                      labels;
     DataSegment                                 globalSegment;
     DataSegment                                 stringSegment;
-    VectorNative<CPULabelToSolve>               labelsToSolve;
     Utf8                                        directives;
     Vector<CPUFunction*>                        functions;
-    VectorNative<CPUReg>                        unwindRegs;
-    VectorNative<uint32_t>                      unwindOffsetRegs;
 
     uint32_t* patchSymbolTableOffset = nullptr;
     uint32_t* patchSymbolTableCount  = nullptr;

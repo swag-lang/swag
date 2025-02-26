@@ -444,19 +444,6 @@ void SCBE::emitJumpCmp3(SCBE_CPU& pp, CPUCondJump op1, CPUCondJump op2, OpBits o
     pp.emitJump(op2, ip->b.s32);
 }
 
-void SCBE::emitJumps(SCBE_CPU& pp)
-{
-    for (auto& toSolve : pp.labelsToSolve)
-    {
-        auto it = pp.labels.find(toSolve.ipDest);
-        SWAG_ASSERT(it != pp.labels.end());
-        pp.emitPatchJump(toSolve.jump, it->second);
-    }
-
-    pp.labels.clear();
-    pp.labelsToSolve.clear();
-}
-
 void SCBE::emitJumpDyn(SCBE_CPU& pp)
 {
     const auto ip     = pp.ip;

@@ -2,11 +2,23 @@
 #include "Backend/SCBE/Encoder/SCBE_Micro.h"
 #include "Semantic/Type/TypeManager.h"
 
+void SCBE_Micro::init(const BuildParameters& buildParameters)
+{
+    concat.init();
+    SCBE_CPU::init(buildParameters);
+}
+
 void SCBE_Micro::emitLabel(uint32_t instructionIndex)
 {
     const auto inst = concat.addObj<SCBE_MicroInstruction>();
     inst->op        = SCBE_MicroOp::AddLabel;
     inst->valueA    = instructionIndex;
+}
+
+void SCBE_Micro::emitLabels()
+{
+    const auto inst = concat.addObj<SCBE_MicroInstruction>();
+    inst->op        = SCBE_MicroOp::ComputeLabels;
 }
 
 void SCBE_Micro::emitSymbolRelocationRef(const Utf8& name)
@@ -397,25 +409,28 @@ void SCBE_Micro::emitJump(CPUCondJump jumpType, int32_t jumpOffset)
 
 CPUJump SCBE_Micro::emitJump(CPUCondJump jumpType, OpBits opBits)
 {
+    CPUJump cpuJump;
+    cpuJump.offset = concat.totalCount();
+    
     const auto inst = concat.addObj<SCBE_MicroInstruction>();
     inst->op        = SCBE_MicroOp::Jump0;
     inst->jumpType  = jumpType;
     inst->opBitsA   = opBits;
-    return CPUJump{.addr = inst};
+    return cpuJump;
 }
 
 void SCBE_Micro::emitPatchJump(const CPUJump& jump)
 {
     const auto inst = concat.addObj<SCBE_MicroInstruction>();
     inst->op        = SCBE_MicroOp::PatchJump0;
-    inst->valueA    = reinterpret_cast<uint64_t>(jump.addr);
+    inst->valueA    = jump.offset;
 }
 
 void SCBE_Micro::emitPatchJump(const CPUJump& jump, uint64_t offsetDestination)
 {
     const auto inst = concat.addObj<SCBE_MicroInstruction>();
     inst->op        = SCBE_MicroOp::PatchJump1;
-    inst->valueA    = reinterpret_cast<uint64_t>(jump.addr);
+    inst->valueA    = jump.offset;
     inst->valueB    = offsetDestination;
 }
 
@@ -466,8 +481,10 @@ void SCBE_Micro::emitMulAdd(CPUReg regDst, CPUReg regMul, CPUReg regAdd, OpBits 
     inst->opBitsA   = opBits;
 }
 
-void SCBE_Micro::encode(SCBE_CPU& encoder) const
+void SCBE_Micro::encode(SCBE_CPU& encoder)
 {
+    concat.makeLinear();
+
     const auto num  = concat.totalCount() / sizeof(SCBE_MicroInstruction);
     auto       inst = reinterpret_cast<SCBE_MicroInstruction*>(concat.firstBucket->data);
     for (uint32_t i = 0; i < num; i++, inst++)
@@ -476,6 +493,9 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
         {
             case SCBE_MicroOp::AddLabel:
                 encoder.emitLabel(static_cast<int32_t>(inst->valueA));
+                break;
+            case SCBE_MicroOp::ComputeLabels:
+                encoder.emitLabels();
                 break;
             case SCBE_MicroOp::SymbolRelocationRef:
                 encoder.emitSymbolRelocationRef(inst->name);
@@ -532,8 +552,9 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
             }
             case SCBE_MicroOp::PatchJump0:
             {
-                const SCBE_MicroInstruction* jump = reinterpret_cast<SCBE_MicroInstruction*>(inst->valueA);
-                CPUJump                      cpuJump;
+                const auto jump = reinterpret_cast<const SCBE_MicroInstruction*>(concat.firstBucket->data + inst->valueA);
+
+                CPUJump cpuJump;
                 cpuJump.addr   = reinterpret_cast<void*>(jump->valueA);
                 cpuJump.offset = jump->valueB;
                 cpuJump.opBits = jump->opBitsA;
