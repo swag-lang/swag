@@ -4,7 +4,6 @@
 #include "Core/Math.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Wmf/Module.h"
-#pragma optimize("", off)
 
 enum class ModRMMode : uint8_t
 {
