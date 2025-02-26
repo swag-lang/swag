@@ -63,7 +63,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     // Register function
     ppCPU.cpuFct = ppCPU.addFunction(funcName, &cc, bc);
     if (debug)
-        SCBE_Debug::setLocation(ppCPU.cpuFct, bc, nullptr, 0);
+        SCBE_Debug::setLocation(ppCPU.cpuFct, nullptr, 0);
 
     ppCPU.cpuFct->offsetFLTReg            = CPUReg::RDI;
     ppCPU.cpuFct->offsetFLT               = offsetFLT;
@@ -75,17 +75,17 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 #ifdef MICRO
     SCBE_Micro pp;
     pp.init(buildParameters);
-    pp.cpuFct               = ppCPU.cpuFct;
-    pp.symCOIndex           = ppCPU.symCOIndex;
-    pp.symBSIndex           = ppCPU.symBSIndex;
-    pp.symMSIndex           = ppCPU.symMSIndex;
-    pp.symCSIndex           = ppCPU.symCSIndex;
-    pp.symTLSIndex          = ppCPU.symTLSIndex;
-    pp.symXDIndex           = ppCPU.symXDIndex;
-    pp.symPI_contextTlsId   = ppCPU.symPI_contextTlsId;
-    pp.symPI_byteCodeRun    = ppCPU.symPI_byteCodeRun;
-    pp.symPI_processInfos   = ppCPU.symPI_processInfos;
-    pp.symPI_makeCallback   = ppCPU.symPI_makeCallback;
+    pp.cpuFct             = ppCPU.cpuFct;
+    pp.symCOIndex         = ppCPU.symCOIndex;
+    pp.symBSIndex         = ppCPU.symBSIndex;
+    pp.symMSIndex         = ppCPU.symMSIndex;
+    pp.symCSIndex         = ppCPU.symCSIndex;
+    pp.symTLSIndex        = ppCPU.symTLSIndex;
+    pp.symXDIndex         = ppCPU.symXDIndex;
+    pp.symPI_contextTlsId = ppCPU.symPI_contextTlsId;
+    pp.symPI_byteCodeRun  = ppCPU.symPI_byteCodeRun;
+    pp.symPI_processInfos = ppCPU.symPI_processInfos;
+    pp.symPI_makeCallback = ppCPU.symPI_makeCallback;
 #else
     SCBE_CPU& pp = ppCPU;
 #endif
@@ -146,8 +146,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         pp.ipIndex = static_cast<int32_t>(i);
 
         if (debug)
-            SCBE_Debug::setLocation(pp.cpuFct, bc, ip, pp.concat.totalCount() - pp.cpuFct->startAddress);
-
+            pp.emitDebug(ip);
         if (ip->hasFlag(BCI_JUMP_DEST))
             pp.emitLabel(i);
 

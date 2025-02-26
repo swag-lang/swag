@@ -8,6 +8,13 @@ void SCBE_Micro::init(const BuildParameters& buildParameters)
     SCBE_CPU::init(buildParameters);
 }
 
+void SCBE_Micro::emitDebug(ByteCodeInstruction* ipAddr)
+{
+    const auto inst = concat.addObj<SCBE_MicroInstruction>();
+    inst->op        = SCBE_MicroOp::Debug;
+    inst->valueA    = reinterpret_cast<uint64_t>(ipAddr);
+}
+
 void SCBE_Micro::emitLabel(uint32_t instructionIndex)
 {
     const auto inst = concat.addObj<SCBE_MicroInstruction>();
@@ -493,6 +500,9 @@ void SCBE_Micro::encode(SCBE_CPU& encoder)
     {
         switch (inst->op)
         {
+            case SCBE_MicroOp::Debug:
+                //encoder.emitDebug(reinterpret_cast<ByteCodeInstruction*>(inst->valueA));
+                break;
             case SCBE_MicroOp::AddLabel:
                 encoder.emitLabel(static_cast<int32_t>(inst->valueA));
                 break;

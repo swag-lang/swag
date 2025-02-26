@@ -493,7 +493,7 @@ Utf8 SCBE_Debug::getScopedName(const AstNode* node)
     return result;
 }
 
-void SCBE_Debug::setLocation(CPUFunction* cpuFct, const ByteCode* bc, const ByteCodeInstruction* ip, uint32_t byteOffset)
+void SCBE_Debug::setLocation(CPUFunction* cpuFct, const ByteCodeInstruction* ip, uint32_t byteOffset)
 {
     if (!cpuFct->node || cpuFct->node->isSpecialFunctionGenerated())
         return;
@@ -515,7 +515,7 @@ void SCBE_Debug::setLocation(CPUFunction* cpuFct, const ByteCode* bc, const Byte
         return;
     }
 
-    const auto loc = ByteCode::getLocation(bc, ip, bc->sourceFile && bc->sourceFile->module->buildCfg.backendDebugInline);
+    const auto loc = ByteCode::getLocation(cpuFct->bc, ip, cpuFct->bc->sourceFile && cpuFct->bc->sourceFile->module->buildCfg.backendDebugInline);
     if (!loc.location)
         return;
 

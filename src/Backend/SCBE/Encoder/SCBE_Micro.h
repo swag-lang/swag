@@ -57,6 +57,7 @@ enum class SCBE_MicroOp : uint8_t
     MulAdd,
     AddLabel,
     ComputeLabels,
+    Debug,
 };
 
 struct SCBE_MicroInstruction
@@ -84,6 +85,7 @@ struct SCBE_Micro final : SCBE_CPU
 {
     void init(const BuildParameters& buildParameters) override;
 
+    void    emitDebug(ByteCodeInstruction* ipAddr) override;
     void    emitLabel(uint32_t instructionIndex) override;
     void    emitLabels() override;
     void    emitSymbolRelocationRef(const Utf8& name) override;

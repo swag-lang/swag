@@ -537,3 +537,8 @@ void SCBE_CPU::emitLabels()
         emitPatchJump(toSolve.jump, it->second);
     }
 }
+
+void SCBE_CPU::emitDebug(ByteCodeInstruction* ipAddr)
+{
+    SCBE_Debug::setLocation(cpuFct, ipAddr, concat.totalCount() - cpuFct->startAddress);
+}
