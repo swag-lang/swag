@@ -565,8 +565,7 @@ void SCBE_Micro::encode(SCBE_CPU& encoder)
             case SCBE_MicroOp::PatchJump0:
             {
                 const auto jump = reinterpret_cast<const SCBE_MicroInstruction*>(concat.firstBucket->data + inst->valueA);
-
-                CPUJump cpuJump;
+                CPUJump    cpuJump;
                 cpuJump.addr   = reinterpret_cast<void*>(jump->valueA);
                 cpuJump.offset = jump->valueB;
                 cpuJump.opBits = jump->opBitsA;
@@ -575,8 +574,8 @@ void SCBE_Micro::encode(SCBE_CPU& encoder)
             }
             case SCBE_MicroOp::PatchJump1:
             {
-                const SCBE_MicroInstruction* jump = reinterpret_cast<SCBE_MicroInstruction*>(inst->valueA);
-                CPUJump                      cpuJump;
+                const auto jump = reinterpret_cast<SCBE_MicroInstruction*>(inst->valueA);
+                CPUJump    cpuJump;
                 cpuJump.addr   = reinterpret_cast<void*>(jump->valueA);
                 cpuJump.offset = jump->valueB;
                 cpuJump.opBits = jump->opBitsA;
