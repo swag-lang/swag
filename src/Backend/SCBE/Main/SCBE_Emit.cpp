@@ -381,7 +381,7 @@ void SCBE::emitJumpCmp(SCBE_CPU& pp, CPUCondJump op, OpBits opBits)
         pp.emitCmp(r0, r1, opBits);
     }
 
-    pp.emitJump(op, ip->b.s32);
+    pp.emitJump(op, pp.ipIndex, ip->b.s32);
 }
 
 void SCBE::emitJumpCmpAddr(SCBE_CPU& pp, CPUCondJump op, CPUReg memReg, uint64_t memOffset, OpBits opBits)
@@ -399,7 +399,7 @@ void SCBE::emitJumpCmpAddr(SCBE_CPU& pp, CPUCondJump op, CPUReg memReg, uint64_t
         pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, opBits);
     }
 
-    pp.emitJump(op, ip->b.s32);
+    pp.emitJump(op, pp.ipIndex, ip->b.s32);
 }
 
 void SCBE::emitJumpCmp2(SCBE_CPU& pp, CPUCondJump op1, CPUCondJump op2, OpBits opBits)
@@ -419,8 +419,8 @@ void SCBE::emitJumpCmp2(SCBE_CPU& pp, CPUCondJump op1, CPUCondJump op2, OpBits o
         pp.emitCmp(CPUReg::XMM0, CPUReg::XMM1, opBits);
     }
 
-    pp.emitJump(op1, ip->b.s32);
-    pp.emitJump(op2, ip->b.s32);
+    pp.emitJump(op1, pp.ipIndex, ip->b.s32);
+    pp.emitJump(op2, pp.ipIndex, ip->b.s32);
 }
 
 void SCBE::emitJumpCmp3(SCBE_CPU& pp, CPUCondJump op1, CPUCondJump op2, OpBits opBits)
@@ -440,8 +440,8 @@ void SCBE::emitJumpCmp3(SCBE_CPU& pp, CPUCondJump op1, CPUCondJump op2, OpBits o
         pp.emitCmp(CPUReg::XMM0, CPUReg::XMM1, opBits);
     }
 
-    pp.emitJump(op1, 0);
-    pp.emitJump(op2, ip->b.s32);
+    pp.emitJump(op1, pp.ipIndex, 0);
+    pp.emitJump(op2, pp.ipIndex, ip->b.s32);
 }
 
 void SCBE::emitJumpDyn(SCBE_CPU& pp)
@@ -462,9 +462,9 @@ void SCBE::emitJumpDyn(SCBE_CPU& pp)
     pp.emitOpBinary(CPUReg::RAX, ip->b.u64 - 1, CPUOp::SUB, OpBits::B64);
     pp.emitCmp(CPUReg::RAX, ip->c.u64, OpBits::B64);
     const auto tableCompiler = reinterpret_cast<int32_t*>(pp.buildParams.module->compilerSegment.address(ip->d.u32));
-    pp.emitJump(JAE, tableCompiler[0]);
+    pp.emitJump(JAE, pp.ipIndex, tableCompiler[0]);
 
-    pp.emitJumpTable(CPUReg::RCX, CPUReg::RAX, ip->d.u32, ip->c.u32);
+    pp.emitJumpTable(CPUReg::RCX, CPUReg::RAX, pp.ipIndex, ip->d.u32, ip->c.u32);
 }
 
 void SCBE::emitCopyVaargs(SCBE_CPU& pp)

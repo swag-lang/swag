@@ -44,7 +44,6 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     llvm::BasicBlock* block         = llvm::BasicBlock::Create(context, "entry", func);
     bool              blockIsClosed = false;
     builder.SetInsertPoint(block);
-    pp.labels.clear();
     bc->markLabels();
 
     // Reserve registers

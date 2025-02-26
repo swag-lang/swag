@@ -382,14 +382,15 @@ void SCBE_Micro::emitOpBinary(CPUReg memReg, uint64_t memOffset, uint64_t value,
     inst->emitFlags = emitFlags;
 }
 
-void SCBE_Micro::emitJumpTable(CPUReg table, CPUReg offset, uint32_t offsetTable, uint32_t numEntries)
+void SCBE_Micro::emitJumpTable(CPUReg table, CPUReg offset, int32_t currentIp, uint32_t offsetTable, uint32_t numEntries)
 {
     const auto inst = concat.addObj<SCBE_MicroInstruction>();
     inst->op        = SCBE_MicroOp::JumpTable;
     inst->regA      = table;
     inst->regB      = offset;
-    inst->valueA    = offsetTable;
-    inst->valueB    = numEntries;
+    inst->valueA    = currentIp;
+    inst->valueB    = offsetTable;
+    inst->valueC    = numEntries;
 }
 
 void SCBE_Micro::emitJump(CPUReg reg)
@@ -399,19 +400,20 @@ void SCBE_Micro::emitJump(CPUReg reg)
     inst->regA      = reg;
 }
 
-void SCBE_Micro::emitJump(CPUCondJump jumpType, int32_t jumpOffset)
+void SCBE_Micro::emitJump(CPUCondJump jumpType, int32_t currentIp, int32_t jumpOffset)
 {
     const auto inst = concat.addObj<SCBE_MicroInstruction>();
     inst->op        = SCBE_MicroOp::Jump2;
     inst->jumpType  = jumpType;
-    inst->valueA    = jumpOffset;
+    inst->valueA    = currentIp;
+    inst->valueB    = jumpOffset;
 }
 
 CPUJump SCBE_Micro::emitJump(CPUCondJump jumpType, OpBits opBits)
 {
     CPUJump cpuJump;
     cpuJump.offset = concat.totalCount();
-    
+
     const auto inst = concat.addObj<SCBE_MicroInstruction>();
     inst->op        = SCBE_MicroOp::Jump0;
     inst->jumpType  = jumpType;
@@ -540,7 +542,7 @@ void SCBE_Micro::encode(SCBE_CPU& encoder)
                 encoder.emitCallIndirect(inst->regA);
                 break;
             case SCBE_MicroOp::JumpTable:
-                encoder.emitJumpTable(inst->regA, inst->regB, static_cast<uint32_t>(inst->valueA), static_cast<uint32_t>(inst->valueB));
+                encoder.emitJumpTable(inst->regA, inst->regB, static_cast<int32_t>(inst->valueA), static_cast<uint32_t>(inst->valueB), static_cast<uint32_t>(inst->valueC));
                 break;
             case SCBE_MicroOp::Jump0:
             {
@@ -575,7 +577,7 @@ void SCBE_Micro::encode(SCBE_CPU& encoder)
                 encoder.emitJump(inst->regA);
                 break;
             case SCBE_MicroOp::Jump2:
-                encoder.emitJump(inst->jumpType, static_cast<int32_t>(inst->valueA));
+                encoder.emitJump(inst->jumpType, static_cast<int32_t>(inst->valueA), static_cast<int32_t>(inst->valueB));
                 break;
             case SCBE_MicroOp::LoadParam:
                 encoder.emitLoadParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->opBitsA);

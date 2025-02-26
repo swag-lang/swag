@@ -77,6 +77,7 @@ struct SCBE_MicroInstruction
 
     uint64_t valueA;
     uint64_t valueB;
+    uint64_t valueC;
 };
 
 struct SCBE_Micro final : SCBE_CPU
@@ -99,9 +100,9 @@ struct SCBE_Micro final : SCBE_CPU
     void    emitCallLocal(const Utf8& symbolName) override;
     void    emitCallExtern(const Utf8& symbolName) override;
     void    emitCallIndirect(CPUReg reg) override;
-    void    emitJumpTable(CPUReg table, CPUReg offset, uint32_t offsetTable, uint32_t numEntries) override;
+    void    emitJumpTable(CPUReg table, CPUReg offset, int32_t currentIp, uint32_t offsetTable, uint32_t numEntries) override;
     CPUJump emitJump(CPUCondJump jumpType, OpBits opBits) override;
-    void    emitJump(CPUCondJump jumpType, int32_t jumpOffset) override;
+    void    emitJump(CPUCondJump jumpType, int32_t currentIp, int32_t jumpOffset) override;
     void    emitPatchJump(const CPUJump& jump) override;
     void    emitPatchJump(const CPUJump& jump, uint64_t offsetDestination) override;
     void    emitJump(CPUReg reg) override;

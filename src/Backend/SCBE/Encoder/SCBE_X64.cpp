@@ -1800,7 +1800,7 @@ void SCBE_X64::emitOpBinary(CPUReg memReg, uint64_t memOffset, uint64_t value, C
 }
 
 /////////////////////////////////////////////////////////////////////
-void SCBE_X64::emitJumpTable(CPUReg table, CPUReg offset, uint32_t offsetTable, uint32_t numEntries)
+void SCBE_X64::emitJumpTable(CPUReg table, CPUReg offset, int32_t currentIp, uint32_t offsetTable, uint32_t numEntries)
 {
     SWAG_ASSERT(table == CPUReg::RCX && offset == CPUReg::RAX);
 
@@ -1830,7 +1830,7 @@ void SCBE_X64::emitJumpTable(CPUReg table, CPUReg offset, uint32_t offsetTable, 
     CPULabelToSolve label;
     for (uint32_t idx = 0; idx < numEntries; idx++)
     {
-        label.ipDest      = tableCompiler[idx] + ipIndex + 1;
+        label.ipDest      = tableCompiler[idx] + currentIp + 1;
         label.jump.opBits = OpBits::B32;
         label.jump.offset = currentOffset;
         label.jump.addr   = addrConstant + idx * sizeof(uint32_t);
