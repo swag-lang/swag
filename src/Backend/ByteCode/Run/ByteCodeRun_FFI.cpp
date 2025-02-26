@@ -175,6 +175,6 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, const ByteCodeInstruction
         OS::ffi(context, foreignPtr, typeFuncBc, cpuParams, retCopyAddr);
     }
 #else
-    OS::ffi(context, foreignPtr, typeInfoFunc, context->ffiPushCPUParams, retCopyAddr);
+    OS::ffi(context, foreignPtr, typeFuncBc, cpuParams, retCopyAddr);
 #endif
 }

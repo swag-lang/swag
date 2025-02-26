@@ -71,24 +71,21 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     ppCPU.cpuFct->offsetByteCodeStack     = offsetByteCodeStack;
     ppCPU.cpuFct->offsetParamsAsRegisters = offsetParamsAsRegisters;
 
-//#define MICRO
-#ifdef MICRO
     SCBE_Micro pp;
     pp.init(buildParameters);
-    pp.cpuFct             = ppCPU.cpuFct;
-    pp.symCOIndex         = ppCPU.symCOIndex;
-    pp.symBSIndex         = ppCPU.symBSIndex;
-    pp.symMSIndex         = ppCPU.symMSIndex;
-    pp.symCSIndex         = ppCPU.symCSIndex;
-    pp.symTLSIndex        = ppCPU.symTLSIndex;
-    pp.symXDIndex         = ppCPU.symXDIndex;
-    pp.symPI_contextTlsId = ppCPU.symPI_contextTlsId;
-    pp.symPI_byteCodeRun  = ppCPU.symPI_byteCodeRun;
-    pp.symPI_processInfos = ppCPU.symPI_processInfos;
-    pp.symPI_makeCallback = ppCPU.symPI_makeCallback;
-#else
-    SCBE_CPU& pp = ppCPU;
-#endif
+    pp.cpuFct               = ppCPU.cpuFct;
+    pp.symCOIndex           = ppCPU.symCOIndex;
+    pp.symBSIndex           = ppCPU.symBSIndex;
+    pp.symMSIndex           = ppCPU.symMSIndex;
+    pp.symCSIndex           = ppCPU.symCSIndex;
+    pp.symTLSIndex          = ppCPU.symTLSIndex;
+    pp.symXDIndex           = ppCPU.symXDIndex;
+    pp.symTls_threadLocalId = ppCPU.symTls_threadLocalId;
+    pp.symPI_contextTlsId   = ppCPU.symPI_contextTlsId;
+    pp.symPI_byteCodeRun    = ppCPU.symPI_byteCodeRun;
+    pp.symPI_processInfos   = ppCPU.symPI_processInfos;
+    pp.symPI_makeCallback   = ppCPU.symPI_makeCallback;
+    pp.symCst_U64F64        = ppCPU.symCst_U64F64;
 
     // RDI will be a pointer to the stack, and the list of registers is stored at the start of the stack
     pp.cpuFct->unwindRegs.push_back(CPUReg::RDI);
@@ -2417,9 +2414,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     pp.emitLabels();
 
-#ifdef MICRO
     pp.encode(ppCPU);
-#endif
     endFunction(ppCPU);
 
     return ok;
