@@ -325,20 +325,24 @@ bool Concat::flushToFile(const Path& path)
 
 void Concat::makeLinear()
 {
+    if (!firstBucket)
+        return;
     if (firstBucket == lastBucket)
         return;
 
-    auto bucket = firstBucket;
+    const auto count      = totalCount();
+    const auto newBucket  = Allocator::alloc<ConcatBucket>();
+    newBucket->countBytes = count;
+    newBucket->capacity   = count;
+    newBucket->data       = Allocator::allocN<uint8_t>(newBucket->capacity);
 
-    firstBucket           = Allocator::alloc<ConcatBucket>();
-    firstBucket->capacity = totalCount();
-    firstBucket->data     = Allocator::allocN<uint8_t>(firstBucket->capacity);
-
-    auto ptr = bucket->data;
-    while (bucket != lastBucket->nextBucket)
+    auto bucket  = firstBucket;
+    auto ptrDest = newBucket->data;
+    while (bucket)
     {
-        std::copy_n(bucket->data, bucket->countBytes, ptr);
-        ptr += bucket->countBytes;
+        const auto bcount = bucketCount(bucket);
+        std::copy_n(bucket->data, bcount, ptrDest);
+        ptrDest += bcount;
 
         const auto next = bucket->nextBucket;
         Allocator::free(bucket->data, bucket->capacity);
@@ -346,5 +350,8 @@ void Concat::makeLinear()
         bucket = next;
     }
 
-    lastBucket = firstBucket;
+    firstBucket     = newBucket;
+    lastBucket      = newBucket;
+    currentSP       = firstBucket->data + firstBucket->countBytes;
+    totalCountBytes = 0;
 }
