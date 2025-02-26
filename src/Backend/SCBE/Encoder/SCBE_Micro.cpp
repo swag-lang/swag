@@ -57,7 +57,7 @@ void SCBE_Micro::emitSymbolGlobalString(CPUReg reg, const Utf8& str)
 void SCBE_Micro::emitSymbolRelocationPtr(CPUReg reg, const Utf8& name)
 {
     const auto inst = concat.addObj<SCBE_MicroInstruction>();
-    inst->op        = SCBE_MicroOp::SymbolRelocationRef;
+    inst->op        = SCBE_MicroOp::SymbolRelocationPtr;
     inst->regA      = reg;
     inst->name      = name;
 }
@@ -506,7 +506,7 @@ void SCBE_Micro::encode(SCBE_CPU& encoder)
                 encoder.emitSymbolRelocationAddr(inst->regA, static_cast<uint32_t>(inst->valueA), static_cast<uint32_t>(inst->valueB));
                 break;
             case SCBE_MicroOp::SymbolRelocationValue:
-                encoder.emitSymbolRelocationAddr(inst->regA, static_cast<uint32_t>(inst->valueA), static_cast<uint32_t>(inst->valueB));
+                encoder.emitSymbolRelocationValue(inst->regA, static_cast<uint32_t>(inst->valueA), static_cast<uint32_t>(inst->valueB));
                 break;
             case SCBE_MicroOp::SymbolGlobalString:
                 encoder.emitSymbolGlobalString(inst->regA, inst->name);
