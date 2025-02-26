@@ -490,10 +490,14 @@ void SCBE_Micro::emitMulAdd(CPUReg regDst, CPUReg regMul, CPUReg regAdd, OpBits 
     inst->opBitsA   = opBits;
 }
 
-void SCBE_Micro::encode(SCBE_CPU& encoder)
+void SCBE_Micro::process()
 {
+    emitLabels();
     concat.makeLinear();
+}
 
+void SCBE_Micro::encode(SCBE_CPU& encoder) const
+{
     const auto num  = concat.totalCount() / sizeof(SCBE_MicroInstruction);
     auto       inst = reinterpret_cast<SCBE_MicroInstruction*>(concat.firstBucket->data);
     for (uint32_t i = 0; i < num; i++, inst++)
