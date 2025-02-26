@@ -130,7 +130,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             SCBE_Debug::setLocation(pp.cpuFct, bc, ip, concat.totalCount() - pp.cpuFct->startAddress);
 
         if (ip->hasFlag(BCI_JUMP_DEST))
-            pp.addLabel(i);
+            pp.emitLabel(i);
 
         switch (ip->op)
         {

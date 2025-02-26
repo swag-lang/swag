@@ -205,7 +205,6 @@ struct SCBE_CPU : BackendEncoder
 
     CPUSymbol*   getOrAddSymbol(const Utf8& name, CPUSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);
     CPUSymbol*   getOrCreateGlobalString(const Utf8& str);
-    void         addLabel(uint32_t instructionIndex);
     void         addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, uint16_t type);
     CPUFunction* addFunction(const Utf8& funcName, const CallConv* cc, ByteCode* bc);
     bool         isNoOp(uint64_t value, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags = EMITF_Zero) const;
@@ -214,6 +213,7 @@ struct SCBE_CPU : BackendEncoder
     void emitComputeCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& cpuParams, uint32_t resultOffsetRT, void* resultAddr);
     void emitStoreCallResult(CPUReg memReg, uint32_t memOffset, const TypeInfoFuncAttr* typeFuncBc);
 
+    virtual void emitLabel(uint32_t instructionIndex);
     virtual void emitEnter(uint32_t sizeStack);
     virtual void emitLeave();
     virtual void emitLoadParam(CPUReg reg, uint32_t paramIdx, OpBits opBits);

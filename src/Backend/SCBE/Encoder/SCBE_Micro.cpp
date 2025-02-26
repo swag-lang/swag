@@ -2,6 +2,13 @@
 #include "Backend/SCBE/Encoder/SCBE_Micro.h"
 #include "Semantic/Type/TypeManager.h"
 
+void SCBE_Micro::emitLabel(uint32_t instructionIndex)
+{
+    const auto inst = concat.addObj<SCBE_MicroInstruction>();
+    inst->op        = SCBE_MicroOp::AddLabel;
+    inst->valueA    = instructionIndex;
+}
+
 void SCBE_Micro::emitSymbolRelocationRef(const Utf8& name)
 {
     const auto inst = concat.addObj<SCBE_MicroInstruction>();
@@ -467,6 +474,9 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
     {
         switch (inst->op)
         {
+            case SCBE_MicroOp::AddLabel:
+                encoder.emitLabel(static_cast<int32_t>(inst->valueA));
+                break;
             case SCBE_MicroOp::SymbolRelocationRef:
                 encoder.emitSymbolRelocationRef(inst->name);
                 break;

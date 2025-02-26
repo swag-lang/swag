@@ -92,7 +92,7 @@ CPUSymbol* SCBE_CPU::getOrCreateGlobalString(const Utf8& str)
     return sym;
 }
 
-void SCBE_CPU::addLabel(uint32_t instructionIndex)
+void SCBE_CPU::emitLabel(uint32_t instructionIndex)
 {
     const auto it = labels.find(instructionIndex);
     if (it == labels.end())
