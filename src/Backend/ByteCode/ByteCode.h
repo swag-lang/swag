@@ -98,22 +98,24 @@ struct ByteCode
     static void*    undoByteCodeLambda(void* ptr);
     static bool     isByteCodeLambda(void* ptr);
     static Location getLocation(const ByteCode* bc, const ByteCodeInstruction* ip, bool wantInline = false);
+    static uint32_t getSetZeroAtPointerSize(const ByteCodeInstruction* ip, uint32_t& offset);
+    static uint32_t getSetZeroStackSize(const ByteCodeInstruction* ip, uint32_t& offset);
 
-    static uint32_t   getSetZeroAtPointerSize(const ByteCodeInstruction* inst, uint32_t& offset);
-    static uint32_t   getSetZeroStackSize(const ByteCodeInstruction* inst, uint32_t& offset);
-    void              printSourceCode(const ByteCodePrintOptions& options, const ByteCodeInstruction* ip, uint32_t* lastLine, SourceFile** lastFile, AstNode** lastInline) const;
-    static Utf8       getPrettyInstruction(ByteCodeInstruction* ip);
-    static Utf8       getInstructionReg(const char* name, const Register& reg, bool regW, bool regR, bool regImm);
-    void              fillPrintInstruction(const ByteCodePrintOptions& options, ByteCodeInstruction* ip, PrintInstructionLine& line) const;
-    static void       printInstruction(const ByteCodePrintOptions& options, const ByteCodeInstruction* ip, const PrintInstructionLine& line);
-    void              printInstruction(const ByteCodePrintOptions& options, ByteCodeInstruction* ip) const;
-    static void       alignPrintInstructions(const ByteCodePrintOptions& options, Vector<PrintInstructionLine>& lines, bool defaultLen = false);
-    void              print(const ByteCodePrintOptions& options, uint32_t start, uint32_t count) const;
-    void              print(const ByteCodePrintOptions& options) const;
-    void              printName() const;
-    Utf8              getPrintRefName() const;
-    Utf8              getPrintName() const;
-    Utf8              getPrintFileName() const;
+    static void printSourceCode(const ByteCodePrintOptions& options, const ByteCode* bc, const ByteCodeInstruction* ip, uint32_t* lastLine, SourceFile** lastFile, AstNode** lastInline);
+    static Utf8 getPrettyInstruction(const ByteCodeInstruction* ip);
+    static Utf8 getInstructionReg(const char* name, const Register& reg, bool regW, bool regR, bool regImm);
+    static void fillPrintInstruction(const ByteCodePrintOptions& options, const ByteCode* bc, const ByteCodeInstruction* ip, PrintInstructionLine& line);
+    static void printInstruction(const ByteCodePrintOptions& options, const ByteCodeInstruction* ip, const PrintInstructionLine& line);
+    static void alignPrintInstructions(const ByteCodePrintOptions& options, Vector<PrintInstructionLine>& lines, bool defaultLen = false);
+
+    void printInstruction(const ByteCodePrintOptions& options, ByteCodeInstruction* ip) const;
+    void print(const ByteCodePrintOptions& options, uint32_t start, uint32_t count) const;
+    void print(const ByteCodePrintOptions& options) const;
+    void printName() const;
+    Utf8 getPrintRefName() const;
+    Utf8 getPrintName() const;
+    Utf8 getPrintFileName() const;
+
     Utf8              getCallNameFromDecl();
     Utf8              getCallName();
     TypeInfoFuncAttr* getCallType() const;

@@ -386,49 +386,49 @@ void ByteCode::makeRoomForInstructions(uint32_t room)
     out = newInstructions;
 }
 
-uint32_t ByteCode::getSetZeroAtPointerSize(const ByteCodeInstruction* inst, uint32_t& offset)
+uint32_t ByteCode::getSetZeroAtPointerSize(const ByteCodeInstruction* ip, uint32_t& offset)
 {
-    switch (inst->op)
+    switch (ip->op)
     {
         case ByteCodeOp::SetZeroAtPointer8:
-            offset = inst->b.u32;
+            offset = ip->b.u32;
             return 1;
         case ByteCodeOp::SetZeroAtPointer16:
-            offset = inst->b.u32;
+            offset = ip->b.u32;
             return 2;
         case ByteCodeOp::SetZeroAtPointer32:
-            offset = inst->b.u32;
+            offset = ip->b.u32;
             return 4;
         case ByteCodeOp::SetZeroAtPointer64:
-            offset = inst->b.u32;
+            offset = ip->b.u32;
             return 8;
         case ByteCodeOp::SetZeroAtPointerX:
-            offset = inst->c.u32;
-            return inst->b.u32;
+            offset = ip->c.u32;
+            return ip->b.u32;
     }
 
     return 0;
 }
 
-uint32_t ByteCode::getSetZeroStackSize(const ByteCodeInstruction* inst, uint32_t& offset)
+uint32_t ByteCode::getSetZeroStackSize(const ByteCodeInstruction* ip, uint32_t& offset)
 {
-    switch (inst->op)
+    switch (ip->op)
     {
         case ByteCodeOp::SetZeroStack8:
-            offset = inst->a.u32;
+            offset = ip->a.u32;
             return 1;
         case ByteCodeOp::SetZeroStack16:
-            offset = inst->a.u32;
+            offset = ip->a.u32;
             return 2;
         case ByteCodeOp::SetZeroStack32:
-            offset = inst->a.u32;
+            offset = ip->a.u32;
             return 4;
         case ByteCodeOp::SetZeroStack64:
-            offset = inst->a.u32;
+            offset = ip->a.u32;
             return 8;
         case ByteCodeOp::SetZeroStackX:
-            offset = inst->a.u32;
-            return inst->b.u32;
+            offset = ip->a.u32;
+            return ip->b.u32;
     }
 
     return 0;

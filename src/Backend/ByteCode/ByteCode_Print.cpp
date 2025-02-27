@@ -57,15 +57,15 @@ Utf8 ByteCode::getPrintRefName() const
     return str;
 }
 
-void ByteCode::printSourceCode(const ByteCodePrintOptions& options, const ByteCodeInstruction* ip, uint32_t* lastLine, SourceFile** lastFile, AstNode** lastInline) const
+void ByteCode::printSourceCode(const ByteCodePrintOptions& options, const ByteCode* bc, const ByteCodeInstruction* ip, uint32_t* lastLine, SourceFile** lastFile, AstNode** lastInline)
 {
     if (ip->op == ByteCodeOp::End)
         return;
 
     // Print source code
     const bool forDbg = options.curIp != nullptr;
-    const auto loc    = getLocation(this, ip, true);
-    const auto loc1   = getLocation(this, ip);
+    const auto loc    = getLocation(bc, ip, true);
+    const auto loc1   = getLocation(bc, ip);
 
     if (!loc.location)
         return;
@@ -110,7 +110,7 @@ void ByteCode::printSourceCode(const ByteCodePrintOptions& options, const ByteCo
     }
 }
 
-Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
+Utf8 ByteCode::getPrettyInstruction(const ByteCodeInstruction* ip)
 {
     Utf8       str   = g_ByteCodeOpDesc[static_cast<int>(ip->op)].display;
     const auto flags = opFlags(ip->op);
@@ -305,9 +305,9 @@ Utf8 ByteCode::getInstructionReg(const char* name, const Register& reg, bool reg
     return str;
 }
 
-void ByteCode::fillPrintInstruction(const ByteCodePrintOptions& options, ByteCodeInstruction* ip, PrintInstructionLine& line) const
+void ByteCode::fillPrintInstruction(const ByteCodePrintOptions& options, const ByteCode* bc, const ByteCodeInstruction* ip, PrintInstructionLine& line)
 {
-    const uint32_t i      = static_cast<uint32_t>(ip - out);
+    const uint32_t i      = static_cast<uint32_t>(ip - bc->out);
     const bool     forDbg = options.curIp != nullptr;
 
     // Print for bcdbg
@@ -320,7 +320,7 @@ void ByteCode::fillPrintInstruction(const ByteCodePrintOptions& options, ByteCod
             switch (bkp.type)
             {
                 case ByteCodeDebugger::DebugBkpType::InstructionIndex:
-                    if (bkp.bc == this && bkp.line == i)
+                    if (bkp.bc == bc && bkp.line == i)
                         hasBkp = &bkp;
                     break;
                 default:
@@ -383,7 +383,7 @@ void ByteCode::fillPrintInstruction(const ByteCodePrintOptions& options, ByteCod
     switch (ip->op)
     {
         case ByteCodeOp::DecSPBP:
-            line.pretty += form("%d", stackSize);
+            line.pretty += form("%d", bc->stackSize);
             line.pretty += " ";
             break;
 
@@ -421,17 +421,17 @@ void ByteCode::fillPrintInstruction(const ByteCodePrintOptions& options, ByteCod
     }
     else if (isLocalCall(ip))
     {
-        const auto bc = reinterpret_cast<ByteCode*>(ip->a.pointer);
-        SWAG_ASSERT(bc);
+        const auto bcCall = reinterpret_cast<ByteCode*>(ip->a.pointer);
+        SWAG_ASSERT(bcCall);
 
         line.pretty += "// ";
-        line.pretty += bc->name;
+        line.pretty += bcCall->name;
         line.pretty += "()";
 
-        if (bc->node && bc->node->typeInfo)
+        if (bcCall->node && bcCall->node->typeInfo)
         {
             line.pretty += " ";
-            line.pretty += bc->node->typeInfo->name;
+            line.pretty += bcCall->node->typeInfo->name;
         }
 
         line.pretty += " ";
@@ -627,7 +627,7 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, ByteCodeIns
 {
     PrintInstructionLine line;
 
-    fillPrintInstruction(options, ip, line);
+    fillPrintInstruction(options, this, ip, line);
 
     Vector<PrintInstructionLine> lines;
     lines.push_back(line);
@@ -647,13 +647,13 @@ void ByteCode::print(const ByteCodePrintOptions& options, uint32_t start, uint32
             break;
 
         PrintInstructionLine line;
-        fillPrintInstruction(options, ip++, line);
+        fillPrintInstruction(options, this, ip++, line);
         lines.push_back(line);
     }
 
     // End
     PrintInstructionLine line;
-    fillPrintInstruction(options, ip, line);
+    fillPrintInstruction(options, this, ip, line);
     lines.push_back(line);
 
     alignPrintInstructions(options, lines);
@@ -668,7 +668,7 @@ void ByteCode::print(const ByteCodePrintOptions& options, uint32_t start, uint32
         if (ip->op == ByteCodeOp::End)
             break;
         if (options.printSourceCode)
-            printSourceCode(options, ip, &lastLine, &lastFile, &lastInline);
+            printSourceCode(options, this, ip, &lastLine, &lastFile, &lastInline);
         printInstruction(options, ip++, lines[i]);
     }
 
