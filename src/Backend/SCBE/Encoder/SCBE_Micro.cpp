@@ -439,14 +439,13 @@ void SCBE_Micro::emitPatchJump(const CPUJump& jump, uint64_t offsetDestination)
     inst->valueB    = offsetDestination;
 }
 
-void SCBE_Micro::emitCopy(CPUReg regDst, CPUReg regSrc, uint32_t count, uint32_t offset)
+void SCBE_Micro::emitCopy(CPUReg regDst, CPUReg regSrc, uint32_t count)
 {
     const auto inst = concat.addObj<SCBE_MicroInstruction>();
     inst->op        = SCBE_MicroOp::Copy;
     inst->regA      = regDst;
     inst->regB      = regSrc;
     inst->valueA    = count;
-    inst->valueB    = offset;
 }
 
 void SCBE_Micro::emitNop()
@@ -654,7 +653,7 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
                 encoder.emitClear(inst->regA, inst->valueA, static_cast<uint32_t>(inst->valueB));
                 break;
             case SCBE_MicroOp::Copy:
-                encoder.emitCopy(inst->regA, inst->regB, static_cast<uint32_t>(inst->valueA), static_cast<uint32_t>(inst->valueB));
+                encoder.emitCopy(inst->regA, inst->regB, static_cast<uint32_t>(inst->valueA));
                 break;
             case SCBE_MicroOp::OpUnary0:
                 encoder.emitOpUnary(inst->regA, inst->valueA, inst->cpuOp, inst->opBitsA);

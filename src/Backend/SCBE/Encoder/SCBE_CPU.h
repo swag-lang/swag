@@ -232,7 +232,7 @@ struct SCBE_CPU : BackendEncoder
     virtual void emitJump(CPUCondJump jumpType, int32_t currentIp, int32_t jumpOffset);
 
     virtual void    emitSymbolRelocationRef(const Utf8& name)                                                                                     = 0;
-    virtual void    emitSymbolRelocationAddress(CPUReg reg, uint32_t symbolIndex, uint32_t offset)                                                   = 0;
+    virtual void    emitSymbolRelocationAddress(CPUReg reg, uint32_t symbolIndex, uint32_t offset)                                                = 0;
     virtual void    emitSymbolRelocationValue(CPUReg reg, uint32_t symbolIndex, uint32_t offset)                                                  = 0;
     virtual void    emitSymbolGlobalString(CPUReg reg, const Utf8& str)                                                                           = 0;
     virtual void    emitPush(CPUReg reg)                                                                                                          = 0;
@@ -266,7 +266,7 @@ struct SCBE_CPU : BackendEncoder
     virtual void    emitSet(CPUReg reg, CPUCondFlag setType)                                                                                      = 0;
     virtual void    emitClear(CPUReg reg, OpBits opBits)                                                                                          = 0;
     virtual void    emitClear(CPUReg memReg, uint64_t memOffset, uint32_t count)                                                                  = 0;
-    virtual void    emitCopy(CPUReg regDst, CPUReg regSrc, uint32_t count, uint32_t offset)                                                       = 0;
+    virtual void    emitCopy(CPUReg regDst, CPUReg regSrc, uint32_t count)                                                                        = 0;
     virtual void    emitOpUnary(CPUReg memReg, uint64_t memOffset, CPUOp op, OpBits opBits)                                                       = 0;
     virtual void    emitOpUnary(CPUReg reg, CPUOp op, OpBits opBits)                                                                              = 0;
     virtual void    emitOpBinary(CPUReg regDst, CPUReg regSrc, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags = EMITF_Zero)                      = 0;

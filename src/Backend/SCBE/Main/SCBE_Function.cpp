@@ -1630,7 +1630,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 opBits = SCBE_CPU::getOpBits(ip->op);
                 pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);
                 pp.emitLoad(CPUReg::RDX, CPUReg::RDI, REG_OFFSET(ip->b.u32), OpBits::B64);
-                pp.emitCopy(CPUReg::RCX, CPUReg::RDX, SCBE_CPU::getNumBits(opBits) / 8, 0);
+                pp.emitCopy(CPUReg::RCX, CPUReg::RDX, SCBE_CPU::getNumBits(opBits) / 8);
                 break;
 
                 /////////////////////////////////////
@@ -1642,7 +1642,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 {
                     pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);
                     pp.emitLoad(CPUReg::RDX, CPUReg::RDI, REG_OFFSET(ip->b.u32), OpBits::B64);
-                    pp.emitCopy(CPUReg::RCX, CPUReg::RDX, ip->c.u32, 0);
+                    pp.emitCopy(CPUReg::RCX, CPUReg::RDX, ip->c.u32);
                 }
                 else
                 {

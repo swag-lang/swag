@@ -291,6 +291,7 @@ void SCBE_Micro::print() const
             case SCBE_MicroOp::LoadAddress1:
                 // encoder.emitLoadAddress(inst->regA, inst->regB, inst->regC, inst->valueA, inst->opBitsA);
                 line.name = "lea";
+                line.args = form("%s, [%s+%s*%d]", regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsA), regName(inst->regC, inst->opBitsA), inst->valueA);
                 break;
             case SCBE_MicroOp::Store0:
                 // encoder.emitStore(inst->regA, inst->valueA, inst->regB, inst->opBitsA);
@@ -338,8 +339,9 @@ void SCBE_Micro::print() const
                 line.args = form("%s+%d, %d", regName(inst->regA, inst->opBitsA), inst->valueA, inst->valueB);
                 break;
             case SCBE_MicroOp::Copy:
-                // encoder.emitCopy(inst->regA, inst->regB, static_cast<uint32_t>(inst->valueA), static_cast<uint32_t>(inst->valueB));
+                // encoder.emitCopy(inst->regA, inst->regB, static_cast<uint32_t>(inst->valueA));
                 line.name = "copy";
+                line.args = form("%s, %s, %d", regName(inst->regA, inst->opBitsA), regName(inst->regA, inst->opBitsB), inst->valueA);
                 break;
             case SCBE_MicroOp::OpUnary0:
                 // encoder.emitOpUnary(inst->regA, inst->valueA, inst->cpuOp, inst->opBitsA);

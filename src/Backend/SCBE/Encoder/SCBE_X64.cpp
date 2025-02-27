@@ -2010,12 +2010,14 @@ void SCBE_X64::emitJump(CPUReg reg)
 
 /////////////////////////////////////////////////////////////////////
 
-void SCBE_X64::emitCopy(CPUReg regDst, CPUReg regSrc, uint32_t count, uint32_t offset)
+void SCBE_X64::emitCopy(CPUReg regDst, CPUReg regSrc, uint32_t count)
 {
     if (!count)
         return;
+
     SWAG_ASSERT(regDst == CPUReg::RCX);
     SWAG_ASSERT(regSrc == CPUReg::RDX);
+    uint32_t offset = 0;
 
     // SSE 16 octets
     if (count >= 16)

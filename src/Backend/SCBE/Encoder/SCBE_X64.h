@@ -39,7 +39,7 @@ struct SCBE_X64 final : SCBE_CPU
     void    emitSet(CPUReg reg, CPUCondFlag setType) override;
     void    emitClear(CPUReg reg, OpBits opBits) override;
     void    emitClear(CPUReg memReg, uint64_t memOffset, uint32_t count) override;
-    void    emitCopy(CPUReg regDst, CPUReg regSrc, uint32_t count, uint32_t offset) override;
+    void    emitCopy(CPUReg regDst, CPUReg regSrc, uint32_t count) override;
     void    emitOpUnary(CPUReg memReg, uint64_t memOffset, CPUOp op, OpBits opBits) override;
     void    emitOpUnary(CPUReg reg, CPUOp op, OpBits opBits) override;
     void    emitOpBinary(CPUReg regDst, CPUReg regSrc, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags = EMITF_Zero) override;
