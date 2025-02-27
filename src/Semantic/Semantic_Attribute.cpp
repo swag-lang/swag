@@ -246,7 +246,7 @@ void Semantic::inheritAttributesFromOwnerFunc(AstNode* child)
     const auto safetyOff      = child->ownerFct->safetyOff;
 
     child->addAttribute(attributeFlags.mask(ATTRIBUTE_PRINT_BC));
-    child->addAttribute(attributeFlags.mask(ATTRIBUTE_PRINT_GEN_BC));
+    child->addAttribute(attributeFlags.mask(ATTRIBUTE_PRINT_BC_GEN));
     inheritAttributesFrom(child, attributeFlags, safetyOn, safetyOff);
 }
 

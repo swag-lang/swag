@@ -335,6 +335,7 @@ void SCBE_Micro::print() const
             case SCBE_MicroOp::Clear1:
                 // encoder.emitClear(inst->regA, inst->valueA, static_cast<uint32_t>(inst->valueB));
                 line.name = "clear";
+                line.args = form("%s+%d, %d", regName(inst->regA, inst->opBitsA), inst->valueA, inst->valueB);
                 break;
             case SCBE_MicroOp::Copy:
                 // encoder.emitCopy(inst->regA, inst->regB, static_cast<uint32_t>(inst->valueA), static_cast<uint32_t>(inst->valueB));
@@ -343,10 +344,12 @@ void SCBE_Micro::print() const
             case SCBE_MicroOp::OpUnary0:
                 // encoder.emitOpUnary(inst->regA, inst->valueA, inst->cpuOp, inst->opBitsA);
                 line.name = cpuOpName(inst->cpuOp);
+                line.args += form("%s ptr [%s+%d]", opBitsName(inst->opBitsA), regName(inst->regA, inst->opBitsA), inst->valueA);
                 break;
             case SCBE_MicroOp::OpUnary1:
                 // encoder.emitOpUnary(inst->regA, inst->cpuOp, inst->opBitsA);
                 line.name = cpuOpName(inst->cpuOp);
+                line.args += form("%s", regName(inst->regA, inst->opBitsA));
                 break;
             case SCBE_MicroOp::OpBinary0:
                 // encoder.emitOpBinary(inst->regA, inst->regB, inst->cpuOp, inst->opBitsA, inst->emitFlags);

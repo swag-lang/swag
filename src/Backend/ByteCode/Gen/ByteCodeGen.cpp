@@ -70,7 +70,7 @@ bool ByteCodeGen::setupByteCodeGenerated(ByteCodeGenContext* context, AstNode* n
                 context->sourceFile->module->byteCodePrintBC.push_back(context->bc);
             }
 
-            if (node->hasAttribute(ATTRIBUTE_PRINT_GEN_BC) && !node->hasAttribute(ATTRIBUTE_GENERATED_FUNC))
+            if (node->hasAttribute(ATTRIBUTE_PRINT_BC_GEN) && !node->hasAttribute(ATTRIBUTE_GENERATED_FUNC))
             {
                 constexpr ByteCodePrintOptions opt;
                 context->bc->print(opt);

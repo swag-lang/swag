@@ -270,7 +270,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
     }
 
     SWAG_CHECK(collectAttributes(context, node, nullptr));
-    if (node->hasAttribute(ATTRIBUTE_PRINT_GEN_BC))
+    if (node->hasAttribute(ATTRIBUTE_PRINT_BC_GEN))
     {
         constexpr ByteCodePrintOptions opt;
         node->extByteCode()->bc->print(opt);

@@ -597,7 +597,7 @@ bool ByteCodeGen::generateStructOpInit(ByteCodeGenContext* context, TypeInfoStru
             cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
         }
 
-        if (structNode->hasAttribute(ATTRIBUTE_PRINT_GEN_BC))
+        if (structNode->hasAttribute(ATTRIBUTE_PRINT_BC_GEN))
         {
             constexpr ByteCodePrintOptions opt;
             cxt.bc->print(opt);
@@ -619,7 +619,7 @@ bool ByteCodeGen::generateStructOpInit(ByteCodeGenContext* context, TypeInfoStru
             cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
         }
 
-        if (structNode->hasAttribute(ATTRIBUTE_PRINT_GEN_BC))
+        if (structNode->hasAttribute(ATTRIBUTE_PRINT_BC_GEN))
         {
             constexpr ByteCodePrintOptions opt;
             cxt.bc->print(opt);
@@ -775,7 +775,7 @@ bool ByteCodeGen::generateStructOpInit(ByteCodeGenContext* context, TypeInfoStru
         cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
     }
 
-    if (structNode->hasAttribute(ATTRIBUTE_PRINT_GEN_BC))
+    if (structNode->hasAttribute(ATTRIBUTE_PRINT_BC_GEN))
     {
         constexpr ByteCodePrintOptions opt;
         cxt.bc->print(opt);
@@ -885,7 +885,7 @@ bool ByteCodeGen::generateStructOpDrop(ByteCodeGenContext* context, TypeInfoStru
         cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
     }
 
-    if (structNode->hasAttribute(ATTRIBUTE_PRINT_GEN_BC))
+    if (structNode->hasAttribute(ATTRIBUTE_PRINT_BC_GEN))
     {
         constexpr ByteCodePrintOptions opt;
         cxt.bc->print(opt);
@@ -997,7 +997,7 @@ bool ByteCodeGen::generateStructOpPostCopy(ByteCodeGenContext* context, TypeInfo
         cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
     }
 
-    if (structNode->hasAttribute(ATTRIBUTE_PRINT_GEN_BC))
+    if (structNode->hasAttribute(ATTRIBUTE_PRINT_BC_GEN))
     {
         constexpr ByteCodePrintOptions opt;
         cxt.bc->print(opt);
@@ -1108,7 +1108,7 @@ bool ByteCodeGen::generateStructOpPostMove(ByteCodeGenContext* context, TypeInfo
         cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
     }
 
-    if (structNode->hasAttribute(ATTRIBUTE_PRINT_GEN_BC))
+    if (structNode->hasAttribute(ATTRIBUTE_PRINT_BC_GEN))
     {
         constexpr ByteCodePrintOptions opt;
         cxt.bc->print(opt);

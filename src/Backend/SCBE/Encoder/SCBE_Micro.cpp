@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "Backend/ByteCode/ByteCode.h"
 #include "Backend/SCBE/Encoder/SCBE_Micro.h"
+#include "Backend/ByteCode/ByteCode.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/AstNode.h"
 
@@ -685,6 +685,6 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
 
     encoder.emitLabels();
 
-    if (cpuFct->bc->node && cpuFct->bc->node->hasAttribute(ATTRIBUTE_PRINT_BC))
+    if (cpuFct->bc->node && cpuFct->bc->node->hasAttribute(ATTRIBUTE_PRINT_ASM))
         print();
 }

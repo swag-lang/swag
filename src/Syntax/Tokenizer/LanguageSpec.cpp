@@ -566,7 +566,8 @@ void LanguageSpec::setupAttributesFlags()
 {
     attributesFlags.add("ConstExpr", ATTRIBUTE_CONSTEXPR);
     attributesFlags.add("PrintBc", ATTRIBUTE_PRINT_BC);
-    attributesFlags.add("PrintGenBc", ATTRIBUTE_PRINT_GEN_BC);
+    attributesFlags.add("PrintBcGen", ATTRIBUTE_PRINT_BC_GEN);
+    attributesFlags.add("PrintAsm", ATTRIBUTE_PRINT_ASM);
     attributesFlags.add("Compiler", ATTRIBUTE_COMPILER);
     attributesFlags.add("EnumFlags", ATTRIBUTE_ENUM_FLAGS);
     attributesFlags.add("EnumIndex", ATTRIBUTE_ENUM_INDEX);
