@@ -5,7 +5,7 @@
 enum class SCBE_MicroOp : uint8_t
 {
     SymbolRelocationRef,
-    SymbolRelocationAddr,
+    SymbolRelocationAddress,
     SymbolRelocationValue,
     SymbolGlobalString,
     SymbolRelocationPtr,

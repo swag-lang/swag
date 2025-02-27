@@ -6,6 +6,43 @@
 
 namespace
 {
+    const char* cpuCondName(CPUCondFlag cond)
+    {
+        switch (cond)
+        {
+            case CPUCondFlag::A:
+                return "a";
+            case CPUCondFlag::O:
+                return "o";
+            case CPUCondFlag::AE:
+                return "ae";
+            case CPUCondFlag::G:
+                return "g";
+            case CPUCondFlag::B:
+                return "b";
+            case CPUCondFlag::BE:
+                return "be";
+            case CPUCondFlag::E:
+                return "e";
+            case CPUCondFlag::EP:
+                return "ep";
+            case CPUCondFlag::GE:
+                return "ge";
+            case CPUCondFlag::L:
+                return "l";
+            case CPUCondFlag::LE:
+                return "le";
+            case CPUCondFlag::NA:
+                return "na";
+            case CPUCondFlag::NE:
+                return "ne";
+            case CPUCondFlag::NEP:
+                return "nep";
+        }
+
+        return "??";
+    }
+
     const char* cpuOpName(CPUOp op)
     {
         switch (op)
@@ -103,13 +140,15 @@ void SCBE_Micro::print() const
             case SCBE_MicroOp::SymbolRelocationRef:
                 // encoder.emitSymbolRelocationRef(inst->name);
                 break;
-            case SCBE_MicroOp::SymbolRelocationAddr:
-                // encoder.emitSymbolRelocationAddr(inst->regA, static_cast<uint32_t>(inst->valueA), static_cast<uint32_t>(inst->valueB));
-                line.name = "mov";
+            case SCBE_MicroOp::SymbolRelocationAddress:
+                // encoder.emitSymbolRelocationAddress(inst->regA, static_cast<uint32_t>(inst->valueA), static_cast<uint32_t>(inst->valueB));
+                line.name = "lea";
+                line.args = form("%s, <sym%d>+%d", regName(inst->regA, OpBits::B64), inst->valueA, inst->valueB);
                 break;
             case SCBE_MicroOp::SymbolRelocationValue:
                 // encoder.emitSymbolRelocationValue(inst->regA, static_cast<uint32_t>(inst->valueA), static_cast<uint32_t>(inst->valueB));
                 line.name = "mov";
+                line.args = form("%s, <sym%d>+%d", regName(inst->regA, OpBits::B64), inst->valueA, inst->valueB);
                 break;
             case SCBE_MicroOp::SymbolGlobalString:
                 // encoder.emitSymbolGlobalString(inst->regA, inst->name);
@@ -279,7 +318,8 @@ void SCBE_Micro::print() const
                 break;
             case SCBE_MicroOp::Set:
                 // encoder.emitSet(inst->regA, inst->cpuCond);
-                line.name = "set";
+                line.name = form("set%s", cpuCondName(inst->cpuCond));
+                line.args = form("%s", regName(inst->regA, OpBits::B8));
                 break;
             case SCBE_MicroOp::Clear0:
                 // encoder.emitClear(inst->regA, inst->opBitsA);

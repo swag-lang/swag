@@ -34,7 +34,7 @@ void SCBE_Micro::emitSymbolRelocationRef(const Utf8& name)
 void SCBE_Micro::emitSymbolRelocationAddress(CPUReg reg, uint32_t symbolIndex, uint32_t offset)
 {
     const auto inst = concat.addObj<SCBE_MicroInstruction>();
-    inst->op        = SCBE_MicroOp::SymbolRelocationAddr;
+    inst->op        = SCBE_MicroOp::SymbolRelocationAddress;
     inst->regA      = reg;
     inst->valueA    = symbolIndex;
     inst->valueB    = offset;
@@ -508,7 +508,7 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
             case SCBE_MicroOp::SymbolRelocationRef:
                 encoder.emitSymbolRelocationRef(inst->name);
                 break;
-            case SCBE_MicroOp::SymbolRelocationAddr:
+            case SCBE_MicroOp::SymbolRelocationAddress:
                 encoder.emitSymbolRelocationAddress(inst->regA, static_cast<uint32_t>(inst->valueA), static_cast<uint32_t>(inst->valueB));
                 break;
             case SCBE_MicroOp::SymbolRelocationValue:
