@@ -1,4 +1,6 @@
 #include "pch.h"
+
+#include "Backend/ByteCode/ByteCode.h"
 #include "Backend/SCBE/Encoder/SCBE_Micro.h"
 #include "Semantic/Type/TypeManager.h"
 
@@ -682,4 +684,7 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
     }
 
     encoder.emitLabels();
+
+    if (cpuFct->bc->getPrintName().containsNoCase("__tlsAlloc"))
+        print();
 }
