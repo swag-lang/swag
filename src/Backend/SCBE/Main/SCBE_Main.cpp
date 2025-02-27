@@ -78,51 +78,51 @@ void SCBE::emitMain(SCBE_CPU& pp)
     SWAG_ASSERT(g_SystemAllocatorTable);
     const auto bcAlloc = static_cast<ByteCode*>(ByteCode::undoByteCodeLambda(static_cast<void**>(g_SystemAllocatorTable)[0]));
     SWAG_ASSERT(bcAlloc);
-    pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symDefaultAllocTable, 0);
+    pp.emitSymbolRelocationAddress(CPUReg::RAX, pp.symDefaultAllocTable, 0);
     pp.emitLoadAddress(CPUReg::RCX, CPUReg::RIP, 0);
     pp.emitSymbolRelocationRef(bcAlloc->getCallName());
     pp.emitStore(CPUReg::RAX, 0, CPUReg::RCX, OpBits::B64);
 
     // mainContext.allocator.itable = &defaultAllocTable;
-    pp.emitSymbolRelocationAddr(CPUReg::RCX, pp.symMC_mainContext_allocator_itable, 0);
+    pp.emitSymbolRelocationAddress(CPUReg::RCX, pp.symMC_mainContext_allocator_itable, 0);
     pp.emitStore(CPUReg::RCX, 0, CPUReg::RAX, OpBits::B64);
 
     // main context flags
-    pp.emitSymbolRelocationAddr(CPUReg::RCX, pp.symMC_mainContext_flags, 0);
+    pp.emitSymbolRelocationAddress(CPUReg::RCX, pp.symMC_mainContext_flags, 0);
     const uint64_t contextFlags = getDefaultContextFlags(module);
     pp.emitStore(CPUReg::RCX, 0, contextFlags, OpBits::B64);
 
     //__process_infos.contextTlsId = swag_runtime_tlsAlloc();
-    pp.emitSymbolRelocationAddr(CPUReg::RDI, pp.symPI_contextTlsId, 0);
+    pp.emitSymbolRelocationAddress(CPUReg::RDI, pp.symPI_contextTlsId, 0);
     emitInternalCallRAParams(pp, g_LangSpec->name_priv_tlsAlloc, {}, 0);
 
     //__process_infos.modules
-    pp.emitSymbolRelocationAddr(CPUReg::RCX, pp.symPI_modulesAddr, 0);
-    pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symCSIndex, module->modulesSliceOffset);
+    pp.emitSymbolRelocationAddress(CPUReg::RCX, pp.symPI_modulesAddr, 0);
+    pp.emitSymbolRelocationAddress(CPUReg::RAX, pp.symCSIndex, module->modulesSliceOffset);
     pp.emitStore(CPUReg::RCX, 0, CPUReg::RAX, OpBits::B64);
-    pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symPI_modulesCount, 0);
+    pp.emitSymbolRelocationAddress(CPUReg::RAX, pp.symPI_modulesCount, 0);
     pp.emitStore(CPUReg::RAX, 0, module->moduleDependencies.count + 1, OpBits::B64);
 
     //__process_infos.args
     pp.emitClear(CPUReg::RCX, OpBits::B64);
-    pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symPI_argsAddr, 0);
+    pp.emitSymbolRelocationAddress(CPUReg::RAX, pp.symPI_argsAddr, 0);
     pp.emitStore(CPUReg::RAX, 0, CPUReg::RCX, OpBits::B64);
-    pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symPI_argsCount, 0);
+    pp.emitSymbolRelocationAddress(CPUReg::RAX, pp.symPI_argsCount, 0);
     pp.emitStore(CPUReg::RAX, 0, CPUReg::RCX, OpBits::B64);
 
     // Set main context
-    pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symMC_mainContext, 0);
-    pp.emitSymbolRelocationAddr(CPUReg::RCX, pp.symPI_defaultContext, 0);
+    pp.emitSymbolRelocationAddress(CPUReg::RAX, pp.symMC_mainContext, 0);
+    pp.emitSymbolRelocationAddress(CPUReg::RCX, pp.symPI_defaultContext, 0);
     pp.emitStore(CPUReg::RCX, 0, CPUReg::RAX, OpBits::B64);
 
     // Set current backend as SCBE
-    pp.emitSymbolRelocationAddr(CPUReg::RCX, pp.symPI_backendKind, 0);
+    pp.emitSymbolRelocationAddress(CPUReg::RCX, pp.symPI_backendKind, 0);
     pp.emitStore(CPUReg::RCX, 0, static_cast<uint32_t>(SwagBackendGenType::SCBE), OpBits::B32);
 
     // Set default context in TLS
     pp.pushParams.clear();
-    pp.pushParams.push_back({.type = CPUPushParamType::SymRelationValue, .value = pp.symPI_contextTlsId});
-    pp.pushParams.push_back({.type = CPUPushParamType::SymRelationValue, .value = pp.symPI_defaultContext});
+    pp.pushParams.push_back({.type = CPUPushParamType::SymbolRelocationValue, .value = pp.symPI_contextTlsId});
+    pp.pushParams.push_back({.type = CPUPushParamType::SymbolRelocationValue, .value = pp.symPI_defaultContext});
     emitInternalCallCPUParams(pp, g_LangSpec->name_priv_tlsSetValue, pp.pushParams);
 
     // Setup runtime
@@ -150,7 +150,7 @@ void SCBE::emitMain(SCBE_CPU& pp)
     }
 
     pp.pushParams.clear();
-    pp.pushParams.push_back({.type = CPUPushParamType::SymRelocationAddress, .value = pp.symPI_processInfos});
+    pp.pushParams.push_back({.type = CPUPushParamType::SymbolRelocationAddress, .value = pp.symPI_processInfos});
 
     // Call to global init of all dependencies
     for (const auto dep : moduleDependencies)
@@ -237,7 +237,7 @@ void SCBE::emitGetTypeTable(SCBE_CPU& pp)
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         pp.directives += form("/EXPORT:%s ", thisInit.cstr());
 
-    pp.emitSymbolRelocationAddr(cc.returnByRegisterInteger, pp.symCSIndex, module->typesSliceOffset);
+    pp.emitSymbolRelocationAddress(cc.returnByRegisterInteger, pp.symCSIndex, module->typesSliceOffset);
     pp.emitLeave();
 
     endFunction(pp);
@@ -265,7 +265,7 @@ void SCBE::emitGlobalPreMain(SCBE_CPU& pp)
 
     // Copy process infos passed as a parameter to the process info struct of this module
     pp.pushParams.clear();
-    pp.pushParams.push_back({.type = CPUPushParamType::SymRelocationAddress, .value = pp.symPI_processInfos});
+    pp.pushParams.push_back({.type = CPUPushParamType::SymbolRelocationAddress, .value = pp.symPI_processInfos});
     pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .value = 0});
     pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = sizeof(SwagProcessInfos)});
     emitInternalCallCPUParams(pp, g_LangSpec->name_memcpy, pp.pushParams);
@@ -306,18 +306,18 @@ void SCBE::emitGlobalInit(SCBE_CPU& pp)
 
     // Copy process infos passed as a parameter to the process info struct of this module
     pp.pushParams.clear();
-    pp.pushParams.push_back({.type = CPUPushParamType::SymRelocationAddress, .value = pp.symPI_processInfos});
+    pp.pushParams.push_back({.type = CPUPushParamType::SymbolRelocationAddress, .value = pp.symPI_processInfos});
     pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .value = 0});
     pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = sizeof(SwagProcessInfos)});
     emitInternalCallCPUParams(pp, g_LangSpec->name_memcpy, pp.pushParams);
 
     // Thread local storage
-    pp.emitSymbolRelocationAddr(CPUReg::RDI, pp.symTls_threadLocalId, 0);
+    pp.emitSymbolRelocationAddress(CPUReg::RDI, pp.symTls_threadLocalId, 0);
     pp.pushParams.clear();
     emitInternalCallCPUParams(pp, g_LangSpec->name_priv_tlsAlloc, pp.pushParams, 0);
 
     // Init type table slice for each dependency (by calling ???_getTypeTable)
-    pp.emitSymbolRelocationAddr(CPUReg::RCX, pp.symCSIndex, module->modulesSliceOffset + sizeof(SwagModule) + offsetof(SwagModule, types));
+    pp.emitSymbolRelocationAddress(CPUReg::RCX, pp.symCSIndex, module->modulesSliceOffset + sizeof(SwagModule) + offsetof(SwagModule, types));
     for (const auto& dep : module->moduleDependencies)
     {
         if (!dep->module->isSwag)

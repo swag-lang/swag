@@ -226,14 +226,14 @@ namespace
                     pp.emitLoad(callConv->paramByRegisterInteger[idxParam], static_cast<CPUReg>(value), OpBits::B64);
                     break;
 
-                case CPUPushParamType::SymRelationValue:
+                case CPUPushParamType::SymbolRelocationValue:
                     SWAG_ASSERT(value < UINT32_MAX);
                     pp.emitSymbolRelocationValue(callConv->paramByRegisterInteger[idxParam], static_cast<uint32_t>(value), 0);
                     break;
 
-                case CPUPushParamType::SymRelocationAddress:
+                case CPUPushParamType::SymbolRelocationAddress:
                     SWAG_ASSERT(value < UINT32_MAX);
-                    pp.emitSymbolRelocationAddr(callConv->paramByRegisterInteger[idxParam], static_cast<uint32_t>(value), 0);
+                    pp.emitSymbolRelocationAddress(callConv->paramByRegisterInteger[idxParam], static_cast<uint32_t>(value), 0);
                     break;
 
                 case CPUPushParamType::SwagRegisterAdd:

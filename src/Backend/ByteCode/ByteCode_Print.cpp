@@ -355,11 +355,11 @@ void ByteCode::fillPrintInstruction(const ByteCodePrintOptions& options, const B
 
     // Parameters
     const auto flags = opFlags(ip->op);
-    line.instRef += getInstructionReg("A", ip->a, flags.has(OPF_WRITE_A), flags.has(OPF_READ_A), flags.has(OPF_READ_VAL32_A | OPF_READ_VAL64_A) || (flags.has(OPF_IMM_A) && ip->hasFlag(BCI_IMM_A)));
-    line.instRef += getInstructionReg("B", ip->b, flags.has(OPF_WRITE_B), flags.has(OPF_READ_B), flags.has(OPF_READ_VAL32_B | OPF_READ_VAL64_B) || (flags.has(OPF_IMM_B) && ip->hasFlag(BCI_IMM_B)));
-    line.instRef += getInstructionReg("C", ip->c, flags.has(OPF_WRITE_C), flags.has(OPF_READ_C), flags.has(OPF_READ_VAL32_C | OPF_READ_VAL64_C) || (flags.has(OPF_IMM_C) && ip->hasFlag(BCI_IMM_C)));
-    line.instRef += getInstructionReg("D", ip->d, flags.has(OPF_WRITE_D), flags.has(OPF_READ_D), flags.has(OPF_READ_VAL32_D | OPF_READ_VAL64_D) || (flags.has(OPF_IMM_D) && ip->hasFlag(BCI_IMM_D)));
-    line.instRef.trim();
+    line.args += getInstructionReg("A", ip->a, flags.has(OPF_WRITE_A), flags.has(OPF_READ_A), flags.has(OPF_READ_VAL32_A | OPF_READ_VAL64_A) || (flags.has(OPF_IMM_A) && ip->hasFlag(BCI_IMM_A)));
+    line.args += getInstructionReg("B", ip->b, flags.has(OPF_WRITE_B), flags.has(OPF_READ_B), flags.has(OPF_READ_VAL32_B | OPF_READ_VAL64_B) || (flags.has(OPF_IMM_B) && ip->hasFlag(BCI_IMM_B)));
+    line.args += getInstructionReg("C", ip->c, flags.has(OPF_WRITE_C), flags.has(OPF_READ_C), flags.has(OPF_READ_VAL32_C | OPF_READ_VAL64_C) || (flags.has(OPF_IMM_C) && ip->hasFlag(BCI_IMM_C)));
+    line.args += getInstructionReg("D", ip->d, flags.has(OPF_WRITE_D), flags.has(OPF_READ_D), flags.has(OPF_READ_VAL32_D | OPF_READ_VAL64_D) || (flags.has(OPF_IMM_D) && ip->hasFlag(BCI_IMM_D)));
+    line.args.trim();
 
     // Flags
     line.flags += ip->hasFlag(BCI_SAFETY) ? "S" : ".";
@@ -453,7 +453,7 @@ void ByteCode::fillPrintInstruction(const ByteCodePrintOptions& options, const B
 
 void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteCodeInstruction* ip, const PrintInstructionLine& line)
 {
-    const bool forDbg = options.curIp != nullptr;
+    const bool forDbg = ip && options.curIp != nullptr;
 
     // Bkp
     g_Log.print(line.bkp);
@@ -471,10 +471,12 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteC
         g_Log.setColor(LogColor::CurInstruction);
 
     // The instruction comes from an inline function
-    // else if (ip->node && ip->node->hasOwnerInline() && options.printSourceCode)
+    // else if (ip && ip->node && ip->node->hasOwnerInline() && options.printSourceCode)
     //    g_Log.setColor(LogColor::Gray);
 
     // Normal instruction
+    else if (options.flags.has(BCPF_ASM_SCBE))
+        g_Log.setColor(LogColor::Gray);
     else
         g_Log.setColor(LogColor::White);
 
@@ -482,7 +484,7 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteC
     g_Log.print(line.name);
 
     // Parameters
-    g_Log.print(line.instRef);
+    g_Log.print(line.args);
 
     // Flags
     if (forDbg && ip == options.curIp)
@@ -548,7 +550,7 @@ namespace
                     len = std::max(len, line.name.length());
                     break;
                 case RankStr::InstRef:
-                    len = std::max(len, line.instRef.length());
+                    len = std::max(len, line.args.length());
                     break;
                 case RankStr::Flags:
                     len = std::max(len, line.flags.length());
@@ -578,7 +580,7 @@ namespace
                     str = &line.name;
                     break;
                 case RankStr::InstRef:
-                    str = &line.instRef;
+                    str = &line.args;
                     break;
                 case RankStr::Flags:
                     str = &line.flags;

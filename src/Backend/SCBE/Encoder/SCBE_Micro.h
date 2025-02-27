@@ -87,7 +87,7 @@ struct SCBE_Micro final : SCBE_CPU
     void    emitDebug(ByteCodeInstruction* ipAddr) override;
     void    emitLabel(uint32_t instructionIndex) override;
     void    emitSymbolRelocationRef(const Utf8& name) override;
-    void    emitSymbolRelocationAddr(CPUReg reg, uint32_t symbolIndex, uint32_t offset) override;
+    void    emitSymbolRelocationAddress(CPUReg reg, uint32_t symbolIndex, uint32_t offset) override;
     void    emitSymbolRelocationValue(CPUReg reg, uint32_t symbolIndex, uint32_t offset) override;
     void    emitSymbolGlobalString(CPUReg reg, const Utf8& str) override;
     void    emitSymbolRelocationPtr(CPUReg reg, const Utf8& name) override;

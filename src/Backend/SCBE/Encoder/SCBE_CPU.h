@@ -19,8 +19,8 @@ enum class CPUPushParamType
     CPURegister,
     Constant,
     Constant64,
-    SymRelationValue,
-    SymRelocationAddress,
+    SymbolRelocationValue,
+    SymbolRelocationAddress,
     LoadAddress,
     GlobalString,
     Load,
@@ -232,7 +232,7 @@ struct SCBE_CPU : BackendEncoder
     virtual void emitJump(CPUCondJump jumpType, int32_t currentIp, int32_t jumpOffset);
 
     virtual void    emitSymbolRelocationRef(const Utf8& name)                                                                                     = 0;
-    virtual void    emitSymbolRelocationAddr(CPUReg reg, uint32_t symbolIndex, uint32_t offset)                                                   = 0;
+    virtual void    emitSymbolRelocationAddress(CPUReg reg, uint32_t symbolIndex, uint32_t offset)                                                   = 0;
     virtual void    emitSymbolRelocationValue(CPUReg reg, uint32_t symbolIndex, uint32_t offset)                                                  = 0;
     virtual void    emitSymbolGlobalString(CPUReg reg, const Utf8& str)                                                                           = 0;
     virtual void    emitPush(CPUReg reg)                                                                                                          = 0;

@@ -558,7 +558,7 @@ void SCBE::emitMakeCallback(SCBE_CPU& pp)
     //////////////////
 
     pp.emitLoad(CPUReg::RCX, CPUReg::RAX, OpBits::B64);
-    pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symPI_makeCallback, 0);
+    pp.emitSymbolRelocationAddress(CPUReg::RAX, pp.symPI_makeCallback, 0);
     pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, OpBits::B64);
     pp.emitCallIndirect(CPUReg::RAX);
 

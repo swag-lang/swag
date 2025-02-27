@@ -1,8 +1,8 @@
 #include "pch.h"
-
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/SCBE/Encoder/SCBE_Micro.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/AstNode.h"
 
 void SCBE_Micro::init(const BuildParameters& buildParameters)
 {
@@ -31,7 +31,7 @@ void SCBE_Micro::emitSymbolRelocationRef(const Utf8& name)
     inst->name      = name;
 }
 
-void SCBE_Micro::emitSymbolRelocationAddr(CPUReg reg, uint32_t symbolIndex, uint32_t offset)
+void SCBE_Micro::emitSymbolRelocationAddress(CPUReg reg, uint32_t symbolIndex, uint32_t offset)
 {
     const auto inst = concat.addObj<SCBE_MicroInstruction>();
     inst->op        = SCBE_MicroOp::SymbolRelocationAddr;
@@ -509,7 +509,7 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
                 encoder.emitSymbolRelocationRef(inst->name);
                 break;
             case SCBE_MicroOp::SymbolRelocationAddr:
-                encoder.emitSymbolRelocationAddr(inst->regA, static_cast<uint32_t>(inst->valueA), static_cast<uint32_t>(inst->valueB));
+                encoder.emitSymbolRelocationAddress(inst->regA, static_cast<uint32_t>(inst->valueA), static_cast<uint32_t>(inst->valueB));
                 break;
             case SCBE_MicroOp::SymbolRelocationValue:
                 encoder.emitSymbolRelocationValue(inst->regA, static_cast<uint32_t>(inst->valueA), static_cast<uint32_t>(inst->valueB));
@@ -685,6 +685,6 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
 
     encoder.emitLabels();
 
-    if (cpuFct->bc->getPrintName().containsNoCase("__tlsAlloc"))
+    if (cpuFct->bc->node && cpuFct->bc->node->hasAttribute(ATTRIBUTE_PRINT_BC))
         print();
 }

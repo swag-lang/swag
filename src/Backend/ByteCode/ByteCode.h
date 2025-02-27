@@ -12,10 +12,16 @@ struct TypeInfoFuncAttr;
 struct ByteCode;
 struct SourceLocation;
 
+using ByteCodePrintPrintFlags = Flags<uint32_t>;
+
+constexpr ByteCodePrintPrintFlags BCPF_DEFAULT  = 0x00000000;
+constexpr ByteCodePrintPrintFlags BCPF_ASM_SCBE = 0x00000001;
+
 struct ByteCodePrintOptions
 {
-    ByteCodeInstruction* curIp           = nullptr;
-    bool                 printSourceCode = true;
+    ByteCodeInstruction*    curIp           = nullptr;
+    bool                    printSourceCode = true;
+    ByteCodePrintPrintFlags flags           = BCPF_DEFAULT;
 };
 
 struct ByteCode
@@ -32,7 +38,7 @@ struct ByteCode
         Utf8 bkp;
         Utf8 rank;
         Utf8 name;
-        Utf8 instRef;
+        Utf8 args;
         Utf8 flags;
         Utf8 pretty;
 #ifdef SWAG_DEV_MODE

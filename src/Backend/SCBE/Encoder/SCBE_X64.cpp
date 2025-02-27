@@ -155,7 +155,7 @@ void SCBE_X64::emitSymbolRelocationRef(const Utf8& name)
     }
 }
 
-void SCBE_X64::emitSymbolRelocationAddr(CPUReg reg, uint32_t symbolIndex, uint32_t offset)
+void SCBE_X64::emitSymbolRelocationAddress(CPUReg reg, uint32_t symbolIndex, uint32_t offset)
 {
     SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX || reg == CPUReg::RDX || reg == CPUReg::R8 || reg == CPUReg::R9 || reg == CPUReg::RDI);
     emitREX(concat, OpBits::B64, reg);
@@ -507,7 +507,7 @@ void SCBE_X64::emitLoadExtend(CPUReg regDst, CPUReg regSrc, OpBits numBitsDst, O
     {
         SWAG_ASSERT(regSrc == CPUReg::RAX && regDst == CPUReg::XMM0);
         concat.addString5("\x66\x48\x0F\x6E\xC8"); // movq xmm1, rax
-        emitSymbolRelocationAddr(CPUReg::RCX, symCst_U64F64, 0);
+        emitSymbolRelocationAddress(CPUReg::RCX, symCst_U64F64, 0);
         concat.addString4("\x66\x0F\x62\x09");     // punpckldq xmm1, xmmword ptr [rcx]
         concat.addString5("\x66\x0F\x5C\x49\x10"); // subpd xmm1, xmmword ptr [rcx + 16]
         concat.addString4("\x66\x0F\x28\xC1");     // movapd xmm0, xmm1
@@ -1806,7 +1806,7 @@ void SCBE_X64::emitJumpTable(CPUReg table, CPUReg offset, int32_t currentIp, uin
 
     uint8_t*   addrConstant        = nullptr;
     const auto offsetTableConstant = buildParams.module->constantSegment.reserve(numEntries * sizeof(uint32_t), &addrConstant);
-    emitSymbolRelocationAddr(table, symCSIndex, offsetTableConstant); // rcx = jump table
+    emitSymbolRelocationAddress(table, symCSIndex, offsetTableConstant); // rcx = jump table
 
     emitREX(concat, OpBits::B64);
 
@@ -1818,7 +1818,7 @@ void SCBE_X64::emitJumpTable(CPUReg table, CPUReg offset, int32_t currentIp, uin
     // + 7 for this instruction
     // + 5 for the two following instructions
     const auto startIdx = concat.totalCount();
-    emitSymbolRelocationAddr(CPUReg::RAX, cpuFct->symbolIndex, concat.totalCount() - cpuFct->startAddress + 5 + 7);
+    emitSymbolRelocationAddress(CPUReg::RAX, cpuFct->symbolIndex, concat.totalCount() - cpuFct->startAddress + 5 + 7);
     emitOpBinary(CPUReg::RAX, CPUReg::RCX, CPUOp::ADD, OpBits::B64);
     emitJump(CPUReg::RAX);
     const auto endIdx = concat.totalCount();

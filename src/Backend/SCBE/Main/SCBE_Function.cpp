@@ -1325,7 +1325,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::GetFromBssSeg32:
             case ByteCodeOp::GetFromBssSeg64:
                 opBits = SCBE_CPU::getOpBits(ip->op);
-                pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symBSIndex, 0);
+                pp.emitSymbolRelocationAddress(CPUReg::RAX, pp.symBSIndex, 0);
                 pp.emitLoadExtend(CPUReg::RAX, CPUReg::RAX, ip->b.u32, OpBits::B64, opBits, false);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, OpBits::B64);
                 break;
@@ -1335,7 +1335,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::GetFromMutableSeg32:
             case ByteCodeOp::GetFromMutableSeg64:
                 opBits = SCBE_CPU::getOpBits(ip->op);
-                pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symMSIndex, 0);
+                pp.emitSymbolRelocationAddress(CPUReg::RAX, pp.symMSIndex, 0);
                 pp.emitLoadExtend(CPUReg::RAX, CPUReg::RAX, ip->b.u32, OpBits::B64, opBits, false);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, OpBits::B64);
                 break;
@@ -1578,15 +1578,15 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::MakeMutableSegPointer:
-                pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symMSIndex, ip->b.u32);
+                pp.emitSymbolRelocationAddress(CPUReg::RAX, pp.symMSIndex, ip->b.u32);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, OpBits::B64);
                 break;
             case ByteCodeOp::MakeBssSegPointer:
-                pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symBSIndex, ip->b.u32);
+                pp.emitSymbolRelocationAddress(CPUReg::RAX, pp.symBSIndex, ip->b.u32);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, OpBits::B64);
                 break;
             case ByteCodeOp::MakeConstantSegPointer:
-                pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symCSIndex, ip->b.u32);
+                pp.emitSymbolRelocationAddress(CPUReg::RAX, pp.symCSIndex, ip->b.u32);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, OpBits::B64);
                 break;
             case ByteCodeOp::MakeCompilerSegPointer:
@@ -1715,25 +1715,25 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::InternalGetTlsPtr:
                 pp.pushParams.clear();
-                pp.pushParams.push_back({.type = CPUPushParamType::SymRelationValue, .value = pp.symTls_threadLocalId});
+                pp.pushParams.push_back({.type = CPUPushParamType::SymbolRelocationValue, .value = pp.symTls_threadLocalId});
                 pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = module->tlsSegment.totalCount, .typeInfo = g_TypeMgr->typeInfoU64});
-                pp.pushParams.push_back({.type = CPUPushParamType::SymRelocationAddress, .value = pp.symTLSIndex});
+                pp.pushParams.push_back({.type = CPUPushParamType::SymbolRelocationAddress, .value = pp.symTLSIndex});
                 emitInternalCallCPUParams(pp, g_LangSpec->name_priv_tlsGetPtr, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case ByteCodeOp::IntrinsicGetContext:
                 pp.pushParams.clear();
-                pp.pushParams.push_back({.type = CPUPushParamType::SymRelationValue, .value = pp.symPI_contextTlsId});
+                pp.pushParams.push_back({.type = CPUPushParamType::SymbolRelocationValue, .value = pp.symPI_contextTlsId});
                 emitInternalCallCPUParams(pp, g_LangSpec->name_priv_tlsGetValue, pp.pushParams, REG_OFFSET(ip->a.u32));
                 break;
             case ByteCodeOp::IntrinsicSetContext:
                 pp.pushParams.clear();
-                pp.pushParams.push_back({.type = CPUPushParamType::SymRelationValue, .value = pp.symPI_contextTlsId});
+                pp.pushParams.push_back({.type = CPUPushParamType::SymbolRelocationValue, .value = pp.symPI_contextTlsId});
                 pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .value = ip->a.u32});
                 emitInternalCallCPUParams(pp, g_LangSpec->name_priv_tlsSetValue, pp.pushParams);
                 break;
 
             case ByteCodeOp::IntrinsicGetProcessInfos:
-                pp.emitSymbolRelocationAddr(CPUReg::RCX, pp.symPI_processInfos, 0);
+                pp.emitSymbolRelocationAddress(CPUReg::RCX, pp.symPI_processInfos, 0);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RCX, OpBits::B64);
                 break;
 
@@ -1767,7 +1767,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 }
                 else
                 {
-                    pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symCSIndex, buildParameters.module->modulesSliceOffset);
+                    pp.emitSymbolRelocationAddress(CPUReg::RAX, pp.symCSIndex, buildParameters.module->modulesSliceOffset);
                     pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, OpBits::B64);
                     pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->b.u32), buildParameters.module->moduleDependencies.count + 1, OpBits::B64);
                 }
@@ -1780,7 +1780,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 }
                 else
                 {
-                    pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symMSIndex, buildParameters.module->globalVarsToDropSliceOffset);
+                    pp.emitSymbolRelocationAddress(CPUReg::RAX, pp.symMSIndex, buildParameters.module->globalVarsToDropSliceOffset);
                     pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, OpBits::B64);
                     pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->b.u32), buildParameters.module->globalVarsToDrop.count, OpBits::B64);
                 }
@@ -2397,7 +2397,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitStore(CPUReg::RAX, offsetof(SwagContext, traceIndex), 0, OpBits::B32);
                 break;
             case ByteCodeOp::InternalStackTraceConst:
-                pp.emitSymbolRelocationAddr(CPUReg::RAX, pp.symCSIndex, ip->b.u32);
+                pp.emitSymbolRelocationAddress(CPUReg::RAX, pp.symCSIndex, ip->b.u32);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, OpBits::B64);
                 emitInternalCallRAParams(pp, g_LangSpec->name_priv_stackTrace, {ip->a.u32});
                 break;
