@@ -53,8 +53,12 @@ namespace
                 return "sub";
             case CPUOp::MUL:
                 return "mul";
+            case CPUOp::IMUL:
+                return "imul";
             case CPUOp::DIV:
                 return "div";
+            case CPUOp::IDIV:
+                return "idiv";
             case CPUOp::MOD:
                 return "mod";
             case CPUOp::SHL:
@@ -226,10 +230,12 @@ void SCBE_Micro::print() const
             case SCBE_MicroOp::LoadParam:
                 // encoder.emitLoadParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->opBitsA);
                 line.name = "mov";
+                line.args = form("%s, param %d", regName(inst->regA, inst->opBitsA), inst->valueA);
                 break;
             case SCBE_MicroOp::LoadExtendParam:
                 // encoder.emitLoadExtendParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->opBitsA, inst->opBitsB, inst->boolA);
-                line.name = "mov";
+                line.name = inst->boolA ? "movs" : "movz";
+                line.args = form("%s, %s param %d", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsB), inst->valueA);
                 break;
             case SCBE_MicroOp::LoadAddressParam:
                 // encoder.emitLoadAddressParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->boolA);
@@ -349,10 +355,12 @@ void SCBE_Micro::print() const
             case SCBE_MicroOp::OpBinary1:
                 // encoder.emitOpBinary(inst->regA, inst->valueA, inst->regB, inst->cpuOp, inst->opBitsA, inst->emitFlags);
                 line.name = cpuOpName(inst->cpuOp);
+                line.args += form("%s ptr [%s+%d], %s", opBitsName(inst->opBitsA), regName(inst->regA, inst->opBitsA), inst->valueA, regName(inst->regB, inst->opBitsA));
                 break;
             case SCBE_MicroOp::OpBinary2:
                 // encoder.emitOpBinary(inst->regA, inst->valueA, inst->cpuOp, inst->opBitsA, inst->emitFlags);
                 line.name = cpuOpName(inst->cpuOp);
+                line.args += form("%s, %d", regName(inst->regA, inst->opBitsA), inst->valueA);
                 break;
             case SCBE_MicroOp::OpBinary3:
                 // encoder.emitOpBinary(inst->regA, inst->valueA, inst->valueB, inst->cpuOp, inst->opBitsA, inst->emitFlags);
