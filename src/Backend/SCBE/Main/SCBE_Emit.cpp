@@ -265,11 +265,9 @@ void SCBE::emitBinOpEqS(SCBE_CPU& pp, CPUOp op)
     }
     else
     {
-        const auto r0 = SCBE_CPU::isInt(opBits) ? CPUReg::RAX : CPUReg::RCX;
         const auto r1 = SCBE_CPU::isInt(opBits) ? CPUReg::RCX : CPUReg::XMM1;
-        pp.emitLoadAddress(r0, CPUReg::RDI, pp.cpuFct->offsetByteCodeStack + ip->a.u32);
         emitIMMB(pp, r1, opBits);
-        pp.emitOpBinary(r0, 0, r1, op, opBits);
+        pp.emitOpBinary(CPUReg::RDI, pp.cpuFct->offsetByteCodeStack + ip->a.u32, r1, op, opBits);
     }
 }
 
