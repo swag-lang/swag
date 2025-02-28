@@ -321,10 +321,9 @@ void SCBE::emitAddSubMul64(SCBE_CPU& pp, uint64_t mulValue, CPUOp op)
     }
     else if (ip->hasFlag(BCI_IMM_B))
     {
-        pp.emitLoad(CPUReg::RAX, value, OpBits::B64);
-        pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);
-        pp.emitOpBinary(CPUReg::RCX, CPUReg::RAX, op, OpBits::B64);
-        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RCX, OpBits::B64);
+        pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);
+        pp.emitOpBinary(CPUReg::RAX, value, op, OpBits::B64);
+        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, OpBits::B64);
     }
     else if (ip->a.u32 == ip->c.u32)
     {
