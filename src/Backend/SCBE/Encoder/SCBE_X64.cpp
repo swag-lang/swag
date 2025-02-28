@@ -1932,10 +1932,6 @@ CPUJump SCBE_X64::emitJump(CPUCondJump jumpType, OpBits opBits)
             concat.addU8(0x0F);
             concat.addU8(0x87);
             break;
-        case JL:
-            concat.addU8(0x0F);
-            concat.addU8(0x8C);
-            break;
         case JP:
             concat.addU8(0x0F);
             concat.addU8(0x8A);
@@ -1943,6 +1939,10 @@ CPUJump SCBE_X64::emitJump(CPUCondJump jumpType, OpBits opBits)
         case JNP:
             concat.addU8(0x0F);
             concat.addU8(0x8B);
+            break;
+        case JL:
+            concat.addU8(0x0F);
+            concat.addU8(0x8C);
             break;
         case JGE:
             concat.addU8(0x0F);
