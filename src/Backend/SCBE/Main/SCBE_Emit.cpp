@@ -80,18 +80,18 @@ void SCBE::emitShiftRightArithmetic(SCBE_CPU& pp)
         pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), opBits);
         pp.emitOpBinary(CPUReg::RAX, ip->b.u32, CPUOp::SAR, opBits);
     }
+    else if (ip->hasFlag(BCI_IMM_B))
+    {
+        pp.emitLoad(CPUReg::RCX, std::min(static_cast<uint32_t>(ip->b.u8), SCBE_CPU::getNumBits(opBits) - 1), OpBits::B8);
+        emitIMMA(pp, CPUReg::RAX, opBits);
+        pp.emitOpBinary(CPUReg::RAX, CPUReg::RCX, CPUOp::SAR, opBits);
+    }
     else
     {
-        if (ip->hasFlag(BCI_IMM_B))
-            pp.emitLoad(CPUReg::RCX, std::min(static_cast<uint32_t>(ip->b.u8), SCBE_CPU::getNumBits(opBits) - 1), OpBits::B8);
-        else
-        {
-            pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->b.u32), OpBits::B32);
-            pp.emitLoad(CPUReg::RAX, SCBE_CPU::getNumBits(opBits) - 1, OpBits::B32);
-            pp.emitCmp(CPUReg::RCX, SCBE_CPU::getNumBits(opBits) - 1, OpBits::B32);
-            pp.emitOpBinary(CPUReg::RCX, CPUReg::RAX, CPUOp::CMOVG, opBits);
-        }
-
+        pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->b.u32), OpBits::B32);
+        pp.emitLoad(CPUReg::RAX, SCBE_CPU::getNumBits(opBits) - 1, OpBits::B32);
+        pp.emitCmp(CPUReg::RCX, SCBE_CPU::getNumBits(opBits) - 1, OpBits::B32);
+        pp.emitOpBinary(CPUReg::RCX, CPUReg::RAX, CPUOp::CMOVG, opBits);
         emitIMMA(pp, CPUReg::RAX, opBits);
         pp.emitOpBinary(CPUReg::RAX, CPUReg::RCX, CPUOp::SAR, opBits);
     }
@@ -150,18 +150,20 @@ void SCBE::emitShiftEqLogical(SCBE_CPU& pp, CPUOp op)
 {
     const auto ip     = pp.ip;
     const auto opBits = SCBE_CPU::getOpBits(ip->op);
-    pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);
     if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 >= SCBE_CPU::getNumBits(opBits))
     {
+        pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);
         pp.emitClear(CPUReg::RCX, opBits);
         pp.emitStore(CPUReg::RAX, 0, CPUReg::RCX, opBits);
     }
     else if (ip->hasFlag(BCI_IMM_B))
     {
+        pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);
         pp.emitOpBinary(CPUReg::RAX, 0, ip->b.u8, op, opBits);
     }
     else
     {
+        pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);
         pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->b.u32), OpBits::B32);
         pp.emitCmp(CPUReg::RCX, SCBE_CPU::getNumBits(opBits), OpBits::B32);
         const auto jump = pp.emitJump(JL, OpBits::B8);
@@ -336,7 +338,7 @@ void SCBE::emitAddSubMul64(SCBE_CPU& pp, uint64_t mulValue, CPUOp op)
         pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->b.u32), OpBits::B64);
         pp.emitOpBinary(CPUReg::RAX, mulValue, CPUOp::IMUL, OpBits::B64);
         pp.emitOpBinary(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), op, OpBits::B64);
-        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, OpBits::B64);        
+        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, OpBits::B64);
     }
     else
     {
