@@ -310,7 +310,7 @@ void SCBE_Micro::print() const
                 break;
             case SCBE_MicroOp::Jump2:
                 // encoder.emitJump(inst->jumpType, static_cast<int32_t>(inst->valueA), static_cast<int32_t>(inst->valueB));
-                line.name = "jump";
+                line.name = cpuJumpName(inst->jumpType);
                 line.args = form("%d", inst->valueA);
                 break;
             case SCBE_MicroOp::LoadParam:
