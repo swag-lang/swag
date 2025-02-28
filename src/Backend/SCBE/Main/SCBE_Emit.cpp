@@ -125,8 +125,7 @@ void SCBE::emitShiftLogical(SCBE_CPU& pp, CPUOp op)
     const auto opBits = SCBE_CPU::getOpBits(ip->op);
     if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 >= SCBE_CPU::getNumBits(opBits))
     {
-        pp.emitClear(CPUReg::RAX, opBits);
-        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, opBits);
+        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), 0, opBits);
     }
     else if (!ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_B))
     {
@@ -153,8 +152,7 @@ void SCBE::emitShiftEqLogical(SCBE_CPU& pp, CPUOp op)
     if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 >= SCBE_CPU::getNumBits(opBits))
     {
         pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);
-        pp.emitClear(CPUReg::RCX, opBits);
-        pp.emitStore(CPUReg::RAX, 0, CPUReg::RCX, opBits);
+        pp.emitStore(CPUReg::RAX, 0, 0, opBits);
     }
     else if (ip->hasFlag(BCI_IMM_B))
     {
