@@ -4,6 +4,7 @@
 #include "Core/Math.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Wmf/Module.h"
+#pragma optimize("", off)
 
 enum class ModRMMode : uint8_t
 {
@@ -1014,8 +1015,17 @@ void SCBE_X64::emitOpUnary(CPUReg reg, CPUOp op, OpBits opBits)
 void SCBE_X64::emitOpBinary(CPUReg regDst, CPUReg memReg, uint64_t memOffset, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags)
 {
     SWAG_ASSERT(regDst == CPUReg::RAX);
-    emitLoad(CPUReg::RCX, memReg, memOffset, opBits);
-    emitOpBinary(regDst, CPUReg::RCX, op, opBits);
+    if (op == CPUOp::ADD)
+    {
+        emitREX(concat, opBits, regDst, memReg);
+        emitCPUOp(concat, 0x03);
+        emitModRM(concat, memOffset, regDst, memReg);
+    }
+    else
+    {
+        emitLoad(CPUReg::RCX, memReg, memOffset, opBits);
+        emitOpBinary(regDst, CPUReg::RCX, op, opBits);
+    }
 }
 
 void SCBE_X64::emitOpBinary(CPUReg regDst, CPUReg regSrc, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags)

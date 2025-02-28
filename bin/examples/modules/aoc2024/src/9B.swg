@@ -28,6 +28,7 @@ func day9B()
 
 //#[Swag.Optimize("", false)]
 //#[Swag.PrintBc]
+//#[Swag.PrintAsm]
 func day9BA()
 {
     Time.Stopwatch.scopeMeasure()

@@ -496,6 +496,11 @@ void SCBE_Micro::print() const
                     line.name = cpuOpName(inst->cpuOp);
                     line.args += form("%s ptr [%s+%d], %d", opBitsName(inst->opBitsA), regName(inst->regA, inst->opBitsA), inst->valueA, inst->valueB);
                     break;
+                case SCBE_MicroOp::OpBinary4:
+                    // encoder.emitOpBinary(inst->regA, inst->regB, inst->valueA, inst->cpuOp, inst->opBitsA, inst->emitFlags);
+                    line.name = cpuOpName(inst->cpuOp);
+                    line.args += form("%s, %s ptr [%s+%d]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsA), regName(inst->regB, OpBits::B64), inst->valueA);
+                    break;
                 case SCBE_MicroOp::MulAdd:
                     // encoder.emitMulAdd(inst->regA, inst->regB, inst->regC, inst->opBitsA);
                     line.name = "muladd";
