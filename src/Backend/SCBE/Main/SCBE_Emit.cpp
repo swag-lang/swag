@@ -307,13 +307,13 @@ void SCBE::emitAddSubMul64(SCBE_CPU& pp, uint64_t mulValue, CPUOp op)
 
     const auto ip    = pp.ip;
     const auto value = ip->b.u64 * mulValue;
+    if (ip->hasFlag(BCI_IMM_B) && value == 0 && ip->a.u32 == ip->c.u32)
+        return;
+
     if (ip->hasFlag(BCI_IMM_B) && value == 0)
     {
-        if (ip->a.u32 != ip->c.u32)
-        {
-            pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);
-            pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, OpBits::B64);
-        }
+        pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);
+        pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, OpBits::B64);
     }
     else if (ip->hasFlag(BCI_IMM_B) && ip->a.u32 == ip->c.u32)
     {
@@ -357,10 +357,7 @@ void SCBE::emitInternalPanic(SCBE_CPU& pp, const char* msg)
     pp.pushParams.push_back({.type = CPUPushParamType::GlobalString, .value = reinterpret_cast<uint64_t>(np.cstr())});
     pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = node->token.startLocation.line});
     pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = node->token.startLocation.column});
-    if (msg)
-        pp.pushParams.push_back({.type = CPUPushParamType::GlobalString, .value = reinterpret_cast<uint64_t>(msg)});
-    else
-        pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = 0});
+    pp.pushParams.push_back({.type = msg ? CPUPushParamType::GlobalString : CPUPushParamType::Constant, .value = reinterpret_cast<uint64_t>(msg)});
     emitInternalCallCPUParams(pp, g_LangSpec->name_priv_panic, pp.pushParams);
 }
 
