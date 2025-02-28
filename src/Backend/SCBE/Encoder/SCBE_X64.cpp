@@ -1011,6 +1011,10 @@ void SCBE_X64::emitOpUnary(CPUReg reg, CPUOp op, OpBits opBits)
     }
 }
 
+void SCBE_X64::emitOpBinary(CPUReg regDst, CPUReg memReg, uint64_t memOffset, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags)
+{
+}
+
 void SCBE_X64::emitOpBinary(CPUReg regDst, CPUReg regSrc, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags)
 {
     if (opBits == OpBits::F32)

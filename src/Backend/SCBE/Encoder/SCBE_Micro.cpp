@@ -350,6 +350,18 @@ void SCBE_Micro::emitOpBinary(CPUReg regDst, CPUReg regSrc, CPUOp op, OpBits opB
     inst->emitFlags = emitFlags;
 }
 
+void SCBE_Micro::emitOpBinary(CPUReg regDst, CPUReg memReg, uint64_t memOffset, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags)
+{
+    const auto inst = concat.addObj<SCBE_MicroInstruction>();
+    inst->op        = SCBE_MicroOp::OpBinary4;
+    inst->regA      = regDst;
+    inst->regB      = memReg;
+    inst->valueA    = memOffset;
+    inst->cpuOp     = op;
+    inst->opBitsA   = opBits;
+    inst->emitFlags = emitFlags;
+}
+
 void SCBE_Micro::emitOpBinary(CPUReg memReg, uint64_t memOffset, CPUReg reg, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags)
 {
     const auto inst = concat.addObj<SCBE_MicroInstruction>();
@@ -672,6 +684,9 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
             case SCBE_MicroOp::OpBinary3:
                 encoder.emitOpBinary(inst->regA, inst->valueA, inst->valueB, inst->cpuOp, inst->opBitsA, inst->emitFlags);
                 break;
+            case SCBE_MicroOp::OpBinary4:
+                encoder.emitOpBinary(inst->regA, inst->regB, inst->valueA, inst->cpuOp, inst->opBitsA, inst->emitFlags);
+            break;            
             case SCBE_MicroOp::MulAdd:
                 encoder.emitMulAdd(inst->regA, inst->regB, inst->regC, inst->opBitsA);
                 break;

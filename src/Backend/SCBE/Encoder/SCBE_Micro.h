@@ -54,6 +54,7 @@ enum class SCBE_MicroOp : uint8_t
     OpBinary1,
     OpBinary2,
     OpBinary3,
+    OpBinary4,
     MulAdd,
     AddLabel,
     Debug,
@@ -133,6 +134,7 @@ struct SCBE_Micro final : SCBE_CPU
     void    emitOpUnary(CPUReg memReg, uint64_t memOffset, CPUOp op, OpBits opBits) override;
     void    emitOpUnary(CPUReg reg, CPUOp op, OpBits opBits) override;
     void    emitOpBinary(CPUReg regDst, CPUReg regSrc, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags = EMITF_Zero) override;
+    void    emitOpBinary(CPUReg regDst, CPUReg memReg, uint64_t memOffset, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags) override;
     void    emitOpBinary(CPUReg memReg, uint64_t memOffset, CPUReg reg, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags = EMITF_Zero) override;
     void    emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags = EMITF_Zero) override;
     void    emitOpBinary(CPUReg memReg, uint64_t memOffset, uint64_t value, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags = EMITF_Zero) override;

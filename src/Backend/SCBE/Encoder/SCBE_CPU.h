@@ -270,6 +270,7 @@ struct SCBE_CPU : BackendEncoder
     virtual void    emitOpUnary(CPUReg memReg, uint64_t memOffset, CPUOp op, OpBits opBits)                                                       = 0;
     virtual void    emitOpUnary(CPUReg reg, CPUOp op, OpBits opBits)                                                                              = 0;
     virtual void    emitOpBinary(CPUReg regDst, CPUReg regSrc, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags = EMITF_Zero)                      = 0;
+    virtual void    emitOpBinary(CPUReg regDst, CPUReg memReg, uint64_t memOffset, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags = EMITF_Zero)  = 0;
     virtual void    emitOpBinary(CPUReg memReg, uint64_t memOffset, CPUReg reg, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags = EMITF_Zero)     = 0;
     virtual void    emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags = EMITF_Zero)                        = 0;
     virtual void    emitOpBinary(CPUReg memReg, uint64_t memOffset, uint64_t value, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags = EMITF_Zero) = 0;
