@@ -11,33 +11,33 @@ namespace
         switch (kind)
         {
             case JNO:
-                return "JNO";
+                return "jno";
             case JNZ:
-                return "JNZ";
+                return "jnz";
             case JZ:
-                return "JZ";
+                return "jz";
             case JL:
-                return "JL";
+                return "jl";
             case JLE:
-                return "JLE";
+                return "jle";
             case JB:
-                return "JB";
+                return "jb";
             case JBE:
-                return "JBE";
+                return "jbe";
             case JGE:
-                return "JGE";
+                return "jge";
             case JAE:
-                return "JAE";
+                return "jae";
             case JG:
-                return "JG";
+                return "jg";
             case JA:
-                return "JA";
+                return "ja";
             case JP:
-                return "JP";
+                return "jp";
             case JNP:
-                return "JNP";
+                return "jnp";
             case JUMP:
-                return "JUMP";
+                return "jump";
             default:
                 SWAG_ASSERT(false);
                 break;
@@ -320,7 +320,10 @@ void SCBE_Micro::print() const
                 break;
             case SCBE_MicroOp::LoadExtendParam:
                 // encoder.emitLoadExtendParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->opBitsA, inst->opBitsB, inst->boolA);
-                line.name = inst->boolA ? "movs" : "movz";
+                if (inst->opBitsA == inst->opBitsB)
+                    line.name = "mov";
+                else
+                    line.name = inst->boolA ? "movs" : "movz";
                 line.args = form("%s, %s param %d", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsB), inst->valueA);
                 break;
             case SCBE_MicroOp::LoadAddressParam:
@@ -330,7 +333,7 @@ void SCBE_Micro::print() const
                 break;
             case SCBE_MicroOp::StoreParam:
                 // encoder.emitStoreParam(static_cast<uint32_t>(inst->valueA), inst->regA, inst->opBitsA, inst->boolA);
-                line.name = inst->boolA ? "movs" : "movz";
+                line.name = "mov";
                 line.args = form("param %d, %s", inst->valueA, regName(inst->regA, inst->opBitsA));
                 break;
             case SCBE_MicroOp::Load0:
@@ -368,12 +371,18 @@ void SCBE_Micro::print() const
                 break;
             case SCBE_MicroOp::LoadExtend0:
                 // encoder.emitLoadExtend(inst->regA, inst->regB, inst->valueA, inst->opBitsA, inst->opBitsB, inst->boolA);
-                line.name = inst->boolA ? "movs" : "movz";
+                if (inst->opBitsA == inst->opBitsB)
+                    line.name = "mov";
+                else
+                    line.name = inst->boolA ? "movs" : "movz";
                 line.args = form("%s, %s ptr [%s+%d]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsB), regName(inst->regB, inst->opBitsA), inst->valueA);
                 break;
             case SCBE_MicroOp::LoadExtend1:
                 // encoder.emitLoadExtend(inst->regA, inst->regB, inst->opBitsA, inst->opBitsB, inst->boolA);
-                line.name = inst->boolA ? "movs" : "movz";
+                if (inst->opBitsA == inst->opBitsB)
+                    line.name = "mov";
+                else
+                    line.name = inst->boolA ? "movs" : "movz";
                 line.args = form("%s, %s ptr [%s+%d]", regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsB));
                 break;
             case SCBE_MicroOp::LoadAddress0:

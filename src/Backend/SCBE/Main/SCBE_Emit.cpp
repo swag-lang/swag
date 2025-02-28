@@ -261,8 +261,7 @@ void SCBE::emitBinOpEqS(SCBE_CPU& pp, CPUOp op)
     const auto opBits = SCBE_CPU::getOpBits(ip->op);
     if (SCBE_CPU::isInt(opBits) && ip->hasFlag(BCI_IMM_B))
     {
-        pp.emitLoadAddress(CPUReg::RAX, CPUReg::RDI, pp.cpuFct->offsetByteCodeStack + ip->a.u32);
-        pp.emitOpBinary(CPUReg::RAX, 0, ip->b.u64, op, opBits);
+        pp.emitOpBinary(CPUReg::RDI, pp.cpuFct->offsetByteCodeStack + ip->a.u32, ip->b.u64, op, opBits);
     }
     else
     {

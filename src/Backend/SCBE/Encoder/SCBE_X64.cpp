@@ -1200,7 +1200,7 @@ void SCBE_X64::emitOpBinary(CPUReg memReg, uint64_t memOffset, CPUReg reg, CPUOp
              op == CPUOp::MOD ||
              op == CPUOp::IMOD)
     {
-        SWAG_ASSERT(memReg == CPUReg::RAX);
+        SWAG_ASSERT(memReg == CPUReg::RAX || memReg == CPUReg::RDI);
         SWAG_ASSERT(reg == CPUReg::RCX);
         if (memReg == CPUReg::RAX)
         {
@@ -1215,7 +1215,8 @@ void SCBE_X64::emitOpBinary(CPUReg memReg, uint64_t memOffset, CPUReg reg, CPUOp
              op == CPUOp::SHR ||
              op == CPUOp::SHL)
     {
-        SWAG_ASSERT(memReg == CPUReg::RAX && reg == CPUReg::RCX);
+        SWAG_ASSERT(memReg == CPUReg::RAX || memReg == CPUReg::RDI);
+        SWAG_ASSERT(reg == CPUReg::RCX);
         if (emitFlags.has(EMITF_Lock))
             concat.addU8(0xF0);
         emitREX(concat, opBits, reg, memReg);
