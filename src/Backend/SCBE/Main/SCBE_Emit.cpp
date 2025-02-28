@@ -271,7 +271,7 @@ void SCBE::emitBinOpEqS(SCBE_CPU& pp, CPUOp op)
     }
 }
 
-void SCBE::emitCompareOp(SCBE_CPU& pp)
+void SCBE::emitCompareOp(SCBE_CPU& pp, CPUReg reg, CPUCondFlag cond)
 {
     const auto ip     = pp.ip;
     const auto opBits = SCBE_CPU::getOpBits(ip->op);
@@ -299,6 +299,8 @@ void SCBE::emitCompareOp(SCBE_CPU& pp)
         emitIMMB(pp, r1, opBits);
         pp.emitCmp(r0, r1, opBits);
     }
+
+    pp.emitSet(reg, cond);
 }
 
 void SCBE::emitAddSubMul64(SCBE_CPU& pp, uint64_t mulValue, CPUOp op)

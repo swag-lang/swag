@@ -835,8 +835,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOpGreaterS16:
             case ByteCodeOp::CompareOpGreaterS32:
             case ByteCodeOp::CompareOpGreaterS64:
-                emitCompareOp(pp);
-                pp.emitSet(CPUReg::RAX, CPUCondFlag::G);
+                emitCompareOp(pp, CPUReg::RAX, CPUCondFlag::G);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, OpBits::B8);
                 break;
             case ByteCodeOp::CompareOpGreaterU8:
@@ -845,8 +844,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOpGreaterU64:
             case ByteCodeOp::CompareOpGreaterF32:
             case ByteCodeOp::CompareOpGreaterF64:
-                emitCompareOp(pp);
-                pp.emitSet(CPUReg::RAX, CPUCondFlag::A);
+                emitCompareOp(pp, CPUReg::RAX, CPUCondFlag::A);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, OpBits::B8);
                 break;
 
@@ -854,8 +852,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOpGreaterEqS16:
             case ByteCodeOp::CompareOpGreaterEqS32:
             case ByteCodeOp::CompareOpGreaterEqS64:
-                emitCompareOp(pp);
-                pp.emitSet(CPUReg::RAX, CPUCondFlag::GE);
+                emitCompareOp(pp, CPUReg::RAX, CPUCondFlag::GE);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, OpBits::B8);
                 break;
 
@@ -865,8 +862,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOpGreaterEqU64:
             case ByteCodeOp::CompareOpGreaterEqF32:
             case ByteCodeOp::CompareOpGreaterEqF64:
-                emitCompareOp(pp);
-                pp.emitSet(CPUReg::RAX, CPUCondFlag::AE);
+                emitCompareOp(pp, CPUReg::RAX, CPUCondFlag::AE);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, OpBits::B8);
                 break;
 
@@ -876,8 +872,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOpLowerS16:
             case ByteCodeOp::CompareOpLowerS32:
             case ByteCodeOp::CompareOpLowerS64:
-                emitCompareOp(pp);
-                pp.emitSet(CPUReg::RAX, CPUCondFlag::L);
+                emitCompareOp(pp, CPUReg::RAX, CPUCondFlag::L);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, OpBits::B8);
                 break;
 
@@ -887,8 +882,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOpLowerU64:
             case ByteCodeOp::CompareOpLowerF32:
             case ByteCodeOp::CompareOpLowerF64:
-                emitCompareOp(pp);
-                pp.emitSet(CPUReg::RAX, CPUCondFlag::B);
+                emitCompareOp(pp, CPUReg::RAX, CPUCondFlag::B);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, OpBits::B8);
                 break;
 
@@ -896,8 +890,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOpLowerEqS16:
             case ByteCodeOp::CompareOpLowerEqS32:
             case ByteCodeOp::CompareOpLowerEqS64:
-                emitCompareOp(pp);
-                pp.emitSet(CPUReg::RAX, CPUCondFlag::LE);
+                emitCompareOp(pp, CPUReg::RAX, CPUCondFlag::LE);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, OpBits::B8);
                 break;
 
@@ -907,8 +900,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOpLowerEqU64:
             case ByteCodeOp::CompareOpLowerEqF32:
             case ByteCodeOp::CompareOpLowerEqF64:
-                emitCompareOp(pp);
-                pp.emitSet(CPUReg::RAX, CPUCondFlag::BE);
+                emitCompareOp(pp, CPUReg::RAX, CPUCondFlag::BE);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, OpBits::B8);
                 break;
 
@@ -919,8 +911,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOp3Way32:
             case ByteCodeOp::CompareOp3Way64:
                 pp.emitClear(CPUReg::R8, OpBits::B32);
-                emitCompareOp(pp);
-                pp.emitSet(CPUReg::R8, CPUCondFlag::G);
+                emitCompareOp(pp, CPUReg::R8, CPUCondFlag::G);
                 pp.emitLoad(CPUReg::RAX, 0xFFFFFFFF, OpBits::B32);
                 pp.emitOpBinary(CPUReg::RAX, CPUReg::R8, CPUOp::CMOVGE, OpBits::B32);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, OpBits::B32);
@@ -946,14 +937,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOpEqual16:
             case ByteCodeOp::CompareOpEqual32:
             case ByteCodeOp::CompareOpEqual64:
-                emitCompareOp(pp);
-                pp.emitSet(CPUReg::RAX, CPUCondFlag::E);
+                emitCompareOp(pp, CPUReg::RAX, CPUCondFlag::E);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, OpBits::B8);
                 break;
             case ByteCodeOp::CompareOpEqualF32:
             case ByteCodeOp::CompareOpEqualF64:
-                emitCompareOp(pp);
-                pp.emitSet(CPUReg::RAX, CPUCondFlag::EP);
+                emitCompareOp(pp, CPUReg::RAX, CPUCondFlag::EP);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, OpBits::B8);
                 break;
 
@@ -963,14 +952,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOpNotEqual16:
             case ByteCodeOp::CompareOpNotEqual32:
             case ByteCodeOp::CompareOpNotEqual64:
-                emitCompareOp(pp);
-                pp.emitSet(CPUReg::RAX, CPUCondFlag::NE);
+                emitCompareOp(pp, CPUReg::RAX, CPUCondFlag::NE);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, OpBits::B8);
                 break;
             case ByteCodeOp::CompareOpNotEqualF32:
             case ByteCodeOp::CompareOpNotEqualF64:
-                emitCompareOp(pp);
-                pp.emitSet(CPUReg::RAX, CPUCondFlag::NEP);
+                emitCompareOp(pp, CPUReg::RAX, CPUCondFlag::NEP);
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, OpBits::B8);
                 break;
 
