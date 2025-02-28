@@ -281,12 +281,6 @@ void SCBE::emitCompareOp(SCBE_CPU& pp, CPUReg reg, CPUCondFlag cond)
         pp.emitLoad(r0, CPUReg::RDI, REG_OFFSET(ip->a.u32), opBits);
         pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->b.u32), r0, opBits);
     }
-    else if (ip->hasFlag(BCI_IMM_A) && !ip->hasFlag(BCI_IMM_B))
-    {
-        const auto r0 = SCBE_CPU::isInt(opBits) ? CPUReg::RAX : CPUReg::XMM0;
-        pp.emitLoad(r0, ip->a.u64, opBits);
-        pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->b.u32), r0, opBits);
-    }
     else if (SCBE_CPU::isInt(opBits) && !ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_B))
     {
         pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->a.u32), ip->b.u64, opBits);
