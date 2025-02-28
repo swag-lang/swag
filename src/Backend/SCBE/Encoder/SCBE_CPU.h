@@ -229,7 +229,7 @@ struct SCBE_CPU : BackendEncoder
     virtual void emitSymbolRelocationPtr(CPUReg reg, const Utf8& name);
     virtual void emitLabel(uint32_t instructionIndex);
     virtual void emitLabels();
-    virtual void emitJump(CPUCondJump jumpType, int32_t currentIp, int32_t jumpOffset);
+    virtual void emitJump(CPUCondJump jumpType, uint32_t ipDest);
 
     virtual void    emitSymbolRelocationRef(const Utf8& name)                                                                                     = 0;
     virtual void    emitSymbolRelocationAddress(CPUReg reg, uint32_t symbolIndex, uint32_t offset)                                                = 0;

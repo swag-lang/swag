@@ -102,7 +102,7 @@ struct SCBE_Micro final : SCBE_CPU
     void    emitCallIndirect(CPUReg reg) override;
     void    emitJumpTable(CPUReg table, CPUReg offset, int32_t currentIp, uint32_t offsetTable, uint32_t numEntries) override;
     CPUJump emitJump(CPUCondJump jumpType, OpBits opBits) override;
-    void    emitJump(CPUCondJump jumpType, int32_t currentIp, int32_t jumpOffset) override;
+    void    emitJump(CPUCondJump jumpType, uint32_t ipDest) override;
     void    emitPatchJump(const CPUJump& jump) override;
     void    emitPatchJump(const CPUJump& jump, uint64_t offsetDestination) override;
     void    emitJump(CPUReg reg) override;

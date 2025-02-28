@@ -517,10 +517,10 @@ void SCBE_CPU::emitSymbolRelocationPtr(CPUReg reg, const Utf8& name)
     relocTableTextSection.table.push_back(relocation);
 }
 
-void SCBE_CPU::emitJump(CPUCondJump jumpType, int32_t currentIp, int32_t jumpOffset)
+void SCBE_CPU::emitJump(CPUCondJump jumpType, uint32_t ipDest)
 {
     CPULabelToSolve label;
-    label.ipDest = jumpOffset + currentIp + 1;
+    label.ipDest = ipDest;
 
     // Can we solve the label now ?
     const auto it = cpuFct->labels.find(label.ipDest);
