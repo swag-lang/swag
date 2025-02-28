@@ -82,35 +82,67 @@ namespace
 
     const char* regName(CPUReg reg, OpBits opBits)
     {
+        static constexpr const char* GENERAL_REGS[][4] = {
+            {"al", "ax", "eax", "rax"},
+            {"cl", "cx", "ecx", "rcx"},
+            {"dl", "dx", "edx", "rdx"},
+            {"bl", "bx", "ebx", "rbx"},
+            {"spl", "sp", "esp", "rsp"},
+            {"bpl", "bp", "ebp", "rbp"},
+            {"sil", "si", "esi", "rsi"},
+            {"dil", "di", "edi", "rdi"},
+            {"r8b", "r8w", "r8d", "r8"},
+            {"r9b", "r9w", "r9d", "r9"},
+            {"r10b", "r10w", "r10d", "r10"},
+            {"r11b", "r11w", "r11d", "r11"},
+            {"r12b", "r12w", "r12d", "r12"},
+            {"r13b", "r13w", "r13d", "r13"},
+            {"r14b", "r14w", "r14d", "r14"},
+            {"r15b", "r15w", "r15d", "r15"}};
+
+        static constexpr const char* XMM_REGS[] = {"xmm0", "xmm1", "xmm2", "xmm3", "xmm4", "xmm5", "xmm6", "xmm7", "xmm8", "xmm9", "xmm10", "xmm11", "xmm12", "xmm13", "xmm14", "xmm15"};
+
+        if (SCBE_CPU::isFloat(opBits))
+            return XMM_REGS[static_cast<int>(reg) - static_cast<int>(CPUReg::XMM0)];
+
+        const auto numBytes = static_cast<int>(std::log2(SCBE_CPU::getNumBits(opBits) / 8));
         switch (reg)
         {
             case CPUReg::RAX:
-                return opBits == OpBits::B64 ? "rax" : opBits == OpBits::B32   ? "eax"
-                                                       : opBits == OpBits::B16 ? "ax"
-                                                                               : "al";
-            case CPUReg::RBX:
-                return "rbx";
+                return GENERAL_REGS[0][numBytes];
             case CPUReg::RCX:
-                return opBits == OpBits::B64 ? "rcx" : opBits == OpBits::B32   ? "ecx"
-                                                       : opBits == OpBits::B16 ? "cx"
-                                                                               : "cl";
+                return GENERAL_REGS[1][numBytes];
             case CPUReg::RDX:
-                return "rdx";
-            case CPUReg::RDI:
-                return "rdi";
+                return GENERAL_REGS[2][numBytes];
+            case CPUReg::RBX:
+                return GENERAL_REGS[3][numBytes];
             case CPUReg::RSP:
-                return "rsp";
+                return GENERAL_REGS[4][numBytes];
+            case CPUReg::RBP:
+                return GENERAL_REGS[5][numBytes];
+            case CPUReg::RSI:
+                return GENERAL_REGS[6][numBytes];
+            case CPUReg::RDI:
+                return GENERAL_REGS[7][numBytes];
             case CPUReg::R8:
-                return opBits == OpBits::B64 ? "r8" : opBits == OpBits::B32   ? "r8d"
-                                                      : opBits == OpBits::B16 ? "r8w"
-                                                                              : "r8b";
+                return GENERAL_REGS[8][numBytes];
             case CPUReg::R9:
-                return "r9";
+                return GENERAL_REGS[9][numBytes];
             case CPUReg::R10:
-                return "r10";
+                return GENERAL_REGS[10][numBytes];
+            case CPUReg::R11:
+                return GENERAL_REGS[11][numBytes];
+            case CPUReg::R12:
+                return GENERAL_REGS[12][numBytes];
+            case CPUReg::R13:
+                return GENERAL_REGS[13][numBytes];
+            case CPUReg::R14:
+                return GENERAL_REGS[14][numBytes];
+            case CPUReg::R15:
+                return GENERAL_REGS[15][numBytes];
+            default:
+                return "???";
         }
-
-        return "???";
     }
 
     const char* opBitsName(OpBits opBits)
@@ -154,6 +186,8 @@ void SCBE_Micro::print() const
             }
 
             case SCBE_MicroOp::AddLabel:
+            case SCBE_MicroOp::PatchJump0:
+            case SCBE_MicroOp::PatchJump1:
                 continue;
 
             case SCBE_MicroOp::SymbolRelocationRef:
@@ -228,12 +262,6 @@ void SCBE_Micro::print() const
                 // const auto cmpJump = encoder.emitJump(inst->jumpType, inst->opBitsA);
                 line.name = "jump";
                 break;
-            case SCBE_MicroOp::PatchJump0:
-                // const auto jump = reinterpret_cast<const SCBE_MicroInstruction*>(concat.firstBucket->data + inst->valueA);
-                break;
-            case SCBE_MicroOp::PatchJump1:
-                // const auto jump = reinterpret_cast<SCBE_MicroInstruction*>(inst->valueA);
-                break;
             case SCBE_MicroOp::Jump1:
                 // encoder.emitJump(inst->regA);
                 line.name = "jump";
@@ -270,6 +298,7 @@ void SCBE_Micro::print() const
             case SCBE_MicroOp::Load1:
                 // encoder.emitLoad(inst->regA, inst->opBitsA);
                 line.name = "mov";
+                line.args = form("%s, %s", regName(inst->regA, inst->opBitsA), regName(inst->regA, inst->opBitsA));
                 break;
             case SCBE_MicroOp::Load2:
                 // encoder.emitLoad(inst->regA, inst->regB, inst->valueA, inst->valueB, inst->boolA, inst->cpuOp, inst->opBitsA);
@@ -357,7 +386,7 @@ void SCBE_Micro::print() const
             case SCBE_MicroOp::Clear1:
                 // encoder.emitClear(inst->regA, inst->valueA, static_cast<uint32_t>(inst->valueB));
                 line.name = "clear";
-                line.args = form("byte ptr [%s+%d], %d", regName(inst->regA, inst->opBitsA), inst->valueA, inst->valueB);
+                line.args = form("byte ptr [%s+%d], %d", regName(inst->regA, OpBits::B64), inst->valueA, inst->valueB);
                 break;
             case SCBE_MicroOp::Copy:
                 // encoder.emitCopy(inst->regA, inst->regB, static_cast<uint32_t>(inst->valueA));
@@ -396,6 +425,8 @@ void SCBE_Micro::print() const
                 break;
             case SCBE_MicroOp::MulAdd:
                 // encoder.emitMulAdd(inst->regA, inst->regB, inst->regC, inst->opBitsA);
+                line.name = "muladd";
+                line.args += form("%s, %s*%s+%s", regName(inst->regA, inst->opBitsA), regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsA), regName(inst->regC, inst->opBitsA));
                 break;
         }
 
