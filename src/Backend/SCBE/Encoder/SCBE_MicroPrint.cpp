@@ -6,6 +6,46 @@
 
 namespace
 {
+    const char* cpuJumpName(CPUCondJump kind)
+    {
+        switch (kind)
+        {
+            case JNO:
+                return "JNO";
+            case JNZ:
+                return "JNZ";
+            case JZ:
+                return "JZ";
+            case JL:
+                return "JL";
+            case JLE:
+                return "JLE";
+            case JB:
+                return "JB";
+            case JBE:
+                return "JBE";
+            case JGE:
+                return "JGE";
+            case JAE:
+                return "JAE";
+            case JG:
+                return "JG";
+            case JA:
+                return "JA";
+            case JP:
+                return "JP";
+            case JNP:
+                return "JNP";
+            case JUMP:
+                return "JUMP";
+            default:
+                SWAG_ASSERT(false);
+                break;
+        }
+        
+        return "???";
+    };
+
     const char* cpuCondName(CPUCondFlag cond)
     {
         switch (cond)
@@ -260,11 +300,12 @@ void SCBE_Micro::print() const
                 break;
             case SCBE_MicroOp::Jump0:
                 // const auto cmpJump = encoder.emitJump(inst->jumpType, inst->opBitsA);
-                line.name = "jump";
+                line.name = cpuJumpName(inst->jumpType);
                 break;
             case SCBE_MicroOp::Jump1:
                 // encoder.emitJump(inst->regA);
                 line.name = "jump";
+                line.args = form("[%s]", regName(inst->regA, OpBits::B64));
                 break;
             case SCBE_MicroOp::Jump2:
                 // encoder.emitJump(inst->jumpType, static_cast<int32_t>(inst->valueA), static_cast<int32_t>(inst->valueB));
