@@ -686,7 +686,7 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
                 break;
             case SCBE_MicroOp::OpBinary4:
                 encoder.emitOpBinary(inst->regA, inst->regB, inst->valueA, inst->cpuOp, inst->opBitsA, inst->emitFlags);
-            break;            
+                break;
             case SCBE_MicroOp::MulAdd:
                 encoder.emitMulAdd(inst->regA, inst->regB, inst->regC, inst->opBitsA);
                 break;
