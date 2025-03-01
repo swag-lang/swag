@@ -66,7 +66,9 @@ constexpr SCBE_MicroFlag MF_JUMP_DEST = 0x02;
 
 struct SCBE_MicroInstruction
 {
-    Utf8 name;
+    Utf8     name;
+    uint64_t valueA;
+    uint64_t valueB;
 
     SCBE_MicroOp op;
     CPUOp        cpuOp;
@@ -78,13 +80,10 @@ struct SCBE_MicroInstruction
     CPUEmitFlags   emitFlags;
     SCBE_MicroFlag flags;
 
-    CPUReg regA;
-    CPUReg regB;
-    CPUReg regC;
-
-    uint64_t valueA;
-    uint64_t valueB;
-    uint64_t valueC;
+    uint32_t valueC;
+    CPUReg   regA;
+    CPUReg   regB;
+    CPUReg   regC;
 };
 
 struct SCBE_Micro final : SCBE_CPU

@@ -513,7 +513,7 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
                 encoder.emitCallIndirect(inst->regA);
                 break;
             case SCBE_MicroOp::JumpTable:
-                encoder.emitJumpTable(inst->regA, inst->regB, static_cast<int32_t>(inst->valueA), static_cast<uint32_t>(inst->valueB), static_cast<uint32_t>(inst->valueC));
+                encoder.emitJumpTable(inst->regA, inst->regB, static_cast<int32_t>(inst->valueA), static_cast<uint32_t>(inst->valueB), inst->valueC);
                 break;
             case SCBE_MicroOp::Jump0:
             {
