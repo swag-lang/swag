@@ -437,7 +437,7 @@
     <ClCompile Include="..\src\Backend\SCBE\Debug\SCBE_Debug_CodeView.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Encoder\SCBE_CPU.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Encoder\SCBE_Micro.cpp" />
-    <ClCompile Include="..\src\Backend\SCBE\Encoder\SCBE_MicroPrint.cpp" />
+    <ClCompile Include="..\src\Backend\SCBE\Encoder\SCBE_Micro_Print.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Encoder\SCBE_X64.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Main\SCBE.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Main\SCBE_Call.cpp" />
