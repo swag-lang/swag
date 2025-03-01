@@ -62,7 +62,9 @@ struct Stats
     std::atomic<size_t> memStd             = 0;
     std::atomic<size_t> memFileBuffer      = 0;
 
-    std::atomic<size_t> sizeBackendDbg = 0;
+    std::atomic<size_t>   sizeScbeDbg         = 0;
+    std::atomic<uint32_t> numScbeInstructions = 0;
+    std::atomic<uint32_t> totalOptimScbe      = 0;
 
     std::atomic<uint32_t> countOpFreq[static_cast<int>(ByteCodeOp::End) + 1][static_cast<int>(ByteCodeOp::End) + 1] = {{0}};
 

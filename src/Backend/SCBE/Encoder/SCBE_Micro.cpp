@@ -644,8 +644,19 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
         print();
 }
 
+void SCBE_Micro::ignore(SCBE_MicroInstruction* inst)
+{
+#ifdef SWAG_STATS
+    g_Stats.totalOptimScbe += 1;
+#endif
+}
+
 void SCBE_Micro::process()
 {
+#ifdef SWAG_STATS
+    g_Stats.numScbeInstructions += concat.totalCount();
+#endif
+
     concat.makeLinear();
     if (optLevel == BuildCfgBackendOptim::O0)
         return;
@@ -656,7 +667,7 @@ void SCBE_Micro::process()
     {
         if (inst->op == SCBE_MicroOp::Ignore || inst->op == SCBE_MicroOp::Nop)
             continue;
-        
+
         auto next = inst + 1;
         while (next->op == SCBE_MicroOp::Nop || next->op == SCBE_MicroOp::Label || next->op == SCBE_MicroOp::Debug)
             next++;
@@ -671,7 +682,7 @@ void SCBE_Micro::process()
             inst[0].regB == next->regA &&
             inst[0].valueA == next->valueA)
         {
-            next->op = SCBE_MicroOp::Ignore;
+            ignore(next);
         }
     }
 }

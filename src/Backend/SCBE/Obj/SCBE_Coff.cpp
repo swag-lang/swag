@@ -435,7 +435,7 @@ bool SCBE_Coff::emitPostFunc(const BuildParameters& buildParameters, SCBE_CPU& p
 #endif
     SCBE_Debug_CodeView::emit(buildParameters, pp);
 #ifdef SWAG_STATS
-    g_Stats.sizeBackendDbg += pp.concat.totalCount() - beforeCount;
+    g_Stats.sizeScbeDbg += pp.concat.totalCount() - beforeCount;
 #endif
 
     if (!pp.relocTableTextSection.table.empty())

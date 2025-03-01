@@ -155,11 +155,20 @@ void Stats::print() const
         g_Log.messageHeaderDot("warnings", form("%u", g_Workspace->numWarnings.load()), LogColor::Magenta);
     g_Log.writeEol();
 
-    g_Log.messageHeaderDot("instructions", form("%u", numInstructions.load()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("bc instructions", form("%u", numInstructions.load()), LogColor::Header, LogColor::Value);
     const float pc1 = static_cast<float>(totalOptimBC.load()) * 100.0f / static_cast<float>(numInstructions.load());
-    g_Log.messageHeaderDot("kicked", form("%d %.1f%%", totalOptimBC.load(), pc1), LogColor::Header, LogColor::Value);
-    g_Log.messageHeaderDot("total", form("%u", numInstructions.load() - totalOptimBC.load()), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("bc kicked", form("%d %.1f%%", totalOptimBC.load(), pc1), LogColor::Header, LogColor::Value);
+    g_Log.messageHeaderDot("bc total", form("%u", numInstructions.load() - totalOptimBC.load()), LogColor::Header, LogColor::Value);
     g_Log.writeEol();
+
+    if (g_CommandLine.backendGenType == BackendGenType::SCBE)
+    {
+        g_Log.messageHeaderDot("scbe instructions", form("%u", numScbeInstructions.load()), LogColor::Header, LogColor::Value);
+        const float pc2 = static_cast<float>(totalOptimScbe.load()) * 100.0f / static_cast<float>(numScbeInstructions.load());
+        g_Log.messageHeaderDot("scbe kicked", form("%d %.1f%%", totalOptimScbe.load(), pc2), LogColor::Header, LogColor::Value);
+        g_Log.messageHeaderDot("scbe total", form("%u", numScbeInstructions.load() - totalOptimScbe.load()), LogColor::Header, LogColor::Value);
+        g_Log.writeEol();
+    }
 
     g_Log.messageHeaderDot("concrete types", form("%u", totalConcreteTypes.load()), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("concrete struct types", form("%u", totalConcreteStructTypes.load()), LogColor::Header, LogColor::Value);
@@ -209,7 +218,7 @@ void Stats::print() const
     g_Log.messageHeaderDot("mem sym name", form("%s", Utf8::toNiceSize(memSymName.load()).cstr()), LogColor::Header, LogColor::Value);
     g_Log.messageHeaderDot("mem sym over", form("%s", Utf8::toNiceSize(memSymOver.load()).cstr()), LogColor::Header, LogColor::Value);
     if (g_CommandLine.backendGenType == BackendGenType::SCBE)
-        g_Log.messageHeaderDot("mem x64 dbg", form("%s", Utf8::toNiceSize(sizeBackendDbg.load()).cstr()), LogColor::Header, LogColor::Value);
+        g_Log.messageHeaderDot("mem scbe dbg", form("%s", Utf8::toNiceSize(sizeScbeDbg.load()).cstr()), LogColor::Header, LogColor::Value);
 
     /////////////////////////
     g_Log.writeEol();

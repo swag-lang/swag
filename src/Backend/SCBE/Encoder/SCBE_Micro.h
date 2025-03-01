@@ -147,6 +147,7 @@ struct SCBE_Micro final : SCBE_CPU
     void    emitMulAdd(CPUReg regDst, CPUReg regMul, CPUReg regAdd, OpBits opBits) override;
 
     SCBE_MicroInstruction* addInstruction(SCBE_MicroOp op);
+    static void            ignore(SCBE_MicroInstruction* inst);
     void                   process();
     void                   print() const;
     void                   encode(SCBE_CPU& encoder) const;
