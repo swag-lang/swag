@@ -139,7 +139,8 @@ struct SCBE_Micro final : SCBE_CPU
     void    emitOpBinary(CPUReg memReg, uint64_t memOffset, uint64_t value, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags = EMITF_Zero) override;
     void    emitMulAdd(CPUReg regDst, CPUReg regMul, CPUReg regAdd, OpBits opBits) override;
 
-    void process();
-    void print() const;
-    void encode(SCBE_CPU& encoder) const;
+    SCBE_MicroInstruction* addInstruction(SCBE_MicroOp op);
+    void                   process();
+    void                   print() const;
+    void                   encode(SCBE_CPU& encoder) const;
 };
