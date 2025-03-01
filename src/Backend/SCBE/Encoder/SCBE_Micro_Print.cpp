@@ -211,6 +211,9 @@ void SCBE_Micro::print() const
     SourceFile* lastFile   = nullptr;
     AstNode*    lastInline = nullptr;
 
+    if (cpuFct->bc)
+        cpuFct->bc->printName();
+
     for (uint32_t i = 0; i < num; i++, inst++)
     {
         ByteCode::PrintInstructionLine         line;
@@ -336,7 +339,7 @@ void SCBE_Micro::print() const
                 case SCBE_MicroOp::LoadParam:
                     // encoder.emitLoadParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->opBitsA);
                     line.name = "mov";
-                    line.args = form("%s, param %d", regName(inst->regA, inst->opBitsA), inst->valueA);
+                    line.args = form("%s, %s ptr [rdi+<param%d>]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsA), inst->valueA);
                     break;
                 case SCBE_MicroOp::LoadExtendParam:
                     // encoder.emitLoadExtendParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->opBitsA, inst->opBitsB, inst->boolA);
@@ -344,17 +347,17 @@ void SCBE_Micro::print() const
                         line.name = "mov";
                     else
                         line.name = inst->flags.has(MF_BOOL) ? "movs" : "movz";
-                    line.args = form("%s, %s param %d", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsB), inst->valueA);
+                    line.args = form("%s, %s ptr [rdi+<param%d>]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsB), inst->valueA);
                     break;
                 case SCBE_MicroOp::LoadAddressParam:
                     // encoder.emitLoadAddressParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->boolA);
                     line.name = "lea";
-                    line.args = form("%s, [param %d]", regName(inst->regA, inst->opBitsA), inst->valueA);
+                    line.args = form("%s, %s ptr [rdi+<param%d>]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsA), inst->valueA);
                     break;
                 case SCBE_MicroOp::StoreParam:
                     // encoder.emitStoreParam(static_cast<uint32_t>(inst->valueA), inst->regA, inst->opBitsA, inst->boolA);
                     line.name = "mov";
-                    line.args = form("param %d, %s", inst->valueA, regName(inst->regA, inst->opBitsA));
+                    line.args = form("%s ptr [rdi+<param%d>], %s", opBitsName(inst->opBitsA), inst->valueA, regName(inst->regA, inst->opBitsA));
                     break;
                 case SCBE_MicroOp::Load0:
                     // encoder.emitLoad(inst->regA, inst->regB, inst->opBitsA);
