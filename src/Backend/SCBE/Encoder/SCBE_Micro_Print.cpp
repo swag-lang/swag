@@ -219,6 +219,9 @@ void SCBE_Micro::print() const
         ByteCode::PrintInstructionLine         line;
         Vector<ByteCode::PrintInstructionLine> lines;
 
+        if (inst->op == SCBE_MicroOp::Ignore)
+            continue;
+
         if (inst->op == SCBE_MicroOp::Enter)
         {
             for (const auto& reg : cpuFct->unwindRegs)
@@ -514,6 +517,11 @@ void SCBE_Micro::print() const
                 line.flags += 'J';
             while (line.flags.length() != 10)
                 line.flags += '.';
+
+#ifdef SWAG_DEV_MODE
+            line.rank    = form("%08d", i);
+            line.devMode = form("%d", inst->op);
+#endif
 
             lines.push_back(line);
         }

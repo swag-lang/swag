@@ -451,11 +451,6 @@ void SCBE_Micro::emitMulAdd(CPUReg regDst, CPUReg regMul, CPUReg regAdd, OpBits 
     inst->opBitsA   = opBits;
 }
 
-void SCBE_Micro::process()
-{
-    concat.makeLinear();
-}
-
 void SCBE_Micro::encode(SCBE_CPU& encoder) const
 {
     const auto num  = concat.totalCount() / sizeof(SCBE_MicroInstruction);
@@ -464,6 +459,8 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
     {
         switch (inst->op)
         {
+            case SCBE_MicroOp::Ignore:
+                break;
             case SCBE_MicroOp::Debug:
                 encoder.emitDebug(reinterpret_cast<ByteCodeInstruction*>(inst->valueA));
                 break;
@@ -645,4 +642,36 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
 
     if (cpuFct->bc->node && cpuFct->bc->node->hasAttribute(ATTRIBUTE_PRINT_ASM))
         print();
+}
+
+void SCBE_Micro::process()
+{
+    concat.makeLinear();
+    if (optLevel == BuildCfgBackendOptim::O0)
+        return;
+
+    const auto num  = concat.totalCount() / sizeof(SCBE_MicroInstruction);
+    auto       inst = reinterpret_cast<SCBE_MicroInstruction*>(concat.firstBucket->data);
+    for (uint32_t i = 0; i < num; i++, inst++)
+    {
+        if (inst->op == SCBE_MicroOp::Ignore || inst->op == SCBE_MicroOp::Nop)
+            continue;
+        
+        auto next = inst + 1;
+        while (next->op == SCBE_MicroOp::Nop || next->op == SCBE_MicroOp::Label || next->op == SCBE_MicroOp::Debug)
+            next++;
+
+        // mov qword ptr [rdi+16], rax
+        // mov rax, qword ptr [rdi+16]
+        if (inst[0].op == SCBE_MicroOp::Store0 &&
+            next->op == SCBE_MicroOp::Load5 &&
+            !next->flags.has(MF_JUMP_DEST) &&
+            inst[0].opBitsA == next->opBitsA &&
+            inst[0].regA == next->regB &&
+            inst[0].regB == next->regA &&
+            inst[0].valueA == next->valueA)
+        {
+            next->op = SCBE_MicroOp::Ignore;
+        }
+    }
 }

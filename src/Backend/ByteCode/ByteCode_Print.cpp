@@ -460,6 +460,8 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteC
 
     if (forDbg && ip == options.curIp)
         g_Log.setColor(LogColor::CurInstruction);
+    else if (options.flags.has(BCPF_ASM_SCBE))
+        g_Log.setColor(LogColor::AsmInstruction);
     else
         g_Log.setColor(LogColor::Index);
 
@@ -476,7 +478,7 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteC
 
     // Normal instruction
     else if (options.flags.has(BCPF_ASM_SCBE))
-        g_Log.setColor(LogColor::Gray);
+        g_Log.setColor(LogColor::AsmInstruction);
     else
         g_Log.setColor(LogColor::White);
 
@@ -489,8 +491,10 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteC
     // Flags
     if (forDbg && ip == options.curIp)
         g_Log.setColor(LogColor::CurInstruction);
+    else if (options.flags.has(BCPF_ASM_SCBE))
+        g_Log.setColor(LogColor::AsmFlags);
     else
-        g_Log.setColor(LogColor::PrintBcFlags);
+        g_Log.setColor(LogColor::InstructionFlags);
     g_Log.print(line.flags);
 
     // Pretty

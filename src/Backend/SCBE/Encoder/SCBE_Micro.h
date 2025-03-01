@@ -4,6 +4,7 @@
 
 enum class SCBE_MicroOp : uint8_t
 {
+    Ignore,
     SymbolRelocationRef,
     SymbolRelocationAddress,
     SymbolRelocationValue,
