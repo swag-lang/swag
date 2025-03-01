@@ -90,7 +90,7 @@ enum class CPUOp : uint8_t
     IMOD    = 0xFB,
 };
 
-enum class CPUCondFlag
+enum class CPUCondFlag : uint8_t
 {
     A,
     O,
@@ -108,7 +108,7 @@ enum class CPUCondFlag
     NEP,
 };
 
-enum CPUCondJump
+enum CPUCondJump : uint8_t
 {
     JNO,
     JNZ,
@@ -126,7 +126,7 @@ enum CPUCondJump
     JUMP,
 };
 
-using CPUEmitFlags                    = Flags<uint32_t>;
+using CPUEmitFlags                    = Flags<uint8_t>;
 constexpr CPUEmitFlags EMITF_Zero     = 0x00000000;
 constexpr CPUEmitFlags EMITF_Overflow = 0x00000001;
 constexpr CPUEmitFlags EMITF_Lock     = 0x00000002;
@@ -136,7 +136,7 @@ struct CPUJump
 {
     void*    addr   = nullptr;
     uint64_t offset = 0;
-    OpBits   opBits = OpBits::NONE;
+    OpBits   opBits = OpBits::Zero;
 };
 
 struct CPULabelToSolve

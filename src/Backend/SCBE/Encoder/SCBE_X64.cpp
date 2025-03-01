@@ -193,13 +193,13 @@ void SCBE_X64::emitSymbolGlobalString(CPUReg reg, const Utf8& str)
 
 void SCBE_X64::emitPush(CPUReg reg)
 {
-    emitREX(concat, OpBits::NONE, REX_REG_NONE, reg);
+    emitREX(concat, OpBits::Zero, REX_REG_NONE, reg);
     emitCPUOp(concat, 0x50, reg);
 }
 
 void SCBE_X64::emitPop(CPUReg reg)
 {
-    emitREX(concat, OpBits::NONE, REX_REG_NONE, reg);
+    emitREX(concat, OpBits::Zero, REX_REG_NONE, reg);
     emitCPUOp(concat, 0x58, reg);
 }
 
@@ -2027,7 +2027,7 @@ void SCBE_X64::emitPatchJump(const CPUJump& jump)
 void SCBE_X64::emitJump(CPUReg reg)
 {
     SWAG_ASSERT(reg == CPUReg::RAX);
-    emitREX(concat, OpBits::NONE, REX_REG_NONE, reg);
+    emitREX(concat, OpBits::Zero, REX_REG_NONE, reg);
     emitCPUOp(concat, 0xFF);
     emitModRM(concat, ModRMMode::Register, MODRM_REG_4, static_cast<uint8_t>(reg));
 }
@@ -2210,7 +2210,7 @@ void SCBE_X64::emitCallLocal(const Utf8& symbolName)
 void SCBE_X64::emitCallIndirect(CPUReg reg)
 {
     SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX || reg == CPUReg::R10);
-    emitREX(concat, OpBits::NONE, REX_REG_NONE, reg);
+    emitREX(concat, OpBits::Zero, REX_REG_NONE, reg);
     emitCPUOp(concat, 0xFF);
     emitModRM(concat, ModRMMode::Register, MODRM_REG_2, static_cast<uint8_t>(reg));
 }

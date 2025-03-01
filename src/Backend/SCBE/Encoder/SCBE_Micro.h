@@ -67,13 +67,15 @@ struct SCBE_MicroInstruction
     CPUOp        cpuOp;
     CPUCondFlag  cpuCond;
     CPUCondJump  jumpType;
-    CPUReg       regA;
-    CPUReg       regB;
-    CPUReg       regC;
+
     OpBits       opBitsA;
     OpBits       opBitsB;
     CPUEmitFlags emitFlags;
     bool         boolA;
+
+    CPUReg regA;
+    CPUReg regB;
+    CPUReg regC;
 
     uint64_t valueA;
     uint64_t valueB;

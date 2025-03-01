@@ -16,9 +16,9 @@ enum class BackendPreCompilePass
     Release,
 };
 
-enum class OpBits : uint32_t
+enum class OpBits : uint8_t
 {
-    NONE = 0,
+    Zero = 0,
     B8   = 8,
     B16  = 16,
     B32  = 32,

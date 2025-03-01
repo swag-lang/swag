@@ -131,7 +131,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         pp.emitLoad(CPUReg::R12, CPUReg::RCX, OpBits::B64);
 
     auto ip     = bc->out;
-    auto opBits = OpBits::NONE;
+    auto opBits = OpBits::Zero;
     for (uint32_t i = 0; i < bc->numInstructions; i++, ip++)
     {
         if (ip->node->hasAstFlag(AST_NO_BACKEND))
@@ -160,7 +160,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
         }
 
-        opBits = OpBits::NONE;
+        opBits = OpBits::Zero;
         switch (ip->op)
         {
             case ByteCodeOp::DebugNop:
