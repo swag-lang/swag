@@ -20,7 +20,7 @@ void SCBE_Micro::emitDebug(ByteCodeInstruction* ipAddr)
 void SCBE_Micro::emitLabel(uint32_t instructionIndex)
 {
     const auto inst = concat.addObj<SCBE_MicroInstruction>();
-    inst->op        = SCBE_MicroOp::AddLabel;
+    inst->op        = SCBE_MicroOp::Label;
     inst->valueA    = instructionIndex;
 }
 
@@ -512,7 +512,7 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
             case SCBE_MicroOp::Debug:
                 encoder.emitDebug(reinterpret_cast<ByteCodeInstruction*>(inst->valueA));
                 break;
-            case SCBE_MicroOp::AddLabel:
+            case SCBE_MicroOp::Label:
                 encoder.emitLabel(static_cast<int32_t>(inst->valueA));
                 break;
             case SCBE_MicroOp::SymbolRelocationRef:

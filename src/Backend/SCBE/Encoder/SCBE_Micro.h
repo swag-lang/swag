@@ -56,7 +56,7 @@ enum class SCBE_MicroOp : uint8_t
     OpBinary3,
     OpBinary4,
     MulAdd,
-    AddLabel,
+    Label,
     Debug,
 };
 

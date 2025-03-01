@@ -254,7 +254,7 @@ void SCBE_Micro::print() const
                     continue;
                 }
 
-                case SCBE_MicroOp::AddLabel:
+                case SCBE_MicroOp::Label:
                 case SCBE_MicroOp::PatchJump0:
                 case SCBE_MicroOp::PatchJump1:
                     continue;
