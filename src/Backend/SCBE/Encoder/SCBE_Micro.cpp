@@ -649,8 +649,10 @@ void SCBE_Micro::ignore(SCBE_MicroInstruction* inst)
 #ifdef SWAG_STATS
     g_Stats.totalOptimScbe += 1;
 #endif
+    inst->op = SCBE_MicroOp::Ignore;
 }
 
+#pragma optimize("", off)
 void SCBE_Micro::process()
 {
 #ifdef SWAG_STATS
@@ -684,5 +686,16 @@ void SCBE_Micro::process()
         {
             ignore(next);
         }
+
+        // mov qword ptr [rdi+16], rax
+        // mov rcx, qword ptr [rdi+16]
+        if (inst[0].op == SCBE_MicroOp::Store0 &&
+            next->op == SCBE_MicroOp::Load5 &&
+            !next->flags.has(MF_JUMP_DEST) &&
+            inst[0].opBitsA == next->opBitsA &&
+            inst[0].regA == next->regB &&
+            inst[0].valueA == next->valueA)
+        {
+        }        
     }
 }
