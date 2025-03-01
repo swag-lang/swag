@@ -44,8 +44,9 @@ enum class LogColor
     ByteCodeFlags    = Gray,
     Instruction      = White,
     InstructionFlags = White,
-    AsmInstruction   = DarkYellow,
-    AsmFlags         = DarkYellow,
+    AsmIndex         = Gray,
+    AsmInstruction   = Gray,
+    AsmFlags         = Gray,
 };
 
 enum class LogSymbol

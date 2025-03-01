@@ -461,7 +461,7 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteC
     if (forDbg && ip == options.curIp)
         g_Log.setColor(LogColor::CurInstruction);
     else if (options.flags.has(BCPF_ASM_SCBE))
-        g_Log.setColor(LogColor::AsmInstruction);
+        g_Log.setColor(LogColor::AsmIndex);
     else
         g_Log.setColor(LogColor::Index);
 

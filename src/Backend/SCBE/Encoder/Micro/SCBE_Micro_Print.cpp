@@ -5,6 +5,14 @@
 
 namespace
 {
+    const char* g_MicroOpNames[] =
+    {
+#undef SCBE_MICRO_OP
+#define SCBE_MICRO_OP(__op) #__op,
+#include "Backend/SCBE/Encoder/Micro/SCBE_MicroOpList.h"
+
+    };
+
     const char* cpuJumpName(CPUCondJump kind)
     {
         switch (kind)
@@ -534,7 +542,7 @@ void SCBE_Micro::print() const
 
 #ifdef SWAG_DEV_MODE
             line.rank    = form("%08d", i);
-            line.devMode = form("%d", inst->op);
+            line.devMode = g_MicroOpNames[static_cast<int>(inst->op)];
 #endif
 
             lines.push_back(line);
