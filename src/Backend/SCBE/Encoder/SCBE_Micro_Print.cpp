@@ -507,6 +507,11 @@ void SCBE_Micro::print() const
                     break;
             }
 
+            if (inst->flags.has(MF_JUMP_DEST))
+                line.flags += 'J';
+            while (line.flags.length() != 10)
+                line.flags += '.';
+
             lines.push_back(line);
         }
 

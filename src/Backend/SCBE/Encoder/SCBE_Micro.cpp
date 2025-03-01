@@ -13,7 +13,10 @@ void SCBE_Micro::init(const BuildParameters& buildParameters)
 SCBE_MicroInstruction* SCBE_Micro::addInstruction(SCBE_MicroOp op)
 {
     const auto inst = concat.addObj<SCBE_MicroInstruction>();
-    inst->op        = op;
+    if (nextIsJumpDest)
+        inst->flags.add(MF_JUMP_DEST);
+    inst->op       = op;
+    nextIsJumpDest = false;
     return inst;
 }
 
@@ -27,6 +30,7 @@ void SCBE_Micro::emitLabel(uint32_t instructionIndex)
 {
     const auto inst = addInstruction(SCBE_MicroOp::Label);
     inst->valueA    = instructionIndex;
+    nextIsJumpDest  = true;
 }
 
 void SCBE_Micro::emitSymbolRelocationRef(const Utf8& name)
@@ -399,6 +403,7 @@ void SCBE_Micro::emitPatchJump(const CPUJump& jump)
 {
     const auto inst = addInstruction(SCBE_MicroOp::PatchJump);
     inst->valueA    = jump.offset;
+    nextIsJumpDest  = true;
 }
 
 void SCBE_Micro::emitPatchJump(const CPUJump& jump, uint64_t offsetDestination)

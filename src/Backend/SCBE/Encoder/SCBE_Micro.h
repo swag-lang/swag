@@ -59,9 +59,10 @@ enum class SCBE_MicroOp : uint8_t
     Debug,
 };
 
-using SCBE_MicroFlag             = Flags<uint8_t>;
-constexpr SCBE_MicroFlag MF_ZERO = 0x00;
-constexpr SCBE_MicroFlag MF_BOOL = 0x01;
+using SCBE_MicroFlag                  = Flags<uint8_t>;
+constexpr SCBE_MicroFlag MF_ZERO      = 0x00;
+constexpr SCBE_MicroFlag MF_BOOL      = 0x01;
+constexpr SCBE_MicroFlag MF_JUMP_DEST = 0x02;
 
 struct SCBE_MicroInstruction
 {
@@ -149,4 +150,6 @@ struct SCBE_Micro final : SCBE_CPU
     void                   process();
     void                   print() const;
     void                   encode(SCBE_CPU& encoder) const;
+
+    bool nextIsJumpDest = false;
 };
