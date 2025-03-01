@@ -372,7 +372,7 @@ void SCBE_Micro::print() const
                     if (inst->flags.has(MF_BOOL))
                         line.args = form("%s, %d", regName(inst->regA, inst->opBitsA), inst->valueB);
                     else
-                        line.args = form("%s, [%s+%d]", regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsA), inst->valueA);
+                        line.args = form("%s, %s ptr [%s+%d]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsA), regName(inst->regB, inst->opBitsA), inst->valueA);
                     break;
                 case SCBE_MicroOp::Load3:
                     // encoder.emitLoad(inst->regA, inst->valueA);
