@@ -138,7 +138,7 @@ namespace
     void emitCPUOp(Concat& concat, uint8_t op, CPUReg reg)
     {
         concat.addU8(op | (static_cast<uint8_t>(reg) & 0b111));
-    }    
+    }
 
     void emitSpecCPUOp(Concat& concat, CPUOp op, OpBits opBits)
     {
