@@ -254,6 +254,7 @@
     <ClInclude Include="..\src\Backend\SCBE\Debug\SCBE_Debug.h" />
     <ClInclude Include="..\src\Backend\SCBE\Debug\SCBE_Debug_CodeView.h" />
     <ClInclude Include="..\src\Backend\SCBE\Encoder\Micro\SCBE_Micro.h" />
+    <ClInclude Include="..\src\Backend\SCBE\Encoder\Micro\SCBE_MicroOpList.h" />
     <ClInclude Include="..\src\Backend\SCBE\Encoder\SCBE_CPU.h" />
     <ClInclude Include="..\src\Backend\SCBE\Encoder\X64\SCBE_X64.h" />
     <ClInclude Include="..\src\Backend\SCBE\Main\SCBE.h" />

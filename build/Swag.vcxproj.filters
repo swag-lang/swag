@@ -70,7 +70,6 @@
     <ClCompile Include="..\src\Backend\LLVM\Main\LLVM_Function.cpp" />
     <ClCompile Include="..\src\Backend\LLVM\Main\LLVM_Main.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Encoder\SCBE_CPU.cpp" />
-    <ClCompile Include="..\src\Backend\SCBE\Encoder\SCBE_X64.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Main\SCBE.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Main\SCBE_Call.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Main\SCBE_Data.cpp" />
@@ -256,10 +255,8 @@
     <ClCompile Include="..\src\Os\OSWin32_PatchIcon.cpp" />
     <ClCompile Include="..\src\Backend\BackendEncoder.cpp" />
     <ClCompile Include="..\src\Backend\LLVM\Encoder\LLVM_Encoder.cpp" />
-    <ClCompile Include="..\src\Backend\SCBE\Encoder\SCBE_Micro.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Debug\SCBE_Debug.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Debug\SCBE_Debug_CodeView.cpp" />
-    <ClCompile Include="..\src\Backend\SCBE\Encoder\SCBE_Micro_Print.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Encoder\X64\SCBE_X64.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Encoder\Micro\SCBE_Micro.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Encoder\Micro\SCBE_Micro_Print.cpp" />
@@ -296,7 +293,6 @@
     <ClInclude Include="..\src\Backend\LLVM\Main\LLVM_Macros.h" />
     <ClInclude Include="..\src\Backend\Runtime.h" />
     <ClInclude Include="..\src\Backend\SCBE\Encoder\SCBE_CPU.h" />
-    <ClInclude Include="..\src\Backend\SCBE\Encoder\SCBE_X64.h" />
     <ClInclude Include="..\src\Backend\SCBE\Main\SCBE.h" />
     <ClInclude Include="..\src\Backend\SCBE\Obj\SCBE_Coff.h" />
     <ClInclude Include="..\src\Backend\SCBE\Obj\SCBE_SaveObjJob.h" />
@@ -396,11 +392,11 @@
     <ClInclude Include="..\src\Backend\ByteCode\Sanity\ByteCodeSanityState.h" />
     <ClInclude Include="..\src\Backend\BackendEncoder.h" />
     <ClInclude Include="..\src\Backend\LLVM\Encoder\LLVM_Encoder.h" />
-    <ClInclude Include="..\src\Backend\SCBE\Encoder\SCBE_Micro.h" />
     <ClInclude Include="..\src\Backend\SCBE\Debug\SCBE_Debug.h" />
     <ClInclude Include="..\src\Backend\SCBE\Debug\SCBE_Debug_CodeView.h" />
     <ClInclude Include="..\src\Backend\SCBE\Encoder\X64\SCBE_X64.h" />
     <ClInclude Include="..\src\Backend\SCBE\Encoder\Micro\SCBE_Micro.h" />
+    <ClInclude Include="..\src\Backend\SCBE\Encoder\Micro\SCBE_MicroOpList.h" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="swag.natvis" />

@@ -1,6 +1,5 @@
 #include "pch.h"
-
-#include "Backend/SCBE/Encoder/SCBE_X64.h"
+#include "Backend/SCBE/Encoder/X64/SCBE_X64.h"
 #include "Backend/SCBE/Main/SCBE.h"
 #include "Backend/SCBE/Obj/SCBE_Coff.h"
 #include "Backend/SCBE/Obj/SCBE_SaveObjJob.h"

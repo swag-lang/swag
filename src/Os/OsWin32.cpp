@@ -1,6 +1,5 @@
 #include "pch.h"
-
-#include "Backend/SCBE/Encoder/SCBE_X64.h"
+#include "Backend/SCBE/Encoder/X64/SCBE_X64.h"
 #include "Core/Math.h"
 #ifdef _WIN32
 #include "Backend/Context.h"

@@ -1,6 +1,6 @@
 // ReSharper disable CommentTypo
 #include "pch.h"
-#include "Backend/SCBE/Encoder/SCBE_X64.h"
+#include "Backend/SCBE/Encoder/X64/SCBE_X64.h"
 #include "Core/Math.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Wmf/Module.h"

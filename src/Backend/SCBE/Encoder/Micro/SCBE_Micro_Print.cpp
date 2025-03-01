@@ -1,8 +1,7 @@
 #include "pch.h"
 #include "Backend/ByteCode/ByteCode.h"
-#include "Backend/SCBE/Encoder/SCBE_Micro.h"
+#include "Backend/SCBE/Encoder/Micro/SCBE_Micro.h"
 #include "Semantic/Type/TypeManager.h"
-#pragma optimize("", off)
 
 namespace
 {
