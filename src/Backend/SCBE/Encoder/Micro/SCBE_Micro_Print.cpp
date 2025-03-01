@@ -540,10 +540,8 @@ void SCBE_Micro::print() const
             while (line.flags.length() != 10)
                 line.flags += '.';
 
-#ifdef SWAG_DEV_MODE
+            line.name = form("%s - %s", g_MicroOpNames[static_cast<int>(inst->op)], line.name.cstr());
             line.rank    = form("%08d", i);
-            line.devMode = g_MicroOpNames[static_cast<int>(inst->op)];
-#endif
 
             lines.push_back(line);
         }
