@@ -14,9 +14,9 @@ union Register;
 enum class SegmentKind;
 enum class SafetyMsg;
 
-struct LLVM_Encoder : BackendEncoder
+struct LLVM_Encoder final : BackendEncoder
 {
-    void init(const BuildParameters& buildParameters);
+    void init(const BuildParameters& buildParameters) override;
 
     llvm::IRBuilder<>* builder     = nullptr;
     llvm::LLVMContext* llvmContext = nullptr;
