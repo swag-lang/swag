@@ -59,6 +59,10 @@ enum class SCBE_MicroOp : uint8_t
     Debug,
 };
 
+using SCBE_MicroFlag             = Flags<uint8_t>;
+constexpr SCBE_MicroFlag MF_ZERO = 0x00;
+constexpr SCBE_MicroFlag MF_BOOL = 0x01;
+
 struct SCBE_MicroInstruction
 {
     Utf8 name;
@@ -68,10 +72,10 @@ struct SCBE_MicroInstruction
     CPUCondFlag  cpuCond;
     CPUCondJump  jumpType;
 
-    OpBits       opBitsA;
-    OpBits       opBitsB;
-    CPUEmitFlags emitFlags;
-    bool         boolA;
+    OpBits         opBitsA;
+    OpBits         opBitsB;
+    CPUEmitFlags   emitFlags;
+    SCBE_MicroFlag flags;
 
     CPUReg regA;
     CPUReg regB;

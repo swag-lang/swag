@@ -343,7 +343,7 @@ void SCBE_Micro::print() const
                     if (inst->opBitsA == inst->opBitsB)
                         line.name = "mov";
                     else
-                        line.name = inst->boolA ? "movs" : "movz";
+                        line.name = inst->flags.has(MF_BOOL) ? "movs" : "movz";
                     line.args = form("%s, %s param %d", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsB), inst->valueA);
                     break;
                 case SCBE_MicroOp::LoadAddressParam:
@@ -369,7 +369,7 @@ void SCBE_Micro::print() const
                 case SCBE_MicroOp::Load2:
                     // encoder.emitLoad(inst->regA, inst->regB, inst->valueA, inst->valueB, inst->boolA, inst->cpuOp, inst->opBitsA);
                     line.name = "mov";
-                    if (inst->boolA)
+                    if (inst->flags.has(MF_BOOL))
                         line.args = form("%s, %d", regName(inst->regA, inst->opBitsA), inst->valueB);
                     else
                         line.args = form("%s, [%s+%d]", regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsA), inst->valueA);
@@ -394,7 +394,7 @@ void SCBE_Micro::print() const
                     if (inst->opBitsA == inst->opBitsB)
                         line.name = "mov";
                     else
-                        line.name = inst->boolA ? "movs" : "movz";
+                        line.name = inst->flags.has(MF_BOOL) ? "movs" : "movz";
                     line.args = form("%s, %s ptr [%s+%d]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsB), regName(inst->regB, inst->opBitsA), inst->valueA);
                     break;
                 case SCBE_MicroOp::LoadExtend1:
@@ -402,7 +402,7 @@ void SCBE_Micro::print() const
                     if (inst->opBitsA == inst->opBitsB)
                         line.name = "mov";
                     else
-                        line.name = inst->boolA ? "movs" : "movz";
+                        line.name = inst->flags.has(MF_BOOL) ? "movs" : "movz";
                     line.args = form("%s, %s ptr [%s+%d]", regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsB));
                     break;
                 case SCBE_MicroOp::LoadAddress0:
