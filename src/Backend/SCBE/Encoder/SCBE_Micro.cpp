@@ -696,6 +696,11 @@ void SCBE_Micro::process()
             inst[0].regA == next->regB &&
             inst[0].valueA == next->valueA)
         {
+            if (inst[0].opBitsA == OpBits::B64)
+            {
+                next->op = SCBE_MicroOp::Load0;
+                next->regB = inst[0].regB;
+            }
         }        
     }
 }

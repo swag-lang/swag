@@ -1,4 +1,4 @@
-//#[Swag.PrintBc]
+//#[Swag.PrintAsm]
 #test
 {
     const t = [10, 10, 10]

@@ -83,7 +83,7 @@ namespace
         return "??";
     }
 
-    const char* cpuOpName(CPUOp op)
+    Utf8 cpuOpName(CPUOp op)
     {
         switch (op)
         {
@@ -115,9 +115,20 @@ namespace
                 return "or";
             case CPUOp::XOR:
                 return "xor";
+
+            case CPUOp::CVTI2F:
+                return "cvti2f";
+            case CPUOp::FADD:
+                return "fadd";
+            case CPUOp::FSUB:
+                return "fsub";
+            case CPUOp::FMIN:
+                return "fmin";
+            case CPUOp::FMAX:
+                return "fmax";
         }
 
-        return "???";
+        return form("<%d>", op);
     }
 
     const char* regName(CPUReg reg, OpBits opBits)
@@ -197,6 +208,10 @@ namespace
                 return "dword";
             case OpBits::B64:
                 return "qword";
+            case OpBits::F32:
+                return "float";
+            case OpBits::F64:
+                return "double";
         }
 
         return "???";
@@ -464,12 +479,12 @@ void SCBE_Micro::print() const
                 case SCBE_MicroOp::Clear1:
                     // encoder.emitClear(inst->regA, inst->valueA, static_cast<uint32_t>(inst->valueB));
                     line.name = "clear";
-                    line.args = form("byte ptr [%s+%d], %d", regName(inst->regA, OpBits::B64), inst->valueA, inst->valueB);
+                    line.args = form("ptr %s+%d, %d", regName(inst->regA, OpBits::B64), inst->valueA, inst->valueB);
                     break;
                 case SCBE_MicroOp::Copy:
                     // encoder.emitCopy(inst->regA, inst->regB, static_cast<uint32_t>(inst->valueA));
                     line.name = "copy";
-                    line.args = form("%s, %s, %d", regName(inst->regA, inst->opBitsA), regName(inst->regA, inst->opBitsB), inst->valueA);
+                    line.args = form("ptr %s, ptr %s, %d", regName(inst->regA, OpBits::B64), regName(inst->regA, OpBits::B64), inst->valueA);
                     break;
                 case SCBE_MicroOp::OpUnary0:
                     // encoder.emitOpUnary(inst->regA, inst->valueA, inst->cpuOp, inst->opBitsA);
