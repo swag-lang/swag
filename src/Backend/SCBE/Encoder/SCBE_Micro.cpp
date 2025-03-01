@@ -438,16 +438,13 @@ CPUJump SCBE_Micro::emitJump(CPUCondJump jumpType, OpBits opBits)
 void SCBE_Micro::emitPatchJump(const CPUJump& jump)
 {
     const auto inst = concat.addObj<SCBE_MicroInstruction>();
-    inst->op        = SCBE_MicroOp::PatchJump0;
+    inst->op        = SCBE_MicroOp::PatchJump;
     inst->valueA    = jump.offset;
 }
 
 void SCBE_Micro::emitPatchJump(const CPUJump& jump, uint64_t offsetDestination)
 {
-    const auto inst = concat.addObj<SCBE_MicroInstruction>();
-    inst->op        = SCBE_MicroOp::PatchJump1;
-    inst->valueA    = jump.offset;
-    inst->valueB    = offsetDestination;
+    SWAG_ASSERT(false);
 }
 
 void SCBE_Micro::emitCopy(CPUReg regDst, CPUReg regSrc, uint32_t count)
@@ -568,7 +565,7 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
                 inst->opBitsA      = cmpJump.opBits;
                 break;
             }
-            case SCBE_MicroOp::PatchJump0:
+            case SCBE_MicroOp::PatchJump:
             {
                 const auto jump = reinterpret_cast<const SCBE_MicroInstruction*>(concat.firstBucket->data + inst->valueA);
                 CPUJump    cpuJump;
@@ -576,16 +573,6 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
                 cpuJump.offset = jump->valueB;
                 cpuJump.opBits = jump->opBitsA;
                 encoder.emitPatchJump(cpuJump);
-                break;
-            }
-            case SCBE_MicroOp::PatchJump1:
-            {
-                const auto jump = reinterpret_cast<SCBE_MicroInstruction*>(inst->valueA);
-                CPUJump    cpuJump;
-                cpuJump.addr   = reinterpret_cast<void*>(jump->valueA);
-                cpuJump.offset = jump->valueB;
-                cpuJump.opBits = jump->opBitsA;
-                encoder.emitPatchJump(cpuJump, inst->valueB);
                 break;
             }
             case SCBE_MicroOp::Jump1:

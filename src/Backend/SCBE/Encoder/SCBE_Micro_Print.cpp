@@ -255,8 +255,7 @@ void SCBE_Micro::print() const
                 }
 
                 case SCBE_MicroOp::Label:
-                case SCBE_MicroOp::PatchJump0:
-                case SCBE_MicroOp::PatchJump1:
+                case SCBE_MicroOp::PatchJump:
                     continue;
 
                 case SCBE_MicroOp::SymbolRelocationRef:
