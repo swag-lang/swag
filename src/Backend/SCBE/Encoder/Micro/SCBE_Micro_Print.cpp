@@ -12,7 +12,7 @@ namespace
         return form("%d", value);
     }
 
-    const char* cpuJumpName(CPUCondJump kind)
+    const char* jumpTypeName(CPUCondJump kind)
     {
         switch (kind)
         {
@@ -127,11 +127,14 @@ namespace
                                                                                : "mov";
 
             case CPUOp::CVTI2F:
-                return opBits == OpBits::F32 ? "cvtsi2ss" : "cvtsi2sd";
+                return opBits == OpBits::F32 ? "cvtsi2ss" : opBits == OpBits::F64 ? "cvtsi2sd"
+                                                                                  : "cvti2f";
             case CPUOp::FADD:
-                return opBits == OpBits::F32 ? "addss" : "addsd";
+                return opBits == OpBits::F32 ? "addss" : opBits == OpBits::F64 ? "addsd"
+                                                                               : "fadd";
             case CPUOp::FSUB:
-                return "fsub";
+                return opBits == OpBits::F32 ? "subss" : opBits == OpBits::F64 ? "subsd"
+                                                                               : "fsub";
             case CPUOp::FMIN:
                 return "fmin";
             case CPUOp::FMAX:
@@ -223,6 +226,76 @@ namespace
         }
 
         return "???";
+    }
+
+    const char* opBitsNameRaw(OpBits opBits)
+    {
+        switch (opBits)
+        {
+            case OpBits::B8:
+                return "B8";
+            case OpBits::B16:
+                return "B16";
+            case OpBits::B32:
+                return "B32";
+            case OpBits::B64:
+                return "B64";            
+            case OpBits::F32:
+                return "F32";
+            case OpBits::F64:
+                return "F64";
+        }
+
+        return "???";
+    }
+
+    Utf8 printOpArgs(const SCBE_MicroInstruction* inst, SCBE_MicroOpFlag flags)
+    {
+        Utf8 res;
+
+        if (flags.has(MOF_CPU_COND))
+            res += form("CC:%s ", cpuCondName(inst->cpuCond));
+        
+        if (flags.has(MOF_CPU_OP))
+            res += form("CO:%s ", cpuOpName(inst->cpuOp, OpBits::Zero).cstr());
+
+        if (flags.has(MOF_JUMP_TYPE))
+            res += form("JT:%s ", jumpTypeName(inst->jumpType));        
+
+        if (flags.has(MOF_REG_A) && flags.has(MOF_OPBITS_A))
+            res += form("A:%s ", regName(inst->regA, inst->opBitsA));
+        else if (flags.has(MOF_REG_A) && flags.has(MOF_OPBITS_B))
+            res += form("A:%s ", regName(inst->regA, inst->opBitsB));
+        else if (flags.has(MOF_REG_A))
+            res += form("A:%s ", regName(inst->regA, OpBits::B64));
+
+        if (flags.has(MOF_REG_B) && flags.has(MOF_OPBITS_A))
+            res += form("B:%s ", regName(inst->regB, inst->opBitsA));
+        else if (flags.has(MOF_REG_B) && flags.has(MOF_OPBITS_B))
+            res += form("B:%s ", regName(inst->regB, inst->opBitsB));
+        else if (flags.has(MOF_REG_B))
+            res += form("B:%s ", regName(inst->regB, OpBits::B64));
+
+        if (flags.has(MOF_REG_C) && flags.has(MOF_OPBITS_A))
+            res += form("C:%s ", regName(inst->regC, inst->opBitsA));
+        else if (flags.has(MOF_REG_C) && flags.has(MOF_OPBITS_B))
+            res += form("C:%s ", regName(inst->regC, inst->opBitsB));
+        else if (flags.has(MOF_REG_C))
+            res += form("C:%s ", regName(inst->regC, OpBits::B64));
+
+        if (flags.has(MOF_VALUE_A))
+            res += form("A:%llxh ", inst->valueA);
+        if (flags.has(MOF_VALUE_B))
+            res += form("B:%llxh ", inst->valueB);
+        if (flags.has(MOF_VALUE_C))
+            res += form("B:%xh ", inst->valueC);
+
+        if (flags.has(MOF_OPBITS_A))
+            res += form("A:%s ", opBitsNameRaw(inst->opBitsA));
+        if (flags.has(MOF_OPBITS_B))
+            res += form("B:%s ", opBitsNameRaw(inst->opBitsB));
+
+        return res;
     }
 }
 
@@ -350,7 +423,7 @@ void SCBE_Micro::print() const
                     break;
                 case SCBE_MicroOp::Jump0:
                     // const auto cmpJump = encoder.emitJump(inst->jumpType, inst->opBitsA);
-                    line.name = cpuJumpName(inst->jumpType);
+                    line.name = jumpTypeName(inst->jumpType);
                     break;
                 case SCBE_MicroOp::Jump1:
                     // encoder.emitJump(inst->regA);
@@ -359,7 +432,7 @@ void SCBE_Micro::print() const
                     break;
                 case SCBE_MicroOp::Jump2:
                     // encoder.emitJump(inst->jumpType, static_cast<int32_t>(inst->valueA), static_cast<int32_t>(inst->valueB));
-                    line.name = cpuJumpName(inst->jumpType);
+                    line.name = jumpTypeName(inst->jumpType);
                     line.args = form("%08d", inst->valueA);
                     break;
                 case SCBE_MicroOp::LoadParam:
@@ -541,9 +614,16 @@ void SCBE_Micro::print() const
             while (line.name.length() != 12)
                 line.name += ' ';
             line.pretty = line.name + line.args;
-            
-            line.name = g_MicroOpInfos[static_cast<int>(inst->op)].name;
-            line.args = "";
+
+            const auto& def = g_MicroOpInfos[static_cast<int>(inst->op)];
+            line.name       = def.name;
+            line.args       = printOpArgs(inst, def.leftFlags);
+            if (def.rightFlags.flags)
+            {
+                line.args += "| ";
+                line.args += printOpArgs(inst, def.rightFlags);
+            }
+            line.args.makeUpper();
 
             if (inst->flags.has(MIF_JUMP_DEST))
                 line.flags += 'J';

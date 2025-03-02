@@ -8,8 +8,20 @@ enum class SCBE_MicroOp : uint8_t
 #include "Backend/SCBE/Encoder/Micro/SCBE_MicroOpList.h"
 };
 
-using SCBE_MicroOpFlag              = Flags<uint32_t>;
-constexpr SCBE_MicroOpFlag MOF_ZERO = 0x00000000;
+using SCBE_MicroOpFlag                   = Flags<uint32_t>;
+constexpr SCBE_MicroOpFlag MOF_ZERO      = 0x00000000;
+constexpr SCBE_MicroOpFlag MOF_REG_A     = 0x00000001;
+constexpr SCBE_MicroOpFlag MOF_REG_B     = 0x00000002;
+constexpr SCBE_MicroOpFlag MOF_REG_C     = 0x00000004;
+constexpr SCBE_MicroOpFlag MOF_VALUE_A   = 0x00000008;
+constexpr SCBE_MicroOpFlag MOF_VALUE_B   = 0x00000010;
+constexpr SCBE_MicroOpFlag MOF_VALUE_C   = 0x00000020;
+constexpr SCBE_MicroOpFlag MOF_OPBITS_A  = 0x00000040;
+constexpr SCBE_MicroOpFlag MOF_OPBITS_B  = 0x00000080;
+constexpr SCBE_MicroOpFlag MOF_CPU_OP    = 0x00000100;
+constexpr SCBE_MicroOpFlag MOF_JUMP_TYPE = 0x00000200;
+constexpr SCBE_MicroOpFlag MOF_NAME      = 0x00000400;
+constexpr SCBE_MicroOpFlag MOF_CPU_COND  = 0x00000800;
 
 struct SCBE_MicroOpInfo
 {
