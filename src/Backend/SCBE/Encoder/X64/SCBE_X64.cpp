@@ -392,51 +392,40 @@ void SCBE_X64::emitLoadSignedExtend(CPUReg reg, CPUReg memReg, uint64_t memOffse
         memOffset = 0;
     }
 
-    if (numBitsSrc == OpBits::B8)
+    if (numBitsSrc == OpBits::B8 && numBitsDst == OpBits::B16)
     {
-        switch (numBitsDst)
-        {
-            case OpBits::B16:
-                emitREX(concat, OpBits::B16, reg, memReg);
-                concat.addU8(0x0F);
-                concat.addU8(0xBE);
-                emitModRM(concat, memOffset, reg, memReg);
-                return;
-
-            case OpBits::B32:
-                emitREX(concat, OpBits::B32, reg, memReg);
-                concat.addU8(0x0F);
-                concat.addU8(0xBE);
-                emitModRM(concat, memOffset, reg, memReg);
-                return;
-
-            case OpBits::B64:
-                emitREX(concat, OpBits::B64, reg, memReg);
-                concat.addU8(0x0F);
-                concat.addU8(0xBE);
-                emitModRM(concat, memOffset, reg, memReg);
-                return;
-        }
+        emitREX(concat, OpBits::B16, reg, memReg);
+        concat.addU8(0x0F);
+        concat.addU8(0xBE);
+        emitModRM(concat, memOffset, reg, memReg);
     }
-    else if (numBitsSrc == OpBits::B16)
+    else if (numBitsSrc == OpBits::B8 && numBitsDst == OpBits::B32)
     {
-        switch (numBitsDst)
-        {
-            case OpBits::B32:
-
-                emitREX(concat, OpBits::B32, reg, memReg);
-                concat.addU8(0x0F);
-                concat.addU8(0xBF);
-                emitModRM(concat, memOffset, reg, memReg);
-                return;
-
-            case OpBits::B64:
-                emitREX(concat, OpBits::B64, reg, memReg);
-                concat.addU8(0x0F);
-                concat.addU8(0xBF);
-                emitModRM(concat, memOffset, reg, memReg);
-                return;
-        }
+        emitREX(concat, OpBits::B32, reg, memReg);
+        concat.addU8(0x0F);
+        concat.addU8(0xBE);
+        emitModRM(concat, memOffset, reg, memReg);
+    }
+    else if (numBitsSrc == OpBits::B8 && numBitsDst == OpBits::B64)
+    {
+        emitREX(concat, OpBits::B64, reg, memReg);
+        concat.addU8(0x0F);
+        concat.addU8(0xBE);
+        emitModRM(concat, memOffset, reg, memReg);
+    }
+    else if (numBitsSrc == OpBits::B16 && numBitsDst == OpBits::B32)
+    {
+        emitREX(concat, OpBits::B32, reg, memReg);
+        concat.addU8(0x0F);
+        concat.addU8(0xBF);
+        emitModRM(concat, memOffset, reg, memReg);
+    }
+    else if (numBitsSrc == OpBits::B16 && numBitsDst == OpBits::B64)
+    {
+        emitREX(concat, OpBits::B64, reg, memReg);
+        concat.addU8(0x0F);
+        concat.addU8(0xBF);
+        emitModRM(concat, memOffset, reg, memReg);
     }
     else if (numBitsSrc == OpBits::B32)
     {
@@ -444,10 +433,11 @@ void SCBE_X64::emitLoadSignedExtend(CPUReg reg, CPUReg memReg, uint64_t memOffse
         emitREX(concat, OpBits::B64, reg, memReg);
         emitCPUOp(concat, 0x63);
         emitModRM(concat, memOffset, reg, memReg);
-        return;
     }
-
-    SWAG_ASSERT(false);
+    else
+    {
+        SWAG_ASSERT(false);
+    }
 }
 
 void SCBE_X64::emitLoadZeroExtend(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc)
@@ -466,52 +456,43 @@ void SCBE_X64::emitLoadZeroExtend(CPUReg reg, CPUReg memReg, uint64_t memOffset,
         memOffset = 0;
     }
 
-    if (numBitsSrc == OpBits::B8)
+    if (numBitsSrc == OpBits::B8 && numBitsDst == OpBits::B32)
     {
-        switch (numBitsDst)
-        {
-            case OpBits::B32:
-                emitREX(concat, OpBits::B32, reg, memReg);
-                concat.addU8(0x0F);
-                concat.addU8(0xB6);
-                emitModRM(concat, memOffset, reg, memReg);
-                return;
-
-            case OpBits::B64:
-                emitREX(concat, OpBits::B64, reg, memReg);
-                concat.addU8(0x0F);
-                concat.addU8(0xB6);
-                emitModRM(concat, memOffset, reg, memReg);
-                return;
-        }
+        emitREX(concat, OpBits::B32, reg, memReg);
+        concat.addU8(0x0F);
+        concat.addU8(0xB6);
+        emitModRM(concat, memOffset, reg, memReg);
     }
-    else if (numBitsSrc == OpBits::B16)
+    else if (numBitsSrc == OpBits::B8 && numBitsDst == OpBits::B64)
     {
-        switch (numBitsDst)
-        {
-            case OpBits::B32:
-                emitREX(concat, OpBits::B32, reg, memReg);
-                concat.addU8(0x0F);
-                concat.addU8(0xB7);
-                emitModRM(concat, memOffset, reg, memReg);
-                return;
-
-            case OpBits::B64:
-                emitREX(concat, OpBits::B64, reg, memReg);
-                concat.addU8(0x0F);
-                concat.addU8(0xB7);
-                emitModRM(concat, memOffset, reg, memReg);
-                return;
-        }
+        emitREX(concat, OpBits::B64, reg, memReg);
+        concat.addU8(0x0F);
+        concat.addU8(0xB6);
+        emitModRM(concat, memOffset, reg, memReg);
+    }
+    else if (numBitsSrc == OpBits::B16 && numBitsDst == OpBits::B32)
+    {
+        emitREX(concat, OpBits::B32, reg, memReg);
+        concat.addU8(0x0F);
+        concat.addU8(0xB7);
+        emitModRM(concat, memOffset, reg, memReg);
+    }
+    else if (numBitsSrc == OpBits::B16 && numBitsDst == OpBits::B64)
+    {
+        emitREX(concat, OpBits::B64, reg, memReg);
+        concat.addU8(0x0F);
+        concat.addU8(0xB7);
+        emitModRM(concat, memOffset, reg, memReg);
     }
     else if (numBitsSrc == OpBits::B32)
     {
         SWAG_ASSERT(numBitsDst == OpBits::B64);
         emitLoad(reg, memReg, memOffset, numBitsSrc);
-        return;
     }
-
-    SWAG_ASSERT(false);
+    else
+    {
+        SWAG_ASSERT(false);
+    }
 }
 
 void SCBE_X64::emitLoadZeroExtend(CPUReg regDst, CPUReg regSrc, OpBits numBitsDst, OpBits numBitsSrc)
