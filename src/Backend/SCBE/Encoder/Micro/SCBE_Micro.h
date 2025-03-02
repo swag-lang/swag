@@ -22,7 +22,6 @@ constexpr SCBE_MicroOpFlag MOF_CPU_OP    = 0x00000100;
 constexpr SCBE_MicroOpFlag MOF_JUMP_TYPE = 0x00000200;
 constexpr SCBE_MicroOpFlag MOF_NAME      = 0x00000400;
 constexpr SCBE_MicroOpFlag MOF_CPU_COND  = 0x00000800;
-constexpr SCBE_MicroOpFlag MOF_BOOL      = 0x00001000;
 
 struct SCBE_MicroOpInfo
 {
@@ -35,8 +34,7 @@ extern SCBE_MicroOpInfo g_MicroOpInfos[];
 
 using SCBE_MicroInstructionFlag                   = Flags<uint8_t>;
 constexpr SCBE_MicroInstructionFlag MIF_ZERO      = 0x00;
-constexpr SCBE_MicroInstructionFlag MIF_BOOL      = 0x01;
-constexpr SCBE_MicroInstructionFlag MIF_JUMP_DEST = 0x02;
+constexpr SCBE_MicroInstructionFlag MIF_JUMP_DEST = 0x01;
 
 struct SCBE_MicroInstruction
 {
@@ -89,8 +87,10 @@ struct SCBE_Micro final : SCBE_CPU
     void    emitLoadParam(CPUReg reg, uint32_t paramIdx, OpBits opBits) override;
     void    emitLoadSignedExtendParam(CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc) override;
     void    emitLoadZeroExtendParam(CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc) override;
-    void    emitLoadAddressParam(CPUReg reg, uint32_t paramIdx, bool forceStack) override;
-    void    emitStoreParam(uint32_t paramIdx, CPUReg reg, OpBits opBits, bool forceStack) override;
+    void    emitLoadAddressParam(CPUReg reg, uint32_t paramIdx) override;
+    void    emitStoreParam(uint32_t paramIdx, CPUReg reg, OpBits opBits) override;
+    void    emitLoadCallerAddressParam(CPUReg reg, uint32_t paramIdx) override;
+    void    emitStoreCallerParam(uint32_t paramIdx, CPUReg reg, OpBits opBits) override;
     void    emitLoad(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits opBits) override;
     void    emitLoad(CPUReg reg, uint64_t value, OpBits opBits) override;
     void    emitLoad(CPUReg regDst, CPUReg regSrc, OpBits opBits) override;

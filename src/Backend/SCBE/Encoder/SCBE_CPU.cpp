@@ -20,12 +20,12 @@ namespace
     }
 }
 
-uint32_t CPUFunction::getParamStackOffset(uint32_t paramIdx, bool forceStack) const
+uint32_t CPUFunction::getParamStackOffset(uint32_t paramIdx) const
 {
     // If the parameter has been passed as a CPU register, then we get the value from 'offsetParamsAsRegisters'
     // (where input registers have been saved) instead of the value from the caller stack
     uint32_t offset = 0;
-    if (!forceStack && paramIdx < cc->paramByRegisterCount)
+    if (paramIdx < cc->paramByRegisterCount)
         offset = offsetParamsAsRegisters + REG_OFFSET(paramIdx);
 
     // The parameter has been passed by stack, so we get the value for the caller stack offset
@@ -481,31 +481,43 @@ void SCBE_CPU::emitLeave()
 
 void SCBE_CPU::emitLoadParam(CPUReg reg, uint32_t paramIdx, OpBits opBits)
 {
-    const uint32_t stackOffset = cpuFct->getParamStackOffset(paramIdx, false);
+    const uint32_t stackOffset = cpuFct->getParamStackOffset(paramIdx);
     emitLoad(reg, CPUReg::RDI, stackOffset, opBits);
 }
 
 void SCBE_CPU::emitLoadSignedExtendParam(CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc)
 {
-    const uint32_t stackOffset = cpuFct->getParamStackOffset(paramIdx, false);
+    const uint32_t stackOffset = cpuFct->getParamStackOffset(paramIdx);
     emitLoadSignedExtend(reg, CPUReg::RDI, stackOffset, numBitsDst, numBitsSrc);
 }
 
 void SCBE_CPU::emitLoadZeroExtendParam(CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc)
 {
-    const uint32_t stackOffset = cpuFct->getParamStackOffset(paramIdx, false);
+    const uint32_t stackOffset = cpuFct->getParamStackOffset(paramIdx);
     emitLoadZeroExtend(reg, CPUReg::RDI, stackOffset, numBitsDst, numBitsSrc);
 }
 
-void SCBE_CPU::emitLoadAddressParam(CPUReg reg, uint32_t paramIdx, bool forceStack)
+void SCBE_CPU::emitLoadAddressParam(CPUReg reg, uint32_t paramIdx)
 {
-    const uint32_t stackOffset = cpuFct->getParamStackOffset(paramIdx, forceStack);
+    const uint32_t stackOffset = cpuFct->getParamStackOffset(paramIdx);
     emitLoadAddress(reg, CPUReg::RDI, stackOffset);
 }
 
-void SCBE_CPU::emitStoreParam(uint32_t paramIdx, CPUReg reg, OpBits opBits, bool forceStack)
+void SCBE_CPU::emitStoreParam(uint32_t paramIdx, CPUReg reg, OpBits opBits)
 {
-    const uint32_t stackOffset = cpuFct->getParamStackOffset(paramIdx, forceStack);
+    const uint32_t stackOffset = cpuFct->getParamStackOffset(paramIdx);
+    emitStore(CPUReg::RDI, stackOffset, reg, opBits);
+}
+
+void SCBE_CPU::emitLoadCallerAddressParam(CPUReg reg, uint32_t paramIdx)
+{
+    const uint32_t stackOffset = cpuFct->offsetCallerStackParams + REG_OFFSET(paramIdx);
+    emitLoadAddress(reg, CPUReg::RDI, stackOffset);
+}
+
+void SCBE_CPU::emitStoreCallerParam(uint32_t paramIdx, CPUReg reg, OpBits opBits)
+{
+    const uint32_t stackOffset = cpuFct->offsetCallerStackParams + REG_OFFSET(paramIdx);
     emitStore(CPUReg::RDI, stackOffset, reg, opBits);
 }
 

@@ -35,7 +35,7 @@ void SCBE::emitGetParam(SCBE_CPU& pp, uint32_t reg, uint32_t paramIdx, OpBits op
     }
 
     if (typeFunc->structParamByValue(typeParam))
-        pp.emitLoadAddressParam(CPUReg::RAX, paramIdx, false);
+        pp.emitLoadAddressParam(CPUReg::RAX, paramIdx);
     else
         pp.emitLoadParam(CPUReg::RAX, paramIdx, OpBits::B64);
 

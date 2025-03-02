@@ -131,21 +131,34 @@ void SCBE_Micro::emitLoadZeroExtendParam(CPUReg reg, uint32_t paramIdx, OpBits n
     inst->opBitsB   = numBitsSrc;
 }
 
-void SCBE_Micro::emitLoadAddressParam(CPUReg reg, uint32_t paramIdx, bool forceStack)
+void SCBE_Micro::emitLoadAddressParam(CPUReg reg, uint32_t paramIdx)
 {
     const auto inst = addInstruction(SCBE_MicroOp::LoadAddressParam);
     inst->regA      = reg;
     inst->valueA    = paramIdx;
-    inst->flags.add(forceStack ? MIF_BOOL : MIF_ZERO);
 }
 
-void SCBE_Micro::emitStoreParam(uint32_t paramIdx, CPUReg reg, OpBits opBits, bool forceStack)
+void SCBE_Micro::emitStoreParam(uint32_t paramIdx, CPUReg reg, OpBits opBits)
 {
     const auto inst = addInstruction(SCBE_MicroOp::StoreParam);
     inst->valueA    = paramIdx;
     inst->regA      = reg;
     inst->opBitsA   = opBits;
-    inst->flags.add(forceStack ? MIF_BOOL : MIF_ZERO);
+}
+
+void SCBE_Micro::emitLoadCallerAddressParam(CPUReg reg, uint32_t paramIdx)
+{
+    const auto inst = addInstruction(SCBE_MicroOp::LoadCallerAddressParam);
+    inst->regA      = reg;
+    inst->valueA    = paramIdx;
+}
+
+void SCBE_Micro::emitStoreCallerParam(uint32_t paramIdx, CPUReg reg, OpBits opBits)
+{
+    const auto inst = addInstruction(SCBE_MicroOp::StoreCallerParam);
+    inst->valueA    = paramIdx;
+    inst->regA      = reg;
+    inst->opBitsA   = opBits;
 }
 
 void SCBE_Micro::emitLoad(CPUReg regDst, CPUReg regSrc, OpBits opBits)
@@ -567,11 +580,17 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
                 encoder.emitLoadZeroExtendParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->opBitsA, inst->opBitsB);
                 break;
             case SCBE_MicroOp::LoadAddressParam:
-                encoder.emitLoadAddressParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->flags.has(MIF_BOOL));
+                encoder.emitLoadAddressParam(inst->regA, static_cast<uint32_t>(inst->valueA));
                 break;
             case SCBE_MicroOp::StoreParam:
-                encoder.emitStoreParam(static_cast<uint32_t>(inst->valueA), inst->regA, inst->opBitsA, inst->flags.has(MIF_BOOL));
+                encoder.emitStoreParam(static_cast<uint32_t>(inst->valueA), inst->regA, inst->opBitsA);
                 break;
+            case SCBE_MicroOp::LoadCallerAddressParam:
+                encoder.emitLoadCallerAddressParam(inst->regA, static_cast<uint32_t>(inst->valueA));
+            break;
+            case SCBE_MicroOp::StoreCallerParam:
+                encoder.emitStoreCallerParam(static_cast<uint32_t>(inst->valueA), inst->regA, inst->opBitsA);
+            break;            
             case SCBE_MicroOp::Load0:
                 encoder.emitLoad(inst->regA, inst->regB, inst->opBitsA);
                 break;

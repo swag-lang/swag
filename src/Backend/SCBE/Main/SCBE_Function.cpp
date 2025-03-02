@@ -100,16 +100,16 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     {
         const auto typeParam = typeFunc->registerIdxToType(idxReg);
         if (cc.useRegisterFloat && typeParam->isNativeFloat())
-            pp.emitStoreParam(idxReg, cc.paramByRegisterFloat[idxReg], OpBits::F64, false);
+            pp.emitStoreParam(idxReg, cc.paramByRegisterFloat[idxReg], OpBits::F64);
         else
-            pp.emitStoreParam(idxReg, cc.paramByRegisterInteger[idxReg], OpBits::B64, false);
+            pp.emitStoreParam(idxReg, cc.paramByRegisterInteger[idxReg], OpBits::B64);
         idxReg++;
     }
 
     // Save pointer to return value if this is a return by copy
     if (idxReg < cc.paramByRegisterCount && typeFunc->returnByAddress())
     {
-        pp.emitStoreParam(idxReg, cc.paramByRegisterInteger[idxReg], OpBits::B64, false);
+        pp.emitStoreParam(idxReg, cc.paramByRegisterInteger[idxReg], OpBits::B64);
         idxReg++;
     }
 
@@ -119,7 +119,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     {
         while (idxReg < cc.paramByRegisterCount)
         {
-            pp.emitStoreParam(idxReg, cc.paramByRegisterInteger[idxReg], OpBits::B64, true);
+            pp.emitStoreCallerParam(idxReg, cc.paramByRegisterInteger[idxReg], OpBits::B64);
             idxReg++;
         }
     }
@@ -1727,7 +1727,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::IntrinsicCVaStart:
             {
                 const uint32_t paramIdx = typeFunc->numParamsRegisters() + (typeFunc->returnByAddress() ? 1 : 0);
-                pp.emitLoadAddressParam(CPUReg::RAX, paramIdx, true);
+                pp.emitLoadCallerAddressParam(CPUReg::RAX, paramIdx);
                 pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);
                 pp.emitStore(CPUReg::RCX, 0, CPUReg::RAX, OpBits::B64);
                 break;

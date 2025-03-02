@@ -514,7 +514,7 @@ namespace
             concat.addU16(R_RDI);                   // Register
             concat.addU16(0);                       // Flags
             if (overload->hasFlag(OVERLOAD_RETVAL)) // Offset to register
-                concat.addU32(f->getParamStackOffset(typeFunc->numParamsRegisters(), false));
+                concat.addU32(f->getParamStackOffset(typeFunc->numParamsRegisters()));
             else
                 concat.addU32(overload->computedValue.storageOffset + f->offsetByteCodeStack);
             emitSecRel(pp, f->symbolIndex, pp.symCOIndex, localVar->ownerScope->backendStart);
@@ -684,7 +684,7 @@ namespace
                 regParam += 2;
             else if (typeFunc->isFctVariadic())
                 regParam = 0;
-            const uint32_t offsetStackParam = cpuFct->getParamStackOffset(regParam, false);
+            const uint32_t offsetStackParam = cpuFct->getParamStackOffset(regParam);
             regCounter += typeParam->numRegisters();
 
             //////////

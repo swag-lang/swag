@@ -201,7 +201,7 @@ struct CPUFunction
     uint32_t          offsetFLT               = 0;
     uint32_t          offsetRT                = 0;
 
-    uint32_t getParamStackOffset(uint32_t paramIdx, bool forceStack) const;
+    uint32_t getParamStackOffset(uint32_t paramIdx) const;
 };
 
 struct SCBE_CPU : BackendEncoder
@@ -225,8 +225,10 @@ struct SCBE_CPU : BackendEncoder
     virtual void emitLoadParam(CPUReg reg, uint32_t paramIdx, OpBits opBits);
     virtual void emitLoadSignedExtendParam(CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc);
     virtual void emitLoadZeroExtendParam(CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc);
-    virtual void emitLoadAddressParam(CPUReg reg, uint32_t paramIdx, bool forceStack);
-    virtual void emitStoreParam(uint32_t paramIdx, CPUReg reg, OpBits opBits, bool forceStack);
+    virtual void emitLoadAddressParam(CPUReg reg, uint32_t paramIdx);
+    virtual void emitStoreParam(uint32_t paramIdx, CPUReg reg, OpBits opBits);
+    virtual void emitLoadCallerAddressParam(CPUReg reg, uint32_t paramIdx);
+    virtual void emitStoreCallerParam(uint32_t paramIdx, CPUReg reg, OpBits opBits);
     virtual void emitSymbolRelocationPtr(CPUReg reg, const Utf8& name);
     virtual void emitLabel(uint32_t instructionIndex);
     virtual void emitLabels();
