@@ -403,7 +403,7 @@ void SCBE_Micro::print() const
                     break;
                 case SCBE_MicroOp::Load4:
                     // encoder.emitLoad(inst->regA, inst->valueA, inst->opBitsA);
-                    line.name = "mov";
+                    line.name = cpuOpName(CPUOp::MOV, inst->opBitsA);
                     line.args = form("%s, %d", regName(inst->regA, inst->opBitsA), inst->valueA);
                     break;
                 case SCBE_MicroOp::Load5:
@@ -529,13 +529,14 @@ void SCBE_Micro::print() const
                     break;
             }
 
+            line.rank = form("%08d", i);
+
+            line.pretty = g_MicroOpInfos[static_cast<int>(inst->op)].name;
+            
             if (inst->flags.has(MIF_JUMP_DEST))
                 line.flags += 'J';
             while (line.flags.length() != 10)
                 line.flags += '.';
-
-            line.name = form("%s - %s", g_MicroOpInfos[static_cast<int>(inst->op)].name, line.name.cstr());
-            line.rank = form("%08d", i);
 
             lines.push_back(line);
         }
