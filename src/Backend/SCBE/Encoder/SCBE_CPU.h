@@ -223,7 +223,8 @@ struct SCBE_CPU : BackendEncoder
     virtual void emitEnter(uint32_t sizeStack);
     virtual void emitLeave();
     virtual void emitLoadParam(CPUReg reg, uint32_t paramIdx, OpBits opBits);
-    virtual void emitLoadExtendParam(CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc, bool isSigned);
+    virtual void emitLoadSignedExtendParam(CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc);
+    virtual void emitLoadZeroExtendParam(CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc);
     virtual void emitLoadAddressParam(CPUReg reg, uint32_t paramIdx, bool forceStack);
     virtual void emitStoreParam(uint32_t paramIdx, CPUReg reg, OpBits opBits, bool forceStack);
     virtual void emitSymbolRelocationPtr(CPUReg reg, const Utf8& name);
@@ -253,8 +254,10 @@ struct SCBE_CPU : BackendEncoder
     virtual void    emitLoad(CPUReg regDst, CPUReg regSrc, OpBits opBits)                                                                         = 0;
     virtual void    emitLoad(CPUReg regDstSrc, OpBits opBits)                                                                                     = 0;
     virtual void    emitLoad(CPUReg reg, uint64_t value)                                                                                          = 0;
-    virtual void    emitLoadExtend(CPUReg regDst, CPUReg regSrc, OpBits numBitsDst, OpBits numBitsSrc, bool isSigned)                             = 0;
-    virtual void    emitLoadExtend(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc, bool isSigned)            = 0;
+    virtual void    emitLoadSignedExtend(CPUReg regDst, CPUReg regSrc, OpBits numBitsDst, OpBits numBitsSrc)                                      = 0;
+    virtual void    emitLoadSignedExtend(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc)                     = 0;
+    virtual void    emitLoadZeroExtend(CPUReg regDst, CPUReg regSrc, OpBits numBitsDst, OpBits numBitsSrc)                                        = 0;
+    virtual void    emitLoadZeroExtend(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc)                       = 0;
     virtual void    emitLoadAddress(CPUReg regDst, CPUReg regSrc1, CPUReg regSrc2, uint64_t mulValue, OpBits opBits)                              = 0;
     virtual void    emitLoadAddress(CPUReg reg, CPUReg memReg, uint64_t memOffset)                                                                = 0;
     virtual void    emitStore(CPUReg memReg, uint64_t memOffset, CPUReg reg, OpBits opBits)                                                       = 0;

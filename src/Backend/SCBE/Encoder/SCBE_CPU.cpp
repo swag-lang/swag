@@ -485,10 +485,16 @@ void SCBE_CPU::emitLoadParam(CPUReg reg, uint32_t paramIdx, OpBits opBits)
     emitLoad(reg, CPUReg::RDI, stackOffset, opBits);
 }
 
-void SCBE_CPU::emitLoadExtendParam(CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc, bool isSigned)
+void SCBE_CPU::emitLoadSignedExtendParam(CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc)
 {
     const uint32_t stackOffset = cpuFct->getParamStackOffset(paramIdx, false);
-    emitLoadExtend(reg, CPUReg::RDI, stackOffset, numBitsDst, numBitsSrc, isSigned);
+    emitLoadSignedExtend(reg, CPUReg::RDI, stackOffset, numBitsDst, numBitsSrc);
+}
+
+void SCBE_CPU::emitLoadZeroExtendParam(CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc)
+{
+    const uint32_t stackOffset = cpuFct->getParamStackOffset(paramIdx, false);
+    emitLoadZeroExtend(reg, CPUReg::RDI, stackOffset, numBitsDst, numBitsSrc);
 }
 
 void SCBE_CPU::emitLoadAddressParam(CPUReg reg, uint32_t paramIdx, bool forceStack)

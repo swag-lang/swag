@@ -113,14 +113,22 @@ void SCBE_Micro::emitLoadParam(CPUReg reg, uint32_t paramIdx, OpBits opBits)
     inst->opBitsA   = opBits;
 }
 
-void SCBE_Micro::emitLoadExtendParam(CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc, bool isSigned)
+void SCBE_Micro::emitLoadSignedExtendParam(CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc)
 {
-    const auto inst = addInstruction(SCBE_MicroOp::LoadExtendParam);
+    const auto inst = addInstruction(SCBE_MicroOp::LoadSignedExtendParam);
     inst->regA      = reg;
     inst->valueA    = paramIdx;
     inst->opBitsA   = numBitsDst;
     inst->opBitsB   = numBitsSrc;
-    inst->flags.add(isSigned ? MIF_BOOL : MIF_ZERO);
+}
+
+void SCBE_Micro::emitLoadZeroExtendParam(CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc)
+{
+    const auto inst = addInstruction(SCBE_MicroOp::LoadZeroExtendParam);
+    inst->regA      = reg;
+    inst->valueA    = paramIdx;
+    inst->opBitsA   = numBitsDst;
+    inst->opBitsB   = numBitsSrc;
 }
 
 void SCBE_Micro::emitLoadAddressParam(CPUReg reg, uint32_t paramIdx, bool forceStack)
@@ -191,25 +199,42 @@ void SCBE_Micro::emitLoad(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits 
     inst->opBitsA   = opBits;
 }
 
-void SCBE_Micro::emitLoadExtend(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc, bool isSigned)
+void SCBE_Micro::emitLoadSignedExtend(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc)
 {
-    const auto inst = addInstruction(SCBE_MicroOp::LoadExtend0);
+    const auto inst = addInstruction(SCBE_MicroOp::LoadSignedExtend0);
     inst->regA      = reg;
     inst->regB      = memReg;
     inst->valueA    = memOffset;
     inst->opBitsA   = numBitsDst;
     inst->opBitsB   = numBitsSrc;
-    inst->flags.add(isSigned ? MIF_BOOL : MIF_ZERO);
 }
 
-void SCBE_Micro::emitLoadExtend(CPUReg regDst, CPUReg regSrc, OpBits numBitsDst, OpBits numBitsSrc, bool isSigned)
+void SCBE_Micro::emitLoadSignedExtend(CPUReg regDst, CPUReg regSrc, OpBits numBitsDst, OpBits numBitsSrc)
 {
-    const auto inst = addInstruction(SCBE_MicroOp::LoadExtend1);
+    const auto inst = addInstruction(SCBE_MicroOp::LoadSignedExtend1);
     inst->regA      = regDst;
     inst->regB      = regSrc;
     inst->opBitsA   = numBitsDst;
     inst->opBitsB   = numBitsSrc;
-    inst->flags.add(isSigned ? MIF_BOOL : MIF_ZERO);
+}
+
+void SCBE_Micro::emitLoadZeroExtend(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc)
+{
+    const auto inst = addInstruction(SCBE_MicroOp::LoadZeroExtend0);
+    inst->regA      = reg;
+    inst->regB      = memReg;
+    inst->valueA    = memOffset;
+    inst->opBitsA   = numBitsDst;
+    inst->opBitsB   = numBitsSrc;
+}
+
+void SCBE_Micro::emitLoadZeroExtend(CPUReg regDst, CPUReg regSrc, OpBits numBitsDst, OpBits numBitsSrc)
+{
+    const auto inst = addInstruction(SCBE_MicroOp::LoadZeroExtend1);
+    inst->regA      = regDst;
+    inst->regB      = regSrc;
+    inst->opBitsA   = numBitsDst;
+    inst->opBitsB   = numBitsSrc;
 }
 
 void SCBE_Micro::emitLoadAddress(CPUReg reg, CPUReg memReg, uint64_t memOffset)
@@ -547,8 +572,11 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
             case SCBE_MicroOp::LoadParam:
                 encoder.emitLoadParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->opBitsA);
                 break;
-            case SCBE_MicroOp::LoadExtendParam:
-                encoder.emitLoadExtendParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->opBitsA, inst->opBitsB, inst->flags.has(MIF_BOOL));
+            case SCBE_MicroOp::LoadSignedExtendParam:
+                encoder.emitLoadSignedExtendParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->opBitsA, inst->opBitsB);
+                break;
+            case SCBE_MicroOp::LoadZeroExtendParam:
+                encoder.emitLoadZeroExtendParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->opBitsA, inst->opBitsB);
                 break;
             case SCBE_MicroOp::LoadAddressParam:
                 encoder.emitLoadAddressParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->flags.has(MIF_BOOL));
@@ -574,11 +602,17 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
             case SCBE_MicroOp::Load5:
                 encoder.emitLoad(inst->regA, inst->regB, inst->valueA, inst->opBitsA);
                 break;
-            case SCBE_MicroOp::LoadExtend0:
-                encoder.emitLoadExtend(inst->regA, inst->regB, inst->valueA, inst->opBitsA, inst->opBitsB, inst->flags.has(MIF_BOOL));
+            case SCBE_MicroOp::LoadSignedExtend0:
+                encoder.emitLoadSignedExtend(inst->regA, inst->regB, inst->valueA, inst->opBitsA, inst->opBitsB);
                 break;
-            case SCBE_MicroOp::LoadExtend1:
-                encoder.emitLoadExtend(inst->regA, inst->regB, inst->opBitsA, inst->opBitsB, inst->flags.has(MIF_BOOL));
+            case SCBE_MicroOp::LoadSignedExtend1:
+                encoder.emitLoadSignedExtend(inst->regA, inst->regB, inst->opBitsA, inst->opBitsB);
+                break;
+            case SCBE_MicroOp::LoadZeroExtend0:
+                encoder.emitLoadZeroExtend(inst->regA, inst->regB, inst->valueA, inst->opBitsA, inst->opBitsB);
+                break;
+            case SCBE_MicroOp::LoadZeroExtend1:
+                encoder.emitLoadZeroExtend(inst->regA, inst->regB, inst->opBitsA, inst->opBitsB);
                 break;
             case SCBE_MicroOp::LoadAddress0:
                 encoder.emitLoadAddress(inst->regA, inst->regB, inst->valueA);

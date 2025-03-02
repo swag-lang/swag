@@ -239,7 +239,7 @@ namespace
             case OpBits::B32:
                 return "B32";
             case OpBits::B64:
-                return "B64";            
+                return "B64";
             case OpBits::F32:
                 return "F32";
             case OpBits::F64:
@@ -255,12 +255,12 @@ namespace
 
         if (flags.has(MOF_CPU_COND))
             res += form("CC:%s ", cpuCondName(inst->cpuCond));
-        
+
         if (flags.has(MOF_CPU_OP))
             res += form("CO:%s ", cpuOpName(inst->cpuOp, OpBits::Zero).cstr());
 
         if (flags.has(MOF_JUMP_TYPE))
-            res += form("JT:%s ", jumpTypeName(inst->jumpType));        
+            res += form("JT:%s ", jumpTypeName(inst->jumpType));
 
         if (flags.has(MOF_REG_A) && flags.has(MOF_OPBITS_A))
             res += form("A:%s ", regName(inst->regA, inst->opBitsA));
@@ -440,12 +440,14 @@ void SCBE_Micro::print() const
                     line.name = "mov";
                     line.args = form("%s, %s ptr [rdi+<param%d>]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsA), inst->valueA);
                     break;
-                case SCBE_MicroOp::LoadExtendParam:
-                    // encoder.emitLoadExtendParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->opBitsA, inst->opBitsB, inst->boolA);
-                    if (inst->opBitsA == inst->opBitsB)
-                        line.name = "mov";
-                    else
-                        line.name = inst->flags.has(MIF_BOOL) ? "movs" : "movz";
+                case SCBE_MicroOp::LoadSignedExtendParam:
+                    // encoder.emitLoadSignedExtendParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->opBitsA, inst->opBitsB);
+                    line.name = "movs";
+                    line.args = form("%s, %s ptr [rdi+<param%d>]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsB), inst->valueA);
+                    break;
+                case SCBE_MicroOp::LoadZeroExtendParam:
+                    // encoder.emitLoadZeroExtendParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->opBitsA, inst->opBitsB);
+                    line.name = "movz";
                     line.args = form("%s, %s ptr [rdi+<param%d>]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsB), inst->valueA);
                     break;
                 case SCBE_MicroOp::LoadAddressParam:
@@ -491,20 +493,24 @@ void SCBE_Micro::print() const
                     line.name = cpuOpName(CPUOp::MOV, inst->opBitsA);
                     line.args = form("%s, %s ptr [%s+%xh]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsA), regName(inst->regB, OpBits::B64), inst->valueA);
                     break;
-                case SCBE_MicroOp::LoadExtend0:
-                    // encoder.emitLoadExtend(inst->regA, inst->regB, inst->valueA, inst->opBitsA, inst->opBitsB, inst->boolA);
-                    if (inst->opBitsA == inst->opBitsB)
-                        line.name = "mov";
-                    else
-                        line.name = inst->flags.has(MIF_BOOL) ? "movs" : "movz";
+                case SCBE_MicroOp::LoadSignedExtend0:
+                    // encoder.emitLoadSignedExtend0(inst->regA, inst->regB, inst->valueA, inst->opBitsA, inst->opBitsB);
+                    line.name = "movs";
                     line.args = form("%s, %s ptr [%s+%xh]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsB), regName(inst->regB, OpBits::B64), inst->valueA);
                     break;
-                case SCBE_MicroOp::LoadExtend1:
-                    // encoder.emitLoadExtend(inst->regA, inst->regB, inst->opBitsA, inst->opBitsB, inst->boolA);
-                    if (inst->opBitsA == inst->opBitsB)
-                        line.name = "mov";
-                    else
-                        line.name = inst->flags.has(MIF_BOOL) ? "movs" : "movz";
+                case SCBE_MicroOp::LoadSignedExtend1:
+                    // encoder.emitLoadSignedExtend1(inst->regA, inst->regB, inst->opBitsA, inst->opBitsB);
+                    line.name = "movs";
+                    line.args = form("%s, %s", regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsB));
+                    break;
+                case SCBE_MicroOp::LoadZeroExtend0:
+                    // encoder.emitLoadZeroExtend0(inst->regA, inst->regB, inst->valueA, inst->opBitsA, inst->opBitsB);
+                    line.name = "movz";
+                    line.args = form("%s, %s ptr [%s+%xh]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsB), regName(inst->regB, OpBits::B64), inst->valueA);
+                    break;
+                case SCBE_MicroOp::LoadZeroExtend1:
+                    // encoder.emitLoadZeroExtend1(inst->regA, inst->regB, inst->opBitsA, inst->opBitsB);
+                    line.name = "movz";
                     line.args = form("%s, %s", regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsB));
                     break;
                 case SCBE_MicroOp::LoadAddress0:

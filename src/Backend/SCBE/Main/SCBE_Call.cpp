@@ -22,7 +22,7 @@ void SCBE::emitGetParam(SCBE_CPU& pp, uint32_t reg, uint32_t paramIdx, OpBits op
         case OpBits::B32:
         {
             SWAG_ASSERT(!toAdd);
-            pp.emitLoadExtendParam(CPUReg::RAX, paramIdx, OpBits::B64, opBits, false);
+            pp.emitLoadZeroExtendParam(CPUReg::RAX, paramIdx, OpBits::B64, opBits);
             pp.emitStore(CPUReg::RDI, REG_OFFSET(reg), CPUReg::RAX, OpBits::B64);
             return;
         }
@@ -45,7 +45,7 @@ void SCBE::emitGetParam(SCBE_CPU& pp, uint32_t reg, uint32_t paramIdx, OpBits op
         case OpBits::B16:
         case OpBits::B32:
         case OpBits::B64:
-            pp.emitLoadExtend(CPUReg::RAX, CPUReg::RAX, static_cast<uint32_t>(toAdd), OpBits::B64, derefBits, false);
+            pp.emitLoadZeroExtend(CPUReg::RAX, CPUReg::RAX, static_cast<uint32_t>(toAdd), OpBits::B64, derefBits);
             break;
         default:
             if (toAdd)
