@@ -5,14 +5,6 @@
 
 namespace
 {
-    const char* g_MicroOpNames[] =
-    {
-#undef SCBE_MICRO_OP
-#define SCBE_MICRO_OP(__op) #__op,
-#include "Backend/SCBE/Encoder/Micro/SCBE_MicroOpList.h"
-
-    };
-
     const char* cpuJumpName(CPUCondJump kind)
     {
         switch (kind)
@@ -371,7 +363,7 @@ void SCBE_Micro::print() const
                     if (inst->opBitsA == inst->opBitsB)
                         line.name = "mov";
                     else
-                        line.name = inst->flags.has(MF_BOOL) ? "movs" : "movz";
+                        line.name = inst->flags.has(MIF_BOOL) ? "movs" : "movz";
                     line.args = form("%s, %s ptr [rdi+<param%d>]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsB), inst->valueA);
                     break;
                 case SCBE_MicroOp::LoadAddressParam:
@@ -397,7 +389,7 @@ void SCBE_Micro::print() const
                 case SCBE_MicroOp::Load2:
                     // encoder.emitLoad(inst->regA, inst->regB, inst->valueA, inst->valueB, inst->boolA, inst->cpuOp, inst->opBitsA);
                     line.name = "mov";
-                    if (inst->flags.has(MF_BOOL))
+                    if (inst->flags.has(MIF_BOOL))
                         line.args = form("%s, %d", regName(inst->regA, inst->opBitsA), inst->valueB);
                     else
                         line.args = form("%s, %s ptr [%s+%d]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsA), regName(inst->regB, inst->opBitsA), inst->valueA);
@@ -422,7 +414,7 @@ void SCBE_Micro::print() const
                     if (inst->opBitsA == inst->opBitsB)
                         line.name = "mov";
                     else
-                        line.name = inst->flags.has(MF_BOOL) ? "movs" : "movz";
+                        line.name = inst->flags.has(MIF_BOOL) ? "movs" : "movz";
                     line.args = form("%s, %s ptr [%s+%d]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsB), regName(inst->regB, OpBits::B64), inst->valueA);
                     break;
                 case SCBE_MicroOp::LoadExtend1:
@@ -430,7 +422,7 @@ void SCBE_Micro::print() const
                     if (inst->opBitsA == inst->opBitsB)
                         line.name = "mov";
                     else
-                        line.name = inst->flags.has(MF_BOOL) ? "movs" : "movz";
+                        line.name = inst->flags.has(MIF_BOOL) ? "movs" : "movz";
                     line.args = form("%s, %s", regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsB));
                     break;
                 case SCBE_MicroOp::LoadAddress0:
@@ -535,12 +527,12 @@ void SCBE_Micro::print() const
                     break;
             }
 
-            if (inst->flags.has(MF_JUMP_DEST))
+            if (inst->flags.has(MIF_JUMP_DEST))
                 line.flags += 'J';
             while (line.flags.length() != 10)
                 line.flags += '.';
 
-            line.name = form("%s - %s", g_MicroOpNames[static_cast<int>(inst->op)], line.name.cstr());
+            line.name = form("%s - %s", g_MicroOpInfos[static_cast<int>(inst->op)].name, line.name.cstr());
             line.rank    = form("%08d", i);
 
             lines.push_back(line);

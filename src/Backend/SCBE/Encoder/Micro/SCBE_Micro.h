@@ -4,14 +4,26 @@
 
 enum class SCBE_MicroOp : uint8_t
 {
-#define SCBE_MICRO_OP(__op) __op,
+#define SCBE_MICRO_OP(__op, ...) __op,
 #include "Backend/SCBE/Encoder/Micro/SCBE_MicroOpList.h"
 };
 
-using SCBE_MicroFlag                  = Flags<uint8_t>;
-constexpr SCBE_MicroFlag MF_ZERO      = 0x00;
-constexpr SCBE_MicroFlag MF_BOOL      = 0x01;
-constexpr SCBE_MicroFlag MF_JUMP_DEST = 0x02;
+using SCBE_MicroOpFlag              = Flags<uint32_t>;
+constexpr SCBE_MicroOpFlag MOF_ZERO = 0x00000000;
+
+struct SCBE_MicroOpInfo
+{
+    const char*      name;
+    SCBE_MicroOpFlag leftFlags;
+    SCBE_MicroOpFlag rightFlags;
+};
+
+extern SCBE_MicroOpInfo g_MicroOpInfos[];
+
+using SCBE_MicroInstructionFlag                   = Flags<uint8_t>;
+constexpr SCBE_MicroInstructionFlag MIF_ZERO      = 0x00;
+constexpr SCBE_MicroInstructionFlag MIF_BOOL      = 0x01;
+constexpr SCBE_MicroInstructionFlag MIF_JUMP_DEST = 0x02;
 
 struct SCBE_MicroInstruction
 {
@@ -24,10 +36,10 @@ struct SCBE_MicroInstruction
     CPUCondFlag  cpuCond;
     CPUCondJump  jumpType;
 
-    OpBits         opBitsA;
-    OpBits         opBitsB;
-    CPUEmitFlags   emitFlags;
-    SCBE_MicroFlag flags;
+    OpBits                    opBitsA;
+    OpBits                    opBitsB;
+    CPUEmitFlags              emitFlags;
+    SCBE_MicroInstructionFlag flags;
 
     uint32_t valueC;
     CPUReg   regA;
