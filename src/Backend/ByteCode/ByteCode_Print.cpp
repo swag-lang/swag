@@ -510,7 +510,7 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteC
         g_Log.setColor(LogColor::AsmInstruction);
         LogWriteContext logCxt;
         logCxt.raw = true;
-        g_Log.print(line.pretty, &logCxt);        
+        g_Log.print(line.pretty, &logCxt);
     }
     else
     {

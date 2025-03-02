@@ -587,10 +587,10 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
                 break;
             case SCBE_MicroOp::LoadCallerAddressParam:
                 encoder.emitLoadCallerAddressParam(inst->regA, static_cast<uint32_t>(inst->valueA));
-            break;
+                break;
             case SCBE_MicroOp::StoreCallerParam:
                 encoder.emitStoreCallerParam(static_cast<uint32_t>(inst->valueA), inst->regA, inst->opBitsA);
-            break;            
+                break;
             case SCBE_MicroOp::Load0:
                 encoder.emitLoad(inst->regA, inst->regB, inst->opBitsA);
                 break;

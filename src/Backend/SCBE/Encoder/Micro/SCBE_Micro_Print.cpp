@@ -255,7 +255,7 @@ namespace
 
         if (flags.has(MOF_NAME))
             res += form("NAME");
-        
+
         if (flags.has(MOF_CPU_COND))
             res += form("CC:%s ", cpuCondName(inst->cpuCond));
 

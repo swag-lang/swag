@@ -1031,7 +1031,7 @@ void SCBE_X64::emitOpBinary(CPUReg regDst, CPUReg regSrc, CPUOp op, OpBits opBit
             emitClear(CPUReg::RDX, opBits);
         }
     }
-    
+
     if (opBits == OpBits::F32)
     {
         if (op != CPUOp::FSQRT &&
@@ -1292,7 +1292,7 @@ void SCBE_X64::emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, OpBits opBits,
 {
     if (isNoOp(value, op, opBits, emitFlags))
         return;
-    
+
     ///////////////////////////////////////////
 
     if (op == CPUOp::DIV || op == CPUOp::MOD || op == CPUOp::IDIV || op == CPUOp::IMOD)
