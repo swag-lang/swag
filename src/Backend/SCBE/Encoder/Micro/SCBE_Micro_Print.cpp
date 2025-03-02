@@ -253,6 +253,9 @@ namespace
     {
         Utf8 res;
 
+        if (flags.has(MOF_NAME))
+            res += form("NAME");
+        
         if (flags.has(MOF_CPU_COND))
             res += form("CC:%s ", cpuCondName(inst->cpuCond));
 
@@ -289,6 +292,9 @@ namespace
             res += form("B:%llxh ", inst->valueB);
         if (flags.has(MOF_VALUE_C))
             res += form("B:%xh ", inst->valueC);
+
+        if (flags.has(MOF_BOOL))
+            res += form("BOOL:%d ", inst->flags.has(MIF_BOOL));        
 
         if (flags.has(MOF_OPBITS_A))
             res += form("A:%s ", opBitsNameRaw(inst->opBitsA));

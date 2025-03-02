@@ -22,6 +22,7 @@ constexpr SCBE_MicroOpFlag MOF_CPU_OP    = 0x00000100;
 constexpr SCBE_MicroOpFlag MOF_JUMP_TYPE = 0x00000200;
 constexpr SCBE_MicroOpFlag MOF_NAME      = 0x00000400;
 constexpr SCBE_MicroOpFlag MOF_CPU_COND  = 0x00000800;
+constexpr SCBE_MicroOpFlag MOF_BOOL      = 0x00001000;
 
 struct SCBE_MicroOpInfo
 {
@@ -99,7 +100,7 @@ struct SCBE_Micro final : SCBE_CPU
     void    emitLoadSignedExtend(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc) override;
     void    emitLoadSignedExtend(CPUReg regDst, CPUReg regSrc, OpBits numBitsDst, OpBits numBitsSr) override;
     void    emitLoadZeroExtend(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc) override;
-    void    emitLoadZeroExtend(CPUReg regDst, CPUReg regSrc, OpBits numBitsDst, OpBits numBitsSr) override;    
+    void    emitLoadZeroExtend(CPUReg regDst, CPUReg regSrc, OpBits numBitsDst, OpBits numBitsSr) override;
     void    emitLoadAddress(CPUReg reg, CPUReg memReg, uint64_t memOffset) override;
     void    emitLoadAddress(CPUReg regDst, CPUReg regSrc1, CPUReg regSrc2, uint64_t mulValue, OpBits opBits) override;
     void    emitStore(CPUReg memReg, uint64_t memOffset, CPUReg reg, OpBits opBits) override;
