@@ -505,6 +505,13 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteC
         logCxt.raw = true;
         g_Log.print(line.pretty, &logCxt);
     }
+    else if (options.flags.has(BCPF_ASM_SCBE))
+    {
+        g_Log.setColor(LogColor::AsmInstruction);
+        LogWriteContext logCxt;
+        logCxt.raw = true;
+        g_Log.print(line.pretty, &logCxt);        
+    }
     else
     {
         g_Log.setColor(LogColor::White);

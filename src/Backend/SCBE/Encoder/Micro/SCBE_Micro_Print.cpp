@@ -2,7 +2,6 @@
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/SCBE/Encoder/Micro/SCBE_Micro.h"
 #include "Semantic/Type/TypeManager.h"
-#pragma optimize("", off)
 
 namespace
 {
@@ -128,7 +127,7 @@ namespace
                                                                                : "mov";
 
             case CPUOp::CVTI2F:
-                return "cvti2f";
+                return opBits == OpBits::F32 ? "cvtsi2ss" : "cvtsi2sd";
             case CPUOp::FADD:
                 return opBits == OpBits::F32 ? "addss" : "addsd";
             case CPUOp::FSUB:
@@ -539,7 +538,12 @@ void SCBE_Micro::print() const
 
             line.rank = form("%08d", i);
 
-            line.pretty = g_MicroOpInfos[static_cast<int>(inst->op)].name;
+            while (line.name.length() != 12)
+                line.name += ' ';
+            line.pretty = line.name + line.args;
+            
+            line.name = g_MicroOpInfos[static_cast<int>(inst->op)].name;
+            line.args = "";
 
             if (inst->flags.has(MIF_JUMP_DEST))
                 line.flags += 'J';
