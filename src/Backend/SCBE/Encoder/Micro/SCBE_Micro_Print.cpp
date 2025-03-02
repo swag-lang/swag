@@ -476,14 +476,6 @@ void SCBE_Micro::print() const
                     line.name = "mov";
                     line.args = form("%s, %s", regName(inst->regA, inst->opBitsA), regName(inst->regA, inst->opBitsA));
                     break;
-                case SCBE_MicroOp::Load2:
-                    // encoder.emitLoad(inst->regA, inst->regB, inst->valueA, inst->valueB, inst->boolA, inst->cpuOp, inst->opBitsA);
-                    line.name = "mov";
-                    if (inst->flags.has(MIF_BOOL))
-                        line.args = form("%s, %d", regName(inst->regA, inst->opBitsA), inst->valueB);
-                    else
-                        line.args = form("%s, %s ptr [%s+%xh]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsA), regName(inst->regB, inst->opBitsA), inst->valueA);
-                    break;
                 case SCBE_MicroOp::Load3:
                     // encoder.emitLoad(inst->regA, inst->valueA);
                     line.name = "mov";

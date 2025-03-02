@@ -163,18 +163,6 @@ void SCBE_Micro::emitLoad(CPUReg regDstSrc, OpBits opBits)
     inst->opBitsA   = opBits;
 }
 
-void SCBE_Micro::emitLoad(CPUReg reg, CPUReg memReg, uint64_t memOffset, uint64_t value, bool isImmediate, CPUOp op, OpBits opBits)
-{
-    const auto inst = addInstruction(SCBE_MicroOp::Load2);
-    inst->regA      = reg;
-    inst->regB      = memReg;
-    inst->valueA    = memOffset;
-    inst->valueB    = value;
-    inst->flags.add(isImmediate ? MIF_BOOL : MIF_ZERO);
-    inst->cpuOp   = op;
-    inst->opBitsA = opBits;
-}
-
 void SCBE_Micro::emitLoad(CPUReg reg, uint64_t value)
 {
     const auto inst = addInstruction(SCBE_MicroOp::Load3);
@@ -589,9 +577,6 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
                 break;
             case SCBE_MicroOp::Load1:
                 encoder.emitLoad(inst->regA, inst->opBitsA);
-                break;
-            case SCBE_MicroOp::Load2:
-                encoder.emitLoad(inst->regA, inst->regB, inst->valueA, inst->valueB, inst->flags.has(MIF_BOOL), inst->cpuOp, inst->opBitsA);
                 break;
             case SCBE_MicroOp::Load3:
                 encoder.emitLoad(inst->regA, inst->valueA);

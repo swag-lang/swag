@@ -248,7 +248,6 @@ struct SCBE_CPU : BackendEncoder
     virtual void    emitPatchJump(const CPUJump& jump)                                                                                            = 0;
     virtual void    emitPatchJump(const CPUJump& jump, uint64_t offsetDestination)                                                                = 0;
     virtual void    emitJump(CPUReg reg)                                                                                                          = 0;
-    virtual void    emitLoad(CPUReg reg, CPUReg memReg, uint64_t memOffset, uint64_t value, bool isImmediate, CPUOp op, OpBits opBits)            = 0;
     virtual void    emitLoad(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits opBits)                                                        = 0;
     virtual void    emitLoad(CPUReg reg, uint64_t value, OpBits opBits)                                                                           = 0;
     virtual void    emitLoad(CPUReg regDst, CPUReg regSrc, OpBits opBits)                                                                         = 0;
