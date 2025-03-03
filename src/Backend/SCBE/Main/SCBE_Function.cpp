@@ -181,7 +181,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::Add32byVB32:
             case ByteCodeOp::Add64byVB64:
                 opBits = SCBE_CPU::getOpBits(ip->op);
-                pp.emitOpBinary(CPUReg::RDI, REG_OFFSET(ip->a.u32), ip->b.u64, CPUOp::ADD, opBits);
+                pp.emitOpBinary(CPUReg::RSP, pp.getStackOffsetReg(ip->a.u32), ip->b.u64, CPUOp::ADD, opBits);
                 break;
 
                 /////////////////////////////////////
@@ -1124,7 +1124,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitJumpCmp2(pp, JP, JZ, OpBits::F64);
                 break;
             case ByteCodeOp::IncJumpIfEqual64:
-                pp.emitOpBinary(CPUReg::RDI, REG_OFFSET(ip->a.u32), 1, CPUOp::ADD, OpBits::B64);
+                pp.emitOpBinary(CPUReg::RSP, pp.getStackOffsetReg(ip->a.u32), 1, CPUOp::ADD, OpBits::B64);
                 emitJumpCmp(pp, JZ, OpBits::B64);
                 break;
 
