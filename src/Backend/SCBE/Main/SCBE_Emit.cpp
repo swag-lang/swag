@@ -96,7 +96,7 @@ void SCBE::emitShiftRightArithmetic(SCBE_CPU& pp)
     }
     else
     {
-        pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->b.u32), OpBits::B32);
+        pp.emitLoad(CPUReg::RCX, CPUReg::RSP, pp.getRegOffset(ip->b.u32), OpBits::B32);
         pp.emitLoad(CPUReg::RAX, SCBE_CPU::getNumBits(opBits) - 1, OpBits::B32);
         pp.emitCmp(CPUReg::RCX, SCBE_CPU::getNumBits(opBits) - 1, OpBits::B32);
         pp.emitOpBinary(CPUReg::RCX, CPUReg::RAX, CPUOp::CMOVG, opBits);
@@ -118,7 +118,7 @@ void SCBE::emitShiftRightEqArithmetic(SCBE_CPU& pp)
     }
     else
     {
-        pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->b.u32), OpBits::B32);
+        pp.emitLoad(CPUReg::RCX, CPUReg::RSP, pp.getRegOffset(ip->b.u32), OpBits::B32);
         pp.emitLoad(CPUReg::RAX, SCBE_CPU::getNumBits(opBits) - 1, OpBits::B32);
         pp.emitCmp(CPUReg::RCX, SCBE_CPU::getNumBits(opBits) - 1, OpBits::B32);
         pp.emitOpBinary(CPUReg::RCX, CPUReg::RAX, CPUOp::CMOVG, opBits);
@@ -170,7 +170,7 @@ void SCBE::emitShiftEqLogical(SCBE_CPU& pp, CPUOp op)
     else
     {
         pp.emitLoad(CPUReg::RAX, CPUReg::RSP, pp.getRegOffset(ip->a.u32), OpBits::B64);
-        pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->b.u32), OpBits::B32);
+        pp.emitLoad(CPUReg::RCX, CPUReg::RSP, pp.getRegOffset(ip->b.u32), OpBits::B32);
         pp.emitCmp(CPUReg::RCX, SCBE_CPU::getNumBits(opBits), OpBits::B32);
         const auto jump = pp.emitJump(JL, OpBits::B8);
         pp.emitClear(CPUReg::RCX, opBits);
@@ -261,7 +261,7 @@ void SCBE::emitBinOpEqLock(SCBE_CPU& pp, CPUOp op)
 {
     const auto ip     = pp.ip;
     const auto opBits = SCBE_CPU::getOpBits(ip->op);
-    pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);
+    pp.emitLoad(CPUReg::RCX, CPUReg::RSP, pp.getRegOffset(ip->a.u32), OpBits::B64);
     emitIMMB(pp, CPUReg::RAX, opBits);
     pp.emitOpBinary(CPUReg::RCX, 0, CPUReg::RAX, op, opBits, EMITF_Lock);
 }
@@ -349,7 +349,7 @@ void SCBE::emitAddSubMul64(SCBE_CPU& pp, uint64_t mulValue, CPUOp op)
     {
         pp.emitLoad(CPUReg::RAX, CPUReg::RSP, pp.getRegOffset(ip->b.u32), OpBits::B64);
         pp.emitOpBinary(CPUReg::RAX, mulValue, CPUOp::IMUL, OpBits::B64);
-        pp.emitLoad(CPUReg::RCX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);
+        pp.emitLoad(CPUReg::RCX, CPUReg::RSP, pp.getRegOffset(ip->a.u32), OpBits::B64);
         pp.emitOpBinary(CPUReg::RCX, CPUReg::RAX, op, OpBits::B64);
         pp.emitStore(CPUReg::RSP, pp.getRegOffset(ip->c.u32), CPUReg::RCX, OpBits::B64);
     }
