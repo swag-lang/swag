@@ -290,11 +290,11 @@ void SCBE::emitCompareOp(SCBE_CPU& pp, CPUReg reg, CPUCondFlag cond)
     {
         const auto r0 = SCBE_CPU::isInt(opBits) ? CPUReg::RAX : CPUReg::XMM0;
         pp.emitLoad(r0, CPUReg::RSP, pp.getRegOffset(ip->a.u32), opBits);
-        pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->b.u32), r0, opBits);
+        pp.emitCmp(CPUReg::RSP, pp.getRegOffset(ip->b.u32), r0, opBits);
     }
     else if (SCBE_CPU::isInt(opBits) && !ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_B))
     {
-        pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->a.u32), ip->b.u64, opBits);
+        pp.emitCmp(CPUReg::RSP, pp.getRegOffset(ip->a.u32), ip->b.u64, opBits);
     }
     else
     {
@@ -375,11 +375,11 @@ void SCBE::emitJumpCmp(SCBE_CPU& pp, CPUCondJump op, OpBits opBits)
     {
         const auto r0 = SCBE_CPU::isInt(opBits) ? CPUReg::RAX : CPUReg::XMM0;
         pp.emitLoad(r0, CPUReg::RSP, pp.getRegOffset(ip->a.u32), opBits);
-        pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->c.u32), r0, opBits);
+        pp.emitCmp(CPUReg::RSP, pp.getRegOffset(ip->c.u32), r0, opBits);
     }
     else if (SCBE_CPU::isInt(opBits) && !ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_C))
     {
-        pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->a.u32), ip->c.u64, opBits);
+        pp.emitCmp(CPUReg::RSP, pp.getRegOffset(ip->a.u32), ip->c.u64, opBits);
     }
     else
     {
@@ -405,7 +405,7 @@ void SCBE::emitJumpCmpAddr(SCBE_CPU& pp, CPUCondJump op, CPUReg memReg, uint64_t
     else
     {
         pp.emitLoad(CPUReg::RAX, memReg, memOffset, opBits);
-        pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::RAX, opBits);
+        pp.emitCmp(CPUReg::RSP, pp.getRegOffset(ip->c.u32), CPUReg::RAX, opBits);
     }
 
     pp.emitJump(op, pp.ipIndex + ip->b.s32 + 1);
@@ -419,7 +419,7 @@ void SCBE::emitJumpCmp2(SCBE_CPU& pp, CPUCondJump op1, CPUCondJump op2, OpBits o
     if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_C))
     {
         pp.emitLoad(CPUReg::XMM0, CPUReg::RSP, pp.getRegOffset(ip->a.u32), opBits);
-        pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::XMM0, opBits);
+        pp.emitCmp(CPUReg::RSP, pp.getRegOffset(ip->c.u32), CPUReg::XMM0, opBits);
     }
     else
     {
@@ -440,7 +440,7 @@ void SCBE::emitJumpCmp3(SCBE_CPU& pp, CPUCondJump op1, CPUCondJump op2, OpBits o
     if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_C))
     {
         pp.emitLoad(CPUReg::XMM0, CPUReg::RSP, pp.getRegOffset(ip->a.u32), opBits);
-        pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::XMM0, opBits);
+        pp.emitCmp(CPUReg::RSP, pp.getRegOffset(ip->c.u32), CPUReg::XMM0, opBits);
     }
     else
     {
