@@ -68,6 +68,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     ppCPU.cpuFct->offsetFLTReg            = CPUReg::RDI;
     ppCPU.cpuFct->offsetFLT               = offsetFLT;
     ppCPU.cpuFct->offsetRT                = offsetRT;
+    ppCPU.cpuFct->offsetResult            = offsetResult;
     ppCPU.cpuFct->offsetByteCodeStack     = offsetByteCodeStack;
     ppCPU.cpuFct->offsetParamsAsRegisters = offsetParamsAsRegisters;
 
@@ -1800,12 +1801,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CopyRAtoRR:
                 if (ip->hasFlag(BCI_IMM_A))
                 {
-                    pp.emitStore(CPUReg::RDI, offsetResult, ip->a.u64, OpBits::B64);
+                    pp.emitStore(CPUReg::RSP, pp.getStackOffsetResult(), ip->a.u64, OpBits::B64);
                 }
                 else
                 {
                     pp.emitLoad(CPUReg::RAX, CPUReg::RSP, pp.getStackOffsetReg(ip->a.u32), OpBits::B64);
-                    pp.emitStore(CPUReg::RDI, offsetResult, CPUReg::RAX, OpBits::B64);
+                    pp.emitStore(CPUReg::RSP, pp.getStackOffsetResult(), CPUReg::RAX, OpBits::B64);
                 }
 
                 break;
@@ -1994,12 +1995,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CopyRAtoRRRet:
                 if (ip->hasFlag(BCI_IMM_A))
                 {
-                    pp.emitStore(CPUReg::RDI, offsetResult, ip->a.u64, OpBits::B64);
+                    pp.emitStore(CPUReg::RSP, pp.getStackOffsetResult(), ip->a.u64, OpBits::B64);
                 }
                 else
                 {
                     pp.emitLoad(CPUReg::RAX, CPUReg::RSP, pp.getStackOffsetReg(ip->a.u32), OpBits::B64);
-                    pp.emitStore(CPUReg::RDI, offsetResult, CPUReg::RAX, OpBits::B64);
+                    pp.emitStore(CPUReg::RSP, pp.getStackOffsetResult(), CPUReg::RAX, OpBits::B64);
                 }
                 [[fallthrough]];
 
@@ -2008,7 +2009,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 // Emit result
                 if (!returnType->isVoid() && !typeFunc->returnByAddress())
                 {
-                    pp.emitLoad(cc.returnByRegisterInteger, CPUReg::RDI, offsetResult, OpBits::B64);
+                    pp.emitLoad(cc.returnByRegisterInteger, CPUReg::RSP, pp.getStackOffsetResult(), OpBits::B64);
                     if (returnType->isNative(NativeTypeKind::F32))
                         pp.emitLoad(cc.returnByRegisterFloat, CPUReg::RAX, OpBits::F32);
                     else if (returnType->isNative(NativeTypeKind::F64))

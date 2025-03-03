@@ -46,6 +46,11 @@ uint32_t SCBE_CPU::getStackOffsetRT(uint32_t reg) const
     return cpuFct->sizeStackCallParams + cpuFct->offsetRT + (reg * sizeof(Register));
 }
 
+uint32_t SCBE_CPU::getStackOffsetResult() const
+{
+    return cpuFct->sizeStackCallParams + cpuFct->offsetResult;
+}
+
 uint32_t SCBE_CPU::getStackOffsetBCStack() const
 {
     return cpuFct->sizeStackCallParams + cpuFct->offsetByteCodeStack;
