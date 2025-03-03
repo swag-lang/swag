@@ -207,7 +207,8 @@ struct SCBE_CPU : BackendEncoder
 {
     void init(const BuildParameters& buildParameters) override;
 
-    uint32_t     getRegOffset(uint32_t reg) const;
+    uint32_t     getStackOffsetReg(uint32_t reg) const;
+    uint32_t     getStackOffsetRT(uint32_t reg) const;
     CPUSymbol*   getOrAddSymbol(const Utf8& name, CPUSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);
     CPUSymbol*   getOrCreateGlobalString(const Utf8& str);
     void         addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, uint16_t type);

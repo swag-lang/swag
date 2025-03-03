@@ -24,7 +24,7 @@ void SCBE::emitGetParam(SCBE_CPU& pp, uint32_t reg, uint32_t paramIdx, OpBits op
         {
             SWAG_ASSERT(!toAdd);
             pp.emitLoadZeroExtendParam(CPUReg::RAX, paramIdx, OpBits::B64, opBits);
-            pp.emitStore(CPUReg::RSP, pp.getRegOffset(reg), CPUReg::RAX, OpBits::B64);
+            pp.emitStore(CPUReg::RSP, pp.getStackOffsetReg(reg), CPUReg::RAX, OpBits::B64);
             return;
         }
         case OpBits::B64:
@@ -54,7 +54,7 @@ void SCBE::emitGetParam(SCBE_CPU& pp, uint32_t reg, uint32_t paramIdx, OpBits op
             break;
     }
 
-    pp.emitStore(CPUReg::RSP, pp.getRegOffset(reg), CPUReg::RAX, OpBits::B64);
+    pp.emitStore(CPUReg::RSP, pp.getStackOffsetReg(reg), CPUReg::RAX, OpBits::B64);
 }
 
 void SCBE::emitCallCPUParams(SCBE_CPU& pp, const Utf8& funcName, const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& pushCPUParams, uint32_t offsetRT, bool localCall)
@@ -132,7 +132,7 @@ void SCBE::emitLocalCall(SCBE_CPU& pp)
     if (ip->op == ByteCodeOp::LocalCallPopRC)
     {
         pp.emitLoad(CPUReg::RAX, CPUReg::RDI, pp.cpuFct->offsetRT + REG_OFFSET(0), OpBits::B64);
-        pp.emitStore(CPUReg::RSP, pp.getRegOffset(ip->d.u32), CPUReg::RAX, OpBits::B64);
+        pp.emitStore(CPUReg::RSP, pp.getStackOffsetReg(ip->d.u32), CPUReg::RAX, OpBits::B64);
     }
 }
 

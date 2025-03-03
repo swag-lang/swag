@@ -36,10 +36,16 @@ void SCBE_CPU::init(const BuildParameters& buildParameters)
     optLevel = buildParameters.buildCfg ? buildParameters.buildCfg->backendOptimize : BuildCfgBackendOptim::O0;
 }
 
-uint32_t SCBE_CPU::getRegOffset(uint32_t reg) const
+uint32_t SCBE_CPU::getStackOffsetReg(uint32_t reg) const
 {
     return cpuFct->sizeStackCallParams + (reg * sizeof(Register));
 }
+
+uint32_t SCBE_CPU::getStackOffsetRT(uint32_t reg) const
+{
+    return cpuFct->sizeStackCallParams + cpuFct->offsetRT + (reg * sizeof(Register));
+}
+
 CPUSymbol* SCBE_CPU::getOrAddSymbol(const Utf8& name, CPUSymbolKind kind, uint32_t value, uint16_t sectionIdx)
 {
     const auto it = getSymbol(*this, name);
