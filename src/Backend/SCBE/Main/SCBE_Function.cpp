@@ -223,7 +223,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::CopyRBAddrToRA:
-                pp.emitLoadAddress(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->b.u32));
+                pp.emitLoadAddress(CPUReg::RAX, CPUReg::RSP, pp.getStackOffsetReg(ip->b.u32));
                 pp.emitStore(CPUReg::RSP, pp.getStackOffsetReg(ip->a.u32), CPUReg::RAX, OpBits::B64);
                 break;
 
@@ -1334,11 +1334,11 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::GetFromStack32:
             case ByteCodeOp::GetFromStack64:
                 opBits = SCBE_CPU::getOpBits(ip->op);
-                pp.emitLoadZeroExtend(CPUReg::RAX, CPUReg::RDI, offsetByteCodeStack + ip->b.u32, OpBits::B64, opBits);
+                pp.emitLoadZeroExtend(CPUReg::RAX, CPUReg::RSP, pp.getStackOffsetBCStack() + ip->b.u32, OpBits::B64, opBits);
                 pp.emitStore(CPUReg::RSP, pp.getStackOffsetReg(ip->a.u32), CPUReg::RAX, OpBits::B64);
                 break;
             case ByteCodeOp::GetIncFromStack64:
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetByteCodeStack + ip->b.u32, OpBits::B64);
+                pp.emitLoad(CPUReg::RAX, CPUReg::RSP, pp.getStackOffsetBCStack() + ip->b.u32, OpBits::B64);
                 if (ip->c.u64)
                     pp.emitOpBinary(CPUReg::RAX, ip->c.u64, CPUOp::ADD, OpBits::B64);
                 pp.emitStore(CPUReg::RSP, pp.getStackOffsetReg(ip->a.u32), CPUReg::RAX, OpBits::B64);

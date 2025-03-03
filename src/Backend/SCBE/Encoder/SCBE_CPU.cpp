@@ -46,6 +46,11 @@ uint32_t SCBE_CPU::getStackOffsetRT(uint32_t reg) const
     return cpuFct->sizeStackCallParams + cpuFct->offsetRT + (reg * sizeof(Register));
 }
 
+uint32_t SCBE_CPU::getStackOffsetBCStack() const
+{
+    return cpuFct->sizeStackCallParams + cpuFct->offsetByteCodeStack;
+}
+
 CPUSymbol* SCBE_CPU::getOrAddSymbol(const Utf8& name, CPUSymbolKind kind, uint32_t value, uint16_t sectionIdx)
 {
     const auto it = getSymbol(*this, name);
