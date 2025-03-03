@@ -240,7 +240,7 @@ void SCBE::emitBinOpEq(SCBE_CPU& pp, uint32_t offset, CPUOp op, CPUEmitFlags emi
     {
         const auto r0 = SCBE_CPU::isInt(opBits) ? CPUReg::RAX : CPUReg::RCX;
         const auto r1 = SCBE_CPU::isInt(opBits) ? CPUReg::RCX : CPUReg::XMM1;
-        pp.emitLoad(r0, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);
+        pp.emitLoad(r0, CPUReg::RSP, pp.getRegOffset(ip->a.u32), OpBits::B64);
         emitIMMB(pp, r1, opBits);
         pp.emitOpBinary(r0, offset, r1, op, opBits, emitFlags);
     }
@@ -289,7 +289,7 @@ void SCBE::emitCompareOp(SCBE_CPU& pp, CPUReg reg, CPUCondFlag cond)
     if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_B))
     {
         const auto r0 = SCBE_CPU::isInt(opBits) ? CPUReg::RAX : CPUReg::XMM0;
-        pp.emitLoad(r0, CPUReg::RDI, REG_OFFSET(ip->a.u32), opBits);
+        pp.emitLoad(r0, CPUReg::RSP, pp.getRegOffset(ip->a.u32), opBits);
         pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->b.u32), r0, opBits);
     }
     else if (SCBE_CPU::isInt(opBits) && !ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_B))
@@ -374,7 +374,7 @@ void SCBE::emitJumpCmp(SCBE_CPU& pp, CPUCondJump op, OpBits opBits)
     if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_C))
     {
         const auto r0 = SCBE_CPU::isInt(opBits) ? CPUReg::RAX : CPUReg::XMM0;
-        pp.emitLoad(r0, CPUReg::RDI, REG_OFFSET(ip->a.u32), opBits);
+        pp.emitLoad(r0, CPUReg::RSP, pp.getRegOffset(ip->a.u32), opBits);
         pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->c.u32), r0, opBits);
     }
     else if (SCBE_CPU::isInt(opBits) && !ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_C))
@@ -418,7 +418,7 @@ void SCBE::emitJumpCmp2(SCBE_CPU& pp, CPUCondJump op1, CPUCondJump op2, OpBits o
 
     if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_C))
     {
-        pp.emitLoad(CPUReg::XMM0, CPUReg::RDI, REG_OFFSET(ip->a.u32), opBits);
+        pp.emitLoad(CPUReg::XMM0, CPUReg::RSP, pp.getRegOffset(ip->a.u32), opBits);
         pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::XMM0, opBits);
     }
     else
@@ -439,7 +439,7 @@ void SCBE::emitJumpCmp3(SCBE_CPU& pp, CPUCondJump op1, CPUCondJump op2, OpBits o
 
     if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_C))
     {
-        pp.emitLoad(CPUReg::XMM0, CPUReg::RDI, REG_OFFSET(ip->a.u32), opBits);
+        pp.emitLoad(CPUReg::XMM0, CPUReg::RSP, pp.getRegOffset(ip->a.u32), opBits);
         pp.emitCmp(CPUReg::RDI, REG_OFFSET(ip->c.u32), CPUReg::XMM0, opBits);
     }
     else
@@ -557,7 +557,7 @@ void SCBE::emitMakeLambda(SCBE_CPU& pp)
 void SCBE::emitMakeCallback(SCBE_CPU& pp)
 {
     // Test if it's a bytecode lambda
-    pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(pp.ip->a.u32), OpBits::B64);
+    pp.emitLoad(CPUReg::RAX, CPUReg::RSP, pp.getRegOffset(pp.ip->a.u32), OpBits::B64);
     pp.emitLoad(CPUReg::RCX, SWAG_LAMBDA_BC_MARKER, OpBits::B64);
     pp.emitOpBinary(CPUReg::RCX, CPUReg::RAX, CPUOp::AND, OpBits::B64);
 
