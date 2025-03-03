@@ -1130,31 +1130,31 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::JumpIfStackEqual8:
-                emitJumpCmpAddr(pp, JZ, CPUReg::RDI, offsetByteCodeStack + ip->a.u32, OpBits::B8);
+                emitJumpCmpAddr(pp, JZ, CPUReg::RSP, pp.getStackOffsetBCStack() + ip->a.u32, OpBits::B8);
                 break;
             case ByteCodeOp::JumpIfStackNotEqual8:
-                emitJumpCmpAddr(pp, JNZ, CPUReg::RDI, offsetByteCodeStack + ip->a.u32, OpBits::B8);
+                emitJumpCmpAddr(pp, JNZ, CPUReg::RSP, pp.getStackOffsetBCStack() + ip->a.u32, OpBits::B8);
                 break;
 
             case ByteCodeOp::JumpIfStackEqual16:
-                emitJumpCmpAddr(pp, JZ, CPUReg::RDI, offsetByteCodeStack + ip->a.u32, OpBits::B16);
+                emitJumpCmpAddr(pp, JZ, CPUReg::RSP, pp.getStackOffsetBCStack() + ip->a.u32, OpBits::B16);
                 break;
             case ByteCodeOp::JumpIfStackNotEqual16:
-                emitJumpCmpAddr(pp, JNZ, CPUReg::RDI, offsetByteCodeStack + ip->a.u32, OpBits::B16);
+                emitJumpCmpAddr(pp, JNZ, CPUReg::RSP, pp.getStackOffsetBCStack() + ip->a.u32, OpBits::B16);
                 break;
 
             case ByteCodeOp::JumpIfStackEqual32:
-                emitJumpCmpAddr(pp, JZ, CPUReg::RDI, offsetByteCodeStack + ip->a.u32, OpBits::B32);
+                emitJumpCmpAddr(pp, JZ, CPUReg::RSP, pp.getStackOffsetBCStack() + ip->a.u32, OpBits::B32);
                 break;
             case ByteCodeOp::JumpIfStackNotEqual32:
-                emitJumpCmpAddr(pp, JNZ, CPUReg::RDI, offsetByteCodeStack + ip->a.u32, OpBits::B32);
+                emitJumpCmpAddr(pp, JNZ, CPUReg::RSP, pp.getStackOffsetBCStack() + ip->a.u32, OpBits::B32);
                 break;
 
             case ByteCodeOp::JumpIfStackEqual64:
-                emitJumpCmpAddr(pp, JZ, CPUReg::RDI, offsetByteCodeStack + ip->a.u32, OpBits::B64);
+                emitJumpCmpAddr(pp, JZ, CPUReg::RSP, pp.getStackOffsetBCStack() + ip->a.u32, OpBits::B64);
                 break;
             case ByteCodeOp::JumpIfStackNotEqual64:
-                emitJumpCmpAddr(pp, JNZ, CPUReg::RDI, offsetByteCodeStack + ip->a.u32, OpBits::B64);
+                emitJumpCmpAddr(pp, JNZ, CPUReg::RSP, pp.getStackOffsetBCStack() + ip->a.u32, OpBits::B64);
                 break;
 
             case ByteCodeOp::JumpIfDeRefEqual8:
