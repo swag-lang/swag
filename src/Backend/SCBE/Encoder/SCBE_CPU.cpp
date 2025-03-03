@@ -445,8 +445,8 @@ void SCBE_CPU::emitEnter(uint32_t sizeStack)
     auto total = cpuFct->offsetCallerStackParams + cpuFct->sizeStackCallParams + sizeStack;
     if (!Math::isAligned(total, cpuFct->cc->stackAlign))
     {
-        total = Math::align(total, cpuFct->cc->stackAlign);
-        sizeStack += (cpuFct->offsetCallerStackParams + cpuFct->sizeStackCallParams + sizeStack) - total;
+        const auto totalAligned = Math::align(total, cpuFct->cc->stackAlign);
+        sizeStack += totalAligned - total;
     }
 
     cpuFct->offsetCallerStackParams += sizeStack;
