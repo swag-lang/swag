@@ -221,6 +221,7 @@ struct SCBE_CPU : BackendEncoder
 
     virtual void emitDebug(ByteCodeInstruction* ipAddr);
     virtual void emitEnter(uint32_t sizeStack);
+    virtual void emitEndProlog();
     virtual void emitLeave();
     virtual void emitLoadParam(CPUReg reg, uint32_t paramIdx, OpBits opBits);
     virtual void emitLoadSignedExtendParam(CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc);

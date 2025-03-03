@@ -72,6 +72,7 @@ struct SCBE_Micro final : SCBE_CPU
     void    emitPush(CPUReg reg) override;
     void    emitPop(CPUReg reg) override;
     void    emitEnter(uint32_t sizeStack) override;
+    void    emitEndProlog() override;
     void    emitLeave() override;
     void    emitNop() override;
     void    emitRet() override;

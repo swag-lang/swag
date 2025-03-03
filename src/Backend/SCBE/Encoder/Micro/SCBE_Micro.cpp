@@ -95,6 +95,11 @@ void SCBE_Micro::emitEnter(uint32_t sizeStack)
     inst->valueA    = sizeStack;
 }
 
+void SCBE_Micro::emitEndProlog()
+{
+    addInstruction(SCBE_MicroOp::EndProlog);
+}
+
 void SCBE_Micro::emitLeave()
 {
     addInstruction(SCBE_MicroOp::Leave);
@@ -525,6 +530,9 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
             case SCBE_MicroOp::Enter:
                 encoder.emitEnter(static_cast<uint32_t>(inst->valueA));
                 break;
+            case SCBE_MicroOp::EndProlog:
+                encoder.emitEndProlog();
+            break;
             case SCBE_MicroOp::Leave:
                 encoder.emitLeave();
                 break;

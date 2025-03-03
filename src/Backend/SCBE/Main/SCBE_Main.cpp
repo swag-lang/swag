@@ -73,6 +73,7 @@ void SCBE::emitMain(SCBE_CPU& pp)
 
     pp.cpuFct = pp.addFunction(entryPoint, callConv, nullptr);
     pp.emitEnter(0);
+    pp.emitEndProlog();
 
     // Set default system allocator function
     SWAG_ASSERT(g_SystemAllocatorTable);
@@ -233,6 +234,7 @@ void SCBE::emitGetTypeTable(SCBE_CPU& pp)
     const auto  thisInit = module->getGlobalPrivateFct(g_LangSpec->name_getTypeTable);
     pp.cpuFct            = pp.addFunction(thisInit, &cc, nullptr);
     pp.emitEnter(0);
+    pp.emitEndProlog();
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         pp.directives += form("/EXPORT:%s ", thisInit.cstr());
@@ -254,6 +256,7 @@ void SCBE::emitGlobalPreMain(SCBE_CPU& pp)
 
     pp.cpuFct->unwindRegs.push_back(CPUReg::RDI);
     pp.emitEnter(0);
+    pp.emitEndProlog();
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         pp.directives += form("/EXPORT:%s ", thisInit.cstr());
@@ -295,6 +298,7 @@ void SCBE::emitGlobalInit(SCBE_CPU& pp)
 
     pp.cpuFct->unwindRegs.push_back(CPUReg::RDI);
     pp.emitEnter(0);
+    pp.emitEndProlog();
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         pp.directives += form("/EXPORT:%s ", thisInit.cstr());
@@ -361,6 +365,7 @@ void SCBE::emitGlobalDrop(SCBE_CPU& pp)
     const auto  thisDrop = module->getGlobalPrivateFct(g_LangSpec->name_globalDrop);
     pp.cpuFct            = pp.addFunction(thisDrop, &cc, nullptr);
     pp.emitEnter(0);
+    pp.emitEndProlog();
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         pp.directives += form("/EXPORT:%s ", thisDrop.cstr());

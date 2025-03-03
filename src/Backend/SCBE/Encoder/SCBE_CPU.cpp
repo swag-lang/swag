@@ -463,6 +463,10 @@ void SCBE_CPU::emitEnter(uint32_t sizeStack)
     }
 
     emitOpBinary(CPUReg::RSP, cpuFct->frameSize, CPUOp::SUB, OpBits::B64);
+}
+
+void SCBE_CPU::emitEndProlog()
+{
     cpuFct->sizeProlog = concat.totalCount() - cpuFct->startAddress;
 }
 
