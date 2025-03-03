@@ -136,8 +136,17 @@ void SCBE_CPU::endFunction() const
     switch (objFileType)
     {
         case BackendObjType::Coff:
-            SCBE_Coff::computeUnwind(cpuFct->unwindRegs, cpuFct->unwindOffsetRegs, cpuFct->frameSize, cpuFct->sizeProlog, cpuFct->unwind);
+        {
+            VectorNative<uint32_t> unwindOffsetRegs;
+            uint32_t               offset = cpuFct->startAddress;
+            for (uint32_t i = 0; i < cpuFct->unwindRegs.size(); i++)
+            {
+                unwindOffsetRegs.push_back(offset - cpuFct->startAddress);
+                offset += 1;
+            }
+            SCBE_Coff::computeUnwind(cpuFct->unwindRegs, unwindOffsetRegs, cpuFct->frameSize, cpuFct->sizeProlog, cpuFct->unwind);
             break;
+        }
         default:
             Report::internalError(module, "SCBE::computeUnwind, unsupported output");
             break;
@@ -422,60 +431,9 @@ void SCBE_CPU::emitStoreCallResult(CPUReg memReg, uint32_t memOffset, const Type
         emitStore(memReg, memOffset, cc.returnByRegisterInteger, OpBits::B64);
 }
 
-void SCBE_CPU::emitEnter(uint32_t sizeStack)
-{
-    // Minimal size stack depends on calling convention
-    sizeStack = std::max(sizeStack, static_cast<uint32_t>(cpuFct->cc->paramByRegisterCount * sizeof(void*)));
-    sizeStack = Math::align(sizeStack, cpuFct->cc->stackAlign);
-
-    // We need to start at sizeof(void*) because the call has pushed one register on the stack
-    cpuFct->offsetCallerStackParams = sizeof(void*);
-
-    // Push all registers
-    for (const auto& reg : cpuFct->unwindRegs)
-    {
-        emitPush(reg);
-        cpuFct->unwindOffsetRegs.push_back(concat.totalCount() - cpuFct->startAddress);
-        cpuFct->offsetCallerStackParams += sizeof(void*);
-    }
-
-    SWAG_ASSERT(!cpuFct->sizeStackCallParams || Math::isAligned(cpuFct->sizeStackCallParams, cpuFct->cc->stackAlign));
-
-    // Be sure that total alignment is respected
-    const auto total = cpuFct->offsetCallerStackParams + cpuFct->sizeStackCallParams + sizeStack;
-    if (!Math::isAligned(total, cpuFct->cc->stackAlign))
-    {
-        const auto totalAligned = Math::align(total, cpuFct->cc->stackAlign);
-        sizeStack += totalAligned - total;
-    }
-
-    cpuFct->offsetCallerStackParams += sizeStack;
-    cpuFct->frameSize = sizeStack + cpuFct->sizeStackCallParams;
-
-    // Stack size check
-    if (g_CommandLine.target.os == SwagTargetOs::Windows)
-    {
-        if (cpuFct->frameSize >= SWAG_LIMIT_PAGE_STACK)
-        {
-            emitLoad(CPUReg::RAX, cpuFct->frameSize, OpBits::B64);
-            emitCallLocal(R"(__chkstk)");
-        }
-    }
-
-    emitOpBinary(CPUReg::RSP, cpuFct->frameSize, CPUOp::SUB, OpBits::B64);
-}
-
 void SCBE_CPU::emitEndProlog()
 {
     cpuFct->sizeProlog = concat.totalCount() - cpuFct->startAddress;
-}
-
-void SCBE_CPU::emitLeave()
-{
-    emitOpBinary(CPUReg::RSP, cpuFct->frameSize, CPUOp::ADD, OpBits::B64);
-    for (auto idxReg = cpuFct->unwindRegs.size() - 1; idxReg != UINT32_MAX; idxReg--)
-        emitPop(cpuFct->unwindRegs[idxReg]);
-    emitRet();
 }
 
 void SCBE_CPU::emitLoadParam(CPUReg reg, uint32_t paramIdx, OpBits opBits)

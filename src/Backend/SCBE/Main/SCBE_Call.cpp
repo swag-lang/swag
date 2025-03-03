@@ -2,6 +2,7 @@
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/ByteCodeInstruction.h"
 #include "Backend/SCBE/Main/SCBE.h"
+#include "Core/Math.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/AstNode.h"
 #include "Wmf/Module.h"
@@ -203,4 +204,55 @@ void SCBE::emitLambdaCall(SCBE_CPU& pp)
 
     pp.pushRAParams.clear();
     pp.pushRVParams.clear();
+}
+
+void SCBE::emitEnter(SCBE_CPU& pp, uint32_t sizeStack)
+{
+    // Minimal size stack depends on calling convention
+    sizeStack = std::max(sizeStack, static_cast<uint32_t>(pp.cpuFct->cc->paramByRegisterCount * sizeof(void*)));
+    sizeStack = Math::align(sizeStack, pp.cpuFct->cc->stackAlign);
+
+    // We need to start at sizeof(void*) because the call has pushed one register on the stack
+    pp.cpuFct->offsetCallerStackParams = sizeof(void*);
+
+    // Push all registers
+    for (const auto& reg : pp.cpuFct->unwindRegs)
+    {
+        pp.emitPush(reg);
+        pp.cpuFct->offsetCallerStackParams += sizeof(void*);
+    }
+
+    SWAG_ASSERT(!pp.cpuFct->sizeStackCallParams || Math::isAligned(pp.cpuFct->sizeStackCallParams, pp.cpuFct->cc->stackAlign));
+
+    // Be sure that total alignment is respected
+    const auto total = pp.cpuFct->offsetCallerStackParams + pp.cpuFct->sizeStackCallParams + sizeStack;
+    if (!Math::isAligned(total, pp.cpuFct->cc->stackAlign))
+    {
+        const auto totalAligned = Math::align(total, pp.cpuFct->cc->stackAlign);
+        sizeStack += totalAligned - total;
+    }
+
+    pp.cpuFct->offsetCallerStackParams += sizeStack;
+    pp.cpuFct->frameSize = sizeStack + pp.cpuFct->sizeStackCallParams;
+
+    // Stack size check
+    if (g_CommandLine.target.os == SwagTargetOs::Windows)
+    {
+        if (pp.cpuFct->frameSize >= SWAG_LIMIT_PAGE_STACK)
+        {
+            pp.emitLoad(CPUReg::RAX, pp.cpuFct->frameSize, OpBits::B64);
+            pp.emitCallLocal(R"(__chkstk)");
+        }
+    }
+
+    pp.emitOpBinary(CPUReg::RSP, pp.cpuFct->frameSize, CPUOp::SUB, OpBits::B64);
+    pp.emitEndProlog();
+}
+
+void SCBE::emitLeave(SCBE_CPU& pp)
+{
+    pp.emitOpBinary(CPUReg::RSP, pp.cpuFct->frameSize, CPUOp::ADD, OpBits::B64);
+    for (auto idxReg = pp.cpuFct->unwindRegs.size() - 1; idxReg != UINT32_MAX; idxReg--)
+        pp.emitPop(pp.cpuFct->unwindRegs[idxReg]);
+    pp.emitRet();
 }

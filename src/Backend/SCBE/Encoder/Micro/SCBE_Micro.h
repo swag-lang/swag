@@ -71,9 +71,7 @@ struct SCBE_Micro final : SCBE_CPU
     void    emitSymbolRelocationPtr(CPUReg reg, const Utf8& name) override;
     void    emitPush(CPUReg reg) override;
     void    emitPop(CPUReg reg) override;
-    void    emitEnter(uint32_t sizeStack) override;
     void    emitEndProlog() override;
-    void    emitLeave() override;
     void    emitNop() override;
     void    emitRet() override;
     void    emitCallLocal(const Utf8& symbolName) override;

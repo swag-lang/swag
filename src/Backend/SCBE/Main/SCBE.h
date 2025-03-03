@@ -23,7 +23,6 @@ struct SCBE final : Backend
     void      saveObjFile(const BuildParameters& buildParameters) const;
 
     static void createRuntime(SCBE_CPU& pp);
-    static void endFunction(const SCBE_CPU& pp);
     static bool buildRelocationSegment(SCBE_CPU& pp, DataSegment* dataSegment, CPURelocationTable& relocationTable, SegmentKind me);
 
     static void emitGetTypeTable(SCBE_CPU& pp);
@@ -42,7 +41,10 @@ struct SCBE final : Backend
     static void emitLocalCall(SCBE_CPU& pp);
     static void emitForeignCall(SCBE_CPU& pp);
     static void emitLambdaCall(SCBE_CPU& pp);
-
+    
+    static void emitEnter(SCBE_CPU& pp, uint32_t sizeStack);
+    static void emitLeave(SCBE_CPU& pp);
+    
     static void emitOverflow(SCBE_CPU& pp, const char* msg, bool isSigned);
     static void emitShiftRightArithmetic(SCBE_CPU& pp);
     static void emitShiftLogical(SCBE_CPU& pp, CPUOp op);

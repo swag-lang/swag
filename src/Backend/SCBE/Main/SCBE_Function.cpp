@@ -89,8 +89,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     // RDI will be a pointer to the stack, and the list of registers is stored at the start of the stack
     pp.cpuFct->unwindRegs.push_back(CPUReg::RDI);
-    pp.emitEnter(sizeStack);
-    pp.emitEndProlog();
+    emitEnter(pp, sizeStack);
 
     // Registers are stored after the sizeParamsStack area, which is used to store parameters for function calls
     pp.emitLoadAddress(CPUReg::RDI, CPUReg::RSP, pp.cpuFct->sizeStackCallParams);
@@ -2014,7 +2013,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         pp.emitLoad(cc.returnByRegisterFloat, CPUReg::RAX, OpBits::F64);
                 }
 
-                pp.emitLeave();
+                emitLeave(pp);
                 break;
 
                 /////////////////////////////////////

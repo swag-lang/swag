@@ -89,20 +89,9 @@ void SCBE_Micro::emitPop(CPUReg reg)
     inst->regA      = reg;
 }
 
-void SCBE_Micro::emitEnter(uint32_t sizeStack)
-{
-    const auto inst = addInstruction(SCBE_MicroOp::Enter);
-    inst->valueA    = sizeStack;
-}
-
 void SCBE_Micro::emitEndProlog()
 {
     addInstruction(SCBE_MicroOp::EndProlog);
-}
-
-void SCBE_Micro::emitLeave()
-{
-    addInstruction(SCBE_MicroOp::Leave);
 }
 
 void SCBE_Micro::emitRet()
@@ -527,14 +516,8 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
             case SCBE_MicroOp::Pop:
                 encoder.emitPop(inst->regA);
                 break;
-            case SCBE_MicroOp::Enter:
-                encoder.emitEnter(static_cast<uint32_t>(inst->valueA));
-                break;
             case SCBE_MicroOp::EndProlog:
                 encoder.emitEndProlog();
-            break;
-            case SCBE_MicroOp::Leave:
-                encoder.emitLeave();
                 break;
             case SCBE_MicroOp::Nop:
                 encoder.emitNop();

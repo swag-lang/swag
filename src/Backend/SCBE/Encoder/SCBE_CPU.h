@@ -179,7 +179,6 @@ struct CPUFunction
     Map<uint32_t, int32_t>        labels;
     VectorNative<CPULabelToSolve> labelsToSolve;
     VectorNative<CPUReg>          unwindRegs;
-    VectorNative<uint32_t>        unwindOffsetRegs;
     VectorNative<uint16_t>        unwind;
     Vector<SCBEDebugLines>        dbgLines;
 
@@ -220,9 +219,7 @@ struct SCBE_CPU : BackendEncoder
     void emitStoreCallResult(CPUReg memReg, uint32_t memOffset, const TypeInfoFuncAttr* typeFuncBc);
 
     virtual void emitDebug(ByteCodeInstruction* ipAddr);
-    virtual void emitEnter(uint32_t sizeStack);
     virtual void emitEndProlog();
-    virtual void emitLeave();
     virtual void emitLoadParam(CPUReg reg, uint32_t paramIdx, OpBits opBits);
     virtual void emitLoadSignedExtendParam(CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc);
     virtual void emitLoadZeroExtendParam(CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc);

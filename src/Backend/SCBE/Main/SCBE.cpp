@@ -237,22 +237,6 @@ JobResult SCBE::prepareOutput(const BuildParameters& buildParameters, int stage,
     return JobResult::ReleaseJob;
 }
 
-void SCBE::endFunction(const SCBE_CPU& pp)
-{
-    pp.cpuFct->endAddress = pp.concat.totalCount();
-
-    const auto objFileType = getObjType(g_CommandLine.target);
-    switch (objFileType)
-    {
-        case BackendObjType::Coff:
-            SCBE_Coff::computeUnwind(pp.cpuFct->unwindRegs, pp.cpuFct->unwindOffsetRegs, pp.cpuFct->frameSize, pp.cpuFct->sizeProlog, pp.cpuFct->unwind);
-            break;
-        default:
-            Report::internalError(pp.module, "SCBE::computeUnwind, unsupported output");
-            break;
-    }
-}
-
 void SCBE::saveObjFile(const BuildParameters& buildParameters) const
 {
     const auto ct              = buildParameters.compileType;
