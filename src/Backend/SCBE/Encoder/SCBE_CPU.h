@@ -196,7 +196,6 @@ struct CPUFunction
     uint32_t          offsetParamsAsRegisters = 0;
     uint32_t          sizeStackCallParams     = 0;
     uint32_t          frameSize               = 0;
-    CPUReg            offsetFLTReg            = CPUReg::RDI;
     uint32_t          offsetFLT               = 0;
     uint32_t          offsetRT                = 0;
     uint32_t          offsetResult            = 0;
@@ -208,10 +207,12 @@ struct SCBE_CPU : BackendEncoder
 {
     void init(const BuildParameters& buildParameters) override;
 
-    uint32_t     getStackOffsetReg(uint32_t reg) const;
-    uint32_t     getStackOffsetRT(uint32_t reg) const;
-    uint32_t     getStackOffsetResult() const;
-    uint32_t     getStackOffsetBCStack() const;
+    uint32_t getStackOffsetReg(uint32_t reg) const;
+    uint32_t getStackOffsetRT(uint32_t reg) const;
+    uint32_t getStackOffsetResult() const;
+    uint32_t getStackOffsetBCStack() const;
+    uint32_t getStackOffsetFLT() const;
+
     CPUSymbol*   getOrAddSymbol(const Utf8& name, CPUSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);
     CPUSymbol*   getOrCreateGlobalString(const Utf8& str);
     void         addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, uint16_t type);

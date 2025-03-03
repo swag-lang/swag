@@ -65,7 +65,6 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     if (debug)
         SCBE_Debug::setLocation(ppCPU.cpuFct, nullptr, 0);
 
-    ppCPU.cpuFct->offsetFLTReg            = CPUReg::RDI;
     ppCPU.cpuFct->offsetFLT               = offsetFLT;
     ppCPU.cpuFct->offsetRT                = offsetRT;
     ppCPU.cpuFct->offsetResult            = offsetResult;
