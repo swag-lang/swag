@@ -417,12 +417,12 @@ void SCBE_Micro::print() const
                 break;
             case SCBE_MicroOp::LoadSignedExtendParam:
                 // encoder.emitLoadSignedExtendParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->opBitsA, inst->opBitsB);
-                line.name = "movs";
+                line.name = "movsx";
                 line.args = form("%s, %s ptr [rdi+<param%d>]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsB), inst->valueA);
                 break;
             case SCBE_MicroOp::LoadZeroExtendParam:
                 // encoder.emitLoadZeroExtendParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->opBitsA, inst->opBitsB);
-                line.name = "movz";
+                line.name = "movzx";
                 line.args = form("%s, %s ptr [rdi+<param%d>]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsB), inst->valueA);
                 break;
             case SCBE_MicroOp::LoadAddressParam:
@@ -462,22 +462,22 @@ void SCBE_Micro::print() const
                 break;
             case SCBE_MicroOp::LoadSignedExtend0:
                 // encoder.emitLoadSignedExtend0(inst->regA, inst->regB, inst->valueA, inst->opBitsA, inst->opBitsB);
-                line.name = "movs";
+                line.name = "movsx";
                 line.args = form("%s, %s ptr [%s+%xh]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsB), regName(inst->regB, OpBits::B64), inst->valueA);
                 break;
             case SCBE_MicroOp::LoadSignedExtend1:
                 // encoder.emitLoadSignedExtend1(inst->regA, inst->regB, inst->opBitsA, inst->opBitsB);
-                line.name = "movs";
+                line.name = "movsx";
                 line.args = form("%s, %s", regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsB));
                 break;
             case SCBE_MicroOp::LoadZeroExtend0:
                 // encoder.emitLoadZeroExtend0(inst->regA, inst->regB, inst->valueA, inst->opBitsA, inst->opBitsB);
-                line.name = "movz";
+                line.name = "movzx";
                 line.args = form("%s, %s ptr [%s+%xh]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsB), regName(inst->regB, OpBits::B64), inst->valueA);
                 break;
             case SCBE_MicroOp::LoadZeroExtend1:
                 // encoder.emitLoadZeroExtend1(inst->regA, inst->regB, inst->opBitsA, inst->opBitsB);
-                line.name = "movz";
+                line.name = "movzx";
                 line.args = form("%s, %s", regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsB));
                 break;
             case SCBE_MicroOp::LoadAddress0:
