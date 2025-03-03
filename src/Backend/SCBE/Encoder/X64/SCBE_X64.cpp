@@ -4,7 +4,6 @@
 #include "Core/Math.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Wmf/Module.h"
-#pragma optimize("", off)
 
 enum class ModRMMode : uint8_t
 {
@@ -2127,7 +2126,7 @@ void SCBE_X64::emitClear(CPUReg memReg, uint64_t memOffset, uint32_t count)
 {
     if (!count)
         return;
-    SWAG_ASSERT(memReg == CPUReg::RAX || memReg == CPUReg::RCX || memReg == CPUReg::RDI);
+    SWAG_ASSERT(memReg == CPUReg::RAX || memReg == CPUReg::RCX || memReg == CPUReg::RSP);
     SWAG_ASSERT(memOffset <= 0x7FFFFFFF);
 
     // SSE 16 octets
@@ -2140,20 +2139,10 @@ void SCBE_X64::emitClear(CPUReg memReg, uint64_t memOffset, uint32_t count)
 
         while (count >= 16)
         {
+            // movups [memReg+??], xmm0
             emitCPUOp(concat, 0x0F);
-            emitCPUOp(concat, 0x11); // movups [rcx+??], xmm0
-
-            if (memOffset <= 0x7F)
-            {
-                concat.addU8(0x40 | static_cast<uint8_t>(memReg));
-                emitValue(concat, memOffset, OpBits::B8);
-            }
-            else
-            {
-                concat.addU8(0x80 | static_cast<uint8_t>(memReg));
-                emitValue(concat, memOffset, OpBits::B32);
-            }
-
+            emitCPUOp(concat, 0x11); 
+            emitModRM(concat, memOffset, MODRM_REG_0, memReg);
             count -= 16;
             memOffset += 16;
         }
@@ -2161,28 +2150,28 @@ void SCBE_X64::emitClear(CPUReg memReg, uint64_t memOffset, uint32_t count)
 
     while (count >= 8)
     {
-        emitStore(memReg, static_cast<uint32_t>(memOffset), 0, OpBits::B64);
+        emitStore(memReg, memOffset, 0, OpBits::B64);
         count -= 8;
         memOffset += 8;
     }
 
     while (count >= 4)
     {
-        emitStore(memReg, static_cast<uint32_t>(memOffset), 0, OpBits::B32);
+        emitStore(memReg, memOffset, 0, OpBits::B32);
         count -= 4;
         memOffset += 4;
     }
 
     while (count >= 2)
     {
-        emitStore(memReg, static_cast<uint32_t>(memOffset), 0, OpBits::B16);
+        emitStore(memReg, memOffset, 0, OpBits::B16);
         count -= 2;
         memOffset += 2;
     }
 
     while (count >= 1)
     {
-        emitStore(memReg, static_cast<uint32_t>(memOffset), 0, OpBits::B8);
+        emitStore(memReg, memOffset, 0, OpBits::B8);
         count -= 1;
         memOffset += 1;
     }
