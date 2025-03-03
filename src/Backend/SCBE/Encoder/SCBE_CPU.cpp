@@ -442,7 +442,7 @@ void SCBE_CPU::emitEnter(uint32_t sizeStack)
     SWAG_ASSERT(!cpuFct->sizeStackCallParams || Math::isAligned(cpuFct->sizeStackCallParams, cpuFct->cc->stackAlign));
 
     // Be sure that total alignment is respected
-    auto total = cpuFct->offsetCallerStackParams + cpuFct->sizeStackCallParams + sizeStack;
+    const auto total = cpuFct->offsetCallerStackParams + cpuFct->sizeStackCallParams + sizeStack;
     if (!Math::isAligned(total, cpuFct->cc->stackAlign))
     {
         const auto totalAligned = Math::align(total, cpuFct->cc->stackAlign);
