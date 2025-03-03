@@ -131,7 +131,7 @@ void SCBE::emitLocalCall(SCBE_CPU& pp)
 
     if (ip->op == ByteCodeOp::LocalCallPopRC)
     {
-        pp.emitLoad(CPUReg::RAX, CPUReg::RDI, pp.cpuFct->offsetRT + REG_OFFSET(0), OpBits::B64);
+        pp.emitLoad(CPUReg::RAX, CPUReg::RSP, pp.getStackOffsetRT(0), OpBits::B64);
         pp.emitStore(CPUReg::RSP, pp.getStackOffsetReg(ip->d.u32), CPUReg::RAX, OpBits::B64);
     }
 }
@@ -159,7 +159,7 @@ void SCBE::emitLambdaCall(SCBE_CPU& pp)
     const auto typeFuncBc = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
 
     // Test if it's a bytecode lambda
-    pp.emitLoad(CPUReg::R10, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64);
+    pp.emitLoad(CPUReg::R10, CPUReg::RSP, pp.getStackOffsetReg(ip->a.u32), OpBits::B64);
     pp.emitOpBinary(CPUReg::R10, SWAG_LAMBDA_BC_MARKER_BIT, CPUOp::BT, OpBits::B64);
     const auto jumpBC = pp.emitJump(JB, OpBits::B32);
 
