@@ -272,13 +272,13 @@ void SCBE::emitBinOpEqS(SCBE_CPU& pp, CPUOp op)
     const auto opBits = SCBE_CPU::getOpBits(ip->op);
     if (SCBE_CPU::isInt(opBits) && ip->hasFlag(BCI_IMM_B))
     {
-        pp.emitOpBinary(CPUReg::RDI, pp.cpuFct->offsetByteCodeStack + ip->a.u32, ip->b.u64, op, opBits);
+        pp.emitOpBinary(CPUReg::RSP, pp.getStackOffsetBCStack() + ip->a.u32, ip->b.u64, op, opBits);
     }
     else
     {
         const auto r1 = SCBE_CPU::isInt(opBits) ? CPUReg::RCX : CPUReg::XMM1;
         emitIMMB(pp, r1, opBits);
-        pp.emitOpBinary(CPUReg::RDI, pp.cpuFct->offsetByteCodeStack + ip->a.u32, r1, op, opBits);
+        pp.emitOpBinary(CPUReg::RSP, pp.getStackOffsetBCStack() + ip->a.u32, r1, op, opBits);
     }
 }
 
@@ -324,7 +324,7 @@ void SCBE::emitAddSubMul64(SCBE_CPU& pp, uint64_t mulValue, CPUOp op)
     }
     else if (ip->hasFlag(BCI_IMM_B) && ip->a.u32 == ip->c.u32)
     {
-        pp.emitOpBinary(CPUReg::RDI, REG_OFFSET(ip->a.u32), value, op, OpBits::B64);
+        pp.emitOpBinary(CPUReg::RSP, pp.getStackOffsetReg(ip->a.u32), value, op, OpBits::B64);
     }
     else if (ip->hasFlag(BCI_IMM_B))
     {
@@ -336,13 +336,13 @@ void SCBE::emitAddSubMul64(SCBE_CPU& pp, uint64_t mulValue, CPUOp op)
     {
         pp.emitLoad(CPUReg::RAX, CPUReg::RSP, pp.getStackOffsetReg(ip->b.u32), OpBits::B64);
         pp.emitOpBinary(CPUReg::RAX, mulValue, CPUOp::IMUL, OpBits::B64);
-        pp.emitOpBinary(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, op, OpBits::B64);
+        pp.emitOpBinary(CPUReg::RSP, pp.getStackOffsetReg(ip->a.u32), CPUReg::RAX, op, OpBits::B64);
     }
     else if (op == CPUOp::ADD)
     {
         pp.emitLoad(CPUReg::RAX, CPUReg::RSP, pp.getStackOffsetReg(ip->b.u32), OpBits::B64);
         pp.emitOpBinary(CPUReg::RAX, mulValue, CPUOp::IMUL, OpBits::B64);
-        pp.emitOpBinary(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), op, OpBits::B64);
+        pp.emitOpBinary(CPUReg::RAX, CPUReg::RSP, pp.getStackOffsetReg(ip->a.u32), op, OpBits::B64);
         pp.emitStore(CPUReg::RSP, pp.getStackOffsetReg(ip->c.u32), CPUReg::RAX, OpBits::B64);
     }
     else
