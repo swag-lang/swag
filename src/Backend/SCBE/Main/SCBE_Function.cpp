@@ -1278,11 +1278,11 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::DecrementRA32:
             case ByteCodeOp::DecrementRA64:
                 opBits = SCBE_CPU::getOpBits(ip->op);
-                pp.emitOpBinary(CPUReg::RDI, REG_OFFSET(ip->a.u32), 1, CPUOp::SUB, opBits);
+                pp.emitOpBinary(CPUReg::RSP, pp.getStackOffsetReg(ip->a.u32), 1, CPUOp::SUB, opBits);
                 break;
 
             case ByteCodeOp::IncrementRA64:
-                pp.emitOpBinary(CPUReg::RDI, REG_OFFSET(ip->a.u32), 1, CPUOp::ADD, OpBits::B64);
+                pp.emitOpBinary(CPUReg::RSP, pp.getStackOffsetReg(ip->a.u32), 1, CPUOp::ADD, OpBits::B64);
                 break;
 
                 /////////////////////////////////////
@@ -1597,10 +1597,10 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::Mul64byVB64:
-                pp.emitOpBinary(CPUReg::RDI, REG_OFFSET(ip->a.u32), ip->b.u64, CPUOp::IMUL, OpBits::B64);
+                pp.emitOpBinary(CPUReg::RSP, pp.getStackOffsetReg(ip->a.u32), ip->b.u64, CPUOp::IMUL, OpBits::B64);
                 break;
             case ByteCodeOp::Div64byVB64:
-                pp.emitOpBinary(CPUReg::RDI, REG_OFFSET(ip->a.u32), ip->b.u64, CPUOp::IDIV, OpBits::B64);
+                pp.emitOpBinary(CPUReg::RSP, pp.getStackOffsetReg(ip->a.u32), ip->b.u64, CPUOp::IDIV, OpBits::B64);
                 break;
 
                 /////////////////////////////////////
