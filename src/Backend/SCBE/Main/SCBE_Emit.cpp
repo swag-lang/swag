@@ -13,7 +13,7 @@ void SCBE::emitIMMA(SCBE_CPU& pp, CPUReg reg, OpBits opBits)
     if (ip->hasFlag(BCI_IMM_A))
         pp.emitLoad(reg, ip->a.u64, opBits);
     else
-        pp.emitLoad(reg, CPUReg::RDI, REG_OFFSET(ip->a.u32), opBits);
+        pp.emitLoad(reg, CPUReg::RSP, pp.getRegOffset(ip->a.u32), opBits);
 }
 
 void SCBE::emitIMMB(SCBE_CPU& pp, CPUReg reg, OpBits opBits)
@@ -22,7 +22,7 @@ void SCBE::emitIMMB(SCBE_CPU& pp, CPUReg reg, OpBits opBits)
     if (ip->hasFlag(BCI_IMM_B))
         pp.emitLoad(reg, ip->b.u64, opBits);
     else
-        pp.emitLoad(reg, CPUReg::RDI, REG_OFFSET(ip->b.u32), opBits);
+        pp.emitLoad(reg, CPUReg::RSP, pp.getRegOffset(ip->b.u32), opBits);
 }
 
 void SCBE::emitIMMC(SCBE_CPU& pp, CPUReg reg, OpBits opBits)
@@ -31,7 +31,7 @@ void SCBE::emitIMMC(SCBE_CPU& pp, CPUReg reg, OpBits opBits)
     if (ip->hasFlag(BCI_IMM_C))
         pp.emitLoad(reg, ip->c.u64, opBits);
     else
-        pp.emitLoad(reg, CPUReg::RDI, REG_OFFSET(ip->c.u32), opBits);
+        pp.emitLoad(reg, CPUReg::RSP, pp.getRegOffset(ip->c.u32), opBits);
 }
 
 void SCBE::emitIMMD(SCBE_CPU& pp, CPUReg reg, OpBits opBits)
@@ -40,7 +40,7 @@ void SCBE::emitIMMD(SCBE_CPU& pp, CPUReg reg, OpBits opBits)
     if (ip->hasFlag(BCI_IMM_D))
         pp.emitLoad(reg, ip->d.u64, opBits);
     else
-        pp.emitLoad(reg, CPUReg::RDI, REG_OFFSET(ip->d.u32), opBits);
+        pp.emitLoad(reg, CPUReg::RSP, pp.getRegOffset(ip->d.u32), opBits);
 }
 
 void SCBE::emitIMMB(SCBE_CPU& pp, CPUReg reg, OpBits numBitsSrc, OpBits numBitsDst, bool isSigned)
