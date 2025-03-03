@@ -213,18 +213,14 @@ void SCBE::emitEnter(SCBE_CPU& pp, uint32_t sizeStack)
     sizeStack = Math::align(sizeStack, pp.cpuFct->cc->stackAlign);
 
     // We need to start at sizeof(void*) because the call has pushed one register on the stack
-    pp.cpuFct->offsetCallerStackParams = sizeof(void*);
+    pp.cpuFct->offsetCallerStackParams = sizeof(void*) + pp.cpuFct->unwindRegs.size() * sizeof(void*);
 
     // Push all registers
     for (const auto& reg : pp.cpuFct->unwindRegs)
-    {
         pp.emitPush(reg);
-        pp.cpuFct->offsetCallerStackParams += sizeof(void*);
-    }
-
-    SWAG_ASSERT(!pp.cpuFct->sizeStackCallParams || Math::isAligned(pp.cpuFct->sizeStackCallParams, pp.cpuFct->cc->stackAlign));
 
     // Be sure that total alignment is respected
+    SWAG_ASSERT(!pp.cpuFct->sizeStackCallParams || Math::isAligned(pp.cpuFct->sizeStackCallParams, pp.cpuFct->cc->stackAlign));
     const auto total = pp.cpuFct->offsetCallerStackParams + pp.cpuFct->sizeStackCallParams + sizeStack;
     if (!Math::isAligned(total, pp.cpuFct->cc->stackAlign))
     {
