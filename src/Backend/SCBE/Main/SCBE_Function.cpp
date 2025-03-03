@@ -1351,9 +1351,9 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::GetFromStack32x2:
             case ByteCodeOp::GetFromStack64x2:
                 opBits = SCBE_CPU::getOpBits(ip->op);
-                pp.emitLoadZeroExtend(CPUReg::RAX, CPUReg::RDI, offsetByteCodeStack + ip->b.u32, OpBits::B64, opBits);
+                pp.emitLoadZeroExtend(CPUReg::RAX, CPUReg::RSP, pp.getStackOffsetBCStack() + ip->b.u32, OpBits::B64, opBits);
                 pp.emitStore(CPUReg::RSP, pp.getStackOffsetReg(ip->a.u32), CPUReg::RAX, OpBits::B64);
-                pp.emitLoadZeroExtend(CPUReg::RAX, CPUReg::RDI, offsetByteCodeStack + ip->d.u32, OpBits::B64, opBits);
+                pp.emitLoadZeroExtend(CPUReg::RAX, CPUReg::RSP, pp.getStackOffsetBCStack() + ip->d.u32, OpBits::B64, opBits);
                 pp.emitStore(CPUReg::RSP, pp.getStackOffsetReg(ip->c.u32), CPUReg::RAX, OpBits::B64);
                 break;
 
@@ -1364,7 +1364,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::GetIncFromStack64DeRef32:
             case ByteCodeOp::GetIncFromStack64DeRef64:
                 opBits = SCBE_CPU::getOpBits(ip->op);
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetByteCodeStack + ip->b.u32, OpBits::B64);
+                pp.emitLoad(CPUReg::RAX, CPUReg::RSP, pp.getStackOffsetBCStack() + ip->b.u32, OpBits::B64);
                 pp.emitLoadZeroExtend(CPUReg::RAX, CPUReg::RAX, ip->c.u64, OpBits::B64, opBits);
                 pp.emitStore(CPUReg::RSP, pp.getStackOffsetReg(ip->a.u32), CPUReg::RAX, OpBits::B64);
                 break;
@@ -1376,8 +1376,8 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CopyStack32:
             case ByteCodeOp::CopyStack64:
                 opBits = SCBE_CPU::getOpBits(ip->op);
-                pp.emitLoad(CPUReg::RAX, CPUReg::RDI, offsetByteCodeStack + ip->b.u32, opBits);
-                pp.emitStore(CPUReg::RDI, offsetByteCodeStack + ip->a.u32, CPUReg::RAX, opBits);
+                pp.emitLoad(CPUReg::RAX, CPUReg::RSP, pp.getStackOffsetBCStack() + ip->b.u32, opBits);
+                pp.emitStore(CPUReg::RSP, pp.getStackOffsetBCStack() + ip->a.u32, CPUReg::RAX, opBits);
                 break;
 
                 /////////////////////////////////////
