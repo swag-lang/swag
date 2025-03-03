@@ -10,6 +10,7 @@
 #include "Syntax/AstFlags.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
+#pragma optimize("", off)
 
 bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc)
 {
@@ -186,7 +187,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::ClearRA:
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), 0, OpBits::B64);
+                pp.emitStore(CPUReg::RSP, pp.getRegOffset(ip->a.u32), 0, OpBits::B64);
                 break;
             case ByteCodeOp::ClearRAx2:
                 pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), 0, OpBits::B64);
@@ -1477,7 +1478,9 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::SetZeroStackX:
                 if (ip->b.u32 <= buildParameters.buildCfg->backendSCBE.unrollMemLimit &&
                     buildParameters.buildCfg->backendOptimize > BuildCfgBackendOptim::O1)
+                {
                     pp.emitClear(CPUReg::RDI, offsetByteCodeStack + ip->a.u32, ip->b.u32);
+                }
                 else
                 {
                     pp.pushParams.clear();
@@ -1566,15 +1569,15 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::MakeMutableSegPointer:
                 pp.emitSymbolRelocationAddress(CPUReg::RAX, pp.symMSIndex, ip->b.u32);
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, OpBits::B64);
+                pp.emitStore(CPUReg::RSP, pp.getRegOffset(ip->a.u32), CPUReg::RAX, OpBits::B64);
                 break;
             case ByteCodeOp::MakeBssSegPointer:
                 pp.emitSymbolRelocationAddress(CPUReg::RAX, pp.symBSIndex, ip->b.u32);
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, OpBits::B64);
+                pp.emitStore(CPUReg::RSP, pp.getRegOffset(ip->a.u32), CPUReg::RAX, OpBits::B64);
                 break;
             case ByteCodeOp::MakeConstantSegPointer:
                 pp.emitSymbolRelocationAddress(CPUReg::RAX, pp.symCSIndex, ip->b.u32);
-                pp.emitStore(CPUReg::RDI, REG_OFFSET(ip->a.u32), CPUReg::RAX, OpBits::B64);
+                pp.emitStore(CPUReg::RSP, pp.getRegOffset(ip->a.u32), CPUReg::RAX, OpBits::B64);
                 break;
             case ByteCodeOp::MakeCompilerSegPointer:
                 break;

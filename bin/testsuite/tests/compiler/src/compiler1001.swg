@@ -6,7 +6,7 @@ struct Point
 	y: s32 = 20
 }
 
-//#[Swag.PrintBc]
+//#[Swag.PrintAsm]
 #test
 {
 	var x : any
