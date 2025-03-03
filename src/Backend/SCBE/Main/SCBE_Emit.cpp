@@ -492,19 +492,19 @@ void SCBE::emitCopyVaargs(SCBE_CPU& pp)
             switch (sizeOf)
             {
                 case 1:
-                    pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B8);
+                    pp.emitLoad(CPUReg::RAX, CPUReg::RSP, pp.getRegOffset(reg), OpBits::B8);
                     pp.emitStore(CPUReg::RSP, offset, CPUReg::RAX, OpBits::B8);
                     break;
                 case 2:
-                    pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B16);
+                    pp.emitLoad(CPUReg::RAX, CPUReg::RSP, pp.getRegOffset(reg), OpBits::B16);
                     pp.emitStore(CPUReg::RSP, offset, CPUReg::RAX, OpBits::B16);
                     break;
                 case 4:
-                    pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B32);
+                    pp.emitLoad(CPUReg::RAX, CPUReg::RSP, pp.getRegOffset(reg), OpBits::B32);
                     pp.emitStore(CPUReg::RSP, offset, CPUReg::RAX, OpBits::B32);
                     break;
                 case 8:
-                    pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(reg), OpBits::B64);
+                    pp.emitLoad(CPUReg::RAX, CPUReg::RSP, pp.getRegOffset(reg), OpBits::B64);
                     pp.emitStore(CPUReg::RSP, offset, CPUReg::RAX, OpBits::B64);
                     break;
                 default:
@@ -535,7 +535,7 @@ void SCBE::emitCopyVaargs(SCBE_CPU& pp)
         uint32_t       offset            = pp.cpuFct->sizeStackCallParams - variadicStackSize;
         while (idxParam != UINT32_MAX)
         {
-            pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(pp.pushRAParams[idxParam]), OpBits::B64);
+            pp.emitLoad(CPUReg::RAX, CPUReg::RSP, pp.getRegOffset(pp.pushRAParams[idxParam]), OpBits::B64);
             pp.emitStore(CPUReg::RSP, offset, CPUReg::RAX, OpBits::B64);
             idxParam--;
             offset += 8;
