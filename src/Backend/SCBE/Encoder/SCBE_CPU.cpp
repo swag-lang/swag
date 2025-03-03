@@ -24,15 +24,10 @@ uint32_t CPUFunction::getParamStackOffset(uint32_t paramIdx) const
 {
     // If the parameter has been passed as a CPU register, then we get the value from 'offsetParamsAsRegisters'
     // (where input registers have been saved) instead of the value from the caller stack
-    uint32_t offset = 0;
-    if (paramIdx < cc->paramByRegisterCount)
-        offset = offsetParamsAsRegisters + REG_OFFSET(paramIdx);
-
-    // The parameter has been passed by stack, so we get the value for the caller stack offset
-    else
-        offset = offsetCallerStackParams + REG_OFFSET(paramIdx);
-
-    return offset;
+    //
+    // Otherwise the parameter has been passed by stack, so we get the value for the caller stack offset
+    const auto offset = paramIdx < cc->paramByRegisterCount ? offsetParamsAsRegisters : offsetCallerStackParams;
+    return offset + REG_OFFSET(paramIdx);
 }
 
 void SCBE_CPU::init(const BuildParameters& buildParameters)
