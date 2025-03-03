@@ -53,11 +53,11 @@ void SCBE::emitIMMB(SCBE_CPU& pp, CPUReg reg, OpBits numBitsSrc, OpBits numBitsD
     }
     else if (isSigned)
     {
-        pp.emitLoadSignedExtend(reg, CPUReg::RDI, REG_OFFSET(ip->b.u32), numBitsDst, numBitsSrc);
+        pp.emitLoadSignedExtend(reg, CPUReg::RSP, pp.getRegOffset(ip->b.u32), numBitsDst, numBitsSrc);
     }
     else
     {
-        pp.emitLoadZeroExtend(reg, CPUReg::RDI, REG_OFFSET(ip->b.u32), numBitsDst, numBitsSrc);
+        pp.emitLoadZeroExtend(reg, CPUReg::RSP, pp.getRegOffset(ip->b.u32), numBitsDst, numBitsSrc);
     }
 }
 
@@ -71,11 +71,11 @@ void SCBE::emitIMMC(SCBE_CPU& pp, CPUReg reg, OpBits numBitsSrc, OpBits numBitsD
     }
     else if (isSigned)
     {
-        pp.emitLoadSignedExtend(reg, CPUReg::RDI, REG_OFFSET(ip->c.u32), numBitsDst, numBitsSrc);
+        pp.emitLoadSignedExtend(reg, CPUReg::RSP, pp.getRegOffset(ip->c.u32), numBitsDst, numBitsSrc);
     }
     else
     {
-        pp.emitLoadZeroExtend(reg, CPUReg::RDI, REG_OFFSET(ip->c.u32), numBitsDst, numBitsSrc);
+        pp.emitLoadZeroExtend(reg, CPUReg::RSP, pp.getRegOffset(ip->c.u32), numBitsDst, numBitsSrc);
     }
 }
 
@@ -458,7 +458,7 @@ void SCBE::emitJumpDyn(SCBE_CPU& pp)
     const auto ip     = pp.ip;
     const auto opBits = SCBE_CPU::getOpBits(ip->op);
 
-    pp.emitLoadSignedExtend(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(ip->a.u32), OpBits::B64, opBits);
+    pp.emitLoadSignedExtend(CPUReg::RAX, CPUReg::RSP, pp.getRegOffset(ip->a.u32), OpBits::B64, opBits);
 
     // Note:
     //
