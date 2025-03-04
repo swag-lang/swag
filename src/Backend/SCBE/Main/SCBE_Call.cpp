@@ -57,10 +57,15 @@ void SCBE::emitGetParam(SCBE_CPU& pp, uint32_t reg, uint32_t paramIdx, OpBits op
     pp.emitStore(CPUReg::RSP, pp.getStackOffsetReg(reg), CPUReg::RAX, OpBits::B64);
 }
 
-void SCBE::emitCallCPUParams(SCBE_CPU& pp, const Utf8& funcName, const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& pushCPUParams, uint32_t offsetRT, bool localCall)
+void SCBE::emitCallCPUParams(SCBE_CPU&                         pp,
+                             const Utf8&                       funcName,
+                             const TypeInfoFuncAttr*           typeFuncBc,
+                             const VectorNative<CPUPushParam>& pushCPUParams,
+                             uint32_t                          memOffsetResult,
+                             bool                              localCall)
 {
     // Push parameters
-    pp.emitComputeCallParameters(typeFuncBc, pushCPUParams, offsetRT, nullptr);
+    pp.emitComputeCallParameters(typeFuncBc, pushCPUParams, memOffsetResult, nullptr);
 
     if (!localCall)
         pp.emitCallExtern(funcName);
@@ -68,7 +73,7 @@ void SCBE::emitCallCPUParams(SCBE_CPU& pp, const Utf8& funcName, const TypeInfoF
         pp.emitCallLocal(funcName);
 
     // Store result
-    pp.emitStoreCallResult(CPUReg::RDI, offsetRT, typeFuncBc);
+    pp.emitStoreCallResult(CPUReg::RDI, memOffsetResult, typeFuncBc);
 
     // In case of stack trace, we force a "nop" just after the function call, in order
     // to be sure that there's at least one instruction before the potential next line.
@@ -97,7 +102,7 @@ void SCBE::emitCallRAParams(SCBE_CPU& pp, const Utf8& funcName, const TypeInfoFu
     emitCallCPUParams(pp, funcName, typeFuncBc, p, pp.cpuFct->offsetRT, localCall);
 }
 
-void SCBE::emitInternalCallRAParams(SCBE_CPU& pp, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT)
+void SCBE::emitInternalCallRAParams(SCBE_CPU& pp, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t memOffsetResult)
 {
     const auto typeFunc = g_Workspace->runtimeModule->getRuntimeTypeFct(funcName);
     SWAG_ASSERT(typeFunc);
@@ -106,17 +111,17 @@ void SCBE::emitInternalCallRAParams(SCBE_CPU& pp, const Utf8& funcName, const Ve
     for (const auto r : pushRAParams)
         p.push_back({.type = CPUPushParamType::SwagRegister, .value = r});
 
-    emitCallCPUParams(pp, funcName, typeFunc, p, offsetRT, true);
+    emitCallCPUParams(pp, funcName, typeFunc, p, memOffsetResult, true);
 }
 
-void SCBE::emitInternalCallCPUParams(SCBE_CPU& pp, const Utf8& funcName, const VectorNative<CPUPushParam>& pushCPUParams, uint32_t offsetRT)
+void SCBE::emitInternalCallCPUParams(SCBE_CPU& pp, const Utf8& funcName, const VectorNative<CPUPushParam>& pushCPUParams, uint32_t memOffsetResult)
 {
     auto typeFuncBc = g_Workspace->runtimeModule->getRuntimeTypeFct(funcName);
     if (!typeFuncBc)
         typeFuncBc = g_TypeMgr->typeInfoModuleCall;
     SWAG_ASSERT(typeFuncBc);
 
-    emitCallCPUParams(pp, funcName, typeFuncBc, pushCPUParams, offsetRT, true);
+    emitCallCPUParams(pp, funcName, typeFuncBc, pushCPUParams, memOffsetResult, true);
 }
 
 void SCBE::emitLocalCall(SCBE_CPU& pp)
@@ -178,7 +183,7 @@ void SCBE::emitLambdaCall(SCBE_CPU& pp)
 
     pp.emitComputeCallParameters(typeFuncBc, pushCPUParams, pp.cpuFct->offsetRT, nullptr);
     pp.emitCallIndirect(CPUReg::R10);
-    pp.emitStoreCallResult(CPUReg::RDI, pp.cpuFct->offsetRT, typeFuncBc);
+    pp.emitStoreCallResult(CPUReg::RSP, pp.getStackOffsetRT(0), typeFuncBc);
 
     const auto jumpBCAfter = pp.emitJump(JUMP, OpBits::B32);
 
