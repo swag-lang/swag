@@ -1483,7 +1483,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 else
                 {
                     pp.pushParams.clear();
-                    pp.pushParams.push_back({.type = CPUPushParamType::LoadAddress, .value = offsetByteCodeStack + ip->a.u32});
+                    pp.pushParams.push_back({.type = CPUPushParamType::LoadAddress, .baseReg = CPUReg::RDI, .value = offsetByteCodeStack + ip->a.u32});
                     pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = 0});
                     pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = ip->b.u32});
                     emitInternalCallCPUParams(pp, g_LangSpec->name_memset, pp.pushParams);

@@ -195,9 +195,9 @@ void SCBE::emitLambdaCall(SCBE_CPU& pp)
 
     pushCPUParams.insert_at_index({.type = CPUPushParamType::CPURegister, .value = static_cast<uint64_t>(CPUReg::R10)}, 0);
     if (typeFuncBc->numReturnRegisters() >= 1)
-        pushCPUParams.insert_at_index({.type = CPUPushParamType::LoadAddress, .value = pp.cpuFct->offsetRT}, 1);
+        pushCPUParams.insert_at_index({.type = CPUPushParamType::LoadAddress, .baseReg = CPUReg::RDI, .value = pp.cpuFct->offsetRT}, 1);
     if (typeFuncBc->numReturnRegisters() >= 2)
-        pushCPUParams.insert_at_index({.type = CPUPushParamType::LoadAddress, .value = pp.cpuFct->offsetRT + sizeof(Register)}, 2);
+        pushCPUParams.insert_at_index({.type = CPUPushParamType::LoadAddress, .baseReg = CPUReg::RDI, .value = pp.cpuFct->offsetRT + sizeof(Register)}, 2);
     pp.emitCallParameters(typeFuncBc, pushCPUParams, CallConv::get(CallConvKind::ByteCode));
 
     pp.emitSymbolRelocationAddress(CPUReg::RAX, pp.symPI_byteCodeRun, 0);

@@ -31,6 +31,7 @@ enum class CPUPushParamType
 struct CPUPushParam
 {
     CPUPushParamType type     = CPUPushParamType::SwagRegister;
+    CPUReg           baseReg  = CPUReg::RDI;
     uint64_t         value    = 0;
     uint64_t         value2   = 0;
     TypeInfo*        typeInfo = nullptr;
