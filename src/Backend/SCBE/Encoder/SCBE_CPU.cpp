@@ -217,7 +217,7 @@ namespace
             switch (params[idxParam].type)
             {
                 case CPUPushParamType::Load:
-                    pp.emitLoad(callConv->paramByRegisterInteger[idxParam], CPUReg::RDI, value, OpBits::B64);
+                    pp.emitLoad(callConv->paramByRegisterInteger[idxParam], params[idxParam].baseReg, value, OpBits::B64);
                     break;
 
                 case CPUPushParamType::LoadAddress:
@@ -300,7 +300,7 @@ namespace
             switch (params[idxParam].type)
             {
                 case CPUPushParamType::Load:
-                    pp.emitLoad(CPUReg::RAX, CPUReg::RDI, value, OpBits::B64);
+                    pp.emitLoad(CPUReg::RAX, params[idxParam].baseReg, value, OpBits::B64);
                     pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
                     break;
 
@@ -434,7 +434,7 @@ void SCBE_CPU::emitComputeCallParameters(const TypeInfoFuncAttr* typeFuncBc, con
         if (resultAddr)
             pushParams.insert_at_index({.type = CPUPushParamType::Constant64, .value = reinterpret_cast<uint64_t>(resultAddr)}, indexParam);
         else if (typeFuncBc->returnByStackAddress())
-            pushParams.insert_at_index({.type = CPUPushParamType::Load, .value = memOffsetResult}, indexParam);
+            pushParams.insert_at_index({.type = CPUPushParamType::Load, .baseReg = memRegResult, .value = memOffsetResult}, indexParam);
         else
             pushParams.insert_at_index({.type = CPUPushParamType::LoadAddress, .baseReg = memRegResult, .value = memOffsetResult}, indexParam);
     }
