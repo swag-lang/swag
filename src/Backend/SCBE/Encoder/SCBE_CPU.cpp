@@ -266,13 +266,13 @@ namespace
                     break;
 
                 case CPUPushParamType::SwagRegisterAdd:
-                    pp.emitLoad(callConv->paramByRegisterInteger[idxParam], CPUReg::RDI, REG_OFFSET(value), OpBits::B64);
+                    pp.emitLoad(callConv->paramByRegisterInteger[idxParam], params[idxParam].baseReg, value, OpBits::B64);
                     if (params[idxParam].value2)
                         pp.emitOpBinary(callConv->paramByRegisterInteger[idxParam], params[idxParam].value2, CPUOp::ADD, OpBits::B64);
                     break;
 
                 case CPUPushParamType::SwagRegisterMul:
-                    pp.emitLoad(CPUReg::RAX, CPUReg::RDI, REG_OFFSET(value), OpBits::B64);
+                    pp.emitLoad(CPUReg::RAX, params[idxParam].baseReg, value, OpBits::B64);
                     if (params[idxParam].value2 != 1)
                         pp.emitOpBinary(CPUReg::RAX, params[idxParam].value2, CPUOp::IMUL, OpBits::B64);
                     pp.emitLoad(callConv->paramByRegisterInteger[idxParam], CPUReg::RAX, OpBits::B64);
