@@ -964,25 +964,25 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::IntrinsicDbgAlloc:
-                emitInternalCallRAParams(pp, g_LangSpec->name_at_dbgalloc, {}, CPUReg::RDI, REG_OFFSET(ip->a.u32));
+                emitInternalCallRAParams(pp, g_LangSpec->name_at_dbgalloc, {}, CPUReg::RSP, pp.getStackOffsetReg(ip->a.u32));
                 break;
             case ByteCodeOp::IntrinsicSysAlloc:
-                emitInternalCallRAParams(pp, g_LangSpec->name_at_sysalloc, {}, CPUReg::RDI, REG_OFFSET(ip->a.u32));
+                emitInternalCallRAParams(pp, g_LangSpec->name_at_sysalloc, {}, CPUReg::RSP, pp.getStackOffsetReg(ip->a.u32));
                 break;
             case ByteCodeOp::IntrinsicRtFlags:
-                emitInternalCallRAParams(pp, g_LangSpec->name_at_rtflags, {}, CPUReg::RDI, REG_OFFSET(ip->a.u32));
+                emitInternalCallRAParams(pp, g_LangSpec->name_at_rtflags, {}, CPUReg::RSP, pp.getStackOffsetReg(ip->a.u32));
                 break;
             case ByteCodeOp::IntrinsicStringCmp:
-                emitInternalCallRAParams(pp, g_LangSpec->name_at_strcmp, {ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32}, CPUReg::RDI, REG_OFFSET(ip->d.u32));
+                emitInternalCallRAParams(pp, g_LangSpec->name_at_strcmp, {ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32}, CPUReg::RSP, pp.getStackOffsetReg(ip->d.u32));
                 break;
             case ByteCodeOp::IntrinsicTypeCmp:
-                emitInternalCallRAParams(pp, g_LangSpec->name_at_typecmp, {ip->a.u32, ip->b.u32, ip->c.u32}, CPUReg::RDI, REG_OFFSET(ip->d.u32));
+                emitInternalCallRAParams(pp, g_LangSpec->name_at_typecmp, {ip->a.u32, ip->b.u32, ip->c.u32}, CPUReg::RSP, pp.getStackOffsetReg(ip->d.u32));
                 break;
             case ByteCodeOp::IntrinsicIs:
-                emitInternalCallRAParams(pp, g_LangSpec->name_at_is, {ip->a.u32, ip->b.u32}, CPUReg::RDI, REG_OFFSET(ip->c.u32));
+                emitInternalCallRAParams(pp, g_LangSpec->name_at_is, {ip->a.u32, ip->b.u32}, CPUReg::RSP, pp.getStackOffsetReg(ip->c.u32));
                 break;
             case ByteCodeOp::IntrinsicAs:
-                emitInternalCallRAParams(pp, g_LangSpec->name_at_as, {ip->a.u32, ip->b.u32, ip->c.u32}, CPUReg::RDI, REG_OFFSET(ip->d.u32));
+                emitInternalCallRAParams(pp, g_LangSpec->name_at_as, {ip->a.u32, ip->b.u32, ip->c.u32}, CPUReg::RSP, pp.getStackOffsetReg(ip->d.u32));
                 break;
 
                 /////////////////////////////////////
