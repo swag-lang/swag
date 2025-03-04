@@ -1673,7 +1673,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .value = ip->b.u32});
                 pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .value = ip->c.u32});
                 pp.pushParams.push_back({.type = ip->hasFlag(BCI_IMM_D) ? CPUPushParamType::Constant : CPUPushParamType::SwagRegister, .value = ip->d.u64});
-                emitInternalCallCPUParams(pp, g_LangSpec->name_memcmp, pp.pushParams, CPUReg::RDI, REG_OFFSET(ip->a.u32));
+                emitInternalCallCPUParams(pp, g_LangSpec->name_memcmp, pp.pushParams, CPUReg::RSP, pp.getStackOffsetReg(ip->a.u32));
                 break;
 
             case ByteCodeOp::IntrinsicStrLen:
@@ -1707,12 +1707,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.pushParams.push_back({.type = CPUPushParamType::SymbolRelocationValue, .value = pp.symTls_threadLocalId});
                 pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = module->tlsSegment.totalCount, .typeInfo = g_TypeMgr->typeInfoU64});
                 pp.pushParams.push_back({.type = CPUPushParamType::SymbolRelocationAddress, .value = pp.symTLSIndex});
-                emitInternalCallCPUParams(pp, g_LangSpec->name_priv_tlsGetPtr, pp.pushParams, CPUReg::RDI, REG_OFFSET(ip->a.u32));
+                emitInternalCallCPUParams(pp, g_LangSpec->name_priv_tlsGetPtr, pp.pushParams, CPUReg::RSP, pp.getStackOffsetReg(ip->a.u32));
                 break;
             case ByteCodeOp::IntrinsicGetContext:
                 pp.pushParams.clear();
                 pp.pushParams.push_back({.type = CPUPushParamType::SymbolRelocationValue, .value = pp.symPI_contextTlsId});
-                emitInternalCallCPUParams(pp, g_LangSpec->name_priv_tlsGetValue, pp.pushParams, CPUReg::RDI, REG_OFFSET(ip->a.u32));
+                emitInternalCallCPUParams(pp, g_LangSpec->name_priv_tlsGetValue, pp.pushParams, CPUReg::RSP, pp.getStackOffsetReg(ip->a.u32));
                 break;
             case ByteCodeOp::IntrinsicSetContext:
                 pp.pushParams.clear();
@@ -2248,10 +2248,10 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         break;
 
                     case TokenId::IntrinsicPow:
-                        emitInternalCallCPUParams(pp, is32 ? g_LangSpec->name_powf : g_LangSpec->name_pow, pp.pushParams, CPUReg::RDI, REG_OFFSET(ip->a.u32));
+                        emitInternalCallCPUParams(pp, is32 ? g_LangSpec->name_powf : g_LangSpec->name_pow, pp.pushParams, CPUReg::RSP, pp.getStackOffsetReg(ip->a.u32));
                         break;
                     case TokenId::IntrinsicATan2:
-                        emitInternalCallCPUParams(pp, is32 ? g_LangSpec->name_atan2f : g_LangSpec->name_atan2, pp.pushParams, CPUReg::RDI, REG_OFFSET(ip->a.u32));
+                        emitInternalCallCPUParams(pp, is32 ? g_LangSpec->name_atan2f : g_LangSpec->name_atan2, pp.pushParams, CPUReg::RSP, pp.getStackOffsetReg(ip->a.u32));
                         break;
                     default:
                         ok = false;
