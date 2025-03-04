@@ -100,7 +100,7 @@ void SCBE::emitCallRAParams(SCBE_CPU& pp, const Utf8& funcName, const TypeInfoFu
     for (uint32_t i = pp.pushRAParams.size() - 1; i != UINT32_MAX; i--)
         p.push_back({.type = CPUPushParamType::SwagRegister, .value = pp.pushRAParams[i]});
 
-    emitCallCPUParams(pp, funcName, typeFuncBc, p, CPUReg::RDI, pp.cpuFct->offsetRT, localCall);
+    emitCallCPUParams(pp, funcName, typeFuncBc, p, CPUReg::RSP, pp.getStackOffsetRT(0), localCall);
 }
 
 void SCBE::emitInternalCallRAParams(SCBE_CPU& pp, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, CPUReg memRegResult, uint32_t memOffsetResult)
