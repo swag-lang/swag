@@ -403,7 +403,7 @@ void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
     }
 }
 
-void SCBE_CPU::emitComputeCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& cpuParams, uint32_t resultOffsetRT, void* resultAddr)
+void SCBE_CPU::emitComputeCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& cpuParams, CPUReg memRegResult, uint32_t memOffsetResult, void* resultAddr)
 {
     uint32_t numCallParams = typeFuncBc->parameters.size();
     uint32_t indexParam    = 0;
@@ -434,9 +434,9 @@ void SCBE_CPU::emitComputeCallParameters(const TypeInfoFuncAttr* typeFuncBc, con
         if (resultAddr)
             pushParams.insert_at_index({.type = CPUPushParamType::Constant64, .value = reinterpret_cast<uint64_t>(resultAddr)}, indexParam);
         else if (typeFuncBc->returnByStackAddress())
-            pushParams.insert_at_index({.type = CPUPushParamType::Load, .value = resultOffsetRT}, indexParam);
+            pushParams.insert_at_index({.type = CPUPushParamType::Load, .value = memOffsetResult}, indexParam);
         else
-            pushParams.insert_at_index({.type = CPUPushParamType::LoadAddress, .value = resultOffsetRT}, indexParam);
+            pushParams.insert_at_index({.type = CPUPushParamType::LoadAddress, .value = memOffsetResult}, indexParam);
     }
 
     emitCallParameters(typeFuncBc, pushParams, &typeFuncBc->getCallConv());

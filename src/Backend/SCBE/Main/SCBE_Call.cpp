@@ -66,7 +66,7 @@ void SCBE::emitCallCPUParams(SCBE_CPU&                         pp,
                              bool                              localCall)
 {
     // Push parameters
-    pp.emitComputeCallParameters(typeFuncBc, pushCPUParams, memOffsetResult, nullptr);
+    pp.emitComputeCallParameters(typeFuncBc, pushCPUParams, memRegResult, memOffsetResult, nullptr);
 
     if (!localCall)
         pp.emitCallExtern(funcName);
@@ -182,7 +182,7 @@ void SCBE::emitLambdaCall(SCBE_CPU& pp)
     if (typeFuncBc->isClosure())
         pushCPUParams[typeFuncBc->isFctVariadic() ? 2 : 0].type = CPUPushParamType::CaptureContext;
 
-    pp.emitComputeCallParameters(typeFuncBc, pushCPUParams, pp.cpuFct->offsetRT, nullptr);
+    pp.emitComputeCallParameters(typeFuncBc, pushCPUParams, CPUReg::RDI, pp.cpuFct->offsetRT, nullptr);
     pp.emitCallIndirect(CPUReg::R10);
     pp.emitStoreCallResult(CPUReg::RSP, pp.getStackOffsetRT(0), typeFuncBc);
 
