@@ -2352,7 +2352,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::IntrinsicGetErr:
                 SWAG_ASSERT(ip->b.u32 == ip->a.u32 + 1);
-                emitInternalCallRAParams(pp, g_LangSpec->name_at_err, {}, CPUReg::RDI, REG_OFFSET(ip->a.u32));
+                emitInternalCallRAParams(pp, g_LangSpec->name_at_err, {}, CPUReg::RSP, pp.getStackOffsetReg(ip->a.u32));
                 break;
             case ByteCodeOp::InternalSetErr:
                 emitInternalCallRAParams(pp, g_LangSpec->name_priv_seterr, {ip->a.u32, ip->b.u32});
