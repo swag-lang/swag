@@ -94,7 +94,7 @@ void SCBE::emitMain(SCBE_CPU& pp)
 
     //__process_infos.contextTlsId = swag_runtime_tlsAlloc();
     pp.emitSymbolRelocationAddress(CPUReg::RDI, pp.symPI_contextTlsId, 0);
-    emitInternalCallRAParams(pp, g_LangSpec->name_priv_tlsAlloc, {}, 0);
+    emitInternalCallRAParams(pp, g_LangSpec->name_priv_tlsAlloc, {}, CPUReg::RDI, 0);
 
     //__process_infos.modules
     pp.emitSymbolRelocationAddress(CPUReg::RCX, pp.symPI_modulesAddr, 0);
@@ -313,7 +313,7 @@ void SCBE::emitGlobalInit(SCBE_CPU& pp)
     // Thread local storage
     pp.emitSymbolRelocationAddress(CPUReg::RDI, pp.symTls_threadLocalId, 0);
     pp.pushParams.clear();
-    emitInternalCallCPUParams(pp, g_LangSpec->name_priv_tlsAlloc, pp.pushParams, 0);
+    emitInternalCallCPUParams(pp, g_LangSpec->name_priv_tlsAlloc, pp.pushParams, CPUReg::RDI, 0);
 
     // Init type table slice for each dependency (by calling ???_getTypeTable)
     pp.emitSymbolRelocationAddress(CPUReg::RCX, pp.symCSIndex, module->modulesSliceOffset + sizeof(SwagModule) + offsetof(SwagModule, types));
