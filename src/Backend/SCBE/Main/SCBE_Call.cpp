@@ -182,7 +182,7 @@ void SCBE::emitLambdaCall(SCBE_CPU& pp)
     if (typeFuncBc->isClosure())
         pushCPUParams[typeFuncBc->isFctVariadic() ? 2 : 0].type = CPUPushParamType::CaptureContext;
 
-    pp.emitComputeCallParameters(typeFuncBc, pushCPUParams, CPUReg::RDI, pp.cpuFct->offsetRT, nullptr);
+    pp.emitComputeCallParameters(typeFuncBc, pushCPUParams, CPUReg::RSP, pp.getStackOffsetRT(0), nullptr);
     pp.emitCallIndirect(CPUReg::R10);
     pp.emitStoreCallResult(CPUReg::RSP, pp.getStackOffsetRT(0), typeFuncBc);
 
