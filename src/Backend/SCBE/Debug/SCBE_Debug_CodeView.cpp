@@ -489,15 +489,18 @@ namespace
         }
     }
 
-    void emitLocalVars(SCBE_CPU& pp, const CPUFunction* f, const Scope* scope, Concat& concat, const TypeInfoFuncAttr* typeFunc)
+    void emitLocalVars(SCBE_CPU& pp, const CPUFunction* f, const Scope* scope, const TypeInfoFuncAttr* typeFunc)
     {
-        for (const auto localVar : f->node->extByteCode()->bc->localVars)
+        auto& concat = pp.concat;
+        for (const auto localVar : scope->symTable.allSymbols)
         {
-            if (!scope->isSameOrParentOf(localVar->ownerScope))
+            if (localVar->overloads.empty())
+                continue;
+            const SymbolOverload* overload = localVar->overloads[0];
+            if (overload->hasFlag(OVERLOAD_VAR_FUNC_PARAM))
                 continue;
 
-            const SymbolOverload* overload = localVar->resolvedSymbolOverload();
-            const auto            typeInfo = overload->typeInfo;
+            const auto typeInfo = overload->typeInfo;
 
             //////////
             emitStartRecord(pp, S_LOCAL);
@@ -505,11 +508,11 @@ namespace
                 concat.addU32(SCBE_Debug::getOrCreatePointerToType(pp, typeInfo, true)); // Type
             else
                 concat.addU32(SCBE_Debug::getOrCreateType(pp, typeInfo)); // Type
-            concat.addU16(0);                                             // Flags
-            emitTruncatedString(pp, localVar->token.text);
+            CV_LVARFLAGS cvf = {};
+            concat.addU16(std::bit_cast<uint16_t>(cvf));
+            emitTruncatedString(pp, localVar->name);
             emitEndRecord(pp);
 
-            //////////
             emitStartRecord(pp, S_DEFRANGE_REGISTER_REL);
             concat.addU16(R_RSP);                   // Register
             concat.addU16(0);                       // Flags
@@ -517,9 +520,9 @@ namespace
                 concat.addU32(f->getStackOffsetParam(typeFunc->numParamsRegisters()));
             else
                 concat.addU32(f->getStackOffsetBCStack() + overload->computedValue.storageOffset);
-            emitSecRel(pp, f->symbolIndex, pp.symCOIndex, localVar->ownerScope->backendStart);
-            const auto endOffsetVar = localVar->ownerScope->backendEnd == 0 ? f->endAddress : localVar->ownerScope->backendEnd;
-            concat.addU16(static_cast<uint16_t>(endOffsetVar - localVar->ownerScope->backendStart)); // Range
+            emitSecRel(pp, f->symbolIndex, pp.symCOIndex, scope->backendStart);
+            const auto endOffsetVar = scope->backendEnd == 0 ? f->endAddress : scope->backendEnd;
+            concat.addU16(static_cast<uint16_t>(endOffsetVar - scope->backendStart)); // Range
             emitEndRecord(pp);
         }
     }
@@ -566,7 +569,7 @@ namespace
 
         // Local variables
         /////////////////////////////////
-        emitLocalVars(pp, f, scope, concat, typeFunc);
+        emitLocalVars(pp, f, scope, typeFunc);
 
         // Sub scopes
         // Must be sorted, from first to last. We use the byte index of the first instruction in the block
@@ -664,21 +667,6 @@ namespace
             }
 
             //////////
-            emitStartRecord(pp, S_LOCAL);
-            concat.addU32(typeIdx); // Type
-            concat.addU16(1);       // set fIsParam. If not set, callstack signature won't be good.
-
-            // The real name, in case of 2 registers, will be created below without the 'fIsParam' flag set.
-            // Because i don't know how two deal with those parameters (in fact we have 2 parameters/registers in the calling convention,
-            // but the signature has only one visible parameter).
-            if (typeParam->numRegisters() == 2)
-                emitTruncatedString(pp, "__" + child->token.text);
-            else
-                emitTruncatedString(pp, child->token.text);
-
-            emitEndRecord(pp);
-
-            //////////
             uint32_t regParam = regCounter;
             if (typeFunc->isFctVariadic() && i != countParams - 1)
                 regParam += 2;
@@ -687,31 +675,61 @@ namespace
             const uint32_t offsetStackParam = cpuFct->getStackOffsetParam(regParam);
             regCounter += typeParam->numRegisters();
 
-            //////////
-            emitStartRecord(pp, S_DEFRANGE_REGISTER_REL);
-            concat.addU16(R_RSP); // Register
-            concat.addU16(0);     // Flags
-            concat.addU32(offsetStackParam);
-            emitSecRel(pp, cpuFct->symbolIndex, pp.symCOIndex);
-            concat.addU16(static_cast<uint16_t>(cpuFct->endAddress - cpuFct->startAddress)); // Range
-            emitEndRecord(pp);
-
-            // If we have 2 registers then we cannot create a symbol flagged as 'parameter' in order to really see it.
+            // If we have 2 registers then we cannot create a symbol flagged as 'fIsParam' in order to really see it.
+            // But we also need to have one with the 'fIsParam' set to true, otherwise the callstack signature won't be correct.
+            // So we create two : on dummy variable with 'fIsParam' set to true for the signature, and another one without the flag to be
+            // able to see the value...
             if (typeParam->numRegisters() == 2)
             {
-                typeIdx = SCBE_Debug::getOrCreateType(pp, typeParam);
-
                 //////////
                 emitStartRecord(pp, S_LOCAL);
-                concat.addU32(typeIdx); // Type
-                concat.addU16(0);       // set fIsParam to 0
-                emitTruncatedString(pp, child->token.text);
+                concat.addU32(typeIdx);
+                CV_LVARFLAGS cvf0    = {};
+                cvf0.fIsParam        = true;
+                cvf0.fIsOptimizedOut = true;
+                cvf0.fCompGenx       = true;
+                concat.addU16(std::bit_cast<uint16_t>(cvf0));
+                emitTruncatedString(pp, "__" + child->token.text);
+                emitEndRecord(pp);
+
+                emitStartRecord(pp, S_DEFRANGE_REGISTER_REL);
+                concat.addU16(R_RSP);
+                concat.addU16(0); // Flags
+                concat.addU32(offsetStackParam);
+                emitSecRel(pp, cpuFct->symbolIndex, pp.symCOIndex);
+                concat.addU16(static_cast<uint16_t>(cpuFct->endAddress - cpuFct->startAddress)); // Range
                 emitEndRecord(pp);
 
                 //////////
+                emitStartRecord(pp, S_LOCAL);
+                concat.addU32(typeIdx);
+                CV_LVARFLAGS cvf1 = {};
+                concat.addU16(std::bit_cast<uint16_t>(cvf1));
+                emitTruncatedString(pp, child->token.text);
+                emitEndRecord(pp);
+
                 emitStartRecord(pp, S_DEFRANGE_REGISTER_REL);
-                concat.addU16(R_RSP); // Register
-                concat.addU16(0);     // Flags
+                concat.addU16(R_RSP);
+                concat.addU16(0); // Flags
+                concat.addU32(offsetStackParam);
+                emitSecRel(pp, cpuFct->symbolIndex, pp.symCOIndex);
+                concat.addU16(static_cast<uint16_t>(cpuFct->endAddress - cpuFct->startAddress)); // Range
+                emitEndRecord(pp);
+            }
+            else
+            {
+                //////////
+                emitStartRecord(pp, S_LOCAL);
+                concat.addU32(typeIdx);
+                CV_LVARFLAGS cvf = {};
+                cvf.fIsParam     = true; // set fIsParam. If not set, callstack signature won't be good.
+                concat.addU16(std::bit_cast<uint16_t>(cvf));
+                emitTruncatedString(pp, child->token.text);
+                emitEndRecord(pp);
+
+                emitStartRecord(pp, S_DEFRANGE_REGISTER_REL);
+                concat.addU16(R_RSP);
+                concat.addU16(0); // Flags
                 concat.addU32(offsetStackParam);
                 emitSecRel(pp, cpuFct->symbolIndex, pp.symCOIndex);
                 concat.addU16(static_cast<uint16_t>(cpuFct->endAddress - cpuFct->startAddress)); // Range
@@ -724,15 +742,17 @@ namespace
             {
                 //////////
                 emitStartRecord(pp, S_LOCAL);
-                concat.addU32(typeIdx); // Type
-                concat.addU16(1);       // set fIsParam
+                concat.addU32(typeIdx);
+                CV_LVARFLAGS cvf = {};
+                cvf.fIsParam     = true; // set fIsParam. If not set, callstack signature won't be good.
+                concat.addU16(std::bit_cast<uint16_t>(cvf));
                 emitTruncatedString(pp, "this");
                 emitEndRecord(pp);
 
                 //////////
                 emitStartRecord(pp, S_DEFRANGE_REGISTER_REL);
-                concat.addU16(R_RSP); // Register
-                concat.addU16(0);     // Flags
+                concat.addU16(R_RSP);
+                concat.addU16(0); // Flags
                 concat.addU32(offsetStackParam);
                 emitSecRel(pp, cpuFct->symbolIndex, pp.symCOIndex);
                 concat.addU16(static_cast<uint16_t>(cpuFct->endAddress - cpuFct->startAddress)); // Range
@@ -774,11 +794,11 @@ namespace
             //////////
             emitStartRecord(pp, S_LOCAL);
             concat.addU32(typeIdx); // Type
-            concat.addU16(0);
+            CV_LVARFLAGS cvf = {};
+            concat.addU16(std::bit_cast<uint16_t>(cvf));
             emitTruncatedString(pp, child->token.text);
             emitEndRecord(pp);
 
-            //////////
             emitStartRecord(pp, S_DEFRANGE_REGISTER_REL);
             concat.addU16(R_R12); // Register
             concat.addU16(0);     // Flags
