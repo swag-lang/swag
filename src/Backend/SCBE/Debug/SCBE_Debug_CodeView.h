@@ -76,7 +76,7 @@ constexpr uint16_t R_R12 = 340;
 // const uint16_t R_RCX = 330;
 // const uint16_t R_RDX = 331;
 // const uint16_t R_RBP = 334;
-// const uint16_t R_RSP = 335;
+constexpr uint16_t R_RSP = 335;
 
 enum SimpleTypeKind : SCBEDebugTypeIndex
 {

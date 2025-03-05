@@ -511,12 +511,12 @@ namespace
 
             //////////
             emitStartRecord(pp, S_DEFRANGE_REGISTER_REL);
-            concat.addU16(R_RDI);                   // Register
+            concat.addU16(R_RSP);                   // Register
             concat.addU16(0);                       // Flags
             if (overload->hasFlag(OVERLOAD_RETVAL)) // Offset to register
-                concat.addU32(f->getParamStackOffset(typeFunc->numParamsRegisters()));
+                concat.addU32(f->getStackOffsetParam(typeFunc->numParamsRegisters()));
             else
-                concat.addU32(overload->computedValue.storageOffset + f->offsetByteCodeStack);
+                concat.addU32(f->getStackOffsetBCStack() + overload->computedValue.storageOffset);
             emitSecRel(pp, f->symbolIndex, pp.symCOIndex, localVar->ownerScope->backendStart);
             const auto endOffsetVar = localVar->ownerScope->backendEnd == 0 ? f->endAddress : localVar->ownerScope->backendEnd;
             concat.addU16(static_cast<uint16_t>(endOffsetVar - localVar->ownerScope->backendStart)); // Range
@@ -684,12 +684,12 @@ namespace
                 regParam += 2;
             else if (typeFunc->isFctVariadic())
                 regParam = 0;
-            const uint32_t offsetStackParam = cpuFct->getParamStackOffset(regParam);
+            const uint32_t offsetStackParam = cpuFct->getStackOffsetParam(regParam);
             regCounter += typeParam->numRegisters();
 
             //////////
             emitStartRecord(pp, S_DEFRANGE_REGISTER_REL);
-            concat.addU16(R_RDI); // Register
+            concat.addU16(R_RSP); // Register
             concat.addU16(0);     // Flags
             concat.addU32(offsetStackParam);
             emitSecRel(pp, cpuFct->symbolIndex, pp.symCOIndex);
@@ -710,7 +710,7 @@ namespace
 
                 //////////
                 emitStartRecord(pp, S_DEFRANGE_REGISTER_REL);
-                concat.addU16(R_RDI); // Register
+                concat.addU16(R_RSP); // Register
                 concat.addU16(0);     // Flags
                 concat.addU32(offsetStackParam);
                 emitSecRel(pp, cpuFct->symbolIndex, pp.symCOIndex);
@@ -731,7 +731,7 @@ namespace
 
                 //////////
                 emitStartRecord(pp, S_DEFRANGE_REGISTER_REL);
-                concat.addU16(R_RDI); // Register
+                concat.addU16(R_RSP); // Register
                 concat.addU16(0);     // Flags
                 concat.addU32(offsetStackParam);
                 emitSecRel(pp, cpuFct->symbolIndex, pp.symCOIndex);

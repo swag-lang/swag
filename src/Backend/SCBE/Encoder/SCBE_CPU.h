@@ -201,7 +201,8 @@ struct CPUFunction
     uint32_t          offsetRT                = 0;
     uint32_t          offsetResult            = 0;
 
-    uint32_t getParamStackOffset(uint32_t paramIdx) const;
+    uint32_t getStackOffsetParam(uint32_t paramIdx) const;
+    uint32_t getStackOffsetBCStack() const;
 };
 
 struct SCBE_CPU : BackendEncoder
@@ -211,7 +212,6 @@ struct SCBE_CPU : BackendEncoder
     uint32_t getStackOffsetReg(uint32_t reg) const;
     uint32_t getStackOffsetRT(uint32_t reg) const;
     uint32_t getStackOffsetResult() const;
-    uint32_t getStackOffsetBCStack() const;
     uint32_t getStackOffsetFLT() const;
 
     CPUSymbol*   getOrAddSymbol(const Utf8& name, CPUSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);
