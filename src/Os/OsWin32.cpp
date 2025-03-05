@@ -974,8 +974,8 @@ namespace OS
                 VectorNative<uint32_t> unwindOffsetRegs;
 
                 // Fake emit in order to compute the unwind infos
-                gen.emitPush(CPUReg::RDI);
-                unwindRegs.push_back(CPUReg::RDI);
+                gen.emitPush(cc.ffiBaseRegister);
+                unwindRegs.push_back(cc.ffiBaseRegister);
                 unwindOffsetRegs.push_back(gen.concat.totalCount());
 
                 gen.emitOpBinary(CPUReg::RSP, stackSize, CPUOp::SUB, OpBits::B64);
@@ -1004,23 +1004,23 @@ namespace OS
             startOffset = gen.concat.currentSP - gen.concat.firstBucket->data;
             SWAG_ASSERT(startOffset < JIT_SIZE_BUFFER);
 
-            gen.emitPush(CPUReg::RDI);
+            gen.emitPush(cc.ffiBaseRegister);
             gen.emitOpBinary(CPUReg::RSP, stackSize, CPUOp::SUB, OpBits::B64);
-            gen.emitLoad(CPUReg::RDI, reinterpret_cast<uint64_t>(context->sp), OpBits::B64);
+            gen.emitLoad(cc.ffiBaseRegister, reinterpret_cast<uint64_t>(context->sp), OpBits::B64);
 
-            gen.emitComputeCallParameters(typeInfoFunc, pushCPUParams, CPUReg::RDI, 0, retCopyAddr);
+            gen.emitComputeCallParameters(typeInfoFunc, pushCPUParams, cc.ffiBaseRegister, 0, retCopyAddr);
 
             gen.emitLoad(CPUReg::RAX, reinterpret_cast<uint64_t>(foreignPtr), OpBits::B64);
             gen.emitCallIndirect(CPUReg::RAX);
 
             if (!returnType->isVoid() && !retCopyAddr)
             {
-                gen.emitLoad(CPUReg::RCX, reinterpret_cast<uint64_t>(context->registersRR), OpBits::B64);
-                gen.emitStoreCallResult(CPUReg::RCX, 0, typeInfoFunc);
+                gen.emitLoad(cc.ffiBaseRegister, reinterpret_cast<uint64_t>(context->registersRR), OpBits::B64);
+                gen.emitStoreCallResult(cc.ffiBaseRegister, 0, typeInfoFunc);
             }
 
             gen.emitOpBinary(CPUReg::RSP, stackSize, CPUOp::ADD, OpBits::B64);
-            gen.emitPop(CPUReg::RDI);
+            gen.emitPop(cc.ffiBaseRegister);
             gen.emitRet();
         }
 

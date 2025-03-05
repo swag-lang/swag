@@ -61,6 +61,9 @@ struct CallConv
     // The register used to return a float
     CPUReg returnByRegisterFloat = CPUReg::XMM0;
 
+    // The base register used for ffi
+    CPUReg ffiBaseRegister = CPUReg::RDI;
+
     // If a float is passed by register, use 'paramByRegisterFloat' instead of 'paramByRegisterInteger'
     bool useRegisterFloat = true;
 

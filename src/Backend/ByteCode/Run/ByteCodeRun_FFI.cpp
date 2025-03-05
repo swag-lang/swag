@@ -108,7 +108,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, const ByteCodeInstruction
     uint32_t cptParam      = 0;
     auto     numParameters = typeFuncBc->parameters.size();
 
-    // For variadics, we have a slice at the start
+    // For variadic, we have a slice at the start
     if (typeFuncBc->isFctVariadic())
         cptParam += 2;
     // We should not count the variadic parameter as a real parameter
@@ -128,11 +128,12 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, const ByteCodeInstruction
     cpuParams.reserve(cptParam);
     cpuParams.count = cptParam;
 
-    cptParam = 0;
+    const auto& cc = typeFuncBc->getCallConv();
+    cptParam       = 0;
     for (auto& param : cpuParams)
     {
         param.type     = CPUPushParamType::SwagRegister;
-        param.baseReg  = CPUReg::RDI;
+        param.baseReg  = cc.ffiBaseRegister;
         param.value    = REG_OFFSET(cptParam);
         param.typeInfo = nullptr;
         cptParam++;
