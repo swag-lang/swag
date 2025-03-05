@@ -87,12 +87,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     pp.symPI_makeCallback   = ppCPU.symPI_makeCallback;
     pp.symCst_U64F64        = ppCPU.symCst_U64F64;
 
-    // RDI will be a pointer to the stack, and the list of registers is stored at the start of the stack
-    pp.cpuFct->unwindRegs.push_back(CPUReg::RDI);
     emitEnter(pp, sizeStack);
-
-    // Registers are stored after the sizeParamsStack area, which is used to store parameters for function calls
-    pp.emitLoadAddress(CPUReg::RDI, CPUReg::RSP, pp.cpuFct->sizeStackCallParams);
 
     // Save register parameters
     uint32_t idxReg = 0;

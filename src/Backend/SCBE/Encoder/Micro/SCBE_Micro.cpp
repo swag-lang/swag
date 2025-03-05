@@ -487,6 +487,8 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
     {
         switch (inst->op)
         {
+            case SCBE_MicroOp::End:
+                break;
             case SCBE_MicroOp::Ignore:
                 break;
             case SCBE_MicroOp::Debug:
@@ -689,13 +691,13 @@ void SCBE_Micro::ignore(SCBE_MicroInstruction* inst)
     inst->op = SCBE_MicroOp::Ignore;
 }
 
-#pragma optimize("", off)
 void SCBE_Micro::process()
 {
 #ifdef SWAG_STATS
     g_Stats.numScbeInstructions += concat.totalCount();
 #endif
 
+    addInstruction(SCBE_MicroOp::End);
     concat.makeLinear();
     if (optLevel == BuildCfgBackendOptim::O0)
         return;
