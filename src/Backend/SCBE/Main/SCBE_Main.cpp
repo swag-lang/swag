@@ -252,7 +252,6 @@ void SCBE::emitGlobalPreMain(SCBE_CPU& pp)
     const auto  thisInit = module->getGlobalPrivateFct(g_LangSpec->name_globalPreMain);
     pp.cpuFct            = pp.addFunction(thisInit, &cc, nullptr);
 
-    pp.cpuFct->unwindRegs.push_back(CPUReg::RDI);
     emitEnter(pp, 0);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
@@ -260,13 +259,12 @@ void SCBE::emitGlobalPreMain(SCBE_CPU& pp)
 
     // Store first parameter on stack (process infos ptr)
     SWAG_ASSERT(cc.paramByRegisterCount >= 1);
-    pp.emitLoadAddress(CPUReg::RDI, CPUReg::RSP, 0);
-    pp.emitStore(CPUReg::RDI, 0, cc.paramByRegisterInteger[0], OpBits::B64);
+    pp.emitStore(CPUReg::RSP, 0, cc.paramByRegisterInteger[0], OpBits::B64);
 
     // Copy process infos passed as a parameter to the process info struct of this module
     pp.pushParams.clear();
     pp.pushParams.push_back({.type = CPUPushParamType::SymbolRelocationAddress, .value = pp.symPI_processInfos});
-    pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RDI, .value = REG_OFFSET(0)});
+    pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RSP, .value = REG_OFFSET(0)});
     pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = sizeof(SwagProcessInfos)});
     emitInternalCallCPUParams(pp, g_LangSpec->name_memcpy, pp.pushParams);
 
