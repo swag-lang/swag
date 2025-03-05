@@ -970,14 +970,6 @@ namespace OS
                 concat.firstBucket->data     = static_cast<uint8_t*>(VirtualAlloc(nullptr, gen.concat.firstBucket->capacity, MEM_COMMIT, PAGE_EXECUTE_READWRITE));
                 concat.currentSP             = gen.concat.firstBucket->data;
 
-                VectorNative<CPUReg>   unwindRegs;
-                VectorNative<uint32_t> unwindOffsetRegs;
-
-                // Fake emit in order to compute the unwind infos
-                gen.emitPush(CPUReg::RDI);
-                unwindRegs.push_back(CPUReg::RDI);
-                unwindOffsetRegs.push_back(gen.concat.totalCount());
-
                 gen.emitOpBinary(CPUReg::RSP, stackSize, CPUOp::SUB, OpBits::B64);
                 const auto sizeProlog = gen.concat.totalCount();
 
@@ -985,7 +977,7 @@ namespace OS
                 // with 'RaiseException' (panic, error, etc.)
                 // The function information is always the same, that's why we generate only one table per SCBE_X64.
                 VectorNative<uint16_t> unwind;
-                SCBE_Coff::computeUnwind(unwindRegs, unwindOffsetRegs, stackSize, sizeProlog, unwind);
+                SCBE_Coff::computeUnwind({}, {}, stackSize, sizeProlog, unwind);
 
                 // Add function table
                 auto* rtFunc              = new RUNTIME_FUNCTION(); // leak, but it's fine
@@ -1004,11 +996,10 @@ namespace OS
             startOffset = gen.concat.currentSP - gen.concat.firstBucket->data;
             SWAG_ASSERT(startOffset < JIT_SIZE_BUFFER);
 
-            gen.emitPush(CPUReg::RDI);
             gen.emitOpBinary(CPUReg::RSP, stackSize, CPUOp::SUB, OpBits::B64);
-            gen.emitLoad(CPUReg::RDI, reinterpret_cast<uint64_t>(context->sp), OpBits::B64);
+            gen.emitLoad(CPUReg::R12, reinterpret_cast<uint64_t>(context->sp), OpBits::B64);
 
-            gen.emitComputeCallParameters(typeInfoFunc, pushCPUParams, CPUReg::RDI, 0, retCopyAddr);
+            gen.emitComputeCallParameters(typeInfoFunc, pushCPUParams, CPUReg::R12, 0, retCopyAddr);
 
             gen.emitLoad(CPUReg::RAX, reinterpret_cast<uint64_t>(foreignPtr), OpBits::B64);
             gen.emitCallIndirect(CPUReg::RAX);
@@ -1020,7 +1011,6 @@ namespace OS
             }
 
             gen.emitOpBinary(CPUReg::RSP, stackSize, CPUOp::ADD, OpBits::B64);
-            gen.emitPop(CPUReg::RDI);
             gen.emitRet();
         }
 
