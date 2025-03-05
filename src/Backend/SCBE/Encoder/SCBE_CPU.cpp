@@ -236,19 +236,19 @@ namespace
                     break;
 
                 case CPUPushParamType::CaptureContext:
-                    pp.emitLoad(callConv->paramByRegisterInteger[idxParam], CPUReg::RDI, value, OpBits::B64);
+                    pp.emitLoad(callConv->paramByRegisterInteger[idxParam], params[idxParam].baseReg, value, OpBits::B64);
                     break;
 
                 case CPUPushParamType::SwagParamStructValue:
-                    pp.emitLoad(CPUReg::RAX, CPUReg::RDI, value, OpBits::B64);
+                    pp.emitLoad(CPUReg::RAX, params[idxParam].baseReg, value, OpBits::B64);
                     pp.emitLoad(callConv->paramByRegisterInteger[idxParam], CPUReg::RAX, 0, OpBits::B64);
                     break;
 
                 case CPUPushParamType::SwagRegister:
                     if (callConv->useRegisterFloat && type->isNativeFloat())
-                        pp.emitLoad(callConv->paramByRegisterFloat[idxParam], CPUReg::RDI, value, BackendEncoder::getOpBitsByBytes(type->sizeOf, true));
+                        pp.emitLoad(callConv->paramByRegisterFloat[idxParam], params[idxParam].baseReg, value, BackendEncoder::getOpBitsByBytes(type->sizeOf, true));
                     else
-                        pp.emitLoad(callConv->paramByRegisterInteger[idxParam], CPUReg::RDI, value, OpBits::B64);
+                        pp.emitLoad(callConv->paramByRegisterInteger[idxParam], params[idxParam].baseReg, value, OpBits::B64);
                     break;
 
                 case CPUPushParamType::CPURegister:
@@ -319,12 +319,12 @@ namespace
                     break;
 
                 case CPUPushParamType::CaptureContext:
-                    pp.emitLoad(CPUReg::RAX, CPUReg::RDI, value, OpBits::B64);
+                    pp.emitLoad(CPUReg::RAX, params[idxParam].baseReg, value, OpBits::B64);
                     pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
                     break;
 
                 case CPUPushParamType::SwagParamStructValue:
-                    pp.emitLoad(CPUReg::RAX, CPUReg::RDI, value, OpBits::B64);
+                    pp.emitLoad(CPUReg::RAX, params[idxParam].baseReg, value, OpBits::B64);
                     pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, BackendEncoder::getOpBitsByBytes(type->sizeOf));
                     pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, BackendEncoder::getOpBitsByBytes(type->sizeOf));
                     break;
@@ -332,17 +332,17 @@ namespace
                 case CPUPushParamType::SwagRegister:
                     if (type->isStruct())
                     {
-                        pp.emitLoad(CPUReg::RAX, CPUReg::RDI, value, OpBits::B64);
+                        pp.emitLoad(CPUReg::RAX, params[idxParam].baseReg, value, OpBits::B64);
                         pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
                     }
                     else if (type->sizeOf > sizeof(uint64_t))
                     {
-                        pp.emitLoad(CPUReg::RAX, CPUReg::RDI, value, OpBits::B64);
+                        pp.emitLoad(CPUReg::RAX, params[idxParam].baseReg, value, OpBits::B64);
                         pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
                     }
                     else
                     {
-                        pp.emitLoad(CPUReg::RAX, CPUReg::RDI, value, BackendEncoder::getOpBitsByBytes(type->sizeOf));
+                        pp.emitLoad(CPUReg::RAX, params[idxParam].baseReg, value, BackendEncoder::getOpBitsByBytes(type->sizeOf));
                         pp.emitStore(CPUReg::RSP, memOffset, CPUReg::RAX, BackendEncoder::getOpBitsByBytes(type->sizeOf));
                     }
                     break;
@@ -375,8 +375,7 @@ void SCBE_CPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vect
 
         // First register is closure context, except if variadic, where we have 2 registers for the slice first
         // :VariadicAndClosure
-        const auto reg = cpuParams[idxParamContext].value;
-        emitCmp(CPUReg::RDI, reg, 0, OpBits::B64);
+        emitCmp(cpuParams[idxParamContext].baseReg, cpuParams[idxParamContext].value, 0, OpBits::B64);
 
         // If zero, jump to parameters for a non closure call
         const auto jumpToNoClosure = emitJump(JZ, OpBits::B32);
