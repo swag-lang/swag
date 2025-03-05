@@ -1426,7 +1426,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::SetZeroAtPointerXRB:
                 pp.pushParams.clear();
-                pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RDI, .value = REG_OFFSET(ip->a.u32)});
+                pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RSP, .value = pp.getStackOffsetReg(ip->a.u32)});
                 pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = 0});
                 pp.pushParams.push_back({.type = CPUPushParamType::SwagRegisterMul, .baseReg = CPUReg::RSP, .value = pp.getStackOffsetReg(ip->b.u32), .value2 = ip->c.u64});
                 emitInternalCallCPUParams(pp, g_LangSpec->name_memset, pp.pushParams);
@@ -1636,12 +1636,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 else
                 {
                     pp.pushParams.clear();
-                    pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RDI, .value = REG_OFFSET(ip->a.u32)});
-                    pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RDI, .value = REG_OFFSET(ip->b.u32)});
+                    pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RSP, .value = pp.getStackOffsetReg(ip->a.u32)});
+                    pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RSP, .value = pp.getStackOffsetReg(ip->b.u32)});
                     if (ip->hasFlag(BCI_IMM_C))
                         pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = ip->c.u64});
                     else
-                        pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RDI, .value = REG_OFFSET(ip->c.u32)});
+                        pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RSP, .value = pp.getStackOffsetReg(ip->c.u32)});
                     emitInternalCallCPUParams(pp, g_LangSpec->name_memcpy, pp.pushParams);
                 }
                 break;
@@ -1658,36 +1658,36 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 else
                 {
                     pp.pushParams.clear();
-                    pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RDI, .value = REG_OFFSET(ip->a.u32)});
+                    pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RSP, .value = pp.getStackOffsetReg(ip->a.u32)});
                     if (ip->hasFlag(BCI_IMM_B))
                         pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = ip->b.u64});
                     else
-                        pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RDI, .value = REG_OFFSET(ip->b.u32)});
+                        pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RSP, .value = pp.getStackOffsetReg(ip->b.u32)});
                     if (ip->hasFlag(BCI_IMM_C))
                         pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = ip->c.u64});
                     else
-                        pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RDI, .value = REG_OFFSET(ip->c.u32)});
+                        pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RSP, .value = pp.getStackOffsetReg(ip->c.u32)});
                     emitInternalCallCPUParams(pp, g_LangSpec->name_memset, pp.pushParams);
                 }
                 break;
             case ByteCodeOp::IntrinsicMemMove:
                 pp.pushParams.clear();
-                pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RDI, .value = REG_OFFSET(ip->a.u32)});
-                pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RDI, .value = REG_OFFSET(ip->b.u32)});
+                pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RSP, .value = pp.getStackOffsetReg(ip->a.u32)});
+                pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RSP, .value = pp.getStackOffsetReg(ip->b.u32)});
                 if (ip->hasFlag(BCI_IMM_C))
                     pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = ip->c.u64});
                 else
-                    pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RDI, .value = REG_OFFSET(ip->c.u32)});
+                    pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RSP, .value = pp.getStackOffsetReg(ip->c.u32)});
                 emitInternalCallCPUParams(pp, g_LangSpec->name_memmove, pp.pushParams);
                 break;
             case ByteCodeOp::IntrinsicMemCmp:
                 pp.pushParams.clear();
-                pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RDI, .value = REG_OFFSET(ip->b.u32)});
-                pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RDI, .value = REG_OFFSET(ip->c.u32)});
+                pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RSP, .value = pp.getStackOffsetReg(ip->b.u32)});
+                pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RSP, .value = pp.getStackOffsetReg(ip->c.u32)});
                 if (ip->hasFlag(BCI_IMM_D))
                     pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = ip->d.u64});
                 else
-                    pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RDI, .value = REG_OFFSET(ip->d.u32)});
+                    pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RSP, .value = pp.getStackOffsetReg(ip->d.u32)});
                 emitInternalCallCPUParams(pp, g_LangSpec->name_memcmp, pp.pushParams, CPUReg::RSP, pp.getStackOffsetReg(ip->a.u32));
                 break;
 
@@ -1732,7 +1732,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::IntrinsicSetContext:
                 pp.pushParams.clear();
                 pp.pushParams.push_back({.type = CPUPushParamType::SymbolRelocationValue, .value = pp.symPI_contextTlsId});
-                pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RDI, .value = REG_OFFSET(ip->a.u32)});
+                pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RSP, .value = pp.getStackOffsetReg(ip->a.u32)});
                 emitInternalCallCPUParams(pp, g_LangSpec->name_priv_tlsSetValue, pp.pushParams);
                 break;
 
@@ -2247,11 +2247,11 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (ip->hasFlag(BCI_IMM_B))
                     pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = ip->b.u64});
                 else
-                    pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RDI, .value = REG_OFFSET(ip->b.u32)});
+                    pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RSP, .value = pp.getStackOffsetReg(ip->b.u32)});
                 if (ip->hasFlag(BCI_IMM_C))
                     pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = ip->c.u64});
                 else
-                    pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RDI, .value = REG_OFFSET(ip->c.u32)});
+                    pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RSP, .value = pp.getStackOffsetReg(ip->c.u32)});
 
                 switch (static_cast<TokenId>(ip->d.u32))
                 {
@@ -2291,7 +2291,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (ip->hasFlag(BCI_IMM_B))
                     pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = ip->b.u64});
                 else
-                    pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RDI, .value = REG_OFFSET(ip->b.u32)});
+                    pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RSP, .value = pp.getStackOffsetReg(ip->b.u32)});
 
                 switch (static_cast<TokenId>(ip->d.u32))
                 {
