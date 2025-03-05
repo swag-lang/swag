@@ -8,6 +8,7 @@
 #include "Report/Report.h"
 #include "Semantic/Type/TypeInfo.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/Ast.h"
 
 uint32_t CPUFunction::getStackOffsetParam(uint32_t paramIdx) const
 {
@@ -139,7 +140,8 @@ CPUFunction* SCBE_CPU::addFunction(const Utf8& funcName, const CallConv* cc, Byt
 
     if (bc)
     {
-        cf->node     = bc->node;
+        if (bc->node)
+            cf->node = castAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl);
         cf->typeFunc = bc->getCallType();
 
         // Calling convention, space for at least 'MAX_CALL_CONV_REGISTERS' parameters when calling a function
@@ -172,7 +174,7 @@ void SCBE_CPU::endFunction() const
             for (uint32_t i = 0; i < cpuFct->unwindRegs.size(); i++)
             {
                 unwindOffsetRegs.push_back(offset - cpuFct->startAddress);
-                offset += 1;
+                offset += 1; // Magic number. Should be the size in bytes of one push instruction, depending on the cpu 
             }
             SCBE_Coff::computeUnwind(cpuFct->unwindRegs, unwindOffsetRegs, cpuFct->frameSize, cpuFct->sizeProlog, cpuFct->unwind);
             break;

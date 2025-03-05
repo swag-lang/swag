@@ -617,26 +617,26 @@ namespace
         }
     }
 
-    void emitFuncParameters(SCBE_CPU& pp, const CPUFunction* cpuFct, const AstFuncDecl* decl, const TypeInfoFuncAttr* typeFunc)
+    void emitFuncParameters(SCBE_CPU& pp, const CPUFunction* cpuFct)
     {
-        if (!decl->parameters)
+        if (!cpuFct->node->parameters)
             return;
-        if (decl->hasAttribute(ATTRIBUTE_MESSAGE_FUNC))
+        if (cpuFct->node->hasAttribute(ATTRIBUTE_MESSAGE_FUNC))
             return;
 
         auto&      concat      = pp.concat;
-        const auto countParams = decl->parameters->childCount();
+        const auto countParams = cpuFct->node->parameters->childCount();
         uint32_t   regCounter  = 0;
         for (uint32_t i = 0; i < countParams; i++)
         {
-            const auto child     = decl->parameters->children[i];
-            const auto typeParam = typeFunc->parameters[i]->typeInfo;
+            const auto child     = cpuFct->node->parameters->children[i];
+            const auto typeParam = cpuFct->typeFunc->parameters[i]->typeInfo;
 
             SCBEDebugTypeIndex typeIdx;
             switch (typeParam->kind)
             {
                 case TypeInfoKind::Struct:
-                    if (typeFunc->structParamByValue(typeParam))
+                    if (cpuFct->typeFunc->structParamByValue(typeParam))
                         typeIdx = SCBE_Debug::getOrCreateType(pp, typeParam);
                     else
                         typeIdx = SCBE_Debug::getOrCreatePointerToType(pp, typeParam, true);
@@ -646,7 +646,7 @@ namespace
                     if (typeParam->isAutoConstPointerRef())
                     {
                         const auto typeRef = TypeManager::concretePtrRefType(typeParam);
-                        if (typeFunc->structParamByValue(typeRef))
+                        if (cpuFct->typeFunc->structParamByValue(typeRef))
                             typeIdx = SCBE_Debug::getOrCreateType(pp, typeRef);
                         else
                             typeIdx = SCBE_Debug::getOrCreateType(pp, typeParam);
@@ -668,9 +668,9 @@ namespace
 
             //////////
             uint32_t regParam = regCounter;
-            if (typeFunc->isFctVariadic() && i != countParams - 1)
+            if (cpuFct->typeFunc->isFctVariadic() && i != countParams - 1)
                 regParam += 2;
-            else if (typeFunc->isFctVariadic())
+            else if (cpuFct->typeFunc->isFctVariadic())
                 regParam = 0;
             const uint32_t offsetStackParam = cpuFct->getStackOffsetParam(regParam);
             regCounter += typeParam->numRegisters();
@@ -738,7 +738,7 @@ namespace
 
             // codeview seems to need this pointer to be named "this"...
             // So add it
-            if (typeFunc->isMethod() && child->token.is(g_LangSpec->name_self))
+            if (cpuFct->typeFunc->isMethod() && child->token.is(g_LangSpec->name_self))
             {
                 //////////
                 emitStartRecord(pp, S_LOCAL);
@@ -761,18 +761,18 @@ namespace
         }
     }
 
-    void emitFuncCaptureParameters(SCBE_CPU& pp, const CPUFunction* cpuFct, const AstFuncDecl* decl)
+    void emitFuncCaptureParameters(SCBE_CPU& pp, const CPUFunction* cpuFct)
     {
-        if (!decl->captureParameters)
+        if (!cpuFct->node->captureParameters)
             return;
-        if (decl->hasAttribute(ATTRIBUTE_MESSAGE_FUNC))
+        if (cpuFct->node->hasAttribute(ATTRIBUTE_MESSAGE_FUNC))
             return;
 
         auto&      concat      = pp.concat;
-        const auto countParams = decl->captureParameters->childCount();
+        const auto countParams = cpuFct->node->captureParameters->childCount();
         for (uint32_t i = 0; i < countParams; i++)
         {
-            auto       child     = decl->captureParameters->children[i];
+            auto       child     = cpuFct->node->captureParameters->children[i];
             const auto typeParam = child->typeInfo;
             if (child->is(AstNodeKind::MakePointer))
                 child = child->firstChild();
@@ -822,24 +822,21 @@ namespace
             if (!cpuFct->node || cpuFct->node->isSpecialFunctionGenerated())
                 continue;
 
-            const auto decl     = castAst<AstFuncDecl>(cpuFct->node, AstNodeKind::FuncDecl);
-            const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(decl->typeInfo, TypeInfoKind::FuncAttr);
-
             // Add a func id type record
             /////////////////////////////////
             const auto tr = SCBE_Debug::addTypeRecord(pp);
             tr->node      = cpuFct->node;
-            if (typeFunc->isMethod())
+            if (cpuFct->typeFunc->isMethod())
             {
                 tr->kind                 = LF_MFUNC_ID;
-                const auto typeThis      = castTypeInfo<TypeInfoPointer>(typeFunc->parameters[0]->typeInfo, TypeInfoKind::Pointer);
+                const auto typeThis      = castTypeInfo<TypeInfoPointer>(cpuFct->typeFunc->parameters[0]->typeInfo, TypeInfoKind::Pointer);
                 tr->lfMFuncId.parentType = SCBE_Debug::getOrCreateType(pp, typeThis->pointedType);
-                tr->lfMFuncId.type       = SCBE_Debug::getOrCreateType(pp, typeFunc);
+                tr->lfMFuncId.type       = SCBE_Debug::getOrCreateType(pp, cpuFct->typeFunc);
             }
             else
             {
                 tr->kind          = LF_FUNC_ID;
-                tr->lfFuncId.type = SCBE_Debug::getOrCreateType(pp, typeFunc);
+                tr->lfFuncId.type = SCBE_Debug::getOrCreateType(pp, cpuFct->typeFunc);
             }
 
             // Symbol
@@ -878,16 +875,15 @@ namespace
 
             // Capture parameters
             /////////////////////////////////
-            emitFuncCaptureParameters(pp, cpuFct, decl);
+            emitFuncCaptureParameters(pp, cpuFct);
 
             // Parameters
             /////////////////////////////////
-            emitFuncParameters(pp, cpuFct, decl, typeFunc);
+            emitFuncParameters(pp, cpuFct);
 
             // Lexical blocks
             /////////////////////////////////
-            const auto funcDecl = castAst<AstFuncDecl>(cpuFct->node, AstNodeKind::FuncDecl);
-            emitScope(pp, cpuFct, funcDecl->scope);
+            emitScope(pp, cpuFct, cpuFct->node->scope);
 
             // End
             /////////////////////////////////

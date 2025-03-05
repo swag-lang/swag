@@ -184,7 +184,7 @@ struct CPUFunction
     Vector<SCBEDebugLines>        dbgLines;
 
     ByteCode*         bc                      = nullptr;
-    AstNode*          node                    = nullptr;
+    AstFuncDecl*      node                    = nullptr;
     TypeInfoFuncAttr* typeFunc                = nullptr;
     const CallConv*   cc                      = nullptr;
     uint32_t          symbolIndex             = 0;
