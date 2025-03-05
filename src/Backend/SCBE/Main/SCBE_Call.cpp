@@ -98,7 +98,7 @@ void SCBE::emitCallRAParams(SCBE_CPU& pp, const Utf8& funcName, const TypeInfoFu
     // Invert order
     VectorNative<CPUPushParam> p;
     for (uint32_t i = pp.pushRAParams.size() - 1; i != UINT32_MAX; i--)
-        p.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RDI, .value = REG_OFFSET(pp.pushRAParams[i])});
+        p.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RSP, .value = pp.getStackOffsetReg(pp.pushRAParams[i])});
 
     emitCallCPUParams(pp, funcName, typeFuncBc, p, CPUReg::RSP, pp.getStackOffsetRT(0), localCall);
 }
@@ -110,7 +110,7 @@ void SCBE::emitInternalCallRAParams(SCBE_CPU& pp, const Utf8& funcName, const Ve
 
     VectorNative<CPUPushParam> p;
     for (const auto r : pushRAParams)
-        p.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RDI, .value = REG_OFFSET(r)});
+        p.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RSP, .value = pp.getStackOffsetReg(r)});
 
     emitCallCPUParams(pp, funcName, typeFunc, p, memRegResult, memOffsetResult, true);
 }
