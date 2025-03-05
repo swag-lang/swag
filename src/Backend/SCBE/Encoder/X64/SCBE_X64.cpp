@@ -174,7 +174,6 @@ void SCBE_X64::emitSymbolRelocationRef(const Utf8& name)
 
 void SCBE_X64::emitSymbolRelocationAddress(CPUReg reg, uint32_t symbolIndex, uint32_t offset)
 {
-    SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX || reg == CPUReg::RDX || reg == CPUReg::R8 || reg == CPUReg::R9 || reg == CPUReg::RDI);
     emitREX(concat, OpBits::B64, reg);
     emitCPUOp(concat, 0x8D); // LEA
     emitModRM(concat, ModRMMode::Memory, reg, MODRM_RM_RIP);
