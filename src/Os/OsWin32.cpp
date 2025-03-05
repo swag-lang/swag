@@ -970,19 +970,21 @@ namespace OS
                 concat.firstBucket->data     = static_cast<uint8_t*>(VirtualAlloc(nullptr, gen.concat.firstBucket->capacity, MEM_COMMIT, PAGE_EXECUTE_READWRITE));
                 concat.currentSP             = gen.concat.firstBucket->data;
 
-                // We need to generate unwind stuff to get a correct callstack, and in case the runtime raises an exception
-                // with 'RaiseException' (panic, error, etc.)
-                // The function information is always the same, that's why we generate only one table per SCBE_X64.
                 VectorNative<CPUReg>   unwindRegs;
                 VectorNative<uint32_t> unwindOffsetRegs;
-                VectorNative<uint16_t> unwind;
 
                 // Fake emit in order to compute the unwind infos
                 gen.emitPush(CPUReg::RDI);
                 unwindRegs.push_back(CPUReg::RDI);
                 unwindOffsetRegs.push_back(gen.concat.totalCount());
+
                 gen.emitOpBinary(CPUReg::RSP, stackSize, CPUOp::SUB, OpBits::B64);
                 const auto sizeProlog = gen.concat.totalCount();
+
+                // We need to generate unwind stuff to get a correct callstack, and in case the runtime raises an exception
+                // with 'RaiseException' (panic, error, etc.)
+                // The function information is always the same, that's why we generate only one table per SCBE_X64.
+                VectorNative<uint16_t> unwind;
                 SCBE_Coff::computeUnwind(unwindRegs, unwindOffsetRegs, stackSize, sizeProlog, unwind);
 
                 // Add function table
