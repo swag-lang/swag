@@ -132,8 +132,9 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, const ByteCodeInstruction
     for (auto& param : cpuParams)
     {
         param.type     = CPUPushParamType::SwagRegister;
-        param.value    = cptParam++;
+        param.value    = REG_OFFSET(cptParam);
         param.typeInfo = nullptr;
+        cptParam++;
     }
 
     // Mark the first parameter as the capture context.

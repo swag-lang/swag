@@ -266,7 +266,7 @@ void SCBE::emitGlobalPreMain(SCBE_CPU& pp)
     // Copy process infos passed as a parameter to the process info struct of this module
     pp.pushParams.clear();
     pp.pushParams.push_back({.type = CPUPushParamType::SymbolRelocationAddress, .value = pp.symPI_processInfos});
-    pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .value = 0});
+    pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .value = REG_OFFSET(0)});
     pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = sizeof(SwagProcessInfos)});
     emitInternalCallCPUParams(pp, g_LangSpec->name_memcpy, pp.pushParams);
 
@@ -306,7 +306,7 @@ void SCBE::emitGlobalInit(SCBE_CPU& pp)
     // Copy process infos passed as a parameter to the process info struct of this module
     pp.pushParams.clear();
     pp.pushParams.push_back({.type = CPUPushParamType::SymbolRelocationAddress, .value = pp.symPI_processInfos});
-    pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .value = 0});
+    pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .value = REG_OFFSET(0)});
     pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = sizeof(SwagProcessInfos)});
     emitInternalCallCPUParams(pp, g_LangSpec->name_memcpy, pp.pushParams);
 

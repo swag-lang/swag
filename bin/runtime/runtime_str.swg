@@ -245,5 +245,7 @@ func @stringcmp(str1: string, str2: string)->bool
     let data2 = @dataof(str2)
     if data1 == null or data2 == null:
         return data1 == data2
+    if data1 == data2:
+        return true
     return !@memcmp(data1, data2, num1)
 }
