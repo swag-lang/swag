@@ -202,6 +202,7 @@ struct CPUFunction
     uint32_t          offsetResult            = 0;
 
     uint32_t getStackOffsetParam(uint32_t paramIdx) const;
+    uint32_t getStackOffsetCallerParam(uint32_t paramIdx) const;
     uint32_t getStackOffsetBCStack() const;
 };
 
