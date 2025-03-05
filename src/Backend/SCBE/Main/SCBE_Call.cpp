@@ -175,7 +175,7 @@ void SCBE::emitLambdaCall(SCBE_CPU& pp)
     // Invert order
     VectorNative<CPUPushParam> pushCPUParams;
     for (uint32_t i = pp.pushRAParams.size() - 1; i != UINT32_MAX; i--)
-        pushCPUParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RDI, .value = REG_OFFSET(pp.pushRAParams[i])});
+        pushCPUParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RSP, .value = pp.getStackOffsetReg(pp.pushRAParams[i])});
 
     // Mark the first parameter as the capture context.
     // The "first" parameter has index 2 in case of a variadic function, as the 2 first parameters are the variadic slice
