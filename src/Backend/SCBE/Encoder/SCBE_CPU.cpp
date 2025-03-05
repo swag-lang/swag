@@ -453,7 +453,7 @@ void SCBE_CPU::emitStoreCallResult(CPUReg memReg, uint32_t memOffset, const Type
     if (!typeFuncBc->returnByValue())
         return;
 
-    SWAG_ASSERT(memReg == CPUReg::RDI || memReg == CPUReg::RSP);
+    SWAG_ASSERT(memReg == CPUReg::RAX || memReg == CPUReg::RDI || memReg == CPUReg::RSP);
 
     const auto& cc         = typeFuncBc->getCallConv();
     const auto  returnType = typeFuncBc->concreteReturnType();
