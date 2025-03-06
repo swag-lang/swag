@@ -675,10 +675,6 @@ void SCBE_Micro::process()
 
     addInstruction(SCBE_MicroOp::End);
     concat.makeLinear();
-
-    cpuFct->unwindRegs.push_back(CPUReg::R9);
-    cpuFct->unwindRegs.push_back(CPUReg::R11);
-    
     if (optLevel == BuildCfgBackendOptim::O0)
         return;
 
