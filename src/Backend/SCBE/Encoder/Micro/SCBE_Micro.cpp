@@ -105,9 +105,9 @@ void SCBE_Micro::emitRet()
     addInstruction(SCBE_MicroOp::Ret);
 }
 
-void SCBE_Micro::emitLoadParam(CPUReg reg, uint32_t paramIdx, OpBits opBits)
+void SCBE_Micro::emitLoadCallerParam(CPUReg reg, uint32_t paramIdx, OpBits opBits)
 {
-    const auto inst = addInstruction(SCBE_MicroOp::LoadParam);
+    const auto inst = addInstruction(SCBE_MicroOp::LoadCallerParam);
     inst->regA      = reg;
     inst->valueA    = paramIdx;
     inst->opBitsA   = opBits;
@@ -120,13 +120,6 @@ void SCBE_Micro::emitLoadZeroExtendParam(CPUReg reg, uint32_t paramIdx, OpBits n
     inst->valueA    = paramIdx;
     inst->opBitsA   = numBitsDst;
     inst->opBitsB   = numBitsSrc;
-}
-
-void SCBE_Micro::emitLoadAddressParam(CPUReg reg, uint32_t paramIdx)
-{
-    const auto inst = addInstruction(SCBE_MicroOp::LoadAddressParam);
-    inst->regA      = reg;
-    inst->valueA    = paramIdx;
 }
 
 void SCBE_Micro::emitLoadCallerAddressParam(CPUReg reg, uint32_t paramIdx)
@@ -555,14 +548,11 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
             case SCBE_MicroOp::Jump2:
                 encoder.emitJump(inst->jumpType, static_cast<uint32_t>(inst->valueA));
                 break;
-            case SCBE_MicroOp::LoadParam:
-                encoder.emitLoadParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->opBitsA);
+            case SCBE_MicroOp::LoadCallerParam:
+                encoder.emitLoadCallerParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->opBitsA);
                 break;
             case SCBE_MicroOp::LoadZeroExtendParam:
                 encoder.emitLoadZeroExtendParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->opBitsA, inst->opBitsB);
-                break;
-            case SCBE_MicroOp::LoadAddressParam:
-                encoder.emitLoadAddressParam(inst->regA, static_cast<uint32_t>(inst->valueA));
                 break;
             case SCBE_MicroOp::LoadCallerAddressParam:
                 encoder.emitLoadCallerAddressParam(inst->regA, static_cast<uint32_t>(inst->valueA));

@@ -410,20 +410,20 @@ void SCBE_Micro::print() const
                 line.name = jumpTypeName(inst->jumpType);
                 line.args = form("%08d", inst->valueA);
                 break;
-            case SCBE_MicroOp::LoadParam:
-                // encoder.emitLoadParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->opBitsA);
+            case SCBE_MicroOp::LoadCallerParam:
+                // encoder.emitLoadCallerParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->opBitsA);
                 line.name = "mov";
                 line.args = form("%s, %s ptr [rdi+<param%d>]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsA), inst->valueA);
+                break;
+            case SCBE_MicroOp::LoadCallerAddressParam:
+                // encoder.emitLoadCallerAddressParam(inst->regA, static_cast<uint32_t>(inst->valueA));
+                line.name = "lea";
+                line.args = form("%s, %s ptr [rdi+<param%d>]", regName(inst->regA, OpBits::B64), opBitsName(OpBits::B64), inst->valueA);
                 break;
             case SCBE_MicroOp::LoadZeroExtendParam:
                 // encoder.emitLoadZeroExtendParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->opBitsA, inst->opBitsB);
                 line.name = "movzx";
                 line.args = form("%s, %s ptr [rdi+<param%d>]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsB), inst->valueA);
-                break;
-            case SCBE_MicroOp::LoadAddressParam:
-                // encoder.emitLoadAddressParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->boolA);
-                line.name = "lea";
-                line.args = form("%s, %s ptr [rdi+<param%d>]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsA), inst->valueA);
                 break;
             case SCBE_MicroOp::Load0:
                 // encoder.emitLoad(inst->regA, inst->regB, inst->opBitsA);

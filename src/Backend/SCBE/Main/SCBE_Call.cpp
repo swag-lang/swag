@@ -13,7 +13,7 @@ void SCBE::emitLoadParam(SCBE_CPU& pp, CPUReg reg, uint32_t paramIdx, OpBits opB
     if (paramIdx < pp.cpuFct->cc->paramByRegisterCount)
         pp.emitLoad(reg, CPUReg::RSP, pp.cpuFct->getStackOffsetParam(paramIdx), opBits);
     else
-        pp.emitLoadParam(reg, paramIdx, opBits);
+        pp.emitLoadCallerParam(reg, paramIdx, opBits);
 }
 
 void SCBE::emitLoadAddressParam(SCBE_CPU& pp, CPUReg reg, uint32_t paramIdx)
@@ -21,7 +21,7 @@ void SCBE::emitLoadAddressParam(SCBE_CPU& pp, CPUReg reg, uint32_t paramIdx)
     if (paramIdx < pp.cpuFct->cc->paramByRegisterCount)
         pp.emitLoadAddress(reg, CPUReg::RSP, pp.cpuFct->getStackOffsetParam(paramIdx));
     else
-        pp.emitLoadAddressParam(reg, paramIdx);
+        pp.emitLoadCallerAddressParam(reg, paramIdx);
 }
 
 void SCBE::emitGetParam(SCBE_CPU& pp, uint32_t reg, uint32_t paramIdx, OpBits opBits, uint64_t toAdd, OpBits derefBits)

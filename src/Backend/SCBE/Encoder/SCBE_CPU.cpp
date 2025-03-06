@@ -421,7 +421,7 @@ void SCBE_CPU::emitStoreCallResult(CPUReg memReg, uint32_t memOffset, const Type
         emitStore(memReg, memOffset, cc.returnByRegisterInteger, OpBits::B64);
 }
 
-void SCBE_CPU::emitLoadParam(CPUReg reg, uint32_t paramIdx, OpBits opBits)
+void SCBE_CPU::emitLoadCallerParam(CPUReg reg, uint32_t paramIdx, OpBits opBits)
 {
     const uint32_t stackOffset = cpuFct->getStackOffsetParam(paramIdx);
     emitLoad(reg, CPUReg::RSP, stackOffset, opBits);
@@ -431,12 +431,6 @@ void SCBE_CPU::emitLoadZeroExtendParam(CPUReg reg, uint32_t paramIdx, OpBits num
 {
     const uint32_t stackOffset = cpuFct->getStackOffsetParam(paramIdx);
     emitLoadZeroExtend(reg, CPUReg::RSP, stackOffset, numBitsDst, numBitsSrc);
-}
-
-void SCBE_CPU::emitLoadAddressParam(CPUReg reg, uint32_t paramIdx)
-{
-    const uint32_t stackOffset = cpuFct->getStackOffsetParam(paramIdx);
-    emitLoadAddress(reg, CPUReg::RSP, stackOffset);
 }
 
 void SCBE_CPU::emitLoadCallerAddressParam(CPUReg reg, uint32_t paramIdx)
