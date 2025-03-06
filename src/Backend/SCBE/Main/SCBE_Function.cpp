@@ -1435,7 +1435,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::ClearRR64:
             {
                 opBits = SCBE_CPU::getOpBits(ip->op);
-                pp.emitLoadParam(CPUReg::RAX, typeFunc->numParamsRegisters(), OpBits::B64);
+                emitLoadParam(pp, CPUReg::RAX, typeFunc->numParamsRegisters(), OpBits::B64);
                 pp.emitStore(CPUReg::RAX, ip->c.u32, 0, opBits);
                 break;
             }
@@ -1443,7 +1443,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::ClearRRX:
             {
                 SWAG_ASSERT(ip->c.s64 >= 0 && ip->c.s64 <= 0x7FFFFFFF);
-                pp.emitLoadParam(CPUReg::RAX, typeFunc->numParamsRegisters(), OpBits::B64);
+                emitLoadParam(pp, CPUReg::RAX, typeFunc->numParamsRegisters(), OpBits::B64);
                 if (ip->b.u32 <= buildParameters.buildCfg->backendSCBE.unrollMemLimit &&
                     buildParameters.buildCfg->backendOptimize > BuildCfgBackendOptim::O1)
                 {
@@ -1822,7 +1822,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::CopyRARBtoRR2:
             {
-                pp.emitLoadParam(CPUReg::RAX, typeFunc->numParamsRegisters(), OpBits::B64);
+                emitLoadParam(pp, CPUReg::RAX, typeFunc->numParamsRegisters(), OpBits::B64);
                 pp.emitLoad(CPUReg::RCX, CPUReg::RSP, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
                 pp.emitStore(CPUReg::RAX, 0, CPUReg::RCX, OpBits::B64);
                 pp.emitLoad(CPUReg::RCX, CPUReg::RSP, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
@@ -1837,13 +1837,13 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::SaveRRtoRA:
             {
-                pp.emitLoadParam(CPUReg::RAX, typeFunc->numParamsRegisters(), OpBits::B64);
+                emitLoadParam(pp, CPUReg::RAX, typeFunc->numParamsRegisters(), OpBits::B64);
                 pp.emitStore(CPUReg::RSP, pp.cpuFct->getStackOffsetReg(ip->a.u32), CPUReg::RAX, OpBits::B64);
                 break;
             }
             case ByteCodeOp::CopyRRtoRA:
             {
-                pp.emitLoadParam(CPUReg::RAX, typeFunc->numParamsRegisters(), OpBits::B64);
+                emitLoadParam(pp, CPUReg::RAX, typeFunc->numParamsRegisters(), OpBits::B64);
                 if (ip->b.u64)
                 {
                     pp.emitLoad(CPUReg::RCX, ip->b.u64, OpBits::B64);

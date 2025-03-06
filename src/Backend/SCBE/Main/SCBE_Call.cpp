@@ -2,12 +2,19 @@
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/ByteCodeInstruction.h"
 #include "Backend/SCBE/Main/SCBE.h"
-#include "Core/Math.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/AstNode.h"
 #include "Wmf/Module.h"
 #include "Wmf/ModuleManager.h"
 #include "Wmf/Workspace.h"
+
+void SCBE::emitLoadParam(SCBE_CPU& pp, CPUReg reg, uint32_t paramIdx, OpBits opBits)
+{
+    if (paramIdx < pp.cpuFct->cc->paramByRegisterCount)
+        pp.emitLoad(reg, CPUReg::RSP, pp.cpuFct->getStackOffsetParam(paramIdx), opBits);
+    else
+        pp.emitLoadParam(reg, paramIdx, opBits);
+}
 
 void SCBE::emitGetParam(SCBE_CPU& pp, uint32_t reg, uint32_t paramIdx, OpBits opBits, uint64_t toAdd, OpBits derefBits)
 {
@@ -38,7 +45,7 @@ void SCBE::emitGetParam(SCBE_CPU& pp, uint32_t reg, uint32_t paramIdx, OpBits op
     if (typeFunc->structParamByValue(typeParam))
         pp.emitLoadAddressParam(CPUReg::RAX, paramIdx);
     else
-        pp.emitLoadParam(CPUReg::RAX, paramIdx, OpBits::B64);
+        emitLoadParam(pp, CPUReg::RAX, paramIdx, OpBits::B64);
 
     switch (derefBits)
     {
