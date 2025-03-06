@@ -16,6 +16,14 @@ void SCBE::emitLoadParam(SCBE_CPU& pp, CPUReg reg, uint32_t paramIdx, OpBits opB
         pp.emitLoadParam(reg, paramIdx, opBits);
 }
 
+void SCBE::emitLoadAddressParam(SCBE_CPU& pp, CPUReg reg, uint32_t paramIdx)
+{
+    if (paramIdx < pp.cpuFct->cc->paramByRegisterCount)
+        pp.emitLoadAddress(reg, CPUReg::RSP, pp.cpuFct->getStackOffsetParam(paramIdx));
+    else
+        pp.emitLoadAddressParam(reg, paramIdx);
+}
+
 void SCBE::emitGetParam(SCBE_CPU& pp, uint32_t reg, uint32_t paramIdx, OpBits opBits, uint64_t toAdd, OpBits derefBits)
 {
     const auto typeFunc  = pp.cpuFct->typeFunc;
@@ -43,7 +51,7 @@ void SCBE::emitGetParam(SCBE_CPU& pp, uint32_t reg, uint32_t paramIdx, OpBits op
     }
 
     if (typeFunc->structParamByValue(typeParam))
-        pp.emitLoadAddressParam(CPUReg::RAX, paramIdx);
+        emitLoadAddressParam(pp, CPUReg::RAX, paramIdx);
     else
         emitLoadParam(pp, CPUReg::RAX, paramIdx, OpBits::B64);
 

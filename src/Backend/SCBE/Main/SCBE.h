@@ -38,6 +38,7 @@ struct SCBE final : Backend
     static void emitInternalCallRAParams(SCBE_CPU& pp, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, CPUReg memRegResult = CPUReg::RSP, uint32_t memOffsetResult = UINT32_MAX);
 
     static void emitLoadParam(SCBE_CPU& pp, CPUReg reg, uint32_t paramIdx, OpBits opBits);
+    static void emitLoadAddressParam(SCBE_CPU& pp, CPUReg reg, uint32_t paramIdx);
     static void emitGetParam(SCBE_CPU& pp, uint32_t reg, uint32_t paramIdx, OpBits opBits, uint64_t toAdd = 0, OpBits derefBits = OpBits::Zero);
     static void emitLocalCall(SCBE_CPU& pp);
     static void emitForeignCall(SCBE_CPU& pp);
