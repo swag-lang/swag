@@ -653,12 +653,11 @@ void SCBE_Coff::computeUnwind(const VectorNative<CPUReg>&   unwindRegs,
     // Now we put the registers.
     // At the end because array must be sorted in 'offset in prolog' descending order.
     // So RDI, which is the first 'push', must be the last
-    for (int32_t i = static_cast<int32_t>(unwindRegs.size()) - 1; i >= 0; i--)
+    for (uint32_t i = unwindRegs.size() - 1; i != UINT32_MAX; i--)
     {
-        uint16_t unwind0 = 0;
-        unwind0          = static_cast<uint16_t>(unwindRegs[i]) << 12;
+        auto unwind0 = static_cast<uint16_t>(unwindRegs[i]) << 12;
         unwind0 |= UWOP_PUSH_NO_VOL << 8;
         unwind0 |= static_cast<uint8_t>(unwindOffsetRegs[i]);
-        unwind.push_back(unwind0);
+        unwind.push_back(static_cast<uint16_t>(unwind0));
     }
 }
