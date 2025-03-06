@@ -95,16 +95,16 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     {
         const auto typeParam = typeFunc->registerIdxToType(idxReg);
         if (cc.useRegisterFloat && typeParam->isNativeFloat())
-            pp.emitStoreParam(idxReg, cc.paramByRegisterFloat[idxReg], OpBits::F64);
+            pp.emitStore(CPUReg::RSP, pp.cpuFct->getStackOffsetParam(idxReg), cc.paramByRegisterFloat[idxReg], OpBits::F64);
         else
-            pp.emitStoreParam(idxReg, cc.paramByRegisterInteger[idxReg], OpBits::B64);
+            pp.emitStore(CPUReg::RSP, pp.cpuFct->getStackOffsetParam(idxReg), cc.paramByRegisterInteger[idxReg], OpBits::B64);
         idxReg++;
     }
 
     // Save pointer to return value if this is a return by copy
     if (idxReg < cc.paramByRegisterCount && typeFunc->returnByAddress())
     {
-        pp.emitStoreParam(idxReg, cc.paramByRegisterInteger[idxReg], OpBits::B64);
+        pp.emitStore(CPUReg::RSP, pp.cpuFct->getStackOffsetParam(idxReg), cc.paramByRegisterInteger[idxReg], OpBits::B64);
         idxReg++;
     }
 

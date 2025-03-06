@@ -88,7 +88,6 @@ struct SCBE_Micro final : SCBE_CPU
     void    emitLoadSignedExtendParam(CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc) override;
     void    emitLoadZeroExtendParam(CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc) override;
     void    emitLoadAddressParam(CPUReg reg, uint32_t paramIdx) override;
-    void    emitStoreParam(uint32_t paramIdx, CPUReg reg, OpBits opBits) override;
     void    emitLoadCallerAddressParam(CPUReg reg, uint32_t paramIdx) override;
     void    emitStoreCallerParam(uint32_t paramIdx, CPUReg reg, OpBits opBits) override;
     void    emitLoad(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits opBits) override;

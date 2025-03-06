@@ -445,12 +445,6 @@ void SCBE_CPU::emitLoadAddressParam(CPUReg reg, uint32_t paramIdx)
     emitLoadAddress(reg, CPUReg::RSP, stackOffset);
 }
 
-void SCBE_CPU::emitStoreParam(uint32_t paramIdx, CPUReg reg, OpBits opBits)
-{
-    const uint32_t stackOffset = cpuFct->getStackOffsetParam(paramIdx);
-    emitStore(CPUReg::RSP, stackOffset, reg, opBits);
-}
-
 void SCBE_CPU::emitLoadCallerAddressParam(CPUReg reg, uint32_t paramIdx)
 {
     const uint32_t stackOffset = cpuFct->getStackOffsetCallerParam(paramIdx);

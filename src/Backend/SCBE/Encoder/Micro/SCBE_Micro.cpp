@@ -138,14 +138,6 @@ void SCBE_Micro::emitLoadAddressParam(CPUReg reg, uint32_t paramIdx)
     inst->valueA    = paramIdx;
 }
 
-void SCBE_Micro::emitStoreParam(uint32_t paramIdx, CPUReg reg, OpBits opBits)
-{
-    const auto inst = addInstruction(SCBE_MicroOp::StoreParam);
-    inst->valueA    = paramIdx;
-    inst->regA      = reg;
-    inst->opBitsA   = opBits;
-}
-
 void SCBE_Micro::emitLoadCallerAddressParam(CPUReg reg, uint32_t paramIdx)
 {
     const auto inst = addInstruction(SCBE_MicroOp::LoadCallerAddressParam);
@@ -583,9 +575,6 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
                 break;
             case SCBE_MicroOp::LoadAddressParam:
                 encoder.emitLoadAddressParam(inst->regA, static_cast<uint32_t>(inst->valueA));
-                break;
-            case SCBE_MicroOp::StoreParam:
-                encoder.emitStoreParam(static_cast<uint32_t>(inst->valueA), inst->regA, inst->opBitsA);
                 break;
             case SCBE_MicroOp::LoadCallerAddressParam:
                 encoder.emitLoadCallerAddressParam(inst->regA, static_cast<uint32_t>(inst->valueA));

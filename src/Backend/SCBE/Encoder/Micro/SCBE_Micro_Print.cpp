@@ -430,11 +430,6 @@ void SCBE_Micro::print() const
                 line.name = "lea";
                 line.args = form("%s, %s ptr [rdi+<param%d>]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsA), inst->valueA);
                 break;
-            case SCBE_MicroOp::StoreParam:
-                // encoder.emitStoreParam(static_cast<uint32_t>(inst->valueA), inst->regA, inst->opBitsA, inst->boolA);
-                line.name = "mov";
-                line.args = form("%s ptr [rdi+<param%d>], %s", opBitsName(inst->opBitsA), inst->valueA, regName(inst->regA, inst->opBitsA));
-                break;
             case SCBE_MicroOp::Load0:
                 // encoder.emitLoad(inst->regA, inst->regB, inst->opBitsA);
                 line.name = "mov";
