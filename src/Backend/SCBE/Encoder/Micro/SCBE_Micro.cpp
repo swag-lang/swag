@@ -113,15 +113,6 @@ void SCBE_Micro::emitLoadParam(CPUReg reg, uint32_t paramIdx, OpBits opBits)
     inst->opBitsA   = opBits;
 }
 
-void SCBE_Micro::emitLoadSignedExtendParam(CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc)
-{
-    const auto inst = addInstruction(SCBE_MicroOp::LoadSignedExtendParam);
-    inst->regA      = reg;
-    inst->valueA    = paramIdx;
-    inst->opBitsA   = numBitsDst;
-    inst->opBitsB   = numBitsSrc;
-}
-
 void SCBE_Micro::emitLoadZeroExtendParam(CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc)
 {
     const auto inst = addInstruction(SCBE_MicroOp::LoadZeroExtendParam);
@@ -566,9 +557,6 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
                 break;
             case SCBE_MicroOp::LoadParam:
                 encoder.emitLoadParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->opBitsA);
-                break;
-            case SCBE_MicroOp::LoadSignedExtendParam:
-                encoder.emitLoadSignedExtendParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->opBitsA, inst->opBitsB);
                 break;
             case SCBE_MicroOp::LoadZeroExtendParam:
                 encoder.emitLoadZeroExtendParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->opBitsA, inst->opBitsB);

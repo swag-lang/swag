@@ -85,7 +85,6 @@ struct SCBE_Micro final : SCBE_CPU
     void    emitPatchJump(const CPUJump& jump, uint64_t offsetDestination) override;
     void    emitJump(CPUReg reg) override;
     void    emitLoadParam(CPUReg reg, uint32_t paramIdx, OpBits opBits) override;
-    void    emitLoadSignedExtendParam(CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc) override;
     void    emitLoadZeroExtendParam(CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc) override;
     void    emitLoadAddressParam(CPUReg reg, uint32_t paramIdx) override;
     void    emitLoadCallerAddressParam(CPUReg reg, uint32_t paramIdx) override;

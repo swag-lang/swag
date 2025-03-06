@@ -415,11 +415,6 @@ void SCBE_Micro::print() const
                 line.name = "mov";
                 line.args = form("%s, %s ptr [rdi+<param%d>]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsA), inst->valueA);
                 break;
-            case SCBE_MicroOp::LoadSignedExtendParam:
-                // encoder.emitLoadSignedExtendParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->opBitsA, inst->opBitsB);
-                line.name = "movsx";
-                line.args = form("%s, %s ptr [rdi+<param%d>]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsB), inst->valueA);
-                break;
             case SCBE_MicroOp::LoadZeroExtendParam:
                 // encoder.emitLoadZeroExtendParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->opBitsA, inst->opBitsB);
                 line.name = "movzx";

@@ -427,12 +427,6 @@ void SCBE_CPU::emitLoadParam(CPUReg reg, uint32_t paramIdx, OpBits opBits)
     emitLoad(reg, CPUReg::RSP, stackOffset, opBits);
 }
 
-void SCBE_CPU::emitLoadSignedExtendParam(CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc)
-{
-    const uint32_t stackOffset = cpuFct->getStackOffsetParam(paramIdx);
-    emitLoadSignedExtend(reg, CPUReg::RSP, stackOffset, numBitsDst, numBitsSrc);
-}
-
 void SCBE_CPU::emitLoadZeroExtendParam(CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc)
 {
     const uint32_t stackOffset = cpuFct->getStackOffsetParam(paramIdx);
