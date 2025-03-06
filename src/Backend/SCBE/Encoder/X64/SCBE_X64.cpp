@@ -944,8 +944,8 @@ void SCBE_X64::emitOpUnary(CPUReg reg, CPUOp op, OpBits opBits)
         if (isFloat(opBits))
         {
             SWAG_ASSERT(reg == CPUReg::XMM0);
-            emitStore(CPUReg::RSP, getStackOffsetFLT(), opBits == OpBits::F32 ? 0x80000000 : 0x80000000'00000000, OpBits::B64);
-            emitLoad(CPUReg::XMM1, CPUReg::RSP, getStackOffsetFLT(), opBits);
+            emitStore(CPUReg::RSP, cpuFct->getStackOffsetFLT(), opBits == OpBits::F32 ? 0x80000000 : 0x80000000'00000000, OpBits::B64);
+            emitLoad(CPUReg::XMM1, CPUReg::RSP, cpuFct->getStackOffsetFLT(), opBits);
             emitOpBinary(CPUReg::XMM0, CPUReg::XMM1, CPUOp::FXOR, opBits);
         }
         else

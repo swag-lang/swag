@@ -10,50 +10,10 @@
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 
-uint32_t CPUFunction::getStackOffsetParam(uint32_t paramIdx) const
-{
-    // If the parameter has been passed as a CPU register, then we get the value from 'offsetParamsAsRegisters'
-    // (where input registers have been saved) instead of the value from the caller stack
-    //
-    // Otherwise the parameter has been passed by stack, so we get the value for the caller stack offset
-    const auto offset = paramIdx < cc->paramByRegisterCount ? offsetParamsAsRegisters : offsetCallerStackParams;
-    return sizeStackCallParams + offset + (paramIdx * sizeof(Register));
-}
-
-uint32_t CPUFunction::getStackOffsetCallerParam(uint32_t paramIdx) const
-{
-    return sizeStackCallParams + offsetCallerStackParams + (paramIdx * sizeof(Register));
-}
-
-uint32_t CPUFunction::getStackOffsetBCStack() const
-{
-    return sizeStackCallParams + offsetByteCodeStack;
-}
-
 void SCBE_CPU::init(const BuildParameters& buildParameters)
 {
     BackendEncoder::init(buildParameters);
     optLevel = buildParameters.buildCfg ? buildParameters.buildCfg->backendOptimize : BuildCfgBackendOptim::O0;
-}
-
-uint32_t SCBE_CPU::getStackOffsetReg(uint32_t reg) const
-{
-    return cpuFct->sizeStackCallParams + (reg * sizeof(Register));
-}
-
-uint32_t SCBE_CPU::getStackOffsetRT(uint32_t reg) const
-{
-    return cpuFct->sizeStackCallParams + cpuFct->offsetRT + (reg * sizeof(Register));
-}
-
-uint32_t SCBE_CPU::getStackOffsetResult() const
-{
-    return cpuFct->sizeStackCallParams + cpuFct->offsetResult;
-}
-
-uint32_t SCBE_CPU::getStackOffsetFLT() const
-{
-    return cpuFct->sizeStackCallParams + cpuFct->offsetFLT;
 }
 
 namespace
@@ -174,7 +134,7 @@ void SCBE_CPU::endFunction() const
             for (uint32_t i = 0; i < cpuFct->unwindRegs.size(); i++)
             {
                 unwindOffsetRegs.push_back(offset - cpuFct->startAddress);
-                offset += 1; // Magic number. Should be the size in bytes of one push instruction, depending on the cpu 
+                offset += 1; // Magic number. Should be the size in bytes of one push instruction, depending on the cpu
             }
             SCBE_Coff::computeUnwind(cpuFct->unwindRegs, unwindOffsetRegs, cpuFct->frameSize, cpuFct->sizeProlog, cpuFct->unwind);
             break;
@@ -565,4 +525,44 @@ void SCBE_CPU::emitLabels()
 void SCBE_CPU::emitDebug(ByteCodeInstruction* ipAddr)
 {
     SCBE_Debug::setLocation(cpuFct, ipAddr, concat.totalCount() - cpuFct->startAddress);
+}
+
+uint32_t CPUFunction::getStackOffsetParam(uint32_t paramIdx) const
+{
+    // If the parameter has been passed as a CPU register, then we get the value from 'offsetParamsAsRegisters'
+    // (where input registers have been saved) instead of the value from the caller stack
+    //
+    // Otherwise the parameter has been passed by stack, so we get the value for the caller stack offset
+    const auto offset = paramIdx < cc->paramByRegisterCount ? offsetParamsAsRegisters : offsetCallerStackParams;
+    return sizeStackCallParams + offset + (paramIdx * sizeof(Register));
+}
+
+uint32_t CPUFunction::getStackOffsetCallerParam(uint32_t paramIdx) const
+{
+    return sizeStackCallParams + offsetCallerStackParams + (paramIdx * sizeof(Register));
+}
+
+uint32_t CPUFunction::getStackOffsetBCStack() const
+{
+    return sizeStackCallParams + offsetByteCodeStack;
+}
+
+uint32_t CPUFunction::getStackOffsetReg(uint32_t reg) const
+{
+    return sizeStackCallParams + (reg * sizeof(Register));
+}
+
+uint32_t CPUFunction::getStackOffsetRT(uint32_t reg) const
+{
+    return sizeStackCallParams + offsetRT + (reg * sizeof(Register));
+}
+
+uint32_t CPUFunction::getStackOffsetResult() const
+{
+    return sizeStackCallParams + offsetResult;
+}
+
+uint32_t CPUFunction::getStackOffsetFLT() const
+{
+    return sizeStackCallParams + offsetFLT;
 }
