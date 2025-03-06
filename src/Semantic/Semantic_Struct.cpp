@@ -1220,7 +1220,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
             child->resolvedSymbolOverload()->storageIndex                = storageIndexField;
 
             auto childType   = TypeManager::concreteType(child->typeInfo, CONCRETE_FUNC);
-            typeInfo->sizeOf = std::max(typeInfo->sizeOf, (int) realStorageOffset + childType->sizeOf);
+            typeInfo->sizeOf = std::max(typeInfo->sizeOf, realStorageOffset + childType->sizeOf);
 
             if (relocated)
                 storageOffset = std::max(storageOffset, realStorageOffset + childType->sizeOf);

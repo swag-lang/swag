@@ -50,7 +50,7 @@ namespace
         }
 
         return "???";
-    };
+    }
 
     const char* cpuCondName(CPUCondFlag cond)
     {

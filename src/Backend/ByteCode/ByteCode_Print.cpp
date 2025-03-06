@@ -636,7 +636,7 @@ void ByteCode::alignPrintInstructions(const ByteCodePrintOptions& /*options*/, V
 #endif
 }
 
-void ByteCode::printInstruction(const ByteCodePrintOptions& options, ByteCodeInstruction* ip) const
+void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteCodeInstruction* ip) const
 {
     PrintInstructionLine line;
 

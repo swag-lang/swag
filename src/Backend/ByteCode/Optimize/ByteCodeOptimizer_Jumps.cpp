@@ -2037,8 +2037,8 @@ namespace
                         maxValue = std::max(maxValue, static_cast<int64_t>(inst->c.s32));
                         break;
                     case 8:
-                        minValue = std::min(minValue, static_cast<int64_t>(inst->c.s64));
-                        maxValue = std::max(maxValue, static_cast<int64_t>(inst->c.s64));
+                        minValue = std::min(minValue, inst->c.s64);
+                        maxValue = std::max(maxValue, inst->c.s64);
                         break;
                     default:
                         break;

@@ -114,7 +114,7 @@ struct ByteCode
     static void printInstruction(const ByteCodePrintOptions& options, const ByteCodeInstruction* ip, const PrintInstructionLine& line);
     static void alignPrintInstructions(const ByteCodePrintOptions& options, Vector<PrintInstructionLine>& lines, bool defaultLen = false);
 
-    void printInstruction(const ByteCodePrintOptions& options, ByteCodeInstruction* ip) const;
+    void printInstruction(const ByteCodePrintOptions& options, const ByteCodeInstruction* ip) const;
     void print(const ByteCodePrintOptions& options, uint32_t start, uint32_t count) const;
     void print(const ByteCodePrintOptions& options) const;
     void printName() const;

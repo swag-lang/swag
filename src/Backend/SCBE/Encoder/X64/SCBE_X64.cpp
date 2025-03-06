@@ -1563,7 +1563,7 @@ void SCBE_X64::emitOpBinary(CPUReg reg, uint64_t value, CPUOp op, OpBits opBits,
         {
             SWAG_ASSERT(reg == CPUReg::RAX || reg == CPUReg::RCX || reg == CPUReg::R9);
             emitREX(concat, opBits, reg, reg);
-            value = std::min(static_cast<uint32_t>(value), SCBE_CPU::getNumBits(opBits) - 1);
+            value = std::min(static_cast<uint32_t>(value), getNumBits(opBits) - 1);
             emitSpecB8(concat, 0xC1, opBits);
             emitCPUOp(concat, op, reg);
             emitValue(concat, value, OpBits::B8);

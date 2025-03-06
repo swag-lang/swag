@@ -605,11 +605,11 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             break;
 
         case ByteCodeOp::JumpIfDeRefEqual8:
-            if (*reinterpret_cast<uint8_t*>(registersRC[ip->a.u32].pointer + ip->d.s64) == IMMC_U8(ip))
+            if (*(registersRC[ip->a.u32].pointer + ip->d.s64) == IMMC_U8(ip))
                 context->ip += ip->b.s32;
             break;
         case ByteCodeOp::JumpIfDeRefNotEqual8:
-            if (*reinterpret_cast<uint8_t*>(registersRC[ip->a.u32].pointer + ip->d.s64) != IMMC_U8(ip))
+            if (*(registersRC[ip->a.u32].pointer + ip->d.s64) != IMMC_U8(ip))
                 context->ip += ip->b.s32;
             break;
 
@@ -643,13 +643,13 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         case ByteCodeOp::JumpIfStackEqual8:
             SWAG_ASSERT(ip->a.u32 + 1 <= context->bc->dynStackSize);
             SWAG_ASSERT(context->bp + ip->a.u32 <= context->stack + g_CommandLine.limitStackBC - 1);
-            if (*reinterpret_cast<uint8_t*>(context->bp + ip->a.u32) == IMMC_U8(ip))
+            if (*(context->bp + ip->a.u32) == IMMC_U8(ip))
                 context->ip += ip->b.s32;
             break;
         case ByteCodeOp::JumpIfStackNotEqual8:
             SWAG_ASSERT(ip->a.u32 + 1 <= context->bc->dynStackSize);
             SWAG_ASSERT(context->bp + ip->a.u32 <= context->stack + g_CommandLine.limitStackBC - 1);
-            if (*reinterpret_cast<uint8_t*>(context->bp + ip->a.u32) != IMMC_U8(ip))
+            if (*(context->bp + ip->a.u32) != IMMC_U8(ip))
                 context->ip += ip->b.s32;
             break;
 

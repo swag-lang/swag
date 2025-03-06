@@ -361,7 +361,7 @@ void ByteCode::makeRoomForInstructions(uint32_t room)
         return;
 
     const auto oldSize = static_cast<uint32_t>(maxInstructions * sizeof(ByteCodeInstruction));
-    maxInstructions    = std::max(static_cast<uint32_t>(numInstructions + room * 2), maxInstructions * 2);
+    maxInstructions    = std::max(numInstructions + room * 2, maxInstructions * 2);
 
     // Evaluate the first number of instructions for a given function.
     // We take the number of AST nodes in the function as a metric.

@@ -18,7 +18,7 @@ namespace
 
         // https://docs.microsoft.com/en-us/cpp/build/exception-handling-x64?view=vs-2019
         uint32_t offset = 0;
-        for (auto f : pp.functions)
+        for (const auto f : pp.functions)
         {
             f->xdataOffset = offset;
             SCBE_Coff::emitUnwind(pp.concat, offset, f->sizeProlog, f->unwind);
