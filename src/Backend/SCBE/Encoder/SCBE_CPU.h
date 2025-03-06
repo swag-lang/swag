@@ -180,6 +180,7 @@ struct CPUFunction
     Map<uint32_t, int32_t>        labels;
     VectorNative<CPULabelToSolve> labelsToSolve;
     VectorNative<CPUReg>          unwindRegs;
+    VectorNative<uint32_t>        unwindOffsetRegs;
     VectorNative<uint16_t>        unwind;
     Vector<SCBEDebugLines>        dbgLines;
 

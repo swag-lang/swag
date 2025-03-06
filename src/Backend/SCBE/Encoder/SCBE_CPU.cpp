@@ -128,17 +128,8 @@ void SCBE_CPU::endFunction() const
     switch (objFileType)
     {
         case BackendObjType::Coff:
-        {
-            VectorNative<uint32_t> unwindOffsetRegs;
-            uint32_t               offset = cpuFct->startAddress;
-            for (uint32_t i = 0; i < cpuFct->unwindRegs.size(); i++)
-            {
-                unwindOffsetRegs.push_back(offset - cpuFct->startAddress);
-                offset += 1; // Magic number. Should be the size in bytes of one push instruction, depending on the cpu
-            }
-            SCBE_Coff::computeUnwind(cpuFct->unwindRegs, unwindOffsetRegs, cpuFct->frameSize, cpuFct->sizeProlog, cpuFct->unwind);
+            SCBE_Coff::computeUnwind(cpuFct->unwindRegs, cpuFct->unwindOffsetRegs, cpuFct->frameSize, cpuFct->sizeProlog, cpuFct->unwind);
             break;
-        }
         default:
             Report::internalError(module, "SCBE::computeUnwind, unsupported output");
             break;
@@ -504,7 +495,6 @@ void SCBE_CPU::emitDebug(ByteCodeInstruction* ipAddr)
     SCBE_Debug::setLocation(cpuFct, ipAddr, concat.totalCount() - cpuFct->startAddress);
 }
 
-
 void SCBE_CPU::emitEnter(uint32_t sizeStack)
 {
     // Minimal size stack depends on calling convention
@@ -516,7 +506,10 @@ void SCBE_CPU::emitEnter(uint32_t sizeStack)
 
     // Push all registers
     for (const auto& reg : cpuFct->unwindRegs)
+    {
         emitPush(reg);
+        cpuFct->unwindOffsetRegs.push_back(concat.totalCount() - cpuFct->startAddress);
+    }
 
     // Be sure that total alignment is respected
     SWAG_ASSERT(!cpuFct->sizeStackCallParams || Math::isAligned(cpuFct->sizeStackCallParams, cpuFct->cc->stackAlign));

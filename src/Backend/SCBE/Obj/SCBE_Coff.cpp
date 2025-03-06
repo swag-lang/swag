@@ -615,11 +615,7 @@ bool SCBE_Coff::saveFileBuffer(FILE* f, const BuildParameters& buildParameters, 
     return true;
 }
 
-void SCBE_Coff::computeUnwind(const VectorNative<CPUReg>&   unwindRegs,
-                              const VectorNative<uint32_t>& unwindOffsetRegs,
-                              uint32_t                      sizeStack,
-                              uint32_t                      offsetSubRSP,
-                              VectorNative<uint16_t>&       unwind)
+void SCBE_Coff::computeUnwind(const VectorNative<CPUReg>& unwindRegs, const VectorNative<uint32_t>& unwindOffsetRegs, uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind)
 {
     // UNWIND_CODE
     // UBYTE:8: offset of the instruction after the "sub rsp"
@@ -652,7 +648,7 @@ void SCBE_Coff::computeUnwind(const VectorNative<CPUReg>&   unwindRegs,
 
     // Now we put the registers.
     // At the end because array must be sorted in 'offset in prolog' descending order.
-    // So RDI, which is the first 'push', must be the last
+    // So the first 'push' must be the last.
     for (uint32_t i = unwindRegs.size() - 1; i != UINT32_MAX; i--)
     {
         auto unwind0 = static_cast<uint16_t>(unwindRegs[i]) << 12;
