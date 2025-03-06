@@ -201,13 +201,13 @@ struct CPUFunction
     uint32_t          offsetRT                = 0;
     uint32_t          offsetResult            = 0;
 
-    uint32_t getStackOffsetParam(uint32_t paramIdx) const;
-    uint32_t getStackOffsetCallerParam(uint32_t paramIdx) const;
-    uint32_t getStackOffsetBCStack() const;
-    uint32_t getStackOffsetReg(uint32_t reg) const;
-    uint32_t getStackOffsetRT(uint32_t reg) const;
-    uint32_t getStackOffsetResult() const;
-    uint32_t getStackOffsetFLT() const;
+    uint32_t getStackOffsetParam(uint32_t paramIdx) const { return sizeStackCallParams + (paramIdx < cc->paramByRegisterCount ? offsetParamsAsRegisters : offsetCallerStackParams) + (paramIdx * sizeof(Register)); }
+    uint32_t getStackOffsetCallerParam(uint32_t paramIdx) const { return sizeStackCallParams + offsetCallerStackParams + (paramIdx * sizeof(Register)); }
+    uint32_t getStackOffsetBCStack() const { return sizeStackCallParams + offsetByteCodeStack; }
+    uint32_t getStackOffsetReg(uint32_t reg) const { return sizeStackCallParams + (reg * sizeof(Register)); }
+    uint32_t getStackOffsetRT(uint32_t reg) const { return sizeStackCallParams + offsetRT + (reg * sizeof(Register)); }
+    uint32_t getStackOffsetResult() const { return sizeStackCallParams + offsetResult; }
+    uint32_t getStackOffsetFLT() const { return sizeStackCallParams + offsetFLT; }
 };
 
 struct SCBE_CPU : BackendEncoder
