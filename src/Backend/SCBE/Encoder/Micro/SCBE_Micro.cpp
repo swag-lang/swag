@@ -28,6 +28,17 @@ SCBE_MicroInstruction* SCBE_Micro::addInstruction(SCBE_MicroOp op)
     return inst;
 }
 
+void SCBE_Micro::emitEnter(uint32_t sizeStack)
+{
+    const auto inst = addInstruction(SCBE_MicroOp::Enter);
+    inst->valueA    = sizeStack;
+}
+
+void SCBE_Micro::emitLeave()
+{
+    addInstruction(SCBE_MicroOp::Leave);
+}
+
 void SCBE_Micro::emitDebug(ByteCodeInstruction* ipAddr)
 {
     const auto inst = addInstruction(SCBE_MicroOp::Debug);
@@ -87,11 +98,6 @@ void SCBE_Micro::emitPop(CPUReg reg)
 {
     const auto inst = addInstruction(SCBE_MicroOp::Pop);
     inst->regA      = reg;
-}
-
-void SCBE_Micro::emitEndProlog()
-{
-    addInstruction(SCBE_MicroOp::EndProlog);
 }
 
 void SCBE_Micro::emitRet()
@@ -491,6 +497,12 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
                 break;
             case SCBE_MicroOp::Ignore:
                 break;
+            case SCBE_MicroOp::Enter:
+                encoder.emitEnter(static_cast<uint32_t>(inst->valueA));
+                break;
+            case SCBE_MicroOp::Leave:
+                encoder.emitLeave();
+                break;
             case SCBE_MicroOp::Debug:
                 encoder.emitDebug(reinterpret_cast<ByteCodeInstruction*>(inst->valueA));
                 break;
@@ -517,9 +529,6 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
                 break;
             case SCBE_MicroOp::Pop:
                 encoder.emitPop(inst->regA);
-                break;
-            case SCBE_MicroOp::EndProlog:
-                encoder.emitEndProlog();
                 break;
             case SCBE_MicroOp::Nop:
                 encoder.emitNop();

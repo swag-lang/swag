@@ -225,8 +225,9 @@ struct SCBE_CPU : BackendEncoder
     void emitComputeCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& cpuParams, CPUReg memRegResult, uint32_t memOffsetResult, void* resultAddr);
     void emitStoreCallResult(CPUReg memReg, uint32_t memOffset, const TypeInfoFuncAttr* typeFuncBc);
 
+    virtual void emitEnter(uint32_t sizeStack);
+    virtual void emitLeave();
     virtual void emitDebug(ByteCodeInstruction* ipAddr);
-    virtual void emitEndProlog();
     virtual void emitLoadParam(CPUReg reg, uint32_t paramIdx, OpBits opBits);
     virtual void emitLoadSignedExtendParam(CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc);
     virtual void emitLoadZeroExtendParam(CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc);

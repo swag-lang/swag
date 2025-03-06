@@ -87,7 +87,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     pp.symPI_makeCallback   = ppCPU.symPI_makeCallback;
     pp.symCst_U64F64        = ppCPU.symCst_U64F64;
 
-    emitEnter(pp, sizeStack);
+    pp.emitEnter(sizeStack);
 
     // Save register parameters
     uint32_t idxReg = 0;
@@ -2025,7 +2025,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         pp.emitLoad(cc.returnByRegisterFloat, CPUReg::RAX, OpBits::F64);
                 }
 
-                emitLeave(pp);
+                pp.emitLeave();
                 break;
 
                 /////////////////////////////////////
