@@ -1,6 +1,8 @@
 #include "pch.h"
-#include "Backend/SCBE/Encoder/Micro/SCBE_Micro.h"
+
 #include "Backend/ByteCode/ByteCode.h"
+#include "Backend/SCBE/Encoder/Micro/SCBE_Micro.h"
+#include "SCBE_Optimizer.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/AstNode.h"
 
@@ -659,14 +661,6 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
         print();
 }
 
-void SCBE_Micro::ignore(SCBE_MicroInstruction* inst)
-{
-#ifdef SWAG_STATS
-    g_Stats.totalOptimScbe += 1;
-#endif
-    inst->op = SCBE_MicroOp::Ignore;
-}
-
 void SCBE_Micro::process()
 {
 #ifdef SWAG_STATS
@@ -675,54 +669,7 @@ void SCBE_Micro::process()
 
     addInstruction(SCBE_MicroOp::End);
     concat.makeLinear();
-    if (optLevel == BuildCfgBackendOptim::O0)
-        return;
-
-    const auto num  = concat.totalCount() / sizeof(SCBE_MicroInstruction);
-    auto       inst = reinterpret_cast<SCBE_MicroInstruction*>(concat.firstBucket->data);
-    for (uint32_t i = 0; i < num; i++, inst++)
-    {
-        if (inst->op == SCBE_MicroOp::Ignore || inst->op == SCBE_MicroOp::Nop)
-            continue;
-
-        auto next = inst + 1;
-        while (next->op == SCBE_MicroOp::Nop || next->op == SCBE_MicroOp::Label || next->op == SCBE_MicroOp::Debug || next->op == SCBE_MicroOp::Ignore)
-            next++;
-
-        // mov qword ptr [rdi+16], rax
-        // mov rax, qword ptr [rdi+16]
-        if (inst[0].op == SCBE_MicroOp::StoreMR &&
-            next->op == SCBE_MicroOp::LoadRM &&
-            !next->flags.has(MIF_JUMP_DEST) &&
-            inst[0].opBitsA == next->opBitsA &&
-            inst[0].regA == next->regB &&
-            inst[0].regB == next->regA &&
-            inst[0].valueA == next->valueA)
-        {
-            ignore(next);
-        }
-
-        // mov qword ptr [rdi+16], rax
-        // mov rcx, qword ptr [rdi+16]
-        if (inst[0].op == SCBE_MicroOp::StoreMR &&
-            next->op == SCBE_MicroOp::LoadRM &&
-            !next->flags.has(MIF_JUMP_DEST) &&
-            inst[0].opBitsA == next->opBitsA &&
-            inst[0].regA == next->regB &&
-            inst[0].valueA == next->valueA)
-        {
-            if (inst[0].opBitsA == OpBits::B64)
-            {
-                next->op   = SCBE_MicroOp::LoadRR;
-                next->regB = inst[0].regB;
-            }
-        }
-
-        if (inst[0].op == SCBE_MicroOp::StoreMR &&
-            inst[0].regA == CPUReg::RSP &&
-            next->op == SCBE_MicroOp::End)
-        {
-            //ignore(inst);
-        }
-    }
+    
+    SCBE_Optimizer opt;
+    opt.optimize(*this);
 }
