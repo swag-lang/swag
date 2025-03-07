@@ -1,9 +1,11 @@
 // ReSharper disable CppInconsistentNaming
 #pragma once
+#include "Backend/CallConv.h"
 
 struct SCBE_Micro;
 struct SCBE_MicroInstruction;
 enum class SCBE_MicroOp : uint8_t;
+enum class OpBits : uint8_t;
 
 struct SCBE_Optimizer
 {
@@ -16,5 +18,7 @@ struct SCBE_Optimizer
 
     void optimize(const SCBE_Micro& out);
 
-    bool passHasDoneSomething = false;
+    Map<uint64_t, std::pair<CPUReg, OpBits>> mapValReg;
+    Map<CPUReg, uint64_t>                    mapRegVal;
+    bool                                     passHasDoneSomething = false;
 };

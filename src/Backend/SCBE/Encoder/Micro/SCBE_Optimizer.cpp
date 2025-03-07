@@ -2,6 +2,7 @@
 #include "Backend/SCBE/Encoder/Micro/SCBE_Optimizer.h"
 #include "Backend/SCBE/Encoder/Micro/SCBE_Micro.h"
 #include "Main/Statistics.h"
+#pragma optimize("", off)
 
 void SCBE_Optimizer::ignore(SCBE_MicroInstruction* inst)
 {
@@ -68,6 +69,75 @@ void SCBE_Optimizer::passReduce(const SCBE_Micro& out)
 
 void SCBE_Optimizer::passStoreMR(const SCBE_Micro& out)
 {
+    if (!out.cpuFct->bc->getPrintName().containsNoCase("5478"))
+        return;
+
+    mapValReg.clear();
+    mapRegVal.clear();
+
+    auto inst = reinterpret_cast<SCBE_MicroInstruction*>(out.concat.firstBucket->data);
+    while (inst->op != SCBE_MicroOp::End)
+    {
+        const auto& infos = g_MicroOpInfos[static_cast<int>(inst->op)];
+
+        if (inst->flags.has(MIF_JUMP_DEST))
+        {
+            mapValReg.clear();
+            mapRegVal.clear();
+        }
+
+        if (inst->op == SCBE_MicroOp::CallExtern ||
+            inst->op == SCBE_MicroOp::CallIndirect ||
+            inst->op == SCBE_MicroOp::CallLocal)
+        {
+            mapValReg.clear();
+            mapRegVal.clear();
+        }
+
+        if (inst->op == SCBE_MicroOp::JumpM ||
+            inst->op == SCBE_MicroOp::JumpTable ||
+            inst->op == SCBE_MicroOp::JumpCC ||
+            inst->op == SCBE_MicroOp::JumpCI)
+        {
+            mapValReg.clear();
+            mapRegVal.clear();
+        }
+
+        if (inst->op == SCBE_MicroOp::StoreMR &&
+            inst->regA == CPUReg::RSP &&
+            out.cpuFct->isStackOffsetReg(static_cast<uint32_t>(inst->valueA)))
+        {
+            mapValReg[inst->valueA] = {inst->regB, inst->opBitsA};
+            mapRegVal[inst->regB]   = inst->valueA;
+        }
+        else if (infos.leftFlags.has(MOF_REG_A) &&
+                 infos.leftFlags.has(MOF_VALUE_A) &&
+                 inst->regA == CPUReg::RSP &&
+                 mapValReg.contains(inst->valueA))
+        {
+            mapValReg[inst->valueA] = {CPUReg::Invalid, OpBits::Zero};
+        }
+        else if (inst->op == SCBE_MicroOp::LoadRM &&
+                 inst->regB == CPUReg::RSP &&
+                 mapValReg.contains(inst->valueA) &&
+                 mapRegVal.contains(mapValReg[inst->valueA].first) &&
+                 inst->opBitsA == mapValReg[inst->valueA].second &&
+                 mapRegVal[mapValReg[inst->valueA].first] == inst->valueA)
+        {
+            if (mapValReg[inst->valueA].first == inst->regA)
+            {
+                ignore(inst);
+            }
+        }
+        else if (infos.leftFlags.has(MOF_REG_A) &&
+                 !infos.leftFlags.has(MOF_VALUE_A) &&
+                 mapRegVal.contains(inst->regA))
+        {
+            mapRegVal[inst->regA] = UINT64_MAX;
+        }
+
+        inst = zap(inst + 1);
+    }
 }
 
 void SCBE_Optimizer::optimize(const SCBE_Micro& out)
@@ -80,6 +150,6 @@ void SCBE_Optimizer::optimize(const SCBE_Micro& out)
     {
         passHasDoneSomething = false;
         passReduce(out);
-        passStoreMR(out);
+        //passStoreMR(out);
     }
 }

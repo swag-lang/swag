@@ -45,7 +45,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     // sizeStackCallParams to store function call parameters
     // ...padding to 16...
 
-    // all registers = RDI:             bc->maxReservedRegisterRC, contains all Swag bytecode registers
+    // all registers:                   bc->maxReservedRegisterRC, contains all Swag bytecode registers
     // offsetRT:                        bc->maxCallResults, contains registers for result
     // offsetParamsAsRegisters:         To store all parameters passed as register in the current calling convention
     // offsetResult:                    sizeof(Register) to store return value

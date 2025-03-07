@@ -1,6 +1,7 @@
 // ReSharper disable CppInconsistentNaming
 #pragma once
 #include "Backend/Backend.h"
+#include "Backend/ByteCode/ByteCode.h"
 #include "Backend/CallConv.h"
 #include "Backend/SCBE/Debug/SCBE_Debug.h"
 #include "Core/Concat.h"
@@ -209,6 +210,7 @@ struct CPUFunction
     uint32_t getStackOffsetRT(uint32_t reg) const { return sizeStackCallParams + offsetRT + (reg * sizeof(Register)); }
     uint32_t getStackOffsetResult() const { return sizeStackCallParams + offsetResult; }
     uint32_t getStackOffsetFLT() const { return sizeStackCallParams + offsetFLT; }
+    bool     isStackOffsetReg(uint32_t offset) const { return offset >= getStackOffsetReg(0) && offset < getStackOffsetReg(bc->maxReservedRegisterRC); }
 };
 
 struct SCBE_CPU : BackendEncoder

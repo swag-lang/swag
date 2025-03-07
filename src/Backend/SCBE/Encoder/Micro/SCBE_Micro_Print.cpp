@@ -525,12 +525,12 @@ void SCBE_Micro::print() const
             case SCBE_MicroOp::ClearM:
                 // encoder.emitClear(inst->regA, inst->valueA, static_cast<uint32_t>(inst->valueB));
                 line.name = "clear";
-                line.args = form("ptr %s+%d, %d", regName(inst->regA, OpBits::B64), inst->valueA, inst->valueB);
+                line.args = form("byte ptr [%s+%d], %d", regName(inst->regA, OpBits::B64), inst->valueA, inst->valueB);
                 break;
             case SCBE_MicroOp::Copy:
                 // encoder.emitCopy(inst->regA, inst->regB, static_cast<uint32_t>(inst->valueA));
                 line.name = "copy";
-                line.args = form("ptr %s, ptr %s, %d", regName(inst->regA, OpBits::B64), regName(inst->regA, OpBits::B64), inst->valueA);
+                line.args = form("byte ptr [%s], byte ptr [%s], %d", regName(inst->regA, OpBits::B64), regName(inst->regB, OpBits::B64), inst->valueA);
                 break;
             case SCBE_MicroOp::OpUnaryM:
                 // encoder.emitOpUnary(inst->regA, inst->valueA, inst->cpuOp, inst->opBitsA);
