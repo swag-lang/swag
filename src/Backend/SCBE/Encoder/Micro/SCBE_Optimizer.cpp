@@ -18,6 +18,58 @@ void SCBE_Optimizer::setOp(SCBE_MicroInstruction* inst, SCBE_MicroOp op)
     passHasDoneSomething = true;
 }
 
+SCBE_MicroInstruction* SCBE_Optimizer::zap(SCBE_MicroInstruction* inst)
+{
+    while (inst->op == SCBE_MicroOp::Nop || inst->op == SCBE_MicroOp::Label || inst->op == SCBE_MicroOp::Debug || inst->op == SCBE_MicroOp::Ignore)
+        inst++;
+    return inst;
+}
+
+void SCBE_Optimizer::passReduce(const SCBE_Micro& out)
+{
+    auto inst = reinterpret_cast<SCBE_MicroInstruction*>(out.concat.firstBucket->data);
+    while (inst->op != SCBE_MicroOp::End)
+    {
+        const auto next = zap(inst + 1);
+
+        switch (inst[0].op)
+        {
+            case SCBE_MicroOp::StoreMR:
+                if (next->op == SCBE_MicroOp::LoadRM &&
+                    !next->flags.has(MIF_JUMP_DEST) &&
+                    inst[0].opBitsA == next->opBitsA &&
+                    inst[0].regA == next->regB &&
+                    inst[0].valueA == next->valueA)
+                {
+                    if (inst[0].regB == next->regA)
+                    {
+                        ignore(next);
+                    }
+                    else if (inst[0].opBitsA == OpBits::B64)
+                    {
+                        setOp(next, SCBE_MicroOp::LoadRR);
+                        next->regB = inst[0].regB;
+                    }
+                    break;
+                }
+
+                if (inst[0].regA == CPUReg::RSP &&
+                    next->op == SCBE_MicroOp::Leave)
+                {
+                    ignore(inst);
+                    break;
+                }
+                break;
+        }
+
+        inst = zap(next);
+    }
+}
+
+void SCBE_Optimizer::passStoreMR(const SCBE_Micro& out)
+{
+}
+
 void SCBE_Optimizer::optimize(const SCBE_Micro& out)
 {
     if (out.optLevel == BuildCfgBackendOptim::O0)
@@ -27,49 +79,7 @@ void SCBE_Optimizer::optimize(const SCBE_Micro& out)
     while (passHasDoneSomething)
     {
         passHasDoneSomething = false;
-
-        const auto num  = out.concat.totalCount() / sizeof(SCBE_MicroInstruction);
-        auto       inst = reinterpret_cast<SCBE_MicroInstruction*>(out.concat.firstBucket->data);
-        for (uint32_t i = 0; i < num; i++, inst++)
-        {
-            if (inst->op == SCBE_MicroOp::Nop || inst->op == SCBE_MicroOp::Label || inst->op == SCBE_MicroOp::Debug || inst->op == SCBE_MicroOp::Ignore)
-                continue;
-
-            auto next = inst + 1;
-            while (next->op == SCBE_MicroOp::Nop || next->op == SCBE_MicroOp::Label || next->op == SCBE_MicroOp::Debug || next->op == SCBE_MicroOp::Ignore)
-                next++;
-
-            if (inst[0].op == SCBE_MicroOp::StoreMR &&
-                next->op == SCBE_MicroOp::LoadRM &&
-                !next->flags.has(MIF_JUMP_DEST) &&
-                inst[0].opBitsA == next->opBitsA &&
-                inst[0].regA == next->regB &&
-                inst[0].regB == next->regA &&
-                inst[0].valueA == next->valueA)
-            {
-                ignore(next);
-            }
-
-            if (inst[0].op == SCBE_MicroOp::StoreMR &&
-                next->op == SCBE_MicroOp::LoadRM &&
-                !next->flags.has(MIF_JUMP_DEST) &&
-                inst[0].opBitsA == next->opBitsA &&
-                inst[0].regA == next->regB &&
-                inst[0].valueA == next->valueA)
-            {
-                if (inst[0].opBitsA == OpBits::B64)
-                {
-                    setOp(next, SCBE_MicroOp::LoadRR);
-                    next->regB = inst[0].regB;
-                }
-            }
-
-            if (inst[0].op == SCBE_MicroOp::StoreMR &&
-                inst[0].regA == CPUReg::RSP &&
-                next->op == SCBE_MicroOp::Leave)
-            {
-                ignore(inst);
-            }
-        }
+        passReduce(out);
+        passStoreMR(out);
     }
 }
