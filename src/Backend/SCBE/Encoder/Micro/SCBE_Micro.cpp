@@ -686,7 +686,7 @@ void SCBE_Micro::process()
             continue;
 
         auto next = inst + 1;
-        while (next->op == SCBE_MicroOp::Nop || next->op == SCBE_MicroOp::Label || next->op == SCBE_MicroOp::Debug)
+        while (next->op == SCBE_MicroOp::Nop || next->op == SCBE_MicroOp::Label || next->op == SCBE_MicroOp::Debug || next->op == SCBE_MicroOp::Ignore)
             next++;
 
         // mov qword ptr [rdi+16], rax
@@ -716,6 +716,13 @@ void SCBE_Micro::process()
                 next->op   = SCBE_MicroOp::LoadRR;
                 next->regB = inst[0].regB;
             }
+        }
+
+        if (inst[0].op == SCBE_MicroOp::StoreMR &&
+            inst[0].regA == CPUReg::RSP &&
+            next->op == SCBE_MicroOp::End)
+        {
+            //ignore(inst);
         }
     }
 }
