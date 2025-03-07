@@ -115,7 +115,7 @@ void SCBE_Optimizer::passStoreMR(const SCBE_Micro& out)
                  inst->regA == CPUReg::RSP &&
                  mapValReg.contains(inst->valueA))
         {
-            mapValReg[inst->valueA] = {CPUReg::Invalid, OpBits::Zero};
+            mapValReg[inst->valueA] = {CPUReg::Max, OpBits::Zero};
         }
         else if (inst->op == SCBE_MicroOp::LoadRM &&
                  inst->regB == CPUReg::RSP &&

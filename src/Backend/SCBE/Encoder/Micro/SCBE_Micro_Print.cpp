@@ -127,8 +127,10 @@ namespace
                                                                                : "mov";
 
             case CPUOp::CVTI2F:
-                return opBits == OpBits::F32 ? "cvtsi2ss" : opBits == OpBits::F64 ? "cvtsi2sd"
-                                                                                  : "cvti2f";
+                return opBits == OpBits::F32 ? "cvtsi2ss" : "cvtsi2sd";
+            case CPUOp::CVTF2I:
+                return opBits == OpBits::F32 ? "cvtss2si" : "cvtsd2si";
+
             case CPUOp::FADD:
                 return opBits == OpBits::F32 ? "addss" : opBits == OpBits::F64 ? "addsd"
                                                                                : "fadd";
@@ -140,7 +142,7 @@ namespace
             case CPUOp::FMAX:
                 return "fmax";
             case CPUOp::FXOR:
-                return "fxor";            
+                return "fxor";
         }
 
         return form("<%d>", op);
@@ -150,9 +152,9 @@ namespace
     {
         static constexpr const char* GENERAL_REGS[][4] = {
             {"al", "ax", "eax", "rax"},
+            {"bl", "bx", "ebx", "rbx"},
             {"cl", "cx", "ecx", "rcx"},
             {"dl", "dx", "edx", "rdx"},
-            {"bl", "bx", "ebx", "rbx"},
             {"spl", "sp", "esp", "rsp"},
             {"bpl", "bp", "ebp", "rbp"},
             {"sil", "si", "esi", "rsi"},
@@ -164,51 +166,14 @@ namespace
             {"r12b", "r12w", "r12d", "r12"},
             {"r13b", "r13w", "r13d", "r13"},
             {"r14b", "r14w", "r14d", "r14"},
-            {"r15b", "r15w", "r15d", "r15"}};
-
-        static constexpr const char* XMM_REGS[] = {"xmm0", "xmm1", "xmm2", "xmm3", "xmm4", "xmm5", "xmm6", "xmm7", "xmm8", "xmm9", "xmm10", "xmm11", "xmm12", "xmm13", "xmm14", "xmm15"};
-
-        if (SCBE_CPU::isFloat(opBits))
-            return XMM_REGS[static_cast<int>(reg) - static_cast<int>(CPUReg::XMM0)];
+            {"r15b", "r15w", "r15d", "r15"},
+            {"xmm0", "xmm0", "xmm0", "xmm0"},
+            {"xmm1", "xmm1", "xmm1", "xmm1"},
+            {"xmm2", "xmm2", "xmm2", "xmm2"},
+            {"xmm3", "xmm3", "xmm3", "xmm3"}};
 
         const auto numBytes = static_cast<int>(std::log2(SCBE_CPU::getNumBits(opBits) / 8));
-        switch (reg)
-        {
-            case CPUReg::RAX:
-                return GENERAL_REGS[0][numBytes];
-            case CPUReg::RCX:
-                return GENERAL_REGS[1][numBytes];
-            case CPUReg::RDX:
-                return GENERAL_REGS[2][numBytes];
-            case CPUReg::RBX:
-                return GENERAL_REGS[3][numBytes];
-            case CPUReg::RSP:
-                return GENERAL_REGS[4][numBytes];
-            case CPUReg::RBP:
-                return GENERAL_REGS[5][numBytes];
-            case CPUReg::RSI:
-                return GENERAL_REGS[6][numBytes];
-            case CPUReg::RDI:
-                return GENERAL_REGS[7][numBytes];
-            case CPUReg::R8:
-                return GENERAL_REGS[8][numBytes];
-            case CPUReg::R9:
-                return GENERAL_REGS[9][numBytes];
-            case CPUReg::R10:
-                return GENERAL_REGS[10][numBytes];
-            case CPUReg::R11:
-                return GENERAL_REGS[11][numBytes];
-            case CPUReg::R12:
-                return GENERAL_REGS[12][numBytes];
-            case CPUReg::R13:
-                return GENERAL_REGS[13][numBytes];
-            case CPUReg::R14:
-                return GENERAL_REGS[14][numBytes];
-            case CPUReg::R15:
-                return GENERAL_REGS[15][numBytes];
-            default:
-                return "???";
-        }
+        return GENERAL_REGS[static_cast<int>(reg)][numBytes];
     }
 
     const char* opBitsName(OpBits opBits)
