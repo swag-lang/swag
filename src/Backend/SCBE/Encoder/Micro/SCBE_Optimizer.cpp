@@ -18,7 +18,7 @@ void SCBE_Optimizer::setOp(SCBE_MicroInstruction* inst, SCBE_MicroOp op)
     passHasDoneSomething = true;
 }
 
-void SCBE_Optimizer::optimize(SCBE_Micro& out)
+void SCBE_Optimizer::optimize(const SCBE_Micro& out)
 {
     if (out.optLevel == BuildCfgBackendOptim::O0)
         return;
@@ -39,8 +39,6 @@ void SCBE_Optimizer::optimize(SCBE_Micro& out)
             while (next->op == SCBE_MicroOp::Nop || next->op == SCBE_MicroOp::Label || next->op == SCBE_MicroOp::Debug || next->op == SCBE_MicroOp::Ignore)
                 next++;
 
-            // mov qword ptr [rdi+16], rax
-            // mov rax, qword ptr [rdi+16]
             if (inst[0].op == SCBE_MicroOp::StoreMR &&
                 next->op == SCBE_MicroOp::LoadRM &&
                 !next->flags.has(MIF_JUMP_DEST) &&
@@ -52,8 +50,6 @@ void SCBE_Optimizer::optimize(SCBE_Micro& out)
                 ignore(next);
             }
 
-            // mov qword ptr [rdi+16], rax
-            // mov rcx, qword ptr [rdi+16]
             if (inst[0].op == SCBE_MicroOp::StoreMR &&
                 next->op == SCBE_MicroOp::LoadRM &&
                 !next->flags.has(MIF_JUMP_DEST) &&

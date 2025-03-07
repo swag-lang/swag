@@ -10,7 +10,7 @@ struct SCBE_Optimizer
     void ignore(SCBE_MicroInstruction* inst);
     void setOp(SCBE_MicroInstruction* inst, SCBE_MicroOp op);
 
-    void optimize(SCBE_Micro& out);
+    void optimize(const SCBE_Micro& out);
 
     bool passHasDoneSomething = false;
 };
