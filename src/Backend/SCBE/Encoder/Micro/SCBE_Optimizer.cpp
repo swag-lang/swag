@@ -96,7 +96,7 @@ void SCBE_Optimizer::passReduce(const SCBE_Micro& out)
                         ignore(next);
                         break;
                     }
-                    
+
                     if (inst[0].opBitsA == OpBits::B64)
                     {
                         setOp(next, SCBE_MicroOp::LoadRR);
@@ -170,18 +170,7 @@ void SCBE_Optimizer::passStoreToHdwRegBeforeLeave(const SCBE_Micro& out)
     {
         const auto& infos = g_MicroOpInfos[static_cast<int>(inst->op)];
 
-        if (inst->flags.has(MIF_JUMP_DEST))
-        {
-            mapValInst.clear();
-        }
-
-        if (inst->op == SCBE_MicroOp::JumpM ||
-            inst->op == SCBE_MicroOp::JumpTable ||
-            inst->op == SCBE_MicroOp::JumpCC ||
-            inst->op == SCBE_MicroOp::JumpCI ||
-            inst->op == SCBE_MicroOp::CallExtern ||
-            inst->op == SCBE_MicroOp::CallIndirect ||
-            inst->op == SCBE_MicroOp::CallLocal)
+        if (inst->flags.has(MIF_JUMP_DEST) || inst->isJump() || inst->isCall())
         {
             mapValInst.clear();
         }
@@ -229,16 +218,7 @@ void SCBE_Optimizer::passStoreMR(const SCBE_Micro& out)
     {
         const auto& infos = g_MicroOpInfos[static_cast<int>(inst->op)];
 
-        if (inst->flags.has(MIF_JUMP_DEST))
-        {
-            mapValReg.clear();
-            mapRegVal.clear();
-        }
-
-        if (inst->op == SCBE_MicroOp::JumpM ||
-            inst->op == SCBE_MicroOp::JumpTable ||
-            inst->op == SCBE_MicroOp::JumpCC ||
-            inst->op == SCBE_MicroOp::JumpCI)
+        if (inst->flags.has(MIF_JUMP_DEST) || inst->isJump())
         {
             mapValReg.clear();
             mapRegVal.clear();

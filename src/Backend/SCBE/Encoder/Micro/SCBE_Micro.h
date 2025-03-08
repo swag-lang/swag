@@ -56,6 +56,9 @@ struct SCBE_MicroInstruction
     CPUReg   regA;
     CPUReg   regB;
     CPUReg   regC;
+
+    bool isJump() const { return op == SCBE_MicroOp::JumpM || op == SCBE_MicroOp::JumpCI || op == SCBE_MicroOp::JumpTable || op == SCBE_MicroOp::JumpCC; }
+    bool isCall() const { return op == SCBE_MicroOp::CallExtern || op == SCBE_MicroOp::CallIndirect || op == SCBE_MicroOp::CallLocal; }
 };
 
 using SCBE_MicroOpDetails                  = Flags<uint64_t>;
