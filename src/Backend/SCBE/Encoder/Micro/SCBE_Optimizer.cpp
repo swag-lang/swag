@@ -32,9 +32,23 @@ void SCBE_Optimizer::passReduce(const SCBE_Micro& out)
     while (inst->op != SCBE_MicroOp::End)
     {
         const auto next = zap(inst + 1);
+        const auto& infos = g_MicroOpInfos[static_cast<int>(next->op)];
 
         switch (inst[0].op)
         {
+            case SCBE_MicroOp::LoadRR:
+                if (infos.leftFlags.has(MOF_REG_A) &&
+                    infos.leftFlags.has(MOF_VALUE_A) &&
+                    !infos.leftFlags.has(MOF_REG_B) &&
+                    !next->flags.has(MIF_JUMP_DEST) &&
+                    inst->regA == next->regA &&
+                    inst->opBitsA == OpBits::B64)
+                {
+                    next->regA = inst->regB;
+                    passHasDoneSomething = true;
+                }
+                break;
+                
             case SCBE_MicroOp::StoreMR:
                 if (next->op == SCBE_MicroOp::LoadRM &&
                     !next->flags.has(MIF_JUMP_DEST) &&

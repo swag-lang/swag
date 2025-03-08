@@ -654,7 +654,7 @@ void SCBE_X64::emitStoreMI(CPUReg memReg, uint64_t memOffset, uint64_t value, Op
     }
     else
     {
-        emitREX(concat, opBits);
+        emitREX(concat, opBits, REX_REG_NONE, memReg);
         emitSpecB8(concat, 0xC7, opBits);
         emitModRM(concat, memOffset, MODRM_REG_0, memReg);
         emitValue(concat, value, std::min(opBits, OpBits::B32));
@@ -2181,11 +2181,11 @@ void SCBE_X64::emitCopy(CPUReg regDst, CPUReg regSrc, uint32_t count)
     }
 }
 
+#pragma optimize("", off)
 void SCBE_X64::emitClearM(CPUReg memReg, uint64_t memOffset, uint32_t count)
 {
     if (!count)
         return;
-    SWAG_ASSERT(memReg == CPUReg::RAX || memReg == CPUReg::RCX || memReg == CPUReg::RSP);
     SWAG_ASSERT(memOffset <= 0x7FFFFFFF);
 
     // SSE 16 octets
@@ -2199,6 +2199,7 @@ void SCBE_X64::emitClearM(CPUReg memReg, uint64_t memOffset, uint32_t count)
         while (count >= 16)
         {
             // movups [memReg+??], xmm0
+            emitREX(concat, OpBits::Zero, REX_REG_NONE, memReg);
             emitCPUOp(concat, 0x0F);
             emitCPUOp(concat, 0x11);
             emitModRM(concat, memOffset, MODRM_REG_0, memReg);
