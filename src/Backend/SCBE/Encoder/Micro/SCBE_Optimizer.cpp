@@ -67,6 +67,41 @@ void SCBE_Optimizer::passReduce(const SCBE_Micro& out)
     }
 }
 
+void SCBE_Optimizer::passPendingReg(const SCBE_Micro& out)
+{
+    mapValInst.clear();
+
+    auto inst = reinterpret_cast<SCBE_MicroInstruction*>(out.concat.firstBucket->data);
+    while (inst->op != SCBE_MicroOp::End)
+    {
+        const auto& infos = g_MicroOpInfos[static_cast<int>(inst->op)];
+
+        if (inst->flags.has(MIF_JUMP_DEST))
+        {
+            mapValInst.clear();
+        }
+
+        if (inst->op == SCBE_MicroOp::StoreMR &&
+            inst->regA == CPUReg::RSP &&
+            out.cpuFct->isStackOffsetTransient(static_cast<uint32_t>(inst->valueA)))
+        {
+            mapValInst[inst->valueA] = inst;
+        }
+        else if (infos.rightFlags.has(MOF_VALUE_A | MOF_VALUE_B))
+        {
+            mapValInst.clear();
+        }
+        else if (inst->op == SCBE_MicroOp::Leave && !mapValInst.empty())
+        {
+            for (const auto& i : mapValInst | std::views::values)
+                ignore(i);
+            mapValInst.clear();
+        }
+
+        inst = zap(inst + 1);
+    }
+}
+
 void SCBE_Optimizer::passStoreMR(const SCBE_Micro& out)
 {
     /*if (!out.cpuFct->bc->getPrintName().containsNoCase(".BuildCfg.opInitGenerated"))
@@ -120,14 +155,14 @@ void SCBE_Optimizer::passStoreMR(const SCBE_Micro& out)
         {
             if (mapValReg[inst->valueA].first == inst->regA)
             {
-                //out.print();
+                // out.print();
                 ignore(inst);
-                //out.print();
+                // out.print();
             }
             else if (inst->opBitsA == OpBits::B64)
             {
                 setOp(inst, SCBE_MicroOp::LoadRR);
-                inst->regB = mapValReg[inst->valueA].first;                
+                inst->regB = mapValReg[inst->valueA].first;
             }
         }
         else if (inst->op == SCBE_MicroOp::LoadRM &&
@@ -172,5 +207,6 @@ void SCBE_Optimizer::optimize(const SCBE_Micro& out)
         passHasDoneSomething = false;
         passReduce(out);
         passStoreMR(out);
+        passPendingReg(out);
     }
 }

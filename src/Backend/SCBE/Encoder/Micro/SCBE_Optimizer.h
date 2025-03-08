@@ -15,6 +15,7 @@ struct SCBE_Optimizer
     static SCBE_MicroInstruction* zap(SCBE_MicroInstruction* inst);
 
     void passReduce(const SCBE_Micro& out);
+    void passPendingReg(const SCBE_Micro& out);
     void passStoreMR(const SCBE_Micro& out);
 
     void optimize(const SCBE_Micro& out);
@@ -22,5 +23,6 @@ struct SCBE_Optimizer
     SCBE_CPU*                                encoder = nullptr;
     Map<uint64_t, std::pair<CPUReg, OpBits>> mapValReg;
     Map<CPUReg, uint64_t>                    mapRegVal;
+    Map<uint64_t, SCBE_MicroInstruction*>    mapValInst;
     bool                                     passHasDoneSomething = false;
 };
