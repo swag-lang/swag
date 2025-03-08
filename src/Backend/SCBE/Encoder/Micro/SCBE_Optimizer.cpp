@@ -45,8 +45,12 @@ void SCBE_Optimizer::passReduce(const SCBE_Micro& out)
                     inst->regA == next->regA &&
                     inst->opBitsA == OpBits::B64)
                 {
-                    next->regA           = inst->regB;
-                    passHasDoneSomething = true;
+                    const auto details = encoder->getInstructionDetails(next);
+                    if (!details.has(1ULL << static_cast<uint32_t>(inst->regB)))
+                    {
+                        next->regA           = inst->regB;
+                        passHasDoneSomething = true;
+                    }
                 }
                 break;
 
@@ -102,11 +106,19 @@ void SCBE_Optimizer::passStoreToRegBeforeLeave(const SCBE_Micro& out)
         {
             mapValInst[inst->valueA] = inst;
         }
-        else if (infos.rightFlags.has(MOF_VALUE_A | MOF_VALUE_B))
+        else
         {
-            mapValInst.clear();
+            if (infos.leftFlags.has(MOF_REG_A | MOF_REG_B) && infos.leftFlags.has(MOF_VALUE_A))
+                mapValInst.erase(static_cast<uint32_t>(inst->valueA));
+            if (infos.leftFlags.has(MOF_REG_A | MOF_REG_B) && infos.leftFlags.has(MOF_VALUE_B))
+                mapValInst.erase(static_cast<uint32_t>(inst->valueB));            
+            if (infos.rightFlags.has(MOF_REG_A | MOF_REG_B) && infos.rightFlags.has(MOF_VALUE_A))
+                mapValInst.erase(static_cast<uint32_t>(inst->valueA));
+            if (infos.rightFlags.has(MOF_REG_A | MOF_REG_B) && infos.rightFlags.has(MOF_VALUE_B))
+                mapValInst.erase(static_cast<uint32_t>(inst->valueB));
         }
-        else if (inst->op == SCBE_MicroOp::Leave && !mapValInst.empty())
+
+        if (inst->op == SCBE_MicroOp::Leave && !mapValInst.empty())
         {
             for (const auto& i : mapValInst | std::views::values)
                 ignore(i);
@@ -153,6 +165,8 @@ void SCBE_Optimizer::passStoreToHdwRegBeforeLeave(const SCBE_Micro& out)
             {
                 mapValInst[static_cast<uint32_t>(inst->regA)] = inst;
             }
+
+            mapValInst.erase(static_cast<uint32_t>(inst->regB));
         }
         else
         {
