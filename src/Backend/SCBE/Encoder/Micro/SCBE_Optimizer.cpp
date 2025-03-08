@@ -293,6 +293,8 @@ void SCBE_Optimizer::optimize(const SCBE_Micro& out)
 {
     if (out.optLevel == BuildCfgBackendOptim::O0)
         return;
+    //if (!out.cpuFct->bc->getPrintName().containsNoCase("dayOfWeek"))
+    //    return;
 
     passHasDoneSomething = true;
     while (passHasDoneSomething)

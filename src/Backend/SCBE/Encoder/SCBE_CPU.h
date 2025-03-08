@@ -213,8 +213,9 @@ struct CPUFunction
     uint32_t getStackOffsetResult() const { return sizeStackCallParams + offsetResult; }
     uint32_t getStackOffsetFLT() const { return sizeStackCallParams + offsetFLT; }
     bool     isStackOffsetLocalParam(uint32_t offset) const { return cc->paramByRegisterCount && offset >= getStackOffsetParam(0) && offset <= getStackOffsetParam(cc->paramByRegisterCount - 1); }
+    bool     isStackOffsetRT(uint32_t offset) const { return offset >= getStackOffsetRT(0) && offset <= getStackOffsetRT(1); }
     bool     isStackOffsetReg(uint32_t offset) const { return offset >= getStackOffsetReg(0) && offset < getStackOffsetReg(bc->maxReservedRegisterRC); }
-    bool     isStackOffsetTransient(uint32_t offset) const { return isStackOffsetLocalParam(offset) || isStackOffsetReg(offset); }
+    bool     isStackOffsetTransient(uint32_t offset) const { return isStackOffsetLocalParam(offset) || isStackOffsetReg(offset) || isStackOffsetRT(offset); }
 };
 
 struct SCBE_CPU : BackendEncoder

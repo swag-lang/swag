@@ -5,6 +5,7 @@
 #include "Core/Math.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Wmf/Module.h"
+#pragma optimize("", off)
 #pragma warning(disable : 4063)
 
 enum class ModRMMode : uint8_t
@@ -2329,7 +2330,10 @@ SCBE_MicroOpDetails SCBE_X64::getInstructionDetails(SCBE_MicroInstruction* inst)
         case SCBE_MicroOp::LoadRR:
             result.add(1ULL << static_cast<uint32_t>(inst->regA));
             return result;
+
         case SCBE_MicroOp::LoadRM:
+        case SCBE_MicroOp::LoadZeroExtendRM:
+        case SCBE_MicroOp::LoadSignedExtendRM:
             result.add(1ULL << static_cast<uint32_t>(inst->regA));
             if (inst->valueA > 0x7FFFFFFF)
                 result.add(1ULL << static_cast<uint32_t>(CPUReg::RCX));
@@ -2338,6 +2342,8 @@ SCBE_MicroOpDetails SCBE_X64::getInstructionDetails(SCBE_MicroInstruction* inst)
         case SCBE_MicroOp::OpBinaryRI:
             result.add(1ULL << static_cast<uint32_t>(inst->regA));
             if (inst->valueA > 0x7FFFFFFF)
+                result.add(1ULL << static_cast<uint32_t>(CPUReg::RCX));
+            if (inst->cpuOp == CPUOp::DIV || inst->cpuOp == CPUOp::MOD || inst->cpuOp == CPUOp::IDIV || inst->cpuOp == CPUOp::IMOD)
                 result.add(1ULL << static_cast<uint32_t>(CPUReg::RCX));
             if (inst->cpuOp == CPUOp::DIV || inst->cpuOp == CPUOp::MOD || inst->cpuOp == CPUOp::IDIV || inst->cpuOp == CPUOp::IMOD)
                 result.add(1ULL << static_cast<uint32_t>(CPUReg::RDX));
