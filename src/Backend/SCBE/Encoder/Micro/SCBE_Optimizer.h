@@ -16,6 +16,7 @@ struct SCBE_Optimizer
 
     void passReduce(const SCBE_Micro& out);
     void passStoreToRegBeforeLeave(const SCBE_Micro& out);
+    void passStoreToHdwRegBeforeLeave(const SCBE_Micro& out);
     void passStoreMR(const SCBE_Micro& out);
 
     void optimize(const SCBE_Micro& out);

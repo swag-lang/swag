@@ -2,6 +2,7 @@
 #include "Backend/SCBE/Encoder/Micro/SCBE_Optimizer.h"
 #include "Backend/SCBE/Encoder/Micro/SCBE_Micro.h"
 #include "Main/Statistics.h"
+#include "Semantic/Type/TypeInfo.h"
 #pragma optimize("", off)
 
 void SCBE_Optimizer::ignore(SCBE_MicroInstruction* inst)
@@ -31,7 +32,7 @@ void SCBE_Optimizer::passReduce(const SCBE_Micro& out)
     auto inst = reinterpret_cast<SCBE_MicroInstruction*>(out.concat.firstBucket->data);
     while (inst->op != SCBE_MicroOp::End)
     {
-        const auto next = zap(inst + 1);
+        const auto  next  = zap(inst + 1);
         const auto& infos = g_MicroOpInfos[static_cast<int>(next->op)];
 
         switch (inst[0].op)
@@ -44,11 +45,11 @@ void SCBE_Optimizer::passReduce(const SCBE_Micro& out)
                     inst->regA == next->regA &&
                     inst->opBitsA == OpBits::B64)
                 {
-                    next->regA = inst->regB;
+                    next->regA           = inst->regB;
                     passHasDoneSomething = true;
                 }
                 break;
-                
+
             case SCBE_MicroOp::StoreMR:
                 if (next->op == SCBE_MicroOp::LoadRM &&
                     !next->flags.has(MIF_JUMP_DEST) &&
@@ -116,12 +117,64 @@ void SCBE_Optimizer::passStoreToRegBeforeLeave(const SCBE_Micro& out)
     }
 }
 
+void SCBE_Optimizer::passStoreToHdwRegBeforeLeave(const SCBE_Micro& out)
+{
+    mapValInst.clear();
+
+    auto inst = reinterpret_cast<SCBE_MicroInstruction*>(out.concat.firstBucket->data);
+    while (inst->op != SCBE_MicroOp::End)
+    {
+        const auto& infos = g_MicroOpInfos[static_cast<int>(inst->op)];
+
+        if (inst->flags.has(MIF_JUMP_DEST))
+        {
+            mapValInst.clear();
+        }
+
+        if (inst->op == SCBE_MicroOp::JumpM ||
+            inst->op == SCBE_MicroOp::JumpTable ||
+            inst->op == SCBE_MicroOp::JumpCC ||
+            inst->op == SCBE_MicroOp::JumpCI ||
+            inst->op == SCBE_MicroOp::CallExtern ||
+            inst->op == SCBE_MicroOp::CallIndirect ||
+            inst->op == SCBE_MicroOp::CallLocal)
+        {
+            mapValInst.clear();
+        }
+
+        if (inst->op == SCBE_MicroOp::LoadRR)
+        {
+            if (!out.cpuFct->typeFunc->returnByValue() && !out.cpuFct->typeFunc->returnStructByValue())
+            {
+                mapValInst[static_cast<uint32_t>(inst->regA)] = inst;
+            }
+            else if (inst->regA != out.cpuFct->cc->returnByRegisterInteger &&
+                     inst->regA != out.cpuFct->cc->returnByRegisterFloat)
+            {
+                mapValInst[static_cast<uint32_t>(inst->regA)] = inst;
+            }
+        }
+        else
+        {
+            if (infos.leftFlags.has(MOF_REG_A) || infos.rightFlags.has(MOF_REG_A))
+                mapValInst.erase(static_cast<uint32_t>(inst->regA));
+            if (infos.leftFlags.has(MOF_REG_B) || infos.rightFlags.has(MOF_REG_B))
+                mapValInst.erase(static_cast<uint32_t>(inst->regB));
+        }
+
+        if (inst->op == SCBE_MicroOp::Leave && !mapValInst.empty())
+        {
+            for (const auto& i : mapValInst | std::views::values)
+                ignore(i);
+            mapValInst.clear();
+        }
+
+        inst = zap(inst + 1);
+    }
+}
+
 void SCBE_Optimizer::passStoreMR(const SCBE_Micro& out)
 {
-    /*if (!out.cpuFct->bc->getPrintName().containsNoCase(".BuildCfg.opInitGenerated"))
-        return;
-    out.print();*/
-
     mapValReg.clear();
     mapRegVal.clear();
 
@@ -169,9 +222,7 @@ void SCBE_Optimizer::passStoreMR(const SCBE_Micro& out)
         {
             if (mapValReg[inst->valueA].first == inst->regA)
             {
-                // out.print();
                 ignore(inst);
-                // out.print();
             }
             else if (inst->opBitsA == OpBits::B64)
             {
@@ -222,5 +273,6 @@ void SCBE_Optimizer::optimize(const SCBE_Micro& out)
         passReduce(out);
         passStoreMR(out);
         passStoreToRegBeforeLeave(out);
+        passStoreToHdwRegBeforeLeave(out);
     }
 }
