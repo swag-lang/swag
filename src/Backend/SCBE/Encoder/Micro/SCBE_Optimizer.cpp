@@ -32,16 +32,21 @@ void SCBE_Optimizer::passReduce(const SCBE_Micro& out)
     auto inst = reinterpret_cast<SCBE_MicroInstruction*>(out.concat.firstBucket->data);
     while (inst->op != SCBE_MicroOp::End)
     {
-        const auto  next  = zap(inst + 1);
-        const auto& infos = g_MicroOpInfos[static_cast<int>(next->op)];
+        const auto next = zap(inst + 1);
+        if (next->flags.has(MIF_JUMP_DEST))
+        {
+            inst = zap(next);
+            continue;
+        }
+
+        const auto& nextInfos = g_MicroOpInfos[static_cast<int>(next->op)];
 
         switch (inst[0].op)
         {
             case SCBE_MicroOp::LoadRR:
-                if (infos.leftFlags.has(MOF_REG_A) &&
-                    infos.leftFlags.has(MOF_VALUE_A) &&
-                    !infos.leftFlags.has(MOF_REG_B) &&
-                    !next->flags.has(MIF_JUMP_DEST) &&
+                if (nextInfos.leftFlags.has(MOF_REG_A) &&
+                    nextInfos.leftFlags.has(MOF_VALUE_A) &&
+                    !nextInfos.leftFlags.has(MOF_REG_B) &&
                     inst->regA == next->regA &&
                     inst->opBitsA == OpBits::B64)
                 {
@@ -52,11 +57,20 @@ void SCBE_Optimizer::passReduce(const SCBE_Micro& out)
                         passHasDoneSomething = true;
                     }
                 }
+
+                if (next->op == SCBE_MicroOp::LoadRR &&
+                    inst->regA == next->regB &&
+                    inst->regB == next->regA &&
+                    inst->opBitsA == next->opBitsA &&
+                    inst->opBitsA == OpBits::B64)
+                {
+                    ignore(inst);
+                    ignore(next);
+                }
                 break;
 
             case SCBE_MicroOp::StoreMR:
                 if (next->op == SCBE_MicroOp::LoadRM &&
-                    !next->flags.has(MIF_JUMP_DEST) &&
                     inst[0].opBitsA == next->opBitsA &&
                     inst[0].regA == next->regB &&
                     inst[0].valueA == next->valueA)
@@ -111,7 +125,7 @@ void SCBE_Optimizer::passStoreToRegBeforeLeave(const SCBE_Micro& out)
             if (infos.leftFlags.has(MOF_REG_A | MOF_REG_B) && infos.leftFlags.has(MOF_VALUE_A))
                 mapValInst.erase(static_cast<uint32_t>(inst->valueA));
             if (infos.leftFlags.has(MOF_REG_A | MOF_REG_B) && infos.leftFlags.has(MOF_VALUE_B))
-                mapValInst.erase(static_cast<uint32_t>(inst->valueB));            
+                mapValInst.erase(static_cast<uint32_t>(inst->valueB));
             if (infos.rightFlags.has(MOF_REG_A | MOF_REG_B) && infos.rightFlags.has(MOF_VALUE_A))
                 mapValInst.erase(static_cast<uint32_t>(inst->valueA));
             if (infos.rightFlags.has(MOF_REG_A | MOF_REG_B) && infos.rightFlags.has(MOF_VALUE_B))
