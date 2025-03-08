@@ -99,14 +99,7 @@ void SCBE_Optimizer::passStoreMR(const SCBE_Micro& out)
         auto legitReg = CPUReg::Max;
         if (inst->op == SCBE_MicroOp::StoreMR &&
             inst->regA == CPUReg::RSP &&
-            out.cpuFct->isStackOffsetReg(static_cast<uint32_t>(inst->valueA)))
-        {
-            mapValReg[inst->valueA] = {inst->regB, inst->opBitsA};
-            mapRegVal[inst->regB]   = inst->valueA;
-        }
-        else if (inst->op == SCBE_MicroOp::StoreMR &&
-                 inst->regA == CPUReg::RSP &&
-                 out.cpuFct->isStackOffsetParam(static_cast<uint32_t>(inst->valueA)))
+            out.cpuFct->isStackOffsetTransient(static_cast<uint32_t>(inst->valueA)))
         {
             mapValReg[inst->valueA] = {inst->regB, inst->opBitsA};
             mapRegVal[inst->regB]   = inst->valueA;
@@ -139,7 +132,7 @@ void SCBE_Optimizer::passStoreMR(const SCBE_Micro& out)
         }
         else if (inst->op == SCBE_MicroOp::LoadRM &&
                  inst->regB == CPUReg::RSP &&
-                 out.cpuFct->isStackOffsetReg(static_cast<uint32_t>(inst->valueA)))
+                 out.cpuFct->isStackOffsetTransient(static_cast<uint32_t>(inst->valueA)))
         {
             legitReg                = inst->regA;
             mapValReg[inst->valueA] = {inst->regA, inst->opBitsA};

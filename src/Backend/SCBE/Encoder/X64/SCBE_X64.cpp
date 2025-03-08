@@ -2313,6 +2313,7 @@ SCBE_MicroOpDetails SCBE_X64::getInstructionDetails(SCBE_MicroInstruction* inst)
             return MOD_ZERO;
 
         case SCBE_MicroOp::StoreMR:
+        case SCBE_MicroOp::ClearM:
             return MOD_ZERO;
 
         case SCBE_MicroOp::StoreMI:
