@@ -103,6 +103,13 @@ void SCBE_Optimizer::passStoreMR(const SCBE_Micro& out)
             mapValReg[inst->valueA] = {inst->regB, inst->opBitsA};
             mapRegVal[inst->regB]   = inst->valueA;
         }
+        else if (inst->op == SCBE_MicroOp::StoreMR &&
+                 inst->regA == CPUReg::RSP &&
+                 out.cpuFct->isStackOffsetParam(static_cast<uint32_t>(inst->valueA)))
+        {
+            mapValReg[inst->valueA] = {inst->regB, inst->opBitsA};
+            mapRegVal[inst->regB]   = inst->valueA;
+        }
         else if (infos.leftFlags.has(MOF_REG_A) &&
                  infos.leftFlags.has(MOF_VALUE_A) &&
                  inst->regA == CPUReg::RSP &&
@@ -119,9 +126,9 @@ void SCBE_Optimizer::passStoreMR(const SCBE_Micro& out)
         {
             if (mapValReg[inst->valueA].first == inst->regA)
             {
-                //out.print();
+                // out.print();
                 ignore(inst);
-                //out.print();
+                // out.print();
             }
         }
 
