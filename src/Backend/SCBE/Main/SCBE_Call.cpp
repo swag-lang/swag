@@ -11,7 +11,7 @@
 void SCBE::emitLoadParam(SCBE_CPU& pp, CPUReg reg, uint32_t paramIdx, OpBits opBits)
 {
     if (paramIdx < pp.cpuFct->cc->paramByRegisterCount)
-        pp.emitLoad(reg, CPUReg::RSP, pp.cpuFct->getStackOffsetParam(paramIdx), opBits);
+        pp.emitLoadRM(reg, CPUReg::RSP, pp.cpuFct->getStackOffsetParam(paramIdx), opBits);
     else
         pp.emitLoadCallerParam(reg, paramIdx, opBits);
 }
@@ -19,7 +19,7 @@ void SCBE::emitLoadParam(SCBE_CPU& pp, CPUReg reg, uint32_t paramIdx, OpBits opB
 void SCBE::emitLoadZeroExtendParam(SCBE_CPU& pp, CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc)
 {
     if (paramIdx < pp.cpuFct->cc->paramByRegisterCount)
-        pp.emitLoadZeroExtend(reg, CPUReg::RSP, pp.cpuFct->getStackOffsetParam(paramIdx), numBitsDst, numBitsSrc);
+        pp.emitLoadZeroExtendRM(reg, CPUReg::RSP, pp.cpuFct->getStackOffsetParam(paramIdx), numBitsDst, numBitsSrc);
     else
         pp.emitLoadCallerZeroExtendParam(reg, paramIdx, numBitsDst, numBitsSrc);
 }
@@ -27,7 +27,7 @@ void SCBE::emitLoadZeroExtendParam(SCBE_CPU& pp, CPUReg reg, uint32_t paramIdx, 
 void SCBE::emitLoadAddressParam(SCBE_CPU& pp, CPUReg reg, uint32_t paramIdx)
 {
     if (paramIdx < pp.cpuFct->cc->paramByRegisterCount)
-        pp.emitLoadAddress(reg, CPUReg::RSP, pp.cpuFct->getStackOffsetParam(paramIdx));
+        pp.emitLoadAddressM(reg, CPUReg::RSP, pp.cpuFct->getStackOffsetParam(paramIdx));
     else
         pp.emitLoadCallerAddressParam(reg, paramIdx);
 }
@@ -47,7 +47,7 @@ void SCBE::emitGetParam(SCBE_CPU& pp, uint32_t reg, uint32_t paramIdx, OpBits op
         {
             SWAG_ASSERT(!toAdd);
             emitLoadZeroExtendParam(pp, CPUReg::RAX, paramIdx, OpBits::B64, opBits);
-            pp.emitStore(CPUReg::RSP, pp.cpuFct->getStackOffsetReg(reg), CPUReg::RAX, OpBits::B64);
+            pp.emitStoreMR(CPUReg::RSP, pp.cpuFct->getStackOffsetReg(reg), CPUReg::RAX, OpBits::B64);
             return;
         }
         case OpBits::B64:
@@ -69,15 +69,15 @@ void SCBE::emitGetParam(SCBE_CPU& pp, uint32_t reg, uint32_t paramIdx, OpBits op
         case OpBits::B16:
         case OpBits::B32:
         case OpBits::B64:
-            pp.emitLoadZeroExtend(CPUReg::RAX, CPUReg::RAX, static_cast<uint32_t>(toAdd), OpBits::B64, derefBits);
+            pp.emitLoadZeroExtendRM(CPUReg::RAX, CPUReg::RAX, static_cast<uint32_t>(toAdd), OpBits::B64, derefBits);
             break;
         default:
             if (toAdd)
-                pp.emitOpBinary(CPUReg::RAX, toAdd, CPUOp::ADD, OpBits::B64);
+                pp.emitOpBinaryRI(CPUReg::RAX, toAdd, CPUOp::ADD, OpBits::B64);
             break;
     }
 
-    pp.emitStore(CPUReg::RSP, pp.cpuFct->getStackOffsetReg(reg), CPUReg::RAX, OpBits::B64);
+    pp.emitStoreMR(CPUReg::RSP, pp.cpuFct->getStackOffsetReg(reg), CPUReg::RAX, OpBits::B64);
 }
 
 void SCBE::emitCallCPUParams(SCBE_CPU&                         pp,
@@ -160,8 +160,8 @@ void SCBE::emitLocalCall(SCBE_CPU& pp)
 
     if (ip->op == ByteCodeOp::LocalCallPopRC)
     {
-        pp.emitLoad(CPUReg::RAX, CPUReg::RSP, pp.cpuFct->getStackOffsetRT(0), OpBits::B64);
-        pp.emitStore(CPUReg::RSP, pp.cpuFct->getStackOffsetReg(ip->d.u32), CPUReg::RAX, OpBits::B64);
+        pp.emitLoadRM(CPUReg::RAX, CPUReg::RSP, pp.cpuFct->getStackOffsetRT(0), OpBits::B64);
+        pp.emitStoreMR(CPUReg::RSP, pp.cpuFct->getStackOffsetReg(ip->d.u32), CPUReg::RAX, OpBits::B64);
     }
 }
 
@@ -188,8 +188,8 @@ void SCBE::emitLambdaCall(SCBE_CPU& pp)
     const auto typeFuncBc = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
 
     // Test if it's a bytecode lambda
-    pp.emitLoad(CPUReg::R10, CPUReg::RSP, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-    pp.emitOpBinary(CPUReg::R10, SWAG_LAMBDA_BC_MARKER_BIT, CPUOp::BT, OpBits::B64);
+    pp.emitLoadRM(CPUReg::R10, CPUReg::RSP, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
+    pp.emitOpBinaryRI(CPUReg::R10, SWAG_LAMBDA_BC_MARKER_BIT, CPUOp::BT, OpBits::B64);
     const auto jumpBC = pp.emitJump(JB, OpBits::B32);
 
     // Native lambda
@@ -224,7 +224,7 @@ void SCBE::emitLambdaCall(SCBE_CPU& pp)
     pp.emitCallParameters(typeFuncBc, pushCPUParams, CallConv::get(CallConvKind::ByteCode));
 
     pp.emitSymbolRelocationAddress(CPUReg::RAX, pp.symPI_byteCodeRun, 0);
-    pp.emitLoad(CPUReg::RAX, CPUReg::RAX, 0, OpBits::B64);
+    pp.emitLoadRM(CPUReg::RAX, CPUReg::RAX, 0, OpBits::B64);
     pp.emitCallIndirect(CPUReg::RAX);
 
     // End

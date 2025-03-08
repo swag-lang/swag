@@ -41,7 +41,7 @@ void SCBE::emitOS(SCBE_CPU& pp)
 
         // int _DllMainCRTStartup(void*, int, void*)
         pp.getOrAddSymbol("_DllMainCRTStartup", CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
-        pp.emitLoad(CPUReg::RAX, 1, OpBits::B64);
+        pp.emitLoadRI(CPUReg::RAX, 1, OpBits::B64);
         pp.emitRet();
     }
     else
@@ -79,18 +79,18 @@ void SCBE::emitMain(SCBE_CPU& pp)
     const auto bcAlloc = static_cast<ByteCode*>(ByteCode::undoByteCodeLambda(static_cast<void**>(g_SystemAllocatorTable)[0]));
     SWAG_ASSERT(bcAlloc);
     pp.emitSymbolRelocationAddress(CPUReg::RAX, pp.symDefaultAllocTable, 0);
-    pp.emitLoadAddress(CPUReg::RCX, CPUReg::RIP, 0);
+    pp.emitLoadAddressM(CPUReg::RCX, CPUReg::RIP, 0);
     pp.emitSymbolRelocationRef(bcAlloc->getCallName());
-    pp.emitStore(CPUReg::RAX, 0, CPUReg::RCX, OpBits::B64);
+    pp.emitStoreMR(CPUReg::RAX, 0, CPUReg::RCX, OpBits::B64);
 
     // mainContext.allocator.itable = &defaultAllocTable;
     pp.emitSymbolRelocationAddress(CPUReg::RCX, pp.symMC_mainContext_allocator_itable, 0);
-    pp.emitStore(CPUReg::RCX, 0, CPUReg::RAX, OpBits::B64);
+    pp.emitStoreMR(CPUReg::RCX, 0, CPUReg::RAX, OpBits::B64);
 
     // main context flags
     pp.emitSymbolRelocationAddress(CPUReg::RCX, pp.symMC_mainContext_flags, 0);
     const uint64_t contextFlags = getDefaultContextFlags(module);
-    pp.emitStore(CPUReg::RCX, 0, contextFlags, OpBits::B64);
+    pp.emitStoreMI(CPUReg::RCX, 0, contextFlags, OpBits::B64);
 
     //__process_infos.contextTlsId = swag_runtime_tlsAlloc();
     pp.emitSymbolRelocationAddress(CPUReg::RCX, pp.symPI_contextTlsId, 0);
@@ -99,25 +99,25 @@ void SCBE::emitMain(SCBE_CPU& pp)
     //__process_infos.modules
     pp.emitSymbolRelocationAddress(CPUReg::RCX, pp.symPI_modulesAddr, 0);
     pp.emitSymbolRelocationAddress(CPUReg::RAX, pp.symCSIndex, module->modulesSliceOffset);
-    pp.emitStore(CPUReg::RCX, 0, CPUReg::RAX, OpBits::B64);
+    pp.emitStoreMR(CPUReg::RCX, 0, CPUReg::RAX, OpBits::B64);
     pp.emitSymbolRelocationAddress(CPUReg::RAX, pp.symPI_modulesCount, 0);
-    pp.emitStore(CPUReg::RAX, 0, module->moduleDependencies.count + 1, OpBits::B64);
+    pp.emitStoreMI(CPUReg::RAX, 0, module->moduleDependencies.count + 1, OpBits::B64);
 
     //__process_infos.args
-    pp.emitClear(CPUReg::RCX, OpBits::B64);
+    pp.emitClearR(CPUReg::RCX, OpBits::B64);
     pp.emitSymbolRelocationAddress(CPUReg::RAX, pp.symPI_argsAddr, 0);
-    pp.emitStore(CPUReg::RAX, 0, CPUReg::RCX, OpBits::B64);
+    pp.emitStoreMR(CPUReg::RAX, 0, CPUReg::RCX, OpBits::B64);
     pp.emitSymbolRelocationAddress(CPUReg::RAX, pp.symPI_argsCount, 0);
-    pp.emitStore(CPUReg::RAX, 0, CPUReg::RCX, OpBits::B64);
+    pp.emitStoreMR(CPUReg::RAX, 0, CPUReg::RCX, OpBits::B64);
 
     // Set main context
     pp.emitSymbolRelocationAddress(CPUReg::RAX, pp.symMC_mainContext, 0);
     pp.emitSymbolRelocationAddress(CPUReg::RCX, pp.symPI_defaultContext, 0);
-    pp.emitStore(CPUReg::RCX, 0, CPUReg::RAX, OpBits::B64);
+    pp.emitStoreMR(CPUReg::RCX, 0, CPUReg::RAX, OpBits::B64);
 
     // Set current backend as SCBE
     pp.emitSymbolRelocationAddress(CPUReg::RCX, pp.symPI_backendKind, 0);
-    pp.emitStore(CPUReg::RCX, 0, static_cast<uint32_t>(SwagBackendGenType::SCBE), OpBits::B32);
+    pp.emitStoreMI(CPUReg::RCX, 0, static_cast<uint32_t>(SwagBackendGenType::SCBE), OpBits::B32);
 
     // Set default context in TLS
     pp.pushParams.clear();
@@ -216,7 +216,7 @@ void SCBE::emitMain(SCBE_CPU& pp)
 
     pp.emitCallLocal(g_LangSpec->name_priv_closeRuntime);
 
-    pp.emitClear(CPUReg::RAX, OpBits::B64);
+    pp.emitClearR(CPUReg::RAX, OpBits::B64);
     
     pp.emitLeave();
     pp.endFunction();
@@ -259,7 +259,7 @@ void SCBE::emitGlobalPreMain(SCBE_CPU& pp)
 
     // Store first parameter on stack (process infos ptr)
     SWAG_ASSERT(cc.paramByRegisterCount >= 1);
-    pp.emitStore(CPUReg::RSP, 0, cc.paramByRegisterInteger[0], OpBits::B64);
+    pp.emitStoreMR(CPUReg::RSP, 0, cc.paramByRegisterInteger[0], OpBits::B64);
 
     // Copy process infos passed as a parameter to the process info struct of this module
     pp.pushParams.clear();
@@ -297,7 +297,7 @@ void SCBE::emitGlobalInit(SCBE_CPU& pp)
 
     // Store first parameter on stack (process infos ptr)
     SWAG_ASSERT(cc.paramByRegisterCount >= 1);
-    pp.emitStore(CPUReg::RSP, 0, cc.paramByRegisterInteger[0], OpBits::B64);
+    pp.emitStoreMR(CPUReg::RSP, 0, cc.paramByRegisterInteger[0], OpBits::B64);
 
     // Copy process infos passed as a parameter to the process info struct of this module
     pp.pushParams.clear();
@@ -317,7 +317,7 @@ void SCBE::emitGlobalInit(SCBE_CPU& pp)
     {
         if (!dep->module->isSwag)
         {
-            pp.emitOpBinary(CPUReg::RCX, sizeof(SwagModule), CPUOp::ADD, OpBits::B64);
+            pp.emitOpBinaryRI(CPUReg::RCX, sizeof(SwagModule), CPUOp::ADD, OpBits::B64);
             continue;
         }
 
@@ -325,12 +325,12 @@ void SCBE::emitGlobalInit(SCBE_CPU& pp)
         pp.emitCallLocal(callTable);
 
         // Count types is stored as a uint64_t at the start of the address
-        pp.emitLoad(CPUReg::R8, cc.returnByRegisterInteger, 0, OpBits::B64);
-        pp.emitStore(CPUReg::RCX, sizeof(uint64_t), CPUReg::R8, OpBits::B64);
-        pp.emitOpBinary(cc.returnByRegisterInteger, sizeof(uint64_t), CPUOp::ADD, OpBits::B64);
-        pp.emitStore(CPUReg::RCX, 0, cc.returnByRegisterInteger, OpBits::B64);
+        pp.emitLoadRM(CPUReg::R8, cc.returnByRegisterInteger, 0, OpBits::B64);
+        pp.emitStoreMR(CPUReg::RCX, sizeof(uint64_t), CPUReg::R8, OpBits::B64);
+        pp.emitOpBinaryRI(cc.returnByRegisterInteger, sizeof(uint64_t), CPUOp::ADD, OpBits::B64);
+        pp.emitStoreMR(CPUReg::RCX, 0, cc.returnByRegisterInteger, OpBits::B64);
 
-        pp.emitOpBinary(CPUReg::RCX, sizeof(SwagModule), CPUOp::ADD, OpBits::B64);
+        pp.emitOpBinaryRI(CPUReg::RCX, sizeof(SwagModule), CPUOp::ADD, OpBits::B64);
     }
 
     // Call to #init functions

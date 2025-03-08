@@ -978,7 +978,7 @@ namespace OS
                 unwindRegs.push_back(cc.ffiBaseRegister);
                 unwindOffsetRegs.push_back(gen.concat.totalCount());
 
-                gen.emitOpBinary(CPUReg::RSP, stackSize, CPUOp::SUB, OpBits::B64);
+                gen.emitOpBinaryRI(CPUReg::RSP, stackSize, CPUOp::SUB, OpBits::B64);
                 const auto sizeProlog = gen.concat.totalCount();
 
                 // We need to generate unwind stuff to get a correct callstack, and in case the runtime raises an exception
@@ -1005,21 +1005,21 @@ namespace OS
             SWAG_ASSERT(startOffset < JIT_SIZE_BUFFER);
 
             gen.emitPush(cc.ffiBaseRegister);
-            gen.emitOpBinary(CPUReg::RSP, stackSize, CPUOp::SUB, OpBits::B64);
-            gen.emitLoad(cc.ffiBaseRegister, reinterpret_cast<uint64_t>(context->sp), OpBits::B64);
+            gen.emitOpBinaryRI(CPUReg::RSP, stackSize, CPUOp::SUB, OpBits::B64);
+            gen.emitLoadRI(cc.ffiBaseRegister, reinterpret_cast<uint64_t>(context->sp), OpBits::B64);
 
             gen.emitComputeCallParameters(typeInfoFunc, pushCPUParams, cc.ffiBaseRegister, 0, retCopyAddr);
 
-            gen.emitLoad(CPUReg::RAX, reinterpret_cast<uint64_t>(foreignPtr), OpBits::B64);
+            gen.emitLoadRI(CPUReg::RAX, reinterpret_cast<uint64_t>(foreignPtr), OpBits::B64);
             gen.emitCallIndirect(CPUReg::RAX);
 
             if (!returnType->isVoid() && !retCopyAddr)
             {
-                gen.emitLoad(cc.ffiBaseRegister, reinterpret_cast<uint64_t>(context->registersRR), OpBits::B64);
+                gen.emitLoadRI(cc.ffiBaseRegister, reinterpret_cast<uint64_t>(context->registersRR), OpBits::B64);
                 gen.emitStoreCallResult(cc.ffiBaseRegister, 0, typeInfoFunc);
             }
 
-            gen.emitOpBinary(CPUReg::RSP, stackSize, CPUOp::ADD, OpBits::B64);
+            gen.emitOpBinaryRI(CPUReg::RSP, stackSize, CPUOp::ADD, OpBits::B64);
             gen.emitPop(cc.ffiBaseRegister);
             gen.emitRet();
         }

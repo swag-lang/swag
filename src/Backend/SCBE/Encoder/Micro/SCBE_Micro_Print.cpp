@@ -437,12 +437,12 @@ void SCBE_Micro::print() const
                 line.name = "movzx";
                 line.args = form("%s, %s", regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsB));
                 break;
-            case SCBE_MicroOp::LoadAddress0:
+            case SCBE_MicroOp::LoadAddressM:
                 // encoder.emitLoadAddress(inst->regA, inst->regB, inst->valueA);
                 line.name = "lea";
                 line.args = form("%s, [%s+%xh]", regName(inst->regA, OpBits::B64), regName(inst->regB, OpBits::B64), inst->valueA);
                 break;
-            case SCBE_MicroOp::LoadAddress1:
+            case SCBE_MicroOp::LoadAddressAddMul:
                 // encoder.emitLoadAddress(inst->regA, inst->regB, inst->regC, inst->valueA, inst->opBitsA);
                 line.name = "lea";
                 line.args = form("%s, [%s+%s*%d]", regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsA), regName(inst->regC, inst->opBitsA), inst->valueA);
