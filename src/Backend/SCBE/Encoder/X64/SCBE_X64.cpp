@@ -2315,6 +2315,11 @@ SCBE_MicroOpDetails SCBE_X64::getInstructionDetails(SCBE_MicroInstruction* inst)
 
         case SCBE_MicroOp::StoreMR:
             return MOD_ZERO;
+        
+        case SCBE_MicroOp::StoreMI:
+            if (inst->opBitsA == OpBits::B64 && inst->valueB > 0x7FFFFFFF && inst->valueB >> 32 != 0xFFFFFFFF)
+                result.add(1ULL << static_cast<uint32_t>(CPUReg::RCX));
+            return result;        
 
         case SCBE_MicroOp::LoadRM:
             result.add(1ULL << static_cast<uint32_t>(inst->regA));
