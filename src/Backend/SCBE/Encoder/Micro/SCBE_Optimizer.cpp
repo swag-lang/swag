@@ -55,6 +55,21 @@ void SCBE_Optimizer::passReduce(const SCBE_Micro& out)
                     {
                         next->regA           = inst->regB;
                         passHasDoneSomething = true;
+                        break;
+                    }
+                }
+
+                if (nextInfos.rightFlags.has(MOF_REG_B) &&
+                    inst->regA == next->regB &&
+                    nextInfos.rightFlags.has(MOF_OPBITS_B) &&
+                    next->opBitsB == OpBits::B64)
+                {
+                    const auto details = encoder->getInstructionDetails(next);
+                    if (!details.has(1ULL << static_cast<uint32_t>(inst->regB)))
+                    {
+                        next->regB           = inst->regB;
+                        passHasDoneSomething = true;
+                        break;
                     }
                 }
 
@@ -66,6 +81,7 @@ void SCBE_Optimizer::passReduce(const SCBE_Micro& out)
                 {
                     ignore(inst);
                     ignore(next);
+                    break;
                 }
                 break;
 
@@ -78,13 +94,15 @@ void SCBE_Optimizer::passReduce(const SCBE_Micro& out)
                     if (inst[0].regB == next->regA)
                     {
                         ignore(next);
+                        break;
                     }
-                    else if (inst[0].opBitsA == OpBits::B64)
+                    
+                    if (inst[0].opBitsA == OpBits::B64)
                     {
                         setOp(next, SCBE_MicroOp::LoadRR);
                         next->regB = inst[0].regB;
+                        break;
                     }
-                    break;
                 }
 
                 if (inst[0].regA == CPUReg::RSP &&
@@ -293,8 +311,6 @@ void SCBE_Optimizer::optimize(const SCBE_Micro& out)
 {
     if (out.optLevel == BuildCfgBackendOptim::O0)
         return;
-    //if (!out.cpuFct->bc->getPrintName().containsNoCase("dayOfWeek"))
-    //    return;
 
     passHasDoneSomething = true;
     while (passHasDoneSomething)
