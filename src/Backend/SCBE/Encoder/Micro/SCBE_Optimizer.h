@@ -15,7 +15,7 @@ struct SCBE_Optimizer
     static SCBE_MicroInstruction* zap(SCBE_MicroInstruction* inst);
 
     void passReduce(const SCBE_Micro& out);
-    void passPendingReg(const SCBE_Micro& out);
+    void passStoreToRegBeforeLeave(const SCBE_Micro& out);
     void passStoreMR(const SCBE_Micro& out);
 
     void optimize(const SCBE_Micro& out);

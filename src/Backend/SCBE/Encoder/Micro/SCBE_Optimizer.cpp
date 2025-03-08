@@ -67,7 +67,7 @@ void SCBE_Optimizer::passReduce(const SCBE_Micro& out)
     }
 }
 
-void SCBE_Optimizer::passPendingReg(const SCBE_Micro& out)
+void SCBE_Optimizer::passStoreToRegBeforeLeave(const SCBE_Micro& out)
 {
     mapValInst.clear();
 
@@ -207,6 +207,6 @@ void SCBE_Optimizer::optimize(const SCBE_Micro& out)
         passHasDoneSomething = false;
         passReduce(out);
         passStoreMR(out);
-        passPendingReg(out);
+        passStoreToRegBeforeLeave(out);
     }
 }
