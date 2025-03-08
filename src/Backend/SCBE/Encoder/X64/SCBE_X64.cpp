@@ -1,6 +1,7 @@
 // ReSharper disable CommentTypo
 #include "pch.h"
 #include "Backend/SCBE/Encoder/X64/SCBE_X64.h"
+#include "Backend/SCBE/Encoder/Micro/SCBE_Micro.h"
 #include "Core/Math.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Wmf/Module.h"
@@ -2304,7 +2305,7 @@ void SCBE_X64::emitMulAdd(CPUReg regDst, CPUReg regMul, CPUReg regAdd, OpBits op
     concat.addU8(0xC2);
 }
 
-uint64_t SCBE_X64::getInstructionInfo(SCBE_MicroOp* inst)
+SCBE_MicroOpDetails SCBE_X64::getInstructionDetails(SCBE_MicroInstruction* inst)
 {
-    return 0;
+    return MOD_REG_ALL;
 }

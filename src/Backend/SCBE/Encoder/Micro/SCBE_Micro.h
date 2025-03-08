@@ -58,6 +58,14 @@ struct SCBE_MicroInstruction
     CPUReg   regC;
 };
 
+using SCBE_MicroOpDetails                 = Flags<uint64_t>;
+constexpr SCBE_MicroOpDetails MOD_ZERO    = 0x0000000000000000;
+constexpr SCBE_MicroOpDetails MOD_REG_RAX = 0x0000000000000001;
+constexpr SCBE_MicroOpDetails MOD_REG_RBX = 0x0000000000000002;
+constexpr SCBE_MicroOpDetails MOD_REG_RCX = 0x0000000000000004;
+constexpr SCBE_MicroOpDetails MOD_REG_RDX = 0x0000000000000008;
+constexpr SCBE_MicroOpDetails MOD_REG_ALL = 0x00000000000000FF;
+
 struct SCBE_Micro final : SCBE_CPU
 {
     void init(const BuildParameters& buildParameters) override;

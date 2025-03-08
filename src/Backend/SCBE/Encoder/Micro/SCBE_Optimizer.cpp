@@ -129,10 +129,20 @@ void SCBE_Optimizer::passStoreMR(const SCBE_Micro& out)
                 ignore(inst);
             }
         }
-        else if (infos.leftFlags.has(MOF_REG_A) &&
-                 !infos.leftFlags.has(MOF_VALUE_A) &&
-                 mapRegVal.contains(inst->regA))
+        else
         {
+            const auto details = encoder->getInstructionDetails(inst);
+            if (details.has(MOD_REG_ALL))
+            {
+                for (uint32_t i = 0; i < static_cast<uint32_t>(CPUReg::Max); i++)
+                {
+                    if (details.has(1ULL << i))
+                    {
+                        mapRegVal[static_cast<CPUReg>(i)] = UINT64_MAX;
+                    }
+                }
+            }
+            
             mapRegVal[inst->regA] = UINT64_MAX;
         }
 
@@ -150,6 +160,6 @@ void SCBE_Optimizer::optimize(const SCBE_Micro& out)
     {
         passHasDoneSomething = false;
         passReduce(out);
-        //passStoreMR(out);
+        passStoreMR(out);
     }
 }

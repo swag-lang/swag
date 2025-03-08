@@ -1,10 +1,11 @@
 // ReSharper disable CppInconsistentNaming
 #pragma once
 #include "Backend/SCBE/Encoder/SCBE_CPU.h"
+struct SCBE_MicroInstruction;
 
 struct SCBE_X64 final : SCBE_CPU
 {
-    uint64_t getInstructionInfo(SCBE_MicroOp* inst) override;
+    SCBE_MicroOpDetails getInstructionDetails(SCBE_MicroInstruction* inst) override;
 
     void    emitSymbolRelocationRef(const Utf8& name) override;
     void    emitSymbolRelocationAddress(CPUReg reg, uint32_t symbolIndex, uint32_t offset) override;
