@@ -1915,11 +1915,11 @@ void SCBE_X64::emitJumpTable(CPUReg table, CPUReg offset, int32_t currentIp, uin
 
     // + 7 for this instruction
     // + 5 for the two following instructions
-    const auto startIdx = concat.totalCount();
+    SWAG_IF_ASSERT(const auto startIdx = concat.totalCount());
     emitSymbolRelocationAddress(CPUReg::RAX, cpuFct->symbolIndex, concat.totalCount() - cpuFct->startAddress + 5 + 7);
     emitOpBinary(CPUReg::RAX, CPUReg::RCX, CPUOp::ADD, OpBits::B64);
     emitJump(CPUReg::RAX);
-    const auto endIdx = concat.totalCount();
+    SWAG_IF_ASSERT(const auto endIdx = concat.totalCount());
     SWAG_ASSERT(endIdx - startIdx == 12);
 
     const auto tableCompiler = reinterpret_cast<int32_t*>(buildParams.module->compilerSegment.address(offsetTable));
@@ -2302,4 +2302,9 @@ void SCBE_X64::emitMulAdd(CPUReg regDst, CPUReg regMul, CPUReg regAdd, OpBits op
     concat.addU8(0x0F);
     emitCPUOp(concat, CPUOp::FADD);
     concat.addU8(0xC2);
+}
+
+uint64_t SCBE_X64::getInstructionInfo(SCBE_MicroOp* inst)
+{
+    return 0;
 }

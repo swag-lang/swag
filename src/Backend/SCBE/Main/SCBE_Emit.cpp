@@ -217,11 +217,9 @@ void SCBE::emitBinOp(SCBE_CPU& pp, CPUOp op, CPUEmitFlags emitFlags)
 
 void SCBE::emitBinOpOverflow(SCBE_CPU& pp, CPUOp op, SafetyMsg safetyMsg, TypeInfo* safetyType)
 {
-    const auto  ip       = pp.ip;
-    const auto  opBits   = SCBE_CPU::getOpBits(ip->op);
     const char* msg      = ByteCodeGen::safetyMsg(safetyMsg, safetyType);
     const bool  isSigned = safetyType->isNativeIntegerSigned();
-    SWAG_ASSERT(SCBE_CPU::isInt(opBits));
+    SWAG_ASSERT(SCBE_CPU::isInt(SCBE_CPU::getOpBits(pp.ip->op)));
 
     emitBinOp(pp, op, EMITF_Overflow);
     emitOverflow(pp, msg, isSigned);
@@ -248,10 +246,9 @@ void SCBE::emitBinOpEq(SCBE_CPU& pp, uint32_t offset, CPUOp op, CPUEmitFlags emi
 
 void SCBE::emitBinOpEqOverflow(SCBE_CPU& pp, CPUOp op, SafetyMsg safetyMsg, TypeInfo* safetyType)
 {
-    const auto  ip       = pp.ip;
     const char* msg      = ByteCodeGen::safetyMsg(safetyMsg, safetyType);
     const bool  isSigned = safetyType->isNativeIntegerSigned();
-    SWAG_ASSERT(SCBE_CPU::isInt(SCBE_CPU::getOpBits(ip->op)));
+    SWAG_ASSERT(SCBE_CPU::isInt(SCBE_CPU::getOpBits(pp.ip->op)));
 
     emitBinOpEq(pp, 0, op, EMITF_Overflow);
     emitOverflow(pp, msg, isSigned);

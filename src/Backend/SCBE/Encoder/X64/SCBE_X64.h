@@ -4,6 +4,8 @@
 
 struct SCBE_X64 final : SCBE_CPU
 {
+    uint64_t getInstructionInfo(SCBE_MicroOp* inst) override;
+
     void    emitSymbolRelocationRef(const Utf8& name) override;
     void    emitSymbolRelocationAddress(CPUReg reg, uint32_t symbolIndex, uint32_t offset) override;
     void    emitSymbolRelocationValue(CPUReg reg, uint32_t symbolIndex, uint32_t offset) override;

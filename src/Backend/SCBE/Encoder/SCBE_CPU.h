@@ -7,6 +7,7 @@
 #include "Core/Concat.h"
 #include "Semantic/DataSegment.h"
 
+enum class SCBE_MicroOp : uint8_t;
 enum class ByteCodeOp : uint16_t;
 struct AstNode;
 
@@ -227,6 +228,8 @@ struct SCBE_CPU : BackendEncoder
     void emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& cpuParams, const CallConv* callConv);
     void emitComputeCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& cpuParams, CPUReg memRegResult, uint32_t memOffsetResult, void* resultAddr);
     void emitStoreCallResult(CPUReg memReg, uint32_t memOffset, const TypeInfoFuncAttr* typeFuncBc);
+
+    virtual uint64_t getInstructionInfo(SCBE_MicroOp* inst) { return 0; };
 
     virtual void emitEnter(uint32_t sizeStack);
     virtual void emitLeave();

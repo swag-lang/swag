@@ -664,7 +664,7 @@ void SCBE_Micro::encode(SCBE_CPU& encoder) const
         print();
 }
 
-void SCBE_Micro::process()
+void SCBE_Micro::process(SCBE_CPU& encoder)
 {
 #ifdef SWAG_STATS
     g_Stats.numScbeInstructions += concat.totalCount();
@@ -674,5 +674,6 @@ void SCBE_Micro::process()
     concat.makeLinear();
     
     SCBE_Optimizer opt;
+    opt.encoder = &encoder;
     opt.optimize(*this);
 }

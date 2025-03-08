@@ -2,6 +2,7 @@
 #pragma once
 #include "Backend/CallConv.h"
 
+struct SCBE_CPU;
 struct SCBE_Micro;
 struct SCBE_MicroInstruction;
 enum class SCBE_MicroOp : uint8_t;
@@ -18,6 +19,7 @@ struct SCBE_Optimizer
 
     void optimize(const SCBE_Micro& out);
 
+    SCBE_CPU*                                encoder = nullptr;
     Map<uint64_t, std::pair<CPUReg, OpBits>> mapValReg;
     Map<CPUReg, uint64_t>                    mapRegVal;
     bool                                     passHasDoneSomething = false;
