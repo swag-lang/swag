@@ -155,10 +155,6 @@ namespace
             {"bl", "bx", "ebx", "rbx"},
             {"cl", "cx", "ecx", "rcx"},
             {"dl", "dx", "edx", "rdx"},
-            {"spl", "sp", "esp", "rsp"},
-            {"bpl", "bp", "ebp", "rbp"},
-            {"sil", "si", "esi", "rsi"},
-            {"dil", "di", "edi", "rdi"},
             {"r8b", "r8w", "r8d", "r8"},
             {"r9b", "r9w", "r9d", "r9"},
             {"r10b", "r10w", "r10d", "r10"},
@@ -170,7 +166,12 @@ namespace
             {"xmm0", "xmm0", "xmm0", "xmm0"},
             {"xmm1", "xmm1", "xmm1", "xmm1"},
             {"xmm2", "xmm2", "xmm2", "xmm2"},
-            {"xmm3", "xmm3", "xmm3", "xmm3"}};
+            {"xmm3", "xmm3", "xmm3", "xmm3"},
+            {"sil", "si", "esi", "rsi"},
+            {"dil", "di", "edi", "rdi"},
+            {"spl", "sp", "esp", "rsp"},
+            {"bpl", "bp", "ebp", "rbp"},
+        };
 
         const auto numBytes = static_cast<int>(std::log2(SCBE_CPU::getNumBits(opBits) / 8));
         return GENERAL_REGS[static_cast<int>(reg)][numBytes];

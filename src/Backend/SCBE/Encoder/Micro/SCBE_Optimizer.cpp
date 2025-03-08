@@ -69,8 +69,9 @@ void SCBE_Optimizer::passReduce(const SCBE_Micro& out)
 
 void SCBE_Optimizer::passStoreMR(const SCBE_Micro& out)
 {
-    if (!out.cpuFct->bc->getPrintName().containsNoCase("5478"))
+    /*if (!out.cpuFct->bc->getPrintName().containsNoCase("__compiler1937"))
         return;
+    out.print();*/
 
     mapValReg.clear();
     mapRegVal.clear();
@@ -81,14 +82,6 @@ void SCBE_Optimizer::passStoreMR(const SCBE_Micro& out)
         const auto& infos = g_MicroOpInfos[static_cast<int>(inst->op)];
 
         if (inst->flags.has(MIF_JUMP_DEST))
-        {
-            mapValReg.clear();
-            mapRegVal.clear();
-        }
-
-        if (inst->op == SCBE_MicroOp::CallExtern ||
-            inst->op == SCBE_MicroOp::CallIndirect ||
-            inst->op == SCBE_MicroOp::CallLocal)
         {
             mapValReg.clear();
             mapRegVal.clear();
@@ -126,24 +119,22 @@ void SCBE_Optimizer::passStoreMR(const SCBE_Micro& out)
         {
             if (mapValReg[inst->valueA].first == inst->regA)
             {
+                //out.print();
                 ignore(inst);
+                //out.print();
             }
         }
-        else
+
+        const auto details = encoder->getInstructionDetails(inst);
+        if (details.has(MOD_REG_ALL))
         {
-            const auto details = encoder->getInstructionDetails(inst);
-            if (details.has(MOD_REG_ALL))
+            for (uint32_t i = 0; i < static_cast<uint32_t>(CPUReg::Max); i++)
             {
-                for (uint32_t i = 0; i < static_cast<uint32_t>(CPUReg::Max); i++)
+                if (details.has(1ULL << i))
                 {
-                    if (details.has(1ULL << i))
-                    {
-                        mapRegVal[static_cast<CPUReg>(i)] = UINT64_MAX;
-                    }
+                    mapRegVal[static_cast<CPUReg>(i)] = UINT64_MAX;
                 }
             }
-            
-            mapRegVal[inst->regA] = UINT64_MAX;
         }
 
         inst = zap(inst + 1);

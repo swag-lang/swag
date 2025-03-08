@@ -58,13 +58,27 @@ struct SCBE_MicroInstruction
     CPUReg   regC;
 };
 
-using SCBE_MicroOpDetails                 = Flags<uint64_t>;
-constexpr SCBE_MicroOpDetails MOD_ZERO    = 0x0000000000000000;
-constexpr SCBE_MicroOpDetails MOD_REG_RAX = 0x0000000000000001;
-constexpr SCBE_MicroOpDetails MOD_REG_RBX = 0x0000000000000002;
-constexpr SCBE_MicroOpDetails MOD_REG_RCX = 0x0000000000000004;
-constexpr SCBE_MicroOpDetails MOD_REG_RDX = 0x0000000000000008;
-constexpr SCBE_MicroOpDetails MOD_REG_ALL = 0x00000000000000FF;
+using SCBE_MicroOpDetails                  = Flags<uint64_t>;
+constexpr SCBE_MicroOpDetails MOD_ZERO     = 0x0000000000000000;
+constexpr SCBE_MicroOpDetails MOD_REG_RAX  = 0x0000000000000001;
+constexpr SCBE_MicroOpDetails MOD_REG_RBX  = 0x0000000000000002;
+constexpr SCBE_MicroOpDetails MOD_REG_RCX  = 0x0000000000000004;
+constexpr SCBE_MicroOpDetails MOD_REG_RDX  = 0x0000000000000008;
+constexpr SCBE_MicroOpDetails MOD_REG_R8   = 0x0000000000000010;
+constexpr SCBE_MicroOpDetails MOD_REG_R9   = 0x0000000000000020;
+constexpr SCBE_MicroOpDetails MOD_REG_R10  = 0x0000000000000040;
+constexpr SCBE_MicroOpDetails MOD_REG_R11  = 0x0000000000000080;
+constexpr SCBE_MicroOpDetails MOD_REG_R12  = 0x0000000000000100;
+constexpr SCBE_MicroOpDetails MOD_REG_R13  = 0x0000000000000200;
+constexpr SCBE_MicroOpDetails MOD_REG_R14  = 0x0000000000000400;
+constexpr SCBE_MicroOpDetails MOD_REG_R15  = 0x0000000000000800;
+constexpr SCBE_MicroOpDetails MOD_REG_XMM0 = 0x0000000000001000;
+constexpr SCBE_MicroOpDetails MOD_REG_XMM1 = 0x0000000000002000;
+constexpr SCBE_MicroOpDetails MOD_REG_XMM2 = 0x0000000000004000;
+constexpr SCBE_MicroOpDetails MOD_REG_XMM3 = 0x0000000000008000;
+constexpr SCBE_MicroOpDetails MOD_REG_RSI  = 0x0000000000010000;
+constexpr SCBE_MicroOpDetails MOD_REG_RDI  = 0x0000000000020000;
+constexpr SCBE_MicroOpDetails MOD_REG_ALL  = 0x0000000000FFFFFF;
 
 struct SCBE_Micro final : SCBE_CPU
 {

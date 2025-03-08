@@ -400,7 +400,6 @@ void SCBE_X64::emitLoadRM(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits 
 
     if (isFloat(opBits))
     {
-        SWAG_ASSERT(memReg < CPUReg::R8);
         emitSpecF64(concat, 0xF3, opBits);
         concat.addU8(0x0F);
         concat.addU8(0x10);
@@ -633,7 +632,6 @@ void SCBE_X64::emitStoreMR(CPUReg memReg, uint64_t memOffset, CPUReg reg, OpBits
 {
     if (isFloat(opBits))
     {
-        SWAG_ASSERT(memReg < CPUReg::R8);
         emitSpecF64(concat, 0xF3, opBits);
         concat.addU8(0x0F);
         concat.addU8(0x11);
@@ -915,14 +913,12 @@ void SCBE_X64::emitCmpMR(CPUReg memReg, uint64_t memOffset, CPUReg reg, OpBits o
 {
     if (opBits == OpBits::F32)
     {
-        SWAG_ASSERT(memReg < CPUReg::R8);
         concat.addU8(0x0F);
         concat.addU8(0x2E);
         emitModRM(concat, memOffset, reg, memReg);
     }
     else if (opBits == OpBits::F64)
     {
-        SWAG_ASSERT(memReg < CPUReg::R8);
         concat.addU8(0x66);
         concat.addU8(0x0F);
         concat.addU8(0x2F);
@@ -930,7 +926,6 @@ void SCBE_X64::emitCmpMR(CPUReg memReg, uint64_t memOffset, CPUReg reg, OpBits o
     }
     else
     {
-        SWAG_ASSERT(memReg < CPUReg::R8);
         emitREX(concat, opBits);
         emitSpecB8(concat, 0x3B, opBits);
         emitModRM(concat, memOffset, reg, memReg);
@@ -1251,7 +1246,6 @@ void SCBE_X64::emitOpBinaryMR(CPUReg memReg, uint64_t memOffset, CPUReg reg, CPU
     if (isFloat(opBits))
     {
         SWAG_ASSERT(reg == CPUReg::XMM1);
-        SWAG_ASSERT(memReg < CPUReg::R8);
         emitLoadRM(CPUReg::XMM0, memReg, memOffset, opBits);
         emitOpBinaryRR(CPUReg::XMM0, reg, op, opBits, emitFlags);
         emitStoreMR(memReg, memOffset, CPUReg::XMM0, opBits);
@@ -1300,7 +1294,6 @@ void SCBE_X64::emitOpBinaryMR(CPUReg memReg, uint64_t memOffset, CPUReg reg, CPU
     }
     else
     {
-        SWAG_ASSERT(memReg < CPUReg::R8);
         if (emitFlags.has(EMITF_Lock))
             concat.addU8(0xF0);
         emitREX(concat, opBits, reg, memReg);
@@ -1792,7 +1785,7 @@ void SCBE_X64::emitOpBinaryMI(CPUReg memReg, uint64_t memOffset, uint64_t value,
     {
         if (value == 1 && !emitFlags.has(EMITF_Overflow) && optLevel >= BuildCfgBackendOptim::O1)
         {
-            SWAG_ASSERT(memReg < CPUReg::R8);
+            SWAG_ASSERT(memReg == CPUReg::RAX || memReg == CPUReg::RSP);
             emitREX(concat, opBits);
             emitSpecB8(concat, 0xFF, opBits);
             emitModRM(concat, memOffset, MODRM_REG_0, memReg);
@@ -1829,7 +1822,7 @@ void SCBE_X64::emitOpBinaryMI(CPUReg memReg, uint64_t memOffset, uint64_t value,
     {
         if (value == 1 && !emitFlags.has(EMITF_Overflow) && optLevel >= BuildCfgBackendOptim::O1)
         {
-            SWAG_ASSERT(memReg < CPUReg::R8);
+            SWAG_ASSERT(memReg == CPUReg::RAX || memReg == CPUReg::RSP);
             emitREX(concat, opBits);
             emitSpecB8(concat, 0xFF, opBits);
             emitModRM(concat, memOffset, MODRM_REG_1, memReg);
@@ -2307,5 +2300,20 @@ void SCBE_X64::emitMulAdd(CPUReg regDst, CPUReg regMul, CPUReg regAdd, OpBits op
 
 SCBE_MicroOpDetails SCBE_X64::getInstructionDetails(SCBE_MicroInstruction* inst)
 {
+    switch (inst->op)
+    {
+        case SCBE_MicroOp::Nop:
+        case SCBE_MicroOp::Ignore:
+        case SCBE_MicroOp::Label:
+        case SCBE_MicroOp::Debug:
+        case SCBE_MicroOp::Push:
+        case SCBE_MicroOp::Pop:
+        case SCBE_MicroOp::Ret:
+            return MOD_ZERO;
+
+        case SCBE_MicroOp::StoreMR:
+            return MOD_ZERO;
+    }
+
     return MOD_REG_ALL;
 }
