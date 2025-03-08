@@ -2301,7 +2301,7 @@ void SCBE_X64::emitMulAdd(CPUReg regDst, CPUReg regMul, CPUReg regAdd, OpBits op
 SCBE_MicroOpDetails SCBE_X64::getInstructionDetails(SCBE_MicroInstruction* inst)
 {
     SCBE_MicroOpDetails result = MOD_ZERO;
-    
+
     switch (inst->op)
     {
         case SCBE_MicroOp::Nop:
@@ -2315,12 +2315,19 @@ SCBE_MicroOpDetails SCBE_X64::getInstructionDetails(SCBE_MicroInstruction* inst)
 
         case SCBE_MicroOp::StoreMR:
             return MOD_ZERO;
-        
+
         case SCBE_MicroOp::StoreMI:
             if (inst->opBitsA == OpBits::B64 && inst->valueB > 0x7FFFFFFF && inst->valueB >> 32 != 0xFFFFFFFF)
                 result.add(1ULL << static_cast<uint32_t>(CPUReg::RCX));
-            return result;        
+            return result;
 
+        case SCBE_MicroOp::LoadRI:
+            result.add(1ULL << static_cast<uint32_t>(inst->regA));
+            result.add(1ULL << static_cast<uint32_t>(CPUReg::RAX));
+            return result;
+        case SCBE_MicroOp::LoadRR:
+            result.add(1ULL << static_cast<uint32_t>(inst->regA));
+            return result;
         case SCBE_MicroOp::LoadRM:
             result.add(1ULL << static_cast<uint32_t>(inst->regA));
             if (inst->valueA > 0x7FFFFFFF)
