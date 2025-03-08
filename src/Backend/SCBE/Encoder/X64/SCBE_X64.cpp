@@ -294,7 +294,6 @@ void SCBE_X64::emitLoadRR(CPUReg regDst, CPUReg regSrc, OpBits opBits)
 {
     if (isFloat(opBits))
     {
-        SWAG_ASSERT(regSrc == CPUReg::RAX);
         SWAG_ASSERT(regDst == CPUReg::XMM0 || regDst == CPUReg::XMM1 || regDst == CPUReg::XMM2 || regDst == CPUReg::XMM3);
         emitREX(concat, OpBits::F64);
         emitREX(concat, opBits == OpBits::F64 ? OpBits::B64 : OpBits::B32);

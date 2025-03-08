@@ -131,6 +131,11 @@ void SCBE_Optimizer::passStoreMR(const SCBE_Micro& out)
                 ignore(inst);
                 //out.print();
             }
+            else if (inst->opBitsA == OpBits::B64)
+            {
+                setOp(inst, SCBE_MicroOp::LoadRR);
+                inst->regB = mapValReg[inst->valueA].first;                
+            }
         }
         else if (inst->op == SCBE_MicroOp::LoadRM &&
                  inst->regB == CPUReg::RSP &&
@@ -140,13 +145,6 @@ void SCBE_Optimizer::passStoreMR(const SCBE_Micro& out)
             mapValReg[inst->valueA] = {inst->regA, inst->opBitsA};
             mapRegVal[inst->regA]   = inst->valueA;
         }
-
-        /*else if (infos.leftFlags.has(MOF_REG_A) &&
-                 !infos.leftFlags.has(MOF_VALUE_A) &&
-                 mapRegVal.contains(inst->regA))
-        {
-            mapRegVal[inst->regA] = UINT64_MAX;
-        }   */
 
         if (inst->op != SCBE_MicroOp::Ignore)
         {
