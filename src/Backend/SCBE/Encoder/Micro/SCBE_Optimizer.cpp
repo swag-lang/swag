@@ -69,7 +69,7 @@ void SCBE_Optimizer::passReduce(const SCBE_Micro& out)
 
 void SCBE_Optimizer::passStoreMR(const SCBE_Micro& out)
 {
-    /*if (!out.cpuFct->bc->getPrintName().containsNoCase("__compiler1937"))
+    /*if (!out.cpuFct->bc->getPrintName().containsNoCase(".BuildCfg.opInitGenerated"))
         return;
     out.print();*/
 
@@ -96,6 +96,7 @@ void SCBE_Optimizer::passStoreMR(const SCBE_Micro& out)
             mapRegVal.clear();
         }
 
+        auto legitReg = CPUReg::Max;
         if (inst->op == SCBE_MicroOp::StoreMR &&
             inst->regA == CPUReg::RSP &&
             out.cpuFct->isStackOffsetReg(static_cast<uint32_t>(inst->valueA)))
@@ -126,11 +127,26 @@ void SCBE_Optimizer::passStoreMR(const SCBE_Micro& out)
         {
             if (mapValReg[inst->valueA].first == inst->regA)
             {
-                // out.print();
+                //out.print();
                 ignore(inst);
-                // out.print();
+                //out.print();
             }
         }
+        else if (inst->op == SCBE_MicroOp::LoadRM &&
+                 inst->regB == CPUReg::RSP &&
+                 out.cpuFct->isStackOffsetReg(static_cast<uint32_t>(inst->valueA)))
+        {
+            legitReg                = inst->regA;
+            mapValReg[inst->valueA] = {inst->regA, inst->opBitsA};
+            mapRegVal[inst->regA]   = inst->valueA;
+        }
+
+        /*else if (infos.leftFlags.has(MOF_REG_A) &&
+                 !infos.leftFlags.has(MOF_VALUE_A) &&
+                 mapRegVal.contains(inst->regA))
+        {
+            mapRegVal[inst->regA] = UINT64_MAX;
+        }   */
 
         if (inst->op != SCBE_MicroOp::Ignore)
         {
@@ -139,6 +155,9 @@ void SCBE_Optimizer::passStoreMR(const SCBE_Micro& out)
             {
                 for (uint32_t i = 0; i < static_cast<uint32_t>(CPUReg::Max); i++)
                 {
+                    if (static_cast<CPUReg>(i) == legitReg)
+                        continue;
+
                     if (details.has(1ULL << i))
                     {
                         mapRegVal[static_cast<CPUReg>(i)] = UINT64_MAX;
