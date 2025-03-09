@@ -2340,6 +2340,12 @@ ScbeMicroOpDetails ScbeX64::getInstructionDetails(ScbeMicroInstruction* inst) co
                 result.add(1ULL << static_cast<uint32_t>(CpuReg::RCX));
             return result;
 
+        case ScbeMicroOp::CmpMI:
+            result.add(1ULL << static_cast<uint32_t>(inst->regA));
+            if (inst->valueA > 0x7FFFFFFF)
+                result.add(1ULL << static_cast<uint32_t>(CpuReg::RAX));
+            return result;
+
         case ScbeMicroOp::OpBinaryRI:
             result.add(1ULL << static_cast<uint32_t>(inst->regA));
             if (inst->valueA > 0x7FFFFFFF)
