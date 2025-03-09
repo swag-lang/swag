@@ -178,7 +178,7 @@ void ScbeOptimizer::optimizePassStoreToHdwRegBeforeLeave(const ScbeMicro& out)
                 ignore(i);
             mapRegInst.clear();
         }
-        else if (inst->op == ScbeMicroOp::LoadRR)
+        else if (inst->hasWriteRegA())
         {
             if (!out.cpuFct->typeFunc->returnByValue() &&
                 !out.cpuFct->typeFunc->returnStructByValue())
@@ -191,7 +191,10 @@ void ScbeOptimizer::optimizePassStoreToHdwRegBeforeLeave(const ScbeMicro& out)
                 mapRegInst[inst->regA] = inst;
             }
 
-            mapRegInst.erase(inst->regB);
+            if (inst->hasReadRegB())
+                mapRegInst.erase(inst->regB);
+            if (inst->hasReadRegC())
+                mapRegInst.erase(inst->regC);
         }
         else
         {
