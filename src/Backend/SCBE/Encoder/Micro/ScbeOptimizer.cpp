@@ -169,12 +169,8 @@ void ScbeOptimizer::optimizePassStoreToHdwRegBeforeLeave(const ScbeMicro& out)
     auto inst = reinterpret_cast<ScbeMicroInstruction*>(out.concat.firstBucket->data);
     while (inst->op != ScbeMicroOp::End)
     {
-        const auto& infos = g_MicroOpInfos[static_cast<int>(inst->op)];
-
         if (inst->flags.has(MIF_JUMP_DEST) || inst->isJump() || inst->isCall())
-        {
             mapRegInst.clear();
-        }
 
         if (inst->op == ScbeMicroOp::LoadRR)
         {
@@ -192,10 +188,12 @@ void ScbeOptimizer::optimizePassStoreToHdwRegBeforeLeave(const ScbeMicro& out)
         }
         else
         {
-            if (infos.leftFlags.has(MOF_REG_A) || infos.rightFlags.has(MOF_REG_A))
+            if (inst->hasReadRegA())
                 mapRegInst.erase(inst->regA);
-            if (infos.leftFlags.has(MOF_REG_B) || infos.rightFlags.has(MOF_REG_B))
+            if (inst->hasReadRegB())
                 mapRegInst.erase(inst->regB);
+            if (inst->hasReadRegC())
+                mapRegInst.erase(inst->regC);
         }
 
         if (inst->op == ScbeMicroOp::Leave && !mapRegInst.empty())
