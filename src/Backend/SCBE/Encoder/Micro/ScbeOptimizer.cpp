@@ -28,7 +28,7 @@ ScbeMicroInstruction* ScbeOptimizer::zap(ScbeMicroInstruction* inst)
     return inst;
 }
 
-void ScbeOptimizer::passReduce(const ScbeMicro& out)
+void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
 {
     auto inst = reinterpret_cast<ScbeMicroInstruction*>(out.concat.firstBucket->data);
     while (inst->op != ScbeMicroOp::End)
@@ -119,7 +119,7 @@ void ScbeOptimizer::passReduce(const ScbeMicro& out)
     }
 }
 
-void ScbeOptimizer::passStoreToRegBeforeLeave(const ScbeMicro& out)
+void ScbeOptimizer::optimizePassStoreToRegBeforeLeave(const ScbeMicro& out)
 {
     mapValInst.clear();
 
@@ -162,7 +162,7 @@ void ScbeOptimizer::passStoreToRegBeforeLeave(const ScbeMicro& out)
     }
 }
 
-void ScbeOptimizer::passStoreToHdwRegBeforeLeave(const ScbeMicro& out)
+void ScbeOptimizer::optimizePassStoreToHdwRegBeforeLeave(const ScbeMicro& out)
 {
     mapValInst.clear();
 
@@ -209,7 +209,7 @@ void ScbeOptimizer::passStoreToHdwRegBeforeLeave(const ScbeMicro& out)
     }
 }
 
-void ScbeOptimizer::passDeadStore(const ScbeMicro& out)
+void ScbeOptimizer::optimizePassDeadStore(const ScbeMicro& out)
 {
     mapRegInst.clear();
 
@@ -268,7 +268,7 @@ void ScbeOptimizer::passDeadStore(const ScbeMicro& out)
     }
 }
 
-void ScbeOptimizer::passStoreMR(const ScbeMicro& out)
+void ScbeOptimizer::optimizePassStoreMR(const ScbeMicro& out)
 {
     mapValReg.clear();
     mapRegVal.clear();
@@ -353,10 +353,10 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
     while (passHasDoneSomething)
     {
         passHasDoneSomething = false;
-        passReduce(out);
-        passStoreMR(out);
-        passDeadStore(out);
-        passStoreToRegBeforeLeave(out);
-        passStoreToHdwRegBeforeLeave(out);
+        optimizePassReduce(out);
+        optimizePassStoreMR(out);
+        optimizePassDeadStore(out);
+        optimizePassStoreToRegBeforeLeave(out);
+        optimizePassStoreToHdwRegBeforeLeave(out);
     }
 }

@@ -14,11 +14,11 @@ struct ScbeOptimizer
     void                         setOp(ScbeMicroInstruction* inst, ScbeMicroOp op);
     static ScbeMicroInstruction* zap(ScbeMicroInstruction* inst);
 
-    void passReduce(const ScbeMicro& out);
-    void passStoreToRegBeforeLeave(const ScbeMicro& out);
-    void passStoreToHdwRegBeforeLeave(const ScbeMicro& out);
-    void passDeadStore(const ScbeMicro& out);
-    void passStoreMR(const ScbeMicro& out);
+    void optimizePassReduce(const ScbeMicro& out);
+    void optimizePassStoreToRegBeforeLeave(const ScbeMicro& out);
+    void optimizePassStoreToHdwRegBeforeLeave(const ScbeMicro& out);
+    void optimizePassDeadStore(const ScbeMicro& out);
+    void optimizePassStoreMR(const ScbeMicro& out);
 
     void optimize(const ScbeMicro& out);
 
