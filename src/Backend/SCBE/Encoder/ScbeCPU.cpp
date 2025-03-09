@@ -1,7 +1,7 @@
 #include "pch.h"
+#include "Backend/SCBE/Encoder/ScbeCPU.h"
 #include "Backend/ByteCode/ByteCode.h"
-#include "Backend/SCBE/Encoder/SCBECPU.h"
-#include "Backend/SCBE/Main/SCBE.h"
+#include "Backend/SCBE/Main/Scbe.h"
 #include "Backend/SCBE/Obj/SCBE_Coff.h"
 #include "Core/Math.h"
 #include "Main/CommandLine.h"
@@ -10,7 +10,7 @@
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 
-void SCBECPU::init(const BuildParameters& buildParameters)
+void ScbeCPU::init(const BuildParameters& buildParameters)
 {
     BackendEncoder::init(buildParameters);
     optLevel = buildParameters.buildCfg ? buildParameters.buildCfg->backendOptimize : BuildCfgBackendOptim::O0;
@@ -18,7 +18,7 @@ void SCBECPU::init(const BuildParameters& buildParameters)
 
 namespace
 {
-    CPUSymbol* getSymbol(SCBECPU& pp, const Utf8& name)
+    CPUSymbol* getSymbol(ScbeCPU& pp, const Utf8& name)
     {
         const auto it = pp.mapSymbols.find(name);
         if (it != pp.mapSymbols.end())
@@ -27,7 +27,7 @@ namespace
     }
 }
 
-CPUSymbol* SCBECPU::getOrAddSymbol(const Utf8& name, CPUSymbolKind kind, uint32_t value, uint16_t sectionIdx)
+CPUSymbol* ScbeCPU::getOrAddSymbol(const Utf8& name, CPUSymbolKind kind, uint32_t value, uint16_t sectionIdx)
 {
     const auto it = getSymbol(*this, name);
     if (it)
@@ -58,7 +58,7 @@ CPUSymbol* SCBECPU::getOrAddSymbol(const Utf8& name, CPUSymbolKind kind, uint32_
     return &allSymbols.back();
 }
 
-void SCBECPU::addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, uint16_t type)
+void ScbeCPU::addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, uint16_t type)
 {
     CPURelocation reloc;
     reloc.virtualAddress = virtualAddr;
@@ -67,7 +67,7 @@ void SCBECPU::addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, ui
     relocTableTextSection.table.push_back(reloc);
 }
 
-CPUSymbol* SCBECPU::getOrCreateGlobalString(const Utf8& str)
+CPUSymbol* ScbeCPU::getOrCreateGlobalString(const Utf8& str)
 {
     const auto it = globalStrings.find(str);
     if (it != globalStrings.end())
@@ -81,14 +81,14 @@ CPUSymbol* SCBECPU::getOrCreateGlobalString(const Utf8& str)
     return sym;
 }
 
-void SCBECPU::emitLabel(uint32_t instructionIndex)
+void ScbeCPU::emitLabel(uint32_t instructionIndex)
 {
     const auto it = cpuFct->labels.find(instructionIndex);
     if (it == cpuFct->labels.end())
         cpuFct->labels[instructionIndex] = static_cast<int32_t>(concat.totalCount());
 }
 
-CPUFunction* SCBECPU::addFunction(const Utf8& funcName, const CallConv* cc, ByteCode* bc)
+CPUFunction* ScbeCPU::addFunction(const Utf8& funcName, const CallConv* cc, ByteCode* bc)
 {
     concat.align(16);
 
@@ -120,11 +120,11 @@ CPUFunction* SCBECPU::addFunction(const Utf8& funcName, const CallConv* cc, Byte
     return cf;
 }
 
-void SCBECPU::endFunction() const
+void ScbeCPU::endFunction() const
 {
     cpuFct->endAddress = concat.totalCount();
 
-    const auto objFileType = SCBE::getObjType(g_CommandLine.target);
+    const auto objFileType = Scbe::getObjType(g_CommandLine.target);
     switch (objFileType)
     {
         case BackendObjType::Coff:
@@ -136,7 +136,7 @@ void SCBECPU::endFunction() const
     }
 }
 
-bool SCBECPU::isNoOp(uint64_t value, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags) const
+bool ScbeCPU::isNoOp(uint64_t value, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags) const
 {
     if (emitFlags.has(EMITF_Overflow))
         return false;
@@ -161,7 +161,7 @@ bool SCBECPU::isNoOp(uint64_t value, CPUOp op, OpBits opBits, CPUEmitFlags emitF
 
 namespace
 {
-    void emitParameters(SCBECPU& pp, const VectorNative<CPUPushParam>& params, const CallConv* callConv)
+    void emitParameters(ScbeCPU& pp, const VectorNative<CPUPushParam>& params, const CallConv* callConv)
     {
         const uint32_t numParamsPerRegister = std::min(callConv->paramByRegisterCount, params.size());
         uint32_t       idxParam             = 0;
@@ -316,7 +316,7 @@ namespace
     }
 }
 
-void SCBECPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& cpuParams, const CallConv* callConv)
+void ScbeCPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& cpuParams, const CallConv* callConv)
 {
     // If a lambda is assigned to a closure, then we must not use the first parameter (the first
     // parameter is the capture context, which does not exist in a normal lambda function).
@@ -360,7 +360,7 @@ void SCBECPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vecto
     }
 }
 
-void SCBECPU::emitComputeCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& cpuParams, CPUReg memRegResult, uint32_t memOffsetResult, void* resultAddr)
+void ScbeCPU::emitComputeCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& cpuParams, CPUReg memRegResult, uint32_t memOffsetResult, void* resultAddr)
 {
     uint32_t numCallParams = typeFuncBc->parameters.size();
     uint32_t indexParam    = 0;
@@ -399,7 +399,7 @@ void SCBECPU::emitComputeCallParameters(const TypeInfoFuncAttr* typeFuncBc, cons
     emitCallParameters(typeFuncBc, pushParams, &typeFuncBc->getCallConv());
 }
 
-void SCBECPU::emitStoreCallResult(CPUReg memReg, uint32_t memOffset, const TypeInfoFuncAttr* typeFuncBc)
+void ScbeCPU::emitStoreCallResult(CPUReg memReg, uint32_t memOffset, const TypeInfoFuncAttr* typeFuncBc)
 {
     if (!typeFuncBc->returnByValue())
         return;
@@ -412,31 +412,31 @@ void SCBECPU::emitStoreCallResult(CPUReg memReg, uint32_t memOffset, const TypeI
         emitStoreMR(memReg, memOffset, cc.returnByRegisterInteger, OpBits::B64);
 }
 
-void SCBECPU::emitLoadCallerParam(CPUReg reg, uint32_t paramIdx, OpBits opBits)
+void ScbeCPU::emitLoadCallerParam(CPUReg reg, uint32_t paramIdx, OpBits opBits)
 {
     const uint32_t stackOffset = cpuFct->getStackOffsetParam(paramIdx);
     emitLoadRM(reg, CPUReg::RSP, stackOffset, opBits);
 }
 
-void SCBECPU::emitLoadCallerZeroExtendParam(CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc)
+void ScbeCPU::emitLoadCallerZeroExtendParam(CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc)
 {
     const uint32_t stackOffset = cpuFct->getStackOffsetParam(paramIdx);
     emitLoadZeroExtendRM(reg, CPUReg::RSP, stackOffset, numBitsDst, numBitsSrc);
 }
 
-void SCBECPU::emitLoadCallerAddressParam(CPUReg reg, uint32_t paramIdx)
+void ScbeCPU::emitLoadCallerAddressParam(CPUReg reg, uint32_t paramIdx)
 {
     const uint32_t stackOffset = cpuFct->getStackOffsetCallerParam(paramIdx);
     emitLoadAddressM(reg, CPUReg::RSP, stackOffset);
 }
 
-void SCBECPU::emitStoreCallerParam(uint32_t paramIdx, CPUReg reg, OpBits opBits)
+void ScbeCPU::emitStoreCallerParam(uint32_t paramIdx, CPUReg reg, OpBits opBits)
 {
     const uint32_t stackOffset = cpuFct->getStackOffsetCallerParam(paramIdx);
     emitStoreMR(CPUReg::RSP, stackOffset, reg, opBits);
 }
 
-void SCBECPU::emitSymbolRelocationPtr(CPUReg reg, const Utf8& name)
+void ScbeCPU::emitSymbolRelocationPtr(CPUReg reg, const Utf8& name)
 {
     SWAG_ASSERT(reg == CPUReg::RAX);
 
@@ -450,7 +450,7 @@ void SCBECPU::emitSymbolRelocationPtr(CPUReg reg, const Utf8& name)
     relocTableTextSection.table.push_back(relocation);
 }
 
-void SCBECPU::emitJumpCI(CPUCondJump jumpType, uint32_t ipDest)
+void ScbeCPU::emitJumpCI(CPUCondJump jumpType, uint32_t ipDest)
 {
     CPULabelToSolve label;
     label.ipDest = ipDest;
@@ -480,7 +480,7 @@ void SCBECPU::emitJumpCI(CPUCondJump jumpType, uint32_t ipDest)
     cpuFct->labelsToSolve.push_back(label);
 }
 
-void SCBECPU::emitLabels()
+void ScbeCPU::emitLabels()
 {
     for (auto& toSolve : cpuFct->labelsToSolve)
     {
@@ -490,12 +490,12 @@ void SCBECPU::emitLabels()
     }
 }
 
-void SCBECPU::emitDebug(ByteCodeInstruction* ipAddr)
+void ScbeCPU::emitDebug(ByteCodeInstruction* ipAddr)
 {
     SCBE_Debug::setLocation(cpuFct, ipAddr, concat.totalCount() - cpuFct->startAddress);
 }
 
-void SCBECPU::emitEnter(uint32_t sizeStack)
+void ScbeCPU::emitEnter(uint32_t sizeStack)
 {
     // Minimal size stack depends on calling convention
     sizeStack = std::max(sizeStack, static_cast<uint32_t>(cpuFct->cc->paramByRegisterCount * sizeof(void*)));
@@ -537,7 +537,7 @@ void SCBECPU::emitEnter(uint32_t sizeStack)
     cpuFct->sizeProlog = concat.totalCount() - cpuFct->startAddress;
 }
 
-void SCBECPU::emitLeave()
+void ScbeCPU::emitLeave()
 {
     emitOpBinaryRI(CPUReg::RSP, cpuFct->frameSize, CPUOp::ADD, OpBits::B64);
     for (auto idxReg = cpuFct->unwindRegs.size() - 1; idxReg != UINT32_MAX; idxReg--)

@@ -1,64 +1,64 @@
 // ReSharper disable CppInconsistentNaming
 #pragma once
-#include "Backend/SCBE/Encoder/SCBECPU.h"
+#include "Backend/SCBE/Encoder/ScbeCPU.h"
 
-enum class SCBEMicroOp : uint8_t
+enum class ScbeMicroOp : uint8_t
 {
 #define SCBE_MICRO_OP(__op, ...) __op,
-#include "Backend/SCBE/Encoder/Micro/SCBEMicroOpList.h"
+#include "Backend/SCBE/Encoder/Micro/ScbeMicroOpList.h"
 };
 
-using SCBEMicroOpFlag                   = Flags<uint32_t>;
-constexpr SCBEMicroOpFlag MOF_ZERO      = 0x00000000;
-constexpr SCBEMicroOpFlag MOF_REG_A     = 0x00000001;
-constexpr SCBEMicroOpFlag MOF_REG_B     = 0x00000002;
-constexpr SCBEMicroOpFlag MOF_REG_C     = 0x00000004;
-constexpr SCBEMicroOpFlag MOF_VALUE_A   = 0x00000008;
-constexpr SCBEMicroOpFlag MOF_VALUE_B   = 0x00000010;
-constexpr SCBEMicroOpFlag MOF_VALUE_C   = 0x00000020;
-constexpr SCBEMicroOpFlag MOF_OPBITS_A  = 0x00000040;
-constexpr SCBEMicroOpFlag MOF_OPBITS_B  = 0x00000080;
-constexpr SCBEMicroOpFlag MOF_CPU_OP    = 0x00000100;
-constexpr SCBEMicroOpFlag MOF_JUMP_TYPE = 0x00000200;
-constexpr SCBEMicroOpFlag MOF_NAME      = 0x00000400;
-constexpr SCBEMicroOpFlag MOF_CPU_COND  = 0x00000800;
+using ScbeMicroOpFlag                   = Flags<uint32_t>;
+constexpr ScbeMicroOpFlag MOF_ZERO      = 0x00000000;
+constexpr ScbeMicroOpFlag MOF_REG_A     = 0x00000001;
+constexpr ScbeMicroOpFlag MOF_REG_B     = 0x00000002;
+constexpr ScbeMicroOpFlag MOF_REG_C     = 0x00000004;
+constexpr ScbeMicroOpFlag MOF_VALUE_A   = 0x00000008;
+constexpr ScbeMicroOpFlag MOF_VALUE_B   = 0x00000010;
+constexpr ScbeMicroOpFlag MOF_VALUE_C   = 0x00000020;
+constexpr ScbeMicroOpFlag MOF_OPBITS_A  = 0x00000040;
+constexpr ScbeMicroOpFlag MOF_OPBITS_B  = 0x00000080;
+constexpr ScbeMicroOpFlag MOF_CPU_OP    = 0x00000100;
+constexpr ScbeMicroOpFlag MOF_JUMP_TYPE = 0x00000200;
+constexpr ScbeMicroOpFlag MOF_NAME      = 0x00000400;
+constexpr ScbeMicroOpFlag MOF_CPU_COND  = 0x00000800;
 
-struct SCBEMicroOpInfo
+struct ScbeMicroOpInfo
 {
-    const char*      name;
-    SCBEMicroOpFlag leftFlags;
-    SCBEMicroOpFlag rightFlags;
+    const char*     name;
+    ScbeMicroOpFlag leftFlags;
+    ScbeMicroOpFlag rightFlags;
 };
 
-extern SCBEMicroOpInfo g_MicroOpInfos[];
+extern ScbeMicroOpInfo g_MicroOpInfos[];
 
-using SCBE_MicroInstructionFlag                   = Flags<uint8_t>;
-constexpr SCBE_MicroInstructionFlag MIF_ZERO      = 0x00;
-constexpr SCBE_MicroInstructionFlag MIF_JUMP_DEST = 0x01;
+using ScbeMicroInstructionFlag                   = Flags<uint8_t>;
+constexpr ScbeMicroInstructionFlag MIF_ZERO      = 0x00;
+constexpr ScbeMicroInstructionFlag MIF_JUMP_DEST = 0x01;
 
-struct SCBEMicroInstruction
+struct ScbeMicroInstruction
 {
     Utf8     name;
     uint64_t valueA;
     uint64_t valueB;
 
-    SCBEMicroOp op;
-    CPUOp        cpuOp;
-    CPUCondFlag  cpuCond;
-    CPUCondJump  jumpType;
+    ScbeMicroOp op;
+    CPUOp       cpuOp;
+    CPUCondFlag cpuCond;
+    CPUCondJump jumpType;
 
-    OpBits                    opBitsA;
-    OpBits                    opBitsB;
-    CPUEmitFlags              emitFlags;
-    SCBE_MicroInstructionFlag flags;
+    OpBits                   opBitsA;
+    OpBits                   opBitsB;
+    CPUEmitFlags             emitFlags;
+    ScbeMicroInstructionFlag flags;
 
     uint32_t valueC;
     CPUReg   regA;
     CPUReg   regB;
     CPUReg   regC;
 
-    bool isJump() const { return op == SCBEMicroOp::JumpM || op == SCBEMicroOp::JumpCI || op == SCBEMicroOp::JumpTable || op == SCBEMicroOp::JumpCC; }
-    bool isCall() const { return op == SCBEMicroOp::CallExtern || op == SCBEMicroOp::CallIndirect || op == SCBEMicroOp::CallLocal; }
+    bool isJump() const { return op == ScbeMicroOp::JumpM || op == ScbeMicroOp::JumpCI || op == ScbeMicroOp::JumpTable || op == ScbeMicroOp::JumpCC; }
+    bool isCall() const { return op == ScbeMicroOp::CallExtern || op == ScbeMicroOp::CallIndirect || op == ScbeMicroOp::CallLocal; }
 };
 
 using SCBEMicroOpDetails                  = Flags<uint64_t>;
@@ -83,7 +83,7 @@ constexpr SCBEMicroOpDetails MOD_REG_RSI  = 0x0000000000010000;
 constexpr SCBEMicroOpDetails MOD_REG_RDI  = 0x0000000000020000;
 constexpr SCBEMicroOpDetails MOD_REG_ALL  = 0x0000000000FFFFFF;
 
-struct SCBEMicro final : SCBECPU
+struct ScbeMicro final : ScbeCPU
 {
     void init(const BuildParameters& buildParameters) override;
 
@@ -143,10 +143,10 @@ struct SCBEMicro final : SCBECPU
     void    emitOpBinaryMI(CPUReg memReg, uint64_t memOffset, uint64_t value, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags = EMITF_Zero) override;
     void    emitMulAdd(CPUReg regDst, CPUReg regMul, CPUReg regAdd, OpBits opBits) override;
 
-    SCBEMicroInstruction* addInstruction(SCBEMicroOp op);
-    void                   process(SCBECPU& encoder);
-    void                   encode(SCBECPU& encoder) const;
-    void                   print() const;
+    ScbeMicroInstruction* addInstruction(ScbeMicroOp op);
+    void                  process(ScbeCPU& encoder);
+    void                  encode(ScbeCPU& encoder) const;
+    void                  print() const;
 
     bool nextIsJumpDest = false;
 };

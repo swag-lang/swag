@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Backend/SCBE/Debug/SCBE_Debug_CodeView.h"
 #include "Backend/ByteCode/ByteCode.h"
-#include "Backend/SCBE/Main/SCBE.h"
+#include "Backend/SCBE/Main/Scbe.h"
 #include "Backend/SCBE/Obj/SCBE_Coff.h"
 #include "Main/Version.h"
 #include "Semantic/Scope.h"
@@ -13,7 +13,7 @@
 
 namespace
 {
-    void emitStartRecord(SCBECPU& pp, uint16_t what)
+    void emitStartRecord(ScbeCPU& pp, uint16_t what)
     {
         auto& concat = pp.concat;
         SWAG_ASSERT(pp.dbgRecordIdx < pp.MAX_RECORD);
@@ -23,7 +23,7 @@ namespace
         pp.dbgRecordIdx++;
     }
 
-    void emitEndRecord(SCBECPU& pp, bool align = true)
+    void emitEndRecord(ScbeCPU& pp, bool align = true)
     {
         auto& concat = pp.concat;
         if (align)
@@ -33,7 +33,7 @@ namespace
         *pp.dbgStartRecordPtr[pp.dbgRecordIdx] = static_cast<uint16_t>(concat.totalCount() - pp.dbgStartRecordOffset[pp.dbgRecordIdx]);
     }
 
-    void emitCompilerFlagsDebugS(SCBECPU& pp)
+    void emitCompilerFlagsDebugS(ScbeCPU& pp)
     {
         auto& concat = pp.concat;
 
@@ -69,7 +69,7 @@ namespace
         *patchSCount = concat.totalCount() - patchSOffset;
     }
 
-    void emitTruncatedString(SCBECPU& pp, const Utf8& str)
+    void emitTruncatedString(ScbeCPU& pp, const Utf8& str)
     {
         auto& concat = pp.concat;
         SWAG_ASSERT(str.length() < 0xF00); // Magic number from llvm codeview debug (should truncate)
@@ -78,7 +78,7 @@ namespace
         concat.addU8(0);
     }
 
-    void emitSecRel(SCBECPU& pp, uint32_t symbolIndex, uint32_t segIndex, uint32_t offset = 0)
+    void emitSecRel(ScbeCPU& pp, uint32_t symbolIndex, uint32_t segIndex, uint32_t offset = 0)
     {
         auto& concat = pp.concat;
 
@@ -98,7 +98,7 @@ namespace
         concat.addU16(0);
     }
 
-    void emitEmbeddedValue(SCBECPU& pp, const TypeInfo* valueType, const ComputedValue& val)
+    void emitEmbeddedValue(ScbeCPU& pp, const TypeInfo* valueType, const ComputedValue& val)
     {
         auto& concat = pp.concat;
         SWAG_ASSERT(valueType->isNative());
@@ -156,7 +156,7 @@ namespace
         }
     }
 
-    bool emitDataDebugT(SCBECPU& pp)
+    bool emitDataDebugT(ScbeCPU& pp)
     {
         auto& concat = pp.concat;
 
@@ -303,7 +303,7 @@ namespace
         return true;
     }
 
-    void emitConstant(SCBECPU& pp, const AstNode* node, const Utf8& name)
+    void emitConstant(ScbeCPU& pp, const AstNode* node, const Utf8& name)
     {
         auto& concat = pp.concat;
         if (node->typeInfo->isNative() && node->typeInfo->sizeOf <= 8)
@@ -337,7 +337,7 @@ namespace
         }
     }
 
-    void emitGlobalDebugS(SCBECPU& pp, VectorNative<AstNode*>& gVars, uint32_t segSymIndex)
+    void emitGlobalDebugS(ScbeCPU& pp, VectorNative<AstNode*>& gVars, uint32_t segSymIndex)
     {
         auto& concat = pp.concat;
         concat.addU32(DEBUG_S_SYMBOLS);
@@ -413,7 +413,7 @@ namespace
         return checkSymIndex * 8;
     }
 
-    bool emitLines(SCBECPU& pp, MapPath<uint32_t>& mapFileNames, Vector<uint32_t>& arrFileNames, Utf8& stringTable, Concat& concat, const CPUFunction* f, uint32_t idxDbgLines)
+    bool emitLines(ScbeCPU& pp, MapPath<uint32_t>& mapFileNames, Vector<uint32_t>& arrFileNames, Utf8& stringTable, Concat& concat, const CPUFunction* f, uint32_t idxDbgLines)
     {
         const auto& dbgLines   = f->dbgLines[idxDbgLines];
         const auto  sourceFile = dbgLines.sourceFile;
@@ -452,7 +452,7 @@ namespace
         return true;
     }
 
-    void emitLocalGlobalVars(SCBECPU& pp, const Scope* scope, Concat& concat, AstFuncDecl* const funcDecl)
+    void emitLocalGlobalVars(ScbeCPU& pp, const Scope* scope, Concat& concat, AstFuncDecl* const funcDecl)
     {
         for (const auto localVar : funcDecl->localGlobalVars)
         {
@@ -489,7 +489,7 @@ namespace
         }
     }
 
-    void emitLocalVars(SCBECPU& pp, const CPUFunction* f, const Scope* scope, const TypeInfoFuncAttr* typeFunc)
+    void emitLocalVars(ScbeCPU& pp, const CPUFunction* f, const Scope* scope, const TypeInfoFuncAttr* typeFunc)
     {
         auto& concat = pp.concat;
         for (const auto localVar : scope->symTable.allSymbols)
@@ -527,7 +527,7 @@ namespace
         }
     }
 
-    void emitLocalConstants(SCBECPU& pp, const Scope* scope, AstFuncDecl* const funcDecl)
+    void emitLocalConstants(ScbeCPU& pp, const Scope* scope, AstFuncDecl* const funcDecl)
     {
         for (const auto localConst : funcDecl->localConstants)
         {
@@ -538,7 +538,7 @@ namespace
         }
     }
 
-    bool emitScope(SCBECPU& pp, CPUFunction* f, Scope* scope)
+    bool emitScope(ScbeCPU& pp, CPUFunction* f, Scope* scope)
     {
         auto& concat = pp.concat;
 
@@ -589,7 +589,7 @@ namespace
         return true;
     }
 
-    void emitInlineTable(SCBECPU& pp, Concat& concat, MapPath<uint32_t> mapFileNames, Vector<uint32_t> arrFileNames, Utf8 stringTable, const CPUFunction* f)
+    void emitInlineTable(ScbeCPU& pp, Concat& concat, MapPath<uint32_t> mapFileNames, Vector<uint32_t> arrFileNames, Utf8 stringTable, const CPUFunction* f)
     {
         for (auto& dbgLines : f->dbgLines)
         {
@@ -617,7 +617,7 @@ namespace
         }
     }
 
-    void emitFuncParameters(SCBECPU& pp, const CPUFunction* cpuFct)
+    void emitFuncParameters(ScbeCPU& pp, const CPUFunction* cpuFct)
     {
         if (!cpuFct->node->parameters)
             return;
@@ -761,7 +761,7 @@ namespace
         }
     }
 
-    void emitFuncCaptureParameters(SCBECPU& pp, const CPUFunction* cpuFct)
+    void emitFuncCaptureParameters(ScbeCPU& pp, const CPUFunction* cpuFct)
     {
         if (!cpuFct->node->captureParameters)
             return;
@@ -809,7 +809,7 @@ namespace
         }
     }
 
-    bool emitFctDebugS(SCBECPU& pp)
+    bool emitFctDebugS(ScbeCPU& pp)
     {
         auto& concat = pp.concat;
 
@@ -924,7 +924,7 @@ namespace
     }
 }
 
-bool SCBE_Debug_CodeView::emit(const BuildParameters& buildParameters, SCBECPU& pp)
+bool SCBE_Debug_CodeView::emit(const BuildParameters& buildParameters, ScbeCPU& pp)
 {
     auto&      concat = pp.concat;
     const auto module = buildParameters.module;

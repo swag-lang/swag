@@ -1,28 +1,28 @@
 #include "pch.h"
 
 #include "Backend/ByteCode/ByteCode.h"
-#include "Backend/SCBE/Encoder/Micro/SCBEMicro.h"
-#include "SCBEOptimizer.h"
+#include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
+#include "ScbeOptimizer.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/AstNode.h"
 
-SCBEMicroOpInfo g_MicroOpInfos[] =
+ScbeMicroOpInfo g_MicroOpInfos[] =
 {
 #undef SCBE_MICRO_OP
 #define SCBE_MICRO_OP(__op, __left, __right) {#__op, __left, __right},
-#include "Backend/SCBE/Encoder/Micro/SCBEMicroOpList.h"
+#include "Backend/SCBE/Encoder/Micro/ScbeMicroOpList.h"
 
 };
 
-void SCBEMicro::init(const BuildParameters& buildParameters)
+void ScbeMicro::init(const BuildParameters& buildParameters)
 {
     concat.init();
-    SCBECPU::init(buildParameters);
+    ScbeCPU::init(buildParameters);
 }
 
-SCBEMicroInstruction* SCBEMicro::addInstruction(SCBEMicroOp op)
+ScbeMicroInstruction* ScbeMicro::addInstruction(ScbeMicroOp op)
 {
-    const auto inst = concat.addObj<SCBEMicroInstruction>();
+    const auto inst = concat.addObj<ScbeMicroInstruction>();
     if (nextIsJumpDest)
         inst->flags.add(MIF_JUMP_DEST);
     inst->op       = op;
@@ -30,158 +30,158 @@ SCBEMicroInstruction* SCBEMicro::addInstruction(SCBEMicroOp op)
     return inst;
 }
 
-void SCBEMicro::emitEnter(uint32_t sizeStack)
+void ScbeMicro::emitEnter(uint32_t sizeStack)
 {
-    const auto inst = addInstruction(SCBEMicroOp::Enter);
+    const auto inst = addInstruction(ScbeMicroOp::Enter);
     inst->valueA    = sizeStack;
 }
 
-void SCBEMicro::emitLeave()
+void ScbeMicro::emitLeave()
 {
-    addInstruction(SCBEMicroOp::Leave);
+    addInstruction(ScbeMicroOp::Leave);
 }
 
-void SCBEMicro::emitDebug(ByteCodeInstruction* ipAddr)
+void ScbeMicro::emitDebug(ByteCodeInstruction* ipAddr)
 {
-    const auto inst = addInstruction(SCBEMicroOp::Debug);
+    const auto inst = addInstruction(ScbeMicroOp::Debug);
     inst->valueA    = reinterpret_cast<uint64_t>(ipAddr);
 }
 
-void SCBEMicro::emitLabel(uint32_t instructionIndex)
+void ScbeMicro::emitLabel(uint32_t instructionIndex)
 {
-    const auto inst = addInstruction(SCBEMicroOp::Label);
+    const auto inst = addInstruction(ScbeMicroOp::Label);
     inst->valueA    = instructionIndex;
     nextIsJumpDest  = true;
 }
 
-void SCBEMicro::emitSymbolRelocationRef(const Utf8& name)
+void ScbeMicro::emitSymbolRelocationRef(const Utf8& name)
 {
-    const auto inst = addInstruction(SCBEMicroOp::SymbolRelocationRef);
+    const auto inst = addInstruction(ScbeMicroOp::SymbolRelocationRef);
     inst->name      = name;
 }
 
-void SCBEMicro::emitSymbolRelocationAddress(CPUReg reg, uint32_t symbolIndex, uint32_t offset)
+void ScbeMicro::emitSymbolRelocationAddress(CPUReg reg, uint32_t symbolIndex, uint32_t offset)
 {
-    const auto inst = addInstruction(SCBEMicroOp::SymbolRelocationAddress);
+    const auto inst = addInstruction(ScbeMicroOp::SymbolRelocationAddress);
     inst->regA      = reg;
     inst->valueA    = symbolIndex;
     inst->valueB    = offset;
 }
 
-void SCBEMicro::emitSymbolRelocationValue(CPUReg reg, uint32_t symbolIndex, uint32_t offset)
+void ScbeMicro::emitSymbolRelocationValue(CPUReg reg, uint32_t symbolIndex, uint32_t offset)
 {
-    const auto inst = addInstruction(SCBEMicroOp::SymbolRelocationValue);
+    const auto inst = addInstruction(ScbeMicroOp::SymbolRelocationValue);
     inst->regA      = reg;
     inst->valueA    = symbolIndex;
     inst->valueB    = offset;
 }
 
-void SCBEMicro::emitSymbolGlobalString(CPUReg reg, const Utf8& str)
+void ScbeMicro::emitSymbolGlobalString(CPUReg reg, const Utf8& str)
 {
-    const auto inst = addInstruction(SCBEMicroOp::SymbolGlobalString);
+    const auto inst = addInstruction(ScbeMicroOp::SymbolGlobalString);
     inst->regA      = reg;
     inst->name      = str;
 }
 
-void SCBEMicro::emitSymbolRelocationPtr(CPUReg reg, const Utf8& name)
+void ScbeMicro::emitSymbolRelocationPtr(CPUReg reg, const Utf8& name)
 {
-    const auto inst = addInstruction(SCBEMicroOp::SymbolRelocationPtr);
+    const auto inst = addInstruction(ScbeMicroOp::SymbolRelocationPtr);
     inst->regA      = reg;
     inst->name      = name;
 }
 
-void SCBEMicro::emitPush(CPUReg reg)
+void ScbeMicro::emitPush(CPUReg reg)
 {
-    const auto inst = addInstruction(SCBEMicroOp::Push);
+    const auto inst = addInstruction(ScbeMicroOp::Push);
     inst->regA      = reg;
 }
 
-void SCBEMicro::emitPop(CPUReg reg)
+void ScbeMicro::emitPop(CPUReg reg)
 {
-    const auto inst = addInstruction(SCBEMicroOp::Pop);
+    const auto inst = addInstruction(ScbeMicroOp::Pop);
     inst->regA      = reg;
 }
 
-void SCBEMicro::emitRet()
+void ScbeMicro::emitRet()
 {
-    addInstruction(SCBEMicroOp::Ret);
+    addInstruction(ScbeMicroOp::Ret);
 }
 
-void SCBEMicro::emitLoadCallerParam(CPUReg reg, uint32_t paramIdx, OpBits opBits)
+void ScbeMicro::emitLoadCallerParam(CPUReg reg, uint32_t paramIdx, OpBits opBits)
 {
-    const auto inst = addInstruction(SCBEMicroOp::LoadCallerParam);
+    const auto inst = addInstruction(ScbeMicroOp::LoadCallerParam);
     inst->regA      = reg;
     inst->valueA    = paramIdx;
     inst->opBitsA   = opBits;
 }
 
-void SCBEMicro::emitLoadCallerZeroExtendParam(CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc)
+void ScbeMicro::emitLoadCallerZeroExtendParam(CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc)
 {
-    const auto inst = addInstruction(SCBEMicroOp::LoadCallerZeroExtendParam);
+    const auto inst = addInstruction(ScbeMicroOp::LoadCallerZeroExtendParam);
     inst->regA      = reg;
     inst->valueA    = paramIdx;
     inst->opBitsA   = numBitsDst;
     inst->opBitsB   = numBitsSrc;
 }
 
-void SCBEMicro::emitLoadCallerAddressParam(CPUReg reg, uint32_t paramIdx)
+void ScbeMicro::emitLoadCallerAddressParam(CPUReg reg, uint32_t paramIdx)
 {
-    const auto inst = addInstruction(SCBEMicroOp::LoadCallerAddressParam);
+    const auto inst = addInstruction(ScbeMicroOp::LoadCallerAddressParam);
     inst->regA      = reg;
     inst->valueA    = paramIdx;
 }
 
-void SCBEMicro::emitStoreCallerParam(uint32_t paramIdx, CPUReg reg, OpBits opBits)
+void ScbeMicro::emitStoreCallerParam(uint32_t paramIdx, CPUReg reg, OpBits opBits)
 {
-    const auto inst = addInstruction(SCBEMicroOp::StoreCallerParam);
+    const auto inst = addInstruction(ScbeMicroOp::StoreCallerParam);
     inst->valueA    = paramIdx;
     inst->regA      = reg;
     inst->opBitsA   = opBits;
 }
 
-void SCBEMicro::emitLoadRR(CPUReg regDst, CPUReg regSrc, OpBits opBits)
+void ScbeMicro::emitLoadRR(CPUReg regDst, CPUReg regSrc, OpBits opBits)
 {
-    const auto inst = addInstruction(SCBEMicroOp::LoadRR);
+    const auto inst = addInstruction(ScbeMicroOp::LoadRR);
     inst->regA      = regDst;
     inst->regB      = regSrc;
     inst->opBitsA   = opBits;
 }
 
-void SCBEMicro::emitLoadR(CPUReg regDstSrc, OpBits opBits)
+void ScbeMicro::emitLoadR(CPUReg regDstSrc, OpBits opBits)
 {
-    const auto inst = addInstruction(SCBEMicroOp::LoadR);
+    const auto inst = addInstruction(ScbeMicroOp::LoadR);
     inst->regA      = regDstSrc;
     inst->opBitsA   = opBits;
 }
 
-void SCBEMicro::emitLoadRI64(CPUReg reg, uint64_t value)
+void ScbeMicro::emitLoadRI64(CPUReg reg, uint64_t value)
 {
-    const auto inst = addInstruction(SCBEMicroOp::LoadRI64);
+    const auto inst = addInstruction(ScbeMicroOp::LoadRI64);
     inst->regA      = reg;
     inst->valueA    = value;
 }
 
-void SCBEMicro::emitLoadRI(CPUReg reg, uint64_t value, OpBits opBits)
+void ScbeMicro::emitLoadRI(CPUReg reg, uint64_t value, OpBits opBits)
 {
     SWAG_ASSERT(!isFloat(opBits) || reg == CPUReg::XMM0 || reg == CPUReg::XMM1 || reg == CPUReg::XMM2 || reg == CPUReg::XMM3);
-    const auto inst = addInstruction(SCBEMicroOp::LoadRI);
+    const auto inst = addInstruction(ScbeMicroOp::LoadRI);
     inst->regA      = reg;
     inst->valueA    = value;
     inst->opBitsA   = opBits;
 }
 
-void SCBEMicro::emitLoadRM(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits opBits)
+void ScbeMicro::emitLoadRM(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits opBits)
 {
-    const auto inst = addInstruction(SCBEMicroOp::LoadRM);
+    const auto inst = addInstruction(ScbeMicroOp::LoadRM);
     inst->regA      = reg;
     inst->regB      = memReg;
     inst->valueA    = memOffset;
     inst->opBitsA   = opBits;
 }
 
-void SCBEMicro::emitLoadSignedExtendRM(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc)
+void ScbeMicro::emitLoadSignedExtendRM(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc)
 {
-    const auto inst = addInstruction(SCBEMicroOp::LoadSignedExtendRM);
+    const auto inst = addInstruction(ScbeMicroOp::LoadSignedExtendRM);
     inst->regA      = reg;
     inst->regB      = memReg;
     inst->valueA    = memOffset;
@@ -189,18 +189,18 @@ void SCBEMicro::emitLoadSignedExtendRM(CPUReg reg, CPUReg memReg, uint64_t memOf
     inst->opBitsB   = numBitsSrc;
 }
 
-void SCBEMicro::emitLoadSignedExtendRR(CPUReg regDst, CPUReg regSrc, OpBits numBitsDst, OpBits numBitsSrc)
+void ScbeMicro::emitLoadSignedExtendRR(CPUReg regDst, CPUReg regSrc, OpBits numBitsDst, OpBits numBitsSrc)
 {
-    const auto inst = addInstruction(SCBEMicroOp::LoadSignedExtendRR);
+    const auto inst = addInstruction(ScbeMicroOp::LoadSignedExtendRR);
     inst->regA      = regDst;
     inst->regB      = regSrc;
     inst->opBitsA   = numBitsDst;
     inst->opBitsB   = numBitsSrc;
 }
 
-void SCBEMicro::emitLoadZeroExtendRM(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc)
+void ScbeMicro::emitLoadZeroExtendRM(CPUReg reg, CPUReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc)
 {
-    const auto inst = addInstruction(SCBEMicroOp::LoadZeroExtendRM);
+    const auto inst = addInstruction(ScbeMicroOp::LoadZeroExtendRM);
     inst->regA      = reg;
     inst->regB      = memReg;
     inst->valueA    = memOffset;
@@ -208,26 +208,26 @@ void SCBEMicro::emitLoadZeroExtendRM(CPUReg reg, CPUReg memReg, uint64_t memOffs
     inst->opBitsB   = numBitsSrc;
 }
 
-void SCBEMicro::emitLoadZeroExtendRR(CPUReg regDst, CPUReg regSrc, OpBits numBitsDst, OpBits numBitsSrc)
+void ScbeMicro::emitLoadZeroExtendRR(CPUReg regDst, CPUReg regSrc, OpBits numBitsDst, OpBits numBitsSrc)
 {
-    const auto inst = addInstruction(SCBEMicroOp::LoadZeroExtendRR);
+    const auto inst = addInstruction(ScbeMicroOp::LoadZeroExtendRR);
     inst->regA      = regDst;
     inst->regB      = regSrc;
     inst->opBitsA   = numBitsDst;
     inst->opBitsB   = numBitsSrc;
 }
 
-void SCBEMicro::emitLoadAddressM(CPUReg reg, CPUReg memReg, uint64_t memOffset)
+void ScbeMicro::emitLoadAddressM(CPUReg reg, CPUReg memReg, uint64_t memOffset)
 {
-    const auto inst = addInstruction(SCBEMicroOp::LoadAddressM);
+    const auto inst = addInstruction(ScbeMicroOp::LoadAddressM);
     inst->regA      = reg;
     inst->regB      = memReg;
     inst->valueA    = memOffset;
 }
 
-void SCBEMicro::emitLoadAddressAddMul(CPUReg regDst, CPUReg regSrc1, CPUReg regSrc2, uint64_t mulValue, OpBits opBits)
+void ScbeMicro::emitLoadAddressAddMul(CPUReg regDst, CPUReg regSrc1, CPUReg regSrc2, uint64_t mulValue, OpBits opBits)
 {
-    const auto inst = addInstruction(SCBEMicroOp::LoadAddressAddMul);
+    const auto inst = addInstruction(ScbeMicroOp::LoadAddressAddMul);
     inst->regA      = regDst;
     inst->regB      = regSrc1;
     inst->regC      = regSrc2;
@@ -235,102 +235,102 @@ void SCBEMicro::emitLoadAddressAddMul(CPUReg regDst, CPUReg regSrc1, CPUReg regS
     inst->opBitsA   = opBits;
 }
 
-void SCBEMicro::emitStoreMR(CPUReg memReg, uint64_t memOffset, CPUReg reg, OpBits opBits)
+void ScbeMicro::emitStoreMR(CPUReg memReg, uint64_t memOffset, CPUReg reg, OpBits opBits)
 {
-    const auto inst = addInstruction(SCBEMicroOp::StoreMR);
+    const auto inst = addInstruction(ScbeMicroOp::StoreMR);
     inst->regA      = memReg;
     inst->valueA    = memOffset;
     inst->regB      = reg;
     inst->opBitsA   = opBits;
 }
 
-void SCBEMicro::emitStoreMI(CPUReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits)
+void ScbeMicro::emitStoreMI(CPUReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits)
 {
-    const auto inst = addInstruction(SCBEMicroOp::StoreMI);
+    const auto inst = addInstruction(ScbeMicroOp::StoreMI);
     inst->regA      = memReg;
     inst->valueA    = memOffset;
     inst->valueB    = value;
     inst->opBitsA   = opBits;
 }
 
-void SCBEMicro::emitClearR(CPUReg reg, OpBits opBits)
+void ScbeMicro::emitClearR(CPUReg reg, OpBits opBits)
 {
-    const auto inst = addInstruction(SCBEMicroOp::ClearR);
+    const auto inst = addInstruction(ScbeMicroOp::ClearR);
     inst->regA      = reg;
     inst->opBitsA   = opBits;
 }
 
-void SCBEMicro::emitClearM(CPUReg memReg, uint64_t memOffset, uint32_t count)
+void ScbeMicro::emitClearM(CPUReg memReg, uint64_t memOffset, uint32_t count)
 {
-    const auto inst = addInstruction(SCBEMicroOp::ClearM);
+    const auto inst = addInstruction(ScbeMicroOp::ClearM);
     inst->regA      = memReg;
     inst->valueA    = memOffset;
     inst->valueB    = count;
 }
 
-void SCBEMicro::emitSetCC(CPUReg reg, CPUCondFlag setType)
+void ScbeMicro::emitSetCC(CPUReg reg, CPUCondFlag setType)
 {
-    const auto inst = addInstruction(SCBEMicroOp::SetCC);
+    const auto inst = addInstruction(ScbeMicroOp::SetCC);
     inst->regA      = reg;
     inst->cpuCond   = setType;
 }
 
-void SCBEMicro::emitCmpRR(CPUReg reg0, CPUReg reg1, OpBits opBits)
+void ScbeMicro::emitCmpRR(CPUReg reg0, CPUReg reg1, OpBits opBits)
 {
-    const auto inst = addInstruction(SCBEMicroOp::CmpRR);
+    const auto inst = addInstruction(ScbeMicroOp::CmpRR);
     inst->regA      = reg0;
     inst->regB      = reg1;
     inst->opBitsA   = opBits;
 }
 
-void SCBEMicro::emitCmpRI(CPUReg reg, uint64_t value, OpBits opBits)
+void ScbeMicro::emitCmpRI(CPUReg reg, uint64_t value, OpBits opBits)
 {
-    const auto inst = addInstruction(SCBEMicroOp::CmpRI);
+    const auto inst = addInstruction(ScbeMicroOp::CmpRI);
     inst->regA      = reg;
     inst->valueA    = value;
     inst->opBitsA   = opBits;
 }
 
-void SCBEMicro::emitCmpMR(CPUReg memReg, uint64_t memOffset, CPUReg reg, OpBits opBits)
+void ScbeMicro::emitCmpMR(CPUReg memReg, uint64_t memOffset, CPUReg reg, OpBits opBits)
 {
-    const auto inst = addInstruction(SCBEMicroOp::CmpMR);
+    const auto inst = addInstruction(ScbeMicroOp::CmpMR);
     inst->regA      = memReg;
     inst->valueA    = memOffset;
     inst->regB      = reg;
     inst->opBitsA   = opBits;
 }
 
-void SCBEMicro::emitCmpMI(CPUReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits)
+void ScbeMicro::emitCmpMI(CPUReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits)
 {
-    const auto inst = addInstruction(SCBEMicroOp::CmpMI);
+    const auto inst = addInstruction(ScbeMicroOp::CmpMI);
     inst->regA      = memReg;
     inst->valueA    = memOffset;
     inst->valueB    = value;
     inst->opBitsA   = opBits;
 }
 
-void SCBEMicro::emitOpUnaryM(CPUReg memReg, uint64_t memOffset, CPUOp op, OpBits opBits)
+void ScbeMicro::emitOpUnaryM(CPUReg memReg, uint64_t memOffset, CPUOp op, OpBits opBits)
 {
-    const auto inst = addInstruction(SCBEMicroOp::OpUnaryM);
+    const auto inst = addInstruction(ScbeMicroOp::OpUnaryM);
     inst->regA      = memReg;
     inst->valueA    = memOffset;
     inst->cpuOp     = op;
     inst->opBitsA   = opBits;
 }
 
-void SCBEMicro::emitOpUnaryR(CPUReg reg, CPUOp op, OpBits opBits)
+void ScbeMicro::emitOpUnaryR(CPUReg reg, CPUOp op, OpBits opBits)
 {
-    const auto inst = addInstruction(SCBEMicroOp::OpUnaryR);
+    const auto inst = addInstruction(ScbeMicroOp::OpUnaryR);
     inst->regA      = reg;
     inst->cpuOp     = op;
     inst->opBitsA   = opBits;
 }
 
-void SCBEMicro::emitOpBinaryRR(CPUReg regDst, CPUReg regSrc, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags)
+void ScbeMicro::emitOpBinaryRR(CPUReg regDst, CPUReg regSrc, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags)
 {
     SWAG_ASSERT(!isFloat(opBits) || regDst == CPUReg::XMM0 || regDst == CPUReg::XMM1 || regDst == CPUReg::XMM2 || regDst == CPUReg::XMM3);
     
-    const auto inst = addInstruction(SCBEMicroOp::OpBinaryRR);
+    const auto inst = addInstruction(ScbeMicroOp::OpBinaryRR);
     inst->regA      = regDst;
     inst->regB      = regSrc;
     inst->cpuOp     = op;
@@ -338,9 +338,9 @@ void SCBEMicro::emitOpBinaryRR(CPUReg regDst, CPUReg regSrc, CPUOp op, OpBits op
     inst->emitFlags = emitFlags;
 }
 
-void SCBEMicro::emitOpBinaryRM(CPUReg regDst, CPUReg memReg, uint64_t memOffset, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags)
+void ScbeMicro::emitOpBinaryRM(CPUReg regDst, CPUReg memReg, uint64_t memOffset, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags)
 {
-    const auto inst = addInstruction(SCBEMicroOp::OpBinaryRM);
+    const auto inst = addInstruction(ScbeMicroOp::OpBinaryRM);
     inst->regA      = regDst;
     inst->regB      = memReg;
     inst->valueA    = memOffset;
@@ -349,9 +349,9 @@ void SCBEMicro::emitOpBinaryRM(CPUReg regDst, CPUReg memReg, uint64_t memOffset,
     inst->emitFlags = emitFlags;
 }
 
-void SCBEMicro::emitOpBinaryMR(CPUReg memReg, uint64_t memOffset, CPUReg reg, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags)
+void ScbeMicro::emitOpBinaryMR(CPUReg memReg, uint64_t memOffset, CPUReg reg, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags)
 {
-    const auto inst = addInstruction(SCBEMicroOp::OpBinaryMR);
+    const auto inst = addInstruction(ScbeMicroOp::OpBinaryMR);
     inst->regA      = memReg;
     inst->valueA    = memOffset;
     inst->regB      = reg;
@@ -360,9 +360,9 @@ void SCBEMicro::emitOpBinaryMR(CPUReg memReg, uint64_t memOffset, CPUReg reg, CP
     inst->emitFlags = emitFlags;
 }
 
-void SCBEMicro::emitOpBinaryRI(CPUReg reg, uint64_t value, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags)
+void ScbeMicro::emitOpBinaryRI(CPUReg reg, uint64_t value, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags)
 {
-    const auto inst = addInstruction(SCBEMicroOp::OpBinaryRI);
+    const auto inst = addInstruction(ScbeMicroOp::OpBinaryRI);
     inst->regA      = reg;
     inst->valueA    = value;
     inst->cpuOp     = op;
@@ -370,9 +370,9 @@ void SCBEMicro::emitOpBinaryRI(CPUReg reg, uint64_t value, CPUOp op, OpBits opBi
     inst->emitFlags = emitFlags;
 }
 
-void SCBEMicro::emitOpBinaryMI(CPUReg memReg, uint64_t memOffset, uint64_t value, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags)
+void ScbeMicro::emitOpBinaryMI(CPUReg memReg, uint64_t memOffset, uint64_t value, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags)
 {
-    const auto inst = addInstruction(SCBEMicroOp::OpBinaryMI);
+    const auto inst = addInstruction(ScbeMicroOp::OpBinaryMI);
     inst->regA      = memReg;
     inst->valueA    = memOffset;
     inst->valueB    = value;
@@ -381,9 +381,9 @@ void SCBEMicro::emitOpBinaryMI(CPUReg memReg, uint64_t memOffset, uint64_t value
     inst->emitFlags = emitFlags;
 }
 
-void SCBEMicro::emitJumpTable(CPUReg table, CPUReg offset, int32_t currentIp, uint32_t offsetTable, uint32_t numEntries)
+void ScbeMicro::emitJumpTable(CPUReg table, CPUReg offset, int32_t currentIp, uint32_t offsetTable, uint32_t numEntries)
 {
-    const auto inst = addInstruction(SCBEMicroOp::JumpTable);
+    const auto inst = addInstruction(ScbeMicroOp::JumpTable);
     inst->regA      = table;
     inst->regB      = offset;
     inst->valueA    = currentIp;
@@ -391,145 +391,145 @@ void SCBEMicro::emitJumpTable(CPUReg table, CPUReg offset, int32_t currentIp, ui
     inst->valueC    = numEntries;
 }
 
-void SCBEMicro::emitJumpM(CPUReg reg)
+void ScbeMicro::emitJumpM(CPUReg reg)
 {
-    const auto inst = addInstruction(SCBEMicroOp::JumpM);
+    const auto inst = addInstruction(ScbeMicroOp::JumpM);
     inst->regA      = reg;
 }
 
-void SCBEMicro::emitJumpCI(CPUCondJump jumpType, uint32_t ipDest)
+void ScbeMicro::emitJumpCI(CPUCondJump jumpType, uint32_t ipDest)
 {
-    const auto inst = addInstruction(SCBEMicroOp::JumpCI);
+    const auto inst = addInstruction(ScbeMicroOp::JumpCI);
     inst->jumpType  = jumpType;
     inst->valueA    = ipDest;
 }
 
-CPUJump SCBEMicro::emitJump(CPUCondJump jumpType, OpBits opBits)
+CPUJump ScbeMicro::emitJump(CPUCondJump jumpType, OpBits opBits)
 {
     CPUJump cpuJump;
     cpuJump.offset  = concat.totalCount();
-    const auto inst = addInstruction(SCBEMicroOp::JumpCC);
+    const auto inst = addInstruction(ScbeMicroOp::JumpCC);
     inst->jumpType  = jumpType;
     inst->opBitsA   = opBits;
     return cpuJump;
 }
 
-void SCBEMicro::emitPatchJump(const CPUJump& jump)
+void ScbeMicro::emitPatchJump(const CPUJump& jump)
 {
-    const auto inst = addInstruction(SCBEMicroOp::PatchJump);
+    const auto inst = addInstruction(ScbeMicroOp::PatchJump);
     inst->valueA    = jump.offset;
     nextIsJumpDest  = true;
 }
 
-void SCBEMicro::emitPatchJump(const CPUJump& jump, uint64_t offsetDestination)
+void ScbeMicro::emitPatchJump(const CPUJump& jump, uint64_t offsetDestination)
 {
     SWAG_ASSERT(false);
 }
 
-void SCBEMicro::emitCopy(CPUReg regDst, CPUReg regSrc, uint32_t count)
+void ScbeMicro::emitCopy(CPUReg regDst, CPUReg regSrc, uint32_t count)
 {
-    const auto inst = addInstruction(SCBEMicroOp::Copy);
+    const auto inst = addInstruction(ScbeMicroOp::Copy);
     inst->regA      = regDst;
     inst->regB      = regSrc;
     inst->valueA    = count;
 }
 
-void SCBEMicro::emitNop()
+void ScbeMicro::emitNop()
 {
-    addInstruction(SCBEMicroOp::Nop);
+    addInstruction(ScbeMicroOp::Nop);
 }
 
-void SCBEMicro::emitCallLocal(const Utf8& symbolName)
+void ScbeMicro::emitCallLocal(const Utf8& symbolName)
 {
-    const auto inst = addInstruction(SCBEMicroOp::CallLocal);
+    const auto inst = addInstruction(ScbeMicroOp::CallLocal);
     inst->name      = symbolName;
 }
 
-void SCBEMicro::emitCallExtern(const Utf8& symbolName)
+void ScbeMicro::emitCallExtern(const Utf8& symbolName)
 {
-    const auto inst = addInstruction(SCBEMicroOp::CallExtern);
+    const auto inst = addInstruction(ScbeMicroOp::CallExtern);
     inst->name      = symbolName;
 }
 
-void SCBEMicro::emitCallIndirect(CPUReg reg)
+void ScbeMicro::emitCallIndirect(CPUReg reg)
 {
-    const auto inst = addInstruction(SCBEMicroOp::CallIndirect);
+    const auto inst = addInstruction(ScbeMicroOp::CallIndirect);
     inst->regA      = reg;
 }
 
-void SCBEMicro::emitMulAdd(CPUReg regDst, CPUReg regMul, CPUReg regAdd, OpBits opBits)
+void ScbeMicro::emitMulAdd(CPUReg regDst, CPUReg regMul, CPUReg regAdd, OpBits opBits)
 {
-    const auto inst = addInstruction(SCBEMicroOp::MulAdd);
+    const auto inst = addInstruction(ScbeMicroOp::MulAdd);
     inst->regA      = regDst;
     inst->regB      = regMul;
     inst->regC      = regAdd;
     inst->opBitsA   = opBits;
 }
 
-void SCBEMicro::encode(SCBECPU& encoder) const
+void ScbeMicro::encode(ScbeCPU& encoder) const
 {
-    const auto num  = concat.totalCount() / sizeof(SCBEMicroInstruction);
-    auto       inst = reinterpret_cast<SCBEMicroInstruction*>(concat.firstBucket->data);
+    const auto num  = concat.totalCount() / sizeof(ScbeMicroInstruction);
+    auto       inst = reinterpret_cast<ScbeMicroInstruction*>(concat.firstBucket->data);
     for (uint32_t i = 0; i < num; i++, inst++)
     {
         switch (inst->op)
         {
-            case SCBEMicroOp::End:
+            case ScbeMicroOp::End:
                 break;
-            case SCBEMicroOp::Ignore:
+            case ScbeMicroOp::Ignore:
                 break;
-            case SCBEMicroOp::Enter:
+            case ScbeMicroOp::Enter:
                 encoder.emitEnter(static_cast<uint32_t>(inst->valueA));
                 break;
-            case SCBEMicroOp::Leave:
+            case ScbeMicroOp::Leave:
                 encoder.emitLeave();
                 break;
-            case SCBEMicroOp::Debug:
+            case ScbeMicroOp::Debug:
                 encoder.emitDebug(reinterpret_cast<ByteCodeInstruction*>(inst->valueA));
                 break;
-            case SCBEMicroOp::Label:
+            case ScbeMicroOp::Label:
                 encoder.emitLabel(static_cast<int32_t>(inst->valueA));
                 break;
-            case SCBEMicroOp::SymbolRelocationRef:
+            case ScbeMicroOp::SymbolRelocationRef:
                 encoder.emitSymbolRelocationRef(inst->name);
                 break;
-            case SCBEMicroOp::SymbolRelocationAddress:
+            case ScbeMicroOp::SymbolRelocationAddress:
                 encoder.emitSymbolRelocationAddress(inst->regA, static_cast<uint32_t>(inst->valueA), static_cast<uint32_t>(inst->valueB));
                 break;
-            case SCBEMicroOp::SymbolRelocationValue:
+            case ScbeMicroOp::SymbolRelocationValue:
                 encoder.emitSymbolRelocationValue(inst->regA, static_cast<uint32_t>(inst->valueA), static_cast<uint32_t>(inst->valueB));
                 break;
-            case SCBEMicroOp::SymbolGlobalString:
+            case ScbeMicroOp::SymbolGlobalString:
                 encoder.emitSymbolGlobalString(inst->regA, inst->name);
                 break;
-            case SCBEMicroOp::SymbolRelocationPtr:
+            case ScbeMicroOp::SymbolRelocationPtr:
                 encoder.emitSymbolRelocationPtr(inst->regA, inst->name);
                 break;
-            case SCBEMicroOp::Push:
+            case ScbeMicroOp::Push:
                 encoder.emitPush(inst->regA);
                 break;
-            case SCBEMicroOp::Pop:
+            case ScbeMicroOp::Pop:
                 encoder.emitPop(inst->regA);
                 break;
-            case SCBEMicroOp::Nop:
+            case ScbeMicroOp::Nop:
                 encoder.emitNop();
                 break;
-            case SCBEMicroOp::Ret:
+            case ScbeMicroOp::Ret:
                 encoder.emitRet();
                 break;
-            case SCBEMicroOp::CallLocal:
+            case ScbeMicroOp::CallLocal:
                 encoder.emitCallLocal(inst->name);
                 break;
-            case SCBEMicroOp::CallExtern:
+            case ScbeMicroOp::CallExtern:
                 encoder.emitCallExtern(inst->name);
                 break;
-            case SCBEMicroOp::CallIndirect:
+            case ScbeMicroOp::CallIndirect:
                 encoder.emitCallIndirect(inst->regA);
                 break;
-            case SCBEMicroOp::JumpTable:
+            case ScbeMicroOp::JumpTable:
                 encoder.emitJumpTable(inst->regA, inst->regB, static_cast<int32_t>(inst->valueA), static_cast<uint32_t>(inst->valueB), inst->valueC);
                 break;
-            case SCBEMicroOp::JumpCC:
+            case ScbeMicroOp::JumpCC:
             {
                 const auto cmpJump = encoder.emitJump(inst->jumpType, inst->opBitsA);
                 inst->valueA       = reinterpret_cast<uint64_t>(cmpJump.addr);
@@ -537,9 +537,9 @@ void SCBEMicro::encode(SCBECPU& encoder) const
                 inst->opBitsA      = cmpJump.opBits;
                 break;
             }
-            case SCBEMicroOp::PatchJump:
+            case ScbeMicroOp::PatchJump:
             {
-                const auto jump = reinterpret_cast<const SCBEMicroInstruction*>(concat.firstBucket->data + inst->valueA);
+                const auto jump = reinterpret_cast<const ScbeMicroInstruction*>(concat.firstBucket->data + inst->valueA);
                 CPUJump    cpuJump;
                 cpuJump.addr   = reinterpret_cast<void*>(jump->valueA);
                 cpuJump.offset = jump->valueB;
@@ -547,109 +547,109 @@ void SCBEMicro::encode(SCBECPU& encoder) const
                 encoder.emitPatchJump(cpuJump);
                 break;
             }
-            case SCBEMicroOp::JumpM:
+            case ScbeMicroOp::JumpM:
                 encoder.emitJumpM(inst->regA);
                 break;
-            case SCBEMicroOp::JumpCI:
+            case ScbeMicroOp::JumpCI:
                 encoder.emitJumpCI(inst->jumpType, static_cast<uint32_t>(inst->valueA));
                 break;
-            case SCBEMicroOp::LoadCallerParam:
+            case ScbeMicroOp::LoadCallerParam:
                 encoder.emitLoadCallerParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->opBitsA);
                 break;
-            case SCBEMicroOp::LoadCallerAddressParam:
+            case ScbeMicroOp::LoadCallerAddressParam:
                 encoder.emitLoadCallerAddressParam(inst->regA, static_cast<uint32_t>(inst->valueA));
                 break;
-            case SCBEMicroOp::LoadCallerZeroExtendParam:
+            case ScbeMicroOp::LoadCallerZeroExtendParam:
                 encoder.emitLoadCallerZeroExtendParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->opBitsA, inst->opBitsB);
                 break;
-            case SCBEMicroOp::StoreCallerParam:
+            case ScbeMicroOp::StoreCallerParam:
                 encoder.emitStoreCallerParam(static_cast<uint32_t>(inst->valueA), inst->regA, inst->opBitsA);
                 break;
-            case SCBEMicroOp::LoadRR:
+            case ScbeMicroOp::LoadRR:
                 encoder.emitLoadRR(inst->regA, inst->regB, inst->opBitsA);
                 break;
-            case SCBEMicroOp::LoadR:
+            case ScbeMicroOp::LoadR:
                 encoder.emitLoadR(inst->regA, inst->opBitsA);
                 break;
-            case SCBEMicroOp::LoadRI64:
+            case ScbeMicroOp::LoadRI64:
                 encoder.emitLoadRI64(inst->regA, inst->valueA);
                 break;
-            case SCBEMicroOp::LoadRI:
+            case ScbeMicroOp::LoadRI:
                 encoder.emitLoadRI(inst->regA, inst->valueA, inst->opBitsA);
                 break;
-            case SCBEMicroOp::LoadRM:
+            case ScbeMicroOp::LoadRM:
                 encoder.emitLoadRM(inst->regA, inst->regB, inst->valueA, inst->opBitsA);
                 break;
-            case SCBEMicroOp::LoadSignedExtendRM:
+            case ScbeMicroOp::LoadSignedExtendRM:
                 encoder.emitLoadSignedExtendRM(inst->regA, inst->regB, inst->valueA, inst->opBitsA, inst->opBitsB);
                 break;
-            case SCBEMicroOp::LoadSignedExtendRR:
+            case ScbeMicroOp::LoadSignedExtendRR:
                 encoder.emitLoadSignedExtendRR(inst->regA, inst->regB, inst->opBitsA, inst->opBitsB);
                 break;
-            case SCBEMicroOp::LoadZeroExtendRM:
+            case ScbeMicroOp::LoadZeroExtendRM:
                 encoder.emitLoadZeroExtendRM(inst->regA, inst->regB, inst->valueA, inst->opBitsA, inst->opBitsB);
                 break;
-            case SCBEMicroOp::LoadZeroExtendRR:
+            case ScbeMicroOp::LoadZeroExtendRR:
                 encoder.emitLoadZeroExtendRR(inst->regA, inst->regB, inst->opBitsA, inst->opBitsB);
                 break;
-            case SCBEMicroOp::LoadAddressM:
+            case ScbeMicroOp::LoadAddressM:
                 encoder.emitLoadAddressM(inst->regA, inst->regB, inst->valueA);
                 break;
-            case SCBEMicroOp::LoadAddressAddMul:
+            case ScbeMicroOp::LoadAddressAddMul:
                 encoder.emitLoadAddressAddMul(inst->regA, inst->regB, inst->regC, inst->valueA, inst->opBitsA);
                 break;
-            case SCBEMicroOp::StoreMR:
+            case ScbeMicroOp::StoreMR:
                 encoder.emitStoreMR(inst->regA, inst->valueA, inst->regB, inst->opBitsA);
                 break;
-            case SCBEMicroOp::StoreMI:
+            case ScbeMicroOp::StoreMI:
                 encoder.emitStoreMI(inst->regA, inst->valueA, inst->valueB, inst->opBitsA);
                 break;
-            case SCBEMicroOp::CmpRR:
+            case ScbeMicroOp::CmpRR:
                 encoder.emitCmpRR(inst->regA, inst->regB, inst->opBitsA);
                 break;
-            case SCBEMicroOp::CmpRI:
+            case ScbeMicroOp::CmpRI:
                 encoder.emitCmpRI(inst->regA, inst->valueA, inst->opBitsA);
                 break;
-            case SCBEMicroOp::CmpMR:
+            case ScbeMicroOp::CmpMR:
                 encoder.emitCmpMR(inst->regA, inst->valueA, inst->regB, inst->opBitsA);
                 break;
-            case SCBEMicroOp::CmpMI:
+            case ScbeMicroOp::CmpMI:
                 encoder.emitCmpMI(inst->regA, inst->valueA, inst->valueB, inst->opBitsA);
                 break;
-            case SCBEMicroOp::SetCC:
+            case ScbeMicroOp::SetCC:
                 encoder.emitSetCC(inst->regA, inst->cpuCond);
                 break;
-            case SCBEMicroOp::ClearR:
+            case ScbeMicroOp::ClearR:
                 encoder.emitClearR(inst->regA, inst->opBitsA);
                 break;
-            case SCBEMicroOp::ClearM:
+            case ScbeMicroOp::ClearM:
                 encoder.emitClearM(inst->regA, inst->valueA, static_cast<uint32_t>(inst->valueB));
                 break;
-            case SCBEMicroOp::Copy:
+            case ScbeMicroOp::Copy:
                 encoder.emitCopy(inst->regA, inst->regB, static_cast<uint32_t>(inst->valueA));
                 break;
-            case SCBEMicroOp::OpUnaryM:
+            case ScbeMicroOp::OpUnaryM:
                 encoder.emitOpUnaryM(inst->regA, inst->valueA, inst->cpuOp, inst->opBitsA);
                 break;
-            case SCBEMicroOp::OpUnaryR:
+            case ScbeMicroOp::OpUnaryR:
                 encoder.emitOpUnaryR(inst->regA, inst->cpuOp, inst->opBitsA);
                 break;
-            case SCBEMicroOp::OpBinaryRR:
+            case ScbeMicroOp::OpBinaryRR:
                 encoder.emitOpBinaryRR(inst->regA, inst->regB, inst->cpuOp, inst->opBitsA, inst->emitFlags);
                 break;
-            case SCBEMicroOp::OpBinaryMR:
+            case ScbeMicroOp::OpBinaryMR:
                 encoder.emitOpBinaryMR(inst->regA, inst->valueA, inst->regB, inst->cpuOp, inst->opBitsA, inst->emitFlags);
                 break;
-            case SCBEMicroOp::OpBinaryRI:
+            case ScbeMicroOp::OpBinaryRI:
                 encoder.emitOpBinaryRI(inst->regA, inst->valueA, inst->cpuOp, inst->opBitsA, inst->emitFlags);
                 break;
-            case SCBEMicroOp::OpBinaryMI:
+            case ScbeMicroOp::OpBinaryMI:
                 encoder.emitOpBinaryMI(inst->regA, inst->valueA, inst->valueB, inst->cpuOp, inst->opBitsA, inst->emitFlags);
                 break;
-            case SCBEMicroOp::OpBinaryRM:
+            case ScbeMicroOp::OpBinaryRM:
                 encoder.emitOpBinaryRM(inst->regA, inst->regB, inst->valueA, inst->cpuOp, inst->opBitsA, inst->emitFlags);
                 break;
-            case SCBEMicroOp::MulAdd:
+            case ScbeMicroOp::MulAdd:
                 encoder.emitMulAdd(inst->regA, inst->regB, inst->regC, inst->opBitsA);
                 break;
             default:
@@ -664,16 +664,16 @@ void SCBEMicro::encode(SCBECPU& encoder) const
         print();
 }
 
-void SCBEMicro::process(SCBECPU& encoder)
+void ScbeMicro::process(ScbeCPU& encoder)
 {
 #ifdef SWAG_STATS
     g_Stats.numScbeInstructions += concat.totalCount();
 #endif
 
-    addInstruction(SCBEMicroOp::End);
+    addInstruction(ScbeMicroOp::End);
     concat.makeLinear();
     
-    SCBEOptimizer opt;
+    ScbeOptimizer opt;
     opt.encoder = &encoder;
     opt.optimize(*this);
 }

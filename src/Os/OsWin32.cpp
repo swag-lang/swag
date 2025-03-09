@@ -1,9 +1,9 @@
 #include "pch.h"
-#include "Backend/SCBE/Encoder/X64/SCBEX64.h"
+#include "Backend/SCBE/Encoder/X64/ScbeX64.h"
 #include "Core/Math.h"
 #ifdef _WIN32
 #include "Backend/Context.h"
-#include "Backend/SCBE/Main/SCBE.h"
+#include "Backend/SCBE/Main/Scbe.h"
 #include "Backend/SCBE/Obj/SCBE_Coff.h"
 #include "Os/Os.h"
 #include "Report/ErrorIds.h"
@@ -936,7 +936,7 @@ namespace OS
     namespace
     {
 #ifdef _M_X64
-        thread_local SCBEX64 g_GenFFI;
+        thread_local ScbeX64 g_GenFFI;
 #else
         static_assert(false, "unsupported architecture");
 #endif

@@ -1,12 +1,12 @@
 #include "pch.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/Context.h"
-#include "Backend/SCBE/Main/SCBE.h"
+#include "Backend/SCBE/Main/Scbe.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 
-void SCBE::emitOS(SCBECPU& pp)
+void Scbe::emitOS(ScbeCPU& pp)
 {
     auto& concat = pp.concat;
 
@@ -50,7 +50,7 @@ void SCBE::emitOS(SCBECPU& pp)
     }
 }
 
-void SCBE::emitMain(SCBECPU& pp)
+void Scbe::emitMain(ScbeCPU& pp)
 {
     const auto& buildParameters = pp.buildParams;
     const auto  module          = pp.module;
@@ -222,7 +222,7 @@ void SCBE::emitMain(SCBECPU& pp)
     pp.endFunction();
 }
 
-void SCBE::emitGetTypeTable(SCBECPU& pp)
+void Scbe::emitGetTypeTable(ScbeCPU& pp)
 {
     const auto& buildParameters = pp.buildParams;
     const auto  module          = pp.module;
@@ -243,7 +243,7 @@ void SCBE::emitGetTypeTable(SCBECPU& pp)
     pp.endFunction();
 }
 
-void SCBE::emitGlobalPreMain(SCBECPU& pp)
+void Scbe::emitGlobalPreMain(ScbeCPU& pp)
 {
     const auto& buildParameters = pp.buildParams;
     const auto  module          = pp.module;
@@ -281,7 +281,7 @@ void SCBE::emitGlobalPreMain(SCBECPU& pp)
     pp.endFunction();
 }
 
-void SCBE::emitGlobalInit(SCBECPU& pp)
+void Scbe::emitGlobalInit(ScbeCPU& pp)
 {
     const auto& buildParameters = pp.buildParams;
     const auto  module          = pp.module;
@@ -346,7 +346,7 @@ void SCBE::emitGlobalInit(SCBECPU& pp)
     pp.endFunction();
 }
 
-void SCBE::emitGlobalDrop(SCBECPU& pp)
+void Scbe::emitGlobalDrop(ScbeCPU& pp)
 {
     const auto  module          = pp.module;
     const auto& buildParameters = pp.buildParams;

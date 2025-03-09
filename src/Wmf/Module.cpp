@@ -3,7 +3,7 @@
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/Context.h"
 #include "Backend/LLVM/Main/LLVM.h"
-#include "Backend/SCBE/Main/SCBE.h"
+#include "Backend/SCBE/Main/Scbe.h"
 #include "Jobs/SaveGenJob.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
@@ -487,7 +487,7 @@ void Module::allocateBackend()
                 backend = new LLVM(this);
                 break;
             case BackendGenType::SCBE:
-                backend = new SCBE(this);
+                backend = new Scbe(this);
                 break;
             default:
                 SWAG_ASSERT(false);

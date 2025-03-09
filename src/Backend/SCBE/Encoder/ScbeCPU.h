@@ -9,7 +9,7 @@
 
 enum class ByteCodeOp : uint16_t;
 using SCBEMicroOpDetails = Flags<uint64_t>;
-struct SCBEMicroInstruction;
+struct ScbeMicroInstruction;
 struct AstNode;
 
 #define REG_OFFSET(__r) ((__r) * sizeof(Register))
@@ -218,7 +218,7 @@ struct CPUFunction
     bool     isStackOffsetTransient(uint32_t offset) const { return isStackOffsetLocalParam(offset) || isStackOffsetReg(offset) || isStackOffsetRT(offset); }
 };
 
-struct SCBECPU : BackendEncoder
+struct ScbeCPU : BackendEncoder
 {
     void init(const BuildParameters& buildParameters) override;
 
@@ -233,7 +233,7 @@ struct SCBECPU : BackendEncoder
     void emitComputeCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& cpuParams, CPUReg memRegResult, uint32_t memOffsetResult, void* resultAddr);
     void emitStoreCallResult(CPUReg memReg, uint32_t memOffset, const TypeInfoFuncAttr* typeFuncBc);
 
-    virtual SCBEMicroOpDetails getInstructionDetails(SCBEMicroInstruction* inst) { return 0; };
+    virtual SCBEMicroOpDetails getInstructionDetails(ScbeMicroInstruction* inst) { return 0; };
 
     virtual void emitEnter(uint32_t sizeStack);
     virtual void emitLeave();

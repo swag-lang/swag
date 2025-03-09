@@ -1,36 +1,36 @@
 #include "pch.h"
-#include "Backend/SCBE/Encoder/Micro/SCBEOptimizer.h"
-#include "Backend/SCBE/Encoder/Micro/SCBEMicro.h"
+#include "Backend/SCBE/Encoder/Micro/ScbeOptimizer.h"
+#include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Main/Statistics.h"
 #include "Semantic/Type/TypeInfo.h"
 #pragma optimize("", off)
 
-void SCBEOptimizer::ignore(SCBEMicroInstruction* inst)
+void ScbeOptimizer::ignore(ScbeMicroInstruction* inst)
 {
 #ifdef SWAG_STATS
     g_Stats.totalOptimScbe += 1;
 #endif
-    inst->op             = SCBEMicroOp::Ignore;
+    inst->op             = ScbeMicroOp::Ignore;
     passHasDoneSomething = true;
 }
 
-void SCBEOptimizer::setOp(SCBEMicroInstruction* inst, SCBEMicroOp op)
+void ScbeOptimizer::setOp(ScbeMicroInstruction* inst, ScbeMicroOp op)
 {
     inst->op             = op;
     passHasDoneSomething = true;
 }
 
-SCBEMicroInstruction* SCBEOptimizer::zap(SCBEMicroInstruction* inst)
+ScbeMicroInstruction* ScbeOptimizer::zap(ScbeMicroInstruction* inst)
 {
-    while (inst->op == SCBEMicroOp::Nop || inst->op == SCBEMicroOp::Label || inst->op == SCBEMicroOp::Debug || inst->op == SCBEMicroOp::Ignore)
+    while (inst->op == ScbeMicroOp::Nop || inst->op == ScbeMicroOp::Label || inst->op == ScbeMicroOp::Debug || inst->op == ScbeMicroOp::Ignore)
         inst++;
     return inst;
 }
 
-void SCBEOptimizer::passReduce(const SCBEMicro& out)
+void ScbeOptimizer::passReduce(const ScbeMicro& out)
 {
-    auto inst = reinterpret_cast<SCBEMicroInstruction*>(out.concat.firstBucket->data);
-    while (inst->op != SCBEMicroOp::End)
+    auto inst = reinterpret_cast<ScbeMicroInstruction*>(out.concat.firstBucket->data);
+    while (inst->op != ScbeMicroOp::End)
     {
         const auto next = zap(inst + 1);
         if (next->flags.has(MIF_JUMP_DEST))
@@ -43,7 +43,7 @@ void SCBEOptimizer::passReduce(const SCBEMicro& out)
 
         switch (inst[0].op)
         {
-            case SCBEMicroOp::LoadRR:
+            case ScbeMicroOp::LoadRR:
                 if (nextInfos.leftFlags.has(MOF_REG_A) &&
                     nextInfos.leftFlags.has(MOF_VALUE_A) &&
                     !nextInfos.leftFlags.has(MOF_REG_B) &&
@@ -73,7 +73,7 @@ void SCBEOptimizer::passReduce(const SCBEMicro& out)
                     }
                 }
 
-                if (next->op == SCBEMicroOp::LoadRR &&
+                if (next->op == ScbeMicroOp::LoadRR &&
                     inst->regA == next->regB &&
                     inst->regB == next->regA &&
                     inst->opBitsA == next->opBitsA &&
@@ -85,8 +85,8 @@ void SCBEOptimizer::passReduce(const SCBEMicro& out)
                 }
                 break;
 
-            case SCBEMicroOp::StoreMR:
-                if (next->op == SCBEMicroOp::LoadRM &&
+            case ScbeMicroOp::StoreMR:
+                if (next->op == ScbeMicroOp::LoadRM &&
                     inst[0].opBitsA == next->opBitsA &&
                     inst[0].regA == next->regB &&
                     inst[0].valueA == next->valueA)
@@ -99,14 +99,14 @@ void SCBEOptimizer::passReduce(const SCBEMicro& out)
 
                     if (inst[0].opBitsA == OpBits::B64)
                     {
-                        setOp(next, SCBEMicroOp::LoadRR);
+                        setOp(next, ScbeMicroOp::LoadRR);
                         next->regB = inst[0].regB;
                         break;
                     }
                 }
 
                 if (inst[0].regA == CPUReg::RSP &&
-                    next->op == SCBEMicroOp::Leave)
+                    next->op == ScbeMicroOp::Leave)
                 {
                     ignore(inst);
                     break;
@@ -118,12 +118,12 @@ void SCBEOptimizer::passReduce(const SCBEMicro& out)
     }
 }
 
-void SCBEOptimizer::passStoreToRegBeforeLeave(const SCBEMicro& out)
+void ScbeOptimizer::passStoreToRegBeforeLeave(const ScbeMicro& out)
 {
     mapValInst.clear();
 
-    auto inst = reinterpret_cast<SCBEMicroInstruction*>(out.concat.firstBucket->data);
-    while (inst->op != SCBEMicroOp::End)
+    auto inst = reinterpret_cast<ScbeMicroInstruction*>(out.concat.firstBucket->data);
+    while (inst->op != ScbeMicroOp::End)
     {
         const auto& infos = g_MicroOpInfos[static_cast<int>(inst->op)];
 
@@ -132,7 +132,7 @@ void SCBEOptimizer::passStoreToRegBeforeLeave(const SCBEMicro& out)
             mapValInst.clear();
         }
 
-        if (inst->op == SCBEMicroOp::StoreMR &&
+        if (inst->op == ScbeMicroOp::StoreMR &&
             inst->regA == CPUReg::RSP &&
             out.cpuFct->isStackOffsetTransient(static_cast<uint32_t>(inst->valueA)))
         {
@@ -150,7 +150,7 @@ void SCBEOptimizer::passStoreToRegBeforeLeave(const SCBEMicro& out)
                 mapValInst.erase(static_cast<uint32_t>(inst->valueB));
         }
 
-        if (inst->op == SCBEMicroOp::Leave && !mapValInst.empty())
+        if (inst->op == ScbeMicroOp::Leave && !mapValInst.empty())
         {
             for (const auto& i : mapValInst | std::views::values)
                 ignore(i);
@@ -161,12 +161,12 @@ void SCBEOptimizer::passStoreToRegBeforeLeave(const SCBEMicro& out)
     }
 }
 
-void SCBEOptimizer::passStoreToHdwRegBeforeLeave(const SCBEMicro& out)
+void ScbeOptimizer::passStoreToHdwRegBeforeLeave(const ScbeMicro& out)
 {
     mapValInst.clear();
 
-    auto inst = reinterpret_cast<SCBEMicroInstruction*>(out.concat.firstBucket->data);
-    while (inst->op != SCBEMicroOp::End)
+    auto inst = reinterpret_cast<ScbeMicroInstruction*>(out.concat.firstBucket->data);
+    while (inst->op != ScbeMicroOp::End)
     {
         const auto& infos = g_MicroOpInfos[static_cast<int>(inst->op)];
 
@@ -175,7 +175,7 @@ void SCBEOptimizer::passStoreToHdwRegBeforeLeave(const SCBEMicro& out)
             mapValInst.clear();
         }
 
-        if (inst->op == SCBEMicroOp::LoadRR)
+        if (inst->op == ScbeMicroOp::LoadRR)
         {
             if (!out.cpuFct->typeFunc->returnByValue() && !out.cpuFct->typeFunc->returnStructByValue())
             {
@@ -197,7 +197,7 @@ void SCBEOptimizer::passStoreToHdwRegBeforeLeave(const SCBEMicro& out)
                 mapValInst.erase(static_cast<uint32_t>(inst->regB));
         }
 
-        if (inst->op == SCBEMicroOp::Leave && !mapValInst.empty())
+        if (inst->op == ScbeMicroOp::Leave && !mapValInst.empty())
         {
             for (const auto& i : mapValInst | std::views::values)
                 ignore(i);
@@ -208,12 +208,12 @@ void SCBEOptimizer::passStoreToHdwRegBeforeLeave(const SCBEMicro& out)
     }
 }
 
-void SCBEOptimizer::passDeadStore(const SCBEMicro& out)
+void ScbeOptimizer::passDeadStore(const ScbeMicro& out)
 {
     mapRegInst.clear();
 
-    auto inst = reinterpret_cast<SCBEMicroInstruction*>(out.concat.firstBucket->data);
-    while (inst->op != SCBEMicroOp::End)
+    auto inst = reinterpret_cast<ScbeMicroInstruction*>(out.concat.firstBucket->data);
+    while (inst->op != ScbeMicroOp::End)
     {
         if (inst->flags.has(MIF_JUMP_DEST) || inst->isJump())
         {
@@ -228,9 +228,9 @@ void SCBEOptimizer::passDeadStore(const SCBEMicro& out)
             mapRegInst.erase(inst->regB);
 
         CPUReg legitReg = CPUReg::Max;
-        if (inst->op == SCBEMicroOp::LoadRR ||
-            inst->op == SCBEMicroOp::LoadZeroExtendRM ||
-            inst->op == SCBEMicroOp::LoadRM)
+        if (inst->op == ScbeMicroOp::LoadRR ||
+            inst->op == ScbeMicroOp::LoadZeroExtendRM ||
+            inst->op == ScbeMicroOp::LoadRM)
         {
             if (mapRegInst.contains(inst->regA))
             {
@@ -267,13 +267,13 @@ void SCBEOptimizer::passDeadStore(const SCBEMicro& out)
     }
 }
 
-void SCBEOptimizer::passStoreMR(const SCBEMicro& out)
+void ScbeOptimizer::passStoreMR(const ScbeMicro& out)
 {
     mapValReg.clear();
     mapRegVal.clear();
 
-    auto inst = reinterpret_cast<SCBEMicroInstruction*>(out.concat.firstBucket->data);
-    while (inst->op != SCBEMicroOp::End)
+    auto inst = reinterpret_cast<ScbeMicroInstruction*>(out.concat.firstBucket->data);
+    while (inst->op != ScbeMicroOp::End)
     {
         const auto& infos = g_MicroOpInfos[static_cast<int>(inst->op)];
 
@@ -284,7 +284,7 @@ void SCBEOptimizer::passStoreMR(const SCBEMicro& out)
         }
 
         auto legitReg = CPUReg::Max;
-        if (inst->op == SCBEMicroOp::StoreMR &&
+        if (inst->op == ScbeMicroOp::StoreMR &&
             inst->regA == CPUReg::RSP &&
             out.cpuFct->isStackOffsetTransient(static_cast<uint32_t>(inst->valueA)))
         {
@@ -298,7 +298,7 @@ void SCBEOptimizer::passStoreMR(const SCBEMicro& out)
         {
             mapValReg[inst->valueA] = {CPUReg::Max, OpBits::Zero};
         }
-        else if (inst->op == SCBEMicroOp::LoadRM &&
+        else if (inst->op == ScbeMicroOp::LoadRM &&
                  inst->regB == CPUReg::RSP &&
                  mapValReg.contains(inst->valueA) &&
                  mapRegVal.contains(mapValReg[inst->valueA].first) &&
@@ -311,11 +311,11 @@ void SCBEOptimizer::passStoreMR(const SCBEMicro& out)
             }
             else if (inst->opBitsA == OpBits::B64)
             {
-                setOp(inst, SCBEMicroOp::LoadRR);
+                setOp(inst, ScbeMicroOp::LoadRR);
                 inst->regB = mapValReg[inst->valueA].first;
             }
         }
-        else if (inst->op == SCBEMicroOp::LoadRM &&
+        else if (inst->op == ScbeMicroOp::LoadRM &&
                  inst->regB == CPUReg::RSP &&
                  out.cpuFct->isStackOffsetTransient(static_cast<uint32_t>(inst->valueA)))
         {
@@ -324,7 +324,7 @@ void SCBEOptimizer::passStoreMR(const SCBEMicro& out)
             mapRegVal[inst->regA]   = inst->valueA;
         }
 
-        if (inst->op != SCBEMicroOp::Ignore)
+        if (inst->op != ScbeMicroOp::Ignore)
         {
             const auto details = encoder->getInstructionDetails(inst);
             if (details.has(MOD_REG_ALL))
@@ -346,7 +346,7 @@ void SCBEOptimizer::passStoreMR(const SCBEMicro& out)
     }
 }
 
-void SCBEOptimizer::optimize(const SCBEMicro& out)
+void ScbeOptimizer::optimize(const ScbeMicro& out)
 {
     if (out.optLevel == BuildCfgBackendOptim::O0)
         return;

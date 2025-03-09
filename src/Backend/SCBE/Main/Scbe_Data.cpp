@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "Backend/SCBE/Main/SCBE.h"
+#include "Backend/SCBE/Main/Scbe.h"
 
-bool SCBE::buildRelocationSegment(SCBECPU& pp, DataSegment* dataSegment, CPURelocationTable& relocationTable, SegmentKind me)
+bool Scbe::buildRelocationSegment(ScbeCPU& pp, DataSegment* dataSegment, CPURelocationTable& relocationTable, SegmentKind me)
 {
     if (dataSegment->buckets.empty())
         return true;
