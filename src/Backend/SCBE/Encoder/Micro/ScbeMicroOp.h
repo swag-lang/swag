@@ -14,10 +14,14 @@ constexpr ScbeMicroOpFlags MOF_CPU_OP    = 0x00000100;
 constexpr ScbeMicroOpFlags MOF_JUMP_TYPE = 0x00000200;
 constexpr ScbeMicroOpFlags MOF_NAME      = 0x00000400;
 constexpr ScbeMicroOpFlags MOF_CPU_COND  = 0x00000800;
+constexpr ScbeMicroOpFlags MOF_READ_REG  = 0x00001000;
+constexpr ScbeMicroOpFlags MOF_WRITE_REG = 0x00002000;
+constexpr ScbeMicroOpFlags MOF_READ_MEM  = 0x00004000;
+constexpr ScbeMicroOpFlags MOF_WRITE_MEM = 0x00008000;
 
 struct ScbeMicroOpInfo
 {
-    const char*     name;
+    const char*      name;
     ScbeMicroOpFlags leftFlags;
     ScbeMicroOpFlags rightFlags;
 };
