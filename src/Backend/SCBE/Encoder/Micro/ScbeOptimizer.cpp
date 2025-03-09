@@ -172,9 +172,16 @@ void ScbeOptimizer::optimizePassStoreToHdwRegBeforeLeave(const ScbeMicro& out)
         if (inst->flags.has(MIF_JUMP_DEST) || inst->isJump() || inst->isCall())
             mapRegInst.clear();
 
-        if (inst->op == ScbeMicroOp::LoadRR)
+        if (inst->op == ScbeMicroOp::Leave)
         {
-            if (!out.cpuFct->typeFunc->returnByValue() && !out.cpuFct->typeFunc->returnStructByValue())
+            for (const auto& i : mapRegInst | std::views::values)
+                ignore(i);
+            mapRegInst.clear();
+        }
+        else if (inst->op == ScbeMicroOp::LoadRR)
+        {
+            if (!out.cpuFct->typeFunc->returnByValue() &&
+                !out.cpuFct->typeFunc->returnStructByValue())
             {
                 mapRegInst[inst->regA] = inst;
             }
@@ -194,13 +201,6 @@ void ScbeOptimizer::optimizePassStoreToHdwRegBeforeLeave(const ScbeMicro& out)
                 mapRegInst.erase(inst->regB);
             if (inst->hasReadRegC())
                 mapRegInst.erase(inst->regC);
-        }
-
-        if (inst->op == ScbeMicroOp::Leave && !mapRegInst.empty())
-        {
-            for (const auto& i : mapRegInst | std::views::values)
-                ignore(i);
-            mapRegInst.clear();
         }
 
         inst = zap(inst + 1);
