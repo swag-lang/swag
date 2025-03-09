@@ -239,11 +239,8 @@ void ScbeOptimizer::optimizePassDeadStore(const ScbeMicro& out)
             {
                 if (legitReg == static_cast<CpuReg>(i))
                     continue;
-
                 if (details.has(1ULL << i))
-                {
                     mapRegInst.erase(static_cast<CpuReg>(i));
-                }
             }
         }
 
@@ -251,7 +248,7 @@ void ScbeOptimizer::optimizePassDeadStore(const ScbeMicro& out)
     }
 }
 
-void ScbeOptimizer::optimizePassStoreMR(const ScbeMicro& out)
+void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
 {
     mapValReg.clear();
     mapRegVal.clear();
@@ -305,21 +302,15 @@ void ScbeOptimizer::optimizePassStoreMR(const ScbeMicro& out)
             mapRegVal[inst->regA]   = inst->valueA;
         }
 
-        if (inst->op != ScbeMicroOp::Ignore)
+        const auto details = encoder->getInstructionDetails(inst);
+        if (details.has(MOD_REG_ALL))
         {
-            const auto details = encoder->getInstructionDetails(inst);
-            if (details.has(MOD_REG_ALL))
+            for (uint32_t i = 0; i < static_cast<uint32_t>(CpuReg::Max); i++)
             {
-                for (uint32_t i = 0; i < static_cast<uint32_t>(CpuReg::Max); i++)
-                {
-                    if (static_cast<CpuReg>(i) == legitReg)
-                        continue;
-
-                    if (details.has(1ULL << i))
-                    {
-                        mapRegVal.erase(static_cast<CpuReg>(i));
-                    }
-                }
+                if (static_cast<CpuReg>(i) == legitReg)
+                    continue;
+                if (details.has(1ULL << i))
+                    mapRegVal.erase(static_cast<CpuReg>(i));
             }
         }
 
@@ -337,7 +328,7 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
     {
         passHasDoneSomething = false;
         optimizePassReduce(out);
-        optimizePassStoreMR(out);
+        optimizePassStore(out);
         optimizePassDeadStore(out);
         optimizePassStoreToRegBeforeLeave(out);
         optimizePassStoreToHdwRegBeforeLeave(out);

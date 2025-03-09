@@ -18,7 +18,7 @@ struct ScbeOptimizer
     void optimizePassStoreToRegBeforeLeave(const ScbeMicro& out);
     void optimizePassStoreToHdwRegBeforeLeave(const ScbeMicro& out);
     void optimizePassDeadStore(const ScbeMicro& out);
-    void optimizePassStoreMR(const ScbeMicro& out);
+    void optimizePassStore(const ScbeMicro& out);
 
     void optimize(const ScbeMicro& out);
     void setDirtyPass() { passHasDoneSomething = true; }
