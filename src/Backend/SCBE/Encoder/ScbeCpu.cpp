@@ -136,6 +136,12 @@ void ScbeCpu::endFunction() const
     }
 }
 
+bool ScbeCpu::manipulateRegister(ScbeMicroInstruction* inst, CpuReg reg) const
+{
+    const auto details = getInstructionDetails(inst);
+    return details.has(1ULL << static_cast<uint32_t>(reg));
+}
+
 bool ScbeCpu::isNoOp(uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags) const
 {
     if (emitFlags.has(EMITF_Overflow))

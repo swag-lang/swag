@@ -45,28 +45,22 @@ void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
             case ScbeMicroOp::LoadRR:
                 if (next->hasReadRegA() &&
                     inst->regA == next->regA &&
-                    inst->opBitsA == OpBits::B64)
+                    inst->opBitsA == OpBits::B64 &&
+                    !encoder->manipulateRegister(next, inst->regB))
                 {
-                    const auto details = encoder->getInstructionDetails(next);
-                    if (!details.has(1ULL << static_cast<uint32_t>(inst->regB)))
-                    {
-                        next->regA = inst->regB;
-                        setDirtyPass();
-                        break;
-                    }
+                    next->regA = inst->regB;
+                    setDirtyPass();
+                    break;
                 }
 
                 if (next->hasReadRegB() &&
                     inst->regA == next->regB &&
-                    inst->opBitsA == OpBits::B64)
+                    inst->opBitsA == OpBits::B64 &&
+                    !encoder->manipulateRegister(next, inst->regB))
                 {
-                    const auto details = encoder->getInstructionDetails(next);
-                    if (!details.has(1ULL << static_cast<uint32_t>(inst->regB)))
-                    {
-                        next->regB = inst->regB;
-                        setDirtyPass();
-                        break;
-                    }
+                    next->regB = inst->regB;
+                    setDirtyPass();
+                    break;
                 }
 
                 if (next->op == ScbeMicroOp::LoadRR &&

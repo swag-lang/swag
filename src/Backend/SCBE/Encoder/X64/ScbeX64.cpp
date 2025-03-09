@@ -2300,7 +2300,7 @@ void ScbeX64::emitMulAdd(CpuReg regDst, CpuReg regMul, CpuReg regAdd, OpBits opB
     concat.addU8(0xC2);
 }
 
-ScbeMicroOpDetails ScbeX64::getInstructionDetails(ScbeMicroInstruction* inst)
+ScbeMicroOpDetails ScbeX64::getInstructionDetails(ScbeMicroInstruction* inst) const
 {
     ScbeMicroOpDetails result = MOD_ZERO;
 

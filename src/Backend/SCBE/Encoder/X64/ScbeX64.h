@@ -5,7 +5,7 @@ struct ScbeMicroInstruction;
 
 struct ScbeX64 final : ScbeCpu
 {
-    ScbeMicroOpDetails getInstructionDetails(ScbeMicroInstruction* inst) override;
+    ScbeMicroOpDetails getInstructionDetails(ScbeMicroInstruction* inst) const override;
 
     void    emitSymbolRelocationRef(const Utf8& name) override;
     void    emitSymbolRelocationAddress(CpuReg reg, uint32_t symbolIndex, uint32_t offset) override;
