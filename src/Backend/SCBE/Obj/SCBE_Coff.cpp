@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Backend/SCBE/Obj/SCBE_Coff.h"
-#include "Backend/SCBE/Debug/SCBE_Debug_CodeView.h"
+#include "Backend/SCBE/Debug/ScbeDebugCodeView.h"
 #include "Backend/SCBE/Main/Scbe.h"
 #include "Wmf/Module.h"
 #ifdef SWAG_STATS
@@ -433,7 +433,7 @@ bool SCBE_Coff::emitPostFunc(const BuildParameters& buildParameters, ScbeCPU& pp
 #ifdef SWAG_STATS
     const auto beforeCount = pp.concat.totalCount();
 #endif
-    SCBE_Debug_CodeView::emit(buildParameters, pp);
+    ScbeDebugCodeView::emit(buildParameters, pp);
 #ifdef SWAG_STATS
     g_Stats.sizeScbeDbg += pp.concat.totalCount() - beforeCount;
 #endif

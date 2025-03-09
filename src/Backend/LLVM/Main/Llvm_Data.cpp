@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "Backend/LLVM/Debug/LLVMDebug.h"
-#include "Backend/LLVM/Main/LLVM.h"
-#include "Backend/LLVM/Main/LLVM_Macros.h"
+#include "Backend/LLVM/Debug/LlvmDebug.h"
+#include "Backend/LLVM/Main/Llvm.h"
+#include "Backend/LLVM/Main/Llvm_Macros.h"
 #include "Wmf/Module.h"
 
-bool LLVM::emitDataSegment(LLVM_Encoder& pp, DataSegment* dataSegment)
+bool Llvm::emitDataSegment(LlvmEncoder& pp, DataSegment* dataSegment)
 {
     if (dataSegment->buckets.empty())
         return true;
@@ -103,7 +103,7 @@ bool LLVM::emitDataSegment(LLVM_Encoder& pp, DataSegment* dataSegment)
     return true;
 }
 
-bool LLVM::emitInitSeg(const LLVM_Encoder& pp, DataSegment* dataSegment, SegmentKind me)
+bool Llvm::emitInitSeg(const LlvmEncoder& pp, DataSegment* dataSegment, SegmentKind me)
 {
     auto& context = *pp.llvmContext;
     auto& builder = *pp.builder;

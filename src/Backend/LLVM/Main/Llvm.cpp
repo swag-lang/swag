@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "Backend/LLVM/Main/LLVM.h"
-#include "Backend/LLVM/Debug/LLVMDebug.h"
-#include "Backend/LLVM/Main/LLVM_Macros.h"
+#include "Backend/LLVM/Main/Llvm.h"
+#include "Backend/LLVM/Debug/LlvmDebug.h"
+#include "Backend/LLVM/Main/Llvm_Macros.h"
 #include "Os/Os.h"
 #include "Report/Log.h"
 #include "Report/Report.h"
@@ -9,12 +9,12 @@
 #include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
 
-LLVM::LLVM(Module* mdl) :
+Llvm::Llvm(Module* mdl) :
     Backend{mdl}
 {
 }
 
-void LLVM::createRuntime(LLVM_Encoder& pp)
+void Llvm::createRuntime(LlvmEncoder& pp)
 {
     const auto& buildParameters = pp.buildParams;
     const auto  precompileIndex = buildParameters.precompileIndex;
@@ -179,13 +179,13 @@ void LLVM::createRuntime(LLVM_Encoder& pp)
     }
 }
 
-JobResult LLVM::prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob)
+JobResult Llvm::prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob)
 {
     const auto ct              = buildParameters.compileType;
     const auto precompileIndex = buildParameters.precompileIndex;
 
-    allocatePerObj<LLVM_Encoder>(buildParameters);
-    auto& pp = encoder<LLVM_Encoder>(ct, precompileIndex);
+    allocatePerObj<LlvmEncoder>(buildParameters);
+    auto& pp = encoder<LlvmEncoder>(ct, precompileIndex);
     pp.init(buildParameters);
 
     // Message
@@ -211,7 +211,7 @@ JobResult LLVM::prepareOutput(const BuildParameters& buildParameters, int stage,
 
         if (buildParameters.buildCfg->backendDebugInfos)
         {
-            pp.dbg = new LLVMDebug;
+            pp.dbg = new LlvmDebug;
             pp.dbg->setup(this, pp.llvmModule);
         }
 
@@ -263,7 +263,7 @@ JobResult LLVM::prepareOutput(const BuildParameters& buildParameters, int stage,
     return JobResult::ReleaseJob;
 }
 
-void LLVM::generateObjFile(LLVM_Encoder& pp)
+void Llvm::generateObjFile(LlvmEncoder& pp)
 {
     auto& modu = *pp.llvmModule;
 

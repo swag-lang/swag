@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
-#include "Backend/LLVM/Debug/LLVMDebug.h"
-#include "Backend/LLVM/Main/LLVM.h"
-#include "Backend/LLVM/Main/LLVM_Macros.h"
+#include "Backend/LLVM/Debug/LlvmDebug.h"
+#include "Backend/LLVM/Main/Llvm.h"
+#include "Backend/LLVM/Main/Llvm_Macros.h"
 #include "Report/Diagnostic.h"
 #include "Report/Report.h"
 #include "Semantic/Type/TypeManager.h"
@@ -12,7 +12,7 @@
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 
-bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc)
+bool Llvm::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc)
 {
     // Do not emit a text function if we are not compiling a test executable
     if (bc->node && bc->node->hasAttribute(ATTRIBUTE_TEST_FUNC) && buildParameters.compileType != Test)
@@ -20,7 +20,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     const auto ct              = buildParameters.compileType;
     const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = encoder<LLVM_Encoder>(ct, precompileIndex);
+    auto&      pp              = encoder<LlvmEncoder>(ct, precompileIndex);
     auto&      context         = *pp.llvmContext;
     auto&      builder         = *pp.builder;
     auto&      modu            = *pp.llvmModule;

@@ -7,14 +7,14 @@ struct ByteCode;
 struct ByteCodeInstruction;
 struct DataSegment;
 struct Job;
-struct LLVMDebug;
+struct LlvmDebug;
 struct Module;
 struct TypeInfo;
 union Register;
 enum class SegmentKind;
 enum class SafetyMsg;
 
-struct LLVM_Encoder final : BackendEncoder
+struct LlvmEncoder final : BackendEncoder
 {
     void init(const BuildParameters& buildParameters) override;
 
@@ -84,5 +84,5 @@ struct LLVM_Encoder final : BackendEncoder
     Map<const TypeInfoFuncAttr*, llvm::FunctionType*> mapFctTypeForeignClosure;
 
     // Debug infos
-    LLVMDebug* dbg = nullptr;
+    LlvmDebug* dbg = nullptr;
 };

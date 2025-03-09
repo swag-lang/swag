@@ -2,7 +2,7 @@
 #include "Wmf/Module.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/Context.h"
-#include "Backend/LLVM/Main/LLVM.h"
+#include "Backend/LLVM/Main/Llvm.h"
 #include "Backend/SCBE/Main/Scbe.h"
 #include "Jobs/SaveGenJob.h"
 #include "Report/Diagnostic.h"
@@ -484,7 +484,7 @@ void Module::allocateBackend()
         switch (g_CommandLine.backendGenType)
         {
             case BackendGenType::LLVM:
-                backend = new LLVM(this);
+                backend = new Llvm(this);
                 break;
             case BackendGenType::SCBE:
                 backend = new Scbe(this);

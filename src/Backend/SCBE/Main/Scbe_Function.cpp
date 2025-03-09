@@ -63,7 +63,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     // Register function
     ppCPU.cpuFct = ppCPU.addFunction(funcName, &cc, bc);
     if (debug)
-        SCBE_Debug::setLocation(ppCPU.cpuFct, nullptr, 0);
+        ScbeDebug::setLocation(ppCPU.cpuFct, nullptr, 0);
 
     ppCPU.cpuFct->offsetFLT               = offsetFLT;
     ppCPU.cpuFct->offsetRT                = offsetRT;

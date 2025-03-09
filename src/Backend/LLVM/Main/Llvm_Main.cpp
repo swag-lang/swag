@@ -1,14 +1,14 @@
 #include "pch.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/Context.h"
-#include "Backend/LLVM/Main/LLVM.h"
-#include "Backend/LLVM/Main/LLVM_Macros.h"
+#include "Backend/LLVM/Main/Llvm.h"
+#include "Backend/LLVM/Main/Llvm_Macros.h"
 #include "Semantic/Type/TypeInfo.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 
-void LLVM::emitOS(const LLVM_Encoder& pp)
+void Llvm::emitOS(const LlvmEncoder& pp)
 {
     if (g_CommandLine.target.os == SwagTargetOs::Windows)
     {
@@ -66,7 +66,7 @@ void LLVM::emitOS(const LLVM_Encoder& pp)
     }
 }
 
-void LLVM::emitMain(LLVM_Encoder& pp)
+void Llvm::emitMain(LlvmEncoder& pp)
 {
     auto&       context         = *pp.llvmContext;
     auto&       builder         = *pp.builder;
@@ -272,7 +272,7 @@ void LLVM::emitMain(LLVM_Encoder& pp)
     builder.CreateRetVoid();
 }
 
-void LLVM::emitGetTypeTable(const LLVM_Encoder& pp)
+void Llvm::emitGetTypeTable(const LlvmEncoder& pp)
 {
     const auto& buildParameters = pp.buildParams;
     const auto  module          = pp.module;
@@ -293,7 +293,7 @@ void LLVM::emitGetTypeTable(const LLVM_Encoder& pp)
     builder.CreateRet(TO_PTR_I8(r1));
 }
 
-void LLVM::emitGlobalPreMain(const LLVM_Encoder& pp)
+void Llvm::emitGlobalPreMain(const LlvmEncoder& pp)
 {
     const auto& buildParameters = pp.buildParams;
     const auto  module          = pp.module;
@@ -331,7 +331,7 @@ void LLVM::emitGlobalPreMain(const LLVM_Encoder& pp)
     builder.CreateRetVoid();
 }
 
-void LLVM::emitGlobalInit(LLVM_Encoder& pp)
+void Llvm::emitGlobalInit(LlvmEncoder& pp)
 {
     const auto& buildParameters = pp.buildParams;
     const auto  module          = pp.module;
@@ -407,7 +407,7 @@ void LLVM::emitGlobalInit(LLVM_Encoder& pp)
     builder.CreateRetVoid();
 }
 
-void LLVM::emitGlobalDrop(LLVM_Encoder& pp)
+void Llvm::emitGlobalDrop(LlvmEncoder& pp)
 {
     const auto& buildParameters = pp.buildParams;
     const auto  module          = pp.module;
@@ -442,7 +442,7 @@ void LLVM::emitGlobalDrop(LLVM_Encoder& pp)
     builder.CreateRetVoid();
 }
 
-llvm::Type* LLVM::getLLVMType(LLVM_Encoder& pp, TypeInfo* typeInfo)
+llvm::Type* Llvm::getLLVMType(LlvmEncoder& pp, TypeInfo* typeInfo)
 {
     auto& context = *pp.llvmContext;
 
@@ -508,7 +508,7 @@ llvm::Type* LLVM::getLLVMType(LLVM_Encoder& pp, TypeInfo* typeInfo)
     return nullptr;
 }
 
-llvm::BasicBlock* LLVM::getOrCreateLabel(LLVM_Encoder& pp, int64_t ip)
+llvm::BasicBlock* Llvm::getOrCreateLabel(LlvmEncoder& pp, int64_t ip)
 {
     auto& context = *pp.llvmContext;
 
@@ -523,7 +523,7 @@ llvm::BasicBlock* LLVM::getOrCreateLabel(LLVM_Encoder& pp, int64_t ip)
     return it->second;
 }
 
-void LLVM::setFuncAttributes(const LLVM_Encoder& pp, uint32_t numPreComp, const AstFuncDecl* funcNode, const ByteCode* bc)
+void Llvm::setFuncAttributes(const LlvmEncoder& pp, uint32_t numPreComp, const AstFuncDecl* funcNode, const ByteCode* bc)
 {
     const auto  func            = pp.llvmFunc;
     const auto& buildParameters = pp.buildParams;

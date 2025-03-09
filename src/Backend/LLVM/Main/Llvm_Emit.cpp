@@ -1,14 +1,14 @@
 #include "pch.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
-#include "Backend/LLVM/Main/LLVM.h"
-#include "Backend/LLVM/Main/LLVM_Macros.h"
+#include "Backend/LLVM/Main/Llvm.h"
+#include "Backend/LLVM/Main/Llvm_Macros.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 #include "Wmf/SourceFile.h"
 
-void LLVM::emitShiftRightArithmetic(const LLVM_Encoder& pp, uint32_t numBits)
+void Llvm::emitShiftRightArithmetic(const LlvmEncoder& pp, uint32_t numBits)
 {
     const auto ip      = pp.ip;
     const auto allocR  = pp.allocR;
@@ -38,7 +38,7 @@ void LLVM::emitShiftRightArithmetic(const LLVM_Encoder& pp, uint32_t numBits)
     }
 }
 
-void LLVM::emitShiftRightEqArithmetic(const LLVM_Encoder& pp, uint32_t numBits)
+void Llvm::emitShiftRightEqArithmetic(const LlvmEncoder& pp, uint32_t numBits)
 {
     const auto ip      = pp.ip;
     const auto allocR  = pp.allocR;
@@ -68,7 +68,7 @@ void LLVM::emitShiftRightEqArithmetic(const LLVM_Encoder& pp, uint32_t numBits)
     }
 }
 
-void LLVM::emitShiftLogical(const LLVM_Encoder& pp, uint32_t numBits, bool left)
+void Llvm::emitShiftLogical(const LlvmEncoder& pp, uint32_t numBits, bool left)
 {
     const auto ip      = pp.ip;
     const auto allocR  = pp.allocR;
@@ -103,7 +103,7 @@ void LLVM::emitShiftLogical(const LLVM_Encoder& pp, uint32_t numBits, bool left)
     }
 }
 
-void LLVM::emitShiftEqLogical(const LLVM_Encoder& pp, uint32_t numBits, bool left)
+void Llvm::emitShiftEqLogical(const LlvmEncoder& pp, uint32_t numBits, bool left)
 {
     const auto ip      = pp.ip;
     const auto allocR  = pp.allocR;
@@ -138,7 +138,7 @@ void LLVM::emitShiftEqLogical(const LLVM_Encoder& pp, uint32_t numBits, bool lef
     }
 }
 
-void LLVM::emitInternalPanic(LLVM_Encoder& pp, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const char* message)
+void Llvm::emitInternalPanic(LlvmEncoder& pp, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const char* message)
 {
     const auto node    = pp.ip->node;
     auto&      context = *pp.llvmContext;
@@ -165,7 +165,7 @@ void LLVM::emitInternalPanic(LLVM_Encoder& pp, llvm::AllocaInst* allocR, llvm::A
     emitCall(pp, g_LangSpec->name_priv_panic, allocR, allocT, {UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX}, {r2, r3, r4, r5});
 }
 
-void LLVM::emitTypedValueToRegister(const LLVM_Encoder& pp, llvm::Value* value, uint32_t reg)
+void Llvm::emitTypedValueToRegister(const LlvmEncoder& pp, llvm::Value* value, uint32_t reg)
 {
     SWAG_ASSERT(value);
     const auto allocR = pp.allocR;
@@ -190,7 +190,7 @@ void LLVM::emitTypedValueToRegister(const LLVM_Encoder& pp, llvm::Value* value, 
         builder.CreateStore(r1, GEP64(allocR, reg));
 }
 
-void LLVM::emitRT2ToRegisters(const LLVM_Encoder& pp, uint32_t reg0, uint32_t reg1, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR)
+void Llvm::emitRT2ToRegisters(const LlvmEncoder& pp, uint32_t reg0, uint32_t reg1, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR)
 {
     auto& context = *pp.llvmContext;
     auto& builder = *pp.builder;
@@ -203,7 +203,7 @@ void LLVM::emitRT2ToRegisters(const LLVM_Encoder& pp, uint32_t reg0, uint32_t re
     builder.CreateStore(r3, r2);
 }
 
-void LLVM::emitBinOpOverflow(LLVM_Encoder& pp, llvm::Value* r0, llvm::Value* r1, llvm::Value* r2, llvm::Intrinsic::IndependentIntrinsics op, SafetyMsg msg)
+void Llvm::emitBinOpOverflow(LlvmEncoder& pp, llvm::Value* r0, llvm::Value* r1, llvm::Value* r2, llvm::Intrinsic::IndependentIntrinsics op, SafetyMsg msg)
 {
     const auto ip      = pp.ip;
     auto&      context = *pp.llvmContext;
@@ -224,7 +224,7 @@ void LLVM::emitBinOpOverflow(LLVM_Encoder& pp, llvm::Value* r0, llvm::Value* r1,
     builder.CreateStore(r4, r0);
 }
 
-void LLVM::emitBinOpEqOverflow(LLVM_Encoder& pp, llvm::Value* r1, llvm::Value* r2, llvm::Intrinsic::IndependentIntrinsics op, SafetyMsg msg)
+void Llvm::emitBinOpEqOverflow(LlvmEncoder& pp, llvm::Value* r1, llvm::Value* r2, llvm::Intrinsic::IndependentIntrinsics op, SafetyMsg msg)
 {
     const auto ip      = pp.ip;
     auto&      context = *pp.llvmContext;
@@ -246,7 +246,7 @@ void LLVM::emitBinOpEqOverflow(LLVM_Encoder& pp, llvm::Value* r1, llvm::Value* r
     builder.CreateStore(r4, r1);
 }
 
-void LLVM::emitCopyVaargs(LLVM_Encoder& pp)
+void Llvm::emitCopyVaargs(LlvmEncoder& pp)
 {
     const auto allocR  = pp.allocR;
     const auto allocVa = pp.allocVa;

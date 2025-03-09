@@ -3,7 +3,7 @@
 #include "Backend/Backend.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/CallConv.h"
-#include "Backend/SCBE/Debug/SCBE_Debug.h"
+#include "Backend/SCBE/Debug/ScbeDebug.h"
 #include "Core/Concat.h"
 #include "Semantic/DataSegment.h"
 
@@ -185,7 +185,7 @@ struct CPUFunction
     VectorNative<CPUReg>          unwindRegs;
     VectorNative<uint32_t>        unwindOffsetRegs;
     VectorNative<uint16_t>        unwind;
-    Vector<SCBEDebugLines>        dbgLines;
+    Vector<ScbeDebugLines>        dbgLines;
 
     ByteCode*         bc                      = nullptr;
     AstFuncDecl*      node                    = nullptr;
@@ -416,6 +416,6 @@ struct ScbeCPU : BackendEncoder
     uint32_t                           dbgStartRecordOffset[MAX_RECORD];
     uint32_t                           dbgTypeRecordsCount = 0;
     Concat                             dbgTypeRecords;
-    Map<TypeInfo*, SCBEDebugTypeIndex> dbgMapTypes;
-    MapUtf8<SCBEDebugTypeIndex>        dbgMapTypesNames;
+    Map<TypeInfo*, ScbeDebugTypeIndex> dbgMapTypes;
+    MapUtf8<ScbeDebugTypeIndex>        dbgMapTypesNames;
 };

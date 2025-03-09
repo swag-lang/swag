@@ -3,7 +3,7 @@
 #include "Backend/BackendFunctionBodyJob.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/CallConv.h"
-#include "Backend/LLVM/LLVM_Setup.h"
+#include "Backend/LLVM/LlvmSetup.h"
 #include "Backend/Linker/BackendLinker.h"
 #include "Format/FormatAst.h"
 #include "Jobs/ModuleSaveExportJob.h"

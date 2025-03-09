@@ -1,8 +1,8 @@
 #include "pch.h"
-#include "Backend/LLVM/Debug/LLVMDebug.h"
+#include "Backend/LLVM/Debug/LlvmDebug.h"
 #include "Backend/ByteCode/ByteCode.h"
-#include "Backend/LLVM/Main/LLVM.h"
-#include "Backend/LLVM/Main/LLVM_Macros.h"
+#include "Backend/LLVM/Main/Llvm.h"
+#include "Backend/LLVM/Main/Llvm_Macros.h"
 #include "Main/Version.h"
 #include "Semantic/Scope.h"
 #include "Semantic/Type/TypeManager.h"
@@ -21,7 +21,7 @@ namespace
     }
 }
 
-void LLVMDebug::setup(LLVM* m, llvm::Module* module)
+void LlvmDebug::setup(Llvm* m, llvm::Module* module)
 {
     llvm                = m;
     isOptimized         = m->module->buildParameters.buildCfg->backendOptimize != BuildCfgBackendOptim::O0;
@@ -87,7 +87,7 @@ void LLVMDebug::setup(LLVM* m, llvm::Module* module)
     }
 }
 
-llvm::DIFile* LLVMDebug::getOrCreateFile(const SourceFile* file)
+llvm::DIFile* LlvmDebug::getOrCreateFile(const SourceFile* file)
 {
     const auto it = mapFiles.find(file->path);
     if (it != mapFiles.end())
@@ -99,7 +99,7 @@ llvm::DIFile* LLVMDebug::getOrCreateFile(const SourceFile* file)
     return dbgfile;
 }
 
-llvm::DIType* LLVMDebug::getEnumType(TypeInfo* typeInfo, llvm::DIFile* file)
+llvm::DIType* LlvmDebug::getEnumType(TypeInfo* typeInfo, llvm::DIFile* file)
 {
     const auto it = mapTypes.find(typeInfo);
     if (it != mapTypes.end())
@@ -137,7 +137,7 @@ llvm::DIType* LLVMDebug::getEnumType(TypeInfo* typeInfo, llvm::DIFile* file)
     return getType(typeInfoEnum->rawType, file);
 }
 
-llvm::DIType* LLVMDebug::getPointerToType(TypeInfo* typeInfo, llvm::DIFile* file)
+llvm::DIType* LlvmDebug::getPointerToType(TypeInfo* typeInfo, llvm::DIFile* file)
 {
     const auto it = mapPtrTypes.find(typeInfo);
     if (it != mapPtrTypes.end())
@@ -147,7 +147,7 @@ llvm::DIType* LLVMDebug::getPointerToType(TypeInfo* typeInfo, llvm::DIFile* file
     return result;
 }
 
-llvm::DIType* LLVMDebug::getReferenceToType(TypeInfo* typeInfo, llvm::DIFile* file)
+llvm::DIType* LlvmDebug::getReferenceToType(TypeInfo* typeInfo, llvm::DIFile* file)
 {
     const auto it = mapRefTypes.find(typeInfo);
     if (it != mapRefTypes.end())
@@ -157,7 +157,7 @@ llvm::DIType* LLVMDebug::getReferenceToType(TypeInfo* typeInfo, llvm::DIFile* fi
     return result;
 }
 
-llvm::DIType* LLVMDebug::getStructType(TypeInfo* typeInfo, llvm::DIFile* file)
+llvm::DIType* LlvmDebug::getStructType(TypeInfo* typeInfo, llvm::DIFile* file)
 {
     const auto it = mapTypes.find(typeInfo);
     if (it != mapTypes.end())
@@ -210,7 +210,7 @@ llvm::DIType* LLVMDebug::getStructType(TypeInfo* typeInfo, llvm::DIFile* file)
     return result;
 }
 
-llvm::DIType* LLVMDebug::getSliceType(TypeInfo* typeInfo, TypeInfo* pointedType, llvm::DIFile* file)
+llvm::DIType* LlvmDebug::getSliceType(TypeInfo* typeInfo, TypeInfo* pointedType, llvm::DIFile* file)
 {
     const auto it = mapTypes.find(typeInfo);
     if (it != mapTypes.end())
@@ -231,7 +231,7 @@ llvm::DIType* LLVMDebug::getSliceType(TypeInfo* typeInfo, TypeInfo* pointedType,
     return result;
 }
 
-llvm::DIType* LLVMDebug::getType(TypeInfo* typeInfo, llvm::DIFile* file)
+llvm::DIType* LlvmDebug::getType(TypeInfo* typeInfo, llvm::DIFile* file)
 {
     if (!typeInfo)
         return s32Ty;
@@ -352,7 +352,7 @@ llvm::DIType* LLVMDebug::getType(TypeInfo* typeInfo, llvm::DIFile* file)
     }
 }
 
-llvm::DISubroutineType* LLVMDebug::getFunctionType(TypeInfoFuncAttr* typeFunc, llvm::DIFile* file)
+llvm::DISubroutineType* LlvmDebug::getFunctionType(TypeInfoFuncAttr* typeFunc, llvm::DIFile* file)
 {
     const auto it = mapFuncTypes.find(typeFunc);
     if (it != mapFuncTypes.end())
@@ -390,7 +390,7 @@ llvm::DISubroutineType* LLVMDebug::getFunctionType(TypeInfoFuncAttr* typeFunc, l
     return result;
 }
 
-llvm::DISubprogram* LLVMDebug::startFunction(const ByteCode* bc, AstFuncDecl** resultDecl)
+llvm::DISubprogram* LlvmDebug::startFunction(const ByteCode* bc, AstFuncDecl** resultDecl)
 {
     SWAG_ASSERT(dbgBuilder);
 
@@ -438,7 +438,7 @@ llvm::DISubprogram* LLVMDebug::startFunction(const ByteCode* bc, AstFuncDecl** r
     return sp;
 }
 
-void LLVMDebug::startFunction(const BuildParameters& buildParameters, const LLVM_Encoder& pp, ByteCode* bc, llvm::Function* func, llvm::AllocaInst* stack)
+void LlvmDebug::startFunction(const BuildParameters& buildParameters, const LlvmEncoder& pp, ByteCode* bc, llvm::Function* func, llvm::AllocaInst* stack)
 {
     if (bc->node && bc->node->isSpecialFunctionGenerated())
         return;
@@ -648,7 +648,7 @@ void LLVMDebug::startFunction(const BuildParameters& buildParameters, const LLVM
     }
 }
 
-void LLVMDebug::setLocation(llvm::IRBuilder<>* builder, const ByteCode* bc, const ByteCodeInstruction* ip)
+void LlvmDebug::setLocation(llvm::IRBuilder<>* builder, const ByteCode* bc, const ByteCodeInstruction* ip)
 {
     if (bc->node && bc->node->isSpecialFunctionGenerated())
         return;
@@ -694,7 +694,7 @@ void LLVMDebug::setLocation(llvm::IRBuilder<>* builder, const ByteCode* bc, cons
     }
 }
 
-llvm::DIScope* LLVMDebug::getOrCreateScope(llvm::DIFile* file, Scope* scope)
+llvm::DIScope* LlvmDebug::getOrCreateScope(llvm::DIFile* file, Scope* scope)
 {
     SWAG_ASSERT(scope);
 
@@ -755,11 +755,11 @@ llvm::DIScope* LLVMDebug::getOrCreateScope(llvm::DIFile* file, Scope* scope)
     return parent;
 }
 
-void LLVMDebug::createGlobalVariablesForSegment(const BuildParameters& buildParameters, llvm::Type* type, llvm::GlobalVariable* var)
+void LlvmDebug::createGlobalVariablesForSegment(const BuildParameters& buildParameters, llvm::Type* type, llvm::GlobalVariable* var)
 {
     const auto ct              = buildParameters.compileType;
     const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = llvm->encoder<LLVM_Encoder>(ct, precompileIndex);
+    auto&      pp              = llvm->encoder<LlvmEncoder>(ct, precompileIndex);
     auto&      builder         = *pp.builder;
     auto&      context         = *pp.llvmContext;
     auto&      modu            = *pp.llvmModule;
@@ -788,7 +788,7 @@ void LLVMDebug::createGlobalVariablesForSegment(const BuildParameters& buildPara
             continue;
 
         // Cast to the correct type
-        auto varType = LLVM::getLLVMType(pp, typeInfo);
+        auto varType = Llvm::getLLVMType(pp, typeInfo);
         if (!varType)
             continue;
 
@@ -872,7 +872,7 @@ void LLVMDebug::createGlobalVariablesForSegment(const BuildParameters& buildPara
     }
 }
 
-void LLVMDebug::finalize() const
+void LlvmDebug::finalize() const
 {
     SWAG_ASSERT(dbgBuilder);
     dbgBuilder->finalize();

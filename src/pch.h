@@ -21,7 +21,7 @@
 #endif
 
 ////////////////////////////
-#include "Backend/LLVM/LLVM_Inc.h"
+#include "Backend/LLVM/LlvmInc.h"
 
 ////////////////////////////
 

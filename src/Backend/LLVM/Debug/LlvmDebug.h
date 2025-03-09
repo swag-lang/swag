@@ -1,21 +1,21 @@
 #pragma once
 
 struct AstFuncDecl;
-struct LLVM;
+struct Llvm;
 struct BuildParameters;
 struct ByteCode;
 struct ByteCodeInstruction;
-struct LLVM_Encoder;
+struct LlvmEncoder;
 struct Scope;
 struct SourceFile;
 struct TypeInfo;
 struct TypeInfoFuncAttr;
 
-struct LLVMDebug
+struct LlvmDebug
 {
-    void                    setup(LLVM* m, llvm::Module* module);
+    void                    setup(Llvm* m, llvm::Module* module);
     llvm::DISubprogram*     startFunction(const ByteCode* bc, AstFuncDecl** resultDecl = nullptr);
-    void                    startFunction(const BuildParameters& buildParameters, const LLVM_Encoder& pp, ByteCode* bc, llvm::Function* func, llvm::AllocaInst* stack);
+    void                    startFunction(const BuildParameters& buildParameters, const LlvmEncoder& pp, ByteCode* bc, llvm::Function* func, llvm::AllocaInst* stack);
     void                    finalize() const;
     void                    setLocation(llvm::IRBuilder<>* builder, const ByteCode* bc, const ByteCodeInstruction* ip);
     void                    createGlobalVariablesForSegment(const BuildParameters& buildParameters, llvm::Type* type, llvm::GlobalVariable* var);
@@ -29,7 +29,7 @@ struct LLVMDebug
     llvm::DISubroutineType* getFunctionType(TypeInfoFuncAttr* typeFunc, llvm::DIFile* file);
     llvm::DIScope*          getOrCreateScope(llvm::DIFile* file, Scope* scope);
 
-    LLVM*                llvm        = nullptr;
+    Llvm*                llvm        = nullptr;
     llvm::LLVMContext*   llvmContext = nullptr;
     llvm::Module*        llvmModule  = nullptr;
     llvm::DIBuilder*     dbgBuilder  = nullptr;

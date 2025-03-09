@@ -492,7 +492,7 @@ void ScbeCPU::emitLabels()
 
 void ScbeCPU::emitDebug(ByteCodeInstruction* ipAddr)
 {
-    SCBE_Debug::setLocation(cpuFct, ipAddr, concat.totalCount() - cpuFct->startAddress);
+    ScbeDebug::setLocation(cpuFct, ipAddr, concat.totalCount() - cpuFct->startAddress);
 }
 
 void ScbeCPU::emitEnter(uint32_t sizeStack)
