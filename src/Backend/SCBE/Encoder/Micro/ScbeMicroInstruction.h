@@ -16,8 +16,11 @@ struct ScbeMicroInstruction
 {
     SWAG_FORCE_INLINE bool hasLeftOpFlag(ScbeMicroOpFlags fl) const { return g_MicroOpInfos[static_cast<int>(op)].leftFlags.has(fl); }
     SWAG_FORCE_INLINE bool hasRightOpFlag(ScbeMicroOpFlags fl) const { return g_MicroOpInfos[static_cast<int>(op)].rightFlags.has(fl); }
-    
+
     bool isWriteMemA() const { return hasLeftOpFlag(MOF_REG_A) && hasLeftOpFlag(MOF_VALUE_A) && hasLeftOpFlag(MOF_WRITE_MEM); }
+    bool hasReadRegA() const { return (hasLeftOpFlag(MOF_REG_A) && hasLeftOpFlag(MOF_READ_REG)) || (hasRightOpFlag(MOF_REG_A) && hasRightOpFlag(MOF_READ_REG)); }
+    bool hasReadRegB() const { return (hasLeftOpFlag(MOF_REG_B) && hasLeftOpFlag(MOF_READ_REG)) || (hasRightOpFlag(MOF_REG_B) && hasRightOpFlag(MOF_READ_REG)); }
+    bool hasReadRegC() const { return (hasLeftOpFlag(MOF_REG_C) && hasLeftOpFlag(MOF_READ_REG)) || (hasRightOpFlag(MOF_REG_C) && hasRightOpFlag(MOF_READ_REG)); }
 
     bool isJump() const;
     bool isCall() const;
@@ -31,9 +34,9 @@ struct ScbeMicroInstruction
     CpuCondFlag cpuCond;
     CpuCondJump jumpType;
 
-    OpBits                   opBitsA;
-    OpBits                   opBitsB;
-    CpuEmitFlags             emitFlags;
+    OpBits                    opBitsA;
+    OpBits                    opBitsB;
+    CpuEmitFlags              emitFlags;
     ScbeMicroInstructionFlags flags;
 
     uint32_t valueC;
