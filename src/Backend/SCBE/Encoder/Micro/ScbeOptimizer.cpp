@@ -223,10 +223,12 @@ void ScbeOptimizer::optimizePassDeadStore(const ScbeMicro& out)
 
         const auto& infos = g_MicroOpInfos[static_cast<int>(inst->op)];
 
-        if (infos.rightFlags.has(MOF_REG_A))
+        if (inst->hasReadRegA())
             mapRegInst.erase(inst->regA);
-        if (infos.rightFlags.has(MOF_REG_B))
+        if (inst->hasReadRegB())
             mapRegInst.erase(inst->regB);
+        if (inst->hasReadRegC())
+            mapRegInst.erase(inst->regC);
 
         auto legitReg = CpuReg::Max;
         if (inst->op == ScbeMicroOp::LoadRR ||
