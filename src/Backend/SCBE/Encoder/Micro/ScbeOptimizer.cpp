@@ -143,9 +143,9 @@ void ScbeOptimizer::optimizePassStoreToRegBeforeLeave(const ScbeMicro& out)
         }
         else
         {
-            if (inst->isReadMemA())
+            if (inst->hasReadMemA())
                 mapValInst.erase(static_cast<uint32_t>(inst->valueA));
-            if (inst->isReadMemB())
+            if (inst->hasReadMemB())
                 mapValInst.erase(static_cast<uint32_t>(inst->valueB));
         }
 
@@ -284,7 +284,7 @@ void ScbeOptimizer::optimizePassStoreMR(const ScbeMicro& out)
             mapValReg[inst->valueA] = {inst->regB, inst->opBitsA};
             mapRegVal[inst->regB]   = inst->valueA;
         }
-        else if (inst->isWriteMemA() &&
+        else if (inst->hasWriteMemA() &&
                  inst->regA == CpuReg::RSP &&
                  mapValReg.contains(inst->valueA))
         {
