@@ -46,8 +46,6 @@ void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
         {
             case ScbeMicroOp::LoadRR:
                 if (next->hasReadRegA() &&
-                    !next->hasReadRegB() &&
-                    !next->hasReadRegC() &&
                     inst->regA == next->regA &&
                     inst->opBitsA == OpBits::B64)
                 {
