@@ -1,11 +1,11 @@
 #include "pch.h"
-#include "Backend/SCBE/Encoder/Micro/SCBE_Optimizer.h"
-#include "Backend/SCBE/Encoder/Micro/SCBE_Micro.h"
+#include "Backend/SCBE/Encoder/Micro/SCBEOptimizer.h"
+#include "Backend/SCBE/Encoder/Micro/SCBEMicro.h"
 #include "Main/Statistics.h"
 #include "Semantic/Type/TypeInfo.h"
 #pragma optimize("", off)
 
-void SCBE_Optimizer::ignore(SCBE_MicroInstruction* inst)
+void SCBEOptimizer::ignore(SCBE_MicroInstruction* inst)
 {
 #ifdef SWAG_STATS
     g_Stats.totalOptimScbe += 1;
@@ -14,20 +14,20 @@ void SCBE_Optimizer::ignore(SCBE_MicroInstruction* inst)
     passHasDoneSomething = true;
 }
 
-void SCBE_Optimizer::setOp(SCBE_MicroInstruction* inst, SCBE_MicroOp op)
+void SCBEOptimizer::setOp(SCBE_MicroInstruction* inst, SCBE_MicroOp op)
 {
     inst->op             = op;
     passHasDoneSomething = true;
 }
 
-SCBE_MicroInstruction* SCBE_Optimizer::zap(SCBE_MicroInstruction* inst)
+SCBE_MicroInstruction* SCBEOptimizer::zap(SCBE_MicroInstruction* inst)
 {
     while (inst->op == SCBE_MicroOp::Nop || inst->op == SCBE_MicroOp::Label || inst->op == SCBE_MicroOp::Debug || inst->op == SCBE_MicroOp::Ignore)
         inst++;
     return inst;
 }
 
-void SCBE_Optimizer::passReduce(const SCBE_Micro& out)
+void SCBEOptimizer::passReduce(const SCBEMicro& out)
 {
     auto inst = reinterpret_cast<SCBE_MicroInstruction*>(out.concat.firstBucket->data);
     while (inst->op != SCBE_MicroOp::End)
@@ -118,7 +118,7 @@ void SCBE_Optimizer::passReduce(const SCBE_Micro& out)
     }
 }
 
-void SCBE_Optimizer::passStoreToRegBeforeLeave(const SCBE_Micro& out)
+void SCBEOptimizer::passStoreToRegBeforeLeave(const SCBEMicro& out)
 {
     mapValInst.clear();
 
@@ -161,7 +161,7 @@ void SCBE_Optimizer::passStoreToRegBeforeLeave(const SCBE_Micro& out)
     }
 }
 
-void SCBE_Optimizer::passStoreToHdwRegBeforeLeave(const SCBE_Micro& out)
+void SCBEOptimizer::passStoreToHdwRegBeforeLeave(const SCBEMicro& out)
 {
     mapValInst.clear();
 
@@ -208,7 +208,7 @@ void SCBE_Optimizer::passStoreToHdwRegBeforeLeave(const SCBE_Micro& out)
     }
 }
 
-void SCBE_Optimizer::passDeadStore(const SCBE_Micro& out)
+void SCBEOptimizer::passDeadStore(const SCBEMicro& out)
 {
     mapRegInst.clear();
 
@@ -267,7 +267,7 @@ void SCBE_Optimizer::passDeadStore(const SCBE_Micro& out)
     }
 }
 
-void SCBE_Optimizer::passStoreMR(const SCBE_Micro& out)
+void SCBEOptimizer::passStoreMR(const SCBEMicro& out)
 {
     mapValReg.clear();
     mapRegVal.clear();
@@ -346,7 +346,7 @@ void SCBE_Optimizer::passStoreMR(const SCBE_Micro& out)
     }
 }
 
-void SCBE_Optimizer::optimize(const SCBE_Micro& out)
+void SCBEOptimizer::optimize(const SCBEMicro& out)
 {
     if (out.optLevel == BuildCfgBackendOptim::O0)
         return;

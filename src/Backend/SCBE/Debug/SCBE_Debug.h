@@ -4,7 +4,7 @@
 
 struct ByteCodeInstruction;
 struct CPUFunction;
-struct SCBE_CPU;
+struct SCBECPU;
 struct SCBE;
 struct SourceFile;
 struct AstFuncDecl;
@@ -129,13 +129,13 @@ struct SCBEDebugLines
 
 struct SCBE_Debug
 {
-    static void                 getStructFields(SCBE_CPU& pp, SCBEDebugTypeRecord* tr, TypeInfoStruct* typeStruct, uint32_t baseOffset);
-    static SCBEDebugTypeIndex   getTypeSlice(SCBE_CPU& pp, const TypeInfo* typeInfo, TypeInfo* pointedType, SCBEDebugTypeIndex* value);
+    static void                 getStructFields(SCBECPU& pp, SCBEDebugTypeRecord* tr, TypeInfoStruct* typeStruct, uint32_t baseOffset);
+    static SCBEDebugTypeIndex   getTypeSlice(SCBECPU& pp, const TypeInfo* typeInfo, TypeInfo* pointedType, SCBEDebugTypeIndex* value);
     static SCBEDebugTypeIndex   getSimpleType(const TypeInfo* typeInfo);
-    static SCBEDebugTypeIndex   getOrCreatePointerToType(SCBE_CPU& pp, TypeInfo* typeInfo, bool asRef);
-    static SCBEDebugTypeIndex   getOrCreatePointerPointerToType(SCBE_CPU& pp, TypeInfo* typeInfo);
-    static SCBEDebugTypeIndex   getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo, bool forceUnRef = false);
-    static SCBEDebugTypeRecord* addTypeRecord(SCBE_CPU& pp);
+    static SCBEDebugTypeIndex   getOrCreatePointerToType(SCBECPU& pp, TypeInfo* typeInfo, bool asRef);
+    static SCBEDebugTypeIndex   getOrCreatePointerPointerToType(SCBECPU& pp, TypeInfo* typeInfo);
+    static SCBEDebugTypeIndex   getOrCreateType(SCBECPU& pp, TypeInfo* typeInfo, bool forceUnRef = false);
+    static SCBEDebugTypeRecord* addTypeRecord(SCBECPU& pp);
     static void                 setLocation(CPUFunction* cpuFct, const ByteCodeInstruction* ip, uint32_t byteOffset);
     static Utf8                 getScopedName(const AstNode* node);
 };

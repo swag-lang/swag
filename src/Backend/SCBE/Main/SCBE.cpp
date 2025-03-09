@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Backend/SCBE/Main/SCBE.h"
-#include "Backend/SCBE/Encoder/X64/SCBE_X64.h"
+#include "Backend/SCBE/Encoder/X64/SCBEX64.h"
 #include "Backend/SCBE/Obj/SCBE_Coff.h"
 #include "Backend/SCBE/Obj/SCBE_SaveObjJob.h"
 #include "Os/Os.h"
@@ -20,7 +20,7 @@ SCBE::SCBE() :
     memset(perThread, 0, sizeof(perThread));
 }
 
-void SCBE::createRuntime(SCBE_CPU& pp)
+void SCBE::createRuntime(SCBECPU& pp)
 {
     const auto module          = pp.module;
     const auto precompileIndex = pp.buildParams.precompileIndex;
@@ -127,14 +127,14 @@ JobResult SCBE::prepareOutput(const BuildParameters& buildParameters, int stage,
     switch (g_CommandLine.target.arch)
     {
         case SwagTargetArch::X86_64:
-            allocatePerObj<SCBE_X64>(buildParameters);
+            allocatePerObj<SCBEX64>(buildParameters);
             break;
         default:
             SWAG_ASSERT(false);
             break;
     }
 
-    auto& pp = encoder<SCBE_CPU>(ct, precompileIndex);
+    auto& pp = encoder<SCBECPU>(ct, precompileIndex);
     pp.init(buildParameters);
 
     auto& concat = pp.concat;
@@ -241,7 +241,7 @@ void SCBE::saveObjFile(const BuildParameters& buildParameters) const
 {
     const auto ct              = buildParameters.compileType;
     const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = encoder<SCBE_CPU>(ct, precompileIndex);
+    auto&      pp              = encoder<SCBECPU>(ct, precompileIndex);
 
     auto path = getCacheFolder();
     path.append(pp.filename);

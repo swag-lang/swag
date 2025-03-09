@@ -218,7 +218,7 @@ struct CPUFunction
     bool     isStackOffsetTransient(uint32_t offset) const { return isStackOffsetLocalParam(offset) || isStackOffsetReg(offset) || isStackOffsetRT(offset); }
 };
 
-struct SCBE_CPU : BackendEncoder
+struct SCBECPU : BackendEncoder
 {
     void init(const BuildParameters& buildParameters) override;
 

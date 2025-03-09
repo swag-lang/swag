@@ -9,7 +9,7 @@
 
 namespace
 {
-    bool emitXData(const BuildParameters&, SCBE_CPU& pp)
+    bool emitXData(const BuildParameters&, SCBECPU& pp)
     {
         auto& concat = pp.concat;
 
@@ -28,7 +28,7 @@ namespace
         return true;
     }
 
-    bool emitPData(const BuildParameters&, SCBE_CPU& pp)
+    bool emitPData(const BuildParameters&, SCBECPU& pp)
     {
         auto& concat = pp.concat;
 
@@ -67,7 +67,7 @@ namespace
         return true;
     }
 
-    bool emitDirectives(const BuildParameters&, SCBE_CPU& pp)
+    bool emitDirectives(const BuildParameters&, SCBECPU& pp)
     {
         auto& concat = pp.concat;
 
@@ -79,7 +79,7 @@ namespace
         return true;
     }
 
-    bool emitSymbolTable(const BuildParameters&, SCBE_CPU& pp)
+    bool emitSymbolTable(const BuildParameters&, SCBECPU& pp)
     {
         auto& concat = pp.concat;
 
@@ -143,7 +143,7 @@ namespace
         return true;
     }
 
-    bool emitStringTable(const BuildParameters&, SCBE_CPU& pp)
+    bool emitStringTable(const BuildParameters&, SCBECPU& pp)
     {
         auto& concat = pp.concat;
 
@@ -161,7 +161,7 @@ namespace
     }
 }
 
-bool SCBE_Coff::emitHeader(const BuildParameters& buildParameters, SCBE_CPU& pp)
+bool SCBE_Coff::emitHeader(const BuildParameters& buildParameters, SCBECPU& pp)
 {
     const auto           precompileIndex = buildParameters.precompileIndex;
     const auto           module          = buildParameters.module;
@@ -418,7 +418,7 @@ bool SCBE_Coff::emitRelocationTable(Concat& concat, const CPURelocationTable& co
     return true;
 }
 
-bool SCBE_Coff::emitPostFunc(const BuildParameters& buildParameters, SCBE_CPU& pp)
+bool SCBE_Coff::emitPostFunc(const BuildParameters& buildParameters, SCBECPU& pp)
 {
     const auto module          = buildParameters.module;
     const auto precompileIndex = buildParameters.precompileIndex;
@@ -523,7 +523,7 @@ bool SCBE_Coff::emitPostFunc(const BuildParameters& buildParameters, SCBE_CPU& p
     return true;
 }
 
-bool SCBE_Coff::saveFileBuffer(FILE* f, const BuildParameters& buildParameters, SCBE_CPU& pp)
+bool SCBE_Coff::saveFileBuffer(FILE* f, const BuildParameters& buildParameters, SCBECPU& pp)
 {
     const auto module          = buildParameters.module;
     const auto precompileIndex = buildParameters.precompileIndex;

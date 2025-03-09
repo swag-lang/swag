@@ -1,7 +1,7 @@
 #include "pch.h"
 
 #include "Backend/ByteCode/ByteCode.h"
-#include "Backend/SCBE/Encoder/SCBE_CPU.h"
+#include "Backend/SCBE/Encoder/SCBECPU.h"
 #include "ByteCodeStack.h"
 #include "Os/Os.h"
 #include "Report/Diagnostic.h"

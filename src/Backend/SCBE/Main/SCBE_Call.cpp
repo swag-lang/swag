@@ -8,7 +8,7 @@
 #include "Wmf/ModuleManager.h"
 #include "Wmf/Workspace.h"
 
-void SCBE::emitLoadParam(SCBE_CPU& pp, CPUReg reg, uint32_t paramIdx, OpBits opBits)
+void SCBE::emitLoadParam(SCBECPU& pp, CPUReg reg, uint32_t paramIdx, OpBits opBits)
 {
     if (paramIdx < pp.cpuFct->cc->paramByRegisterCount)
         pp.emitLoadRM(reg, CPUReg::RSP, pp.cpuFct->getStackOffsetParam(paramIdx), opBits);
@@ -16,7 +16,7 @@ void SCBE::emitLoadParam(SCBE_CPU& pp, CPUReg reg, uint32_t paramIdx, OpBits opB
         pp.emitLoadCallerParam(reg, paramIdx, opBits);
 }
 
-void SCBE::emitLoadZeroExtendParam(SCBE_CPU& pp, CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc)
+void SCBE::emitLoadZeroExtendParam(SCBECPU& pp, CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc)
 {
     if (paramIdx < pp.cpuFct->cc->paramByRegisterCount)
         pp.emitLoadZeroExtendRM(reg, CPUReg::RSP, pp.cpuFct->getStackOffsetParam(paramIdx), numBitsDst, numBitsSrc);
@@ -24,7 +24,7 @@ void SCBE::emitLoadZeroExtendParam(SCBE_CPU& pp, CPUReg reg, uint32_t paramIdx, 
         pp.emitLoadCallerZeroExtendParam(reg, paramIdx, numBitsDst, numBitsSrc);
 }
 
-void SCBE::emitLoadAddressParam(SCBE_CPU& pp, CPUReg reg, uint32_t paramIdx)
+void SCBE::emitLoadAddressParam(SCBECPU& pp, CPUReg reg, uint32_t paramIdx)
 {
     if (paramIdx < pp.cpuFct->cc->paramByRegisterCount)
         pp.emitLoadAddressM(reg, CPUReg::RSP, pp.cpuFct->getStackOffsetParam(paramIdx));
@@ -32,7 +32,7 @@ void SCBE::emitLoadAddressParam(SCBE_CPU& pp, CPUReg reg, uint32_t paramIdx)
         pp.emitLoadCallerAddressParam(reg, paramIdx);
 }
 
-void SCBE::emitGetParam(SCBE_CPU& pp, uint32_t reg, uint32_t paramIdx, OpBits opBits, uint64_t toAdd, OpBits derefBits)
+void SCBE::emitGetParam(SCBECPU& pp, uint32_t reg, uint32_t paramIdx, OpBits opBits, uint64_t toAdd, OpBits derefBits)
 {
     const auto typeFunc  = pp.cpuFct->typeFunc;
     auto       typeParam = TypeManager::concreteType(typeFunc->parameters[typeFunc->registerIdxToParamIdx(paramIdx)]->typeInfo);
@@ -80,7 +80,7 @@ void SCBE::emitGetParam(SCBE_CPU& pp, uint32_t reg, uint32_t paramIdx, OpBits op
     pp.emitStoreMR(CPUReg::RSP, pp.cpuFct->getStackOffsetReg(reg), CPUReg::RAX, OpBits::B64);
 }
 
-void SCBE::emitCallCPUParams(SCBE_CPU&                         pp,
+void SCBE::emitCallCPUParams(SCBECPU&                         pp,
                              const Utf8&                       funcName,
                              const TypeInfoFuncAttr*           typeFuncBc,
                              const VectorNative<CPUPushParam>& pushCPUParams,
@@ -116,7 +116,7 @@ void SCBE::emitCallCPUParams(SCBE_CPU&                         pp,
     }
 }
 
-void SCBE::emitCallRAParams(SCBE_CPU& pp, const Utf8& funcName, const TypeInfoFuncAttr* typeFuncBc, bool localCall)
+void SCBE::emitCallRAParams(SCBECPU& pp, const Utf8& funcName, const TypeInfoFuncAttr* typeFuncBc, bool localCall)
 {
     // Invert order
     VectorNative<CPUPushParam> p;
@@ -126,7 +126,7 @@ void SCBE::emitCallRAParams(SCBE_CPU& pp, const Utf8& funcName, const TypeInfoFu
     emitCallCPUParams(pp, funcName, typeFuncBc, p, CPUReg::RSP, pp.cpuFct->getStackOffsetRT(0), localCall);
 }
 
-void SCBE::emitInternalCallRAParams(SCBE_CPU& pp, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, CPUReg memRegResult, uint32_t memOffsetResult)
+void SCBE::emitInternalCallRAParams(SCBECPU& pp, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, CPUReg memRegResult, uint32_t memOffsetResult)
 {
     const auto typeFunc = g_Workspace->runtimeModule->getRuntimeTypeFct(funcName);
     SWAG_ASSERT(typeFunc);
@@ -138,7 +138,7 @@ void SCBE::emitInternalCallRAParams(SCBE_CPU& pp, const Utf8& funcName, const Ve
     emitCallCPUParams(pp, funcName, typeFunc, p, memRegResult, memOffsetResult, true);
 }
 
-void SCBE::emitInternalCallCPUParams(SCBE_CPU& pp, const Utf8& funcName, const VectorNative<CPUPushParam>& pushCPUParams, CPUReg memRegResult, uint32_t memOffsetResult)
+void SCBE::emitInternalCallCPUParams(SCBECPU& pp, const Utf8& funcName, const VectorNative<CPUPushParam>& pushCPUParams, CPUReg memRegResult, uint32_t memOffsetResult)
 {
     auto typeFuncBc = g_Workspace->runtimeModule->getRuntimeTypeFct(funcName);
     if (!typeFuncBc)
@@ -148,7 +148,7 @@ void SCBE::emitInternalCallCPUParams(SCBE_CPU& pp, const Utf8& funcName, const V
     emitCallCPUParams(pp, funcName, typeFuncBc, pushCPUParams, memRegResult, memOffsetResult, true);
 }
 
-void SCBE::emitLocalCall(SCBE_CPU& pp)
+void SCBE::emitLocalCall(SCBECPU& pp)
 {
     const auto ip      = pp.ip;
     const auto callBc  = reinterpret_cast<ByteCode*>(ip->a.pointer);
@@ -165,7 +165,7 @@ void SCBE::emitLocalCall(SCBE_CPU& pp)
     }
 }
 
-void SCBE::emitForeignCall(SCBE_CPU& pp)
+void SCBE::emitForeignCall(SCBECPU& pp)
 {
     const auto ip       = pp.ip;
     const auto funcNode = reinterpret_cast<AstFuncDecl*>(ip->a.pointer);
@@ -182,7 +182,7 @@ void SCBE::emitForeignCall(SCBE_CPU& pp)
     pp.pushRVParams.clear();
 }
 
-void SCBE::emitLambdaCall(SCBE_CPU& pp)
+void SCBE::emitLambdaCall(SCBECPU& pp)
 {
     const auto ip         = pp.ip;
     const auto typeFuncBc = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);

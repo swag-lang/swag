@@ -2,27 +2,27 @@
 #pragma once
 #include "Backend/CallConv.h"
 
-struct SCBE_CPU;
-struct SCBE_Micro;
+struct SCBECPU;
+struct SCBEMicro;
 struct SCBE_MicroInstruction;
 enum class SCBE_MicroOp : uint8_t;
 enum class OpBits : uint8_t;
 
-struct SCBE_Optimizer
+struct SCBEOptimizer
 {
     void                          ignore(SCBE_MicroInstruction* inst);
     void                          setOp(SCBE_MicroInstruction* inst, SCBE_MicroOp op);
     static SCBE_MicroInstruction* zap(SCBE_MicroInstruction* inst);
 
-    void passReduce(const SCBE_Micro& out);
-    void passStoreToRegBeforeLeave(const SCBE_Micro& out);
-    void passStoreToHdwRegBeforeLeave(const SCBE_Micro& out);
-    void passDeadStore(const SCBE_Micro& out);
-    void passStoreMR(const SCBE_Micro& out);
+    void passReduce(const SCBEMicro& out);
+    void passStoreToRegBeforeLeave(const SCBEMicro& out);
+    void passStoreToHdwRegBeforeLeave(const SCBEMicro& out);
+    void passDeadStore(const SCBEMicro& out);
+    void passStoreMR(const SCBEMicro& out);
 
-    void optimize(const SCBE_Micro& out);
+    void optimize(const SCBEMicro& out);
 
-    SCBE_CPU*                                encoder = nullptr;
+    SCBECPU*                                encoder = nullptr;
     Map<uint64_t, std::pair<CPUReg, OpBits>> mapValReg;
     Map<CPUReg, uint64_t>                    mapRegVal;
     Map<uint64_t, SCBE_MicroInstruction*>    mapValInst;

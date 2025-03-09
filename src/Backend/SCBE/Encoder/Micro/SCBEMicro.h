@@ -1,11 +1,11 @@
 // ReSharper disable CppInconsistentNaming
 #pragma once
-#include "Backend/SCBE/Encoder/SCBE_CPU.h"
+#include "Backend/SCBE/Encoder/SCBECPU.h"
 
 enum class SCBE_MicroOp : uint8_t
 {
 #define SCBE_MICRO_OP(__op, ...) __op,
-#include "Backend/SCBE/Encoder/Micro/SCBE_MicroOpList.h"
+#include "Backend/SCBE/Encoder/Micro/SCBEMicroOpList.h"
 };
 
 using SCBE_MicroOpFlag                   = Flags<uint32_t>;
@@ -83,7 +83,7 @@ constexpr SCBE_MicroOpDetails MOD_REG_RSI  = 0x0000000000010000;
 constexpr SCBE_MicroOpDetails MOD_REG_RDI  = 0x0000000000020000;
 constexpr SCBE_MicroOpDetails MOD_REG_ALL  = 0x0000000000FFFFFF;
 
-struct SCBE_Micro final : SCBE_CPU
+struct SCBEMicro final : SCBECPU
 {
     void init(const BuildParameters& buildParameters) override;
 
@@ -144,8 +144,8 @@ struct SCBE_Micro final : SCBE_CPU
     void    emitMulAdd(CPUReg regDst, CPUReg regMul, CPUReg regAdd, OpBits opBits) override;
 
     SCBE_MicroInstruction* addInstruction(SCBE_MicroOp op);
-    void                   process(SCBE_CPU& encoder);
-    void                   encode(SCBE_CPU& encoder) const;
+    void                   process(SCBECPU& encoder);
+    void                   encode(SCBECPU& encoder) const;
     void                   print() const;
 
     bool nextIsJumpDest = false;

@@ -13,7 +13,7 @@
 
 namespace
 {
-    void emitStartRecord(SCBE_CPU& pp, uint16_t what)
+    void emitStartRecord(SCBECPU& pp, uint16_t what)
     {
         auto& concat = pp.concat;
         SWAG_ASSERT(pp.dbgRecordIdx < pp.MAX_RECORD);
@@ -23,7 +23,7 @@ namespace
         pp.dbgRecordIdx++;
     }
 
-    void emitEndRecord(SCBE_CPU& pp, bool align = true)
+    void emitEndRecord(SCBECPU& pp, bool align = true)
     {
         auto& concat = pp.concat;
         if (align)
@@ -33,7 +33,7 @@ namespace
         *pp.dbgStartRecordPtr[pp.dbgRecordIdx] = static_cast<uint16_t>(concat.totalCount() - pp.dbgStartRecordOffset[pp.dbgRecordIdx]);
     }
 
-    void emitCompilerFlagsDebugS(SCBE_CPU& pp)
+    void emitCompilerFlagsDebugS(SCBECPU& pp)
     {
         auto& concat = pp.concat;
 
@@ -69,7 +69,7 @@ namespace
         *patchSCount = concat.totalCount() - patchSOffset;
     }
 
-    void emitTruncatedString(SCBE_CPU& pp, const Utf8& str)
+    void emitTruncatedString(SCBECPU& pp, const Utf8& str)
     {
         auto& concat = pp.concat;
         SWAG_ASSERT(str.length() < 0xF00); // Magic number from llvm codeview debug (should truncate)
@@ -78,7 +78,7 @@ namespace
         concat.addU8(0);
     }
 
-    void emitSecRel(SCBE_CPU& pp, uint32_t symbolIndex, uint32_t segIndex, uint32_t offset = 0)
+    void emitSecRel(SCBECPU& pp, uint32_t symbolIndex, uint32_t segIndex, uint32_t offset = 0)
     {
         auto& concat = pp.concat;
 
@@ -98,7 +98,7 @@ namespace
         concat.addU16(0);
     }
 
-    void emitEmbeddedValue(SCBE_CPU& pp, const TypeInfo* valueType, const ComputedValue& val)
+    void emitEmbeddedValue(SCBECPU& pp, const TypeInfo* valueType, const ComputedValue& val)
     {
         auto& concat = pp.concat;
         SWAG_ASSERT(valueType->isNative());
@@ -156,7 +156,7 @@ namespace
         }
     }
 
-    bool emitDataDebugT(SCBE_CPU& pp)
+    bool emitDataDebugT(SCBECPU& pp)
     {
         auto& concat = pp.concat;
 
@@ -303,7 +303,7 @@ namespace
         return true;
     }
 
-    void emitConstant(SCBE_CPU& pp, const AstNode* node, const Utf8& name)
+    void emitConstant(SCBECPU& pp, const AstNode* node, const Utf8& name)
     {
         auto& concat = pp.concat;
         if (node->typeInfo->isNative() && node->typeInfo->sizeOf <= 8)
@@ -337,7 +337,7 @@ namespace
         }
     }
 
-    void emitGlobalDebugS(SCBE_CPU& pp, VectorNative<AstNode*>& gVars, uint32_t segSymIndex)
+    void emitGlobalDebugS(SCBECPU& pp, VectorNative<AstNode*>& gVars, uint32_t segSymIndex)
     {
         auto& concat = pp.concat;
         concat.addU32(DEBUG_S_SYMBOLS);
@@ -413,7 +413,7 @@ namespace
         return checkSymIndex * 8;
     }
 
-    bool emitLines(SCBE_CPU& pp, MapPath<uint32_t>& mapFileNames, Vector<uint32_t>& arrFileNames, Utf8& stringTable, Concat& concat, const CPUFunction* f, uint32_t idxDbgLines)
+    bool emitLines(SCBECPU& pp, MapPath<uint32_t>& mapFileNames, Vector<uint32_t>& arrFileNames, Utf8& stringTable, Concat& concat, const CPUFunction* f, uint32_t idxDbgLines)
     {
         const auto& dbgLines   = f->dbgLines[idxDbgLines];
         const auto  sourceFile = dbgLines.sourceFile;
@@ -452,7 +452,7 @@ namespace
         return true;
     }
 
-    void emitLocalGlobalVars(SCBE_CPU& pp, const Scope* scope, Concat& concat, AstFuncDecl* const funcDecl)
+    void emitLocalGlobalVars(SCBECPU& pp, const Scope* scope, Concat& concat, AstFuncDecl* const funcDecl)
     {
         for (const auto localVar : funcDecl->localGlobalVars)
         {
@@ -489,7 +489,7 @@ namespace
         }
     }
 
-    void emitLocalVars(SCBE_CPU& pp, const CPUFunction* f, const Scope* scope, const TypeInfoFuncAttr* typeFunc)
+    void emitLocalVars(SCBECPU& pp, const CPUFunction* f, const Scope* scope, const TypeInfoFuncAttr* typeFunc)
     {
         auto& concat = pp.concat;
         for (const auto localVar : scope->symTable.allSymbols)
@@ -527,7 +527,7 @@ namespace
         }
     }
 
-    void emitLocalConstants(SCBE_CPU& pp, const Scope* scope, AstFuncDecl* const funcDecl)
+    void emitLocalConstants(SCBECPU& pp, const Scope* scope, AstFuncDecl* const funcDecl)
     {
         for (const auto localConst : funcDecl->localConstants)
         {
@@ -538,7 +538,7 @@ namespace
         }
     }
 
-    bool emitScope(SCBE_CPU& pp, CPUFunction* f, Scope* scope)
+    bool emitScope(SCBECPU& pp, CPUFunction* f, Scope* scope)
     {
         auto& concat = pp.concat;
 
@@ -589,7 +589,7 @@ namespace
         return true;
     }
 
-    void emitInlineTable(SCBE_CPU& pp, Concat& concat, MapPath<uint32_t> mapFileNames, Vector<uint32_t> arrFileNames, Utf8 stringTable, const CPUFunction* f)
+    void emitInlineTable(SCBECPU& pp, Concat& concat, MapPath<uint32_t> mapFileNames, Vector<uint32_t> arrFileNames, Utf8 stringTable, const CPUFunction* f)
     {
         for (auto& dbgLines : f->dbgLines)
         {
@@ -617,7 +617,7 @@ namespace
         }
     }
 
-    void emitFuncParameters(SCBE_CPU& pp, const CPUFunction* cpuFct)
+    void emitFuncParameters(SCBECPU& pp, const CPUFunction* cpuFct)
     {
         if (!cpuFct->node->parameters)
             return;
@@ -761,7 +761,7 @@ namespace
         }
     }
 
-    void emitFuncCaptureParameters(SCBE_CPU& pp, const CPUFunction* cpuFct)
+    void emitFuncCaptureParameters(SCBECPU& pp, const CPUFunction* cpuFct)
     {
         if (!cpuFct->node->captureParameters)
             return;
@@ -809,7 +809,7 @@ namespace
         }
     }
 
-    bool emitFctDebugS(SCBE_CPU& pp)
+    bool emitFctDebugS(SCBECPU& pp)
     {
         auto& concat = pp.concat;
 
@@ -924,7 +924,7 @@ namespace
     }
 }
 
-bool SCBE_Debug_CodeView::emit(const BuildParameters& buildParameters, SCBE_CPU& pp)
+bool SCBE_Debug_CodeView::emit(const BuildParameters& buildParameters, SCBECPU& pp)
 {
     auto&      concat = pp.concat;
     const auto module = buildParameters.module;

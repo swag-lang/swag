@@ -1,13 +1,13 @@
 #include "pch.h"
 #include "Backend/ByteCode/ByteCode.h"
-#include "Backend/SCBE/Encoder/Micro/SCBE_Micro.h"
+#include "Backend/SCBE/Encoder/Micro/SCBEMicro.h"
 #include "Semantic/Type/TypeManager.h"
 
 namespace
 {
     Utf8 valueName(uint64_t value, OpBits opBits)
     {
-        if (SCBE_CPU::isFloat(opBits))
+        if (SCBECPU::isFloat(opBits))
             return form("%f", std::bit_cast<double>(value));
         return form("%d", value);
     }
@@ -173,7 +173,7 @@ namespace
             {"bpl", "bp", "ebp", "rbp"},
         };
 
-        const auto numBytes = static_cast<int>(std::log2(SCBE_CPU::getNumBits(opBits) / 8));
+        const auto numBytes = static_cast<int>(std::log2(SCBECPU::getNumBits(opBits) / 8));
         return GENERAL_REGS[static_cast<int>(reg)][numBytes];
     }
 
@@ -270,7 +270,7 @@ namespace
     }
 }
 
-void SCBE_Micro::print() const
+void SCBEMicro::print() const
 {
     const auto  num        = concat.totalCount() / sizeof(SCBE_MicroInstruction);
     auto        inst       = reinterpret_cast<SCBE_MicroInstruction*>(concat.firstBucket->data);
