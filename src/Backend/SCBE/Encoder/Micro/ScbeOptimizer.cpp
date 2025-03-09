@@ -164,7 +164,7 @@ void ScbeOptimizer::optimizePassStoreToRegBeforeLeave(const ScbeMicro& out)
 
 void ScbeOptimizer::optimizePassStoreToHdwRegBeforeLeave(const ScbeMicro& out)
 {
-    mapValInst.clear();
+    mapRegInst.clear();
 
     auto inst = reinterpret_cast<ScbeMicroInstruction*>(out.concat.firstBucket->data);
     while (inst->op != ScbeMicroOp::End)
@@ -173,36 +173,36 @@ void ScbeOptimizer::optimizePassStoreToHdwRegBeforeLeave(const ScbeMicro& out)
 
         if (inst->flags.has(MIF_JUMP_DEST) || inst->isJump() || inst->isCall())
         {
-            mapValInst.clear();
+            mapRegInst.clear();
         }
 
         if (inst->op == ScbeMicroOp::LoadRR)
         {
             if (!out.cpuFct->typeFunc->returnByValue() && !out.cpuFct->typeFunc->returnStructByValue())
             {
-                mapValInst[static_cast<uint32_t>(inst->regA)] = inst;
+                mapRegInst[inst->regA] = inst;
             }
             else if (inst->regA != out.cpuFct->cc->returnByRegisterInteger &&
                      inst->regA != out.cpuFct->cc->returnByRegisterFloat)
             {
-                mapValInst[static_cast<uint32_t>(inst->regA)] = inst;
+                mapRegInst[inst->regA] = inst;
             }
 
-            mapValInst.erase(static_cast<uint32_t>(inst->regB));
+            mapRegInst.erase(inst->regB);
         }
         else
         {
             if (infos.leftFlags.has(MOF_REG_A) || infos.rightFlags.has(MOF_REG_A))
-                mapValInst.erase(static_cast<uint32_t>(inst->regA));
+                mapRegInst.erase(inst->regA);
             if (infos.leftFlags.has(MOF_REG_B) || infos.rightFlags.has(MOF_REG_B))
-                mapValInst.erase(static_cast<uint32_t>(inst->regB));
+                mapRegInst.erase(inst->regB);
         }
 
-        if (inst->op == ScbeMicroOp::Leave && !mapValInst.empty())
+        if (inst->op == ScbeMicroOp::Leave && !mapRegInst.empty())
         {
-            for (const auto& i : mapValInst | std::views::values)
+            for (const auto& i : mapRegInst | std::views::values)
                 ignore(i);
-            mapValInst.clear();
+            mapRegInst.clear();
         }
 
         inst = zap(inst + 1);
