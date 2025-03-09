@@ -218,7 +218,7 @@ namespace
         return "???";
     }
 
-    Utf8 printOpArgs(const ScbeMicroInstruction* inst, ScbeMicroOpFlag flags)
+    Utf8 printOpArgs(const ScbeMicroInstruction* inst, ScbeMicroOpFlags flags)
     {
         Utf8 res;
 

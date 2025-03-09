@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Backend/SCBE/Encoder/Micro/ScbeMicroOp.h"
 #include "Backend/SCBE/Encoder/ScbeCpu.h"
 
 enum class OpBits : uint8_t;
@@ -7,12 +8,18 @@ enum class CpuCondFlag : uint8_t;
 enum class CpuOp : uint8_t;
 enum class ScbeMicroOp : uint8_t;
 
-using ScbeMicroInstructionFlag                   = Flags<uint8_t>;
-constexpr ScbeMicroInstructionFlag MIF_ZERO      = 0x00;
-constexpr ScbeMicroInstructionFlag MIF_JUMP_DEST = 0x01;
+using ScbeMicroInstructionFlags                   = Flags<uint8_t>;
+constexpr ScbeMicroInstructionFlags MIF_ZERO      = 0x00;
+constexpr ScbeMicroInstructionFlags MIF_JUMP_DEST = 0x01;
 
 struct ScbeMicroInstruction
 {
+    SWAG_FORCE_INLINE bool hasLeftOpFlag(ScbeMicroOpFlags fl) const { return g_MicroOpInfos[static_cast<int>(op)].leftFlags.has(fl); }
+    SWAG_FORCE_INLINE bool hasRightOpFlag(ScbeMicroOpFlags fl) const { return g_MicroOpInfos[static_cast<int>(op)].rightFlags.has(fl); }
+
+    bool isJump() const;
+    bool isCall() const;
+
     Utf8     name;
     uint64_t valueA;
     uint64_t valueB;
@@ -25,13 +32,10 @@ struct ScbeMicroInstruction
     OpBits                   opBitsA;
     OpBits                   opBitsB;
     CpuEmitFlags             emitFlags;
-    ScbeMicroInstructionFlag flags;
+    ScbeMicroInstructionFlags flags;
 
     uint32_t valueC;
     CpuReg   regA;
     CpuReg   regB;
     CpuReg   regC;
-
-    bool isJump() const;
-    bool isCall() const;
 };
