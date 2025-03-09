@@ -208,6 +208,65 @@ void SCBE_Optimizer::passStoreToHdwRegBeforeLeave(const SCBE_Micro& out)
     }
 }
 
+void SCBE_Optimizer::passDeadStore(const SCBE_Micro& out)
+{
+    mapRegInst.clear();
+
+    auto inst = reinterpret_cast<SCBE_MicroInstruction*>(out.concat.firstBucket->data);
+    while (inst->op != SCBE_MicroOp::End)
+    {
+        if (inst->flags.has(MIF_JUMP_DEST) || inst->isJump())
+        {
+            mapRegInst.clear();
+        }
+
+        const auto& infos = g_MicroOpInfos[static_cast<int>(inst->op)];
+
+        if (infos.rightFlags.has(MOF_REG_A))
+            mapRegInst.erase(inst->regA);
+        if (infos.rightFlags.has(MOF_REG_B))
+            mapRegInst.erase(inst->regB);
+
+        CPUReg legitReg = CPUReg::Max;
+        if (inst->op == SCBE_MicroOp::LoadRR ||
+            inst->op == SCBE_MicroOp::LoadZeroExtendRM ||
+            inst->op == SCBE_MicroOp::LoadRM)
+        {
+            if (mapRegInst.contains(inst->regA))
+            {
+                ignore(mapRegInst[inst->regA]);
+            }
+
+            mapRegInst[inst->regA] = inst;
+            legitReg = inst->regA;
+        }
+        else
+        {
+            if (infos.leftFlags.has(MOF_REG_A))
+                mapRegInst.erase(inst->regA);
+            if (infos.leftFlags.has(MOF_REG_B))
+                mapRegInst.erase(inst->regB);
+        }
+
+        const auto details = encoder->getInstructionDetails(inst);
+        if (details.has(MOD_REG_ALL))
+        {
+            for (uint32_t i = 0; i < static_cast<uint32_t>(CPUReg::Max); i++)
+            {
+                if (legitReg == static_cast<CPUReg>(i))
+                    continue;
+                
+                if (details.has(1ULL << i))
+                {
+                    mapRegInst.erase(static_cast<CPUReg>(i));
+                }
+            }
+        }
+
+        inst = zap(inst + 1);
+    }
+}
+
 void SCBE_Optimizer::passStoreMR(const SCBE_Micro& out)
 {
     mapValReg.clear();
@@ -298,6 +357,7 @@ void SCBE_Optimizer::optimize(const SCBE_Micro& out)
         passHasDoneSomething = false;
         passReduce(out);
         passStoreMR(out);
+        passDeadStore(out);
         passStoreToRegBeforeLeave(out);
         passStoreToHdwRegBeforeLeave(out);
     }

@@ -17,6 +17,7 @@ struct SCBE_Optimizer
     void passReduce(const SCBE_Micro& out);
     void passStoreToRegBeforeLeave(const SCBE_Micro& out);
     void passStoreToHdwRegBeforeLeave(const SCBE_Micro& out);
+    void passDeadStore(const SCBE_Micro& out);
     void passStoreMR(const SCBE_Micro& out);
 
     void optimize(const SCBE_Micro& out);
@@ -25,5 +26,6 @@ struct SCBE_Optimizer
     Map<uint64_t, std::pair<CPUReg, OpBits>> mapValReg;
     Map<CPUReg, uint64_t>                    mapRegVal;
     Map<uint64_t, SCBE_MicroInstruction*>    mapValInst;
+    Map<CPUReg, SCBE_MicroInstruction*>      mapRegInst;
     bool                                     passHasDoneSomething = false;
 };
