@@ -21,6 +21,7 @@ struct ScbeOptimizer
     void optimizePassStoreMR(const ScbeMicro& out);
 
     void optimize(const ScbeMicro& out);
+    void setDirtyPass() { passHasDoneSomething = true; }
 
     ScbeCpu*                                 encoder = nullptr;
     Map<uint64_t, std::pair<CpuReg, OpBits>> mapValReg;

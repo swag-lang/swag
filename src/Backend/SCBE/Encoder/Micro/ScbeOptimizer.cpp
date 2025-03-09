@@ -11,14 +11,14 @@ void ScbeOptimizer::ignore(ScbeMicroInstruction* inst)
 #ifdef SWAG_STATS
     g_Stats.totalOptimScbe += 1;
 #endif
-    inst->op             = ScbeMicroOp::Ignore;
-    passHasDoneSomething = true;
+    inst->op = ScbeMicroOp::Ignore;
+    setDirtyPass();
 }
 
 void ScbeOptimizer::setOp(ScbeMicroInstruction* inst, ScbeMicroOp op)
 {
-    inst->op             = op;
-    passHasDoneSomething = true;
+    inst->op = op;
+    setDirtyPass();
 }
 
 ScbeMicroInstruction* ScbeOptimizer::zap(ScbeMicroInstruction* inst)
@@ -54,8 +54,8 @@ void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
                     const auto details = encoder->getInstructionDetails(next);
                     if (!details.has(1ULL << static_cast<uint32_t>(inst->regB)))
                     {
-                        next->regA           = inst->regB;
-                        passHasDoneSomething = true;
+                        next->regA = inst->regB;
+                        setDirtyPass();
                         break;
                     }
                 }
@@ -68,8 +68,8 @@ void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
                     const auto details = encoder->getInstructionDetails(next);
                     if (!details.has(1ULL << static_cast<uint32_t>(inst->regB)))
                     {
-                        next->regB           = inst->regB;
-                        passHasDoneSomething = true;
+                        next->regB = inst->regB;
+                        setDirtyPass();
                         break;
                     }
                 }
@@ -343,7 +343,7 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
     if (out.optLevel == BuildCfgBackendOptim::O0)
         return;
 
-    passHasDoneSomething = true;
+    setDirtyPass();
     while (passHasDoneSomething)
     {
         passHasDoneSomething = false;
