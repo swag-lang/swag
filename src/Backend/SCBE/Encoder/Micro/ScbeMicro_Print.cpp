@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
+#include "ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeManager.h"
 
 namespace

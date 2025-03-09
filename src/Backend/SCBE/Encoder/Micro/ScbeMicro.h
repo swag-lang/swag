@@ -1,27 +1,13 @@
 // ReSharper disable CppInconsistentNaming
 #pragma once
 #include "Backend/SCBE/Encoder/ScbeCPU.h"
+#include "Backend/SCBE/Encoder/Micro/ScbeMicroOp.h"
 
 enum class ScbeMicroOp : uint8_t
 {
 #define SCBE_MICRO_OP(__op, ...) __op,
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroOpList.h"
 };
-
-using ScbeMicroOpFlag                   = Flags<uint32_t>;
-constexpr ScbeMicroOpFlag MOF_ZERO      = 0x00000000;
-constexpr ScbeMicroOpFlag MOF_REG_A     = 0x00000001;
-constexpr ScbeMicroOpFlag MOF_REG_B     = 0x00000002;
-constexpr ScbeMicroOpFlag MOF_REG_C     = 0x00000004;
-constexpr ScbeMicroOpFlag MOF_VALUE_A   = 0x00000008;
-constexpr ScbeMicroOpFlag MOF_VALUE_B   = 0x00000010;
-constexpr ScbeMicroOpFlag MOF_VALUE_C   = 0x00000020;
-constexpr ScbeMicroOpFlag MOF_OPBITS_A  = 0x00000040;
-constexpr ScbeMicroOpFlag MOF_OPBITS_B  = 0x00000080;
-constexpr ScbeMicroOpFlag MOF_CPU_OP    = 0x00000100;
-constexpr ScbeMicroOpFlag MOF_JUMP_TYPE = 0x00000200;
-constexpr ScbeMicroOpFlag MOF_NAME      = 0x00000400;
-constexpr ScbeMicroOpFlag MOF_CPU_COND  = 0x00000800;
 
 struct ScbeMicroOpInfo
 {
@@ -31,35 +17,6 @@ struct ScbeMicroOpInfo
 };
 
 extern ScbeMicroOpInfo g_MicroOpInfos[];
-
-using ScbeMicroInstructionFlag                   = Flags<uint8_t>;
-constexpr ScbeMicroInstructionFlag MIF_ZERO      = 0x00;
-constexpr ScbeMicroInstructionFlag MIF_JUMP_DEST = 0x01;
-
-struct ScbeMicroInstruction
-{
-    Utf8     name;
-    uint64_t valueA;
-    uint64_t valueB;
-
-    ScbeMicroOp op;
-    CPUOp       cpuOp;
-    CPUCondFlag cpuCond;
-    CPUCondJump jumpType;
-
-    OpBits                   opBitsA;
-    OpBits                   opBitsB;
-    CPUEmitFlags             emitFlags;
-    ScbeMicroInstructionFlag flags;
-
-    uint32_t valueC;
-    CPUReg   regA;
-    CPUReg   regB;
-    CPUReg   regC;
-
-    bool isJump() const { return op == ScbeMicroOp::JumpM || op == ScbeMicroOp::JumpCI || op == ScbeMicroOp::JumpTable || op == ScbeMicroOp::JumpCC; }
-    bool isCall() const { return op == ScbeMicroOp::CallExtern || op == ScbeMicroOp::CallIndirect || op == ScbeMicroOp::CallLocal; }
-};
 
 using SCBEMicroOpDetails                  = Flags<uint64_t>;
 constexpr SCBEMicroOpDetails MOD_ZERO     = 0x0000000000000000;

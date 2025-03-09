@@ -1,7 +1,8 @@
 #include "pch.h"
-#include "Backend/SCBE/Encoder/Micro/ScbeOptimizer.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
+#include "Backend/SCBE/Encoder/Micro/ScbeOptimizer.h"
 #include "Main/Statistics.h"
+#include "ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
 #pragma optimize("", off)
 

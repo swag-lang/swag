@@ -2,6 +2,7 @@
 #include "pch.h"
 #include "Backend/SCBE/Encoder/X64/ScbeX64.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
+#include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Core/Math.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Wmf/Module.h"
