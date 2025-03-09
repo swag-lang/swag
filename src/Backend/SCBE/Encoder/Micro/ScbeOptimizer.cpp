@@ -297,7 +297,7 @@ void ScbeOptimizer::passStoreMR(const ScbeMicro& out)
                  inst->regA == CpuReg::RSP &&
                  mapValReg.contains(inst->valueA))
         {
-            mapValReg[inst->valueA] = {CpuReg::Max, OpBits::Zero};
+            mapValReg.erase(inst->valueA);
         }
         else if (inst->op == ScbeMicroOp::LoadRM &&
                  inst->regB == CpuReg::RSP &&
@@ -337,7 +337,7 @@ void ScbeOptimizer::passStoreMR(const ScbeMicro& out)
 
                     if (details.has(1ULL << i))
                     {
-                        mapRegVal[static_cast<CpuReg>(i)] = UINT64_MAX;
+                        mapRegVal.erase(static_cast<CpuReg>(i));
                     }
                 }
             }
