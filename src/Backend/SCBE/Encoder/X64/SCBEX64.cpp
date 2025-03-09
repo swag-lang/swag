@@ -2299,47 +2299,47 @@ void SCBEX64::emitMulAdd(CPUReg regDst, CPUReg regMul, CPUReg regAdd, OpBits opB
     concat.addU8(0xC2);
 }
 
-SCBE_MicroOpDetails SCBEX64::getInstructionDetails(SCBE_MicroInstruction* inst)
+SCBEMicroOpDetails SCBEX64::getInstructionDetails(SCBEMicroInstruction* inst)
 {
-    SCBE_MicroOpDetails result = MOD_ZERO;
+    SCBEMicroOpDetails result = MOD_ZERO;
 
     switch (inst->op)
     {
-        case SCBE_MicroOp::Nop:
-        case SCBE_MicroOp::Ignore:
-        case SCBE_MicroOp::Label:
-        case SCBE_MicroOp::Debug:
-        case SCBE_MicroOp::Push:
-        case SCBE_MicroOp::Pop:
-        case SCBE_MicroOp::Ret:
+        case SCBEMicroOp::Nop:
+        case SCBEMicroOp::Ignore:
+        case SCBEMicroOp::Label:
+        case SCBEMicroOp::Debug:
+        case SCBEMicroOp::Push:
+        case SCBEMicroOp::Pop:
+        case SCBEMicroOp::Ret:
             return MOD_ZERO;
 
-        case SCBE_MicroOp::StoreMR:
-        case SCBE_MicroOp::ClearM:
+        case SCBEMicroOp::StoreMR:
+        case SCBEMicroOp::ClearM:
             return MOD_ZERO;
 
-        case SCBE_MicroOp::StoreMI:
+        case SCBEMicroOp::StoreMI:
             if (inst->opBitsA == OpBits::B64 && inst->valueB > 0x7FFFFFFF && inst->valueB >> 32 != 0xFFFFFFFF)
                 result.add(1ULL << static_cast<uint32_t>(CPUReg::RCX));
             return result;
 
-        case SCBE_MicroOp::LoadRI:
+        case SCBEMicroOp::LoadRI:
             result.add(1ULL << static_cast<uint32_t>(inst->regA));
             result.add(1ULL << static_cast<uint32_t>(CPUReg::RAX));
             return result;
-        case SCBE_MicroOp::LoadRR:
+        case SCBEMicroOp::LoadRR:
             result.add(1ULL << static_cast<uint32_t>(inst->regA));
             return result;
 
-        case SCBE_MicroOp::LoadRM:
-        case SCBE_MicroOp::LoadZeroExtendRM:
-        case SCBE_MicroOp::LoadSignedExtendRM:
+        case SCBEMicroOp::LoadRM:
+        case SCBEMicroOp::LoadZeroExtendRM:
+        case SCBEMicroOp::LoadSignedExtendRM:
             result.add(1ULL << static_cast<uint32_t>(inst->regA));
             if (inst->valueA > 0x7FFFFFFF)
                 result.add(1ULL << static_cast<uint32_t>(CPUReg::RCX));
             return result;
 
-        case SCBE_MicroOp::OpBinaryRI:
+        case SCBEMicroOp::OpBinaryRI:
             result.add(1ULL << static_cast<uint32_t>(inst->regA));
             if (inst->valueA > 0x7FFFFFFF)
                 result.add(1ULL << static_cast<uint32_t>(CPUReg::RCX));

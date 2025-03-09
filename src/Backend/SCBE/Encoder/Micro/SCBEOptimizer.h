@@ -4,15 +4,15 @@
 
 struct SCBECPU;
 struct SCBEMicro;
-struct SCBE_MicroInstruction;
-enum class SCBE_MicroOp : uint8_t;
+struct SCBEMicroInstruction;
+enum class SCBEMicroOp : uint8_t;
 enum class OpBits : uint8_t;
 
 struct SCBEOptimizer
 {
-    void                          ignore(SCBE_MicroInstruction* inst);
-    void                          setOp(SCBE_MicroInstruction* inst, SCBE_MicroOp op);
-    static SCBE_MicroInstruction* zap(SCBE_MicroInstruction* inst);
+    void                         ignore(SCBEMicroInstruction* inst);
+    void                         setOp(SCBEMicroInstruction* inst, SCBEMicroOp op);
+    static SCBEMicroInstruction* zap(SCBEMicroInstruction* inst);
 
     void passReduce(const SCBEMicro& out);
     void passStoreToRegBeforeLeave(const SCBEMicro& out);
@@ -22,10 +22,10 @@ struct SCBEOptimizer
 
     void optimize(const SCBEMicro& out);
 
-    SCBECPU*                                encoder = nullptr;
+    SCBECPU*                                 encoder = nullptr;
     Map<uint64_t, std::pair<CPUReg, OpBits>> mapValReg;
     Map<CPUReg, uint64_t>                    mapRegVal;
-    Map<uint64_t, SCBE_MicroInstruction*>    mapValInst;
-    Map<CPUReg, SCBE_MicroInstruction*>      mapRegInst;
+    Map<uint64_t, SCBEMicroInstruction*>     mapValInst;
+    Map<CPUReg, SCBEMicroInstruction*>       mapRegInst;
     bool                                     passHasDoneSomething = false;
 };

@@ -8,8 +8,8 @@
 #include "Semantic/DataSegment.h"
 
 enum class ByteCodeOp : uint16_t;
-using SCBE_MicroOpDetails = Flags<uint64_t>;
-struct SCBE_MicroInstruction;
+using SCBEMicroOpDetails = Flags<uint64_t>;
+struct SCBEMicroInstruction;
 struct AstNode;
 
 #define REG_OFFSET(__r) ((__r) * sizeof(Register))
@@ -233,7 +233,7 @@ struct SCBECPU : BackendEncoder
     void emitComputeCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& cpuParams, CPUReg memRegResult, uint32_t memOffsetResult, void* resultAddr);
     void emitStoreCallResult(CPUReg memReg, uint32_t memOffset, const TypeInfoFuncAttr* typeFuncBc);
 
-    virtual SCBE_MicroOpDetails getInstructionDetails(SCBE_MicroInstruction* inst) { return 0; };
+    virtual SCBEMicroOpDetails getInstructionDetails(SCBEMicroInstruction* inst) { return 0; };
 
     virtual void emitEnter(uint32_t sizeStack);
     virtual void emitLeave();

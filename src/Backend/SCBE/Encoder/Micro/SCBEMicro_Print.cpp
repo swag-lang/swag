@@ -217,7 +217,7 @@ namespace
         return "???";
     }
 
-    Utf8 printOpArgs(const SCBE_MicroInstruction* inst, SCBE_MicroOpFlag flags)
+    Utf8 printOpArgs(const SCBEMicroInstruction* inst, SCBEMicroOpFlag flags)
     {
         Utf8 res;
 
@@ -272,8 +272,8 @@ namespace
 
 void SCBEMicro::print() const
 {
-    const auto  num        = concat.totalCount() / sizeof(SCBE_MicroInstruction);
-    auto        inst       = reinterpret_cast<SCBE_MicroInstruction*>(concat.firstBucket->data);
+    const auto  num        = concat.totalCount() / sizeof(SCBEMicroInstruction);
+    auto        inst       = reinterpret_cast<SCBEMicroInstruction*>(concat.firstBucket->data);
     uint32_t    lastLine   = UINT32_MAX;
     SourceFile* lastFile   = nullptr;
     AstNode*    lastInline = nullptr;
@@ -286,12 +286,12 @@ void SCBEMicro::print() const
         ByteCode::PrintInstructionLine         line;
         Vector<ByteCode::PrintInstructionLine> lines;
 
-        if (inst->op == SCBE_MicroOp::Ignore)
+        if (inst->op == SCBEMicroOp::Ignore)
             continue;
 
         switch (inst->op)
         {
-            case SCBE_MicroOp::Debug:
+            case SCBEMicroOp::Debug:
             {
                 const auto curIp = reinterpret_cast<ByteCodeInstruction*>(inst->valueA);
                 ByteCode::printSourceCode({}, cpuFct->bc, curIp, &lastLine, &lastFile, &lastInline);
@@ -299,241 +299,241 @@ void SCBEMicro::print() const
                 continue;
             }
 
-            case SCBE_MicroOp::Label:
-            case SCBE_MicroOp::PatchJump:
+            case SCBEMicroOp::Label:
+            case SCBEMicroOp::PatchJump:
                 continue;
 
-            case SCBE_MicroOp::SymbolRelocationRef:
+            case SCBEMicroOp::SymbolRelocationRef:
                 // encoder.emitSymbolRelocationRef(inst->name);
                 break;
-            case SCBE_MicroOp::SymbolRelocationAddress:
+            case SCBEMicroOp::SymbolRelocationAddress:
                 // encoder.emitSymbolRelocationAddress(inst->regA, static_cast<uint32_t>(inst->valueA), static_cast<uint32_t>(inst->valueB));
                 line.name = "lea";
                 line.args = form("%s, [<sym%d>+%d]", regName(inst->regA, OpBits::B64), inst->valueA, inst->valueB);
                 break;
-            case SCBE_MicroOp::SymbolRelocationValue:
+            case SCBEMicroOp::SymbolRelocationValue:
                 // encoder.emitSymbolRelocationValue(inst->regA, static_cast<uint32_t>(inst->valueA), static_cast<uint32_t>(inst->valueB));
                 line.name = "mov";
                 line.args = form("%s, <sym%d>+%d", regName(inst->regA, OpBits::B64), inst->valueA, inst->valueB);
                 break;
-            case SCBE_MicroOp::SymbolGlobalString:
+            case SCBEMicroOp::SymbolGlobalString:
                 // encoder.emitSymbolGlobalString(inst->regA, inst->name);
                 line.name = "mov";
                 line.args = form("%s, ptr \"%s\"", regName(inst->regA, OpBits::B64), inst->name.cstr());
                 break;
-            case SCBE_MicroOp::SymbolRelocationPtr:
+            case SCBEMicroOp::SymbolRelocationPtr:
                 // encoder.emitSymbolRelocationPtr(inst->regA, inst->name);
                 line.name = "mov";
                 line.args = form("%s, ptr %s", regName(inst->regA, OpBits::B64), inst->name.cstr());
                 break;
-            case SCBE_MicroOp::Push:
+            case SCBEMicroOp::Push:
                 // encoder.emitPush(inst->regA);
                 line.name = "push";
                 line.args = regName(inst->regA, OpBits::B64);
                 break;
-            case SCBE_MicroOp::Pop:
+            case SCBEMicroOp::Pop:
                 // encoder.emitPop(inst->regA);
                 line.name = "pop";
                 line.args = regName(inst->regA, OpBits::B64);
                 break;
-            case SCBE_MicroOp::Nop:
+            case SCBEMicroOp::Nop:
                 // encoder.emitNop();
                 line.name = "nop";
                 break;
-            case SCBE_MicroOp::Ret:
+            case SCBEMicroOp::Ret:
                 // encoder.emitRet();
                 line.name = "ret";
                 break;
-            case SCBE_MicroOp::CallLocal:
+            case SCBEMicroOp::CallLocal:
                 // encoder.emitCallLocal(inst->name);
                 line.name = "call near";
                 line.args = inst->name;
                 break;
-            case SCBE_MicroOp::CallExtern:
+            case SCBEMicroOp::CallExtern:
                 // encoder.emitCallExtern(inst->name);
                 line.name = "call far";
                 line.args = inst->name;
                 break;
-            case SCBE_MicroOp::CallIndirect:
+            case SCBEMicroOp::CallIndirect:
                 // encoder.emitCallIndirect(inst->regA);
                 line.name = "call";
                 line.args = form("[%s]", regName(inst->regA, OpBits::B64));
                 break;
-            case SCBE_MicroOp::JumpTable:
+            case SCBEMicroOp::JumpTable:
                 // encoder.emitJumpTable(inst->regA, inst->regB, static_cast<int32_t>(inst->valueA), static_cast<uint32_t>(inst->valueB), static_cast<uint32_t>(inst->valueC));
                 line.name = "jumptable";
                 line.args = form("[%s+%s]", regName(inst->regA, OpBits::B64), regName(inst->regB, OpBits::B64));
                 break;
-            case SCBE_MicroOp::JumpCC:
+            case SCBEMicroOp::JumpCC:
                 // const auto cmpJump = encoder.emitJump(inst->jumpType, inst->opBitsA);
                 line.name = jumpTypeName(inst->jumpType);
                 break;
-            case SCBE_MicroOp::JumpM:
+            case SCBEMicroOp::JumpM:
                 // encoder.emitJump(inst->regA);
                 line.name = "jump";
                 line.args = form("[%s]", regName(inst->regA, OpBits::B64));
                 break;
-            case SCBE_MicroOp::JumpCI:
+            case SCBEMicroOp::JumpCI:
                 // encoder.emitJump(inst->jumpType, static_cast<int32_t>(inst->valueA), static_cast<int32_t>(inst->valueB));
                 line.name = jumpTypeName(inst->jumpType);
                 line.args = form("%08d", inst->valueA);
                 break;
-            case SCBE_MicroOp::LoadCallerParam:
+            case SCBEMicroOp::LoadCallerParam:
                 // encoder.emitLoadCallerParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->opBitsA);
                 line.name = "mov";
                 line.args = form("%s, %s ptr [rdi+<param%d>]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsA), inst->valueA);
                 break;
-            case SCBE_MicroOp::LoadCallerAddressParam:
+            case SCBEMicroOp::LoadCallerAddressParam:
                 // encoder.emitLoadCallerAddressParam(inst->regA, static_cast<uint32_t>(inst->valueA));
                 line.name = "lea";
                 line.args = form("%s, %s ptr [rdi+<param%d>]", regName(inst->regA, OpBits::B64), opBitsName(OpBits::B64), inst->valueA);
                 break;
-            case SCBE_MicroOp::LoadCallerZeroExtendParam:
+            case SCBEMicroOp::LoadCallerZeroExtendParam:
                 // encoder.emitLoadCallerZeroExtendParam(inst->regA, static_cast<uint32_t>(inst->valueA), inst->opBitsA, inst->opBitsB);
                 line.name = "movzx";
                 line.args = form("%s, %s ptr [rdi+<param%d>]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsB), inst->valueA);
                 break;
-            case SCBE_MicroOp::LoadRR:
+            case SCBEMicroOp::LoadRR:
                 // encoder.emitLoad(inst->regA, inst->regB, inst->opBitsA);
                 line.name = "mov";
                 line.args = form("%s, %s", regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsA));
                 break;
-            case SCBE_MicroOp::LoadR:
+            case SCBEMicroOp::LoadR:
                 // encoder.emitLoad(inst->regA, inst->opBitsA);
                 line.name = "mov";
                 line.args = form("%s, %s", regName(inst->regA, inst->opBitsA), regName(inst->regA, inst->opBitsA));
                 break;
-            case SCBE_MicroOp::LoadRI64:
+            case SCBEMicroOp::LoadRI64:
                 // encoder.emitLoad(inst->regA, inst->valueA);
                 line.name = "mov";
                 line.args = form("%s, %lld", regName(inst->regA, OpBits::B64), inst->valueA);
                 break;
-            case SCBE_MicroOp::LoadRI:
+            case SCBEMicroOp::LoadRI:
                 // encoder.emitLoad(inst->regA, inst->valueA, inst->opBitsA);
                 line.name = cpuOpName(CPUOp::MOV, inst->opBitsA);
                 line.args = form("%s, %s", regName(inst->regA, inst->opBitsA), valueName(inst->valueA, inst->opBitsA).cstr());
                 break;
-            case SCBE_MicroOp::LoadRM:
+            case SCBEMicroOp::LoadRM:
                 // encoder.emitLoad(inst->regA, inst->regB, inst->valueA, inst->opBitsA);
                 line.name = cpuOpName(CPUOp::MOV, inst->opBitsA);
                 line.args = form("%s, %s ptr [%s+%xh]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsA), regName(inst->regB, OpBits::B64), inst->valueA);
                 break;
-            case SCBE_MicroOp::LoadSignedExtendRM:
+            case SCBEMicroOp::LoadSignedExtendRM:
                 // encoder.emitLoadSignedExtend0(inst->regA, inst->regB, inst->valueA, inst->opBitsA, inst->opBitsB);
                 line.name = "movsx";
                 line.args = form("%s, %s ptr [%s+%xh]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsB), regName(inst->regB, OpBits::B64), inst->valueA);
                 break;
-            case SCBE_MicroOp::LoadSignedExtendRR:
+            case SCBEMicroOp::LoadSignedExtendRR:
                 // encoder.emitLoadSignedExtend1(inst->regA, inst->regB, inst->opBitsA, inst->opBitsB);
                 line.name = "movsx";
                 line.args = form("%s, %s", regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsB));
                 break;
-            case SCBE_MicroOp::LoadZeroExtendRM:
+            case SCBEMicroOp::LoadZeroExtendRM:
                 // encoder.emitLoadZeroExtend0(inst->regA, inst->regB, inst->valueA, inst->opBitsA, inst->opBitsB);
                 line.name = "movzx";
                 line.args = form("%s, %s ptr [%s+%xh]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsB), regName(inst->regB, OpBits::B64), inst->valueA);
                 break;
-            case SCBE_MicroOp::LoadZeroExtendRR:
+            case SCBEMicroOp::LoadZeroExtendRR:
                 // encoder.emitLoadZeroExtend1(inst->regA, inst->regB, inst->opBitsA, inst->opBitsB);
                 line.name = "movzx";
                 line.args = form("%s, %s", regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsB));
                 break;
-            case SCBE_MicroOp::LoadAddressM:
+            case SCBEMicroOp::LoadAddressM:
                 // encoder.emitLoadAddress(inst->regA, inst->regB, inst->valueA);
                 line.name = "lea";
                 line.args = form("%s, [%s+%xh]", regName(inst->regA, OpBits::B64), regName(inst->regB, OpBits::B64), inst->valueA);
                 break;
-            case SCBE_MicroOp::LoadAddressAddMul:
+            case SCBEMicroOp::LoadAddressAddMul:
                 // encoder.emitLoadAddress(inst->regA, inst->regB, inst->regC, inst->valueA, inst->opBitsA);
                 line.name = "lea";
                 line.args = form("%s, [%s+%s*%d]", regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsA), regName(inst->regC, inst->opBitsA), inst->valueA);
                 break;
-            case SCBE_MicroOp::StoreMR:
+            case SCBEMicroOp::StoreMR:
                 // encoder.emitStore(inst->regA, inst->valueA, inst->regB, inst->opBitsA);
                 line.name = cpuOpName(CPUOp::MOV, inst->opBitsA);
                 line.args = form("%s ptr [%s+%xh], %s", opBitsName(inst->opBitsA), regName(inst->regA, OpBits::B64), inst->valueA, regName(inst->regB, inst->opBitsA));
                 break;
-            case SCBE_MicroOp::StoreMI:
+            case SCBEMicroOp::StoreMI:
                 // encoder.emitStore(inst->regA, inst->valueA, inst->valueB, inst->opBitsA);
                 line.name = cpuOpName(CPUOp::MOV, inst->opBitsA);
                 line.args = form("%s ptr [%s+%xh], %d", opBitsName(inst->opBitsA), regName(inst->regA, OpBits::B64), inst->valueA, inst->valueB);
                 break;
-            case SCBE_MicroOp::CmpRR:
+            case SCBEMicroOp::CmpRR:
                 // encoder.emitCmp(inst->regA, inst->regB, inst->opBitsA);
                 line.name = "cmp";
                 line.args = form("%s, %s", regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsA));
                 break;
-            case SCBE_MicroOp::CmpRI:
+            case SCBEMicroOp::CmpRI:
                 // encoder.emitCmp(inst->regA, inst->valueA, inst->opBitsA);
                 line.name = "cmp";
                 line.args = form("%s, %d", regName(inst->regA, inst->opBitsA), inst->valueA);
                 break;
-            case SCBE_MicroOp::CmpMR:
+            case SCBEMicroOp::CmpMR:
                 // encoder.emitCmp(inst->regA, inst->valueA, inst->regB, inst->opBitsA);
                 line.name = "cmp";
                 line.args = form("%s ptr [%s+%xh], %s", opBitsName(inst->opBitsA), regName(inst->regA, OpBits::B64), inst->valueA, regName(inst->regB, inst->opBitsA));
                 break;
-            case SCBE_MicroOp::CmpMI:
+            case SCBEMicroOp::CmpMI:
                 // encoder.emitCmp(inst->regA, inst->valueA, inst->valueB, inst->opBitsA);
                 line.name = "cmp";
                 line.args = form("%s ptr [%s+%xh], %d", opBitsName(inst->opBitsA), regName(inst->regA, OpBits::B64), inst->valueA, inst->valueB);
                 break;
-            case SCBE_MicroOp::SetCC:
+            case SCBEMicroOp::SetCC:
                 // encoder.emitSet(inst->regA, inst->cpuCond);
                 line.name = form("set%s", cpuCondName(inst->cpuCond));
                 line.args = form("%s", regName(inst->regA, OpBits::B8));
                 break;
-            case SCBE_MicroOp::ClearR:
+            case SCBEMicroOp::ClearR:
                 // encoder.emitClear(inst->regA, inst->opBitsA);
                 line.name = "clear";
                 line.args = form("%s", regName(inst->regA, inst->opBitsA));
                 break;
-            case SCBE_MicroOp::ClearM:
+            case SCBEMicroOp::ClearM:
                 // encoder.emitClear(inst->regA, inst->valueA, static_cast<uint32_t>(inst->valueB));
                 line.name = "clear";
                 line.args = form("byte ptr [%s+%d], %d", regName(inst->regA, OpBits::B64), inst->valueA, inst->valueB);
                 break;
-            case SCBE_MicroOp::Copy:
+            case SCBEMicroOp::Copy:
                 // encoder.emitCopy(inst->regA, inst->regB, static_cast<uint32_t>(inst->valueA));
                 line.name = "copy";
                 line.args = form("byte ptr [%s], byte ptr [%s], %d", regName(inst->regA, OpBits::B64), regName(inst->regB, OpBits::B64), inst->valueA);
                 break;
-            case SCBE_MicroOp::OpUnaryM:
+            case SCBEMicroOp::OpUnaryM:
                 // encoder.emitOpUnary(inst->regA, inst->valueA, inst->cpuOp, inst->opBitsA);
                 line.name = cpuOpName(inst->cpuOp, inst->opBitsA);
                 line.args += form("%s ptr [%s+%xh]", opBitsName(inst->opBitsA), regName(inst->regA, inst->opBitsA), inst->valueA);
                 break;
-            case SCBE_MicroOp::OpUnaryR:
+            case SCBEMicroOp::OpUnaryR:
                 // encoder.emitOpUnary(inst->regA, inst->cpuOp, inst->opBitsA);
                 line.name = cpuOpName(inst->cpuOp, inst->opBitsA);
                 line.args += form("%s", regName(inst->regA, inst->opBitsA));
                 break;
-            case SCBE_MicroOp::OpBinaryRR:
+            case SCBEMicroOp::OpBinaryRR:
                 // encoder.emitOpBinary(inst->regA, inst->regB, inst->cpuOp, inst->opBitsA, inst->emitFlags);
                 line.name = cpuOpName(inst->cpuOp, inst->opBitsA);
                 line.args += form("%s, %s", regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsA));
                 break;
-            case SCBE_MicroOp::OpBinaryMR:
+            case SCBEMicroOp::OpBinaryMR:
                 // encoder.emitOpBinary(inst->regA, inst->valueA, inst->regB, inst->cpuOp, inst->opBitsA, inst->emitFlags);
                 line.name = cpuOpName(inst->cpuOp, inst->opBitsA);
                 line.args += form("%s ptr [%s+%xh], %s", opBitsName(inst->opBitsA), regName(inst->regA, OpBits::B64), inst->valueA, regName(inst->regB, inst->opBitsA));
                 break;
-            case SCBE_MicroOp::OpBinaryRI:
+            case SCBEMicroOp::OpBinaryRI:
                 // encoder.emitOpBinary(inst->regA, inst->valueA, inst->cpuOp, inst->opBitsA, inst->emitFlags);
                 line.name = cpuOpName(inst->cpuOp, inst->opBitsA);
                 line.args += form("%s, %d", regName(inst->regA, inst->opBitsA), inst->valueA);
                 break;
-            case SCBE_MicroOp::OpBinaryMI:
+            case SCBEMicroOp::OpBinaryMI:
                 // encoder.emitOpBinary(inst->regA, inst->valueA, inst->valueB, inst->cpuOp, inst->opBitsA, inst->emitFlags);
                 line.name = cpuOpName(inst->cpuOp, inst->opBitsA);
                 line.args += form("%s ptr [%s+%xh], %d", opBitsName(inst->opBitsA), regName(inst->regA, OpBits::B64), inst->valueA, inst->valueB);
                 break;
-            case SCBE_MicroOp::OpBinaryRM:
+            case SCBEMicroOp::OpBinaryRM:
                 // encoder.emitOpBinary(inst->regA, inst->regB, inst->valueA, inst->cpuOp, inst->opBitsA, inst->emitFlags);
                 line.name = cpuOpName(inst->cpuOp, inst->opBitsA);
                 line.args += form("%s, %s ptr [%s+%xh]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsA), regName(inst->regB, OpBits::B64), inst->valueA);
                 break;
-            case SCBE_MicroOp::MulAdd:
+            case SCBEMicroOp::MulAdd:
                 // encoder.emitMulAdd(inst->regA, inst->regB, inst->regC, inst->opBitsA);
                 line.name = "muladd";
                 line.args += form("%s, %s*%s+%s", regName(inst->regA, inst->opBitsA), regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsA), regName(inst->regC, inst->opBitsA));
