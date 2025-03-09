@@ -106,13 +106,13 @@ void ByteCode::markLabels() const
     auto     ip    = out;
     for (uint32_t i = 0; i < numInstructions && count; i++, ip++)
     {
-        if (isJump(ip))
+        if (ip->isJump())
         {
             ip[ip->b.s32 + 1].addFlag(BCI_JUMP_DEST);
             ip[1].addFlag(BCI_JUMP_DEST);
             count--;
         }
-        else if (isJumpDyn(ip))
+        else if (ip->isJumpDyn())
         {
             const auto table = reinterpret_cast<int32_t*>(sourceFile->module->compilerSegment.address(ip->d.u32));
             for (uint32_t idx = 0; idx < ip->c.u32; idx++)
@@ -218,13 +218,13 @@ bool ByteCode::haveSameRead(const ByteCodeInstruction* ip0, const ByteCodeInstru
     bool sameInst = true;
     if (ip1->op != ip0->op)
         sameInst = false;
-    else if (!hasWriteRegInA(ip1) && (hasReadRegInA(ip0) != hasReadRegInA(ip1) || ip1->a.u64 != ip0->a.u64))
+    else if (!ip1->hasWriteRegInA() && (ip0->hasReadRegInA() != ip1->hasReadRegInA() || ip1->a.u64 != ip0->a.u64))
         sameInst = false;
-    else if (!hasWriteRegInB(ip1) && (hasReadRegInB(ip0) != hasReadRegInB(ip1) || ip1->b.u64 != ip0->b.u64))
+    else if (!ip1->hasWriteRegInB() && (ip0->hasReadRegInB() != ip1->hasReadRegInB() || ip1->b.u64 != ip0->b.u64))
         sameInst = false;
-    else if (!hasWriteRegInC(ip1) && (hasReadRegInC(ip0) != hasReadRegInC(ip1) || ip1->c.u64 != ip0->c.u64))
+    else if (!ip1->hasWriteRegInC() && (ip0->hasReadRegInC() != ip1->hasReadRegInC() || ip1->c.u64 != ip0->c.u64))
         sameInst = false;
-    else if (!hasWriteRegInD(ip1) && (hasReadRegInD(ip0) != hasReadRegInD(ip1) || ip1->d.u64 != ip0->d.u64))
+    else if (!ip1->hasWriteRegInD() && (ip0->hasReadRegInD() != ip1->hasReadRegInD() || ip1->d.u64 != ip0->d.u64))
         sameInst = false;
 
     return sameInst;
@@ -256,27 +256,27 @@ bool ByteCode::areSame(const ByteCodeInstruction* start0,
             break;
         }
 
-        if (hasSomethingInC(ip0) && ip0->c.u64 != ip1->c.u64)
+        if (ip0->hasSomethingInC() && ip0->c.u64 != ip1->c.u64)
         {
             same = false;
             break;
         }
 
-        if (hasSomethingInD(ip0) && ip0->d.u64 != ip1->d.u64)
+        if (ip0->hasSomethingInD() && ip0->d.u64 != ip1->d.u64)
         {
             same = false;
             break;
         }
 
         // Compare if the 2 bytes codes or their alias are the same
-        if (specialCall && isLocalCall(ip0))
+        if (specialCall && ip0->isLocalCall())
         {
             const ByteCode* bc0 = reinterpret_cast<ByteCode*>(ip0->a.pointer);
             const ByteCode* bc1 = reinterpret_cast<ByteCode*>(ip1->a.pointer);
             if (bc0 != bc1)
                 same = false;
         }
-        else if (hasSomethingInA(ip0) && ip0->a.u64 != ip1->a.u64)
+        else if (ip0->hasSomethingInA() && ip0->a.u64 != ip1->a.u64)
         {
             same = false;
             break;
@@ -290,7 +290,7 @@ bool ByteCode::areSame(const ByteCodeInstruction* start0,
             if (destIp0 != destIp1)
                 same = false;
         }
-        else if (hasSomethingInB(ip0) && ip0->b.u64 != ip1->b.u64)
+        else if (ip0->hasSomethingInB() && ip0->b.u64 != ip1->b.u64)
         {
             same = false;
             break;
@@ -307,18 +307,18 @@ uint32_t ByteCode::computeCrc(const ByteCodeInstruction* ip, uint32_t oldCrc, bo
 {
     oldCrc = Crc32::compute2(reinterpret_cast<const uint8_t*>(&ip->op), oldCrc);
 
-    if (hasSomethingInC(ip))
+    if (ip->hasSomethingInC())
         oldCrc = Crc32::compute8(reinterpret_cast<const uint8_t*>(&ip->c.pointer), oldCrc);
-    if (hasSomethingInD(ip))
+    if (ip->hasSomethingInD())
         oldCrc = Crc32::compute8(reinterpret_cast<const uint8_t*>(&ip->d.pointer), oldCrc);
 
     // Special call. We add the alias if it exists instead of the called bytecode
-    if (specialCall && isLocalCall(ip))
+    if (specialCall && ip->isLocalCall())
     {
         const auto bc = reinterpret_cast<ByteCode*>(ip->a.pointer);
         oldCrc        = Crc32::compute8(reinterpret_cast<const uint8_t*>(&bc), oldCrc);
     }
-    else if (hasSomethingInA(ip))
+    else if (ip->hasSomethingInA())
         oldCrc = Crc32::compute8(reinterpret_cast<const uint8_t*>(&ip->a.pointer), oldCrc);
 
     // For a jump, we compute the crc to go to the destination (if two jump nodes
@@ -329,7 +329,7 @@ uint32_t ByteCode::computeCrc(const ByteCodeInstruction* ip, uint32_t oldCrc, bo
         const auto destN  = destIp - out;
         oldCrc            = Crc32::compute8(reinterpret_cast<const uint8_t*>(&destN), oldCrc);
     }
-    else if (hasSomethingInB(ip))
+    else if (ip->hasSomethingInB())
         oldCrc = Crc32::compute8(reinterpret_cast<const uint8_t*>(&ip->b.pointer), oldCrc);
 
     return oldCrc;

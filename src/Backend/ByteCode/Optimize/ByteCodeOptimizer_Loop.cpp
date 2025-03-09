@@ -7,7 +7,7 @@ namespace
     ByteCodeInstruction* findLoop(ByteCodeOptContext* context, ByteCodeInstruction* ip, bool& hasJumps)
     {
         // Find a negative jump
-        if (!ByteCode::isJump(ip) || ip->b.s32 > 0)
+        if (!ip->isJump() || ip->b.s32 > 0)
             return nullptr;
 
         context->vecReg.clear();
@@ -16,7 +16,7 @@ namespace
         auto       ipScan  = ipStart;
 
         // Zap non jump instructions
-        while (!ByteCode::isJump(ipScan))
+        while (!ipScan->isJump())
             ipScan++;
         if (ipScan == ip)
             return nullptr;
@@ -33,7 +33,7 @@ namespace
         while (ipScan != ip)
         {
             // Test an inside jump that will escape the loop
-            if (ByteCode::isJump(ipScan) && ipScan != ipExitJump && ipScan != ip)
+            if (ipScan->isJump() && ipScan != ipExitJump && ipScan != ip)
             {
                 hasJumps        = true;
                 const auto test = ipScan + ipScan->b.s32 + 1;
@@ -42,25 +42,25 @@ namespace
             }
 
             // A jump dyn inside, just dismiss
-            if (ByteCode::isJumpDyn(ipScan))
+            if (ipScan->isJumpDyn())
                 break;
 
-            if (ByteCode::hasWriteRegInA(ipScan))
+            if (ipScan->hasWriteRegInA())
             {
                 context->vecReg.expand_clear(ipScan->a.u32 + 1);
                 context->vecReg[ipScan->a.u32]++;
             }
-            if (ByteCode::hasWriteRegInB(ipScan))
+            if (ipScan->hasWriteRegInB())
             {
                 context->vecReg.expand_clear(ipScan->b.u32 + 1);
                 context->vecReg[ipScan->b.u32]++;
             }
-            if (ByteCode::hasWriteRegInC(ipScan))
+            if (ipScan->hasWriteRegInC())
             {
                 context->vecReg.expand_clear(ipScan->c.u32 + 1);
                 context->vecReg[ipScan->c.u32]++;
             }
-            if (ByteCode::hasWriteRegInD(ipScan))
+            if (ipScan->hasWriteRegInD())
             {
                 context->vecReg.expand_clear(ipScan->d.u32 + 1);
                 context->vecReg[ipScan->d.u32]++;
@@ -80,7 +80,7 @@ namespace
                 continue;
             if (!ipScan)
                 break;
-            if (ByteCode::isJumpDyn(it))
+            if (it->isJumpDyn())
             {
                 const auto table = reinterpret_cast<int32_t*>(context->module->compilerSegment.address(it->d.u32));
                 for (uint32_t i = 0; i < it->c.u32; i++)
@@ -111,23 +111,23 @@ namespace
     {
         while (ipScan != ipEnd)
         {
-            if (ByteCode::isRet(ipScan))
+            if (ipScan->isRet())
                 break;
-            if (ByteCode::isJump(ipScan) && context->vecReg[reg] > 1)
+            if (ipScan->isJump() && context->vecReg[reg] > 1)
                 break;
             if (ipScan->hasFlag(BCI_START_STMT) && context->vecReg[reg] > 1)
                 break;
 
-            if (ByteCode::hasReadRefToRegA(ipScan, reg) && !ByteCode::hasWriteRefToRegA(ipScan, reg))
+            if (ipScan->hasReadRefToRegA(reg) && !ipScan->hasWriteRefToRegA(reg))
                 ipScan->a.u32 = newReg;
-            if (ByteCode::hasReadRefToRegB(ipScan, reg) && !ByteCode::hasWriteRefToRegB(ipScan, reg))
+            if (ipScan->hasReadRefToRegB(reg) && !ipScan->hasWriteRefToRegB(reg))
                 ipScan->b.u32 = newReg;
-            if (ByteCode::hasReadRefToRegC(ipScan, reg) && !ByteCode::hasWriteRefToRegC(ipScan, reg))
+            if (ipScan->hasReadRefToRegC(reg) && !ipScan->hasWriteRefToRegC(reg))
                 ipScan->c.u32 = newReg;
-            if (ByteCode::hasReadRefToRegD(ipScan, reg) && !ByteCode::hasWriteRefToRegD(ipScan, reg))
+            if (ipScan->hasReadRefToRegD(reg) && !ipScan->hasWriteRefToRegD(reg))
                 ipScan->d.u32 = newReg;
 
-            if (ByteCode::hasWriteRefToReg(ipScan, reg))
+            if (ipScan->hasWriteRefToReg(reg))
                 break;
             ipScan += 1;
         }
@@ -172,12 +172,12 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
                     break;
 
                 default:
-                    if (ipScan->hasOpFlag(OPF_REG_ONLY) && ByteCode::countWriteRegs(ipScan) == 1 && ByteCode::countReadRegs(ipScan))
+                    if (ipScan->hasOpFlag(OPF_REG_ONLY) && ipScan->countWriteRegs() == 1 && ipScan->countReadRegs())
                     {
-                        if ((!ByteCode::hasReadRegInA(ipScan) || ipScan->a.u32 >= context->vecReg.size() || context->vecReg[ipScan->a.u32] == 0) &&
-                            (!ByteCode::hasReadRegInB(ipScan) || ipScan->b.u32 >= context->vecReg.size() || context->vecReg[ipScan->b.u32] == 0) &&
-                            (!ByteCode::hasReadRegInC(ipScan) || ipScan->c.u32 >= context->vecReg.size() || context->vecReg[ipScan->c.u32] == 0) &&
-                            (!ByteCode::hasReadRegInD(ipScan) || ipScan->d.u32 >= context->vecReg.size() || context->vecReg[ipScan->d.u32] == 0))
+                        if ((!ipScan->hasReadRegInA() || ipScan->a.u32 >= context->vecReg.size() || context->vecReg[ipScan->a.u32] == 0) &&
+                            (!ipScan->hasReadRegInB() || ipScan->b.u32 >= context->vecReg.size() || context->vecReg[ipScan->b.u32] == 0) &&
+                            (!ipScan->hasReadRegInC() || ipScan->c.u32 >= context->vecReg.size() || context->vecReg[ipScan->c.u32] == 0) &&
+                            (!ipScan->hasReadRegInD() || ipScan->d.u32 >= context->vecReg.size() || context->vecReg[ipScan->d.u32] == 0))
                         {
                             context->vecInst.push_back(ipScan);
                         }
@@ -198,7 +198,7 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
         for (const auto it : context->vecInst)
         {
             auto cstOp = it + shift;
-            SWAG_ASSERT(ByteCode::countWriteRegs(cstOp) == 1);
+            SWAG_ASSERT(cstOp->countWriteRegs() == 1);
 
             if (cstOp->op == ByteCodeOp::CopyRBtoRA64)
             {
@@ -211,15 +211,15 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
                         auto ipT = cstOp + 1;
                         while (ipT != ip + shift)
                         {
-                            if (ByteCode::hasReadRefToRegA(ipT, reg) && !ByteCode::hasWriteRefToRegA(ipT, reg))
+                            if (ipT->hasReadRefToRegA(reg) && !ipT->hasWriteRefToRegA(reg))
                                 ipT->a.u32 = newReg;
-                            if (ByteCode::hasReadRefToRegB(ipT, reg) && !ByteCode::hasWriteRefToRegB(ipT, reg))
+                            if (ipT->hasReadRefToRegB(reg) && !ipT->hasWriteRefToRegB(reg))
                                 ipT->b.u32 = newReg;
-                            if (ByteCode::hasReadRefToRegC(ipT, reg) && !ByteCode::hasWriteRefToRegC(ipT, reg))
+                            if (ipT->hasReadRefToRegC(reg) && !ipT->hasWriteRefToRegC(reg))
                                 ipT->c.u32 = newReg;
-                            if (ByteCode::hasReadRefToRegD(ipT, reg) && !ByteCode::hasWriteRefToRegD(ipT, reg))
+                            if (ipT->hasReadRefToRegD(reg) && !ipT->hasWriteRefToRegD(reg))
                                 ipT->d.u32 = newReg;
-                            if (ByteCode::hasWriteRefToReg(ipScan, newReg))
+                            if (ipScan->hasWriteRefToReg(newReg))
                                 break;
                             ipT += 1;
                         }
@@ -235,16 +235,16 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
             for (const auto& it1 : context->vecInstCopy)
             {
                 if (it1.op == cstOp->op &&
-                    (it1.a.u64 == cstOp->a.u64 || !ByteCode::hasSomethingInA(cstOp) || ByteCode::hasWriteRegInA(cstOp)) &&
-                    (it1.b.u64 == cstOp->b.u64 || !ByteCode::hasSomethingInB(cstOp) || ByteCode::hasWriteRegInB(cstOp)) &&
-                    (it1.c.u64 == cstOp->c.u64 || !ByteCode::hasSomethingInC(cstOp) || ByteCode::hasWriteRegInC(cstOp)) &&
-                    (it1.d.u64 == cstOp->d.u64 || !ByteCode::hasSomethingInD(cstOp) || ByteCode::hasWriteRegInD(cstOp)))
+                    (it1.a.u64 == cstOp->a.u64 || !cstOp->hasSomethingInA() || cstOp->hasWriteRegInA()) &&
+                    (it1.b.u64 == cstOp->b.u64 || !cstOp->hasSomethingInB() || cstOp->hasWriteRegInB()) &&
+                    (it1.c.u64 == cstOp->c.u64 || !cstOp->hasSomethingInC() || cstOp->hasWriteRegInC()) &&
+                    (it1.d.u64 == cstOp->d.u64 || !cstOp->hasSomethingInD() || cstOp->hasWriteRegInD()))
                 {
-                    if (ByteCode::hasWriteRegInA(&it1))
+                    if (it1.hasWriteRegInA())
                         newReg = it1.a.u32;
-                    else if (ByteCode::hasWriteRegInB(&it1))
+                    else if (it1.hasWriteRegInB())
                         newReg = it1.b.u32;
-                    else if (ByteCode::hasWriteRegInC(&it1))
+                    else if (it1.hasWriteRegInC())
                         newReg = it1.c.u32;
                     else
                         newReg = it1.d.u32;
@@ -253,11 +253,11 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
             }
 
             uint32_t writeReg;
-            if (ByteCode::hasWriteRegInA(cstOp))
+            if (cstOp->hasWriteRegInA())
                 writeReg = cstOp->a.u32;
-            else if (ByteCode::hasWriteRegInB(cstOp))
+            else if (cstOp->hasWriteRegInB())
                 writeReg = cstOp->b.u32;
-            else if (ByteCode::hasWriteRegInC(cstOp))
+            else if (cstOp->hasWriteRegInC())
                 writeReg = cstOp->c.u32;
             else
                 writeReg = cstOp->d.u32;
@@ -298,11 +298,11 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
                 cstOp->b.u64 = newReg;
                 cstOp->removeFlag(BCI_IMM_A | BCI_IMM_B | BCI_IMM_C | BCI_IMM_D);
 
-                if (ByteCode::hasWriteRegInA(ipStart))
+                if (ipStart->hasWriteRegInA())
                     ipStart->a.u64 = newReg;
-                else if (ByteCode::hasWriteRegInB(ipStart))
+                else if (ipStart->hasWriteRegInB())
                     ipStart->b.u64 = newReg;
-                else if (ByteCode::hasWriteRegInC(ipStart))
+                else if (ipStart->hasWriteRegInC())
                     ipStart->c.u64 = newReg;
                 else
                     ipStart->d.u64 = newReg;

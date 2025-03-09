@@ -340,8 +340,8 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
     switch (ip[0].op)
     {
         case ByteCodeOp::InternalHasErr:
-            // Has err followed by ret
-            if (ByteCode::isRet(ip + 1))
+            // HasErr followed by ret
+            if (ip[1].isRet())
             {
                 setNop(context, ip);
                 break;
@@ -447,18 +447,18 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
                 ByteCodeInstruction* ipEnd     = nullptr;
                 while (cpt)
                 {
-                    if (ipScan[0].op == ByteCodeOp::InternalPushErr)
+                    if (ipScan->op == ByteCodeOp::InternalPushErr)
                         cpt++;
-                    if (ipScan[0].op == ByteCodeOp::InternalPopErr)
+                    if (ipScan->op == ByteCodeOp::InternalPopErr)
                     {
                         cpt--;
                         if (!cpt)
                             ipEnd = ipScan;
                     }
 
-                    if (ipScan[0].op == ByteCodeOp::End ||
-                        ipScan[0].op == ByteCodeOp::InternalSetErr ||
-                        ByteCode::isCall(ipScan))
+                    if (ipScan->op == ByteCodeOp::End ||
+                        ipScan->op == ByteCodeOp::InternalSetErr ||
+                        ipScan->isCall())
                     {
                         hasSetErr = true;
                         break;
@@ -538,7 +538,7 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
 
 void ByteCodeOptimizer::reduceCallEmptyFct(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
-    if (ByteCode::isLocalCall(ip))
+    if (ip->isLocalCall())
     {
         const auto destBC = reinterpret_cast<ByteCode*>(ip->a.pointer);
         if (destBC->isEmpty.load() != true)
@@ -557,7 +557,7 @@ void ByteCodeOptimizer::reduceCallEmptyFct(ByteCodeOptContext* context, ByteCode
         auto backIp = ip;
         if (!backIp->hasFlag(BCI_START_STMT))
         {
-            while (backIp != context->bc->out && !ByteCode::isCall(backIp))
+            while (backIp != context->bc->out && !backIp->isCall())
             {
                 if (backIp->op == ByteCodeOp::PushRVParam ||
                     backIp->op == ByteCodeOp::PushRAParam ||
@@ -681,7 +681,7 @@ void ByteCodeOptimizer::reduceMemcpy(ByteCodeOptContext* context, ByteCodeInstru
     // Copy a constant value (from segment) to the stack
     else if (ip->op == ByteCodeOp::MakeConstantSegPointer &&
              ip[1].op == ByteCodeOp::MakeStackPointer &&
-             ByteCode::isMemCpy(ip + 2) &&
+             ip[2].isMemCpy() &&
              ip->a.u32 == ip[2].b.u32 &&
              !ip[1].hasFlag(BCI_START_STMT) &&
              ip[1].a.u32 == ip[2].a.u32)
@@ -1576,7 +1576,7 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
                 ip[0].a.u32 == ip[2].a.u32 &&
                 !ip[1].hasFlag(BCI_START_STMT) &&
                 !ip[2].hasFlag(BCI_START_STMT) &&
-                !ByteCode::hasWriteRefToReg(ip + 1, ip[0].a.u32))
+                !ip[1].hasWriteRefToReg(ip[0].a.u32))
             {
                 SET_OP(ip + 2, ByteCodeOp::SetAtStackPointer8);
                 ip[2].a.u32 = ip[0].b.u32 + ip[2].c.u32;
@@ -1587,7 +1587,7 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
                 ip[0].a.u32 == ip[2].a.u32 &&
                 !ip[1].hasFlag(BCI_START_STMT) &&
                 !ip[2].hasFlag(BCI_START_STMT) &&
-                !ByteCode::hasWriteRefToReg(ip + 1, ip[0].a.u32))
+                !ip[1].hasWriteRefToReg(ip[0].a.u32))
             {
                 SET_OP(ip + 2, ByteCodeOp::SetAtStackPointer16);
                 ip[2].a.u32 = ip[0].b.u32 + ip[2].c.u32;
@@ -1598,7 +1598,7 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
                 ip[0].a.u32 == ip[2].a.u32 &&
                 !ip[1].hasFlag(BCI_START_STMT) &&
                 !ip[2].hasFlag(BCI_START_STMT) &&
-                !ByteCode::hasWriteRefToReg(ip + 1, ip[0].a.u32))
+                !ip[1].hasWriteRefToReg(ip[0].a.u32))
             {
                 SET_OP(ip + 2, ByteCodeOp::SetAtStackPointer32);
                 ip[2].a.u32 = ip[0].b.u32 + ip[2].c.u32;
@@ -1609,7 +1609,7 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
                 ip[0].a.u32 == ip[2].a.u32 &&
                 !ip[1].hasFlag(BCI_START_STMT) &&
                 !ip[2].hasFlag(BCI_START_STMT) &&
-                !ByteCode::hasWriteRefToReg(ip + 1, ip[0].a.u32))
+                !ip[1].hasWriteRefToReg(ip[0].a.u32))
             {
                 SET_OP(ip + 2, ByteCodeOp::SetAtStackPointer64);
                 ip[2].a.u32 = ip[0].b.u32 + ip[2].c.u32;
@@ -3028,7 +3028,7 @@ void ByteCodeOptimizer::reduceStack2(ByteCodeOptContext* context, ByteCodeInstru
                         return;
                 }
 
-                if (ByteCode::hasWriteRefToReg(tst, ip->b.u32))
+                if (tst->hasWriteRefToReg(ip->b.u32))
                     return;
             }
 
@@ -4131,7 +4131,7 @@ void ByteCodeOptimizer::reduceCmpJump(ByteCodeOptContext* context, ByteCodeInstr
 {
     // Instruction followed by jump followed by the exact same instruction, and no stmt start
     // Remove the clone
-    if (ByteCode::isJump(ip + 1) &&
+    if (ip[1].isJump() &&
         ip[1].op != ByteCodeOp::Jump &&
         !ip[1].hasFlag(BCI_START_STMT) &&
         !ip[2].hasFlag(BCI_START_STMT) &&
@@ -6703,19 +6703,19 @@ void ByteCodeOptimizer::reduceDupInstr(ByteCodeOptContext* context, ByteCodeInst
         if (ipn->op == ip->op)
             break;
 
-        if (ByteCode::hasWriteRefToRegA(ipn, ip[0].a.u32))
+        if (ipn->hasWriteRefToRegA(ip[0].a.u32))
             return;
-        if (ByteCode::hasWriteRefToRegB(ipn, ip[0].a.u32))
+        if (ipn->hasWriteRefToRegB(ip[0].a.u32))
             return;
-        if (ByteCode::hasWriteRefToRegC(ipn, ip[0].a.u32))
+        if (ipn->hasWriteRefToRegC(ip[0].a.u32))
             return;
-        if (ByteCode::hasWriteRefToRegD(ipn, ip[0].a.u32))
+        if (ipn->hasWriteRefToRegD(ip[0].a.u32))
             return;
         if (ipn->op == ByteCodeOp::End)
             return;
 
         if (!isParam &&
-            !ByteCode::isJump(ipn) &&
+            !ipn->isJump() &&
             !ipn->hasOpFlag(OPF_REG_ONLY) &&
             ipn->op != ByteCodeOp::Nop)
             return;
@@ -6725,13 +6725,13 @@ void ByteCodeOptimizer::reduceDupInstr(ByteCodeOptContext* context, ByteCodeInst
 
     if (ip[0].flags.maskInvert(BCI_START_STMT) != ipn->flags.maskInvert(BCI_START_STMT))
         return;
-    if (ByteCode::hasSomethingInA(ip) && ip[0].a.u64 != ipn->a.u64)
+    if (ip->hasSomethingInA() && ip[0].a.u64 != ipn->a.u64)
         return;
-    if (ByteCode::hasSomethingInB(ip) && ip[0].b.u64 != ipn->b.u64)
+    if (ip->hasSomethingInB() && ip[0].b.u64 != ipn->b.u64)
         return;
-    if (ByteCode::hasSomethingInB(ip) && ip[0].c.u64 != ipn->c.u64)
+    if (ip->hasSomethingInB() && ip[0].c.u64 != ipn->c.u64)
         return;
-    if (ByteCode::hasSomethingInB(ip) && ip[0].d.u64 != ipn->d.u64)
+    if (ip->hasSomethingInB() && ip[0].d.u64 != ipn->d.u64)
         return;
 
     setNop(context, ipn);
@@ -6753,8 +6753,8 @@ void ByteCodeOptimizer::reduceCopy(ByteCodeOptContext* context, ByteCodeInstruct
     if (ipn->hasFlag(BCI_START_STMT))
         return;
 
-    if (ByteCode::isPushParam(ipn) ||
-        ByteCode::isCall(ipn))
+    if (ipn->isPushParam() ||
+        ipn->isCall())
         return;
 
     const auto fl0 = ByteCode::opFlags(ip->op);
@@ -6769,29 +6769,29 @@ void ByteCodeOptimizer::reduceCopy(ByteCodeOptContext* context, ByteCodeInstruct
     if (fl0.has(OPF_64) && !fl1.has(OPF_8 | OPF_16 | OPF_32 | OPF_64))
         return;
 
-    if (ByteCode::hasReadRefToRegA(ipn, ip->a.u32) &&
-        !ByteCode::hasWriteRefToRegA(ipn, ip->a.u32))
+    if (ipn->hasReadRefToRegA(ip->a.u32) &&
+        !ipn->hasWriteRefToRegA(ip->a.u32))
     {
         ipn->a.u32 = ip->b.u32;
         context->setDirtyPass();
     }
 
-    if (ByteCode::hasReadRefToRegB(ipn, ip->a.u32) &&
-        !ByteCode::hasWriteRefToRegB(ipn, ip->a.u32))
+    if (ipn->hasReadRefToRegB(ip->a.u32) &&
+        !ipn->hasWriteRefToRegB(ip->a.u32))
     {
         ipn->b.u32 = ip->b.u32;
         context->setDirtyPass();
     }
 
-    if (ByteCode::hasReadRefToRegC(ipn, ip->a.u32) &&
-        !ByteCode::hasWriteRefToRegC(ipn, ip->a.u32))
+    if (ipn->hasReadRefToRegC(ip->a.u32) &&
+        !ipn->hasWriteRefToRegC(ip->a.u32))
     {
         ipn->c.u32 = ip->b.u32;
         context->setDirtyPass();
     }
 
-    if (ByteCode::hasReadRefToRegD(ipn, ip->a.u32) &&
-        !ByteCode::hasWriteRefToRegD(ipn, ip->a.u32))
+    if (ipn->hasReadRefToRegD(ip->a.u32) &&
+        !ipn->hasWriteRefToRegD(ip->a.u32))
     {
         ipn->d.u32 = ip->b.u32;
         context->setDirtyPass();
@@ -6926,8 +6926,8 @@ namespace
                 for (int j = 1; j < i; j++)
                 {
                     if (ip[j].hasFlag(BCI_START_STMT) ||
-                        ByteCode::hasWriteRefToReg(ip + j, ip->a.u32) ||
-                        (isDeRef && ByteCode::hasWriteRefToReg(ip + j, ip->b.u32)))
+                        ip[j].hasWriteRefToReg(ip->a.u32) ||
+                        (isDeRef && ip[j].hasWriteRefToReg(ip->b.u32)))
                         return;
 
                     if (!ip[j].hasOpFlag(OPF_REG_ONLY | OPF_REG_READ))
@@ -7219,10 +7219,10 @@ void ByteCodeOptimizer::reduceX2(ByteCodeOptContext* context, ByteCodeInstructio
 void ByteCodeOptimizer::reduceInvCopy(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
     if (!ip->dynFlags.has(BCID_SWAP) &&
-        !ByteCode::hasWriteRegInA(ip) &&
-        !ByteCode::hasWriteRegInB(ip) &&
-        ByteCode::hasWriteRegInC(ip) &&
-        !ByteCode::hasWriteRegInD(ip) &&
+        !ip->hasWriteRegInA() &&
+        !ip->hasWriteRegInB() &&
+        ip->hasWriteRegInC() &&
+        !ip->hasWriteRegInD() &&
         ip[0].c.u32 == ip[1].b.u32 &&
         !ip[1].hasFlag(BCI_START_STMT))
     {

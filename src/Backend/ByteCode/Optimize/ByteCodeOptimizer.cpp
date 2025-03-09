@@ -198,7 +198,7 @@ void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx, b
     ByteCodeOptTreeNode* treeNode = &context->tree[nodeIdx];
     treeNode->end                 = treeNode->start;
 
-    while (!ByteCode::isRet(treeNode->end) && !ByteCode::isJumpOrDyn(treeNode->end) && !treeNode->end[1].hasFlag(BCI_START_STMT))
+    while (!treeNode->end->isRet() && !treeNode->end->isJumpOrDyn() && !treeNode->end[1].hasFlag(BCI_START_STMT))
     {
         setContextFlags(context, treeNode->end);
         if (computeCrc)
@@ -223,12 +223,12 @@ void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx, b
     }
 #endif
 
-    if (ByteCode::isRet(treeNode->end))
+    if (treeNode->end->isRet())
         return;
 
     bool here = false;
 
-    if (ByteCode::isJumpDyn(treeNode->end))
+    if (treeNode->end->isJumpDyn())
     {
         const auto table = reinterpret_cast<int32_t*>(context->module->compilerSegment.address(treeNode->end->d.u32));
         for (uint32_t i = 0; i < treeNode->end->c.u32; i++)
@@ -242,7 +242,7 @@ void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx, b
             newNodePtr->parent.push_back(nodeIdx);
         }
     }
-    else if (ByteCode::isJump(treeNode->end))
+    else if (treeNode->end->isJump())
     {
         ByteCodeInstruction* nextIp = treeNode->end + treeNode->end->b.s32 + 1;
         if (nextIp->op != ByteCodeOp::End)
@@ -434,7 +434,7 @@ void ByteCodeOptimizer::removeNop(ByteCodeOptContext* context)
             continue;
         }
 
-        if (ByteCode::isJump(ip))
+        if (ip->isJump())
         {
             const auto srcJump = static_cast<int32_t>(ip - context->bc->out);
             const auto dstJump = srcJump + ip->b.s32 + 1;
@@ -457,7 +457,7 @@ void ByteCodeOptimizer::removeNop(ByteCodeOptContext* context)
                 }
             }
         }
-        else if (ByteCode::isJumpDyn(ip))
+        else if (ip->isJumpDyn())
         {
             const auto table = reinterpret_cast<int32_t*>(context->module->compilerSegment.address(ip->d.u32));
             for (uint32_t idx = 0; idx < ip->c.u32; idx++)
@@ -501,9 +501,9 @@ bool ByteCodeOptimizer::insertNopBefore(ByteCodeOptContext* context, ByteCodeIns
     for (uint32_t it = 0; it < context->jumps.size(); it++)
     {
         const auto jump = context->jumps[it];
-        SWAG_ASSERT(ByteCode::isJumpOrDyn(jump));
+        SWAG_ASSERT(jump->isJumpOrDyn());
 
-        if (ByteCode::isJumpDyn(jump))
+        if (jump->isJumpDyn())
         {
             const auto table = reinterpret_cast<int32_t*>(context->module->compilerSegment.address(jump->d.u32));
             for (uint32_t i = 0; i < jump->c.u32; i++)
@@ -566,7 +566,7 @@ void ByteCodeOptimizer::computeJumpAndNop(ByteCodeOptContext* context)
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
         ip->removeFlag(BCI_START_STMT);
-        if (ByteCode::isJumpOrDyn(ip))
+        if (ip->isJumpOrDyn())
             context->jumps.push_back(ip);
         else if (ip->op == ByteCodeOp::DebugNop)
             context->nops.push_back(ip);
@@ -578,7 +578,7 @@ void ByteCodeOptimizer::computeJumpAndNop(ByteCodeOptContext* context)
     // Mark all instructions which are a jump destination
     for (const auto jump : context->jumps)
     {
-        if (ByteCode::isJumpDyn(jump))
+        if (jump->isJumpDyn())
         {
             const auto table = reinterpret_cast<int32_t*>(context->module->compilerSegment.address(jump->d.u64 & 0xFFFFFFFF));
             for (uint32_t i = 0; i < jump->c.u32; i++)

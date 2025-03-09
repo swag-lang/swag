@@ -14,7 +14,7 @@ bool ByteCodeOptimizer::optimizePassParam(ByteCodeOptContext* context)
         if (ip->op == ByteCodeOp::CopyRRtoRA)
         {
             auto ipScan = ip + 1;
-            while (!ByteCode::isRet(ipScan) && !ipScan->hasFlag(BCI_START_STMT) && !ByteCode::isJump(ipScan))
+            while (!ipScan->isRet() && !ipScan->hasFlag(BCI_START_STMT) && !ipScan->isJump())
             {
                 if (ipScan->op == ByteCodeOp::CopyRRtoRA && ipScan->a.u32 == ip->a.u32)
                 {
@@ -28,7 +28,7 @@ bool ByteCodeOptimizer::optimizePassParam(ByteCodeOptContext* context)
                     }
                 }
 
-                if (ByteCode::hasWriteRefToReg(ipScan, ip->a.u32))
+                if (ipScan->hasWriteRefToReg(ip->a.u32))
                     break;
 
                 ipScan++;
@@ -37,7 +37,7 @@ bool ByteCodeOptimizer::optimizePassParam(ByteCodeOptContext* context)
         else if (ip->op == ByteCodeOp::GetParam64)
         {
             auto ipScan = ip + 1;
-            while (!ByteCode::isRet(ipScan) && !ipScan->hasFlag(BCI_START_STMT) && !ByteCode::isJump(ipScan))
+            while (!ipScan->isRet() && !ipScan->hasFlag(BCI_START_STMT) && !ipScan->isJump())
             {
                 if (ipScan->op == ByteCodeOp::GetIncParam64 &&
                     ipScan->a.u32 == ip->a.u32 &&
@@ -50,7 +50,7 @@ bool ByteCodeOptimizer::optimizePassParam(ByteCodeOptContext* context)
                     return true;
                 }
 
-                if (ByteCode::hasWriteRefToReg(ipScan, ip->a.u32))
+                if (ipScan->hasWriteRefToReg(ip->a.u32))
                     break;
 
                 ipScan++;
@@ -59,7 +59,7 @@ bool ByteCodeOptimizer::optimizePassParam(ByteCodeOptContext* context)
         else if (ip->op == ByteCodeOp::GetIncParam64)
         {
             auto ipScan = ip + 1;
-            while (!ByteCode::isRet(ipScan) && !ipScan->hasFlag(BCI_START_STMT) && !ByteCode::isJump(ipScan))
+            while (!ipScan->isRet() && !ipScan->hasFlag(BCI_START_STMT) && !ipScan->isJump())
             {
                 if (ipScan->op == ByteCodeOp::GetIncParam64 &&
                     ipScan->a.u32 == ip->a.u32 &&
@@ -75,7 +75,7 @@ bool ByteCodeOptimizer::optimizePassParam(ByteCodeOptContext* context)
                     }
                 }
 
-                if (ByteCode::hasWriteRefToReg(ipScan, ip->a.u32))
+                if (ipScan->hasWriteRefToReg(ip->a.u32))
                     break;
 
                 ipScan++;

@@ -43,6 +43,53 @@ struct ByteCodeInstruction
 
     SWAG_FORCE_INLINE bool hasOpFlag(OpFlags fl) const { return g_ByteCodeOpDesc[static_cast<int>(op)].flags.has(fl); }
 
+    bool isMemCpy() const { return hasOpFlag(OPF_MEMCPY); }
+    bool isPushParam() const { return hasOpFlag(OPF_PUSH_PARAM); }
+    bool isCall() const { return hasOpFlag(OPF_CALL); }
+    bool isLocalCall() const { return hasOpFlag(OPF_LOCAL_CALL); }
+    bool isLambdaCall() const { return hasOpFlag(OPF_LAMBDA_CALL); }
+    bool isForeignCall() const { return hasOpFlag(OPF_FOREIGN_CALL); }
+    bool isJump() const { return hasOpFlag(OPF_JUMP); }
+    bool isJumpDyn() const { return hasOpFlag(OPF_JUMP_DYN); }
+    bool isJumpOrDyn() const { return hasOpFlag(OPF_JUMP | OPF_JUMP_DYN); }
+    bool isRet() const { return op == ByteCodeOp::Ret || op == ByteCodeOp::CopyRAtoRRRet || op == ByteCodeOp::InternalUnreachable || op == ByteCodeOp::Unreachable; }
+
+    bool hasRefToRegA(uint32_t reg) const { return a.u32 == reg && !hasFlag(BCI_IMM_A) && hasOpFlag(OPF_READ_A | OPF_WRITE_A); }
+    bool hasRefToRegB(uint32_t reg) const { return b.u32 == reg && !hasFlag(BCI_IMM_B) && hasOpFlag(OPF_READ_B | OPF_WRITE_B); }
+    bool hasRefToRegC(uint32_t reg) const { return c.u32 == reg && !hasFlag(BCI_IMM_C) && hasOpFlag(OPF_READ_C | OPF_WRITE_C); }
+    bool hasRefToRegD(uint32_t reg) const { return d.u32 == reg && !hasFlag(BCI_IMM_D) && hasOpFlag(OPF_READ_D | OPF_WRITE_D); }
+    bool hasRefToReg(uint32_t reg) const { return hasRefToRegA(reg) || hasRefToRegB(reg) || hasRefToRegC(reg) || hasRefToRegD(reg); }
+
+    bool hasWriteRefToRegA(uint32_t reg) const { return a.u32 == reg && !hasFlag(BCI_IMM_A) && hasOpFlag(OPF_WRITE_A); }
+    bool hasWriteRefToRegB(uint32_t reg) const { return b.u32 == reg && !hasFlag(BCI_IMM_B) && hasOpFlag(OPF_WRITE_B); }
+    bool hasWriteRefToRegC(uint32_t reg) const { return c.u32 == reg && !hasFlag(BCI_IMM_C) && hasOpFlag(OPF_WRITE_C); }
+    bool hasWriteRefToRegD(uint32_t reg) const { return d.u32 == reg && !hasFlag(BCI_IMM_D) && hasOpFlag(OPF_WRITE_D); }
+    bool hasWriteRefToReg(uint32_t reg) const { return hasWriteRefToRegA(reg) || hasWriteRefToRegB(reg) || hasWriteRefToRegC(reg) || hasWriteRefToRegD(reg); }
+
+    bool hasReadRefToRegA(uint32_t reg) const { return a.u32 == reg && !hasFlag(BCI_IMM_A) && hasOpFlag(OPF_READ_A); }
+    bool hasReadRefToRegB(uint32_t reg) const { return b.u32 == reg && !hasFlag(BCI_IMM_B) && hasOpFlag(OPF_READ_B); }
+    bool hasReadRefToRegC(uint32_t reg) const { return c.u32 == reg && !hasFlag(BCI_IMM_C) && hasOpFlag(OPF_READ_C); }
+    bool hasReadRefToRegD(uint32_t reg) const { return d.u32 == reg && !hasFlag(BCI_IMM_D) && hasOpFlag(OPF_READ_D); }
+    bool hasReadRefToReg(uint32_t reg) const { return hasReadRefToRegA(reg) || hasReadRefToRegB(reg) || hasReadRefToRegC(reg) || hasReadRefToRegD(reg); }
+
+    bool hasWriteRegInA() const { return !hasFlag(BCI_IMM_A) && hasOpFlag(OPF_WRITE_A); }
+    bool hasWriteRegInB() const { return !hasFlag(BCI_IMM_B) && hasOpFlag(OPF_WRITE_B); }
+    bool hasWriteRegInC() const { return !hasFlag(BCI_IMM_C) && hasOpFlag(OPF_WRITE_C); }
+    bool hasWriteRegInD() const { return !hasFlag(BCI_IMM_D) && hasOpFlag(OPF_WRITE_D); }
+
+    bool hasReadRegInA() const { return !hasFlag(BCI_IMM_A) && hasOpFlag(OPF_READ_A); }
+    bool hasReadRegInB() const { return !hasFlag(BCI_IMM_B) && hasOpFlag(OPF_READ_B); }
+    bool hasReadRegInC() const { return !hasFlag(BCI_IMM_C) && hasOpFlag(OPF_READ_C); }
+    bool hasReadRegInD() const { return !hasFlag(BCI_IMM_D) && hasOpFlag(OPF_READ_D); }
+
+    bool hasSomethingInA() const { return hasOpFlag(OPF_READ_A | OPF_WRITE_A | OPF_READ_VAL32_A | OPF_READ_VAL64_A); }
+    bool hasSomethingInB() const { return hasOpFlag(OPF_READ_B | OPF_WRITE_B | OPF_READ_VAL32_B | OPF_READ_VAL64_B); }
+    bool hasSomethingInC() const { return hasOpFlag(OPF_READ_C | OPF_WRITE_C | OPF_READ_VAL32_C | OPF_READ_VAL64_C); }
+    bool hasSomethingInD() const { return hasOpFlag(OPF_READ_D | OPF_WRITE_D | OPF_READ_VAL32_D | OPF_READ_VAL64_D); }
+
+    uint32_t countWriteRegs() const { return hasWriteRegInA() + hasWriteRegInB() + hasWriteRegInC() + hasWriteRegInD(); }
+    uint32_t countReadRegs() const { return hasReadRegInA() + hasReadRegInB() + hasReadRegInC() + hasReadRegInD(); }
+
     // Keep 'op' first to dereference it in the runner without an offset
     ByteCodeOp          op;
     InstructionFlags    flags;

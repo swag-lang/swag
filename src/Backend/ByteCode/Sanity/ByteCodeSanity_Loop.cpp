@@ -22,7 +22,7 @@ bool ByteCodeSanity::backTrace(ByteCodeSanityState* state, uint32_t reg)
     for (uint32_t i = state->ips.size() - 2; i != UINT_MAX && !done; i--)
     {
         const auto ip = state->ips[i];
-        if (!ByteCode::hasWriteRefToReg(ip, reg))
+        if (!ip->hasWriteRefToReg(reg))
             break;
 
         // Store the last value of a given register, to restore it at the end, once the backtrace is done
@@ -267,22 +267,22 @@ bool ByteCodeSanity::loop()
             case ByteCodeOp::DeRefStringSlice:
             case ByteCodeOp::IntrinsicArguments:
             case ByteCodeOp::IntrinsicCompiler:
-                if (ByteCode::hasWriteRegInA(ip))
+                if (ip->hasWriteRegInA())
                 {
                     SWAG_CHECK(STATE()->getRegister(ra, ip->a.u32));
                     ra->setUnknown();
                 }
-                if (ByteCode::hasWriteRegInB(ip))
+                if (ip->hasWriteRegInB())
                 {
                     SWAG_CHECK(STATE()->getRegister(rb, ip->b.u32));
                     rb->setUnknown();
                 }
-                if (ByteCode::hasWriteRegInC(ip))
+                if (ip->hasWriteRegInC())
                 {
                     SWAG_CHECK(STATE()->getRegister(rc, ip->c.u32));
                     rc->setUnknown();
                 }
-                if (ByteCode::hasWriteRegInD(ip))
+                if (ip->hasWriteRegInD())
                 {
                     SWAG_CHECK(STATE()->getRegister(rd, ip->d.u32));
                     rd->setUnknown();

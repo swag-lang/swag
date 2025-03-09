@@ -616,7 +616,7 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
         case DebugStepMode::FinishedFunction:
         {
             // Top level function, break on ret
-            if (context->curRC == 0 && stepRc == UINT32_MAX && ByteCode::isRet(ip))
+            if (context->curRC == 0 && stepRc == UINT32_MAX && ip->isRet())
             {
                 stepMode = DebugStepMode::None;
                 break;

@@ -223,7 +223,7 @@ bool ByteCodeOptimizer::optimizePassImmediate2(ByteCodeOptContext* context)
             auto ipn = ip + 1;
             while (ipn->op != ByteCodeOp::End)
             {
-                if (ByteCode::hasReadRefToReg(ipn, ip->a.u32))
+                if (ipn->hasReadRefToReg(ip->a.u32))
                 {
                     bool bad           = false;
                     bool hasJumpInside = false;
@@ -264,13 +264,13 @@ bool ByteCodeOptimizer::optimizePassImmediate2(ByteCodeOptContext* context)
                     bool canC  = false;
                     bool canD  = false;
 
-                    if (ByteCode::hasReadRefToRegA(ipn, ip->a.u32) && flags.has(OPF_IMM_A))
+                    if (ipn->hasReadRefToRegA(ip->a.u32) && flags.has(OPF_IMM_A))
                         canA = true;
-                    if (ByteCode::hasReadRefToRegB(ipn, ip->a.u32) && flags.has(OPF_IMM_B))
+                    if (ipn->hasReadRefToRegB(ip->a.u32) && flags.has(OPF_IMM_B))
                         canB = true;
-                    if (ByteCode::hasReadRefToRegC(ipn, ip->a.u32) && flags.has(OPF_IMM_C))
+                    if (ipn->hasReadRefToRegC(ip->a.u32) && flags.has(OPF_IMM_C))
                         canC = true;
-                    if (ByteCode::hasReadRefToRegD(ipn, ip->a.u32) && flags.has(OPF_IMM_D))
+                    if (ipn->hasReadRefToRegD(ip->a.u32) && flags.has(OPF_IMM_D))
                         canD = true;
 
                     // To be sure...
@@ -317,7 +317,7 @@ bool ByteCodeOptimizer::optimizePassImmediate2(ByteCodeOptContext* context)
                     break;
                 }
 
-                if (ByteCode::hasRefToReg(ipn, ip->a.u32))
+                if (ipn->hasRefToReg(ip->a.u32))
                     break;
 
                 ipn++;

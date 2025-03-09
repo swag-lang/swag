@@ -41,13 +41,13 @@ bool ByteCodeOptimizer::optimizePassErr(ByteCodeOptContext* context)
                     break;
                 }
 
-                if (ByteCode::isRet(ip + i) && i != countErrInst - 1)
+                if (ip[i].isRet() && i != countErrInst - 1)
                 {
                     invalid = true;
                     break;
                 }
 
-                if (ByteCode::isJump(ip + i))
+                if (ip[i].isJump())
                 {
                     invalid = true;
                     break;

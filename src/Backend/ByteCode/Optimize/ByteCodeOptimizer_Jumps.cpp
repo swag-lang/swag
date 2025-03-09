@@ -9,7 +9,7 @@ bool ByteCodeOptimizer::optimizePassJump(ByteCodeOptContext* context)
     for (uint32_t idx = 0; idx < context->jumps.size(); idx++)
     {
         const auto ip = context->jumps[idx];
-        if (!ByteCode::isJump(ip))
+        if (!ip->isJump())
             continue;
 
         auto destIp = ip + ip->b.s32 + 1;
@@ -1678,7 +1678,7 @@ bool ByteCodeOptimizer::optimizePassConstJump(ByteCodeOptContext* context)
     for (uint32_t idx = 0; idx < context->jumps.size(); idx++)
     {
         const auto ip = context->jumps[idx];
-        if (!ByteCode::isJump(ip))
+        if (!ip->isJump())
             continue;
 
         if (ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_C))
@@ -1937,7 +1937,7 @@ namespace
         for (uint32_t idx = 0; idx < context->jumps.size(); idx++)
         {
             const auto ip = context->jumps[idx];
-            if (!ByteCode::isJump(ip))
+            if (!ip->isJump())
                 continue;
 
             const auto orgValue0 = ip->a.u32;

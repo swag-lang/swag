@@ -193,7 +193,7 @@ ByteCodeInstruction* ByteCodeGen::emitInstruction(const ByteCodeGenContext* cont
     else
         ins.location = &node->token.startLocation;
 
-    if (ByteCode::isJumpOrDyn(&ins))
+    if (ins.isJumpOrDyn())
         bc->numJumps++;
     if (op == ByteCodeOp::DebugNop)
         bc->numDebugNops++;

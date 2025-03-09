@@ -163,7 +163,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, const ByteCodeInstruction
         context->bc->profileCumTime += now - context->bc->profileStart;
         context->bc->profileFFI += now - context->bc->profileStart;
 
-        if (ByteCode::isForeignCall(ip))
+        if (ip->isForeignCall())
         {
             const auto funcDecl = castAst<AstFuncDecl>(reinterpret_cast<AstNode*>(ip->a.pointer), AstNodeKind::FuncDecl);
             const auto callName = funcDecl->getCallName();

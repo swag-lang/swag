@@ -29,12 +29,12 @@ bool ByteCodeOptimizer::optimizePassDeadCode(ByteCodeOptContext* context)
         {
             ADD_TODO(ip + ip->b.s32 + 1);
         }
-        else if (ByteCode::isJump(ip))
+        else if (ip->isJump())
         {
             ADD_TODO(ip + ip->b.s32 + 1);
             ADD_TODO(ip + 1);
         }
-        else if (ByteCode::isJumpDyn(ip))
+        else if (ip->isJumpDyn())
         {
             const auto table = reinterpret_cast<int32_t*>(context->module->compilerSegment.address(ip->d.u32));
             for (uint32_t i = 0; i < ip->c.u32; i++)
@@ -42,7 +42,7 @@ bool ByteCodeOptimizer::optimizePassDeadCode(ByteCodeOptContext* context)
                 ADD_TODO(ip + table[i] + 1);
             }
         }
-        else if (!ByteCode::isRet(ip) && ip->op != ByteCodeOp::End)
+        else if (!ip->isRet() && ip->op != ByteCodeOp::End)
         {
             ADD_TODO(ip + 1);
         }

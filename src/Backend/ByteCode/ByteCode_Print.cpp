@@ -377,7 +377,7 @@ void ByteCode::fillPrintInstruction(const ByteCodePrintOptions& options, const B
     line.pretty = getPrettyInstruction(ip);
     line.pretty += " ";
 
-    if (isJump(ip))
+    if (ip->isJump())
         line.pretty += form("%08d ", ip->b.s32 + i + 1);
 
     switch (ip->op)
@@ -411,7 +411,7 @@ void ByteCode::fillPrintInstruction(const ByteCodePrintOptions& options, const B
         }
     }
 
-    if (isForeignCall(ip))
+    if (ip->isForeignCall())
     {
         const auto funcNode = castAst<AstFuncDecl>(reinterpret_cast<AstNode*>(ip->a.pointer), AstNodeKind::FuncDecl);
         line.pretty += "// ";
@@ -419,7 +419,7 @@ void ByteCode::fillPrintInstruction(const ByteCodePrintOptions& options, const B
         line.pretty += "()";
         line.pretty += " ";
     }
-    else if (isLocalCall(ip))
+    else if (ip->isLocalCall())
     {
         const auto bcCall = reinterpret_cast<ByteCode*>(ip->a.pointer);
         SWAG_ASSERT(bcCall);

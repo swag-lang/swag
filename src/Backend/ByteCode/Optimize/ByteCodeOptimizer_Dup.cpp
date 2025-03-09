@@ -92,7 +92,7 @@ namespace
                 {
                     case ByteCodeOp::JumpIfZero32:
                     case ByteCodeOp::JumpIfNotZero32:
-                        if (ByteCode::hasReadRegInA(ip) && !ByteCode::hasWriteRegInA(ip))
+                        if (ip->hasReadRegInA() && !ip->hasWriteRegInA())
                         {
                             const auto it = mapCopyRA.find(ip->a.u32);
                             if (it)
@@ -110,7 +110,7 @@ namespace
                     case ByteCodeOp::SetAtPointer32:
                     case ByteCodeOp::SetAtStackPointer32:
                     case ByteCodeOp::AffectOpPlusEqS32:
-                        if (ByteCode::hasReadRegInB(ip) && !ByteCode::hasWriteRegInB(ip))
+                        if (ip->hasReadRegInB() && !ip->hasWriteRegInB())
                         {
                             const auto it = mapCopyRA.find(ip->b.u32);
                             if (it)
@@ -142,7 +142,7 @@ namespace
                     (ip->op != ByteCodeOp::PushRAParam4 || !ip->hasFlag(BCI_VARIADIC)) &&
                     ip->op != ByteCodeOp::CopySP)
                 {
-                    if (ByteCode::hasReadRegInA(ip) && !ByteCode::hasWriteRegInA(ip))
+                    if (ip->hasReadRegInA() && !ip->hasWriteRegInA())
                     {
                         const auto it = mapCopyRA.find(ip->a.u32);
                         if (it)
@@ -156,7 +156,7 @@ namespace
                         }
                     }
 
-                    if (ByteCode::hasReadRegInB(ip) && !ByteCode::hasWriteRegInB(ip))
+                    if (ip->hasReadRegInB() && !ip->hasWriteRegInB())
                     {
                         const auto it = mapCopyRA.find(ip->b.u32);
                         if (it)
@@ -170,7 +170,7 @@ namespace
                         }
                     }
 
-                    if (ByteCode::hasReadRegInC(ip) && !ByteCode::hasWriteRegInC(ip))
+                    if (ip->hasReadRegInC() && !ip->hasWriteRegInC())
                     {
                         const auto it = mapCopyRA.find(ip->c.u32);
                         if (it)
@@ -184,7 +184,7 @@ namespace
                         }
                     }
 
-                    if (ByteCode::hasReadRegInD(ip) && !ByteCode::hasWriteRegInD(ip))
+                    if (ip->hasReadRegInD() && !ip->hasWriteRegInD())
                     {
                         const auto it = mapCopyRA.find(ip->d.u32);
                         if (it)
@@ -201,7 +201,7 @@ namespace
             }
 
             // Reset CopyRARB Map
-            if (ByteCode::isJump(ip))
+            if (ip->isJump())
             {
                 mapCopyRA.clear();
                 mapCopyRB.clear();
@@ -288,7 +288,7 @@ namespace
 
         for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
         {
-            if (ip->hasFlag(BCI_START_STMT) || ByteCode::isJump(ip))
+            if (ip->hasFlag(BCI_START_STMT) || ip->isJump())
                 mapRA.clear();
 
             if (ip->op == op)
@@ -311,13 +311,13 @@ namespace
             }
             else if (mapRA.count())
             {
-                if (ByteCode::hasWriteRegInA(ip))
+                if (ip->hasWriteRegInA())
                     mapRA.remove(ip->a.u32);
-                if (ByteCode::hasWriteRegInB(ip))
+                if (ip->hasWriteRegInB())
                     mapRA.remove(ip->b.u32);
-                if (ByteCode::hasWriteRegInC(ip))
+                if (ip->hasWriteRegInC())
                     mapRA.remove(ip->c.u32);
-                if (ByteCode::hasWriteRegInD(ip))
+                if (ip->hasWriteRegInD())
                     mapRA.remove(ip->d.u32);
             }
         }
@@ -355,20 +355,20 @@ bool ByteCodeOptimizer::optimizePassDupInstruction(ByteCodeOptContext* context)
     {
         if (!ip->hasOpFlag(OPF_REG_ONLY | OPF_REG_READ))
             continue;
-        if (ByteCode::countWriteRegs(ip) > 1)
+        if (ip->countWriteRegs() > 1)
             continue;
 
         uint32_t reg;
-        if (ByteCode::hasWriteRegInA(ip))
+        if (ip->hasWriteRegInA())
             reg = ip->a.u32;
-        else if (ByteCode::hasWriteRegInB(ip))
+        else if (ip->hasWriteRegInB())
             reg = ip->b.u32;
-        else if (ByteCode::hasWriteRegInC(ip))
+        else if (ip->hasWriteRegInC())
             reg = ip->c.u32;
         else
             reg = ip->d.u32;
 
-        if (ByteCode::hasReadRefToReg(ip, reg))
+        if (ip->hasReadRefToReg(reg))
             continue;
 
         for (auto ipScan = ip + 1; ipScan->op != ByteCodeOp::End; ipScan++)
@@ -378,38 +378,38 @@ bool ByteCodeOptimizer::optimizePassDupInstruction(ByteCodeOptContext* context)
             if (ipScan->hasFlag(BCI_START_STMT))
                 break;
 
-            if (ByteCode::hasReadRegInA(ip) && ByteCode::hasWriteRefToReg(ipScan, ip->a.u32))
+            if (ip->hasReadRegInA() && ipScan->hasWriteRefToReg(ip->a.u32))
                 break;
-            if (ByteCode::hasReadRegInB(ip) && ByteCode::hasWriteRefToReg(ipScan, ip->b.u32))
+            if (ip->hasReadRegInB() && ipScan->hasWriteRefToReg(ip->b.u32))
                 break;
-            if (ByteCode::hasReadRegInC(ip) && ByteCode::hasWriteRefToReg(ipScan, ip->c.u32))
+            if (ip->hasReadRegInC() && ipScan->hasWriteRefToReg(ip->c.u32))
                 break;
-            if (ByteCode::hasReadRegInD(ip) && ByteCode::hasWriteRefToReg(ipScan, ip->d.u32))
+            if (ip->hasReadRegInD() && ipScan->hasWriteRefToReg(ip->d.u32))
                 break;
 
             const bool sameInst = ByteCode::haveSameRead(ip, ipScan);
-            if (!sameInst && ByteCode::hasWriteRefToReg(ipScan, reg))
+            if (!sameInst && ipScan->hasWriteRefToReg(reg))
                 break;
             if (!sameInst)
                 continue;
 
             // Exact same instructions, it's useless, as we only have "pure" instructions between the 2
             // (i.e. only instructions that read something, or modify a register)
-            if ((ByteCode::hasWriteRegInA(ipScan) && ipScan->a.u32 == reg) ||
-                (ByteCode::hasWriteRegInB(ipScan) && ipScan->b.u32 == reg) ||
-                (ByteCode::hasWriteRegInC(ipScan) && ipScan->c.u32 == reg) ||
-                (ByteCode::hasWriteRegInD(ipScan) && ipScan->d.u32 == reg))
+            if ((ipScan->hasWriteRegInA() && ipScan->a.u32 == reg) ||
+                (ipScan->hasWriteRegInB() && ipScan->b.u32 == reg) ||
+                (ipScan->hasWriteRegInC() && ipScan->c.u32 == reg) ||
+                (ipScan->hasWriteRegInD() && ipScan->d.u32 == reg))
             {
                 setNop(context, ipScan);
                 break;
             }
 
             uint32_t writeReg;
-            if (ByteCode::hasWriteRegInA(ipScan))
+            if (ipScan->hasWriteRegInA())
                 writeReg = ipScan->a.u32;
-            else if (ByteCode::hasWriteRegInB(ipScan))
+            else if (ipScan->hasWriteRegInB())
                 writeReg = ipScan->b.u32;
-            else if (ByteCode::hasWriteRegInC(ipScan))
+            else if (ipScan->hasWriteRegInC())
                 writeReg = ipScan->c.u32;
             else
                 writeReg = ipScan->d.u32;
@@ -422,33 +422,33 @@ bool ByteCodeOptimizer::optimizePassDupInstruction(ByteCodeOptContext* context)
                 if (ipScan->hasFlag(BCI_START_STMT))
                     break;
 
-                if (ByteCode::hasReadRefToRegA(ipScan, writeReg) && !ByteCode::hasWriteRefToRegA(ipScan, writeReg))
+                if (ipScan->hasReadRefToRegA(writeReg) && !ipScan->hasWriteRefToRegA(writeReg))
                 {
                     ipScan->a.u32 = reg;
                     context->setDirtyPass();
                 }
 
-                if (ByteCode::hasReadRefToRegB(ipScan, writeReg) && !ByteCode::hasWriteRefToRegB(ipScan, writeReg))
+                if (ipScan->hasReadRefToRegB(writeReg) && !ipScan->hasWriteRefToRegB(writeReg))
                 {
                     ipScan->b.u32 = reg;
                     context->setDirtyPass();
                 }
 
-                if (ByteCode::hasReadRefToRegC(ipScan, writeReg) && !ByteCode::hasWriteRefToRegC(ipScan, writeReg))
+                if (ipScan->hasReadRefToRegC(writeReg) && !ipScan->hasWriteRefToRegC(writeReg))
                 {
                     ipScan->c.u32 = reg;
                     context->setDirtyPass();
                 }
 
-                if (ByteCode::hasReadRefToRegD(ipScan, writeReg) && !ByteCode::hasWriteRefToRegD(ipScan, writeReg))
+                if (ipScan->hasReadRefToRegD(writeReg) && !ipScan->hasWriteRefToRegD(writeReg))
                 {
                     ipScan->d.u32 = reg;
                     context->setDirtyPass();
                 }
 
-                if (ByteCode::hasWriteRefToReg(ipScan, writeReg))
+                if (ipScan->hasWriteRefToReg(writeReg))
                     break;
-                if (ByteCode::hasWriteRefToReg(ipScan, reg))
+                if (ipScan->hasWriteRefToReg(reg))
                     break;
 
                 ipScan += 1;

@@ -9,7 +9,7 @@ bool ByteCodeOptimizer::optimizePassDupBlocks(ByteCodeOptContext* inContext)
         parseCxt.curIp            = node->end;
 
         // Only factorize terminal blocks
-        if (!ByteCode::isRet(node->end))
+        if (!node->end->isRet())
             return;
 
         const auto it = context->map32Node.find(node->crcBlock);

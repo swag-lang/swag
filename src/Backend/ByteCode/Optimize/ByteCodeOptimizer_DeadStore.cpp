@@ -55,10 +55,10 @@ namespace
     {
         node->mark = context->mark;
 
-        const bool hasA = ByteCode::hasWriteRegInA(ip);
-        const bool hasB = ByteCode::hasWriteRegInB(ip);
-        const bool hasC = ByteCode::hasWriteRegInC(ip);
-        const bool hasD = ByteCode::hasWriteRegInD(ip);
+        const bool hasA = ip->hasWriteRegInA();
+        const bool hasB = ip->hasWriteRegInB();
+        const bool hasC = ip->hasWriteRegInC();
+        const bool hasD = ip->hasWriteRegInD();
 
         if (ipScan >= node->start)
         {
@@ -70,13 +70,13 @@ namespace
                 if (ipScan->op == ip->op)
                 {
                     bool same = true;
-                    if (ByteCode::hasSomethingInA(ipScan) && ipScan->a.u64 != ip->a.u64)
+                    if (ipScan->hasSomethingInA() && ipScan->a.u64 != ip->a.u64)
                         same = false;
-                    if (ByteCode::hasSomethingInB(ipScan) && ipScan->b.u64 != ip->b.u64)
+                    if (ipScan->hasSomethingInB() && ipScan->b.u64 != ip->b.u64)
                         same = false;
-                    if (ByteCode::hasSomethingInC(ipScan) && ipScan->c.u64 != ip->c.u64)
+                    if (ipScan->hasSomethingInC() && ipScan->c.u64 != ip->c.u64)
                         same = false;
-                    if (ByteCode::hasSomethingInD(ipScan) && ipScan->d.u64 != ip->d.u64)
+                    if (ipScan->hasSomethingInD() && ipScan->d.u64 != ip->d.u64)
                         same = false;
                     if (same)
                     {
@@ -85,13 +85,13 @@ namespace
                     }
                 }
 
-                if (hasA && ByteCode::hasWriteRefToReg(ipScan, ip->a.u32))
+                if (hasA && ipScan->hasWriteRefToReg(ip->a.u32))
                     return false;
-                if (hasB && ByteCode::hasWriteRefToReg(ipScan, ip->b.u32))
+                if (hasB && ipScan->hasWriteRefToReg(ip->b.u32))
                     return false;
-                if (hasC && ByteCode::hasWriteRefToReg(ipScan, ip->c.u32))
+                if (hasC && ipScan->hasWriteRefToReg(ip->c.u32))
                     return false;
-                if (hasD && ByteCode::hasWriteRefToReg(ipScan, ip->d.u32))
+                if (hasD && ipScan->hasWriteRefToReg(ip->d.u32))
                     return false;
 
                 if (ipScan <= node->start)

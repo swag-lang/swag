@@ -117,49 +117,49 @@ namespace
 
 void SanityValue::setIps(ByteCodeInstruction* ip, SanityValue* ra, SanityValue* rb, SanityValue* rc, SanityValue* rd)
 {
-    if (ByteCode::hasWriteRegInA(ip))
+    if (ip->hasWriteRegInA())
     {
         SWAG_ASSERT(ra);
-        if (ByteCode::hasReadRefToRegA(ip, ip->a.u32) ||
-            ByteCode::hasReadRefToRegB(ip, ip->a.u32) ||
-            ByteCode::hasReadRefToRegC(ip, ip->a.u32) ||
-            ByteCode::hasReadRefToRegD(ip, ip->a.u32))
+        if (ip->hasReadRefToRegA(ip->a.u32) ||
+            ip->hasReadRefToRegB(ip->a.u32) ||
+            ip->hasReadRefToRegC(ip->a.u32) ||
+            ip->hasReadRefToRegD(ip->a.u32))
             updateIp(ip, ra);
         else
             setIp(ip, ra);
     }
 
-    if (ByteCode::hasWriteRegInB(ip))
+    if (ip->hasWriteRegInB())
     {
         SWAG_ASSERT(rb);
-        if (ByteCode::hasReadRefToRegA(ip, ip->b.u32) ||
-            ByteCode::hasReadRefToRegB(ip, ip->b.u32) ||
-            ByteCode::hasReadRefToRegC(ip, ip->b.u32) ||
-            ByteCode::hasReadRefToRegD(ip, ip->b.u32))
+        if (ip->hasReadRefToRegA(ip->b.u32) ||
+            ip->hasReadRefToRegB(ip->b.u32) ||
+            ip->hasReadRefToRegC(ip->b.u32) ||
+            ip->hasReadRefToRegD(ip->b.u32))
             updateIp(ip, rb);
         else
             setIp(ip, rb);
     }
 
-    if (ByteCode::hasWriteRegInC(ip))
+    if (ip->hasWriteRegInC())
     {
         SWAG_ASSERT(rc);
-        if (ByteCode::hasReadRefToRegA(ip, ip->c.u32) ||
-            ByteCode::hasReadRefToRegB(ip, ip->c.u32) ||
-            ByteCode::hasReadRefToRegC(ip, ip->c.u32) ||
-            ByteCode::hasReadRefToRegD(ip, ip->c.u32))
+        if (ip->hasReadRefToRegA(ip->c.u32) ||
+            ip->hasReadRefToRegB(ip->c.u32) ||
+            ip->hasReadRefToRegC(ip->c.u32) ||
+            ip->hasReadRefToRegD(ip->c.u32))
             updateIp(ip, rc);
         else
             setIp(ip, rc);
     }
 
-    if (ByteCode::hasWriteRegInD(ip))
+    if (ip->hasWriteRegInD())
     {
         SWAG_ASSERT(rd);
-        if (ByteCode::hasReadRefToRegA(ip, ip->d.u32) ||
-            ByteCode::hasReadRefToRegB(ip, ip->d.u32) ||
-            ByteCode::hasReadRefToRegC(ip, ip->d.u32) ||
-            ByteCode::hasReadRefToRegD(ip, ip->d.u32))
+        if (ip->hasReadRefToRegA(ip->d.u32) ||
+            ip->hasReadRefToRegB(ip->d.u32) ||
+            ip->hasReadRefToRegC(ip->d.u32) ||
+            ip->hasReadRefToRegD(ip->d.u32))
             updateIp(ip, rd);
         else
             setIp(ip, rd);

@@ -56,33 +56,33 @@ bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
                 //
                 // So we never move an instruction INSIDE a PushParam block
 
-                if (ByteCode::isPushParam(ipn) && !startParamBlock)
+                if (ipn->isPushParam() && !startParamBlock)
                     startParamBlock = ipn;
 
-                if ((ByteCode::hasWriteRegInA(ip) && ByteCode::hasRefToReg(ipn, ip->a.u32)) ||
-                    (ByteCode::hasWriteRegInB(ip) && ByteCode::hasRefToReg(ipn, ip->b.u32)) ||
-                    (ByteCode::hasWriteRegInC(ip) && ByteCode::hasRefToReg(ipn, ip->c.u32)) ||
-                    (ByteCode::hasWriteRegInD(ip) && ByteCode::hasRefToReg(ipn, ip->d.u32)))
+                if ((ip->hasWriteRegInA() && ipn->hasRefToReg(ip->a.u32)) ||
+                    (ip->hasWriteRegInB() && ipn->hasRefToReg(ip->b.u32)) ||
+                    (ip->hasWriteRegInC() && ipn->hasRefToReg(ip->c.u32)) ||
+                    (ip->hasWriteRegInD() && ipn->hasRefToReg(ip->d.u32)))
                 {
                     context->mapInstInst[ip] = startParamBlock ? startParamBlock : ipn;
                     break;
                 }
 
-                if ((ByteCode::hasReadRegInA(ip) && ByteCode::hasWriteRefToReg(ipn, ip->a.u32)) ||
-                    (ByteCode::hasReadRegInB(ip) && ByteCode::hasWriteRefToReg(ipn, ip->b.u32)) ||
-                    (ByteCode::hasReadRegInC(ip) && ByteCode::hasWriteRefToReg(ipn, ip->c.u32)) ||
-                    (ByteCode::hasReadRegInD(ip) && ByteCode::hasWriteRefToReg(ipn, ip->d.u32)))
+                if ((ip->hasReadRegInA() && ipn->hasWriteRefToReg(ip->a.u32)) ||
+                    (ip->hasReadRegInB() && ipn->hasWriteRefToReg(ip->b.u32)) ||
+                    (ip->hasReadRegInC() && ipn->hasWriteRefToReg(ip->c.u32)) ||
+                    (ip->hasReadRegInD() && ipn->hasWriteRefToReg(ip->d.u32)))
                 {
                     break;
                 }
 
-                if (ByteCode::isJump(ipn))
+                if (ipn->isJump())
                     break;
 
                 // After the call, this is the end of the param block, so we can move an instruction
                 // here again, as long as nothing in the param block and the call references the
                 // register
-                if (ByteCode::isCall(ipn))
+                if (ipn->isCall())
                     startParamBlock = nullptr;
 
                 ipn++;
@@ -123,15 +123,15 @@ bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
                             int cpt0 = 0;
                             int cpt1 = 0;
 
-                            cpt0 += ByteCode::hasReadRegInA(ip) || ByteCode::hasWriteRegInA(ip) ? 1 : 0;
-                            cpt0 += ByteCode::hasReadRegInB(ip) || ByteCode::hasWriteRegInB(ip) ? 1 : 0;
-                            cpt0 += ByteCode::hasReadRegInC(ip) || ByteCode::hasWriteRegInC(ip) ? 1 : 0;
-                            cpt0 += ByteCode::hasReadRegInD(ip) || ByteCode::hasWriteRegInD(ip) ? 1 : 0;
+                            cpt0 += ip->hasReadRegInA() || ip->hasWriteRegInA() ? 1 : 0;
+                            cpt0 += ip->hasReadRegInB() || ip->hasWriteRegInB() ? 1 : 0;
+                            cpt0 += ip->hasReadRegInC() || ip->hasWriteRegInC() ? 1 : 0;
+                            cpt0 += ip->hasReadRegInD() || ip->hasWriteRegInD() ? 1 : 0;
 
-                            cpt1 += ByteCode::hasReadRegInA(ip + 1) || ByteCode::hasWriteRegInA(ip + 1) ? 1 : 0;
-                            cpt1 += ByteCode::hasReadRegInB(ip + 1) || ByteCode::hasWriteRegInB(ip + 1) ? 1 : 0;
-                            cpt1 += ByteCode::hasReadRegInC(ip + 1) || ByteCode::hasWriteRegInC(ip + 1) ? 1 : 0;
-                            cpt1 += ByteCode::hasReadRegInD(ip + 1) || ByteCode::hasWriteRegInD(ip + 1) ? 1 : 0;
+                            cpt1 += ip[1].hasReadRegInA() || ip[1].hasWriteRegInA() ? 1 : 0;
+                            cpt1 += ip[1].hasReadRegInB() || ip[1].hasWriteRegInB() ? 1 : 0;
+                            cpt1 += ip[1].hasReadRegInC() || ip[1].hasWriteRegInC() ? 1 : 0;
+                            cpt1 += ip[1].hasReadRegInD() || ip[1].hasWriteRegInD() ? 1 : 0;
 
                             if (cpt1 <= cpt0)
                                 continue;

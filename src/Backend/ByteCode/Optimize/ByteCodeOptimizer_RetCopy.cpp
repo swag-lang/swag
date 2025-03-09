@@ -169,7 +169,7 @@ bool ByteCodeOptimizer::optimizePassRetCopyLocal(ByteCodeOptContext* context)
 
             // Find the following call
             context->vecReg.clear();
-            while (ip->op != ByteCodeOp::End && !ByteCode::isCall(ip))
+            while (ip->op != ByteCodeOp::End && !ip->isCall())
                 ip++;
 
             if (ip->op != ByteCodeOp::End)
@@ -182,7 +182,7 @@ bool ByteCodeOptimizer::optimizePassRetCopyLocal(ByteCodeOptContext* context)
                 ip++;
 
             // This will copy the result in the real variable
-            if (ByteCode::isMemCpy(ip + 1) && ip[1].b.u32 == ipOrg->a.u32)
+            if (ip[1].isMemCpy() && ip[1].b.u32 == ipOrg->a.u32)
             {
                 if (ip->op == ByteCodeOp::MakeStackPointer)
                     optimRetCopy(context, ipOrg, ip);
@@ -230,13 +230,13 @@ void ByteCodeOptimizer::registerMakeAddr(ByteCodeOptContext* context, const Byte
 
         default:
         {
-            if (ByteCode::hasWriteRegInA(ip))
+            if (ip->hasWriteRegInA())
                 context->mapRegReg.remove(ip->a.u32);
-            if (ByteCode::hasWriteRegInB(ip))
+            if (ip->hasWriteRegInB())
                 context->mapRegReg.remove(ip->b.u32);
-            if (ByteCode::hasWriteRegInC(ip))
+            if (ip->hasWriteRegInC())
                 context->mapRegReg.remove(ip->c.u32);
-            if (ByteCode::hasWriteRegInD(ip))
+            if (ip->hasWriteRegInD())
                 context->mapRegReg.remove(ip->d.u32);
             break;
         }
@@ -274,7 +274,7 @@ bool ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
 
             // Find the following call
             context->vecReg.clear();
-            while (ip->op != ByteCodeOp::End && !ByteCode::isCall(ip))
+            while (ip->op != ByteCodeOp::End && !ip->isCall())
             {
                 registerParamsReg(context, ip);
                 ip++;
@@ -290,7 +290,7 @@ bool ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
                 ip++;
 
             // This will copy the result in the real variable
-            if (ByteCode::isMemCpy(ip) && ip->b.u32 == ipOrg->a.u32)
+            if (ip->isMemCpy() && ip->b.u32 == ipOrg->a.u32)
             {
                 // Pointer aliasing. Do not make the optimization if the wanted result is also a parameter
                 // to the call. For example a = toto(a, b).

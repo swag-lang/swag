@@ -31,7 +31,7 @@ struct ScbeMicroInstruction
     CPUReg   regA;
     CPUReg   regB;
     CPUReg   regC;
-
+    
     bool isJump() const;
     bool isCall() const;
 };
