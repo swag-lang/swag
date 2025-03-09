@@ -2,7 +2,7 @@
 #include "Backend/SCBE/Encoder/ScbeCPU.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/SCBE/Main/Scbe.h"
-#include "Backend/SCBE/Obj/SCBE_Coff.h"
+#include "Backend/SCBE/Obj/ScbeCoff.h"
 #include "Core/Math.h"
 #include "Main/CommandLine.h"
 #include "Report/Report.h"
@@ -128,7 +128,7 @@ void ScbeCPU::endFunction() const
     switch (objFileType)
     {
         case BackendObjType::Coff:
-            SCBE_Coff::computeUnwind(cpuFct->unwindRegs, cpuFct->unwindOffsetRegs, cpuFct->frameSize, cpuFct->sizeProlog, cpuFct->unwind);
+            ScbeCoff::computeUnwind(cpuFct->unwindRegs, cpuFct->unwindOffsetRegs, cpuFct->frameSize, cpuFct->sizeProlog, cpuFct->unwind);
             break;
         default:
             Report::internalError(module, "SCBE::computeUnwind, unsupported output");

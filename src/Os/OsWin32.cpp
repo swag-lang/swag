@@ -4,7 +4,7 @@
 #ifdef _WIN32
 #include "Backend/Context.h"
 #include "Backend/SCBE/Main/Scbe.h"
-#include "Backend/SCBE/Obj/SCBE_Coff.h"
+#include "Backend/SCBE/Obj/ScbeCoff.h"
 #include "Os/Os.h"
 #include "Report/ErrorIds.h"
 #include "Report/Log.h"
@@ -985,7 +985,7 @@ namespace OS
                 // with 'RaiseException' (panic, error, etc.)
                 // The function information is always the same, that's why we generate only one table per SCBE_X64.
                 VectorNative<uint16_t> unwind;
-                SCBE_Coff::computeUnwind(unwindRegs, unwindOffsetRegs, stackSize, sizeProlog, unwind);
+                ScbeCoff::computeUnwind(unwindRegs, unwindOffsetRegs, stackSize, sizeProlog, unwind);
 
                 // Add function table
                 auto* rtFunc              = new RUNTIME_FUNCTION(); // leak, but it's fine
@@ -994,7 +994,7 @@ namespace OS
                 rtFunc->UnwindInfoAddress = JIT_SIZE_BUFFER;
                 uint32_t offset           = 0;
                 concat.currentSP          = gen.concat.firstBucket->data + JIT_SIZE_BUFFER;
-                SCBE_Coff::emitUnwind(gen.concat, offset, sizeProlog, unwind);
+                ScbeCoff::emitUnwind(gen.concat, offset, sizeProlog, unwind);
                 RtlAddFunctionTable(rtFunc, 1, reinterpret_cast<DWORD64>(gen.concat.firstBucket->data));
 
                 // Restore back the start of the buffer

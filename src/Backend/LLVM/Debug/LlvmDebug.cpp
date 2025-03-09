@@ -788,7 +788,7 @@ void LlvmDebug::createGlobalVariablesForSegment(const BuildParameters& buildPara
             continue;
 
         // Cast to the correct type
-        auto varType = Llvm::getLLVMType(pp, typeInfo);
+        auto varType = Llvm::getLlvmType(pp, typeInfo);
         if (!varType)
             continue;
 

@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "Backend/SCBE/Main/Scbe.h"
 #include "Backend/SCBE/Encoder/X64/ScbeX64.h"
-#include "Backend/SCBE/Obj/SCBE_Coff.h"
-#include "Backend/SCBE/Obj/SCBE_SaveObjJob.h"
+#include "Backend/SCBE/Obj/ScbeCoff.h"
+#include "Backend/SCBE/Obj/ScbeSaveObjJob.h"
 #include "Os/Os.h"
 #include "Report/ErrorIds.h"
 #include "Report/Report.h"
@@ -155,7 +155,7 @@ JobResult Scbe::prepareOutput(const BuildParameters& buildParameters, int stage,
         switch (objFileType)
         {
             case BackendObjType::Coff:
-                SCBE_Coff::emitHeader(buildParameters, pp);
+                ScbeCoff::emitHeader(buildParameters, pp);
                 break;
             default:
                 Report::internalError(module, "SCBE::prepareOutput, unsupported output");
@@ -213,7 +213,7 @@ JobResult Scbe::prepareOutput(const BuildParameters& buildParameters, int stage,
         switch (objFileType)
         {
             case BackendObjType::Coff:
-                SCBE_Coff::emitPostFunc(pp.buildParams, pp);
+                ScbeCoff::emitPostFunc(pp.buildParams, pp);
                 break;
             default:
                 Report::internalError(module, "SCBE::prepareOutput, unsupported output");
@@ -226,7 +226,7 @@ JobResult Scbe::prepareOutput(const BuildParameters& buildParameters, int stage,
     if (pp.pass == BackendPreCompilePass::GenerateObj)
     {
         pp.pass           = BackendPreCompilePass::Release;
-        const auto job    = Allocator::alloc<SCBE_SaveObjJob>();
+        const auto job    = Allocator::alloc<ScbeSaveObjJob>();
         job->module       = module;
         job->dependentJob = ownerJob;
         job->prepJob      = reinterpret_cast<ModulePrepOutputStage1Job*>(ownerJob);
@@ -258,7 +258,7 @@ void Scbe::saveObjFile(const BuildParameters& buildParameters) const
     switch (objFileType)
     {
         case BackendObjType::Coff:
-            SCBE_Coff::saveFileBuffer(f, pp.buildParams, pp);
+            ScbeCoff::saveFileBuffer(f, pp.buildParams, pp);
             break;
         default:
             Report::internalError(module, "SCBE::saveObjFile, unsupported output");

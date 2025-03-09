@@ -177,7 +177,7 @@
 #pragma comment(lib, "lldMinGW.lib")
 #pragma comment(lib, "lldWasm.lib")
 
-namespace LLVM
+namespace Llvm
 {
     void setup()
     {

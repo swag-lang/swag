@@ -1,6 +1,6 @@
 #pragma once
 
-namespace LLVM
+namespace Llvm
 {
     void setup();
-} // namespace LLVM
+}

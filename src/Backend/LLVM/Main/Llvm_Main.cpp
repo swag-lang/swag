@@ -442,7 +442,7 @@ void Llvm::emitGlobalDrop(LlvmEncoder& pp)
     builder.CreateRetVoid();
 }
 
-llvm::Type* Llvm::getLLVMType(LlvmEncoder& pp, TypeInfo* typeInfo)
+llvm::Type* Llvm::getLlvmType(LlvmEncoder& pp, TypeInfo* typeInfo)
 {
     auto& context = *pp.llvmContext;
 
@@ -451,7 +451,7 @@ llvm::Type* Llvm::getLLVMType(LlvmEncoder& pp, TypeInfo* typeInfo)
     if (typeInfo->isEnum())
     {
         const auto typeInfoEnum = castTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
-        return getLLVMType(pp, typeInfoEnum->rawType);
+        return getLlvmType(pp, typeInfoEnum->rawType);
     }
 
     if (typeInfo->isPointer())
@@ -460,7 +460,7 @@ llvm::Type* Llvm::getLLVMType(LlvmEncoder& pp, TypeInfo* typeInfo)
         const auto pointedType     = TypeManager::concreteType(typeInfoPointer->pointedType);
         if (pointedType->isVoid())
             return PTR_I8_TY();
-        return getLLVMType(pp, pointedType)->getPointerTo();
+        return getLlvmType(pp, pointedType)->getPointerTo();
     }
 
     if (typeInfo->isSlice() ||

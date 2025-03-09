@@ -259,8 +259,8 @@
     <ClInclude Include="..\src\Backend\SCBE\Encoder\ScbeCPU.h" />
     <ClInclude Include="..\src\Backend\SCBE\Encoder\X64\ScbeX64.h" />
     <ClInclude Include="..\src\Backend\SCBE\Main\Scbe.h" />
-    <ClInclude Include="..\src\Backend\SCBE\Obj\SCBE_Coff.h" />
-    <ClInclude Include="..\src\Backend\SCBE\Obj\SCBE_SaveObjJob.h" />
+    <ClInclude Include="..\src\Backend\SCBE\Obj\ScbeCoff.h" />
+    <ClInclude Include="..\src\Backend\SCBE\Obj\ScbeSaveObjJob.h" />
     <ClInclude Include="..\src\Core\Allocator.h" />
     <ClInclude Include="..\src\Core\AtomicFlags.h" />
     <ClInclude Include="..\src\Core\Concat.h" />
@@ -448,8 +448,8 @@
     <ClCompile Include="..\src\Backend\SCBE\Main\Scbe_Emit.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Main\Scbe_Function.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Main\Scbe_Main.cpp" />
-    <ClCompile Include="..\src\Backend\SCBE\Obj\SCBE_Coff.cpp" />
-    <ClCompile Include="..\src\Backend\SCBE\Obj\SCBE_SaveObjJob.cpp" />
+    <ClCompile Include="..\src\Backend\SCBE\Obj\ScbeCoff.cpp" />
+    <ClCompile Include="..\src\Backend\SCBE\Obj\ScbeSaveObjJob.cpp" />
     <ClCompile Include="..\src\Core\Allocator.cpp" />
     <ClCompile Include="..\src\Core\Concat.cpp" />
     <ClCompile Include="..\src\Core\Utf8.cpp" />

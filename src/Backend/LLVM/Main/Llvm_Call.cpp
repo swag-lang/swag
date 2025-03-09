@@ -74,7 +74,7 @@ void Llvm::getReturnResult(LlvmEncoder& pp, TypeInfo* returnType, bool imm, cons
     }
     else if (returnType->isPointer() || returnType->isLambdaClosure())
     {
-        const auto llvmType = getLLVMType(pp, returnType);
+        const auto llvmType = getLlvmType(pp, returnType);
         if (imm)
             returnResult = builder.CreateIntToPtr(builder.getInt64(reg.u64), llvmType);
         else
@@ -140,7 +140,7 @@ void Llvm::emitRet(LlvmEncoder& pp, const TypeInfoFuncAttr* typeFuncBc, TypeInfo
         }
         else if (returnType->isPointer() || returnType->isLambdaClosure())
         {
-            const auto llvmType = getLLVMType(pp, returnType);
+            const auto llvmType = getLlvmType(pp, returnType);
             builder.CreateRet(builder.CreateLoad(llvmType, allocResult));
         }
         // :ReturnStructByValue
@@ -179,7 +179,7 @@ llvm::FunctionType* Llvm::getOrCreateFuncType(LlvmEncoder& pp, const TypeInfoFun
     }
 
     VectorNative<llvm::Type*> params;
-    llvm::Type*               llvmRealReturnType = getLLVMType(pp, typeFuncBc->returnType);
+    llvm::Type*               llvmRealReturnType = getLlvmType(pp, typeFuncBc->returnType);
     const bool                returnByAddress    = typeFuncBc->returnByAddress();
     const auto                returnType         = typeFuncBc->concreteReturnType();
 
@@ -231,19 +231,19 @@ llvm::FunctionType* Llvm::getOrCreateFuncType(LlvmEncoder& pp, const TypeInfoFun
             }
             else if (param->isString() || param->isSlice())
             {
-                auto cType = getLLVMType(pp, param);
+                auto cType = getLlvmType(pp, param);
                 params.push_back(cType);
                 params.push_back(I64_TY());
             }
             else if (param->isAny() || param->isInterface())
             {
-                auto cType = getLLVMType(pp, param);
+                auto cType = getLlvmType(pp, param);
                 params.push_back(cType);
                 params.push_back(PTR_I8_TY());
             }
             else
             {
-                auto cType = getLLVMType(pp, param);
+                auto cType = getLlvmType(pp, param);
                 params.push_back(cType);
             }
         }
@@ -408,7 +408,7 @@ bool Llvm::emitGetParam(LlvmEncoder& pp, const TypeInfoFuncAttr* typeFuncBc, uin
             }
             else
             {
-                const auto ty = getLLVMType(pp, param);
+                const auto ty = getLlvmType(pp, param);
                 r0            = builder.CreatePointerCast(r0, ty->getPointerTo());
                 builder.CreateStore(arg, r0);
             }
@@ -417,7 +417,7 @@ bool Llvm::emitGetParam(LlvmEncoder& pp, const TypeInfoFuncAttr* typeFuncBc, uin
         // Real type
         else
         {
-            const auto ty = getLLVMType(pp, param);
+            const auto ty = getLlvmType(pp, param);
             auto       r0 = GEP64(allocR, rDest);
             r0            = builder.CreatePointerCast(r0, ty->getPointerTo());
             builder.CreateStore(arg, r0);
@@ -499,7 +499,7 @@ bool Llvm::emitCallParameters(LlvmEncoder&                 pp,
         else if (typeParam->isPointer())
         {
             const auto typePtr  = castTypeInfo<TypeInfoPointer>(typeParam, TypeInfoKind::Pointer);
-            const auto llvmType = getLLVMType(pp, typePtr);
+            const auto llvmType = getLlvmType(pp, typePtr);
             params.push_back(builder.CreateLoad(llvmType, GEP64(allocR, index)));
         }
         else if (typeFuncBc->structParamByValue(typeParam))
@@ -529,7 +529,7 @@ bool Llvm::emitCallParameters(LlvmEncoder&                 pp,
         }
         else if (typeParam->isNative())
         {
-            const auto llvmType = getLLVMType(pp, typeParam);
+            const auto llvmType = getLlvmType(pp, typeParam);
             params.push_back(builder.CreateLoad(llvmType, GEP64(allocR, index)));
         }
         else
@@ -740,7 +740,7 @@ void Llvm::emitByteCodeCallParameters(LlvmEncoder& pp, TypeInfoFuncAttr* typeFun
             // By value
             if (typeParam->numRegisters() == 1)
             {
-                const auto ty = getLLVMType(pp, typeParam);
+                const auto ty = getLlvmType(pp, typeParam);
                 if (index == UINT32_MAX)
                 {
                     auto v0 = values[popRAidx + 1];

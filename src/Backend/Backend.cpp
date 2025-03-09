@@ -34,7 +34,7 @@ void Backend::setup()
     if (!g_CommandLine.output)
         return;
 
-    LLVM::setup();
+    Llvm::setup();
 
     Path rtPath;
 

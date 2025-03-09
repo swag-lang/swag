@@ -57,7 +57,7 @@ struct Llvm final : Backend
     static void emitInternalPanic(LlvmEncoder& pp, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const char* message);
     static void emitCopyVaargs(LlvmEncoder& pp);
 
-    static llvm::Type*         getLLVMType(LlvmEncoder& pp, TypeInfo* typeInfo);
+    static llvm::Type*         getLlvmType(LlvmEncoder& pp, TypeInfo* typeInfo);
     static llvm::FunctionType* getOrCreateFuncType(LlvmEncoder& pp, const TypeInfoFuncAttr* typeFuncBc, bool closureToLambda = false);
     static llvm::BasicBlock*   getOrCreateLabel(LlvmEncoder& pp, int64_t ip);
     static void                getReturnResult(LlvmEncoder& pp, TypeInfo* returnType, bool imm, const Register& reg, llvm::AllocaInst* allocR, llvm::AllocaInst* allocResult);
