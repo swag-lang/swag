@@ -221,8 +221,6 @@ void ScbeOptimizer::optimizePassDeadStore(const ScbeMicro& out)
             mapRegInst.clear();
         }
 
-        const auto& infos = g_MicroOpInfos[static_cast<int>(inst->op)];
-
         if (inst->hasReadRegA())
             mapRegInst.erase(inst->regA);
         if (inst->hasReadRegB())
@@ -245,10 +243,12 @@ void ScbeOptimizer::optimizePassDeadStore(const ScbeMicro& out)
         }
         else
         {
-            if (infos.leftFlags.has(MOF_REG_A))
+            if (inst->hasWriteRegA())
                 mapRegInst.erase(inst->regA);
-            if (infos.leftFlags.has(MOF_REG_B))
+            if (inst->hasWriteRegB())
                 mapRegInst.erase(inst->regB);
+            if (inst->hasWriteRegC())
+                mapRegInst.erase(inst->regC);
         }
 
         const auto details = encoder->getInstructionDetails(inst);
