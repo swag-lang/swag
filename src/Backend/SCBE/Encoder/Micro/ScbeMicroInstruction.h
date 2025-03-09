@@ -16,6 +16,8 @@ struct ScbeMicroInstruction
 {
     SWAG_FORCE_INLINE bool hasLeftOpFlag(ScbeMicroOpFlags fl) const { return g_MicroOpInfos[static_cast<int>(op)].leftFlags.has(fl); }
     SWAG_FORCE_INLINE bool hasRightOpFlag(ScbeMicroOpFlags fl) const { return g_MicroOpInfos[static_cast<int>(op)].rightFlags.has(fl); }
+    
+    bool isWriteMemA() const { return hasLeftOpFlag(MOF_REG_A) && hasLeftOpFlag(MOF_VALUE_A) && hasLeftOpFlag(MOF_WRITE_MEM); }
 
     bool isJump() const;
     bool isCall() const;

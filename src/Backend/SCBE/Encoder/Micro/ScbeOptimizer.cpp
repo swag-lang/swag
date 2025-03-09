@@ -276,8 +276,6 @@ void ScbeOptimizer::passStoreMR(const ScbeMicro& out)
     auto inst = reinterpret_cast<ScbeMicroInstruction*>(out.concat.firstBucket->data);
     while (inst->op != ScbeMicroOp::End)
     {
-        const auto& infos = g_MicroOpInfos[static_cast<int>(inst->op)];
-
         if (inst->flags.has(MIF_JUMP_DEST) || inst->isJump())
         {
             mapValReg.clear();
@@ -292,8 +290,7 @@ void ScbeOptimizer::passStoreMR(const ScbeMicro& out)
             mapValReg[inst->valueA] = {inst->regB, inst->opBitsA};
             mapRegVal[inst->regB]   = inst->valueA;
         }
-        else if (infos.leftFlags.has(MOF_REG_A) &&
-                 infos.leftFlags.has(MOF_VALUE_A) &&
+        else if (inst->isWriteMemA() &&
                  inst->regA == CpuReg::RSP &&
                  mapValReg.contains(inst->valueA))
         {
