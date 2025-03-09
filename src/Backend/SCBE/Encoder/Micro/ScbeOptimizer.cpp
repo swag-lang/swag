@@ -126,36 +126,27 @@ void ScbeOptimizer::optimizePassStoreToRegBeforeLeave(const ScbeMicro& out)
     auto inst = reinterpret_cast<ScbeMicroInstruction*>(out.concat.firstBucket->data);
     while (inst->op != ScbeMicroOp::End)
     {
-        const auto& infos = g_MicroOpInfos[static_cast<int>(inst->op)];
+        if (inst->flags.has(MIF_JUMP_DEST) || inst->isJump())
+            mapValInst.clear();
 
-        if (inst->flags.has(MIF_JUMP_DEST))
+        if (inst->op == ScbeMicroOp::Leave)
         {
+            for (const auto& i : mapValInst | std::views::values)
+                ignore(i);
             mapValInst.clear();
         }
-
-        if (inst->op == ScbeMicroOp::StoreMR &&
-            inst->regA == CpuReg::RSP &&
-            out.cpuFct->isStackOffsetTransient(static_cast<uint32_t>(inst->valueA)))
+        else if (inst->op == ScbeMicroOp::StoreMR &&
+                 inst->regA == CpuReg::RSP &&
+                 out.cpuFct->isStackOffsetTransient(static_cast<uint32_t>(inst->valueA)))
         {
             mapValInst[inst->valueA] = inst;
         }
         else
         {
-            if (infos.leftFlags.has(MOF_REG_A | MOF_REG_B) && infos.leftFlags.has(MOF_VALUE_A))
+            if (inst->isReadMemA())
                 mapValInst.erase(static_cast<uint32_t>(inst->valueA));
-            if (infos.leftFlags.has(MOF_REG_A | MOF_REG_B) && infos.leftFlags.has(MOF_VALUE_B))
+            if (inst->isReadMemB())
                 mapValInst.erase(static_cast<uint32_t>(inst->valueB));
-            if (infos.rightFlags.has(MOF_REG_A | MOF_REG_B) && infos.rightFlags.has(MOF_VALUE_A))
-                mapValInst.erase(static_cast<uint32_t>(inst->valueA));
-            if (infos.rightFlags.has(MOF_REG_A | MOF_REG_B) && infos.rightFlags.has(MOF_VALUE_B))
-                mapValInst.erase(static_cast<uint32_t>(inst->valueB));
-        }
-
-        if (inst->op == ScbeMicroOp::Leave && !mapValInst.empty())
-        {
-            for (const auto& i : mapValInst | std::views::values)
-                ignore(i);
-            mapValInst.clear();
         }
 
         inst = zap(inst + 1);
