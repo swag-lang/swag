@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Backend/ByteCode/ByteCode.h"
-#include "Backend/SCBE/Encoder/ScbeCPU.h"
+#include "Backend/SCBE/Encoder/ScbeCpu.h"
 #include "Semantic/Type/TypeInfo.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/AstNode.h"

@@ -106,7 +106,7 @@ void ScbeOptimizer::passReduce(const ScbeMicro& out)
                     }
                 }
 
-                if (inst[0].regA == CPUReg::RSP &&
+                if (inst[0].regA == CpuReg::RSP &&
                     next->op == ScbeMicroOp::Leave)
                 {
                     ignore(inst);
@@ -134,7 +134,7 @@ void ScbeOptimizer::passStoreToRegBeforeLeave(const ScbeMicro& out)
         }
 
         if (inst->op == ScbeMicroOp::StoreMR &&
-            inst->regA == CPUReg::RSP &&
+            inst->regA == CpuReg::RSP &&
             out.cpuFct->isStackOffsetTransient(static_cast<uint32_t>(inst->valueA)))
         {
             mapValInst[inst->valueA] = inst;
@@ -228,7 +228,7 @@ void ScbeOptimizer::passDeadStore(const ScbeMicro& out)
         if (infos.rightFlags.has(MOF_REG_B))
             mapRegInst.erase(inst->regB);
 
-        auto legitReg = CPUReg::Max;
+        auto legitReg = CpuReg::Max;
         if (inst->op == ScbeMicroOp::LoadRR ||
             inst->op == ScbeMicroOp::LoadZeroExtendRM ||
             inst->op == ScbeMicroOp::LoadRM)
@@ -252,14 +252,14 @@ void ScbeOptimizer::passDeadStore(const ScbeMicro& out)
         const auto details = encoder->getInstructionDetails(inst);
         if (details.has(MOD_REG_ALL))
         {
-            for (uint32_t i = 0; i < static_cast<uint32_t>(CPUReg::Max); i++)
+            for (uint32_t i = 0; i < static_cast<uint32_t>(CpuReg::Max); i++)
             {
-                if (legitReg == static_cast<CPUReg>(i))
+                if (legitReg == static_cast<CpuReg>(i))
                     continue;
 
                 if (details.has(1ULL << i))
                 {
-                    mapRegInst.erase(static_cast<CPUReg>(i));
+                    mapRegInst.erase(static_cast<CpuReg>(i));
                 }
             }
         }
@@ -284,9 +284,9 @@ void ScbeOptimizer::passStoreMR(const ScbeMicro& out)
             mapRegVal.clear();
         }
 
-        auto legitReg = CPUReg::Max;
+        auto legitReg = CpuReg::Max;
         if (inst->op == ScbeMicroOp::StoreMR &&
-            inst->regA == CPUReg::RSP &&
+            inst->regA == CpuReg::RSP &&
             out.cpuFct->isStackOffsetTransient(static_cast<uint32_t>(inst->valueA)))
         {
             mapValReg[inst->valueA] = {inst->regB, inst->opBitsA};
@@ -294,13 +294,13 @@ void ScbeOptimizer::passStoreMR(const ScbeMicro& out)
         }
         else if (infos.leftFlags.has(MOF_REG_A) &&
                  infos.leftFlags.has(MOF_VALUE_A) &&
-                 inst->regA == CPUReg::RSP &&
+                 inst->regA == CpuReg::RSP &&
                  mapValReg.contains(inst->valueA))
         {
-            mapValReg[inst->valueA] = {CPUReg::Max, OpBits::Zero};
+            mapValReg[inst->valueA] = {CpuReg::Max, OpBits::Zero};
         }
         else if (inst->op == ScbeMicroOp::LoadRM &&
-                 inst->regB == CPUReg::RSP &&
+                 inst->regB == CpuReg::RSP &&
                  mapValReg.contains(inst->valueA) &&
                  mapRegVal.contains(mapValReg[inst->valueA].first) &&
                  inst->opBitsA == mapValReg[inst->valueA].second &&
@@ -317,7 +317,7 @@ void ScbeOptimizer::passStoreMR(const ScbeMicro& out)
             }
         }
         else if (inst->op == ScbeMicroOp::LoadRM &&
-                 inst->regB == CPUReg::RSP &&
+                 inst->regB == CpuReg::RSP &&
                  out.cpuFct->isStackOffsetTransient(static_cast<uint32_t>(inst->valueA)))
         {
             legitReg                = inst->regA;
@@ -330,14 +330,14 @@ void ScbeOptimizer::passStoreMR(const ScbeMicro& out)
             const auto details = encoder->getInstructionDetails(inst);
             if (details.has(MOD_REG_ALL))
             {
-                for (uint32_t i = 0; i < static_cast<uint32_t>(CPUReg::Max); i++)
+                for (uint32_t i = 0; i < static_cast<uint32_t>(CpuReg::Max); i++)
                 {
-                    if (static_cast<CPUReg>(i) == legitReg)
+                    if (static_cast<CpuReg>(i) == legitReg)
                         continue;
 
                     if (details.has(1ULL << i))
                     {
-                        mapRegVal[static_cast<CPUReg>(i)] = UINT64_MAX;
+                        mapRegVal[static_cast<CpuReg>(i)] = UINT64_MAX;
                     }
                 }
             }

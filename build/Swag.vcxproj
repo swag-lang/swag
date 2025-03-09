@@ -258,7 +258,7 @@
     <ClInclude Include="..\src\Backend\SCBE\Encoder\Micro\ScbeMicroOp.h" />
     <ClInclude Include="..\src\Backend\SCBE\Encoder\Micro\ScbeMicroOpList.h" />
     <ClInclude Include="..\src\Backend\SCBE\Encoder\Micro\ScbeOptimizer.h" />
-    <ClInclude Include="..\src\Backend\SCBE\Encoder\ScbeCPU.h" />
+    <ClInclude Include="..\src\Backend\SCBE\Encoder\ScbeCpu.h" />
     <ClInclude Include="..\src\Backend\SCBE\Encoder\X64\ScbeX64.h" />
     <ClInclude Include="..\src\Backend\SCBE\Main\Scbe.h" />
     <ClInclude Include="..\src\Backend\SCBE\Obj\ScbeCoff.h" />
@@ -443,7 +443,7 @@
     <ClCompile Include="..\src\Backend\SCBE\Encoder\Micro\ScbeMicroInstruction.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Encoder\Micro\ScbeMicro_Print.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Encoder\Micro\ScbeOptimizer.cpp" />
-    <ClCompile Include="..\src\Backend\SCBE\Encoder\ScbeCPU.cpp" />
+    <ClCompile Include="..\src\Backend\SCBE\Encoder\ScbeCpu.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Encoder\X64\ScbeX64.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Main\Scbe.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Main\Scbe_Call.cpp" />

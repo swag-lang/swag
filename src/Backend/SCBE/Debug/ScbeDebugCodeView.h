@@ -2,7 +2,7 @@
 #include "Backend/SCBE/Debug/ScbeDebug.h"
 
 struct BuildParameters;
-struct ScbeCPU;
+struct ScbeCpu;
 
 // https://github.com/microsoft/microsoft-pdb/blob/master/include/cvinfo.h
 
@@ -222,5 +222,5 @@ enum SimpleTypeMode : ScbeDebugTypeIndex
 
 struct ScbeDebugCodeView
 {
-    static bool emit(const BuildParameters& buildParameters, ScbeCPU& pp);
+    static bool emit(const BuildParameters& buildParameters, ScbeCpu& pp);
 };

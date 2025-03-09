@@ -6,7 +6,7 @@ struct ByteCodeRunContext;
 struct Module;
 struct TypeInfoFuncAttr;
 struct BuildCfg;
-struct CPUPushParam;
+struct CpuPushParam;
 
 namespace OS
 {
@@ -62,7 +62,7 @@ namespace OS
     uint64_t timerNow();
     double   timerToSeconds(uint64_t timer);
 
-    void ffi(ByteCodeRunContext* context, void* foreignPtr, const TypeInfoFuncAttr* typeInfoFunc, const VectorNative<CPUPushParam>& pushCPUParams, void* retCopyAddr);
+    void ffi(ByteCodeRunContext* context, void* foreignPtr, const TypeInfoFuncAttr* typeInfoFunc, const VectorNative<CpuPushParam>& pushCPUParams, void* retCopyAddr);
 
     bool    atomicTestNull(void** ptr);
     void    atomicSetIfNotNull(void** ptr, void* what);

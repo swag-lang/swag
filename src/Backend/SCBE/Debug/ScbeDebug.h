@@ -3,8 +3,8 @@
 #include "Syntax/ComputedValue.h"
 
 struct ByteCodeInstruction;
-struct CPUFunction;
-struct ScbeCPU;
+struct CpuFunction;
+struct ScbeCpu;
 struct Scbe;
 struct SourceFile;
 struct AstFuncDecl;
@@ -129,13 +129,13 @@ struct ScbeDebugLines
 
 struct ScbeDebug
 {
-    static void                 getStructFields(ScbeCPU& pp, ScbeDebugTypeRecord* tr, TypeInfoStruct* typeStruct, uint32_t baseOffset);
-    static ScbeDebugTypeIndex   getTypeSlice(ScbeCPU& pp, const TypeInfo* typeInfo, TypeInfo* pointedType, ScbeDebugTypeIndex* value);
+    static void                 getStructFields(ScbeCpu& pp, ScbeDebugTypeRecord* tr, TypeInfoStruct* typeStruct, uint32_t baseOffset);
+    static ScbeDebugTypeIndex   getTypeSlice(ScbeCpu& pp, const TypeInfo* typeInfo, TypeInfo* pointedType, ScbeDebugTypeIndex* value);
     static ScbeDebugTypeIndex   getSimpleType(const TypeInfo* typeInfo);
-    static ScbeDebugTypeIndex   getOrCreatePointerToType(ScbeCPU& pp, TypeInfo* typeInfo, bool asRef);
-    static ScbeDebugTypeIndex   getOrCreatePointerPointerToType(ScbeCPU& pp, TypeInfo* typeInfo);
-    static ScbeDebugTypeIndex   getOrCreateType(ScbeCPU& pp, TypeInfo* typeInfo, bool forceUnRef = false);
-    static ScbeDebugTypeRecord* addTypeRecord(ScbeCPU& pp);
-    static void                 setLocation(CPUFunction* cpuFct, const ByteCodeInstruction* ip, uint32_t byteOffset);
+    static ScbeDebugTypeIndex   getOrCreatePointerToType(ScbeCpu& pp, TypeInfo* typeInfo, bool asRef);
+    static ScbeDebugTypeIndex   getOrCreatePointerPointerToType(ScbeCpu& pp, TypeInfo* typeInfo);
+    static ScbeDebugTypeIndex   getOrCreateType(ScbeCpu& pp, TypeInfo* typeInfo, bool forceUnRef = false);
+    static ScbeDebugTypeRecord* addTypeRecord(ScbeCpu& pp);
+    static void                 setLocation(CpuFunction* cpuFct, const ByteCodeInstruction* ip, uint32_t byteOffset);
     static Utf8                 getScopedName(const AstNode* node);
 };

@@ -20,7 +20,7 @@ Scbe::Scbe() :
     memset(perThread, 0, sizeof(perThread));
 }
 
-void Scbe::createRuntime(ScbeCPU& pp)
+void Scbe::createRuntime(ScbeCpu& pp)
 {
     const auto module          = pp.module;
     const auto precompileIndex = pp.buildParams.precompileIndex;
@@ -29,56 +29,56 @@ void Scbe::createRuntime(ScbeCPU& pp)
         pp.globalSegment.setup(SegmentKind::Global, module);
         pp.stringSegment.setup(SegmentKind::String, module);
 
-        pp.symBSIndex  = pp.getOrAddSymbol("__bs", CPUSymbolKind::Custom, 0, pp.sectionIndexBS)->index;
-        pp.symCSIndex  = pp.getOrAddSymbol("__cs", CPUSymbolKind::Custom, 0, pp.sectionIndexCS)->index;
-        pp.symMSIndex  = pp.getOrAddSymbol("__ms", CPUSymbolKind::Custom, 0, pp.sectionIndexMS)->index;
-        pp.symTLSIndex = pp.getOrAddSymbol("__tls", CPUSymbolKind::Custom, 0, pp.sectionIndexTLS)->index;
-        pp.symCOIndex  = pp.getOrAddSymbol(form("__co%d", precompileIndex), CPUSymbolKind::Custom, 0, pp.sectionIndexText)->index;
-        pp.symXDIndex  = pp.getOrAddSymbol(form("__xd%d", precompileIndex), CPUSymbolKind::Custom, 0, pp.sectionIndexXD)->index;
+        pp.symBSIndex  = pp.getOrAddSymbol("__bs", CpuSymbolKind::Custom, 0, pp.sectionIndexBS)->index;
+        pp.symCSIndex  = pp.getOrAddSymbol("__cs", CpuSymbolKind::Custom, 0, pp.sectionIndexCS)->index;
+        pp.symMSIndex  = pp.getOrAddSymbol("__ms", CpuSymbolKind::Custom, 0, pp.sectionIndexMS)->index;
+        pp.symTLSIndex = pp.getOrAddSymbol("__tls", CpuSymbolKind::Custom, 0, pp.sectionIndexTLS)->index;
+        pp.symCOIndex  = pp.getOrAddSymbol(form("__co%d", precompileIndex), CpuSymbolKind::Custom, 0, pp.sectionIndexText)->index;
+        pp.symXDIndex  = pp.getOrAddSymbol(form("__xd%d", precompileIndex), CpuSymbolKind::Custom, 0, pp.sectionIndexXD)->index;
 
         // This should match the structure SwagContext declared in Runtime.h
         auto offset                         = pp.globalSegment.reserve(sizeof(SwagContext), nullptr, sizeof(uint64_t));
-        pp.symMC_mainContext                = pp.getOrAddSymbol("swag_main_context", CPUSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
-        pp.symMC_mainContext_allocator_addr = pp.getOrAddSymbol("swag_main_context_allocator_addr", CPUSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        pp.symMC_mainContext                = pp.getOrAddSymbol("swag_main_context", CpuSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        pp.symMC_mainContext_allocator_addr = pp.getOrAddSymbol("swag_main_context_allocator_addr", CpuSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
         offset += sizeof(void*);
-        pp.symMC_mainContext_allocator_itable = pp.getOrAddSymbol("swag_main_context_allocator_itable", CPUSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        pp.symMC_mainContext_allocator_itable = pp.getOrAddSymbol("swag_main_context_allocator_itable", CpuSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
         offset += sizeof(void*);
-        pp.symMC_mainContext_flags = pp.getOrAddSymbol("swag_main_context_flags", CPUSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        pp.symMC_mainContext_flags = pp.getOrAddSymbol("swag_main_context_flags", CpuSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
 
         // defaultAllocTable, an interface ITable that contains only one entry
         offset                  = pp.globalSegment.reserve(8, nullptr, 8);
-        pp.symDefaultAllocTable = pp.getOrAddSymbol("swag_default_alloc_table", CPUSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        pp.symDefaultAllocTable = pp.getOrAddSymbol("swag_default_alloc_table", CpuSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
 
         // tls ID
         offset                  = pp.globalSegment.reserve(8, nullptr, sizeof(uint64_t));
-        pp.symTls_threadLocalId = pp.getOrAddSymbol("swag_tls_threadLocalId", CPUSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        pp.symTls_threadLocalId = pp.getOrAddSymbol("swag_tls_threadLocalId", CpuSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
 
         // This should match the structure SwagProcessInfo declared in Runtime.h
         offset                  = pp.globalSegment.reserve(8, nullptr, sizeof(uint64_t));
-        pp.symPI_processInfos   = pp.getOrAddSymbol("swag_process_infos", CPUSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
-        pp.symPI_modulesAddr    = pp.getOrAddSymbol("swag_process_infos_modulesAddr", CPUSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        pp.symPI_processInfos   = pp.getOrAddSymbol("swag_process_infos", CpuSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        pp.symPI_modulesAddr    = pp.getOrAddSymbol("swag_process_infos_modulesAddr", CpuSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
         offset                  = pp.globalSegment.reserve(8, nullptr, sizeof(uint64_t));
-        pp.symPI_modulesCount   = pp.getOrAddSymbol("swag_process_infos_modulesCount", CPUSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        pp.symPI_modulesCount   = pp.getOrAddSymbol("swag_process_infos_modulesCount", CpuSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
         offset                  = pp.globalSegment.reserve(8, nullptr, sizeof(uint64_t));
-        pp.symPI_argsAddr       = pp.getOrAddSymbol("swag_process_infos_argsAddr", CPUSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        pp.symPI_argsAddr       = pp.getOrAddSymbol("swag_process_infos_argsAddr", CpuSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
         offset                  = pp.globalSegment.reserve(8, nullptr, sizeof(uint64_t));
-        pp.symPI_argsCount      = pp.getOrAddSymbol("swag_process_infos_argsCount", CPUSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        pp.symPI_argsCount      = pp.getOrAddSymbol("swag_process_infos_argsCount", CpuSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
         offset                  = pp.globalSegment.reserve(8, nullptr, sizeof(uint64_t));
-        pp.symPI_contextTlsId   = pp.getOrAddSymbol("swag_process_infos_contextTlsId", CPUSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        pp.symPI_contextTlsId   = pp.getOrAddSymbol("swag_process_infos_contextTlsId", CpuSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
         offset                  = pp.globalSegment.reserve(8, nullptr, sizeof(uint64_t));
-        pp.symPI_defaultContext = pp.getOrAddSymbol("swag_process_infos_defaultContext", CPUSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        pp.symPI_defaultContext = pp.getOrAddSymbol("swag_process_infos_defaultContext", CpuSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
         offset                  = pp.globalSegment.reserve(8, nullptr, sizeof(uint64_t));
-        pp.symPI_byteCodeRun    = pp.getOrAddSymbol("swag_process_infos_byteCodeRun", CPUSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        pp.symPI_byteCodeRun    = pp.getOrAddSymbol("swag_process_infos_byteCodeRun", CpuSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
         offset                  = pp.globalSegment.reserve(8, nullptr, sizeof(uint64_t));
-        pp.symPI_makeCallback   = pp.getOrAddSymbol("swag_process_infos_makeCallback", CPUSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        pp.symPI_makeCallback   = pp.getOrAddSymbol("swag_process_infos_makeCallback", CpuSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
         offset                  = pp.globalSegment.reserve(8, nullptr, sizeof(uint64_t));
-        pp.symPI_backendKind    = pp.getOrAddSymbol("swag_process_infos_backendKind", CPUSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        pp.symPI_backendKind    = pp.getOrAddSymbol("swag_process_infos_backendKind", CpuSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
 
         // Constant stuff needed to convert U64 to F64 (code from clang)
         if (g_CommandLine.target.arch == SwagTargetArch::X86_64)
         {
             offset                                  = pp.globalSegment.reserve(32, nullptr, 2 * sizeof(uint64_t));
-            pp.symCst_U64F64                        = pp.getOrAddSymbol("swag_cast_u64f64", CPUSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+            pp.symCst_U64F64                        = pp.getOrAddSymbol("swag_cast_u64f64", CpuSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
             const auto addr                         = pp.globalSegment.address(offset);
             *reinterpret_cast<uint32_t*>(addr + 0)  = 0x43300000;
             *reinterpret_cast<uint32_t*>(addr + 4)  = 0x45300000;
@@ -94,25 +94,25 @@ void Scbe::createRuntime(ScbeCPU& pp)
     }
     else
     {
-        pp.symBSIndex  = pp.getOrAddSymbol("__bs", CPUSymbolKind::Extern)->index;
-        pp.symCSIndex  = pp.getOrAddSymbol("__cs", CPUSymbolKind::Extern)->index;
-        pp.symMSIndex  = pp.getOrAddSymbol("__ms", CPUSymbolKind::Extern)->index;
-        pp.symTLSIndex = pp.getOrAddSymbol("__tls", CPUSymbolKind::Extern)->index;
-        pp.symCOIndex  = pp.getOrAddSymbol(form("__co%d", precompileIndex), CPUSymbolKind::Custom, 0, pp.sectionIndexText)->index;
-        pp.symXDIndex  = pp.getOrAddSymbol(form("__xd%d", precompileIndex), CPUSymbolKind::Custom, 0, pp.sectionIndexXD)->index;
+        pp.symBSIndex  = pp.getOrAddSymbol("__bs", CpuSymbolKind::Extern)->index;
+        pp.symCSIndex  = pp.getOrAddSymbol("__cs", CpuSymbolKind::Extern)->index;
+        pp.symMSIndex  = pp.getOrAddSymbol("__ms", CpuSymbolKind::Extern)->index;
+        pp.symTLSIndex = pp.getOrAddSymbol("__tls", CpuSymbolKind::Extern)->index;
+        pp.symCOIndex  = pp.getOrAddSymbol(form("__co%d", precompileIndex), CpuSymbolKind::Custom, 0, pp.sectionIndexText)->index;
+        pp.symXDIndex  = pp.getOrAddSymbol(form("__xd%d", precompileIndex), CpuSymbolKind::Custom, 0, pp.sectionIndexXD)->index;
 
-        pp.symPI_processInfos   = pp.getOrAddSymbol("swag_process_infos", CPUSymbolKind::Extern)->index;
-        pp.symPI_modulesAddr    = pp.getOrAddSymbol("swag_process_infos_modulesAddr", CPUSymbolKind::Extern)->index;
-        pp.symPI_modulesCount   = pp.getOrAddSymbol("swag_process_infos_modulesCount", CPUSymbolKind::Extern)->index;
-        pp.symPI_argsAddr       = pp.getOrAddSymbol("swag_process_infos_argsAddr", CPUSymbolKind::Extern)->index;
-        pp.symPI_argsCount      = pp.getOrAddSymbol("swag_process_infos_argsCount", CPUSymbolKind::Extern)->index;
-        pp.symPI_contextTlsId   = pp.getOrAddSymbol("swag_process_infos_contextTlsId", CPUSymbolKind::Extern)->index;
-        pp.symPI_defaultContext = pp.getOrAddSymbol("swag_process_infos_defaultContext", CPUSymbolKind::Extern)->index;
-        pp.symPI_byteCodeRun    = pp.getOrAddSymbol("swag_process_infos_byteCodeRun", CPUSymbolKind::Extern)->index;
-        pp.symPI_makeCallback   = pp.getOrAddSymbol("swag_process_infos_makeCallback", CPUSymbolKind::Extern)->index;
-        pp.symPI_backendKind    = pp.getOrAddSymbol("swag_process_infos_backendKind", CPUSymbolKind::Extern)->index;
-        pp.symTls_threadLocalId = pp.getOrAddSymbol("swag_tls_threadLocalId", CPUSymbolKind::Extern)->index;
-        pp.symCst_U64F64        = pp.getOrAddSymbol("swag_cast_u64f64", CPUSymbolKind::Extern)->index;
+        pp.symPI_processInfos   = pp.getOrAddSymbol("swag_process_infos", CpuSymbolKind::Extern)->index;
+        pp.symPI_modulesAddr    = pp.getOrAddSymbol("swag_process_infos_modulesAddr", CpuSymbolKind::Extern)->index;
+        pp.symPI_modulesCount   = pp.getOrAddSymbol("swag_process_infos_modulesCount", CpuSymbolKind::Extern)->index;
+        pp.symPI_argsAddr       = pp.getOrAddSymbol("swag_process_infos_argsAddr", CpuSymbolKind::Extern)->index;
+        pp.symPI_argsCount      = pp.getOrAddSymbol("swag_process_infos_argsCount", CpuSymbolKind::Extern)->index;
+        pp.symPI_contextTlsId   = pp.getOrAddSymbol("swag_process_infos_contextTlsId", CpuSymbolKind::Extern)->index;
+        pp.symPI_defaultContext = pp.getOrAddSymbol("swag_process_infos_defaultContext", CpuSymbolKind::Extern)->index;
+        pp.symPI_byteCodeRun    = pp.getOrAddSymbol("swag_process_infos_byteCodeRun", CpuSymbolKind::Extern)->index;
+        pp.symPI_makeCallback   = pp.getOrAddSymbol("swag_process_infos_makeCallback", CpuSymbolKind::Extern)->index;
+        pp.symPI_backendKind    = pp.getOrAddSymbol("swag_process_infos_backendKind", CpuSymbolKind::Extern)->index;
+        pp.symTls_threadLocalId = pp.getOrAddSymbol("swag_tls_threadLocalId", CpuSymbolKind::Extern)->index;
+        pp.symCst_U64F64        = pp.getOrAddSymbol("swag_cast_u64f64", CpuSymbolKind::Extern)->index;
     }
 }
 
@@ -134,7 +134,7 @@ JobResult Scbe::prepareOutput(const BuildParameters& buildParameters, int stage,
             break;
     }
 
-    auto& pp = encoder<ScbeCPU>(ct, precompileIndex);
+    auto& pp = encoder<ScbeCpu>(ct, precompileIndex);
     pp.init(buildParameters);
 
     auto& concat = pp.concat;
@@ -241,7 +241,7 @@ void Scbe::saveObjFile(const BuildParameters& buildParameters) const
 {
     const auto ct              = buildParameters.compileType;
     const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      pp              = encoder<ScbeCPU>(ct, precompileIndex);
+    auto&      pp              = encoder<ScbeCpu>(ct, precompileIndex);
 
     auto path = getCacheFolder();
     path.append(pp.filename);

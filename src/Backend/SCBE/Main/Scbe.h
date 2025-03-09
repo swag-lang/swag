@@ -1,7 +1,7 @@
 #pragma once
 #include "Backend/Backend.h"
 #include "Backend/BackendParameters.h"
-#include "Backend/SCBE/Encoder/ScbeCPU.h"
+#include "Backend/SCBE/Encoder/ScbeCpu.h"
 #include "Semantic/DataSegment.h"
 
 struct Module;
@@ -22,55 +22,55 @@ struct Scbe final : Backend
     bool      emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc) override;
     void      saveObjFile(const BuildParameters& buildParameters) const;
 
-    static void createRuntime(ScbeCPU& pp);
-    static bool buildRelocationSegment(ScbeCPU& pp, DataSegment* dataSegment, CPURelocationTable& relocationTable, SegmentKind me);
+    static void createRuntime(ScbeCpu& pp);
+    static bool buildRelocationSegment(ScbeCpu& pp, DataSegment* dataSegment, CpuRelocationTable& relocationTable, SegmentKind me);
 
-    static void emitGetTypeTable(ScbeCPU& pp);
-    static void emitGlobalPreMain(ScbeCPU& pp);
-    static void emitGlobalInit(ScbeCPU& pp);
-    static void emitGlobalDrop(ScbeCPU& pp);
-    static void emitOS(ScbeCPU& pp);
-    static void emitMain(ScbeCPU& pp);
+    static void emitGetTypeTable(ScbeCpu& pp);
+    static void emitGlobalPreMain(ScbeCpu& pp);
+    static void emitGlobalInit(ScbeCpu& pp);
+    static void emitGlobalDrop(ScbeCpu& pp);
+    static void emitOS(ScbeCpu& pp);
+    static void emitMain(ScbeCpu& pp);
 
-    static void emitCallCPUParams(ScbeCPU& pp, const Utf8& funcName, const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& pushCPUParams, CPUReg memRegResult, uint32_t memOffsetResult, bool localCall);
-    static void emitCallRAParams(ScbeCPU& pp, const Utf8& funcName, const TypeInfoFuncAttr* typeFuncBc, bool localCall);
-    static void emitInternalCallCPUParams(ScbeCPU& pp, const Utf8& funcName, const VectorNative<CPUPushParam>& pushCPUParams, CPUReg memRegResult = CPUReg::RSP, uint32_t memOffsetResult = UINT32_MAX);
-    static void emitInternalCallRAParams(ScbeCPU& pp, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, CPUReg memRegResult = CPUReg::RSP, uint32_t memOffsetResult = UINT32_MAX);
+    static void emitCallCPUParams(ScbeCpu& pp, const Utf8& funcName, const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CpuPushParam>& pushCPUParams, CpuReg memRegResult, uint32_t memOffsetResult, bool localCall);
+    static void emitCallRAParams(ScbeCpu& pp, const Utf8& funcName, const TypeInfoFuncAttr* typeFuncBc, bool localCall);
+    static void emitInternalCallCPUParams(ScbeCpu& pp, const Utf8& funcName, const VectorNative<CpuPushParam>& pushCPUParams, CpuReg memRegResult = CpuReg::RSP, uint32_t memOffsetResult = UINT32_MAX);
+    static void emitInternalCallRAParams(ScbeCpu& pp, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, CpuReg memRegResult = CpuReg::RSP, uint32_t memOffsetResult = UINT32_MAX);
 
-    static void emitLoadParam(ScbeCPU& pp, CPUReg reg, uint32_t paramIdx, OpBits opBits);
-    static void emitLoadZeroExtendParam(ScbeCPU& pp, CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc);
-    static void emitLoadAddressParam(ScbeCPU& pp, CPUReg reg, uint32_t paramIdx);
-    static void emitGetParam(ScbeCPU& pp, uint32_t reg, uint32_t paramIdx, OpBits opBits, uint64_t toAdd = 0, OpBits derefBits = OpBits::Zero);
-    static void emitLocalCall(ScbeCPU& pp);
-    static void emitForeignCall(ScbeCPU& pp);
-    static void emitLambdaCall(ScbeCPU& pp);
+    static void emitLoadParam(ScbeCpu& pp, CpuReg reg, uint32_t paramIdx, OpBits opBits);
+    static void emitLoadZeroExtendParam(ScbeCpu& pp, CpuReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc);
+    static void emitLoadAddressParam(ScbeCpu& pp, CpuReg reg, uint32_t paramIdx);
+    static void emitGetParam(ScbeCpu& pp, uint32_t reg, uint32_t paramIdx, OpBits opBits, uint64_t toAdd = 0, OpBits derefBits = OpBits::Zero);
+    static void emitLocalCall(ScbeCpu& pp);
+    static void emitForeignCall(ScbeCpu& pp);
+    static void emitLambdaCall(ScbeCpu& pp);
 
-    static void emitOverflow(ScbeCPU& pp, const char* msg, bool isSigned);
-    static void emitShiftRightArithmetic(ScbeCPU& pp);
-    static void emitShiftLogical(ScbeCPU& pp, CPUOp op);
-    static void emitShiftRightEqArithmetic(ScbeCPU& pp);
-    static void emitShiftEqLogical(ScbeCPU& pp, CPUOp op);
-    static void emitInternalPanic(ScbeCPU& pp, const char* msg);
-    static void emitCompareOp(ScbeCPU& pp, CPUReg reg, CPUCondFlag cond);
-    static void emitBinOp(ScbeCPU& pp, CPUOp op, CPUEmitFlags emitFlags = EMITF_Zero);
-    static void emitBinOpOverflow(ScbeCPU& pp, CPUOp op, SafetyMsg safetyMsg, TypeInfo* safetyType);
-    static void emitBinOpEq(ScbeCPU& pp, uint32_t offset, CPUOp op, CPUEmitFlags emitFlags = EMITF_Zero);
-    static void emitBinOpEqOverflow(ScbeCPU& pp, CPUOp op, SafetyMsg safetyMsg, TypeInfo* safetyType);
-    static void emitBinOpEqLock(ScbeCPU& pp, CPUOp op);
-    static void emitBinOpEqS(ScbeCPU& pp, CPUOp op);
-    static void emitAddSubMul64(ScbeCPU& pp, uint64_t mulValue, CPUOp op);
-    static void emitJumpCmp(ScbeCPU& pp, CPUCondJump op, OpBits opBits);
-    static void emitJumpCmpAddr(ScbeCPU& pp, CPUCondJump op, CPUReg memReg, uint64_t memOffset, OpBits opBits);
-    static void emitJumpCmp2(ScbeCPU& pp, CPUCondJump op1, CPUCondJump op2, OpBits opBits);
-    static void emitJumpCmp3(ScbeCPU& pp, CPUCondJump op1, CPUCondJump op2, OpBits opBits);
-    static void emitIMMA(ScbeCPU& pp, CPUReg reg, OpBits opBits);
-    static void emitIMMB(ScbeCPU& pp, CPUReg reg, OpBits opBits);
-    static void emitIMMC(ScbeCPU& pp, CPUReg reg, OpBits opBits);
-    static void emitIMMD(ScbeCPU& pp, CPUReg reg, OpBits opBits);
-    static void emitIMMB(ScbeCPU& pp, CPUReg reg, OpBits numBitsSrc, OpBits numBitsDst, bool isSigned);
-    static void emitIMMC(ScbeCPU& pp, CPUReg reg, OpBits numBitsSrc, OpBits numBitsDst, bool isSigned);
-    static void emitJumpDyn(ScbeCPU& pp);
-    static void emitCopyVaargs(ScbeCPU& pp);
-    static void emitMakeLambda(ScbeCPU& pp);
-    static void emitMakeCallback(ScbeCPU& pp);
+    static void emitOverflow(ScbeCpu& pp, const char* msg, bool isSigned);
+    static void emitShiftRightArithmetic(ScbeCpu& pp);
+    static void emitShiftLogical(ScbeCpu& pp, CpuOp op);
+    static void emitShiftRightEqArithmetic(ScbeCpu& pp);
+    static void emitShiftEqLogical(ScbeCpu& pp, CpuOp op);
+    static void emitInternalPanic(ScbeCpu& pp, const char* msg);
+    static void emitCompareOp(ScbeCpu& pp, CpuReg reg, CpuCondFlag cond);
+    static void emitBinOp(ScbeCpu& pp, CpuOp op, CpuEmitFlags emitFlags = EMITF_Zero);
+    static void emitBinOpOverflow(ScbeCpu& pp, CpuOp op, SafetyMsg safetyMsg, TypeInfo* safetyType);
+    static void emitBinOpEq(ScbeCpu& pp, uint32_t offset, CpuOp op, CpuEmitFlags emitFlags = EMITF_Zero);
+    static void emitBinOpEqOverflow(ScbeCpu& pp, CpuOp op, SafetyMsg safetyMsg, TypeInfo* safetyType);
+    static void emitBinOpEqLock(ScbeCpu& pp, CpuOp op);
+    static void emitBinOpEqS(ScbeCpu& pp, CpuOp op);
+    static void emitAddSubMul64(ScbeCpu& pp, uint64_t mulValue, CpuOp op);
+    static void emitJumpCmp(ScbeCpu& pp, CpuCondJump op, OpBits opBits);
+    static void emitJumpCmpAddr(ScbeCpu& pp, CpuCondJump op, CpuReg memReg, uint64_t memOffset, OpBits opBits);
+    static void emitJumpCmp2(ScbeCpu& pp, CpuCondJump op1, CpuCondJump op2, OpBits opBits);
+    static void emitJumpCmp3(ScbeCpu& pp, CpuCondJump op1, CpuCondJump op2, OpBits opBits);
+    static void emitIMMA(ScbeCpu& pp, CpuReg reg, OpBits opBits);
+    static void emitIMMB(ScbeCpu& pp, CpuReg reg, OpBits opBits);
+    static void emitIMMC(ScbeCpu& pp, CpuReg reg, OpBits opBits);
+    static void emitIMMD(ScbeCpu& pp, CpuReg reg, OpBits opBits);
+    static void emitIMMB(ScbeCpu& pp, CpuReg reg, OpBits numBitsSrc, OpBits numBitsDst, bool isSigned);
+    static void emitIMMC(ScbeCpu& pp, CpuReg reg, OpBits numBitsSrc, OpBits numBitsDst, bool isSigned);
+    static void emitJumpDyn(ScbeCpu& pp);
+    static void emitCopyVaargs(ScbeCpu& pp);
+    static void emitMakeLambda(ScbeCpu& pp);
+    static void emitMakeCallback(ScbeCpu& pp);
 };

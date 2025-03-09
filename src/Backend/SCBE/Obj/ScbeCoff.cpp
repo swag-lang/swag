@@ -13,7 +13,7 @@ namespace
     static constexpr int UWOP_ALLOC_LARGE = 0x00000001;
     static constexpr int UWOP_ALLOC_SMALL = 0x00000002;
 
-    bool emitXData(const BuildParameters&, ScbeCPU& pp)
+    bool emitXData(const BuildParameters&, ScbeCpu& pp)
     {
         auto& concat = pp.concat;
 
@@ -32,7 +32,7 @@ namespace
         return true;
     }
 
-    bool emitPData(const BuildParameters&, ScbeCPU& pp)
+    bool emitPData(const BuildParameters&, ScbeCpu& pp)
     {
         auto& concat = pp.concat;
 
@@ -45,7 +45,7 @@ namespace
             SWAG_ASSERT(f->symbolIndex < pp.allSymbols.size());
             SWAG_ASSERT(f->endAddress > f->startAddress);
 
-            CPURelocation reloc;
+            CpuRelocation reloc;
             reloc.type = IMAGE_REL_AMD64_ADDR32NB;
 
             reloc.virtualAddress = offset;
@@ -71,7 +71,7 @@ namespace
         return true;
     }
 
-    bool emitDirectives(const BuildParameters&, ScbeCPU& pp)
+    bool emitDirectives(const BuildParameters&, ScbeCpu& pp)
     {
         auto& concat = pp.concat;
 
@@ -83,7 +83,7 @@ namespace
         return true;
     }
 
-    bool emitSymbolTable(const BuildParameters&, ScbeCPU& pp)
+    bool emitSymbolTable(const BuildParameters&, ScbeCpu& pp)
     {
         auto& concat = pp.concat;
 
@@ -114,25 +114,25 @@ namespace
             concat.addU32(symbol.value); // .Value
             switch (symbol.kind)
             {
-                case CPUSymbolKind::Function:
+                case CpuSymbolKind::Function:
                     concat.addU16(pp.sectionIndexText);           // .SectionNumber
                     concat.addU16(IMAGE_SYM_DTYPE_FUNCTION << 8); // .Type
                     concat.addU8(IMAGE_SYM_CLASS_EXTERNAL);       // .StorageClass
                     concat.addU8(0);                              // .NumberOfAuxSymbols
                     break;
-                case CPUSymbolKind::Extern:
+                case CpuSymbolKind::Extern:
                     concat.addU16(0);                       // .SectionNumber
                     concat.addU16(0);                       // .Type
                     concat.addU8(IMAGE_SYM_CLASS_EXTERNAL); // .StorageClass
                     concat.addU8(0);                        // .NumberOfAuxSymbols
                     break;
-                case CPUSymbolKind::Custom:
+                case CpuSymbolKind::Custom:
                     concat.addU16(symbol.sectionIdx);       // .SectionNumber
                     concat.addU16(0);                       // .Type
                     concat.addU8(IMAGE_SYM_CLASS_EXTERNAL); // .StorageClass
                     concat.addU8(0);                        // .NumberOfAuxSymbols
                     break;
-                case CPUSymbolKind::GlobalString:
+                case CpuSymbolKind::GlobalString:
                     concat.addU16(pp.sectionIndexSS);     // .SectionNumber
                     concat.addU16(0);                     // .Type
                     concat.addU8(IMAGE_SYM_CLASS_STATIC); // .StorageClass
@@ -147,7 +147,7 @@ namespace
         return true;
     }
 
-    bool emitStringTable(const BuildParameters&, ScbeCPU& pp)
+    bool emitStringTable(const BuildParameters&, ScbeCpu& pp)
     {
         auto& concat = pp.concat;
 
@@ -165,7 +165,7 @@ namespace
     }
 }
 
-bool ScbeCoff::emitHeader(const BuildParameters& buildParameters, ScbeCPU& pp)
+bool ScbeCoff::emitHeader(const BuildParameters& buildParameters, ScbeCpu& pp)
 {
     const auto           precompileIndex = buildParameters.precompileIndex;
     const auto           module          = buildParameters.module;
@@ -393,7 +393,7 @@ void ScbeCoff::emitUnwind(Concat& concat, uint32_t& offset, uint32_t sizeProlog,
     }
 }
 
-bool ScbeCoff::emitRelocationTable(Concat& concat, const CPURelocationTable& coffTable, uint32_t* sectionFlags, uint16_t* count)
+bool ScbeCoff::emitRelocationTable(Concat& concat, const CpuRelocationTable& coffTable, uint32_t* sectionFlags, uint16_t* count)
 {
     SWAG_ASSERT(coffTable.table.size() < UINT32_MAX);
     const auto tableSize = coffTable.table.size();
@@ -422,7 +422,7 @@ bool ScbeCoff::emitRelocationTable(Concat& concat, const CPURelocationTable& cof
     return true;
 }
 
-bool ScbeCoff::emitPostFunc(const BuildParameters& buildParameters, ScbeCPU& pp)
+bool ScbeCoff::emitPostFunc(const BuildParameters& buildParameters, ScbeCpu& pp)
 {
     const auto module          = buildParameters.module;
     const auto precompileIndex = buildParameters.precompileIndex;
@@ -527,7 +527,7 @@ bool ScbeCoff::emitPostFunc(const BuildParameters& buildParameters, ScbeCPU& pp)
     return true;
 }
 
-bool ScbeCoff::saveFileBuffer(FILE* f, const BuildParameters& buildParameters, ScbeCPU& pp)
+bool ScbeCoff::saveFileBuffer(FILE* f, const BuildParameters& buildParameters, ScbeCpu& pp)
 {
     const auto module          = buildParameters.module;
     const auto precompileIndex = buildParameters.precompileIndex;
@@ -619,7 +619,7 @@ bool ScbeCoff::saveFileBuffer(FILE* f, const BuildParameters& buildParameters, S
     return true;
 }
 
-void ScbeCoff::computeUnwind(const VectorNative<CPUReg>& unwindRegs, const VectorNative<uint32_t>& unwindOffsetRegs, uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind)
+void ScbeCoff::computeUnwind(const VectorNative<CpuReg>& unwindRegs, const VectorNative<uint32_t>& unwindOffsetRegs, uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind)
 {
     // UNWIND_CODE
     // UBYTE:8: offset of the instruction after the "sub rsp"

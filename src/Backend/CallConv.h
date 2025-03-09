@@ -12,7 +12,7 @@ enum class CallConvKind
 };
 
 // ReSharper disable CppInconsistentNaming
-enum class CPUReg : uint8_t
+enum class CpuReg : uint8_t
 {
     RAX,
     RBX,
@@ -51,19 +51,19 @@ struct CallConv
     uint32_t stackAlign = 16;
 
     // The registers to use when passing parameter by register, and if it's integer
-    VectorNative<CPUReg> paramByRegisterInteger;
+    VectorNative<CpuReg> paramByRegisterInteger;
 
     // The registers to use when passing parameter by register, and if it's float
-    VectorNative<CPUReg> paramByRegisterFloat;
+    VectorNative<CpuReg> paramByRegisterFloat;
 
     // The register used to return an integer
-    CPUReg returnByRegisterInteger = CPUReg::RAX;
+    CpuReg returnByRegisterInteger = CpuReg::RAX;
 
     // The register used to return a float
-    CPUReg returnByRegisterFloat = CPUReg::XMM0;
+    CpuReg returnByRegisterFloat = CpuReg::XMM0;
 
     // The base register used for ffi
-    CPUReg ffiBaseRegister = CPUReg::RDI;
+    CpuReg ffiBaseRegister = CpuReg::RDI;
 
     // If a float is passed by register, use 'paramByRegisterFloat' instead of 'paramByRegisterInteger'
     bool useRegisterFloat = true;

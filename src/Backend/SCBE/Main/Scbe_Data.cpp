@@ -1,14 +1,14 @@
 #include "pch.h"
 #include "Backend/SCBE/Main/Scbe.h"
 
-bool Scbe::buildRelocationSegment(ScbeCPU& pp, DataSegment* dataSegment, CPURelocationTable& relocationTable, SegmentKind me)
+bool Scbe::buildRelocationSegment(ScbeCpu& pp, DataSegment* dataSegment, CpuRelocationTable& relocationTable, SegmentKind me)
 {
     if (dataSegment->buckets.empty())
         return true;
     if (!dataSegment->totalCount)
         return true;
 
-    CPURelocation reloc;
+    CpuRelocation reloc;
 
     for (const auto& k : dataSegment->initPtr)
     {
@@ -50,7 +50,7 @@ bool Scbe::buildRelocationSegment(ScbeCPU& pp, DataSegment* dataSegment, CPURelo
     {
         *reinterpret_cast<void**>(dataSegment->address(k.first)) = nullptr;
 
-        const auto sym       = pp.getOrAddSymbol(k.second, CPUSymbolKind::Extern);
+        const auto sym       = pp.getOrAddSymbol(k.second, CpuSymbolKind::Extern);
         reloc.virtualAddress = k.first;
         reloc.symbolIndex    = sym->index;
         reloc.type           = IMAGE_REL_AMD64_ADDR64;

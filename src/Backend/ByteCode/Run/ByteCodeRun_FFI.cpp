@@ -1,7 +1,7 @@
 #include "pch.h"
 
 #include "Backend/ByteCode/ByteCode.h"
-#include "Backend/SCBE/Encoder/ScbeCPU.h"
+#include "Backend/SCBE/Encoder/ScbeCpu.h"
 #include "ByteCodeStack.h"
 #include "Os/Os.h"
 #include "Report/Diagnostic.h"
@@ -124,7 +124,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, const ByteCodeInstruction
         cptParam += typeParam->numRegisters();
     }
 
-    VectorNative<CPUPushParam> cpuParams;
+    VectorNative<CpuPushParam> cpuParams;
     cpuParams.reserve(cptParam);
     cpuParams.count = cptParam;
 
@@ -132,7 +132,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, const ByteCodeInstruction
     cptParam       = 0;
     for (auto& param : cpuParams)
     {
-        param.type     = CPUPushParamType::SwagRegister;
+        param.type     = CpuPushParamType::SwagRegister;
         param.baseReg  = cc.ffiBaseRegister;
         param.value    = REG_OFFSET(cptParam);
         param.typeInfo = nullptr;
@@ -142,7 +142,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, const ByteCodeInstruction
     // Mark the first parameter as the capture context.
     // The "first" parameter has index 2 in case of a variadic function, as the 2 first parameters are the variadic slice
     if (typeFuncBc->isClosure())
-        cpuParams[typeFuncBc->isFctVariadic() ? 2 : 0].type = CPUPushParamType::CaptureContext;
+        cpuParams[typeFuncBc->isFctVariadic() ? 2 : 0].type = CpuPushParamType::CaptureContext;
 
     void* retCopyAddr = nullptr;
     if (typeFuncBc->returnByStackAddress())

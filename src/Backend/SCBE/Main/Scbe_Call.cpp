@@ -8,31 +8,31 @@
 #include "Wmf/ModuleManager.h"
 #include "Wmf/Workspace.h"
 
-void Scbe::emitLoadParam(ScbeCPU& pp, CPUReg reg, uint32_t paramIdx, OpBits opBits)
+void Scbe::emitLoadParam(ScbeCpu& pp, CpuReg reg, uint32_t paramIdx, OpBits opBits)
 {
     if (paramIdx < pp.cpuFct->cc->paramByRegisterCount)
-        pp.emitLoadRM(reg, CPUReg::RSP, pp.cpuFct->getStackOffsetParam(paramIdx), opBits);
+        pp.emitLoadRM(reg, CpuReg::RSP, pp.cpuFct->getStackOffsetParam(paramIdx), opBits);
     else
         pp.emitLoadCallerParam(reg, paramIdx, opBits);
 }
 
-void Scbe::emitLoadZeroExtendParam(ScbeCPU& pp, CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc)
+void Scbe::emitLoadZeroExtendParam(ScbeCpu& pp, CpuReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc)
 {
     if (paramIdx < pp.cpuFct->cc->paramByRegisterCount)
-        pp.emitLoadZeroExtendRM(reg, CPUReg::RSP, pp.cpuFct->getStackOffsetParam(paramIdx), numBitsDst, numBitsSrc);
+        pp.emitLoadZeroExtendRM(reg, CpuReg::RSP, pp.cpuFct->getStackOffsetParam(paramIdx), numBitsDst, numBitsSrc);
     else
         pp.emitLoadCallerZeroExtendParam(reg, paramIdx, numBitsDst, numBitsSrc);
 }
 
-void Scbe::emitLoadAddressParam(ScbeCPU& pp, CPUReg reg, uint32_t paramIdx)
+void Scbe::emitLoadAddressParam(ScbeCpu& pp, CpuReg reg, uint32_t paramIdx)
 {
     if (paramIdx < pp.cpuFct->cc->paramByRegisterCount)
-        pp.emitLoadAddressM(reg, CPUReg::RSP, pp.cpuFct->getStackOffsetParam(paramIdx));
+        pp.emitLoadAddressM(reg, CpuReg::RSP, pp.cpuFct->getStackOffsetParam(paramIdx));
     else
         pp.emitLoadCallerAddressParam(reg, paramIdx);
 }
 
-void Scbe::emitGetParam(ScbeCPU& pp, uint32_t reg, uint32_t paramIdx, OpBits opBits, uint64_t toAdd, OpBits derefBits)
+void Scbe::emitGetParam(ScbeCpu& pp, uint32_t reg, uint32_t paramIdx, OpBits opBits, uint64_t toAdd, OpBits derefBits)
 {
     const auto typeFunc  = pp.cpuFct->typeFunc;
     auto       typeParam = TypeManager::concreteType(typeFunc->parameters[typeFunc->registerIdxToParamIdx(paramIdx)]->typeInfo);
@@ -46,8 +46,8 @@ void Scbe::emitGetParam(ScbeCPU& pp, uint32_t reg, uint32_t paramIdx, OpBits opB
         case OpBits::B32:
         {
             SWAG_ASSERT(!toAdd);
-            emitLoadZeroExtendParam(pp, CPUReg::RAX, paramIdx, OpBits::B64, opBits);
-            pp.emitStoreMR(CPUReg::RSP, pp.cpuFct->getStackOffsetReg(reg), CPUReg::RAX, OpBits::B64);
+            emitLoadZeroExtendParam(pp, CpuReg::RAX, paramIdx, OpBits::B64, opBits);
+            pp.emitStoreMR(CpuReg::RSP, pp.cpuFct->getStackOffsetReg(reg), CpuReg::RAX, OpBits::B64);
             return;
         }
         case OpBits::B64:
@@ -59,9 +59,9 @@ void Scbe::emitGetParam(ScbeCPU& pp, uint32_t reg, uint32_t paramIdx, OpBits opB
     }
 
     if (typeFunc->structParamByValue(typeParam))
-        emitLoadAddressParam(pp, CPUReg::RAX, paramIdx);
+        emitLoadAddressParam(pp, CpuReg::RAX, paramIdx);
     else
-        emitLoadParam(pp, CPUReg::RAX, paramIdx, OpBits::B64);
+        emitLoadParam(pp, CpuReg::RAX, paramIdx, OpBits::B64);
 
     switch (derefBits)
     {
@@ -69,22 +69,22 @@ void Scbe::emitGetParam(ScbeCPU& pp, uint32_t reg, uint32_t paramIdx, OpBits opB
         case OpBits::B16:
         case OpBits::B32:
         case OpBits::B64:
-            pp.emitLoadZeroExtendRM(CPUReg::RAX, CPUReg::RAX, static_cast<uint32_t>(toAdd), OpBits::B64, derefBits);
+            pp.emitLoadZeroExtendRM(CpuReg::RAX, CpuReg::RAX, static_cast<uint32_t>(toAdd), OpBits::B64, derefBits);
             break;
         default:
             if (toAdd)
-                pp.emitOpBinaryRI(CPUReg::RAX, toAdd, CPUOp::ADD, OpBits::B64);
+                pp.emitOpBinaryRI(CpuReg::RAX, toAdd, CpuOp::ADD, OpBits::B64);
             break;
     }
 
-    pp.emitStoreMR(CPUReg::RSP, pp.cpuFct->getStackOffsetReg(reg), CPUReg::RAX, OpBits::B64);
+    pp.emitStoreMR(CpuReg::RSP, pp.cpuFct->getStackOffsetReg(reg), CpuReg::RAX, OpBits::B64);
 }
 
-void Scbe::emitCallCPUParams(ScbeCPU&                          pp,
+void Scbe::emitCallCPUParams(ScbeCpu&                          pp,
                              const Utf8&                       funcName,
                              const TypeInfoFuncAttr*           typeFuncBc,
-                             const VectorNative<CPUPushParam>& pushCPUParams,
-                             CPUReg                            memRegResult,
+                             const VectorNative<CpuPushParam>& pushCPUParams,
+                             CpuReg                            memRegResult,
                              uint32_t                          memOffsetResult,
                              bool                              localCall)
 {
@@ -116,29 +116,29 @@ void Scbe::emitCallCPUParams(ScbeCPU&                          pp,
     }
 }
 
-void Scbe::emitCallRAParams(ScbeCPU& pp, const Utf8& funcName, const TypeInfoFuncAttr* typeFuncBc, bool localCall)
+void Scbe::emitCallRAParams(ScbeCpu& pp, const Utf8& funcName, const TypeInfoFuncAttr* typeFuncBc, bool localCall)
 {
     // Invert order
-    VectorNative<CPUPushParam> p;
+    VectorNative<CpuPushParam> p;
     for (uint32_t i = pp.pushRAParams.size() - 1; i != UINT32_MAX; i--)
-        p.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RSP, .value = pp.cpuFct->getStackOffsetReg(pp.pushRAParams[i])});
+        p.push_back({.type = CpuPushParamType::SwagRegister, .baseReg = CpuReg::RSP, .value = pp.cpuFct->getStackOffsetReg(pp.pushRAParams[i])});
 
-    emitCallCPUParams(pp, funcName, typeFuncBc, p, CPUReg::RSP, pp.cpuFct->getStackOffsetRT(0), localCall);
+    emitCallCPUParams(pp, funcName, typeFuncBc, p, CpuReg::RSP, pp.cpuFct->getStackOffsetRT(0), localCall);
 }
 
-void Scbe::emitInternalCallRAParams(ScbeCPU& pp, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, CPUReg memRegResult, uint32_t memOffsetResult)
+void Scbe::emitInternalCallRAParams(ScbeCpu& pp, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, CpuReg memRegResult, uint32_t memOffsetResult)
 {
     const auto typeFunc = g_Workspace->runtimeModule->getRuntimeTypeFct(funcName);
     SWAG_ASSERT(typeFunc);
 
-    VectorNative<CPUPushParam> p;
+    VectorNative<CpuPushParam> p;
     for (const auto r : pushRAParams)
-        p.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RSP, .value = pp.cpuFct->getStackOffsetReg(r)});
+        p.push_back({.type = CpuPushParamType::SwagRegister, .baseReg = CpuReg::RSP, .value = pp.cpuFct->getStackOffsetReg(r)});
 
     emitCallCPUParams(pp, funcName, typeFunc, p, memRegResult, memOffsetResult, true);
 }
 
-void Scbe::emitInternalCallCPUParams(ScbeCPU& pp, const Utf8& funcName, const VectorNative<CPUPushParam>& pushCPUParams, CPUReg memRegResult, uint32_t memOffsetResult)
+void Scbe::emitInternalCallCPUParams(ScbeCpu& pp, const Utf8& funcName, const VectorNative<CpuPushParam>& pushCPUParams, CpuReg memRegResult, uint32_t memOffsetResult)
 {
     auto typeFuncBc = g_Workspace->runtimeModule->getRuntimeTypeFct(funcName);
     if (!typeFuncBc)
@@ -148,7 +148,7 @@ void Scbe::emitInternalCallCPUParams(ScbeCPU& pp, const Utf8& funcName, const Ve
     emitCallCPUParams(pp, funcName, typeFuncBc, pushCPUParams, memRegResult, memOffsetResult, true);
 }
 
-void Scbe::emitLocalCall(ScbeCPU& pp)
+void Scbe::emitLocalCall(ScbeCpu& pp)
 {
     const auto ip      = pp.ip;
     const auto callBc  = reinterpret_cast<ByteCode*>(ip->a.pointer);
@@ -160,12 +160,12 @@ void Scbe::emitLocalCall(ScbeCPU& pp)
 
     if (ip->op == ByteCodeOp::LocalCallPopRC)
     {
-        pp.emitLoadRM(CPUReg::RAX, CPUReg::RSP, pp.cpuFct->getStackOffsetRT(0), OpBits::B64);
-        pp.emitStoreMR(CPUReg::RSP, pp.cpuFct->getStackOffsetReg(ip->d.u32), CPUReg::RAX, OpBits::B64);
+        pp.emitLoadRM(CpuReg::RAX, CpuReg::RSP, pp.cpuFct->getStackOffsetRT(0), OpBits::B64);
+        pp.emitStoreMR(CpuReg::RSP, pp.cpuFct->getStackOffsetReg(ip->d.u32), CpuReg::RAX, OpBits::B64);
     }
 }
 
-void Scbe::emitForeignCall(ScbeCPU& pp)
+void Scbe::emitForeignCall(ScbeCpu& pp)
 {
     const auto ip       = pp.ip;
     const auto funcNode = reinterpret_cast<AstFuncDecl*>(ip->a.pointer);
@@ -182,50 +182,50 @@ void Scbe::emitForeignCall(ScbeCPU& pp)
     pp.pushRVParams.clear();
 }
 
-void Scbe::emitLambdaCall(ScbeCPU& pp)
+void Scbe::emitLambdaCall(ScbeCpu& pp)
 {
     const auto ip         = pp.ip;
     const auto typeFuncBc = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
 
     // Test if it's a bytecode lambda
-    pp.emitLoadRM(CPUReg::R10, CPUReg::RSP, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-    pp.emitOpBinaryRI(CPUReg::R10, SWAG_LAMBDA_BC_MARKER_BIT, CPUOp::BT, OpBits::B64);
-    const auto jumpBC = pp.emitJump(JB, OpBits::B32);
+    pp.emitLoadRM(CpuReg::R10, CpuReg::RSP, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
+    pp.emitOpBinaryRI(CpuReg::R10, SWAG_LAMBDA_BC_MARKER_BIT, CpuOp::BT, OpBits::B64);
+    const auto jumpBC = pp.emitJump(CpuCondJump::JB, OpBits::B32);
 
     // Native lambda
     //////////////////
 
     // Invert order
-    VectorNative<CPUPushParam> pushCPUParams;
+    VectorNative<CpuPushParam> pushCPUParams;
     for (uint32_t i = pp.pushRAParams.size() - 1; i != UINT32_MAX; i--)
-        pushCPUParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RSP, .value = pp.cpuFct->getStackOffsetReg(pp.pushRAParams[i])});
+        pushCPUParams.push_back({.type = CpuPushParamType::SwagRegister, .baseReg = CpuReg::RSP, .value = pp.cpuFct->getStackOffsetReg(pp.pushRAParams[i])});
 
     // Mark the first parameter as the capture context.
     // The "first" parameter has index 2 in case of a variadic function, as the 2 first parameters are the variadic slice
     if (typeFuncBc->isClosure())
-        pushCPUParams[typeFuncBc->isFctVariadic() ? 2 : 0].type = CPUPushParamType::CaptureContext;
+        pushCPUParams[typeFuncBc->isFctVariadic() ? 2 : 0].type = CpuPushParamType::CaptureContext;
 
-    pp.emitComputeCallParameters(typeFuncBc, pushCPUParams, CPUReg::RSP, pp.cpuFct->getStackOffsetRT(0), nullptr);
-    pp.emitCallIndirect(CPUReg::R10);
-    pp.emitStoreCallResult(CPUReg::RSP, pp.cpuFct->getStackOffsetRT(0), typeFuncBc);
+    pp.emitComputeCallParameters(typeFuncBc, pushCPUParams, CpuReg::RSP, pp.cpuFct->getStackOffsetRT(0), nullptr);
+    pp.emitCallIndirect(CpuReg::R10);
+    pp.emitStoreCallResult(CpuReg::RSP, pp.cpuFct->getStackOffsetRT(0), typeFuncBc);
 
-    const auto jumpBCAfter = pp.emitJump(JUMP, OpBits::B32);
+    const auto jumpBCAfter = pp.emitJump(CpuCondJump::JUMP, OpBits::B32);
 
     // ByteCode lambda
     //////////////////
 
     pp.emitPatchJump(jumpBC);
 
-    pushCPUParams.insert_at_index({.type = CPUPushParamType::CPURegister, .value = static_cast<uint64_t>(CPUReg::R10)}, 0);
+    pushCPUParams.insert_at_index({.type = CpuPushParamType::CPURegister, .value = static_cast<uint64_t>(CpuReg::R10)}, 0);
     if (typeFuncBc->numReturnRegisters() >= 1)
-        pushCPUParams.insert_at_index({.type = CPUPushParamType::LoadAddress, .baseReg = CPUReg::RSP, .value = pp.cpuFct->getStackOffsetRT(0)}, 1);
+        pushCPUParams.insert_at_index({.type = CpuPushParamType::LoadAddress, .baseReg = CpuReg::RSP, .value = pp.cpuFct->getStackOffsetRT(0)}, 1);
     if (typeFuncBc->numReturnRegisters() >= 2)
-        pushCPUParams.insert_at_index({.type = CPUPushParamType::LoadAddress, .baseReg = CPUReg::RSP, .value = pp.cpuFct->getStackOffsetRT(1)}, 2);
+        pushCPUParams.insert_at_index({.type = CpuPushParamType::LoadAddress, .baseReg = CpuReg::RSP, .value = pp.cpuFct->getStackOffsetRT(1)}, 2);
     pp.emitCallParameters(typeFuncBc, pushCPUParams, CallConv::get(CallConvKind::ByteCode));
 
-    pp.emitSymbolRelocationAddress(CPUReg::RAX, pp.symPI_byteCodeRun, 0);
-    pp.emitLoadRM(CPUReg::RAX, CPUReg::RAX, 0, OpBits::B64);
-    pp.emitCallIndirect(CPUReg::RAX);
+    pp.emitSymbolRelocationAddress(CpuReg::RAX, pp.symPI_byteCodeRun, 0);
+    pp.emitLoadRM(CpuReg::RAX, CpuReg::RAX, 0, OpBits::B64);
+    pp.emitCallIndirect(CpuReg::RAX);
 
     // End
     //////////////////

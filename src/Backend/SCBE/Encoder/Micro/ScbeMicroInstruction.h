@@ -1,10 +1,10 @@
 ﻿#pragma once
-#include "Backend/SCBE/Encoder/ScbeCPU.h"
+#include "Backend/SCBE/Encoder/ScbeCpu.h"
 
 enum class OpBits : uint8_t;
-enum CPUCondJump : uint8_t;
-enum class CPUCondFlag : uint8_t;
-enum class CPUOp : uint8_t;
+enum class CpuCondJump : uint8_t;
+enum class CpuCondFlag : uint8_t;
+enum class CpuOp : uint8_t;
 enum class ScbeMicroOp : uint8_t;
 
 using ScbeMicroInstructionFlag                   = Flags<uint8_t>;
@@ -18,19 +18,19 @@ struct ScbeMicroInstruction
     uint64_t valueB;
 
     ScbeMicroOp op;
-    CPUOp       cpuOp;
-    CPUCondFlag cpuCond;
-    CPUCondJump jumpType;
+    CpuOp       cpuOp;
+    CpuCondFlag cpuCond;
+    CpuCondJump jumpType;
 
     OpBits                   opBitsA;
     OpBits                   opBitsB;
-    CPUEmitFlags             emitFlags;
+    CpuEmitFlags             emitFlags;
     ScbeMicroInstructionFlag flags;
 
     uint32_t valueC;
-    CPUReg   regA;
-    CPUReg   regB;
-    CPUReg   regC;
+    CpuReg   regA;
+    CpuReg   regB;
+    CpuReg   regC;
 
     bool isJump() const;
     bool isCall() const;

@@ -7,16 +7,16 @@ void initCallConvKinds()
 {
     auto& ccSwag                = g_CallConv[static_cast<int>(CallConvKind::X86_64)];
     ccSwag.paramByRegisterCount = 4;
-    ccSwag.paramByRegisterInteger.push_back(CPUReg::RCX);
-    ccSwag.paramByRegisterInteger.push_back(CPUReg::RDX);
-    ccSwag.paramByRegisterInteger.push_back(CPUReg::R8);
-    ccSwag.paramByRegisterInteger.push_back(CPUReg::R9);
-    ccSwag.paramByRegisterFloat.push_back(CPUReg::XMM0);
-    ccSwag.paramByRegisterFloat.push_back(CPUReg::XMM1);
-    ccSwag.paramByRegisterFloat.push_back(CPUReg::XMM2);
-    ccSwag.paramByRegisterFloat.push_back(CPUReg::XMM3);
-    ccSwag.returnByRegisterInteger = CPUReg::RAX;
-    ccSwag.returnByRegisterFloat   = CPUReg::XMM0;
+    ccSwag.paramByRegisterInteger.push_back(CpuReg::RCX);
+    ccSwag.paramByRegisterInteger.push_back(CpuReg::RDX);
+    ccSwag.paramByRegisterInteger.push_back(CpuReg::R8);
+    ccSwag.paramByRegisterInteger.push_back(CpuReg::R9);
+    ccSwag.paramByRegisterFloat.push_back(CpuReg::XMM0);
+    ccSwag.paramByRegisterFloat.push_back(CpuReg::XMM1);
+    ccSwag.paramByRegisterFloat.push_back(CpuReg::XMM2);
+    ccSwag.paramByRegisterFloat.push_back(CpuReg::XMM3);
+    ccSwag.returnByRegisterInteger = CpuReg::RAX;
+    ccSwag.returnByRegisterFloat   = CpuReg::XMM0;
     ccSwag.useRegisterFloat        = true;
     ccSwag.structParamByRegister   = true;
     ccSwag.structReturnByRegister  = true;

@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Backend/SCBE/Encoder/ScbeCPU.h"
+#include "Backend/SCBE/Encoder/ScbeCpu.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/SCBE/Main/Scbe.h"
 #include "Backend/SCBE/Obj/ScbeCoff.h"
@@ -10,7 +10,7 @@
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 
-void ScbeCPU::init(const BuildParameters& buildParameters)
+void ScbeCpu::init(const BuildParameters& buildParameters)
 {
     BackendEncoder::init(buildParameters);
     optLevel = buildParameters.buildCfg ? buildParameters.buildCfg->backendOptimize : BuildCfgBackendOptim::O0;
@@ -18,7 +18,7 @@ void ScbeCPU::init(const BuildParameters& buildParameters)
 
 namespace
 {
-    CPUSymbol* getSymbol(ScbeCPU& pp, const Utf8& name)
+    CpuSymbol* getSymbol(ScbeCpu& pp, const Utf8& name)
     {
         const auto it = pp.mapSymbols.find(name);
         if (it != pp.mapSymbols.end())
@@ -27,16 +27,16 @@ namespace
     }
 }
 
-CPUSymbol* ScbeCPU::getOrAddSymbol(const Utf8& name, CPUSymbolKind kind, uint32_t value, uint16_t sectionIdx)
+CpuSymbol* ScbeCpu::getOrAddSymbol(const Utf8& name, CpuSymbolKind kind, uint32_t value, uint16_t sectionIdx)
 {
     const auto it = getSymbol(*this, name);
     if (it)
     {
         if (it->kind == kind)
             return it;
-        if (kind == CPUSymbolKind::Extern)
+        if (kind == CpuSymbolKind::Extern)
             return it;
-        if (kind == CPUSymbolKind::Function && it->kind == CPUSymbolKind::Extern)
+        if (kind == CpuSymbolKind::Function && it->kind == CpuSymbolKind::Extern)
         {
             it->kind  = kind;
             it->value = value;
@@ -46,7 +46,7 @@ CPUSymbol* ScbeCPU::getOrAddSymbol(const Utf8& name, CPUSymbolKind kind, uint32_
         SWAG_ASSERT(false);
     }
 
-    CPUSymbol sym;
+    CpuSymbol sym;
     sym.name       = name;
     sym.kind       = kind;
     sym.value      = value;
@@ -58,44 +58,44 @@ CPUSymbol* ScbeCPU::getOrAddSymbol(const Utf8& name, CPUSymbolKind kind, uint32_
     return &allSymbols.back();
 }
 
-void ScbeCPU::addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, uint16_t type)
+void ScbeCpu::addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, uint16_t type)
 {
-    CPURelocation reloc;
+    CpuRelocation reloc;
     reloc.virtualAddress = virtualAddr;
     reloc.symbolIndex    = symbolIndex;
     reloc.type           = type;
     relocTableTextSection.table.push_back(reloc);
 }
 
-CPUSymbol* ScbeCPU::getOrCreateGlobalString(const Utf8& str)
+CpuSymbol* ScbeCpu::getOrCreateGlobalString(const Utf8& str)
 {
     const auto it = globalStrings.find(str);
     if (it != globalStrings.end())
         return &allSymbols[it->second];
 
     const Utf8 symName = form("__str%u", static_cast<uint32_t>(globalStrings.size()));
-    const auto sym     = getOrAddSymbol(symName, CPUSymbolKind::GlobalString);
+    const auto sym     = getOrAddSymbol(symName, CpuSymbolKind::GlobalString);
     globalStrings[str] = sym->index;
     sym->value         = stringSegment.addStringNoLock(str);
 
     return sym;
 }
 
-void ScbeCPU::emitLabel(uint32_t instructionIndex)
+void ScbeCpu::emitLabel(uint32_t instructionIndex)
 {
     const auto it = cpuFct->labels.find(instructionIndex);
     if (it == cpuFct->labels.end())
         cpuFct->labels[instructionIndex] = static_cast<int32_t>(concat.totalCount());
 }
 
-CPUFunction* ScbeCPU::addFunction(const Utf8& funcName, const CallConv* cc, ByteCode* bc)
+CpuFunction* ScbeCpu::addFunction(const Utf8& funcName, const CallConv* cc, ByteCode* bc)
 {
     concat.align(16);
 
-    CPUFunction* cf  = Allocator::alloc<CPUFunction>();
+    CpuFunction* cf  = Allocator::alloc<CpuFunction>();
     cf->cc           = cc;
     cf->bc           = bc;
-    cf->symbolIndex  = getOrAddSymbol(funcName, CPUSymbolKind::Function, concat.totalCount() - textSectionOffset)->index;
+    cf->symbolIndex  = getOrAddSymbol(funcName, CpuSymbolKind::Function, concat.totalCount() - textSectionOffset)->index;
     cf->startAddress = concat.totalCount();
 
     if (bc)
@@ -120,7 +120,7 @@ CPUFunction* ScbeCPU::addFunction(const Utf8& funcName, const CallConv* cc, Byte
     return cf;
 }
 
-void ScbeCPU::endFunction() const
+void ScbeCpu::endFunction() const
 {
     cpuFct->endAddress = concat.totalCount();
 
@@ -136,7 +136,7 @@ void ScbeCPU::endFunction() const
     }
 }
 
-bool ScbeCPU::isNoOp(uint64_t value, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags) const
+bool ScbeCpu::isNoOp(uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags) const
 {
     if (emitFlags.has(EMITF_Overflow))
         return false;
@@ -149,9 +149,9 @@ bool ScbeCPU::isNoOp(uint64_t value, CPUOp op, OpBits opBits, CPUEmitFlags emitF
     switch (value)
     {
         case 0:
-            return op == CPUOp::ADD || op == CPUOp::SUB || op == CPUOp::SAR || op == CPUOp::SHL || op == CPUOp::SHR || op == CPUOp::ROL || op == CPUOp::ROR || op == CPUOp::BT;
+            return op == CpuOp::ADD || op == CpuOp::SUB || op == CpuOp::SAR || op == CpuOp::SHL || op == CpuOp::SHR || op == CpuOp::ROL || op == CpuOp::ROR || op == CpuOp::BT;
         case 1:
-            return op == CPUOp::MUL || op == CPUOp::IMUL || op == CPUOp::DIV || op == CPUOp::IDIV;
+            return op == CpuOp::MUL || op == CpuOp::IMUL || op == CpuOp::DIV || op == CpuOp::IDIV;
         default:
             break;
     }
@@ -161,7 +161,7 @@ bool ScbeCPU::isNoOp(uint64_t value, CPUOp op, OpBits opBits, CPUEmitFlags emitF
 
 namespace
 {
-    void emitParameters(ScbeCPU& pp, const VectorNative<CPUPushParam>& params, const CallConv* callConv)
+    void emitParameters(ScbeCpu& pp, const VectorNative<CpuPushParam>& params, const CallConv* callConv)
     {
         const uint32_t numParamsPerRegister = std::min(callConv->paramByRegisterCount, params.size());
         uint32_t       idxParam             = 0;
@@ -174,69 +174,69 @@ namespace
 
             switch (params[idxParam].type)
             {
-                case CPUPushParamType::Load:
+                case CpuPushParamType::Load:
                     pp.emitLoadRM(callConv->paramByRegisterInteger[idxParam], params[idxParam].baseReg, value, OpBits::B64);
                     break;
 
-                case CPUPushParamType::LoadAddress:
+                case CpuPushParamType::LoadAddress:
                     pp.emitLoadAddressM(callConv->paramByRegisterInteger[idxParam], params[idxParam].baseReg, value);
                     break;
 
-                case CPUPushParamType::Constant:
+                case CpuPushParamType::Constant:
                     if (callConv->useRegisterFloat && type->isNativeFloat())
                         pp.emitLoadRI(callConv->paramByRegisterFloat[idxParam], value, BackendEncoder::getOpBitsByBytes(type->sizeOf, true));
                     else
                         pp.emitLoadRI(callConv->paramByRegisterInteger[idxParam], value, OpBits::B64);
                     break;
 
-                case CPUPushParamType::Constant64:
+                case CpuPushParamType::Constant64:
                     pp.emitLoadRI64(callConv->paramByRegisterInteger[idxParam], value);
                     break;
 
-                case CPUPushParamType::CaptureContext:
+                case CpuPushParamType::CaptureContext:
                     pp.emitLoadRM(callConv->paramByRegisterInteger[idxParam], params[idxParam].baseReg, value, OpBits::B64);
                     break;
 
-                case CPUPushParamType::SwagParamStructValue:
-                    pp.emitLoadRM(CPUReg::RAX, params[idxParam].baseReg, value, OpBits::B64);
-                    pp.emitLoadRM(callConv->paramByRegisterInteger[idxParam], CPUReg::RAX, 0, OpBits::B64);
+                case CpuPushParamType::SwagParamStructValue:
+                    pp.emitLoadRM(CpuReg::RAX, params[idxParam].baseReg, value, OpBits::B64);
+                    pp.emitLoadRM(callConv->paramByRegisterInteger[idxParam], CpuReg::RAX, 0, OpBits::B64);
                     break;
 
-                case CPUPushParamType::SwagRegister:
+                case CpuPushParamType::SwagRegister:
                     if (callConv->useRegisterFloat && type->isNativeFloat())
                         pp.emitLoadRM(callConv->paramByRegisterFloat[idxParam], params[idxParam].baseReg, value, BackendEncoder::getOpBitsByBytes(type->sizeOf, true));
                     else
                         pp.emitLoadRM(callConv->paramByRegisterInteger[idxParam], params[idxParam].baseReg, value, OpBits::B64);
                     break;
 
-                case CPUPushParamType::CPURegister:
-                    pp.emitLoadRR(callConv->paramByRegisterInteger[idxParam], static_cast<CPUReg>(value), OpBits::B64);
+                case CpuPushParamType::CPURegister:
+                    pp.emitLoadRR(callConv->paramByRegisterInteger[idxParam], static_cast<CpuReg>(value), OpBits::B64);
                     break;
 
-                case CPUPushParamType::SymbolRelocationValue:
+                case CpuPushParamType::SymbolRelocationValue:
                     SWAG_ASSERT(value < UINT32_MAX);
                     pp.emitSymbolRelocationValue(callConv->paramByRegisterInteger[idxParam], static_cast<uint32_t>(value), 0);
                     break;
 
-                case CPUPushParamType::SymbolRelocationAddress:
+                case CpuPushParamType::SymbolRelocationAddress:
                     SWAG_ASSERT(value < UINT32_MAX);
                     pp.emitSymbolRelocationAddress(callConv->paramByRegisterInteger[idxParam], static_cast<uint32_t>(value), 0);
                     break;
 
-                case CPUPushParamType::SwagRegisterAdd:
+                case CpuPushParamType::SwagRegisterAdd:
                     pp.emitLoadRM(callConv->paramByRegisterInteger[idxParam], params[idxParam].baseReg, value, OpBits::B64);
                     if (params[idxParam].value2)
-                        pp.emitOpBinaryRI(callConv->paramByRegisterInteger[idxParam], params[idxParam].value2, CPUOp::ADD, OpBits::B64);
+                        pp.emitOpBinaryRI(callConv->paramByRegisterInteger[idxParam], params[idxParam].value2, CpuOp::ADD, OpBits::B64);
                     break;
 
-                case CPUPushParamType::SwagRegisterMul:
-                    pp.emitLoadRM(CPUReg::RAX, params[idxParam].baseReg, value, OpBits::B64);
+                case CpuPushParamType::SwagRegisterMul:
+                    pp.emitLoadRM(CpuReg::RAX, params[idxParam].baseReg, value, OpBits::B64);
                     if (params[idxParam].value2 != 1)
-                        pp.emitOpBinaryRI(CPUReg::RAX, params[idxParam].value2, CPUOp::IMUL, OpBits::B64);
-                    pp.emitLoadRR(callConv->paramByRegisterInteger[idxParam], CPUReg::RAX, OpBits::B64);
+                        pp.emitOpBinaryRI(CpuReg::RAX, params[idxParam].value2, CpuOp::IMUL, OpBits::B64);
+                    pp.emitLoadRR(callConv->paramByRegisterInteger[idxParam], CpuReg::RAX, OpBits::B64);
                     break;
 
-                case CPUPushParamType::GlobalString:
+                case CpuPushParamType::GlobalString:
                     pp.emitSymbolGlobalString(callConv->paramByRegisterInteger[idxParam], reinterpret_cast<const char*>(value));
                     break;
 
@@ -257,51 +257,51 @@ namespace
 
             switch (params[idxParam].type)
             {
-                case CPUPushParamType::Load:
-                    pp.emitLoadRM(CPUReg::RAX, params[idxParam].baseReg, value, OpBits::B64);
-                    pp.emitStoreMR(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
+                case CpuPushParamType::Load:
+                    pp.emitLoadRM(CpuReg::RAX, params[idxParam].baseReg, value, OpBits::B64);
+                    pp.emitStoreMR(CpuReg::RSP, memOffset, CpuReg::RAX, OpBits::B64);
                     break;
 
-                case CPUPushParamType::LoadAddress:
-                    pp.emitLoadAddressM(CPUReg::RAX, params[idxParam].baseReg, value);
-                    pp.emitStoreMR(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
+                case CpuPushParamType::LoadAddress:
+                    pp.emitLoadAddressM(CpuReg::RAX, params[idxParam].baseReg, value);
+                    pp.emitStoreMR(CpuReg::RSP, memOffset, CpuReg::RAX, OpBits::B64);
                     break;
 
-                case CPUPushParamType::Constant:
-                    pp.emitStoreMI(CPUReg::RSP, memOffset, value, BackendEncoder::getOpBitsByBytes(type->sizeOf));
+                case CpuPushParamType::Constant:
+                    pp.emitStoreMI(CpuReg::RSP, memOffset, value, BackendEncoder::getOpBitsByBytes(type->sizeOf));
                     break;
 
-                case CPUPushParamType::Constant64:
-                    pp.emitLoadRI64(CPUReg::RAX, value);
-                    pp.emitStoreMR(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
+                case CpuPushParamType::Constant64:
+                    pp.emitLoadRI64(CpuReg::RAX, value);
+                    pp.emitStoreMR(CpuReg::RSP, memOffset, CpuReg::RAX, OpBits::B64);
                     break;
 
-                case CPUPushParamType::CaptureContext:
-                    pp.emitLoadRM(CPUReg::RAX, params[idxParam].baseReg, value, OpBits::B64);
-                    pp.emitStoreMR(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
+                case CpuPushParamType::CaptureContext:
+                    pp.emitLoadRM(CpuReg::RAX, params[idxParam].baseReg, value, OpBits::B64);
+                    pp.emitStoreMR(CpuReg::RSP, memOffset, CpuReg::RAX, OpBits::B64);
                     break;
 
-                case CPUPushParamType::SwagParamStructValue:
-                    pp.emitLoadRM(CPUReg::RAX, params[idxParam].baseReg, value, OpBits::B64);
-                    pp.emitLoadRM(CPUReg::RAX, CPUReg::RAX, 0, BackendEncoder::getOpBitsByBytes(type->sizeOf));
-                    pp.emitStoreMR(CPUReg::RSP, memOffset, CPUReg::RAX, BackendEncoder::getOpBitsByBytes(type->sizeOf));
+                case CpuPushParamType::SwagParamStructValue:
+                    pp.emitLoadRM(CpuReg::RAX, params[idxParam].baseReg, value, OpBits::B64);
+                    pp.emitLoadRM(CpuReg::RAX, CpuReg::RAX, 0, BackendEncoder::getOpBitsByBytes(type->sizeOf));
+                    pp.emitStoreMR(CpuReg::RSP, memOffset, CpuReg::RAX, BackendEncoder::getOpBitsByBytes(type->sizeOf));
                     break;
 
-                case CPUPushParamType::SwagRegister:
+                case CpuPushParamType::SwagRegister:
                     if (type->isStruct())
                     {
-                        pp.emitLoadRM(CPUReg::RAX, params[idxParam].baseReg, value, OpBits::B64);
-                        pp.emitStoreMR(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
+                        pp.emitLoadRM(CpuReg::RAX, params[idxParam].baseReg, value, OpBits::B64);
+                        pp.emitStoreMR(CpuReg::RSP, memOffset, CpuReg::RAX, OpBits::B64);
                     }
                     else if (type->sizeOf > sizeof(uint64_t))
                     {
-                        pp.emitLoadRM(CPUReg::RAX, params[idxParam].baseReg, value, OpBits::B64);
-                        pp.emitStoreMR(CPUReg::RSP, memOffset, CPUReg::RAX, OpBits::B64);
+                        pp.emitLoadRM(CpuReg::RAX, params[idxParam].baseReg, value, OpBits::B64);
+                        pp.emitStoreMR(CpuReg::RSP, memOffset, CpuReg::RAX, OpBits::B64);
                     }
                     else
                     {
-                        pp.emitLoadRM(CPUReg::RAX, params[idxParam].baseReg, value, BackendEncoder::getOpBitsByBytes(type->sizeOf));
-                        pp.emitStoreMR(CPUReg::RSP, memOffset, CPUReg::RAX, BackendEncoder::getOpBitsByBytes(type->sizeOf));
+                        pp.emitLoadRM(CpuReg::RAX, params[idxParam].baseReg, value, BackendEncoder::getOpBitsByBytes(type->sizeOf));
+                        pp.emitStoreMR(CpuReg::RSP, memOffset, CpuReg::RAX, BackendEncoder::getOpBitsByBytes(type->sizeOf));
                     }
                     break;
 
@@ -316,7 +316,7 @@ namespace
     }
 }
 
-void ScbeCPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& cpuParams, const CallConv* callConv)
+void ScbeCpu::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CpuPushParam>& cpuParams, const CallConv* callConv)
 {
     // If a lambda is assigned to a closure, then we must not use the first parameter (the first
     // parameter is the capture context, which does not exist in a normal lambda function).
@@ -326,21 +326,21 @@ void ScbeCPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vecto
     {
         // Get the capture context index, as we will have to remove it when calling a normal lambda
         uint32_t idxParamContext = 0;
-        while (idxParamContext < cpuParams.size() && cpuParams[idxParamContext].type != CPUPushParamType::CaptureContext)
+        while (idxParamContext < cpuParams.size() && cpuParams[idxParamContext].type != CpuPushParamType::CaptureContext)
             idxParamContext++;
         SWAG_ASSERT(idxParamContext < cpuParams.size());
-        SWAG_ASSERT(cpuParams[idxParamContext].type == CPUPushParamType::CaptureContext);
+        SWAG_ASSERT(cpuParams[idxParamContext].type == CpuPushParamType::CaptureContext);
 
         // First register is closure context, except if variadic, where we have 2 registers for the slice first
         // :VariadicAndClosure
         emitCmpMI(cpuParams[idxParamContext].baseReg, cpuParams[idxParamContext].value, 0, OpBits::B64);
 
         // If zero, jump to parameters for a non closure call
-        const auto jumpToNoClosure = emitJump(JZ, OpBits::B32);
+        const auto jumpToNoClosure = emitJump(CpuCondJump::JZ, OpBits::B32);
 
         // Emit parameters for the closure call (with the pointer to context)
         emitParameters(*this, cpuParams, callConv);
-        const auto jumpAfterParameters = emitJump(JUMP, OpBits::B32);
+        const auto jumpAfterParameters = emitJump(CpuCondJump::JUMP, OpBits::B32);
 
         emitPatchJump(jumpToNoClosure);
 
@@ -360,7 +360,7 @@ void ScbeCPU::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vecto
     }
 }
 
-void ScbeCPU::emitComputeCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CPUPushParam>& cpuParams, CPUReg memRegResult, uint32_t memOffsetResult, void* resultAddr)
+void ScbeCpu::emitComputeCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CpuPushParam>& cpuParams, CpuReg memRegResult, uint32_t memOffsetResult, void* resultAddr)
 {
     uint32_t numCallParams = typeFuncBc->parameters.size();
     uint32_t indexParam    = 0;
@@ -381,7 +381,7 @@ void ScbeCPU::emitComputeCallParameters(const TypeInfoFuncAttr* typeFuncBc, cons
             typeParam = TypeManager::concretePtrRef(typeParam);
         pushParams[indexParam].typeInfo = typeParam;
         if (typeFuncBc->structParamByValue(typeParam))
-            pushParams[indexParam].type = CPUPushParamType::SwagParamStructValue;
+            pushParams[indexParam].type = CpuPushParamType::SwagParamStructValue;
         indexParam += typeParam->numRegisters();
     }
 
@@ -389,17 +389,17 @@ void ScbeCPU::emitComputeCallParameters(const TypeInfoFuncAttr* typeFuncBc, cons
     if (typeFuncBc->returnByAddress())
     {
         if (resultAddr)
-            pushParams.insert_at_index({.type = CPUPushParamType::Constant64, .value = reinterpret_cast<uint64_t>(resultAddr)}, indexParam);
+            pushParams.insert_at_index({.type = CpuPushParamType::Constant64, .value = reinterpret_cast<uint64_t>(resultAddr)}, indexParam);
         else if (typeFuncBc->returnByStackAddress())
-            pushParams.insert_at_index({.type = CPUPushParamType::Load, .baseReg = memRegResult, .value = memOffsetResult}, indexParam);
+            pushParams.insert_at_index({.type = CpuPushParamType::Load, .baseReg = memRegResult, .value = memOffsetResult}, indexParam);
         else
-            pushParams.insert_at_index({.type = CPUPushParamType::LoadAddress, .baseReg = memRegResult, .value = memOffsetResult}, indexParam);
+            pushParams.insert_at_index({.type = CpuPushParamType::LoadAddress, .baseReg = memRegResult, .value = memOffsetResult}, indexParam);
     }
 
     emitCallParameters(typeFuncBc, pushParams, &typeFuncBc->getCallConv());
 }
 
-void ScbeCPU::emitStoreCallResult(CPUReg memReg, uint32_t memOffset, const TypeInfoFuncAttr* typeFuncBc)
+void ScbeCpu::emitStoreCallResult(CpuReg memReg, uint32_t memOffset, const TypeInfoFuncAttr* typeFuncBc)
 {
     if (!typeFuncBc->returnByValue())
         return;
@@ -412,47 +412,47 @@ void ScbeCPU::emitStoreCallResult(CPUReg memReg, uint32_t memOffset, const TypeI
         emitStoreMR(memReg, memOffset, cc.returnByRegisterInteger, OpBits::B64);
 }
 
-void ScbeCPU::emitLoadCallerParam(CPUReg reg, uint32_t paramIdx, OpBits opBits)
+void ScbeCpu::emitLoadCallerParam(CpuReg reg, uint32_t paramIdx, OpBits opBits)
 {
     const uint32_t stackOffset = cpuFct->getStackOffsetParam(paramIdx);
-    emitLoadRM(reg, CPUReg::RSP, stackOffset, opBits);
+    emitLoadRM(reg, CpuReg::RSP, stackOffset, opBits);
 }
 
-void ScbeCPU::emitLoadCallerZeroExtendParam(CPUReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc)
+void ScbeCpu::emitLoadCallerZeroExtendParam(CpuReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc)
 {
     const uint32_t stackOffset = cpuFct->getStackOffsetParam(paramIdx);
-    emitLoadZeroExtendRM(reg, CPUReg::RSP, stackOffset, numBitsDst, numBitsSrc);
+    emitLoadZeroExtendRM(reg, CpuReg::RSP, stackOffset, numBitsDst, numBitsSrc);
 }
 
-void ScbeCPU::emitLoadCallerAddressParam(CPUReg reg, uint32_t paramIdx)
+void ScbeCpu::emitLoadCallerAddressParam(CpuReg reg, uint32_t paramIdx)
 {
     const uint32_t stackOffset = cpuFct->getStackOffsetCallerParam(paramIdx);
-    emitLoadAddressM(reg, CPUReg::RSP, stackOffset);
+    emitLoadAddressM(reg, CpuReg::RSP, stackOffset);
 }
 
-void ScbeCPU::emitStoreCallerParam(uint32_t paramIdx, CPUReg reg, OpBits opBits)
+void ScbeCpu::emitStoreCallerParam(uint32_t paramIdx, CpuReg reg, OpBits opBits)
 {
     const uint32_t stackOffset = cpuFct->getStackOffsetCallerParam(paramIdx);
-    emitStoreMR(CPUReg::RSP, stackOffset, reg, opBits);
+    emitStoreMR(CpuReg::RSP, stackOffset, reg, opBits);
 }
 
-void ScbeCPU::emitSymbolRelocationPtr(CPUReg reg, const Utf8& name)
+void ScbeCpu::emitSymbolRelocationPtr(CpuReg reg, const Utf8& name)
 {
-    SWAG_ASSERT(reg == CPUReg::RAX);
+    SWAG_ASSERT(reg == CpuReg::RAX);
 
     emitLoadRI64(reg, 0);
 
-    CPURelocation relocation;
+    CpuRelocation relocation;
     relocation.virtualAddress = concat.totalCount() - sizeof(uint64_t) - textSectionOffset;
-    const auto callSym        = getOrAddSymbol(name, CPUSymbolKind::Extern);
+    const auto callSym        = getOrAddSymbol(name, CpuSymbolKind::Extern);
     relocation.symbolIndex    = callSym->index;
     relocation.type           = IMAGE_REL_AMD64_ADDR64;
     relocTableTextSection.table.push_back(relocation);
 }
 
-void ScbeCPU::emitJumpCI(CPUCondJump jumpType, uint32_t ipDest)
+void ScbeCpu::emitJumpCI(CpuCondJump jumpType, uint32_t ipDest)
 {
-    CPULabelToSolve label;
+    CpuLabelToSolve label;
     label.ipDest = ipDest;
 
     // Can we solve the label now ?
@@ -480,7 +480,7 @@ void ScbeCPU::emitJumpCI(CPUCondJump jumpType, uint32_t ipDest)
     cpuFct->labelsToSolve.push_back(label);
 }
 
-void ScbeCPU::emitLabels()
+void ScbeCpu::emitLabels()
 {
     for (auto& toSolve : cpuFct->labelsToSolve)
     {
@@ -490,12 +490,12 @@ void ScbeCPU::emitLabels()
     }
 }
 
-void ScbeCPU::emitDebug(ByteCodeInstruction* ipAddr)
+void ScbeCpu::emitDebug(ByteCodeInstruction* ipAddr)
 {
     ScbeDebug::setLocation(cpuFct, ipAddr, concat.totalCount() - cpuFct->startAddress);
 }
 
-void ScbeCPU::emitEnter(uint32_t sizeStack)
+void ScbeCpu::emitEnter(uint32_t sizeStack)
 {
     // Minimal size stack depends on calling convention
     sizeStack = std::max(sizeStack, static_cast<uint32_t>(cpuFct->cc->paramByRegisterCount * sizeof(void*)));
@@ -528,18 +528,18 @@ void ScbeCPU::emitEnter(uint32_t sizeStack)
     {
         if (cpuFct->frameSize >= SWAG_LIMIT_PAGE_STACK)
         {
-            emitLoadRI(CPUReg::RAX, cpuFct->frameSize, OpBits::B64);
+            emitLoadRI(CpuReg::RAX, cpuFct->frameSize, OpBits::B64);
             emitCallLocal(R"(__chkstk)");
         }
     }
 
-    emitOpBinaryRI(CPUReg::RSP, cpuFct->frameSize, CPUOp::SUB, OpBits::B64);
+    emitOpBinaryRI(CpuReg::RSP, cpuFct->frameSize, CpuOp::SUB, OpBits::B64);
     cpuFct->sizeProlog = concat.totalCount() - cpuFct->startAddress;
 }
 
-void ScbeCPU::emitLeave()
+void ScbeCpu::emitLeave()
 {
-    emitOpBinaryRI(CPUReg::RSP, cpuFct->frameSize, CPUOp::ADD, OpBits::B64);
+    emitOpBinaryRI(CpuReg::RSP, cpuFct->frameSize, CpuOp::ADD, OpBits::B64);
     for (auto idxReg = cpuFct->unwindRegs.size() - 1; idxReg != UINT32_MAX; idxReg--)
         emitPop(cpuFct->unwindRegs[idxReg]);
     emitRet();

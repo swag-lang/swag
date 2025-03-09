@@ -8,42 +8,42 @@ namespace
 {
     Utf8 valueName(uint64_t value, OpBits opBits)
     {
-        if (ScbeCPU::isFloat(opBits))
+        if (ScbeCpu::isFloat(opBits))
             return form("%f", std::bit_cast<double>(value));
         return form("%d", value);
     }
 
-    const char* jumpTypeName(CPUCondJump kind)
+    const char* jumpTypeName(CpuCondJump kind)
     {
         switch (kind)
         {
-            case JNO:
+            case CpuCondJump::JNO:
                 return "jno";
-            case JNZ:
+            case CpuCondJump::JNZ:
                 return "jnz";
-            case JZ:
+            case CpuCondJump::JZ:
                 return "jz";
-            case JL:
+            case CpuCondJump::JL:
                 return "jl";
-            case JLE:
+            case CpuCondJump::JLE:
                 return "jle";
-            case JB:
+            case CpuCondJump::JB:
                 return "jb";
-            case JBE:
+            case CpuCondJump::JBE:
                 return "jbe";
-            case JGE:
+            case CpuCondJump::JGE:
                 return "jge";
-            case JAE:
+            case CpuCondJump::JAE:
                 return "jae";
-            case JG:
+            case CpuCondJump::JG:
                 return "jg";
-            case JA:
+            case CpuCondJump::JA:
                 return "ja";
-            case JP:
+            case CpuCondJump::JP:
                 return "jp";
-            case JNP:
+            case CpuCondJump::JNP:
                 return "jnp";
-            case JUMP:
+            case CpuCondJump::JUMP:
                 return "jump";
             default:
                 SWAG_ASSERT(false);
@@ -53,103 +53,103 @@ namespace
         return "???";
     }
 
-    const char* cpuCondName(CPUCondFlag cond)
+    const char* cpuCondName(CpuCondFlag cond)
     {
         switch (cond)
         {
-            case CPUCondFlag::A:
+            case CpuCondFlag::A:
                 return "a";
-            case CPUCondFlag::O:
+            case CpuCondFlag::O:
                 return "o";
-            case CPUCondFlag::AE:
+            case CpuCondFlag::AE:
                 return "ae";
-            case CPUCondFlag::G:
+            case CpuCondFlag::G:
                 return "g";
-            case CPUCondFlag::B:
+            case CpuCondFlag::B:
                 return "b";
-            case CPUCondFlag::BE:
+            case CpuCondFlag::BE:
                 return "be";
-            case CPUCondFlag::E:
+            case CpuCondFlag::E:
                 return "e";
-            case CPUCondFlag::EP:
+            case CpuCondFlag::EP:
                 return "ep";
-            case CPUCondFlag::GE:
+            case CpuCondFlag::GE:
                 return "ge";
-            case CPUCondFlag::L:
+            case CpuCondFlag::L:
                 return "l";
-            case CPUCondFlag::LE:
+            case CpuCondFlag::LE:
                 return "le";
-            case CPUCondFlag::NA:
+            case CpuCondFlag::NA:
                 return "na";
-            case CPUCondFlag::NE:
+            case CpuCondFlag::NE:
                 return "ne";
-            case CPUCondFlag::NEP:
+            case CpuCondFlag::NEP:
                 return "nep";
         }
 
         return "??";
     }
 
-    Utf8 cpuOpName(CPUOp op, OpBits opBits)
+    Utf8 cpuOpName(CpuOp op, OpBits opBits)
     {
         switch (op)
         {
-            case CPUOp::ADD:
+            case CpuOp::ADD:
                 return "add";
-            case CPUOp::SUB:
+            case CpuOp::SUB:
                 return "sub";
-            case CPUOp::MUL:
+            case CpuOp::MUL:
                 return "mul";
-            case CPUOp::IMUL:
+            case CpuOp::IMUL:
                 return "imul";
-            case CPUOp::DIV:
+            case CpuOp::DIV:
                 return "div";
-            case CPUOp::IDIV:
+            case CpuOp::IDIV:
                 return "idiv";
-            case CPUOp::MOD:
+            case CpuOp::MOD:
                 return "mod";
-            case CPUOp::SHL:
+            case CpuOp::SHL:
                 return "shl";
-            case CPUOp::SHR:
+            case CpuOp::SHR:
                 return "shr";
-            case CPUOp::SAL:
+            case CpuOp::SAL:
                 return "sal";
-            case CPUOp::SAR:
+            case CpuOp::SAR:
                 return "sar";
-            case CPUOp::AND:
+            case CpuOp::AND:
                 return "and";
-            case CPUOp::OR:
+            case CpuOp::OR:
                 return "or";
-            case CPUOp::XOR:
+            case CpuOp::XOR:
                 return "xor";
 
-            case CPUOp::MOV:
+            case CpuOp::MOV:
                 return opBits == OpBits::F32 ? "movss" : opBits == OpBits::F64 ? "movsd"
                                                                                : "mov";
 
-            case CPUOp::CVTI2F:
+            case CpuOp::CVTI2F:
                 return opBits == OpBits::F32 ? "cvtsi2ss" : "cvtsi2sd";
-            case CPUOp::CVTF2I:
+            case CpuOp::CVTF2I:
                 return opBits == OpBits::F32 ? "cvtss2si" : "cvtsd2si";
 
-            case CPUOp::FADD:
+            case CpuOp::FADD:
                 return opBits == OpBits::F32 ? "addss" : opBits == OpBits::F64 ? "addsd"
                                                                                : "fadd";
-            case CPUOp::FSUB:
+            case CpuOp::FSUB:
                 return opBits == OpBits::F32 ? "subss" : opBits == OpBits::F64 ? "subsd"
                                                                                : "fsub";
-            case CPUOp::FMIN:
+            case CpuOp::FMIN:
                 return "fmin";
-            case CPUOp::FMAX:
+            case CpuOp::FMAX:
                 return "fmax";
-            case CPUOp::FXOR:
+            case CpuOp::FXOR:
                 return "fxor";
         }
 
         return form("<%d>", op);
     }
 
-    const char* regName(CPUReg reg, OpBits opBits)
+    const char* regName(CpuReg reg, OpBits opBits)
     {
         static constexpr const char* GENERAL_REGS[][4] = {
             {"al", "ax", "eax", "rax"},
@@ -174,7 +174,7 @@ namespace
             {"bpl", "bp", "ebp", "rbp"},
         };
 
-        const auto numBytes = static_cast<int>(std::log2(ScbeCPU::getNumBits(opBits) / 8));
+        const auto numBytes = static_cast<int>(std::log2(ScbeCpu::getNumBits(opBits) / 8));
         return GENERAL_REGS[static_cast<int>(reg)][numBytes];
     }
 
@@ -411,12 +411,12 @@ void ScbeMicro::print() const
                 break;
             case ScbeMicroOp::LoadRI:
                 // encoder.emitLoad(inst->regA, inst->valueA, inst->opBitsA);
-                line.name = cpuOpName(CPUOp::MOV, inst->opBitsA);
+                line.name = cpuOpName(CpuOp::MOV, inst->opBitsA);
                 line.args = form("%s, %s", regName(inst->regA, inst->opBitsA), valueName(inst->valueA, inst->opBitsA).cstr());
                 break;
             case ScbeMicroOp::LoadRM:
                 // encoder.emitLoad(inst->regA, inst->regB, inst->valueA, inst->opBitsA);
-                line.name = cpuOpName(CPUOp::MOV, inst->opBitsA);
+                line.name = cpuOpName(CpuOp::MOV, inst->opBitsA);
                 line.args = form("%s, %s ptr [%s+%xh]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsA), regName(inst->regB, OpBits::B64), inst->valueA);
                 break;
             case ScbeMicroOp::LoadSignedExtendRM:
@@ -451,12 +451,12 @@ void ScbeMicro::print() const
                 break;
             case ScbeMicroOp::StoreMR:
                 // encoder.emitStore(inst->regA, inst->valueA, inst->regB, inst->opBitsA);
-                line.name = cpuOpName(CPUOp::MOV, inst->opBitsA);
+                line.name = cpuOpName(CpuOp::MOV, inst->opBitsA);
                 line.args = form("%s ptr [%s+%xh], %s", opBitsName(inst->opBitsA), regName(inst->regA, OpBits::B64), inst->valueA, regName(inst->regB, inst->opBitsA));
                 break;
             case ScbeMicroOp::StoreMI:
                 // encoder.emitStore(inst->regA, inst->valueA, inst->valueB, inst->opBitsA);
-                line.name = cpuOpName(CPUOp::MOV, inst->opBitsA);
+                line.name = cpuOpName(CpuOp::MOV, inst->opBitsA);
                 line.args = form("%s ptr [%s+%xh], %d", opBitsName(inst->opBitsA), regName(inst->regA, OpBits::B64), inst->valueA, inst->valueB);
                 break;
             case ScbeMicroOp::CmpRR:

@@ -6,7 +6,7 @@
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 
-void Scbe::emitOS(ScbeCPU& pp)
+void Scbe::emitOS(ScbeCpu& pp)
 {
     auto& concat = pp.concat;
 
@@ -40,8 +40,8 @@ void Scbe::emitOS(ScbeCPU& pp)
         }
 
         // int _DllMainCRTStartup(void*, int, void*)
-        pp.getOrAddSymbol("_DllMainCRTStartup", CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
-        pp.emitLoadRI(CPUReg::RAX, 1, OpBits::B64);
+        pp.getOrAddSymbol("_DllMainCRTStartup", CpuSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
+        pp.emitLoadRI(CpuReg::RAX, 1, OpBits::B64);
         pp.emitRet();
     }
     else
@@ -50,7 +50,7 @@ void Scbe::emitOS(ScbeCPU& pp)
     }
 }
 
-void Scbe::emitMain(ScbeCPU& pp)
+void Scbe::emitMain(ScbeCpu& pp)
 {
     const auto& buildParameters = pp.buildParams;
     const auto  module          = pp.module;
@@ -78,57 +78,57 @@ void Scbe::emitMain(ScbeCPU& pp)
     SWAG_ASSERT(g_SystemAllocatorTable);
     const auto bcAlloc = static_cast<ByteCode*>(ByteCode::undoByteCodeLambda(static_cast<void**>(g_SystemAllocatorTable)[0]));
     SWAG_ASSERT(bcAlloc);
-    pp.emitSymbolRelocationAddress(CPUReg::RAX, pp.symDefaultAllocTable, 0);
-    pp.emitLoadAddressM(CPUReg::RCX, CPUReg::RIP, 0);
+    pp.emitSymbolRelocationAddress(CpuReg::RAX, pp.symDefaultAllocTable, 0);
+    pp.emitLoadAddressM(CpuReg::RCX, CpuReg::RIP, 0);
     pp.emitSymbolRelocationRef(bcAlloc->getCallName());
-    pp.emitStoreMR(CPUReg::RAX, 0, CPUReg::RCX, OpBits::B64);
+    pp.emitStoreMR(CpuReg::RAX, 0, CpuReg::RCX, OpBits::B64);
 
     // mainContext.allocator.itable = &defaultAllocTable;
-    pp.emitSymbolRelocationAddress(CPUReg::RCX, pp.symMC_mainContext_allocator_itable, 0);
-    pp.emitStoreMR(CPUReg::RCX, 0, CPUReg::RAX, OpBits::B64);
+    pp.emitSymbolRelocationAddress(CpuReg::RCX, pp.symMC_mainContext_allocator_itable, 0);
+    pp.emitStoreMR(CpuReg::RCX, 0, CpuReg::RAX, OpBits::B64);
 
     // main context flags
-    pp.emitSymbolRelocationAddress(CPUReg::RCX, pp.symMC_mainContext_flags, 0);
+    pp.emitSymbolRelocationAddress(CpuReg::RCX, pp.symMC_mainContext_flags, 0);
     const uint64_t contextFlags = getDefaultContextFlags(module);
-    pp.emitStoreMI(CPUReg::RCX, 0, contextFlags, OpBits::B64);
+    pp.emitStoreMI(CpuReg::RCX, 0, contextFlags, OpBits::B64);
 
     //__process_infos.contextTlsId = swag_runtime_tlsAlloc();
-    pp.emitSymbolRelocationAddress(CPUReg::RCX, pp.symPI_contextTlsId, 0);
-    emitInternalCallRAParams(pp, g_LangSpec->name_priv_tlsAlloc, {}, CPUReg::RCX, 0);
+    pp.emitSymbolRelocationAddress(CpuReg::RCX, pp.symPI_contextTlsId, 0);
+    emitInternalCallRAParams(pp, g_LangSpec->name_priv_tlsAlloc, {}, CpuReg::RCX, 0);
 
     //__process_infos.modules
-    pp.emitSymbolRelocationAddress(CPUReg::RCX, pp.symPI_modulesAddr, 0);
-    pp.emitSymbolRelocationAddress(CPUReg::RAX, pp.symCSIndex, module->modulesSliceOffset);
-    pp.emitStoreMR(CPUReg::RCX, 0, CPUReg::RAX, OpBits::B64);
-    pp.emitSymbolRelocationAddress(CPUReg::RAX, pp.symPI_modulesCount, 0);
-    pp.emitStoreMI(CPUReg::RAX, 0, module->moduleDependencies.count + 1, OpBits::B64);
+    pp.emitSymbolRelocationAddress(CpuReg::RCX, pp.symPI_modulesAddr, 0);
+    pp.emitSymbolRelocationAddress(CpuReg::RAX, pp.symCSIndex, module->modulesSliceOffset);
+    pp.emitStoreMR(CpuReg::RCX, 0, CpuReg::RAX, OpBits::B64);
+    pp.emitSymbolRelocationAddress(CpuReg::RAX, pp.symPI_modulesCount, 0);
+    pp.emitStoreMI(CpuReg::RAX, 0, module->moduleDependencies.count + 1, OpBits::B64);
 
     //__process_infos.args
-    pp.emitClearR(CPUReg::RCX, OpBits::B64);
-    pp.emitSymbolRelocationAddress(CPUReg::RAX, pp.symPI_argsAddr, 0);
-    pp.emitStoreMR(CPUReg::RAX, 0, CPUReg::RCX, OpBits::B64);
-    pp.emitSymbolRelocationAddress(CPUReg::RAX, pp.symPI_argsCount, 0);
-    pp.emitStoreMR(CPUReg::RAX, 0, CPUReg::RCX, OpBits::B64);
+    pp.emitClearR(CpuReg::RCX, OpBits::B64);
+    pp.emitSymbolRelocationAddress(CpuReg::RAX, pp.symPI_argsAddr, 0);
+    pp.emitStoreMR(CpuReg::RAX, 0, CpuReg::RCX, OpBits::B64);
+    pp.emitSymbolRelocationAddress(CpuReg::RAX, pp.symPI_argsCount, 0);
+    pp.emitStoreMR(CpuReg::RAX, 0, CpuReg::RCX, OpBits::B64);
 
     // Set main context
-    pp.emitSymbolRelocationAddress(CPUReg::RAX, pp.symMC_mainContext, 0);
-    pp.emitSymbolRelocationAddress(CPUReg::RCX, pp.symPI_defaultContext, 0);
-    pp.emitStoreMR(CPUReg::RCX, 0, CPUReg::RAX, OpBits::B64);
+    pp.emitSymbolRelocationAddress(CpuReg::RAX, pp.symMC_mainContext, 0);
+    pp.emitSymbolRelocationAddress(CpuReg::RCX, pp.symPI_defaultContext, 0);
+    pp.emitStoreMR(CpuReg::RCX, 0, CpuReg::RAX, OpBits::B64);
 
     // Set current backend as SCBE
-    pp.emitSymbolRelocationAddress(CPUReg::RCX, pp.symPI_backendKind, 0);
-    pp.emitStoreMI(CPUReg::RCX, 0, static_cast<uint32_t>(SwagBackendGenType::SCBE), OpBits::B32);
+    pp.emitSymbolRelocationAddress(CpuReg::RCX, pp.symPI_backendKind, 0);
+    pp.emitStoreMI(CpuReg::RCX, 0, static_cast<uint32_t>(SwagBackendGenType::SCBE), OpBits::B32);
 
     // Set default context in TLS
     pp.pushParams.clear();
-    pp.pushParams.push_back({.type = CPUPushParamType::SymbolRelocationValue, .value = pp.symPI_contextTlsId});
-    pp.pushParams.push_back({.type = CPUPushParamType::SymbolRelocationValue, .value = pp.symPI_defaultContext});
+    pp.pushParams.push_back({.type = CpuPushParamType::SymbolRelocationValue, .value = pp.symPI_contextTlsId});
+    pp.pushParams.push_back({.type = CpuPushParamType::SymbolRelocationValue, .value = pp.symPI_defaultContext});
     emitInternalCallCPUParams(pp, g_LangSpec->name_priv_tlsSetValue, pp.pushParams);
 
     // Setup runtime
     const auto rtFlags = getRuntimeFlags();
     pp.pushParams.clear();
-    pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = rtFlags, .typeInfo = g_TypeMgr->typeInfoU64});
+    pp.pushParams.push_back({.type = CpuPushParamType::Constant, .value = rtFlags, .typeInfo = g_TypeMgr->typeInfoU64});
     emitInternalCallCPUParams(pp, g_LangSpec->name_priv_setupRuntime, pp.pushParams);
 
     // Load all dependencies
@@ -143,14 +143,14 @@ void Scbe::emitMain(ScbeCPU& pp)
         {
             nameLib = nameLib.filename();
             pp.pushParams.clear();
-            pp.pushParams.push_back({.type = CPUPushParamType::GlobalString, .value = reinterpret_cast<uint64_t>(nameLib.cstr())});
-            pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = nameLib.length()});
+            pp.pushParams.push_back({.type = CpuPushParamType::GlobalString, .value = reinterpret_cast<uint64_t>(nameLib.cstr())});
+            pp.pushParams.push_back({.type = CpuPushParamType::Constant, .value = nameLib.length()});
             emitInternalCallCPUParams(pp, g_LangSpec->name_priv_loaddll, pp.pushParams);
         }
     }
 
     pp.pushParams.clear();
-    pp.pushParams.push_back({.type = CPUPushParamType::SymbolRelocationAddress, .value = pp.symPI_processInfos});
+    pp.pushParams.push_back({.type = CpuPushParamType::SymbolRelocationAddress, .value = pp.symPI_processInfos});
 
     // Call to global init of all dependencies
     for (const auto dep : moduleDependencies)
@@ -216,13 +216,13 @@ void Scbe::emitMain(ScbeCPU& pp)
 
     pp.emitCallLocal(g_LangSpec->name_priv_closeRuntime);
 
-    pp.emitClearR(CPUReg::RAX, OpBits::B64);
+    pp.emitClearR(CpuReg::RAX, OpBits::B64);
 
     pp.emitLeave();
     pp.endFunction();
 }
 
-void Scbe::emitGetTypeTable(ScbeCPU& pp)
+void Scbe::emitGetTypeTable(ScbeCpu& pp)
 {
     const auto& buildParameters = pp.buildParams;
     const auto  module          = pp.module;
@@ -243,7 +243,7 @@ void Scbe::emitGetTypeTable(ScbeCPU& pp)
     pp.endFunction();
 }
 
-void Scbe::emitGlobalPreMain(ScbeCPU& pp)
+void Scbe::emitGlobalPreMain(ScbeCpu& pp)
 {
     const auto& buildParameters = pp.buildParams;
     const auto  module          = pp.module;
@@ -259,13 +259,13 @@ void Scbe::emitGlobalPreMain(ScbeCPU& pp)
 
     // Store first parameter on stack (process infos ptr)
     SWAG_ASSERT(cc.paramByRegisterCount >= 1);
-    pp.emitStoreMR(CPUReg::RSP, 0, cc.paramByRegisterInteger[0], OpBits::B64);
+    pp.emitStoreMR(CpuReg::RSP, 0, cc.paramByRegisterInteger[0], OpBits::B64);
 
     // Copy process infos passed as a parameter to the process info struct of this module
     pp.pushParams.clear();
-    pp.pushParams.push_back({.type = CPUPushParamType::SymbolRelocationAddress, .value = pp.symPI_processInfos});
-    pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RSP, .value = REG_OFFSET(0)});
-    pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = sizeof(SwagProcessInfos)});
+    pp.pushParams.push_back({.type = CpuPushParamType::SymbolRelocationAddress, .value = pp.symPI_processInfos});
+    pp.pushParams.push_back({.type = CpuPushParamType::SwagRegister, .baseReg = CpuReg::RSP, .value = REG_OFFSET(0)});
+    pp.pushParams.push_back({.type = CpuPushParamType::Constant, .value = sizeof(SwagProcessInfos)});
     emitInternalCallCPUParams(pp, g_LangSpec->name_memcpy, pp.pushParams);
 
     // Call to #premain functions
@@ -281,7 +281,7 @@ void Scbe::emitGlobalPreMain(ScbeCPU& pp)
     pp.endFunction();
 }
 
-void Scbe::emitGlobalInit(ScbeCPU& pp)
+void Scbe::emitGlobalInit(ScbeCpu& pp)
 {
     const auto& buildParameters = pp.buildParams;
     const auto  module          = pp.module;
@@ -297,27 +297,27 @@ void Scbe::emitGlobalInit(ScbeCPU& pp)
 
     // Store first parameter on stack (process infos ptr)
     SWAG_ASSERT(cc.paramByRegisterCount >= 1);
-    pp.emitStoreMR(CPUReg::RSP, 0, cc.paramByRegisterInteger[0], OpBits::B64);
+    pp.emitStoreMR(CpuReg::RSP, 0, cc.paramByRegisterInteger[0], OpBits::B64);
 
     // Copy process infos passed as a parameter to the process info struct of this module
     pp.pushParams.clear();
-    pp.pushParams.push_back({.type = CPUPushParamType::SymbolRelocationAddress, .value = pp.symPI_processInfos});
-    pp.pushParams.push_back({.type = CPUPushParamType::SwagRegister, .baseReg = CPUReg::RSP, .value = 0});
-    pp.pushParams.push_back({.type = CPUPushParamType::Constant, .value = sizeof(SwagProcessInfos)});
+    pp.pushParams.push_back({.type = CpuPushParamType::SymbolRelocationAddress, .value = pp.symPI_processInfos});
+    pp.pushParams.push_back({.type = CpuPushParamType::SwagRegister, .baseReg = CpuReg::RSP, .value = 0});
+    pp.pushParams.push_back({.type = CpuPushParamType::Constant, .value = sizeof(SwagProcessInfos)});
     emitInternalCallCPUParams(pp, g_LangSpec->name_memcpy, pp.pushParams);
 
     // Thread local storage
     pp.pushParams.clear();
-    pp.emitSymbolRelocationAddress(CPUReg::R12, pp.symTls_threadLocalId, 0);
-    emitInternalCallCPUParams(pp, g_LangSpec->name_priv_tlsAlloc, pp.pushParams, CPUReg::R12, 0);
+    pp.emitSymbolRelocationAddress(CpuReg::R12, pp.symTls_threadLocalId, 0);
+    emitInternalCallCPUParams(pp, g_LangSpec->name_priv_tlsAlloc, pp.pushParams, CpuReg::R12, 0);
 
     // Init type table slice for each dependency (by calling ???_getTypeTable)
-    pp.emitSymbolRelocationAddress(CPUReg::RCX, pp.symCSIndex, module->modulesSliceOffset + sizeof(SwagModule) + offsetof(SwagModule, types));
+    pp.emitSymbolRelocationAddress(CpuReg::RCX, pp.symCSIndex, module->modulesSliceOffset + sizeof(SwagModule) + offsetof(SwagModule, types));
     for (const auto& dep : module->moduleDependencies)
     {
         if (!dep->module->isSwag)
         {
-            pp.emitOpBinaryRI(CPUReg::RCX, sizeof(SwagModule), CPUOp::ADD, OpBits::B64);
+            pp.emitOpBinaryRI(CpuReg::RCX, sizeof(SwagModule), CpuOp::ADD, OpBits::B64);
             continue;
         }
 
@@ -325,12 +325,12 @@ void Scbe::emitGlobalInit(ScbeCPU& pp)
         pp.emitCallLocal(callTable);
 
         // Count types is stored as a uint64_t at the start of the address
-        pp.emitLoadRM(CPUReg::R8, cc.returnByRegisterInteger, 0, OpBits::B64);
-        pp.emitStoreMR(CPUReg::RCX, sizeof(uint64_t), CPUReg::R8, OpBits::B64);
-        pp.emitOpBinaryRI(cc.returnByRegisterInteger, sizeof(uint64_t), CPUOp::ADD, OpBits::B64);
-        pp.emitStoreMR(CPUReg::RCX, 0, cc.returnByRegisterInteger, OpBits::B64);
+        pp.emitLoadRM(CpuReg::R8, cc.returnByRegisterInteger, 0, OpBits::B64);
+        pp.emitStoreMR(CpuReg::RCX, sizeof(uint64_t), CpuReg::R8, OpBits::B64);
+        pp.emitOpBinaryRI(cc.returnByRegisterInteger, sizeof(uint64_t), CpuOp::ADD, OpBits::B64);
+        pp.emitStoreMR(CpuReg::RCX, 0, cc.returnByRegisterInteger, OpBits::B64);
 
-        pp.emitOpBinaryRI(CPUReg::RCX, sizeof(SwagModule), CPUOp::ADD, OpBits::B64);
+        pp.emitOpBinaryRI(CpuReg::RCX, sizeof(SwagModule), CpuOp::ADD, OpBits::B64);
     }
 
     // Call to #init functions
@@ -346,7 +346,7 @@ void Scbe::emitGlobalInit(ScbeCPU& pp)
     pp.endFunction();
 }
 
-void Scbe::emitGlobalDrop(ScbeCPU& pp)
+void Scbe::emitGlobalDrop(ScbeCpu& pp)
 {
     const auto  module          = pp.module;
     const auto& buildParameters = pp.buildParams;
