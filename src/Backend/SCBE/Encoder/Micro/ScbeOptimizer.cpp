@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeOptimizer.h"
+#include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Main/Statistics.h"
 #include "ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
@@ -239,7 +239,7 @@ void ScbeOptimizer::passDeadStore(const ScbeMicro& out)
             }
 
             mapRegInst[inst->regA] = inst;
-            legitReg = inst->regA;
+            legitReg               = inst->regA;
         }
         else
         {
@@ -256,7 +256,7 @@ void ScbeOptimizer::passDeadStore(const ScbeMicro& out)
             {
                 if (legitReg == static_cast<CPUReg>(i))
                     continue;
-                
+
                 if (details.has(1ULL << i))
                 {
                     mapRegInst.erase(static_cast<CPUReg>(i));

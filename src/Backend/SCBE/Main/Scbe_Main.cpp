@@ -217,7 +217,7 @@ void Scbe::emitMain(ScbeCPU& pp)
     pp.emitCallLocal(g_LangSpec->name_priv_closeRuntime);
 
     pp.emitClearR(CPUReg::RAX, OpBits::B64);
-    
+
     pp.emitLeave();
     pp.endFunction();
 }
@@ -238,7 +238,7 @@ void Scbe::emitGetTypeTable(ScbeCPU& pp)
         pp.directives += form("/EXPORT:%s ", thisInit.cstr());
 
     pp.emitSymbolRelocationAddress(cc.returnByRegisterInteger, pp.symCSIndex, module->typesSliceOffset);
-    
+
     pp.emitLeave();
     pp.endFunction();
 }

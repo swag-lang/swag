@@ -441,7 +441,7 @@ bool Llvm::emitGetParam(LlvmEncoder& pp, const TypeInfoFuncAttr* typeFuncBc, uin
     return true;
 }
 
-bool Llvm::emitCallParameters(LlvmEncoder&                 pp,
+bool Llvm::emitCallParameters(LlvmEncoder&                  pp,
                               const TypeInfoFuncAttr*       typeFuncBc,
                               llvm::AllocaInst*             allocR,
                               llvm::AllocaInst*             allocRR,
@@ -625,7 +625,7 @@ bool Llvm::emitCallResult(const LlvmEncoder& pp, const TypeInfoFuncAttr* typeFun
     return true;
 }
 
-llvm::Value* Llvm::emitCall(LlvmEncoder&                 pp,
+llvm::Value* Llvm::emitCall(LlvmEncoder&                  pp,
                             const Utf8&                   funcName,
                             const TypeInfoFuncAttr*       typeFuncBc,
                             llvm::AllocaInst*             allocR,

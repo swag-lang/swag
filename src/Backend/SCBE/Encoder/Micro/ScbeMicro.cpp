@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "Backend/ByteCode/ByteCode.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
+#include "Backend/ByteCode/ByteCode.h"
 #include "ScbeMicroInstruction.h"
 #include "ScbeOptimizer.h"
 #include "Semantic/Type/TypeManager.h"
@@ -329,7 +329,7 @@ void ScbeMicro::emitOpUnaryR(CPUReg reg, CPUOp op, OpBits opBits)
 void ScbeMicro::emitOpBinaryRR(CPUReg regDst, CPUReg regSrc, CPUOp op, OpBits opBits, CPUEmitFlags emitFlags)
 {
     SWAG_ASSERT(!isFloat(opBits) || regDst == CPUReg::XMM0 || regDst == CPUReg::XMM1 || regDst == CPUReg::XMM2 || regDst == CPUReg::XMM3);
-    
+
     const auto inst = addInstruction(ScbeMicroOp::OpBinaryRR);
     inst->regA      = regDst;
     inst->regB      = regSrc;
@@ -672,7 +672,7 @@ void ScbeMicro::process(ScbeCPU& encoder)
 
     addInstruction(ScbeMicroOp::End);
     concat.makeLinear();
-    
+
     ScbeOptimizer opt;
     opt.encoder = &encoder;
     opt.optimize(*this);

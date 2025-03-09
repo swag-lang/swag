@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "Backend/SCBE/Main/Scbe.h"
 #include "Backend/SCBE/Obj/ScbeSaveObjJob.h"
+#include "Backend/SCBE/Main/Scbe.h"
 #include "Jobs/ModulePrepOutputJob.h"
 #include "Wmf/Module.h"
 #ifdef SWAG_STATS

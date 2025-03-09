@@ -1,7 +1,7 @@
 // ReSharper disable CppInconsistentNaming
 #pragma once
-#include "Backend/SCBE/Encoder/ScbeCPU.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroOp.h"
+#include "Backend/SCBE/Encoder/ScbeCPU.h"
 
 enum class ScbeMicroOp : uint8_t
 {

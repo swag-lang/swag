@@ -80,7 +80,7 @@ void Scbe::emitGetParam(ScbeCPU& pp, uint32_t reg, uint32_t paramIdx, OpBits opB
     pp.emitStoreMR(CPUReg::RSP, pp.cpuFct->getStackOffsetReg(reg), CPUReg::RAX, OpBits::B64);
 }
 
-void Scbe::emitCallCPUParams(ScbeCPU&                         pp,
+void Scbe::emitCallCPUParams(ScbeCPU&                          pp,
                              const Utf8&                       funcName,
                              const TypeInfoFuncAttr*           typeFuncBc,
                              const VectorNative<CPUPushParam>& pushCPUParams,
