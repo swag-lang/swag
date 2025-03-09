@@ -45,9 +45,9 @@ void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
         switch (inst[0].op)
         {
             case ScbeMicroOp::LoadRR:
-                if (nextInfos.leftFlags.has(MOF_REG_A) &&
-                    nextInfos.leftFlags.has(MOF_VALUE_A) &&
-                    !nextInfos.leftFlags.has(MOF_REG_B) &&
+                if (next->hasReadRegA() &&
+                    !next->hasReadRegB() &&
+                    !next->hasReadRegC() &&
                     inst->regA == next->regA &&
                     inst->opBitsA == OpBits::B64)
                 {
