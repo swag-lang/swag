@@ -40,8 +40,6 @@ void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
             continue;
         }
 
-        const auto& nextInfos = g_MicroOpInfos[static_cast<int>(next->op)];
-
         switch (inst[0].op)
         {
             case ScbeMicroOp::LoadRR:
@@ -58,10 +56,9 @@ void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
                     }
                 }
 
-                if (nextInfos.rightFlags.has(MOF_REG_B) &&
+                if (next->hasReadRegB() &&
                     inst->regA == next->regB &&
-                    nextInfos.rightFlags.has(MOF_OPBITS_B) &&
-                    next->opBitsB == OpBits::B64)
+                    inst->opBitsA == OpBits::B64)
                 {
                     const auto details = encoder->getInstructionDetails(next);
                     if (!details.has(1ULL << static_cast<uint32_t>(inst->regB)))
