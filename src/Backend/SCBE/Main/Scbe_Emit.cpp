@@ -81,7 +81,7 @@ void Scbe::emitIMMC(ScbeCpu& pp, CpuReg reg, OpBits numBitsSrc, OpBits numBitsDs
 
 void Scbe::emitShiftRightArithmetic(ScbeCpu& pp)
 {
-    const auto cc     = pp.cpuFct->cc;
+    const auto cc     = pp.cc;
     const auto ip     = pp.ip;
     const auto opBits = ScbeCpu::getOpBits(ip->op);
     if (!ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_B))
@@ -110,7 +110,7 @@ void Scbe::emitShiftRightArithmetic(ScbeCpu& pp)
 
 void Scbe::emitShiftRightEqArithmetic(ScbeCpu& pp)
 {
-    const auto cc     = pp.cpuFct->cc;
+    const auto cc     = pp.cc;
     const auto ip     = pp.ip;
     const auto opBits = ScbeCpu::getOpBits(ip->op);
     if (ip->hasFlag(BCI_IMM_B))
@@ -131,7 +131,7 @@ void Scbe::emitShiftRightEqArithmetic(ScbeCpu& pp)
 
 void Scbe::emitShiftLogical(ScbeCpu& pp, CpuOp op)
 {
-    const auto cc     = pp.cpuFct->cc;
+    const auto cc     = pp.cc;
     const auto ip     = pp.ip;
     const auto opBits = ScbeCpu::getOpBits(ip->op);
     if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 >= ScbeCpu::getNumBits(opBits))
@@ -158,7 +158,7 @@ void Scbe::emitShiftLogical(ScbeCpu& pp, CpuOp op)
 
 void Scbe::emitShiftEqLogical(ScbeCpu& pp, CpuOp op)
 {
-    const auto cc     = pp.cpuFct->cc;
+    const auto cc     = pp.cc;
     const auto ip     = pp.ip;
     const auto opBits = ScbeCpu::getOpBits(ip->op);
     if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 >= ScbeCpu::getNumBits(opBits))
@@ -197,7 +197,7 @@ void Scbe::emitOverflow(ScbeCpu& pp, const char* msg, bool isSigned)
 
 void Scbe::emitBinOp(ScbeCpu& pp, CpuOp op, CpuEmitFlags emitFlags)
 {
-    const auto cc     = pp.cpuFct->cc;
+    const auto cc     = pp.cc;
     const auto ip     = pp.ip;
     const auto opBits = ScbeCpu::getOpBits(ip->op);
     if (ScbeCpu::isInt(opBits) && !ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_B))
@@ -232,7 +232,7 @@ void Scbe::emitBinOpOverflow(ScbeCpu& pp, CpuOp op, SafetyMsg safetyMsg, TypeInf
 
 void Scbe::emitBinOpEq(ScbeCpu& pp, uint32_t offset, CpuOp op, CpuEmitFlags emitFlags)
 {
-    const auto cc     = pp.cpuFct->cc;
+    const auto cc     = pp.cc;
     const auto ip     = pp.ip;
     const auto opBits = ScbeCpu::getOpBits(ip->op);
     if (ScbeCpu::isInt(opBits) && ip->hasFlag(BCI_IMM_B))
@@ -262,7 +262,7 @@ void Scbe::emitBinOpEqOverflow(ScbeCpu& pp, CpuOp op, SafetyMsg safetyMsg, TypeI
 
 void Scbe::emitBinOpEqLock(ScbeCpu& pp, CpuOp op)
 {
-    const auto cc     = pp.cpuFct->cc;
+    const auto cc     = pp.cc;
     const auto ip     = pp.ip;
     const auto opBits = ScbeCpu::getOpBits(ip->op);
     pp.emitLoadRM(cc->cpuReg1, CpuReg::RSP, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
@@ -272,7 +272,7 @@ void Scbe::emitBinOpEqLock(ScbeCpu& pp, CpuOp op)
 
 void Scbe::emitBinOpEqS(ScbeCpu& pp, CpuOp op)
 {
-    const auto cc     = pp.cpuFct->cc;
+    const auto cc     = pp.cc;
     const auto ip     = pp.ip;
     const auto opBits = ScbeCpu::getOpBits(ip->op);
     if (ScbeCpu::isInt(opBits) && ip->hasFlag(BCI_IMM_B))
@@ -289,7 +289,7 @@ void Scbe::emitBinOpEqS(ScbeCpu& pp, CpuOp op)
 
 void Scbe::emitCompareOp(ScbeCpu& pp, CpuReg reg, CpuCondFlag cond)
 {
-    const auto cc     = pp.cpuFct->cc;
+    const auto cc     = pp.cc;
     const auto ip     = pp.ip;
     const auto opBits = ScbeCpu::getOpBits(ip->op);
     if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_B))
@@ -318,7 +318,7 @@ void Scbe::emitAddSubMul64(ScbeCpu& pp, uint64_t mulValue, CpuOp op)
 {
     SWAG_ASSERT(op == CpuOp::ADD || op == CpuOp::SUB);
 
-    const auto cc    = pp.cpuFct->cc;
+    const auto cc    = pp.cc;
     const auto ip    = pp.ip;
     const auto value = ip->b.u64 * mulValue;
     if (ip->hasFlag(BCI_IMM_B) && value == 0 && ip->a.u32 == ip->c.u32)
@@ -377,7 +377,7 @@ void Scbe::emitInternalPanic(ScbeCpu& pp, const char* msg)
 
 void Scbe::emitJumpCmp(ScbeCpu& pp, CpuCondJump op, OpBits opBits)
 {
-    const auto cc = pp.cpuFct->cc;
+    const auto cc = pp.cc;
     const auto ip = pp.ip;
     if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_C))
     {
@@ -403,7 +403,7 @@ void Scbe::emitJumpCmp(ScbeCpu& pp, CpuCondJump op, OpBits opBits)
 
 void Scbe::emitJumpCmpAddr(ScbeCpu& pp, CpuCondJump op, CpuReg memReg, uint64_t memOffset, OpBits opBits)
 {
-    const auto cc = pp.cpuFct->cc;
+    const auto cc = pp.cc;
     const auto ip = pp.ip;
     SWAG_ASSERT(ScbeCpu::isInt(opBits));
 
@@ -464,7 +464,7 @@ void Scbe::emitJumpCmp3(ScbeCpu& pp, CpuCondJump op1, CpuCondJump op2, OpBits op
 
 void Scbe::emitJumpDyn(ScbeCpu& pp)
 {
-    const auto cc     = pp.cpuFct->cc;
+    const auto cc     = pp.cc;
     const auto ip     = pp.ip;
     const auto opBits = ScbeCpu::getOpBits(ip->op);
 
@@ -488,7 +488,7 @@ void Scbe::emitJumpDyn(ScbeCpu& pp)
 
 void Scbe::emitCopyVaargs(ScbeCpu& pp)
 {
-    const auto cc = pp.cpuFct->cc;
+    const auto cc = pp.cc;
     const auto ip = pp.ip;
     if (!pp.pushRVParams.empty())
     {
@@ -559,7 +559,7 @@ void Scbe::emitCopyVaargs(ScbeCpu& pp)
 
 void Scbe::emitMakeLambda(ScbeCpu& pp)
 {
-    const auto cc       = pp.cpuFct->cc;
+    const auto cc       = pp.cc;
     const auto funcNode = castAst<AstFuncDecl>(reinterpret_cast<AstNode*>(pp.ip->b.pointer), AstNodeKind::FuncDecl);
     SWAG_ASSERT(!pp.ip->c.pointer || (funcNode && funcNode->hasExtByteCode() && funcNode->extByteCode()->bc == reinterpret_cast<ByteCode*>(pp.ip->c.pointer)));
     pp.emitSymbolRelocationPtr(cc->cpuReg0, funcNode->getCallName());
@@ -568,7 +568,7 @@ void Scbe::emitMakeLambda(ScbeCpu& pp)
 
 void Scbe::emitMakeCallback(ScbeCpu& pp)
 {
-    const auto cc = pp.cpuFct->cc;
+    const auto cc = pp.cc;
 
     // Test if it's a bytecode lambda
     pp.emitLoadRM(cc->cpuReg0, CpuReg::RSP, pp.cpuFct->getStackOffsetReg(pp.ip->a.u32), OpBits::B64);

@@ -128,12 +128,12 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, const ByteCodeInstruction
     cpuParams.reserve(cptParam);
     cpuParams.count = cptParam;
 
-    const auto& cc = typeFuncBc->getCallConv();
-    cptParam       = 0;
+    const auto cc = CallConv::get(CallConvKind::Swag);
+    cptParam      = 0;
     for (auto& param : cpuParams)
     {
         param.type     = CpuPushParamType::SwagRegister;
-        param.baseReg  = cc.ffiBaseRegister;
+        param.baseReg  = cc->ffiBaseRegister;
         param.value    = REG_OFFSET(cptParam);
         param.typeInfo = nullptr;
         cptParam++;

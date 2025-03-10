@@ -225,7 +225,7 @@ struct ScbeCpu : BackendEncoder
     CpuSymbol*   getOrAddSymbol(const Utf8& name, CpuSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);
     CpuSymbol*   getOrCreateGlobalString(const Utf8& str);
     void         addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, uint16_t type);
-    CpuFunction* addFunction(const Utf8& funcName, const CallConv* cc, ByteCode* bc);
+    CpuFunction* addFunction(const Utf8& funcName, const CallConv* ccFunc, ByteCode* bc);
     void         endFunction() const;
 
     bool isNoOp(uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags = EMITF_Zero) const;

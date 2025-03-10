@@ -281,8 +281,8 @@ void Scbe::emitGlobalInit(ScbeCpu& pp)
     const auto& buildParameters = pp.buildParams;
     const auto  module          = pp.module;
 
-    const auto& cc       = g_TypeMgr->typeInfoModuleCall->getCallConv();
     const auto  thisInit = module->getGlobalPrivateFct(g_LangSpec->name_globalInit);
+    const auto& cc       = g_TypeMgr->typeInfoModuleCall->getCallConv();
     pp.cpuFct            = pp.addFunction(thisInit, &cc, nullptr);
 
     pp.emitEnter(0);
@@ -320,10 +320,10 @@ void Scbe::emitGlobalInit(ScbeCpu& pp)
         pp.emitCallLocal(callTable);
 
         // Count types is stored as a uint64_t at the start of the address
-        pp.emitLoadRM(CpuReg::R8, cc.returnByRegisterInteger, 0, OpBits::B64);
+        pp.emitLoadRM(CpuReg::R8, pp.cc->returnByRegisterInteger, 0, OpBits::B64);
         pp.emitStoreMR(CpuReg::RCX, sizeof(uint64_t), CpuReg::R8, OpBits::B64);
-        pp.emitOpBinaryRI(cc.returnByRegisterInteger, sizeof(uint64_t), CpuOp::ADD, OpBits::B64);
-        pp.emitStoreMR(CpuReg::RCX, 0, cc.returnByRegisterInteger, OpBits::B64);
+        pp.emitOpBinaryRI(pp.cc->returnByRegisterInteger, sizeof(uint64_t), CpuOp::ADD, OpBits::B64);
+        pp.emitStoreMR(CpuReg::RCX, 0, pp.cc->returnByRegisterInteger, OpBits::B64);
 
         pp.emitOpBinaryRI(CpuReg::RCX, sizeof(SwagModule), CpuOp::ADD, OpBits::B64);
     }

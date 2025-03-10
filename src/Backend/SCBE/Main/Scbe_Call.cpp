@@ -10,7 +10,7 @@
 
 void Scbe::emitLoadParam(ScbeCpu& pp, CpuReg reg, uint32_t paramIdx, OpBits opBits)
 {
-    if (paramIdx < pp.cpuFct->cc->paramByRegisterCount)
+    if (paramIdx < pp.cc->paramByRegisterCount)
         pp.emitLoadRM(reg, CpuReg::RSP, pp.cpuFct->getStackOffsetParam(paramIdx), opBits);
     else
         pp.emitLoadCallerParam(reg, paramIdx, opBits);
@@ -18,7 +18,7 @@ void Scbe::emitLoadParam(ScbeCpu& pp, CpuReg reg, uint32_t paramIdx, OpBits opBi
 
 void Scbe::emitLoadZeroExtendParam(ScbeCpu& pp, CpuReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc)
 {
-    if (paramIdx < pp.cpuFct->cc->paramByRegisterCount)
+    if (paramIdx < pp.cc->paramByRegisterCount)
         pp.emitLoadZeroExtendRM(reg, CpuReg::RSP, pp.cpuFct->getStackOffsetParam(paramIdx), numBitsDst, numBitsSrc);
     else
         pp.emitLoadCallerZeroExtendParam(reg, paramIdx, numBitsDst, numBitsSrc);
@@ -26,7 +26,7 @@ void Scbe::emitLoadZeroExtendParam(ScbeCpu& pp, CpuReg reg, uint32_t paramIdx, O
 
 void Scbe::emitLoadAddressParam(ScbeCpu& pp, CpuReg reg, uint32_t paramIdx)
 {
-    if (paramIdx < pp.cpuFct->cc->paramByRegisterCount)
+    if (paramIdx < pp.cc->paramByRegisterCount)
         pp.emitLoadAddressM(reg, CpuReg::RSP, pp.cpuFct->getStackOffsetParam(paramIdx));
     else
         pp.emitLoadCallerAddressParam(reg, paramIdx);
@@ -34,7 +34,7 @@ void Scbe::emitLoadAddressParam(ScbeCpu& pp, CpuReg reg, uint32_t paramIdx)
 
 void Scbe::emitGetParam(ScbeCpu& pp, uint32_t reg, uint32_t paramIdx, OpBits opBits, uint64_t toAdd, OpBits derefBits)
 {
-    const auto cc        = pp.cpuFct->cc;
+    const auto cc        = pp.cc;
     const auto typeFunc  = pp.cpuFct->typeFunc;
     auto       typeParam = TypeManager::concreteType(typeFunc->parameters[typeFunc->registerIdxToParamIdx(paramIdx)]->typeInfo);
     if (typeParam->isAutoConstPointerRef())
@@ -151,7 +151,7 @@ void Scbe::emitInternalCallCPUParams(ScbeCpu& pp, const Utf8& funcName, const Ve
 
 void Scbe::emitLocalCall(ScbeCpu& pp)
 {
-    const auto cc      = pp.cpuFct->cc;
+    const auto cc      = pp.cc;
     const auto ip      = pp.ip;
     const auto callBc  = reinterpret_cast<ByteCode*>(ip->a.pointer);
     const auto typeFct = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
@@ -225,7 +225,7 @@ void Scbe::emitLambdaCall(ScbeCpu& pp)
         pushCPUParams.insert_at_index({.type = CpuPushParamType::LoadAddress, .baseReg = CpuReg::RSP, .value = pp.cpuFct->getStackOffsetRT(1)}, 2);
     pp.emitCallParameters(typeFuncBc, pushCPUParams, CallConv::get(CallConvKind::ByteCode));
 
-    const auto cc = pp.cpuFct->cc;
+    const auto cc = pp.cc;
     pp.emitSymbolRelocationAddress(cc->cpuReg0, pp.symPI_byteCodeRun, 0);
     pp.emitLoadRM(cc->cpuReg0, cc->cpuReg0, 0, OpBits::B64);
     pp.emitCallIndirect(cc->cpuReg0);

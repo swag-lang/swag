@@ -62,6 +62,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     // Register function
     ppCPU.cpuFct = ppCPU.addFunction(funcName, &cc, bc);
+    ppCPU.cc     = &cc;
     if (debug)
         ScbeDebug::setLocation(ppCPU.cpuFct, nullptr, 0);
 
@@ -74,6 +75,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     ScbeMicro pp;
     pp.init(buildParameters);
     pp.cpuFct               = ppCPU.cpuFct;
+    pp.cc                   = ppCPU.cpuFct->cc;
     pp.symCOIndex           = ppCPU.symCOIndex;
     pp.symBSIndex           = ppCPU.symBSIndex;
     pp.symMSIndex           = ppCPU.symMSIndex;

@@ -88,12 +88,13 @@ void ScbeCpu::emitLabel(uint32_t instructionIndex)
         cpuFct->labels[instructionIndex] = static_cast<int32_t>(concat.totalCount());
 }
 
-CpuFunction* ScbeCpu::addFunction(const Utf8& funcName, const CallConv* cc, ByteCode* bc)
+CpuFunction* ScbeCpu::addFunction(const Utf8& funcName, const CallConv* ccFunc, ByteCode* bc)
 {
     concat.align(16);
 
     CpuFunction* cf  = Allocator::alloc<CpuFunction>();
-    cf->cc           = cc;
+    cc               = ccFunc;
+    cf->cc           = ccFunc;
     cf->bc           = bc;
     cf->symbolIndex  = getOrAddSymbol(funcName, CpuSymbolKind::Function, concat.totalCount() - textSectionOffset)->index;
     cf->startAddress = concat.totalCount();
@@ -113,7 +114,7 @@ CpuFunction* ScbeCpu::addFunction(const Utf8& funcName, const CallConv* cc, Byte
         //
         // Why 2 ?? magic number ??
         cf->sizeStackCallParams = 2 * static_cast<uint32_t>(std::max(CallConv::MAX_CALL_CONV_REGISTERS, (bc->maxCallParams + 1)) * sizeof(void*));
-        cf->sizeStackCallParams = Math::align(cf->sizeStackCallParams, cc->stackAlign);
+        cf->sizeStackCallParams = Math::align(cf->sizeStackCallParams, ccFunc->stackAlign);
     }
 
     functions.push_back(cf);
@@ -410,12 +411,12 @@ void ScbeCpu::emitStoreCallResult(CpuReg memReg, uint32_t memOffset, const TypeI
     if (!typeFuncBc->returnByValue())
         return;
 
-    const auto& cc         = typeFuncBc->getCallConv();
+    const auto& ccFunc     = typeFuncBc->getCallConv();
     const auto  returnType = typeFuncBc->concreteReturnType();
     if (returnType->isNativeFloat())
-        emitStoreMR(memReg, memOffset, cc.returnByRegisterFloat, OpBits::F64);
+        emitStoreMR(memReg, memOffset, ccFunc.returnByRegisterFloat, OpBits::F64);
     else
-        emitStoreMR(memReg, memOffset, cc.returnByRegisterInteger, OpBits::B64);
+        emitStoreMR(memReg, memOffset, ccFunc.returnByRegisterInteger, OpBits::B64);
 }
 
 void ScbeCpu::emitLoadCallerParam(CpuReg reg, uint32_t paramIdx, OpBits opBits)
@@ -504,8 +505,8 @@ void ScbeCpu::emitDebug(ByteCodeInstruction* ipAddr)
 void ScbeCpu::emitEnter(uint32_t sizeStack)
 {
     // Minimal size stack depends on calling convention
-    sizeStack = std::max(sizeStack, static_cast<uint32_t>(cpuFct->cc->paramByRegisterCount * sizeof(void*)));
-    sizeStack = Math::align(sizeStack, cpuFct->cc->stackAlign);
+    sizeStack = std::max(sizeStack, static_cast<uint32_t>(cc->paramByRegisterCount * sizeof(void*)));
+    sizeStack = Math::align(sizeStack, cc->stackAlign);
 
     // We need to start at sizeof(void*) because the call has pushed one register on the stack
     cpuFct->offsetCallerStackParams = sizeof(void*) + cpuFct->unwindRegs.size() * sizeof(void*);
@@ -518,11 +519,11 @@ void ScbeCpu::emitEnter(uint32_t sizeStack)
     }
 
     // Be sure that total alignment is respected
-    SWAG_ASSERT(!cpuFct->sizeStackCallParams || Math::isAligned(cpuFct->sizeStackCallParams, cpuFct->cc->stackAlign));
+    SWAG_ASSERT(!cpuFct->sizeStackCallParams || Math::isAligned(cpuFct->sizeStackCallParams, cc->stackAlign));
     const auto total = cpuFct->offsetCallerStackParams + cpuFct->sizeStackCallParams + sizeStack;
-    if (!Math::isAligned(total, cpuFct->cc->stackAlign))
+    if (!Math::isAligned(total, cc->stackAlign))
     {
-        const auto totalAligned = Math::align(total, cpuFct->cc->stackAlign);
+        const auto totalAligned = Math::align(total, cc->stackAlign);
         sizeStack += totalAligned - total;
     }
 

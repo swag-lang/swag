@@ -165,8 +165,8 @@ void ScbeOptimizer::optimizePassStoreToHdwRegBeforeLeave(const ScbeMicro& out)
             {
                 mapRegInst[inst->regA] = inst;
             }
-            else if (inst->regA != out.cpuFct->cc->returnByRegisterInteger &&
-                     inst->regA != out.cpuFct->cc->returnByRegisterFloat)
+            else if (inst->regA != out.cc->returnByRegisterInteger &&
+                     inst->regA != out.cc->returnByRegisterFloat)
             {
                 mapRegInst[inst->regA] = inst;
             }

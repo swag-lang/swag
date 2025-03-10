@@ -5,6 +5,7 @@ struct CpuFunction;
 struct Module;
 struct TypeInfo;
 struct ByteCodeInstruction;
+struct CallConv;
 enum class ByteCodeOp : uint16_t;
 
 enum class BackendPreCompilePass
@@ -33,6 +34,7 @@ struct BackendEncoder
     Utf8                  filename;
     ByteCodeInstruction*  ip      = nullptr;
     CpuFunction*          cpuFct  = nullptr;
+    const CallConv*       cc      = nullptr;
     int32_t               ipIndex = 0;
     Module*               module  = nullptr;
     BackendPreCompilePass pass    = {BackendPreCompilePass::Init};
