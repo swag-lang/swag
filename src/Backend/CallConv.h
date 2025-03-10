@@ -56,6 +56,13 @@ struct CallConv
     // The registers to use when passing parameter by register, and if it's float
     VectorNative<CpuReg> paramByRegisterFloat;
 
+    // All registers considered as volatile
+    VectorNative<CpuReg> volatileRegisters;    
+
+    // All registers considered as nonvolatile
+    VectorNative<CpuReg> nonVolatileRegisters;    
+   
+    
     // The register used to return an integer
     CpuReg returnByRegisterInteger = CpuReg::RAX;
 
