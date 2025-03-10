@@ -2269,7 +2269,6 @@ void ScbeX64::emitCallLocal(const Utf8& symbolName)
 
 void ScbeX64::emitCallIndirect(CpuReg reg)
 {
-    SWAG_ASSERT(reg == cc->cpuReg0 || reg == cc->cpuReg1 || reg == CpuReg::R10);
     emitREX(concat, OpBits::Zero, REX_REG_NONE, reg);
     emitCPUOp(concat, 0xFF);
     emitModRM(concat, ModRMMode::Register, MODRM_REG_2, encodeReg(reg));

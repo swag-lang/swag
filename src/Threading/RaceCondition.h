@@ -28,7 +28,7 @@ struct RaceCondition
 #define SWAG_RACE_CONDITION_ON_WRITE1(__x)   RaceCondition rc1(const_cast<RaceCondition::Instance*>(&(__x)), false)
 #define SWAG_RACE_CONDITION_ON_READ(__x)     RaceCondition rc(const_cast<RaceCondition::Instance*>(&(__x)), true)
 #define SWAG_RACE_CONDITION_ON_READ1(__x)    RaceCondition rc1(const_cast<RaceCondition::Instance*>(&(__x)), true)
-#define SWAG_RACE_CONDITION_ON_INSTANCE(__x) RaceCondition::Instance __x
+#define SWAG_RACE_CONDITION_ON_INSTANCE(__x) mutable RaceCondition::Instance __x
 
 #define SWAG_RACE_CONDITION_OFF_WRITE(__x) \
     do                                     \

@@ -289,7 +289,7 @@ struct VectorNative
         count += other.count;
     }
 
-    int find(const T& value)
+    int find(const T& value) const
     {
         SWAG_RACE_CONDITION_READ_VECTOR(raceC);
         int idx = 0;
@@ -303,7 +303,7 @@ struct VectorNative
         return -1;
     }
 
-    bool contains(const T& val)
+    bool contains(const T& val) const
     {
         SWAG_RACE_CONDITION_READ_VECTOR(raceC);
         for (uint32_t i = 0; i < count; i++)

@@ -189,9 +189,24 @@ void Scbe::emitLambdaCall(ScbeCpu& pp)
     const auto ip         = pp.ip;
     const auto typeFuncBc = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
 
+    // We need a working volatile register which is not used as a call parameter
+    const auto ccFunc = typeFuncBc->getCallConv();
+    auto       regRes = CpuReg::Max;
+    for (const auto& r : pp.cc->volatileRegisters)
+    {
+        if (r == pp.cc->cpuReg0 || r == pp.cc->cpuReg1)
+            continue;
+        if (ccFunc.paramByRegisterInteger.contains(r))
+            continue;
+        regRes = r;
+        break;
+    }
+
+    SWAG_ASSERT(regRes != CpuReg::Max);
+
     // Test if it's a bytecode lambda
-    pp.emitLoadRM(CpuReg::R10, CpuReg::RSP, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-    pp.emitOpBinaryRI(CpuReg::R10, SWAG_LAMBDA_BC_MARKER_BIT, CpuOp::BT, OpBits::B64);
+    pp.emitLoadRM(regRes, CpuReg::RSP, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
+    pp.emitOpBinaryRI(regRes, SWAG_LAMBDA_BC_MARKER_BIT, CpuOp::BT, OpBits::B64);
     const auto jumpBC = pp.emitJump(CpuCondJump::JB, OpBits::B32);
 
     // Native lambda
@@ -208,7 +223,7 @@ void Scbe::emitLambdaCall(ScbeCpu& pp)
         pushCPUParams[typeFuncBc->isFctVariadic() ? 2 : 0].type = CpuPushParamType::CaptureContext;
 
     pp.emitComputeCallParameters(typeFuncBc, pushCPUParams, CpuReg::RSP, pp.cpuFct->getStackOffsetRT(0), nullptr);
-    pp.emitCallIndirect(CpuReg::R10);
+    pp.emitCallIndirect(regRes);
     pp.emitStoreCallResult(CpuReg::RSP, pp.cpuFct->getStackOffsetRT(0), typeFuncBc);
 
     const auto jumpBCAfter = pp.emitJump(CpuCondJump::JUMP, OpBits::B32);
@@ -218,7 +233,7 @@ void Scbe::emitLambdaCall(ScbeCpu& pp)
 
     pp.emitPatchJump(jumpBC);
 
-    pushCPUParams.insert_at_index({.type = CpuPushParamType::CpuRegister, .baseReg = CpuReg::R10}, 0);
+    pushCPUParams.insert_at_index({.type = CpuPushParamType::CpuRegister, .baseReg = regRes}, 0);
     if (typeFuncBc->numReturnRegisters() >= 1)
         pushCPUParams.insert_at_index({.type = CpuPushParamType::LoadAddress, .baseReg = CpuReg::RSP, .value = pp.cpuFct->getStackOffsetRT(0)}, 1);
     if (typeFuncBc->numReturnRegisters() >= 2)
