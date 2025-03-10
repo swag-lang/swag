@@ -216,8 +216,8 @@ namespace
                         pp.emitLoadRM(callConv->paramByRegisterInteger[idxParam], params[idxParam].baseReg, value, OpBits::B64);
                     break;
 
-                case CpuPushParamType::CPURegister:
-                    pp.emitLoadRR(callConv->paramByRegisterInteger[idxParam], static_cast<CpuReg>(value), OpBits::B64);
+                case CpuPushParamType::CpuRegister:
+                    pp.emitLoadRR(callConv->paramByRegisterInteger[idxParam], params[idxParam].baseReg, OpBits::B64);
                     break;
 
                 case CpuPushParamType::SymbolRelocationValue:

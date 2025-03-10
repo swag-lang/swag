@@ -19,7 +19,7 @@ enum class CpuPushParamType
     SwagRegister,
     SwagRegisterAdd,
     SwagRegisterMul,
-    CPURegister,
+    CpuRegister,
     Constant,
     Constant64,
     SymbolRelocationValue,

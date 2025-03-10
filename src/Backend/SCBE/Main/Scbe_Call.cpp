@@ -218,7 +218,7 @@ void Scbe::emitLambdaCall(ScbeCpu& pp)
 
     pp.emitPatchJump(jumpBC);
 
-    pushCPUParams.insert_at_index({.type = CpuPushParamType::CPURegister, .value = static_cast<uint64_t>(CpuReg::R10)}, 0);
+    pushCPUParams.insert_at_index({.type = CpuPushParamType::CpuRegister, .baseReg = CpuReg::R10}, 0);
     if (typeFuncBc->numReturnRegisters() >= 1)
         pushCPUParams.insert_at_index({.type = CpuPushParamType::LoadAddress, .baseReg = CpuReg::RSP, .value = pp.cpuFct->getStackOffsetRT(0)}, 1);
     if (typeFuncBc->numReturnRegisters() >= 2)

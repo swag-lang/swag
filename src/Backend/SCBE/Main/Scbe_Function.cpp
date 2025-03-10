@@ -1454,7 +1454,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 else
                 {
                     pp.pushParams.clear();
-                    pp.pushParams.push_back({.type = CpuPushParamType::CPURegister, .value = static_cast<uint64_t>(cc.cpuReg0)});
+                    pp.pushParams.push_back({.type = CpuPushParamType::CpuRegister, .baseReg = cc.cpuReg0});
                     pp.pushParams.push_back({.type = CpuPushParamType::Constant, .value = 0});
                     pp.pushParams.push_back({.type = CpuPushParamType::Constant, .value = ip->b.u64});
                     emitInternalCallCPUParams(pp, g_LangSpec->name_memset, pp.pushParams);
