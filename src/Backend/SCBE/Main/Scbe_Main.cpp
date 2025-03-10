@@ -12,36 +12,31 @@ void Scbe::emitOS(ScbeCpu& pp)
 
     if (g_CommandLine.target.os == SwagTargetOs::Windows)
     {
+        SWAG_ASSERT(g_CommandLine.target.arch == SwagTargetArch::X86_64);
+
         // :ChkStk Stack probing
         // See SWAG_LIMIT_PAGE_STACK
-        if (g_CommandLine.target.arch == SwagTargetArch::X86_64)
-        {
-            const auto cpuFct = pp.addFunction(R"(__chkstk)", CallConv::get(CallConvKind::X86_64), nullptr);
-            concat.addString1("\x51");                            // push rcx  // NOLINT(modernize-raw-string-literal)
-            concat.addString1("\x50");                            // push rax  // NOLINT(modernize-raw-string-literal)
-            concat.addStringN("\x48\x3d\x00\x10\x00\x00", 6);     // cmp rax, 1000h
-            concat.addString5("\x48\x8d\x4c\x24\x18");            // lea rcx[rsp+18h]
-            concat.addString2("\x72\x18");                        // jb @1
-            concat.addStringN("\x48\x81\xe9\x00\x10\x00\x00", 7); // @2 sub rcx, 1000h
-            concat.addString3("\x48\x85\x09");                    // test qword ptr [rcx], rax
-            concat.addStringN("\x48\x2d\x00\x10\x00\x00", 6);     // sub rax, 1000h
-            concat.addStringN("\x48\x3d\x00\x10\x00\x00", 6);     // cmp rax, 1000h
-            concat.addString2("\x77\xe8");                        // ja @2
-            concat.addString3("\x48\x29\xc1");                    // @1 sub rcx, rax
-            concat.addString3("\x48\x85\x09");                    // test qword ptr [rcx], rcx
-            concat.addString1("\x58");                            // pop rax  // NOLINT(modernize-raw-string-literal)
-            concat.addString1("\x59");                            // pop rcx  // NOLINT(modernize-raw-string-literal)
-            concat.addString1("\xc3");                            // ret
-            cpuFct->endAddress = concat.totalCount();
-        }
-        else
-        {
-            SWAG_ASSERT(false);
-        }
+        const auto cpuFct = pp.addFunction(R"(__chkstk)", CallConv::get(CallConvKind::X86_64), nullptr);
+        concat.addString1("\x51");                            // push rcx  // NOLINT(modernize-raw-string-literal)
+        concat.addString1("\x50");                            // push rax  // NOLINT(modernize-raw-string-literal)
+        concat.addStringN("\x48\x3d\x00\x10\x00\x00", 6);     // cmp rax, 1000h
+        concat.addString5("\x48\x8d\x4c\x24\x18");            // lea rcx[rsp+18h]
+        concat.addString2("\x72\x18");                        // jb @1
+        concat.addStringN("\x48\x81\xe9\x00\x10\x00\x00", 7); // @2 sub rcx, 1000h
+        concat.addString3("\x48\x85\x09");                    // test qword ptr [rcx], rax
+        concat.addStringN("\x48\x2d\x00\x10\x00\x00", 6);     // sub rax, 1000h
+        concat.addStringN("\x48\x3d\x00\x10\x00\x00", 6);     // cmp rax, 1000h
+        concat.addString2("\x77\xe8");                        // ja @2
+        concat.addString3("\x48\x29\xc1");                    // @1 sub rcx, rax
+        concat.addString3("\x48\x85\x09");                    // test qword ptr [rcx], rcx
+        concat.addString1("\x58");                            // pop rax  // NOLINT(modernize-raw-string-literal)
+        concat.addString1("\x59");                            // pop rcx  // NOLINT(modernize-raw-string-literal)
+        concat.addString1("\xc3");                            // ret
+        cpuFct->endAddress = concat.totalCount();
 
         // int _DllMainCRTStartup(void*, int, void*)
         pp.getOrAddSymbol("_DllMainCRTStartup", CpuSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
-        pp.emitLoadRI(CpuReg::RAX, 1, OpBits::B64);
+        pp.emitLoadRI(CallConv::get(CallConvKind::X86_64)->returnByRegisterInteger, 1, OpBits::B64);
         pp.emitRet();
     }
     else
@@ -56,7 +51,7 @@ void Scbe::emitMain(ScbeCpu& pp)
     const auto  module          = pp.module;
 
     const char*     entryPoint = nullptr;
-    const CallConv* callConv   = nullptr;
+    const CallConv* cc         = nullptr;
     switch (g_CommandLine.target.os)
     {
         case SwagTargetOs::Windows:
@@ -64,60 +59,61 @@ void Scbe::emitMain(ScbeCpu& pp)
                 entryPoint = "mainCRTStartup";
             else
                 entryPoint = "WinMainCRTStartup";
-            callConv = CallConv::get(CallConvKind::X86_64);
+            cc = CallConv::get(CallConvKind::X86_64);
             break;
         default:
             SWAG_ASSERT(false);
             return;
     }
 
-    pp.cpuFct = pp.addFunction(entryPoint, callConv, nullptr);
+    pp.cpuFct = pp.addFunction(entryPoint, cc, nullptr);
     pp.emitEnter(0);
 
     // Set default system allocator function
     SWAG_ASSERT(g_SystemAllocatorTable);
     const auto bcAlloc = static_cast<ByteCode*>(ByteCode::undoByteCodeLambda(static_cast<void**>(g_SystemAllocatorTable)[0]));
     SWAG_ASSERT(bcAlloc);
-    pp.emitSymbolRelocationAddress(CpuReg::RAX, pp.symDefaultAllocTable, 0);
-    pp.emitLoadAddressM(CpuReg::RCX, CpuReg::RIP, 0);
+
+    pp.emitSymbolRelocationAddress(cc->cpuReg0, pp.symDefaultAllocTable, 0);
+    pp.emitLoadAddressM(cc->cpuReg1, CpuReg::RIP, 0);
     pp.emitSymbolRelocationRef(bcAlloc->getCallName());
-    pp.emitStoreMR(CpuReg::RAX, 0, CpuReg::RCX, OpBits::B64);
+    pp.emitStoreMR(cc->cpuReg0, 0, cc->cpuReg1, OpBits::B64);
 
     // mainContext.allocator.itable = &defaultAllocTable;
-    pp.emitSymbolRelocationAddress(CpuReg::RCX, pp.symMC_mainContext_allocator_itable, 0);
-    pp.emitStoreMR(CpuReg::RCX, 0, CpuReg::RAX, OpBits::B64);
+    pp.emitSymbolRelocationAddress(cc->cpuReg1, pp.symMC_mainContext_allocator_itable, 0);
+    pp.emitStoreMR(cc->cpuReg1, 0, cc->cpuReg0, OpBits::B64);
 
     // main context flags
-    pp.emitSymbolRelocationAddress(CpuReg::RCX, pp.symMC_mainContext_flags, 0);
+    pp.emitSymbolRelocationAddress(cc->cpuReg1, pp.symMC_mainContext_flags, 0);
     const uint64_t contextFlags = getDefaultContextFlags(module);
-    pp.emitStoreMI(CpuReg::RCX, 0, contextFlags, OpBits::B64);
+    pp.emitStoreMI(cc->cpuReg1, 0, contextFlags, OpBits::B64);
 
     //__process_infos.contextTlsId = swag_runtime_tlsAlloc();
-    pp.emitSymbolRelocationAddress(CpuReg::RCX, pp.symPI_contextTlsId, 0);
-    emitInternalCallRAParams(pp, g_LangSpec->name_priv_tlsAlloc, {}, CpuReg::RCX, 0);
+    pp.emitSymbolRelocationAddress(cc->cpuReg1, pp.symPI_contextTlsId, 0);
+    emitInternalCallRAParams(pp, g_LangSpec->name_priv_tlsAlloc, {}, cc->cpuReg1, 0);
 
     //__process_infos.modules
-    pp.emitSymbolRelocationAddress(CpuReg::RCX, pp.symPI_modulesAddr, 0);
-    pp.emitSymbolRelocationAddress(CpuReg::RAX, pp.symCSIndex, module->modulesSliceOffset);
-    pp.emitStoreMR(CpuReg::RCX, 0, CpuReg::RAX, OpBits::B64);
-    pp.emitSymbolRelocationAddress(CpuReg::RAX, pp.symPI_modulesCount, 0);
-    pp.emitStoreMI(CpuReg::RAX, 0, module->moduleDependencies.count + 1, OpBits::B64);
+    pp.emitSymbolRelocationAddress(cc->cpuReg1, pp.symPI_modulesAddr, 0);
+    pp.emitSymbolRelocationAddress(cc->cpuReg0, pp.symCSIndex, module->modulesSliceOffset);
+    pp.emitStoreMR(cc->cpuReg1, 0, cc->cpuReg0, OpBits::B64);
+    pp.emitSymbolRelocationAddress(cc->cpuReg0, pp.symPI_modulesCount, 0);
+    pp.emitStoreMI(cc->cpuReg0, 0, module->moduleDependencies.count + 1, OpBits::B64);
 
     //__process_infos.args
-    pp.emitClearR(CpuReg::RCX, OpBits::B64);
-    pp.emitSymbolRelocationAddress(CpuReg::RAX, pp.symPI_argsAddr, 0);
-    pp.emitStoreMR(CpuReg::RAX, 0, CpuReg::RCX, OpBits::B64);
-    pp.emitSymbolRelocationAddress(CpuReg::RAX, pp.symPI_argsCount, 0);
-    pp.emitStoreMR(CpuReg::RAX, 0, CpuReg::RCX, OpBits::B64);
+    pp.emitClearR(cc->cpuReg1, OpBits::B64);
+    pp.emitSymbolRelocationAddress(cc->cpuReg0, pp.symPI_argsAddr, 0);
+    pp.emitStoreMR(cc->cpuReg0, 0, cc->cpuReg1, OpBits::B64);
+    pp.emitSymbolRelocationAddress(cc->cpuReg0, pp.symPI_argsCount, 0);
+    pp.emitStoreMR(cc->cpuReg0, 0, cc->cpuReg1, OpBits::B64);
 
     // Set main context
-    pp.emitSymbolRelocationAddress(CpuReg::RAX, pp.symMC_mainContext, 0);
-    pp.emitSymbolRelocationAddress(CpuReg::RCX, pp.symPI_defaultContext, 0);
-    pp.emitStoreMR(CpuReg::RCX, 0, CpuReg::RAX, OpBits::B64);
+    pp.emitSymbolRelocationAddress(cc->cpuReg0, pp.symMC_mainContext, 0);
+    pp.emitSymbolRelocationAddress(cc->cpuReg1, pp.symPI_defaultContext, 0);
+    pp.emitStoreMR(cc->cpuReg1, 0, cc->cpuReg0, OpBits::B64);
 
     // Set current backend as SCBE
-    pp.emitSymbolRelocationAddress(CpuReg::RCX, pp.symPI_backendKind, 0);
-    pp.emitStoreMI(CpuReg::RCX, 0, static_cast<uint32_t>(SwagBackendGenType::SCBE), OpBits::B32);
+    pp.emitSymbolRelocationAddress(cc->cpuReg1, pp.symPI_backendKind, 0);
+    pp.emitStoreMI(cc->cpuReg1, 0, static_cast<uint32_t>(SwagBackendGenType::SCBE), OpBits::B32);
 
     // Set default context in TLS
     pp.pushParams.clear();
@@ -215,8 +211,7 @@ void Scbe::emitMain(ScbeCpu& pp)
     }
 
     pp.emitCallLocal(g_LangSpec->name_priv_closeRuntime);
-
-    pp.emitClearR(CpuReg::RAX, OpBits::B64);
+    pp.emitClearR(cc->returnByRegisterInteger, OpBits::B64);
 
     pp.emitLeave();
     pp.endFunction();

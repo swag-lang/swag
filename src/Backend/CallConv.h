@@ -65,6 +65,9 @@ struct CallConv
     // The base register used for ffi
     CpuReg ffiBaseRegister = CpuReg::RDI;
 
+    CpuReg cpuReg0 = CpuReg::RAX;
+    CpuReg cpuReg1 = CpuReg::RCX;
+
     // If a float is passed by register, use 'paramByRegisterFloat' instead of 'paramByRegisterInteger'
     bool useRegisterFloat = true;
 

@@ -34,6 +34,7 @@ void Scbe::emitLoadAddressParam(ScbeCpu& pp, CpuReg reg, uint32_t paramIdx)
 
 void Scbe::emitGetParam(ScbeCpu& pp, uint32_t reg, uint32_t paramIdx, OpBits opBits, uint64_t toAdd, OpBits derefBits)
 {
+    const auto cc        = pp.cpuFct->cc;
     const auto typeFunc  = pp.cpuFct->typeFunc;
     auto       typeParam = TypeManager::concreteType(typeFunc->parameters[typeFunc->registerIdxToParamIdx(paramIdx)]->typeInfo);
     if (typeParam->isAutoConstPointerRef())
@@ -46,8 +47,8 @@ void Scbe::emitGetParam(ScbeCpu& pp, uint32_t reg, uint32_t paramIdx, OpBits opB
         case OpBits::B32:
         {
             SWAG_ASSERT(!toAdd);
-            emitLoadZeroExtendParam(pp, CpuReg::RAX, paramIdx, OpBits::B64, opBits);
-            pp.emitStoreMR(CpuReg::RSP, pp.cpuFct->getStackOffsetReg(reg), CpuReg::RAX, OpBits::B64);
+            emitLoadZeroExtendParam(pp, cc->cpuReg0, paramIdx, OpBits::B64, opBits);
+            pp.emitStoreMR(CpuReg::RSP, pp.cpuFct->getStackOffsetReg(reg), cc->cpuReg0, OpBits::B64);
             return;
         }
         case OpBits::B64:
@@ -59,9 +60,9 @@ void Scbe::emitGetParam(ScbeCpu& pp, uint32_t reg, uint32_t paramIdx, OpBits opB
     }
 
     if (typeFunc->structParamByValue(typeParam))
-        emitLoadAddressParam(pp, CpuReg::RAX, paramIdx);
+        emitLoadAddressParam(pp, cc->cpuReg0, paramIdx);
     else
-        emitLoadParam(pp, CpuReg::RAX, paramIdx, OpBits::B64);
+        emitLoadParam(pp, cc->cpuReg0, paramIdx, OpBits::B64);
 
     switch (derefBits)
     {
@@ -69,15 +70,15 @@ void Scbe::emitGetParam(ScbeCpu& pp, uint32_t reg, uint32_t paramIdx, OpBits opB
         case OpBits::B16:
         case OpBits::B32:
         case OpBits::B64:
-            pp.emitLoadZeroExtendRM(CpuReg::RAX, CpuReg::RAX, static_cast<uint32_t>(toAdd), OpBits::B64, derefBits);
+            pp.emitLoadZeroExtendRM(cc->cpuReg0, cc->cpuReg0, static_cast<uint32_t>(toAdd), OpBits::B64, derefBits);
             break;
         default:
             if (toAdd)
-                pp.emitOpBinaryRI(CpuReg::RAX, toAdd, CpuOp::ADD, OpBits::B64);
+                pp.emitOpBinaryRI(cc->cpuReg0, toAdd, CpuOp::ADD, OpBits::B64);
             break;
     }
 
-    pp.emitStoreMR(CpuReg::RSP, pp.cpuFct->getStackOffsetReg(reg), CpuReg::RAX, OpBits::B64);
+    pp.emitStoreMR(CpuReg::RSP, pp.cpuFct->getStackOffsetReg(reg), cc->cpuReg0, OpBits::B64);
 }
 
 void Scbe::emitCallCPUParams(ScbeCpu&                          pp,
@@ -150,6 +151,7 @@ void Scbe::emitInternalCallCPUParams(ScbeCpu& pp, const Utf8& funcName, const Ve
 
 void Scbe::emitLocalCall(ScbeCpu& pp)
 {
+    const auto cc      = pp.cpuFct->cc;
     const auto ip      = pp.ip;
     const auto callBc  = reinterpret_cast<ByteCode*>(ip->a.pointer);
     const auto typeFct = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
@@ -160,8 +162,8 @@ void Scbe::emitLocalCall(ScbeCpu& pp)
 
     if (ip->op == ByteCodeOp::LocalCallPopRC)
     {
-        pp.emitLoadRM(CpuReg::RAX, CpuReg::RSP, pp.cpuFct->getStackOffsetRT(0), OpBits::B64);
-        pp.emitStoreMR(CpuReg::RSP, pp.cpuFct->getStackOffsetReg(ip->d.u32), CpuReg::RAX, OpBits::B64);
+        pp.emitLoadRM(cc->cpuReg0, CpuReg::RSP, pp.cpuFct->getStackOffsetRT(0), OpBits::B64);
+        pp.emitStoreMR(CpuReg::RSP, pp.cpuFct->getStackOffsetReg(ip->d.u32), cc->cpuReg0, OpBits::B64);
     }
 }
 
@@ -223,9 +225,10 @@ void Scbe::emitLambdaCall(ScbeCpu& pp)
         pushCPUParams.insert_at_index({.type = CpuPushParamType::LoadAddress, .baseReg = CpuReg::RSP, .value = pp.cpuFct->getStackOffsetRT(1)}, 2);
     pp.emitCallParameters(typeFuncBc, pushCPUParams, CallConv::get(CallConvKind::ByteCode));
 
-    pp.emitSymbolRelocationAddress(CpuReg::RAX, pp.symPI_byteCodeRun, 0);
-    pp.emitLoadRM(CpuReg::RAX, CpuReg::RAX, 0, OpBits::B64);
-    pp.emitCallIndirect(CpuReg::RAX);
+    const auto cc = pp.cpuFct->cc;
+    pp.emitSymbolRelocationAddress(cc->cpuReg0, pp.symPI_byteCodeRun, 0);
+    pp.emitLoadRM(cc->cpuReg0, cc->cpuReg0, 0, OpBits::B64);
+    pp.emitCallIndirect(cc->cpuReg0);
 
     // End
     //////////////////
