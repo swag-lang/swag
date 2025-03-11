@@ -74,46 +74,46 @@ void Scbe::emitMain(ScbeCpu& pp)
     const auto bcAlloc = static_cast<ByteCode*>(ByteCode::undoByteCodeLambda(static_cast<void**>(g_SystemAllocatorTable)[0]));
     SWAG_ASSERT(bcAlloc);
 
-    pp.emitSymbolRelocationAddress(cc->cpuReg0, pp.symDefaultAllocTable, 0);
-    pp.emitLoadAddressM(cc->cpuReg1, CpuReg::RIP, 0);
+    pp.emitSymbolRelocationAddress(cc->computeRegI0, pp.symDefaultAllocTable, 0);
+    pp.emitLoadAddressM(cc->computeRegI1, CpuReg::RIP, 0);
     pp.emitSymbolRelocationRef(bcAlloc->getCallName());
-    pp.emitStoreMR(cc->cpuReg0, 0, cc->cpuReg1, OpBits::B64);
+    pp.emitStoreMR(cc->computeRegI0, 0, cc->computeRegI1, OpBits::B64);
 
     // mainContext.allocator.itable = &defaultAllocTable;
-    pp.emitSymbolRelocationAddress(cc->cpuReg1, pp.symMC_mainContext_allocator_itable, 0);
-    pp.emitStoreMR(cc->cpuReg1, 0, cc->cpuReg0, OpBits::B64);
+    pp.emitSymbolRelocationAddress(cc->computeRegI1, pp.symMC_mainContext_allocator_itable, 0);
+    pp.emitStoreMR(cc->computeRegI1, 0, cc->computeRegI0, OpBits::B64);
 
     // main context flags
-    pp.emitSymbolRelocationAddress(cc->cpuReg1, pp.symMC_mainContext_flags, 0);
+    pp.emitSymbolRelocationAddress(cc->computeRegI1, pp.symMC_mainContext_flags, 0);
     const uint64_t contextFlags = getDefaultContextFlags(module);
-    pp.emitStoreMI(cc->cpuReg1, 0, contextFlags, OpBits::B64);
+    pp.emitStoreMI(cc->computeRegI1, 0, contextFlags, OpBits::B64);
 
     //__process_infos.contextTlsId = swag_runtime_tlsAlloc();
-    pp.emitSymbolRelocationAddress(cc->cpuReg1, pp.symPI_contextTlsId, 0);
-    emitInternalCallRAParams(pp, g_LangSpec->name_priv_tlsAlloc, {}, cc->cpuReg1, 0);
+    pp.emitSymbolRelocationAddress(cc->computeRegI1, pp.symPI_contextTlsId, 0);
+    emitInternalCallRAParams(pp, g_LangSpec->name_priv_tlsAlloc, {}, cc->computeRegI1, 0);
 
     //__process_infos.modules
-    pp.emitSymbolRelocationAddress(cc->cpuReg1, pp.symPI_modulesAddr, 0);
-    pp.emitSymbolRelocationAddress(cc->cpuReg0, pp.symCSIndex, module->modulesSliceOffset);
-    pp.emitStoreMR(cc->cpuReg1, 0, cc->cpuReg0, OpBits::B64);
-    pp.emitSymbolRelocationAddress(cc->cpuReg0, pp.symPI_modulesCount, 0);
-    pp.emitStoreMI(cc->cpuReg0, 0, module->moduleDependencies.count + 1, OpBits::B64);
+    pp.emitSymbolRelocationAddress(cc->computeRegI1, pp.symPI_modulesAddr, 0);
+    pp.emitSymbolRelocationAddress(cc->computeRegI0, pp.symCSIndex, module->modulesSliceOffset);
+    pp.emitStoreMR(cc->computeRegI1, 0, cc->computeRegI0, OpBits::B64);
+    pp.emitSymbolRelocationAddress(cc->computeRegI0, pp.symPI_modulesCount, 0);
+    pp.emitStoreMI(cc->computeRegI0, 0, module->moduleDependencies.count + 1, OpBits::B64);
 
     //__process_infos.args
-    pp.emitClearR(cc->cpuReg1, OpBits::B64);
-    pp.emitSymbolRelocationAddress(cc->cpuReg0, pp.symPI_argsAddr, 0);
-    pp.emitStoreMR(cc->cpuReg0, 0, cc->cpuReg1, OpBits::B64);
-    pp.emitSymbolRelocationAddress(cc->cpuReg0, pp.symPI_argsCount, 0);
-    pp.emitStoreMR(cc->cpuReg0, 0, cc->cpuReg1, OpBits::B64);
+    pp.emitClearR(cc->computeRegI1, OpBits::B64);
+    pp.emitSymbolRelocationAddress(cc->computeRegI0, pp.symPI_argsAddr, 0);
+    pp.emitStoreMR(cc->computeRegI0, 0, cc->computeRegI1, OpBits::B64);
+    pp.emitSymbolRelocationAddress(cc->computeRegI0, pp.symPI_argsCount, 0);
+    pp.emitStoreMR(cc->computeRegI0, 0, cc->computeRegI1, OpBits::B64);
 
     // Set main context
-    pp.emitSymbolRelocationAddress(cc->cpuReg0, pp.symMC_mainContext, 0);
-    pp.emitSymbolRelocationAddress(cc->cpuReg1, pp.symPI_defaultContext, 0);
-    pp.emitStoreMR(cc->cpuReg1, 0, cc->cpuReg0, OpBits::B64);
+    pp.emitSymbolRelocationAddress(cc->computeRegI0, pp.symMC_mainContext, 0);
+    pp.emitSymbolRelocationAddress(cc->computeRegI1, pp.symPI_defaultContext, 0);
+    pp.emitStoreMR(cc->computeRegI1, 0, cc->computeRegI0, OpBits::B64);
 
     // Set current backend as SCBE
-    pp.emitSymbolRelocationAddress(cc->cpuReg1, pp.symPI_backendKind, 0);
-    pp.emitStoreMI(cc->cpuReg1, 0, static_cast<uint32_t>(SwagBackendGenType::SCBE), OpBits::B32);
+    pp.emitSymbolRelocationAddress(cc->computeRegI1, pp.symPI_backendKind, 0);
+    pp.emitStoreMI(cc->computeRegI1, 0, static_cast<uint32_t>(SwagBackendGenType::SCBE), OpBits::B32);
 
     // Set default context in TLS
     pp.pushParams.clear();

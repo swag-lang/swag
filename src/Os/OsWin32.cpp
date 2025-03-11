@@ -1010,8 +1010,8 @@ namespace OS
 
             gen.emitComputeCallParameters(typeInfoFunc, pushCPUParams, g_GenFFI.cc->ffiBaseRegister, 0, retCopyAddr);
 
-            gen.emitLoadRI(g_GenFFI.cc->cpuReg0, reinterpret_cast<uint64_t>(foreignPtr), OpBits::B64);
-            gen.emitCallIndirect(g_GenFFI.cc->cpuReg0);
+            gen.emitLoadRI(g_GenFFI.cc->computeRegI0, reinterpret_cast<uint64_t>(foreignPtr), OpBits::B64);
+            gen.emitCallIndirect(g_GenFFI.cc->computeRegI0);
 
             if (!returnType->isVoid() && !retCopyAddr)
             {

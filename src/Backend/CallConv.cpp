@@ -5,41 +5,47 @@ CallConv g_CallConv[static_cast<int>(CallConvKind::Max)];
 
 void initCallConvKinds()
 {
-    auto& ccSwag = g_CallConv[static_cast<int>(CallConvKind::X86_64)];
+    auto& ccX64 = g_CallConv[static_cast<int>(CallConvKind::X86_64)];
 
-    ccSwag.paramByRegisterCount = 4;
-    ccSwag.paramByRegisterInteger.push_back(CpuReg::RCX);
-    ccSwag.paramByRegisterInteger.push_back(CpuReg::RDX);
-    ccSwag.paramByRegisterInteger.push_back(CpuReg::R8);
-    ccSwag.paramByRegisterInteger.push_back(CpuReg::R9);
+    ccX64.paramByRegisterCount = 4;
+    ccX64.paramByRegisterInteger.push_back(CpuReg::RCX);
+    ccX64.paramByRegisterInteger.push_back(CpuReg::RDX);
+    ccX64.paramByRegisterInteger.push_back(CpuReg::R8);
+    ccX64.paramByRegisterInteger.push_back(CpuReg::R9);
 
-    ccSwag.paramByRegisterFloat.push_back(CpuReg::XMM0);
-    ccSwag.paramByRegisterFloat.push_back(CpuReg::XMM1);
-    ccSwag.paramByRegisterFloat.push_back(CpuReg::XMM2);
-    ccSwag.paramByRegisterFloat.push_back(CpuReg::XMM3);
+    ccX64.paramByRegisterFloat.push_back(CpuReg::XMM0);
+    ccX64.paramByRegisterFloat.push_back(CpuReg::XMM1);
+    ccX64.paramByRegisterFloat.push_back(CpuReg::XMM2);
+    ccX64.paramByRegisterFloat.push_back(CpuReg::XMM3);
 
-    ccSwag.returnByRegisterInteger = CpuReg::RAX;
-    ccSwag.returnByRegisterFloat   = CpuReg::XMM0;
+    ccX64.ffiBaseRegister         = CpuReg::RDI;
+    ccX64.returnByRegisterInteger = CpuReg::RAX;
+    ccX64.returnByRegisterFloat   = CpuReg::XMM0;
+    ccX64.computeRegI0            = CpuReg::RAX;
+    ccX64.computeRegI1            = CpuReg::RCX;
+    ccX64.computeRegF0            = CpuReg::XMM0;
+    ccX64.computeRegF1            = CpuReg::XMM1;
+    ccX64.computeRegF2            = CpuReg::XMM2;
 
-    ccSwag.volatileRegisters.push_back(CpuReg::RAX);
-    ccSwag.volatileRegisters.push_back(CpuReg::RCX);
-    ccSwag.volatileRegisters.push_back(CpuReg::RDX);
-    ccSwag.volatileRegisters.push_back(CpuReg::R8);
-    ccSwag.volatileRegisters.push_back(CpuReg::R9);
-    ccSwag.volatileRegisters.push_back(CpuReg::R10);
-    ccSwag.volatileRegisters.push_back(CpuReg::R11);
-    ccSwag.volatileRegisters.push_back(CpuReg::XMM0);
-    ccSwag.volatileRegisters.push_back(CpuReg::XMM1);
-    ccSwag.volatileRegisters.push_back(CpuReg::XMM2);
-    ccSwag.volatileRegisters.push_back(CpuReg::XMM3);
+    ccX64.volatileRegisters.push_back(CpuReg::RAX);
+    ccX64.volatileRegisters.push_back(CpuReg::RCX);
+    ccX64.volatileRegisters.push_back(CpuReg::RDX);
+    ccX64.volatileRegisters.push_back(CpuReg::R8);
+    ccX64.volatileRegisters.push_back(CpuReg::R9);
+    ccX64.volatileRegisters.push_back(CpuReg::R10);
+    ccX64.volatileRegisters.push_back(CpuReg::R11);
+    ccX64.volatileRegisters.push_back(CpuReg::XMM0);
+    ccX64.volatileRegisters.push_back(CpuReg::XMM1);
+    ccX64.volatileRegisters.push_back(CpuReg::XMM2);
+    ccX64.volatileRegisters.push_back(CpuReg::XMM3);
 
-    ccSwag.nonVolatileRegisters.push_back(CpuReg::RBX);
-    ccSwag.nonVolatileRegisters.push_back(CpuReg::RDI);
-    ccSwag.nonVolatileRegisters.push_back(CpuReg::RSI);
+    ccX64.nonVolatileRegisters.push_back(CpuReg::RBX);
+    ccX64.nonVolatileRegisters.push_back(CpuReg::RDI);
+    ccX64.nonVolatileRegisters.push_back(CpuReg::RSI);
 
-    ccSwag.useRegisterFloat       = true;
-    ccSwag.structParamByRegister  = true;
-    ccSwag.structReturnByRegister = true;
+    ccX64.useRegisterFloat       = true;
+    ccX64.structParamByRegister  = true;
+    ccX64.structReturnByRegister = true;
 
     g_CallConv[static_cast<int>(CallConvKind::Swag)] = g_CallConv[static_cast<int>(CallConvKind::X86_64)];
 
@@ -61,9 +67,9 @@ CpuReg CallConv::getVolatileRegister(const CallConv& ccCaller, const CallConv& c
     auto regRes = CpuReg::Max;
     for (const auto& r : ccCaller.volatileRegisters)
     {
-        if (r == ccCaller.cpuReg0 && flags.has(VF_EXCLUDE_COMPUTE_I0))
+        if (r == ccCaller.computeRegI0 && flags.has(VF_EXCLUDE_COMPUTE_I0))
             continue;
-        if (r == ccCaller.cpuReg1 && flags.has(VF_EXCLUDE_COMPUTE_I1))
+        if (r == ccCaller.computeRegI1 && flags.has(VF_EXCLUDE_COMPUTE_I1))
             continue;
         if (r == ccCallee.returnByRegisterInteger && flags.has(VF_EXCLUDE_RETURN))
             continue;

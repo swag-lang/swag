@@ -80,10 +80,14 @@ struct CallConv
     CpuReg returnByRegisterFloat = CpuReg::XMM0;
 
     // The base register used for ffi
-    CpuReg ffiBaseRegister = CpuReg::RDI;
+    CpuReg ffiBaseRegister = CpuReg::Max;
 
-    CpuReg cpuReg0 = CpuReg::RAX;
-    CpuReg cpuReg1 = CpuReg::RCX;
+    // Base computing registers
+    CpuReg computeRegI0 = CpuReg::Max;
+    CpuReg computeRegI1 = CpuReg::Max;
+    CpuReg computeRegF0 = CpuReg::Max;
+    CpuReg computeRegF1 = CpuReg::Max;
+    CpuReg computeRegF2 = CpuReg::Max;
 
     // If a float is passed by register, use 'paramByRegisterFloat' instead of 'paramByRegisterInteger'
     bool useRegisterFloat = true;

@@ -205,8 +205,9 @@ namespace
                     break;
 
                 case CpuPushParamType::SwagParamStructValue:
-                    pp.emitLoadRM(CpuReg::RAX, params[idxParam].baseReg, value, OpBits::B64);
-                    pp.emitLoadRM(callConv->paramByRegisterInteger[idxParam], CpuReg::RAX, 0, OpBits::B64);
+                    SWAG_ASSERT(pp.cc->computeRegI0 != callConv->paramByRegisterInteger[idxParam]);
+                    pp.emitLoadRM(pp.cc->computeRegI0, params[idxParam].baseReg, value, OpBits::B64);
+                    pp.emitLoadRM(callConv->paramByRegisterInteger[idxParam], pp.cc->computeRegI0, 0, OpBits::B64);
                     break;
 
                 case CpuPushParamType::SwagRegister:
@@ -237,10 +238,11 @@ namespace
                     break;
 
                 case CpuPushParamType::SwagRegisterMul:
-                    pp.emitLoadRM(CpuReg::RAX, params[idxParam].baseReg, value, OpBits::B64);
+                    SWAG_ASSERT(pp.cc->computeRegI0 != callConv->paramByRegisterInteger[idxParam]);
+                    pp.emitLoadRM(pp.cc->computeRegI0, params[idxParam].baseReg, value, OpBits::B64);
                     if (params[idxParam].value2 != 1)
-                        pp.emitOpBinaryRI(CpuReg::RAX, params[idxParam].value2, CpuOp::IMUL, OpBits::B64);
-                    pp.emitLoadRR(callConv->paramByRegisterInteger[idxParam], CpuReg::RAX, OpBits::B64);
+                        pp.emitOpBinaryRI(pp.cc->computeRegI0, params[idxParam].value2, CpuOp::IMUL, OpBits::B64);
+                    pp.emitLoadRR(callConv->paramByRegisterInteger[idxParam], pp.cc->computeRegI0, OpBits::B64);
                     break;
 
                 case CpuPushParamType::GlobalString:
@@ -265,13 +267,13 @@ namespace
             switch (params[idxParam].type)
             {
                 case CpuPushParamType::Load:
-                    pp.emitLoadRM(CpuReg::RAX, params[idxParam].baseReg, value, OpBits::B64);
-                    pp.emitStoreMR(CpuReg::RSP, memOffset, CpuReg::RAX, OpBits::B64);
+                    pp.emitLoadRM(pp.cc->computeRegI0, params[idxParam].baseReg, value, OpBits::B64);
+                    pp.emitStoreMR(CpuReg::RSP, memOffset, pp.cc->computeRegI0, OpBits::B64);
                     break;
 
                 case CpuPushParamType::LoadAddress:
-                    pp.emitLoadAddressM(CpuReg::RAX, params[idxParam].baseReg, value);
-                    pp.emitStoreMR(CpuReg::RSP, memOffset, CpuReg::RAX, OpBits::B64);
+                    pp.emitLoadAddressM(pp.cc->computeRegI0, params[idxParam].baseReg, value);
+                    pp.emitStoreMR(CpuReg::RSP, memOffset, pp.cc->computeRegI0, OpBits::B64);
                     break;
 
                 case CpuPushParamType::Constant:
@@ -279,36 +281,36 @@ namespace
                     break;
 
                 case CpuPushParamType::Constant64:
-                    pp.emitLoadRI64(CpuReg::RAX, value);
-                    pp.emitStoreMR(CpuReg::RSP, memOffset, CpuReg::RAX, OpBits::B64);
+                    pp.emitLoadRI64(pp.cc->computeRegI0, value);
+                    pp.emitStoreMR(CpuReg::RSP, memOffset, pp.cc->computeRegI0, OpBits::B64);
                     break;
 
                 case CpuPushParamType::CaptureContext:
-                    pp.emitLoadRM(CpuReg::RAX, params[idxParam].baseReg, value, OpBits::B64);
-                    pp.emitStoreMR(CpuReg::RSP, memOffset, CpuReg::RAX, OpBits::B64);
+                    pp.emitLoadRM(pp.cc->computeRegI0, params[idxParam].baseReg, value, OpBits::B64);
+                    pp.emitStoreMR(CpuReg::RSP, memOffset, pp.cc->computeRegI0, OpBits::B64);
                     break;
 
                 case CpuPushParamType::SwagParamStructValue:
-                    pp.emitLoadRM(CpuReg::RAX, params[idxParam].baseReg, value, OpBits::B64);
-                    pp.emitLoadRM(CpuReg::RAX, CpuReg::RAX, 0, BackendEncoder::getOpBitsByBytes(type->sizeOf));
-                    pp.emitStoreMR(CpuReg::RSP, memOffset, CpuReg::RAX, BackendEncoder::getOpBitsByBytes(type->sizeOf));
+                    pp.emitLoadRM(pp.cc->computeRegI0, params[idxParam].baseReg, value, OpBits::B64);
+                    pp.emitLoadRM(pp.cc->computeRegI0, pp.cc->computeRegI0, 0, BackendEncoder::getOpBitsByBytes(type->sizeOf));
+                    pp.emitStoreMR(CpuReg::RSP, memOffset, pp.cc->computeRegI0, BackendEncoder::getOpBitsByBytes(type->sizeOf));
                     break;
 
                 case CpuPushParamType::SwagRegister:
                     if (type->isStruct())
                     {
-                        pp.emitLoadRM(CpuReg::RAX, params[idxParam].baseReg, value, OpBits::B64);
-                        pp.emitStoreMR(CpuReg::RSP, memOffset, CpuReg::RAX, OpBits::B64);
+                        pp.emitLoadRM(pp.cc->computeRegI0, params[idxParam].baseReg, value, OpBits::B64);
+                        pp.emitStoreMR(CpuReg::RSP, memOffset, pp.cc->computeRegI0, OpBits::B64);
                     }
                     else if (type->sizeOf > sizeof(uint64_t))
                     {
-                        pp.emitLoadRM(CpuReg::RAX, params[idxParam].baseReg, value, OpBits::B64);
-                        pp.emitStoreMR(CpuReg::RSP, memOffset, CpuReg::RAX, OpBits::B64);
+                        pp.emitLoadRM(pp.cc->computeRegI0, params[idxParam].baseReg, value, OpBits::B64);
+                        pp.emitStoreMR(CpuReg::RSP, memOffset, pp.cc->computeRegI0, OpBits::B64);
                     }
                     else
                     {
-                        pp.emitLoadRM(CpuReg::RAX, params[idxParam].baseReg, value, BackendEncoder::getOpBitsByBytes(type->sizeOf));
-                        pp.emitStoreMR(CpuReg::RSP, memOffset, CpuReg::RAX, BackendEncoder::getOpBitsByBytes(type->sizeOf));
+                        pp.emitLoadRM(pp.cc->computeRegI0, params[idxParam].baseReg, value, BackendEncoder::getOpBitsByBytes(type->sizeOf));
+                        pp.emitStoreMR(CpuReg::RSP, memOffset, pp.cc->computeRegI0, BackendEncoder::getOpBitsByBytes(type->sizeOf));
                     }
                     break;
 
@@ -445,10 +447,8 @@ void ScbeCpu::emitStoreCallerParam(uint32_t paramIdx, CpuReg reg, OpBits opBits)
 
 void ScbeCpu::emitSymbolRelocationPtr(CpuReg reg, const Utf8& name)
 {
-    SWAG_ASSERT(reg == CpuReg::RAX);
-
     emitLoadRI64(reg, 0);
-
+    
     CpuRelocation relocation;
     relocation.virtualAddress = concat.totalCount() - sizeof(uint64_t) - textSectionOffset;
     const auto callSym        = getOrAddSymbol(name, CpuSymbolKind::Extern);
