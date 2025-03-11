@@ -43,7 +43,7 @@ struct CallConv
 {
     constexpr static uint32_t MAX_CALL_CONV_REGISTERS = 4;
     static const CallConv*    get(CallConvKind kind);
-    static CpuReg             getFctPointerRegister(const CallConv& ccCaller, const CallConv& ccCallee);
+    static CpuReg             getVolatileRegister(const CallConv& ccCaller, const CallConv& ccCallee);
 
     // The number of parameters to pass by register
     uint32_t paramByRegisterCount = 4;

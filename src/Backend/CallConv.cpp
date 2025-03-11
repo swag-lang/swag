@@ -36,8 +36,6 @@ void initCallConvKinds()
     ccSwag.nonVolatileRegisters.push_back(CpuReg::RBX);
     ccSwag.nonVolatileRegisters.push_back(CpuReg::RDI);
     ccSwag.nonVolatileRegisters.push_back(CpuReg::RSI);
-    ccSwag.nonVolatileRegisters.push_back(CpuReg::RBP);
-    ccSwag.nonVolatileRegisters.push_back(CpuReg::RSP);
 
     ccSwag.useRegisterFloat       = true;
     ccSwag.structParamByRegister  = true;
@@ -57,7 +55,7 @@ const CallConv* CallConv::get(CallConvKind kind)
     return &g_CallConv[static_cast<int>(kind)];
 }
 
-CpuReg CallConv::getFctPointerRegister(const CallConv& ccCaller, const CallConv& ccCallee)
+CpuReg CallConv::getVolatileRegister(const CallConv& ccCaller, const CallConv& ccCallee)
 {
     // We need a working volatile register which is not used as a call parameter
     auto regRes = CpuReg::Max;

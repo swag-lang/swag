@@ -189,7 +189,7 @@ void Scbe::emitLambdaCall(ScbeCpu& pp)
     const auto ip         = pp.ip;
     const auto typeFuncBc = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
 
-    const auto regRes = CallConv::getFctPointerRegister(*pp.cc, typeFuncBc->getCallConv());
+    const auto regRes = CallConv::getVolatileRegister(*pp.cc, typeFuncBc->getCallConv());
 
     // Test if it's a bytecode lambda
     pp.emitLoadRM(regRes, CpuReg::RSP, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
