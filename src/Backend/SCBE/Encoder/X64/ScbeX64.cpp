@@ -1421,7 +1421,7 @@ void ScbeX64::emitOpBinaryRI(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits
             SWAG_ASSERT(reg == cc->cpuReg0 || reg == cc->cpuReg1 || reg == CpuReg::RSP);
             emitREX(concat, opBits);
             emitSpecB8(concat, 0xFF, opBits);
-            concat.addU8(0xC0 | encodeReg(reg)); // inc rax
+            emitCPUOp(concat, 0xC0, reg);
         }
         else if (opBits == OpBits::B8)
         {
@@ -1432,16 +1432,15 @@ void ScbeX64::emitOpBinaryRI(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits
             else
             {
                 concat.addU8(0x80);
-                concat.addU8(0xC0 | encodeReg(reg));
+                emitCPUOp(concat, 0xC0, reg);
             }
             emitValue(concat, value, OpBits::B8);
         }
         else if (value <= 0x7F)
         {
-            SWAG_ASSERT(reg == cc->cpuReg0 || reg == cc->cpuReg1 || reg == CpuReg::RSP);
-            emitREX(concat, opBits);
+            emitREX(concat, opBits, REX_REG_NONE, reg);
             concat.addU8(0x83);
-            concat.addU8(0xC0 | encodeReg(reg));
+            emitCPUOp(concat, 0xC0, reg);
             emitValue(concat, value, OpBits::B8);
         }
         else
@@ -1453,7 +1452,7 @@ void ScbeX64::emitOpBinaryRI(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits
             else
             {
                 concat.addU8(0x81);
-                concat.addU8(0xC0 | encodeReg(reg));
+                emitCPUOp(concat, 0xC0, reg);
             }
             emitValue(concat, value, opBits == OpBits::B16 ? OpBits::B16 : OpBits::B32);
         }
@@ -1468,7 +1467,7 @@ void ScbeX64::emitOpBinaryRI(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits
             SWAG_ASSERT(reg == cc->cpuReg0 || reg == cc->cpuReg1 || reg == CpuReg::RSP);
             emitREX(concat, opBits);
             emitSpecB8(concat, 0xFF, opBits);
-            concat.addU8(0xC8 | encodeReg(reg)); // dec rax
+            emitCPUOp(concat, 0xC8, reg);
         }
         else if (opBits == OpBits::B8)
         {
@@ -1479,7 +1478,7 @@ void ScbeX64::emitOpBinaryRI(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits
             else
             {
                 concat.addU8(0x80);
-                concat.addU8(0xE8 | encodeReg(reg));
+                emitCPUOp(concat, 0xE8, reg);
             }
             emitValue(concat, value, OpBits::B8);
         }
@@ -1488,7 +1487,7 @@ void ScbeX64::emitOpBinaryRI(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits
             SWAG_ASSERT(reg == cc->cpuReg0 || reg == cc->cpuReg1 || reg == CpuReg::RSP);
             emitREX(concat, opBits);
             concat.addU8(0x83);
-            concat.addU8(0xE8 | encodeReg(reg));
+            emitCPUOp(concat, 0xE8, reg);
             emitValue(concat, value, OpBits::B8);
         }
         else
@@ -1500,7 +1499,7 @@ void ScbeX64::emitOpBinaryRI(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits
             else
             {
                 concat.addU8(0x81);
-                concat.addU8(0xE8 | encodeReg(reg));
+                emitCPUOp(concat, 0xE8, reg);
             }
             emitValue(concat, value, opBits == OpBits::B16 ? OpBits::B16 : OpBits::B32);
         }
@@ -2122,12 +2121,12 @@ void ScbeX64::emitCopy(CpuReg regDst, CpuReg regSrc, uint32_t count)
 
             if (offset <= 0x7F)
             {
-                concat.addU8(0x40 | encodeReg(regSrc));
+                emitCPUOp(concat, 0x40, regSrc);
                 emitValue(concat, offset, OpBits::B8);
             }
             else
             {
-                concat.addU8(0x80 | encodeReg(regSrc));
+                emitCPUOp(concat, 0x80, regSrc);
                 emitValue(concat, offset, OpBits::B32);
             }
 
@@ -2136,12 +2135,12 @@ void ScbeX64::emitCopy(CpuReg regDst, CpuReg regSrc, uint32_t count)
 
             if (offset <= 0x7F)
             {
-                concat.addU8(0x40 | encodeReg(regDst));
+                emitCPUOp(concat, 0x40, regDst);
                 emitValue(concat, offset, OpBits::B8);
             }
             else
             {
-                concat.addU8(0x80 | encodeReg(regDst));
+                emitCPUOp(concat, 0x80, regDst);
                 emitValue(concat, offset, OpBits::B32);
             }
 

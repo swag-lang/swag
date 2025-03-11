@@ -308,25 +308,25 @@ void Scbe::emitGlobalInit(ScbeCpu& pp)
     emitInternalCallCPUParams(pp, g_LangSpec->name_priv_tlsAlloc, pp.pushParams, cc.nonVolatileRegisters[0], 0);
 
     // Init type table slice for each dependency (by calling ???_getTypeTable)
-    pp.emitSymbolRelocationAddress(CpuReg::RCX, pp.symCSIndex, module->modulesSliceOffset + sizeof(SwagModule) + offsetof(SwagModule, types));
+    const auto resReg = CallConv::getFctPointerRegister(cc, cc);
+    pp.emitSymbolRelocationAddress(resReg, pp.symCSIndex, module->modulesSliceOffset + sizeof(SwagModule) + offsetof(SwagModule, types));
     for (const auto& dep : module->moduleDependencies)
     {
-        if (!dep->module->isSwag)
+        if (dep->module->isSwag)
         {
-            pp.emitOpBinaryRI(CpuReg::RCX, sizeof(SwagModule), CpuOp::ADD, OpBits::B64);
-            continue;
+            pp.pushParams.clear();
+            pp.pushParams.push_back({.type = CpuPushParamType::SwagRegister, .baseReg = resReg, .value = 0});
+            auto callTable = dep->module->getGlobalPrivateFct(g_LangSpec->name_getTypeTable);
+            emitInternalCallCPUParams(pp, callTable, pp.pushParams);
+
+            // Count types is stored as a uint64_t at the start of the address
+            pp.emitLoadRM(CpuReg::R8, pp.cc->returnByRegisterInteger, 0, OpBits::B64);
+            pp.emitStoreMR(resReg, sizeof(uint64_t), CpuReg::R8, OpBits::B64);
+            pp.emitOpBinaryRI(pp.cc->returnByRegisterInteger, sizeof(uint64_t), CpuOp::ADD, OpBits::B64);
+            pp.emitStoreMR(resReg, 0, pp.cc->returnByRegisterInteger, OpBits::B64);
         }
 
-        auto callTable = dep->module->getGlobalPrivateFct(g_LangSpec->name_getTypeTable);
-        pp.emitCallLocal(callTable);
-
-        // Count types is stored as a uint64_t at the start of the address
-        pp.emitLoadRM(CpuReg::R8, pp.cc->returnByRegisterInteger, 0, OpBits::B64);
-        pp.emitStoreMR(CpuReg::RCX, sizeof(uint64_t), CpuReg::R8, OpBits::B64);
-        pp.emitOpBinaryRI(pp.cc->returnByRegisterInteger, sizeof(uint64_t), CpuOp::ADD, OpBits::B64);
-        pp.emitStoreMR(CpuReg::RCX, 0, pp.cc->returnByRegisterInteger, OpBits::B64);
-
-        pp.emitOpBinaryRI(CpuReg::RCX, sizeof(SwagModule), CpuOp::ADD, OpBits::B64);
+        pp.emitOpBinaryRI(resReg, sizeof(SwagModule), CpuOp::ADD, OpBits::B64);
     }
 
     // Call to #init functions
@@ -365,6 +365,7 @@ void Scbe::emitGlobalDrop(ScbeCpu& pp)
     }
 
     // __dropGlobalVariables
+    pp.pushParams.clear();
     emitInternalCallCPUParams(pp, g_LangSpec->name_priv_dropGlobalVariables, pp.pushParams);
 
     pp.emitLeave();
