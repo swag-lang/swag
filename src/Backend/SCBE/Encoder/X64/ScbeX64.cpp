@@ -293,9 +293,15 @@ void ScbeX64::emitRet()
 
 void ScbeX64::emitLoadRR(CpuReg regDst, CpuReg regSrc, OpBits opBits)
 {
-    if (isFloat(opBits))
+    if (isFloat(opBits) && isFloat(regSrc))
     {
-        SWAG_ASSERT(regDst == cc->computeRegF0 || regDst == cc->computeRegF1 || regDst == cc->computeRegF2 || regDst == CpuReg::XMM3);
+        emitSpecF64(concat, 0xF3, opBits);
+        concat.addU8(0x0F);
+        concat.addU8(0x10);
+        emitModRM(concat, regDst, regSrc);
+    }
+    else if (isFloat(opBits))
+    {
         emitREX(concat, OpBits::F64);
         emitREX(concat, opBits == OpBits::F64 ? OpBits::B64 : OpBits::B32);
         concat.addU8(0x0F);

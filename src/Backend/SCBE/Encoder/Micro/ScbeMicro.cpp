@@ -163,7 +163,6 @@ void ScbeMicro::emitLoadRI64(CpuReg reg, uint64_t value)
 
 void ScbeMicro::emitLoadRI(CpuReg reg, uint64_t value, OpBits opBits)
 {
-    SWAG_ASSERT(!isFloat(opBits) || reg == CpuReg::XMM0 || reg == CpuReg::XMM1 || reg == CpuReg::XMM2 || reg == CpuReg::XMM3);
     const auto inst = addInstruction(ScbeMicroOp::LoadRI);
     inst->regA      = reg;
     inst->valueA    = value;
@@ -328,8 +327,6 @@ void ScbeMicro::emitOpUnaryR(CpuReg reg, CpuOp op, OpBits opBits)
 
 void ScbeMicro::emitOpBinaryRR(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
-    SWAG_ASSERT(!isFloat(opBits) || regDst == CpuReg::XMM0 || regDst == CpuReg::XMM1 || regDst == CpuReg::XMM2 || regDst == CpuReg::XMM3);
-
     const auto inst = addInstruction(ScbeMicroOp::OpBinaryRR);
     inst->regA      = regDst;
     inst->regB      = regSrc;
