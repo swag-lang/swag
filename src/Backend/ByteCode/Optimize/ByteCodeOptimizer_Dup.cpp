@@ -66,20 +66,20 @@ namespace
                 }
 
                 const auto it = mapCopyRA.find(ip->a.u32);
-                if (it)
+                if (it != mapCopyRA.end())
                 {
                     const auto it1 = mapCopyRB.find(ip->b.u32);
-                    if (it1 && *it1 == *it)
+                    if (it1 != mapCopyRB.end() && it1->second == it->second)
                         ByteCodeOptimizer::setNop(context, ip);
                 }
 
-                mapCopyRB.remove(ip->a.u32);
-                mapCopyRA.set(ip->a.u32, ip);
-                mapCopyRB.set(ip->b.u32, ip);
+                mapCopyRB.erase(ip->a.u32);
+                mapCopyRA[ip->a.u32] = ip;
+                mapCopyRB[ip->b.u32] = ip;
                 continue;
             }
 
-            if (!mapCopyRA.count() && !mapCopyRB.count())
+            if (mapCopyRA.empty() && mapCopyRB.empty())
                 continue;
 
             // If we use a register that comes from a CopyRBRA, then use the initial register instead.
@@ -95,12 +95,12 @@ namespace
                         if (ip->hasReadRegInA() && !ip->hasWriteRegInA())
                         {
                             const auto it = mapCopyRA.find(ip->a.u32);
-                            if (it)
+                            if (it != mapCopyRA.end())
                             {
-                                const auto it1 = mapCopyRB.find((*it)->b.u32);
-                                if (it1 && *it == *it1)
+                                const auto it1 = mapCopyRB.find(it->second->b.u32);
+                                if (it1 != mapCopyRB.end() && it->second == it1->second)
                                 {
-                                    ip->a.u32 = (*it)->b.u32;
+                                    ip->a.u32 = it->second->b.u32;
                                     context->setDirtyPass();
                                 }
                             }
@@ -113,12 +113,12 @@ namespace
                         if (ip->hasReadRegInB() && !ip->hasWriteRegInB())
                         {
                             const auto it = mapCopyRA.find(ip->b.u32);
-                            if (it)
+                            if (it != mapCopyRA.end())
                             {
-                                const auto it1 = mapCopyRB.find((*it)->b.u32);
-                                if (it1 && *it == *it1)
+                                const auto it1 = mapCopyRB.find(it->second->b.u32);
+                                if (it1 != mapCopyRB.end() && it->second == it1->second)
                                 {
-                                    ip->b.u32 = (*it)->b.u32;
+                                    ip->b.u32 = it->second->b.u32;
                                     context->setDirtyPass();
                                 }
                             }
@@ -145,12 +145,12 @@ namespace
                     if (ip->hasReadRegInA() && !ip->hasWriteRegInA())
                     {
                         const auto it = mapCopyRA.find(ip->a.u32);
-                        if (it)
+                        if (it != mapCopyRA.end())
                         {
-                            const auto it1 = mapCopyRB.find((*it)->b.u32);
-                            if (it1 && *it == *it1)
+                            const auto it1 = mapCopyRB.find(it->second->b.u32);
+                            if (it1 != mapCopyRB.end() && it->second == it1->second)
                             {
-                                ip->a.u32 = (*it)->b.u32;
+                                ip->a.u32 = it->second->b.u32;
                                 context->setDirtyPass();
                             }
                         }
@@ -159,12 +159,12 @@ namespace
                     if (ip->hasReadRegInB() && !ip->hasWriteRegInB())
                     {
                         const auto it = mapCopyRA.find(ip->b.u32);
-                        if (it)
+                        if (it != mapCopyRA.end())
                         {
-                            const auto it1 = mapCopyRB.find((*it)->b.u32);
-                            if (it1 && *it == *it1)
+                            const auto it1 = mapCopyRB.find(it->second->b.u32);
+                            if (it1 != mapCopyRB.end() && it->second == it1->second)
                             {
-                                ip->b.u32 = (*it)->b.u32;
+                                ip->b.u32 = it->second->b.u32;
                                 context->setDirtyPass();
                             }
                         }
@@ -173,12 +173,12 @@ namespace
                     if (ip->hasReadRegInC() && !ip->hasWriteRegInC())
                     {
                         const auto it = mapCopyRA.find(ip->c.u32);
-                        if (it)
+                        if (it != mapCopyRA.end())
                         {
-                            const auto it1 = mapCopyRB.find((*it)->b.u32);
-                            if (it1 && *it == *it1)
+                            const auto it1 = mapCopyRB.find(it->second->b.u32);
+                            if (it1 != mapCopyRB.end() && it->second == it1->second)
                             {
-                                ip->c.u32 = (*it)->b.u32;
+                                ip->c.u32 = it->second->b.u32;
                                 context->setDirtyPass();
                             }
                         }
@@ -187,12 +187,12 @@ namespace
                     if (ip->hasReadRegInD() && !ip->hasWriteRegInD())
                     {
                         const auto it = mapCopyRA.find(ip->d.u32);
-                        if (it)
+                        if (it != mapCopyRA.end())
                         {
-                            const auto it1 = mapCopyRB.find((*it)->b.u32);
-                            if (it1 && *it == *it1)
+                            const auto it1 = mapCopyRB.find(it->second->b.u32);
+                            if (it1 != mapCopyRB.end() && it->second == it1->second)
                             {
-                                ip->d.u32 = (*it)->b.u32;
+                                ip->d.u32 = it->second->b.u32;
                                 context->setDirtyPass();
                             }
                         }
@@ -210,57 +210,57 @@ namespace
             if (flags.has(OPF_WRITE_A) && !ip->hasFlag(BCI_IMM_A))
             {
                 const auto it = mapCopyRA.find(ip->a.u32);
-                if (it)
+                if (it != mapCopyRA.end())
                 {
-                    const auto it1 = mapCopyRB.find((*it)->b.u32);
-                    if (it1 && *it == *it1)
-                        mapCopyRB.remove((*it)->b.u32);
-                    mapCopyRA.remove(ip->a.u32);
+                    const auto it1 = mapCopyRB.find(it->second->b.u32);
+                    if (it1 != mapCopyRB.end() && it->second == it1->second)
+                        mapCopyRB.erase(it->second->b.u32);
+                    mapCopyRA.erase(ip->a.u32);
                 }
 
-                mapCopyRB.remove(ip->a.u32);
+                mapCopyRB.erase(ip->a.u32);
             }
 
             if (flags.has(OPF_WRITE_B) && !ip->hasFlag(BCI_IMM_B))
             {
                 const auto it = mapCopyRA.find(ip->b.u32);
-                if (it)
+                if (it != mapCopyRA.end())
                 {
-                    const auto it1 = mapCopyRB.find((*it)->b.u32);
-                    if (it1 && *it == *it1)
-                        mapCopyRB.remove((*it)->b.u32);
-                    mapCopyRA.remove(ip->b.u32);
+                    const auto it1 = mapCopyRB.find(it->second->b.u32);
+                    if (it1 != mapCopyRB.end() && it->second == it1->second)
+                        mapCopyRB.erase(it->second->b.u32);
+                    mapCopyRA.erase(ip->b.u32);
                 }
 
-                mapCopyRB.remove(ip->b.u32);
+                mapCopyRB.erase(ip->b.u32);
             }
 
             if (flags.has(OPF_WRITE_C) && !ip->hasFlag(BCI_IMM_C))
             {
                 const auto it = mapCopyRA.find(ip->c.u32);
-                if (it)
+                if (it != mapCopyRA.end())
                 {
-                    const auto it1 = mapCopyRB.find((*it)->b.u32);
-                    if (it1 && *it == *it1)
-                        mapCopyRB.remove((*it)->b.u32);
-                    mapCopyRA.remove(ip->c.u32);
+                    const auto it1 = mapCopyRB.find(it->second->b.u32);
+                    if (it1 != mapCopyRB.end() && it->second == it1->second)
+                        mapCopyRB.erase(it->second->b.u32);
+                    mapCopyRA.erase(ip->c.u32);
                 }
 
-                mapCopyRB.remove(ip->c.u32);
+                mapCopyRB.erase(ip->c.u32);
             }
 
             if (flags.has(OPF_WRITE_D) && !ip->hasFlag(BCI_IMM_D))
             {
                 const auto it = mapCopyRA.find(ip->d.u32);
-                if (it)
+                if (it != mapCopyRA.end())
                 {
-                    const auto it1 = mapCopyRB.find((*it)->b.u32);
-                    if (it1 && *it == *it1)
-                        mapCopyRB.remove((*it)->b.u32);
-                    mapCopyRA.remove(ip->d.u32);
+                    const auto it1 = mapCopyRB.find(it->second->b.u32);
+                    if (it1 != mapCopyRB.end() && it->second == it1->second)
+                        mapCopyRB.erase(it->second->b.u32);
+                    mapCopyRA.erase(ip->d.u32);
                 }
 
-                mapCopyRB.remove(ip->d.u32);
+                mapCopyRB.erase(ip->d.u32);
             }
         }
     }
@@ -294,31 +294,31 @@ namespace
             if (ip->op == op)
             {
                 const auto it = mapRA.find(ip->a.u32);
-                if (it)
+                if (it != mapRA.end())
                 {
-                    if ((*it)->b.u64 == ip->b.u64 &&
-                        (*it)->c.u64 == ip->c.u64 &&
-                        (*it)->d.u64 == ip->d.u64 &&
-                        (*it)->flags == ip->flags)
+                    if (it->second->b.u64 == ip->b.u64 &&
+                        it->second->c.u64 == ip->c.u64 &&
+                        it->second->d.u64 == ip->d.u64 &&
+                        it->second->flags == ip->flags)
                     {
                         ByteCodeOptimizer::setNop(context, ip);
-                        mapRA.remove(ip->a.u32);
+                        mapRA.erase(ip->a.u32);
                         continue;
                     }
                 }
 
-                mapRA.set(ip->a.u32, ip);
+                mapRA[ip->a.u32] = ip;
             }
-            else if (mapRA.count())
+            else if (!mapRA.empty())
             {
                 if (ip->hasWriteRegInA())
-                    mapRA.remove(ip->a.u32);
+                    mapRA.erase(ip->a.u32);
                 if (ip->hasWriteRegInB())
-                    mapRA.remove(ip->b.u32);
+                    mapRA.erase(ip->b.u32);
                 if (ip->hasWriteRegInC())
-                    mapRA.remove(ip->c.u32);
+                    mapRA.erase(ip->c.u32);
                 if (ip->hasWriteRegInD())
-                    mapRA.remove(ip->d.u32);
+                    mapRA.erase(ip->d.u32);
             }
         }
     }

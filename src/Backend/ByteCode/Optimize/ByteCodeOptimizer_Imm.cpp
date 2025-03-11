@@ -24,55 +24,55 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
         switch (ip->op)
         {
             case ByteCodeOp::ClearRA:
-                regsRW.set(ip->a.u32, 0);
-                regs.set(ip->a.u32, ip);
+                regsRW[ip->a.u32] = 0;
+                regs[ip->a.u32] = ip;
                 ip->removeFlag(BCI_IMM_C);
                 ip->removeFlag(BCI_IMM_D);
                 break;
 
             case ByteCodeOp::ClearRAx2:
-                regsRW.set(ip->a.u32, 0);
-                regsRW.set(ip->b.u32, 0);
-                regs.set(ip->a.u32, ip);
-                regs.set(ip->b.u32, ip);
+                regsRW[ip->a.u32] = 0;
+                regsRW[ip->b.u32] = 0;
+                regs[ip->a.u32] = ip;
+                regs[ip->b.u32] = ip;
                 ip->removeFlag(BCI_IMM_C);
                 ip->removeFlag(BCI_IMM_D);
                 break;
 
             case ByteCodeOp::ClearRAx3:
-                regsRW.set(ip->a.u32, 0);
-                regsRW.set(ip->b.u32, 0);
-                regsRW.set(ip->c.u32, 0);
-                regs.set(ip->a.u32, ip);
-                regs.set(ip->b.u32, ip);
-                regs.set(ip->c.u32, ip);
+                regsRW[ip->a.u32] = 0;
+                regsRW[ip->b.u32] = 0;
+                regsRW[ip->c.u32] = 0;
+                regs[ip->a.u32] = ip;
+                regs[ip->b.u32] = ip;
+                regs[ip->c.u32] = ip;
                 ip->removeFlag(BCI_IMM_C);
                 ip->removeFlag(BCI_IMM_D);
                 break;
 
             case ByteCodeOp::ClearRAx4:
-                regsRW.set(ip->a.u32, 0);
-                regsRW.set(ip->b.u32, 0);
-                regsRW.set(ip->c.u32, 0);
-                regsRW.set(ip->d.u32, 0);
-                regs.set(ip->a.u32, ip);
-                regs.set(ip->b.u32, ip);
-                regs.set(ip->c.u32, ip);
-                regs.set(ip->d.u32, ip);
+                regsRW[ip->a.u32] = 0;
+                regsRW[ip->b.u32] = 0;
+                regsRW[ip->c.u32] = 0;
+                regsRW[ip->d.u32] = 0;
+                regs[ip->a.u32] = ip;
+                regs[ip->b.u32] = ip;
+                regs[ip->c.u32] = ip;
+                regs[ip->d.u32] = ip;
                 ip->removeFlag(BCI_IMM_C);
                 ip->removeFlag(BCI_IMM_D);
                 break;
 
             case ByteCodeOp::SetImmediate32:
-                regsRW.set(ip->a.u32, ip->b.u32);
-                regs.set(ip->a.u32, ip);
+                regsRW[ip->a.u32] = ip->b.u32;
+                regs[ip->a.u32] = ip;
                 ip->removeFlag(BCI_IMM_C);
                 ip->removeFlag(BCI_IMM_D);
                 break;
 
             case ByteCodeOp::SetImmediate64:
-                regsRW.set(ip->a.u32, ip->b.u64);
-                regs.set(ip->a.u32, ip);
+                regsRW[ip->a.u32] = ip->b.u64;
+                regs[ip->a.u32] = ip;
                 ip->removeFlag(BCI_IMM_C);
                 ip->removeFlag(BCI_IMM_D);
                 break;
@@ -80,7 +80,7 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
             default:
                 if (ip->hasFlag(BCI_START_STMT))
                     regs.clear();
-                if (!regs.count())
+                if (regs.empty())
                     break;
 
                 optPostWrite = true;
@@ -92,8 +92,8 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
                 {
                     context->setDirtyPass();
                     ip->addFlag(BCI_IMM_B);
-                    regs.remove(ip->a.u32);
-                    ip->b.u64 = regsRW.val[ip->a.u32];
+                    regs.erase(ip->a.u32);
+                    ip->b.u64 = regsRW[ip->a.u32];
                     break;
                 }
 
@@ -102,8 +102,8 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
                 {
                     context->setDirtyPass();
                     ip->addFlag(BCI_IMM_B);
-                    regs.remove(ip->a.u32);
-                    ip->b.u64 = regsRW.val[ip->a.u32];
+                    regs.erase(ip->a.u32);
+                    ip->b.u64 = regsRW[ip->a.u32];
                     break;
                 }
 
@@ -114,8 +114,8 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
                 {
                     context->setDirtyPass();
                     ip->addFlag(BCI_IMM_C);
-                    regs.remove(ip->a.u32);
-                    ip->c.u64 = regsRW.val[ip->a.u32];
+                    regs.erase(ip->a.u32);
+                    ip->c.u64 = regsRW[ip->a.u32];
                     break;
                 }
 
@@ -125,17 +125,17 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
                     break;
 
                 if (flags.has(OPF_WRITE_A))
-                    regs.remove(ip->a.u32);
+                    regs.erase(ip->a.u32);
                 if (flags.has(OPF_WRITE_B))
-                    regs.remove(ip->b.u32);
+                    regs.erase(ip->b.u32);
                 if (flags.has(OPF_WRITE_C))
-                    regs.remove(ip->c.u32);
+                    regs.erase(ip->c.u32);
                 if (flags.has(OPF_WRITE_D))
-                    regs.remove(ip->d.u32);
+                    regs.erase(ip->d.u32);
                 break;
         }
 
-        if (!regs.count())
+        if (regs.empty())
             continue;
 
         if (!ip->hasFlag(BCI_IMM_A) && flags.has(OPF_READ_A) && regs.contains(ip->a.u32))
@@ -144,8 +144,8 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
             {
                 context->setDirtyPass();
                 ip->addFlag(BCI_IMM_A);
-                regs.remove(ip->a.u32);
-                ip->a.u64 = regsRW.val[ip->a.u32];
+                regs.erase(ip->a.u32);
+                ip->a.u64 = regsRW[ip->a.u32];
             }
         }
 
@@ -155,14 +155,14 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
             {
                 context->setDirtyPass();
                 ip->addFlag(BCI_IMM_B);
-                regs.remove(ip->b.u32);
-                ip->b.u64 = regsRW.val[ip->b.u32];
+                regs.erase(ip->b.u32);
+                ip->b.u64 = regsRW[ip->b.u32];
             }
             else if (ip->op == ByteCodeOp::CopyRBtoRA64)
             {
                 SET_OP(ip, ByteCodeOp::SetImmediate64);
-                regs.remove(ip->b.u32);
-                ip->b.u64 = regsRW.val[ip->b.u32];
+                regs.erase(ip->b.u32);
+                ip->b.u64 = regsRW[ip->b.u32];
                 flags     = ByteCode::opFlags(ip->op);
             }
         }
@@ -173,8 +173,8 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
             {
                 context->setDirtyPass();
                 ip->addFlag(BCI_IMM_C);
-                regs.remove(ip->c.u32);
-                ip->c.u64 = regsRW.val[ip->c.u32];
+                regs.erase(ip->c.u32);
+                ip->c.u64 = regsRW[ip->c.u32];
             }
         }
 
@@ -184,31 +184,31 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
             {
                 context->setDirtyPass();
                 ip->addFlag(BCI_IMM_D);
-                regs.remove(ip->d.u32);
-                ip->d.u64 = regsRW.val[ip->d.u32];
+                regs.erase(ip->d.u32);
+                ip->d.u64 = regsRW[ip->d.u32];
             }
         }
 
         if (optPostWrite)
         {
             if (flags.has(OPF_WRITE_A))
-                regs.remove(ip->a.u32);
+                regs.erase(ip->a.u32);
             if (flags.has(OPF_WRITE_B))
-                regs.remove(ip->b.u32);
+                regs.erase(ip->b.u32);
             if (flags.has(OPF_WRITE_C))
-                regs.remove(ip->c.u32);
+                regs.erase(ip->c.u32);
             if (flags.has(OPF_WRITE_D))
-                regs.remove(ip->d.u32);
+                regs.erase(ip->d.u32);
         }
 
         if (flags.has(OPF_READ_A) && !ip->hasFlag(BCI_IMM_A))
-            regs.remove(ip->a.u32);
+            regs.erase(ip->a.u32);
         if (flags.has(OPF_READ_B) && !ip->hasFlag(BCI_IMM_B))
-            regs.remove(ip->b.u32);
+            regs.erase(ip->b.u32);
         if (flags.has(OPF_READ_C) && !ip->hasFlag(BCI_IMM_C))
-            regs.remove(ip->c.u32);
+            regs.erase(ip->c.u32);
         if (flags.has(OPF_READ_D) && !ip->hasFlag(BCI_IMM_D))
-            regs.remove(ip->d.u32);
+            regs.erase(ip->d.u32);
     }
 
     return true;

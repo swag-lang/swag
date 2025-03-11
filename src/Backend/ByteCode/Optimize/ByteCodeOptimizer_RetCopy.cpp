@@ -205,10 +205,10 @@ void ByteCodeOptimizer::registerMakeAddr(ByteCodeOptContext* context, const Byte
         case ByteCodeOp::MakeBssSegPointer:
         case ByteCodeOp::MakeMutableSegPointer:
         case ByteCodeOp::MakeCompilerSegPointer:
-            context->mapRegReg.set(ip->a.u32, ip->b.u32);
+            context->mapRegReg[ip->a.u32] = ip->b.u32;
             break;
         case ByteCodeOp::InternalGetTlsPtr:
-            context->mapRegReg.set(ip->a.u32, UINT32_MAX); // Disable optim whatever
+            context->mapRegReg[ip->a.u32] = UINT32_MAX; // Disable optim whatever
             break;
 
         case ByteCodeOp::GetParam64:
@@ -225,19 +225,19 @@ void ByteCodeOptimizer::registerMakeAddr(ByteCodeOptContext* context, const Byte
                     break;
             }
 
-            context->mapRegReg.set(ip->a.u32, UINT32_MAX); // Disable optim whatever
+            context->mapRegReg[ip->a.u32] = UINT32_MAX; // Disable optim whatever
             break;
 
         default:
         {
             if (ip->hasWriteRegInA())
-                context->mapRegReg.remove(ip->a.u32);
+                context->mapRegReg.erase(ip->a.u32);
             if (ip->hasWriteRegInB())
-                context->mapRegReg.remove(ip->b.u32);
+                context->mapRegReg.erase(ip->b.u32);
             if (ip->hasWriteRegInC())
-                context->mapRegReg.remove(ip->c.u32);
+                context->mapRegReg.erase(ip->c.u32);
             if (ip->hasWriteRegInD())
-                context->mapRegReg.remove(ip->d.u32);
+                context->mapRegReg.erase(ip->d.u32);
             break;
         }
     }
@@ -296,14 +296,14 @@ bool ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
                 // to the call. For example a = toto(a, b).
                 bool       ok = true;
                 const auto it = context->mapRegReg.find(ip->a.u32);
-                if (it)
+                if (it != context->mapRegReg.end())
                 {
                     for (const auto it1 : context->vecReg)
                     {
                         const auto it2 = context->mapRegReg.find(it1);
-                        if (!it2)
+                        if (it2 == context->mapRegReg.end())
                             continue;
-                        if (*it2 == UINT32_MAX || *it == UINT32_MAX || *it2 == *it)
+                        if (it2->second == UINT32_MAX || it->second == UINT32_MAX || it2->second == it->second)
                         {
                             ok = false;
                             ip = ipOrg;

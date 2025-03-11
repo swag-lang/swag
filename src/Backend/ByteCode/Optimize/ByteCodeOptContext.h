@@ -1,6 +1,5 @@
 #pragma once
 #include "Backend/ByteCode/ByteCode.h"
-#include "MapRegTo.h"
 #include "Threading/Job.h"
 
 struct ByteCode;
@@ -58,10 +57,10 @@ struct ByteCodeOptContext : JobContext
     VectorNative<ByteCodeInstruction*>                       vecInst;
     VectorNative<ByteCodeInstruction>                        vecInstCopy;
     VectorNative<uint32_t>                                   vecReg;
-    MapRegTo<uint32_t>                                       mapRegReg;
-    MapRegTo<uint64_t>                                       mapRegU64;
-    MapRegTo<ByteCodeInstruction*>                           mapRegInstA;
-    MapRegTo<ByteCodeInstruction*>                           mapRegInstB;
+    Map<uint32_t, uint32_t>                                  mapRegReg;
+    Map<uint32_t, uint64_t>                                  mapRegU64;
+    Map<uint32_t, ByteCodeInstruction*>                      mapRegInstA;
+    Map<uint32_t, ByteCodeInstruction*>                      mapRegInstB;
     Map<uint64_t, std::pair<uint64_t, ByteCodeInstruction*>> mapCst;
     Map<uint64_t, uint32_t>                                  map6432;
     Map<uint32_t, ByteCodeOptTreeNode*>                      map32Node;
