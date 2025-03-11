@@ -189,20 +189,7 @@ void Scbe::emitLambdaCall(ScbeCpu& pp)
     const auto ip         = pp.ip;
     const auto typeFuncBc = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
 
-    // We need a working volatile register which is not used as a call parameter
-    const auto ccFunc = typeFuncBc->getCallConv();
-    auto       regRes = CpuReg::Max;
-    for (const auto& r : pp.cc->volatileRegisters)
-    {
-        if (r == pp.cc->cpuReg0 || r == pp.cc->cpuReg1)
-            continue;
-        if (ccFunc.paramByRegisterInteger.contains(r))
-            continue;
-        regRes = r;
-        break;
-    }
-
-    SWAG_ASSERT(regRes != CpuReg::Max);
+    const auto regRes = CallConv::getFctPointerRegister(*pp.cc, typeFuncBc->getCallConv());
 
     // Test if it's a bytecode lambda
     pp.emitLoadRM(regRes, CpuReg::RSP, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);

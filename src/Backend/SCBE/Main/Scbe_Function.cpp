@@ -121,12 +121,6 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         }
     }
 
-    // Use R12 as base pointer for capture parameters
-    // This is used to debug and have access to capture parameters, even if we "lose" rcx
-    // which is the register that will have a pointer to the capture buffer (but rcx is volatile)
-    if (typeFunc->isClosure() && debug)
-        pp.emitLoadRR(CpuReg::R12, cc.cpuReg1, OpBits::B64);
-
     auto ip     = bc->out;
     auto opBits = OpBits::Zero;
     for (uint32_t i = 0; i < bc->numInstructions; i++, ip++)

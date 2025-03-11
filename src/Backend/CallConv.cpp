@@ -56,3 +56,21 @@ const CallConv* CallConv::get(CallConvKind kind)
 {
     return &g_CallConv[static_cast<int>(kind)];
 }
+
+CpuReg CallConv::getFctPointerRegister(const CallConv& ccCaller, const CallConv& ccCallee)
+{
+    // We need a working volatile register which is not used as a call parameter
+    auto regRes = CpuReg::Max;
+    for (const auto& r : ccCaller.volatileRegisters)
+    {
+        if (r == ccCaller.cpuReg0 || r == ccCaller.cpuReg1)
+            continue;
+        if (ccCallee.paramByRegisterInteger.contains(r))
+            continue;
+        regRes = r;
+        break;
+    }
+
+    SWAG_ASSERT(regRes != CpuReg::Max);
+    return regRes;
+}

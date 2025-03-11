@@ -285,6 +285,7 @@ void Scbe::emitGlobalInit(ScbeCpu& pp)
     const auto& cc       = g_TypeMgr->typeInfoModuleCall->getCallConv();
     pp.cpuFct            = pp.addFunction(thisInit, &cc, nullptr);
 
+    pp.cpuFct->unwindRegs.push_back(cc.nonVolatileRegisters[0]);
     pp.emitEnter(0);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
@@ -303,8 +304,8 @@ void Scbe::emitGlobalInit(ScbeCpu& pp)
 
     // Thread local storage
     pp.pushParams.clear();
-    pp.emitSymbolRelocationAddress(CpuReg::R12, pp.symTls_threadLocalId, 0);
-    emitInternalCallCPUParams(pp, g_LangSpec->name_priv_tlsAlloc, pp.pushParams, CpuReg::R12, 0);
+    pp.emitSymbolRelocationAddress(cc.nonVolatileRegisters[0], pp.symTls_threadLocalId, 0);
+    emitInternalCallCPUParams(pp, g_LangSpec->name_priv_tlsAlloc, pp.pushParams, cc.nonVolatileRegisters[0], 0);
 
     // Init type table slice for each dependency (by calling ???_getTypeTable)
     pp.emitSymbolRelocationAddress(CpuReg::RCX, pp.symCSIndex, module->modulesSliceOffset + sizeof(SwagModule) + offsetof(SwagModule, types));

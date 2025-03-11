@@ -156,18 +156,18 @@ namespace
 
     void emitModRM(Concat& concat, uint64_t memOffset, CpuReg reg, CpuReg memReg, uint8_t op = 1)
     {
-        if (memOffset == 0 && (memReg < CpuReg::R8 || memReg == CpuReg::R12))
+        if (memOffset == 0 && (memReg < CpuReg::R8))
         {
             // mov al, byte ptr [rdi]
             concat.addU8(getModRM(ModRMMode::Memory, reg, encodeReg(memReg)) | op - 1);
-            if (memReg == CpuReg::RSP || memReg == CpuReg::R12)
+            if (memReg == CpuReg::RSP)
                 concat.addU8(0x24);
         }
         else if (memOffset <= 0x7F)
         {
             // mov al, byte ptr [rdi + ??]
             concat.addU8(getModRM(ModRMMode::Displacement8, reg, encodeReg(memReg)) | op - 1);
-            if (memReg == CpuReg::RSP || memReg == CpuReg::R12)
+            if (memReg == CpuReg::RSP)
                 concat.addU8(0x24);
             emitValue(concat, memOffset, OpBits::B8);
         }
@@ -175,7 +175,7 @@ namespace
         {
             // mov al, byte ptr [rdi + ????????]
             concat.addU8(getModRM(ModRMMode::Displacement32, reg, encodeReg(memReg)) | op - 1);
-            if (memReg == CpuReg::RSP || memReg == CpuReg::R12)
+            if (memReg == CpuReg::RSP)
                 concat.addU8(0x24);
             SWAG_ASSERT(memOffset <= 0x7FFFFFFF);
             emitValue(concat, memOffset, OpBits::B32);
