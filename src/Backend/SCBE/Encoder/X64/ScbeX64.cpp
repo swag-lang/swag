@@ -689,36 +689,28 @@ void ScbeX64::emitSetCC(CpuReg reg, CpuCondFlag setType)
     switch (setType)
     {
         case CpuCondFlag::A:
-            SWAG_ASSERT(reg == cc->computeRegI0 || reg == CpuReg::R8);
-            if (reg >= CpuReg::R8 && reg <= CpuReg::R15)
-                concat.addU8(0x41);
+            emitREX(concat, OpBits::B8, REX_REG_NONE, reg);
             concat.addU8(0x0F);
             concat.addU8(0x97);
             emitCPUOp(concat, 0xC0, reg);
             break;
 
         case CpuCondFlag::O:
-            SWAG_ASSERT(reg == cc->computeRegI0 || reg == CpuReg::R8);
-            if (reg >= CpuReg::R8 && reg <= CpuReg::R15)
-                concat.addU8(0x41);
+            emitREX(concat, OpBits::B8, REX_REG_NONE, reg);
             concat.addU8(0x0F);
             concat.addU8(0x90);
             emitCPUOp(concat, 0xC0, reg);
             break;
 
         case CpuCondFlag::AE:
-            SWAG_ASSERT(reg == cc->computeRegI0 || reg == CpuReg::R8);
-            if (reg >= CpuReg::R8 && reg <= CpuReg::R15)
-                concat.addU8(0x41);
+            emitREX(concat, OpBits::B8, REX_REG_NONE, reg);
             concat.addU8(0x0F);
             concat.addU8(0x93);
             emitCPUOp(concat, 0xC0, reg);
             break;
 
         case CpuCondFlag::G:
-            SWAG_ASSERT(reg == cc->computeRegI0 || reg == CpuReg::R8);
-            if (reg >= CpuReg::R8 && reg <= CpuReg::R15)
-                concat.addU8(0x41);
+            emitREX(concat, OpBits::B8, REX_REG_NONE, reg);
             concat.addU8(0x0F);
             concat.addU8(0x9F);
             emitCPUOp(concat, 0xC0, reg);
@@ -759,6 +751,27 @@ void ScbeX64::emitSetCC(CpuReg reg, CpuCondFlag setType)
             concat.addU8(0xC0);
             break;
 
+        case CpuCondFlag::GE:
+            SWAG_ASSERT(reg == cc->computeRegI0);
+            concat.addU8(0x0F);
+            concat.addU8(0x9D);
+            concat.addU8(0xC0);
+            break;
+
+        case CpuCondFlag::L:
+            SWAG_ASSERT(reg == cc->computeRegI0);
+            concat.addU8(0x0F);
+            concat.addU8(0x9C);
+            concat.addU8(0xC0);
+            break;
+
+        case CpuCondFlag::LE:
+            SWAG_ASSERT(reg == cc->computeRegI0);
+            concat.addU8(0x0F);
+            concat.addU8(0x9E);
+            concat.addU8(0xC0);
+            break;
+
         case CpuCondFlag::EP:
             SWAG_ASSERT(reg == cc->computeRegI0);
 
@@ -793,27 +806,6 @@ void ScbeX64::emitSetCC(CpuReg reg, CpuCondFlag setType)
             // or al, ah
             concat.addU8(0x08);
             concat.addU8(0xE0);
-            break;
-
-        case CpuCondFlag::GE:
-            SWAG_ASSERT(reg == cc->computeRegI0);
-            concat.addU8(0x0F);
-            concat.addU8(0x9D);
-            concat.addU8(0xC0);
-            break;
-
-        case CpuCondFlag::L:
-            SWAG_ASSERT(reg == cc->computeRegI0);
-            concat.addU8(0x0F);
-            concat.addU8(0x9C);
-            concat.addU8(0xC0);
-            break;
-
-        case CpuCondFlag::LE:
-            SWAG_ASSERT(reg == cc->computeRegI0);
-            concat.addU8(0x0F);
-            concat.addU8(0x9E);
-            concat.addU8(0xC0);
             break;
 
         default:
