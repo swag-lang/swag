@@ -913,17 +913,20 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::CompareOp3WayF32:
             case ByteCodeOp::CompareOp3WayF64:
-                opBits = ScbeCpu::getOpBits(ip->op);
-                pp.emitClearR(CpuReg::R8, OpBits::B32);
+            {
+                const auto regTmp = CallConv::getVolatileRegister(cc, cc, VF_EXCLUDE_COMPUTE);
+                opBits            = ScbeCpu::getOpBits(ip->op);
+                pp.emitClearR(regTmp, OpBits::B32);
                 emitIMMA(pp, cc.computeRegF0, opBits);
                 emitIMMB(pp, cc.computeRegF1, opBits);
                 pp.emitOpBinaryRR(cc.computeRegF0, cc.computeRegF1, CpuOp::UCOMIF, opBits);
-                pp.emitSetCC(CpuReg::R8, CpuCondFlag::A);
+                pp.emitSetCC(regTmp, CpuCondFlag::A);
                 pp.emitOpBinaryRR(cc.computeRegF1, cc.computeRegF0, CpuOp::UCOMIF, opBits);
                 pp.emitLoadRI(cc.computeRegI0, 0xFFFFFFFF, OpBits::B32);
-                pp.emitOpBinaryRR(cc.computeRegI0, CpuReg::R8, CpuOp::CMOVBE, OpBits::B32);
+                pp.emitOpBinaryRR(cc.computeRegI0, regTmp, CpuOp::CMOVBE, OpBits::B32);
                 pp.emitStoreMR(CpuReg::RSP, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B32);
                 break;
+            }
 
                 /////////////////////////////////////
 

@@ -14,3 +14,14 @@
 // kicked : 71171
 // kicked : 71192
 // kicked : 75320
+
+#[Swag.NoInline]
+func toto(x, y: s32)->s32
+{
+    return x <=> y
+}
+
+#test
+{
+    discard toto(1, 2)
+}
