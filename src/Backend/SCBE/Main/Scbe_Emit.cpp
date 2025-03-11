@@ -208,8 +208,8 @@ void Scbe::emitBinOp(ScbeCpu& pp, CpuOp op, CpuEmitFlags emitFlags)
     }
     else
     {
-        const auto r0 = ScbeCpu::isInt(opBits) ? cc->computeRegI0 : CpuReg::XMM0;
-        const auto r1 = ScbeCpu::isInt(opBits) ? cc->computeRegI1 : CpuReg::XMM1;
+        const auto r0 = ScbeCpu::isInt(opBits) ? cc->computeRegI0 : cc->computeRegF0;
+        const auto r1 = ScbeCpu::isInt(opBits) ? cc->computeRegI1 : cc->computeRegF1;
         if (ip->hasFlag(BCI_IMM_A))
             pp.emitLoadRI(r0, ip->a.u64, opBits);
         else
@@ -243,7 +243,7 @@ void Scbe::emitBinOpEq(ScbeCpu& pp, uint32_t offset, CpuOp op, CpuEmitFlags emit
     else
     {
         const auto r0 = ScbeCpu::isInt(opBits) ? cc->computeRegI0 : cc->computeRegI1;
-        const auto r1 = ScbeCpu::isInt(opBits) ? cc->computeRegI1 : CpuReg::XMM1;
+        const auto r1 = ScbeCpu::isInt(opBits) ? cc->computeRegI1 : cc->computeRegF1;
         pp.emitLoadRM(r0, CpuReg::RSP, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
         emitIMMB(pp, r1, opBits);
         pp.emitOpBinaryMR(r0, offset, r1, op, opBits, emitFlags);
@@ -281,7 +281,7 @@ void Scbe::emitBinOpEqS(ScbeCpu& pp, CpuOp op)
     }
     else
     {
-        const auto r1 = ScbeCpu::isInt(opBits) ? cc->computeRegI1 : CpuReg::XMM1;
+        const auto r1 = ScbeCpu::isInt(opBits) ? cc->computeRegI1 : cc->computeRegF1;
         emitIMMB(pp, r1, opBits);
         pp.emitOpBinaryMR(CpuReg::RSP, pp.cpuFct->getStackOffsetBCStack() + ip->a.u32, r1, op, opBits);
     }
@@ -294,7 +294,7 @@ void Scbe::emitCompareOp(ScbeCpu& pp, CpuReg reg, CpuCondFlag cond)
     const auto opBits = ScbeCpu::getOpBits(ip->op);
     if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_B))
     {
-        const auto r0 = ScbeCpu::isInt(opBits) ? cc->computeRegI0 : CpuReg::XMM0;
+        const auto r0 = ScbeCpu::isInt(opBits) ? cc->computeRegI0 : cc->computeRegF0;
         pp.emitLoadRM(r0, CpuReg::RSP, pp.cpuFct->getStackOffsetReg(ip->a.u32), opBits);
         pp.emitCmpMR(CpuReg::RSP, pp.cpuFct->getStackOffsetReg(ip->b.u32), r0, opBits);
     }
@@ -304,8 +304,8 @@ void Scbe::emitCompareOp(ScbeCpu& pp, CpuReg reg, CpuCondFlag cond)
     }
     else
     {
-        const auto r0 = ScbeCpu::isInt(opBits) ? cc->computeRegI0 : CpuReg::XMM0;
-        const auto r1 = ScbeCpu::isInt(opBits) ? cc->computeRegI1 : CpuReg::XMM1;
+        const auto r0 = ScbeCpu::isInt(opBits) ? cc->computeRegI0 : cc->computeRegF0;
+        const auto r1 = ScbeCpu::isInt(opBits) ? cc->computeRegI1 : cc->computeRegF1;
         emitIMMA(pp, r0, opBits);
         emitIMMB(pp, r1, opBits);
         pp.emitCmpRR(r0, r1, opBits);
@@ -381,7 +381,7 @@ void Scbe::emitJumpCmp(ScbeCpu& pp, CpuCondJump op, OpBits opBits)
     const auto ip = pp.ip;
     if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_C))
     {
-        const auto r0 = ScbeCpu::isInt(opBits) ? cc->computeRegI0 : CpuReg::XMM0;
+        const auto r0 = ScbeCpu::isInt(opBits) ? cc->computeRegI0 : cc->computeRegF0;
         pp.emitLoadRM(r0, CpuReg::RSP, pp.cpuFct->getStackOffsetReg(ip->a.u32), opBits);
         pp.emitCmpMR(CpuReg::RSP, pp.cpuFct->getStackOffsetReg(ip->c.u32), r0, opBits);
     }
@@ -391,8 +391,8 @@ void Scbe::emitJumpCmp(ScbeCpu& pp, CpuCondJump op, OpBits opBits)
     }
     else
     {
-        const auto r0 = ScbeCpu::isInt(opBits) ? cc->computeRegI0 : CpuReg::XMM0;
-        const auto r1 = ScbeCpu::isInt(opBits) ? cc->computeRegI1 : CpuReg::XMM1;
+        const auto r0 = ScbeCpu::isInt(opBits) ? cc->computeRegI0 : cc->computeRegF0;
+        const auto r1 = ScbeCpu::isInt(opBits) ? cc->computeRegI1 : cc->computeRegF1;
         emitIMMA(pp, r0, opBits);
         emitIMMC(pp, r1, opBits);
         pp.emitCmpRR(r0, r1, opBits);
@@ -422,19 +422,20 @@ void Scbe::emitJumpCmpAddr(ScbeCpu& pp, CpuCondJump op, CpuReg memReg, uint64_t 
 
 void Scbe::emitJumpCmp2(ScbeCpu& pp, CpuCondJump op1, CpuCondJump op2, OpBits opBits)
 {
+    const auto cc = pp.cc;
     const auto ip = pp.ip;
     SWAG_ASSERT(ScbeCpu::isFloat(opBits));
 
     if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_C))
     {
-        pp.emitLoadRM(CpuReg::XMM0, CpuReg::RSP, pp.cpuFct->getStackOffsetReg(ip->a.u32), opBits);
-        pp.emitCmpMR(CpuReg::RSP, pp.cpuFct->getStackOffsetReg(ip->c.u32), CpuReg::XMM0, opBits);
+        pp.emitLoadRM(cc->computeRegF0, CpuReg::RSP, pp.cpuFct->getStackOffsetReg(ip->a.u32), opBits);
+        pp.emitCmpMR(CpuReg::RSP, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegF0, opBits);
     }
     else
     {
-        emitIMMA(pp, CpuReg::XMM0, opBits);
-        emitIMMC(pp, CpuReg::XMM1, opBits);
-        pp.emitCmpRR(CpuReg::XMM0, CpuReg::XMM1, opBits);
+        emitIMMA(pp, cc->computeRegF0, opBits);
+        emitIMMC(pp, cc->computeRegF1, opBits);
+        pp.emitCmpRR(cc->computeRegF0, cc->computeRegF1, opBits);
     }
 
     pp.emitJumpCI(op1, pp.ipIndex + ip->b.s32 + 1);
@@ -443,19 +444,20 @@ void Scbe::emitJumpCmp2(ScbeCpu& pp, CpuCondJump op1, CpuCondJump op2, OpBits op
 
 void Scbe::emitJumpCmp3(ScbeCpu& pp, CpuCondJump op1, CpuCondJump op2, OpBits opBits)
 {
+    const auto cc = pp.cc;
     const auto ip = pp.ip;
     SWAG_ASSERT(ScbeCpu::isFloat(opBits));
 
     if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_C))
     {
-        pp.emitLoadRM(CpuReg::XMM0, CpuReg::RSP, pp.cpuFct->getStackOffsetReg(ip->a.u32), opBits);
-        pp.emitCmpMR(CpuReg::RSP, pp.cpuFct->getStackOffsetReg(ip->c.u32), CpuReg::XMM0, opBits);
+        pp.emitLoadRM(cc->computeRegF0, CpuReg::RSP, pp.cpuFct->getStackOffsetReg(ip->a.u32), opBits);
+        pp.emitCmpMR(CpuReg::RSP, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegF0, opBits);
     }
     else
     {
-        emitIMMA(pp, CpuReg::XMM0, opBits);
-        emitIMMC(pp, CpuReg::XMM1, opBits);
-        pp.emitCmpRR(CpuReg::XMM0, CpuReg::XMM1, opBits);
+        emitIMMA(pp, cc->computeRegF0, opBits);
+        emitIMMC(pp, cc->computeRegF1, opBits);
+        pp.emitCmpRR(cc->computeRegF0, cc->computeRegF1, opBits);
     }
 
     pp.emitJumpCI(op1, pp.ipIndex + 1);
