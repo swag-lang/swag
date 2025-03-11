@@ -548,6 +548,10 @@ void ScbeX64::emitLoadZeroExtendRR(CpuReg regDst, CpuReg regSrc, OpBits numBitsD
         concat.addU8(0xB7);
         concat.addU8(getModRM(ModRMMode::Register, regDst, encodeReg(regSrc)));
     }
+    else if (numBitsSrc == OpBits::B32 && numBitsDst == OpBits::B64)
+    {
+        emitLoadRR(regDst, regSrc, numBitsSrc);
+    }
     else if (numBitsSrc == OpBits::B64 && numBitsDst == OpBits::F64)
     {
         SWAG_ASSERT(regSrc == cc->computeRegI0 && regDst == cc->computeRegF0);
