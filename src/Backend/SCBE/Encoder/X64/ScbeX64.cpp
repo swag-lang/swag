@@ -2308,6 +2308,10 @@ ScbeMicroOpDetails ScbeX64::getInstructionDetails(ScbeMicroInstruction* inst) co
         case ScbeMicroOp::ClearM:
             return MOD_ZERO;
 
+        case ScbeMicroOp::ClearR:
+            result.add(1ULL << static_cast<uint32_t>(inst->regA));
+            return result;
+
         case ScbeMicroOp::StoreMI:
             if (inst->opBitsA == OpBits::B64 && inst->valueB > 0x7FFFFFFF && inst->valueB >> 32 != 0xFFFFFFFF)
                 result.add(1ULL << static_cast<uint32_t>(cc->computeRegI1));
