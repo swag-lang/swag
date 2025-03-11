@@ -84,15 +84,13 @@ void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
                     if (inst[0].regB == next->regA)
                     {
                         ignore(next);
-                        break;
                     }
-
-                    if (inst[0].opBitsA == OpBits::B64)
+                    else
                     {
                         setOp(next, ScbeMicroOp::LoadRR);
                         next->regB = inst[0].regB;
-                        break;
                     }
+                    break;
                 }
 
                 if (inst[0].regA == CpuReg::RSP &&
@@ -287,18 +285,11 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
             {
                 ignore(inst);
             }
-            else if (inst->opBitsA == OpBits::B64 || ScbeCpu::isFloat(inst->opBitsA))
+            else
             {
                 setOp(inst, ScbeMicroOp::LoadRR);
                 inst->regB = mapValReg[inst->valueA].first;
             }
-            /*else
-            {
-                setOp(inst, ScbeMicroOp::LoadZeroExtendRR);
-                inst->regB = mapValReg[inst->valueA].first;
-                inst->opBitsB = inst->opBitsA;
-                inst->opBitsA = OpBits::B64;
-            } */           
         }
         else if (inst->op == ScbeMicroOp::LoadRM &&
                  inst->regB == CpuReg::RSP &&
