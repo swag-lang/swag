@@ -2314,14 +2314,14 @@ ScbeMicroOpDetails ScbeX64::getInstructionDetails(ScbeMicroInstruction* inst) co
         case ScbeMicroOp::Ret:
             return MOD_ZERO;
 
-        case ScbeMicroOp::StoreMR:
         case ScbeMicroOp::ClearM:
             return MOD_ZERO;
-
         case ScbeMicroOp::ClearR:
             result.add(1ULL << static_cast<uint32_t>(inst->regA));
             return result;
 
+        case ScbeMicroOp::StoreMR:
+            return MOD_ZERO;
         case ScbeMicroOp::StoreMI:
             if (inst->opBitsA == OpBits::B64 && inst->valueB > 0x7FFFFFFF && inst->valueB >> 32 != 0xFFFFFFFF)
                 result.add(1ULL << static_cast<uint32_t>(cc->computeRegI1));
@@ -2343,8 +2343,10 @@ ScbeMicroOpDetails ScbeX64::getInstructionDetails(ScbeMicroInstruction* inst) co
                 result.add(1ULL << static_cast<uint32_t>(cc->computeRegI1));
             return result;
 
+        case ScbeMicroOp::CmpMR:
+        case ScbeMicroOp::CmpRR:
+            return MOD_ZERO;
         case ScbeMicroOp::CmpMI:
-            result.add(1ULL << static_cast<uint32_t>(inst->regA));
             if (inst->valueA > 0x7FFFFFFF)
                 result.add(1ULL << static_cast<uint32_t>(cc->computeRegI0));
             return result;
