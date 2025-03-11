@@ -339,24 +339,12 @@ void ScbeX64::emitLoadRI(CpuReg reg, uint64_t value, OpBits opBits)
     }
     else if (opBits == OpBits::F32)
     {
-        emitCPUOp(concat, 0xB8, cc->computeRegI0);
-        emitValue(concat, value, OpBits::B32);
+        emitLoadRI(cc->computeRegI0, value, OpBits::B32);
         emitLoadRR(reg, cc->computeRegI0, OpBits::F32);
     }
     else if (opBits == OpBits::F64)
     {
-        emitREX(concat, OpBits::B64);
-        if (value <= 0x7FFFFFFF)
-        {
-            concat.addU8(0xC7);
-            emitCPUOp(concat, 0xC0, cc->computeRegI0);
-            emitValue(concat, value, OpBits::B32);
-        }
-        else
-        {
-            concat.addU8(0xB8 | static_cast<int>(cc->computeRegI0));
-            concat.addU64(value);
-        }
+        emitLoadRI(cc->computeRegI0, value, OpBits::B64);
         emitLoadRR(reg, cc->computeRegI0, OpBits::F64);
     }
     else if (opBits == OpBits::B64)
@@ -368,16 +356,16 @@ void ScbeX64::emitLoadRI(CpuReg reg, uint64_t value, OpBits opBits)
         }
         else if (value <= 0x7FFFFFFF)
         {
-            emitREX(concat, OpBits::B64, cc->computeRegI0, reg);
-            concat.addU8(0xC7);
+            emitREX(concat, OpBits::B64, REX_REG_NONE, reg);
+            emitCPUOp(concat, 0xC7);
             emitCPUOp(concat, 0xC0, reg);
             emitValue(concat, value, OpBits::B32);
         }
         else
         {
-            emitREX(concat, OpBits::B64, cc->computeRegI0, reg);
+            emitREX(concat, OpBits::B64, REX_REG_NONE, reg);
             emitCPUOp(concat, 0xB8, reg);
-            concat.addU64(value);
+            emitValue(concat, value, OpBits::B64);
         }
     }
     else if (opBits == OpBits::B8)
@@ -2329,7 +2317,8 @@ ScbeMicroOpDetails ScbeX64::getInstructionDetails(ScbeMicroInstruction* inst) co
 
         case ScbeMicroOp::LoadRI:
             result.add(1ULL << static_cast<uint32_t>(inst->regA));
-            result.add(1ULL << static_cast<uint32_t>(cc->computeRegI0));
+            if (isFloat(inst->opBitsA))
+                result.add(1ULL << static_cast<uint32_t>(cc->computeRegI0));
             return result;
         case ScbeMicroOp::LoadRR:
             result.add(1ULL << static_cast<uint32_t>(inst->regA));
