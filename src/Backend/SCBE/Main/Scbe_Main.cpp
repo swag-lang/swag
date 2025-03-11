@@ -308,7 +308,7 @@ void Scbe::emitGlobalInit(ScbeCpu& pp)
     emitInternalCallCPUParams(pp, g_LangSpec->name_priv_tlsAlloc, pp.pushParams, cc.nonVolatileRegisters[0], 0);
 
     // Init type table slice for each dependency (by calling ???_getTypeTable)
-    const auto resReg = CallConv::getVolatileRegister(cc, cc);
+    const auto resReg = CallConv::getVolatileRegister(cc, cc, VF_EXCLUDE_COMPUTE | VF_EXCLUDE_PARAM1 | VF_EXCLUDE_RETURN);
     pp.emitSymbolRelocationAddress(resReg, pp.symCSIndex, module->modulesSliceOffset + sizeof(SwagModule) + offsetof(SwagModule, types));
     for (const auto& dep : module->moduleDependencies)
     {
@@ -320,8 +320,10 @@ void Scbe::emitGlobalInit(ScbeCpu& pp)
             emitInternalCallCPUParams(pp, callTable, pp.pushParams);
 
             // Count types is stored as a uint64_t at the start of the address
-            pp.emitLoadRM(CpuReg::R8, cc.returnByRegisterInteger, 0, OpBits::B64);
-            pp.emitStoreMR(resReg, sizeof(uint64_t), CpuReg::R8, OpBits::B64);
+            const auto resTmp = CallConv::getVolatileRegister(cc, cc, VF_EXCLUDE_RETURN);
+            SWAG_ASSERT(resTmp != resReg);
+            pp.emitLoadRM(resTmp, cc.returnByRegisterInteger, 0, OpBits::B64);
+            pp.emitStoreMR(resReg, sizeof(uint64_t), resTmp, OpBits::B64);
             pp.emitOpBinaryRI(pp.cc->returnByRegisterInteger, sizeof(uint64_t), CpuOp::ADD, OpBits::B64);
             pp.emitStoreMR(resReg, 0, cc.returnByRegisterInteger, OpBits::B64);
         }
