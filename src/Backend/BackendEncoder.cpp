@@ -37,8 +37,12 @@ OpBits BackendEncoder::getOpBitsByBytes(uint32_t numBytes, bool forFloat)
             return OpBits::B8;
         case 2:
             return OpBits::B16;
+        case 3:
         case 4:
             return forFloat ? OpBits::F32 : OpBits::B32;
+        case 5:
+        case 6:
+        case 7:
         case 8:
             return forFloat ? OpBits::F64 : OpBits::B64;
         default:

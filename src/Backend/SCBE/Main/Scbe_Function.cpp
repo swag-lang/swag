@@ -2004,14 +2004,15 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::CopyRAtoRRRet:
+                opBits = ScbeCpu::getOpBitsByBytes(returnType->sizeOf, false);
                 if (ip->hasFlag(BCI_IMM_A))
                 {
-                    pp.emitStoreMI(CpuReg::RSP, pp.cpuFct->getStackOffsetResult(), ip->a.u64, OpBits::B64);
+                    pp.emitStoreMI(CpuReg::RSP, pp.cpuFct->getStackOffsetResult(), ip->a.u64, opBits);
                 }
                 else
                 {
-                    pp.emitLoadRM(cc.computeRegI0, CpuReg::RSP, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-                    pp.emitStoreMR(CpuReg::RSP, pp.cpuFct->getStackOffsetResult(), cc.computeRegI0, OpBits::B64);
+                    pp.emitLoadRM(cc.computeRegI0, CpuReg::RSP, pp.cpuFct->getStackOffsetReg(ip->a.u32), opBits);
+                    pp.emitStoreMR(CpuReg::RSP, pp.cpuFct->getStackOffsetResult(), cc.computeRegI0, opBits);
                 }
                 [[fallthrough]];
 
@@ -2020,11 +2021,13 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 // Emit result
                 if (!returnType->isVoid() && !typeFunc->returnByAddress())
                 {
-                    pp.emitLoadRM(cc.returnByRegisterInteger, CpuReg::RSP, pp.cpuFct->getStackOffsetResult(), OpBits::B64);
+                    opBits = ScbeCpu::getOpBitsByBytes(returnType->sizeOf, false);
                     if (returnType->isNative(NativeTypeKind::F32))
-                        pp.emitLoadRR(cc.returnByRegisterFloat, cc.computeRegI0, OpBits::F32);
+                        pp.emitLoadRM(cc.returnByRegisterFloat, CpuReg::RSP, pp.cpuFct->getStackOffsetResult(), OpBits::F32);
                     else if (returnType->isNative(NativeTypeKind::F64))
-                        pp.emitLoadRR(cc.returnByRegisterFloat, cc.computeRegI0, OpBits::F64);
+                        pp.emitLoadRM(cc.returnByRegisterFloat, CpuReg::RSP, pp.cpuFct->getStackOffsetResult(), OpBits::F64);
+                    else
+                        pp.emitLoadRM(cc.returnByRegisterInteger, CpuReg::RSP, pp.cpuFct->getStackOffsetResult(), opBits);
                 }
 
                 pp.emitLeave();
