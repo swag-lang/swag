@@ -267,6 +267,8 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
             inst->regA == CpuReg::RSP &&
             out.cpuFct->isStackOffsetTransient(static_cast<uint32_t>(inst->valueA)))
         {
+            if (mapValReg.contains(inst->valueA))
+                mapRegVal.erase(mapValReg[inst->valueA].first);
             mapValReg[inst->valueA] = {inst->regB, inst->opBitsA};
             mapRegVal[inst->regB]   = inst->valueA;
         }
@@ -298,9 +300,22 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
                  inst->regB == CpuReg::RSP &&
                  out.cpuFct->isStackOffsetTransient(static_cast<uint32_t>(inst->valueA)))
         {
+            if (mapRegVal.contains(inst->regA))
+                mapValReg.erase(mapRegVal[inst->regA]);
             legitReg                = inst->regA;
             mapValReg[inst->valueA] = {inst->regA, inst->opBitsA};
             mapRegVal[inst->regA]   = inst->valueA;
+        }
+        else if (inst->op == ScbeMicroOp::CmpMR &&
+                 inst->regA == CpuReg::RSP &&
+                 mapValReg.contains(inst->valueA) &&
+                 mapRegVal[mapValReg[inst->valueA].first] == inst->valueA &&
+                 ScbeCpu::isInt(inst->opBitsA) == ScbeCpu::isInt(mapValReg[inst->valueA].second) &&
+                 ScbeCpu::getNumBits(inst->opBitsA) <= ScbeCpu::getNumBits(mapValReg[inst->valueA].second))
+        {
+            setOp(inst, ScbeMicroOp::CmpRR);
+            inst->regA = mapValReg[inst->valueA].first;
+            std::swap(inst->regA, inst->regB);
         }
 
         auto details = encoder->getInstructionDetails(inst);
@@ -320,7 +335,7 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
 {
     if (out.optLevel == BuildCfgBackendOptim::O0)
         return;
-
+    
     setDirtyPass();
     while (passHasDoneSomething)
     {
