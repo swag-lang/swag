@@ -2302,6 +2302,10 @@ ScbeMicroOpDetails ScbeX64::getInstructionDetails(ScbeMicroInstruction* inst) co
         case ScbeMicroOp::Ret:
             return MOD_ZERO;
 
+        case ScbeMicroOp::SetCC:
+            result.add(1ULL << static_cast<uint32_t>(inst->regA));
+            return result;
+
         case ScbeMicroOp::ClearM:
             return MOD_ZERO;
         case ScbeMicroOp::ClearR:

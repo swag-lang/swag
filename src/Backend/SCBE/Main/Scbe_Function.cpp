@@ -902,7 +902,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOp3Way32:
             case ByteCodeOp::CompareOp3Way64:
             {
-                const auto regTmp = CallConv::getVolatileRegister(cc, cc, VF_EXCLUDE_COMPUTE);
+                const auto regTmp = CallConv::getVolatileRegister(cc, cc, VF_EXCLUDE_COMPUTE | VF_EXCLUDE_PARAMS);
                 pp.emitClearR(regTmp, OpBits::B32);
                 emitCompareOp(pp, regTmp, CpuCondFlag::G);
                 pp.emitLoadRI(cc.computeRegI0, 0xFFFFFFFF, OpBits::B32);
@@ -914,7 +914,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOp3WayF32:
             case ByteCodeOp::CompareOp3WayF64:
             {
-                const auto regTmp = CallConv::getVolatileRegister(cc, cc, VF_EXCLUDE_COMPUTE);
+                const auto regTmp = CallConv::getVolatileRegister(cc, cc, VF_EXCLUDE_COMPUTE | VF_EXCLUDE_PARAMS);
                 opBits            = ScbeCpu::getOpBits(ip->op);
                 pp.emitClearR(regTmp, OpBits::B32);
                 emitIMMA(pp, cc.computeRegF0, opBits);
