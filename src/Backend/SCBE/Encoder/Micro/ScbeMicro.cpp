@@ -221,7 +221,7 @@ void ScbeMicro::emitLoadAddressM(CpuReg reg, CpuReg memReg, uint64_t memOffset)
     const auto inst = addInstruction(ScbeMicroOp::LoadAddressM);
     inst->regA      = reg;
     inst->regB      = memReg;
-    inst->valueA    = memOffset;
+    inst->valueB    = memOffset;
 }
 
 void ScbeMicro::emitLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, OpBits opBits)
@@ -590,7 +590,7 @@ void ScbeMicro::encode(ScbeCpu& encoder) const
                 encoder.emitLoadZeroExtendRR(inst->regA, inst->regB, inst->opBitsA, inst->opBitsB);
                 break;
             case ScbeMicroOp::LoadAddressM:
-                encoder.emitLoadAddressM(inst->regA, inst->regB, inst->valueA);
+                encoder.emitLoadAddressM(inst->regA, inst->regB, inst->valueB);
                 break;
             case ScbeMicroOp::LoadAddressAddMul:
                 encoder.emitLoadAddressAddMul(inst->regA, inst->regB, inst->regC, inst->valueA, inst->opBitsA);
