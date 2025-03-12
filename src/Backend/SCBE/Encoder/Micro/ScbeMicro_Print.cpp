@@ -126,6 +126,8 @@ namespace
                 return "cmovge";
             case CpuOp::UCOMIF:
                 return "ucomif";
+            case CpuOp::CMOVBE:
+                return "cmovbe";
 
             case CpuOp::MOV:
                 return opBits == OpBits::F32 ? "movss" : opBits == OpBits::F64 ? "movsd"
