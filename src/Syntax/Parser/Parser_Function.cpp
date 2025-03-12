@@ -162,7 +162,6 @@ bool Parser::doFuncCallArguments(AstNode* parent, AstFuncCallParams** result, To
                 return error(tokenParse, toErr(Err0606));
 
             {
-                PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, [] { return toNte(Nte0156); });
                 if (callParams->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT) || closeToken == TokenId::SymRightCurly)
                     SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0111)));
                 else if (forAttrUse)
