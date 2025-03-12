@@ -77,9 +77,10 @@ void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
 
             case ScbeMicroOp::StoreMR:
                 if (next->op == ScbeMicroOp::LoadRM &&
-                    inst[0].opBitsA == next->opBitsA &&
-                    inst[0].regA == next->regB &&
-                    inst[0].valueA == next->valueA)
+                    ScbeCpu::isInt(next->opBitsA) == ScbeCpu::isInt(inst[0].opBitsA) &&
+                    ScbeCpu::getNumBits(next->opBitsA) <= ScbeCpu::getNumBits(inst[0].opBitsA) &&
+                    next->regB == inst[0].regA &&
+                    next->valueA == inst[0].valueA)
                 {
                     if (inst[0].regB == next->regA)
                     {
@@ -278,7 +279,8 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
                  inst->regB == CpuReg::RSP &&
                  mapValReg.contains(inst->valueA) &&
                  mapRegVal.contains(mapValReg[inst->valueA].first) &&
-                 inst->opBitsA == mapValReg[inst->valueA].second &&
+                 ScbeCpu::isInt(inst->opBitsA) == ScbeCpu::isInt(mapValReg[inst->valueA].second) &&
+                 ScbeCpu::getNumBits(inst->opBitsA) <= ScbeCpu::getNumBits(mapValReg[inst->valueA].second) &&
                  mapRegVal[mapValReg[inst->valueA].first] == inst->valueA)
         {
             if (mapValReg[inst->valueA].first == inst->regA)
