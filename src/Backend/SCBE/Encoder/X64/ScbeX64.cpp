@@ -1653,10 +1653,10 @@ void ScbeX64::emitOpBinaryRI(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits
     {
         if (value <= 0x7F)
         {
-            emitREX(concat, opBits, cc->computeRegI0, reg);
-            concat.addU8(0x0F);
+            emitREX(concat, opBits, REX_REG_NONE, reg);
+            emitCPUOp(concat, 0x0F);
             emitCPUOp(concat, op);
-            concat.addU8(0xE2);
+            emitModRM(concat, ModRMMode::Register, MODRM_REG_4, encodeReg(reg));
             emitValue(concat, value, OpBits::B8);
         }
         else
