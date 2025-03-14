@@ -2183,18 +2183,13 @@ void ScbeX64::emitClearM(CpuReg memReg, uint64_t memOffset, uint32_t count)
     // SSE 16 octets
     if (count >= 16)
     {
-        // xorps xmm0, xmm0
-        emitCPUOp(concat, 0x0F);
-        emitCPUOp(concat, 0x57);
-        concat.addU8(0xC0);
-
+        emitClearR(cc->computeRegF0, OpBits::F32);
         while (count >= 16)
         {
             // movups [memReg+??], xmm0
-            emitREX(concat, OpBits::Zero, REX_REG_NONE, memReg);
             emitCPUOp(concat, 0x0F);
             emitCPUOp(concat, 0x11);
-            emitModRM(concat, memOffset, MODRM_REG_0, memReg);
+            emitModRM(concat, memOffset, cc->computeRegF0, memReg);
             count -= 16;
             memOffset += 16;
         }
