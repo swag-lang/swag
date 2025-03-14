@@ -275,7 +275,7 @@ namespace ByteCodeGen
     bool emitIntrinsicMakeInterface(ByteCodeGenContext* context);
     bool emitUserOp(ByteCodeGenContext* context, AstNode* allParams = nullptr, AstNode* forNode = nullptr, bool freeRegisterParams = true);
     bool emitLeaveScope(ByteCodeGenContext* context);
-    bool emitLeaveScopeDrop(const ByteCodeGenContext* context, Scope* scope, VectorNative<SymbolOverload*>* forceNoDrop = nullptr);
+    bool emitLeaveScopeDrop(const ByteCodeGenContext* context, Scope* scope, const VectorNative<SymbolOverload*>* forceNoDrop = nullptr);
     bool emitDeferredStatements(ByteCodeGenContext* context, Scope* scope, bool forError);
     bool emitLeaveScopeReturn(ByteCodeGenContext* context, VectorNative<SymbolOverload*>* forceNoDrop, bool forError);
     bool computeLeaveScope(ByteCodeGenContext* context, Scope* scope, VectorNative<SymbolOverload*>* forceNoDrop = nullptr, bool forError = false);

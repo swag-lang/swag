@@ -1189,7 +1189,7 @@ bool ByteCodeGen::emitIndex(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGen::emitLeaveScopeDrop(const ByteCodeGenContext* context, Scope* scope, VectorNative<SymbolOverload*>* forceNoDrop)
+bool ByteCodeGen::emitLeaveScopeDrop(const ByteCodeGenContext* context, Scope* scope, const VectorNative<SymbolOverload*>* forceNoDrop)
 {
     if (!scope)
         return true;
