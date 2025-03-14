@@ -2124,41 +2124,20 @@ void ScbeX64::emitCopy(CpuReg memRegDst, CpuReg memRegSrc, uint32_t count)
     uint32_t offset = 0;
 
     // SSE 16 octets
-    if (count >= 16)
+    while (count >= 16)
     {
-        while (count >= 16)
-        {
-            emitCPUOp(concat, 0x0F);
-            emitCPUOp(concat, 0x10); // movups xmm0, [rdx+??]
+        // movups xmm0, [rdx+??]
+        emitCPUOp(concat, 0x0F);
+        emitCPUOp(concat, 0x10);
+        emitModRM(concat, offset, cc->computeRegF0, memRegSrc);
 
-            if (offset <= 0x7F)
-            {
-                emitCPUOp(concat, 0x40, memRegSrc);
-                emitValue(concat, offset, OpBits::B8);
-            }
-            else
-            {
-                emitCPUOp(concat, 0x80, memRegSrc);
-                emitValue(concat, offset, OpBits::B32);
-            }
+        // movups [rcx+??], xmm0
+        emitCPUOp(concat, 0x0F);
+        emitCPUOp(concat, 0x11);
+        emitModRM(concat, offset, cc->computeRegF0, memRegDst);
 
-            emitCPUOp(concat, 0x0F);
-            emitCPUOp(concat, 0x11); // movups [rcx+??], xmm0
-
-            if (offset <= 0x7F)
-            {
-                emitCPUOp(concat, 0x40, memRegDst);
-                emitValue(concat, offset, OpBits::B8);
-            }
-            else
-            {
-                emitCPUOp(concat, 0x80, memRegDst);
-                emitValue(concat, offset, OpBits::B32);
-            }
-
-            count -= 16;
-            offset += 16;
-        }
+        count -= 16;
+        offset += 16;
     }
 
     while (count >= 8)
