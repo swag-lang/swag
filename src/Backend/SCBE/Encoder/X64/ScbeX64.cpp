@@ -611,10 +611,9 @@ void ScbeX64::emitLoadAddressM(CpuReg reg, CpuReg memReg, uint64_t memOffset)
     if (memReg == CpuReg::Rip)
     {
         SWAG_ASSERT(memOffset == 0);
-        SWAG_ASSERT(reg == cc->computeRegI1);
         emitREX(concat, OpBits::B64, reg, memReg);
         emitCPUOp(concat, 0x8D);
-        concat.addU8(0x0D);
+        emitModRM(concat, ModRMMode::Memory, reg, MODRM_RM_RIP);
     }
     else if (memOffset == 0)
     {
