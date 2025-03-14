@@ -1432,15 +1432,15 @@ void ScbeX64::emitOpBinaryRI(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits
         if (value == 1 && !emitFlags.has(EMITF_Overflow) && optLevel >= BuildCfgBackendOptim::O1)
         {
             SWAG_ASSERT(reg == cc->computeRegI0 || reg == cc->computeRegI1 || reg == CpuReg::Rsp);
-            emitREX(concat, opBits);
+            emitREX(concat, opBits, REX_REG_NONE, reg);
             emitSpecB8(concat, 0xFF, opBits);
             emitCPUOp(concat, 0xC0, reg);
         }
         else if (opBits == OpBits::B8)
         {
             SWAG_ASSERT(reg == cc->computeRegI0 || reg == cc->computeRegI1 || reg == CpuReg::Rsp);
-            emitREX(concat, opBits);
-            if (reg == cc->computeRegI0)
+            emitREX(concat, opBits, REX_REG_NONE, reg);
+            if (reg == CpuReg::Rax)
                 concat.addU8(0x04);
             else
             {
@@ -1458,9 +1458,8 @@ void ScbeX64::emitOpBinaryRI(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits
         }
         else
         {
-            SWAG_ASSERT(reg == cc->computeRegI0 || reg == cc->computeRegI1 || reg == CpuReg::Rsp);
-            emitREX(concat, opBits);
-            if (reg == cc->computeRegI0)
+            emitREX(concat, opBits, REX_REG_NONE, reg);
+            if (reg == CpuReg::Rax)
                 concat.addU8(0x05);
             else
             {
