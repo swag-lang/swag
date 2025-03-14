@@ -13,10 +13,10 @@ enum class CallConvKind
 
 enum class CpuReg : uint8_t
 {
-    RAX,
-    RBX,
-    RCX,
-    RDX,
+    Rax,
+    Rbx,
+    Rcx,
+    Rdx,
     R8,
     R9,
     R10,
@@ -25,15 +25,15 @@ enum class CpuReg : uint8_t
     R13,
     R14,
     R15,
-    XMM0,
-    XMM1,
-    XMM2,
-    XMM3,
-    RSI,
-    RDI,
-    RSP,
-    RBP,
-    RIP,
+    Xmm0,
+    Xmm1,
+    Xmm2,
+    Xmm3,
+    Rsi,
+    Rdi,
+    Rsp,
+    Rbp,
+    Rip,
     Max,
 };
 
@@ -74,10 +74,10 @@ struct CallConv
     VectorNative<CpuReg> nonVolatileRegisters;
 
     // The register used to return an integer
-    CpuReg returnByRegisterInteger = CpuReg::RAX;
+    CpuReg returnByRegisterInteger = CpuReg::Rax;
 
     // The register used to return a float
-    CpuReg returnByRegisterFloat = CpuReg::XMM0;
+    CpuReg returnByRegisterFloat = CpuReg::Xmm0;
 
     // The base register used for ffi
     CpuReg ffiBaseRegister = CpuReg::Max;

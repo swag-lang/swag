@@ -96,7 +96,7 @@ void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
                     break;
                 }
 
-                if (inst[0].regA == CpuReg::RSP &&
+                if (inst[0].regA == CpuReg::Rsp &&
                     next->op == ScbeMicroOp::Leave)
                 {
                     ignore(inst);
@@ -126,7 +126,7 @@ void ScbeOptimizer::optimizePassStoreToRegBeforeLeave(const ScbeMicro& out)
             mapValInst.clear();
         }
         else if (inst->op == ScbeMicroOp::StoreMR &&
-                 inst->regA == CpuReg::RSP &&
+                 inst->regA == CpuReg::Rsp &&
                  out.cpuFct->isStackOffsetTransient(static_cast<uint32_t>(inst->valueA)))
         {
             mapValInst[inst->valueA] = inst;
@@ -264,7 +264,7 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
 
         auto legitReg = CpuReg::Max;
         if (inst->op == ScbeMicroOp::StoreMR &&
-            inst->regA == CpuReg::RSP &&
+            inst->regA == CpuReg::Rsp &&
             out.cpuFct->isStackOffsetTransient(static_cast<uint32_t>(inst->valueA)))
         {
             if (mapValReg.contains(inst->valueA))
@@ -273,13 +273,13 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
             mapRegVal[inst->regB]   = inst->valueA;
         }
         else if (inst->hasWriteMemA() &&
-                 inst->regA == CpuReg::RSP &&
+                 inst->regA == CpuReg::Rsp &&
                  mapValReg.contains(inst->valueA))
         {
             mapValReg.erase(inst->valueA);
         }
         else if (inst->op == ScbeMicroOp::LoadRM &&
-                 inst->regB == CpuReg::RSP &&
+                 inst->regB == CpuReg::Rsp &&
                  mapValReg.contains(inst->valueA) &&
                  mapRegVal.contains(mapValReg[inst->valueA].first) &&
                  ScbeCpu::isInt(inst->opBitsA) == ScbeCpu::isInt(mapValReg[inst->valueA].second) &&
@@ -297,7 +297,7 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
             }
         }
         else if (inst->op == ScbeMicroOp::LoadRM &&
-                 inst->regB == CpuReg::RSP &&
+                 inst->regB == CpuReg::Rsp &&
                  out.cpuFct->isStackOffsetTransient(static_cast<uint32_t>(inst->valueA)))
         {
             if (mapRegVal.contains(inst->regA))
@@ -307,7 +307,7 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
             mapRegVal[inst->regA]   = inst->valueA;
         }
         else if (inst->op == ScbeMicroOp::CmpMR &&
-                 inst->regA == CpuReg::RSP &&
+                 inst->regA == CpuReg::Rsp &&
                  mapValReg.contains(inst->valueA) &&
                  mapRegVal[mapValReg[inst->valueA].first] == inst->valueA &&
                  ScbeCpu::isInt(inst->opBitsA) == ScbeCpu::isInt(mapValReg[inst->valueA].second) &&

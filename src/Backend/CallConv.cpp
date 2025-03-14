@@ -8,40 +8,40 @@ void initCallConvKinds()
     auto& ccX64 = g_CallConv[static_cast<int>(CallConvKind::X86_64)];
 
     ccX64.paramByRegisterCount = 4;
-    ccX64.paramByRegisterInteger.push_back(CpuReg::RCX);
-    ccX64.paramByRegisterInteger.push_back(CpuReg::RDX);
+    ccX64.paramByRegisterInteger.push_back(CpuReg::Rcx);
+    ccX64.paramByRegisterInteger.push_back(CpuReg::Rdx);
     ccX64.paramByRegisterInteger.push_back(CpuReg::R8);
     ccX64.paramByRegisterInteger.push_back(CpuReg::R9);
 
-    ccX64.paramByRegisterFloat.push_back(CpuReg::XMM0);
-    ccX64.paramByRegisterFloat.push_back(CpuReg::XMM1);
-    ccX64.paramByRegisterFloat.push_back(CpuReg::XMM2);
-    ccX64.paramByRegisterFloat.push_back(CpuReg::XMM3);
+    ccX64.paramByRegisterFloat.push_back(CpuReg::Xmm0);
+    ccX64.paramByRegisterFloat.push_back(CpuReg::Xmm1);
+    ccX64.paramByRegisterFloat.push_back(CpuReg::Xmm2);
+    ccX64.paramByRegisterFloat.push_back(CpuReg::Xmm3);
 
-    ccX64.ffiBaseRegister         = CpuReg::RDI;
-    ccX64.returnByRegisterInteger = CpuReg::RAX;
-    ccX64.returnByRegisterFloat   = CpuReg::XMM0;
-    ccX64.computeRegI0            = CpuReg::RAX;
-    ccX64.computeRegI1            = CpuReg::RCX;
-    ccX64.computeRegF0            = CpuReg::XMM0;
-    ccX64.computeRegF1            = CpuReg::XMM1;
-    ccX64.computeRegF2            = CpuReg::XMM2;
+    ccX64.ffiBaseRegister         = CpuReg::Rdi;
+    ccX64.returnByRegisterInteger = CpuReg::Rax;
+    ccX64.returnByRegisterFloat   = CpuReg::Xmm0;
+    ccX64.computeRegI0            = CpuReg::Rax;
+    ccX64.computeRegI1            = CpuReg::Rcx;
+    ccX64.computeRegF0            = CpuReg::Xmm0;
+    ccX64.computeRegF1            = CpuReg::Xmm1;
+    ccX64.computeRegF2            = CpuReg::Xmm2;
 
-    ccX64.volatileRegisters.push_back(CpuReg::RAX);
-    ccX64.volatileRegisters.push_back(CpuReg::RCX);
-    ccX64.volatileRegisters.push_back(CpuReg::RDX);
+    ccX64.volatileRegisters.push_back(CpuReg::Rax);
+    ccX64.volatileRegisters.push_back(CpuReg::Rcx);
+    ccX64.volatileRegisters.push_back(CpuReg::Rdx);
     ccX64.volatileRegisters.push_back(CpuReg::R8);
     ccX64.volatileRegisters.push_back(CpuReg::R9);
     ccX64.volatileRegisters.push_back(CpuReg::R10);
     ccX64.volatileRegisters.push_back(CpuReg::R11);
-    ccX64.volatileRegisters.push_back(CpuReg::XMM0);
-    ccX64.volatileRegisters.push_back(CpuReg::XMM1);
-    ccX64.volatileRegisters.push_back(CpuReg::XMM2);
-    ccX64.volatileRegisters.push_back(CpuReg::XMM3);
+    ccX64.volatileRegisters.push_back(CpuReg::Xmm0);
+    ccX64.volatileRegisters.push_back(CpuReg::Xmm1);
+    ccX64.volatileRegisters.push_back(CpuReg::Xmm2);
+    ccX64.volatileRegisters.push_back(CpuReg::Xmm3);
 
-    ccX64.nonVolatileRegisters.push_back(CpuReg::RBX);
-    ccX64.nonVolatileRegisters.push_back(CpuReg::RDI);
-    ccX64.nonVolatileRegisters.push_back(CpuReg::RSI);
+    ccX64.nonVolatileRegisters.push_back(CpuReg::Rbx);
+    ccX64.nonVolatileRegisters.push_back(CpuReg::Rdi);
+    ccX64.nonVolatileRegisters.push_back(CpuReg::Rsi);
 
     ccX64.useRegisterFloat       = true;
     ccX64.structParamByRegister  = true;

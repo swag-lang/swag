@@ -1359,7 +1359,7 @@ bool ByteCodeGen::emitLeaveScopeReturn(ByteCodeGenContext* context, VectorNative
     return true;
 }
 
-bool ByteCodeGen::computeLeaveScope(ByteCodeGenContext* context, Scope* scope, VectorNative<SymbolOverload*>* forceNoDrop, bool forError)
+bool ByteCodeGen::computeLeaveScope(ByteCodeGenContext* context, Scope* scope, const VectorNative<SymbolOverload*>* forceNoDrop, bool forError)
 {
     PushLocation pl(context, &context->node->token.endLocation);
 

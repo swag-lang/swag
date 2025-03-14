@@ -1,3 +1,4 @@
+// ReSharper disable CppInconsistentNaming
 #pragma once
 #include "Backend/SCBE/Debug/ScbeDebug.h"
 

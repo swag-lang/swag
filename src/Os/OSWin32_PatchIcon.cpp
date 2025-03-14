@@ -4,6 +4,7 @@
 
 namespace OS
 {
+    // ReSharper disable once CppInconsistentNaming
     struct ICONENTRY
     {
         BYTE  width;
@@ -16,6 +17,7 @@ namespace OS
         DWORD imageOffset;
     };
 
+    // ReSharper disable once CppInconsistentNaming
     struct ICONHEADER
     {
         WORD                   reserved;
@@ -24,6 +26,7 @@ namespace OS
         std::vector<ICONENTRY> entries;
     };
 
+    // ReSharper disable once CppInconsistentNaming
     struct ICONVAL
     {
         ICONHEADER                     header;
@@ -32,6 +35,7 @@ namespace OS
     };
 
 #pragma pack(push, 2)
+    // ReSharper disable once CppInconsistentNaming
     struct GRPICONENTRY
     {
         BYTE width;
@@ -46,6 +50,7 @@ namespace OS
         WORD id;
     };
 
+    // ReSharper disable once CppInconsistentNaming
     struct GRPICONHEADER
     {
         WORD         reserved;

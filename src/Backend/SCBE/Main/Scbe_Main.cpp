@@ -75,7 +75,7 @@ void Scbe::emitMain(ScbeCpu& pp)
     SWAG_ASSERT(bcAlloc);
 
     pp.emitSymbolRelocationAddress(cc->computeRegI0, pp.symDefaultAllocTable, 0);
-    pp.emitLoadAddressM(cc->computeRegI1, CpuReg::RIP, 0);
+    pp.emitLoadAddressM(cc->computeRegI1, CpuReg::Rip, 0);
     pp.emitSymbolRelocationRef(bcAlloc->getCallName());
     pp.emitStoreMR(cc->computeRegI0, 0, cc->computeRegI1, OpBits::B64);
 
@@ -254,12 +254,12 @@ void Scbe::emitGlobalPreMain(ScbeCpu& pp)
 
     // Store first parameter on stack (process infos ptr)
     SWAG_ASSERT(cc.paramByRegisterCount >= 1);
-    pp.emitStoreMR(CpuReg::RSP, 0, cc.paramByRegisterInteger[0], OpBits::B64);
+    pp.emitStoreMR(CpuReg::Rsp, 0, cc.paramByRegisterInteger[0], OpBits::B64);
 
     // Copy process infos passed as a parameter to the process info struct of this module
     pp.pushParams.clear();
     pp.pushParams.push_back({.type = CpuPushParamType::SymbolRelocationAddress, .value = pp.symPI_processInfos});
-    pp.pushParams.push_back({.type = CpuPushParamType::SwagRegister, .baseReg = CpuReg::RSP, .value = REG_OFFSET(0)});
+    pp.pushParams.push_back({.type = CpuPushParamType::SwagRegister, .baseReg = CpuReg::Rsp, .value = REG_OFFSET(0)});
     pp.pushParams.push_back({.type = CpuPushParamType::Constant, .value = sizeof(SwagProcessInfos)});
     emitInternalCallCPUParams(pp, g_LangSpec->name_memcpy, pp.pushParams);
 
@@ -293,12 +293,12 @@ void Scbe::emitGlobalInit(ScbeCpu& pp)
 
     // Store first parameter on stack (process infos ptr)
     SWAG_ASSERT(cc.paramByRegisterCount >= 1);
-    pp.emitStoreMR(CpuReg::RSP, 0, cc.paramByRegisterInteger[0], OpBits::B64);
+    pp.emitStoreMR(CpuReg::Rsp, 0, cc.paramByRegisterInteger[0], OpBits::B64);
 
     // Copy process infos passed as a parameter to the process info struct of this module
     pp.pushParams.clear();
     pp.pushParams.push_back({.type = CpuPushParamType::SymbolRelocationAddress, .value = pp.symPI_processInfos});
-    pp.pushParams.push_back({.type = CpuPushParamType::SwagRegister, .baseReg = CpuReg::RSP, .value = 0});
+    pp.pushParams.push_back({.type = CpuPushParamType::SwagRegister, .baseReg = CpuReg::Rsp, .value = 0});
     pp.pushParams.push_back({.type = CpuPushParamType::Constant, .value = sizeof(SwagProcessInfos)});
     emitInternalCallCPUParams(pp, g_LangSpec->name_memcpy, pp.pushParams);
 

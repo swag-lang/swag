@@ -278,7 +278,7 @@ namespace ByteCodeGen
     bool emitLeaveScopeDrop(const ByteCodeGenContext* context, Scope* scope, const VectorNative<SymbolOverload*>* forceNoDrop = nullptr);
     bool emitDeferredStatements(ByteCodeGenContext* context, Scope* scope, bool forError);
     bool emitLeaveScopeReturn(ByteCodeGenContext* context, VectorNative<SymbolOverload*>* forceNoDrop, bool forError);
-    bool computeLeaveScope(ByteCodeGenContext* context, Scope* scope, VectorNative<SymbolOverload*>* forceNoDrop = nullptr, bool forError = false);
+    bool computeLeaveScope(ByteCodeGenContext* context, Scope* scope, const VectorNative<SymbolOverload*>* forceNoDrop = nullptr, bool forError = false);
     bool emitConditionalOpAfterExpr(ByteCodeGenContext* context);
     bool emitConditionalOpAfterIfTrue(ByteCodeGenContext* context);
     bool emitConditionalOp(ByteCodeGenContext* context);

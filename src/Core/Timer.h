@@ -14,7 +14,7 @@ struct Timer
         stop();
     }
 
-    void start(bool force)
+    void start([[maybe_unused]] bool force)
     {
 #ifdef SWAG_STATS
         timeBefore = OS::timerNow();

@@ -34,7 +34,7 @@ enum class CpuPushParamType
 struct CpuPushParam
 {
     CpuPushParamType type     = CpuPushParamType::SwagRegister;
-    CpuReg           baseReg  = CpuReg::RSP;
+    CpuReg           baseReg  = CpuReg::Rsp;
     uint64_t         value    = 0;
     uint64_t         value2   = 0;
     TypeInfo*        typeInfo = nullptr;
@@ -235,7 +235,7 @@ struct ScbeCpu : BackendEncoder
     void emitComputeCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CpuPushParam>& cpuParams, CpuReg memRegResult, uint32_t memOffsetResult, void* resultAddr);
     void emitStoreCallResult(CpuReg memReg, uint32_t memOffset, const TypeInfoFuncAttr* typeFuncBc);
 
-    virtual ScbeMicroOpDetails getInstructionDetails(ScbeMicroInstruction* inst) const { return 0; };
+    virtual ScbeMicroOpDetails getInstructionDetails(ScbeMicroInstruction* inst) const { return 0; }
 
     virtual void emitEnter(uint32_t sizeStack);
     virtual void emitLeave();

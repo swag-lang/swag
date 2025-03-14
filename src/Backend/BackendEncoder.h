@@ -54,5 +54,5 @@ struct BackendEncoder
     static uint32_t getNumBytes(ByteCodeOp op) { return getNumBits(getOpBits(op)) / 8; }
     static bool     isInt(OpBits opBits) { return opBits == OpBits::B8 || opBits == OpBits::B16 || opBits == OpBits::B32 || opBits == OpBits::B64; }
     static bool     isFloat(OpBits opBits) { return opBits == OpBits::F32 || opBits == OpBits::F64; }
-    static bool     isFloat(CpuReg reg) { return reg == CpuReg::XMM0 || reg == CpuReg::XMM1 || reg == CpuReg::XMM2 || reg == CpuReg::XMM3; }
+    static bool     isFloat(CpuReg reg) { return reg == CpuReg::Xmm0 || reg == CpuReg::Xmm1 || reg == CpuReg::Xmm2 || reg == CpuReg::Xmm3; }
 };

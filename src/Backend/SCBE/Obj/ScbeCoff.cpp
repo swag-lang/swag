@@ -9,9 +9,9 @@
 
 namespace
 {
-    static constexpr int UWOP_PUSH_NO_VOL = 0x00000000;
-    static constexpr int UWOP_ALLOC_LARGE = 0x00000001;
-    static constexpr int UWOP_ALLOC_SMALL = 0x00000002;
+    constexpr int UWOP_PUSH_NO_VOL = 0x00000000;
+    constexpr int UWOP_ALLOC_LARGE = 0x00000001;
+    constexpr int UWOP_ALLOC_SMALL = 0x00000002;
 
     bool emitXData(const BuildParameters&, ScbeCpu& pp)
     {
