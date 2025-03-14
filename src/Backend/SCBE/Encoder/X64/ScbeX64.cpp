@@ -27,6 +27,31 @@ constexpr auto MODRM_REG_4  = static_cast<CpuReg>(255);
 constexpr uint8_t MODRM_RM_SID = 0b100;
 constexpr uint8_t MODRM_RM_RIP = 0b101;
 
+enum class X64Reg : uint8_t
+{
+    Rax  = 0b0000,
+    Rbx  = 0b0011,
+    Rcx  = 0b0001,
+    Rdx  = 0b0010,
+    Rsp  = 0b0100,
+    Rbp  = 0b0101,
+    Rsi  = 0b0110,
+    Rdi  = 0b0111,
+    R8   = 0b1000,
+    R9   = 0b1001,
+    R10  = 0b1010,
+    R11  = 0b1011,
+    R12  = 0b1100,
+    R13  = 0b1101,
+    R14  = 0b1110,
+    R15  = 0b1111,
+    Xmm0 = 0b0000,
+    Xmm1 = 0b0001,
+    Xmm2 = 0b0010,
+    Xmm3 = 0b0011,
+    Rip  = 0b10000
+};
+
 namespace
 {
     uint8_t encodeReg(CpuReg reg)
@@ -34,47 +59,47 @@ namespace
         switch (reg)
         {
             case CpuReg::Rax:
-                return 0b0000;
+                return static_cast<uint8_t>(X64Reg::Rax);
             case CpuReg::Rbx:
-                return 0b0011;
+                return static_cast<uint8_t>(X64Reg::Rbx);
             case CpuReg::Rcx:
-                return 0b0001;
+                return static_cast<uint8_t>(X64Reg::Rcx);
             case CpuReg::Rdx:
-                return 0b0010;
+                return static_cast<uint8_t>(X64Reg::Rdx);
             case CpuReg::Rsp:
-                return 0b0100;
+                return static_cast<uint8_t>(X64Reg::Rsp);
             case CpuReg::Rbp:
-                return 0b0101;
+                return static_cast<uint8_t>(X64Reg::Rbp);
             case CpuReg::Rsi:
-                return 0b0110;
+                return static_cast<uint8_t>(X64Reg::Rsi);
             case CpuReg::Rdi:
-                return 0b0111;
+                return static_cast<uint8_t>(X64Reg::Rdi);
             case CpuReg::R8:
-                return 0b1000;
+                return static_cast<uint8_t>(X64Reg::R8);
             case CpuReg::R9:
-                return 0b1001;
+                return static_cast<uint8_t>(X64Reg::R9);
             case CpuReg::R10:
-                return 0b1010;
+                return static_cast<uint8_t>(X64Reg::R10);
             case CpuReg::R11:
-                return 0b1011;
+                return static_cast<uint8_t>(X64Reg::R11);
             case CpuReg::R12:
-                return 0b1100;
+                return static_cast<uint8_t>(X64Reg::R12);
             case CpuReg::R13:
-                return 0b1101;
+                return static_cast<uint8_t>(X64Reg::R13);
             case CpuReg::R14:
-                return 0b1110;
+                return static_cast<uint8_t>(X64Reg::R14);
             case CpuReg::R15:
-                return 0b1111;
+                return static_cast<uint8_t>(X64Reg::R15);
             case CpuReg::Xmm0:
-                return 0b0000;
+                return static_cast<uint8_t>(X64Reg::Xmm0);
             case CpuReg::Xmm1:
-                return 0b0001;
+                return static_cast<uint8_t>(X64Reg::Xmm1);
             case CpuReg::Xmm2:
-                return 0b0010;
+                return static_cast<uint8_t>(X64Reg::Xmm2);
             case CpuReg::Xmm3:
-                return 0b0011;
+                return static_cast<uint8_t>(X64Reg::Xmm3);
             case CpuReg::Rip:
-                return 0b10000;
+                return static_cast<uint8_t>(X64Reg::Rip);
 
             case REX_REG_NONE:
             case MODRM_REG_0:
