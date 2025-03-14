@@ -1630,14 +1630,12 @@ void ScbeX64::emitOpBinaryRI(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits
         }
         else if (value == 1)
         {
-            SWAG_ASSERT(reg == cc->computeRegI0 || reg == cc->computeRegI1 || reg == CpuReg::R9);
             emitREX(concat, opBits, reg, reg);
             emitSpecB8(concat, 0xD1, opBits);
             emitCPUOp(concat, op, reg);
         }
         else if (value <= 0x7F)
         {
-            SWAG_ASSERT(reg == cc->computeRegI0 || reg == cc->computeRegI1 || reg == CpuReg::R9);
             emitREX(concat, opBits, reg, reg);
             value = std::min(static_cast<uint32_t>(value), getNumBits(opBits) - 1);
             emitSpecB8(concat, 0xC1, opBits);
