@@ -1909,23 +1909,21 @@ void ScbeX64::emitJumpTable(CpuReg table, CpuReg offset, int32_t currentIp, uint
 
     uint8_t*   addrConstant        = nullptr;
     const auto offsetTableConstant = buildParams.module->constantSegment.reserve(numEntries * sizeof(uint32_t), &addrConstant);
-    emitSymbolRelocationAddress(table, symCSIndex, offsetTableConstant); // rcx = jump table
-
-    emitREX(concat, OpBits::B64);
+    emitSymbolRelocationAddress(table, symCSIndex, offsetTableConstant);
 
     // movsxd rcx, dword ptr [rcx + rax*4]
+    emitREX(concat, OpBits::B64);
     emitCPUOp(concat, 0x63);
     emitModRM(concat, ModRMMode::Memory, cc->computeRegI1, MODRM_RM_SID);
     concat.addU8(getSid(2, cc->computeRegI0, cc->computeRegI1));
 
-    // + 7 for this instruction
-    // + 5 for the two following instructions
-    SWAG_IF_ASSERT(const auto startIdx = concat.totalCount());
-    emitSymbolRelocationAddress(cc->computeRegI0, cpuFct->symbolIndex, concat.totalCount() - cpuFct->startAddress + 5 + 7);
+    const auto startIdx = concat.totalCount();
+    emitSymbolRelocationAddress(cc->computeRegI0, cpuFct->symbolIndex, concat.totalCount() - cpuFct->startAddress);
+    const auto patchPtr = reinterpret_cast<uint32_t*>(concat.currentSP) - 1;
     emitOpBinaryRR(cc->computeRegI0, cc->computeRegI1, CpuOp::ADD, OpBits::B64);
     emitJumpM(cc->computeRegI0);
-    SWAG_IF_ASSERT(const auto endIdx = concat.totalCount());
-    SWAG_ASSERT(endIdx - startIdx == 12);
+    const auto endIdx = concat.totalCount();
+    *patchPtr += endIdx - startIdx; 
 
     const auto tableCompiler = reinterpret_cast<int32_t*>(buildParams.module->compilerSegment.address(offsetTable));
     const auto currentOffset = static_cast<int32_t>(concat.totalCount());
