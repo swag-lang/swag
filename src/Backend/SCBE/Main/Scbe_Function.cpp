@@ -2106,13 +2106,16 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::IntrinsicAtomicCmpXchgS16:
             case ByteCodeOp::IntrinsicAtomicCmpXchgS32:
             case ByteCodeOp::IntrinsicAtomicCmpXchgS64:
-                opBits = ScbeCpu::getOpBits(ip->op);
+            {
+                const auto reg = CallConv::getVolatileRegister(cc, cc, VF_EXCLUDE_COMPUTE);
+                opBits         = ScbeCpu::getOpBits(ip->op);
                 pp.emitLoadRM(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
                 emitIMMB(pp, cc.computeRegI0, opBits);
-                emitIMMC(pp, CpuReg::Rdx, opBits);
-                pp.emitOpBinaryRR(cc.computeRegI1, CpuReg::Rdx, CpuOp::CMPXCHG, opBits);
+                emitIMMC(pp, reg, opBits);
+                pp.emitOpBinaryRR(cc.computeRegI1, reg, CpuOp::CMPXCHG, opBits);
                 pp.emitStoreMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->d.u32), cc.computeRegI0, opBits);
                 break;
+            }
 
             case ByteCodeOp::IntrinsicS8x1:
             case ByteCodeOp::IntrinsicS16x1:

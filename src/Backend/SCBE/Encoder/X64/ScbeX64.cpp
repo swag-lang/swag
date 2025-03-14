@@ -181,7 +181,7 @@ namespace
 
     void emitModRM(Concat& concat, uint64_t memOffset, CpuReg reg, CpuReg memReg, uint8_t op = 1)
     {
-        if (memOffset == 0 && (memReg < CpuReg::R8))
+        if (memOffset == 0)
         {
             // mov al, byte ptr [rdi]
             concat.addU8(getModRM(ModRMMode::Memory, reg, encodeReg(memReg)) | op - 1);
@@ -1239,16 +1239,15 @@ void ScbeX64::emitOpBinaryRR(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBi
     }
     else if (op == CpuOp::CMPXCHG)
     {
-        SWAG_ASSERT(regDst == cc->computeRegI1 && regSrc == CpuReg::Rdx);
+        //SWAG_ASSERT(regDst == cc->computeRegI1 && regSrc == CpuReg::Rdx);
         // lock CMPXCHG [rcx], dl
         if (opBits == OpBits::B16)
             emitREX(concat, opBits);
         concat.addU8(0xF0);
-        if (opBits == OpBits::B64)
-            emitREX(concat, opBits);
-        concat.addU8(0x0F);
-        emitSpecB8(concat, 0xB1, opBits);
-        concat.addU8(0x11);
+        emitREX(concat, opBits, regSrc, regDst);
+        emitCPUOp(concat, 0x0F);
+        emitSpecCPUOp(concat, 0xB1, opBits);
+        emitModRM(concat, 0, regSrc, regDst);
     }
     else
     {
