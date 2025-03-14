@@ -43,7 +43,7 @@ struct ScbeX64 final : ScbeCpu
     void    emitSetCC(CpuReg reg, CpuCondFlag setType) override;
     void    emitClearR(CpuReg reg, OpBits opBits) override;
     void    emitClearM(CpuReg memReg, uint64_t memOffset, uint32_t count) override;
-    void    emitCopy(CpuReg regDst, CpuReg regSrc, uint32_t count) override;
+    void    emitCopy(CpuReg memRegDst, CpuReg memRegSrc, uint32_t count) override;
     void    emitOpUnaryM(CpuReg memReg, uint64_t memOffset, CpuOp op, OpBits opBits) override;
     void    emitOpUnaryR(CpuReg reg, CpuOp op, OpBits opBits) override;
     void    emitOpBinaryRR(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags = EMITF_Zero) override;

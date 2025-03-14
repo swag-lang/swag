@@ -2114,13 +2114,13 @@ void ScbeX64::emitJumpM(CpuReg reg)
 
 /////////////////////////////////////////////////////////////////////
 
-void ScbeX64::emitCopy(CpuReg regDst, CpuReg regSrc, uint32_t count)
+void ScbeX64::emitCopy(CpuReg memRegDst, CpuReg memRegSrc, uint32_t count)
 {
     if (!count)
         return;
 
-    SWAG_ASSERT(regDst == cc->computeRegI1);
-    SWAG_ASSERT(regSrc == CpuReg::Rdx);
+    SWAG_ASSERT(memRegDst == cc->computeRegI1);
+    SWAG_ASSERT(memRegSrc == CpuReg::Rdx);
     uint32_t offset = 0;
 
     // SSE 16 octets
@@ -2133,12 +2133,12 @@ void ScbeX64::emitCopy(CpuReg regDst, CpuReg regSrc, uint32_t count)
 
             if (offset <= 0x7F)
             {
-                emitCPUOp(concat, 0x40, regSrc);
+                emitCPUOp(concat, 0x40, memRegSrc);
                 emitValue(concat, offset, OpBits::B8);
             }
             else
             {
-                emitCPUOp(concat, 0x80, regSrc);
+                emitCPUOp(concat, 0x80, memRegSrc);
                 emitValue(concat, offset, OpBits::B32);
             }
 
@@ -2147,12 +2147,12 @@ void ScbeX64::emitCopy(CpuReg regDst, CpuReg regSrc, uint32_t count)
 
             if (offset <= 0x7F)
             {
-                emitCPUOp(concat, 0x40, regDst);
+                emitCPUOp(concat, 0x40, memRegDst);
                 emitValue(concat, offset, OpBits::B8);
             }
             else
             {
-                emitCPUOp(concat, 0x80, regDst);
+                emitCPUOp(concat, 0x80, memRegDst);
                 emitValue(concat, offset, OpBits::B32);
             }
 
@@ -2163,38 +2163,37 @@ void ScbeX64::emitCopy(CpuReg regDst, CpuReg regSrc, uint32_t count)
 
     while (count >= 8)
     {
-        emitLoadRM(cc->computeRegI0, regSrc, offset, OpBits::B64);
-        emitStoreMR(regDst, offset, cc->computeRegI0, OpBits::B64);
+        emitLoadRM(cc->computeRegI0, memRegSrc, offset, OpBits::B64);
+        emitStoreMR(memRegDst, offset, cc->computeRegI0, OpBits::B64);
         count -= 8;
         offset += 8;
     }
 
     while (count >= 4)
     {
-        emitLoadRM(cc->computeRegI0, regSrc, offset, OpBits::B32);
-        emitStoreMR(regDst, offset, cc->computeRegI0, OpBits::B32);
+        emitLoadRM(cc->computeRegI0, memRegSrc, offset, OpBits::B32);
+        emitStoreMR(memRegDst, offset, cc->computeRegI0, OpBits::B32);
         count -= 4;
         offset += 4;
     }
 
     while (count >= 2)
     {
-        emitLoadRM(cc->computeRegI0, regSrc, offset, OpBits::B16);
-        emitStoreMR(regDst, offset, cc->computeRegI0, OpBits::B16);
+        emitLoadRM(cc->computeRegI0, memRegSrc, offset, OpBits::B16);
+        emitStoreMR(memRegDst, offset, cc->computeRegI0, OpBits::B16);
         count -= 2;
         offset += 2;
     }
 
     while (count >= 1)
     {
-        emitLoadRM(cc->computeRegI0, regSrc, offset, OpBits::B8);
-        emitStoreMR(regDst, offset, cc->computeRegI0, OpBits::B8);
+        emitLoadRM(cc->computeRegI0, memRegSrc, offset, OpBits::B8);
+        emitStoreMR(memRegDst, offset, cc->computeRegI0, OpBits::B8);
         count -= 1;
         offset += 1;
     }
 }
 
-#pragma optimize("", off)
 void ScbeX64::emitClearM(CpuReg memReg, uint64_t memOffset, uint32_t count)
 {
     if (!count)
