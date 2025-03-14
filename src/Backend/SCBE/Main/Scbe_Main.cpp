@@ -67,6 +67,7 @@ void Scbe::emitMain(ScbeCpu& pp)
     }
 
     pp.cpuFct = pp.addFunction(entryPoint, cc, nullptr);
+    pp.cpuFct->unwindRegs.push_back(cc->nonVolatileRegisters[0]);
     pp.emitEnter(0);
 
     // Set default system allocator function
@@ -89,8 +90,8 @@ void Scbe::emitMain(ScbeCpu& pp)
     pp.emitStoreMI(cc->computeRegI1, 0, contextFlags, OpBits::B64);
 
     //__process_infos.contextTlsId = swag_runtime_tlsAlloc();
-    pp.emitSymbolRelocationAddress(cc->computeRegI1, pp.symPI_contextTlsId, 0);
-    emitInternalCallRAParams(pp, g_LangSpec->name_priv_tlsAlloc, {}, cc->computeRegI1, 0);
+    pp.emitSymbolRelocationAddress(cc->nonVolatileRegisters[0], pp.symPI_contextTlsId, 0);
+    emitInternalCallRAParams(pp, g_LangSpec->name_priv_tlsAlloc, {}, cc->nonVolatileRegisters[0], 0);
 
     //__process_infos.modules
     pp.emitSymbolRelocationAddress(cc->computeRegI1, pp.symPI_modulesAddr, 0);
