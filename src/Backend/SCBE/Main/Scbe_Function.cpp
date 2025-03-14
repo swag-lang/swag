@@ -1614,9 +1614,9 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::MemCpy32:
             case ByteCodeOp::MemCpy64:
                 opBits = ScbeCpu::getOpBits(ip->op);
-                pp.emitLoadRM(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-                pp.emitLoadRM(CpuReg::Rdx, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
-                pp.emitCopy(cc.computeRegI1, CpuReg::Rdx, ScbeCpu::getNumBits(opBits) / 8);
+                pp.emitLoadRM(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
+                pp.emitLoadRM(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
+                pp.emitCopy(cc.computeRegI0, cc.computeRegI1, ScbeCpu::getNumBits(opBits) / 8);
                 break;
 
                 /////////////////////////////////////
@@ -1626,9 +1626,9 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                     ip->c.u64 <= buildParameters.buildCfg->backendSCBE.unrollMemLimit &&
                     buildParameters.buildCfg->backendOptimize > BuildCfgBackendOptim::O1)
                 {
-                    pp.emitLoadRM(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-                    pp.emitLoadRM(CpuReg::Rdx, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
-                    pp.emitCopy(cc.computeRegI1, CpuReg::Rdx, ip->c.u32);
+                    pp.emitLoadRM(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
+                    pp.emitLoadRM(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
+                    pp.emitCopy(cc.computeRegI0, cc.computeRegI1, ip->c.u32);
                 }
                 else
                 {

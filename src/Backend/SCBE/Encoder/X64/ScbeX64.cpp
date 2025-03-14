@@ -2119,19 +2119,19 @@ void ScbeX64::emitCopy(CpuReg memRegDst, CpuReg memRegSrc, uint32_t count)
     if (!count)
         return;
 
-    SWAG_ASSERT(memRegDst == cc->computeRegI1);
-    SWAG_ASSERT(memRegSrc == CpuReg::Rdx);
+    SWAG_ASSERT(memRegDst == cc->computeRegI0);
+    SWAG_ASSERT(memRegSrc == cc->computeRegI1);
     uint32_t offset = 0;
 
     // SSE 16 octets
     while (count >= 16)
     {
-        // movups xmm0, [rdx+??]
+        // movups xmm0, [memRegSrc+??]
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, 0x10);
         emitModRM(concat, offset, cc->computeRegF0, memRegSrc);
 
-        // movups [rcx+??], xmm0
+        // movups [memRegDst+??], xmm0
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, 0x11);
         emitModRM(concat, offset, cc->computeRegF0, memRegDst);
@@ -2140,34 +2140,35 @@ void ScbeX64::emitCopy(CpuReg memRegDst, CpuReg memRegSrc, uint32_t count)
         offset += 16;
     }
 
+    const auto reg = CallConv::getVolatileRegister(*cc, *cc, VF_EXCLUDE_COMPUTE);
     while (count >= 8)
     {
-        emitLoadRM(cc->computeRegI0, memRegSrc, offset, OpBits::B64);
-        emitStoreMR(memRegDst, offset, cc->computeRegI0, OpBits::B64);
+        emitLoadRM(reg, memRegSrc, offset, OpBits::B64);
+        emitStoreMR(memRegDst, offset, reg, OpBits::B64);
         count -= 8;
         offset += 8;
     }
 
     while (count >= 4)
     {
-        emitLoadRM(cc->computeRegI0, memRegSrc, offset, OpBits::B32);
-        emitStoreMR(memRegDst, offset, cc->computeRegI0, OpBits::B32);
+        emitLoadRM(reg, memRegSrc, offset, OpBits::B32);
+        emitStoreMR(memRegDst, offset, reg, OpBits::B32);
         count -= 4;
         offset += 4;
     }
 
     while (count >= 2)
     {
-        emitLoadRM(cc->computeRegI0, memRegSrc, offset, OpBits::B16);
-        emitStoreMR(memRegDst, offset, cc->computeRegI0, OpBits::B16);
+        emitLoadRM(reg, memRegSrc, offset, OpBits::B16);
+        emitStoreMR(memRegDst, offset, reg, OpBits::B16);
         count -= 2;
         offset += 2;
     }
 
     while (count >= 1)
     {
-        emitLoadRM(cc->computeRegI0, memRegSrc, offset, OpBits::B8);
-        emitStoreMR(memRegDst, offset, cc->computeRegI0, OpBits::B8);
+        emitLoadRM(reg, memRegSrc, offset, OpBits::B8);
+        emitStoreMR(memRegDst, offset, reg, OpBits::B8);
         count -= 1;
         offset += 1;
     }
