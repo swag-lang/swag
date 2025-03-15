@@ -401,13 +401,13 @@ void ScbeX64::emitLoadRI(CpuReg reg, uint64_t value, OpBits opBits)
     }
     else if (opBits == OpBits::B8)
     {
-        emitREX(concat, opBits);
+        emitREX(concat, opBits, REX_REG_NONE, reg);
         emitCPUOp(concat, 0xB0, reg);
         emitValue(concat, value, opBits);
     }
     else
     {
-        emitREX(concat, opBits);
+        emitREX(concat, opBits, REX_REG_NONE, reg);
         emitCPUOp(concat, 0xB8, reg);
         emitValue(concat, value, opBits);
     }
