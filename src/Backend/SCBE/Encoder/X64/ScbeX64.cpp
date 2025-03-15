@@ -584,16 +584,28 @@ void ScbeX64::emitLoadZeroExtendRR(CpuReg regDst, CpuReg regSrc, OpBits numBitsD
         emitLoadRR(cc->computeRegF1, cc->computeRegI0, OpBits::F64);
         emitSymbolRelocationAddress(cc->computeRegI1, symCst_U64F64, 0);
 
-        concat.addString3("\x66\x0F\x62"); // punpckldq xmm1, xmmword ptr [rcx]
+        // punpckldq xmm1, xmmword ptr [rcx]
+        emitREX(concat, OpBits::F64, cc->computeRegF1, cc->computeRegI1);
+        emitCPUOp(concat, 0x0F);
+        emitCPUOp(concat, 0x62);
         emitModRM(concat, 0, cc->computeRegF1, cc->computeRegI1);
 
-        concat.addString3("\x66\x0F\x5C"); // subpd xmm1, xmmword ptr [rcx + 16]
+        // subpd xmm1, xmmword ptr [rcx + 16]
+        emitREX(concat, OpBits::F64, cc->computeRegF1, cc->computeRegI1);
+        emitCPUOp(concat, 0x0F);
+        emitCPUOp(concat, 0x5C);
         emitModRM(concat, 16, cc->computeRegF1, cc->computeRegI1);
 
-        concat.addString3("\x66\x0F\x28"); // movapd xmm0, xmm1
+        // movapd xmm0, xmm1
+        emitREX(concat, OpBits::F64, cc->computeRegF0, cc->computeRegF1);
+        emitCPUOp(concat, 0x0F);
+        emitCPUOp(concat, 0x28);
         emitModRM(concat, cc->computeRegF0, cc->computeRegF1);
 
-        concat.addString3("\x66\x0F\x15"); // unpckhpd xmm0, xmm1
+        // unpckhpd xmm0, xmm1
+        emitREX(concat, OpBits::F64, cc->computeRegF0, cc->computeRegF1);
+        emitCPUOp(concat, 0x0F);
+        emitCPUOp(concat, 0x15);
         emitModRM(concat, cc->computeRegF0, cc->computeRegF1);
 
         emitOpBinaryRR(cc->computeRegF0, cc->computeRegF1, CpuOp::FADD, OpBits::F64);
