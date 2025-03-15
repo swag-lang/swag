@@ -426,6 +426,7 @@ void ScbeX64::emitLoadRM(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits o
     if (isFloat(opBits))
     {
         emitSpecF64(concat, 0xF3, opBits);
+        emitREX(concat, OpBits::Zero, reg, memReg);
         concat.addU8(0x0F);
         concat.addU8(0x10);
         emitModRM(concat, memOffset, reg, memReg);
@@ -433,7 +434,7 @@ void ScbeX64::emitLoadRM(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits o
     else
     {
         emitREX(concat, opBits, reg, memReg);
-        emitSpecB8(concat, 0x8B, opBits);
+        emitSpecCPUOp(concat, 0x8B, opBits);
         emitModRM(concat, memOffset, reg, memReg);
     }
 }
@@ -661,14 +662,15 @@ void ScbeX64::emitStoreMR(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits 
     if (isFloat(opBits))
     {
         emitSpecF64(concat, 0xF3, opBits);
-        concat.addU8(0x0F);
-        concat.addU8(0x11);
+        emitREX(concat, OpBits::Zero, reg, memReg);
+        emitCPUOp(concat, 0x0F);
+        emitCPUOp(concat, 0x11);
         emitModRM(concat, memOffset, reg, memReg);
     }
     else
     {
         emitREX(concat, opBits, reg, memReg);
-        emitSpecB8(concat, 0x89, opBits);
+        emitSpecCPUOp(concat, 0x89, opBits);
         emitModRM(concat, memOffset, reg, memReg);
     }
 }
