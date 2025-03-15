@@ -1034,11 +1034,9 @@ void ScbeX64::emitOpUnaryR(CpuReg reg, CpuOp op, OpBits opBits)
         }
         else
         {
-            SWAG_ASSERT(reg < CpuReg::R8);
-            SWAG_ASSERT(opBits == OpBits::B32 || opBits == OpBits::B64);
-            emitREX(concat, opBits);
-            emitCPUOp(concat, 0xF7);
-            emitCPUOp(concat, 0xD8, reg);
+            emitREX(concat, opBits, MODRM_REG_0, reg);
+            emitSpecCPUOp(concat, 0xF7, opBits);
+            emitModRM(concat, MODRM_REG_3, reg);
         }
     }
     else if (op == CpuOp::BSWAP)
