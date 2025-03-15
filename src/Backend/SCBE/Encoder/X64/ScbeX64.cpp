@@ -1152,13 +1152,10 @@ void ScbeX64::emitOpBinaryRR(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBi
             emitModRM(concat, MODRM_REG_7, regSrc);
         else
             SWAG_ASSERT(false);
-        if (op == CpuOp::MOD || op == CpuOp::IMOD)
-        {
-            if (opBits == OpBits::B8)
-                emitOpBinaryRI(regDst, 8, CpuOp::SHR, OpBits::B32);
-            else
-                emitLoadRR(regDst, CpuReg::Rdx, opBits);
-        }
+        if ((op == CpuOp::MOD || op == CpuOp::IMOD) && opBits == OpBits::B8)
+            emitOpBinaryRI(regDst, 8, CpuOp::SHR, OpBits::B32); // AH => AL
+        else if (op == CpuOp::MOD || op == CpuOp::IMOD)
+            emitLoadRR(regDst, CpuReg::Rdx, opBits);
     }
     else if (op == CpuOp::MUL ||
              op == CpuOp::IMUL)
@@ -1203,11 +1200,10 @@ void ScbeX64::emitOpBinaryRR(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBi
     else if (op == CpuOp::BSF ||
              op == CpuOp::BSR)
     {
-        SWAG_ASSERT(regSrc == cc->computeRegI0 && regDst == cc->computeRegI0);
-        emitREX(concat, opBits, regSrc, regDst);
-        concat.addU8(0x0F);
-        emitCPUOp(concat, op);
-        concat.addU8(0xC0);
+        emitREX(concat, opBits, regDst, regSrc);
+        emitCPUOp(concat, 0x0F);
+        emitCPUOp(concat, op == CpuOp::BSF ? 0xBC : 0xBD);
+        emitModRM(concat, regDst, regSrc);
     }
     else if (op == CpuOp::POPCNT)
     {
