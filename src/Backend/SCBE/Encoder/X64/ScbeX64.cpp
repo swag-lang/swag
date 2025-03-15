@@ -894,7 +894,8 @@ void ScbeX64::emitCmpRI(CpuReg reg, uint64_t value, OpBits opBits)
         emitModRM(concat, MODRM_REG_7, reg);
         emitValue(concat, value, OpBits::B8);
     }
-    else if (opBits == OpBits::B16 && value <= 0x7FFF)
+    else if ((opBits == OpBits::B16 && value <= 0x7FFF) ||
+             (opBits == OpBits::B32 && value <= 0x7FFFFFFF))
     {
         if (reg == CpuReg::Rax)
             emitCPUOp(concat, 0x3d);
@@ -904,18 +905,10 @@ void ScbeX64::emitCmpRI(CpuReg reg, uint64_t value, OpBits opBits)
             emitCPUOp(concat, 0x81);
             emitModRM(concat, MODRM_REG_7, reg);
         }
-        emitValue(concat, value, OpBits::B16);
-    }
-    else if (value <= 0x7FFFFFFF)
-    {
-        SWAG_ASSERT(reg == cc->computeRegI0);
-        emitREX(concat, opBits, REX_REG_NONE, reg);
-        emitCPUOp(concat, 0x3d);
-        emitValue(concat, value, OpBits::B32);
+        emitValue(concat, value, opBits);
     }
     else
     {
-        SWAG_ASSERT(reg == cc->computeRegI0);
         emitLoadRI(cc->computeRegI1, value, opBits);
         emitCmpRR(reg, cc->computeRegI1, opBits);
     }
