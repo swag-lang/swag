@@ -26,7 +26,6 @@ struct ScbeX64 final : ScbeCpu
     void    emitLoadRM(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits opBits) override;
     void    emitLoadRI(CpuReg reg, uint64_t value, OpBits opBits) override;
     void    emitLoadRR(CpuReg regDst, CpuReg regSrc, OpBits opBits) override;
-    void    emitLoadR(CpuReg regDstSrc, OpBits opBits) override;
     void    emitLoadRI64(CpuReg reg, uint64_t value) override;
     void    emitLoadSignedExtendRM(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc) override;
     void    emitLoadSignedExtendRR(CpuReg regDst, CpuReg regSrc, OpBits numBitsDst, OpBits numBitsSrc) override;

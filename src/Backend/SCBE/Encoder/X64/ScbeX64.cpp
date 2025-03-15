@@ -355,14 +355,6 @@ void ScbeX64::emitLoadRR(CpuReg regDst, CpuReg regSrc, OpBits opBits)
     }
 }
 
-void ScbeX64::emitLoadR(CpuReg regDstSrc, OpBits opBits)
-{
-    SWAG_ASSERT(regDstSrc == cc->computeRegI0);
-    SWAG_ASSERT(opBits == OpBits::B8);
-    emitSpecCPUOp(concat, CpuOp::MOV, opBits);
-    concat.addU8(0xE0);
-}
-
 void ScbeX64::emitLoadRI64(CpuReg reg, uint64_t value)
 {
     emitREX(concat, OpBits::B64, REX_REG_NONE, reg);
@@ -1163,9 +1155,9 @@ void ScbeX64::emitOpBinaryRR(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBi
         if (op == CpuOp::MOD || op == CpuOp::IMOD)
         {
             if (opBits == OpBits::B8)
-                emitLoadR(cc->computeRegI0, opBits);
+                emitOpBinaryRI(regDst, 8, CpuOp::SHR, OpBits::B32);
             else
-                emitLoadRR(cc->computeRegI0, CpuReg::Rdx, opBits);
+                emitLoadRR(regDst, CpuReg::Rdx, opBits);
         }
     }
     else if (op == CpuOp::MUL ||

@@ -268,7 +268,6 @@ struct ScbeCpu : BackendEncoder
     virtual void    emitLoadRM(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits opBits)                                                        = 0;
     virtual void    emitLoadRI(CpuReg reg, uint64_t value, OpBits opBits)                                                                           = 0;
     virtual void    emitLoadRR(CpuReg regDst, CpuReg regSrc, OpBits opBits)                                                                         = 0;
-    virtual void    emitLoadR(CpuReg regDstSrc, OpBits opBits)                                                                                      = 0;
     virtual void    emitLoadRI64(CpuReg reg, uint64_t value)                                                                                        = 0;
     virtual void    emitLoadSignedExtendRR(CpuReg regDst, CpuReg regSrc, OpBits numBitsDst, OpBits numBitsSrc)                                      = 0;
     virtual void    emitLoadSignedExtendRM(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc)                     = 0;

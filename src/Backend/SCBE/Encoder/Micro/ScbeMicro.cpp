@@ -147,13 +147,6 @@ void ScbeMicro::emitLoadRR(CpuReg regDst, CpuReg regSrc, OpBits opBits)
     inst->opBitsA   = opBits;
 }
 
-void ScbeMicro::emitLoadR(CpuReg regDstSrc, OpBits opBits)
-{
-    const auto inst = addInstruction(ScbeMicroOp::LoadR);
-    inst->regA      = regDstSrc;
-    inst->opBitsA   = opBits;
-}
-
 void ScbeMicro::emitLoadRI64(CpuReg reg, uint64_t value)
 {
     const auto inst = addInstruction(ScbeMicroOp::LoadRI64);
@@ -564,9 +557,6 @@ void ScbeMicro::encode(ScbeCpu& encoder) const
                 break;
             case ScbeMicroOp::LoadRR:
                 encoder.emitLoadRR(inst->regA, inst->regB, inst->opBitsA);
-                break;
-            case ScbeMicroOp::LoadR:
-                encoder.emitLoadR(inst->regA, inst->opBitsA);
                 break;
             case ScbeMicroOp::LoadRI64:
                 encoder.emitLoadRI64(inst->regA, inst->valueA);

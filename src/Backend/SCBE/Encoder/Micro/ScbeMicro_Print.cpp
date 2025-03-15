@@ -405,11 +405,6 @@ void ScbeMicro::print() const
                 line.name = cpuOpName(CpuOp::MOV, inst->opBitsA);
                 line.args = form("%s, %s", regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsA));
                 break;
-            case ScbeMicroOp::LoadR:
-                // encoder.emitLoad(inst->regA, inst->opBitsA);
-                line.name = cpuOpName(CpuOp::MOV, inst->opBitsA);
-                line.args = form("%s, %s", regName(inst->regA, inst->opBitsA), regName(inst->regA, inst->opBitsA));
-                break;
             case ScbeMicroOp::LoadRI64:
                 // encoder.emitLoad(inst->regA, inst->valueA);
                 line.name = "mov";
