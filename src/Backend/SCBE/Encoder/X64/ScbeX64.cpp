@@ -946,9 +946,9 @@ void ScbeX64::emitCmpMI(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBit
 
     if (opBits == OpBits::B8)
     {
-        emitREX(concat, opBits);
-        concat.addU8(0x80);
-        emitModRM(concat, memOffset, memReg, memReg, 0x39);
+        emitREX(concat, opBits, REX_REG_NONE, memReg);
+        emitCPUOp(concat, 0x80);
+        emitModRM(concat, memOffset, MODRM_REG_7, memReg);
         emitValue(concat, value, OpBits::B8);
     }
     else if (value <= 0x7F ||
@@ -956,25 +956,22 @@ void ScbeX64::emitCmpMI(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBit
              (opBits == OpBits::B32 && value >= 0xFFFFFF80) ||
              (opBits == OpBits::B64 && value >= 0xFFFFFFFFFFFFFF80))
     {
-        emitREX(concat, opBits);
-        concat.addU8(0x83);
-        emitModRM(concat, memOffset, memReg, memReg, 0x39);
+        emitREX(concat, opBits, REX_REG_NONE, memReg);
+        emitCPUOp(concat, 0x83);
+        emitModRM(concat, memOffset, MODRM_REG_7, memReg);
         emitValue(concat, value, OpBits::B8);
     }
-    else if (value > 0x7FFFFFFF)
+    else if (value <= 0x7FFFFFFF)
     {
-        emitLoadRM(cc->computeRegI0, memReg, memOffset, opBits);
-        emitCmpRI(cc->computeRegI0, value, opBits);
+        emitREX(concat, opBits);
+        emitCPUOp(concat, 0x81);
+        emitModRM(concat, memOffset, MODRM_REG_7, memReg);
+        emitValue(concat, value, opBits == OpBits::B16 ? opBits : OpBits::B32);
     }
     else
     {
-        emitREX(concat, opBits);
-        concat.addU8(0x81);
-        emitModRM(concat, memOffset, memReg, memReg, 0x39);
-        if (opBits == OpBits::B16)
-            emitValue(concat, value, OpBits::B16);
-        else
-            emitValue(concat, value, OpBits::B32);
+        emitLoadRM(cc->computeRegI0, memReg, memOffset, opBits);
+        emitCmpRI(cc->computeRegI0, value, opBits);
     }
 }
 
