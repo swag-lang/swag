@@ -563,16 +563,16 @@ void ScbeX64::emitLoadZeroExtendRR(CpuReg regDst, CpuReg regSrc, OpBits numBitsD
     if (numBitsSrc == OpBits::B8 && (numBitsDst == OpBits::B32 || numBitsDst == OpBits::B64))
     {
         emitREX(concat, numBitsDst, regDst, regSrc);
-        concat.addU8(0x0F);
-        concat.addU8(0xB6);
-        concat.addU8(getModRM(ModRMMode::Register, regDst, encodeReg(regSrc)));
+        emitCPUOp(concat, 0x0F);
+        emitCPUOp(concat, 0xB6);
+        emitModRM(concat, regDst, regSrc);
     }
     else if (numBitsSrc == OpBits::B16 && numBitsDst == OpBits::B64)
     {
         emitREX(concat, OpBits::B64, regDst, regSrc);
-        concat.addU8(0x0F);
-        concat.addU8(0xB7);
-        concat.addU8(getModRM(ModRMMode::Register, regDst, encodeReg(regSrc)));
+        emitCPUOp(concat, 0x0F);
+        emitCPUOp(concat, 0xB7);
+        emitModRM(concat, regDst, regSrc);
     }
     else if (numBitsSrc == OpBits::B32 && numBitsDst == OpBits::B64)
     {
