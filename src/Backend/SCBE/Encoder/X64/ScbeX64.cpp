@@ -874,51 +874,43 @@ void ScbeX64::emitCmpRI(CpuReg reg, uint64_t value, OpBits opBits)
 
     if (opBits == OpBits::B8)
     {
-        SWAG_ASSERT(reg == cc->computeRegI0 || reg == cc->computeRegI1);
-        if (reg == cc->computeRegI0)
+        if (reg == CpuReg::Rax)
+            emitCPUOp(concat, 0x3C);
+        else
         {
-            concat.addU8(0x3C);
-            emitValue(concat, value, OpBits::B8);
+            emitREX(concat, opBits, REX_REG_NONE, reg);
+            emitCPUOp(concat, 0x80);
+            emitModRM(concat, MODRM_REG_7, reg);
         }
-        else if (reg == cc->computeRegI1)
-        {
-            concat.addU8(0x80);
-            concat.addU8(0xF9);
-            emitValue(concat, value, OpBits::B8);
-        }
+        emitValue(concat, value, OpBits::B8);
     }
     else if (value <= 0x7F ||
              (opBits == OpBits::B16 && value >= 0xFF80) ||
              (opBits == OpBits::B32 && value >= 0xFFFFFF80) ||
              (opBits == OpBits::B64 && value >= 0xFFFFFFFFFFFFFF80))
     {
-        SWAG_ASSERT(reg == cc->computeRegI0 || reg == cc->computeRegI1);
-        emitREX(concat, opBits);
-        concat.addU8(0x83);
-        emitCPUOp(concat, 0xF8, reg);
-        emitValue(concat, value & 0xFF, OpBits::B8);
+        emitREX(concat, opBits, REX_REG_NONE, reg);
+        emitCPUOp(concat, 0x83);
+        emitModRM(concat, MODRM_REG_7, reg);
+        emitValue(concat, value, OpBits::B8);
     }
     else if (opBits == OpBits::B16 && value <= 0x7FFF)
     {
-        SWAG_ASSERT(reg == cc->computeRegI0 || reg == cc->computeRegI1);
-        emitREX(concat, opBits);
-        if (reg == cc->computeRegI0)
+        if (reg == CpuReg::Rax)
+            emitCPUOp(concat, 0x3d);
+        else
         {
-            concat.addU8(0x3d);
-            emitValue(concat, value, OpBits::B16);
+            emitREX(concat, opBits, REX_REG_NONE, reg);
+            emitCPUOp(concat, 0x81);
+            emitModRM(concat, MODRM_REG_7, reg);
         }
-        else if (reg == cc->computeRegI1)
-        {
-            concat.addU8(0x81);
-            concat.addU8(0xF9);
-            emitValue(concat, value, OpBits::B16);
-        }
+        emitValue(concat, value, OpBits::B16);
     }
     else if (value <= 0x7FFFFFFF)
     {
         SWAG_ASSERT(reg == cc->computeRegI0);
-        emitREX(concat, opBits);
-        concat.addU8(0x3d);
+        emitREX(concat, opBits, REX_REG_NONE, reg);
+        emitCPUOp(concat, 0x3d);
         emitValue(concat, value, OpBits::B32);
     }
     else
