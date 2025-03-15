@@ -584,8 +584,11 @@ void ScbeX64::emitLoadZeroExtendRR(CpuReg regDst, CpuReg regSrc, OpBits numBitsD
         emitLoadRR(cc->computeRegF1, cc->computeRegI0, OpBits::F64);
         emitSymbolRelocationAddress(cc->computeRegI1, symCst_U64F64, 0);
 
-        concat.addString4("\x66\x0F\x62\x09");     // punpckldq xmm1, xmmword ptr [rcx]
-        concat.addString5("\x66\x0F\x5C\x49\x10"); // subpd xmm1, xmmword ptr [rcx + 16]
+        concat.addString3("\x66\x0F\x62"); // punpckldq xmm1, xmmword ptr [rcx]
+        emitModRM(concat, 0, cc->computeRegF1, cc->computeRegI1);
+
+        concat.addString3("\x66\x0F\x5C"); // subpd xmm1, xmmword ptr [rcx + 16]
+        emitModRM(concat, 16, cc->computeRegF1, cc->computeRegI1);
 
         concat.addString3("\x66\x0F\x28"); // movapd xmm0, xmm1
         emitModRM(concat, cc->computeRegF0, cc->computeRegF1);
