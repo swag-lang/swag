@@ -1043,7 +1043,7 @@ void ScbeX64::emitOpUnaryR(CpuReg reg, CpuOp op, OpBits opBits)
     {
         if (opBits == OpBits::B16)
         {
-            // rol ax, 0x8 
+            // rol ax, 0x8
             emitREX(concat, opBits, REX_REG_NONE, reg);
             emitCPUOp(concat, 0xC1);
             emitCPUOp(concat, 0xC0);
@@ -1168,15 +1168,22 @@ void ScbeX64::emitOpBinaryRR(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBi
         else
             SWAG_ASSERT(false);
     }
-    else if (op == CpuOp::SAL ||
+    else if (op == CpuOp::ROL ||
+             op == CpuOp::ROR ||
+             op == CpuOp::SAL ||
              op == CpuOp::SAR ||
              op == CpuOp::SHL ||
              op == CpuOp::SHR)
     {
-        SWAG_ASSERT(regSrc == CpuReg::Rcx);
+        if (regSrc != CpuReg::Rcx)
+            emitLoadRR(CpuReg::Rcx, regSrc, opBits);
         emitREX(concat, opBits, REX_REG_NONE, regDst);
         emitSpecCPUOp(concat, 0xD3, opBits);
-        if (op == CpuOp::SAL || op == CpuOp::SHL)
+        if (op == CpuOp::ROL)
+            emitModRM(concat, MODRM_REG_0, regDst);
+        else if (op == CpuOp::ROR)
+            emitModRM(concat, MODRM_REG_1, regDst);
+        else if (op == CpuOp::SAL || op == CpuOp::SHL)
             emitModRM(concat, MODRM_REG_4, regDst);
         else if (op == CpuOp::SAR)
             emitModRM(concat, MODRM_REG_7, regDst);
@@ -1223,19 +1230,6 @@ void ScbeX64::emitOpBinaryRR(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBi
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, op);
         emitModRM(concat, regDst, regSrc);
-    }
-    else if (op == CpuOp::ROL ||
-             op == CpuOp::ROR)
-    {
-        SWAG_ASSERT(regSrc == CpuReg::Rcx);
-        emitREX(concat, opBits, REX_REG_NONE, regDst);
-        emitSpecCPUOp(concat, 0xD3, opBits);
-        if (op == CpuOp::ROL)
-            emitModRM(concat, MODRM_REG_0, regDst);
-        else if (op == CpuOp::ROR)
-            emitModRM(concat, MODRM_REG_1, regDst);
-        else
-            SWAG_ASSERT(false);
     }
     else if (op == CpuOp::CMPXCHG)
     {
