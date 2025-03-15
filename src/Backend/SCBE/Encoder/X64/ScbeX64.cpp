@@ -1111,11 +1111,11 @@ void ScbeX64::emitOpBinaryRR(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBi
             op != CpuOp::UCOMIF &&
             op != CpuOp::FXOR)
         {
-            concat.addU8(0xF3);
+            emitCPUOp(concat, 0xF3);
             emitREX(concat, emitFlags.has(EMITF_B64) ? OpBits::B64 : OpBits::B32, regSrc, regDst);
         }
 
-        concat.addU8(0x0F);
+        emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, op);
         concat.addU8(static_cast<uint8_t>(0xC0 | encodeReg(regSrc) | encodeReg(regDst) << 3));
     }
@@ -1126,7 +1126,7 @@ void ScbeX64::emitOpBinaryRR(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBi
             op != CpuOp::UCOMIF &&
             op != CpuOp::FXOR)
         {
-            concat.addU8(0xF2);
+            emitCPUOp(concat, 0xF2);
             emitREX(concat, emitFlags.has(EMITF_B64) ? OpBits::B64 : OpBits::B32, regSrc, regDst);
         }
         else
@@ -1134,7 +1134,7 @@ void ScbeX64::emitOpBinaryRR(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBi
             concat.addU8(0x66);
         }
 
-        concat.addU8(0x0F);
+        emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, op);
         concat.addU8(static_cast<uint8_t>(0xC0 | encodeReg(regSrc) | encodeReg(regDst) << 3));
     }
@@ -1229,9 +1229,9 @@ void ScbeX64::emitOpBinaryRR(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBi
     else if (op == CpuOp::NOT)
     {
         SWAG_ASSERT(regSrc == regDst);
-        emitREX(concat, opBits);
+        emitREX(concat, opBits, MODRM_REG_0, regSrc);
         emitSpecCPUOp(concat, op, opBits);
-        emitCPUOp(concat, 0xD0, regSrc);
+        emitModRM(concat, MODRM_REG_2, regSrc);
     }
     else if (op == CpuOp::ROL ||
              op == CpuOp::ROR)
