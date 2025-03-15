@@ -1220,15 +1220,11 @@ void ScbeX64::emitOpBinaryRR(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBi
     }
     else if (op == CpuOp::POPCNT)
     {
-        SWAG_ASSERT(regSrc == cc->computeRegI0 && regDst == cc->computeRegI0);
-        if (opBits == OpBits::B16)
-            emitREX(concat, opBits, regSrc, regDst);
         concat.addU8(0xF3);
-        if (opBits == OpBits::B64)
-            emitREX(concat, opBits, regSrc, regDst);
-        concat.addU8(0x0F);
+        emitREX(concat, opBits, regDst, regSrc);
+        emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, op);
-        concat.addU8(0xC0);
+        emitModRM(concat, regDst, regSrc);
     }
     else if (op == CpuOp::NOT)
     {
