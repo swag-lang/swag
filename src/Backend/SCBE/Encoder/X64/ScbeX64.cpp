@@ -1197,6 +1197,19 @@ void ScbeX64::emitOpBinaryRR(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBi
         emitSpecCPUOp(concat, op, opBits);
         emitModRM(concat, regSrc, regDst);
     }
+    else if (op == CpuOp::CMOVB ||
+             op == CpuOp::CMOVE ||
+             op == CpuOp::CMOVG ||
+             op == CpuOp::CMOVL ||
+             op == CpuOp::CMOVBE ||
+             op == CpuOp::CMOVGE)
+    {
+        opBits = std::max(opBits, OpBits::B32);
+        emitREX(concat, opBits, regDst, regSrc);
+        emitCPUOp(concat, 0x0F);
+        emitCPUOp(concat, op);
+        emitModRM(concat, regDst, regSrc);
+    }
     else if (op == CpuOp::BSF ||
              op == CpuOp::BSR)
     {
@@ -1231,25 +1244,11 @@ void ScbeX64::emitOpBinaryRR(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBi
         emitREX(concat, opBits, MODRM_REG_0, regDst);
         emitSpecCPUOp(concat, 0xD3, opBits);
         if (op == CpuOp::ROL)
-            emitModRM(concat, MODRM_REG_0, regDst);        
+            emitModRM(concat, MODRM_REG_0, regDst);
         else if (op == CpuOp::ROR)
             emitModRM(concat, MODRM_REG_1, regDst);
         else
             SWAG_ASSERT(false);
-    }
-    else if (op == CpuOp::CMOVB ||
-             op == CpuOp::CMOVE ||
-             op == CpuOp::CMOVG ||
-             op == CpuOp::CMOVL ||
-             op == CpuOp::CMOVBE ||
-             op == CpuOp::CMOVGE)
-    {
-        if (opBits == OpBits::B8 || opBits == OpBits::B16)
-            opBits = OpBits::B32;
-        emitREX(concat, opBits, regDst, regSrc);
-        concat.addU8(0x0F);
-        emitCPUOp(concat, op);
-        concat.addU8(getModRM(ModRMMode::Register, regDst, encodeReg(regSrc)));
     }
     else if (op == CpuOp::CMPXCHG)
     {
