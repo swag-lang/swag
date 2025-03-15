@@ -618,13 +618,12 @@ void ScbeX64::emitLoadZeroExtendRR(CpuReg regDst, CpuReg regSrc, OpBits numBitsD
 
 void ScbeX64::emitLoadSignedExtendRR(CpuReg regDst, CpuReg regSrc, OpBits numBitsDst, OpBits numBitsSrc)
 {
-    SWAG_ASSERT(regDst == cc->computeRegI0);
-    SWAG_ASSERT(regSrc == cc->computeRegI0);
     if (numBitsDst == OpBits::B32 && numBitsSrc == OpBits::B8)
     {
-        concat.addU8(0x0F);
+        emitREX(concat, OpBits::Zero, regDst, regSrc);
+        emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, 0xBE);
-        concat.addU8(getModRM(ModRMMode::Register, regDst, encodeReg(regSrc)));
+        emitModRM(concat, regDst, regSrc);
     }
     else
     {
