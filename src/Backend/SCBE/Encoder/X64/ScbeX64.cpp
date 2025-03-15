@@ -17,12 +17,13 @@ enum class ModRMMode : uint8_t
     Register       = 0b11,
 };
 
-constexpr auto REX_REG_NONE = static_cast<CpuReg>(250);
-constexpr auto MODRM_REG_0  = static_cast<CpuReg>(251);
-constexpr auto MODRM_REG_1  = static_cast<CpuReg>(252);
-constexpr auto MODRM_REG_2  = static_cast<CpuReg>(253);
-constexpr auto MODRM_REG_3  = static_cast<CpuReg>(254);
-constexpr auto MODRM_REG_4  = static_cast<CpuReg>(255);
+constexpr auto REX_REG_NONE = static_cast<CpuReg>(249);
+constexpr auto MODRM_REG_0  = static_cast<CpuReg>(250);
+constexpr auto MODRM_REG_1  = static_cast<CpuReg>(251);
+constexpr auto MODRM_REG_2  = static_cast<CpuReg>(252);
+constexpr auto MODRM_REG_3  = static_cast<CpuReg>(253);
+constexpr auto MODRM_REG_4  = static_cast<CpuReg>(254);
+constexpr auto MODRM_REG_5  = static_cast<CpuReg>(255);
 
 constexpr uint8_t MODRM_RM_SID = 0b100;
 constexpr uint8_t MODRM_RM_RIP = 0b101;
@@ -112,6 +113,8 @@ namespace
                 return 3;
             case MODRM_REG_4:
                 return 4;
+            case MODRM_REG_5:
+                return 5;            
 
             default:
                 SWAG_ASSERT(false);
@@ -134,12 +137,17 @@ namespace
     }
 
     // Addressing mode
-    uint8_t getModRM(ModRMMode mod, CpuReg reg, uint8_t rm)
+    uint8_t getModRM(ModRMMode mod, uint8_t reg, uint8_t rm)
     {
-        const auto result = static_cast<uint32_t>(mod) << 6 | ((encodeReg(reg) & 0b111) << 3) | (rm & 0b111);
+        const auto result = static_cast<uint32_t>(mod) << 6 | ((reg & 0b111) << 3) | (rm & 0b111);
         return static_cast<uint8_t>(result);
     }
-
+    
+    uint8_t getModRM(ModRMMode mod, CpuReg reg, uint8_t rm)
+    {
+        return getModRM(mod, encodeReg(reg), rm);
+    }
+  
     // Scaled index addressing
     uint8_t getSid(uint8_t scale, CpuReg regIndex, CpuReg regBase)
     {
@@ -1155,13 +1163,10 @@ void ScbeX64::emitOpBinaryRR(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBi
     else if (op == CpuOp::MUL ||
              op == CpuOp::IMUL)
     {
-        SWAG_ASSERT(regDst == cc->computeRegI0 && regSrc == cc->computeRegI1);
+        SWAG_ASSERT(regDst == CpuReg::Rax);
         emitREX(concat, opBits, regSrc, regDst);
-        emitSpecB8(concat, 0xF7, opBits);
-        if (op == CpuOp::MUL)
-            concat.addU8(0xE1);
-        else if (op == CpuOp::IMUL)
-            concat.addU8(0xE9);
+        emitSpecCPUOp(concat, 0xF7, opBits);
+        emitModRM(concat, op == CpuOp::MUL ? MODRM_REG_4 : MODRM_REG_5, regSrc);
     }
     else if (op == CpuOp::SAR ||
              op == CpuOp::SAL ||
