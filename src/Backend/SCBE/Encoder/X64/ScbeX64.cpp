@@ -1019,9 +1019,9 @@ void ScbeX64::emitOpUnaryR(CpuReg reg, CpuOp op, OpBits opBits)
 {
     if (op == CpuOp::NOT)
     {
-        emitREX(concat, opBits);
-        emitSpecCPUOp(concat, op, opBits);
-        emitCPUOp(concat, 0xD0, reg);
+        emitREX(concat, opBits, MODRM_REG_0, reg);
+        emitSpecCPUOp(concat, 0xF7, opBits);
+        emitModRM(concat, MODRM_REG_2, reg);
     }
     else if (op == CpuOp::NEG)
     {
@@ -1225,13 +1225,6 @@ void ScbeX64::emitOpBinaryRR(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBi
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, op);
         emitModRM(concat, regDst, regSrc);
-    }
-    else if (op == CpuOp::NOT)
-    {
-        SWAG_ASSERT(regSrc == regDst);
-        emitREX(concat, opBits, MODRM_REG_0, regSrc);
-        emitSpecCPUOp(concat, op, opBits);
-        emitModRM(concat, MODRM_REG_2, regSrc);
     }
     else if (op == CpuOp::ROL ||
              op == CpuOp::ROR)

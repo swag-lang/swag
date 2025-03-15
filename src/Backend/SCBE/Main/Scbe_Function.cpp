@@ -815,7 +815,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::GreaterEqZeroToTrue:
                 pp.emitLoadRM(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B32);
-                pp.emitOpBinaryRR(cc.computeRegI0, cc.computeRegI0, CpuOp::NOT, OpBits::B32);
+                pp.emitOpUnaryR(cc.computeRegI0, CpuOp::NOT, OpBits::B32);
                 pp.emitOpBinaryRI(cc.computeRegI0, 31, CpuOp::SHR, OpBits::B32);
                 pp.emitStoreMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B8);
                 break;
