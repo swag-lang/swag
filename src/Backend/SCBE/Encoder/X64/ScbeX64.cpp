@@ -1297,13 +1297,20 @@ void ScbeX64::emitOpBinaryMR(CpuReg memReg, uint64_t memOffset, CpuReg reg, CpuO
              op == CpuOp::SHR ||
              op == CpuOp::SHL)
     {
-        SWAG_ASSERT(memReg == cc->computeRegI0 || memReg == CpuReg::Rsp);
-        SWAG_ASSERT(reg == cc->computeRegI1);
+        if (reg != CpuReg::Rcx)
+            emitLoadRR(CpuReg::Rcx, reg, opBits);
         if (emitFlags.has(EMITF_Lock))
             concat.addU8(0xF0);
-        emitREX(concat, opBits, reg, memReg);
-        emitSpecB8(concat, 0xD3, opBits);
-        concat.addU8(static_cast<uint8_t>(op) & ~0xC0);
+        emitREX(concat, opBits, REX_REG_NONE, memReg);
+        emitSpecCPUOp(concat, 0xD3, opBits);
+        if (op == CpuOp::SHL)
+            emitModRM(concat, memOffset, MODRM_REG_4, memReg);
+        else if (op == CpuOp::SAR)
+            emitModRM(concat, memOffset, MODRM_REG_7, memReg);
+        else if (op == CpuOp::SHR)
+            emitModRM(concat, memOffset, MODRM_REG_5, memReg);
+        else
+            SWAG_ASSERT(false);
     }
     else
     {
