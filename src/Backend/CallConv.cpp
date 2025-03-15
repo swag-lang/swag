@@ -24,6 +24,7 @@ void initCallConvKinds()
 
     ccX64.computeRegI0 = CpuReg::Rax;
     ccX64.computeRegI1 = CpuReg::Rcx;
+    ccX64.computeRegI2 = CpuReg::R8;
     ccX64.computeRegF0 = CpuReg::Xmm0;
     ccX64.computeRegF1 = CpuReg::Xmm1;
     ccX64.computeRegF2 = CpuReg::Xmm2;

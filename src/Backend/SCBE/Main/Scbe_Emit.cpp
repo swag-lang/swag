@@ -149,9 +149,9 @@ void Scbe::emitShiftLogical(ScbeCpu& pp, CpuOp op)
         emitIMMA(pp, cc->computeRegI0, opBits);
         emitIMMB(pp, cc->computeRegI1, OpBits::B32);
         pp.emitOpBinaryRR(cc->computeRegI0, cc->computeRegI1, op, opBits);
-        pp.emitClearR(CpuReg::R8, opBits);
+        pp.emitClearR(cc->computeRegI2, opBits);
         pp.emitCmpRI(cc->computeRegI1, ScbeCpu::getNumBits(opBits) - 1, OpBits::B32);
-        pp.emitOpBinaryRR(cc->computeRegI0, CpuReg::R8, CpuOp::CMOVG, opBits);
+        pp.emitOpBinaryRR(cc->computeRegI0, cc->computeRegI2, CpuOp::CMOVG, opBits);
         pp.emitStoreMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, opBits);
     }
 }

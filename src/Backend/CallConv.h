@@ -85,6 +85,7 @@ struct CallConv
     // Base computing registers
     CpuReg computeRegI0 = CpuReg::Max;
     CpuReg computeRegI1 = CpuReg::Max;
+    CpuReg computeRegI2 = CpuReg::Max;
     CpuReg computeRegF0 = CpuReg::Max;
     CpuReg computeRegF1 = CpuReg::Max;
     CpuReg computeRegF2 = CpuReg::Max;
