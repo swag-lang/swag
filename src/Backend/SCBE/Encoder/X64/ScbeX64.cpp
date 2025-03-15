@@ -1195,7 +1195,7 @@ void ScbeX64::emitOpBinaryRR(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBi
     {
         emitREX(concat, opBits, regSrc, regDst);
         emitSpecCPUOp(concat, op, opBits);
-        concat.addU8(getModRM(ModRMMode::Register, regSrc, encodeReg(regDst)));
+        emitModRM(concat, regSrc, regDst);
     }
     else if (op == CpuOp::BSF ||
              op == CpuOp::BSR)
@@ -1227,13 +1227,15 @@ void ScbeX64::emitOpBinaryRR(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBi
     else if (op == CpuOp::ROL ||
              op == CpuOp::ROR)
     {
-        SWAG_ASSERT(regDst == cc->computeRegI0 && regSrc == cc->computeRegI1);
+        SWAG_ASSERT(regSrc == CpuReg::Rcx);
         emitREX(concat, opBits, regDst, regSrc);
-        emitSpecB8(concat, 0xD3, opBits);
+        emitSpecCPUOp(concat, 0xD3, opBits);
         if (op == CpuOp::ROL)
-            concat.addU8(0xC0);
+            emitModRM(concat, MODRM_REG_0, regDst);        
+        else if (op == CpuOp::ROR)
+            emitModRM(concat, MODRM_REG_1, regDst);
         else
-            concat.addU8(0xC8);
+            SWAG_ASSERT(false);
     }
     else if (op == CpuOp::CMOVB ||
              op == CpuOp::CMOVE ||
