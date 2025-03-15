@@ -1152,7 +1152,7 @@ void ScbeX64::emitOpBinaryRR(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBi
              op == CpuOp::IMOD)
     {
         SWAG_ASSERT(regDst == CpuReg::Rax);
-        emitREX(concat, opBits, regSrc, regDst);
+        emitREX(concat, opBits, regDst, regSrc);
         emitSpecCPUOp(concat, 0xF7, opBits);
         if (op == CpuOp::DIV || op == CpuOp::MOD)
             emitModRM(concat, MODRM_REG_6, regSrc);
