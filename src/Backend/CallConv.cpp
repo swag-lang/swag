@@ -56,7 +56,7 @@ void initCallConvKinds()
     g_CallConv[static_cast<int>(CallConvKind::Swag)] = g_CallConv[static_cast<int>(CallConvKind::X86_64)];
 
 #ifdef _M_X64
-    g_CallConv[static_cast<int>(CallConvKind::ByteCode)] = g_CallConv[static_cast<int>(CallConvKind::X86_64)];
+    g_CallConv[static_cast<int>(CallConvKind::Compiler)] = g_CallConv[static_cast<int>(CallConvKind::X86_64)];
 #else
     static_assert(false, "unsupported architecture")
 #endif

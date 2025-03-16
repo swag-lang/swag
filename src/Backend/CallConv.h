@@ -6,7 +6,7 @@ struct TypeInfoFuncAttr;
 enum class CallConvKind
 {
     X86_64,
-    ByteCode,
+    Compiler,
     Swag,
     Max
 };

@@ -585,6 +585,11 @@ void Scbe::emitMakeCallback(ScbeCpu& pp)
     pp.emitLoadRR(cc->computeRegI1, cc->computeRegI0, OpBits::B64);
     pp.emitSymbolRelocationAddress(cc->computeRegI0, pp.symPI_makeCallback, 0);
     pp.emitLoadRM(cc->computeRegI0, cc->computeRegI0, 0, OpBits::B64);
+
+    VectorNative<CpuPushParam> pushCPUParams;
+    pushCPUParams.insert_at_index({.type = CpuPushParamType::CpuRegister, .baseReg = cc->computeRegI1}, 0);
+    pp.emitCallParameters(nullptr, pushCPUParams, CallConv::get(CallConvKind::Compiler));
+    
     pp.emitCallIndirect(cc->computeRegI0);
 
     // End

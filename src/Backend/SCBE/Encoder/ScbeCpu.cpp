@@ -218,7 +218,8 @@ namespace
                     break;
 
                 case CpuPushParamType::CpuRegister:
-                    pp.emitLoadRR(callConv->paramByRegisterInteger[idxParam], params[idxParam].baseReg, OpBits::B64);
+                    if (callConv->paramByRegisterInteger[idxParam] != params[idxParam].baseReg)
+                        pp.emitLoadRR(callConv->paramByRegisterInteger[idxParam], params[idxParam].baseReg, OpBits::B64);
                     break;
 
                 case CpuPushParamType::SymbolRelocationValue:
@@ -331,7 +332,7 @@ void ScbeCpu::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vecto
     // parameter is the capture context, which does not exist in a normal lambda function).
     // But as this is dynamic, we need to have two call paths : one for the closure (normal call), and
     // one for the lambda (omit first parameter)
-    if (typeFuncBc->isClosure())
+    if (typeFuncBc && typeFuncBc->isClosure())
     {
         // Get the capture context index, as we will have to remove it when calling a normal lambda
         uint32_t idxParamContext = 0;
@@ -448,7 +449,7 @@ void ScbeCpu::emitStoreCallerParam(uint32_t paramIdx, CpuReg reg, OpBits opBits)
 void ScbeCpu::emitSymbolRelocationPtr(CpuReg reg, const Utf8& name)
 {
     emitLoadRI64(reg, 0);
-    
+
     CpuRelocation relocation;
     relocation.virtualAddress = concat.totalCount() - sizeof(uint64_t) - textSectionOffset;
     const auto callSym        = getOrAddSymbol(name, CpuSymbolKind::Extern);
