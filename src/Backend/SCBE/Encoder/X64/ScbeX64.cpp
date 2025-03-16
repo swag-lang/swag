@@ -1094,28 +1094,6 @@ void ScbeX64::emitOpBinaryRM(CpuReg regDst, CpuReg memReg, uint64_t memOffset, C
 
 void ScbeX64::emitOpBinaryRR(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
-    if (op == CpuOp::DIV || op == CpuOp::MOD || op == CpuOp::IDIV || op == CpuOp::IMOD)
-    {
-        SWAG_ASSERT(getReg(regDst) == X64Reg::Rax);
-        if (opBits == OpBits::B8)
-        {
-            if (op == CpuOp::IDIV || op == CpuOp::IMOD)
-                emitLoadSignedExtendRR(regDst, regDst, OpBits::B32, OpBits::B8);
-            else
-                emitLoadZeroExtendRR(regDst, regDst, OpBits::B32, OpBits::B8);
-        }
-        else if (op == CpuOp::IDIV || op == CpuOp::IMOD)
-        {
-            // cdq
-            emitREX(concat, opBits);
-            emitCPUOp(concat, 0x99);
-        }
-        else
-        {
-            emitClearR(CpuReg::Rdx, opBits);
-        }
-    }
-
     if (opBits == OpBits::F32)
     {
         if (op != CpuOp::FSQRT &&
@@ -1156,6 +1134,22 @@ void ScbeX64::emitOpBinaryRR(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBi
              op == CpuOp::IMOD)
     {
         SWAG_ASSERT(getReg(regDst) == X64Reg::Rax);
+
+        if (opBits == OpBits::B8 && (op == CpuOp::IDIV || op == CpuOp::IMOD))
+            emitLoadSignedExtendRR(regDst, regDst, OpBits::B32, OpBits::B8);
+        else if (opBits == OpBits::B8)
+            emitLoadZeroExtendRR(regDst, regDst, OpBits::B32, OpBits::B8);
+        else if (op == CpuOp::IDIV || op == CpuOp::IMOD)
+        {
+            // cdq
+            emitREX(concat, opBits);
+            emitCPUOp(concat, 0x99);
+        }
+        else
+        {
+            emitClearR(CpuReg::Rdx, opBits);
+        }
+
         emitREX(concat, opBits, regDst, regSrc);
         emitSpecCPUOp(concat, 0xF7, opBits);
         if (op == CpuOp::DIV || op == CpuOp::MOD)
@@ -1373,30 +1367,6 @@ void ScbeX64::emitOpBinaryRI(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits
 
     ///////////////////////////////////////////
 
-    if (op == CpuOp::DIV || op == CpuOp::MOD || op == CpuOp::IDIV || op == CpuOp::IMOD)
-    {
-        SWAG_ASSERT(reg == cc->computeRegI0);
-        if (opBits == OpBits::B8)
-        {
-            if (op == CpuOp::IDIV || op == CpuOp::IMOD)
-                emitLoadSignedExtendRR(reg, reg, OpBits::B32, OpBits::B8);
-            else
-                emitLoadZeroExtendRR(reg, reg, OpBits::B32, OpBits::B8);
-        }
-        else if (op == CpuOp::IDIV || op == CpuOp::IMOD)
-        {
-            // cdq
-            emitREX(concat, opBits);
-            emitCPUOp(concat, 0x99);
-        }
-        else
-        {
-            emitClearR(CpuReg::Rdx, opBits);
-        }
-    }
-
-    ///////////////////////////////////////////
-
     if (value > 0x7FFFFFFF)
     {
         SWAG_ASSERT(reg == cc->computeRegI0);
@@ -1551,9 +1521,25 @@ void ScbeX64::emitOpBinaryRI(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits
 
     ///////////////////////////////////////////
 
-    else if (op == CpuOp::DIV)
+    else if (op == CpuOp::DIV || op == CpuOp::IDIV)
     {
-        if (Math::isPowerOfTwo(value) && optLevel >= BuildCfgBackendOptim::O1)
+        SWAG_ASSERT(getReg(reg) == X64Reg::Rax);
+        if (opBits == OpBits::B8 && op == CpuOp::IDIV)
+            emitLoadSignedExtendRR(reg, reg, OpBits::B32, OpBits::B8);
+        else if (opBits == OpBits::B8)
+            emitLoadZeroExtendRR(reg, reg, OpBits::B32, OpBits::B8);
+        else if (op == CpuOp::IDIV)
+        {
+            // cdq
+            emitREX(concat, opBits);
+            emitCPUOp(concat, 0x99);
+        }
+        else
+        {
+            emitClearR(CpuReg::Rdx, opBits);
+        }
+
+        if (op == CpuOp::DIV && Math::isPowerOfTwo(value) && optLevel >= BuildCfgBackendOptim::O1)
         {
             emitOpBinaryRI(reg, static_cast<uint32_t>(log2(value)), CpuOp::SHR, opBits, emitFlags);
         }
@@ -1563,12 +1549,6 @@ void ScbeX64::emitOpBinaryRI(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits
             emitLoadRI(cc->computeRegI1, value, opBits);
             emitOpBinaryRR(reg, cc->computeRegI1, op, opBits, emitFlags);
         }
-    }
-    else if (op == CpuOp::IDIV)
-    {
-        SWAG_ASSERT(reg == cc->computeRegI0);
-        emitLoadRI(cc->computeRegI1, value, opBits);
-        emitOpBinaryRR(reg, cc->computeRegI1, op, opBits, emitFlags);
     }
 
     ///////////////////////////////////////////
