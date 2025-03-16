@@ -263,17 +263,16 @@ void Scbe::emitMakeCallback(ScbeCpu& pp)
 
     // ByteCode lambda
     //////////////////
-
-    pp.emitLoadRR(cc->computeRegI1, cc->computeRegI0, OpBits::B64);
     
-    pp.emitSymbolRelocationAddress(cc->computeRegI0, pp.symPI_makeCallback, 0);
-    pp.emitLoadRM(cc->computeRegI0, cc->computeRegI0, 0, OpBits::B64);
+    const auto regCall = CallConv::getVolatileRegister(*cc, *cc, VF_EXCLUDE_COMPUTE_I0 | VF_EXCLUDE_PARAMS);
+    pp.emitSymbolRelocationAddress(regCall, pp.symPI_makeCallback, 0);
+    pp.emitLoadRM(regCall, regCall, 0, OpBits::B64);
 
     VectorNative<CpuPushParam> pushCPUParams;
-    pushCPUParams.insert_at_index({.type = CpuPushParamType::CpuRegister, .baseReg = cc->computeRegI1}, 0);
+    pushCPUParams.insert_at_index({.type = CpuPushParamType::CpuRegister, .baseReg = cc->computeRegI0}, 0);
     pp.emitCallParameters(nullptr, pushCPUParams, CallConv::get(CallConvKind::Compiler));
     
-    pp.emitCallIndirect(cc->computeRegI0);
+    pp.emitCallIndirect(regCall);
 
     // End
     //////////////////
