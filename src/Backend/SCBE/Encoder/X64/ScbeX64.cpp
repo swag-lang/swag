@@ -2120,19 +2120,19 @@ void ScbeX64::emitCopy(CpuReg memRegDst, CpuReg memRegSrc, uint32_t count)
     if (!count)
         return;
 
-    SWAG_ASSERT(memRegDst == cc->computeRegI0);
-    SWAG_ASSERT(memRegSrc == cc->computeRegI1);
     uint32_t offset = 0;
 
     // SSE 16 octets
     while (count >= 16)
     {
         // movups xmm0, [memRegSrc+??]
+        emitREX(concat, OpBits::Zero, REX_REG_NONE, memRegSrc);
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, 0x10);
         emitModRM(concat, offset, cc->computeRegF0, memRegSrc);
 
         // movups [memRegDst+??], xmm0
+        emitREX(concat, OpBits::Zero, REX_REG_NONE, memRegDst);
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, 0x11);
         emitModRM(concat, offset, cc->computeRegF0, memRegDst);
