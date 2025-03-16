@@ -983,7 +983,7 @@ void ScbeX64::emitCmpMI(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBit
     }
     else if (value <= 0x7FFFFFFF)
     {
-        emitREX(concat, opBits);
+        emitREX(concat, opBits, REX_REG_NONE, memReg);
         emitCPUOp(concat, 0x81);
         emitModRM(concat, memOffset, MODRM_REG_7, memReg);
         emitValue(concat, value, opBits == OpBits::B16 ? opBits : OpBits::B32);
