@@ -1916,7 +1916,7 @@ void ScbeX64::emitJumpTable(CpuReg table, CpuReg offset, int32_t currentIp, uint
     emitSymbolRelocationAddress(table, symCSIndex, offsetTableConstant);
 
     // movsxd rcx, dword ptr [rcx + rax*4]
-    emitREX(concat, OpBits::B64);
+    emitREX(concat, OpBits::B64, cc->computeRegI1, cc->computeRegI1);
     emitCPUOp(concat, 0x63);
     emitModRM(concat, ModRMMode::Memory, cc->computeRegI1, MODRM_RM_SID);
     concat.addU8(getSid(2, cc->computeRegI0, cc->computeRegI1));
