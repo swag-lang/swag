@@ -1133,8 +1133,10 @@ void ScbeX64::emitOpBinaryRR(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBi
              op == CpuOp::MOD ||
              op == CpuOp::IMOD)
     {
+        SWAG_ASSERT(regDst == cc->computeRegI0);
+        SWAG_ASSERT(regSrc == cc->computeRegI1);
         SWAG_ASSERT(getReg(regDst) == X64Reg::Rax);
-
+        SWAG_ASSERT(getReg(regSrc) != X64Reg::Rdx);
         if (opBits == OpBits::B8 && (op == CpuOp::IDIV || op == CpuOp::IMOD))
             emitLoadSignedExtendRR(regDst, regDst, OpBits::B32, OpBits::B8);
         else if (opBits == OpBits::B8)
@@ -1546,6 +1548,7 @@ void ScbeX64::emitOpBinaryRI(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits
         else
         {
             SWAG_ASSERT(reg == cc->computeRegI0);
+            SWAG_ASSERT(getReg(cc->computeRegI1) != X64Reg::Rdx);
             emitLoadRI(cc->computeRegI1, value, opBits);
             emitOpBinaryRR(reg, cc->computeRegI1, op, opBits, emitFlags);
         }
