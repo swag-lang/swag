@@ -2115,6 +2115,8 @@ void ScbeX64::emitCopy(CpuReg memRegDst, CpuReg memRegSrc, uint32_t count)
         return;
 
     uint32_t offset = 0;
+    SWAG_ASSERT(memRegDst == cc->computeRegI0);
+    SWAG_ASSERT(memRegSrc == cc->computeRegI1);
 
     // SSE 16 octets
     while (count >= 16)
@@ -2135,35 +2137,34 @@ void ScbeX64::emitCopy(CpuReg memRegDst, CpuReg memRegSrc, uint32_t count)
         offset += 16;
     }
 
-    const auto reg = CallConv::getVolatileRegister(*cc, *cc, VF_EXCLUDE_COMPUTE);
     while (count >= 8)
     {
-        emitLoadRM(reg, memRegSrc, offset, OpBits::B64);
-        emitStoreMR(memRegDst, offset, reg, OpBits::B64);
+        emitLoadRM(cc->computeRegI2, memRegSrc, offset, OpBits::B64);
+        emitStoreMR(memRegDst, offset, cc->computeRegI2, OpBits::B64);
         count -= 8;
         offset += 8;
     }
 
     while (count >= 4)
     {
-        emitLoadRM(reg, memRegSrc, offset, OpBits::B32);
-        emitStoreMR(memRegDst, offset, reg, OpBits::B32);
+        emitLoadRM(cc->computeRegI2, memRegSrc, offset, OpBits::B32);
+        emitStoreMR(memRegDst, offset, cc->computeRegI2, OpBits::B32);
         count -= 4;
         offset += 4;
     }
 
     while (count >= 2)
     {
-        emitLoadRM(reg, memRegSrc, offset, OpBits::B16);
-        emitStoreMR(memRegDst, offset, reg, OpBits::B16);
+        emitLoadRM(cc->computeRegI2, memRegSrc, offset, OpBits::B16);
+        emitStoreMR(memRegDst, offset, cc->computeRegI2, OpBits::B16);
         count -= 2;
         offset += 2;
     }
 
     while (count >= 1)
     {
-        emitLoadRM(reg, memRegSrc, offset, OpBits::B8);
-        emitStoreMR(memRegDst, offset, reg, OpBits::B8);
+        emitLoadRM(cc->computeRegI2, memRegSrc, offset, OpBits::B8);
+        emitStoreMR(memRegDst, offset, cc->computeRegI2, OpBits::B8);
         count -= 1;
         offset += 1;
     }
