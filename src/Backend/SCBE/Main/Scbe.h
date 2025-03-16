@@ -44,6 +44,8 @@ struct Scbe final : Backend
     static void emitLocalCall(ScbeCpu& pp);
     static void emitForeignCall(ScbeCpu& pp);
     static void emitLambdaCall(ScbeCpu& pp);
+    static void emitMakeLambda(ScbeCpu& pp);
+    static void emitMakeCallback(ScbeCpu& pp);
 
     static void emitOverflow(ScbeCpu& pp, const char* msg, bool isSigned);
     static void emitShiftRightArithmetic(ScbeCpu& pp);
@@ -71,6 +73,4 @@ struct Scbe final : Backend
     static void emitIMMC(ScbeCpu& pp, CpuReg reg, OpBits numBitsSrc, OpBits numBitsDst, bool isSigned);
     static void emitJumpDyn(ScbeCpu& pp);
     static void emitCopyVaargs(ScbeCpu& pp);
-    static void emitMakeLambda(ScbeCpu& pp);
-    static void emitMakeCallback(ScbeCpu& pp);
 };

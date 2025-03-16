@@ -3,6 +3,7 @@
 #include "Backend/ByteCode/ByteCodeInstruction.h"
 #include "Backend/SCBE/Main/Scbe.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/Ast.h"
 #include "Syntax/AstNode.h"
 #include "Wmf/Module.h"
 #include "Wmf/ModuleManager.h"
@@ -238,4 +239,44 @@ void Scbe::emitLambdaCall(ScbeCpu& pp)
 
     pp.pushRAParams.clear();
     pp.pushRVParams.clear();
+}
+
+void Scbe::emitMakeLambda(ScbeCpu& pp)
+{
+    const auto cc       = pp.cc;
+    const auto funcNode = castAst<AstFuncDecl>(reinterpret_cast<AstNode*>(pp.ip->b.pointer), AstNodeKind::FuncDecl);
+    SWAG_ASSERT(!pp.ip->c.pointer || (funcNode && funcNode->hasExtByteCode() && funcNode->extByteCode()->bc == reinterpret_cast<ByteCode*>(pp.ip->c.pointer)));
+    pp.emitSymbolRelocationPtr(cc->computeRegI0, funcNode->getCallName());
+    pp.emitStoreMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(pp.ip->a.u32), cc->computeRegI0, OpBits::B64);
+}
+
+void Scbe::emitMakeCallback(ScbeCpu& pp)
+{
+    const auto cc = pp.cc;
+
+    // Test if it's a bytecode lambda
+    pp.emitLoadRM(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(pp.ip->a.u32), OpBits::B64);
+    pp.emitLoadRI(cc->computeRegI1, SWAG_LAMBDA_BC_MARKER, OpBits::B64);
+    pp.emitOpBinaryRR(cc->computeRegI1, cc->computeRegI0, CpuOp::AND, OpBits::B64);
+
+    const auto jump = pp.emitJump(CpuCondJump::JZ, OpBits::B32);
+
+    // ByteCode lambda
+    //////////////////
+
+    pp.emitLoadRR(cc->computeRegI1, cc->computeRegI0, OpBits::B64);
+    
+    pp.emitSymbolRelocationAddress(cc->computeRegI0, pp.symPI_makeCallback, 0);
+    pp.emitLoadRM(cc->computeRegI0, cc->computeRegI0, 0, OpBits::B64);
+
+    VectorNative<CpuPushParam> pushCPUParams;
+    pushCPUParams.insert_at_index({.type = CpuPushParamType::CpuRegister, .baseReg = cc->computeRegI1}, 0);
+    pp.emitCallParameters(nullptr, pushCPUParams, CallConv::get(CallConvKind::Compiler));
+    
+    pp.emitCallIndirect(cc->computeRegI0);
+
+    // End
+    //////////////////
+    pp.emitPatchJump(jump);
+    pp.emitStoreMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(pp.ip->a.u32), cc->computeRegI0, OpBits::B64);
 }
