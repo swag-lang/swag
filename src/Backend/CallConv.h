@@ -54,7 +54,7 @@ struct CallConv
 {
     constexpr static uint32_t MAX_CALL_CONV_REGISTERS = 4;
     static const CallConv*    get(CallConvKind kind);
-    static CpuReg             getVolatileRegister(const CallConv& ccCaller, const CallConv& ccCallee, VolatileFlags flags);
+    static CpuReg             getVolatileRegisterInteger(const CallConv& ccCaller, const CallConv& ccCallee, VolatileFlags flags);
 
     // The number of parameters to pass by register
     uint32_t paramByRegisterCount = 4;
@@ -69,7 +69,8 @@ struct CallConv
     VectorNative<CpuReg> paramByRegisterFloat;
 
     // All registers considered as volatile
-    VectorNative<CpuReg> volatileRegisters;
+    VectorNative<CpuReg> volatileRegistersInteger;
+    VectorNative<CpuReg> volatileRegistersFloat;
 
     // All registers considered as nonvolatile
     VectorNative<CpuReg> nonVolatileRegisters;

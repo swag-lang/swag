@@ -190,7 +190,7 @@ void Scbe::emitLambdaCall(ScbeCpu& pp)
     const auto ip         = pp.ip;
     const auto typeFuncBc = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
 
-    const auto regCall = CallConv::getVolatileRegister(*pp.cc, typeFuncBc->getCallConv(), VF_EXCLUDE_COMPUTE | VF_EXCLUDE_PARAMS);
+    const auto regCall = CallConv::getVolatileRegisterInteger(*pp.cc, typeFuncBc->getCallConv(), VF_EXCLUDE_RETURN | VF_EXCLUDE_PARAMS);
 
     // Test if it's a bytecode lambda
     pp.emitLoadRM(regCall, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
@@ -264,7 +264,7 @@ void Scbe::emitMakeCallback(ScbeCpu& pp)
     // ByteCode lambda
     //////////////////
     
-    const auto regCall = CallConv::getVolatileRegister(*cc, *cc, VF_EXCLUDE_COMPUTE_I0 | VF_EXCLUDE_PARAMS);
+    const auto regCall = CallConv::getVolatileRegisterInteger(*cc, *cc, VF_EXCLUDE_COMPUTE_I0 | VF_EXCLUDE_PARAMS);
     pp.emitSymbolRelocationAddress(regCall, pp.symPI_makeCallback, 0);
     pp.emitLoadRM(regCall, regCall, 0, OpBits::B64);
 

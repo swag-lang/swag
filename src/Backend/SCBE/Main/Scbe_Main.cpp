@@ -309,7 +309,7 @@ void Scbe::emitGlobalInit(ScbeCpu& pp)
     emitInternalCallCPUParams(pp, g_LangSpec->name_priv_tlsAlloc, pp.pushParams, cc.nonVolatileRegisters[0], 0);
 
     // Init type table slice for each dependency (by calling ???_getTypeTable)
-    const auto resReg = CallConv::getVolatileRegister(cc, cc, VF_EXCLUDE_COMPUTE | VF_EXCLUDE_PARAM0 | VF_EXCLUDE_RETURN);
+    const auto resReg = CallConv::getVolatileRegisterInteger(cc, cc, VF_EXCLUDE_COMPUTE | VF_EXCLUDE_PARAM0 | VF_EXCLUDE_RETURN);
     pp.emitSymbolRelocationAddress(resReg, pp.symCSIndex, module->modulesSliceOffset + sizeof(SwagModule) + offsetof(SwagModule, types));
     for (const auto& dep : module->moduleDependencies)
     {

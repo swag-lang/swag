@@ -23,23 +23,24 @@ void initCallConvKinds()
     ccX64.returnByRegisterFloat   = CpuReg::Xmm0;
 
     ccX64.computeRegI0 = CpuReg::Rax;
-    ccX64.computeRegI1 = CpuReg::Rcx;
-    ccX64.computeRegI2 = CpuReg::R9;
+    ccX64.computeRegI1 = CpuReg::R10;
+    ccX64.computeRegI2 = CpuReg::R11;
     ccX64.computeRegF0 = CpuReg::Xmm0;
     ccX64.computeRegF1 = CpuReg::Xmm1;
     ccX64.computeRegF2 = CpuReg::Xmm2;
 
-    ccX64.volatileRegisters.push_back(CpuReg::Rax);
-    ccX64.volatileRegisters.push_back(CpuReg::Rcx);
-    ccX64.volatileRegisters.push_back(CpuReg::Rdx);
-    ccX64.volatileRegisters.push_back(CpuReg::R8);
-    ccX64.volatileRegisters.push_back(CpuReg::R9);
-    ccX64.volatileRegisters.push_back(CpuReg::R10);
-    ccX64.volatileRegisters.push_back(CpuReg::R11);
-    ccX64.volatileRegisters.push_back(CpuReg::Xmm0);
-    ccX64.volatileRegisters.push_back(CpuReg::Xmm1);
-    ccX64.volatileRegisters.push_back(CpuReg::Xmm2);
-    ccX64.volatileRegisters.push_back(CpuReg::Xmm3);
+    ccX64.volatileRegistersInteger.push_back(CpuReg::Rax);
+    ccX64.volatileRegistersInteger.push_back(CpuReg::Rcx);
+    ccX64.volatileRegistersInteger.push_back(CpuReg::Rdx);
+    ccX64.volatileRegistersInteger.push_back(CpuReg::R8);
+    ccX64.volatileRegistersInteger.push_back(CpuReg::R9);
+    ccX64.volatileRegistersInteger.push_back(CpuReg::R10);
+    ccX64.volatileRegistersInteger.push_back(CpuReg::R11);
+    
+    ccX64.volatileRegistersFloat.push_back(CpuReg::Xmm0);
+    ccX64.volatileRegistersFloat.push_back(CpuReg::Xmm1);
+    ccX64.volatileRegistersFloat.push_back(CpuReg::Xmm2);
+    ccX64.volatileRegistersFloat.push_back(CpuReg::Xmm3);
 
     ccX64.nonVolatileRegisters.push_back(CpuReg::Rbx);
     ccX64.nonVolatileRegisters.push_back(CpuReg::Rdi);
@@ -67,11 +68,11 @@ const CallConv* CallConv::get(CallConvKind kind)
     return &g_CallConv[static_cast<int>(kind)];
 }
 
-CpuReg CallConv::getVolatileRegister(const CallConv& ccCaller, const CallConv& ccCallee, VolatileFlags flags)
+CpuReg CallConv::getVolatileRegisterInteger(const CallConv& ccCaller, const CallConv& ccCallee, VolatileFlags flags)
 {
     // We need a working volatile register which is not used as a call parameter
     auto regRes = CpuReg::Max;
-    for (const auto& r : ccCaller.volatileRegisters)
+    for (const auto& r : ccCaller.volatileRegistersInteger)
     {
         if (r == ccCaller.computeRegI0 && flags.has(VF_EXCLUDE_COMPUTE_I0))
             continue;
@@ -80,8 +81,6 @@ CpuReg CallConv::getVolatileRegister(const CallConv& ccCaller, const CallConv& c
         if (r == ccCaller.computeRegI2 && flags.has(VF_EXCLUDE_COMPUTE_I2))
             continue;
         if (r == ccCallee.returnByRegisterInteger && flags.has(VF_EXCLUDE_RETURN))
-            continue;
-        if (r == ccCallee.returnByRegisterFloat && flags.has(VF_EXCLUDE_RETURN))
             continue;
 
         if (!ccCallee.paramByRegisterInteger.empty() && r == ccCallee.paramByRegisterInteger[0] && flags.has(VF_EXCLUDE_PARAM0))
