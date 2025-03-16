@@ -41,13 +41,14 @@ using VolatileFlags                                  = Flags<uint32_t>;
 static constexpr VolatileFlags VF_ZERO               = 0x00000000;
 static constexpr VolatileFlags VF_EXCLUDE_COMPUTE_I0 = 0x00000001;
 static constexpr VolatileFlags VF_EXCLUDE_COMPUTE_I1 = 0x00000002;
-static constexpr VolatileFlags VF_EXCLUDE_COMPUTE    = VF_EXCLUDE_COMPUTE_I0 | VF_EXCLUDE_COMPUTE_I1;
-static constexpr VolatileFlags VF_EXCLUDE_PARAM0     = 0x00000004;
-static constexpr VolatileFlags VF_EXCLUDE_PARAM1     = 0x00000008;
-static constexpr VolatileFlags VF_EXCLUDE_PARAM2     = 0x00000010;
-static constexpr VolatileFlags VF_EXCLUDE_PARAM3     = 0x00000020;
+static constexpr VolatileFlags VF_EXCLUDE_COMPUTE_I2 = 0x00000004;
+static constexpr VolatileFlags VF_EXCLUDE_COMPUTE    = VF_EXCLUDE_COMPUTE_I0 | VF_EXCLUDE_COMPUTE_I1 | VF_EXCLUDE_COMPUTE_I2;
+static constexpr VolatileFlags VF_EXCLUDE_PARAM0     = 0x00000008;
+static constexpr VolatileFlags VF_EXCLUDE_PARAM1     = 0x00000010;
+static constexpr VolatileFlags VF_EXCLUDE_PARAM2     = 0x00000020;
+static constexpr VolatileFlags VF_EXCLUDE_PARAM3     = 0x00000040;
 static constexpr VolatileFlags VF_EXCLUDE_PARAMS     = VF_EXCLUDE_PARAM0 | VF_EXCLUDE_PARAM1 | VF_EXCLUDE_PARAM2 | VF_EXCLUDE_PARAM3;
-static constexpr VolatileFlags VF_EXCLUDE_RETURN     = 0x00000040;
+static constexpr VolatileFlags VF_EXCLUDE_RETURN     = 0x00000080;
 
 struct CallConv
 {

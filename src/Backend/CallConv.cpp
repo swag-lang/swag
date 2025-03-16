@@ -24,7 +24,7 @@ void initCallConvKinds()
 
     ccX64.computeRegI0 = CpuReg::Rax;
     ccX64.computeRegI1 = CpuReg::Rcx;
-    ccX64.computeRegI2 = CpuReg::R8;
+    ccX64.computeRegI2 = CpuReg::R9;
     ccX64.computeRegF0 = CpuReg::Xmm0;
     ccX64.computeRegF1 = CpuReg::Xmm1;
     ccX64.computeRegF2 = CpuReg::Xmm2;
@@ -72,6 +72,8 @@ CpuReg CallConv::getVolatileRegister(const CallConv& ccCaller, const CallConv& c
         if (r == ccCaller.computeRegI0 && flags.has(VF_EXCLUDE_COMPUTE_I0))
             continue;
         if (r == ccCaller.computeRegI1 && flags.has(VF_EXCLUDE_COMPUTE_I1))
+            continue;
+        if (r == ccCaller.computeRegI2 && flags.has(VF_EXCLUDE_COMPUTE_I2))
             continue;
         if (r == ccCallee.returnByRegisterInteger && flags.has(VF_EXCLUDE_RETURN))
             continue;

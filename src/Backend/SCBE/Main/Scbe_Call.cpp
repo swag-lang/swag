@@ -189,11 +189,11 @@ void Scbe::emitLambdaCall(ScbeCpu& pp)
     const auto ip         = pp.ip;
     const auto typeFuncBc = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
 
-    const auto regRes = CallConv::getVolatileRegister(*pp.cc, typeFuncBc->getCallConv(), VF_EXCLUDE_COMPUTE | VF_EXCLUDE_PARAMS);
+    const auto regCall = CallConv::getVolatileRegister(*pp.cc, typeFuncBc->getCallConv(), VF_EXCLUDE_COMPUTE | VF_EXCLUDE_PARAMS);
 
     // Test if it's a bytecode lambda
-    pp.emitLoadRM(regRes, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-    pp.emitOpBinaryRI(regRes, SWAG_LAMBDA_BC_MARKER_BIT, CpuOp::BT, OpBits::B64);
+    pp.emitLoadRM(regCall, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
+    pp.emitOpBinaryRI(regCall, SWAG_LAMBDA_BC_MARKER_BIT, CpuOp::BT, OpBits::B64);
     const auto jumpBC = pp.emitJump(CpuCondJump::JB, OpBits::B32);
 
     // Native lambda
@@ -210,7 +210,7 @@ void Scbe::emitLambdaCall(ScbeCpu& pp)
         pushCPUParams[typeFuncBc->isFctVariadic() ? 2 : 0].type = CpuPushParamType::CaptureContext;
 
     pp.emitComputeCallParameters(typeFuncBc, pushCPUParams, CpuReg::Rsp, pp.cpuFct->getStackOffsetRT(0), nullptr);
-    pp.emitCallIndirect(regRes);
+    pp.emitCallIndirect(regCall);
     pp.emitStoreCallResult(CpuReg::Rsp, pp.cpuFct->getStackOffsetRT(0), typeFuncBc);
 
     const auto jumpBCAfter = pp.emitJump(CpuCondJump::JUMP, OpBits::B32);
@@ -220,7 +220,7 @@ void Scbe::emitLambdaCall(ScbeCpu& pp)
 
     pp.emitPatchJump(jumpBC);
 
-    pushCPUParams.insert_at_index({.type = CpuPushParamType::CpuRegister, .baseReg = regRes}, 0);
+    pushCPUParams.insert_at_index({.type = CpuPushParamType::CpuRegister, .baseReg = regCall}, 0);
     if (typeFuncBc->numReturnRegisters() >= 1)
         pushCPUParams.insert_at_index({.type = CpuPushParamType::LoadAddress, .baseReg = CpuReg::Rsp, .value = pp.cpuFct->getStackOffsetRT(0)}, 1);
     if (typeFuncBc->numReturnRegisters() >= 2)
