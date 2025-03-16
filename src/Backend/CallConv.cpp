@@ -44,6 +44,10 @@ void initCallConvKinds()
     ccX64.nonVolatileRegisters.push_back(CpuReg::Rbx);
     ccX64.nonVolatileRegisters.push_back(CpuReg::Rdi);
     ccX64.nonVolatileRegisters.push_back(CpuReg::Rsi);
+    ccX64.nonVolatileRegisters.push_back(CpuReg::R12);
+    ccX64.nonVolatileRegisters.push_back(CpuReg::R13);
+    ccX64.nonVolatileRegisters.push_back(CpuReg::R14);
+    ccX64.nonVolatileRegisters.push_back(CpuReg::R15);
 
     ccX64.useRegisterFloat       = true;
     ccX64.structParamByRegister  = true;
