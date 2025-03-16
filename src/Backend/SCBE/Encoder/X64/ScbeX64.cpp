@@ -947,23 +947,17 @@ void ScbeX64::emitCmpRI(CpuReg reg, uint64_t value, OpBits opBits)
 
 void ScbeX64::emitCmpMR(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits opBits)
 {
-    if (opBits == OpBits::F32)
+    if (isFloat(opBits))
     {
-        concat.addU8(0x0F);
-        concat.addU8(0x2E);
-        emitModRM(concat, memOffset, reg, memReg);
-    }
-    else if (opBits == OpBits::F64)
-    {
-        concat.addU8(0x66);
-        concat.addU8(0x0F);
-        concat.addU8(0x2F);
+        emitREX(concat, opBits);
+        emitCPUOp(concat, 0x0F);
+        emitCPUOp(concat, 0x2F);
         emitModRM(concat, memOffset, reg, memReg);
     }
     else
     {
-        emitREX(concat, opBits);
-        emitSpecB8(concat, 0x3B, opBits);
+        emitREX(concat, opBits, reg, memReg);
+        emitSpecCPUOp(concat, 0x3B, opBits);
         emitModRM(concat, memOffset, reg, memReg);
     }
 }
