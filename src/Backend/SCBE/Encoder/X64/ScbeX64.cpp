@@ -1557,9 +1557,16 @@ void ScbeX64::emitOpBinaryRI(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits
 
     ///////////////////////////////////////////
 
+    else if (op == CpuOp::DIV && Math::isPowerOfTwo(value) && optLevel >= BuildCfgBackendOptim::O1)
+    {
+        emitOpBinaryRI(reg, static_cast<uint32_t>(log2(value)), CpuOp::SHR, opBits, emitFlags);
+    }
     else if (op == CpuOp::DIV || op == CpuOp::IDIV)
     {
+        SWAG_ASSERT(reg == cc->computeRegI0);
         SWAG_ASSERT(getReg(reg) == X64Reg::Rax);
+        SWAG_ASSERT(getReg(cc->computeRegI1) != X64Reg::Rdx);
+
         if (opBits == OpBits::B8 && op == CpuOp::IDIV)
             emitLoadSignedExtendRR(reg, reg, OpBits::B32, OpBits::B8);
         else if (opBits == OpBits::B8)
@@ -1575,17 +1582,8 @@ void ScbeX64::emitOpBinaryRI(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits
             emitClearR(CpuReg::Rdx, opBits);
         }
 
-        if (op == CpuOp::DIV && Math::isPowerOfTwo(value) && optLevel >= BuildCfgBackendOptim::O1)
-        {
-            emitOpBinaryRI(reg, static_cast<uint32_t>(log2(value)), CpuOp::SHR, opBits, emitFlags);
-        }
-        else
-        {
-            SWAG_ASSERT(reg == cc->computeRegI0);
-            SWAG_ASSERT(getReg(cc->computeRegI1) != X64Reg::Rdx);
-            emitLoadRI(cc->computeRegI1, value, opBits);
-            emitOpBinaryRR(reg, cc->computeRegI1, op, opBits, emitFlags);
-        }
+        emitLoadRI(cc->computeRegI1, value, opBits);
+        emitOpBinaryRR(reg, cc->computeRegI1, op, opBits, emitFlags);
     }
 
     ///////////////////////////////////////////
@@ -1688,7 +1686,7 @@ void ScbeX64::emitOpBinaryRI(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits
             emitREX(concat, opBits, REX_REG_NONE, reg);
             emitCPUOp(concat, 0x0F);
             emitCPUOp(concat, op);
-            emitModRM(concat, ModRMMode::Register, MODRM_REG_4, encodeReg(reg));
+            emitModRM(concat, MODRM_REG_4, reg);
             emitValue(concat, value, OpBits::B8);
         }
         else
