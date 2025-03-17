@@ -1372,7 +1372,74 @@ void ScbeX64::emitOpBinaryRI(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits
 
     ///////////////////////////////////////////
 
-    else if (op == CpuOp::XOR || op == CpuOp::OR || op == CpuOp::AND)
+    else if (op == CpuOp::XOR)
+    {
+        if (opBits == OpBits::B8)
+        {
+            SWAG_ASSERT(reg == cc->computeRegI0);
+            emitREX(concat, opBits, REX_REG_NONE, reg);
+            emitCPUOp(concat, 0x80);
+            emitModRM(concat, MODRM_REG_6, reg);
+            emitValue(concat, value, OpBits::B8);
+        }
+        else if (value <= 0x7F)
+        {
+            SWAG_ASSERT(reg == cc->computeRegI0);
+            emitREX(concat, opBits, REX_REG_NONE, reg);
+            emitCPUOp(concat, 0x83);
+            emitModRM(concat, MODRM_REG_6, reg);
+            emitValue(concat, value, OpBits::B8);
+        }
+        else
+        {
+            SWAG_ASSERT(reg == cc->computeRegI0);
+            emitREX(concat, opBits, REX_REG_NONE, reg);
+            emitCPUOp(concat, 0x81);
+            emitModRM(concat, MODRM_REG_6, reg);
+            emitValue(concat, value, std::min(opBits, OpBits::B32));
+        }
+    }
+
+    ///////////////////////////////////////////
+
+    else if (op == CpuOp::OR)
+    {
+        if (opBits == OpBits::B8)
+        {
+            SWAG_ASSERT(reg == cc->computeRegI0);
+            emitREX(concat, opBits);
+            concat.addU8(static_cast<uint8_t>(op) + 3);
+            emitValue(concat, value, OpBits::B8);
+        }
+        else if (value <= 0x7F)
+        {
+            SWAG_ASSERT(reg == cc->computeRegI0);
+            emitREX(concat, opBits);
+            concat.addU8(0x83);
+            concat.addU8(static_cast<uint8_t>(op) + 0xBF);
+            emitValue(concat, value, OpBits::B8);
+        }
+        else if (opBits == OpBits::B16)
+        {
+            SWAG_ASSERT(reg == cc->computeRegI0);
+            emitREX(concat, opBits);
+            concat.addU8(0x81);
+            concat.addU8(static_cast<uint8_t>(op) + 0xBF);
+            emitValue(concat, value, OpBits::B16);
+        }
+        else if (opBits == OpBits::B32 || opBits == OpBits::B64)
+        {
+            SWAG_ASSERT(reg == cc->computeRegI0);
+            emitREX(concat, opBits);
+            concat.addU8(0x81);
+            concat.addU8(static_cast<uint8_t>(op) + 0xBF);
+            emitValue(concat, value, OpBits::B32);
+        }
+    }
+
+    ///////////////////////////////////////////
+
+    else if (op == CpuOp::AND)
     {
         if (opBits == OpBits::B8)
         {
