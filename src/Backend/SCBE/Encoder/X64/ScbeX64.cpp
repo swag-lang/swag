@@ -1464,35 +1464,34 @@ void ScbeX64::emitOpBinaryRI(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits
         }
         else if (opBits == OpBits::B8)
         {
-            SWAG_ASSERT(reg == cc->computeRegI0 || reg == cc->computeRegI1 || reg == CpuReg::Rsp);
             emitREX(concat, opBits, REX_REG_NONE, reg);
             if (getReg(reg) == X64Reg::Rax)
-                concat.addU8(0x04);
+                emitCPUOp(concat, 0x04);
             else
             {
-                concat.addU8(0x80);
-                emitCPUOp(concat, 0xC0, reg);
+                emitCPUOp(concat, 0x80);
+                emitModRM(concat, MODRM_REG_0, reg);
             }
             emitValue(concat, value, OpBits::B8);
         }
         else if (value <= 0x7F)
         {
             emitREX(concat, opBits, REX_REG_NONE, reg);
-            concat.addU8(0x83);
-            emitCPUOp(concat, 0xC0, reg);
+            emitCPUOp(concat, 0x83);
+            emitModRM(concat, MODRM_REG_0, reg);
             emitValue(concat, value, OpBits::B8);
         }
         else
         {
             emitREX(concat, opBits, REX_REG_NONE, reg);
             if (getReg(reg) == X64Reg::Rax)
-                concat.addU8(0x05);
+                emitCPUOp(concat, 0x05);
             else
             {
-                concat.addU8(0x81);
-                emitCPUOp(concat, 0xC0, reg);
+                emitCPUOp(concat, 0x81);
+                emitModRM(concat, MODRM_REG_0, reg);
             }
-            emitValue(concat, value, opBits == OpBits::B16 ? OpBits::B16 : OpBits::B32);
+            emitValue(concat, value, std::min(opBits, OpBits::B32));
         }
     }
 
