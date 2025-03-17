@@ -1129,21 +1129,19 @@ void ScbeX64::emitOpBinaryRR(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBi
     {
         SWAG_ASSERT(regDst == cc->computeRegI0);
         SWAG_ASSERT(regSrc == cc->computeRegI1);
-        SWAG_ASSERT(getReg(regDst) == X64Reg::Rax);
+        if (getReg(regDst) != X64Reg::Rax)
+            emitLoadRR(CpuReg::Rax, regDst, opBits);
         SWAG_ASSERT(getReg(regSrc) != X64Reg::Rdx);
         if (opBits == OpBits::B8 && (op == CpuOp::IDIV || op == CpuOp::IMOD))
             emitLoadSignedExtendRR(regDst, regDst, OpBits::B32, OpBits::B8);
         else if (opBits == OpBits::B8)
             emitLoadZeroExtendRR(regDst, regDst, OpBits::B32, OpBits::B8);
-        else if (op == CpuOp::IDIV || op == CpuOp::IMOD)
-        {
-            // cdq
-            emitREX(concat, opBits);
-            emitCPUOp(concat, 0x99);
-        }
+        else if (op == CpuOp::DIV || op == CpuOp::MOD)
+            emitClearR(CpuReg::Rdx, opBits);
         else
         {
-            emitClearR(CpuReg::Rdx, opBits);
+            emitREX(concat, opBits);
+            emitCPUOp(concat, 0x99); // cdq
         }
 
         emitREX(concat, opBits, regDst, regSrc);
@@ -1158,11 +1156,14 @@ void ScbeX64::emitOpBinaryRR(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBi
             emitOpBinaryRI(regDst, 8, CpuOp::SHR, OpBits::B32); // AH => AL
         else if (op == CpuOp::MOD || op == CpuOp::IMOD)
             emitLoadRR(regDst, CpuReg::Rdx, opBits);
+        if (getReg(regDst) != X64Reg::Rax)
+            emitLoadRR(regDst, CpuReg::Rax, opBits);
     }
     else if (op == CpuOp::MUL ||
              op == CpuOp::IMUL)
     {
-        SWAG_ASSERT(getReg(regDst) == X64Reg::Rax);
+        if(getReg(regDst) != X64Reg::Rax)
+            emitLoadRR(CpuReg::Rax, regDst, opBits);
         emitREX(concat, opBits, regDst, regSrc);
         emitSpecCPUOp(concat, 0xF7, opBits);
         if (op == CpuOp::MUL)
@@ -1171,6 +1172,8 @@ void ScbeX64::emitOpBinaryRR(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBi
             emitModRM(concat, MODRM_REG_5, regSrc);
         else
             SWAG_ASSERT(false);
+        if(getReg(regDst) != X64Reg::Rax)
+            emitLoadRR(regDst, CpuReg::Rax, opBits);
     }
     else if (op == CpuOp::ROL ||
              op == CpuOp::ROR ||
@@ -1867,7 +1870,7 @@ void ScbeX64::emitOpBinaryMI(CpuReg memReg, uint64_t memOffset, uint64_t value, 
             emitModRM(concat, memOffset, MODRM_REG_4, memReg);
             emitValue(concat, std::min(static_cast<uint32_t>(value), getNumBits(opBits) - 1), OpBits::B8);
         }
-    }    
+    }
 
     ///////////////////////////////////////////
 
@@ -1875,33 +1878,29 @@ void ScbeX64::emitOpBinaryMI(CpuReg memReg, uint64_t memOffset, uint64_t value, 
     {
         if (value == 1 && !emitFlags.has(EMITF_Overflow) && optLevel >= BuildCfgBackendOptim::O1)
         {
-            SWAG_ASSERT(memReg == cc->computeRegI0 || memReg == CpuReg::Rsp);
-            emitREX(concat, opBits);
+            emitREX(concat, opBits, REX_REG_NONE, memReg);
             emitSpecCPUOp(concat, 0xFF, opBits);
             emitModRM(concat, memOffset, MODRM_REG_0, memReg);
         }
         else if (opBits == OpBits::B8)
         {
-            SWAG_ASSERT(memReg == cc->computeRegI0 || memReg == CpuReg::Rsp);
-            emitREX(concat, opBits);
+            emitREX(concat, opBits, REX_REG_NONE, memReg);
             emitCPUOp(concat, 0x80);
-            emitModRM(concat, memOffset, MODRM_REG_0, memReg, static_cast<uint8_t>(op));
+            emitModRM(concat, memOffset, MODRM_REG_0, memReg);
             emitValue(concat, value, OpBits::B8);
         }
         else if (value <= 0x7F)
         {
-            SWAG_ASSERT(memReg == cc->computeRegI0 || memReg == CpuReg::Rsp);
-            emitREX(concat, opBits);
+            emitREX(concat, opBits, REX_REG_NONE, memReg);
             emitCPUOp(concat, 0x83);
-            emitModRM(concat, memOffset, MODRM_REG_0, memReg, static_cast<uint8_t>(op));
+            emitModRM(concat, memOffset, MODRM_REG_0, memReg);
             emitValue(concat, value, OpBits::B8);
         }
         else
         {
-            SWAG_ASSERT(memReg == cc->computeRegI0 || memReg == CpuReg::Rsp);
-            emitREX(concat, opBits);
+            emitREX(concat, opBits, REX_REG_NONE, memReg);
             emitCPUOp(concat, 0x81);
-            emitModRM(concat, memOffset, MODRM_REG_0, memReg, static_cast<uint8_t>(op));
+            emitModRM(concat, memOffset, MODRM_REG_0, memReg);
             emitValue(concat, value, std::min(opBits, OpBits::B32));
         }
     }
@@ -1912,33 +1911,29 @@ void ScbeX64::emitOpBinaryMI(CpuReg memReg, uint64_t memOffset, uint64_t value, 
     {
         if (value == 1 && !emitFlags.has(EMITF_Overflow) && optLevel >= BuildCfgBackendOptim::O1)
         {
-            SWAG_ASSERT(memReg == cc->computeRegI0 || memReg == CpuReg::Rsp);
-            emitREX(concat, opBits);
+            emitREX(concat, opBits, REX_REG_NONE, memReg);
             emitSpecCPUOp(concat, 0xFF, opBits);
             emitModRM(concat, memOffset, MODRM_REG_1, memReg);
         }
         else if (opBits == OpBits::B8)
         {
-            SWAG_ASSERT(memReg == cc->computeRegI0 || memReg == CpuReg::Rsp);
-            emitREX(concat, opBits);
+            emitREX(concat, opBits, REX_REG_NONE, memReg);
             emitCPUOp(concat, 0x80);
-            emitModRM(concat, memOffset, MODRM_REG_0, memReg, static_cast<uint8_t>(op));
+            emitModRM(concat, memOffset, MODRM_REG_5, memReg);
             emitValue(concat, value, OpBits::B8);
         }
         else if (value <= 0x7F)
         {
-            SWAG_ASSERT(memReg == cc->computeRegI0 || memReg == CpuReg::Rsp);
-            emitREX(concat, opBits);
+            emitREX(concat, opBits, REX_REG_NONE, memReg);
             emitCPUOp(concat, 0x83);
-            emitModRM(concat, memOffset, MODRM_REG_0, memReg, static_cast<uint8_t>(op));
+            emitModRM(concat, memOffset, MODRM_REG_5, memReg);
             emitValue(concat, value, OpBits::B8);
         }
         else
         {
-            SWAG_ASSERT(memReg == cc->computeRegI0 || memReg == CpuReg::Rsp);
-            emitREX(concat, opBits);
+            emitREX(concat, opBits, REX_REG_NONE, memReg);
             emitCPUOp(concat, 0x81);
-            emitModRM(concat, memOffset, MODRM_REG_0, memReg, static_cast<uint8_t>(op));
+            emitModRM(concat, memOffset, MODRM_REG_5, memReg);
             emitValue(concat, value, std::min(opBits, OpBits::B32));
         }
     }

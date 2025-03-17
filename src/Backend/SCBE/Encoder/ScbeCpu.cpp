@@ -205,10 +205,12 @@ namespace
                     break;
 
                 case CpuPushParamType::SwagParamStructValue:
-                    SWAG_ASSERT(pp.cc->computeRegI0 != callConv->paramByRegisterInteger[idxParam]);
-                    pp.emitLoadRM(pp.cc->computeRegI0, params[idxParam].baseReg, value, OpBits::B64);
-                    pp.emitLoadRM(callConv->paramByRegisterInteger[idxParam], pp.cc->computeRegI0, 0, OpBits::B64);
+                {
+                    const auto reg = CallConv::getVolatileRegisterInteger(*callConv, *callConv, VF_EXCLUDE_PARAMS);
+                    pp.emitLoadRM(reg, params[idxParam].baseReg, value, OpBits::B64);
+                    pp.emitLoadRM(callConv->paramByRegisterInteger[idxParam], reg, 0, OpBits::B64);
                     break;
+                }
 
                 case CpuPushParamType::SwagRegister:
                     if (callConv->useRegisterFloat && type->isNativeFloat())
