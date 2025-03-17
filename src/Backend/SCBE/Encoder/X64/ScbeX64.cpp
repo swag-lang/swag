@@ -1557,33 +1557,18 @@ void ScbeX64::emitOpBinaryRI(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits
 
     ///////////////////////////////////////////
 
-    else if (op == CpuOp::DIV && Math::isPowerOfTwo(value) && optLevel >= BuildCfgBackendOptim::O1)
-    {
-        emitOpBinaryRI(reg, static_cast<uint32_t>(log2(value)), CpuOp::SHR, opBits, emitFlags);
-    }
     else if (op == CpuOp::DIV || op == CpuOp::IDIV)
     {
-        SWAG_ASSERT(reg == cc->computeRegI0);
-        SWAG_ASSERT(getReg(reg) == X64Reg::Rax);
-        SWAG_ASSERT(getReg(cc->computeRegI1) != X64Reg::Rdx);
-
-        if (opBits == OpBits::B8 && op == CpuOp::IDIV)
-            emitLoadSignedExtendRR(reg, reg, OpBits::B32, OpBits::B8);
-        else if (opBits == OpBits::B8)
-            emitLoadZeroExtendRR(reg, reg, OpBits::B32, OpBits::B8);
-        else if (op == CpuOp::IDIV)
+        if (op == CpuOp::DIV && Math::isPowerOfTwo(value) && optLevel >= BuildCfgBackendOptim::O1)
         {
-            // cdq
-            emitREX(concat, opBits);
-            emitCPUOp(concat, 0x99);
+            emitOpBinaryRI(reg, static_cast<uint32_t>(log2(value)), CpuOp::SHR, opBits, emitFlags);
         }
         else
         {
-            emitClearR(CpuReg::Rdx, opBits);
+            SWAG_ASSERT(reg == cc->computeRegI0);
+            emitLoadRI(cc->computeRegI1, value, opBits);
+            emitOpBinaryRR(reg, cc->computeRegI1, op, opBits, emitFlags);
         }
-
-        emitLoadRI(cc->computeRegI1, value, opBits);
-        emitOpBinaryRR(reg, cc->computeRegI1, op, opBits, emitFlags);
     }
 
     ///////////////////////////////////////////
