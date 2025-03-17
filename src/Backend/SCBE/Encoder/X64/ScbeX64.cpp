@@ -1575,28 +1575,18 @@ void ScbeX64::emitOpBinaryRI(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits
 
     else if (op == CpuOp::MUL || op == CpuOp::IMUL)
     {
-        uint32_t   factor1, factor2;
         const bool canFactorize = (opBits == OpBits::B32 || opBits == OpBits::B64) && optLevel >= BuildCfgBackendOptim::O1 && !emitFlags.has(EMITF_Overflow);
+        uint32_t   factor1, factor2;
         if (value == 0 && optLevel >= BuildCfgBackendOptim::O1)
-        {
             emitClearR(reg, opBits);
-        }
         else if (value == 3 && canFactorize)
-        {
             emitLoadAddressAddMul(reg, reg, reg, 2, opBits);
-        }
         else if (value == 5 && canFactorize)
-        {
             emitLoadAddressAddMul(reg, reg, reg, 4, opBits);
-        }
         else if (value == 9 && canFactorize)
-        {
             emitLoadAddressAddMul(reg, reg, reg, 8, opBits);
-        }
         else if (Math::isPowerOfTwo(value) && optLevel >= BuildCfgBackendOptim::O1)
-        {
             emitOpBinaryRI(reg, static_cast<uint32_t>(log2(value)), CpuOp::SHL, opBits, emitFlags);
-        }
         else if (canFactorize && decomposeMul(static_cast<uint32_t>(value), factor1, factor2))
         {
             if (factor1 != 1)
@@ -1613,17 +1603,17 @@ void ScbeX64::emitOpBinaryRI(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits
         else if (op == CpuOp::IMUL && value <= 0x7F)
         {
             SWAG_ASSERT(reg == cc->computeRegI0 || reg == cc->computeRegI1);
-            emitREX(concat, opBits);
-            concat.addU8(0x6B);
-            concat.addU8(reg == cc->computeRegI0 ? 0xC0 : 0xC9);
+            emitREX(concat, opBits, REX_REG_NONE, reg);
+            emitCPUOp(concat, 0x6B);
+            emitModRM(concat, reg, reg);
             emitValue(concat, value, OpBits::B8);
         }
         else if (op == CpuOp::IMUL)
         {
             SWAG_ASSERT(reg == cc->computeRegI0 || reg == cc->computeRegI1);
-            emitREX(concat, opBits);
-            concat.addU8(0x69);
-            concat.addU8(reg == cc->computeRegI0 ? 0xC0 : 0xC9);
+            emitREX(concat, opBits, REX_REG_NONE, reg);
+            emitCPUOp(concat, 0x69);
+            emitModRM(concat, reg, reg);
             emitValue(concat, value, OpBits::B32);
         }
         else
