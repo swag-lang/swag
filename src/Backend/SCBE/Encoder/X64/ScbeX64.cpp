@@ -1624,13 +1624,61 @@ void ScbeX64::emitOpBinaryRI(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits
 
     ///////////////////////////////////////////
 
-    else if (op == CpuOp::SAR || op == CpuOp::SHR || op == CpuOp::SHL)
+    else if (op == CpuOp::SHL)
     {
-        if (op == CpuOp::SHL && value == 1 && optLevel >= BuildCfgBackendOptim::O1)
+        if (value == 1 && optLevel >= BuildCfgBackendOptim::O1)
         {
             emitOpBinaryRR(reg, reg, CpuOp::ADD, opBits);
         }
         else if (value == 1)
+        {
+            emitREX(concat, opBits, reg, reg);
+            emitSpecB8(concat, 0xD1, opBits);
+            emitCPUOp(concat, op, reg);
+        }
+        else if (value <= 0x7F)
+        {
+            emitREX(concat, opBits, reg, reg);
+            value = std::min(static_cast<uint32_t>(value), getNumBits(opBits) - 1);
+            emitSpecB8(concat, 0xC1, opBits);
+            emitCPUOp(concat, op, reg);
+            emitValue(concat, value, OpBits::B8);
+        }
+        else
+        {
+            SWAG_ASSERT(false);
+        }
+    }
+
+    ///////////////////////////////////////////
+
+    else if (op == CpuOp::SHR)
+    {
+        if (value == 1)
+        {
+            emitREX(concat, opBits, reg, reg);
+            emitSpecB8(concat, 0xD1, opBits);
+            emitCPUOp(concat, op, reg);
+        }
+        else if (value <= 0x7F)
+        {
+            emitREX(concat, opBits, reg, reg);
+            value = std::min(static_cast<uint32_t>(value), getNumBits(opBits) - 1);
+            emitSpecB8(concat, 0xC1, opBits);
+            emitCPUOp(concat, op, reg);
+            emitValue(concat, value, OpBits::B8);
+        }
+        else
+        {
+            SWAG_ASSERT(false);
+        }
+    }
+
+    ///////////////////////////////////////////
+
+    else if (op == CpuOp::SAR)
+    {
+        if (value == 1)
         {
             emitREX(concat, opBits, reg, reg);
             emitSpecB8(concat, 0xD1, opBits);
