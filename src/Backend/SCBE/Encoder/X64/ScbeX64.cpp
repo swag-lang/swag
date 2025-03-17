@@ -1632,17 +1632,16 @@ void ScbeX64::emitOpBinaryRI(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits
         }
         else if (value == 1)
         {
-            emitREX(concat, opBits, reg, reg);
-            emitSpecB8(concat, 0xD1, opBits);
-            emitCPUOp(concat, op, reg);
+            emitREX(concat, opBits, REX_REG_NONE, reg);
+            emitSpecCPUOp(concat, 0xD1, opBits);
+            emitModRM(concat, MODRM_REG_4, reg);
         }
         else if (value <= 0x7F)
         {
-            emitREX(concat, opBits, reg, reg);
-            value = std::min(static_cast<uint32_t>(value), getNumBits(opBits) - 1);
-            emitSpecB8(concat, 0xC1, opBits);
-            emitCPUOp(concat, op, reg);
-            emitValue(concat, value, OpBits::B8);
+            emitREX(concat, opBits, REX_REG_NONE, reg);
+            emitSpecCPUOp(concat, 0xC1, opBits);
+            emitModRM(concat, MODRM_REG_4, reg);
+            emitValue(concat, std::min(static_cast<uint32_t>(value), getNumBits(opBits) - 1), OpBits::B8);
         }
         else
         {
