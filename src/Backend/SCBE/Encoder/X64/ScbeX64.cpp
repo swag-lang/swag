@@ -1508,37 +1508,34 @@ void ScbeX64::emitOpBinaryRI(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits
         }
         else if (opBits == OpBits::B8)
         {
-            SWAG_ASSERT(reg == cc->computeRegI0 || reg == cc->computeRegI1 || reg == CpuReg::Rsp);
-            emitREX(concat, opBits);
-            if (reg == cc->computeRegI0)
-                concat.addU8(0x2C);
+            emitREX(concat, opBits, REX_REG_NONE, reg);
+            if (getReg(reg) == X64Reg::Rax)
+                emitCPUOp(concat, 0x2C);
             else
             {
-                concat.addU8(0x80);
-                emitCPUOp(concat, 0xE8, reg);
+                emitCPUOp(concat, 0x80);
+                emitModRM(concat, MODRM_REG_5, reg);
             }
             emitValue(concat, value, OpBits::B8);
         }
         else if (value <= 0x7F)
         {
-            SWAG_ASSERT(reg == cc->computeRegI0 || reg == cc->computeRegI1 || reg == CpuReg::Rsp);
-            emitREX(concat, opBits);
-            concat.addU8(0x83);
-            emitCPUOp(concat, 0xE8, reg);
+            emitREX(concat, opBits, REX_REG_NONE, reg);
+            emitCPUOp(concat, 0x83);
+            emitModRM(concat, MODRM_REG_5, reg);
             emitValue(concat, value, OpBits::B8);
         }
         else
         {
-            SWAG_ASSERT(reg == cc->computeRegI0 || reg == cc->computeRegI1 || reg == CpuReg::Rsp);
-            emitREX(concat, opBits);
-            if (reg == cc->computeRegI0)
-                concat.addU8(0x2D);
+            emitREX(concat, opBits, REX_REG_NONE, reg);
+            if (getReg(reg) == X64Reg::Rax)
+                emitCPUOp(concat, 0x2D);
             else
             {
-                concat.addU8(0x81);
-                emitCPUOp(concat, 0xE8, reg);
+                emitCPUOp(concat, 0x81);
+                emitModRM(concat, MODRM_REG_5, reg);
             }
-            emitValue(concat, value, opBits == OpBits::B16 ? OpBits::B16 : OpBits::B32);
+            emitValue(concat, value, std::min(opBits, OpBits::B32));
         }
     }
 
