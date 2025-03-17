@@ -1814,7 +1814,26 @@ void ScbeX64::emitOpBinaryMI(CpuReg memReg, uint64_t memOffset, uint64_t value, 
 
     ///////////////////////////////////////////
 
-    else if (op == CpuOp::SAR || op == CpuOp::SHR || op == CpuOp::SHL)
+    else if (op == CpuOp::SAR)
+    {
+        if (value == 1)
+        {
+            emitREX(concat, opBits, REX_REG_NONE, memReg);
+            emitSpecCPUOp(concat, 0xD1, opBits);
+            emitModRM(concat, memOffset, MODRM_REG_7, memReg);
+        }
+        else
+        {
+            emitREX(concat, opBits, REX_REG_NONE, memReg);
+            emitSpecCPUOp(concat, 0xC1, opBits);
+            emitModRM(concat, memOffset, MODRM_REG_7, memReg);
+            emitValue(concat, std::min(static_cast<uint32_t>(value), getNumBits(opBits) - 1), OpBits::B8);
+        }
+    }
+
+    ///////////////////////////////////////////
+
+    else if (op == CpuOp::SHR)
     {
         if (value == 1)
         {
@@ -1830,6 +1849,25 @@ void ScbeX64::emitOpBinaryMI(CpuReg memReg, uint64_t memOffset, uint64_t value, 
             emitValue(concat, std::min(static_cast<uint32_t>(value), getNumBits(opBits) - 1), OpBits::B8);
         }
     }
+
+    ///////////////////////////////////////////
+
+    else if (op == CpuOp::SHL)
+    {
+        if (value == 1)
+        {
+            emitREX(concat, opBits);
+            emitSpecCPUOp(concat, 0xD1, opBits);
+            emitModRM(concat, memOffset, MODRM_REG_0, memReg, 1 + static_cast<uint8_t>(op) & 0x3F);
+        }
+        else
+        {
+            emitREX(concat, opBits);
+            emitSpecCPUOp(concat, 0xC1, opBits);
+            emitModRM(concat, memOffset, MODRM_REG_0, memReg, 1 + static_cast<uint8_t>(op) & 0x3F);
+            emitValue(concat, std::min(static_cast<uint32_t>(value), getNumBits(opBits) - 1), OpBits::B8);
+        }
+    }    
 
     ///////////////////////////////////////////
 
