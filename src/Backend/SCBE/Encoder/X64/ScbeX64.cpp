@@ -2052,46 +2052,46 @@ CpuJump ScbeX64::emitJump(CpuCondJump jumpType, OpBits opBits)
         switch (jumpType)
         {
             case CpuCondJump::JNO:
-                concat.addU8(0x71);
+                emitCPUOp(concat, 0x71);
                 break;
             case CpuCondJump::JB:
-                concat.addU8(0x72);
+                emitCPUOp(concat, 0x72);
                 break;
             case CpuCondJump::JAE:
-                concat.addU8(0x73);
+                emitCPUOp(concat, 0x73);
                 break;
             case CpuCondJump::JZ:
-                concat.addU8(0x74);
+                emitCPUOp(concat, 0x74);
                 break;
             case CpuCondJump::JNZ:
-                concat.addU8(0x75);
+                emitCPUOp(concat, 0x75);
                 break;
             case CpuCondJump::JBE:
-                concat.addU8(0x76);
+                emitCPUOp(concat, 0x76);
                 break;
             case CpuCondJump::JA:
                 concat.addU8(0x77);
                 break;
             case CpuCondJump::JP:
-                concat.addU8(0x7A);
+                emitCPUOp(concat, 0x7A);
                 break;
             case CpuCondJump::JNP:
-                concat.addU8(0x7B);
+                emitCPUOp(concat, 0x7B);
                 break;
             case CpuCondJump::JL:
-                concat.addU8(0x7C);
+                emitCPUOp(concat, 0x7C);
                 break;
             case CpuCondJump::JGE:
-                concat.addU8(0x7D);
+                emitCPUOp(concat, 0x7D);
                 break;
             case CpuCondJump::JLE:
-                concat.addU8(0x7E);
+                emitCPUOp(concat, 0x7E);
                 break;
             case CpuCondJump::JG:
-                concat.addU8(0x7F);
+                emitCPUOp(concat, 0x7F);
                 break;
             case CpuCondJump::JUMP:
-                concat.addU8(0xEB);
+                emitCPUOp(concat, 0xEB);
                 break;
             default:
                 SWAG_ASSERT(false);
@@ -2110,59 +2110,59 @@ CpuJump ScbeX64::emitJump(CpuCondJump jumpType, OpBits opBits)
     switch (jumpType)
     {
         case CpuCondJump::JNO:
-            concat.addU8(0x0F);
-            concat.addU8(0x81);
+            emitCPUOp(concat, 0x0F);
+            emitCPUOp(concat, 0x81);
             break;
         case CpuCondJump::JB:
-            concat.addU8(0x0F);
-            concat.addU8(0x82);
+            emitCPUOp(concat, 0x0F);
+            emitCPUOp(concat, 0x82);
             break;
         case CpuCondJump::JAE:
-            concat.addU8(0x0F);
-            concat.addU8(0x83);
+            emitCPUOp(concat, 0x0F);
+            emitCPUOp(concat, 0x83);
             break;
         case CpuCondJump::JZ:
-            concat.addU8(0x0F);
-            concat.addU8(0x84);
+            emitCPUOp(concat, 0x0F);
+            emitCPUOp(concat, 0x84);
             break;
         case CpuCondJump::JNZ:
-            concat.addU8(0x0F);
-            concat.addU8(0x85);
+            emitCPUOp(concat, 0x0F);
+            emitCPUOp(concat, 0x85);
             break;
         case CpuCondJump::JBE:
-            concat.addU8(0x0F);
-            concat.addU8(0x86);
+            emitCPUOp(concat, 0x0F);
+            emitCPUOp(concat, 0x86);
             break;
         case CpuCondJump::JA:
-            concat.addU8(0x0F);
-            concat.addU8(0x87);
+            emitCPUOp(concat, 0x0F);
+            emitCPUOp(concat, 0x87);
             break;
         case CpuCondJump::JP:
-            concat.addU8(0x0F);
-            concat.addU8(0x8A);
+            emitCPUOp(concat, 0x0F);
+            emitCPUOp(concat, 0x8A);
             break;
         case CpuCondJump::JNP:
-            concat.addU8(0x0F);
-            concat.addU8(0x8B);
+            emitCPUOp(concat, 0x0F);
+            emitCPUOp(concat, 0x8B);
             break;
         case CpuCondJump::JL:
-            concat.addU8(0x0F);
-            concat.addU8(0x8C);
+            emitCPUOp(concat, 0x0F);
+            emitCPUOp(concat, 0x8C);
             break;
         case CpuCondJump::JGE:
-            concat.addU8(0x0F);
-            concat.addU8(0x8D);
+            emitCPUOp(concat, 0x0F);
+            emitCPUOp(concat, 0x8D);
             break;
         case CpuCondJump::JLE:
-            concat.addU8(0x0F);
-            concat.addU8(0x8E);
+            emitCPUOp(concat, 0x0F);
+            emitCPUOp(concat, 0x8E);
             break;
         case CpuCondJump::JG:
-            concat.addU8(0x0F);
-            concat.addU8(0x8F);
+            emitCPUOp(concat, 0x0F);
+            emitCPUOp(concat, 0x8F);
             break;
         case CpuCondJump::JUMP:
-            concat.addU8(0xE9);
+            emitCPUOp(concat, 0xE9);
             break;
         default:
             SWAG_ASSERT(false);
@@ -2358,7 +2358,7 @@ void ScbeX64::emitCallIndirect(CpuReg reg)
 {
     emitREX(concat, OpBits::Zero, REX_REG_NONE, reg);
     emitCPUOp(concat, 0xFF);
-    emitModRM(concat, ModRMMode::Register, MODRM_REG_2, encodeReg(reg));
+    emitModRM(concat, MODRM_REG_2, reg);
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -2376,14 +2376,14 @@ void ScbeX64::emitMulAdd(CpuReg regDst, CpuReg regMul, CpuReg regAdd, OpBits opB
     SWAG_ASSERT(regAdd == cc->computeRegF2);
 
     emitSpecF64(concat, 0xF3, opBits);
-    concat.addU8(0x0F);
+    emitCPUOp(concat, 0x0F);
     emitCPUOp(concat, CpuOp::FMUL);
-    concat.addU8(0xC1);
+    emitModRM(concat, cc->computeRegF0, cc->computeRegF1);
 
     emitSpecF64(concat, 0xF3, opBits);
-    concat.addU8(0x0F);
+    emitCPUOp(concat, 0x0F);
     emitCPUOp(concat, CpuOp::FADD);
-    concat.addU8(0xC2);
+    emitModRM(concat, cc->computeRegF0, cc->computeRegF2);
 }
 
 ScbeMicroOpDetails ScbeX64::getInstructionDetails(ScbeMicroInstruction* inst) const
