@@ -687,7 +687,7 @@ void ScbeX64::emitLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc
 
 /////////////////////////////////////////////////////////////////////
 
-void ScbeX64::emitStoreMR(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits opBits)
+void ScbeX64::emitLoadMR(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits opBits)
 {
     if (isFloat(opBits))
     {
@@ -705,13 +705,13 @@ void ScbeX64::emitStoreMR(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits 
     }
 }
 
-void ScbeX64::emitStoreMI(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits)
+void ScbeX64::emitLoadMI(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits)
 {
     if (opBits == OpBits::B64 && value > 0x7FFFFFFF && value >> 32 != 0xFFFFFFFF)
     {
         SWAG_ASSERT(memReg != cc->computeRegI1);
         emitLoadRI(cc->computeRegI1, value, OpBits::B64);
-        emitStoreMR(memReg, memOffset, cc->computeRegI1, OpBits::B64);
+        emitLoadMR(memReg, memOffset, cc->computeRegI1, OpBits::B64);
     }
     else
     {
@@ -1020,7 +1020,7 @@ void ScbeX64::emitOpUnaryR(CpuReg reg, CpuOp op, OpBits opBits)
         if (isFloat(opBits))
         {
             SWAG_ASSERT(reg == cc->computeRegF0);
-            emitStoreMI(CpuReg::Rsp, cpuFct->getStackOffsetFLT(), opBits == OpBits::F32 ? 0x80000000 : 0x80000000'00000000, OpBits::B64);
+            emitLoadMI(CpuReg::Rsp, cpuFct->getStackOffsetFLT(), opBits == OpBits::F32 ? 0x80000000 : 0x80000000'00000000, OpBits::B64);
             emitLoadRM(cc->computeRegF1, CpuReg::Rsp, cpuFct->getStackOffsetFLT(), opBits);
             emitOpBinaryRR(cc->computeRegF0, cc->computeRegF1, CpuOp::FXOR, opBits);
         }
@@ -1248,7 +1248,7 @@ void ScbeX64::emitOpBinaryMR(CpuReg memReg, uint64_t memOffset, CpuReg reg, CpuO
         SWAG_ASSERT(reg == cc->computeRegF1);
         emitLoadRM(cc->computeRegF0, memReg, memOffset, opBits);
         emitOpBinaryRR(cc->computeRegF0, reg, op, opBits, emitFlags);
-        emitStoreMR(memReg, memOffset, cc->computeRegF0, opBits);
+        emitLoadMR(memReg, memOffset, cc->computeRegF0, opBits);
     }
     else if (op == CpuOp::IMUL ||
              op == CpuOp::MUL)
@@ -1262,7 +1262,7 @@ void ScbeX64::emitOpBinaryMR(CpuReg memReg, uint64_t memOffset, CpuReg reg, CpuO
         }
         emitLoadRM(cc->computeRegI0, memReg, memOffset, opBits);
         emitOpBinaryRR(cc->computeRegI0, reg, op, opBits, emitFlags);
-        emitStoreMR(memReg, memOffset, cc->computeRegI0, opBits);
+        emitLoadMR(memReg, memOffset, cc->computeRegI0, opBits);
     }
     else if (op == CpuOp::DIV ||
              op == CpuOp::IDIV ||
@@ -1278,7 +1278,7 @@ void ScbeX64::emitOpBinaryMR(CpuReg memReg, uint64_t memOffset, CpuReg reg, CpuO
         }
         emitLoadRM(cc->computeRegI0, memReg, memOffset, opBits);
         emitOpBinaryRR(cc->computeRegI0, reg, op, opBits, emitFlags);
-        emitStoreMR(memReg, memOffset, cc->computeRegI0, opBits);
+        emitLoadMR(memReg, memOffset, cc->computeRegI0, opBits);
     }
     else if (op == CpuOp::SAR ||
              op == CpuOp::SHR ||
@@ -1742,7 +1742,7 @@ void ScbeX64::emitOpBinaryMI(CpuReg memReg, uint64_t memOffset, uint64_t value, 
             }
             emitLoadRM(cc->computeRegI0, memReg, memOffset, opBits);
             emitOpBinaryRI(cc->computeRegI0, value, op, opBits, emitFlags);
-            emitStoreMR(memReg, memOffset, cc->computeRegI0, opBits);
+            emitLoadMR(memReg, memOffset, cc->computeRegI0, opBits);
         }
     }
 
@@ -1763,7 +1763,7 @@ void ScbeX64::emitOpBinaryMI(CpuReg memReg, uint64_t memOffset, uint64_t value, 
             }
             emitLoadRM(cc->computeRegI0, memReg, memOffset, opBits);
             emitOpBinaryRI(cc->computeRegI0, value, op, opBits, emitFlags);
-            emitStoreMR(memReg, memOffset, cc->computeRegI0, opBits);
+            emitLoadMR(memReg, memOffset, cc->computeRegI0, opBits);
         }
     }
 
@@ -1776,7 +1776,7 @@ void ScbeX64::emitOpBinaryMI(CpuReg memReg, uint64_t memOffset, uint64_t value, 
         }
         emitLoadRM(cc->computeRegI0, memReg, memOffset, opBits);
         emitOpBinaryRI(cc->computeRegI0, value, op, opBits, emitFlags);
-        emitStoreMR(memReg, memOffset, cc->computeRegI0, opBits);
+        emitLoadMR(memReg, memOffset, cc->computeRegI0, opBits);
     }
 
     ///////////////////////////////////////////
@@ -1796,7 +1796,7 @@ void ScbeX64::emitOpBinaryMI(CpuReg memReg, uint64_t memOffset, uint64_t value, 
             }
             emitLoadRM(cc->computeRegI0, memReg, memOffset, opBits);
             emitOpBinaryRI(cc->computeRegI0, value, op, opBits, emitFlags);
-            emitStoreMR(memReg, memOffset, cc->computeRegI0, opBits);
+            emitLoadMR(memReg, memOffset, cc->computeRegI0, opBits);
         }
     }
 
@@ -2252,7 +2252,7 @@ void ScbeX64::emitCopy(CpuReg memRegDst, CpuReg memRegSrc, uint32_t count)
     while (count >= 8)
     {
         emitLoadRM(cc->computeRegI2, memRegSrc, offset, OpBits::B64);
-        emitStoreMR(memRegDst, offset, cc->computeRegI2, OpBits::B64);
+        emitLoadMR(memRegDst, offset, cc->computeRegI2, OpBits::B64);
         count -= 8;
         offset += 8;
     }
@@ -2260,7 +2260,7 @@ void ScbeX64::emitCopy(CpuReg memRegDst, CpuReg memRegSrc, uint32_t count)
     while (count >= 4)
     {
         emitLoadRM(cc->computeRegI2, memRegSrc, offset, OpBits::B32);
-        emitStoreMR(memRegDst, offset, cc->computeRegI2, OpBits::B32);
+        emitLoadMR(memRegDst, offset, cc->computeRegI2, OpBits::B32);
         count -= 4;
         offset += 4;
     }
@@ -2268,7 +2268,7 @@ void ScbeX64::emitCopy(CpuReg memRegDst, CpuReg memRegSrc, uint32_t count)
     while (count >= 2)
     {
         emitLoadRM(cc->computeRegI2, memRegSrc, offset, OpBits::B16);
-        emitStoreMR(memRegDst, offset, cc->computeRegI2, OpBits::B16);
+        emitLoadMR(memRegDst, offset, cc->computeRegI2, OpBits::B16);
         count -= 2;
         offset += 2;
     }
@@ -2276,7 +2276,7 @@ void ScbeX64::emitCopy(CpuReg memRegDst, CpuReg memRegSrc, uint32_t count)
     while (count >= 1)
     {
         emitLoadRM(cc->computeRegI2, memRegSrc, offset, OpBits::B8);
-        emitStoreMR(memRegDst, offset, cc->computeRegI2, OpBits::B8);
+        emitLoadMR(memRegDst, offset, cc->computeRegI2, OpBits::B8);
         count -= 1;
         offset += 1;
     }
@@ -2305,28 +2305,28 @@ void ScbeX64::emitClearM(CpuReg memReg, uint64_t memOffset, uint32_t count)
 
     while (count >= 8)
     {
-        emitStoreMI(memReg, memOffset, 0, OpBits::B64);
+        emitLoadMI(memReg, memOffset, 0, OpBits::B64);
         count -= 8;
         memOffset += 8;
     }
 
     while (count >= 4)
     {
-        emitStoreMI(memReg, memOffset, 0, OpBits::B32);
+        emitLoadMI(memReg, memOffset, 0, OpBits::B32);
         count -= 4;
         memOffset += 4;
     }
 
     while (count >= 2)
     {
-        emitStoreMI(memReg, memOffset, 0, OpBits::B16);
+        emitLoadMI(memReg, memOffset, 0, OpBits::B16);
         count -= 2;
         memOffset += 2;
     }
 
     while (count >= 1)
     {
-        emitStoreMI(memReg, memOffset, 0, OpBits::B8);
+        emitLoadMI(memReg, memOffset, 0, OpBits::B8);
         count -= 1;
         memOffset += 1;
     }
@@ -2417,9 +2417,9 @@ ScbeMicroOpDetails ScbeX64::getInstructionDetails(ScbeMicroInstruction* inst) co
             result.add(1ULL << static_cast<uint32_t>(inst->regA));
             return result;
 
-        case ScbeMicroOp::StoreMR:
+        case ScbeMicroOp::LoadMR:
             return MOD_ZERO;
-        case ScbeMicroOp::StoreMI:
+        case ScbeMicroOp::LoadMI:
             if (inst->opBitsA == OpBits::B64 && inst->valueB > 0x7FFFFFFF && inst->valueB >> 32 != 0xFFFFFFFF)
                 result.add(1ULL << static_cast<uint32_t>(cc->computeRegI1));
             return result;

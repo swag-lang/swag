@@ -49,7 +49,7 @@ void Scbe::emitGetParam(ScbeCpu& pp, uint32_t reg, uint32_t paramIdx, OpBits opB
         {
             SWAG_ASSERT(!toAdd);
             emitLoadZeroExtendParam(pp, cc->computeRegI0, paramIdx, OpBits::B64, opBits);
-            pp.emitStoreMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(reg), cc->computeRegI0, OpBits::B64);
+            pp.emitLoadMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(reg), cc->computeRegI0, OpBits::B64);
             return;
         }
         case OpBits::B64:
@@ -79,7 +79,7 @@ void Scbe::emitGetParam(ScbeCpu& pp, uint32_t reg, uint32_t paramIdx, OpBits opB
             break;
     }
 
-    pp.emitStoreMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(reg), cc->computeRegI0, OpBits::B64);
+    pp.emitLoadMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(reg), cc->computeRegI0, OpBits::B64);
 }
 
 void Scbe::emitCallCPUParams(ScbeCpu&                          pp,
@@ -164,7 +164,7 @@ void Scbe::emitLocalCall(ScbeCpu& pp)
     if (ip->op == ByteCodeOp::LocalCallPopRC)
     {
         pp.emitLoadRM(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetRT(0), OpBits::B64);
-        pp.emitStoreMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->d.u32), cc->computeRegI0, OpBits::B64);
+        pp.emitLoadMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->d.u32), cc->computeRegI0, OpBits::B64);
     }
 }
 
@@ -247,7 +247,7 @@ void Scbe::emitMakeLambda(ScbeCpu& pp)
     const auto funcNode = castAst<AstFuncDecl>(reinterpret_cast<AstNode*>(pp.ip->b.pointer), AstNodeKind::FuncDecl);
     SWAG_ASSERT(!pp.ip->c.pointer || (funcNode && funcNode->hasExtByteCode() && funcNode->extByteCode()->bc == reinterpret_cast<ByteCode*>(pp.ip->c.pointer)));
     pp.emitSymbolRelocationPtr(cc->computeRegI0, funcNode->getCallName());
-    pp.emitStoreMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(pp.ip->a.u32), cc->computeRegI0, OpBits::B64);
+    pp.emitLoadMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(pp.ip->a.u32), cc->computeRegI0, OpBits::B64);
 }
 
 void Scbe::emitMakeCallback(ScbeCpu& pp)
@@ -277,5 +277,5 @@ void Scbe::emitMakeCallback(ScbeCpu& pp)
     // End
     //////////////////
     pp.emitPatchJump(jump);
-    pp.emitStoreMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(pp.ip->a.u32), cc->computeRegI0, OpBits::B64);
+    pp.emitLoadMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(pp.ip->a.u32), cc->computeRegI0, OpBits::B64);
 }

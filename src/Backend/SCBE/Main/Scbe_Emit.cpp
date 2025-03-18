@@ -105,7 +105,7 @@ void Scbe::emitShiftRightArithmetic(ScbeCpu& pp)
         pp.emitOpBinaryRR(cc->computeRegI0, cc->computeRegI1, CpuOp::SAR, opBits);
     }
 
-    pp.emitStoreMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, opBits);
+    pp.emitLoadMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, opBits);
 }
 
 void Scbe::emitShiftRightEqArithmetic(ScbeCpu& pp)
@@ -136,13 +136,13 @@ void Scbe::emitShiftLogical(ScbeCpu& pp, CpuOp op)
     const auto opBits = ScbeCpu::getOpBits(ip->op);
     if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 >= ScbeCpu::getNumBits(opBits))
     {
-        pp.emitStoreMI(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), 0, opBits);
+        pp.emitLoadMI(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), 0, opBits);
     }
     else if (!ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_B))
     {
         pp.emitLoadRM(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), opBits);
         pp.emitOpBinaryRI(cc->computeRegI0, ip->b.u8, op, opBits);
-        pp.emitStoreMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, opBits);
+        pp.emitLoadMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, opBits);
     }
     else
     {
@@ -152,7 +152,7 @@ void Scbe::emitShiftLogical(ScbeCpu& pp, CpuOp op)
         pp.emitClearR(cc->computeRegI2, opBits);
         pp.emitCmpRI(cc->computeRegI1, ScbeCpu::getNumBits(opBits) - 1, OpBits::B32);
         pp.emitOpBinaryRR(cc->computeRegI0, cc->computeRegI2, CpuOp::CMOVG, opBits);
-        pp.emitStoreMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, opBits);
+        pp.emitLoadMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, opBits);
     }
 }
 
@@ -164,7 +164,7 @@ void Scbe::emitShiftEqLogical(ScbeCpu& pp, CpuOp op)
     if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 >= ScbeCpu::getNumBits(opBits))
     {
         pp.emitLoadRM(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-        pp.emitStoreMI(cc->computeRegI0, 0, 0, opBits);
+        pp.emitLoadMI(cc->computeRegI0, 0, 0, opBits);
     }
     else if (ip->hasFlag(BCI_IMM_B))
     {
@@ -178,7 +178,7 @@ void Scbe::emitShiftEqLogical(ScbeCpu& pp, CpuOp op)
         pp.emitCmpRI(cc->computeRegI1, ScbeCpu::getNumBits(opBits), OpBits::B32);
         const auto jump = pp.emitJump(CpuCondJump::JL, OpBits::B8);
         pp.emitClearR(cc->computeRegI1, opBits);
-        pp.emitStoreMR(cc->computeRegI0, 0, cc->computeRegI1, opBits);
+        pp.emitLoadMR(cc->computeRegI0, 0, cc->computeRegI1, opBits);
         pp.emitPatchJump(jump);
         pp.emitOpBinaryMR(cc->computeRegI0, 0, cc->computeRegI1, op, opBits);
     }
@@ -204,7 +204,7 @@ void Scbe::emitBinOp(ScbeCpu& pp, CpuOp op, CpuEmitFlags emitFlags)
     {
         pp.emitLoadRM(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), opBits);
         pp.emitOpBinaryRI(cc->computeRegI0, ip->b.u64, op, opBits, emitFlags);
-        pp.emitStoreMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, opBits);
+        pp.emitLoadMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, opBits);
     }
     else
     {
@@ -216,7 +216,7 @@ void Scbe::emitBinOp(ScbeCpu& pp, CpuOp op, CpuEmitFlags emitFlags)
             pp.emitLoadRM(r0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), opBits);
         emitIMMB(pp, r1, opBits);
         pp.emitOpBinaryRR(r0, r1, op, opBits, emitFlags);
-        pp.emitStoreMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), r0, opBits);
+        pp.emitLoadMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), r0, opBits);
     }
 }
 
@@ -327,7 +327,7 @@ void Scbe::emitAddSubMul64(ScbeCpu& pp, uint64_t mulValue, CpuOp op)
     if (ip->hasFlag(BCI_IMM_B) && value == 0)
     {
         pp.emitLoadRM(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-        pp.emitStoreMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, OpBits::B64);
+        pp.emitLoadMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, OpBits::B64);
     }
     else if (ip->hasFlag(BCI_IMM_B) && ip->a.u32 == ip->c.u32)
     {
@@ -337,7 +337,7 @@ void Scbe::emitAddSubMul64(ScbeCpu& pp, uint64_t mulValue, CpuOp op)
     {
         pp.emitLoadRM(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
         pp.emitOpBinaryRI(cc->computeRegI0, value, op, OpBits::B64);
-        pp.emitStoreMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, OpBits::B64);
+        pp.emitLoadMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, OpBits::B64);
     }
     else if (ip->a.u32 == ip->c.u32)
     {
@@ -350,7 +350,7 @@ void Scbe::emitAddSubMul64(ScbeCpu& pp, uint64_t mulValue, CpuOp op)
         pp.emitLoadRM(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
         pp.emitOpBinaryRI(cc->computeRegI0, mulValue, CpuOp::IMUL, OpBits::B64);
         pp.emitOpBinaryRM(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), op, OpBits::B64);
-        pp.emitStoreMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, OpBits::B64);
+        pp.emitLoadMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, OpBits::B64);
     }
     else
     {
@@ -358,7 +358,7 @@ void Scbe::emitAddSubMul64(ScbeCpu& pp, uint64_t mulValue, CpuOp op)
         pp.emitOpBinaryRI(cc->computeRegI0, mulValue, CpuOp::IMUL, OpBits::B64);
         pp.emitLoadRM(cc->computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
         pp.emitOpBinaryRR(cc->computeRegI1, cc->computeRegI0, op, OpBits::B64);
-        pp.emitStoreMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI1, OpBits::B64);
+        pp.emitLoadMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI1, OpBits::B64);
     }
 }
 
@@ -506,19 +506,19 @@ void Scbe::emitCopyVaargs(ScbeCpu& pp)
             {
                 case 1:
                     pp.emitLoadRM(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(reg), OpBits::B8);
-                    pp.emitStoreMR(CpuReg::Rsp, offset, cc->computeRegI0, OpBits::B8);
+                    pp.emitLoadMR(CpuReg::Rsp, offset, cc->computeRegI0, OpBits::B8);
                     break;
                 case 2:
                     pp.emitLoadRM(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(reg), OpBits::B16);
-                    pp.emitStoreMR(CpuReg::Rsp, offset, cc->computeRegI0, OpBits::B16);
+                    pp.emitLoadMR(CpuReg::Rsp, offset, cc->computeRegI0, OpBits::B16);
                     break;
                 case 4:
                     pp.emitLoadRM(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(reg), OpBits::B32);
-                    pp.emitStoreMR(CpuReg::Rsp, offset, cc->computeRegI0, OpBits::B32);
+                    pp.emitLoadMR(CpuReg::Rsp, offset, cc->computeRegI0, OpBits::B32);
                     break;
                 case 8:
                     pp.emitLoadRM(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(reg), OpBits::B64);
-                    pp.emitStoreMR(CpuReg::Rsp, offset, cc->computeRegI0, OpBits::B64);
+                    pp.emitLoadMR(CpuReg::Rsp, offset, cc->computeRegI0, OpBits::B64);
                     break;
                 default:
                     break;
@@ -529,7 +529,7 @@ void Scbe::emitCopyVaargs(ScbeCpu& pp)
         }
 
         pp.emitLoadAddressM(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->sizeStackCallParams - variadicStackSize);
-        pp.emitStoreMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, OpBits::B64);
+        pp.emitLoadMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, OpBits::B64);
     }
     else
     {
@@ -549,12 +549,12 @@ void Scbe::emitCopyVaargs(ScbeCpu& pp)
         while (idxParam != UINT32_MAX)
         {
             pp.emitLoadRM(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(pp.pushRAParams[idxParam]), OpBits::B64);
-            pp.emitStoreMR(CpuReg::Rsp, offset, cc->computeRegI0, OpBits::B64);
+            pp.emitLoadMR(CpuReg::Rsp, offset, cc->computeRegI0, OpBits::B64);
             idxParam--;
             offset += 8;
         }
 
         pp.emitLoadAddressM(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->sizeStackCallParams - variadicStackSize);
-        pp.emitStoreMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, OpBits::B64);
+        pp.emitLoadMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, OpBits::B64);
     }
 }

@@ -227,18 +227,18 @@ void ScbeMicro::emitLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, CpuReg regS
     inst->opBitsA   = opBits;
 }
 
-void ScbeMicro::emitStoreMR(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits opBits)
+void ScbeMicro::emitLoadMR(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits opBits)
 {
-    const auto inst = addInstruction(ScbeMicroOp::StoreMR);
+    const auto inst = addInstruction(ScbeMicroOp::LoadMR);
     inst->regA      = memReg;
     inst->valueA    = memOffset;
     inst->regB      = reg;
     inst->opBitsA   = opBits;
 }
 
-void ScbeMicro::emitStoreMI(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits)
+void ScbeMicro::emitLoadMI(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits)
 {
-    const auto inst = addInstruction(ScbeMicroOp::StoreMI);
+    const auto inst = addInstruction(ScbeMicroOp::LoadMI);
     inst->regA      = memReg;
     inst->valueA    = memOffset;
     inst->valueB    = value;
@@ -585,11 +585,11 @@ void ScbeMicro::encode(ScbeCpu& encoder) const
             case ScbeMicroOp::LoadAddressAddMul:
                 encoder.emitLoadAddressAddMul(inst->regA, inst->regB, inst->regC, inst->valueA, inst->opBitsA);
                 break;
-            case ScbeMicroOp::StoreMR:
-                encoder.emitStoreMR(inst->regA, inst->valueA, inst->regB, inst->opBitsA);
+            case ScbeMicroOp::LoadMR:
+                encoder.emitLoadMR(inst->regA, inst->valueA, inst->regB, inst->opBitsA);
                 break;
-            case ScbeMicroOp::StoreMI:
-                encoder.emitStoreMI(inst->regA, inst->valueA, inst->valueB, inst->opBitsA);
+            case ScbeMicroOp::LoadMI:
+                encoder.emitLoadMI(inst->regA, inst->valueA, inst->valueB, inst->opBitsA);
                 break;
             case ScbeMicroOp::CmpRR:
                 encoder.emitCmpRR(inst->regA, inst->regB, inst->opBitsA);

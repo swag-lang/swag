@@ -6,6 +6,44 @@
 #include "Semantic/Type/TypeInfo.h"
 #pragma optimize("", off)
 
+void ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOffset, CpuReg reg)
+{
+    auto inst = reinterpret_cast<ScbeMicroInstruction*>(out.concat.firstBucket->data);
+    while (inst->op != ScbeMicroOp::End)
+    {
+        switch (inst->op)
+        {
+            case ScbeMicroOp::LoadRM:
+                if (inst->regA == memReg &&
+                    inst->valueA == memOffset)
+                {
+                    setOp(inst, ScbeMicroOp::LoadRR);
+                    inst->regB = reg;
+                }
+                break;
+            case ScbeMicroOp::LoadMR:
+                if (inst->regA == memReg &&
+                    inst->valueA == memOffset)
+                {
+                    setOp(inst, ScbeMicroOp::LoadRR);
+                    inst->regA = reg;
+                }
+                break;
+            case ScbeMicroOp::LoadMI:
+                if (inst->regA == memReg &&
+                    inst->valueA == memOffset)
+                {
+                    setOp(inst, ScbeMicroOp::LoadRI);
+                    inst->regA   = reg;
+                    inst->valueA = inst->valueB;
+                }
+                break;
+        }
+
+        inst = zap(inst + 1);
+    }
+}
+
 void ScbeOptimizer::ignore(ScbeMicroInstruction* inst)
 {
 #ifdef SWAG_STATS
@@ -77,7 +115,7 @@ void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
                 }
                 break;
 
-            case ScbeMicroOp::StoreMR:
+            case ScbeMicroOp::LoadMR:
                 if (next->op == ScbeMicroOp::LoadRM &&
                     ScbeCpu::isInt(next->opBitsA) == ScbeCpu::isInt(inst[0].opBitsA) &&
                     ScbeCpu::getNumBits(next->opBitsA) <= ScbeCpu::getNumBits(inst[0].opBitsA) &&
@@ -125,7 +163,7 @@ void ScbeOptimizer::optimizePassStoreToRegBeforeLeave(const ScbeMicro& out)
                 ignore(i);
             mapValInst.clear();
         }
-        else if (inst->op == ScbeMicroOp::StoreMR &&
+        else if (inst->op == ScbeMicroOp::LoadMR &&
                  inst->regA == CpuReg::Rsp &&
                  out.cpuFct->isStackOffsetTransient(static_cast<uint32_t>(inst->valueA)))
         {
@@ -263,7 +301,7 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
         }
 
         auto legitReg = CpuReg::Max;
-        if (inst->op == ScbeMicroOp::StoreMR &&
+        if (inst->op == ScbeMicroOp::LoadMR &&
             inst->regA == CpuReg::Rsp &&
             out.cpuFct->isStackOffsetTransient(static_cast<uint32_t>(inst->valueA)))
         {
@@ -335,7 +373,7 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
 {
     if (out.optLevel == BuildCfgBackendOptim::O0)
         return;
-    
+
     setDirtyPass();
     while (passHasDoneSomething)
     {

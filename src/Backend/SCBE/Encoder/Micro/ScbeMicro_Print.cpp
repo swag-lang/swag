@@ -453,12 +453,12 @@ void ScbeMicro::print() const
                 line.name = "lea";
                 line.args = form("%s, [%s+%s*%d]", regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsA), regName(inst->regC, inst->opBitsA), inst->valueA);
                 break;
-            case ScbeMicroOp::StoreMR:
+            case ScbeMicroOp::LoadMR:
                 // encoder.emitStore(inst->regA, inst->valueA, inst->regB, inst->opBitsA);
                 line.name = cpuOpName(CpuOp::MOV, inst->opBitsA);
                 line.args = form("%s ptr [%s+%xh], %s", opBitsName(inst->opBitsA), regName(inst->regA, OpBits::B64), inst->valueA, regName(inst->regB, inst->opBitsA));
                 break;
-            case ScbeMicroOp::StoreMI:
+            case ScbeMicroOp::LoadMI:
                 // encoder.emitStore(inst->regA, inst->valueA, inst->valueB, inst->opBitsA);
                 line.name = cpuOpName(CpuOp::MOV, inst->opBitsA);
                 line.args = form("%s ptr [%s+%xh], %d", opBitsName(inst->opBitsA), regName(inst->regA, OpBits::B64), inst->valueA, inst->valueB);

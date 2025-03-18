@@ -42,14 +42,14 @@ struct ScbeMicro final : ScbeCpu
     void    emitLoadRI(CpuReg reg, uint64_t value, OpBits opBits) override;
     void    emitLoadRR(CpuReg regDst, CpuReg regSrc, OpBits opBits) override;
     void    emitLoadRI64(CpuReg reg, uint64_t value) override;
+    void    emitLoadMR(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits opBits) override;
+    void    emitLoadMI(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits) override;
     void    emitLoadSignedExtendRM(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc) override;
     void    emitLoadSignedExtendRR(CpuReg regDst, CpuReg regSrc, OpBits numBitsDst, OpBits numBitsSrc) override;
     void    emitLoadZeroExtendRM(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc) override;
     void    emitLoadZeroExtendRR(CpuReg regDst, CpuReg regSrc, OpBits numBitsDst, OpBits numBitsSrc) override;
     void    emitLoadAddressM(CpuReg reg, CpuReg memReg, uint64_t memOffset) override;
     void    emitLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, OpBits opBits) override;
-    void    emitStoreMR(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits opBits) override;
-    void    emitStoreMI(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits) override;
     void    emitCmpRR(CpuReg reg0, CpuReg reg1, OpBits opBits) override;
     void    emitCmpMR(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits opBits) override;
     void    emitCmpMI(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits) override;

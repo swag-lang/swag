@@ -10,6 +10,7 @@ enum class OpBits : uint8_t;
 
 struct ScbeOptimizer
 {
+    void                         memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOffset, CpuReg reg);
     void                         ignore(ScbeMicroInstruction* inst);
     void                         setOp(ScbeMicroInstruction* inst, ScbeMicroOp op);
     static ScbeMicroInstruction* zap(ScbeMicroInstruction* inst);
