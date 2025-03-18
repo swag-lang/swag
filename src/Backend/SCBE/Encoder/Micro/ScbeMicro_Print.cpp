@@ -129,6 +129,9 @@ namespace
             case CpuOp::CMOVBE:
                 return "cmovbe";
 
+            case CpuOp::CMP:
+                return opBits == OpBits::F32 ? "comiss" : opBits == OpBits::F64 ? "comisd"
+                                                                                : "cmp";
             case CpuOp::MOV:
                 return opBits == OpBits::F32 ? "movss" : opBits == OpBits::F64 ? "movsd"
                                                                                : "mov";
@@ -462,7 +465,7 @@ void ScbeMicro::print() const
                 break;
             case ScbeMicroOp::CmpRR:
                 // encoder.emitCmp(inst->regA, inst->regB, inst->opBitsA);
-                line.name = "cmp";
+                line.name = cpuOpName(CpuOp::CMP, inst->opBitsA);
                 line.args = form("%s, %s", regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsA));
                 break;
             case ScbeMicroOp::CmpRI:
