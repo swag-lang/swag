@@ -686,4 +686,6 @@ void ScbeMicro::process(ScbeCpu& encoder)
     ScbeOptimizer opt;
     opt.encoder = &encoder;
     opt.optimize(*this);
+
+    pushRegisters();
 }

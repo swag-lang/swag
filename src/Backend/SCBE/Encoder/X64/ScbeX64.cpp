@@ -174,10 +174,16 @@ namespace
     {
         if (opBits == OpBits::B16 || opBits == OpBits::F64)
             concat.addU8(0x66);
-        const bool b1 = reg0 >= CpuReg::R8 && reg0 <= CpuReg::R15;
-        const bool b2 = reg1 >= CpuReg::R8 && reg1 <= CpuReg::R15;
-        if (opBits == OpBits::B64 || b1 || b2)
+
+        const bool b1 = (reg0 >= CpuReg::R8 && reg0 <= CpuReg::R15);
+        const bool b2 = (reg1 >= CpuReg::R8 && reg1 <= CpuReg::R15);
+        if (opBits == OpBits::B64 ||
+            b1 || b2 ||
+            reg0 == CpuReg::Rsi || reg1 == CpuReg::Rsi ||
+            reg0 == CpuReg::Rdi || reg1 == CpuReg::Rdi)
+        {
             concat.addU8(getREX(opBits == OpBits::B64, b1, false, b2));
+        }
     }
 
     void emitValue(Concat& concat, uint64_t value, OpBits opBits)
