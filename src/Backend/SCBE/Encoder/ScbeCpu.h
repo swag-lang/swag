@@ -102,12 +102,14 @@ enum class CpuCondFlag : uint8_t
     B,
     BE,
     E,
-    EP,
     GE,
     L,
     LE,
     NA,
     NE,
+    P,
+    NP,
+    EP,
     NEP,
 };
 

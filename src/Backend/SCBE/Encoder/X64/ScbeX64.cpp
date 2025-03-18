@@ -826,40 +826,30 @@ void ScbeX64::emitSetCC(CpuReg reg, CpuCondFlag setType)
             emitModRM(concat, MODRM_REG_0, reg);
             break;
 
+        case CpuCondFlag::P:
+            emitREX(concat, OpBits::B8, REX_REG_NONE, reg);
+            emitCPUOp(concat, 0x0F);
+            emitCPUOp(concat, 0x9A);
+            emitModRM(concat, MODRM_REG_0, reg);
+            break;
+
+        case CpuCondFlag::NP:
+            emitREX(concat, OpBits::B8, REX_REG_NONE, reg);
+            emitCPUOp(concat, 0x0F);
+            emitCPUOp(concat, 0x9B);
+            emitModRM(concat, MODRM_REG_0, reg);
+            break;
+
         case CpuCondFlag::EP:
-            SWAG_ASSERT(reg == cc->computeRegI0);
-
-            // sete al
-            concat.addU8(0x0F);
-            concat.addU8(0x94);
-            concat.addU8(0xC0);
-
-            // setnp ah
-            concat.addU8(0x0F);
-            concat.addU8(0x9B);
-            concat.addU8(0xC4);
-
-            // and al, ah
-            concat.addU8(0x20);
-            concat.addU8(0xE0);
+            emitSetCC(cc->computeRegI0, CpuCondFlag::E);
+            emitSetCC(cc->computeRegI1, CpuCondFlag::NP);
+            emitOpBinaryRR(cc->computeRegI0, cc->computeRegI1, CpuOp::AND, OpBits::B8);
             break;
 
         case CpuCondFlag::NEP:
-            SWAG_ASSERT(reg == cc->computeRegI0);
-
-            // setne al
-            concat.addU8(0x0F);
-            concat.addU8(0x95);
-            concat.addU8(0xC0);
-
-            // setp ah
-            concat.addU8(0x0F);
-            concat.addU8(0x9A);
-            concat.addU8(0xC4);
-
-            // or al, ah
-            concat.addU8(0x08);
-            concat.addU8(0xE0);
+            emitSetCC(cc->computeRegI0, CpuCondFlag::NE);
+            emitSetCC(cc->computeRegI1, CpuCondFlag::P);
+            emitOpBinaryRR(cc->computeRegI0, cc->computeRegI1, CpuOp::OR, OpBits::B8);
             break;
 
         default:
