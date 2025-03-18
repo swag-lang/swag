@@ -68,6 +68,7 @@ struct ScbeMicro final : ScbeCpu
     void    emitMulAdd(CpuReg regDst, CpuReg regMul, CpuReg regAdd, OpBits opBits) override;
 
     ScbeMicroInstruction* addInstruction(ScbeMicroOp op);
+    void                  pushRegisters() const;
     void                  process(ScbeCpu& encoder);
     void                  encode(ScbeCpu& encoder) const;
     void                  print() const;

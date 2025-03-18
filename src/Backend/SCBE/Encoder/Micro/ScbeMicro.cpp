@@ -651,6 +651,29 @@ void ScbeMicro::encode(ScbeCpu& encoder) const
         print();
 }
 
+void ScbeMicro::pushRegisters() const
+{
+    Set<CpuReg> regs;
+
+    auto inst = reinterpret_cast<ScbeMicroInstruction*>(concat.firstBucket->data);
+    while (inst->op != ScbeMicroOp::End)
+    {
+        if (inst->hasReadRegA())
+            regs.insert(inst->regA);
+        if (inst->hasReadRegB())
+            regs.insert(inst->regB);
+        if (inst->hasReadRegC())
+            regs.insert(inst->regC);
+        inst = inst + 1;
+    }
+
+    for (const auto r: regs)
+    {
+        if (cc->nonVolatileRegisters.contains(r))
+            cpuFct->unwindRegs.push_back(r);
+    }
+}
+
 void ScbeMicro::process(ScbeCpu& encoder)
 {
 #ifdef SWAG_STATS
