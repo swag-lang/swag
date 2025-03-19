@@ -449,6 +449,110 @@ void ScbeX64::emitLoadRM(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits o
     }
 }
 
+void ScbeX64::emitLoadZeroExtendRM(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc)
+{
+    if (numBitsSrc == numBitsDst)
+    {
+        emitLoadRM(reg, memReg, memOffset, numBitsSrc);
+        return;
+    }
+
+    if (memOffset > 0x7FFFFFFF)
+    {
+        SWAG_ASSERT(memReg != cc->computeRegI1);
+        emitLoadRI(cc->computeRegI1, memOffset, OpBits::B64);
+        emitOpBinaryRR(memReg, cc->computeRegI1, CpuOp::ADD, OpBits::B64);
+        memOffset = 0;
+    }
+
+    if (numBitsSrc == OpBits::B8 && (numBitsDst == OpBits::B32 || numBitsDst == OpBits::B64))
+    {
+        emitREX(concat, numBitsDst, reg, memReg);
+        concat.addU8(0x0F);
+        concat.addU8(0xB6);
+        emitModRM(concat, memOffset, reg, memReg);
+    }
+    else if (numBitsSrc == OpBits::B16 && (numBitsDst == OpBits::B32 || numBitsDst == OpBits::B64))
+    {
+        emitREX(concat, numBitsDst, reg, memReg);
+        concat.addU8(0x0F);
+        concat.addU8(0xB7);
+        emitModRM(concat, memOffset, reg, memReg);
+    }
+    else if (numBitsSrc == OpBits::B32 && numBitsDst == OpBits::B64)
+    {
+        emitLoadRM(reg, memReg, memOffset, numBitsSrc);
+    }
+    else
+    {
+        SWAG_ASSERT(false);
+    }
+}
+
+void ScbeX64::emitLoadZeroExtendRR(CpuReg regDst, CpuReg regSrc, OpBits numBitsDst, OpBits numBitsSrc)
+{
+    if (numBitsSrc == numBitsDst)
+    {
+        emitLoadRR(regDst, regSrc, numBitsSrc);
+        return;
+    }
+
+    if (numBitsSrc == OpBits::B8 && (numBitsDst == OpBits::B32 || numBitsDst == OpBits::B64))
+    {
+        emitREX(concat, numBitsDst, regDst, regSrc);
+        emitCPUOp(concat, 0x0F);
+        emitCPUOp(concat, 0xB6);
+        emitModRM(concat, regDst, regSrc);
+    }
+    else if (numBitsSrc == OpBits::B16 && (numBitsDst == OpBits::B32 || numBitsDst == OpBits::B64))
+    {
+        emitREX(concat, OpBits::B64, regDst, regSrc);
+        emitCPUOp(concat, 0x0F);
+        emitCPUOp(concat, 0xB7);
+        emitModRM(concat, regDst, regSrc);
+    }
+    else if (numBitsSrc == OpBits::B32 && numBitsDst == OpBits::B64)
+    {
+        emitLoadRR(regDst, regSrc, numBitsSrc);
+    }
+    else if (numBitsSrc == OpBits::B64 && numBitsDst == OpBits::F64)
+    {
+        SWAG_ASSERT(regSrc == cc->computeRegI0 && regDst == cc->computeRegF0);
+        emitLoadRR(cc->computeRegF1, cc->computeRegI0, OpBits::F64);
+        emitSymbolRelocationAddress(cc->computeRegI1, symCst_U64F64, 0);
+
+        // punpckldq xmm1, xmmword ptr [rcx]
+        emitREX(concat, OpBits::F64, cc->computeRegF1, cc->computeRegI1);
+        emitCPUOp(concat, 0x0F);
+        emitCPUOp(concat, 0x62);
+        emitModRM(concat, 0, cc->computeRegF1, cc->computeRegI1);
+
+        // subpd xmm1, xmmword ptr [rcx + 16]
+        emitREX(concat, OpBits::F64, cc->computeRegF1, cc->computeRegI1);
+        emitCPUOp(concat, 0x0F);
+        emitCPUOp(concat, 0x5C);
+        emitModRM(concat, 16, cc->computeRegF1, cc->computeRegI1);
+
+        // movapd xmm0, xmm1
+        emitREX(concat, OpBits::F64, cc->computeRegF0, cc->computeRegF1);
+        emitCPUOp(concat, 0x0F);
+        emitCPUOp(concat, 0x28);
+        emitModRM(concat, cc->computeRegF0, cc->computeRegF1);
+
+        // unpckhpd xmm0, xmm1
+        emitREX(concat, OpBits::F64, cc->computeRegF0, cc->computeRegF1);
+        emitCPUOp(concat, 0x0F);
+        emitCPUOp(concat, 0x15);
+        emitModRM(concat, cc->computeRegF0, cc->computeRegF1);
+
+        emitOpBinaryRR(cc->computeRegF0, cc->computeRegF1, CpuOp::FADD, OpBits::F64);
+    }
+    else
+    {
+        SWAG_ASSERT(false);
+    }
+}
+
 void ScbeX64::emitLoadSignedExtendRM(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc)
 {
     if (numBitsSrc == numBitsDst)
@@ -513,122 +617,9 @@ void ScbeX64::emitLoadSignedExtendRM(CpuReg reg, CpuReg memReg, uint64_t memOffs
     }
 }
 
-void ScbeX64::emitLoadZeroExtendRM(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc)
-{
-    if (numBitsSrc == numBitsDst)
-    {
-        emitLoadRM(reg, memReg, memOffset, numBitsSrc);
-        return;
-    }
-
-    if (memOffset > 0x7FFFFFFF)
-    {
-        SWAG_ASSERT(memReg != cc->computeRegI1);
-        emitLoadRI(cc->computeRegI1, memOffset, OpBits::B64);
-        emitOpBinaryRR(memReg, cc->computeRegI1, CpuOp::ADD, OpBits::B64);
-        memOffset = 0;
-    }
-
-    if (numBitsSrc == OpBits::B8 && numBitsDst == OpBits::B32)
-    {
-        emitREX(concat, OpBits::B32, reg, memReg);
-        concat.addU8(0x0F);
-        concat.addU8(0xB6);
-        emitModRM(concat, memOffset, reg, memReg);
-    }
-    else if (numBitsSrc == OpBits::B8 && numBitsDst == OpBits::B64)
-    {
-        emitREX(concat, OpBits::B64, reg, memReg);
-        concat.addU8(0x0F);
-        concat.addU8(0xB6);
-        emitModRM(concat, memOffset, reg, memReg);
-    }
-    else if (numBitsSrc == OpBits::B16 && numBitsDst == OpBits::B32)
-    {
-        emitREX(concat, OpBits::B32, reg, memReg);
-        concat.addU8(0x0F);
-        concat.addU8(0xB7);
-        emitModRM(concat, memOffset, reg, memReg);
-    }
-    else if (numBitsSrc == OpBits::B16 && numBitsDst == OpBits::B64)
-    {
-        emitREX(concat, OpBits::B64, reg, memReg);
-        concat.addU8(0x0F);
-        concat.addU8(0xB7);
-        emitModRM(concat, memOffset, reg, memReg);
-    }
-    else if (numBitsSrc == OpBits::B32)
-    {
-        SWAG_ASSERT(numBitsDst == OpBits::B64);
-        emitLoadRM(reg, memReg, memOffset, numBitsSrc);
-    }
-    else
-    {
-        SWAG_ASSERT(false);
-    }
-}
-
-void ScbeX64::emitLoadZeroExtendRR(CpuReg regDst, CpuReg regSrc, OpBits numBitsDst, OpBits numBitsSrc)
-{
-    if (numBitsSrc == OpBits::B8 && (numBitsDst == OpBits::B32 || numBitsDst == OpBits::B64))
-    {
-        emitREX(concat, numBitsDst, regDst, regSrc);
-        emitCPUOp(concat, 0x0F);
-        emitCPUOp(concat, 0xB6);
-        emitModRM(concat, regDst, regSrc);
-    }
-    else if (numBitsSrc == OpBits::B16 && numBitsDst == OpBits::B64)
-    {
-        emitREX(concat, OpBits::B64, regDst, regSrc);
-        emitCPUOp(concat, 0x0F);
-        emitCPUOp(concat, 0xB7);
-        emitModRM(concat, regDst, regSrc);
-    }
-    else if (numBitsSrc == OpBits::B32 && numBitsDst == OpBits::B64)
-    {
-        emitLoadRR(regDst, regSrc, numBitsSrc);
-    }
-    else if (numBitsSrc == OpBits::B64 && numBitsDst == OpBits::F64)
-    {
-        SWAG_ASSERT(regSrc == cc->computeRegI0 && regDst == cc->computeRegF0);
-        emitLoadRR(cc->computeRegF1, cc->computeRegI0, OpBits::F64);
-        emitSymbolRelocationAddress(cc->computeRegI1, symCst_U64F64, 0);
-
-        // punpckldq xmm1, xmmword ptr [rcx]
-        emitREX(concat, OpBits::F64, cc->computeRegF1, cc->computeRegI1);
-        emitCPUOp(concat, 0x0F);
-        emitCPUOp(concat, 0x62);
-        emitModRM(concat, 0, cc->computeRegF1, cc->computeRegI1);
-
-        // subpd xmm1, xmmword ptr [rcx + 16]
-        emitREX(concat, OpBits::F64, cc->computeRegF1, cc->computeRegI1);
-        emitCPUOp(concat, 0x0F);
-        emitCPUOp(concat, 0x5C);
-        emitModRM(concat, 16, cc->computeRegF1, cc->computeRegI1);
-
-        // movapd xmm0, xmm1
-        emitREX(concat, OpBits::F64, cc->computeRegF0, cc->computeRegF1);
-        emitCPUOp(concat, 0x0F);
-        emitCPUOp(concat, 0x28);
-        emitModRM(concat, cc->computeRegF0, cc->computeRegF1);
-
-        // unpckhpd xmm0, xmm1
-        emitREX(concat, OpBits::F64, cc->computeRegF0, cc->computeRegF1);
-        emitCPUOp(concat, 0x0F);
-        emitCPUOp(concat, 0x15);
-        emitModRM(concat, cc->computeRegF0, cc->computeRegF1);
-
-        emitOpBinaryRR(cc->computeRegF0, cc->computeRegF1, CpuOp::FADD, OpBits::F64);
-    }
-    else
-    {
-        SWAG_ASSERT(false);
-    }
-}
-
 void ScbeX64::emitLoadSignedExtendRR(CpuReg regDst, CpuReg regSrc, OpBits numBitsDst, OpBits numBitsSrc)
 {
-    if (numBitsDst == OpBits::B32 && numBitsSrc == OpBits::B8)
+    if (numBitsSrc == OpBits::B8 && numBitsDst == OpBits::B32)
     {
         emitREX(concat, OpBits::Zero, regDst, regSrc);
         emitCPUOp(concat, 0x0F);

@@ -658,11 +658,11 @@ void ScbeMicro::pushRegisters() const
     auto inst = reinterpret_cast<ScbeMicroInstruction*>(concat.firstBucket->data);
     while (inst->op != ScbeMicroOp::End)
     {
-        if (inst->hasReadRegA())
+        if (inst->hasWriteRegA())
             regs.insert(inst->regA);
-        if (inst->hasReadRegB())
+        if (inst->hasWriteRegB())
             regs.insert(inst->regB);
-        if (inst->hasReadRegC())
+        if (inst->hasWriteRegC())
             regs.insert(inst->regC);
         inst = inst + 1;
     }
@@ -686,6 +686,6 @@ void ScbeMicro::process(ScbeCpu& encoder)
     ScbeOptimizer opt;
     opt.encoder = &encoder;
     opt.optimize(*this);
-
+    
     pushRegisters();
 }

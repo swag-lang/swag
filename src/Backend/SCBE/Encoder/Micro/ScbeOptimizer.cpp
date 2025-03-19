@@ -13,8 +13,24 @@ void ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
     {
         switch (inst->op)
         {
+            case ScbeMicroOp::LoadSignedExtendRM:
+                if (inst->regB == memReg &&
+                    inst->valueA == memOffset)
+                {
+                    setOp(inst, ScbeMicroOp::LoadSignedExtendRR);
+                    inst->regB = reg;
+                }
+                break;
+            case ScbeMicroOp::LoadZeroExtendRM:
+                if (inst->regB == memReg &&
+                    inst->valueA == memOffset)
+                {
+                    setOp(inst, ScbeMicroOp::LoadZeroExtendRR);
+                    inst->regB = reg;
+                }
+                break;
             case ScbeMicroOp::LoadRM:
-                if (inst->regA == memReg &&
+                if (inst->regB == memReg &&
                     inst->valueA == memOffset)
                 {
                     setOp(inst, ScbeMicroOp::LoadRR);
@@ -384,4 +400,6 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
         optimizePassStoreToRegBeforeLeave(out);
         optimizePassStoreToHdwRegBeforeLeave(out);
     }
+
+    //memToReg(out, CpuReg::Rsp, out.cpuFct->getStackOffsetReg(0), CpuReg::Rdi);
 }
