@@ -911,9 +911,9 @@ void ScbeX64::emitCmpRI(CpuReg reg, uint64_t value, OpBits opBits)
 
 void ScbeX64::emitCmpMR(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits opBits)
 {
-    if (isFloat(opBits))
+    if (isFloat(reg))
     {
-        emitREX(concat, opBits);
+        emitREX(concat, opBits, reg, memReg);
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, 0x2F);
         emitModRM(concat, memOffset, reg, memReg);
@@ -1207,7 +1207,7 @@ void ScbeX64::emitOpBinaryRR(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBi
 
 void ScbeX64::emitOpBinaryMR(CpuReg memReg, uint64_t memOffset, CpuReg reg, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
-    if (isFloat(opBits))
+    if (isFloat(reg))
     {
         SWAG_ASSERT(reg == cc->computeRegF1);
         emitLoadRM(cc->computeRegF0, memReg, memOffset, opBits);

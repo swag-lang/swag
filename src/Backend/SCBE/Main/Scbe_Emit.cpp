@@ -424,7 +424,6 @@ void Scbe::emitJumpCmp2(ScbeCpu& pp, CpuCondJump op1, CpuCondJump op2, OpBits op
 {
     const auto cc = pp.cc;
     const auto ip = pp.ip;
-    SWAG_ASSERT(ScbeCpu::isFloat(opBits));
 
     if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_C))
     {
@@ -446,7 +445,6 @@ void Scbe::emitJumpCmp3(ScbeCpu& pp, CpuCondJump op1, CpuCondJump op2, OpBits op
 {
     const auto cc = pp.cc;
     const auto ip = pp.ip;
-    SWAG_ASSERT(ScbeCpu::isFloat(opBits));
 
     if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_C))
     {
