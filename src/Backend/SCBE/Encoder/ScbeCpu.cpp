@@ -147,8 +147,6 @@ bool ScbeCpu::isNoOp(uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitF
 {
     if (emitFlags.has(EMITF_Overflow))
         return false;
-    if (isFloat(opBits))
-        return false;
     if (optLevel <= BuildCfgBackendOptim::O1)
         return false;
 

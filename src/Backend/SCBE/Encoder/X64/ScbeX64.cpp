@@ -1310,7 +1310,7 @@ namespace
 
 void ScbeX64::emitOpBinaryRI(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
-    if (isNoOp(value, op, opBits, emitFlags))
+    if (isInt(reg) && isNoOp(value, op, opBits, emitFlags))
         return;
 
     ///////////////////////////////////////////
@@ -1675,7 +1675,6 @@ void ScbeX64::emitOpBinaryRI(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits
 
 void ScbeX64::emitOpBinaryMI(CpuReg memReg, uint64_t memOffset, uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
-    SWAG_ASSERT(ScbeCpu::isInt(opBits));
     if (isNoOp(value, op, opBits, emitFlags))
         return;
     maskValue(value, opBits);
