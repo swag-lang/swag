@@ -378,15 +378,10 @@ void ScbeX64::emitLoadRI(CpuReg reg, uint64_t value, OpBits opBits)
     {
         emitClearR(reg, opBits);
     }
-    else if (opBits == OpBits::F32)
+    else if (isFloat(reg))
     {
-        emitLoadRI(cc->computeRegI0, value, OpBits::B32);
-        emitLoadRR(reg, cc->computeRegI0, OpBits::F32);
-    }
-    else if (opBits == OpBits::F64)
-    {
-        emitLoadRI(cc->computeRegI0, value, OpBits::B64);
-        emitLoadRR(reg, cc->computeRegI0, OpBits::F64);
+        emitLoadRI(cc->computeRegI0, value, opBits == OpBits::F32 ? OpBits::B32: OpBits::B64);
+        emitLoadRR(reg, cc->computeRegI0, opBits);
     }
     else if (opBits == OpBits::B64)
     {
