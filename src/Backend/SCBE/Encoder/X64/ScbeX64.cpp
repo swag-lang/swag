@@ -705,11 +705,11 @@ void ScbeX64::emitLoadMI(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBi
 
 void ScbeX64::emitClearR(CpuReg reg, OpBits opBits)
 {
-    if (isFloat(opBits))
+    if (isFloat(reg))
     {
         SWAG_ASSERT(reg == cc->computeRegF0 || reg == cc->computeRegF1);
         emitREX(concat, opBits);
-        concat.addU8(0x0F);
+        emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, CpuOp::FXOR);
         emitModRM(concat, reg, reg);
     }
@@ -1052,22 +1052,7 @@ void ScbeX64::emitOpBinaryRM(CpuReg regDst, CpuReg memReg, uint64_t memOffset, C
 
 void ScbeX64::emitOpBinaryRR(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
-    if (opBits == OpBits::F32)
-    {
-        if (op != CpuOp::FSQRT &&
-            op != CpuOp::FAND &&
-            op != CpuOp::UCOMIF &&
-            op != CpuOp::FXOR)
-        {
-            emitSpecF64(concat, 0xF3, opBits);
-            emitREX(concat, emitFlags.has(EMITF_B64) ? OpBits::B64 : OpBits::B32, regSrc, regDst);
-        }
-
-        emitCPUOp(concat, 0x0F);
-        emitCPUOp(concat, op);
-        emitModRM(concat, regDst, regSrc);
-    }
-    else if (opBits == OpBits::F64)
+    if (isFloat(regDst) || isFloat(regSrc))
     {
         if (op != CpuOp::FSQRT &&
             op != CpuOp::FAND &&
@@ -1079,7 +1064,7 @@ void ScbeX64::emitOpBinaryRR(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBi
         }
         else
         {
-            emitREX(concat, opBits);
+            emitREX(concat, opBits, regSrc, regDst);
         }
 
         emitCPUOp(concat, 0x0F);
