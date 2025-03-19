@@ -229,7 +229,7 @@ void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
                     break;
                 }
 
-                if (inst[0].regA == CpuReg::Rsp &&
+                if (inst->regA == CpuReg::Rsp &&
                     next->op == ScbeMicroOp::Leave)
                 {
                     ignore(inst);
