@@ -598,13 +598,27 @@ void ScbeX64::emitLoadSignedExtendRM(CpuReg reg, CpuReg memReg, uint64_t memOffs
 
 void ScbeX64::emitLoadSignedExtendRR(CpuReg regDst, CpuReg regSrc, OpBits numBitsDst, OpBits numBitsSrc)
 {
-    if (numBitsSrc == OpBits::B8 && numBitsDst == OpBits::B32)
+    if (numBitsSrc == OpBits::B8)
     {
-        emitREX(concat, OpBits::Zero, regDst, regSrc);
+        emitREX(concat, numBitsDst, regDst, regSrc);
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, 0xBE);
         emitModRM(concat, regDst, regSrc);
     }
+    else if (numBitsSrc == OpBits::B16)
+    {
+        emitREX(concat, numBitsDst, regDst, regSrc);
+        emitCPUOp(concat, 0x0F);
+        emitCPUOp(concat, 0xBF);
+        emitModRM(concat, regDst, regSrc);
+    }
+    else if (numBitsSrc == OpBits::B32)
+    {
+        SWAG_ASSERT(numBitsDst == OpBits::B64);
+        emitREX(concat, numBitsDst, regDst, regSrc);
+        emitCPUOp(concat, 0x63);
+        emitModRM(concat, regDst, regSrc);
+    }    
     else
     {
         SWAG_ASSERT(false);
