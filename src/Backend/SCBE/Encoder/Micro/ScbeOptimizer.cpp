@@ -188,7 +188,8 @@ void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
 
                 if (next->hasReadRegB() &&
                     inst->regA == next->regB &&
-                    ScbeCpu::isInt(inst->opBitsA) == ScbeCpu::isInt(next->opBitsA) &&
+                    ScbeCpu::isInt(inst->regA) &&
+                    next->hasLeftOpFlag(MOF_OPBITS_A) &&
                     ScbeCpu::getNumBits(inst->opBitsA) >= ScbeCpu::getNumBits(next->opBitsA) &&
                     !encoder->manipulateRegister(next, inst->regB))
                 {
@@ -479,5 +480,5 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
         optimizePassStoreToHdwRegBeforeLeave(out);
     }
 
-    //memToReg(out, CpuReg::Rsp, out.cpuFct->getStackOffsetReg(0), CpuReg::Rdi);
+    // memToReg(out, CpuReg::Rsp, out.cpuFct->getStackOffsetReg(0), CpuReg::Rdi);
 }
