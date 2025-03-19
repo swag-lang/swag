@@ -446,7 +446,7 @@ void ScbeMicro::print() const
             case ScbeMicroOp::LoadAddressM:
                 // encoder.emitLoadAddress(inst->regA, inst->regB, inst->valueA);
                 line.name = "lea";
-                line.args = form("%s, [%s+%xh]", regName(inst->regA, OpBits::B64), regName(inst->regB, OpBits::B64), inst->valueA);
+                line.args = form("%s, [%s+%xh]", regName(inst->regA, OpBits::B64), regName(inst->regB, OpBits::B64), inst->valueB);
                 break;
             case ScbeMicroOp::LoadAddressAddMul:
                 // encoder.emitLoadAddress(inst->regA, inst->regB, inst->regC, inst->valueA, inst->opBitsA);
