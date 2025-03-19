@@ -996,7 +996,7 @@ void ScbeX64::emitOpUnaryR(CpuReg reg, CpuOp op, OpBits opBits)
     }
     else if (op == CpuOp::NEG)
     {
-        if (isFloat(opBits))
+        if (isFloat(reg))
         {
             SWAG_ASSERT(reg == cc->computeRegF0);
             emitLoadMI(CpuReg::Rsp, cpuFct->getStackOffsetFLT(), opBits == OpBits::F32 ? 0x80000000 : 0x80000000'00000000, OpBits::B64);
