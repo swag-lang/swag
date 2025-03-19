@@ -342,22 +342,19 @@ void ScbeX64::emitRet()
 
 void ScbeX64::emitLoadRR(CpuReg regDst, CpuReg regSrc, OpBits opBits)
 {
-    if (isFloat(opBits) && isFloat(regDst) && isFloat(regSrc))
+    if (isFloat(regDst) && isFloat(regSrc))
     {
         emitSpecF64(concat, 0xF3, opBits);
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, 0x10);
         emitModRM(concat, regDst, regSrc);
     }
-    else if (isFloat(opBits))
+    else if (isFloat(regDst) || isFloat(regSrc))
     {
         emitREX(concat, OpBits::F64);
         emitREX(concat, opBits == OpBits::F64 ? OpBits::B64 : OpBits::B32);
         emitCPUOp(concat, 0x0F);
-        if (isFloat(regSrc))
-            emitCPUOp(concat, 0x7E);
-        else
-            emitCPUOp(concat, 0x6E);
+        emitCPUOp(concat, isFloat(regSrc) ? 0x7E : 0x6E);
         emitModRM(concat, regDst, regSrc);
     }
     else
@@ -621,7 +618,7 @@ void ScbeX64::emitLoadSignedExtendRR(CpuReg regDst, CpuReg regSrc, OpBits numBit
         emitREX(concat, numBitsDst, regDst, regSrc);
         emitCPUOp(concat, 0x63);
         emitModRM(concat, regDst, regSrc);
-    }    
+    }
     else
     {
         SWAG_ASSERT(false);
