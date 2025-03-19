@@ -6,9 +6,9 @@
 
 namespace
 {
-    Utf8 valueName(uint64_t value, OpBits opBits)
+    Utf8 valueName(uint64_t value, bool isFloat)
     {
-        if (ScbeCpu::isFloat(opBits))
+        if (isFloat)
             return form("%f", std::bit_cast<double>(value));
         return form("%d", value);
     }
@@ -416,7 +416,7 @@ void ScbeMicro::print() const
             case ScbeMicroOp::LoadRI:
                 // encoder.emitLoad(inst->regA, inst->valueA, inst->opBitsA);
                 line.name = cpuOpName(CpuOp::MOV, inst->opBitsA);
-                line.args = form("%s, %s", regName(inst->regA, inst->opBitsA), valueName(inst->valueA, inst->opBitsA).cstr());
+                line.args = form("%s, %s", regName(inst->regA, inst->opBitsA), valueName(inst->valueA, isFloat(inst->regA)).cstr());
                 break;
             case ScbeMicroOp::LoadRM:
                 // encoder.emitLoad(inst->regA, inst->regB, inst->valueA, inst->opBitsA);
