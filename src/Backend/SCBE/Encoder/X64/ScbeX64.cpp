@@ -428,7 +428,7 @@ void ScbeX64::emitLoadRM(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits o
         memOffset = 0;
     }
 
-    if (isFloat(opBits))
+    if (isFloat(reg))
     {
         emitSpecF64(concat, 0xF3, opBits);
         emitREX(concat, OpBits::Zero, reg, memReg);
@@ -668,7 +668,7 @@ void ScbeX64::emitLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc
 
 void ScbeX64::emitLoadMR(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits opBits)
 {
-    if (isFloat(opBits))
+    if (isFloat(reg))
     {
         emitSpecF64(concat, 0xF3, opBits);
         emitREX(concat, OpBits::Zero, reg, memReg);
@@ -707,8 +707,7 @@ void ScbeX64::emitClearR(CpuReg reg, OpBits opBits)
 {
     if (isFloat(reg))
     {
-        SWAG_ASSERT(reg == cc->computeRegF0 || reg == cc->computeRegF1);
-        emitREX(concat, opBits);
+        emitREX(concat, opBits, reg, reg);
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, CpuOp::FXOR);
         emitModRM(concat, reg, reg);
@@ -847,9 +846,10 @@ void ScbeX64::emitSetCC(CpuReg reg, CpuCondFlag setType)
 
 void ScbeX64::emitCmpRR(CpuReg reg0, CpuReg reg1, OpBits opBits)
 {
-    if (isFloat(opBits))
+    if (isFloat(reg0))
     {
-        emitREX(concat, opBits);
+        SWAG_ASSERT(isFloat(reg1));
+        emitREX(concat, opBits, reg0, reg1);
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, 0x2F);
         emitModRM(concat, reg0, reg1);
