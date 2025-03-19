@@ -212,19 +212,19 @@ void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
 
             case ScbeMicroOp::LoadMR:
                 if (next->op == ScbeMicroOp::LoadRM &&
-                    ScbeCpu::isInt(next->opBitsA) == ScbeCpu::isInt(inst[0].opBitsA) &&
-                    ScbeCpu::getNumBits(next->opBitsA) <= ScbeCpu::getNumBits(inst[0].opBitsA) &&
-                    next->regB == inst[0].regA &&
-                    next->valueA == inst[0].valueA)
+                    ScbeCpu::isInt(next->opBitsA) == ScbeCpu::isInt(inst->opBitsA) &&
+                    ScbeCpu::getNumBits(next->opBitsA) <= ScbeCpu::getNumBits(inst->opBitsA) &&
+                    next->regB == inst->regA &&
+                    next->valueA == inst->valueA)
                 {
-                    if (inst[0].regB == next->regA)
+                    if (inst->regB == next->regA)
                     {
                         ignore(next);
                     }
                     else
                     {
                         setOp(next, ScbeMicroOp::LoadRR);
-                        next->regB = inst[0].regB;
+                        next->regB = inst->regB;
                     }
                     break;
                 }
