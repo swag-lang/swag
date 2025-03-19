@@ -2389,7 +2389,7 @@ ScbeMicroOpDetails ScbeX64::getInstructionDetails(ScbeMicroInstruction* inst) co
 
         case ScbeMicroOp::LoadRI:
             result.add(1ULL << static_cast<uint32_t>(inst->regA));
-            if (isFloat(inst->opBitsA))
+            if (isFloat(inst->regA))
                 result.add(1ULL << static_cast<uint32_t>(cc->computeRegI0));
             return result;
         case ScbeMicroOp::LoadRR:
