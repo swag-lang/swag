@@ -342,7 +342,7 @@ void ScbeX64::emitRet()
 
 void ScbeX64::emitLoadRR(CpuReg regDst, CpuReg regSrc, OpBits opBits)
 {
-    if (isFloat(opBits) && isFloat(regSrc))
+    if (isFloat(opBits) && isFloat(regDst) && isFloat(regSrc))
     {
         emitSpecF64(concat, 0xF3, opBits);
         emitCPUOp(concat, 0x0F);
@@ -354,13 +354,16 @@ void ScbeX64::emitLoadRR(CpuReg regDst, CpuReg regSrc, OpBits opBits)
         emitREX(concat, OpBits::F64);
         emitREX(concat, opBits == OpBits::F64 ? OpBits::B64 : OpBits::B32);
         emitCPUOp(concat, 0x0F);
-        emitCPUOp(concat, CpuOp::MOVD);
+        if (isFloat(regSrc))
+            emitCPUOp(concat, 0x7E);
+        else
+            emitCPUOp(concat, 0x6E);
         emitModRM(concat, regDst, regSrc);
     }
     else
     {
         emitREX(concat, opBits, regSrc, regDst);
-        emitSpecCPUOp(concat, CpuOp::MOV, opBits);
+        emitSpecCPUOp(concat, 0x89, opBits);
         emitModRM(concat, regSrc, regDst);
     }
 }

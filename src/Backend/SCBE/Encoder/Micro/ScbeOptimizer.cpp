@@ -54,6 +54,83 @@ void ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                     inst->valueA = inst->valueB;
                 }
                 break;
+            /*case ScbeMicroOp::LoadAddressM:
+                if (inst->regB == memReg &&
+                    inst->valueB == memOffset)
+                {
+                    out.print();
+                    SWAG_ASSERT(false);
+                }
+                break;*/
+            case ScbeMicroOp::CmpMR:
+                if (inst->regA == memReg &&
+                    inst->valueA == memOffset)
+                {
+                    setOp(inst, ScbeMicroOp::CmpRR);
+                    inst->regA = reg;
+                }
+                break;
+            case ScbeMicroOp::CmpMI:
+                if (inst->regA == memReg &&
+                    inst->valueA == memOffset)
+                {
+                    setOp(inst, ScbeMicroOp::CmpRI);
+                    inst->regA   = reg;
+                    inst->valueA = inst->valueB;
+                }
+                break;
+            case ScbeMicroOp::ClearM:
+                if (inst->regA == memReg &&
+                    inst->valueA == memOffset)
+                {
+                    SWAG_ASSERT(false);
+                }
+                break;
+            case ScbeMicroOp::Copy:
+                if (inst->regA == memReg &&
+                    inst->valueA == memOffset)
+                {
+                    SWAG_ASSERT(false);
+                }
+                if (inst->regB == memReg &&
+                    inst->valueA == memOffset)
+                {
+                    SWAG_ASSERT(false);
+                }
+                break;
+            case ScbeMicroOp::OpUnaryM:
+                if (inst->regA == memReg &&
+                    inst->valueA == memOffset)
+                {
+                    setOp(inst, ScbeMicroOp::OpUnaryR);
+                    inst->regA = reg;
+                }
+                break;
+            case ScbeMicroOp::OpBinaryMI:
+                if (inst->regA == memReg &&
+                    inst->valueA == memOffset)
+                {
+                    setOp(inst, ScbeMicroOp::OpBinaryRI);
+                    inst->regA   = reg;
+                    inst->valueA = inst->valueB;
+                }
+                break;
+            case ScbeMicroOp::OpBinaryMR:
+                if (inst->regA == memReg &&
+                    inst->valueA == memOffset)
+                {
+                    setOp(inst, ScbeMicroOp::OpBinaryRR);
+                    inst->regA = reg;
+                }
+                break;
+            case ScbeMicroOp::OpBinaryRM:
+                if (inst->regB == memReg &&
+                    inst->valueA == memOffset)
+                {
+                    setOp(inst, ScbeMicroOp::OpBinaryRR);
+                    inst->regB = reg;
+                }
+                break;
         }
 
         inst = zap(inst + 1);
