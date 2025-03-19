@@ -225,8 +225,6 @@ void Scbe::emitBinOpOverflow(ScbeCpu& pp, CpuOp op, SafetyMsg safetyMsg, TypeInf
 {
     const char* msg      = ByteCodeGen::safetyMsg(safetyMsg, safetyType);
     const bool  isSigned = safetyType->isNativeIntegerSigned();
-    SWAG_ASSERT(ScbeCpu::isInt(ScbeCpu::getOpBits(pp.ip->op)));
-
     emitBinOp(pp, op, EMITF_Overflow);
     emitOverflow(pp, msg, isSigned);
 }
@@ -255,7 +253,6 @@ void Scbe::emitBinOpEqOverflow(ScbeCpu& pp, CpuOp op, SafetyMsg safetyMsg, TypeI
 {
     const char* msg      = ByteCodeGen::safetyMsg(safetyMsg, safetyType);
     const bool  isSigned = safetyType->isNativeIntegerSigned();
-    SWAG_ASSERT(ScbeCpu::isInt(ScbeCpu::getOpBits(pp.ip->op)));
 
     emitBinOpEq(pp, 0, op, EMITF_Overflow);
     emitOverflow(pp, msg, isSigned);
@@ -406,7 +403,6 @@ void Scbe::emitJumpCmpAddr(ScbeCpu& pp, CpuCondJump op, CpuReg memReg, uint64_t 
 {
     const auto cc = pp.cc;
     const auto ip = pp.ip;
-    SWAG_ASSERT(ScbeCpu::isInt(opBits));
 
     if (ip->hasFlag(BCI_IMM_C))
     {

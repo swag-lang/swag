@@ -864,7 +864,6 @@ void ScbeX64::emitCmpRR(CpuReg reg0, CpuReg reg1, OpBits opBits)
 
 void ScbeX64::emitCmpRI(CpuReg reg, uint64_t value, OpBits opBits)
 {
-    SWAG_ASSERT(ScbeCpu::isInt(opBits));
     maskValue(value, opBits);
 
     if (opBits == OpBits::B8)
@@ -928,7 +927,6 @@ void ScbeX64::emitCmpMR(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits op
 
 void ScbeX64::emitCmpMI(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits)
 {
-    SWAG_ASSERT(ScbeCpu::isInt(opBits));
     maskValue(value, opBits);
 
     if (opBits == OpBits::B8)
