@@ -73,6 +73,17 @@ uint32_t BackendEncoder::getNumBits(OpBits opBits)
     return 0;
 }
 
+bool BackendEncoder::isFloat(ByteCodeOp op)
+{
+    const auto flags = ByteCode::opFlags(op);
+    return flags.has(OPF_FLOAT);
+}
+
+bool BackendEncoder::isInt(ByteCodeOp op)
+{
+    return !isFloat(op);
+}
+
 OpBits BackendEncoder::getOpBits(ByteCodeOp op)
 {
     const auto flags = ByteCode::opFlags(op);
@@ -95,6 +106,14 @@ OpBits BackendEncoder::getOpBits(ByteCodeOp op)
 TypeInfo* BackendEncoder::getOpType(ByteCodeOp op)
 {
     const auto flags = ByteCode::opFlags(op);
+
+    if (flags.has(OPF_FLOAT))
+    {
+        if (flags.has(OPF_32))
+            return g_TypeMgr->typeInfoF32;
+        return g_TypeMgr->typeInfoF64;
+    }
+
     if (flags.has(OPF_SIGNED))
     {
         if (flags.has(OPF_8))

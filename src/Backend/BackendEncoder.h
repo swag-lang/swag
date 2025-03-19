@@ -45,6 +45,8 @@ struct BackendEncoder
 
     static uint32_t  getNumBits(OpBits opBits);
     static OpBits    getOpBitsByBytes(uint32_t numBytes, bool forFloat = false);
+    static bool      isFloat(ByteCodeOp op);
+    static bool      isInt(ByteCodeOp op);
     static OpBits    getOpBits(ByteCodeOp op);
     static TypeInfo* getOpType(ByteCodeOp op);
     static void      maskValue(uint64_t& value, OpBits opBits);

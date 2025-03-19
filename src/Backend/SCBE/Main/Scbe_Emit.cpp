@@ -199,8 +199,9 @@ void Scbe::emitBinOp(ScbeCpu& pp, CpuOp op, CpuEmitFlags emitFlags)
 {
     const auto cc     = pp.cc;
     const auto ip     = pp.ip;
+    const auto isInt  = ScbeCpu::isInt(ip->op);
     const auto opBits = ScbeCpu::getOpBits(ip->op);
-    if (ScbeCpu::isInt(opBits) && !ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_B))
+    if (isInt && !ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_B))
     {
         pp.emitLoadRM(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), opBits);
         pp.emitOpBinaryRI(cc->computeRegI0, ip->b.u64, op, opBits, emitFlags);
@@ -208,8 +209,8 @@ void Scbe::emitBinOp(ScbeCpu& pp, CpuOp op, CpuEmitFlags emitFlags)
     }
     else
     {
-        const auto r0 = ScbeCpu::isInt(opBits) ? cc->computeRegI0 : cc->computeRegF0;
-        const auto r1 = ScbeCpu::isInt(opBits) ? cc->computeRegI1 : cc->computeRegF1;
+        const auto r0 = isInt ? cc->computeRegI0 : cc->computeRegF0;
+        const auto r1 = isInt ? cc->computeRegI1 : cc->computeRegF1;
         if (ip->hasFlag(BCI_IMM_A))
             pp.emitLoadRI(r0, ip->a.u64, opBits);
         else
