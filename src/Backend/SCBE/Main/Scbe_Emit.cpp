@@ -233,16 +233,17 @@ void Scbe::emitBinOpEq(ScbeCpu& pp, uint32_t offset, CpuOp op, CpuEmitFlags emit
 {
     const auto cc     = pp.cc;
     const auto ip     = pp.ip;
+    const auto isInt  = ScbeCpu::isInt(ip->op);
     const auto opBits = ScbeCpu::getOpBits(ip->op);
-    if (ScbeCpu::isInt(opBits) && ip->hasFlag(BCI_IMM_B))
+    if (isInt && ip->hasFlag(BCI_IMM_B))
     {
         pp.emitLoadRM(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
         pp.emitOpBinaryMI(cc->computeRegI0, offset, ip->b.u64, op, opBits, emitFlags);
     }
     else
     {
-        const auto r0 = ScbeCpu::isInt(opBits) ? cc->computeRegI0 : cc->computeRegI1;
-        const auto r1 = ScbeCpu::isInt(opBits) ? cc->computeRegI1 : cc->computeRegF1;
+        const auto r0 = isInt ? cc->computeRegI0 : cc->computeRegI1;
+        const auto r1 = isInt ? cc->computeRegI1 : cc->computeRegF1;
         pp.emitLoadRM(r0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
         emitIMMB(pp, r1, opBits);
         pp.emitOpBinaryMR(r0, offset, r1, op, opBits, emitFlags);
@@ -272,14 +273,15 @@ void Scbe::emitBinOpEqS(ScbeCpu& pp, CpuOp op)
 {
     const auto cc     = pp.cc;
     const auto ip     = pp.ip;
+    const auto isInt  = ScbeCpu::isInt(ip->op);
     const auto opBits = ScbeCpu::getOpBits(ip->op);
-    if (ScbeCpu::isInt(opBits) && ip->hasFlag(BCI_IMM_B))
+    if (isInt && ip->hasFlag(BCI_IMM_B))
     {
         pp.emitOpBinaryMI(CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->a.u32, ip->b.u64, op, opBits);
     }
     else
     {
-        const auto r1 = ScbeCpu::isInt(opBits) ? cc->computeRegI1 : cc->computeRegF1;
+        const auto r1 = isInt ? cc->computeRegI1 : cc->computeRegF1;
         emitIMMB(pp, r1, opBits);
         pp.emitOpBinaryMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->a.u32, r1, op, opBits);
     }
@@ -289,21 +291,22 @@ void Scbe::emitCompareOp(ScbeCpu& pp, CpuReg reg, CpuCondFlag cond)
 {
     const auto cc     = pp.cc;
     const auto ip     = pp.ip;
+    const auto isInt  = ScbeCpu::isInt(ip->op);
     const auto opBits = ScbeCpu::getOpBits(ip->op);
     if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_B))
     {
-        const auto r0 = ScbeCpu::isInt(opBits) ? cc->computeRegI0 : cc->computeRegF0;
+        const auto r0 = isInt ? cc->computeRegI0 : cc->computeRegF0;
         pp.emitLoadRM(r0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), opBits);
         pp.emitCmpMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), r0, opBits);
     }
-    else if (ScbeCpu::isInt(opBits) && !ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_B))
+    else if (isInt && !ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_B))
     {
         pp.emitCmpMI(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), ip->b.u64, opBits);
     }
     else
     {
-        const auto r0 = ScbeCpu::isInt(opBits) ? cc->computeRegI0 : cc->computeRegF0;
-        const auto r1 = ScbeCpu::isInt(opBits) ? cc->computeRegI1 : cc->computeRegF1;
+        const auto r0 = isInt ? cc->computeRegI0 : cc->computeRegF0;
+        const auto r1 = isInt ? cc->computeRegI1 : cc->computeRegF1;
         emitIMMA(pp, r0, opBits);
         emitIMMB(pp, r1, opBits);
         pp.emitCmpRR(r0, r1, opBits);
@@ -375,22 +378,23 @@ void Scbe::emitInternalPanic(ScbeCpu& pp, const char* msg)
 
 void Scbe::emitJumpCmp(ScbeCpu& pp, CpuCondJump op, OpBits opBits)
 {
-    const auto cc = pp.cc;
-    const auto ip = pp.ip;
+    const auto cc    = pp.cc;
+    const auto ip    = pp.ip;
+    const auto isInt = ScbeCpu::isInt(ip->op);
     if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_C))
     {
-        const auto r0 = ScbeCpu::isInt(opBits) ? cc->computeRegI0 : cc->computeRegF0;
+        const auto r0 = isInt ? cc->computeRegI0 : cc->computeRegF0;
         pp.emitLoadRM(r0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), opBits);
         pp.emitCmpMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), r0, opBits);
     }
-    else if (ScbeCpu::isInt(opBits) && !ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_C))
+    else if (isInt && !ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_C))
     {
         pp.emitCmpMI(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), ip->c.u64, opBits);
     }
     else
     {
-        const auto r0 = ScbeCpu::isInt(opBits) ? cc->computeRegI0 : cc->computeRegF0;
-        const auto r1 = ScbeCpu::isInt(opBits) ? cc->computeRegI1 : cc->computeRegF1;
+        const auto r0 = isInt ? cc->computeRegI0 : cc->computeRegF0;
+        const auto r1 = isInt ? cc->computeRegI1 : cc->computeRegF1;
         emitIMMA(pp, r0, opBits);
         emitIMMC(pp, r1, opBits);
         pp.emitCmpRR(r0, r1, opBits);
