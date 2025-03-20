@@ -358,7 +358,7 @@ void ScbeX64::emitLoadRR(CpuReg regDst, CpuReg regSrc, OpBits opBits)
     else if (isFloat(regDst))
     {
         emitPrefixF64(concat, OpBits::B64);
-        emitREX(concat, opBits);
+        emitREX(concat, opBits, regDst, regSrc);
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, 0x6E);
         emitModRM(concat, regDst, regSrc);
@@ -366,7 +366,7 @@ void ScbeX64::emitLoadRR(CpuReg regDst, CpuReg regSrc, OpBits opBits)
     else if (isFloat(regSrc))
     {
         emitPrefixF64(concat, OpBits::B64);
-        emitREX(concat, opBits);
+        emitREX(concat, opBits, regSrc, regDst);
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, 0x7E);
         emitModRM(concat, regSrc, regDst);

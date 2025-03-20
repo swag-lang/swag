@@ -473,5 +473,5 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
         optimizePassStoreToHdwRegBeforeLeave(out);
     }
 
-    //memToReg(out, CpuReg::Rsp, out.cpuFct->getStackOffsetReg(0), CpuReg::Rdi);
+    //memToReg(out, CpuReg::Rsp, out.cpuFct->getStackOffsetReg(0), CpuReg::R12);
 }
