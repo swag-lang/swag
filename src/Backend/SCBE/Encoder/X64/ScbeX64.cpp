@@ -609,6 +609,12 @@ void ScbeX64::emitLoadSignedExtendRM(CpuReg reg, CpuReg memReg, uint64_t memOffs
 
 void ScbeX64::emitLoadSignedExtendRR(CpuReg regDst, CpuReg regSrc, OpBits numBitsDst, OpBits numBitsSrc)
 {
+    if (numBitsSrc == numBitsDst)
+    {
+        emitLoadRR(regDst, regSrc, numBitsSrc);
+        return;
+    }
+    
     if (numBitsSrc == OpBits::B8)
     {
         emitREX(concat, numBitsDst, regDst, regSrc);

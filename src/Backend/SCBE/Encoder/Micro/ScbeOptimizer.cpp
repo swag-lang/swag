@@ -54,20 +54,13 @@ void ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                     inst->valueA = inst->valueB;
                 }
                 break;
-            /*case ScbeMicroOp::LoadAddressM:
-                if (inst->regB == memReg &&
-                    inst->valueB == memOffset)
-                {
-                    out.print();
-                    SWAG_ASSERT(false);
-                }
-                break;*/
             case ScbeMicroOp::CmpMR:
                 if (inst->regA == memReg &&
                     inst->valueA == memOffset)
                 {
                     setOp(inst, ScbeMicroOp::CmpRR);
                     inst->regA = reg;
+                    std::swap(inst->regA, inst->regB);
                 }
                 break;
             case ScbeMicroOp::CmpMI:
@@ -480,5 +473,5 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
         optimizePassStoreToHdwRegBeforeLeave(out);
     }
 
-    // memToReg(out, CpuReg::Rsp, out.cpuFct->getStackOffsetReg(0), CpuReg::Rdi);
+    //memToReg(out, CpuReg::Rsp, out.cpuFct->getStackOffsetReg(0), CpuReg::Rdi);
 }
