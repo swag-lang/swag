@@ -25,8 +25,6 @@ enum class OpBits : uint8_t
     B16  = 16,
     B32  = 32,
     B64  = 64,
-    F32  = 65,
-    F64  = 66,
 };
 
 struct BackendEncoder
@@ -44,7 +42,7 @@ struct BackendEncoder
     virtual void init(const BuildParameters& buildParameters);
 
     static uint32_t  getNumBits(OpBits opBits);
-    static OpBits    getOpBitsByBytes(uint32_t numBytes, bool forFloat = false);
+    static OpBits    getOpBitsByBytes(uint32_t numBytes);
     static bool      isFloat(ByteCodeOp op);
     static bool      isInt(ByteCodeOp op);
     static OpBits    getOpBits(ByteCodeOp op);

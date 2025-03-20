@@ -189,7 +189,7 @@ namespace
 
                 case CpuPushParamType::Constant:
                     if (callConv->useRegisterFloat && type->isNativeFloat())
-                        pp.emitLoadRI(callConv->paramByRegisterFloat[idxParam], value, BackendEncoder::getOpBitsByBytes(type->sizeOf, true));
+                        pp.emitLoadRI(callConv->paramByRegisterFloat[idxParam], value, BackendEncoder::getOpBitsByBytes(type->sizeOf));
                     else
                         pp.emitLoadRI(callConv->paramByRegisterInteger[idxParam], value, OpBits::B64);
                     break;
@@ -212,7 +212,7 @@ namespace
 
                 case CpuPushParamType::SwagRegister:
                     if (callConv->useRegisterFloat && type->isNativeFloat())
-                        pp.emitLoadRM(callConv->paramByRegisterFloat[idxParam], params[idxParam].baseReg, value, BackendEncoder::getOpBitsByBytes(type->sizeOf, true));
+                        pp.emitLoadRM(callConv->paramByRegisterFloat[idxParam], params[idxParam].baseReg, value, BackendEncoder::getOpBitsByBytes(type->sizeOf));
                     else
                         pp.emitLoadRM(callConv->paramByRegisterInteger[idxParam], params[idxParam].baseReg, value, OpBits::B64);
                     break;
@@ -417,7 +417,7 @@ void ScbeCpu::emitStoreCallResult(CpuReg memReg, uint32_t memOffset, const TypeI
     const auto& ccFunc     = typeFuncBc->getCallConv();
     const auto  returnType = typeFuncBc->concreteReturnType();
     if (returnType->isNativeFloat())
-        emitLoadMR(memReg, memOffset, ccFunc.returnByRegisterFloat, OpBits::F64);
+        emitLoadMR(memReg, memOffset, ccFunc.returnByRegisterFloat, OpBits::B64);
     else
         emitLoadMR(memReg, memOffset, ccFunc.returnByRegisterInteger, OpBits::B64);
 }

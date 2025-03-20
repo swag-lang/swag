@@ -172,13 +172,12 @@ namespace
 
     void emitPrefixF64(Concat& concat, OpBits opBits)
     {
-        if (opBits == OpBits::B64 || opBits == OpBits::F64)
+        if (opBits == OpBits::B64)
             concat.addU8(0x66);
     }
     
     void emitREX(Concat& concat, OpBits opBits, CpuReg reg0 = REX_REG_NONE, CpuReg reg1 = REX_REG_NONE)
     {
-        SWAG_ASSERT(opBits != OpBits::F32 && opBits != OpBits::F64);
         if (opBits == OpBits::B16)
             concat.addU8(0x66);
 
@@ -253,7 +252,7 @@ namespace
 
     void emitSpecF64(Concat& concat, uint8_t value, OpBits opBits)
     {
-        if (opBits == OpBits::F64)
+        if (opBits == OpBits::B64)
             concat.addU8(value & ~1);
         else
             concat.addU8(value);
@@ -349,7 +348,6 @@ void ScbeX64::emitRet()
 
 void ScbeX64::emitLoadRR(CpuReg regDst, CpuReg regSrc, OpBits opBits)
 {
-    SWAG_ASSERT(opBits != OpBits::F32 && opBits != OpBits::F64);
     if (isFloat(regDst) && isFloat(regSrc))
     {
         emitSpecF64(concat, 0xF3, opBits);
@@ -388,8 +386,8 @@ void ScbeX64::emitLoadRI(CpuReg reg, uint64_t value, OpBits opBits)
     }
     else if (isFloat(reg))
     {
-        emitLoadRI(cc->computeRegI0, value, opBits == OpBits::F32 ? OpBits::B32 : OpBits::B64);
-        emitLoadRR(reg, cc->computeRegI0, opBits == OpBits::F32 ? OpBits::B32 : OpBits::B64);
+        emitLoadRI(cc->computeRegI0, value, opBits);
+        emitLoadRR(reg, cc->computeRegI0, opBits);
     }
     else if (opBits == OpBits::B64)
     {
@@ -494,7 +492,7 @@ void ScbeX64::emitLoadZeroExtendRM(CpuReg reg, CpuReg memReg, uint64_t memOffset
 
 void ScbeX64::emitLoadZeroExtendRR(CpuReg regDst, CpuReg regSrc, OpBits numBitsDst, OpBits numBitsSrc)
 {
-    if (numBitsSrc == numBitsDst)
+    if (numBitsSrc == numBitsDst && isFloat(regDst) == isFloat(regSrc))
     {
         emitLoadRR(regDst, regSrc, numBitsSrc);
         return;
@@ -518,7 +516,7 @@ void ScbeX64::emitLoadZeroExtendRR(CpuReg regDst, CpuReg regSrc, OpBits numBitsD
     {
         emitLoadRR(regDst, regSrc, numBitsSrc);
     }
-    else if (numBitsSrc == OpBits::B64 && numBitsDst == OpBits::F64)
+    else if (numBitsSrc == OpBits::B64 && numBitsDst == OpBits::B64 && isInt(regSrc) && isFloat(regDst))
     {
         SWAG_ASSERT(regSrc == cc->computeRegI0 && regDst == cc->computeRegF0);
         emitLoadRR(cc->computeRegF1, cc->computeRegI0, OpBits::B64);
@@ -550,7 +548,7 @@ void ScbeX64::emitLoadZeroExtendRR(CpuReg regDst, CpuReg regSrc, OpBits numBitsD
         emitCPUOp(concat, 0x15);
         emitModRM(concat, cc->computeRegF0, cc->computeRegF1);
 
-        emitOpBinaryRR(cc->computeRegF0, cc->computeRegF1, CpuOp::FADD, OpBits::F64);
+        emitOpBinaryRR(cc->computeRegF0, cc->computeRegF1, CpuOp::FADD, OpBits::B64);
     }
     else
     {
@@ -1008,7 +1006,7 @@ void ScbeX64::emitOpUnaryR(CpuReg reg, CpuOp op, OpBits opBits)
         if (isFloat(reg))
         {
             SWAG_ASSERT(reg == cc->computeRegF0);
-            emitLoadMI(CpuReg::Rsp, cpuFct->getStackOffsetFLT(), opBits == OpBits::F32 ? 0x80000000 : 0x80000000'00000000, OpBits::B64);
+            emitLoadMI(CpuReg::Rsp, cpuFct->getStackOffsetFLT(), opBits == OpBits::B32 ? 0x80000000 : 0x80000000'00000000, OpBits::B64);
             emitLoadRM(cc->computeRegF1, CpuReg::Rsp, cpuFct->getStackOffsetFLT(), opBits);
             emitOpBinaryRR(cc->computeRegF0, cc->computeRegF1, CpuOp::FXOR, opBits);
         }
@@ -1190,7 +1188,7 @@ void ScbeX64::emitOpBinaryRR(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBi
     }
     else if (op == CpuOp::POPCNT)
     {
-        emitSpecF64(concat, 0xF3, opBits);
+        emitCPUOp(concat, 0xF3);
         emitREX(concat, opBits, regDst, regSrc);
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, op);
@@ -2263,7 +2261,7 @@ void ScbeX64::emitClearM(CpuReg memReg, uint64_t memOffset, uint32_t count)
     // SSE 16 octets
     if (count >= 16)
     {
-        emitClearR(cc->computeRegF0, OpBits::F32);
+        emitClearR(cc->computeRegF0, OpBits::B32);
         while (count >= 16)
         {
             // movups [memReg+??], xmm0

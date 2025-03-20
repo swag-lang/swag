@@ -23,13 +23,12 @@ void BackendEncoder::maskValue(uint64_t& value, OpBits opBits)
             value &= 0xFFFF;
             break;
         case OpBits::B32:
-        case OpBits::F32:
             value &= 0xFFFFFFFF;
             break;
     }
 }
 
-OpBits BackendEncoder::getOpBitsByBytes(uint32_t numBytes, bool forFloat)
+OpBits BackendEncoder::getOpBitsByBytes(uint32_t numBytes)
 {
     switch (numBytes)
     {
@@ -39,12 +38,12 @@ OpBits BackendEncoder::getOpBitsByBytes(uint32_t numBytes, bool forFloat)
             return OpBits::B16;
         case 3:
         case 4:
-            return forFloat ? OpBits::F32 : OpBits::B32;
+            return OpBits::B32;
         case 5:
         case 6:
         case 7:
         case 8:
-            return forFloat ? OpBits::F64 : OpBits::B64;
+            return OpBits::B64;
         default:
             SWAG_ASSERT(false);
             break;
@@ -62,10 +61,8 @@ uint32_t BackendEncoder::getNumBits(OpBits opBits)
         case OpBits::B16:
             return 16;
         case OpBits::B32:
-        case OpBits::F32:
             return 32;
         case OpBits::B64:
-        case OpBits::F64:
             return 64;
     }
 
@@ -91,12 +88,8 @@ OpBits BackendEncoder::getOpBits(ByteCodeOp op)
         return OpBits::B8;
     if (flags.has(OPF_16))
         return OpBits::B16;
-    if (flags.has(OPF_32) && flags.has(OPF_FLOAT))
-        return OpBits::F32;
     if (flags.has(OPF_32))
         return OpBits::B32;
-    if (flags.has(OPF_64) && flags.has(OPF_FLOAT))
-        return OpBits::F64;
     if (flags.has(OPF_64))
         return OpBits::B64;
     SWAG_ASSERT(false);
