@@ -175,7 +175,7 @@ namespace
         if (opBits == OpBits::B64)
             concat.addU8(0x66);
     }
-    
+
     void emitREX(Concat& concat, OpBits opBits, CpuReg reg0 = REX_REG_NONE, CpuReg reg1 = REX_REG_NONE)
     {
         if (opBits == OpBits::B16)
@@ -370,7 +370,7 @@ void ScbeX64::emitLoadRR(CpuReg regDst, CpuReg regSrc, OpBits opBits)
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, 0x7E);
         emitModRM(concat, regSrc, regDst);
-    }    
+    }
     else
     {
         emitREX(concat, opBits, regSrc, regDst);
@@ -614,7 +614,7 @@ void ScbeX64::emitLoadSignedExtendRR(CpuReg regDst, CpuReg regSrc, OpBits numBit
         emitLoadRR(regDst, regSrc, numBitsSrc);
         return;
     }
-    
+
     if (numBitsSrc == OpBits::B8)
     {
         emitREX(concat, numBitsDst, regDst, regSrc);
@@ -868,9 +868,14 @@ void ScbeX64::emitSetCC(CpuReg reg, CpuCondFlag setType)
 
 void ScbeX64::emitCmpRR(CpuReg reg0, CpuReg reg1, OpBits opBits)
 {
-    if (isFloat(reg0))
+    if (isFloat(reg0) && isInt(reg1))
     {
-        SWAG_ASSERT(isFloat(reg1));
+        SWAG_ASSERT(reg0 != cc->computeRegF1);
+        emitLoadRR(cc->computeRegF1, reg1, opBits);
+        emitCmpRR(reg0, cc->computeRegF1, opBits);
+    }
+    else if (isFloat(reg0))
+    {
         emitPrefixF64(concat, opBits);
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, 0x2F);
@@ -1097,8 +1102,6 @@ void ScbeX64::emitOpBinaryRR(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBi
              op == CpuOp::MOD ||
              op == CpuOp::IMOD)
     {
-        SWAG_ASSERT(regDst == cc->computeRegI0);
-        SWAG_ASSERT(regSrc == cc->computeRegI1);
         if (getReg(regDst) != X64Reg::Rax)
             emitLoadRR(CpuReg::Rax, regDst, opBits);
         SWAG_ASSERT(getReg(regSrc) != X64Reg::Rdx);
