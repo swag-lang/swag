@@ -2467,10 +2467,10 @@ bool TypeManager::castToAny(SemanticContext* context, TypeInfo* toType, TypeInfo
     {
         if (toNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
         {
-            // When casting something complex to any, we will copy the value to the stack to be sure
+            // When casting something to any, we will copy the value to the stack to be sure
             // that the memory layout is correct, without relying on registers being contiguous, and not being reallocated (by an optimize pass).
             // See ByteCodeGen::emitCastToNativeAny
-            if (toNode->ownerFct && toType->numRegisters() > 1)
+            if (toNode->ownerFct)
             {
                 toNode->allocateExtension(ExtensionKind::Misc);
                 toNode->extMisc()->stackOffset = toNode->ownerScope->startStackSize;
@@ -2492,7 +2492,7 @@ bool TypeManager::castToAny(SemanticContext* context, TypeInfo* toType, TypeInfo
         // When casting something complex to any, we will copy the value to the stack to be sure
         // that the memory layout is correct, without relying on registers being contiguous, and not being reallocated (by an optimize pass).
         // See ByteCodeGen::emitCastToNativeAny
-        if (fromNode->ownerFct && fromType->numRegisters() > 1)
+        if (fromNode->ownerFct)
         {
             fromNode->allocateExtension(ExtensionKind::Misc);
             fromNode->extMisc()->stackOffset = fromNode->ownerScope->startStackSize;
@@ -2572,7 +2572,7 @@ bool TypeManager::castFromAny(SemanticContext* context, TypeInfo* toType, TypeIn
         // When casting something complex to any, we will copy the value to the stack to be sure
         // that the memory layout is correct, without relying on registers being contiguous, and not being reallocated (by an optimize pass).
         // See ByteCodeGen::emitCastToNativeAny
-        if (fromNode->ownerFct && fromType->numRegisters() > 1)
+        if (fromNode->ownerFct)
         {
             fromNode->allocateExtension(ExtensionKind::Misc);
             fromNode->extMisc()->stackOffset = fromNode->ownerScope->startStackSize;

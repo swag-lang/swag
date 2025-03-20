@@ -213,11 +213,6 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitLoadMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B64);
                 break;
 
-            case ByteCodeOp::CopyRBAddrToRA:
-                pp.emitLoadAddressM(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32));
-                pp.emitLoadMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
-                break;
-
                 /////////////////////////////////////
 
             case ByteCodeOp::CastBool8:

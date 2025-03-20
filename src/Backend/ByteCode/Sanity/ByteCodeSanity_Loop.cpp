@@ -242,7 +242,6 @@ bool ByteCodeSanity::loop()
             case ByteCodeOp::CopyRRtoRA:
             case ByteCodeOp::CopySPVaargs:
             case ByteCodeOp::MakeLambda:
-            case ByteCodeOp::CopyRBAddrToRA:
             case ByteCodeOp::IntrinsicMakeCallback:
             case ByteCodeOp::CloneString:
             case ByteCodeOp::IntrinsicIsConstExprSI:

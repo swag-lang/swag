@@ -1158,9 +1158,6 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             registersRC[ip->a.u32].u64 = registersRC[ip->b.u32].u64;
             registersRC[ip->c.u32].u64 = registersRC[ip->d.u32].u64;
             break;
-        case ByteCodeOp::CopyRBAddrToRA:
-            registersRC[ip->a.u32].pointer = reinterpret_cast<uint8_t*>(registersRC + ip->b.u32);
-            break;
 
         case ByteCodeOp::SetImmediate32:
             registersRC[ip->a.u32].u64 = ip->b.u32;

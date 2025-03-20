@@ -4,6 +4,7 @@
 #include "Backend/ByteCode/Gen/ByteCodeGenContext.h"
 #include "Report/Report.h"
 #include "Semantic/Scope.h"
+#include "Semantic/Semantic.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
@@ -37,25 +38,17 @@ bool ByteCodeGen::emitCastToNativeAny(const ByteCodeGenContext* context, AstNode
     {
         EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r0[0], exprNode->resultRegisterRc[0]);
     }
-    else if (exprNode->resultRegisterRc.size() == 2)
+    else
     {
         // If inside a function, we copy the value to the stack, and address the stack as the any value.
         // That way, even if registers are changed, the memory layout remains correct.
         if (exprNode->ownerFct)
         {
             EMIT_INST2(context, ByteCodeOp::SetAtStackPointer64, exprNode->extMisc()->stackOffset, exprNode->resultRegisterRc[0]);
-            EMIT_INST2(context, ByteCodeOp::SetAtStackPointer64, exprNode->extMisc()->stackOffset + 8, exprNode->resultRegisterRc[1]);
+            if (exprNode->resultRegisterRc.size() == 2)
+                EMIT_INST2(context, ByteCodeOp::SetAtStackPointer64, exprNode->extMisc()->stackOffset + sizeof(uint64_t), exprNode->resultRegisterRc[1]);
             EMIT_INST2(context, ByteCodeOp::MakeStackPointer, r0[0], exprNode->extMisc()->stackOffset);
         }
-        else
-        {
-            return Report::internalError(exprNode, "cannot convert type to 'any'");
-        }
-    }
-    else
-    {
-        SWAG_ASSERT(exprNode->resultRegisterRc.size() == 1);
-        EMIT_INST2(context, ByteCodeOp::CopyRBAddrToRA, r0[0], exprNode->resultRegisterRc[0]);
     }
 
     if (!exprNode->resultRegisterRc.cannotFree)

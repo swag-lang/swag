@@ -645,13 +645,6 @@ bool Llvm::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 builder.CreateStore(builder.CreateLoad(I64_TY(), r3), r2);
                 break;
             }
-            case ByteCodeOp::CopyRBAddrToRA:
-            {
-                const auto r0 = GEP64_PTR_PTR_I64(allocR, ip->a.u32);
-                const auto r1 = GEP64(allocR, ip->b.u32);
-                builder.CreateStore(r1, r0);
-                break;
-            }
 
                 /////////////////////////////////////
 
