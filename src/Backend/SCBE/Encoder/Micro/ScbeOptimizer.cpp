@@ -415,7 +415,7 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
                  inst->regB == CpuReg::Rsp &&
                  mapValReg.contains(inst->valueA) &&
                  mapRegVal.contains(mapValReg[inst->valueA].first) &&
-                 ScbeCpu::isInt(inst->opBitsA) == ScbeCpu::isInt(mapValReg[inst->valueA].second) &&
+                 ScbeCpu::isInt(inst->regA) == ScbeCpu::isInt(mapValReg[inst->valueA].first) &&
                  ScbeCpu::getNumBits(inst->opBitsA) <= ScbeCpu::getNumBits(mapValReg[inst->valueA].second) &&
                  mapRegVal[mapValReg[inst->valueA].first] == inst->valueA)
         {
