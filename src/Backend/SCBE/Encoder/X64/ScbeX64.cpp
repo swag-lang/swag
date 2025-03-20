@@ -170,9 +170,16 @@ namespace
         return static_cast<uint8_t>(result);
     }
 
+    void emitPrefixF64(Concat& concat, OpBits opBits)
+    {
+        if (opBits == OpBits::F64)
+            concat.addU8(0x66);
+    }
+    
     void emitREX(Concat& concat, OpBits opBits, CpuReg reg0 = REX_REG_NONE, CpuReg reg1 = REX_REG_NONE)
     {
-        if (opBits == OpBits::B16 || opBits == OpBits::F64)
+        SWAG_ASSERT(opBits != OpBits::F32 && opBits != OpBits::F64);
+        if (opBits == OpBits::B16)
             concat.addU8(0x66);
 
         const bool b1 = (reg0 >= CpuReg::R8 && reg0 <= CpuReg::R15);
@@ -351,7 +358,7 @@ void ScbeX64::emitLoadRR(CpuReg regDst, CpuReg regSrc, OpBits opBits)
     }
     else if (isFloat(regDst) || isFloat(regSrc))
     {
-        emitREX(concat, OpBits::F64);
+        emitPrefixF64(concat, OpBits::F64);
         emitREX(concat, opBits == OpBits::F64 ? OpBits::B64 : OpBits::B32);
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, isFloat(regSrc) ? 0x7E : 0x6E);
@@ -380,7 +387,7 @@ void ScbeX64::emitLoadRI(CpuReg reg, uint64_t value, OpBits opBits)
     }
     else if (isFloat(reg))
     {
-        emitLoadRI(cc->computeRegI0, value, opBits == OpBits::F32 ? OpBits::B32: OpBits::B64);
+        emitLoadRI(cc->computeRegI0, value, opBits == OpBits::F32 ? OpBits::B32 : OpBits::B64);
         emitLoadRR(reg, cc->computeRegI0, opBits);
     }
     else if (opBits == OpBits::B64)
@@ -517,25 +524,27 @@ void ScbeX64::emitLoadZeroExtendRR(CpuReg regDst, CpuReg regSrc, OpBits numBitsD
         emitSymbolRelocationAddress(cc->computeRegI1, symCst_U64F64, 0);
 
         // punpckldq xmm1, xmmword ptr [rcx]
-        emitREX(concat, OpBits::F64, cc->computeRegF1, cc->computeRegI1);
+        emitPrefixF64(concat, OpBits::F64);
+        emitREX(concat, OpBits::B64, MODRM_REG_0, cc->computeRegI1);
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, 0x62);
         emitModRM(concat, 0, cc->computeRegF1, cc->computeRegI1);
 
         // subpd xmm1, xmmword ptr [rcx + 16]
-        emitREX(concat, OpBits::F64, cc->computeRegF1, cc->computeRegI1);
+        emitPrefixF64(concat, OpBits::F64);
+        emitREX(concat, OpBits::B64, MODRM_REG_0, cc->computeRegI1);
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, 0x5C);
         emitModRM(concat, 16, cc->computeRegF1, cc->computeRegI1);
 
         // movapd xmm0, xmm1
-        emitREX(concat, OpBits::F64, cc->computeRegF0, cc->computeRegF1);
+        emitPrefixF64(concat, OpBits::F64);
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, 0x28);
         emitModRM(concat, cc->computeRegF0, cc->computeRegF1);
 
         // unpckhpd xmm0, xmm1
-        emitREX(concat, OpBits::F64, cc->computeRegF0, cc->computeRegF1);
+        emitPrefixF64(concat, OpBits::F64);
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, 0x15);
         emitModRM(concat, cc->computeRegF0, cc->computeRegF1);
@@ -707,7 +716,7 @@ void ScbeX64::emitClearR(CpuReg reg, OpBits opBits)
 {
     if (isFloat(reg))
     {
-        emitREX(concat, opBits, reg, reg);
+        emitPrefixF64(concat, opBits);
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, CpuOp::FXOR);
         emitModRM(concat, reg, reg);
@@ -849,7 +858,7 @@ void ScbeX64::emitCmpRR(CpuReg reg0, CpuReg reg1, OpBits opBits)
     if (isFloat(reg0))
     {
         SWAG_ASSERT(isFloat(reg1));
-        emitREX(concat, opBits, reg0, reg1);
+        emitPrefixF64(concat, opBits);
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, 0x2F);
         emitModRM(concat, reg0, reg1);
@@ -912,7 +921,8 @@ void ScbeX64::emitCmpMR(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits op
 {
     if (isFloat(reg))
     {
-        emitREX(concat, opBits, reg, memReg);
+        emitPrefixF64(concat, opBits);
+        emitREX(concat, OpBits::Zero, MODRM_REG_0, memReg);
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, 0x2F);
         emitModRM(concat, memOffset, reg, memReg);
@@ -1062,7 +1072,7 @@ void ScbeX64::emitOpBinaryRR(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBi
         }
         else
         {
-            emitREX(concat, opBits, regSrc, regDst);
+            emitPrefixF64(concat, opBits);
         }
 
         emitCPUOp(concat, 0x0F);
