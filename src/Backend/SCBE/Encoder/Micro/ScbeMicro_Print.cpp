@@ -6,13 +6,6 @@
 
 namespace
 {
-    Utf8 valueName(uint64_t value, bool isFloat)
-    {
-        if (isFloat)
-            return form("%f", std::bit_cast<double>(value));
-        return form("%d", value);
-    }
-
     const char* jumpTypeName(CpuCondJump kind)
     {
         switch (kind)
@@ -419,7 +412,7 @@ void ScbeMicro::print() const
             case ScbeMicroOp::LoadRI:
                 // encoder.emitLoad(inst->regA, inst->valueA, inst->opBitsA);
                 line.name = "mov";
-                line.args = form("%s, %s", regName(inst->regA, inst->opBitsA), valueName(inst->valueA, isFloat(inst->regA)).cstr());
+                line.args = form("%s, %x", regName(inst->regA, inst->opBitsA), inst->valueA);
                 break;
             case ScbeMicroOp::LoadRM:
                 // encoder.emitLoad(inst->regA, inst->regB, inst->valueA, inst->opBitsA);
@@ -468,7 +461,7 @@ void ScbeMicro::print() const
                 break;
             case ScbeMicroOp::CmpRR:
                 // encoder.emitCmp(inst->regA, inst->regB, inst->opBitsA);
-                line.name = "mov";
+                line.name = "cmp";
                 line.args = form("%s, %s", regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsA));
                 break;
             case ScbeMicroOp::CmpRI:
