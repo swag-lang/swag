@@ -469,6 +469,7 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
     if (out.optLevel == BuildCfgBackendOptim::O0)
         return;
 
+    /*
     setDirtyPass();
     while (passHasDoneSomething)
     {
@@ -478,7 +479,7 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
         optimizePassDeadStore(out);
         optimizePassStoreToRegBeforeLeave(out);
         optimizePassStoreToHdwRegBeforeLeave(out);
-    }
+    }*/
 
     // memToReg(out, CpuReg::Rsp, out.cpuFct->getStackOffsetReg(0), CpuReg::Rdi);
 }

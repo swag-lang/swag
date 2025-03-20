@@ -2297,7 +2297,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                     case TokenId::IntrinsicAbs:
                         emitIMMB(pp, cc.computeRegF0, opBits);
                         pp.emitLoadRI(cc.computeRegI0, opBits == OpBits::F32 ? 0x7FFFFFFF : 0x7FFFFFFF'FFFFFFFF, OpBits::B64);
-                        pp.emitLoadRR(cc.computeRegF1, cc.computeRegI0, OpBits::F64);
+                        pp.emitLoadRR(cc.computeRegF1, cc.computeRegI0, OpBits::B64);
                         pp.emitOpBinaryRR(cc.computeRegF0, cc.computeRegF1, CpuOp::FAND, opBits);
                         pp.emitLoadMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, opBits);
                         break;

@@ -172,7 +172,7 @@ namespace
 
     void emitPrefixF64(Concat& concat, OpBits opBits)
     {
-        if (opBits == OpBits::F64)
+        if (opBits == OpBits::B64 || opBits == OpBits::F64)
             concat.addU8(0x66);
     }
     
@@ -349,6 +349,7 @@ void ScbeX64::emitRet()
 
 void ScbeX64::emitLoadRR(CpuReg regDst, CpuReg regSrc, OpBits opBits)
 {
+    SWAG_ASSERT(opBits != OpBits::F32 && opBits != OpBits::F64);
     if (isFloat(regDst) && isFloat(regSrc))
     {
         emitSpecF64(concat, 0xF3, opBits);
@@ -358,8 +359,8 @@ void ScbeX64::emitLoadRR(CpuReg regDst, CpuReg regSrc, OpBits opBits)
     }
     else if (isFloat(regDst) || isFloat(regSrc))
     {
-        emitPrefixF64(concat, OpBits::F64);
-        emitREX(concat, opBits == OpBits::F64 ? OpBits::B64 : OpBits::B32);
+        emitPrefixF64(concat, OpBits::B64);
+        emitREX(concat, opBits);
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, isFloat(regSrc) ? 0x7E : 0x6E);
         emitModRM(concat, regDst, regSrc);
@@ -388,7 +389,7 @@ void ScbeX64::emitLoadRI(CpuReg reg, uint64_t value, OpBits opBits)
     else if (isFloat(reg))
     {
         emitLoadRI(cc->computeRegI0, value, opBits == OpBits::F32 ? OpBits::B32 : OpBits::B64);
-        emitLoadRR(reg, cc->computeRegI0, opBits);
+        emitLoadRR(reg, cc->computeRegI0, opBits == OpBits::F32 ? OpBits::B32 : OpBits::B64);
     }
     else if (opBits == OpBits::B64)
     {
@@ -520,31 +521,31 @@ void ScbeX64::emitLoadZeroExtendRR(CpuReg regDst, CpuReg regSrc, OpBits numBitsD
     else if (numBitsSrc == OpBits::B64 && numBitsDst == OpBits::F64)
     {
         SWAG_ASSERT(regSrc == cc->computeRegI0 && regDst == cc->computeRegF0);
-        emitLoadRR(cc->computeRegF1, cc->computeRegI0, OpBits::F64);
+        emitLoadRR(cc->computeRegF1, cc->computeRegI0, OpBits::B64);
         emitSymbolRelocationAddress(cc->computeRegI1, symCst_U64F64, 0);
 
         // punpckldq xmm1, xmmword ptr [rcx]
-        emitPrefixF64(concat, OpBits::F64);
+        emitPrefixF64(concat, OpBits::B64);
         emitREX(concat, OpBits::B64, MODRM_REG_0, cc->computeRegI1);
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, 0x62);
         emitModRM(concat, 0, cc->computeRegF1, cc->computeRegI1);
 
         // subpd xmm1, xmmword ptr [rcx + 16]
-        emitPrefixF64(concat, OpBits::F64);
+        emitPrefixF64(concat, OpBits::B64);
         emitREX(concat, OpBits::B64, MODRM_REG_0, cc->computeRegI1);
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, 0x5C);
         emitModRM(concat, 16, cc->computeRegF1, cc->computeRegI1);
 
         // movapd xmm0, xmm1
-        emitPrefixF64(concat, OpBits::F64);
+        emitPrefixF64(concat, OpBits::B64);
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, 0x28);
         emitModRM(concat, cc->computeRegF0, cc->computeRegF1);
 
         // unpckhpd xmm0, xmm1
-        emitPrefixF64(concat, OpBits::F64);
+        emitPrefixF64(concat, OpBits::B64);
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, 0x15);
         emitModRM(concat, cc->computeRegF0, cc->computeRegF1);

@@ -141,6 +141,7 @@ void ScbeMicro::emitStoreCallerParam(uint32_t paramIdx, CpuReg reg, OpBits opBit
 
 void ScbeMicro::emitLoadRR(CpuReg regDst, CpuReg regSrc, OpBits opBits)
 {
+    SWAG_ASSERT(opBits != OpBits::F32 && opBits != OpBits::F64);
     const auto inst = addInstruction(ScbeMicroOp::LoadRR);
     inst->regA      = regDst;
     inst->regB      = regSrc;
