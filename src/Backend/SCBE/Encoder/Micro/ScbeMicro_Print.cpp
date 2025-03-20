@@ -122,12 +122,18 @@ namespace
                 return "or";
             case CpuOp::XOR:
                 return "xor";
+            case CpuOp::CMOVE:
+                return "cmove";              
+            case CpuOp::CMOVG:
+                return "cmovg";            
             case CpuOp::CMOVGE:
                 return "cmovge";
-            case CpuOp::UCOMIF:
-                return "ucomif";
+            case CpuOp::CMOVB:
+                return "cmovb";            
             case CpuOp::CMOVBE:
                 return "cmovbe";
+            case CpuOp::CMOVL:
+                return "cmovl";
             case CpuOp::POPCNT:
                 return "popcnt";
 
@@ -140,7 +146,8 @@ namespace
                 return "cvtsi2f";
             case CpuOp::CVTF2I:
                 return "cvtf2i";
-
+            case CpuOp::UCOMIF:
+                return "ucomif";
             case CpuOp::FADD:
                 return "fadd";
             case CpuOp::FSUB:
@@ -151,9 +158,13 @@ namespace
                 return "fmax";
             case CpuOp::FXOR:
                 return "fxor";
+            case CpuOp::FDIV:
+                return "fdiv";
+            case CpuOp::FMUL:
+                return "fmul";
         }
 
-        return form("<%d>", op);
+        return form("<%X>", op);
     }
 
     const char* regName(CpuReg reg, OpBits opBits)
