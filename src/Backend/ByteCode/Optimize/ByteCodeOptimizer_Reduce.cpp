@@ -3875,12 +3875,15 @@ void ByteCodeOptimizer::reduceSetAt(ByteCodeOptContext* context, ByteCodeInstruc
                     {
                         case 2:
                             SET_OP(ip, ByteCodeOp::SetZeroAtPointer16);
+                            ip->b.s64 = offset0;
                             break;
                         case 4:
                             SET_OP(ip, ByteCodeOp::SetZeroAtPointer32);
+                            ip->b.s64 = offset0;
                             break;
                         case 8:
                             SET_OP(ip, ByteCodeOp::SetZeroAtPointer64);
+                            ip->b.s64 = offset0;
                             break;
                         default:
                             SET_OP(ip, ByteCodeOp::SetZeroAtPointerX);

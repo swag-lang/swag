@@ -460,6 +460,7 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
 void ScbeOptimizer::computeContext(const ScbeMicro& out)
 {
     takeAddressRsp.clear();
+    usedRegs.clear();
 
     auto inst = reinterpret_cast<ScbeMicroInstruction*>(out.concat.firstBucket->data);
     while (inst->op != ScbeMicroOp::End)
@@ -476,11 +477,11 @@ void ScbeOptimizer::computeContext(const ScbeMicro& out)
             contextFlags.add(CF_HAS_JUMP);
 
         if (inst->hasReadRegA() || inst->hasWriteRegA())
-            usedRegs.push_back_once(inst->regA);
+            usedRegs[inst->regA] += 1;
         if (inst->hasReadRegB() || inst->hasWriteRegB())
-            usedRegs.push_back_once(inst->regB);
+            usedRegs[inst->regB] += 1;
         if (inst->hasReadRegC() || inst->hasWriteRegC())
-            usedRegs.push_back_once(inst->regC);
+            usedRegs[inst->regC] += 1;
 
         inst = zap(inst + 1);
     }
@@ -504,7 +505,8 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
         optimizePassStoreToHdwRegBeforeLeave(out);
     }
 
-    // if (!contextFlags.has(CF_HAS_CALL))
+    //if (usedRegs.contains(CpuReg::Rcx) && usedRegs[CpuReg::Rcx] == 1)
     //    out.print();
+    
     // memToReg(out, CpuReg::Rsp, out.cpuFct->getStackOffsetReg(0), CpuReg::R12);
 }

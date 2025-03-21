@@ -39,6 +39,6 @@ struct ScbeOptimizer
 
     // Context
     VectorNative<uint64_t> takeAddressRsp;
-    VectorNative<CpuReg>   usedRegs;
+    Map<CpuReg, uint32_t>  usedRegs;
     ScbeOptContextFlags    contextFlags = CF_NONE;
 };
