@@ -115,6 +115,8 @@ namespace
                 return "or";
             case CpuOp::XOR:
                 return "xor";
+            case CpuOp::NEG:
+                return "neg";
             case CpuOp::CMOVE:
                 return "cmove";              
             case CpuOp::CMOVG:
