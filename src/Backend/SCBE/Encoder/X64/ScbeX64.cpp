@@ -2399,13 +2399,6 @@ ScbeMicroOpDetails ScbeX64::getInstructionDetails(ScbeMicroInstruction* inst) co
     result.add(1ULL << static_cast<uint32_t>(cc->computeRegF1));
     result.add(1ULL << static_cast<uint32_t>(cc->computeRegF2));
 
-    if (inst->op == ScbeMicroOp::OpUnaryM ||
-        inst->op == ScbeMicroOp::OpUnaryR)
-    {
-        if (isFloat(inst->regA))
-            result.add(1ULL << static_cast<uint32_t>(cc->computeRegF1));
-    }
-
     if (inst->op == ScbeMicroOp::OpBinaryRI ||
         inst->op == ScbeMicroOp::OpBinaryRR ||
         inst->op == ScbeMicroOp::OpBinaryMI ||
