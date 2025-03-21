@@ -166,7 +166,7 @@ void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
             continue;
         }
 
-        switch (inst[0].op)
+        switch (inst->op)
         {
             case ScbeMicroOp::LoadRR:
                 if (next->hasReadRegA() &&
@@ -475,7 +475,7 @@ void ScbeOptimizer::computeContext(const ScbeMicro& out)
         if (inst->isCall())
             contextFlags.add(CF_HAS_CALL);
         if (inst->isJump())
-            contextFlags.add(CF_HAS_JUMP);            
+            contextFlags.add(CF_HAS_JUMP);
 
         if (inst->hasReadRegA() || inst->hasWriteRegA())
             usedRegs.push_back_once(inst->regA);

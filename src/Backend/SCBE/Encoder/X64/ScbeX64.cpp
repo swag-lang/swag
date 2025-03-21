@@ -2282,6 +2282,7 @@ void ScbeX64::emitClearM(CpuReg memReg, uint64_t memOffset, uint32_t count)
         while (count >= 16)
         {
             // movups [memReg+??], xmm0
+            emitREX(concat, OpBits::Zero, REX_REG_NONE, memReg);
             emitCPUOp(concat, 0x0F);
             emitCPUOp(concat, 0x11);
             emitModRM(concat, memOffset, cc->computeRegF0, memReg);
