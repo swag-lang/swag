@@ -16,9 +16,9 @@ SCBE_MICRO_OP(SymbolRelocationValue,       MOF_REG_A | MOF_WRITE_REG,           
 SCBE_MICRO_OP(SymbolGlobalString,          MOF_REG_A | MOF_WRITE_REG,                                                  MOF_NAME)
 SCBE_MICRO_OP(SymbolRelocationPtr,         MOF_REG_A | MOF_WRITE_REG,                                                  MOF_NAME)
                                                                                                                        
-SCBE_MICRO_OP(LoadCallerParam,             MOF_REG_A | MOF_OPBITS_A | MOF_READ_REG,                                    MOF_VALUE_A)
-SCBE_MICRO_OP(LoadCallerAddressParam,      MOF_REG_A | MOF_READ_REG,                                                   MOF_VALUE_A)
-SCBE_MICRO_OP(LoadCallerZeroExtendParam,   MOF_REG_A | MOF_OPBITS_A | MOF_READ_REG,                                    MOF_VALUE_B | MOF_OPBITS_B)
+SCBE_MICRO_OP(LoadCallerParam,             MOF_REG_A | MOF_OPBITS_A | MOF_WRITE_REG,                                   MOF_VALUE_A)
+SCBE_MICRO_OP(LoadCallerAddressParam,      MOF_REG_A | MOF_WRITE_REG,                                                  MOF_VALUE_A)
+SCBE_MICRO_OP(LoadCallerZeroExtendParam,   MOF_REG_A | MOF_OPBITS_A | MOF_WRITE_REG,                                   MOF_VALUE_B | MOF_OPBITS_B)
 SCBE_MICRO_OP(StoreCallerParam,            MOF_VALUE_A,                                                                MOF_REG_A | MOF_READ_REG)
                                                                                                                        
 SCBE_MICRO_OP(CallLocal,                   MOF_NAME,                                                                   MOF_ZERO)

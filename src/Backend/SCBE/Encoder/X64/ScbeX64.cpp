@@ -1213,8 +1213,6 @@ void ScbeX64::emitOpBinaryRR(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBi
     }
     else if (op == CpuOp::CMPXCHG)
     {
-        // SWAG_ASSERT(regDst == cc->computeRegI1 && regSrc == CpuReg::Rdx);
-        //  lock CMPXCHG [rcx], dl
         if (opBits == OpBits::B16)
             emitREX(concat, opBits);
         concat.addU8(0xF0);
@@ -2214,8 +2212,8 @@ void ScbeX64::emitCopy(CpuReg memRegDst, CpuReg memRegSrc, uint32_t count)
         return;
 
     uint32_t offset = 0;
-    SWAG_ASSERT(memRegDst == cc->computeRegI0);
-    SWAG_ASSERT(memRegSrc == cc->computeRegI1);
+    SWAG_ASSERT(memRegSrc != cc->computeRegI2);
+    SWAG_ASSERT(memRegDst != cc->computeRegI2);
 
     // SSE 16 octets
     while (count >= 16)
@@ -2382,71 +2380,54 @@ void ScbeX64::emitMulAdd(CpuReg regDst, CpuReg regMul, CpuReg regAdd, OpBits opB
 
 ScbeMicroOpDetails ScbeX64::getInstructionDetails(ScbeMicroInstruction* inst) const
 {
+    if (inst->isCall())
+        return MOD_REG_ALL;
+
     ScbeMicroOpDetails result = MOD_ZERO;
 
-    switch (inst->op)
+    if (inst->hasWriteRegA())
+        result.add(1ULL << static_cast<uint32_t>(inst->regA));
+    if (inst->hasWriteRegB())
+        result.add(1ULL << static_cast<uint32_t>(inst->regB));
+    if (inst->hasWriteRegC())
+        result.add(1ULL << static_cast<uint32_t>(inst->regC));
+
+    result.add(1ULL << static_cast<uint32_t>(cc->computeRegI0));
+    result.add(1ULL << static_cast<uint32_t>(cc->computeRegI1));
+    result.add(1ULL << static_cast<uint32_t>(cc->computeRegI2));
+    result.add(1ULL << static_cast<uint32_t>(cc->computeRegF0));
+    result.add(1ULL << static_cast<uint32_t>(cc->computeRegF1));
+    result.add(1ULL << static_cast<uint32_t>(cc->computeRegF2));
+
+    if (inst->op == ScbeMicroOp::OpUnaryM ||
+        inst->op == ScbeMicroOp::OpUnaryR)
     {
-        case ScbeMicroOp::Nop:
-        case ScbeMicroOp::Ignore:
-        case ScbeMicroOp::Label:
-        case ScbeMicroOp::Debug:
-        case ScbeMicroOp::Push:
-        case ScbeMicroOp::Pop:
-        case ScbeMicroOp::Ret:
-            return MOD_ZERO;
-
-        case ScbeMicroOp::SetCC:
-            result.add(1ULL << static_cast<uint32_t>(inst->regA));
-            return result;
-
-        case ScbeMicroOp::ClearM:
-            return MOD_ZERO;
-        case ScbeMicroOp::ClearR:
-            result.add(1ULL << static_cast<uint32_t>(inst->regA));
-            return result;
-
-        case ScbeMicroOp::LoadMR:
-            return MOD_ZERO;
-        case ScbeMicroOp::LoadMI:
-            if (inst->opBitsA == OpBits::B64 && inst->valueB > 0x7FFFFFFF && inst->valueB >> 32 != 0xFFFFFFFF)
-                result.add(1ULL << static_cast<uint32_t>(cc->computeRegI1));
-            return result;
-
-        case ScbeMicroOp::LoadRI:
-            result.add(1ULL << static_cast<uint32_t>(inst->regA));
-            if (isFloat(inst->regA))
-                result.add(1ULL << static_cast<uint32_t>(cc->computeRegI0));
-            return result;
-        case ScbeMicroOp::LoadRR:
-            result.add(1ULL << static_cast<uint32_t>(inst->regA));
-            return result;
-
-        case ScbeMicroOp::LoadRM:
-        case ScbeMicroOp::LoadZeroExtendRM:
-        case ScbeMicroOp::LoadSignedExtendRM:
-            result.add(1ULL << static_cast<uint32_t>(inst->regA));
-            if (inst->valueA > 0x7FFFFFFF)
-                result.add(1ULL << static_cast<uint32_t>(cc->computeRegI1));
-            return result;
-
-        case ScbeMicroOp::CmpMR:
-        case ScbeMicroOp::CmpRR:
-            return MOD_ZERO;
-        case ScbeMicroOp::CmpMI:
-            if (inst->valueA > 0x7FFFFFFF)
-                result.add(1ULL << static_cast<uint32_t>(cc->computeRegI0));
-            return result;
-
-        case ScbeMicroOp::OpBinaryRI:
-            result.add(1ULL << static_cast<uint32_t>(inst->regA));
-            if (inst->valueA > 0x7FFFFFFF)
-                result.add(1ULL << static_cast<uint32_t>(cc->computeRegI1));
-            if (inst->cpuOp == CpuOp::DIV || inst->cpuOp == CpuOp::MOD || inst->cpuOp == CpuOp::IDIV || inst->cpuOp == CpuOp::IMOD)
-                result.add(1ULL << static_cast<uint32_t>(cc->computeRegI1));
-            if (inst->cpuOp == CpuOp::DIV || inst->cpuOp == CpuOp::MOD || inst->cpuOp == CpuOp::IDIV || inst->cpuOp == CpuOp::IMOD)
-                result.add(1ULL << static_cast<uint32_t>(CpuReg::Rdx));
-            return result;
+        if (isFloat(inst->regA))
+            result.add(1ULL << static_cast<uint32_t>(cc->computeRegF1));
     }
 
-    return MOD_REG_ALL;
+    if (inst->op == ScbeMicroOp::OpBinaryRI ||
+        inst->op == ScbeMicroOp::OpBinaryRR ||
+        inst->op == ScbeMicroOp::OpBinaryMI ||
+        inst->op == ScbeMicroOp::OpBinaryMR)
+    {
+        if (inst->cpuOp == CpuOp::MUL || inst->cpuOp == CpuOp::IMUL)
+        {
+            result.add(1ULL << static_cast<uint32_t>(CpuReg::Rax));
+            result.add(1ULL << static_cast<uint32_t>(CpuReg::Rdx));
+        }
+
+        if (inst->cpuOp == CpuOp::DIV || inst->cpuOp == CpuOp::MOD || inst->cpuOp == CpuOp::IDIV || inst->cpuOp == CpuOp::IMOD)
+        {
+            result.add(1ULL << static_cast<uint32_t>(CpuReg::Rax));
+            result.add(1ULL << static_cast<uint32_t>(CpuReg::Rdx));
+        }
+
+        if (inst->cpuOp == CpuOp::ROL || inst->cpuOp == CpuOp::ROR || inst->cpuOp == CpuOp::SAL || inst->cpuOp == CpuOp::SAR || inst->cpuOp == CpuOp::SHL || inst->cpuOp == CpuOp::SHR)
+        {
+            result.add(1ULL << static_cast<uint32_t>(CpuReg::Rcx));
+        }
+    }
+
+    return result;
 }
