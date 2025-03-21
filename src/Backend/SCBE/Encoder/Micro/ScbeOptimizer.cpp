@@ -172,8 +172,7 @@ void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
                 if (next->hasReadRegA() &&
                     inst->regA == next->regA &&
                     ScbeCpu::isInt(inst->regA) &&
-                    next->hasOpFlag(MOF_OPBITS_A) &&
-                    ScbeCpu::getNumBits(inst->opBitsA) >= ScbeCpu::getNumBits(next->opBitsA) &&
+                    (!next->hasOpFlag(MOF_OPBITS_A) || ScbeCpu::getNumBits(inst->opBitsA) >= ScbeCpu::getNumBits(next->opBitsA)) &&
                     !encoder->manipulateRegister(next, inst->regB))
                 {
                     next->regA = inst->regB;
