@@ -56,9 +56,6 @@ struct CallConv
     static const CallConv*    get(CallConvKind kind);
     static CpuReg             getVolatileRegisterInteger(const CallConv& ccCaller, const CallConv& ccCallee, VolatileFlags flags);
 
-    // The number of parameters to pass by register
-    uint32_t paramByRegisterCount = 4;
-
     // Stack align
     uint32_t stackAlign = 16;
 

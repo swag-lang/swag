@@ -11,7 +11,7 @@
 
 void Scbe::emitLoadParam(ScbeCpu& pp, CpuReg reg, uint32_t paramIdx, OpBits opBits)
 {
-    if (paramIdx < pp.cc->paramByRegisterCount)
+    if (paramIdx < pp.cc->paramByRegisterInteger.size())
         pp.emitLoadRM(reg, CpuReg::Rsp, pp.cpuFct->getStackOffsetParam(paramIdx), opBits);
     else
         pp.emitLoadCallerParam(reg, paramIdx, opBits);
@@ -19,7 +19,7 @@ void Scbe::emitLoadParam(ScbeCpu& pp, CpuReg reg, uint32_t paramIdx, OpBits opBi
 
 void Scbe::emitLoadZeroExtendParam(ScbeCpu& pp, CpuReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc)
 {
-    if (paramIdx < pp.cc->paramByRegisterCount)
+    if (paramIdx < pp.cc->paramByRegisterInteger.size())
         pp.emitLoadZeroExtendRM(reg, CpuReg::Rsp, pp.cpuFct->getStackOffsetParam(paramIdx), numBitsDst, numBitsSrc);
     else
         pp.emitLoadCallerZeroExtendParam(reg, paramIdx, numBitsDst, numBitsSrc);
@@ -27,7 +27,7 @@ void Scbe::emitLoadZeroExtendParam(ScbeCpu& pp, CpuReg reg, uint32_t paramIdx, O
 
 void Scbe::emitLoadAddressParam(ScbeCpu& pp, CpuReg reg, uint32_t paramIdx)
 {
-    if (paramIdx < pp.cc->paramByRegisterCount)
+    if (paramIdx < pp.cc->paramByRegisterInteger.size())
         pp.emitLoadAddressM(reg, CpuReg::Rsp, pp.cpuFct->getStackOffsetParam(paramIdx));
     else
         pp.emitLoadCallerAddressParam(reg, paramIdx);

@@ -206,14 +206,14 @@ struct CpuFunction
     uint32_t          offsetRT                = 0;
     uint32_t          offsetResult            = 0;
 
-    uint32_t getStackOffsetParam(uint32_t paramIdx) const { return sizeStackCallParams + (paramIdx < cc->paramByRegisterCount ? offsetParamsAsRegisters : offsetCallerStackParams) + (paramIdx * sizeof(Register)); }
+    uint32_t getStackOffsetParam(uint32_t paramIdx) const { return sizeStackCallParams + (paramIdx < cc->paramByRegisterInteger.size() ? offsetParamsAsRegisters : offsetCallerStackParams) + (paramIdx * sizeof(Register)); }
     uint32_t getStackOffsetCallerParam(uint32_t paramIdx) const { return sizeStackCallParams + offsetCallerStackParams + (paramIdx * sizeof(Register)); }
     uint32_t getStackOffsetBCStack() const { return sizeStackCallParams + offsetByteCodeStack; }
     uint32_t getStackOffsetReg(uint32_t reg) const { return sizeStackCallParams + (reg * sizeof(Register)); }
     uint32_t getStackOffsetRT(uint32_t reg) const { return sizeStackCallParams + offsetRT + (reg * sizeof(Register)); }
     uint32_t getStackOffsetResult() const { return sizeStackCallParams + offsetResult; }
     uint32_t getStackOffsetFLT() const { return sizeStackCallParams + offsetFLT; }
-    bool     isStackOffsetLocalParam(uint32_t offset) const { return cc->paramByRegisterCount && offset >= getStackOffsetParam(0) && offset <= getStackOffsetParam(cc->paramByRegisterCount - 1); }
+    bool     isStackOffsetLocalParam(uint32_t offset) const { return cc->paramByRegisterInteger.size() && offset >= getStackOffsetParam(0) && offset <= getStackOffsetParam(cc->paramByRegisterInteger.size() - 1); }
     bool     isStackOffsetRT(uint32_t offset) const { return offset >= getStackOffsetRT(0) && offset <= getStackOffsetRT(1); }
     bool     isStackOffsetReg(uint32_t offset) const { return offset >= getStackOffsetReg(0) && offset < getStackOffsetReg(bc->maxReservedRegisterRC); }
     bool     isStackOffsetTransient(uint32_t offset) const { return isStackOffsetLocalParam(offset) || isStackOffsetReg(offset) || isStackOffsetRT(offset); }

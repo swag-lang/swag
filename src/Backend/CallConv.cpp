@@ -7,7 +7,6 @@ void initCallConvKinds()
 {
     auto& ccX64 = g_CallConv[static_cast<int>(CallConvKind::X86_64)];
 
-    ccX64.paramByRegisterCount = 4;
     ccX64.paramByRegisterInteger.push_back(CpuReg::Rcx);
     ccX64.paramByRegisterInteger.push_back(CpuReg::Rdx);
     ccX64.paramByRegisterInteger.push_back(CpuReg::R8);

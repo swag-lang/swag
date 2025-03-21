@@ -505,8 +505,18 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
         optimizePassStoreToHdwRegBeforeLeave(out);
     }
 
-    //if (usedRegs.contains(CpuReg::Rcx) && usedRegs[CpuReg::Rcx] == 1)
-    //    out.print();
-    
+    /*if (!contextFlags.has(CF_HAS_CALL) &&
+        out.cpuFct->typeFunc->numParamsRegisters() &&
+        !out.cc->paramByRegisterInteger.empty() &&
+        usedRegs[out.cc->paramByRegisterInteger[0]] == 1 &&
+        !takeAddressRsp.contains(out.cpuFct->getStackOffsetParam(0)))
+    {
+        const auto typeParam = out.cpuFct->typeFunc->registerIdxToType(0);
+        if (!out.cc->useRegisterFloat || !typeParam->isNativeFloat())
+            memToReg(out, CpuReg::Rsp, out.cpuFct->getStackOffsetParam(0), out.cc->paramByRegisterInteger[0]);
+        else
+            int a = 0;
+    }*/
+
     // memToReg(out, CpuReg::Rsp, out.cpuFct->getStackOffsetReg(0), CpuReg::R12);
 }

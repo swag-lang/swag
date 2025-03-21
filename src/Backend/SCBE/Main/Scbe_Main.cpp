@@ -254,7 +254,7 @@ void Scbe::emitGlobalPreMain(ScbeCpu& pp)
         pp.directives += form("/EXPORT:%s ", thisInit.cstr());
 
     // Store first parameter on stack (process infos ptr)
-    SWAG_ASSERT(cc.paramByRegisterCount >= 1);
+    SWAG_ASSERT(cc.paramByRegisterInteger.size() >= 1);
     pp.emitLoadMR(CpuReg::Rsp, 0, cc.paramByRegisterInteger[0], OpBits::B64);
 
     // Copy process infos passed as a parameter to the process info struct of this module
@@ -293,7 +293,7 @@ void Scbe::emitGlobalInit(ScbeCpu& pp)
         pp.directives += form("/EXPORT:%s ", thisInit.cstr());
 
     // Store first parameter on stack (process infos ptr)
-    SWAG_ASSERT(cc.paramByRegisterCount >= 1);
+    SWAG_ASSERT(cc.paramByRegisterInteger.size() >= 1);
     pp.emitLoadMR(CpuReg::Rsp, 0, cc.paramByRegisterInteger[0], OpBits::B64);
 
     // Copy process infos passed as a parameter to the process info struct of this module

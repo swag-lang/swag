@@ -55,7 +55,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     const uint32_t offsetRT                = bc->maxReservedRegisterRC * sizeof(Register);
     const uint32_t offsetParamsAsRegisters = offsetRT + bc->maxCallResults * sizeof(Register);
-    const uint32_t offsetResult            = offsetParamsAsRegisters + cc.paramByRegisterCount * sizeof(Register);
+    const uint32_t offsetResult            = offsetParamsAsRegisters + cc.paramByRegisterInteger.size() * sizeof(Register);
     const uint32_t offsetByteCodeStack     = offsetResult + sizeof(Register);
     const uint32_t offsetFLT               = offsetByteCodeStack + bc->stackSize; // For float load (should be reserved only if we have floating point operations in that function)
     const uint32_t sizeStack               = offsetFLT + 8;
@@ -93,7 +93,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     // Save register parameters
     uint32_t idxReg = 0;
-    while (idxReg < std::min(cc.paramByRegisterCount, typeFunc->numParamsRegisters()))
+    while (idxReg < std::min(cc.paramByRegisterInteger.size(), typeFunc->numParamsRegisters()))
     {
         const auto typeParam = typeFunc->registerIdxToType(idxReg);
         if (cc.useRegisterFloat && typeParam->isNativeFloat())
@@ -104,7 +104,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     }
 
     // Save pointer to return value if this is a return by copy
-    if (idxReg < cc.paramByRegisterCount && typeFunc->returnByAddress())
+    if (idxReg < cc.paramByRegisterInteger.size() && typeFunc->returnByAddress())
     {
         pp.emitLoadMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetParam(idxReg), cc.paramByRegisterInteger[idxReg], OpBits::B64);
         idxReg++;
@@ -112,9 +112,9 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     // Save C variadic on the caller stack, to be sure that everything is stored there, even if it's
     // passed by registers
-    if (idxReg < cc.paramByRegisterCount && typeFunc->isFctCVariadic())
+    if (idxReg < cc.paramByRegisterInteger.size() && typeFunc->isFctCVariadic())
     {
-        while (idxReg < cc.paramByRegisterCount)
+        while (idxReg < cc.paramByRegisterInteger.size())
         {
             pp.emitStoreCallerParam(idxReg, cc.paramByRegisterInteger[idxReg], OpBits::B64);
             idxReg++;

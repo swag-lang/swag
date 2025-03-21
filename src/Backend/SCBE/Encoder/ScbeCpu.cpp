@@ -168,7 +168,7 @@ namespace
 {
     void emitParameters(ScbeCpu& pp, const VectorNative<CpuPushParam>& params, const CallConv* callConv)
     {
-        const uint32_t numParamsPerRegister = std::min(callConv->paramByRegisterCount, params.size());
+        const uint32_t numParamsPerRegister = std::min(callConv->paramByRegisterInteger.size(), params.size());
         uint32_t       idxParam             = 0;
 
         // Set the first N parameters. Can be a return register, or a function parameter.
@@ -506,7 +506,7 @@ void ScbeCpu::emitDebug(ByteCodeInstruction* ipAddr)
 void ScbeCpu::emitEnter(uint32_t sizeStack)
 {
     // Minimal size stack depends on calling convention
-    sizeStack = std::max(sizeStack, static_cast<uint32_t>(cc->paramByRegisterCount * sizeof(void*)));
+    sizeStack = std::max(sizeStack, static_cast<uint32_t>(cc->paramByRegisterInteger.size() * sizeof(void*)));
     sizeStack = Math::align(sizeStack, cc->stackAlign);
 
     // We need to start at sizeof(void*) because the call has pushed one register on the stack
