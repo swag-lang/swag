@@ -8,6 +8,8 @@
 
 void ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOffset, CpuReg reg)
 {
+    SWAG_ASSERT(memReg != CpuReg::Rsp || !takeAddressRsp.contains(memOffset));
+
     auto inst = reinterpret_cast<ScbeMicroInstruction*>(out.concat.firstBucket->data);
     while (inst->op != ScbeMicroOp::End)
     {
@@ -457,12 +459,43 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
     }
 }
 
+void ScbeOptimizer::computeContext(const ScbeMicro& out)
+{
+    takeAddressRsp.clear();
+
+    auto inst = reinterpret_cast<ScbeMicroInstruction*>(out.concat.firstBucket->data);
+    while (inst->op != ScbeMicroOp::End)
+    {
+        if (inst->op == ScbeMicroOp::LoadAddressM &&
+            inst->regB == CpuReg::Rsp)
+        {
+            takeAddressRsp.push_back(inst->valueB);
+        }
+
+        if (inst->isCall())
+            contextFlags.add(CF_HAS_CALL);
+        if (inst->isJump())
+            contextFlags.add(CF_HAS_JUMP);            
+
+        if (inst->hasReadRegA() || inst->hasWriteRegA())
+            usedRegs.push_back_once(inst->regA);
+        if (inst->hasReadRegB() || inst->hasWriteRegB())
+            usedRegs.push_back_once(inst->regB);
+        if (inst->hasReadRegC() || inst->hasWriteRegC())
+            usedRegs.push_back_once(inst->regC);
+
+        inst = zap(inst + 1);
+    }
+}
+
 void ScbeOptimizer::optimize(const ScbeMicro& out)
 {
     if (out.optLevel == BuildCfgBackendOptim::O0)
         return;
 
     setDirtyPass();
+    computeContext(out);
+
     while (passHasDoneSomething)
     {
         passHasDoneSomething = false;
@@ -473,5 +506,7 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
         optimizePassStoreToHdwRegBeforeLeave(out);
     }
 
-    // memToReg(out, CpuReg::Rsp, out.cpuFct->getStackOffsetReg(1), CpuReg::R12);
+    // if (!contextFlags.has(CF_HAS_CALL))
+    //    out.print();
+    // memToReg(out, CpuReg::Rsp, out.cpuFct->getStackOffsetReg(0), CpuReg::R12);
 }
