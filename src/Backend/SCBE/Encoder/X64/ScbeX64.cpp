@@ -675,15 +675,15 @@ void ScbeX64::emitLoadAddressM(CpuReg reg, CpuReg memReg, uint64_t memOffset)
 
 void ScbeX64::emitLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, OpBits opBits)
 {
-    SWAG_ASSERT(regDst == cc->computeRegI0);
     SWAG_ASSERT(regSrc1 == regDst);
     SWAG_ASSERT(regSrc2 == regDst);
     SWAG_ASSERT(opBits == OpBits::B32 || opBits == OpBits::B64);
 
     // lea regDst, [regSrc1 + regSrc2 * mulValue]
-    concat.addU8(opBits == OpBits::B32 ? 0x67 : 0x48);
-    concat.addU8(0x8D);
-    concat.addU8(0x04);
+    emitREX(concat, opBits, REX_REG_NONE, regDst);
+    emitCPUOp(concat, 0x8D);
+    emitModRM(concat, ModRMMode::Memory, regDst, MODRM_RM_SID);
+    
     if (mulValue == 2)
         concat.addU8(0x40);
     else if (mulValue == 4)
