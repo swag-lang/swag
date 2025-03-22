@@ -137,6 +137,14 @@ namespace
         }
     }
 
+    bool canEncode8(uint64_t value, OpBits opBits)
+    {
+        return value <= 0x7F ||
+               (opBits == OpBits::B16 && value >= 0xFF80) ||
+               (opBits == OpBits::B32 && value >= 0xFFFFFF80) ||
+               (opBits == OpBits::B64 && value >= 0xFFFFFFFFFFFFFF80);
+    }
+
     uint8_t getREX(bool w, bool r, bool x, bool b)
     {
         uint8_t rex = 0x40;
@@ -905,10 +913,7 @@ void ScbeX64::emitCmpRI(CpuReg reg, uint64_t value, OpBits opBits)
         }
         emitValue(concat, value, OpBits::B8);
     }
-    else if (value <= 0x7F ||
-             (opBits == OpBits::B16 && value >= 0xFF80) ||
-             (opBits == OpBits::B32 && value >= 0xFFFFFF80) ||
-             (opBits == OpBits::B64 && value >= 0xFFFFFFFFFFFFFF80))
+    else if (canEncode8(value, opBits))
     {
         emitREX(concat, opBits, REX_REG_NONE, reg);
         emitCPUOp(concat, 0x83);
@@ -964,10 +969,7 @@ void ScbeX64::emitCmpMI(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBit
         emitModRM(concat, memOffset, MODRM_REG_7, memReg);
         emitValue(concat, value, OpBits::B8);
     }
-    else if (value <= 0x7F ||
-             (opBits == OpBits::B16 && value >= 0xFF80) ||
-             (opBits == OpBits::B32 && value >= 0xFFFFFF80) ||
-             (opBits == OpBits::B64 && value >= 0xFFFFFFFFFFFFFF80))
+    else if (canEncode8(value, opBits))
     {
         emitREX(concat, opBits, REX_REG_NONE, memReg);
         emitCPUOp(concat, 0x83);
