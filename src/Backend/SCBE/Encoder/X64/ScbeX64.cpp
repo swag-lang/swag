@@ -402,8 +402,8 @@ void ScbeX64::emitLoadRI(CpuReg reg, uint64_t value, OpBits opBits)
     }
     else if (isFloat(reg))
     {
-        emitLoadRI(cc->computeRegI0, value, opBits);
-        emitLoadRR(reg, cc->computeRegI0, opBits);
+        emitLoadRI(cc->computeRegI2, value, opBits);
+        emitLoadRR(reg, cc->computeRegI2, opBits);
     }
     else if (opBits == OpBits::B64)
     {
@@ -855,15 +855,17 @@ void ScbeX64::emitSetCC(CpuReg reg, CpuCondFlag setType)
             break;
 
         case CpuCondFlag::EP:
-            emitSetCC(cc->computeRegI0, CpuCondFlag::E);
-            emitSetCC(cc->computeRegI1, CpuCondFlag::NP);
-            emitOpBinaryRR(cc->computeRegI0, cc->computeRegI1, CpuOp::AND, OpBits::B8);
+            SWAG_ASSERT(reg != cc->computeRegI2);
+            emitSetCC(reg, CpuCondFlag::E);
+            emitSetCC(cc->computeRegI2, CpuCondFlag::NP);
+            emitOpBinaryRR(reg, cc->computeRegI2, CpuOp::AND, OpBits::B8);
             break;
 
         case CpuCondFlag::NEP:
-            emitSetCC(cc->computeRegI0, CpuCondFlag::NE);
-            emitSetCC(cc->computeRegI1, CpuCondFlag::P);
-            emitOpBinaryRR(cc->computeRegI0, cc->computeRegI1, CpuOp::OR, OpBits::B8);
+            SWAG_ASSERT(reg != cc->computeRegI2);
+            emitSetCC(reg, CpuCondFlag::NE);
+            emitSetCC(cc->computeRegI2, CpuCondFlag::P);
+            emitOpBinaryRR(reg, cc->computeRegI2, CpuOp::OR, OpBits::B8);
             break;
 
         default:
@@ -1107,10 +1109,10 @@ void ScbeX64::emitOpBinaryRM(CpuReg regDst, CpuReg memReg, uint64_t memOffset, C
         emitREX(concat, opBits, regDst, memReg);
         emitSpecCPUOp(concat, 0x33, opBits);
         emitModRM(concat, memOffset, regDst, memReg);
-    }    
+    }
 
     ///////////////////////////////////////////
-    
+
     else
     {
         const auto r1 = isFloat(regDst) ? cc->computeRegF1 : cc->computeRegI1;
@@ -2135,23 +2137,21 @@ void ScbeX64::emitOpBinaryMI(CpuReg memReg, uint64_t memOffset, uint64_t value, 
 /////////////////////////////////////////////////////////////////////
 void ScbeX64::emitJumpTable(CpuReg table, CpuReg offset, int32_t currentIp, uint32_t offsetTable, uint32_t numEntries)
 {
-    SWAG_ASSERT(table == cc->computeRegI1 && offset == cc->computeRegI0);
-
     uint8_t*   addrConstant        = nullptr;
     const auto offsetTableConstant = buildParams.module->constantSegment.reserve(numEntries * sizeof(uint32_t), &addrConstant);
     emitSymbolRelocationAddress(table, symCSIndex, offsetTableConstant);
 
-    // movsxd computeRegI1, dword ptr [computeRegI1 + computeRegI0*4]
-    emitREX(concat, OpBits::B64, cc->computeRegI1, cc->computeRegI1);
+    // movsxd table, dword ptr [table + offset*4]
+    emitREX(concat, OpBits::B64, table, table);
     emitCPUOp(concat, 0x63);
-    emitModRM(concat, ModRMMode::Memory, cc->computeRegI1, MODRM_RM_SID);
-    concat.addU8(getSid(2, cc->computeRegI0, cc->computeRegI1));
+    emitModRM(concat, ModRMMode::Memory, table, MODRM_RM_SID);
+    concat.addU8(getSid(2, offset, table));
 
     const auto startIdx = concat.totalCount();
-    emitSymbolRelocationAddress(cc->computeRegI0, cpuFct->symbolIndex, concat.totalCount() - cpuFct->startAddress);
+    emitSymbolRelocationAddress(offset, cpuFct->symbolIndex, concat.totalCount() - cpuFct->startAddress);
     const auto patchPtr = reinterpret_cast<uint32_t*>(concat.currentSP) - 1;
-    emitOpBinaryRR(cc->computeRegI0, cc->computeRegI1, CpuOp::ADD, OpBits::B64);
-    emitJumpM(cc->computeRegI0);
+    emitOpBinaryRR(offset, table, CpuOp::ADD, OpBits::B64);
+    emitJumpM(offset);
     const auto endIdx = concat.totalCount();
     *patchPtr += endIdx - startIdx;
 
@@ -2333,7 +2333,6 @@ void ScbeX64::emitPatchJump(const CpuJump& jump)
 
 void ScbeX64::emitJumpM(CpuReg reg)
 {
-    SWAG_ASSERT(reg == cc->computeRegI0);
     emitREX(concat, OpBits::Zero, REX_REG_NONE, reg);
     emitCPUOp(concat, 0xFF);
     emitModRM(concat, ModRMMode::Register, MODRM_REG_4, encodeReg(reg));
