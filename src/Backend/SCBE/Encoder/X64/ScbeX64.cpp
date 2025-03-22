@@ -987,8 +987,9 @@ void ScbeX64::emitCmpMI(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBit
     }
     else
     {
-        emitLoadRM(cc->computeRegI0, memReg, memOffset, opBits);
-        emitCmpRI(cc->computeRegI0, value, opBits);
+        SWAG_ASSERT(memReg != cc->computeRegI2);
+        emitLoadRM(cc->computeRegI2, memReg, memOffset, opBits);
+        emitCmpRI(cc->computeRegI2, value, opBits);
     }
 }
 
