@@ -485,6 +485,13 @@ void ScbeOptimizer::computeContext(const ScbeMicro& out)
         if (inst->hasReadRegC() || inst->hasWriteRegC())
             usedRegs[inst->regC] += 1;
 
+        auto details = encoder->getInstructionDetails(inst);
+        for (uint32_t i = 0; details.has(MOD_REG_ALL) && i < static_cast<uint32_t>(CpuReg::Max); details.remove(1ULL << i++))
+        {
+            if (details.has(1ULL << i))
+                usedRegs[static_cast<CpuReg>(i)] += 1;
+        }        
+
         inst = zap(inst + 1);
     }
 }
@@ -518,9 +525,5 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
         const auto typeParam = out.cpuFct->typeFunc->registerIdxToType(0);
         if (!out.cc->useRegisterFloat || !typeParam->isNativeFloat())
             memToReg(out, CpuReg::Rsp, out.cpuFct->getStackOffsetParam(0), out.cc->paramByRegisterInteger[0]);
-        else
-            int a = 0;
     }*/
-
-    // memToReg(out, CpuReg::Rsp, out.cpuFct->getStackOffsetReg(0), CpuReg::R12);
 }
