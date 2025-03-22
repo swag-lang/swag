@@ -246,8 +246,8 @@ void Scbe::emitBinOpEq(ScbeCpu& pp, uint32_t offset, CpuOp op, CpuEmitFlags emit
     }
     else
     {
-        const auto r0 = isInt ? cc->computeRegI0 : cc->computeRegI1;
-        const auto r1 = isInt ? cc->computeRegI1 : cc->computeRegF1;
+        const auto r0 = cc->computeRegI0;
+        const auto r1 = isInt ? cc->computeRegI1 : cc->computeRegF0;
         pp.emitLoadRM(r0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
         emitIMMB(pp, r1, opBits);
         pp.emitOpBinaryMR(r0, offset, r1, op, opBits, emitFlags);

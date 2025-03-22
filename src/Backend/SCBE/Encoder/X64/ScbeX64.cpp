@@ -1279,10 +1279,10 @@ void ScbeX64::emitOpBinaryMR(CpuReg memReg, uint64_t memOffset, CpuReg reg, CpuO
 {
     if (isFloat(reg))
     {
-        SWAG_ASSERT(reg == cc->computeRegF1);
-        emitLoadRM(cc->computeRegF0, memReg, memOffset, opBits);
-        emitOpBinaryRR(cc->computeRegF0, reg, op, opBits, emitFlags);
-        emitLoadMR(memReg, memOffset, cc->computeRegF0, opBits);
+        SWAG_ASSERT(reg != cc->computeRegF2);
+        emitLoadRM(cc->computeRegF2, memReg, memOffset, opBits);
+        emitOpBinaryRR(cc->computeRegF2, reg, op, opBits, emitFlags);
+        emitLoadMR(memReg, memOffset, cc->computeRegF2, opBits);
     }
     else if (op == CpuOp::IMUL ||
              op == CpuOp::MUL)
