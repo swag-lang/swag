@@ -1064,7 +1064,8 @@ void ScbeX64::emitOpUnaryR(CpuReg reg, CpuOp op, OpBits opBits)
 
 void ScbeX64::emitOpBinaryRM(CpuReg regDst, CpuReg memReg, uint64_t memOffset, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
-    SWAG_ASSERT(regDst == cc->computeRegI0);
+    ///////////////////////////////////////////
+    
     if (op == CpuOp::ADD)
     {
         emitREX(concat, opBits, regDst, memReg);
@@ -1073,6 +1074,8 @@ void ScbeX64::emitOpBinaryRM(CpuReg regDst, CpuReg memReg, uint64_t memOffset, C
     }
     else
     {
+        SWAG_ASSERT(regDst != cc->computeRegI1);
+        SWAG_ASSERT(memReg != cc->computeRegI1);
         emitLoadRM(cc->computeRegI1, memReg, memOffset, opBits);
         emitOpBinaryRR(regDst, cc->computeRegI1, op, opBits);
     }
