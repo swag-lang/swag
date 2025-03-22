@@ -534,8 +534,8 @@ void ScbeX64::emitLoadZeroExtendRR(CpuReg regDst, CpuReg regSrc, OpBits numBitsD
     }
     else if (numBitsSrc == OpBits::B64 && numBitsDst == OpBits::B64 && isInt(regSrc) && isFloat(regDst))
     {
-        SWAG_ASSERT(regSrc == cc->computeRegI0 && regDst == cc->computeRegF0);
-        emitLoadRR(cc->computeRegF1, cc->computeRegI0, OpBits::B64);
+        SWAG_ASSERT(regDst == cc->computeRegF0);
+        emitLoadRR(cc->computeRegF1, regSrc, OpBits::B64);
         emitSymbolRelocationAddress(cc->computeRegI1, symCst_U64F64, 0);
 
         // punpckldq xmm1, xmmword ptr [rcx]
@@ -2498,19 +2498,15 @@ void ScbeX64::emitNop()
 // a*b+c
 void ScbeX64::emitMulAdd(CpuReg regDst, CpuReg regMul, CpuReg regAdd, OpBits opBits)
 {
-    SWAG_ASSERT(regDst == cc->computeRegF0);
-    SWAG_ASSERT(regMul == cc->computeRegF1);
-    SWAG_ASSERT(regAdd == cc->computeRegF2);
-
     emitSpecF64(concat, 0xF3, opBits);
     emitCPUOp(concat, 0x0F);
     emitCPUOp(concat, CpuOp::FMUL);
-    emitModRM(concat, cc->computeRegF0, cc->computeRegF1);
+    emitModRM(concat, regDst, regMul);
 
     emitSpecF64(concat, 0xF3, opBits);
     emitCPUOp(concat, 0x0F);
     emitCPUOp(concat, CpuOp::FADD);
-    emitModRM(concat, cc->computeRegF0, cc->computeRegF2);
+    emitModRM(concat, regDst, regAdd);
 }
 
 ScbeMicroOpDetails ScbeX64::getInstructionDetails(ScbeMicroInstruction* inst) const
