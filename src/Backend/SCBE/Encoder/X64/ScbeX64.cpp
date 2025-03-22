@@ -1074,6 +1074,42 @@ void ScbeX64::emitOpBinaryRM(CpuReg regDst, CpuReg memReg, uint64_t memOffset, C
     }
 
     ///////////////////////////////////////////
+
+    else if (op == CpuOp::SUB)
+    {
+        emitREX(concat, opBits, regDst, memReg);
+        emitSpecCPUOp(concat, 0x2B, opBits);
+        emitModRM(concat, memOffset, regDst, memReg);
+    }
+
+    ///////////////////////////////////////////
+
+    else if (op == CpuOp::AND)
+    {
+        emitREX(concat, opBits, regDst, memReg);
+        emitSpecCPUOp(concat, 0x23, opBits);
+        emitModRM(concat, memOffset, regDst, memReg);
+    }
+
+    ///////////////////////////////////////////
+
+    else if (op == CpuOp::OR)
+    {
+        emitREX(concat, opBits, regDst, memReg);
+        emitSpecCPUOp(concat, 0x0B, opBits);
+        emitModRM(concat, memOffset, regDst, memReg);
+    }
+
+    ///////////////////////////////////////////
+
+    else if (op == CpuOp::XOR)
+    {
+        emitREX(concat, opBits, regDst, memReg);
+        emitSpecCPUOp(concat, 0x33, opBits);
+        emitModRM(concat, memOffset, regDst, memReg);
+    }    
+
+    ///////////////////////////////////////////
     
     else
     {
