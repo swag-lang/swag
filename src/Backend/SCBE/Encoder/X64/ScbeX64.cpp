@@ -534,37 +534,37 @@ void ScbeX64::emitLoadZeroExtendRR(CpuReg regDst, CpuReg regSrc, OpBits numBitsD
     }
     else if (numBitsSrc == OpBits::B64 && numBitsDst == OpBits::B64 && isInt(regSrc) && isFloat(regDst))
     {
-        SWAG_ASSERT(regDst == cc->computeRegF0);
+        SWAG_ASSERT(regDst != cc->computeRegF1);
         emitLoadRR(cc->computeRegF1, regSrc, OpBits::B64);
-        emitSymbolRelocationAddress(cc->computeRegI1, symCst_U64F64, 0);
+        emitSymbolRelocationAddress(regSrc, symCst_U64F64, 0);
 
         // punpckldq xmm1, xmmword ptr [rcx]
         emitPrefixF64(concat, OpBits::B64);
-        emitREX(concat, OpBits::B64, MODRM_REG_0, cc->computeRegI1);
+        emitREX(concat, OpBits::B64, MODRM_REG_0, regSrc);
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, 0x62);
-        emitModRM(concat, 0, cc->computeRegF1, cc->computeRegI1);
+        emitModRM(concat, 0, cc->computeRegF1, regSrc);
 
         // subpd xmm1, xmmword ptr [rcx + 16]
         emitPrefixF64(concat, OpBits::B64);
-        emitREX(concat, OpBits::B64, MODRM_REG_0, cc->computeRegI1);
+        emitREX(concat, OpBits::B64, MODRM_REG_0, regSrc);
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, 0x5C);
-        emitModRM(concat, 16, cc->computeRegF1, cc->computeRegI1);
+        emitModRM(concat, 16, cc->computeRegF1, regSrc);
 
         // movapd xmm0, xmm1
         emitPrefixF64(concat, OpBits::B64);
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, 0x28);
-        emitModRM(concat, cc->computeRegF0, cc->computeRegF1);
+        emitModRM(concat, regDst, cc->computeRegF1);
 
         // unpckhpd xmm0, xmm1
         emitPrefixF64(concat, OpBits::B64);
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, 0x15);
-        emitModRM(concat, cc->computeRegF0, cc->computeRegF1);
+        emitModRM(concat, regDst, cc->computeRegF1);
 
-        emitOpBinaryRR(cc->computeRegF0, cc->computeRegF1, CpuOp::FADD, OpBits::B64);
+        emitOpBinaryRR(regDst, cc->computeRegF1, CpuOp::FADD, OpBits::B64);
     }
     else
     {
