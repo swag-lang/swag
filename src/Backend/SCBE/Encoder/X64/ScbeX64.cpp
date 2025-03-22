@@ -1065,19 +1065,23 @@ void ScbeX64::emitOpUnaryR(CpuReg reg, CpuOp op, OpBits opBits)
 void ScbeX64::emitOpBinaryRM(CpuReg regDst, CpuReg memReg, uint64_t memOffset, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
     ///////////////////////////////////////////
-    
+
     if (op == CpuOp::ADD)
     {
         emitREX(concat, opBits, regDst, memReg);
-        emitCPUOp(concat, 0x03);
+        emitSpecCPUOp(concat, 0x03, opBits);
         emitModRM(concat, memOffset, regDst, memReg);
     }
+
+    ///////////////////////////////////////////
+    
     else
     {
-        SWAG_ASSERT(regDst != cc->computeRegI1);
-        SWAG_ASSERT(memReg != cc->computeRegI1);
-        emitLoadRM(cc->computeRegI1, memReg, memOffset, opBits);
-        emitOpBinaryRR(regDst, cc->computeRegI1, op, opBits);
+        const auto r1 = isFloat(regDst) ? cc->computeRegF1 : cc->computeRegI1;
+        SWAG_ASSERT(regDst != r1);
+        SWAG_ASSERT(memReg != r1);
+        emitLoadRM(r1, memReg, memOffset, opBits);
+        emitOpBinaryRR(regDst, r1, op, opBits);
     }
 }
 
@@ -2497,6 +2501,7 @@ ScbeMicroOpDetails ScbeX64::getInstructionDetails(ScbeMicroInstruction* inst) co
     if (inst->op == ScbeMicroOp::OpBinaryRI ||
         inst->op == ScbeMicroOp::OpBinaryRR ||
         inst->op == ScbeMicroOp::OpBinaryMI ||
+        inst->op == ScbeMicroOp::OpBinaryRM ||
         inst->op == ScbeMicroOp::OpBinaryMR)
     {
         if (inst->cpuOp == CpuOp::MUL || inst->cpuOp == CpuOp::IMUL)

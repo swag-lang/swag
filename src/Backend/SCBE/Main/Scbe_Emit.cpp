@@ -207,14 +207,18 @@ void Scbe::emitBinOp(ScbeCpu& pp, CpuOp op, CpuEmitFlags emitFlags)
         pp.emitOpBinaryRI(cc->computeRegI0, ip->b.u64, op, opBits, emitFlags);
         pp.emitLoadMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, opBits);
     }
+    else if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_B))
+    {
+        const auto r0 = isInt ? cc->computeRegI0 : cc->computeRegF0;
+        pp.emitLoadRM(r0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), opBits);
+        pp.emitOpBinaryRM(r0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), op, opBits, emitFlags);
+        pp.emitLoadMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), r0, opBits);
+    }
     else
     {
         const auto r0 = isInt ? cc->computeRegI0 : cc->computeRegF0;
         const auto r1 = isInt ? cc->computeRegI1 : cc->computeRegF1;
-        if (ip->hasFlag(BCI_IMM_A))
-            pp.emitLoadRI(r0, ip->a.u64, opBits);
-        else
-            pp.emitLoadRM(r0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), opBits);
+        emitIMMA(pp, r0, opBits);
         emitIMMB(pp, r1, opBits);
         pp.emitOpBinaryRR(r0, r1, op, opBits, emitFlags);
         pp.emitLoadMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), r0, opBits);
