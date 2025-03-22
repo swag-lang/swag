@@ -485,15 +485,15 @@ void ScbeX64::emitLoadZeroExtendRM(CpuReg reg, CpuReg memReg, uint64_t memOffset
     if (numBitsSrc == OpBits::B8 && (numBitsDst == OpBits::B32 || numBitsDst == OpBits::B64))
     {
         emitREX(concat, numBitsDst, reg, memReg);
-        concat.addU8(0x0F);
-        concat.addU8(0xB6);
+        emitCPUOp(concat, 0x0F);
+        emitCPUOp(concat, 0xB6);
         emitModRM(concat, memOffset, reg, memReg);
     }
     else if (numBitsSrc == OpBits::B16 && (numBitsDst == OpBits::B32 || numBitsDst == OpBits::B64))
     {
         emitREX(concat, numBitsDst, reg, memReg);
-        concat.addU8(0x0F);
-        concat.addU8(0xB7);
+        emitCPUOp(concat, 0x0F);
+        emitCPUOp(concat, 0xB7);
         emitModRM(concat, memOffset, reg, memReg);
     }
     else if (numBitsSrc == OpBits::B32 && numBitsDst == OpBits::B64)
@@ -676,8 +676,8 @@ void ScbeX64::emitLoadAddressM(CpuReg reg, CpuReg memReg, uint64_t memOffset)
 void ScbeX64::emitLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, OpBits opBits)
 {
     SWAG_ASSERT(regDst == cc->computeRegI0);
-    SWAG_ASSERT(regSrc1 == cc->computeRegI0);
-    SWAG_ASSERT(regSrc2 == cc->computeRegI0);
+    SWAG_ASSERT(regSrc1 == regDst);
+    SWAG_ASSERT(regSrc2 == regDst);
     SWAG_ASSERT(opBits == OpBits::B32 || opBits == OpBits::B64);
 
     // lea regDst, [regSrc1 + regSrc2 * mulValue]
