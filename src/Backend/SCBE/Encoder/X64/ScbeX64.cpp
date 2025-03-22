@@ -1921,7 +1921,7 @@ void ScbeX64::emitOpBinaryMI(CpuReg memReg, uint64_t memOffset, uint64_t value, 
             emitModRM(concat, memOffset, MODRM_REG_0, memReg);
             emitValue(concat, value, OpBits::B8);
         }
-        else if (value <= 0x7F)
+        else if (canEncode8(value, opBits))
         {
             emitREX(concat, opBits, REX_REG_NONE, memReg);
             emitCPUOp(concat, 0x83);
@@ -1960,7 +1960,7 @@ void ScbeX64::emitOpBinaryMI(CpuReg memReg, uint64_t memOffset, uint64_t value, 
             emitModRM(concat, memOffset, MODRM_REG_5, memReg);
             emitValue(concat, value, OpBits::B8);
         }
-        else if (value <= 0x7F)
+        else if (canEncode8(value, opBits))
         {
             emitREX(concat, opBits, REX_REG_NONE, memReg);
             emitCPUOp(concat, 0x83);
@@ -1993,7 +1993,7 @@ void ScbeX64::emitOpBinaryMI(CpuReg memReg, uint64_t memOffset, uint64_t value, 
             emitModRM(concat, memOffset, MODRM_REG_1, memReg);
             emitValue(concat, value, OpBits::B8);
         }
-        else if (value <= 0x7F)
+        else if (canEncode8(value, opBits))
         {
             emitREX(concat, opBits, REX_REG_NONE, memReg);
             emitCPUOp(concat, 0x83);
@@ -2026,7 +2026,7 @@ void ScbeX64::emitOpBinaryMI(CpuReg memReg, uint64_t memOffset, uint64_t value, 
             emitModRM(concat, memOffset, MODRM_REG_4, memReg);
             emitValue(concat, value, OpBits::B8);
         }
-        else if (value <= 0x7F)
+        else if (canEncode8(value, opBits))
         {
             emitREX(concat, opBits, REX_REG_NONE, memReg);
             emitCPUOp(concat, 0x83);
@@ -2059,7 +2059,7 @@ void ScbeX64::emitOpBinaryMI(CpuReg memReg, uint64_t memOffset, uint64_t value, 
             emitModRM(concat, memOffset, MODRM_REG_6, memReg);
             emitValue(concat, value, OpBits::B8);
         }
-        else if (value <= 0x7F)
+        else if (canEncode8(value, opBits))
         {
             emitREX(concat, opBits, REX_REG_NONE, memReg);
             emitCPUOp(concat, 0x83);
