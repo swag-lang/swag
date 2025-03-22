@@ -1348,7 +1348,7 @@ void ScbeX64::emitOpBinaryRI(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits
             emitModRM(concat, MODRM_REG_6, reg);
             emitValue(concat, value, OpBits::B8);
         }
-        else if (value <= 0x7F)
+        else if (canEncode8(value, opBits))
         {
             emitREX(concat, opBits, REX_REG_NONE, reg);
             emitCPUOp(concat, 0x83);
@@ -1381,7 +1381,7 @@ void ScbeX64::emitOpBinaryRI(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits
             emitModRM(concat, MODRM_REG_1, reg);
             emitValue(concat, value, OpBits::B8);
         }
-        else if (value <= 0x7F)
+        else if (canEncode8(value, opBits))
         {
             emitREX(concat, opBits, REX_REG_NONE, reg);
             emitCPUOp(concat, 0x83);
@@ -1414,7 +1414,7 @@ void ScbeX64::emitOpBinaryRI(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits
             emitModRM(concat, MODRM_REG_4, reg);
             emitValue(concat, value, OpBits::B8);
         }
-        else if (value <= 0x7F)
+        else if (canEncode8(value, opBits))
         {
             emitREX(concat, opBits, REX_REG_NONE, reg);
             emitCPUOp(concat, 0x83);
@@ -1459,7 +1459,7 @@ void ScbeX64::emitOpBinaryRI(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits
             }
             emitValue(concat, value, OpBits::B8);
         }
-        else if (value <= 0x7F)
+        else if (canEncode8(value, opBits))
         {
             emitREX(concat, opBits, REX_REG_NONE, reg);
             emitCPUOp(concat, 0x83);
@@ -1509,7 +1509,7 @@ void ScbeX64::emitOpBinaryRI(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits
             }
             emitValue(concat, value, OpBits::B8);
         }
-        else if (value <= 0x7F)
+        else if (canEncode8(value, opBits))
         {
             emitREX(concat, opBits, REX_REG_NONE, reg);
             emitCPUOp(concat, 0x83);
@@ -1739,12 +1739,6 @@ void ScbeX64::emitOpBinaryRI(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits
             emitCPUOp(concat, op);
             emitModRM(concat, MODRM_REG_4, reg);
             emitValue(concat, value, OpBits::B8);
-        }
-        else if (value > 0x7FFFFFFF)
-        {
-            SWAG_ASSERT(reg != cc->computeRegI1);
-            emitLoadRI(cc->computeRegI1, value, OpBits::B64);
-            emitOpBinaryRR(reg, cc->computeRegI1, op, opBits, emitFlags);
         }
         else
         {
