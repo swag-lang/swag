@@ -442,14 +442,6 @@ void ScbeX64::emitLoadRI(CpuReg reg, uint64_t value, OpBits opBits)
 
 void ScbeX64::emitLoadRM(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits opBits)
 {
-    if (memOffset > 0x7FFFFFFF)
-    {
-        SWAG_ASSERT(memReg != cc->computeRegI1);
-        emitLoadRI(cc->computeRegI1, memOffset, OpBits::B64);
-        emitOpBinaryRR(memReg, cc->computeRegI1, CpuOp::ADD, OpBits::B64);
-        memOffset = 0;
-    }
-
     if (isFloat(reg))
     {
         emitSpecF64(concat, 0xF3, opBits);
@@ -472,14 +464,6 @@ void ScbeX64::emitLoadZeroExtendRM(CpuReg reg, CpuReg memReg, uint64_t memOffset
     {
         emitLoadRM(reg, memReg, memOffset, numBitsSrc);
         return;
-    }
-
-    if (memOffset > 0x7FFFFFFF)
-    {
-        SWAG_ASSERT(memReg != cc->computeRegI1);
-        emitLoadRI(cc->computeRegI1, memOffset, OpBits::B64);
-        emitOpBinaryRR(memReg, cc->computeRegI1, CpuOp::ADD, OpBits::B64);
-        memOffset = 0;
     }
 
     if (numBitsSrc == OpBits::B8 && (numBitsDst == OpBits::B32 || numBitsDst == OpBits::B64))
@@ -578,14 +562,6 @@ void ScbeX64::emitLoadSignedExtendRM(CpuReg reg, CpuReg memReg, uint64_t memOffs
     {
         emitLoadRM(reg, memReg, memOffset, numBitsSrc);
         return;
-    }
-
-    if (memOffset > 0x7FFFFFFF)
-    {
-        SWAG_ASSERT(memReg != cc->computeRegI1);
-        emitLoadRI(cc->computeRegI1, memOffset, OpBits::B64);
-        emitOpBinaryRR(memReg, cc->computeRegI1, CpuOp::ADD, OpBits::B64);
-        memOffset = 0;
     }
 
     if (numBitsSrc == OpBits::B8)
@@ -1786,6 +1762,7 @@ void ScbeX64::emitOpBinaryMI(CpuReg memReg, uint64_t memOffset, uint64_t value, 
 {
     if (isNoOp(value, op, opBits, emitFlags))
         return;
+    SWAG_ASSERT(memOffset <= 0x7FFFFFFF);
     maskValue(value, opBits);
 
     ///////////////////////////////////////////
