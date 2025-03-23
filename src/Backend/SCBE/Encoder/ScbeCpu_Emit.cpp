@@ -188,11 +188,13 @@ void ScbeCpu::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vecto
         emitCmpMemImm(cpuParams[idxParamContext].baseReg, cpuParams[idxParamContext].value, 0, OpBits::B64);
 
         // If zero, jump to parameters for a non closure call
-        const auto jumpToNoClosure = emitJump(CpuCondJump::JZ, OpBits::B32);
+        CpuJump jumpToNoClosure;
+        emitJump(jumpToNoClosure, CpuCondJump::JZ, OpBits::B32);
 
         // Emit parameters for the closure call (with the pointer to context)
         emitParameters(*this, cpuParams, callConv);
-        const auto jumpAfterParameters = emitJump(CpuCondJump::JUMP, OpBits::B32);
+        CpuJump jumpAfterParameters;
+        emitJump(jumpAfterParameters, CpuCondJump::JUMP, OpBits::B32);
 
         emitPatchJump(jumpToNoClosure);
 
@@ -313,12 +315,14 @@ void ScbeCpu::emitJumpCondImm(CpuCondJump jumpType, uint32_t ipDest)
         const int  relOffset     = it->second - (currentOffset + 1);
         if (relOffset >= -127 && relOffset <= 128)
         {
-            const auto jump = emitJump(jumpType, OpBits::B8);
+            CpuJump jump;
+            emitJump(jump, jumpType, OpBits::B8);
             emitPatchJump(jump, it->second);
         }
         else
         {
-            const auto jump = emitJump(jumpType, OpBits::B32);
+            CpuJump jump;
+            emitJump(jump, jumpType, OpBits::B32);
             emitPatchJump(jump, it->second);
         }
 
@@ -326,7 +330,7 @@ void ScbeCpu::emitJumpCondImm(CpuCondJump jumpType, uint32_t ipDest)
     }
 
     // Here we do not know the destination label, so we assume 32 bits of offset
-    label.jump = emitJump(jumpType, OpBits::B32);
+    emitJump(label.jump, jumpType, OpBits::B32);
     cpuFct->labelsToSolve.push_back(label);
 }
 

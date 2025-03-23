@@ -195,7 +195,8 @@ void Scbe::emitLambdaCall(ScbeCpu& pp)
     // Test if it's a bytecode lambda
     pp.emitLoadRegMem(regCall, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
     pp.emitOpBinaryRegImm(regCall, SWAG_LAMBDA_BC_MARKER_BIT, CpuOp::BT, OpBits::B64);
-    const auto jumpBC = pp.emitJump(CpuCondJump::JB, OpBits::B32);
+    CpuJump jumpBC;
+    pp.emitJump(jumpBC, CpuCondJump::JB, OpBits::B32);
 
     // Native lambda
     //////////////////
@@ -214,7 +215,8 @@ void Scbe::emitLambdaCall(ScbeCpu& pp)
     pp.emitCallReg(regCall);
     pp.emitStoreCallResult(CpuReg::Rsp, pp.cpuFct->getStackOffsetRT(0), typeFuncBc);
 
-    const auto jumpBCAfter = pp.emitJump(CpuCondJump::JUMP, OpBits::B32);
+    CpuJump jumpBCAfter;
+    pp.emitJump(jumpBCAfter, CpuCondJump::JUMP, OpBits::B32);
 
     // ByteCode lambda
     //////////////////
@@ -259,7 +261,8 @@ void Scbe::emitMakeCallback(ScbeCpu& pp)
     pp.emitLoadRegImm(cc->computeRegI1, SWAG_LAMBDA_BC_MARKER, OpBits::B64);
     pp.emitOpBinaryRegReg(cc->computeRegI1, cc->computeRegI0, CpuOp::AND, OpBits::B64);
 
-    const auto jump = pp.emitJump(CpuCondJump::JZ, OpBits::B32);
+    CpuJump jump;
+    pp.emitJump(jump, CpuCondJump::JZ, OpBits::B32);
 
     // ByteCode lambda
     //////////////////

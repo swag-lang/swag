@@ -176,7 +176,8 @@ void Scbe::emitShiftEqLogical(ScbeCpu& pp, CpuOp op)
         pp.emitLoadRegMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
         pp.emitLoadRegMem(cc->computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32);
         pp.emitCmpRegImm(cc->computeRegI1, ScbeCpu::getNumBits(opBits), OpBits::B32);
-        const auto jump = pp.emitJump(CpuCondJump::JL, OpBits::B8);
+        CpuJump jump;
+        pp.emitJump(jump, CpuCondJump::JL, OpBits::B8);
         pp.emitClearReg(cc->computeRegI1, opBits);
         pp.emitLoadMemReg(cc->computeRegI0, 0, cc->computeRegI1, opBits);
         pp.emitPatchJump(jump);
@@ -189,7 +190,8 @@ void Scbe::emitOverflow(ScbeCpu& pp, const char* msg, bool isSigned)
     const auto ip = pp.ip;
     if (BackendEncoder::mustCheckOverflow(pp.buildParams.module, ip))
     {
-        const auto jump = pp.emitJump(isSigned ? CpuCondJump::JNO : CpuCondJump::JAE, OpBits::B8);
+        CpuJump jump;
+        pp.emitJump(jump, isSigned ? CpuCondJump::JNO : CpuCondJump::JAE, OpBits::B8);
         emitInternalPanic(pp, msg);
         pp.emitPatchJump(jump);
     }

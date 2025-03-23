@@ -98,9 +98,9 @@ void ScbeCpu::emitJumpTable(CpuReg table, CpuReg offset, int32_t currentIp, uint
     encodeJumpTable(table, offset, currentIp, offsetTable, numEntries, EMITF_Zero);
 }
 
-CpuJump ScbeCpu::emitJump(CpuCondJump jumpType, OpBits opBits)
+void ScbeCpu::emitJump(CpuJump& jump, CpuCondJump jumpType, OpBits opBits)
 {
-    return encodeJump(jumpType, opBits, EMITF_Zero);
+    return encodeJump(jump, jumpType, opBits, EMITF_Zero);
 }
 
 void ScbeCpu::emitPatchJump(const CpuJump& jump)

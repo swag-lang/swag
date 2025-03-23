@@ -2135,7 +2135,7 @@ void ScbeX64::encodeJumpTable(CpuReg table, CpuReg offset, int32_t currentIp, ui
     }
 }
 
-CpuJump ScbeX64::encodeJump(CpuCondJump jumpType, OpBits opBits, CpuEmitFlags emitFlags)
+void ScbeX64::encodeJump(CpuJump &jump, CpuCondJump jumpType, OpBits opBits, CpuEmitFlags emitFlags)
 {
     SWAG_ASSERT(opBits == OpBits::B8 || opBits == OpBits::B32);
 
@@ -2192,11 +2192,10 @@ CpuJump ScbeX64::encodeJump(CpuCondJump jumpType, OpBits opBits, CpuEmitFlags em
 
         concat.addU8(0);
 
-        CpuJump jump;
         jump.addr   = concat.getSeekPtr() - 1;
         jump.offset = concat.totalCount();
         jump.opBits = opBits;
-        return jump;
+        return;
     }
 
     switch (jumpType)
@@ -2262,11 +2261,10 @@ CpuJump ScbeX64::encodeJump(CpuCondJump jumpType, OpBits opBits, CpuEmitFlags em
     }
 
     concat.addU32(0);
-    CpuJump jump;
+
     jump.addr   = concat.getSeekPtr() - sizeof(uint32_t);
     jump.offset = concat.totalCount();
     jump.opBits = opBits;
-    return jump;
 }
 
 void ScbeX64::encodePatchJump(const CpuJump& jump, uint64_t offsetDestination, CpuEmitFlags emitFlags)
