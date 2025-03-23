@@ -702,111 +702,59 @@ CpuResultFlags ScbeX64::encodeClearReg(CpuReg reg, OpBits opBits, CpuEmitFlags e
 
 CpuResultFlags ScbeX64::encodeSetCond(CpuReg reg, CpuCondFlag setType, CpuEmitFlags emitFlags)
 {
+    emitREX(concat, OpBits::B8, REX_REG_NONE, reg);
+    emitCPUOp(concat, 0x0F);
+
     switch (setType)
     {
         case CpuCondFlag::A:
-            emitREX(concat, OpBits::B8, REX_REG_NONE, reg);
-            emitCPUOp(concat, 0x0F);
             emitCPUOp(concat, 0x97);
-            emitModRM(concat, MODRM_REG_0, reg);
             break;
-
         case CpuCondFlag::O:
-            emitREX(concat, OpBits::B8, REX_REG_NONE, reg);
-            emitCPUOp(concat, 0x0F);
             emitCPUOp(concat, 0x90);
-            emitModRM(concat, MODRM_REG_0, reg);
             break;
-
         case CpuCondFlag::AE:
-            emitREX(concat, OpBits::B8, REX_REG_NONE, reg);
-            emitCPUOp(concat, 0x0F);
             emitCPUOp(concat, 0x93);
-            emitModRM(concat, MODRM_REG_0, reg);
             break;
-
         case CpuCondFlag::G:
-            emitREX(concat, OpBits::B8, REX_REG_NONE, reg);
-            emitCPUOp(concat, 0x0F);
             emitCPUOp(concat, 0x9F);
-            emitModRM(concat, MODRM_REG_0, reg);
             break;
-
         case CpuCondFlag::NE:
-            emitREX(concat, OpBits::B8, REX_REG_NONE, reg);
-            emitCPUOp(concat, 0x0F);
             emitCPUOp(concat, 0x95);
-            emitModRM(concat, MODRM_REG_0, reg);
             break;
-
         case CpuCondFlag::NA:
-            emitREX(concat, OpBits::B8, REX_REG_NONE, reg);
-            emitCPUOp(concat, 0x0F);
             emitCPUOp(concat, 0x96);
-            emitModRM(concat, MODRM_REG_0, reg);
             break;
-
         case CpuCondFlag::B:
-            emitREX(concat, OpBits::B8, REX_REG_NONE, reg);
-            emitCPUOp(concat, 0x0F);
             emitCPUOp(concat, 0x92);
-            emitModRM(concat, MODRM_REG_0, reg);
             break;
-
         case CpuCondFlag::BE:
-            emitREX(concat, OpBits::B8, REX_REG_NONE, reg);
-            emitCPUOp(concat, 0x0F);
             emitCPUOp(concat, 0x96);
-            emitModRM(concat, MODRM_REG_0, reg);
             break;
-
         case CpuCondFlag::E:
-            emitREX(concat, OpBits::B8, REX_REG_NONE, reg);
-            emitCPUOp(concat, 0x0F);
             emitCPUOp(concat, 0x94);
-            emitModRM(concat, MODRM_REG_0, reg);
             break;
-
         case CpuCondFlag::GE:
-            emitREX(concat, OpBits::B8, REX_REG_NONE, reg);
-            emitCPUOp(concat, 0x0F);
             emitCPUOp(concat, 0x9D);
-            emitModRM(concat, MODRM_REG_0, reg);
             break;
-
         case CpuCondFlag::L:
-            emitREX(concat, OpBits::B8, REX_REG_NONE, reg);
-            emitCPUOp(concat, 0x0F);
             emitCPUOp(concat, 0x9C);
-            emitModRM(concat, MODRM_REG_0, reg);
             break;
-
         case CpuCondFlag::LE:
-            emitREX(concat, OpBits::B8, REX_REG_NONE, reg);
-            emitCPUOp(concat, 0x0F);
             emitCPUOp(concat, 0x9E);
-            emitModRM(concat, MODRM_REG_0, reg);
             break;
-
         case CpuCondFlag::P:
-            emitREX(concat, OpBits::B8, REX_REG_NONE, reg);
-            emitCPUOp(concat, 0x0F);
             emitCPUOp(concat, 0x9A);
-            emitModRM(concat, MODRM_REG_0, reg);
             break;
-
         case CpuCondFlag::NP:
-            emitREX(concat, OpBits::B8, REX_REG_NONE, reg);
-            emitCPUOp(concat, 0x0F);
             emitCPUOp(concat, 0x9B);
-            emitModRM(concat, MODRM_REG_0, reg);
             break;
-
         default:
             SWAG_ASSERT(false);
             break;
     }
 
+    emitModRM(concat, MODRM_REG_0, reg);
     return RESULTF_Zero;
 }
 
