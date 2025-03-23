@@ -443,6 +443,8 @@
     <ClCompile Include="..\src\Backend\SCBE\Encoder\Micro\ScbeMicro_Print.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Encoder\Micro\ScbeOptimizer.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Encoder\ScbeCpu.cpp" />
+    <ClCompile Include="..\src\Backend\SCBE\Encoder\ScbeCpu_Emit.cpp" />
+    <ClCompile Include="..\src\Backend\SCBE\Encoder\ScbeCpu_Encode.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Encoder\X64\ScbeX64.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Main\Scbe.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Main\Scbe_Call.cpp" />
