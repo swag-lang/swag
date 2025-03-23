@@ -252,6 +252,24 @@ void ScbeCpu::emitCmpRegImm(CpuReg reg, uint64_t value, OpBits opBits)
 
 void ScbeCpu::emitSetCond(CpuReg reg, CpuCondFlag setType)
 {
+    if (setType == CpuCondFlag::EP)
+    {
+        SWAG_ASSERT(reg != cc->computeRegI2);
+        emitSetCond(reg, CpuCondFlag::E);
+        emitSetCond(cc->computeRegI2, CpuCondFlag::NP);
+        emitOpBinaryRegReg(reg, cc->computeRegI2, CpuOp::AND, OpBits::B8, EMITF_Zero);
+        return;
+    }
+
+    if (setType == CpuCondFlag::NEP)
+    {
+        SWAG_ASSERT(reg != cc->computeRegI2);
+        emitSetCond(reg, CpuCondFlag::NE);
+        emitSetCond(cc->computeRegI2, CpuCondFlag::P);
+        emitOpBinaryRegReg(reg, cc->computeRegI2, CpuOp::OR, OpBits::B8, EMITF_Zero);
+        return;
+    }
+    
     encodeSetCond(reg, setType, EMITF_Zero);
 }
 

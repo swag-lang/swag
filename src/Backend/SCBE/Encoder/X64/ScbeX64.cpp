@@ -802,20 +802,6 @@ CpuResultFlags ScbeX64::encodeSetCond(CpuReg reg, CpuCondFlag setType, CpuEmitFl
             emitModRM(concat, MODRM_REG_0, reg);
             break;
 
-        case CpuCondFlag::EP:
-            SWAG_ASSERT(reg != cc->computeRegI2);
-            emitSetCond(reg, CpuCondFlag::E);
-            emitSetCond(cc->computeRegI2, CpuCondFlag::NP);
-            emitOpBinaryRegReg(reg, cc->computeRegI2, CpuOp::AND, OpBits::B8, emitFlags);
-            break;
-
-        case CpuCondFlag::NEP:
-            SWAG_ASSERT(reg != cc->computeRegI2);
-            emitSetCond(reg, CpuCondFlag::NE);
-            emitSetCond(cc->computeRegI2, CpuCondFlag::P);
-            emitOpBinaryRegReg(reg, cc->computeRegI2, CpuOp::OR, OpBits::B8, emitFlags);
-            break;
-
         default:
             SWAG_ASSERT(false);
             break;
