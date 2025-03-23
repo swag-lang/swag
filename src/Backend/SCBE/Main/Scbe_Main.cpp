@@ -260,7 +260,7 @@ void Scbe::emitGlobalPreMain(ScbeCpu& pp)
     // Copy process infos passed as a parameter to the process info struct of this module
     pp.pushParams.clear();
     pp.pushParams.push_back({.type = CpuPushParamType::SymbolRelocationAddress, .value = pp.symPI_processInfos});
-    pp.pushParams.push_back({.type = CpuPushParamType::SwagRegister, .baseReg = CpuReg::Rsp, .value = REG_OFFSET(0)});
+    pp.pushParams.push_back({.type = CpuPushParamType::SwagRegister, .baseReg = CpuReg::Rsp, .value = 0});
     pp.pushParams.push_back({.type = CpuPushParamType::Constant, .value = sizeof(SwagProcessInfos)});
     emitInternalCallCPUParams(pp, g_LangSpec->name_memcpy, pp.pushParams);
 

@@ -12,8 +12,6 @@ using ScbeMicroOpDetails = Flags<uint64_t>;
 struct ScbeMicroInstruction;
 struct AstNode;
 
-#define REG_OFFSET(__r) ((__r) * sizeof(Register))
-
 enum class CpuPushParamType
 {
     SwagRegister,
@@ -181,6 +179,18 @@ struct CpuRelocationTable
 
 struct CpuFunction
 {
+    uint32_t getStackOffsetParam(uint32_t paramIdx) const { return sizeStackCallParams + (paramIdx < cc->paramByRegisterInteger.size() ? offsetParamsAsRegisters : offsetCallerStackParams) + (paramIdx * sizeof(Register)); }
+    uint32_t getStackOffsetCallerParam(uint32_t paramIdx) const { return sizeStackCallParams + offsetCallerStackParams + (paramIdx * sizeof(Register)); }
+    uint32_t getStackOffsetBCStack() const { return sizeStackCallParams + offsetByteCodeStack; }
+    uint32_t getStackOffsetReg(uint32_t reg) const { return sizeStackCallParams + (reg * sizeof(Register)); }
+    uint32_t getStackOffsetRT(uint32_t reg) const { return sizeStackCallParams + offsetRT + (reg * sizeof(Register)); }
+    uint32_t getStackOffsetResult() const { return sizeStackCallParams + offsetResult; }
+    uint32_t getStackOffsetFLT() const { return sizeStackCallParams + offsetFLT; }
+    bool     isStackOffsetLocalParam(uint32_t offset) const { return !cc->paramByRegisterInteger.empty() && offset >= getStackOffsetParam(0) && offset <= getStackOffsetParam(cc->paramByRegisterInteger.size() - 1); }
+    bool     isStackOffsetRT(uint32_t offset) const { return offset >= getStackOffsetRT(0) && offset <= getStackOffsetRT(1); }
+    bool     isStackOffsetReg(uint32_t offset) const { return offset >= getStackOffsetReg(0) && offset < getStackOffsetReg(bc->maxReservedRegisterRC); }
+    bool     isStackOffsetTransient(uint32_t offset) const { return isStackOffsetLocalParam(offset) || isStackOffsetReg(offset) || isStackOffsetRT(offset); }
+
     Map<uint32_t, int32_t>        labels;
     VectorNative<CpuLabelToSolve> labelsToSolve;
     VectorNative<CpuReg>          unwindRegs;
@@ -205,18 +215,6 @@ struct CpuFunction
     uint32_t          offsetFLT               = 0;
     uint32_t          offsetRT                = 0;
     uint32_t          offsetResult            = 0;
-
-    uint32_t getStackOffsetParam(uint32_t paramIdx) const { return sizeStackCallParams + (paramIdx < cc->paramByRegisterInteger.size() ? offsetParamsAsRegisters : offsetCallerStackParams) + (paramIdx * sizeof(Register)); }
-    uint32_t getStackOffsetCallerParam(uint32_t paramIdx) const { return sizeStackCallParams + offsetCallerStackParams + (paramIdx * sizeof(Register)); }
-    uint32_t getStackOffsetBCStack() const { return sizeStackCallParams + offsetByteCodeStack; }
-    uint32_t getStackOffsetReg(uint32_t reg) const { return sizeStackCallParams + (reg * sizeof(Register)); }
-    uint32_t getStackOffsetRT(uint32_t reg) const { return sizeStackCallParams + offsetRT + (reg * sizeof(Register)); }
-    uint32_t getStackOffsetResult() const { return sizeStackCallParams + offsetResult; }
-    uint32_t getStackOffsetFLT() const { return sizeStackCallParams + offsetFLT; }
-    bool     isStackOffsetLocalParam(uint32_t offset) const { return cc->paramByRegisterInteger.size() && offset >= getStackOffsetParam(0) && offset <= getStackOffsetParam(cc->paramByRegisterInteger.size() - 1); }
-    bool     isStackOffsetRT(uint32_t offset) const { return offset >= getStackOffsetRT(0) && offset <= getStackOffsetRT(1); }
-    bool     isStackOffsetReg(uint32_t offset) const { return offset >= getStackOffsetReg(0) && offset < getStackOffsetReg(bc->maxReservedRegisterRC); }
-    bool     isStackOffsetTransient(uint32_t offset) const { return isStackOffsetLocalParam(offset) || isStackOffsetReg(offset) || isStackOffsetRT(offset); }
 };
 
 struct ScbeCpu : BackendEncoder
@@ -229,27 +227,15 @@ struct ScbeCpu : BackendEncoder
     CpuFunction* addFunction(const Utf8& funcName, const CallConv* ccFunc, ByteCode* bc);
     void         endFunction() const;
 
-    static void maskValue(uint64_t& value, OpBits opBits);
-    bool        isNoOp(uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags = EMITF_Zero) const;
+    static void                maskValue(uint64_t& value, OpBits opBits);
+    bool                       isNoOp(uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags = EMITF_Zero) const;
+    bool                       manipulateRegister(ScbeMicroInstruction* inst, CpuReg reg) const;
+    virtual ScbeMicroOpDetails getInstructionDetails(ScbeMicroInstruction* inst) const { return 0; }
 
     void emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CpuPushParam>& cpuParams, const CallConv* callConv);
     void emitComputeCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CpuPushParam>& cpuParams, CpuReg memRegResult, uint32_t memOffsetResult, void* resultAddr);
     void emitStoreCallResult(CpuReg memReg, uint32_t memOffset, const TypeInfoFuncAttr* typeFuncBc);
     void emitLabels();
-
-    bool                       manipulateRegister(ScbeMicroInstruction* inst, CpuReg reg) const;
-    virtual ScbeMicroOpDetails getInstructionDetails(ScbeMicroInstruction* inst) const { return 0; }
-
-    virtual void emitEnter(uint32_t sizeStack);
-    virtual void emitLeave();
-    virtual void emitDebug(ByteCodeInstruction* ipAddr);
-    virtual void emitLabel(uint32_t instructionIndex);
-    virtual void emitLoadCallerZeroExtendParam(CpuReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc);
-    virtual void emitLoadCallerParam(CpuReg reg, uint32_t paramIdx, OpBits opBits);
-    virtual void emitLoadCallerAddressParam(CpuReg reg, uint32_t paramIdx);
-    virtual void emitStoreCallerParam(uint32_t paramIdx, CpuReg reg, OpBits opBits);
-    virtual void emitSymbolRelocationPtr(CpuReg reg, const Utf8& name);
-    virtual void emitJumpCondImm(CpuCondJump jumpType, uint32_t ipDest);
 
     void    emitSymbolRelocationRef(const Utf8& name);
     void    emitSymbolRelocationAddress(CpuReg reg, uint32_t symbolIndex, uint32_t offset);
@@ -295,6 +281,17 @@ struct ScbeCpu : BackendEncoder
     void    emitOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags = EMITF_Zero);
     void    emitOpBinaryMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags = EMITF_Zero);
     void    emitOpMulAdd(CpuReg regDst, CpuReg regMul, CpuReg regAdd, OpBits opBits);
+
+    virtual void emitEnter(uint32_t sizeStack);
+    virtual void emitLeave();
+    virtual void emitDebug(ByteCodeInstruction* ipAddr);
+    virtual void emitLabel(uint32_t instructionIndex);
+    virtual void emitLoadCallerZeroExtendParam(CpuReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc);
+    virtual void emitLoadCallerParam(CpuReg reg, uint32_t paramIdx, OpBits opBits);
+    virtual void emitLoadCallerAddressParam(CpuReg reg, uint32_t paramIdx);
+    virtual void emitStoreCallerParam(uint32_t paramIdx, CpuReg reg, OpBits opBits);
+    virtual void emitSymbolRelocationPtr(CpuReg reg, const Utf8& name);
+    virtual void emitJumpCondImm(CpuCondJump jumpType, uint32_t ipDest);
 
     virtual void    encodeSymbolRelocationRef(const Utf8& name)                                                                                           = 0;
     virtual void    encodeSymbolRelocationAddress(CpuReg reg, uint32_t symbolIndex, uint32_t offset)                                                      = 0;

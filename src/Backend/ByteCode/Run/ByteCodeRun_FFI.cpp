@@ -134,7 +134,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, const ByteCodeInstruction
     {
         param.type     = CpuPushParamType::SwagRegister;
         param.baseReg  = cc->ffiBaseRegister;
-        param.value    = REG_OFFSET(cptParam);
+        param.value    = cptParam * sizeof(void*);
         param.typeInfo = nullptr;
         cptParam++;
     }
