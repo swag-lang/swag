@@ -100,85 +100,96 @@ void ScbeMicro::emitJumpCondImm(CpuCondJump jumpType, uint32_t ipDest)
     inst->valueA    = ipDest;
 }
 
-void ScbeMicro::encodeSymbolRelocationRef(const Utf8& name, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeSymbolRelocationRef(const Utf8& name, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::SymbolRelocationRef, emitFlags);
     inst->name      = name;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeSymbolRelocationAddress(CpuReg reg, uint32_t symbolIndex, uint32_t offset, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeSymbolRelocationAddress(CpuReg reg, uint32_t symbolIndex, uint32_t offset, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::SymbolRelocationAddress, emitFlags);
     inst->regA      = reg;
     inst->valueA    = symbolIndex;
     inst->valueB    = offset;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeSymbolRelocationValue(CpuReg reg, uint32_t symbolIndex, uint32_t offset, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeSymbolRelocationValue(CpuReg reg, uint32_t symbolIndex, uint32_t offset, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::SymbolRelocationValue, emitFlags);
     inst->regA      = reg;
     inst->valueA    = symbolIndex;
     inst->valueB    = offset;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeSymbolGlobalString(CpuReg reg, const Utf8& str, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeSymbolGlobalString(CpuReg reg, const Utf8& str, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::SymbolGlobalString, emitFlags);
     inst->regA      = reg;
     inst->name      = str;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodePush(CpuReg reg, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodePush(CpuReg reg, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::Push, emitFlags);
     inst->regA      = reg;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodePop(CpuReg reg, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodePop(CpuReg reg, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::Pop, emitFlags);
     inst->regA      = reg;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeRet(CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeRet(CpuEmitFlags emitFlags)
 {
     addInstruction(ScbeMicroOp::Ret, emitFlags);
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeLoadRegReg(CpuReg regDst, CpuReg regSrc, OpBits opBits, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeLoadRegReg(CpuReg regDst, CpuReg regSrc, OpBits opBits, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::LoadRR, emitFlags);
     inst->regA      = regDst;
     inst->regB      = regSrc;
     inst->opBitsA   = opBits;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeLoadRegImm64(CpuReg reg, uint64_t value, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeLoadRegImm64(CpuReg reg, uint64_t value, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::LoadRI64, emitFlags);
     inst->regA      = reg;
     inst->valueA    = value;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeLoadRegImm(CpuReg reg, uint64_t value, OpBits opBits, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeLoadRegImm(CpuReg reg, uint64_t value, OpBits opBits, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::LoadRI, emitFlags);
     inst->regA      = reg;
     inst->valueA    = value;
     inst->opBitsA   = opBits;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeLoadRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits opBits, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeLoadRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits opBits, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::LoadRM, emitFlags);
     inst->regA      = reg;
     inst->regB      = memReg;
     inst->valueA    = memOffset;
     inst->opBitsA   = opBits;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeLoadSignedExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeLoadSignedExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::LoadSignedExtendRM, emitFlags);
     inst->regA      = reg;
@@ -186,18 +197,20 @@ void ScbeMicro::encodeLoadSignedExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t
     inst->valueA    = memOffset;
     inst->opBitsA   = numBitsDst;
     inst->opBitsB   = numBitsSrc;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeLoadSignedExtendRegReg(CpuReg regDst, CpuReg regSrc, OpBits numBitsDst, OpBits numBitsSrc, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeLoadSignedExtendRegReg(CpuReg regDst, CpuReg regSrc, OpBits numBitsDst, OpBits numBitsSrc, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::LoadSignedExtendRR, emitFlags);
     inst->regA      = regDst;
     inst->regB      = regSrc;
     inst->opBitsA   = numBitsDst;
     inst->opBitsB   = numBitsSrc;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeLoadZeroExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeLoadZeroExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::LoadZeroExtendRM, emitFlags);
     inst->regA      = reg;
@@ -205,26 +218,29 @@ void ScbeMicro::encodeLoadZeroExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t m
     inst->valueA    = memOffset;
     inst->opBitsA   = numBitsDst;
     inst->opBitsB   = numBitsSrc;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeLoadZeroExtendRegReg(CpuReg regDst, CpuReg regSrc, OpBits numBitsDst, OpBits numBitsSrc, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeLoadZeroExtendRegReg(CpuReg regDst, CpuReg regSrc, OpBits numBitsDst, OpBits numBitsSrc, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::LoadZeroExtendRR, emitFlags);
     inst->regA      = regDst;
     inst->regB      = regSrc;
     inst->opBitsA   = numBitsDst;
     inst->opBitsB   = numBitsSrc;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeLoadAddressMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeLoadAddressMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::LoadAddressM, emitFlags);
     inst->regA      = reg;
     inst->regB      = memReg;
     inst->valueB    = memOffset;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, OpBits opBits, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, OpBits opBits, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::LoadAddressAddMul, emitFlags);
     inst->regA      = regDst;
@@ -232,109 +248,122 @@ void ScbeMicro::encodeLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, CpuReg re
     inst->regC      = regSrc2;
     inst->valueA    = mulValue;
     inst->opBitsA   = opBits;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeLoadMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits opBits, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeLoadMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits opBits, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::LoadMR, emitFlags);
     inst->regA      = memReg;
     inst->valueA    = memOffset;
     inst->regB      = reg;
     inst->opBitsA   = opBits;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeLoadMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeLoadMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::LoadMI, emitFlags);
     inst->regA      = memReg;
     inst->valueA    = memOffset;
     inst->valueB    = value;
     inst->opBitsA   = opBits;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeClearReg(CpuReg reg, OpBits opBits, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeClearReg(CpuReg reg, OpBits opBits, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::ClearR, emitFlags);
     inst->regA      = reg;
     inst->opBitsA   = opBits;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeClearMem(CpuReg memReg, uint64_t memOffset, uint32_t count, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeClearMem(CpuReg memReg, uint64_t memOffset, uint32_t count, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::ClearM, emitFlags);
     inst->regA      = memReg;
     inst->valueA    = memOffset;
     inst->valueB    = count;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeSetCond(CpuReg reg, CpuCondFlag setType, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeSetCond(CpuReg reg, CpuCondFlag setType, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::SetCC, emitFlags);
     inst->regA      = reg;
     inst->cpuCond   = setType;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeCmpRegReg(CpuReg reg0, CpuReg reg1, OpBits opBits, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeCmpRegReg(CpuReg reg0, CpuReg reg1, OpBits opBits, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::CmpRR, emitFlags);
     inst->regA      = reg0;
     inst->regB      = reg1;
     inst->opBitsA   = opBits;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeCmpRegImm(CpuReg reg, uint64_t value, OpBits opBits, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeCmpRegImm(CpuReg reg, uint64_t value, OpBits opBits, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::CmpRI, emitFlags);
     inst->regA      = reg;
     inst->valueA    = value;
     inst->opBitsA   = opBits;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeCmpMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits opBits, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeCmpMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits opBits, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::CmpMR, emitFlags);
     inst->regA      = memReg;
     inst->valueA    = memOffset;
     inst->regB      = reg;
     inst->opBitsA   = opBits;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeCmpMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeCmpMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::CmpMI, emitFlags);
     inst->regA      = memReg;
     inst->valueA    = memOffset;
     inst->valueB    = value;
     inst->opBitsA   = opBits;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeOpUnaryMem(CpuReg memReg, uint64_t memOffset, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeOpUnaryMem(CpuReg memReg, uint64_t memOffset, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::OpUnaryM, emitFlags);
     inst->regA      = memReg;
     inst->valueA    = memOffset;
     inst->cpuOp     = op;
     inst->opBitsA   = opBits;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeOpUnaryReg(CpuReg reg, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeOpUnaryReg(CpuReg reg, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::OpUnaryR, emitFlags);
     inst->regA      = reg;
     inst->cpuOp     = op;
     inst->opBitsA   = opBits;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::OpBinaryRR, emitFlags);
     inst->regA      = regDst;
     inst->regB      = regSrc;
     inst->cpuOp     = op;
     inst->opBitsA   = opBits;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeOpBinaryRegMem(CpuReg regDst, CpuReg memReg, uint64_t memOffset, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeOpBinaryRegMem(CpuReg regDst, CpuReg memReg, uint64_t memOffset, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::OpBinaryRM, emitFlags);
     inst->regA      = regDst;
@@ -342,9 +371,10 @@ void ScbeMicro::encodeOpBinaryRegMem(CpuReg regDst, CpuReg memReg, uint64_t memO
     inst->valueA    = memOffset;
     inst->cpuOp     = op;
     inst->opBitsA   = opBits;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeOpBinaryMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeOpBinaryMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::OpBinaryMR, emitFlags);
     inst->regA      = memReg;
@@ -352,18 +382,20 @@ void ScbeMicro::encodeOpBinaryMemReg(CpuReg memReg, uint64_t memOffset, CpuReg r
     inst->regB      = reg;
     inst->cpuOp     = op;
     inst->opBitsA   = opBits;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::OpBinaryRI, emitFlags);
     inst->regA      = reg;
     inst->valueA    = value;
     inst->cpuOp     = op;
     inst->opBitsA   = opBits;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeOpBinaryMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeOpBinaryMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::OpBinaryMI, emitFlags);
     inst->regA      = memReg;
@@ -371,9 +403,10 @@ void ScbeMicro::encodeOpBinaryMemImm(CpuReg memReg, uint64_t memOffset, uint64_t
     inst->valueB    = value;
     inst->cpuOp     = op;
     inst->opBitsA   = opBits;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeJumpTable(CpuReg table, CpuReg offset, int32_t currentIp, uint32_t offsetTable, uint32_t numEntries, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeJumpTable(CpuReg table, CpuReg offset, int32_t currentIp, uint32_t offsetTable, uint32_t numEntries, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::JumpTable, emitFlags);
     inst->regA      = table;
@@ -381,72 +414,83 @@ void ScbeMicro::encodeJumpTable(CpuReg table, CpuReg offset, int32_t currentIp, 
     inst->valueA    = currentIp;
     inst->valueB    = offsetTable;
     inst->valueC    = numEntries;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeJumpReg(CpuReg reg, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeJumpReg(CpuReg reg, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::JumpM, emitFlags);
     inst->regA      = reg;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeJump(CpuJump& jump, CpuCondJump jumpType, OpBits opBits, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeJump(CpuJump& jump, CpuCondJump jumpType, OpBits opBits, CpuEmitFlags emitFlags)
 {
     jump.offset     = concat.totalCount();
     const auto inst = addInstruction(ScbeMicroOp::JumpCC, emitFlags);
     inst->jumpType  = jumpType;
     inst->opBitsA   = opBits;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodePatchJump(const CpuJump& jump, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodePatchJump(const CpuJump& jump, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::PatchJump, emitFlags);
     inst->valueA    = jump.offset;
     nextIsJumpDest  = true;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodePatchJump(const CpuJump& jump, uint64_t offsetDestination, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodePatchJump(const CpuJump& jump, uint64_t offsetDestination, CpuEmitFlags emitFlags)
 {
     SWAG_ASSERT(false);
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeCopy(CpuReg regDst, CpuReg regSrc, uint32_t count, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeCopy(CpuReg regDst, CpuReg regSrc, uint32_t count, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::Copy, emitFlags);
     inst->regA      = regDst;
     inst->regB      = regSrc;
     inst->valueA    = count;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeNop(CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeNop(CpuEmitFlags emitFlags)
 {
     addInstruction(ScbeMicroOp::Nop, emitFlags);
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeCallLocal(const Utf8& symbolName, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeCallLocal(const Utf8& symbolName, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::CallLocal, emitFlags);
     inst->name      = symbolName;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeCallExtern(const Utf8& symbolName, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeCallExtern(const Utf8& symbolName, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::CallExtern, emitFlags);
     inst->name      = symbolName;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeCallReg(CpuReg reg, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeCallReg(CpuReg reg, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::CallIndirect, emitFlags);
     inst->regA      = reg;
+    return RESULTF_Zero;
 }
 
-void ScbeMicro::encodeOpMulAdd(CpuReg regDst, CpuReg regMul, CpuReg regAdd, OpBits opBits, CpuEmitFlags emitFlags)
+CpuResultFlags ScbeMicro::encodeOpMulAdd(CpuReg regDst, CpuReg regMul, CpuReg regAdd, OpBits opBits, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::MulAdd, emitFlags);
     inst->regA      = regDst;
     inst->regB      = regMul;
     inst->regC      = regAdd;
     inst->opBitsA   = opBits;
+    return RESULTF_Zero;
 }
 
 void ScbeMicro::encode(ScbeCpu& encoder) const
