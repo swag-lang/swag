@@ -74,6 +74,6 @@ struct Scbe final : Backend
     static void emitJumpDyn(ScbeCpu& pp);
     static void emitCopyVaargs(ScbeCpu& pp);
 
-    static void emitCmpMI(ScbeCpu& pp, CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits);
-    static void emitCmpRI(ScbeCpu& pp, CpuReg reg, uint64_t value, OpBits opBits);
+    static void emitCmpMemImm(ScbeCpu& pp, CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits);
+    static void emitCmpRegImm(ScbeCpu& pp, CpuReg reg, uint64_t value, OpBits opBits);
 };

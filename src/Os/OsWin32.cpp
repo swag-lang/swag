@@ -978,7 +978,7 @@ namespace OS
                 unwindRegs.push_back(g_GenFFI.cc->ffiBaseRegister);
                 unwindOffsetRegs.push_back(gen.concat.totalCount());
 
-                gen.emitOpBinaryRI(CpuReg::Rsp, stackSize, CpuOp::SUB, OpBits::B64);
+                gen.emitOpBinaryRegImm(CpuReg::Rsp, stackSize, CpuOp::SUB, OpBits::B64);
                 const auto sizeProlog = gen.concat.totalCount();
 
                 // We need to generate unwind stuff to get a correct callstack, and in case the runtime raises an exception
@@ -1005,21 +1005,21 @@ namespace OS
             SWAG_ASSERT(startOffset < JIT_SIZE_BUFFER);
 
             gen.emitPush(g_GenFFI.cc->ffiBaseRegister);
-            gen.emitOpBinaryRI(CpuReg::Rsp, stackSize, CpuOp::SUB, OpBits::B64);
-            gen.emitLoadRI(g_GenFFI.cc->ffiBaseRegister, reinterpret_cast<uint64_t>(context->sp), OpBits::B64);
+            gen.emitOpBinaryRegImm(CpuReg::Rsp, stackSize, CpuOp::SUB, OpBits::B64);
+            gen.emitLoadRegImm(g_GenFFI.cc->ffiBaseRegister, reinterpret_cast<uint64_t>(context->sp), OpBits::B64);
 
             gen.emitComputeCallParameters(typeInfoFunc, pushCPUParams, g_GenFFI.cc->ffiBaseRegister, 0, retCopyAddr);
 
-            gen.emitLoadRI(g_GenFFI.cc->computeRegI0, reinterpret_cast<uint64_t>(foreignPtr), OpBits::B64);
-            gen.emitCallIndirect(g_GenFFI.cc->computeRegI0);
+            gen.emitLoadRegImm(g_GenFFI.cc->computeRegI0, reinterpret_cast<uint64_t>(foreignPtr), OpBits::B64);
+            gen.emitCallReg(g_GenFFI.cc->computeRegI0);
 
             if (!returnType->isVoid() && !retCopyAddr)
             {
-                gen.emitLoadRI(g_GenFFI.cc->ffiBaseRegister, reinterpret_cast<uint64_t>(context->registersRR), OpBits::B64);
+                gen.emitLoadRegImm(g_GenFFI.cc->ffiBaseRegister, reinterpret_cast<uint64_t>(context->registersRR), OpBits::B64);
                 gen.emitStoreCallResult(g_GenFFI.cc->ffiBaseRegister, 0, typeInfoFunc);
             }
 
-            gen.emitOpBinaryRI(CpuReg::Rsp, stackSize, CpuOp::ADD, OpBits::B64);
+            gen.emitOpBinaryRegImm(CpuReg::Rsp, stackSize, CpuOp::ADD, OpBits::B64);
             gen.emitPop(g_GenFFI.cc->ffiBaseRegister);
             gen.emitRet();
         }

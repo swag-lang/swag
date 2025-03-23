@@ -36,7 +36,7 @@ void Scbe::emitOS(ScbeCpu& pp)
 
         // int _DllMainCRTStartup(void*, int, void*)
         pp.getOrAddSymbol("_DllMainCRTStartup", CpuSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
-        pp.emitLoadRI(CallConv::get(CallConvKind::X86_64)->returnByRegisterInteger, 1, OpBits::B64);
+        pp.emitLoadRegImm(CallConv::get(CallConvKind::X86_64)->returnByRegisterInteger, 1, OpBits::B64);
         pp.emitRet();
     }
     else
@@ -76,18 +76,18 @@ void Scbe::emitMain(ScbeCpu& pp)
     SWAG_ASSERT(bcAlloc);
 
     pp.emitSymbolRelocationAddress(cc->computeRegI0, pp.symDefaultAllocTable, 0);
-    pp.emitLoadAddressM(cc->computeRegI1, CpuReg::Rip, 0);
+    pp.emitLoadAddressMem(cc->computeRegI1, CpuReg::Rip, 0);
     pp.emitSymbolRelocationRef(bcAlloc->getCallName());
-    pp.emitLoadMR(cc->computeRegI0, 0, cc->computeRegI1, OpBits::B64);
+    pp.emitLoadMegReg(cc->computeRegI0, 0, cc->computeRegI1, OpBits::B64);
 
     // mainContext.allocator.itable = &defaultAllocTable;
     pp.emitSymbolRelocationAddress(cc->computeRegI1, pp.symMC_mainContext_allocator_itable, 0);
-    pp.emitLoadMR(cc->computeRegI1, 0, cc->computeRegI0, OpBits::B64);
+    pp.emitLoadMegReg(cc->computeRegI1, 0, cc->computeRegI0, OpBits::B64);
 
     // main context flags
     pp.emitSymbolRelocationAddress(cc->computeRegI1, pp.symMC_mainContext_flags, 0);
     const uint64_t contextFlags = getDefaultContextFlags(module);
-    pp.emitLoadMI(cc->computeRegI1, 0, contextFlags, OpBits::B64);
+    pp.emitLoadMemImm(cc->computeRegI1, 0, contextFlags, OpBits::B64);
 
     //__process_infos.contextTlsId = swag_runtime_tlsAlloc();
     pp.emitSymbolRelocationAddress(cc->nonVolatileRegisters[0], pp.symPI_contextTlsId, 0);
@@ -96,25 +96,25 @@ void Scbe::emitMain(ScbeCpu& pp)
     //__process_infos.modules
     pp.emitSymbolRelocationAddress(cc->computeRegI1, pp.symPI_modulesAddr, 0);
     pp.emitSymbolRelocationAddress(cc->computeRegI0, pp.symCSIndex, module->modulesSliceOffset);
-    pp.emitLoadMR(cc->computeRegI1, 0, cc->computeRegI0, OpBits::B64);
+    pp.emitLoadMegReg(cc->computeRegI1, 0, cc->computeRegI0, OpBits::B64);
     pp.emitSymbolRelocationAddress(cc->computeRegI0, pp.symPI_modulesCount, 0);
-    pp.emitLoadMI(cc->computeRegI0, 0, module->moduleDependencies.count + 1, OpBits::B64);
+    pp.emitLoadMemImm(cc->computeRegI0, 0, module->moduleDependencies.count + 1, OpBits::B64);
 
     //__process_infos.args
-    pp.emitClearR(cc->computeRegI1, OpBits::B64);
+    pp.emitClearReg(cc->computeRegI1, OpBits::B64);
     pp.emitSymbolRelocationAddress(cc->computeRegI0, pp.symPI_argsAddr, 0);
-    pp.emitLoadMR(cc->computeRegI0, 0, cc->computeRegI1, OpBits::B64);
+    pp.emitLoadMegReg(cc->computeRegI0, 0, cc->computeRegI1, OpBits::B64);
     pp.emitSymbolRelocationAddress(cc->computeRegI0, pp.symPI_argsCount, 0);
-    pp.emitLoadMR(cc->computeRegI0, 0, cc->computeRegI1, OpBits::B64);
+    pp.emitLoadMegReg(cc->computeRegI0, 0, cc->computeRegI1, OpBits::B64);
 
     // Set main context
     pp.emitSymbolRelocationAddress(cc->computeRegI0, pp.symMC_mainContext, 0);
     pp.emitSymbolRelocationAddress(cc->computeRegI1, pp.symPI_defaultContext, 0);
-    pp.emitLoadMR(cc->computeRegI1, 0, cc->computeRegI0, OpBits::B64);
+    pp.emitLoadMegReg(cc->computeRegI1, 0, cc->computeRegI0, OpBits::B64);
 
     // Set current backend as SCBE
     pp.emitSymbolRelocationAddress(cc->computeRegI1, pp.symPI_backendKind, 0);
-    pp.emitLoadMI(cc->computeRegI1, 0, static_cast<uint32_t>(SwagBackendGenType::SCBE), OpBits::B32);
+    pp.emitLoadMemImm(cc->computeRegI1, 0, static_cast<uint32_t>(SwagBackendGenType::SCBE), OpBits::B32);
 
     // Set default context in TLS
     pp.pushParams.clear();
@@ -212,7 +212,7 @@ void Scbe::emitMain(ScbeCpu& pp)
     }
 
     pp.emitCallLocal(g_LangSpec->name_priv_closeRuntime);
-    pp.emitClearR(cc->returnByRegisterInteger, OpBits::B64);
+    pp.emitClearReg(cc->returnByRegisterInteger, OpBits::B64);
 
     pp.emitLeave();
     pp.endFunction();
@@ -255,7 +255,7 @@ void Scbe::emitGlobalPreMain(ScbeCpu& pp)
 
     // Store first parameter on stack (process infos ptr)
     SWAG_ASSERT(cc.paramByRegisterInteger.size() >= 1);
-    pp.emitLoadMR(CpuReg::Rsp, 0, cc.paramByRegisterInteger[0], OpBits::B64);
+    pp.emitLoadMegReg(CpuReg::Rsp, 0, cc.paramByRegisterInteger[0], OpBits::B64);
 
     // Copy process infos passed as a parameter to the process info struct of this module
     pp.pushParams.clear();
@@ -294,7 +294,7 @@ void Scbe::emitGlobalInit(ScbeCpu& pp)
 
     // Store first parameter on stack (process infos ptr)
     SWAG_ASSERT(cc.paramByRegisterInteger.size() >= 1);
-    pp.emitLoadMR(CpuReg::Rsp, 0, cc.paramByRegisterInteger[0], OpBits::B64);
+    pp.emitLoadMegReg(CpuReg::Rsp, 0, cc.paramByRegisterInteger[0], OpBits::B64);
 
     // Copy process infos passed as a parameter to the process info struct of this module
     pp.pushParams.clear();
@@ -321,13 +321,13 @@ void Scbe::emitGlobalInit(ScbeCpu& pp)
             emitInternalCallCPUParams(pp, callTable, pp.pushParams);
 
             // Count types is stored as a uint64_t at the start of the address
-            pp.emitLoadRM(cc.nonVolatileRegisters[0], cc.returnByRegisterInteger, 0, OpBits::B64);
-            pp.emitLoadMR(resReg, sizeof(uint64_t), cc.nonVolatileRegisters[0], OpBits::B64);
-            pp.emitOpBinaryRI(pp.cc->returnByRegisterInteger, sizeof(uint64_t), CpuOp::ADD, OpBits::B64);
-            pp.emitLoadMR(resReg, 0, cc.returnByRegisterInteger, OpBits::B64);
+            pp.emitLoadRegMem(cc.nonVolatileRegisters[0], cc.returnByRegisterInteger, 0, OpBits::B64);
+            pp.emitLoadMegReg(resReg, sizeof(uint64_t), cc.nonVolatileRegisters[0], OpBits::B64);
+            pp.emitOpBinaryRegImm(pp.cc->returnByRegisterInteger, sizeof(uint64_t), CpuOp::ADD, OpBits::B64);
+            pp.emitLoadMegReg(resReg, 0, cc.returnByRegisterInteger, OpBits::B64);
         }
 
-        pp.emitOpBinaryRI(resReg, sizeof(SwagModule), CpuOp::ADD, OpBits::B64);
+        pp.emitOpBinaryRegImm(resReg, sizeof(SwagModule), CpuOp::ADD, OpBits::B64);
     }
 
     // Call to #init functions
