@@ -229,13 +229,14 @@ struct ScbeCpu : BackendEncoder
     CpuFunction* addFunction(const Utf8& funcName, const CallConv* ccFunc, ByteCode* bc);
     void         endFunction() const;
 
-    bool isNoOp(uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags = EMITF_Zero) const;
-    bool manipulateRegister(ScbeMicroInstruction* inst, CpuReg reg) const;
+    static void maskValue(uint64_t& value, OpBits opBits);
+    bool        isNoOp(uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags = EMITF_Zero) const;
 
     void emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CpuPushParam>& cpuParams, const CallConv* callConv);
     void emitComputeCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CpuPushParam>& cpuParams, CpuReg memRegResult, uint32_t memOffsetResult, void* resultAddr);
     void emitStoreCallResult(CpuReg memReg, uint32_t memOffset, const TypeInfoFuncAttr* typeFuncBc);
 
+    bool                       manipulateRegister(ScbeMicroInstruction* inst, CpuReg reg) const;
     virtual ScbeMicroOpDetails getInstructionDetails(ScbeMicroInstruction* inst) const { return 0; }
 
     virtual void emitEnter(uint32_t sizeStack);

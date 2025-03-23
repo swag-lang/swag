@@ -12,22 +12,6 @@ void BackendEncoder::init(const BuildParameters& buildParameters)
     buildParams = buildParameters;
 }
 
-void BackendEncoder::maskValue(uint64_t& value, OpBits opBits)
-{
-    switch (opBits)
-    {
-        case OpBits::B8:
-            value &= 0xFF;
-            break;
-        case OpBits::B16:
-            value &= 0xFFFF;
-            break;
-        case OpBits::B32:
-            value &= 0xFFFFFFFF;
-            break;
-    }
-}
-
 OpBits BackendEncoder::getOpBitsByBytes(uint32_t numBytes)
 {
     switch (numBytes)

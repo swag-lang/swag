@@ -29,6 +29,22 @@ enum class OpBits : uint8_t
 
 struct BackendEncoder
 {
+    virtual ~BackendEncoder() = default;
+    virtual void init(const BuildParameters& buildParameters);
+
+    static bool mustCheckOverflow(const Module* module, const ByteCodeInstruction* ip);
+
+    static uint32_t  getNumBits(OpBits opBits);
+    static OpBits    getOpBitsByBytes(uint32_t numBytes);
+    static bool      isFloat(ByteCodeOp op);
+    static bool      isInt(ByteCodeOp op);
+    static OpBits    getOpBits(ByteCodeOp op);
+    static TypeInfo* getOpType(ByteCodeOp op);
+    static uint32_t  getNumBits(ByteCodeOp op) { return getNumBits(getOpBits(op)); }
+    static uint32_t  getNumBytes(ByteCodeOp op) { return getNumBits(getOpBits(op)) / 8; }
+    static bool      isFloat(CpuReg reg) { return reg == CpuReg::Xmm0 || reg == CpuReg::Xmm1 || reg == CpuReg::Xmm2 || reg == CpuReg::Xmm3; }
+    static bool      isInt(CpuReg reg) { return !isFloat(reg); }
+
     BuildParameters       buildParams;
     Utf8                  filename;
     ByteCodeInstruction*  ip      = nullptr;
@@ -37,21 +53,4 @@ struct BackendEncoder
     int32_t               ipIndex = 0;
     Module*               module  = nullptr;
     BackendPreCompilePass pass    = {BackendPreCompilePass::Init};
-
-    virtual ~BackendEncoder() = default;
-    virtual void init(const BuildParameters& buildParameters);
-
-    static uint32_t  getNumBits(OpBits opBits);
-    static OpBits    getOpBitsByBytes(uint32_t numBytes);
-    static bool      isFloat(ByteCodeOp op);
-    static bool      isInt(ByteCodeOp op);
-    static OpBits    getOpBits(ByteCodeOp op);
-    static TypeInfo* getOpType(ByteCodeOp op);
-    static void      maskValue(uint64_t& value, OpBits opBits);
-    static bool      mustCheckOverflow(const Module* module, const ByteCodeInstruction* ip);
-
-    static uint32_t getNumBits(ByteCodeOp op) { return getNumBits(getOpBits(op)); }
-    static uint32_t getNumBytes(ByteCodeOp op) { return getNumBits(getOpBits(op)) / 8; }
-    static bool     isFloat(CpuReg reg) { return reg == CpuReg::Xmm0 || reg == CpuReg::Xmm1 || reg == CpuReg::Xmm2 || reg == CpuReg::Xmm3; }
-    static bool     isInt(CpuReg reg) { return !isFloat(reg); }
 };
