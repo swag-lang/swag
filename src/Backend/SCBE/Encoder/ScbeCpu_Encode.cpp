@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Backend/SCBE/Encoder/ScbeCpu.h"
 #include "Backend/SCBE/Main/Scbe.h"
+#include "Report/Report.h"
 
 namespace
 {
@@ -125,7 +126,28 @@ void ScbeCpu::emitLoadRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBi
 
 void ScbeCpu::emitLoadRegImm(CpuReg reg, uint64_t value, OpBits opBits)
 {
-    encodeLoadRegImm(reg, value, opBits, EMITF_Zero);
+    maskValue(value, opBits);
+    if (value == 0)
+    {
+        emitClearReg(reg, opBits);
+        return;
+    }
+
+    const auto result = cpu->encodeLoadRegImm(reg, value, opBits, EMITF_CanEncode);
+    if (result == RESULTF_Zero)
+    {
+        encodeLoadRegImm(reg, value, opBits, EMITF_Zero);
+        return;
+    }
+
+    if (result == RESULTF_Imm2Reg)
+    {
+        emitLoadRegImm(cc->computeRegI2, value, opBits);
+        emitLoadRegReg(reg, cc->computeRegI2, opBits);
+        return;
+    }
+
+    Report::internalError(module, "emitLoadRegImm, cannot encode");
 }
 
 void ScbeCpu::emitLoadRegReg(CpuReg regDst, CpuReg regSrc, OpBits opBits)

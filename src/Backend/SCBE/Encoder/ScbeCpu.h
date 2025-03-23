@@ -130,14 +130,16 @@ enum class CpuCondJump : uint8_t
     JUMP,
 };
 
-using CpuEmitFlags                    = Flags<uint8_t>;
-constexpr CpuEmitFlags EMITF_Zero     = 0x00000000;
-constexpr CpuEmitFlags EMITF_Overflow = 0x00000001;
-constexpr CpuEmitFlags EMITF_Lock     = 0x00000002;
-constexpr CpuEmitFlags EMITF_B64      = 0x00000004;
+using CpuEmitFlags                     = Flags<uint8_t>;
+constexpr CpuEmitFlags EMITF_Zero      = 0x00000000;
+constexpr CpuEmitFlags EMITF_Overflow  = 0x00000001;
+constexpr CpuEmitFlags EMITF_Lock      = 0x00000002;
+constexpr CpuEmitFlags EMITF_B64       = 0x00000004;
+constexpr CpuEmitFlags EMITF_CanEncode = 0x00000008;
 
-using CpuResultFlags                  = Flags<uint32_t>;
-constexpr CpuResultFlags RESULTF_Zero = 0x00000000;
+using CpuResultFlags                     = Flags<uint32_t>;
+constexpr CpuResultFlags RESULTF_Zero    = 0x00000000;
+constexpr CpuResultFlags RESULTF_Imm2Reg = 0x00000001;
 
 struct CpuJump
 {

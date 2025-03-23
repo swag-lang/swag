@@ -13,6 +13,7 @@ void ScbeCpu::init(const BuildParameters& buildParameters)
 {
     BackendEncoder::init(buildParameters);
     optLevel = buildParameters.buildCfg ? buildParameters.buildCfg->backendOptimize : BuildCfgBackendOptim::O0;
+    cpu = this;
 }
 
 namespace

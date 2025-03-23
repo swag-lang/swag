@@ -4,6 +4,7 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Core/Math.h"
+#include "Report/Report.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Wmf/Module.h"
 #pragma warning(disable : 4063)
@@ -406,16 +407,17 @@ CpuResultFlags ScbeX64::encodeLoadRegImm64(CpuReg reg, uint64_t value, CpuEmitFl
 
 CpuResultFlags ScbeX64::encodeLoadRegImm(CpuReg reg, uint64_t value, OpBits opBits, CpuEmitFlags emitFlags)
 {
-    if (value == 0)
+    if (isFloat(reg))
     {
-        emitClearReg(reg, opBits);
+        if (emitFlags.has(EMITF_CanEncode))
+            return RESULTF_Imm2Reg;
+        Report::internalError(module, "emitLoadRegImm, cannot encode");
     }
-    else if (isFloat(reg))
-    {
-        emitLoadRegImm(cc->computeRegI2, value, opBits);
-        emitLoadRegReg(reg, cc->computeRegI2, opBits);
-    }
-    else if (opBits == OpBits::B64)
+
+    if (emitFlags.has(EMITF_CanEncode))
+        return RESULTF_Zero;
+
+    if (opBits == OpBits::B64)
     {
         if (value <= 0x7FFFFFFF && reg < CpuReg::R8)
         {
