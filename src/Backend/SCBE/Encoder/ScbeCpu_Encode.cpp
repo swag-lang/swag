@@ -40,194 +40,194 @@ namespace
 
 void ScbeCpu::emitSymbolRelocationRef(const Utf8& name)
 {
-    encodeSymbolRelocationRef(name);
+    encodeSymbolRelocationRef(name, EMITF_Zero);
 }
 
 void ScbeCpu::emitSymbolRelocationAddress(CpuReg reg, uint32_t symbolIndex, uint32_t offset)
 {
-    encodeSymbolRelocationAddress(reg, symbolIndex, offset);
+    encodeSymbolRelocationAddress(reg, symbolIndex, offset, EMITF_Zero);
 }
 
 void ScbeCpu::emitSymbolRelocationValue(CpuReg reg, uint32_t symbolIndex, uint32_t offset)
 {
-    encodeSymbolRelocationValue(reg, symbolIndex, offset);
+    encodeSymbolRelocationValue(reg, symbolIndex, offset, EMITF_Zero);
 }
 
 void ScbeCpu::emitSymbolGlobalString(CpuReg reg, const Utf8& str)
 {
-    encodeSymbolGlobalString(reg, str);
+    encodeSymbolGlobalString(reg, str, EMITF_Zero);
 }
 
 void ScbeCpu::emitPush(CpuReg reg)
 {
-    encodePush(reg);
+    encodePush(reg, EMITF_Zero);
 }
 
 void ScbeCpu::emitPop(CpuReg reg)
 {
-    encodePop(reg);
+    encodePop(reg, EMITF_Zero);
 }
 
 void ScbeCpu::emitNop()
 {
-    encodeNop();
+    encodeNop(EMITF_Zero);
 }
 
 void ScbeCpu::emitRet()
 {
-    encodeRet();
+    encodeRet(EMITF_Zero);
 }
 
 void ScbeCpu::emitCallLocal(const Utf8& symbolName)
 {
-    encodeCallLocal(symbolName);
+    encodeCallLocal(symbolName, EMITF_Zero);
 }
 
 void ScbeCpu::emitCallExtern(const Utf8& symbolName)
 {
-    encodeCallExtern(symbolName);
+    encodeCallExtern(symbolName, EMITF_Zero);
 }
 
 void ScbeCpu::emitCallReg(CpuReg reg)
 {
-    encodeCallReg(reg);
+    encodeCallReg(reg, EMITF_Zero);
 }
 
 void ScbeCpu::emitJumpTable(CpuReg table, CpuReg offset, int32_t currentIp, uint32_t offsetTable, uint32_t numEntries)
 {
-    encodeJumpTable(table, offset, currentIp, offsetTable, numEntries);
+    encodeJumpTable(table, offset, currentIp, offsetTable, numEntries, EMITF_Zero);
 }
 
 CpuJump ScbeCpu::emitJump(CpuCondJump jumpType, OpBits opBits)
 {
-    return encodeJump(jumpType, opBits);
+    return encodeJump(jumpType, opBits, EMITF_Zero);
 }
 
 void ScbeCpu::emitPatchJump(const CpuJump& jump)
 {
-    encodePatchJump(jump);
+    encodePatchJump(jump, EMITF_Zero);
 }
 
 void ScbeCpu::emitPatchJump(const CpuJump& jump, uint64_t offsetDestination)
 {
-    encodePatchJump(jump, offsetDestination);
+    encodePatchJump(jump, offsetDestination, EMITF_Zero);
 }
 
 void ScbeCpu::emitJumpReg(CpuReg reg)
 {
-    encodeJumpReg(reg);
+    encodeJumpReg(reg, EMITF_Zero);
 }
 
 void ScbeCpu::emitLoadRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits opBits)
 {
-    encodeLoadRegMem(reg, memReg, memOffset, opBits);
+    encodeLoadRegMem(reg, memReg, memOffset, opBits, EMITF_Zero);
 }
 
 void ScbeCpu::emitLoadRegImm(CpuReg reg, uint64_t value, OpBits opBits)
 {
-    encodeLoadRegImm(reg, value, opBits);
+    encodeLoadRegImm(reg, value, opBits, EMITF_Zero);
 }
 
 void ScbeCpu::emitLoadRegReg(CpuReg regDst, CpuReg regSrc, OpBits opBits)
 {
-    encodeLoadRegReg(regDst, regSrc, opBits);
+    encodeLoadRegReg(regDst, regSrc, opBits, EMITF_Zero);
 }
 
 void ScbeCpu::emitLoadRegImm64(CpuReg reg, uint64_t value)
 {
-    encodeLoadRegImm64(reg, value);
+    encodeLoadRegImm64(reg, value, EMITF_Zero);
 }
 
 void ScbeCpu::emitLoadSignedExtendRegReg(CpuReg regDst, CpuReg regSrc, OpBits numBitsDst, OpBits numBitsSrc)
 {
-    encodeLoadSignedExtendRegReg(regDst, regSrc, numBitsDst, numBitsSrc);
+    encodeLoadSignedExtendRegReg(regDst, regSrc, numBitsDst, numBitsSrc, EMITF_Zero);
 }
 
 void ScbeCpu::emitLoadSignedExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc)
 {
-    encodeLoadSignedExtendRegMem(reg, memReg, memOffset, numBitsDst, numBitsSrc);
+    encodeLoadSignedExtendRegMem(reg, memReg, memOffset, numBitsDst, numBitsSrc, EMITF_Zero);
 }
 
 void ScbeCpu::emitLoadZeroExtendRegReg(CpuReg regDst, CpuReg regSrc, OpBits numBitsDst, OpBits numBitsSrc)
 {
-    encodeLoadZeroExtendRegReg(regDst, regSrc, numBitsDst, numBitsSrc);
+    encodeLoadZeroExtendRegReg(regDst, regSrc, numBitsDst, numBitsSrc, EMITF_Zero);
 }
 
 void ScbeCpu::emitLoadZeroExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc)
 {
-    encodeLoadZeroExtendRegMem(reg, memReg, memOffset, numBitsDst, numBitsSrc);
+    encodeLoadZeroExtendRegMem(reg, memReg, memOffset, numBitsDst, numBitsSrc, EMITF_Zero);
 }
 
 void ScbeCpu::emitLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, OpBits opBits)
 {
-    encodeLoadAddressAddMul(regDst, regSrc1, regSrc2, mulValue, opBits);
+    encodeLoadAddressAddMul(regDst, regSrc1, regSrc2, mulValue, opBits, EMITF_Zero);
 }
 
 void ScbeCpu::emitLoadAddressMem(CpuReg reg, CpuReg memReg, uint64_t memOffset)
 {
-    encodeLoadAddressMem(reg, memReg, memOffset);
+    encodeLoadAddressMem(reg, memReg, memOffset, EMITF_Zero);
 }
 
 void ScbeCpu::emitLoadMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits opBits)
 {
-    encodeLoadMemReg(memReg, memOffset, reg, opBits);
+    encodeLoadMemReg(memReg, memOffset, reg, opBits, EMITF_Zero);
 }
 
 void ScbeCpu::emitLoadMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits)
 {
-    encodeLoadMemImm(memReg, memOffset, value, opBits);
+    encodeLoadMemImm(memReg, memOffset, value, opBits, EMITF_Zero);
 }
 
 void ScbeCpu::emitCmpRegReg(CpuReg reg0, CpuReg reg1, OpBits opBits)
 {
-    encodeCmpRegReg(reg0, reg1, opBits);
+    encodeCmpRegReg(reg0, reg1, opBits, EMITF_Zero);
 }
 
 void ScbeCpu::emitCmpMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits opBits)
 {
-    encodeCmpMemReg(memReg, memOffset, reg, opBits);
+    encodeCmpMemReg(memReg, memOffset, reg, opBits, EMITF_Zero);
 }
 
 void ScbeCpu::emitCmpMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits)
 {
     maskValue(value, opBits);
-    encodeCmpMemImm(memReg, memOffset, value, opBits);
+    encodeCmpMemImm(memReg, memOffset, value, opBits, EMITF_Zero);
 }
 
 void ScbeCpu::emitCmpRegImm(CpuReg reg, uint64_t value, OpBits opBits)
 {
     maskValue(value, opBits);
-    encodeCmpRegImm(reg, value, opBits);
+    encodeCmpRegImm(reg, value, opBits, EMITF_Zero);
 }
 
 void ScbeCpu::emitSetCond(CpuReg reg, CpuCondFlag setType)
 {
-    encodeSetCond(reg, setType);
+    encodeSetCond(reg, setType, EMITF_Zero);
 }
 
 void ScbeCpu::emitClearReg(CpuReg reg, OpBits opBits)
 {
-    encodeClearReg(reg, opBits);
+    encodeClearReg(reg, opBits, EMITF_Zero);
 }
 
 void ScbeCpu::emitClearMem(CpuReg memReg, uint64_t memOffset, uint32_t count)
 {
-    encodeClearMem(memReg, memOffset, count);
+    encodeClearMem(memReg, memOffset, count, EMITF_Zero);
 }
 
 void ScbeCpu::emitCopy(CpuReg regDst, CpuReg regSrc, uint32_t count)
 {
-    encodeCopy(regDst, regSrc, count);
+    encodeCopy(regDst, regSrc, count, EMITF_Zero);
 }
 
 void ScbeCpu::emitOpUnaryMem(CpuReg memReg, uint64_t memOffset, CpuOp op, OpBits opBits)
 {
-    encodeOpUnaryMem(memReg, memOffset, op, opBits);
+    encodeOpUnaryMem(memReg, memOffset, op, opBits, EMITF_Zero);
 }
 
 void ScbeCpu::emitOpUnaryReg(CpuReg reg, CpuOp op, OpBits opBits)
 {
-    encodeOpUnaryReg(reg, op, opBits);
+    encodeOpUnaryReg(reg, op, opBits, EMITF_Zero);
 }
 
 void ScbeCpu::emitOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
@@ -272,5 +272,5 @@ void ScbeCpu::emitOpBinaryMemImm(CpuReg memReg, uint64_t memOffset, uint64_t val
 
 void ScbeCpu::emitOpMulAdd(CpuReg regDst, CpuReg regMul, CpuReg regAdd, OpBits opBits)
 {
-    encodeOpMulAdd(regDst, regMul, regAdd, opBits);
+    encodeOpMulAdd(regDst, regMul, regAdd, opBits, EMITF_Zero);
 }
