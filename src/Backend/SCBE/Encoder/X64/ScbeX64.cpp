@@ -417,26 +417,23 @@ CpuResultFlags ScbeX64::encodeLoadRegImm(CpuReg reg, uint64_t value, OpBits opBi
     if (emitFlags.has(EMITF_CanEncode))
         return RESULTF_Zero;
 
-    if (opBits == OpBits::B64)
+    if (opBits == OpBits::B64 && value <= 0x7FFFFFFF && reg < CpuReg::R8)
     {
-        if (value <= 0x7FFFFFFF && reg < CpuReg::R8)
-        {
-            emitCPUOp(concat, 0xB8, reg);
-            emitValue(concat, value, OpBits::B32);
-        }
-        else if (value <= 0x7FFFFFFF)
-        {
-            emitREX(concat, OpBits::B64, REX_REG_NONE, reg);
-            emitCPUOp(concat, 0xC7);
-            emitCPUOp(concat, 0xC0, reg);
-            emitValue(concat, value, OpBits::B32);
-        }
-        else
-        {
-            emitREX(concat, OpBits::B64, REX_REG_NONE, reg);
-            emitCPUOp(concat, 0xB8, reg);
-            emitValue(concat, value, OpBits::B64);
-        }
+        emitCPUOp(concat, 0xB8, reg);
+        emitValue(concat, value, OpBits::B32);
+    }
+    else if (opBits == OpBits::B64 && value <= 0x7FFFFFFF)
+    {
+        emitREX(concat, OpBits::B64, REX_REG_NONE, reg);
+        emitCPUOp(concat, 0xC7);
+        emitCPUOp(concat, 0xC0, reg);
+        emitValue(concat, value, OpBits::B32);
+    }
+    else if (opBits == OpBits::B64)
+    {
+        emitREX(concat, OpBits::B64, REX_REG_NONE, reg);
+        emitCPUOp(concat, 0xB8, reg);
+        emitValue(concat, value, OpBits::B64);
     }
     else if (opBits == OpBits::B8)
     {
@@ -496,7 +493,7 @@ CpuResultFlags ScbeX64::encodeLoadZeroExtendRegMem(CpuReg reg, CpuReg memReg, ui
     }
     else
     {
-        SWAG_ASSERT(false);
+        Report::internalError(module, "encodeLoadZeroExtendRegMem, cannot encode");
     }
 
     return RESULTF_Zero;
@@ -524,7 +521,7 @@ CpuResultFlags ScbeX64::encodeLoadZeroExtendRegReg(CpuReg regDst, CpuReg regSrc,
     }
     else
     {
-        SWAG_ASSERT(false);
+        Report::internalError(module, "encodeLoadZeroExtendRegReg, cannot encode");
     }
 
     return RESULTF_Zero;
@@ -555,7 +552,7 @@ CpuResultFlags ScbeX64::encodeLoadSignedExtendRegMem(CpuReg reg, CpuReg memReg, 
     }
     else
     {
-        SWAG_ASSERT(false);
+        Report::internalError(module, "encodeLoadSignedExtendRegMem, cannot encode");
     }
 
     return RESULTF_Zero;
@@ -577,16 +574,15 @@ CpuResultFlags ScbeX64::encodeLoadSignedExtendRegReg(CpuReg regDst, CpuReg regSr
         emitCPUOp(concat, 0xBF);
         emitModRM(concat, regDst, regSrc);
     }
-    else if (numBitsSrc == OpBits::B32)
+    else if (numBitsSrc == OpBits::B32 && numBitsDst == OpBits::B64)
     {
-        SWAG_ASSERT(numBitsDst == OpBits::B64);
         emitREX(concat, numBitsDst, regDst, regSrc);
         emitCPUOp(concat, 0x63);
         emitModRM(concat, regDst, regSrc);
     }
     else
     {
-        SWAG_ASSERT(false);
+        Report::internalError(module, "encodeLoadSignedExtendRegReg, cannot encode");
     }
 
     return RESULTF_Zero;
