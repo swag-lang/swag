@@ -341,6 +341,7 @@ struct ScbeCpu : BackendEncoder
     Concat concat;
     Concat postConcat;
 
+    ScbeCpu*                                    cpu = nullptr;
     VectorNative<const Utf8*>                   stringTable;
     VectorNative<uint32_t>                      pushRAParams;
     VectorNative<std::pair<uint32_t, uint32_t>> pushRVParams;

@@ -74,6 +74,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     ScbeMicro pp;
     pp.init(buildParameters);
+    pp.cpu                  = &ppCPU;
     pp.cpuFct               = ppCPU.cpuFct;
     pp.cc                   = ppCPU.cpuFct->cc;
     pp.symCOIndex           = ppCPU.symCOIndex;

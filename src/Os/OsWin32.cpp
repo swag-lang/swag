@@ -944,8 +944,10 @@ namespace OS
 
     void ffi(ByteCodeRunContext* context, void* foreignPtr, const TypeInfoFuncAttr* typeInfoFunc, const VectorNative<CpuPushParam>& pushCPUParams, void* retCopyAddr)
     {
-        g_GenFFI.cc           = CallConv::get(CallConvKind::Swag);
         const auto returnType = TypeManager::concreteType(typeInfoFunc->returnType);
+
+        g_GenFFI.cpu = &g_GenFFI;
+        g_GenFFI.cc  = CallConv::get(CallConvKind::Swag);
 
         uint32_t stackSize = sizeof(void*);
         stackSize += pushCPUParams.size() * sizeof(void*);
@@ -953,33 +955,32 @@ namespace OS
         stackSize = Math::align(stackSize, g_GenFFI.cc->stackAlign);
 
         static constexpr int JIT_SIZE_BUFFER = 16 * 1024;
-        auto&                gen             = g_GenFFI;
         uint64_t             startOffset     = 0;
 
         {
 #ifdef SWAG_STATS
             Timer timer(&g_Stats.ffiGenTime);
 #endif
-            if (!gen.concat.firstBucket)
+            if (!g_GenFFI.concat.firstBucket)
             {
                 // Generate a buffer big enough to store the call, and be aware that this could be recursive, that's
                 // why the buffer is kind of big
-                auto& concat = gen.concat;
+                auto& concat = g_GenFFI.concat;
                 concat.init(0);
                 concat.firstBucket->capacity = JIT_SIZE_BUFFER + 128;
-                concat.firstBucket->data     = static_cast<uint8_t*>(VirtualAlloc(nullptr, gen.concat.firstBucket->capacity, MEM_COMMIT, PAGE_EXECUTE_READWRITE));
-                concat.currentSP             = gen.concat.firstBucket->data;
+                concat.firstBucket->data     = static_cast<uint8_t*>(VirtualAlloc(nullptr, g_GenFFI.concat.firstBucket->capacity, MEM_COMMIT, PAGE_EXECUTE_READWRITE));
+                concat.currentSP             = g_GenFFI.concat.firstBucket->data;
 
                 VectorNative<CpuReg>   unwindRegs;
                 VectorNative<uint32_t> unwindOffsetRegs;
 
                 // Fake emit in order to compute the unwind infos
-                gen.emitPush(g_GenFFI.cc->ffiBaseRegister);
+                g_GenFFI.emitPush(g_GenFFI.cc->ffiBaseRegister);
                 unwindRegs.push_back(g_GenFFI.cc->ffiBaseRegister);
-                unwindOffsetRegs.push_back(gen.concat.totalCount());
+                unwindOffsetRegs.push_back(g_GenFFI.concat.totalCount());
 
-                gen.emitOpBinaryRegImm(CpuReg::Rsp, stackSize, CpuOp::SUB, OpBits::B64);
-                const auto sizeProlog = gen.concat.totalCount();
+                g_GenFFI.emitOpBinaryRegImm(CpuReg::Rsp, stackSize, CpuOp::SUB, OpBits::B64);
+                const auto sizeProlog = g_GenFFI.concat.totalCount();
 
                 // We need to generate unwind stuff to get a correct callstack, and in case the runtime raises an exception
                 // with 'RaiseException' (panic, error, etc.)
@@ -993,43 +994,43 @@ namespace OS
                 rtFunc->EndAddress        = JIT_SIZE_BUFFER;
                 rtFunc->UnwindInfoAddress = JIT_SIZE_BUFFER;
                 uint32_t offset           = 0;
-                concat.currentSP          = gen.concat.firstBucket->data + JIT_SIZE_BUFFER;
-                ScbeCoff::emitUnwind(gen.concat, offset, sizeProlog, unwind);
-                RtlAddFunctionTable(rtFunc, 1, reinterpret_cast<DWORD64>(gen.concat.firstBucket->data));
+                concat.currentSP          = g_GenFFI.concat.firstBucket->data + JIT_SIZE_BUFFER;
+                ScbeCoff::emitUnwind(g_GenFFI.concat, offset, sizeProlog, unwind);
+                RtlAddFunctionTable(rtFunc, 1, reinterpret_cast<DWORD64>(g_GenFFI.concat.firstBucket->data));
 
                 // Restore back the start of the buffer
-                concat.currentSP = gen.concat.firstBucket->data;
+                concat.currentSP = g_GenFFI.concat.firstBucket->data;
             }
 
-            startOffset = gen.concat.currentSP - gen.concat.firstBucket->data;
+            startOffset = g_GenFFI.concat.currentSP - g_GenFFI.concat.firstBucket->data;
             SWAG_ASSERT(startOffset < JIT_SIZE_BUFFER);
 
-            gen.emitPush(g_GenFFI.cc->ffiBaseRegister);
-            gen.emitOpBinaryRegImm(CpuReg::Rsp, stackSize, CpuOp::SUB, OpBits::B64);
-            gen.emitLoadRegImm(g_GenFFI.cc->ffiBaseRegister, reinterpret_cast<uint64_t>(context->sp), OpBits::B64);
+            g_GenFFI.emitPush(g_GenFFI.cc->ffiBaseRegister);
+            g_GenFFI.emitOpBinaryRegImm(CpuReg::Rsp, stackSize, CpuOp::SUB, OpBits::B64);
+            g_GenFFI.emitLoadRegImm(g_GenFFI.cc->ffiBaseRegister, reinterpret_cast<uint64_t>(context->sp), OpBits::B64);
 
-            gen.emitComputeCallParameters(typeInfoFunc, pushCPUParams, g_GenFFI.cc->ffiBaseRegister, 0, retCopyAddr);
+            g_GenFFI.emitComputeCallParameters(typeInfoFunc, pushCPUParams, g_GenFFI.cc->ffiBaseRegister, 0, retCopyAddr);
 
-            gen.emitLoadRegImm(g_GenFFI.cc->computeRegI0, reinterpret_cast<uint64_t>(foreignPtr), OpBits::B64);
-            gen.emitCallReg(g_GenFFI.cc->computeRegI0);
+            g_GenFFI.emitLoadRegImm(g_GenFFI.cc->computeRegI0, reinterpret_cast<uint64_t>(foreignPtr), OpBits::B64);
+            g_GenFFI.emitCallReg(g_GenFFI.cc->computeRegI0);
 
             if (!returnType->isVoid() && !retCopyAddr)
             {
-                gen.emitLoadRegImm(g_GenFFI.cc->ffiBaseRegister, reinterpret_cast<uint64_t>(context->registersRR), OpBits::B64);
-                gen.emitStoreCallResult(g_GenFFI.cc->ffiBaseRegister, 0, typeInfoFunc);
+                g_GenFFI.emitLoadRegImm(g_GenFFI.cc->ffiBaseRegister, reinterpret_cast<uint64_t>(context->registersRR), OpBits::B64);
+                g_GenFFI.emitStoreCallResult(g_GenFFI.cc->ffiBaseRegister, 0, typeInfoFunc);
             }
 
-            gen.emitOpBinaryRegImm(CpuReg::Rsp, stackSize, CpuOp::ADD, OpBits::B64);
-            gen.emitPop(g_GenFFI.cc->ffiBaseRegister);
-            gen.emitRet();
+            g_GenFFI.emitOpBinaryRegImm(CpuReg::Rsp, stackSize, CpuOp::ADD, OpBits::B64);
+            g_GenFFI.emitPop(g_GenFFI.cc->ffiBaseRegister);
+            g_GenFFI.emitRet();
         }
 
         // The real deal : make the call
         using FuncPtr  = void (*)();
-        const auto ptr = reinterpret_cast<FuncPtr>(gen.concat.firstBucket->data + startOffset);
+        const auto ptr = reinterpret_cast<FuncPtr>(g_GenFFI.concat.firstBucket->data + startOffset);
         ptr();
 
-        gen.concat.currentSP = reinterpret_cast<uint8_t*>(ptr);
+        g_GenFFI.concat.currentSP = reinterpret_cast<uint8_t*>(ptr);
     }
 
     Utf8 getClipboardString()
