@@ -347,7 +347,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::CastU64F64:
                 pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
-                pp.emitLoadZeroExtendRegReg(cc.computeRegF0, cc.computeRegI0, OpBits::B64, OpBits::B64);
+                pp.emitOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTI2F64, OpBits::B64);
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, OpBits::B64);
                 break;
 

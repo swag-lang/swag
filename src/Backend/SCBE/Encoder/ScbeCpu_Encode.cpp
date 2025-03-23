@@ -156,7 +156,10 @@ void ScbeCpu::emitLoadSignedExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t mem
 
 void ScbeCpu::emitLoadZeroExtendRegReg(CpuReg regDst, CpuReg regSrc, OpBits numBitsDst, OpBits numBitsSrc)
 {
-    encodeLoadZeroExtendRegReg(regDst, regSrc, numBitsDst, numBitsSrc, EMITF_Zero);
+    if (numBitsSrc == numBitsDst)
+        emitLoadRegReg(regDst, regSrc, numBitsSrc);
+    else
+        encodeLoadZeroExtendRegReg(regDst, regSrc, numBitsDst, numBitsSrc, EMITF_Zero);
 }
 
 void ScbeCpu::emitLoadZeroExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc)
