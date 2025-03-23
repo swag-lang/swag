@@ -2,6 +2,42 @@
 #include "Backend/SCBE/Encoder/ScbeCpu.h"
 #include "Backend/SCBE/Main/Scbe.h"
 
+namespace
+{
+    void maskValue(uint64_t& value, OpBits opBits)
+    {
+        switch (opBits)
+        {
+            case OpBits::B8:
+                value &= 0xFF;
+                break;
+            case OpBits::B16:
+                value &= 0xFFFF;
+                break;
+            case OpBits::B32:
+                value &= 0xFFFFFFFF;
+                break;
+        }
+    }
+
+    bool isNoOp(uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
+    {
+        if (emitFlags.has(EMITF_Overflow))
+            return false;
+        switch (value)
+        {
+            case 0:
+                return op == CpuOp::ADD || op == CpuOp::SUB || op == CpuOp::SAR || op == CpuOp::SHL || op == CpuOp::SHR || op == CpuOp::ROL || op == CpuOp::ROR || op == CpuOp::BT;
+            case 1:
+                return op == CpuOp::MUL || op == CpuOp::IMUL || op == CpuOp::DIV || op == CpuOp::IDIV;
+            default:
+                break;
+        }
+
+        return false;
+    }
+}
+
 void ScbeCpu::emitSymbolRelocationRef(const Utf8& name)
 {
     encodeSymbolRelocationRef(name);
@@ -154,11 +190,13 @@ void ScbeCpu::emitCmpMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBit
 
 void ScbeCpu::emitCmpMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits)
 {
+    maskValue(value, opBits);
     encodeCmpMemImm(memReg, memOffset, value, opBits);
 }
 
 void ScbeCpu::emitCmpRegImm(CpuReg reg, uint64_t value, OpBits opBits)
 {
+    maskValue(value, opBits);
     encodeCmpRegImm(reg, value, opBits);
 }
 
@@ -209,11 +247,26 @@ void ScbeCpu::emitOpBinaryMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, 
 
 void ScbeCpu::emitOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
+    maskValue(value, opBits);
+    if (optLevel > BuildCfgBackendOptim::O1 &&
+        isInt(reg) &&
+        isNoOp(value, op, opBits, emitFlags))
+    {
+        return;
+    }
+
     encodeOpBinaryRegImm(reg, value, op, opBits, emitFlags);
 }
 
 void ScbeCpu::emitOpBinaryMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
+    maskValue(value, opBits);
+    if (optLevel > BuildCfgBackendOptim::O1 &&
+        isNoOp(value, op, opBits, emitFlags))
+    {
+        return;
+    }
+
     encodeOpBinaryMemImm(memReg, memOffset, value, op, opBits, emitFlags);
 }
 

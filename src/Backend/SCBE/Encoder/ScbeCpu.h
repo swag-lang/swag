@@ -227,8 +227,6 @@ struct ScbeCpu : BackendEncoder
     CpuFunction* addFunction(const Utf8& funcName, const CallConv* ccFunc, ByteCode* bc);
     void         endFunction() const;
 
-    static void                maskValue(uint64_t& value, OpBits opBits);
-    bool                       isNoOp(uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags = EMITF_Zero) const;
     bool                       manipulateRegister(ScbeMicroInstruction* inst, CpuReg reg) const;
     virtual ScbeMicroOpDetails getInstructionDetails(ScbeMicroInstruction* inst) const { return 0; }
 

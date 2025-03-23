@@ -877,8 +877,6 @@ void ScbeX64::encodeCmpRegReg(CpuReg reg0, CpuReg reg1, OpBits opBits)
 
 void ScbeX64::encodeCmpRegImm(CpuReg reg, uint64_t value, OpBits opBits)
 {
-    maskValue(value, opBits);
-
     if (opBits == OpBits::B8)
     {
         if (getReg(reg) == X64Reg::Rax)
@@ -938,8 +936,6 @@ void ScbeX64::encodeCmpMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpB
 
 void ScbeX64::encodeCmpMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits)
 {
-    maskValue(value, opBits);
-
     if (opBits == OpBits::B8)
     {
         emitREX(concat, opBits, REX_REG_NONE, memReg);
@@ -1356,9 +1352,6 @@ namespace
 
 void ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
-    if (isInt(reg) && isNoOp(value, op, opBits, emitFlags))
-        return;
-
     ///////////////////////////////////////////
 
     if (op == CpuOp::XOR)
@@ -1760,11 +1753,6 @@ void ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp op, OpBits 
 
 void ScbeX64::encodeOpBinaryMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
-    if (isNoOp(value, op, opBits, emitFlags))
-        return;
-    SWAG_ASSERT(memOffset <= 0x7FFFFFFF);
-    maskValue(value, opBits);
-
     ///////////////////////////////////////////
 
     if (op == CpuOp::IMOD || op == CpuOp::MOD)
