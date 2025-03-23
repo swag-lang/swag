@@ -448,6 +448,7 @@
     <ClCompile Include="..\src\Backend\SCBE\Main\Scbe_Call.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Main\Scbe_Data.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Main\Scbe_Emit.cpp" />
+    <ClCompile Include="..\src\Backend\SCBE\Main\Scbe_EmitCpu.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Main\Scbe_Function.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Main\Scbe_Main.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Obj\ScbeCoff.cpp" />

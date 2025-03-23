@@ -2166,14 +2166,14 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                     case TokenId::IntrinsicMin:
                         emitIMMB(pp, cc.computeRegI0, opBits);
                         emitIMMC(pp, cc.computeRegI1, opBits);
-                        pp.emitCmpRegReg(cc.computeRegI1, cc.computeRegI0, opBits);
+                        emitCmpRegReg(pp, cc.computeRegI1, cc.computeRegI0, opBits);
                         emitOpBinaryRegReg(pp, cc.computeRegI0, cc.computeRegI1, CpuOp::CMOVL, opBits);
                         pp.emitLoadMegReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, opBits);
                         break;
                     case TokenId::IntrinsicMax:
                         emitIMMB(pp, cc.computeRegI0, opBits);
                         emitIMMC(pp, cc.computeRegI1, opBits);
-                        pp.emitCmpRegReg(cc.computeRegI0, cc.computeRegI1, opBits);
+                        emitCmpRegReg(pp, cc.computeRegI0, cc.computeRegI1, opBits);
                         emitOpBinaryRegReg(pp, cc.computeRegI0, cc.computeRegI1, CpuOp::CMOVL, opBits);
                         pp.emitLoadMegReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, opBits);
                         break;
@@ -2197,14 +2197,14 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                     case TokenId::IntrinsicMin:
                         emitIMMB(pp, cc.computeRegI0, opBits);
                         emitIMMC(pp, cc.computeRegI1, opBits);
-                        pp.emitCmpRegReg(cc.computeRegI1, cc.computeRegI0, opBits);
+                        emitCmpRegReg(pp, cc.computeRegI1, cc.computeRegI0, opBits);
                         emitOpBinaryRegReg(pp, cc.computeRegI0, cc.computeRegI1, CpuOp::CMOVB, opBits);
                         pp.emitLoadMegReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, opBits);
                         break;
                     case TokenId::IntrinsicMax:
                         emitIMMB(pp, cc.computeRegI0, opBits);
                         emitIMMC(pp, cc.computeRegI1, opBits);
-                        pp.emitCmpRegReg(cc.computeRegI0, cc.computeRegI1, opBits);
+                        emitCmpRegReg(pp, cc.computeRegI0, cc.computeRegI1, opBits);
                         emitOpBinaryRegReg(pp, cc.computeRegI0, cc.computeRegI1, CpuOp::CMOVB, opBits);
                         pp.emitLoadMegReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, opBits);
                         break;

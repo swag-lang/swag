@@ -87,22 +87,22 @@ void Scbe::emitShiftRightArithmetic(ScbeCpu& pp)
     if (!ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_B))
     {
         pp.emitLoadRegMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), opBits);
-        pp.emitOpBinaryRegImm(cc->computeRegI0, ip->b.u32, CpuOp::SAR, opBits);
+        emitOpBinaryRegImm(pp, cc->computeRegI0, ip->b.u32, CpuOp::SAR, opBits);
     }
     else if (ip->hasFlag(BCI_IMM_B))
     {
         pp.emitLoadRegImm(cc->computeRegI1, std::min(static_cast<uint32_t>(ip->b.u8), ScbeCpu::getNumBits(opBits) - 1), OpBits::B8);
         emitIMMA(pp, cc->computeRegI0, opBits);
-        pp.emitOpBinaryRegReg(cc->computeRegI0, cc->computeRegI1, CpuOp::SAR, opBits);
+        emitOpBinaryRegReg(pp, cc->computeRegI0, cc->computeRegI1, CpuOp::SAR, opBits);
     }
     else
     {
         pp.emitLoadRegMem(cc->computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32);
         pp.emitLoadRegImm(cc->computeRegI0, ScbeCpu::getNumBits(opBits) - 1, OpBits::B32);
         emitCmpRegImm(pp, cc->computeRegI1, ScbeCpu::getNumBits(opBits) - 1, OpBits::B32);
-        pp.emitOpBinaryRegReg(cc->computeRegI1, cc->computeRegI0, CpuOp::CMOVG, opBits);
+        emitOpBinaryRegReg(pp, cc->computeRegI1, cc->computeRegI0, CpuOp::CMOVG, opBits);
         emitIMMA(pp, cc->computeRegI0, opBits);
-        pp.emitOpBinaryRegReg(cc->computeRegI0, cc->computeRegI1, CpuOp::SAR, opBits);
+        emitOpBinaryRegReg(pp, cc->computeRegI0, cc->computeRegI1, CpuOp::SAR, opBits);
     }
 
     pp.emitLoadMegReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, opBits);
@@ -116,16 +116,16 @@ void Scbe::emitShiftRightEqArithmetic(ScbeCpu& pp)
     if (ip->hasFlag(BCI_IMM_B))
     {
         pp.emitLoadRegMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-        pp.emitOpBinaryMemImm(cc->computeRegI0, 0, ip->b.u32, CpuOp::SAR, opBits);
+        emitOpBinaryMemImm(pp, cc->computeRegI0, 0, ip->b.u32, CpuOp::SAR, opBits);
     }
     else
     {
         pp.emitLoadRegMem(cc->computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32);
         pp.emitLoadRegImm(cc->computeRegI0, ScbeCpu::getNumBits(opBits) - 1, OpBits::B32);
         emitCmpRegImm(pp, cc->computeRegI1, ScbeCpu::getNumBits(opBits) - 1, OpBits::B32);
-        pp.emitOpBinaryRegReg(cc->computeRegI1, cc->computeRegI0, CpuOp::CMOVG, opBits);
+        emitOpBinaryRegReg(pp, cc->computeRegI1, cc->computeRegI0, CpuOp::CMOVG, opBits);
         pp.emitLoadRegMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-        pp.emitOpBinaryMemReg(cc->computeRegI0, 0, cc->computeRegI1, CpuOp::SAR, opBits);
+        emitOpBinaryMemReg(pp,  cc->computeRegI0, 0, cc->computeRegI1, CpuOp::SAR, opBits);
     }
 }
 
@@ -136,22 +136,22 @@ void Scbe::emitShiftLogical(ScbeCpu& pp, CpuOp op)
     const auto opBits = ScbeCpu::getOpBits(ip->op);
     if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 >= ScbeCpu::getNumBits(opBits))
     {
-        pp.emitLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), 0, opBits);
+        emitLoadMemImm(pp, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), 0, opBits);
     }
     else if (!ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_B))
     {
         pp.emitLoadRegMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), opBits);
-        pp.emitOpBinaryRegImm(cc->computeRegI0, ip->b.u8, op, opBits);
+        emitOpBinaryRegImm(pp, cc->computeRegI0, ip->b.u8, op, opBits);
         pp.emitLoadMegReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, opBits);
     }
     else
     {
         emitIMMA(pp, cc->computeRegI0, opBits);
         emitIMMB(pp, cc->computeRegI1, OpBits::B32);
-        pp.emitOpBinaryRegReg(cc->computeRegI0, cc->computeRegI1, op, opBits);
+        emitOpBinaryRegReg(pp, cc->computeRegI0, cc->computeRegI1, op, opBits);
         pp.emitClearReg(cc->computeRegI2, opBits);
         emitCmpRegImm(pp, cc->computeRegI1, ScbeCpu::getNumBits(opBits) - 1, OpBits::B32);
-        pp.emitOpBinaryRegReg(cc->computeRegI0, cc->computeRegI2, CpuOp::CMOVG, opBits);
+        emitOpBinaryRegReg(pp, cc->computeRegI0, cc->computeRegI2, CpuOp::CMOVG, opBits);
         pp.emitLoadMegReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, opBits);
     }
 }
@@ -164,12 +164,12 @@ void Scbe::emitShiftEqLogical(ScbeCpu& pp, CpuOp op)
     if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 >= ScbeCpu::getNumBits(opBits))
     {
         pp.emitLoadRegMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-        pp.emitLoadMemImm(cc->computeRegI0, 0, 0, opBits);
+        emitLoadMemImm(pp, cc->computeRegI0, 0, 0, opBits);
     }
     else if (ip->hasFlag(BCI_IMM_B))
     {
         pp.emitLoadRegMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-        pp.emitOpBinaryMemImm(cc->computeRegI0, 0, ip->b.u8, op, opBits);
+        emitOpBinaryMemImm(pp, cc->computeRegI0, 0, ip->b.u8, op, opBits);
     }
     else
     {
@@ -180,7 +180,7 @@ void Scbe::emitShiftEqLogical(ScbeCpu& pp, CpuOp op)
         pp.emitClearReg(cc->computeRegI1, opBits);
         pp.emitLoadMegReg(cc->computeRegI0, 0, cc->computeRegI1, opBits);
         pp.emitPatchJump(jump);
-        pp.emitOpBinaryMemReg(cc->computeRegI0, 0, cc->computeRegI1, op, opBits);
+        emitOpBinaryMemReg(pp,  cc->computeRegI0, 0, cc->computeRegI1, op, opBits);
     }
 }
 
@@ -204,14 +204,14 @@ void Scbe::emitBinOp(ScbeCpu& pp, CpuOp op, CpuEmitFlags emitFlags)
     if (isInt && !ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_B))
     {
         pp.emitLoadRegMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), opBits);
-        pp.emitOpBinaryRegImm(cc->computeRegI0, ip->b.u64, op, opBits, emitFlags);
+        emitOpBinaryRegImm(pp, cc->computeRegI0, ip->b.u64, op, opBits, emitFlags);
         pp.emitLoadMegReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, opBits);
     }
     else if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_B))
     {
         const auto r0 = isInt ? cc->computeRegI0 : cc->computeRegF0;
         pp.emitLoadRegMem(r0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), opBits);
-        pp.emitOpBinaryRegMem(r0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), op, opBits, emitFlags);
+        emitOpBinaryRegMem(pp, r0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), op, opBits, emitFlags);
         pp.emitLoadMegReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), r0, opBits);
     }
     else
@@ -220,7 +220,7 @@ void Scbe::emitBinOp(ScbeCpu& pp, CpuOp op, CpuEmitFlags emitFlags)
         const auto r1 = isInt ? cc->computeRegI1 : cc->computeRegF1;
         emitIMMA(pp, r0, opBits);
         emitIMMB(pp, r1, opBits);
-        pp.emitOpBinaryRegReg(r0, r1, op, opBits, emitFlags);
+        emitOpBinaryRegReg(pp, r0, r1, op, opBits, emitFlags);
         pp.emitLoadMegReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), r0, opBits);
     }
 }
@@ -242,7 +242,7 @@ void Scbe::emitBinOpEq(ScbeCpu& pp, uint32_t offset, CpuOp op, CpuEmitFlags emit
     if (isInt && ip->hasFlag(BCI_IMM_B))
     {
         pp.emitLoadRegMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-        pp.emitOpBinaryMemImm(cc->computeRegI0, offset, ip->b.u64, op, opBits, emitFlags);
+        emitOpBinaryMemImm(pp, cc->computeRegI0, offset, ip->b.u64, op, opBits, emitFlags);
     }
     else
     {
@@ -250,7 +250,7 @@ void Scbe::emitBinOpEq(ScbeCpu& pp, uint32_t offset, CpuOp op, CpuEmitFlags emit
         const auto r1 = isInt ? cc->computeRegI1 : cc->computeRegF0;
         pp.emitLoadRegMem(r0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
         emitIMMB(pp, r1, opBits);
-        pp.emitOpBinaryMemReg(r0, offset, r1, op, opBits, emitFlags);
+        emitOpBinaryMemReg(pp,  r0, offset, r1, op, opBits, emitFlags);
     }
 }
 
@@ -270,7 +270,7 @@ void Scbe::emitBinOpEqLock(ScbeCpu& pp, CpuOp op)
     const auto opBits = ScbeCpu::getOpBits(ip->op);
     pp.emitLoadRegMem(cc->computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
     emitIMMB(pp, cc->computeRegI0, opBits);
-    pp.emitOpBinaryMemReg(cc->computeRegI1, 0, cc->computeRegI0, op, opBits, EMITF_Lock);
+    emitOpBinaryMemReg(pp,  cc->computeRegI1, 0, cc->computeRegI0, op, opBits, EMITF_Lock);
 }
 
 void Scbe::emitBinOpEqS(ScbeCpu& pp, CpuOp op)
@@ -281,13 +281,13 @@ void Scbe::emitBinOpEqS(ScbeCpu& pp, CpuOp op)
     const auto opBits = ScbeCpu::getOpBits(ip->op);
     if (isInt && ip->hasFlag(BCI_IMM_B))
     {
-        pp.emitOpBinaryMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->a.u32, ip->b.u64, op, opBits);
+        emitOpBinaryMemImm(pp, CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->a.u32, ip->b.u64, op, opBits);
     }
     else
     {
         const auto r1 = isInt ? cc->computeRegI1 : cc->computeRegF1;
         emitIMMB(pp, r1, opBits);
-        pp.emitOpBinaryMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->a.u32, r1, op, opBits);
+        emitOpBinaryMemReg(pp,  CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->a.u32, r1, op, opBits);
     }
 }
 
@@ -301,7 +301,7 @@ void Scbe::emitCompareOp(ScbeCpu& pp, CpuReg reg, CpuCondFlag cond)
     {
         const auto r0 = isInt ? cc->computeRegI0 : cc->computeRegF0;
         pp.emitLoadRegMem(r0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), opBits);
-        pp.emitCmpMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), r0, opBits);
+        emitCmpMemReg(pp, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), r0, opBits);
     }
     else if (isInt && !ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_B))
     {
@@ -313,7 +313,7 @@ void Scbe::emitCompareOp(ScbeCpu& pp, CpuReg reg, CpuCondFlag cond)
         const auto r1 = isInt ? cc->computeRegI1 : cc->computeRegF1;
         emitIMMA(pp, r0, opBits);
         emitIMMB(pp, r1, opBits);
-        pp.emitCmpRegReg(r0, r1, opBits);
+        emitCmpRegReg(pp, r0, r1, opBits);
     }
 
     pp.emitSetCond(reg, cond);
@@ -336,33 +336,33 @@ void Scbe::emitAddSubMul64(ScbeCpu& pp, uint64_t mulValue, CpuOp op)
     }
     else if (ip->hasFlag(BCI_IMM_B) && ip->a.u32 == ip->c.u32)
     {
-        pp.emitOpBinaryMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), value, op, OpBits::B64);
+        emitOpBinaryMemImm(pp, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), value, op, OpBits::B64);
     }
     else if (ip->hasFlag(BCI_IMM_B))
     {
         pp.emitLoadRegMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-        pp.emitOpBinaryRegImm(cc->computeRegI0, value, op, OpBits::B64);
+        emitOpBinaryRegImm(pp, cc->computeRegI0, value, op, OpBits::B64);
         pp.emitLoadMegReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, OpBits::B64);
     }
     else if (ip->a.u32 == ip->c.u32)
     {
         pp.emitLoadRegMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
-        pp.emitOpBinaryRegImm(cc->computeRegI0, mulValue, CpuOp::IMUL, OpBits::B64);
-        pp.emitOpBinaryMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, op, OpBits::B64);
+        emitOpBinaryRegImm(pp, cc->computeRegI0, mulValue, CpuOp::IMUL, OpBits::B64);
+        emitOpBinaryMemReg(pp,  CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, op, OpBits::B64);
     }
     else if (op == CpuOp::ADD)
     {
         pp.emitLoadRegMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
-        pp.emitOpBinaryRegImm(cc->computeRegI0, mulValue, CpuOp::IMUL, OpBits::B64);
-        pp.emitOpBinaryRegMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), op, OpBits::B64);
+        emitOpBinaryRegImm(pp, cc->computeRegI0, mulValue, CpuOp::IMUL, OpBits::B64);
+        emitOpBinaryRegMem(pp, cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), op, OpBits::B64);
         pp.emitLoadMegReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, OpBits::B64);
     }
     else
     {
         pp.emitLoadRegMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
-        pp.emitOpBinaryRegImm(cc->computeRegI0, mulValue, CpuOp::IMUL, OpBits::B64);
+        emitOpBinaryRegImm(pp, cc->computeRegI0, mulValue, CpuOp::IMUL, OpBits::B64);
         pp.emitLoadRegMem(cc->computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-        pp.emitOpBinaryRegReg(cc->computeRegI1, cc->computeRegI0, op, OpBits::B64);
+        emitOpBinaryRegReg(pp, cc->computeRegI1, cc->computeRegI0, op, OpBits::B64);
         pp.emitLoadMegReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI1, OpBits::B64);
     }
 }
@@ -389,7 +389,7 @@ void Scbe::emitJumpCmp(ScbeCpu& pp, CpuCondJump op, OpBits opBits)
     {
         const auto r0 = isInt ? cc->computeRegI0 : cc->computeRegF0;
         pp.emitLoadRegMem(r0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), opBits);
-        pp.emitCmpMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), r0, opBits);
+        emitCmpMemReg(pp, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), r0, opBits);
     }
     else if (isInt && !ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_C))
     {
@@ -401,7 +401,7 @@ void Scbe::emitJumpCmp(ScbeCpu& pp, CpuCondJump op, OpBits opBits)
         const auto r1 = isInt ? cc->computeRegI1 : cc->computeRegF1;
         emitIMMA(pp, r0, opBits);
         emitIMMC(pp, r1, opBits);
-        pp.emitCmpRegReg(r0, r1, opBits);
+        emitCmpRegReg(pp, r0, r1, opBits);
     }
 
     pp.emitJumpCI(op, pp.ipIndex + ip->b.s32 + 1);
@@ -419,7 +419,7 @@ void Scbe::emitJumpCmpAddr(ScbeCpu& pp, CpuCondJump op, CpuReg memReg, uint64_t 
     else
     {
         pp.emitLoadRegMem(cc->computeRegI0, memReg, memOffset, opBits);
-        pp.emitCmpMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, opBits);
+        emitCmpMemReg(pp, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, opBits);
     }
 
     pp.emitJumpCI(op, pp.ipIndex + ip->b.s32 + 1);
@@ -433,13 +433,13 @@ void Scbe::emitJumpCmp2(ScbeCpu& pp, CpuCondJump op1, CpuCondJump op2, OpBits op
     if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_C))
     {
         pp.emitLoadRegMem(cc->computeRegF0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), opBits);
-        pp.emitCmpMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegF0, opBits);
+        emitCmpMemReg(pp, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegF0, opBits);
     }
     else
     {
         emitIMMA(pp, cc->computeRegF0, opBits);
         emitIMMC(pp, cc->computeRegF1, opBits);
-        pp.emitCmpRegReg(cc->computeRegF0, cc->computeRegF1, opBits);
+        emitCmpRegReg(pp, cc->computeRegF0, cc->computeRegF1, opBits);
     }
 
     pp.emitJumpCI(op1, pp.ipIndex + ip->b.s32 + 1);
@@ -454,13 +454,13 @@ void Scbe::emitJumpCmp3(ScbeCpu& pp, CpuCondJump op1, CpuCondJump op2, OpBits op
     if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_C))
     {
         pp.emitLoadRegMem(cc->computeRegF0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), opBits);
-        pp.emitCmpMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegF0, opBits);
+        emitCmpMemReg(pp, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegF0, opBits);
     }
     else
     {
         emitIMMA(pp, cc->computeRegF0, opBits);
         emitIMMC(pp, cc->computeRegF1, opBits);
-        pp.emitCmpRegReg(cc->computeRegF0, cc->computeRegF1, opBits);
+        emitCmpRegReg(pp, cc->computeRegF0, cc->computeRegF1, opBits);
     }
 
     pp.emitJumpCI(op1, pp.ipIndex + 1);
@@ -483,7 +483,7 @@ void Scbe::emitJumpDyn(ScbeCpu& pp)
     //
     // We could in the end remove two instructions and be as the llvm generation
 
-    pp.emitOpBinaryRegImm(cc->computeRegI0, ip->b.u64 - 1, CpuOp::SUB, OpBits::B64);
+    emitOpBinaryRegImm(pp, cc->computeRegI0, ip->b.u64 - 1, CpuOp::SUB, OpBits::B64);
     emitCmpRegImm(pp, cc->computeRegI0, ip->c.u64, OpBits::B64);
     const auto tableCompiler = reinterpret_cast<int32_t*>(pp.buildParams.module->compilerSegment.address(ip->d.u32));
     pp.emitJumpCI(CpuCondJump::JAE, pp.ipIndex + tableCompiler[0] + 1);
@@ -560,54 +560,4 @@ void Scbe::emitCopyVaargs(ScbeCpu& pp)
         pp.emitLoadAddressMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->sizeStackCallParams - variadicStackSize);
         pp.emitLoadMegReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, OpBits::B64);
     }
-}
-
-void Scbe::emitCmpMemImm(ScbeCpu& pp, CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits)
-{
-    pp.emitCmpMemImm(memReg, memOffset, value, opBits);
-}
-
-void Scbe::emitCmpRegImm(ScbeCpu& pp, CpuReg reg, uint64_t value, OpBits opBits)
-{
-    pp.emitCmpRegImm(reg, value, opBits);
-}
-
-void Scbe::emitLoadMemImm(ScbeCpu& pp, CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits)
-{
-    pp.emitLoadMemImm(memReg, memOffset, value, opBits);
-}
-
-void Scbe::emitOpUnaryMem(ScbeCpu& pp, CpuReg memReg, uint64_t memOffset, CpuOp op, OpBits opBits)
-{
-    pp.emitOpUnaryMem(memReg, memOffset, op, opBits);
-}
-
-void Scbe::emitOpUnaryReg(ScbeCpu& pp, CpuReg reg, CpuOp op, OpBits opBits)
-{
-    pp.emitOpUnaryReg(reg, op, opBits);
-}
-
-void Scbe::emitOpBinaryRegReg(ScbeCpu& pp, CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
-{
-    pp.emitOpBinaryRegReg(regDst, regSrc, op, opBits, emitFlags);
-}
-
-void Scbe::emitOpBinaryRegMem(ScbeCpu& pp, CpuReg regDst, CpuReg memReg, uint64_t memOffset, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
-{
-    pp.emitOpBinaryRegMem(regDst, memReg, memOffset, op, opBits, emitFlags);
-}
-
-void Scbe::emitOpBinaryMemReg(ScbeCpu& pp, CpuReg memReg, uint64_t memOffset, CpuReg reg, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
-{
-    pp.emitOpBinaryMemReg(memReg, memOffset, reg, op, opBits, emitFlags);
-}
-
-void Scbe::emitOpBinaryRegImm(ScbeCpu& pp, CpuReg reg, uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
-{
-    pp.emitOpBinaryRegImm(reg, value, op, opBits, emitFlags);
-}
-
-void Scbe::emitOpBinaryMemImm(ScbeCpu& pp, CpuReg memReg, uint64_t memOffset, uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
-{
-    pp.emitOpBinaryMemImm(memReg, memOffset, value, op, opBits, emitFlags);
 }
