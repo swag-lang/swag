@@ -294,7 +294,7 @@ namespace
 
 /////////////////////////////////////////////////////////////////////
 
-void ScbeX64::emitSymbolRelocationRef(const Utf8& name)
+void ScbeX64::encodeSymbolRelocationRef(const Utf8& name)
 {
     const auto callSym = getOrAddSymbol(name, CpuSymbolKind::Extern);
     if (callSym->kind == CpuSymbolKind::Function)
@@ -308,7 +308,7 @@ void ScbeX64::emitSymbolRelocationRef(const Utf8& name)
     }
 }
 
-void ScbeX64::emitSymbolRelocationAddress(CpuReg reg, uint32_t symbolIndex, uint32_t offset)
+void ScbeX64::encodeSymbolRelocationAddress(CpuReg reg, uint32_t symbolIndex, uint32_t offset)
 {
     emitREX(concat, OpBits::B64, reg);
     emitCPUOp(concat, 0x8D); // LEA
@@ -317,7 +317,7 @@ void ScbeX64::emitSymbolRelocationAddress(CpuReg reg, uint32_t symbolIndex, uint
     concat.addU32(offset);
 }
 
-void ScbeX64::emitSymbolRelocationValue(CpuReg reg, uint32_t symbolIndex, uint32_t offset)
+void ScbeX64::encodeSymbolRelocationValue(CpuReg reg, uint32_t symbolIndex, uint32_t offset)
 {
     emitREX(concat, OpBits::B64, reg);
     emitCPUOp(concat, 0x8B); // MOV
@@ -326,7 +326,7 @@ void ScbeX64::emitSymbolRelocationValue(CpuReg reg, uint32_t symbolIndex, uint32
     concat.addU32(offset);
 }
 
-void ScbeX64::emitSymbolGlobalString(CpuReg reg, const Utf8& str)
+void ScbeX64::encodeSymbolGlobalString(CpuReg reg, const Utf8& str)
 {
     emitLoadRegImm64(reg, 0);
     const auto sym = getOrCreateGlobalString(str);
@@ -335,26 +335,26 @@ void ScbeX64::emitSymbolGlobalString(CpuReg reg, const Utf8& str)
 
 /////////////////////////////////////////////////////////////////////
 
-void ScbeX64::emitPush(CpuReg reg)
+void ScbeX64::encodePush(CpuReg reg)
 {
     emitREX(concat, OpBits::Zero, REX_REG_NONE, reg);
     emitCPUOp(concat, 0x50, reg);
 }
 
-void ScbeX64::emitPop(CpuReg reg)
+void ScbeX64::encodePop(CpuReg reg)
 {
     emitREX(concat, OpBits::Zero, REX_REG_NONE, reg);
     emitCPUOp(concat, 0x58, reg);
 }
 
-void ScbeX64::emitRet()
+void ScbeX64::encodeRet()
 {
     emitCPUOp(concat, 0xC3);
 }
 
 /////////////////////////////////////////////////////////////////////
 
-void ScbeX64::emitLoadRegReg(CpuReg regDst, CpuReg regSrc, OpBits opBits)
+void ScbeX64::encodeLoadRegReg(CpuReg regDst, CpuReg regSrc, OpBits opBits)
 {
     if (isFloat(regDst) && isFloat(regSrc))
     {
@@ -387,14 +387,14 @@ void ScbeX64::emitLoadRegReg(CpuReg regDst, CpuReg regSrc, OpBits opBits)
     }
 }
 
-void ScbeX64::emitLoadRegImm64(CpuReg reg, uint64_t value)
+void ScbeX64::encodeLoadRegImm64(CpuReg reg, uint64_t value)
 {
     emitREX(concat, OpBits::B64, REX_REG_NONE, reg);
     emitCPUOp(concat, 0xB8, reg);
     concat.addU64(value);
 }
 
-void ScbeX64::emitLoadRegImm(CpuReg reg, uint64_t value, OpBits opBits)
+void ScbeX64::encodeLoadRegImm(CpuReg reg, uint64_t value, OpBits opBits)
 {
     if (value == 0)
     {
@@ -440,7 +440,7 @@ void ScbeX64::emitLoadRegImm(CpuReg reg, uint64_t value, OpBits opBits)
     }
 }
 
-void ScbeX64::emitLoadRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits opBits)
+void ScbeX64::encodeLoadRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits opBits)
 {
     if (isFloat(reg))
     {
@@ -458,7 +458,7 @@ void ScbeX64::emitLoadRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBi
     }
 }
 
-void ScbeX64::emitLoadZeroExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc)
+void ScbeX64::encodeLoadZeroExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc)
 {
     if (numBitsSrc == numBitsDst)
     {
@@ -490,7 +490,7 @@ void ScbeX64::emitLoadZeroExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t memOf
     }
 }
 
-void ScbeX64::emitLoadZeroExtendRegReg(CpuReg regDst, CpuReg regSrc, OpBits numBitsDst, OpBits numBitsSrc)
+void ScbeX64::encodeLoadZeroExtendRegReg(CpuReg regDst, CpuReg regSrc, OpBits numBitsDst, OpBits numBitsSrc)
 {
     if (numBitsSrc == numBitsDst && isFloat(regDst) == isFloat(regSrc))
     {
@@ -556,7 +556,7 @@ void ScbeX64::emitLoadZeroExtendRegReg(CpuReg regDst, CpuReg regSrc, OpBits numB
     }
 }
 
-void ScbeX64::emitLoadSignedExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc)
+void ScbeX64::encodeLoadSignedExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc)
 {
     if (numBitsSrc == numBitsDst)
     {
@@ -591,7 +591,7 @@ void ScbeX64::emitLoadSignedExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t mem
     }
 }
 
-void ScbeX64::emitLoadSignedExtendRegReg(CpuReg regDst, CpuReg regSrc, OpBits numBitsDst, OpBits numBitsSrc)
+void ScbeX64::encodeLoadSignedExtendRegReg(CpuReg regDst, CpuReg regSrc, OpBits numBitsDst, OpBits numBitsSrc)
 {
     if (numBitsSrc == numBitsDst)
     {
@@ -628,7 +628,7 @@ void ScbeX64::emitLoadSignedExtendRegReg(CpuReg regDst, CpuReg regSrc, OpBits nu
 
 /////////////////////////////////////////////////////////////////////
 
-void ScbeX64::emitLoadAddressMem(CpuReg reg, CpuReg memReg, uint64_t memOffset)
+void ScbeX64::encodeLoadAddressMem(CpuReg reg, CpuReg memReg, uint64_t memOffset)
 {
     if (memReg == CpuReg::Rip)
     {
@@ -649,7 +649,7 @@ void ScbeX64::emitLoadAddressMem(CpuReg reg, CpuReg memReg, uint64_t memOffset)
     }
 }
 
-void ScbeX64::emitLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, OpBits opBits)
+void ScbeX64::encodeLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, OpBits opBits)
 {
     SWAG_ASSERT(regSrc1 == regDst);
     SWAG_ASSERT(regSrc2 == regDst);
@@ -672,7 +672,7 @@ void ScbeX64::emitLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc
 
 /////////////////////////////////////////////////////////////////////
 
-void ScbeX64::emitLoadMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits opBits)
+void ScbeX64::encodeLoadMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits opBits)
 {
     if (isFloat(reg))
     {
@@ -690,7 +690,7 @@ void ScbeX64::emitLoadMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBi
     }
 }
 
-void ScbeX64::emitLoadMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits)
+void ScbeX64::encodeLoadMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits)
 {
     if (opBits == OpBits::B64 && value > 0x7FFFFFFF && value >> 32 != 0xFFFFFFFF)
     {
@@ -709,7 +709,7 @@ void ScbeX64::emitLoadMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, 
 
 /////////////////////////////////////////////////////////////////////
 
-void ScbeX64::emitClearReg(CpuReg reg, OpBits opBits)
+void ScbeX64::encodeClearReg(CpuReg reg, OpBits opBits)
 {
     if (isFloat(reg))
     {
@@ -728,7 +728,7 @@ void ScbeX64::emitClearReg(CpuReg reg, OpBits opBits)
 
 /////////////////////////////////////////////////////////////////////
 
-void ScbeX64::emitSetCond(CpuReg reg, CpuCondFlag setType)
+void ScbeX64::encodeSetCond(CpuReg reg, CpuCondFlag setType)
 {
     switch (setType)
     {
@@ -852,7 +852,7 @@ void ScbeX64::emitSetCond(CpuReg reg, CpuCondFlag setType)
 
 /////////////////////////////////////////////////////////////////////
 
-void ScbeX64::emitCmpRegReg(CpuReg reg0, CpuReg reg1, OpBits opBits)
+void ScbeX64::encodeCmpRegReg(CpuReg reg0, CpuReg reg1, OpBits opBits)
 {
     if (isFloat(reg0) && isInt(reg1))
     {
@@ -875,7 +875,7 @@ void ScbeX64::emitCmpRegReg(CpuReg reg0, CpuReg reg1, OpBits opBits)
     }
 }
 
-void ScbeX64::emitCmpRegImm(CpuReg reg, uint64_t value, OpBits opBits)
+void ScbeX64::encodeCmpRegImm(CpuReg reg, uint64_t value, OpBits opBits)
 {
     maskValue(value, opBits);
 
@@ -918,7 +918,7 @@ void ScbeX64::emitCmpRegImm(CpuReg reg, uint64_t value, OpBits opBits)
     }
 }
 
-void ScbeX64::emitCmpMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits opBits)
+void ScbeX64::encodeCmpMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits opBits)
 {
     if (isFloat(reg))
     {
@@ -936,7 +936,7 @@ void ScbeX64::emitCmpMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBit
     }
 }
 
-void ScbeX64::emitCmpMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits)
+void ScbeX64::encodeCmpMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits)
 {
     maskValue(value, opBits);
 
@@ -971,7 +971,7 @@ void ScbeX64::emitCmpMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, O
 
 /////////////////////////////////////////////////////////////////////
 
-void ScbeX64::emitOpUnaryMem(CpuReg memReg, uint64_t memOffset, CpuOp op, OpBits opBits)
+void ScbeX64::encodeOpUnaryMem(CpuReg memReg, uint64_t memOffset, CpuOp op, OpBits opBits)
 {
     if (op == CpuOp::NOT)
     {
@@ -993,7 +993,7 @@ void ScbeX64::emitOpUnaryMem(CpuReg memReg, uint64_t memOffset, CpuOp op, OpBits
     }
 }
 
-void ScbeX64::emitOpUnaryReg(CpuReg reg, CpuOp op, OpBits opBits)
+void ScbeX64::encodeOpUnaryReg(CpuReg reg, CpuOp op, OpBits opBits)
 {
     if (op == CpuOp::NOT)
     {
@@ -1041,7 +1041,7 @@ void ScbeX64::emitOpUnaryReg(CpuReg reg, CpuOp op, OpBits opBits)
     }
 }
 
-void ScbeX64::emitOpBinaryRegMem(CpuReg regDst, CpuReg memReg, uint64_t memOffset, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
+void ScbeX64::encodeOpBinaryRegMem(CpuReg regDst, CpuReg memReg, uint64_t memOffset, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
     ///////////////////////////////////////////
 
@@ -1100,7 +1100,7 @@ void ScbeX64::emitOpBinaryRegMem(CpuReg regDst, CpuReg memReg, uint64_t memOffse
     }
 }
 
-void ScbeX64::emitOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
+void ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
     if (isFloat(regDst) || isFloat(regSrc))
     {
@@ -1251,7 +1251,7 @@ void ScbeX64::emitOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits 
     }
 }
 
-void ScbeX64::emitOpBinaryMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
+void ScbeX64::encodeOpBinaryMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
     if (isFloat(reg))
     {
@@ -1354,7 +1354,7 @@ namespace
     }
 }
 
-void ScbeX64::emitOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
+void ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
     if (isInt(reg) && isNoOp(value, op, opBits, emitFlags))
         return;
@@ -1758,7 +1758,7 @@ void ScbeX64::emitOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp op, OpBits op
     }
 }
 
-void ScbeX64::emitOpBinaryMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
+void ScbeX64::encodeOpBinaryMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
     if (isNoOp(value, op, opBits, emitFlags))
         return;
@@ -2113,7 +2113,7 @@ void ScbeX64::emitOpBinaryMemImm(CpuReg memReg, uint64_t memOffset, uint64_t val
 }
 
 /////////////////////////////////////////////////////////////////////
-void ScbeX64::emitJumpTable(CpuReg table, CpuReg offset, int32_t currentIp, uint32_t offsetTable, uint32_t numEntries)
+void ScbeX64::encodeJumpTable(CpuReg table, CpuReg offset, int32_t currentIp, uint32_t offsetTable, uint32_t numEntries)
 {
     uint8_t*   addrConstant        = nullptr;
     const auto offsetTableConstant = buildParams.module->constantSegment.reserve(numEntries * sizeof(uint32_t), &addrConstant);
@@ -2147,7 +2147,7 @@ void ScbeX64::emitJumpTable(CpuReg table, CpuReg offset, int32_t currentIp, uint
     }
 }
 
-CpuJump ScbeX64::emitJump(CpuCondJump jumpType, OpBits opBits)
+CpuJump ScbeX64::encodeJump(CpuCondJump jumpType, OpBits opBits)
 {
     SWAG_ASSERT(opBits == OpBits::B8 || opBits == OpBits::B32);
 
@@ -2281,7 +2281,7 @@ CpuJump ScbeX64::emitJump(CpuCondJump jumpType, OpBits opBits)
     return jump;
 }
 
-void ScbeX64::emitPatchJump(const CpuJump& jump, uint64_t offsetDestination)
+void ScbeX64::encodePatchJump(const CpuJump& jump, uint64_t offsetDestination)
 {
     const int32_t offset = static_cast<int32_t>(offsetDestination - jump.offset);
     if (jump.opBits == OpBits::B8)
@@ -2295,7 +2295,7 @@ void ScbeX64::emitPatchJump(const CpuJump& jump, uint64_t offsetDestination)
     }
 }
 
-void ScbeX64::emitPatchJump(const CpuJump& jump)
+void ScbeX64::encodePatchJump(const CpuJump& jump)
 {
     const int32_t offset = static_cast<int32_t>(concat.totalCount() - jump.offset);
     if (jump.opBits == OpBits::B8)
@@ -2309,7 +2309,7 @@ void ScbeX64::emitPatchJump(const CpuJump& jump)
     }
 }
 
-void ScbeX64::emitJumpReg(CpuReg reg)
+void ScbeX64::encodeJumpReg(CpuReg reg)
 {
     emitREX(concat, OpBits::Zero, REX_REG_NONE, reg);
     emitCPUOp(concat, 0xFF);
@@ -2318,7 +2318,7 @@ void ScbeX64::emitJumpReg(CpuReg reg)
 
 /////////////////////////////////////////////////////////////////////
 
-void ScbeX64::emitCopy(CpuReg memRegDst, CpuReg memRegSrc, uint32_t count)
+void ScbeX64::encodeCopy(CpuReg memRegDst, CpuReg memRegSrc, uint32_t count)
 {
     if (!count)
         return;
@@ -2379,7 +2379,7 @@ void ScbeX64::emitCopy(CpuReg memRegDst, CpuReg memRegSrc, uint32_t count)
     }
 }
 
-void ScbeX64::emitClearMem(CpuReg memReg, uint64_t memOffset, uint32_t count)
+void ScbeX64::encodeClearMem(CpuReg memReg, uint64_t memOffset, uint32_t count)
 {
     if (!count)
         return;
@@ -2432,7 +2432,7 @@ void ScbeX64::emitClearMem(CpuReg memReg, uint64_t memOffset, uint32_t count)
 
 /////////////////////////////////////////////////////////////////////
 
-void ScbeX64::emitCallExtern(const Utf8& symbolName)
+void ScbeX64::encodeCallExtern(const Utf8& symbolName)
 {
     emitCPUOp(concat, 0xFF);
     emitModRM(concat, ModRMMode::Memory, MODRM_REG_2, MODRM_RM_RIP);
@@ -2442,7 +2442,7 @@ void ScbeX64::emitCallExtern(const Utf8& symbolName)
     concat.addU32(0);
 }
 
-void ScbeX64::emitCallLocal(const Utf8& symbolName)
+void ScbeX64::encodeCallLocal(const Utf8& symbolName)
 {
     emitCPUOp(concat, 0xE8);
 
@@ -2458,7 +2458,7 @@ void ScbeX64::emitCallLocal(const Utf8& symbolName)
     }
 }
 
-void ScbeX64::emitCallReg(CpuReg reg)
+void ScbeX64::encodeCallReg(CpuReg reg)
 {
     emitREX(concat, OpBits::Zero, REX_REG_NONE, reg);
     emitCPUOp(concat, 0xFF);
@@ -2467,13 +2467,13 @@ void ScbeX64::emitCallReg(CpuReg reg)
 
 /////////////////////////////////////////////////////////////////////
 
-void ScbeX64::emitNop()
+void ScbeX64::encodeNop()
 {
     emitCPUOp(concat, 0x90);
 }
 
 // a*b+c
-void ScbeX64::emitOpMulAdd(CpuReg regDst, CpuReg regMul, CpuReg regAdd, OpBits opBits)
+void ScbeX64::encodeOpMulAdd(CpuReg regDst, CpuReg regMul, CpuReg regAdd, OpBits opBits)
 {
     emitSpecF64(concat, 0xF3, opBits);
     emitCPUOp(concat, 0x0F);

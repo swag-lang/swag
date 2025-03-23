@@ -97,16 +97,16 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     {
         const auto typeParam = typeFunc->registerIdxToType(idxReg);
         if (cc.useRegisterFloat && typeParam->isNativeFloat())
-            pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetParam(idxReg), cc.paramByRegisterFloat[idxReg], OpBits::B64);
+            pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetParam(idxReg), cc.paramByRegisterFloat[idxReg], OpBits::B64);
         else
-            pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetParam(idxReg), cc.paramByRegisterInteger[idxReg], OpBits::B64);
+            pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetParam(idxReg), cc.paramByRegisterInteger[idxReg], OpBits::B64);
         idxReg++;
     }
 
     // Save pointer to return value if this is a return by copy
     if (idxReg < cc.paramByRegisterInteger.size() && typeFunc->returnByAddress())
     {
-        pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetParam(idxReg), cc.paramByRegisterInteger[idxReg], OpBits::B64);
+        pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetParam(idxReg), cc.paramByRegisterInteger[idxReg], OpBits::B64);
         idxReg++;
     }
 
@@ -155,44 +155,44 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         switch (ip->op)
         {
             case ByteCodeOp::DebugNop:
-                pp.emitNop();
+                pp.encodeNop();
                 break;
 
                 /////////////////////////////////////
 
             case ByteCodeOp::MulAddVC64:
-                pp.emitLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
-                pp.emitOpBinaryRegImm(cc.computeRegI1, ip->c.u8, CpuOp::ADD, OpBits::B64);
-                pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-                pp.emitOpBinaryRegReg(cc.computeRegI0, cc.computeRegI1, CpuOp::MUL, OpBits::B64);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
+                pp.encodeOpBinaryRegImm(cc.computeRegI1, ip->c.u8, CpuOp::ADD, OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
+                pp.encodeOpBinaryRegReg(cc.computeRegI0, cc.computeRegI1, CpuOp::MUL, OpBits::B64);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
                 break;
 
             case ByteCodeOp::Add32byVB32:
             case ByteCodeOp::Add64byVB64:
                 opBits = ScbeCpu::getOpBits(ip->op);
-                pp.emitOpBinaryMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), ip->b.u64, CpuOp::ADD, opBits);
+                pp.encodeOpBinaryMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), ip->b.u64, CpuOp::ADD, opBits);
                 break;
 
                 /////////////////////////////////////
 
             case ByteCodeOp::ClearRA:
-                pp.emitLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B64);
+                pp.encodeLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B64);
                 break;
             case ByteCodeOp::ClearRAx2:
-                pp.emitLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B64);
-                pp.emitLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), 0, OpBits::B64);
+                pp.encodeLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B64);
+                pp.encodeLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), 0, OpBits::B64);
                 break;
             case ByteCodeOp::ClearRAx3:
-                pp.emitLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B64);
-                pp.emitLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), 0, OpBits::B64);
-                pp.emitLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), 0, OpBits::B64);
+                pp.encodeLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B64);
+                pp.encodeLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), 0, OpBits::B64);
+                pp.encodeLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), 0, OpBits::B64);
                 break;
             case ByteCodeOp::ClearRAx4:
-                pp.emitLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B64);
-                pp.emitLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), 0, OpBits::B64);
-                pp.emitLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), 0, OpBits::B64);
-                pp.emitLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->d.u32), 0, OpBits::B64);
+                pp.encodeLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B64);
+                pp.encodeLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), 0, OpBits::B64);
+                pp.encodeLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), 0, OpBits::B64);
+                pp.encodeLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->d.u32), 0, OpBits::B64);
                 break;
 
                 /////////////////////////////////////
@@ -202,15 +202,15 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CopyRBtoRA32:
             case ByteCodeOp::CopyRBtoRA64:
                 opBits = ScbeCpu::getOpBits(ip->op);
-                pp.emitLoadZeroExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64, opBits);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
+                pp.encodeLoadZeroExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64, opBits);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
                 break;
 
             case ByteCodeOp::CopyRBtoRA64x2:
-                pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
-                pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->d.u32), OpBits::B64);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->d.u32), OpBits::B64);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B64);
                 break;
 
                 /////////////////////////////////////
@@ -220,140 +220,140 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CastBool32:
             case ByteCodeOp::CastBool64:
                 opBits = ScbeCpu::getOpBits(ip->op);
-                pp.emitCmpMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), 0, opBits);
-                pp.emitSetCond(cc.computeRegI0, CpuCondFlag::NE);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B8);
+                pp.encodeCmpMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), 0, opBits);
+                pp.encodeSetCond(cc.computeRegI0, CpuCondFlag::NE);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B8);
                 break;
 
             case ByteCodeOp::CastS8S16:
-                pp.emitLoadSignedExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B16, OpBits::B8);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B16);
+                pp.encodeLoadSignedExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B16, OpBits::B8);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B16);
                 break;
 
             case ByteCodeOp::CastS8S32:
-                pp.emitLoadSignedExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32, OpBits::B8);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B32);
+                pp.encodeLoadSignedExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32, OpBits::B8);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B32);
                 break;
             case ByteCodeOp::CastS16S32:
-                pp.emitLoadSignedExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32, OpBits::B16);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B32);
+                pp.encodeLoadSignedExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32, OpBits::B16);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B32);
                 break;
 
             case ByteCodeOp::CastS8S64:
-                pp.emitLoadSignedExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64, OpBits::B8);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
+                pp.encodeLoadSignedExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64, OpBits::B8);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
                 break;
             case ByteCodeOp::CastS16S64:
-                pp.emitLoadSignedExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64, OpBits::B16);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
+                pp.encodeLoadSignedExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64, OpBits::B16);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
                 break;
             case ByteCodeOp::CastS32S64:
-                pp.emitLoadSignedExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64, OpBits::B32);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
+                pp.encodeLoadSignedExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64, OpBits::B32);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
                 break;
 
             case ByteCodeOp::CastF32S32:
-                pp.emitLoadRegMem(cc.computeRegF0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32);
-                pp.emitOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTF2I, OpBits::B32);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B32);
+                pp.encodeLoadRegMem(cc.computeRegF0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32);
+                pp.encodeOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTF2I, OpBits::B32);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B32);
                 break;
             case ByteCodeOp::CastF64S64:
-                pp.emitLoadRegMem(cc.computeRegF0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
-                pp.emitOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTF2I, OpBits::B64, EMITF_B64);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegF0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
+                pp.encodeOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTF2I, OpBits::B64, EMITF_B64);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
                 break;
 
             case ByteCodeOp::CastS8F32:
-                pp.emitLoadSignedExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32, OpBits::B8);
-                pp.emitOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTI2F, OpBits::B32);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, OpBits::B32);
+                pp.encodeLoadSignedExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32, OpBits::B8);
+                pp.encodeOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTI2F, OpBits::B32);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, OpBits::B32);
                 break;
             case ByteCodeOp::CastS16F32:
-                pp.emitLoadSignedExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32, OpBits::B16);
-                pp.emitOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTI2F, OpBits::B32);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, OpBits::B32);
+                pp.encodeLoadSignedExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32, OpBits::B16);
+                pp.encodeOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTI2F, OpBits::B32);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, OpBits::B32);
                 break;
             case ByteCodeOp::CastS32F32:
-                pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32);
-                pp.emitOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTI2F, OpBits::B32);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, OpBits::B32);
+                pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32);
+                pp.encodeOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTI2F, OpBits::B32);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, OpBits::B32);
                 break;
             case ByteCodeOp::CastS64F32:
-                pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
-                pp.emitOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTI2F, OpBits::B32, EMITF_B64);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, OpBits::B32);
+                pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
+                pp.encodeOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTI2F, OpBits::B32, EMITF_B64);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, OpBits::B32);
                 break;
             case ByteCodeOp::CastU8F32:
-                pp.emitLoadZeroExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32, OpBits::B8);
-                pp.emitOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTI2F, OpBits::B32);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, OpBits::B32);
+                pp.encodeLoadZeroExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32, OpBits::B8);
+                pp.encodeOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTI2F, OpBits::B32);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, OpBits::B32);
                 break;
             case ByteCodeOp::CastU16F32:
-                pp.emitLoadZeroExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32, OpBits::B16);
-                pp.emitOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTI2F, OpBits::B32);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, OpBits::B32);
+                pp.encodeLoadZeroExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32, OpBits::B16);
+                pp.encodeOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTI2F, OpBits::B32);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, OpBits::B32);
                 break;
             case ByteCodeOp::CastU32F32:
-                pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32);
-                pp.emitOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTI2F, OpBits::B32, EMITF_B64);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, OpBits::B32);
+                pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32);
+                pp.encodeOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTI2F, OpBits::B32, EMITF_B64);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, OpBits::B32);
                 break;
             case ByteCodeOp::CastU64F32:
-                pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
-                pp.emitOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTI2F, OpBits::B32, EMITF_B64);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, OpBits::B32);
+                pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
+                pp.encodeOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTI2F, OpBits::B32, EMITF_B64);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, OpBits::B32);
                 break;
             case ByteCodeOp::CastF64F32:
-                pp.emitLoadRegMem(cc.computeRegF0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
-                pp.emitOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTF2F, OpBits::B64);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, OpBits::B32);
+                pp.encodeLoadRegMem(cc.computeRegF0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
+                pp.encodeOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTF2F, OpBits::B64);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, OpBits::B32);
                 break;
 
             case ByteCodeOp::CastS8F64:
-                pp.emitLoadSignedExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32, OpBits::B8);
-                pp.emitOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTI2F, OpBits::B64);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, OpBits::B64);
+                pp.encodeLoadSignedExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32, OpBits::B8);
+                pp.encodeOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTI2F, OpBits::B64);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, OpBits::B64);
                 break;
             case ByteCodeOp::CastS16F64:
-                pp.emitLoadSignedExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32, OpBits::B16);
-                pp.emitOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTI2F, OpBits::B64);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, OpBits::B64);
+                pp.encodeLoadSignedExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32, OpBits::B16);
+                pp.encodeOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTI2F, OpBits::B64);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, OpBits::B64);
                 break;
             case ByteCodeOp::CastS32F64:
-                pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32);
-                pp.emitOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTI2F, OpBits::B64);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32);
+                pp.encodeOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTI2F, OpBits::B64);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, OpBits::B64);
                 break;
             case ByteCodeOp::CastS64F64:
-                pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
-                pp.emitOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTI2F, OpBits::B64, EMITF_B64);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
+                pp.encodeOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTI2F, OpBits::B64, EMITF_B64);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, OpBits::B64);
                 break;
             case ByteCodeOp::CastU8F64:
-                pp.emitLoadZeroExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32, OpBits::B8);
-                pp.emitOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTI2F, OpBits::B64);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, OpBits::B64);
+                pp.encodeLoadZeroExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32, OpBits::B8);
+                pp.encodeOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTI2F, OpBits::B64);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, OpBits::B64);
                 break;
             case ByteCodeOp::CastU16F64:
-                pp.emitLoadZeroExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32, OpBits::B16);
-                pp.emitOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTI2F, OpBits::B64);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, OpBits::B64);
+                pp.encodeLoadZeroExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32, OpBits::B16);
+                pp.encodeOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTI2F, OpBits::B64);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, OpBits::B64);
                 break;
             case ByteCodeOp::CastU32F64:
-                pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32);
-                pp.emitOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTI2F, OpBits::B64);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32);
+                pp.encodeOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTI2F, OpBits::B64);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, OpBits::B64);
                 break;
             case ByteCodeOp::CastU64F64:
-                pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
-                pp.emitLoadZeroExtendRegReg(cc.computeRegF0, cc.computeRegI0, OpBits::B64, OpBits::B64);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
+                pp.encodeLoadZeroExtendRegReg(cc.computeRegF0, cc.computeRegI0, OpBits::B64, OpBits::B64);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, OpBits::B64);
                 break;
 
             case ByteCodeOp::CastF32F64:
-                pp.emitLoadRegMem(cc.computeRegF0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32);
-                pp.emitOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTF2F, OpBits::B32);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegF0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32);
+                pp.encodeOpBinaryRegReg(cc.computeRegF0, cc.computeRegI0, CpuOp::CVTF2F, OpBits::B32);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, OpBits::B64);
                 break;
 
                 /////////////////////////////////////
@@ -789,30 +789,30 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::ZeroToTrue:
-                pp.emitCmpMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B32);
-                pp.emitSetCond(cc.computeRegI0, CpuCondFlag::E);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B8);
+                pp.encodeCmpMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B32);
+                pp.encodeSetCond(cc.computeRegI0, CpuCondFlag::E);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B8);
                 break;
             case ByteCodeOp::LowerZeroToTrue:
-                pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B32);
-                pp.emitOpBinaryRegImm(cc.computeRegI0, 31, CpuOp::SHR, OpBits::B32);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B8);
+                pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B32);
+                pp.encodeOpBinaryRegImm(cc.computeRegI0, 31, CpuOp::SHR, OpBits::B32);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B8);
                 break;
             case ByteCodeOp::LowerEqZeroToTrue:
-                pp.emitCmpMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B32);
-                pp.emitSetCond(cc.computeRegI0, CpuCondFlag::LE);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B8);
+                pp.encodeCmpMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B32);
+                pp.encodeSetCond(cc.computeRegI0, CpuCondFlag::LE);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B8);
                 break;
             case ByteCodeOp::GreaterZeroToTrue:
-                pp.emitCmpMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B32);
-                pp.emitSetCond(cc.computeRegI0, CpuCondFlag::G);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B8);
+                pp.encodeCmpMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B32);
+                pp.encodeSetCond(cc.computeRegI0, CpuCondFlag::G);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B8);
                 break;
             case ByteCodeOp::GreaterEqZeroToTrue:
-                pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B32);
-                pp.emitOpUnaryReg(cc.computeRegI0, CpuOp::NOT, OpBits::B32);
-                pp.emitOpBinaryRegImm(cc.computeRegI0, 31, CpuOp::SHR, OpBits::B32);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B8);
+                pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B32);
+                pp.encodeOpUnaryReg(cc.computeRegI0, CpuOp::NOT, OpBits::B32);
+                pp.encodeOpBinaryRegImm(cc.computeRegI0, 31, CpuOp::SHR, OpBits::B32);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B8);
                 break;
 
                 /////////////////////////////////////
@@ -822,7 +822,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOpGreaterS32:
             case ByteCodeOp::CompareOpGreaterS64:
                 emitCompareOp(pp, cc.computeRegI0, CpuCondFlag::G);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B8);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B8);
                 break;
             case ByteCodeOp::CompareOpGreaterU8:
             case ByteCodeOp::CompareOpGreaterU16:
@@ -831,7 +831,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOpGreaterF32:
             case ByteCodeOp::CompareOpGreaterF64:
                 emitCompareOp(pp, cc.computeRegI0, CpuCondFlag::A);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B8);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B8);
                 break;
 
             case ByteCodeOp::CompareOpGreaterEqS8:
@@ -839,7 +839,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOpGreaterEqS32:
             case ByteCodeOp::CompareOpGreaterEqS64:
                 emitCompareOp(pp, cc.computeRegI0, CpuCondFlag::GE);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B8);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B8);
                 break;
 
             case ByteCodeOp::CompareOpGreaterEqU8:
@@ -849,7 +849,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOpGreaterEqF32:
             case ByteCodeOp::CompareOpGreaterEqF64:
                 emitCompareOp(pp, cc.computeRegI0, CpuCondFlag::AE);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B8);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B8);
                 break;
 
                 /////////////////////////////////////
@@ -859,7 +859,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOpLowerS32:
             case ByteCodeOp::CompareOpLowerS64:
                 emitCompareOp(pp, cc.computeRegI0, CpuCondFlag::L);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B8);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B8);
                 break;
 
             case ByteCodeOp::CompareOpLowerU8:
@@ -869,7 +869,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOpLowerF32:
             case ByteCodeOp::CompareOpLowerF64:
                 emitCompareOp(pp, cc.computeRegI0, CpuCondFlag::B);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B8);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B8);
                 break;
 
             case ByteCodeOp::CompareOpLowerEqS8:
@@ -877,7 +877,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOpLowerEqS32:
             case ByteCodeOp::CompareOpLowerEqS64:
                 emitCompareOp(pp, cc.computeRegI0, CpuCondFlag::LE);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B8);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B8);
                 break;
 
             case ByteCodeOp::CompareOpLowerEqU8:
@@ -887,7 +887,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOpLowerEqF32:
             case ByteCodeOp::CompareOpLowerEqF64:
                 emitCompareOp(pp, cc.computeRegI0, CpuCondFlag::BE);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B8);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B8);
                 break;
 
                 /////////////////////////////////////
@@ -896,25 +896,25 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOp3Way16:
             case ByteCodeOp::CompareOp3Way32:
             case ByteCodeOp::CompareOp3Way64:
-                pp.emitClearReg(cc.computeRegI2, OpBits::B32);
+                pp.encodeClearReg(cc.computeRegI2, OpBits::B32);
                 emitCompareOp(pp, cc.computeRegI2, CpuCondFlag::G);
-                pp.emitLoadRegImm(cc.computeRegI0, 0xFFFFFFFF, OpBits::B32);
-                pp.emitOpBinaryRegReg(cc.computeRegI0, cc.computeRegI2, CpuOp::CMOVGE, OpBits::B32);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B32);
+                pp.encodeLoadRegImm(cc.computeRegI0, 0xFFFFFFFF, OpBits::B32);
+                pp.encodeOpBinaryRegReg(cc.computeRegI0, cc.computeRegI2, CpuOp::CMOVGE, OpBits::B32);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B32);
                 break;
 
             case ByteCodeOp::CompareOp3WayF32:
             case ByteCodeOp::CompareOp3WayF64:
                 opBits = ScbeCpu::getOpBits(ip->op);
-                pp.emitClearReg(cc.computeRegI2, OpBits::B32);
+                pp.encodeClearReg(cc.computeRegI2, OpBits::B32);
                 emitIMMA(pp, cc.computeRegF0, opBits);
                 emitIMMB(pp, cc.computeRegF1, opBits);
-                pp.emitOpBinaryRegReg(cc.computeRegF0, cc.computeRegF1, CpuOp::UCOMIF, opBits);
-                pp.emitSetCond(cc.computeRegI2, CpuCondFlag::A);
-                pp.emitOpBinaryRegReg(cc.computeRegF1, cc.computeRegF0, CpuOp::UCOMIF, opBits);
-                pp.emitLoadRegImm(cc.computeRegI0, 0xFFFFFFFF, OpBits::B32);
-                pp.emitOpBinaryRegReg(cc.computeRegI0, cc.computeRegI2, CpuOp::CMOVBE, OpBits::B32);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B32);
+                pp.encodeOpBinaryRegReg(cc.computeRegF0, cc.computeRegF1, CpuOp::UCOMIF, opBits);
+                pp.encodeSetCond(cc.computeRegI2, CpuCondFlag::A);
+                pp.encodeOpBinaryRegReg(cc.computeRegF1, cc.computeRegF0, CpuOp::UCOMIF, opBits);
+                pp.encodeLoadRegImm(cc.computeRegI0, 0xFFFFFFFF, OpBits::B32);
+                pp.encodeOpBinaryRegReg(cc.computeRegI0, cc.computeRegI2, CpuOp::CMOVBE, OpBits::B32);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B32);
                 break;
 
                 /////////////////////////////////////
@@ -924,12 +924,12 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOpEqual32:
             case ByteCodeOp::CompareOpEqual64:
                 emitCompareOp(pp, cc.computeRegI0, CpuCondFlag::E);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B8);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B8);
                 break;
             case ByteCodeOp::CompareOpEqualF32:
             case ByteCodeOp::CompareOpEqualF64:
                 emitCompareOp(pp, cc.computeRegI0, CpuCondFlag::EP);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B8);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B8);
                 break;
 
                 /////////////////////////////////////
@@ -939,12 +939,12 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOpNotEqual32:
             case ByteCodeOp::CompareOpNotEqual64:
                 emitCompareOp(pp, cc.computeRegI0, CpuCondFlag::NE);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B8);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B8);
                 break;
             case ByteCodeOp::CompareOpNotEqualF32:
             case ByteCodeOp::CompareOpNotEqualF64:
                 emitCompareOp(pp, cc.computeRegI0, CpuCondFlag::NEP);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B8);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B8);
                 break;
 
                 /////////////////////////////////////
@@ -974,30 +974,30 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::NegBool:
-                pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B8);
-                pp.emitOpBinaryRegImm(cc.computeRegI0, 1, CpuOp::XOR, OpBits::B8);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B8);
+                pp.encodeOpBinaryRegImm(cc.computeRegI0, 1, CpuOp::XOR, OpBits::B8);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
                 break;
 
             case ByteCodeOp::NegS32:
             case ByteCodeOp::NegS64:
                 opBits = ScbeCpu::getOpBits(ip->op);
                 if (ip->a.u32 == ip->b.u32)
-                    pp.emitOpUnaryMem(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), CpuOp::NEG, opBits);
+                    pp.encodeOpUnaryMem(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), CpuOp::NEG, opBits);
                 else
                 {
-                    pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), opBits);
-                    pp.emitOpUnaryReg(cc.computeRegI0, CpuOp::NEG, opBits);
-                    pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, opBits);
+                    pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), opBits);
+                    pp.encodeOpUnaryReg(cc.computeRegI0, CpuOp::NEG, opBits);
+                    pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, opBits);
                 }
                 break;
 
             case ByteCodeOp::NegF32:
             case ByteCodeOp::NegF64:
                 opBits = ScbeCpu::getOpBits(ip->op);
-                pp.emitLoadRegMem(cc.computeRegF0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), opBits);
-                pp.emitOpUnaryReg(cc.computeRegF0, CpuOp::NEG, opBits);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, opBits);
+                pp.encodeLoadRegMem(cc.computeRegF0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), opBits);
+                pp.encodeOpUnaryReg(cc.computeRegF0, CpuOp::NEG, opBits);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, opBits);
                 break;
 
                 /////////////////////////////////////
@@ -1008,12 +1008,12 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::InvertU64:
                 opBits = ScbeCpu::getOpBits(ip->op);
                 if (ip->a.u32 == ip->b.u32)
-                    pp.emitOpUnaryMem(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), CpuOp::NOT, opBits);
+                    pp.encodeOpUnaryMem(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), CpuOp::NOT, opBits);
                 else
                 {
-                    pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), opBits);
-                    pp.emitOpUnaryReg(cc.computeRegI0, CpuOp::NOT, opBits);
-                    pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, opBits);
+                    pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), opBits);
+                    pp.encodeOpUnaryReg(cc.computeRegI0, CpuOp::NOT, opBits);
+                    pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, opBits);
                 }
                 break;
 
@@ -1029,19 +1029,19 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::JumpIfTrue:
-                pp.emitCmpMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B8);
+                pp.encodeCmpMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B8);
                 pp.emitJumpCondImm(CpuCondJump::JNZ, pp.ipIndex + ip->b.s32 + 1);
                 break;
             case ByteCodeOp::JumpIfFalse:
-                pp.emitCmpMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B8);
+                pp.encodeCmpMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B8);
                 pp.emitJumpCondImm(CpuCondJump::JZ, pp.ipIndex + ip->b.s32 + 1);
                 break;
             case ByteCodeOp::JumpIfRTTrue:
-                pp.emitCmpMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetRT(0), 0, OpBits::B8);
+                pp.encodeCmpMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetRT(0), 0, OpBits::B8);
                 pp.emitJumpCondImm(CpuCondJump::JNZ, pp.ipIndex + ip->b.s32 + 1);
                 break;
             case ByteCodeOp::JumpIfRTFalse:
-                pp.emitCmpMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetRT(0), 0, OpBits::B8);
+                pp.encodeCmpMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetRT(0), 0, OpBits::B8);
                 pp.emitJumpCondImm(CpuCondJump::JZ, pp.ipIndex + ip->b.s32 + 1);
                 break;
 
@@ -1050,7 +1050,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpIfNotZero32:
             case ByteCodeOp::JumpIfNotZero64:
                 opBits = ScbeCpu::getOpBits(ip->op);
-                pp.emitCmpMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, opBits);
+                pp.encodeCmpMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, opBits);
                 pp.emitJumpCondImm(CpuCondJump::JNZ, pp.ipIndex + ip->b.s32 + 1);
                 break;
 
@@ -1059,7 +1059,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpIfZero32:
             case ByteCodeOp::JumpIfZero64:
                 opBits = ScbeCpu::getOpBits(ip->op);
-                pp.emitCmpMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, opBits);
+                pp.encodeCmpMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, opBits);
                 pp.emitJumpCondImm(CpuCondJump::JZ, pp.ipIndex + ip->b.s32 + 1);
                 break;
 
@@ -1109,7 +1109,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitJumpCmp2(pp, CpuCondJump::JP, CpuCondJump::JZ, OpBits::B64);
                 break;
             case ByteCodeOp::IncJumpIfEqual64:
-                pp.emitOpBinaryMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 1, CpuOp::ADD, OpBits::B64);
+                pp.encodeOpBinaryMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 1, CpuOp::ADD, OpBits::B64);
                 emitJumpCmp(pp, CpuCondJump::JZ, OpBits::B64);
                 break;
 
@@ -1144,38 +1144,38 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::JumpIfDeRefEqual8:
-                pp.emitLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
                 emitJumpCmpAddr(pp, CpuCondJump::JZ, cc.computeRegI1, ip->d.u32, OpBits::B8);
                 break;
             case ByteCodeOp::JumpIfDeRefNotEqual8:
-                pp.emitLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
                 emitJumpCmpAddr(pp, CpuCondJump::JNZ, cc.computeRegI1, ip->d.u32, OpBits::B8);
                 break;
 
             case ByteCodeOp::JumpIfDeRefEqual16:
-                pp.emitLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
                 emitJumpCmpAddr(pp, CpuCondJump::JZ, cc.computeRegI1, ip->d.u32, OpBits::B16);
                 break;
             case ByteCodeOp::JumpIfDeRefNotEqual16:
-                pp.emitLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
                 emitJumpCmpAddr(pp, CpuCondJump::JNZ, cc.computeRegI1, ip->d.u32, OpBits::B16);
                 break;
 
             case ByteCodeOp::JumpIfDeRefEqual32:
-                pp.emitLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
                 emitJumpCmpAddr(pp, CpuCondJump::JZ, cc.computeRegI1, ip->d.u32, OpBits::B32);
                 break;
             case ByteCodeOp::JumpIfDeRefNotEqual32:
-                pp.emitLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
                 emitJumpCmpAddr(pp, CpuCondJump::JNZ, cc.computeRegI1, ip->d.u32, OpBits::B32);
                 break;
 
             case ByteCodeOp::JumpIfDeRefEqual64:
-                pp.emitLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
                 emitJumpCmpAddr(pp, CpuCondJump::JZ, cc.computeRegI1, ip->d.u32, OpBits::B64);
                 break;
             case ByteCodeOp::JumpIfDeRefNotEqual64:
-                pp.emitLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
                 emitJumpCmpAddr(pp, CpuCondJump::JNZ, cc.computeRegI1, ip->d.u32, OpBits::B64);
                 break;
 
@@ -1263,11 +1263,11 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::DecrementRA32:
             case ByteCodeOp::DecrementRA64:
                 opBits = ScbeCpu::getOpBits(ip->op);
-                pp.emitOpBinaryMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 1, CpuOp::SUB, opBits);
+                pp.encodeOpBinaryMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 1, CpuOp::SUB, opBits);
                 break;
 
             case ByteCodeOp::IncrementRA64:
-                pp.emitOpBinaryMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 1, CpuOp::ADD, OpBits::B64);
+                pp.encodeOpBinaryMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 1, CpuOp::ADD, OpBits::B64);
                 break;
 
                 /////////////////////////////////////
@@ -1277,18 +1277,18 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::DeRef32:
             case ByteCodeOp::DeRef64:
                 opBits = ScbeCpu::getOpBits(ip->op);
-                pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
-                pp.emitLoadZeroExtendRegMem(cc.computeRegI0, cc.computeRegI0, ip->c.u64, OpBits::B64, opBits);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
+                pp.encodeLoadZeroExtendRegMem(cc.computeRegI0, cc.computeRegI0, ip->c.u64, OpBits::B64, opBits);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
                 break;
 
             case ByteCodeOp::DeRefStringSlice:
                 SWAG_ASSERT(ip->c.s64 >= 0 && ip->c.s64 <= 0x7FFFFFFFF);
-                pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-                pp.emitLoadRegMem(cc.computeRegI1, cc.computeRegI0, ip->c.u32 + 8, OpBits::B64);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), cc.computeRegI1, OpBits::B64);
-                pp.emitLoadRegMem(cc.computeRegI0, cc.computeRegI0, ip->c.u32 + 0, OpBits::B64);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI1, cc.computeRegI0, ip->c.u32 + 8, OpBits::B64);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), cc.computeRegI1, OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI0, cc.computeRegI0, ip->c.u32 + 0, OpBits::B64);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
                 break;
 
                 /////////////////////////////////////
@@ -1298,9 +1298,9 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::GetFromBssSeg32:
             case ByteCodeOp::GetFromBssSeg64:
                 opBits = ScbeCpu::getOpBits(ip->op);
-                pp.emitSymbolRelocationAddress(cc.computeRegI0, pp.symBSIndex, 0);
-                pp.emitLoadZeroExtendRegMem(cc.computeRegI0, cc.computeRegI0, ip->b.u32, OpBits::B64, opBits);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
+                pp.encodeSymbolRelocationAddress(cc.computeRegI0, pp.symBSIndex, 0);
+                pp.encodeLoadZeroExtendRegMem(cc.computeRegI0, cc.computeRegI0, ip->b.u32, OpBits::B64, opBits);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
                 break;
 
             case ByteCodeOp::GetFromMutableSeg8:
@@ -1308,9 +1308,9 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::GetFromMutableSeg32:
             case ByteCodeOp::GetFromMutableSeg64:
                 opBits = ScbeCpu::getOpBits(ip->op);
-                pp.emitSymbolRelocationAddress(cc.computeRegI0, pp.symMSIndex, 0);
-                pp.emitLoadZeroExtendRegMem(cc.computeRegI0, cc.computeRegI0, ip->b.u32, OpBits::B64, opBits);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
+                pp.encodeSymbolRelocationAddress(cc.computeRegI0, pp.symMSIndex, 0);
+                pp.encodeLoadZeroExtendRegMem(cc.computeRegI0, cc.computeRegI0, ip->b.u32, OpBits::B64, opBits);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
                 break;
 
                 /////////////////////////////////////
@@ -1320,14 +1320,14 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::GetFromStack32:
             case ByteCodeOp::GetFromStack64:
                 opBits = ScbeCpu::getOpBits(ip->op);
-                pp.emitLoadZeroExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->b.u32, OpBits::B64, opBits);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
+                pp.encodeLoadZeroExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->b.u32, OpBits::B64, opBits);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
                 break;
             case ByteCodeOp::GetIncFromStack64:
-                pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->b.u32, OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->b.u32, OpBits::B64);
                 if (ip->c.u64)
-                    pp.emitOpBinaryRegImm(cc.computeRegI0, ip->c.u64, CpuOp::ADD, OpBits::B64);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
+                    pp.encodeOpBinaryRegImm(cc.computeRegI0, ip->c.u64, CpuOp::ADD, OpBits::B64);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
                 break;
 
                 /////////////////////////////////////
@@ -1337,10 +1337,10 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::GetFromStack32x2:
             case ByteCodeOp::GetFromStack64x2:
                 opBits = ScbeCpu::getOpBits(ip->op);
-                pp.emitLoadZeroExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->b.u32, OpBits::B64, opBits);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
-                pp.emitLoadZeroExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->d.u32, OpBits::B64, opBits);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B64);
+                pp.encodeLoadZeroExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->b.u32, OpBits::B64, opBits);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
+                pp.encodeLoadZeroExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->d.u32, OpBits::B64, opBits);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B64);
                 break;
 
                 /////////////////////////////////////
@@ -1350,9 +1350,9 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::GetIncFromStack64DeRef32:
             case ByteCodeOp::GetIncFromStack64DeRef64:
                 opBits = ScbeCpu::getOpBits(ip->op);
-                pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->b.u32, OpBits::B64);
-                pp.emitLoadZeroExtendRegMem(cc.computeRegI0, cc.computeRegI0, ip->c.u64, OpBits::B64, opBits);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->b.u32, OpBits::B64);
+                pp.encodeLoadZeroExtendRegMem(cc.computeRegI0, cc.computeRegI0, ip->c.u64, OpBits::B64, opBits);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
                 break;
 
                 /////////////////////////////////////
@@ -1362,8 +1362,8 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CopyStack32:
             case ByteCodeOp::CopyStack64:
                 opBits = ScbeCpu::getOpBits(ip->op);
-                pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->b.u32, opBits);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->a.u32, cc.computeRegI0, opBits);
+                pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->b.u32, opBits);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->a.u32, cc.computeRegI0, opBits);
                 break;
 
                 /////////////////////////////////////
@@ -1372,14 +1372,14 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::ClearMaskU64:
                 opBits = ScbeCpu::getOpBits(ip->op);
                 if (ip->b.u32 == 0xFF)
-                    pp.emitLoadZeroExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), opBits, OpBits::B8);
+                    pp.encodeLoadZeroExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), opBits, OpBits::B8);
                 else if (ip->b.u32 == 0xFFFF)
-                    pp.emitLoadZeroExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), opBits, OpBits::B16);
+                    pp.encodeLoadZeroExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), opBits, OpBits::B16);
                 else if (ip->b.u32 == 0xFFFFFFFF)
-                    pp.emitLoadZeroExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), opBits, OpBits::B32);
+                    pp.encodeLoadZeroExtendRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), opBits, OpBits::B32);
                 else
                     SWAG_ASSERT(false);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, opBits);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, opBits);
                 break;
 
                 /////////////////////////////////////
@@ -1389,8 +1389,8 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::SetZeroAtPointer32:
             case ByteCodeOp::SetZeroAtPointer64:
                 opBits = ScbeCpu::getOpBits(ip->op);
-                pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-                pp.emitLoadMemImm(cc.computeRegI0, ip->b.u32, 0, opBits);
+                pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
+                pp.encodeLoadMemImm(cc.computeRegI0, ip->b.u32, 0, opBits);
                 break;
 
             case ByteCodeOp::SetZeroAtPointerX:
@@ -1398,8 +1398,8 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (ip->b.u32 <= buildParameters.buildCfg->backendSCBE.unrollMemLimit &&
                     buildParameters.buildCfg->backendOptimize > BuildCfgBackendOptim::O1)
                 {
-                    pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-                    pp.emitClearMem(cc.computeRegI0, ip->c.u32, ip->b.u32);
+                    pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
+                    pp.encodeClearMem(cc.computeRegI0, ip->c.u32, ip->b.u32);
                 }
                 else
                 {
@@ -1427,7 +1427,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             {
                 opBits = ScbeCpu::getOpBits(ip->op);
                 emitLoadParam(pp, cc.computeRegI0, typeFunc->numParamsRegisters(), OpBits::B64);
-                pp.emitLoadMemImm(cc.computeRegI0, ip->c.u32, 0, opBits);
+                pp.encodeLoadMemImm(cc.computeRegI0, ip->c.u32, 0, opBits);
                 break;
             }
 
@@ -1438,7 +1438,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (ip->b.u32 <= buildParameters.buildCfg->backendSCBE.unrollMemLimit &&
                     buildParameters.buildCfg->backendOptimize > BuildCfgBackendOptim::O1)
                 {
-                    pp.emitClearMem(cc.computeRegI0, ip->c.u32, ip->b.u32);
+                    pp.encodeClearMem(cc.computeRegI0, ip->c.u32, ip->b.u32);
                 }
                 else
                 {
@@ -1458,13 +1458,13 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::SetZeroStack32:
             case ByteCodeOp::SetZeroStack64:
                 opBits = ScbeCpu::getOpBits(ip->op);
-                pp.emitLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->a.u32, 0, opBits);
+                pp.encodeLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->a.u32, 0, opBits);
                 break;
             case ByteCodeOp::SetZeroStackX:
                 if (ip->b.u32 <= buildParameters.buildCfg->backendSCBE.unrollMemLimit &&
                     buildParameters.buildCfg->backendOptimize > BuildCfgBackendOptim::O1)
                 {
-                    pp.emitClearMem(CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->a.u32, ip->b.u32);
+                    pp.encodeClearMem(CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->a.u32, ip->b.u32);
                 }
                 else
                 {
@@ -1483,13 +1483,13 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::SetAtPointer32:
             case ByteCodeOp::SetAtPointer64:
                 opBits = ScbeCpu::getOpBits(ip->op);
-                pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
                 if (ip->hasFlag(BCI_IMM_B))
-                    pp.emitLoadMemImm(cc.computeRegI0, ip->c.u32, ip->b.u64, opBits);
+                    pp.encodeLoadMemImm(cc.computeRegI0, ip->c.u32, ip->b.u64, opBits);
                 else
                 {
-                    pp.emitLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), opBits);
-                    pp.emitLoadMemReg(cc.computeRegI0, ip->c.u32, cc.computeRegI1, opBits);
+                    pp.encodeLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), opBits);
+                    pp.encodeLoadMemReg(cc.computeRegI0, ip->c.u32, cc.computeRegI1, opBits);
                 }
                 break;
 
@@ -1501,11 +1501,11 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::SetAtStackPointer64:
                 opBits = ScbeCpu::getOpBits(ip->op);
                 if (ip->hasFlag(BCI_IMM_B))
-                    pp.emitLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->a.u32, ip->b.u64, opBits);
+                    pp.encodeLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->a.u32, ip->b.u64, opBits);
                 else
                 {
-                    pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), opBits);
-                    pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->a.u32, cc.computeRegI0, opBits);
+                    pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), opBits);
+                    pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->a.u32, cc.computeRegI0, opBits);
                 }
                 break;
 
@@ -1517,52 +1517,52 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::SetAtStackPointer64x2:
                 opBits = ScbeCpu::getOpBits(ip->op);
                 if (ip->hasFlag(BCI_IMM_B))
-                    pp.emitLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->a.u32, ip->b.u64, opBits);
+                    pp.encodeLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->a.u32, ip->b.u64, opBits);
                 else
                 {
-                    pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), opBits);
-                    pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->a.u32, cc.computeRegI0, opBits);
+                    pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), opBits);
+                    pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->a.u32, cc.computeRegI0, opBits);
                 }
 
                 if (ip->hasFlag(BCI_IMM_D))
-                    pp.emitLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->c.u32, ip->d.u64, opBits);
+                    pp.encodeLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->c.u32, ip->d.u64, opBits);
                 else
                 {
-                    pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->d.u32), opBits);
-                    pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->c.u32, cc.computeRegI0, opBits);
+                    pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->d.u32), opBits);
+                    pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->c.u32, cc.computeRegI0, opBits);
                 }
                 break;
 
                 /////////////////////////////////////
 
             case ByteCodeOp::MakeStackPointer:
-                pp.emitLoadAddressMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->b.u32);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
+                pp.encodeLoadAddressMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->b.u32);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
                 break;
             case ByteCodeOp::MakeStackPointerx2:
-                pp.emitLoadAddressMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->b.u32);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
-                pp.emitLoadAddressMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->d.u32);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B64);
+                pp.encodeLoadAddressMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->b.u32);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
+                pp.encodeLoadAddressMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->d.u32);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B64);
                 break;
             case ByteCodeOp::MakeStackPointerRT:
-                pp.emitLoadAddressMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->a.u32);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetRT(0), cc.computeRegI0, OpBits::B64);
+                pp.encodeLoadAddressMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->a.u32);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetRT(0), cc.computeRegI0, OpBits::B64);
                 break;
 
                 /////////////////////////////////////
 
             case ByteCodeOp::MakeMutableSegPointer:
-                pp.emitSymbolRelocationAddress(cc.computeRegI0, pp.symMSIndex, ip->b.u32);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
+                pp.encodeSymbolRelocationAddress(cc.computeRegI0, pp.symMSIndex, ip->b.u32);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
                 break;
             case ByteCodeOp::MakeBssSegPointer:
-                pp.emitSymbolRelocationAddress(cc.computeRegI0, pp.symBSIndex, ip->b.u32);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
+                pp.encodeSymbolRelocationAddress(cc.computeRegI0, pp.symBSIndex, ip->b.u32);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
                 break;
             case ByteCodeOp::MakeConstantSegPointer:
-                pp.emitSymbolRelocationAddress(cc.computeRegI0, pp.symCSIndex, ip->b.u32);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
+                pp.encodeSymbolRelocationAddress(cc.computeRegI0, pp.symCSIndex, ip->b.u32);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
                 break;
             case ByteCodeOp::MakeCompilerSegPointer:
                 break;
@@ -1582,10 +1582,10 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::Mul64byVB64:
-                pp.emitOpBinaryMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), ip->b.u64, CpuOp::IMUL, OpBits::B64);
+                pp.encodeOpBinaryMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), ip->b.u64, CpuOp::IMUL, OpBits::B64);
                 break;
             case ByteCodeOp::Div64byVB64:
-                pp.emitOpBinaryMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), ip->b.u64, CpuOp::IDIV, OpBits::B64);
+                pp.encodeOpBinaryMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), ip->b.u64, CpuOp::IDIV, OpBits::B64);
                 break;
 
                 /////////////////////////////////////
@@ -1593,7 +1593,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::SetImmediate32:
             case ByteCodeOp::SetImmediate64:
                 opBits = ScbeCpu::getOpBits(ip->op);
-                pp.emitLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), ip->b.u64, opBits);
+                pp.encodeLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), ip->b.u64, opBits);
                 break;
 
                 /////////////////////////////////////
@@ -1603,9 +1603,9 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::MemCpy32:
             case ByteCodeOp::MemCpy64:
                 opBits = ScbeCpu::getOpBits(ip->op);
-                pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-                pp.emitLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
-                pp.emitCopy(cc.computeRegI0, cc.computeRegI1, ScbeCpu::getNumBits(opBits) / 8);
+                pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
+                pp.encodeCopy(cc.computeRegI0, cc.computeRegI1, ScbeCpu::getNumBits(opBits) / 8);
                 break;
 
                 /////////////////////////////////////
@@ -1615,9 +1615,9 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                     ip->c.u64 <= buildParameters.buildCfg->backendSCBE.unrollMemLimit &&
                     buildParameters.buildCfg->backendOptimize > BuildCfgBackendOptim::O1)
                 {
-                    pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-                    pp.emitLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
-                    pp.emitCopy(cc.computeRegI0, cc.computeRegI1, ip->c.u32);
+                    pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
+                    pp.encodeLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
+                    pp.encodeCopy(cc.computeRegI0, cc.computeRegI1, ip->c.u32);
                 }
                 else
                 {
@@ -1638,8 +1638,8 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                     ip->c.u64 <= buildParameters.buildCfg->backendSCBE.unrollMemLimit &&
                     buildParameters.buildCfg->backendOptimize > BuildCfgBackendOptim::O1)
                 {
-                    pp.emitLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-                    pp.emitClearMem(cc.computeRegI1, 0, ip->c.u32);
+                    pp.encodeLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
+                    pp.encodeClearMem(cc.computeRegI1, 0, ip->c.u32);
                 }
                 else
                 {
@@ -1723,26 +1723,26 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::IntrinsicGetProcessInfos:
-                pp.emitSymbolRelocationAddress(cc.computeRegI1, pp.symPI_processInfos, 0);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI1, OpBits::B64);
+                pp.encodeSymbolRelocationAddress(cc.computeRegI1, pp.symPI_processInfos, 0);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI1, OpBits::B64);
                 break;
 
             case ByteCodeOp::IntrinsicCVaStart:
             {
                 const uint32_t paramIdx = typeFunc->numParamsRegisters() + (typeFunc->returnByAddress() ? 1 : 0);
                 pp.emitLoadCallerAddressParam(cc.computeRegI0, paramIdx);
-                pp.emitLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-                pp.emitLoadMemReg(cc.computeRegI1, 0, cc.computeRegI0, OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
+                pp.encodeLoadMemReg(cc.computeRegI1, 0, cc.computeRegI0, OpBits::B64);
                 break;
             }
             case ByteCodeOp::IntrinsicCVaEnd:
                 break;
             case ByteCodeOp::IntrinsicCVaArg:
-                pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-                pp.emitLoadRegMem(cc.computeRegI1, cc.computeRegI0, 0, OpBits::B64);
-                pp.emitLoadZeroExtendRegMem(cc.computeRegI1, cc.computeRegI1, 0, OpBits::B64, static_cast<OpBits>(ip->c.u32 * 8));
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), cc.computeRegI1, OpBits::B64);
-                pp.emitOpBinaryMemImm(cc.computeRegI0, 0, 8, CpuOp::ADD, OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI1, cc.computeRegI0, 0, OpBits::B64);
+                pp.encodeLoadZeroExtendRegMem(cc.computeRegI1, cc.computeRegI1, 0, OpBits::B64, static_cast<OpBits>(ip->c.u32 * 8));
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), cc.computeRegI1, OpBits::B64);
+                pp.encodeOpBinaryMemImm(cc.computeRegI0, 0, 8, CpuOp::ADD, OpBits::B64);
                 break;
 
             case ByteCodeOp::IntrinsicArguments:
@@ -1752,36 +1752,36 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::IntrinsicModules:
                 if (buildParameters.module->modulesSliceOffset == UINT32_MAX)
                 {
-                    pp.emitLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B64);
-                    pp.emitLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), 0, OpBits::B64);
+                    pp.encodeLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B64);
+                    pp.encodeLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), 0, OpBits::B64);
                 }
                 else
                 {
-                    pp.emitSymbolRelocationAddress(cc.computeRegI0, pp.symCSIndex, buildParameters.module->modulesSliceOffset);
-                    pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
-                    pp.emitLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), buildParameters.module->moduleDependencies.count + 1, OpBits::B64);
+                    pp.encodeSymbolRelocationAddress(cc.computeRegI0, pp.symCSIndex, buildParameters.module->modulesSliceOffset);
+                    pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
+                    pp.encodeLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), buildParameters.module->moduleDependencies.count + 1, OpBits::B64);
                 }
                 break;
             case ByteCodeOp::IntrinsicGvtd:
                 if (buildParameters.module->globalVarsToDropSliceOffset == UINT32_MAX)
                 {
-                    pp.emitLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B64);
-                    pp.emitLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), 0, OpBits::B64);
+                    pp.encodeLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B64);
+                    pp.encodeLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), 0, OpBits::B64);
                 }
                 else
                 {
-                    pp.emitSymbolRelocationAddress(cc.computeRegI0, pp.symMSIndex, buildParameters.module->globalVarsToDropSliceOffset);
-                    pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
-                    pp.emitLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), buildParameters.module->globalVarsToDrop.count, OpBits::B64);
+                    pp.encodeSymbolRelocationAddress(cc.computeRegI0, pp.symMSIndex, buildParameters.module->globalVarsToDropSliceOffset);
+                    pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
+                    pp.encodeLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), buildParameters.module->globalVarsToDrop.count, OpBits::B64);
                 }
                 break;
 
             case ByteCodeOp::IntrinsicCompiler:
-                pp.emitLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B64);
-                pp.emitLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), 0, OpBits::B64);
+                pp.encodeLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B64);
+                pp.encodeLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), 0, OpBits::B64);
                 break;
             case ByteCodeOp::IntrinsicIsByteCode:
-                pp.emitLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B32);
+                pp.encodeLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B32);
                 break;
             case ByteCodeOp::IntrinsicCompilerError:
                 emitInternalCallRAParams(pp, g_LangSpec->name_at_compilererror, {ip->a.u32, ip->b.u32, ip->c.u32});
@@ -1801,12 +1801,12 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CopyRAtoRR:
                 if (ip->hasFlag(BCI_IMM_A))
                 {
-                    pp.emitLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetResult(), ip->a.u64, OpBits::B64);
+                    pp.encodeLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetResult(), ip->a.u64, OpBits::B64);
                 }
                 else
                 {
-                    pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-                    pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetResult(), cc.computeRegI0, OpBits::B64);
+                    pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
+                    pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetResult(), cc.computeRegI0, OpBits::B64);
                 }
 
                 break;
@@ -1814,22 +1814,22 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CopyRARBtoRR2:
             {
                 emitLoadParam(pp, cc.computeRegI0, typeFunc->numParamsRegisters(), OpBits::B64);
-                pp.emitLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-                pp.emitLoadMemReg(cc.computeRegI0, 0, cc.computeRegI1, OpBits::B64);
-                pp.emitLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
-                pp.emitLoadMemReg(cc.computeRegI0, 8, cc.computeRegI1, OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
+                pp.encodeLoadMemReg(cc.computeRegI0, 0, cc.computeRegI1, OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
+                pp.encodeLoadMemReg(cc.computeRegI0, 8, cc.computeRegI1, OpBits::B64);
                 break;
             }
 
             case ByteCodeOp::CopyRAtoRT:
-                pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetRT(0), cc.computeRegI0, OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetRT(0), cc.computeRegI0, OpBits::B64);
                 break;
 
             case ByteCodeOp::SaveRRtoRA:
             {
                 emitLoadParam(pp, cc.computeRegI0, typeFunc->numParamsRegisters(), OpBits::B64);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
                 break;
             }
             case ByteCodeOp::CopyRRtoRA:
@@ -1837,29 +1837,29 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitLoadParam(pp, cc.computeRegI0, typeFunc->numParamsRegisters(), OpBits::B64);
                 if (ip->b.u64)
                 {
-                    pp.emitLoadRegImm(cc.computeRegI1, ip->b.u64, OpBits::B64);
-                    pp.emitOpBinaryRegReg(cc.computeRegI0, cc.computeRegI1, CpuOp::ADD, OpBits::B64);
+                    pp.encodeLoadRegImm(cc.computeRegI1, ip->b.u64, OpBits::B64);
+                    pp.encodeOpBinaryRegReg(cc.computeRegI0, cc.computeRegI1, CpuOp::ADD, OpBits::B64);
                 }
 
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
                 break;
             }
 
             case ByteCodeOp::CopyRTtoRA:
-                pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetRT(0), OpBits::B64);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetRT(0), OpBits::B64);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
                 break;
 
             case ByteCodeOp::CopyRT2toRARB:
-                pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetRT(0), OpBits::B64);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
-                pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetRT(1), OpBits::B64);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), cc.computeRegI0, OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetRT(0), OpBits::B64);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetRT(1), OpBits::B64);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), cc.computeRegI0, OpBits::B64);
                 break;
 
             case ByteCodeOp::CopySP:
-                pp.emitLoadAddressMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32));
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
+                pp.encodeLoadAddressMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32));
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
                 break;
 
             case ByteCodeOp::CopySPVaargs:
@@ -1996,12 +1996,12 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 opBits = ScbeCpu::getOpBitsByBytes(returnType->sizeOf);
                 if (ip->hasFlag(BCI_IMM_A))
                 {
-                    pp.emitLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetResult(), ip->a.u64, opBits);
+                    pp.encodeLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetResult(), ip->a.u64, opBits);
                 }
                 else
                 {
-                    pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), opBits);
-                    pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetResult(), cc.computeRegI0, opBits);
+                    pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), opBits);
+                    pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetResult(), cc.computeRegI0, opBits);
                 }
                 [[fallthrough]];
 
@@ -2012,11 +2012,11 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 {
                     opBits = ScbeCpu::getOpBitsByBytes(returnType->sizeOf);
                     if (returnType->isNative(NativeTypeKind::F32))
-                        pp.emitLoadRegMem(cc.returnByRegisterFloat, CpuReg::Rsp, pp.cpuFct->getStackOffsetResult(), OpBits::B32);
+                        pp.encodeLoadRegMem(cc.returnByRegisterFloat, CpuReg::Rsp, pp.cpuFct->getStackOffsetResult(), OpBits::B32);
                     else if (returnType->isNative(NativeTypeKind::F64))
-                        pp.emitLoadRegMem(cc.returnByRegisterFloat, CpuReg::Rsp, pp.cpuFct->getStackOffsetResult(), OpBits::B64);
+                        pp.encodeLoadRegMem(cc.returnByRegisterFloat, CpuReg::Rsp, pp.cpuFct->getStackOffsetResult(), OpBits::B64);
                     else
-                        pp.emitLoadRegMem(cc.returnByRegisterInteger, CpuReg::Rsp, pp.cpuFct->getStackOffsetResult(), opBits);
+                        pp.encodeLoadRegMem(cc.returnByRegisterInteger, CpuReg::Rsp, pp.cpuFct->getStackOffsetResult(), opBits);
                 }
 
                 pp.emitLeave();
@@ -2031,8 +2031,8 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitIMMB(pp, cc.computeRegF0, opBits);
                 emitIMMC(pp, cc.computeRegF1, opBits);
                 emitIMMD(pp, cc.computeRegF2, opBits);
-                pp.emitOpMulAdd(cc.computeRegF0, cc.computeRegF1, cc.computeRegF2, opBits);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, opBits);
+                pp.encodeOpMulAdd(cc.computeRegF0, cc.computeRegF1, cc.computeRegF2, opBits);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, opBits);
                 break;
             }
 
@@ -2041,9 +2041,9 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::IntrinsicAtomicAddS32:
             case ByteCodeOp::IntrinsicAtomicAddS64:
                 opBits = ScbeCpu::getOpBits(ip->op);
-                pp.emitLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-                pp.emitLoadRegMem(cc.computeRegI0, cc.computeRegI1, 0, opBits);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, opBits);
+                pp.encodeLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI0, cc.computeRegI1, 0, opBits);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, opBits);
                 emitBinOpEqLock(pp, CpuOp::ADD);
                 break;
 
@@ -2052,9 +2052,9 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::IntrinsicAtomicAndS32:
             case ByteCodeOp::IntrinsicAtomicAndS64:
                 opBits = ScbeCpu::getOpBits(ip->op);
-                pp.emitLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-                pp.emitLoadRegMem(cc.computeRegI0, cc.computeRegI1, 0, opBits);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, opBits);
+                pp.encodeLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI0, cc.computeRegI1, 0, opBits);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, opBits);
                 emitBinOpEqLock(pp, CpuOp::AND);
                 break;
 
@@ -2063,9 +2063,9 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::IntrinsicAtomicOrS32:
             case ByteCodeOp::IntrinsicAtomicOrS64:
                 opBits = ScbeCpu::getOpBits(ip->op);
-                pp.emitLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-                pp.emitLoadRegMem(cc.computeRegI0, cc.computeRegI1, 0, opBits);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, opBits);
+                pp.encodeLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI0, cc.computeRegI1, 0, opBits);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, opBits);
                 emitBinOpEqLock(pp, CpuOp::OR);
                 break;
 
@@ -2074,9 +2074,9 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::IntrinsicAtomicXorS32:
             case ByteCodeOp::IntrinsicAtomicXorS64:
                 opBits = ScbeCpu::getOpBits(ip->op);
-                pp.emitLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-                pp.emitLoadRegMem(cc.computeRegI0, cc.computeRegI1, 0, opBits);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, opBits);
+                pp.encodeLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI0, cc.computeRegI1, 0, opBits);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, opBits);
                 emitBinOpEqLock(pp, CpuOp::XOR);
                 break;
 
@@ -2085,9 +2085,9 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::IntrinsicAtomicXchgS32:
             case ByteCodeOp::IntrinsicAtomicXchgS64:
                 opBits = ScbeCpu::getOpBits(ip->op);
-                pp.emitLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-                pp.emitLoadRegMem(cc.computeRegI0, cc.computeRegI1, 0, opBits);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, opBits);
+                pp.encodeLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI0, cc.computeRegI1, 0, opBits);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, opBits);
                 emitBinOpEqLock(pp, CpuOp::XCHG);
                 break;
 
@@ -2096,11 +2096,11 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::IntrinsicAtomicCmpXchgS32:
             case ByteCodeOp::IntrinsicAtomicCmpXchgS64:
                 opBits = ScbeCpu::getOpBits(ip->op);
-                pp.emitLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
                 emitIMMB(pp, cc.computeRegI0, opBits);
                 emitIMMC(pp, cc.computeRegI2, opBits);
-                pp.emitOpBinaryRegReg(cc.computeRegI1, cc.computeRegI2, CpuOp::CMPXCHG, opBits);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->d.u32), cc.computeRegI0, opBits);
+                pp.encodeOpBinaryRegReg(cc.computeRegI1, cc.computeRegI2, CpuOp::CMPXCHG, opBits);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->d.u32), cc.computeRegI0, opBits);
                 break;
 
             case ByteCodeOp::IntrinsicS8x1:
@@ -2113,36 +2113,36 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 {
                     case TokenId::IntrinsicAbs:
                         emitIMMB(pp, cc.computeRegI0, opBits);
-                        pp.emitLoadRegReg(cc.computeRegI1, cc.computeRegI0, opBits);
-                        pp.emitOpBinaryRegImm(cc.computeRegI1, ScbeCpu::getNumBits(opBits) - 1, CpuOp::SAR, opBits);
-                        pp.emitOpBinaryRegReg(cc.computeRegI0, cc.computeRegI1, CpuOp::XOR, opBits);
-                        pp.emitOpBinaryRegReg(cc.computeRegI0, cc.computeRegI1, CpuOp::SUB, opBits);
-                        pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, opBits);
+                        pp.encodeLoadRegReg(cc.computeRegI1, cc.computeRegI0, opBits);
+                        pp.encodeOpBinaryRegImm(cc.computeRegI1, ScbeCpu::getNumBits(opBits) - 1, CpuOp::SAR, opBits);
+                        pp.encodeOpBinaryRegReg(cc.computeRegI0, cc.computeRegI1, CpuOp::XOR, opBits);
+                        pp.encodeOpBinaryRegReg(cc.computeRegI0, cc.computeRegI1, CpuOp::SUB, opBits);
+                        pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, opBits);
                         break;
                     case TokenId::IntrinsicBitCountNz:
                         emitIMMB(pp, cc.computeRegI0, opBits);
-                        pp.emitOpBinaryRegReg(cc.computeRegI0, cc.computeRegI0, CpuOp::POPCNT, opBits);
-                        pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, opBits);
+                        pp.encodeOpBinaryRegReg(cc.computeRegI0, cc.computeRegI0, CpuOp::POPCNT, opBits);
+                        pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, opBits);
                         break;
                     case TokenId::IntrinsicBitCountTz:
                         emitIMMB(pp, cc.computeRegI0, opBits);
-                        pp.emitOpBinaryRegReg(cc.computeRegI0, cc.computeRegI0, CpuOp::BSF, opBits);
-                        pp.emitLoadRegImm(cc.computeRegI1, ScbeCpu::getNumBits(opBits), opBits);
-                        pp.emitOpBinaryRegReg(cc.computeRegI0, cc.computeRegI1, CpuOp::CMOVE, opBits);
-                        pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, opBits);
+                        pp.encodeOpBinaryRegReg(cc.computeRegI0, cc.computeRegI0, CpuOp::BSF, opBits);
+                        pp.encodeLoadRegImm(cc.computeRegI1, ScbeCpu::getNumBits(opBits), opBits);
+                        pp.encodeOpBinaryRegReg(cc.computeRegI0, cc.computeRegI1, CpuOp::CMOVE, opBits);
+                        pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, opBits);
                         break;
                     case TokenId::IntrinsicBitCountLz:
                         emitIMMB(pp, cc.computeRegI0, opBits);
-                        pp.emitOpBinaryRegReg(cc.computeRegI0, cc.computeRegI0, CpuOp::BSR, opBits);
-                        pp.emitLoadRegImm(cc.computeRegI1, (ScbeCpu::getNumBits(opBits) * 2) - 1, opBits);
-                        pp.emitOpBinaryRegReg(cc.computeRegI0, cc.computeRegI1, CpuOp::CMOVE, opBits);
-                        pp.emitOpBinaryRegImm(cc.computeRegI0, ScbeCpu::getNumBits(opBits) - 1, CpuOp::XOR, opBits);
-                        pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, opBits);
+                        pp.encodeOpBinaryRegReg(cc.computeRegI0, cc.computeRegI0, CpuOp::BSR, opBits);
+                        pp.encodeLoadRegImm(cc.computeRegI1, (ScbeCpu::getNumBits(opBits) * 2) - 1, opBits);
+                        pp.encodeOpBinaryRegReg(cc.computeRegI0, cc.computeRegI1, CpuOp::CMOVE, opBits);
+                        pp.encodeOpBinaryRegImm(cc.computeRegI0, ScbeCpu::getNumBits(opBits) - 1, CpuOp::XOR, opBits);
+                        pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, opBits);
                         break;
                     case TokenId::IntrinsicByteSwap:
                         emitIMMB(pp, cc.computeRegI0, opBits);
-                        pp.emitOpUnaryReg(cc.computeRegI0, CpuOp::BSWAP, opBits);
-                        pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, opBits);
+                        pp.encodeOpUnaryReg(cc.computeRegI0, CpuOp::BSWAP, opBits);
+                        pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, opBits);
                         break;
                     default:
                         ok = false;
@@ -2164,16 +2164,16 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                     case TokenId::IntrinsicMin:
                         emitIMMB(pp, cc.computeRegI0, opBits);
                         emitIMMC(pp, cc.computeRegI1, opBits);
-                        pp.emitCmpRegReg(cc.computeRegI1, cc.computeRegI0, opBits);
-                        pp.emitOpBinaryRegReg(cc.computeRegI0, cc.computeRegI1, CpuOp::CMOVL, opBits);
-                        pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, opBits);
+                        pp.encodeCmpRegReg(cc.computeRegI1, cc.computeRegI0, opBits);
+                        pp.encodeOpBinaryRegReg(cc.computeRegI0, cc.computeRegI1, CpuOp::CMOVL, opBits);
+                        pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, opBits);
                         break;
                     case TokenId::IntrinsicMax:
                         emitIMMB(pp, cc.computeRegI0, opBits);
                         emitIMMC(pp, cc.computeRegI1, opBits);
-                        pp.emitCmpRegReg(cc.computeRegI0, cc.computeRegI1, opBits);
-                        pp.emitOpBinaryRegReg(cc.computeRegI0, cc.computeRegI1, CpuOp::CMOVL, opBits);
-                        pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, opBits);
+                        pp.encodeCmpRegReg(cc.computeRegI0, cc.computeRegI1, opBits);
+                        pp.encodeOpBinaryRegReg(cc.computeRegI0, cc.computeRegI1, CpuOp::CMOVL, opBits);
+                        pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, opBits);
                         break;
                     default:
                         ok = false;
@@ -2195,28 +2195,28 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                     case TokenId::IntrinsicMin:
                         emitIMMB(pp, cc.computeRegI0, opBits);
                         emitIMMC(pp, cc.computeRegI1, opBits);
-                        pp.emitCmpRegReg(cc.computeRegI1, cc.computeRegI0, opBits);
-                        pp.emitOpBinaryRegReg(cc.computeRegI0, cc.computeRegI1, CpuOp::CMOVB, opBits);
-                        pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, opBits);
+                        pp.encodeCmpRegReg(cc.computeRegI1, cc.computeRegI0, opBits);
+                        pp.encodeOpBinaryRegReg(cc.computeRegI0, cc.computeRegI1, CpuOp::CMOVB, opBits);
+                        pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, opBits);
                         break;
                     case TokenId::IntrinsicMax:
                         emitIMMB(pp, cc.computeRegI0, opBits);
                         emitIMMC(pp, cc.computeRegI1, opBits);
-                        pp.emitCmpRegReg(cc.computeRegI0, cc.computeRegI1, opBits);
-                        pp.emitOpBinaryRegReg(cc.computeRegI0, cc.computeRegI1, CpuOp::CMOVB, opBits);
-                        pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, opBits);
+                        pp.encodeCmpRegReg(cc.computeRegI0, cc.computeRegI1, opBits);
+                        pp.encodeOpBinaryRegReg(cc.computeRegI0, cc.computeRegI1, CpuOp::CMOVB, opBits);
+                        pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, opBits);
                         break;
                     case TokenId::IntrinsicRol:
                         emitIMMB(pp, cc.computeRegI0, opBits);
                         emitIMMC(pp, cc.computeRegI1, OpBits::B8);
-                        pp.emitOpBinaryRegReg(cc.computeRegI0, cc.computeRegI1, CpuOp::ROL, opBits);
-                        pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, opBits);
+                        pp.encodeOpBinaryRegReg(cc.computeRegI0, cc.computeRegI1, CpuOp::ROL, opBits);
+                        pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, opBits);
                         break;
                     case TokenId::IntrinsicRor:
                         emitIMMB(pp, cc.computeRegI0, opBits);
                         emitIMMC(pp, cc.computeRegI1, OpBits::B8);
-                        pp.emitOpBinaryRegReg(cc.computeRegI0, cc.computeRegI1, CpuOp::ROR, opBits);
-                        pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, opBits);
+                        pp.encodeOpBinaryRegReg(cc.computeRegI0, cc.computeRegI1, CpuOp::ROR, opBits);
+                        pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, opBits);
                         break;
                     default:
                         ok = false;
@@ -2247,14 +2247,14 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                     case TokenId::IntrinsicMin:
                         emitIMMB(pp, cc.computeRegF0, opBits);
                         emitIMMC(pp, cc.computeRegF1, opBits);
-                        pp.emitOpBinaryRegReg(cc.computeRegF0, cc.computeRegF1, CpuOp::FMIN, opBits);
-                        pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, opBits);
+                        pp.encodeOpBinaryRegReg(cc.computeRegF0, cc.computeRegF1, CpuOp::FMIN, opBits);
+                        pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, opBits);
                         break;
                     case TokenId::IntrinsicMax:
                         emitIMMB(pp, cc.computeRegF0, opBits);
                         emitIMMC(pp, cc.computeRegF1, opBits);
-                        pp.emitOpBinaryRegReg(cc.computeRegF0, cc.computeRegF1, CpuOp::FMAX, opBits);
-                        pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, opBits);
+                        pp.encodeOpBinaryRegReg(cc.computeRegF0, cc.computeRegF1, CpuOp::FMAX, opBits);
+                        pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, opBits);
                         break;
 
                     case TokenId::IntrinsicPow:
@@ -2286,15 +2286,15 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 {
                     case TokenId::IntrinsicSqrt:
                         emitIMMB(pp, cc.computeRegF0, opBits);
-                        pp.emitOpBinaryRegReg(cc.computeRegF0, cc.computeRegF0, CpuOp::FSQRT, opBits);
-                        pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, opBits);
+                        pp.encodeOpBinaryRegReg(cc.computeRegF0, cc.computeRegF0, CpuOp::FSQRT, opBits);
+                        pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, opBits);
                         break;
                     case TokenId::IntrinsicAbs:
                         emitIMMB(pp, cc.computeRegF0, opBits);
-                        pp.emitLoadRegImm(cc.computeRegI0, opBits == OpBits::B32 ? 0x7FFFFFFF : 0x7FFFFFFF'FFFFFFFF, OpBits::B64);
-                        pp.emitLoadRegReg(cc.computeRegF1, cc.computeRegI0, OpBits::B64);
-                        pp.emitOpBinaryRegReg(cc.computeRegF0, cc.computeRegF1, CpuOp::FAND, opBits);
-                        pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, opBits);
+                        pp.encodeLoadRegImm(cc.computeRegI0, opBits == OpBits::B32 ? 0x7FFFFFFF : 0x7FFFFFFF'FFFFFFFF, OpBits::B64);
+                        pp.encodeLoadRegReg(cc.computeRegF1, cc.computeRegI0, OpBits::B64);
+                        pp.encodeOpBinaryRegReg(cc.computeRegF0, cc.computeRegF1, CpuOp::FAND, opBits);
+                        pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, opBits);
                         break;
 
                     case TokenId::IntrinsicSin:
@@ -2371,36 +2371,36 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitInternalCallRAParams(pp, g_LangSpec->name_priv_seterr, {ip->a.u32, ip->b.u32});
                 break;
             case ByteCodeOp::InternalHasErr:
-                pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
-                pp.emitLoadRegMem(cc.computeRegI1, cc.computeRegI0, offsetof(SwagContext, hasError), OpBits::B32);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI1, OpBits::B32);
+                pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
+                pp.encodeLoadRegMem(cc.computeRegI1, cc.computeRegI0, offsetof(SwagContext, hasError), OpBits::B32);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI1, OpBits::B32);
                 break;
             case ByteCodeOp::JumpIfError:
-                pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-                pp.emitCmpMemImm(cc.computeRegI0, offsetof(SwagContext, hasError), 0, OpBits::B32);
+                pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
+                pp.encodeCmpMemImm(cc.computeRegI0, offsetof(SwagContext, hasError), 0, OpBits::B32);
                 pp.emitJumpCondImm(CpuCondJump::JNZ, pp.ipIndex + ip->b.s32 + 1);
                 break;
             case ByteCodeOp::JumpIfNoError:
-                pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-                pp.emitCmpMemImm(cc.computeRegI0, offsetof(SwagContext, hasError), 0, OpBits::B32);
+                pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
+                pp.encodeCmpMemImm(cc.computeRegI0, offsetof(SwagContext, hasError), 0, OpBits::B32);
                 pp.emitJumpCondImm(CpuCondJump::JZ, pp.ipIndex + ip->b.s32 + 1);
                 break;
             case ByteCodeOp::InternalPushErr:
-                pp.emitCallLocal(g_LangSpec->name_priv_pusherr);
+                pp.encodeCallLocal(g_LangSpec->name_priv_pusherr);
                 break;
             case ByteCodeOp::InternalPopErr:
-                pp.emitCallLocal(g_LangSpec->name_priv_poperr);
+                pp.encodeCallLocal(g_LangSpec->name_priv_poperr);
                 break;
             case ByteCodeOp::InternalCatchErr:
-                pp.emitCallLocal(g_LangSpec->name_priv_catcherr);
+                pp.encodeCallLocal(g_LangSpec->name_priv_catcherr);
                 break;
             case ByteCodeOp::InternalInitStackTrace:
-                pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-                pp.emitLoadMemImm(cc.computeRegI0, offsetof(SwagContext, traceIndex), 0, OpBits::B32);
+                pp.encodeLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
+                pp.encodeLoadMemImm(cc.computeRegI0, offsetof(SwagContext, traceIndex), 0, OpBits::B32);
                 break;
             case ByteCodeOp::InternalStackTraceConst:
-                pp.emitSymbolRelocationAddress(cc.computeRegI0, pp.symCSIndex, ip->b.u32);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
+                pp.encodeSymbolRelocationAddress(cc.computeRegI0, pp.symCSIndex, ip->b.u32);
+                pp.encodeLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
                 emitInternalCallRAParams(pp, g_LangSpec->name_priv_stackTrace, {ip->a.u32});
                 break;
             case ByteCodeOp::InternalStackTrace:
