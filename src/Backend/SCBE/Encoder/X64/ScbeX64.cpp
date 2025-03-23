@@ -762,13 +762,7 @@ CpuResultFlags ScbeX64::encodeSetCond(CpuReg reg, CpuCondFlag setType, CpuEmitFl
 
 CpuResultFlags ScbeX64::encodeCmpRegReg(CpuReg reg0, CpuReg reg1, OpBits opBits, CpuEmitFlags emitFlags)
 {
-    if (isFloat(reg0) && isInt(reg1))
-    {
-        SWAG_ASSERT(reg0 != cc->computeRegF1);
-        emitLoadRegReg(cc->computeRegF1, reg1, opBits);
-        emitCmpRegReg(reg0, cc->computeRegF1, opBits);
-    }
-    else if (isFloat(reg0))
+    if (isFloat(reg0))
     {
         emitPrefixF64(concat, opBits);
         emitCPUOp(concat, 0x0F);

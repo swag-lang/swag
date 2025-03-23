@@ -230,7 +230,16 @@ void ScbeCpu::emitLoadMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, 
 
 void ScbeCpu::emitCmpRegReg(CpuReg reg0, CpuReg reg1, OpBits opBits)
 {
-    encodeCmpRegReg(reg0, reg1, opBits, EMITF_Zero);
+    if (isFloat(reg0) && isInt(reg1))
+    {
+        SWAG_ASSERT(reg0 != cc->computeRegF1);
+        emitLoadRegReg(cc->computeRegF1, reg1, opBits);
+        emitCmpRegReg(reg0, cc->computeRegF1, opBits);
+    }
+    else
+    {
+        encodeCmpRegReg(reg0, reg1, opBits, EMITF_Zero);
+    }
 }
 
 void ScbeCpu::emitCmpMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits opBits)
@@ -269,7 +278,7 @@ void ScbeCpu::emitSetCond(CpuReg reg, CpuCondFlag setType)
         emitOpBinaryRegReg(reg, cc->computeRegI2, CpuOp::OR, OpBits::B8, EMITF_Zero);
         return;
     }
-    
+
     encodeSetCond(reg, setType, EMITF_Zero);
 }
 
