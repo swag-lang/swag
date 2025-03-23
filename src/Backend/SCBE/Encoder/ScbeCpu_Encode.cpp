@@ -140,12 +140,18 @@ void ScbeCpu::emitLoadRegImm64(CpuReg reg, uint64_t value)
 
 void ScbeCpu::emitLoadSignedExtendRegReg(CpuReg regDst, CpuReg regSrc, OpBits numBitsDst, OpBits numBitsSrc)
 {
-    encodeLoadSignedExtendRegReg(regDst, regSrc, numBitsDst, numBitsSrc, EMITF_Zero);
+    if (numBitsSrc == numBitsDst)
+        emitLoadRegReg(regDst, regSrc, numBitsSrc);
+    else
+        encodeLoadSignedExtendRegReg(regDst, regSrc, numBitsDst, numBitsSrc, EMITF_Zero);
 }
 
 void ScbeCpu::emitLoadSignedExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc)
 {
-    encodeLoadSignedExtendRegMem(reg, memReg, memOffset, numBitsDst, numBitsSrc, EMITF_Zero);
+    if (numBitsSrc == numBitsDst)
+        emitLoadRegMem(reg, memReg, memOffset, numBitsSrc);
+    else
+        encodeLoadSignedExtendRegMem(reg, memReg, memOffset, numBitsDst, numBitsSrc, EMITF_Zero);
 }
 
 void ScbeCpu::emitLoadZeroExtendRegReg(CpuReg regDst, CpuReg regSrc, OpBits numBitsDst, OpBits numBitsSrc)
@@ -155,7 +161,10 @@ void ScbeCpu::emitLoadZeroExtendRegReg(CpuReg regDst, CpuReg regSrc, OpBits numB
 
 void ScbeCpu::emitLoadZeroExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc)
 {
-    encodeLoadZeroExtendRegMem(reg, memReg, memOffset, numBitsDst, numBitsSrc, EMITF_Zero);
+    if (numBitsSrc == numBitsDst)
+        emitLoadRegMem(reg, memReg, memOffset, numBitsSrc);
+    else
+        encodeLoadZeroExtendRegMem(reg, memReg, memOffset, numBitsDst, numBitsSrc, EMITF_Zero);
 }
 
 void ScbeCpu::emitLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, OpBits opBits)

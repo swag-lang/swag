@@ -475,12 +475,6 @@ CpuResultFlags ScbeX64::encodeLoadRegMem(CpuReg reg, CpuReg memReg, uint64_t mem
 
 CpuResultFlags ScbeX64::encodeLoadZeroExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc, CpuEmitFlags emitFlags)
 {
-    if (numBitsSrc == numBitsDst)
-    {
-        emitLoadRegMem(reg, memReg, memOffset, numBitsSrc);
-        return RESULTF_Zero;
-    }
-
     if (numBitsSrc == OpBits::B8 && (numBitsDst == OpBits::B32 || numBitsDst == OpBits::B64))
     {
         emitREX(concat, numBitsDst, reg, memReg);
@@ -577,12 +571,6 @@ CpuResultFlags ScbeX64::encodeLoadZeroExtendRegReg(CpuReg regDst, CpuReg regSrc,
 
 CpuResultFlags ScbeX64::encodeLoadSignedExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc, CpuEmitFlags emitFlags)
 {
-    if (numBitsSrc == numBitsDst)
-    {
-        emitLoadRegMem(reg, memReg, memOffset, numBitsSrc);
-        return RESULTF_Zero;
-    }
-
     if (numBitsSrc == OpBits::B8)
     {
         emitREX(concat, numBitsDst, reg, memReg);
@@ -614,12 +602,6 @@ CpuResultFlags ScbeX64::encodeLoadSignedExtendRegMem(CpuReg reg, CpuReg memReg, 
 
 CpuResultFlags ScbeX64::encodeLoadSignedExtendRegReg(CpuReg regDst, CpuReg regSrc, OpBits numBitsDst, OpBits numBitsSrc, CpuEmitFlags emitFlags)
 {
-    if (numBitsSrc == numBitsDst)
-    {
-        emitLoadRegReg(regDst, regSrc, numBitsSrc);
-        return RESULTF_Zero;
-    }
-
     if (numBitsSrc == OpBits::B8)
     {
         emitREX(concat, numBitsDst, regDst, regSrc);
