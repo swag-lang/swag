@@ -802,7 +802,7 @@ CpuResultFlags ScbeX64::encodeCmpRegImm(CpuReg reg, uint64_t value, OpBits opBit
         emitREX(concat, opBits, REX_REG_NONE, reg);
         emitCPUOp(concat, 0x81);
         emitModRM(concat, MODRM_REG_7, reg);
-        emitValue(concat, value, opBits);
+        emitValue(concat, value, std::min(opBits, OpBits::B32));
     }
     else
     {
