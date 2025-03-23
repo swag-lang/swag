@@ -796,7 +796,8 @@ CpuResultFlags ScbeX64::encodeCmpRegImm(CpuReg reg, uint64_t value, OpBits opBit
         emitValue(concat, value, OpBits::B8);
     }
     else if ((opBits == OpBits::B16 && value <= 0x7FFF) ||
-             (opBits == OpBits::B32 && value <= 0x7FFFFFFF))
+             (opBits == OpBits::B32 && value <= 0x7FFFFFFF) ||
+             (opBits == OpBits::B64 && value <= 0x7FFFFFFF))
     {
         emitREX(concat, opBits, REX_REG_NONE, reg);
         emitCPUOp(concat, 0x81);
