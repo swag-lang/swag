@@ -2322,18 +2322,7 @@ CpuResultFlags ScbeX64::encodePatchJump(const CpuJump& jump, uint64_t offsetDest
 
 CpuResultFlags ScbeX64::encodePatchJump(const CpuJump& jump, CpuEmitFlags emitFlags)
 {
-    const int32_t offset = static_cast<int32_t>(concat.totalCount() - jump.offset);
-    if (jump.opBits == OpBits::B8)
-    {
-        SWAG_ASSERT(offset >= -127 && offset <= 128);
-        *static_cast<uint8_t*>(jump.addr) = static_cast<int8_t>(offset);
-    }
-    else
-    {
-        *static_cast<uint32_t*>(jump.addr) = static_cast<int32_t>(offset);
-    }
-
-    return RESULTF_Zero;
+    return encodePatchJump(jump, concat.totalCount(), emitFlags);
 }
 
 CpuResultFlags ScbeX64::encodeJumpReg(CpuReg reg, CpuEmitFlags emitFlags)
