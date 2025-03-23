@@ -74,6 +74,17 @@ struct Scbe final : Backend
     static void emitJumpDyn(ScbeCpu& pp);
     static void emitCopyVaargs(ScbeCpu& pp);
 
+    static void emitLoadRegMem(ScbeCpu& pp, CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits opBits);
+    static void emitLoadRegImm(ScbeCpu& pp, CpuReg reg, uint64_t value, OpBits opBits);
+    static void emitLoadRegReg(ScbeCpu& pp, CpuReg regDst, CpuReg regSrc, OpBits opBits);
+    static void emitLoadRegImm64(ScbeCpu& pp, CpuReg reg, uint64_t value);
+    static void emitLoadSignedExtendRegReg(ScbeCpu& pp, CpuReg regDst, CpuReg regSrc, OpBits numBitsDst, OpBits numBitsSrc);
+    static void emitLoadSignedExtendRegMem(ScbeCpu& pp, CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc);
+    static void emitLoadZeroExtendRegReg(ScbeCpu& pp, CpuReg regDst, CpuReg regSrc, OpBits numBitsDst, OpBits numBitsSrc);
+    static void emitLoadZeroExtendRegMem(ScbeCpu& pp, CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc);
+    static void emitLoadAddressAddMul(ScbeCpu& pp, CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, OpBits opBits);
+    static void emitLoadAddressMem(ScbeCpu& pp, CpuReg reg, CpuReg memReg, uint64_t memOffset);
+    static void emitLoadMegReg(ScbeCpu& pp, CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits opBits);
     static void emitLoadMemImm(ScbeCpu& pp, CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits);
     static void emitCmpRegReg(ScbeCpu& pp, CpuReg reg0, CpuReg reg1, OpBits opBits);
     static void emitCmpMemReg(ScbeCpu& pp, CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits opBits);
