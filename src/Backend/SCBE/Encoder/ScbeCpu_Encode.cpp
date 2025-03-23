@@ -140,8 +140,9 @@ void ScbeCpu::emitLoadRegImm(CpuReg reg, uint64_t value, OpBits opBits)
         return;
     }
 
-    if (result == RESULTF_Imm2Reg)
+    if (result.has(RESULTF_Imm2Reg))
     {
+        SWAG_ASSERT(reg != cc->computeRegI2);
         emitLoadRegImm(cc->computeRegI2, value, opBits);
         emitLoadRegReg(reg, cc->computeRegI2, opBits);
         return;
@@ -209,7 +210,22 @@ void ScbeCpu::emitLoadMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBi
 
 void ScbeCpu::emitLoadMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits)
 {
-    encodeLoadMemImm(memReg, memOffset, value, opBits, EMITF_Zero);
+    const auto result = cpu->encodeLoadMemImm(memReg, memOffset, value, opBits, EMITF_CanEncode);
+    if (result == RESULTF_Zero)
+    {
+        encodeLoadMemImm(memReg, memOffset, value, opBits, EMITF_Zero);
+        return;
+    }
+
+    if (result.has(RESULTF_Imm2Reg))
+    {
+        SWAG_ASSERT(memReg != cc->computeRegI1);
+        emitLoadRegImm(cc->computeRegI1, value, OpBits::B64);
+        emitLoadMemReg(memReg, memOffset, cc->computeRegI1, OpBits::B64);
+        return;
+    }
+
+    Report::internalError(module, "emitLoadMemImm, cannot encode");
 }
 
 void ScbeCpu::emitCmpRegReg(CpuReg reg0, CpuReg reg1, OpBits opBits)

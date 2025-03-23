@@ -662,18 +662,18 @@ CpuResultFlags ScbeX64::encodeLoadMemImm(CpuReg memReg, uint64_t memOffset, uint
 {
     if (opBits == OpBits::B64 && value > 0x7FFFFFFF && value >> 32 != 0xFFFFFFFF)
     {
-        SWAG_ASSERT(memReg != cc->computeRegI1);
-        emitLoadRegImm(cc->computeRegI1, value, OpBits::B64);
-        emitLoadMemReg(memReg, memOffset, cc->computeRegI1, OpBits::B64);
-    }
-    else
-    {
-        emitREX(concat, opBits, REX_REG_NONE, memReg);
-        emitSpecB8(concat, 0xC7, opBits);
-        emitModRM(concat, memOffset, MODRM_REG_0, memReg);
-        emitValue(concat, value, std::min(opBits, OpBits::B32));
+        if (emitFlags.has(EMITF_CanEncode))
+            return RESULTF_Imm2Reg;
+        Report::internalError(module, "encodeLoadMemImm, cannot encode");
     }
 
+    if (emitFlags.has(EMITF_CanEncode))
+        return RESULTF_Zero;
+
+    emitREX(concat, opBits, REX_REG_NONE, memReg);
+    emitSpecB8(concat, 0xC7, opBits);
+    emitModRM(concat, memOffset, MODRM_REG_0, memReg);
+    emitValue(concat, value, std::min(opBits, OpBits::B32));
     return RESULTF_Zero;
 }
 
