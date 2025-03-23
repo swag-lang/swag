@@ -74,6 +74,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     ScbeMicro pp;
     pp.init(buildParameters);
+    pp.cpu                  = &ppCPU;
     pp.cpuFct               = ppCPU.cpuFct;
     pp.cc                   = ppCPU.cpuFct->cc;
     pp.symCOIndex           = ppCPU.symCOIndex;
@@ -89,6 +90,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     pp.symPI_makeCallback   = ppCPU.symPI_makeCallback;
     pp.symCst_U64F64        = ppCPU.symCst_U64F64;
 
+    pp.cpu = &ppCPU;
     pp.emitEnter(sizeStack);
 
     // Save register parameters
@@ -220,7 +222,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CastBool32:
             case ByteCodeOp::CastBool64:
                 opBits = ScbeCpu::getOpBits(ip->op);
-                pp.emitCmpMI(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), 0, opBits);
+                emitCmpMI(pp, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), 0, opBits);
                 pp.emitSetCC(cc.computeRegI0, CpuCondFlag::NE);
                 pp.emitLoadMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B8);
                 break;
@@ -789,7 +791,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::ZeroToTrue:
-                pp.emitCmpMI(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B32);
+                emitCmpMI(pp, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B32);
                 pp.emitSetCC(cc.computeRegI0, CpuCondFlag::E);
                 pp.emitLoadMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B8);
                 break;
@@ -799,12 +801,12 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitLoadMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B8);
                 break;
             case ByteCodeOp::LowerEqZeroToTrue:
-                pp.emitCmpMI(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B32);
+                emitCmpMI(pp, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B32);
                 pp.emitSetCC(cc.computeRegI0, CpuCondFlag::LE);
                 pp.emitLoadMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B8);
                 break;
             case ByteCodeOp::GreaterZeroToTrue:
-                pp.emitCmpMI(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B32);
+                emitCmpMI(pp, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B32);
                 pp.emitSetCC(cc.computeRegI0, CpuCondFlag::G);
                 pp.emitLoadMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B8);
                 break;
@@ -1029,19 +1031,19 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::JumpIfTrue:
-                pp.emitCmpMI(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B8);
+                emitCmpMI(pp, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B8);
                 pp.emitJumpCI(CpuCondJump::JNZ, pp.ipIndex + ip->b.s32 + 1);
                 break;
             case ByteCodeOp::JumpIfFalse:
-                pp.emitCmpMI(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B8);
+                emitCmpMI(pp, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B8);
                 pp.emitJumpCI(CpuCondJump::JZ, pp.ipIndex + ip->b.s32 + 1);
                 break;
             case ByteCodeOp::JumpIfRTTrue:
-                pp.emitCmpMI(CpuReg::Rsp, pp.cpuFct->getStackOffsetRT(0), 0, OpBits::B8);
+                emitCmpMI(pp, CpuReg::Rsp, pp.cpuFct->getStackOffsetRT(0), 0, OpBits::B8);
                 pp.emitJumpCI(CpuCondJump::JNZ, pp.ipIndex + ip->b.s32 + 1);
                 break;
             case ByteCodeOp::JumpIfRTFalse:
-                pp.emitCmpMI(CpuReg::Rsp, pp.cpuFct->getStackOffsetRT(0), 0, OpBits::B8);
+                emitCmpMI(pp, CpuReg::Rsp, pp.cpuFct->getStackOffsetRT(0), 0, OpBits::B8);
                 pp.emitJumpCI(CpuCondJump::JZ, pp.ipIndex + ip->b.s32 + 1);
                 break;
 
@@ -1050,7 +1052,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpIfNotZero32:
             case ByteCodeOp::JumpIfNotZero64:
                 opBits = ScbeCpu::getOpBits(ip->op);
-                pp.emitCmpMI(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, opBits);
+                emitCmpMI(pp, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, opBits);
                 pp.emitJumpCI(CpuCondJump::JNZ, pp.ipIndex + ip->b.s32 + 1);
                 break;
 
@@ -1059,7 +1061,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpIfZero32:
             case ByteCodeOp::JumpIfZero64:
                 opBits = ScbeCpu::getOpBits(ip->op);
-                pp.emitCmpMI(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, opBits);
+                emitCmpMI(pp, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, opBits);
                 pp.emitJumpCI(CpuCondJump::JZ, pp.ipIndex + ip->b.s32 + 1);
                 break;
 
@@ -2377,12 +2379,12 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::JumpIfError:
                 pp.emitLoadRM(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-                pp.emitCmpMI(cc.computeRegI0, offsetof(SwagContext, hasError), 0, OpBits::B32);
+                emitCmpMI(pp, cc.computeRegI0, offsetof(SwagContext, hasError), 0, OpBits::B32);
                 pp.emitJumpCI(CpuCondJump::JNZ, pp.ipIndex + ip->b.s32 + 1);
                 break;
             case ByteCodeOp::JumpIfNoError:
                 pp.emitLoadRM(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-                pp.emitCmpMI(cc.computeRegI0, offsetof(SwagContext, hasError), 0, OpBits::B32);
+                emitCmpMI(pp, cc.computeRegI0, offsetof(SwagContext, hasError), 0, OpBits::B32);
                 pp.emitJumpCI(CpuCondJump::JZ, pp.ipIndex + ip->b.s32 + 1);
                 break;
             case ByteCodeOp::InternalPushErr:

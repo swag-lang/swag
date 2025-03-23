@@ -1,6 +1,7 @@
 #pragma once
 #include "Backend/Backend.h"
 #include "Backend/BackendParameters.h"
+#include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/ScbeCpu.h"
 #include "Semantic/DataSegment.h"
 
@@ -24,7 +25,6 @@ struct Scbe final : Backend
 
     static void createRuntime(ScbeCpu& pp);
     static bool buildRelocationSegment(ScbeCpu& pp, DataSegment* dataSegment, CpuRelocationTable& relocationTable, SegmentKind me);
-
     static void emitGetTypeTable(ScbeCpu& pp);
     static void emitGlobalPreMain(ScbeCpu& pp);
     static void emitGlobalInit(ScbeCpu& pp);
@@ -73,4 +73,7 @@ struct Scbe final : Backend
     static void emitIMMC(ScbeCpu& pp, CpuReg reg, OpBits numBitsSrc, OpBits numBitsDst, bool isSigned);
     static void emitJumpDyn(ScbeCpu& pp);
     static void emitCopyVaargs(ScbeCpu& pp);
+
+    static void emitCmpMI(ScbeCpu& pp, CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits);
+    static void emitCmpRI(ScbeCpu& pp, CpuReg reg, uint64_t value, OpBits opBits);
 };
