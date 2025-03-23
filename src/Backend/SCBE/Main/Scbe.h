@@ -74,6 +74,14 @@ struct Scbe final : Backend
     static void emitJumpDyn(ScbeCpu& pp);
     static void emitCopyVaargs(ScbeCpu& pp);
 
+    static void emitLoadMemImm(ScbeCpu& pp, CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits);
     static void emitCmpMemImm(ScbeCpu& pp, CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits);
     static void emitCmpRegImm(ScbeCpu& pp, CpuReg reg, uint64_t value, OpBits opBits);
+    static void emitOpUnaryMem(ScbeCpu& pp, CpuReg memReg, uint64_t memOffset, CpuOp op, OpBits opBits);
+    static void emitOpUnaryReg(ScbeCpu& pp, CpuReg reg, CpuOp op, OpBits opBits);
+    static void emitOpBinaryRegReg(ScbeCpu& pp, CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags = EMITF_Zero);
+    static void emitOpBinaryRegMem(ScbeCpu& pp, CpuReg regDst, CpuReg memReg, uint64_t memOffset, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags = EMITF_Zero);
+    static void emitOpBinaryMemReg(ScbeCpu& pp, CpuReg memReg, uint64_t memOffset, CpuReg reg, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags = EMITF_Zero);
+    static void emitOpBinaryRegImm(ScbeCpu& pp, CpuReg reg, uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags = EMITF_Zero);
+    static void emitOpBinaryMemImm(ScbeCpu& pp, CpuReg memReg, uint64_t memOffset, uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags = EMITF_Zero);
 };
