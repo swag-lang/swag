@@ -99,7 +99,7 @@ void Scbe::emitShiftRightArithmetic(ScbeCpu& pp)
     {
         pp.emitLoadRM(cc->computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32);
         pp.emitLoadRI(cc->computeRegI0, ScbeCpu::getNumBits(opBits) - 1, OpBits::B32);
-        emitCmpRI(pp, cc->computeRegI1, ScbeCpu::getNumBits(opBits) - 1, OpBits::B32);
+        pp.emitCmpRI(cc->computeRegI1, ScbeCpu::getNumBits(opBits) - 1, OpBits::B32);
         pp.emitOpBinaryRR(cc->computeRegI1, cc->computeRegI0, CpuOp::CMOVG, opBits);
         emitIMMA(pp, cc->computeRegI0, opBits);
         pp.emitOpBinaryRR(cc->computeRegI0, cc->computeRegI1, CpuOp::SAR, opBits);
@@ -122,7 +122,7 @@ void Scbe::emitShiftRightEqArithmetic(ScbeCpu& pp)
     {
         pp.emitLoadRM(cc->computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32);
         pp.emitLoadRI(cc->computeRegI0, ScbeCpu::getNumBits(opBits) - 1, OpBits::B32);
-        emitCmpRI(pp, cc->computeRegI1, ScbeCpu::getNumBits(opBits) - 1, OpBits::B32);
+        pp.emitCmpRI(cc->computeRegI1, ScbeCpu::getNumBits(opBits) - 1, OpBits::B32);
         pp.emitOpBinaryRR(cc->computeRegI1, cc->computeRegI0, CpuOp::CMOVG, opBits);
         pp.emitLoadRM(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
         pp.emitOpBinaryMR(cc->computeRegI0, 0, cc->computeRegI1, CpuOp::SAR, opBits);
@@ -150,7 +150,7 @@ void Scbe::emitShiftLogical(ScbeCpu& pp, CpuOp op)
         emitIMMB(pp, cc->computeRegI1, OpBits::B32);
         pp.emitOpBinaryRR(cc->computeRegI0, cc->computeRegI1, op, opBits);
         pp.emitClearR(cc->computeRegI2, opBits);
-        emitCmpRI(pp, cc->computeRegI1, ScbeCpu::getNumBits(opBits) - 1, OpBits::B32);
+        pp.emitCmpRI(cc->computeRegI1, ScbeCpu::getNumBits(opBits) - 1, OpBits::B32);
         pp.emitOpBinaryRR(cc->computeRegI0, cc->computeRegI2, CpuOp::CMOVG, opBits);
         pp.emitLoadMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, opBits);
     }
@@ -175,7 +175,7 @@ void Scbe::emitShiftEqLogical(ScbeCpu& pp, CpuOp op)
     {
         pp.emitLoadRM(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
         pp.emitLoadRM(cc->computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32);
-        emitCmpRI(pp, cc->computeRegI1, ScbeCpu::getNumBits(opBits), OpBits::B32);
+        pp.emitCmpRI(cc->computeRegI1, ScbeCpu::getNumBits(opBits), OpBits::B32);
         const auto jump = pp.emitJump(CpuCondJump::JL, OpBits::B8);
         pp.emitClearR(cc->computeRegI1, opBits);
         pp.emitLoadMR(cc->computeRegI0, 0, cc->computeRegI1, opBits);
@@ -305,7 +305,7 @@ void Scbe::emitCompareOp(ScbeCpu& pp, CpuReg reg, CpuCondFlag cond)
     }
     else if (isInt && !ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_B))
     {
-        emitCmpMI(pp, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), ip->b.u64, opBits);
+        pp.emitCmpMI(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), ip->b.u64, opBits);
     }
     else
     {
@@ -393,7 +393,7 @@ void Scbe::emitJumpCmp(ScbeCpu& pp, CpuCondJump op, OpBits opBits)
     }
     else if (isInt && !ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_C))
     {
-        emitCmpMI(pp, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), ip->c.u64, opBits);
+        pp.emitCmpMI(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), ip->c.u64, opBits);
     }
     else
     {
@@ -414,7 +414,7 @@ void Scbe::emitJumpCmpAddr(ScbeCpu& pp, CpuCondJump op, CpuReg memReg, uint64_t 
 
     if (ip->hasFlag(BCI_IMM_C))
     {
-        emitCmpMI(pp, memReg, memOffset, ip->c.u64, opBits);
+        pp.emitCmpMI(memReg, memOffset, ip->c.u64, opBits);
     }
     else
     {
@@ -484,7 +484,7 @@ void Scbe::emitJumpDyn(ScbeCpu& pp)
     // We could in the end remove two instructions and be as the llvm generation
 
     pp.emitOpBinaryRI(cc->computeRegI0, ip->b.u64 - 1, CpuOp::SUB, OpBits::B64);
-    emitCmpRI(pp, cc->computeRegI0, ip->c.u64, OpBits::B64);
+    pp.emitCmpRI(cc->computeRegI0, ip->c.u64, OpBits::B64);
     const auto tableCompiler = reinterpret_cast<int32_t*>(pp.buildParams.module->compilerSegment.address(ip->d.u32));
     pp.emitJumpCI(CpuCondJump::JAE, pp.ipIndex + tableCompiler[0] + 1);
 
@@ -560,14 +560,4 @@ void Scbe::emitCopyVaargs(ScbeCpu& pp)
         pp.emitLoadAddressM(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->sizeStackCallParams - variadicStackSize);
         pp.emitLoadMR(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, OpBits::B64);
     }
-}
-
-void Scbe::emitCmpMI(ScbeCpu& pp, CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits)
-{
-    pp.emitCmpMI(memReg, memOffset, value, opBits);
-}
-
-void Scbe::emitCmpRI(ScbeCpu& pp, CpuReg reg, uint64_t value, OpBits opBits)
-{
-    pp.emitCmpRI(reg, value, opBits);
 }

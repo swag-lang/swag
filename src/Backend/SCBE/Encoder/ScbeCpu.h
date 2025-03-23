@@ -276,8 +276,8 @@ struct ScbeCpu : BackendEncoder
     virtual void    emitLoadZeroExtendRM(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc)                       = 0;
     virtual void    emitLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, OpBits opBits)                          = 0;
     virtual void    emitLoadAddressM(CpuReg reg, CpuReg memReg, uint64_t memOffset)                                                                 = 0;
-    virtual void    emitLoadMR(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits opBits)                                                        = 0;
-    virtual void    emitLoadMI(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits)                                                    = 0;
+    virtual void    emitLoadMR(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits opBits)                                                       = 0;
+    virtual void    emitLoadMI(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits)                                                   = 0;
     virtual void    emitCmpRR(CpuReg reg0, CpuReg reg1, OpBits opBits)                                                                              = 0;
     virtual void    emitCmpMR(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits opBits)                                                         = 0;
     virtual void    emitCmpMI(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits)                                                     = 0;
@@ -298,7 +298,6 @@ struct ScbeCpu : BackendEncoder
     Concat concat;
     Concat postConcat;
 
-    ScbeCpu*                                    cpu = nullptr;
     VectorNative<const Utf8*>                   stringTable;
     VectorNative<uint32_t>                      pushRAParams;
     VectorNative<std::pair<uint32_t, uint32_t>> pushRVParams;
