@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Backend/SCBE/Encoder/ScbeCpu.h"
 #include "Backend/SCBE/Main/Scbe.h"
-#include "Syntax/Ast.h"
 
 void ScbeCpu::emitSymbolRelocationRef(const Utf8& name)
 {
