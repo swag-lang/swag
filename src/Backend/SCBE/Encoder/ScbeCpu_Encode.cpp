@@ -140,7 +140,7 @@ void ScbeCpu::emitLoadRegImm(CpuReg reg, uint64_t value, OpBits opBits)
         return;
     }
 
-    if (result.has(RESULTF_Imm2Reg))
+    if (result.has(RESULTF_Right2Reg))
     {
         SWAG_ASSERT(reg != cc->computeRegI2);
         emitLoadRegImm(cc->computeRegI2, value, opBits);
@@ -217,7 +217,7 @@ void ScbeCpu::emitLoadMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, 
         return;
     }
 
-    if (result.has(RESULTF_Imm2Reg))
+    if (result.has(RESULTF_Right2Reg))
     {
         SWAG_ASSERT(memReg != cc->computeRegI1);
         emitLoadRegImm(cc->computeRegI1, value, OpBits::B64);

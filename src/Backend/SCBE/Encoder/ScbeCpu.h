@@ -137,9 +137,9 @@ constexpr CpuEmitFlags EMITF_Lock      = 0x00000002;
 constexpr CpuEmitFlags EMITF_B64       = 0x00000004;
 constexpr CpuEmitFlags EMITF_CanEncode = 0x00000008;
 
-using CpuResultFlags                     = Flags<uint32_t>;
-constexpr CpuResultFlags RESULTF_Zero    = 0x00000000;
-constexpr CpuResultFlags RESULTF_Imm2Reg = 0x00000001;
+using CpuResultFlags                       = Flags<uint32_t>;
+constexpr CpuResultFlags RESULTF_Zero      = 0x00000000;
+constexpr CpuResultFlags RESULTF_Right2Reg = 0x00000001;
 
 struct CpuJump
 {
