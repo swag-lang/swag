@@ -35,7 +35,7 @@ void initCallConvKinds()
     ccX64.volatileRegistersInteger.push_back(CpuReg::R9);
     ccX64.volatileRegistersInteger.push_back(CpuReg::R10);
     ccX64.volatileRegistersInteger.push_back(CpuReg::R11);
-    
+
     ccX64.volatileRegistersFloat.push_back(CpuReg::Xmm0);
     ccX64.volatileRegistersFloat.push_back(CpuReg::Xmm1);
     ccX64.volatileRegistersFloat.push_back(CpuReg::Xmm2);

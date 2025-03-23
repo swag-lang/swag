@@ -118,13 +118,13 @@ namespace
             case CpuOp::NEG:
                 return "neg";
             case CpuOp::CMOVE:
-                return "cmove";              
+                return "cmove";
             case CpuOp::CMOVG:
-                return "cmovg";            
+                return "cmovg";
             case CpuOp::CMOVGE:
                 return "cmovge";
             case CpuOp::CMOVB:
-                return "cmovb";            
+                return "cmovb";
             case CpuOp::CMOVBE:
                 return "cmovbe";
             case CpuOp::CMOVL:

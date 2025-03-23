@@ -490,7 +490,7 @@ void ScbeOptimizer::computeContext(const ScbeMicro& out)
         {
             if (details.has(1ULL << i))
                 usedRegs[static_cast<CpuReg>(i)] += 1;
-        }        
+        }
 
         inst = zap(inst + 1);
     }
@@ -502,7 +502,7 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
         return;
     if (!out.cpuFct->bc->sourceFile->module->mustOptimizeBackend(out.cpuFct->bc->node))
         return;
-    
+
     setDirtyPass();
     computeContext(out);
 
