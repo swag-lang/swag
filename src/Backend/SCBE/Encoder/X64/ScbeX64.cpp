@@ -3,7 +3,6 @@
 #include "Backend/SCBE/Encoder/X64/ScbeX64.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
-#include "Core/Math.h"
 #include "Report/Report.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Wmf/Module.h"
@@ -675,7 +674,7 @@ CpuEncodeResult ScbeX64::encodeLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, 
 
     SWAG_ASSERT(mulValue == 1 || mulValue == 2 || mulValue == 4 || mulValue == 8);
     const auto    scale = static_cast<uint8_t>(log2(mulValue));
-    const uint8_t value = (scale << 6) | (encodeReg(regSrc2) << 3) | encodeReg(regSrc1);
+    const uint8_t value = static_cast<uint8_t>(scale << 6) | static_cast<uint8_t>(encodeReg(regSrc2) << 3) | encodeReg(regSrc1);
     concat.addU8(value);
 
     return CpuEncodeResult::Zero;
