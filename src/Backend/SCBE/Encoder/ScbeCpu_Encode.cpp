@@ -391,11 +391,13 @@ void ScbeCpu::emitOpBinaryMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, 
 void ScbeCpu::emitOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
     maskValue(value, opBits);
-    if (optLevel > BuildCfgBackendOptim::O1 &&
-        isInt(reg) &&
-        isNoOp(value, op, opBits, emitFlags))
+
+    if (optLevel > BuildCfgBackendOptim::O1)
     {
-        return;
+        if (isInt(reg) && isNoOp(value, op, opBits, emitFlags))
+        {
+            return;
+        }
     }
 
     encodeOpBinaryRegImm(reg, value, op, opBits, emitFlags);
