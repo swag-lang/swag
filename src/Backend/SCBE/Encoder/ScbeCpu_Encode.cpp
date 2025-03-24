@@ -452,49 +452,46 @@ void ScbeCpu::emitOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp op, OpBits op
             return;
         }
 
-        if (op == CpuOp::MUL || op == CpuOp::IMUL)
+        if ((op == CpuOp::MUL || op == CpuOp::IMUL) && value == 0)
         {
-            if (value == 0)
+            emitClearReg(reg, opBits);
+            return;
+        }
+
+        if ((op == CpuOp::MUL || op == CpuOp::IMUL) && (opBits == OpBits::B32 || opBits == OpBits::B64))
+        {
+            if (value == 3)
             {
-                emitClearReg(reg, opBits);
+                emitLoadAddressAddMul(reg, reg, reg, 2, opBits);
                 return;
             }
 
-            if (opBits == OpBits::B32 || opBits == OpBits::B64)
+            if (value == 5)
             {
-                if (value == 3)
-                {
-                    emitLoadAddressAddMul(reg, reg, reg, 2, opBits);
-                    return;
-                }
+                emitLoadAddressAddMul(reg, reg, reg, 4, opBits);
+                return;
+            }
 
-                if (value == 5)
-                {
-                    emitLoadAddressAddMul(reg, reg, reg, 4, opBits);
-                    return;
-                }
+            if (value == 9)
+            {
+                emitLoadAddressAddMul(reg, reg, reg, 8, opBits);
+                return;
+            }
 
-                if (value == 9)
-                {
-                    emitLoadAddressAddMul(reg, reg, reg, 8, opBits);
-                    return;
-                }
+            if (Math::isPowerOfTwo(value))
+            {
+                emitOpBinaryRegImm(reg, static_cast<uint32_t>(log2(value)), CpuOp::SHL, opBits, emitFlags);
+                return;
+            }
 
-                if (Math::isPowerOfTwo(value))
-                {
-                    emitOpBinaryRegImm(reg, static_cast<uint32_t>(log2(value)), CpuOp::SHL, opBits, emitFlags);
-                    return;
-                }
-
-                uint32_t factor1, factor2;
-                if (decomposeMul(static_cast<uint32_t>(value), factor1, factor2))
-                {
-                    if (factor1 != 1)
-                        emitOpBinaryRegImm(reg, factor1, CpuOp::MUL, opBits, emitFlags);
-                    if (factor2 != 1)
-                        emitOpBinaryRegImm(reg, factor2, CpuOp::MUL, opBits, emitFlags);
-                    return;
-                }
+            uint32_t factor1, factor2;
+            if (decomposeMul(static_cast<uint32_t>(value), factor1, factor2))
+            {
+                if (factor1 != 1)
+                    emitOpBinaryRegImm(reg, factor1, CpuOp::MUL, opBits, emitFlags);
+                if (factor2 != 1)
+                    emitOpBinaryRegImm(reg, factor2, CpuOp::MUL, opBits, emitFlags);
+                return;
             }
         }
     }
