@@ -458,32 +458,32 @@ void ScbeCpu::emitOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp op, OpBits op
             return;
         }
 
-        if ((op == CpuOp::MUL || op == CpuOp::IMUL) && (opBits == OpBits::B32 || opBits == OpBits::B64))
+        if ((op == CpuOp::MUL || op == CpuOp::IMUL) && value == 3)
         {
-            if (value == 3)
-            {
-                emitLoadAddressAddMul(reg, reg, reg, 2, opBits);
-                return;
-            }
+            emitLoadAddressAddMul(reg, reg, reg, 2, std::max(opBits, OpBits::B32));
+            return;
+        }
 
-            if (value == 5)
-            {
-                emitLoadAddressAddMul(reg, reg, reg, 4, opBits);
-                return;
-            }
+        if ((op == CpuOp::MUL || op == CpuOp::IMUL) && value == 5)
+        {
+            emitLoadAddressAddMul(reg, reg, reg, 4, std::max(opBits, OpBits::B32));
+            return;
+        }
 
-            if (value == 9)
-            {
-                emitLoadAddressAddMul(reg, reg, reg, 8, opBits);
-                return;
-            }
+        if ((op == CpuOp::MUL || op == CpuOp::IMUL) && value == 9)
+        {
+            emitLoadAddressAddMul(reg, reg, reg, 8, std::max(opBits, OpBits::B32));
+            return;
+        }
 
-            if (Math::isPowerOfTwo(value))
-            {
-                emitOpBinaryRegImm(reg, static_cast<uint32_t>(log2(value)), CpuOp::SHL, opBits, emitFlags);
-                return;
-            }
+        if ((op == CpuOp::MUL || op == CpuOp::IMUL) && Math::isPowerOfTwo(value))
+        {
+            emitOpBinaryRegImm(reg, static_cast<uint32_t>(log2(value)), CpuOp::SHL, opBits, emitFlags);
+            return;
+        }
 
+        if (op == CpuOp::MUL || op == CpuOp::IMUL)
+        {
             uint32_t factor1, factor2;
             if (decomposeMul(static_cast<uint32_t>(value), factor1, factor2))
             {
