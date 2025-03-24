@@ -134,13 +134,13 @@ void ScbeCpu::emitLoadRegImm(CpuReg reg, uint64_t value, OpBits opBits)
     }
 
     const auto result = cpu->encodeLoadRegImm(reg, value, opBits, EMITF_CanEncode);
-    if (result == RESULTF_Zero)
+    if (result == CpuResultFlags::RESULTF_Zero)
     {
         encodeLoadRegImm(reg, value, opBits, EMITF_Zero);
         return;
     }
 
-    if (result.has(RESULTF_Right2Reg))
+    if (result == CpuResultFlags::RESULTF_Right2Reg)
     {
         SWAG_ASSERT(reg != cc->computeRegI2);
         emitLoadRegImm(cc->computeRegI2, value, opBits);
@@ -211,13 +211,13 @@ void ScbeCpu::emitLoadMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBi
 void ScbeCpu::emitLoadMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits)
 {
     const auto result = cpu->encodeLoadMemImm(memReg, memOffset, value, opBits, EMITF_CanEncode);
-    if (result == RESULTF_Zero)
+    if (result == CpuResultFlags::RESULTF_Zero)
     {
         encodeLoadMemImm(memReg, memOffset, value, opBits, EMITF_Zero);
         return;
     }
 
-    if (result.has(RESULTF_Right2Reg))
+    if (result == CpuResultFlags::RESULTF_Right2Reg)
     {
         SWAG_ASSERT(memReg != cc->computeRegI1);
         emitLoadRegImm(cc->computeRegI1, value, OpBits::B64);
@@ -252,13 +252,13 @@ void ScbeCpu::emitCmpMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, O
     maskValue(value, opBits);
 
     const auto result = cpu->encodeCmpMemImm(memReg, memOffset, value, opBits, EMITF_CanEncode);
-    if (result == RESULTF_Zero)
+    if (result == CpuResultFlags::RESULTF_Zero)
     {
         encodeCmpMemImm(memReg, memOffset, value, opBits, EMITF_Zero);
         return;
     }
 
-    if (result.has(RESULTF_Right2Reg))
+    if (result == CpuResultFlags::RESULTF_Right2Reg)
     {
         SWAG_ASSERT(memReg != cc->computeRegI2);
         emitLoadRegMem(cc->computeRegI2, memReg, memOffset, opBits);
@@ -274,13 +274,13 @@ void ScbeCpu::emitCmpRegImm(CpuReg reg, uint64_t value, OpBits opBits)
     maskValue(value, opBits);
 
     const auto result = cpu->encodeCmpRegImm(reg, value, opBits, EMITF_CanEncode);
-    if (result == RESULTF_Zero)
+    if (result == CpuResultFlags::RESULTF_Zero)
     {
         encodeCmpRegImm(reg, value, opBits, EMITF_Zero);
         return;
     }
 
-    if (result.has(RESULTF_Right2Reg))
+    if (result == CpuResultFlags::RESULTF_Right2Reg)
     {
         SWAG_ASSERT(reg != cc->computeRegI1);
         emitLoadRegImm(cc->computeRegI1, value, opBits);
@@ -336,7 +336,23 @@ void ScbeCpu::emitOpUnaryMem(CpuReg memReg, uint64_t memOffset, CpuOp op, OpBits
 
 void ScbeCpu::emitOpUnaryReg(CpuReg reg, CpuOp op, OpBits opBits)
 {
-    encodeOpUnaryReg(reg, op, opBits, EMITF_Zero);
+    const auto result = cpu->encodeOpUnaryReg(reg, op, opBits, EMITF_CanEncode);
+    if (result == CpuResultFlags::RESULTF_Zero)
+    {
+        encodeOpUnaryReg(reg, op, opBits, EMITF_Zero);
+        return;
+    }
+
+    if (result == CpuResultFlags::RESULTF_NotSupported)
+    {
+        SWAG_ASSERT(reg == cc->computeRegF0);
+        emitLoadMemImm(CpuReg::Rsp, cpuFct->getStackOffsetFLT(), opBits == OpBits::B32 ? 0x80000000 : 0x80000000'00000000, OpBits::B64);
+        emitLoadRegMem(cc->computeRegF1, CpuReg::Rsp, cpuFct->getStackOffsetFLT(), opBits);
+        emitOpBinaryRegReg(cc->computeRegF0, cc->computeRegF1, CpuOp::FXOR, opBits, EMITF_Zero);
+        return;
+    }
+
+    Report::internalError(module, "emitOpUnaryReg, cannot encode");
 }
 
 void ScbeCpu::emitOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
