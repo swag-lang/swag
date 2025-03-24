@@ -1329,6 +1329,8 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
     {
         if (opBits == OpBits::B8)
         {
+            if (emitFlags.has(EMIT_CanEncode))
+                return CpuEncodeResult::Zero;
             emitREX(concat, opBits, REX_REG_NONE, reg);
             emitCPUOp(concat, 0x80);
             emitModRM(concat, MODRM_REG_6, reg);
@@ -1336,6 +1338,8 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
         }
         else if (canEncode8(value, opBits))
         {
+            if (emitFlags.has(EMIT_CanEncode))
+                return CpuEncodeResult::Zero;
             emitREX(concat, opBits, REX_REG_NONE, reg);
             emitCPUOp(concat, 0x83);
             emitModRM(concat, MODRM_REG_6, reg);
@@ -1343,6 +1347,8 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
         }
         else if (value <= 0x7FFFFFFF)
         {
+            if (emitFlags.has(EMIT_CanEncode))
+                return CpuEncodeResult::Zero;
             emitREX(concat, opBits, REX_REG_NONE, reg);
             emitCPUOp(concat, 0x81);
             emitModRM(concat, MODRM_REG_6, reg);
@@ -1350,9 +1356,9 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
         }
         else
         {
-            SWAG_ASSERT(reg != cc->computeRegI1);
-            emitLoadRegImm(cc->computeRegI1, value, OpBits::B64);
-            emitOpBinaryRegReg(reg, cc->computeRegI1, op, opBits, emitFlags);
+            if (emitFlags.has(EMIT_CanEncode))
+                return CpuEncodeResult::Right2Reg;
+            Report::internalError(module, "encodeOpBinaryRegImm, cannot encode");
         }
     }
 
@@ -1362,6 +1368,8 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
     {
         if (opBits == OpBits::B8)
         {
+            if (emitFlags.has(EMIT_CanEncode))
+                return CpuEncodeResult::Zero;
             emitREX(concat, opBits, REX_REG_NONE, reg);
             emitCPUOp(concat, 0x80);
             emitModRM(concat, MODRM_REG_1, reg);
@@ -1369,6 +1377,8 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
         }
         else if (canEncode8(value, opBits))
         {
+            if (emitFlags.has(EMIT_CanEncode))
+                return CpuEncodeResult::Zero;
             emitREX(concat, opBits, REX_REG_NONE, reg);
             emitCPUOp(concat, 0x83);
             emitModRM(concat, MODRM_REG_1, reg);
@@ -1376,6 +1386,8 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
         }
         else if (value <= 0x7FFFFFFF)
         {
+            if (emitFlags.has(EMIT_CanEncode))
+                return CpuEncodeResult::Zero;
             emitREX(concat, opBits, REX_REG_NONE, reg);
             emitCPUOp(concat, 0x81);
             emitModRM(concat, MODRM_REG_1, reg);
@@ -1383,9 +1395,9 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
         }
         else
         {
-            SWAG_ASSERT(reg != cc->computeRegI1);
-            emitLoadRegImm(cc->computeRegI1, value, OpBits::B64);
-            emitOpBinaryRegReg(reg, cc->computeRegI1, op, opBits, emitFlags);
+            if (emitFlags.has(EMIT_CanEncode))
+                return CpuEncodeResult::Right2Reg;
+            Report::internalError(module, "encodeOpBinaryRegImm, cannot encode");
         }
     }
 
@@ -1395,6 +1407,8 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
     {
         if (opBits == OpBits::B8)
         {
+            if (emitFlags.has(EMIT_CanEncode))
+                return CpuEncodeResult::Zero;
             emitREX(concat, opBits, REX_REG_NONE, reg);
             emitCPUOp(concat, 0x80);
             emitModRM(concat, MODRM_REG_4, reg);
@@ -1402,6 +1416,8 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
         }
         else if (canEncode8(value, opBits))
         {
+            if (emitFlags.has(EMIT_CanEncode))
+                return CpuEncodeResult::Zero;
             emitREX(concat, opBits, REX_REG_NONE, reg);
             emitCPUOp(concat, 0x83);
             emitModRM(concat, MODRM_REG_4, reg);
@@ -1409,6 +1425,8 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
         }
         else if (value <= 0x7FFFFFFF)
         {
+            if (emitFlags.has(EMIT_CanEncode))
+                return CpuEncodeResult::Zero;
             emitREX(concat, opBits, REX_REG_NONE, reg);
             emitCPUOp(concat, 0x81);
             emitModRM(concat, MODRM_REG_4, reg);
@@ -1416,9 +1434,9 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
         }
         else
         {
-            SWAG_ASSERT(reg != cc->computeRegI1);
-            emitLoadRegImm(cc->computeRegI1, value, OpBits::B64);
-            emitOpBinaryRegReg(reg, cc->computeRegI1, op, opBits, emitFlags);
+            if (emitFlags.has(EMIT_CanEncode))
+                return CpuEncodeResult::Right2Reg;
+            Report::internalError(module, "encodeOpBinaryRegImm, cannot encode");
         }
     }
 
@@ -1428,12 +1446,16 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
     {
         if (value == 1 && !emitFlags.has(EMIT_Overflow) && optLevel >= BuildCfgBackendOptim::O1)
         {
+            if (emitFlags.has(EMIT_CanEncode))
+                return CpuEncodeResult::Zero;
             emitREX(concat, opBits, REX_REG_NONE, reg);
             emitSpecCPUOp(concat, 0xFF, opBits);
             emitModRM(concat, MODRM_REG_0, reg);
         }
         else if (opBits == OpBits::B8)
         {
+            if (emitFlags.has(EMIT_CanEncode))
+                return CpuEncodeResult::Zero;
             emitREX(concat, opBits, REX_REG_NONE, reg);
             emitCPUOp(concat, 0x80);
             emitModRM(concat, MODRM_REG_0, reg);
@@ -1441,6 +1463,8 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
         }
         else if (canEncode8(value, opBits))
         {
+            if (emitFlags.has(EMIT_CanEncode))
+                return CpuEncodeResult::Zero;
             emitREX(concat, opBits, REX_REG_NONE, reg);
             emitCPUOp(concat, 0x83);
             emitModRM(concat, MODRM_REG_0, reg);
@@ -1448,6 +1472,8 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
         }
         else if (value <= 0x7FFFFFFF)
         {
+            if (emitFlags.has(EMIT_CanEncode))
+                return CpuEncodeResult::Zero;
             emitREX(concat, opBits, REX_REG_NONE, reg);
             emitCPUOp(concat, 0x81);
             emitModRM(concat, MODRM_REG_0, reg);
@@ -1455,9 +1481,9 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
         }
         else
         {
-            SWAG_ASSERT(reg != cc->computeRegI1);
-            emitLoadRegImm(cc->computeRegI1, value, OpBits::B64);
-            emitOpBinaryRegReg(reg, cc->computeRegI1, op, opBits, emitFlags);
+            if (emitFlags.has(EMIT_CanEncode))
+                return CpuEncodeResult::Right2Reg;
+            Report::internalError(module, "encodeOpBinaryRegImm, cannot encode");
         }
     }
 
@@ -1467,12 +1493,16 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
     {
         if (value == 1 && !emitFlags.has(EMIT_Overflow) && optLevel >= BuildCfgBackendOptim::O1)
         {
+            if (emitFlags.has(EMIT_CanEncode))
+                return CpuEncodeResult::Zero;
             emitREX(concat, opBits, REX_REG_NONE, reg);
             emitSpecCPUOp(concat, 0xFF, opBits);
             emitModRM(concat, MODRM_REG_1, reg);
         }
         else if (opBits == OpBits::B8)
         {
+            if (emitFlags.has(EMIT_CanEncode))
+                return CpuEncodeResult::Zero;
             emitREX(concat, opBits, REX_REG_NONE, reg);
             emitCPUOp(concat, 0x80);
             emitModRM(concat, MODRM_REG_5, reg);
@@ -1480,6 +1510,8 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
         }
         else if (canEncode8(value, opBits))
         {
+            if (emitFlags.has(EMIT_CanEncode))
+                return CpuEncodeResult::Zero;
             emitREX(concat, opBits, REX_REG_NONE, reg);
             emitCPUOp(concat, 0x83);
             emitModRM(concat, MODRM_REG_5, reg);
@@ -1487,6 +1519,8 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
         }
         else if (value <= 0x7FFFFFFF)
         {
+            if (emitFlags.has(EMIT_CanEncode))
+                return CpuEncodeResult::Zero;
             emitREX(concat, opBits, REX_REG_NONE, reg);
             emitCPUOp(concat, 0x81);
             emitModRM(concat, MODRM_REG_5, reg);
@@ -1494,9 +1528,9 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
         }
         else
         {
-            SWAG_ASSERT(reg != cc->computeRegI1);
-            emitLoadRegImm(cc->computeRegI1, value, OpBits::B64);
-            emitOpBinaryRegReg(reg, cc->computeRegI1, op, opBits, emitFlags);
+            if (emitFlags.has(EMIT_CanEncode))
+                return CpuEncodeResult::Right2Reg;
+            Report::internalError(module, "encodeOpBinaryRegImm, cannot encode");
         }
     }
 
@@ -1508,9 +1542,9 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
              op == CpuOp::IDIV ||
              op == CpuOp::MUL)
     {
-        SWAG_ASSERT(reg != cc->computeRegI1);
-        emitLoadRegImm(cc->computeRegI1, value, opBits);
-        emitOpBinaryRegReg(reg, cc->computeRegI1, op, opBits, emitFlags);
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::Right2Reg;
+        Report::internalError(module, "encodeOpBinaryRegImm, cannot encode");
     }
 
     ///////////////////////////////////////////
@@ -1519,6 +1553,8 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
     {
         if (canEncode8(value, opBits))
         {
+            if (emitFlags.has(EMIT_CanEncode))
+                return CpuEncodeResult::Zero;
             if (opBits == OpBits::B8 || opBits == OpBits::B16)
                 emitLoadSignedExtendRegReg(reg, reg, OpBits::B32, opBits);
             emitREX(concat, opBits, REX_REG_NONE, reg);
@@ -1528,6 +1564,8 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
         }
         else if (value <= 0x7FFFFFFF)
         {
+            if (emitFlags.has(EMIT_CanEncode))
+                return CpuEncodeResult::Zero;
             if (opBits == OpBits::B8 || opBits == OpBits::B16)
                 emitLoadSignedExtendRegReg(reg, reg, OpBits::B32, opBits);
             emitREX(concat, opBits, REX_REG_NONE, reg);
@@ -1537,9 +1575,9 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
         }
         else
         {
-            SWAG_ASSERT(reg != cc->computeRegI1);
-            emitLoadRegImm(cc->computeRegI1, value, opBits);
-            emitOpBinaryRegReg(reg, cc->computeRegI1, op, opBits, emitFlags);
+            if (emitFlags.has(EMIT_CanEncode))
+                return CpuEncodeResult::Right2Reg;
+            Report::internalError(module, "encodeOpBinaryRegImm, cannot encode");
         }
     }
 
@@ -1547,6 +1585,9 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
 
     else if (op == CpuOp::SHL)
     {
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::Zero;
+        
         SWAG_ASSERT(value <= 0x7F);
         if (value == 1)
         {
@@ -1567,6 +1608,9 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
 
     else if (op == CpuOp::SHR)
     {
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::Zero;
+        
         SWAG_ASSERT(value <= 0x7F);
         if (value == 1)
         {
@@ -1587,6 +1631,9 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
 
     else if (op == CpuOp::SAR)
     {
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::Zero;
+        
         SWAG_ASSERT(value <= 0x7F);
         if (value == 1)
         {
@@ -1607,6 +1654,9 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
 
     else if (op == CpuOp::BT)
     {
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::Zero;
+    
         SWAG_ASSERT(value <= 0x7F);
         emitREX(concat, opBits, REX_REG_NONE, reg);
         emitCPUOp(concat, 0x0F);

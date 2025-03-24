@@ -496,7 +496,22 @@ void ScbeCpu::emitOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp op, OpBits op
         }
     }
 
-    encodeOpBinaryRegImm(reg, value, op, opBits, emitFlags);
+    const auto result = cpu->encodeOpBinaryRegImm(reg, value, op, opBits, EMIT_CanEncode);
+    if (result == CpuEncodeResult::Zero)
+    {
+        encodeOpBinaryRegImm(reg, value, op, opBits, emitFlags);
+        return;
+    }
+
+    if (result == CpuEncodeResult::Right2Reg)
+    {
+        SWAG_ASSERT(reg != cc->computeRegI1);
+        emitLoadRegImm(cc->computeRegI1, value, opBits);
+        emitOpBinaryRegReg(reg, cc->computeRegI1, op, opBits, emitFlags);
+        return;
+    }
+
+    Report::internalError(module, "emitOpBinaryRegImm, cannot encode");
 }
 
 void ScbeCpu::emitOpBinaryMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
