@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Backend/SCBE/Encoder/ScbeCpu.h"
 #include "Backend/SCBE/Main/Scbe.h"
+#include "Core/Math.h"
 #include "Report/Report.h"
 
 namespace
@@ -407,6 +408,27 @@ void ScbeCpu::emitOpBinaryMemImm(CpuReg memReg, uint64_t memOffset, uint64_t val
         isNoOp(value, op, opBits, emitFlags))
     {
         return;
+    }
+
+    if (optLevel >= BuildCfgBackendOptim::O1)
+    {
+        if ((op == CpuOp::IMOD || op == CpuOp::MOD) && Math::isPowerOfTwo(value))
+        {
+            emitOpBinaryMemImm(memReg, memOffset, value - 1, CpuOp::AND, opBits, emitFlags);
+            return;
+        }
+
+        if (op == CpuOp::DIV && Math::isPowerOfTwo(value))
+        {
+            emitOpBinaryMemImm(memReg, memOffset, static_cast<uint32_t>(log2(value)), op == CpuOp::IDIV ? CpuOp::SAR : CpuOp::SHR, opBits, emitFlags);
+            return;
+        }
+
+        if ((op == CpuOp::IMUL || op == CpuOp::MUL) && Math::isPowerOfTwo(value))
+        {
+            emitOpBinaryMemImm(memReg, memOffset, static_cast<uint32_t>(log2(value)), CpuOp::SHL, opBits, emitFlags);
+            return;
+        }
     }
 
     encodeOpBinaryMemImm(memReg, memOffset, value, op, opBits, emitFlags);

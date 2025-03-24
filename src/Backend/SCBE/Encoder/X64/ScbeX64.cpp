@@ -1752,11 +1752,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryMemImm(CpuReg memReg, uint64_t memOffset,
 
     if (op == CpuOp::IMOD || op == CpuOp::MOD)
     {
-        if (Math::isPowerOfTwo(value) && optLevel >= BuildCfgBackendOptim::O1)
-        {
-            emitOpBinaryMemImm(memReg, memOffset, value - 1, CpuOp::AND, opBits, emitFlags);
-        }
-        else if (value > 0x7FFFFFFF)
+        if (value > 0x7FFFFFFF)
         {
             SWAG_ASSERT(memReg != cc->computeRegI1);
             emitLoadRegImm(cc->computeRegI1, value, opBits);
@@ -1779,11 +1775,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryMemImm(CpuReg memReg, uint64_t memOffset,
 
     else if (op == CpuOp::DIV)
     {
-        if (Math::isPowerOfTwo(value) && optLevel >= BuildCfgBackendOptim::O1)
-        {
-            emitOpBinaryMemImm(memReg, memOffset, static_cast<uint32_t>(log2(value)), op == CpuOp::IDIV ? CpuOp::SAR : CpuOp::SHR, opBits, emitFlags);
-        }
-        else if (value > 0x7FFFFFFF)
+        if (value > 0x7FFFFFFF)
         {
             SWAG_ASSERT(memReg != cc->computeRegI1);
             emitLoadRegImm(cc->computeRegI1, value, opBits);
@@ -1827,11 +1819,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryMemImm(CpuReg memReg, uint64_t memOffset,
 
     else if (op == CpuOp::IMUL || op == CpuOp::MUL)
     {
-        if (Math::isPowerOfTwo(value) && optLevel >= BuildCfgBackendOptim::O1)
-        {
-            emitOpBinaryMemImm(memReg, memOffset, static_cast<uint32_t>(log2(value)), CpuOp::SHL, opBits, emitFlags);
-        }
-        else if (value > 0x7FFFFFFF)
+        if (value > 0x7FFFFFFF)
         {
             SWAG_ASSERT(memReg != cc->computeRegI1);
             emitLoadRegImm(cc->computeRegI1, value, opBits);
@@ -2091,7 +2079,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryMemImm(CpuReg memReg, uint64_t memOffset,
 
     else
     {
-        SWAG_ASSERT(false);
+        Report::internalError(module, "encodeOpBinaryMemImm, cannot encode");
     }
 
     return CpuEncodeResult::Zero;
