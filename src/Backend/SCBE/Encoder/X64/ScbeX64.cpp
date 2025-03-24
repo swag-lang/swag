@@ -1111,7 +1111,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
         emitCPUOp(concat, op);
         emitModRM(concat, regDst, regSrc);
     }
-    
+
     ///////////////////////////////////////////
 
     else if (op == CpuOp::DIV ||
@@ -1251,8 +1251,6 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
 
     else if (op == CpuOp::CMPXCHG)
     {
-        if (opBits == OpBits::B16)
-            emitREX(concat, opBits);
         emitCPUOp(concat, 0xF0);
         emitREX(concat, opBits, regSrc, regDst);
         emitCPUOp(concat, 0x0F);
