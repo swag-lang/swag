@@ -174,7 +174,8 @@ void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
                     inst->regA == next->regA &&
                     ScbeCpu::isInt(inst->regA) &&
                     (!next->hasOpFlag(MOF_OPBITS_A) || ScbeCpu::getNumBits(inst->opBitsA) >= ScbeCpu::getNumBits(next->opBitsA)) &&
-                    !encoder->manipulateRegister(next, inst->regB))
+                    !encoder->manipulateRegister(next, inst->regB) &&
+                    out.cpu->acceptRegA(next, inst->regB))
                 {
                     next->regA = inst->regB;
                     setDirtyPass();
@@ -185,7 +186,8 @@ void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
                     inst->regA == next->regB &&
                     ScbeCpu::isInt(inst->regA) &&
                     (!next->hasOpFlag(MOF_OPBITS_A) || ScbeCpu::getNumBits(inst->opBitsA) >= ScbeCpu::getNumBits(next->opBitsA)) &&
-                    !encoder->manipulateRegister(next, inst->regB))
+                    !encoder->manipulateRegister(next, inst->regB) &&
+                    out.cpu->acceptRegB(next, inst->regB))
                 {
                     next->regB = inst->regB;
                     setDirtyPass();

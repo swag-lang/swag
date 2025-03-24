@@ -5,6 +5,8 @@ struct ScbeMicroInstruction;
 
 struct ScbeX64 final : ScbeCpu
 {
+    bool               acceptRegA(ScbeMicroInstruction* inst, CpuReg reg) override;
+    bool               acceptRegB(ScbeMicroInstruction* inst, CpuReg reg) override;
     ScbeMicroOpDetails getInstructionDetails(ScbeMicroInstruction* inst) const override;
 
     CpuEncodeResult encodeSymbolRelocationRef(const Utf8& name, CpuEmitFlags emitFlags) override;

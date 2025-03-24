@@ -365,11 +365,20 @@ void ScbeCpu::emitOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits 
         return;
     }
 
+    if (result == CpuEncodeResult::Left2Rax)
+    {
+        SWAG_ASSERT(regSrc != CpuReg::Rax);
+        emitLoadRegReg(CpuReg::Rax, regDst, opBits);
+        emitOpBinaryRegReg(CpuReg::Rax, regSrc, op, opBits, emitFlags);
+        emitLoadRegReg(regDst, CpuReg::Rax, opBits);
+        return;
+    }    
+
     if (result == CpuEncodeResult::Right2Rcx)
     {
         SWAG_ASSERT(regDst != CpuReg::Rcx);
         emitLoadRegReg(CpuReg::Rcx, regSrc, opBits);
-        encodeOpBinaryRegReg(regDst, CpuReg::Rcx, op, opBits, emitFlags);
+        emitOpBinaryRegReg(regDst, CpuReg::Rcx, op, opBits, emitFlags);
         return;
     }
 

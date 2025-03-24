@@ -142,6 +142,7 @@ enum class CpuEncodeResult : uint32_t
 {
     Zero,
     Left2Reg,
+    Left2Rax,
     Right2Reg,
     Right2Rcx,
     NotSupported,
@@ -240,6 +241,8 @@ struct ScbeCpu : BackendEncoder
     void         endFunction() const;
 
     bool                       manipulateRegister(ScbeMicroInstruction* inst, CpuReg reg) const;
+    virtual bool               acceptRegA(ScbeMicroInstruction* inst, CpuReg reg) { return true; }
+    virtual bool               acceptRegB(ScbeMicroInstruction* inst, CpuReg reg) { return true; }
     virtual ScbeMicroOpDetails getInstructionDetails(ScbeMicroInstruction* inst) const { return 0; }
 
     void emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CpuPushParam>& cpuParams, const CallConv* callConv);

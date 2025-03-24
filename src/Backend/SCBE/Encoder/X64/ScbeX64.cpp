@@ -1100,7 +1100,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
     if (op == CpuOp::CVTI2F64)
     {
         if (emitFlags.has(EMIT_CanEncode))
-            return CpuEncodeResult::Zero;        
+            return CpuEncodeResult::Zero;
         SWAG_ASSERT(opBits == OpBits::B64);
         SWAG_ASSERT(isInt(regSrc) && isFloat(regDst));
         SWAG_ASSERT(regDst != cc->computeRegF1);
@@ -1142,7 +1142,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
     else if (isFloat(regDst) || isFloat(regSrc))
     {
         if (emitFlags.has(EMIT_CanEncode))
-            return CpuEncodeResult::Zero;        
+            return CpuEncodeResult::Zero;
         if (op != CpuOp::FSQRT &&
             op != CpuOp::FAND &&
             op != CpuOp::UCOMIF &&
@@ -1169,7 +1169,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
              op == CpuOp::IMOD)
     {
         if (emitFlags.has(EMIT_CanEncode))
-            return CpuEncodeResult::Zero;        
+            return CpuEncodeResult::Zero;
         if (cpuRegToX64Reg(regDst) != X64Reg::Rax)
             emitLoadRegReg(CpuReg::Rax, regDst, opBits);
         SWAG_ASSERT(cpuRegToX64Reg(regSrc) != X64Reg::Rax);
@@ -1208,9 +1208,17 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
              op == CpuOp::IMUL)
     {
         if (emitFlags.has(EMIT_CanEncode))
-            return CpuEncodeResult::Zero;        
-        if (cpuRegToX64Reg(regDst) != X64Reg::Rax)
-            emitLoadRegReg(x64Reg2CpuReg(X64Reg::Rax), regDst, opBits);
+        {
+            if (cpuRegToX64Reg(regDst) != X64Reg::Rax)
+            {
+                SWAG_ASSERT(x64Reg2CpuReg(X64Reg::Rax) == CpuReg::Rax);
+                return CpuEncodeResult::Left2Rax;
+            }
+
+            return CpuEncodeResult::Zero;
+        }
+
+        SWAG_ASSERT(cpuRegToX64Reg(regDst) == X64Reg::Rax);
         SWAG_ASSERT(cpuRegToX64Reg(regSrc) != X64Reg::Rax);
         SWAG_ASSERT(cpuRegToX64Reg(regSrc) != X64Reg::Rdx);
 
@@ -1220,9 +1228,6 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
             emitModRM(concat, MODRM_REG_4, regSrc);
         else if (op == CpuOp::IMUL)
             emitModRM(concat, MODRM_REG_5, regSrc);
-
-        if (cpuRegToX64Reg(regDst) != X64Reg::Rax)
-            emitLoadRegReg(regDst, x64Reg2CpuReg(X64Reg::Rax), opBits);
     }
 
     ///////////////////////////////////////////
@@ -1269,7 +1274,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
              op == CpuOp::OR)
     {
         if (emitFlags.has(EMIT_CanEncode))
-            return CpuEncodeResult::Zero;        
+            return CpuEncodeResult::Zero;
         emitREX(concat, opBits, regSrc, regDst);
         emitSpecCPUOp(concat, op, opBits);
         emitModRM(concat, regSrc, regDst);
@@ -1285,7 +1290,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
              op == CpuOp::CMOVGE)
     {
         if (emitFlags.has(EMIT_CanEncode))
-            return CpuEncodeResult::Zero;        
+            return CpuEncodeResult::Zero;
         opBits = std::max(opBits, OpBits::B32);
         emitREX(concat, opBits, regDst, regSrc);
         emitCPUOp(concat, 0x0F);
@@ -1299,7 +1304,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
              op == CpuOp::BSR)
     {
         if (emitFlags.has(EMIT_CanEncode))
-            return CpuEncodeResult::Zero;        
+            return CpuEncodeResult::Zero;
         emitREX(concat, opBits, regDst, regSrc);
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, op == CpuOp::BSF ? 0xBC : 0xBD);
@@ -1311,7 +1316,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
     else if (op == CpuOp::POPCNT)
     {
         if (emitFlags.has(EMIT_CanEncode))
-            return CpuEncodeResult::Zero;        
+            return CpuEncodeResult::Zero;
         emitCPUOp(concat, 0xF3);
         emitREX(concat, opBits, regDst, regSrc);
         emitCPUOp(concat, 0x0F);
@@ -2474,6 +2479,45 @@ CpuEncodeResult ScbeX64::encodeNop(CpuEmitFlags emitFlags)
 {
     emitCPUOp(concat, 0x90);
     return CpuEncodeResult::Zero;
+}
+
+bool ScbeX64::acceptRegA(ScbeMicroInstruction* inst, CpuReg reg)
+{
+    if (inst->op == ScbeMicroOp::OpBinaryRR)
+    {
+        switch (inst->cpuOp)
+        {
+            case CpuOp::MUL:
+            case CpuOp::IMUL:
+                return cpuRegToX64Reg(reg) == X64Reg::Rax;
+        }
+    }
+
+    return true;
+}
+
+bool ScbeX64::acceptRegB(ScbeMicroInstruction* inst, CpuReg reg)
+{
+    if (inst->op == ScbeMicroOp::OpBinaryRR ||
+        inst->op == ScbeMicroOp::OpBinaryMR)
+    {
+        switch (inst->cpuOp)
+        {
+            case CpuOp::MUL:
+            case CpuOp::IMUL:
+                return cpuRegToX64Reg(reg) != X64Reg::Rdx;
+            
+            case CpuOp::ROL:
+            case CpuOp::ROR:
+            case CpuOp::SAL:
+            case CpuOp::SAR:
+            case CpuOp::SHL:
+            case CpuOp::SHR:
+                return cpuRegToX64Reg(reg) == X64Reg::Rcx;
+        }
+    }
+
+    return true;
 }
 
 ScbeMicroOpDetails ScbeX64::getInstructionDetails(ScbeMicroInstruction* inst) const
