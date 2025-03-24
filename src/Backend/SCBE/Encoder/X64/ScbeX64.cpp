@@ -1757,23 +1757,9 @@ CpuEncodeResult ScbeX64::encodeOpBinaryMemImm(CpuReg memReg, uint64_t memOffset,
         op == CpuOp::IMUL ||
         op == CpuOp::MUL)
     {
-        if (value > 0x7FFFFFFF)
-        {
-            SWAG_ASSERT(memReg != cc->computeRegI1);
-            emitLoadRegImm(cc->computeRegI1, value, opBits);
-            emitOpBinaryMemReg(memReg, memOffset, cc->computeRegI1, op, opBits, emitFlags);
-        }
-        else
-        {
-            if (memReg == cc->computeRegI0)
-            {
-                emitLoadRegReg(cc->computeRegI2, memReg, OpBits::B64);
-                memReg = cc->computeRegI2;
-            }
-            emitLoadRegMem(cc->computeRegI0, memReg, memOffset, opBits);
-            emitOpBinaryRegImm(cc->computeRegI0, value, op, opBits, emitFlags);
-            emitLoadMemReg(memReg, memOffset, cc->computeRegI0, opBits);
-        }
+        SWAG_ASSERT(memReg != cc->computeRegI1);
+        emitLoadRegImm(cc->computeRegI1, value, opBits);
+        emitOpBinaryMemReg(memReg, memOffset, cc->computeRegI1, op, opBits, emitFlags);
     }
 
     ///////////////////////////////////////////
