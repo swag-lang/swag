@@ -256,7 +256,23 @@ void ScbeCpu::emitCmpMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, O
 void ScbeCpu::emitCmpRegImm(CpuReg reg, uint64_t value, OpBits opBits)
 {
     maskValue(value, opBits);
-    encodeCmpRegImm(reg, value, opBits, EMITF_Zero);
+
+    const auto result = cpu->encodeCmpRegImm(reg, value, opBits, EMITF_CanEncode);
+    if (result == RESULTF_Zero)
+    {
+        encodeCmpRegImm(reg, value, opBits, EMITF_Zero);
+        return;
+    }
+
+    if (result.has(RESULTF_Right2Reg))
+    {
+        SWAG_ASSERT(reg != cc->computeRegI1);
+        emitLoadRegImm(cc->computeRegI1, value, opBits);
+        emitCmpRegReg(reg, cc->computeRegI1, opBits);
+        return;
+    }
+
+    Report::internalError(module, "emitCmpRegImm, cannot encode");
 }
 
 void ScbeCpu::emitSetCond(CpuReg reg, CpuCondFlag setType)

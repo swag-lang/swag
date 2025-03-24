@@ -783,6 +783,8 @@ CpuResultFlags ScbeX64::encodeCmpRegImm(CpuReg reg, uint64_t value, OpBits opBit
 {
     if (opBits == OpBits::B8)
     {
+        if (emitFlags.has(EMITF_CanEncode))
+            return RESULTF_Zero;
         emitREX(concat, opBits, REX_REG_NONE, reg);
         emitCPUOp(concat, 0x80);
         emitModRM(concat, MODRM_REG_7, reg);
@@ -790,6 +792,8 @@ CpuResultFlags ScbeX64::encodeCmpRegImm(CpuReg reg, uint64_t value, OpBits opBit
     }
     else if (canEncode8(value, opBits))
     {
+        if (emitFlags.has(EMITF_CanEncode))
+            return RESULTF_Zero;
         emitREX(concat, opBits, REX_REG_NONE, reg);
         emitCPUOp(concat, 0x83);
         emitModRM(concat, MODRM_REG_7, reg);
@@ -799,6 +803,8 @@ CpuResultFlags ScbeX64::encodeCmpRegImm(CpuReg reg, uint64_t value, OpBits opBit
              (opBits == OpBits::B32 && value <= 0x7FFFFFFF) ||
              (opBits == OpBits::B64 && value <= 0x7FFFFFFF))
     {
+        if (emitFlags.has(EMITF_CanEncode))
+            return RESULTF_Zero;
         emitREX(concat, opBits, REX_REG_NONE, reg);
         emitCPUOp(concat, 0x81);
         emitModRM(concat, MODRM_REG_7, reg);
@@ -806,8 +812,9 @@ CpuResultFlags ScbeX64::encodeCmpRegImm(CpuReg reg, uint64_t value, OpBits opBit
     }
     else
     {
-        emitLoadRegImm(cc->computeRegI1, value, opBits);
-        emitCmpRegReg(reg, cc->computeRegI1, opBits);
+        if (emitFlags.has(EMITF_CanEncode))
+            return RESULTF_Right2Reg;
+        Report::internalError(module, "encodeCmpRegImm, cannot encode");
     }
 
     return RESULTF_Zero;
