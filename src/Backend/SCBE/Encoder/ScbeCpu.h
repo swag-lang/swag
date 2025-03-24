@@ -141,6 +141,7 @@ constexpr CpuEmitFlags EMIT_CanEncode = 0x00000008;
 enum class CpuEncodeResult : uint32_t
 {
     Zero,
+    Left2Reg,
     Right2Reg,
     NotSupported,
 };
