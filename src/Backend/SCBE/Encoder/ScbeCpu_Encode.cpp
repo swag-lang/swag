@@ -410,6 +410,12 @@ void ScbeCpu::emitOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp op, OpBits op
             emitOpBinaryRegImm(reg, static_cast<uint32_t>(log2(value)), CpuOp::SHR, opBits, emitFlags);
             return;
         }
+
+        if (op == CpuOp::SHL && value == 1)
+        {
+            emitOpBinaryRegReg(reg, reg, CpuOp::ADD, opBits, emitFlags);
+            return;
+        }
     }
 
     encodeOpBinaryRegImm(reg, value, op, opBits, emitFlags);

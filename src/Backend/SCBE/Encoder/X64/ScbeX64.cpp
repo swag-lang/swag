@@ -1614,11 +1614,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
 
     else if (op == CpuOp::SHL)
     {
-        if (value == 1 && optLevel >= BuildCfgBackendOptim::O1)
-        {
-            emitOpBinaryRegReg(reg, reg, CpuOp::ADD, opBits, emitFlags);
-        }
-        else if (value == 1)
+        if (value == 1)
         {
             emitREX(concat, opBits, REX_REG_NONE, reg);
             emitSpecCPUOp(concat, 0xD1, opBits);
