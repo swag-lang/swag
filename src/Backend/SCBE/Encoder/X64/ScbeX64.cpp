@@ -1476,13 +1476,8 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
         else if (opBits == OpBits::B8)
         {
             emitREX(concat, opBits, REX_REG_NONE, reg);
-            if (getReg(reg) == X64Reg::Rax)
-                emitCPUOp(concat, 0x04);
-            else
-            {
-                emitCPUOp(concat, 0x80);
-                emitModRM(concat, MODRM_REG_0, reg);
-            }
+            emitCPUOp(concat, 0x80);
+            emitModRM(concat, MODRM_REG_0, reg);
             emitValue(concat, value, OpBits::B8);
         }
         else if (canEncode8(value, opBits))
@@ -1492,23 +1487,18 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
             emitModRM(concat, MODRM_REG_0, reg);
             emitValue(concat, value, OpBits::B8);
         }
-        else if (value > 0x7FFFFFFF)
+        else if (value <= 0x7FFFFFFF)
+        {
+            emitREX(concat, opBits, REX_REG_NONE, reg);
+            emitCPUOp(concat, 0x81);
+            emitModRM(concat, MODRM_REG_0, reg);
+            emitValue(concat, value, std::min(opBits, OpBits::B32));
+        }
+        else
         {
             SWAG_ASSERT(reg != cc->computeRegI1);
             emitLoadRegImm(cc->computeRegI1, value, OpBits::B64);
             emitOpBinaryRegReg(reg, cc->computeRegI1, op, opBits, emitFlags);
-        }
-        else
-        {
-            emitREX(concat, opBits, REX_REG_NONE, reg);
-            if (getReg(reg) == X64Reg::Rax)
-                emitCPUOp(concat, 0x05);
-            else
-            {
-                emitCPUOp(concat, 0x81);
-                emitModRM(concat, MODRM_REG_0, reg);
-            }
-            emitValue(concat, value, std::min(opBits, OpBits::B32));
         }
     }
 
@@ -1518,7 +1508,6 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
     {
         if (value == 1 && !emitFlags.has(EMIT_Overflow) && optLevel >= BuildCfgBackendOptim::O1)
         {
-            // dec
             emitREX(concat, opBits, REX_REG_NONE, reg);
             emitSpecCPUOp(concat, 0xFF, opBits);
             emitModRM(concat, MODRM_REG_1, reg);
@@ -1526,13 +1515,8 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
         else if (opBits == OpBits::B8)
         {
             emitREX(concat, opBits, REX_REG_NONE, reg);
-            if (getReg(reg) == X64Reg::Rax)
-                emitCPUOp(concat, 0x2C);
-            else
-            {
-                emitCPUOp(concat, 0x80);
-                emitModRM(concat, MODRM_REG_5, reg);
-            }
+            emitCPUOp(concat, 0x80);
+            emitModRM(concat, MODRM_REG_5, reg);
             emitValue(concat, value, OpBits::B8);
         }
         else if (canEncode8(value, opBits))
@@ -1542,23 +1526,18 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
             emitModRM(concat, MODRM_REG_5, reg);
             emitValue(concat, value, OpBits::B8);
         }
-        else if (value > 0x7FFFFFFF)
+        else if (value <= 0x7FFFFFFF)
+        {
+            emitREX(concat, opBits, REX_REG_NONE, reg);
+            emitCPUOp(concat, 0x81);
+            emitModRM(concat, MODRM_REG_5, reg);
+            emitValue(concat, value, std::min(opBits, OpBits::B32));
+        }
+        else
         {
             SWAG_ASSERT(reg != cc->computeRegI1);
             emitLoadRegImm(cc->computeRegI1, value, OpBits::B64);
             emitOpBinaryRegReg(reg, cc->computeRegI1, op, opBits, emitFlags);
-        }
-        else
-        {
-            emitREX(concat, opBits, REX_REG_NONE, reg);
-            if (getReg(reg) == X64Reg::Rax)
-                emitCPUOp(concat, 0x2D);
-            else
-            {
-                emitCPUOp(concat, 0x81);
-                emitModRM(concat, MODRM_REG_5, reg);
-            }
-            emitValue(concat, value, std::min(opBits, OpBits::B32));
         }
     }
 
