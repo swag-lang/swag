@@ -32,32 +32,85 @@ constexpr uint8_t MODRM_RM_RIP = 0b101;
 
 enum class X64Reg : uint8_t
 {
-    Rax  = 0b0000,
-    Rbx  = 0b0011,
-    Rcx  = 0b0001,
-    Rdx  = 0b0010,
-    Rsp  = 0b0100,
-    Rbp  = 0b0101,
-    Rsi  = 0b0110,
-    Rdi  = 0b0111,
-    R8   = 0b1000,
-    R9   = 0b1001,
-    R10  = 0b1010,
-    R11  = 0b1011,
-    R12  = 0b1100,
-    R13  = 0b1101,
-    R14  = 0b1110,
-    R15  = 0b1111,
-    Xmm0 = 0b0000,
-    Xmm1 = 0b0001,
-    Xmm2 = 0b0010,
-    Xmm3 = 0b0011,
-    Rip  = 0b10000
+    Rax  = 0b000000,
+    Rbx  = 0b000011,
+    Rcx  = 0b000001,
+    Rdx  = 0b000010,
+    Rsp  = 0b000100,
+    Rbp  = 0b000101,
+    Rsi  = 0b000110,
+    Rdi  = 0b000111,
+    R8   = 0b001000,
+    R9   = 0b001001,
+    R10  = 0b001010,
+    R11  = 0b001011,
+    R12  = 0b001100,
+    R13  = 0b001101,
+    R14  = 0b001110,
+    R15  = 0b001111,
+    Xmm0 = 0b100000,
+    Xmm1 = 0b100001,
+    Xmm2 = 0b100010,
+    Xmm3 = 0b100011,
+    Rip  = 0b110000
 };
 
 namespace
 {
-    X64Reg getReg(CpuReg reg)
+    CpuReg x64Reg2CpuReg(X64Reg reg)
+    {
+        switch (reg)
+        {
+            case X64Reg::Rax:
+                return CpuReg::Rax;
+            case X64Reg::Rbx:
+                return CpuReg::Rbx;
+            case X64Reg::Rcx:
+                return CpuReg::Rcx;
+            case X64Reg::Rdx:
+                return CpuReg::Rdx;
+            case X64Reg::Rsp:
+                return CpuReg::Rsp;
+            case X64Reg::Rbp:
+                return CpuReg::Rbp;
+            case X64Reg::Rsi:
+                return CpuReg::Rsi;
+            case X64Reg::Rdi:
+                return CpuReg::Rdi;
+            case X64Reg::R8:
+                return CpuReg::R8;
+            case X64Reg::R9:
+                return CpuReg::R9;
+            case X64Reg::R10:
+                return CpuReg::R10;
+            case X64Reg::R11:
+                return CpuReg::R11;
+            case X64Reg::R12:
+                return CpuReg::R12;
+            case X64Reg::R13:
+                return CpuReg::R13;
+            case X64Reg::R14:
+                return CpuReg::R14;
+            case X64Reg::R15:
+                return CpuReg::R15;
+            case X64Reg::Xmm0:
+                return CpuReg::Xmm0;
+            case X64Reg::Xmm1:
+                return CpuReg::Xmm1;
+            case X64Reg::Xmm2:
+                return CpuReg::Xmm2;
+            case X64Reg::Xmm3:
+                return CpuReg::Xmm3;
+            case X64Reg::Rip:
+                return CpuReg::Rip;
+
+            default:
+                SWAG_ASSERT(false);
+            return CpuReg::Rax;
+        }
+    }
+    
+    X64Reg cpuReg2X64Reg(CpuReg reg)
     {
         switch (reg)
         {
@@ -103,7 +156,6 @@ namespace
                 return X64Reg::Xmm3;
             case CpuReg::Rip:
                 return X64Reg::Rip;
-
             default:
                 SWAG_ASSERT(false);
                 return X64Reg::Rax;
@@ -131,9 +183,8 @@ namespace
                 return 6;
             case MODRM_REG_7:
                 return 7;
-
             default:
-                return static_cast<uint8_t>(getReg(reg));
+                return static_cast<uint8_t>(cpuReg2X64Reg(reg)) & 0b11111;
         }
     }
 
@@ -1113,9 +1164,9 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
              op == CpuOp::MOD ||
              op == CpuOp::IMOD)
     {
-        if (getReg(regDst) != X64Reg::Rax)
+        if (cpuReg2X64Reg(regDst) != X64Reg::Rax)
             emitLoadRegReg(CpuReg::Rax, regDst, opBits);
-        SWAG_ASSERT(getReg(regSrc) != X64Reg::Rdx);
+        SWAG_ASSERT(cpuReg2X64Reg(regSrc) != X64Reg::Rdx);
         if (opBits == OpBits::B8 && (op == CpuOp::IDIV || op == CpuOp::IMOD))
             emitLoadSignedExtendRegReg(regDst, regDst, OpBits::B32, OpBits::B8);
         else if (opBits == OpBits::B8)
@@ -1140,7 +1191,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
             emitOpBinaryRegImm(regDst, 8, CpuOp::SHR, OpBits::B32, emitFlags); // AH => AL
         else if (op == CpuOp::MOD || op == CpuOp::IMOD)
             emitLoadRegReg(regDst, CpuReg::Rdx, opBits);
-        if (getReg(regDst) != X64Reg::Rax)
+        if (cpuReg2X64Reg(regDst) != X64Reg::Rax)
             emitLoadRegReg(regDst, CpuReg::Rax, opBits);
     }
 
@@ -1149,7 +1200,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
     else if (op == CpuOp::MUL ||
              op == CpuOp::IMUL)
     {
-        if (getReg(regDst) != X64Reg::Rax)
+        if (cpuReg2X64Reg(regDst) != X64Reg::Rax)
             emitLoadRegReg(CpuReg::Rax, regDst, opBits);
         emitREX(concat, opBits, regDst, regSrc);
         emitSpecCPUOp(concat, 0xF7, opBits);
@@ -1159,7 +1210,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
             emitModRM(concat, MODRM_REG_5, regSrc);
         else
             SWAG_ASSERT(false);
-        if (getReg(regDst) != X64Reg::Rax)
+        if (cpuReg2X64Reg(regDst) != X64Reg::Rax)
             emitLoadRegReg(regDst, CpuReg::Rax, opBits);
     }
 
@@ -2007,7 +2058,7 @@ CpuEncodeResult ScbeX64::encodeOpTernaryRegRegReg(CpuReg reg0, CpuReg reg1, CpuR
 
     else if (op == CpuOp::CMPXCHG)
     {
-        SWAG_ASSERT(getReg(reg0) == X64Reg::Rax);
+        SWAG_ASSERT(cpuReg2X64Reg(reg0) == X64Reg::Rax);
         if (emitFlags.has(EMIT_Lock))
             emitCPUOp(concat, 0xF0);
         emitREX(concat, opBits, reg2, reg1);
