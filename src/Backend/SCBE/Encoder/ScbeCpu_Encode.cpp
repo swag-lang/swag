@@ -451,5 +451,5 @@ void ScbeCpu::emitOpBinaryMemImm(CpuReg memReg, uint64_t memOffset, uint64_t val
 
 void ScbeCpu::emitOpTernaryRegRegReg(CpuReg reg0, CpuReg reg1, CpuReg reg2, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
-    encodeOpTernaryRegRegReg(reg0, reg1, reg2, op, opBits, EMIT_Zero);
+    encodeOpTernaryRegRegReg(reg0, reg1, reg2, op, opBits, emitFlags);
 }

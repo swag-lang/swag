@@ -1249,18 +1249,6 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
 
     ///////////////////////////////////////////
 
-    else if (op == CpuOp::CMPXCHG)
-    {
-        if (emitFlags.has(EMIT_Lock))
-            emitCPUOp(concat, 0xF0);
-        emitREX(concat, opBits, regSrc, regDst);
-        emitCPUOp(concat, 0x0F);
-        emitSpecCPUOp(concat, 0xB1, opBits);
-        emitModRM(concat, 0, regSrc, regDst);
-    }
-
-    ///////////////////////////////////////////
-
     else
     {
         Report::internalError(module, "encodeOpBinaryRegReg, cannot encode");
@@ -2083,6 +2071,47 @@ CpuEncodeResult ScbeX64::encodeOpBinaryMemImm(CpuReg memReg, uint64_t memOffset,
     return CpuEncodeResult::Zero;
 }
 
+CpuEncodeResult ScbeX64::encodeOpTernaryRegRegReg(CpuReg reg0, CpuReg reg1, CpuReg reg2, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
+{
+    ///////////////////////////////////////////
+
+    if (op == CpuOp::MULADD)
+    {
+        SWAG_ASSERT(isFloat(reg0) && isFloat(reg1) && isFloat(reg2));
+        emitSpecF64(concat, 0xF3, opBits);
+        emitCPUOp(concat, 0x0F);
+        emitCPUOp(concat, CpuOp::FMUL);
+        emitModRM(concat, reg0, reg1);
+
+        emitSpecF64(concat, 0xF3, opBits);
+        emitCPUOp(concat, 0x0F);
+        emitCPUOp(concat, CpuOp::FADD);
+        emitModRM(concat, reg0, reg2);
+    }
+
+    ///////////////////////////////////////////
+
+    else if (op == CpuOp::CMPXCHG)
+    {
+        SWAG_ASSERT(getReg(reg0) == X64Reg::Rax);
+        if (emitFlags.has(EMIT_Lock))
+            emitCPUOp(concat, 0xF0);
+        emitREX(concat, opBits, reg2, reg1);
+        emitCPUOp(concat, 0x0F);
+        emitSpecCPUOp(concat, 0xB1, opBits);
+        emitModRM(concat, 0, reg2, reg1);
+    }
+
+    ///////////////////////////////////////////
+
+    else
+    {
+        Report::internalError(module, "encodeOpTernaryRegRegReg, cannot encode");
+    }
+
+    return CpuEncodeResult::Zero;
+}
+
 CpuEncodeResult ScbeX64::encodeJumpTable(CpuReg table, CpuReg offset, int32_t currentIp, uint32_t offsetTable, uint32_t numEntries, CpuEmitFlags emitFlags)
 {
     uint8_t*   addrConstant        = nullptr;
@@ -2444,29 +2473,6 @@ CpuEncodeResult ScbeX64::encodeCallReg(CpuReg reg, CpuEmitFlags emitFlags)
 CpuEncodeResult ScbeX64::encodeNop(CpuEmitFlags emitFlags)
 {
     emitCPUOp(concat, 0x90);
-    return CpuEncodeResult::Zero;
-}
-
-CpuEncodeResult ScbeX64::encodeOpTernaryRegRegReg(CpuReg reg0, CpuReg reg1, CpuReg reg2, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
-{
-    if (op == CpuOp::MULADD)
-    {
-        SWAG_ASSERT(isFloat(reg0) && isFloat(reg1) && isFloat(reg2));
-        emitSpecF64(concat, 0xF3, opBits);
-        emitCPUOp(concat, 0x0F);
-        emitCPUOp(concat, CpuOp::FMUL);
-        emitModRM(concat, reg0, reg1);
-
-        emitSpecF64(concat, 0xF3, opBits);
-        emitCPUOp(concat, 0x0F);
-        emitCPUOp(concat, CpuOp::FADD);
-        emitModRM(concat, reg0, reg2);
-    }
-    else
-    {
-        Report::internalError(module, "encodeOpTernaryRegRegReg, cannot encode");
-    }
-
     return CpuEncodeResult::Zero;
 }
 
