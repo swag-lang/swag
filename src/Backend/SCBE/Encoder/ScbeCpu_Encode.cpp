@@ -362,7 +362,7 @@ void ScbeCpu::emitOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits 
         emitOpBinaryRegReg(CpuReg::Rax, regSrc, op, opBits, emitFlags);
         emitLoadRegReg(regDst, CpuReg::Rax, opBits);
         return;
-    }    
+    }
 
     if (result == CpuEncodeResult::Right2Rcx)
     {
@@ -414,8 +414,25 @@ void ScbeCpu::emitOpBinaryMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, 
             emitLoadRegMem(cc->computeRegF2, memReg, memOffset, opBits);
             emitOpBinaryRegReg(cc->computeRegF2, reg, op, opBits, emitFlags);
             emitLoadMemReg(memReg, memOffset, cc->computeRegF2, opBits);
-            return;
         }
+        else
+        {
+            if (memReg == cc->computeRegI0)
+            {
+                SWAG_ASSERT(memReg != cc->computeRegI2);
+                emitLoadRegReg(cc->computeRegI2, memReg, OpBits::B64);
+                emitOpBinaryMemReg(cc->computeRegI2, memOffset, reg, op, opBits, emitFlags);
+            }
+            else
+            {
+                SWAG_ASSERT(reg != cc->computeRegI0);
+                emitLoadRegMem(cc->computeRegI0, memReg, memOffset, opBits);
+                emitOpBinaryRegReg(cc->computeRegI0, reg, op, opBits, emitFlags);
+                emitLoadMemReg(memReg, memOffset, cc->computeRegI0, opBits);
+            }
+        }
+
+        return;
     }
 
     if (result == CpuEncodeResult::Right2Rcx)
@@ -599,7 +616,7 @@ void ScbeCpu::emitOpBinaryMemImm(CpuReg memReg, uint64_t memOffset, uint64_t val
         emitOpBinaryMemReg(memReg, memOffset, cc->computeRegI1, op, opBits, emitFlags);
         return;
     }
-    
+
     Report::internalError(module, "emitOpBinaryMemImm, cannot encode");
 }
 

@@ -1354,18 +1354,8 @@ CpuEncodeResult ScbeX64::encodeOpBinaryMemReg(CpuReg memReg, uint64_t memOffset,
              op == CpuOp::MUL)
     {
         if (emitFlags.has(EMIT_CanEncode))
-            return CpuEncodeResult::Zero;
-
-        SWAG_ASSERT(memReg == cc->computeRegI0 || memReg == CpuReg::Rsp);
-        SWAG_ASSERT(reg == cc->computeRegI1);
-        if (memReg == cc->computeRegI0)
-        {
-            emitLoadRegReg(cc->computeRegI2, memReg, OpBits::B64);
-            memReg = cc->computeRegI2;
-        }
-        emitLoadRegMem(cc->computeRegI0, memReg, memOffset, opBits);
-        emitOpBinaryRegReg(cc->computeRegI0, reg, op, opBits, emitFlags);
-        emitLoadMemReg(memReg, memOffset, cc->computeRegI0, opBits);
+            return CpuEncodeResult::Left2Reg;
+        Report::internalError(module, "encodeOpBinaryMemReg, cannot encode");
     }
 
     ///////////////////////////////////////////
