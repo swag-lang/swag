@@ -90,6 +90,7 @@ enum class CpuOp : uint8_t
     IDIV     = 0xF9,
     CMPXCHG  = 0xFA,
     IMOD     = 0xFB,
+    MULADD   = 0xFC,
 };
 
 enum class CpuCondFlag : uint8_t
@@ -287,7 +288,7 @@ struct ScbeCpu : BackendEncoder
     void emitOpBinaryMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags = EMIT_Zero);
     void emitOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags = EMIT_Zero);
     void emitOpBinaryMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags = EMIT_Zero);
-    void emitOpMulAdd(CpuReg regDst, CpuReg regMul, CpuReg regAdd, OpBits opBits);
+    void emitOpTernaryRegRegReg(CpuReg reg0, CpuReg reg1, CpuReg reg2, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags = EMIT_Zero);
 
     virtual void emitEnter(uint32_t sizeStack);
     virtual void emitLeave();
@@ -343,7 +344,7 @@ struct ScbeCpu : BackendEncoder
     virtual CpuEncodeResult encodeOpBinaryMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)                      = 0;
     virtual CpuEncodeResult encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)                                         = 0;
     virtual CpuEncodeResult encodeOpBinaryMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)                  = 0;
-    virtual CpuEncodeResult encodeOpMulAdd(CpuReg regDst, CpuReg regMul, CpuReg regAdd, OpBits opBits, CpuEmitFlags emitFlags)                                        = 0;
+    virtual CpuEncodeResult encodeOpTernaryRegRegReg(CpuReg reg0, CpuReg reg1, CpuReg reg2, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)                          = 0;
 
     Concat concat;
     Concat postConcat;

@@ -2447,18 +2447,25 @@ CpuEncodeResult ScbeX64::encodeNop(CpuEmitFlags emitFlags)
     return CpuEncodeResult::Zero;
 }
 
-// a*b+c
-CpuEncodeResult ScbeX64::encodeOpMulAdd(CpuReg regDst, CpuReg regMul, CpuReg regAdd, OpBits opBits, CpuEmitFlags emitFlags)
+CpuEncodeResult ScbeX64::encodeOpTernaryRegRegReg(CpuReg reg0, CpuReg reg1, CpuReg reg2, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
-    emitSpecF64(concat, 0xF3, opBits);
-    emitCPUOp(concat, 0x0F);
-    emitCPUOp(concat, CpuOp::FMUL);
-    emitModRM(concat, regDst, regMul);
+    if (op == CpuOp::MULADD)
+    {
+        SWAG_ASSERT(isFloat(reg0) && isFloat(reg1) && isFloat(reg2));
+        emitSpecF64(concat, 0xF3, opBits);
+        emitCPUOp(concat, 0x0F);
+        emitCPUOp(concat, CpuOp::FMUL);
+        emitModRM(concat, reg0, reg1);
 
-    emitSpecF64(concat, 0xF3, opBits);
-    emitCPUOp(concat, 0x0F);
-    emitCPUOp(concat, CpuOp::FADD);
-    emitModRM(concat, regDst, regAdd);
+        emitSpecF64(concat, 0xF3, opBits);
+        emitCPUOp(concat, 0x0F);
+        emitCPUOp(concat, CpuOp::FADD);
+        emitModRM(concat, reg0, reg2);
+    }
+    else
+    {
+        Report::internalError(module, "encodeOpTernaryRegRegReg, cannot encode");
+    }
 
     return CpuEncodeResult::Zero;
 }

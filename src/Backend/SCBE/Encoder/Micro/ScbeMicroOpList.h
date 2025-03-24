@@ -66,4 +66,4 @@ SCBE_MICRO_OP(OpBinaryRM,                  MOF_CPU_OP | MOF_REG_A | MOF_WRITE_RE
 SCBE_MICRO_OP(OpBinaryMR,                  MOF_CPU_OP | MOF_REG_A | MOF_VALUE_A | MOF_READ_REG | MOF_WRITE_MEM,        MOF_REG_B | MOF_READ_REG | MOF_OPBITS_A)
 SCBE_MICRO_OP(OpBinaryMI,                  MOF_CPU_OP | MOF_REG_A | MOF_VALUE_A | MOF_READ_REG | MOF_WRITE_MEM,        MOF_VALUE_B | MOF_OPBITS_A)
 
-SCBE_MICRO_OP(MulAdd,                      MOF_REG_A | MOF_WRITE_REG | MOF_OPBITS_A,                                   MOF_REG_A | MOF_REG_B | MOF_REG_C | MOF_OPBITS_A | MOF_READ_REG)
+SCBE_MICRO_OP(OpTernaryRRR,                MOF_REG_A | MOF_WRITE_REG | MOF_OPBITS_A,                                   MOF_REG_A | MOF_REG_B | MOF_REG_C | MOF_OPBITS_A | MOF_READ_REG)

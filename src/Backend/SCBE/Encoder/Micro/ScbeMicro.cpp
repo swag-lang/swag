@@ -483,12 +483,13 @@ CpuEncodeResult ScbeMicro::encodeCallReg(CpuReg reg, CpuEmitFlags emitFlags)
     return CpuEncodeResult::Zero;
 }
 
-CpuEncodeResult ScbeMicro::encodeOpMulAdd(CpuReg regDst, CpuReg regMul, CpuReg regAdd, OpBits opBits, CpuEmitFlags emitFlags)
+CpuEncodeResult ScbeMicro::encodeOpTernaryRegRegReg(CpuReg reg0, CpuReg reg1, CpuReg reg2, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
-    const auto inst = addInstruction(ScbeMicroOp::MulAdd, emitFlags);
-    inst->regA      = regDst;
-    inst->regB      = regMul;
-    inst->regC      = regAdd;
+    const auto inst = addInstruction(ScbeMicroOp::OpTernaryRRR, emitFlags);
+    inst->regA      = reg0;
+    inst->regB      = reg1;
+    inst->regC      = reg2;
+    inst->cpuOp     = op;
     inst->opBitsA   = opBits;
     return CpuEncodeResult::Zero;
 }
@@ -676,8 +677,8 @@ void ScbeMicro::encode(ScbeCpu& encoder) const
             case ScbeMicroOp::OpBinaryRM:
                 encoder.encodeOpBinaryRegMem(inst->regA, inst->regB, inst->valueA, inst->cpuOp, inst->opBitsA, inst->emitFlags);
                 break;
-            case ScbeMicroOp::MulAdd:
-                encoder.encodeOpMulAdd(inst->regA, inst->regB, inst->regC, inst->opBitsA, inst->emitFlags);
+            case ScbeMicroOp::OpTernaryRRR:
+                encoder.encodeOpTernaryRegRegReg(inst->regA, inst->regB, inst->regC, inst->cpuOp, inst->opBitsA, inst->emitFlags);
                 break;
             default:
                 SWAG_ASSERT(false);

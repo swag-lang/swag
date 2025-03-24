@@ -411,7 +411,7 @@ void ScbeCpu::emitOpBinaryMemImm(CpuReg memReg, uint64_t memOffset, uint64_t val
         {
             return;
         }
-        
+
         if ((op == CpuOp::IMOD || op == CpuOp::MOD) && Math::isPowerOfTwo(value))
         {
             emitOpBinaryMemImm(memReg, memOffset, value - 1, CpuOp::AND, opBits, emitFlags);
@@ -449,7 +449,7 @@ void ScbeCpu::emitOpBinaryMemImm(CpuReg memReg, uint64_t memOffset, uint64_t val
     Report::internalError(module, "emitOpBinaryMemImm, cannot encode");
 }
 
-void ScbeCpu::emitOpMulAdd(CpuReg regDst, CpuReg regMul, CpuReg regAdd, OpBits opBits)
+void ScbeCpu::emitOpTernaryRegRegReg(CpuReg reg0, CpuReg reg1, CpuReg reg2, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
-    encodeOpMulAdd(regDst, regMul, regAdd, opBits, EMIT_Zero);
+    encodeOpTernaryRegRegReg(reg0, reg1, reg2, op, opBits, EMIT_Zero);
 }

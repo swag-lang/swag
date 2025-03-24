@@ -2032,7 +2032,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitIMMB(pp, cc.computeRegF0, opBits);
                 emitIMMC(pp, cc.computeRegF1, opBits);
                 emitIMMD(pp, cc.computeRegF2, opBits);
-                pp.emitOpMulAdd(cc.computeRegF0, cc.computeRegF1, cc.computeRegF2, opBits);
+                pp.emitOpTernaryRegRegReg(cc.computeRegF0, cc.computeRegF1, cc.computeRegF2, CpuOp::MULADD, opBits);
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegF0, opBits);
                 break;
             }
