@@ -392,6 +392,18 @@ void ScbeCpu::emitOpBinaryMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, 
         return;
     }
 
+    if (result == CpuEncodeResult::Left2Reg)
+    {
+        if (isFloat(reg))
+        {
+            SWAG_ASSERT(reg != cc->computeRegF2);
+            emitLoadRegMem(cc->computeRegF2, memReg, memOffset, opBits);
+            emitOpBinaryRegReg(cc->computeRegF2, reg, op, opBits, emitFlags);
+            emitLoadMemReg(memReg, memOffset, cc->computeRegF2, opBits);
+            return;
+        }
+    }
+
     Report::internalError(module, "emitOpBinaryMemReg, cannot encode");
 }
 
