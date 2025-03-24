@@ -1400,7 +1400,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                     buildParameters.buildCfg->backendOptimize > BuildCfgBackendOptim::O1)
                 {
                     pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-                    pp.emitClearMem(cc.computeRegI0, ip->c.u32, ip->b.u32);
+                    emitClearMem(pp, cc.computeRegI0, ip->c.u32, ip->b.u32);
                 }
                 else
                 {
@@ -1439,7 +1439,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (ip->b.u32 <= buildParameters.buildCfg->backendSCBE.unrollMemLimit &&
                     buildParameters.buildCfg->backendOptimize > BuildCfgBackendOptim::O1)
                 {
-                    pp.emitClearMem(cc.computeRegI0, ip->c.u32, ip->b.u32);
+                    emitClearMem(pp, cc.computeRegI0, ip->c.u32, ip->b.u32);
                 }
                 else
                 {
@@ -1465,7 +1465,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 if (ip->b.u32 <= buildParameters.buildCfg->backendSCBE.unrollMemLimit &&
                     buildParameters.buildCfg->backendOptimize > BuildCfgBackendOptim::O1)
                 {
-                    pp.emitClearMem(CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->a.u32, ip->b.u32);
+                    emitClearMem(pp, CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->a.u32, ip->b.u32);
                 }
                 else
                 {
@@ -1606,7 +1606,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 opBits = ScbeCpu::getOpBits(ip->op);
                 pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
                 pp.emitLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
-                pp.emitCopyM(cc.computeRegI0, cc.computeRegI1, ScbeCpu::getNumBits(opBits) / 8);
+                emitCopyMem(pp, cc.computeRegI0, cc.computeRegI1, ScbeCpu::getNumBits(opBits) / 8);
                 break;
 
                 /////////////////////////////////////
@@ -1618,7 +1618,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 {
                     pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
                     pp.emitLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
-                    pp.emitCopyM(cc.computeRegI0, cc.computeRegI1, ip->c.u32);
+                    emitCopyMem(pp, cc.computeRegI0, cc.computeRegI1, ip->c.u32);
                 }
                 else
                 {
@@ -1640,7 +1640,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                     buildParameters.buildCfg->backendOptimize > BuildCfgBackendOptim::O1)
                 {
                     pp.emitLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-                    pp.emitClearMem(cc.computeRegI1, 0, ip->c.u32);
+                    emitClearMem(pp, cc.computeRegI1, 0, ip->c.u32);
                 }
                 else
                 {

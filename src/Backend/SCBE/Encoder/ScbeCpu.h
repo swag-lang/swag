@@ -284,8 +284,6 @@ struct ScbeCpu : BackendEncoder
     void emitCmpRegImm(CpuReg reg, uint64_t value, OpBits opBits);
     void emitSetCond(CpuReg reg, CpuCondFlag setType);
     void emitClearReg(CpuReg reg, OpBits opBits);
-    void emitClearMem(CpuReg memReg, uint64_t memOffset, uint32_t count);
-    void emitCopyM(CpuReg memRegDst, CpuReg memRegSrc, uint32_t count);
     void emitOpUnaryMem(CpuReg memReg, uint64_t memOffset, CpuOp op, OpBits opBits);
     void emitOpUnaryReg(CpuReg reg, CpuOp op, OpBits opBits);
     void emitOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags = EMIT_Zero);
