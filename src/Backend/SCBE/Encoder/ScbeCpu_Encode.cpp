@@ -398,6 +398,18 @@ void ScbeCpu::emitOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp op, OpBits op
         {
             return;
         }
+
+        if ((op == CpuOp::MOD || op == CpuOp::IMOD) && Math::isPowerOfTwo(value))
+        {
+            emitOpBinaryRegImm(reg, value - 1, CpuOp::AND, opBits, emitFlags);
+            return;
+        }
+
+        if (op == CpuOp::DIV && Math::isPowerOfTwo(value))
+        {
+            emitOpBinaryRegImm(reg, static_cast<uint32_t>(log2(value)), CpuOp::SHR, opBits, emitFlags);
+            return;
+        }
     }
 
     encodeOpBinaryRegImm(reg, value, op, opBits, emitFlags);

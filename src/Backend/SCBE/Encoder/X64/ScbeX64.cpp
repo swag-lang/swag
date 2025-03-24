@@ -1543,46 +1543,14 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
 
     ///////////////////////////////////////////
 
-    else if (op == CpuOp::MOD || op == CpuOp::IMOD)
+    else if (op == CpuOp::MOD ||
+             op == CpuOp::IMOD ||
+             op == CpuOp::DIV ||
+             op == CpuOp::IDIV)
     {
-        if (Math::isPowerOfTwo(value) && optLevel >= BuildCfgBackendOptim::O1)
-        {
-            emitOpBinaryRegImm(reg, value - 1, CpuOp::AND, opBits, emitFlags);
-        }
-        else if (value > 0x7FFFFFFF)
-        {
-            SWAG_ASSERT(reg != cc->computeRegI1);
-            emitLoadRegImm(cc->computeRegI1, value, OpBits::B64);
-            emitOpBinaryRegReg(reg, cc->computeRegI1, op, opBits, emitFlags);
-        }
-        else
-        {
-            SWAG_ASSERT(reg != cc->computeRegI1);
-            emitLoadRegImm(cc->computeRegI1, value, opBits);
-            emitOpBinaryRegReg(reg, cc->computeRegI1, op, opBits, emitFlags);
-        }
-    }
-
-    ///////////////////////////////////////////
-
-    else if (op == CpuOp::DIV || op == CpuOp::IDIV)
-    {
-        if (op == CpuOp::DIV && Math::isPowerOfTwo(value) && optLevel >= BuildCfgBackendOptim::O1)
-        {
-            emitOpBinaryRegImm(reg, static_cast<uint32_t>(log2(value)), CpuOp::SHR, opBits, emitFlags);
-        }
-        else if (value > 0x7FFFFFFF)
-        {
-            SWAG_ASSERT(reg != cc->computeRegI1);
-            emitLoadRegImm(cc->computeRegI1, value, OpBits::B64);
-            emitOpBinaryRegReg(reg, cc->computeRegI1, op, opBits, emitFlags);
-        }
-        else
-        {
-            SWAG_ASSERT(reg != cc->computeRegI1);
-            emitLoadRegImm(cc->computeRegI1, value, opBits);
-            emitOpBinaryRegReg(reg, cc->computeRegI1, op, opBits, emitFlags);
-        }
+        SWAG_ASSERT(reg != cc->computeRegI1);
+        emitLoadRegImm(cc->computeRegI1, value, opBits);
+        emitOpBinaryRegReg(reg, cc->computeRegI1, op, opBits, emitFlags);
     }
 
     ///////////////////////////////////////////
