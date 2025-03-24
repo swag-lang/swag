@@ -1251,7 +1251,8 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
 
     else if (op == CpuOp::CMPXCHG)
     {
-        emitCPUOp(concat, 0xF0);
+        if (emitFlags.has(EMIT_Lock))
+            emitCPUOp(concat, 0xF0);
         emitREX(concat, opBits, regSrc, regDst);
         emitCPUOp(concat, 0x0F);
         emitSpecCPUOp(concat, 0xB1, opBits);

@@ -2100,7 +2100,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitLoadRegMem(cc.computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
                 emitIMMB(pp, cc.computeRegI0, opBits);
                 emitIMMC(pp, cc.computeRegI2, opBits);
-                pp.emitOpBinaryRegReg(cc.computeRegI1, cc.computeRegI2, CpuOp::CMPXCHG, opBits);
+                pp.emitOpBinaryRegReg(cc.computeRegI1, cc.computeRegI2, CpuOp::CMPXCHG, opBits, EMIT_Lock);
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->d.u32), cc.computeRegI0, opBits);
                 break;
 
