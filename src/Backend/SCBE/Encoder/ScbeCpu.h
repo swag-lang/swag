@@ -143,6 +143,7 @@ enum class CpuEncodeResult : uint32_t
     Zero,
     Left2Reg,
     Right2Reg,
+    Right2Rcx,
     NotSupported,
 };
 

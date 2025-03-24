@@ -1228,7 +1228,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
     {
         if (cpuRegToX64Reg(regSrc) != X64Reg::Rcx)
             emitLoadRegReg(x64Reg2CpuReg(X64Reg::Rcx), regSrc, opBits);
-        
+
         emitREX(concat, opBits, REX_REG_NONE, regDst);
         emitSpecCPUOp(concat, 0xD3, opBits);
         if (op == CpuOp::ROL)
@@ -1326,7 +1326,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryMemReg(CpuReg memReg, uint64_t memOffset,
     {
         if (emitFlags.has(EMIT_CanEncode))
             return CpuEncodeResult::Zero;
-        
+
         SWAG_ASSERT(memReg == cc->computeRegI0 || memReg == CpuReg::Rsp);
         SWAG_ASSERT(reg == cc->computeRegI1);
         if (memReg == cc->computeRegI0)
@@ -1346,11 +1346,18 @@ CpuEncodeResult ScbeX64::encodeOpBinaryMemReg(CpuReg memReg, uint64_t memOffset,
              op == CpuOp::SHL)
     {
         if (emitFlags.has(EMIT_CanEncode))
+        {
+            if (cpuRegToX64Reg(reg) != X64Reg::Rcx)
+            {
+                SWAG_ASSERT(x64Reg2CpuReg(X64Reg::Rcx) == CpuReg::Rcx);
+                return CpuEncodeResult::Right2Rcx;
+            }
+
             return CpuEncodeResult::Zero;
-        
-        if (cpuRegToX64Reg(reg) != X64Reg::Rcx)
-            emitLoadRegReg(x64Reg2CpuReg(X64Reg::Rcx), reg, opBits);
-       
+        }
+
+        SWAG_ASSERT(cpuRegToX64Reg(reg) == X64Reg::Rcx);
+
         if (emitFlags.has(EMIT_Lock))
             concat.addU8(0xF0);
         emitREX(concat, opBits, REX_REG_NONE, memReg);
