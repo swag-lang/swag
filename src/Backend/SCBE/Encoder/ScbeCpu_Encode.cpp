@@ -322,7 +322,44 @@ void ScbeCpu::emitClearReg(CpuReg reg, OpBits opBits)
 
 void ScbeCpu::emitClearMem(CpuReg memReg, uint64_t memOffset, uint32_t count)
 {
-    encodeClearMem(memReg, memOffset, count, EMIT_Zero);
+    if (count >= 16)
+    {
+        emitClearReg(cc->computeRegF0, OpBits::B32);
+        while (count >= 16)
+        {
+            emitLoadMemReg(memReg, memOffset, cc->computeRegF0, OpBits::B128);
+            count -= 16;
+            memOffset += 16;
+        }
+    }
+
+    while (count >= 8)
+    {
+        emitLoadMemImm(memReg, memOffset, 0, OpBits::B64);
+        count -= 8;
+        memOffset += 8;
+    }
+
+    while (count >= 4)
+    {
+        emitLoadMemImm(memReg, memOffset, 0, OpBits::B32);
+        count -= 4;
+        memOffset += 4;
+    }
+
+    while (count >= 2)
+    {
+        emitLoadMemImm(memReg, memOffset, 0, OpBits::B16);
+        count -= 2;
+        memOffset += 2;
+    }
+
+    while (count >= 1)
+    {
+        emitLoadMemImm(memReg, memOffset, 0, OpBits::B8);
+        count -= 1;
+        memOffset += 1;
+    }
 }
 
 void ScbeCpu::emitCopy(CpuReg regDst, CpuReg regSrc, uint32_t count)

@@ -25,6 +25,7 @@ enum class OpBits : uint8_t
     B16  = 16,
     B32  = 32,
     B64  = 64,
+    B128 = 128,
 };
 
 struct BackendEncoder

@@ -313,7 +313,7 @@ namespace
     {
         if (opBits == OpBits::B64)
             concat.addU8(value & ~1);
-        else
+        else if (opBits == OpBits::B32)
             concat.addU8(value);
     }
 
@@ -2380,60 +2380,6 @@ CpuEncodeResult ScbeX64::encodeCopy(CpuReg memRegDst, CpuReg memRegSrc, uint32_t
     return CpuEncodeResult::Zero;
 }
 
-CpuEncodeResult ScbeX64::encodeClearMem(CpuReg memReg, uint64_t memOffset, uint32_t count, CpuEmitFlags emitFlags)
-{
-    if (!count)
-        return CpuEncodeResult::Zero;
-
-    SWAG_ASSERT(memOffset <= 0x7FFFFFFF);
-
-    // SSE 16 octets
-    if (count >= 16)
-    {
-        emitClearReg(cc->computeRegF0, OpBits::B32);
-        while (count >= 16)
-        {
-            // movups [memReg+??], xmm0
-            emitREX(concat, OpBits::Zero, REX_REG_NONE, memReg);
-            emitCPUOp(concat, 0x0F);
-            emitCPUOp(concat, 0x11);
-            emitModRM(concat, memOffset, cc->computeRegF0, memReg);
-            count -= 16;
-            memOffset += 16;
-        }
-    }
-
-    while (count >= 8)
-    {
-        emitLoadMemImm(memReg, memOffset, 0, OpBits::B64);
-        count -= 8;
-        memOffset += 8;
-    }
-
-    while (count >= 4)
-    {
-        emitLoadMemImm(memReg, memOffset, 0, OpBits::B32);
-        count -= 4;
-        memOffset += 4;
-    }
-
-    while (count >= 2)
-    {
-        emitLoadMemImm(memReg, memOffset, 0, OpBits::B16);
-        count -= 2;
-        memOffset += 2;
-    }
-
-    while (count >= 1)
-    {
-        emitLoadMemImm(memReg, memOffset, 0, OpBits::B8);
-        count -= 1;
-        memOffset += 1;
-    }
-
-    return CpuEncodeResult::Zero;
-}
-
 /////////////////////////////////////////////////////////////////////
 
 CpuEncodeResult ScbeX64::encodeCallExtern(const Utf8& symbolName, CpuEmitFlags emitFlags)
@@ -2506,7 +2452,7 @@ bool ScbeX64::acceptRegB(ScbeMicroInstruction* inst, CpuReg reg)
             case CpuOp::MUL:
             case CpuOp::IMUL:
                 return cpuRegToX64Reg(reg) != X64Reg::Rdx;
-            
+
             case CpuOp::ROL:
             case CpuOp::ROR:
             case CpuOp::SAL:

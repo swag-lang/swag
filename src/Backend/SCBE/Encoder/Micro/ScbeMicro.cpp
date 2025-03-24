@@ -279,15 +279,6 @@ CpuEncodeResult ScbeMicro::encodeClearReg(CpuReg reg, OpBits opBits, CpuEmitFlag
     return CpuEncodeResult::Zero;
 }
 
-CpuEncodeResult ScbeMicro::encodeClearMem(CpuReg memReg, uint64_t memOffset, uint32_t count, CpuEmitFlags emitFlags)
-{
-    const auto inst = addInstruction(ScbeMicroOp::ClearM, emitFlags);
-    inst->regA      = memReg;
-    inst->valueA    = memOffset;
-    inst->valueB    = count;
-    return CpuEncodeResult::Zero;
-}
-
 CpuEncodeResult ScbeMicro::encodeSetCond(CpuReg reg, CpuCondFlag setType, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::SetCC, emitFlags);
@@ -649,9 +640,6 @@ void ScbeMicro::encode(ScbeCpu& encoder) const
                 break;
             case ScbeMicroOp::ClearR:
                 encoder.encodeClearReg(inst->regA, inst->opBitsA, inst->emitFlags);
-                break;
-            case ScbeMicroOp::ClearM:
-                encoder.encodeClearMem(inst->regA, inst->valueA, static_cast<uint32_t>(inst->valueB), inst->emitFlags);
                 break;
             case ScbeMicroOp::Copy:
                 encoder.encodeCopy(inst->regA, inst->regB, static_cast<uint32_t>(inst->valueA), inst->emitFlags);

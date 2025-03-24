@@ -209,6 +209,8 @@ namespace
                 return "dword";
             case OpBits::B64:
                 return "qword";
+            case OpBits::B128:
+                return "long qword";            
         }
 
         return "???";
@@ -226,6 +228,8 @@ namespace
                 return "B32";
             case OpBits::B64:
                 return "B64";
+            case OpBits::B128:
+                return "B128";            
         }
 
         return "???";
@@ -459,10 +463,6 @@ void ScbeMicro::print() const
             case ScbeMicroOp::ClearR:
                 line.name = "clear";
                 line.args = form("%s", regName(inst->regA, inst->opBitsA));
-                break;
-            case ScbeMicroOp::ClearM:
-                line.name = "clear";
-                line.args = form("byte ptr [%s+%d], %d", regName(inst->regA, OpBits::B64), inst->valueA, inst->valueB);
                 break;
             case ScbeMicroOp::Copy:
                 line.name = "copy";

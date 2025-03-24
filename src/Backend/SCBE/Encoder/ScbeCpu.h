@@ -340,7 +340,6 @@ struct ScbeCpu : BackendEncoder
     virtual CpuEncodeResult encodeCmpRegImm(CpuReg reg, uint64_t value, OpBits opBits, CpuEmitFlags emitFlags)                                                        = 0;
     virtual CpuEncodeResult encodeSetCond(CpuReg reg, CpuCondFlag setType, CpuEmitFlags emitFlags)                                                                    = 0;
     virtual CpuEncodeResult encodeClearReg(CpuReg reg, OpBits opBits, CpuEmitFlags emitFlags)                                                                         = 0;
-    virtual CpuEncodeResult encodeClearMem(CpuReg memReg, uint64_t memOffset, uint32_t count, CpuEmitFlags emitFlags)                                                 = 0;
     virtual CpuEncodeResult encodeCopy(CpuReg regDst, CpuReg regSrc, uint32_t count, CpuEmitFlags emitFlags)                                                          = 0;
     virtual CpuEncodeResult encodeOpUnaryMem(CpuReg memReg, uint64_t memOffset, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)                                      = 0;
     virtual CpuEncodeResult encodeOpUnaryReg(CpuReg reg, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)                                                             = 0;
