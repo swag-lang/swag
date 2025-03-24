@@ -365,6 +365,14 @@ void ScbeCpu::emitOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits 
         return;
     }
 
+    if (result == CpuEncodeResult::Right2Rcx)
+    {
+        SWAG_ASSERT(regDst != CpuReg::Rcx);
+        emitLoadRegReg(CpuReg::Rcx, regSrc, opBits);
+        encodeOpBinaryRegReg(regDst, CpuReg::Rcx, op, opBits, emitFlags);
+        return;
+    }
+
     Report::internalError(module, "emitOpBinaryRegReg, cannot encode");
 }
 

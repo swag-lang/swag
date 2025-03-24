@@ -1235,10 +1235,17 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
              op == CpuOp::SHR)
     {
         if (emitFlags.has(EMIT_CanEncode))
-            return CpuEncodeResult::Zero;        
-        if (cpuRegToX64Reg(regSrc) != X64Reg::Rcx)
-            emitLoadRegReg(x64Reg2CpuReg(X64Reg::Rcx), regSrc, opBits);
+        {
+            if (cpuRegToX64Reg(regSrc) != X64Reg::Rcx)
+            {
+                SWAG_ASSERT(x64Reg2CpuReg(X64Reg::Rcx) == CpuReg::Rcx);
+                return CpuEncodeResult::Right2Rcx;
+            }
 
+            return CpuEncodeResult::Zero;
+        }
+
+        SWAG_ASSERT(cpuRegToX64Reg(regSrc) == X64Reg::Rcx);
         emitREX(concat, opBits, REX_REG_NONE, regDst);
         emitSpecCPUOp(concat, 0xD3, opBits);
         if (op == CpuOp::ROL)
