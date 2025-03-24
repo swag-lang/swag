@@ -388,6 +388,41 @@ void ScbeCpu::emitOpBinaryMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, 
     encodeOpBinaryMemReg(memReg, memOffset, reg, op, opBits, emitFlags);
 }
 
+namespace
+{
+    bool decomposeMul(uint32_t value, uint32_t& factor1, uint32_t& factor2)
+    {
+        // [3, 5, 9] * [3, 5, 9]
+        for (uint32_t i = 3; i <= value; i += 2)
+        {
+            if ((i == 3 || i == 5 || i == 9) && value % i == 0)
+            {
+                const uint32_t otherFactor = value / i;
+                if ((otherFactor == 3 || otherFactor == 5 || otherFactor == 9))
+                {
+                    factor1 = i;
+                    factor2 = otherFactor;
+                    if (factor1 * factor2 == value)
+                        return true;
+                }
+            }
+        }
+
+        // powerOf2 * [3, 5, 9]
+        const uint32_t pow2        = 1 << std::countr_zero(value);
+        const uint32_t otherFactor = value / pow2;
+        if ((otherFactor == 3) || (otherFactor == 5) || (otherFactor == 9))
+        {
+            factor1 = pow2;
+            factor2 = otherFactor;
+            if (factor1 * factor2 == value)
+                return true;
+        }
+
+        return false;
+    }
+}
+
 void ScbeCpu::emitOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
     maskValue(value, opBits);
@@ -415,6 +450,52 @@ void ScbeCpu::emitOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp op, OpBits op
         {
             emitOpBinaryRegReg(reg, reg, CpuOp::ADD, opBits, emitFlags);
             return;
+        }
+
+        if (op == CpuOp::MUL || op == CpuOp::IMUL)
+        {
+            if (value == 0)
+            {
+                emitClearReg(reg, opBits);
+                return;
+            }
+
+            if (opBits == OpBits::B32 || opBits == OpBits::B64)
+            {
+                if (value == 3)
+                {
+                    emitLoadAddressAddMul(reg, reg, reg, 2, opBits);
+                    return;
+                }
+
+                if (value == 5)
+                {
+                    emitLoadAddressAddMul(reg, reg, reg, 4, opBits);
+                    return;
+                }
+
+                if (value == 9)
+                {
+                    emitLoadAddressAddMul(reg, reg, reg, 8, opBits);
+                    return;
+                }
+
+                if (Math::isPowerOfTwo(value))
+                {
+                    emitOpBinaryRegImm(reg, static_cast<uint32_t>(log2(value)), CpuOp::SHL, opBits, emitFlags);
+                    return;
+                }
+
+                uint32_t factor1, factor2;
+                if (decomposeMul(static_cast<uint32_t>(value), factor1, factor2))
+                {
+                    if (factor1 != 1)
+                        emitOpBinaryRegImm(reg, factor1, CpuOp::MUL, opBits, emitFlags);
+                    if (factor2 != 1)
+                        emitOpBinaryRegImm(reg, factor2, CpuOp::MUL, opBits, emitFlags);
+                    return;
+                }
+            }
         }
     }
 

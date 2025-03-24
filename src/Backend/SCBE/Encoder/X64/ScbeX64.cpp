@@ -613,10 +613,9 @@ CpuEncodeResult ScbeX64::encodeLoadAddressMem(CpuReg reg, CpuReg memReg, uint64_
     return CpuEncodeResult::Zero;
 }
 
+#pragma optimize("", off)
 CpuEncodeResult ScbeX64::encodeLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, OpBits opBits, CpuEmitFlags emitFlags)
 {
-    SWAG_ASSERT(regSrc1 == regDst);
-    SWAG_ASSERT(regSrc2 == regDst);
     SWAG_ASSERT(opBits == OpBits::B32 || opBits == OpBits::B64);
 
     // lea regDst, [regSrc1 + regSrc2 * mulValue]
@@ -624,14 +623,10 @@ CpuEncodeResult ScbeX64::encodeLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, 
     emitCPUOp(concat, 0x8D);
     emitModRM(concat, ModRMMode::Memory, regDst, MODRM_RM_SID);
 
-    if (mulValue == 2)
-        concat.addU8(0x40);
-    else if (mulValue == 4)
-        concat.addU8(0x80);
-    else if (mulValue == 8)
-        concat.addU8(0xC0);
-    else
-        SWAG_ASSERT(false);
+    SWAG_ASSERT(mulValue == 1 || mulValue == 2 || mulValue == 4 || mulValue == 8);
+    const auto    scale = static_cast<uint8_t>(log2(mulValue));
+    const uint8_t value = (scale << 6) | (encodeReg(regSrc2) << 3) | encodeReg(regSrc1);
+    concat.addU8(value);
 
     return CpuEncodeResult::Zero;
 }
@@ -1327,41 +1322,6 @@ CpuEncodeResult ScbeX64::encodeOpBinaryMemReg(CpuReg memReg, uint64_t memOffset,
     return CpuEncodeResult::Zero;
 }
 
-namespace
-{
-    bool decomposeMul(uint32_t value, uint32_t& factor1, uint32_t& factor2)
-    {
-        // [3, 5, 9] * [3, 5, 9]
-        for (uint32_t i = 3; i <= value; i += 2)
-        {
-            if ((i == 3 || i == 5 || i == 9) && value % i == 0)
-            {
-                const uint32_t otherFactor = value / i;
-                if ((otherFactor == 3 || otherFactor == 5 || otherFactor == 9))
-                {
-                    factor1 = i;
-                    factor2 = otherFactor;
-                    if (factor1 * factor2 == value)
-                        return true;
-                }
-            }
-        }
-
-        // powerOf2 * [3, 5, 9]
-        const uint32_t pow2        = 1 << std::countr_zero(value);
-        const uint32_t otherFactor = value / pow2;
-        if ((otherFactor == 3) || (otherFactor == 5) || (otherFactor == 9))
-        {
-            factor1 = pow2;
-            factor2 = otherFactor;
-            if (factor1 * factor2 == value)
-                return true;
-        }
-
-        return false;
-    }
-}
-
 CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
     ///////////////////////////////////////////
@@ -1557,26 +1517,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
 
     else if (op == CpuOp::MUL || op == CpuOp::IMUL)
     {
-        const bool canFactorize = (opBits == OpBits::B32 || opBits == OpBits::B64) && optLevel >= BuildCfgBackendOptim::O1 && !emitFlags.has(EMIT_Overflow);
-        uint32_t   factor1, factor2;
-        if (value == 0 && optLevel >= BuildCfgBackendOptim::O1)
-            emitClearReg(reg, opBits);
-        else if (value == 3 && canFactorize)
-            emitLoadAddressAddMul(reg, reg, reg, 2, opBits);
-        else if (value == 5 && canFactorize)
-            emitLoadAddressAddMul(reg, reg, reg, 4, opBits);
-        else if (value == 9 && canFactorize)
-            emitLoadAddressAddMul(reg, reg, reg, 8, opBits);
-        else if (Math::isPowerOfTwo(value) && optLevel >= BuildCfgBackendOptim::O1)
-            emitOpBinaryRegImm(reg, static_cast<uint32_t>(log2(value)), CpuOp::SHL, opBits, emitFlags);
-        else if (canFactorize && decomposeMul(static_cast<uint32_t>(value), factor1, factor2))
-        {
-            if (factor1 != 1)
-                emitOpBinaryRegImm(reg, factor1, CpuOp::MUL, opBits, emitFlags);
-            if (factor2 != 1)
-                emitOpBinaryRegImm(reg, factor2, CpuOp::MUL, opBits, emitFlags);
-        }
-        else if (op == CpuOp::IMUL && opBits == OpBits::B8)
+        if (op == CpuOp::IMUL && opBits == OpBits::B8)
         {
             SWAG_ASSERT(reg != cc->computeRegI1);
             emitLoadRegImm(cc->computeRegI1, value, opBits);
