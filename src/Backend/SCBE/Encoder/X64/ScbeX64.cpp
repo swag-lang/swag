@@ -985,6 +985,8 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegMem(CpuReg regDst, CpuReg memReg, uint
 
     if (op == CpuOp::ADD)
     {
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::Zero;
         emitREX(concat, opBits, regDst, memReg);
         emitSpecCPUOp(concat, 0x03, opBits);
         emitModRM(concat, memOffset, regDst, memReg);
@@ -994,6 +996,8 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegMem(CpuReg regDst, CpuReg memReg, uint
 
     else if (op == CpuOp::SUB)
     {
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::Zero;
         emitREX(concat, opBits, regDst, memReg);
         emitSpecCPUOp(concat, 0x2B, opBits);
         emitModRM(concat, memOffset, regDst, memReg);
@@ -1003,6 +1007,8 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegMem(CpuReg regDst, CpuReg memReg, uint
 
     else if (op == CpuOp::AND)
     {
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::Zero;
         emitREX(concat, opBits, regDst, memReg);
         emitSpecCPUOp(concat, 0x23, opBits);
         emitModRM(concat, memOffset, regDst, memReg);
@@ -1012,6 +1018,8 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegMem(CpuReg regDst, CpuReg memReg, uint
 
     else if (op == CpuOp::OR)
     {
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::Zero;
         emitREX(concat, opBits, regDst, memReg);
         emitSpecCPUOp(concat, 0x0B, opBits);
         emitModRM(concat, memOffset, regDst, memReg);
@@ -1021,6 +1029,8 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegMem(CpuReg regDst, CpuReg memReg, uint
 
     else if (op == CpuOp::XOR)
     {
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::Zero;        
         emitREX(concat, opBits, regDst, memReg);
         emitSpecCPUOp(concat, 0x33, opBits);
         emitModRM(concat, memOffset, regDst, memReg);
@@ -1030,11 +1040,9 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegMem(CpuReg regDst, CpuReg memReg, uint
 
     else
     {
-        const auto r1 = isFloat(regDst) ? cc->computeRegF1 : cc->computeRegI1;
-        SWAG_ASSERT(regDst != r1);
-        SWAG_ASSERT(memReg != r1);
-        emitLoadRegMem(r1, memReg, memOffset, opBits);
-        emitOpBinaryRegReg(regDst, r1, op, opBits, emitFlags);
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::Right2Reg;
+        Report::internalError(module, "encodeOpBinaryRegMem, cannot encode");
     }
 
     return CpuEncodeResult::Zero;
