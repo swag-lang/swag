@@ -844,6 +844,8 @@ CpuResultFlags ScbeX64::encodeCmpMemImm(CpuReg memReg, uint64_t memOffset, uint6
 {
     if (opBits == OpBits::B8)
     {
+        if (emitFlags.has(EMITF_CanEncode))
+            return RESULTF_Zero;        
         emitREX(concat, opBits, REX_REG_NONE, memReg);
         emitCPUOp(concat, 0x80);
         emitModRM(concat, memOffset, MODRM_REG_7, memReg);
@@ -851,6 +853,8 @@ CpuResultFlags ScbeX64::encodeCmpMemImm(CpuReg memReg, uint64_t memOffset, uint6
     }
     else if (canEncode8(value, opBits))
     {
+        if (emitFlags.has(EMITF_CanEncode))
+            return RESULTF_Zero;        
         emitREX(concat, opBits, REX_REG_NONE, memReg);
         emitCPUOp(concat, 0x83);
         emitModRM(concat, memOffset, MODRM_REG_7, memReg);
@@ -858,6 +862,8 @@ CpuResultFlags ScbeX64::encodeCmpMemImm(CpuReg memReg, uint64_t memOffset, uint6
     }
     else if (value <= 0x7FFFFFFF)
     {
+        if (emitFlags.has(EMITF_CanEncode))
+            return RESULTF_Zero;        
         emitREX(concat, opBits, REX_REG_NONE, memReg);
         emitCPUOp(concat, 0x81);
         emitModRM(concat, memOffset, MODRM_REG_7, memReg);
@@ -865,9 +871,9 @@ CpuResultFlags ScbeX64::encodeCmpMemImm(CpuReg memReg, uint64_t memOffset, uint6
     }
     else
     {
-        SWAG_ASSERT(memReg != cc->computeRegI2);
-        emitLoadRegMem(cc->computeRegI2, memReg, memOffset, opBits);
-        emitCmpRegImm(cc->computeRegI2, value, opBits);
+        if (emitFlags.has(EMITF_CanEncode))
+            return RESULTF_Right2Reg;
+        Report::internalError(module, "encodeCmpRegImm, cannot encode");
     }
 
     return RESULTF_Zero;
@@ -893,7 +899,7 @@ CpuResultFlags ScbeX64::encodeOpUnaryMem(CpuReg memReg, uint64_t memOffset, CpuO
     }
     else
     {
-        SWAG_ASSERT(false);
+        Report::internalError(module, "encodeOpUnaryMem, cannot encode");
     }
 
     return RESULTF_Zero;
@@ -943,7 +949,7 @@ CpuResultFlags ScbeX64::encodeOpUnaryReg(CpuReg reg, CpuOp op, OpBits opBits, Cp
     }
     else
     {
-        SWAG_ASSERT(false);
+        Report::internalError(module, "encodeOpUnaryReg, cannot encode");
     }
 
     return RESULTF_Zero;
