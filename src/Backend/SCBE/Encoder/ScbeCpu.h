@@ -285,7 +285,7 @@ struct ScbeCpu : BackendEncoder
     void emitSetCond(CpuReg reg, CpuCondFlag setType);
     void emitClearReg(CpuReg reg, OpBits opBits);
     void emitClearMem(CpuReg memReg, uint64_t memOffset, uint32_t count);
-    void emitCopy(CpuReg regDst, CpuReg regSrc, uint32_t count);
+    void emitCopyM(CpuReg memRegDst, CpuReg memRegSrc, uint32_t count);
     void emitOpUnaryMem(CpuReg memReg, uint64_t memOffset, CpuOp op, OpBits opBits);
     void emitOpUnaryReg(CpuReg reg, CpuOp op, OpBits opBits);
     void emitOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags = EMIT_Zero);
@@ -340,7 +340,6 @@ struct ScbeCpu : BackendEncoder
     virtual CpuEncodeResult encodeCmpRegImm(CpuReg reg, uint64_t value, OpBits opBits, CpuEmitFlags emitFlags)                                                        = 0;
     virtual CpuEncodeResult encodeSetCond(CpuReg reg, CpuCondFlag setType, CpuEmitFlags emitFlags)                                                                    = 0;
     virtual CpuEncodeResult encodeClearReg(CpuReg reg, OpBits opBits, CpuEmitFlags emitFlags)                                                                         = 0;
-    virtual CpuEncodeResult encodeCopy(CpuReg regDst, CpuReg regSrc, uint32_t count, CpuEmitFlags emitFlags)                                                          = 0;
     virtual CpuEncodeResult encodeOpUnaryMem(CpuReg memReg, uint64_t memOffset, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)                                      = 0;
     virtual CpuEncodeResult encodeOpUnaryReg(CpuReg reg, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)                                                             = 0;
     virtual CpuEncodeResult encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)                                       = 0;

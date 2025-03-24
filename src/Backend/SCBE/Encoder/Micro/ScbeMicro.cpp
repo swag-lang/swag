@@ -438,15 +438,6 @@ CpuEncodeResult ScbeMicro::encodePatchJump(const CpuJump& jump, uint64_t offsetD
     return CpuEncodeResult::Zero;
 }
 
-CpuEncodeResult ScbeMicro::encodeCopy(CpuReg regDst, CpuReg regSrc, uint32_t count, CpuEmitFlags emitFlags)
-{
-    const auto inst = addInstruction(ScbeMicroOp::Copy, emitFlags);
-    inst->regA      = regDst;
-    inst->regB      = regSrc;
-    inst->valueA    = count;
-    return CpuEncodeResult::Zero;
-}
-
 CpuEncodeResult ScbeMicro::encodeNop(CpuEmitFlags emitFlags)
 {
     addInstruction(ScbeMicroOp::Nop, emitFlags);
@@ -640,9 +631,6 @@ void ScbeMicro::encode(ScbeCpu& encoder) const
                 break;
             case ScbeMicroOp::ClearR:
                 encoder.encodeClearReg(inst->regA, inst->opBitsA, inst->emitFlags);
-                break;
-            case ScbeMicroOp::Copy:
-                encoder.encodeCopy(inst->regA, inst->regB, static_cast<uint32_t>(inst->valueA), inst->emitFlags);
                 break;
             case ScbeMicroOp::OpUnaryM:
                 encoder.encodeOpUnaryMem(inst->regA, inst->valueA, inst->cpuOp, inst->opBitsA, inst->emitFlags);

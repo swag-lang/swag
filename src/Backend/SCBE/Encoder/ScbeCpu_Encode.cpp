@@ -362,9 +362,49 @@ void ScbeCpu::emitClearMem(CpuReg memReg, uint64_t memOffset, uint32_t count)
     }
 }
 
-void ScbeCpu::emitCopy(CpuReg regDst, CpuReg regSrc, uint32_t count)
+void ScbeCpu::emitCopyM(CpuReg memRegDst, CpuReg memRegSrc, uint32_t count)
 {
-    encodeCopy(regDst, regSrc, count, EMIT_Zero);
+    uint32_t offset = 0;
+
+    while (count >= 16)
+    {
+        emitLoadRegMem(cc->computeRegF0, memRegSrc, offset, OpBits::B128);
+        emitLoadMemReg(memRegDst, offset, cc->computeRegF0, OpBits::B128);
+        count -= 16;
+        offset += 16;
+    }
+
+    while (count >= 8)
+    {
+        emitLoadRegMem(cc->computeRegI2, memRegSrc, offset, OpBits::B64);
+        emitLoadMemReg(memRegDst, offset, cc->computeRegI2, OpBits::B64);
+        count -= 8;
+        offset += 8;
+    }
+
+    while (count >= 4)
+    {
+        emitLoadRegMem(cc->computeRegI2, memRegSrc, offset, OpBits::B32);
+        emitLoadMemReg(memRegDst, offset, cc->computeRegI2, OpBits::B32);
+        count -= 4;
+        offset += 4;
+    }
+
+    while (count >= 2)
+    {
+        emitLoadRegMem(cc->computeRegI2, memRegSrc, offset, OpBits::B16);
+        emitLoadMemReg(memRegDst, offset, cc->computeRegI2, OpBits::B16);
+        count -= 2;
+        offset += 2;
+    }
+
+    while (count >= 1)
+    {
+        emitLoadRegMem(cc->computeRegI2, memRegSrc, offset, OpBits::B8);
+        emitLoadMemReg(memRegDst, offset, cc->computeRegI2, OpBits::B8);
+        count -= 1;
+        offset += 1;
+    }
 }
 
 void ScbeCpu::emitOpUnaryMem(CpuReg memReg, uint64_t memOffset, CpuOp op, OpBits opBits)

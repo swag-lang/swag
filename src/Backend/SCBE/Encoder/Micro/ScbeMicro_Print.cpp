@@ -464,10 +464,6 @@ void ScbeMicro::print() const
                 line.name = "clear";
                 line.args = form("%s", regName(inst->regA, inst->opBitsA));
                 break;
-            case ScbeMicroOp::Copy:
-                line.name = "copy";
-                line.args = form("byte ptr [%s], byte ptr [%s], %d", regName(inst->regA, OpBits::B64), regName(inst->regB, OpBits::B64), inst->valueA);
-                break;
             case ScbeMicroOp::OpUnaryM:
                 line.name = cpuOpName(inst->cpuOp);
                 line.args += form("%s ptr [%s+%xh]", opBitsName(inst->opBitsA), regName(inst->regA, inst->opBitsA), inst->valueA);

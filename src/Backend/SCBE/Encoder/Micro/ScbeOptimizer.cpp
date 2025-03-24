@@ -75,18 +75,6 @@ void ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                     inst->valueA = inst->valueB;
                 }
                 break;
-            case ScbeMicroOp::Copy:
-                if (inst->regA == memReg &&
-                    inst->valueA == memOffset)
-                {
-                    SWAG_ASSERT(false);
-                }
-                if (inst->regB == memReg &&
-                    inst->valueA == memOffset)
-                {
-                    SWAG_ASSERT(false);
-                }
-                break;
             case ScbeMicroOp::OpUnaryM:
                 if (inst->regA == memReg &&
                     inst->valueA == memOffset)

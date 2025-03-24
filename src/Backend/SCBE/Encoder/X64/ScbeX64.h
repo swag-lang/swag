@@ -43,7 +43,6 @@ struct ScbeX64 final : ScbeCpu
     CpuEncodeResult encodeCmpRegImm(CpuReg reg, uint64_t value, OpBits opBits, CpuEmitFlags emitFlags) override;
     CpuEncodeResult encodeSetCond(CpuReg reg, CpuCondFlag setType, CpuEmitFlags emitFlags) override;
     CpuEncodeResult encodeClearReg(CpuReg reg, OpBits opBits, CpuEmitFlags emitFlags) override;
-    CpuEncodeResult encodeCopy(CpuReg memRegDst, CpuReg memRegSrc, uint32_t count, CpuEmitFlags emitFlags) override;
     CpuEncodeResult encodeOpUnaryMem(CpuReg memReg, uint64_t memOffset, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags) override;
     CpuEncodeResult encodeOpUnaryReg(CpuReg reg, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags) override;
     CpuEncodeResult encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags) override;
