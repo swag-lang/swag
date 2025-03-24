@@ -231,7 +231,7 @@ void Scbe::emitBinOpOverflow(ScbeCpu& pp, CpuOp op, SafetyMsg safetyMsg, TypeInf
 {
     const char* msg      = ByteCodeGen::safetyMsg(safetyMsg, safetyType);
     const bool  isSigned = safetyType->isNativeIntegerSigned();
-    emitBinOp(pp, op, EMITF_Overflow);
+    emitBinOp(pp, op, EMIT_Overflow);
     emitOverflow(pp, msg, isSigned);
 }
 
@@ -261,7 +261,7 @@ void Scbe::emitBinOpEqOverflow(ScbeCpu& pp, CpuOp op, SafetyMsg safetyMsg, TypeI
     const char* msg      = ByteCodeGen::safetyMsg(safetyMsg, safetyType);
     const bool  isSigned = safetyType->isNativeIntegerSigned();
 
-    emitBinOpEq(pp, 0, op, EMITF_Overflow);
+    emitBinOpEq(pp, 0, op, EMIT_Overflow);
     emitOverflow(pp, msg, isSigned);
 }
 
@@ -272,7 +272,7 @@ void Scbe::emitBinOpEqLock(ScbeCpu& pp, CpuOp op)
     const auto opBits = ScbeCpu::getOpBits(ip->op);
     pp.emitLoadRegMem(cc->computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
     emitIMMB(pp, cc->computeRegI0, opBits);
-    pp.emitOpBinaryMemReg(cc->computeRegI1, 0, cc->computeRegI0, op, opBits, EMITF_Lock);
+    pp.emitOpBinaryMemReg(cc->computeRegI1, 0, cc->computeRegI0, op, opBits, EMIT_Lock);
 }
 
 void Scbe::emitBinOpEqS(ScbeCpu& pp, CpuOp op)

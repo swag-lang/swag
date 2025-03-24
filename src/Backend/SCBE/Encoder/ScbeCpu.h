@@ -130,18 +130,18 @@ enum class CpuCondJump : uint8_t
     JUMP,
 };
 
-using CpuEmitFlags                     = Flags<uint8_t>;
-constexpr CpuEmitFlags EMITF_Zero      = 0x00000000;
-constexpr CpuEmitFlags EMITF_Overflow  = 0x00000001;
-constexpr CpuEmitFlags EMITF_Lock      = 0x00000002;
-constexpr CpuEmitFlags EMITF_B64       = 0x00000004;
-constexpr CpuEmitFlags EMITF_CanEncode = 0x00000008;
+using CpuEmitFlags                    = Flags<uint8_t>;
+constexpr CpuEmitFlags EMIT_Zero      = 0x00000000;
+constexpr CpuEmitFlags EMIT_Overflow  = 0x00000001;
+constexpr CpuEmitFlags EMIT_Lock      = 0x00000002;
+constexpr CpuEmitFlags EMIT_B64       = 0x00000004;
+constexpr CpuEmitFlags EMIT_CanEncode = 0x00000008;
 
-enum class CpuResultFlags : uint32_t
+enum class CpuEncodeResult : uint32_t
 {
-    RESULTF_Zero,
-    RESULTF_Right2Reg,
-    RESULTF_NotSupported,
+    Zero,
+    Right2Reg,
+    NotSupported,
 };
 
 struct CpuJump
@@ -282,11 +282,11 @@ struct ScbeCpu : BackendEncoder
     void emitCopy(CpuReg regDst, CpuReg regSrc, uint32_t count);
     void emitOpUnaryMem(CpuReg memReg, uint64_t memOffset, CpuOp op, OpBits opBits);
     void emitOpUnaryReg(CpuReg reg, CpuOp op, OpBits opBits);
-    void emitOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags = EMITF_Zero);
-    void emitOpBinaryRegMem(CpuReg regDst, CpuReg memReg, uint64_t memOffset, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags = EMITF_Zero);
-    void emitOpBinaryMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags = EMITF_Zero);
-    void emitOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags = EMITF_Zero);
-    void emitOpBinaryMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags = EMITF_Zero);
+    void emitOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags = EMIT_Zero);
+    void emitOpBinaryRegMem(CpuReg regDst, CpuReg memReg, uint64_t memOffset, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags = EMIT_Zero);
+    void emitOpBinaryMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags = EMIT_Zero);
+    void emitOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags = EMIT_Zero);
+    void emitOpBinaryMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags = EMIT_Zero);
     void emitOpMulAdd(CpuReg regDst, CpuReg regMul, CpuReg regAdd, OpBits opBits);
 
     virtual void emitEnter(uint32_t sizeStack);
@@ -300,50 +300,50 @@ struct ScbeCpu : BackendEncoder
     virtual void emitSymbolRelocationPtr(CpuReg reg, const Utf8& name);
     virtual void emitJumpCondImm(CpuCondJump jumpType, uint32_t ipDest);
 
-    virtual CpuResultFlags encodeSymbolRelocationRef(const Utf8& name, CpuEmitFlags emitFlags)                                                                       = 0;
-    virtual CpuResultFlags encodeSymbolRelocationAddress(CpuReg reg, uint32_t symbolIndex, uint32_t offset, CpuEmitFlags emitFlags)                                  = 0;
-    virtual CpuResultFlags encodeSymbolRelocationValue(CpuReg reg, uint32_t symbolIndex, uint32_t offset, CpuEmitFlags emitFlags)                                    = 0;
-    virtual CpuResultFlags encodeSymbolGlobalString(CpuReg reg, const Utf8& str, CpuEmitFlags emitFlags)                                                             = 0;
-    virtual CpuResultFlags encodePush(CpuReg reg, CpuEmitFlags emitFlags)                                                                                            = 0;
-    virtual CpuResultFlags encodePop(CpuReg reg, CpuEmitFlags emitFlags)                                                                                             = 0;
-    virtual CpuResultFlags encodeNop(CpuEmitFlags emitFlags)                                                                                                         = 0;
-    virtual CpuResultFlags encodeRet(CpuEmitFlags emitFlags)                                                                                                         = 0;
-    virtual CpuResultFlags encodeCallLocal(const Utf8& symbolName, CpuEmitFlags emitFlags)                                                                           = 0;
-    virtual CpuResultFlags encodeCallExtern(const Utf8& symbolName, CpuEmitFlags emitFlags)                                                                          = 0;
-    virtual CpuResultFlags encodeCallReg(CpuReg reg, CpuEmitFlags emitFlags)                                                                                         = 0;
-    virtual CpuResultFlags encodeJumpTable(CpuReg table, CpuReg offset, int32_t currentIp, uint32_t offsetTable, uint32_t numEntries, CpuEmitFlags emitFlags)        = 0;
-    virtual CpuResultFlags encodeJump(CpuJump& jump, CpuCondJump jumpType, OpBits opBits, CpuEmitFlags emitFlags)                                                    = 0;
-    virtual CpuResultFlags encodePatchJump(const CpuJump& jump, CpuEmitFlags emitFlags)                                                                              = 0;
-    virtual CpuResultFlags encodePatchJump(const CpuJump& jump, uint64_t offsetDestination, CpuEmitFlags emitFlags)                                                  = 0;
-    virtual CpuResultFlags encodeJumpReg(CpuReg reg, CpuEmitFlags emitFlags)                                                                                         = 0;
-    virtual CpuResultFlags encodeLoadRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits opBits, CpuEmitFlags emitFlags)                                    = 0;
-    virtual CpuResultFlags encodeLoadRegImm(CpuReg reg, uint64_t value, OpBits opBits, CpuEmitFlags emitFlags)                                                       = 0;
-    virtual CpuResultFlags encodeLoadRegReg(CpuReg regDst, CpuReg regSrc, OpBits opBits, CpuEmitFlags emitFlags)                                                     = 0;
-    virtual CpuResultFlags encodeLoadRegImm64(CpuReg reg, uint64_t value, CpuEmitFlags emitFlags)                                                                    = 0;
-    virtual CpuResultFlags encodeLoadSignedExtendRegReg(CpuReg regDst, CpuReg regSrc, OpBits numBitsDst, OpBits numBitsSrc, CpuEmitFlags emitFlags)                  = 0;
-    virtual CpuResultFlags encodeLoadSignedExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc, CpuEmitFlags emitFlags) = 0;
-    virtual CpuResultFlags encodeLoadZeroExtendRegReg(CpuReg regDst, CpuReg regSrc, OpBits numBitsDst, OpBits numBitsSrc, CpuEmitFlags emitFlags)                    = 0;
-    virtual CpuResultFlags encodeLoadZeroExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc, CpuEmitFlags emitFlags)   = 0;
-    virtual CpuResultFlags encodeLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, OpBits opBits, CpuEmitFlags emitFlags)          = 0;
-    virtual CpuResultFlags encodeLoadAddressMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, CpuEmitFlags emitFlags)                                               = 0;
-    virtual CpuResultFlags encodeLoadMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits opBits, CpuEmitFlags emitFlags)                                    = 0;
-    virtual CpuResultFlags encodeLoadMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits, CpuEmitFlags emitFlags)                                = 0;
-    virtual CpuResultFlags encodeCmpRegReg(CpuReg reg0, CpuReg reg1, OpBits opBits, CpuEmitFlags emitFlags)                                                          = 0;
-    virtual CpuResultFlags encodeCmpMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits opBits, CpuEmitFlags emitFlags)                                     = 0;
-    virtual CpuResultFlags encodeCmpMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits, CpuEmitFlags emitFlags)                                 = 0;
-    virtual CpuResultFlags encodeCmpRegImm(CpuReg reg, uint64_t value, OpBits opBits, CpuEmitFlags emitFlags)                                                        = 0;
-    virtual CpuResultFlags encodeSetCond(CpuReg reg, CpuCondFlag setType, CpuEmitFlags emitFlags)                                                                    = 0;
-    virtual CpuResultFlags encodeClearReg(CpuReg reg, OpBits opBits, CpuEmitFlags emitFlags)                                                                         = 0;
-    virtual CpuResultFlags encodeClearMem(CpuReg memReg, uint64_t memOffset, uint32_t count, CpuEmitFlags emitFlags)                                                 = 0;
-    virtual CpuResultFlags encodeCopy(CpuReg regDst, CpuReg regSrc, uint32_t count, CpuEmitFlags emitFlags)                                                          = 0;
-    virtual CpuResultFlags encodeOpUnaryMem(CpuReg memReg, uint64_t memOffset, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)                                      = 0;
-    virtual CpuResultFlags encodeOpUnaryReg(CpuReg reg, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)                                                             = 0;
-    virtual CpuResultFlags encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)                                       = 0;
-    virtual CpuResultFlags encodeOpBinaryRegMem(CpuReg regDst, CpuReg memReg, uint64_t memOffset, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)                   = 0;
-    virtual CpuResultFlags encodeOpBinaryMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)                      = 0;
-    virtual CpuResultFlags encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)                                         = 0;
-    virtual CpuResultFlags encodeOpBinaryMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)                  = 0;
-    virtual CpuResultFlags encodeOpMulAdd(CpuReg regDst, CpuReg regMul, CpuReg regAdd, OpBits opBits, CpuEmitFlags emitFlags)                                        = 0;
+    virtual CpuEncodeResult encodeSymbolRelocationRef(const Utf8& name, CpuEmitFlags emitFlags)                                                                       = 0;
+    virtual CpuEncodeResult encodeSymbolRelocationAddress(CpuReg reg, uint32_t symbolIndex, uint32_t offset, CpuEmitFlags emitFlags)                                  = 0;
+    virtual CpuEncodeResult encodeSymbolRelocationValue(CpuReg reg, uint32_t symbolIndex, uint32_t offset, CpuEmitFlags emitFlags)                                    = 0;
+    virtual CpuEncodeResult encodeSymbolGlobalString(CpuReg reg, const Utf8& str, CpuEmitFlags emitFlags)                                                             = 0;
+    virtual CpuEncodeResult encodePush(CpuReg reg, CpuEmitFlags emitFlags)                                                                                            = 0;
+    virtual CpuEncodeResult encodePop(CpuReg reg, CpuEmitFlags emitFlags)                                                                                             = 0;
+    virtual CpuEncodeResult encodeNop(CpuEmitFlags emitFlags)                                                                                                         = 0;
+    virtual CpuEncodeResult encodeRet(CpuEmitFlags emitFlags)                                                                                                         = 0;
+    virtual CpuEncodeResult encodeCallLocal(const Utf8& symbolName, CpuEmitFlags emitFlags)                                                                           = 0;
+    virtual CpuEncodeResult encodeCallExtern(const Utf8& symbolName, CpuEmitFlags emitFlags)                                                                          = 0;
+    virtual CpuEncodeResult encodeCallReg(CpuReg reg, CpuEmitFlags emitFlags)                                                                                         = 0;
+    virtual CpuEncodeResult encodeJumpTable(CpuReg table, CpuReg offset, int32_t currentIp, uint32_t offsetTable, uint32_t numEntries, CpuEmitFlags emitFlags)        = 0;
+    virtual CpuEncodeResult encodeJump(CpuJump& jump, CpuCondJump jumpType, OpBits opBits, CpuEmitFlags emitFlags)                                                    = 0;
+    virtual CpuEncodeResult encodePatchJump(const CpuJump& jump, CpuEmitFlags emitFlags)                                                                              = 0;
+    virtual CpuEncodeResult encodePatchJump(const CpuJump& jump, uint64_t offsetDestination, CpuEmitFlags emitFlags)                                                  = 0;
+    virtual CpuEncodeResult encodeJumpReg(CpuReg reg, CpuEmitFlags emitFlags)                                                                                         = 0;
+    virtual CpuEncodeResult encodeLoadRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits opBits, CpuEmitFlags emitFlags)                                    = 0;
+    virtual CpuEncodeResult encodeLoadRegImm(CpuReg reg, uint64_t value, OpBits opBits, CpuEmitFlags emitFlags)                                                       = 0;
+    virtual CpuEncodeResult encodeLoadRegReg(CpuReg regDst, CpuReg regSrc, OpBits opBits, CpuEmitFlags emitFlags)                                                     = 0;
+    virtual CpuEncodeResult encodeLoadRegImm64(CpuReg reg, uint64_t value, CpuEmitFlags emitFlags)                                                                    = 0;
+    virtual CpuEncodeResult encodeLoadSignedExtendRegReg(CpuReg regDst, CpuReg regSrc, OpBits numBitsDst, OpBits numBitsSrc, CpuEmitFlags emitFlags)                  = 0;
+    virtual CpuEncodeResult encodeLoadSignedExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc, CpuEmitFlags emitFlags) = 0;
+    virtual CpuEncodeResult encodeLoadZeroExtendRegReg(CpuReg regDst, CpuReg regSrc, OpBits numBitsDst, OpBits numBitsSrc, CpuEmitFlags emitFlags)                    = 0;
+    virtual CpuEncodeResult encodeLoadZeroExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc, CpuEmitFlags emitFlags)   = 0;
+    virtual CpuEncodeResult encodeLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, OpBits opBits, CpuEmitFlags emitFlags)          = 0;
+    virtual CpuEncodeResult encodeLoadAddressMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, CpuEmitFlags emitFlags)                                               = 0;
+    virtual CpuEncodeResult encodeLoadMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits opBits, CpuEmitFlags emitFlags)                                    = 0;
+    virtual CpuEncodeResult encodeLoadMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits, CpuEmitFlags emitFlags)                                = 0;
+    virtual CpuEncodeResult encodeCmpRegReg(CpuReg reg0, CpuReg reg1, OpBits opBits, CpuEmitFlags emitFlags)                                                          = 0;
+    virtual CpuEncodeResult encodeCmpMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits opBits, CpuEmitFlags emitFlags)                                     = 0;
+    virtual CpuEncodeResult encodeCmpMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits, CpuEmitFlags emitFlags)                                 = 0;
+    virtual CpuEncodeResult encodeCmpRegImm(CpuReg reg, uint64_t value, OpBits opBits, CpuEmitFlags emitFlags)                                                        = 0;
+    virtual CpuEncodeResult encodeSetCond(CpuReg reg, CpuCondFlag setType, CpuEmitFlags emitFlags)                                                                    = 0;
+    virtual CpuEncodeResult encodeClearReg(CpuReg reg, OpBits opBits, CpuEmitFlags emitFlags)                                                                         = 0;
+    virtual CpuEncodeResult encodeClearMem(CpuReg memReg, uint64_t memOffset, uint32_t count, CpuEmitFlags emitFlags)                                                 = 0;
+    virtual CpuEncodeResult encodeCopy(CpuReg regDst, CpuReg regSrc, uint32_t count, CpuEmitFlags emitFlags)                                                          = 0;
+    virtual CpuEncodeResult encodeOpUnaryMem(CpuReg memReg, uint64_t memOffset, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)                                      = 0;
+    virtual CpuEncodeResult encodeOpUnaryReg(CpuReg reg, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)                                                             = 0;
+    virtual CpuEncodeResult encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)                                       = 0;
+    virtual CpuEncodeResult encodeOpBinaryRegMem(CpuReg regDst, CpuReg memReg, uint64_t memOffset, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)                   = 0;
+    virtual CpuEncodeResult encodeOpBinaryMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)                      = 0;
+    virtual CpuEncodeResult encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)                                         = 0;
+    virtual CpuEncodeResult encodeOpBinaryMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)                  = 0;
+    virtual CpuEncodeResult encodeOpMulAdd(CpuReg regDst, CpuReg regMul, CpuReg regAdd, OpBits opBits, CpuEmitFlags emitFlags)                                        = 0;
 
     Concat concat;
     Concat postConcat;
