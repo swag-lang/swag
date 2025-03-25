@@ -143,8 +143,8 @@ namespace
 
             case CpuOp::CVTI2F:
                 return "cvtsi2f";
-            case CpuOp::CVTI2F64:
-                return "cvtdi2f";        
+            case CpuOp::CVTU2F64:
+                return "cvtu2f";        
             case CpuOp::CVTF2I:
                 return "cvtf2i";
             case CpuOp::UCOMIF:

@@ -1096,10 +1096,11 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
 {
     ///////////////////////////////////////////
 
-    if (op == CpuOp::CVTI2F64)
+    if (op == CpuOp::CVTU2F64)
     {
         if (emitFlags.has(EMIT_CanEncode))
             return CpuEncodeResult::Zero;
+        
         SWAG_ASSERT(opBits == OpBits::B64);
         SWAG_ASSERT(isInt(regSrc) && isFloat(regDst));
         SWAG_ASSERT(regDst != cc->computeRegF1);
