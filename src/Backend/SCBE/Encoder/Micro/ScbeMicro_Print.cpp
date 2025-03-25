@@ -210,7 +210,7 @@ namespace
             case OpBits::B64:
                 return "qword";
             case OpBits::B128:
-                return "long qword";            
+                return "xmmword";            
         }
 
         return "???";
