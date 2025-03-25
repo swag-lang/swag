@@ -355,6 +355,26 @@ void ScbeCpu::emitOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits 
         return;
     }
 
+    if (result == CpuEncodeResult::NotSupported && op == CpuOp::CVTU2F64)
+    {
+        SWAG_ASSERT(regSrc != cc->computeRegI1);
+        CpuJump jump0, jump1;
+        emitClearReg(regDst, OpBits::B32);
+        emitCmpRegImm(regSrc, 0, OpBits::B64);
+        emitJump(jump0, CpuCondJump::JL, OpBits::B8);
+        emitOpBinaryRegReg(regDst, regSrc, CpuOp::CVTI2F, OpBits::B64, EMIT_B64);
+        emitJump(jump1, CpuCondJump::JUMP, OpBits::B8);
+        emitPatchJump(jump0);
+        emitLoadRegReg(cc->computeRegI1, regSrc, OpBits::B64);
+        emitOpBinaryRegImm(regSrc, 1, CpuOp::AND, OpBits::B32, EMIT_Zero);
+        emitOpBinaryRegImm(cc->computeRegI1, 1, CpuOp::SHR, OpBits::B64, EMIT_Zero);
+        emitOpBinaryRegReg(cc->computeRegI1, regSrc, CpuOp::OR, OpBits::B64, EMIT_Zero);
+        emitOpBinaryRegReg(regDst, cc->computeRegI1, CpuOp::CVTI2F, OpBits::B64, EMIT_B64);
+        emitOpBinaryRegReg(regDst, regDst, CpuOp::FADD, OpBits::B64, EMIT_Zero);
+        emitPatchJump(jump1);
+        return;
+    }
+
     if (result == CpuEncodeResult::Left2Rax)
     {
         SWAG_ASSERT(regSrc != CpuReg::Rax);
@@ -563,7 +583,7 @@ void ScbeCpu::emitOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp op, OpBits op
 
     if (result == CpuEncodeResult::Right2Reg)
     {
-        if(reg != cc->computeRegI1)
+        if (reg != cc->computeRegI1)
         {
             emitLoadRegImm(cc->computeRegI1, value, opBits);
             emitOpBinaryRegReg(reg, cc->computeRegI1, op, opBits, emitFlags);
@@ -573,7 +593,7 @@ void ScbeCpu::emitOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp op, OpBits op
             emitLoadRegImm(cc->computeRegI2, value, opBits);
             emitOpBinaryRegReg(reg, cc->computeRegI2, op, opBits, emitFlags);
         }
-        
+
         return;
     }
 

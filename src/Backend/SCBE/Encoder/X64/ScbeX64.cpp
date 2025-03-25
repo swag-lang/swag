@@ -1100,64 +1100,8 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
     if (op == CpuOp::CVTU2F64)
     {
         if (emitFlags.has(EMIT_CanEncode))
-            return CpuEncodeResult::Zero;
-
-        emitClearReg(cc->computeRegF0, OpBits::B32);
-
-        emitREX(concat, opBits, cc->computeRegI0, cc->computeRegI0);
-        emitSpecCPUOp(concat, 0x85, opBits);
-        emitModRM(concat, cc->computeRegI0, cc->computeRegI0);        
-        //emitCmpRegReg(cc->computeRegI0, cc->computeRegI0, OpBits::B64);
-        
-        CpuJump jump0;
-        emitJump(jump0, CpuCondJump::JS, OpBits::B8);
-        emitOpBinaryRegReg(cc->computeRegF0, cc->computeRegI0, CpuOp::CVTI2F, OpBits::B64, EMIT_B64);
-        CpuJump jump1;
-        emitJump(jump1, CpuCondJump::JUMP, OpBits::B8);
-        emitPatchJump(jump0);
-        emitLoadRegReg(cc->computeRegI1, cc->computeRegI0, OpBits::B64);
-        emitOpBinaryRegImm(cc->computeRegI0, 1, CpuOp::AND, OpBits::B32, EMIT_Zero);
-        emitOpBinaryRegImm(cc->computeRegI1, 1, CpuOp::SHR, OpBits::B64, EMIT_Zero);
-        emitOpBinaryRegReg(cc->computeRegI1, cc->computeRegI0, CpuOp::OR, OpBits::B64, EMIT_Zero);
-        emitOpBinaryRegReg(cc->computeRegF0, cc->computeRegI1, CpuOp::CVTI2F, OpBits::B64, EMIT_B64);
-        emitOpBinaryRegReg(cc->computeRegF0, cc->computeRegF0, CpuOp::FADD, OpBits::B64, EMIT_Zero);
-        emitPatchJump(jump1);
-
-        /*
-        SWAG_ASSERT(opBits == OpBits::B64);
-        SWAG_ASSERT(isInt(regSrc) && isFloat(regDst));
-        SWAG_ASSERT(regDst != cc->computeRegF1);
-
-        emitLoadRegReg(cc->computeRegF1, regSrc, OpBits::B64);
-        emitSymbolRelocationAddress(regSrc, symCst_U64F64, 0);
-
-        // punpckldq xmm1, xmmword ptr [rcx]
-        emitPrefixF64(concat, OpBits::B64);
-        emitREX(concat, OpBits::B64, MODRM_REG_0, regSrc);
-        emitCPUOp(concat, 0x0F);
-        emitCPUOp(concat, 0x62);
-        emitModRM(concat, 0, cc->computeRegF1, regSrc);
-
-        // subpd xmm1, xmmword ptr [rcx + 16]
-        emitPrefixF64(concat, OpBits::B64);
-        emitREX(concat, OpBits::B64, MODRM_REG_0, regSrc);
-        emitCPUOp(concat, 0x0F);
-        emitCPUOp(concat, 0x5C);
-        emitModRM(concat, 16, cc->computeRegF1, regSrc);
-
-        // movapd xmm0, xmm1
-        emitPrefixF64(concat, OpBits::B64);
-        emitCPUOp(concat, 0x0F);
-        emitCPUOp(concat, 0x28);
-        emitModRM(concat, regDst, cc->computeRegF1);
-
-        // unpckhpd xmm0, xmm1
-        emitPrefixF64(concat, OpBits::B64);
-        emitCPUOp(concat, 0x0F);
-        emitCPUOp(concat, 0x15);
-        emitModRM(concat, regDst, cc->computeRegF1);
-
-        emitOpBinaryRegReg(regDst, cc->computeRegF1, CpuOp::FADD, OpBits::B64, emitFlags);*/
+            return CpuEncodeResult::NotSupported;
+        Report::internalError(module, "encodeOpBinaryRegReg, cannot encode");
     }
 
     ///////////////////////////////////////////
