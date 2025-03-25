@@ -563,9 +563,17 @@ void ScbeCpu::emitOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp op, OpBits op
 
     if (result == CpuEncodeResult::Right2Reg)
     {
-        SWAG_ASSERT(reg != cc->computeRegI1);
-        emitLoadRegImm(cc->computeRegI1, value, opBits);
-        emitOpBinaryRegReg(reg, cc->computeRegI1, op, opBits, emitFlags);
+        if(reg != cc->computeRegI1)
+        {
+            emitLoadRegImm(cc->computeRegI1, value, opBits);
+            emitOpBinaryRegReg(reg, cc->computeRegI1, op, opBits, emitFlags);
+        }
+        else
+        {
+            emitLoadRegImm(cc->computeRegI2, value, opBits);
+            emitOpBinaryRegReg(reg, cc->computeRegI2, op, opBits, emitFlags);
+        }
+        
         return;
     }
 

@@ -1150,7 +1150,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
             op != CpuOp::FXOR)
         {
             emitSpecF64(concat, 0xF3, opBits);
-            emitREX(concat, emitFlags.has(EMIT_B64) ? OpBits::B64 : OpBits::B32, regSrc, regDst);
+            emitREX(concat, emitFlags.has(EMIT_B64) ? OpBits::B64 : OpBits::B32, regDst, regSrc);
         }
         else
         {
