@@ -1142,7 +1142,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
     {
         if (emitFlags.has(EMIT_CanEncode))
             return CpuEncodeResult::Zero;
-        
+
         if (op != CpuOp::FSQRT &&
             op != CpuOp::FAND &&
             op != CpuOp::UCOMIF &&
@@ -1202,6 +1202,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
             emitModRM(concat, MODRM_REG_6, regSrc);
         else if (op == CpuOp::IDIV || op == CpuOp::IMOD)
             emitModRM(concat, MODRM_REG_7, regSrc);
+
         if ((op == CpuOp::MOD || op == CpuOp::IMOD) && opBits == OpBits::B8)
             emitOpBinaryRegImm(rax, 8, CpuOp::SHR, OpBits::B32, emitFlags); // AH => AL
         else if (op == CpuOp::MOD || op == CpuOp::IMOD)
@@ -2079,6 +2080,9 @@ CpuEncodeResult ScbeX64::encodeOpTernaryRegRegReg(CpuReg reg0, CpuReg reg1, CpuR
 
     if (op == CpuOp::MULADD)
     {
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::Zero;
+        
         SWAG_ASSERT(isFloat(reg0) && isFloat(reg1) && isFloat(reg2));
         emitSpecF64(concat, 0xF3, opBits);
         emitCPUOp(concat, 0x0F);
@@ -2095,7 +2099,20 @@ CpuEncodeResult ScbeX64::encodeOpTernaryRegRegReg(CpuReg reg0, CpuReg reg1, CpuR
 
     else if (op == CpuOp::CMPXCHG)
     {
+        const auto rax = x64Reg2CpuReg(X64Reg::Rax);
+        if (emitFlags.has(EMIT_CanEncode))
+        {
+            if (cpuRegToX64Reg(reg0) != X64Reg::Rax)
+            {
+                SWAG_ASSERT(rax == CpuReg::Rax);
+                return CpuEncodeResult::Left2Rax;
+            }
+
+            return CpuEncodeResult::Zero;
+        }
+
         SWAG_ASSERT(cpuRegToX64Reg(reg0) == X64Reg::Rax);
+
         if (emitFlags.has(EMIT_Lock))
             emitCPUOp(concat, 0xF0);
         emitREX(concat, opBits, reg2, reg1);
@@ -2369,6 +2386,14 @@ bool ScbeX64::acceptRegA(ScbeMicroInstruction* inst, CpuReg reg)
             case CpuOp::IMUL:
                 return cpuRegToX64Reg(reg) == X64Reg::Rax;
         }
+    }
+    else if (inst->op == ScbeMicroOp::OpTernaryRRR)
+    {
+        switch (inst->cpuOp)
+        {
+            case CpuOp::CMPXCHG:
+                return cpuRegToX64Reg(reg) == X64Reg::Rax;
+        }        
     }
 
     return true;
