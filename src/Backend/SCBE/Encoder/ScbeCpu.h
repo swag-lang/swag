@@ -127,6 +127,7 @@ enum class CpuCondJump : uint8_t
     JG,
     JA,
     JP,
+    JS,
     JNP,
     JUMP,
 };

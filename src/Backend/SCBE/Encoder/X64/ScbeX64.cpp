@@ -7,6 +7,7 @@
 #include "Semantic/Type/TypeManager.h"
 #include "Wmf/Module.h"
 #pragma warning(disable : 4063)
+#pragma optimize("", off)
 
 enum class ModRMMode : uint8_t
 {
@@ -1100,7 +1101,29 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
     {
         if (emitFlags.has(EMIT_CanEncode))
             return CpuEncodeResult::Zero;
+
+        emitClearReg(cc->computeRegF0, OpBits::B32);
+
+        emitREX(concat, opBits, cc->computeRegI0, cc->computeRegI0);
+        emitSpecCPUOp(concat, 0x85, opBits);
+        emitModRM(concat, cc->computeRegI0, cc->computeRegI0);        
+        //emitCmpRegReg(cc->computeRegI0, cc->computeRegI0, OpBits::B64);
         
+        CpuJump jump0;
+        emitJump(jump0, CpuCondJump::JS, OpBits::B8);
+        emitOpBinaryRegReg(cc->computeRegF0, cc->computeRegI0, CpuOp::CVTI2F, OpBits::B64, EMIT_B64);
+        CpuJump jump1;
+        emitJump(jump1, CpuCondJump::JUMP, OpBits::B8);
+        emitPatchJump(jump0);
+        emitLoadRegReg(cc->computeRegI1, cc->computeRegI0, OpBits::B64);
+        emitOpBinaryRegImm(cc->computeRegI0, 1, CpuOp::AND, OpBits::B32, EMIT_Zero);
+        emitOpBinaryRegImm(cc->computeRegI1, 1, CpuOp::SHR, OpBits::B64, EMIT_Zero);
+        emitOpBinaryRegReg(cc->computeRegI1, cc->computeRegI0, CpuOp::OR, OpBits::B64, EMIT_Zero);
+        emitOpBinaryRegReg(cc->computeRegF0, cc->computeRegI1, CpuOp::CVTI2F, OpBits::B64, EMIT_B64);
+        emitOpBinaryRegReg(cc->computeRegF0, cc->computeRegF0, CpuOp::FADD, OpBits::B64, EMIT_Zero);
+        emitPatchJump(jump1);
+
+        /*
         SWAG_ASSERT(opBits == OpBits::B64);
         SWAG_ASSERT(isInt(regSrc) && isFloat(regDst));
         SWAG_ASSERT(regDst != cc->computeRegF1);
@@ -1134,7 +1157,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
         emitCPUOp(concat, 0x15);
         emitModRM(concat, regDst, cc->computeRegF1);
 
-        emitOpBinaryRegReg(regDst, cc->computeRegF1, CpuOp::FADD, OpBits::B64, emitFlags);
+        emitOpBinaryRegReg(regDst, cc->computeRegF1, CpuOp::FADD, OpBits::B64, emitFlags);*/
     }
 
     ///////////////////////////////////////////
@@ -2083,7 +2106,7 @@ CpuEncodeResult ScbeX64::encodeOpTernaryRegRegReg(CpuReg reg0, CpuReg reg1, CpuR
     {
         if (emitFlags.has(EMIT_CanEncode))
             return CpuEncodeResult::Zero;
-        
+
         SWAG_ASSERT(isFloat(reg0) && isFloat(reg1) && isFloat(reg2));
         emitSpecF64(concat, 0xF3, opBits);
         emitCPUOp(concat, 0x0F);
@@ -2197,6 +2220,9 @@ CpuEncodeResult ScbeX64::encodeJump(CpuJump& jump, CpuCondJump jumpType, OpBits 
             case CpuCondJump::JA:
                 concat.addU8(0x77);
                 break;
+            case CpuCondJump::JS:
+                emitCPUOp(concat, 0x78);
+                break;
             case CpuCondJump::JP:
                 emitCPUOp(concat, 0x7A);
                 break;
@@ -2264,6 +2290,10 @@ CpuEncodeResult ScbeX64::encodeJump(CpuJump& jump, CpuCondJump jumpType, OpBits 
         case CpuCondJump::JP:
             emitCPUOp(concat, 0x0F);
             emitCPUOp(concat, 0x8A);
+            break;
+        case CpuCondJump::JS:
+            emitCPUOp(concat, 0x0F);
+            emitCPUOp(concat, 0x88);
             break;
         case CpuCondJump::JNP:
             emitCPUOp(concat, 0x0F);
@@ -2394,7 +2424,7 @@ bool ScbeX64::acceptRegA(ScbeMicroInstruction* inst, CpuReg reg)
         {
             case CpuOp::CMPXCHG:
                 return cpuRegToX64Reg(reg) == X64Reg::Rax;
-        }        
+        }
     }
 
     return true;
