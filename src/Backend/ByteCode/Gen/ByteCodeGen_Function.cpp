@@ -1627,8 +1627,8 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
         allParams->swap2Children();
     }
 
-    // For a untyped variadic, we need to store all parameters as 'any'
-    uint32_t               precallStack = 0;
+    // For an untyped variadic, we need to store all parameters as 'any'
+    uint32_t               preCallStack = 0;
     VectorNative<uint32_t> toFree;
     if (allParams && typeInfoFunc->hasFlag(TYPEINFO_VARIADIC))
     {
@@ -1677,7 +1677,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
                 maxCallParams++;
             }
 
-            precallStack += 2 * sizeof(Register);
+            preCallStack += 2 * sizeof(Register);
             offset -= 2 * sizeof(Register);
             offset += sizeof(Register);
         }
@@ -1714,7 +1714,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
                             toFree.push_back(param->resultRegisterRc[r]);
                         accParams.push_back(param->resultRegisterRc[r]);
                         maxCallParams++;
-                        precallStack += sizeof(Register);
+                        preCallStack += sizeof(Register);
                         numPushParams++;
                     }
 
@@ -1761,7 +1761,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
                         if (!regList.cannotFree)
                             toFree.push_back(regList[r]);
                         accParams.push_back(regList[r--]);
-                        precallStack += sizeof(Register);
+                        preCallStack += sizeof(Register);
                         numPushParams++;
                         maxCallParams++;
                     }
@@ -1859,7 +1859,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
                                 toFree.push_back(param->resultRegisterRc[r]);
                             auto inst   = EMIT_INST1(context, ByteCodeOp::PushRVParam, param->resultRegisterRc[r--]);
                             inst->b.u64 = typeRawVariadic->sizeOf;
-                            precallStack += typeRawVariadic->sizeOf;
+                            preCallStack += typeRawVariadic->sizeOf;
                             numPushParams++;
                             maxCallParams++;
                         }
@@ -1879,7 +1879,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
                         if (freeRegistersParams && !param->resultRegisterRc.cannotFree)
                             toFree.push_back(param->resultRegisterRc[r]);
                         accParams.push_back(param->resultRegisterRc[r--]);
-                        precallStack += sizeof(Register);
+                        preCallStack += sizeof(Register);
                         numPushParams++;
                         maxCallParams++;
                     }
@@ -1902,7 +1902,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
 
     if (lastParam && lastParam->typeInfo && lastParam->typeInfo->isTypedVariadic())
     {
-        precallStack += 2 * sizeof(Register);
+        preCallStack += 2 * sizeof(Register);
         EMIT_INST2(context, ByteCodeOp::PushRAParam2, lastParam->resultRegisterRc[1], lastParam->resultRegisterRc[0]);
         numPushParams += 2;
         maxCallParams += 2;
@@ -1912,7 +1912,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     // Pass a variadic parameter to another function
     else if (lastParam && lastParam->typeInfo && lastParam->typeInfo->isVariadic())
     {
-        precallStack += 2 * sizeof(Register);
+        preCallStack += 2 * sizeof(Register);
         EMIT_INST2(context, ByteCodeOp::PushRAParam2, lastParam->resultRegisterRc[1], lastParam->resultRegisterRc[0]);
         numPushParams += 2;
         maxCallParams += 2;
@@ -1924,7 +1924,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     {
         EMIT_INST2(context, ByteCodeOp::PushRAParam2, lastParam->resultRegisterRc[1], lastParam->resultRegisterRc[0]);
         maxCallParams += 2;
-        precallStack += 2 * sizeof(Register);
+        preCallStack += 2 * sizeof(Register);
         freeRegisterRC(context, lastParam);
     }
 
@@ -1968,7 +1968,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
         EMIT_INST2(context, ByteCodeOp::PushRAParam2, r0[1], r0[0]);
         maxCallParams += 2;
 
-        precallStack += 2 * sizeof(Register);
+        preCallStack += 2 * sizeof(Register);
     }
     else if (typeInfoFunc->hasFlag(TYPEINFO_TYPED_VARIADIC))
     {
@@ -2008,7 +2008,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
         EMIT_INST2(context, ByteCodeOp::PushRAParam2, r0[1], r0[0]);
         maxCallParams += 2;
 
-        precallStack += 2 * sizeof(Register);
+        preCallStack += 2 * sizeof(Register);
     }
 
     if (foreign)
@@ -2089,18 +2089,18 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     context->bc->maxCallParams = std::max(context->bc->maxCallParams, maxCallParams);
 
     // Restore stack as it was before the call, before the parameters
-    if (precallStack)
+    if (preCallStack)
     {
         if (node->typeInfo && node->typeInfo->isClosure())
         {
             SWAG_ASSERT(node->hasExtension());
             EMIT_INST2(context, ByteCodeOp::IncSPPostCallCond, node->extMisc()->additionalRegisterRC[1], sizeof(void*));
-            if (precallStack - sizeof(void*))
-                EMIT_INST1(context, ByteCodeOp::IncSPPostCall, precallStack - sizeof(void*));
+            if (preCallStack - sizeof(void*))
+                EMIT_INST1(context, ByteCodeOp::IncSPPostCall, preCallStack - sizeof(void*));
         }
         else
         {
-            EMIT_INST1(context, ByteCodeOp::IncSPPostCall, precallStack);
+            EMIT_INST1(context, ByteCodeOp::IncSPPostCall, preCallStack);
         }
     }
 
