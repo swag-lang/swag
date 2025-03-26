@@ -132,9 +132,9 @@ namespace
             case CpuOp::POPCNT:
                 return "popcnt";
             case CpuOp::MULADD:
-                return "muladd";            
+                return "muladd";
             case CpuOp::CMPXCHG:
-                return "cmpxchg";            
+                return "cmpxchg";
 
             case CpuOp::CMP:
                 return "cmp";
@@ -144,7 +144,7 @@ namespace
             case CpuOp::CVTI2F:
                 return "cvtsi2f";
             case CpuOp::CVTU2F64:
-                return "cvtu2f";        
+                return "cvtu2f";
             case CpuOp::CVTF2I:
                 return "cvtf2i";
             case CpuOp::UCOMIF:
@@ -210,7 +210,7 @@ namespace
             case OpBits::B64:
                 return "qword";
             case OpBits::B128:
-                return "xmmword";            
+                return "xmmword";
         }
 
         return "???";
@@ -229,7 +229,7 @@ namespace
             case OpBits::B64:
                 return "B64";
             case OpBits::B128:
-                return "B128";            
+                return "B128";
         }
 
         return "???";
@@ -495,6 +495,13 @@ void ScbeMicro::print() const
             case ScbeMicroOp::OpTernaryRRR:
                 line.name = cpuOpName(inst->cpuOp);
                 line.args += form("%s, %s %s %s", regName(inst->regA, inst->opBitsA), regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsA), regName(inst->regC, inst->opBitsA));
+                break;
+
+            case ScbeMicroOp::Enter:
+                line.name = "enter";
+                break;
+            case ScbeMicroOp::Leave:
+                line.name = "leave";
                 break;
         }
 
