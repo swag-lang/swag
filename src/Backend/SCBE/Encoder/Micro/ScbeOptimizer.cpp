@@ -148,6 +148,8 @@ void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
             continue;
         }
 
+        const auto nextRegs = out.cpu->getWriteRegisters(next);
+
         switch (inst->op)
         {
             case ScbeMicroOp::LoadRR:
@@ -155,7 +157,7 @@ void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
                     inst->regA == next->regA &&
                     ScbeCpu::isInt(inst->regA) &&
                     (!next->hasOpFlag(MOF_OPBITS_A) || ScbeCpu::getNumBits(inst->opBitsA) >= ScbeCpu::getNumBits(next->opBitsA)) &&
-                    !out.cpu->getWriteRegisters(next).contains(inst->regB) &&
+                    !nextRegs.contains(inst->regB) &&
                     out.cpu->acceptRegA(next, inst->regB))
                 {
                     next->regA = inst->regB;
@@ -167,7 +169,7 @@ void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
                     inst->regA == next->regB &&
                     ScbeCpu::isInt(inst->regA) &&
                     (!next->hasOpFlag(MOF_OPBITS_A) || ScbeCpu::getNumBits(inst->opBitsA) >= ScbeCpu::getNumBits(next->opBitsA)) &&
-                    !out.cpu->getWriteRegisters(next).contains(inst->regB) &&
+                    !nextRegs.contains(inst->regB) &&
                     out.cpu->acceptRegB(next, inst->regB))
                 {
                     next->regB = inst->regB;
