@@ -136,9 +136,3 @@ void ScbeCpu::endFunction() const
             break;
     }
 }
-
-bool ScbeCpu::manipulateRegister(ScbeMicroInstruction* inst, CpuReg reg) const
-{
-    const auto details = getInstructionDetails(inst);
-    return details.has(1ULL << static_cast<uint32_t>(reg));
-}

@@ -2342,13 +2342,13 @@ CpuEncodeResult ScbeX64::encodeCallReg(CpuReg reg, CpuEmitFlags emitFlags)
     return CpuEncodeResult::Zero;
 }
 
-/////////////////////////////////////////////////////////////////////
-
 CpuEncodeResult ScbeX64::encodeNop(CpuEmitFlags emitFlags)
 {
     emitCPUOp(concat, 0x90);
     return CpuEncodeResult::Zero;
 }
+
+/////////////////////////////////////////////////////////////////////
 
 bool ScbeX64::acceptRegA(ScbeMicroInstruction* inst, CpuReg reg)
 {
@@ -2397,19 +2397,22 @@ bool ScbeX64::acceptRegB(ScbeMicroInstruction* inst, CpuReg reg)
     return true;
 }
 
-ScbeMicroOpDetails ScbeX64::getInstructionDetails(ScbeMicroInstruction* inst) const
+VectorNative<CpuReg> ScbeX64::getWriteRegisters(ScbeMicroInstruction* inst)
 {
+    VectorNative<CpuReg> result;
     if (inst->isCall())
-        return MOD_REG_ALL;
-
-    ScbeMicroOpDetails result = MOD_ZERO;
+    {
+        result.append(cc->volatileRegistersInteger);
+        result.append(cc->volatileRegistersFloat);
+        return result;
+    }
 
     if (inst->hasWriteRegA())
-        result.add(1ULL << static_cast<uint32_t>(inst->regA));
+        result.push_back(inst->regA);
     if (inst->hasWriteRegB())
-        result.add(1ULL << static_cast<uint32_t>(inst->regB));
+        result.push_back(inst->regB);
     if (inst->hasWriteRegC())
-        result.add(1ULL << static_cast<uint32_t>(inst->regC));
+        result.push_back(inst->regC);
 
     if (inst->op == ScbeMicroOp::OpBinaryRI ||
         inst->op == ScbeMicroOp::OpBinaryRR ||
@@ -2417,14 +2420,14 @@ ScbeMicroOpDetails ScbeX64::getInstructionDetails(ScbeMicroInstruction* inst) co
         inst->op == ScbeMicroOp::OpBinaryRM ||
         inst->op == ScbeMicroOp::OpBinaryMR)
     {
-        if (inst->cpuOp == CpuOp::MUL || inst->cpuOp == CpuOp::IMUL)
+        if (inst->cpuOp == CpuOp::MUL ||
+            inst->cpuOp == CpuOp::IMUL ||
+            inst->cpuOp == CpuOp::DIV ||
+            inst->cpuOp == CpuOp::MOD ||
+            inst->cpuOp == CpuOp::IDIV ||
+            inst->cpuOp == CpuOp::IMOD)
         {
-            result.add(1ULL << static_cast<uint32_t>(CpuReg::Rdx));
-        }
-
-        if (inst->cpuOp == CpuOp::DIV || inst->cpuOp == CpuOp::MOD || inst->cpuOp == CpuOp::IDIV || inst->cpuOp == CpuOp::IMOD)
-        {
-            result.add(1ULL << static_cast<uint32_t>(CpuReg::Rdx));
+            result.push_back(x64Reg2CpuReg(X64Reg::Rdx));
         }
     }
 

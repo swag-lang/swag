@@ -155,7 +155,7 @@ void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
                     inst->regA == next->regA &&
                     ScbeCpu::isInt(inst->regA) &&
                     (!next->hasOpFlag(MOF_OPBITS_A) || ScbeCpu::getNumBits(inst->opBitsA) >= ScbeCpu::getNumBits(next->opBitsA)) &&
-                    !encoder->manipulateRegister(next, inst->regB) &&
+                    !out.cpu->getWriteRegisters(next).contains(inst->regB) &&
                     out.cpu->acceptRegA(next, inst->regB))
                 {
                     next->regA = inst->regB;
@@ -167,7 +167,7 @@ void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
                     inst->regA == next->regB &&
                     ScbeCpu::isInt(inst->regA) &&
                     (!next->hasOpFlag(MOF_OPBITS_A) || ScbeCpu::getNumBits(inst->opBitsA) >= ScbeCpu::getNumBits(next->opBitsA)) &&
-                    !encoder->manipulateRegister(next, inst->regB) &&
+                    !out.cpu->getWriteRegisters(next).contains(inst->regB) &&
                     out.cpu->acceptRegB(next, inst->regB))
                 {
                     next->regB = inst->regB;
@@ -335,23 +335,12 @@ void ScbeOptimizer::optimizePassDeadStore(const ScbeMicro& out)
             mapRegInst[inst->regA] = inst;
             legitReg               = inst->regA;
         }
-        else
-        {
-            if (inst->hasWriteRegA())
-                mapRegInst.erase(inst->regA);
-            if (inst->hasWriteRegB())
-                mapRegInst.erase(inst->regB);
-            if (inst->hasWriteRegC())
-                mapRegInst.erase(inst->regC);
-        }
 
-        auto details = encoder->getInstructionDetails(inst);
-        for (uint32_t i = 0; details.has(MOD_REG_ALL) && i < static_cast<uint32_t>(CpuReg::Max); details.remove(1ULL << i++))
+        auto details = out.cpu->getWriteRegisters(inst);
+        for (const auto r : details)
         {
-            if (legitReg == static_cast<CpuReg>(i))
-                continue;
-            if (details.has(1ULL << i))
-                mapRegInst.erase(static_cast<CpuReg>(i));
+            if (r != legitReg)
+                mapRegInst.erase(r);
         }
 
         inst = zap(inst + 1);
@@ -433,13 +422,11 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
             std::swap(inst->regA, inst->regB);
         }
 
-        auto details = encoder->getInstructionDetails(inst);
-        for (uint32_t i = 0; details.has(MOD_REG_ALL) && i < static_cast<uint32_t>(CpuReg::Max); details.remove(1ULL << i++))
+        auto details = out.cpu->getWriteRegisters(inst);
+        for (auto r : details)
         {
-            if (static_cast<CpuReg>(i) == legitReg)
-                continue;
-            if (details.has(1ULL << i))
-                mapRegVal.erase(static_cast<CpuReg>(i));
+            if (r != legitReg)
+                mapRegVal.erase(r);
         }
 
         inst = zap(inst + 1);
@@ -472,12 +459,9 @@ void ScbeOptimizer::computeContext(const ScbeMicro& out)
         if (inst->hasReadRegC() || inst->hasWriteRegC())
             usedRegs[inst->regC] += 1;
 
-        auto details = encoder->getInstructionDetails(inst);
-        for (uint32_t i = 0; details.has(MOD_REG_ALL) && i < static_cast<uint32_t>(CpuReg::Max); details.remove(1ULL << i++))
-        {
-            if (details.has(1ULL << i))
-                usedRegs[static_cast<CpuReg>(i)] += 1;
-        }
+        auto details = out.cpu->getWriteRegisters(inst);
+        for (auto r : details)
+            usedRegs[r] += 1;
 
         inst = zap(inst + 1);
     }

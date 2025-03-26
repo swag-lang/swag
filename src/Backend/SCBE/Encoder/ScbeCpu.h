@@ -8,7 +8,6 @@
 #include "Semantic/DataSegment.h"
 
 enum class ByteCodeOp : uint16_t;
-using ScbeMicroOpDetails = Flags<uint64_t>;
 struct ScbeMicroInstruction;
 struct AstNode;
 
@@ -241,10 +240,9 @@ struct ScbeCpu : BackendEncoder
     CpuFunction* addFunction(const Utf8& funcName, const CallConv* ccFunc, ByteCode* bc);
     void         endFunction() const;
 
-    bool                       manipulateRegister(ScbeMicroInstruction* inst, CpuReg reg) const;
-    virtual bool               acceptRegA(ScbeMicroInstruction* inst, CpuReg reg) { return true; }
-    virtual bool               acceptRegB(ScbeMicroInstruction* inst, CpuReg reg) { return true; }
-    virtual ScbeMicroOpDetails getInstructionDetails(ScbeMicroInstruction* inst) const { return 0; }
+    virtual bool                 acceptRegA(ScbeMicroInstruction* inst, CpuReg reg) { return true; }
+    virtual bool                 acceptRegB(ScbeMicroInstruction* inst, CpuReg reg) { return true; }
+    virtual VectorNative<CpuReg> getWriteRegisters(ScbeMicroInstruction* inst) { return {}; }
 
     void emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CpuPushParam>& cpuParams, const CallConv* callConv);
     void emitComputeCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CpuPushParam>& cpuParams, CpuReg memRegResult, uint32_t memOffsetResult, void* resultAddr);
