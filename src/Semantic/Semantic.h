@@ -359,7 +359,6 @@ namespace Semantic
     bool resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* node, const char* name);
     bool resolveIntrinsicVarArgs(SemanticContext* context);
     bool resolveIntrinsicProperty(SemanticContext* context);
-    bool resolveIntrinsicSpread(SemanticContext* context);
     bool resolveCompilerIntrinsicTypeOf(SemanticContext* context);
     bool resolveKeepRef(SemanticContext* context);
     bool resolveLiteral(SemanticContext* context);

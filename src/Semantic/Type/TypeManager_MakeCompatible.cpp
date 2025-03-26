@@ -49,13 +49,6 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
     if (!fromNode)
         return true;
 
-    // Be sure to keep the TYPEINFO_SPREAD flag from the original type
-    if (fromNode->typeInfoCast && fromNode->typeInfoCast->hasFlag(TYPEINFO_SPREAD))
-    {
-        fromNode->typeInfo = fromNode->typeInfo->clone();
-        fromNode->typeInfo->addFlag(TYPEINFO_SPREAD);
-    }
-
     // auto cast
     if (fromNode->typeInfo->hasFlag(TYPEINFO_AUTO_CAST) && !fromNode->typeInfoCast)
     {

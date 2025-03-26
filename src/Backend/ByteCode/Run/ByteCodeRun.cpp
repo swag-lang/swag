@@ -1242,9 +1242,6 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         case ByteCodeOp::PopBP:
             context->bp = context->pop<uint8_t*>();
             break;
-        case ByteCodeOp::CopySP:
-            registersRC[ip->a.u32].pointer = context->sp - ip->b.u32;
-            break;
 
         case ByteCodeOp::CopySPVaargs:
             registersRC[ip->a.u32].pointer = context->sp + ip->b.u32;

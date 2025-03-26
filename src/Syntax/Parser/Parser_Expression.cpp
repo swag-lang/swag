@@ -332,7 +332,6 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
             SWAG_CHECK(doIdentifierRef(parent, result));
             break;
 
-        case TokenId::IntrinsicSpread:
         case TokenId::IntrinsicKindOf:
         case TokenId::IntrinsicCountOf:
         case TokenId::IntrinsicDataOf:

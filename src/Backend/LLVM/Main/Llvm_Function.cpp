@@ -2965,14 +2965,6 @@ bool Llvm::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
                 /////////////////////////////////////
 
-            case ByteCodeOp::CopySP:
-            {
-                const auto r0 = GEP64_PTR_PTR_I64(allocR, ip->a.u32);
-                const auto r1 = GEP64(allocR, ip->c.u32);
-                builder.CreateStore(r1, r0);
-                break;
-            }
-
             case ByteCodeOp::CopySPVaargs:
                 emitCopyVaargs(pp);
                 break;

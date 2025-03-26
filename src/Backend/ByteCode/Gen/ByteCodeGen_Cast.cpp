@@ -40,14 +40,17 @@ bool ByteCodeGen::emitCastToNativeAny(const ByteCodeGenContext* context, AstNode
     }
     else
     {
+        // :AnyValueOnStack
         // If inside a function, we copy the value to the stack, and address the stack as the any value.
         // That way, even if registers are changed, the memory layout remains correct.
         if (exprNode->ownerFct)
         {
-            EMIT_INST2(context, ByteCodeOp::SetAtStackPointer64, exprNode->extMisc()->stackOffset, exprNode->resultRegisterRc[0]);
+            const auto stack = exprNode->extMisc()->stackOffset;
+            SWAG_ASSERT(stack != UINT32_MAX);
+            EMIT_INST2(context, ByteCodeOp::SetAtStackPointer64, stack, exprNode->resultRegisterRc[0]);
             if (exprNode->resultRegisterRc.size() == 2)
-                EMIT_INST2(context, ByteCodeOp::SetAtStackPointer64, exprNode->extMisc()->stackOffset + sizeof(uint64_t), exprNode->resultRegisterRc[1]);
-            EMIT_INST2(context, ByteCodeOp::MakeStackPointer, r0[0], exprNode->extMisc()->stackOffset);
+                EMIT_INST2(context, ByteCodeOp::SetAtStackPointer64, stack + sizeof(uint64_t), exprNode->resultRegisterRc[1]);
+            EMIT_INST2(context, ByteCodeOp::MakeStackPointer, r0[0], stack);
         }
     }
 

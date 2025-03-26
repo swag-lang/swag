@@ -2467,6 +2467,7 @@ bool TypeManager::castToAny(SemanticContext* context, TypeInfo* toType, TypeInfo
     {
         if (toNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
         {
+            // :AnyValueOnStack
             // When casting something to any, we will copy the value to the stack to be sure
             // that the memory layout is correct, without relying on registers being contiguous, and not being reallocated (by an optimize pass).
             // See ByteCodeGen::emitCastToNativeAny
@@ -2489,6 +2490,7 @@ bool TypeManager::castToAny(SemanticContext* context, TypeInfo* toType, TypeInfo
 
     if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
     {
+        // :AnyValueOnStack
         // When casting something complex to any, we will copy the value to the stack to be sure
         // that the memory layout is correct, without relying on registers being contiguous, and not being reallocated (by an optimize pass).
         // See ByteCodeGen::emitCastToNativeAny
@@ -2569,6 +2571,7 @@ bool TypeManager::castFromAny(SemanticContext* context, TypeInfo* toType, TypeIn
 
     if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
     {
+        // :AnyValueOnStack
         // When casting something complex to any, we will copy the value to the stack to be sure
         // that the memory layout is correct, without relying on registers being contiguous, and not being reallocated (by an optimize pass).
         // See ByteCodeGen::emitCastToNativeAny
@@ -2782,6 +2785,7 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
     {
         if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
         {
+            // :AnyValueOnStack
             // We will copy the value to the stack to be sure that the memory layout is correct, without relying on
             // registers being contiguous, and not being reallocated (by an optimize pass).
             // This is the same problem when casting to 'any'.

@@ -258,7 +258,6 @@ namespace ByteCodeGen
     bool emitArrayRef(ByteCodeGenContext* context);
     bool emitStringRef(ByteCodeGenContext* context);
     bool emitSliceRef(ByteCodeGenContext* context);
-    bool emitIntrinsicSpread(ByteCodeGenContext* context);
     bool emitIntrinsicCountOf(ByteCodeGenContext* context, AstNode* node, AstNode* expr);
     bool emitIntrinsicCountOf(ByteCodeGenContext* context);
     bool emitIntrinsicDataOf(ByteCodeGenContext* context);

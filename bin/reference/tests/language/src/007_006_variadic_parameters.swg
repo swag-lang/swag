@@ -19,7 +19,7 @@ where the exact number of arguments is not known in advance.
 /**
 # Working with Variadic Parameters as Slices
 
-When a function takes a variadic parameter, the `parameters` variable is treated as a slice of type 
+When a function takes a variadic parameter, the `parameters` variable is treated as a slice of type
 `any`. This feature allows the function to flexibly handle different types of arguments at runtime.
 */
 
@@ -75,7 +75,7 @@ This practice makes the parameters' type explicit, ensuring they are not treated
 # Passing Variadic Parameters Between Functions
 
 You can pass variadic parameters from one function to another, preserving their types and values.
-This technique is useful when you need to delegate tasks to other functions without losing the 
+This technique is useful when you need to delegate tasks to other functions without losing the
 variadic nature of the arguments.
 */
 
@@ -101,35 +101,9 @@ variadic nature of the arguments.
 }
 
 /**
-# Spreading Arrays or Slices to Variadic Parameters
-
-You can spread the contents of an array or slice into variadic parameters using `@spread`. This 
-feature is handy when you have a collection of values that you want to pass as individual arguments.
-*/
-
-#test
-{
-    func sum(params: s32...)->s32
-    {
-        // Variadic parameters can be iterated as they are slices.
-        var total = 0
-        foreach v in params:
-            total += v
-        return total
-    }
-
-    var arr = [1, 2, 3, 4]
-    let res = sum(@spread(arr))        // Equivalent to sum(1, 2, 3, 4).
-    @assert(res == 1 + 2 + 3 + 4)
-
-    let res1 = sum(@spread(arr[1..3])) // Equivalent to sum(2, 3, 4).
-    @assert(res1 == 2 + 3 + 4)
-}
-
-/**
 # Advanced Example: Combining Variadic and Non-Variadic Parameters
 
-This example demonstrates how to combine fixed parameters with variadic parameters and use them 
+This example demonstrates how to combine fixed parameters with variadic parameters and use them
 together in a function.
 */
 
@@ -150,7 +124,7 @@ private func print()
 /**
 # Example: Handling Different Types in Variadic Parameters
 
-This example shows how to handle different types within a variadic function, such as summing 
+This example shows how to handle different types within a variadic function, such as summing
 integers and concatenating strings.
 */
 
@@ -159,7 +133,7 @@ integers and concatenating strings.
     func processParameters(params: ...)->s32
     {
         var sum = 0
-        
+
         foreach p in params
         {
             switch @kindof(p)
@@ -168,10 +142,10 @@ integers and concatenating strings.
                 sum += 1
             case string:
                 sum += 10
-            }   
+            }
         }
 
-        return sum    
+        return sum
     }
 
     let result = processParameters(1, 2, "Hello, ", 3, "World!")

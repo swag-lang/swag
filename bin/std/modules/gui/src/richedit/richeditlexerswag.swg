@@ -173,7 +173,7 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("not", State.Error)
         mapWords.add("do", State.Error)
 
-        mapWords.add("#defined", State.Intrinsic)        
+        mapWords.add("#defined", State.Intrinsic)
         mapWords.add("#offsetof", State.Intrinsic)
         mapWords.add("#alignof", State.Intrinsic)
         mapWords.add("#sizeof", State.Intrinsic)
@@ -210,7 +210,6 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("#alias8", State.Intrinsic)
         mapWords.add("#alias9", State.Intrinsic)
 
-        mapWords.add("@spread", State.Intrinsic)
         mapWords.add("@kindof", State.Intrinsic)
         mapWords.add("@countof", State.Intrinsic)
         mapWords.add("@dataof", State.Intrinsic)
@@ -360,7 +359,7 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("#assert", State.CompilerStatement)
         mapWords.add("#print", State.CompilerStatement)
         mapWords.add("#error", State.CompilerStatement)
-        mapWords.add("#warning", State.CompilerStatement)        
+        mapWords.add("#warning", State.CompilerStatement)
         mapWords.add("#import", State.CompilerStatement)
         mapWords.add("#inject", State.CompilerStatement)
         mapWords.add("#macro", State.CompilerStatement)

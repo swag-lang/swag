@@ -309,7 +309,6 @@ bool Parser::doIdentifierRef(AstNode* parent, AstNode** result, IdentifierFlags 
         case TokenId::CompilerIntrinsicIsConstExpr:
             SWAG_CHECK(doIntrinsicProp(identifierRef, &dummyResult));
             break;
-        case TokenId::IntrinsicSpread:
         case TokenId::IntrinsicKindOf:
         case TokenId::IntrinsicCountOf:
         case TokenId::IntrinsicDataOf:

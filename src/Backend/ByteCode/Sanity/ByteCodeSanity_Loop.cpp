@@ -237,7 +237,6 @@ bool ByteCodeSanity::loop()
             case ByteCodeOp::GetFromCompilerSeg16:
             case ByteCodeOp::GetFromCompilerSeg32:
             case ByteCodeOp::GetFromCompilerSeg64:
-            case ByteCodeOp::CopySP:
             case ByteCodeOp::SaveRRtoRA:
             case ByteCodeOp::CopyRRtoRA:
             case ByteCodeOp::CopySPVaargs:

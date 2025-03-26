@@ -1,7 +1,7 @@
 /**
 # Intrinsics in Swag
-Intrinsics are built-in functions provided by the Swag compiler that offer low-level operations, often directly mapping to 
-specific machine instructions or providing essential compiler utilities. All intrinsics in Swag are prefixed with `@`, 
+Intrinsics are built-in functions provided by the Swag compiler that offer low-level operations, often directly mapping to
+specific machine instructions or providing essential compiler utilities. All intrinsics in Swag are prefixed with `@`,
 which is reserved exclusively for these functions.
 
 This document provides a categorized list of all intrinsics available in Swag.
@@ -28,11 +28,10 @@ func @args() -> const [..] string;               // Returns the command-line arg
 
 /**
 # Built-in Intrinsics
-These intrinsics provide essential built-in operations related to type and memory management, typically for 
+These intrinsics provide essential built-in operations related to type and memory management, typically for
 low-level or performance-critical code.
 */
 
-@spread()                   // Expands a value into a wider context.
 @init()                     // Initializes a variable or memory area.
 @drop()                     // Destroys a variable or memory area.
 @postmove()                 // Called after a move operation to handle post-move logic.
@@ -56,7 +55,7 @@ low-level or performance-critical code.
 
 /**
 # Memory-related Intrinsics
-These intrinsics offer memory management operations, allowing for fine-grained control over memory allocation, 
+These intrinsics offer memory management operations, allowing for fine-grained control over memory allocation,
 deallocation, and manipulation.
 */
 
@@ -71,7 +70,7 @@ func @strlen(value: const *u8) -> u64;                   // Returns the length o
 
 /**
 # Atomic Operations
-Atomic operations provide thread-safe manipulation of variables in shared memory, ensuring data consistency 
+Atomic operations provide thread-safe manipulation of variables in shared memory, ensuring data consistency
 without the need for explicit locking mechanisms.
 */
 
@@ -131,7 +130,7 @@ func @atomcmpxchg(addr: *u64, compareTo, exchangeWith: u64) -> u64;
 
 /**
 # Math Intrinsics
-These intrinsics provide various mathematical operations, including trigonometric, logarithmic, and other common 
+These intrinsics provide various mathematical operations, including trigonometric, logarithmic, and other common
 functions, offering precise control over mathematical calculations in Swag programs.
 */
 

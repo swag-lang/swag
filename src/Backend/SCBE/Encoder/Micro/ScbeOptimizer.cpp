@@ -388,6 +388,11 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
         {
             mapValReg.erase(inst->valueA);
         }
+        else if (inst->op == ScbeMicroOp::LoadAddressM &&
+                 inst->regB == CpuReg::Rsp)
+        {
+            mapValReg.erase(inst->valueB);
+        }
         else if (inst->op == ScbeMicroOp::LoadRM &&
                  inst->regB == CpuReg::Rsp &&
                  mapValReg.contains(inst->valueA) &&

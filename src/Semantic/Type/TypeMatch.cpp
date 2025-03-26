@@ -66,7 +66,7 @@ namespace
 
             if (wantedTypeInfo->isVariadic())
             {
-                if (callTypeInfo->isCVariadic() || (callTypeInfo->isTypedVariadic() && !callTypeInfo->hasFlag(TYPEINFO_SPREAD)))
+                if (callTypeInfo->isCVariadic() || (callTypeInfo->isTypedVariadic()))
                 {
                     context.badSignatureInfos.badSignatureParameterIdx  = i;
                     context.badSignatureInfos.badSignatureRequestedType = wantedTypeInfo;
@@ -100,19 +100,9 @@ namespace
             // For a typed variadic, cast against the underlying type
             else if (wantedTypeInfo->isTypedVariadic())
             {
-                if (!callTypeInfo->isTypedVariadic() && !callTypeInfo->hasFlag(TYPEINFO_SPREAD))
+                if (!callTypeInfo->isTypedVariadic())
                     wantedTypeInfo = castTypeInfo<TypeInfoVariadic>(wantedTypeInfo)->rawType;
                 isAfterVariadic = true;
-            }
-
-            // If we pass a @spread, must be match to a TypedVariadic !
-            else if (callTypeInfo->hasFlag(TYPEINFO_SPREAD))
-            {
-                context.badSignatureInfos.badSignatureParameterIdx  = i;
-                context.badSignatureInfos.badSignatureRequestedType = wantedTypeInfo;
-                context.badSignatureInfos.badSignatureGivenType     = callTypeInfo;
-                SWAG_ASSERT(context.badSignatureInfos.badSignatureRequestedType);
-                context.result = MatchResult::BadSignature;
             }
 
             CastFlags castFlags = CAST_FLAG_JUST_CHECK | CAST_FLAG_ACCEPT_PENDING | CAST_FLAG_FOR_AFFECT;
@@ -215,22 +205,8 @@ namespace
                 auto       wantedTypeInfo = wantedParameter->typeInfo;
 
                 // For a typed variadic, cast against the underlying type
-                // In case of a spread, match the underlying type too
-                if (wantedTypeInfo->isTypedVariadic())
-                {
-                    if (!callTypeInfo->isTypedVariadic() && !callTypeInfo->hasFlag(TYPEINFO_SPREAD))
-                        wantedTypeInfo = castTypeInfo<TypeInfoVariadic>(wantedTypeInfo)->rawType;
-                }
-
-                // If we pass a @spread, must be match to a TypedVariadic !
-                else if (callTypeInfo->hasFlag(TYPEINFO_SPREAD))
-                {
-                    context.badSignatureInfos.badSignatureParameterIdx  = parameterIndex;
-                    context.badSignatureInfos.badSignatureRequestedType = wantedTypeInfo;
-                    context.badSignatureInfos.badSignatureGivenType     = callTypeInfo;
-                    SWAG_ASSERT(context.badSignatureInfos.badSignatureRequestedType);
-                    context.result = MatchResult::BadSignature;
-                }
+                if (wantedTypeInfo->isTypedVariadic() && !callTypeInfo->isTypedVariadic())
+                    wantedTypeInfo = castTypeInfo<TypeInfoVariadic>(wantedTypeInfo)->rawType;
 
                 CastFlags castFlags = CAST_FLAG_JUST_CHECK | CAST_FLAG_PARAMS;
                 castFlags.add(forceCastFlags);

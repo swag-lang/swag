@@ -564,8 +564,7 @@ void ByteCodeOptimizer::reduceCallEmptyFct(ByteCodeOptContext* context, ByteCode
                     backIp->op == ByteCodeOp::PushRAParam2 ||
                     backIp->op == ByteCodeOp::PushRAParam3 ||
                     backIp->op == ByteCodeOp::PushRAParam4 ||
-                    backIp->op == ByteCodeOp::CopySPVaargs ||
-                    backIp->op == ByteCodeOp::CopySP)
+                    backIp->op == ByteCodeOp::CopySPVaargs)
                 {
                     setNop(context, backIp);
                 }

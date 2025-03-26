@@ -402,7 +402,7 @@ void initErrors()
     SWAG_ERROR(Err0252, "invalid type                                      $ cannot evaluate the type because it is generic                                                                                           $ ");
     SWAG_ERROR(Err0253, "invalid type                                      $ cannot have the type [[%s]] as the second parameter of [[%s]]                                                                            $ consider using [[opAssign]] if you want to make a copy");
     SWAG_ERROR(Err0254, "invalid type                                      $ cannot use a [[const]] version of the type [[%s]]                                                                                        $ ");
-    SWAG_ERROR(Err0255, "invalid type                                      $ cannot use the intrinsic [[@spread]] with the type [[%s]]                                                                                $ this kind of type cannot be spreaded");
+    SWAG_ERROR(Err0255, nullptr);
     SWAG_ERROR(Err0256, "invalid type                                      $ cannot use the type [[%s]] as a type for an attribute parameter                                                                          $ ");
     SWAG_ERROR(Err0257, "invalid type                                      $ cannot use the type [[%s]] as an argument to [[@cvaarg]]                                                                                 $ ");
     SWAG_ERROR(Err0258, "invalid type                                      $ expected [[bool]] as the generic parameter of [[%s]], found type [[%s]] instead                                                          $ ");
@@ -466,7 +466,7 @@ void initErrors()
     SWAG_ERROR(Err0316, "misplaced block start                             $ cannot have [[':']] before [[{]]                                                                                                         $ a block should start with either [[':']] or [[{]], but not both");
     SWAG_ERROR(Err0317, "misplaced [[@cvastart]]                           $ expected the intrinsic [[@cvastart]] to be used in a function with a last parameter of type [[cvarargs]]                                 $ ");
     SWAG_ERROR(Err0318, "misplaced [[@kindof]]                             $ cannot apply [[@kindof]] to the type [[%s]]                                                                                              $ the [[@kindof]] intrinsic should be used on the type [[any]] or on an interface");
-    SWAG_ERROR(Err0319, "misplaced [[@spread]]                             $ expected the intrinsic [[@spread]] to be used as a direct function argument                                                              $ ");
+    SWAG_ERROR(Err0319, nullptr);
     SWAG_ERROR(Err0320, "misplaced [[Self]] type                           $ cannot use [[Self]] outside of an [[impl]], [[struct]], or [[interface]] block                                                           $ [[Self]] is a reserved alias for the corresponding struct");
     SWAG_ERROR(Err0321, "misplaced [[alias]]                               $ cannot use [[alias]] on a struct member                                                                                                  $ ");
     SWAG_ERROR(Err0322, "misplaced [[break]]                               $ cannot use [[break]] outside of a breakable block such as [[loop]], [[visit]], [[for]], etc.                                             $ ");
@@ -528,7 +528,7 @@ void initErrors()
     SWAG_ERROR(Err0379, "misplaced attribute                               $ cannot use this attribute here                                                                                                           $ ");
     SWAG_ERROR(Err0380, "misplaced attribute                               $ expected [[AttributeUsage.Gen]] to be associated with [[AttributeUsage.Struct]] or [[AttributeUsage.Enum]]                               $ ");
     SWAG_ERROR(Err0381, "misplaced block start                             $ cannot start a block with [['{']] after [[try]], [[assume]] or [[catch]]                                                                 $ ");
-    SWAG_ERROR(Err0382, "misplaced cast                                    $ cannot cast a [[@spread]] result                                                                                                         $ ");
+    SWAG_ERROR(Err0382, nullptr);
     SWAG_ERROR(Err0383, "misplaced closure                                 $ cannot define a closure in a global scope $ closures can only be defined within functions                                                $ ");
     SWAG_ERROR(Err0384, "misplaced compiler instruction                    $ cannot use [[#callerfunction]] outside of a function parameter                                                                           $ ");
     SWAG_ERROR(Err0385, "misplaced compiler instruction                    $ cannot use [[#callerlocation]] outside of a function parameter                                                                           $ ");

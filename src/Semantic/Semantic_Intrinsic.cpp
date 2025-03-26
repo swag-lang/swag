@@ -446,68 +446,6 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
     return true;
 }
 
-bool Semantic::resolveIntrinsicSpread(SemanticContext* context)
-{
-    const auto node     = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
-    auto       expr     = node->firstChild();
-    const auto typeInfo = TypeManager::concreteType(expr->typeInfo);
-    node->byteCodeFct   = ByteCodeGen::emitIntrinsicSpread;
-
-    if (const auto pr2 = node->getParent(2); pr2->isNot(AstNodeKind::FuncCallParam))
-    {
-        if (pr2->is(AstNodeKind::Cast) || pr2->is(AstNodeKind::AutoCast))
-        {
-            const Diagnostic err{pr2, pr2->token, toErr(Err0382)};
-            return context->report(err);
-        }
-
-        const Diagnostic err{node, node->token, toErr(Err0319)};
-        return context->report(err);
-    }
-
-    if (typeInfo->isArray())
-    {
-        const auto typeArr = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        node->typeInfo     = typeArr->pointedType;
-    }
-    else if (typeInfo->isSlice())
-    {
-        const auto typeSlice = castTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
-        node->typeInfo       = typeSlice->pointedType;
-    }
-    else if (typeInfo->isListArray())
-    {
-        const auto typeList = castTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::TypeListArray);
-        node->typeInfo      = typeList->subTypes[0]->typeInfo;
-
-        // Need to be sure that the expression list can be cast to the equivalent array
-        const auto typeArr   = makeType<TypeInfoArray>();
-        typeArr->count       = typeList->subTypes.size();
-        typeArr->pointedType = typeList->subTypes[0]->typeInfo;
-        typeArr->finalType   = typeArr->pointedType;
-        typeArr->sizeOf      = typeArr->count * typeArr->finalType->sizeOf;
-        typeArr->totalCount  = typeArr->count;
-        typeArr->setConst();
-        typeArr->computeName();
-
-        SWAG_CHECK(TypeManager::makeCompatibles(context, typeArr, typeList, nullptr, expr));
-
-        Allocator::free(typeArr, sizeof(TypeInfoArray));
-    }
-    else
-    {
-        return context->report({expr, formErr(Err0255, typeInfo->getDisplayNameC())});
-    }
-
-    const auto typeVar = makeType<TypeInfoVariadic>(TypeInfoKind::TypedVariadic);
-    typeVar->rawType   = node->typeInfo;
-    typeVar->computeName();
-    node->typeInfo = typeVar;
-    node->typeInfo->addFlag(TYPEINFO_SPREAD);
-
-    return true;
-}
-
 bool Semantic::resolveIntrinsicKindOf(SemanticContext* context)
 {
     const auto node       = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
@@ -636,10 +574,6 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
 
         case TokenId::CompilerIntrinsicRunes:
             SWAG_CHECK(resolveCompilerIntrinsicRunes(context));
-            return true;
-
-        case TokenId::IntrinsicSpread:
-            SWAG_CHECK(resolveIntrinsicSpread(context));
             return true;
 
         case TokenId::IntrinsicKindOf:

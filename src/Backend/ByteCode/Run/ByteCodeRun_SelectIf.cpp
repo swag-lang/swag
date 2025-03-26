@@ -9,7 +9,6 @@
 
 bool ByteCodeRun::getVariadicSI(const ByteCodeRunContext* context, const ByteCodeInstruction* ip, Register* regPtr, Register* regCount)
 {
-    const auto paramIdx   = ip->c.u32;
     const auto callParams = context->callerContext->whereParameters;
 
     // Nothing
@@ -31,33 +30,6 @@ bool ByteCodeRun::getVariadicSI(const ByteCodeRunContext* context, const ByteCod
         regCount->u64 = numParamsCall - numParamsFunc;
     if (count != 1)
         return true;
-
-    // Try to deal with @spread
-    auto child = callParams->children[paramIdx];
-    if (!child->typeInfo->hasFlag(TYPEINFO_SPREAD))
-        return true;
-
-    child = child->firstChild();
-    SWAG_ASSERT(child->is(AstNodeKind::IdentifierRef));
-    child = child->firstChild();
-    SWAG_ASSERT(child->is(AstNodeKind::IntrinsicProp));
-    child = child->firstChild();
-
-    if (child->typeInfo->isListArray())
-    {
-        const auto typeList = castTypeInfo<TypeInfoList>(child->typeInfo, TypeInfoKind::TypeListArray);
-        if (regCount)
-            regCount->u64 = typeList->subTypes.size();
-        return true;
-    }
-
-    if (child->typeInfo->isArray())
-    {
-        const auto typeArray = castTypeInfo<TypeInfoArray>(child->typeInfo, TypeInfoKind::Array);
-        if (regCount)
-            regCount->u64 = typeArray->totalCount;
-        return true;
-    }
 
     return false;
 }

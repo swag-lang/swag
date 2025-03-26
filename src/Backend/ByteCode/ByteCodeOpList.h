@@ -276,7 +276,6 @@ BYTECODE_OP(CopyRTtoRA, OPF_WRITE_A, "_ra_ = last_call_result")
 BYTECODE_OP(CopyRT2toRARB, OPF_WRITE_A | OPF_WRITE_B, "_ra_, _rb_ = last_call_result")
 BYTECODE_OP(CopyRAtoRT, OPF_READ_A, "last_call_result = _ra_")
 
-BYTECODE_OP(CopySP, OPF_WRITE_A | OPF_READ_VAL32_B | OPF_READ_C, "_ra_ = &_rc_")
 BYTECODE_OP(CopySPVaargs, OPF_WRITE_A | OPF_READ_VAL32_B | OPF_READ_VAL64_D, "_ra_ = &sp + _rbu32_")
 
 BYTECODE_OP(GetParam64SI, OPF_WRITE_A | OPF_WRITE_B | OPF_READ_VAL32_C, "")

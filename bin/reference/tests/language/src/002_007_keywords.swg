@@ -178,7 +178,6 @@ Compiler instructions are prefixed with `#` and are reserved for specific operat
 Intrinsic functions are prefixed with `@` and provide low-level operations that are often directly supported by the compiler or underlying hardware. These keywords offer specialized functionality that can be used during both compile time and runtime, depending on the context.
 
 ```swag
-@spread
 @kindof
 @countof
 @dataof

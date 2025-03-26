@@ -546,6 +546,27 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
         }
     }
 
+    // :VariadicAllocStackForAny
+    if (typeInfoFunc->hasFlag(TYPEINFO_VARIADIC))
+    {
+        const auto numFuncParams = typeInfoFunc->parameters.size();
+        for (int i = static_cast<int>(maxParams - 1); i >= static_cast<int>(numFuncParams - 1); i--)
+        {
+            const auto child     = identifier->callParameters->children[i];
+            const auto typeParam = TypeManager::concreteType(child->typeInfo, CONCRETE_FUNC);
+            if (!typeParam->isStruct() &&
+                !typeParam->isArray() &&
+                !typeParam->isListArray() &&
+                !typeParam->isListTuple())
+            {
+                child->allocateExtension(ExtensionKind::Misc);
+                child->extMisc()->stackOffset = child->ownerScope->startStackSize;
+                child->ownerScope->startStackSize += typeParam->numRegisters() * sizeof(Register);
+                setOwnerMaxStackSize(child, child->ownerScope->startStackSize);
+            }
+        }
+    }
+
     return true;
 }
 

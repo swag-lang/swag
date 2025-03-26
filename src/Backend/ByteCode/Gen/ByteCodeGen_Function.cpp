@@ -1664,15 +1664,18 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
             }
             else
             {
+                // :VariadicAllocStackForAny
+                const auto stack = child->extMisc()->stackOffset;
+                SWAG_ASSERT(stack != UINT32_MAX);
+
                 auto r1 = reserveRegisterRC(context);
                 toFree.push_back(r1);
+                
+                EMIT_INST2(context, ByteCodeOp::SetAtStackPointer64, stack, child->resultRegisterRc[0]);
+                if (child->resultRegisterRc.size() == 2)
+                    EMIT_INST2(context, ByteCodeOp::SetAtStackPointer64, stack + sizeof(uint64_t), child->resultRegisterRc[1]);
+                EMIT_INST2(context, ByteCodeOp::MakeStackPointer, r1, stack);
 
-                // The value will be stored on the stack (1 or 2 registers max). So we push now the address
-                // of that value on that stack. This is the data part of the 'any'
-                // Store address of value on the stack
-                auto inst   = EMIT_INST1(context, ByteCodeOp::CopySP, r1);
-                inst->b.u64 = offset;
-                inst->c.u64 = child->resultRegisterRc[0];
                 EMIT_INST1(context, ByteCodeOp::PushRAParam, r1);
                 maxCallParams++;
             }
@@ -1806,8 +1809,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
                 truncRegisterRC(context, param->resultRegisterRc, 1);
 
             if (!param->typeInfo->isVariadic() &&
-                !param->typeInfo->isTypedVariadic() &&
-                !param->typeInfo->hasFlag(TYPEINFO_SPREAD))
+                !param->typeInfo->isTypedVariadic())
             {
                 bool done = false;
 
@@ -1919,15 +1921,6 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
         freeRegisterRC(context, lastParam);
     }
 
-    // If last parameter is a spread, then no need to deal with variadic slice : already done
-    else if (lastParam && lastParam->typeInfo && lastParam->typeInfo->hasFlag(TYPEINFO_SPREAD))
-    {
-        EMIT_INST2(context, ByteCodeOp::PushRAParam2, lastParam->resultRegisterRc[1], lastParam->resultRegisterRc[0]);
-        maxCallParams += 2;
-        preCallStack += 2 * sizeof(Register);
-        freeRegisterRC(context, lastParam);
-    }
-
     // Variadic parameter is on top of stack
     else if (typeInfoFunc->hasFlag(TYPEINFO_VARIADIC))
     {
@@ -1952,7 +1945,6 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
         inst->d.pointer = reinterpret_cast<uint8_t*>(typeInfoFunc);
 
         // In case of a real closure not affected to a lambda, we must count the first parameter
-        // So we add sizeof(Register) to the CopySP pointer
         if (node->typeInfo && node->typeInfo->isClosure())
         {
             SWAG_ASSERT(node->hasExtension());
@@ -1992,7 +1984,6 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
         inst->d.pointer = reinterpret_cast<uint8_t*>(typeInfoFunc);
 
         // In case of a real closure not affected to a lambda, we must count the first parameter
-        // So we add sizeof(Register) to the CopySP pointer
         if (node->typeInfo && node->typeInfo->isClosure())
         {
             SWAG_ASSERT(node->hasExtension());

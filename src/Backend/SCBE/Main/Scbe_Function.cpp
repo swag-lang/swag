@@ -1858,11 +1858,6 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), cc.computeRegI0, OpBits::B64);
                 break;
 
-            case ByteCodeOp::CopySP:
-                pp.emitLoadAddressMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32));
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
-                break;
-
             case ByteCodeOp::CopySPVaargs:
                 emitCopyVaargs(pp);
                 break;

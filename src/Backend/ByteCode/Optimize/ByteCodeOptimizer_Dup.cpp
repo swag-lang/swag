@@ -135,12 +135,10 @@ namespace
                 // register instead (that way, the Copy can become dead store and removed later)
                 // Do it only for CopyRBtoRA64, as other copy have an implicit cast
                 // *NOT* for PushRAParam, because the register numbers are important in case of variadic parameters.
-                // *NOT* for CopySP, because the register numbers are important in case of variadic parameters.
                 if ((ip->op != ByteCodeOp::PushRAParam || !ip->hasFlag(BCI_VARIADIC)) &&
                     (ip->op != ByteCodeOp::PushRAParam2 || !ip->hasFlag(BCI_VARIADIC)) &&
                     (ip->op != ByteCodeOp::PushRAParam3 || !ip->hasFlag(BCI_VARIADIC)) &&
-                    (ip->op != ByteCodeOp::PushRAParam4 || !ip->hasFlag(BCI_VARIADIC)) &&
-                    ip->op != ByteCodeOp::CopySP)
+                    (ip->op != ByteCodeOp::PushRAParam4 || !ip->hasFlag(BCI_VARIADIC)))
                 {
                     if (ip->hasReadRegInA() && !ip->hasWriteRegInA())
                     {

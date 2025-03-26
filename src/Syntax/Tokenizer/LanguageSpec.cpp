@@ -449,7 +449,6 @@ void LanguageSpec::setupKeywords()
     keywords.add("@panic", TokenId::IntrinsicPanic);
     keywords.add("@init", TokenId::IntrinsicInit);
     keywords.add("@drop", TokenId::IntrinsicDrop);
-    keywords.add("@spread", TokenId::IntrinsicSpread);
     keywords.add("@postmove", TokenId::IntrinsicPostMove);
     keywords.add("@postcopy", TokenId::IntrinsicPostCopy);
     keywords.add("@kindof", TokenId::IntrinsicKindOf);

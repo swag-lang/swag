@@ -78,33 +78,6 @@ bool ByteCodeGen::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
 }
 
 // ReSharper disable once CppParameterMayBeConstPtrOrRef
-bool ByteCodeGen::emitIntrinsicSpread(ByteCodeGenContext* context)
-{
-    const auto node     = context->node;
-    const auto expr     = node->lastChild();
-    const auto typeInfo = TypeManager::concreteType(expr->typeInfo);
-
-    if (typeInfo->isArray())
-    {
-        transformResultToLinear2(context, expr->resultRegisterRc);
-        node->resultRegisterRc = expr->resultRegisterRc;
-        const auto typeArr     = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        const auto inst        = EMIT_INST1(context, ByteCodeOp::SetImmediate64, expr->resultRegisterRc[1]);
-        inst->b.u64            = typeArr->count;
-    }
-    else if (typeInfo->isListArray() || typeInfo->isSlice())
-    {
-        node->resultRegisterRc = expr->resultRegisterRc;
-    }
-    else
-    {
-        return Report::internalError(context->node, "emitIntrinsicSpread, type not supported");
-    }
-
-    return true;
-}
-
-// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitIntrinsicLocationSI(ByteCodeGenContext* context)
 {
     const auto node  = castAst<AstNode>(context->node, AstNodeKind::CompilerIntrinsicLocation);

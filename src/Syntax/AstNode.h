@@ -445,7 +445,7 @@ struct AstNode
 
         RegisterList additionalRegisterRC;
         uint32_t     castOffset  = 0;
-        uint32_t     stackOffset = 0;
+        uint32_t     stackOffset = UINT32_MAX;
     };
 
     struct NodeExtension
