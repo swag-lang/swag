@@ -2411,13 +2411,6 @@ ScbeMicroOpDetails ScbeX64::getInstructionDetails(ScbeMicroInstruction* inst) co
     if (inst->hasWriteRegC())
         result.add(1ULL << static_cast<uint32_t>(inst->regC));
 
-    result.add(1ULL << static_cast<uint32_t>(cc->computeRegI0));
-    result.add(1ULL << static_cast<uint32_t>(cc->computeRegI1));
-    result.add(1ULL << static_cast<uint32_t>(cc->computeRegI2));
-    result.add(1ULL << static_cast<uint32_t>(cc->computeRegF0));
-    result.add(1ULL << static_cast<uint32_t>(cc->computeRegF1));
-    result.add(1ULL << static_cast<uint32_t>(cc->computeRegF2));
-
     if (inst->op == ScbeMicroOp::OpBinaryRI ||
         inst->op == ScbeMicroOp::OpBinaryRR ||
         inst->op == ScbeMicroOp::OpBinaryMI ||
@@ -2426,19 +2419,12 @@ ScbeMicroOpDetails ScbeX64::getInstructionDetails(ScbeMicroInstruction* inst) co
     {
         if (inst->cpuOp == CpuOp::MUL || inst->cpuOp == CpuOp::IMUL)
         {
-            result.add(1ULL << static_cast<uint32_t>(CpuReg::Rax));
             result.add(1ULL << static_cast<uint32_t>(CpuReg::Rdx));
         }
 
         if (inst->cpuOp == CpuOp::DIV || inst->cpuOp == CpuOp::MOD || inst->cpuOp == CpuOp::IDIV || inst->cpuOp == CpuOp::IMOD)
         {
-            result.add(1ULL << static_cast<uint32_t>(CpuReg::Rax));
             result.add(1ULL << static_cast<uint32_t>(CpuReg::Rdx));
-        }
-
-        if (inst->cpuOp == CpuOp::ROL || inst->cpuOp == CpuOp::ROR || inst->cpuOp == CpuOp::SAL || inst->cpuOp == CpuOp::SAR || inst->cpuOp == CpuOp::SHL || inst->cpuOp == CpuOp::SHR)
-        {
-            result.add(1ULL << static_cast<uint32_t>(CpuReg::Rcx));
         }
     }
 
