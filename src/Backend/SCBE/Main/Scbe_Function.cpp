@@ -897,24 +897,24 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOp3Way16:
             case ByteCodeOp::CompareOp3Way32:
             case ByteCodeOp::CompareOp3Way64:
-                pp.emitClearReg(cc.computeRegI2, OpBits::B32);
-                emitCompareOp(pp, cc.computeRegI2, CpuCondFlag::G);
+                pp.emitClearReg(cc.computeRegI1, OpBits::B32);
+                emitCompareOp(pp, cc.computeRegI1, CpuCondFlag::G);
                 pp.emitLoadRegImm(cc.computeRegI0, 0xFFFFFFFF, OpBits::B32);
-                pp.emitOpBinaryRegReg(cc.computeRegI0, cc.computeRegI2, CpuOp::CMOVGE, OpBits::B32);
+                pp.emitOpBinaryRegReg(cc.computeRegI0, cc.computeRegI1, CpuOp::CMOVGE, OpBits::B32);
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B32);
                 break;
 
             case ByteCodeOp::CompareOp3WayF32:
             case ByteCodeOp::CompareOp3WayF64:
                 opBits = ScbeCpu::getOpBits(ip->op);
-                pp.emitClearReg(cc.computeRegI2, OpBits::B32);
+                pp.emitClearReg(cc.computeRegI1, OpBits::B32);
                 emitIMMA(pp, cc.computeRegF0, opBits);
                 emitIMMB(pp, cc.computeRegF1, opBits);
                 pp.emitOpBinaryRegReg(cc.computeRegF0, cc.computeRegF1, CpuOp::UCOMIF, opBits);
-                pp.emitSetCond(cc.computeRegI2, CpuCondFlag::A);
+                pp.emitSetCond(cc.computeRegI1, CpuCondFlag::A);
                 pp.emitOpBinaryRegReg(cc.computeRegF1, cc.computeRegF0, CpuOp::UCOMIF, opBits);
                 pp.emitLoadRegImm(cc.computeRegI0, 0xFFFFFFFF, OpBits::B32);
-                pp.emitOpBinaryRegReg(cc.computeRegI0, cc.computeRegI2, CpuOp::CMOVBE, OpBits::B32);
+                pp.emitOpBinaryRegReg(cc.computeRegI0, cc.computeRegI1, CpuOp::CMOVBE, OpBits::B32);
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B32);
                 break;
 
