@@ -208,6 +208,26 @@ void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
                     break;
                 }
 
+                if (next->op == ScbeMicroOp::LoadSignedExtendRM &&
+                    ScbeCpu::isInt(inst->regB) == ScbeCpu::isInt(next->regA) &&
+                    next->regB == inst->regA &&
+                    next->valueA == inst->valueA)
+                {
+                    setOp(next, ScbeMicroOp::LoadSignedExtendRR);
+                    next->regB = inst->regB;
+                    break;
+                }
+
+                if (next->op == ScbeMicroOp::LoadZeroExtendRM &&
+                    ScbeCpu::isInt(inst->regB) == ScbeCpu::isInt(next->regA) &&
+                    next->regB == inst->regA &&
+                    next->valueA == inst->valueA)
+                {
+                    setOp(next, ScbeMicroOp::LoadZeroExtendRR);
+                    next->regB = inst->regB;
+                    break;
+                }
+
                 if (inst->regA == CpuReg::Rsp &&
                     next->op == ScbeMicroOp::Leave)
                 {
