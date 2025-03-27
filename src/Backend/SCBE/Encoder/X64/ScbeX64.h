@@ -5,8 +5,8 @@ struct ScbeMicroInstruction;
 
 struct ScbeX64 final : ScbeCpu
 {
-    bool                 acceptRegA(ScbeMicroInstruction* inst, CpuReg reg) override;
-    bool                 acceptRegB(ScbeMicroInstruction* inst, CpuReg reg) override;
+    bool                 acceptsRegA(ScbeMicroInstruction* inst, CpuReg reg) override;
+    bool                 acceptsRegB(ScbeMicroInstruction* inst, CpuReg reg) override;
     VectorNative<CpuReg> getWriteRegisters(ScbeMicroInstruction* inst) override;
 
     CpuEncodeResult encodeSymbolRelocationRef(const Utf8& name, CpuEmitFlags emitFlags) override;

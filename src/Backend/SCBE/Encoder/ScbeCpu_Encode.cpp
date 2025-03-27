@@ -264,6 +264,8 @@ void ScbeCpu::emitCmpMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, O
         SWAG_ASSERT(memReg != cc->computeRegI2);
         emitLoadRegMem(cc->computeRegI2, memReg, memOffset, opBits);
         emitCmpRegImm(cc->computeRegI2, value, opBits);
+        /*emitLoadRegImm(cc->computeRegI2, value, opBits);
+        emitCmpMemReg(memReg, memOffset, cc->computeRegI2, opBits);*/
         return;
     }
 

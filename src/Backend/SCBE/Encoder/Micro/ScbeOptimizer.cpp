@@ -158,7 +158,7 @@ void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
                     ScbeCpu::isInt(inst->regA) &&
                     (!next->hasOpFlag(MOF_OPBITS_A) || ScbeCpu::getNumBits(inst->opBitsA) >= ScbeCpu::getNumBits(next->opBitsA)) &&
                     !nextRegs.contains(inst->regB) &&
-                    out.cpu->acceptRegA(next, inst->regB))
+                    out.cpu->acceptsRegA(next, inst->regB))
                 {
                     next->regA = inst->regB;
                     setDirtyPass();
@@ -170,7 +170,7 @@ void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
                     ScbeCpu::isInt(inst->regA) &&
                     (!next->hasOpFlag(MOF_OPBITS_A) || ScbeCpu::getNumBits(inst->opBitsA) >= ScbeCpu::getNumBits(next->opBitsA)) &&
                     !nextRegs.contains(inst->regB) &&
-                    out.cpu->acceptRegB(next, inst->regB))
+                    out.cpu->acceptsRegB(next, inst->regB))
                 {
                     next->regB = inst->regB;
                     setDirtyPass();
@@ -437,7 +437,7 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
                     mapRegVal[inst->regA]   = inst->valueA;
                     break;
                 }
-            
+
                 break;
 
             case ScbeMicroOp::CmpMR:
@@ -452,6 +452,21 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
                     std::swap(inst->regA, inst->regB);
                     break;
                 }
+
+                break;
+
+            case ScbeMicroOp::CmpMI:
+                /*if (inst->regA == CpuReg::Rsp &&
+                    mapValReg.contains(inst->valueA) &&
+                    mapRegVal[mapValReg[inst->valueA].first] == inst->valueA &&
+                    ScbeCpu::isInt(mapValReg[inst->valueA].first) &&
+                    ScbeCpu::getNumBits(inst->opBitsA) <= ScbeCpu::getNumBits(mapValReg[inst->valueA].second))
+                {
+                    setOp(inst, ScbeMicroOp::CmpRI);
+                    inst->regA   = mapValReg[inst->valueA].first;
+                    inst->valueA = inst->valueB;
+                    break;
+                }*/
 
                 break;
         }

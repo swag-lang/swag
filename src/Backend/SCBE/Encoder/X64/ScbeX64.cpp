@@ -877,6 +877,7 @@ CpuEncodeResult ScbeX64::encodeCmpMemReg(CpuReg memReg, uint64_t memOffset, CpuR
     else
     {
         emitREX(concat, opBits, reg, memReg);
+        //emitSpecCPUOp(concat, 0x39, opBits);
         emitSpecCPUOp(concat, 0x3B, opBits);
         emitModRM(concat, memOffset, reg, memReg);
     }
@@ -2350,7 +2351,7 @@ CpuEncodeResult ScbeX64::encodeNop(CpuEmitFlags emitFlags)
 
 /////////////////////////////////////////////////////////////////////
 
-bool ScbeX64::acceptRegA(ScbeMicroInstruction* inst, CpuReg reg)
+bool ScbeX64::acceptsRegA(ScbeMicroInstruction* inst, CpuReg reg)
 {
     if (inst->op == ScbeMicroOp::OpBinaryRR)
     {
@@ -2373,7 +2374,7 @@ bool ScbeX64::acceptRegA(ScbeMicroInstruction* inst, CpuReg reg)
     return true;
 }
 
-bool ScbeX64::acceptRegB(ScbeMicroInstruction* inst, CpuReg reg)
+bool ScbeX64::acceptsRegB(ScbeMicroInstruction* inst, CpuReg reg)
 {
     if (inst->op == ScbeMicroOp::OpBinaryRR ||
         inst->op == ScbeMicroOp::OpBinaryMR)
