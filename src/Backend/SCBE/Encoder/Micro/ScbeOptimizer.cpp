@@ -399,49 +399,61 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
         {
             mapValReg.erase(inst->valueA);
         }
-        else if (inst->op == ScbeMicroOp::LoadAddressM &&
-                 inst->regB == CpuReg::Rsp)
+
+        switch (inst->op)
         {
-            mapValReg.erase(inst->valueB);
-        }
-        else if (inst->op == ScbeMicroOp::LoadRM &&
-                 inst->regB == CpuReg::Rsp &&
-                 mapValReg.contains(inst->valueA) &&
-                 mapRegVal.contains(mapValReg[inst->valueA].first) &&
-                 ScbeCpu::isInt(inst->regA) == ScbeCpu::isInt(mapValReg[inst->valueA].first) &&
-                 ScbeCpu::getNumBits(inst->opBitsA) <= ScbeCpu::getNumBits(mapValReg[inst->valueA].second) &&
-                 mapRegVal[mapValReg[inst->valueA].first] == inst->valueA)
-        {
-            if (mapValReg[inst->valueA].first == inst->regA)
-            {
-                ignore(inst);
-            }
-            else
-            {
-                setOp(inst, ScbeMicroOp::LoadRR);
-                inst->regB = mapValReg[inst->valueA].first;
-            }
-        }
-        else if (inst->op == ScbeMicroOp::LoadRM &&
-                 inst->regB == CpuReg::Rsp &&
-                 out.cpuFct->isStackOffsetTransient(static_cast<uint32_t>(inst->valueA)))
-        {
-            if (mapRegVal.contains(inst->regA))
-                mapValReg.erase(mapRegVal[inst->regA]);
-            legitReg                = inst->regA;
-            mapValReg[inst->valueA] = {inst->regA, inst->opBitsA};
-            mapRegVal[inst->regA]   = inst->valueA;
-        }
-        else if (inst->op == ScbeMicroOp::CmpMR &&
-                 inst->regA == CpuReg::Rsp &&
-                 mapValReg.contains(inst->valueA) &&
-                 mapRegVal[mapValReg[inst->valueA].first] == inst->valueA &&
-                 ScbeCpu::isInt(inst->regB) == ScbeCpu::isInt(mapValReg[inst->valueA].first) &&
-                 ScbeCpu::getNumBits(inst->opBitsA) <= ScbeCpu::getNumBits(mapValReg[inst->valueA].second))
-        {
-            setOp(inst, ScbeMicroOp::CmpRR);
-            inst->regA = mapValReg[inst->valueA].first;
-            std::swap(inst->regA, inst->regB);
+            case ScbeMicroOp::LoadAddressM:
+                if (inst->regB == CpuReg::Rsp)
+                    mapValReg.erase(inst->valueB);
+                break;
+
+            case ScbeMicroOp::LoadRM:
+                if (inst->regB == CpuReg::Rsp &&
+                    mapValReg.contains(inst->valueA) &&
+                    mapRegVal.contains(mapValReg[inst->valueA].first) &&
+                    ScbeCpu::isInt(inst->regA) == ScbeCpu::isInt(mapValReg[inst->valueA].first) &&
+                    ScbeCpu::getNumBits(inst->opBitsA) <= ScbeCpu::getNumBits(mapValReg[inst->valueA].second) &&
+                    mapRegVal[mapValReg[inst->valueA].first] == inst->valueA)
+                {
+                    if (mapValReg[inst->valueA].first == inst->regA)
+                    {
+                        ignore(inst);
+                    }
+                    else
+                    {
+                        setOp(inst, ScbeMicroOp::LoadRR);
+                        inst->regB = mapValReg[inst->valueA].first;
+                    }
+                    break;
+                }
+
+                if (inst->regB == CpuReg::Rsp &&
+                    out.cpuFct->isStackOffsetTransient(static_cast<uint32_t>(inst->valueA)))
+                {
+                    if (mapRegVal.contains(inst->regA))
+                        mapValReg.erase(mapRegVal[inst->regA]);
+                    legitReg                = inst->regA;
+                    mapValReg[inst->valueA] = {inst->regA, inst->opBitsA};
+                    mapRegVal[inst->regA]   = inst->valueA;
+                    break;
+                }
+            
+                break;
+
+            case ScbeMicroOp::CmpMR:
+                if (inst->regA == CpuReg::Rsp &&
+                    mapValReg.contains(inst->valueA) &&
+                    mapRegVal[mapValReg[inst->valueA].first] == inst->valueA &&
+                    ScbeCpu::isInt(inst->regB) == ScbeCpu::isInt(mapValReg[inst->valueA].first) &&
+                    ScbeCpu::getNumBits(inst->opBitsA) <= ScbeCpu::getNumBits(mapValReg[inst->valueA].second))
+                {
+                    setOp(inst, ScbeMicroOp::CmpRR);
+                    inst->regA = mapValReg[inst->valueA].first;
+                    std::swap(inst->regA, inst->regB);
+                    break;
+                }
+
+                break;
         }
 
         auto details = out.cpu->getWriteRegisters(inst);
