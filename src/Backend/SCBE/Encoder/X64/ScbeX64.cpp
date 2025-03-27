@@ -869,17 +869,16 @@ CpuEncodeResult ScbeX64::encodeCmpMemReg(CpuReg memReg, uint64_t memOffset, CpuR
 {
     if (isFloat(reg))
     {
-        emitPrefixF64(concat, opBits);
-        emitREX(concat, OpBits::Zero, MODRM_REG_0, memReg);
-        emitCPUOp(concat, 0x0F);
-        emitCPUOp(concat, 0x2F);
-        emitModRM(concat, memOffset, reg, memReg);
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::Left2Reg;
+        Report::internalError(module, "encodeCmpMemReg, cannot encode");
     }
     else
     {
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::Zero;        
         emitREX(concat, opBits, reg, memReg);
-        //emitSpecCPUOp(concat, 0x39, opBits);
-        emitSpecCPUOp(concat, 0x3B, opBits);
+        emitSpecCPUOp(concat, 0x39, opBits);
         emitModRM(concat, memOffset, reg, memReg);
     }
 

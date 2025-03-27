@@ -63,7 +63,6 @@ void ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                 {
                     setOp(inst, ScbeMicroOp::CmpRR);
                     inst->regA = reg;
-                    std::swap(inst->regA, inst->regB);
                 }
                 break;
             case ScbeMicroOp::CmpMI:
@@ -449,14 +448,13 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
                 {
                     setOp(inst, ScbeMicroOp::CmpRR);
                     inst->regA = mapValReg[inst->valueA].first;
-                    std::swap(inst->regA, inst->regB);
                     break;
                 }
 
                 break;
 
             case ScbeMicroOp::CmpMI:
-                /*if (inst->regA == CpuReg::Rsp &&
+                if (inst->regA == CpuReg::Rsp &&
                     mapValReg.contains(inst->valueA) &&
                     mapRegVal[mapValReg[inst->valueA].first] == inst->valueA &&
                     ScbeCpu::isInt(mapValReg[inst->valueA].first) &&
@@ -466,7 +464,7 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
                     inst->regA   = mapValReg[inst->valueA].first;
                     inst->valueA = inst->valueB;
                     break;
-                }*/
+                }
 
                 break;
         }

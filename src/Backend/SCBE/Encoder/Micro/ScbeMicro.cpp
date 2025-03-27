@@ -618,7 +618,7 @@ void ScbeMicro::encode(ScbeCpu& encoder) const
                 encoder.encodeCmpRegReg(inst->regA, inst->regB, inst->opBitsA, inst->emitFlags);
                 break;
             case ScbeMicroOp::CmpRI:
-                encoder.encodeCmpRegImm(inst->regA, inst->valueA, inst->opBitsA, inst->emitFlags);
+                encoder.emitCmpRegImm(inst->regA, inst->valueA, inst->opBitsA);
                 break;
             case ScbeMicroOp::CmpMR:
                 encoder.encodeCmpMemReg(inst->regA, inst->valueA, inst->regB, inst->opBitsA, inst->emitFlags);
