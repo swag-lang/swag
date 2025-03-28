@@ -32,6 +32,7 @@ struct ScbeOptimizer
     void optimizePassStoreToHdwRegBeforeLeave(const ScbeMicro& out);
     void optimizePassDeadStore(const ScbeMicro& out);
     void optimizePassStore(const ScbeMicro& out);
+    void optimizePassParams(const ScbeMicro& out);
 
     void computeContext(const ScbeMicro& out);
     void optimize(const ScbeMicro& out);

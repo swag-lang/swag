@@ -236,15 +236,6 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
         optimizePassDeadStore(out);
         optimizePassStoreToRegBeforeLeave(out);
         optimizePassStoreToHdwRegBeforeLeave(out);
-
-        /*if (!contextFlags.has(CF_HAS_CALL) &&
-            out.cpuFct->typeFunc->numParamsRegisters() &&
-            !out.cc->paramByRegisterInteger.empty() &&
-            usedRegs[out.cc->paramByRegisterInteger[0]] == 1 &&
-            (!out.cc->useRegisterFloat || !out.cpuFct->typeFunc->registerIdxToType(0)->isNativeFloat()) &&
-            !takeAddressRsp.contains(out.cpuFct->getStackOffsetParam(0)))
-        {
-            memToReg(out, CpuReg::Rsp, out.cpuFct->getStackOffsetParam(0), out.cc->paramByRegisterInteger[0]);
-        }*/
+        optimizePassParams(out);
     }
 }
