@@ -876,7 +876,7 @@ CpuEncodeResult ScbeX64::encodeCmpMemReg(CpuReg memReg, uint64_t memOffset, CpuR
     else
     {
         if (emitFlags.has(EMIT_CanEncode))
-            return CpuEncodeResult::Zero;        
+            return CpuEncodeResult::Zero;
         emitREX(concat, opBits, reg, memReg);
         emitSpecCPUOp(concat, 0x39, opBits);
         emitModRM(concat, memOffset, reg, memReg);
@@ -1088,7 +1088,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegMem(CpuReg regDst, CpuReg memReg, uint
         if (emitFlags.has(EMIT_CanEncode))
             return CpuEncodeResult::Zero;
         if (opBits == OpBits::B8)
-            emitLoadSignedExtendRegReg(regDst, regDst, OpBits::B16, opBits);
+            emitLoadSignedExtendRegReg(regDst, regDst, OpBits::B32, opBits);
         emitREX(concat, opBits, regDst, memReg);
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, 0xAF);
@@ -1193,8 +1193,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
 
     ///////////////////////////////////////////
 
-    else if (op == CpuOp::MUL ||
-             op == CpuOp::IMUL)
+    else if (op == CpuOp::MUL)
     {
         const auto rax = x64Reg2CpuReg(X64Reg::Rax);
         if (emitFlags.has(EMIT_CanEncode))
@@ -1214,10 +1213,26 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
 
         emitREX(concat, opBits, rax, regSrc);
         emitSpecCPUOp(concat, 0xF7, opBits);
-        if (op == CpuOp::MUL)
-            emitModRM(concat, MODRM_REG_4, regSrc);
-        else if (op == CpuOp::IMUL)
-            emitModRM(concat, MODRM_REG_5, regSrc);
+        emitModRM(concat, MODRM_REG_4, regSrc);
+    }
+
+    ///////////////////////////////////////////
+
+    else if (op == CpuOp::IMUL)
+    {
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::Zero;
+        
+        if (opBits == OpBits::B8)
+        {
+            emitLoadSignedExtendRegReg(regDst, regDst, OpBits::B32, opBits);
+            emitLoadSignedExtendRegReg(regSrc, regSrc, OpBits::B32, opBits);
+        }
+        
+        emitREX(concat, opBits, regDst, regSrc);
+        emitCPUOp(concat, 0x0F);
+        emitCPUOp(concat, 0xAF);
+        emitModRM(concat, regDst, regSrc);
     }
 
     ///////////////////////////////////////////
@@ -1630,7 +1645,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
         {
             if (emitFlags.has(EMIT_CanEncode))
                 return CpuEncodeResult::Zero;
-            if (opBits == OpBits::B8 || opBits == OpBits::B16)
+            if (opBits == OpBits::B8)
                 emitLoadSignedExtendRegReg(reg, reg, OpBits::B32, opBits);
             emitREX(concat, opBits, REX_REG_NONE, reg);
             emitCPUOp(concat, 0x6B);
@@ -2372,7 +2387,6 @@ bool ScbeX64::acceptsRegA(ScbeMicroInstruction* inst, CpuReg reg)
         switch (inst->cpuOp)
         {
             case CpuOp::MUL:
-            case CpuOp::IMUL:
                 return cpuRegToX64Reg(reg) == X64Reg::Rax;
         }
     }
@@ -2396,7 +2410,6 @@ bool ScbeX64::acceptsRegB(ScbeMicroInstruction* inst, CpuReg reg)
         switch (inst->cpuOp)
         {
             case CpuOp::MUL:
-            case CpuOp::IMUL:
                 return cpuRegToX64Reg(reg) != X64Reg::Rdx;
 
             case CpuOp::ROL:
@@ -2436,7 +2449,6 @@ VectorNative<CpuReg> ScbeX64::getWriteRegisters(ScbeMicroInstruction* inst)
         inst->op == ScbeMicroOp::OpBinaryMR)
     {
         if (inst->cpuOp == CpuOp::MUL ||
-            inst->cpuOp == CpuOp::IMUL ||
             inst->cpuOp == CpuOp::DIV ||
             inst->cpuOp == CpuOp::MOD ||
             inst->cpuOp == CpuOp::IDIV ||
