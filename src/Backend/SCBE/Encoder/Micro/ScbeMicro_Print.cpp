@@ -299,6 +299,7 @@ void ScbeMicro::print() const
     if (cpuFct->bc)
         cpuFct->bc->printName();
 
+    uint32_t idx = 0;
     for (uint32_t i = 0; i < num; i++, inst++)
     {
         ByteCode::PrintInstructionLine         line;
@@ -505,7 +506,7 @@ void ScbeMicro::print() const
                 break;
         }
 
-        line.rank = form("%08d", i);
+        line.rank = form("%08d", idx++);
 
         while (line.name.length() != 12)
             line.name += ' ';

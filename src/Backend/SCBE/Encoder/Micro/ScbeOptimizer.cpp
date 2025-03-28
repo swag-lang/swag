@@ -124,8 +124,38 @@ void ScbeOptimizer::ignore(ScbeMicroInstruction* inst)
 
 void ScbeOptimizer::setOp(ScbeMicroInstruction* inst, ScbeMicroOp op)
 {
-    inst->op = op;
-    setDirtyPass();
+    if (inst->op != op)
+    {
+        inst->op = op;
+        setDirtyPass();
+    }
+}
+
+void ScbeOptimizer::setRegA(ScbeMicroInstruction* inst, CpuReg reg)
+{
+    if (inst->regA != reg)
+    {
+        inst->regA = reg;
+        setDirtyPass();
+    }
+}
+
+void ScbeOptimizer::setRegB(ScbeMicroInstruction* inst, CpuReg reg)
+{
+    if (inst->regB != reg)
+    {
+        inst->regB = reg;
+        setDirtyPass();
+    }
+}
+
+void ScbeOptimizer::setRegC(ScbeMicroInstruction* inst, CpuReg reg)
+{
+    if (inst->regC != reg)
+    {
+        inst->regC = reg;
+        setDirtyPass();
+    }
 }
 
 ScbeMicroInstruction* ScbeOptimizer::zap(ScbeMicroInstruction* inst)
@@ -135,108 +165,128 @@ ScbeMicroInstruction* ScbeOptimizer::zap(ScbeMicroInstruction* inst)
     return inst;
 }
 
+void ScbeOptimizer::reduceNoOp(const ScbeMicro& out, ScbeMicroInstruction* inst)
+{
+    const auto next = zap(inst + 1);
+    switch (inst->op)
+    {
+        case ScbeMicroOp::LoadRR:
+            /*if (inst->regA == inst->regB)
+            {
+                printf("X");
+                ignore(inst);
+                break;
+            }*/
+            break;
+
+        case ScbeMicroOp::LoadMR:
+            if (inst->regA == CpuReg::Rsp &&
+                next->op == ScbeMicroOp::Leave)
+            {
+                ignore(inst);
+                break;
+            }
+
+            break;
+    }
+}
+
+void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst)
+{
+    const auto next     = zap(inst + 1);
+    const auto nextRegs = out.cpu->getWriteRegisters(next);
+    if (next->flags.has(MIF_JUMP_DEST))
+        return;
+
+    switch (inst->op)
+    {
+        case ScbeMicroOp::LoadRR:
+            if (next->hasReadRegA() &&
+                inst->regA == next->regA &&
+                ScbeCpu::isInt(inst->regA) &&
+                (!next->hasOpFlag(MOF_OPBITS_A) || ScbeCpu::getNumBits(inst->opBitsA) >= ScbeCpu::getNumBits(next->opBitsA)) &&
+                !nextRegs.contains(inst->regB) &&
+                out.cpu->acceptsRegA(next, inst->regB))
+            {
+                setRegA(next, inst->regB);
+                break;
+            }
+
+            if (next->hasReadRegB() &&
+                inst->regA == next->regB &&
+                ScbeCpu::isInt(inst->regA) &&
+                (!next->hasOpFlag(MOF_OPBITS_A) || ScbeCpu::getNumBits(inst->opBitsA) >= ScbeCpu::getNumBits(next->opBitsA)) &&
+                !nextRegs.contains(inst->regB) &&
+                out.cpu->acceptsRegB(next, inst->regB))
+            {
+                setRegB(next, inst->regB);
+                break;
+            }
+
+            if (next->op == ScbeMicroOp::LoadRR &&
+                inst->regA == next->regB &&
+                inst->regB == next->regA &&
+                inst->opBitsA == next->opBitsA &&
+                inst->opBitsA == OpBits::B64)
+            {
+                ignore(inst);
+                ignore(next);
+                break;
+            }
+
+            break;
+
+        case ScbeMicroOp::LoadMR:
+            if (next->op == ScbeMicroOp::LoadRM &&
+                ScbeCpu::isInt(inst->regB) == ScbeCpu::isInt(next->regA) &&
+                ScbeCpu::getNumBits(next->opBitsA) <= ScbeCpu::getNumBits(inst->opBitsA) &&
+                next->regB == inst->regA &&
+                next->valueA == inst->valueA)
+            {
+                if (inst->regB == next->regA)
+                {
+                    ignore(next);
+                }
+                else
+                {
+                    setOp(next, ScbeMicroOp::LoadRR);
+                    setRegB(next, inst->regB);
+                }
+                break;
+            }
+
+            if (next->op == ScbeMicroOp::LoadSignedExtendRM &&
+                ScbeCpu::isInt(inst->regB) == ScbeCpu::isInt(next->regA) &&
+                next->regB == inst->regA &&
+                next->valueA == inst->valueA)
+            {
+                setOp(next, ScbeMicroOp::LoadSignedExtendRR);
+                setRegB(next, inst->regB);
+                break;
+            }
+
+            if (next->op == ScbeMicroOp::LoadZeroExtendRM &&
+                ScbeCpu::isInt(inst->regB) == ScbeCpu::isInt(next->regA) &&
+                next->regB == inst->regA &&
+                next->valueA == inst->valueA)
+            {
+                setOp(next, ScbeMicroOp::LoadZeroExtendRR);
+                setRegB(next, inst->regB);
+                break;
+            }
+
+            break;
+    }
+}
+
 void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
 {
     auto inst = reinterpret_cast<ScbeMicroInstruction*>(out.concat.firstBucket->data);
     while (inst->op != ScbeMicroOp::End)
     {
-        const auto next = zap(inst + 1);
-        if (next->flags.has(MIF_JUMP_DEST))
-        {
-            inst = zap(next);
-            continue;
-        }
-
-        const auto nextRegs = out.cpu->getWriteRegisters(next);
-
-        switch (inst->op)
-        {
-            case ScbeMicroOp::LoadRR:
-                if (next->hasReadRegA() &&
-                    inst->regA == next->regA &&
-                    ScbeCpu::isInt(inst->regA) &&
-                    (!next->hasOpFlag(MOF_OPBITS_A) || ScbeCpu::getNumBits(inst->opBitsA) >= ScbeCpu::getNumBits(next->opBitsA)) &&
-                    !nextRegs.contains(inst->regB) &&
-                    out.cpu->acceptsRegA(next, inst->regB))
-                {
-                    next->regA = inst->regB;
-                    setDirtyPass();
-                    break;
-                }
-
-                if (next->hasReadRegB() &&
-                    inst->regA == next->regB &&
-                    ScbeCpu::isInt(inst->regA) &&
-                    (!next->hasOpFlag(MOF_OPBITS_A) || ScbeCpu::getNumBits(inst->opBitsA) >= ScbeCpu::getNumBits(next->opBitsA)) &&
-                    !nextRegs.contains(inst->regB) &&
-                    out.cpu->acceptsRegB(next, inst->regB))
-                {
-                    next->regB = inst->regB;
-                    setDirtyPass();
-                    break;
-                }
-
-                if (next->op == ScbeMicroOp::LoadRR &&
-                    inst->regA == next->regB &&
-                    inst->regB == next->regA &&
-                    inst->opBitsA == next->opBitsA &&
-                    inst->opBitsA == OpBits::B64)
-                {
-                    ignore(inst);
-                    ignore(next);
-                    break;
-                }
-                break;
-
-            case ScbeMicroOp::LoadMR:
-                if (next->op == ScbeMicroOp::LoadRM &&
-                    ScbeCpu::isInt(inst->regB) == ScbeCpu::isInt(next->regA) &&
-                    ScbeCpu::getNumBits(next->opBitsA) <= ScbeCpu::getNumBits(inst->opBitsA) &&
-                    next->regB == inst->regA &&
-                    next->valueA == inst->valueA)
-                {
-                    if (inst->regB == next->regA)
-                    {
-                        ignore(next);
-                    }
-                    else
-                    {
-                        setOp(next, ScbeMicroOp::LoadRR);
-                        next->regB = inst->regB;
-                    }
-                    break;
-                }
-
-                if (next->op == ScbeMicroOp::LoadSignedExtendRM &&
-                    ScbeCpu::isInt(inst->regB) == ScbeCpu::isInt(next->regA) &&
-                    next->regB == inst->regA &&
-                    next->valueA == inst->valueA)
-                {
-                    setOp(next, ScbeMicroOp::LoadSignedExtendRR);
-                    next->regB = inst->regB;
-                    break;
-                }
-
-                if (next->op == ScbeMicroOp::LoadZeroExtendRM &&
-                    ScbeCpu::isInt(inst->regB) == ScbeCpu::isInt(next->regA) &&
-                    next->regB == inst->regA &&
-                    next->valueA == inst->valueA)
-                {
-                    setOp(next, ScbeMicroOp::LoadZeroExtendRR);
-                    next->regB = inst->regB;
-                    break;
-                }
-
-                if (inst->regA == CpuReg::Rsp &&
-                    next->op == ScbeMicroOp::Leave)
-                {
-                    ignore(inst);
-                    break;
-                }
-                break;
-        }
-
-        inst = zap(next);
+        reduceNoOp(out, inst);
+        reduceNext(out, inst);
+        inst = zap(inst + 1);
     }
 }
 
@@ -484,6 +534,7 @@ void ScbeOptimizer::computeContext(const ScbeMicro& out)
 {
     takeAddressRsp.clear();
     usedRegs.clear();
+    contextFlags.clear();
 
     auto inst = reinterpret_cast<ScbeMicroInstruction*>(out.concat.firstBucket->data);
     while (inst->op != ScbeMicroOp::End)
@@ -522,26 +573,25 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
         return;
 
     setDirtyPass();
-    computeContext(out);
-
     while (passHasDoneSomething)
     {
         passHasDoneSomething = false;
+        computeContext(out);
+
         optimizePassReduce(out);
         optimizePassStore(out);
         optimizePassDeadStore(out);
         optimizePassStoreToRegBeforeLeave(out);
         optimizePassStoreToHdwRegBeforeLeave(out);
-    }
 
-    /*if (!contextFlags.has(CF_HAS_CALL) &&
-        out.cpuFct->typeFunc->numParamsRegisters() &&
-        !out.cc->paramByRegisterInteger.empty() &&
-        usedRegs[out.cc->paramByRegisterInteger[0]] == 1 &&
-        !takeAddressRsp.contains(out.cpuFct->getStackOffsetParam(0)))
-    {
-        const auto typeParam = out.cpuFct->typeFunc->registerIdxToType(0);
-        if (!out.cc->useRegisterFloat || !typeParam->isNativeFloat())
+        /*if (!contextFlags.has(CF_HAS_CALL) &&
+            out.cpuFct->typeFunc->numParamsRegisters() &&
+            !out.cc->paramByRegisterInteger.empty() &&
+            usedRegs[out.cc->paramByRegisterInteger[0]] == 1 &&
+            (!out.cc->useRegisterFloat || !out.cpuFct->typeFunc->registerIdxToType(0)->isNativeFloat()) &&
+            !takeAddressRsp.contains(out.cpuFct->getStackOffsetParam(0)))
+        {
             memToReg(out, CpuReg::Rsp, out.cpuFct->getStackOffsetParam(0), out.cc->paramByRegisterInteger[0]);
-    }*/
+        }*/
+    }
 }

@@ -20,6 +20,7 @@ struct Flags
     Flags                  maskInvert(Flags fl) const { return flags & ~fl.flags; }
     void                   add(Flags fl) { flags |= fl.flags; }
     void                   remove(Flags fl) { flags &= ~fl.flags; }
+    void                   clear() { flags = 0; }
 
     T flags = 0;
 };
