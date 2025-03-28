@@ -21,7 +21,7 @@ void ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                     inst->valueA == memOffset)
                 {
                     setOp(inst, ScbeMicroOp::LoadSignedExtendRR);
-                    inst->regB = reg;
+                    setRegB(inst, reg);
                 }
                 break;
             case ScbeMicroOp::LoadZeroExtendRM:
@@ -29,7 +29,7 @@ void ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                     inst->valueA == memOffset)
                 {
                     setOp(inst, ScbeMicroOp::LoadZeroExtendRR);
-                    inst->regB = reg;
+                    setRegB(inst, reg);
                 }
                 break;
             case ScbeMicroOp::LoadRM:
@@ -37,7 +37,7 @@ void ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                     inst->valueA == memOffset)
                 {
                     setOp(inst, ScbeMicroOp::LoadRR);
-                    inst->regB = reg;
+                    setRegB(inst, reg);
                 }
                 break;
             case ScbeMicroOp::LoadMR:
@@ -45,7 +45,7 @@ void ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                     inst->valueA == memOffset)
                 {
                     setOp(inst, ScbeMicroOp::LoadRR);
-                    inst->regA = reg;
+                    setRegA(inst, reg);
                 }
                 break;
             case ScbeMicroOp::LoadMI:
@@ -53,8 +53,8 @@ void ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                     inst->valueA == memOffset)
                 {
                     setOp(inst, ScbeMicroOp::LoadRI);
-                    inst->regA   = reg;
-                    inst->valueA = inst->valueB;
+                    setRegA(inst, reg);
+                    setValueA(inst, inst->valueB);
                 }
                 break;
             case ScbeMicroOp::CmpMR:
@@ -62,7 +62,7 @@ void ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                     inst->valueA == memOffset)
                 {
                     setOp(inst, ScbeMicroOp::CmpRR);
-                    inst->regA = reg;
+                    setRegA(inst, reg);
                 }
                 break;
             case ScbeMicroOp::CmpMI:
@@ -70,8 +70,8 @@ void ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                     inst->valueA == memOffset)
                 {
                     setOp(inst, ScbeMicroOp::CmpRI);
-                    inst->regA   = reg;
-                    inst->valueA = inst->valueB;
+                    setRegA(inst, reg);
+                    setValueA(inst, inst->valueB);
                 }
                 break;
             case ScbeMicroOp::OpUnaryM:
@@ -79,7 +79,7 @@ void ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                     inst->valueA == memOffset)
                 {
                     setOp(inst, ScbeMicroOp::OpUnaryR);
-                    inst->regA = reg;
+                    setRegA(inst, reg);
                 }
                 break;
             case ScbeMicroOp::OpBinaryMI:
@@ -87,8 +87,8 @@ void ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                     inst->valueA == memOffset)
                 {
                     setOp(inst, ScbeMicroOp::OpBinaryRI);
-                    inst->regA   = reg;
-                    inst->valueA = inst->valueB;
+                    setRegA(inst, reg);
+                    setValueA(inst, inst->valueB);
                 }
                 break;
             case ScbeMicroOp::OpBinaryMR:
@@ -96,7 +96,7 @@ void ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                     inst->valueA == memOffset)
                 {
                     setOp(inst, ScbeMicroOp::OpBinaryRR);
-                    inst->regA = reg;
+                    setRegA(inst, reg);
                 }
                 break;
             case ScbeMicroOp::OpBinaryRM:
@@ -104,7 +104,7 @@ void ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                     inst->valueA == memOffset)
                 {
                     setOp(inst, ScbeMicroOp::OpBinaryRR);
-                    inst->regB = reg;
+                    setRegB(inst, reg);
                 }
                 break;
         }
@@ -127,6 +127,24 @@ void ScbeOptimizer::setOp(ScbeMicroInstruction* inst, ScbeMicroOp op)
     if (inst->op != op)
     {
         inst->op = op;
+        setDirtyPass();
+    }
+}
+
+void ScbeOptimizer::setValueA(ScbeMicroInstruction* inst, uint64_t value)
+{
+    if (inst->valueA != value)
+    {
+        inst->valueA = value;
+        setDirtyPass();
+    }
+}
+
+void ScbeOptimizer::setValueB(ScbeMicroInstruction* inst, uint64_t value)
+{
+    if (inst->valueB != value)
+    {
+        inst->valueB = value;
         setDirtyPass();
     }
 }

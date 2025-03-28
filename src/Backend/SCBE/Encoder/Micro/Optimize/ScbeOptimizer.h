@@ -18,6 +18,8 @@ struct ScbeOptimizer
     void                         memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOffset, CpuReg reg);
     void                         ignore(ScbeMicroInstruction* inst);
     void                         setOp(ScbeMicroInstruction* inst, ScbeMicroOp op);
+    void                         setValueA(ScbeMicroInstruction* inst, uint64_t value);
+    void                         setValueB(ScbeMicroInstruction* inst, uint64_t value);
     void                         setRegA(ScbeMicroInstruction* inst, CpuReg reg);
     void                         setRegB(ScbeMicroInstruction* inst, CpuReg reg);
     void                         setRegC(ScbeMicroInstruction* inst, CpuReg reg);

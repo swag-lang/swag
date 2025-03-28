@@ -197,7 +197,7 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
                     else
                     {
                         setOp(inst, ScbeMicroOp::LoadRR);
-                        inst->regB = mapValReg[inst->valueA].first;
+                        setRegB(inst, mapValReg[inst->valueA].first);
                     }
                     break;
                 }
@@ -223,7 +223,7 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
                     ScbeCpu::getNumBits(inst->opBitsA) <= ScbeCpu::getNumBits(mapValReg[inst->valueA].second))
                 {
                     setOp(inst, ScbeMicroOp::CmpRR);
-                    inst->regA = mapValReg[inst->valueA].first;
+                    setRegA(inst, mapValReg[inst->valueA].first);
                     break;
                 }
 
@@ -237,8 +237,8 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
                     ScbeCpu::getNumBits(inst->opBitsA) <= ScbeCpu::getNumBits(mapValReg[inst->valueA].second))
                 {
                     setOp(inst, ScbeMicroOp::CmpRI);
-                    inst->regA   = mapValReg[inst->valueA].first;
-                    inst->valueA = inst->valueB;
+                    setRegA(inst, mapValReg[inst->valueA].first);
+                    setValueA(inst, inst->valueB);
                     break;
                 }
 
