@@ -1083,6 +1083,20 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegMem(CpuReg regDst, CpuReg memReg, uint
 
     ///////////////////////////////////////////
 
+    else if (op == CpuOp::IMUL)
+    {
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::Zero;
+        if (opBits == OpBits::B8)
+            emitLoadSignedExtendRegReg(regDst, regDst, OpBits::B16, opBits);
+        emitREX(concat, opBits, regDst, memReg);
+        emitCPUOp(concat, 0x0F);
+        emitCPUOp(concat, 0xAF);
+        emitModRM(concat, memOffset, regDst, memReg);
+    }
+
+    ///////////////////////////////////////////
+
     else
     {
         if (emitFlags.has(EMIT_CanEncode))

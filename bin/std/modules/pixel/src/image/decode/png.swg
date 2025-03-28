@@ -309,6 +309,7 @@ impl Decoder
         }
     }
 
+#[Swag.PrintAsm]
     mtd getStrideIn(width: u32)->u64
     {
         if header.bitDepth < 8:
@@ -544,7 +545,7 @@ impl Decoder
 
                 paletteCount = cast(u32) (len / 3)
 
-            case TEXt:   
+            case TEXt:
                 var chunk = readChunk(ch)
                 if decOptions.decodeMetaDatas
                 {
