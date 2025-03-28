@@ -171,12 +171,12 @@ void ScbeOptimizer::reduceNoOp(const ScbeMicro& out, ScbeMicroInstruction* inst)
     switch (inst->op)
     {
         case ScbeMicroOp::LoadRR:
-            /*if (inst->regA == inst->regB)
+            if (inst->regA == inst->regB)
             {
-                printf("X");
                 ignore(inst);
                 break;
-            }*/
+            }
+
             break;
 
         case ScbeMicroOp::LoadMR:
@@ -297,8 +297,11 @@ void ScbeOptimizer::optimizePassStoreToRegBeforeLeave(const ScbeMicro& out)
     auto inst = reinterpret_cast<ScbeMicroInstruction*>(out.concat.firstBucket->data);
     while (inst->op != ScbeMicroOp::End)
     {
-        if (inst->flags.has(MIF_JUMP_DEST) || inst->isJump())
+        if (inst->flags.has(MIF_JUMP_DEST) ||
+            inst->isJump())
+        {
             mapValInst.clear();
+        }
 
         if (inst->op == ScbeMicroOp::Leave)
         {
@@ -331,8 +334,13 @@ void ScbeOptimizer::optimizePassStoreToHdwRegBeforeLeave(const ScbeMicro& out)
     auto inst = reinterpret_cast<ScbeMicroInstruction*>(out.concat.firstBucket->data);
     while (inst->op != ScbeMicroOp::End)
     {
-        if (inst->flags.has(MIF_JUMP_DEST) || inst->isJump() || inst->isCall())
+        if (inst->flags.has(MIF_JUMP_DEST) ||
+            inst->isJump() ||
+            inst->isCall() ||
+            inst->isRet())
+        {
             mapRegInst.clear();
+        }
 
         if (inst->op == ScbeMicroOp::Leave)
         {
@@ -379,7 +387,9 @@ void ScbeOptimizer::optimizePassDeadStore(const ScbeMicro& out)
     auto inst = reinterpret_cast<ScbeMicroInstruction*>(out.concat.firstBucket->data);
     while (inst->op != ScbeMicroOp::End)
     {
-        if (inst->flags.has(MIF_JUMP_DEST) || inst->isJump())
+        if (inst->flags.has(MIF_JUMP_DEST) ||
+            inst->isJump() ||
+            inst->isRet())
         {
             mapRegInst.clear();
         }
@@ -426,7 +436,9 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
     auto inst = reinterpret_cast<ScbeMicroInstruction*>(out.concat.firstBucket->data);
     while (inst->op != ScbeMicroOp::End)
     {
-        if (inst->flags.has(MIF_JUMP_DEST) || inst->isJump())
+        if (inst->flags.has(MIF_JUMP_DEST) ||
+            inst->isJump() ||
+            inst->isRet())
         {
             mapValReg.clear();
             mapRegVal.clear();

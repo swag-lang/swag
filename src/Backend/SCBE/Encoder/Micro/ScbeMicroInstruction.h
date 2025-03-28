@@ -32,6 +32,7 @@ struct ScbeMicroInstruction
 
     bool isJump() const;
     bool isCall() const;
+    bool isRet() const;
 
     Utf8     name;
     uint64_t valueA;
