@@ -11,8 +11,7 @@ void ScbeOptimizer::optimizePassStoreToRegBeforeLeave(const ScbeMicro& out)
     auto inst = reinterpret_cast<ScbeMicroInstruction*>(out.concat.firstBucket->data);
     while (inst->op != ScbeMicroOp::End)
     {
-        if (inst->flags.has(MIF_JUMP_DEST) ||
-            inst->isJump())
+        if (inst->flags.has(MIF_JUMP_DEST))
         {
             mapValInst.clear();
         }
@@ -49,7 +48,6 @@ void ScbeOptimizer::optimizePassStoreToHdwRegBeforeLeave(const ScbeMicro& out)
     while (inst->op != ScbeMicroOp::End)
     {
         if (inst->flags.has(MIF_JUMP_DEST) ||
-            inst->isJump() ||
             inst->isCall() ||
             inst->isRet())
         {
@@ -102,7 +100,6 @@ void ScbeOptimizer::optimizePassDeadStore(const ScbeMicro& out)
     while (inst->op != ScbeMicroOp::End)
     {
         if (inst->flags.has(MIF_JUMP_DEST) ||
-            inst->isJump() ||
             inst->isRet())
         {
             mapRegInst.clear();
@@ -151,7 +148,6 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
     while (inst->op != ScbeMicroOp::End)
     {
         if (inst->flags.has(MIF_JUMP_DEST) ||
-            inst->isJump() ||
             inst->isRet())
         {
             mapValReg.clear();

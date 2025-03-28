@@ -119,6 +119,14 @@ void ScbeOptimizer::ignore(ScbeMicroInstruction* inst)
     g_Stats.totalOptimScbe += 1;
 #endif
     inst->op = ScbeMicroOp::Ignore;
+    
+    if (inst->flags.has(MIF_JUMP_DEST))
+    {
+        const auto next = zap(inst + 1);
+        next->flags.add(MIF_JUMP_DEST);
+    }
+    
+    inst->flags.clear();
     setDirtyPass();
 }
 
