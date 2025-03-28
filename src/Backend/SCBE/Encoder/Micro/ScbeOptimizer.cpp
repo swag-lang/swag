@@ -200,6 +200,18 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst)
 
     switch (inst->op)
     {
+        case ScbeMicroOp::LoadZeroExtendRM:
+            if (next->op == ScbeMicroOp::LoadSignedExtendRR &&
+                next->regA == inst->regA &&
+                next->regB == inst->regA &&
+                next->opBitsA == inst->opBitsA &&
+                next->opBitsB == inst->opBitsB)
+            {
+                setOp(inst, ScbeMicroOp::LoadSignedExtendRM);
+                ignore(next);
+            }
+            break;
+
         case ScbeMicroOp::LoadRR:
             if (next->hasReadRegA() &&
                 inst->regA == next->regA &&
