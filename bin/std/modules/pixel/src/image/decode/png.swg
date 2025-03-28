@@ -309,7 +309,6 @@ impl Decoder
         }
     }
 
-#[Swag.PrintAsm]
     mtd getStrideIn(width: u32)->u64
     {
         if header.bitDepth < 8:
