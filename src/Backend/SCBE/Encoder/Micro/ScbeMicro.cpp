@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
-#include "Backend/SCBE/Encoder/Micro/Optimizer/ScbeOptimizer.h"
-#include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Backend/ByteCode/ByteCode.h"
+#include "Backend/SCBE/Encoder/Micro/Optimize/ScbeOptimizer.h"
+#include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/AstNode.h"
 
