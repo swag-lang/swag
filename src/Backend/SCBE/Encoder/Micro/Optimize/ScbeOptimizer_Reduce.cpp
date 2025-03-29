@@ -32,7 +32,7 @@ void ScbeOptimizer::reduceNoOp(const ScbeMicro& out, ScbeMicroInstruction* inst)
 
 void ScbeOptimizer::reduceLoadRR(const ScbeMicro& out, ScbeMicroInstruction* inst)
 {
-    /*const auto next     = nextInstruction(inst);
+    const auto next     = nextInstruction(inst);
     const auto nextNext = nextInstruction(next);
 
     if (inst->op != ScbeMicroOp::LoadRR &&
@@ -40,6 +40,7 @@ void ScbeOptimizer::reduceLoadRR(const ScbeMicro& out, ScbeMicroInstruction* ins
         nextNext->op != ScbeMicroOp::LoadRR &&
         !next->flags.has(MIF_JUMP_DEST) &&
         !nextNext->flags.has(MIF_JUMP_DEST) &&
+        !inst->hasReadRegA() &&
         inst->hasWriteRegA() &&
         nextNext->hasWriteRegA() &&
         next->regB == inst->regA &&
@@ -48,11 +49,9 @@ void ScbeOptimizer::reduceLoadRR(const ScbeMicro& out, ScbeMicroInstruction* ins
         ScbeCpu::isInt(next->regB) &&
         !out.cpu->getReadRegisters(nextNext).contains(inst->regA))
     {
-        out.print();
         setRegA(inst, next->regA);
         ignore(out, next);
-        out.print();
-    }*/
+    }
 }
 
 void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst)

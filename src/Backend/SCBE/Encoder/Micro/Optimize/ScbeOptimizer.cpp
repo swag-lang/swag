@@ -279,7 +279,7 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
     if (!out.cpuFct->bc->sourceFile->module->mustOptimizeBackend(out.cpuFct->bc->node))
         return;
 
-    //if (!out.cpuFct->bc->sourceFile->name.containsNoCase("4590"))
+    //if (!out.cpuFct->bc->sourceFile->name.containsNoCase("5449"))
     //    return;
     
     bool globalChanged = true;
