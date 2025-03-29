@@ -119,13 +119,13 @@ void ScbeOptimizer::ignore(ScbeMicroInstruction* inst)
     g_Stats.totalOptimScbe += 1;
 #endif
     inst->op = ScbeMicroOp::Ignore;
-    
+
     if (inst->flags.has(MIF_JUMP_DEST))
     {
         const auto next = zap(inst + 1);
         next->flags.add(MIF_JUMP_DEST);
     }
-    
+
     inst->flags.clear();
     setDirtyPass();
 }
@@ -195,6 +195,7 @@ void ScbeOptimizer::computeContext(const ScbeMicro& out)
 {
     takeAddressRsp.clear();
     usedRegs.clear();
+    usedStack.clear();
     contextFlags.clear();
 
     auto inst = reinterpret_cast<ScbeMicroInstruction*>(out.concat.firstBucket->data);
@@ -206,10 +207,10 @@ void ScbeOptimizer::computeContext(const ScbeMicro& out)
             takeAddressRsp.push_back(inst->valueB);
         }
 
-        if (inst->isCall())
-            contextFlags.add(CF_HAS_CALL);
-        if (inst->isJump())
-            contextFlags.add(CF_HAS_JUMP);
+        if (inst->hasReadRegA() && inst->regA == CpuReg::Rsp && (inst->hasReadMemA() || inst->hasWriteMemA()))
+            usedStack[static_cast<uint32_t>(inst->valueB)] += 1;
+        if (inst->hasReadRegB() && inst->regB == CpuReg::Rsp && (inst->hasReadMemB() || inst->hasWriteMemB()))
+            usedStack[static_cast<uint32_t>(inst->valueB)] += 1;
 
         if (inst->hasReadRegA() || inst->hasWriteRegA())
             usedRegs[inst->regA] += 1;

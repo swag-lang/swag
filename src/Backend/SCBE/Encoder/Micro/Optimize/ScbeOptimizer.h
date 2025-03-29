@@ -8,10 +8,8 @@ struct ScbeMicroInstruction;
 enum class ScbeMicroOp : uint8_t;
 enum class OpBits : uint8_t;
 
-using ScbeOptContextFlags                 = Flags<uint32_t>;
-constexpr ScbeOptContextFlags CF_NONE     = 0x00000000;
-constexpr ScbeOptContextFlags CF_HAS_CALL = 0x00000001;
-constexpr ScbeOptContextFlags CF_HAS_JUMP = 0x00000002;
+using ScbeOptContextFlags             = Flags<uint32_t>;
+constexpr ScbeOptContextFlags CF_ZERO = 0x00000000;
 
 struct ScbeOptimizer
 {
@@ -46,7 +44,8 @@ struct ScbeOptimizer
     bool                                     passHasDoneSomething = false;
 
     // Context
-    VectorNative<uint64_t> takeAddressRsp;
-    Map<CpuReg, uint32_t>  usedRegs;
-    ScbeOptContextFlags    contextFlags = CF_NONE;
+    VectorNative<uint64_t>  takeAddressRsp;
+    Map<CpuReg, uint32_t>   usedRegs;
+    Map<uint32_t, uint32_t> usedStack;
+    ScbeOptContextFlags     contextFlags = CF_ZERO;
 };
