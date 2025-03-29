@@ -30,7 +30,6 @@ void ScbeOptimizer::reduceNoOp(const ScbeMicro& out, ScbeMicroInstruction* inst)
     }
 }
 
-#pragma optimize("", off)
 void ScbeOptimizer::reduceLoadRR(const ScbeMicro& out, ScbeMicroInstruction* inst)
 {
     const auto next = nextInstruction(inst);
@@ -57,6 +56,7 @@ void ScbeOptimizer::reduceLoadRR(const ScbeMicro& out, ScbeMicroInstruction* ins
             if (nextNext->op != ScbeMicroOp::LoadRR &&
                 nextNext->hasWriteRegA() &&
                 nextNext->regA == inst->regA &&
+                out.cpu->acceptsRegB(inst, next->regA) &&
                 !readRegs.contains(inst->regA))
             {
                 setRegA(inst, next->regA);
