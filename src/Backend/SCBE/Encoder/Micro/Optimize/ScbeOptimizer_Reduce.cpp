@@ -30,27 +30,44 @@ void ScbeOptimizer::reduceNoOp(const ScbeMicro& out, ScbeMicroInstruction* inst)
     }
 }
 
+#pragma optimize("", off)
 void ScbeOptimizer::reduceLoadRR(const ScbeMicro& out, ScbeMicroInstruction* inst)
 {
-    const auto next     = nextInstruction(inst);
-    const auto nextNext = nextInstruction(next);
+    const auto next = nextInstruction(inst);
 
     if (inst->op != ScbeMicroOp::LoadRR &&
         next->op == ScbeMicroOp::LoadRR &&
-        nextNext->op != ScbeMicroOp::LoadRR &&
         !next->flags.has(MIF_JUMP_DEST) &&
-        !nextNext->flags.has(MIF_JUMP_DEST) &&
         !inst->hasReadRegA() &&
         inst->hasWriteRegA() &&
-        nextNext->hasWriteRegA() &&
         next->regB == inst->regA &&
-        nextNext->regA == inst->regA &&
         ScbeCpu::isInt(next->regA) &&
-        ScbeCpu::isInt(next->regB) &&
-        !out.cpu->getReadRegisters(nextNext).contains(inst->regA))
+        ScbeCpu::isInt(next->regB))
     {
-        setRegA(inst, next->regA);
-        ignore(out, next);
+        auto nextNext = nextInstruction(next);
+        while (true)
+        {
+            if (nextNext->flags.has(MIF_JUMP_DEST))
+                break;
+            if (nextNext->isJump() || nextNext->isRet())
+                break;
+
+            const auto readRegs = out.cpu->getReadRegisters(nextNext);
+
+            if (nextNext->op != ScbeMicroOp::LoadRR &&
+                nextNext->hasWriteRegA() &&
+                nextNext->regA == inst->regA &&
+                !readRegs.contains(inst->regA))
+            {
+                setRegA(inst, next->regA);
+                ignore(out, next);
+                break;
+            }
+
+            if (readRegs.contains(inst->regA))
+                break;
+            nextNext = nextInstruction(nextNext);
+        }
     }
 }
 
