@@ -674,9 +674,9 @@ CpuEncodeResult ScbeX64::encodeLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, 
     const bool b2 = (regSrc1 >= CpuReg::R8 && regSrc1 <= CpuReg::R15);
     if (opBits == OpBits::B32)
         emitCPUOp(concat, 0x67);
-    if (opBits == OpBits::B64 || b0 || b1 || b2) 
+    if (opBits == OpBits::B64 || b0 || b1 || b2)
         concat.addU8(getREX(opBits == OpBits::B64, b0, b1, b2));
-    
+
     emitCPUOp(concat, 0x8D);
     emitModRM(concat, ModRMMode::Memory, regDst, MODRM_RM_SID);
 
@@ -1229,13 +1229,13 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
     {
         if (emitFlags.has(EMIT_CanEncode))
             return CpuEncodeResult::Zero;
-        
+
         if (opBits == OpBits::B8)
         {
             emitLoadSignedExtendRegReg(regDst, regDst, OpBits::B32, opBits);
             emitLoadSignedExtendRegReg(regSrc, regSrc, OpBits::B32, opBits);
         }
-        
+
         emitREX(concat, opBits, regDst, regSrc);
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, 0xAF);
@@ -2389,30 +2389,16 @@ CpuEncodeResult ScbeX64::encodeNop(CpuEmitFlags emitFlags)
 
 bool ScbeX64::acceptsRegA(ScbeMicroInstruction* inst, CpuReg reg)
 {
-    if (inst->op == ScbeMicroOp::OpBinaryRR)
-    {
-        switch (inst->cpuOp)
-        {
-            case CpuOp::MUL:
-                return cpuRegToX64Reg(reg) == X64Reg::Rax;
-        }
-    }
-    else if (inst->op == ScbeMicroOp::OpTernaryRRR)
-    {
-        switch (inst->cpuOp)
-        {
-            case CpuOp::CMPXCHG:
-                return cpuRegToX64Reg(reg) == X64Reg::Rax;
-        }
-    }
-
+    if (inst->op == ScbeMicroOp::OpBinaryRR && inst->cpuOp == CpuOp::MUL)
+        return cpuRegToX64Reg(reg) == X64Reg::Rax;
+    if (inst->op == ScbeMicroOp::OpTernaryRRR && inst->cpuOp == CpuOp::CMPXCHG)
+        return cpuRegToX64Reg(reg) == X64Reg::Rax;
     return true;
 }
 
 bool ScbeX64::acceptsRegB(ScbeMicroInstruction* inst, CpuReg reg)
 {
-    if (inst->op == ScbeMicroOp::OpBinaryRR ||
-        inst->op == ScbeMicroOp::OpBinaryMR)
+    if (inst->op == ScbeMicroOp::OpBinaryRR || inst->op == ScbeMicroOp::OpBinaryMR)
     {
         switch (inst->cpuOp)
         {
