@@ -510,7 +510,7 @@ void ScbeMicro::print() const
                 break;
         }
 
-        line.rank = form("%08d (%d)", idx++, i);
+        line.rank = form("%08d:%08d", idx++, i);
 
         while (line.name.length() != 12)
             line.name += ' ';
