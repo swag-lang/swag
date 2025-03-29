@@ -201,22 +201,16 @@ void ScbeOptimizer::computeContext(const ScbeMicro& out)
     auto inst = reinterpret_cast<ScbeMicroInstruction*>(out.concat.firstBucket->data);
     while (inst->op != ScbeMicroOp::End)
     {
-        if (inst->op == ScbeMicroOp::LoadAddressM &&
-            inst->regB == CpuReg::Rsp)
-        {
-            takeAddressRsp.push_back(inst->valueB);
-        }
+        const auto stackOffset = inst->getStackOffset();
+        if (inst->op == ScbeMicroOp::LoadAddressM)
+            takeAddressRsp.push_back(stackOffset);
+        usedStack[stackOffset] += 1;
 
-        if (inst->hasReadRegA() && inst->regA == CpuReg::Rsp && (inst->hasReadMemA() || inst->hasWriteMemA()))
-            usedStack[static_cast<uint32_t>(inst->valueB)] += 1;
-        if (inst->hasReadRegB() && inst->regB == CpuReg::Rsp && (inst->hasReadMemB() || inst->hasWriteMemB()))
-            usedStack[static_cast<uint32_t>(inst->valueB)] += 1;
-
-        if (inst->hasReadRegA() || inst->hasWriteRegA())
+        if (inst->hasRegA())
             usedRegs[inst->regA] += 1;
-        if (inst->hasReadRegB() || inst->hasWriteRegB())
+        if (inst->hasRegB())
             usedRegs[inst->regB] += 1;
-        if (inst->hasReadRegC() || inst->hasWriteRegC())
+        if (inst->hasRegC())
             usedRegs[inst->regC] += 1;
 
         auto details = out.cpu->getWriteRegisters(inst);

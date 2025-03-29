@@ -29,10 +29,15 @@ struct ScbeMicroInstruction
     bool hasWriteRegA() const { return (hasLeftOpFlag(MOF_REG_A) && hasLeftOpFlag(MOF_WRITE_REG)) || (hasRightOpFlag(MOF_REG_A) && hasRightOpFlag(MOF_WRITE_REG)); }
     bool hasWriteRegB() const { return (hasLeftOpFlag(MOF_REG_B) && hasLeftOpFlag(MOF_WRITE_REG)) || (hasRightOpFlag(MOF_REG_B) && hasRightOpFlag(MOF_WRITE_REG)); }
     bool hasWriteRegC() const { return (hasLeftOpFlag(MOF_REG_C) && hasLeftOpFlag(MOF_WRITE_REG)) || (hasRightOpFlag(MOF_REG_C) && hasRightOpFlag(MOF_WRITE_REG)); }
+    bool hasRegA() const { return (hasReadRegA() || hasWriteRegA()); }
+    bool hasRegB() const { return (hasReadRegB() || hasWriteRegB()); }
+    bool hasRegC() const { return (hasReadRegC() || hasWriteRegC()); }
 
     bool isJump() const;
     bool isCall() const;
     bool isRet() const;
+
+    uint32_t getStackOffset() const;
 
     Utf8     name;
     uint64_t valueA;

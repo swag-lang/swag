@@ -427,7 +427,7 @@ void ScbeMicro::print() const
                 break;
             case ScbeMicroOp::LoadAddressM:
                 line.name = "lea";
-                line.args = form("%s, [%s+%xh]", regName(inst->regA, OpBits::B64), regName(inst->regB, OpBits::B64), inst->valueB);
+                line.args = form("%s, [%s+%xh]", regName(inst->regA, OpBits::B64), regName(inst->regB, OpBits::B64), inst->valueA);
                 break;
             case ScbeMicroOp::LoadAddressAddMul:
                 line.name = "lea";

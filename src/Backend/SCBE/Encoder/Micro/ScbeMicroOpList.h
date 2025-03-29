@@ -43,7 +43,7 @@ SCBE_MICRO_OP(LoadZeroExtendRM,            MOF_REG_A | MOF_OPBITS_A | MOF_WRITE_
 SCBE_MICRO_OP(LoadSignedExtendRR,          MOF_REG_A | MOF_OPBITS_A | MOF_WRITE_REG,                                   MOF_REG_B | MOF_READ_REG | MOF_OPBITS_B)
 SCBE_MICRO_OP(LoadZeroExtendRR,            MOF_REG_A | MOF_OPBITS_A | MOF_WRITE_REG,                                   MOF_REG_B | MOF_READ_REG | MOF_OPBITS_B)
                                                                                                                        
-SCBE_MICRO_OP(LoadAddressM,                MOF_REG_A | MOF_WRITE_REG,                                                  MOF_REG_B | MOF_READ_REG | MOF_VALUE_B | MOF_READ_MEM | MOF_WRITE_MEM)
+SCBE_MICRO_OP(LoadAddressM,                MOF_REG_A | MOF_WRITE_REG,                                                  MOF_REG_B | MOF_READ_REG | MOF_VALUE_A | MOF_READ_MEM | MOF_WRITE_MEM)
 SCBE_MICRO_OP(LoadAddressAddMul,           MOF_REG_A | MOF_WRITE_REG,                                                  MOF_REG_B | MOF_REG_C | MOF_VALUE_A | MOF_OPBITS_A | MOF_READ_REG)
                                                                                                                                                                                                                                              
 SCBE_MICRO_OP(CmpRR,                       MOF_REG_A | MOF_READ_REG | MOF_OPBITS_A,                                    MOF_REG_B | MOF_READ_REG | MOF_OPBITS_A)
