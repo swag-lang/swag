@@ -242,6 +242,7 @@ struct ScbeCpu : BackendEncoder
 
     virtual bool                 acceptsRegA(ScbeMicroInstruction* inst, CpuReg reg) { return true; }
     virtual bool                 acceptsRegB(ScbeMicroInstruction* inst, CpuReg reg) { return true; }
+    virtual bool                 acceptsRegC(ScbeMicroInstruction* inst, CpuReg reg) { return true; }
     virtual VectorNative<CpuReg> getWriteRegisters(ScbeMicroInstruction* inst) { return {}; }
 
     void emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CpuPushParam>& cpuParams, const CallConv* callConv);

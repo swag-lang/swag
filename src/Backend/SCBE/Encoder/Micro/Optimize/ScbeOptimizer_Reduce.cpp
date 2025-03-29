@@ -74,6 +74,18 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst)
                 break;
             }
 
+            if (next->hasReadRegC() &&
+                inst->regA == next->regC &&
+                ScbeCpu::isInt(inst->regA) &&
+                (!next->hasOpFlag(MOF_OPBITS_A) || ScbeCpu::getNumBits(inst->opBitsA) >= ScbeCpu::getNumBits(next->opBitsA)) &&
+                !nextRegs.contains(inst->regB) &&
+                out.cpu->acceptsRegC(next, inst->regC))
+            {
+                printf("X");
+                setRegC(next, inst->regB);
+                break;
+            }
+
             if (next->op == ScbeMicroOp::LoadRR &&
                 inst->regA == next->regB &&
                 inst->regB == next->regA &&
