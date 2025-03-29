@@ -63,19 +63,13 @@ void ScbeOptimizer::optimizePassDeadHdwRegBeforeLeave(const ScbeMicro& out)
                 mapRegInst[inst->regA] = inst;
             }
 
-            if (inst->hasReadRegB())
-                mapRegInst.erase(inst->regB);
-            if (inst->hasReadRegC())
-                mapRegInst.erase(inst->regC);
+            mapRegInst.erase(inst->regB);
         }
         else
         {
-            if (inst->hasReadRegA())
-                mapRegInst.erase(inst->regA);
-            if (inst->hasReadRegB())
-                mapRegInst.erase(inst->regB);
-            if (inst->hasReadRegC())
-                mapRegInst.erase(inst->regC);
+            const auto readRegs = out.cpu->getReadRegisters(inst);
+            for (const auto r : readRegs)
+                mapRegInst.erase(r);
         }
 
         inst = zap(inst + 1);
@@ -92,12 +86,9 @@ void ScbeOptimizer::optimizePassDeadStore(const ScbeMicro& out)
         if (inst->flags.has(MIF_JUMP_DEST) || inst->isRet())
             mapRegInst.clear();
 
-        if (inst->hasReadRegA())
-            mapRegInst.erase(inst->regA);
-        if (inst->hasReadRegB())
-            mapRegInst.erase(inst->regB);
-        if (inst->hasReadRegC())
-            mapRegInst.erase(inst->regC);
+        const auto readRegs = out.cpu->getReadRegisters(inst);
+        for (const auto r : readRegs)
+            mapRegInst.erase(r);
 
         auto legitReg = CpuReg::Max;
         if (inst->op == ScbeMicroOp::LoadRR ||
@@ -112,8 +103,8 @@ void ScbeOptimizer::optimizePassDeadStore(const ScbeMicro& out)
             legitReg               = inst->regA;
         }
 
-        auto details = out.cpu->getWriteRegisters(inst);
-        for (const auto r : details)
+        const auto writeRegs = out.cpu->getWriteRegisters(inst);
+        for (const auto r : writeRegs)
         {
             if (r != legitReg)
                 mapRegInst.erase(r);
@@ -131,8 +122,7 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
     auto inst = reinterpret_cast<ScbeMicroInstruction*>(out.concat.firstBucket->data);
     while (inst->op != ScbeMicroOp::End)
     {
-        if (inst->flags.has(MIF_JUMP_DEST) ||
-            inst->isRet())
+        if (inst->flags.has(MIF_JUMP_DEST) || inst->isRet())
         {
             mapValReg.clear();
             mapRegVal.clear();
@@ -218,8 +208,8 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
                 break;
         }
 
-        auto details = out.cpu->getWriteRegisters(inst);
-        for (auto r : details)
+        const auto writeRegs = out.cpu->getWriteRegisters(inst);
+        for (auto r : writeRegs)
         {
             if (r != legitReg)
                 mapRegVal.erase(r);
