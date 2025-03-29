@@ -54,12 +54,12 @@ SCBE_MICRO_OP(CmpMI,                       MOF_REG_A | MOF_VALUE_A | MOF_READ_RE
 SCBE_MICRO_OP(SetCC,                       MOF_CPU_COND | MOF_REG_A | MOF_WRITE_REG,                                   MOF_ZERO)                                                                                                                      
 SCBE_MICRO_OP(ClearR,                      MOF_REG_A | MOF_WRITE_REG | MOF_OPBITS_A,                                   MOF_ZERO)
 
-SCBE_MICRO_OP(OpUnaryM,                    MOF_CPU_OP | MOF_REG_A | MOF_VALUE_A | MOF_READ_REG | MOF_WRITE_MEM,        MOF_ZERO)
-SCBE_MICRO_OP(OpUnaryR,                    MOF_CPU_OP | MOF_REG_A | MOF_WRITE_REG | MOF_OPBITS_A,                      MOF_ZERO)
+SCBE_MICRO_OP(OpUnaryM,                    MOF_CPU_OP | MOF_REG_A | MOF_VALUE_A | MOF_READ_REG | MOF_READ_MEM | MOF_WRITE_MEM,        MOF_ZERO)
+SCBE_MICRO_OP(OpUnaryR,                    MOF_CPU_OP | MOF_REG_A | MOF_READ_REG | MOF_WRITE_REG | MOF_OPBITS_A,                      MOF_ZERO)
 
-SCBE_MICRO_OP(OpBinaryRR,                  MOF_CPU_OP | MOF_REG_A | MOF_WRITE_REG | MOF_OPBITS_A,                      MOF_REG_B | MOF_READ_REG | MOF_OPBITS_A)
-SCBE_MICRO_OP(OpBinaryRI,                  MOF_CPU_OP | MOF_REG_A | MOF_WRITE_REG | MOF_OPBITS_A,                      MOF_VALUE_A | MOF_OPBITS_A)
-SCBE_MICRO_OP(OpBinaryRM,                  MOF_CPU_OP | MOF_REG_A | MOF_WRITE_REG | MOF_OPBITS_A,                      MOF_REG_B | MOF_VALUE_A | MOF_READ_REG | MOF_READ_MEM)
+SCBE_MICRO_OP(OpBinaryRR,                  MOF_CPU_OP | MOF_REG_A | MOF_READ_REG | MOF_WRITE_REG | MOF_OPBITS_A,       MOF_REG_B | MOF_READ_REG | MOF_OPBITS_A)
+SCBE_MICRO_OP(OpBinaryRI,                  MOF_CPU_OP | MOF_REG_A | MOF_READ_REG | MOF_WRITE_REG | MOF_OPBITS_A,       MOF_VALUE_A | MOF_OPBITS_A)
+SCBE_MICRO_OP(OpBinaryRM,                  MOF_CPU_OP | MOF_REG_A | MOF_READ_REG | MOF_WRITE_REG | MOF_OPBITS_A,       MOF_REG_B | MOF_VALUE_A | MOF_READ_REG | MOF_READ_MEM)
 SCBE_MICRO_OP(OpBinaryMR,                  MOF_CPU_OP | MOF_REG_A | MOF_VALUE_A | MOF_READ_REG | MOF_WRITE_MEM,        MOF_REG_B | MOF_READ_REG | MOF_OPBITS_A)
 SCBE_MICRO_OP(OpBinaryMI,                  MOF_CPU_OP | MOF_REG_A | MOF_VALUE_A | MOF_READ_REG | MOF_WRITE_MEM,        MOF_VALUE_B | MOF_OPBITS_A)
 

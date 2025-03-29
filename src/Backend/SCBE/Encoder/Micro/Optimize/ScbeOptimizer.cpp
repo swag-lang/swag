@@ -113,11 +113,12 @@ void ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
     }
 }
 
-void ScbeOptimizer::ignore(ScbeMicroInstruction* inst)
+void ScbeOptimizer::ignore(const ScbeMicro& out, ScbeMicroInstruction* inst)
 {
 #ifdef SWAG_STATS
     g_Stats.totalOptimScbe += 1;
 #endif
+
     inst->op = ScbeMicroOp::Ignore;
 
     if (inst->flags.has(MIF_JUMP_DEST))
@@ -278,6 +279,9 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
     if (!out.cpuFct->bc->sourceFile->module->mustOptimizeBackend(out.cpuFct->bc->node))
         return;
 
+    //if (!out.cpuFct->bc->sourceFile->name.containsNoCase("4590"))
+    //    return;
+    
     bool globalChanged = true;
     while (globalChanged)
     {

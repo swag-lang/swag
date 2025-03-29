@@ -18,7 +18,7 @@ void ScbeOptimizer::optimizePassDeadRegBeforeLeave(const ScbeMicro& out)
         if (inst->op == ScbeMicroOp::Leave)
         {
             for (const auto& i : mapValInst | std::views::values)
-                ignore(i);
+                ignore(out, i);
             mapValInst.clear();
         }
         else if (inst->op == ScbeMicroOp::LoadMR && out.cpuFct->isStackOffsetTransient(stackOffset))
@@ -47,7 +47,7 @@ void ScbeOptimizer::optimizePassDeadHdwRegBeforeLeave(const ScbeMicro& out)
         if (inst->op == ScbeMicroOp::Leave)
         {
             for (const auto& i : mapRegInst | std::views::values)
-                ignore(i);
+                ignore(out, i);
             mapRegInst.clear();
         }
         else if (inst->op == ScbeMicroOp::LoadRR)
@@ -98,7 +98,7 @@ void ScbeOptimizer::optimizePassDeadStore(const ScbeMicro& out)
             inst->op == ScbeMicroOp::LoadRM)
         {
             if (mapRegInst.contains(inst->regA))
-                ignore(mapRegInst[inst->regA]);
+                ignore(out, mapRegInst[inst->regA]);
             mapRegInst[inst->regA] = inst;
             legitReg               = inst->regA;
         }
@@ -158,7 +158,7 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
                 {
                     if (mapValReg[stackOffset].first == inst->regA)
                     {
-                        ignore(inst);
+                        ignore(out, inst);
                     }
                     else
                     {
