@@ -669,13 +669,20 @@ CpuEncodeResult ScbeX64::encodeLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, 
     SWAG_ASSERT(opBits == OpBits::B32 || opBits == OpBits::B64);
 
     // lea regDst, [regSrc1 + regSrc2 * mulValue]
-    emitREX(concat, opBits, REX_REG_NONE, regDst);
+    const bool b0 = (regDst >= CpuReg::R8 && regDst <= CpuReg::R15);
+    const bool b1 = (regSrc2 >= CpuReg::R8 && regSrc2 <= CpuReg::R15);
+    const bool b2 = (regSrc1 >= CpuReg::R8 && regSrc1 <= CpuReg::R15);
+    if (opBits == OpBits::B32)
+        emitCPUOp(concat, 0x67);
+    if (opBits == OpBits::B64 || b0 || b1 || b2) 
+        concat.addU8(getREX(opBits == OpBits::B64, b0, b1, b2));
+    
     emitCPUOp(concat, 0x8D);
     emitModRM(concat, ModRMMode::Memory, regDst, MODRM_RM_SID);
 
     SWAG_ASSERT(mulValue == 1 || mulValue == 2 || mulValue == 4 || mulValue == 8);
     const auto    scale = static_cast<uint8_t>(log2(mulValue));
-    const uint8_t value = static_cast<uint8_t>(scale << 6) | static_cast<uint8_t>(encodeReg(regSrc2) << 3) | encodeReg(regSrc1);
+    const uint8_t value = static_cast<uint8_t>(scale << 6) | static_cast<uint8_t>((encodeReg(regSrc2) & 0b111) << 3) | (encodeReg(regSrc1) & 0b111);
     concat.addU8(value);
 
     return CpuEncodeResult::Zero;
