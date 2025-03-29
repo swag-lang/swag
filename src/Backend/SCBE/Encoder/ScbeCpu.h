@@ -240,10 +240,12 @@ struct ScbeCpu : BackendEncoder
     CpuFunction* addFunction(const Utf8& funcName, const CallConv* ccFunc, ByteCode* bc);
     void         endFunction() const;
 
-    virtual bool                 acceptsRegA(ScbeMicroInstruction* inst, CpuReg reg) { return true; }
-    virtual bool                 acceptsRegB(ScbeMicroInstruction* inst, CpuReg reg) { return true; }
-    virtual bool                 acceptsRegC(ScbeMicroInstruction* inst, CpuReg reg) { return true; }
-    virtual VectorNative<CpuReg> getWriteRegisters(ScbeMicroInstruction* inst) { return {}; }
+    virtual bool acceptsRegA(ScbeMicroInstruction* inst, CpuReg reg) { return true; }
+    virtual bool acceptsRegB(ScbeMicroInstruction* inst, CpuReg reg) { return true; }
+    virtual bool acceptsRegC(ScbeMicroInstruction* inst, CpuReg reg) { return true; }
+
+    virtual VectorNative<CpuReg> getReadRegisters(ScbeMicroInstruction* inst);
+    virtual VectorNative<CpuReg> getWriteRegisters(ScbeMicroInstruction* inst);
 
     void emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CpuPushParam>& cpuParams, const CallConv* callConv);
     void emitComputeCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CpuPushParam>& cpuParams, CpuReg memRegResult, uint32_t memOffsetResult, void* resultAddr);

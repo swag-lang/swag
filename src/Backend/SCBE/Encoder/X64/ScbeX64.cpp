@@ -2418,22 +2418,41 @@ bool ScbeX64::acceptsRegB(ScbeMicroInstruction* inst, CpuReg reg)
     return true;
 }
 
-VectorNative<CpuReg> ScbeX64::getWriteRegisters(ScbeMicroInstruction* inst)
+VectorNative<CpuReg> ScbeX64::getReadRegisters(ScbeMicroInstruction* inst)
 {
-    VectorNative<CpuReg> result;
-    if (inst->isCall())
+    auto result = ScbeCpu::getReadRegisters(inst);
+
+    if (inst->op == ScbeMicroOp::OpBinaryRI ||
+        inst->op == ScbeMicroOp::OpBinaryRR ||
+        inst->op == ScbeMicroOp::OpBinaryMI ||
+        inst->op == ScbeMicroOp::OpBinaryRM ||
+        inst->op == ScbeMicroOp::OpBinaryMR)
     {
-        result.append(cc->volatileRegistersInteger);
-        result.append(cc->volatileRegistersFloat);
-        return result;
+        if (inst->cpuOp == CpuOp::ROL ||
+            inst->cpuOp == CpuOp::ROR ||
+            inst->cpuOp == CpuOp::SAL ||
+            inst->cpuOp == CpuOp::SAR ||
+            inst->cpuOp == CpuOp::SHL ||
+            inst->cpuOp == CpuOp::SHR)
+        {
+            result.push_back(x64Reg2CpuReg(X64Reg::Rcx));
+        }
+        else if (inst->cpuOp == CpuOp::MUL ||
+                 inst->cpuOp == CpuOp::DIV ||
+                 inst->cpuOp == CpuOp::MOD ||
+                 inst->cpuOp == CpuOp::IDIV ||
+                 inst->cpuOp == CpuOp::IMOD)
+        {
+            result.push_back(x64Reg2CpuReg(X64Reg::Rdx));
+        }
     }
 
-    if (inst->hasWriteRegA())
-        result.push_back(inst->regA);
-    if (inst->hasWriteRegB())
-        result.push_back(inst->regB);
-    if (inst->hasWriteRegC())
-        result.push_back(inst->regC);
+    return result;
+}
+
+VectorNative<CpuReg> ScbeX64::getWriteRegisters(ScbeMicroInstruction* inst)
+{
+    auto result = ScbeCpu::getWriteRegisters(inst);
 
     if (inst->op == ScbeMicroOp::OpBinaryRI ||
         inst->op == ScbeMicroOp::OpBinaryRR ||

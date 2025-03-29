@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Backend/SCBE/Encoder/ScbeCpu.h"
 #include "Backend/ByteCode/ByteCode.h"
+#include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Backend/SCBE/Main/Scbe.h"
 #include "Backend/SCBE/Obj/ScbeCoff.h"
 #include "Core/Math.h"
@@ -13,7 +14,7 @@ void ScbeCpu::init(const BuildParameters& buildParameters)
 {
     BackendEncoder::init(buildParameters);
     optLevel = buildParameters.buildCfg ? buildParameters.buildCfg->backendOptimize : BuildCfgBackendOptim::O0;
-    cpu = this;
+    cpu      = this;
 }
 
 namespace
@@ -135,4 +136,46 @@ void ScbeCpu::endFunction() const
             Report::internalError(module, "SCBE::computeUnwind, unsupported output");
             break;
     }
+}
+
+VectorNative<CpuReg> ScbeCpu::getReadRegisters(ScbeMicroInstruction* inst)
+{
+    VectorNative<CpuReg> result;
+    if (inst->isCall())
+    {
+        result.append(cc->volatileRegistersInteger);
+        result.append(cc->volatileRegistersFloat);
+    }
+    else
+    {
+        if (inst->hasReadRegA())
+            result.push_back(inst->regA);
+        if (inst->hasReadRegB())
+            result.push_back(inst->regB);
+        if (inst->hasReadRegC())
+            result.push_back(inst->regC);
+    }
+
+    return result;
+}
+
+VectorNative<CpuReg> ScbeCpu::getWriteRegisters(ScbeMicroInstruction* inst)
+{
+    VectorNative<CpuReg> result;
+    if (inst->isCall())
+    {
+        result.append(cc->volatileRegistersInteger);
+        result.append(cc->volatileRegistersFloat);
+    }
+    else
+    {
+        if (inst->hasWriteRegA())
+            result.push_back(inst->regA);
+        if (inst->hasWriteRegB())
+            result.push_back(inst->regB);
+        if (inst->hasWriteRegC())
+            result.push_back(inst->regC);
+    }
+
+    return result;
 }
