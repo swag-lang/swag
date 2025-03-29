@@ -81,7 +81,6 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst)
                 !nextRegs.contains(inst->regB) &&
                 out.cpu->acceptsRegC(next, inst->regC))
             {
-                printf("X");
                 setRegC(next, inst->regB);
                 break;
             }

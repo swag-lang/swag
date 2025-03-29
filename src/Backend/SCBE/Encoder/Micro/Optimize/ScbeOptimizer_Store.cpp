@@ -4,7 +4,7 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
 
-void ScbeOptimizer::optimizePassStoreToRegBeforeLeave(const ScbeMicro& out)
+void ScbeOptimizer::optimizePassDeadRegBeforeLeave(const ScbeMicro& out)
 {
     mapValInst.clear();
 
@@ -40,7 +40,7 @@ void ScbeOptimizer::optimizePassStoreToRegBeforeLeave(const ScbeMicro& out)
     }
 }
 
-void ScbeOptimizer::optimizePassStoreToHdwRegBeforeLeave(const ScbeMicro& out)
+void ScbeOptimizer::optimizePassDeadHdwRegBeforeLeave(const ScbeMicro& out)
 {
     mapRegInst.clear();
 
@@ -48,8 +48,7 @@ void ScbeOptimizer::optimizePassStoreToHdwRegBeforeLeave(const ScbeMicro& out)
     while (inst->op != ScbeMicroOp::End)
     {
         if (inst->flags.has(MIF_JUMP_DEST) ||
-            inst->isCall() ||
-            inst->isRet())
+            inst->isCall())
         {
             mapRegInst.clear();
         }

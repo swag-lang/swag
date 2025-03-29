@@ -242,8 +242,8 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
         optimizePassReduce(out);
         optimizePassStore(out);
         optimizePassDeadStore(out);
-        optimizePassStoreToRegBeforeLeave(out);
-        optimizePassStoreToHdwRegBeforeLeave(out);
+        optimizePassDeadRegBeforeLeave(out);
+        optimizePassDeadHdwRegBeforeLeave(out);
         optimizePassParams(out);
     }
 }
