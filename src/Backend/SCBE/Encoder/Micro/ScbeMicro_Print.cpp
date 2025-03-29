@@ -76,6 +76,10 @@ namespace
                 return "na";
             case CpuCondFlag::NE:
                 return "ne";
+            case CpuCondFlag::P:
+                return "p";
+            case CpuCondFlag::NP:
+                return "np";               
             case CpuCondFlag::NEP:
                 return "nep";
         }

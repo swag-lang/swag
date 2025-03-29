@@ -203,9 +203,12 @@ void ScbeOptimizer::computeContext(const ScbeMicro& out)
     while (inst->op != ScbeMicroOp::End)
     {
         const auto stackOffset = inst->getStackOffset();
-        if (inst->op == ScbeMicroOp::LoadAddressM)
-            takeAddressRsp.push_back(stackOffset);
-        usedStack[stackOffset] += 1;
+        if (stackOffset != UINT32_MAX)
+        {
+            if (inst->op == ScbeMicroOp::LoadAddressM)
+                takeAddressRsp.push_back(stackOffset);
+            usedStack[stackOffset] += 1;
+        }
 
         if (inst->hasRegA())
             usedRegs[inst->regA] += 1;
@@ -222,15 +225,9 @@ void ScbeOptimizer::computeContext(const ScbeMicro& out)
     }
 }
 
-void ScbeOptimizer::optimize(const ScbeMicro& out)
+void ScbeOptimizer::optimizeStep1(const ScbeMicro& out)
 {
-    if (out.optLevel == BuildCfgBackendOptim::O0)
-        return;
-    if (!out.cpuFct->bc->sourceFile->module->mustOptimizeBackend(out.cpuFct->bc->node))
-        return;
-
-    setDirtyPass();
-    while (passHasDoneSomething)
+    while (true)
     {
         passHasDoneSomething = false;
         computeContext(out);
@@ -241,5 +238,54 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
         optimizePassDeadRegBeforeLeave(out);
         optimizePassDeadHdwRegBeforeLeave(out);
         optimizePassParams(out);
+        if (!passHasDoneSomething)
+            break;
+    }
+}
+
+void ScbeOptimizer::optimizeStep2(const ScbeMicro& out)
+{
+    passHasDoneSomething = false;
+    computeContext(out);
+
+    std::vector<std::pair<uint32_t, uint32_t>> vec(usedStack.begin(), usedStack.end());
+    std::ranges::sort(vec, [](const auto& a, const auto& b) {
+        return a.second > b.second;
+    });
+    
+    for (const auto& offset : vec | std::views::keys)
+    {
+        if (!out.cpuFct->isStackOffsetLocalParam(offset) && !out.cpuFct->isStackOffsetReg(offset))
+            continue;
+        if (takeAddressRsp.contains(offset))
+            continue;
+        
+        for (const auto r : out.cc->volatileRegistersInteger)
+        {
+            if (usedRegs[r] == 0)
+            {
+                memToReg(out, CpuReg::Rsp, offset, r);
+                return;
+            }
+        }
+    }
+}
+
+void ScbeOptimizer::optimize(const ScbeMicro& out)
+{
+    if (out.optLevel == BuildCfgBackendOptim::O0)
+        return;
+    if (!out.cpuFct->bc->sourceFile->module->mustOptimizeBackend(out.cpuFct->bc->node))
+        return;
+
+    bool globalChanged = true;
+    while (globalChanged)
+    {
+        globalChanged = false;
+
+        optimizeStep1(out);
+        globalChanged = globalChanged || passHasDoneSomething;
+        optimizeStep2(out);
+        globalChanged = globalChanged || passHasDoneSomething;
     }
 }

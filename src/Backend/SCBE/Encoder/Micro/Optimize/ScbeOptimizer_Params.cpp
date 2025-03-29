@@ -18,9 +18,4 @@ void ScbeOptimizer::optimizePassParams(const ScbeMicro& out)
             memToReg(out, CpuReg::Rsp, out.cpuFct->getStackOffsetParam(i), r);
         }
     }
-
-    /*if (usedRegs[CpuReg::R9] == 0)
-    {
-        memToReg(out, CpuReg::Rsp, out.cpuFct->getStackOffsetReg(1), CpuReg::R9);
-    }*/
 }

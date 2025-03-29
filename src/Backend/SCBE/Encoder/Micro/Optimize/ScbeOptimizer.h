@@ -33,6 +33,8 @@ struct ScbeOptimizer
     void optimizePassParams(const ScbeMicro& out);
 
     void computeContext(const ScbeMicro& out);
+    void optimizeStep1(const ScbeMicro& out);
+    void optimizeStep2(const ScbeMicro& out);
     void optimize(const ScbeMicro& out);
     void setDirtyPass() { passHasDoneSomething = true; }
 
