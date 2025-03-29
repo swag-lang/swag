@@ -20,6 +20,11 @@ void ScbeMicro::init(const BuildParameters& buildParameters)
     ScbeCpu::init(buildParameters);
 }
 
+ScbeMicroInstruction* ScbeMicro::getFirstInstruction() const
+{
+    return reinterpret_cast<ScbeMicroInstruction*>(concat.firstBucket->data);
+}
+
 ScbeMicroInstruction* ScbeMicro::addInstruction(ScbeMicroOp op, CpuEmitFlags emitFlags)
 {
     const auto inst = concat.addObj<ScbeMicroInstruction>();

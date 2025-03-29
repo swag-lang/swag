@@ -6,7 +6,7 @@
 
 void ScbeOptimizer::reduceNoOp(const ScbeMicro& out, ScbeMicroInstruction* inst)
 {
-    const auto next = zap(inst + 1);
+    const auto next = nextInstruction(inst);
     switch (inst->op)
     {
         case ScbeMicroOp::LoadRR:
@@ -32,7 +32,7 @@ void ScbeOptimizer::reduceNoOp(const ScbeMicro& out, ScbeMicroInstruction* inst)
 
 void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst)
 {
-    const auto next     = zap(inst + 1);
+    const auto next     = nextInstruction(inst);
     const auto nextRegs = out.cpu->getWriteRegisters(next);
     if (next->flags.has(MIF_JUMP_DEST))
         return;
@@ -143,11 +143,11 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst)
 
 void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
 {
-    auto inst = reinterpret_cast<ScbeMicroInstruction*>(out.concat.firstBucket->data);
+    auto inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {
         reduceNoOp(out, inst);
         reduceNext(out, inst);
-        inst = zap(inst + 1);
+        inst = nextInstruction(inst);
     }
 }

@@ -21,7 +21,7 @@ struct ScbeOptimizer
     void                         setRegA(ScbeMicroInstruction* inst, CpuReg reg);
     void                         setRegB(ScbeMicroInstruction* inst, CpuReg reg);
     void                         setRegC(ScbeMicroInstruction* inst, CpuReg reg);
-    static ScbeMicroInstruction* zap(ScbeMicroInstruction* inst);
+    static ScbeMicroInstruction* nextInstruction(ScbeMicroInstruction* inst);
 
     void reduceNoOp(const ScbeMicro& out, ScbeMicroInstruction* inst);
     void reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst);

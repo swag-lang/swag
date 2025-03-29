@@ -8,7 +8,7 @@ void ScbeOptimizer::optimizePassDeadRegBeforeLeave(const ScbeMicro& out)
 {
     mapValInst.clear();
 
-    auto inst = reinterpret_cast<ScbeMicroInstruction*>(out.concat.firstBucket->data);
+    auto inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {
         if (inst->flags.has(MIF_JUMP_DEST))
@@ -30,7 +30,7 @@ void ScbeOptimizer::optimizePassDeadRegBeforeLeave(const ScbeMicro& out)
             mapValInst.erase(stackOffset);
         }
 
-        inst = zap(inst + 1);
+        inst = nextInstruction(inst);
     }
 }
 
@@ -38,7 +38,7 @@ void ScbeOptimizer::optimizePassDeadHdwRegBeforeLeave(const ScbeMicro& out)
 {
     mapRegInst.clear();
 
-    auto inst = reinterpret_cast<ScbeMicroInstruction*>(out.concat.firstBucket->data);
+    auto inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {
         if (inst->flags.has(MIF_JUMP_DEST) || inst->isCall())
@@ -72,7 +72,7 @@ void ScbeOptimizer::optimizePassDeadHdwRegBeforeLeave(const ScbeMicro& out)
                 mapRegInst.erase(r);
         }
 
-        inst = zap(inst + 1);
+        inst = nextInstruction(inst);
     }
 }
 
@@ -80,7 +80,7 @@ void ScbeOptimizer::optimizePassDeadStore(const ScbeMicro& out)
 {
     mapRegInst.clear();
 
-    auto inst = reinterpret_cast<ScbeMicroInstruction*>(out.concat.firstBucket->data);
+    auto inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {
         if (inst->flags.has(MIF_JUMP_DEST) || inst->isRet())
@@ -110,7 +110,7 @@ void ScbeOptimizer::optimizePassDeadStore(const ScbeMicro& out)
                 mapRegInst.erase(r);
         }
 
-        inst = zap(inst + 1);
+        inst = nextInstruction(inst);
     }
 }
 
@@ -119,7 +119,7 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
     mapValReg.clear();
     mapRegVal.clear();
 
-    auto inst = reinterpret_cast<ScbeMicroInstruction*>(out.concat.firstBucket->data);
+    auto inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {
         if (inst->flags.has(MIF_JUMP_DEST) || inst->isRet())
@@ -215,6 +215,6 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
                 mapRegVal.erase(r);
         }
 
-        inst = zap(inst + 1);
+        inst = nextInstruction(inst);
     }
 }

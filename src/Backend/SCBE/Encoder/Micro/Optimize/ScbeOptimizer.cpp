@@ -11,7 +11,7 @@ void ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
 {
     SWAG_ASSERT(memReg != CpuReg::Rsp || !takeAddressRsp.contains(memOffset));
 
-    auto inst = reinterpret_cast<ScbeMicroInstruction*>(out.concat.firstBucket->data);
+    auto inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {
         switch (inst->op)
@@ -109,7 +109,7 @@ void ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                 break;
         }
 
-        inst = zap(inst + 1);
+        inst = nextInstruction(inst);
     }
 }
 
@@ -122,7 +122,7 @@ void ScbeOptimizer::ignore(ScbeMicroInstruction* inst)
 
     if (inst->flags.has(MIF_JUMP_DEST))
     {
-        const auto next = zap(inst + 1);
+        const auto next = nextInstruction(inst);
         next->flags.add(MIF_JUMP_DEST);
     }
 
@@ -184,8 +184,9 @@ void ScbeOptimizer::setRegC(ScbeMicroInstruction* inst, CpuReg reg)
     }
 }
 
-ScbeMicroInstruction* ScbeOptimizer::zap(ScbeMicroInstruction* inst)
+ScbeMicroInstruction* ScbeOptimizer::nextInstruction(ScbeMicroInstruction* inst)
 {
+    inst++;
     while (inst->op == ScbeMicroOp::Nop || inst->op == ScbeMicroOp::Label || inst->op == ScbeMicroOp::Debug || inst->op == ScbeMicroOp::Ignore)
         inst++;
     return inst;
@@ -198,7 +199,7 @@ void ScbeOptimizer::computeContext(const ScbeMicro& out)
     usedStack.clear();
     contextFlags.clear();
 
-    auto inst = reinterpret_cast<ScbeMicroInstruction*>(out.concat.firstBucket->data);
+    auto inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {
         const auto stackOffset = inst->getStackOffset();
@@ -217,7 +218,7 @@ void ScbeOptimizer::computeContext(const ScbeMicro& out)
         for (auto r : details)
             usedRegs[r] += 1;
 
-        inst = zap(inst + 1);
+        inst = nextInstruction(inst);
     }
 }
 
