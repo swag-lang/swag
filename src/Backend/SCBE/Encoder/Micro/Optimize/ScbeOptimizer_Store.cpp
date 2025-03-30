@@ -14,24 +14,22 @@ void ScbeOptimizer::optimizePassDeadRegBeforeLeave(const ScbeMicro& out)
         if (inst->flags.has(MIF_JUMP_DEST))
             mapValInst.clear();
 
-        const auto stackOffset = inst->getStackOffset();
         if (inst->op == ScbeMicroOp::Leave)
         {
             for (const auto& i : mapValInst | std::views::values)
                 ignore(out, i);
             mapValInst.clear();
         }
-        else if (inst->op == ScbeMicroOp::LoadMR && out.cpuFct->isStackOffsetTransient(stackOffset))
-        {
-            mapValInst[stackOffset] = inst;
-        }
-        else if (inst->op == ScbeMicroOp::LoadMI && out.cpuFct->isStackOffsetTransient(stackOffset))
-        {
-            mapValInst[stackOffset] = inst;
-        }        
         else
         {
-            mapValInst.erase(stackOffset);
+            const auto stackOffset = inst->getStackOffset();
+            if (out.cpuFct->isStackOffsetTransient(stackOffset))
+            {
+                if (inst->op == ScbeMicroOp::LoadMR || inst->op == ScbeMicroOp::LoadMI)
+                    mapValInst[stackOffset] = inst;
+                else
+                    mapValInst.erase(stackOffset);
+            }
         }
 
         inst = ScbeMicro::getNextInstruction(inst);
