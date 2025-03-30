@@ -50,12 +50,12 @@ void ScbeOptimizer::reduceLoadRR(const ScbeMicro& out, ScbeMicroInstruction* ins
             if (nextNext->isJump() || nextNext->isRet())
                 break;
 
-            const auto readRegs = out.cpu->getReadRegisters(nextNext);
+            const auto readRegs  = out.cpu->getReadRegisters(nextNext);
+            const auto writeRegs = out.cpu->getWriteRegisters(nextNext);
 
             if (nextNext->op != ScbeMicroOp::LoadRR &&
-                nextNext->hasWriteRegA() &&
-                nextNext->regA == inst->regA &&
                 out.cpu->acceptsRegB(inst, next->regA) &&
+                writeRegs.contains(inst->regA) &&
                 !readRegs.contains(inst->regA))
             {
                 setRegA(inst, next->regA);

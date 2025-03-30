@@ -143,8 +143,8 @@ VectorNative<CpuReg> ScbeCpu::getReadRegisters(ScbeMicroInstruction* inst)
     VectorNative<CpuReg> result;
     if (inst->isCall())
     {
-        result.append(cc->volatileRegistersInteger);
-        result.append(cc->volatileRegistersFloat);
+        result.append(cc->paramByRegisterInteger);
+        result.append(cc->paramByRegisterFloat);
     }
     else
     {
@@ -166,6 +166,8 @@ VectorNative<CpuReg> ScbeCpu::getWriteRegisters(ScbeMicroInstruction* inst)
     {
         result.append(cc->volatileRegistersInteger);
         result.append(cc->volatileRegistersFloat);
+        result.push_back(cc->returnByRegisterInteger);
+        result.push_back(cc->returnByRegisterFloat);
     }
     else
     {
