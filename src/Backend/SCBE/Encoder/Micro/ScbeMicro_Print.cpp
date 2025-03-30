@@ -306,12 +306,10 @@ void ScbeMicro::print() const
     uint32_t idx = 0;
     for (uint32_t i = 0; i < num; i++, inst++)
     {
-        ByteCode::PrintInstructionLine         line;
-        Vector<ByteCode::PrintInstructionLine> lines;
-
         if (inst->op == ScbeMicroOp::Ignore)
             continue;
 
+        ByteCode::PrintInstructionLine line;
         switch (inst->op)
         {
             case ScbeMicroOp::Debug:
@@ -533,6 +531,7 @@ void ScbeMicro::print() const
         while (line.flags.length() != 10)
             line.flags += '.';
 
+        Vector<ByteCode::PrintInstructionLine> lines;
         lines.push_back(line);
 
         ByteCodePrintOptions po;
