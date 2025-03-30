@@ -25,6 +25,10 @@ void ScbeOptimizer::optimizePassDeadRegBeforeLeave(const ScbeMicro& out)
         {
             mapValInst[stackOffset] = inst;
         }
+        else if (inst->op == ScbeMicroOp::LoadMI && out.cpuFct->isStackOffsetTransient(stackOffset))
+        {
+            mapValInst[stackOffset] = inst;
+        }        
         else
         {
             mapValInst.erase(stackOffset);
