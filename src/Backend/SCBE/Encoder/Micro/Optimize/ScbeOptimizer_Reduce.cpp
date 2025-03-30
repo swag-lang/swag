@@ -70,6 +70,7 @@ void ScbeOptimizer::reduceLoadRR(const ScbeMicro& out, ScbeMicroInstruction* ins
     }
 }
 
+#pragma optimize("", off)
 void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst)
 {
     const auto next     = ScbeMicro::getNextInstruction(inst);
@@ -138,6 +139,18 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst)
                 break;
             }
 
+            break;
+
+        case ScbeMicroOp::LoadMI:
+            if (next->op == ScbeMicroOp::LoadRM &&
+                inst->regA == next->regB &&
+                inst->valueA == next->valueA)
+            {
+                setOp(next, ScbeMicroOp::LoadRI);
+                setValueA(next, inst->valueB);
+                break;
+            }
+        
             break;
 
         case ScbeMicroOp::LoadMR:
