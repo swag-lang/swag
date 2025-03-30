@@ -70,7 +70,6 @@ void ScbeOptimizer::reduceLoadRR(const ScbeMicro& out, ScbeMicroInstruction* ins
     }
 }
 
-#pragma optimize("", off)
 void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst)
 {
     const auto next     = ScbeMicro::getNextInstruction(inst);

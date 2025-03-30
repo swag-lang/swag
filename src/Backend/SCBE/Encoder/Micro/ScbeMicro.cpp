@@ -28,11 +28,18 @@ ScbeMicroInstruction* ScbeMicro::getFirstInstruction() const
 ScbeMicroInstruction* ScbeMicro::addInstruction(ScbeMicroOp op, CpuEmitFlags emitFlags)
 {
     const auto inst = concat.addObj<ScbeMicroInstruction>();
-    if (nextIsJumpDest)
-        inst->flags.add(MIF_JUMP_DEST);
     inst->op        = op;
     inst->emitFlags = emitFlags;
-    nextIsJumpDest  = false;
+
+    if (op != ScbeMicroOp::Label &&
+        op != ScbeMicroOp::PatchJump &&
+        op != ScbeMicroOp::Debug &&
+        nextIsJumpDest)
+    {
+        inst->flags.add(MIF_JUMP_DEST);
+        nextIsJumpDest = false;
+    }
+
     return inst;
 }
 

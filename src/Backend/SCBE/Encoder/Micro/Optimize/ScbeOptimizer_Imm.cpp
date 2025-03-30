@@ -5,6 +5,8 @@
 
 void ScbeOptimizer::optimizePassImmediate(const ScbeMicro& out)
 {
+    mapValInst.clear();
+    
     auto inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {

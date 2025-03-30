@@ -467,25 +467,7 @@ CpuEncodeResult ScbeX64::encodeLoadRegImm(CpuReg reg, uint64_t value, OpBits opB
     if (emitFlags.has(EMIT_CanEncode))
         return CpuEncodeResult::Zero;
 
-    if (opBits == OpBits::B64 && value <= 0x7FFFFFFF && reg < CpuReg::R8)
-    {
-        emitCPUOp(concat, 0xB8, reg);
-        emitValue(concat, value, OpBits::B32);
-    }
-    else if (opBits == OpBits::B64 && value <= 0x7FFFFFFF)
-    {
-        emitREX(concat, OpBits::B64, REX_REG_NONE, reg);
-        emitCPUOp(concat, 0xC7);
-        emitCPUOp(concat, 0xC0, reg);
-        emitValue(concat, value, OpBits::B32);
-    }
-    else if (opBits == OpBits::B64)
-    {
-        emitREX(concat, OpBits::B64, REX_REG_NONE, reg);
-        emitCPUOp(concat, 0xB8, reg);
-        emitValue(concat, value, OpBits::B64);
-    }
-    else if (opBits == OpBits::B8)
+    if (opBits == OpBits::B8)
     {
         emitREX(concat, opBits, REX_REG_NONE, reg);
         emitCPUOp(concat, 0xB0, reg);

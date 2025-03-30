@@ -9,6 +9,7 @@ impl Vector2
     mtd(op: string) const opBinary(other: s32)->Vector2 => Self{x*other}
 }
 
+//#[Swag.PrintAsm]
 #[Swag.Optimize("", false)]
 #test
 {
