@@ -183,11 +183,22 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst)
     }
 }
 
+void ScbeOptimizer::reduceUnusedStack(const ScbeMicro& out, ScbeMicroInstruction* inst)
+{
+    const auto stackOffset = inst->getStackOffsetWrite();
+    if (out.cpuFct->isStackOffsetTransient(stackOffset) &&
+        !usedReadStack.contains(static_cast<uint32_t>(inst->valueA)))
+    {
+        ignore(out, inst);
+    }
+}
+
 void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
 {
     auto inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {
+        reduceUnusedStack(out, inst);
         reduceNoOp(out, inst);
         reduceNext(out, inst);
         reduceLoadRR(out, inst);

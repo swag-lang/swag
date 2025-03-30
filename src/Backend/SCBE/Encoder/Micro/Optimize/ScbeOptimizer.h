@@ -26,6 +26,7 @@ struct ScbeOptimizer
     void reduceNoOp(const ScbeMicro& out, ScbeMicroInstruction* inst);
     void reduceLoadRR(const ScbeMicro& out, ScbeMicroInstruction* inst);
     void reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst);
+    void reduceUnusedStack(const ScbeMicro& out, ScbeMicroInstruction* inst);
     void optimizePassReduce(const ScbeMicro& out);
     void optimizePassDeadRegBeforeLeave(const ScbeMicro& out);
     void optimizePassDeadHdwRegBeforeLeave(const ScbeMicro& out);
