@@ -277,11 +277,11 @@ namespace
             res += form("C:%s ", regName(inst->regC, OpBits::B64));
 
         if (flags.has(MOF_VALUE_A))
-            res += form("A:%llxh ", inst->valueA);
+            res += form("A:0x%llX ", inst->valueA);
         if (flags.has(MOF_VALUE_B))
-            res += form("B:%llxh ", inst->valueB);
+            res += form("B:0x%llX ", inst->valueB);
         if (flags.has(MOF_VALUE_C))
-            res += form("B:%xh ", inst->valueC);
+            res += form("B:0x%X ", inst->valueC);
 
         if (flags.has(MOF_OPBITS_A))
             res += form("A:%s ", opBitsNameRaw(inst->opBitsA));
@@ -407,15 +407,15 @@ void ScbeMicro::print() const
                 break;
             case ScbeMicroOp::LoadRI:
                 line.name = "mov";
-                line.args = form("%s, %xh", regName(inst->regA, inst->opBitsA), inst->valueA);
+                line.args = form("%s, 0x%X", regName(inst->regA, inst->opBitsA), inst->valueA);
                 break;
             case ScbeMicroOp::LoadRM:
                 line.name = "mov";
-                line.args = form("%s, %s ptr [%s+%xh]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsA), regName(inst->regB, OpBits::B64), inst->valueA);
+                line.args = form("%s, %s ptr [%s+0x%X]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsA), regName(inst->regB, OpBits::B64), inst->valueA);
                 break;
             case ScbeMicroOp::LoadSignedExtendRM:
                 line.name = "movsx";
-                line.args = form("%s, %s ptr [%s+%xh]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsB), regName(inst->regB, OpBits::B64), inst->valueA);
+                line.args = form("%s, %s ptr [%s+0x%X]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsB), regName(inst->regB, OpBits::B64), inst->valueA);
                 break;
             case ScbeMicroOp::LoadSignedExtendRR:
                 line.name = "movsx";
@@ -423,7 +423,7 @@ void ScbeMicro::print() const
                 break;
             case ScbeMicroOp::LoadZeroExtendRM:
                 line.name = "movzx";
-                line.args = form("%s, %s ptr [%s+%xh]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsB), regName(inst->regB, OpBits::B64), inst->valueA);
+                line.args = form("%s, %s ptr [%s+0x%X]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsB), regName(inst->regB, OpBits::B64), inst->valueA);
                 break;
             case ScbeMicroOp::LoadZeroExtendRR:
                 line.name = "movzx";
@@ -431,7 +431,7 @@ void ScbeMicro::print() const
                 break;
             case ScbeMicroOp::LoadAddressM:
                 line.name = "lea";
-                line.args = form("%s, [%s+%xh]", regName(inst->regA, OpBits::B64), regName(inst->regB, OpBits::B64), inst->valueA);
+                line.args = form("%s, [%s+0x%X]", regName(inst->regA, OpBits::B64), regName(inst->regB, OpBits::B64), inst->valueA);
                 break;
             case ScbeMicroOp::LoadAddressAddMul:
                 line.name = "lea";
@@ -439,11 +439,11 @@ void ScbeMicro::print() const
                 break;
             case ScbeMicroOp::LoadMR:
                 line.name = "mov";
-                line.args = form("%s ptr [%s+%xh], %s", opBitsName(inst->opBitsA), regName(inst->regA, OpBits::B64), inst->valueA, regName(inst->regB, inst->opBitsA));
+                line.args = form("%s ptr [%s+0x%X], %s", opBitsName(inst->opBitsA), regName(inst->regA, OpBits::B64), inst->valueA, regName(inst->regB, inst->opBitsA));
                 break;
             case ScbeMicroOp::LoadMI:
                 line.name = "mov";
-                line.args = form("%s ptr [%s+%xh], %d", opBitsName(inst->opBitsA), regName(inst->regA, OpBits::B64), inst->valueA, inst->valueB);
+                line.args = form("%s ptr [%s+0x%X], %d", opBitsName(inst->opBitsA), regName(inst->regA, OpBits::B64), inst->valueA, inst->valueB);
                 break;
             case ScbeMicroOp::CmpRR:
                 line.name = "cmp";
@@ -455,11 +455,11 @@ void ScbeMicro::print() const
                 break;
             case ScbeMicroOp::CmpMR:
                 line.name = "cmp";
-                line.args = form("%s ptr [%s+%xh], %s", opBitsName(inst->opBitsA), regName(inst->regA, OpBits::B64), inst->valueA, regName(inst->regB, inst->opBitsA));
+                line.args = form("%s ptr [%s+0x%X], %s", opBitsName(inst->opBitsA), regName(inst->regA, OpBits::B64), inst->valueA, regName(inst->regB, inst->opBitsA));
                 break;
             case ScbeMicroOp::CmpMI:
                 line.name = "cmp";
-                line.args = form("%s ptr [%s+%xh], %d", opBitsName(inst->opBitsA), regName(inst->regA, OpBits::B64), inst->valueA, inst->valueB);
+                line.args = form("%s ptr [%s+0x%X], %d", opBitsName(inst->opBitsA), regName(inst->regA, OpBits::B64), inst->valueA, inst->valueB);
                 break;
             case ScbeMicroOp::SetCC:
                 line.name = form("set%s", cpuCondName(inst->cpuCond));
@@ -471,7 +471,7 @@ void ScbeMicro::print() const
                 break;
             case ScbeMicroOp::OpUnaryM:
                 line.name = cpuOpName(inst->cpuOp);
-                line.args += form("%s ptr [%s+%xh]", opBitsName(inst->opBitsA), regName(inst->regA, inst->opBitsA), inst->valueA);
+                line.args += form("%s ptr [%s+0x%X]", opBitsName(inst->opBitsA), regName(inst->regA, inst->opBitsA), inst->valueA);
                 break;
             case ScbeMicroOp::OpUnaryR:
                 line.name = cpuOpName(inst->cpuOp);
@@ -483,7 +483,7 @@ void ScbeMicro::print() const
                 break;
             case ScbeMicroOp::OpBinaryMR:
                 line.name = cpuOpName(inst->cpuOp);
-                line.args += form("%s ptr [%s+%xh], %s", opBitsName(inst->opBitsA), regName(inst->regA, OpBits::B64), inst->valueA, regName(inst->regB, inst->opBitsA));
+                line.args += form("%s ptr [%s+0x%X], %s", opBitsName(inst->opBitsA), regName(inst->regA, OpBits::B64), inst->valueA, regName(inst->regB, inst->opBitsA));
                 break;
             case ScbeMicroOp::OpBinaryRI:
                 line.name = cpuOpName(inst->cpuOp);
@@ -491,11 +491,11 @@ void ScbeMicro::print() const
                 break;
             case ScbeMicroOp::OpBinaryMI:
                 line.name = cpuOpName(inst->cpuOp);
-                line.args += form("%s ptr [%s+%xh], %d", opBitsName(inst->opBitsA), regName(inst->regA, OpBits::B64), inst->valueA, inst->valueB);
+                line.args += form("%s ptr [%s+0x%X], %d", opBitsName(inst->opBitsA), regName(inst->regA, OpBits::B64), inst->valueA, inst->valueB);
                 break;
             case ScbeMicroOp::OpBinaryRM:
                 line.name = cpuOpName(inst->cpuOp);
-                line.args += form("%s, %s ptr [%s+%xh]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsA), regName(inst->regB, OpBits::B64), inst->valueA);
+                line.args += form("%s, %s ptr [%s+0x%X]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsA), regName(inst->regB, OpBits::B64), inst->valueA);
                 break;
             case ScbeMicroOp::OpTernaryRRR:
                 line.name = cpuOpName(inst->cpuOp);
