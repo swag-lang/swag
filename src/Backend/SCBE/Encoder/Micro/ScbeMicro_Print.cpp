@@ -281,7 +281,7 @@ namespace
         if (flags.has(MOF_VALUE_B))
             res += form("B:0x%llX ", inst->valueB);
         if (flags.has(MOF_VALUE_C))
-            res += form("B:0x%X ", inst->valueC);
+            res += form("C:0x%X ", inst->valueC);
 
         if (flags.has(MOF_OPBITS_A))
             res += form("A:%s ", opBitsNameRaw(inst->opBitsA));
@@ -441,7 +441,10 @@ void ScbeMicro::print() const
                 break;
             case ScbeMicroOp::LoadMI:
                 line.name = "mov";
-                line.args = form("%s ptr [%s+0x%X], %d", opBitsName(inst->opBitsA), regName(inst->regA, OpBits::B64), inst->valueA, inst->valueB);
+                if (inst->valueA == 0)
+                    line.args = form("%s ptr [%s], %d", opBitsName(inst->opBitsA), regName(inst->regA, OpBits::B64), inst->valueB);
+                else
+                    line.args = form("%s ptr [%s+0x%X], %d", opBitsName(inst->opBitsA), regName(inst->regA, OpBits::B64), inst->valueA, inst->valueB);
                 break;
             case ScbeMicroOp::CmpRR:
                 line.name = "cmp";
@@ -524,7 +527,6 @@ void ScbeMicro::print() const
             line.args += "| ";
             line.args += printOpArgs(inst, def.rightFlags);
         }
-        line.args.makeUpper();
 
         if (inst->flags.has(MIF_JUMP_DEST))
             line.flags += 'J';
