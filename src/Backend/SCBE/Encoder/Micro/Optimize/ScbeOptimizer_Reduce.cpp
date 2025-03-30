@@ -34,8 +34,7 @@ void ScbeOptimizer::reduceLoadRR(const ScbeMicro& out, ScbeMicroInstruction* ins
 {
     const auto next = nextInstruction(inst);
 
-    if (inst->op != ScbeMicroOp::LoadRR &&
-        next->op == ScbeMicroOp::LoadRR &&
+    if (next->op == ScbeMicroOp::LoadRR &&
         !next->flags.has(MIF_JUMP_DEST) &&
         !inst->hasReadRegA() &&
         inst->hasWriteRegA() &&
