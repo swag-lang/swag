@@ -32,6 +32,7 @@ struct ScbeOptimizer
     void optimizePassDeadStore(const ScbeMicro& out);
     void optimizePassStore(const ScbeMicro& out);
     void optimizePassParams(const ScbeMicro& out);
+    void optimizePassImmediate(const ScbeMicro& out);
 
     void computeContext(const ScbeMicro& out);
     void optimizeStep1(const ScbeMicro& out);
