@@ -117,7 +117,6 @@ struct ByteCode
     uint32_t dynStackSize          = 0;
     uint32_t numInstructions       = 0;
     uint32_t maxInstructions       = 0;
-    uint32_t maxCallResults        = 0;
     uint32_t maxCallParams         = 0;
     uint32_t maxSpVaargs           = 0;
     uint32_t maxReservedRegisterRC = 0;

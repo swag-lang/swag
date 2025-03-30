@@ -55,12 +55,8 @@ bool Llvm::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         pp.allocR->setAlignment(llvm::Align{16});
     }
 
-    pp.allocRR = nullptr;
-    if (bc->maxCallResults)
-    {
-        pp.allocRR = builder.CreateAlloca(I64_TY(), builder.getInt32(bc->maxCallResults));
-        pp.allocRR->setAlignment(llvm::Align{16});
-    }
+    pp.allocRR = builder.CreateAlloca(I64_TY(), builder.getInt32(2));
+    pp.allocRR->setAlignment(llvm::Align{16});
 
     pp.allocResult = builder.CreateAlloca(I64_TY(), builder.getInt32(1));
     pp.allocResult->setAlignment(llvm::Align{16});

@@ -1463,7 +1463,6 @@ bool ByteCodeGen::emitReturnByCopyAddress(const ByteCodeGenContext* context, Ast
                 EMIT_INST1(context, ByteCodeOp::CopyRAtoRT, node->resultRegisterRc);
             }
 
-            context->bc->maxCallResults = std::max(context->bc->maxCallResults, static_cast<uint32_t>(1));
             parentReturn->addSemFlag(SEMFLAG_RETVAL);
             return true;
         }
@@ -1493,7 +1492,6 @@ bool ByteCodeGen::emitReturnByCopyAddress(const ByteCodeGenContext* context, Ast
 
             emitRetValRef(context, resolved, node->resultRegisterRc, false, resolved->computedValue.storageOffset + typeParam->offset);
             EMIT_INST1(context, ByteCodeOp::CopyRAtoRT, node->resultRegisterRc);
-            context->bc->maxCallResults = std::max(context->bc->maxCallResults, static_cast<uint32_t>(1));
 
             testReturn->parent->addSemFlag(SEMFLAG_FIELD_STRUCT);
             return true;
@@ -1504,7 +1502,6 @@ bool ByteCodeGen::emitReturnByCopyAddress(const ByteCodeGenContext* context, Ast
     const auto inst = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRc);
     inst->b.u64     = node->computedValue()->storageOffset;
     EMIT_INST1(context, ByteCodeOp::CopyRAtoRT, node->resultRegisterRc);
-    context->bc->maxCallResults = std::max(context->bc->maxCallResults, static_cast<uint32_t>(1));
 
     if (node->resolvedSymbolOverload())
         node->resolvedSymbolOverload()->flags.add(OVERLOAD_EMITTED);
@@ -2038,10 +2035,6 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
         !typeInfoFunc->returnByStackAddress())
     {
         auto numRegs = typeInfoFunc->returnType->numRegisters();
-
-        // Need to do that even if discard, not sure why
-        context->bc->maxCallResults = std::max(context->bc->maxCallResults, numRegs);
-
         if (!node->hasAstFlag(AST_DISCARD))
         {
             reserveRegisterRC(context, node->resultRegisterRc, numRegs);

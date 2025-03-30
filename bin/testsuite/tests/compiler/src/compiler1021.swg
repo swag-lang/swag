@@ -1,5 +1,4 @@
-
-
+//#[Swag.PrintAsm]
 #test
 {
 	var ptr : ^u8 = cast() @alloc(10)

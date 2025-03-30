@@ -46,7 +46,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     // ...padding to 16...
 
     // all registers:                   bc->maxReservedRegisterRC, contains all Swag bytecode registers
-    // offsetRT:                        bc->maxCallResults, contains registers for result
+    // offsetRT:                        contains 2 registers for result
     // offsetParamsAsRegisters:         To store all parameters passed as register in the current calling convention
     // offsetResult:                    sizeof(Register) to store return value
     // offsetStack:                     stackSize, function local stack
@@ -54,7 +54,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     // ...padding to 16... => total is sizeStack
 
     const uint32_t offsetRT                = bc->maxReservedRegisterRC * sizeof(Register);
-    const uint32_t offsetParamsAsRegisters = offsetRT + bc->maxCallResults * sizeof(Register);
+    const uint32_t offsetParamsAsRegisters = offsetRT + 2 * sizeof(Register);
     const uint32_t offsetResult            = offsetParamsAsRegisters + cc.paramByRegisterInteger.size() * sizeof(Register);
     const uint32_t offsetByteCodeStack     = offsetResult + sizeof(Register);
     const uint32_t offsetFLT               = offsetByteCodeStack + bc->stackSize; // For float load (should be reserved only if we have floating point operations in that function)
@@ -1747,8 +1747,11 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::IntrinsicArguments:
-                SWAG_ASSERT(ip->b.u32 == ip->a.u32 + 1);
-                emitInternalCallRAParams(pp, g_LangSpec->name_at_args, {}, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32));
+                emitInternalCallRAParams(pp, g_LangSpec->name_at_args, {}, CpuReg::Rsp, pp.cpuFct->getStackOffsetRT(0));
+                pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetRT(0), OpBits::B64);
+                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
+                pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetRT(1), OpBits::B64);
+                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), cc.computeRegI0, OpBits::B64);
                 break;
             case ByteCodeOp::IntrinsicModules:
                 if (buildParameters.module->modulesSliceOffset == UINT32_MAX)
@@ -2360,8 +2363,11 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitInternalCallRAParams(pp, g_LangSpec->name_priv_failedAssume, {ip->a.u32});
                 break;
             case ByteCodeOp::IntrinsicGetErr:
-                SWAG_ASSERT(ip->b.u32 == ip->a.u32 + 1);
-                emitInternalCallRAParams(pp, g_LangSpec->name_at_err, {}, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32));
+                emitInternalCallRAParams(pp, g_LangSpec->name_at_err, {}, CpuReg::Rsp, pp.cpuFct->getStackOffsetRT(0));
+                pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetRT(0), OpBits::B64);
+                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc.computeRegI0, OpBits::B64);
+                pp.emitLoadRegMem(cc.computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetRT(1), OpBits::B64);
+                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), cc.computeRegI0, OpBits::B64);
                 break;
             case ByteCodeOp::InternalSetErr:
                 emitInternalCallRAParams(pp, g_LangSpec->name_priv_seterr, {ip->a.u32, ip->b.u32});
