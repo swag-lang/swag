@@ -50,5 +50,7 @@ struct ScbeOptimizer
     VectorNative<uint64_t>  takeAddressRsp;
     Map<CpuReg, uint32_t>   usedRegs;
     Map<uint32_t, uint32_t> usedStack;
+    Map<uint32_t, uint32_t> usedReadStack;
+    Map<uint32_t, uint32_t> usedWriteStack;
     ScbeOptContextFlags     contextFlags = CF_ZERO;
 };

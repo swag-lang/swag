@@ -198,6 +198,8 @@ void ScbeOptimizer::computeContext(const ScbeMicro& out)
     takeAddressRsp.clear();
     usedRegs.clear();
     usedStack.clear();
+    usedReadStack.clear();
+    usedWriteStack.clear();
     contextFlags.clear();
 
     auto inst = out.getFirstInstruction();
@@ -210,6 +212,9 @@ void ScbeOptimizer::computeContext(const ScbeMicro& out)
                 takeAddressRsp.push_back(stackOffset);
             usedStack[stackOffset] += 1;
         }
+
+        usedReadStack[inst->getStackOffsetRead()] += 1;
+        usedWriteStack[inst->getStackOffsetWrite()] += 1;
 
         if (inst->hasRegA())
             usedRegs[inst->regA] += 1;
@@ -278,9 +283,6 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
         return;
     if (!out.cpuFct->bc->sourceFile->module->mustOptimizeBackend(out.cpuFct->bc->node))
         return;
-
-    //if (!out.cpuFct->bc->sourceFile->name.containsNoCase("5449"))
-    //    return;
     
     bool globalChanged = true;
     while (globalChanged)

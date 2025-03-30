@@ -37,6 +37,8 @@ struct ScbeMicroInstruction
     bool isCall() const;
     bool isRet() const;
 
+    uint32_t getStackOffsetRead() const;
+    uint32_t getStackOffsetWrite() const;
     uint32_t getStackOffset() const;
 
     Utf8     name;
