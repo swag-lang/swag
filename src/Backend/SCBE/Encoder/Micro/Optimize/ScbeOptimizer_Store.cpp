@@ -30,7 +30,7 @@ void ScbeOptimizer::optimizePassDeadRegBeforeLeave(const ScbeMicro& out)
             mapValInst.erase(stackOffset);
         }
 
-        inst = nextInstruction(inst);
+        inst = ScbeMicro::getNextInstruction(inst);
     }
 }
 
@@ -72,7 +72,7 @@ void ScbeOptimizer::optimizePassDeadHdwRegBeforeLeave(const ScbeMicro& out)
                 mapRegInst.erase(r);
         }
 
-        inst = nextInstruction(inst);
+        inst = ScbeMicro::getNextInstruction(inst);
     }
 }
 
@@ -110,7 +110,7 @@ void ScbeOptimizer::optimizePassDeadStore(const ScbeMicro& out)
                 mapRegInst.erase(r);
         }
 
-        inst = nextInstruction(inst);
+        inst = ScbeMicro::getNextInstruction(inst);
     }
 }
 
@@ -215,6 +215,6 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
                 mapRegVal.erase(r);
         }
 
-        inst = nextInstruction(inst);
+        inst = ScbeMicro::getNextInstruction(inst);
     }
 }

@@ -206,6 +206,7 @@ struct CpuFunction
 
     Map<uint32_t, int32_t>        labels;
     VectorNative<CpuLabelToSolve> labelsToSolve;
+    Set<CpuReg>                   usedRegs;
     VectorNative<CpuReg>          unwindRegs;
     VectorNative<uint32_t>        unwindOffsetRegs;
     VectorNative<uint16_t>        unwind;

@@ -109,7 +109,7 @@ void ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                 break;
         }
 
-        inst = nextInstruction(inst);
+        inst = ScbeMicro::getNextInstruction(inst);
     }
 }
 
@@ -123,7 +123,7 @@ void ScbeOptimizer::ignore(const ScbeMicro& out, ScbeMicroInstruction* inst)
 
     if (inst->flags.has(MIF_JUMP_DEST))
     {
-        const auto next = nextInstruction(inst);
+        const auto next = ScbeMicro::getNextInstruction(inst);
         next->flags.add(MIF_JUMP_DEST);
     }
 
@@ -185,14 +185,6 @@ void ScbeOptimizer::setRegC(ScbeMicroInstruction* inst, CpuReg reg)
     }
 }
 
-ScbeMicroInstruction* ScbeOptimizer::nextInstruction(ScbeMicroInstruction* inst)
-{
-    inst++;
-    while (inst->op == ScbeMicroOp::Nop || inst->op == ScbeMicroOp::Label || inst->op == ScbeMicroOp::Debug || inst->op == ScbeMicroOp::Ignore)
-        inst++;
-    return inst;
-}
-
 void ScbeOptimizer::computeContext(const ScbeMicro& out)
 {
     takeAddressRsp.clear();
@@ -227,7 +219,7 @@ void ScbeOptimizer::computeContext(const ScbeMicro& out)
         for (auto r : details)
             usedRegs[r] += 1;
 
-        inst = nextInstruction(inst);
+        inst = ScbeMicro::getNextInstruction(inst);
     }
 }
 

@@ -673,23 +673,29 @@ void ScbeMicro::encode(ScbeCpu& encoder) const
         print();
 }
 
+ScbeMicroInstruction* ScbeMicro::getNextInstruction(ScbeMicroInstruction* inst)
+{
+    inst++;
+    while (inst->op == ScbeMicroOp::Nop || inst->op == ScbeMicroOp::Label || inst->op == ScbeMicroOp::Debug || inst->op == ScbeMicroOp::Ignore)
+        inst++;
+    return inst;
+}
+
 void ScbeMicro::pushRegisters() const
 {
-    Set<CpuReg> regs;
-
     auto inst = reinterpret_cast<ScbeMicroInstruction*>(concat.firstBucket->data);
     while (inst->op != ScbeMicroOp::End)
     {
-        if (inst->hasWriteRegA())
-            regs.insert(inst->regA);
-        if (inst->hasWriteRegB())
-            regs.insert(inst->regB);
-        if (inst->hasWriteRegC())
-            regs.insert(inst->regC);
-        inst = inst + 1;
+        if (inst->hasRegA())
+            cpuFct->usedRegs.insert(inst->regA);
+        if (inst->hasRegB())
+            cpuFct->usedRegs.insert(inst->regB);
+        if (inst->hasRegC())
+            cpuFct->usedRegs.insert(inst->regC);
+        inst = getNextInstruction(inst);
     }
 
-    for (const auto r : regs)
+    for (const auto r : cpuFct->usedRegs)
     {
         if (cc->nonVolatileRegisters.contains(r))
             cpuFct->unwindRegs.push_back(r);

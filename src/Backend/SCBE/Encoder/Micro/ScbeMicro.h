@@ -66,12 +66,13 @@ struct ScbeMicro final : ScbeCpu
     CpuEncodeResult encodeOpBinaryMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags) override;
     CpuEncodeResult encodeOpTernaryRegRegReg(CpuReg reg0, CpuReg reg1, CpuReg reg2, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags) override;
 
-    ScbeMicroInstruction* getFirstInstruction() const;
-    ScbeMicroInstruction* addInstruction(ScbeMicroOp op, CpuEmitFlags emitFlags);
-    void                  pushRegisters() const;
-    void                  process(ScbeCpu& encoder);
-    void                  encode(ScbeCpu& encoder) const;
-    void                  print() const;
+    static ScbeMicroInstruction* getNextInstruction(ScbeMicroInstruction* inst);
+    ScbeMicroInstruction*        getFirstInstruction() const;
+    ScbeMicroInstruction*        addInstruction(ScbeMicroOp op, CpuEmitFlags emitFlags);
+    void                         pushRegisters() const;
+    void                         process(ScbeCpu& encoder);
+    void                         encode(ScbeCpu& encoder) const;
+    void                         print() const;
 
     bool nextIsJumpDest = false;
 };

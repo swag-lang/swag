@@ -3,6 +3,7 @@
 #include "Backend/SCBE/Main/Scbe.h"
 #include "Core/Math.h"
 #include "Main/CommandLine.h"
+#include "Micro/Optimize/ScbeOptimizer.h"
 #include "Semantic/Type/TypeInfo.h"
 #include "Semantic/Type/TypeManager.h"
 
@@ -386,7 +387,7 @@ void ScbeCpu::emitEnter(uint32_t sizeStack)
             emitCallLocal(R"(__chkstk)");
         }
     }
-
+    
     emitOpBinaryRegImm(CpuReg::Rsp, cpuFct->frameSize, CpuOp::SUB, OpBits::B64);
     cpuFct->sizeProlog = concat.totalCount() - cpuFct->startAddress;
 }
