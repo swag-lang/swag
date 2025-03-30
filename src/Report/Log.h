@@ -42,6 +42,7 @@ enum class LogColor
     Index            = Cyan,
     Default          = Gray,
     ByteCodeFlags    = Gray,
+    SourceCode       = DarkYellow,
     Instruction      = White,
     InstructionFlags = White,
     AsmIndex         = Gray,

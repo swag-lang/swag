@@ -79,7 +79,7 @@ namespace
             case CpuCondFlag::P:
                 return "p";
             case CpuCondFlag::NP:
-                return "np";               
+                return "np";
             case CpuCondFlag::NEP:
                 return "nep";
         }
@@ -510,11 +510,13 @@ void ScbeMicro::print() const
                 break;
         }
 
-        line.rank = form("%08d:%08d", idx++, i);
+        line.rank = form("%08d", idx++);
 
         while (line.name.length() != 12)
             line.name += ' ';
-        line.pretty = line.name + line.args;
+
+        line.pretty = form("(%08d)    ", i);
+        line.pretty += line.name + line.args;
 
         const auto& def = g_MicroOpInfos[static_cast<int>(inst->op)];
         line.name       = def.name;

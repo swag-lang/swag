@@ -93,7 +93,7 @@ void ByteCode::printSourceCode(const ByteCodePrintOptions& options, const ByteCo
         s.trim();
         s.replaceAll("  ", " ");
 
-        g_Log.setColor(LogColor::Gray);
+        g_Log.setColor(LogColor::SourceCode);
 
         if (forDbg)
             g_Log.write("   ");
@@ -625,7 +625,7 @@ namespace
     }
 }
 
-void ByteCode::alignPrintInstructions(const ByteCodePrintOptions& /*options*/, Vector<PrintInstructionLine>& lines, bool defaultLen)
+void ByteCode::alignPrintInstructions(const ByteCodePrintOptions& options, Vector<PrintInstructionLine>& lines, bool defaultLen)
 {
     align(lines, RankStr::Rank, false, defaultLen ? 10 : 0);
     align(lines, RankStr::Name, true, defaultLen ? 25 : 0);
