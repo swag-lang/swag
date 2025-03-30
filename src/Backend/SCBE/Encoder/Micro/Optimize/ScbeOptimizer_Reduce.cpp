@@ -70,6 +70,7 @@ void ScbeOptimizer::reduceLoadRR(const ScbeMicro& out, ScbeMicroInstruction* ins
     }
 }
 
+#pragma optimize("", off)
 void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst)
 {
     const auto next     = ScbeMicro::getNextInstruction(inst);
@@ -185,7 +186,8 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst)
             if (next->op == ScbeMicroOp::LoadSignedExtendRM &&
                 ScbeCpu::isInt(inst->regB) == ScbeCpu::isInt(next->regA) &&
                 next->regB == inst->regA &&
-                next->valueA == inst->valueA)
+                next->valueA == inst->valueA &&
+                ScbeCpu::getNumBits(inst->opBitsA) >= ScbeCpu::getNumBits(next->opBitsB))
             {
                 setOp(next, ScbeMicroOp::LoadSignedExtendRR);
                 setRegB(next, inst->regB);
@@ -195,7 +197,8 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst)
             if (next->op == ScbeMicroOp::LoadZeroExtendRM &&
                 ScbeCpu::isInt(inst->regB) == ScbeCpu::isInt(next->regA) &&
                 next->regB == inst->regA &&
-                next->valueA == inst->valueA)
+                next->valueA == inst->valueA &&
+                ScbeCpu::getNumBits(inst->opBitsA) >= ScbeCpu::getNumBits(next->opBitsB))
             {
                 setOp(next, ScbeMicroOp::LoadZeroExtendRR);
                 setRegB(next, inst->regB);
