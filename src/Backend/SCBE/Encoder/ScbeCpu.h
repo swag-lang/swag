@@ -3,6 +3,7 @@
 #include "Backend/Backend.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/CallConv.h"
+#include "Backend/RegisterSet.h"
 #include "Backend/SCBE/Debug/ScbeDebug.h"
 #include "Core/Concat.h"
 #include "Semantic/DataSegment.h"
@@ -246,8 +247,8 @@ struct ScbeCpu : BackendEncoder
     virtual bool acceptsRegB(ScbeMicroInstruction* inst, CpuReg reg) { return true; }
     virtual bool acceptsRegC(ScbeMicroInstruction* inst, CpuReg reg) { return true; }
 
-    virtual VectorNative<CpuReg> getReadRegisters(ScbeMicroInstruction* inst);
-    virtual VectorNative<CpuReg> getWriteRegisters(ScbeMicroInstruction* inst);
+    virtual RegisterSet getReadRegisters(ScbeMicroInstruction* inst);
+    virtual RegisterSet getWriteRegisters(ScbeMicroInstruction* inst);
 
     void emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CpuPushParam>& cpuParams, const CallConv* callConv);
     void emitComputeCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CpuPushParam>& cpuParams, CpuReg memRegResult, uint32_t memOffsetResult, void* resultAddr);

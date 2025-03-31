@@ -138,13 +138,13 @@ void ScbeCpu::endFunction() const
     }
 }
 
-VectorNative<CpuReg> ScbeCpu::getReadRegisters(ScbeMicroInstruction* inst)
+RegisterSet ScbeCpu::getReadRegisters(ScbeMicroInstruction* inst)
 {
-    VectorNative<CpuReg> result;
+    RegisterSet result;
     if (inst->isCall())
     {
-        result.append(cc->paramByRegisterInteger);
-        result.append(cc->paramByRegisterFloat);
+        result.append(cc->paramByRegisterIntegerSet);
+        result.append(cc->paramByRegisterFloatSet);
     }
     else
     {
@@ -159,13 +159,13 @@ VectorNative<CpuReg> ScbeCpu::getReadRegisters(ScbeMicroInstruction* inst)
     return result;
 }
 
-VectorNative<CpuReg> ScbeCpu::getWriteRegisters(ScbeMicroInstruction* inst)
+RegisterSet ScbeCpu::getWriteRegisters(ScbeMicroInstruction* inst)
 {
-    VectorNative<CpuReg> result;
+    RegisterSet result;
     if (inst->isCall())
     {
-        result.append(cc->volatileRegistersInteger);
-        result.append(cc->volatileRegistersFloat);
+        result.append(cc->volatileRegistersIntegerSet);
+        result.append(cc->volatileRegistersFloatSet);
         result.push_back(cc->returnByRegisterInteger);
         result.push_back(cc->returnByRegisterFloat);
     }

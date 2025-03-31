@@ -2378,7 +2378,7 @@ bool ScbeX64::acceptsRegB(ScbeMicroInstruction* inst, CpuReg reg)
     return true;
 }
 
-VectorNative<CpuReg> ScbeX64::getReadRegisters(ScbeMicroInstruction* inst)
+RegisterSet ScbeX64::getReadRegisters(ScbeMicroInstruction* inst)
 {
     auto result = ScbeCpu::getReadRegisters(inst);
 
@@ -2410,7 +2410,7 @@ VectorNative<CpuReg> ScbeX64::getReadRegisters(ScbeMicroInstruction* inst)
     return result;
 }
 
-VectorNative<CpuReg> ScbeX64::getWriteRegisters(ScbeMicroInstruction* inst)
+RegisterSet ScbeX64::getWriteRegisters(ScbeMicroInstruction* inst)
 {
     auto result = ScbeCpu::getWriteRegisters(inst);
 

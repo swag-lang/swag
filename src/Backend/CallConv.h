@@ -1,4 +1,5 @@
 #pragma once
+#include "Backend/RegisterSet.h"
 
 struct TypeInfo;
 struct TypeInfoFuncAttr;
@@ -55,6 +56,7 @@ struct CallConv
     constexpr static uint32_t MAX_CALL_CONV_REGISTERS = 4;
     static const CallConv*    get(CallConvKind kind);
     static CpuReg             getVolatileRegisterInteger(const CallConv& ccCaller, const CallConv& ccCallee, VolatileFlags flags);
+    void                      compute();
 
     // Stack align
     uint32_t stackAlign = 16;
@@ -97,6 +99,12 @@ struct CallConv
 
     // Returns a struct by register if it fits
     bool structReturnByRegister = true;
+
+    // Cache
+    RegisterSet paramByRegisterIntegerSet;
+    RegisterSet paramByRegisterFloatSet;
+    RegisterSet volatileRegistersIntegerSet;
+    RegisterSet volatileRegistersFloatSet;
 };
 
 extern CallConv g_CallConv[static_cast<int>(CallConvKind::Max)];

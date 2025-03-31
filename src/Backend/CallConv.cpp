@@ -53,6 +53,8 @@ void initCallConvKinds()
     ccX64.structParamByRegister  = true;
     ccX64.structReturnByRegister = true;
 
+    ccX64.compute();
+
     g_CallConv[static_cast<int>(CallConvKind::Swag)] = g_CallConv[static_cast<int>(CallConvKind::X86_64)];
 
 #ifdef _M_X64
@@ -60,6 +62,18 @@ void initCallConvKinds()
 #else
     static_assert(false, "unsupported architecture")
 #endif
+}
+
+void CallConv::compute()
+{
+    for (const auto r : paramByRegisterInteger)
+        paramByRegisterIntegerSet.push_back(r);
+    for (const auto r : paramByRegisterFloat)
+        paramByRegisterFloatSet.push_back(r);
+    for (const auto r : volatileRegistersInteger)
+        volatileRegistersIntegerSet.push_back(r);
+    for (const auto r : volatileRegistersFloat)
+        volatileRegistersFloatSet.push_back(r);
 }
 
 const CallConv* CallConv::get(CallConvKind kind)
