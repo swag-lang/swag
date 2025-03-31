@@ -704,7 +704,7 @@ void ScbeMicro::pushRegisters() const
 
     for (const auto r : cpuFct->usedRegs)
     {
-        if (std::ranges::find(cc->nonVolatileRegisters, r) != cc->nonVolatileRegisters.end())
+        if (cc->nonVolatileRegisters.contains(r))
             cpuFct->unwindRegs.push_back(r);
     }
 }

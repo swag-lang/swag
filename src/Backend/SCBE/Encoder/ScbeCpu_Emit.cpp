@@ -11,7 +11,7 @@ namespace
 {
     void emitParameters(ScbeCpu& pp, const VectorNative<CpuPushParam>& params, const CallConv* callConv)
     {
-        const uint32_t numParamsPerRegister = std::min(static_cast<uint32_t>(callConv->paramByRegisterInteger.size()), params.size());
+        const uint32_t numParamsPerRegister = std::min(callConv->paramByRegisterInteger.size(), params.size());
         uint32_t       idxParam             = 0;
 
         // Set the first N parameters. Can be a return register, or a function parameter.

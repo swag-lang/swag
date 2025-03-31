@@ -200,7 +200,7 @@ struct CpuFunction
     uint32_t getStackOffsetRT(uint32_t reg) const { return sizeStackCallParams + offsetRT + (reg * sizeof(Register)); }
     uint32_t getStackOffsetResult() const { return sizeStackCallParams + offsetResult; }
     uint32_t getStackOffsetFLT() const { return sizeStackCallParams + offsetFLT; }
-    bool     isStackOffsetLocalParam(uint32_t offset) const { return !cc->paramByRegisterInteger.empty() && offset >= getStackOffsetParam(0) && offset <= getStackOffsetParam(static_cast<uint32_t>(cc->paramByRegisterInteger.size()) - 1); }
+    bool     isStackOffsetLocalParam(uint32_t offset) const { return !cc->paramByRegisterInteger.empty() && offset >= getStackOffsetParam(0) && offset <= getStackOffsetParam(cc->paramByRegisterInteger.size() - 1); }
     bool     isStackOffsetRT(uint32_t offset) const { return offset >= getStackOffsetRT(0) && offset <= getStackOffsetRT(1); }
     bool     isStackOffsetResult(uint32_t offset) const { return offset == getStackOffsetResult(); }
     bool     isStackOffsetReg(uint32_t offset) const { return offset >= getStackOffsetReg(0) && offset < getStackOffsetReg(bc->maxReservedRegisterRC); }
