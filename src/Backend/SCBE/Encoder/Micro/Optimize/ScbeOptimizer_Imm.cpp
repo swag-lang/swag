@@ -48,17 +48,16 @@ void ScbeOptimizer::optimizePassImmediate(const ScbeMicro& out)
                 setValueA(inst, mapRegInst[inst->regB]->valueA);
             }
         }
-        /*else if (inst->op == ScbeMicroOp::LoadMR && ScbeCpu::isInt(inst->regB))
+        else if (inst->op == ScbeMicroOp::LoadMR)
         {
             mapValInst.erase(inst->valueA);
-            if (mapRegInst.contains(inst->regB) && mapRegInst[inst->regB]->valueA < 0x7FFFFFFF)
+            if (mapRegInst.contains(inst->regB) &&
+                out.cpu->encodeLoadMemImm(inst->regA, inst->valueA, mapRegInst[inst->regB]->valueA, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
             {
-                out.print();
                 setOp(inst, ScbeMicroOp::LoadMI);
                 setValueB(inst, mapRegInst[inst->regB]->valueA);
-                out.print();
             }
-        } */
+        }
         else
         {
             const auto stackOffset = inst->getStackOffsetWrite();
