@@ -95,6 +95,10 @@ namespace
                 return "add";
             case CpuOp::SUB:
                 return "sub";
+            case CpuOp::BSR:
+                return "bsr";
+            case CpuOp::BSF:
+                return "bsf";            
             case CpuOp::MUL:
                 return "mul";
             case CpuOp::IMUL:
@@ -401,11 +405,11 @@ void ScbeMicro::print() const
                 break;
             case ScbeMicroOp::LoadRI64:
                 line.name = "mov";
-                line.args = form("%s, %lld", regName(inst->regA, OpBits::B64), inst->valueA);
+                line.args = form("%s, 0x%llX", regName(inst->regA, OpBits::B64), inst->valueA);
                 break;
             case ScbeMicroOp::LoadRI:
                 line.name = "mov";
-                line.args = form("%s, 0x%X", regName(inst->regA, inst->opBitsA), inst->valueA);
+                line.args = form("%s, 0x%llX", regName(inst->regA, inst->opBitsA), inst->valueA);
                 break;
             case ScbeMicroOp::LoadRM:
                 line.name = "mov";
@@ -442,9 +446,9 @@ void ScbeMicro::print() const
             case ScbeMicroOp::LoadMI:
                 line.name = "mov";
                 if (inst->valueA == 0)
-                    line.args = form("%s ptr [%s], %d", opBitsName(inst->opBitsA), regName(inst->regA, OpBits::B64), inst->valueB);
+                    line.args = form("%s ptr [%s], 0x%llX", opBitsName(inst->opBitsA), regName(inst->regA, OpBits::B64), inst->valueB);
                 else
-                    line.args = form("%s ptr [%s+0x%X], %d", opBitsName(inst->opBitsA), regName(inst->regA, OpBits::B64), inst->valueA, inst->valueB);
+                    line.args = form("%s ptr [%s+0x%X], 0x%llX", opBitsName(inst->opBitsA), regName(inst->regA, OpBits::B64), inst->valueA, inst->valueB);
                 break;
             case ScbeMicroOp::CmpRR:
                 line.name = "cmp";
@@ -452,7 +456,7 @@ void ScbeMicro::print() const
                 break;
             case ScbeMicroOp::CmpRI:
                 line.name = "cmp";
-                line.args = form("%s, %d", regName(inst->regA, inst->opBitsA), inst->valueA);
+                line.args = form("%s, 0x%llX", regName(inst->regA, inst->opBitsA), inst->valueA);
                 break;
             case ScbeMicroOp::CmpMR:
                 line.name = "cmp";
@@ -460,7 +464,7 @@ void ScbeMicro::print() const
                 break;
             case ScbeMicroOp::CmpMI:
                 line.name = "cmp";
-                line.args = form("%s ptr [%s+0x%X], %d", opBitsName(inst->opBitsA), regName(inst->regA, OpBits::B64), inst->valueA, inst->valueB);
+                line.args = form("%s ptr [%s+0x%X], 0x%llX", opBitsName(inst->opBitsA), regName(inst->regA, OpBits::B64), inst->valueA, inst->valueB);
                 break;
             case ScbeMicroOp::SetCC:
                 line.name = form("set%s", cpuCondName(inst->cpuCond));
