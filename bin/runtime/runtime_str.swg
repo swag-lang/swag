@@ -233,6 +233,7 @@ func @print(params: ...)
 ////////////////////////////////////////////////////////////
 
 // Compares two strings, and returns 'true' if they are equal.
+//#[Swag.PrintAsm]
 func @stringcmp(str1: string, str2: string)->bool
 {
     let num1 = @countof(str1)

@@ -140,29 +140,6 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst)
 
             break;
 
-        case ScbeMicroOp::LoadMI:
-            if (next->op == ScbeMicroOp::LoadRM &&
-                inst->regA == next->regB &&
-                inst->valueA == next->valueA)
-            {
-                setOp(next, ScbeMicroOp::LoadRI);
-                setValueA(next, inst->valueB);
-                break;
-            }
-
-            break;
-
-        case ScbeMicroOp::LoadRI:
-            if (next->op == ScbeMicroOp::LoadRR &&
-                inst->regA == next->regB &&
-                ScbeCpu::isInt(next->regA))
-            {
-                setOp(next, ScbeMicroOp::LoadRI);
-                setValueA(next, inst->valueA);
-                break;
-            }
-            break;
-
         case ScbeMicroOp::LoadMR:
             if (next->op == ScbeMicroOp::LoadRM &&
                 ScbeCpu::isInt(inst->regB) == ScbeCpu::isInt(next->regA) &&

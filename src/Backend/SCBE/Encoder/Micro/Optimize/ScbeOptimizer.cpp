@@ -230,12 +230,12 @@ void ScbeOptimizer::optimizeStep1(const ScbeMicro& out)
         passHasDoneSomething = false;
         computeContext(out);
 
+        optimizePassImmediate(out);
         optimizePassReduce(out);
         optimizePassStore(out);
         optimizePassDeadStore(out);
         optimizePassDeadRegBeforeLeave(out);
         optimizePassDeadHdwRegBeforeLeave(out);
-        optimizePassImmediate(out);
         optimizePassParams(out);
 
         if (!passHasDoneSomething)
