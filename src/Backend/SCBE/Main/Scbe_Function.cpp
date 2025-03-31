@@ -55,7 +55,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     const uint32_t offsetRT                = bc->maxReservedRegisterRC * sizeof(Register);
     const uint32_t offsetParamsAsRegisters = offsetRT + 2 * sizeof(Register);
-    const uint32_t offsetResult            = offsetParamsAsRegisters + cc.paramByRegisterInteger.size() * sizeof(Register);
+    const uint32_t offsetResult            = offsetParamsAsRegisters + static_cast<uint32_t>(cc.paramByRegisterInteger.size()) * sizeof(Register);
     const uint32_t offsetByteCodeStack     = offsetResult + sizeof(Register);
     const uint32_t offsetFLT               = offsetByteCodeStack + bc->stackSize; // For float load (should be reserved only if we have floating point operations in that function)
     const uint32_t sizeStack               = offsetFLT + 8;
@@ -94,7 +94,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     // Save register parameters
     uint32_t idxReg = 0;
-    while (idxReg < std::min(cc.paramByRegisterInteger.size(), typeFunc->numParamsRegisters()))
+    while (idxReg < std::min(static_cast<uint32_t>(cc.paramByRegisterInteger.size()), typeFunc->numParamsRegisters()))
     {
         const auto typeParam = typeFunc->registerIdxToType(idxReg);
         if (cc.useRegisterFloat && typeParam->isNativeFloat())
