@@ -1363,8 +1363,6 @@ CpuEncodeResult ScbeX64::encodeOpBinaryMemReg(CpuReg memReg, uint64_t memOffset,
             return CpuEncodeResult::Zero;
         }
 
-        SWAG_ASSERT(cpuRegToX64Reg(reg) == X64Reg::Rcx);
-
         if (emitFlags.has(EMIT_Lock))
             concat.addU8(0xF0);
         emitREX(concat, opBits, REX_REG_NONE, memReg);
@@ -2364,32 +2362,19 @@ CpuEncodeResult ScbeX64::encodeNop(CpuEmitFlags emitFlags)
 
 bool ScbeX64::acceptsRegA(ScbeMicroInstruction* inst, CpuReg reg)
 {
-    if (inst->op == ScbeMicroOp::OpBinaryRR && inst->cpuOp == CpuOp::MUL)
-        return cpuRegToX64Reg(reg) == X64Reg::Rax;
+    if (inst->op == ScbeMicroOp::OpBinaryRR)
+        return encodeOpBinaryRegReg(reg, inst->regB, inst->cpuOp, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero;
     if (inst->op == ScbeMicroOp::OpTernaryRRR && inst->cpuOp == CpuOp::CMPXCHG)
-        return cpuRegToX64Reg(reg) == X64Reg::Rax;
+        return encodeOpTernaryRegRegReg(reg, inst->regB, inst->regC, inst->cpuOp, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero;
     return true;
 }
 
 bool ScbeX64::acceptsRegB(ScbeMicroInstruction* inst, CpuReg reg)
 {
-    if (inst->op == ScbeMicroOp::OpBinaryRR || inst->op == ScbeMicroOp::OpBinaryMR)
-    {
-        switch (inst->cpuOp)
-        {
-            case CpuOp::MUL:
-                return cpuRegToX64Reg(reg) != X64Reg::Rdx;
-
-            case CpuOp::ROL:
-            case CpuOp::ROR:
-            case CpuOp::SAL:
-            case CpuOp::SAR:
-            case CpuOp::SHL:
-            case CpuOp::SHR:
-                return cpuRegToX64Reg(reg) == X64Reg::Rcx;
-        }
-    }
-
+    if (inst->op == ScbeMicroOp::OpBinaryRR)
+        return encodeOpBinaryRegReg(inst->regA, reg, inst->cpuOp, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero;
+    if (inst->op == ScbeMicroOp::OpBinaryMR)
+        return encodeOpBinaryMemReg(inst->regA, inst->valueA, reg, inst->cpuOp, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero;
     return true;
 }
 
