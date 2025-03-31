@@ -3449,56 +3449,56 @@ void ByteCodeOptimizer::reduceCast(ByteCodeOptContext* context, ByteCodeInstruct
         case ByteCodeOp::CastBool8:
             if (ip[1].op == ByteCodeOp::NegBool &&
                 ip[0].a.u32 == ip[1].b.u32 &&
-                !ip[1].hasFlag(BCI_START_STMT))
+                !ip->hasFlag(BCI_IMM_B) &&
+                !ip[1].hasFlag(BCI_IMM_B | BCI_START_STMT))
             {
-                SET_OP(ip, ByteCodeOp::CompareOpEqual8);
-                ip->c.u32 = ip[1].a.u32;
-                ip->a.u32 = ip->b.u32;
-                ip->b.u64 = 0;
-                ip->addFlag(BCI_IMM_B);
-                setNop(context, ip + 1);
+                SET_OP(ip + 1, ByteCodeOp::CompareOpEqual8);
+                ip[1].c.u32 = ip[1].a.u32;
+                ip[1].a.u32 = ip->b.u32;
+                ip[1].b.u64 = 0;
+                ip[1].addFlag(BCI_IMM_B);
                 break;
             }
             break;
         case ByteCodeOp::CastBool16:
             if (ip[1].op == ByteCodeOp::NegBool &&
                 ip[0].a.u32 == ip[1].b.u32 &&
-                !ip[1].hasFlag(BCI_START_STMT))
+                !ip->hasFlag(BCI_IMM_B) &&
+                !ip[1].hasFlag(BCI_IMM_B | BCI_START_STMT))
             {
-                SET_OP(ip, ByteCodeOp::CompareOpEqual16);
-                ip->c.u32 = ip[1].a.u32;
-                ip->a.u32 = ip->b.u32;
-                ip->b.u64 = 0;
-                ip->addFlag(BCI_IMM_B);
-                setNop(context, ip + 1);
+                SET_OP(ip + 1, ByteCodeOp::CompareOpEqual16);
+                ip[1].c.u32 = ip[1].a.u32;
+                ip[1].a.u32 = ip->b.u32;
+                ip[1].b.u64 = 0;
+                ip[1].addFlag(BCI_IMM_B);
                 break;
             }
             break;
         case ByteCodeOp::CastBool32:
             if (ip[1].op == ByteCodeOp::NegBool &&
                 ip[0].a.u32 == ip[1].b.u32 &&
-                !ip[1].hasFlag(BCI_START_STMT))
+                !ip->hasFlag(BCI_IMM_B) &&
+                !ip[1].hasFlag(BCI_IMM_B | BCI_START_STMT))
             {
-                SET_OP(ip, ByteCodeOp::CompareOpEqual32);
-                ip->c.u32 = ip[1].a.u32;
-                ip->a.u32 = ip->b.u32;
-                ip->b.u64 = 0;
-                ip->addFlag(BCI_IMM_B);
-                setNop(context, ip + 1);
+                SET_OP(ip + 1, ByteCodeOp::CompareOpEqual32);
+                ip[1].c.u32 = ip[1].a.u32;
+                ip[1].a.u32 = ip->b.u32;
+                ip[1].b.u64 = 0;
+                ip[1].addFlag(BCI_IMM_B);
                 break;
             }
             break;
         case ByteCodeOp::CastBool64:
             if (ip[1].op == ByteCodeOp::NegBool &&
                 ip[0].a.u32 == ip[1].b.u32 &&
-                !ip[1].hasFlag(BCI_START_STMT))
+                !ip->hasFlag(BCI_IMM_B) &&
+                !ip[1].hasFlag(BCI_IMM_B | BCI_START_STMT))
             {
-                SET_OP(ip, ByteCodeOp::CompareOpEqual64);
-                ip->c.u32 = ip[1].a.u32;
-                ip->a.u32 = ip->b.u32;
-                ip->b.u64 = 0;
-                ip->addFlag(BCI_IMM_B);
-                setNop(context, ip + 1);
+                SET_OP(ip + 1, ByteCodeOp::CompareOpEqual64);
+                ip[1].c.u32 = ip[1].a.u32;
+                ip[1].a.u32 = ip->b.u32;
+                ip[1].b.u64 = 0;
+                ip[1].addFlag(BCI_IMM_B);
                 break;
             }
             break;

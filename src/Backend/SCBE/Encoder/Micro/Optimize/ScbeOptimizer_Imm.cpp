@@ -2,13 +2,9 @@
 #include "Backend/SCBE/Encoder/Micro/Optimize/ScbeOptimizer.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
-#pragma optimize("", off)
 
 void ScbeOptimizer::optimizePassImmediate(const ScbeMicro& out)
 {
-    //if (!out.cpuFct->bc->getPrintName().containsNoCase("parseU64"))
-        return;
-    
     mapValInst.clear();
     mapRegInst.clear();
 
@@ -38,7 +34,6 @@ void ScbeOptimizer::optimizePassImmediate(const ScbeMicro& out)
             if (mapValInst.contains(stackOffset) &&
                 out.cpu->encodeLoadRegImm(inst->regA, mapValInst[stackOffset]->valueB, inst->opBitsA, EMIT_CanEncode) != CpuEncodeResult::Zero)
             {
-                out.print();
                 setOp(inst, ScbeMicroOp::LoadRI);
                 setValueA(inst, mapValInst[stackOffset]->valueB);
             }
@@ -49,7 +44,6 @@ void ScbeOptimizer::optimizePassImmediate(const ScbeMicro& out)
             if (mapRegInst.contains(inst->regB) &&
                 out.cpu->encodeLoadRegImm(inst->regA, mapRegInst[inst->regB]->valueA, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
             {
-                out.print();
                 setOp(inst, ScbeMicroOp::LoadRI);
                 setValueA(inst, mapRegInst[inst->regB]->valueA);
             }
