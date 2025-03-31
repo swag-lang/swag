@@ -488,6 +488,9 @@ namespace
 {
     bool decomposeMul(uint32_t value, uint32_t& factor1, uint32_t& factor2)
     {
+        if (value > 1024)
+            return false;
+
         // [3, 5, 9] * [3, 5, 9]
         for (uint32_t i = 3; i <= value; i += 2)
         {
