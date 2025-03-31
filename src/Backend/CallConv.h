@@ -62,17 +62,17 @@ struct CallConv
     uint32_t stackAlign = 16;
 
     // The registers to use when passing parameter by register, and if it's integer
-    VectorNative<CpuReg> paramByRegisterInteger;
+    Vector<CpuReg> paramByRegisterInteger;
 
     // The registers to use when passing parameter by register, and if it's float
-    VectorNative<CpuReg> paramByRegisterFloat;
+    Vector<CpuReg> paramByRegisterFloat;
 
     // All registers considered as volatile
-    VectorNative<CpuReg> volatileRegistersInteger;
-    VectorNative<CpuReg> volatileRegistersFloat;
+    Vector<CpuReg> volatileRegistersInteger;
+    Vector<CpuReg> volatileRegistersFloat;
 
     // All registers considered as nonvolatile
-    VectorNative<CpuReg> nonVolatileRegisters;
+    Vector<CpuReg> nonVolatileRegisters;
 
     // The register used to return an integer
     CpuReg returnByRegisterInteger = CpuReg::Rax;
