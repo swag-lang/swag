@@ -98,7 +98,7 @@ namespace
             case CpuOp::BSR:
                 return "bsr";
             case CpuOp::BSF:
-                return "bsf";            
+                return "bsf";
             case CpuOp::MUL:
                 return "mul";
             case CpuOp::IMUL:
@@ -441,7 +441,10 @@ void ScbeMicro::print() const
                 break;
             case ScbeMicroOp::LoadMR:
                 line.name = "mov";
-                line.args = form("%s ptr [%s+0x%X], %s", opBitsName(inst->opBitsA), regName(inst->regA, OpBits::B64), inst->valueA, regName(inst->regB, inst->opBitsA));
+                if (!inst->valueA)
+                    line.args = form("%s ptr [%s], %s", opBitsName(inst->opBitsA), regName(inst->regA, OpBits::B64), regName(inst->regB, inst->opBitsA));
+                else
+                    line.args = form("%s ptr [%s+0x%X], %s", opBitsName(inst->opBitsA), regName(inst->regA, OpBits::B64), inst->valueA, regName(inst->regB, inst->opBitsA));
                 break;
             case ScbeMicroOp::LoadMI:
                 line.name = "mov";
