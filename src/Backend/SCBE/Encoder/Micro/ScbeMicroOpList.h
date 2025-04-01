@@ -25,7 +25,7 @@ SCBE_MICRO_OP(CallLocal,                   MOF_NAME,                            
 SCBE_MICRO_OP(CallExtern,                  MOF_NAME,                                                                   MOF_ZERO)
 SCBE_MICRO_OP(CallIndirect,                MOF_REG_A | MOF_READ_REG | MOF_READ_MEM,                                    MOF_ZERO)
                                                                                                                        
-SCBE_MICRO_OP(JumpTable,                   MOF_ZERO,                                                                   MOF_ZERO)
+SCBE_MICRO_OP(JumpTable,                   MOF_REG_A | MOF_REG_B | MOF_READ_REG | MOF_READ_MEM | MOF_REG_A,            MOF_ZERO)
 SCBE_MICRO_OP(JumpCC,                      MOF_JUMP_TYPE | MOF_OPBITS_A,                                               MOF_ZERO)
 SCBE_MICRO_OP(JumpM,                       MOF_REG_A | MOF_READ_REG | MOF_READ_MEM,                                    MOF_ZERO)
 SCBE_MICRO_OP(JumpCI,                      MOF_JUMP_TYPE | MOF_VALUE_A,                                                MOF_ZERO)

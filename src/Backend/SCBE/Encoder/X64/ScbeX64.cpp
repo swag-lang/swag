@@ -222,13 +222,6 @@ namespace
         return getModRM(mod, encodeReg(reg), rm);
     }
 
-    // Scaled index addressing
-    uint8_t getSid(uint8_t scale, CpuReg regIndex, CpuReg regBase)
-    {
-        const auto result = static_cast<uint32_t>(scale) << 6 | ((encodeReg(regIndex) & 0b111) << 3) | (encodeReg(regBase) & 0b111);
-        return static_cast<uint8_t>(result);
-    }
-
     void emitPrefixF64(Concat& concat, OpBits opBits)
     {
         if (opBits == OpBits::B64)
@@ -240,6 +233,12 @@ namespace
         const uint8_t value = (scale << 6) | (index << 3) | base;
         concat.addU8(value);
     }
+
+    // Scaled index addressing
+    void emitSIB(Concat& concat, uint8_t scale, CpuReg regIndex, CpuReg regBase)
+    {
+        emitSIB(concat, scale, encodeReg(regIndex) & 0b111, encodeReg(regBase) & 0b111);
+    }    
 
     void emitREX(Concat& concat, OpBits opBits, CpuReg reg0 = REX_REG_NONE, CpuReg reg1 = REX_REG_NONE)
     {
@@ -2147,7 +2146,7 @@ CpuEncodeResult ScbeX64::encodeJumpTable(CpuReg table, CpuReg offset, int32_t cu
     emitREX(concat, OpBits::B64, table, table);
     emitCPUOp(concat, 0x63);
     emitModRM(concat, ModRMMode::Memory, table, MODRM_RM_SIB);
-    concat.addU8(getSid(2, offset, table));
+    emitSIB(concat, 2, offset, table);
 
     const auto startIdx = concat.totalCount();
     emitSymbolRelocationAddress(offset, cpuFct->symbolIndex, concat.totalCount() - cpuFct->startAddress);
