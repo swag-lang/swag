@@ -27,7 +27,7 @@ constexpr auto MODRM_REG_5  = static_cast<CpuReg>(249);
 constexpr auto MODRM_REG_6  = static_cast<CpuReg>(248);
 constexpr auto MODRM_REG_7  = static_cast<CpuReg>(247);
 
-constexpr uint8_t MODRM_RM_SID = 0b100;
+constexpr uint8_t MODRM_RM_SIB = 0b100;
 constexpr uint8_t MODRM_RM_RIP = 0b101;
 
 enum class X64Reg : uint8_t
@@ -235,6 +235,12 @@ namespace
             concat.addU8(0x66);
     }
 
+    void emitSIB(Concat& concat, uint8_t scale, uint8_t index, uint8_t base)
+    {
+        const uint8_t value = (scale << 6) | (index << 3) | base;
+        concat.addU8(value);
+    }
+
     void emitREX(Concat& concat, OpBits opBits, CpuReg reg0 = REX_REG_NONE, CpuReg reg1 = REX_REG_NONE)
     {
         if (opBits == OpBits::B16)
@@ -265,7 +271,8 @@ namespace
 
     void emitModRM(Concat& concat, ModRMMode mod, CpuReg reg, uint8_t rm)
     {
-        concat.addU8(getModRM(mod, reg, rm));
+        const auto value = getModRM(mod, reg, rm);
+        concat.addU8(value);
     }
 
     void emitModRM(Concat& concat, CpuReg reg, CpuReg memReg)
@@ -273,29 +280,52 @@ namespace
         emitModRM(concat, ModRMMode::Register, reg, encodeReg(memReg));
     }
 
-    void emitModRM(Concat& concat, uint64_t memOffset, CpuReg reg, CpuReg memReg, uint8_t op = 1)
+    void emitModRM(Concat& concat, uint64_t memOffset, CpuReg reg, CpuReg memReg)
     {
-        if (memOffset == 0)
+        if (memOffset == 0 && memReg != CpuReg::R13)
         {
-            // mov al, byte ptr [rdi]
-            concat.addU8(getModRM(ModRMMode::Memory, reg, encodeReg(memReg)) | op - 1);
-            if (memReg == CpuReg::Rsp)
-                concat.addU8(0x24);
+            if (memReg == CpuReg::Rsp || memReg == CpuReg::R12)
+            {
+                const auto modRM = getModRM(ModRMMode::Memory, reg, MODRM_RM_SIB);
+                concat.addU8(modRM);
+                emitSIB(concat, 0, MODRM_RM_SIB, encodeReg(memReg) & 0b111);
+            }
+            else
+            {
+                const auto modRM = getModRM(ModRMMode::Memory, reg, encodeReg(memReg));
+                concat.addU8(modRM);
+            }
         }
         else if (memOffset <= 0x7F)
         {
-            // mov al, byte ptr [rdi + ??]
-            concat.addU8(getModRM(ModRMMode::Displacement8, reg, encodeReg(memReg)) | op - 1);
-            if (memReg == CpuReg::Rsp)
-                concat.addU8(0x24);
+            if (memReg == CpuReg::Rsp || memReg == CpuReg::R12)
+            {
+                const auto modRM = getModRM(ModRMMode::Displacement8, reg, MODRM_RM_SIB);
+                concat.addU8(modRM);
+                emitSIB(concat, 0, MODRM_RM_SIB, encodeReg(memReg) & 0b111);
+            }
+            else
+            {
+                const auto modRM = getModRM(ModRMMode::Displacement8, reg, encodeReg(memReg));
+                concat.addU8(modRM);
+            }
+
             emitValue(concat, memOffset, OpBits::B8);
         }
         else
         {
-            // mov al, byte ptr [rdi + ????????]
-            concat.addU8(getModRM(ModRMMode::Displacement32, reg, encodeReg(memReg)) | op - 1);
-            if (memReg == CpuReg::Rsp)
-                concat.addU8(0x24);
+            if (memReg == CpuReg::Rsp || memReg == CpuReg::R12)
+            {
+                const auto modRM = getModRM(ModRMMode::Displacement32, reg, MODRM_RM_SIB);
+                concat.addU8(modRM);
+                emitSIB(concat, 0, MODRM_RM_SIB, encodeReg(memReg) & 0b111);
+            }
+            else
+            {
+                const auto modRM = getModRM(ModRMMode::Displacement32, reg, encodeReg(memReg));
+                concat.addU8(modRM);
+            }
+
             SWAG_ASSERT(memOffset <= 0x7FFFFFFF);
             emitValue(concat, memOffset, OpBits::B32);
         }
@@ -660,12 +690,10 @@ CpuEncodeResult ScbeX64::encodeLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, 
         concat.addU8(getREX(opBits == OpBits::B64, b0, b1, b2));
 
     emitCPUOp(concat, 0x8D);
-    emitModRM(concat, ModRMMode::Memory, regDst, MODRM_RM_SID);
+    emitModRM(concat, ModRMMode::Memory, regDst, MODRM_RM_SIB);
 
     SWAG_ASSERT(mulValue == 1 || mulValue == 2 || mulValue == 4 || mulValue == 8);
-    const auto    scale = static_cast<uint8_t>(log2(mulValue));
-    const uint8_t value = static_cast<uint8_t>(scale << 6) | static_cast<uint8_t>((encodeReg(regSrc2) & 0b111) << 3) | (encodeReg(regSrc1) & 0b111);
-    concat.addU8(value);
+    emitSIB(concat, static_cast<uint8_t>(log2(mulValue)), encodeReg(regSrc2) & 0b111, encodeReg(regSrc1) & 0b111);
 
     return CpuEncodeResult::Zero;
 }
@@ -1145,7 +1173,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
             if (cpuRegToX64Reg(regDst) != X64Reg::Rax)
                 return CpuEncodeResult::Left2Rax;
             if (cpuRegToX64Reg(regSrc) == X64Reg::Rax)
-                return CpuEncodeResult::NotSupported;            
+                return CpuEncodeResult::NotSupported;
             if (cpuRegToX64Reg(regSrc) == X64Reg::Rdx)
                 return CpuEncodeResult::NotSupported;
 
@@ -1187,10 +1215,10 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
             if (cpuRegToX64Reg(regDst) != X64Reg::Rax)
                 return CpuEncodeResult::Left2Rax;
             if (cpuRegToX64Reg(regSrc) == X64Reg::Rax)
-                return CpuEncodeResult::NotSupported;            
+                return CpuEncodeResult::NotSupported;
             if (cpuRegToX64Reg(regSrc) == X64Reg::Rdx)
                 return CpuEncodeResult::NotSupported;
-            
+
             return CpuEncodeResult::Zero;
         }
 
@@ -2118,7 +2146,7 @@ CpuEncodeResult ScbeX64::encodeJumpTable(CpuReg table, CpuReg offset, int32_t cu
     // movsxd table, dword ptr [table + offset*4]
     emitREX(concat, OpBits::B64, table, table);
     emitCPUOp(concat, 0x63);
-    emitModRM(concat, ModRMMode::Memory, table, MODRM_RM_SID);
+    emitModRM(concat, ModRMMode::Memory, table, MODRM_RM_SIB);
     concat.addU8(getSid(2, offset, table));
 
     const auto startIdx = concat.totalCount();
