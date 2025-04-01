@@ -143,17 +143,17 @@ RegisterSet ScbeCpu::getReadRegisters(ScbeMicroInstruction* inst)
     RegisterSet result;
     if (inst->isCall())
     {
-        result.append(cc->paramByRegisterIntegerSet);
-        result.append(cc->paramByRegisterFloatSet);
+        result.append(cc->paramsRegistersIntegerSet);
+        result.append(cc->paramsRegistersFloatSet);
     }
     else
     {
         if (inst->hasReadRegA())
-            result.push_back(inst->regA);
+            result.add(inst->regA);
         if (inst->hasReadRegB())
-            result.push_back(inst->regB);
+            result.add(inst->regB);
         if (inst->hasReadRegC())
-            result.push_back(inst->regC);
+            result.add(inst->regC);
     }
 
     return result;
@@ -166,18 +166,25 @@ RegisterSet ScbeCpu::getWriteRegisters(ScbeMicroInstruction* inst)
     {
         result.append(cc->volatileRegistersIntegerSet);
         result.append(cc->volatileRegistersFloatSet);
-        result.push_back(cc->returnByRegisterInteger);
-        result.push_back(cc->returnByRegisterFloat);
+        result.add(cc->returnByRegisterInteger);
+        result.add(cc->returnByRegisterFloat);
     }
     else
     {
         if (inst->hasWriteRegA())
-            result.push_back(inst->regA);
+            result.add(inst->regA);
         if (inst->hasWriteRegB())
-            result.push_back(inst->regB);
+            result.add(inst->regB);
         if (inst->hasWriteRegC())
-            result.push_back(inst->regC);
+            result.add(inst->regC);
     }
 
+    return result;
+}
+
+RegisterSet ScbeCpu::getReadWriteRegisters(ScbeMicroInstruction* inst)
+{
+    auto result = getReadRegisters(inst);
+    result.append(getWriteRegisters(inst));
     return result;
 }

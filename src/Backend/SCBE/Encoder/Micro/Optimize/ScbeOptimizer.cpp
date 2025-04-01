@@ -194,6 +194,11 @@ void ScbeOptimizer::computeContext(const ScbeMicro& out)
     usedWriteStack.clear();
     contextFlags.clear();
 
+    unusedVolatileInteger.clear();
+    unusedVolatileInteger.append(out.cc->volatileRegistersIntegerSet);
+    unusedNonVolatileInteger.clear();
+    unusedNonVolatileInteger.append(out.cc->nonVolatileRegistersIntegerSet);
+
     auto inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {
@@ -203,21 +208,20 @@ void ScbeOptimizer::computeContext(const ScbeMicro& out)
             if (inst->op == ScbeMicroOp::LoadAddressM)
                 takeAddressRsp.push_back(stackOffset);
             usedStack[stackOffset] += 1;
+
+            usedReadStack[inst->getStackOffsetRead()] += 1;
+            usedWriteStack[inst->getStackOffsetWrite()] += 1;
         }
-
-        usedReadStack[inst->getStackOffsetRead()] += 1;
-        usedWriteStack[inst->getStackOffsetWrite()] += 1;
-
-        if (inst->hasRegA())
-            usedRegs[inst->regA] += 1;
-        if (inst->hasRegB())
-            usedRegs[inst->regB] += 1;
-        if (inst->hasRegC())
-            usedRegs[inst->regC] += 1;
-
-        auto details = out.cpu->getWriteRegisters(inst);
-        for (auto r : details)
+        
+        auto regs = out.cpu->getReadWriteRegisters(inst);
+        for (auto r : regs)
+        {
             usedRegs[r] += 1;
+            if (out.cc->volatileRegistersIntegerSet.contains(r))
+                unusedVolatileInteger.erase(r);
+            if (out.cc->nonVolatileRegistersIntegerSet.contains(r))
+                unusedNonVolatileInteger.erase(r);
+        }
 
         inst = ScbeMicro::getNextInstruction(inst);
     }

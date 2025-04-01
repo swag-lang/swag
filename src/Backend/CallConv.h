@@ -61,24 +61,21 @@ struct CallConv
     // Stack align
     uint32_t stackAlign = 16;
 
-    // The registers to use when passing parameter by register, and if it's integer
-    Vector<CpuReg> paramByRegisterInteger;
-
-    // The registers to use when passing parameter by register, and if it's float
-    Vector<CpuReg> paramByRegisterFloat;
+    // The registers to use when passing parameters by register
+    Vector<CpuReg> paramsRegistersInteger;
+    Vector<CpuReg> paramsRegistersFloat;
 
     // All registers considered as volatile
     Vector<CpuReg> volatileRegistersInteger;
     Vector<CpuReg> volatileRegistersFloat;
 
     // All registers considered as nonvolatile
-    Vector<CpuReg> nonVolatileRegisters;
+    Vector<CpuReg> nonVolatileRegistersInteger;
+    Vector<CpuReg> nonVolatileRegistersFloat;
 
-    // The register used to return an integer
+    // The register used to return an integer or a float
     CpuReg returnByRegisterInteger = CpuReg::Rax;
-
-    // The register used to return a float
-    CpuReg returnByRegisterFloat = CpuReg::Xmm0;
+    CpuReg returnByRegisterFloat   = CpuReg::Xmm0;
 
     // The base register used for ffi
     CpuReg ffiBaseRegister = CpuReg::Max;
@@ -101,11 +98,11 @@ struct CallConv
     bool structReturnByRegister = true;
 
     // Cache
-    RegisterSet paramByRegisterIntegerSet;
-    RegisterSet paramByRegisterFloatSet;
+    RegisterSet paramsRegistersIntegerSet;
+    RegisterSet paramsRegistersFloatSet;
     RegisterSet volatileRegistersIntegerSet;
     RegisterSet volatileRegistersFloatSet;
-    RegisterSet nonVolatileRegistersSet;
+    RegisterSet nonVolatileRegistersIntegerSet;
 };
 
 extern CallConv g_CallConv[static_cast<int>(CallConvKind::Max)];

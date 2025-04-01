@@ -6,11 +6,11 @@
 
 void ScbeOptimizer::optimizePassParamsToReg(const ScbeMicro& out)
 {
-    for (uint32_t i = 0; i < out.cc->paramByRegisterInteger.size(); ++i)
+    for (uint32_t i = 0; i < out.cc->paramsRegistersInteger.size(); ++i)
     {
         if (out.cpuFct->typeFunc->numParamsRegisters() <= i)
             break;
-        const auto r = out.cc->paramByRegisterInteger[i];
+        const auto r = out.cc->paramsRegistersInteger[i];
         if (usedRegs[r] == 1 &&
             (!out.cc->useRegisterFloat || !out.cpuFct->typeFunc->registerIdxToType(i)->isNativeFloat()) &&
             !takeAddressRsp.contains(out.cpuFct->getStackOffsetParam(i)))

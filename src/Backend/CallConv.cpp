@@ -7,15 +7,15 @@ void initCallConvKinds()
 {
     auto& ccX64 = g_CallConv[static_cast<int>(CallConvKind::X86_64)];
 
-    ccX64.paramByRegisterInteger.push_back(CpuReg::Rcx);
-    ccX64.paramByRegisterInteger.push_back(CpuReg::Rdx);
-    ccX64.paramByRegisterInteger.push_back(CpuReg::R8);
-    ccX64.paramByRegisterInteger.push_back(CpuReg::R9);
+    ccX64.paramsRegistersInteger.push_back(CpuReg::Rcx);
+    ccX64.paramsRegistersInteger.push_back(CpuReg::Rdx);
+    ccX64.paramsRegistersInteger.push_back(CpuReg::R8);
+    ccX64.paramsRegistersInteger.push_back(CpuReg::R9);
 
-    ccX64.paramByRegisterFloat.push_back(CpuReg::Xmm0);
-    ccX64.paramByRegisterFloat.push_back(CpuReg::Xmm1);
-    ccX64.paramByRegisterFloat.push_back(CpuReg::Xmm2);
-    ccX64.paramByRegisterFloat.push_back(CpuReg::Xmm3);
+    ccX64.paramsRegistersFloat.push_back(CpuReg::Xmm0);
+    ccX64.paramsRegistersFloat.push_back(CpuReg::Xmm1);
+    ccX64.paramsRegistersFloat.push_back(CpuReg::Xmm2);
+    ccX64.paramsRegistersFloat.push_back(CpuReg::Xmm3);
 
     ccX64.ffiBaseRegister         = CpuReg::Rdi;
     ccX64.returnByRegisterInteger = CpuReg::Rax;
@@ -41,13 +41,13 @@ void initCallConvKinds()
     ccX64.volatileRegistersFloat.push_back(CpuReg::Xmm2);
     ccX64.volatileRegistersFloat.push_back(CpuReg::Xmm3);
 
-    ccX64.nonVolatileRegisters.push_back(CpuReg::Rbx);
-    ccX64.nonVolatileRegisters.push_back(CpuReg::Rdi);
-    ccX64.nonVolatileRegisters.push_back(CpuReg::Rsi);
-    ccX64.nonVolatileRegisters.push_back(CpuReg::R12);
-    ccX64.nonVolatileRegisters.push_back(CpuReg::R13);
-    ccX64.nonVolatileRegisters.push_back(CpuReg::R14);
-    ccX64.nonVolatileRegisters.push_back(CpuReg::R15);
+    ccX64.nonVolatileRegistersInteger.push_back(CpuReg::Rbx);
+    ccX64.nonVolatileRegistersInteger.push_back(CpuReg::Rdi);
+    ccX64.nonVolatileRegistersInteger.push_back(CpuReg::Rsi);
+    ccX64.nonVolatileRegistersInteger.push_back(CpuReg::R12);
+    ccX64.nonVolatileRegistersInteger.push_back(CpuReg::R13);
+    ccX64.nonVolatileRegistersInteger.push_back(CpuReg::R14);
+    ccX64.nonVolatileRegistersInteger.push_back(CpuReg::R15);
 
     ccX64.useRegisterFloat       = true;
     ccX64.structParamByRegister  = true;
@@ -66,16 +66,16 @@ void initCallConvKinds()
 
 void CallConv::compute()
 {
-    for (const auto r : paramByRegisterInteger)
-        paramByRegisterIntegerSet.push_back(r);
-    for (const auto r : paramByRegisterFloat)
-        paramByRegisterFloatSet.push_back(r);
+    for (const auto r : paramsRegistersInteger)
+        paramsRegistersIntegerSet.add(r);
+    for (const auto r : paramsRegistersFloat)
+        paramsRegistersFloatSet.add(r);
     for (const auto r : volatileRegistersInteger)
-        volatileRegistersIntegerSet.push_back(r);
+        volatileRegistersIntegerSet.add(r);
     for (const auto r : volatileRegistersFloat)
-        volatileRegistersFloatSet.push_back(r);
-    for (const auto r : nonVolatileRegisters)
-        nonVolatileRegistersSet.push_back(r);    
+        volatileRegistersFloatSet.add(r);
+    for (const auto r : nonVolatileRegistersInteger)
+        nonVolatileRegistersIntegerSet.add(r);    
 }
 
 const CallConv* CallConv::get(CallConvKind kind)
@@ -98,13 +98,13 @@ CpuReg CallConv::getVolatileRegisterInteger(const CallConv& ccCaller, const Call
         if (r == ccCallee.returnByRegisterInteger && flags.has(VF_EXCLUDE_RETURN))
             continue;
 
-        if (!ccCallee.paramByRegisterInteger.empty() && r == ccCallee.paramByRegisterInteger[0] && flags.has(VF_EXCLUDE_PARAM0))
+        if (!ccCallee.paramsRegistersInteger.empty() && r == ccCallee.paramsRegistersInteger[0] && flags.has(VF_EXCLUDE_PARAM0))
             continue;
-        if (ccCallee.paramByRegisterInteger.size() >= 2 && r == ccCallee.paramByRegisterInteger[1] && flags.has(VF_EXCLUDE_PARAM1))
+        if (ccCallee.paramsRegistersInteger.size() >= 2 && r == ccCallee.paramsRegistersInteger[1] && flags.has(VF_EXCLUDE_PARAM1))
             continue;
-        if (ccCallee.paramByRegisterInteger.size() >= 3 && r == ccCallee.paramByRegisterInteger[2] && flags.has(VF_EXCLUDE_PARAM2))
+        if (ccCallee.paramsRegistersInteger.size() >= 3 && r == ccCallee.paramsRegistersInteger[2] && flags.has(VF_EXCLUDE_PARAM2))
             continue;
-        if (ccCallee.paramByRegisterInteger.size() >= 4 && r == ccCallee.paramByRegisterInteger[3] && flags.has(VF_EXCLUDE_PARAM3))
+        if (ccCallee.paramsRegistersInteger.size() >= 4 && r == ccCallee.paramsRegistersInteger[3] && flags.has(VF_EXCLUDE_PARAM3))
             continue;
 
         regRes = r;

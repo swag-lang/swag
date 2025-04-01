@@ -55,7 +55,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     const uint32_t offsetRT                = bc->maxReservedRegisterRC * sizeof(Register);
     const uint32_t offsetParamsAsRegisters = offsetRT + 2 * sizeof(Register);
-    const uint32_t offsetResult            = offsetParamsAsRegisters + cc.paramByRegisterInteger.size() * sizeof(Register);
+    const uint32_t offsetResult            = offsetParamsAsRegisters + cc.paramsRegistersInteger.size() * sizeof(Register);
     const uint32_t offsetByteCodeStack     = offsetResult + sizeof(Register);
     const uint32_t offsetFLT               = offsetByteCodeStack + bc->stackSize; // For float load (should be reserved only if we have floating point operations in that function)
     const uint32_t sizeStack               = offsetFLT + 8;
@@ -94,30 +94,30 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
     // Save register parameters
     uint32_t idxReg = 0;
-    while (idxReg < std::min(cc.paramByRegisterInteger.size(), typeFunc->numParamsRegisters()))
+    while (idxReg < std::min(cc.paramsRegistersInteger.size(), typeFunc->numParamsRegisters()))
     {
         const auto typeParam = typeFunc->registerIdxToType(idxReg);
         if (cc.useRegisterFloat && typeParam->isNativeFloat())
-            pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetParam(idxReg), cc.paramByRegisterFloat[idxReg], OpBits::B64);
+            pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetParam(idxReg), cc.paramsRegistersFloat[idxReg], OpBits::B64);
         else
-            pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetParam(idxReg), cc.paramByRegisterInteger[idxReg], OpBits::B64);
+            pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetParam(idxReg), cc.paramsRegistersInteger[idxReg], OpBits::B64);
         idxReg++;
     }
 
     // Save pointer to return value if this is a return by copy
-    if (idxReg < cc.paramByRegisterInteger.size() && typeFunc->returnByAddress())
+    if (idxReg < cc.paramsRegistersInteger.size() && typeFunc->returnByAddress())
     {
-        pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetParam(idxReg), cc.paramByRegisterInteger[idxReg], OpBits::B64);
+        pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetParam(idxReg), cc.paramsRegistersInteger[idxReg], OpBits::B64);
         idxReg++;
     }
 
     // Save C variadic on the caller stack, to be sure that everything is stored there, even if it's
     // passed by registers
-    if (idxReg < cc.paramByRegisterInteger.size() && typeFunc->isFctCVariadic())
+    if (idxReg < cc.paramsRegistersInteger.size() && typeFunc->isFctCVariadic())
     {
-        while (idxReg < cc.paramByRegisterInteger.size())
+        while (idxReg < cc.paramsRegistersInteger.size())
         {
-            pp.emitStoreCallerParam(idxReg, cc.paramByRegisterInteger[idxReg], OpBits::B64);
+            pp.emitStoreCallerParam(idxReg, cc.paramsRegistersInteger[idxReg], OpBits::B64);
             idxReg++;
         }
     }

@@ -696,11 +696,11 @@ void ScbeMicro::postProcess() const
     while (inst->op != ScbeMicroOp::End)
     {
         if (inst->hasRegA())
-            cpuFct->usedRegs.push_back(inst->regA);
+            cpuFct->usedRegs.add(inst->regA);
         if (inst->hasRegB())
-            cpuFct->usedRegs.push_back(inst->regB);
+            cpuFct->usedRegs.add(inst->regB);
         if (inst->hasRegC())
-            cpuFct->usedRegs.push_back(inst->regC);
+            cpuFct->usedRegs.add(inst->regC);
 
         if (inst->op != ScbeMicroOp::Enter && inst->op != ScbeMicroOp::Leave && inst->op != ScbeMicroOp::Ret)
             cpuFct->isEmpty = false;
@@ -710,7 +710,7 @@ void ScbeMicro::postProcess() const
     
     for (const auto r : cpuFct->usedRegs)
     {
-        if (cc->nonVolatileRegistersSet.contains(r))
+        if (cc->nonVolatileRegistersIntegerSet.contains(r))
             cpuFct->unwindRegs.push_back(r);
     }
 }

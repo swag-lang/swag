@@ -54,5 +54,7 @@ struct ScbeOptimizer
     Map<uint32_t, uint32_t> usedStack;
     Map<uint32_t, uint32_t> usedReadStack;
     Map<uint32_t, uint32_t> usedWriteStack;
+    RegisterSet             unusedVolatileInteger;
+    RegisterSet             unusedNonVolatileInteger;
     ScbeOptContextFlags     contextFlags = CF_ZERO;
 };

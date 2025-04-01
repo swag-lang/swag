@@ -67,7 +67,7 @@ void Scbe::emitMain(ScbeCpu& pp)
     }
 
     pp.cpuFct = pp.addFunction(entryPoint, cc, nullptr);
-    pp.cpuFct->unwindRegs.push_back(cc->nonVolatileRegisters[0]);
+    pp.cpuFct->unwindRegs.push_back(cc->nonVolatileRegistersInteger[0]);
     pp.emitEnter(0);
 
     // Set default system allocator function
@@ -90,8 +90,8 @@ void Scbe::emitMain(ScbeCpu& pp)
     pp.emitLoadMemImm(cc->computeRegI1, 0, contextFlags, OpBits::B64);
 
     //__process_infos.contextTlsId = swag_runtime_tlsAlloc();
-    pp.emitSymbolRelocationAddress(cc->nonVolatileRegisters[0], pp.symPI_contextTlsId, 0);
-    emitInternalCallRAParams(pp, g_LangSpec->name_priv_tlsAlloc, {}, cc->nonVolatileRegisters[0], 0);
+    pp.emitSymbolRelocationAddress(cc->nonVolatileRegistersInteger[0], pp.symPI_contextTlsId, 0);
+    emitInternalCallRAParams(pp, g_LangSpec->name_priv_tlsAlloc, {}, cc->nonVolatileRegistersInteger[0], 0);
 
     //__process_infos.modules
     pp.emitSymbolRelocationAddress(cc->computeRegI1, pp.symPI_modulesAddr, 0);
@@ -254,8 +254,8 @@ void Scbe::emitGlobalPreMain(ScbeCpu& pp)
         pp.directives += form("/EXPORT:%s ", thisInit.cstr());
 
     // Store first parameter on stack (process infos ptr)
-    SWAG_ASSERT(cc.paramByRegisterInteger.size() >= 1);
-    pp.emitLoadMemReg(CpuReg::Rsp, 0, cc.paramByRegisterInteger[0], OpBits::B64);
+    SWAG_ASSERT(cc.paramsRegistersInteger.size() >= 1);
+    pp.emitLoadMemReg(CpuReg::Rsp, 0, cc.paramsRegistersInteger[0], OpBits::B64);
 
     // Copy process infos passed as a parameter to the process info struct of this module
     pp.pushParams.clear();
@@ -286,15 +286,15 @@ void Scbe::emitGlobalInit(ScbeCpu& pp)
     const auto& cc       = g_TypeMgr->typeInfoModuleCall->getCallConv();
     pp.cpuFct            = pp.addFunction(thisInit, &cc, nullptr);
 
-    pp.cpuFct->unwindRegs.push_back(cc.nonVolatileRegisters[0]);
+    pp.cpuFct->unwindRegs.push_back(cc.nonVolatileRegistersInteger[0]);
     pp.emitEnter(0);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         pp.directives += form("/EXPORT:%s ", thisInit.cstr());
 
     // Store first parameter on stack (process infos ptr)
-    SWAG_ASSERT(cc.paramByRegisterInteger.size() >= 1);
-    pp.emitLoadMemReg(CpuReg::Rsp, 0, cc.paramByRegisterInteger[0], OpBits::B64);
+    SWAG_ASSERT(cc.paramsRegistersInteger.size() >= 1);
+    pp.emitLoadMemReg(CpuReg::Rsp, 0, cc.paramsRegistersInteger[0], OpBits::B64);
 
     // Copy process infos passed as a parameter to the process info struct of this module
     pp.pushParams.clear();
@@ -305,8 +305,8 @@ void Scbe::emitGlobalInit(ScbeCpu& pp)
 
     // Thread local storage
     pp.pushParams.clear();
-    pp.emitSymbolRelocationAddress(cc.nonVolatileRegisters[0], pp.symTls_threadLocalId, 0);
-    emitInternalCallCPUParams(pp, g_LangSpec->name_priv_tlsAlloc, pp.pushParams, cc.nonVolatileRegisters[0], 0);
+    pp.emitSymbolRelocationAddress(cc.nonVolatileRegistersInteger[0], pp.symTls_threadLocalId, 0);
+    emitInternalCallCPUParams(pp, g_LangSpec->name_priv_tlsAlloc, pp.pushParams, cc.nonVolatileRegistersInteger[0], 0);
 
     // Init type table slice for each dependency (by calling ???_getTypeTable)
     const auto resReg = CallConv::getVolatileRegisterInteger(cc, cc, VF_EXCLUDE_COMPUTE | VF_EXCLUDE_PARAM0 | VF_EXCLUDE_RETURN);
@@ -321,8 +321,8 @@ void Scbe::emitGlobalInit(ScbeCpu& pp)
             emitInternalCallCPUParams(pp, callTable, pp.pushParams);
 
             // Count types is stored as a uint64_t at the start of the address
-            pp.emitLoadRegMem(cc.nonVolatileRegisters[0], cc.returnByRegisterInteger, 0, OpBits::B64);
-            pp.emitLoadMemReg(resReg, sizeof(uint64_t), cc.nonVolatileRegisters[0], OpBits::B64);
+            pp.emitLoadRegMem(cc.nonVolatileRegistersInteger[0], cc.returnByRegisterInteger, 0, OpBits::B64);
+            pp.emitLoadMemReg(resReg, sizeof(uint64_t), cc.nonVolatileRegistersInteger[0], OpBits::B64);
             pp.emitOpBinaryRegImm(pp.cc->returnByRegisterInteger, sizeof(uint64_t), CpuOp::ADD, OpBits::B64);
             pp.emitLoadMemReg(resReg, 0, cc.returnByRegisterInteger, OpBits::B64);
         }

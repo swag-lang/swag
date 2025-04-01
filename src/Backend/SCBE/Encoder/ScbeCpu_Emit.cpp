@@ -11,7 +11,7 @@ namespace
 {
     void emitParameters(ScbeCpu& pp, const VectorNative<CpuPushParam>& params, const CallConv* callConv)
     {
-        const uint32_t numParamsPerRegister = std::min(callConv->paramByRegisterInteger.size(), params.size());
+        const uint32_t numParamsPerRegister = std::min(callConv->paramsRegistersInteger.size(), params.size());
         uint32_t       idxParam             = 0;
 
         // Set the first N parameters. Can be a return register, or a function parameter.
@@ -23,74 +23,74 @@ namespace
             switch (params[idxParam].type)
             {
                 case CpuPushParamType::Load:
-                    pp.emitLoadRegMem(callConv->paramByRegisterInteger[idxParam], params[idxParam].baseReg, value, OpBits::B64);
+                    pp.emitLoadRegMem(callConv->paramsRegistersInteger[idxParam], params[idxParam].baseReg, value, OpBits::B64);
                     break;
 
                 case CpuPushParamType::LoadAddress:
-                    pp.emitLoadAddressMem(callConv->paramByRegisterInteger[idxParam], params[idxParam].baseReg, value);
+                    pp.emitLoadAddressMem(callConv->paramsRegistersInteger[idxParam], params[idxParam].baseReg, value);
                     break;
 
                 case CpuPushParamType::Constant:
                     if (callConv->useRegisterFloat && type->isNativeFloat())
-                        pp.emitLoadRegImm(callConv->paramByRegisterFloat[idxParam], value, BackendEncoder::getOpBitsByBytes(type->sizeOf));
+                        pp.emitLoadRegImm(callConv->paramsRegistersFloat[idxParam], value, BackendEncoder::getOpBitsByBytes(type->sizeOf));
                     else
-                        pp.emitLoadRegImm(callConv->paramByRegisterInteger[idxParam], value, OpBits::B64);
+                        pp.emitLoadRegImm(callConv->paramsRegistersInteger[idxParam], value, OpBits::B64);
                     break;
 
                 case CpuPushParamType::Constant64:
-                    pp.emitLoadRegImm64(callConv->paramByRegisterInteger[idxParam], value);
+                    pp.emitLoadRegImm64(callConv->paramsRegistersInteger[idxParam], value);
                     break;
 
                 case CpuPushParamType::CaptureContext:
-                    pp.emitLoadRegMem(callConv->paramByRegisterInteger[idxParam], params[idxParam].baseReg, value, OpBits::B64);
+                    pp.emitLoadRegMem(callConv->paramsRegistersInteger[idxParam], params[idxParam].baseReg, value, OpBits::B64);
                     break;
 
                 case CpuPushParamType::SwagParamStructValue:
                 {
                     const auto reg = CallConv::getVolatileRegisterInteger(*callConv, *callConv, VF_EXCLUDE_PARAMS);
                     pp.emitLoadRegMem(reg, params[idxParam].baseReg, value, OpBits::B64);
-                    pp.emitLoadRegMem(callConv->paramByRegisterInteger[idxParam], reg, 0, OpBits::B64);
+                    pp.emitLoadRegMem(callConv->paramsRegistersInteger[idxParam], reg, 0, OpBits::B64);
                     break;
                 }
 
                 case CpuPushParamType::SwagRegister:
                     if (callConv->useRegisterFloat && type->isNativeFloat())
-                        pp.emitLoadRegMem(callConv->paramByRegisterFloat[idxParam], params[idxParam].baseReg, value, BackendEncoder::getOpBitsByBytes(type->sizeOf));
+                        pp.emitLoadRegMem(callConv->paramsRegistersFloat[idxParam], params[idxParam].baseReg, value, BackendEncoder::getOpBitsByBytes(type->sizeOf));
                     else
-                        pp.emitLoadRegMem(callConv->paramByRegisterInteger[idxParam], params[idxParam].baseReg, value, OpBits::B64);
+                        pp.emitLoadRegMem(callConv->paramsRegistersInteger[idxParam], params[idxParam].baseReg, value, OpBits::B64);
                     break;
 
                 case CpuPushParamType::CpuRegister:
-                    if (callConv->paramByRegisterInteger[idxParam] != params[idxParam].baseReg)
-                        pp.emitLoadRegReg(callConv->paramByRegisterInteger[idxParam], params[idxParam].baseReg, OpBits::B64);
+                    if (callConv->paramsRegistersInteger[idxParam] != params[idxParam].baseReg)
+                        pp.emitLoadRegReg(callConv->paramsRegistersInteger[idxParam], params[idxParam].baseReg, OpBits::B64);
                     break;
 
                 case CpuPushParamType::SymbolRelocationValue:
                     SWAG_ASSERT(value < UINT32_MAX);
-                    pp.emitSymbolRelocationValue(callConv->paramByRegisterInteger[idxParam], static_cast<uint32_t>(value), 0);
+                    pp.emitSymbolRelocationValue(callConv->paramsRegistersInteger[idxParam], static_cast<uint32_t>(value), 0);
                     break;
 
                 case CpuPushParamType::SymbolRelocationAddress:
                     SWAG_ASSERT(value < UINT32_MAX);
-                    pp.emitSymbolRelocationAddress(callConv->paramByRegisterInteger[idxParam], static_cast<uint32_t>(value), 0);
+                    pp.emitSymbolRelocationAddress(callConv->paramsRegistersInteger[idxParam], static_cast<uint32_t>(value), 0);
                     break;
 
                 case CpuPushParamType::SwagRegisterAdd:
-                    pp.emitLoadRegMem(callConv->paramByRegisterInteger[idxParam], params[idxParam].baseReg, value, OpBits::B64);
+                    pp.emitLoadRegMem(callConv->paramsRegistersInteger[idxParam], params[idxParam].baseReg, value, OpBits::B64);
                     if (params[idxParam].value2)
-                        pp.emitOpBinaryRegImm(callConv->paramByRegisterInteger[idxParam], params[idxParam].value2, CpuOp::ADD, OpBits::B64);
+                        pp.emitOpBinaryRegImm(callConv->paramsRegistersInteger[idxParam], params[idxParam].value2, CpuOp::ADD, OpBits::B64);
                     break;
 
                 case CpuPushParamType::SwagRegisterMul:
-                    SWAG_ASSERT(pp.cc->computeRegI0 != callConv->paramByRegisterInteger[idxParam]);
+                    SWAG_ASSERT(pp.cc->computeRegI0 != callConv->paramsRegistersInteger[idxParam]);
                     pp.emitLoadRegMem(pp.cc->computeRegI0, params[idxParam].baseReg, value, OpBits::B64);
                     if (params[idxParam].value2 != 1)
                         pp.emitOpBinaryRegImm(pp.cc->computeRegI0, params[idxParam].value2, CpuOp::IMUL, OpBits::B64);
-                    pp.emitLoadRegReg(callConv->paramByRegisterInteger[idxParam], pp.cc->computeRegI0, OpBits::B64);
+                    pp.emitLoadRegReg(callConv->paramsRegistersInteger[idxParam], pp.cc->computeRegI0, OpBits::B64);
                     break;
 
                 case CpuPushParamType::GlobalString:
-                    pp.emitSymbolGlobalString(callConv->paramByRegisterInteger[idxParam], reinterpret_cast<const char*>(value));
+                    pp.emitSymbolGlobalString(callConv->paramsRegistersInteger[idxParam], reinterpret_cast<const char*>(value));
                     break;
 
                 default:
@@ -353,7 +353,7 @@ void ScbeCpu::emitDebug(ByteCodeInstruction* ipAddr)
 void ScbeCpu::emitEnter(uint32_t sizeStack)
 {
     // Minimal size stack depends on calling convention
-    sizeStack = std::max(sizeStack, static_cast<uint32_t>(cc->paramByRegisterInteger.size() * sizeof(void*)));
+    sizeStack = std::max(sizeStack, static_cast<uint32_t>(cc->paramsRegistersInteger.size() * sizeof(void*)));
     sizeStack = Math::align(sizeStack, cc->stackAlign);
 
     // We need to start at sizeof(void*) because the call has pushed one register on the stack

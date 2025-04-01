@@ -2395,7 +2395,7 @@ RegisterSet ScbeX64::getReadRegisters(ScbeMicroInstruction* inst)
             inst->cpuOp == CpuOp::SHL ||
             inst->cpuOp == CpuOp::SHR)
         {
-            result.push_back(x64Reg2CpuReg(X64Reg::Rcx));
+            result.add(x64Reg2CpuReg(X64Reg::Rcx));
         }
         else if (inst->cpuOp == CpuOp::MUL ||
                  inst->cpuOp == CpuOp::DIV ||
@@ -2403,7 +2403,7 @@ RegisterSet ScbeX64::getReadRegisters(ScbeMicroInstruction* inst)
                  inst->cpuOp == CpuOp::IDIV ||
                  inst->cpuOp == CpuOp::IMOD)
         {
-            result.push_back(x64Reg2CpuReg(X64Reg::Rdx));
+            result.add(x64Reg2CpuReg(X64Reg::Rdx));
         }
     }
 
@@ -2426,7 +2426,7 @@ RegisterSet ScbeX64::getWriteRegisters(ScbeMicroInstruction* inst)
             inst->cpuOp == CpuOp::IDIV ||
             inst->cpuOp == CpuOp::IMOD)
         {
-            result.push_back(x64Reg2CpuReg(X64Reg::Rdx));
+            result.add(x64Reg2CpuReg(X64Reg::Rdx));
         }
     }
 

@@ -3,10 +3,15 @@ enum class CpuReg : uint8_t;
 
 struct RegisterSet
 {
-    void push_back(CpuReg reg)
+    void add(CpuReg reg)
     {
         regs |= 1ULL << static_cast<uint64_t>(reg);
     }
+
+    void erase(CpuReg reg)
+    {
+        regs &= ~(1ULL << static_cast<uint64_t>(reg));
+    }    
 
     void append(RegisterSet other)
     {
@@ -16,6 +21,11 @@ struct RegisterSet
     bool contains(CpuReg reg) const
     {
         return regs & (1ULL << static_cast<uint64_t>(reg));
+    }
+
+    void clear()
+    {
+        regs = 0;
     }
 
     struct Iterator

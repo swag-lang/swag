@@ -193,14 +193,14 @@ struct CpuRelocationTable
 
 struct CpuFunction
 {
-    uint32_t getStackOffsetParam(uint32_t paramIdx) const { return sizeStackCallParams + (paramIdx < cc->paramByRegisterInteger.size() ? offsetParamsAsRegisters : offsetCallerStackParams) + (paramIdx * sizeof(Register)); }
+    uint32_t getStackOffsetParam(uint32_t paramIdx) const { return sizeStackCallParams + (paramIdx < cc->paramsRegistersInteger.size() ? offsetParamsAsRegisters : offsetCallerStackParams) + (paramIdx * sizeof(Register)); }
     uint32_t getStackOffsetCallerParam(uint32_t paramIdx) const { return sizeStackCallParams + offsetCallerStackParams + (paramIdx * sizeof(Register)); }
     uint32_t getStackOffsetBCStack() const { return sizeStackCallParams + offsetByteCodeStack; }
     uint32_t getStackOffsetReg(uint32_t reg) const { return sizeStackCallParams + (reg * sizeof(Register)); }
     uint32_t getStackOffsetRT(uint32_t reg) const { return sizeStackCallParams + offsetRT + (reg * sizeof(Register)); }
     uint32_t getStackOffsetResult() const { return sizeStackCallParams + offsetResult; }
     uint32_t getStackOffsetFLT() const { return sizeStackCallParams + offsetFLT; }
-    bool     isStackOffsetLocalParam(uint32_t offset) const { return !cc->paramByRegisterInteger.empty() && offset >= getStackOffsetParam(0) && offset <= getStackOffsetParam(cc->paramByRegisterInteger.size() - 1); }
+    bool     isStackOffsetLocalParam(uint32_t offset) const { return !cc->paramsRegistersInteger.empty() && offset >= getStackOffsetParam(0) && offset <= getStackOffsetParam(cc->paramsRegistersInteger.size() - 1); }
     bool     isStackOffsetRT(uint32_t offset) const { return offset >= getStackOffsetRT(0) && offset <= getStackOffsetRT(1); }
     bool     isStackOffsetResult(uint32_t offset) const { return offset == getStackOffsetResult(); }
     bool     isStackOffsetReg(uint32_t offset) const { return offset >= getStackOffsetReg(0) && offset < getStackOffsetReg(bc->maxReservedRegisterRC); }
@@ -250,6 +250,7 @@ struct ScbeCpu : BackendEncoder
 
     virtual RegisterSet getReadRegisters(ScbeMicroInstruction* inst);
     virtual RegisterSet getWriteRegisters(ScbeMicroInstruction* inst);
+    RegisterSet         getReadWriteRegisters(ScbeMicroInstruction* inst);
 
     void emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CpuPushParam>& cpuParams, const CallConv* callConv);
     void emitComputeCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CpuPushParam>& cpuParams, CpuReg memRegResult, uint32_t memOffsetResult, void* resultAddr);
