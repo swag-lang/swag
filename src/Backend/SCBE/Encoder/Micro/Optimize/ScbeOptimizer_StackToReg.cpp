@@ -4,7 +4,7 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
 
-void ScbeOptimizer::optimizePassParamsToReg(const ScbeMicro& out)
+void ScbeOptimizer::optimizePassParamsKeepReg(const ScbeMicro& out)
 {
     for (uint32_t i = 0; i < out.cc->paramsRegistersInteger.size(); ++i)
     {
@@ -20,8 +20,11 @@ void ScbeOptimizer::optimizePassParamsToReg(const ScbeMicro& out)
     }
 }
 
-void ScbeOptimizer::optimizePassStackToReg(const ScbeMicro& out)
+void ScbeOptimizer::optimizePassStackToVolatileReg(const ScbeMicro& out)
 {
+    if (unusedVolatileInteger.empty())
+        return;
+    
     std::vector<std::pair<uint32_t, uint32_t>> vec(usedStack.begin(), usedStack.end());
     std::ranges::sort(vec, [](const auto& a, const auto& b) {
         return a.second > b.second;
@@ -34,13 +37,9 @@ void ScbeOptimizer::optimizePassStackToReg(const ScbeMicro& out)
         if (takeAddressRsp.contains(offset))
             continue;
 
-        for (const auto r : out.cc->volatileRegistersInteger)
-        {
-            if (usedRegs[r] == 0)
-            {
-                memToReg(out, CpuReg::Rsp, offset, r);
-                return;
-            }
-        }
+        const auto r = unusedVolatileInteger.first();
+        unusedVolatileInteger.erase(r);
+        memToReg(out, CpuReg::Rsp, offset, r);
+        return;
     }
 }

@@ -31,8 +31,8 @@ struct ScbeOptimizer
     void optimizePassDeadHdwRegBeforeLeave(const ScbeMicro& out);
     void optimizePassDeadStore(const ScbeMicro& out);
     void optimizePassStore(const ScbeMicro& out);
-    void optimizePassParamsToReg(const ScbeMicro& out);
-    void optimizePassStackToReg(const ScbeMicro& out);
+    void optimizePassParamsKeepReg(const ScbeMicro& out);
+    void optimizePassStackToVolatileReg(const ScbeMicro& out);
     void optimizePassImmediate(const ScbeMicro& out);
 
     void computeContext(const ScbeMicro& out);

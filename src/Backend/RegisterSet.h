@@ -1,4 +1,6 @@
 ﻿#pragma once
+#include "Os/Os.h"
+
 enum class CpuReg : uint8_t;
 
 struct RegisterSet
@@ -11,7 +13,7 @@ struct RegisterSet
     void erase(CpuReg reg)
     {
         regs &= ~(1ULL << static_cast<uint64_t>(reg));
-    }    
+    }
 
     void append(RegisterSet other)
     {
@@ -28,12 +30,17 @@ struct RegisterSet
         regs = 0;
     }
 
+    bool empty() const
+    {
+        return regs == 0;
+    }
+
     struct Iterator
     {
         uint64_t remaining;
         int      index;
 
-        Iterator(uint64_t regs, int startIdx = 0) :
+        explicit Iterator(uint64_t regs, int startIdx = 0) :
             remaining(regs),
             index(startIdx)
         {
@@ -66,13 +73,19 @@ struct RegisterSet
 
     Iterator begin() const
     {
-        return Iterator(regs, 0);
+        return Iterator{regs, 0};
     }
 
-    Iterator end() const
+    static Iterator end()
     {
-        return Iterator(0, 64); // 64 means "past the last"
+        return Iterator{0, 64};
     }
+
+    CpuReg first() const
+    {
+        SWAG_ASSERT(!empty());
+        return static_cast<CpuReg>(OS::bitCountTz(regs));
+    }    
 
     uint64_t regs = 0;
 };
