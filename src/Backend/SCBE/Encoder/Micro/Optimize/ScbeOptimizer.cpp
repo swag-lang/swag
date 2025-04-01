@@ -236,7 +236,7 @@ void ScbeOptimizer::optimizeStep1(const ScbeMicro& out)
         optimizePassDeadStore(out);
         optimizePassDeadRegBeforeLeave(out);
         optimizePassDeadHdwRegBeforeLeave(out);
-        optimizePassParams(out);
+        optimizePassParamToReg(out);
 
         if (!passHasDoneSomething)
             break;
@@ -247,28 +247,7 @@ void ScbeOptimizer::optimizeStep2(const ScbeMicro& out)
 {
     passHasDoneSomething = false;
     computeContext(out);
-
-    std::vector<std::pair<uint32_t, uint32_t>> vec(usedStack.begin(), usedStack.end());
-    std::ranges::sort(vec, [](const auto& a, const auto& b) {
-        return a.second > b.second;
-    });
-
-    for (const auto& offset : vec | std::views::keys)
-    {
-        if (!out.cpuFct->isStackOffsetLocalParam(offset) && !out.cpuFct->isStackOffsetReg(offset))
-            continue;
-        if (takeAddressRsp.contains(offset))
-            continue;
-
-        for (const auto r : out.cc->volatileRegistersInteger)
-        {
-            if (usedRegs[r] == 0)
-            {
-                memToReg(out, CpuReg::Rsp, offset, r);
-                return;
-            }
-        }
-    }
+    optimizePassStackToReg(out);
 }
 
 void ScbeOptimizer::optimize(const ScbeMicro& out)
