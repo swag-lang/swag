@@ -4,7 +4,7 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
 
-void ScbeOptimizer::optimizePassParamToReg(const ScbeMicro& out)
+void ScbeOptimizer::optimizePassParamsToReg(const ScbeMicro& out)
 {
     for (uint32_t i = 0; i < out.cc->paramByRegisterInteger.size(); ++i)
     {
