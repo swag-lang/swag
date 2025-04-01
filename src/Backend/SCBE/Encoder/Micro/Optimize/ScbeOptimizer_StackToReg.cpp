@@ -22,24 +22,48 @@ void ScbeOptimizer::optimizePassParamsKeepReg(const ScbeMicro& out)
 
 void ScbeOptimizer::optimizePassStackToVolatileReg(const ScbeMicro& out)
 {
-    if (unusedVolatileInteger.empty())
-        return;
-    
-    std::vector<std::pair<uint32_t, uint32_t>> vec(usedStack.begin(), usedStack.end());
-    std::ranges::sort(vec, [](const auto& a, const auto& b) {
-        return a.second > b.second;
-    });
-
-    for (const auto& offset : vec | std::views::keys)
+    if (!unusedVolatileInteger.empty() && !usedStack.empty())
     {
-        if (!out.cpuFct->isStackOffsetLocalParam(offset) && !out.cpuFct->isStackOffsetReg(offset))
-            continue;
-        if (takeAddressRsp.contains(offset))
-            continue;
+        std::vector<std::pair<uint32_t, uint32_t>> vec(usedStack.begin(), usedStack.end());
+        std::ranges::sort(vec, [](const auto& a, const auto& b) {
+            return a.second > b.second;
+        });
 
-        const auto r = unusedVolatileInteger.first();
-        unusedVolatileInteger.erase(r);
-        memToReg(out, CpuReg::Rsp, offset, r);
-        return;
+        for (const auto& offset : vec | std::views::keys)
+        {
+            if (!out.cpuFct->isStackOffsetLocalParam(offset) && !out.cpuFct->isStackOffsetReg(offset))
+                continue;
+            if (takeAddressRsp.contains(offset))
+                continue;
+
+            const auto r = unusedVolatileInteger.first();
+            unusedVolatileInteger.erase(r);
+            memToReg(out, CpuReg::Rsp, offset, r);
+            return;
+        }
     }
+
+    /*
+    if (!unusedNonVolatileInteger.empty() && !usedStack.empty())
+    {
+        std::vector<std::pair<uint32_t, uint32_t>> vec(usedStack.begin(), usedStack.end());
+        std::ranges::sort(vec, [](const auto& a, const auto& b) {
+            return a.second > b.second;
+        });
+
+        for (const auto& it : vec)
+        {
+            if (it.second < 10)
+                break;
+            if (!out.cpuFct->isStackOffsetLocalParam(it.first) && !out.cpuFct->isStackOffsetReg(it.first))
+                continue;
+            if (takeAddressRsp.contains(it.first))
+                continue;
+
+            const auto r = unusedNonVolatileInteger.first();
+            unusedNonVolatileInteger.erase(r);
+            memToReg(out, CpuReg::Rsp, it.first, r);
+            return;
+        }
+    }*/
 }

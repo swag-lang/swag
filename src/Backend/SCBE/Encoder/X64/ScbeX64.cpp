@@ -7,6 +7,7 @@
 #include "Semantic/Type/TypeManager.h"
 #include "Wmf/Module.h"
 #pragma warning(disable : 4063)
+#pragma optimize("", off)
 
 enum class ModRMMode : uint8_t
 {
