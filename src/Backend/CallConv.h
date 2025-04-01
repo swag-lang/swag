@@ -105,6 +105,7 @@ struct CallConv
     RegisterSet paramByRegisterFloatSet;
     RegisterSet volatileRegistersIntegerSet;
     RegisterSet volatileRegistersFloatSet;
+    RegisterSet nonVolatileRegistersSet;
 };
 
 extern CallConv g_CallConv[static_cast<int>(CallConvKind::Max)];

@@ -490,9 +490,8 @@ CpuEncodeResult ScbeMicro::encodeOpTernaryRegRegReg(CpuReg reg0, CpuReg reg1, Cp
 
 void ScbeMicro::encode(ScbeCpu& encoder) const
 {
-    const auto num  = concat.totalCount() / sizeof(ScbeMicroInstruction);
-    auto       inst = reinterpret_cast<ScbeMicroInstruction*>(concat.firstBucket->data);
-    for (uint32_t i = 0; i < num; i++, inst++)
+    auto inst = getFirstInstruction();
+    while (inst->op != ScbeMicroOp::End)
     {
         switch (inst->op)
         {
@@ -672,6 +671,8 @@ void ScbeMicro::encode(ScbeCpu& encoder) const
                 SWAG_ASSERT(false);
                 break;
         }
+
+        inst = inst + 1;
     }
 
     encoder.emitLabels();
@@ -690,21 +691,21 @@ ScbeMicroInstruction* ScbeMicro::getNextInstruction(ScbeMicroInstruction* inst)
 
 void ScbeMicro::pushRegisters() const
 {
-    auto inst = reinterpret_cast<ScbeMicroInstruction*>(concat.firstBucket->data);
+    auto inst = getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {
         if (inst->hasRegA())
-            cpuFct->usedRegs.insert(inst->regA);
+            cpuFct->usedRegs.push_back(inst->regA);
         if (inst->hasRegB())
-            cpuFct->usedRegs.insert(inst->regB);
+            cpuFct->usedRegs.push_back(inst->regB);
         if (inst->hasRegC())
-            cpuFct->usedRegs.insert(inst->regC);
+            cpuFct->usedRegs.push_back(inst->regC);
         inst = getNextInstruction(inst);
     }
 
     for (const auto r : cpuFct->usedRegs)
     {
-        if (cc->nonVolatileRegisters.contains(r))
+        if (cc->nonVolatileRegistersSet.contains(r))
             cpuFct->unwindRegs.push_back(r);
     }
 }
