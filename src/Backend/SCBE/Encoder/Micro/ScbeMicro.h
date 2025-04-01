@@ -69,7 +69,7 @@ struct ScbeMicro final : ScbeCpu
     static ScbeMicroInstruction* getNextInstruction(ScbeMicroInstruction* inst);
     ScbeMicroInstruction*        getFirstInstruction() const;
     ScbeMicroInstruction*        addInstruction(ScbeMicroOp op, CpuEmitFlags emitFlags);
-    void                         pushRegisters() const;
+    void                         postProcess() const;
     void                         process(ScbeCpu& encoder);
     void                         encode(ScbeCpu& encoder) const;
     void                         print() const;

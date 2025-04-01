@@ -231,6 +231,7 @@ struct CpuFunction
     uint32_t          offsetFLT               = 0;
     uint32_t          offsetRT                = 0;
     uint32_t          offsetResult            = 0;
+    bool              isEmpty                 = false;
 };
 
 struct ScbeCpu : BackendEncoder

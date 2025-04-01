@@ -387,14 +387,17 @@ void ScbeCpu::emitEnter(uint32_t sizeStack)
             emitCallLocal(R"(__chkstk)");
         }
     }
-    
-    emitOpBinaryRegImm(CpuReg::Rsp, cpuFct->frameSize, CpuOp::SUB, OpBits::B64);
+
+    SWAG_ASSERT(!cpuFct->isEmpty || cpuFct->unwindRegs.empty());
+    if (!cpuFct->isEmpty)
+        emitOpBinaryRegImm(CpuReg::Rsp, cpuFct->frameSize, CpuOp::SUB, OpBits::B64);
     cpuFct->sizeProlog = concat.totalCount() - cpuFct->startAddress;
 }
 
 void ScbeCpu::emitLeave()
 {
-    emitOpBinaryRegImm(CpuReg::Rsp, cpuFct->frameSize, CpuOp::ADD, OpBits::B64);
+    if (!cpuFct->isEmpty)
+        emitOpBinaryRegImm(CpuReg::Rsp, cpuFct->frameSize, CpuOp::ADD, OpBits::B64);
     for (auto idxReg = cpuFct->unwindRegs.size() - 1; idxReg != UINT32_MAX; idxReg--)
         emitPop(cpuFct->unwindRegs[idxReg]);
     emitRet();

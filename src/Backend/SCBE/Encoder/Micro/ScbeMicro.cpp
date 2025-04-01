@@ -689,9 +689,10 @@ ScbeMicroInstruction* ScbeMicro::getNextInstruction(ScbeMicroInstruction* inst)
     return inst;
 }
 
-void ScbeMicro::pushRegisters() const
+void ScbeMicro::postProcess() const
 {
-    auto inst = getFirstInstruction();
+    cpuFct->isEmpty = true;
+    auto inst       = getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {
         if (inst->hasRegA())
@@ -700,9 +701,13 @@ void ScbeMicro::pushRegisters() const
             cpuFct->usedRegs.push_back(inst->regB);
         if (inst->hasRegC())
             cpuFct->usedRegs.push_back(inst->regC);
+
+        if (inst->op != ScbeMicroOp::Enter && inst->op != ScbeMicroOp::Leave && inst->op != ScbeMicroOp::Ret)
+            cpuFct->isEmpty = false;
+
         inst = getNextInstruction(inst);
     }
-
+    
     for (const auto r : cpuFct->usedRegs)
     {
         if (cc->nonVolatileRegistersSet.contains(r))
@@ -723,5 +728,5 @@ void ScbeMicro::process(ScbeCpu& encoder)
     opt.encoder = &encoder;
     opt.optimize(*this);
 
-    pushRegisters();
+    postProcess();
 }
