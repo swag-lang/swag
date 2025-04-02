@@ -4268,6 +4268,8 @@ void ByteCodeOptimizer::reduceCmpJump(ByteCodeOptContext* context, ByteCodeInstr
             {
                 SET_OP(ip + 1, ByteCodeOp::JumpIfNotZero8);
                 ip[1].a.u32 = ip->b.u32;
+                if (ip->a.u32 == ip->b.u32)
+                    setNop(context, ip);
                 break;
             }
 
@@ -4279,6 +4281,8 @@ void ByteCodeOptimizer::reduceCmpJump(ByteCodeOptContext* context, ByteCodeInstr
             {
                 SET_OP(ip + 1, ByteCodeOp::JumpIfZero8);
                 ip[1].a.u32 = ip->b.u32;
+                if (ip->a.u32 == ip->b.u32)
+                    setNop(context, ip);
                 break;
             }
 
@@ -4293,6 +4297,8 @@ void ByteCodeOptimizer::reduceCmpJump(ByteCodeOptContext* context, ByteCodeInstr
             {
                 SET_OP(ip + 1, ByteCodeOp::JumpIfNotZero16);
                 ip[1].a.u32 = ip->b.u32;
+                if (ip->a.u32 == ip->b.u32)
+                    setNop(context, ip);
                 break;
             }
 
@@ -4304,6 +4310,8 @@ void ByteCodeOptimizer::reduceCmpJump(ByteCodeOptContext* context, ByteCodeInstr
             {
                 SET_OP(ip + 1, ByteCodeOp::JumpIfZero16);
                 ip[1].a.u32 = ip->b.u32;
+                if (ip->a.u32 == ip->b.u32)
+                    setNop(context, ip);
                 break;
             }
 
@@ -4318,6 +4326,8 @@ void ByteCodeOptimizer::reduceCmpJump(ByteCodeOptContext* context, ByteCodeInstr
             {
                 SET_OP(ip + 1, ByteCodeOp::JumpIfNotZero32);
                 ip[1].a.u32 = ip->b.u32;
+                if (ip->a.u32 == ip->b.u32)
+                    setNop(context, ip);
                 break;
             }
 
@@ -4329,6 +4339,8 @@ void ByteCodeOptimizer::reduceCmpJump(ByteCodeOptContext* context, ByteCodeInstr
             {
                 SET_OP(ip + 1, ByteCodeOp::JumpIfZero32);
                 ip[1].a.u32 = ip->b.u32;
+                if (ip->a.u32 == ip->b.u32)
+                    setNop(context, ip);
                 break;
             }
 
@@ -4343,6 +4355,8 @@ void ByteCodeOptimizer::reduceCmpJump(ByteCodeOptContext* context, ByteCodeInstr
             {
                 SET_OP(ip + 1, ByteCodeOp::JumpIfNotZero64);
                 ip[1].a.u32 = ip->b.u32;
+                if (ip->a.u32 == ip->b.u32)
+                    setNop(context, ip);
                 break;
             }
 
@@ -4354,6 +4368,8 @@ void ByteCodeOptimizer::reduceCmpJump(ByteCodeOptContext* context, ByteCodeInstr
             {
                 SET_OP(ip + 1, ByteCodeOp::JumpIfZero64);
                 ip[1].a.u32 = ip->b.u32;
+                if (ip->a.u32 == ip->b.u32)
+                    setNop(context, ip);
                 break;
             }
 
