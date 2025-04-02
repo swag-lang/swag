@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroOp.h"
 #include "Backend/SCBE/Encoder/ScbeCpu.h"
+#include "ScbeMicro.h"
 
 enum class OpBits : uint8_t;
 enum class CpuCondJump : uint8_t;
@@ -27,7 +28,7 @@ struct ScbeMicroInstruction
     bool hasReadRegB() const { return (hasLeftOpFlag(MOF_REG_B) && hasLeftOpFlag(MOF_READ_REG)) || (hasRightOpFlag(MOF_REG_B) && hasRightOpFlag(MOF_READ_REG)); }
     bool hasReadRegC() const { return (hasLeftOpFlag(MOF_REG_C) && hasLeftOpFlag(MOF_READ_REG)) || (hasRightOpFlag(MOF_REG_C) && hasRightOpFlag(MOF_READ_REG)); }
     bool hasWriteRegA() const { return (hasLeftOpFlag(MOF_REG_A) && hasLeftOpFlag(MOF_WRITE_REG)) || (hasRightOpFlag(MOF_REG_A) && hasRightOpFlag(MOF_WRITE_REG)); }
-    bool hasWriteRegB() const { return (hasLeftOpFlag(MOF_REG_B) && hasLeftOpFlag(MOF_WRITE_REG)) || (hasRightOpFlag(MOF_REG_B) && hasRightOpFlag(MOF_WRITE_REG)); }
+    bool hasWriteRegB() const { return (op == ScbeMicroOp::OpBinaryMR && cpuOp == CpuOp::XCHG) || (hasLeftOpFlag(MOF_REG_B) && hasLeftOpFlag(MOF_WRITE_REG)) || (hasRightOpFlag(MOF_REG_B) && hasRightOpFlag(MOF_WRITE_REG)); }
     bool hasWriteRegC() const { return (hasLeftOpFlag(MOF_REG_C) && hasLeftOpFlag(MOF_WRITE_REG)) || (hasRightOpFlag(MOF_REG_C) && hasRightOpFlag(MOF_WRITE_REG)); }
     bool hasRegA() const { return (hasReadRegA() || hasWriteRegA()); }
     bool hasRegB() const { return (hasReadRegB() || hasWriteRegB()); }

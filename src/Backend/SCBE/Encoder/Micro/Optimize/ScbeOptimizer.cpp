@@ -6,6 +6,7 @@
 #include "Semantic/Type/TypeInfo.h"
 #include "Wmf/Module.h"
 #include "Wmf/SourceFile.h"
+#pragma optimize("", off)
 
 void ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOffset, CpuReg reg)
 {

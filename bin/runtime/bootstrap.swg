@@ -718,20 +718,20 @@ namespace Swag
     // 'LLVM' backend specific options
     struct BuildCfgBackendLLVM
     {
-        outputIR:               bool = false     // Output IR in a file
-        fpMathFma:              bool = false     // true in 'release'
-        fpMathNoNaN:            bool = false     // true in 'release'
-        fpMathNoInf:            bool = false     // true in 'release'
-        fpMathNoSignedZero:     bool = false     // true in 'release'
-        fpMathUnsafe:           bool = false
-        fpMathApproxFunc:       bool = false
+        outputIR:               bool     // Output IR in a file
+        fpMathFma:              bool     // true in 'release'
+        fpMathNoNaN:            bool     // true in 'release'
+        fpMathNoInf:            bool     // true in 'release'
+        fpMathNoSignedZero:     bool     // true in 'release'
+        fpMathUnsafe:           bool
+        fpMathApproxFunc:       bool
     }
 
     // 'SCBE' backend specific options
     struct BuildCfgBackendSCBE
     {
-        unrollMemLimit: u32 = 128   // Maximum number of bytes to unroll memset/cpy in optimize mode
-        regToRegLimit:  u32 = 10    // Limit to convert soft registers to hard registers
+        unrollMemLimit: u32     // Maximum number of bytes to unroll memset/cpy in optimize mode
+        regToRegLimit:  u32     // Limit to convert soft registers to hard registers
     }
 
     // The kind of native backend to generate.

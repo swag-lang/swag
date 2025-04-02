@@ -205,7 +205,7 @@ struct BuildCfgLLVM
 struct BuildCfgSCBE
 {
     uint32_t unrollMemLimit = 128;
-    uint32_t regToRegLimit  = 10;
+    uint32_t regToRegLimit  = 4;
 };
 
 enum class BuildCfgBackendKind

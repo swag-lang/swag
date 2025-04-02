@@ -4,7 +4,6 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
 #include "Wmf/Module.h"
-#include "Wmf/SourceFile.h"
 #pragma optimize("", off)
 
 void ScbeOptimizer::optimizePassParamsKeepReg(const ScbeMicro& out)
@@ -52,7 +51,7 @@ void ScbeOptimizer::optimizePassStackToVolatileReg(const ScbeMicro& out)
         std::ranges::sort(vec, [](const auto& a, const auto& b) {
             return a.second > b.second;
         });
-
+/*
         for (const auto& it : vec)
         {
             if (it.second < out.buildParams.buildCfg->backendSCBE.regToRegLimit)
@@ -66,6 +65,6 @@ void ScbeOptimizer::optimizePassStackToVolatileReg(const ScbeMicro& out)
             unusedNonVolatileInteger.erase(r);
             memToReg(out, CpuReg::Rsp, it.first, r);
             return;
-        }
+        }*/
     }
 }
