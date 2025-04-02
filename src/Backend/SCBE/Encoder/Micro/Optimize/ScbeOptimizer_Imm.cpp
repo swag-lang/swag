@@ -32,7 +32,7 @@ void ScbeOptimizer::optimizePassImmediate(const ScbeMicro& out)
             mapRegInst.erase(inst->regA);
             const auto stackOffset = inst->getStackOffsetRead();
             if (mapValInst.contains(stackOffset) &&
-                out.cpu->encodeLoadRegImm(inst->regA, mapValInst[stackOffset]->valueB, inst->opBitsA, EMIT_CanEncode) != CpuEncodeResult::Zero)
+                out.cpu->encodeLoadRegImm(inst->regA, mapValInst[stackOffset]->valueB, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
             {
                 setOp(inst, ScbeMicroOp::LoadRI);
                 setValueA(inst, mapValInst[stackOffset]->valueB);
