@@ -205,7 +205,8 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
                 if (mapValReg.contains(stackOffset) &&
                     mapRegVal[mapValReg[stackOffset].first] == stackOffset &&
                     ScbeCpu::isInt(mapValReg[stackOffset].first) &&
-                    ScbeCpu::getNumBits(inst->opBitsA) <= ScbeCpu::getNumBits(mapValReg[stackOffset].second))
+                    ScbeCpu::getNumBits(inst->opBitsA) <= ScbeCpu::getNumBits(mapValReg[stackOffset].second) &&
+                    out.cpu->encodeCmpRegImm(mapValReg[stackOffset].first, inst->valueB, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
                 {
                     setOp(inst, ScbeMicroOp::CmpRI);
                     setRegA(inst, mapValReg[stackOffset].first);
