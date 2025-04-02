@@ -3,6 +3,7 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
+#pragma optimize("", off)
 
 void ScbeOptimizer::optimizePassParamsKeepReg(const ScbeMicro& out)
 {
@@ -43,14 +44,13 @@ void ScbeOptimizer::optimizePassStackToVolatileReg(const ScbeMicro& out)
         }
     }
 
-    /*
     if (!unusedNonVolatileInteger.empty() && !usedStack.empty())
     {
         std::vector<std::pair<uint32_t, uint32_t>> vec(usedStack.begin(), usedStack.end());
         std::ranges::sort(vec, [](const auto& a, const auto& b) {
             return a.second > b.second;
         });
-
+/*
         for (const auto& it : vec)
         {
             if (it.second < 10)
@@ -64,6 +64,6 @@ void ScbeOptimizer::optimizePassStackToVolatileReg(const ScbeMicro& out)
             unusedNonVolatileInteger.erase(r);
             memToReg(out, CpuReg::Rsp, it.first, r);
             return;
-        }
-    }*/
+        }*/
+    }
 }

@@ -130,6 +130,12 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
             mapRegVal.clear();
         }
 
+        if (inst->isCall())
+        {
+            mapValReg.erase(out.cpuFct->getStackOffsetRT(0));
+            mapValReg.erase(out.cpuFct->getStackOffsetRT(1));
+        }
+
         const auto stackOffset = inst->getStackOffset();
         auto       legitReg    = CpuReg::Max;
 
