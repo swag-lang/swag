@@ -6,6 +6,7 @@
 #include "Backend/SCBE/Obj/ScbeCoff.h"
 #include "Core/Math.h"
 #include "Main/CommandLine.h"
+#include "Micro/ScbeMicro.h"
 #include "Report/Report.h"
 #include "Semantic/Type/TypeInfo.h"
 #include "Syntax/Ast.h"
@@ -187,4 +188,47 @@ RegisterSet ScbeCpu::getReadWriteRegisters(ScbeMicroInstruction* inst)
     auto result = getReadRegisters(inst);
     result.append(getWriteRegisters(inst));
     return result;
+}
+
+bool ScbeCpu::acceptsRegA(const ScbeMicroInstruction* inst, CpuReg reg)
+{
+    auto result = CpuEncodeResult::Zero;
+    switch (inst->op)
+    {
+        case ScbeMicroOp::CmpRI:
+            result = encodeCmpRegImm(reg, inst->valueA, inst->opBitsA, EMIT_CanEncode);
+            break;
+        case ScbeMicroOp::OpUnaryR:
+            result = encodeOpUnaryReg(reg, inst->cpuOp, inst->opBitsA, EMIT_CanEncode);
+            break;
+        case ScbeMicroOp::OpBinaryRR:
+            result = encodeOpBinaryRegReg(reg, inst->regB, inst->cpuOp, inst->opBitsA, EMIT_CanEncode);
+            break;
+        case ScbeMicroOp::OpTernaryRRR:
+            result = encodeOpTernaryRegRegReg(reg, inst->regB, inst->regC, inst->cpuOp, inst->opBitsA, EMIT_CanEncode);
+            break;
+    }
+
+    return result == CpuEncodeResult::Zero;
+}
+
+bool ScbeCpu::acceptsRegB(const ScbeMicroInstruction* inst, CpuReg reg)
+{
+    auto result = CpuEncodeResult::Zero;
+    switch (inst->op)
+    {
+        case ScbeMicroOp::OpBinaryRR:
+            result = encodeOpBinaryRegReg(inst->regA, reg, inst->cpuOp, inst->opBitsA, EMIT_CanEncode);
+            break;
+        case ScbeMicroOp::OpBinaryMR:
+            result = encodeOpBinaryMemReg(inst->regA, inst->valueA, reg, inst->cpuOp, inst->opBitsA, EMIT_CanEncode);
+            break;
+    }
+
+    return result == CpuEncodeResult::Zero;
+}
+
+bool ScbeCpu::acceptsRegC(const ScbeMicroInstruction* inst, CpuReg reg)
+{
+    return true;
 }

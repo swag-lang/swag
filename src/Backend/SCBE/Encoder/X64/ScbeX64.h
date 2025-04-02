@@ -5,8 +5,6 @@ struct ScbeMicroInstruction;
 
 struct ScbeX64 final : ScbeCpu
 {
-    bool        acceptsRegA(ScbeMicroInstruction* inst, CpuReg reg) override;
-    bool        acceptsRegB(ScbeMicroInstruction* inst, CpuReg reg) override;
     RegisterSet getReadRegisters(ScbeMicroInstruction* inst) override;
     RegisterSet getWriteRegisters(ScbeMicroInstruction* inst) override;
 

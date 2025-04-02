@@ -244,9 +244,9 @@ struct ScbeCpu : BackendEncoder
     CpuFunction* addFunction(const Utf8& funcName, const CallConv* ccFunc, ByteCode* bc);
     void         endFunction() const;
 
-    virtual bool acceptsRegA(ScbeMicroInstruction* inst, CpuReg reg) { return true; }
-    virtual bool acceptsRegB(ScbeMicroInstruction* inst, CpuReg reg) { return true; }
-    virtual bool acceptsRegC(ScbeMicroInstruction* inst, CpuReg reg) { return true; }
+    bool acceptsRegA(const ScbeMicroInstruction* inst, CpuReg reg);
+    bool acceptsRegB(const ScbeMicroInstruction* inst, CpuReg reg);
+    bool acceptsRegC(const ScbeMicroInstruction* inst, CpuReg reg);
 
     virtual RegisterSet getReadRegisters(ScbeMicroInstruction* inst);
     virtual RegisterSet getWriteRegisters(ScbeMicroInstruction* inst);
