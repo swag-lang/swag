@@ -133,7 +133,6 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst)
                 inst->opBitsA == next->opBitsA &&
                 inst->opBitsA == OpBits::B64)
             {
-                ignore(out, inst);
                 ignore(out, next);
                 break;
             }

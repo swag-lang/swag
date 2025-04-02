@@ -50,7 +50,7 @@ void ScbeOptimizer::optimizePassStackToVolatileReg(const ScbeMicro& out)
         std::ranges::sort(vec, [](const auto& a, const auto& b) {
             return a.second > b.second;
         });
-/*
+
         for (const auto& it : vec)
         {
             if (it.second < 10)
@@ -64,6 +64,6 @@ void ScbeOptimizer::optimizePassStackToVolatileReg(const ScbeMicro& out)
             unusedNonVolatileInteger.erase(r);
             memToReg(out, CpuReg::Rsp, it.first, r);
             return;
-        }*/
+        }
     }
 }
