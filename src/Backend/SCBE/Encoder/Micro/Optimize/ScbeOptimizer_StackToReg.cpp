@@ -3,6 +3,8 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
+#include "Wmf/Module.h"
+#include "Wmf/SourceFile.h"
 #pragma optimize("", off)
 
 void ScbeOptimizer::optimizePassParamsKeepReg(const ScbeMicro& out)
@@ -53,7 +55,7 @@ void ScbeOptimizer::optimizePassStackToVolatileReg(const ScbeMicro& out)
 
         for (const auto& it : vec)
         {
-            if (it.second < 10)
+            if (it.second < out.buildParams.buildCfg->backendSCBE.regToRegLimit)
                 break;
             if (!out.cpuFct->isStackOffsetLocalParam(it.first) && !out.cpuFct->isStackOffsetReg(it.first))
                 continue;
