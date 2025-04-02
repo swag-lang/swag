@@ -143,6 +143,8 @@ namespace
                 return "muladd";
             case CpuOp::CMPXCHG:
                 return "cmpxchg";
+            case CpuOp::XCHG:
+                return "xchg";            
 
             case CpuOp::CMP:
                 return "cmp";
