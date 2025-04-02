@@ -167,6 +167,8 @@ namespace
                 return "fmin";
             case CpuOp::FMAX:
                 return "fmax";
+            case CpuOp::FAND:
+                return "fand";
             case CpuOp::FXOR:
                 return "fxor";
             case CpuOp::FDIV:
