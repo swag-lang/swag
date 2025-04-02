@@ -3,7 +3,6 @@
 #include "Backend/SCBE/Main/Scbe.h"
 #include "Core/Math.h"
 #include "Main/CommandLine.h"
-#include "Micro/Optimize/ScbeOptimizer.h"
 #include "Semantic/Type/TypeInfo.h"
 #include "Semantic/Type/TypeManager.h"
 
@@ -362,6 +361,9 @@ void ScbeCpu::emitEnter(uint32_t sizeStack)
     // Push all registers
     for (const auto& reg : cpuFct->unwindRegs)
     {
+#ifdef SWAG_STATS
+        g_Stats.numScbeInstructions += 1;
+#endif
         emitPush(reg);
         cpuFct->unwindOffsetRegs.push_back(concat.totalCount() - cpuFct->startAddress);
     }
@@ -385,20 +387,41 @@ void ScbeCpu::emitEnter(uint32_t sizeStack)
         {
             emitLoadRegImm(CpuReg::Rax, cpuFct->frameSize, OpBits::B64);
             emitCallLocal(R"(__chkstk)");
+#ifdef SWAG_STATS
+            g_Stats.numScbeInstructions += 2;
+#endif
         }
     }
 
     SWAG_ASSERT(!cpuFct->isEmpty || cpuFct->unwindRegs.empty());
     if (!cpuFct->isEmpty)
+    {
         emitOpBinaryRegImm(CpuReg::Rsp, cpuFct->frameSize, CpuOp::SUB, OpBits::B64);
+#ifdef SWAG_STATS
+        g_Stats.numScbeInstructions += 1;
+#endif
+    }
+
     cpuFct->sizeProlog = concat.totalCount() - cpuFct->startAddress;
 }
 
 void ScbeCpu::emitLeave()
 {
     if (!cpuFct->isEmpty)
+    {
         emitOpBinaryRegImm(CpuReg::Rsp, cpuFct->frameSize, CpuOp::ADD, OpBits::B64);
+#ifdef SWAG_STATS
+        g_Stats.numScbeInstructions += 2;
+#endif
+    }
+
     for (auto idxReg = cpuFct->unwindRegs.size() - 1; idxReg != UINT32_MAX; idxReg--)
+    {
         emitPop(cpuFct->unwindRegs[idxReg]);
+#ifdef SWAG_STATS
+        g_Stats.numScbeInstructions += 1;
+#endif
+    }
+
     emitRet();
 }
