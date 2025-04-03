@@ -17,6 +17,15 @@ bool ScbeMicroInstruction::isRet() const
     return op == ScbeMicroOp::Ret || op == ScbeMicroOp::Leave;
 }
 
+bool ScbeMicroInstruction::isTest() const
+{
+    return op == ScbeMicroOp::CmpMR ||
+           op == ScbeMicroOp::CmpRI ||
+           op == ScbeMicroOp::CmpRR ||
+           op == ScbeMicroOp::CmpMI ||
+           op == ScbeMicroOp::SetCC;
+}
+
 uint32_t ScbeMicroInstruction::getStackOffsetRead() const
 {
     if (hasLeftOpFlag(MOF_READ_MEM) && hasLeftOpFlag(MOF_VALUE_A) && hasLeftOpFlag(MOF_REG_A) && regA == CpuReg::Rsp)

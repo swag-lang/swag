@@ -37,6 +37,7 @@ struct ScbeMicroInstruction
     bool isJump() const;
     bool isCall() const;
     bool isRet() const;
+    bool isTest() const;
 
     uint32_t getStackOffsetRead() const;
     uint32_t getStackOffsetWrite() const;

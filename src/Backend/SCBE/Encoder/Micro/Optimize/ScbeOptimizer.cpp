@@ -241,6 +241,7 @@ void ScbeOptimizer::optimizeStep1(const ScbeMicro& out)
         optimizePassDeadRegBeforeLeave(out);
         optimizePassDeadHdwRegBeforeLeave(out);
         optimizePassParamsKeepReg(out);
+        optimizePassSwap(out);
 
         if (!passHasDoneSomething)
             break;

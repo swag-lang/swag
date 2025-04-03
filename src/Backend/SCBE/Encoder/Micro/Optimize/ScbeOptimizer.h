@@ -34,6 +34,7 @@ struct ScbeOptimizer
     void optimizePassParamsKeepReg(const ScbeMicro& out);
     void optimizePassStackToVolatileReg(const ScbeMicro& out);
     void optimizePassImmediate(const ScbeMicro& out);
+    void optimizePassSwap(const ScbeMicro& out);
 
     void computeContext(const ScbeMicro& out);
     void optimizeStep1(const ScbeMicro& out);
