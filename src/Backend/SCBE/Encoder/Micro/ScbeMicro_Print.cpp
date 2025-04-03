@@ -157,6 +157,8 @@ namespace
                 return "cvtu2f";
             case CpuOp::CVTF2I:
                 return "cvtf2i";
+            case CpuOp::CVTF2F:
+                return "cvtf2f";
             case CpuOp::UCOMIF:
                 return "ucomif";
             case CpuOp::FADD:
