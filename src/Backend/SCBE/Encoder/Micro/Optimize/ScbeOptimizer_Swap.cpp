@@ -41,7 +41,7 @@ void ScbeOptimizer::optimizePassSwap(const ScbeMicro& out)
                 else
                 {
                     const auto next = ScbeMicro::getNextInstruction(inst);
-                    if (!next->isTest())
+                    if (next->op != ScbeMicroOp::SetCC)
                     {
                         if (toMove->flags.has(MIF_JUMP_DEST))
                         {
