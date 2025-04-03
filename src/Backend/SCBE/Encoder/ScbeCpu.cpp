@@ -10,7 +10,6 @@
 #include "Report/Report.h"
 #include "Semantic/Type/TypeInfo.h"
 #include "Syntax/Ast.h"
-#pragma optimize("", off)
 
 void ScbeCpu::init(const BuildParameters& buildParameters)
 {
