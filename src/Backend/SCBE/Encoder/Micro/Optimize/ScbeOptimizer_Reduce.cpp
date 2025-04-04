@@ -261,6 +261,20 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
                 break;
             }
 
+            if (next->op == ScbeMicroOp::LoadRR &&
+                next->regA == inst->regA &&
+                next->regB != next->regA)
+            {
+                ignore(out, inst);
+                break;
+            }
+
+            if (next->op == ScbeMicroOp::LoadRI &&
+                next->regA == inst->regA)
+            {
+                ignore(out, inst);
+                break;
+            }
             break;
 
         case ScbeMicroOp::LoadAddressM:
