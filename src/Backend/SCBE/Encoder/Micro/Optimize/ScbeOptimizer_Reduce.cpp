@@ -73,6 +73,7 @@ void ScbeOptimizer::reduceOffset(const ScbeMicro& out, ScbeMicroInstruction* ins
 {
     if (next->flags.has(MIF_JUMP_DEST))
         return;
+    return;
 
     switch (inst->op)
     {
@@ -80,7 +81,17 @@ void ScbeOptimizer::reduceOffset(const ScbeMicro& out, ScbeMicroInstruction* ins
             if (inst->cpuOp == CpuOp::ADD &&
                 next->op == ScbeMicroOp::OpBinaryMI &&
                 next->regA == inst->regA &&
-                out.cpu->encodeOpBinaryMemImm(next->regA, next->valueA, next->valueA + inst->valueA, next->cpuOp, next->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+                out.cpu->encodeOpBinaryMemImm(next->regA, next->valueA + inst->valueA, next->valueB, next->cpuOp, next->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+            {
+                next->valueA += inst->valueA;
+                swapInstruction(out, inst, next);
+                break;
+            }
+
+            if (inst->cpuOp == CpuOp::ADD &&
+                next->op == ScbeMicroOp::OpBinaryMR &&
+                next->regA == inst->regA &&
+                out.cpu->encodeOpBinaryMemReg(next->regA, next->valueA + inst->valueA, inst->regB, next->cpuOp, next->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
             {
                 next->valueA += inst->valueA;
                 swapInstruction(out, inst, next);
@@ -90,7 +101,47 @@ void ScbeOptimizer::reduceOffset(const ScbeMicro& out, ScbeMicroInstruction* ins
             if (inst->cpuOp == CpuOp::ADD &&
                 next->op == ScbeMicroOp::LoadMI &&
                 next->regA == inst->regA &&
-                out.cpu->encodeLoadMemImm(next->regA, next->valueA, next->valueA + inst->valueA, next->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+                out.cpu->encodeLoadMemImm(next->regA, next->valueA + inst->valueA, next->valueB, next->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+            {
+                next->valueA += inst->valueA;
+                swapInstruction(out, inst, next);
+                break;
+            }
+
+            if (inst->cpuOp == CpuOp::ADD &&
+                next->op == ScbeMicroOp::LoadMR &&
+                next->regA == inst->regA &&
+                out.cpu->encodeLoadMemReg(next->regA, next->valueA + inst->valueA, next->regB, next->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+            {
+                next->valueA += inst->valueA;
+                swapInstruction(out, inst, next);
+                break;
+            }
+
+            if (inst->cpuOp == CpuOp::ADD &&
+                next->op == ScbeMicroOp::CmpMI &&
+                next->regA == inst->regA &&
+                out.cpu->encodeCmpMemImm(next->regA, next->valueA + inst->valueA, next->valueB, next->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+            {
+                next->valueA += inst->valueA;
+                swapInstruction(out, inst, next);
+                break;
+            }
+
+            if (inst->cpuOp == CpuOp::ADD &&
+                next->op == ScbeMicroOp::CmpMR &&
+                next->regA == inst->regA &&
+                out.cpu->encodeCmpMemReg(next->regA, next->valueA + inst->valueA, next->regB, next->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+            {
+                next->valueA += inst->valueA;
+                swapInstruction(out, inst, next);
+                break;
+            }
+
+            if (inst->cpuOp == CpuOp::ADD &&
+                next->op == ScbeMicroOp::OpUnaryM &&
+                next->regA == inst->regA &&
+                out.cpu->encodeOpUnaryMem(next->regA, next->valueA + inst->valueA, next->cpuOp, next->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
             {
                 next->valueA += inst->valueA;
                 swapInstruction(out, inst, next);

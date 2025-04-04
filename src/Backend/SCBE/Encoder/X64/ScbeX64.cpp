@@ -717,6 +717,13 @@ CpuEncodeResult ScbeX64::encodeLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, 
 
 CpuEncodeResult ScbeX64::encodeLoadMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits opBits, CpuEmitFlags emitFlags)
 {
+    if (memOffset > 0x7FFFFFFF)
+    {
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::NotSupported;
+        Report::internalError(module, "encodeLoadMemReg, cannot encode");
+    }
+    
     if (isFloat(reg))
     {
         emitSpecF64(concat, 0xF3, opBits);
@@ -743,6 +750,13 @@ CpuEncodeResult ScbeX64::encodeLoadMemImm(CpuReg memReg, uint64_t memOffset, uin
             return CpuEncodeResult::Right2Reg;
         Report::internalError(module, "encodeLoadMemImm, cannot encode");
     }
+
+    if (memOffset > 0x7FFFFFFF)
+    {
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::NotSupported;
+        Report::internalError(module, "encodeLoadMemImm, cannot encode");
+    }    
 
     if (emitFlags.has(EMIT_CanEncode))
         return CpuEncodeResult::Zero;
@@ -904,6 +918,13 @@ CpuEncodeResult ScbeX64::encodeCmpRegImm(CpuReg reg, uint64_t value, OpBits opBi
 
 CpuEncodeResult ScbeX64::encodeCmpMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits opBits, CpuEmitFlags emitFlags)
 {
+    if (memOffset > 0x7FFFFFFF)
+    {
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::NotSupported;
+        Report::internalError(module, "encodeCmpMemReg, cannot encode");
+    }
+    
     if (isFloat(reg))
     {
         if (emitFlags.has(EMIT_CanEncode))
@@ -924,6 +945,13 @@ CpuEncodeResult ScbeX64::encodeCmpMemReg(CpuReg memReg, uint64_t memOffset, CpuR
 
 CpuEncodeResult ScbeX64::encodeCmpMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits, CpuEmitFlags emitFlags)
 {
+    if (memOffset > 0x7FFFFFFF)
+    {
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::NotSupported;
+        Report::internalError(module, "encodeCmpMemImm, cannot encode");
+    }
+    
     if (opBits == OpBits::B8)
     {
         if (emitFlags.has(EMIT_CanEncode))
@@ -1379,6 +1407,13 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
 
 CpuEncodeResult ScbeX64::encodeOpBinaryMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
+    if (memOffset > 0x7FFFFFFF)
+    {
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::NotSupported;
+        Report::internalError(module, "encodeOpBinaryMemReg, cannot encode");
+    }
+    
     ///////////////////////////////////////////
 
     if (isFloat(reg))
@@ -1803,6 +1838,13 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
 
 CpuEncodeResult ScbeX64::encodeOpBinaryMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
+    if (memOffset > 0x7FFFFFFF)
+    {
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::NotSupported;
+        Report::internalError(module, "encodeOpBinaryMemImm, cannot encode");
+    }
+    
     ///////////////////////////////////////////
 
     if (op == CpuOp::IMOD ||
