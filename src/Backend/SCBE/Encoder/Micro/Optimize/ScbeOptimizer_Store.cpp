@@ -54,7 +54,15 @@ void ScbeOptimizer::optimizePassDeadHdwRegBeforeLeave(const ScbeMicro& out)
             mapRegInst.clear();
         }
         else if (inst->op == ScbeMicroOp::LoadRR ||
-                 inst->op == ScbeMicroOp::OpBinaryRI)
+                 inst->op == ScbeMicroOp::LoadRI ||
+                 inst->op == ScbeMicroOp::LoadZeroExtendRR ||
+                 inst->op == ScbeMicroOp::LoadZeroExtendRM ||
+                 inst->op == ScbeMicroOp::LoadSignedExtendRR ||
+                 inst->op == ScbeMicroOp::LoadSignedExtendRM ||
+                 inst->op == ScbeMicroOp::OpBinaryRR ||
+                 inst->op == ScbeMicroOp::OpBinaryRI ||
+                 inst->op == ScbeMicroOp::SetCC ||
+                 inst->op == ScbeMicroOp::OpUnaryR)
         {
             if (!out.cpuFct->typeFunc->returnByValue() &&
                 !out.cpuFct->typeFunc->returnStructByValue())
