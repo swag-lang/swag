@@ -206,7 +206,14 @@ void ScbeCpu::emitLoadAddressMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, 
 
 void ScbeCpu::emitLoadMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits opBits, CpuEmitFlags emitFlags)
 {
-    encodeLoadMemReg(memReg, memOffset, reg, opBits, emitFlags);
+    const auto result = encodeLoadMemReg(memReg, memOffset, reg, opBits, EMIT_CanEncode);
+    if (result == CpuEncodeResult::Zero)
+    {
+        encodeLoadMemReg(memReg, memOffset, reg, opBits, emitFlags);
+        return;
+    }
+
+    Report::internalError(module, "emitLoadMemReg, cannot encode");
 }
 
 void ScbeCpu::emitLoadMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits, CpuEmitFlags emitFlags)
