@@ -6,7 +6,7 @@
 void ScbeOptimizer::optimizePassSwap(const ScbeMicro& out)
 {
     ScbeMicroInstruction* toMove = nullptr;
-    
+
     auto inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {
@@ -18,7 +18,10 @@ void ScbeOptimizer::optimizePassSwap(const ScbeMicro& out)
             toMove = nullptr;
         }
 
-        if (inst->op == ScbeMicroOp::LoadRR)
+        if (inst->op == ScbeMicroOp::LoadRR ||
+            inst->op == ScbeMicroOp::LoadAddressM ||
+            inst->op == ScbeMicroOp::LoadZeroExtendRR ||
+            inst->op == ScbeMicroOp::LoadSignedExtendRR)
         {
             if (out.cc->paramsRegistersInteger.contains(inst->regA) || out.cc->paramsRegistersFloat.contains(inst->regA))
                 toMove = nullptr;

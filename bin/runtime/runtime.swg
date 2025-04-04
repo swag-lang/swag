@@ -221,7 +221,6 @@ func __setupRuntime(flags: RuntimeFlags)
     }
 }
 
-//#[Swag.PrintAsm]
 func __closeRuntime()
 {
     @getcontext().tempAllocator.release()

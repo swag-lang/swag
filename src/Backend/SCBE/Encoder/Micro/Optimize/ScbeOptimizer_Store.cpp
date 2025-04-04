@@ -11,7 +11,7 @@ void ScbeOptimizer::optimizePassDeadRegBeforeLeave(const ScbeMicro& out)
     auto inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {
-        if (inst->flags.has(MIF_JUMP_DEST))
+        if (inst->flags.has(MIF_JUMP_DEST) || inst->isJump())
             mapValInst.clear();
 
         if (inst->op == ScbeMicroOp::Leave)
@@ -43,7 +43,7 @@ void ScbeOptimizer::optimizePassDeadHdwRegBeforeLeave(const ScbeMicro& out)
     auto inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {
-        if (inst->flags.has(MIF_JUMP_DEST) || inst->isCall())
+        if (inst->flags.has(MIF_JUMP_DEST) || inst->isJump())
             mapRegInst.clear();
 
         if (inst->op == ScbeMicroOp::Leave)
