@@ -73,7 +73,6 @@ void ScbeOptimizer::reduceOffset(const ScbeMicro& out, ScbeMicroInstruction* ins
 {
     if (next->flags.has(MIF_JUMP_DEST))
         return;
-    return;
 
     switch (inst->op)
     {

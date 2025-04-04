@@ -723,7 +723,10 @@ CpuEncodeResult ScbeX64::encodeLoadMemReg(CpuReg memReg, uint64_t memOffset, Cpu
             return CpuEncodeResult::NotSupported;
         Report::internalError(module, "encodeLoadMemReg, cannot encode");
     }
-    
+
+    if (emitFlags.has(EMIT_CanEncode))
+        return CpuEncodeResult::Zero;
+
     if (isFloat(reg))
     {
         emitSpecF64(concat, 0xF3, opBits);
@@ -756,7 +759,7 @@ CpuEncodeResult ScbeX64::encodeLoadMemImm(CpuReg memReg, uint64_t memOffset, uin
         if (emitFlags.has(EMIT_CanEncode))
             return CpuEncodeResult::NotSupported;
         Report::internalError(module, "encodeLoadMemImm, cannot encode");
-    }    
+    }
 
     if (emitFlags.has(EMIT_CanEncode))
         return CpuEncodeResult::Zero;
@@ -924,7 +927,7 @@ CpuEncodeResult ScbeX64::encodeCmpMemReg(CpuReg memReg, uint64_t memOffset, CpuR
             return CpuEncodeResult::NotSupported;
         Report::internalError(module, "encodeCmpMemReg, cannot encode");
     }
-    
+
     if (isFloat(reg))
     {
         if (emitFlags.has(EMIT_CanEncode))
@@ -951,7 +954,7 @@ CpuEncodeResult ScbeX64::encodeCmpMemImm(CpuReg memReg, uint64_t memOffset, uint
             return CpuEncodeResult::NotSupported;
         Report::internalError(module, "encodeCmpMemImm, cannot encode");
     }
-    
+
     if (opBits == OpBits::B8)
     {
         if (emitFlags.has(EMIT_CanEncode))
@@ -1413,7 +1416,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryMemReg(CpuReg memReg, uint64_t memOffset,
             return CpuEncodeResult::NotSupported;
         Report::internalError(module, "encodeOpBinaryMemReg, cannot encode");
     }
-    
+
     ///////////////////////////////////////////
 
     if (isFloat(reg))
@@ -1844,7 +1847,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryMemImm(CpuReg memReg, uint64_t memOffset,
             return CpuEncodeResult::NotSupported;
         Report::internalError(module, "encodeOpBinaryMemImm, cannot encode");
     }
-    
+
     ///////////////////////////////////////////
 
     if (op == CpuOp::IMOD ||
