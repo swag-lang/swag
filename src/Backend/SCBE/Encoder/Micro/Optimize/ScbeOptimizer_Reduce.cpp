@@ -3,6 +3,7 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
+#pragma optimize("", off)
 
 void ScbeOptimizer::reduceNoOp(const ScbeMicro& out, ScbeMicroInstruction* inst, const ScbeMicroInstruction* next)
 {
@@ -150,6 +151,50 @@ void ScbeOptimizer::reduceOffset(const ScbeMicro& out, ScbeMicroInstruction* ins
     }
 }
 
+void ScbeOptimizer::reduceDup(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next)
+{
+    if (next->flags.has(MIF_JUMP_DEST))
+        return;
+
+    switch (inst->op)
+    {
+        case ScbeMicroOp::LoadMR:
+            if (next->op == ScbeMicroOp::LoadMR &&
+                next->regA == inst->regA &&
+                next->regB == inst->regB &&
+                next->opBitsA == inst->opBitsA &&
+                next->valueA == inst->valueA)
+            {
+                ignore(out, next);
+                break;
+            }
+
+            break;
+
+        case ScbeMicroOp::LoadRR:
+            if (next->op == ScbeMicroOp::LoadRR &&
+                inst->regA == next->regA &&
+                inst->regB == next->regB &&
+                inst->opBitsA == next->opBitsA)
+            {
+                printf("X");
+                ignore(out, next);
+                break;
+            }
+
+            if (next->op == ScbeMicroOp::LoadRR &&
+                inst->regA == next->regB &&
+                inst->regB == next->regA &&
+                inst->opBitsA == next->opBitsA &&
+                inst->opBitsA == OpBits::B64)
+            {
+                ignore(out, next);
+                break;
+            }
+            break;
+    }
+}
+
 void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next)
 {
     if (next->flags.has(MIF_JUMP_DEST))
@@ -204,16 +249,6 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
                 out.cpu->acceptsRegC(next, inst->regC))
             {
                 setRegC(next, inst->regB);
-                break;
-            }
-
-            if (next->op == ScbeMicroOp::LoadRR &&
-                inst->regA == next->regB &&
-                inst->regB == next->regA &&
-                inst->opBitsA == next->opBitsA &&
-                inst->opBitsA == OpBits::B64)
-            {
-                ignore(out, next);
                 break;
             }
 
@@ -283,6 +318,7 @@ void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
         reduceUnusedStack(out, inst, next);
         reduceNoOp(out, inst, next);
         reduceNext(out, inst, next);
+        reduceDup(out, inst, next);
         reduceOffset(out, inst, next);
         reduceLoadRR(out, inst, next);
         inst = next;
