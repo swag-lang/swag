@@ -52,7 +52,8 @@ void ScbeOptimizer::optimizePassDeadHdwRegBeforeLeave(const ScbeMicro& out)
                 ignore(out, i);
             mapRegInst.clear();
         }
-        else if (inst->op == ScbeMicroOp::LoadRR ||
+        else if (inst->op == ScbeMicroOp::LoadAddressM ||
+                 inst->op == ScbeMicroOp::LoadRR ||
                  inst->op == ScbeMicroOp::LoadRI ||
                  inst->op == ScbeMicroOp::LoadZeroExtendRR ||
                  inst->op == ScbeMicroOp::LoadZeroExtendRM ||
@@ -170,7 +171,8 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
         switch (inst->op)
         {
             case ScbeMicroOp::LoadAddressM:
-                mapValReg.erase(stackOffset);
+                if (inst->regB == CpuReg::Rsp && out.cpuFct->isStackOffsetTransient(stackOffset))
+                    mapValReg.erase(stackOffset);
                 break;
 
             case ScbeMicroOp::LoadRM:
