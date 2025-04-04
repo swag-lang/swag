@@ -689,6 +689,31 @@ ScbeMicroInstruction* ScbeMicro::getNextInstruction(ScbeMicroInstruction* inst)
     return inst;
 }
 
+ScbeMicroInstruction* ScbeMicro::getNextFlagSensitive(ScbeMicroInstruction* inst)
+{
+    inst++;
+    while (inst->op != ScbeMicroOp::End && 
+           inst->op == ScbeMicroOp::Label ||
+           inst->op == ScbeMicroOp::Debug ||
+           inst->op == ScbeMicroOp::Ignore ||
+           inst->op == ScbeMicroOp::LoadMI ||
+           inst->op == ScbeMicroOp::LoadMR ||
+           inst->op == ScbeMicroOp::LoadRI ||
+           inst->op == ScbeMicroOp::LoadRM ||
+           inst->op == ScbeMicroOp::LoadRR ||
+           inst->op == ScbeMicroOp::LoadAddressM ||
+           inst->op == ScbeMicroOp::LoadAddressAddMul ||
+           inst->op == ScbeMicroOp::LoadSignedExtendRM ||
+           inst->op == ScbeMicroOp::LoadSignedExtendRR ||
+           inst->op == ScbeMicroOp::LoadZeroExtendRM ||
+           inst->op == ScbeMicroOp::LoadZeroExtendRR)
+    {
+        inst++;
+    }
+    
+    return inst;
+}
+
 void ScbeMicro::postProcess() const
 {
     cpuFct->isEmpty = true;
@@ -707,7 +732,7 @@ void ScbeMicro::postProcess() const
 
         inst = getNextInstruction(inst);
     }
-    
+
     for (const auto r : cpuFct->usedRegs)
     {
         if (cc->nonVolatileRegistersIntegerSet.contains(r))

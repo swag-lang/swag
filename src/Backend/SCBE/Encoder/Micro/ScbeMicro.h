@@ -67,6 +67,7 @@ struct ScbeMicro final : ScbeCpu
     CpuEncodeResult encodeOpTernaryRegRegReg(CpuReg reg0, CpuReg reg1, CpuReg reg2, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags) override;
 
     static ScbeMicroInstruction* getNextInstruction(ScbeMicroInstruction* inst);
+    static ScbeMicroInstruction* getNextFlagSensitive(ScbeMicroInstruction* inst);
     ScbeMicroInstruction*        getFirstInstruction() const;
     ScbeMicroInstruction*        addInstruction(ScbeMicroOp op, CpuEmitFlags emitFlags);
     void                         postProcess() const;

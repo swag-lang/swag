@@ -35,6 +35,7 @@ struct ScbeMicroInstruction
     bool hasRegC() const { return (hasReadRegC() || hasWriteRegC()); }
 
     bool isJump() const;
+    bool isJumpCond() const;
     bool isCall() const;
     bool isRet() const;
     bool isTest() const;

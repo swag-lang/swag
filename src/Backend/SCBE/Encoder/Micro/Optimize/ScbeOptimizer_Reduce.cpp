@@ -3,7 +3,6 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
-#include "Wmf/SourceFile.h"
 #pragma optimize("", off)
 
 void ScbeOptimizer::reduceNoOp(const ScbeMicro& out, ScbeMicroInstruction* inst, const ScbeMicroInstruction* next)
@@ -229,6 +228,21 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
                 out.cpu->acceptsRegC(next, inst->regC))
             {
                 setRegC(next, inst->regB);
+                break;
+            }
+
+            if (next->op == ScbeMicroOp::OpBinaryRI &&
+                next->cpuOp == CpuOp::ADD &&
+                next->regA == inst->regA &&
+                next->opBitsA == inst->opBitsA &&
+                out.cpu->encodeLoadAddressMem(next->regA, inst->regB, next->valueA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+            {
+                if (!ScbeMicro::getNextFlagSensitive(next)->isJumpCond()) // :x64optimoverflow
+                {
+                    setOp(next, ScbeMicroOp::LoadAddressM);
+                    next->regB = inst->regB;
+                    ignore(out, inst);
+                }
                 break;
             }
 

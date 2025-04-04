@@ -4,7 +4,16 @@
 
 bool ScbeMicroInstruction::isJump() const
 {
-    return op == ScbeMicroOp::JumpM || op == ScbeMicroOp::JumpCI || op == ScbeMicroOp::JumpTable || op == ScbeMicroOp::JumpCC;
+    return op == ScbeMicroOp::JumpM ||
+           op == ScbeMicroOp::JumpCI ||
+           op == ScbeMicroOp::JumpTable ||
+           op == ScbeMicroOp::JumpCC;
+}
+
+bool ScbeMicroInstruction::isJumpCond() const
+{
+    return op == ScbeMicroOp::JumpCI ||
+           op == ScbeMicroOp::JumpCC;
 }
 
 bool ScbeMicroInstruction::isCall() const
