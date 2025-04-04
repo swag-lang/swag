@@ -3,7 +3,6 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
-#pragma optimize("", off)
 
 void ScbeOptimizer::reduceNoOp(const ScbeMicro& out, ScbeMicroInstruction* inst, const ScbeMicroInstruction* next)
 {
@@ -177,7 +176,6 @@ void ScbeOptimizer::reduceDup(const ScbeMicro& out, ScbeMicroInstruction* inst, 
                 inst->regB == next->regB &&
                 inst->opBitsA == next->opBitsA)
             {
-                printf("X");
                 ignore(out, next);
                 break;
             }
