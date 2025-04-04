@@ -1202,7 +1202,6 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
 
         if (op != CpuOp::FSQRT &&
             op != CpuOp::FAND &&
-            op != CpuOp::UCOMIF &&
             op != CpuOp::FXOR)
         {
             emitSpecF64(concat, 0xF3, opBits);

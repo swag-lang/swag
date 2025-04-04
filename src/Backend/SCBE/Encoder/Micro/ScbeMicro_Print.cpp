@@ -160,8 +160,6 @@ namespace
                 return "cvtf2i";
             case CpuOp::CVTF2F:
                 return "cvtf2f";
-            case CpuOp::UCOMIF:
-                return "ucomif";
             case CpuOp::FADD:
                 return "fadd";
             case CpuOp::FSUB:

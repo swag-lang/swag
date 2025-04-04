@@ -910,9 +910,9 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitClearReg(cc.computeRegI1, OpBits::B32);
                 emitIMMA(pp, cc.computeRegF0, opBits);
                 emitIMMB(pp, cc.computeRegF1, opBits);
-                pp.emitOpBinaryRegReg(cc.computeRegF0, cc.computeRegF1, CpuOp::UCOMIF, opBits);
+                pp.emitCmpRegReg(cc.computeRegF0, cc.computeRegF1, opBits);
                 pp.emitSetCond(cc.computeRegI1, CpuCondFlag::A);
-                pp.emitOpBinaryRegReg(cc.computeRegF1, cc.computeRegF0, CpuOp::UCOMIF, opBits);
+                pp.emitCmpRegReg(cc.computeRegF1, cc.computeRegF0, opBits);
                 pp.emitLoadRegImm(cc.computeRegI0, 0xFFFFFFFF, OpBits::B32);
                 pp.emitOpBinaryRegReg(cc.computeRegI0, cc.computeRegI1, CpuOp::CMOVBE, OpBits::B32);
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc.computeRegI0, OpBits::B32);
