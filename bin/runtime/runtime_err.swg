@@ -35,6 +35,7 @@ func __setErr(err: any)
     cxt.hasError                     = 1
 }
 
+//#[Swag.PrintAsm]
 func __pushErr()
 {
     let cxt = @getcontext()

@@ -113,6 +113,18 @@ void ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
     }
 }
 
+void ScbeOptimizer::swapInstruction(const ScbeMicro& out, ScbeMicroInstruction* before, ScbeMicroInstruction* after)
+{
+    if (before->flags.has(MIF_JUMP_DEST))
+    {
+        after->flags.add(MIF_JUMP_DEST);
+        before->flags.remove(MIF_JUMP_DEST);
+    }
+
+    std::swap(*before, *after);
+    setDirtyPass();
+}
+
 void ScbeOptimizer::ignore(const ScbeMicro& out, ScbeMicroInstruction* inst)
 {
 #ifdef SWAG_STATS
@@ -212,7 +224,7 @@ void ScbeOptimizer::computeContext(const ScbeMicro& out)
             usedReadStack[inst->getStackOffsetRead()] += 1;
             usedWriteStack[inst->getStackOffsetWrite()] += 1;
         }
-        
+
         auto regs = out.cpu->getReadWriteRegisters(inst);
         for (auto r : regs)
         {

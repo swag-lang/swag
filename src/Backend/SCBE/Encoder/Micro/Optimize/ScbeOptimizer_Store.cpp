@@ -3,6 +3,7 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
+#pragma optimize("", off)
 
 void ScbeOptimizer::optimizePassDeadRegBeforeLeave(const ScbeMicro& out)
 {
@@ -52,7 +53,8 @@ void ScbeOptimizer::optimizePassDeadHdwRegBeforeLeave(const ScbeMicro& out)
                 ignore(out, i);
             mapRegInst.clear();
         }
-        else if (inst->op == ScbeMicroOp::LoadRR)
+        else if (inst->op == ScbeMicroOp::LoadRR ||
+                 inst->op == ScbeMicroOp::OpBinaryRI)
         {
             if (!out.cpuFct->typeFunc->returnByValue() &&
                 !out.cpuFct->typeFunc->returnStructByValue())

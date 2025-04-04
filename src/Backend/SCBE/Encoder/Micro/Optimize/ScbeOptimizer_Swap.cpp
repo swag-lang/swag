@@ -43,14 +43,7 @@ void ScbeOptimizer::optimizePassSwap(const ScbeMicro& out)
                     const auto next = ScbeMicro::getNextInstruction(inst);
                     if (next->op != ScbeMicroOp::SetCC)
                     {
-                        if (toMove->flags.has(MIF_JUMP_DEST))
-                        {
-                            inst->flags.add(MIF_JUMP_DEST);
-                            toMove->flags.remove(MIF_JUMP_DEST);
-                        }
-                        
-                        std::swap(*toMove, *inst);
-                        setDirtyPass();
+                        swapInstruction(out, toMove, inst);
                         toMove = inst;
                     }
                     else

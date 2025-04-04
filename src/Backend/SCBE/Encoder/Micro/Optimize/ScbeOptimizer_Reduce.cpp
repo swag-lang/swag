@@ -4,9 +4,8 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
 
-void ScbeOptimizer::reduceNoOp(const ScbeMicro& out, ScbeMicroInstruction* inst)
+void ScbeOptimizer::reduceNoOp(const ScbeMicro& out, ScbeMicroInstruction* inst, const ScbeMicroInstruction* next)
 {
-    const auto next = ScbeMicro::getNextInstruction(inst);
     switch (inst->op)
     {
         case ScbeMicroOp::LoadRR:
@@ -30,12 +29,12 @@ void ScbeOptimizer::reduceNoOp(const ScbeMicro& out, ScbeMicroInstruction* inst)
     }
 }
 
-void ScbeOptimizer::reduceLoadRR(const ScbeMicro& out, ScbeMicroInstruction* inst)
+void ScbeOptimizer::reduceLoadRR(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next)
 {
-    const auto next = ScbeMicro::getNextInstruction(inst);
+    if (next->flags.has(MIF_JUMP_DEST))
+        return;
 
     if (next->op == ScbeMicroOp::LoadRR &&
-        !next->flags.has(MIF_JUMP_DEST) &&
         !inst->hasReadRegA() &&
         inst->hasWriteRegA() &&
         next->regB == inst->regA &&
@@ -70,12 +69,42 @@ void ScbeOptimizer::reduceLoadRR(const ScbeMicro& out, ScbeMicroInstruction* ins
     }
 }
 
-void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst)
+void ScbeOptimizer::reduceOffset(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next)
 {
-    const auto next     = ScbeMicro::getNextInstruction(inst);
-    const auto nextRegs = out.cpu->getWriteRegisters(next);
     if (next->flags.has(MIF_JUMP_DEST))
         return;
+
+    switch (inst->op)
+    {
+        case ScbeMicroOp::OpBinaryRI:
+            if (inst->cpuOp == CpuOp::ADD &&
+                next->op == ScbeMicroOp::OpBinaryMI &&
+                next->regA == inst->regA &&
+                out.cpu->encodeOpBinaryMemImm(next->regA, next->valueA, next->valueA + inst->valueA, next->cpuOp, next->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+            {
+                next->valueA += inst->valueA;
+                swapInstruction(out, inst, next);
+                break;
+            }
+
+            if (inst->cpuOp == CpuOp::ADD &&
+                next->op == ScbeMicroOp::LoadMI &&
+                next->regA == inst->regA &&
+                out.cpu->encodeLoadMemImm(next->regA, next->valueA, next->valueA + inst->valueA, next->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+            {
+                next->valueA += inst->valueA;
+                swapInstruction(out, inst, next);
+                break;
+            }
+            break;
+    }
+}
+
+void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next)
+{
+    if (next->flags.has(MIF_JUMP_DEST))
+        return;
+    RegisterSet nextRegs;
 
     switch (inst->op)
     {
@@ -92,6 +121,7 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst)
             break;
 
         case ScbeMicroOp::LoadRR:
+            nextRegs = out.cpu->getWriteRegisters(next);
             if (next->hasReadRegA() &&
                 !next->hasWriteRegA() &&
                 inst->regA == next->regA &&
@@ -184,7 +214,7 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst)
     }
 }
 
-void ScbeOptimizer::reduceUnusedStack(const ScbeMicro& out, ScbeMicroInstruction* inst)
+void ScbeOptimizer::reduceUnusedStack(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction*)
 {
     const auto stackOffset = inst->getStackOffsetWrite();
     if (out.cpuFct->isStackOffsetTransient(stackOffset) &&
@@ -199,10 +229,12 @@ void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
     auto inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {
-        reduceUnusedStack(out, inst);
-        reduceNoOp(out, inst);
-        reduceNext(out, inst);
-        reduceLoadRR(out, inst);
-        inst = ScbeMicro::getNextInstruction(inst);
+        const auto next = ScbeMicro::getNextInstruction(inst);
+        reduceUnusedStack(out, inst, next);
+        reduceNoOp(out, inst, next);
+        reduceNext(out, inst, next);
+        reduceOffset(out, inst, next);
+        reduceLoadRR(out, inst, next);
+        inst = next;
     }
 }
