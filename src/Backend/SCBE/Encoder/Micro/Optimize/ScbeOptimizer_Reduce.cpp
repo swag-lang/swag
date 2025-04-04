@@ -3,6 +3,8 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
+#include "Wmf/SourceFile.h"
+#pragma optimize("", off)
 
 void ScbeOptimizer::reduceNoOp(const ScbeMicro& out, ScbeMicroInstruction* inst, const ScbeMicroInstruction* next)
 {
@@ -111,26 +113,6 @@ void ScbeOptimizer::reduceOffset(const ScbeMicro& out, ScbeMicroInstruction* ins
                 next->op == ScbeMicroOp::LoadMR &&
                 next->regA == inst->regA &&
                 out.cpu->encodeLoadMemReg(next->regA, next->valueA + inst->valueA, next->regB, next->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
-            {
-                next->valueA += inst->valueA;
-                swapInstruction(out, inst, next);
-                break;
-            }
-
-            if (inst->cpuOp == CpuOp::ADD &&
-                next->op == ScbeMicroOp::CmpMI &&
-                next->regA == inst->regA &&
-                out.cpu->encodeCmpMemImm(next->regA, next->valueA + inst->valueA, next->valueB, next->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
-            {
-                next->valueA += inst->valueA;
-                swapInstruction(out, inst, next);
-                break;
-            }
-
-            if (inst->cpuOp == CpuOp::ADD &&
-                next->op == ScbeMicroOp::CmpMR &&
-                next->regA == inst->regA &&
-                out.cpu->encodeCmpMemReg(next->regA, next->valueA + inst->valueA, next->regB, next->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
             {
                 next->valueA += inst->valueA;
                 swapInstruction(out, inst, next);
@@ -247,6 +229,21 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
                 out.cpu->acceptsRegC(next, inst->regC))
             {
                 setRegC(next, inst->regB);
+                break;
+            }
+
+            break;
+
+        case ScbeMicroOp::OpBinaryRI:
+            if (inst->cpuOp == CpuOp::ADD &&
+                next->op == ScbeMicroOp::LoadRR &&
+                next->regB == inst->regA &&
+                out.cpu->encodeLoadAddressMem(next->regA, inst->regA, inst->valueA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+            {
+                setOp(next, ScbeMicroOp::LoadAddressM);
+                next->regB   = inst->regA;
+                next->valueA = inst->valueA;
+                swapInstruction(out, inst, next);
                 break;
             }
 

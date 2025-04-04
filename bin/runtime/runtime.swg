@@ -38,9 +38,9 @@ func __is(toType, fromType: const *TypeInfoStruct)->{offset: u32, yes: bool}
             let ptr = cast(const *Swag.TypeInfoPointer) ft.pointedType
             let typeStruct = cast(const *Swag.TypeInfoStruct) ptr.pointedType
             if @typecmp(toType, typeStruct, .Strict):
-                return {ft.offset, true}      
+                return {ft.offset, true}
         }
-    }    
+    }
 
     return {0, false}
 }
@@ -147,7 +147,7 @@ func __convertArgcArgv(args: const ^u8)
 {
     if args == null:
         return
-        
+
     var cmdLine = args
     __argc = 0
     while dref cmdLine
@@ -221,6 +221,7 @@ func __setupRuntime(flags: RuntimeFlags)
     }
 }
 
+//#[Swag.PrintAsm]
 func __closeRuntime()
 {
     @getcontext().tempAllocator.release()

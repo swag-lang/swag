@@ -688,6 +688,8 @@ CpuEncodeResult ScbeX64::encodeLoadAddressMem(CpuReg reg, CpuReg memReg, uint64_
     if (memReg == CpuReg::Rip)
     {
         SWAG_ASSERT(memOffset == 0);
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::Zero;
         emitREX(concat, OpBits::B64, reg, memReg);
         emitCPUOp(concat, 0x8D);
         emitModRM(concat, ModRMMode::Memory, reg, MODRM_RM_RIP);
@@ -698,6 +700,15 @@ CpuEncodeResult ScbeX64::encodeLoadAddressMem(CpuReg reg, CpuReg memReg, uint64_
     }
     else
     {
+        if (memOffset > 0x7FFFFFFF)
+        {
+            if (emitFlags.has(EMIT_CanEncode))
+                return CpuEncodeResult::NotSupported;
+            Report::internalError(module, "encodeLoadAddressMem, cannot encode");
+        }
+
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::Zero;
         emitREX(concat, OpBits::B64, reg, memReg);
         emitCPUOp(concat, 0x8D);
         emitModRM(concat, memOffset, reg, memReg);
