@@ -3,7 +3,6 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
-#pragma optimize("", off)
 
 void ScbeOptimizer::optimizePassDeadRegBeforeLeave(const ScbeMicro& out)
 {
@@ -88,15 +87,19 @@ void ScbeOptimizer::optimizePassDeadHdwRegBeforeLeave(const ScbeMicro& out)
     }
 }
 
-void ScbeOptimizer::optimizePassDeadStore(const ScbeMicro& out)
+void ScbeOptimizer::optimizePassDeadHdwReg(const ScbeMicro& out)
 {
     mapRegInst.clear();
 
     auto inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {
-        if (inst->flags.has(MIF_JUMP_DEST) || inst->isRet())
+        if (inst->flags.has(MIF_JUMP_DEST) ||
+            inst->isRet() ||
+            inst->isJump())
+        {
             mapRegInst.clear();
+        }
 
         const auto readRegs = out.cpu->getReadRegisters(inst);
         for (const auto r : readRegs)
@@ -105,9 +108,12 @@ void ScbeOptimizer::optimizePassDeadStore(const ScbeMicro& out)
         auto legitReg = CpuReg::Max;
         if (inst->op == ScbeMicroOp::LoadRR ||
             inst->op == ScbeMicroOp::LoadRI ||
+            inst->op == ScbeMicroOp::LoadRM ||
+            inst->op == ScbeMicroOp::LoadAddressM ||
+            inst->op == ScbeMicroOp::SymbolRelocationAddress ||
             inst->op == ScbeMicroOp::LoadZeroExtendRM ||
             inst->op == ScbeMicroOp::LoadSignedExtendRM ||
-            inst->op == ScbeMicroOp::LoadRM)
+            inst->op == ScbeMicroOp::ClearR)
         {
             if (mapRegInst.contains(inst->regA))
                 ignore(out, mapRegInst[inst->regA]);
