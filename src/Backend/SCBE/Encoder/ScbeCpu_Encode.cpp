@@ -122,7 +122,14 @@ void ScbeCpu::emitJumpReg(CpuReg reg, CpuEmitFlags emitFlags)
 
 void ScbeCpu::emitLoadRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits opBits, CpuEmitFlags emitFlags)
 {
-    encodeLoadRegMem(reg, memReg, memOffset, opBits, emitFlags);
+    const auto result = cpu->encodeLoadRegMem(reg, memReg, memOffset, opBits, EMIT_CanEncode);
+    if (result == CpuEncodeResult::Zero)
+    {
+        encodeLoadRegMem(reg, memReg, memOffset, opBits, emitFlags);
+        return;
+    }
+
+    Report::internalError(module, "emitLoadRegMem, cannot encode");
 }
 
 void ScbeCpu::emitLoadRegImm(CpuReg reg, uint64_t value, OpBits opBits, CpuEmitFlags emitFlags)

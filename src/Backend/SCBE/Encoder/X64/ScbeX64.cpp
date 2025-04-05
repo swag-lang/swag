@@ -556,6 +556,16 @@ CpuEncodeResult ScbeX64::encodeLoadRegImm(CpuReg reg, uint64_t value, OpBits opB
 
 CpuEncodeResult ScbeX64::encodeLoadRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits opBits, CpuEmitFlags emitFlags)
 {
+    if (memOffset > 0x7FFFFFFF)
+    {
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::NotSupported;
+        Report::internalError(module, "encodeLoadRegMem, cannot encode");
+    }
+
+    if (emitFlags.has(EMIT_CanEncode))
+        return CpuEncodeResult::Zero;
+
     if (isFloat(reg))
     {
         emitSpecF64(concat, 0xF3, opBits);
