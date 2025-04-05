@@ -3,6 +3,7 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
+#include "Wmf/SourceFile.h"
 #pragma optimize("", off)
 
 void ScbeOptimizer::reduceNoOp(const ScbeMicro& out, ScbeMicroInstruction* inst, const ScbeMicroInstruction* next)
@@ -174,6 +175,61 @@ void ScbeOptimizer::reduceDup(const ScbeMicro& out, ScbeMicroInstruction* inst, 
     }
 }
 
+void ScbeOptimizer::reduceToLoadAddress(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next)
+{
+    if (next->flags.has(MIF_JUMP_DEST))
+        return;
+    RegisterSet nextRegs;
+
+    switch (inst->op)
+    {
+        case ScbeMicroOp::LoadRR:
+            if (next->op == ScbeMicroOp::OpBinaryRI &&
+                next->cpuOp == CpuOp::ADD &&
+                next->regA == inst->regA &&
+                next->opBitsA == inst->opBitsA &&
+                !ScbeMicro::getNextFlagSensitive(next)->isJumpCond() && // :x64optimoverflow
+                out.cpu->encodeLoadAddressMem(next->regA, inst->regB, next->valueA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+            {
+                setOp(next, ScbeMicroOp::LoadAddressM);
+                next->regB = inst->regB;
+                ignore(out, inst);
+                break;
+            }
+
+            if (next->op == ScbeMicroOp::OpBinaryRI &&
+                next->cpuOp == CpuOp::SHL &&
+                next->regA == inst->regA &&
+                next->opBitsA == inst->opBitsA &&
+                !ScbeMicro::getNextFlagSensitive(next)->isJumpCond() && // :x64optimoverflow
+                out.cpu->encodeLoadAddressAddMul(next->regA, CpuReg::Max, inst->regB, 1ULL << next->valueA, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+            {
+                setOp(next, ScbeMicroOp::LoadAddressAddMul);
+                next->regB   = CpuReg::Max;
+                next->regC   = inst->regB;
+                next->valueA = 1ULL << next->valueA;
+                ignore(out, inst);
+                break;
+            }
+
+            break;
+
+        case ScbeMicroOp::OpBinaryRI:
+            if (inst->cpuOp == CpuOp::ADD &&
+                next->op == ScbeMicroOp::LoadRR &&
+                next->regB == inst->regA &&
+                out.cpu->encodeLoadAddressMem(next->regA, inst->regA, inst->valueA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+            {
+                setOp(next, ScbeMicroOp::LoadAddressM);
+                next->regB   = inst->regA;
+                next->valueA = inst->valueA;
+                swapInstruction(out, inst, next);
+                break;
+            }
+            break;
+    }
+}
+
 void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next)
 {
     if (next->flags.has(MIF_JUMP_DEST))
@@ -230,36 +286,9 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
                 setRegC(next, inst->regB);
                 break;
             }
-
-            if (next->op == ScbeMicroOp::OpBinaryRI &&
-                next->cpuOp == CpuOp::ADD &&
-                next->regA == inst->regA &&
-                next->opBitsA == inst->opBitsA &&
-                out.cpu->encodeLoadAddressMem(next->regA, inst->regB, next->valueA, EMIT_CanEncode) == CpuEncodeResult::Zero)
-            {
-                if (!ScbeMicro::getNextFlagSensitive(next)->isJumpCond()) // :x64optimoverflow
-                {
-                    setOp(next, ScbeMicroOp::LoadAddressM);
-                    next->regB = inst->regB;
-                    ignore(out, inst);
-                }
-                break;
-            }
-
             break;
 
         case ScbeMicroOp::OpBinaryRI:
-            if (inst->cpuOp == CpuOp::ADD &&
-                next->op == ScbeMicroOp::LoadRR &&
-                next->regB == inst->regA &&
-                out.cpu->encodeLoadAddressMem(next->regA, inst->regA, inst->valueA, EMIT_CanEncode) == CpuEncodeResult::Zero)
-            {
-                setOp(next, ScbeMicroOp::LoadAddressM);
-                next->regB   = inst->regA;
-                next->valueA = inst->valueA;
-                swapInstruction(out, inst, next);
-                break;
-            }
 
             if (next->op == ScbeMicroOp::LoadRR &&
                 next->regA == inst->regA &&
@@ -354,6 +383,7 @@ void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
         reduceUnusedStack(out, inst, next);
         reduceNoOp(out, inst, next);
         reduceNext(out, inst, next);
+        reduceToLoadAddress(out, inst, next);
         reduceDup(out, inst, next);
         reduceOffset(out, inst, next);
         reduceLoadRR(out, inst, next);

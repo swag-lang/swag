@@ -150,7 +150,7 @@ namespace
             case CpuOp::MOV:
                 return "mov";
             case CpuOp::BT:
-                return "bt";            
+                return "bt";
 
             case CpuOp::CVTI2F:
                 return "cvtsi2f";
@@ -183,6 +183,9 @@ namespace
 
     const char* regName(CpuReg reg, OpBits opBits)
     {
+        if (reg == CpuReg::Max)
+            return "";
+        
         static constexpr const char* GENERAL_REGS[][5] = {
             {"al", "ax", "eax", "rax", "..."},
             {"bl", "bx", "ebx", "rbx", "..."},
@@ -454,7 +457,10 @@ void ScbeMicro::print() const
                 break;
             case ScbeMicroOp::LoadAddressAddMul:
                 line.name = "lea";
-                line.args = form("%s, [%s+%s*%d]", regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsA), regName(inst->regC, inst->opBitsA), inst->valueA);
+                if (inst->regB == CpuReg::Max)
+                    line.args = form("%s, [%s*%d]", regName(inst->regA, inst->opBitsA), regName(inst->regC, inst->opBitsA), inst->valueA);
+                else
+                    line.args = form("%s, [%s+%s*%d]", regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsA), regName(inst->regC, inst->opBitsA), inst->valueA);
                 break;
             case ScbeMicroOp::LoadMR:
                 line.name = "mov";

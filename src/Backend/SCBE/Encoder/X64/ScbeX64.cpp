@@ -7,6 +7,7 @@
 #include "Semantic/Type/TypeManager.h"
 #include "Wmf/Module.h"
 #pragma warning(disable : 4063)
+#pragma optimize("", off)
 
 enum class ModRMMode : uint8_t
 {
@@ -28,6 +29,8 @@ constexpr auto MODRM_REG_7  = static_cast<CpuReg>(247);
 
 constexpr uint8_t MODRM_RM_SIB = 0b100;
 constexpr uint8_t MODRM_RM_RIP = 0b101;
+
+constexpr uint8_t SIB_NO_BASE = 0b101;
 
 enum class X64Reg : uint8_t
 {
@@ -396,10 +399,17 @@ namespace
         }
 
         SWAG_ASSERT(mulValue == 1 || mulValue == 2 || mulValue == 4 || mulValue == 8);
-        emitSIB(concat, static_cast<uint8_t>(log2(mulValue)), encodeReg(regSrc2) & 0b111, encodeReg(regSrc1) & 0b111);
-
-        if (regSrc1 == CpuReg::R13)
-            emitValue(concat, 0, OpBits::B8);
+        if (regSrc1 == CpuReg::Max)
+        {
+            emitSIB(concat, static_cast<uint8_t>(log2(mulValue)), encodeReg(regSrc2) & 0b111, SIB_NO_BASE);
+            emitValue(concat, 0, OpBits::B32);
+        }
+        else
+        {
+            emitSIB(concat, static_cast<uint8_t>(log2(mulValue)), encodeReg(regSrc2) & 0b111, encodeReg(regSrc1) & 0b111);
+            if (regSrc1 == CpuReg::R13)
+                emitValue(concat, 0, OpBits::B8);
+        }
     }
 }
 
@@ -719,7 +729,17 @@ CpuEncodeResult ScbeX64::encodeLoadAddressMem(CpuReg reg, CpuReg memReg, uint64_
 
 CpuEncodeResult ScbeX64::encodeLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, OpBits opBits, CpuEmitFlags emitFlags)
 {
+    if (emitFlags.has(EMIT_CanEncode))
+    {
+        if (mulValue != 1 && mulValue != 2 && mulValue != 4 && mulValue != 8)
+            return CpuEncodeResult::NotSupported;
+        if (opBits != OpBits::B32 && opBits != OpBits::B64)
+            return CpuEncodeResult::NotSupported;
+        return CpuEncodeResult::Zero;
+    }
+
     SWAG_ASSERT(opBits == OpBits::B32 || opBits == OpBits::B64);
+
     emitAddMul(concat, 0x8D, regDst, regSrc1, regSrc2, mulValue, opBits, emitFlags);
     return CpuEncodeResult::Zero;
 }
