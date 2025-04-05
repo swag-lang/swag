@@ -731,7 +731,6 @@ namespace Swag
     struct BuildCfgBackendSCBE
     {
         unrollMemLimit: u32     // Maximum number of bytes to unroll memset/cpy in optimize mode
-        regToRegLimit:  u32     // Limit to convert soft registers to hard registers
     }
 
     // The kind of native backend to generate.

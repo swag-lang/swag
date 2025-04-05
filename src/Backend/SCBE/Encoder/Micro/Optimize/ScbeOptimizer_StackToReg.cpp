@@ -53,7 +53,7 @@ void ScbeOptimizer::optimizePassStackToVolatileReg(const ScbeMicro& out)
 
         for (const auto& it : vec)
         {
-            if (it.second < out.buildParams.buildCfg->backendSCBE.regToRegLimit)
+            if (it.second < 2)
                 break;
             if (!out.cpuFct->isStackOffsetLocalParam(it.first) && !out.cpuFct->isStackOffsetReg(it.first))
                 continue;
