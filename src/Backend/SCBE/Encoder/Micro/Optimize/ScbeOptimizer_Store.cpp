@@ -3,6 +3,7 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
+#pragma optimize("", off)
 
 void ScbeOptimizer::optimizePassDeadRegBeforeLeave(const ScbeMicro& out)
 {
@@ -120,6 +121,21 @@ void ScbeOptimizer::optimizePassDeadHdwReg(const ScbeMicro& out)
                 ignore(out, mapRegInst[inst->regA]);
             mapRegInst[inst->regA] = inst;
             legitReg               = inst->regA;
+        }
+        else if (inst->isCall())
+        {
+            for (const auto& [r, i] : mapRegInst)
+            {
+                if (!inst->cc->paramsRegistersInteger.contains(r) && !inst->cc->paramsRegistersFloat.contains(r))
+                {
+                    if (inst->cc->volatileRegistersInteger.contains(r) || inst->cc->volatileRegistersFloat.contains(r))
+                    {
+                        if (inst->op == ScbeMicroOp::CallIndirect && r == inst->regA)
+                            continue;
+                        ignore(out, i);
+                    }
+                }
+            }
         }
 
         const auto writeRegs = out.cpu->getWriteRegisters(inst);
