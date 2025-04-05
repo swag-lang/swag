@@ -174,7 +174,16 @@ void ScbeCpu::emitLoadSignedExtendRegReg(CpuReg regDst, CpuReg regSrc, OpBits nu
     if (numBitsSrc == numBitsDst)
         emitLoadRegReg(regDst, regSrc, numBitsSrc, emitFlags);
     else
-        encodeLoadSignedExtendRegReg(regDst, regSrc, numBitsDst, numBitsSrc, emitFlags);
+    {
+        const auto result = cpu->encodeLoadSignedExtendRegReg(regDst, regSrc, numBitsDst, numBitsSrc, EMIT_CanEncode);
+        if (result == CpuEncodeResult::Zero)
+        {
+            encodeLoadSignedExtendRegReg(regDst, regSrc, numBitsDst, numBitsSrc, emitFlags);
+            return;
+        }
+
+        Report::internalError(module, "emitLoadSignedExtendRegReg, cannot encode");
+    }
 }
 
 void ScbeCpu::emitLoadSignedExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc, CpuEmitFlags emitFlags)
@@ -189,7 +198,7 @@ void ScbeCpu::emitLoadSignedExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t mem
             encodeLoadSignedExtendRegMem(reg, memReg, memOffset, numBitsDst, numBitsSrc, emitFlags);
             return;
         }
-        
+
         Report::internalError(module, "emitLoadSignedExtendRegMem, cannot encode");
     }
 }
@@ -199,7 +208,16 @@ void ScbeCpu::emitLoadZeroExtendRegReg(CpuReg regDst, CpuReg regSrc, OpBits numB
     if (numBitsSrc == numBitsDst)
         emitLoadRegReg(regDst, regSrc, numBitsSrc, emitFlags);
     else
-        encodeLoadZeroExtendRegReg(regDst, regSrc, numBitsDst, numBitsSrc, emitFlags);
+    {
+        const auto result = cpu->encodeLoadZeroExtendRegReg(regDst, regSrc, numBitsDst, numBitsSrc, EMIT_CanEncode);
+        if (result == CpuEncodeResult::Zero)
+        {
+            encodeLoadZeroExtendRegReg(regDst, regSrc, numBitsDst, numBitsSrc, emitFlags);
+            return;
+        }
+
+        Report::internalError(module, "emitLoadZeroExtendRegReg, cannot encode");
+    }
 }
 
 void ScbeCpu::emitLoadZeroExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc, CpuEmitFlags emitFlags)
