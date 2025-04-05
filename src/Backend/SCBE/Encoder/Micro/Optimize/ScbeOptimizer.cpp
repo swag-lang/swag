@@ -237,7 +237,9 @@ void ScbeOptimizer::computeContextStack(const ScbeMicro& out)
         {
             if (inst->op == ScbeMicroOp::LoadAddressM)
                 takeAddressRsp.push_back(stackOffset);
+
             usedStack[stackOffset] += 1;
+
             rangeReadStack.addRange(inst->getStackOffsetRead(), 1);
         }
 
@@ -251,7 +253,6 @@ void ScbeOptimizer::optimizeStep1(const ScbeMicro& out)
     {
         passHasDoneSomething = false;
         computeContextRegs(out);
-        computeContextStack(out);
 
         optimizePassImmediate(out);
         optimizePassReduce(out);
@@ -259,7 +260,6 @@ void ScbeOptimizer::optimizeStep1(const ScbeMicro& out)
         optimizePassDeadHdwReg(out);
         optimizePassDeadRegBeforeLeave(out);
         optimizePassDeadHdwRegBeforeLeave(out);
-        optimizePassParamsKeepReg(out);
         optimizePassSwap(out);
 
         if (!passHasDoneSomething)
@@ -273,6 +273,7 @@ void ScbeOptimizer::optimizeStep2(const ScbeMicro& out)
     computeContextRegs(out);
     computeContextStack(out);
 
+    optimizePassParamsKeepReg(out);
     optimizePassReduce2(out);
     optimizePassStackToVolatileReg(out);
 }
