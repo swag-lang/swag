@@ -586,8 +586,17 @@ CpuEncodeResult ScbeX64::encodeLoadRegMem(CpuReg reg, CpuReg memReg, uint64_t me
 
 CpuEncodeResult ScbeX64::encodeLoadZeroExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc, CpuEmitFlags emitFlags)
 {
+    if (memOffset > 0x7FFFFFFF)
+    {
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::NotSupported;
+        Report::internalError(module, "encodeLoadZeroExtendRegMem, cannot encode");
+    }
+
     if (numBitsSrc == OpBits::B8 && (numBitsDst == OpBits::B32 || numBitsDst == OpBits::B64))
     {
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::Zero;
         emitREX(concat, numBitsDst, reg, memReg);
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, 0xB6);
@@ -595,6 +604,8 @@ CpuEncodeResult ScbeX64::encodeLoadZeroExtendRegMem(CpuReg reg, CpuReg memReg, u
     }
     else if (numBitsSrc == OpBits::B16 && (numBitsDst == OpBits::B32 || numBitsDst == OpBits::B64))
     {
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::Zero;
         emitREX(concat, numBitsDst, reg, memReg);
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, 0xB7);
@@ -602,10 +613,12 @@ CpuEncodeResult ScbeX64::encodeLoadZeroExtendRegMem(CpuReg reg, CpuReg memReg, u
     }
     else if (numBitsSrc == OpBits::B32 && numBitsDst == OpBits::B64)
     {
-        emitLoadRegMem(reg, memReg, memOffset, numBitsSrc);
+        emitLoadRegMem(reg, memReg, memOffset, numBitsSrc, emitFlags);
     }
     else
     {
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::NotSupported;
         Report::internalError(module, "encodeLoadZeroExtendRegMem, cannot encode");
     }
 

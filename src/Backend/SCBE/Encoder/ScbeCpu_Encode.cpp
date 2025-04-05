@@ -198,7 +198,16 @@ void ScbeCpu::emitLoadZeroExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t memOf
     if (numBitsSrc == numBitsDst)
         emitLoadRegMem(reg, memReg, memOffset, numBitsSrc, emitFlags);
     else
-        encodeLoadZeroExtendRegMem(reg, memReg, memOffset, numBitsDst, numBitsSrc, emitFlags);
+    {
+        const auto result = cpu->encodeLoadZeroExtendRegMem(reg, memReg, memOffset, numBitsDst, numBitsSrc, EMIT_CanEncode);
+        if (result == CpuEncodeResult::Zero)
+        {
+            encodeLoadZeroExtendRegMem(reg, memReg, memOffset, numBitsDst, numBitsSrc, emitFlags);
+            return;
+        }
+
+        Report::internalError(module, "emitLoadZeroExtendRegMem, cannot encode");
+    }
 }
 
 void ScbeCpu::emitLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, OpBits opBits, CpuEmitFlags emitFlags)
