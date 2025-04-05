@@ -303,7 +303,6 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
             break;
 
         case ScbeMicroOp::OpBinaryRI:
-
             if (next->op == ScbeMicroOp::LoadRR &&
                 next->regA == inst->regA &&
                 next->regB != next->regA)
@@ -331,6 +330,18 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
                 setValueA(next, inst->valueA);
                 break;
             }
+
+            if (next->op == ScbeMicroOp::LoadMR &&
+                next->regA == inst->regA &&
+                next->regB != inst->regA &&
+                out.cpu->encodeLoadMemReg(inst->regB, next->valueA + inst->valueA, next->regB, next->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+            {
+                setRegA(next, inst->regB);
+                setValueA(next, next->valueA + inst->valueA);
+                swapInstruction(out, inst, next);
+                break;
+            }
+
             break;
 
         case ScbeMicroOp::LoadMR:
