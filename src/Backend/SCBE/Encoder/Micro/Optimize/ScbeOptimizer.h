@@ -1,15 +1,13 @@
 // ReSharper disable CppInconsistentNaming
 #pragma once
 #include "Backend/CallConv.h"
+#include "Backend/SCBE/Encoder/Micro/Optimize/StackRange.h"
 
 struct ScbeCpu;
 struct ScbeMicro;
 struct ScbeMicroInstruction;
 enum class ScbeMicroOp : uint8_t;
 enum class OpBits : uint8_t;
-
-using ScbeOptContextFlags             = Flags<uint32_t>;
-constexpr ScbeOptContextFlags CF_ZERO = 0x00000000;
 
 struct ScbeOptimizer
 {
@@ -30,7 +28,8 @@ struct ScbeOptimizer
     void reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next);
     void reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next);
     void optimizePassReduce(const ScbeMicro& out);
-    
+    void optimizePassReduce2(const ScbeMicro& out);
+
     void reduceUnusedStack(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next);
     void optimizePassDeadRegBeforeLeave(const ScbeMicro& out);
     void optimizePassDeadHdwRegBeforeLeave(const ScbeMicro& out);
@@ -41,7 +40,8 @@ struct ScbeOptimizer
     void optimizePassImmediate(const ScbeMicro& out);
     void optimizePassSwap(const ScbeMicro& out);
 
-    void computeContext(const ScbeMicro& out);
+    void computeContextRegs(const ScbeMicro& out);
+    void computeContextStack(const ScbeMicro& out);
     void optimizeStep1(const ScbeMicro& out);
     void optimizeStep2(const ScbeMicro& out);
     void optimize(const ScbeMicro& out);
@@ -58,9 +58,7 @@ struct ScbeOptimizer
     VectorNative<uint64_t>  takeAddressRsp;
     Map<CpuReg, uint32_t>   usedRegs;
     Map<uint32_t, uint32_t> usedStack;
-    Map<uint32_t, uint32_t> usedReadStack;
-    Map<uint32_t, uint32_t> usedWriteStack;
+    StackRange              rangeReadStack;
     RegisterSet             unusedVolatileInteger;
     RegisterSet             unusedNonVolatileInteger;
-    ScbeOptContextFlags     contextFlags = CF_ZERO;
 };

@@ -253,6 +253,7 @@
     <ClInclude Include="..\src\Backend\SCBE\Debug\ScbeDebug.h" />
     <ClInclude Include="..\src\Backend\SCBE\Debug\ScbeDebugCodeView.h" />
     <ClInclude Include="..\src\Backend\SCBE\Encoder\Micro\Optimize\ScbeOptimizer.h" />
+    <ClInclude Include="..\src\Backend\SCBE\Encoder\Micro\Optimize\StackRange.h" />
     <ClInclude Include="..\src\Backend\SCBE\Encoder\Micro\ScbeMicro.h" />
     <ClInclude Include="..\src\Backend\SCBE\Encoder\Micro\ScbeMicroInstruction.h" />
     <ClInclude Include="..\src\Backend\SCBE\Encoder\Micro\ScbeMicroOp.h" />

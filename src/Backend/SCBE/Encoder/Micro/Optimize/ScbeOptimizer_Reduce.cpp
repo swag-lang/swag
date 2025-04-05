@@ -418,29 +418,39 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
     }
 }
 
-void ScbeOptimizer::reduceUnusedStack(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction*)
-{
-    const auto stackOffset = inst->getStackOffsetWrite();
-    if (out.cpuFct->isStackOffsetTransient(stackOffset) &&
-        !usedReadStack.contains(static_cast<uint32_t>(inst->valueA)))
-    {
-        ignore(out, inst);
-    }
-}
-
 void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
 {
     auto inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {
         const auto next = ScbeMicro::getNextInstruction(inst);
-        reduceUnusedStack(out, inst, next);
         reduceNoOp(out, inst, next);
         reduceNext(out, inst, next);
         reduceLoadAddress(out, inst, next);
         reduceDup(out, inst, next);
         reduceOffset(out, inst, next);
         reduceLoadRR(out, inst, next);
+        inst = next;
+    }
+}
+
+void ScbeOptimizer::reduceUnusedStack(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction*)
+{
+    const auto stackOffset = inst->getStackOffsetWrite();
+    if (out.cpuFct->isStackOffsetTransient(stackOffset) &&
+        !rangeReadStack.isInRange(static_cast<uint32_t>(inst->valueA)))
+    {
+        ignore(out, inst);
+    }
+}
+
+void ScbeOptimizer::optimizePassReduce2(const ScbeMicro& out)
+{
+    auto inst = out.getFirstInstruction();
+    while (inst->op != ScbeMicroOp::End)
+    {
+        const auto next = ScbeMicro::getNextInstruction(inst);
+        reduceUnusedStack(out, inst, next);
         inst = next;
     }
 }

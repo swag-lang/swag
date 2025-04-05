@@ -197,14 +197,9 @@ void ScbeOptimizer::setRegC(ScbeMicroInstruction* inst, CpuReg reg)
     }
 }
 
-void ScbeOptimizer::computeContext(const ScbeMicro& out)
+void ScbeOptimizer::computeContextRegs(const ScbeMicro& out)
 {
-    takeAddressRsp.clear();
     usedRegs.clear();
-    usedStack.clear();
-    usedReadStack.clear();
-    usedWriteStack.clear();
-    contextFlags.clear();
 
     unusedVolatileInteger.clear();
     unusedVolatileInteger.append(out.cc->volatileRegistersIntegerSet);
@@ -214,17 +209,6 @@ void ScbeOptimizer::computeContext(const ScbeMicro& out)
     auto inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {
-        const auto stackOffset = inst->getStackOffset();
-        if (stackOffset != UINT32_MAX)
-        {
-            if (inst->op == ScbeMicroOp::LoadAddressM)
-                takeAddressRsp.push_back(stackOffset);
-            usedStack[stackOffset] += 1;
-
-            usedReadStack[inst->getStackOffsetRead()] += 1;
-            usedWriteStack[inst->getStackOffsetWrite()] += 1;
-        }
-
         auto regs = out.cpu->getReadWriteRegisters(inst);
         for (auto r : regs)
         {
@@ -239,12 +223,35 @@ void ScbeOptimizer::computeContext(const ScbeMicro& out)
     }
 }
 
+void ScbeOptimizer::computeContextStack(const ScbeMicro& out)
+{
+    takeAddressRsp.clear();
+    usedStack.clear();
+    rangeReadStack.clear();
+
+    auto inst = out.getFirstInstruction();
+    while (inst->op != ScbeMicroOp::End)
+    {
+        const auto stackOffset = inst->getStackOffset();
+        if (stackOffset != UINT32_MAX)
+        {
+            if (inst->op == ScbeMicroOp::LoadAddressM)
+                takeAddressRsp.push_back(stackOffset);
+            usedStack[stackOffset] += 1;
+            rangeReadStack.addRange(inst->getStackOffsetRead(), 1);
+        }
+
+        inst = ScbeMicro::getNextInstruction(inst);
+    }
+}
+
 void ScbeOptimizer::optimizeStep1(const ScbeMicro& out)
 {
     while (true)
     {
         passHasDoneSomething = false;
-        computeContext(out);
+        computeContextRegs(out);
+        computeContextStack(out);
 
         optimizePassImmediate(out);
         optimizePassReduce(out);
@@ -263,7 +270,10 @@ void ScbeOptimizer::optimizeStep1(const ScbeMicro& out)
 void ScbeOptimizer::optimizeStep2(const ScbeMicro& out)
 {
     passHasDoneSomething = false;
-    computeContext(out);
+    computeContextRegs(out);
+    computeContextStack(out);
+
+    optimizePassReduce2(out);
     optimizePassStackToVolatileReg(out);
 }
 
