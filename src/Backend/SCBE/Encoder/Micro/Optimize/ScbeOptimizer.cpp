@@ -240,7 +240,10 @@ void ScbeOptimizer::computeContextStack(const ScbeMicro& out)
 
             usedStack[stackOffset] += 1;
 
-            rangeReadStack.addRange(inst->getStackOffsetRead(), 1);
+            uint32_t size = sizeof(uint64_t);
+            if (inst->hasLeftOpFlag(MOF_OPBITS_A))
+                size = ScbeCpu::getNumBits(inst->opBitsA) / 8;
+            rangeReadStack.addRange(inst->getStackOffsetRead(), size);
         }
 
         inst = ScbeMicro::getNextInstruction(inst);
