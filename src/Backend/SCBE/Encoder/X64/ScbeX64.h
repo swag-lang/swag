@@ -16,9 +16,9 @@ struct ScbeX64 final : ScbeCpu
     CpuEncodeResult encodePop(CpuReg reg, CpuEmitFlags emitFlags) override;
     CpuEncodeResult encodeNop(CpuEmitFlags emitFlags) override;
     CpuEncodeResult encodeRet(CpuEmitFlags emitFlags) override;
-    CpuEncodeResult encodeCallLocal(const Utf8& symbolName, CpuEmitFlags emitFlags) override;
-    CpuEncodeResult encodeCallExtern(const Utf8& symbolName, CpuEmitFlags emitFlags) override;
-    CpuEncodeResult encodeCallReg(CpuReg reg, CpuEmitFlags emitFlags) override;
+    CpuEncodeResult encodeCallLocal(const Utf8& symbolName, const CallConv* callConv, CpuEmitFlags emitFlags) override;
+    CpuEncodeResult encodeCallExtern(const Utf8& symbolName, const CallConv* callConv, CpuEmitFlags emitFlags) override;
+    CpuEncodeResult encodeCallReg(CpuReg reg, const CallConv* callConv, CpuEmitFlags emitFlags) override;
     CpuEncodeResult encodeJumpTable(CpuReg table, CpuReg offset, int32_t currentIp, uint32_t offsetTable, uint32_t numEntries, CpuEmitFlags emitFlags) override;
     CpuEncodeResult encodeJump(CpuJump& jump, CpuCondJump jumpType, OpBits opBits, CpuEmitFlags emitFlags) override;
     CpuEncodeResult encodePatchJump(const CpuJump& jump, uint64_t offsetDestination, CpuEmitFlags emitFlags) override;

@@ -44,8 +44,13 @@ struct ScbeMicroInstruction
     uint32_t getStackOffsetWrite() const;
     uint32_t getStackOffset() const;
 
-    Utf8     name;
-    uint64_t valueA;
+    Utf8 name;
+    union
+    {
+        uint64_t        valueA;
+        const CallConv* cc;
+    };
+
     uint64_t valueB;
 
     ScbeMicroOp op;

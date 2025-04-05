@@ -80,19 +80,19 @@ void ScbeCpu::emitRet(CpuEmitFlags emitFlags)
     encodeRet(emitFlags);
 }
 
-void ScbeCpu::emitCallLocal(const Utf8& symbolName, CpuEmitFlags emitFlags)
+void ScbeCpu::emitCallLocal(const Utf8& symbolName, const CallConv* callConv, CpuEmitFlags emitFlags)
 {
-    encodeCallLocal(symbolName, emitFlags);
+    encodeCallLocal(symbolName, callConv, emitFlags);
 }
 
-void ScbeCpu::emitCallExtern(const Utf8& symbolName, CpuEmitFlags emitFlags)
+void ScbeCpu::emitCallExtern(const Utf8& symbolName, const CallConv* callConv, CpuEmitFlags emitFlags)
 {
-    encodeCallExtern(symbolName, emitFlags);
+    encodeCallExtern(symbolName, callConv, emitFlags);
 }
 
-void ScbeCpu::emitCallReg(CpuReg reg, CpuEmitFlags emitFlags)
+void ScbeCpu::emitCallReg(CpuReg reg, const CallConv* callConv, CpuEmitFlags emitFlags)
 {
-    encodeCallReg(reg, emitFlags);
+    encodeCallReg(reg, callConv, emitFlags);
 }
 
 void ScbeCpu::emitJumpTable(CpuReg table, CpuReg offset, int32_t currentIp, uint32_t offsetTable, uint32_t numEntries, CpuEmitFlags emitFlags)

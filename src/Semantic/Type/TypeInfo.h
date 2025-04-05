@@ -337,7 +337,7 @@ struct TypeInfoFuncAttr final : TypeInfo
     uint32_t        numParamsRegisters() const;
     uint32_t        numReturnRegisters() const;
     uint32_t        numTotalRegisters() const;
-    const CallConv& getCallConv() const;
+    const CallConv* getCallConv() const;
     bool            structParamByValue(const TypeInfo* typeParam) const;
     bool            returnByAddress() const;
     bool            returnByStackAddress() const;

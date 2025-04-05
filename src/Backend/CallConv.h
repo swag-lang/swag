@@ -55,7 +55,7 @@ struct CallConv
 {
     constexpr static uint32_t MAX_CALL_CONV_REGISTERS = 4;
     static const CallConv*    get(CallConvKind kind);
-    static CpuReg             getVolatileRegisterInteger(const CallConv& ccCaller, const CallConv& ccCallee, VolatileFlags flags);
+    static CpuReg             getVolatileRegisterInteger(const CallConv* ccCaller, const CallConv* ccCallee, VolatileFlags flags);
     void                      compute();
 
     // Stack align

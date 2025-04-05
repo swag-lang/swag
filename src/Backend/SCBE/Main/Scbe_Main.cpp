@@ -187,19 +187,19 @@ void Scbe::emitMain(ScbeCpu& pp)
             if (node && node->hasAttribute(ATTRIBUTE_COMPILER))
                 continue;
 
-            pp.emitCallLocal(bc->getCallName());
+            pp.emitCallLocal(bc->getCallName(), CallConv::get(CallConvKind::Swag));
         }
     }
 
     // Call to main
     if (module->byteCodeMainFunc)
     {
-        pp.emitCallLocal(module->byteCodeMainFunc->getCallName());
+        pp.emitCallLocal(module->byteCodeMainFunc->getCallName(), CallConv::get(CallConvKind::Swag));
     }
 
     // Call to global drop of this module
     const auto thisDrop = module->getGlobalPrivateFct(g_LangSpec->name_globalDrop);
-    pp.emitCallLocal(thisDrop);
+    pp.emitCallLocal(thisDrop, CallConv::get(CallConvKind::Swag));
 
     // Call to global drop of all dependencies
     for (uint32_t i = moduleDependencies.size() - 1; i != UINT32_MAX; i--)
@@ -208,10 +208,10 @@ void Scbe::emitMain(ScbeCpu& pp)
         if (!dep->module->isSwag)
             continue;
         auto nameFct = dep->module->getGlobalPrivateFct(g_LangSpec->name_globalDrop);
-        pp.emitCallLocal(nameFct);
+        pp.emitCallLocal(nameFct, CallConv::get(CallConvKind::Swag));
     }
 
-    pp.emitCallLocal(g_LangSpec->name_priv_closeRuntime);
+    pp.emitCallLocal(g_LangSpec->name_priv_closeRuntime, CallConv::get(CallConvKind::Swag));
     pp.emitClearReg(cc->returnByRegisterInteger, OpBits::B64);
 
     pp.emitLeave();
@@ -225,15 +225,15 @@ void Scbe::emitGetTypeTable(ScbeCpu& pp)
     if (buildParameters.buildCfg->backendKind != BuildCfgBackendKind::Library)
         return;
 
-    const auto& cc       = g_TypeMgr->typeInfoModuleCall->getCallConv();
-    const auto  thisInit = module->getGlobalPrivateFct(g_LangSpec->name_getTypeTable);
-    pp.cpuFct            = pp.addFunction(thisInit, &cc, nullptr);
+    const auto cc       = g_TypeMgr->typeInfoModuleCall->getCallConv();
+    const auto thisInit = module->getGlobalPrivateFct(g_LangSpec->name_getTypeTable);
+    pp.cpuFct           = pp.addFunction(thisInit, cc, nullptr);
     pp.emitEnter(0);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         pp.directives += form("/EXPORT:%s ", thisInit.cstr());
 
-    pp.emitSymbolRelocationAddress(cc.returnByRegisterInteger, pp.symCSIndex, module->typesSliceOffset);
+    pp.emitSymbolRelocationAddress(cc->returnByRegisterInteger, pp.symCSIndex, module->typesSliceOffset);
 
     pp.emitLeave();
     pp.endFunction();
@@ -246,7 +246,7 @@ void Scbe::emitGlobalPreMain(ScbeCpu& pp)
 
     const auto& cc       = g_TypeMgr->typeInfoModuleCall->getCallConv();
     const auto  thisInit = module->getGlobalPrivateFct(g_LangSpec->name_globalPreMain);
-    pp.cpuFct            = pp.addFunction(thisInit, &cc, nullptr);
+    pp.cpuFct            = pp.addFunction(thisInit, cc, nullptr);
 
     pp.emitEnter(0);
 
@@ -254,8 +254,8 @@ void Scbe::emitGlobalPreMain(ScbeCpu& pp)
         pp.directives += form("/EXPORT:%s ", thisInit.cstr());
 
     // Store first parameter on stack (process infos ptr)
-    SWAG_ASSERT(cc.paramsRegistersInteger.size() >= 1);
-    pp.emitLoadMemReg(CpuReg::Rsp, 0, cc.paramsRegistersInteger[0], OpBits::B64);
+    SWAG_ASSERT(!cc->paramsRegistersInteger.empty());
+    pp.emitLoadMemReg(CpuReg::Rsp, 0, cc->paramsRegistersInteger[0], OpBits::B64);
 
     // Copy process infos passed as a parameter to the process info struct of this module
     pp.pushParams.clear();
@@ -270,7 +270,7 @@ void Scbe::emitGlobalPreMain(ScbeCpu& pp)
         const auto node = bc->node;
         if (node && node->hasAttribute(ATTRIBUTE_COMPILER))
             continue;
-        pp.emitCallLocal(bc->getCallName());
+        pp.emitCallLocal(bc->getCallName(), CallConv::get(CallConvKind::Swag));
     }
 
     pp.emitLeave();
@@ -282,19 +282,19 @@ void Scbe::emitGlobalInit(ScbeCpu& pp)
     const auto& buildParameters = pp.buildParams;
     const auto  module          = pp.module;
 
-    const auto  thisInit = module->getGlobalPrivateFct(g_LangSpec->name_globalInit);
-    const auto& cc       = g_TypeMgr->typeInfoModuleCall->getCallConv();
-    pp.cpuFct            = pp.addFunction(thisInit, &cc, nullptr);
+    const auto thisInit = module->getGlobalPrivateFct(g_LangSpec->name_globalInit);
+    const auto cc       = g_TypeMgr->typeInfoModuleCall->getCallConv();
+    pp.cpuFct           = pp.addFunction(thisInit, cc, nullptr);
 
-    pp.cpuFct->unwindRegs.push_back(cc.nonVolatileRegistersInteger[0]);
+    pp.cpuFct->unwindRegs.push_back(cc->nonVolatileRegistersInteger[0]);
     pp.emitEnter(0);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         pp.directives += form("/EXPORT:%s ", thisInit.cstr());
 
     // Store first parameter on stack (process infos ptr)
-    SWAG_ASSERT(cc.paramsRegistersInteger.size() >= 1);
-    pp.emitLoadMemReg(CpuReg::Rsp, 0, cc.paramsRegistersInteger[0], OpBits::B64);
+    SWAG_ASSERT(cc->paramsRegistersInteger.size() >= 1);
+    pp.emitLoadMemReg(CpuReg::Rsp, 0, cc->paramsRegistersInteger[0], OpBits::B64);
 
     // Copy process infos passed as a parameter to the process info struct of this module
     pp.pushParams.clear();
@@ -305,8 +305,8 @@ void Scbe::emitGlobalInit(ScbeCpu& pp)
 
     // Thread local storage
     pp.pushParams.clear();
-    pp.emitSymbolRelocationAddress(cc.nonVolatileRegistersInteger[0], pp.symTls_threadLocalId, 0);
-    emitInternalCallCPUParams(pp, g_LangSpec->name_priv_tlsAlloc, pp.pushParams, cc.nonVolatileRegistersInteger[0], 0);
+    pp.emitSymbolRelocationAddress(cc->nonVolatileRegistersInteger[0], pp.symTls_threadLocalId, 0);
+    emitInternalCallCPUParams(pp, g_LangSpec->name_priv_tlsAlloc, pp.pushParams, cc->nonVolatileRegistersInteger[0], 0);
 
     // Init type table slice for each dependency (by calling ???_getTypeTable)
     const auto resReg = CallConv::getVolatileRegisterInteger(cc, cc, VF_EXCLUDE_COMPUTE | VF_EXCLUDE_PARAM0 | VF_EXCLUDE_RETURN);
@@ -321,10 +321,10 @@ void Scbe::emitGlobalInit(ScbeCpu& pp)
             emitInternalCallCPUParams(pp, callTable, pp.pushParams);
 
             // Count types is stored as a uint64_t at the start of the address
-            pp.emitLoadRegMem(cc.nonVolatileRegistersInteger[0], cc.returnByRegisterInteger, 0, OpBits::B64);
-            pp.emitLoadMemReg(resReg, sizeof(uint64_t), cc.nonVolatileRegistersInteger[0], OpBits::B64);
+            pp.emitLoadRegMem(cc->nonVolatileRegistersInteger[0], cc->returnByRegisterInteger, 0, OpBits::B64);
+            pp.emitLoadMemReg(resReg, sizeof(uint64_t), cc->nonVolatileRegistersInteger[0], OpBits::B64);
             pp.emitOpBinaryRegImm(pp.cc->returnByRegisterInteger, sizeof(uint64_t), CpuOp::ADD, OpBits::B64);
-            pp.emitLoadMemReg(resReg, 0, cc.returnByRegisterInteger, OpBits::B64);
+            pp.emitLoadMemReg(resReg, 0, cc->returnByRegisterInteger, OpBits::B64);
         }
 
         pp.emitOpBinaryRegImm(resReg, sizeof(SwagModule), CpuOp::ADD, OpBits::B64);
@@ -336,7 +336,7 @@ void Scbe::emitGlobalInit(ScbeCpu& pp)
         const auto node = bc->node;
         if (node && node->hasAttribute(ATTRIBUTE_COMPILER))
             continue;
-        pp.emitCallLocal(bc->getCallName());
+        pp.emitCallLocal(bc->getCallName(), CallConv::get(CallConvKind::Swag));
     }
 
     pp.emitLeave();
@@ -348,9 +348,9 @@ void Scbe::emitGlobalDrop(ScbeCpu& pp)
     const auto  module          = pp.module;
     const auto& buildParameters = pp.buildParams;
 
-    const auto& cc       = g_TypeMgr->typeInfoModuleCall->getCallConv();
-    const auto  thisDrop = module->getGlobalPrivateFct(g_LangSpec->name_globalDrop);
-    pp.cpuFct            = pp.addFunction(thisDrop, &cc, nullptr);
+    const auto cc       = g_TypeMgr->typeInfoModuleCall->getCallConv();
+    const auto thisDrop = module->getGlobalPrivateFct(g_LangSpec->name_globalDrop);
+    pp.cpuFct           = pp.addFunction(thisDrop, cc, nullptr);
     pp.emitEnter(0);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
@@ -362,7 +362,7 @@ void Scbe::emitGlobalDrop(ScbeCpu& pp)
         const auto node = bc->node;
         if (node && node->hasAttribute(ATTRIBUTE_COMPILER))
             continue;
-        pp.emitCallLocal(bc->getCallName());
+        pp.emitCallLocal(bc->getCallName(), CallConv::get(CallConvKind::Swag));
     }
 
     // __dropGlobalVariables

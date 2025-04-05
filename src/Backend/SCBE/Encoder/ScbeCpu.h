@@ -264,9 +264,9 @@ struct ScbeCpu : BackendEncoder
     void emitPop(CpuReg reg, CpuEmitFlags emitFlags = EMIT_Zero);
     void emitNop(CpuEmitFlags emitFlags = EMIT_Zero);
     void emitRet(CpuEmitFlags emitFlags = EMIT_Zero);
-    void emitCallLocal(const Utf8& symbolName, CpuEmitFlags emitFlags = EMIT_Zero);
-    void emitCallExtern(const Utf8& symbolName, CpuEmitFlags emitFlags = EMIT_Zero);
-    void emitCallReg(CpuReg reg, CpuEmitFlags emitFlags = EMIT_Zero);
+    void emitCallLocal(const Utf8& symbolName, const CallConv* callConv, CpuEmitFlags emitFlags = EMIT_Zero);
+    void emitCallExtern(const Utf8& symbolName, const CallConv* callConv, CpuEmitFlags emitFlags = EMIT_Zero);
+    void emitCallReg(CpuReg reg, const CallConv* callConv, CpuEmitFlags emitFlags = EMIT_Zero);
     void emitJumpTable(CpuReg table, CpuReg offset, int32_t currentIp, uint32_t offsetTable, uint32_t numEntries, CpuEmitFlags emitFlags = EMIT_Zero);
     void emitJump(CpuJump& jump, CpuCondJump jumpType, OpBits opBits, CpuEmitFlags emitFlags = EMIT_Zero);
     void emitPatchJump(const CpuJump& jump, CpuEmitFlags emitFlags = EMIT_Zero);
@@ -318,9 +318,9 @@ struct ScbeCpu : BackendEncoder
     virtual CpuEncodeResult encodePop(CpuReg reg, CpuEmitFlags emitFlags)                                                                                             = 0;
     virtual CpuEncodeResult encodeNop(CpuEmitFlags emitFlags)                                                                                                         = 0;
     virtual CpuEncodeResult encodeRet(CpuEmitFlags emitFlags)                                                                                                         = 0;
-    virtual CpuEncodeResult encodeCallLocal(const Utf8& symbolName, CpuEmitFlags emitFlags)                                                                           = 0;
-    virtual CpuEncodeResult encodeCallExtern(const Utf8& symbolName, CpuEmitFlags emitFlags)                                                                          = 0;
-    virtual CpuEncodeResult encodeCallReg(CpuReg reg, CpuEmitFlags emitFlags)                                                                                         = 0;
+    virtual CpuEncodeResult encodeCallLocal(const Utf8& symbolName, const CallConv* cc, CpuEmitFlags emitFlags)                                                       = 0;
+    virtual CpuEncodeResult encodeCallExtern(const Utf8& symbolName, const CallConv* cc, CpuEmitFlags emitFlags)                                                      = 0;
+    virtual CpuEncodeResult encodeCallReg(CpuReg reg, const CallConv* cc, CpuEmitFlags emitFlags)                                                                     = 0;
     virtual CpuEncodeResult encodeJumpTable(CpuReg table, CpuReg offset, int32_t currentIp, uint32_t offsetTable, uint32_t numEntries, CpuEmitFlags emitFlags)        = 0;
     virtual CpuEncodeResult encodeJump(CpuJump& jump, CpuCondJump jumpType, OpBits opBits, CpuEmitFlags emitFlags)                                                    = 0;
     virtual CpuEncodeResult encodePatchJump(const CpuJump& jump, CpuEmitFlags emitFlags)                                                                              = 0;

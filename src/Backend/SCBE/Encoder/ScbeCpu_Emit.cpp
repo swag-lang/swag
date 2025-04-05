@@ -46,7 +46,7 @@ namespace
 
                 case CpuPushParamType::SwagParamStructValue:
                 {
-                    const auto reg = CallConv::getVolatileRegisterInteger(*callConv, *callConv, VF_EXCLUDE_PARAMS);
+                    const auto reg = CallConv::getVolatileRegisterInteger(callConv, callConv, VF_EXCLUDE_PARAMS);
                     pp.emitLoadRegMem(reg, params[idxParam].baseReg, value, OpBits::B64);
                     pp.emitLoadRegMem(callConv->paramsRegistersInteger[idxParam], reg, 0, OpBits::B64);
                     break;
@@ -250,7 +250,7 @@ void ScbeCpu::emitComputeCallParameters(const TypeInfoFuncAttr* typeFuncBc, cons
             pushParams.insert_at_index({.type = CpuPushParamType::LoadAddress, .baseReg = memRegResult, .value = memOffsetResult}, indexParam);
     }
 
-    emitCallParameters(typeFuncBc, pushParams, &typeFuncBc->getCallConv());
+    emitCallParameters(typeFuncBc, pushParams, typeFuncBc->getCallConv());
 }
 
 void ScbeCpu::emitStoreCallResult(CpuReg memReg, uint32_t memOffset, const TypeInfoFuncAttr* typeFuncBc)
@@ -258,12 +258,12 @@ void ScbeCpu::emitStoreCallResult(CpuReg memReg, uint32_t memOffset, const TypeI
     if (!typeFuncBc->returnByValue())
         return;
 
-    const auto& ccFunc     = typeFuncBc->getCallConv();
-    const auto  returnType = typeFuncBc->concreteReturnType();
+    const auto ccFunc     = typeFuncBc->getCallConv();
+    const auto returnType = typeFuncBc->concreteReturnType();
     if (returnType->isNativeFloat())
-        emitLoadMemReg(memReg, memOffset, ccFunc.returnByRegisterFloat, OpBits::B64);
+        emitLoadMemReg(memReg, memOffset, ccFunc->returnByRegisterFloat, OpBits::B64);
     else
-        emitLoadMemReg(memReg, memOffset, ccFunc.returnByRegisterInteger, OpBits::B64);
+        emitLoadMemReg(memReg, memOffset, ccFunc->returnByRegisterInteger, OpBits::B64);
 }
 
 void ScbeCpu::emitLoadCallerParam(CpuReg reg, uint32_t paramIdx, OpBits opBits)
@@ -386,7 +386,7 @@ void ScbeCpu::emitEnter(uint32_t sizeStack)
         if (cpuFct->frameSize >= SWAG_LIMIT_PAGE_STACK)
         {
             emitLoadRegImm(CpuReg::Rax, cpuFct->frameSize, OpBits::B64);
-            emitCallLocal(R"(__chkstk)");
+            emitCallLocal(R"(__chkstk)", CallConv::get(CallConvKind::Swag));
 #ifdef SWAG_STATS
             g_Stats.numScbeInstructions += 2;
 #endif

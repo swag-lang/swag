@@ -3,7 +3,6 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
-#include "Wmf/Module.h"
 
 void ScbeOptimizer::optimizePassParamsKeepReg(const ScbeMicro& out)
 {

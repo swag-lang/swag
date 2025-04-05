@@ -14,6 +14,7 @@ func(T, V) contains(values: const [..] T, value: V)->bool
 }
 
 //#[Swag.PrintBc]
+#[Swag.PrintAsm]
 #test
 {
     var arr = [1, 2, 4]

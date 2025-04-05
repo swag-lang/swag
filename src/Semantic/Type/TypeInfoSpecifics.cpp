@@ -1009,15 +1009,15 @@ uint32_t TypeInfoFuncAttr::numTotalRegisters() const
     return numReturnRegisters() + numParamsRegisters();
 }
 
-const CallConv& TypeInfoFuncAttr::getCallConv() const
+const CallConv* TypeInfoFuncAttr::getCallConv() const
 {
-    return g_CallConv[static_cast<int>(callConv)];
+    return &g_CallConv[static_cast<int>(callConv)];
 }
 
 bool TypeInfoFuncAttr::structParamByValue(const TypeInfo* typeParam) const
 {
-    const auto& cc = getCallConv();
-    return cc.structParamByRegister && typeParam->isStruct() && typeParam->sizeOf <= sizeof(void*);
+    const auto cc = getCallConv();
+    return cc->structParamByRegister && typeParam->isStruct() && typeParam->sizeOf <= sizeof(void*);
 }
 
 bool TypeInfoFuncAttr::returnByAddress() const
@@ -1073,7 +1073,7 @@ bool TypeInfoFuncAttr::returnStructByValue() const
         return false;
 
     const auto& cc = getCallConv();
-    if (cc.structReturnByRegister && type->isStruct() && type->sizeOf <= sizeof(void*))
+    if (cc->structReturnByRegister && type->isStruct() && type->sizeOf <= sizeof(void*))
         return true;
 
     return false;

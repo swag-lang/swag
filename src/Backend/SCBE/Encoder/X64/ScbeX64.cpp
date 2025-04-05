@@ -2443,7 +2443,7 @@ CpuEncodeResult ScbeX64::encodeJumpReg(CpuReg reg, CpuEmitFlags emitFlags)
 
 /////////////////////////////////////////////////////////////////////
 
-CpuEncodeResult ScbeX64::encodeCallExtern(const Utf8& symbolName, CpuEmitFlags emitFlags)
+CpuEncodeResult ScbeX64::encodeCallExtern(const Utf8& symbolName, const CallConv* callConv, CpuEmitFlags emitFlags)
 {
     emitCPUOp(concat, 0xFF);
     emitModRM(concat, ModRMMode::Memory, MODRM_REG_2, MODRM_RM_RIP);
@@ -2454,7 +2454,7 @@ CpuEncodeResult ScbeX64::encodeCallExtern(const Utf8& symbolName, CpuEmitFlags e
     return CpuEncodeResult::Zero;
 }
 
-CpuEncodeResult ScbeX64::encodeCallLocal(const Utf8& symbolName, CpuEmitFlags emitFlags)
+CpuEncodeResult ScbeX64::encodeCallLocal(const Utf8& symbolName, const CallConv* callConv, CpuEmitFlags emitFlags)
 {
     emitCPUOp(concat, 0xE8);
 
@@ -2472,7 +2472,7 @@ CpuEncodeResult ScbeX64::encodeCallLocal(const Utf8& symbolName, CpuEmitFlags em
     return CpuEncodeResult::Zero;
 }
 
-CpuEncodeResult ScbeX64::encodeCallReg(CpuReg reg, CpuEmitFlags emitFlags)
+CpuEncodeResult ScbeX64::encodeCallReg(CpuReg reg, const CallConv* callConv, CpuEmitFlags emitFlags)
 {
     emitREX(concat, OpBits::Zero, REX_REG_NONE, reg);
     emitCPUOp(concat, 0xFF);

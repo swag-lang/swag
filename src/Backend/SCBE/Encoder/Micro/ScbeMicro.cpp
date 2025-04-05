@@ -456,24 +456,27 @@ CpuEncodeResult ScbeMicro::encodeNop(CpuEmitFlags emitFlags)
     return CpuEncodeResult::Zero;
 }
 
-CpuEncodeResult ScbeMicro::encodeCallLocal(const Utf8& symbolName, CpuEmitFlags emitFlags)
+CpuEncodeResult ScbeMicro::encodeCallLocal(const Utf8& symbolName, const CallConv* callConv, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::CallLocal, emitFlags);
     inst->name      = symbolName;
+    inst->cc        = callConv;
     return CpuEncodeResult::Zero;
 }
 
-CpuEncodeResult ScbeMicro::encodeCallExtern(const Utf8& symbolName, CpuEmitFlags emitFlags)
+CpuEncodeResult ScbeMicro::encodeCallExtern(const Utf8& symbolName, const CallConv* callConv, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::CallExtern, emitFlags);
     inst->name      = symbolName;
+    inst->cc        = callConv;
     return CpuEncodeResult::Zero;
 }
 
-CpuEncodeResult ScbeMicro::encodeCallReg(CpuReg reg, CpuEmitFlags emitFlags)
+CpuEncodeResult ScbeMicro::encodeCallReg(CpuReg reg, const CallConv* callConv, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::CallIndirect, emitFlags);
     inst->regA      = reg;
+    inst->cc        = callConv;
     return CpuEncodeResult::Zero;
 }
 
@@ -556,13 +559,13 @@ void ScbeMicro::encode(ScbeCpu& encoder) const
                 encoder.emitRet(inst->emitFlags);
                 break;
             case ScbeMicroOp::CallLocal:
-                encoder.emitCallLocal(inst->name, inst->emitFlags);
+                encoder.emitCallLocal(inst->name, inst->cc, inst->emitFlags);
                 break;
             case ScbeMicroOp::CallExtern:
-                encoder.emitCallExtern(inst->name, inst->emitFlags);
+                encoder.emitCallExtern(inst->name, inst->cc, inst->emitFlags);
                 break;
             case ScbeMicroOp::CallIndirect:
-                encoder.emitCallReg(inst->regA, inst->emitFlags);
+                encoder.emitCallReg(inst->regA, inst->cc, inst->emitFlags);
                 break;
             case ScbeMicroOp::JumpTable:
                 encoder.emitJumpTable(inst->regA, inst->regB, static_cast<int32_t>(inst->valueA), static_cast<uint32_t>(inst->valueB), inst->valueC, inst->emitFlags);
@@ -692,7 +695,7 @@ ScbeMicroInstruction* ScbeMicro::getNextInstruction(ScbeMicroInstruction* inst)
 ScbeMicroInstruction* ScbeMicro::getNextFlagSensitive(ScbeMicroInstruction* inst)
 {
     inst++;
-    while (inst->op != ScbeMicroOp::End && 
+    while (inst->op != ScbeMicroOp::End &&
            inst->op == ScbeMicroOp::Label ||
            inst->op == ScbeMicroOp::Debug ||
            inst->op == ScbeMicroOp::Ignore ||
@@ -710,7 +713,7 @@ ScbeMicroInstruction* ScbeMicro::getNextFlagSensitive(ScbeMicroInstruction* inst
     {
         inst++;
     }
-    
+
     return inst;
 }
 

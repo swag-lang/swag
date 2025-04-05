@@ -94,9 +94,9 @@ void Scbe::emitCallCPUParams(ScbeCpu&                          pp,
     pp.emitComputeCallParameters(typeFuncBc, pushCPUParams, memRegResult, memOffsetResult, nullptr);
 
     if (!localCall)
-        pp.emitCallExtern(funcName);
+        pp.emitCallExtern(funcName, typeFuncBc->getCallConv());
     else
-        pp.emitCallLocal(funcName);
+        pp.emitCallLocal(funcName, typeFuncBc->getCallConv());
 
     // Store result
     pp.emitStoreCallResult(memRegResult, memOffsetResult, typeFuncBc);
@@ -190,7 +190,7 @@ void Scbe::emitLambdaCall(ScbeCpu& pp)
     const auto ip         = pp.ip;
     const auto typeFuncBc = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
 
-    const auto regCall = CallConv::getVolatileRegisterInteger(*pp.cc, typeFuncBc->getCallConv(), VF_EXCLUDE_RETURN | VF_EXCLUDE_PARAMS);
+    const auto regCall = CallConv::getVolatileRegisterInteger(pp.cc, typeFuncBc->getCallConv(), VF_EXCLUDE_RETURN | VF_EXCLUDE_PARAMS);
 
     // Test if it's a bytecode lambda
     pp.emitLoadRegMem(regCall, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
@@ -212,7 +212,7 @@ void Scbe::emitLambdaCall(ScbeCpu& pp)
         pushCPUParams[typeFuncBc->isFctVariadic() ? 2 : 0].type = CpuPushParamType::CaptureContext;
 
     pp.emitComputeCallParameters(typeFuncBc, pushCPUParams, CpuReg::Rsp, pp.cpuFct->getStackOffsetRT(0), nullptr);
-    pp.emitCallReg(regCall);
+    pp.emitCallReg(regCall, typeFuncBc->getCallConv());
     pp.emitStoreCallResult(CpuReg::Rsp, pp.cpuFct->getStackOffsetRT(0), typeFuncBc);
 
     CpuJump jumpBCAfter;
@@ -233,7 +233,7 @@ void Scbe::emitLambdaCall(ScbeCpu& pp)
     const auto cc = pp.cc;
     pp.emitSymbolRelocationAddress(cc->computeRegI0, pp.symPI_byteCodeRun, 0);
     pp.emitLoadRegMem(cc->computeRegI0, cc->computeRegI0, 0, OpBits::B64);
-    pp.emitCallReg(cc->computeRegI0);
+    pp.emitCallReg(cc->computeRegI0, CallConv::get(CallConvKind::Compiler));
 
     // End
     //////////////////
@@ -267,7 +267,7 @@ void Scbe::emitMakeCallback(ScbeCpu& pp)
     // ByteCode lambda
     //////////////////
 
-    const auto regCall = CallConv::getVolatileRegisterInteger(*cc, *cc, VF_EXCLUDE_COMPUTE_I0 | VF_EXCLUDE_PARAMS);
+    const auto regCall = CallConv::getVolatileRegisterInteger(cc, cc, VF_EXCLUDE_COMPUTE_I0 | VF_EXCLUDE_PARAMS);
     pp.emitSymbolRelocationAddress(regCall, pp.symPI_makeCallback, 0);
     pp.emitLoadRegMem(regCall, regCall, 0, OpBits::B64);
 
@@ -275,7 +275,7 @@ void Scbe::emitMakeCallback(ScbeCpu& pp)
     pushCPUParams.insert_at_index({.type = CpuPushParamType::CpuRegister, .baseReg = cc->computeRegI0}, 0);
     pp.emitCallParameters(nullptr, pushCPUParams, CallConv::get(CallConvKind::Compiler));
 
-    pp.emitCallReg(regCall);
+    pp.emitCallReg(regCall, CallConv::get(CallConvKind::Compiler));
 
     // End
     //////////////////

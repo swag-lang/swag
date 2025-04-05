@@ -83,28 +83,28 @@ const CallConv* CallConv::get(CallConvKind kind)
     return &g_CallConv[static_cast<int>(kind)];
 }
 
-CpuReg CallConv::getVolatileRegisterInteger(const CallConv& ccCaller, const CallConv& ccCallee, VolatileFlags flags)
+CpuReg CallConv::getVolatileRegisterInteger(const CallConv* ccCaller, const CallConv* ccCallee, VolatileFlags flags)
 {
     // We need a working volatile register which is not used as a call parameter
     auto regRes = CpuReg::Max;
-    for (const auto& r : ccCaller.volatileRegistersInteger)
+    for (const auto& r : ccCaller->volatileRegistersInteger)
     {
-        if (r == ccCaller.computeRegI0 && flags.has(VF_EXCLUDE_COMPUTE_I0))
+        if (r == ccCaller->computeRegI0 && flags.has(VF_EXCLUDE_COMPUTE_I0))
             continue;
-        if (r == ccCaller.computeRegI1 && flags.has(VF_EXCLUDE_COMPUTE_I1))
+        if (r == ccCaller->computeRegI1 && flags.has(VF_EXCLUDE_COMPUTE_I1))
             continue;
-        if (r == ccCaller.computeRegI2 && flags.has(VF_EXCLUDE_COMPUTE_I2))
+        if (r == ccCaller->computeRegI2 && flags.has(VF_EXCLUDE_COMPUTE_I2))
             continue;
-        if (r == ccCallee.returnByRegisterInteger && flags.has(VF_EXCLUDE_RETURN))
+        if (r == ccCallee->returnByRegisterInteger && flags.has(VF_EXCLUDE_RETURN))
             continue;
 
-        if (!ccCallee.paramsRegistersInteger.empty() && r == ccCallee.paramsRegistersInteger[0] && flags.has(VF_EXCLUDE_PARAM0))
+        if (!ccCallee->paramsRegistersInteger.empty() && r == ccCallee->paramsRegistersInteger[0] && flags.has(VF_EXCLUDE_PARAM0))
             continue;
-        if (ccCallee.paramsRegistersInteger.size() >= 2 && r == ccCallee.paramsRegistersInteger[1] && flags.has(VF_EXCLUDE_PARAM1))
+        if (ccCallee->paramsRegistersInteger.size() >= 2 && r == ccCallee->paramsRegistersInteger[1] && flags.has(VF_EXCLUDE_PARAM1))
             continue;
-        if (ccCallee.paramsRegistersInteger.size() >= 3 && r == ccCallee.paramsRegistersInteger[2] && flags.has(VF_EXCLUDE_PARAM2))
+        if (ccCallee->paramsRegistersInteger.size() >= 3 && r == ccCallee->paramsRegistersInteger[2] && flags.has(VF_EXCLUDE_PARAM2))
             continue;
-        if (ccCallee.paramsRegistersInteger.size() >= 4 && r == ccCallee.paramsRegistersInteger[3] && flags.has(VF_EXCLUDE_PARAM3))
+        if (ccCallee->paramsRegistersInteger.size() >= 4 && r == ccCallee->paramsRegistersInteger[3] && flags.has(VF_EXCLUDE_PARAM3))
             continue;
 
         regRes = r;

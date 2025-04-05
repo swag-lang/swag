@@ -1012,7 +1012,7 @@ namespace OS
             g_GenFFI.emitComputeCallParameters(typeInfoFunc, pushCPUParams, g_GenFFI.cc->ffiBaseRegister, 0, retCopyAddr);
 
             g_GenFFI.emitLoadRegImm(g_GenFFI.cc->computeRegI0, reinterpret_cast<uint64_t>(foreignPtr), OpBits::B64);
-            g_GenFFI.emitCallReg(g_GenFFI.cc->computeRegI0);
+            g_GenFFI.emitCallReg(g_GenFFI.cc->computeRegI0, typeInfoFunc->getCallConv());
 
             if (!returnType->isVoid() && !retCopyAddr)
             {
