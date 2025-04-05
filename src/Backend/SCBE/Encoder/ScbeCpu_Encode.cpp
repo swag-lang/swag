@@ -182,7 +182,16 @@ void ScbeCpu::emitLoadSignedExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t mem
     if (numBitsSrc == numBitsDst)
         emitLoadRegMem(reg, memReg, memOffset, numBitsSrc, emitFlags);
     else
-        encodeLoadSignedExtendRegMem(reg, memReg, memOffset, numBitsDst, numBitsSrc, emitFlags);
+    {
+        const auto result = cpu->encodeLoadSignedExtendRegMem(reg, memReg, memOffset, numBitsDst, numBitsSrc, EMIT_CanEncode);
+        if (result == CpuEncodeResult::Zero)
+        {
+            encodeLoadSignedExtendRegMem(reg, memReg, memOffset, numBitsDst, numBitsSrc, emitFlags);
+            return;
+        }
+        
+        Report::internalError(module, "emitLoadSignedExtendRegMem, cannot encode");
+    }
 }
 
 void ScbeCpu::emitLoadZeroExtendRegReg(CpuReg regDst, CpuReg regSrc, OpBits numBitsDst, OpBits numBitsSrc, CpuEmitFlags emitFlags)
