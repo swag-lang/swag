@@ -175,11 +175,10 @@ void ScbeOptimizer::reduceDup(const ScbeMicro& out, ScbeMicroInstruction* inst, 
     }
 }
 
-void ScbeOptimizer::reduceToLoadAddress(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next)
+void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next)
 {
     if (next->flags.has(MIF_JUMP_DEST))
         return;
-    RegisterSet nextRegs;
 
     switch (inst->op)
     {
@@ -383,7 +382,7 @@ void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
         reduceUnusedStack(out, inst, next);
         reduceNoOp(out, inst, next);
         reduceNext(out, inst, next);
-        reduceToLoadAddress(out, inst, next);
+        reduceLoadAddress(out, inst, next);
         reduceDup(out, inst, next);
         reduceOffset(out, inst, next);
         reduceLoadRR(out, inst, next);
