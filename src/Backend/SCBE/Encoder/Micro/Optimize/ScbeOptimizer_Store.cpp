@@ -124,6 +124,11 @@ void ScbeOptimizer::optimizePassDeadHdwReg(const ScbeMicro& out)
             mapRegInst[inst->regA] = inst;
             legitReg               = inst->regA;
         }
+        else if (inst->op == ScbeMicroOp::OpBinaryRI)
+        {
+            mapRegInst[inst->regA] = inst;
+            legitReg               = inst->regA;
+        }        
         else if (inst->isCall())
         {
             for (const auto& [r, i] : mapRegInst)
