@@ -39,7 +39,7 @@ struct ScbeOptimizer
     void optimizePassStackToVolatileReg(const ScbeMicro& out);
     void optimizePassImmediate(const ScbeMicro& out);
     void optimizePassSwap(const ScbeMicro& out);
-    void optimizePassAliasHdw(const ScbeMicro& out);
+    void optimizePassAliasHdwReg(const ScbeMicro& out);
 
     void computeContextRegs(const ScbeMicro& out);
     void computeContextStack(const ScbeMicro& out);

@@ -283,7 +283,7 @@ void ScbeOptimizer::optimizeStep1(const ScbeMicro& out)
         optimizePassStore(out);
         optimizePassDeadHdwReg(out);
         optimizePassDeadHdwRegBeforeLeave(out);
-        optimizePassAliasHdw(out);
+        optimizePassAliasHdwReg(out);
         optimizePassSwap(out);
 
         if (!passHasDoneSomething)
