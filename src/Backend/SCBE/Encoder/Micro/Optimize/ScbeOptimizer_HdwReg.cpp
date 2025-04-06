@@ -8,7 +8,6 @@
 void ScbeOptimizer::optimizePassAliasHdw(const ScbeMicro& out)
 {
     mapRegInst.clear();
-    mapRegInst2.clear();
 
     auto inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
@@ -18,14 +17,13 @@ void ScbeOptimizer::optimizePassAliasHdw(const ScbeMicro& out)
             inst->isRet())
         {
             mapRegInst.clear();
-            mapRegInst2.clear();
         }
 
         if (inst->hasReadRegB())
         {
-            const auto prev = mapRegInst[inst->regB];
-            if (prev && mapRegInst2[prev->regB] == prev)
+            if (mapRegInst.contains(inst->regB))
             {
+                const auto prev = mapRegInst[inst->regB];
                 if (inst->op == ScbeMicroOp::LoadRR &&
                     inst->regA == prev->regA &&
                     inst->regB == prev->regB &&
@@ -47,13 +45,21 @@ void ScbeOptimizer::optimizePassAliasHdw(const ScbeMicro& out)
         for (const auto r : writeRegs)
         {
             mapRegInst.erase(r);
-            mapRegInst2.erase(r);
+
+            VectorNative<CpuReg> toErase;
+            for (const auto& [r1, i] : mapRegInst)
+            {
+                if (i->regB == r)
+                    toErase.push_back(r1);
+            }
+
+            for (const auto r1 : toErase)
+                mapRegInst.erase(r1);
         }
 
         if (inst->op == ScbeMicroOp::LoadRR)
         {
-            mapRegInst[inst->regA]  = inst;
-            mapRegInst2[inst->regB] = inst;
+            mapRegInst[inst->regA] = inst;
         }
 
         inst = ScbeMicro::getNextInstruction(inst);

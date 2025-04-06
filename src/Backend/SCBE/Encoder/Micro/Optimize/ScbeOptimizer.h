@@ -53,7 +53,6 @@ struct ScbeOptimizer
     Map<CpuReg, uint64_t>                    mapRegVal;
     Map<uint64_t, ScbeMicroInstruction*>     mapValInst;
     Map<CpuReg, ScbeMicroInstruction*>       mapRegInst;
-    Map<CpuReg, ScbeMicroInstruction*>       mapRegInst2;
     bool                                     passHasDoneSomething = false;
 
     // Context
