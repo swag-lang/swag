@@ -55,10 +55,11 @@ struct ScbeOptimizer
     bool                                     passHasDoneSomething = false;
 
     // Context
-    VectorNative<uint64_t>  takeAddressRsp;
-    Map<CpuReg, uint32_t>   usedRegs;
-    Map<uint32_t, uint32_t> usedStack;
-    StackRange              rangeReadStack;
-    RegisterSet             unusedVolatileInteger;
-    RegisterSet             unusedNonVolatileInteger;
+    Map<CpuReg, uint32_t>                 usedRegs;
+    Map<uint32_t, uint32_t>               usedStack;
+    Vector<std::pair<uint32_t, uint32_t>> usedStackRanges;
+    StackRange                            takeAddressRsp;
+    StackRange                            rangeReadStack;
+    RegisterSet                           unusedVolatileInteger;
+    RegisterSet                           unusedNonVolatileInteger;
 };

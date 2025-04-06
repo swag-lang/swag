@@ -3,6 +3,7 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
+#pragma optimize("", off)
 
 void ScbeOptimizer::optimizePassParamsKeepReg(const ScbeMicro& out)
 {
@@ -11,12 +12,16 @@ void ScbeOptimizer::optimizePassParamsKeepReg(const ScbeMicro& out)
         if (out.cpuFct->typeFunc->numParamsRegisters() <= i)
             break;
         const auto r = out.cc->paramsRegistersInteger[i];
-        if (usedRegs[r] == 1 &&
-            (!out.cc->useRegisterFloat || !out.cpuFct->typeFunc->registerIdxToType(i)->isNativeFloat()) &&
-            !takeAddressRsp.contains(out.cpuFct->getStackOffsetParam(i)))
-        {
-            memToReg(out, CpuReg::Rsp, out.cpuFct->getStackOffsetParam(i), r);
-        }
+        if (usedRegs[r] != 1)
+            continue;
+        if (out.cpuFct->typeFunc->registerIdxToType(i)->isNativeFloat())
+            continue;
+
+        const auto offset = out.cpuFct->getStackOffsetParam(i);
+        if (takeAddressRsp.contains(offset))
+            continue;
+
+        memToReg(out, CpuReg::Rsp, offset, r);
     }
 }
 

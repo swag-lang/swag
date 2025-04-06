@@ -6,11 +6,10 @@
 #include "Semantic/Type/TypeInfo.h"
 #include "Wmf/Module.h"
 #include "Wmf/SourceFile.h"
+#pragma optimize("", off)
 
 void ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOffset, CpuReg reg)
 {
-    SWAG_ASSERT(memReg != CpuReg::Rsp || !takeAddressRsp.contains(memOffset));
-
     auto inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {
@@ -228,6 +227,7 @@ void ScbeOptimizer::computeContextStack(const ScbeMicro& out)
     takeAddressRsp.clear();
     usedStack.clear();
     rangeReadStack.clear();
+    usedStackRanges.clear();
 
     auto inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
@@ -238,12 +238,33 @@ void ScbeOptimizer::computeContextStack(const ScbeMicro& out)
             if (inst->op == ScbeMicroOp::LoadAddressM)
                 takeAddressRsp.push_back(stackOffset);
 
+            const uint32_t size = std::max(inst->getNumBytes(), static_cast<uint32_t>(8));
+            /*if (!usedStackCount.contains(stackOffset))
+            {
+                for (const auto& [r, i] : usedStackRanges)
+                {
+                    bool hasAlias = false;
+                    if (r >= stackOffset && r < stackOffset + size)
+                        hasAlias = true;
+                    else if (stackOffset >= r && stackOffset < r + i)
+                        hasAlias = true;
+                    if (hasAlias)
+                    {
+                        takeAddressRsp.addRange(stackOffset, size);
+                        takeAddressRsp.addRange(r, i);
+                    }
+                }
+
+                usedStackRanges.push_back({stackOffset, size});
+            }*/
+
             usedStack[stackOffset] += 1;
 
-            uint32_t size = sizeof(uint64_t);
-            if (inst->hasLeftOpFlag(MOF_OPBITS_A))
-                size = ScbeCpu::getNumBits(inst->opBitsA) / 8;
-            rangeReadStack.addRange(inst->getStackOffsetRead(), size);
+            const auto readOffset = inst->getStackOffsetRead();
+            if (readOffset != UINT32_MAX)
+            {
+                rangeReadStack.push_back(readOffset, size);
+            }
         }
 
         inst = ScbeMicro::getNextInstruction(inst);
@@ -287,6 +308,9 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
         return;
     if (!out.cpuFct->bc->sourceFile->module->mustOptimizeBackend(out.cpuFct->bc->node))
         return;
+    
+    //if (!out.cpuFct->bc->sourceFile->name.containsNoCase("3401"))
+    //    return;
 
     bool globalChanged = true;
     while (globalChanged)

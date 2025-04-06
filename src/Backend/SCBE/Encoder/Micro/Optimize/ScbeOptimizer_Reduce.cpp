@@ -437,10 +437,13 @@ void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
 void ScbeOptimizer::reduceUnusedStack(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction*)
 {
     const auto stackOffset = inst->getStackOffsetWrite();
-    if (out.cpuFct->isStackOffsetTransient(stackOffset) &&
-        !rangeReadStack.isInRange(static_cast<uint32_t>(inst->valueA)))
+    if (out.cpuFct->isStackOffsetTransient(stackOffset))
     {
-        ignore(out, inst);
+        const auto size = inst->getNumBytes();
+        if (!rangeReadStack.contains(static_cast<uint32_t>(inst->valueA), size))
+        {
+            ignore(out, inst);
+        }
     }
 }
 
