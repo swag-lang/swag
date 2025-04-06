@@ -374,7 +374,6 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
 
         case ScbeMicroOp::LoadMR:
             if (next->op == ScbeMicroOp::LoadRM &&
-                ScbeCpu::isInt(inst->regB) == ScbeCpu::isInt(next->regA) &&
                 ScbeCpu::getNumBits(next->opBitsA) <= ScbeCpu::getNumBits(inst->opBitsA) &&
                 next->regB == inst->regA &&
                 next->valueA == inst->valueA)
