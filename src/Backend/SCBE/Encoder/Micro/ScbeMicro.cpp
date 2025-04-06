@@ -31,7 +31,9 @@ ScbeMicroInstruction* ScbeMicro::addInstruction(ScbeMicroOp op, CpuEmitFlags emi
     inst->op        = op;
     inst->emitFlags = emitFlags;
 
-    if (op != ScbeMicroOp::Label &&
+    if (op != ScbeMicroOp::Enter &&
+        op != ScbeMicroOp::Leave &&
+        op != ScbeMicroOp::Label &&
         op != ScbeMicroOp::PatchJump &&
         op != ScbeMicroOp::Debug)
     {
