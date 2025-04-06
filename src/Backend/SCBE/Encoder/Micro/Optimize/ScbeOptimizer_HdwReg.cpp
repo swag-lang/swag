@@ -2,6 +2,7 @@
 #include "Backend/SCBE/Encoder/Micro/Optimize/ScbeOptimizer.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
+#include "Wmf/SourceFile.h"
 #pragma optimize("", off)
 
 void ScbeOptimizer::optimizePassAliasHdw(const ScbeMicro& out)
@@ -32,14 +33,13 @@ void ScbeOptimizer::optimizePassAliasHdw(const ScbeMicro& out)
                 {
                     ignore(out, inst);
                 }
-                /*else if (ScbeCpu::isInt(inst->regB) == ScbeCpu::isInt(mapRegInst[inst->regB]->regB) &&
+                else if (ScbeCpu::isInt(inst->regB) == ScbeCpu::isInt(prev->regB) &&
+                         inst->opBitsA == prev->opBitsA &&
                          !inst->hasWriteRegB() &&
-                         out.cpu->acceptsRegB(inst, mapRegInst[inst->regB]->regB))
+                         out.cpu->acceptsRegB(inst, prev->regB))
                 {
-                    // out.print();
-                    setRegB(inst, mapRegInst[inst->regB]->regB);
-                    // out.print();
-                }*/
+                    setRegB(inst, prev->regB);
+                }
             }
         }
 
