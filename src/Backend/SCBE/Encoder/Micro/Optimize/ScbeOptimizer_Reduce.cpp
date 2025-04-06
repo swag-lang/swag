@@ -184,6 +184,7 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
     {
         case ScbeMicroOp::LoadAddressAddMul:
             if (inst->regB == CpuReg::Max &&
+                inst->valueB == 0 &&
                 next->op == ScbeMicroOp::OpBinaryRR &&
                 next->cpuOp == CpuOp::ADD &&
                 next->regA == inst->regA &&
@@ -222,6 +223,7 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
                 next->regB   = CpuReg::Max;
                 next->regC   = inst->regB;
                 next->valueA = 1ULL << next->valueA;
+                next->valueB = 0;
                 ignore(out, inst);
                 break;
             }

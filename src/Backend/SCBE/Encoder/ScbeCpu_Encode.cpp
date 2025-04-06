@@ -260,7 +260,14 @@ void ScbeCpu::emitLoadZeroExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t memOf
 
 void ScbeCpu::emitLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, OpBits opBits, CpuEmitFlags emitFlags)
 {
-    encodeLoadAddressAddMul(regDst, regSrc1, regSrc2, mulValue, addValue, opBits, emitFlags);
+    const auto result = cpu->encodeLoadAddressAddMul(regDst, regSrc1, regSrc2, mulValue, addValue, opBits, EMIT_CanEncode);
+    if (result == CpuEncodeResult::Zero)
+    {
+        encodeLoadAddressAddMul(regDst, regSrc1, regSrc2, mulValue, addValue, opBits, emitFlags);
+        return;
+    }
+
+    Report::internalError(module, "emitLoadAddressAddMul, cannot encode");
 }
 
 void ScbeCpu::emitLoadAddressMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, CpuEmitFlags emitFlags)
@@ -318,7 +325,7 @@ void ScbeCpu::emitCmpRegReg(CpuReg reg0, CpuReg reg1, OpBits opBits, CpuEmitFlag
 
     if (result == CpuEncodeResult::Right2Reg)
     {
-        if(reg0 != cc->computeRegF1)
+        if (reg0 != cc->computeRegF1)
         {
             emitLoadRegReg(cc->computeRegF1, reg1, opBits, emitFlags);
             emitCmpRegReg(reg0, cc->computeRegF1, opBits, emitFlags);
@@ -328,7 +335,7 @@ void ScbeCpu::emitCmpRegReg(CpuReg reg0, CpuReg reg1, OpBits opBits, CpuEmitFlag
             emitLoadRegReg(cc->computeRegF2, reg1, opBits, emitFlags);
             emitCmpRegReg(reg0, cc->computeRegF2, opBits, emitFlags);
         }
-        
+
         return;
     }
 

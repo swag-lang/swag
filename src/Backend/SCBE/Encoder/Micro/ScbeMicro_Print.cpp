@@ -185,7 +185,7 @@ namespace
     {
         if (reg == CpuReg::Max)
             return "";
-        
+
         static constexpr const char* GENERAL_REGS[][5] = {
             {"al", "ax", "eax", "rax", "..."},
             {"bl", "bx", "ebx", "rbx", "..."},
@@ -457,8 +457,12 @@ void ScbeMicro::print() const
                 break;
             case ScbeMicroOp::LoadAddressAddMul:
                 line.name = "lea";
-                if (inst->regB == CpuReg::Max)
+                if (inst->regB == CpuReg::Max && inst->valueB == 0)
                     line.args = form("%s, [%s*%d]", regName(inst->regA, inst->opBitsA), regName(inst->regC, inst->opBitsA), inst->valueA);
+                else if (inst->regB == CpuReg::Max)
+                    line.args = form("%s, [%s*%d+0xllX]", regName(inst->regA, inst->opBitsA), regName(inst->regC, inst->opBitsA), inst->valueA, inst->valueB);
+                else if (inst->valueB == 0)
+                    line.args = form("%s, [%s+%s*%d+0xllX]", regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsA), regName(inst->regC, inst->opBitsA), inst->valueA, inst->valueB);
                 else
                     line.args = form("%s, [%s+%s*%d]", regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsA), regName(inst->regC, inst->opBitsA), inst->valueA);
                 break;
