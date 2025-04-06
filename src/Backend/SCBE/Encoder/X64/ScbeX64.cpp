@@ -485,6 +485,9 @@ CpuEncodeResult ScbeX64::encodeRet(CpuEmitFlags emitFlags)
 
 CpuEncodeResult ScbeX64::encodeLoadRegReg(CpuReg regDst, CpuReg regSrc, OpBits opBits, CpuEmitFlags emitFlags)
 {
+    if (emitFlags.has(EMIT_CanEncode))
+        return CpuEncodeResult::Zero;
+    
     if (isFloat(regDst) && isFloat(regSrc))
     {
         emitSpecF64(concat, 0xF3, opBits);
