@@ -1491,6 +1491,8 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
 
     else
     {
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::NotSupported;
         Report::internalError(module, "encodeOpBinaryRegReg, cannot encode");
     }
 

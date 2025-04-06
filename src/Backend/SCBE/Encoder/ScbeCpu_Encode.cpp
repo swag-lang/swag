@@ -311,9 +311,16 @@ void ScbeCpu::emitCmpRegReg(CpuReg reg0, CpuReg reg1, OpBits opBits, CpuEmitFlag
 {
     if (isFloat(reg0) && isInt(reg1))
     {
-        SWAG_ASSERT(reg0 != cc->computeRegF1);
-        emitLoadRegReg(cc->computeRegF1, reg1, opBits, emitFlags);
-        emitCmpRegReg(reg0, cc->computeRegF1, opBits, emitFlags);
+        if(reg0 != cc->computeRegF1)
+        {
+            emitLoadRegReg(cc->computeRegF1, reg1, opBits, emitFlags);
+            emitCmpRegReg(reg0, cc->computeRegF1, opBits, emitFlags);
+        }
+        else
+        {
+            emitLoadRegReg(cc->computeRegF2, reg1, opBits, emitFlags);
+            emitCmpRegReg(reg0, cc->computeRegF2, opBits, emitFlags);
+        }
     }
     else
     {

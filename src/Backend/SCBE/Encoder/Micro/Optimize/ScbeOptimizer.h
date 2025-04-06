@@ -39,6 +39,7 @@ struct ScbeOptimizer
     void optimizePassStackToVolatileReg(const ScbeMicro& out);
     void optimizePassImmediate(const ScbeMicro& out);
     void optimizePassSwap(const ScbeMicro& out);
+    void optimizePassAliasHdw(const ScbeMicro& out);
 
     void computeContextRegs(const ScbeMicro& out);
     void computeContextStack(const ScbeMicro& out);
@@ -52,6 +53,7 @@ struct ScbeOptimizer
     Map<CpuReg, uint64_t>                    mapRegVal;
     Map<uint64_t, ScbeMicroInstruction*>     mapValInst;
     Map<CpuReg, ScbeMicroInstruction*>       mapRegInst;
+    Map<CpuReg, ScbeMicroInstruction*>       mapRegInst2;
     bool                                     passHasDoneSomething = false;
 
     // Context

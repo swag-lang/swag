@@ -440,6 +440,7 @@
     <ClCompile Include="..\src\Backend\SCBE\Debug\ScbeDebug.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Debug\ScbeDebugCodeView.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Encoder\Micro\Optimize\ScbeOptimizer.cpp" />
+    <ClCompile Include="..\src\Backend\SCBE\Encoder\Micro\Optimize\ScbeOptimizer_HdwReg.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Encoder\Micro\Optimize\ScbeOptimizer_Imm.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Encoder\Micro\Optimize\ScbeOptimizer_StackToReg.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Encoder\Micro\Optimize\ScbeOptimizer_Reduce.cpp" />
