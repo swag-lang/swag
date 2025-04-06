@@ -948,6 +948,15 @@ CpuEncodeResult ScbeX64::encodeCmpRegReg(CpuReg reg0, CpuReg reg1, OpBits opBits
 {
     if (isFloat(reg0))
     {
+        if (isInt(reg1))
+        {
+            if (emitFlags.has(EMIT_CanEncode))
+                return CpuEncodeResult::Right2Reg;
+            Report::internalError(module, "encodeCmpRegReg, cannot encode");
+        }
+
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::Zero;
         emitPrefixF64(concat, opBits);
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, 0x2F);
@@ -955,6 +964,8 @@ CpuEncodeResult ScbeX64::encodeCmpRegReg(CpuReg reg0, CpuReg reg1, OpBits opBits
     }
     else
     {
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::Zero;
         emitREX(concat, opBits, reg1, reg0);
         emitSpecCPUOp(concat, 0x39, opBits);
         emitModRM(concat, reg1, reg0);

@@ -309,7 +309,14 @@ void ScbeCpu::emitLoadMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, 
 
 void ScbeCpu::emitCmpRegReg(CpuReg reg0, CpuReg reg1, OpBits opBits, CpuEmitFlags emitFlags)
 {
-    if (isFloat(reg0) && isInt(reg1))
+    const auto result = cpu->encodeCmpRegReg(reg0, reg1, opBits, EMIT_CanEncode);
+    if (result == CpuEncodeResult::Zero)
+    {
+        encodeCmpRegReg(reg0, reg1, opBits, emitFlags);
+        return;
+    }
+
+    if (result == CpuEncodeResult::Right2Reg)
     {
         if(reg0 != cc->computeRegF1)
         {
@@ -321,11 +328,11 @@ void ScbeCpu::emitCmpRegReg(CpuReg reg0, CpuReg reg1, OpBits opBits, CpuEmitFlag
             emitLoadRegReg(cc->computeRegF2, reg1, opBits, emitFlags);
             emitCmpRegReg(reg0, cc->computeRegF2, opBits, emitFlags);
         }
+        
+        return;
     }
-    else
-    {
-        encodeCmpRegReg(reg0, reg1, opBits, emitFlags);
-    }
+
+    Report::internalError(module, "emitCmpMemReg, cannot encode");
 }
 
 void ScbeCpu::emitCmpMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits opBits, CpuEmitFlags emitFlags)

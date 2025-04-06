@@ -217,6 +217,9 @@ bool ScbeCpu::acceptsRegB(const ScbeMicroInstruction* inst, CpuReg reg)
     auto result = CpuEncodeResult::Zero;
     switch (inst->op)
     {
+        case ScbeMicroOp::CmpRR:
+            result = encodeCmpRegReg(inst->regA, reg, inst->opBitsA, EMIT_CanEncode);
+            break;
         case ScbeMicroOp::OpBinaryRR:
             result = encodeOpBinaryRegReg(inst->regA, reg, inst->cpuOp, inst->opBitsA, EMIT_CanEncode);
             break;
