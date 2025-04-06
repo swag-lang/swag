@@ -359,7 +359,6 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
             if (next->op == ScbeMicroOp::LoadZeroExtendRM &&
                 next->regB == inst->regA &&
                 next->regA != inst->regB &&
-                !next->valueA && // :aliasing
                 out.cpu->encodeLoadZeroExtendRegMem(next->regA, inst->regB, next->valueA + inst->valueA, next->opBitsA, next->opBitsB, EMIT_CanEncode) == CpuEncodeResult::Zero)
             {
                 setRegB(next, inst->regB);

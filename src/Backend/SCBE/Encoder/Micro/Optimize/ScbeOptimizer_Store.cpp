@@ -26,7 +26,9 @@ void ScbeOptimizer::optimizePassDeadRegBeforeLeave(const ScbeMicro& out)
             const auto stackOffset = inst->getStackOffset();
             if (out.cpuFct->isStackOffsetTransient(stackOffset))
             {
-                if (inst->op == ScbeMicroOp::LoadMR || inst->op == ScbeMicroOp::LoadMI)
+                if (takeAddressRsp.contains(stackOffset, sizeof(uint8_t)))
+                    mapValInst.erase(stackOffset);
+                else if (inst->op == ScbeMicroOp::LoadMR || inst->op == ScbeMicroOp::LoadMI)
                     mapValInst[stackOffset] = inst;
                 else
                     mapValInst.erase(stackOffset);

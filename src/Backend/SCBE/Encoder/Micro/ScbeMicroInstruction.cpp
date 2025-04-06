@@ -5,7 +5,9 @@
 uint32_t ScbeMicroInstruction::getNumBytes() const
 {
     uint32_t size = 0;
-    if (hasLeftOpFlag(MOF_OPBITS_A) || hasRightOpFlag(MOF_OPBITS_A))
+    if (hasLeftOpFlag(MOF_OPBITS_B) || hasRightOpFlag(MOF_OPBITS_B))
+        size = ScbeCpu::getNumBits(opBitsB) / 8;
+    else if (hasLeftOpFlag(MOF_OPBITS_A) || hasRightOpFlag(MOF_OPBITS_A))
         size = ScbeCpu::getNumBits(opBitsA) / 8;
     return size;
 }

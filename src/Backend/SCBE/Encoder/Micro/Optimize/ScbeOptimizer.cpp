@@ -238,7 +238,7 @@ void ScbeOptimizer::computeContextStack(const ScbeMicro& out)
             if (inst->op == ScbeMicroOp::LoadAddressM)
                 takeAddressRsp.push_back(stackOffset);
 
-            const uint32_t size = std::max(inst->getNumBytes(), static_cast<uint32_t>(8));
+            const uint32_t size = std::max(inst->getNumBytes(), static_cast<uint32_t>(1));
             if (!usedStack.contains(stackOffset))
             {
                 for (const auto& [r, i] : usedStackRanges)
@@ -309,8 +309,8 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
     if (!out.cpuFct->bc->sourceFile->module->mustOptimizeBackend(out.cpuFct->bc->node))
         return;
 
-    // if (!out.cpuFct->bc->sourceFile->name.containsNoCase("3401"))
-    //     return;
+    //if (!out.cpuFct->bc->getPrintName().containsNoCase("lineLineIntersect1"))
+    //    return;
 
     bool globalChanged = true;
     while (globalChanged)
