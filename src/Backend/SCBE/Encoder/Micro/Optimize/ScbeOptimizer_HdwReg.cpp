@@ -73,12 +73,8 @@ void ScbeOptimizer::optimizePassDeadHdwReg(const ScbeMicro& out)
     auto inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {
-        if (inst->flags.has(MIF_JUMP_DEST) ||
-            inst->isRet() ||
-            inst->isJump())
-        {
+        if (inst->isRet() || inst->isJump())
             mapRegInst.clear();
-        }
 
         const auto readRegs = out.cpu->getReadRegisters(inst);
         for (const auto r : readRegs)
