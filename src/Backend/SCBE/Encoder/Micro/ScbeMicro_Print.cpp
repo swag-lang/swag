@@ -460,11 +460,11 @@ void ScbeMicro::print() const
                 if (inst->regB == CpuReg::Max && inst->valueB == 0)
                     line.args = form("%s, [%s*%d]", regName(inst->regA, inst->opBitsA), regName(inst->regC, inst->opBitsA), inst->valueA);
                 else if (inst->regB == CpuReg::Max)
-                    line.args = form("%s, [%s*%d+0xllX]", regName(inst->regA, inst->opBitsA), regName(inst->regC, inst->opBitsA), inst->valueA, inst->valueB);
+                    line.args = form("%s, [%s*%d+0x%llX]", regName(inst->regA, inst->opBitsA), regName(inst->regC, inst->opBitsA), inst->valueA, inst->valueB);
                 else if (inst->valueB == 0)
-                    line.args = form("%s, [%s+%s*%d+0xllX]", regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsA), regName(inst->regC, inst->opBitsA), inst->valueA, inst->valueB);
-                else
                     line.args = form("%s, [%s+%s*%d]", regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsA), regName(inst->regC, inst->opBitsA), inst->valueA);
+                else
+                    line.args = form("%s, [%s+%s*%d+0x%llX]", regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsA), regName(inst->regC, inst->opBitsA), inst->valueA, inst->valueB);
                 break;
             case ScbeMicroOp::LoadMR:
                 line.name = "mov";
