@@ -145,6 +145,7 @@ enum class CpuEncodeResult : uint32_t
     Left2Rax,
     Right2Reg,
     Right2Rcx,
+    Simplify,
     NotSupported,
 };
 

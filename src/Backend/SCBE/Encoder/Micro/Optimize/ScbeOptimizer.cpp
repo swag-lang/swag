@@ -282,7 +282,6 @@ void ScbeOptimizer::optimizeStep1(const ScbeMicro& out)
         optimizePassReduce(out);
         optimizePassStore(out);
         optimizePassDeadHdwReg(out);
-        optimizePassDeadRegBeforeLeave(out);
         optimizePassDeadHdwRegBeforeLeave(out);
         optimizePassSwap(out);
 
@@ -297,6 +296,7 @@ void ScbeOptimizer::optimizeStep2(const ScbeMicro& out)
     computeContextRegs(out);
     computeContextStack(out);
 
+    optimizePassDeadRegBeforeLeave(out);
     optimizePassParamsKeepReg(out);
     optimizePassReduce2(out);
     optimizePassStackToVolatileReg(out);
@@ -308,9 +308,6 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
         return;
     if (!out.cpuFct->bc->sourceFile->module->mustOptimizeBackend(out.cpuFct->bc->node))
         return;
-
-    //if (!out.cpuFct->bc->getPrintName().containsNoCase("lineLineIntersect1"))
-    //    return;
 
     bool globalChanged = true;
     while (globalChanged)

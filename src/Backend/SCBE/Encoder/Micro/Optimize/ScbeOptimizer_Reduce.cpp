@@ -439,9 +439,7 @@ void ScbeOptimizer::reduceUnusedStack(const ScbeMicro& out, ScbeMicroInstruction
     {
         const auto size = inst->getNumBytes();
         if (!rangeReadStack.contains(static_cast<uint32_t>(inst->valueA), size))
-        {
             ignore(out, inst);
-        }
     }
 }
 

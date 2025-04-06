@@ -40,7 +40,7 @@ void ScbeOptimizer::optimizePassStackToVolatileReg(const ScbeMicro& out)
                 continue;
             if (takeAddressRsp.contains(offset))
                 continue;
-
+            
             const auto r = unusedVolatileInteger.first();
             unusedVolatileInteger.erase(r);
             memToReg(out, CpuReg::Rsp, offset, r);
