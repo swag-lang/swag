@@ -33,11 +33,16 @@ ScbeMicroInstruction* ScbeMicro::addInstruction(ScbeMicroOp op, CpuEmitFlags emi
 
     if (op != ScbeMicroOp::Label &&
         op != ScbeMicroOp::PatchJump &&
-        op != ScbeMicroOp::Debug &&
-        nextIsJumpDest)
+        op != ScbeMicroOp::Debug)
     {
-        inst->flags.add(MIF_JUMP_DEST);
-        nextIsJumpDest = false;
+#ifdef SWAG_STATS
+        g_Stats.numScbeInstructions += 1;
+#endif
+        if (nextIsJumpDest)
+        {
+            inst->flags.add(MIF_JUMP_DEST);
+            nextIsJumpDest = false;
+        }
     }
 
     return inst;
@@ -745,10 +750,6 @@ void ScbeMicro::postProcess() const
 
 void ScbeMicro::process(ScbeCpu& encoder)
 {
-#ifdef SWAG_STATS
-    g_Stats.numScbeInstructions += concat.totalCount();
-#endif
-
     addInstruction(ScbeMicroOp::End, EMIT_Zero);
     concat.makeLinear();
 
