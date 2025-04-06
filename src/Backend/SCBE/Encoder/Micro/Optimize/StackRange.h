@@ -81,30 +81,5 @@ struct StackRange
         return false;
     }
 
-    bool isInRange(uint32_t offset) const
-    {
-        if (ranges.empty())
-            return false;
-
-        uint32_t left  = 0;
-        uint32_t right = ranges.size() - 1;
-
-        while (left <= right)
-        {
-            const uint32_t mid       = left + (right - left) / 2;
-            const auto& [start, end] = ranges[mid];
-            if (offset < start && mid == 0)
-                return false;
-            if (offset < start)
-                right = mid - 1;
-            else if (offset >= end)
-                left = mid + 1;
-            else
-                return true;
-        }
-
-        return false;
-    }    
-
     Vector<std::pair<uint32_t, uint32_t>> ranges;
 };

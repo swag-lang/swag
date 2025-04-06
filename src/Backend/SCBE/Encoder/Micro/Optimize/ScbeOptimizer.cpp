@@ -239,7 +239,7 @@ void ScbeOptimizer::computeContextStack(const ScbeMicro& out)
                 takeAddressRsp.push_back(stackOffset);
 
             const uint32_t size = std::max(inst->getNumBytes(), static_cast<uint32_t>(8));
-            /*if (!usedStackCount.contains(stackOffset))
+            if (!usedStack.contains(stackOffset))
             {
                 for (const auto& [r, i] : usedStackRanges)
                 {
@@ -250,13 +250,13 @@ void ScbeOptimizer::computeContextStack(const ScbeMicro& out)
                         hasAlias = true;
                     if (hasAlias)
                     {
-                        takeAddressRsp.addRange(stackOffset, size);
-                        takeAddressRsp.addRange(r, i);
+                        takeAddressRsp.push_back(stackOffset, size);
+                        takeAddressRsp.push_back(r, i);
                     }
                 }
 
                 usedStackRanges.push_back({stackOffset, size});
-            }*/
+            }
 
             usedStack[stackOffset] += 1;
 
@@ -308,9 +308,9 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
         return;
     if (!out.cpuFct->bc->sourceFile->module->mustOptimizeBackend(out.cpuFct->bc->node))
         return;
-    
-    //if (!out.cpuFct->bc->sourceFile->name.containsNoCase("3401"))
-    //    return;
+
+    // if (!out.cpuFct->bc->sourceFile->name.containsNoCase("3401"))
+    //     return;
 
     bool globalChanged = true;
     while (globalChanged)
