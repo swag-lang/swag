@@ -239,12 +239,6 @@ namespace
         concat.addU8(value);
     }
 
-    // Scaled index addressing
-    void emitSIB(Concat& concat, uint8_t scale, CpuReg regIndex, CpuReg regBase)
-    {
-        emitSIB(concat, scale, encodeReg(regIndex) & 0b111, encodeReg(regBase) & 0b111);
-    }
-
     void emitREX(Concat& concat, OpBits opBits, CpuReg reg0 = REX_REG_NONE, CpuReg reg1 = REX_REG_NONE)
     {
         if (opBits == OpBits::B16)
@@ -387,32 +381,45 @@ namespace
         if (opBits == OpBits::B32)
             emitCPUOp(concat, 0x67);
         if (opBits == OpBits::B64 || b0 || b1 || b2)
-            concat.addU8(getREX(opBits == OpBits::B64, b0, b1, b2));
+        {
+            const auto value = getREX(opBits == OpBits::B64, b0, b1, b2);
+            concat.addU8(value);
+        }
 
         emitCPUOp(concat, op);
 
         if (regSrc1 == CpuReg::R13)
         {
-            const auto modRM = getModRM(ModRMMode::Displacement8, regDst, MODRM_RM_SIB);
-            concat.addU8(modRM);
+            if (addValue <= 0x7F)
+                emitModRM(concat, ModRMMode::Displacement8, regDst, MODRM_RM_SIB);
+            else
+                emitModRM(concat, ModRMMode::Displacement32, regDst, MODRM_RM_SIB);
+        }
+        else if (addValue == 0 || regSrc1 == CpuReg::Max)
+        {
+            emitModRM(concat, ModRMMode::Memory, regDst, MODRM_RM_SIB);
         }
         else
         {
-            //emitModRM(concat, ModRMMode::Memory, regDst, MODRM_RM_SIB);
-            emitModRM(concat, addValue, regDst, MODRM_REG_SIB);
+            if (addValue <= 0x7F)
+                emitModRM(concat, ModRMMode::Displacement8, regDst, MODRM_RM_SIB);
+            else
+                emitModRM(concat, ModRMMode::Displacement32, regDst, MODRM_RM_SIB);
         }
 
         SWAG_ASSERT(mulValue == 1 || mulValue == 2 || mulValue == 4 || mulValue == 8);
         if (regSrc1 == CpuReg::Max)
         {
             emitSIB(concat, static_cast<uint8_t>(log2(mulValue)), encodeReg(regSrc2) & 0b111, SIB_NO_BASE);
-            emitValue(concat, 0, OpBits::B32);
+            emitValue(concat, addValue, OpBits::B32);
         }
         else
         {
             emitSIB(concat, static_cast<uint8_t>(log2(mulValue)), encodeReg(regSrc2) & 0b111, encodeReg(regSrc1) & 0b111);
-            if (regSrc1 == CpuReg::R13)
-                emitValue(concat, 0, OpBits::B8);
+            if (regSrc1 == CpuReg::R13 || (addValue != 0 && addValue <= 0x7F))
+                emitValue(concat, addValue, OpBits::B8);
+            else if (addValue)
+                emitValue(concat, addValue, OpBits::B32);
         }
     }
 }
