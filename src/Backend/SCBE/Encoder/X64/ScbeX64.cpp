@@ -373,7 +373,7 @@ namespace
         emitSpecB8(concat, op, opBits);
     }
 
-    void emitAddMul(Concat& concat, uint8_t op, CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, OpBits opBits, CpuEmitFlags emitFlags)
+    void emitAddMul(Concat& concat, uint8_t op, CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, OpBits opBits, CpuEmitFlags emitFlags)
     {
         SWAG_ASSERT(opBits == OpBits::B32 || opBits == OpBits::B64);
 
@@ -786,7 +786,7 @@ CpuEncodeResult ScbeX64::encodeLoadAddressMem(CpuReg reg, CpuReg memReg, uint64_
     return CpuEncodeResult::Zero;
 }
 
-CpuEncodeResult ScbeX64::encodeLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, OpBits opBits, CpuEmitFlags emitFlags)
+CpuEncodeResult ScbeX64::encodeLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, OpBits opBits, CpuEmitFlags emitFlags)
 {
     if (emitFlags.has(EMIT_CanEncode))
     {
@@ -799,7 +799,7 @@ CpuEncodeResult ScbeX64::encodeLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, 
 
     SWAG_ASSERT(opBits == OpBits::B32 || opBits == OpBits::B64);
 
-    emitAddMul(concat, 0x8D, regDst, regSrc1, regSrc2, mulValue, opBits, emitFlags);
+    emitAddMul(concat, 0x8D, regDst, regSrc1, regSrc2, mulValue, addValue, opBits, emitFlags);
     return CpuEncodeResult::Zero;
 }
 
@@ -2318,7 +2318,7 @@ CpuEncodeResult ScbeX64::encodeJumpTable(CpuReg table, CpuReg offset, int32_t cu
     emitSymbolRelocationAddress(table, symCSIndex, offsetTableConstant);
 
     // movsxd table, dword ptr [table + offset*4]
-    emitAddMul(concat, 0x63, table, table, offset, 4, OpBits::B64, emitFlags);
+    emitAddMul(concat, 0x63, table, table, offset, 4, 0, OpBits::B64, emitFlags);
 
     const auto startIdx = concat.totalCount();
     emitSymbolRelocationAddress(offset, cpuFct->symbolIndex, concat.totalCount() - cpuFct->startAddress);

@@ -258,9 +258,9 @@ void ScbeCpu::emitLoadZeroExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t memOf
     }
 }
 
-void ScbeCpu::emitLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, OpBits opBits, CpuEmitFlags emitFlags)
+void ScbeCpu::emitLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, OpBits opBits, CpuEmitFlags emitFlags)
 {
-    encodeLoadAddressAddMul(regDst, regSrc1, regSrc2, mulValue, opBits, emitFlags);
+    encodeLoadAddressAddMul(regDst, regSrc1, regSrc2, mulValue, addValue, opBits, emitFlags);
 }
 
 void ScbeCpu::emitLoadAddressMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, CpuEmitFlags emitFlags)
@@ -651,19 +651,19 @@ void ScbeCpu::emitOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp op, OpBits op
 
         if ((op == CpuOp::MUL || op == CpuOp::IMUL) && value == 3)
         {
-            emitLoadAddressAddMul(reg, reg, reg, 2, std::max(opBits, OpBits::B32));
+            emitLoadAddressAddMul(reg, reg, reg, 2, 0, std::max(opBits, OpBits::B32));
             return;
         }
 
         if ((op == CpuOp::MUL || op == CpuOp::IMUL) && value == 5)
         {
-            emitLoadAddressAddMul(reg, reg, reg, 4, std::max(opBits, OpBits::B32));
+            emitLoadAddressAddMul(reg, reg, reg, 4, 0, std::max(opBits, OpBits::B32));
             return;
         }
 
         if ((op == CpuOp::MUL || op == CpuOp::IMUL) && value == 9)
         {
-            emitLoadAddressAddMul(reg, reg, reg, 8, std::max(opBits, OpBits::B32));
+            emitLoadAddressAddMul(reg, reg, reg, 8, 0, std::max(opBits, OpBits::B32));
             return;
         }
 
