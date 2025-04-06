@@ -2,6 +2,14 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 
+uint32_t ScbeMicroInstruction::getNumBytes() const
+{
+    uint32_t size = 0;
+    if (hasLeftOpFlag(MOF_OPBITS_A) || hasRightOpFlag(MOF_OPBITS_A))
+        size = ScbeCpu::getNumBits(opBitsA) / 8;
+    return size;
+}
+
 bool ScbeMicroInstruction::isJump() const
 {
     return op == ScbeMicroOp::JumpM ||

@@ -34,6 +34,8 @@ struct ScbeMicroInstruction
     bool hasRegB() const { return (hasReadRegB() || hasWriteRegB()); }
     bool hasRegC() const { return (hasReadRegC() || hasWriteRegC()); }
 
+    uint32_t getNumBytes() const;
+
     bool isJump() const;
     bool isJumpCond() const;
     bool isCall() const;
