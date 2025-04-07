@@ -3,26 +3,30 @@
 #include "Backend/ByteCode/ByteCodeOp.h"
 #include "Backend/ByteCode/Profiler/Profiler.h"
 #include "Backend/ByteCode/Register.h"
+#include "Report/Log.h"
 #include "Threading/Mutex.h"
 #include "Threading/RaceCondition.h"
 
+enum class LogColor;
 struct AstNode;
 struct SourceFile;
 struct TypeInfoFuncAttr;
 struct ByteCode;
 struct SourceLocation;
 
-using ByteCodePrintPrintFlags = Flags<uint32_t>;
-
-constexpr ByteCodePrintPrintFlags BCPF_DEFAULT          = 0x00000000;
-constexpr ByteCodePrintPrintFlags BCPF_SCBE_INSTRUCTION = 0x00000001;
-constexpr ByteCodePrintPrintFlags BCPF_SCBE_ASM         = 0x00000002;
+using ByteCodePrintPrintFlags                  = Flags<uint32_t>;
+constexpr ByteCodePrintPrintFlags BCPF_DEFAULT = 0x00000000;
 
 struct ByteCodePrintOptions
 {
     ByteCodeInstruction*    curIp           = nullptr;
     bool                    printSourceCode = true;
     ByteCodePrintPrintFlags flags           = BCPF_DEFAULT;
+    LogColor                rankColor       = LogColor::Undefined;
+    LogColor                nameColor       = LogColor::Undefined;
+    LogColor                argsColor       = LogColor::Undefined;
+    LogColor                flagsColor      = LogColor::Undefined;
+    LogColor                prettyColor     = LogColor::Undefined;
 };
 
 struct ByteCode

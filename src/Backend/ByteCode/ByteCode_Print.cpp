@@ -458,68 +458,80 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteC
     // Bkp
     g_Log.print(line.bkp);
 
-    if (forDbg && ip == options.curIp)
-        g_Log.setColor(LogColor::CurInstruction);
-    else if (options.flags.has(BCPF_SCBE_INSTRUCTION))
-        g_Log.setColor(LogColor::AsmIndex);
-    else
-        g_Log.setColor(LogColor::Index);
-
-    // Instruction rank
-    g_Log.print(line.rank);
-
-    // This is the current instruction
-    if (forDbg && ip == options.curIp)
-        g_Log.setColor(LogColor::CurInstruction);
-
-    // The instruction comes from an inline function
-    // else if (ip && ip->node && ip->node->hasOwnerInline() && options.printSourceCode)
-    //    g_Log.setColor(LogColor::Gray);
-
-    // Normal instruction
-    else if (options.flags.has(BCPF_SCBE_INSTRUCTION))
-        g_Log.setColor(LogColor::AsmInstruction);
-    else
-        g_Log.setColor(LogColor::White);
+    // Rank
+    if (options.rankColor != LogColor::Transparent)
+    {
+        if (options.rankColor != LogColor::Undefined)
+            g_Log.setColor(options.rankColor);
+        else if (forDbg && ip == options.curIp)
+            g_Log.setColor(LogColor::CurInstruction);
+        else
+            g_Log.setColor(LogColor::Index);
+        g_Log.print(line.rank);
+    }
 
     // Instruction name
-    g_Log.print(line.name);
+    if (options.nameColor != LogColor::Transparent)
+    {
+        if (options.nameColor != LogColor::Undefined)
+            g_Log.setColor(options.nameColor);
+        else if (forDbg && ip == options.curIp)
+            g_Log.setColor(LogColor::CurInstruction);
+        else
+            g_Log.setColor(LogColor::White);
+        g_Log.print(line.name);
+    }
 
     // Parameters
-    g_Log.print(line.args);
+    if (options.argsColor != LogColor::Transparent)
+    {
+        if (options.argsColor != LogColor::Undefined)
+            g_Log.setColor(options.argsColor);
+        else if (forDbg && ip == options.curIp)
+            g_Log.setColor(LogColor::CurInstruction);
+        else
+            g_Log.setColor(LogColor::White);
+        g_Log.print(line.args);
+    }
 
     // Flags
-    if (forDbg && ip == options.curIp)
-        g_Log.setColor(LogColor::CurInstruction);
-    else if (options.flags.has(BCPF_SCBE_INSTRUCTION))
-        g_Log.setColor(LogColor::AsmFlags);
-    else
-        g_Log.setColor(LogColor::InstructionFlags);
-    g_Log.print(line.flags);
+    if (options.flagsColor != LogColor::Transparent)
+    {
+        if (options.flagsColor != LogColor::Undefined)
+            g_Log.setColor(options.flagsColor);
+        else if (forDbg && ip == options.curIp)
+            g_Log.setColor(LogColor::CurInstruction);
+        else
+            g_Log.setColor(LogColor::InstructionFlags);
+        g_Log.print(line.flags);
+    }
 
     // Pretty
-    if (forDbg && ip == options.curIp)
+    if (options.prettyColor != LogColor::Transparent)
     {
-        g_Log.setColor(LogColor::CurInstruction);
-        LogWriteContext logCxt;
-        logCxt.raw = true;
-        g_Log.print(line.pretty, &logCxt);
-    }
-    else if (options.flags.has(BCPF_SCBE_INSTRUCTION) || options.flags.has(BCPF_SCBE_ASM))
-    {
-        g_Log.setColor(LogColor::AsmInstruction);
-        LogWriteContext logCxt;
-        logCxt.raw = true;
-        g_Log.print(line.pretty, &logCxt);
-    }
-    else
-    {
-        g_Log.setColor(LogColor::White);
-        SyntaxColorContext synCxt;
-        synCxt.forByteCode = true;
-        LogWriteContext logCxt;
-        logCxt.raw = true;
-        g_Log.print(doSyntaxColor(line.pretty, synCxt), &logCxt);
+        if (options.prettyColor != LogColor::Undefined)
+        {
+            LogWriteContext logCxt;
+            logCxt.raw = true;
+            g_Log.setColor(options.prettyColor);
+            g_Log.print(line.pretty, &logCxt);
+        }
+        else if (forDbg && ip == options.curIp)
+        {
+            LogWriteContext logCxt;
+            logCxt.raw = true;
+            g_Log.setColor(LogColor::CurInstruction);
+            g_Log.print(line.pretty, &logCxt);
+        }
+        else
+        {
+            SyntaxColorContext synCxt;
+            LogWriteContext    logCxt;
+            synCxt.forByteCode = true;
+            logCxt.raw         = true;
+            g_Log.setColor(LogColor::White);
+            g_Log.print(doSyntaxColor(line.pretty, synCxt), &logCxt);
+        }
     }
 
 #ifdef SWAG_DEV_MODE

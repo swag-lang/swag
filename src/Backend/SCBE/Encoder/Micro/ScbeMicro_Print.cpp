@@ -323,7 +323,11 @@ void ScbeMicro::print() const
             case ScbeMicroOp::Debug:
             {
                 ByteCodePrintOptions po;
-                po.flags.add(BCPF_SCBE_INSTRUCTION);
+                po.rankColor     = LogColor::Gray;
+                po.nameColor     = LogColor::Gray;
+                po.argsColor     = LogColor::Gray;
+                po.flagsColor    = LogColor::Gray;
+                po.prettyColor   = LogColor::Gray;
                 const auto curIp = reinterpret_cast<ByteCodeInstruction*>(inst->valueA);
                 ByteCode::printSourceCode(po, cpuFct->bc, curIp, &lastLine, &lastFile, &lastInline);
                 cpuFct->bc->printInstruction(po, curIp);
@@ -585,7 +589,7 @@ void ScbeMicro::print() const
         lines.push_back(line);
 
         ByteCodePrintOptions po;
-        po.flags.add(BCPF_SCBE_ASM);
+        po.prettyColor = LogColor::Gray;
         ByteCode::alignPrintInstructions(po, lines, true);
         for (const auto& l : lines)
             ByteCode::printInstruction(po, nullptr, l);
