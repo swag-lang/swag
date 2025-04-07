@@ -36,6 +36,8 @@ namespace
                 return "jp";
             case CpuCondJump::JNP:
                 return "jnp";
+            case CpuCondJump::JS:
+                return "js";            
             case CpuCondJump::JUMP:
                 return "jump";
             default:
