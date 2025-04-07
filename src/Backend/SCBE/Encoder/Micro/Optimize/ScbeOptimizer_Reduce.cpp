@@ -182,7 +182,7 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
 
     switch (inst->op)
     {
-        case ScbeMicroOp::LoadAddressAddMul:
+        case ScbeMicroOp::LoadAddrAddMul:
             if (inst->regB == CpuReg::Max &&
                 inst->valueB == 0 &&
                 next->op == ScbeMicroOp::OpBinaryRR &&
@@ -206,7 +206,7 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
                 !ScbeMicro::getNextFlagSensitive(next)->isJumpCond() && // :x64optimoverflow
                 out.cpu->encodeLoadAddressMem(next->regA, inst->regB, next->valueA, EMIT_CanEncode) == CpuEncodeResult::Zero)
             {
-                setOp(next, ScbeMicroOp::LoadAddressM);
+                setOp(next, ScbeMicroOp::LoadAddr);
                 next->regB = inst->regB;
                 ignore(out, inst);
                 break;
@@ -219,7 +219,7 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
                 !ScbeMicro::getNextFlagSensitive(next)->isJumpCond() && // :x64optimoverflow
                 out.cpu->encodeLoadAddressAddMul(next->regA, CpuReg::Max, inst->regB, 1ULL << next->valueA, 0, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
             {
-                setOp(next, ScbeMicroOp::LoadAddressAddMul);
+                setOp(next, ScbeMicroOp::LoadAddrAddMul);
                 next->regB   = CpuReg::Max;
                 next->regC   = inst->regB;
                 next->valueA = 1ULL << next->valueA;
@@ -236,7 +236,7 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
                 next->regB == inst->regA &&
                 out.cpu->encodeLoadAddressMem(next->regA, inst->regA, inst->valueA, EMIT_CanEncode) == CpuEncodeResult::Zero)
             {
-                setOp(next, ScbeMicroOp::LoadAddressM);
+                setOp(next, ScbeMicroOp::LoadAddr);
                 next->regB   = inst->regA;
                 next->valueA = inst->valueA;
                 swapInstruction(out, inst, next);
@@ -254,14 +254,14 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
 
     switch (inst->op)
     {
-        case ScbeMicroOp::LoadZeroExtendRM:
-            if (next->op == ScbeMicroOp::LoadSignedExtendRR &&
+        case ScbeMicroOp::LoadZeroExtRM:
+            if (next->op == ScbeMicroOp::LoadSignedExtRR &&
                 next->regA == inst->regA &&
                 next->regB == inst->regA &&
                 next->opBitsA == inst->opBitsA &&
                 next->opBitsB == inst->opBitsB)
             {
-                setOp(inst, ScbeMicroOp::LoadSignedExtendRM);
+                setOp(inst, ScbeMicroOp::LoadSignedExtRM);
                 ignore(out, next);
             }
             break;
@@ -321,13 +321,13 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
             }
             break;
 
-        case ScbeMicroOp::LoadAddressM:
+        case ScbeMicroOp::LoadAddr:
             if (next->op == ScbeMicroOp::LoadRR &&
                 inst->regA != inst->regB &&
                 next->regB == inst->regA &&
                 next->opBitsA == OpBits::B64)
             {
-                setOp(next, ScbeMicroOp::LoadAddressM);
+                setOp(next, ScbeMicroOp::LoadAddr);
                 setRegB(next, inst->regB);
                 setValueA(next, inst->valueA);
                 break;
@@ -358,7 +358,7 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
                 break;
             }
 
-            if (next->op == ScbeMicroOp::LoadZeroExtendRM &&
+            if (next->op == ScbeMicroOp::LoadZeroExtRM &&
                 next->regB == inst->regA &&
                 next->regA != inst->regB &&
                 out.cpu->encodeLoadZeroExtendRegMem(next->regA, inst->regB, next->valueA + inst->valueA, next->opBitsA, next->opBitsB, EMIT_CanEncode) == CpuEncodeResult::Zero)
@@ -392,24 +392,24 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
                 break;
             }
 
-            if (next->op == ScbeMicroOp::LoadSignedExtendRM &&
+            if (next->op == ScbeMicroOp::LoadSignedExtRM &&
                 ScbeCpu::isInt(inst->regB) == ScbeCpu::isInt(next->regA) &&
                 next->regB == inst->regA &&
                 next->valueA == inst->valueA &&
                 ScbeCpu::getNumBits(inst->opBitsA) >= ScbeCpu::getNumBits(next->opBitsB))
             {
-                setOp(next, ScbeMicroOp::LoadSignedExtendRR);
+                setOp(next, ScbeMicroOp::LoadSignedExtRR);
                 setRegB(next, inst->regB);
                 break;
             }
 
-            if (next->op == ScbeMicroOp::LoadZeroExtendRM &&
+            if (next->op == ScbeMicroOp::LoadZeroExtRM &&
                 ScbeCpu::isInt(inst->regB) == ScbeCpu::isInt(next->regA) &&
                 next->regB == inst->regA &&
                 next->valueA == inst->valueA &&
                 ScbeCpu::getNumBits(inst->opBitsA) >= ScbeCpu::getNumBits(next->opBitsB))
             {
-                setOp(next, ScbeMicroOp::LoadZeroExtendRR);
+                setOp(next, ScbeMicroOp::LoadZeroExtRR);
                 setRegB(next, inst->regB);
                 break;
             }

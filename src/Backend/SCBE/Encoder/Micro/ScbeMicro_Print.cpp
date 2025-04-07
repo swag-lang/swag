@@ -338,13 +338,13 @@ void ScbeMicro::print() const
             case ScbeMicroOp::PatchJump:
                 continue;
 
-            case ScbeMicroOp::SymbolRelocationRef:
+            case ScbeMicroOp::SymbolRelocRef:
                 break;
-            case ScbeMicroOp::SymbolRelocationAddress:
+            case ScbeMicroOp::SymbolRelocAddr:
                 line.name = "lea";
                 line.args = form("%s, [<sym%d>+%d]", regName(inst->regA, OpBits::B64), inst->valueA, inst->valueB);
                 break;
-            case ScbeMicroOp::SymbolRelocationValue:
+            case ScbeMicroOp::SymbolRelocValue:
                 line.name = "mov";
                 line.args = form("%s, <sym%d>+%d", regName(inst->regA, OpBits::B64), inst->valueA, inst->valueB);
                 break;
@@ -352,7 +352,7 @@ void ScbeMicro::print() const
                 line.name = "mov";
                 line.args = form("%s, ptr \"%s\"", regName(inst->regA, OpBits::B64), inst->name.cstr());
                 break;
-            case ScbeMicroOp::SymbolRelocationPtr:
+            case ScbeMicroOp::SymbolRelocPtr:
                 line.name = "mov";
                 line.args = form("%s, ptr %s", regName(inst->regA, OpBits::B64), inst->name.cstr());
                 break;
@@ -395,15 +395,15 @@ void ScbeMicro::print() const
                 line.name = jumpTypeName(inst->jumpType);
                 line.args = form("%08d", inst->valueB);
                 break;
-            case ScbeMicroOp::LoadCallerParam:
+            case ScbeMicroOp::LoadCallParam:
                 line.name = "mov";
                 line.args = form("%s, %s ptr [rdi+<param%d>]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsA), inst->valueA);
                 break;
-            case ScbeMicroOp::LoadCallerAddressParam:
+            case ScbeMicroOp::LoadCallAddrParam:
                 line.name = "lea";
                 line.args = form("%s, %s ptr [rdi+<param%d>]", regName(inst->regA, OpBits::B64), opBitsName(OpBits::B64), inst->valueA);
                 break;
-            case ScbeMicroOp::LoadCallerZeroExtendParam:
+            case ScbeMicroOp::LoadCallZeroExtParam:
                 line.name = "movzx";
                 line.args = form("%s, %s ptr [rdi+<param%d>]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsB), inst->valueA);
                 break;
@@ -426,36 +426,36 @@ void ScbeMicro::print() const
                 else
                     line.args = form("%s, %s ptr [%s+0x%llX]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsA), regName(inst->regB, OpBits::B64), inst->valueA);
                 break;
-            case ScbeMicroOp::LoadSignedExtendRM:
+            case ScbeMicroOp::LoadSignedExtRM:
                 line.name = "movsx";
                 if (inst->valueA == 0)
                     line.args = form("%s, %s ptr [%s]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsB), regName(inst->regB, OpBits::B64));
                 else
                     line.args = form("%s, %s ptr [%s+0x%llX]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsB), regName(inst->regB, OpBits::B64), inst->valueA);
                 break;
-            case ScbeMicroOp::LoadSignedExtendRR:
+            case ScbeMicroOp::LoadSignedExtRR:
                 line.name = "movsx";
                 line.args = form("%s, %s", regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsB));
                 break;
-            case ScbeMicroOp::LoadZeroExtendRM:
+            case ScbeMicroOp::LoadZeroExtRM:
                 line.name = "movzx";
                 if (inst->valueA == 0)
                     line.args = form("%s, %s ptr [%s]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsB), regName(inst->regB, OpBits::B64));
                 else
                     line.args = form("%s, %s ptr [%s+0x%llX]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsB), regName(inst->regB, OpBits::B64), inst->valueA);
                 break;
-            case ScbeMicroOp::LoadZeroExtendRR:
+            case ScbeMicroOp::LoadZeroExtRR:
                 line.name = "movzx";
                 line.args = form("%s, %s", regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsB));
                 break;
-            case ScbeMicroOp::LoadAddressM:
+            case ScbeMicroOp::LoadAddr:
                 line.name = "lea";
                 if (inst->valueA == 0)
                     line.args = form("%s, [%s]", regName(inst->regA, OpBits::B64), regName(inst->regB, OpBits::B64));
                 else
                     line.args = form("%s, [%s+0x%llX]", regName(inst->regA, OpBits::B64), regName(inst->regB, OpBits::B64), inst->valueA);
                 break;
-            case ScbeMicroOp::LoadAddressAddMul:
+            case ScbeMicroOp::LoadAddrAddMul:
                 line.name = "lea";
                 if (inst->regB == CpuReg::Max && inst->valueB == 0)
                     line.args = form("%s, [%s*%d]", regName(inst->regA, inst->opBitsA), regName(inst->regC, inst->opBitsA), inst->valueA);
@@ -576,7 +576,7 @@ void ScbeMicro::print() const
         const auto& def = g_MicroOpInfos[static_cast<int>(inst->op)];
         line.pretty += def.name;
         line.pretty += " ";
-        while (line.pretty.length() < 15)
+        while (line.pretty.length() < 20)
             line.pretty += " ";
         line.pretty += printOpArgs(inst, def.leftFlags);
         if (def.rightFlags.flags)

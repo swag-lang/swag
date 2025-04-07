@@ -15,19 +15,19 @@ void ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
     {
         switch (inst->op)
         {
-            case ScbeMicroOp::LoadSignedExtendRM:
+            case ScbeMicroOp::LoadSignedExtRM:
                 if (inst->regB == memReg &&
                     inst->valueA == memOffset)
                 {
-                    setOp(inst, ScbeMicroOp::LoadSignedExtendRR);
+                    setOp(inst, ScbeMicroOp::LoadSignedExtRR);
                     setRegB(inst, reg);
                 }
                 break;
-            case ScbeMicroOp::LoadZeroExtendRM:
+            case ScbeMicroOp::LoadZeroExtRM:
                 if (inst->regB == memReg &&
                     inst->valueA == memOffset)
                 {
-                    setOp(inst, ScbeMicroOp::LoadZeroExtendRR);
+                    setOp(inst, ScbeMicroOp::LoadZeroExtRR);
                     setRegB(inst, reg);
                 }
                 break;
@@ -235,7 +235,7 @@ void ScbeOptimizer::computeContextStack(const ScbeMicro& out)
         const auto stackOffset = inst->getStackOffset();
         if (stackOffset != UINT32_MAX)
         {
-            if (inst->op == ScbeMicroOp::LoadAddressM)
+            if (inst->op == ScbeMicroOp::LoadAddr)
                 takeAddressRsp.push_back(stackOffset);
 
             const uint32_t size = std::max(inst->getNumBytes(), static_cast<uint32_t>(1));

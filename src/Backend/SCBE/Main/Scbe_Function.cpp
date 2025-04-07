@@ -1706,19 +1706,19 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::InternalGetTlsPtr:
                 pp.pushParams.clear();
-                pp.pushParams.push_back({.type = CpuPushParamType::SymbolRelocationValue, .value = pp.symTls_threadLocalId});
+                pp.pushParams.push_back({.type = CpuPushParamType::SymbolRelocValue, .value = pp.symTls_threadLocalId});
                 pp.pushParams.push_back({.type = CpuPushParamType::Constant, .value = module->tlsSegment.totalCount, .typeInfo = g_TypeMgr->typeInfoU64});
-                pp.pushParams.push_back({.type = CpuPushParamType::SymbolRelocationAddress, .value = pp.symTLSIndex});
+                pp.pushParams.push_back({.type = CpuPushParamType::SymbolRelocAddr, .value = pp.symTLSIndex});
                 emitInternalCallCPUParams(pp, g_LangSpec->name_priv_tlsGetPtr, pp.pushParams, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32));
                 break;
             case ByteCodeOp::IntrinsicGetContext:
                 pp.pushParams.clear();
-                pp.pushParams.push_back({.type = CpuPushParamType::SymbolRelocationValue, .value = pp.symPI_contextTlsId});
+                pp.pushParams.push_back({.type = CpuPushParamType::SymbolRelocValue, .value = pp.symPI_contextTlsId});
                 emitInternalCallCPUParams(pp, g_LangSpec->name_priv_tlsGetValue, pp.pushParams, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32));
                 break;
             case ByteCodeOp::IntrinsicSetContext:
                 pp.pushParams.clear();
-                pp.pushParams.push_back({.type = CpuPushParamType::SymbolRelocationValue, .value = pp.symPI_contextTlsId});
+                pp.pushParams.push_back({.type = CpuPushParamType::SymbolRelocValue, .value = pp.symPI_contextTlsId});
                 pp.pushParams.push_back({.type = CpuPushParamType::SwagRegister, .baseReg = CpuReg::Rsp, .value = pp.cpuFct->getStackOffsetReg(ip->a.u32)});
                 emitInternalCallCPUParams(pp, g_LangSpec->name_priv_tlsSetValue, pp.pushParams);
                 break;

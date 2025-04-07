@@ -102,10 +102,10 @@ void ScbeOptimizer::optimizePassDeadHdwReg(const ScbeMicro& out)
         if (inst->op == ScbeMicroOp::LoadRR ||
             inst->op == ScbeMicroOp::LoadRI ||
             inst->op == ScbeMicroOp::LoadRM ||
-            inst->op == ScbeMicroOp::LoadAddressM ||
-            inst->op == ScbeMicroOp::SymbolRelocationAddress ||
-            inst->op == ScbeMicroOp::LoadZeroExtendRM ||
-            inst->op == ScbeMicroOp::LoadSignedExtendRM ||
+            inst->op == ScbeMicroOp::LoadAddr ||
+            inst->op == ScbeMicroOp::SymbolRelocAddr ||
+            inst->op == ScbeMicroOp::LoadZeroExtRM ||
+            inst->op == ScbeMicroOp::LoadSignedExtRM ||
             inst->op == ScbeMicroOp::ClearR)
         {
             if (mapRegInst.contains(inst->regA))
@@ -161,13 +161,13 @@ void ScbeOptimizer::optimizePassDeadHdwRegBeforeLeave(const ScbeMicro& out)
                 ignore(out, i);
             mapRegInst.clear();
         }
-        else if (inst->op == ScbeMicroOp::LoadAddressM ||
+        else if (inst->op == ScbeMicroOp::LoadAddr ||
                  inst->op == ScbeMicroOp::LoadRR ||
                  inst->op == ScbeMicroOp::LoadRI ||
-                 inst->op == ScbeMicroOp::LoadZeroExtendRR ||
-                 inst->op == ScbeMicroOp::LoadZeroExtendRM ||
-                 inst->op == ScbeMicroOp::LoadSignedExtendRR ||
-                 inst->op == ScbeMicroOp::LoadSignedExtendRM ||
+                 inst->op == ScbeMicroOp::LoadZeroExtRR ||
+                 inst->op == ScbeMicroOp::LoadZeroExtRM ||
+                 inst->op == ScbeMicroOp::LoadSignedExtRR ||
+                 inst->op == ScbeMicroOp::LoadSignedExtRM ||
                  inst->op == ScbeMicroOp::OpBinaryRR ||
                  inst->op == ScbeMicroOp::OpBinaryRI ||
                  inst->op == ScbeMicroOp::SetCC ||

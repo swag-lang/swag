@@ -64,12 +64,12 @@ namespace
                         pp.emitLoadRegReg(callConv->paramsRegistersInteger[idxParam], params[idxParam].baseReg, OpBits::B64);
                     break;
 
-                case CpuPushParamType::SymbolRelocationValue:
+                case CpuPushParamType::SymbolRelocValue:
                     SWAG_ASSERT(value < UINT32_MAX);
                     pp.emitSymbolRelocationValue(callConv->paramsRegistersInteger[idxParam], static_cast<uint32_t>(value), 0);
                     break;
 
-                case CpuPushParamType::SymbolRelocationAddress:
+                case CpuPushParamType::SymbolRelocAddr:
                     SWAG_ASSERT(value < UINT32_MAX);
                     pp.emitSymbolRelocationAddress(callConv->paramsRegistersInteger[idxParam], static_cast<uint32_t>(value), 0);
                     break;

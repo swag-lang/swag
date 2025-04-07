@@ -19,9 +19,9 @@ void ScbeOptimizer::optimizePassSwap(const ScbeMicro& out)
         }
 
         if (inst->op == ScbeMicroOp::LoadRR ||
-            inst->op == ScbeMicroOp::LoadAddressM ||
-            inst->op == ScbeMicroOp::LoadZeroExtendRR ||
-            inst->op == ScbeMicroOp::LoadSignedExtendRR)
+            inst->op == ScbeMicroOp::LoadAddr ||
+            inst->op == ScbeMicroOp::LoadZeroExtRR ||
+            inst->op == ScbeMicroOp::LoadSignedExtRR)
         {
             if (out.cc->paramsRegistersInteger.contains(inst->regA) || out.cc->paramsRegistersFloat.contains(inst->regA))
                 toMove = nullptr;
