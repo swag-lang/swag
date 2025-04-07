@@ -31,15 +31,21 @@ ScbeMicroInstruction* ScbeMicro::addInstruction(ScbeMicroOp op, CpuEmitFlags emi
     inst->op        = op;
     inst->emitFlags = emitFlags;
 
+#ifdef SWAG_STATS
     if (op != ScbeMicroOp::Enter &&
         op != ScbeMicroOp::Leave &&
         op != ScbeMicroOp::Label &&
         op != ScbeMicroOp::PatchJump &&
         op != ScbeMicroOp::Debug)
     {
-#ifdef SWAG_STATS
         g_Stats.numScbeInstructions += 1;
+    }
 #endif
+
+    if (op != ScbeMicroOp::Label &&
+        op != ScbeMicroOp::PatchJump &&
+        op != ScbeMicroOp::Debug)
+    {
         if (nextIsJumpDest)
         {
             inst->flags.add(MIF_JUMP_DEST);
@@ -69,9 +75,10 @@ void ScbeMicro::emitDebug(ByteCodeInstruction* ipAddr)
 
 void ScbeMicro::emitLabel(uint32_t instructionIndex)
 {
-    const auto inst = addInstruction(ScbeMicroOp::Label, EMIT_Zero);
-    inst->valueA    = instructionIndex;
-    nextIsJumpDest  = true;
+    const auto inst          = addInstruction(ScbeMicroOp::Label, EMIT_Zero);
+    inst->valueA             = instructionIndex;
+    nextIsJumpDest           = true;
+    labels[instructionIndex] = concat.totalCount() / sizeof(ScbeMicroInstruction);
 }
 
 void ScbeMicro::emitSymbolRelocationPtr(CpuReg reg, const Utf8& name)
@@ -687,9 +694,6 @@ void ScbeMicro::encode(ScbeCpu& encoder) const
     }
 
     encoder.emitLabels();
-
-    if (cpuFct->bc->node && cpuFct->bc->node->hasAttribute(ATTRIBUTE_PRINT_ASM))
-        print();
 }
 
 ScbeMicroInstruction* ScbeMicro::getNextInstruction(ScbeMicroInstruction* inst)
@@ -751,10 +755,32 @@ void ScbeMicro::postProcess() const
     }
 }
 
+void ScbeMicro::solveLabels()
+{
+    auto inst = getFirstInstruction();
+    while (inst->op != ScbeMicroOp::End)
+    {
+        if (inst->op == ScbeMicroOp::JumpCI)
+        {
+            const auto it = labels.find(static_cast<uint32_t>(inst->valueA));
+            if (it != labels.end())
+            {
+                inst->valueB = it->second;
+            }
+        }
+
+        inst = getNextInstruction(inst);
+    }
+}
+
 void ScbeMicro::process(ScbeCpu& encoder)
 {
     addInstruction(ScbeMicroOp::End, EMIT_Zero);
     concat.makeLinear();
+
+    solveLabels();
+    if (cpuFct->bc->node && cpuFct->bc->node->hasAttribute(ATTRIBUTE_PRINT_ASM))
+        print();
 
     ScbeOptimizer opt;
     opt.encoder = &encoder;

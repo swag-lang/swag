@@ -71,9 +71,11 @@ struct ScbeMicro final : ScbeCpu
     ScbeMicroInstruction*        getFirstInstruction() const;
     ScbeMicroInstruction*        addInstruction(ScbeMicroOp op, CpuEmitFlags emitFlags);
     void                         postProcess() const;
+    void                         solveLabels();
     void                         process(ScbeCpu& encoder);
     void                         encode(ScbeCpu& encoder) const;
     void                         print() const;
 
-    bool nextIsJumpDest = false;
+    Map<uint32_t, uint32_t> labels;
+    bool                    nextIsJumpDest = false;
 };

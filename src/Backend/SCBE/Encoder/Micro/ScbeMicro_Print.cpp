@@ -389,7 +389,7 @@ void ScbeMicro::print() const
                 break;
             case ScbeMicroOp::JumpCI:
                 line.name = jumpTypeName(inst->jumpType);
-                line.args = form("%08d", inst->valueA);
+                line.args = form("%08d", inst->valueB);
                 break;
             case ScbeMicroOp::LoadCallerParam:
                 line.name = "mov";
