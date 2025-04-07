@@ -768,10 +768,8 @@ void ScbeMicro::solveLabels()
         if (inst->op == ScbeMicroOp::JumpCI)
         {
             const auto it = labels.find(static_cast<uint32_t>(inst->valueA));
-            if (it != labels.end())
-            {
-                inst->valueB = it->second;
-            }
+            SWAG_ASSERT(it != labels.end());
+            inst->valueB = it->second;
         }
         else if (inst->op == ScbeMicroOp::PatchJump)
         {
@@ -780,7 +778,7 @@ void ScbeMicro::solveLabels()
             jump->valueB    = static_cast<uint64_t>(next - first);
         }
 
-        inst = getNextInstruction(inst);
+        inst++;
     }
 }
 
