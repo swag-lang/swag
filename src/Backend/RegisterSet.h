@@ -85,7 +85,7 @@ struct RegisterSet
     {
         SWAG_ASSERT(!empty());
         return static_cast<CpuReg>(OS::bitCountTz(regs));
-    }    
+    }
 
     uint64_t regs = 0;
 };

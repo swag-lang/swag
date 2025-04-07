@@ -75,7 +75,7 @@ void CallConv::compute()
     for (const auto r : volatileRegistersFloat)
         volatileRegistersFloatSet.add(r);
     for (const auto r : nonVolatileRegistersInteger)
-        nonVolatileRegistersIntegerSet.add(r);    
+        nonVolatileRegistersIntegerSet.add(r);
 }
 
 const CallConv* CallConv::get(CallConvKind kind)

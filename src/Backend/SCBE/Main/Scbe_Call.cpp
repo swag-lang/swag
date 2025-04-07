@@ -194,7 +194,7 @@ void Scbe::emitLambdaCall(ScbeCpu& pp)
 
     // Test if it's a bytecode lambda
     pp.emitLoadRegMem(regCall, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
-    
+
     CpuJump jumpBC;
     static_assert(SWAG_LAMBDA_BC_MARKER_BIT == 63);
     pp.emitCmpRegImm(regCall, 0, OpBits::B64);

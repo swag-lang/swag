@@ -49,7 +49,7 @@ uint32_t BackendEncoder::getNumBits(OpBits opBits)
         case OpBits::B64:
             return 64;
         case OpBits::B128:
-            return 128;        
+            return 128;
     }
 
     SWAG_ASSERT(false);

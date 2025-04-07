@@ -514,7 +514,7 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteC
     {
         printTransparent(line.args);
     }
-    
+
     // Flags
     if (options.flagsColor != LogColor::Transparent)
     {
@@ -530,7 +530,7 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteC
     {
         printTransparent(line.flags);
     }
-    
+
     // Pretty
     if (options.prettyColor != LogColor::Transparent)
     {
@@ -561,7 +561,7 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteC
     else
     {
         printTransparent(line.pretty);
-    }    
+    }
 
 #ifdef SWAG_DEV_MODE
     if (!forDbg)

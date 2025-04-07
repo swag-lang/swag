@@ -1667,7 +1667,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
 
                 auto r1 = reserveRegisterRC(context);
                 toFree.push_back(r1);
-                
+
                 EMIT_INST2(context, ByteCodeOp::SetAtStackPointer64, stack, child->resultRegisterRc[0]);
                 if (child->resultRegisterRc.size() == 2)
                     EMIT_INST2(context, ByteCodeOp::SetAtStackPointer64, stack + sizeof(uint64_t), child->resultRegisterRc[1]);
