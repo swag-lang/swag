@@ -273,14 +273,16 @@ void ScbeOptimizer::computeContextStack(const ScbeMicro& out)
 
 bool ScbeOptimizer::explore(ScbeExplorerContext& cxt, const ScbeMicro& out, const std::function<bool(const ScbeMicro& out, const ScbeExplorerContext&)>& callback)
 {
-    Set<ScbeMicroInstruction*> done;
+    cxt.done.clear();
+    cxt.pending.clear();
+    cxt.hasReachedEndOnce = false;
 
-    done.insert(cxt.startInst);
+    cxt.done.insert(cxt.startInst);
     cxt.curInst = ScbeMicro::getNextInstruction(cxt.startInst);
 
     while (true)
     {
-        if (cxt.curInst->isRet() || done.contains(cxt.curInst))
+        if (cxt.curInst->isRet() || cxt.done.contains(cxt.curInst))
         {
             if (cxt.curInst->isRet())
                 cxt.hasReachedEndOnce = true;
@@ -291,7 +293,7 @@ bool ScbeOptimizer::explore(ScbeExplorerContext& cxt, const ScbeMicro& out, cons
             continue;
         }
 
-        done.insert(cxt.curInst);
+        cxt.done.insert(cxt.curInst);
 
         if (cxt.curInst->isJump())
         {
@@ -314,7 +316,8 @@ bool ScbeOptimizer::explore(ScbeExplorerContext& cxt, const ScbeMicro& out, cons
         if (!callback(out, cxt))
             break;
 
-        cxt.curInst = ScbeMicro::getNextInstruction(cxt.curInst);
+        if (cxt.curInst->op != ScbeMicroOp::End)
+            cxt.curInst = ScbeMicro::getNextInstruction(cxt.curInst);
     }
 
     return true;

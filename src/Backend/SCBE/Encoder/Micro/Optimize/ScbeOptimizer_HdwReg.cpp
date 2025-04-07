@@ -150,7 +150,8 @@ void ScbeOptimizer::optimizePassAliasHdwReg(const ScbeMicro& out)
 
 void ScbeOptimizer::optimizePassDeadHdwReg2(const ScbeMicro& out)
 {
-    auto inst = out.getFirstInstruction();
+    ScbeExplorerContext cxt;
+    auto                inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {
         if (inst->op == ScbeMicroOp::LoadAddr ||
@@ -166,10 +167,9 @@ void ScbeOptimizer::optimizePassDeadHdwReg2(const ScbeMicro& out)
             inst->op == ScbeMicroOp::ClearR ||
             inst->op == ScbeMicroOp::SetCC)
         {
-            ScbeExplorerContext cxt;
-            bool                hasRead = false;
+            bool hasRead  = false;
+            cxt.startInst = inst;
 
-            cxt.startInst    = inst;
             const auto valid = explore(cxt, out, [&hasRead](const ScbeMicro& outIn, const ScbeExplorerContext& cxtIn) {
                 const auto readRegs = outIn.cpu->getReadRegisters(cxtIn.curInst);
                 if (readRegs.contains(cxtIn.startInst->regA))

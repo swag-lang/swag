@@ -14,6 +14,7 @@ struct ScbeExplorerContext
     ScbeMicroInstruction*               startInst         = nullptr;
     ScbeMicroInstruction*               curInst           = nullptr;
     bool                                hasReachedEndOnce = false;
+    Set<ScbeMicroInstruction*>          done;
     VectorNative<ScbeMicroInstruction*> pending;
 };
 
