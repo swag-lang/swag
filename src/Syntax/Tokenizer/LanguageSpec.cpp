@@ -272,21 +272,21 @@ void LanguageSpec::setupNames()
 
 void LanguageSpec::setupBcKeywords()
 {
-    bckeywords.insert("jump");
-    bckeywords.insert("jumpdyn8");
-    bckeywords.insert("jumpdyn16");
-    bckeywords.insert("jumpdyn32");
-    bckeywords.insert("jumpdyn64");
-    bckeywords.insert("pushparam");
-    bckeywords.insert("push");
-    bckeywords.insert("pop");
-    bckeywords.insert("stacksize");
-    bckeywords.insert("popstack");
-    bckeywords.insert("call");
+    bcKeywords.insert("jump");
+    bcKeywords.insert("jumpdyn8");
+    bcKeywords.insert("jumpdyn16");
+    bcKeywords.insert("jumpdyn32");
+    bcKeywords.insert("jumpdyn64");
+    bcKeywords.insert("pushparam");
+    bcKeywords.insert("push");
+    bcKeywords.insert("pop");
+    bcKeywords.insert("stacksize");
+    bcKeywords.insert("popstack");
+    bcKeywords.insert("call");
 
-    bcconstants.insert("my_result");
-    bcconstants.insert("result_ptr");
-    bcconstants.insert("last_call_result");
+    bcConstants.insert("my_result");
+    bcConstants.insert("result_ptr");
+    bcConstants.insert("last_call_result");
 }
 
 void LanguageSpec::setupKeywords()

@@ -19,8 +19,8 @@ struct LanguageSpec
     void setupAttributesFlags();
 
     LangHashTable<TokenId, 4096>       keywords;
-    SetUtf8                            bckeywords;
-    SetUtf8                            bcconstants;
+    SetUtf8                            bcKeywords;
+    SetUtf8                            bcConstants;
     LangHashTable<LiteralType, 64>     nativeTypes;
     LangHashTable<AttributeFlags, 256> attributesFlags;
 

@@ -505,8 +505,8 @@ Utf8 doSyntaxColor(const Utf8& line, SyntaxColorContext& context, bool force)
             // Bytecode keyword
             if (context.forByteCode)
             {
-                auto it = g_LangSpec->bckeywords.find(identifier);
-                if (it != g_LangSpec->bckeywords.end())
+                auto it = g_LangSpec->bcKeywords.find(identifier);
+                if (it != g_LangSpec->bcKeywords.end())
                 {
                     result += syntaxColorToVTS(SyntaxColor::SyntaxKeyword, mode);
                     result += identifier;
@@ -518,8 +518,8 @@ Utf8 doSyntaxColor(const Utf8& line, SyntaxColorContext& context, bool force)
             // Bytecode constant
             if (context.forByteCode)
             {
-                auto it = g_LangSpec->bcconstants.find(identifier);
-                if (it != g_LangSpec->bcconstants.end())
+                auto it = g_LangSpec->bcConstants.find(identifier);
+                if (it != g_LangSpec->bcConstants.end())
                 {
                     result += syntaxColorToVTS(SyntaxColor::SyntaxConstant, mode);
                     result += identifier;
