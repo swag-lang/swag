@@ -71,7 +71,7 @@ struct Scbe final : Backend
     static void emitIMMD(ScbeCpu& pp, CpuReg reg, OpBits opBits);
     static void emitIMMB(ScbeCpu& pp, CpuReg reg, OpBits numBitsSrc, OpBits numBitsDst, bool isSigned);
     static void emitIMMC(ScbeCpu& pp, CpuReg reg, OpBits numBitsSrc, OpBits numBitsDst, bool isSigned);
-    static void emitJumpDyn(ScbeCpu& pp);
+    static void emitJumpTable(ScbeCpu& pp);
     static void emitCopyVaargs(ScbeCpu& pp);
     static void emitClearMem(ScbeCpu& pp, CpuReg memReg, uint64_t memOffset, uint32_t count);
     static void emitCopyMem(ScbeCpu& pp, CpuReg memRegDst, CpuReg memRegSrc, uint32_t count);

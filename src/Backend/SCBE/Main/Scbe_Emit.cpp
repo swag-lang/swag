@@ -469,7 +469,7 @@ void Scbe::emitJumpCmp3(ScbeCpu& pp, CpuCondJump op1, CpuCondJump op2, OpBits op
     pp.emitJumpCondImm(op2, pp.ipIndex + ip->b.s32 + 1);
 }
 
-void Scbe::emitJumpDyn(ScbeCpu& pp)
+void Scbe::emitJumpTable(ScbeCpu& pp)
 {
     const auto cc     = pp.cc;
     const auto ip     = pp.ip;

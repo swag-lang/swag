@@ -1024,7 +1024,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::JumpDyn16:
             case ByteCodeOp::JumpDyn32:
             case ByteCodeOp::JumpDyn64:
-                emitJumpDyn(pp);
+                emitJumpTable(pp);
                 break;
 
                 /////////////////////////////////////
