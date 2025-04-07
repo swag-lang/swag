@@ -16,6 +16,7 @@ using ByteCodePrintPrintFlags = Flags<uint32_t>;
 
 constexpr ByteCodePrintPrintFlags BCPF_DEFAULT  = 0x00000000;
 constexpr ByteCodePrintPrintFlags BCPF_ASM_SCBE = 0x00000001;
+constexpr ByteCodePrintPrintFlags BCPF_BC_SCBE  = 0x00000002;
 
 struct ByteCodePrintOptions
 {

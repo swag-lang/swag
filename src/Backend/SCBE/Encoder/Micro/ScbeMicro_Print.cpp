@@ -37,7 +37,7 @@ namespace
             case CpuCondJump::JNP:
                 return "jnp";
             case CpuCondJump::JS:
-                return "js";            
+                return "js";
             case CpuCondJump::JUMP:
                 return "jump";
             default:
@@ -322,9 +322,11 @@ void ScbeMicro::print() const
         {
             case ScbeMicroOp::Debug:
             {
+                ByteCodePrintOptions po;
+                po.flags.add(BCPF_BC_SCBE);
                 const auto curIp = reinterpret_cast<ByteCodeInstruction*>(inst->valueA);
-                ByteCode::printSourceCode({}, cpuFct->bc, curIp, &lastLine, &lastFile, &lastInline);
-                cpuFct->bc->printInstruction({}, curIp);
+                ByteCode::printSourceCode(po, cpuFct->bc, curIp, &lastLine, &lastFile, &lastInline);
+                cpuFct->bc->printInstruction(po, curIp);
                 continue;
             }
 
@@ -562,7 +564,7 @@ void ScbeMicro::print() const
         while (line.name.length() != 12)
             line.name += ' ';
 
-        line.pretty = form("(%08d)    ", i);
+        line.pretty = form("%08d    ", i);
         line.pretty += line.name + line.args;
 
         const auto& def = g_MicroOpInfos[static_cast<int>(inst->op)];
