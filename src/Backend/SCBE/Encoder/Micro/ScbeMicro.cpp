@@ -757,7 +757,8 @@ void ScbeMicro::postProcess() const
 
 void ScbeMicro::solveLabels()
 {
-    auto inst = getFirstInstruction();
+    const auto first = getFirstInstruction();
+    auto       inst  = first;
     while (inst->op != ScbeMicroOp::End)
     {
         if (inst->op == ScbeMicroOp::JumpCI)
@@ -767,6 +768,12 @@ void ScbeMicro::solveLabels()
             {
                 inst->valueB = it->second;
             }
+        }
+        else if (inst->op == ScbeMicroOp::PatchJump)
+        {
+            const auto jump = reinterpret_cast<ScbeMicroInstruction*>(concat.firstBucket->data + inst->valueA);
+            const auto next = getNextInstruction(inst);
+            jump->valueB    = static_cast<uint64_t>(next - first);
         }
 
         inst = getNextInstruction(inst);

@@ -380,13 +380,11 @@ void ScbeMicro::print() const
                 line.name = "jumptable";
                 line.args = form("[%s+%s]", regName(inst->regA, OpBits::B64), regName(inst->regB, OpBits::B64));
                 break;
-            case ScbeMicroOp::JumpCC:
-                line.name = jumpTypeName(inst->jumpType);
-                break;
             case ScbeMicroOp::JumpM:
                 line.name = "jump";
                 line.args = form("[%s]", regName(inst->regA, OpBits::B64));
                 break;
+            case ScbeMicroOp::JumpCC:
             case ScbeMicroOp::JumpCI:
                 line.name = jumpTypeName(inst->jumpType);
                 line.args = form("%08d", inst->valueB);
