@@ -68,7 +68,6 @@ enum class CpuOp : uint8_t
     NEG      = 0x9F,
     BSWAP    = 0xB0,
     POPCNT   = 0xB8,
-    BT       = 0xBA,
     BSF      = 0xBC,
     BSR      = 0xBD,
     MUL      = 0xC0,

@@ -145,8 +145,6 @@ namespace
                 return "cmpxchg";
             case CpuOp::XCHG:
                 return "xchg";
-            case CpuOp::BT:
-                return "bt";
 
             case CpuOp::CVTI2F:
                 return "cvtsi2f";

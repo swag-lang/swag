@@ -1933,21 +1933,6 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
 
     ///////////////////////////////////////////
 
-    else if (op == CpuOp::BT)
-    {
-        if (emitFlags.has(EMIT_CanEncode))
-            return CpuEncodeResult::Zero;
-
-        SWAG_ASSERT(value <= 0x7F);
-        emitREX(concat, opBits, REX_REG_NONE, reg);
-        emitCPUOp(concat, 0x0F);
-        emitCPUOp(concat, op);
-        emitModRM(concat, MODRM_REG_4, reg);
-        emitValue(concat, value, OpBits::B8);
-    }
-
-    ///////////////////////////////////////////
-
     else
     {
         Report::internalError(module, "encodeOpBinaryRegImm, cannot encode");
