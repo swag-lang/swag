@@ -560,7 +560,7 @@ void ScbeMicro::print() const
                 break;
             case ScbeMicroOp::Leave:
                 line.name = "leave";
-                line.args = form("(%08d)", idx);
+                line.args = form("(%d instructions)", idx);
                 break;
         }
 
