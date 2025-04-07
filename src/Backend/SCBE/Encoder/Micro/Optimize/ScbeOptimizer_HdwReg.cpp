@@ -3,7 +3,64 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
+#include "Wmf/SourceFile.h"
 #pragma optimize("", off)
+
+void ScbeOptimizer::optimizePassAliasRegMem(const ScbeMicro& out)
+{
+    mapRegInst.clear();
+
+    auto inst = out.getFirstInstruction();
+    while (inst->op != ScbeMicroOp::End)
+    {
+        if (inst->op == ScbeMicroOp::LoadRM)
+        {
+            mapRegInst.clear();
+            auto next = ScbeMicro::getNextInstruction(inst);
+            while (true)
+            {
+                if (next->flags.has(MIF_JUMP_DEST) ||
+                    next->isJump() ||
+                    next->isRet())
+                {
+                    break;
+                }
+
+                if (next->op == ScbeMicroOp::LoadRR &&
+                    next->regB == inst->regA &&
+                    next->regA != inst->regB &&
+                    inst->opBitsA == next->opBitsA)
+                {
+                    if (mapRegInst.contains(next->regA))
+                        break;
+                    const auto nextNext   = ScbeMicro::getNextInstruction(next);
+                    const auto writeRegs1 = out.cpu->getWriteRegisters(nextNext);
+                    const auto readRegs1  = out.cpu->getReadRegisters(nextNext);
+                    if (writeRegs1.contains(next->regB) && !readRegs1.contains(next->regB))
+                    {
+                        setRegA(inst, next->regA);
+                        ignore(out, next);
+                    }
+
+                    break;
+                }
+
+                const auto writeRegs = out.cpu->getWriteRegisters(next);
+                for (const auto r : writeRegs)
+                    mapRegInst[r] = next;
+                const auto readRegs = out.cpu->getReadRegisters(next);
+                for (const auto r : readRegs)
+                    mapRegInst[r] = next;
+                if (mapRegInst.contains(inst->regA))
+                    break;
+
+                next = ScbeMicro::getNextInstruction(next);
+            }
+        }
+
+        inst = ScbeMicro::getNextInstruction(inst);
+    }
+}
 
 void ScbeOptimizer::optimizePassAliasHdwReg(const ScbeMicro& out)
 {

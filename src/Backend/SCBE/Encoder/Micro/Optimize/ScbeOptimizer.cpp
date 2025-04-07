@@ -284,6 +284,7 @@ void ScbeOptimizer::optimizeStep1(const ScbeMicro& out)
         optimizePassDeadHdwReg(out);
         optimizePassDeadHdwRegBeforeLeave(out);
         optimizePassAliasHdwReg(out);
+        optimizePassAliasRegMem(out);
         optimizePassSwap(out);
 
         if (!passHasDoneSomething)
