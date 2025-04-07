@@ -451,6 +451,15 @@ void ByteCode::fillPrintInstruction(const ByteCodePrintOptions& options, const B
 #endif
 }
 
+namespace
+{
+    void printTransparent(const Utf8& str)
+    {
+        for (uint32_t i = 0; i < str.length(); ++i)
+            g_Log.print(" ");
+    }
+}
+
 void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteCodeInstruction* ip, const PrintInstructionLine& line)
 {
     const bool forDbg = ip && options.curIp != nullptr;
@@ -469,6 +478,10 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteC
             g_Log.setColor(LogColor::Index);
         g_Log.print(line.rank);
     }
+    else
+    {
+        printTransparent(line.rank);
+    }
 
     // Instruction name
     if (options.nameColor != LogColor::Transparent)
@@ -480,6 +493,10 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteC
         else
             g_Log.setColor(LogColor::White);
         g_Log.print(line.name);
+    }
+    else
+    {
+        printTransparent(line.name);
     }
 
     // Parameters
@@ -493,7 +510,11 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteC
             g_Log.setColor(LogColor::White);
         g_Log.print(line.args);
     }
-
+    else
+    {
+        printTransparent(line.args);
+    }
+    
     // Flags
     if (options.flagsColor != LogColor::Transparent)
     {
@@ -505,7 +526,11 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteC
             g_Log.setColor(LogColor::InstructionFlags);
         g_Log.print(line.flags);
     }
-
+    else
+    {
+        printTransparent(line.flags);
+    }
+    
     // Pretty
     if (options.prettyColor != LogColor::Transparent)
     {
@@ -533,6 +558,10 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteC
             g_Log.print(doSyntaxColor(line.pretty, synCxt), &logCxt);
         }
     }
+    else
+    {
+        printTransparent(line.pretty);
+    }    
 
 #ifdef SWAG_DEV_MODE
     if (!forDbg)
