@@ -146,8 +146,8 @@ enum class CpuEncodeResult : uint32_t
 
 struct CpuJump
 {
-    void*    addr   = nullptr;
-    uint64_t offset = 0;
+    void*    patchOffsetAddr   = nullptr;
+    uint64_t offsetStart = 0;
     OpBits   opBits = OpBits::Zero;
 };
 

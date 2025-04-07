@@ -2334,10 +2334,10 @@ CpuEncodeResult ScbeX64::encodeJumpTable(CpuReg tableReg, CpuReg offsetReg, int3
     CpuLabelToSolve label;
     for (uint32_t idx = 0; idx < numEntries; idx++)
     {
-        label.ipDest      = tableCompiler[idx] + currentIp + 1;
-        label.jump.opBits = OpBits::B32;
-        label.jump.offset = currentOffset;
-        label.jump.addr   = addrConstant + idx * sizeof(uint32_t);
+        label.ipDest               = tableCompiler[idx] + currentIp + 1;
+        label.jump.opBits          = OpBits::B32;
+        label.jump.offsetStart     = currentOffset;
+        label.jump.patchOffsetAddr = addrConstant + idx * sizeof(uint32_t);
         cpuFct->labelsToSolve.push_back(label);
     }
 
@@ -2404,9 +2404,9 @@ CpuEncodeResult ScbeX64::encodeJump(CpuJump& jump, CpuCondJump jumpType, OpBits 
 
         concat.addU8(0);
 
-        jump.addr   = concat.getSeekPtr() - 1;
-        jump.offset = concat.totalCount();
-        jump.opBits = opBits;
+        jump.patchOffsetAddr = concat.getSeekPtr() - 1;
+        jump.offsetStart     = concat.totalCount();
+        jump.opBits          = opBits;
         return CpuEncodeResult::Zero;
     }
 
@@ -2478,23 +2478,23 @@ CpuEncodeResult ScbeX64::encodeJump(CpuJump& jump, CpuCondJump jumpType, OpBits 
 
     concat.addU32(0);
 
-    jump.addr   = concat.getSeekPtr() - sizeof(uint32_t);
-    jump.offset = concat.totalCount();
-    jump.opBits = opBits;
+    jump.patchOffsetAddr = concat.getSeekPtr() - sizeof(uint32_t);
+    jump.offsetStart     = concat.totalCount();
+    jump.opBits          = opBits;
     return CpuEncodeResult::Zero;
 }
 
 CpuEncodeResult ScbeX64::encodePatchJump(const CpuJump& jump, uint64_t offsetDestination, CpuEmitFlags emitFlags)
 {
-    const int32_t offset = static_cast<int32_t>(offsetDestination - jump.offset);
+    const int32_t offset = static_cast<int32_t>(offsetDestination - jump.offsetStart);
     if (jump.opBits == OpBits::B8)
     {
         SWAG_ASSERT(offset >= -127 && offset <= 128);
-        *static_cast<uint8_t*>(jump.addr) = static_cast<int8_t>(offset);
+        *static_cast<uint8_t*>(jump.patchOffsetAddr) = static_cast<int8_t>(offset);
     }
     else
     {
-        *static_cast<uint32_t*>(jump.addr) = static_cast<int32_t>(offset);
+        *static_cast<uint32_t*>(jump.patchOffsetAddr) = static_cast<int32_t>(offset);
     }
 
     return CpuEncodeResult::Zero;

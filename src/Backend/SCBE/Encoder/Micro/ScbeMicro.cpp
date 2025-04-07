@@ -444,7 +444,7 @@ CpuEncodeResult ScbeMicro::encodeJumpReg(CpuReg reg, CpuEmitFlags emitFlags)
 
 CpuEncodeResult ScbeMicro::encodeJump(CpuJump& jump, CpuCondJump jumpType, OpBits opBits, CpuEmitFlags emitFlags)
 {
-    jump.offset     = concat.totalCount();
+    jump.offsetStart     = concat.totalCount();
     const auto inst = addInstruction(ScbeMicroOp::JumpCC, emitFlags);
     inst->jumpType  = jumpType;
     inst->opBitsA   = opBits;
@@ -454,7 +454,7 @@ CpuEncodeResult ScbeMicro::encodeJump(CpuJump& jump, CpuCondJump jumpType, OpBit
 CpuEncodeResult ScbeMicro::encodePatchJump(const CpuJump& jump, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::PatchJump, emitFlags);
-    inst->valueA    = jump.offset;
+    inst->valueA    = jump.offsetStart;
     nextIsJumpDest  = true;
     return CpuEncodeResult::Zero;
 }
@@ -589,8 +589,8 @@ void ScbeMicro::encode(ScbeCpu& encoder) const
             {
                 CpuJump jump;
                 encoder.emitJump(jump, inst->jumpType, inst->opBitsA, inst->emitFlags);
-                inst->valueA  = reinterpret_cast<uint64_t>(jump.addr);
-                inst->valueB  = jump.offset;
+                inst->valueA  = reinterpret_cast<uint64_t>(jump.patchOffsetAddr);
+                inst->valueB  = jump.offsetStart;
                 inst->opBitsA = jump.opBits;
                 break;
             }
@@ -598,8 +598,8 @@ void ScbeMicro::encode(ScbeCpu& encoder) const
             {
                 const auto jump = reinterpret_cast<const ScbeMicroInstruction*>(concat.firstBucket->data + inst->valueA);
                 CpuJump    cpuJump;
-                cpuJump.addr   = reinterpret_cast<void*>(jump->valueA);
-                cpuJump.offset = jump->valueB;
+                cpuJump.patchOffsetAddr   = reinterpret_cast<void*>(jump->valueA);
+                cpuJump.offsetStart = jump->valueB;
                 cpuJump.opBits = jump->opBitsA;
                 encoder.emitPatchJump(cpuJump, inst->emitFlags);
                 break;
