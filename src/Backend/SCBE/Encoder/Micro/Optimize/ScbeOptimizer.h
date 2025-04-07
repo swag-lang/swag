@@ -9,8 +9,18 @@ struct ScbeMicroInstruction;
 enum class ScbeMicroOp : uint8_t;
 enum class OpBits : uint8_t;
 
+struct ScbeExplorerContext
+{
+    ScbeMicroInstruction*               startInst         = nullptr;
+    ScbeMicroInstruction*               curInst           = nullptr;
+    bool                                hasReachedEndOnce = false;
+    VectorNative<ScbeMicroInstruction*> pending;
+};
+
 struct ScbeOptimizer
 {
+    static bool explore(ScbeExplorerContext& cxt, const ScbeMicro& out, const std::function<bool(const ScbeMicro&, const ScbeExplorerContext&)>& callback);
+
     void memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOffset, CpuReg reg);
     void swapInstruction(const ScbeMicro& out, ScbeMicroInstruction* before, ScbeMicroInstruction* after);
     void ignore(const ScbeMicro& out, ScbeMicroInstruction* inst);
@@ -34,6 +44,7 @@ struct ScbeOptimizer
     void optimizePassDeadRegBeforeLeave(const ScbeMicro& out);
     void optimizePassDeadHdwRegBeforeLeave(const ScbeMicro& out);
     void optimizePassDeadHdwReg(const ScbeMicro& out);
+    void optimizePassDeadHdwReg2(const ScbeMicro& out);
     void optimizePassStore(const ScbeMicro& out);
     void optimizePassParamsKeepReg(const ScbeMicro& out);
     void optimizePassStackToVolatileReg(const ScbeMicro& out);

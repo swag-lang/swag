@@ -148,6 +148,58 @@ void ScbeOptimizer::optimizePassAliasHdwReg(const ScbeMicro& out)
     }
 }
 
+void ScbeOptimizer::optimizePassDeadHdwReg2(const ScbeMicro& out)
+{
+    auto inst = out.getFirstInstruction();
+    while (inst->op != ScbeMicroOp::End)
+    {
+        if (inst->op == ScbeMicroOp::LoadAddr ||
+            inst->op == ScbeMicroOp::LoadRR ||
+            inst->op == ScbeMicroOp::LoadRI ||
+            inst->op == ScbeMicroOp::LoadZeroExtRR ||
+            inst->op == ScbeMicroOp::LoadZeroExtRM ||
+            inst->op == ScbeMicroOp::LoadSignedExtRR ||
+            inst->op == ScbeMicroOp::LoadSignedExtRM ||
+            inst->op == ScbeMicroOp::OpBinaryRR ||
+            inst->op == ScbeMicroOp::OpBinaryRI ||
+            inst->op == ScbeMicroOp::OpUnaryR ||
+            inst->op == ScbeMicroOp::ClearR ||
+            inst->op == ScbeMicroOp::SetCC)
+        {
+            ScbeExplorerContext cxt;
+            bool                hasRead = false;
+
+            cxt.startInst    = inst;
+            const auto valid = explore(cxt, out, [&hasRead](const ScbeMicro& outIn, const ScbeExplorerContext& cxtIn) {
+                const auto readRegs = outIn.cpu->getReadRegisters(cxtIn.curInst);
+                if (readRegs.contains(cxtIn.startInst->regA))
+                {
+                    hasRead = true;
+                    return false;
+                }
+
+                const auto writeRegs = outIn.cpu->getWriteRegisters(cxtIn.curInst);
+                if (writeRegs.contains(cxtIn.startInst->regA))
+                    return false;
+
+                return true;
+            });
+
+            if (valid && !hasRead)
+            {
+                if (!cxt.hasReachedEndOnce ||
+                    (!out.cpuFct->typeFunc->returnByValue() && !out.cpuFct->typeFunc->returnStructByValue()) ||
+                    (inst->regA != out.cc->returnByRegisterInteger && inst->regA != out.cc->returnByRegisterFloat))
+                {
+                    // out.print();
+                }
+            }
+        }
+
+        inst = ScbeMicro::getNextInstruction(inst);
+    }
+}
+
 void ScbeOptimizer::optimizePassDeadHdwReg(const ScbeMicro& out)
 {
     mapRegInst.clear();
@@ -234,16 +286,12 @@ void ScbeOptimizer::optimizePassDeadHdwRegBeforeLeave(const ScbeMicro& out)
                  inst->op == ScbeMicroOp::LoadSignedExtRM ||
                  inst->op == ScbeMicroOp::OpBinaryRR ||
                  inst->op == ScbeMicroOp::OpBinaryRI ||
-                 inst->op == ScbeMicroOp::SetCC ||
-                 inst->op == ScbeMicroOp::OpUnaryR)
+                 inst->op == ScbeMicroOp::OpUnaryR ||
+                 inst->op == ScbeMicroOp::ClearR ||
+                 inst->op == ScbeMicroOp::SetCC)
         {
-            if (!out.cpuFct->typeFunc->returnByValue() &&
-                !out.cpuFct->typeFunc->returnStructByValue())
-            {
-                mapRegInst[inst->regA] = inst;
-            }
-            else if (inst->regA != out.cc->returnByRegisterInteger &&
-                     inst->regA != out.cc->returnByRegisterFloat)
+            if ((!out.cpuFct->typeFunc->returnByValue() && !out.cpuFct->typeFunc->returnStructByValue()) ||
+                (inst->regA != out.cc->returnByRegisterInteger && inst->regA != out.cc->returnByRegisterFloat))
             {
                 mapRegInst[inst->regA] = inst;
             }

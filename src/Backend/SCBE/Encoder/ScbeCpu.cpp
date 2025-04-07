@@ -147,15 +147,13 @@ RegisterSet ScbeCpu::getReadRegisters(ScbeMicroInstruction* inst)
         result.append(cc->paramsRegistersIntegerSet);
         result.append(cc->paramsRegistersFloatSet);
     }
-    else
-    {
-        if (inst->hasReadRegA())
-            result.add(inst->regA);
-        if (inst->hasReadRegB())
-            result.add(inst->regB);
-        if (inst->hasReadRegC())
-            result.add(inst->regC);
-    }
+
+    if (inst->hasReadRegA())
+        result.add(inst->regA);
+    if (inst->hasReadRegB())
+        result.add(inst->regB);
+    if (inst->hasReadRegC())
+        result.add(inst->regC);
 
     return result;
 }

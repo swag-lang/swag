@@ -271,6 +271,55 @@ void ScbeOptimizer::computeContextStack(const ScbeMicro& out)
     }
 }
 
+bool ScbeOptimizer::explore(ScbeExplorerContext& cxt, const ScbeMicro& out, const std::function<bool(const ScbeMicro& out, const ScbeExplorerContext&)>& callback)
+{
+    Set<ScbeMicroInstruction*> done;
+
+    done.insert(cxt.startInst);
+    cxt.curInst = ScbeMicro::getNextInstruction(cxt.startInst);
+
+    while (true)
+    {
+        if (cxt.curInst->isRet() || done.contains(cxt.curInst))
+        {
+            if (cxt.curInst->isRet())
+                cxt.hasReachedEndOnce = true;
+            if (cxt.pending.empty())
+                break;
+            cxt.curInst = cxt.pending.back();
+            cxt.pending.pop_back();
+            continue;
+        }
+
+        done.insert(cxt.curInst);
+
+        if (cxt.curInst->isJump())
+        {
+            if (cxt.curInst->op == ScbeMicroOp::JumpCI && cxt.curInst->jumpType == CpuCondJump::JUMP)
+            {
+                cxt.curInst = out.getFirstInstruction() + cxt.curInst->valueB;
+                continue;
+            }
+
+            if (cxt.curInst->op == ScbeMicroOp::JumpCI || cxt.curInst->op == ScbeMicroOp::JumpCC)
+            {
+                const auto destInst = out.getFirstInstruction() + cxt.curInst->valueB;
+                cxt.pending.push_back(destInst);
+            }
+
+            if (cxt.curInst->op == ScbeMicroOp::JumpTable)
+                return false;
+        }
+
+        if (!callback(out, cxt))
+            break;
+
+        cxt.curInst = ScbeMicro::getNextInstruction(cxt.curInst);
+    }
+
+    return true;
+}
+
 void ScbeOptimizer::optimizeStep1(const ScbeMicro& out)
 {
     while (true)
@@ -282,6 +331,7 @@ void ScbeOptimizer::optimizeStep1(const ScbeMicro& out)
         optimizePassReduce(out);
         optimizePassStore(out);
         optimizePassDeadHdwReg(out);
+        optimizePassDeadHdwReg2(out);
         optimizePassDeadHdwRegBeforeLeave(out);
         optimizePassAliasHdwReg(out);
         optimizePassAliasRegMem(out);
