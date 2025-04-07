@@ -19,7 +19,7 @@ void ScbeOptimizer::optimizePassAliasHdwReg(const ScbeMicro& out)
             mapRegInst.clear();
         }
 
-        if (inst->hasReadRegB())
+        if (inst->hasReadRegB() && !inst->hasWriteRegB())
         {
             if (mapRegInst.contains(inst->regB))
             {
@@ -33,10 +33,28 @@ void ScbeOptimizer::optimizePassAliasHdwReg(const ScbeMicro& out)
                 }
                 else if (ScbeCpu::isInt(inst->regB) == ScbeCpu::isInt(prev->regB) &&
                          inst->opBitsA == prev->opBitsA &&
-                         !inst->hasWriteRegB() &&
                          out.cpu->acceptsRegB(inst, prev->regB))
                 {
                     setRegB(inst, prev->regB);
+                }
+            }
+        }
+        else if (inst->hasReadRegA() && !inst->hasWriteRegA())
+        {
+            if (mapRegInst.contains(inst->regA))
+            {
+                const auto prev = mapRegInst[inst->regA];
+                if (out.cpu->acceptsRegA(inst, prev->regB))
+                {
+                    if (inst->hasWriteMemA())
+                    {
+                        setRegA(inst, prev->regB);
+                    }
+                    else if (ScbeCpu::isInt(inst->regA) == ScbeCpu::isInt(prev->regB) &&
+                             inst->opBitsA == prev->opBitsA)
+                    {
+                        setRegA(inst, prev->regB);
+                    }
                 }
             }
         }
