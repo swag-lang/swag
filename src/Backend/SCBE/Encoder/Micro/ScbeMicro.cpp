@@ -699,7 +699,11 @@ void ScbeMicro::encode(ScbeCpu& encoder) const
 ScbeMicroInstruction* ScbeMicro::getNextInstruction(ScbeMicroInstruction* inst)
 {
     inst++;
-    while (inst->op == ScbeMicroOp::Nop || inst->op == ScbeMicroOp::Label || inst->op == ScbeMicroOp::Debug || inst->op == ScbeMicroOp::Ignore)
+    while (inst->op == ScbeMicroOp::Nop ||
+           inst->op == ScbeMicroOp::Label ||
+           inst->op == ScbeMicroOp::Debug ||
+           inst->op == ScbeMicroOp::PatchJump ||
+           inst->op == ScbeMicroOp::Ignore)
         inst++;
     return inst;
 }
@@ -786,12 +790,13 @@ void ScbeMicro::process(ScbeCpu& encoder)
     concat.makeLinear();
 
     solveLabels();
-    if (cpuFct->bc->node && cpuFct->bc->node->hasAttribute(ATTRIBUTE_PRINT_ASM))
-        print();
 
     ScbeOptimizer opt;
     opt.encoder = &encoder;
     opt.optimize(*this);
 
     postProcess();
+
+    if (cpuFct->bc->node && cpuFct->bc->node->hasAttribute(ATTRIBUTE_PRINT_ASM))
+        print();
 }
