@@ -232,7 +232,6 @@ func __closeRuntime()
     __exit()
 }
 
-#[Swag.PrintAsm]
 func __dropGlobalVariables()
 {
     foreach g in @gvtd()

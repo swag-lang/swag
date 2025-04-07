@@ -243,6 +243,24 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
                 break;
             }
             break;
+
+        case ScbeMicroOp::OpBinaryRR:
+            if (inst->cpuOp == CpuOp::ADD &&
+                next->op == ScbeMicroOp::LoadRR &&
+                next->regB == inst->regA &&
+                next->regB != inst->regA &&
+                out.cpu->encodeLoadAddressAddMul(next->regA, inst->regA, inst->regB, 1, 0, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+            {
+                setOp(next, ScbeMicroOp::LoadAddrAddMul);
+                next->regB    = inst->regA;
+                next->regC    = inst->regB;
+                next->valueA  = 1;
+                next->valueB  = 0;
+                next->opBitsA = inst->opBitsA;
+                swapInstruction(out, inst, next);
+                break;
+            }
+            break;
     }
 }
 
