@@ -460,7 +460,7 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteC
 
     if (forDbg && ip == options.curIp)
         g_Log.setColor(LogColor::CurInstruction);
-    else if (options.flags.has(BCPF_ASM_SCBE))
+    else if (options.flags.has(BCPF_SCBE_INSTRUCTION))
         g_Log.setColor(LogColor::AsmIndex);
     else
         g_Log.setColor(LogColor::Index);
@@ -477,7 +477,7 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteC
     //    g_Log.setColor(LogColor::Gray);
 
     // Normal instruction
-    else if (options.flags.has(BCPF_ASM_SCBE))
+    else if (options.flags.has(BCPF_SCBE_INSTRUCTION))
         g_Log.setColor(LogColor::AsmInstruction);
     else
         g_Log.setColor(LogColor::White);
@@ -491,7 +491,7 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteC
     // Flags
     if (forDbg && ip == options.curIp)
         g_Log.setColor(LogColor::CurInstruction);
-    else if (options.flags.has(BCPF_ASM_SCBE))
+    else if (options.flags.has(BCPF_SCBE_INSTRUCTION))
         g_Log.setColor(LogColor::AsmFlags);
     else
         g_Log.setColor(LogColor::InstructionFlags);
@@ -505,7 +505,7 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteC
         logCxt.raw = true;
         g_Log.print(line.pretty, &logCxt);
     }
-    else if (options.flags.has(BCPF_ASM_SCBE))
+    else if (options.flags.has(BCPF_SCBE_INSTRUCTION) || options.flags.has(BCPF_SCBE_ASM))
     {
         g_Log.setColor(LogColor::AsmInstruction);
         LogWriteContext logCxt;

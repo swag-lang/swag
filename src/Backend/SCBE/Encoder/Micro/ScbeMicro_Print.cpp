@@ -323,7 +323,7 @@ void ScbeMicro::print() const
             case ScbeMicroOp::Debug:
             {
                 ByteCodePrintOptions po;
-                po.flags.add(BCPF_BC_SCBE);
+                po.flags.add(BCPF_SCBE_INSTRUCTION);
                 const auto curIp = reinterpret_cast<ByteCodeInstruction*>(inst->valueA);
                 ByteCode::printSourceCode(po, cpuFct->bc, curIp, &lastLine, &lastFile, &lastInline);
                 cpuFct->bc->printInstruction(po, curIp);
@@ -556,36 +556,36 @@ void ScbeMicro::print() const
                 break;
             case ScbeMicroOp::Leave:
                 line.name = "leave";
+                line.name += form(" (%08d)", idx);
                 break;
         }
 
-        line.rank = form("%08d", idx++);
+        idx++;
 
-        while (line.name.length() != 12)
-            line.name += ' ';
-
-        line.pretty = form("%08d    ", i);
-        line.pretty += line.name + line.args;
-
-        const auto& def = g_MicroOpInfos[static_cast<int>(inst->op)];
-        line.name       = def.name;
-        line.args       = printOpArgs(inst, def.leftFlags);
-        if (def.rightFlags.flags)
-        {
-            line.args += "| ";
-            line.args += printOpArgs(inst, def.rightFlags);
-        }
+        line.rank = form("%08d", i);
 
         if (inst->flags.has(MIF_JUMP_DEST))
             line.flags += 'J';
         while (line.flags.length() != 10)
             line.flags += '.';
 
+        const auto& def = g_MicroOpInfos[static_cast<int>(inst->op)];
+        line.pretty += def.name;
+        line.pretty += " ";
+        while (line.pretty.length() < 15)
+            line.pretty += " ";
+        line.pretty += printOpArgs(inst, def.leftFlags);
+        if (def.rightFlags.flags)
+        {
+            line.pretty += "| ";
+            line.pretty += printOpArgs(inst, def.rightFlags);
+        }
+
         Vector<ByteCode::PrintInstructionLine> lines;
         lines.push_back(line);
 
         ByteCodePrintOptions po;
-        po.flags.add(BCPF_ASM_SCBE);
+        po.flags.add(BCPF_SCBE_ASM);
         ByteCode::alignPrintInstructions(po, lines, true);
         for (const auto& l : lines)
             ByteCode::printInstruction(po, nullptr, l);
