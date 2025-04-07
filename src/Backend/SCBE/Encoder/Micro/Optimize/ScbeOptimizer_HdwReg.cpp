@@ -33,23 +33,30 @@ void ScbeOptimizer::optimizePassAliasRegMem(const ScbeMicro& out)
                 {
                     if (mapRegInst.contains(next->regA))
                         break;
-                    const auto nextNext   = ScbeMicro::getNextInstruction(next);
-                    const auto writeRegs1 = out.cpu->getWriteRegisters(nextNext);
-                    const auto readRegs1  = out.cpu->getReadRegisters(nextNext);
-                    if (writeRegs1.contains(next->regB) && !readRegs1.contains(next->regB))
+                    auto nextNext = ScbeMicro::getNextInstruction(next);
+                    while (true)
                     {
-                        setRegA(inst, next->regA);
-                        ignore(out, next);
+                        if (nextNext->isJump())
+                            break;
+                        const auto readRegs1 = out.cpu->getReadRegisters(nextNext);
+                        if (readRegs1.contains(next->regB))
+                            break;
+                        const auto writeRegs1 = out.cpu->getWriteRegisters(nextNext);
+                        if (writeRegs1.contains(next->regB) || nextNext->isRet())
+                        {
+                            setRegA(inst, next->regA);
+                            ignore(out, next);
+                            break;
+                        }
+
+                        nextNext = ScbeMicro::getNextInstruction(nextNext);
                     }
 
                     break;
                 }
 
-                const auto writeRegs = out.cpu->getWriteRegisters(next);
-                for (const auto r : writeRegs)
-                    mapRegInst[r] = next;
-                const auto readRegs = out.cpu->getReadRegisters(next);
-                for (const auto r : readRegs)
+                const auto regs = out.cpu->getReadWriteRegisters(next);
+                for (const auto r : regs)
                     mapRegInst[r] = next;
                 if (mapRegInst.contains(inst->regA))
                     break;
