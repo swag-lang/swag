@@ -150,7 +150,6 @@ void ScbeOptimizer::optimizePassAliasHdwReg(const ScbeMicro& out)
 
 void ScbeOptimizer::optimizePassDeadHdwReg2(const ScbeMicro& out)
 {
-    ScbeExploreContext cxt;
     auto               inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {

@@ -328,24 +328,16 @@ bool ScbeOptimizer::explore(ScbeExploreContext& cxt, const ScbeMicro& out, const
 
 void ScbeOptimizer::optimizeStep1(const ScbeMicro& out)
 {
-    while (true)
-    {
-        passHasDoneSomething = false;
-        computeContextRegs(out);
-
-        optimizePassImmediate(out);
-        optimizePassReduce(out);
-        optimizePassStore(out);
-        optimizePassDeadHdwReg(out);
-        optimizePassDeadHdwReg2(out);
-        optimizePassDeadHdwRegBeforeLeave(out);
-        optimizePassAliasHdwReg(out);
-        optimizePassAliasRegMem(out);
-        optimizePassSwap(out);
-
-        if (!passHasDoneSomething)
-            break;
-    }
+    passHasDoneSomething = false;
+    computeContextRegs(out);
+    optimizePassImmediate(out);
+    optimizePassReduce(out);
+    optimizePassStore(out);
+    optimizePassDeadHdwReg(out);
+    optimizePassDeadHdwRegBeforeLeave(out);
+    optimizePassAliasHdwReg(out);
+    optimizePassAliasRegMem(out);
+    optimizePassSwap(out);
 }
 
 void ScbeOptimizer::optimizeStep2(const ScbeMicro& out)
@@ -358,6 +350,12 @@ void ScbeOptimizer::optimizeStep2(const ScbeMicro& out)
     optimizePassParamsKeepReg(out);
     optimizePassReduce2(out);
     optimizePassStackToVolatileReg(out);
+}
+
+void ScbeOptimizer::optimizeStep3(const ScbeMicro& out)
+{
+    passHasDoneSomething = false;
+    optimizePassDeadHdwReg2(out);
 }
 
 void ScbeOptimizer::optimize(const ScbeMicro& out)
@@ -374,7 +372,15 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
 
         optimizeStep1(out);
         globalChanged = globalChanged || passHasDoneSomething;
+        if (passHasDoneSomething)
+            continue;
+
         optimizeStep2(out);
+        globalChanged = globalChanged || passHasDoneSomething;
+        if (passHasDoneSomething)
+            continue;
+
+        optimizeStep3(out);
         globalChanged = globalChanged || passHasDoneSomething;
     }
 }

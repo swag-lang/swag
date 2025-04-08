@@ -65,6 +65,7 @@ struct ScbeOptimizer
     void computeContextStack(const ScbeMicro& out);
     void optimizeStep1(const ScbeMicro& out);
     void optimizeStep2(const ScbeMicro& out);
+    void optimizeStep3(const ScbeMicro& out);
     void optimize(const ScbeMicro& out);
     void setDirtyPass() { passHasDoneSomething = true; }
 
@@ -76,6 +77,7 @@ struct ScbeOptimizer
     bool                                     passHasDoneSomething = false;
 
     // Context
+    ScbeExploreContext                    cxt;
     Map<CpuReg, uint32_t>                 usedRegs;
     Map<uint32_t, uint32_t>               usedStack;
     Vector<std::pair<uint32_t, uint32_t>> usedStackRanges;
