@@ -369,59 +369,6 @@ namespace
     {
         emitSpecB8(concat, op, opBits);
     }
-
-    void emitAddMul(Concat& concat, uint8_t op, CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, OpBits opBits, CpuEmitFlags emitFlags)
-    {
-        SWAG_ASSERT(opBits == OpBits::B32 || opBits == OpBits::B64);
-
-        // lea regDst, [regSrc1 + regSrc2 * mulValue]
-        const bool b0 = (regDst >= CpuReg::R8 && regDst <= CpuReg::R15);
-        const bool b1 = (regSrc2 >= CpuReg::R8 && regSrc2 <= CpuReg::R15);
-        const bool b2 = (regSrc1 >= CpuReg::R8 && regSrc1 <= CpuReg::R15);
-        if (opBits == OpBits::B32)
-            emitCPUOp(concat, 0x67);
-        if (opBits == OpBits::B64 || b0 || b1 || b2)
-        {
-            const auto value = getREX(opBits == OpBits::B64, b0, b1, b2);
-            concat.addU8(value);
-        }
-
-        emitCPUOp(concat, op);
-
-        if (regSrc1 == CpuReg::R13)
-        {
-            if (addValue <= 0x7F)
-                emitModRM(concat, ModRMMode::Displacement8, regDst, MODRM_RM_SIB);
-            else
-                emitModRM(concat, ModRMMode::Displacement32, regDst, MODRM_RM_SIB);
-        }
-        else if (addValue == 0 || regSrc1 == CpuReg::Max)
-        {
-            emitModRM(concat, ModRMMode::Memory, regDst, MODRM_RM_SIB);
-        }
-        else
-        {
-            if (addValue <= 0x7F)
-                emitModRM(concat, ModRMMode::Displacement8, regDst, MODRM_RM_SIB);
-            else
-                emitModRM(concat, ModRMMode::Displacement32, regDst, MODRM_RM_SIB);
-        }
-
-        SWAG_ASSERT(mulValue == 1 || mulValue == 2 || mulValue == 4 || mulValue == 8);
-        if (regSrc1 == CpuReg::Max)
-        {
-            emitSIB(concat, static_cast<uint8_t>(log2(mulValue)), encodeReg(regSrc2) & 0b111, SIB_NO_BASE);
-            emitValue(concat, addValue, OpBits::B32);
-        }
-        else
-        {
-            emitSIB(concat, static_cast<uint8_t>(log2(mulValue)), encodeReg(regSrc2) & 0b111, encodeReg(regSrc1) & 0b111);
-            if (regSrc1 == CpuReg::R13 || (addValue != 0 && addValue <= 0x7F))
-                emitValue(concat, addValue, OpBits::B8);
-            else if (addValue)
-                emitValue(concat, addValue, OpBits::B32);
-        }
-    }
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -797,7 +744,7 @@ CpuEncodeResult ScbeX64::encodeLoadAddressMem(CpuReg reg, CpuReg memReg, uint64_
     return CpuEncodeResult::Zero;
 }
 
-CpuEncodeResult ScbeX64::encodeLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, OpBits opBits, CpuEmitFlags emitFlags)
+CpuEncodeResult ScbeX64::encodeLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
     if (emitFlags.has(EMIT_CanEncode))
     {
@@ -814,7 +761,54 @@ CpuEncodeResult ScbeX64::encodeLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, 
     SWAG_ASSERT(opBits == OpBits::B32 || opBits == OpBits::B64);
     SWAG_ASSERT(addValue <= 0x7FFFFFFF);
 
-    emitAddMul(concat, 0x8D, regDst, regSrc1, regSrc2, mulValue, addValue, opBits, emitFlags);
+    // lea regDst, [regSrc1 + regSrc2 * mulValue]
+    const bool b0 = (regDst >= CpuReg::R8 && regDst <= CpuReg::R15);
+    const bool b1 = (regSrc2 >= CpuReg::R8 && regSrc2 <= CpuReg::R15);
+    const bool b2 = (regSrc1 >= CpuReg::R8 && regSrc1 <= CpuReg::R15);
+    if (opBits == OpBits::B32)
+        emitCPUOp(concat, 0x67);
+    if (opBits == OpBits::B64 || b0 || b1 || b2)
+    {
+        const auto value = getREX(opBits == OpBits::B64, b0, b1, b2);
+        concat.addU8(value);
+    }
+
+    emitCPUOp(concat, op);
+
+    if (regSrc1 == CpuReg::R13)
+    {
+        if (addValue <= 0x7F)
+            emitModRM(concat, ModRMMode::Displacement8, regDst, MODRM_RM_SIB);
+        else
+            emitModRM(concat, ModRMMode::Displacement32, regDst, MODRM_RM_SIB);
+    }
+    else if (addValue == 0 || regSrc1 == CpuReg::Max)
+    {
+        emitModRM(concat, ModRMMode::Memory, regDst, MODRM_RM_SIB);
+    }
+    else
+    {
+        if (addValue <= 0x7F)
+            emitModRM(concat, ModRMMode::Displacement8, regDst, MODRM_RM_SIB);
+        else
+            emitModRM(concat, ModRMMode::Displacement32, regDst, MODRM_RM_SIB);
+    }
+
+    SWAG_ASSERT(mulValue == 1 || mulValue == 2 || mulValue == 4 || mulValue == 8);
+    if (regSrc1 == CpuReg::Max)
+    {
+        emitSIB(concat, static_cast<uint8_t>(log2(mulValue)), encodeReg(regSrc2) & 0b111, SIB_NO_BASE);
+        emitValue(concat, addValue, OpBits::B32);
+    }
+    else
+    {
+        emitSIB(concat, static_cast<uint8_t>(log2(mulValue)), encodeReg(regSrc2) & 0b111, encodeReg(regSrc1) & 0b111);
+        if (regSrc1 == CpuReg::R13 || (addValue != 0 && addValue <= 0x7F))
+            emitValue(concat, addValue, OpBits::B8);
+        else if (addValue)
+            emitValue(concat, addValue, OpBits::B32);
+    }
+
     return CpuEncodeResult::Zero;
 }
 
@@ -2318,7 +2312,7 @@ CpuEncodeResult ScbeX64::encodeJumpTable(CpuReg tableReg, CpuReg offsetReg, int3
     emitSymbolRelocationAddress(tableReg, symCSIndex, offsetTableConstant);
 
     // movsxd table, dword ptr [table + offset*4]
-    emitAddMul(concat, 0x63, tableReg, tableReg, offsetReg, 4, 0, OpBits::B64, emitFlags);
+    emitLoadAddressAddMul(tableReg, tableReg, offsetReg, 4, 0, CpuOp::MOVSXD, OpBits::B64, emitFlags);
 
     const auto startIdx = concat.totalCount();
     emitSymbolRelocationAddress(offsetReg, cpuFct->symbolIndex, concat.totalCount() - cpuFct->startAddress);

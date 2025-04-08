@@ -64,7 +64,9 @@ enum class CpuOp : uint8_t
     FMIN     = 0x5D,
     FDIV     = 0x5E,
     FMAX     = 0x5F,
+    MOVSXD   = 0x63,
     XCHG     = 0x87,
+    LEA      = 0x8D,
     NEG      = 0x9F,
     BSWAP    = 0xB0,
     POPCNT   = 0xB8,
@@ -146,9 +148,9 @@ enum class CpuEncodeResult : uint32_t
 
 struct CpuJump
 {
-    void*    patchOffsetAddr   = nullptr;
-    uint64_t offsetStart = 0;
-    OpBits   opBits = OpBits::Zero;
+    void*    patchOffsetAddr = nullptr;
+    uint64_t offsetStart     = 0;
+    OpBits   opBits          = OpBits::Zero;
 };
 
 struct CpuLabelToSolve
@@ -276,7 +278,7 @@ struct ScbeCpu : BackendEncoder
     void emitLoadSignedExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc, CpuEmitFlags emitFlags = EMIT_Zero);
     void emitLoadZeroExtendRegReg(CpuReg regDst, CpuReg regSrc, OpBits numBitsDst, OpBits numBitsSrc, CpuEmitFlags emitFlags = EMIT_Zero);
     void emitLoadZeroExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc, CpuEmitFlags emitFlags = EMIT_Zero);
-    void emitLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, OpBits opBits, CpuEmitFlags emitFlags = EMIT_Zero);
+    void emitLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags = EMIT_Zero);
     void emitLoadAddressMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, CpuEmitFlags emitFlags = EMIT_Zero);
     void emitLoadMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits opBits, CpuEmitFlags emitFlags = EMIT_Zero);
     void emitLoadMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits, CpuEmitFlags emitFlags = EMIT_Zero);
@@ -330,7 +332,7 @@ struct ScbeCpu : BackendEncoder
     virtual CpuEncodeResult encodeLoadSignedExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc, CpuEmitFlags emitFlags)           = 0;
     virtual CpuEncodeResult encodeLoadZeroExtendRegReg(CpuReg regDst, CpuReg regSrc, OpBits numBitsDst, OpBits numBitsSrc, CpuEmitFlags emitFlags)                              = 0;
     virtual CpuEncodeResult encodeLoadZeroExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc, CpuEmitFlags emitFlags)             = 0;
-    virtual CpuEncodeResult encodeLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, OpBits opBits, CpuEmitFlags emitFlags) = 0;
+    virtual CpuEncodeResult encodeLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags) = 0;
     virtual CpuEncodeResult encodeLoadAddressMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, CpuEmitFlags emitFlags)                                                         = 0;
     virtual CpuEncodeResult encodeLoadMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBits opBits, CpuEmitFlags emitFlags)                                              = 0;
     virtual CpuEncodeResult encodeLoadMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits, CpuEmitFlags emitFlags)                                          = 0;

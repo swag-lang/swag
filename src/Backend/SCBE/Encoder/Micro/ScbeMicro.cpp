@@ -266,7 +266,7 @@ CpuEncodeResult ScbeMicro::encodeLoadAddressMem(CpuReg reg, CpuReg memReg, uint6
     return CpuEncodeResult::Zero;
 }
 
-CpuEncodeResult ScbeMicro::encodeLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, OpBits opBits, CpuEmitFlags emitFlags)
+CpuEncodeResult ScbeMicro::encodeLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::LoadAddrAddMul, emitFlags);
     inst->regA      = regDst;
@@ -274,6 +274,7 @@ CpuEncodeResult ScbeMicro::encodeLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1
     inst->regC      = regSrc2;
     inst->valueA    = mulValue;
     inst->valueB    = addValue;
+    inst->cpuOp     = op;
     inst->opBitsA   = opBits;
     return CpuEncodeResult::Zero;
 }
@@ -444,10 +445,10 @@ CpuEncodeResult ScbeMicro::encodeJumpReg(CpuReg reg, CpuEmitFlags emitFlags)
 
 CpuEncodeResult ScbeMicro::encodeJump(CpuJump& jump, CpuCondJump jumpType, OpBits opBits, CpuEmitFlags emitFlags)
 {
-    jump.offsetStart     = concat.totalCount();
-    const auto inst = addInstruction(ScbeMicroOp::JumpCC, emitFlags);
-    inst->jumpType  = jumpType;
-    inst->opBitsA   = opBits;
+    jump.offsetStart = concat.totalCount();
+    const auto inst  = addInstruction(ScbeMicroOp::JumpCC, emitFlags);
+    inst->jumpType   = jumpType;
+    inst->opBitsA    = opBits;
     return CpuEncodeResult::Zero;
 }
 
@@ -598,9 +599,9 @@ void ScbeMicro::encode(ScbeCpu& encoder) const
             {
                 const auto jump = reinterpret_cast<const ScbeMicroInstruction*>(concat.firstBucket->data + inst->valueA);
                 CpuJump    cpuJump;
-                cpuJump.patchOffsetAddr   = reinterpret_cast<void*>(jump->valueA);
-                cpuJump.offsetStart = jump->valueB;
-                cpuJump.opBits = jump->opBitsA;
+                cpuJump.patchOffsetAddr = reinterpret_cast<void*>(jump->valueA);
+                cpuJump.offsetStart     = jump->valueB;
+                cpuJump.opBits          = jump->opBitsA;
                 encoder.emitPatchJump(cpuJump, inst->emitFlags);
                 break;
             }
@@ -635,7 +636,7 @@ void ScbeMicro::encode(ScbeCpu& encoder) const
                 encoder.emitLoadAddressMem(inst->regA, inst->regB, inst->valueA, inst->emitFlags);
                 break;
             case ScbeMicroOp::LoadAddrAddMul:
-                encoder.emitLoadAddressAddMul(inst->regA, inst->regB, inst->regC, inst->valueA, inst->valueB, inst->opBitsA, inst->emitFlags);
+                encoder.emitLoadAddressAddMul(inst->regA, inst->regB, inst->regC, inst->valueA, inst->valueB, inst->cpuOp, inst->opBitsA, inst->emitFlags);
                 break;
             case ScbeMicroOp::LoadMR:
                 encoder.emitLoadMemReg(inst->regA, inst->valueA, inst->regB, inst->opBitsA, inst->emitFlags);
