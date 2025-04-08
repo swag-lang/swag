@@ -220,6 +220,21 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
 
             break;
 
+        case ScbeMicroOp::LoadRI:
+            if (next->op == ScbeMicroOp::OpBinaryRR &&
+                next->cpuOp == CpuOp::ADD &&
+                next->regA == inst->regA &&
+                next->opBitsA == inst->opBitsA &&
+                !ScbeMicro::getNextFlagSensitive(next)->isJumpCond() && // :x64optimoverflow
+                out.cpu->encodeLoadAddressMem(next->regA, next->regB, inst->valueA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+            {
+                setOp(next, ScbeMicroOp::LoadAddr);
+                setValueA(next, inst->valueA);
+                ignore(out, inst);
+                break;
+            }
+            break;
+
         case ScbeMicroOp::LoadRR:
             if (next->op == ScbeMicroOp::OpBinaryRI &&
                 next->cpuOp == CpuOp::ADD &&
@@ -229,7 +244,7 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
                 out.cpu->encodeLoadAddressMem(next->regA, inst->regB, next->valueA, EMIT_CanEncode) == CpuEncodeResult::Zero)
             {
                 setOp(next, ScbeMicroOp::LoadAddr);
-                next->regB = inst->regB;
+                setRegB(next, inst->regB);
                 ignore(out, inst);
                 break;
             }
