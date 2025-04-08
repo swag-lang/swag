@@ -200,14 +200,21 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
 
             if (next->op == ScbeMicroOp::LoadRM &&
                 next->regB == inst->regA &&
-                next->regB == next->regA &&
-                next->opBitsA == inst->opBitsA &&
-                next->opBitsA == OpBits::B64 &&
-                out.cpu->encodeLoadAddMulCstRegMem(inst->regA, inst->opBitsA, inst->regB, inst->regC, inst->valueA, inst->valueB, CpuOp::MOV, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+                (next->regA != inst->regB || next->regA == inst->regA) &&
+                (next->regA != inst->regC || next->regA == inst->regA) &&
+                out.cpu->encodeLoadAddMulCstRegMem(next->regA, next->opBitsA, inst->regB, inst->regC, inst->valueA, next->valueA + inst->valueB, CpuOp::MOV, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
             {
-                inst->cpuOp   = CpuOp::MOV;
-                inst->opBitsA = next->opBitsA;
-                ignore(out, next);
+                next->op      = ScbeMicroOp::LoadAddMulCstRM;
+                next->cpuOp   = CpuOp::MOV;
+                next->opBitsB = inst->opBitsA;
+                next->valueB  = next->valueA + inst->valueB;
+                next->valueA  = inst->valueA;
+                next->regB    = inst->regB;
+                next->regC    = inst->regC;
+                if (next->regA == inst->regA)
+                    ignore(out, inst);
+                else
+                    swapInstruction(out, inst, next);
                 break;
             }
 
@@ -254,11 +261,11 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
                 out.cpu->encodeLoadAddMulCstRegMem(next->regA, inst->opBitsA, CpuReg::Max, inst->regB, 1, 0, CpuOp::LEA, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
             {
                 setOp(next, ScbeMicroOp::LoadAddMulCstRM);
-                next->regC   = next->regB;
-                next->regB   = inst->regB;
-                next->valueA = 1;
-                next->valueB = 0;
-                next->cpuOp  = CpuOp::LEA;
+                next->regC    = next->regB;
+                next->regB    = inst->regB;
+                next->valueA  = 1;
+                next->valueB  = 0;
+                next->cpuOp   = CpuOp::LEA;
                 next->opBitsA = inst->opBitsA;
                 next->opBitsB = inst->opBitsA;
                 ignore(out, inst);

@@ -750,6 +750,8 @@ CpuEncodeResult ScbeX64::encodeLoadAddMulCstRegMem(CpuReg regDst, OpBits opBitsD
     {
         if (mulValue != 1 && mulValue != 2 && mulValue != 4 && mulValue != 8)
             return CpuEncodeResult::NotSupported;
+        if (op == CpuOp::LEA && opBitsDst == OpBits::B8)
+            return CpuEncodeResult::NotSupported;
         if (opBitsSrc != OpBits::B32 && opBitsSrc != OpBits::B64)
             return CpuEncodeResult::NotSupported;
         if (addValue > 0x7FFFFFFF)
@@ -757,16 +759,14 @@ CpuEncodeResult ScbeX64::encodeLoadAddMulCstRegMem(CpuReg regDst, OpBits opBitsD
         return CpuEncodeResult::Zero;
     }
 
-    SWAG_ASSERT(mulValue == 1 || mulValue == 2 || mulValue == 4 || mulValue == 8);
-    SWAG_ASSERT(opBitsSrc == OpBits::B32 || opBitsSrc == OpBits::B64);
-    SWAG_ASSERT(addValue <= 0x7FFFFFFF);
+    if (opBitsSrc == OpBits::B32)
+        concat.addU8(0x67);
+    if (opBitsDst == OpBits::B16)
+        concat.addU8(0x66);
 
-    // lea regDst, [regSrc1 + regSrc2 * mulValue]
     const bool b0 = (regDst >= CpuReg::R8 && regDst <= CpuReg::R15);
     const bool b1 = (regSrc2 >= CpuReg::R8 && regSrc2 <= CpuReg::R15);
     const bool b2 = (regSrc1 >= CpuReg::R8 && regSrc1 <= CpuReg::R15);
-    if (opBitsSrc == OpBits::B32)
-        emitCPUOp(concat, 0x67);
     if (opBitsDst == OpBits::B64 || b0 || b1 || b2)
     {
         const auto value = getREX(opBitsDst == OpBits::B64, b0, b1, b2);
