@@ -9,7 +9,14 @@ struct ScbeMicroInstruction;
 enum class ScbeMicroOp : uint8_t;
 enum class OpBits : uint8_t;
 
-struct ScbeExplorerContext
+enum class ScbeExploreReturn
+{
+    Stop,
+    Break,
+    Continue,
+};
+
+struct ScbeExploreContext
 {
     ScbeMicroInstruction*               startInst         = nullptr;
     ScbeMicroInstruction*               curInst           = nullptr;
@@ -20,7 +27,7 @@ struct ScbeExplorerContext
 
 struct ScbeOptimizer
 {
-    static bool explore(ScbeExplorerContext& cxt, const ScbeMicro& out, const std::function<bool(const ScbeMicro&, const ScbeExplorerContext&)>& callback);
+    static bool explore(ScbeExploreContext& cxt, const ScbeMicro& out, const std::function<ScbeExploreReturn(const ScbeMicro&, const ScbeExploreContext&)>& callback);
 
     void memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOffset, CpuReg reg);
     void swapInstruction(const ScbeMicro& out, ScbeMicroInstruction* before, ScbeMicroInstruction* after);

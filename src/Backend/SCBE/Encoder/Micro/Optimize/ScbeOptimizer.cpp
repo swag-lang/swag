@@ -271,7 +271,7 @@ void ScbeOptimizer::computeContextStack(const ScbeMicro& out)
     }
 }
 
-bool ScbeOptimizer::explore(ScbeExplorerContext& cxt, const ScbeMicro& out, const std::function<bool(const ScbeMicro& out, const ScbeExplorerContext&)>& callback)
+bool ScbeOptimizer::explore(ScbeExploreContext& cxt, const ScbeMicro& out, const std::function<ScbeExploreReturn(const ScbeMicro& out, const ScbeExploreContext&)>& callback)
 {
     cxt.done.clear();
     cxt.pending.clear();
@@ -280,9 +280,10 @@ bool ScbeOptimizer::explore(ScbeExplorerContext& cxt, const ScbeMicro& out, cons
     cxt.done.insert(cxt.startInst);
     cxt.curInst = ScbeMicro::getNextInstruction(cxt.startInst);
 
+    ScbeExploreReturn result = ScbeExploreReturn::Continue;
     while (true)
     {
-        if (cxt.curInst->isRet() || cxt.done.contains(cxt.curInst))
+        if (result == ScbeExploreReturn::Break || cxt.curInst->isRet() || cxt.done.contains(cxt.curInst))
         {
             if (cxt.curInst->isRet())
                 cxt.hasReachedEndOnce = true;
@@ -290,7 +291,6 @@ bool ScbeOptimizer::explore(ScbeExplorerContext& cxt, const ScbeMicro& out, cons
                 break;
             cxt.curInst = cxt.pending.back();
             cxt.pending.pop_back();
-            continue;
         }
 
         cxt.done.insert(cxt.curInst);
@@ -313,8 +313,11 @@ bool ScbeOptimizer::explore(ScbeExplorerContext& cxt, const ScbeMicro& out, cons
                 return false;
         }
 
-        if (!callback(out, cxt))
+        result = callback(out, cxt);
+        if (result == ScbeExploreReturn::Stop)
             break;
+        if (result == ScbeExploreReturn::Break)
+            continue;
 
         if (cxt.curInst->op != ScbeMicroOp::End)
             cxt.curInst = ScbeMicro::getNextInstruction(cxt.curInst);
