@@ -150,7 +150,7 @@ void ScbeOptimizer::optimizePassAliasHdwReg(const ScbeMicro& out)
 
 void ScbeOptimizer::optimizePassDeadHdwReg2(const ScbeMicro& out)
 {
-    auto               inst = out.getFirstInstruction();
+    auto inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {
         if (inst->op == ScbeMicroOp::LoadAddr ||

@@ -258,16 +258,16 @@ void ScbeCpu::emitLoadZeroExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t memOf
     }
 }
 
-void ScbeCpu::emitLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
+void ScbeCpu::emitLoadAddMulCstRegMem(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
-    const auto result = cpu->encodeLoadAddressAddMul(regDst, regSrc1, regSrc2, mulValue, addValue, op, opBits, EMIT_CanEncode);
+    const auto result = cpu->encodeLoadAddMulCstRegMem(regDst, regSrc1, regSrc2, mulValue, addValue, op, opBits, EMIT_CanEncode);
     if (result == CpuEncodeResult::Zero)
     {
-        encodeLoadAddressAddMul(regDst, regSrc1, regSrc2, mulValue, addValue, op, opBits, emitFlags);
+        encodeLoadAddMulCstRegMem(regDst, regSrc1, regSrc2, mulValue, addValue, op, opBits, emitFlags);
         return;
     }
 
-    Report::internalError(module, "emitLoadAddressAddMul, cannot encode");
+    Report::internalError(module, "emitLoadAddMulCstRegMem, cannot encode");
 }
 
 void ScbeCpu::emitLoadAddressMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, CpuEmitFlags emitFlags)
@@ -658,19 +658,19 @@ void ScbeCpu::emitOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp op, OpBits op
 
         if ((op == CpuOp::MUL || op == CpuOp::IMUL) && value == 3)
         {
-            emitLoadAddressAddMul(reg, reg, reg, 2, 0, CpuOp::LEA, std::max(opBits, OpBits::B32));
+            emitLoadAddMulCstRegMem(reg, reg, reg, 2, 0, CpuOp::LEA, std::max(opBits, OpBits::B32));
             return;
         }
 
         if ((op == CpuOp::MUL || op == CpuOp::IMUL) && value == 5)
         {
-            emitLoadAddressAddMul(reg, reg, reg, 4, 0, CpuOp::LEA, std::max(opBits, OpBits::B32));
+            emitLoadAddMulCstRegMem(reg, reg, reg, 4, 0, CpuOp::LEA, std::max(opBits, OpBits::B32));
             return;
         }
 
         if ((op == CpuOp::MUL || op == CpuOp::IMUL) && value == 9)
         {
-            emitLoadAddressAddMul(reg, reg, reg, 8, 0, CpuOp::LEA, std::max(opBits, OpBits::B32));
+            emitLoadAddMulCstRegMem(reg, reg, reg, 8, 0, CpuOp::LEA, std::max(opBits, OpBits::B32));
             return;
         }
 

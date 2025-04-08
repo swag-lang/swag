@@ -744,7 +744,7 @@ CpuEncodeResult ScbeX64::encodeLoadAddressMem(CpuReg reg, CpuReg memReg, uint64_
     return CpuEncodeResult::Zero;
 }
 
-CpuEncodeResult ScbeX64::encodeLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
+CpuEncodeResult ScbeX64::encodeLoadAddMulCstRegMem(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
     if (emitFlags.has(EMIT_CanEncode))
     {
@@ -2312,7 +2312,7 @@ CpuEncodeResult ScbeX64::encodeJumpTable(CpuReg tableReg, CpuReg offsetReg, int3
     emitSymbolRelocationAddress(tableReg, symCSIndex, offsetTableConstant);
 
     // movsxd table, dword ptr [table + offset*4]
-    emitLoadAddressAddMul(tableReg, tableReg, offsetReg, 4, 0, CpuOp::MOVSXD, OpBits::B64, emitFlags);
+    emitLoadAddMulCstRegMem(tableReg, tableReg, offsetReg, 4, 0, CpuOp::MOVSXD, OpBits::B64, emitFlags);
 
     const auto startIdx = concat.totalCount();
     emitSymbolRelocationAddress(offsetReg, cpuFct->symbolIndex, concat.totalCount() - cpuFct->startAddress);

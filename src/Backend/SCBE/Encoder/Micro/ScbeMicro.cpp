@@ -266,9 +266,9 @@ CpuEncodeResult ScbeMicro::encodeLoadAddressMem(CpuReg reg, CpuReg memReg, uint6
     return CpuEncodeResult::Zero;
 }
 
-CpuEncodeResult ScbeMicro::encodeLoadAddressAddMul(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
+CpuEncodeResult ScbeMicro::encodeLoadAddMulCstRegMem(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
-    const auto inst = addInstruction(ScbeMicroOp::LoadAddrAddMul, emitFlags);
+    const auto inst = addInstruction(ScbeMicroOp::LoadAddMulCstRM, emitFlags);
     inst->regA      = regDst;
     inst->regB      = regSrc1;
     inst->regC      = regSrc2;
@@ -635,8 +635,8 @@ void ScbeMicro::encode(ScbeCpu& encoder) const
             case ScbeMicroOp::LoadAddr:
                 encoder.emitLoadAddressMem(inst->regA, inst->regB, inst->valueA, inst->emitFlags);
                 break;
-            case ScbeMicroOp::LoadAddrAddMul:
-                encoder.emitLoadAddressAddMul(inst->regA, inst->regB, inst->regC, inst->valueA, inst->valueB, inst->cpuOp, inst->opBitsA, inst->emitFlags);
+            case ScbeMicroOp::LoadAddMulCstRM:
+                encoder.emitLoadAddMulCstRegMem(inst->regA, inst->regB, inst->regC, inst->valueA, inst->valueB, inst->cpuOp, inst->opBitsA, inst->emitFlags);
                 break;
             case ScbeMicroOp::LoadMR:
                 encoder.emitLoadMemReg(inst->regA, inst->valueA, inst->regB, inst->opBitsA, inst->emitFlags);
@@ -723,7 +723,7 @@ ScbeMicroInstruction* ScbeMicro::getNextFlagSensitive(ScbeMicroInstruction* inst
            inst->op == ScbeMicroOp::LoadRM ||
            inst->op == ScbeMicroOp::LoadRR ||
            inst->op == ScbeMicroOp::LoadAddr ||
-           inst->op == ScbeMicroOp::LoadAddrAddMul ||
+           inst->op == ScbeMicroOp::LoadAddMulCstRM ||
            inst->op == ScbeMicroOp::LoadSignedExtRM ||
            inst->op == ScbeMicroOp::LoadSignedExtRR ||
            inst->op == ScbeMicroOp::LoadZeroExtRM ||

@@ -455,7 +455,7 @@ void ScbeMicro::print() const
                 else
                     line.args = form("%s, [%s+0x%llX]", regName(inst->regA, OpBits::B64), regName(inst->regB, OpBits::B64), inst->valueA);
                 break;
-            case ScbeMicroOp::LoadAddrAddMul:
+            case ScbeMicroOp::LoadAddMulCstRM:
                 if (inst->cpuOp == CpuOp::LEA)
                     line.name = "lea";
                 else
