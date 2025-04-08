@@ -773,7 +773,7 @@ CpuEncodeResult ScbeX64::encodeLoadAddMulCstRegMem(CpuReg regDst, CpuReg regSrc1
         concat.addU8(value);
     }
 
-    emitCPUOp(concat, op);
+    emitSpecCPUOp(concat, op, opBits);
 
     if (regSrc1 == CpuReg::R13)
     {

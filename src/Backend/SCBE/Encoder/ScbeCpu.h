@@ -66,6 +66,7 @@ enum class CpuOp : uint8_t
     FMAX     = 0x5F,
     MOVSXD   = 0x63,
     XCHG     = 0x87,
+    MOV      = 0x8B,
     LEA      = 0x8D,
     NEG      = 0x9F,
     BSWAP    = 0xB0,
