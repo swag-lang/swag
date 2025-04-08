@@ -744,13 +744,13 @@ CpuEncodeResult ScbeX64::encodeLoadAddressMem(CpuReg reg, CpuReg memReg, uint64_
     return CpuEncodeResult::Zero;
 }
 
-CpuEncodeResult ScbeX64::encodeLoadAddMulCstRegMem(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
+CpuEncodeResult ScbeX64::encodeLoadAddMulCstRegMem(CpuReg regDst, OpBits opBitsDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, CpuOp op, OpBits opBitsSrc, CpuEmitFlags emitFlags)
 {
     if (emitFlags.has(EMIT_CanEncode))
     {
         if (mulValue != 1 && mulValue != 2 && mulValue != 4 && mulValue != 8)
             return CpuEncodeResult::NotSupported;
-        if (opBits != OpBits::B32 && opBits != OpBits::B64)
+        if (opBitsSrc != OpBits::B32 && opBitsSrc != OpBits::B64)
             return CpuEncodeResult::NotSupported;
         if (addValue > 0x7FFFFFFF)
             return CpuEncodeResult::NotSupported;
@@ -758,22 +758,22 @@ CpuEncodeResult ScbeX64::encodeLoadAddMulCstRegMem(CpuReg regDst, CpuReg regSrc1
     }
 
     SWAG_ASSERT(mulValue == 1 || mulValue == 2 || mulValue == 4 || mulValue == 8);
-    SWAG_ASSERT(opBits == OpBits::B32 || opBits == OpBits::B64);
+    SWAG_ASSERT(opBitsSrc == OpBits::B32 || opBitsSrc == OpBits::B64);
     SWAG_ASSERT(addValue <= 0x7FFFFFFF);
 
     // lea regDst, [regSrc1 + regSrc2 * mulValue]
     const bool b0 = (regDst >= CpuReg::R8 && regDst <= CpuReg::R15);
     const bool b1 = (regSrc2 >= CpuReg::R8 && regSrc2 <= CpuReg::R15);
     const bool b2 = (regSrc1 >= CpuReg::R8 && regSrc1 <= CpuReg::R15);
-    if (opBits == OpBits::B32)
+    if (opBitsSrc == OpBits::B32)
         emitCPUOp(concat, 0x67);
-    if (opBits == OpBits::B64 || b0 || b1 || b2)
+    if (opBitsDst == OpBits::B64 || b0 || b1 || b2)
     {
-        const auto value = getREX(opBits == OpBits::B64, b0, b1, b2);
+        const auto value = getREX(opBitsDst == OpBits::B64, b0, b1, b2);
         concat.addU8(value);
     }
 
-    emitSpecCPUOp(concat, op, opBits);
+    emitSpecCPUOp(concat, op, opBitsDst);
 
     if (regSrc1 == CpuReg::R13)
     {
@@ -2312,7 +2312,7 @@ CpuEncodeResult ScbeX64::encodeJumpTable(CpuReg tableReg, CpuReg offsetReg, int3
     emitSymbolRelocationAddress(tableReg, symCSIndex, offsetTableConstant);
 
     // movsxd table, dword ptr [table + offset*4]
-    emitLoadAddMulCstRegMem(tableReg, tableReg, offsetReg, 4, 0, CpuOp::MOVSXD, OpBits::B64, emitFlags);
+    emitLoadAddMulCstRegMem(tableReg, OpBits::B64, tableReg, offsetReg, 4, 0, CpuOp::MOVSXD, OpBits::B64, emitFlags);
 
     const auto startIdx = concat.totalCount();
     emitSymbolRelocationAddress(offsetReg, cpuFct->symbolIndex, concat.totalCount() - cpuFct->startAddress);

@@ -258,12 +258,12 @@ void ScbeCpu::emitLoadZeroExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t memOf
     }
 }
 
-void ScbeCpu::emitLoadAddMulCstRegMem(CpuReg regDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
+void ScbeCpu::emitLoadAddMulCstRegMem(CpuReg regDst, OpBits opBitsDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, CpuOp op, OpBits opBitsSrc, CpuEmitFlags emitFlags)
 {
-    const auto result = cpu->encodeLoadAddMulCstRegMem(regDst, regSrc1, regSrc2, mulValue, addValue, op, opBits, EMIT_CanEncode);
+    const auto result = cpu->encodeLoadAddMulCstRegMem(regDst, opBitsDst, regSrc1, regSrc2, mulValue, addValue, op, opBitsSrc, EMIT_CanEncode);
     if (result == CpuEncodeResult::Zero)
     {
-        encodeLoadAddMulCstRegMem(regDst, regSrc1, regSrc2, mulValue, addValue, op, opBits, emitFlags);
+        encodeLoadAddMulCstRegMem(regDst, opBitsDst, regSrc1, regSrc2, mulValue, addValue, op, opBitsSrc, emitFlags);
         return;
     }
 
@@ -658,19 +658,19 @@ void ScbeCpu::emitOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp op, OpBits op
 
         if ((op == CpuOp::MUL || op == CpuOp::IMUL) && value == 3)
         {
-            emitLoadAddMulCstRegMem(reg, reg, reg, 2, 0, CpuOp::LEA, std::max(opBits, OpBits::B32));
+            emitLoadAddMulCstRegMem(reg, std::max(opBits, OpBits::B32), reg, reg, 2, 0, CpuOp::LEA, std::max(opBits, OpBits::B32));
             return;
         }
 
         if ((op == CpuOp::MUL || op == CpuOp::IMUL) && value == 5)
         {
-            emitLoadAddMulCstRegMem(reg, reg, reg, 4, 0, CpuOp::LEA, std::max(opBits, OpBits::B32));
+            emitLoadAddMulCstRegMem(reg, std::max(opBits, OpBits::B32), reg, reg, 4, 0, CpuOp::LEA, std::max(opBits, OpBits::B32));
             return;
         }
 
         if ((op == CpuOp::MUL || op == CpuOp::IMUL) && value == 9)
         {
-            emitLoadAddMulCstRegMem(reg, reg, reg, 8, 0, CpuOp::LEA, std::max(opBits, OpBits::B32));
+            emitLoadAddMulCstRegMem(reg, std::max(opBits, OpBits::B32), reg, reg, 8, 0, CpuOp::LEA, std::max(opBits, OpBits::B32));
             return;
         }
 
