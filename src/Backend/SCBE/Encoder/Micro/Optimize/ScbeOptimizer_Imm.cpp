@@ -17,56 +17,92 @@ void ScbeOptimizer::optimizePassImmediate(const ScbeMicro& out)
             mapRegInst.clear();
         }
 
-        if (inst->op == ScbeMicroOp::LoadMI)
+        switch (inst->op)
         {
-            const auto stackOffset = inst->getStackOffsetWrite();
-            if (out.cpuFct->isStackOffsetTransient(stackOffset))
-                mapValInst[stackOffset] = inst;
-        }
-        else if (inst->op == ScbeMicroOp::LoadRI)
-        {
-            mapRegInst[inst->regA] = inst;
-        }
-        else if (inst->op == ScbeMicroOp::LoadRM)
-        {
-            mapRegInst.erase(inst->regA);
-            const auto stackOffset = inst->getStackOffsetRead();
-            if (mapValInst.contains(stackOffset) &&
-                out.cpu->encodeLoadRegImm(inst->regA, mapValInst[stackOffset]->valueB, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+            case ScbeMicroOp::LoadMI:
             {
-                setOp(inst, ScbeMicroOp::LoadRI);
-                setValueA(inst, mapValInst[stackOffset]->valueB);
+                const auto stackOffset = inst->getStackOffsetWrite();
+                if (out.cpuFct->isStackOffsetTransient(stackOffset))
+                    mapValInst[stackOffset] = inst;
+                break;
             }
-        }
-        else if (inst->op == ScbeMicroOp::LoadRR)
-        {
-            mapRegInst.erase(inst->regA);
-            if (mapRegInst.contains(inst->regB) &&
-                out.cpu->encodeLoadRegImm(inst->regA, mapRegInst[inst->regB]->valueA, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
-            {
-                setOp(inst, ScbeMicroOp::LoadRI);
-                setValueA(inst, mapRegInst[inst->regB]->valueA);
-            }
-        }
-        else if (inst->op == ScbeMicroOp::LoadMR)
-        {
-            mapValInst.erase(inst->valueA);
-            if (mapRegInst.contains(inst->regB) &&
-                out.cpu->encodeLoadMemImm(inst->regA, inst->valueA, mapRegInst[inst->regB]->valueA, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
-            {
-                setOp(inst, ScbeMicroOp::LoadMI);
-                setValueB(inst, mapRegInst[inst->regB]->valueA);
-            }
-        }
-        else
-        {
-            const auto stackOffset = inst->getStackOffsetWrite();
-            if (out.cpuFct->isStackOffsetTransient(stackOffset))
-                mapValInst.erase(stackOffset);
 
-            const auto writeRegs = out.cpu->getWriteRegisters(inst);
-            for (const auto r : writeRegs)
-                mapRegInst.erase(r);
+            case ScbeMicroOp::LoadRI:
+                mapRegInst[inst->regA] = inst;
+                break;
+
+            case ScbeMicroOp::LoadRM:
+            {
+                mapRegInst.erase(inst->regA);
+                const auto stackOffset = inst->getStackOffsetRead();
+                if (mapValInst.contains(stackOffset) &&
+                    out.cpu->encodeLoadRegImm(inst->regA, mapValInst[stackOffset]->valueB, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+                {
+                    setOp(inst, ScbeMicroOp::LoadRI);
+                    setValueA(inst, mapValInst[stackOffset]->valueB);
+                }
+                break;
+            }
+
+            case ScbeMicroOp::LoadRR:
+                mapRegInst.erase(inst->regA);
+                if (mapRegInst.contains(inst->regB) &&
+                    out.cpu->encodeLoadRegImm(inst->regA, mapRegInst[inst->regB]->valueA, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+                {
+                    setOp(inst, ScbeMicroOp::LoadRI);
+                    setValueA(inst, mapRegInst[inst->regB]->valueA);
+                }
+                break;
+
+            case ScbeMicroOp::CmpRR:
+                if (mapRegInst.contains(inst->regB) &&
+                    out.cpu->encodeCmpRegImm(inst->regA, mapRegInst[inst->regB]->valueA, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+                {
+                    // out.print();
+                    // setOp(inst, ScbeMicroOp::LoadRI);
+                    // setValueA(inst, mapRegInst[inst->regB]->valueA);
+                }
+                break;
+
+            case ScbeMicroOp::CmpMR:
+                if (mapRegInst.contains(inst->regB) &&
+                    out.cpu->encodeCmpMemImm(inst->regA, inst->valueA, mapRegInst[inst->regB]->valueA, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+                {
+                    // setOp(inst, ScbeMicroOp::LoadRI);
+                    // setValueA(inst, mapRegInst[inst->regB]->valueA);
+                }
+                break;
+
+            case ScbeMicroOp::OpBinaryRR:
+                mapRegInst.erase(inst->regA);
+                if (mapRegInst.contains(inst->regB) &&
+                    out.cpu->encodeOpBinaryRegImm(inst->regA, mapRegInst[inst->regB]->valueA, inst->cpuOp, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+                {
+                    // setOp(inst, ScbeMicroOp::LoadRI);
+                    // setValueA(inst, mapRegInst[inst->regB]->valueA);
+                }
+                break;
+
+            case ScbeMicroOp::LoadMR:
+                mapValInst.erase(inst->valueA);
+                if (mapRegInst.contains(inst->regB) &&
+                    out.cpu->encodeLoadMemImm(inst->regA, inst->valueA, mapRegInst[inst->regB]->valueA, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+                {
+                    setOp(inst, ScbeMicroOp::LoadMI);
+                    setValueB(inst, mapRegInst[inst->regB]->valueA);
+                }
+                break;
+            
+            default:
+            {
+                const auto stackOffset = inst->getStackOffsetWrite();
+                if (out.cpuFct->isStackOffsetTransient(stackOffset))
+                    mapValInst.erase(stackOffset);
+
+                const auto writeRegs = out.cpu->getWriteRegisters(inst);
+                for (const auto r : writeRegs)
+                    mapRegInst.erase(r);
+            }
         }
 
         inst = ScbeMicro::getNextInstruction(inst);
