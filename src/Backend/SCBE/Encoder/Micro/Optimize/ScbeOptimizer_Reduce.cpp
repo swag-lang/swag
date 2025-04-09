@@ -182,6 +182,29 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
 
     switch (inst->op)
     {
+        case ScbeMicroOp::LoadAddr:
+            if (next->op == ScbeMicroOp::OpBinaryRR &&
+                next->cpuOp == CpuOp::ADD &&
+                next->regB == inst->regA &&
+                next->opBitsA == inst->opBitsA &&
+                !ScbeMicro::getNextFlagSensitive(next)->isJumpCond() && // :x64optimoverflow
+                out.cpu->encodeLoadAddMulCstRegMem(next->regA, inst->opBitsA, next->regA, inst->regA, 1, inst->valueA, CpuOp::LEA, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+            {
+                next->op      = ScbeMicroOp::LoadAddMulCstRM;
+                next->cpuOp   = CpuOp::LEA;
+                next->opBitsB = inst->opBitsA;
+                next->valueA  = 1;
+                next->valueB  = inst->valueA;
+                next->regB    = next->regA;
+                next->regC    = inst->regB;
+                if (next->regA == inst->regA)
+                    ignore(out, inst);
+                else
+                    swapInstruction(out, inst, next);
+                break;
+            }
+            break;
+
         case ScbeMicroOp::LoadAddMulCstRM:
             if (inst->regB == CpuReg::Max &&
                 inst->valueB == 0 &&
