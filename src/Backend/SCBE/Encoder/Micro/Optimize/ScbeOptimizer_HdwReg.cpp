@@ -148,22 +148,31 @@ void ScbeOptimizer::optimizePassAliasHdwReg(const ScbeMicro& out)
     }
 }
 
+namespace
+{
+    bool isDeadHwdReg(const ScbeMicroInstruction* inst)
+    {
+        return inst->op == ScbeMicroOp::LoadAddr ||
+               inst->op == ScbeMicroOp::LoadAddMulCstRM ||
+               inst->op == ScbeMicroOp::LoadRR ||
+               inst->op == ScbeMicroOp::LoadRI ||
+               inst->op == ScbeMicroOp::LoadRM ||
+               inst->op == ScbeMicroOp::ClearR ||
+               inst->op == ScbeMicroOp::LoadCallParam ||
+               inst->op == ScbeMicroOp::LoadCallAddrParam ||
+               inst->op == ScbeMicroOp::LoadCallZeroExtParam ||
+               inst->op == ScbeMicroOp::LoadZeroExtRR ||
+               inst->op == ScbeMicroOp::LoadZeroExtRM ||
+               inst->op == ScbeMicroOp::LoadSignedExtRR ||
+               inst->op == ScbeMicroOp::LoadSignedExtRM;
+    }
+}
 void ScbeOptimizer::optimizePassDeadHdwReg2(const ScbeMicro& out)
 {
     auto inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {
-        if (inst->op == ScbeMicroOp::LoadAddr ||
-            inst->op == ScbeMicroOp::LoadAddMulCstRM ||
-            inst->op == ScbeMicroOp::LoadRR ||
-            inst->op == ScbeMicroOp::LoadRI ||
-            inst->op == ScbeMicroOp::LoadRM ||
-            inst->op == ScbeMicroOp::ClearR ||
-            //inst->op == ScbeMicroOp::OpBinaryRI ||
-            inst->op == ScbeMicroOp::LoadZeroExtRR ||
-            inst->op == ScbeMicroOp::LoadZeroExtRM ||
-            inst->op == ScbeMicroOp::LoadSignedExtRR ||
-            inst->op == ScbeMicroOp::LoadSignedExtRM)
+        if (isDeadHwdReg(inst))
         {
             bool hasRead  = false;
             cxt.startInst = inst;
@@ -213,14 +222,7 @@ void ScbeOptimizer::optimizePassDeadHdwReg(const ScbeMicro& out)
             mapRegInst.erase(r);
 
         auto legitReg = CpuReg::Max;
-        if (inst->op == ScbeMicroOp::LoadRR ||
-            inst->op == ScbeMicroOp::LoadRI ||
-            inst->op == ScbeMicroOp::LoadRM ||
-            inst->op == ScbeMicroOp::LoadAddr ||
-            inst->op == ScbeMicroOp::SymbolRelocAddr ||
-            inst->op == ScbeMicroOp::LoadZeroExtRM ||
-            inst->op == ScbeMicroOp::LoadSignedExtRM ||
-            inst->op == ScbeMicroOp::ClearR)
+        if (isDeadHwdReg(inst))
         {
             if (mapRegInst.contains(inst->regA))
                 ignore(out, mapRegInst[inst->regA]);
