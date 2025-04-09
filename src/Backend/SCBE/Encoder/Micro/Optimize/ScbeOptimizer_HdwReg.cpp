@@ -158,6 +158,8 @@ void ScbeOptimizer::optimizePassDeadHdwReg2(const ScbeMicro& out)
             inst->op == ScbeMicroOp::LoadRR ||
             inst->op == ScbeMicroOp::LoadRI ||
             inst->op == ScbeMicroOp::LoadRM ||
+            inst->op == ScbeMicroOp::ClearR ||
+            //inst->op == ScbeMicroOp::OpBinaryRI ||
             inst->op == ScbeMicroOp::LoadZeroExtRR ||
             inst->op == ScbeMicroOp::LoadZeroExtRM ||
             inst->op == ScbeMicroOp::LoadSignedExtRR ||
