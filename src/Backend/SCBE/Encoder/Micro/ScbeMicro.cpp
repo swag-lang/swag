@@ -672,7 +672,7 @@ void ScbeMicro::encode(ScbeCpu& encoder) const
                 break;
             case ScbeMicroOp::LoadCondRR:
                 encoder.emitLoadCondRegReg(inst->regA, inst->regB, inst->cpuCond, inst->opBitsA, inst->emitFlags);
-            break;            
+                break;
             case ScbeMicroOp::ClearR:
                 encoder.emitClearReg(inst->regA, inst->opBitsA, inst->emitFlags);
                 break;
@@ -724,25 +724,15 @@ ScbeMicroInstruction* ScbeMicro::getNextInstruction(ScbeMicroInstruction* inst)
     return inst;
 }
 
-ScbeMicroInstruction* ScbeMicro::getNextFlagSensitive(ScbeMicroInstruction* inst)
+ScbeMicroInstruction* ScbeMicro::getNextFlagSensitive(ScbeMicroInstruction* inst) const
 {
     inst++;
-    while (inst->op != ScbeMicroOp::End &&
-           inst->op == ScbeMicroOp::Label ||
-           inst->op == ScbeMicroOp::Debug ||
-           inst->op == ScbeMicroOp::Ignore ||
-           inst->op == ScbeMicroOp::LoadMI ||
-           inst->op == ScbeMicroOp::LoadMR ||
-           inst->op == ScbeMicroOp::LoadRI ||
-           inst->op == ScbeMicroOp::LoadRM ||
-           inst->op == ScbeMicroOp::LoadRR ||
-           inst->op == ScbeMicroOp::LoadAddr ||
-           inst->op == ScbeMicroOp::LoadAddMulCstRM ||
-           inst->op == ScbeMicroOp::LoadSignedExtRM ||
-           inst->op == ScbeMicroOp::LoadSignedExtRR ||
-           inst->op == ScbeMicroOp::LoadZeroExtRM ||
-           inst->op == ScbeMicroOp::LoadZeroExtRR)
+    while (true)
     {
+        if (inst->op == ScbeMicroOp::End || inst->isJump() || inst->isCall())
+            break;
+        if (cpu->doesReadFlags(inst) || cpu->doesWriteFlags(inst))
+            break;
         inst++;
     }
 

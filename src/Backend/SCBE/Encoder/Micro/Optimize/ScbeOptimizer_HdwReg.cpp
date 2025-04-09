@@ -183,7 +183,7 @@ void ScbeOptimizer::optimizePassDeadHdwReg2(const ScbeMicro& out)
                 inst->op == ScbeMicroOp::OpBinaryRM ||
                 inst->op == ScbeMicroOp::OpUnaryR)
             {
-                if (ScbeMicro::getNextFlagSensitive(inst)->isJumpCond())
+                if (out.getNextFlagSensitive(inst)->isJumpCond())
                 {
                     inst = ScbeMicro::getNextInstruction(inst);
                     continue;

@@ -244,8 +244,8 @@ struct ScbeCpu : BackendEncoder
     virtual RegisterSet getWriteRegisters(ScbeMicroInstruction* inst);
     RegisterSet         getReadWriteRegisters(ScbeMicroInstruction* inst);
 
-    virtual bool doesReadFlags(ScbeMicroInstruction* inst);
-    virtual bool doesWriteFlags(ScbeMicroInstruction* inst);
+    virtual bool doesReadFlags(ScbeMicroInstruction* inst) const;
+    virtual bool doesWriteFlags(ScbeMicroInstruction* inst) const;
 
     void emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CpuPushParam>& cpuParams, const CallConv* callConv);
     void emitComputeCallParameters(const TypeInfoFuncAttr* typeFuncBc, const VectorNative<CpuPushParam>& cpuParams, CpuReg memRegResult, uint32_t memOffsetResult, void* resultAddr);

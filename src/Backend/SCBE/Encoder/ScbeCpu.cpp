@@ -252,7 +252,7 @@ bool ScbeCpu::acceptsRegC(const ScbeMicroInstruction* inst, CpuReg reg)
     return true;
 }
 
-bool ScbeCpu::doesReadFlags(ScbeMicroInstruction* inst)
+bool ScbeCpu::doesReadFlags(ScbeMicroInstruction* inst) const
 {
     switch (inst->op)
     {
@@ -265,7 +265,7 @@ bool ScbeCpu::doesReadFlags(ScbeMicroInstruction* inst)
     return false;
 }
 
-bool ScbeCpu::doesWriteFlags(ScbeMicroInstruction* inst)
+bool ScbeCpu::doesWriteFlags(ScbeMicroInstruction* inst) const
 {
     switch (inst->op)
     {
