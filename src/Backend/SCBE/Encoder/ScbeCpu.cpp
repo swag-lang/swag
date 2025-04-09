@@ -251,3 +251,33 @@ bool ScbeCpu::acceptsRegC(const ScbeMicroInstruction* inst, CpuReg reg)
 {
     return true;
 }
+
+bool ScbeCpu::doesReadFlags(ScbeMicroInstruction* inst)
+{
+    switch (inst->op)
+    {
+        case ScbeMicroOp::LoadCondRR:
+        case ScbeMicroOp::SetCondR:
+        case ScbeMicroOp::JumpCond:
+            return true;
+    }
+
+    return false;
+}
+
+bool ScbeCpu::doesWriteFlags(ScbeMicroInstruction* inst)
+{
+    switch (inst->op)
+    {
+        case ScbeMicroOp::OpBinaryRI:
+        case ScbeMicroOp::OpBinaryRR:
+        case ScbeMicroOp::OpBinaryMI:
+        case ScbeMicroOp::OpBinaryMR:
+        case ScbeMicroOp::OpBinaryRM:
+        case ScbeMicroOp::OpUnaryR:
+        case ScbeMicroOp::OpUnaryM:
+            return true;
+    }
+
+    return false;
+}

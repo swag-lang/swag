@@ -42,7 +42,8 @@ bool ScbeMicroInstruction::isTest() const
            op == ScbeMicroOp::CmpRI ||
            op == ScbeMicroOp::CmpRR ||
            op == ScbeMicroOp::CmpMI ||
-           op == ScbeMicroOp::SetCond;
+           op == ScbeMicroOp::SetCondR ||
+           op == ScbeMicroOp::LoadCondRR;
 }
 
 uint32_t ScbeMicroInstruction::getStackOffsetRead() const

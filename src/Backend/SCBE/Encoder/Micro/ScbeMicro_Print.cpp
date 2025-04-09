@@ -508,7 +508,7 @@ void ScbeMicro::print() const
                 else
                     line.args = form("%s ptr [%s+0x%llX], 0x%llX", opBitsName(inst->opBitsA), regName(inst->regA, OpBits::B64), inst->valueA, inst->valueB);
                 break;
-            case ScbeMicroOp::SetCond:
+            case ScbeMicroOp::SetCondR:
                 line.name = form("set%s", cpuCondName(inst->cpuCond));
                 line.args = form("%s", regName(inst->regA, OpBits::B8));
                 break;

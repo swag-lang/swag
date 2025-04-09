@@ -310,7 +310,7 @@ CpuEncodeResult ScbeMicro::encodeClearReg(CpuReg reg, OpBits opBits, CpuEmitFlag
 
 CpuEncodeResult ScbeMicro::encodeSetCondReg(CpuReg reg, CpuCond setType, CpuEmitFlags emitFlags)
 {
-    const auto inst = addInstruction(ScbeMicroOp::SetCond, emitFlags);
+    const auto inst = addInstruction(ScbeMicroOp::SetCondR, emitFlags);
     inst->regA      = reg;
     inst->cpuCond   = setType;
     return CpuEncodeResult::Zero;
@@ -667,7 +667,7 @@ void ScbeMicro::encode(ScbeCpu& encoder) const
             case ScbeMicroOp::CmpMI:
                 encoder.emitCmpMemImm(inst->regA, inst->valueA, inst->valueB, inst->opBitsA, inst->emitFlags);
                 break;
-            case ScbeMicroOp::SetCond:
+            case ScbeMicroOp::SetCondR:
                 encoder.emitSetCondReg(inst->regA, inst->cpuCond, inst->emitFlags);
                 break;
             case ScbeMicroOp::LoadCondRR:
