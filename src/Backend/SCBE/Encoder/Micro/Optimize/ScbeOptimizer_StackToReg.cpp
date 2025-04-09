@@ -12,7 +12,7 @@ void ScbeOptimizer::optimizePassParamsKeepReg(const ScbeMicro& out)
         if (out.cpuFct->typeFunc->numParamsRegisters() <= i)
             break;
         const auto r = out.cc->paramsRegistersInteger[i];
-        if (usedRegs[r] != 1)
+        if (usedWriteRegs.contains(r))
             continue;
         if (out.cpuFct->typeFunc->registerIdxToType(i)->isNativeFloat())
             continue;
