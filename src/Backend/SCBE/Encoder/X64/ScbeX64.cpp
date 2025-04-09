@@ -756,12 +756,16 @@ CpuEncodeResult ScbeX64::encodeLoadAddMulCstRegMem(CpuReg regDst, OpBits opBitsD
             return CpuEncodeResult::NotSupported;
         if (addValue > 0x7FFFFFFF)
             return CpuEncodeResult::NotSupported;
+        if (isFloat(regSrc1) || isFloat(regSrc2))
+            return CpuEncodeResult::NotSupported;
+        if (isFloat(regDst) && opBitsDst != OpBits::B32 && opBitsDst != OpBits::B64)
+            return CpuEncodeResult::NotSupported;
         return CpuEncodeResult::Zero;
     }
 
     if (opBitsSrc == OpBits::B32)
         concat.addU8(0x67);
-    if (opBitsDst == OpBits::B16)
+    if (opBitsDst == OpBits::B16 || isFloat(regDst))
         concat.addU8(0x66);
 
     const bool b0 = (regDst >= CpuReg::R8 && regDst <= CpuReg::R15);
@@ -773,7 +777,27 @@ CpuEncodeResult ScbeX64::encodeLoadAddMulCstRegMem(CpuReg regDst, OpBits opBitsD
         concat.addU8(value);
     }
 
-    emitSpecCPUOp(concat, op, opBitsDst);
+    switch (op)
+    {
+        case CpuOp::LEA:
+            emitSpecCPUOp(concat, 0x8D, opBitsDst);
+            break;
+        case CpuOp::MOVSXD:
+            emitSpecCPUOp(concat, 0x63, opBitsDst);
+            break;
+        case CpuOp::MOV:
+            if (isFloat(regDst))
+            {
+                emitCPUOp(concat, 0x0F);
+                emitCPUOp(concat, 0x6E);
+            }
+            else
+                emitSpecCPUOp(concat, 0x8B, opBitsDst);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+    }
 
     if (regSrc1 == CpuReg::R13)
     {

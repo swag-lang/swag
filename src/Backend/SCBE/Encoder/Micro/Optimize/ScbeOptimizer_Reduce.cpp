@@ -199,6 +199,7 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
             }
 
             if (next->op == ScbeMicroOp::LoadRM &&
+                inst->cpuOp == CpuOp::LEA &&
                 next->regB == inst->regA &&
                 (next->regA != inst->regB || next->regA == inst->regA) &&
                 (next->regA != inst->regC || next->regA == inst->regA) &&
