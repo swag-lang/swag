@@ -205,6 +205,12 @@ bool ScbeCpu::acceptsRegA(const ScbeMicroInstruction* inst, CpuReg reg)
         case ScbeMicroOp::OpTernaryRRR:
             result = encodeOpTernaryRegRegReg(reg, inst->regB, inst->regC, inst->cpuOp, inst->opBitsA, EMIT_CanEncode);
             break;
+        case ScbeMicroOp::LoadZeroExtRR:
+            result = encodeLoadZeroExtendRegReg(reg, inst->regB, inst->opBitsA, inst->opBitsB, EMIT_CanEncode);
+            break;
+        case ScbeMicroOp::LoadSignedExtRR:
+            result = encodeLoadSignedExtendRegReg(reg, inst->regB, inst->opBitsA, inst->opBitsB, EMIT_CanEncode);
+            break;
     }
 
     return result == CpuEncodeResult::Zero;
@@ -223,6 +229,18 @@ bool ScbeCpu::acceptsRegB(const ScbeMicroInstruction* inst, CpuReg reg)
             break;
         case ScbeMicroOp::OpBinaryMR:
             result = encodeOpBinaryMemReg(inst->regA, inst->valueA, reg, inst->cpuOp, inst->opBitsA, EMIT_CanEncode);
+            break;
+        case ScbeMicroOp::LoadZeroExtRR:
+            result = encodeLoadZeroExtendRegReg(inst->regA, reg, inst->opBitsA, inst->opBitsB, EMIT_CanEncode);
+            break;
+        case ScbeMicroOp::LoadSignedExtRR:
+            result = encodeLoadSignedExtendRegReg(inst->regA, reg, inst->opBitsA, inst->opBitsB, EMIT_CanEncode);
+            break;
+        case ScbeMicroOp::LoadZeroExtRM:
+            result = encodeLoadZeroExtendRegMem(inst->regA, reg, inst->valueA, inst->opBitsA, inst->opBitsB, EMIT_CanEncode);
+            break;
+        case ScbeMicroOp::LoadSignedExtRM:
+            result = encodeLoadSignedExtendRegMem(inst->regA, reg, inst->valueA, inst->opBitsA, inst->opBitsB, EMIT_CanEncode);
             break;
     }
 

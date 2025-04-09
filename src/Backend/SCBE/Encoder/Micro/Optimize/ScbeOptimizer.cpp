@@ -372,7 +372,7 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
         return;
     if (!out.cpuFct->bc->sourceFile->module->mustOptimizeBackend(out.cpuFct->bc->node))
         return;
-
+    
     bool globalChanged = true;
     while (globalChanged)
     {
