@@ -154,6 +154,7 @@ void ScbeOptimizer::optimizePassDeadHdwReg2(const ScbeMicro& out)
     while (inst->op != ScbeMicroOp::End)
     {
         if (inst->op == ScbeMicroOp::LoadAddr ||
+            inst->op == ScbeMicroOp::LoadAddMulCstRM ||
             inst->op == ScbeMicroOp::LoadRR ||
             inst->op == ScbeMicroOp::LoadRI ||
             inst->op == ScbeMicroOp::LoadRM ||
