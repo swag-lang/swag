@@ -308,11 +308,21 @@ CpuEncodeResult ScbeMicro::encodeClearReg(CpuReg reg, OpBits opBits, CpuEmitFlag
     return CpuEncodeResult::Zero;
 }
 
-CpuEncodeResult ScbeMicro::encodeSetCond(CpuReg reg, CpuCondFlag setType, CpuEmitFlags emitFlags)
+CpuEncodeResult ScbeMicro::encodeSetCondReg(CpuReg reg, CpuCond setType, CpuEmitFlags emitFlags)
 {
-    const auto inst = addInstruction(ScbeMicroOp::SetCC, emitFlags);
+    const auto inst = addInstruction(ScbeMicroOp::SetCond, emitFlags);
     inst->regA      = reg;
     inst->cpuCond   = setType;
+    return CpuEncodeResult::Zero;
+}
+
+CpuEncodeResult ScbeMicro::encodeLoadCondRegReg(CpuReg regDst, CpuReg regSrc, CpuCond cpuCond, OpBits opBits, CpuEmitFlags emitFlags)
+{
+    const auto inst = addInstruction(ScbeMicroOp::LoadCondRR, emitFlags);
+    inst->regA      = regDst;
+    inst->regB      = regSrc;
+    inst->cpuCond   = cpuCond;
+    inst->opBitsA   = opBits;
     return CpuEncodeResult::Zero;
 }
 
@@ -447,7 +457,7 @@ CpuEncodeResult ScbeMicro::encodeJumpReg(CpuReg reg, CpuEmitFlags emitFlags)
 CpuEncodeResult ScbeMicro::encodeJump(CpuJump& jump, CpuCondJump jumpType, OpBits opBits, CpuEmitFlags emitFlags)
 {
     jump.offsetStart = concat.totalCount();
-    const auto inst  = addInstruction(ScbeMicroOp::JumpCC, emitFlags);
+    const auto inst  = addInstruction(ScbeMicroOp::JumpCond, emitFlags);
     inst->jumpType   = jumpType;
     inst->opBitsA    = opBits;
     return CpuEncodeResult::Zero;
@@ -587,7 +597,7 @@ void ScbeMicro::encode(ScbeCpu& encoder) const
             case ScbeMicroOp::JumpTable:
                 encoder.emitJumpTable(inst->regA, inst->regB, static_cast<int32_t>(inst->valueA), static_cast<uint32_t>(inst->valueB), inst->valueC, inst->emitFlags);
                 break;
-            case ScbeMicroOp::JumpCC:
+            case ScbeMicroOp::JumpCond:
             {
                 CpuJump jump;
                 encoder.emitJump(jump, inst->jumpType, inst->opBitsA, inst->emitFlags);
@@ -657,9 +667,12 @@ void ScbeMicro::encode(ScbeCpu& encoder) const
             case ScbeMicroOp::CmpMI:
                 encoder.emitCmpMemImm(inst->regA, inst->valueA, inst->valueB, inst->opBitsA, inst->emitFlags);
                 break;
-            case ScbeMicroOp::SetCC:
-                encoder.emitSetCond(inst->regA, inst->cpuCond, inst->emitFlags);
+            case ScbeMicroOp::SetCond:
+                encoder.emitSetCondReg(inst->regA, inst->cpuCond, inst->emitFlags);
                 break;
+            case ScbeMicroOp::LoadCondRR:
+                encoder.emitLoadCondRegReg(inst->regA, inst->regB, inst->cpuCond, inst->opBitsA, inst->emitFlags);
+            break;            
             case ScbeMicroOp::ClearR:
                 encoder.emitClearReg(inst->regA, inst->opBitsA, inst->emitFlags);
                 break;

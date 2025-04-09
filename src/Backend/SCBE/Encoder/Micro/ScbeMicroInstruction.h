@@ -5,7 +5,7 @@
 
 enum class OpBits : uint8_t;
 enum class CpuCondJump : uint8_t;
-enum class CpuCondFlag : uint8_t;
+enum class CpuCond : uint8_t;
 enum class CpuOp : uint8_t;
 enum class ScbeMicroOp : uint8_t;
 
@@ -57,7 +57,7 @@ struct ScbeMicroInstruction
 
     ScbeMicroOp op;
     CpuOp       cpuOp;
-    CpuCondFlag cpuCond;
+    CpuCond cpuCond;
     CpuCondJump jumpType;
 
     OpBits                    opBitsA;

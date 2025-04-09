@@ -304,7 +304,7 @@ void ScbeOptimizer::optimizePassDeadHdwRegBeforeLeave(const ScbeMicro& out)
                  inst->op == ScbeMicroOp::OpBinaryRI ||
                  inst->op == ScbeMicroOp::OpUnaryR ||
                  inst->op == ScbeMicroOp::ClearR ||
-                 inst->op == ScbeMicroOp::SetCC)
+                 inst->op == ScbeMicroOp::SetCond)
         {
             if ((!out.cpuFct->typeFunc->returnByValue() && !out.cpuFct->typeFunc->returnStructByValue()) ||
                 (inst->regA != out.cc->returnByRegisterInteger && inst->regA != out.cc->returnByRegisterFloat))

@@ -222,7 +222,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CastBool64:
                 opBits = ScbeCpu::getOpBits(ip->op);
                 pp.emitCmpMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), 0, opBits);
-                pp.emitSetCond(cc->computeRegI0, CpuCondFlag::NE);
+                pp.emitSetCondReg(cc->computeRegI0, CpuCond::NE);
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, OpBits::B8);
                 break;
 
@@ -791,7 +791,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
 
             case ByteCodeOp::ZeroToTrue:
                 pp.emitCmpMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B32);
-                pp.emitSetCond(cc->computeRegI0, CpuCondFlag::E);
+                pp.emitSetCondReg(cc->computeRegI0, CpuCond::E);
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, OpBits::B8);
                 break;
             case ByteCodeOp::LowerZeroToTrue:
@@ -801,12 +801,12 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
             case ByteCodeOp::LowerEqZeroToTrue:
                 pp.emitCmpMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B32);
-                pp.emitSetCond(cc->computeRegI0, CpuCondFlag::LE);
+                pp.emitSetCondReg(cc->computeRegI0, CpuCond::LE);
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, OpBits::B8);
                 break;
             case ByteCodeOp::GreaterZeroToTrue:
                 pp.emitCmpMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B32);
-                pp.emitSetCond(cc->computeRegI0, CpuCondFlag::G);
+                pp.emitSetCondReg(cc->computeRegI0, CpuCond::G);
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, OpBits::B8);
                 break;
             case ByteCodeOp::GreaterEqZeroToTrue:
@@ -822,7 +822,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOpGreaterS16:
             case ByteCodeOp::CompareOpGreaterS32:
             case ByteCodeOp::CompareOpGreaterS64:
-                emitCompareOp(pp, cc->computeRegI0, CpuCondFlag::G);
+                emitCompareOp(pp, cc->computeRegI0, CpuCond::G);
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, OpBits::B8);
                 break;
             case ByteCodeOp::CompareOpGreaterU8:
@@ -831,7 +831,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOpGreaterU64:
             case ByteCodeOp::CompareOpGreaterF32:
             case ByteCodeOp::CompareOpGreaterF64:
-                emitCompareOp(pp, cc->computeRegI0, CpuCondFlag::A);
+                emitCompareOp(pp, cc->computeRegI0, CpuCond::A);
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, OpBits::B8);
                 break;
 
@@ -839,7 +839,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOpGreaterEqS16:
             case ByteCodeOp::CompareOpGreaterEqS32:
             case ByteCodeOp::CompareOpGreaterEqS64:
-                emitCompareOp(pp, cc->computeRegI0, CpuCondFlag::GE);
+                emitCompareOp(pp, cc->computeRegI0, CpuCond::GE);
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, OpBits::B8);
                 break;
 
@@ -849,7 +849,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOpGreaterEqU64:
             case ByteCodeOp::CompareOpGreaterEqF32:
             case ByteCodeOp::CompareOpGreaterEqF64:
-                emitCompareOp(pp, cc->computeRegI0, CpuCondFlag::AE);
+                emitCompareOp(pp, cc->computeRegI0, CpuCond::AE);
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, OpBits::B8);
                 break;
 
@@ -859,7 +859,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOpLowerS16:
             case ByteCodeOp::CompareOpLowerS32:
             case ByteCodeOp::CompareOpLowerS64:
-                emitCompareOp(pp, cc->computeRegI0, CpuCondFlag::L);
+                emitCompareOp(pp, cc->computeRegI0, CpuCond::L);
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, OpBits::B8);
                 break;
 
@@ -869,7 +869,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOpLowerU64:
             case ByteCodeOp::CompareOpLowerF32:
             case ByteCodeOp::CompareOpLowerF64:
-                emitCompareOp(pp, cc->computeRegI0, CpuCondFlag::B);
+                emitCompareOp(pp, cc->computeRegI0, CpuCond::B);
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, OpBits::B8);
                 break;
 
@@ -877,7 +877,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOpLowerEqS16:
             case ByteCodeOp::CompareOpLowerEqS32:
             case ByteCodeOp::CompareOpLowerEqS64:
-                emitCompareOp(pp, cc->computeRegI0, CpuCondFlag::LE);
+                emitCompareOp(pp, cc->computeRegI0, CpuCond::LE);
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, OpBits::B8);
                 break;
 
@@ -887,7 +887,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOpLowerEqU64:
             case ByteCodeOp::CompareOpLowerEqF32:
             case ByteCodeOp::CompareOpLowerEqF64:
-                emitCompareOp(pp, cc->computeRegI0, CpuCondFlag::BE);
+                emitCompareOp(pp, cc->computeRegI0, CpuCond::BE);
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, OpBits::B8);
                 break;
 
@@ -897,10 +897,10 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOp3Way16:
             case ByteCodeOp::CompareOp3Way32:
             case ByteCodeOp::CompareOp3Way64:
-                emitCompareOp(pp, cc->computeRegI1, CpuCondFlag::G);
+                emitCompareOp(pp, cc->computeRegI1, CpuCond::G);
                 pp.emitLoadZeroExtendRegReg(cc->computeRegI1, cc->computeRegI1, OpBits::B32, OpBits::B8);
                 pp.emitLoadRegImm(cc->computeRegI0, 0xFFFFFFFF, OpBits::B32);
-                pp.emitOpBinaryRegReg(cc->computeRegI0, cc->computeRegI1, CpuOp::CMOVGE, OpBits::B32);
+                pp.emitLoadCondRegReg(cc->computeRegI0, cc->computeRegI1, CpuCond::GE, OpBits::B32);
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, OpBits::B32);
                 break;
 
@@ -910,11 +910,11 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 emitIMMA(pp, cc->computeRegF0, opBits);
                 emitIMMB(pp, cc->computeRegF1, opBits);
                 pp.emitCmpRegReg(cc->computeRegF0, cc->computeRegF1, opBits);
-                pp.emitSetCond(cc->computeRegI1, CpuCondFlag::A);
+                pp.emitSetCondReg(cc->computeRegI1, CpuCond::A);
                 pp.emitLoadZeroExtendRegReg(cc->computeRegI1, cc->computeRegI1, OpBits::B32, OpBits::B8);
                 pp.emitCmpRegReg(cc->computeRegF1, cc->computeRegF0, opBits);
                 pp.emitLoadRegImm(cc->computeRegI0, 0xFFFFFFFF, OpBits::B32);
-                pp.emitOpBinaryRegReg(cc->computeRegI0, cc->computeRegI1, CpuOp::CMOVBE, OpBits::B32);
+                pp.emitLoadCondRegReg(cc->computeRegI0, cc->computeRegI1, CpuCond::BE, OpBits::B32);
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, OpBits::B32);
                 break;
 
@@ -924,12 +924,12 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOpEqual16:
             case ByteCodeOp::CompareOpEqual32:
             case ByteCodeOp::CompareOpEqual64:
-                emitCompareOp(pp, cc->computeRegI0, CpuCondFlag::E);
+                emitCompareOp(pp, cc->computeRegI0, CpuCond::E);
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, OpBits::B8);
                 break;
             case ByteCodeOp::CompareOpEqualF32:
             case ByteCodeOp::CompareOpEqualF64:
-                emitCompareOp(pp, cc->computeRegI0, CpuCondFlag::EP);
+                emitCompareOp(pp, cc->computeRegI0, CpuCond::EP);
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, OpBits::B8);
                 break;
 
@@ -939,12 +939,12 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::CompareOpNotEqual16:
             case ByteCodeOp::CompareOpNotEqual32:
             case ByteCodeOp::CompareOpNotEqual64:
-                emitCompareOp(pp, cc->computeRegI0, CpuCondFlag::NE);
+                emitCompareOp(pp, cc->computeRegI0, CpuCond::NE);
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, OpBits::B8);
                 break;
             case ByteCodeOp::CompareOpNotEqualF32:
             case ByteCodeOp::CompareOpNotEqualF64:
-                emitCompareOp(pp, cc->computeRegI0, CpuCondFlag::NEP);
+                emitCompareOp(pp, cc->computeRegI0, CpuCond::NEP);
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, OpBits::B8);
                 break;
 
@@ -2127,14 +2127,14 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         emitIMMB(pp, cc->computeRegI0, opBits);
                         pp.emitOpBinaryRegReg(cc->computeRegI0, cc->computeRegI0, CpuOp::BSF, opBits);
                         pp.emitLoadRegImm(cc->computeRegI1, ScbeCpu::getNumBits(opBits), opBits);
-                        pp.emitOpBinaryRegReg(cc->computeRegI0, cc->computeRegI1, CpuOp::CMOVE, opBits);
+                        pp.emitLoadCondRegReg(cc->computeRegI0, cc->computeRegI1, CpuCond::E, opBits);
                         pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, opBits);
                         break;
                     case TokenId::IntrinsicBitCountLz:
                         emitIMMB(pp, cc->computeRegI0, opBits);
                         pp.emitOpBinaryRegReg(cc->computeRegI0, cc->computeRegI0, CpuOp::BSR, opBits);
                         pp.emitLoadRegImm(cc->computeRegI1, (ScbeCpu::getNumBits(opBits) * 2) - 1, opBits);
-                        pp.emitOpBinaryRegReg(cc->computeRegI0, cc->computeRegI1, CpuOp::CMOVE, opBits);
+                        pp.emitLoadCondRegReg(cc->computeRegI0, cc->computeRegI1, CpuCond::E, opBits);
                         pp.emitOpBinaryRegImm(cc->computeRegI0, ScbeCpu::getNumBits(opBits) - 1, CpuOp::XOR, opBits);
                         pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, opBits);
                         break;
@@ -2164,14 +2164,14 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         emitIMMB(pp, cc->computeRegI0, opBits);
                         emitIMMC(pp, cc->computeRegI1, opBits);
                         pp.emitCmpRegReg(cc->computeRegI1, cc->computeRegI0, opBits);
-                        pp.emitOpBinaryRegReg(cc->computeRegI0, cc->computeRegI1, CpuOp::CMOVL, opBits);
+                        pp.emitLoadCondRegReg(cc->computeRegI0, cc->computeRegI1, CpuCond::L, opBits);
                         pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, opBits);
                         break;
                     case TokenId::IntrinsicMax:
                         emitIMMB(pp, cc->computeRegI0, opBits);
                         emitIMMC(pp, cc->computeRegI1, opBits);
                         pp.emitCmpRegReg(cc->computeRegI0, cc->computeRegI1, opBits);
-                        pp.emitOpBinaryRegReg(cc->computeRegI0, cc->computeRegI1, CpuOp::CMOVL, opBits);
+                        pp.emitLoadCondRegReg(cc->computeRegI0, cc->computeRegI1, CpuCond::L, opBits);
                         pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, opBits);
                         break;
                     default:
@@ -2195,14 +2195,14 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         emitIMMB(pp, cc->computeRegI0, opBits);
                         emitIMMC(pp, cc->computeRegI1, opBits);
                         pp.emitCmpRegReg(cc->computeRegI1, cc->computeRegI0, opBits);
-                        pp.emitOpBinaryRegReg(cc->computeRegI0, cc->computeRegI1, CpuOp::CMOVB, opBits);
+                        pp.emitLoadCondRegReg(cc->computeRegI0, cc->computeRegI1, CpuCond::B, opBits);
                         pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, opBits);
                         break;
                     case TokenId::IntrinsicMax:
                         emitIMMB(pp, cc->computeRegI0, opBits);
                         emitIMMC(pp, cc->computeRegI1, opBits);
                         pp.emitCmpRegReg(cc->computeRegI0, cc->computeRegI1, opBits);
-                        pp.emitOpBinaryRegReg(cc->computeRegI0, cc->computeRegI1, CpuOp::CMOVB, opBits);
+                        pp.emitLoadCondRegReg(cc->computeRegI0, cc->computeRegI1, CpuCond::B, opBits);
                         pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, opBits);
                         break;
                     case TokenId::IntrinsicRol:

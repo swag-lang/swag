@@ -100,7 +100,7 @@ void Scbe::emitShiftRightArithmetic(ScbeCpu& pp)
         pp.emitLoadRegMem(cc->computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32);
         pp.emitLoadRegImm(cc->computeRegI0, ScbeCpu::getNumBits(opBits) - 1, OpBits::B32);
         pp.emitCmpRegImm(cc->computeRegI1, ScbeCpu::getNumBits(opBits) - 1, OpBits::B32);
-        pp.emitOpBinaryRegReg(cc->computeRegI1, cc->computeRegI0, CpuOp::CMOVG, opBits);
+        pp.emitLoadCondRegReg(cc->computeRegI1, cc->computeRegI0, CpuCond::G, opBits);
         emitIMMA(pp, cc->computeRegI0, opBits);
         pp.emitOpBinaryRegReg(cc->computeRegI0, cc->computeRegI1, CpuOp::SAR, opBits);
     }
@@ -123,7 +123,7 @@ void Scbe::emitShiftRightEqArithmetic(ScbeCpu& pp)
         pp.emitLoadRegMem(cc->computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32);
         pp.emitLoadRegImm(cc->computeRegI0, ScbeCpu::getNumBits(opBits) - 1, OpBits::B32);
         pp.emitCmpRegImm(cc->computeRegI1, ScbeCpu::getNumBits(opBits) - 1, OpBits::B32);
-        pp.emitOpBinaryRegReg(cc->computeRegI1, cc->computeRegI0, CpuOp::CMOVG, opBits);
+        pp.emitLoadCondRegReg(cc->computeRegI1, cc->computeRegI0, CpuCond::G, opBits);
         pp.emitLoadRegMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
         pp.emitOpBinaryMemReg(cc->computeRegI0, 0, cc->computeRegI1, CpuOp::SAR, opBits);
     }
@@ -151,7 +151,7 @@ void Scbe::emitShiftLogical(ScbeCpu& pp, CpuOp op)
         pp.emitOpBinaryRegReg(cc->computeRegI0, cc->computeRegI1, op, opBits);
         pp.emitClearReg(cc->computeRegI2, opBits);
         pp.emitCmpRegImm(cc->computeRegI1, ScbeCpu::getNumBits(opBits) - 1, OpBits::B32);
-        pp.emitOpBinaryRegReg(cc->computeRegI0, cc->computeRegI2, CpuOp::CMOVG, opBits);
+        pp.emitLoadCondRegReg(cc->computeRegI0, cc->computeRegI2, CpuCond::G, opBits);
         pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, opBits);
     }
 }
@@ -293,7 +293,7 @@ void Scbe::emitBinOpEqS(ScbeCpu& pp, CpuOp op)
     }
 }
 
-void Scbe::emitCompareOp(ScbeCpu& pp, CpuReg reg, CpuCondFlag cond)
+void Scbe::emitCompareOp(ScbeCpu& pp, CpuReg reg, CpuCond cond)
 {
     const auto cc     = pp.cc;
     const auto ip     = pp.ip;
@@ -318,7 +318,7 @@ void Scbe::emitCompareOp(ScbeCpu& pp, CpuReg reg, CpuCondFlag cond)
         pp.emitCmpRegReg(r0, r1, opBits);
     }
 
-    pp.emitSetCond(reg, cond);
+    pp.emitSetCondReg(reg, cond);
 }
 
 void Scbe::emitAddSubMul64(ScbeCpu& pp, uint64_t mulValue, CpuOp op)

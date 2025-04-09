@@ -48,41 +48,41 @@ namespace
         return "???";
     }
 
-    const char* cpuCondName(CpuCondFlag cond)
+    const char* cpuCondName(CpuCond cond)
     {
         switch (cond)
         {
-            case CpuCondFlag::A:
+            case CpuCond::A:
                 return "a";
-            case CpuCondFlag::O:
+            case CpuCond::O:
                 return "o";
-            case CpuCondFlag::AE:
+            case CpuCond::AE:
                 return "ae";
-            case CpuCondFlag::G:
+            case CpuCond::G:
                 return "g";
-            case CpuCondFlag::B:
+            case CpuCond::B:
                 return "b";
-            case CpuCondFlag::BE:
+            case CpuCond::BE:
                 return "be";
-            case CpuCondFlag::E:
+            case CpuCond::E:
                 return "e";
-            case CpuCondFlag::EP:
+            case CpuCond::EP:
                 return "ep";
-            case CpuCondFlag::GE:
+            case CpuCond::GE:
                 return "ge";
-            case CpuCondFlag::L:
+            case CpuCond::L:
                 return "l";
-            case CpuCondFlag::LE:
+            case CpuCond::LE:
                 return "le";
-            case CpuCondFlag::NA:
+            case CpuCond::NA:
                 return "na";
-            case CpuCondFlag::NE:
+            case CpuCond::NE:
                 return "ne";
-            case CpuCondFlag::P:
+            case CpuCond::P:
                 return "p";
-            case CpuCondFlag::NP:
+            case CpuCond::NP:
                 return "np";
-            case CpuCondFlag::NEP:
+            case CpuCond::NEP:
                 return "nep";
         }
 
@@ -127,18 +127,6 @@ namespace
                 return "xor";
             case CpuOp::NEG:
                 return "neg";
-            case CpuOp::CMOVE:
-                return "cmove";
-            case CpuOp::CMOVG:
-                return "cmovg";
-            case CpuOp::CMOVGE:
-                return "cmovge";
-            case CpuOp::CMOVB:
-                return "cmovb";
-            case CpuOp::CMOVBE:
-                return "cmovbe";
-            case CpuOp::CMOVL:
-                return "cmovl";
             case CpuOp::POPCNT:
                 return "popcnt";
             case CpuOp::MULADD:
@@ -396,7 +384,7 @@ void ScbeMicro::print() const
                 line.name = "jump";
                 line.args = form("[%s]", regName(inst->regA, OpBits::B64));
                 break;
-            case ScbeMicroOp::JumpCC:
+            case ScbeMicroOp::JumpCond:
             case ScbeMicroOp::JumpCI:
                 line.name = jumpTypeName(inst->jumpType);
                 line.args = form("%08d", inst->valueB);
@@ -415,6 +403,10 @@ void ScbeMicro::print() const
                 break;
             case ScbeMicroOp::LoadRR:
                 line.name = "mov";
+                line.args = form("%s, %s", regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsA));
+                break;
+            case ScbeMicroOp::LoadCondRR:
+                line.name = form("cmov%s", cpuCondName(inst->cpuCond));
                 line.args = form("%s, %s", regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsA));
                 break;
             case ScbeMicroOp::LoadRI64:
@@ -516,7 +508,7 @@ void ScbeMicro::print() const
                 else
                     line.args = form("%s ptr [%s+0x%llX], 0x%llX", opBitsName(inst->opBitsA), regName(inst->regA, OpBits::B64), inst->valueA, inst->valueB);
                 break;
-            case ScbeMicroOp::SetCC:
+            case ScbeMicroOp::SetCond:
                 line.name = form("set%s", cpuCondName(inst->cpuCond));
                 line.args = form("%s", regName(inst->regA, OpBits::B8));
                 break;

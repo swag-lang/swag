@@ -947,53 +947,53 @@ CpuEncodeResult ScbeX64::encodeClearReg(CpuReg reg, OpBits opBits, CpuEmitFlags 
 
 /////////////////////////////////////////////////////////////////////
 
-CpuEncodeResult ScbeX64::encodeSetCond(CpuReg reg, CpuCondFlag setType, CpuEmitFlags emitFlags)
+CpuEncodeResult ScbeX64::encodeSetCondReg(CpuReg reg, CpuCond cpuCond, CpuEmitFlags emitFlags)
 {
     emitREX(concat, OpBits::B8, REX_REG_NONE, reg);
     emitCPUOp(concat, 0x0F);
 
-    switch (setType)
+    switch (cpuCond)
     {
-        case CpuCondFlag::A:
+        case CpuCond::A:
             emitCPUOp(concat, 0x97);
             break;
-        case CpuCondFlag::O:
+        case CpuCond::O:
             emitCPUOp(concat, 0x90);
             break;
-        case CpuCondFlag::AE:
+        case CpuCond::AE:
             emitCPUOp(concat, 0x93);
             break;
-        case CpuCondFlag::G:
+        case CpuCond::G:
             emitCPUOp(concat, 0x9F);
             break;
-        case CpuCondFlag::NE:
+        case CpuCond::NE:
             emitCPUOp(concat, 0x95);
             break;
-        case CpuCondFlag::NA:
+        case CpuCond::NA:
             emitCPUOp(concat, 0x96);
             break;
-        case CpuCondFlag::B:
+        case CpuCond::B:
             emitCPUOp(concat, 0x92);
             break;
-        case CpuCondFlag::BE:
+        case CpuCond::BE:
             emitCPUOp(concat, 0x96);
             break;
-        case CpuCondFlag::E:
+        case CpuCond::E:
             emitCPUOp(concat, 0x94);
             break;
-        case CpuCondFlag::GE:
+        case CpuCond::GE:
             emitCPUOp(concat, 0x9D);
             break;
-        case CpuCondFlag::L:
+        case CpuCond::L:
             emitCPUOp(concat, 0x9C);
             break;
-        case CpuCondFlag::LE:
+        case CpuCond::LE:
             emitCPUOp(concat, 0x9E);
             break;
-        case CpuCondFlag::P:
+        case CpuCond::P:
             emitCPUOp(concat, 0x9A);
             break;
-        case CpuCondFlag::NP:
+        case CpuCond::NP:
             emitCPUOp(concat, 0x9B);
             break;
         default:
@@ -1002,6 +1002,44 @@ CpuEncodeResult ScbeX64::encodeSetCond(CpuReg reg, CpuCondFlag setType, CpuEmitF
     }
 
     emitModRM(concat, MODRM_REG_0, reg);
+    return CpuEncodeResult::Zero;
+}
+
+CpuEncodeResult ScbeX64::encodeLoadCondRegReg(CpuReg regDst, CpuReg regSrc, CpuCond setType, OpBits opBits, CpuEmitFlags emitFlags)
+{
+    if (emitFlags.has(EMIT_CanEncode))
+        return CpuEncodeResult::Zero;
+
+    opBits = std::max(opBits, OpBits::B32);
+    emitREX(concat, opBits, regDst, regSrc);
+    emitCPUOp(concat, 0x0F);
+
+    switch (setType)
+    {
+        case CpuCond::B:
+            emitCPUOp(concat, 0x42);
+            break;
+        case CpuCond::E:
+            emitCPUOp(concat, 0x44);
+            break;
+        case CpuCond::G:
+            emitCPUOp(concat, 0x4F);
+            break;
+        case CpuCond::L:
+            emitCPUOp(concat, 0x4C);
+            break;
+        case CpuCond::BE:
+            emitCPUOp(concat, 0x46);
+            break;
+        case CpuCond::GE:
+            emitCPUOp(concat, 0x4D);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+    }
+
+    emitModRM(concat, regDst, regSrc);
     return CpuEncodeResult::Zero;
 }
 
@@ -1515,24 +1553,6 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
         emitREX(concat, opBits, regSrc, regDst);
         emitSpecCPUOp(concat, op, opBits);
         emitModRM(concat, regSrc, regDst);
-    }
-
-    ///////////////////////////////////////////
-
-    else if (op == CpuOp::CMOVB ||
-             op == CpuOp::CMOVE ||
-             op == CpuOp::CMOVG ||
-             op == CpuOp::CMOVL ||
-             op == CpuOp::CMOVBE ||
-             op == CpuOp::CMOVGE)
-    {
-        if (emitFlags.has(EMIT_CanEncode))
-            return CpuEncodeResult::Zero;
-        opBits = std::max(opBits, OpBits::B32);
-        emitREX(concat, opBits, regDst, regSrc);
-        emitCPUOp(concat, 0x0F);
-        emitCPUOp(concat, op);
-        emitModRM(concat, regDst, regSrc);
     }
 
     ///////////////////////////////////////////

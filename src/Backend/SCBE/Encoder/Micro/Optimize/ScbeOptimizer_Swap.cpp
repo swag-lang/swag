@@ -44,7 +44,7 @@ void ScbeOptimizer::optimizePassSwap(const ScbeMicro& out)
                 else
                 {
                     const auto next = ScbeMicro::getNextInstruction(inst);
-                    if (next->op != ScbeMicroOp::SetCC)
+                    if (next->op != ScbeMicroOp::SetCond)
                     {
                         swapInstruction(out, toMove, inst);
                         toMove = inst;

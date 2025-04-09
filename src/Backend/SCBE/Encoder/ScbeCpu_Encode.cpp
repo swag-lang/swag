@@ -409,27 +409,32 @@ void ScbeCpu::emitCmpRegImm(CpuReg reg, uint64_t value, OpBits opBits, CpuEmitFl
     Report::internalError(module, "emitCmpRegImm, cannot encode");
 }
 
-void ScbeCpu::emitSetCond(CpuReg reg, CpuCondFlag setType, CpuEmitFlags emitFlags)
+void ScbeCpu::emitSetCondReg(CpuReg reg, CpuCond cpuCond, CpuEmitFlags emitFlags)
 {
-    if (setType == CpuCondFlag::EP)
+    if (cpuCond == CpuCond::EP)
     {
         SWAG_ASSERT(reg != cc->computeRegI2);
-        emitSetCond(reg, CpuCondFlag::E, emitFlags);
-        emitSetCond(cc->computeRegI2, CpuCondFlag::NP, emitFlags);
+        emitSetCondReg(reg, CpuCond::E, emitFlags);
+        emitSetCondReg(cc->computeRegI2, CpuCond::NP, emitFlags);
         emitOpBinaryRegReg(reg, cc->computeRegI2, CpuOp::AND, OpBits::B8, emitFlags);
         return;
     }
 
-    if (setType == CpuCondFlag::NEP)
+    if (cpuCond == CpuCond::NEP)
     {
         SWAG_ASSERT(reg != cc->computeRegI2);
-        emitSetCond(reg, CpuCondFlag::NE, emitFlags);
-        emitSetCond(cc->computeRegI2, CpuCondFlag::P, emitFlags);
+        emitSetCondReg(reg, CpuCond::NE, emitFlags);
+        emitSetCondReg(cc->computeRegI2, CpuCond::P, emitFlags);
         emitOpBinaryRegReg(reg, cc->computeRegI2, CpuOp::OR, OpBits::B8, emitFlags);
         return;
     }
 
-    encodeSetCond(reg, setType, EMIT_Zero);
+    encodeSetCondReg(reg, cpuCond, EMIT_Zero);
+}
+
+void ScbeCpu::emitLoadCondRegReg(CpuReg regDst, CpuReg regSrc, CpuCond setType, OpBits opBits, CpuEmitFlags emitFlags)
+{
+    encodeLoadCondRegReg(regDst, regSrc, setType, opBits, emitFlags);
 }
 
 void ScbeCpu::emitClearReg(CpuReg reg, OpBits opBits, CpuEmitFlags emitFlags)

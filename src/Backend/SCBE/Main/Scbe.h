@@ -53,7 +53,7 @@ struct Scbe final : Backend
     static void emitShiftRightEqArithmetic(ScbeCpu& pp);
     static void emitShiftEqLogical(ScbeCpu& pp, CpuOp op);
     static void emitInternalPanic(ScbeCpu& pp, const char* msg);
-    static void emitCompareOp(ScbeCpu& pp, CpuReg reg, CpuCondFlag cond);
+    static void emitCompareOp(ScbeCpu& pp, CpuReg reg, CpuCond cond);
     static void emitBinOp(ScbeCpu& pp, CpuOp op, CpuEmitFlags emitFlags = EMIT_Zero);
     static void emitBinOpOverflow(ScbeCpu& pp, CpuOp op, SafetyMsg safetyMsg, TypeInfo* safetyType);
     static void emitBinOpEq(ScbeCpu& pp, uint32_t offset, CpuOp op, CpuEmitFlags emitFlags = EMIT_Zero);

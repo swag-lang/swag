@@ -17,13 +17,13 @@ bool ScbeMicroInstruction::isJump() const
     return op == ScbeMicroOp::JumpM ||
            op == ScbeMicroOp::JumpCI ||
            op == ScbeMicroOp::JumpTable ||
-           op == ScbeMicroOp::JumpCC;
+           op == ScbeMicroOp::JumpCond;
 }
 
 bool ScbeMicroInstruction::isJumpCond() const
 {
     return op == ScbeMicroOp::JumpCI ||
-           op == ScbeMicroOp::JumpCC;
+           op == ScbeMicroOp::JumpCond;
 }
 
 bool ScbeMicroInstruction::isCall() const
@@ -42,7 +42,7 @@ bool ScbeMicroInstruction::isTest() const
            op == ScbeMicroOp::CmpRI ||
            op == ScbeMicroOp::CmpRR ||
            op == ScbeMicroOp::CmpMI ||
-           op == ScbeMicroOp::SetCC;
+           op == ScbeMicroOp::SetCond;
 }
 
 uint32_t ScbeMicroInstruction::getStackOffsetRead() const
