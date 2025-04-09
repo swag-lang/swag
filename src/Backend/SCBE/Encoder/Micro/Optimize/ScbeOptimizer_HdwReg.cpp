@@ -159,7 +159,7 @@ namespace
                inst->op == ScbeMicroOp::LoadRM ||
                inst->op == ScbeMicroOp::ClearR ||
                inst->op == ScbeMicroOp::OpBinaryRI ||
-               //inst->op == ScbeMicroOp::OpBinaryRR ||
+               inst->op == ScbeMicroOp::OpBinaryRR ||
                inst->op == ScbeMicroOp::OpBinaryRM ||
                inst->op == ScbeMicroOp::OpUnaryR ||
                inst->op == ScbeMicroOp::LoadCallParam ||
@@ -178,6 +178,18 @@ void ScbeOptimizer::optimizePassDeadHdwReg2(const ScbeMicro& out)
     {
         if (isDeadHwdReg(inst))
         {
+            if (inst->op == ScbeMicroOp::OpBinaryRI ||
+                inst->op == ScbeMicroOp::OpBinaryRR ||
+                inst->op == ScbeMicroOp::OpBinaryRM ||
+                inst->op == ScbeMicroOp::OpUnaryR)
+            {
+                if (ScbeMicro::getNextFlagSensitive(inst)->isJumpCond())
+                {
+                    inst = ScbeMicro::getNextInstruction(inst);
+                    continue;
+                }
+            }
+
             bool hasRead  = false;
             cxt.startInst = inst;
 
