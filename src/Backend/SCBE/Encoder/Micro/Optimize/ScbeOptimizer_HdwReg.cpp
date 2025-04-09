@@ -158,6 +158,10 @@ namespace
                inst->op == ScbeMicroOp::LoadRI ||
                inst->op == ScbeMicroOp::LoadRM ||
                inst->op == ScbeMicroOp::ClearR ||
+               inst->op == ScbeMicroOp::OpBinaryRI ||
+               //inst->op == ScbeMicroOp::OpBinaryRR ||
+               inst->op == ScbeMicroOp::OpBinaryRM ||
+               inst->op == ScbeMicroOp::OpUnaryR ||
                inst->op == ScbeMicroOp::LoadCallParam ||
                inst->op == ScbeMicroOp::LoadCallAddrParam ||
                inst->op == ScbeMicroOp::LoadCallZeroExtParam ||
