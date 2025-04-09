@@ -152,7 +152,7 @@ namespace
             case CpuOp::LEA:
                 return "lea";
             case CpuOp::MOVSXD:
-                return "movsxd";            
+                return "movsxd";
 
             case CpuOp::CVTI2F:
                 return "cvtsi2f";
@@ -462,10 +462,7 @@ void ScbeMicro::print() const
                     line.args = form("%s, %s ptr [%s+0x%llX]", regName(inst->regA, OpBits::B64), opBitsName(inst->opBitsA), regName(inst->regB, OpBits::B64), inst->valueA);
                 break;
             case ScbeMicroOp::LoadAddMulCstRM:
-                if (inst->cpuOp == CpuOp::LEA)
-                    line.name = "lea";
-                else
-                    line.name = "mov";
+                line.name = cpuOpName(inst->cpuOp);
                 if (inst->regB == CpuReg::Max && inst->valueA == 1 && inst->valueB == 0)
                     line.args = form("%s, %s ptr [%s]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsA), regName(inst->regC, inst->opBitsB));
                 else if (inst->regB == CpuReg::Max && inst->valueB == 0)
