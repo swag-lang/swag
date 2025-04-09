@@ -803,7 +803,7 @@ CpuEncodeResult ScbeX64::encodeLoadAddMulCstRegMem(CpuReg regDst, OpBits opBitsD
     else
     {
         emitSIB(concat, static_cast<uint8_t>(log2(mulValue)), encodeReg(regSrc2) & 0b111, encodeReg(regSrc1) & 0b111);
-        if (regSrc1 == CpuReg::R13 || (addValue != 0 && addValue <= 0x7F))
+        if (addValue <= 0x7F && (regSrc1 == CpuReg::R13 || addValue != 0))
             emitValue(concat, addValue, OpBits::B8);
         else if (addValue)
             emitValue(concat, addValue, OpBits::B32);
