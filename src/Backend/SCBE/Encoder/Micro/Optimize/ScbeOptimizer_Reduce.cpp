@@ -405,6 +405,21 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
                 setRegC(next, inst->regB);
                 break;
             }
+
+            if (next->op == ScbeMicroOp::LoadRI &&
+                inst->regA != inst->regB &&
+                inst->regB == next->regA)
+            {
+                const auto nextNext = ScbeMicro::getNextInstruction(next);
+                if (!nextNext->flags.has(MIF_JUMP_DEST) &&
+                    nextNext->op == ScbeMicroOp::LoadRR &&
+                    nextNext->regB == inst->regA)
+                {
+                    setRegB(nextNext, inst->regB);
+                    swapInstruction(out, next, nextNext);
+                    break;
+                }
+            }
             break;
 
         case ScbeMicroOp::OpBinaryRI:
