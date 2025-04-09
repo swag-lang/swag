@@ -3768,6 +3768,52 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
         }
     }
 
+    if (ip->hasFlag(BCI_IMM_A) &&
+        !ip->hasFlag(BCI_IMM_B) &&
+        !ip->hasFlag(BCI_IMM_C))
+    {
+        switch (ip->op)
+        {
+            case ByteCodeOp::BinOpMulS8:
+            case ByteCodeOp::BinOpMulU8:
+            case ByteCodeOp::BinOpMulS8_Safe:
+            case ByteCodeOp::BinOpMulU8_Safe:
+            case ByteCodeOp::BinOpMulS16:
+            case ByteCodeOp::BinOpMulU16:
+            case ByteCodeOp::BinOpMulS16_Safe:
+            case ByteCodeOp::BinOpMulU16_Safe:
+            case ByteCodeOp::BinOpMulS32:
+            case ByteCodeOp::BinOpMulU32:
+            case ByteCodeOp::BinOpMulS32_Safe:
+            case ByteCodeOp::BinOpMulU32_Safe:            
+            case ByteCodeOp::BinOpMulS64:
+            case ByteCodeOp::BinOpMulU64:
+            case ByteCodeOp::BinOpMulS64_Safe:
+            case ByteCodeOp::BinOpMulU64_Safe:
+            
+            case ByteCodeOp::BinOpPlusS8:
+            case ByteCodeOp::BinOpPlusU8:
+            case ByteCodeOp::BinOpPlusS8_Safe:
+            case ByteCodeOp::BinOpPlusU8_Safe:
+            case ByteCodeOp::BinOpPlusS16:
+            case ByteCodeOp::BinOpPlusU16:
+            case ByteCodeOp::BinOpPlusS16_Safe:
+            case ByteCodeOp::BinOpPlusU16_Safe:               
+            case ByteCodeOp::BinOpPlusS32:
+            case ByteCodeOp::BinOpPlusU32:
+            case ByteCodeOp::BinOpPlusS32_Safe:
+            case ByteCodeOp::BinOpPlusU32_Safe:
+            case ByteCodeOp::BinOpPlusS64:
+            case ByteCodeOp::BinOpPlusU64:
+            case ByteCodeOp::BinOpPlusS64_Safe:
+            case ByteCodeOp::BinOpPlusU64_Safe:               
+                std::swap(ip->a, ip->b);
+                ip->removeFlag(BCI_IMM_A);
+                ip->addFlag(BCI_IMM_B);
+                break;
+        }
+    }
+
     if (ip->hasFlag(BCI_IMM_B) &&
         !ip->hasFlag(BCI_IMM_A) &&
         !ip->hasFlag(BCI_IMM_C) &&
@@ -3826,6 +3872,7 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
                     ip->a.u32    = ip->c.u32;
                     ip->b.u32    = s;
                     ip->removeFlag(BCI_IMM_B);
+                    break;
                 }
                 break;
 

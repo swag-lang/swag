@@ -55,21 +55,20 @@ void ScbeOptimizer::optimizePassImmediate(const ScbeMicro& out)
                 break;
 
             case ScbeMicroOp::CmpRR:
-                if (mapRegInst.contains(inst->regB) &&
+                /*if (mapRegInst.contains(inst->regB) &&
                     out.cpu->encodeCmpRegImm(inst->regA, mapRegInst[inst->regB]->valueA, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
                 {
-                    // out.print();
-                    // setOp(inst, ScbeMicroOp::LoadRI);
-                    // setValueA(inst, mapRegInst[inst->regB]->valueA);
-                }
+                    setOp(inst, ScbeMicroOp::CmpRI);
+                    setValueA(inst, mapRegInst[inst->regB]->valueA);
+                }*/
                 break;
 
             case ScbeMicroOp::CmpMR:
                 if (mapRegInst.contains(inst->regB) &&
                     out.cpu->encodeCmpMemImm(inst->regA, inst->valueA, mapRegInst[inst->regB]->valueA, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
                 {
-                    // setOp(inst, ScbeMicroOp::LoadRI);
-                    // setValueA(inst, mapRegInst[inst->regB]->valueA);
+                    setOp(inst, ScbeMicroOp::CmpMI);
+                    setValueB(inst, mapRegInst[inst->regB]->valueA);
                 }
                 break;
 
@@ -78,8 +77,8 @@ void ScbeOptimizer::optimizePassImmediate(const ScbeMicro& out)
                 if (mapRegInst.contains(inst->regB) &&
                     out.cpu->encodeOpBinaryRegImm(inst->regA, mapRegInst[inst->regB]->valueA, inst->cpuOp, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
                 {
-                    // setOp(inst, ScbeMicroOp::LoadRI);
-                    // setValueA(inst, mapRegInst[inst->regB]->valueA);
+                    setOp(inst, ScbeMicroOp::OpBinaryRI);
+                    setValueA(inst, mapRegInst[inst->regB]->valueA);
                 }
                 break;
 
