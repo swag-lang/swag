@@ -2003,6 +2003,8 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
 
     else
     {
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::NotSupported;
         Report::internalError(module, "encodeOpBinaryRegImm, cannot encode");
     }
 
