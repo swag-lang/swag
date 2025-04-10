@@ -55,12 +55,12 @@ void ScbeOptimizer::optimizePassImmediate(const ScbeMicro& out)
                 break;
 
             case ScbeMicroOp::CmpRR:
-                /*if (mapRegInst.contains(inst->regB) &&
+                if (mapRegInst.contains(inst->regB) &&
                     out.cpu->encodeCmpRegImm(inst->regA, mapRegInst[inst->regB]->valueA, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
                 {
                     setOp(inst, ScbeMicroOp::CmpRI);
                     setValueA(inst, mapRegInst[inst->regB]->valueA);
-                }*/
+                }
                 break;
 
             case ScbeMicroOp::CmpMR:
@@ -91,7 +91,7 @@ void ScbeOptimizer::optimizePassImmediate(const ScbeMicro& out)
                     setValueB(inst, mapRegInst[inst->regB]->valueA);
                 }
                 break;
-            
+
             default:
             {
                 const auto stackOffset = inst->getStackOffsetWrite();
