@@ -72,6 +72,7 @@ struct ScbeOptimizer
     ScbeCpu*                                 encoder = nullptr;
     Map<uint64_t, std::pair<CpuReg, OpBits>> mapValReg;
     Map<CpuReg, uint64_t>                    mapRegVal;
+    Map<uint64_t, uint64_t>                  mapValVal;
     Map<uint64_t, ScbeMicroInstruction*>     mapValInst;
     Map<CpuReg, ScbeMicroInstruction*>       mapRegInst;
     bool                                     passHasDoneSomething = false;
