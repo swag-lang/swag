@@ -89,6 +89,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     pp.symPI_processInfos   = ppCPU.symPI_processInfos;
     pp.symPI_makeCallback   = ppCPU.symPI_makeCallback;
     pp.symCst_U64F64        = ppCPU.symCst_U64F64;
+    pp.module               = ppCPU.module;
 
     pp.emitEnter(sizeStack);
 
@@ -2140,14 +2141,9 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         break;
                     case TokenId::IntrinsicByteSwap:
                         SWAG_ASSERT(!ip->hasFlag(BCI_IMM_B));
-                        if (ip->a.u32 == ip->b.u32)
-                            pp.emitOpUnaryMem(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), CpuOp::BSWAP, opBits);
-                        else
-                        {
-                            emitIMMB(pp, cc->computeRegI0, opBits);
-                            pp.emitOpUnaryReg(cc->computeRegI0, CpuOp::BSWAP, opBits);
-                            pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, opBits);
-                        }
+                        emitIMMB(pp, cc->computeRegI0, opBits);
+                        pp.emitOpUnaryReg(cc->computeRegI0, CpuOp::BSWAP, opBits);
+                        pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, opBits);
                         break;
                     default:
                         ok = false;
