@@ -444,7 +444,14 @@ void ScbeCpu::emitClearReg(CpuReg reg, OpBits opBits, CpuEmitFlags emitFlags)
 
 void ScbeCpu::emitOpUnaryMem(CpuReg memReg, uint64_t memOffset, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
 {
-    encodeOpUnaryMem(memReg, memOffset, op, opBits, emitFlags);
+    const auto result = cpu->encodeOpUnaryMem(memReg, memOffset, op, opBits, EMIT_CanEncode);
+    if (result == CpuEncodeResult::Zero)
+    {
+        encodeOpUnaryMem(memReg, memOffset, op, opBits, emitFlags);
+        return;
+    }
+
+    Report::internalError(module, "emitOpUnaryMem, cannot encode");
 }
 
 void ScbeCpu::emitOpUnaryReg(CpuReg reg, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)

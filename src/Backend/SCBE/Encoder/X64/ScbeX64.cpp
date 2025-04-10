@@ -1214,7 +1214,8 @@ CpuEncodeResult ScbeX64::encodeOpUnaryMem(CpuReg memReg, uint64_t memOffset, Cpu
 
     if (op == CpuOp::NOT)
     {
-        SWAG_ASSERT(memReg == CpuReg::Rsp);
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::Zero;
         emitREX(concat, opBits);
         emitSpecCPUOp(concat, 0xF7, opBits);
         emitModRM(concat, memOffset, MODRM_REG_2, memReg);
@@ -1224,7 +1225,8 @@ CpuEncodeResult ScbeX64::encodeOpUnaryMem(CpuReg memReg, uint64_t memOffset, Cpu
 
     else if (op == CpuOp::NEG)
     {
-        SWAG_ASSERT(memReg == CpuReg::Rsp);
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::Zero;
         emitREX(concat, opBits);
         emitSpecCPUOp(concat, 0xF7, opBits);
         emitModRM(concat, memOffset, MODRM_REG_3, memReg);
@@ -1234,6 +1236,8 @@ CpuEncodeResult ScbeX64::encodeOpUnaryMem(CpuReg memReg, uint64_t memOffset, Cpu
 
     else
     {
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::NotSupported;
         Report::internalError(module, "encodeOpUnaryMem, cannot encode");
     }
 
@@ -1307,6 +1311,8 @@ CpuEncodeResult ScbeX64::encodeOpUnaryReg(CpuReg reg, CpuOp op, OpBits opBits, C
 
     else
     {
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::NotSupported;
         Report::internalError(module, "encodeOpUnaryReg, cannot encode");
     }
 
