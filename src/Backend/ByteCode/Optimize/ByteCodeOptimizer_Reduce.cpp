@@ -2406,6 +2406,15 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
             break;
 
         case ByteCodeOp::SetImmediate64:
+            if (ip[1].op == ByteCodeOp::IncJumpIfEqual64 &&
+                !ip[1].hasFlag(BCI_START_STMT) &&
+                ip[1].c.u64)
+            {
+                ip->b.u64 = 0;
+                setNop(context, ip + 1);
+                break;
+            }
+
             if (ip[1].op == ByteCodeOp::CopyRBtoRA8 &&
                 !ip[1].hasFlag(BCI_START_STMT) &&
                 ip->a.u32 == ip[1].b.u32)
@@ -3785,12 +3794,12 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
             case ByteCodeOp::BinOpMulS32:
             case ByteCodeOp::BinOpMulU32:
             case ByteCodeOp::BinOpMulS32_Safe:
-            case ByteCodeOp::BinOpMulU32_Safe:            
+            case ByteCodeOp::BinOpMulU32_Safe:
             case ByteCodeOp::BinOpMulS64:
             case ByteCodeOp::BinOpMulU64:
             case ByteCodeOp::BinOpMulS64_Safe:
             case ByteCodeOp::BinOpMulU64_Safe:
-            
+
             case ByteCodeOp::BinOpPlusS8:
             case ByteCodeOp::BinOpPlusU8:
             case ByteCodeOp::BinOpPlusS8_Safe:
@@ -3798,7 +3807,7 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
             case ByteCodeOp::BinOpPlusS16:
             case ByteCodeOp::BinOpPlusU16:
             case ByteCodeOp::BinOpPlusS16_Safe:
-            case ByteCodeOp::BinOpPlusU16_Safe:               
+            case ByteCodeOp::BinOpPlusU16_Safe:
             case ByteCodeOp::BinOpPlusS32:
             case ByteCodeOp::BinOpPlusU32:
             case ByteCodeOp::BinOpPlusS32_Safe:
@@ -3806,7 +3815,7 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
             case ByteCodeOp::BinOpPlusS64:
             case ByteCodeOp::BinOpPlusU64:
             case ByteCodeOp::BinOpPlusS64_Safe:
-            case ByteCodeOp::BinOpPlusU64_Safe:               
+            case ByteCodeOp::BinOpPlusU64_Safe:
                 std::swap(ip->a, ip->b);
                 ip->removeFlag(BCI_IMM_A);
                 ip->addFlag(BCI_IMM_B);

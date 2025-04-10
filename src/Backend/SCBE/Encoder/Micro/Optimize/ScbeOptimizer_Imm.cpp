@@ -32,7 +32,7 @@ void ScbeOptimizer::optimizePassImmediate(const ScbeMicro& out)
                 break;
             case ScbeMicroOp::ClearR:
                 mapRegVal[inst->regA] = 0;
-            break;            
+                break;
 
             case ScbeMicroOp::LoadRM:
             {
@@ -92,6 +92,13 @@ void ScbeOptimizer::optimizePassImmediate(const ScbeMicro& out)
                 {
                     setOp(inst, ScbeMicroOp::LoadMI);
                     setValueB(inst, mapRegVal[inst->regB]);
+                }
+                break;
+
+            case ScbeMicroOp::OpBinaryRI:
+                if (mapRegVal.contains(inst->regA))
+                {
+                    //out.print();
                 }
                 break;
 
