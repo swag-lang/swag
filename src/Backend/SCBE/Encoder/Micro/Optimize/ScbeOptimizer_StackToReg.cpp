@@ -48,6 +48,26 @@ void ScbeOptimizer::optimizePassStackToVolatileReg(const ScbeMicro& out)
                 memToReg(out, CpuReg::Rsp, offset, r);
                 return;
             }
+
+            /*if (!aliasStack.contains(out.cpuFct->getStackOffsetBC(), out.cpuFct->bc->stackSize))
+            {
+                for (const auto& offset : vec | std::views::keys)
+                {
+                    if (!out.cpuFct->isStackOffsetBC(offset))
+                        continue;
+
+                    out.print();
+                    const auto r = unusedVolatileInteger.first();
+                    unusedVolatileInteger.erase(r);
+                    memToReg(out, CpuReg::Rsp, offset, r);
+                    out.print();
+                    return;
+                }
+            }
+            else
+            {
+                out.print();
+            }*/
         }
 
         if (!unusedNonVolatileInteger.empty())

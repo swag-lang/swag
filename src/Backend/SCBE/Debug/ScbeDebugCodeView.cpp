@@ -519,7 +519,7 @@ namespace
             if (overload->hasFlag(OVERLOAD_RETVAL)) // Offset to register
                 concat.addU32(f->getStackOffsetParam(typeFunc->numParamsRegisters()));
             else
-                concat.addU32(f->getStackOffsetBCStack() + overload->computedValue.storageOffset);
+                concat.addU32(f->getStackOffsetBC() + overload->computedValue.storageOffset);
             emitSecRel(pp, f->symbolIndex, pp.symCOIndex, scope->backendStart);
             const auto endOffsetVar = scope->backendEnd == 0 ? f->endAddress : scope->backendEnd;
             concat.addU16(static_cast<uint16_t>(endOffsetVar - scope->backendStart)); // Range

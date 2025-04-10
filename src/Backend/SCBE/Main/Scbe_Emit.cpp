@@ -283,13 +283,13 @@ void Scbe::emitBinOpEqS(ScbeCpu& pp, CpuOp op)
     const auto opBits = ScbeCpu::getOpBits(ip->op);
     if (isInt && ip->hasFlag(BCI_IMM_B))
     {
-        pp.emitOpBinaryMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->a.u32, ip->b.u64, op, opBits);
+        pp.emitOpBinaryMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetBC() + ip->a.u32, ip->b.u64, op, opBits);
     }
     else
     {
         const auto r1 = isInt ? cc->computeRegI1 : cc->computeRegF1;
         emitIMMB(pp, r1, opBits);
-        pp.emitOpBinaryMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetBCStack() + ip->a.u32, r1, op, opBits);
+        pp.emitOpBinaryMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetBC() + ip->a.u32, r1, op, opBits);
     }
 }
 

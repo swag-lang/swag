@@ -14,6 +14,7 @@ impl Toto for A
 {
 }
 
+//#[Swag.PrintAsm]
 #test
 {
     var a: A

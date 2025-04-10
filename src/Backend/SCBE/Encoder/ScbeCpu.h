@@ -187,11 +187,12 @@ struct CpuFunction
 {
     uint32_t getStackOffsetParam(uint32_t paramIdx) const { return sizeStackCallParams + (paramIdx < cc->paramsRegistersInteger.size() ? offsetParamsAsRegisters : offsetCallerStackParams) + (paramIdx * sizeof(Register)); }
     uint32_t getStackOffsetCallerParam(uint32_t paramIdx) const { return sizeStackCallParams + offsetCallerStackParams + (paramIdx * sizeof(Register)); }
-    uint32_t getStackOffsetBCStack() const { return sizeStackCallParams + offsetByteCodeStack; }
+    uint32_t getStackOffsetBC() const { return sizeStackCallParams + offsetByteCodeStack; }
     uint32_t getStackOffsetReg(uint32_t reg) const { return sizeStackCallParams + (reg * sizeof(Register)); }
     uint32_t getStackOffsetRT(uint32_t reg) const { return sizeStackCallParams + offsetRT + (reg * sizeof(Register)); }
     uint32_t getStackOffsetResult() const { return sizeStackCallParams + offsetResult; }
     uint32_t getStackOffsetFLT() const { return sizeStackCallParams + offsetFLT; }
+    bool     isStackOffsetBC(uint32_t offset) const { return offset >= getStackOffsetBC() && offset < getStackOffsetBC() + bc->stackSize; }
     bool     isStackOffsetLocalParam(uint32_t offset) const { return !cc->paramsRegistersInteger.empty() && offset >= getStackOffsetParam(0) && offset <= getStackOffsetParam(cc->paramsRegistersInteger.size() - 1); }
     bool     isStackOffsetRT(uint32_t offset) const { return offset >= getStackOffsetRT(0) && offset <= getStackOffsetRT(1); }
     bool     isStackOffsetResult(uint32_t offset) const { return offset == getStackOffsetResult(); }

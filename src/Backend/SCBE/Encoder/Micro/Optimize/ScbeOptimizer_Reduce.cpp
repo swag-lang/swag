@@ -203,6 +203,26 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
                     swapInstruction(out, inst, next);
                 break;
             }
+
+            if (next->op == ScbeMicroOp::OpBinaryMI &&
+                inst->regA != inst->regB &&
+                next->regA == inst->regA &&
+                out.cpu->encodeOpBinaryMemImm(inst->regB, inst->valueA + next->valueA, next->valueB, next->cpuOp, next->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+            {
+                setRegA(next, inst->regB);
+                setValueA(next, inst->valueA + next->valueA);
+                break;
+            }
+
+            if (next->op == ScbeMicroOp::OpBinaryMR &&
+                inst->regA != inst->regB &&
+                next->regA == inst->regA &&
+                out.cpu->encodeOpBinaryMemReg(inst->regB, inst->valueA + next->valueA, next->regB, next->cpuOp, next->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+            {
+                setRegA(next, inst->regB);
+                setValueA(next, inst->valueA + next->valueA);
+                break;
+            }
             break;
 
         case ScbeMicroOp::LoadAddMulCstRM:
