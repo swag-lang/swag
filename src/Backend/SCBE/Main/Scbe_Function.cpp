@@ -2119,29 +2119,35 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, opBits);
                         break;
                     case TokenId::IntrinsicBitCountNz:
-                        emitIMMB(pp, cc->computeRegI0, opBits);
-                        pp.emitOpBinaryRegReg(cc->computeRegI0, cc->computeRegI0, CpuOp::POPCNT, opBits);
+                        SWAG_ASSERT(!ip->hasFlag(BCI_IMM_B));
+                        pp.emitOpBinaryRegMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), CpuOp::POPCNT, opBits);
                         pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, opBits);
                         break;
                     case TokenId::IntrinsicBitCountTz:
-                        emitIMMB(pp, cc->computeRegI0, opBits);
-                        pp.emitOpBinaryRegReg(cc->computeRegI0, cc->computeRegI0, CpuOp::BSF, opBits);
+                        SWAG_ASSERT(!ip->hasFlag(BCI_IMM_B));
+                        pp.emitOpBinaryRegMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), CpuOp::BSF, opBits);
                         pp.emitLoadRegImm(cc->computeRegI1, ScbeCpu::getNumBits(opBits), opBits);
                         pp.emitLoadCondRegReg(cc->computeRegI0, cc->computeRegI1, CpuCond::E, opBits);
                         pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, opBits);
                         break;
                     case TokenId::IntrinsicBitCountLz:
-                        emitIMMB(pp, cc->computeRegI0, opBits);
-                        pp.emitOpBinaryRegReg(cc->computeRegI0, cc->computeRegI0, CpuOp::BSR, opBits);
+                        SWAG_ASSERT(!ip->hasFlag(BCI_IMM_B));
+                        pp.emitOpBinaryRegMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), CpuOp::BSR, opBits);
                         pp.emitLoadRegImm(cc->computeRegI1, (ScbeCpu::getNumBits(opBits) * 2) - 1, opBits);
                         pp.emitLoadCondRegReg(cc->computeRegI0, cc->computeRegI1, CpuCond::E, opBits);
                         pp.emitOpBinaryRegImm(cc->computeRegI0, ScbeCpu::getNumBits(opBits) - 1, CpuOp::XOR, opBits);
                         pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, opBits);
                         break;
                     case TokenId::IntrinsicByteSwap:
-                        emitIMMB(pp, cc->computeRegI0, opBits);
-                        pp.emitOpUnaryReg(cc->computeRegI0, CpuOp::BSWAP, opBits);
-                        pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, opBits);
+                        SWAG_ASSERT(!ip->hasFlag(BCI_IMM_B));
+                        if (ip->a.u32 == ip->b.u32)
+                            pp.emitOpUnaryMem(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), CpuOp::BSWAP, opBits);
+                        else
+                        {
+                            emitIMMB(pp, cc->computeRegI0, opBits);
+                            pp.emitOpUnaryReg(cc->computeRegI0, CpuOp::BSWAP, opBits);
+                            pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, opBits);
+                        }
                         break;
                     default:
                         ok = false;

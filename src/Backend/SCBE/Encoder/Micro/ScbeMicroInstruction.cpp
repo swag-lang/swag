@@ -6,7 +6,7 @@ bool ScbeMicroInstruction::hasReadRegA() const
 {
     if (op == ScbeMicroOp::OpBinaryRR)
     {
-        if (cpuOp == CpuOp::BSR || cpuOp == CpuOp::BSF)
+        if (cpuOp == CpuOp::BSR || cpuOp == CpuOp::BSF || cpuOp == CpuOp::POPCNT)
             return false;
     }
 
