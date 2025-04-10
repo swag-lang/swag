@@ -902,7 +902,13 @@ CpuEncodeResult ScbeX64::encodeLoadMemReg(CpuReg memReg, uint64_t memOffset, Cpu
 
 CpuEncodeResult ScbeX64::encodeLoadMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, OpBits opBits, CpuEmitFlags emitFlags)
 {
-    if (opBits == OpBits::B64 && value > 0x7FFFFFFF && value >> 32 != 0xFFFFFFFF)
+    if (opBits == OpBits::B128)
+    {
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::Right2Reg;
+        Report::internalError(module, "encodeLoadMemImm, cannot encode");
+    }
+    else if (opBits == OpBits::B64 && value > 0x7FFFFFFF && value >> 32 != 0xFFFFFFFF)
     {
         if (emitFlags.has(EMIT_CanEncode))
             return CpuEncodeResult::Right2Reg;

@@ -30,6 +30,9 @@ void ScbeOptimizer::optimizePassImmediate(const ScbeMicro& out)
             case ScbeMicroOp::LoadRI:
                 mapRegVal[inst->regA] = inst->valueA;
                 break;
+            case ScbeMicroOp::ClearR:
+                mapRegVal[inst->regA] = 0;
+            break;            
 
             case ScbeMicroOp::LoadRM:
             {
