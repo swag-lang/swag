@@ -204,6 +204,16 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
                 break;
             }
 
+            if (next->op == ScbeMicroOp::CmpMI &&
+                inst->regA != inst->regB &&
+                next->regA == inst->regA &&
+                out.cpu->encodeCmpMemImm(inst->regB, inst->valueA + next->valueA, next->valueB, next->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+            {
+                setRegA(next, inst->regB);
+                setValueA(next, inst->valueA + next->valueA);
+                break;
+            }
+
             if (next->op == ScbeMicroOp::OpBinaryMI &&
                 inst->regA != inst->regB &&
                 next->regA == inst->regA &&
