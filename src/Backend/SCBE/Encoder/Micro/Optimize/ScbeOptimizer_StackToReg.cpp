@@ -18,7 +18,7 @@ void ScbeOptimizer::optimizePassParamsKeepReg(const ScbeMicro& out)
             continue;
 
         const auto offset = out.cpuFct->getStackOffsetParam(i);
-        if (takeAddressRsp.contains(offset))
+        if (aliasStack.contains(offset))
             continue;
 
         memToReg(out, CpuReg::Rsp, offset, r);
@@ -38,7 +38,7 @@ void ScbeOptimizer::optimizePassStackToVolatileReg(const ScbeMicro& out)
         {
             if (!out.cpuFct->isStackOffsetLocalParam(offset) && !out.cpuFct->isStackOffsetReg(offset))
                 continue;
-            if (takeAddressRsp.contains(offset))
+            if (aliasStack.contains(offset))
                 continue;
 
             const auto r = unusedVolatileInteger.first();
@@ -61,7 +61,7 @@ void ScbeOptimizer::optimizePassStackToVolatileReg(const ScbeMicro& out)
                 break;
             if (!out.cpuFct->isStackOffsetLocalParam(it.first) && !out.cpuFct->isStackOffsetReg(it.first))
                 continue;
-            if (takeAddressRsp.contains(it.first))
+            if (aliasStack.contains(it.first))
                 continue;
 
             const auto r = unusedNonVolatileInteger.first();

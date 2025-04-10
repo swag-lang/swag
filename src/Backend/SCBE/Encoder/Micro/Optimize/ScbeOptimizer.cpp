@@ -232,7 +232,7 @@ void ScbeOptimizer::computeContextRegs(const ScbeMicro& out)
 
 void ScbeOptimizer::computeContextStack(const ScbeMicro& out)
 {
-    takeAddressRsp.clear();
+    aliasStack.clear();
     usedStack.clear();
     rangeReadStack.clear();
     usedStackRanges.clear();
@@ -244,7 +244,7 @@ void ScbeOptimizer::computeContextStack(const ScbeMicro& out)
         if (stackOffset != UINT32_MAX)
         {
             if (inst->op == ScbeMicroOp::LoadAddr)
-                takeAddressRsp.push_back(stackOffset);
+                aliasStack.push_back(stackOffset);
 
             const uint32_t size = std::max(inst->getNumBytes(), static_cast<uint32_t>(1));
             if (!usedStack.contains(stackOffset))
@@ -258,8 +258,8 @@ void ScbeOptimizer::computeContextStack(const ScbeMicro& out)
                         hasAlias = true;
                     if (hasAlias)
                     {
-                        takeAddressRsp.push_back(stackOffset, size);
-                        takeAddressRsp.push_back(r, i);
+                        aliasStack.push_back(stackOffset, size);
+                        aliasStack.push_back(r, i);
                     }
                 }
 
