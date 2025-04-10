@@ -2,6 +2,48 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 
+bool ScbeMicroInstruction::hasReadRegA() const
+{
+    if (op == ScbeMicroOp::OpBinaryRR)
+    {
+        if (cpuOp == CpuOp::BSR || cpuOp == CpuOp::BSF)
+            return false;
+    }
+
+    return (hasLeftOpFlag(MOF_REG_A) && hasLeftOpFlag(MOF_READ_REG)) || (hasRightOpFlag(MOF_REG_A) && hasRightOpFlag(MOF_READ_REG));
+}
+
+bool ScbeMicroInstruction::hasReadRegB() const
+{
+    return (hasLeftOpFlag(MOF_REG_B) && hasLeftOpFlag(MOF_READ_REG)) || (hasRightOpFlag(MOF_REG_B) && hasRightOpFlag(MOF_READ_REG));
+}
+
+bool ScbeMicroInstruction::hasReadRegC() const
+{
+    return (hasLeftOpFlag(MOF_REG_C) && hasLeftOpFlag(MOF_READ_REG)) || (hasRightOpFlag(MOF_REG_C) && hasRightOpFlag(MOF_READ_REG));
+}
+
+bool ScbeMicroInstruction::hasWriteRegA() const
+{
+    return (hasLeftOpFlag(MOF_REG_A) && hasLeftOpFlag(MOF_WRITE_REG)) || (hasRightOpFlag(MOF_REG_A) && hasRightOpFlag(MOF_WRITE_REG));
+}
+
+bool ScbeMicroInstruction::hasWriteRegB() const
+{
+    if (op == ScbeMicroOp::OpBinaryMR || op == ScbeMicroOp::OpBinaryRR)
+    {
+        if (cpuOp == CpuOp::XCHG)
+            return true;
+    }
+
+    return (hasLeftOpFlag(MOF_REG_B) && hasLeftOpFlag(MOF_WRITE_REG)) || (hasRightOpFlag(MOF_REG_B) && hasRightOpFlag(MOF_WRITE_REG));
+}
+
+bool ScbeMicroInstruction::hasWriteRegC() const
+{
+    return (hasLeftOpFlag(MOF_REG_C) && hasLeftOpFlag(MOF_WRITE_REG)) || (hasRightOpFlag(MOF_REG_C) && hasRightOpFlag(MOF_WRITE_REG));
+}
+
 uint32_t ScbeMicroInstruction::getNumBytes() const
 {
     uint32_t size = 0;

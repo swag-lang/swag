@@ -24,12 +24,12 @@ struct ScbeMicroInstruction
     bool hasReadMemA() const { return (hasLeftOpFlag(MOF_VALUE_A) && hasLeftOpFlag(MOF_READ_MEM)) || (hasRightOpFlag(MOF_VALUE_A) && hasRightOpFlag(MOF_READ_MEM)); }
     bool hasReadMemB() const { return (hasLeftOpFlag(MOF_VALUE_B) && hasLeftOpFlag(MOF_READ_MEM)) || (hasRightOpFlag(MOF_VALUE_B) && hasRightOpFlag(MOF_READ_MEM)); }
 
-    bool hasReadRegA() const { return (hasLeftOpFlag(MOF_REG_A) && hasLeftOpFlag(MOF_READ_REG)) || (hasRightOpFlag(MOF_REG_A) && hasRightOpFlag(MOF_READ_REG)); }
-    bool hasReadRegB() const { return (hasLeftOpFlag(MOF_REG_B) && hasLeftOpFlag(MOF_READ_REG)) || (hasRightOpFlag(MOF_REG_B) && hasRightOpFlag(MOF_READ_REG)); }
-    bool hasReadRegC() const { return (hasLeftOpFlag(MOF_REG_C) && hasLeftOpFlag(MOF_READ_REG)) || (hasRightOpFlag(MOF_REG_C) && hasRightOpFlag(MOF_READ_REG)); }
-    bool hasWriteRegA() const { return (hasLeftOpFlag(MOF_REG_A) && hasLeftOpFlag(MOF_WRITE_REG)) || (hasRightOpFlag(MOF_REG_A) && hasRightOpFlag(MOF_WRITE_REG)); }
-    bool hasWriteRegB() const { return (op == ScbeMicroOp::OpBinaryMR && cpuOp == CpuOp::XCHG) || (hasLeftOpFlag(MOF_REG_B) && hasLeftOpFlag(MOF_WRITE_REG)) || (hasRightOpFlag(MOF_REG_B) && hasRightOpFlag(MOF_WRITE_REG)); }
-    bool hasWriteRegC() const { return (hasLeftOpFlag(MOF_REG_C) && hasLeftOpFlag(MOF_WRITE_REG)) || (hasRightOpFlag(MOF_REG_C) && hasRightOpFlag(MOF_WRITE_REG)); }
+    bool hasReadRegA() const;
+    bool hasReadRegB() const;
+    bool hasReadRegC() const;
+    bool hasWriteRegA() const;
+    bool hasWriteRegB() const;
+    bool hasWriteRegC() const;
     bool hasRegA() const { return (hasReadRegA() || hasWriteRegA()); }
     bool hasRegB() const { return (hasReadRegB() || hasWriteRegB()); }
     bool hasRegC() const { return (hasReadRegC() || hasWriteRegC()); }
@@ -57,7 +57,7 @@ struct ScbeMicroInstruction
 
     ScbeMicroOp op;
     CpuOp       cpuOp;
-    CpuCond cpuCond;
+    CpuCond     cpuCond;
     CpuCondJump jumpType;
 
     OpBits                    opBitsA;
