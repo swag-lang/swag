@@ -784,7 +784,7 @@ CpuEncodeResult ScbeX64::encodeLoadAddressMem(CpuReg reg, CpuReg memReg, uint64_
 
 namespace
 {
-    CpuEncodeResult encodeAmcRegMem(Concat& concat, CpuReg regDst, OpBits opBitsDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, CpuOp op, OpBits opBitsSrc, CpuEmitFlags emitFlags)
+    CpuEncodeResult encodeAmcRegMem(Concat& concat, CpuReg regDst, OpBits opBitsDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, OpBits opBitsSrc, CpuOp op, CpuEmitFlags emitFlags)
     {
         if (emitFlags.has(EMIT_CanEncode))
         {
@@ -823,10 +823,10 @@ namespace
         {
             case CpuOp::LEA:
                 emitSpecCPUOp(concat, 0x8D, opBitsDst);
-            break;
+                break;
             case CpuOp::MOVSXD:
                 emitSpecCPUOp(concat, 0x63, opBitsDst);
-            break;
+                break;
             case CpuOp::MOV:
                 if (ScbeCpu::isFloat(regDst))
                 {
@@ -835,10 +835,10 @@ namespace
                 }
                 else
                     emitSpecCPUOp(concat, 0x8B, opBitsDst);
-            break;
+                break;
             default:
                 SWAG_ASSERT(false);
-            break;
+                break;
         }
 
         if (regSrc1 == CpuReg::R13)
@@ -877,16 +877,27 @@ namespace
 
         return CpuEncodeResult::Zero;
     }
+
+    CpuEncodeResult encodeAmcMemReg(Concat& concat, CpuReg regDst1, CpuReg regDst2, uint64_t mulValue, uint64_t addValue, OpBits opBitsDst, CpuReg regSrc, OpBits opBitsSrc, CpuOp op, CpuEmitFlags emitFlags)
+    {
+        SWAG_ASSERT(false);
+        return CpuEncodeResult::Zero;
+    }
 }
 
 CpuEncodeResult ScbeX64::encodeLoadAmcRegMem(CpuReg regDst, OpBits opBitsDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, OpBits opBitsSrc, CpuEmitFlags emitFlags)
 {
-    return encodeAmcRegMem(concat, regDst, opBitsDst, regSrc1, regSrc2, mulValue, addValue, CpuOp::MOV, opBitsSrc, emitFlags);    
+    return encodeAmcRegMem(concat, regDst, opBitsDst, regSrc1, regSrc2, mulValue, addValue, opBitsSrc, CpuOp::MOV, emitFlags);
+}
+
+CpuEncodeResult ScbeX64::encodeLoadAmcMemReg(CpuReg regDst1, CpuReg regDst2, uint64_t mulValue, uint64_t addValue, OpBits opBitsDst, CpuReg regSrc, OpBits opBitsSrc, CpuEmitFlags emitFlags)
+{
+    return encodeAmcMemReg(concat, regDst1, regDst2, mulValue, addValue, opBitsDst, regSrc, opBitsSrc, CpuOp::MOV, emitFlags);
 }
 
 CpuEncodeResult ScbeX64::encodeLoadAddressAmcRegMem(CpuReg regDst, OpBits opBitsDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, OpBits opBitsSrc, CpuEmitFlags emitFlags)
 {
-    return encodeAmcRegMem(concat, regDst, opBitsDst, regSrc1, regSrc2, mulValue, addValue, CpuOp::LEA, opBitsSrc, emitFlags);    
+    return encodeAmcRegMem(concat, regDst, opBitsDst, regSrc1, regSrc2, mulValue, addValue, opBitsSrc, CpuOp::LEA, emitFlags);
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -1650,10 +1661,10 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
     {
         if (emitFlags.has(EMIT_CanEncode))
             return CpuEncodeResult::Zero;
-        emitREX(concat, opBits, regSrc, regDst); 
+        emitREX(concat, opBits, regSrc, regDst);
         emitSpecCPUOp(concat, 0x87, opBits);
         emitModRM(concat, regSrc, regDst);
-    }    
+    }
 
     ///////////////////////////////////////////
 
@@ -1700,7 +1711,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryMemReg(CpuReg memReg, uint64_t memOffset,
         if (emitFlags.has(EMIT_CanEncode))
             return CpuEncodeResult::NotSupported;
         Report::internalError(module, "encodeOpBinaryMemReg, cannot encode");
-    }    
+    }
     else if (memOffset > 0x7FFFFFFF)
     {
         if (emitFlags.has(EMIT_CanEncode))
@@ -2124,7 +2135,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryMemImm(CpuReg memReg, uint64_t memOffset,
         if (emitFlags.has(EMIT_CanEncode))
             return CpuEncodeResult::NotSupported;
         Report::internalError(module, "encodeOpBinaryMemImm, cannot encode");
-    }     
+    }
     else if (memOffset > 0x7FFFFFFF)
     {
         if (emitFlags.has(EMIT_CanEncode))
@@ -2500,7 +2511,7 @@ CpuEncodeResult ScbeX64::encodeJumpTable(CpuReg tableReg, CpuReg offsetReg, int3
     emitSymbolRelocationAddress(tableReg, symCSIndex, offsetTableConstant);
 
     // movsxd table, dword ptr [table + offset*4]
-    encodeAmcRegMem(concat, tableReg, OpBits::B64, tableReg, offsetReg, 4, 0, CpuOp::MOVSXD, OpBits::B64, emitFlags);
+    encodeAmcRegMem(concat, tableReg, OpBits::B64, tableReg, offsetReg, 4, 0, OpBits::B64, CpuOp::MOVSXD, emitFlags);
 
     const auto startIdx = concat.totalCount();
     emitSymbolRelocationAddress(offsetReg, cpuFct->symbolIndex, concat.totalCount() - cpuFct->startAddress);

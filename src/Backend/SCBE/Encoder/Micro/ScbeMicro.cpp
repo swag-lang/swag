@@ -279,6 +279,19 @@ CpuEncodeResult ScbeMicro::encodeLoadAmcRegMem(CpuReg regDst, OpBits opBitsDst, 
     return CpuEncodeResult::Zero;
 }
 
+CpuEncodeResult ScbeMicro::encodeLoadAmcMemReg(CpuReg regDst1, CpuReg regDst2, uint64_t mulValue, uint64_t addValue, OpBits opBitsDst, CpuReg regSrc, OpBits opBitsSrc, CpuEmitFlags emitFlags)
+{
+    const auto inst = addInstruction(ScbeMicroOp::LoadAmcMR, emitFlags);
+    inst->regA      = regDst1;
+    inst->regB      = regDst2;
+    inst->regC      = regSrc;
+    inst->valueA    = mulValue;
+    inst->valueB    = addValue;
+    inst->opBitsA   = opBitsDst;
+    inst->opBitsB   = opBitsSrc;
+    return CpuEncodeResult::Zero;
+}
+
 CpuEncodeResult ScbeMicro::encodeLoadAddressAmcRegMem(CpuReg regDst, OpBits opBitsDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, OpBits opBitsSrc, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::LoadAddrAmcRM, emitFlags);
@@ -658,12 +671,15 @@ void ScbeMicro::encode(ScbeCpu& encoder) const
             case ScbeMicroOp::LoadAddr:
                 encoder.emitLoadAddressMem(inst->regA, inst->regB, inst->valueA, inst->emitFlags);
                 break;
+            case ScbeMicroOp::LoadAmcMR:
+                encoder.emitLoadAmcMemReg(inst->regA, inst->regB, inst->valueA, inst->valueB, inst->opBitsA, inst->regC, inst->opBitsB, inst->emitFlags);
+                break;
             case ScbeMicroOp::LoadAmcRM:
                 encoder.emitLoadAmcRegMem(inst->regA, inst->opBitsA, inst->regB, inst->regC, inst->valueA, inst->valueB, inst->opBitsB, inst->emitFlags);
                 break;
             case ScbeMicroOp::LoadAddrAmcRM:
                 encoder.emitLoadAddressAmcRegMem(inst->regA, inst->opBitsA, inst->regB, inst->regC, inst->valueA, inst->valueB, inst->opBitsB, inst->emitFlags);
-            break;            
+                break;
             case ScbeMicroOp::LoadMR:
                 encoder.emitLoadMemReg(inst->regA, inst->valueA, inst->regB, inst->opBitsA, inst->emitFlags);
                 break;
