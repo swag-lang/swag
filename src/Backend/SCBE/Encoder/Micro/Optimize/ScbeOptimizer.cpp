@@ -375,6 +375,7 @@ void ScbeOptimizer::optimizeStep2(const ScbeMicro& out)
     optimizePassDeadRegBeforeLeave(out);
     optimizePassParamsKeepReg(out);
     optimizePassReduce2(out);
+    optimizePassStackToHwdReg(out);
 }
 
 void ScbeOptimizer::optimizeStep3(const ScbeMicro& out)
@@ -382,7 +383,6 @@ void ScbeOptimizer::optimizeStep3(const ScbeMicro& out)
     passHasDoneSomething = false;
     computeContextStack(out);
     
-    optimizePassStackToHwdReg(out);
     optimizePassDeadHdwReg2(out);
 }
 

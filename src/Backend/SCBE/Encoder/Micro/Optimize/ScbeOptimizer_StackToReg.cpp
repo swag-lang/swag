@@ -45,10 +45,11 @@ void ScbeOptimizer::optimizePassStackToHwdReg(const ScbeMicro& out)
                     continue;
 
                 const auto r = unusedVolatileInteger.first();
-                unusedVolatileInteger.erase(r);
-                if (!memToReg(out, CpuReg::Rsp, offset, r))
-                    out.print();
-                return;
+                if (memToReg(out, CpuReg::Rsp, offset, r))
+                {
+                    unusedVolatileInteger.erase(r);
+                    return;
+                }
             }
 
             if (!aliasStack.contains(out.cpuFct->getStackOffsetBC(), out.cpuFct->bc->stackSize))
@@ -58,21 +59,21 @@ void ScbeOptimizer::optimizePassStackToHwdReg(const ScbeMicro& out)
                     if (!out.cpuFct->isStackOffsetBC(offset))
                         continue;
 
-                    //if (out.cpuFct->bc->sourceFile->name.containsNoCase("r493."))
+                    // if (out.cpuFct->bc->sourceFile->name.containsNoCase("r493."))
                     {
-                        //out.print();
-                        //printf("x");
+                        // out.print();
+                        // printf("x");
                         /*const auto r = unusedVolatileInteger.first();
                         unusedVolatileInteger.erase(r);
                         memToReg(out, CpuReg::Rsp, offset, r);*/
-                        //out.print();
-                        return;
+                        // out.print();
+                        //return;
                     }
                 }
             }
             else
             {
-                //out.print();
+                // out.print();
             }
         }
 
@@ -88,9 +89,11 @@ void ScbeOptimizer::optimizePassStackToHwdReg(const ScbeMicro& out)
                     continue;
 
                 const auto r = unusedNonVolatileInteger.first();
-                unusedNonVolatileInteger.erase(r);
-                memToReg(out, CpuReg::Rsp, it.first, r);
-                return;
+                if (memToReg(out, CpuReg::Rsp, it.first, r))
+                {
+                    unusedNonVolatileInteger.erase(r);
+                    return;
+                }
             }
         }
     }
