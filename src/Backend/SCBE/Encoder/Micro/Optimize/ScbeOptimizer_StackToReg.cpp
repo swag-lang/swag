@@ -3,6 +3,7 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
+#include "Wmf/SourceFile.h"
 #pragma optimize("", off)
 
 void ScbeOptimizer::optimizePassParamsKeepReg(const ScbeMicro& out)
@@ -49,25 +50,28 @@ void ScbeOptimizer::optimizePassStackToVolatileReg(const ScbeMicro& out)
                 return;
             }
 
-            /*if (!aliasStack.contains(out.cpuFct->getStackOffsetBC(), out.cpuFct->bc->stackSize))
+            if (!aliasStack.contains(out.cpuFct->getStackOffsetBC(), out.cpuFct->bc->stackSize))
             {
                 for (const auto& offset : vec | std::views::keys)
                 {
                     if (!out.cpuFct->isStackOffsetBC(offset))
                         continue;
 
-                    out.print();
-                    const auto r = unusedVolatileInteger.first();
-                    unusedVolatileInteger.erase(r);
-                    memToReg(out, CpuReg::Rsp, offset, r);
-                    out.print();
-                    return;
+                    //if (out.cpuFct->bc->sourceFile->name.containsNoCase("r493."))
+                    {
+                        //out.print();
+                        /*const auto r = unusedVolatileInteger.first();
+                        unusedVolatileInteger.erase(r);
+                        memToReg(out, CpuReg::Rsp, offset, r);*/
+                        //out.print();
+                    }
+                    //return;
                 }
             }
             else
             {
-                out.print();
-            }*/
+                //out.print();
+            }
         }
 
         if (!unusedNonVolatileInteger.empty())

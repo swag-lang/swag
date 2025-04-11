@@ -2120,20 +2120,20 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                         pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, opBits);
                         break;
                     case TokenId::IntrinsicBitCountNz:
-                        SWAG_ASSERT(!ip->hasFlag(BCI_IMM_B));
-                        pp.emitOpBinaryRegMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), CpuOp::POPCNT, opBits);
+                        emitIMMB(pp, cc->computeRegI0, opBits);
+                        pp.emitOpBinaryRegReg(cc->computeRegI0, cc->computeRegI0, CpuOp::POPCNT, opBits);
                         pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, opBits);
                         break;
                     case TokenId::IntrinsicBitCountTz:
-                        SWAG_ASSERT(!ip->hasFlag(BCI_IMM_B));
-                        pp.emitOpBinaryRegMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), CpuOp::BSF, opBits);
+                        emitIMMB(pp, cc->computeRegI0, opBits);
+                        pp.emitOpBinaryRegReg(cc->computeRegI0, cc->computeRegI0, CpuOp::BSF, opBits);
                         pp.emitLoadRegImm(cc->computeRegI1, ScbeCpu::getNumBits(opBits), opBits);
                         pp.emitLoadCondRegReg(cc->computeRegI0, cc->computeRegI1, CpuCond::E, opBits);
                         pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, opBits);
                         break;
                     case TokenId::IntrinsicBitCountLz:
-                        SWAG_ASSERT(!ip->hasFlag(BCI_IMM_B));
-                        pp.emitOpBinaryRegMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), CpuOp::BSR, opBits);
+                        emitIMMB(pp, cc->computeRegI0, opBits);
+                        pp.emitOpBinaryRegReg(cc->computeRegI0, cc->computeRegI0, CpuOp::BSR, opBits);
                         pp.emitLoadRegImm(cc->computeRegI1, (ScbeCpu::getNumBits(opBits) * 2) - 1, opBits);
                         pp.emitLoadCondRegReg(cc->computeRegI0, cc->computeRegI1, CpuCond::E, opBits);
                         pp.emitOpBinaryRegImm(cc->computeRegI0, ScbeCpu::getNumBits(opBits) - 1, CpuOp::XOR, opBits);

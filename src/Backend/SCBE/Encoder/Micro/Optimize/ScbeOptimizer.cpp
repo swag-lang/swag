@@ -252,6 +252,8 @@ void ScbeOptimizer::computeContextStack(const ScbeMicro& out)
                 for (const auto& [r, i] : usedStackRanges)
                 {
                     bool hasAlias = false;
+                    //if (stackOffset == r && stackOffset + size == r + i)
+                    //    continue;
                     if (r >= stackOffset && r < stackOffset + size)
                         hasAlias = true;
                     else if (stackOffset >= r && stackOffset < r + i)
@@ -372,7 +374,7 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
         return;
     if (!out.cpuFct->bc->sourceFile->module->mustOptimizeBackend(out.cpuFct->bc->node))
         return;
-    
+
     bool globalChanged = true;
     while (globalChanged)
     {
