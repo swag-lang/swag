@@ -325,13 +325,13 @@ bool ScbeOptimizer::explore(ScbeExploreContext& cxt, const ScbeMicro& out, const
 
         if (cxt.curInst->isJump())
         {
-            if (cxt.curInst->op == ScbeMicroOp::JumpCI && cxt.curInst->jumpType == CpuCondJump::JUMP)
+            if (cxt.curInst->op == ScbeMicroOp::JumpCondI && cxt.curInst->jumpType == CpuCondJump::JUMP)
             {
                 cxt.curInst = out.getFirstInstruction() + cxt.curInst->valueB;
                 continue;
             }
 
-            if (cxt.curInst->op == ScbeMicroOp::JumpCI || cxt.curInst->op == ScbeMicroOp::JumpCond)
+            if (cxt.curInst->op == ScbeMicroOp::JumpCondI || cxt.curInst->op == ScbeMicroOp::JumpCond)
             {
                 const auto destInst = out.getFirstInstruction() + cxt.curInst->valueB;
                 cxt.pending.push_back(destInst);

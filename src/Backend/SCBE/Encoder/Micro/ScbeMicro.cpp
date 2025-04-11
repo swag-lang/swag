@@ -121,7 +121,7 @@ void ScbeMicro::emitStoreCallerParam(uint32_t paramIdx, CpuReg reg, OpBits opBit
 
 void ScbeMicro::emitJumpCondImm(CpuCondJump jumpType, uint32_t ipDest)
 {
-    const auto inst = addInstruction(ScbeMicroOp::JumpCI, EMIT_Zero);
+    const auto inst = addInstruction(ScbeMicroOp::JumpCondI, EMIT_Zero);
     inst->jumpType  = jumpType;
     inst->valueA    = ipDest;
 }
@@ -545,7 +545,7 @@ void ScbeMicro::encode(ScbeCpu& encoder) const
             case ScbeMicroOp::SymbolRelocPtr:
                 encoder.emitSymbolRelocationPtr(inst->regA, inst->name);
                 break;
-            case ScbeMicroOp::JumpCI:
+            case ScbeMicroOp::JumpCondI:
                 encoder.emitJumpCondImm(inst->jumpType, static_cast<uint32_t>(inst->valueA));
                 break;
             case ScbeMicroOp::LoadCallParam:
@@ -771,7 +771,7 @@ void ScbeMicro::solveLabels()
     auto       inst  = first;
     while (inst->op != ScbeMicroOp::End)
     {
-        if (inst->op == ScbeMicroOp::JumpCI)
+        if (inst->op == ScbeMicroOp::JumpCondI)
         {
             const auto it = labels.find(static_cast<uint32_t>(inst->valueA));
             SWAG_ASSERT(it != labels.end());

@@ -57,15 +57,14 @@ uint32_t ScbeMicroInstruction::getNumBytes() const
 bool ScbeMicroInstruction::isJump() const
 {
     return op == ScbeMicroOp::JumpM ||
-           op == ScbeMicroOp::JumpCI ||
            op == ScbeMicroOp::JumpTable ||
+           op == ScbeMicroOp::JumpCondI ||
            op == ScbeMicroOp::JumpCond;
 }
 
 bool ScbeMicroInstruction::isJumpCond() const
 {
-    return op == ScbeMicroOp::JumpCI ||
-           op == ScbeMicroOp::JumpCond;
+    return (op == ScbeMicroOp::JumpCondI || op == ScbeMicroOp::JumpCond) && jumpType != CpuCondJump::JUMP;
 }
 
 bool ScbeMicroInstruction::isCall() const

@@ -385,7 +385,7 @@ void ScbeMicro::print() const
                 line.args = form("[%s]", regName(inst->regA, OpBits::B64));
                 break;
             case ScbeMicroOp::JumpCond:
-            case ScbeMicroOp::JumpCI:
+            case ScbeMicroOp::JumpCondI:
                 line.name = jumpTypeName(inst->jumpType);
                 line.args = form("%08d", inst->valueB);
                 break;
