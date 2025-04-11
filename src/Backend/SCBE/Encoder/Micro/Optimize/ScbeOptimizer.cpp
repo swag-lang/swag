@@ -263,7 +263,7 @@ void ScbeOptimizer::computeContextStack(const ScbeMicro& out)
             {
                 const uint32_t size = inst->getNumBytes();
                 SWAG_ASSERT(size);
-                if (!usedStack.contains(stackOffset))
+                if (out.cpuFct->isStackOffsetBC(stackOffset) || !usedStack.contains(stackOffset))
                 {
                     for (const auto& [r, i] : usedStackRanges)
                     {

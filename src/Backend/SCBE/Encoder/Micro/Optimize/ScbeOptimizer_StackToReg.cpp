@@ -59,21 +59,13 @@ void ScbeOptimizer::optimizePassStackToHwdReg(const ScbeMicro& out)
                     if (!out.cpuFct->isStackOffsetBC(offset))
                         continue;
 
-                    // if (out.cpuFct->bc->sourceFile->name.containsNoCase("r493."))
+                    const auto r = unusedVolatileInteger.first();
+                    if (memToReg(out, CpuReg::Rsp, offset, r))
                     {
-                        // out.print();
-                        // printf("x");
-                        /*const auto r = unusedVolatileInteger.first();
                         unusedVolatileInteger.erase(r);
-                        memToReg(out, CpuReg::Rsp, offset, r);*/
-                        // out.print();
-                        //return;
+                        return;
                     }
                 }
-            }
-            else
-            {
-                // out.print();
             }
         }
 
@@ -93,6 +85,22 @@ void ScbeOptimizer::optimizePassStackToHwdReg(const ScbeMicro& out)
                 {
                     unusedNonVolatileInteger.erase(r);
                     return;
+                }
+            }
+
+            if (!aliasStack.contains(out.cpuFct->getStackOffsetBC(), out.cpuFct->bc->stackSize))
+            {
+                for (const auto& offset : vec | std::views::keys)
+                {
+                    if (!out.cpuFct->isStackOffsetBC(offset))
+                        continue;
+
+                    const auto r = unusedNonVolatileInteger.first();
+                    if (memToReg(out, CpuReg::Rsp, offset, r))
+                    {
+                        unusedNonVolatileInteger.erase(r);
+                        return;
+                    }
                 }
             }
         }

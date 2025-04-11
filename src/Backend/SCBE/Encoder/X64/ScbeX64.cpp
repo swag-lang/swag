@@ -1631,6 +1631,17 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
 
     ///////////////////////////////////////////
 
+    else if (op == CpuOp::XCHG)
+    {
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::Zero;
+        emitREX(concat, opBits, regSrc, regDst); 
+        emitSpecCPUOp(concat, 0x87, opBits);
+        emitModRM(concat, regSrc, regDst);
+    }    
+
+    ///////////////////////////////////////////
+
     else if (op == CpuOp::BSF ||
              op == CpuOp::BSR)
     {
