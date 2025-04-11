@@ -1,7 +1,5 @@
-
-
-
 //#[Swag.PrintBc]
+//#[Swag.PrintAsm]
 #test
 {
 	var a = 10

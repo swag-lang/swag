@@ -193,14 +193,50 @@ bool ScbeCpu::acceptsRegA(const ScbeMicroInstruction* inst, CpuReg reg)
     auto result = CpuEncodeResult::Zero;
     switch (inst->op)
     {
+        case ScbeMicroOp::LoadRI:
+            result = encodeLoadRegImm(reg, inst->valueA, inst->opBitsA, EMIT_CanEncode);
+            break;
+        case ScbeMicroOp::LoadMI:
+            result = encodeLoadMemImm(reg, inst->valueA, inst->valueB, inst->opBitsA, EMIT_CanEncode);
+            break;
+        case ScbeMicroOp::LoadMR:
+            result = encodeLoadMemReg(reg, inst->valueA, inst->regB, inst->opBitsA, EMIT_CanEncode);
+            break;
+        case ScbeMicroOp::LoadRM:
+            result = encodeLoadRegMem(reg, inst->regB, inst->valueA, inst->opBitsA, EMIT_CanEncode);
+            break;
+        case ScbeMicroOp::LoadRR:
+            result = encodeLoadRegReg(reg, inst->regB, inst->opBitsA, EMIT_CanEncode);
+            break;
         case ScbeMicroOp::CmpRI:
             result = encodeCmpRegImm(reg, inst->valueA, inst->opBitsA, EMIT_CanEncode);
+            break;
+        case ScbeMicroOp::CmpMI:
+            result = encodeCmpMemImm(reg, inst->valueA, inst->valueB, inst->opBitsA, EMIT_CanEncode);
+            break;
+        case ScbeMicroOp::CmpMR:
+            result = encodeCmpMemReg(reg, inst->valueA, inst->regB, inst->opBitsA, EMIT_CanEncode);
+            break;
+        case ScbeMicroOp::CmpRR:
+            result = encodeCmpRegReg(reg, inst->regB, inst->opBitsA, EMIT_CanEncode);
             break;
         case ScbeMicroOp::OpUnaryR:
             result = encodeOpUnaryReg(reg, inst->cpuOp, inst->opBitsA, EMIT_CanEncode);
             break;
         case ScbeMicroOp::OpBinaryRR:
             result = encodeOpBinaryRegReg(reg, inst->regB, inst->cpuOp, inst->opBitsA, EMIT_CanEncode);
+            break;
+        case ScbeMicroOp::OpBinaryRI:
+            result = encodeOpBinaryRegImm(reg, inst->valueB, inst->cpuOp, inst->opBitsA, EMIT_CanEncode);
+            break;
+        case ScbeMicroOp::OpBinaryMI:
+            result = encodeOpBinaryMemImm(reg, inst->valueA, inst->valueB, inst->cpuOp, inst->opBitsA, EMIT_CanEncode);
+            break;
+        case ScbeMicroOp::OpBinaryMR:
+            result = encodeOpBinaryMemReg(reg, inst->valueA, inst->regB, inst->cpuOp, inst->opBitsA, EMIT_CanEncode);
+            break;
+        case ScbeMicroOp::OpBinaryRM:
+            result = encodeOpBinaryRegMem(reg, inst->regB, inst->valueA, inst->cpuOp, inst->opBitsA, EMIT_CanEncode);
             break;
         case ScbeMicroOp::OpTernaryRRR:
             result = encodeOpTernaryRegRegReg(reg, inst->regB, inst->regC, inst->cpuOp, inst->opBitsA, EMIT_CanEncode);

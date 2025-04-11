@@ -29,7 +29,7 @@ struct ScbeOptimizer
 {
     static bool explore(ScbeExploreContext& cxt, const ScbeMicro& out, const std::function<ScbeExploreReturn(const ScbeMicro&, const ScbeExploreContext&)>& callback);
 
-    void memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOffset, CpuReg reg);
+    bool memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOffset, CpuReg reg);
     void swapInstruction(const ScbeMicro& out, ScbeMicroInstruction* before, ScbeMicroInstruction* after);
     void ignore(const ScbeMicro& out, ScbeMicroInstruction* inst);
     void setOp(ScbeMicroInstruction* inst, ScbeMicroOp op);
@@ -55,7 +55,7 @@ struct ScbeOptimizer
     void optimizePassDeadHdwReg2(const ScbeMicro& out);
     void optimizePassStore(const ScbeMicro& out);
     void optimizePassParamsKeepReg(const ScbeMicro& out);
-    void optimizePassStackToVolatileReg(const ScbeMicro& out);
+    void optimizePassStackToHwdReg(const ScbeMicro& out);
     void optimizePassImmediate(const ScbeMicro& out);
     void optimizePassSwap(const ScbeMicro& out);
     void optimizePassAliasRegMem(const ScbeMicro& out);

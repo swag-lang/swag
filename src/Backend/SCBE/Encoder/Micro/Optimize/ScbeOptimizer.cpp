@@ -8,9 +8,10 @@
 #include "Wmf/SourceFile.h"
 #pragma optimize("", off)
 
-void ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOffset, CpuReg reg)
+bool ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOffset, CpuReg reg)
 {
-    auto inst = out.getFirstInstruction();
+    auto inst       = out.getFirstInstruction();
+    bool hasChanged = false;
     while (inst->op != ScbeMicroOp::End)
     {
         switch (inst->op)
@@ -21,6 +22,7 @@ void ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                 {
                     setOp(inst, ScbeMicroOp::LoadSignedExtRR);
                     setRegB(inst, reg);
+                    hasChanged = true;
                 }
                 break;
             case ScbeMicroOp::LoadZeroExtRM:
@@ -29,6 +31,7 @@ void ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                 {
                     setOp(inst, ScbeMicroOp::LoadZeroExtRR);
                     setRegB(inst, reg);
+                    hasChanged = true;
                 }
                 break;
             case ScbeMicroOp::LoadRM:
@@ -37,6 +40,7 @@ void ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                 {
                     setOp(inst, ScbeMicroOp::LoadRR);
                     setRegB(inst, reg);
+                    hasChanged = true;
                 }
                 break;
             case ScbeMicroOp::LoadMR:
@@ -45,6 +49,7 @@ void ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                 {
                     setOp(inst, ScbeMicroOp::LoadRR);
                     setRegA(inst, reg);
+                    hasChanged = true;
                 }
                 break;
             case ScbeMicroOp::LoadMI:
@@ -54,6 +59,7 @@ void ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                     setOp(inst, ScbeMicroOp::LoadRI);
                     setRegA(inst, reg);
                     setValueA(inst, inst->valueB);
+                    hasChanged = true;
                 }
                 break;
             case ScbeMicroOp::CmpMR:
@@ -62,6 +68,7 @@ void ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                 {
                     setOp(inst, ScbeMicroOp::CmpRR);
                     setRegA(inst, reg);
+                    hasChanged = true;
                 }
                 break;
             case ScbeMicroOp::CmpMI:
@@ -71,6 +78,7 @@ void ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                     setOp(inst, ScbeMicroOp::CmpRI);
                     setRegA(inst, reg);
                     setValueA(inst, inst->valueB);
+                    hasChanged = true;
                 }
                 break;
             case ScbeMicroOp::OpUnaryM:
@@ -79,6 +87,7 @@ void ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                 {
                     setOp(inst, ScbeMicroOp::OpUnaryR);
                     setRegA(inst, reg);
+                    hasChanged = true;
                 }
                 break;
             case ScbeMicroOp::OpBinaryMI:
@@ -88,6 +97,7 @@ void ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                     setOp(inst, ScbeMicroOp::OpBinaryRI);
                     setRegA(inst, reg);
                     setValueA(inst, inst->valueB);
+                    hasChanged = true;
                 }
                 break;
             case ScbeMicroOp::OpBinaryMR:
@@ -96,6 +106,7 @@ void ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                 {
                     setOp(inst, ScbeMicroOp::OpBinaryRR);
                     setRegA(inst, reg);
+                    hasChanged = true;
                 }
                 break;
             case ScbeMicroOp::OpBinaryRM:
@@ -104,12 +115,15 @@ void ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                 {
                     setOp(inst, ScbeMicroOp::OpBinaryRR);
                     setRegB(inst, reg);
+                    hasChanged = true;
                 }
                 break;
         }
 
         inst = ScbeMicro::getNextInstruction(inst);
     }
+
+    return hasChanged;
 }
 
 void ScbeOptimizer::swapInstruction(const ScbeMicro& out, ScbeMicroInstruction* before, ScbeMicroInstruction* after)
@@ -361,12 +375,14 @@ void ScbeOptimizer::optimizeStep2(const ScbeMicro& out)
     optimizePassDeadRegBeforeLeave(out);
     optimizePassParamsKeepReg(out);
     optimizePassReduce2(out);
-    optimizePassStackToVolatileReg(out);
 }
 
 void ScbeOptimizer::optimizeStep3(const ScbeMicro& out)
 {
     passHasDoneSomething = false;
+    computeContextStack(out);
+    
+    optimizePassStackToHwdReg(out);
     optimizePassDeadHdwReg2(out);
 }
 
@@ -376,6 +392,9 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
         return;
     if (!out.cpuFct->bc->sourceFile->module->mustOptimizeBackend(out.cpuFct->bc->node))
         return;
+
+    //if (out.cpuFct->bc->sourceFile->name.containsNoCase("r493."))
+    //    out.print();
 
     bool globalChanged = true;
     while (globalChanged)

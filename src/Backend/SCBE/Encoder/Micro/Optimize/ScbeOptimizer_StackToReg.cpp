@@ -26,7 +26,7 @@ void ScbeOptimizer::optimizePassParamsKeepReg(const ScbeMicro& out)
     }
 }
 
-void ScbeOptimizer::optimizePassStackToVolatileReg(const ScbeMicro& out)
+void ScbeOptimizer::optimizePassStackToHwdReg(const ScbeMicro& out)
 {
     if ((!unusedVolatileInteger.empty() || !unusedNonVolatileInteger.empty()) && !usedStack.empty())
     {
@@ -46,7 +46,8 @@ void ScbeOptimizer::optimizePassStackToVolatileReg(const ScbeMicro& out)
 
                 const auto r = unusedVolatileInteger.first();
                 unusedVolatileInteger.erase(r);
-                memToReg(out, CpuReg::Rsp, offset, r);
+                if (!memToReg(out, CpuReg::Rsp, offset, r))
+                    out.print();
                 return;
             }
 
@@ -60,12 +61,13 @@ void ScbeOptimizer::optimizePassStackToVolatileReg(const ScbeMicro& out)
                     //if (out.cpuFct->bc->sourceFile->name.containsNoCase("r493."))
                     {
                         //out.print();
+                        //printf("x");
                         /*const auto r = unusedVolatileInteger.first();
                         unusedVolatileInteger.erase(r);
                         memToReg(out, CpuReg::Rsp, offset, r);*/
                         //out.print();
+                        return;
                     }
-                    //return;
                 }
             }
             else
