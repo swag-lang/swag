@@ -572,6 +572,9 @@ void ScbeMicro::print() const
 
         idx++;
 
+        if (inst->emitFlags.has(EMIT_Lock))
+            line.name = "lock " + line.name;
+
         line.rank = form("%08d", i);
 
         if (inst->flags.has(MIF_JUMP_DEST))
