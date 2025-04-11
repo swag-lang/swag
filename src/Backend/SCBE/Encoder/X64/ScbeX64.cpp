@@ -796,6 +796,8 @@ CpuEncodeResult ScbeX64::encodeLoadAddMulCstRegMem(CpuReg regDst, OpBits opBitsD
             return CpuEncodeResult::NotSupported;
         if (isFloat(regSrc1) || isFloat(regSrc2))
             return CpuEncodeResult::NotSupported;
+        if (isFloat(regDst) && op == CpuOp::LEA)
+            return CpuEncodeResult::NotSupported;
         if (isFloat(regDst) && opBitsDst != OpBits::B32 && opBitsDst != OpBits::B64)
             return CpuEncodeResult::NotSupported;
         return CpuEncodeResult::Zero;
