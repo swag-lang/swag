@@ -153,7 +153,8 @@ namespace
     bool isDeadHwdReg(const ScbeMicroInstruction* inst)
     {
         return inst->op == ScbeMicroOp::LoadAddr ||
-               inst->op == ScbeMicroOp::LoadAddMulCstRM ||
+               inst->op == ScbeMicroOp::LoadAmcRM ||
+               inst->op == ScbeMicroOp::LoadAddrAmcRM ||
                inst->op == ScbeMicroOp::LoadRR ||
                inst->op == ScbeMicroOp::LoadRI ||
                inst->op == ScbeMicroOp::LoadRM ||

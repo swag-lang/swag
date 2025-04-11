@@ -453,8 +453,12 @@ void ScbeMicro::print() const
                 else
                     line.args = form("%s, qword ptr [%s+0x%llX]", regName(inst->regA, OpBits::B64), regName(inst->regB, OpBits::B64), inst->valueA);
                 break;
-            case ScbeMicroOp::LoadAddMulCstRM:
-                line.name = cpuOpName(inst->cpuOp);
+            case ScbeMicroOp::LoadAmcRM:
+            case ScbeMicroOp::LoadAddrAmcRM:
+                if (inst->op == ScbeMicroOp::LoadAmcRM)
+                    line.name = "mov";
+                else
+                    line.name = "lea";
                 if (inst->regB == CpuReg::Max && inst->valueA == 1 && inst->valueB == 0)
                     line.args = form("%s, %s ptr [%s]", regName(inst->regA, inst->opBitsA), opBitsName(inst->opBitsA), regName(inst->regC, inst->opBitsB));
                 else if (inst->regB == CpuReg::Max && inst->valueB == 0)

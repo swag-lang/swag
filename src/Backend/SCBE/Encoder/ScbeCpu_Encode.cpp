@@ -258,16 +258,28 @@ void ScbeCpu::emitLoadZeroExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t memOf
     }
 }
 
-void ScbeCpu::emitLoadAddMulCstRegMem(CpuReg regDst, OpBits opBitsDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, CpuOp op, OpBits opBitsSrc, CpuEmitFlags emitFlags)
+void ScbeCpu::emitLoadAmcRegMem(CpuReg regDst, OpBits opBitsDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, OpBits opBitsSrc, CpuEmitFlags emitFlags)
 {
-    const auto result = cpu->encodeLoadAddMulCstRegMem(regDst, opBitsDst, regSrc1, regSrc2, mulValue, addValue, op, opBitsSrc, EMIT_CanEncode);
+    const auto result = cpu->encodeLoadAmcRegMem(regDst, opBitsDst, regSrc1, regSrc2, mulValue, addValue, opBitsSrc, EMIT_CanEncode);
     if (result == CpuEncodeResult::Zero)
     {
-        encodeLoadAddMulCstRegMem(regDst, opBitsDst, regSrc1, regSrc2, mulValue, addValue, op, opBitsSrc, emitFlags);
+        encodeLoadAmcRegMem(regDst, opBitsDst, regSrc1, regSrc2, mulValue, addValue, opBitsSrc, emitFlags);
         return;
     }
 
-    Report::internalError(module, "emitLoadAddMulCstRegMem, cannot encode");
+    Report::internalError(module, "emitLoadAMCRegMem, cannot encode");
+}
+
+void ScbeCpu::emitLoadAddressAmcRegMem(CpuReg regDst, OpBits opBitsDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, OpBits opBitsSrc, CpuEmitFlags emitFlags)
+{
+    const auto result = cpu->encodeLoadAddressAmcRegMem(regDst, opBitsDst, regSrc1, regSrc2, mulValue, addValue, opBitsSrc, EMIT_CanEncode);
+    if (result == CpuEncodeResult::Zero)
+    {
+        encodeLoadAddressAmcRegMem(regDst, opBitsDst, regSrc1, regSrc2, mulValue, addValue, opBitsSrc, emitFlags);
+        return;
+    }
+
+    Report::internalError(module, "encodeLoadAddressAmcRegMem, cannot encode");
 }
 
 void ScbeCpu::emitLoadAddressMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, CpuEmitFlags emitFlags)
@@ -670,19 +682,19 @@ void ScbeCpu::emitOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp op, OpBits op
 
         if ((op == CpuOp::MUL || op == CpuOp::IMUL) && value == 3)
         {
-            emitLoadAddMulCstRegMem(reg, std::max(opBits, OpBits::B32), reg, reg, 2, 0, CpuOp::LEA, std::max(opBits, OpBits::B32));
+            emitLoadAddressAmcRegMem(reg, std::max(opBits, OpBits::B32), reg, reg, 2, 0, std::max(opBits, OpBits::B32));
             return;
         }
 
         if ((op == CpuOp::MUL || op == CpuOp::IMUL) && value == 5)
         {
-            emitLoadAddMulCstRegMem(reg, std::max(opBits, OpBits::B32), reg, reg, 4, 0, CpuOp::LEA, std::max(opBits, OpBits::B32));
+            emitLoadAddressAmcRegMem(reg, std::max(opBits, OpBits::B32), reg, reg, 4, 0, std::max(opBits, OpBits::B32));
             return;
         }
 
         if ((op == CpuOp::MUL || op == CpuOp::IMUL) && value == 9)
         {
-            emitLoadAddMulCstRegMem(reg, std::max(opBits, OpBits::B32), reg, reg, 8, 0, CpuOp::LEA, std::max(opBits, OpBits::B32));
+            emitLoadAddressAmcRegMem(reg, std::max(opBits, OpBits::B32), reg, reg, 8, 0, std::max(opBits, OpBits::B32));
             return;
         }
 

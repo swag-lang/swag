@@ -44,7 +44,8 @@ SCBE_MICRO_OP(LoadSignedExtRR,             MOF_REG_A | MOF_OPBITS_A | MOF_WRITE_
 SCBE_MICRO_OP(LoadZeroExtRR,               MOF_REG_A | MOF_OPBITS_A | MOF_WRITE_REG,                                   MOF_REG_B | MOF_READ_REG | MOF_OPBITS_B)
                                                                                                                        
 SCBE_MICRO_OP(LoadAddr,                    MOF_REG_A | MOF_WRITE_REG,                                                  MOF_REG_B | MOF_READ_REG | MOF_VALUE_A | MOF_READ_MEM | MOF_WRITE_MEM)
-SCBE_MICRO_OP(LoadAddMulCstRM,             MOF_CPU_OP | MOF_REG_A | MOF_OPBITS_A | MOF_WRITE_REG,                      MOF_REG_B | MOF_REG_C | MOF_VALUE_A | MOF_VALUE_B | MOF_OPBITS_B | MOF_READ_REG)
+SCBE_MICRO_OP(LoadAmcRM,                   MOF_REG_A | MOF_OPBITS_A | MOF_WRITE_REG,                                   MOF_REG_B | MOF_REG_C | MOF_VALUE_A | MOF_VALUE_B | MOF_OPBITS_B | MOF_READ_REG)
+SCBE_MICRO_OP(LoadAddrAmcRM,               MOF_REG_A | MOF_OPBITS_A | MOF_WRITE_REG,                                   MOF_REG_B | MOF_REG_C | MOF_VALUE_A | MOF_VALUE_B | MOF_OPBITS_B | MOF_READ_REG)
                                                                                                                                                                                                                                              
 SCBE_MICRO_OP(CmpRR,                       MOF_REG_A | MOF_READ_REG | MOF_OPBITS_A,                                    MOF_REG_B | MOF_READ_REG | MOF_OPBITS_A)
 SCBE_MICRO_OP(CmpRI,                       MOF_REG_A | MOF_READ_REG | MOF_OPBITS_A,                                    MOF_VALUE_A | MOF_OPBITS_A)

@@ -188,10 +188,9 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
                 next->regB == inst->regA &&
                 next->opBitsA == inst->opBitsA &&
                 !out.getNextFlagSensitive(next)->isJumpCond() &&
-                out.cpu->encodeLoadAddMulCstRegMem(next->regA, inst->opBitsA, next->regA, inst->regA, 1, inst->valueA, CpuOp::LEA, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+                out.cpu->encodeLoadAddressAmcRegMem(next->regA, inst->opBitsA, next->regA, inst->regA, 1, inst->valueA, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
             {
-                next->op      = ScbeMicroOp::LoadAddMulCstRM;
-                next->cpuOp   = CpuOp::LEA;
+                next->op      = ScbeMicroOp::LoadAddrAmcRM;
                 next->opBitsB = inst->opBitsA;
                 next->valueA  = 1;
                 next->valueB  = inst->valueA;
@@ -235,7 +234,7 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
             }
             break;
 
-        case ScbeMicroOp::LoadAddMulCstRM:
+        case ScbeMicroOp::LoadAddrAmcRM:
             if (inst->regB == inst->regC && inst->valueA == 1 && inst->valueB == 0)
             {
                 inst->regB   = CpuReg::Max;
@@ -245,30 +244,27 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
 
             if (inst->regB == CpuReg::Max &&
                 inst->valueB == 0 &&
-                inst->cpuOp == CpuOp::LEA &&
                 next->op == ScbeMicroOp::OpBinaryRR &&
                 next->cpuOp == CpuOp::ADD &&
                 next->regA == inst->regA &&
                 next->opBitsA == inst->opBitsA &&
                 !out.getNextFlagSensitive(next)->isJumpCond() &&
-                out.cpu->encodeLoadAddMulCstRegMem(inst->regA, inst->opBitsA, next->regB, inst->regC, inst->valueA, 0, CpuOp::LEA, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+                out.cpu->encodeLoadAddressAmcRegMem(inst->regA, inst->opBitsA, next->regB, inst->regC, inst->valueA, 0, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
             {
                 setRegB(inst, next->regB);
                 ignore(out, next);
                 break;
             }
 
-            if (inst->cpuOp == CpuOp::LEA &&
-                inst->regB == CpuReg::Max &&
+            if (inst->regB == CpuReg::Max &&
                 next->op == ScbeMicroOp::OpBinaryRR &&
                 next->cpuOp == CpuOp::ADD &&
                 next->regB == inst->regA &&
                 next->opBitsA == inst->opBitsA &&
                 !out.getNextFlagSensitive(next)->isJumpCond() &&
-                out.cpu->encodeLoadAddMulCstRegMem(next->regA, inst->opBitsA, next->regA, inst->regC, inst->valueA, inst->valueB, CpuOp::LEA, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+                out.cpu->encodeLoadAddressAmcRegMem(next->regA, inst->opBitsA, next->regA, inst->regC, inst->valueA, inst->valueB, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
             {
-                next->op      = ScbeMicroOp::LoadAddMulCstRM;
-                next->cpuOp   = CpuOp::LEA;
+                next->op      = ScbeMicroOp::LoadAddrAmcRM;
                 next->opBitsB = inst->opBitsA;
                 next->valueA  = inst->valueA;
                 next->valueB  = inst->valueB;
@@ -279,14 +275,12 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
             }
 
             if (next->op == ScbeMicroOp::LoadRM &&
-                inst->cpuOp == CpuOp::LEA &&
                 next->regB == inst->regA &&
                 (next->regA != inst->regB || next->regA == inst->regA) &&
                 (next->regA != inst->regC || next->regA == inst->regA) &&
-                out.cpu->encodeLoadAddMulCstRegMem(next->regA, next->opBitsA, inst->regB, inst->regC, inst->valueA, next->valueA + inst->valueB, CpuOp::MOV, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+                out.cpu->encodeLoadAmcRegMem(next->regA, next->opBitsA, inst->regB, inst->regC, inst->valueA, next->valueA + inst->valueB, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
             {
-                next->op      = ScbeMicroOp::LoadAddMulCstRM;
-                next->cpuOp   = CpuOp::MOV;
+                next->op      = ScbeMicroOp::LoadAmcRM;
                 next->opBitsB = inst->opBitsA;
                 next->valueB  = next->valueA + inst->valueB;
                 next->valueA  = inst->valueA;
@@ -335,14 +329,13 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
                 next->regA == inst->regA &&
                 next->opBitsA == inst->opBitsA &&
                 !out.getNextFlagSensitive(next)->isJumpCond() &&
-                out.cpu->encodeLoadAddMulCstRegMem(next->regA, inst->opBitsA, CpuReg::Max, inst->regB, 1ULL << next->valueA, 0, CpuOp::LEA, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+                out.cpu->encodeLoadAddressAmcRegMem(next->regA, inst->opBitsA, CpuReg::Max, inst->regB, 1ULL << next->valueA, 0, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
             {
-                setOp(next, ScbeMicroOp::LoadAddMulCstRM);
+                setOp(next, ScbeMicroOp::LoadAddrAmcRM);
                 next->regB    = CpuReg::Max;
                 next->regC    = inst->regB;
                 next->valueA  = 1ULL << next->valueA;
                 next->valueB  = 0;
-                next->cpuOp   = CpuOp::LEA;
                 next->opBitsA = inst->opBitsA;
                 next->opBitsB = inst->opBitsA;
                 ignore(out, inst);
@@ -354,14 +347,13 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
                 next->regA == inst->regA &&
                 next->opBitsA == inst->opBitsA &&
                 !out.getNextFlagSensitive(next)->isJumpCond() &&
-                out.cpu->encodeLoadAddMulCstRegMem(next->regA, inst->opBitsA, CpuReg::Max, inst->regB, 1, 0, CpuOp::LEA, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+                out.cpu->encodeLoadAddressAmcRegMem(next->regA, inst->opBitsA, CpuReg::Max, inst->regB, 1, 0, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
             {
-                setOp(next, ScbeMicroOp::LoadAddMulCstRM);
+                setOp(next, ScbeMicroOp::LoadAddrAmcRM);
                 next->regC    = next->regB;
                 next->regB    = inst->regB;
                 next->valueA  = 1;
                 next->valueB  = 0;
-                next->cpuOp   = CpuOp::LEA;
                 next->opBitsA = inst->opBitsA;
                 next->opBitsB = inst->opBitsA;
                 ignore(out, inst);
@@ -386,14 +378,13 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
             if (inst->cpuOp == CpuOp::SHL &&
                 next->op == ScbeMicroOp::LoadRR &&
                 next->regB == inst->regA &&
-                out.cpu->encodeLoadAddMulCstRegMem(next->regA, inst->opBitsA, CpuReg::Max, inst->regA, 1ULL << inst->valueA, 0, CpuOp::LEA, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+                out.cpu->encodeLoadAddressAmcRegMem(next->regA, inst->opBitsA, CpuReg::Max, inst->regA, 1ULL << inst->valueA, 0, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
             {
-                setOp(next, ScbeMicroOp::LoadAddMulCstRM);
+                setOp(next, ScbeMicroOp::LoadAddrAmcRM);
                 next->regB    = CpuReg::Max;
                 next->regC    = inst->regA;
                 next->valueA  = 1ULL << inst->valueA;
                 next->valueB  = 0;
-                next->cpuOp   = CpuOp::LEA;
                 next->opBitsA = inst->opBitsA;
                 next->opBitsB = inst->opBitsA;
                 swapInstruction(out, inst, next);
@@ -409,14 +400,13 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
                 next->regB == inst->regA &&
                 next->regA != inst->regA &&
                 next->regA != inst->regB &&
-                out.cpu->encodeLoadAddMulCstRegMem(next->regA, inst->opBitsA, inst->regA, inst->regB, 1, 0, CpuOp::LEA, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+                out.cpu->encodeLoadAddressAmcRegMem(next->regA, inst->opBitsA, inst->regA, inst->regB, 1, 0, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
             {
-                setOp(next, ScbeMicroOp::LoadAddMulCstRM);
+                setOp(next, ScbeMicroOp::LoadAddrAmcRM);
                 next->regB    = inst->regA;
                 next->regC    = inst->regB;
                 next->valueA  = 1;
                 next->valueB  = 0;
-                next->cpuOp   = CpuOp::LEA;
                 next->opBitsA = inst->opBitsA;
                 next->opBitsB = inst->opBitsA;
                 swapInstruction(out, inst, next);

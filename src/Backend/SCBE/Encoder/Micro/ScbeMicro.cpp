@@ -266,15 +266,27 @@ CpuEncodeResult ScbeMicro::encodeLoadAddressMem(CpuReg reg, CpuReg memReg, uint6
     return CpuEncodeResult::Zero;
 }
 
-CpuEncodeResult ScbeMicro::encodeLoadAddMulCstRegMem(CpuReg regDst, OpBits opBitsDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, CpuOp op, OpBits opBitsSrc, CpuEmitFlags emitFlags)
+CpuEncodeResult ScbeMicro::encodeLoadAmcRegMem(CpuReg regDst, OpBits opBitsDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, OpBits opBitsSrc, CpuEmitFlags emitFlags)
 {
-    const auto inst = addInstruction(ScbeMicroOp::LoadAddMulCstRM, emitFlags);
+    const auto inst = addInstruction(ScbeMicroOp::LoadAmcRM, emitFlags);
     inst->regA      = regDst;
     inst->regB      = regSrc1;
     inst->regC      = regSrc2;
     inst->valueA    = mulValue;
     inst->valueB    = addValue;
-    inst->cpuOp     = op;
+    inst->opBitsA   = opBitsDst;
+    inst->opBitsB   = opBitsSrc;
+    return CpuEncodeResult::Zero;
+}
+
+CpuEncodeResult ScbeMicro::encodeLoadAddressAmcRegMem(CpuReg regDst, OpBits opBitsDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, OpBits opBitsSrc, CpuEmitFlags emitFlags)
+{
+    const auto inst = addInstruction(ScbeMicroOp::LoadAddrAmcRM, emitFlags);
+    inst->regA      = regDst;
+    inst->regB      = regSrc1;
+    inst->regC      = regSrc2;
+    inst->valueA    = mulValue;
+    inst->valueB    = addValue;
     inst->opBitsA   = opBitsDst;
     inst->opBitsB   = opBitsSrc;
     return CpuEncodeResult::Zero;
@@ -646,9 +658,12 @@ void ScbeMicro::encode(ScbeCpu& encoder) const
             case ScbeMicroOp::LoadAddr:
                 encoder.emitLoadAddressMem(inst->regA, inst->regB, inst->valueA, inst->emitFlags);
                 break;
-            case ScbeMicroOp::LoadAddMulCstRM:
-                encoder.emitLoadAddMulCstRegMem(inst->regA, inst->opBitsA, inst->regB, inst->regC, inst->valueA, inst->valueB, inst->cpuOp, inst->opBitsB, inst->emitFlags);
+            case ScbeMicroOp::LoadAmcRM:
+                encoder.emitLoadAmcRegMem(inst->regA, inst->opBitsA, inst->regB, inst->regC, inst->valueA, inst->valueB, inst->opBitsB, inst->emitFlags);
                 break;
+            case ScbeMicroOp::LoadAddrAmcRM:
+                encoder.emitLoadAddressAmcRegMem(inst->regA, inst->opBitsA, inst->regB, inst->regC, inst->valueA, inst->valueB, inst->opBitsB, inst->emitFlags);
+            break;            
             case ScbeMicroOp::LoadMR:
                 encoder.emitLoadMemReg(inst->regA, inst->valueA, inst->regB, inst->opBitsA, inst->emitFlags);
                 break;
