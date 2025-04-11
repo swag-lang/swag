@@ -236,6 +236,13 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
             break;
 
         case ScbeMicroOp::LoadAddMulCstRM:
+            if (inst->regB == inst->regC && inst->valueA == 1 && inst->valueB == 0)
+            {
+                inst->regB = CpuReg::Max;
+                inst->valueA = 2;
+                break;
+            }
+        
             if (inst->regB == CpuReg::Max &&
                 inst->valueB == 0 &&
                 inst->cpuOp == CpuOp::LEA &&
