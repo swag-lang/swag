@@ -236,6 +236,7 @@ void ScbeOptimizer::computeContextStack(const ScbeMicro& out)
     usedStack.clear();
     rangeReadStack.clear();
     usedStackRanges.clear();
+    doneStack.clear();
 
     auto inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
@@ -247,13 +248,14 @@ void ScbeOptimizer::computeContextStack(const ScbeMicro& out)
                 aliasStack.push_back(stackOffset);
 
             const uint32_t size = std::max(inst->getNumBytes(), static_cast<uint32_t>(1));
-            if (!usedStack.contains(stackOffset))
+            const uint64_t hash = static_cast<uint64_t>(stackOffset) << 32 | size;
+            if (!doneStack.contains(hash))
             {
+                doneStack.push_back(hash);
                 for (const auto& [r, i] : usedStackRanges)
                 {
                     bool hasAlias = false;
-                    //if (stackOffset == r && stackOffset + size == r + i)
-                    //    continue;
+                    SWAG_ASSERT(stackOffset != r || stackOffset + size != r + i);
                     if (r >= stackOffset && r < stackOffset + size)
                         hasAlias = true;
                     else if (stackOffset >= r && stackOffset < r + i)
