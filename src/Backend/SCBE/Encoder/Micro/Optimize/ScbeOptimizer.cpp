@@ -250,7 +250,6 @@ void ScbeOptimizer::computeContextStack(const ScbeMicro& out)
     usedStack.clear();
     rangeReadStack.clear();
     usedStackRanges.clear();
-    doneStack.clear();
 
     auto inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
@@ -260,28 +259,30 @@ void ScbeOptimizer::computeContextStack(const ScbeMicro& out)
         {
             if (inst->op == ScbeMicroOp::LoadAddr)
                 aliasStack.push_back(stackOffset);
-
-            const uint32_t size = std::max(inst->getNumBytes(), static_cast<uint32_t>(1));
-            const uint64_t hash = static_cast<uint64_t>(stackOffset) << 32 | size;
-            if (!doneStack.contains(hash))
+            else
             {
-                doneStack.push_back(hash);
-                for (const auto& [r, i] : usedStackRanges)
+                const uint32_t size = inst->getNumBytes();
+                SWAG_ASSERT(size);
+                if (!usedStack.contains(stackOffset))
                 {
-                    bool hasAlias = false;
-                    SWAG_ASSERT(stackOffset != r || stackOffset + size != r + i);
-                    if (r >= stackOffset && r < stackOffset + size)
-                        hasAlias = true;
-                    else if (stackOffset >= r && stackOffset < r + i)
-                        hasAlias = true;
-                    if (hasAlias)
+                    for (const auto& [r, i] : usedStackRanges)
                     {
-                        aliasStack.push_back(stackOffset, size);
-                        aliasStack.push_back(r, i);
+                        bool hasAlias = false;
+                        if(stackOffset == r && stackOffset + size == r + i)
+                            continue;
+                        if (r >= stackOffset && r < stackOffset + size)
+                            hasAlias = true;
+                        else if (stackOffset >= r && stackOffset < r + i)
+                            hasAlias = true;
+                        if (hasAlias)
+                        {
+                            aliasStack.push_back(stackOffset, size);
+                            aliasStack.push_back(r, i);
+                        }
                     }
-                }
 
-                usedStackRanges.push_back({stackOffset, size});
+                    usedStackRanges.push_back({stackOffset, size});
+                }
             }
 
             usedStack[stackOffset] += 1;
@@ -289,6 +290,7 @@ void ScbeOptimizer::computeContextStack(const ScbeMicro& out)
             const auto readOffset = inst->getStackOffsetRead();
             if (readOffset != UINT32_MAX)
             {
+                const uint32_t size = std::max(inst->getNumBytes(), static_cast<uint32_t>(1));
                 rangeReadStack.push_back(readOffset, size);
             }
         }
@@ -382,7 +384,7 @@ void ScbeOptimizer::optimizeStep3(const ScbeMicro& out)
 {
     passHasDoneSomething = false;
     computeContextStack(out);
-    
+
     optimizePassDeadHdwReg2(out);
 }
 
@@ -393,8 +395,8 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
     if (!out.cpuFct->bc->sourceFile->module->mustOptimizeBackend(out.cpuFct->bc->node))
         return;
 
-    //if (out.cpuFct->bc->sourceFile->name.containsNoCase("r493."))
-    //    out.print();
+    // if (out.cpuFct->bc->sourceFile->name.containsNoCase("r493."))
+    //     out.print();
 
     bool globalChanged = true;
     while (globalChanged)

@@ -54,8 +54,8 @@ SCBE_MICRO_OP(CmpMI,                       MOF_REG_A | MOF_VALUE_A | MOF_READ_RE
 SCBE_MICRO_OP(SetCondR,                    MOF_CPU_COND | MOF_REG_A | MOF_WRITE_REG,                                   MOF_ZERO)                                                                                                                      
 SCBE_MICRO_OP(ClearR,                      MOF_REG_A | MOF_WRITE_REG | MOF_OPBITS_A,                                   MOF_ZERO)
 
-SCBE_MICRO_OP(OpUnaryM,                    MOF_CPU_OP | MOF_REG_A | MOF_VALUE_A | MOF_READ_REG | MOF_READ_MEM | MOF_WRITE_MEM,        MOF_ZERO)
-SCBE_MICRO_OP(OpUnaryR,                    MOF_CPU_OP | MOF_REG_A | MOF_READ_REG | MOF_WRITE_REG | MOF_OPBITS_A,                      MOF_ZERO)
+SCBE_MICRO_OP(OpUnaryM,                    MOF_CPU_OP | MOF_REG_A | MOF_VALUE_A | MOF_READ_REG | MOF_READ_MEM | MOF_WRITE_MEM | MOF_OPBITS_A,     MOF_ZERO)
+SCBE_MICRO_OP(OpUnaryR,                    MOF_CPU_OP | MOF_REG_A | MOF_READ_REG | MOF_WRITE_REG | MOF_OPBITS_A,                                  MOF_ZERO)
 
 SCBE_MICRO_OP(LoadCondRR,                  MOF_CPU_COND | MOF_REG_A | MOF_READ_REG | MOF_WRITE_REG | MOF_OPBITS_A,     MOF_REG_B | MOF_READ_REG | MOF_OPBITS_A)
 

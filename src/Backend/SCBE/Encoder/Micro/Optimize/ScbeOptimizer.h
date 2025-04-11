@@ -81,7 +81,6 @@ struct ScbeOptimizer
     ScbeExploreContext                    cxt;
     Map<uint32_t, uint32_t>               usedStack;
     Vector<std::pair<uint32_t, uint32_t>> usedStackRanges;
-    VectorNative<uint64_t>                doneStack;
     StackRange                            aliasStack;
     StackRange                            rangeReadStack;
     RegisterSet                           usedWriteRegs;
