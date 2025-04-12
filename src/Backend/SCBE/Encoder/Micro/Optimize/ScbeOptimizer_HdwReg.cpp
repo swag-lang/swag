@@ -348,13 +348,6 @@ void ScbeOptimizer::optimizePassDupHdwReg(const ScbeMicro& out)
             ignore(out, inst);
         }
 
-        /*if (inst->op == ScbeMicroOp::LoadRR &&
-            usedWriteRegs[inst->regA] == 1 &&
-            usedWriteRegs[inst->regB] == 0)
-        {
-            out.print();
-        }  */      
-
         inst = ScbeMicro::getNextInstruction(inst);
     }
 }
