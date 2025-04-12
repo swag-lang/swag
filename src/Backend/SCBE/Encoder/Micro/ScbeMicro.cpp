@@ -772,8 +772,9 @@ ScbeMicroInstruction* ScbeMicro::getNextFlagSensitive(ScbeMicroInstruction* inst
 
 void ScbeMicro::postProcess() const
 {
-    cpuFct->isEmpty = true;
-    auto inst       = getFirstInstruction();
+    cpuFct->noStackFrame = true;
+
+    auto inst = getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {
         if (inst->hasRegA())
@@ -782,12 +783,14 @@ void ScbeMicro::postProcess() const
             cpuFct->usedRegs.add(inst->regB);
         if (inst->hasRegC())
             cpuFct->usedRegs.add(inst->regC);
-
-        if (inst->op != ScbeMicroOp::Enter && inst->op != ScbeMicroOp::Leave && inst->op != ScbeMicroOp::Ret)
-            cpuFct->isEmpty = false;
+        if (inst->isCall())
+            cpuFct->noStackFrame = false;
 
         inst = getNextInstruction(inst);
     }
+
+    if (cpuFct->usedRegs.contains(CpuReg::Rsp))
+        cpuFct->noStackFrame = false;
 
     for (const auto r : cpuFct->usedRegs)
     {

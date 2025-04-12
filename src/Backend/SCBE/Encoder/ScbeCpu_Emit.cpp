@@ -393,8 +393,7 @@ void ScbeCpu::emitEnter(uint32_t sizeStack)
         }
     }
 
-    SWAG_ASSERT(!cpuFct->isEmpty || cpuFct->unwindRegs.empty());
-    if (!cpuFct->isEmpty)
+    if (!cpuFct->noStackFrame)
     {
         emitOpBinaryRegImm(CpuReg::Rsp, cpuFct->frameSize, CpuOp::SUB, OpBits::B64);
 #ifdef SWAG_STATS
@@ -407,7 +406,7 @@ void ScbeCpu::emitEnter(uint32_t sizeStack)
 
 void ScbeCpu::emitLeave()
 {
-    if (!cpuFct->isEmpty)
+    if (!cpuFct->noStackFrame)
     {
         emitOpBinaryRegImm(CpuReg::Rsp, cpuFct->frameSize, CpuOp::ADD, OpBits::B64);
 #ifdef SWAG_STATS
