@@ -332,3 +332,22 @@ void ScbeOptimizer::optimizePassDeadHdwRegBeforeLeave(const ScbeMicro& out)
         inst = ScbeMicro::getNextInstruction(inst);
     }
 }
+
+void ScbeOptimizer::optimizePassDupHdwReg(const ScbeMicro& out)
+{
+    auto inst = out.getFirstInstruction();
+    while (inst->op != ScbeMicroOp::End)
+    {
+        if (inst->op == ScbeMicroOp::LoadRR &&
+            usedWriteRegs[inst->regA] == 1 &&
+            usedWriteRegs[inst->regB] == 1 &&
+            out.cc->nonVolatileRegistersInteger.contains(inst->regA) &&
+            out.cc->nonVolatileRegistersInteger.contains(inst->regB))
+        {
+            regToReg(out, inst->regB, inst->regA);
+            ignore(out, inst);
+        }
+
+        inst = ScbeMicro::getNextInstruction(inst);
+    }
+}

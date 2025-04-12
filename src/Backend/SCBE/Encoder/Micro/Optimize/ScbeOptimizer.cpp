@@ -8,6 +8,36 @@
 #include "Wmf/SourceFile.h"
 #pragma optimize("", off)
 
+bool ScbeOptimizer::regToReg(const ScbeMicro& out, CpuReg regDst, CpuReg regSrc)
+{
+    auto inst       = out.getFirstInstruction();
+    bool hasChanged = false;
+    while (inst->op != ScbeMicroOp::End)
+    {
+        if (inst->hasRegA() && inst->regA == regSrc)
+        {
+            setRegA(inst, regDst);
+            hasChanged = true;
+        }
+
+        if (inst->hasRegB() && inst->regB == regSrc)
+        {
+            setRegB(inst, regDst);
+            hasChanged = true;
+        }
+
+        if (inst->hasRegC() && inst->regC == regSrc)
+        {
+            setRegC(inst, regDst);
+            hasChanged = true;
+        }
+
+        inst = ScbeMicro::getNextInstruction(inst);
+    }
+
+    return hasChanged;
+}
+
 bool ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOffset, CpuReg reg)
 {
     auto inst       = out.getFirstInstruction();
@@ -224,7 +254,7 @@ void ScbeOptimizer::computeContextRegs(const ScbeMicro& out)
         const auto writeRegs = out.cpu->getWriteRegisters(inst);
         for (const auto r : writeRegs)
         {
-            usedWriteRegs.add(r);
+            usedWriteRegs[r] += 1;
             if (out.cc->volatileRegistersIntegerSet.contains(r))
                 unusedVolatileInteger.erase(r);
             if (out.cc->nonVolatileRegistersIntegerSet.contains(r))
@@ -268,7 +298,7 @@ void ScbeOptimizer::computeContextStack(const ScbeMicro& out)
                     for (const auto& [r, i] : usedStackRanges)
                     {
                         bool hasAlias = false;
-                        if(stackOffset == r && stackOffset + size == r + i)
+                        if (stackOffset == r && stackOffset + size == r + i)
                             continue;
                         if (r >= stackOffset && r < stackOffset + size)
                             hasAlias = true;
@@ -386,6 +416,7 @@ void ScbeOptimizer::optimizeStep3(const ScbeMicro& out)
     computeContextStack(out);
 
     optimizePassDeadHdwReg2(out);
+    optimizePassDupHdwReg(out);
 }
 
 void ScbeOptimizer::optimize(const ScbeMicro& out)
