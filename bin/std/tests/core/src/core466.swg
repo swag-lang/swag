@@ -1,6 +1,6 @@
 using Core
 
-#[Swag.PrintBc]
+//#[Swag.PrintBc]
 #test
 {
     var a: Array'String

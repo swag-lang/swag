@@ -83,27 +83,7 @@ void ScbeOptimizer::optimizePassAliasHdwReg(const ScbeMicro& out)
             mapRegInst.clear();
         }
 
-        if (inst->hasReadRegB() && !inst->hasWriteRegB())
-        {
-            if (mapRegInst.contains(inst->regB))
-            {
-                const auto prev = mapRegInst[inst->regB];
-                if (inst->op == ScbeMicroOp::LoadRR &&
-                    inst->regA == prev->regA &&
-                    inst->regB == prev->regB &&
-                    inst->opBitsA == prev->opBitsA)
-                {
-                    ignore(out, inst);
-                }
-                else if (ScbeCpu::isInt(inst->regB) == ScbeCpu::isInt(prev->regB) &&
-                         inst->opBitsA == prev->opBitsA &&
-                         out.cpu->acceptsRegB(inst, prev->regB))
-                {
-                    setRegB(inst, prev->regB);
-                }
-            }
-        }
-        else if (inst->hasReadRegA() && !inst->hasWriteRegA())
+        if (inst->hasReadRegA() && !inst->hasWriteRegA())
         {
             if (mapRegInst.contains(inst->regA))
             {
@@ -118,6 +98,33 @@ void ScbeOptimizer::optimizePassAliasHdwReg(const ScbeMicro& out)
                              inst->opBitsA == prev->opBitsA)
                     {
                         setRegA(inst, prev->regB);
+                    }
+                }
+            }
+        }
+
+        if (inst->hasReadRegB() && !inst->hasWriteRegB())
+        {
+            if (mapRegInst.contains(inst->regB))
+            {
+                const auto prev = mapRegInst[inst->regB];
+                if (out.cpu->acceptsRegB(inst, prev->regB))
+                {
+                    if (inst->op == ScbeMicroOp::LoadRR &&
+                        inst->regA == prev->regA &&
+                        inst->regB == prev->regB &&
+                        inst->opBitsA == prev->opBitsA)
+                    {
+                        ignore(out, inst);
+                    }
+                    else if (inst->hasReadMemB())
+                    {
+                        setRegB(inst, prev->regB);
+                    }
+                    else if (ScbeCpu::isInt(inst->regB) == ScbeCpu::isInt(prev->regB) &&
+                             inst->opBitsA == prev->opBitsA)
+                    {
+                        setRegB(inst, prev->regB);
                     }
                 }
             }
