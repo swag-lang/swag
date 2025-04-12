@@ -623,7 +623,10 @@ void Match::match(TypeInfoFuncAttr* typeFunc, SymbolMatchContext& context)
 
                 // We have a match with an automatic cast (opAffect or opCast).
                 if (context.result == MatchResult::Ok)
-                    context.castFlagsResult.add(CAST_RESULT_GEN_AUTO_OP_CAST);
+                {
+                    if (!funcNode->isSpecialFunctionName() || !context.castFlagsResult.has(CAST_RESULT_AUTO_OP_AFFECT))
+                        context.castFlagsResult.add(CAST_RESULT_GEN_AUTO_OP_CAST);
+                }
             }
         }
         else
