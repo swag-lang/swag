@@ -232,6 +232,7 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
                 setValueA(next, inst->valueA + next->valueA);
                 break;
             }
+
             break;
 
         case ScbeMicroOp::LoadAmcRM:
@@ -299,6 +300,27 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
                     ignore(out, inst);
                 else
                     swapInstruction(out, inst, next);
+                break;
+            }
+
+            if (next->op == ScbeMicroOp::LoadMR &&
+                next->regA == inst->regA &&
+                out.cpu->encodeLoadAmcMemReg(inst->regB, inst->regC, inst->valueA, next->valueA + inst->valueB, inst->opBitsA, next->regB, next->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+            {
+                /*if (out.cpuFct->bc->sourceFile->name.containsNoCase("4451"))
+                {
+                    out.print();
+                    next->op      = ScbeMicroOp::LoadAmcMR;
+                    next->regC    = next->regB;
+                    next->regA    = inst->regB;
+                    next->regB    = inst->regC;
+                    next->valueB  = next->valueA + inst->valueB;
+                    next->valueA  = inst->valueA;
+                    next->opBitsB = next->opBitsA;
+                    next->opBitsA = inst->opBitsA;
+                    swapInstruction(out, inst, next);
+                    out.print();
+                }*/
                 break;
             }
 
