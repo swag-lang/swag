@@ -69,7 +69,17 @@ bool ScbeMicroInstruction::isJumpCond() const
 
 bool ScbeMicroInstruction::isCall() const
 {
-    return op == ScbeMicroOp::CallExtern || op == ScbeMicroOp::CallIndirect || op == ScbeMicroOp::CallLocal;
+    return op == ScbeMicroOp::CallExtern ||
+           op == ScbeMicroOp::CallIndirect ||
+           op == ScbeMicroOp::CallLocal;
+}
+
+bool ScbeMicroInstruction::isCallerParams() const
+{
+    return op == ScbeMicroOp::LoadCallParam ||
+           op == ScbeMicroOp::LoadCallAddrParam ||
+           op == ScbeMicroOp::StoreCallParam ||
+           op == ScbeMicroOp::LoadCallZeroExtParam;
 }
 
 bool ScbeMicroInstruction::isRet() const

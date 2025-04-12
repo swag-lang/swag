@@ -39,6 +39,7 @@ struct ScbeMicroInstruction
     bool isJump() const;
     bool isJumpCond() const;
     bool isCall() const;
+    bool isCallerParams() const;
     bool isRet() const;
     bool isTest() const;
 

@@ -785,6 +785,8 @@ void ScbeMicro::postProcess() const
             cpuFct->usedRegs.add(inst->regC);
         if (inst->isCall())
             cpuFct->noStackFrame = false;
+        if (inst->isCallerParams())
+            cpuFct->noStackFrame = false;
 
         inst = getNextInstruction(inst);
     }
