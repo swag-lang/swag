@@ -288,7 +288,7 @@ impl MainWnd
 
         var md: ImageMetaData
         md.tag   = "Captme.File"
-        md.value = capture.file
+        md.value = capture.file.toSlice()
         img.metaDatas.add(md)
 
         catch img.save(nameFile, optImg)

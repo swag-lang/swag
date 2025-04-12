@@ -614,7 +614,7 @@ void Match::match(TypeInfoFuncAttr* typeFunc, SymbolMatchContext& context)
             matchParametersAndNamed(context, typeFunc->parameters, CAST_FLAG_DEFAULT);
             if (context.semContext->result != ContextResult::Done)
                 return;
-            if (context.result == MatchResult::BadSignature)
+            if (context.result == MatchResult::BadSignature && !funcNode->isSpecialFunctionName())
             {
                 context.result = MatchResult::Ok;
                 matchParametersAndNamed(context, typeFunc->parameters, CAST_FLAG_AUTO_OP_CAST);
@@ -624,8 +624,7 @@ void Match::match(TypeInfoFuncAttr* typeFunc, SymbolMatchContext& context)
                 // We have a match with an automatic cast (opAffect or opCast).
                 if (context.result == MatchResult::Ok)
                 {
-                    if (!funcNode->isSpecialFunctionName() || !context.castFlagsResult.has(CAST_RESULT_AUTO_OP_AFFECT))
-                        context.castFlagsResult.add(CAST_RESULT_GEN_AUTO_OP_CAST);
+                    context.castFlagsResult.add(CAST_RESULT_GEN_AUTO_OP_CAST);
                 }
             }
         }
