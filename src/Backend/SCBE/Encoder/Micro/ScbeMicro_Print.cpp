@@ -352,6 +352,9 @@ void ScbeMicro::print() const
         if (inst->op == ScbeMicroOp::Ignore)
             continue;
 
+        line.name.clear();
+        line.args.clear();
+        
         switch (inst->op)
         {
             case ScbeMicroOp::Debug:
