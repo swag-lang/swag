@@ -27,13 +27,9 @@ OpBits BackendEncoder::getOpBitsByBytes(uint32_t numBytes)
         case 6:
         case 7:
         case 8:
-            return OpBits::B64;
         default:
-            SWAG_ASSERT(false);
-            break;
+            return OpBits::B64;
     }
-
-    return OpBits::Zero;
 }
 
 uint32_t BackendEncoder::getNumBits(OpBits opBits)

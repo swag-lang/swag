@@ -1851,9 +1851,14 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             }
 
             case ByteCodeOp::CopyRTtoRA:
-                pp.emitLoadRegMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetRT(0), OpBits::B64);
-                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, OpBits::B64);
+            {
+                const auto typeInfoFunc   = reinterpret_cast<TypeInfoFuncAttr*>(ip->c.pointer);
+                const auto returnTypeCall = typeInfoFunc->concreteReturnType();
+                const auto opBitsCall     = BackendEncoder::getOpBitsByBytes(returnTypeCall->sizeOf);
+                pp.emitLoadRegMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetRT(0), opBitsCall);
+                pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, opBitsCall);
                 break;
+            }
 
             case ByteCodeOp::CopyRT2toRARB:
                 pp.emitLoadRegMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetRT(0), OpBits::B64);
