@@ -39,33 +39,36 @@ void ScbeOptimizer::optimizePassStackToHwdReg(const ScbeMicro& out)
     });
 
     const bool aliasBC = aliasStack.contains(out.cpuFct->getStackOffsetBC(), out.cpuFct->bc->stackSize);
+
     if (!unusedVolatileInteger.empty())
     {
         for (const auto& offset : vec | std::views::keys)
         {
-            if (out.cpuFct->isStackOffsetLocalParam(offset) || out.cpuFct->isStackOffsetReg(offset))
-            {
-                if (!aliasStack.contains(offset))
-                {
-                    const auto r = unusedVolatileInteger.first();
-                    if (memToReg(out, CpuReg::Rsp, offset, r))
-                    {
-                        unusedVolatileInteger.erase(r);
-                        return;
-                    }
-                }
-            }
+            if (!out.cpuFct->isStackOffsetLocalParam(offset) && !out.cpuFct->isStackOffsetReg(offset))
+                continue;
+            if (aliasStack.contains(offset))
+                continue;
 
-            if (out.cpuFct->isStackOffsetBC(offset))
+            const auto r = unusedVolatileInteger.first();
+            if (memToReg(out, CpuReg::Rsp, offset, r))
             {
-                if (!aliasBC)
+                unusedVolatileInteger.erase(r);
+                return;
+            }
+        }
+
+        if (!aliasBC)
+        {
+            for (const auto& offset : vec | std::views::keys)
+            {
+                if (!out.cpuFct->isStackOffsetBC(offset))
+                    continue;
+
+                const auto r = unusedVolatileInteger.first();
+                if (memToReg(out, CpuReg::Rsp, offset, r))
                 {
-                    const auto r = unusedVolatileInteger.first();
-                    if (memToReg(out, CpuReg::Rsp, offset, r))
-                    {
-                        unusedVolatileInteger.erase(r);
-                        return;
-                    }
+                    unusedVolatileInteger.erase(r);
+                    return;
                 }
             }
         }
@@ -73,31 +76,35 @@ void ScbeOptimizer::optimizePassStackToHwdReg(const ScbeMicro& out)
 
     if (!unusedNonVolatileInteger.empty())
     {
-        for (const auto& offset : vec | std::views::keys)
+        for (const auto& it : vec)
         {
-            if (out.cpuFct->isStackOffsetLocalParam(offset) || out.cpuFct->isStackOffsetReg(offset))
-            {
-                if (!aliasStack.contains(offset))
-                {
-                    const auto r = unusedNonVolatileInteger.first();
-                    if (memToReg(out, CpuReg::Rsp, offset, r))
-                    {
-                        unusedNonVolatileInteger.erase(r);
-                        return;
-                    }
-                }
-            }
+            if (it.second < 2)
+                break;
+            if (!out.cpuFct->isStackOffsetLocalParam(it.first) && !out.cpuFct->isStackOffsetReg(it.first))
+                continue;
+            if (aliasStack.contains(it.first))
+                continue;
 
-            if (out.cpuFct->isStackOffsetBC(offset))
+            const auto r = unusedNonVolatileInteger.first();
+            if (memToReg(out, CpuReg::Rsp, it.first, r))
             {
-                if (!aliasBC)
+                unusedNonVolatileInteger.erase(r);
+                return;
+            }
+        }
+
+        if (!aliasBC)
+        {
+            for (const auto& offset : vec | std::views::keys)
+            {
+                if (!out.cpuFct->isStackOffsetBC(offset))
+                    continue;
+
+                const auto r = unusedNonVolatileInteger.first();
+                if (memToReg(out, CpuReg::Rsp, offset, r))
                 {
-                    const auto r = unusedNonVolatileInteger.first();
-                    if (memToReg(out, CpuReg::Rsp, offset, r))
-                    {
-                        unusedNonVolatileInteger.erase(r);
-                        return;
-                    }
+                    unusedNonVolatileInteger.erase(r);
+                    return;
                 }
             }
         }
