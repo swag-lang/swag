@@ -295,24 +295,63 @@ namespace
     }
 }
 
+void ScbeMicro::printInstructionLine(ScbeMicroInstruction* inst, uint32_t& idx, uint32_t i, ByteCode::PrintInstructionLine& line)
+{
+    idx++;
+
+    if (inst->emitFlags.has(EMIT_Lock))
+        line.name = "lock " + line.name;
+
+    line.rank = form("%08d", i);
+
+    line.flags.clear();
+    if (inst->flags.has(MIF_JUMP_DEST))
+        line.flags += 'J';
+    while (line.flags.length() != 10)
+        line.flags += '.';
+
+    const auto& def = g_MicroOpInfos[static_cast<int>(inst->op)];
+    line.pretty.clear();
+    line.pretty += def.name;
+    line.pretty += " ";
+    while (line.pretty.length() < 20)
+        line.pretty += " ";
+    line.pretty += printOpArgs(inst, def.leftFlags);
+    if (def.rightFlags.flags)
+    {
+        line.pretty += "| ";
+        line.pretty += printOpArgs(inst, def.rightFlags);
+    }
+
+    Vector<ByteCode::PrintInstructionLine> lines;
+    lines.push_back(line);
+
+    ByteCodePrintOptions po;
+    po.prettyColor = LogColor::Gray;
+    ByteCode::alignPrintInstructions(po, lines, true);
+    for (const auto& l : lines)
+        ByteCode::printInstruction(po, nullptr, l);
+}
+
 void ScbeMicro::print() const
 {
-    const auto  num        = concat.totalCount() / sizeof(ScbeMicroInstruction);
-    auto        inst       = reinterpret_cast<ScbeMicroInstruction*>(concat.firstBucket->data);
-    uint32_t    lastLine   = UINT32_MAX;
-    SourceFile* lastFile   = nullptr;
-    AstNode*    lastInline = nullptr;
+    const uint32_t num        = concat.totalCount() / sizeof(ScbeMicroInstruction);
+    auto           inst       = reinterpret_cast<ScbeMicroInstruction*>(concat.firstBucket->data);
+    uint32_t       lastLine   = UINT32_MAX;
+    SourceFile*    lastFile   = nullptr;
+    AstNode*       lastInline = nullptr;
 
     if (cpuFct->bc)
         cpuFct->bc->printName();
 
-    uint32_t idx = 0;
+    uint32_t                       idx = 0;
+    ByteCode::PrintInstructionLine line;
+
     for (uint32_t i = 0; i < num; i++, inst++)
     {
         if (inst->op == ScbeMicroOp::Ignore)
             continue;
 
-        ByteCode::PrintInstructionLine line;
         switch (inst->op)
         {
             case ScbeMicroOp::Debug:
@@ -457,7 +496,7 @@ void ScbeMicro::print() const
             case ScbeMicroOp::LoadAmcMR:
                 line.name = "mov";
                 if (inst->regA == CpuReg::Max && inst->valueA == 1 && inst->valueB == 0)
-                    line.args = form("%s ptr [%s], %s", opBitsName(inst->opBitsB), regName(inst->regB, inst->opBitsA), regName(inst->regC, inst->opBitsB)); 
+                    line.args = form("%s ptr [%s], %s", opBitsName(inst->opBitsB), regName(inst->regB, inst->opBitsA), regName(inst->regC, inst->opBitsB));
                 else if (inst->regA == CpuReg::Max && inst->valueB == 0)
                     line.args = form("%s ptr [%s*%d], %s", opBitsName(inst->opBitsB), regName(inst->regB, inst->opBitsA), inst->valueA, regName(inst->regC, inst->opBitsB));
                 else if (inst->regA == CpuReg::Max && inst->valueA == 1)
@@ -586,45 +625,42 @@ void ScbeMicro::print() const
                 break;
 
             case ScbeMicroOp::Enter:
-                line.name = "enter";
-                break;
+                for (auto r : cpuFct->unwindRegs)
+                {
+                    line.name = "push";
+                    line.args = form("%s", regName(r, OpBits::B64));
+                    printInstructionLine(inst, idx, i, line);
+                }
+                if (!cpuFct->noStackFrame)
+                {
+                    line.name = "sub";
+                    line.args = "rsp, <framesize>";
+                    printInstructionLine(inst, idx, i, line);
+                }
+                continue;
+
             case ScbeMicroOp::Leave:
-                line.name = "leave";
+                if (!cpuFct->noStackFrame)
+                {
+                    line.name = "add";
+                    line.args = "rsp, <framesize>";
+                    printInstructionLine(inst, idx, i, line);
+                }
+                for (uint32_t j = cpuFct->unwindRegs.size() - 1; j != UINT32_MAX; j--)
+                {
+                    const auto r = cpuFct->unwindRegs[j];
+                    line.name    = "pop";
+                    line.args    = form("%s", regName(r, OpBits::B64));
+                    printInstructionLine(inst, idx, i, line);
+                }
+                continue;
+
+            case ScbeMicroOp::End:
+                line.name = "end";
                 line.args = form("(%d instructions)", idx);
                 break;
         }
 
-        idx++;
-
-        if (inst->emitFlags.has(EMIT_Lock))
-            line.name = "lock " + line.name;
-
-        line.rank = form("%08d", i);
-
-        if (inst->flags.has(MIF_JUMP_DEST))
-            line.flags += 'J';
-        while (line.flags.length() != 10)
-            line.flags += '.';
-
-        const auto& def = g_MicroOpInfos[static_cast<int>(inst->op)];
-        line.pretty += def.name;
-        line.pretty += " ";
-        while (line.pretty.length() < 20)
-            line.pretty += " ";
-        line.pretty += printOpArgs(inst, def.leftFlags);
-        if (def.rightFlags.flags)
-        {
-            line.pretty += "| ";
-            line.pretty += printOpArgs(inst, def.rightFlags);
-        }
-
-        Vector<ByteCode::PrintInstructionLine> lines;
-        lines.push_back(line);
-
-        ByteCodePrintOptions po;
-        po.prettyColor = LogColor::Gray;
-        ByteCode::alignPrintInstructions(po, lines, true);
-        for (const auto& l : lines)
-            ByteCode::printInstruction(po, nullptr, l);
+        printInstructionLine(inst, idx, i, line);
     }
 }

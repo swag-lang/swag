@@ -77,6 +77,7 @@ struct ScbeMicro final : ScbeCpu
     void                         solveLabels();
     void                         process(ScbeCpu& encoder);
     void                         encode(ScbeCpu& encoder) const;
+    static void                  printInstructionLine(ScbeMicroInstruction* inst, uint32_t& idx, uint32_t i, ByteCode::PrintInstructionLine& line);
     void                         print() const;
 
     Map<uint32_t, uint32_t> labels;
