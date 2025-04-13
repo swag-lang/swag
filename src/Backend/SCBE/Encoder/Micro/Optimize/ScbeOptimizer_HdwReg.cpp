@@ -339,30 +339,33 @@ void ScbeOptimizer::optimizePassMakeVolatile(const ScbeMicro& out)
     while (inst->op != ScbeMicroOp::End)
     {
         if (inst->hasWriteRegA() &&
-            usedWriteRegs[inst->regA] == 1 &&
             out.cc->nonVolatileRegistersInteger.contains(inst->regA))
         {
-            auto     vol  = out.cc->volatileRegistersIntegerSet;
-            auto     next = ScbeMicro::getNextInstruction(inst);
-            uint32_t used = 0;
-            while (true)
+            const auto readRegs = out.cpu->getReadRegisters(inst);
+            if (!readRegs.contains(inst->regA))
             {
-                if (next->isJump())
-                    break;
-                const auto regs = out.cpu->getReadWriteRegisters(next);
-                for (const auto r : regs)
-                    vol.erase(r);
-                if (vol.empty())
-                    break;
-                if (regs.contains(inst->regA))
-                    used++;
-                if (next->op == ScbeMicroOp::Leave)
+                auto     vol  = out.cc->volatileRegistersIntegerSet;
+                auto     next = ScbeMicro::getNextInstruction(inst);
+                uint32_t used = 0;
+                while (true)
                 {
-                    regToReg(out, vol.first(), inst->regA, static_cast<uint32_t>(inst - out.getFirstInstruction()), static_cast<uint32_t>(next - out.getFirstInstruction()));
-                    break;
-                }
+                    if (next->isJump() || next->flags.has(MIF_JUMP_DEST))
+                        break;
+                    const auto regs = out.cpu->getReadWriteRegisters(next);
+                    for (const auto r : regs)
+                        vol.erase(r);
+                    if (vol.empty())
+                        break;
+                    if (regs.contains(inst->regA))
+                        used++;
+                    if (next->op == ScbeMicroOp::Leave)
+                    {
+                        regToReg(out, vol.first(), inst->regA, static_cast<uint32_t>(inst - out.getFirstInstruction()), static_cast<uint32_t>(next - out.getFirstInstruction()));
+                        break;
+                    }
 
-                next = ScbeMicro::getNextInstruction(next);
+                    next = ScbeMicro::getNextInstruction(next);
+                }
             }
         }
 
