@@ -666,4 +666,6 @@ void ScbeMicro::print() const
 
         printInstructionLine(inst, idx, i, line);
     }
+
+    g_Log.writeEol();
 }

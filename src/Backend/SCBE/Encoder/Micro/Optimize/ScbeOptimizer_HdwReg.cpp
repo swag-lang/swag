@@ -350,4 +350,44 @@ void ScbeOptimizer::optimizePassDupHdwReg(const ScbeMicro& out)
 
         inst = ScbeMicro::getNextInstruction(inst);
     }
+
+    inst = out.getFirstInstruction();
+    while (inst->op != ScbeMicroOp::End)
+    {
+        if (inst->hasWriteRegA() &&
+            usedWriteRegs[inst->regA] == 1 &&
+            out.cc->nonVolatileRegistersInteger.contains(inst->regA))
+        {
+            auto     vol  = out.cc->volatileRegistersIntegerSet;
+            auto     next = ScbeMicro::getNextInstruction(inst);
+            uint32_t used = 0;
+            while (true)
+            {
+                if (next->isJump())
+                    break;
+                const auto regs = out.cpu->getReadWriteRegisters(next);
+                for (const auto r : regs)
+                    vol.erase(r);
+                if (vol.empty())
+                    break;
+                if (regs.contains(inst->regA))
+                    used++;
+                if (next->op == ScbeMicroOp::Leave)
+                {
+                    regToReg(out, vol.first(), inst->regA, static_cast<uint32_t>(inst - out.getFirstInstruction()), static_cast<uint32_t>(next - out.getFirstInstruction()));
+                    break;
+                }
+
+                if (used == usedReadRegs[inst->regA] && inst->op == ScbeMicroOp::LoadRR)
+                {
+                    // out.print();
+                    break;
+                }
+
+                next = ScbeMicro::getNextInstruction(next);
+            }
+        }
+
+        inst = ScbeMicro::getNextInstruction(inst);
+    }
 }

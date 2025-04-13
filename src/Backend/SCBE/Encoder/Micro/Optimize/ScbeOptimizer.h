@@ -29,7 +29,7 @@ struct ScbeOptimizer
 {
     static bool explore(ScbeExploreContext& cxt, const ScbeMicro& out, const std::function<ScbeExploreReturn(const ScbeMicro&, const ScbeExploreContext&)>& callback);
 
-    bool regToReg(const ScbeMicro& out, CpuReg regDst, CpuReg regSrc);
+    bool regToReg(const ScbeMicro& out, CpuReg regDst, CpuReg regSrc, uint32_t firstInst = 0, uint32_t lastInst = UINT32_MAX);
     bool memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOffset, CpuReg reg);
     void swapInstruction(const ScbeMicro& out, ScbeMicroInstruction* before, ScbeMicroInstruction* after);
     void ignore(const ScbeMicro& out, ScbeMicroInstruction* inst);
@@ -82,6 +82,7 @@ struct ScbeOptimizer
     // Context
     ScbeExploreContext                    cxt;
     Map<uint32_t, uint32_t>               usedStack;
+    Map<CpuReg, uint32_t>                 usedReadRegs;
     Map<CpuReg, uint32_t>                 usedWriteRegs;
     Vector<std::pair<uint32_t, uint32_t>> usedStackRanges;
     StackRange                            aliasStack;

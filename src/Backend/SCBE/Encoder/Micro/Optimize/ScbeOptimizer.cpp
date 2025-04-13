@@ -8,11 +8,11 @@
 #include "Wmf/SourceFile.h"
 #pragma optimize("", off)
 
-bool ScbeOptimizer::regToReg(const ScbeMicro& out, CpuReg regDst, CpuReg regSrc)
+bool ScbeOptimizer::regToReg(const ScbeMicro& out, CpuReg regDst, CpuReg regSrc, uint32_t firstInst, uint32_t lastInst)
 {
-    auto inst       = out.getFirstInstruction();
+    auto inst       = out.getFirstInstruction() + firstInst;
     bool hasChanged = false;
-    while (inst->op != ScbeMicroOp::End)
+    while (inst != out.getFirstInstruction() + lastInst && inst->op != ScbeMicroOp::End)
     {
         if (inst->hasRegA() && inst->regA == regSrc)
         {
@@ -242,6 +242,7 @@ void ScbeOptimizer::setRegC(ScbeMicroInstruction* inst, CpuReg reg)
 
 void ScbeOptimizer::computeContextRegs(const ScbeMicro& out)
 {
+    usedReadRegs.clear();
     usedWriteRegs.clear();
     unusedVolatileInteger.clear();
     unusedVolatileInteger.append(out.cc->volatileRegistersIntegerSet);
@@ -264,6 +265,7 @@ void ScbeOptimizer::computeContextRegs(const ScbeMicro& out)
         const auto readRegs = out.cpu->getReadRegisters(inst);
         for (const auto r : readRegs)
         {
+            usedReadRegs[r] += 1;
             if (out.cc->volatileRegistersIntegerSet.contains(r))
                 unusedVolatileInteger.erase(r);
             if (out.cc->nonVolatileRegistersIntegerSet.contains(r))
