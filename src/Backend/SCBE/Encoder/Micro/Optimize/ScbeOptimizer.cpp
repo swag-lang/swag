@@ -158,7 +158,7 @@ bool ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
 
 void ScbeOptimizer::swapInstruction(const ScbeMicro& out, ScbeMicroInstruction* before, ScbeMicroInstruction* after)
 {
-    if (before->flags.has(MIF_JUMP_DEST))
+    if (before->isJumpDest())
     {
         after->flags.add(MIF_JUMP_DEST);
         before->flags.remove(MIF_JUMP_DEST);
@@ -176,7 +176,7 @@ void ScbeOptimizer::ignore(const ScbeMicro& out, ScbeMicroInstruction* inst)
 
     inst->op = ScbeMicroOp::Ignore;
 
-    if (inst->flags.has(MIF_JUMP_DEST))
+    if (inst->isJumpDest())
     {
         const auto next = ScbeMicro::getNextInstruction(inst);
         next->flags.add(MIF_JUMP_DEST);

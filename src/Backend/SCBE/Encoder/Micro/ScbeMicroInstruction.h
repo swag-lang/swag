@@ -36,6 +36,7 @@ struct ScbeMicroInstruction
 
     uint32_t getNumBytes() const;
 
+    bool isJumpDest() const { return flags.has(MIF_JUMP_DEST); }
     bool isJump() const;
     bool isJumpCond() const;
     bool isCall() const;

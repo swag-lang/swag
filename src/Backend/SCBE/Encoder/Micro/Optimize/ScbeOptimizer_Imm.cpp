@@ -11,7 +11,7 @@ void ScbeOptimizer::optimizePassImmediate(const ScbeMicro& out)
     auto inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {
-        if (inst->flags.has(MIF_JUMP_DEST) || inst->isRet())
+        if (inst->isJumpDest() || inst->isRet())
         {
             mapValVal.clear();
             mapRegVal.clear();

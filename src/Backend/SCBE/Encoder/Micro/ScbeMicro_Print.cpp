@@ -305,7 +305,7 @@ void ScbeMicro::printInstructionLine(ScbeMicroInstruction* inst, uint32_t& idx, 
     line.rank = form("%08d", i);
 
     line.flags.clear();
-    if (inst->flags.has(MIF_JUMP_DEST))
+    if (inst->isJumpDest())
         line.flags += 'J';
     while (line.flags.length() != 10)
         line.flags += '.';

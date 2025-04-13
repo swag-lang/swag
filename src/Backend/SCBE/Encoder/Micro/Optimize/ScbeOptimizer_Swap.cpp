@@ -10,7 +10,7 @@ void ScbeOptimizer::optimizePassSwap(const ScbeMicro& out)
     auto inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {
-        if (inst->flags.has(MIF_JUMP_DEST) ||
+        if (inst->isJumpDest() ||
             inst->isRet() ||
             inst->isJump() ||
             inst->isTest())

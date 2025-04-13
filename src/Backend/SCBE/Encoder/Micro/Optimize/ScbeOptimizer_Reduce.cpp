@@ -33,7 +33,7 @@ void ScbeOptimizer::reduceNoOp(const ScbeMicro& out, ScbeMicroInstruction* inst,
 
 void ScbeOptimizer::reduceLoadRR(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next)
 {
-    if (next->flags.has(MIF_JUMP_DEST))
+    if (next->isJumpDest())
         return;
 
     if (next->op == ScbeMicroOp::LoadRR &&
@@ -46,7 +46,7 @@ void ScbeOptimizer::reduceLoadRR(const ScbeMicro& out, ScbeMicroInstruction* ins
         auto nextNext = ScbeMicro::getNextInstruction(next);
         while (true)
         {
-            if (nextNext->flags.has(MIF_JUMP_DEST))
+            if (nextNext->isJumpDest())
                 break;
             if (nextNext->isJump() || nextNext->isRet())
                 break;
@@ -73,7 +73,7 @@ void ScbeOptimizer::reduceLoadRR(const ScbeMicro& out, ScbeMicroInstruction* ins
 
 void ScbeOptimizer::reduceOffset(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next)
 {
-    if (next->flags.has(MIF_JUMP_DEST))
+    if (next->isJumpDest())
         return;
 
     switch (inst->op)
@@ -134,7 +134,7 @@ void ScbeOptimizer::reduceOffset(const ScbeMicro& out, ScbeMicroInstruction* ins
 
 void ScbeOptimizer::reduceDup(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next)
 {
-    if (next->flags.has(MIF_JUMP_DEST))
+    if (next->isJumpDest())
         return;
 
     switch (inst->op)
@@ -177,7 +177,7 @@ void ScbeOptimizer::reduceDup(const ScbeMicro& out, ScbeMicroInstruction* inst, 
 
 void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next)
 {
-    if (next->flags.has(MIF_JUMP_DEST))
+    if (next->isJumpDest())
         return;
 
     switch (inst->op)
@@ -489,7 +489,7 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
 
 void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next)
 {
-    if (next->flags.has(MIF_JUMP_DEST))
+    if (next->isJumpDest())
         return;
     RegisterSet nextRegs;
 
@@ -549,7 +549,7 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
                 inst->regB == next->regA)
             {
                 const auto nextNext = ScbeMicro::getNextInstruction(next);
-                if (!nextNext->flags.has(MIF_JUMP_DEST) &&
+                if (!nextNext->isJumpDest() &&
                     nextNext->op == ScbeMicroOp::LoadRR &&
                     nextNext->regB == inst->regA)
                 {

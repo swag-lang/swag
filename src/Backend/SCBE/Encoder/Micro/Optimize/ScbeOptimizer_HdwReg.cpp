@@ -19,7 +19,7 @@ void ScbeOptimizer::optimizePassAliasRegMem(const ScbeMicro& out)
             auto next = ScbeMicro::getNextInstruction(inst);
             while (true)
             {
-                if (next->flags.has(MIF_JUMP_DEST) ||
+                if (next->isJumpDest() ||
                     next->isJump() ||
                     next->isRet())
                 {
@@ -76,7 +76,7 @@ void ScbeOptimizer::optimizePassAliasHdwReg(const ScbeMicro& out)
     auto inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {
-        if (inst->flags.has(MIF_JUMP_DEST) ||
+        if (inst->isJumpDest() ||
             inst->isJump() ||
             inst->isRet())
         {
@@ -308,7 +308,7 @@ void ScbeOptimizer::optimizePassDeadHdwRegBeforeLeave(const ScbeMicro& out)
     auto inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {
-        if (inst->flags.has(MIF_JUMP_DEST) || inst->isJump())
+        if (inst->isJumpDest() || inst->isJump())
             mapRegInst.clear();
 
         if (inst->op == ScbeMicroOp::Leave)
@@ -365,7 +365,7 @@ void ScbeOptimizer::optimizePassMakeVolatile(const ScbeMicro& out)
                 uint32_t used = 0;
                 while (true)
                 {
-                    if (next->isJump() || next->flags.has(MIF_JUMP_DEST))
+                    if (next->isJump() || next->isJumpDest())
                         break;
                     const auto regs = out.cpu->getReadWriteRegisters(next);
                     for (const auto r : regs)
