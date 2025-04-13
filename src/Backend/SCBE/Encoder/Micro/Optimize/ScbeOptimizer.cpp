@@ -419,6 +419,7 @@ void ScbeOptimizer::optimizeStep3(const ScbeMicro& out)
 
     optimizePassDeadHdwReg2(out);
     optimizePassDupHdwReg(out);
+    optimizePassMakeVolatile(out);
 }
 
 void ScbeOptimizer::optimize(const ScbeMicro& out)

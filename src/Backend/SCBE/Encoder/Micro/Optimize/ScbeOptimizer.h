@@ -52,6 +52,7 @@ struct ScbeOptimizer
     void reduceUnusedStack(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next);
     void optimizePassDeadRegBeforeLeave(const ScbeMicro& out);
     void optimizePassDeadHdwRegBeforeLeave(const ScbeMicro& out);
+    void optimizePassMakeVolatile(const ScbeMicro& out);
     void optimizePassDupHdwReg(const ScbeMicro& out);
     void optimizePassDeadHdwReg(const ScbeMicro& out);
     void optimizePassDeadHdwReg2(const ScbeMicro& out);

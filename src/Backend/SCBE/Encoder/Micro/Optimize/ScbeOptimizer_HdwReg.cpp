@@ -333,25 +333,9 @@ void ScbeOptimizer::optimizePassDeadHdwRegBeforeLeave(const ScbeMicro& out)
     }
 }
 
-void ScbeOptimizer::optimizePassDupHdwReg(const ScbeMicro& out)
+void ScbeOptimizer::optimizePassMakeVolatile(const ScbeMicro& out)
 {
     auto inst = out.getFirstInstruction();
-    while (inst->op != ScbeMicroOp::End)
-    {
-        if (inst->op == ScbeMicroOp::LoadRR &&
-            usedWriteRegs[inst->regA] == 1 &&
-            usedWriteRegs[inst->regB] <= 1 &&
-            out.cc->nonVolatileRegistersInteger.contains(inst->regA) &&
-            out.cc->nonVolatileRegistersInteger.contains(inst->regB))
-        {
-            regToReg(out, inst->regB, inst->regA);
-            ignore(out, inst);
-        }
-
-        inst = ScbeMicro::getNextInstruction(inst);
-    }
-
-    inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {
         if (inst->hasWriteRegA() &&
@@ -378,14 +362,27 @@ void ScbeOptimizer::optimizePassDupHdwReg(const ScbeMicro& out)
                     break;
                 }
 
-                if (used == usedReadRegs[inst->regA] && inst->op == ScbeMicroOp::LoadRR)
-                {
-                    // out.print();
-                    break;
-                }
-
                 next = ScbeMicro::getNextInstruction(next);
             }
+        }
+
+        inst = ScbeMicro::getNextInstruction(inst);
+    }
+}
+
+void ScbeOptimizer::optimizePassDupHdwReg(const ScbeMicro& out)
+{
+    auto inst = out.getFirstInstruction();
+    while (inst->op != ScbeMicroOp::End)
+    {
+        if (inst->op == ScbeMicroOp::LoadRR &&
+            usedWriteRegs[inst->regA] == 1 &&
+            usedWriteRegs[inst->regB] <= 1 &&
+            out.cc->nonVolatileRegistersInteger.contains(inst->regA) &&
+            out.cc->nonVolatileRegistersInteger.contains(inst->regB))
+        {
+            regToReg(out, inst->regB, inst->regA);
+            ignore(out, inst);
         }
 
         inst = ScbeMicro::getNextInstruction(inst);
