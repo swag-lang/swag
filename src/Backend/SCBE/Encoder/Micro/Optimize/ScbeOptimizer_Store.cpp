@@ -61,15 +61,20 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
 
         const auto stackOffset = inst->getStackOffset();
         auto       legitReg    = CpuReg::Max;
+        const auto isStack     = out.cpuFct->isStackOffsetTransient(stackOffset) || out.cpuFct->isStackOffsetBC(stackOffset);
 
-        if (inst->op == ScbeMicroOp::LoadMR && out.cpuFct->isStackOffsetTransient(stackOffset))
+        if (inst->op == ScbeMicroOp::LoadMR && isStack)
         {
             if (mapValReg.contains(stackOffset))
                 mapRegVal.erase(mapValReg[stackOffset].first);
-            mapValReg[stackOffset] = {inst->regB, inst->opBitsA};
-            mapRegVal[inst->regB]  = stackOffset;
+
+            if (!aliasStack.contains(stackOffset, ScbeCpu::getNumBytes(inst->opBitsA)))
+            {
+                mapValReg[stackOffset] = {inst->regB, inst->opBitsA};
+                mapRegVal[inst->regB]  = stackOffset;
+            }
         }
-        else if (inst->hasWriteMemA() && mapValReg.contains(stackOffset))
+        else if (inst->hasWriteMemA())
         {
             mapValReg.erase(stackOffset);
         }
@@ -77,7 +82,7 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
         switch (inst->op)
         {
             case ScbeMicroOp::LoadAddr:
-                if (inst->regB == CpuReg::Rsp && out.cpuFct->isStackOffsetTransient(stackOffset))
+                if (inst->regB == CpuReg::Rsp && isStack)
                     mapValReg.erase(stackOffset);
                 break;
 
@@ -100,7 +105,7 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
                     break;
                 }
 
-                if (out.cpuFct->isStackOffsetTransient(stackOffset))
+                if (isStack)
                 {
                     if (mapRegVal.contains(inst->regA))
                         mapValReg.erase(mapRegVal[inst->regA]);

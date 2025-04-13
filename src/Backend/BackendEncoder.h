@@ -36,6 +36,7 @@ struct BackendEncoder
     static bool mustCheckOverflow(const Module* module, const ByteCodeInstruction* ip);
 
     static uint32_t  getNumBits(OpBits opBits);
+    static uint32_t  getNumBytes(OpBits opBits) { return getNumBits(opBits) / 8; }
     static OpBits    getOpBitsByBytes(uint32_t numBytes);
     static bool      isFloat(ByteCodeOp op);
     static bool      isInt(ByteCodeOp op);
