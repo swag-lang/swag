@@ -183,6 +183,15 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
     switch (inst->op)
     {
         case ScbeMicroOp::LoadAddr:
+            if (inst->regB == inst->regA &&
+                inst->opBitsA == inst->opBitsB)
+            {
+                inst->op      = ScbeMicroOp::OpBinaryRI;
+                inst->cpuOp   = CpuOp::ADD;
+                inst->opBitsB = inst->opBitsA;
+                break;
+            }
+        
             if (next->op == ScbeMicroOp::OpBinaryRR &&
                 next->cpuOp == CpuOp::ADD &&
                 next->regB == inst->regA &&
@@ -458,17 +467,15 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
 
             if (inst->cpuOp == CpuOp::ADD &&
                 next->op == ScbeMicroOp::LoadRM &&
-                next->opBitsA == inst->opBitsA &&
                 next->regB == inst->regA &&
                 inst->regB != next->regA &&
-                out.cpu->encodeLoadAddressAmcRegMem(next->regA, inst->opBitsA, next->regB, inst->regB, 1, 0, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+                out.cpu->encodeLoadAddressAmcRegMem(next->regA, next->opBitsA, next->regB, inst->regB, 1, 0, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
             {
                 setOp(next, ScbeMicroOp::LoadAmcRM);
                 next->regC    = inst->regB;
                 next->valueB  = next->valueA;
                 next->valueA  = 1;
-                next->opBitsA = inst->opBitsA;
-                next->opBitsB = inst->opBitsA;
+                next->opBitsB = OpBits::B64;
                 if (next->regA == inst->regA)
                     ignore(out, inst);
                 else
