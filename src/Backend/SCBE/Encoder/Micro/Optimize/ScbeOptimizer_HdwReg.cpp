@@ -95,22 +95,6 @@ void ScbeOptimizer::optimizePassAliasHdwReg(const ScbeMicro& out)
             }
         }
 
-        if (inst->hasReadRegC() && !inst->hasWriteRegC())
-        {
-            if (mapRegInst.contains(inst->regC))
-            {
-                const auto prev = mapRegInst[inst->regC];
-                if (out.cpu->acceptsRegC(inst, prev->regB))
-                {
-                    if (ScbeCpu::isInt(inst->regA) == ScbeCpu::isInt(prev->regB) &&
-                        inst->opBitsA == prev->opBitsA)
-                    {
-                        setRegC(inst, prev->regB);
-                    }
-                }
-            }
-        }
-
         if (inst->hasReadRegB() && !inst->hasWriteRegB())
         {
             if (mapRegInst.contains(inst->regB))
@@ -129,12 +113,25 @@ void ScbeOptimizer::optimizePassAliasHdwReg(const ScbeMicro& out)
                     {
                         setRegB(inst, prev->regB);
                     }
-                    else if (ScbeCpu::isInt(inst->regB) == ScbeCpu::isInt(prev->regB) &&
-                             inst->opBitsA == prev->opBitsA)
+                    else if (inst->opBitsA == prev->opBitsA)
                     {
-                        //if(ScbeCpu::isInt(inst->regB) != ScbeCpu::isInt(prev->regB) && inst->op != ScbeMicroOp::LoadRR)
-                        //    out.print();
                         setRegB(inst, prev->regB);
+                    }
+                }
+            }
+        }
+
+        if (inst->hasReadRegC() && !inst->hasWriteRegC())
+        {
+            if (mapRegInst.contains(inst->regC))
+            {
+                const auto prev = mapRegInst[inst->regC];
+                if (out.cpu->acceptsRegC(inst, prev->regB))
+                {
+                    if (ScbeCpu::isInt(inst->regA) == ScbeCpu::isInt(prev->regB) &&
+                        inst->opBitsA == prev->opBitsA)
+                    {
+                        setRegC(inst, prev->regB);
                     }
                 }
             }
