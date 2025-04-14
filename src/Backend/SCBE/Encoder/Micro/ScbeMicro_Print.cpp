@@ -307,6 +307,8 @@ void ScbeMicro::printInstructionLine(ScbeMicroInstruction* inst, uint32_t& idx, 
     line.flags.clear();
     if (inst->isJumpDest())
         line.flags += 'J';
+    if (inst->flags.has(MIF_JUMP_DEST1))
+        line.flags += 'O';
     while (line.flags.length() != 10)
         line.flags += '.';
 
@@ -354,7 +356,7 @@ void ScbeMicro::print() const
 
         line.name.clear();
         line.args.clear();
-        
+
         switch (inst->op)
         {
             case ScbeMicroOp::Debug:
@@ -368,12 +370,16 @@ void ScbeMicro::print() const
                 const auto curIp = reinterpret_cast<ByteCodeInstruction*>(inst->valueA);
                 ByteCode::printSourceCode(po, cpuFct->bc, curIp, &lastLine, &lastFile, &lastInline);
                 cpuFct->bc->printInstruction(po, curIp);
+                line.name = "debug";
                 continue;
             }
 
             case ScbeMicroOp::Label:
+                line.name = "label";
+                break;
             case ScbeMicroOp::PatchJump:
-                continue;
+                line.name = "patchjump";
+                break;
 
             case ScbeMicroOp::SymbolRelocRef:
                 break;

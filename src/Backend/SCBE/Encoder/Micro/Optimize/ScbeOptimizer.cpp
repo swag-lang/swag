@@ -240,6 +240,48 @@ void ScbeOptimizer::setRegC(ScbeMicroInstruction* inst, CpuReg reg)
     }
 }
 
+void ScbeOptimizer::solveLabels(const ScbeMicro& out)
+{
+    const auto first = out.getFirstInstruction();
+    auto       inst  = first;
+    while (inst->op != ScbeMicroOp::End)
+    {
+        inst->flags.remove(MIF_JUMP_DEST);
+        inst++;
+    }
+
+    inst     = first;
+    while (inst->op != ScbeMicroOp::End)
+    {
+        if (inst->op == ScbeMicroOp::JumpCondI)
+        {
+            const auto it = out.labels.find(static_cast<uint32_t>(inst->valueA));
+            SWAG_ASSERT(it != out.labels.end());
+            inst->valueB = it->second;
+            auto next    = first + inst->valueB;
+            while (next->op == ScbeMicroOp::Label || next->op == ScbeMicroOp::Debug || next->op == ScbeMicroOp::Ignore)
+                next++;
+            next->flags.add(MIF_JUMP_DEST);
+        }
+        else if (inst->op == ScbeMicroOp::PatchJump)
+        {
+            const auto jump = reinterpret_cast<ScbeMicroInstruction*>(out.concat.firstBucket->data + inst->valueA);
+            auto       next = ScbeMicro::getNextInstruction(inst);
+            while (next->op == ScbeMicroOp::Label || next->op == ScbeMicroOp::Debug || next->op == ScbeMicroOp::Ignore)
+                next++;
+            jump->valueB = static_cast<uint64_t>(next - first);
+            next->flags.add(MIF_JUMP_DEST);
+        }
+        else if (inst->op == ScbeMicroOp::Label)
+        {
+            const auto next = ScbeMicro::getNextInstruction(inst);
+            next->flags.add(MIF_JUMP_DEST);
+        }
+
+        inst++;
+    }
+}
+
 void ScbeOptimizer::computeContextRegs(const ScbeMicro& out)
 {
     usedReadRegs.clear();
@@ -331,6 +373,13 @@ void ScbeOptimizer::computeContextStack(const ScbeMicro& out)
     }
 }
 
+void ScbeOptimizer::computeContext(const ScbeMicro& out)
+{
+    solveLabels(out);
+    computeContextRegs(out);
+    computeContextStack(out);
+}
+
 bool ScbeOptimizer::explore(ScbeExploreContext& cxt, const ScbeMicro& out, const std::function<ScbeExploreReturn(const ScbeMicro& out, const ScbeExploreContext&)>& callback)
 {
     cxt.done.clear();
@@ -389,7 +438,8 @@ bool ScbeOptimizer::explore(ScbeExploreContext& cxt, const ScbeMicro& out, const
 void ScbeOptimizer::optimizeStep1(const ScbeMicro& out)
 {
     passHasDoneSomething = false;
-    computeContextRegs(out);
+    computeContext(out);
+
     optimizePassImmediate(out);
     optimizePassReduce(out);
     optimizePassStore(out);
@@ -403,8 +453,7 @@ void ScbeOptimizer::optimizeStep1(const ScbeMicro& out)
 void ScbeOptimizer::optimizeStep2(const ScbeMicro& out)
 {
     passHasDoneSomething = false;
-    computeContextRegs(out);
-    computeContextStack(out);
+    computeContext(out);
 
     optimizePassDeadRegBeforeLeave(out);
     optimizePassParamsKeepReg(out);
@@ -415,7 +464,7 @@ void ScbeOptimizer::optimizeStep2(const ScbeMicro& out)
 void ScbeOptimizer::optimizeStep3(const ScbeMicro& out)
 {
     passHasDoneSomething = false;
-    computeContextStack(out);
+    computeContext(out);
 
     optimizePassDeadHdwReg2(out);
     optimizePassDupHdwReg(out);
@@ -428,9 +477,6 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
         return;
     if (!out.cpuFct->bc->sourceFile->module->mustOptimizeBackend(out.cpuFct->bc->node))
         return;
-
-    // if (out.cpuFct->bc->sourceFile->name.containsNoCase("r493."))
-    //     out.print();
 
     bool globalChanged = true;
     while (globalChanged)

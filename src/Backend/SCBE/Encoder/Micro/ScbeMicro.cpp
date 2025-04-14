@@ -42,17 +42,6 @@ ScbeMicroInstruction* ScbeMicro::addInstruction(ScbeMicroOp op, CpuEmitFlags emi
     }
 #endif
 
-    if (op != ScbeMicroOp::Label &&
-        op != ScbeMicroOp::PatchJump &&
-        op != ScbeMicroOp::Debug)
-    {
-        if (nextIsJumpDest)
-        {
-            inst->flags.add(MIF_JUMP_DEST);
-            nextIsJumpDest = false;
-        }
-    }
-
     return inst;
 }
 
@@ -77,7 +66,6 @@ void ScbeMicro::emitLabel(uint32_t instructionIndex)
 {
     const auto inst          = addInstruction(ScbeMicroOp::Label, EMIT_Zero);
     inst->valueA             = instructionIndex;
-    nextIsJumpDest           = true;
     labels[instructionIndex] = concat.totalCount() / sizeof(ScbeMicroInstruction);
 }
 
@@ -492,7 +480,6 @@ CpuEncodeResult ScbeMicro::encodePatchJump(const CpuJump& jump, CpuEmitFlags emi
 {
     const auto inst = addInstruction(ScbeMicroOp::PatchJump, emitFlags);
     inst->valueA    = jump.offsetStart;
-    nextIsJumpDest  = true;
     return CpuEncodeResult::Zero;
 }
 
@@ -801,35 +788,10 @@ void ScbeMicro::postProcess() const
     }
 }
 
-void ScbeMicro::solveLabels()
-{
-    const auto first = getFirstInstruction();
-    auto       inst  = first;
-    while (inst->op != ScbeMicroOp::End)
-    {
-        if (inst->op == ScbeMicroOp::JumpCondI)
-        {
-            const auto it = labels.find(static_cast<uint32_t>(inst->valueA));
-            SWAG_ASSERT(it != labels.end());
-            inst->valueB = it->second;
-        }
-        else if (inst->op == ScbeMicroOp::PatchJump)
-        {
-            const auto jump = reinterpret_cast<ScbeMicroInstruction*>(concat.firstBucket->data + inst->valueA);
-            const auto next = getNextInstruction(inst);
-            jump->valueB    = static_cast<uint64_t>(next - first);
-        }
-
-        inst++;
-    }
-}
-
 void ScbeMicro::process(ScbeCpu& encoder)
 {
     addInstruction(ScbeMicroOp::End, EMIT_Zero);
     concat.makeLinear();
-
-    solveLabels();
 
     ScbeOptimizer opt;
     opt.encoder = &encoder;
