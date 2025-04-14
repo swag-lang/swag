@@ -72,7 +72,9 @@ void ScbeOptimizer::optimizePassAliasHdwReg(const ScbeMicro& out)
     auto inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {
-        if (inst->isJump() || inst->isJumpDest() || inst->isRet())
+        if (inst->isJump() && !inst->isJumpCond())
+            mapRegInst.clear();
+        if (inst->isJumpDest() || inst->isRet())
             mapRegInst.clear();
 
         if (inst->hasReadRegA() && !inst->hasWriteRegA())
@@ -86,7 +88,9 @@ void ScbeOptimizer::optimizePassAliasHdwReg(const ScbeMicro& out)
                     {
                         setRegA(out, inst, prev->regB);
                     }
-                    else if (ScbeCpu::getNumBits(inst->opBitsA) <= ScbeCpu::getNumBits(prev->opBitsA))
+                    else if (!inst->hasOpFlag(MOF_OPBITS_A) ||
+                             !prev->hasOpFlag(MOF_OPBITS_A) ||
+                             ScbeCpu::getNumBits(inst->opBitsA) <= ScbeCpu::getNumBits(prev->opBitsA))
                     {
                         setRegA(out, inst, prev->regB);
                     }
@@ -112,7 +116,9 @@ void ScbeOptimizer::optimizePassAliasHdwReg(const ScbeMicro& out)
                     {
                         setRegB(out, inst, prev->regB);
                     }
-                    else if (ScbeCpu::getNumBits(inst->opBitsA) <= ScbeCpu::getNumBits(prev->opBitsA))
+                    else if (!inst->hasOpFlag(MOF_OPBITS_A) ||
+                             !prev->hasOpFlag(MOF_OPBITS_A) ||
+                             ScbeCpu::getNumBits(inst->opBitsA) <= ScbeCpu::getNumBits(prev->opBitsA))
                     {
                         setRegB(out, inst, prev->regB);
                     }
@@ -127,7 +133,9 @@ void ScbeOptimizer::optimizePassAliasHdwReg(const ScbeMicro& out)
                 const auto prev = mapRegInst[inst->regC];
                 if (out.cpu->acceptsRegC(inst, prev->regB))
                 {
-                    if (ScbeCpu::getNumBits(inst->opBitsA) <= ScbeCpu::getNumBits(prev->opBitsA))
+                    if (!inst->hasOpFlag(MOF_OPBITS_A) ||
+                        !prev->hasOpFlag(MOF_OPBITS_A) ||
+                        ScbeCpu::getNumBits(inst->opBitsA) <= ScbeCpu::getNumBits(prev->opBitsA))
                     {
                         setRegC(out, inst, prev->regB);
                     }
