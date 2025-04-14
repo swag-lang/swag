@@ -250,7 +250,7 @@ void ScbeOptimizer::solveLabels(const ScbeMicro& out)
         inst++;
     }
 
-    inst     = first;
+    inst = first;
     while (inst->op != ScbeMicroOp::End)
     {
         if (inst->op == ScbeMicroOp::JumpCondI)
@@ -463,7 +463,7 @@ void ScbeOptimizer::optimizeStep3(const ScbeMicro& out)
     computeContextRegs(out);
     computeContextStack(out);
     solveLabels(out);
-    
+
     optimizePassDeadHdwReg2(out);
     optimizePassDupHdwReg(out);
     optimizePassMakeVolatile(out);
