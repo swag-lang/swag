@@ -19,12 +19,8 @@ void ScbeOptimizer::optimizePassAliasRegMem(const ScbeMicro& out)
             auto next = ScbeMicro::getNextInstruction(inst);
             while (true)
             {
-                if (next->isJumpDest() ||
-                    next->isJump() ||
-                    next->isRet())
-                {
+                if (next->isJump() || next->isJumpDest() || next->isRet())
                     break;
-                }
 
                 if (next->op == ScbeMicroOp::LoadRR &&
                     next->regB == inst->regA &&
@@ -76,12 +72,8 @@ void ScbeOptimizer::optimizePassAliasHdwReg(const ScbeMicro& out)
     auto inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {
-        if (inst->isJumpDest() ||
-            inst->isJump() ||
-            inst->isRet())
-        {
+        if (inst->isJump() || inst->isJumpDest() || inst->isRet())
             mapRegInst.clear();
-        }
 
         if (inst->hasReadRegA() && !inst->hasWriteRegA())
         {
@@ -308,7 +300,7 @@ void ScbeOptimizer::optimizePassDeadHdwRegBeforeLeave(const ScbeMicro& out)
     auto inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {
-        if (inst->isJumpDest() || inst->isJump())
+        if (inst->isJump() || inst->isJumpDest())
             mapRegInst.clear();
 
         if (inst->op == ScbeMicroOp::Leave)

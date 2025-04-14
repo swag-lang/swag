@@ -12,7 +12,7 @@ void ScbeOptimizer::optimizePassDeadRegBeforeLeave(const ScbeMicro& out)
     auto inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {
-        if (inst->isJumpDest() || inst->isJump())
+        if (inst->isJump() || inst->isJumpDest())
             mapValInst.clear();
 
         if (inst->op == ScbeMicroOp::Leave)
@@ -47,7 +47,7 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
     auto inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {
-        if (inst->isJumpDest() || inst->isRet())
+        if (inst->isJump() || inst->isJumpDest() || inst->isRet())
         {
             mapValReg.clear();
             mapRegVal.clear();

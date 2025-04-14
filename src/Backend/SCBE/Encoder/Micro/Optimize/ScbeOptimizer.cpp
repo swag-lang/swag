@@ -242,10 +242,13 @@ void ScbeOptimizer::setRegC(ScbeMicroInstruction* inst, CpuReg reg)
 
 void ScbeOptimizer::solveLabels(const ScbeMicro& out)
 {
-    const auto first = out.getFirstInstruction();
-    auto       inst  = first;
+    const auto first        = out.getFirstInstruction();
+    auto       inst         = first;
+    bool       hasJumpTable = false;
     while (inst->op != ScbeMicroOp::End)
     {
+        if (inst->op == ScbeMicroOp::JumpTable)
+            hasJumpTable = true;
         inst->flags.remove(MIF_JUMP_DEST);
         inst++;
     }
@@ -272,7 +275,7 @@ void ScbeOptimizer::solveLabels(const ScbeMicro& out)
             jump->valueB = static_cast<uint64_t>(next - first);
             next->flags.add(MIF_JUMP_DEST);
         }
-        else if (inst->op == ScbeMicroOp::Label)
+        else if (inst->op == ScbeMicroOp::Label && hasJumpTable)
         {
             const auto next = ScbeMicro::getNextInstruction(inst);
             next->flags.add(MIF_JUMP_DEST);

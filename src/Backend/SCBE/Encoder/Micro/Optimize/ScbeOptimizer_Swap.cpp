@@ -10,9 +10,9 @@ void ScbeOptimizer::optimizePassSwap(const ScbeMicro& out)
     auto inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {
-        if (inst->isJumpDest() ||
+        if (inst->isJump() ||
+            inst->isJumpDest() ||
             inst->isRet() ||
-            inst->isJump() ||
             inst->isTest())
         {
             toMove = nullptr;

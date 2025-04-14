@@ -33,7 +33,7 @@ void ScbeOptimizer::reduceNoOp(const ScbeMicro& out, ScbeMicroInstruction* inst,
 
 void ScbeOptimizer::reduceLoadRR(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next)
 {
-    if (next->isJumpDest())
+    if (next->isJump() || next->isJumpDest())
         return;
 
     if (next->op == ScbeMicroOp::LoadRR &&
@@ -46,9 +46,7 @@ void ScbeOptimizer::reduceLoadRR(const ScbeMicro& out, ScbeMicroInstruction* ins
         auto nextNext = ScbeMicro::getNextInstruction(next);
         while (true)
         {
-            if (nextNext->isJumpDest())
-                break;
-            if (nextNext->isJump() || nextNext->isRet())
+            if (nextNext->isJump() || nextNext->isJumpDest() || nextNext->isRet())
                 break;
 
             const auto readRegs  = out.cpu->getReadRegisters(nextNext);
@@ -73,7 +71,7 @@ void ScbeOptimizer::reduceLoadRR(const ScbeMicro& out, ScbeMicroInstruction* ins
 
 void ScbeOptimizer::reduceOffset(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next)
 {
-    if (next->isJumpDest())
+    if (next->isJump() || next->isJumpDest())
         return;
 
     switch (inst->op)
@@ -134,7 +132,7 @@ void ScbeOptimizer::reduceOffset(const ScbeMicro& out, ScbeMicroInstruction* ins
 
 void ScbeOptimizer::reduceDup(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next)
 {
-    if (next->isJumpDest())
+    if (next->isJump() || next->isJumpDest())
         return;
 
     switch (inst->op)
@@ -177,7 +175,7 @@ void ScbeOptimizer::reduceDup(const ScbeMicro& out, ScbeMicroInstruction* inst, 
 
 void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next)
 {
-    if (next->isJumpDest())
+    if (next->isJump() || next->isJumpDest())
         return;
 
     switch (inst->op)
