@@ -67,7 +67,6 @@ struct ScbeOptimizer
     static void solveLabels(const ScbeMicro& out);
     void        computeContextRegs(const ScbeMicro& out);
     void        computeContextStack(const ScbeMicro& out);
-    void        computeContext(const ScbeMicro& out);
     void        optimizeStep1(const ScbeMicro& out);
     void        optimizeStep2(const ScbeMicro& out);
     void        optimizeStep3(const ScbeMicro& out);

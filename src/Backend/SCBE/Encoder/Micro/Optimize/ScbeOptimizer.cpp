@@ -373,13 +373,6 @@ void ScbeOptimizer::computeContextStack(const ScbeMicro& out)
     }
 }
 
-void ScbeOptimizer::computeContext(const ScbeMicro& out)
-{
-    solveLabels(out);
-    computeContextRegs(out);
-    computeContextStack(out);
-}
-
 bool ScbeOptimizer::explore(ScbeExploreContext& cxt, const ScbeMicro& out, const std::function<ScbeExploreReturn(const ScbeMicro& out, const ScbeExploreContext&)>& callback)
 {
     cxt.done.clear();
@@ -438,7 +431,8 @@ bool ScbeOptimizer::explore(ScbeExploreContext& cxt, const ScbeMicro& out, const
 void ScbeOptimizer::optimizeStep1(const ScbeMicro& out)
 {
     passHasDoneSomething = false;
-    computeContext(out);
+    computeContextRegs(out);
+    solveLabels(out);
 
     optimizePassImmediate(out);
     optimizePassReduce(out);
@@ -453,7 +447,9 @@ void ScbeOptimizer::optimizeStep1(const ScbeMicro& out)
 void ScbeOptimizer::optimizeStep2(const ScbeMicro& out)
 {
     passHasDoneSomething = false;
-    computeContext(out);
+    computeContextRegs(out);
+    computeContextStack(out);
+    solveLabels(out);
 
     optimizePassDeadRegBeforeLeave(out);
     optimizePassParamsKeepReg(out);
@@ -464,8 +460,10 @@ void ScbeOptimizer::optimizeStep2(const ScbeMicro& out)
 void ScbeOptimizer::optimizeStep3(const ScbeMicro& out)
 {
     passHasDoneSomething = false;
-    computeContext(out);
-
+    computeContextRegs(out);
+    computeContextStack(out);
+    solveLabels(out);
+    
     optimizePassDeadHdwReg2(out);
     optimizePassDupHdwReg(out);
     optimizePassMakeVolatile(out);
