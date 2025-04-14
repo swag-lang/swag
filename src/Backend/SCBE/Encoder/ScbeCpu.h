@@ -137,6 +137,7 @@ enum class CpuEncodeResult : uint32_t
     Left2Rax,
     Right2Reg,
     Right2Rcx,
+    Right2Cst,
     Simplify,
     NotSupported,
 };
@@ -256,7 +257,7 @@ struct ScbeCpu : BackendEncoder
 
     void emitSymbolRelocationRef(const Utf8& name, CpuEmitFlags emitFlags = EMIT_Zero);
     void emitLoadSymRelocAddress(CpuReg reg, uint32_t symbolIndex, uint32_t offset, CpuEmitFlags emitFlags = EMIT_Zero);
-    void emitLoadSymbolRelocValue(CpuReg reg, uint32_t symbolIndex, uint32_t offset, CpuEmitFlags emitFlags = EMIT_Zero);
+    void emitLoadSymbolRelocValue(CpuReg reg, uint32_t symbolIndex, uint32_t offset, OpBits opBits, CpuEmitFlags emitFlags = EMIT_Zero);
     void emitPush(CpuReg reg, CpuEmitFlags emitFlags = EMIT_Zero);
     void emitPop(CpuReg reg, CpuEmitFlags emitFlags = EMIT_Zero);
     void emitNop(CpuEmitFlags emitFlags = EMIT_Zero);
@@ -309,7 +310,7 @@ struct ScbeCpu : BackendEncoder
     virtual void emitJumpCondImm(CpuCondJump jumpType, uint32_t ipDest);
 
     virtual CpuEncodeResult encodeLoadSymbolRelocAddress(CpuReg reg, uint32_t symbolIndex, uint32_t offset, CpuEmitFlags emitFlags)                                                                     = 0;
-    virtual CpuEncodeResult encodeLoadSymRelocValue(CpuReg reg, uint32_t symbolIndex, uint32_t offset, CpuEmitFlags emitFlags)                                                                          = 0;
+    virtual CpuEncodeResult encodeLoadSymRelocValue(CpuReg reg, uint32_t symbolIndex, uint32_t offset, OpBits opBits, CpuEmitFlags emitFlags)                                                           = 0;
     virtual CpuEncodeResult encodePush(CpuReg reg, CpuEmitFlags emitFlags)                                                                                                                              = 0;
     virtual CpuEncodeResult encodePop(CpuReg reg, CpuEmitFlags emitFlags)                                                                                                                               = 0;
     virtual CpuEncodeResult encodeNop(CpuEmitFlags emitFlags)                                                                                                                                           = 0;

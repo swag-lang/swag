@@ -117,12 +117,13 @@ CpuEncodeResult ScbeMicro::encodeLoadSymbolRelocAddress(CpuReg reg, uint32_t sym
     return CpuEncodeResult::Zero;
 }
 
-CpuEncodeResult ScbeMicro::encodeLoadSymRelocValue(CpuReg reg, uint32_t symbolIndex, uint32_t offset, CpuEmitFlags emitFlags)
+CpuEncodeResult ScbeMicro::encodeLoadSymRelocValue(CpuReg reg, uint32_t symbolIndex, uint32_t offset, OpBits opBits, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::SymbolRelocValue, emitFlags);
     inst->regA      = reg;
     inst->valueA    = symbolIndex;
     inst->valueB    = offset;
+    inst->opBitsA   = opBits;
     return CpuEncodeResult::Zero;
 }
 
@@ -545,7 +546,7 @@ void ScbeMicro::encode(ScbeCpu& encoder) const
                 encoder.emitLoadSymRelocAddress(inst->regA, static_cast<uint32_t>(inst->valueA), static_cast<uint32_t>(inst->valueB), inst->emitFlags);
                 break;
             case ScbeMicroOp::SymbolRelocValue:
-                encoder.emitLoadSymbolRelocValue(inst->regA, static_cast<uint32_t>(inst->valueA), static_cast<uint32_t>(inst->valueB), inst->emitFlags);
+                encoder.emitLoadSymbolRelocValue(inst->regA, static_cast<uint32_t>(inst->valueA), static_cast<uint32_t>(inst->valueB), inst->opBitsA, inst->emitFlags);
                 break;
             case ScbeMicroOp::Push:
                 encoder.emitPush(inst->regA, inst->emitFlags);

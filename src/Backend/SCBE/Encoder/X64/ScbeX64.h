@@ -9,7 +9,7 @@ struct ScbeX64 final : ScbeCpu
     RegisterSet getWriteRegisters(ScbeMicroInstruction* inst) override;
 
     CpuEncodeResult encodeLoadSymbolRelocAddress(CpuReg reg, uint32_t symbolIndex, uint32_t offset, CpuEmitFlags emitFlags) override;
-    CpuEncodeResult encodeLoadSymRelocValue(CpuReg reg, uint32_t symbolIndex, uint32_t offset, CpuEmitFlags emitFlags) override;
+    CpuEncodeResult encodeLoadSymRelocValue(CpuReg reg, uint32_t symbolIndex, uint32_t offset, OpBits opBits, CpuEmitFlags emitFlags) override;
     CpuEncodeResult encodePush(CpuReg reg, CpuEmitFlags emitFlags) override;
     CpuEncodeResult encodePop(CpuReg reg, CpuEmitFlags emitFlags) override;
     CpuEncodeResult encodeNop(CpuEmitFlags emitFlags) override;

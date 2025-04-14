@@ -308,7 +308,8 @@ uint32_t DataSegment::addComputedValueNoLock(const TypeInfo* typeInfo, const Com
 
     uint8_t*   addr;
     const auto storageOffset = reserveNoLock(typeInfo->sizeOf, &addr);
-    *resultPtr               = addr;
+    if (resultPtr)
+        *resultPtr = addr;
 
     switch (typeInfo->sizeOf)
     {

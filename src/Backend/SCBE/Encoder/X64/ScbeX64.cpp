@@ -384,18 +384,35 @@ CpuEncodeResult ScbeX64::encodeLoadSymbolRelocAddress(CpuReg reg, uint32_t symbo
     return CpuEncodeResult::Zero;
 }
 
-CpuEncodeResult ScbeX64::encodeLoadSymRelocValue(CpuReg reg, uint32_t symbolIndex, uint32_t offset, CpuEmitFlags emitFlags)
+CpuEncodeResult ScbeX64::encodeLoadSymRelocValue(CpuReg reg, uint32_t symbolIndex, uint32_t offset, OpBits opBits, CpuEmitFlags emitFlags)
 {
-    if (emitFlags.has(EMIT_B64))
+    if (isFloat(reg))
     {
-        emitREX(concat, OpBits::B64, REX_REG_NONE, reg);
-        emitCPUOp(concat, 0xB8, reg); // MOVABS
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::Zero;
+        emitSpecF64(concat, 0xF3, opBits);
+        emitCPUOp(concat, 0x0F);
+        emitCPUOp(concat, 0x10);
+        emitModRM(concat, ModRMMode::Memory, reg, MODRM_RM_RIP);
+        addSymbolRelocation(concat.totalCount() - textSectionOffset, symbolIndex, IMAGE_REL_AMD64_REL32);
+        concat.addU32(offset);
+    }
+    else if (emitFlags.has(EMIT_B64))
+    {
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::Zero;
+        SWAG_ASSERT(opBits == OpBits::B64);
+        emitREX(concat, opBits, REX_REG_NONE, reg);
+        emitCPUOp(concat, 0xB8, reg); // MOV
         addSymbolRelocation(concat.totalCount() - textSectionOffset, symbolIndex, IMAGE_REL_AMD64_ADDR64);
         concat.addU64(offset);
     }
     else
     {
-        emitREX(concat, OpBits::B64, reg);
+        if (emitFlags.has(EMIT_CanEncode))
+            return CpuEncodeResult::Zero;
+        SWAG_ASSERT(opBits == OpBits::B64);
+        emitREX(concat, opBits, reg);
         emitCPUOp(concat, 0x8B); // MOV
         emitModRM(concat, ModRMMode::Memory, reg, MODRM_RM_RIP);
         addSymbolRelocation(concat.totalCount() - textSectionOffset, symbolIndex, IMAGE_REL_AMD64_REL32);
@@ -477,7 +494,7 @@ CpuEncodeResult ScbeX64::encodeLoadRegImm(CpuReg reg, uint64_t value, OpBits opB
     if (isFloat(reg))
     {
         if (emitFlags.has(EMIT_CanEncode))
-            return CpuEncodeResult::Right2Reg;
+            return CpuEncodeResult::Right2Cst;
         Report::internalError(module, "emitLoadRegImm, cannot encode");
     }
     else if (opBits == OpBits::B8)

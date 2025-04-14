@@ -251,7 +251,7 @@ void Scbe::emitMakeLambda(ScbeCpu& pp)
     const auto funcNode = castAst<AstFuncDecl>(reinterpret_cast<AstNode*>(pp.ip->b.pointer), AstNodeKind::FuncDecl);
     SWAG_ASSERT(!pp.ip->c.pointer || (funcNode && funcNode->hasExtByteCode() && funcNode->extByteCode()->bc == reinterpret_cast<ByteCode*>(pp.ip->c.pointer)));
     const auto sym = pp.cpu->getOrAddSymbol(funcNode->getCallName(), CpuSymbolKind::Extern);
-    pp.emitLoadSymbolRelocValue(cc->computeRegI0, sym->index, 0, EMIT_B64);
+    pp.emitLoadSymbolRelocValue(cc->computeRegI0, sym->index, 0, OpBits::B64, EMIT_B64);
     pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(pp.ip->a.u32), cc->computeRegI0, OpBits::B64);
 }
 

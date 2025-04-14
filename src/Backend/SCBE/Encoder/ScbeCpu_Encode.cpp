@@ -45,9 +45,9 @@ void ScbeCpu::emitLoadSymRelocAddress(CpuReg reg, uint32_t symbolIndex, uint32_t
     encodeLoadSymbolRelocAddress(reg, symbolIndex, offset, emitFlags);
 }
 
-void ScbeCpu::emitLoadSymbolRelocValue(CpuReg reg, uint32_t symbolIndex, uint32_t offset, CpuEmitFlags emitFlags)
+void ScbeCpu::emitLoadSymbolRelocValue(CpuReg reg, uint32_t symbolIndex, uint32_t offset, OpBits opBits, CpuEmitFlags emitFlags)
 {
-    encodeLoadSymRelocValue(reg, symbolIndex, offset, emitFlags);
+    encodeLoadSymRelocValue(reg, symbolIndex, offset, opBits, emitFlags);
 }
 
 void ScbeCpu::emitPush(CpuReg reg, CpuEmitFlags emitFlags)
@@ -145,6 +145,14 @@ void ScbeCpu::emitLoadRegImm(CpuReg reg, uint64_t value, OpBits opBits, CpuEmitF
         emitLoadRegReg(reg, cc->computeRegI2, opBits, emitFlags);
         return;
     }
+
+    if (result == CpuEncodeResult::Right2Cst)
+    {
+        SWAG_ASSERT(reg != cc->computeRegI2);
+        const auto sym = cpu->getOrAddConstant(value, opBits);
+        emitLoadSymbolRelocValue(reg, sym->index, 0, opBits, emitFlags);
+        return;
+    }    
 
     Report::internalError(module, "emitLoadRegImm, cannot encode");
 }

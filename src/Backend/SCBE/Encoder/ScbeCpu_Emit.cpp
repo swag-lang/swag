@@ -66,7 +66,7 @@ namespace
 
                 case CpuPushParamType::SymbolRelocValue:
                     SWAG_ASSERT(value < UINT32_MAX);
-                    pp.emitLoadSymbolRelocValue(callConv->paramsRegistersInteger[idxParam], static_cast<uint32_t>(value), 0);
+                    pp.emitLoadSymbolRelocValue(callConv->paramsRegistersInteger[idxParam], static_cast<uint32_t>(value), 0, OpBits::B64);
                     break;
 
                 case CpuPushParamType::SymbolRelocAddr:
@@ -91,7 +91,7 @@ namespace
                 case CpuPushParamType::GlobalString:
                 {
                     const auto sym = pp.getOrAddString(reinterpret_cast<const char*>(value));
-                    pp.emitLoadSymbolRelocValue(callConv->paramsRegistersInteger[idxParam], sym->index, 0, EMIT_B64);
+                    pp.emitLoadSymbolRelocValue(callConv->paramsRegistersInteger[idxParam], sym->index, 0, OpBits::B64, EMIT_B64);
                     break;
                 }
 
