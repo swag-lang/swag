@@ -290,8 +290,8 @@ void ScbeOptimizer::computeContextRegs(const ScbeMicro& out)
     usedReadRegs.clear();
     usedWriteRegs.clear();
     unusedVolatileInteger.clear();
-    unusedVolatileInteger.append(out.cc->volatileRegistersIntegerSet);
     unusedNonVolatileInteger.clear();
+    unusedVolatileInteger.append(out.cc->volatileRegistersIntegerSet);
     unusedNonVolatileInteger.append(out.cc->nonVolatileRegistersIntegerSet);
 
     auto inst = out.getFirstInstruction();
@@ -301,20 +301,16 @@ void ScbeOptimizer::computeContextRegs(const ScbeMicro& out)
         for (const auto r : writeRegs)
         {
             usedWriteRegs[r] += 1;
-            if (out.cc->volatileRegistersIntegerSet.contains(r))
-                unusedVolatileInteger.erase(r);
-            if (out.cc->nonVolatileRegistersIntegerSet.contains(r))
-                unusedNonVolatileInteger.erase(r);
+            unusedVolatileInteger.erase(r);
+            unusedNonVolatileInteger.erase(r);
         }
 
         const auto readRegs = out.cpu->getReadRegisters(inst);
         for (const auto r : readRegs)
         {
             usedReadRegs[r] += 1;
-            if (out.cc->volatileRegistersIntegerSet.contains(r))
-                unusedVolatileInteger.erase(r);
-            if (out.cc->nonVolatileRegistersIntegerSet.contains(r))
-                unusedNonVolatileInteger.erase(r);
+            unusedVolatileInteger.erase(r);
+            unusedNonVolatileInteger.erase(r);
         }
 
         inst = ScbeMicro::getNextInstruction(inst);
