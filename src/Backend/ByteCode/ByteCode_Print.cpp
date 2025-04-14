@@ -371,6 +371,7 @@ void ByteCode::fillPrintInstruction(const ByteCodePrintOptions& options, const B
     line.flags += ip->hasFlag(BCI_IMM_C) ? "C" : ".";
     line.flags += ip->hasFlag(BCI_IMM_D) ? "D" : ".";
     line.flags += ip->hasFlag(BCI_START_STMT) ? "S" : ".";
+    line.flags += ip->hasFlag(BCI_JUMP_DEST) ? "J" : ".";
     line.flags += ip->hasFlag(BCI_CAN_OVERFLOW) || (ip->node && ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON)) ? "O" : ".";
 
     // Pretty
