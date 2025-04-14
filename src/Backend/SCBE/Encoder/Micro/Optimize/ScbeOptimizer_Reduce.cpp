@@ -489,6 +489,8 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
 {
     if (next->isJumpDest())
         return;
+
+    const auto nextReadRegs  = out.cpu->getReadRegisters(next);
     const auto nextWriteRegs = out.cpu->getWriteRegisters(next);
 
     switch (inst->op)
@@ -549,6 +551,24 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
                 if (!nextNext->isJumpDest() &&
                     nextNext->op == ScbeMicroOp::LoadRR &&
                     nextNext->regB == inst->regA)
+                {
+                    setRegB(out, nextNext, inst->regB);
+                    swapInstruction(out, next, nextNext);
+                    break;
+                }
+            }
+
+            {
+                const auto nextNext = ScbeMicro::getNextInstruction(next);
+                if (!nextNext->isJumpDest() &&
+                    nextNext->op == ScbeMicroOp::LoadRR &&
+                    nextNext->regB == inst->regA &&
+                    !nextWriteRegs.contains(inst->regA) &&
+                    nextWriteRegs.contains(inst->regB) &&
+                    !nextReadRegs.contains(inst->regA) &&
+                    !nextWriteRegs.contains(nextNext->regA) &&
+                    !nextReadRegs.contains(nextNext->regA) &&
+                    inst->opBitsA == nextNext->opBitsA)
                 {
                     setRegB(out, nextNext, inst->regB);
                     swapInstruction(out, next, nextNext);
