@@ -127,8 +127,7 @@ void ScbeOptimizer::optimizePassAliasHdwReg(const ScbeMicro& out)
                 const auto prev = mapRegInst[inst->regC];
                 if (out.cpu->acceptsRegC(inst, prev->regB))
                 {
-                    if (ScbeCpu::isInt(inst->regA) == ScbeCpu::isInt(prev->regB) &&
-                        inst->opBitsA == prev->opBitsA)
+                    if (inst->opBitsA == prev->opBitsA)
                     {
                         setRegC(out, inst, prev->regB);
                     }
