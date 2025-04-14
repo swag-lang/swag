@@ -55,11 +55,6 @@ void ScbeCpu::emitSymbolRelocationRef(const Utf8& name, CpuEmitFlags emitFlags)
     encodeSymbolRelocationRef(name, emitFlags);
 }
 
-void ScbeCpu::emitSymbolGlobalString(CpuReg reg, const Utf8& str, CpuEmitFlags emitFlags)
-{
-    encodeSymbolGlobalString(reg, str, emitFlags);
-}
-
 void ScbeCpu::emitPush(CpuReg reg, CpuEmitFlags emitFlags)
 {
     encodePush(reg, emitFlags);

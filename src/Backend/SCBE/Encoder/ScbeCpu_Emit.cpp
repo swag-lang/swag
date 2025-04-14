@@ -89,8 +89,11 @@ namespace
                     break;
 
                 case CpuPushParamType::GlobalString:
-                    pp.emitSymbolGlobalString(callConv->paramsRegistersInteger[idxParam], reinterpret_cast<const char*>(value));
+                {
+                    const auto sym = pp.getOrCreateGlobalString(reinterpret_cast<const char*>(value));
+                    pp.emitLoadSymbolRelocValue(callConv->paramsRegistersInteger[idxParam], sym->index, 0, EMIT_B64);
                     break;
+                }
 
                 default:
                     SWAG_ASSERT(false);

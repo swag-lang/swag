@@ -251,7 +251,8 @@ namespace
             reg0 == CpuReg::Rsi || reg1 == CpuReg::Rsi ||
             reg0 == CpuReg::Rdi || reg1 == CpuReg::Rdi)
         {
-            concat.addU8(getREX(opBits == OpBits::B64, b1, false, b2));
+            const auto value = getREX(opBits == OpBits::B64, b1, false, b2);
+            concat.addU8(value);
         }
     }
 
@@ -401,19 +402,22 @@ CpuEncodeResult ScbeX64::encodeLoadSymbolRelocAddress(CpuReg reg, uint32_t symbo
 
 CpuEncodeResult ScbeX64::encodeLoadSymRelocValue(CpuReg reg, uint32_t symbolIndex, uint32_t offset, CpuEmitFlags emitFlags)
 {
-    emitREX(concat, OpBits::B64, reg);
-    emitCPUOp(concat, 0x8B); // MOV
-    emitModRM(concat, ModRMMode::Memory, reg, MODRM_RM_RIP);
-    addSymbolRelocation(concat.totalCount() - textSectionOffset, symbolIndex, IMAGE_REL_AMD64_REL32);
-    concat.addU32(offset);
-    return CpuEncodeResult::Zero;
-}
+    if (emitFlags.has(EMIT_B64))
+    {
+        emitREX(concat, OpBits::B64, REX_REG_NONE, reg);
+        emitCPUOp(concat, 0xB8, reg); // MOVABS
+        addSymbolRelocation(concat.totalCount() - textSectionOffset, symbolIndex, IMAGE_REL_AMD64_ADDR64);
+        concat.addU64(offset);
+    }
+    else
+    {
+        emitREX(concat, OpBits::B64, reg);
+        emitCPUOp(concat, 0x8B); // MOV
+        emitModRM(concat, ModRMMode::Memory, reg, MODRM_RM_RIP);
+        addSymbolRelocation(concat.totalCount() - textSectionOffset, symbolIndex, IMAGE_REL_AMD64_REL32);
+        concat.addU32(offset);
+    }
 
-CpuEncodeResult ScbeX64::encodeSymbolGlobalString(CpuReg reg, const Utf8& str, CpuEmitFlags emitFlags)
-{
-    emitLoadRegImm64(reg, 0);
-    const auto sym = getOrCreateGlobalString(str);
-    addSymbolRelocation(concat.totalCount() - 8 - textSectionOffset, sym->index, IMAGE_REL_AMD64_ADDR64);
     return CpuEncodeResult::Zero;
 }
 
@@ -1135,7 +1139,7 @@ CpuEncodeResult ScbeX64::encodeCmpRegReg(CpuReg reg0, CpuReg reg1, OpBits opBits
                 return CpuEncodeResult::NotSupported;
             return CpuEncodeResult::Zero;
         }
-        
+
         emitREX(concat, opBits, reg1, reg0);
         emitSpecCPUOp(concat, 0x39, opBits);
         emitModRM(concat, reg1, reg0);

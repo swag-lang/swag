@@ -13,7 +13,6 @@ public impl GamePad
 
     // Set the left and right vibration of the given 'padIndex'
     #[Swag.Overload]
-    #[Swag.PrintAsm]
     func setVibration(padIndex: u32, left, right: f32) throw
     {
         var vibration: XINPUT_VIBRATION = undefined

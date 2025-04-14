@@ -139,14 +139,6 @@ CpuEncodeResult ScbeMicro::encodeLoadSymRelocValue(CpuReg reg, uint32_t symbolIn
     return CpuEncodeResult::Zero;
 }
 
-CpuEncodeResult ScbeMicro::encodeSymbolGlobalString(CpuReg reg, const Utf8& str, CpuEmitFlags emitFlags)
-{
-    const auto inst = addInstruction(ScbeMicroOp::SymbolGlobalString, emitFlags);
-    inst->regA      = reg;
-    inst->name      = str;
-    return CpuEncodeResult::Zero;
-}
-
 CpuEncodeResult ScbeMicro::encodePush(CpuReg reg, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::Push, emitFlags);
@@ -581,9 +573,6 @@ void ScbeMicro::encode(ScbeCpu& encoder) const
                 break;
             case ScbeMicroOp::SymbolRelocValue:
                 encoder.emitLoadSymbolRelocValue(inst->regA, static_cast<uint32_t>(inst->valueA), static_cast<uint32_t>(inst->valueB), inst->emitFlags);
-                break;
-            case ScbeMicroOp::SymbolGlobalString:
-                encoder.emitSymbolGlobalString(inst->regA, inst->name, inst->emitFlags);
                 break;
             case ScbeMicroOp::Push:
                 encoder.emitPush(inst->regA, inst->emitFlags);
