@@ -88,7 +88,6 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     pp.symPI_byteCodeRun    = ppCPU.symPI_byteCodeRun;
     pp.symPI_processInfos   = ppCPU.symPI_processInfos;
     pp.symPI_makeCallback   = ppCPU.symPI_makeCallback;
-    pp.symCst_U64F64        = ppCPU.symCst_U64F64;
     pp.module               = ppCPU.module;
 
     pp.emitEnter(sizeStack);

@@ -73,24 +73,6 @@ void Scbe::createRuntime(ScbeCpu& pp)
         pp.symPI_makeCallback   = pp.getOrAddSymbol("swag_process_infos_makeCallback", CpuSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
         offset                  = pp.globalSegment.reserve(8, nullptr, sizeof(uint64_t));
         pp.symPI_backendKind    = pp.getOrAddSymbol("swag_process_infos_backendKind", CpuSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
-
-        // Constant stuff needed to convert U64 to F64 (code from clang)
-        if (g_CommandLine.target.arch == SwagTargetArch::X86_64)
-        {
-            offset                                  = pp.globalSegment.reserve(32, nullptr, 2 * sizeof(uint64_t));
-            pp.symCst_U64F64                        = pp.getOrAddSymbol("swag_cast_u64f64", CpuSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
-            const auto addr                         = pp.globalSegment.address(offset);
-            *reinterpret_cast<uint32_t*>(addr + 0)  = 0x43300000;
-            *reinterpret_cast<uint32_t*>(addr + 4)  = 0x45300000;
-            *reinterpret_cast<uint32_t*>(addr + 8)  = 0x00000000;
-            *reinterpret_cast<uint32_t*>(addr + 12) = 0x00000000;
-            *reinterpret_cast<uint64_t*>(addr + 16) = 0x4330000000000000;
-            *reinterpret_cast<uint64_t*>(addr + 24) = 0x4530000000000000;
-        }
-        else
-        {
-            SWAG_ASSERT(false);
-        }
     }
     else
     {
@@ -112,7 +94,6 @@ void Scbe::createRuntime(ScbeCpu& pp)
         pp.symPI_makeCallback   = pp.getOrAddSymbol("swag_process_infos_makeCallback", CpuSymbolKind::Extern)->index;
         pp.symPI_backendKind    = pp.getOrAddSymbol("swag_process_infos_backendKind", CpuSymbolKind::Extern)->index;
         pp.symTls_threadLocalId = pp.getOrAddSymbol("swag_tls_threadLocalId", CpuSymbolKind::Extern)->index;
-        pp.symCst_U64F64        = pp.getOrAddSymbol("swag_cast_u64f64", CpuSymbolKind::Extern)->index;
     }
 }
 

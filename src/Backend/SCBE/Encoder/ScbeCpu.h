@@ -448,7 +448,6 @@ struct ScbeCpu : BackendEncoder
     uint32_t symPI_byteCodeRun                  = 0;
     uint32_t symPI_makeCallback                 = 0;
     uint32_t symPI_backendKind                  = 0;
-    uint32_t symCst_U64F64                      = 0;
 
     uint32_t textSectionOffset = 0;
     uint32_t stringTableOffset = 0;
