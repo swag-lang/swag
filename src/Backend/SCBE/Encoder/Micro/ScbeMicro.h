@@ -24,8 +24,8 @@ struct ScbeMicro final : ScbeCpu
     void emitJumpCondImm(CpuCondJump jumpType, uint32_t ipDest) override;
 
     CpuEncodeResult encodeSymbolRelocationRef(const Utf8& name, CpuEmitFlags emitFlags) override;
-    CpuEncodeResult encodeSymbolRelocationAddress(CpuReg reg, uint32_t symbolIndex, uint32_t offset, CpuEmitFlags emitFlags) override;
-    CpuEncodeResult encodeSymbolRelocationValue(CpuReg reg, uint32_t symbolIndex, uint32_t offset, CpuEmitFlags emitFlags) override;
+    CpuEncodeResult encodeLoadSymbolRelocAddress(CpuReg reg, uint32_t symbolIndex, uint32_t offset, CpuEmitFlags emitFlags) override;
+    CpuEncodeResult encodeLoadSymRelocValue(CpuReg reg, uint32_t symbolIndex, uint32_t offset, CpuEmitFlags emitFlags) override;
     CpuEncodeResult encodeSymbolGlobalString(CpuReg reg, const Utf8& str, CpuEmitFlags emitFlags) override;
     CpuEncodeResult encodePush(CpuReg reg, CpuEmitFlags emitFlags) override;
     CpuEncodeResult encodePop(CpuReg reg, CpuEmitFlags emitFlags) override;

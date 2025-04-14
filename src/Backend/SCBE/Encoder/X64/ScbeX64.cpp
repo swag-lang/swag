@@ -389,7 +389,7 @@ CpuEncodeResult ScbeX64::encodeSymbolRelocationRef(const Utf8& name, CpuEmitFlag
     return CpuEncodeResult::Zero;
 }
 
-CpuEncodeResult ScbeX64::encodeSymbolRelocationAddress(CpuReg reg, uint32_t symbolIndex, uint32_t offset, CpuEmitFlags emitFlags)
+CpuEncodeResult ScbeX64::encodeLoadSymbolRelocAddress(CpuReg reg, uint32_t symbolIndex, uint32_t offset, CpuEmitFlags emitFlags)
 {
     emitREX(concat, OpBits::B64, reg);
     emitCPUOp(concat, 0x8D); // LEA
@@ -399,7 +399,7 @@ CpuEncodeResult ScbeX64::encodeSymbolRelocationAddress(CpuReg reg, uint32_t symb
     return CpuEncodeResult::Zero;
 }
 
-CpuEncodeResult ScbeX64::encodeSymbolRelocationValue(CpuReg reg, uint32_t symbolIndex, uint32_t offset, CpuEmitFlags emitFlags)
+CpuEncodeResult ScbeX64::encodeLoadSymRelocValue(CpuReg reg, uint32_t symbolIndex, uint32_t offset, CpuEmitFlags emitFlags)
 {
     emitREX(concat, OpBits::B64, reg);
     emitCPUOp(concat, 0x8B); // MOV
@@ -2554,13 +2554,13 @@ CpuEncodeResult ScbeX64::encodeJumpTable(CpuReg tableReg, CpuReg offsetReg, int3
 {
     uint8_t*   addrConstant        = nullptr;
     const auto offsetTableConstant = buildParams.module->constantSegment.reserve(numEntries * sizeof(uint32_t), &addrConstant);
-    emitSymbolRelocationAddress(tableReg, symCSIndex, offsetTableConstant);
+    emitLoadSymRelocAddress(tableReg, symCSIndex, offsetTableConstant);
 
     // movsxd table, dword ptr [table + offset*4]
     encodeAmc(concat, tableReg, OpBits::B64, tableReg, offsetReg, 4, 0, OpBits::B64, CpuOp::MOVSXD, emitFlags, false);
 
     const auto startIdx = concat.totalCount();
-    emitSymbolRelocationAddress(offsetReg, cpuFct->symbolIndex, concat.totalCount() - cpuFct->startAddress);
+    emitLoadSymRelocAddress(offsetReg, cpuFct->symbolIndex, concat.totalCount() - cpuFct->startAddress);
     const auto patchPtr = reinterpret_cast<uint32_t*>(concat.currentSP) - 1;
     emitOpBinaryRegReg(offsetReg, tableReg, CpuOp::ADD, OpBits::B64, emitFlags);
     emitJumpReg(offsetReg);

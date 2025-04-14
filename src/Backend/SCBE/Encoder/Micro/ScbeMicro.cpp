@@ -121,7 +121,7 @@ CpuEncodeResult ScbeMicro::encodeSymbolRelocationRef(const Utf8& name, CpuEmitFl
     return CpuEncodeResult::Zero;
 }
 
-CpuEncodeResult ScbeMicro::encodeSymbolRelocationAddress(CpuReg reg, uint32_t symbolIndex, uint32_t offset, CpuEmitFlags emitFlags)
+CpuEncodeResult ScbeMicro::encodeLoadSymbolRelocAddress(CpuReg reg, uint32_t symbolIndex, uint32_t offset, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::SymbolRelocAddr, emitFlags);
     inst->regA      = reg;
@@ -130,7 +130,7 @@ CpuEncodeResult ScbeMicro::encodeSymbolRelocationAddress(CpuReg reg, uint32_t sy
     return CpuEncodeResult::Zero;
 }
 
-CpuEncodeResult ScbeMicro::encodeSymbolRelocationValue(CpuReg reg, uint32_t symbolIndex, uint32_t offset, CpuEmitFlags emitFlags)
+CpuEncodeResult ScbeMicro::encodeLoadSymRelocValue(CpuReg reg, uint32_t symbolIndex, uint32_t offset, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::SymbolRelocValue, emitFlags);
     inst->regA      = reg;
@@ -577,10 +577,10 @@ void ScbeMicro::encode(ScbeCpu& encoder) const
                 encoder.emitSymbolRelocationRef(inst->name, inst->emitFlags);
                 break;
             case ScbeMicroOp::SymbolRelocAddr:
-                encoder.emitSymbolRelocationAddress(inst->regA, static_cast<uint32_t>(inst->valueA), static_cast<uint32_t>(inst->valueB), inst->emitFlags);
+                encoder.emitLoadSymRelocAddress(inst->regA, static_cast<uint32_t>(inst->valueA), static_cast<uint32_t>(inst->valueB), inst->emitFlags);
                 break;
             case ScbeMicroOp::SymbolRelocValue:
-                encoder.emitSymbolRelocationValue(inst->regA, static_cast<uint32_t>(inst->valueA), static_cast<uint32_t>(inst->valueB), inst->emitFlags);
+                encoder.emitLoadSymbolRelocValue(inst->regA, static_cast<uint32_t>(inst->valueA), static_cast<uint32_t>(inst->valueB), inst->emitFlags);
                 break;
             case ScbeMicroOp::SymbolGlobalString:
                 encoder.emitSymbolGlobalString(inst->regA, inst->name, inst->emitFlags);

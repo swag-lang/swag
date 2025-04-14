@@ -1300,7 +1300,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::GetFromBssSeg32:
             case ByteCodeOp::GetFromBssSeg64:
                 opBits = ScbeCpu::getOpBits(ip->op);
-                pp.emitSymbolRelocationAddress(cc->computeRegI0, pp.symBSIndex, 0);
+                pp.emitLoadSymRelocAddress(cc->computeRegI0, pp.symBSIndex, 0);
                 pp.emitLoadZeroExtendRegMem(cc->computeRegI0, cc->computeRegI0, ip->b.u32, OpBits::B64, opBits);
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, OpBits::B64);
                 break;
@@ -1310,7 +1310,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::GetFromMutableSeg32:
             case ByteCodeOp::GetFromMutableSeg64:
                 opBits = ScbeCpu::getOpBits(ip->op);
-                pp.emitSymbolRelocationAddress(cc->computeRegI0, pp.symMSIndex, 0);
+                pp.emitLoadSymRelocAddress(cc->computeRegI0, pp.symMSIndex, 0);
                 pp.emitLoadZeroExtendRegMem(cc->computeRegI0, cc->computeRegI0, ip->b.u32, OpBits::B64, opBits);
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, OpBits::B64);
                 break;
@@ -1555,15 +1555,15 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::MakeMutableSegPointer:
-                pp.emitSymbolRelocationAddress(cc->computeRegI0, pp.symMSIndex, ip->b.u32);
+                pp.emitLoadSymRelocAddress(cc->computeRegI0, pp.symMSIndex, ip->b.u32);
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, OpBits::B64);
                 break;
             case ByteCodeOp::MakeBssSegPointer:
-                pp.emitSymbolRelocationAddress(cc->computeRegI0, pp.symBSIndex, ip->b.u32);
+                pp.emitLoadSymRelocAddress(cc->computeRegI0, pp.symBSIndex, ip->b.u32);
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, OpBits::B64);
                 break;
             case ByteCodeOp::MakeConstantSegPointer:
-                pp.emitSymbolRelocationAddress(cc->computeRegI0, pp.symCSIndex, ip->b.u32);
+                pp.emitLoadSymRelocAddress(cc->computeRegI0, pp.symCSIndex, ip->b.u32);
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, OpBits::B64);
                 break;
             case ByteCodeOp::MakeCompilerSegPointer:
@@ -1725,7 +1725,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 break;
 
             case ByteCodeOp::IntrinsicGetProcessInfos:
-                pp.emitSymbolRelocationAddress(cc->computeRegI1, pp.symPI_processInfos, 0);
+                pp.emitLoadSymRelocAddress(cc->computeRegI1, pp.symPI_processInfos, 0);
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI1, OpBits::B64);
                 break;
 
@@ -1762,7 +1762,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 }
                 else
                 {
-                    pp.emitSymbolRelocationAddress(cc->computeRegI0, pp.symCSIndex, buildParameters.module->modulesSliceOffset);
+                    pp.emitLoadSymRelocAddress(cc->computeRegI0, pp.symCSIndex, buildParameters.module->modulesSliceOffset);
                     pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, OpBits::B64);
                     pp.emitLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), buildParameters.module->moduleDependencies.count + 1, OpBits::B64);
                 }
@@ -1775,7 +1775,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 }
                 else
                 {
-                    pp.emitSymbolRelocationAddress(cc->computeRegI0, pp.symMSIndex, buildParameters.module->globalVarsToDropSliceOffset);
+                    pp.emitLoadSymRelocAddress(cc->computeRegI0, pp.symMSIndex, buildParameters.module->globalVarsToDropSliceOffset);
                     pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, OpBits::B64);
                     pp.emitLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), buildParameters.module->globalVarsToDrop.count, OpBits::B64);
                 }
@@ -2408,7 +2408,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 pp.emitLoadMemImm(cc->computeRegI0, offsetof(SwagContext, traceIndex), 0, OpBits::B32);
                 break;
             case ByteCodeOp::InternalStackTraceConst:
-                pp.emitSymbolRelocationAddress(cc->computeRegI0, pp.symCSIndex, ip->b.u32);
+                pp.emitLoadSymRelocAddress(cc->computeRegI0, pp.symCSIndex, ip->b.u32);
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, OpBits::B64);
                 emitInternalCallRAParams(pp, g_LangSpec->name_priv_stackTrace, {ip->a.u32});
                 break;

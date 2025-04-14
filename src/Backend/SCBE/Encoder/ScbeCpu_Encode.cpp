@@ -40,19 +40,19 @@ namespace
     }
 }
 
+void ScbeCpu::emitLoadSymRelocAddress(CpuReg reg, uint32_t symbolIndex, uint32_t offset, CpuEmitFlags emitFlags)
+{
+    encodeLoadSymbolRelocAddress(reg, symbolIndex, offset, emitFlags);
+}
+
+void ScbeCpu::emitLoadSymbolRelocValue(CpuReg reg, uint32_t symbolIndex, uint32_t offset, CpuEmitFlags emitFlags)
+{
+    encodeLoadSymRelocValue(reg, symbolIndex, offset, emitFlags);
+}
+
 void ScbeCpu::emitSymbolRelocationRef(const Utf8& name, CpuEmitFlags emitFlags)
 {
     encodeSymbolRelocationRef(name, emitFlags);
-}
-
-void ScbeCpu::emitSymbolRelocationAddress(CpuReg reg, uint32_t symbolIndex, uint32_t offset, CpuEmitFlags emitFlags)
-{
-    encodeSymbolRelocationAddress(reg, symbolIndex, offset, emitFlags);
-}
-
-void ScbeCpu::emitSymbolRelocationValue(CpuReg reg, uint32_t symbolIndex, uint32_t offset, CpuEmitFlags emitFlags)
-{
-    encodeSymbolRelocationValue(reg, symbolIndex, offset, emitFlags);
 }
 
 void ScbeCpu::emitSymbolGlobalString(CpuReg reg, const Utf8& str, CpuEmitFlags emitFlags)

@@ -75,45 +75,45 @@ void Scbe::emitMain(ScbeCpu& pp)
     const auto bcAlloc = static_cast<ByteCode*>(ByteCode::undoByteCodeLambda(static_cast<void**>(g_SystemAllocatorTable)[0]));
     SWAG_ASSERT(bcAlloc);
 
-    pp.emitSymbolRelocationAddress(cc->computeRegI0, pp.symDefaultAllocTable, 0);
+    pp.emitLoadSymRelocAddress(cc->computeRegI0, pp.symDefaultAllocTable, 0);
     pp.emitLoadAddressMem(cc->computeRegI1, CpuReg::Rip, 0);
     pp.emitSymbolRelocationRef(bcAlloc->getCallName());
     pp.emitLoadMemReg(cc->computeRegI0, 0, cc->computeRegI1, OpBits::B64);
 
     // mainContext.allocator.itable = &defaultAllocTable;
-    pp.emitSymbolRelocationAddress(cc->computeRegI1, pp.symMC_mainContext_allocator_itable, 0);
+    pp.emitLoadSymRelocAddress(cc->computeRegI1, pp.symMC_mainContext_allocator_itable, 0);
     pp.emitLoadMemReg(cc->computeRegI1, 0, cc->computeRegI0, OpBits::B64);
 
     // main context flags
-    pp.emitSymbolRelocationAddress(cc->computeRegI1, pp.symMC_mainContext_flags, 0);
+    pp.emitLoadSymRelocAddress(cc->computeRegI1, pp.symMC_mainContext_flags, 0);
     const uint64_t contextFlags = getDefaultContextFlags(module);
     pp.emitLoadMemImm(cc->computeRegI1, 0, contextFlags, OpBits::B64);
 
     //__process_infos.contextTlsId = swag_runtime_tlsAlloc();
-    pp.emitSymbolRelocationAddress(cc->nonVolatileRegistersInteger[0], pp.symPI_contextTlsId, 0);
+    pp.emitLoadSymRelocAddress(cc->nonVolatileRegistersInteger[0], pp.symPI_contextTlsId, 0);
     emitInternalCallRAParams(pp, g_LangSpec->name_priv_tlsAlloc, {}, cc->nonVolatileRegistersInteger[0], 0);
 
     //__process_infos.modules
-    pp.emitSymbolRelocationAddress(cc->computeRegI1, pp.symPI_modulesAddr, 0);
-    pp.emitSymbolRelocationAddress(cc->computeRegI0, pp.symCSIndex, module->modulesSliceOffset);
+    pp.emitLoadSymRelocAddress(cc->computeRegI1, pp.symPI_modulesAddr, 0);
+    pp.emitLoadSymRelocAddress(cc->computeRegI0, pp.symCSIndex, module->modulesSliceOffset);
     pp.emitLoadMemReg(cc->computeRegI1, 0, cc->computeRegI0, OpBits::B64);
-    pp.emitSymbolRelocationAddress(cc->computeRegI0, pp.symPI_modulesCount, 0);
+    pp.emitLoadSymRelocAddress(cc->computeRegI0, pp.symPI_modulesCount, 0);
     pp.emitLoadMemImm(cc->computeRegI0, 0, module->moduleDependencies.count + 1, OpBits::B64);
 
     //__process_infos.args
     pp.emitClearReg(cc->computeRegI1, OpBits::B64);
-    pp.emitSymbolRelocationAddress(cc->computeRegI0, pp.symPI_argsAddr, 0);
+    pp.emitLoadSymRelocAddress(cc->computeRegI0, pp.symPI_argsAddr, 0);
     pp.emitLoadMemReg(cc->computeRegI0, 0, cc->computeRegI1, OpBits::B64);
-    pp.emitSymbolRelocationAddress(cc->computeRegI0, pp.symPI_argsCount, 0);
+    pp.emitLoadSymRelocAddress(cc->computeRegI0, pp.symPI_argsCount, 0);
     pp.emitLoadMemReg(cc->computeRegI0, 0, cc->computeRegI1, OpBits::B64);
 
     // Set main context
-    pp.emitSymbolRelocationAddress(cc->computeRegI0, pp.symMC_mainContext, 0);
-    pp.emitSymbolRelocationAddress(cc->computeRegI1, pp.symPI_defaultContext, 0);
+    pp.emitLoadSymRelocAddress(cc->computeRegI0, pp.symMC_mainContext, 0);
+    pp.emitLoadSymRelocAddress(cc->computeRegI1, pp.symPI_defaultContext, 0);
     pp.emitLoadMemReg(cc->computeRegI1, 0, cc->computeRegI0, OpBits::B64);
 
     // Set current backend as SCBE
-    pp.emitSymbolRelocationAddress(cc->computeRegI1, pp.symPI_backendKind, 0);
+    pp.emitLoadSymRelocAddress(cc->computeRegI1, pp.symPI_backendKind, 0);
     pp.emitLoadMemImm(cc->computeRegI1, 0, static_cast<uint32_t>(SwagBackendGenType::SCBE), OpBits::B32);
 
     // Set default context in TLS
@@ -233,7 +233,7 @@ void Scbe::emitGetTypeTable(ScbeCpu& pp)
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
         pp.directives += form("/EXPORT:%s ", thisInit.cstr());
 
-    pp.emitSymbolRelocationAddress(cc->returnByRegisterInteger, pp.symCSIndex, module->typesSliceOffset);
+    pp.emitLoadSymRelocAddress(cc->returnByRegisterInteger, pp.symCSIndex, module->typesSliceOffset);
 
     pp.emitLeave();
     pp.endFunction();
@@ -305,12 +305,12 @@ void Scbe::emitGlobalInit(ScbeCpu& pp)
 
     // Thread local storage
     pp.pushParams.clear();
-    pp.emitSymbolRelocationAddress(cc->nonVolatileRegistersInteger[0], pp.symTls_threadLocalId, 0);
+    pp.emitLoadSymRelocAddress(cc->nonVolatileRegistersInteger[0], pp.symTls_threadLocalId, 0);
     emitInternalCallCPUParams(pp, g_LangSpec->name_priv_tlsAlloc, pp.pushParams, cc->nonVolatileRegistersInteger[0], 0);
 
     // Init type table slice for each dependency (by calling ???_getTypeTable)
     const auto resReg = CallConv::getVolatileRegisterInteger(cc, cc, VF_EXCLUDE_COMPUTE | VF_EXCLUDE_PARAM0 | VF_EXCLUDE_RETURN);
-    pp.emitSymbolRelocationAddress(resReg, pp.symCSIndex, module->modulesSliceOffset + sizeof(SwagModule) + offsetof(SwagModule, types));
+    pp.emitLoadSymRelocAddress(resReg, pp.symCSIndex, module->modulesSliceOffset + sizeof(SwagModule) + offsetof(SwagModule, types));
     for (const auto& dep : module->moduleDependencies)
     {
         if (dep->module->isSwag)

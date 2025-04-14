@@ -233,7 +233,7 @@ void Scbe::emitLambdaCall(ScbeCpu& pp)
     pp.emitCallParameters(typeFuncBc, pushCPUParams, CallConv::get(CallConvKind::Compiler));
 
     const auto cc = pp.cc;
-    pp.emitSymbolRelocationAddress(cc->computeRegI0, pp.symPI_byteCodeRun, 0);
+    pp.emitLoadSymRelocAddress(cc->computeRegI0, pp.symPI_byteCodeRun, 0);
     pp.emitLoadRegMem(cc->computeRegI0, cc->computeRegI0, 0, OpBits::B64);
     pp.emitCallReg(cc->computeRegI0, CallConv::get(CallConvKind::Compiler));
 
@@ -270,7 +270,7 @@ void Scbe::emitMakeCallback(ScbeCpu& pp)
     //////////////////
 
     const auto regCall = CallConv::getVolatileRegisterInteger(cc, cc, VF_EXCLUDE_COMPUTE_I0 | VF_EXCLUDE_PARAMS);
-    pp.emitSymbolRelocationAddress(regCall, pp.symPI_makeCallback, 0);
+    pp.emitLoadSymRelocAddress(regCall, pp.symPI_makeCallback, 0);
     pp.emitLoadRegMem(regCall, regCall, 0, OpBits::B64);
 
     VectorNative<CpuPushParam> pushCPUParams;

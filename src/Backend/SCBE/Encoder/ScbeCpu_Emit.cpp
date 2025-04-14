@@ -66,12 +66,12 @@ namespace
 
                 case CpuPushParamType::SymbolRelocValue:
                     SWAG_ASSERT(value < UINT32_MAX);
-                    pp.emitSymbolRelocationValue(callConv->paramsRegistersInteger[idxParam], static_cast<uint32_t>(value), 0);
+                    pp.emitLoadSymbolRelocValue(callConv->paramsRegistersInteger[idxParam], static_cast<uint32_t>(value), 0);
                     break;
 
                 case CpuPushParamType::SymbolRelocAddr:
                     SWAG_ASSERT(value < UINT32_MAX);
-                    pp.emitSymbolRelocationAddress(callConv->paramsRegistersInteger[idxParam], static_cast<uint32_t>(value), 0);
+                    pp.emitLoadSymRelocAddress(callConv->paramsRegistersInteger[idxParam], static_cast<uint32_t>(value), 0);
                     break;
 
                 case CpuPushParamType::SwagRegisterAdd:
