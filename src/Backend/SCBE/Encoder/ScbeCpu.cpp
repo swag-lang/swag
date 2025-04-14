@@ -60,6 +60,20 @@ CpuSymbol* ScbeCpu::getOrAddSymbol(const Utf8& name, CpuSymbolKind kind, uint32_
     return &allSymbols.back();
 }
 
+CpuSymbol* ScbeCpu::getOrAddString(const Utf8& str)
+{
+    const auto it = globalStrings.find(str);
+    if (it != globalStrings.end())
+        return &allSymbols[it->second];
+
+    const Utf8 symName = form("__str%u", static_cast<uint32_t>(globalStrings.size()));
+    const auto sym     = getOrAddSymbol(symName, CpuSymbolKind::Constant);
+    globalStrings[str] = sym->index;
+    sym->value         = constantSegment.addStringNoLock(str);
+
+    return sym;
+}
+
 void ScbeCpu::addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, uint16_t type)
 {
     CpuRelocation reloc;
@@ -67,20 +81,6 @@ void ScbeCpu::addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, ui
     reloc.symbolIndex    = symbolIndex;
     reloc.type           = type;
     relocTableTextSection.table.push_back(reloc);
-}
-
-CpuSymbol* ScbeCpu::getOrCreateGlobalString(const Utf8& str)
-{
-    const auto it = globalStrings.find(str);
-    if (it != globalStrings.end())
-        return &allSymbols[it->second];
-
-    const Utf8 symName = form("__str%u", static_cast<uint32_t>(globalStrings.size()));
-    const auto sym     = getOrAddSymbol(symName, CpuSymbolKind::GlobalString);
-    globalStrings[str] = sym->index;
-    sym->value         = stringSegment.addStringNoLock(str);
-
-    return sym;
 }
 
 void ScbeCpu::emitLabel(uint32_t instructionIndex)

@@ -90,7 +90,7 @@ namespace
 
                 case CpuPushParamType::GlobalString:
                 {
-                    const auto sym = pp.getOrCreateGlobalString(reinterpret_cast<const char*>(value));
+                    const auto sym = pp.getOrAddString(reinterpret_cast<const char*>(value));
                     pp.emitLoadSymbolRelocValue(callConv->paramsRegistersInteger[idxParam], sym->index, 0, EMIT_B64);
                     break;
                 }

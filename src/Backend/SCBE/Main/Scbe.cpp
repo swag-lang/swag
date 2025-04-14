@@ -27,7 +27,7 @@ void Scbe::createRuntime(ScbeCpu& pp)
     if (precompileIndex == 0)
     {
         pp.globalSegment.setup(SegmentKind::Global, module);
-        pp.stringSegment.setup(SegmentKind::String, module);
+        pp.constantSegment.setup(SegmentKind::String, module);
 
         pp.symBSIndex  = pp.getOrAddSymbol("__bs", CpuSymbolKind::Custom, 0, pp.sectionIndexBS)->index;
         pp.symCSIndex  = pp.getOrAddSymbol("__cs", CpuSymbolKind::Custom, 0, pp.sectionIndexCS)->index;
@@ -185,7 +185,7 @@ JobResult Scbe::prepareOutput(const BuildParameters& buildParameters, int stage,
         *pp.patchTextSectionSize = concat.totalCount() - pp.textSectionOffset;
 
         // Align all segments to 16 bytes
-        pp.stringSegment.align(16);
+        pp.constantSegment.align(16);
         pp.globalSegment.align(16);
         module->constantSegment.align(16);
         module->mutableSegment.align(16);
@@ -253,7 +253,7 @@ void Scbe::saveObjFile(const BuildParameters& buildParameters) const
     pp.concat.release();
     pp.postConcat.release();
     pp.globalSegment.release();
-    pp.stringSegment.release();
+    pp.constantSegment.release();
     pp.relocTableTextSection.table.release();
     pp.relocTableCSSection.table.release();
     pp.relocTableMSSection.table.release();

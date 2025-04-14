@@ -132,7 +132,7 @@ namespace
                     concat.addU8(IMAGE_SYM_CLASS_EXTERNAL); // .StorageClass
                     concat.addU8(0);                        // .NumberOfAuxSymbols
                     break;
-                case CpuSymbolKind::GlobalString:
+                case CpuSymbolKind::Constant:
                     concat.addU16(pp.sectionIndexSS);     // .SectionNumber
                     concat.addU16(0);                     // .Type
                     concat.addU8(IMAGE_SYM_CLASS_STATIC); // .StorageClass
@@ -208,7 +208,7 @@ bool ScbeCoff::emitHeader(const BuildParameters& buildParameters, ScbeCpu& pp)
     concat.addU16(0);                                           // .NumberOfLineNumbers
     pp.patchTextSectionFlags = concat.addU32Addr(IMAGE_SCN_CNT_CODE | IMAGE_SCN_MEM_EXECUTE | IMAGE_SCN_MEM_READ | IMAGE_SCN_ALIGN_16BYTES);
 
-    // global strings sections
+    // generated constants sections
     /////////////////////////////////////////////
     pp.sectionIndexSS = secIndex++;
     concat.addStringN(".rdata\0\0", 8);      // .Name
@@ -458,15 +458,15 @@ bool ScbeCoff::emitPostFunc(const BuildParameters& buildParameters, ScbeCpu& pp)
 
     // Segments
     const uint32_t ssOffset = concat.totalCount();
-    if (pp.stringSegment.totalCount)
+    if (pp.constantSegment.totalCount)
     {
-        *pp.patchSSCount  = pp.stringSegment.totalCount;
+        *pp.patchSSCount  = pp.constantSegment.totalCount;
         *pp.patchSSOffset = ssOffset;
     }
 
     if (precompileIndex == 0)
     {
-        const uint32_t gsOffset  = ssOffset + pp.stringSegment.totalCount;
+        const uint32_t gsOffset  = ssOffset + pp.constantSegment.totalCount;
         const uint32_t csOffset  = gsOffset + pp.globalSegment.totalCount;
         const uint32_t msOffset  = csOffset + module->constantSegment.totalCount;
         const uint32_t tlsOffset = msOffset + module->mutableSegment.totalCount;
@@ -548,13 +548,13 @@ bool ScbeCoff::saveFileBuffer(FILE* f, const BuildParameters& buildParameters, S
 
     // The global strings segment
     SWAG_ASSERT(totalCount == *pp.patchSSOffset || *pp.patchSSOffset == 0);
-    for (const auto oneB : pp.stringSegment.buckets)
+    for (const auto oneB : pp.constantSegment.buckets)
     {
         SWAG_IF_ASSERT(totalCount += oneB.count);
         SWAG_IF_ASSERT(subTotal += oneB.count);
         (void) fwrite(oneB.buffer, oneB.count, 1, f);
     }
-    SWAG_ASSERT(subTotal == pp.stringSegment.totalCount);
+    SWAG_ASSERT(subTotal == pp.constantSegment.totalCount);
 
     if (precompileIndex == 0)
     {
