@@ -33,12 +33,12 @@ struct ScbeOptimizer
     bool memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOffset, CpuReg reg);
     void swapInstruction(const ScbeMicro& out, ScbeMicroInstruction* before, ScbeMicroInstruction* after);
     void ignore(const ScbeMicro& out, ScbeMicroInstruction* inst);
-    void setOp(ScbeMicroInstruction* inst, ScbeMicroOp op);
-    void setValueA(ScbeMicroInstruction* inst, uint64_t value);
-    void setValueB(ScbeMicroInstruction* inst, uint64_t value);
-    void setRegA(ScbeMicroInstruction* inst, CpuReg reg);
-    void setRegB(ScbeMicroInstruction* inst, CpuReg reg);
-    void setRegC(ScbeMicroInstruction* inst, CpuReg reg);
+    void setOp(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroOp op);
+    void setValueA(const ScbeMicro& out, ScbeMicroInstruction* inst, uint64_t value);
+    void setValueB(const ScbeMicro& out, ScbeMicroInstruction* inst, uint64_t value);
+    void setRegA(const ScbeMicro& out, ScbeMicroInstruction* inst, CpuReg reg);
+    void setRegB(const ScbeMicro& out, ScbeMicroInstruction* inst, CpuReg reg);
+    void setRegC(const ScbeMicro& out, ScbeMicroInstruction* inst, CpuReg reg);
 
     void reduceNoOp(const ScbeMicro& out, ScbeMicroInstruction* inst, const ScbeMicroInstruction* next);
     void reduceLoadRR(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next);

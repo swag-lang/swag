@@ -99,8 +99,8 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
                     }
                     else
                     {
-                        setOp(inst, ScbeMicroOp::LoadRR);
-                        setRegB(inst, mapValReg[stackOffset].first);
+                        setOp(out, inst, ScbeMicroOp::LoadRR);
+                        setRegB(out, inst, mapValReg[stackOffset].first);
                     }
                     break;
                 }
@@ -123,8 +123,8 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
                     ScbeCpu::isInt(inst->regB) == ScbeCpu::isInt(mapValReg[stackOffset].first) &&
                     ScbeCpu::getNumBits(inst->opBitsA) <= ScbeCpu::getNumBits(mapValReg[stackOffset].second))
                 {
-                    setOp(inst, ScbeMicroOp::CmpRR);
-                    setRegA(inst, mapValReg[stackOffset].first);
+                    setOp(out, inst, ScbeMicroOp::CmpRR);
+                    setRegA(out, inst, mapValReg[stackOffset].first);
                     break;
                 }
 
@@ -137,9 +137,9 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
                     ScbeCpu::getNumBits(inst->opBitsA) <= ScbeCpu::getNumBits(mapValReg[stackOffset].second) &&
                     out.cpu->encodeCmpRegImm(mapValReg[stackOffset].first, inst->valueB, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
                 {
-                    setOp(inst, ScbeMicroOp::CmpRI);
-                    setRegA(inst, mapValReg[stackOffset].first);
-                    setValueA(inst, inst->valueB);
+                    setOp(out, inst, ScbeMicroOp::CmpRI);
+                    setRegA(out, inst, mapValReg[stackOffset].first);
+                    setValueA(out, inst, inst->valueB);
                     break;
                 }
 

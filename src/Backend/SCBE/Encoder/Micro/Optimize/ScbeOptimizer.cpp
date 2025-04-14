@@ -16,19 +16,19 @@ bool ScbeOptimizer::regToReg(const ScbeMicro& out, CpuReg regDst, CpuReg regSrc,
     {
         if (inst->hasRegA() && inst->regA == regSrc)
         {
-            setRegA(inst, regDst);
+            setRegA(out, inst, regDst);
             hasChanged = true;
         }
 
         if (inst->hasRegB() && inst->regB == regSrc)
         {
-            setRegB(inst, regDst);
+            setRegB(out, inst, regDst);
             hasChanged = true;
         }
 
         if (inst->hasRegC() && inst->regC == regSrc)
         {
-            setRegC(inst, regDst);
+            setRegC(out, inst, regDst);
             hasChanged = true;
         }
 
@@ -50,8 +50,8 @@ bool ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                 if (inst->regB == memReg &&
                     inst->valueA == memOffset)
                 {
-                    setOp(inst, ScbeMicroOp::LoadSignedExtRR);
-                    setRegB(inst, reg);
+                    setOp(out, inst, ScbeMicroOp::LoadSignedExtRR);
+                    setRegB(out, inst, reg);
                     hasChanged = true;
                 }
                 break;
@@ -59,8 +59,8 @@ bool ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                 if (inst->regB == memReg &&
                     inst->valueA == memOffset)
                 {
-                    setOp(inst, ScbeMicroOp::LoadZeroExtRR);
-                    setRegB(inst, reg);
+                    setOp(out, inst, ScbeMicroOp::LoadZeroExtRR);
+                    setRegB(out, inst, reg);
                     hasChanged = true;
                 }
                 break;
@@ -68,8 +68,8 @@ bool ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                 if (inst->regB == memReg &&
                     inst->valueA == memOffset)
                 {
-                    setOp(inst, ScbeMicroOp::LoadRR);
-                    setRegB(inst, reg);
+                    setOp(out, inst, ScbeMicroOp::LoadRR);
+                    setRegB(out, inst, reg);
                     hasChanged = true;
                 }
                 break;
@@ -77,8 +77,8 @@ bool ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                 if (inst->regA == memReg &&
                     inst->valueA == memOffset)
                 {
-                    setOp(inst, ScbeMicroOp::LoadRR);
-                    setRegA(inst, reg);
+                    setOp(out, inst, ScbeMicroOp::LoadRR);
+                    setRegA(out, inst, reg);
                     hasChanged = true;
                 }
                 break;
@@ -86,9 +86,9 @@ bool ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                 if (inst->regA == memReg &&
                     inst->valueA == memOffset)
                 {
-                    setOp(inst, ScbeMicroOp::LoadRI);
-                    setRegA(inst, reg);
-                    setValueA(inst, inst->valueB);
+                    setOp(out, inst, ScbeMicroOp::LoadRI);
+                    setRegA(out, inst, reg);
+                    setValueA(out, inst, inst->valueB);
                     hasChanged = true;
                 }
                 break;
@@ -96,8 +96,8 @@ bool ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                 if (inst->regA == memReg &&
                     inst->valueA == memOffset)
                 {
-                    setOp(inst, ScbeMicroOp::CmpRR);
-                    setRegA(inst, reg);
+                    setOp(out, inst, ScbeMicroOp::CmpRR);
+                    setRegA(out, inst, reg);
                     hasChanged = true;
                 }
                 break;
@@ -105,9 +105,9 @@ bool ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                 if (inst->regA == memReg &&
                     inst->valueA == memOffset)
                 {
-                    setOp(inst, ScbeMicroOp::CmpRI);
-                    setRegA(inst, reg);
-                    setValueA(inst, inst->valueB);
+                    setOp(out, inst, ScbeMicroOp::CmpRI);
+                    setRegA(out, inst, reg);
+                    setValueA(out, inst, inst->valueB);
                     hasChanged = true;
                 }
                 break;
@@ -115,8 +115,8 @@ bool ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                 if (inst->regA == memReg &&
                     inst->valueA == memOffset)
                 {
-                    setOp(inst, ScbeMicroOp::OpUnaryR);
-                    setRegA(inst, reg);
+                    setOp(out, inst, ScbeMicroOp::OpUnaryR);
+                    setRegA(out, inst, reg);
                     hasChanged = true;
                 }
                 break;
@@ -124,9 +124,9 @@ bool ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                 if (inst->regA == memReg &&
                     inst->valueA == memOffset)
                 {
-                    setOp(inst, ScbeMicroOp::OpBinaryRI);
-                    setRegA(inst, reg);
-                    setValueA(inst, inst->valueB);
+                    setOp(out, inst, ScbeMicroOp::OpBinaryRI);
+                    setRegA(out, inst, reg);
+                    setValueA(out, inst, inst->valueB);
                     hasChanged = true;
                 }
                 break;
@@ -134,8 +134,8 @@ bool ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                 if (inst->regA == memReg &&
                     inst->valueA == memOffset)
                 {
-                    setOp(inst, ScbeMicroOp::OpBinaryRR);
-                    setRegA(inst, reg);
+                    setOp(out, inst, ScbeMicroOp::OpBinaryRR);
+                    setRegA(out, inst, reg);
                     hasChanged = true;
                 }
                 break;
@@ -143,8 +143,8 @@ bool ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
                 if (inst->regB == memReg &&
                     inst->valueA == memOffset)
                 {
-                    setOp(inst, ScbeMicroOp::OpBinaryRR);
-                    setRegB(inst, reg);
+                    setOp(out, inst, ScbeMicroOp::OpBinaryRR);
+                    setRegB(out, inst, reg);
                     hasChanged = true;
                 }
                 break;
@@ -186,7 +186,7 @@ void ScbeOptimizer::ignore(const ScbeMicro& out, ScbeMicroInstruction* inst)
     setDirtyPass();
 }
 
-void ScbeOptimizer::setOp(ScbeMicroInstruction* inst, ScbeMicroOp op)
+void ScbeOptimizer::setOp(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroOp op)
 {
     if (inst->op != op)
     {
@@ -195,7 +195,7 @@ void ScbeOptimizer::setOp(ScbeMicroInstruction* inst, ScbeMicroOp op)
     }
 }
 
-void ScbeOptimizer::setValueA(ScbeMicroInstruction* inst, uint64_t value)
+void ScbeOptimizer::setValueA(const ScbeMicro& out, ScbeMicroInstruction* inst, uint64_t value)
 {
     if (inst->valueA != value)
     {
@@ -204,7 +204,7 @@ void ScbeOptimizer::setValueA(ScbeMicroInstruction* inst, uint64_t value)
     }
 }
 
-void ScbeOptimizer::setValueB(ScbeMicroInstruction* inst, uint64_t value)
+void ScbeOptimizer::setValueB(const ScbeMicro& out, ScbeMicroInstruction* inst, uint64_t value)
 {
     if (inst->valueB != value)
     {
@@ -213,7 +213,7 @@ void ScbeOptimizer::setValueB(ScbeMicroInstruction* inst, uint64_t value)
     }
 }
 
-void ScbeOptimizer::setRegA(ScbeMicroInstruction* inst, CpuReg reg)
+void ScbeOptimizer::setRegA(const ScbeMicro& out, ScbeMicroInstruction* inst, CpuReg reg)
 {
     if (inst->regA != reg)
     {
@@ -222,7 +222,7 @@ void ScbeOptimizer::setRegA(ScbeMicroInstruction* inst, CpuReg reg)
     }
 }
 
-void ScbeOptimizer::setRegB(ScbeMicroInstruction* inst, CpuReg reg)
+void ScbeOptimizer::setRegB(const ScbeMicro& out, ScbeMicroInstruction* inst, CpuReg reg)
 {
     if (inst->regB != reg)
     {
@@ -231,7 +231,7 @@ void ScbeOptimizer::setRegB(ScbeMicroInstruction* inst, CpuReg reg)
     }
 }
 
-void ScbeOptimizer::setRegC(ScbeMicroInstruction* inst, CpuReg reg)
+void ScbeOptimizer::setRegC(const ScbeMicro& out, ScbeMicroInstruction* inst, CpuReg reg)
 {
     if (inst->regC != reg)
     {
