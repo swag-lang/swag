@@ -1130,7 +1130,12 @@ CpuEncodeResult ScbeX64::encodeCmpRegReg(CpuReg reg0, CpuReg reg1, OpBits opBits
     else
     {
         if (emitFlags.has(EMIT_CanEncode))
+        {
+            if (isFloat(reg1))
+                return CpuEncodeResult::NotSupported;
             return CpuEncodeResult::Zero;
+        }
+        
         emitREX(concat, opBits, reg1, reg0);
         emitSpecCPUOp(concat, 0x39, opBits);
         emitModRM(concat, reg1, reg0);
