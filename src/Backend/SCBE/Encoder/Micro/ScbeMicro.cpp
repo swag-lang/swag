@@ -114,13 +114,6 @@ void ScbeMicro::emitJumpCondImm(CpuCondJump jumpType, uint32_t ipDest)
     inst->valueA    = ipDest;
 }
 
-CpuEncodeResult ScbeMicro::encodeSymbolRelocationRef(const Utf8& name, CpuEmitFlags emitFlags)
-{
-    const auto inst = addInstruction(ScbeMicroOp::SymbolRelocRef, emitFlags);
-    inst->name      = name;
-    return CpuEncodeResult::Zero;
-}
-
 CpuEncodeResult ScbeMicro::encodeLoadSymbolRelocAddress(CpuReg reg, uint32_t symbolIndex, uint32_t offset, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::SymbolRelocAddr, emitFlags);
@@ -565,9 +558,6 @@ void ScbeMicro::encode(ScbeCpu& encoder) const
                 encoder.emitStoreCallerParam(static_cast<uint32_t>(inst->valueA), inst->regA, inst->opBitsA);
                 break;
 
-            case ScbeMicroOp::SymbolRelocRef:
-                encoder.emitSymbolRelocationRef(inst->name, inst->emitFlags);
-                break;
             case ScbeMicroOp::SymbolRelocAddr:
                 encoder.emitLoadSymRelocAddress(inst->regA, static_cast<uint32_t>(inst->valueA), static_cast<uint32_t>(inst->valueB), inst->emitFlags);
                 break;

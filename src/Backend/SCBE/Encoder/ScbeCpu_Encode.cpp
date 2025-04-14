@@ -50,11 +50,6 @@ void ScbeCpu::emitLoadSymbolRelocValue(CpuReg reg, uint32_t symbolIndex, uint32_
     encodeLoadSymRelocValue(reg, symbolIndex, offset, emitFlags);
 }
 
-void ScbeCpu::emitSymbolRelocationRef(const Utf8& name, CpuEmitFlags emitFlags)
-{
-    encodeSymbolRelocationRef(name, emitFlags);
-}
-
 void ScbeCpu::emitPush(CpuReg reg, CpuEmitFlags emitFlags)
 {
     encodePush(reg, emitFlags);

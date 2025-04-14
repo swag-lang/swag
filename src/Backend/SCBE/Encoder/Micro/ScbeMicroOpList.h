@@ -10,7 +10,6 @@ SCBE_MICRO_OP(Pop,                         MOF_REG_A | MOF_READ_REG,            
 SCBE_MICRO_OP(Nop,                         MOF_ZERO,                                                                   MOF_ZERO)
 SCBE_MICRO_OP(Ret,                         MOF_ZERO,                                                                   MOF_ZERO)
                                                                                                                        
-SCBE_MICRO_OP(SymbolRelocRef,              MOF_NAME,                                                                   MOF_ZERO)
 SCBE_MICRO_OP(SymbolRelocAddr,             MOF_REG_A | MOF_WRITE_REG,                                                  MOF_VALUE_A | MOF_VALUE_B)
 SCBE_MICRO_OP(SymbolRelocValue,            MOF_REG_A | MOF_WRITE_REG,                                                  MOF_VALUE_A | MOF_VALUE_B)
 SCBE_MICRO_OP(SymbolRelocPtr,              MOF_REG_A | MOF_WRITE_REG,                                                  MOF_NAME)

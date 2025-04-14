@@ -379,15 +379,16 @@ void ScbeMicro::print() const
                 line.name = "patchjump";
                 break;
 
-            case ScbeMicroOp::SymbolRelocRef:
-                break;
             case ScbeMicroOp::SymbolRelocAddr:
                 line.name = "lea";
-                line.args = form("%s, [<sym%d>+%d]", regName(inst->regA, OpBits::B64), inst->valueA, inst->valueB);
+                line.args = form("%s, [<sym%d>+%llX]", regName(inst->regA, OpBits::B64), inst->valueA, inst->valueB);
                 break;
             case ScbeMicroOp::SymbolRelocValue:
                 line.name = "mov";
-                line.args = form("%s, <sym%d>+%d", regName(inst->regA, OpBits::B64), inst->valueA, inst->valueB);
+                if (inst->emitFlags.has(EMIT_B64))
+                    line.args = form("%s, <sym%d>+%llX", regName(inst->regA, OpBits::B64), inst->valueA, inst->valueB);
+                else
+                    line.args = form("%s, [<sym%d>+%llX]", regName(inst->regA, OpBits::B64), inst->valueA, inst->valueB);
                 break;
             case ScbeMicroOp::SymbolRelocPtr:
                 line.name = "mov";

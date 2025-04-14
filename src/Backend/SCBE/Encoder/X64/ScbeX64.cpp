@@ -374,22 +374,6 @@ namespace
 
 /////////////////////////////////////////////////////////////////////
 
-CpuEncodeResult ScbeX64::encodeSymbolRelocationRef(const Utf8& name, CpuEmitFlags emitFlags)
-{
-    const auto callSym = getOrAddSymbol(name, CpuSymbolKind::Extern);
-    if (callSym->kind == CpuSymbolKind::Function)
-    {
-        concat.addS32(static_cast<int32_t>(callSym->value + textSectionOffset - (concat.totalCount() + 4)));
-    }
-    else
-    {
-        addSymbolRelocation(concat.totalCount() - textSectionOffset, callSym->index, IMAGE_REL_AMD64_REL32);
-        concat.addU32(0);
-    }
-
-    return CpuEncodeResult::Zero;
-}
-
 CpuEncodeResult ScbeX64::encodeLoadSymbolRelocAddress(CpuReg reg, uint32_t symbolIndex, uint32_t offset, CpuEmitFlags emitFlags)
 {
     emitREX(concat, OpBits::B64, reg);

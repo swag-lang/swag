@@ -74,10 +74,10 @@ void Scbe::emitMain(ScbeCpu& pp)
     SWAG_ASSERT(g_SystemAllocatorTable);
     const auto bcAlloc = static_cast<ByteCode*>(ByteCode::undoByteCodeLambda(static_cast<void**>(g_SystemAllocatorTable)[0]));
     SWAG_ASSERT(bcAlloc);
+    const auto sym = pp.getOrAddSymbol(bcAlloc->getCallName(), CpuSymbolKind::Extern);
 
     pp.emitLoadSymRelocAddress(cc->computeRegI0, pp.symDefaultAllocTable, 0);
-    pp.emitLoadAddressMem(cc->computeRegI1, CpuReg::Rip, 0);
-    pp.emitSymbolRelocationRef(bcAlloc->getCallName());
+    pp.emitLoadSymRelocAddress(cc->computeRegI1, sym->index, 0);
     pp.emitLoadMemReg(cc->computeRegI0, 0, cc->computeRegI1, OpBits::B64);
 
     // mainContext.allocator.itable = &defaultAllocTable;
