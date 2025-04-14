@@ -86,7 +86,7 @@ void ScbeOptimizer::optimizePassAliasHdwReg(const ScbeMicro& out)
                     {
                         setRegA(out, inst, prev->regB);
                     }
-                    else if (inst->opBitsA == prev->opBitsA)
+                    else if (ScbeCpu::getNumBits(inst->opBitsA) <= ScbeCpu::getNumBits(prev->opBitsA))
                     {
                         setRegA(out, inst, prev->regB);
                     }
@@ -112,7 +112,7 @@ void ScbeOptimizer::optimizePassAliasHdwReg(const ScbeMicro& out)
                     {
                         setRegB(out, inst, prev->regB);
                     }
-                    else if (inst->opBitsA == prev->opBitsA)
+                    else if (ScbeCpu::getNumBits(inst->opBitsA) <= ScbeCpu::getNumBits(prev->opBitsA))
                     {
                         setRegB(out, inst, prev->regB);
                     }
@@ -127,7 +127,7 @@ void ScbeOptimizer::optimizePassAliasHdwReg(const ScbeMicro& out)
                 const auto prev = mapRegInst[inst->regC];
                 if (out.cpu->acceptsRegC(inst, prev->regB))
                 {
-                    if (inst->opBitsA == prev->opBitsA)
+                    if (ScbeCpu::getNumBits(inst->opBitsA) <= ScbeCpu::getNumBits(prev->opBitsA))
                     {
                         setRegC(out, inst, prev->regB);
                     }
