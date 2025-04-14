@@ -390,10 +390,6 @@ void ScbeMicro::print() const
                 else
                     line.args = form("%s, [<sym%d>+%llX]", regName(inst->regA, OpBits::B64), inst->valueA, inst->valueB);
                 break;
-            case ScbeMicroOp::SymbolRelocPtr:
-                line.name = "mov";
-                line.args = form("%s, ptr %s", regName(inst->regA, OpBits::B64), inst->name.cstr());
-                break;
             case ScbeMicroOp::Push:
                 line.name = "push";
                 line.args = regName(inst->regA, OpBits::B64);

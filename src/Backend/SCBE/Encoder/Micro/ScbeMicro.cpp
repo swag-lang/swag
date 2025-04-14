@@ -69,12 +69,6 @@ void ScbeMicro::emitLabel(uint32_t instructionIndex)
     labels[instructionIndex] = concat.totalCount() / sizeof(ScbeMicroInstruction);
 }
 
-void ScbeMicro::emitSymbolRelocationPtr(CpuReg reg, const Utf8& name)
-{
-    const auto inst = addInstruction(ScbeMicroOp::SymbolRelocPtr, EMIT_Zero);
-    inst->regA      = reg;
-    inst->name      = name;
-}
 void ScbeMicro::emitLoadCallerParam(CpuReg reg, uint32_t paramIdx, OpBits opBits)
 {
     const auto inst = addInstruction(ScbeMicroOp::LoadCallParam, EMIT_Zero);
@@ -538,9 +532,6 @@ void ScbeMicro::encode(ScbeCpu& encoder) const
                 break;
             case ScbeMicroOp::Label:
                 encoder.emitLabel(static_cast<int32_t>(inst->valueA));
-                break;
-            case ScbeMicroOp::SymbolRelocPtr:
-                encoder.emitSymbolRelocationPtr(inst->regA, inst->name);
                 break;
             case ScbeMicroOp::JumpCondI:
                 encoder.emitJumpCondImm(inst->jumpType, static_cast<uint32_t>(inst->valueA));

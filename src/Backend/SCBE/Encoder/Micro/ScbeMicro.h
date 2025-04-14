@@ -20,7 +20,6 @@ struct ScbeMicro final : ScbeCpu
     void emitLoadCallerZeroExtendParam(CpuReg reg, uint32_t paramIdx, OpBits numBitsDst, OpBits numBitsSrc) override;
     void emitLoadCallerAddressParam(CpuReg reg, uint32_t paramIdx) override;
     void emitStoreCallerParam(uint32_t paramIdx, CpuReg reg, OpBits opBits) override;
-    void emitSymbolRelocationPtr(CpuReg reg, const Utf8& name) override;
     void emitJumpCondImm(CpuCondJump jumpType, uint32_t ipDest) override;
 
     CpuEncodeResult encodeLoadSymbolRelocAddress(CpuReg reg, uint32_t symbolIndex, uint32_t offset, CpuEmitFlags emitFlags) override;

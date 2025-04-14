@@ -293,18 +293,6 @@ void ScbeCpu::emitStoreCallerParam(uint32_t paramIdx, CpuReg reg, OpBits opBits)
     emitLoadMemReg(CpuReg::Rsp, stackOffset, reg, opBits);
 }
 
-void ScbeCpu::emitSymbolRelocationPtr(CpuReg reg, const Utf8& name)
-{
-    emitLoadRegImm64(reg, 0);
-
-    CpuRelocation relocation;
-    relocation.virtualAddress = concat.totalCount() - sizeof(uint64_t) - textSectionOffset;
-    const auto callSym        = getOrAddSymbol(name, CpuSymbolKind::Extern);
-    relocation.symbolIndex    = callSym->index;
-    relocation.type           = IMAGE_REL_AMD64_ADDR64;
-    relocTableTextSection.table.push_back(relocation);
-}
-
 void ScbeCpu::emitJumpCondImm(CpuCondJump jumpType, uint32_t ipDest)
 {
     CpuLabelToSolve label;
