@@ -472,14 +472,6 @@ CpuEncodeResult ScbeX64::encodeLoadRegReg(CpuReg regDst, CpuReg regSrc, OpBits o
     return CpuEncodeResult::Zero;
 }
 
-CpuEncodeResult ScbeX64::encodeLoadRegImm64(CpuReg reg, uint64_t value, CpuEmitFlags emitFlags)
-{
-    emitREX(concat, OpBits::B64, REX_REG_NONE, reg);
-    emitCPUOp(concat, 0xB8, reg);
-    concat.addU64(value);
-    return CpuEncodeResult::Zero;
-}
-
 CpuEncodeResult ScbeX64::encodeLoadRegImm(CpuReg reg, uint64_t value, OpBits opBits, CpuEmitFlags emitFlags)
 {
     if (isFloat(reg))

@@ -155,14 +155,6 @@ CpuEncodeResult ScbeMicro::encodeLoadRegReg(CpuReg regDst, CpuReg regSrc, OpBits
     return CpuEncodeResult::Zero;
 }
 
-CpuEncodeResult ScbeMicro::encodeLoadRegImm64(CpuReg reg, uint64_t value, CpuEmitFlags emitFlags)
-{
-    const auto inst = addInstruction(ScbeMicroOp::LoadRI64, emitFlags);
-    inst->regA      = reg;
-    inst->valueA    = value;
-    return CpuEncodeResult::Zero;
-}
-
 CpuEncodeResult ScbeMicro::encodeLoadRegImm(CpuReg reg, uint64_t value, OpBits opBits, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::LoadRI, emitFlags);
@@ -603,9 +595,6 @@ void ScbeMicro::encode(ScbeCpu& encoder) const
                 break;
             case ScbeMicroOp::LoadRR:
                 encoder.emitLoadRegReg(inst->regA, inst->regB, inst->opBitsA, inst->emitFlags);
-                break;
-            case ScbeMicroOp::LoadRI64:
-                encoder.emitLoadRegImm64(inst->regA, inst->valueA, inst->emitFlags);
                 break;
             case ScbeMicroOp::LoadRI:
                 encoder.emitLoadRegImm(inst->regA, inst->valueA, inst->opBitsA, inst->emitFlags);

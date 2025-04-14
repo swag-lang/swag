@@ -449,10 +449,6 @@ void ScbeMicro::print() const
                 line.name = form("cmov%s", cpuCondName(inst->cpuCond));
                 line.args = form("%s, %s", regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsA));
                 break;
-            case ScbeMicroOp::LoadRI64:
-                line.name = "mov";
-                line.args = form("%s, 0x%llX", regName(inst->regA, OpBits::B64), inst->valueA);
-                break;
             case ScbeMicroOp::LoadRI:
                 line.name = "mov";
                 line.args = form("%s, 0x%llX", regName(inst->regA, inst->opBitsA), inst->valueA);

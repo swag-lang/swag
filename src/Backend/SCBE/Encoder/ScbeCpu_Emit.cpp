@@ -37,7 +37,7 @@ namespace
                     break;
 
                 case CpuPushParamType::Constant64:
-                    pp.emitLoadRegImm64(callConv->paramsRegistersInteger[idxParam], value);
+                    pp.emitLoadRegImm(callConv->paramsRegistersInteger[idxParam], value, OpBits::B64);
                     break;
 
                 case CpuPushParamType::CaptureContext:
@@ -127,7 +127,7 @@ namespace
                     break;
 
                 case CpuPushParamType::Constant64:
-                    pp.emitLoadRegImm64(pp.cc->computeRegI0, value);
+                    pp.emitLoadRegImm(pp.cc->computeRegI0, value, OpBits::B64);
                     pp.emitLoadMemReg(CpuReg::Rsp, memOffset, pp.cc->computeRegI0, OpBits::B64);
                     break;
 

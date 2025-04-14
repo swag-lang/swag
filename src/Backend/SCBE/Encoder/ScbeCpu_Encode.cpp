@@ -161,11 +161,6 @@ void ScbeCpu::emitLoadRegReg(CpuReg regDst, CpuReg regSrc, OpBits opBits, CpuEmi
     Report::internalError(module, "emitLoadRegReg, cannot encode");
 }
 
-void ScbeCpu::emitLoadRegImm64(CpuReg reg, uint64_t value, CpuEmitFlags emitFlags)
-{
-    encodeLoadRegImm64(reg, value, emitFlags);
-}
-
 void ScbeCpu::emitLoadSignedExtendRegReg(CpuReg regDst, CpuReg regSrc, OpBits numBitsDst, OpBits numBitsSrc, CpuEmitFlags emitFlags)
 {
     if (numBitsSrc == numBitsDst)
