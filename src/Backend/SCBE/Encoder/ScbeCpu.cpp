@@ -266,6 +266,9 @@ bool ScbeCpu::acceptsRegB(const ScbeMicroInstruction* inst, CpuReg reg)
         case ScbeMicroOp::OpBinaryMR:
             result = encodeOpBinaryMemReg(inst->regA, inst->valueA, reg, inst->cpuOp, inst->opBitsA, EMIT_CanEncode);
             break;
+        case ScbeMicroOp::OpTernaryRRR:
+            result = encodeOpTernaryRegRegReg(inst->regA, reg, inst->regC, inst->cpuOp, inst->opBitsA, EMIT_CanEncode);
+            break;
         case ScbeMicroOp::LoadZeroExtRR:
             result = encodeLoadZeroExtendRegReg(inst->regA, reg, inst->opBitsA, inst->opBitsB, EMIT_CanEncode);
             break;
@@ -285,7 +288,15 @@ bool ScbeCpu::acceptsRegB(const ScbeMicroInstruction* inst, CpuReg reg)
 
 bool ScbeCpu::acceptsRegC(const ScbeMicroInstruction* inst, CpuReg reg)
 {
-    return true;
+    auto result = CpuEncodeResult::Zero;
+    switch (inst->op)
+    {
+        case ScbeMicroOp::OpTernaryRRR:
+            result = encodeOpTernaryRegRegReg(inst->regA, inst->regB, reg, inst->cpuOp, inst->opBitsA, EMIT_CanEncode);
+            break;
+    }
+
+    return result == CpuEncodeResult::Zero;
 }
 
 bool ScbeCpu::doesReadFlags(ScbeMicroInstruction* inst) const

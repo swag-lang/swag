@@ -1502,14 +1502,44 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
 
     ///////////////////////////////////////////
 
-    else if (isFloat(regDst) || isFloat(regSrc))
+    else if (isFloat(regDst) && isInt(regSrc))
+    {
+        if (emitFlags.has(EMIT_CanEncode))
+        {
+            if (op != CpuOp::CVTI2F && op != CpuOp::CVTU2F64)
+                return CpuEncodeResult::NotSupported;
+            return CpuEncodeResult::Zero;
+        }
+
+        emitSpecF64(concat, 0xF3, opBits);
+        emitREX(concat, emitFlags.has(EMIT_B64) ? OpBits::B64 : OpBits::B32, regDst, regSrc);
+        emitCPUOp(concat, 0x0F);
+        emitCPUOp(concat, op);
+        emitModRM(concat, regDst, regSrc);
+    }
+
+    else if (isInt(regDst) && isFloat(regSrc))
+    {
+        if (emitFlags.has(EMIT_CanEncode))
+        {
+            if (op != CpuOp::CVTF2I)
+                return CpuEncodeResult::NotSupported;
+            return CpuEncodeResult::Zero;
+        }
+
+        emitSpecF64(concat, 0xF3, opBits);
+        emitREX(concat, emitFlags.has(EMIT_B64) ? OpBits::B64 : OpBits::B32, regDst, regSrc);
+        emitCPUOp(concat, 0x0F);
+        emitCPUOp(concat, op);
+        emitModRM(concat, regDst, regSrc);
+    }
+
+    else if (isFloat(regDst) && isFloat(regSrc))
     {
         if (emitFlags.has(EMIT_CanEncode))
             return CpuEncodeResult::Zero;
 
-        if (op != CpuOp::FSQRT &&
-            op != CpuOp::FAND &&
-            op != CpuOp::FXOR)
+        if (op != CpuOp::FSQRT && op != CpuOp::FAND && op != CpuOp::FXOR)
         {
             emitSpecF64(concat, 0xF3, opBits);
             emitREX(concat, emitFlags.has(EMIT_B64) ? OpBits::B64 : OpBits::B32, regDst, regSrc);
@@ -2459,7 +2489,13 @@ CpuEncodeResult ScbeX64::encodeOpTernaryRegRegReg(CpuReg reg0, CpuReg reg1, CpuR
     if (op == CpuOp::MULADD)
     {
         if (emitFlags.has(EMIT_CanEncode))
+        {
+            if (isFloat(reg0) != isFloat(reg1) || isFloat(reg0) != isFloat(reg2))
+                return CpuEncodeResult::NotSupported;
+            if (!isFloat(reg0))
+                return CpuEncodeResult::NotSupported;
             return CpuEncodeResult::Zero;
+        }
 
         SWAG_ASSERT(isFloat(reg0) && isFloat(reg1) && isFloat(reg2));
         emitSpecF64(concat, 0xF3, opBits);

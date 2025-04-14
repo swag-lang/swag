@@ -132,6 +132,8 @@ void ScbeOptimizer::optimizePassAliasHdwReg(const ScbeMicro& out)
                     else if (ScbeCpu::isInt(inst->regB) == ScbeCpu::isInt(prev->regB) &&
                              inst->opBitsA == prev->opBitsA)
                     {
+                        //if(ScbeCpu::isInt(inst->regB) != ScbeCpu::isInt(prev->regB) && inst->op != ScbeMicroOp::LoadRR)
+                        //    out.print();
                         setRegB(inst, prev->regB);
                     }
                 }
