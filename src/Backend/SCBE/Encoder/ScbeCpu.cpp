@@ -9,6 +9,7 @@
 #include "Micro/ScbeMicro.h"
 #include "Report/Report.h"
 #include "Semantic/Type/TypeInfo.h"
+#include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 
 void ScbeCpu::init(const BuildParameters& buildParameters)
@@ -70,6 +71,35 @@ CpuSymbol* ScbeCpu::getOrAddString(const Utf8& str)
     const auto sym     = getOrAddSymbol(symName, CpuSymbolKind::Constant);
     globalStrings[str] = sym->index;
     sym->value         = constantSegment.addStringNoLock(str);
+
+    return sym;
+}
+
+CpuSymbol* ScbeCpu::getOrAddConstant(uint64_t value, OpBits opBits)
+{
+    const auto it = globalConstants.find(value);
+    if (it != globalConstants.end())
+        return &allSymbols[it->second];
+
+    const Utf8 symName     = form("__cst%u", static_cast<uint32_t>(globalConstants.size()));
+    const auto sym         = getOrAddSymbol(symName, CpuSymbolKind::Constant);
+    globalConstants[value] = sym->index;
+
+    ComputedValue cv;
+    cv.reg.u64 = value;
+
+    switch (opBits)
+    {
+        case OpBits::B32:
+            sym->value = constantSegment.addComputedValueNoLock(g_TypeMgr->typeInfoU32, cv, nullptr);
+            break;
+        case OpBits::B64:
+            sym->value = constantSegment.addComputedValueNoLock(g_TypeMgr->typeInfoU64, cv, nullptr);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+    }
 
     return sym;
 }

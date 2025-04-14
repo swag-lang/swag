@@ -233,6 +233,7 @@ struct ScbeCpu : BackendEncoder
 
     CpuSymbol*   getOrAddSymbol(const Utf8& name, CpuSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);
     CpuSymbol*   getOrAddString(const Utf8& str);
+    CpuSymbol*   getOrAddConstant(uint64_t value, OpBits opBits);
     void         addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, uint16_t type);
     CpuFunction* addFunction(const Utf8& funcName, const CallConv* ccFunc, ByteCode* bc);
     void         endFunction() const;
@@ -368,6 +369,7 @@ struct ScbeCpu : BackendEncoder
     Vector<CpuSymbol>                           allSymbols;
     MapUtf8<uint32_t>                           mapSymbols;
     MapUtf8<uint32_t>                           globalStrings;
+    Map<uint64_t, uint32_t>                     globalConstants;
     DataSegment                                 globalSegment;
     DataSegment                                 constantSegment;
     Utf8                                        directives;

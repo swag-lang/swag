@@ -95,7 +95,8 @@ struct DataSegment
     uint8_t* address(uint32_t location);
     uint8_t* addressNoLock(uint32_t location);
 
-    uint32_t addComputedValue(const TypeInfo* typeInfo, ComputedValue& computedValue, uint8_t** resultPtr);
+    uint32_t addComputedValue(const TypeInfo* typeInfo, const ComputedValue& computedValue, uint8_t** resultPtr);
+    uint32_t addComputedValueNoLock(const TypeInfo* typeInfo, const ComputedValue& computedValue, uint8_t** resultPtr);
     uint32_t addString(const Utf8& str, uint8_t** resultPtr = nullptr);
     uint32_t addStringNoLock(const Utf8& str, uint8_t** resultPtr = nullptr);
     void     addInitPtr(uint32_t patchOffset, uint32_t srcOffset, SegmentKind seg = SegmentKind::Me);

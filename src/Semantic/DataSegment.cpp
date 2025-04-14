@@ -242,33 +242,38 @@ uint8_t* DataSegment::addressNoLock(uint32_t location)
     return nullptr;
 }
 
-uint32_t DataSegment::addComputedValue(const TypeInfo* typeInfo, ComputedValue& computedValue, uint8_t** resultPtr)
+uint32_t DataSegment::addComputedValue(const TypeInfo* typeInfo, const ComputedValue& computedValue, uint8_t** resultPtr)
+{
+    ScopedLock lk(mutex);
+    return addComputedValueNoLock(typeInfo, computedValue, resultPtr);
+}
+
+uint32_t DataSegment::addComputedValueNoLock(const TypeInfo* typeInfo, const ComputedValue& computedValue, uint8_t** resultPtr)
 {
     SWAG_ASSERT(typeInfo->isNative());
     SWAG_ASSERT(typeInfo->nativeType != NativeTypeKind::Any);
-    SWAG_ASSERT(resultPtr);
+    SWAG_RACE_CONDITION_WRITE_SEGMENT(raceC);
 
     if (typeInfo->nativeType == NativeTypeKind::String)
     {
-        const auto stringOffset = addString(computedValue.text);
+        const auto stringOffset = addStringNoLock(computedValue.text);
         uint8_t*   addr;
-        const auto storageOffset             = reserve(2 * sizeof(uint64_t), &addr);
+        const auto storageOffset             = reserveNoLock(2 * sizeof(uint64_t), &addr);
         reinterpret_cast<uint64_t*>(addr)[0] = reinterpret_cast<uint64_t>(computedValue.text.buffer);
         reinterpret_cast<uint64_t*>(addr)[1] = computedValue.text.count;
-        *resultPtr                           = addr;
+        if (resultPtr)
+            *resultPtr = addr;
         addInitPtr(storageOffset, stringOffset);
         return storageOffset;
     }
-
-    ScopedLock lk(mutex);
-    SWAG_RACE_CONDITION_WRITE_SEGMENT(raceC);
 
     switch (typeInfo->sizeOf)
     {
         case 1:
             if (const auto it = storedValues8.find(computedValue.reg.u8); it != storedValues8.end())
             {
-                *resultPtr = it->second.addr;
+                if (resultPtr)
+                    *resultPtr = it->second.addr;
                 return it->second.offset;
             }
             break;
@@ -276,7 +281,8 @@ uint32_t DataSegment::addComputedValue(const TypeInfo* typeInfo, ComputedValue& 
         case 2:
             if (const auto it = storedValues16.find(computedValue.reg.u16); it != storedValues16.end())
             {
-                *resultPtr = it->second.addr;
+                if (resultPtr)
+                    *resultPtr = it->second.addr;
                 return it->second.offset;
             }
             break;
@@ -284,7 +290,8 @@ uint32_t DataSegment::addComputedValue(const TypeInfo* typeInfo, ComputedValue& 
         case 4:
             if (const auto it = storedValues32.find(computedValue.reg.u32); it != storedValues32.end())
             {
-                *resultPtr = it->second.addr;
+                if (resultPtr)
+                    *resultPtr = it->second.addr;
                 return it->second.offset;
             }
             break;
@@ -292,7 +299,8 @@ uint32_t DataSegment::addComputedValue(const TypeInfo* typeInfo, ComputedValue& 
         case 8:
             if (const auto it = storedValues64.find(computedValue.reg.u64); it != storedValues64.end())
             {
-                *resultPtr = it->second.addr;
+                if (resultPtr)
+                    *resultPtr = it->second.addr;
                 return it->second.offset;
             }
             break;
