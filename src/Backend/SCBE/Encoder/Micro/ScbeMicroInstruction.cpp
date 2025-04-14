@@ -8,6 +8,8 @@ bool ScbeMicroInstruction::hasReadRegA() const
     {
         if (cpuOp == CpuOp::BSR || cpuOp == CpuOp::BSF || cpuOp == CpuOp::POPCNT)
             return false;
+        if (cpuOp == CpuOp::CVTF2F || cpuOp == CpuOp::CVTF2I || cpuOp == CpuOp::CVTI2F || cpuOp == CpuOp::CVTU2F64)
+            return false;
     }
 
     return (hasLeftOpFlag(MOF_REG_A) && hasLeftOpFlag(MOF_READ_REG)) || (hasRightOpFlag(MOF_REG_A) && hasRightOpFlag(MOF_READ_REG));
