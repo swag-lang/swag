@@ -2,6 +2,7 @@
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
+#include "Main/CommandLine.h"
 #include "Semantic/Type/TypeManager.h"
 #pragma optimize("", off)
 
@@ -247,7 +248,7 @@ namespace
         Utf8 res;
 
         if (flags.has(MOF_NAME))
-            res += form("NAME");
+            res += inst->name;
 
         if (flags.has(MOF_CPU_COND))
             res += form("CC:%s ", cpuCondName(inst->cpuCond));
@@ -299,35 +300,56 @@ void ScbeMicro::printInstructionLine(ScbeMicroInstruction* inst, uint32_t& idx, 
 {
     idx++;
 
-    if (inst->emitFlags.has(EMIT_Lock))
-        line.name = "lock " + line.name;
-
-    line.rank = form("%08d", i);
-
-    line.flags.clear();
-    if (inst->isJumpDest())
-        line.flags += 'J';
-    while (line.flags.length() != 10)
-        line.flags += '.';
-
-    const auto& def = g_MicroOpInfos[static_cast<int>(inst->op)];
-    line.pretty.clear();
-    line.pretty += def.name;
-    line.pretty += " ";
-    while (line.pretty.length() < 20)
-        line.pretty += " ";
-    line.pretty += printOpArgs(inst, def.leftFlags);
-    if (def.rightFlags.flags)
+    if (inst)
     {
-        line.pretty += "| ";
-        line.pretty += printOpArgs(inst, def.rightFlags);
+        if (inst->emitFlags.has(EMIT_Lock))
+            line.name = "lock " + line.name;
+
+        line.rank = form("%08d", i);
+
+        line.flags.clear();
+        if (inst->isJumpDest())
+            line.flags += 'J';
+        while (line.flags.length() != 10)
+            line.flags += '.';
+
+        const auto& def = g_MicroOpInfos[static_cast<int>(inst->op)];
+        line.pretty.clear();
+        line.pretty += def.name;
+        line.pretty += " ";
+        while (line.pretty.length() < 20)
+            line.pretty += " ";
+        line.pretty += printOpArgs(inst, def.leftFlags);
+        if (def.rightFlags.flags)
+        {
+            line.pretty += "| ";
+            line.pretty += printOpArgs(inst, def.rightFlags);
+        }
+    }
+    else
+    {
+        line.rank.clear();
+        line.flags.clear();
+        line.pretty.clear();
     }
 
     Vector<ByteCode::PrintInstructionLine> lines;
     lines.push_back(line);
 
     ByteCodePrintOptions po;
-    po.prettyColor = LogColor::Gray;
+    if (inst && (inst->op == ScbeMicroOp::Label || inst->op == ScbeMicroOp::PatchJump))
+    {
+        po.flagsColor  = LogColor::Magenta;
+        po.prettyColor = LogColor::Magenta;
+        po.nameColor   = LogColor::Magenta;
+    }
+    else
+    {
+        po.prettyColor = LogColor::Gray;
+        po.flagsColor  = LogColor::Undefined;
+        po.nameColor   = LogColor::Undefined;
+    }
+
     ByteCode::alignPrintInstructions(po, lines, true);
     for (const auto& l : lines)
         ByteCode::printInstruction(po, nullptr, l);
@@ -354,17 +376,23 @@ void ScbeMicro::print() const
 
         line.name.clear();
         line.args.clear();
+#ifdef SWAG_DEV_MODE
+        line.devMode.clear();
+#endif
 
         switch (inst->op)
         {
             case ScbeMicroOp::Debug:
             {
                 ByteCodePrintOptions po;
-                po.rankColor     = LogColor::Transparent;
-                po.nameColor     = LogColor::Gray;
-                po.argsColor     = LogColor::Gray;
-                po.flagsColor    = LogColor::Transparent;
-                po.prettyColor   = LogColor::Transparent;
+                po.rankColor   = LogColor::Transparent;
+                po.nameColor   = LogColor::Gray;
+                po.argsColor   = LogColor::Gray;
+                po.flagsColor  = LogColor::Transparent;
+                po.prettyColor = LogColor::Transparent;
+#ifdef SWAG_DEV_MODE
+                po.devModeColor = LogColor::Transparent;
+#endif
                 const auto curIp = reinterpret_cast<ByteCodeInstruction*>(inst->valueA);
                 ByteCode::printSourceCode(po, cpuFct->bc, curIp, &lastLine, &lastFile, &lastInline);
                 cpuFct->bc->printInstruction(po, curIp);
@@ -373,11 +401,24 @@ void ScbeMicro::print() const
             }
 
             case ScbeMicroOp::Label:
-                line.name = "label";
-                break;
+#ifdef SWAG_DEV_MODE
+                if (g_CommandLine.dbgPrintBcExt)
+                {
+                    line.name = "label";
+                    break;
+                }
+#endif
+                continue;
+
             case ScbeMicroOp::PatchJump:
-                line.name = "patchjump";
-                break;
+#ifdef SWAG_DEV_MODE
+                if (g_CommandLine.dbgPrintBcExt)
+                {
+                    line.name = "patchjump";
+                    break;
+                }
+#endif
+                continue;
 
             case ScbeMicroOp::SymbolRelocAddr:
                 line.name = "lea";
@@ -406,11 +447,11 @@ void ScbeMicro::print() const
                 break;
             case ScbeMicroOp::CallLocal:
                 line.name = "call near";
-                line.args = inst->name;
+                line.args = Utf8::truncateDisplay(inst->name, 35);
                 break;
             case ScbeMicroOp::CallExtern:
                 line.name = "call far";
-                line.args = inst->name;
+                line.args = Utf8::truncateDisplay(inst->name, 35);
                 break;
             case ScbeMicroOp::CallIndirect:
                 line.name = "call";
@@ -631,7 +672,7 @@ void ScbeMicro::print() const
                 {
                     line.name = "sub";
                     line.args = "rsp, <framesize>";
-                    printInstructionLine(inst, idx, i, line);
+                    printInstructionLine(nullptr, idx, i, line);
                 }
                 continue;
 
@@ -647,7 +688,7 @@ void ScbeMicro::print() const
                     const auto r = cpuFct->unwindRegs[j];
                     line.name    = "pop";
                     line.args    = form("%s", regName(r, OpBits::B64));
-                    printInstructionLine(inst, idx, i, line);
+                    printInstructionLine(nullptr, idx, i, line);
                 }
                 continue;
 

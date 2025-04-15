@@ -446,7 +446,7 @@ void ByteCode::fillPrintInstruction(const ByteCodePrintOptions& options, const B
         if (ip->sourceFile)
         {
             const Path sf = ip->sourceFile;
-            line.devMode += form("%s:%d", sf.filename().cstr(), ip->sourceLine);
+            line.devMode = form("(%s:%d)", sf.filename().cstr(), ip->sourceLine);
         }
     }
 #endif
@@ -567,8 +567,14 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, const ByteC
 #ifdef SWAG_DEV_MODE
     if (!forDbg)
     {
-        g_Log.setColor(LogColor::DarkMagenta);
-        g_Log.print(line.devMode);
+        if (options.devModeColor != LogColor::Transparent)
+        {
+            if (options.devModeColor != LogColor::Undefined)
+                g_Log.setColor(options.devModeColor);
+            else
+                g_Log.setColor(LogColor::DarkMagenta);
+            g_Log.print(line.devMode);
+        }
     }
 #endif
 
