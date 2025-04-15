@@ -56,6 +56,7 @@ struct ScbeMicroInstruction
     };
 
     uint64_t valueB;
+    uint64_t valueC;
 
     ScbeMicroOp op;
     CpuOp       cpuOp;
@@ -67,7 +68,6 @@ struct ScbeMicroInstruction
     CpuEmitFlags              emitFlags;
     ScbeMicroInstructionFlags flags;
 
-    uint32_t valueC;
     CpuReg   regA;
     CpuReg   regB;
     CpuReg   regC;

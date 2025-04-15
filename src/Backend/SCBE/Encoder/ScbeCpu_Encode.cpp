@@ -275,6 +275,18 @@ void ScbeCpu::emitLoadAmcMemReg(CpuReg regBase, CpuReg regMul, uint64_t mulValue
     Report::internalError(module, "encodeLoadAmcMemReg, cannot encode");
 }
 
+void ScbeCpu::emitLoadAmcMemImm(CpuReg regBase, CpuReg regMul, uint64_t mulValue, uint64_t addValue, OpBits opBitsDst, uint64_t value, OpBits opBitsSrc, CpuEmitFlags emitFlags)
+{
+    const auto result = cpu->encodeLoadAmcMemImm(regBase, regMul, mulValue, addValue, opBitsDst, value, opBitsSrc, EMIT_CanEncode);
+    if (result == CpuEncodeResult::Zero)
+    {
+        encodeLoadAmcMemImm(regBase, regMul, mulValue, addValue, opBitsDst, value, opBitsSrc, emitFlags);
+        return;
+    }
+
+    Report::internalError(module, "encodeLoadAmcMemImm, cannot encode");
+}
+
 void ScbeCpu::emitLoadAddressAmcRegMem(CpuReg regDst, OpBits opBitsDst, CpuReg regBase, CpuReg regMul, uint64_t mulValue, uint64_t addValue, OpBits opBitsSrc, CpuEmitFlags emitFlags)
 {
     const auto result = cpu->encodeLoadAddressAmcRegMem(regDst, opBitsDst, regBase, regMul, mulValue, addValue, opBitsSrc, EMIT_CanEncode);

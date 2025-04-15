@@ -897,6 +897,11 @@ CpuEncodeResult ScbeX64::encodeLoadAmcMemReg(CpuReg regBase, CpuReg regMul, uint
     return encodeAmcReg(concat, regSrc, opBitsSrc, regBase, regMul, mulValue, addValue, opBitsDst, CpuOp::MOV, emitFlags, true);
 }
 
+CpuEncodeResult ScbeX64::encodeLoadAmcMemImm(CpuReg regBase, CpuReg regMul, uint64_t mulValue, uint64_t addValue, OpBits opBitsDst, uint64_t value, OpBits opBitsSrc, CpuEmitFlags emitFlags)
+{
+    return CpuEncodeResult::NotSupported;
+}
+
 CpuEncodeResult ScbeX64::encodeLoadAddressAmcRegMem(CpuReg regDst, OpBits opBitsDst, CpuReg regBase, CpuReg regMul, uint64_t mulValue, uint64_t addValue, OpBits opBitsSrc, CpuEmitFlags emitFlags)
 {
     return encodeAmcReg(concat, regDst, opBitsDst, regBase, regMul, mulValue, addValue, opBitsSrc, CpuOp::LEA, emitFlags, false);
