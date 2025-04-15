@@ -393,6 +393,18 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
                 break;
             }
 
+            if (next->op == ScbeMicroOp::OpBinaryRM &&
+                next->cpuOp == CpuOp::ADD &&
+                next->regA == inst->regA &&
+                next->opBitsA == inst->opBitsA)
+            {
+                setOp(out, next, ScbeMicroOp::LoadRM);
+                setOp(out, inst, ScbeMicroOp::OpBinaryRR);
+                inst->cpuOp = CpuOp::ADD;
+                swapInstruction(out, inst, next);
+                break;
+            }
+
             break;
 
         case ScbeMicroOp::OpBinaryRI:
