@@ -158,7 +158,7 @@ bool Semantic::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, 
         if (node->computedValue()->reg.u64 > UINT32_MAX)
             node->typeInfo = g_TypeMgr->typeInfoU64;
         else
-            node->typeInfo = g_TypeMgr->typeInfoUntypedInt;
+            node->typeInfo = g_TypeMgr->typeInfoUntypedBinHex;
         return true;
     }
 
@@ -174,7 +174,7 @@ bool Semantic::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, 
             if (node->computedValue()->reg.u64 > UINT32_MAX)
                 node->typeInfo = g_TypeMgr->typeInfoU64;
             else
-                node->typeInfo = g_TypeMgr->typeInfoUntypedInt;
+                node->typeInfo = g_TypeMgr->typeInfoUntypedBinHex;
         }
         else
         {
@@ -190,7 +190,7 @@ bool Semantic::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, 
         if (node->computedValue()->reg.u64 > UINT32_MAX)
             node->typeInfo = g_TypeMgr->typeInfoU64;
         else
-            node->typeInfo = g_TypeMgr->typeInfoUntypedInt;
+            node->typeInfo = g_TypeMgr->typeInfoUntypedBinHex;
     }
     else if (typeInfo->isSlice())
     {
@@ -204,7 +204,7 @@ bool Semantic::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, 
             if (slice->count > UINT32_MAX)
                 node->typeInfo = g_TypeMgr->typeInfoU64;
             else
-                node->typeInfo = g_TypeMgr->typeInfoUntypedInt;
+                node->typeInfo = g_TypeMgr->typeInfoUntypedBinHex;
             node->computedValue()->reg.u64 = slice->count;
         }
         else
@@ -222,7 +222,7 @@ bool Semantic::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, 
         if (node->computedValue()->reg.u64 > UINT32_MAX)
             node->typeInfo = g_TypeMgr->typeInfoU64;
         else
-            node->typeInfo = g_TypeMgr->typeInfoUntypedInt;
+            node->typeInfo = g_TypeMgr->typeInfoUntypedBinHex;
     }
     else if (typeInfo->isVariadic() || typeInfo->isTypedVariadic())
     {
