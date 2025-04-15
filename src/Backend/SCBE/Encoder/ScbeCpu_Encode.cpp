@@ -251,36 +251,36 @@ void ScbeCpu::emitLoadZeroExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t memOf
     }
 }
 
-void ScbeCpu::emitLoadAmcRegMem(CpuReg regDst, OpBits opBitsDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, OpBits opBitsSrc, CpuEmitFlags emitFlags)
+void ScbeCpu::emitLoadAmcRegMem(CpuReg regDst, OpBits opBitsDst, CpuReg regBase, CpuReg regMul, uint64_t mulValue, uint64_t addValue, OpBits opBitsSrc, CpuEmitFlags emitFlags)
 {
-    const auto result = cpu->encodeLoadAmcRegMem(regDst, opBitsDst, regSrc1, regSrc2, mulValue, addValue, opBitsSrc, EMIT_CanEncode);
+    const auto result = cpu->encodeLoadAmcRegMem(regDst, opBitsDst, regBase, regMul, mulValue, addValue, opBitsSrc, EMIT_CanEncode);
     if (result == CpuEncodeResult::Zero)
     {
-        encodeLoadAmcRegMem(regDst, opBitsDst, regSrc1, regSrc2, mulValue, addValue, opBitsSrc, emitFlags);
+        encodeLoadAmcRegMem(regDst, opBitsDst, regBase, regMul, mulValue, addValue, opBitsSrc, emitFlags);
         return;
     }
 
     Report::internalError(module, "emitLoadAMCRegMem, cannot encode");
 }
 
-void ScbeCpu::emitLoadAmcMemReg(CpuReg regDst1, CpuReg regDst2, uint64_t mulValue, uint64_t addValue, OpBits opBitsDst, CpuReg regSrc, OpBits opBitsSrc, CpuEmitFlags emitFlags)
+void ScbeCpu::emitLoadAmcMemReg(CpuReg regBase, CpuReg regMul, uint64_t mulValue, uint64_t addValue, OpBits opBitsDst, CpuReg regSrc, OpBits opBitsSrc, CpuEmitFlags emitFlags)
 {
-    const auto result = cpu->encodeLoadAmcMemReg(regDst1, regDst2, mulValue, addValue, opBitsDst, regSrc, opBitsSrc, EMIT_CanEncode);
+    const auto result = cpu->encodeLoadAmcMemReg(regBase, regMul, mulValue, addValue, opBitsDst, regSrc, opBitsSrc, EMIT_CanEncode);
     if (result == CpuEncodeResult::Zero)
     {
-        encodeLoadAmcMemReg(regDst1, regDst2, mulValue, addValue, opBitsDst, regSrc, opBitsSrc, emitFlags);
+        encodeLoadAmcMemReg(regBase, regMul, mulValue, addValue, opBitsDst, regSrc, opBitsSrc, emitFlags);
         return;
     }
 
     Report::internalError(module, "encodeLoadAmcMemReg, cannot encode");
 }
 
-void ScbeCpu::emitLoadAddressAmcRegMem(CpuReg regDst, OpBits opBitsDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, OpBits opBitsSrc, CpuEmitFlags emitFlags)
+void ScbeCpu::emitLoadAddressAmcRegMem(CpuReg regDst, OpBits opBitsDst, CpuReg regBase, CpuReg regMul, uint64_t mulValue, uint64_t addValue, OpBits opBitsSrc, CpuEmitFlags emitFlags)
 {
-    const auto result = cpu->encodeLoadAddressAmcRegMem(regDst, opBitsDst, regSrc1, regSrc2, mulValue, addValue, opBitsSrc, EMIT_CanEncode);
+    const auto result = cpu->encodeLoadAddressAmcRegMem(regDst, opBitsDst, regBase, regMul, mulValue, addValue, opBitsSrc, EMIT_CanEncode);
     if (result == CpuEncodeResult::Zero)
     {
-        encodeLoadAddressAmcRegMem(regDst, opBitsDst, regSrc1, regSrc2, mulValue, addValue, opBitsSrc, emitFlags);
+        encodeLoadAddressAmcRegMem(regDst, opBitsDst, regBase, regMul, mulValue, addValue, opBitsSrc, emitFlags);
         return;
     }
 

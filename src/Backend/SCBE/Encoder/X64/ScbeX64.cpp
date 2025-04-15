@@ -887,19 +887,19 @@ namespace
     }
 }
 
-CpuEncodeResult ScbeX64::encodeLoadAmcRegMem(CpuReg regDst, OpBits opBitsDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, OpBits opBitsSrc, CpuEmitFlags emitFlags)
+CpuEncodeResult ScbeX64::encodeLoadAmcRegMem(CpuReg regDst, OpBits opBitsDst, CpuReg regBase, CpuReg regMul, uint64_t mulValue, uint64_t addValue, OpBits opBitsSrc, CpuEmitFlags emitFlags)
 {
-    return encodeAmcReg(concat, regDst, opBitsDst, regSrc1, regSrc2, mulValue, addValue, opBitsSrc, CpuOp::MOV, emitFlags, false);
+    return encodeAmcReg(concat, regDst, opBitsDst, regBase, regMul, mulValue, addValue, opBitsSrc, CpuOp::MOV, emitFlags, false);
 }
 
-CpuEncodeResult ScbeX64::encodeLoadAmcMemReg(CpuReg regDst1, CpuReg regDst2, uint64_t mulValue, uint64_t addValue, OpBits opBitsDst, CpuReg regSrc, OpBits opBitsSrc, CpuEmitFlags emitFlags)
+CpuEncodeResult ScbeX64::encodeLoadAmcMemReg(CpuReg regBase, CpuReg regMul, uint64_t mulValue, uint64_t addValue, OpBits opBitsDst, CpuReg regSrc, OpBits opBitsSrc, CpuEmitFlags emitFlags)
 {
-    return encodeAmcReg(concat, regSrc, opBitsSrc, regDst1, regDst2, mulValue, addValue, opBitsDst, CpuOp::MOV, emitFlags, true);
+    return encodeAmcReg(concat, regSrc, opBitsSrc, regBase, regMul, mulValue, addValue, opBitsDst, CpuOp::MOV, emitFlags, true);
 }
 
-CpuEncodeResult ScbeX64::encodeLoadAddressAmcRegMem(CpuReg regDst, OpBits opBitsDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, OpBits opBitsSrc, CpuEmitFlags emitFlags)
+CpuEncodeResult ScbeX64::encodeLoadAddressAmcRegMem(CpuReg regDst, OpBits opBitsDst, CpuReg regBase, CpuReg regMul, uint64_t mulValue, uint64_t addValue, OpBits opBitsSrc, CpuEmitFlags emitFlags)
 {
-    return encodeAmcReg(concat, regDst, opBitsDst, regSrc1, regSrc2, mulValue, addValue, opBitsSrc, CpuOp::LEA, emitFlags, false);
+    return encodeAmcReg(concat, regDst, opBitsDst, regBase, regMul, mulValue, addValue, opBitsSrc, CpuOp::LEA, emitFlags, false);
 }
 
 /////////////////////////////////////////////////////////////////////

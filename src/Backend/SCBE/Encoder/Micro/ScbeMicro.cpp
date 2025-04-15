@@ -226,12 +226,12 @@ CpuEncodeResult ScbeMicro::encodeLoadAddressMem(CpuReg reg, CpuReg memReg, uint6
     return CpuEncodeResult::Zero;
 }
 
-CpuEncodeResult ScbeMicro::encodeLoadAmcRegMem(CpuReg regDst, OpBits opBitsDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, OpBits opBitsSrc, CpuEmitFlags emitFlags)
+CpuEncodeResult ScbeMicro::encodeLoadAmcRegMem(CpuReg regDst, OpBits opBitsDst, CpuReg regBase, CpuReg regMul, uint64_t mulValue, uint64_t addValue, OpBits opBitsSrc, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::LoadAmcRM, emitFlags);
     inst->regA      = regDst;
-    inst->regB      = regSrc1;
-    inst->regC      = regSrc2;
+    inst->regB      = regBase;
+    inst->regC      = regMul;
     inst->valueA    = mulValue;
     inst->valueB    = addValue;
     inst->opBitsA   = opBitsDst;
@@ -239,11 +239,11 @@ CpuEncodeResult ScbeMicro::encodeLoadAmcRegMem(CpuReg regDst, OpBits opBitsDst, 
     return CpuEncodeResult::Zero;
 }
 
-CpuEncodeResult ScbeMicro::encodeLoadAmcMemReg(CpuReg regDst1, CpuReg regDst2, uint64_t mulValue, uint64_t addValue, OpBits opBitsDst, CpuReg regSrc, OpBits opBitsSrc, CpuEmitFlags emitFlags)
+CpuEncodeResult ScbeMicro::encodeLoadAmcMemReg(CpuReg regBase, CpuReg regMul, uint64_t mulValue, uint64_t addValue, OpBits opBitsDst, CpuReg regSrc, OpBits opBitsSrc, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::LoadAmcMR, emitFlags);
-    inst->regA      = regDst1;
-    inst->regB      = regDst2;
+    inst->regA      = regBase;
+    inst->regB      = regMul;
     inst->regC      = regSrc;
     inst->valueA    = mulValue;
     inst->valueB    = addValue;
@@ -252,12 +252,12 @@ CpuEncodeResult ScbeMicro::encodeLoadAmcMemReg(CpuReg regDst1, CpuReg regDst2, u
     return CpuEncodeResult::Zero;
 }
 
-CpuEncodeResult ScbeMicro::encodeLoadAddressAmcRegMem(CpuReg regDst, OpBits opBitsDst, CpuReg regSrc1, CpuReg regSrc2, uint64_t mulValue, uint64_t addValue, OpBits opBitsSrc, CpuEmitFlags emitFlags)
+CpuEncodeResult ScbeMicro::encodeLoadAddressAmcRegMem(CpuReg regDst, OpBits opBitsDst, CpuReg regBase, CpuReg regMul, uint64_t mulValue, uint64_t addValue, OpBits opBitsSrc, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::LoadAddrAmcRM, emitFlags);
     inst->regA      = regDst;
-    inst->regB      = regSrc1;
-    inst->regC      = regSrc2;
+    inst->regB      = regBase;
+    inst->regC      = regMul;
     inst->valueA    = mulValue;
     inst->valueB    = addValue;
     inst->opBitsA   = opBitsDst;

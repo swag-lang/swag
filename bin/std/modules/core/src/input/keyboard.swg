@@ -20,6 +20,7 @@ struct Keyboard
 impl Keyboard
 {
     // Compute current state of the keyboard (all keys)
+    #[Swag.PrintAsm]
     mtd update()
     {
         previousState = currentState
