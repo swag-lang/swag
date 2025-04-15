@@ -448,7 +448,6 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
                 next->regB != next->regA &&
                 out.cpu->encodeLoadAddressAmcRegMem(next->regA, inst->opBitsA, next->regB, inst->regA, 1ULL << inst->valueA, 0, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
             {
-                //out.print();
                 setOp(out, next, ScbeMicroOp::LoadAddrAmcRM);
                 next->regC    = inst->regA;
                 next->valueA  = 1ULL << inst->valueA;
@@ -456,7 +455,6 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
                 next->opBitsA = inst->opBitsA;
                 next->opBitsB = inst->opBitsA;
                 ignore(out, inst);
-                //out.print();
                 break;
             }
 
