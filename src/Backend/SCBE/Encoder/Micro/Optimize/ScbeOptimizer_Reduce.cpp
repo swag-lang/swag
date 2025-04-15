@@ -326,6 +326,22 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
                 break;
             }
 
+            if (next->op == ScbeMicroOp::LoadMI &&
+                next->regA == inst->regA &&
+                out.cpu->encodeLoadAmcMemImm(inst->regB, inst->regC, inst->valueA, next->valueA + inst->valueB, inst->opBitsA, next->valueB, next->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+            {
+                next->op      = ScbeMicroOp::LoadAmcMI;
+                next->regA    = inst->regB;
+                next->regB    = inst->regC;
+                next->valueC  = next->valueB;
+                next->valueB  = next->valueA + inst->valueB;
+                next->valueA  = inst->valueA;
+                next->opBitsB = next->opBitsA;
+                next->opBitsA = inst->opBitsA;
+                swapInstruction(out, inst, next);
+                break;
+            }
+
             break;
 
         case ScbeMicroOp::LoadRI:
