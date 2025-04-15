@@ -97,14 +97,6 @@ void ScbeOptimizer::optimizePassImmediate(const ScbeMicro& out)
 
             default:
             {
-                if (inst->op == ScbeMicroOp::OpBinaryRI)
-                {
-                    if (mapRegVal.contains(inst->regA))
-                    {
-                        //out.print();
-                    }
-                }
-                
                 const auto stackOffset = inst->getStackOffsetWrite();
                 if (out.cpuFct->isStackOffsetTransient(stackOffset))
                     mapValVal.erase(stackOffset);

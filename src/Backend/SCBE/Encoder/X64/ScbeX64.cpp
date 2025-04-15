@@ -781,6 +781,74 @@ CpuEncodeResult ScbeX64::encodeLoadAddressMem(CpuReg reg, CpuReg memReg, uint64_
 
 namespace
 {
+    CpuEncodeResult encodeAmcImm(Concat& concat, CpuReg regBase, CpuReg regMul, uint64_t mulValue, uint64_t addValue, OpBits opBitsBaseMul, uint64_t value, OpBits opBitsValue, CpuEmitFlags emitFlags)
+    {
+        if (emitFlags.has(EMIT_CanEncode))
+        {
+            if (mulValue != 1 && mulValue != 2 && mulValue != 4 && mulValue != 8)
+                return CpuEncodeResult::NotSupported;
+            if (opBitsBaseMul != OpBits::B32 && opBitsBaseMul != OpBits::B64)
+                return CpuEncodeResult::NotSupported;
+            if (addValue > 0x7FFFFFFF)
+                return CpuEncodeResult::NotSupported;
+            if (value > 0x7FFFFFFF)
+                return CpuEncodeResult::NotSupported;
+            if (ScbeCpu::isFloat(regBase) || ScbeCpu::isFloat(regMul))
+                return CpuEncodeResult::NotSupported;
+            return CpuEncodeResult::Zero;
+        }
+
+        if (opBitsValue == OpBits::B16)
+            concat.addU8(0x66);
+
+        const bool b1 = (regMul >= CpuReg::R8 && regMul <= CpuReg::R15);
+        const bool b2 = (regBase >= CpuReg::R8 && regBase <= CpuReg::R15);
+        if (opBitsValue == OpBits::B64 || b1 || b2)
+        {
+            const auto val = getREX(opBitsValue == OpBits::B64, false, b1, b2);
+            concat.addU8(val);
+        }
+
+        emitSpecCPUOp(concat, 0xC7, opBitsValue);
+
+        if (regBase == CpuReg::R13)
+        {
+            if (addValue <= 0x7F)
+                emitModRM(concat, ModRMMode::Displacement8, MODRM_REG_0, MODRM_RM_SIB);
+            else
+                emitModRM(concat, ModRMMode::Displacement32, MODRM_REG_0, MODRM_RM_SIB);
+        }
+        else if (addValue == 0 || regBase == CpuReg::Max)
+        {
+            emitModRM(concat, ModRMMode::Memory, MODRM_REG_0, MODRM_RM_SIB);
+        }
+        else
+        {
+            if (addValue <= 0x7F)
+                emitModRM(concat, ModRMMode::Displacement8, MODRM_REG_0, MODRM_RM_SIB);
+            else
+                emitModRM(concat, ModRMMode::Displacement32, MODRM_REG_0, MODRM_RM_SIB);
+        }
+
+        SWAG_ASSERT(mulValue == 1 || mulValue == 2 || mulValue == 4 || mulValue == 8);
+        if (regBase == CpuReg::Max)
+        {
+            emitSIB(concat, static_cast<uint8_t>(log2(mulValue)), encodeReg(regMul) & 0b111, SIB_NO_BASE);
+            emitValue(concat, addValue, OpBits::B32);
+        }
+        else
+        {
+            emitSIB(concat, static_cast<uint8_t>(log2(mulValue)), encodeReg(regMul) & 0b111, encodeReg(regBase) & 0b111);
+            if (addValue <= 0x7F && (regBase == CpuReg::R13 || addValue != 0))
+                emitValue(concat, addValue, OpBits::B8);
+            else if (addValue)
+                emitValue(concat, addValue, OpBits::B32);
+        }
+
+        emitValue(concat, value, std::min(opBitsValue, OpBits::B32));
+        return CpuEncodeResult::Zero;
+    }
+
     CpuEncodeResult encodeAmcReg(Concat& concat, CpuReg reg, OpBits opBitsReg, CpuReg regBase, CpuReg regMul, uint64_t mulValue, uint64_t addValue, OpBits opBitsBaseMul, CpuOp op, CpuEmitFlags emitFlags, bool mr)
     {
         if (emitFlags.has(EMIT_CanEncode))
@@ -892,19 +960,19 @@ CpuEncodeResult ScbeX64::encodeLoadAmcRegMem(CpuReg regDst, OpBits opBitsDst, Cp
     return encodeAmcReg(concat, regDst, opBitsDst, regBase, regMul, mulValue, addValue, opBitsSrc, CpuOp::MOV, emitFlags, false);
 }
 
-CpuEncodeResult ScbeX64::encodeLoadAmcMemReg(CpuReg regBase, CpuReg regMul, uint64_t mulValue, uint64_t addValue, OpBits opBitsDst, CpuReg regSrc, OpBits opBitsSrc, CpuEmitFlags emitFlags)
+CpuEncodeResult ScbeX64::encodeLoadAmcMemReg(CpuReg regBase, CpuReg regMul, uint64_t mulValue, uint64_t addValue, OpBits opBitsBaseMul, CpuReg regSrc, OpBits opBitsSrc, CpuEmitFlags emitFlags)
 {
-    return encodeAmcReg(concat, regSrc, opBitsSrc, regBase, regMul, mulValue, addValue, opBitsDst, CpuOp::MOV, emitFlags, true);
+    return encodeAmcReg(concat, regSrc, opBitsSrc, regBase, regMul, mulValue, addValue, opBitsBaseMul, CpuOp::MOV, emitFlags, true);
 }
 
-CpuEncodeResult ScbeX64::encodeLoadAmcMemImm(CpuReg regBase, CpuReg regMul, uint64_t mulValue, uint64_t addValue, OpBits opBitsDst, uint64_t value, OpBits opBitsSrc, CpuEmitFlags emitFlags)
+CpuEncodeResult ScbeX64::encodeLoadAmcMemImm(CpuReg regBase, CpuReg regMul, uint64_t mulValue, uint64_t addValue, OpBits opBitsBaseMul, uint64_t value, OpBits opBitsValue, CpuEmitFlags emitFlags)
 {
-    return CpuEncodeResult::NotSupported;
+    return encodeAmcImm(concat, regBase, regMul, mulValue, addValue, opBitsBaseMul, value, opBitsValue, emitFlags);
 }
 
-CpuEncodeResult ScbeX64::encodeLoadAddressAmcRegMem(CpuReg regDst, OpBits opBitsDst, CpuReg regBase, CpuReg regMul, uint64_t mulValue, uint64_t addValue, OpBits opBitsSrc, CpuEmitFlags emitFlags)
+CpuEncodeResult ScbeX64::encodeLoadAddressAmcRegMem(CpuReg regDst, OpBits opBitsDst, CpuReg regBase, CpuReg regMul, uint64_t mulValue, uint64_t addValue, OpBits opBitsValue, CpuEmitFlags emitFlags)
 {
-    return encodeAmcReg(concat, regDst, opBitsDst, regBase, regMul, mulValue, addValue, opBitsSrc, CpuOp::LEA, emitFlags, false);
+    return encodeAmcReg(concat, regDst, opBitsDst, regBase, regMul, mulValue, addValue, opBitsValue, CpuOp::LEA, emitFlags, false);
 }
 
 /////////////////////////////////////////////////////////////////////
