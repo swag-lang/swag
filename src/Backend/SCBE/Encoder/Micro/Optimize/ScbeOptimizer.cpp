@@ -269,11 +269,21 @@ void ScbeOptimizer::solveLabels(const ScbeMicro& out)
         else if (inst->op == ScbeMicroOp::PatchJump)
         {
             const auto jump = reinterpret_cast<ScbeMicroInstruction*>(out.concat.firstBucket->data + inst->valueA);
-            auto       next = ScbeMicro::getNextInstruction(inst);
-            while (next->op == ScbeMicroOp::Label || next->op == ScbeMicroOp::Debug || next->op == ScbeMicroOp::Ignore)
-                next++;
-            jump->valueB = static_cast<uint64_t>(next - first);
-            next->flags.add(MIF_JUMP_DEST);
+            if (jump->isJump())
+            {
+                auto next = ScbeMicro::getNextInstruction(inst);
+                while (next->op == ScbeMicroOp::Label || next->op == ScbeMicroOp::Debug || next->op == ScbeMicroOp::Ignore)
+                    next++;
+                jump->valueB = static_cast<uint64_t>(next - first);
+                next->flags.add(MIF_JUMP_DEST);
+            }
+            else
+            {
+                inst->op = ScbeMicroOp::Ignore;
+#ifdef SWAG_STATS
+                g_Stats.totalOptimScbe += 1;
+#endif
+            }
         }
         else if (inst->op == ScbeMicroOp::Label && hasJumpTable)
         {
@@ -381,7 +391,7 @@ bool ScbeOptimizer::explore(ScbeExploreContext& cxt, const ScbeMicro& out, const
     cxt.done.insert(cxt.startInst);
     cxt.curInst = ScbeMicro::getNextInstruction(cxt.startInst);
 
-    ScbeExploreReturn result = ScbeExploreReturn::Continue;
+    auto result = ScbeExploreReturn::Continue;
     while (true)
     {
         if (result == ScbeExploreReturn::Break || cxt.curInst->isRet() || cxt.done.contains(cxt.curInst))
@@ -395,6 +405,12 @@ bool ScbeOptimizer::explore(ScbeExploreContext& cxt, const ScbeMicro& out, const
         }
 
         cxt.done.insert(cxt.curInst);
+
+        result = callback(out, cxt);
+        if (result == ScbeExploreReturn::Stop)
+            break;
+        if (result == ScbeExploreReturn::Break)
+            continue;
 
         if (cxt.curInst->isJump())
         {
@@ -413,12 +429,6 @@ bool ScbeOptimizer::explore(ScbeExploreContext& cxt, const ScbeMicro& out, const
             if (cxt.curInst->op == ScbeMicroOp::JumpTable)
                 return false;
         }
-
-        result = callback(out, cxt);
-        if (result == ScbeExploreReturn::Stop)
-            break;
-        if (result == ScbeExploreReturn::Break)
-            continue;
 
         if (cxt.curInst->op != ScbeMicroOp::End)
             cxt.curInst = ScbeMicro::getNextInstruction(cxt.curInst);
@@ -466,6 +476,7 @@ void ScbeOptimizer::optimizeStep3(const ScbeMicro& out)
     optimizePassDeadHdwReg2(out);
     optimizePassDupHdwReg(out);
     optimizePassMakeVolatile(out);
+    optimizePassDeadCode(out);
 }
 
 void ScbeOptimizer::optimize(const ScbeMicro& out)

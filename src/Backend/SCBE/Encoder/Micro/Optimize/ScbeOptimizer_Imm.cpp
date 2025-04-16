@@ -89,6 +89,27 @@ void ScbeOptimizer::optimizePassImmediate(const ScbeMicro& out)
                 break;
             }
 
+            case ScbeMicroOp::CmpRI:
+                if (mapRegVal.contains(inst->regA))
+                {
+                    const auto next = ScbeMicro::getNextInstruction(inst);
+                    if (next->op == ScbeMicroOp::JumpCondI && !next->isJumpDest())
+                    {
+                        switch (next->jumpType)
+                        {
+                            case CpuCondJump::JZ:
+                                next->jumpType = CpuCondJump::JUMP;
+                                setDirtyPass();
+                                break;
+                            case CpuCondJump::JNZ:
+                                ignore(out, inst);
+                                ignore(out, next);
+                                break;
+                        }
+                    }
+                }
+                break;
+
             case ScbeMicroOp::CmpRR:
                 if (mapRegVal.contains(inst->regB) &&
                     out.cpu->encodeCmpRegImm(inst->regA, mapRegVal[inst->regB], inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)

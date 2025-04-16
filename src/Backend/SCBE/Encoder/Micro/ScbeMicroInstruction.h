@@ -9,9 +9,10 @@ enum class CpuCond : uint8_t;
 enum class CpuOp : uint8_t;
 enum class ScbeMicroOp : uint8_t;
 
-using ScbeMicroInstructionFlags                    = Flags<uint8_t>;
-constexpr ScbeMicroInstructionFlags MIF_ZERO       = 0x00;
-constexpr ScbeMicroInstructionFlags MIF_JUMP_DEST  = 0x01;
+using ScbeMicroInstructionFlags                   = Flags<uint8_t>;
+constexpr ScbeMicroInstructionFlags MIF_ZERO      = 0x00;
+constexpr ScbeMicroInstructionFlags MIF_JUMP_DEST = 0x01;
+constexpr ScbeMicroInstructionFlags MIF_REACHED   = 0x02;
 
 struct ScbeMicroInstruction
 {
@@ -68,7 +69,7 @@ struct ScbeMicroInstruction
     CpuEmitFlags              emitFlags;
     ScbeMicroInstructionFlags flags;
 
-    CpuReg   regA;
-    CpuReg   regB;
-    CpuReg   regC;
+    CpuReg regA;
+    CpuReg regB;
+    CpuReg regC;
 };
