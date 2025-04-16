@@ -612,6 +612,44 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
                 next->opBitsB = inst->opBitsB;
                 break;
             }
+
+            /*if (next->hasReadRegA() &&
+                !next->hasWriteRegA() &&
+                inst->regA != inst->regB &&
+                inst->regA == next->regA &&
+                ScbeCpu::isInt(inst->regA) &&
+                (!next->hasOpFlag(MOF_OPBITS_A) || ScbeCpu::getNumBits(inst->opBitsB) >= ScbeCpu::getNumBits(next->opBitsA)) &&
+                !nextWriteRegs.contains(inst->regB) &&
+                out.cpu->acceptsRegA(next, inst->regB))
+            {
+                setRegA(out, next, inst->regB);
+                break;
+            }*/
+
+            if (next->hasReadRegB() &&
+                !next->hasWriteRegB() &&
+                inst->regA != inst->regB &&
+                inst->regA == next->regB &&
+                ScbeCpu::isInt(inst->regA) &&
+                (!next->hasOpFlag(MOF_OPBITS_A) || ScbeCpu::getNumBits(inst->opBitsB) >= ScbeCpu::getNumBits(next->opBitsA)) &&
+                !nextWriteRegs.contains(inst->regB) &&
+                out.cpu->acceptsRegB(next, inst->regB))
+            {
+                setRegB(out, next, inst->regB);
+                break;
+            }
+
+            /*if (next->hasReadRegC() &&
+                inst->regA != inst->regB &&
+                inst->regA == next->regC &&
+                ScbeCpu::isInt(inst->regA) &&
+                (!next->hasOpFlag(MOF_OPBITS_A) || ScbeCpu::getNumBits(inst->opBitsB) >= ScbeCpu::getNumBits(next->opBitsA)) &&
+                !nextWriteRegs.contains(inst->regB) &&
+                out.cpu->acceptsRegC(next, inst->regC))
+            {
+                setRegC(out, next, inst->regB);
+                break;
+            }*/
             break;
 
         case ScbeMicroOp::LoadRR:

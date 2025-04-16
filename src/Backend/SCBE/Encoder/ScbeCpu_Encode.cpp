@@ -499,6 +499,13 @@ void ScbeCpu::emitOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits 
         return;
     }
 
+    if (result == CpuEncodeResult::ForceZero32)
+    {
+        emitLoadZeroExtendRegReg(regSrc, regSrc, OpBits::B32, opBits, emitFlags);
+        emitOpBinaryRegReg(regDst, regSrc, op, OpBits::B32, emitFlags);
+        return;
+    }
+
     if (result == CpuEncodeResult::NotSupported && op == CpuOp::CVTU2F64)
     {
         SWAG_ASSERT(regSrc != cc->computeRegI1);
@@ -522,16 +529,16 @@ void ScbeCpu::emitOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits 
     if (result == CpuEncodeResult::Left2Rax)
     {
         SWAG_ASSERT(regSrc != CpuReg::Rax);
-        emitLoadRegReg(CpuReg::Rax, regDst, opBits);
+        emitLoadRegReg(CpuReg::Rax, regDst, opBits, emitFlags);
         emitOpBinaryRegReg(CpuReg::Rax, regSrc, op, opBits, emitFlags);
-        emitLoadRegReg(regDst, CpuReg::Rax, opBits);
+        emitLoadRegReg(regDst, CpuReg::Rax, opBits, emitFlags);
         return;
     }
 
     if (result == CpuEncodeResult::Right2Rcx)
     {
         SWAG_ASSERT(regDst != CpuReg::Rcx);
-        emitLoadRegReg(CpuReg::Rcx, regSrc, opBits);
+        emitLoadRegReg(CpuReg::Rcx, regSrc, opBits, emitFlags);
         emitOpBinaryRegReg(regDst, CpuReg::Rcx, op, opBits, emitFlags);
         return;
     }
