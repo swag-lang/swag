@@ -709,6 +709,9 @@ void ScbeMicro::print() const
                     line.args    = form("%s", regName(r, OpBits::B64));
                     printInstructionLine(nullptr, idx, i, line);
                 }
+                line.name = "ret";
+                line.args = "";
+                printInstructionLine(cpuFct->noStackFrame ? inst : nullptr, idx, i, line);
                 continue;
 
             case ScbeMicroOp::End:

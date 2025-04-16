@@ -24,7 +24,7 @@ void ScbeOptimizer::optimizePassDeadCode(const ScbeMicro& out)
 
     if (!valid)
         return;
-
+    
     inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {

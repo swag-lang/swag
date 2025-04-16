@@ -30,6 +30,18 @@ namespace
                 alwaysTrue  = value >= curValue;
                 alwaysFalse = value < curValue;
                 break;
+            case CpuCondJump::JLE:
+                alwaysTrue  = value <= curValue;
+                alwaysFalse = value > curValue;
+                break;
+            case CpuCondJump::JG:
+                alwaysTrue  = value > curValue;
+                alwaysFalse = value <= curValue;
+                break;
+            case CpuCondJump::JL:
+                alwaysTrue  = value < curValue;
+                alwaysFalse = value >= curValue;
+                break;
         }
 
         if (alwaysFalse)

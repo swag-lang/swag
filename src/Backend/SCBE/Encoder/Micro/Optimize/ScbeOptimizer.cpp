@@ -170,6 +170,10 @@ void ScbeOptimizer::swapInstruction(const ScbeMicro& out, ScbeMicroInstruction* 
 
 void ScbeOptimizer::ignore(const ScbeMicro& out, ScbeMicroInstruction* inst)
 {
+    SWAG_ASSERT(inst->op != ScbeMicroOp::End);
+    SWAG_ASSERT(inst->op != ScbeMicroOp::Enter);
+    SWAG_ASSERT(inst->op != ScbeMicroOp::Leave);
+    
 #ifdef SWAG_STATS
     g_Stats.totalOptimScbe += 1;
 #endif
@@ -279,10 +283,7 @@ void ScbeOptimizer::solveLabels(const ScbeMicro& out)
             }
             else
             {
-                inst->op = ScbeMicroOp::Ignore;
-#ifdef SWAG_STATS
-                g_Stats.totalOptimScbe += 1;
-#endif
+                ignore(out, inst);
             }
         }
         else if (inst->op == ScbeMicroOp::Label && hasJumpTable)

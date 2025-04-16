@@ -44,9 +44,22 @@ void ScbeOptimizer::reduceNoOp(const ScbeMicro& out, ScbeMicroInstruction* inst,
         case ScbeMicroOp::JumpCond:
         {
             const auto destJump = out.getFirstInstruction() + inst->valueB;
-            const auto nextJ    = ScbeMicro::getNextInstruction(inst);
+            auto       nextJ    = inst + 1;
+            while (nextJ->op == ScbeMicroOp::Nop ||
+                   nextJ->op == ScbeMicroOp::Label ||
+                   nextJ->op == ScbeMicroOp::Debug ||
+                   nextJ->op == ScbeMicroOp::PatchJump ||
+                   nextJ->op == ScbeMicroOp::Ignore)
+            {
+                nextJ++;
+                if (nextJ == destJump)
+                    break;
+            }
             if (nextJ == destJump)
+            {
                 ignore(out, inst);
+                break;
+            }
             break;
         }
     }
@@ -863,6 +876,8 @@ void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
     while (inst->op != ScbeMicroOp::End)
     {
         const auto next = ScbeMicro::getNextInstruction(inst);
+        if (next->op == ScbeMicroOp::End)
+            break;
         reduceNoOp(out, inst, next);
         reduceNext(out, inst, next);
         reduceLoadAddress(out, inst, next);

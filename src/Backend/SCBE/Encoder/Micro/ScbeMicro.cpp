@@ -708,6 +708,7 @@ void ScbeMicro::encode(ScbeCpu& encoder) const
 ScbeMicroInstruction* ScbeMicro::getNextInstruction(ScbeMicroInstruction* inst)
 {
     SWAG_ASSERT(inst->op != ScbeMicroOp::End);
+    
     inst++;
     while (inst->op == ScbeMicroOp::Nop ||
            inst->op == ScbeMicroOp::Label ||

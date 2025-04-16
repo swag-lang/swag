@@ -65,14 +65,14 @@ struct ScbeOptimizer
     void optimizePassAliasRegMem(const ScbeMicro& out);
     void optimizePassAliasHdwReg(const ScbeMicro& out);
 
-    static void solveLabels(const ScbeMicro& out);
-    void        computeContextRegs(const ScbeMicro& out);
-    void        computeContextStack(const ScbeMicro& out);
-    void        optimizeStep1(const ScbeMicro& out);
-    void        optimizeStep2(const ScbeMicro& out);
-    void        optimizeStep3(const ScbeMicro& out);
-    void        optimize(const ScbeMicro& out);
-    void        setDirtyPass() { passHasDoneSomething = true; }
+    void solveLabels(const ScbeMicro& out);
+    void computeContextRegs(const ScbeMicro& out);
+    void computeContextStack(const ScbeMicro& out);
+    void optimizeStep1(const ScbeMicro& out);
+    void optimizeStep2(const ScbeMicro& out);
+    void optimizeStep3(const ScbeMicro& out);
+    void optimize(const ScbeMicro& out);
+    void setDirtyPass() { passHasDoneSomething = true; }
 
     ScbeCpu*                                 encoder = nullptr;
     Map<uint64_t, std::pair<CpuReg, OpBits>> mapValReg;
