@@ -150,6 +150,33 @@ void ScbeOptimizer::reduceDup(const ScbeMicro& out, ScbeMicroInstruction* inst, 
 
             break;
 
+        case ScbeMicroOp::LoadZeroExtRR:
+        case ScbeMicroOp::LoadSignedExtRR:
+            if (next->op == inst->op &&
+                inst->regA == next->regA &&
+                inst->regB == next->regB &&
+                inst->opBitsA == next->opBitsA &&
+                inst->opBitsB == next->opBitsB)
+            {
+                ignore(out, next);
+                break;
+            }
+            break;
+
+        case ScbeMicroOp::LoadRM:
+            if (next->op == ScbeMicroOp::LoadRM &&
+                inst->regA != inst->regB &&
+                inst->regA != next->regB &&
+                inst->regA == next->regA &&
+                inst->regB == next->regB &&
+                inst->valueA == next->valueA &&
+                inst->opBitsA == next->opBitsA)
+            {
+                ignore(out, next);
+                break;
+            }
+            break;
+
         case ScbeMicroOp::LoadRR:
             if (next->op == ScbeMicroOp::LoadRR &&
                 inst->regA == next->regA &&
