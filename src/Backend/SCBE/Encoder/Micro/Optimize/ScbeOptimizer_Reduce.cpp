@@ -592,6 +592,21 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
             {
                 setOp(out, inst, ScbeMicroOp::LoadSignedExtRM);
                 ignore(out, next);
+                break;
+            }
+            break;
+
+        case ScbeMicroOp::LoadZeroExtRR:
+        case ScbeMicroOp::LoadSignedExtRR:
+            if (next->op == ScbeMicroOp::LoadRR &&
+                inst->regA != inst->regB &&
+                next->regB == inst->regA &&
+                next->opBitsA == inst->opBitsA)
+            {
+                setOp(out, next, inst->op);
+                setRegB(out, next, inst->regB);
+                next->opBitsB = inst->opBitsB;
+                break;
             }
             break;
 
