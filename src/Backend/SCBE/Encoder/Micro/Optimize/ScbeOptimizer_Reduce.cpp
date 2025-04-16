@@ -613,7 +613,7 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
                 break;
             }
 
-            /*if (next->hasReadRegA() &&
+            if (next->hasReadRegA() &&
                 !next->hasWriteRegA() &&
                 inst->regA != inst->regB &&
                 inst->regA == next->regA &&
@@ -624,7 +624,7 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
             {
                 setRegA(out, next, inst->regB);
                 break;
-            }*/
+            }
 
             if (next->hasReadRegB() &&
                 !next->hasWriteRegB() &&
@@ -639,7 +639,7 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
                 break;
             }
 
-            /*if (next->hasReadRegC() &&
+            if (next->hasReadRegC() &&
                 inst->regA != inst->regB &&
                 inst->regA == next->regC &&
                 ScbeCpu::isInt(inst->regA) &&
@@ -649,7 +649,7 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
             {
                 setRegC(out, next, inst->regB);
                 break;
-            }*/
+            }
             break;
 
         case ScbeMicroOp::LoadRR:
