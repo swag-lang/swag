@@ -335,8 +335,11 @@ bool ScbeCpu::doesReadFlags(ScbeMicroInstruction* inst) const
     {
         case ScbeMicroOp::LoadCondRR:
         case ScbeMicroOp::SetCondR:
-        case ScbeMicroOp::JumpCond:
             return true;
+
+        case ScbeMicroOp::JumpCond:
+        case ScbeMicroOp::JumpCondI:
+            return inst->jumpType != CpuCondJump::JUMP;
     }
 
     return false;

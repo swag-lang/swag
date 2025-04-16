@@ -29,6 +29,17 @@ void ScbeOptimizer::reduceNoOp(const ScbeMicro& out, ScbeMicroInstruction* inst,
 
             break;
 
+        case ScbeMicroOp::CmpMI:
+        case ScbeMicroOp::CmpMR:
+        case ScbeMicroOp::CmpRI:
+        case ScbeMicroOp::CmpRR:
+        {
+            const auto nextF = out.getNextFlagSensitive(inst);
+            if (!out.cpu->doesReadFlags(nextF))
+                ignore(out, inst);
+            break;
+        }
+
         case ScbeMicroOp::JumpCondI:
         case ScbeMicroOp::JumpCond:
         {
