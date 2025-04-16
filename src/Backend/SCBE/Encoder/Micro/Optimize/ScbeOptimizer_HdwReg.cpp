@@ -77,42 +77,57 @@ void ScbeOptimizer::optimizePassAliasLoadAddr(const ScbeMicro& out)
         if (inst->isJumpDest() || inst->isRet())
             mapRegInst.clear();
 
-        if (inst->op == ScbeMicroOp::LoadRR)
+        switch (inst->op)
         {
-            if (mapRegInst.contains(inst->regB))
-            {
-                const auto prev = mapRegInst[inst->regB];
-                if (inst->opBitsA == OpBits::B64)
+            case ScbeMicroOp::LoadRR:
+                if (mapRegInst.contains(inst->regB))
                 {
-                    setOp(out, inst, ScbeMicroOp::LoadAddr);
-                    setRegB(out, inst, prev->regB);
-                    setValueA(out, inst, prev->valueA);
+                    const auto prev = mapRegInst[inst->regB];
+                    if (inst->opBitsA == OpBits::B64)
+                    {
+                        setOp(out, inst, ScbeMicroOp::LoadAddr);
+                        setRegB(out, inst, prev->regB);
+                        setValueA(out, inst, prev->valueA);
+                    }
                 }
-            }
-        }
-        else if (inst->op == ScbeMicroOp::LoadZeroExtRM)
-        {
-            if (mapRegInst.contains(inst->regB))
-            {
-                const auto prev = mapRegInst[inst->regB];
-                if (out.cpu->encodeLoadZeroExtendRegMem(inst->regA, prev->regB, prev->valueA + inst->valueA, inst->opBitsA, inst->opBitsB, EMIT_CanEncode) == CpuEncodeResult::Zero)
+                break;
+
+            case ScbeMicroOp::LoadRM:
+                if (mapRegInst.contains(inst->regB))
                 {
-                    setRegB(out, inst, prev->regB);
-                    setValueA(out, inst, prev->valueA + inst->valueA);
+                    const auto prev = mapRegInst[inst->regB];
+                    if (out.cpu->encodeLoadRegMem(inst->regA, prev->regB, prev->valueA + inst->valueA, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+                    {
+                        setOp(out, inst, ScbeMicroOp::LoadRM);
+                        setRegB(out, inst, prev->regB);
+                        setValueA(out, inst, prev->valueA + inst->valueA);
+                    }
                 }
-            }
-        }
-        else if (inst->op == ScbeMicroOp::LoadSignedExtRM)
-        {
-            if (mapRegInst.contains(inst->regB))
-            {
-                const auto prev = mapRegInst[inst->regB];
-                if (out.cpu->encodeLoadSignedExtendRegMem(inst->regA, prev->regB, prev->valueA + inst->valueA, inst->opBitsA, inst->opBitsB, EMIT_CanEncode) == CpuEncodeResult::Zero)
+                break;
+
+            case ScbeMicroOp::LoadZeroExtRM:
+                if (mapRegInst.contains(inst->regB))
                 {
-                    setRegB(out, inst, prev->regB);
-                    setValueA(out, inst, prev->valueA + inst->valueA);
+                    const auto prev = mapRegInst[inst->regB];
+                    if (out.cpu->encodeLoadZeroExtendRegMem(inst->regA, prev->regB, prev->valueA + inst->valueA, inst->opBitsA, inst->opBitsB, EMIT_CanEncode) == CpuEncodeResult::Zero)
+                    {
+                        setRegB(out, inst, prev->regB);
+                        setValueA(out, inst, prev->valueA + inst->valueA);
+                    }
                 }
-            }
+                break;
+
+            case ScbeMicroOp::LoadSignedExtRM:
+                if (mapRegInst.contains(inst->regB))
+                {
+                    const auto prev = mapRegInst[inst->regB];
+                    if (out.cpu->encodeLoadSignedExtendRegMem(inst->regA, prev->regB, prev->valueA + inst->valueA, inst->opBitsA, inst->opBitsB, EMIT_CanEncode) == CpuEncodeResult::Zero)
+                    {
+                        setRegB(out, inst, prev->regB);
+                        setValueA(out, inst, prev->valueA + inst->valueA);
+                    }
+                }
+                break;
         }
 
         const auto writeRegs = out.cpu->getWriteRegisters(inst);
@@ -131,10 +146,8 @@ void ScbeOptimizer::optimizePassAliasLoadAddr(const ScbeMicro& out)
                 mapRegInst.erase(r1);
         }
 
-        if (inst->op == ScbeMicroOp::LoadAddr)
-        {
+        if (inst->op == ScbeMicroOp::LoadAddr && inst->regA != inst->regB)
             mapRegInst[inst->regA] = inst;
-        }
 
         inst = ScbeMicro::getNextInstruction(inst);
     }
@@ -228,9 +241,7 @@ void ScbeOptimizer::optimizePassAliasLoadRR(const ScbeMicro& out)
         }
 
         if (inst->op == ScbeMicroOp::LoadRR)
-        {
             mapRegInst[inst->regA] = inst;
-        }
 
         inst = ScbeMicro::getNextInstruction(inst);
     }
