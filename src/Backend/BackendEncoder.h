@@ -46,6 +46,7 @@ struct BackendEncoder
     static uint32_t  getNumBytes(ByteCodeOp op) { return getNumBits(getOpBits(op)) / 8; }
     static bool      isFloat(CpuReg reg) { return reg == CpuReg::Xmm0 || reg == CpuReg::Xmm1 || reg == CpuReg::Xmm2 || reg == CpuReg::Xmm3; }
     static bool      isInt(CpuReg reg) { return !isFloat(reg); }
+    static void      maskValue(uint64_t& value, OpBits opBits);
 
     BuildParameters       buildParams;
     Utf8                  filename;

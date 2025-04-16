@@ -2,39 +2,45 @@
 #include "Backend/SCBE/Encoder/Micro/Optimize/ScbeOptimizer.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
+#include "Wmf/SourceFile.h"
 
 namespace
 {
     void handleConstantCmp(ScbeOptimizer& opt, const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* const next)
     {
-        const auto value = opt.mapRegVal[inst->regA];
-        if (value == inst->valueA)
+        auto value    = opt.mapRegVal[inst->regA];
+        auto curValue = inst->valueA;
+        BackendEncoder::maskValue(value, inst->opBitsA);
+        BackendEncoder::maskValue(curValue, inst->opBitsA);
+
+        bool alwaysFalse = false;
+        bool alwaysTrue  = false;
+
+        switch (next->jumpType)
         {
-            bool alwaysFalse = false;
-            bool alwaysTrue  = false;
+            case CpuCondJump::JZ:
+                alwaysTrue  = value == curValue;
+                alwaysFalse = value != curValue;
+                break;
+            case CpuCondJump::JNZ:
+                alwaysTrue  = value != curValue;
+                alwaysFalse = value == curValue;
+                break;
+            case CpuCondJump::JGE:
+                alwaysTrue  = value >= curValue;
+                alwaysFalse = value < curValue;
+                break;
+        }
 
-            switch (next->jumpType)
-            {
-                case CpuCondJump::JZ:
-                    alwaysTrue  = value == inst->valueA;
-                    alwaysFalse = value != inst->valueA;
-                    break;
-                case CpuCondJump::JNZ:
-                    alwaysTrue  = value != inst->valueA;
-                    alwaysFalse = value == inst->valueA;
-                    break;
-            }
-
-            if (alwaysFalse)
-            {
-                opt.ignore(out, inst);
-                opt.ignore(out, next);
-            }
-            else if (alwaysTrue)
-            {
-                next->jumpType = CpuCondJump::JUMP;
-                opt.setDirtyPass();
-            }
+        if (alwaysFalse)
+        {
+            opt.ignore(out, inst);
+            opt.ignore(out, next);
+        }
+        else if (alwaysTrue)
+        {
+            next->jumpType = CpuCondJump::JUMP;
+            opt.setDirtyPass();
         }
     }
 }

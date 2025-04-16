@@ -44,8 +44,8 @@ void ScbeOptimizer::reduceNoOp(const ScbeMicro& out, ScbeMicroInstruction* inst,
         case ScbeMicroOp::JumpCond:
         {
             const auto destJump = out.getFirstInstruction() + inst->valueB;
-            const auto next     = ScbeMicro::getNextInstruction(inst);
-            if (next == destJump)
+            const auto nextJ    = ScbeMicro::getNextInstruction(inst);
+            if (nextJ == destJump)
                 ignore(out, inst);
             break;
         }

@@ -120,3 +120,19 @@ bool BackendEncoder::mustCheckOverflow(const Module* module, const ByteCodeInstr
     const bool nw = !ip->node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON) && !ip->hasFlag(BCI_CAN_OVERFLOW);
     return nw && module->mustEmitSafetyOverflow(ip->node) && !ip->hasFlag(BCI_CANT_OVERFLOW);
 }
+
+void BackendEncoder::maskValue(uint64_t& value, OpBits opBits)
+{
+    switch (opBits)
+    {
+        case OpBits::B8:
+            value &= 0xFF;
+            break;
+        case OpBits::B16:
+            value &= 0xFFFF;
+            break;
+        case OpBits::B32:
+            value &= 0xFFFFFFFF;
+            break;
+    }
+}

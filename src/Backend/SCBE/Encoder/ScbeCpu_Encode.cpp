@@ -6,22 +6,6 @@
 
 namespace
 {
-    void maskValue(uint64_t& value, OpBits opBits)
-    {
-        switch (opBits)
-        {
-            case OpBits::B8:
-                value &= 0xFF;
-                break;
-            case OpBits::B16:
-                value &= 0xFFFF;
-                break;
-            case OpBits::B32:
-                value &= 0xFFFFFFFF;
-                break;
-        }
-    }
-
     bool isNoOp(uint64_t value, CpuOp op, OpBits opBits, CpuEmitFlags emitFlags)
     {
         if (emitFlags.has(EMIT_Overflow))
