@@ -62,8 +62,9 @@ struct ScbeOptimizer
     void optimizePassStackToHwdReg(const ScbeMicro& out);
     void optimizePassImmediate(const ScbeMicro& out);
     void optimizePassSwap(const ScbeMicro& out);
-    void optimizePassAliasRegMem(const ScbeMicro& out);
-    void optimizePassAliasHdwReg(const ScbeMicro& out);
+    void optimizePassAliasLoadRM(const ScbeMicro& out);
+    void optimizePassAliasLoadRR(const ScbeMicro& out);
+    void optimizePassAliasLoadAddr(const ScbeMicro& out);
 
     void solveLabels(const ScbeMicro& out);
     void computeContextRegs(const ScbeMicro& out);

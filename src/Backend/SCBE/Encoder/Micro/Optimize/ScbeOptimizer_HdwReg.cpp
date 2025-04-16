@@ -6,7 +6,7 @@
 #include "Wmf/SourceFile.h"
 #pragma optimize("", off)
 
-void ScbeOptimizer::optimizePassAliasRegMem(const ScbeMicro& out)
+void ScbeOptimizer::optimizePassAliasLoadRM(const ScbeMicro& out)
 {
     mapRegInst.clear();
 
@@ -65,7 +65,82 @@ void ScbeOptimizer::optimizePassAliasRegMem(const ScbeMicro& out)
     }
 }
 
-void ScbeOptimizer::optimizePassAliasHdwReg(const ScbeMicro& out)
+void ScbeOptimizer::optimizePassAliasLoadAddr(const ScbeMicro& out)
+{
+    mapRegInst.clear();
+
+    auto inst = out.getFirstInstruction();
+    while (inst->op != ScbeMicroOp::End)
+    {
+        if (inst->isJump() && !inst->isJumpCond())
+            mapRegInst.clear();
+        if (inst->isJumpDest() || inst->isRet())
+            mapRegInst.clear();
+
+        if (inst->op == ScbeMicroOp::LoadRR)
+        {
+            if (mapRegInst.contains(inst->regB))
+            {
+                const auto prev = mapRegInst[inst->regB];
+                if (inst->opBitsA == OpBits::B64)
+                {
+                    setOp(out, inst, ScbeMicroOp::LoadAddr);
+                    setRegB(out, inst, prev->regB);
+                    setValueA(out, inst, prev->valueA);
+                }
+            }
+        }
+        else if (inst->op == ScbeMicroOp::LoadZeroExtRM)
+        {
+            if (mapRegInst.contains(inst->regB))
+            {
+                const auto prev = mapRegInst[inst->regB];
+                if (out.cpu->encodeLoadZeroExtendRegMem(inst->regA, prev->regB, prev->valueA + inst->valueA, inst->opBitsA, inst->opBitsB, EMIT_CanEncode) == CpuEncodeResult::Zero)
+                {
+                    setRegB(out, inst, prev->regB);
+                    setValueA(out, inst, prev->valueA + inst->valueA);
+                }
+            }
+        }
+        else if (inst->op == ScbeMicroOp::LoadSignedExtRM)
+        {
+            if (mapRegInst.contains(inst->regB))
+            {
+                const auto prev = mapRegInst[inst->regB];
+                if (out.cpu->encodeLoadSignedExtendRegMem(inst->regA, prev->regB, prev->valueA + inst->valueA, inst->opBitsA, inst->opBitsB, EMIT_CanEncode) == CpuEncodeResult::Zero)
+                {
+                    setRegB(out, inst, prev->regB);
+                    setValueA(out, inst, prev->valueA + inst->valueA);
+                }
+            }
+        }
+
+        const auto writeRegs = out.cpu->getWriteRegisters(inst);
+        for (const auto r : writeRegs)
+        {
+            mapRegInst.erase(r);
+
+            VectorNative<CpuReg> toErase;
+            for (const auto& [r1, i] : mapRegInst)
+            {
+                if (i->regB == r)
+                    toErase.push_back(r1);
+            }
+
+            for (const auto r1 : toErase)
+                mapRegInst.erase(r1);
+        }
+
+        if (inst->op == ScbeMicroOp::LoadAddr)
+        {
+            mapRegInst[inst->regA] = inst;
+        }
+
+        inst = ScbeMicro::getNextInstruction(inst);
+    }
+}
+
+void ScbeOptimizer::optimizePassAliasLoadRR(const ScbeMicro& out)
 {
     mapRegInst.clear();
 
