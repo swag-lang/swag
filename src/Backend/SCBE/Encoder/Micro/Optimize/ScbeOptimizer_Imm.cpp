@@ -43,6 +43,7 @@ void ScbeOptimizer::optimizePassImmediate(const ScbeMicro& out)
                 {
                     setOp(out, inst, ScbeMicroOp::LoadRI);
                     setValueA(out, inst, mapValVal[stackOffset]);
+                    break;
                 }
                 break;
             }
@@ -55,8 +56,38 @@ void ScbeOptimizer::optimizePassImmediate(const ScbeMicro& out)
                 {
                     setOp(out, inst, ScbeMicroOp::LoadRI);
                     setValueA(out, inst, mapRegVal[inst->regB]);
+                    break;
                 }
                 break;
+
+            case ScbeMicroOp::LoadSignedExtRR:
+            {
+                mapRegVal.erase(inst->regA);
+                if (mapRegVal.contains(inst->regB))
+                {
+                    auto signedValue = mapRegVal[inst->regB];
+                    switch (inst->opBitsB)
+                    {
+                        case OpBits::B8:
+                            signedValue = static_cast<int64_t>(static_cast<int8_t>(signedValue));
+                            break;
+                        case OpBits::B16:
+                            signedValue = static_cast<int64_t>(static_cast<int16_t>(signedValue));
+                            break;
+                        case OpBits::B32:
+                            signedValue = static_cast<int64_t>(static_cast<int32_t>(signedValue));
+                            break;
+                    }
+
+                    if (out.cpu->encodeLoadRegImm(inst->regA, signedValue, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+                    {
+                        setOp(out, inst, ScbeMicroOp::LoadRI);
+                        setValueA(out, inst, signedValue);
+                        break;
+                    }
+                }
+                break;
+            }
 
             case ScbeMicroOp::CmpRR:
                 if (mapRegVal.contains(inst->regB) &&
@@ -64,6 +95,7 @@ void ScbeOptimizer::optimizePassImmediate(const ScbeMicro& out)
                 {
                     setOp(out, inst, ScbeMicroOp::CmpRI);
                     setValueA(out, inst, mapRegVal[inst->regB]);
+                    break;
                 }
                 break;
 
@@ -73,6 +105,7 @@ void ScbeOptimizer::optimizePassImmediate(const ScbeMicro& out)
                 {
                     setOp(out, inst, ScbeMicroOp::CmpMI);
                     setValueB(out, inst, mapRegVal[inst->regB]);
+                    break;
                 }
                 break;
 
@@ -83,6 +116,7 @@ void ScbeOptimizer::optimizePassImmediate(const ScbeMicro& out)
                 {
                     setOp(out, inst, ScbeMicroOp::OpBinaryRI);
                     setValueA(out, inst, mapRegVal[inst->regB]);
+                    break;
                 }
                 break;
 
@@ -93,6 +127,7 @@ void ScbeOptimizer::optimizePassImmediate(const ScbeMicro& out)
                 {
                     setOp(out, inst, ScbeMicroOp::LoadMI);
                     setValueB(out, inst, mapRegVal[inst->regB]);
+                    break;
                 }
                 break;
 
