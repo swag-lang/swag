@@ -685,13 +685,13 @@ void ScbeMicro::print() const
                 {
                     line.name = "push";
                     line.args = form("%s", regName(r, OpBits::B64));
-                    printInstructionLine(inst, idx, i, line);
+                    printInstructionLine(nullptr, idx, i, line);
                 }
                 if (!cpuFct->noStackFrame)
                 {
                     line.name = "sub";
                     line.args = "rsp, <framesize>";
-                    printInstructionLine(nullptr, idx, i, line);
+                    printInstructionLine(inst, idx, i, line);
                 }
                 continue;
 
