@@ -48,6 +48,7 @@ void ScbeOptimizer::optimizePassImmediate(const ScbeMicro& out)
             }
 
             case ScbeMicroOp::LoadRR:
+            case ScbeMicroOp::LoadZeroExtRR:
                 mapRegVal.erase(inst->regA);
                 if (mapRegVal.contains(inst->regB) &&
                     out.cpu->encodeLoadRegImm(inst->regA, mapRegVal[inst->regB], inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
