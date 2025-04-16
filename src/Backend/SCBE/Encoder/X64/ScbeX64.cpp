@@ -555,6 +555,8 @@ CpuEncodeResult ScbeX64::encodeLoadRegMem(CpuReg reg, CpuReg memReg, uint64_t me
 
 CpuEncodeResult ScbeX64::encodeLoadZeroExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc, CpuEmitFlags emitFlags)
 {
+    SWAG_ASSERT(numBitsSrc != numBitsDst);
+   
     if (isFloat(memReg))
     {
         if (emitFlags.has(EMIT_CanEncode))
@@ -587,10 +589,8 @@ CpuEncodeResult ScbeX64::encodeLoadZeroExtendRegMem(CpuReg reg, CpuReg memReg, u
     }
     else if (numBitsSrc == OpBits::B32 && numBitsDst == OpBits::B64)
     {
-        if (emitFlags.has(EMIT_CanEncode))
-            return CpuEncodeResult::Simplify;
-        Report::internalError(module, "encodeLoadZeroExtendRegMem, cannot encode");
-    }
+        return encodeLoadRegMem(reg, memReg, memOffset, numBitsSrc, emitFlags);
+    }    
     else
     {
         if (emitFlags.has(EMIT_CanEncode))
@@ -603,6 +603,8 @@ CpuEncodeResult ScbeX64::encodeLoadZeroExtendRegMem(CpuReg reg, CpuReg memReg, u
 
 CpuEncodeResult ScbeX64::encodeLoadZeroExtendRegReg(CpuReg regDst, CpuReg regSrc, OpBits numBitsDst, OpBits numBitsSrc, CpuEmitFlags emitFlags)
 {
+    SWAG_ASSERT(numBitsSrc != numBitsDst);
+    
     if (isFloat(regDst) || isFloat(regSrc))
     {
         if (emitFlags.has(EMIT_CanEncode))
@@ -629,10 +631,8 @@ CpuEncodeResult ScbeX64::encodeLoadZeroExtendRegReg(CpuReg regDst, CpuReg regSrc
     }
     else if (numBitsSrc == OpBits::B32 && numBitsDst == OpBits::B64)
     {
-        if (emitFlags.has(EMIT_CanEncode))
-            return CpuEncodeResult::Simplify;
-        Report::internalError(module, "encodeLoadZeroExtendRegReg, cannot encode");
-    }
+        return encodeLoadRegReg(regDst, regSrc, numBitsSrc, emitFlags);
+    }    
     else
     {
         if (emitFlags.has(EMIT_CanEncode))
@@ -645,6 +645,8 @@ CpuEncodeResult ScbeX64::encodeLoadZeroExtendRegReg(CpuReg regDst, CpuReg regSrc
 
 CpuEncodeResult ScbeX64::encodeLoadSignedExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits numBitsDst, OpBits numBitsSrc, CpuEmitFlags emitFlags)
 {
+    SWAG_ASSERT(numBitsSrc != numBitsDst);
+
     if (isFloat(memReg))
     {
         if (emitFlags.has(EMIT_CanEncode))
@@ -696,6 +698,8 @@ CpuEncodeResult ScbeX64::encodeLoadSignedExtendRegMem(CpuReg reg, CpuReg memReg,
 
 CpuEncodeResult ScbeX64::encodeLoadSignedExtendRegReg(CpuReg regDst, CpuReg regSrc, OpBits numBitsDst, OpBits numBitsSrc, CpuEmitFlags emitFlags)
 {
+    SWAG_ASSERT(numBitsSrc != numBitsDst);
+    
     if (isFloat(regDst) || isFloat(regSrc))
     {
         if (emitFlags.has(EMIT_CanEncode))

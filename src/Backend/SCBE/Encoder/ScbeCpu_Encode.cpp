@@ -152,7 +152,7 @@ void ScbeCpu::emitLoadRegImm(CpuReg reg, uint64_t value, OpBits opBits, CpuEmitF
         const auto sym = cpu->getOrAddConstant(value, opBits);
         emitLoadSymbolRelocValue(reg, sym->index, 0, opBits, emitFlags);
         return;
-    }    
+    }
 
     Report::internalError(module, "emitLoadRegImm, cannot encode");
 }
@@ -206,21 +206,13 @@ void ScbeCpu::emitLoadSignedExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t mem
 void ScbeCpu::emitLoadZeroExtendRegReg(CpuReg regDst, CpuReg regSrc, OpBits numBitsDst, OpBits numBitsSrc, CpuEmitFlags emitFlags)
 {
     if (numBitsSrc == numBitsDst)
-    {
         emitLoadRegReg(regDst, regSrc, numBitsSrc, emitFlags);
-    }
     else
     {
         const auto result = cpu->encodeLoadZeroExtendRegReg(regDst, regSrc, numBitsDst, numBitsSrc, EMIT_CanEncode);
         if (result == CpuEncodeResult::Zero)
         {
             encodeLoadZeroExtendRegReg(regDst, regSrc, numBitsDst, numBitsSrc, emitFlags);
-            return;
-        }
-
-        if (result == CpuEncodeResult::Simplify)
-        {
-            emitLoadRegReg(regDst, regSrc, numBitsSrc, emitFlags);
             return;
         }
 
@@ -238,12 +230,6 @@ void ScbeCpu::emitLoadZeroExtendRegMem(CpuReg reg, CpuReg memReg, uint64_t memOf
         if (result == CpuEncodeResult::Zero)
         {
             encodeLoadZeroExtendRegMem(reg, memReg, memOffset, numBitsDst, numBitsSrc, emitFlags);
-            return;
-        }
-
-        if (result == CpuEncodeResult::Simplify)
-        {
-            encodeLoadRegMem(reg, memReg, memOffset, numBitsSrc, emitFlags);
             return;
         }
 

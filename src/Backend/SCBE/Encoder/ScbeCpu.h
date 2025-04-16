@@ -138,7 +138,6 @@ enum class CpuEncodeResult : uint32_t
     Right2Reg,
     Right2Rcx,
     Right2Cst,
-    Simplify,
     NotSupported,
 };
 
