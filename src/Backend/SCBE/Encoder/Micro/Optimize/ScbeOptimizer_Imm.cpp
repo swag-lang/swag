@@ -3,6 +3,42 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 
+namespace
+{
+    void handleConstantCmp(ScbeOptimizer& opt, const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* const next)
+    {
+        const auto value = opt.mapRegVal[inst->regA];
+        if (value == inst->valueA)
+        {
+            bool alwaysFalse = false;
+            bool alwaysTrue  = false;
+
+            switch (next->jumpType)
+            {
+                case CpuCondJump::JZ:
+                    alwaysTrue  = value == inst->valueA;
+                    alwaysFalse = value != inst->valueA;
+                    break;
+                case CpuCondJump::JNZ:
+                    alwaysTrue  = value != inst->valueA;
+                    alwaysFalse = value == inst->valueA;
+                    break;
+            }
+
+            if (alwaysFalse)
+            {
+                opt.ignore(out, inst);
+                opt.ignore(out, next);
+            }
+            else if (alwaysTrue)
+            {
+                next->jumpType = CpuCondJump::JUMP;
+                opt.setDirtyPass();
+            }
+        }
+    }
+}
+
 void ScbeOptimizer::optimizePassImmediate(const ScbeMicro& out)
 {
     mapValVal.clear();
@@ -93,19 +129,10 @@ void ScbeOptimizer::optimizePassImmediate(const ScbeMicro& out)
                 if (mapRegVal.contains(inst->regA))
                 {
                     const auto next = ScbeMicro::getNextInstruction(inst);
-                    if (next->op == ScbeMicroOp::JumpCondI && !next->isJumpDest())
+                    if (next->isJumpCond() && !next->isJumpDest())
                     {
-                        switch (next->jumpType)
-                        {
-                            case CpuCondJump::JZ:
-                                next->jumpType = CpuCondJump::JUMP;
-                                setDirtyPass();
-                                break;
-                            case CpuCondJump::JNZ:
-                                ignore(out, inst);
-                                ignore(out, next);
-                                break;
-                        }
+                        handleConstantCmp(*this, out, inst, next);
+                        break;
                     }
                 }
                 break;
