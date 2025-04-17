@@ -93,6 +93,19 @@ void ScbeOptimizer::optimizePassAliasLoadAddr(const ScbeMicro& out)
                 }
                 break;
 
+            case ScbeMicroOp::OpBinaryMR:
+                if (mapRegInst.contains(inst->regA))
+                {
+                    const auto prev = mapRegInst[inst->regA];
+                    if (out.cpu->encodeOpBinaryMemReg(prev->regB, prev->valueA + inst->valueA, inst->regB, inst->cpuOp, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+                    {
+                        setRegA(out, inst, prev->regB);
+                        setValueA(out, inst, prev->valueA + inst->valueA);
+                        break;
+                    }
+                }
+                break;
+
             case ScbeMicroOp::LoadMR:
                 if (mapRegInst.contains(inst->regA))
                 {
