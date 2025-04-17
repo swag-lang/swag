@@ -1741,9 +1741,9 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             case ByteCodeOp::IntrinsicCVaArg:
                 pp.emitLoadRegMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
                 pp.emitLoadRegMem(cc->computeRegI1, cc->computeRegI0, 0, OpBits::B64);
+                pp.emitOpBinaryMemImm(cc->computeRegI0, 0, 8, CpuOp::ADD, OpBits::B64);
                 pp.emitLoadZeroExtendRegMem(cc->computeRegI1, cc->computeRegI1, 0, OpBits::B64, static_cast<OpBits>(ip->c.u32 * 8));
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), cc->computeRegI1, OpBits::B64);
-                pp.emitOpBinaryMemImm(cc->computeRegI0, 0, 8, CpuOp::ADD, OpBits::B64);
                 break;
 
             case ByteCodeOp::IntrinsicArguments:
