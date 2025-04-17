@@ -1,42 +1,20 @@
-#global testerror "Err0561"
-using Swag
-
-struct String
+//#[Swag.PrintBc]
+func toto(str: string, x: cvarargs)
 {
-    x: string
+    var valist: Swag.CVaList
+    @cvastart(&valist)
+    let a = @cvaarg(&valist, s32)
+    let b = @cvaarg(&valist, s32)
+    //let c = @cvaarg(&valist, f64)
+    //@print(a, " ", b, "\n")
+    //@assert(a == 111)
+    @assert(b == 222)
+    //@assert(c == 3.14)
+    @cvaend(&valist)
 }
 
-impl String
-{
-    #[Implicit]
-    mtd opAffect(value: string)
-    {
-        x = value
-    }
-}
-
-// This is a generic dynamic array.
-struct(T) Array
-{
-    buffer:        ^T             // Memory block of all datas
-    count:         u64            // Number of valid datas
-    capacity:      u64            // Number of elements that can be stored in the buffer
-}
-
-impl Array
-{
-    #[Inline]
-    mtd opIndexAffect(index: u64, value: T)
-    {
-        buffer[index] = value
-    }
-}
-
+//#[Swag.PrintBc]
 #test
 {
-    var t: [10] String
-    var a: Array'String
-    a.buffer = &t[0]
-
-    a[0] = "toto"
+    toto("oula", 111, 222, 3.14)
 }
