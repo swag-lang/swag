@@ -93,6 +93,45 @@ void ScbeOptimizer::optimizePassAliasLoadAddr(const ScbeMicro& out)
                 }
                 break;
 
+            case ScbeMicroOp::CmpMR:
+                if (mapRegInst.contains(inst->regA))
+                {
+                    const auto prev = mapRegInst[inst->regA];
+                    if (out.cpu->encodeCmpMemReg(prev->regB, prev->valueA + inst->valueA, inst->regB, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+                    {
+                        setRegA(out, inst, prev->regB);
+                        setValueA(out, inst, prev->valueA + inst->valueA);
+                        break;
+                    }
+                }
+                break;
+
+            case ScbeMicroOp::CmpMI:
+                if (mapRegInst.contains(inst->regA))
+                {
+                    const auto prev = mapRegInst[inst->regA];
+                    if (out.cpu->encodeCmpMemImm(prev->regB, prev->valueA + inst->valueA, inst->valueB, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+                    {
+                        setRegA(out, inst, prev->regB);
+                        setValueA(out, inst, prev->valueA + inst->valueA);
+                        break;
+                    }
+                }
+                break;
+
+            case ScbeMicroOp::LoadMI:
+                if (mapRegInst.contains(inst->regA))
+                {
+                    const auto prev = mapRegInst[inst->regA];
+                    if (out.cpu->encodeLoadMemImm(prev->regB, prev->valueA + inst->valueA, inst->valueB, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+                    {
+                        setRegA(out, inst, prev->regB);
+                        setValueA(out, inst, prev->valueA + inst->valueA);
+                        break;
+                    }
+                }
+                break;
+
             case ScbeMicroOp::OpBinaryMR:
                 if (mapRegInst.contains(inst->regA))
                 {
