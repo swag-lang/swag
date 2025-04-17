@@ -88,6 +88,20 @@ void ScbeOptimizer::optimizePassAliasLoadAddr(const ScbeMicro& out)
                         setOp(out, inst, ScbeMicroOp::LoadAddr);
                         setRegB(out, inst, prev->regB);
                         setValueA(out, inst, prev->valueA);
+                        break;
+                    }
+                }
+                break;
+
+            case ScbeMicroOp::LoadMR:
+                if (mapRegInst.contains(inst->regA))
+                {
+                    const auto prev = mapRegInst[inst->regA];
+                    if (out.cpu->encodeLoadMemReg(prev->regB, prev->valueA + inst->valueA, inst->regB, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+                    {
+                        setRegA(out, inst, prev->regB);
+                        setValueA(out, inst, prev->valueA + inst->valueA);
+                        break;
                     }
                 }
                 break;
@@ -98,9 +112,9 @@ void ScbeOptimizer::optimizePassAliasLoadAddr(const ScbeMicro& out)
                     const auto prev = mapRegInst[inst->regB];
                     if (out.cpu->encodeLoadRegMem(inst->regA, prev->regB, prev->valueA + inst->valueA, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
                     {
-                        setOp(out, inst, ScbeMicroOp::LoadRM);
                         setRegB(out, inst, prev->regB);
                         setValueA(out, inst, prev->valueA + inst->valueA);
+                        break;
                     }
                 }
                 break;
@@ -113,6 +127,7 @@ void ScbeOptimizer::optimizePassAliasLoadAddr(const ScbeMicro& out)
                     {
                         setRegB(out, inst, prev->regB);
                         setValueA(out, inst, prev->valueA + inst->valueA);
+                        break;
                     }
                 }
                 break;
@@ -125,6 +140,7 @@ void ScbeOptimizer::optimizePassAliasLoadAddr(const ScbeMicro& out)
                     {
                         setRegB(out, inst, prev->regB);
                         setValueA(out, inst, prev->valueA + inst->valueA);
+                        break;
                     }
                 }
                 break;
