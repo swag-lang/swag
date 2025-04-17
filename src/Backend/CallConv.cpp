@@ -27,6 +27,7 @@ void initCallConvKinds()
     ccX64.computeRegF0 = CpuReg::Xmm0;
     ccX64.computeRegF1 = CpuReg::Xmm1;
     ccX64.computeRegF2 = CpuReg::Xmm2;
+    ccX64.computeRegF3 = CpuReg::Xmm3;
 
     ccX64.volatileRegistersInteger.push_back(CpuReg::Rax);
     ccX64.volatileRegistersInteger.push_back(CpuReg::Rcx);

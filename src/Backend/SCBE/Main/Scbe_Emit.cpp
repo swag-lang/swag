@@ -612,6 +612,42 @@ void Scbe::emitCopyMem(ScbeCpu& pp, CpuReg memRegDst, CpuReg memRegSrc, uint32_t
     const auto cc     = pp.cc;
     uint32_t   offset = 0;
 
+    while (count >= 64)
+    {
+        pp.emitLoadRegMem(cc->computeRegF0, memRegSrc, offset, OpBits::B128);
+        pp.emitLoadRegMem(cc->computeRegF1, memRegSrc, offset + 16, OpBits::B128);
+        pp.emitLoadRegMem(cc->computeRegF2, memRegSrc, offset + 32, OpBits::B128);
+        pp.emitLoadRegMem(cc->computeRegF3, memRegSrc, offset + 48, OpBits::B128);
+        pp.emitLoadMemReg(memRegDst, offset, cc->computeRegF0, OpBits::B128);
+        pp.emitLoadMemReg(memRegDst, offset + 16, cc->computeRegF1, OpBits::B128);
+        pp.emitLoadMemReg(memRegDst, offset + 32, cc->computeRegF2, OpBits::B128);
+        pp.emitLoadMemReg(memRegDst, offset + 48, cc->computeRegF3, OpBits::B128);
+        count -= 64;
+        offset += 64;
+    }
+
+    while (count >= 48)
+    {
+        pp.emitLoadRegMem(cc->computeRegF0, memRegSrc, offset, OpBits::B128);
+        pp.emitLoadRegMem(cc->computeRegF1, memRegSrc, offset + 16, OpBits::B128);
+        pp.emitLoadRegMem(cc->computeRegF2, memRegSrc, offset + 32, OpBits::B128);
+        pp.emitLoadMemReg(memRegDst, offset, cc->computeRegF0, OpBits::B128);
+        pp.emitLoadMemReg(memRegDst, offset + 16, cc->computeRegF1, OpBits::B128);
+        pp.emitLoadMemReg(memRegDst, offset + 32, cc->computeRegF2, OpBits::B128);
+        count -= 48;
+        offset += 48;
+    }
+
+    while (count >= 32)
+    {
+        pp.emitLoadRegMem(cc->computeRegF0, memRegSrc, offset, OpBits::B128);
+        pp.emitLoadRegMem(cc->computeRegF1, memRegSrc, offset + 16, OpBits::B128);
+        pp.emitLoadMemReg(memRegDst, offset, cc->computeRegF0, OpBits::B128);
+        pp.emitLoadMemReg(memRegDst, offset + 16, cc->computeRegF1, OpBits::B128);
+        count -= 32;
+        offset += 32;
+    }
+
     while (count >= 16)
     {
         pp.emitLoadRegMem(cc->computeRegF0, memRegSrc, offset, OpBits::B128);

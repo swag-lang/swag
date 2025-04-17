@@ -87,6 +87,7 @@ struct CallConv
     CpuReg computeRegF0 = CpuReg::Max;
     CpuReg computeRegF1 = CpuReg::Max;
     CpuReg computeRegF2 = CpuReg::Max;
+    CpuReg computeRegF3 = CpuReg::Max;
 
     // If a float is passed by register, use 'paramByRegisterFloat' instead of 'paramByRegisterInteger'
     bool useRegisterFloat = true;
