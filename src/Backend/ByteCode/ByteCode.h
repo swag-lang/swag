@@ -28,7 +28,7 @@ struct ByteCodePrintOptions
     LogColor                flagsColor      = LogColor::Undefined;
     LogColor                prettyColor     = LogColor::Undefined;
 #ifdef SWAG_DEV_MODE
-    LogColor                devModeColor    = LogColor::Undefined;
+    LogColor devModeColor = LogColor::Undefined;
 #endif
 };
 

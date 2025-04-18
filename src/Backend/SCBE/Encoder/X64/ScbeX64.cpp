@@ -802,7 +802,7 @@ namespace
             if (opBitsBaseMul != OpBits::B64 && (regBase == CpuReg::Rsp || regMul == CpuReg::Rsp))
                 return CpuEncodeResult::NotSupported;
             if (regMul == CpuReg::Rsp && mulValue != 1)
-                return CpuEncodeResult::NotSupported;            
+                return CpuEncodeResult::NotSupported;
             return CpuEncodeResult::Zero;
         }
 
@@ -810,7 +810,7 @@ namespace
         {
             SWAG_ASSERT(mulValue == 1);
             std::swap(regMul, regBase);
-        }        
+        }
 
         if (opBitsValue == OpBits::B16)
             concat.addU8(0x66);

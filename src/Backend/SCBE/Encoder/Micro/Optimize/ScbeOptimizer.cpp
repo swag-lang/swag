@@ -173,7 +173,7 @@ void ScbeOptimizer::ignore(const ScbeMicro& out, ScbeMicroInstruction* inst)
     SWAG_ASSERT(inst->op != ScbeMicroOp::End);
     SWAG_ASSERT(inst->op != ScbeMicroOp::Enter);
     SWAG_ASSERT(inst->op != ScbeMicroOp::Leave);
-    
+
 #ifdef SWAG_STATS
     g_Stats.totalOptimScbe += 1;
 #endif
@@ -488,8 +488,8 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
     if (!out.cpuFct->bc->sourceFile->module->mustOptimizeBackend(out.cpuFct->bc->node))
         return;
 
-    //if (!out.cpuFct->bc->sourceFile->name.containsNoCase("r687"))
-    //    return;
+    // if (!out.cpuFct->bc->sourceFile->name.containsNoCase("r687"))
+    //     return;
 
     bool globalChanged = true;
     while (globalChanged)
