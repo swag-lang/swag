@@ -192,31 +192,34 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
         {
             if (!node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED) || node->type->hasSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS))
             {
-                if (typeArray->totalCount == 1)
+                if (finalType->sizeOf)
                 {
-                    if (!node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED) && !node->hasAstFlag(AST_HAS_FULL_STRUCT_PARAMETERS))
-                        emitStructInit(context, castTypeInfo<TypeInfoStruct>(finalType, TypeInfoKind::Struct), UINT32_MAX, retVal);
-                    emitStructParameters(context, UINT32_MAX, retVal);
-                }
-                else
-                {
-                    // Need to loop on every element of the array in order to initialize them
-                    RegisterList r0;
-                    reserveRegisterRC(context, r0, 2);
-                    EMIT_INST1(context, ByteCodeOp::SetImmediate64, r0[0])->b.u64 = typeArray->totalCount;
-                    EMIT_INST1(context, ByteCodeOp::ClearRA, r0[1]);
-                    const auto seekJump = context->bc->numInstructions;
+                    if (typeArray->totalCount == 1)
+                    {
+                        if (!node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED) && !node->hasAstFlag(AST_HAS_FULL_STRUCT_PARAMETERS))
+                            emitStructInit(context, castTypeInfo<TypeInfoStruct>(finalType, TypeInfoKind::Struct), UINT32_MAX, retVal);
+                        emitStructParameters(context, UINT32_MAX, retVal);
+                    }
+                    else
+                    {
+                        // Need to loop on every element of the array to initialize them
+                        auto r0 = reserveRegisterRC(context);
+                        EMIT_INST1(context, ByteCodeOp::ClearRA, r0);
+                        const auto seekJump = context->bc->numInstructions;
 
-                    if (!node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED) && !node->hasAstFlag(AST_HAS_FULL_STRUCT_PARAMETERS))
-                        emitStructInit(context, castTypeInfo<TypeInfoStruct>(finalType, TypeInfoKind::Struct), r0[1], retVal);
-                    emitStructParameters(context, r0[1], retVal);
+                        if (!node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED) && !node->hasAstFlag(AST_HAS_FULL_STRUCT_PARAMETERS))
+                            emitStructInit(context, castTypeInfo<TypeInfoStruct>(finalType, TypeInfoKind::Struct), r0, retVal);
+                        emitStructParameters(context, r0, retVal);
 
-                    EMIT_INST1(context, ByteCodeOp::DecrementRA64, r0[0]);
-                    if (finalType->sizeOf)
-                        EMIT_INST1(context, ByteCodeOp::Add64byVB64, r0[1])->b.u64 = finalType->sizeOf;
-                    EMIT_INST1(context, ByteCodeOp::JumpIfNotZero64, r0[0])->b.s32 = static_cast<int32_t>(seekJump - context->bc->numInstructions - 1);
+                        EMIT_INST1(context, ByteCodeOp::Add64byVB64, r0)->b.u64 = finalType->sizeOf;
 
-                    freeRegisterRC(context, r0);
+                        const auto inst = EMIT_INST1(context, ByteCodeOp::JumpIfNotEqual64, r0);
+                        inst->b.s32     = static_cast<int32_t>(seekJump - context->bc->numInstructions);
+                        inst->addFlag(BCI_IMM_C);
+                        inst->c.u64 = static_cast<uint64_t>(typeArray->totalCount) * finalType->sizeOf;
+
+                        freeRegisterRC(context, r0);
+                    }
                 }
 
                 freeStructParametersRegisters(context);
