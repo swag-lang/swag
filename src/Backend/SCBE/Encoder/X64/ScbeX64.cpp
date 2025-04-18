@@ -799,8 +799,18 @@ namespace
                 return CpuEncodeResult::NotSupported;
             if (ScbeCpu::isFloat(regBase) || ScbeCpu::isFloat(regMul))
                 return CpuEncodeResult::NotSupported;
+            if (opBitsBaseMul != OpBits::B64 && (regBase == CpuReg::Rsp || regMul == CpuReg::Rsp))
+                return CpuEncodeResult::NotSupported;
+            if (regMul == CpuReg::Rsp && mulValue != 1)
+                return CpuEncodeResult::NotSupported;            
             return CpuEncodeResult::Zero;
         }
+
+        if (regMul == CpuReg::Rsp)
+        {
+            SWAG_ASSERT(mulValue == 1);
+            std::swap(regMul, regBase);
+        }        
 
         if (opBitsValue == OpBits::B16)
             concat.addU8(0x66);
@@ -871,7 +881,17 @@ namespace
                 return CpuEncodeResult::NotSupported;
             if (ScbeCpu::isFloat(reg) && opBitsReg != OpBits::B32 && opBitsReg != OpBits::B64)
                 return CpuEncodeResult::NotSupported;
+            if (opBitsBaseMul != OpBits::B64 && (regBase == CpuReg::Rsp || regMul == CpuReg::Rsp))
+                return CpuEncodeResult::NotSupported;
+            if (regMul == CpuReg::Rsp && mulValue != 1)
+                return CpuEncodeResult::NotSupported;
             return CpuEncodeResult::Zero;
+        }
+
+        if (regMul == CpuReg::Rsp)
+        {
+            SWAG_ASSERT(mulValue == 1);
+            std::swap(regMul, regBase);
         }
 
         if (opBitsBaseMul == OpBits::B32)
@@ -1790,7 +1810,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuO
                 return CpuEncodeResult::ForceZero32;
             return CpuEncodeResult::Zero;
         }
-        
+
         emitREX(concat, opBits, regDst, regSrc);
         emitCPUOp(concat, 0x0F);
         emitCPUOp(concat, op == CpuOp::BSF ? 0xBC : 0xBD);

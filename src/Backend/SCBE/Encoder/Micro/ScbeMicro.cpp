@@ -219,7 +219,7 @@ CpuEncodeResult ScbeMicro::encodeLoadZeroExtendRegReg(CpuReg regDst, CpuReg regS
 
 CpuEncodeResult ScbeMicro::encodeLoadAddressMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, CpuEmitFlags emitFlags)
 {
-    const auto inst = addInstruction(ScbeMicroOp::LoadAddr, emitFlags);
+    const auto inst = addInstruction(ScbeMicroOp::LoadAddrRM, emitFlags);
     inst->regA      = reg;
     inst->regB      = memReg;
     inst->valueA    = memOffset;
@@ -628,7 +628,7 @@ void ScbeMicro::encode(ScbeCpu& encoder) const
             case ScbeMicroOp::LoadZeroExtRR:
                 encoder.emitLoadZeroExtendRegReg(inst->regA, inst->regB, inst->opBitsA, inst->opBitsB, inst->emitFlags);
                 break;
-            case ScbeMicroOp::LoadAddr:
+            case ScbeMicroOp::LoadAddrRM:
                 encoder.emitLoadAddressMem(inst->regA, inst->regB, inst->valueA, inst->emitFlags);
                 break;
             case ScbeMicroOp::LoadAmcMR:

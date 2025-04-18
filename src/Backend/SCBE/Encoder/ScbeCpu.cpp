@@ -277,6 +277,9 @@ bool ScbeCpu::acceptsRegA(const ScbeMicroInstruction* inst, CpuReg reg)
         case ScbeMicroOp::LoadSignedExtRR:
             result = encodeLoadSignedExtendRegReg(reg, inst->regB, inst->opBitsA, inst->opBitsB, EMIT_CanEncode);
             break;
+        case ScbeMicroOp::LoadAmcMR:
+            result = encodeLoadAmcMemReg(reg, inst->regB, inst->valueA, inst->valueB, inst->opBitsA, inst->regC, inst->opBitsB, EMIT_CanEncode);
+            break;
     }
 
     return result == CpuEncodeResult::Zero;
@@ -311,6 +314,18 @@ bool ScbeCpu::acceptsRegB(const ScbeMicroInstruction* inst, CpuReg reg)
         case ScbeMicroOp::LoadSignedExtRM:
             result = encodeLoadSignedExtendRegMem(inst->regA, reg, inst->valueA, inst->opBitsA, inst->opBitsB, EMIT_CanEncode);
             break;
+        case ScbeMicroOp::LoadAddrRM:
+            result = encodeLoadAddressMem(inst->regA, reg, inst->valueA, EMIT_CanEncode);
+            break;
+        case ScbeMicroOp::LoadAddrAmcRM:
+            result = encodeLoadAddressAmcRegMem(inst->regA, inst->opBitsA, reg, inst->regC, inst->valueA, inst->valueB, inst->opBitsB, EMIT_CanEncode);
+            break;
+        case ScbeMicroOp::LoadAmcRM:
+            result = encodeLoadAmcRegMem(inst->regA, inst->opBitsA, reg, inst->regC, inst->valueA, inst->valueB, inst->opBitsB, EMIT_CanEncode);
+            break;
+        case ScbeMicroOp::LoadAmcMR:
+            result = encodeLoadAmcMemReg(inst->regA, reg, inst->valueA, inst->valueB, inst->opBitsA, inst->regC, inst->opBitsB, EMIT_CanEncode);
+            break;
     }
 
     return result == CpuEncodeResult::Zero;
@@ -323,6 +338,15 @@ bool ScbeCpu::acceptsRegC(const ScbeMicroInstruction* inst, CpuReg reg)
     {
         case ScbeMicroOp::OpTernaryRRR:
             result = encodeOpTernaryRegRegReg(inst->regA, inst->regB, reg, inst->cpuOp, inst->opBitsA, EMIT_CanEncode);
+            break;
+        case ScbeMicroOp::LoadAddrAmcRM:
+            result = encodeLoadAddressAmcRegMem(inst->regA, inst->opBitsA, inst->regB, reg, inst->valueA, inst->valueB, inst->opBitsB, EMIT_CanEncode);
+            break;
+        case ScbeMicroOp::LoadAmcRM:
+            result = encodeLoadAmcRegMem(inst->regA, inst->opBitsA, inst->regB, reg, inst->valueA, inst->valueB, inst->opBitsB, EMIT_CanEncode);
+            break;
+        case ScbeMicroOp::LoadAmcMR:
+            result = encodeLoadAmcMemReg(inst->regA, inst->regB, inst->valueA, inst->valueB, inst->opBitsA, reg, inst->opBitsB, EMIT_CanEncode);
             break;
     }
 

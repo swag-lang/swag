@@ -241,7 +241,7 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
 
     switch (inst->op)
     {
-        case ScbeMicroOp::LoadAddr:
+        case ScbeMicroOp::LoadAddrRM:
             if (inst->regB == inst->regA &&
                 inst->opBitsA == inst->opBitsB)
             {
@@ -413,7 +413,7 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
                 !out.getNextFlagSensitive(next)->isJumpCond() &&
                 out.cpu->encodeLoadAddressMem(next->regA, next->regB, inst->valueA, EMIT_CanEncode) == CpuEncodeResult::Zero)
             {
-                setOp(out, next, ScbeMicroOp::LoadAddr);
+                setOp(out, next, ScbeMicroOp::LoadAddrRM);
                 setValueA(out, next, inst->valueA);
                 ignore(out, inst);
                 break;
@@ -428,7 +428,7 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
                 !out.getNextFlagSensitive(next)->isJumpCond() &&
                 out.cpu->encodeLoadAddressMem(next->regA, inst->regB, next->valueA, EMIT_CanEncode) == CpuEncodeResult::Zero)
             {
-                setOp(out, next, ScbeMicroOp::LoadAddr);
+                setOp(out, next, ScbeMicroOp::LoadAddrRM);
                 setRegB(out, next, inst->regB);
                 ignore(out, inst);
                 break;
@@ -773,13 +773,13 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
             }
             break;
 
-        case ScbeMicroOp::LoadAddr:
+        case ScbeMicroOp::LoadAddrRM:
             if (next->op == ScbeMicroOp::LoadRR &&
                 inst->regA != inst->regB &&
                 next->regB == inst->regA &&
                 next->opBitsA == OpBits::B64)
             {
-                setOp(out, next, ScbeMicroOp::LoadAddr);
+                setOp(out, next, ScbeMicroOp::LoadAddrRM);
                 setRegB(out, next, inst->regB);
                 setValueA(out, next, inst->valueA);
                 break;

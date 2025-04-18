@@ -81,7 +81,7 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
 
         switch (inst->op)
         {
-            case ScbeMicroOp::LoadAddr:
+            case ScbeMicroOp::LoadAddrRM:
                 if (inst->regB == CpuReg::Rsp && isStack)
                     mapValReg.erase(stackOffset);
                 break;

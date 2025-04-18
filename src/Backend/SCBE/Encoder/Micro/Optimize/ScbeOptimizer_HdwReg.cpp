@@ -118,6 +118,28 @@ void ScbeOptimizer::optimizePassAliasLoadAddr(const ScbeMicro& out)
                 }
                 break;
 
+            case ScbeMicroOp::OpBinaryRR:
+                if (inst->cpuOp == CpuOp::ADD)
+                {
+                    if (mapRegInst.contains(inst->regA))
+                    {
+                        const auto prev = mapRegInst[inst->regA];
+                        if (inst->opBitsA == prev->opBitsA &&
+                            out.cpu->encodeLoadAmcRegMem(inst->regA, inst->opBitsA, inst->regB, prev->regB, 1, prev->valueA, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+                        {
+                            /*inst->op     = ScbeMicroOp::LoadAddrAmcRM;
+                            inst->regC   = prev->regB;
+                            inst->valueA = 1;
+                            inst->valueB = prev->valueA;
+                            inst->opBitsB = inst->opBitsA;
+                            mapRegInst.erase(inst->regA);
+                            ignore(out, prev);*/
+                            break;
+                        }
+                    }
+                }
+                break;
+
             case ScbeMicroOp::OpBinaryMI:
                 if (mapRegInst.contains(inst->regA))
                 {
@@ -137,7 +159,7 @@ void ScbeOptimizer::optimizePassAliasLoadAddr(const ScbeMicro& out)
                     const auto prev = mapRegInst[inst->regB];
                     if (inst->opBitsA == OpBits::B64)
                     {
-                        setOp(out, inst, ScbeMicroOp::LoadAddr);
+                        setOp(out, inst, ScbeMicroOp::LoadAddrRM);
                         setRegB(out, inst, prev->regB);
                         setValueA(out, inst, prev->valueA);
                         break;
@@ -227,7 +249,7 @@ void ScbeOptimizer::optimizePassAliasLoadAddr(const ScbeMicro& out)
                 mapRegInst.erase(r1);
         }
 
-        if (inst->op == ScbeMicroOp::LoadAddr && inst->regA != inst->regB)
+        if (inst->op == ScbeMicroOp::LoadAddrRM && inst->regA != inst->regB)
             mapRegInst[inst->regA] = inst;
 
         inst = ScbeMicro::getNextInstruction(inst);
@@ -332,7 +354,7 @@ namespace
 {
     bool isDeadHwdReg(const ScbeMicroInstruction* inst)
     {
-        return inst->op == ScbeMicroOp::LoadAddr ||
+        return inst->op == ScbeMicroOp::LoadAddrRM ||
                inst->op == ScbeMicroOp::LoadAmcRM ||
                inst->op == ScbeMicroOp::LoadAddrAmcRM ||
                inst->op == ScbeMicroOp::LoadRR ||
@@ -474,7 +496,7 @@ void ScbeOptimizer::optimizePassDeadHdwRegBeforeLeave(const ScbeMicro& out)
                 ignore(out, i);
             mapRegInst.clear();
         }
-        else if (inst->op == ScbeMicroOp::LoadAddr ||
+        else if (inst->op == ScbeMicroOp::LoadAddrRM ||
                  inst->op == ScbeMicroOp::LoadRR ||
                  inst->op == ScbeMicroOp::LoadRI ||
                  inst->op == ScbeMicroOp::LoadZeroExtRR ||

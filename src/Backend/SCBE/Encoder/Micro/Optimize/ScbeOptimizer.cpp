@@ -341,7 +341,7 @@ void ScbeOptimizer::computeContextStack(const ScbeMicro& out)
         const auto stackOffset = inst->getStackOffset();
         if (stackOffset != UINT32_MAX)
         {
-            if (inst->op == ScbeMicroOp::LoadAddr)
+            if (inst->op == ScbeMicroOp::LoadAddrRM)
                 aliasStack.push_back(stackOffset);
             else
             {
@@ -487,6 +487,9 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
         return;
     if (!out.cpuFct->bc->sourceFile->module->mustOptimizeBackend(out.cpuFct->bc->node))
         return;
+
+    //if (!out.cpuFct->bc->sourceFile->name.containsNoCase("r687"))
+    //    return;
 
     bool globalChanged = true;
     while (globalChanged)

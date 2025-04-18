@@ -523,7 +523,7 @@ void ScbeMicro::print() const
                 line.name = "movzx";
                 line.args = form("%s, %s", regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsB));
                 break;
-            case ScbeMicroOp::LoadAddr:
+            case ScbeMicroOp::LoadAddrRM:
                 line.name = "lea";
                 if (inst->valueA == 0)
                     line.args = form("%s, qword ptr [%s]", regName(inst->regA, OpBits::B64), regName(inst->regB, OpBits::B64));

@@ -19,7 +19,7 @@ void ScbeOptimizer::optimizePassSwap(const ScbeMicro& out)
         }
 
         if (inst->op == ScbeMicroOp::LoadRR ||
-            inst->op == ScbeMicroOp::LoadAddr ||
+            inst->op == ScbeMicroOp::LoadAddrRM ||
             inst->op == ScbeMicroOp::LoadZeroExtRR ||
             inst->op == ScbeMicroOp::LoadSignedExtRR)
         {

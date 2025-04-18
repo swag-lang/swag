@@ -1,6 +1,7 @@
 ﻿#include "pch.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
+#pragma optimize("", off)
 
 bool ScbeMicroInstruction::hasReadRegA() const
 {
@@ -101,19 +102,67 @@ bool ScbeMicroInstruction::isTest() const
 
 uint32_t ScbeMicroInstruction::getStackOffsetRead() const
 {
-    if (hasLeftOpFlag(MOF_READ_MEM) && hasLeftOpFlag(MOF_VALUE_A) && hasLeftOpFlag(MOF_REG_A) && regA == CpuReg::Rsp)
-        return static_cast<uint32_t>(valueA);
-    if (hasRightOpFlag(MOF_READ_MEM) && hasRightOpFlag(MOF_VALUE_A) && hasRightOpFlag(MOF_REG_B) && regB == CpuReg::Rsp)
-        return static_cast<uint32_t>(valueA);
+    switch (op)
+    {
+        case ScbeMicroOp::LoadRM:
+        case ScbeMicroOp::LoadZeroExtRM:
+        case ScbeMicroOp::LoadSignedExtRM:
+        case ScbeMicroOp::OpBinaryRM:
+            if (regB == CpuReg::Rsp)
+                return static_cast<uint32_t>(valueA);
+            break;
+        case ScbeMicroOp::OpBinaryMR:
+        case ScbeMicroOp::OpBinaryMI:
+        case ScbeMicroOp::OpUnaryM:
+            if (regA == CpuReg::Rsp)
+                return static_cast<uint32_t>(valueA);
+            break;
+        case ScbeMicroOp::LoadAddrRM:
+            if (regB == CpuReg::Rsp)
+                return static_cast<uint32_t>(valueA);
+            break;
+        case ScbeMicroOp::CmpMI:
+        case ScbeMicroOp::CmpMR:
+            if (regA == CpuReg::Rsp)
+                return static_cast<uint32_t>(valueA);
+            break;
+        case ScbeMicroOp::LoadAmcRM:
+        case ScbeMicroOp::LoadAddrAmcRM:
+            if (regB == CpuReg::Rsp || regC == CpuReg::Rsp)
+                return static_cast<uint32_t>(valueB);
+            break;
+    }
+
     return UINT32_MAX;
 }
 
 uint32_t ScbeMicroInstruction::getStackOffsetWrite() const
 {
-    if (hasLeftOpFlag(MOF_WRITE_MEM) && hasLeftOpFlag(MOF_VALUE_A) && hasLeftOpFlag(MOF_REG_A) && regA == CpuReg::Rsp)
-        return static_cast<uint32_t>(valueA);
-    if (hasRightOpFlag(MOF_WRITE_MEM) && hasRightOpFlag(MOF_VALUE_A) && hasRightOpFlag(MOF_REG_B) && regB == CpuReg::Rsp)
-        return static_cast<uint32_t>(valueA);
+    switch (op)
+    {
+        case ScbeMicroOp::LoadAddrRM:
+            if (regB == CpuReg::Rsp)
+                return static_cast<uint32_t>(valueA);
+            break;
+        case ScbeMicroOp::LoadMR:
+        case ScbeMicroOp::LoadMI:
+        case ScbeMicroOp::OpBinaryMR:
+        case ScbeMicroOp::OpBinaryMI:
+        case ScbeMicroOp::OpUnaryM:
+            if (regA == CpuReg::Rsp)
+                return static_cast<uint32_t>(valueA);
+            break;
+        case ScbeMicroOp::LoadAmcMR:
+        case ScbeMicroOp::LoadAmcMI:
+            if (regA == CpuReg::Rsp || regB == CpuReg::Rsp)
+                return static_cast<uint32_t>(valueB);
+            break;
+        case ScbeMicroOp::LoadAddrAmcRM:
+            if (regB == CpuReg::Rsp || regC == CpuReg::Rsp)
+                return static_cast<uint32_t>(valueB);
+            break;
+    }
+
     return UINT32_MAX;
 }
 
