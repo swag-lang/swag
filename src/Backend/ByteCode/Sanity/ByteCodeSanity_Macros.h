@@ -157,11 +157,18 @@
     }                                                    \
     BINOP(__op, __reg);
 
-#define CMP_OP(__op, __reg)                                                                               \
-    SWAG_CHECK(STATE()->getImmediateA(va));                                                               \
-    SWAG_CHECK(STATE()->getImmediateB(vb));                                                               \
-    SWAG_CHECK(STATE()->getRegister(rc, ip->c.u32));                                                      \
-    rc->kind = va.isConstant() && vb.isConstant() ? SanityValueKind::Constant : SanityValueKind::Unknown; \
-    rc->setIps(ip, &va, &vb, rc);                                                                         \
-    if (rc->isConstant())                                                                                 \
-        rc->reg.b = va.reg.__reg __op vb.reg.__reg;
+#define CMP_OP(__op, __reg)                          \
+    SWAG_CHECK(STATE()->getImmediateA(va));          \
+    SWAG_CHECK(STATE()->getImmediateB(vb));          \
+    SWAG_CHECK(STATE()->getRegister(rc, ip->c.u32)); \
+    if (va.isConstant() && vb.isConstant())          \
+        rc->kind = SanityValueKind::Constant;        \
+    else if (va.isStackAddr() && vb.isStackAddr())   \
+        rc->kind = SanityValueKind::Constant;        \
+    else                                             \
+        rc->kind = SanityValueKind::Unknown;         \
+    rc->setIps(ip, &va, &vb, rc);                    \
+    if (rc->isConstant())                            \
+        rc->reg.b = va.reg.__reg __op vb.reg.__reg;  \
+    else if (rc->isStackAddr())                      \
+        rc->reg.b = va.reg.u64 __op vb.reg.u64;

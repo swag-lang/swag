@@ -23,10 +23,15 @@ bool ByteCodeGen::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeInfo,
             return true;
         }
 
-        RegisterList r0 = reserveRegisterRC(context);
+        if (!finalType->sizeOf)
+            return true;
 
-        auto inst           = EMIT_INST1(context, ByteCodeOp::SetImmediate64, r0);
-        inst->b.u64         = typeArray->totalCount;
+        RegisterList r0;
+        reserveRegisterRC(context, r0, 2);
+
+        auto inst   = EMIT_INST3(context, ByteCodeOp::IncPointer64, dstReg, 0, r0[0]);
+        inst->b.u64 = static_cast<uint64_t>(typeArray->totalCount) * finalType->sizeOf;
+        inst->addFlag(BCI_IMM_B);
         const auto seekJump = context->bc->numInstructions;
 
         switch (fromType->sizeOf)
@@ -56,8 +61,9 @@ bool ByteCodeGen::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeInfo,
         inst->b.u64 = fromType->sizeOf;
         inst->addFlag(BCI_IMM_B);
 
-        EMIT_INST1(context, ByteCodeOp::DecrementRA64, r0);
-        EMIT_INST1(context, ByteCodeOp::JumpIfNotZero64, r0)->b.s32 = static_cast<int32_t>(seekJump - context->bc->numInstructions - 1);
+        EMIT_INST3(context, ByteCodeOp::CompareOpEqual64, dstReg, r0[0], r0[1]);
+        inst        = EMIT_INST1(context, ByteCodeOp::JumpIfFalse, r0[1]);
+        inst->b.s32 = static_cast<int32_t>(seekJump - context->bc->numInstructions);
 
         freeRegisterRC(context, r0);
         return true;
