@@ -127,13 +127,12 @@ void ScbeOptimizer::optimizePassAliasLoadAddr(const ScbeMicro& out)
                         if (inst->opBitsA == prev->opBitsA &&
                             out.cpu->encodeLoadAmcRegMem(inst->regA, inst->opBitsA, inst->regB, prev->regB, 1, prev->valueA, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
                         {
-                            /*inst->op     = ScbeMicroOp::LoadAddrAmcRM;
+                            inst->op     = ScbeMicroOp::LoadAddrAmcRM;
                             inst->regC   = prev->regB;
                             inst->valueA = 1;
                             inst->valueB = prev->valueA;
                             inst->opBitsB = inst->opBitsA;
                             mapRegInst.erase(inst->regA);
-                            ignore(out, prev);*/
                             break;
                         }
                     }

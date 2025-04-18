@@ -777,5 +777,8 @@ void ScbeMicro::process(ScbeCpu& encoder)
     postProcess();
 
     if (cpuFct->bc->node && cpuFct->bc->node->hasAttribute(ATTRIBUTE_PRINT_ASM))
+    {
+        opt.solveLabels(*this);
         print();
+    }
 }

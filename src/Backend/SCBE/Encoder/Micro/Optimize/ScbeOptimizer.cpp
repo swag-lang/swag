@@ -267,7 +267,10 @@ void ScbeOptimizer::solveLabels(const ScbeMicro& out)
             inst->valueB = it->second;
             auto next    = first + inst->valueB;
             while (next->op == ScbeMicroOp::Label || next->op == ScbeMicroOp::Debug || next->op == ScbeMicroOp::Ignore)
+            {
                 next++;
+                inst->valueB++;
+            }
             next->flags.add(MIF_JUMP_DEST);
         }
         else if (inst->op == ScbeMicroOp::PatchJump)
@@ -341,8 +344,12 @@ void ScbeOptimizer::computeContextStack(const ScbeMicro& out)
         const auto stackOffset = inst->getStackOffset();
         if (stackOffset != UINT32_MAX)
         {
-            if (inst->op == ScbeMicroOp::LoadAddrRM)
+            if (inst->op == ScbeMicroOp::LoadAddrRM ||
+                inst->op == ScbeMicroOp::LoadAddrAmcRM ||
+                inst->op == ScbeMicroOp::LoadAmcMR)
+            {
                 aliasStack.push_back(stackOffset);
+            }
             else
             {
                 const uint32_t size = inst->getNumBytes();
@@ -488,7 +495,7 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
     if (!out.cpuFct->bc->sourceFile->module->mustOptimizeBackend(out.cpuFct->bc->node))
         return;
 
-    // if (!out.cpuFct->bc->sourceFile->name.containsNoCase("r687"))
+    //if (!out.cpuFct->bc->sourceFile->name.containsNoCase("r554"))
     //     return;
 
     bool globalChanged = true;
