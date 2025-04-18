@@ -4,7 +4,6 @@ struct Point
 	y: s32 = 10
 }
 
-#[Swag.PrintAsm]
 #test
 {
 	var pt : [2, 2] Point{100, 500}
