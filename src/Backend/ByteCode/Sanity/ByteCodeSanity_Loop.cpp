@@ -499,33 +499,6 @@ bool ByteCodeSanity::loop()
                 backTrace(STATE(), ip->a.u32);
                 break;
 
-            case ByteCodeOp::JumpIfNotEqual64:
-                SWAG_CHECK(STATE()->getImmediateA(va));
-                SWAG_CHECK(STATE()->getImmediateC(vc));
-
-                if (va.isConstant() && vc.isConstant() && va.reg.u64 == vc.reg.u64)
-                {
-                    ip->dynFlags.add(BCID_SAN_PASS);
-                    ip = ip + 1;
-                    continue;
-                }
-
-                if ((va.isConstant() && vc.isConstant() && va.reg.u64 != vc.reg.u64) ||
-                    (va.isNotZero() && vc.isZero()) ||
-                    (va.isZero() && vc.isNotZero()))
-                {
-                    ip->dynFlags.add(BCID_SAN_PASS);
-                    ip += ip->b.s32 + 1;
-                    continue;
-                }
-
-                if (!context.statesHere.contains(ip + ip->b.s32 + 1))
-                {
-                    context.statesHere.insert(ip + ip->b.s32 + 1);
-                    newState(ip, ip + ip->b.s32 + 1);
-                }
-                break;
-
             case ByteCodeOp::JumpIfEqual64:
                 SWAG_CHECK(STATE()->getImmediateA(va));
                 SWAG_CHECK(STATE()->getImmediateC(vc));
