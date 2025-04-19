@@ -899,10 +899,11 @@ namespace
         if (opBitsReg == OpBits::B16 || ScbeCpu::isFloat(reg))
             concat.addU8(0x66);
 
-        const bool b0 = (reg >= CpuReg::R8 && reg <= CpuReg::R15);
-        const bool b1 = (regMul >= CpuReg::R8 && regMul <= CpuReg::R15);
-        const bool b2 = (regBase >= CpuReg::R8 && regBase <= CpuReg::R15);
-        if (opBitsReg == OpBits::B64 || b0 || b1 || b2)
+        const bool b0      = (reg >= CpuReg::R8 && reg <= CpuReg::R15);
+        const bool b1      = (regMul >= CpuReg::R8 && regMul <= CpuReg::R15);
+        const bool b2      = (regBase >= CpuReg::R8 && regBase <= CpuReg::R15);
+        const bool needREX = opBitsReg == OpBits::B64 || reg == CpuReg::Rsi || reg == CpuReg::Rdi || reg == CpuReg::Rbp;
+        if (needREX || b0 || b1 || b2)
         {
             const auto value = getREX(opBitsReg == OpBits::B64, b0, b1, b2);
             concat.addU8(value);
