@@ -75,15 +75,38 @@ void ScbeOptimizer::reduceInst(const ScbeMicro& out, ScbeMicroInstruction* inst)
                 SWAG_ASSERT(inst->valueA == 1);
                 std::swap(inst->regA, inst->regB);
                 setDirtyPass();
+                break;
             }
+
+            /*if (inst->regB == CpuReg::Max &&
+                inst->valueA == 1 &&
+                out.cpu->encodeLoadMemImm(inst->regA, inst->valueA, inst->valueB, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+            {
+                setOp(out, inst, ScbeMicroOp::LoadMI);
+                setRegB(out, inst, inst->regC);
+                setValueA(out, inst, inst->valueB);
+                break;
+            }
+            break;  */          
             break;
-            
+
         case ScbeMicroOp::LoadAmcRM:
             if (inst->regC == CpuReg::Rsp)
             {
                 SWAG_ASSERT(inst->valueA == 1);
                 std::swap(inst->regB, inst->regC);
                 setDirtyPass();
+                break;
+            }
+
+            if (inst->regB == CpuReg::Max &&
+                inst->valueA == 1 &&
+                out.cpu->encodeLoadRegMem(inst->regA, inst->regC, inst->valueB, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+            {
+                setOp(out, inst, ScbeMicroOp::LoadRM);
+                setRegB(out, inst, inst->regC);
+                setValueA(out, inst, inst->valueB);
+                break;
             }
             break;
 
@@ -93,6 +116,17 @@ void ScbeOptimizer::reduceInst(const ScbeMicro& out, ScbeMicroInstruction* inst)
                 SWAG_ASSERT(inst->valueA == 1);
                 std::swap(inst->regB, inst->regC);
                 setDirtyPass();
+                break;
+            }
+
+            if (inst->regB == CpuReg::Max &&
+                inst->valueA == 1 &&
+                out.cpu->encodeLoadRegMem(inst->regA, inst->regC, inst->valueB, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+            {
+                setOp(out, inst, ScbeMicroOp::LoadAddrRM);
+                setRegB(out, inst, inst->regC);
+                setValueA(out, inst, inst->valueB);
+                break;
             }
             break;
     }
