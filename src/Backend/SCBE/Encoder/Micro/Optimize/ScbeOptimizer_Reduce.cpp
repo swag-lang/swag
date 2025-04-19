@@ -65,6 +65,39 @@ void ScbeOptimizer::reduceNoOp(const ScbeMicro& out, ScbeMicroInstruction* inst,
     }
 }
 
+void ScbeOptimizer::reduceInst(const ScbeMicro& out, ScbeMicroInstruction* inst)
+{
+    switch (inst->op)
+    {
+        case ScbeMicroOp::LoadAmcMI:
+            if (inst->regB == CpuReg::Rsp)
+            {
+                SWAG_ASSERT(inst->valueA == 1);
+                std::swap(inst->regA, inst->regB);
+                setDirtyPass();
+            }
+            break;
+            
+        case ScbeMicroOp::LoadAmcRM:
+            if (inst->regC == CpuReg::Rsp)
+            {
+                SWAG_ASSERT(inst->valueA == 1);
+                std::swap(inst->regB, inst->regC);
+                setDirtyPass();
+            }
+            break;
+
+        case ScbeMicroOp::LoadAddrAmcRM:
+            if (inst->regC == CpuReg::Rsp)
+            {
+                SWAG_ASSERT(inst->valueA == 1);
+                std::swap(inst->regB, inst->regC);
+                setDirtyPass();
+            }
+            break;
+    }
+}
+
 void ScbeOptimizer::reduceLoadRR(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next)
 {
     if (next->isJump() || next->isJumpDest())
@@ -896,6 +929,7 @@ void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
         reduceDup(out, inst, next);
         reduceOffset(out, inst, next);
         reduceLoadRR(out, inst, next);
+        reduceInst(out, inst);
         inst = next;
     }
 }
