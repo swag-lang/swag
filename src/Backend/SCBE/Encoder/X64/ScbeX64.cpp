@@ -812,9 +812,11 @@ namespace
             std::swap(regMul, regBase);
         }
 
+        // Prefixes
         if (opBitsValue == OpBits::B16)
             concat.addU8(0x66);
 
+        // REX prefix
         const bool b1 = (regMul >= CpuReg::R8 && regMul <= CpuReg::R15);
         const bool b2 = (regBase >= CpuReg::R8 && regBase <= CpuReg::R15);
         if (opBitsValue == OpBits::B64 || b1 || b2)
@@ -823,42 +825,33 @@ namespace
             concat.addU8(val);
         }
 
+        // OpCode
         emitSpecCPUOp(concat, 0xC7, opBitsValue);
 
+        // ModRM
         if (regBase == CpuReg::R13)
-        {
-            if (addValue <= 0x7F)
-                emitModRM(concat, ModRMMode::Displacement8, MODRM_REG_0, MODRM_RM_SIB);
-            else
-                emitModRM(concat, ModRMMode::Displacement32, MODRM_REG_0, MODRM_RM_SIB);
-        }
+            emitModRM(concat, addValue <= 0x7F ? ModRMMode::Displacement8 : ModRMMode::Displacement32, MODRM_REG_0, MODRM_RM_SIB);
         else if (addValue == 0 || regBase == CpuReg::Max)
-        {
             emitModRM(concat, ModRMMode::Memory, MODRM_REG_0, MODRM_RM_SIB);
-        }
         else
-        {
-            if (addValue <= 0x7F)
-                emitModRM(concat, ModRMMode::Displacement8, MODRM_REG_0, MODRM_RM_SIB);
-            else
-                emitModRM(concat, ModRMMode::Displacement32, MODRM_REG_0, MODRM_RM_SIB);
-        }
+            emitModRM(concat, addValue <= 0x7F ? ModRMMode::Displacement8 : ModRMMode::Displacement32, MODRM_REG_0, MODRM_RM_SIB);
 
+        // SIB
         SWAG_ASSERT(mulValue == 1 || mulValue == 2 || mulValue == 4 || mulValue == 8);
+        const auto scale = static_cast<uint8_t>(log2(mulValue));
         if (regBase == CpuReg::Max)
         {
-            emitSIB(concat, static_cast<uint8_t>(log2(mulValue)), encodeReg(regMul) & 0b111, SIB_NO_BASE);
+            emitSIB(concat, scale, encodeReg(regMul) & 0b111, SIB_NO_BASE);
             emitValue(concat, addValue, OpBits::B32);
         }
         else
         {
-            emitSIB(concat, static_cast<uint8_t>(log2(mulValue)), encodeReg(regMul) & 0b111, encodeReg(regBase) & 0b111);
-            if (addValue <= 0x7F && (regBase == CpuReg::R13 || addValue != 0))
-                emitValue(concat, addValue, OpBits::B8);
-            else if (addValue)
-                emitValue(concat, addValue, OpBits::B32);
+            emitSIB(concat, scale, encodeReg(regMul) & 0b111, encodeReg(regBase) & 0b111);
+            if (regBase == CpuReg::R13 || addValue != 0)
+                emitValue(concat, addValue, addValue <= 0x7F ? OpBits::B8 : OpBits::B32);
         }
 
+        // Value
         emitValue(concat, value, std::min(opBitsValue, OpBits::B32));
         return CpuEncodeResult::Zero;
     }
@@ -913,7 +906,7 @@ namespace
             concat.addU8(value);
         }
 
-        // Opcode emission
+        // Opcode
         switch (op)
         {
             case CpuOp::LEA:
@@ -938,7 +931,7 @@ namespace
                 break;
         }
 
-        // ModRM emission
+        // ModRM
         if (regBase == CpuReg::R13)
             emitModRM(concat, addValue <= 0x7F ? ModRMMode::Displacement8 : ModRMMode::Displacement32, reg, MODRM_RM_SIB);
         else if (addValue == 0 || regBase == CpuReg::Max)
@@ -946,7 +939,7 @@ namespace
         else
             emitModRM(concat, addValue <= 0x7F ? ModRMMode::Displacement8 : ModRMMode::Displacement32, reg, MODRM_RM_SIB);
 
-        // SIB emission
+        // SIB
         SWAG_ASSERT(mulValue == 1 || mulValue == 2 || mulValue == 4 || mulValue == 8);
         const auto scale = static_cast<uint8_t>(log2(mulValue));
         if (regBase == CpuReg::Max)
