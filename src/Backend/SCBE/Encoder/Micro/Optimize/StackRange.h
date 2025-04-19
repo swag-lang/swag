@@ -1,6 +1,5 @@
 // ReSharper disable CppInconsistentNaming
 #pragma once
-#pragma optimize("", off)
 
 struct StackRange
 {

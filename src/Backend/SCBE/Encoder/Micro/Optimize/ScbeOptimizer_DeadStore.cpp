@@ -3,8 +3,6 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
-#include "Wmf/SourceFile.h"
-#pragma optimize("", off)
 
 namespace
 {
@@ -178,6 +176,40 @@ void ScbeOptimizer::optimizePassDeadHdwRegBeforeLeave(const ScbeMicro& out)
             const auto readRegs = out.cpu->getReadRegisters(inst);
             for (const auto r : readRegs)
                 mapRegInst.erase(r);
+        }
+
+        inst = ScbeMicro::getNextInstruction(inst);
+    }
+}
+
+void ScbeOptimizer::optimizePassDeadRegBeforeLeave(const ScbeMicro& out)
+{
+    mapValInst.clear();
+
+    auto inst = out.getFirstInstruction();
+    while (inst->op != ScbeMicroOp::End)
+    {
+        if (inst->isJump() || inst->isJumpDest())
+            mapValInst.clear();
+
+        if (inst->op == ScbeMicroOp::Leave)
+        {
+            for (const auto& i : mapValInst | std::views::values)
+                ignore(out, i);
+            mapValInst.clear();
+        }
+        else
+        {
+            const auto stackOffset = inst->getStackOffset();
+            if (out.cpuFct->isStackOffsetTransient(stackOffset))
+            {
+                if (aliasStack.contains(stackOffset, sizeof(uint8_t)))
+                    mapValInst.erase(stackOffset);
+                else if (inst->op == ScbeMicroOp::LoadMR || inst->op == ScbeMicroOp::LoadMI)
+                    mapValInst[stackOffset] = inst;
+                else
+                    mapValInst.erase(stackOffset);
+            }
         }
 
         inst = ScbeMicro::getNextInstruction(inst);

@@ -4,7 +4,6 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Main/CommandLine.h"
 #include "Semantic/Type/TypeManager.h"
-#pragma optimize("", off)
 
 namespace
 {

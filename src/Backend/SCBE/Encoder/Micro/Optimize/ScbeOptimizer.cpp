@@ -6,7 +6,6 @@
 #include "Semantic/Type/TypeInfo.h"
 #include "Wmf/Module.h"
 #include "Wmf/SourceFile.h"
-#pragma optimize("", off)
 
 bool ScbeOptimizer::regToReg(const ScbeMicro& out, CpuReg regDst, CpuReg regSrc, uint32_t firstInst, uint32_t lastInst)
 {
@@ -488,11 +487,6 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
         return;
     if (!out.cpuFct->bc->sourceFile->module->mustOptimizeBackend(out.cpuFct->bc->node))
         return;
-
-    // if (!out.cpuFct->bc->sourceFile->name.containsNoCase("r554"))
-    //      return;
-    //if (!out.cpuFct->bc->getPrintName().containsNoCase("Pixel.Png.Decoder.readChunk"))
-    //    return;
 
     bool globalChanged = true;
     while (globalChanged)

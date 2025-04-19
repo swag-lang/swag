@@ -2,9 +2,6 @@
 #include "Backend/SCBE/Encoder/Micro/Optimize/ScbeOptimizer.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
-#include "Semantic/Type/TypeInfo.h"
-#include "Wmf/SourceFile.h"
-#pragma optimize("", off)
 
 void ScbeOptimizer::optimizePassDeadCode(const ScbeMicro& out)
 {

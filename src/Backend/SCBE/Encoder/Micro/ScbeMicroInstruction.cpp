@@ -1,7 +1,6 @@
 ﻿#include "pch.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
-#pragma optimize("", off)
 
 bool ScbeMicroInstruction::hasReadRegA() const
 {
