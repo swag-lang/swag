@@ -129,6 +129,8 @@ namespace
                 return "xor";
             case CpuOp::NEG:
                 return "neg";
+            case CpuOp::NOT:
+                return "not";
             case CpuOp::POPCNT:
                 return "popcnt";
             case CpuOp::MULADD:

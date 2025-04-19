@@ -127,10 +127,10 @@ void ScbeOptimizer::optimizePassAliasLoadAddr(const ScbeMicro& out)
                         if (inst->opBitsA == prev->opBitsA &&
                             out.cpu->encodeLoadAmcRegMem(inst->regA, inst->opBitsA, inst->regB, prev->regB, 1, prev->valueA, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
                         {
-                            inst->op     = ScbeMicroOp::LoadAddrAmcRM;
-                            inst->regC   = prev->regB;
-                            inst->valueA = 1;
-                            inst->valueB = prev->valueA;
+                            inst->op      = ScbeMicroOp::LoadAddrAmcRM;
+                            inst->regC    = prev->regB;
+                            inst->valueA  = 1;
+                            inst->valueB  = prev->valueA;
                             inst->opBitsB = inst->opBitsA;
                             mapRegInst.erase(inst->regA);
                             break;
@@ -529,6 +529,18 @@ void ScbeOptimizer::optimizePassDeadHdwRegBeforeLeave(const ScbeMicro& out)
 
 void ScbeOptimizer::optimizePassMakeVolatile(const ScbeMicro& out)
 {
+    for (const auto rvol : unusedVolatileInteger)
+    {
+        for (const auto rn : out.cc->nonVolatileRegistersInteger)
+        {
+            if (!unusedNonVolatileInteger.contains(rn))
+            {
+                if (regToReg(out, rvol, rn))
+                    return;
+            }
+        }
+    }
+
     auto inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {
