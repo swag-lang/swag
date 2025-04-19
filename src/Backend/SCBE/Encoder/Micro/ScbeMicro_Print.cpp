@@ -113,6 +113,8 @@ namespace
                 return "idiv";
             case CpuOp::MOD:
                 return "mod";
+            case CpuOp::IMOD:
+                return "imod";
             case CpuOp::SHL:
                 return "shl";
             case CpuOp::SHR:
