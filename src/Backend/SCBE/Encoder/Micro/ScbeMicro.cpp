@@ -217,7 +217,7 @@ CpuEncodeResult ScbeMicro::encodeLoadZeroExtendRegReg(CpuReg regDst, CpuReg regS
     return CpuEncodeResult::Zero;
 }
 
-CpuEncodeResult ScbeMicro::encodeLoadAddressMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, CpuEmitFlags emitFlags)
+CpuEncodeResult ScbeMicro::encodeLoadAddressRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, CpuEmitFlags emitFlags)
 {
     const auto inst = addInstruction(ScbeMicroOp::LoadAddrRM, emitFlags);
     inst->regA      = reg;

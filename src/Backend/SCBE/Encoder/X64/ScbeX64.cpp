@@ -744,19 +744,19 @@ CpuEncodeResult ScbeX64::encodeLoadSignedExtendRegReg(CpuReg regDst, CpuReg regS
 
 /////////////////////////////////////////////////////////////////////
 
-CpuEncodeResult ScbeX64::encodeLoadAddressMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, CpuEmitFlags emitFlags)
+CpuEncodeResult ScbeX64::encodeLoadAddressRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, CpuEmitFlags emitFlags)
 {
     if (isFloat(memReg))
     {
         if (emitFlags.has(EMIT_CanEncode))
             return CpuEncodeResult::NotSupported;
-        Report::internalError(module, "encodeLoadAddressMem, cannot encode");
+        Report::internalError(module, "encodeLoadAddressRegMem, cannot encode");
     }
     else if (memOffset > 0x7FFFFFFF)
     {
         if (emitFlags.has(EMIT_CanEncode))
             return CpuEncodeResult::NotSupported;
-        Report::internalError(module, "encodeLoadAddressMem, cannot encode");
+        Report::internalError(module, "encodeLoadAddressRegMem, cannot encode");
     }
     else if (memReg == CpuReg::Rip)
     {

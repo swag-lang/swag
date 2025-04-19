@@ -6,7 +6,37 @@
 
 namespace
 {
-    void handleConstantCmp(ScbeOptimizer& opt, const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* const next)
+    bool handleConstantOpBinary(CpuOp op, uint64_t& result, uint64_t valueA, uint64_t valueB, OpBits opBits)
+    {
+        switch (op)
+        {
+            case CpuOp::SHL:
+                result = valueA << valueB;
+                return true;
+            case CpuOp::SHR:
+                result = valueA >> valueB;
+                return true;
+            case CpuOp::SUB:
+                result = valueA - valueB;
+                return true;
+            case CpuOp::ADD:
+                result = valueA + valueB;
+                return true;
+            case CpuOp::OR:
+                result = valueA | valueB;
+                return true;
+            case CpuOp::AND:
+                result = valueA & valueB;
+                return true;
+            case CpuOp::XOR:
+                result = valueA ^ valueB;
+                return true;
+        }
+
+        return false;
+    }
+
+    void handleConstantCmp(ScbeOptimizer& opt, const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next)
     {
         auto value    = opt.mapRegVal[inst->regA];
         auto curValue = inst->valueA;
@@ -102,6 +132,18 @@ void ScbeOptimizer::optimizePassImmediate(const ScbeMicro& out)
                 break;
             }
 
+            case ScbeMicroOp::LoadAddrAmcRM:
+                mapRegVal.erase(inst->regA);
+                if (mapRegVal.contains(inst->regC) &&
+                    inst->regB == CpuReg::Max &&
+                    out.cpu->encodeLoadRegImm(inst->regA, inst->valueB + inst->valueA * mapRegVal[inst->regC], inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+                {
+                    setOp(out, inst, ScbeMicroOp::LoadRI);
+                    setValueA(out, inst, inst->valueB + inst->valueA * mapRegVal[inst->regC]);
+                    break;
+                }
+                break;
+
             case ScbeMicroOp::LoadRR:
             case ScbeMicroOp::LoadZeroExtRR:
                 mapRegVal.erase(inst->regA);
@@ -143,18 +185,6 @@ void ScbeOptimizer::optimizePassImmediate(const ScbeMicro& out)
                 break;
             }
 
-            case ScbeMicroOp::CmpRI:
-                if (mapRegVal.contains(inst->regA))
-                {
-                    const auto next = ScbeMicro::getNextInstruction(inst);
-                    if (next->isJumpCond() && !next->isJumpDest())
-                    {
-                        handleConstantCmp(*this, out, inst, next);
-                        break;
-                    }
-                }
-                break;
-
             case ScbeMicroOp::CmpRR:
                 if (mapRegVal.contains(inst->regB) &&
                     out.cpu->encodeCmpRegImm(inst->regA, mapRegVal[inst->regB], inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
@@ -193,6 +223,37 @@ void ScbeOptimizer::optimizePassImmediate(const ScbeMicro& out)
                 {
                     setOp(out, inst, ScbeMicroOp::LoadMI);
                     setValueB(out, inst, mapRegVal[inst->regB]);
+                    break;
+                }
+                break;
+
+            case ScbeMicroOp::CmpRI:
+                if (mapRegVal.contains(inst->regA))
+                {
+                    const auto next = ScbeMicro::getNextInstruction(inst);
+                    if (next->isJumpCond() && !next->isJumpDest())
+                    {
+                        handleConstantCmp(*this, out, inst, next);
+                        break;
+                    }
+                }
+                break;
+
+            case ScbeMicroOp::OpBinaryRI:
+                if (mapRegVal.contains(inst->regA))
+                {
+                    uint64_t result;
+                    if (handleConstantOpBinary(inst->cpuOp, result, mapRegVal[inst->regA], inst->valueA, inst->opBitsA))
+                    {
+                        setOp(out, inst, ScbeMicroOp::LoadRI);
+                        setValueA(out, inst, result);
+                        mapRegVal[inst->regA] = result;
+                    }
+                    else
+                    {
+                        // out.print();
+                        mapRegVal.erase(inst->regA);
+                    }
                     break;
                 }
                 break;

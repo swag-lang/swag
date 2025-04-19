@@ -315,7 +315,7 @@ bool ScbeCpu::acceptsRegB(const ScbeMicroInstruction* inst, CpuReg reg)
             result = encodeLoadSignedExtendRegMem(inst->regA, reg, inst->valueA, inst->opBitsA, inst->opBitsB, EMIT_CanEncode);
             break;
         case ScbeMicroOp::LoadAddrRM:
-            result = encodeLoadAddressMem(inst->regA, reg, inst->valueA, EMIT_CanEncode);
+            result = encodeLoadAddressRegMem(inst->regA, reg, inst->valueA, EMIT_CanEncode);
             break;
         case ScbeMicroOp::LoadAddrAmcRM:
             result = encodeLoadAddressAmcRegMem(inst->regA, inst->opBitsA, reg, inst->regC, inst->valueA, inst->valueB, inst->opBitsB, EMIT_CanEncode);
