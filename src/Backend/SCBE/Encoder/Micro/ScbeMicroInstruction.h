@@ -35,6 +35,9 @@ struct ScbeMicroInstruction
     bool hasRegB() const { return (hasReadRegB() || hasWriteRegB()); }
     bool hasRegC() const { return (hasReadRegC() || hasWriteRegC()); }
 
+    OpBits getOpBitsReadReg() const;
+    OpBits getOpBitsWriteReg() const;
+
     uint32_t getNumBytes() const;
 
     bool isJumpDest() const { return flags.has(MIF_JUMP_DEST); }

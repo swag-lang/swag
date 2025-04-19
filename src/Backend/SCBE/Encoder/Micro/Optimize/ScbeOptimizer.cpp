@@ -453,6 +453,7 @@ void ScbeOptimizer::optimizeStep1(const ScbeMicro& out)
     optimizePassAliasLoadAddr(out);
     optimizePassAliasLoadRM(out);
     optimizePassSwap(out);
+    optimizePassReduceBits(out);
 }
 
 void ScbeOptimizer::optimizeStep2(const ScbeMicro& out)

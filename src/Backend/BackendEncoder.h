@@ -48,6 +48,8 @@ struct BackendEncoder
     static bool      isInt(CpuReg reg) { return !isFloat(reg); }
     static void      maskValue(uint64_t& value, OpBits opBits);
 
+    bool isReturnRegister(CpuReg reg) const;
+
     BuildParameters       buildParams;
     Utf8                  filename;
     ByteCodeInstruction*  ip      = nullptr;

@@ -163,12 +163,8 @@ void ScbeOptimizer::optimizePassDeadHdwRegBeforeLeave(const ScbeMicro& out)
                  inst->op == ScbeMicroOp::ClearR ||
                  inst->op == ScbeMicroOp::SetCondR)
         {
-            if ((!out.cpuFct->typeFunc->returnByValue() && !out.cpuFct->typeFunc->returnStructByValue()) ||
-                (inst->regA != out.cc->returnByRegisterInteger && inst->regA != out.cc->returnByRegisterFloat))
-            {
+            if (!out.isReturnRegister(inst->regA))
                 mapRegInst[inst->regA] = inst;
-            }
-
             mapRegInst.erase(inst->regB);
         }
         else

@@ -2,6 +2,28 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 
+OpBits ScbeMicroInstruction::getOpBitsReadReg() const
+{
+    if (hasLeftOpFlag(MOF_READ_REG) && hasLeftOpFlag(MOF_OPBITS_A))
+        return opBitsA;
+    if (hasRightOpFlag(MOF_READ_REG) && hasRightOpFlag(MOF_OPBITS_A))
+        return opBitsA;    
+    if (hasRightOpFlag(MOF_READ_REG) && hasRightOpFlag(MOF_OPBITS_B))
+        return opBitsB;
+    return OpBits::Zero;
+}
+
+OpBits ScbeMicroInstruction::getOpBitsWriteReg() const
+{
+    if (hasLeftOpFlag(MOF_WRITE_REG) && hasLeftOpFlag(MOF_OPBITS_A))
+        return opBitsA;
+    if (hasRightOpFlag(MOF_WRITE_REG) && hasRightOpFlag(MOF_OPBITS_A))
+        return opBitsA;    
+    if (hasRightOpFlag(MOF_WRITE_REG) && hasRightOpFlag(MOF_OPBITS_B))
+        return opBitsB;
+    return OpBits::Zero;    
+}
+
 bool ScbeMicroInstruction::hasReadRegA() const
 {
     if (op == ScbeMicroOp::OpBinaryRR)
