@@ -77,18 +77,19 @@ void ScbeOptimizer::reduceInst(const ScbeMicro& out, ScbeMicroInstruction* inst)
                 setDirtyPass();
                 break;
             }
+            
+            break;
 
-            /*if (inst->regB == CpuReg::Max &&
-                inst->valueA == 1 &&
-                out.cpu->encodeLoadMemImm(inst->regA, inst->valueA, inst->valueB, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+        case ScbeMicroOp::LoadAmcMR:
+            if (inst->regB == CpuReg::Rsp)
             {
-                setOp(out, inst, ScbeMicroOp::LoadMI);
-                setRegB(out, inst, inst->regC);
-                setValueA(out, inst, inst->valueB);
+                SWAG_ASSERT(inst->valueA == 1);
+                std::swap(inst->regA, inst->regB);
+                setDirtyPass();
                 break;
             }
-            break;  */          
-            break;
+
+            break;            
 
         case ScbeMicroOp::LoadAmcRM:
             if (inst->regC == CpuReg::Rsp)
