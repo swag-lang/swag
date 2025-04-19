@@ -242,16 +242,22 @@ void ScbeOptimizer::optimizePassImmediate(const ScbeMicro& out)
             case ScbeMicroOp::OpBinaryRI:
                 if (mapRegVal.contains(inst->regA))
                 {
-                    uint64_t result;
-                    if (handleConstantOpBinary(inst->cpuOp, result, mapRegVal[inst->regA], inst->valueA, inst->opBitsA))
+                    if (!out.getNextFlagSensitive(inst)->isJumpCond())
                     {
-                        setOp(out, inst, ScbeMicroOp::LoadRI);
-                        setValueA(out, inst, result);
-                        mapRegVal[inst->regA] = result;
+                        uint64_t result;
+                        if (handleConstantOpBinary(inst->cpuOp, result, mapRegVal[inst->regA], inst->valueA, inst->opBitsA))
+                        {
+                            setOp(out, inst, ScbeMicroOp::LoadRI);
+                            setValueA(out, inst, result);
+                            mapRegVal[inst->regA] = result;
+                        }
+                        else
+                        {
+                            mapRegVal.erase(inst->regA);
+                        }
                     }
                     else
                     {
-                        // out.print();
                         mapRegVal.erase(inst->regA);
                     }
                     break;
