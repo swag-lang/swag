@@ -231,7 +231,7 @@ void ScbeOptimizer::optimizePassImmediate(const ScbeMicro& out)
                 if (mapRegVal.contains(inst->regA))
                 {
                     const auto next = ScbeMicro::getNextInstruction(inst);
-                    if (next->isJumpCond() && !next->isJumpDest())
+                    if (!next->isJumpDest())
                     {
                         handleConstantCmp(*this, out, inst, next);
                         break;
@@ -242,7 +242,8 @@ void ScbeOptimizer::optimizePassImmediate(const ScbeMicro& out)
             case ScbeMicroOp::OpBinaryRI:
                 if (mapRegVal.contains(inst->regA))
                 {
-                    if (!out.getNextFlagSensitive(inst)->isJumpCond())
+                    const auto next = ScbeMicro::getNextInstruction(inst);
+                    if (!out.cpu->doesReadFlags(next) && !next->isJumpDest())
                     {
                         uint64_t result;
                         if (handleConstantOpBinary(inst->cpuOp, result, mapRegVal[inst->regA], inst->valueA, inst->opBitsA))
