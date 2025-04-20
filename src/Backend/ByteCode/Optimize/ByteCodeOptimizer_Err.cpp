@@ -1,10 +1,11 @@
 #include "pch.h"
 #include "Backend/ByteCode/Optimize/ByteCodeOptimizer.h"
+#include "Wmf/SourceFile.h"
 
 // Try to change JumpIfNotError with JumpIfError.
-// This make the "no error path" the "hot path", branching with a jump only in case of errors.
+// This makes the "no error path" the "hot path", branching with a jump only in case of errors.
 //
-// The error code is placed at the end of the function. So this function can increase temporary the number of instructions.
+// The error code is placed at the end of the function. So this function can temporarily increase the number of instructions.
 bool ByteCodeOptimizer::optimizePassErr(ByteCodeOptContext* context)
 {
     if (!(context->contextBcFlags & OCF_HAS_ERR))
@@ -69,6 +70,41 @@ bool ByteCodeOptimizer::optimizePassErr(ByteCodeOptContext* context)
 
         bc->numInstructions += countErrInst;
         bc->out[bc->numInstructions - 1] = saveEnd;
+    }
+
+    return true;
+}
+
+bool ByteCodeOptimizer::optimizePassRetErr(ByteCodeOptContext* context)
+{
+    ByteCodeInstruction* ip0 = nullptr;
+    for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
+    {
+        if (ip->hasFlag(BCI_TRY_CATCH) && ip->isRet())
+        {
+            if (ip0)
+            {
+                if (ByteCode::areSame(ip0, ip0 + 1, ip, ip + 1, false, false))
+                {
+                    while (ByteCode::areSame(ip0 - 1, ip0, ip - 1, ip, false, false))
+                    {
+                        if (ip0[-1].isJump() || ip0[-1].isRet() || ip0[-1].isCall())
+                            break;
+                        ip--;
+                        ip0--;
+                        if (ip->hasFlag(BCI_START_STMT) || ip0->hasFlag(BCI_START_STMT))
+                            break;
+                    }
+
+                    SET_OP(ip, ByteCodeOp::Jump);
+                    ip->b.s32 = static_cast<int32_t>(ip0 - ip - 1);
+                    ip0->addFlag(BCI_START_STMT);
+                    continue;
+                }
+            }
+
+            ip0 = ip;
+        }
     }
 
     return true;

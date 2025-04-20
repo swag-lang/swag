@@ -725,6 +725,13 @@ bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, b
         if (optContext.allPassesHaveDoneSomething)
             continue;
 
+        computeJumpAndNop(&optContext);
+        genTree(&optContext, true);
+        SWAG_CHECK(optimizeStep4(&optContext));
+        removeNop(&optContext);
+        if (optContext.allPassesHaveDoneSomething)
+            continue;
+
 #ifdef SWAG_STATS
         if (g_CommandLine.statsFreq || !g_CommandLine.statsFreqOp0.empty() || !g_CommandLine.statsFreqOp1.empty())
         {
@@ -819,5 +826,11 @@ bool ByteCodeOptimizer::optimizeStep3(ByteCodeOptContext* context)
         OPT_REDUCE_O2(reduceInvCopy);
     }
 
+    return true;
+}
+
+bool ByteCodeOptimizer::optimizeStep4(ByteCodeOptContext* context)
+{
+    OPT_PASS_O2(optimizePassRetErr);
     return true;
 }

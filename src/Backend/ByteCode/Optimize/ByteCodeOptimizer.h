@@ -41,6 +41,7 @@ struct ByteCodeOptimizer
     static bool optimizePassRetCopyGlobal(ByteCodeOptContext* context);
     static bool optimizePassRetCopyStructVal(ByteCodeOptContext* context);
     static bool optimizePassErr(ByteCodeOptContext* context);
+    static bool optimizePassRetErr(ByteCodeOptContext* context);
     static bool optimizePassSwitch(ByteCodeOptContext* context);
     static bool optimizePassSwap(ByteCodeOptContext* context);
     static bool optimizePassLoop(ByteCodeOptContext* context);
@@ -80,6 +81,7 @@ struct ByteCodeOptimizer
     static bool optimizeStep1(ByteCodeOptContext* context);
     static bool optimizeStep2(ByteCodeOptContext* context);
     static bool optimizeStep3(ByteCodeOptContext* context);
+    static bool optimizeStep4(ByteCodeOptContext* context);
     static bool optimize(ByteCodeOptContext& optContext, ByteCode* bc, bool& restart);
 };
 
