@@ -478,7 +478,6 @@ void ScbeOptimizer::optimizeStep3(const ScbeMicro& out)
     solveLabels(out);
 
     optimizePassDeadHdwReg2(out);
-    optimizePassDupHdwReg(out);
     optimizePassMakeVolatile(out);
     optimizePassDeadCode(out);
 }

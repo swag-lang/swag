@@ -230,7 +230,7 @@ void ScbeOptimizer::reduceOffset(const ScbeMicro& out, ScbeMicroInstruction* ins
     }
 }
 
-void ScbeOptimizer::reduceDup(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next)
+void ScbeOptimizer::reduceDup(const ScbeMicro& out, const ScbeMicroInstruction* inst, ScbeMicroInstruction* next)
 {
     if (next->isJump() || next->isJumpDest())
         return;
@@ -976,6 +976,34 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
     }
 }
 
+void ScbeOptimizer::reduceAliasHwdReg(const ScbeMicro& out, ScbeMicroInstruction* inst)
+{
+    switch (inst->op)
+    {
+        case ScbeMicroOp::LoadRR:
+            if (usedWriteRegs[inst->regA] == 1 &&
+                usedWriteRegs[inst->regB] <= 1 &&
+                out.cc->nonVolatileRegistersInteger.contains(inst->regA) &&
+                out.cc->nonVolatileRegistersInteger.contains(inst->regB))
+            {
+                regToReg(out, inst->regB, inst->regA);
+                ignore(out, inst);
+            }
+            break;
+
+        case ScbeMicroOp::LoadSignedExtRR:
+        case ScbeMicroOp::LoadZeroExtRR:
+            if (usedWriteRegs[inst->regA] == 1 &&
+                usedWriteRegs[inst->regB] <= 1 &&
+                out.cc->nonVolatileRegistersInteger.contains(inst->regA) &&
+                out.cc->nonVolatileRegistersInteger.contains(inst->regB))
+            {
+                regToReg(out, inst->regB, inst->regA);
+            }
+            break;            
+    }
+}
+
 void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
 {
     auto inst = out.getFirstInstruction();
@@ -991,6 +1019,7 @@ void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
         reduceOffset(out, inst, next);
         reduceLoadRR(out, inst, next);
         reduceInst(out, inst);
+        reduceAliasHwdReg(out, inst);
         inst = next;
     }
 }

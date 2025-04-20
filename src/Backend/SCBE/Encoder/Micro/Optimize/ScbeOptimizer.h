@@ -41,10 +41,11 @@ struct ScbeOptimizer
     void setRegC(const ScbeMicro& out, ScbeMicroInstruction* inst, CpuReg reg);
 
     void reduceNoOp(const ScbeMicro& out, ScbeMicroInstruction* inst, const ScbeMicroInstruction* next);
+    void reduceAliasHwdReg(const ScbeMicro& out, ScbeMicroInstruction* inst);
     void reduceLoadRR(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next);
     void reduceInst(const ScbeMicro& out, ScbeMicroInstruction* inst);
     void reduceOffset(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next);
-    void reduceDup(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next);
+    void reduceDup(const ScbeMicro& out, const ScbeMicroInstruction* inst, ScbeMicroInstruction* next);
     void reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next);
     void reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next);
     void optimizePassReduce(const ScbeMicro& out);
@@ -55,7 +56,6 @@ struct ScbeOptimizer
     void optimizePassDeadRegBeforeLeave(const ScbeMicro& out);
     void optimizePassDeadHdwRegBeforeLeave(const ScbeMicro& out);
     void optimizePassMakeVolatile(const ScbeMicro& out);
-    void optimizePassDupHdwReg(const ScbeMicro& out);
     void optimizePassDeadHdwReg(const ScbeMicro& out);
     void optimizePassDeadHdwReg2(const ScbeMicro& out);
     void optimizePassStore(const ScbeMicro& out);
