@@ -359,19 +359,7 @@ void ScbeOptimizer::optimizePassAliasLoadExtend(const ScbeMicro& out)
         if (inst->isJumpDest() || inst->isRet())
             mapRegInst.clear();
 
-        if (inst->op == ScbeMicroOp::LoadZeroExtRR)
-        {
-            if (mapRegInst.contains(inst->regB))
-            {
-                const auto prev = mapRegInst[inst->regB];
-                if (prev->regB != inst->regB &&
-                    prev->opBitsB == inst->opBitsB)
-                {
-                    setRegB(out, inst, prev->regB);
-                }
-            }
-        }
-        else if (inst->hasReadRegA() && !inst->hasWriteRegA())
+        if (inst->hasReadRegA() && !inst->hasWriteRegA())
         {
             if (mapRegInst.contains(inst->regA))
             {
