@@ -371,6 +371,17 @@ void ScbeOptimizer::optimizePassAliasLoadExtend(const ScbeMicro& out)
                 }
             }
         }
+        else if (inst->hasReadRegA() && !inst->hasWriteRegA())
+        {
+            if (mapRegInst.contains(inst->regA))
+            {
+                const auto prev = mapRegInst[inst->regA];
+                if (prev->regB != inst->regA && inst->getOpBitsReadReg() == prev->opBitsB)
+                {
+                    setRegA(out, inst, prev->regB);
+                }
+            }
+        }        
         else if (inst->hasReadRegB() && !inst->hasWriteRegB())
         {
             if (mapRegInst.contains(inst->regB))
