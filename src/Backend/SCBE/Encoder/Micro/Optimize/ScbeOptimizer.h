@@ -47,7 +47,6 @@ struct ScbeOptimizer
     void reduceLoadRR(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next);
     void reduceInst(const ScbeMicro& out, ScbeMicroInstruction* inst);
     void reduceMemOffset(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next);
-    void reduceDup(const ScbeMicro& out, const ScbeMicroInstruction* inst, ScbeMicroInstruction* next);
     void reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next);
     void reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next);
     void optimizePassReduce(const ScbeMicro& out);
