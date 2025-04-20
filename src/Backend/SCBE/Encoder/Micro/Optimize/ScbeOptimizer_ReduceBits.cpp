@@ -41,7 +41,7 @@ void ScbeOptimizer::optimizePassReduceBits(const ScbeMicro& out)
 
             if (valid && !keep && !extra)
             {
-                if (!cxt.hasReachedEndOnce || !out.isReturnRegister(inst->regA))
+                if (!cxt.hasReachedEndOnce || !out.isFuncReturnRegister(inst->regA))
                 {
                     ignore(out, inst);
                 }

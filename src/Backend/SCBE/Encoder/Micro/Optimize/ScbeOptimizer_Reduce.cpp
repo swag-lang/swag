@@ -3,6 +3,7 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
+#include "Wmf/SourceFile.h"
 #pragma optimize("", off)
 
 void ScbeOptimizer::reduceNoOp(const ScbeMicro& out, ScbeMicroInstruction* inst, const ScbeMicroInstruction* next)
@@ -968,8 +969,21 @@ void ScbeOptimizer::reduceAliasHwdReg(const ScbeMicro& out, ScbeMicroInstruction
                 out.cc->nonVolatileRegistersInteger.contains(inst->regA) &&
                 out.cc->nonVolatileRegistersInteger.contains(inst->regB))
             {
-                regToReg(out, inst->regB, inst->regA);
-                ignore(out, inst);
+                if (regToReg(out, inst->regB, inst->regA))
+                    ignore(out, inst);
+                break;
+            }
+
+            if (usedWriteRegs[inst->regA] == 1 &&
+                usedWriteRegs[inst->regB] <= 1 &&
+                out.cc->volatileRegistersInteger.contains(inst->regA) &&
+                out.cc->volatileRegistersInteger.contains(inst->regB) &&
+                !out.isFuncReturnRegister(inst->regA) &&
+                !out.isFuncParameterRegister(inst->regA))
+            {
+                if (regToReg(out, inst->regB, inst->regA))
+                    ignore(out, inst);
+                break;
             }
             break;
 
@@ -981,6 +995,7 @@ void ScbeOptimizer::reduceAliasHwdReg(const ScbeMicro& out, ScbeMicroInstruction
                 out.cc->nonVolatileRegistersInteger.contains(inst->regB))
             {
                 regToReg(out, inst->regB, inst->regA);
+                break;
             }
             break;
     }

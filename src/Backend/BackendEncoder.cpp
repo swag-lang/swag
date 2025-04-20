@@ -137,11 +137,18 @@ void BackendEncoder::maskValue(uint64_t& value, OpBits opBits)
     }
 }
 
-bool BackendEncoder::isReturnRegister(CpuReg reg) const
+bool BackendEncoder::isFuncReturnRegister(CpuReg reg) const
 {
     if (!cpuFct->typeFunc->returnByValue() && !cpuFct->typeFunc->returnStructByValue())
         return false;
     if (reg != cc->returnByRegisterInteger && reg != cc->returnByRegisterFloat)
         return false;
     return true;
+}
+
+bool BackendEncoder::isFuncParameterRegister(CpuReg reg) const
+{
+    if (cc->paramsRegistersIntegerSet.contains(reg) || cc->paramsRegistersFloatSet.contains(reg))
+        return true;
+    return false;
 }

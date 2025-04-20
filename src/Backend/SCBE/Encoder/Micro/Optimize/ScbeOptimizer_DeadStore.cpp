@@ -161,7 +161,7 @@ void ScbeOptimizer::optimizePassDeadHdwRegBeforeLeave(const ScbeMicro& out)
                  inst->op == ScbeMicroOp::ClearR ||
                  inst->op == ScbeMicroOp::SetCondR)
         {
-            if (!out.isReturnRegister(inst->regA))
+            if (!out.isFuncReturnRegister(inst->regA))
                 mapRegInst[inst->regA] = inst;
             mapRegInst.erase(inst->regB);
         }

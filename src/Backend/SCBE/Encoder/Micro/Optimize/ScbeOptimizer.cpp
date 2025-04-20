@@ -9,7 +9,20 @@
 
 bool ScbeOptimizer::regToReg(const ScbeMicro& out, CpuReg regDst, CpuReg regSrc, uint32_t firstInst, uint32_t lastInst)
 {
-    auto inst       = out.getFirstInstruction() + firstInst;
+    // First, we need to determine if all instructions that can change accept the new register
+    auto inst = out.getFirstInstruction() + firstInst;
+    while (inst != out.getFirstInstruction() + lastInst && inst->op != ScbeMicroOp::End)
+    {
+        if (inst->hasRegA() && inst->regA == regSrc && !out.cpu->acceptsRegA(inst, regDst))
+            return false;
+        if (inst->hasRegB() && inst->regB == regSrc && !out.cpu->acceptsRegB(inst, regDst))
+            return false;
+        if (inst->hasRegC() && inst->regC == regSrc && !out.cpu->acceptsRegC(inst, regDst))
+            return false;
+        inst = ScbeMicro::getNextInstruction(inst);
+    }
+
+    inst            = out.getFirstInstruction() + firstInst;
     bool hasChanged = false;
     while (inst != out.getFirstInstruction() + lastInst && inst->op != ScbeMicroOp::End)
     {
