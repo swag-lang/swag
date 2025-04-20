@@ -3,6 +3,7 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
+#pragma optimize("", off)
 
 void ScbeOptimizer::reduceNoOp(const ScbeMicro& out, ScbeMicroInstruction* inst, const ScbeMicroInstruction* next)
 {
@@ -946,7 +947,8 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
                 ScbeCpu::isInt(inst->regB) == ScbeCpu::isInt(next->regA) &&
                 next->regB == inst->regA &&
                 next->valueA == inst->valueA &&
-                ScbeCpu::getNumBits(inst->opBitsA) >= ScbeCpu::getNumBits(next->opBitsB))
+                ScbeCpu::getNumBits(inst->opBitsA) >= ScbeCpu::getNumBits(next->opBitsB) &&
+                out.cpu->encodeLoadZeroExtendRegReg(next->regA, inst->regB, next->opBitsA, next->opBitsB, EMIT_CanEncode) == CpuEncodeResult::Zero)
             {
                 setOp(out, next, ScbeMicroOp::LoadZeroExtRR);
                 setRegB(out, next, inst->regB);

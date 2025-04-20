@@ -9,7 +9,8 @@ void ScbeOptimizer::optimizePassReduceBits(const ScbeMicro& out)
     auto inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {
-        if (inst->op == ScbeMicroOp::LoadZeroExtRR)
+        if (inst->op == ScbeMicroOp::LoadZeroExtRR ||
+            inst->op == ScbeMicroOp::LoadZeroExtRM)
         {
             bool       keep  = false;
             const auto valid = exploreAfter(out, inst, [&keep](const ScbeMicro& outIn, const ScbeExploreContext& cxtIn) {
@@ -17,15 +18,11 @@ void ScbeOptimizer::optimizePassReduceBits(const ScbeMicro& out)
                 if (readRegs.contains(cxtIn.startInst->regA))
                 {
                     const auto opBits = cxtIn.curInst->getOpBitsReadReg();
-                    if (BackendEncoder::getNumBits(opBits) > BackendEncoder::getNumBits(cxtIn.startInst->opBitsA))
+                    if (BackendEncoder::getNumBits(opBits) > BackendEncoder::getNumBits(cxtIn.startInst->opBitsB))
+                    {
                         keep = true;
-                    if (BackendEncoder::getNumBits(opBits) < BackendEncoder::getNumBits(cxtIn.startInst->opBitsB))
-                        keep = true;
-                    if (opBits == cxtIn.startInst->opBitsA)
-                        keep = true;
-
-                    if (keep)
                         return ScbeExploreReturn::Stop;
+                    }
                 }
 
                 const auto regs = outIn.cpu->getWriteRegisters(cxtIn.curInst);
@@ -39,8 +36,20 @@ void ScbeOptimizer::optimizePassReduceBits(const ScbeMicro& out)
             {
                 if (!cxt.hasReachedEndOnce || !out.isFuncReturnRegister(inst->regA))
                 {
-                    if (inst->regA == inst->regB)
-                        ignore(out, inst);
+                    switch (inst->op)
+                    {
+                        case ScbeMicroOp::LoadZeroExtRR:
+                            if (inst->regA == inst->regB)
+                                ignore(out, inst);
+                            break;
+                        case ScbeMicroOp::LoadZeroExtRM:
+                            if (out.cpu->encodeLoadRegMem(inst->regA, inst->regB, inst->valueA, inst->opBitsB, EMIT_CanEncode) == CpuEncodeResult::Zero)
+                            {
+                                setOp(out, inst, ScbeMicroOp::LoadRM);
+                                inst->opBitsA = inst->opBitsB;
+                            }
+                            break;
+                    }
                 }
             }
         }
