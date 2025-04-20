@@ -383,8 +383,9 @@ void ScbeOptimizer::computeContextStack(const ScbeMicro& out)
     }
 }
 
-bool ScbeOptimizer::explore(ScbeExploreContext& cxt, const ScbeMicro& out, const std::function<ScbeExploreReturn(const ScbeMicro& out, const ScbeExploreContext&)>& callback)
+bool ScbeOptimizer::exploreAfter(const ScbeMicro& out, ScbeMicroInstruction* inst, const std::function<ScbeExploreReturn(const ScbeMicro& out, const ScbeExploreContext&)>& callback)
 {
+    cxt.startInst = inst;
     cxt.done.clear();
     cxt.pending.clear();
     cxt.hasReachedEndOnce = false;
@@ -436,6 +437,26 @@ bool ScbeOptimizer::explore(ScbeExploreContext& cxt, const ScbeMicro& out, const
     }
 
     return true;
+}
+
+bool ScbeOptimizer::hasReadRegAfter(const ScbeMicro& out, ScbeMicroInstruction* inst, CpuReg reg)
+{
+    bool       hasRead = false;
+    const auto valid   = exploreAfter(out, inst, [reg, &hasRead](const ScbeMicro& outIn, const ScbeExploreContext& cxtIn) {
+        const auto readReg = outIn.cpu->getReadRegisters(cxtIn.curInst);
+        if (readReg.contains(reg))
+        {
+            hasRead = true;
+            return ScbeExploreReturn::Stop;
+        }
+
+        const auto writeReg = outIn.cpu->getWriteRegisters(cxtIn.curInst);
+        if (writeReg.contains(reg))
+            return ScbeExploreReturn::Break;
+        return ScbeExploreReturn::Continue;
+    });
+
+    return !valid || hasRead;
 }
 
 void ScbeOptimizer::optimizeStep1(const ScbeMicro& out)

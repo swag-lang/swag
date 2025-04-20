@@ -48,9 +48,7 @@ void ScbeOptimizer::optimizePassDeadHdwReg2(const ScbeMicro& out)
             }
 
             bool hasRead  = false;
-            cxt.startInst = inst;
-
-            const auto valid = explore(cxt, out, [&hasRead](const ScbeMicro& outIn, const ScbeExploreContext& cxtIn) {
+            const auto valid = exploreAfter(out, inst, [&hasRead](const ScbeMicro& outIn, const ScbeExploreContext& cxtIn) {
                 const auto readRegs = outIn.cpu->getReadRegisters(cxtIn.curInst);
                 if (readRegs.contains(cxtIn.startInst->regA))
                 {

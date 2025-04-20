@@ -12,9 +12,8 @@ void ScbeOptimizer::optimizePassDeadCode(const ScbeMicro& out)
         inst = ScbeMicro::getNextInstruction(inst);
     }
 
-    cxt.startInst = out.getFirstInstruction();
-    cxt.startInst->flags.add(MIF_REACHED);
-    const auto valid = explore(cxt, out, [](const ScbeMicro& outIn, const ScbeExploreContext& cxtIn) {
+    out.getFirstInstruction()->flags.add(MIF_REACHED);
+    const auto valid = exploreAfter(out, out.getFirstInstruction(), [](const ScbeMicro& outIn, const ScbeExploreContext& cxtIn) {
         cxtIn.curInst->flags.add(MIF_REACHED);
         return ScbeExploreReturn::Continue;
     });

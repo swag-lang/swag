@@ -13,10 +13,9 @@ void ScbeOptimizer::optimizePassReduceBits(const ScbeMicro& out)
         if (inst->op == ScbeMicroOp::LoadZeroExtRR &&
             inst->regA == inst->regB)
         {
-            bool keep        = false;
-            bool extra       = false;
-            cxt.startInst    = inst;
-            const auto valid = explore(cxt, out, [&keep, &extra](const ScbeMicro& outIn, const ScbeExploreContext& cxtIn) {
+            bool       keep  = false;
+            bool       extra = false;
+            const auto valid = exploreAfter(out, inst, [&keep, &extra](const ScbeMicro& outIn, const ScbeExploreContext& cxtIn) {
                 const auto readRegs = outIn.cpu->getReadRegisters(cxtIn.curInst);
                 if (readRegs.contains(cxtIn.startInst->regA))
                 {

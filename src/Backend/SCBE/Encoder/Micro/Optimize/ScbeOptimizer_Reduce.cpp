@@ -3,7 +3,7 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
-#include "Wmf/SourceFile.h"
+#pragma optimize("", off)
 
 void ScbeOptimizer::reduceNoOp(const ScbeMicro& out, ScbeMicroInstruction* inst, const ScbeMicroInstruction* next)
 {
@@ -265,7 +265,20 @@ void ScbeOptimizer::reduceMemOffset(const ScbeMicro& out, ScbeMicroInstruction* 
                     swapInstruction(out, inst, next);
                 break;
             }
-            break;             
+            break;
+
+        case ScbeMicroOp::CmpMI:
+            if (next->regA == inst->regA &&
+                out.cpu->encodeCmpMemImm(next->regA, next->valueA + inst->valueA, next->valueB, next->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+            {
+                if (!hasReadRegAfter(out, next, inst->regA))
+                {
+                    setValueA(out, next, next->valueA + inst->valueA);
+                    ignore(out, inst);
+                }
+                break;
+            }
+            break;
     }
 }
 
