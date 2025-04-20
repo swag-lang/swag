@@ -133,43 +133,42 @@ void ScbeOptimizer::reduceInst(const ScbeMicro& out, ScbeMicroInstruction* inst)
 
 void ScbeOptimizer::reduceLoadRR(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next)
 {
+    if (inst->hasReadRegA() || !inst->hasWriteRegA())
+        return;
     if (next->isJump() || next->isJumpDest())
         return;
+    if (next->op != ScbeMicroOp::LoadRR)
+        return;
+    if (next->regB != inst->regA || !ScbeCpu::isInt(next->regA) || !ScbeCpu::isInt(next->regB))
+        return;
+    if (!out.cpu->acceptsRegB(inst, next->regA))
+        return;
 
-    if (next->op == ScbeMicroOp::LoadRR &&
-        !inst->hasReadRegA() &&
-        inst->hasWriteRegA() &&
-        next->regB == inst->regA &&
-        ScbeCpu::isInt(next->regA) &&
-        ScbeCpu::isInt(next->regB))
+    auto nextNext = ScbeMicro::getNextInstruction(next);
+    while (true)
     {
-        auto nextNext = ScbeMicro::getNextInstruction(next);
-        while (true)
+        if (nextNext->isJump() || nextNext->isJumpDest() || nextNext->isRet())
+            break;
+
+        const auto readRegs  = out.cpu->getReadRegisters(nextNext);
+        const auto writeRegs = out.cpu->getWriteRegisters(nextNext);
+
+        if (nextNext->op != ScbeMicroOp::LoadRR &&
+            writeRegs.contains(inst->regA) &&
+            !readRegs.contains(inst->regA))
         {
-            if (nextNext->isJump() || nextNext->isJumpDest() || nextNext->isRet())
-                break;
-
-            const auto readRegs  = out.cpu->getReadRegisters(nextNext);
-            const auto writeRegs = out.cpu->getWriteRegisters(nextNext);
-
-            if (nextNext->op != ScbeMicroOp::LoadRR &&
-                out.cpu->acceptsRegB(inst, next->regA) &&
-                writeRegs.contains(inst->regA) &&
-                !readRegs.contains(inst->regA))
-            {
-                setRegA(out, inst, next->regA);
-                ignore(out, next);
-                break;
-            }
-
-            if (readRegs.contains(inst->regA))
-                break;
-            nextNext = ScbeMicro::getNextInstruction(nextNext);
+            setRegA(out, inst, next->regA);
+            ignore(out, next);
+            break;
         }
+
+        if (readRegs.contains(inst->regA))
+            break;
+        nextNext = ScbeMicro::getNextInstruction(nextNext);
     }
 }
 
-void ScbeOptimizer::reduceOffset(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next)
+void ScbeOptimizer::reduceMemOffset(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next)
 {
     if (next->isJump() || next->isJumpDest())
         return;
@@ -1000,7 +999,7 @@ void ScbeOptimizer::reduceAliasHwdReg(const ScbeMicro& out, ScbeMicroInstruction
             {
                 regToReg(out, inst->regB, inst->regA);
             }
-            break;            
+            break;
     }
 }
 
@@ -1016,7 +1015,7 @@ void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
         reduceNext(out, inst, next);
         reduceLoadAddress(out, inst, next);
         reduceDup(out, inst, next);
-        reduceOffset(out, inst, next);
+        reduceMemOffset(out, inst, next);
         reduceLoadRR(out, inst, next);
         reduceInst(out, inst);
         reduceAliasHwdReg(out, inst);
