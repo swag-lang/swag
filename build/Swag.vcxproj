@@ -443,7 +443,7 @@
     <ClCompile Include="..\src\Backend\SCBE\Encoder\Micro\Optimize\ScbeOptimizer_Alias.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Encoder\Micro\Optimize\ScbeOptimizer_DeadCode.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Encoder\Micro\Optimize\ScbeOptimizer_DeadStore.cpp" />
-    <ClCompile Include="..\src\Backend\SCBE\Encoder\Micro\Optimize\ScbeOptimizer_HdwReg.cpp" />
+    <ClCompile Include="..\src\Backend\SCBE\Encoder\Micro\Optimize\ScbeOptimizer_MakeVolatile.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Encoder\Micro\Optimize\ScbeOptimizer_Imm.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Encoder\Micro\Optimize\ScbeOptimizer_ReduceBits.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Encoder\Micro\Optimize\ScbeOptimizer_StackToReg.cpp" />
