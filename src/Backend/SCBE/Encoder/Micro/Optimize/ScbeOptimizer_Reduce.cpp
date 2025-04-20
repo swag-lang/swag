@@ -75,7 +75,7 @@ void ScbeOptimizer::reduceInst(const ScbeMicro& out, ScbeMicroInstruction* inst)
                 setDirtyPass();
                 break;
             }
-            
+
             break;
 
         case ScbeMicroOp::LoadAmcMR:
@@ -87,7 +87,7 @@ void ScbeOptimizer::reduceInst(const ScbeMicro& out, ScbeMicroInstruction* inst)
                 break;
             }
 
-            break;            
+            break;
 
         case ScbeMicroOp::LoadAmcRM:
             if (inst->regC == CpuReg::Rsp)
@@ -330,7 +330,7 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
                 else
                     swapInstruction(out, inst, next);
                 break;
-            }            
+            }
 
             if (next->op == ScbeMicroOp::OpBinaryRR &&
                 next->cpuOp == CpuOp::ADD &&
@@ -917,6 +917,19 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
                 break;
             }
 
+            break;
+
+        case ScbeMicroOp::LoadMI:
+            if (next->op == ScbeMicroOp::LoadRM &&
+                inst->regA == next->regB &&
+                inst->valueA == next->valueA &&
+                inst->opBitsA == next->opBitsA &&
+                out.cpu->encodeLoadRegImm(next->regA, inst->valueB, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+            {
+                setOp(out, next, ScbeMicroOp::LoadRI);
+                setValueA(out, next, inst->valueB);
+                break;
+            }
             break;
 
         case ScbeMicroOp::LoadMR:

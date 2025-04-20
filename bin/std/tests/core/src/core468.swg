@@ -1,6 +1,6 @@
 using Core, Core.Math
 
-#[Swag.PrintAsm]
+//#[Swag.PrintAsm]
 #test
 {
     var a, b: Vector2
