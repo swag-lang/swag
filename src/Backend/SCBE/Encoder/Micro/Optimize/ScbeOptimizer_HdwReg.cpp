@@ -3,16 +3,17 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
+#pragma optimize("", off)
 
 void ScbeOptimizer::optimizePassMakeVolatile(const ScbeMicro& out)
 {
-    for (const auto rvol : unusedVolatileInteger)
+    for (const auto vol : unusedVolatileInteger)
     {
-        for (const auto rn : out.cc->nonVolatileRegistersInteger)
+        for (const auto perm : out.cc->nonVolatileRegistersInteger)
         {
-            if (!unusedNonVolatileInteger.contains(rn))
+            if (!unusedNonVolatileInteger.contains(perm))
             {
-                if (regToReg(out, rvol, rn))
+                if (regToReg(out, vol, perm))
                     return;
             }
         }
@@ -70,6 +71,15 @@ void ScbeOptimizer::optimizePassDupHdwReg(const ScbeMicro& out)
             regToReg(out, inst->regB, inst->regA);
             ignore(out, inst);
         }
+
+        if (inst->op == ScbeMicroOp::LoadZeroExtRR &&
+            usedWriteRegs[inst->regA] == 1 &&
+            usedWriteRegs[inst->regB] <= 1 &&
+            out.cc->nonVolatileRegistersInteger.contains(inst->regA) &&
+            out.cc->nonVolatileRegistersInteger.contains(inst->regB))
+        {
+            regToReg(out, inst->regB, inst->regA);
+        }        
 
         inst = ScbeMicro::getNextInstruction(inst);
     }
