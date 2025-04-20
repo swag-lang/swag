@@ -148,7 +148,16 @@ bool BackendEncoder::isFuncReturnRegister(CpuReg reg) const
 
 bool BackendEncoder::isFuncParameterRegister(CpuReg reg) const
 {
-    if (cc->paramsRegistersIntegerSet.contains(reg) || cc->paramsRegistersFloatSet.contains(reg))
-        return true;
+    if (cpuFct->typeFunc->numParamsRegisters() == 0)
+        return false;
+    if (!cc->paramsRegistersIntegerSet.contains(reg) && !cc->paramsRegistersFloatSet.contains(reg))
+        return false;
+    
+    for (uint32_t i = 0; i < cpuFct->typeFunc->numParamsRegisters(); i++)
+    {
+        if (reg == cc->paramsRegistersInteger[i] || reg == cc->paramsRegistersFloat[i])
+            return true;
+    }
+
     return false;
 }

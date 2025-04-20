@@ -964,22 +964,23 @@ void ScbeOptimizer::reduceAliasHwdReg(const ScbeMicro& out, ScbeMicroInstruction
     switch (inst->op)
     {
         case ScbeMicroOp::LoadRR:
-            if (usedWriteRegs[inst->regA] == 1 &&
-                usedWriteRegs[inst->regB] <= 1 &&
-                out.cc->nonVolatileRegistersInteger.contains(inst->regA) &&
-                out.cc->nonVolatileRegistersInteger.contains(inst->regB))
+            if (out.cc->nonVolatileRegistersInteger.contains(inst->regA) &&
+                out.cc->nonVolatileRegistersInteger.contains(inst->regB) &&
+                usedWriteRegs[inst->regA] == 1 &&
+                usedWriteRegs[inst->regB] <= 1)
             {
                 if (regToReg(out, inst->regB, inst->regA))
                     ignore(out, inst);
                 break;
             }
 
-            if (usedWriteRegs[inst->regA] == 1 &&
-                usedWriteRegs[inst->regB] <= 1 &&
-                out.cc->volatileRegistersInteger.contains(inst->regA) &&
+            if (out.cc->volatileRegistersInteger.contains(inst->regA) &&
                 out.cc->volatileRegistersInteger.contains(inst->regB) &&
+                usedWriteRegs[inst->regA] == 1 &&
+                usedWriteRegs[inst->regB] <= 1 &&
                 !out.isFuncReturnRegister(inst->regA) &&
-                !out.isFuncParameterRegister(inst->regA))
+                !out.isFuncParameterRegister(inst->regA) &&
+                (usedWriteRegs[inst->regB] == 0 || !out.isFuncParameterRegister(inst->regB)))
             {
                 if (regToReg(out, inst->regB, inst->regA))
                     ignore(out, inst);
@@ -989,10 +990,22 @@ void ScbeOptimizer::reduceAliasHwdReg(const ScbeMicro& out, ScbeMicroInstruction
 
         case ScbeMicroOp::LoadSignedExtRR:
         case ScbeMicroOp::LoadZeroExtRR:
-            if (usedWriteRegs[inst->regA] == 1 &&
+            if (out.cc->nonVolatileRegistersInteger.contains(inst->regA) &&
+                out.cc->nonVolatileRegistersInteger.contains(inst->regB) &&
+                usedWriteRegs[inst->regA] == 1 &&
+                usedWriteRegs[inst->regB] <= 1)
+            {
+                regToReg(out, inst->regB, inst->regA);
+                break;
+            }
+
+            if (out.cc->volatileRegistersInteger.contains(inst->regA) &&
+                out.cc->volatileRegistersInteger.contains(inst->regB) &&
+                usedWriteRegs[inst->regA] == 1 &&
                 usedWriteRegs[inst->regB] <= 1 &&
-                out.cc->nonVolatileRegistersInteger.contains(inst->regA) &&
-                out.cc->nonVolatileRegistersInteger.contains(inst->regB))
+                !out.isFuncReturnRegister(inst->regA) &&
+                !out.isFuncParameterRegister(inst->regA) &&
+                (usedWriteRegs[inst->regB] == 0 || !out.isFuncParameterRegister(inst->regB)))
             {
                 regToReg(out, inst->regB, inst->regA);
                 break;
