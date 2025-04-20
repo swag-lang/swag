@@ -3,7 +3,6 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Wmf/SourceFile.h"
-#pragma optimize("", off)
 
 void ScbeOptimizer::optimizePassReduceBits(const ScbeMicro& out)
 {

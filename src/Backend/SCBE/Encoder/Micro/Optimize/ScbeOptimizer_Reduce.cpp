@@ -3,8 +3,6 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
-#include "Wmf/SourceFile.h"
-#pragma optimize("", off)
 
 void ScbeOptimizer::reduceNoOp(const ScbeMicro& out, ScbeMicroInstruction* inst, const ScbeMicroInstruction* next)
 {
