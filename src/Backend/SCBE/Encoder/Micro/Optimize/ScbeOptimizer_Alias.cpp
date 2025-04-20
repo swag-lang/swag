@@ -346,3 +346,49 @@ void ScbeOptimizer::optimizePassAliasLoadRR(const ScbeMicro& out)
         inst = ScbeMicro::getNextInstruction(inst);
     }
 }
+
+void ScbeOptimizer::optimizePassAliasLoadExtend(const ScbeMicro& out)
+{
+    mapRegInst.clear();
+
+    auto inst = out.getFirstInstruction();
+    while (inst->op != ScbeMicroOp::End)
+    {
+        if (inst->isJump() && !inst->isJumpCond())
+            mapRegInst.clear();
+        if (inst->isJumpDest() || inst->isRet())
+            mapRegInst.clear();
+
+        if (inst->op == ScbeMicroOp::LoadZeroExtRR &&
+            mapRegInst.contains(inst->regB))
+        {
+            const auto prev = mapRegInst[inst->regB];
+            if (prev->regB != inst->regB &&
+                prev->opBitsB == inst->opBitsB)
+            {
+                setRegB(out, inst, prev->regB);
+            }
+        }
+
+        const auto writeRegs = out.cpu->getWriteRegisters(inst);
+        for (const auto r : writeRegs)
+        {
+            mapRegInst.erase(r);
+
+            VectorNative<CpuReg> toErase;
+            for (const auto& [r1, i] : mapRegInst)
+            {
+                if (i->regB == r)
+                    toErase.push_back(r1);
+            }
+
+            for (const auto r1 : toErase)
+                mapRegInst.erase(r1);
+        }
+
+        if (inst->op == ScbeMicroOp::LoadZeroExtRR)
+            mapRegInst[inst->regA] = inst;
+
+        inst = ScbeMicro::getNextInstruction(inst);
+    }
+}

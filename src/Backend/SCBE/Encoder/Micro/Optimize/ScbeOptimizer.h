@@ -65,6 +65,7 @@ struct ScbeOptimizer
     void optimizePassSwap(const ScbeMicro& out);
     void optimizePassAliasLoadRM(const ScbeMicro& out);
     void optimizePassAliasLoadRR(const ScbeMicro& out);
+    void optimizePassAliasLoadExtend(const ScbeMicro& out);
     void optimizePassAliasLoadAddr(const ScbeMicro& out);
     void optimizePassReduceBits(const ScbeMicro& out);
 

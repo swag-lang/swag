@@ -450,6 +450,7 @@ void ScbeOptimizer::optimizeStep1(const ScbeMicro& out)
     optimizePassDeadHdwReg(out);
     optimizePassDeadHdwRegBeforeLeave(out);
     optimizePassAliasLoadRR(out);
+    optimizePassAliasLoadExtend(out);
     optimizePassAliasLoadAddr(out);
     optimizePassAliasLoadRM(out);
     optimizePassSwap(out);
