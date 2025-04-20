@@ -9,12 +9,10 @@ void ScbeOptimizer::optimizePassReduceBits(const ScbeMicro& out)
     auto inst = out.getFirstInstruction();
     while (inst->op != ScbeMicroOp::End)
     {
-        if (inst->op == ScbeMicroOp::LoadZeroExtRR &&
-            inst->regA == inst->regB)
+        if (inst->op == ScbeMicroOp::LoadZeroExtRR)
         {
             bool       keep  = false;
-            bool       extra = false;
-            const auto valid = exploreAfter(out, inst, [&keep, &extra](const ScbeMicro& outIn, const ScbeExploreContext& cxtIn) {
+            const auto valid = exploreAfter(out, inst, [&keep](const ScbeMicro& outIn, const ScbeExploreContext& cxtIn) {
                 const auto readRegs = outIn.cpu->getReadRegisters(cxtIn.curInst);
                 if (readRegs.contains(cxtIn.startInst->regA))
                 {
@@ -25,7 +23,7 @@ void ScbeOptimizer::optimizePassReduceBits(const ScbeMicro& out)
                         keep = true;
                     if (opBits == cxtIn.startInst->opBitsA)
                         keep = true;
-                    
+
                     if (keep)
                         return ScbeExploreReturn::Stop;
                 }
@@ -37,11 +35,12 @@ void ScbeOptimizer::optimizePassReduceBits(const ScbeMicro& out)
                 return ScbeExploreReturn::Continue;
             });
 
-            if (valid && !keep && !extra)
+            if (valid && !keep)
             {
                 if (!cxt.hasReachedEndOnce || !out.isFuncReturnRegister(inst->regA))
                 {
-                    ignore(out, inst);
+                    if (inst->regA == inst->regB)
+                        ignore(out, inst);
                 }
             }
         }

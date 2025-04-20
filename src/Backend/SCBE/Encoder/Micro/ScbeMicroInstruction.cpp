@@ -7,21 +7,10 @@ OpBits ScbeMicroInstruction::getOpBitsReadReg() const
     if (hasLeftOpFlag(MOF_READ_REG) && hasLeftOpFlag(MOF_OPBITS_A))
         return opBitsA;
     if (hasRightOpFlag(MOF_READ_REG) && hasRightOpFlag(MOF_OPBITS_A))
-        return opBitsA;    
+        return opBitsA;
     if (hasRightOpFlag(MOF_READ_REG) && hasRightOpFlag(MOF_OPBITS_B))
         return opBitsB;
-    return OpBits::Zero;
-}
-
-OpBits ScbeMicroInstruction::getOpBitsWriteReg() const
-{
-    if (hasLeftOpFlag(MOF_WRITE_REG) && hasLeftOpFlag(MOF_OPBITS_A))
-        return opBitsA;
-    if (hasRightOpFlag(MOF_WRITE_REG) && hasRightOpFlag(MOF_OPBITS_A))
-        return opBitsA;    
-    if (hasRightOpFlag(MOF_WRITE_REG) && hasRightOpFlag(MOF_OPBITS_B))
-        return opBitsB;
-    return OpBits::Zero;    
+    return OpBits::B64;
 }
 
 bool ScbeMicroInstruction::hasReadRegA() const

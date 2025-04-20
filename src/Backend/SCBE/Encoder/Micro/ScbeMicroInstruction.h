@@ -36,7 +36,6 @@ struct ScbeMicroInstruction
     bool hasRegC() const { return (hasReadRegC() || hasWriteRegC()); }
 
     OpBits getOpBitsReadReg() const;
-    OpBits getOpBitsWriteReg() const;
 
     uint32_t getNumBytes() const;
 
