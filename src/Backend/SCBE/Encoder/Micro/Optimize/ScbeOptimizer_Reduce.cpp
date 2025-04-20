@@ -240,6 +240,32 @@ void ScbeOptimizer::reduceMemOffset(const ScbeMicro& out, ScbeMicroInstruction* 
                 break;
             }
             break;
+
+        case ScbeMicroOp::LoadZeroExtRM:
+            if (next->regB == inst->regA &&
+                out.cpu->encodeLoadZeroExtendRegMem(next->regA, next->regB, next->valueA + inst->valueA, next->opBitsA, next->opBitsB, EMIT_CanEncode) == CpuEncodeResult::Zero)
+            {
+                setValueA(out, next, next->valueA + inst->valueA);
+                if (next->regA == inst->regA)
+                    ignore(out, inst);
+                else
+                    swapInstruction(out, inst, next);
+                break;
+            }
+            break;
+
+        case ScbeMicroOp::LoadSignedExtRM:
+            if (next->regB == inst->regA &&
+                out.cpu->encodeLoadSignedExtendRegMem(next->regA, next->regB, next->valueA + inst->valueA, next->opBitsA, next->opBitsB, EMIT_CanEncode) == CpuEncodeResult::Zero)
+            {
+                setValueA(out, next, next->valueA + inst->valueA);
+                if (next->regA == inst->regA)
+                    ignore(out, inst);
+                else
+                    swapInstruction(out, inst, next);
+                break;
+            }
+            break;             
     }
 }
 
