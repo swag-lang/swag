@@ -19,16 +19,15 @@ void ScbeOptimizer::optimizePassReduceBits(const ScbeMicro& out)
                 if (readRegs.contains(cxtIn.startInst->regA))
                 {
                     const auto opBits = cxtIn.curInst->getOpBitsReadReg();
-                    if (opBits != OpBits::Zero && BackendEncoder::getNumBits(opBits) > BackendEncoder::getNumBits(cxtIn.startInst->opBitsA))
-                        extra = true;
-                    if (opBits != OpBits::Zero && BackendEncoder::getNumBits(opBits) < BackendEncoder::getNumBits(cxtIn.startInst->opBitsB))
-                        extra = true;
-
-                    if (opBits == cxtIn.startInst->opBitsA)
-                    {
+                    if (BackendEncoder::getNumBits(opBits) > BackendEncoder::getNumBits(cxtIn.startInst->opBitsA))
                         keep = true;
+                    if (BackendEncoder::getNumBits(opBits) < BackendEncoder::getNumBits(cxtIn.startInst->opBitsB))
+                        keep = true;
+                    if (opBits == cxtIn.startInst->opBitsA)
+                        keep = true;
+                    
+                    if (keep)
                         return ScbeExploreReturn::Stop;
-                    }
                 }
 
                 const auto regs = outIn.cpu->getWriteRegisters(cxtIn.curInst);

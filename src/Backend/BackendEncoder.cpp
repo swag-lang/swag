@@ -48,7 +48,6 @@ uint32_t BackendEncoder::getNumBits(OpBits opBits)
             return 128;
     }
 
-    SWAG_ASSERT(false);
     return 0;
 }
 
