@@ -47,30 +47,10 @@ void ScbeOptimizer::optimizePassDeadHdwReg2(const ScbeMicro& out)
                 }
             }
 
-            bool hasRead  = false;
-            const auto valid = exploreAfter(out, inst, [&hasRead](const ScbeMicro& outIn, const ScbeExploreContext& cxtIn) {
-                const auto readRegs = outIn.cpu->getReadRegisters(cxtIn.curInst);
-                if (readRegs.contains(cxtIn.startInst->regA))
-                {
-                    hasRead = true;
-                    return ScbeExploreReturn::Stop;
-                }
-
-                const auto writeRegs = outIn.cpu->getWriteRegisters(cxtIn.curInst);
-                if (writeRegs.contains(cxtIn.startInst->regA))
-                    return ScbeExploreReturn::Break;
-
-                return ScbeExploreReturn::Continue;
-            });
-
-            if (valid && !hasRead)
+            if (!hasReadRegAfter(out, inst, inst->regA))
             {
-                if (!cxt.hasReachedEndOnce ||
-                    (!out.cpuFct->typeFunc->returnByValue() && !out.cpuFct->typeFunc->returnStructByValue()) ||
-                    (inst->regA != out.cc->returnByRegisterInteger && inst->regA != out.cc->returnByRegisterFloat))
-                {
+                if (!cxt.hasReachedEndOnce || !out.isFuncReturnRegister(inst->regA))
                     ignore(out, inst);
-                }
             }
         }
 
