@@ -3,6 +3,7 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
+#include "Wmf/SourceFile.h"
 
 void ScbeOptimizer::reduceNoOp(const ScbeMicro& out, ScbeMicroInstruction* inst, const ScbeMicroInstruction* next)
 {
@@ -185,10 +186,21 @@ void ScbeOptimizer::reduceMemOffset(const ScbeMicro& out, ScbeMicroInstruction* 
                 swapInstruction(out, inst, next);
                 break;
             }
+            break;
 
         case ScbeMicroOp::OpBinaryMR:
             if (next->regA == inst->regA &&
                 out.cpu->encodeOpBinaryMemReg(next->regA, next->valueA + inst->valueA, inst->regB, next->cpuOp, next->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+            {
+                setValueA(out, next, next->valueA + inst->valueA);
+                swapInstruction(out, inst, next);
+                break;
+            }
+            break;
+
+        case ScbeMicroOp::OpUnaryM:
+            if (next->regA == inst->regA &&
+                out.cpu->encodeOpUnaryMem(next->regA, next->valueA + inst->valueA, next->cpuOp, next->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
             {
                 setValueA(out, next, next->valueA + inst->valueA);
                 swapInstruction(out, inst, next);
@@ -216,12 +228,15 @@ void ScbeOptimizer::reduceMemOffset(const ScbeMicro& out, ScbeMicroInstruction* 
             }
             break;
 
-        case ScbeMicroOp::OpUnaryM:
-            if (next->regA == inst->regA &&
-                out.cpu->encodeOpUnaryMem(next->regA, next->valueA + inst->valueA, next->cpuOp, next->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+        case ScbeMicroOp::LoadRM:
+            if (next->regB == inst->regA &&
+                out.cpu->encodeLoadRegMem(next->regA, next->regB, next->valueA + inst->valueA, next->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
             {
                 setValueA(out, next, next->valueA + inst->valueA);
-                swapInstruction(out, inst, next);
+                if (next->regA == inst->regA)
+                    ignore(out, inst);
+                else
+                    swapInstruction(out, inst, next);
                 break;
             }
             break;
