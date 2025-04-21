@@ -201,6 +201,24 @@ void ScbeOptimizer::reduceLoadRRBack(const ScbeMicro& out, ScbeMicroInstruction*
                 setRegA(out, inst, nextNext->regA);
                 setRegA(out, next, nextNext->regA);
                 ignore(out, nextNext);
+                break;
+            }
+            break;
+
+        case ScbeMicroOp::OpBinaryRR:
+            if (next->hasReadRegA() &&
+                next->hasWriteRegA() &&
+                next->regB != nextNext->regA &&
+                out.cpu->acceptsRegA(inst, nextNext->regA) &&
+                out.cpu->acceptsRegA(next, nextNext->regA) &&
+                (next->regB != next->regA || out.cpu->acceptsRegB(next, nextNext->regA)))
+            {
+                setRegA(out, inst, nextNext->regA);
+                if (next->regB == next->regA)
+                    setRegB(out, next, nextNext->regA);
+                setRegA(out, next, nextNext->regA);
+                ignore(out, nextNext);
+                break;
             }
             break;
     }
