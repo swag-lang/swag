@@ -132,6 +132,8 @@ namespace
                 return "neg";
             case CpuOp::NOT:
                 return "not";
+            case CpuOp::BSWAP:
+                return "bswap";                
             case CpuOp::POPCNT:
                 return "popcnt";
             case CpuOp::MULADD:
