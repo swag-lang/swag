@@ -1016,6 +1016,17 @@ void ScbeOptimizer::reduceAliasHwdReg(const ScbeMicro& out, ScbeMicroInstruction
     }
 }
 
+void ScbeOptimizer::reduceUnusedStack(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction*)
+{
+    const auto stackOffset = inst->getStackOffsetWrite();
+    if (out.cpuFct->isStackOffsetTransient(stackOffset))
+    {
+        const auto size = inst->getNumBytes();
+        if (!rangeReadStack.contains(static_cast<uint32_t>(inst->valueA), size))
+            ignore(out, inst);
+    }
+}
+
 void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
 {
     auto inst = out.getFirstInstruction();
@@ -1032,17 +1043,6 @@ void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
         reduceInst(out, inst);
         reduceAliasHwdReg(out, inst);
         inst = next;
-    }
-}
-
-void ScbeOptimizer::reduceUnusedStack(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction*)
-{
-    const auto stackOffset = inst->getStackOffsetWrite();
-    if (out.cpuFct->isStackOffsetTransient(stackOffset))
-    {
-        const auto size = inst->getNumBytes();
-        if (!rangeReadStack.contains(static_cast<uint32_t>(inst->valueA), size))
-            ignore(out, inst);
     }
 }
 
