@@ -2,7 +2,6 @@
 #include "Backend/SCBE/Encoder/Micro/Optimize/ScbeOptimizer.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
-#include "Wmf/SourceFile.h"
 
 void ScbeOptimizer::optimizePassReduceBits(const ScbeMicro& out)
 {
