@@ -7,6 +7,7 @@
 #include "Semantic/Type/TypeManager.h"
 #include "Wmf/Module.h"
 #pragma warning(disable : 4063)
+#pragma optimize("", off)
 
 enum class ModRMMode : uint8_t
 {
@@ -2149,7 +2150,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
                 return CpuEncodeResult::Zero;
             if (opBits == OpBits::B8)
                 emitLoadSignedExtendRegReg(reg, reg, OpBits::B32, opBits);
-            emitREX(concat, opBits, REX_REG_NONE, reg);
+            emitREX(concat, opBits, reg, reg);
             emitCPUOp(concat, 0x6B);
             emitModRM(concat, reg, reg);
             emitValue(concat, value, OpBits::B8);
@@ -2160,7 +2161,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
                 return CpuEncodeResult::Zero;
             if (opBits == OpBits::B8 || opBits == OpBits::B16)
                 emitLoadSignedExtendRegReg(reg, reg, OpBits::B32, opBits);
-            emitREX(concat, opBits, REX_REG_NONE, reg);
+            emitREX(concat, opBits, reg, reg);
             emitCPUOp(concat, 0x69);
             emitModRM(concat, reg, reg);
             emitValue(concat, value, OpBits::B32);

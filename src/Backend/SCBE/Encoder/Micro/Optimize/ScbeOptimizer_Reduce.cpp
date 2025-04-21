@@ -3,6 +3,7 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
+#include "Wmf/SourceFile.h"
 #pragma optimize("", off)
 
 void ScbeOptimizer::reduceNoOp(const ScbeMicro& out, ScbeMicroInstruction* inst, const ScbeMicroInstruction* next)
@@ -167,6 +168,41 @@ void ScbeOptimizer::reduceLoadRR(const ScbeMicro& out, ScbeMicroInstruction* ins
         if (readRegs.contains(inst->regA))
             break;
         nextNext = ScbeMicro::getNextInstruction(nextNext);
+    }
+}
+
+void ScbeOptimizer::reduceLoadRRBack(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroInstruction* next)
+{
+    if (inst->op != ScbeMicroOp::LoadRR)
+        return;
+    if (next->isJump() || next->isJumpDest())
+        return;
+    const auto nextNext = ScbeMicro::getNextInstruction(next);
+    if (nextNext->isJumpDest())
+        return;
+    if (nextNext->op != ScbeMicroOp::LoadRR)
+        return;
+    if (nextNext->regB != inst->regA)
+        return;
+    const auto readRegs = out.cpu->getReadRegisters(next);
+    if (!readRegs.contains(inst->regA))
+        return;
+    const auto writeRegs = out.cpu->getWriteRegisters(next);
+    if (!writeRegs.contains(inst->regA))
+        return;
+    if (hasReadRegAfter(out, nextNext, inst->regA))
+        return;
+
+    switch (next->op)
+    {
+        case ScbeMicroOp::OpBinaryRI:
+            if (out.cpu->acceptsRegA(inst, nextNext->regA) && out.cpu->acceptsRegA(next, nextNext->regA))
+            {
+                setRegA(out, inst, nextNext->regA);
+                setRegA(out, next, nextNext->regA);
+                ignore(out, nextNext);
+            }
+            break;
     }
 }
 
@@ -988,6 +1024,8 @@ void ScbeOptimizer::reduceAliasHwdReg(const ScbeMicro& out, ScbeMicroInstruction
     switch (inst->op)
     {
         case ScbeMicroOp::LoadRR:
+            if (inst->regA == inst->regB)
+                break;
             if (out.cc->nonVolatileRegistersInteger.contains(inst->regA) &&
                 out.cc->nonVolatileRegistersInteger.contains(inst->regB) &&
                 usedWriteRegs[inst->regA] == 1 &&
@@ -1014,6 +1052,8 @@ void ScbeOptimizer::reduceAliasHwdReg(const ScbeMicro& out, ScbeMicroInstruction
 
         case ScbeMicroOp::LoadSignedExtRR:
         case ScbeMicroOp::LoadZeroExtRR:
+            if (inst->regA == inst->regB)
+                break;
             if (out.cc->nonVolatileRegistersInteger.contains(inst->regA) &&
                 out.cc->nonVolatileRegistersInteger.contains(inst->regB) &&
                 usedWriteRegs[inst->regA] == 1 &&
@@ -1074,6 +1114,7 @@ void ScbeOptimizer::optimizePassReduce2(const ScbeMicro& out)
     while (inst->op != ScbeMicroOp::End)
     {
         const auto next = ScbeMicro::getNextInstruction(inst);
+        reduceLoadRRBack(out, inst, next);
         reduceUnusedStack(out, inst, next);
         inst = next;
     }
