@@ -1,1 +1,1 @@
-..\bin\swag_devmode test -w:../bin/testsuite --rebuild %1 %2 %3 %4
+..\bin\swag_devmode test -w:../bin/testsuite --rebuild %1 %2 %3 %4 %5 %6
