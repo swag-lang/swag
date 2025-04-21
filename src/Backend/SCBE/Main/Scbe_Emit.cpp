@@ -533,7 +533,7 @@ void Scbe::emitCopyVaargs(ScbeCpu& pp)
             offset += sizeOf;
         }
 
-        pp.emitLoadAddressMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->sizeStackCallParams - variadicStackSize);
+        pp.emitLoadAddressMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->sizeStackCallParams - variadicStackSize, OpBits::B64);
         pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, OpBits::B64);
     }
     else
@@ -559,7 +559,7 @@ void Scbe::emitCopyVaargs(ScbeCpu& pp)
             offset += 8;
         }
 
-        pp.emitLoadAddressMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->sizeStackCallParams - variadicStackSize);
+        pp.emitLoadAddressMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->sizeStackCallParams - variadicStackSize, OpBits::B64);
         pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, OpBits::B64);
     }
 }

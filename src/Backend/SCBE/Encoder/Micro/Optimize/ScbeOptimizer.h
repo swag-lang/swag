@@ -36,6 +36,8 @@ struct ScbeOptimizer
     void swapInstruction(const ScbeMicro& out, ScbeMicroInstruction* before, ScbeMicroInstruction* after);
     void ignore(const ScbeMicro& out, ScbeMicroInstruction* inst);
     void setOp(const ScbeMicro& out, ScbeMicroInstruction* inst, ScbeMicroOp op);
+    void setOpBitsA(const ScbeMicro& out, ScbeMicroInstruction* inst, OpBits opBits);
+    void setOpBitsB(const ScbeMicro& out, ScbeMicroInstruction* inst, OpBits opBits);
     void setValueA(const ScbeMicro& out, ScbeMicroInstruction* inst, uint64_t value);
     void setValueB(const ScbeMicro& out, ScbeMicroInstruction* inst, uint64_t value);
     void setRegA(const ScbeMicro& out, ScbeMicroInstruction* inst, CpuReg reg);

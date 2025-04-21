@@ -1537,17 +1537,17 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 /////////////////////////////////////
 
             case ByteCodeOp::MakeStackPointer:
-                pp.emitLoadAddressMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetBC() + ip->b.u32);
+                pp.emitLoadAddressMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetBC() + ip->b.u32, OpBits::B64);
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, OpBits::B64);
                 break;
             case ByteCodeOp::MakeStackPointerx2:
-                pp.emitLoadAddressMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetBC() + ip->b.u32);
+                pp.emitLoadAddressMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetBC() + ip->b.u32, OpBits::B64);
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, OpBits::B64);
-                pp.emitLoadAddressMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetBC() + ip->d.u32);
+                pp.emitLoadAddressMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetBC() + ip->d.u32, OpBits::B64);
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, OpBits::B64);
                 break;
             case ByteCodeOp::MakeStackPointerRT:
-                pp.emitLoadAddressMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetBC() + ip->a.u32);
+                pp.emitLoadAddressMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetBC() + ip->a.u32, OpBits::B64);
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetRT(0), cc->computeRegI0, OpBits::B64);
                 break;
 

@@ -28,7 +28,7 @@ void Scbe::emitLoadZeroExtendParam(ScbeCpu& pp, CpuReg reg, uint32_t paramIdx, O
 void Scbe::emitLoadAddressParam(ScbeCpu& pp, CpuReg reg, uint32_t paramIdx)
 {
     if (paramIdx < pp.cc->paramsRegistersInteger.size())
-        pp.emitLoadAddressMem(reg, CpuReg::Rsp, pp.cpuFct->getStackOffsetParam(paramIdx));
+        pp.emitLoadAddressMem(reg, CpuReg::Rsp, pp.cpuFct->getStackOffsetParam(paramIdx), OpBits::B64);
     else
         pp.emitLoadCallerAddressParam(reg, paramIdx);
 }

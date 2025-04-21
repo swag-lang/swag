@@ -269,12 +269,12 @@ void ScbeCpu::emitLoadAddressAmcRegMem(CpuReg regDst, OpBits opBitsDst, CpuReg r
     Report::internalError(module, "encodeLoadAddressAmcRegMem, cannot encode");
 }
 
-void ScbeCpu::emitLoadAddressMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, CpuEmitFlags emitFlags)
+void ScbeCpu::emitLoadAddressMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits opBits, CpuEmitFlags emitFlags)
 {
-    const auto result = cpu->encodeLoadAddressRegMem(reg, memReg, memOffset, EMIT_CanEncode);
+    const auto result = cpu->encodeLoadAddressRegMem(reg, memReg, memOffset, opBits, EMIT_CanEncode);
     if (result == CpuEncodeResult::Zero)
     {
-        encodeLoadAddressRegMem(reg, memReg, memOffset, emitFlags);
+        encodeLoadAddressRegMem(reg, memReg, memOffset, opBits, emitFlags);
         return;
     }
 

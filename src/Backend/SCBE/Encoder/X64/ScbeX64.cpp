@@ -743,8 +743,14 @@ CpuEncodeResult ScbeX64::encodeLoadSignedExtendRegReg(CpuReg regDst, CpuReg regS
 
 /////////////////////////////////////////////////////////////////////
 
-CpuEncodeResult ScbeX64::encodeLoadAddressRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, CpuEmitFlags emitFlags)
+CpuEncodeResult ScbeX64::encodeLoadAddressRegMem(CpuReg reg, CpuReg memReg, uint64_t memOffset, OpBits opBits, CpuEmitFlags emitFlags)
 {
+    if (emitFlags.has(EMIT_CanEncode))
+    {
+        if (opBits != OpBits::B64)
+            return CpuEncodeResult::NotSupported;
+    }
+
     if (isFloat(memReg))
     {
         if (emitFlags.has(EMIT_CanEncode))

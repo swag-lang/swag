@@ -211,6 +211,24 @@ void ScbeOptimizer::setOp(const ScbeMicro& out, ScbeMicroInstruction* inst, Scbe
     }
 }
 
+void ScbeOptimizer::setOpBitsA(const ScbeMicro& out, ScbeMicroInstruction* inst, OpBits opBits)
+{
+    if (inst->opBitsA != opBits)
+    {
+        inst->opBitsA = opBits;
+        setDirtyPass();
+    }
+}
+
+void ScbeOptimizer::setOpBitsB(const ScbeMicro& out, ScbeMicroInstruction* inst, OpBits opBits)
+{
+    if (inst->opBitsB != opBits)
+    {
+        inst->opBitsB = opBits;
+        setDirtyPass();
+    }
+}
+
 void ScbeOptimizer::setValueA(const ScbeMicro& out, ScbeMicroInstruction* inst, uint64_t value)
 {
     if (inst->valueA != value)

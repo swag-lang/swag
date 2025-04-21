@@ -124,6 +124,7 @@ void ScbeOptimizer::reduceInst(const ScbeMicro& out, ScbeMicroInstruction* inst)
                 out.cpu->encodeLoadRegMem(inst->regA, inst->regC, inst->valueB, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
             {
                 setOp(out, inst, ScbeMicroOp::LoadAddrRM);
+                setOpBitsA(out, inst, OpBits::B64);
                 setRegB(out, inst, inst->regC);
                 setValueA(out, inst, inst->valueB);
                 break;
@@ -339,7 +340,7 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
                 next->regA == inst->regA &&
                 next->opBitsA == OpBits::B64 &&
                 !out.getNextFlagSensitive(next)->isJumpCond() &&
-                out.cpu->encodeLoadAddressRegMem(inst->regA, inst->regB, inst->valueA + next->valueA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+                out.cpu->encodeLoadAddressRegMem(inst->regA, inst->regB, inst->valueA + next->valueA, OpBits::B64, EMIT_CanEncode) == CpuEncodeResult::Zero)
             {
                 setValueA(out, inst, inst->valueA + next->valueA);
                 ignore(out, next);
@@ -486,7 +487,7 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
                 next->regA == inst->regA &&
                 next->opBitsA == inst->opBitsA &&
                 !out.getNextFlagSensitive(next)->isJumpCond() &&
-                out.cpu->encodeLoadAddressRegMem(next->regA, next->regB, inst->valueA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+                out.cpu->encodeLoadAddressRegMem(next->regA, next->regB, inst->valueA, next->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
             {
                 setOp(out, next, ScbeMicroOp::LoadAddrRM);
                 setValueA(out, next, inst->valueA);
@@ -501,7 +502,7 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
                 next->regA == inst->regA &&
                 next->opBitsA == inst->opBitsA &&
                 !out.getNextFlagSensitive(next)->isJumpCond() &&
-                out.cpu->encodeLoadAddressRegMem(next->regA, inst->regB, next->valueA, EMIT_CanEncode) == CpuEncodeResult::Zero)
+                out.cpu->encodeLoadAddressRegMem(next->regA, inst->regB, next->valueA, next->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
             {
                 setOp(out, next, ScbeMicroOp::LoadAddrRM);
                 setRegB(out, next, inst->regB);
@@ -855,6 +856,7 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
                 next->opBitsA == OpBits::B64)
             {
                 setOp(out, next, ScbeMicroOp::LoadAddrRM);
+                setOpBitsA(out, next, OpBits::B64);
                 setRegB(out, next, inst->regB);
                 setValueA(out, next, inst->valueA);
                 break;

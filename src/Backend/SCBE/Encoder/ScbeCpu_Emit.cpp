@@ -26,7 +26,7 @@ namespace
                     break;
 
                 case CpuPushParamType::LoadAddress:
-                    pp.emitLoadAddressMem(callConv->paramsRegistersInteger[idxParam], params[idxParam].baseReg, value);
+                    pp.emitLoadAddressMem(callConv->paramsRegistersInteger[idxParam], params[idxParam].baseReg, value, OpBits::B64);
                     break;
 
                 case CpuPushParamType::Constant:
@@ -118,7 +118,7 @@ namespace
                     break;
 
                 case CpuPushParamType::LoadAddress:
-                    pp.emitLoadAddressMem(pp.cc->computeRegI0, params[idxParam].baseReg, value);
+                    pp.emitLoadAddressMem(pp.cc->computeRegI0, params[idxParam].baseReg, value, OpBits::B64);
                     pp.emitLoadMemReg(CpuReg::Rsp, memOffset, pp.cc->computeRegI0, OpBits::B64);
                     break;
 
@@ -284,7 +284,7 @@ void ScbeCpu::emitLoadCallerZeroExtendParam(CpuReg reg, uint32_t paramIdx, OpBit
 void ScbeCpu::emitLoadCallerAddressParam(CpuReg reg, uint32_t paramIdx)
 {
     const uint32_t stackOffset = cpuFct->getStackOffsetCallerParam(paramIdx);
-    emitLoadAddressMem(reg, CpuReg::Rsp, stackOffset);
+    emitLoadAddressMem(reg, CpuReg::Rsp, stackOffset, OpBits::B64);
 }
 
 void ScbeCpu::emitStoreCallerParam(uint32_t paramIdx, CpuReg reg, OpBits opBits)
