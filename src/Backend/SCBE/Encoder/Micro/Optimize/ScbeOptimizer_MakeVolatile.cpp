@@ -27,7 +27,10 @@ void ScbeOptimizer::optimizePassMakeVolatile(const ScbeMicro& out)
             const auto readRegs = out.cpu->getReadRegisters(inst);
             if (!readRegs.contains(inst->regA))
             {
-                auto     vol  = out.cc->volatileRegistersIntegerSet;
+                auto vol = out.cc->volatileRegistersIntegerSet;
+                if (out.isFuncReturnRegister(vol.first()))
+                    vol.erase(vol.first());
+
                 auto     next = ScbeMicro::getNextInstruction(inst);
                 uint32_t used = 0;
                 while (true)

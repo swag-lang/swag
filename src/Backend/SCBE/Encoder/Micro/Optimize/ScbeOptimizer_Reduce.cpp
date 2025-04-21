@@ -708,10 +708,32 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
                 ignore(out, next);
                 break;
             }
+
+            if (next->isRet() &&
+                out.isFuncReturnRegister(inst->regA) &&
+                out.cpuFct->typeFunc->returnByValue() &&
+                !out.cpuFct->typeFunc->returnType->isNativeFloat() &&
+                out.cpuFct->typeFunc->returnType->sizeOf == ScbeCpu::getNumBytes(inst->opBitsB))
+            {
+                setOp(out, inst, ScbeMicroOp::LoadRM);
+                setOpBitsA(out, inst, inst->opBitsB);
+                break;
+            }
             break;
 
         case ScbeMicroOp::LoadZeroExtRR:
         case ScbeMicroOp::LoadSignedExtRR:
+            if (next->isRet() &&
+                out.isFuncReturnRegister(inst->regA) &&
+                out.cpuFct->typeFunc->returnByValue() &&
+                !out.cpuFct->typeFunc->returnType->isNativeFloat() &&
+                out.cpuFct->typeFunc->returnType->sizeOf == ScbeCpu::getNumBytes(inst->opBitsB))
+            {
+                setOp(out, inst, ScbeMicroOp::LoadRR);
+                setOpBitsA(out, inst, inst->opBitsB);
+                break;
+            }
+
             if (next->op == ScbeMicroOp::LoadRR &&
                 inst->regA != inst->regB &&
                 next->regB == inst->regA &&
