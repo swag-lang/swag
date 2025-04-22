@@ -3,6 +3,58 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
+#pragma optimize("", off)
+
+void ScbeOptimizer::optimizePassStackToHwdReg1(const ScbeMicro& out)
+{
+    for (auto inst = out.getFirstInstruction(); inst->op != ScbeMicroOp::End; inst = ScbeMicro::getNextInstruction(inst))
+    {
+        if (inst->op != ScbeMicroOp::LoadMR)
+            continue;
+        const auto orgStack = inst->getStackOffsetWrite();
+        if (!out.cpuFct->isStackOffsetReg(orgStack))
+            continue;
+        if (aliasStack.contains(orgStack))
+            continue;
+
+        bool hasRead  = false;
+        bool hasWrite = false;
+        auto next     = ScbeMicro::getNextInstruction(inst);
+        auto dispo    = out.cc->volatileRegistersIntegerSet;
+        while (next->op != ScbeMicroOp::End)
+        {
+            if (next->isRet() || next->isJump() || next->isJumpDest())
+                break;
+
+            const auto writeStack = next->getStackOffsetWrite();
+            hasWrite              = writeStack == orgStack;
+            if (hasWrite)
+                break;
+
+            const auto readStack = next->getStackOffsetRead();
+            hasRead              = readStack == orgStack;
+
+            const auto regs = out.cpu->getReadWriteRegisters(next);
+            dispo.erase(regs);
+            if (dispo.empty())
+                break;
+
+            next = ScbeMicro::getNextInstruction(next);
+        }
+
+        if (!dispo.empty() && hasRead && hasWrite)
+        {
+            for (const auto r : dispo)
+            {
+                if (!hasReadRegAfter(out, next, r))
+                {
+                    memToReg(out, CpuReg::Rsp, orgStack, r, inst, next);
+                    break;
+                }
+            }
+        }
+    }
+}
 
 void ScbeOptimizer::optimizePassParamsKeepReg(const ScbeMicro& out)
 {
@@ -24,7 +76,7 @@ void ScbeOptimizer::optimizePassParamsKeepReg(const ScbeMicro& out)
     }
 }
 
-void ScbeOptimizer::optimizePassStackToHwdReg(const ScbeMicro& out)
+void ScbeOptimizer::optimizePassStackToHwdReg2(const ScbeMicro& out)
 {
     if (usedStack.empty())
         return;

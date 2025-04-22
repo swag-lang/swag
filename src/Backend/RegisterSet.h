@@ -20,6 +20,11 @@ struct RegisterSet
         regs |= other.regs;
     }
 
+    void erase(RegisterSet other)
+    {
+        regs &= ~other.regs;
+    }    
+
     bool contains(CpuReg reg) const
     {
         return regs & (1ULL << static_cast<uint64_t>(reg));

@@ -31,7 +31,7 @@ struct ScbeOptimizer
     bool hasReadRegAfter(const ScbeMicro& out, ScbeMicroInstruction* inst, CpuReg reg);
 
     bool regToReg(const ScbeMicro& out, CpuReg regDst, CpuReg regSrc, uint32_t firstInst = 0, uint32_t lastInst = UINT32_MAX);
-    bool memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOffset, CpuReg reg);
+    bool memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOffset, CpuReg reg, ScbeMicroInstruction* start = nullptr, ScbeMicroInstruction* end = nullptr);
 
     void swapInstruction(const ScbeMicro& out, ScbeMicroInstruction* before, ScbeMicroInstruction* after);
     void ignore(const ScbeMicro& out, ScbeMicroInstruction* inst);
@@ -64,7 +64,8 @@ struct ScbeOptimizer
     void optimizePassDeadHdwReg2(const ScbeMicro& out);
     void optimizePassStore(const ScbeMicro& out);
     void optimizePassParamsKeepReg(const ScbeMicro& out);
-    void optimizePassStackToHwdReg(const ScbeMicro& out);
+    void optimizePassStackToHwdReg1(const ScbeMicro& out);
+    void optimizePassStackToHwdReg2(const ScbeMicro& out);
     void optimizePassImmediate(const ScbeMicro& out);
     void optimizePassSwap(const ScbeMicro& out);
     void optimizePassAliasLoadRM(const ScbeMicro& out);
