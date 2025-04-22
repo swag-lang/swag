@@ -18,8 +18,7 @@ void ScbeOptimizer::optimizePassMakeHwdRegVolatile(const ScbeMicro& out)
         }
     }
 
-    auto inst = out.getFirstInstruction();
-    while (inst->op != ScbeMicroOp::End)
+    for (auto inst = out.getFirstInstruction(); inst->op != ScbeMicroOp::End; inst = ScbeMicro::getNextInstruction(inst))
     {
         if (inst->hasWriteRegA() &&
             out.cc->nonVolatileRegistersInteger.contains(inst->regA))
@@ -54,7 +53,5 @@ void ScbeOptimizer::optimizePassMakeHwdRegVolatile(const ScbeMicro& out)
                 }
             }
         }
-
-        inst = ScbeMicro::getNextInstruction(inst);
     }
 }

@@ -7,68 +7,62 @@
 void ScbeOptimizer::optimizePassAliasLoadRM(const ScbeMicro& out)
 {
     mapRegInst.clear();
-
-    auto inst = out.getFirstInstruction();
-    while (inst->op != ScbeMicroOp::End)
+    for (auto inst = out.getFirstInstruction(); inst->op != ScbeMicroOp::End; inst = ScbeMicro::getNextInstruction(inst))
     {
-        if (inst->op == ScbeMicroOp::LoadRM)
+        if (inst->op != ScbeMicroOp::LoadRM)
+            continue;
+
+        mapRegInst.clear();
+        auto next = ScbeMicro::getNextInstruction(inst);
+        while (true)
         {
-            mapRegInst.clear();
-            auto next = ScbeMicro::getNextInstruction(inst);
-            while (true)
+            if (next->isJump() || next->isJumpDest() || next->isRet())
+                break;
+
+            if (next->op == ScbeMicroOp::LoadRR &&
+                next->regB == inst->regA &&
+                next->regA != inst->regB &&
+                inst->opBitsA == next->opBitsA)
             {
-                if (next->isJump() || next->isJumpDest() || next->isRet())
+                if (mapRegInst.contains(next->regA))
                     break;
-
-                if (next->op == ScbeMicroOp::LoadRR &&
-                    next->regB == inst->regA &&
-                    next->regA != inst->regB &&
-                    inst->opBitsA == next->opBitsA)
+                auto nextNext = ScbeMicro::getNextInstruction(next);
+                while (true)
                 {
-                    if (mapRegInst.contains(next->regA))
+                    if (nextNext->isJump())
                         break;
-                    auto nextNext = ScbeMicro::getNextInstruction(next);
-                    while (true)
+                    const auto readRegs1 = out.cpu->getReadRegisters(nextNext);
+                    if (readRegs1.contains(next->regB))
+                        break;
+                    const auto writeRegs1 = out.cpu->getWriteRegisters(nextNext);
+                    if (writeRegs1.contains(next->regB) || nextNext->isRet())
                     {
-                        if (nextNext->isJump())
-                            break;
-                        const auto readRegs1 = out.cpu->getReadRegisters(nextNext);
-                        if (readRegs1.contains(next->regB))
-                            break;
-                        const auto writeRegs1 = out.cpu->getWriteRegisters(nextNext);
-                        if (writeRegs1.contains(next->regB) || nextNext->isRet())
-                        {
-                            setRegA(out, inst, next->regA);
-                            ignore(out, next);
-                            break;
-                        }
-
-                        nextNext = ScbeMicro::getNextInstruction(nextNext);
+                        setRegA(out, inst, next->regA);
+                        ignore(out, next);
+                        break;
                     }
 
-                    break;
+                    nextNext = ScbeMicro::getNextInstruction(nextNext);
                 }
 
-                const auto regs = out.cpu->getReadWriteRegisters(next);
-                for (const auto r : regs)
-                    mapRegInst[r] = next;
-                if (mapRegInst.contains(inst->regA))
-                    break;
-
-                next = ScbeMicro::getNextInstruction(next);
+                break;
             }
-        }
 
-        inst = ScbeMicro::getNextInstruction(inst);
+            const auto regs = out.cpu->getReadWriteRegisters(next);
+            for (const auto r : regs)
+                mapRegInst[r] = next;
+            if (mapRegInst.contains(inst->regA))
+                break;
+
+            next = ScbeMicro::getNextInstruction(next);
+        }
     }
 }
 
 void ScbeOptimizer::optimizePassAliasLoadAddr(const ScbeMicro& out)
 {
     mapRegInst.clear();
-
-    auto inst = out.getFirstInstruction();
-    while (inst->op != ScbeMicroOp::End)
+    for (auto inst = out.getFirstInstruction(); inst->op != ScbeMicroOp::End; inst = ScbeMicro::getNextInstruction(inst))
     {
         if (inst->isJump() && !inst->isJumpCond())
             mapRegInst.clear();
@@ -248,8 +242,6 @@ void ScbeOptimizer::optimizePassAliasLoadAddr(const ScbeMicro& out)
 
         if (inst->op == ScbeMicroOp::LoadAddrRM && inst->regA != inst->regB)
             mapRegInst[inst->regA] = inst;
-
-        inst = ScbeMicro::getNextInstruction(inst);
     }
 }
 
@@ -257,8 +249,7 @@ void ScbeOptimizer::optimizePassAliasLoadRR(const ScbeMicro& out)
 {
     mapRegInst.clear();
 
-    auto inst = out.getFirstInstruction();
-    while (inst->op != ScbeMicroOp::End)
+    for (auto inst = out.getFirstInstruction(); inst->op != ScbeMicroOp::End; inst = ScbeMicro::getNextInstruction(inst))
     {
         if (inst->isJump() && !inst->isJumpCond())
             mapRegInst.clear();
@@ -342,8 +333,6 @@ void ScbeOptimizer::optimizePassAliasLoadRR(const ScbeMicro& out)
 
         if (inst->op == ScbeMicroOp::LoadRR)
             mapRegInst[inst->regA] = inst;
-
-        inst = ScbeMicro::getNextInstruction(inst);
     }
 }
 
@@ -351,8 +340,7 @@ void ScbeOptimizer::optimizePassAliasLoadExtend(const ScbeMicro& out)
 {
     mapRegInst.clear();
 
-    auto inst = out.getFirstInstruction();
-    while (inst->op != ScbeMicroOp::End)
+    for (auto inst = out.getFirstInstruction(); inst->op != ScbeMicroOp::End; inst = ScbeMicro::getNextInstruction(inst))
     {
         if (inst->isJump() && !inst->isJumpCond())
             mapRegInst.clear();
@@ -369,7 +357,7 @@ void ScbeOptimizer::optimizePassAliasLoadExtend(const ScbeMicro& out)
                     setRegA(out, inst, prev->regB);
                 }
             }
-        }        
+        }
         else if (inst->hasReadRegB() && !inst->hasWriteRegB())
         {
             if (mapRegInst.contains(inst->regB))
@@ -400,7 +388,5 @@ void ScbeOptimizer::optimizePassAliasLoadExtend(const ScbeMicro& out)
 
         if (inst->op == ScbeMicroOp::LoadZeroExtRR)
             mapRegInst[inst->regA] = inst;
-
-        inst = ScbeMicro::getNextInstruction(inst);
     }
 }

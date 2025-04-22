@@ -5,8 +5,7 @@
 
 void ScbeOptimizer::optimizePassReduceBits(const ScbeMicro& out)
 {
-    auto inst = out.getFirstInstruction();
-    while (inst->op != ScbeMicroOp::End)
+    for (auto inst = out.getFirstInstruction(); inst->op != ScbeMicroOp::End; inst = ScbeMicro::getNextInstruction(inst))
     {
         if (inst->op == ScbeMicroOp::LoadZeroExtRR ||
             inst->op == ScbeMicroOp::LoadZeroExtRM)
@@ -52,7 +51,5 @@ void ScbeOptimizer::optimizePassReduceBits(const ScbeMicro& out)
                 }
             }
         }
-
-        inst = ScbeMicro::getNextInstruction(inst);
     }
 }

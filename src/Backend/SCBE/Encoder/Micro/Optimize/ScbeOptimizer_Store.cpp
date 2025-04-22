@@ -9,8 +9,7 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
     mapValReg.clear();
     mapRegVal.clear();
 
-    auto inst = out.getFirstInstruction();
-    while (inst->op != ScbeMicroOp::End)
+    for (auto inst = out.getFirstInstruction(); inst->op != ScbeMicroOp::End; inst = ScbeMicro::getNextInstruction(inst))
     {
         if (inst->isJump() || inst->isJumpDest() || inst->isRet())
         {
@@ -117,7 +116,5 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
             if (r != legitReg)
                 mapRegVal.erase(r);
         }
-
-        inst = ScbeMicro::getNextInstruction(inst);
     }
 }

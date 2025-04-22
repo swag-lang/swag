@@ -2,7 +2,6 @@
 #include "Backend/SCBE/Encoder/Micro/Optimize/ScbeOptimizer.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
-#include "Wmf/SourceFile.h"
 
 namespace
 {
@@ -92,8 +91,7 @@ void ScbeOptimizer::optimizePassImmediate(const ScbeMicro& out)
     mapValVal.clear();
     mapRegVal.clear();
 
-    auto inst = out.getFirstInstruction();
-    while (inst->op != ScbeMicroOp::End)
+    for (auto inst = out.getFirstInstruction(); inst->op != ScbeMicroOp::End; inst = ScbeMicro::getNextInstruction(inst))
     {
         if (inst->isJump() || inst->isJumpDest() || inst->isRet())
         {
@@ -282,7 +280,5 @@ void ScbeOptimizer::optimizePassImmediate(const ScbeMicro& out)
                     mapRegVal.erase(r);
             }
         }
-
-        inst = ScbeMicro::getNextInstruction(inst);
     }
 }

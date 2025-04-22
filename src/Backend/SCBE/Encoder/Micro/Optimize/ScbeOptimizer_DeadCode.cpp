@@ -5,12 +5,8 @@
 
 void ScbeOptimizer::optimizePassDeadCode(const ScbeMicro& out)
 {
-    auto inst = out.getFirstInstruction();
-    while (inst->op != ScbeMicroOp::End)
-    {
+    for (auto inst = out.getFirstInstruction(); inst->op != ScbeMicroOp::End; inst = ScbeMicro::getNextInstruction(inst))
         inst->flags.remove(MIF_REACHED);
-        inst = ScbeMicro::getNextInstruction(inst);
-    }
 
     out.getFirstInstruction()->flags.add(MIF_REACHED);
     const auto valid = exploreAfter(out, out.getFirstInstruction(), [](const ScbeMicro& outIn, const ScbeExploreContext& cxtIn) {
@@ -21,8 +17,7 @@ void ScbeOptimizer::optimizePassDeadCode(const ScbeMicro& out)
     if (!valid)
         return;
 
-    inst = out.getFirstInstruction();
-    while (inst->op != ScbeMicroOp::End)
+    for (auto inst = out.getFirstInstruction(); inst->op != ScbeMicroOp::End; inst = ScbeMicro::getNextInstruction(inst))
     {
         if (!inst->flags.has(MIF_REACHED) &&
             inst->op != ScbeMicroOp::Enter &&
@@ -32,7 +27,5 @@ void ScbeOptimizer::optimizePassDeadCode(const ScbeMicro& out)
         {
             ignore(out, inst);
         }
-
-        inst = ScbeMicro::getNextInstruction(inst);
     }
 }

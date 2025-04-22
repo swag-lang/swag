@@ -3,7 +3,6 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
-#pragma optimize("", off)
 
 void ScbeOptimizer::optimizePassStackToHwdReg1(const ScbeMicro& out)
 {
