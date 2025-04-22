@@ -3,7 +3,6 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
-#include "Wmf/SourceFile.h"
 
 void ScbeOptimizer::optimizePassAliasLoadRM(const ScbeMicro& out)
 {
@@ -262,9 +261,9 @@ void ScbeOptimizer::optimizePassAliasSymbolReloc(const ScbeMicro& out)
                     const auto prev = mapRegInst[inst->regB];
                     if (!hasReadRegAfter(out, inst, prev->regA))
                     {
-                        setOp(out, inst, ScbeMicroOp::SymbolRelocAddr);
-                        setValueA(out, inst, prev->valueA);
-                        setValueB(out, inst, prev->valueB);
+                        const auto reg = inst->regA;
+                        *inst          = *prev;
+                        setRegA(out, inst, reg);
                         ignore(out, prev);
                         mapRegInst.erase(prev->regA);
                         break;
@@ -277,7 +276,7 @@ void ScbeOptimizer::optimizePassAliasSymbolReloc(const ScbeMicro& out)
         for (const auto r : readRegs)
             mapRegInst.erase(r);
 
-        if (inst->op == ScbeMicroOp::SymbolRelocAddr)
+        if (inst->op == ScbeMicroOp::SymbolRelocAddr || inst->op == ScbeMicroOp::SymbolRelocValue)
             mapRegInst[inst->regA] = inst;
     }
 }
