@@ -3,6 +3,7 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
+#include "Wmf/SourceFile.h"
 
 void ScbeOptimizer::optimizePassAliasLoadRM(const ScbeMicro& out)
 {
@@ -59,7 +60,7 @@ void ScbeOptimizer::optimizePassAliasLoadRM(const ScbeMicro& out)
     }
 }
 
-void ScbeOptimizer::optimizePassAliasLoadAddr(const ScbeMicro& out)
+void ScbeOptimizer::optimizePassAliasLoadAddrRM(const ScbeMicro& out)
 {
     mapRegInst.clear();
     for (auto inst = out.getFirstInstruction(); !inst->isEnd(); inst = ScbeMicro::getNextInstruction(inst))
@@ -241,6 +242,42 @@ void ScbeOptimizer::optimizePassAliasLoadAddr(const ScbeMicro& out)
         }
 
         if (inst->op == ScbeMicroOp::LoadAddrRM && inst->regA != inst->regB)
+            mapRegInst[inst->regA] = inst;
+    }
+}
+
+void ScbeOptimizer::optimizePassAliasSymbolReloc(const ScbeMicro& out)
+{
+    mapRegInst.clear();
+    for (auto inst = out.getFirstInstruction(); !inst->isEnd(); inst = ScbeMicro::getNextInstruction(inst))
+    {
+        if (inst->isJump() || inst->isJumpDest() || inst->isRet())
+            mapRegInst.clear();
+
+        switch (inst->op)
+        {
+            case ScbeMicroOp::LoadRR:
+                if (mapRegInst.contains(inst->regB))
+                {
+                    const auto prev = mapRegInst[inst->regB];
+                    if (!hasReadRegAfter(out, inst, prev->regA))
+                    {
+                        setOp(out, inst, ScbeMicroOp::SymbolRelocAddr);
+                        setValueA(out, inst, prev->valueA);
+                        setValueB(out, inst, prev->valueB);
+                        ignore(out, prev);
+                        mapRegInst.erase(prev->regA);
+                        break;
+                    }
+                }
+                break;
+        }
+
+        const auto readRegs = out.cpu->getReadWriteRegisters(inst);
+        for (const auto r : readRegs)
+            mapRegInst.erase(r);
+
+        if (inst->op == ScbeMicroOp::SymbolRelocAddr)
             mapRegInst[inst->regA] = inst;
     }
 }

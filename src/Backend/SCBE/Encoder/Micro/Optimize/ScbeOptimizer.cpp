@@ -506,8 +506,9 @@ void ScbeOptimizer::optimizeStep1(const ScbeMicro& out)
     optimizePassDeadHdwRegBeforeLeave(out);
     optimizePassAliasLoadRR(out);
     optimizePassAliasLoadExtend(out);
-    optimizePassAliasLoadAddr(out);
+    optimizePassAliasLoadAddrRM(out);
     optimizePassAliasLoadRM(out);
+    optimizePassAliasSymbolReloc(out);
     optimizePassSwap(out);
     optimizePassReduceBits(out);
 }
