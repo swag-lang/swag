@@ -11,7 +11,7 @@ bool ScbeOptimizer::regToReg(const ScbeMicro& out, CpuReg regDst, CpuReg regSrc,
 {
     // First, we need to determine if all instructions that can change accept the new register
     auto inst = out.getFirstInstruction() + firstInst;
-    while (inst != out.getFirstInstruction() + lastInst && inst->op != ScbeMicroOp::End)
+    while (inst != out.getFirstInstruction() + lastInst && !inst->isEnd())
     {
         if (inst->hasRegA() && inst->regA == regSrc && !out.cpu->acceptsRegA(inst, regDst))
             return false;
@@ -24,7 +24,7 @@ bool ScbeOptimizer::regToReg(const ScbeMicro& out, CpuReg regDst, CpuReg regSrc,
 
     inst            = out.getFirstInstruction() + firstInst;
     bool hasChanged = false;
-    while (inst != out.getFirstInstruction() + lastInst && inst->op != ScbeMicroOp::End)
+    while (inst != out.getFirstInstruction() + lastInst && !inst->isEnd())
     {
         if (inst->hasRegA() && inst->regA == regSrc)
         {
@@ -54,7 +54,7 @@ bool ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOf
 {
     auto inst       = start ? start : out.getFirstInstruction();
     bool hasChanged = false;
-    while (inst->op != ScbeMicroOp::End && inst != end)
+    while (!inst->isEnd() && inst != end)
     {
         switch (inst->op)
         {
@@ -182,7 +182,7 @@ void ScbeOptimizer::swapInstruction(const ScbeMicro& out, ScbeMicroInstruction* 
 
 void ScbeOptimizer::ignore(const ScbeMicro& out, ScbeMicroInstruction* inst)
 {
-    SWAG_ASSERT(inst->op != ScbeMicroOp::End);
+    SWAG_ASSERT(!inst->isEnd());
     SWAG_ASSERT(inst->op != ScbeMicroOp::Enter);
     SWAG_ASSERT(inst->op != ScbeMicroOp::Leave);
 
@@ -282,7 +282,7 @@ void ScbeOptimizer::solveLabels(const ScbeMicro& out)
     const auto first        = out.getFirstInstruction();
     auto       inst         = first;
     bool       hasJumpTable = false;
-    while (inst->op != ScbeMicroOp::End)
+    while (!inst->isEnd())
     {
         if (inst->op == ScbeMicroOp::JumpTable)
             hasJumpTable = true;
@@ -291,7 +291,7 @@ void ScbeOptimizer::solveLabels(const ScbeMicro& out)
     }
 
     inst = first;
-    while (inst->op != ScbeMicroOp::End)
+    while (!inst->isEnd())
     {
         if (inst->op == ScbeMicroOp::JumpCondI)
         {
@@ -342,7 +342,7 @@ void ScbeOptimizer::computeContextRegs(const ScbeMicro& out)
     unusedNonVolatileInteger.append(out.cc->nonVolatileRegistersIntegerSet);
 
     auto inst = out.getFirstInstruction();
-    while (inst->op != ScbeMicroOp::End)
+    while (!inst->isEnd())
     {
         const auto writeRegs = out.cpu->getWriteRegisters(inst);
         for (const auto r : writeRegs)
@@ -372,7 +372,7 @@ void ScbeOptimizer::computeContextStack(const ScbeMicro& out)
     usedStackRanges.clear();
 
     auto inst = out.getFirstInstruction();
-    while (inst->op != ScbeMicroOp::End)
+    while (!inst->isEnd())
     {
         const auto stackOffset = inst->getStackOffset();
         if (stackOffset != UINT32_MAX)
@@ -466,7 +466,7 @@ bool ScbeOptimizer::exploreAfter(const ScbeMicro& out, ScbeMicroInstruction* ins
                 return false;
         }
 
-        if (cxt.curInst->op != ScbeMicroOp::End)
+        if (!cxt.curInst->isEnd())
             cxt.curInst = ScbeMicro::getNextInstruction(cxt.curInst);
     }
 

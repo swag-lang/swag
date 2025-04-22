@@ -46,6 +46,7 @@ struct ScbeMicroInstruction
     bool isCallerParams() const;
     bool isRet() const;
     bool isTest() const;
+    bool isEnd() const { return op == ScbeMicroOp::End; }
 
     uint32_t getStackOffsetRead() const;
     uint32_t getStackOffsetWrite() const;

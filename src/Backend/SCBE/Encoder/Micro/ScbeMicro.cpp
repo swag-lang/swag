@@ -519,7 +519,7 @@ CpuEncodeResult ScbeMicro::encodeOpTernaryRegRegReg(CpuReg reg0, CpuReg reg1, Cp
 void ScbeMicro::encode(ScbeCpu& encoder) const
 {
     auto inst = getFirstInstruction();
-    while (inst->op != ScbeMicroOp::End)
+    while (!inst->isEnd())
     {
         switch (inst->op)
         {
@@ -708,7 +708,7 @@ void ScbeMicro::encode(ScbeCpu& encoder) const
 
 ScbeMicroInstruction* ScbeMicro::getNextInstruction(ScbeMicroInstruction* inst)
 {
-    SWAG_ASSERT(inst->op != ScbeMicroOp::End);
+    SWAG_ASSERT(!inst->isEnd());
 
     inst++;
     while (inst->op == ScbeMicroOp::Nop ||
@@ -740,7 +740,7 @@ void ScbeMicro::postProcess() const
     cpuFct->noStackFrame = true;
 
     auto inst = getFirstInstruction();
-    while (inst->op != ScbeMicroOp::End)
+    while (!inst->isEnd())
     {
         if (inst->hasRegA())
             cpuFct->usedRegs.add(inst->regA);

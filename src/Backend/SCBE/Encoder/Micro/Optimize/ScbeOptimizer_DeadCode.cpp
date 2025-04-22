@@ -5,7 +5,7 @@
 
 void ScbeOptimizer::optimizePassDeadCode(const ScbeMicro& out)
 {
-    for (auto inst = out.getFirstInstruction(); inst->op != ScbeMicroOp::End; inst = ScbeMicro::getNextInstruction(inst))
+    for (auto inst = out.getFirstInstruction(); !inst->isEnd(); inst = ScbeMicro::getNextInstruction(inst))
         inst->flags.remove(MIF_REACHED);
 
     out.getFirstInstruction()->flags.add(MIF_REACHED);
@@ -17,7 +17,7 @@ void ScbeOptimizer::optimizePassDeadCode(const ScbeMicro& out)
     if (!valid)
         return;
 
-    for (auto inst = out.getFirstInstruction(); inst->op != ScbeMicroOp::End; inst = ScbeMicro::getNextInstruction(inst))
+    for (auto inst = out.getFirstInstruction(); !inst->isEnd(); inst = ScbeMicro::getNextInstruction(inst))
     {
         if (!inst->flags.has(MIF_REACHED) &&
             inst->op != ScbeMicroOp::Enter &&

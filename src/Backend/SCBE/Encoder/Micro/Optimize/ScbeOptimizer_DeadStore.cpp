@@ -31,7 +31,7 @@ namespace
 void ScbeOptimizer::optimizePassDeadHdwReg2(const ScbeMicro& out)
 {
     auto inst = out.getFirstInstruction();
-    while (inst->op != ScbeMicroOp::End)
+    while (!inst->isEnd())
     {
         if (isDeadHwdReg(inst))
         {
@@ -63,7 +63,7 @@ void ScbeOptimizer::optimizePassDeadHdwReg(const ScbeMicro& out)
     mapRegInst.clear();
 
     auto inst = out.getFirstInstruction();
-    while (inst->op != ScbeMicroOp::End)
+    while (!inst->isEnd())
     {
         if (inst->isRet() || inst->isJump())
             mapRegInst.clear();
@@ -115,7 +115,7 @@ void ScbeOptimizer::optimizePassDeadHdwReg(const ScbeMicro& out)
 void ScbeOptimizer::optimizePassDeadHdwRegBeforeLeave(const ScbeMicro& out)
 {
     mapRegInst.clear();
-    for (auto inst = out.getFirstInstruction(); inst->op != ScbeMicroOp::End; inst = ScbeMicro::getNextInstruction(inst))
+    for (auto inst = out.getFirstInstruction(); !inst->isEnd(); inst = ScbeMicro::getNextInstruction(inst))
     {
         if (inst->isJump() || inst->isJumpDest())
             mapRegInst.clear();
@@ -155,7 +155,7 @@ void ScbeOptimizer::optimizePassDeadHdwRegBeforeLeave(const ScbeMicro& out)
 void ScbeOptimizer::optimizePassDeadRegBeforeLeave(const ScbeMicro& out)
 {
     mapValInst.clear();
-    for (auto inst = out.getFirstInstruction(); inst->op != ScbeMicroOp::End; inst = ScbeMicro::getNextInstruction(inst))
+    for (auto inst = out.getFirstInstruction(); !inst->isEnd(); inst = ScbeMicro::getNextInstruction(inst))
     {
         if (inst->isJump() || inst->isJumpDest())
             mapValInst.clear();

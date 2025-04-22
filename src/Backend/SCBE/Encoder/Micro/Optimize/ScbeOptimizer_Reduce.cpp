@@ -1108,7 +1108,7 @@ void ScbeOptimizer::reduceUnusedStack(const ScbeMicro& out, ScbeMicroInstruction
 void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
 {
     auto inst = out.getFirstInstruction();
-    while (inst->op != ScbeMicroOp::End)
+    while (!inst->isEnd())
     {
         const auto next = ScbeMicro::getNextInstruction(inst);
         if (next->op == ScbeMicroOp::End)
@@ -1127,7 +1127,7 @@ void ScbeOptimizer::optimizePassReduce(const ScbeMicro& out)
 void ScbeOptimizer::optimizePassReduce2(const ScbeMicro& out)
 {
     auto inst = out.getFirstInstruction();
-    while (inst->op != ScbeMicroOp::End)
+    while (!inst->isEnd())
     {
         const auto next = ScbeMicro::getNextInstruction(inst);
         reduceLoadRRBack(out, inst, next);

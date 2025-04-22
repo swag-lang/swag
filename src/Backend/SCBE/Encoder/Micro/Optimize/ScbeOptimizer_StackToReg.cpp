@@ -6,7 +6,7 @@
 
 void ScbeOptimizer::optimizePassStackToHwdReg1(const ScbeMicro& out)
 {
-    for (auto inst = out.getFirstInstruction(); inst->op != ScbeMicroOp::End; inst = ScbeMicro::getNextInstruction(inst))
+    for (auto inst = out.getFirstInstruction(); !inst->isEnd(); inst = ScbeMicro::getNextInstruction(inst))
     {
         if (inst->op != ScbeMicroOp::LoadMR)
             continue;

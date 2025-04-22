@@ -91,7 +91,7 @@ void ScbeOptimizer::optimizePassImmediate(const ScbeMicro& out)
     mapValVal.clear();
     mapRegVal.clear();
 
-    for (auto inst = out.getFirstInstruction(); inst->op != ScbeMicroOp::End; inst = ScbeMicro::getNextInstruction(inst))
+    for (auto inst = out.getFirstInstruction(); !inst->isEnd(); inst = ScbeMicro::getNextInstruction(inst))
     {
         if (inst->isJump() || inst->isJumpDest() || inst->isRet())
         {

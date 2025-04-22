@@ -6,7 +6,7 @@
 void ScbeOptimizer::optimizePassSwap(const ScbeMicro& out)
 {
     ScbeMicroInstruction* toMove = nullptr;
-    for (auto inst = out.getFirstInstruction(); inst->op != ScbeMicroOp::End; inst = ScbeMicro::getNextInstruction(inst))
+    for (auto inst = out.getFirstInstruction(); !inst->isEnd(); inst = ScbeMicro::getNextInstruction(inst))
     {
         if (inst->isJump() ||
             inst->isJumpDest() ||

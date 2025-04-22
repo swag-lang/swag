@@ -7,7 +7,7 @@
 void ScbeOptimizer::optimizePassAliasLoadRM(const ScbeMicro& out)
 {
     mapRegInst.clear();
-    for (auto inst = out.getFirstInstruction(); inst->op != ScbeMicroOp::End; inst = ScbeMicro::getNextInstruction(inst))
+    for (auto inst = out.getFirstInstruction(); !inst->isEnd(); inst = ScbeMicro::getNextInstruction(inst))
     {
         if (inst->op != ScbeMicroOp::LoadRM)
             continue;
@@ -62,7 +62,7 @@ void ScbeOptimizer::optimizePassAliasLoadRM(const ScbeMicro& out)
 void ScbeOptimizer::optimizePassAliasLoadAddr(const ScbeMicro& out)
 {
     mapRegInst.clear();
-    for (auto inst = out.getFirstInstruction(); inst->op != ScbeMicroOp::End; inst = ScbeMicro::getNextInstruction(inst))
+    for (auto inst = out.getFirstInstruction(); !inst->isEnd(); inst = ScbeMicro::getNextInstruction(inst))
     {
         if (inst->isJump() && !inst->isJumpCond())
             mapRegInst.clear();
@@ -249,7 +249,7 @@ void ScbeOptimizer::optimizePassAliasLoadRR(const ScbeMicro& out)
 {
     mapRegInst.clear();
 
-    for (auto inst = out.getFirstInstruction(); inst->op != ScbeMicroOp::End; inst = ScbeMicro::getNextInstruction(inst))
+    for (auto inst = out.getFirstInstruction(); !inst->isEnd(); inst = ScbeMicro::getNextInstruction(inst))
     {
         if (inst->isJump() && !inst->isJumpCond())
             mapRegInst.clear();
@@ -340,7 +340,7 @@ void ScbeOptimizer::optimizePassAliasLoadExtend(const ScbeMicro& out)
 {
     mapRegInst.clear();
 
-    for (auto inst = out.getFirstInstruction(); inst->op != ScbeMicroOp::End; inst = ScbeMicro::getNextInstruction(inst))
+    for (auto inst = out.getFirstInstruction(); !inst->isEnd(); inst = ScbeMicro::getNextInstruction(inst))
     {
         if (inst->isJump() && !inst->isJumpCond())
             mapRegInst.clear();
