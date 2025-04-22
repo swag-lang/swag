@@ -531,10 +531,10 @@ void ScbeOptimizer::optimizeStep3(const ScbeMicro& out)
     computeContextStack(out);
     solveLabels(out);
 
-    optimizePassParamsKeepReg(out);
+    optimizePassParamsKeepHwdReg(out);
     optimizePassStackToHwdReg2(out);
     optimizePassDeadHdwReg2(out);
-    optimizePassMakeVolatile(out);
+    optimizePassMakeHwdRegVolatile(out);
     optimizePassDeadCode(out);
 }
 

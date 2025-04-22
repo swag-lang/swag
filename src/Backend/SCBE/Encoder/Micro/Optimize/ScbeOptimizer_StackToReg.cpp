@@ -56,7 +56,7 @@ void ScbeOptimizer::optimizePassStackToHwdReg1(const ScbeMicro& out)
     }
 }
 
-void ScbeOptimizer::optimizePassParamsKeepReg(const ScbeMicro& out)
+void ScbeOptimizer::optimizePassParamsKeepHwdReg(const ScbeMicro& out)
 {
     for (uint32_t i = 0; i < out.cc->paramsRegistersInteger.size(); ++i)
     {

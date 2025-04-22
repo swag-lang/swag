@@ -4,7 +4,7 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
 
-void ScbeOptimizer::optimizePassMakeVolatile(const ScbeMicro& out)
+void ScbeOptimizer::optimizePassMakeHwdRegVolatile(const ScbeMicro& out)
 {
     for (const auto vol : unusedVolatileInteger)
     {
