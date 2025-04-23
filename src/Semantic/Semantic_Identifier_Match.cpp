@@ -578,6 +578,11 @@ namespace
             return false;
 
         auto checkParent = identifier->identifierRef()->parent;
+        
+        if (checkParent->is(AstNodeKind::FuncCallParam) &&
+            checkParent->parent->is(AstNodeKind::CompilerInject))
+                checkParent = checkParent->parent->parent;
+            
         if (checkParent->is(AstNodeKind::Try) ||
             checkParent->is(AstNodeKind::Catch) ||
             checkParent->is(AstNodeKind::TryCatch) ||
