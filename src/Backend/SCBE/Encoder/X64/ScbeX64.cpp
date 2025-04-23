@@ -2605,12 +2605,10 @@ CpuEncodeResult ScbeX64::encodeOpTernaryRegRegReg(CpuReg reg0, CpuReg reg1, CpuR
 
     else if (op == CpuOp::CMPXCHG)
     {
-        const auto rax = x64Reg2CpuReg(X64Reg::Rax);
         if (emitFlags.has(EMIT_CanEncode))
         {
             if (cpuRegToX64Reg(reg0) != X64Reg::Rax)
             {
-                SWAG_ASSERT(rax == CpuReg::Rax);
                 return CpuEncodeResult::Left2Rax;
             }
 
