@@ -64,7 +64,10 @@ public:
 
 #ifdef SWAG_DEV_MODE
                     if (pze)
+                    {
                         OS::errorBox("[Developer Mode]", "Linker Error raised !");
+                        OS::exit(-1);
+                    }
 #endif
                 }
                 else

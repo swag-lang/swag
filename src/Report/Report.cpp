@@ -681,6 +681,7 @@ namespace
                 if (g_CommandLine.dbgDevMode && !g_CommandLine.dbgCatch)
                 {
                     OS::errorBox("[Developer Mode]", "Error raised !");
+                    OS::exit(-1);
                     return false;
                 }
             }

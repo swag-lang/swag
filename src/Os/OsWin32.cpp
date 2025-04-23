@@ -568,7 +568,6 @@ namespace OS
     void errorBox(const char* title, const char* expr)
     {
         MessageBoxA(nullptr, expr, title, MB_OK | MB_ICONERROR);
-        DebugBreak();
     }
 
     void exit(int code)
