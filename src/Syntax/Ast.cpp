@@ -412,3 +412,17 @@ void Ast::normalizeIdentifierName(const Utf8& name)
         pz++;
     }
 }
+
+void Ast::setDiscard(AstNode* node)
+{
+    // Mark the identifier with AST_DISCARD
+    while (node && node->isNot(AstNodeKind::IdentifierRef))
+        node = node->firstChild();
+    // This is where AST_DISCARD will be really used
+    for (const auto c : node->children)
+    {
+        if (c->isNot(AstNodeKind::Identifier))
+            break;
+        c->addAstFlag(AST_DISCARD);
+    }
+}

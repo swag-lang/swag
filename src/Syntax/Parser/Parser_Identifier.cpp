@@ -380,19 +380,7 @@ bool Parser::doDiscard(AstNode* parent, AstNode** result)
     idRef->addAstFlag(AST_DISCARD);
     FormatAst::inheritFormatBefore(this, idRef, &discardToken);
 
-    // Mark the identifier with AST_DISCARD
-    while (idRef && idRef->isNot(AstNodeKind::IdentifierRef))
-        idRef = idRef->firstChild();
-    SWAG_ASSERT(idRef);
-
-    // This is where AST_DISCARD will be really used
-    for (const auto c : idRef->children)
-    {
-        if (c->isNot(AstNodeKind::Identifier))
-            break;
-        c->addAstFlag(AST_DISCARD);
-    }
-
+    Ast::setDiscard(idRef);
     return true;
 }
 

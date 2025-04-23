@@ -64,6 +64,7 @@ namespace Ast
 
     bool generateMissingInterfaceFct(SemanticContext* context, VectorNative<AstFuncDecl*>& mapItIdxToFunc, TypeInfoStruct* typeStruct, const TypeInfoStruct* typeBaseInterface, TypeInfoStruct* typeInterface);
     bool generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInfo* typeRight);
+    void setDiscard(AstNode* node);
 
     template<typename T>
     void constructNode(T* node)

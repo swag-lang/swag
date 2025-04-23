@@ -460,6 +460,10 @@ bool Semantic::resolveCompilerInject(SemanticContext* context)
     cloneContext.forceFlags             = AST_IN_MIXIN;
     cloneContext.ownerFct               = node->ownerFct;
     const auto cloneContent             = typeCode->content->clone(cloneContext);
+
+    if (node->hasAstFlag(AST_DISCARD))
+        Ast::setDiscard(cloneContent);
+
     cloneContent->addExtraPointer(ExtraPointerKind::AlternativeNode, typeCode->content->parent);
     cloneContent->addAlternativeScope(typeCode->content->parent->ownerScope);
     cloneContent->removeAstFlag(AST_NO_SEMANTIC | AST_NO_BYTECODE);
