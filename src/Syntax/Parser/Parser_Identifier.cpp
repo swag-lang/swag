@@ -359,6 +359,9 @@ bool Parser::doDiscard(AstNode* parent, AstNode** result)
         case TokenId::KwdAssume:
             SWAG_CHECK(doTryCatchAssume(parent, &idRef, true));
             break;
+        case TokenId::CompilerInject:
+            SWAG_CHECK(doCompilerInject(parent, &idRef));
+            break;
         default:
             if (Tokenizer::isIntrinsicReturn(tokenParse.token.id))
             {

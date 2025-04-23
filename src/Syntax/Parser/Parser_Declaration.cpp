@@ -821,7 +821,7 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         case TokenId::CompilerMacro:
             SWAG_CHECK(doCompilerMacro(parent, result));
             break;
-        case TokenId::CompilerMixin:
+        case TokenId::CompilerInject:
             SWAG_CHECK(doCompilerInject(parent, result));
             break;
         case TokenId::CompilerIf:

@@ -377,7 +377,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("#warning", TokenId::CompilerWarning);
     keywords.add("#foreignlib", TokenId::CompilerForeignLib);
     keywords.add("#import", TokenId::CompilerImport);
-    keywords.add("#inject", TokenId::CompilerMixin);
+    keywords.add("#inject", TokenId::CompilerInject);
     keywords.add("#macro", TokenId::CompilerMacro);
     keywords.add("#placeholder", TokenId::CompilerPlaceHolder);
     keywords.add("#if", TokenId::CompilerIf);

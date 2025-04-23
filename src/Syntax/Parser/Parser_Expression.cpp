@@ -1142,7 +1142,7 @@ bool Parser::doExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result
             boolExpression = node;
             break;
         }
-        case TokenId::CompilerMixin:
+        case TokenId::CompilerInject:
         {
             const auto node   = Ast::newNode<AstCompilerMixin>(AstNodeKind::CompilerInject, this, nullptr);
             node->semanticFct = Semantic::resolveCompilerInject;
