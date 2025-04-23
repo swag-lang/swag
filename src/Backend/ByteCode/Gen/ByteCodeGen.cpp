@@ -115,12 +115,12 @@ bool ByteCodeGen::setupByteCodeResolved(const ByteCodeGenContext* context, AstNo
     if (!context->bc)
         return true;
 
-    // Register function in compiler list, now that we are done
+    // Register the function in the compiler list, now that we are done
     if (node->hasAttribute(ATTRIBUTE_MESSAGE_FUNC))
         context->sourceFile->module->addCompilerFunc(context->bc);
 
     // #ast/#run etc... can have a #[Swag.PrintBc]. We need to print it now, because it's compile-time, and the legit
-    // pipeline for printing (after bc optimize) will not be called in that case
+    // pipeline for printing (after bc optimizer) will not be called in that case
     if (!g_ThreadMgr.debuggerMode)
     {
         if (node->hasAttribute(ATTRIBUTE_PRINT_BC) || (node->ownerFct && node->ownerFct->hasAttribute(ATTRIBUTE_PRINT_BC)))
@@ -145,7 +145,7 @@ bool ByteCodeGen::setupByteCodeResolved(const ByteCodeGenContext* context, AstNo
         const auto funcNode = castAst<AstFuncDecl>(context->bc->node, AstNodeKind::FuncDecl);
         if (!funcNode->token.sourceFile->hasFlag(FILE_SHOULD_HAVE_ERROR))
         {
-            // Be sure that every used registers have been released
+            // Be sure that every used register has been released
             if (context->bc->maxReservedRegisterRC > context->bc->availableRegistersRC.size() + context->bc->staticRegs)
             {
                 Report::internalError(funcNode, form("function [[%s]] does not release all registers !", funcNode->token.cstr()));

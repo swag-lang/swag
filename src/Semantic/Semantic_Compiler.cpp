@@ -462,7 +462,7 @@ bool Semantic::resolveCompilerInject(SemanticContext* context)
     const auto cloneContent             = typeCode->content->clone(cloneContext);
     cloneContent->addExtraPointer(ExtraPointerKind::AlternativeNode, typeCode->content->parent);
     cloneContent->addAlternativeScope(typeCode->content->parent->ownerScope);
-    cloneContent->removeAstFlag(AST_NO_SEMANTIC);
+    cloneContent->removeAstFlag(AST_NO_SEMANTIC | AST_NO_BYTECODE);
     node->typeInfo = cloneContent->typeInfo;
     context->baseJob->nodes.push_back(cloneContent);
     context->result = ContextResult::NewChildren;
