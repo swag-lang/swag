@@ -2,11 +2,15 @@
 #include "Backend/SCBE/Encoder/Micro/Optimize/ScbeOptimizer.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
+#pragma optimize("", off)
 
 namespace
 {
     bool handleConstantOpBinary(CpuOp op, uint64_t& result, uint64_t valueA, uint64_t valueB, OpBits opBits)
     {
+        ScbeCpu::maskValue(valueA, opBits);
+        ScbeCpu::maskValue(valueB, opBits);
+        
         switch (op)
         {
             case CpuOp::SHL:
