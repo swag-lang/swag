@@ -897,51 +897,52 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
         return context->report(err, Diagnostic::hereIs(overload));
     }
 
-    if (mustInline(funcDecl) && !isFunctionButNotACall(context, identifier, overload->symbol))
+    bool canInline = true;
+    if (!mustInline(funcDecl) || isFunctionButNotACall(context, identifier, overload->symbol))
+        canInline = false;
+    if (identifier->hasSpecFlag(AstIdentifier::SPEC_FLAG_NO_INLINE) && !funcDecl->hasAttribute(ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO))
+        canInline = false;
+    // Do not expand an inline call inside a function marked as inline.
+    // The expansion will be done at the lowest level possible
+    if (canInline && mustInline(identifier->ownerFct))
+        canInline = false;
+
+    if (canInline)
     {
-        if (!identifier->hasSpecFlag(AstIdentifier::SPEC_FLAG_NO_INLINE) ||
-            funcDecl->hasAttribute(ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO))
+        if (identifier->token.text == "xx")
         {
-            // Expand inline function. Do not expand an inline call inside a function marked as inline.
-            // The expansion will be done at the lowest level possible
-            if (!mustInline(identifier->ownerFct))
-            {
-                if (identifier->token.text == "xx")
-                {
-                    VectorNative<OneSymbolMatch> result;
-                    SWAG_CHECK(findCallSymbolsInContext(context, identifier, result));
-                    YIELD();
-                }
-
-                // Need to wait for function full semantic resolve
-                waitFuncDeclFullResolve(context->baseJob, funcDecl);
-                YIELD();
-
-                // First pass, we inline the function.
-                // The identifier for the function call will be re-resolved later when the content
-                // of the inline os done.
-                if (!identifier->hasAstFlag(AST_INLINED))
-                {
-                    identifier->addAstFlag(AST_INLINED);
-                    SWAG_CHECK(Semantic::makeInline(context, funcDecl, identifier));
-                }
-                else
-                {
-                    SWAG_CHECK(Semantic::setupIdentifierRef(context, identifier));
-                }
-
-                identifier->byteCodeFct = ByteCodeGen::emitPassThrough;
-
-                if (returnType->isStruct())
-                    identifier->addSemFlag(SEMFLAG_CONST_ASSIGN_INHERIT | SEMFLAG_CONST_ASSIGN);
-
-                if (typeFunc->returnNeedsStack())
-                    identifier->addAstFlag(AST_TRANSIENT);
-
-                identifier->addAstFlag(AST_FUNC_INLINE_CALL);
-                return true;
-            }
+            VectorNative<OneSymbolMatch> result;
+            SWAG_CHECK(findCallSymbolsInContext(context, identifier, result));
+            YIELD();
         }
+
+        // Need to wait for function full semantic resolve
+        waitFuncDeclFullResolve(context->baseJob, funcDecl);
+        YIELD();
+
+        // First pass, we inline the function.
+        // The identifier for the function call will be re-resolved later when the content
+        // of the inline os done.
+        if (!identifier->hasAstFlag(AST_INLINED))
+        {
+            identifier->addAstFlag(AST_INLINED);
+            SWAG_CHECK(Semantic::makeInline(context, funcDecl, identifier));
+        }
+        else
+        {
+            SWAG_CHECK(Semantic::setupIdentifierRef(context, identifier));
+        }
+
+        identifier->byteCodeFct = ByteCodeGen::emitPassThrough;
+
+        if (returnType->isStruct())
+            identifier->addSemFlag(SEMFLAG_CONST_ASSIGN_INHERIT | SEMFLAG_CONST_ASSIGN);
+
+        if (typeFunc->returnNeedsStack())
+            identifier->addAstFlag(AST_TRANSIENT);
+
+        identifier->addAstFlag(AST_FUNC_INLINE_CALL);
+        return true;
     }
 
     identifier->addAstFlag(AST_FUNC_CALL);
