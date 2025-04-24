@@ -203,11 +203,17 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
                     const auto callParam = castAst<AstFuncCallParam>(allParams->children[j], AstNodeKind::FuncCallParam);
                     if (callParam->indexParam == i)
                     {
-                        if (callParam->hasSemFlag(SEMFLAG_AUTO_CODE_PARAM))
+                        if (callParam->typeInfo->isCode())
                         {
                             covered = true;
                             break;
                         }
+
+                        /*if (callParam->hasSemFlag(SEMFLAG_AUTO_CODE_PARAM))
+                        {
+                            covered = true;
+                            break;
+                        }*/
 
                         const auto symbol = node->parametersScope->symTable.find(funcParam->token.text);
                         SWAG_ASSERT(symbol);
