@@ -907,15 +907,29 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     if (canInline && mustInline(identifier->ownerFct))
         canInline = false;
 
+    // Do not inline a function call parameter, where the function can be inlined too.
     if (canInline)
     {
-        if (identifier->token.text == "xx")
+        VectorNative<OneSymbolMatch> result;
+        SWAG_CHECK(findCallSymbolsInContext(context, identifier, result));
+        YIELD();
+        for (const auto s: result)
         {
-            VectorNative<OneSymbolMatch> result;
-            SWAG_CHECK(findCallSymbolsInContext(context, identifier, result));
-            YIELD();
+            for (const auto n: s.symbol->nodes)
+            {
+                if (n->hasAttribute(ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO | ATTRIBUTE_INLINE))
+                {
+                    canInline = false;
+                    break;
+                }
+            }
+            if (!canInline)
+                break;
         }
-
+    }
+    
+    if (canInline)
+    {
         // Need to wait for function full semantic resolve
         waitFuncDeclFullResolve(context->baseJob, funcDecl);
         YIELD();

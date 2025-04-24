@@ -1,4 +1,3 @@
-#global skip
 var G = 0
 
 #[Swag.Macro]
