@@ -578,11 +578,11 @@ namespace
             return false;
 
         auto checkParent = identifier->identifierRef()->parent;
-        
+
         if (checkParent->is(AstNodeKind::FuncCallParam) &&
             checkParent->parent->is(AstNodeKind::CompilerInject))
-                checkParent = checkParent->parent->parent;
-            
+            checkParent = checkParent->parent->parent;
+
         if (checkParent->is(AstNodeKind::Try) ||
             checkParent->is(AstNodeKind::Catch) ||
             checkParent->is(AstNodeKind::TryCatch) ||
@@ -906,6 +906,13 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
             // The expansion will be done at the lowest level possible
             if (!mustInline(identifier->ownerFct))
             {
+                if (identifier->token.text == "xx")
+                {
+                    VectorNative<OneSymbolMatch> result;
+                    SWAG_CHECK(findCallSymbolsInContext(context, identifier, result));
+                    YIELD();
+                }
+
                 // Need to wait for function full semantic resolve
                 waitFuncDeclFullResolve(context->baseJob, funcDecl);
                 YIELD();

@@ -1,3 +1,4 @@
+#global skip
 var G = 0
 
 #[Swag.Macro]
@@ -9,7 +10,7 @@ func assert(expr: code, str: string = "toto")
     //@print("after")
 }
 
-#[Swag.NoInline]
+#[Swag.Inline]
 func xx(val: s32)->s32
 {
     return val
