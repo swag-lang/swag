@@ -209,12 +209,6 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
                             break;
                         }
 
-                        /*if (callParam->hasSemFlag(SEMFLAG_AUTO_CODE_PARAM))
-                        {
-                            covered = true;
-                            break;
-                        }*/
-
                         const auto symbol = node->parametersScope->symTable.find(funcParam->token.text);
                         SWAG_ASSERT(symbol);
                         for (const auto overload : symbol->overloads)
