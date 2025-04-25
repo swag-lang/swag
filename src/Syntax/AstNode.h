@@ -57,6 +57,7 @@ using TypeFlags           = Flags<uint16_t>;
 constexpr CloneFlags CLONE_RAW             = 0x00000001;
 constexpr CloneFlags CLONE_FORCE_OWNER_FCT = 0x00000002;
 constexpr CloneFlags CLONE_INLINE          = 0x00000004;
+constexpr CloneFlags CLONE_INJECT          = 0x00000008;
 
 struct CloneUpdateRef
 {

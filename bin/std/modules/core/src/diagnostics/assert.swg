@@ -1,17 +1,14 @@
 #global public
 #global namespace Debug
 
-#[Swag.Macro, Swag.Warning("Wrn0006", Swag.WarningLevel.Disable)]
+#[Swag.Mixin]
 func assert(expr: code, message: string = null, loc = #callerlocation)
 {
     #if ASSERT
     {
-        #macro
-        {
-            let b = #inject #up expr
-            if !b:
-                @panic(#up message, #up loc)
-        }
+        let #mix0 = #inject #self.expr
+        if !#mix0:
+            @panic(#self.message, #self.loc)
     }
 }
 
