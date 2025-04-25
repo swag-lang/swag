@@ -8,9 +8,7 @@ impl Properties
 
     mtd reconstructArray(item: *PropertiesItem)
     {
-        let valueType        = Reflection.getStructArrayType(item.type)
-        Debug.assert(valueType != null)
-
+        let valueType        = assume Reflection.getStructArrayType(item.type)
         let arrData          = cast(*Array'u8) item.data
         let countItemsBefore = items.count
         let itemIdx          = Slice.findLinear(self.items.toSlice(), item)
@@ -66,9 +64,7 @@ impl Properties
 
     mtd clearArray(item: *PropertiesItem)
     {
-        let valueType = Reflection.getStructArrayType(item.type)
-        Debug.assert(valueType != null)
-
+        let valueType = assume Reflection.getStructArrayType(item.type)
         Reflection.clearStructArray(item.data, valueType)
         refreshArray(item)
         hasChanged(item)
@@ -76,9 +72,7 @@ impl Properties
 
     mtd removeArrayValue(item: *PropertiesItem)
     {
-        let valueType     = Reflection.getStructArrayType(item.parent.type)
-        Debug.assert(valueType != null)
-
+        let valueType     = assume Reflection.getStructArrayType(item.parent.type)
         let parentItemIdx = Slice.findLinear(items.toSlice(), item.parent)
         let itemIdx       = Slice.findLinear(items.toSlice(), item)
         let removeItemIdx = itemIdx - parentItemIdx - 1
@@ -92,8 +86,7 @@ impl Properties
 
     mtd appendArrayValue(item: *PropertiesItem)
     {
-        let valueType = Reflection.getStructArrayType(item.type)
-        Debug.assert(valueType != null)
+        let valueType = assume Reflection.getStructArrayType(item.type)
 
         discard Reflection.appendValueStructArray(item.data, valueType)
 
@@ -107,9 +100,7 @@ impl Properties
         let numItemsBefore = items.count
         item.flags.add(.NoSeparator)
 
-        let valueType = Reflection.getStructArrayType(item.type)
-        Debug.assert(valueType != null)
-
+        let valueType = assume Reflection.getStructArrayType(item.type)
         let arrData   = cast(*Array'u8) data
         var newData   = arrData.buffer
 

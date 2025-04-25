@@ -2,12 +2,16 @@
 #global namespace Debug
 
 #[Swag.Macro, Swag.Warning("Wrn0006", Swag.WarningLevel.Disable)]
-func assert(expr: bool, message: string = null, loc = #callerlocation)
+func assert(expr: code, message: string = null, loc = #callerlocation)
 {
     #if ASSERT
     {
-        if !expr:
-            @panic(message, loc)
+        #macro
+        {
+            let b = #inject #up expr
+            if !b:
+                @panic(#up message, #up loc)
+        }
     }
 }
 

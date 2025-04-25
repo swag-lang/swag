@@ -234,18 +234,18 @@ impl RichEditCtrl
     }
 
     #[Swag.Overload]
-    mtd insertTextPrivate(cp: *RichEditCursor, runes: Array'rune, styles: Array'u8, selRect: bool)
+    mtd insertTextPrivate(cp: *RichEditCursor, runes: Array'rune, nstyles: Array'u8, selRect: bool)
     {
         if runes.isEmpty():
             return
-        Debug.assert(runes.count == #self.styles.count)
+        Debug.assert(runes.count == nstyles.count)
 
         if !selRect
         {
-            for i in #self.runes
+            for i in runes
             {
-                let c = #self.runes[i]
-                let s = #self.styles[i]
+                let c = runes[i]
+                let s = nstyles[i]
                 insertRunePrivate(cp, c, s)
             }
         }
@@ -263,7 +263,7 @@ impl RichEditCtrl
                     var posIns = posInLine
                     if posIns > line.length():
                         posIns = line.length()
-                    line.insertRunes(posIns, @mkslice(#self.runes.buffer + rankBeg, rankEnd - rankBeg), @mkslice(#self.styles.buffer + rankBeg, rankEnd - rankBeg))
+                    line.insertRunes(posIns, @mkslice(runes.buffer + rankBeg, rankEnd - rankBeg), @mkslice(nstyles.buffer + rankBeg, rankEnd - rankBeg))
                     if rankEnd == runes.count:
                         break
                     if rankEnd >= runes.count - 1:
