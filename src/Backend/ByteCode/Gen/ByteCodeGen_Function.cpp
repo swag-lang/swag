@@ -2010,7 +2010,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     else if (funcNode)
     {
         auto inst = EMIT_INST0(context, ByteCodeOp::LocalCall);
-        SWAG_ASSERT(funcNode->hasExtSemantic() && funcNode->extByteCode()->bc);
+        SWAG_ASSERT(funcNode->hasExtByteCode() && funcNode->extByteCode()->bc);
         inst->a.pointer                     = reinterpret_cast<uint8_t*>(funcNode->extByteCode()->bc);
         inst->b.pointer                     = reinterpret_cast<uint8_t*>(typeInfoFunc);
         inst->numVariadicParams             = static_cast<uint8_t>(numVariadic);
