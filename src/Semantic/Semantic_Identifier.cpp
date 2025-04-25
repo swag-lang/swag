@@ -337,8 +337,17 @@ TypeInfoEnum* Semantic::findEnumTypeInContext(SemanticContext*, TypeInfo* typeIn
 
 bool Semantic::findCallSymbolsInContext(SemanticContext* context, const AstNode* node, VectorNative<OneSymbolMatch>& symbolMatch)
 {
-    const auto findParent = node->findParent(AstNodeKind::FuncCallParam);
-    if (!findParent)
+    auto findParent = node;
+    while (findParent && findParent->kind != AstNodeKind::FuncCallParam)
+    {
+        if (findParent->is(AstNodeKind::Statement))
+            break;
+        if (findParent->is(AstNodeKind::Inline))
+            break;        
+        findParent = findParent->parent;
+    }
+    
+    if (!findParent || findParent->isNot(AstNodeKind::FuncCallParam))
         return true;
     if (findParent->isNot(AstNodeKind::FuncCallParam) ||
         findParent->getParent(1)->isNot(AstNodeKind::FuncCallParams) ||

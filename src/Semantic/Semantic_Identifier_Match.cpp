@@ -960,7 +960,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     }
 
     identifier->addAstFlag(AST_FUNC_CALL);
-
+    
     // @print behaves like a normal function, so we want an emitCall in that case
     if (identifier->hasIntrinsicName() && identifier->token.isNot(TokenId::IntrinsicPrint))
     {
