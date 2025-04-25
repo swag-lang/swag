@@ -458,6 +458,7 @@ bool Semantic::resolveCompilerInject(SemanticContext* context)
     cloneContext.ownerInline            = node->safeOwnerInline();
     cloneContext.replaceTokens          = node->replaceTokens;
     cloneContext.forceFlags             = AST_IN_MIXIN;
+    cloneContext.removeFlags            = AST_R_VALUE;
     cloneContext.ownerFct               = node->ownerFct;
     const auto cloneContent             = typeCode->content->clone(cloneContext);
 
