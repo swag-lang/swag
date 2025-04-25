@@ -161,7 +161,6 @@ namespace Semantic
     bool           executeCompilerNode(SemanticContext* context, AstNode* node, bool onlyConstExpr);
     bool           fillMatchContextCallParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* identifier, const SymbolOverload* overload, AstNode* ufcsFirstParam);
     bool           fillMatchContextGenericParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, const SymbolOverload* overload);
-    bool           findCallSymbolsInContext(SemanticContext* context, const AstNode* node, VectorNative<OneSymbolMatch> &symbolMatch);
     bool           findEnumTypeInContext(SemanticContext* context, const AstNode* node, VectorNative<TypeInfoEnum*>& result, VectorNative<std::pair<AstNode*, TypeInfoEnum*>>& has, VectorNative<SymbolOverload*>& testedOver);
     bool           getConstantArrayPtr(SemanticContext* context, uint32_t* storageOffset, DataSegment** storageSegment);
     bool           getDigitHex(SemanticContext* context, const SourceLocation& startLoc, const char* pzs, const char** pzr, int& result, const char* errMsg);

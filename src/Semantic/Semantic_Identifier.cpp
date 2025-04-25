@@ -335,55 +335,6 @@ TypeInfoEnum* Semantic::findEnumTypeInContext(SemanticContext*, TypeInfo* typeIn
     }
 }
 
-bool Semantic::findCallSymbolsInContext(SemanticContext* context, const AstNode* node, VectorNative<OneSymbolMatch>& symbolMatch)
-{
-    auto findParent = node;
-    while (findParent && findParent->kind != AstNodeKind::FuncCallParam)
-    {
-        if (findParent->is(AstNodeKind::Statement))
-            break;
-        if (findParent->is(AstNodeKind::Inline))
-            break;        
-        findParent = findParent->parent;
-    }
-    
-    if (!findParent || findParent->isNot(AstNodeKind::FuncCallParam))
-        return true;
-    if (findParent->isNot(AstNodeKind::FuncCallParam) ||
-        findParent->getParent(1)->isNot(AstNodeKind::FuncCallParams) ||
-        findParent->getParent(2)->isNot(AstNodeKind::Identifier))
-        return true;
-
-    const auto fctCallParam = castAst<AstFuncCallParam>(findParent);
-    const auto idref        = castAst<AstIdentifierRef>(fctCallParam->getParent(3), AstNodeKind::IdentifierRef);
-    const auto id           = castAst<AstIdentifier>(fctCallParam->getParent(2), AstNodeKind::Identifier);
-
-    g_SilentError++;
-    const auto found = findIdentifierInScopes(context, symbolMatch, idref, id);
-    g_SilentError--;
-    YIELD();
-
-    if (!found || symbolMatch.empty())
-        return true;
-
-    // Be sure symbols have been solved, because we need the types to be deduced
-    for (const auto& sm : symbolMatch)
-    {
-        const auto symbol = sm.symbol;
-        if (symbol->isNot(SymbolKind::Function))
-            continue;
-
-        ScopedLock ls(symbol->mutex);
-        if (symbol->cptOverloads)
-        {
-            waitSymbolNoLock(context->baseJob, symbol);
-            return true;
-        }
-    }
-
-    return true;
-}
-
 bool Semantic::findEnumTypeInContext(SemanticContext*                                  context,
                                      const AstNode*                                    node,
                                      VectorNative<TypeInfoEnum*>&                      result,

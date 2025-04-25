@@ -906,27 +906,6 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     // The expansion will be done at the lowest level possible
     if (canInline && mustInline(identifier->ownerFct))
         canInline = false;
-
-    // Do not inline a function call parameter, where the function can be inlined too.
-    if (canInline)
-    {
-        VectorNative<OneSymbolMatch> result;
-        SWAG_CHECK(findCallSymbolsInContext(context, identifier, result));
-        YIELD();
-        for (const auto s: result)
-        {
-            for (const auto n: s.symbol->nodes)
-            {
-                if (n->hasAttribute(ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO | ATTRIBUTE_INLINE))
-                {
-                    canInline = false;
-                    break;
-                }
-            }
-            if (!canInline)
-                break;
-        }
-    }
     
     if (canInline)
     {
@@ -956,6 +935,12 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
             identifier->addAstFlag(AST_TRANSIENT);
 
         identifier->addAstFlag(AST_FUNC_INLINE_CALL);
+        return true;
+    }
+
+    if(funcDecl->hasAttribute(ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO))
+    {
+        identifier->byteCodeFct = nullptr;
         return true;
     }
 

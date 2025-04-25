@@ -1,3 +1,4 @@
+#global skip
 //#global skip
 #[Swag.Mixin]
 func safety(expr: code, message: string = null, loc = #callerlocation)

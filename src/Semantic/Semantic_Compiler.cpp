@@ -466,25 +466,12 @@ bool Semantic::resolveCompilerInject(SemanticContext* context)
     if (node->hasAstFlag(AST_DISCARD))
         Ast::setDiscard(cloneContent);
 
-    // In case the injected code has references to parameters of an inlined function,
-    // we need to be sure that the parameter scope is covered
-    SWAG_ASSERT(node->ownerInline());
-    if (typeCode->content->ownerFct->hasAttribute(ATTRIBUTE_INLINE))
-    {
-        auto inlineNode = node->ownerInline();
-        while (inlineNode && inlineNode->func != typeCode->content->ownerFct && inlineNode->hasOwnerInline())
-            inlineNode = inlineNode->ownerInline();
-        if (inlineNode && inlineNode->parametersScope)
-            cloneContent->addAlternativeScope(inlineNode->parametersScope);
-    }
-
     cloneContent->addExtraPointer(ExtraPointerKind::AlternativeNode, typeCode->content->parent);
     cloneContent->addAlternativeScope(typeCode->content->parent->ownerScope);
     cloneContent->removeAstFlag(AST_NO_SEMANTIC | AST_NO_BYTECODE);
     node->typeInfo = cloneContent->typeInfo;
     context->baseJob->nodes.push_back(cloneContent);
     context->result = ContextResult::NewChildren;
-
     return true;
 }
 
