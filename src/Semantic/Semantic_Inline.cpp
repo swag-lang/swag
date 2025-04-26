@@ -322,11 +322,9 @@ bool Semantic::makeInline(JobContext* context, AstIdentifier* identifier)
     // of the inline is done.
     if (!identifier->hasAstFlag(AST_INLINED))
     {
-        // Need to wait for function full semantic resolve
         const auto funcDecl = castAst<AstFuncDecl>(identifier->resolvedSymbolOverload()->node, AstNodeKind::FuncDecl);
         waitFuncDeclFullResolve(context->baseJob, funcDecl);
         YIELD();
-
         identifier->addAstFlag(AST_INLINED);
         SWAG_CHECK(makeInline(context, funcDecl, identifier, true));
         YIELD();

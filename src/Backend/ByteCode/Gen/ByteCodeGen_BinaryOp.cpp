@@ -777,42 +777,44 @@ bool ByteCodeGen::emitUserOp(ByteCodeGenContext* context, AstNode* allParams, As
     const auto funcDecl = castAst<AstFuncDecl>(symbolOverload->node, AstNodeKind::FuncDecl);
 
     // Note: Do not inline a call when evaluation compile-time affectation (SEMFLAG_EXEC_RET_STACK)
-    if (Semantic::mustInline(funcDecl) && !node->hasSemFlag(SEMFLAG_EXEC_RET_STACK))
+    if (!node->hasSemFlag(SEMFLAG_EXEC_RET_STACK))
     {
-        // Expand inline function. Do not expand an inline call inside a function marked as inline.
-        // The expansion will be done at the lowest level possible.
-        // Remember: inline functions are also compiled as non-inlined (mostly for compile-time execution
-        // of calls), and we do not want the call to be inlined twice (one in the normal owner function, and one
-        // again after the owner function has been duplicated).
-        if (!Semantic::mustInline(node->ownerFct))
+        if (Semantic::mustInline(funcDecl))
         {
-            // Need to wait for function full semantic resolve
-            Semantic::waitFuncDeclFullResolve(context->baseJob, funcDecl);
-            YIELD();
-            if (!node->hasAstFlag(AST_INLINED))
+            // Expand inline function. Do not expand an inline call inside a function marked as inline.
+            // The expansion will be done at the lowest level possible.
+            // Remember: inline functions are also compiled as non-inlined (mostly for compile-time execution
+            // of calls), and we do not want the call to be inlined twice (one in the normal owner function, and one
+            // again after the owner function has been duplicated).
+            if (!Semantic::mustInline(node->ownerFct))
             {
-                node->addAstFlag(AST_INLINED);
-                SWAG_CHECK(Semantic::makeInline(context, funcDecl, node, false));
+                if (!node->hasAstFlag(AST_INLINED))
+                {
+                    Semantic::waitFuncDeclFullResolve(context->baseJob, funcDecl);
+                    YIELD();
+                    node->addAstFlag(AST_INLINED);
+                    SWAG_CHECK(Semantic::makeInline(context, funcDecl, node, false));
+                    YIELD();
+                }
+
+                if (!node->hasSemFlag(SEMFLAG_RESOLVE_INLINED))
+                {
+                    node->addSemFlag(SEMFLAG_RESOLVE_INLINED);
+                    const auto back = node->lastChild();
+                    SWAG_ASSERT(back->is(AstNodeKind::Inline));
+                    context->baseJob->nodes.push_back(back);
+                    context->result = ContextResult::NewChildren;
+                }
+
                 return true;
             }
-
-            if (!node->hasSemFlag(SEMFLAG_RESOLVE_INLINED))
-            {
-                node->addSemFlag(SEMFLAG_RESOLVE_INLINED);
-                const auto back = node->lastChild();
-                SWAG_ASSERT(back->is(AstNodeKind::Inline));
-                context->baseJob->nodes.push_back(back);
-                context->result = ContextResult::NewChildren;
-            }
-
-            return true;
         }
     }
 
     const bool foreign = funcDecl->isForeign();
 
-    // We are less restrictive on type parameters for user op, as type are more in control.
-    // Se we could have a needed cast now.
+    // We are less restrictive on type parameters for user op, as types are more in control.
+    // Se we could have a necessary cast now.
     if (allParams)
     {
         for (const auto c : allParams->children)
