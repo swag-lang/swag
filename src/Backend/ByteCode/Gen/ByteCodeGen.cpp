@@ -17,7 +17,7 @@
 
 bool ByteCodeGen::setupRuntime(const ByteCodeGenContext* context, const AstNode* node)
 {
-    // Register allocator interface to the default bytecode context
+    // Register the allocator interface to the default bytecode context
     if (node->token.is(g_LangSpec->name_SystemAllocator))
     {
         const auto typeStruct = castTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
@@ -63,7 +63,7 @@ bool ByteCodeGen::setupByteCodeGenerated(ByteCodeGenContext* context, AstNode* n
             g_Stats.numInstructions += context->bc->numInstructions;
 #endif
 
-            // Print resulting bytecode
+            // Print the resulting bytecode
             if (node->hasAttribute(ATTRIBUTE_PRINT_BC) && !node->hasAttribute(ATTRIBUTE_GENERATED_FUNC))
             {
                 ScopedLock lk(context->sourceFile->module->mutexByteCode);
@@ -188,7 +188,7 @@ bool ByteCodeGen::skipNodes(ByteCodeGenContext* context, AstNode* node)
     return res != Ast::VisitResult::Stop;
 }
 
-void ByteCodeGen::askForByteCode(JobContext* context, AstNode* node, uint32_t flags, ByteCode* caller)
+void ByteCodeGen::askForByteCode(JobContext* context, AstNode* node, AskBcFlags flags, ByteCode* caller)
 {
     if (!node)
         return;
@@ -208,7 +208,7 @@ void ByteCodeGen::askForByteCode(JobContext* context, AstNode* node, uint32_t fl
         if (funcDecl->isForeign())
         {
             // Need to wait for function full semantic resolve
-            if (flags & ASKBC_WAIT_SEMANTIC_RESOLVED)
+            if (flags.has(ASK_BC_WAIT_SEMANTIC_RESOLVED))
             {
                 SWAG_ASSERT(job);
                 Semantic::waitFuncDeclFullResolve(job, funcDecl);
@@ -229,7 +229,7 @@ void ByteCodeGen::askForByteCode(JobContext* context, AstNode* node, uint32_t fl
             return;
 
         // Need to wait for function full semantic resolve
-        if (flags & ASKBC_WAIT_SEMANTIC_RESOLVED)
+        if (flags.has(ASK_BC_WAIT_SEMANTIC_RESOLVED))
         {
             SWAG_ASSERT(funcDecl);
             Semantic::waitFuncDeclFullResolve(job, funcDecl);
@@ -247,7 +247,7 @@ void ByteCodeGen::askForByteCode(JobContext* context, AstNode* node, uint32_t fl
     // Need to generate bytecode, if not already done or running
     if (!node->hasSemFlag(SEMFLAG_BYTECODE_GENERATED))
     {
-        if (flags & ASKBC_WAIT_DONE)
+        if (flags.has(ASK_BC_WAIT_DONE))
         {
             SWAG_ASSERT(job);
             job->setPending(JobWaitKind::SemByteCodeGenerated1, nullptr, node, nullptr);
@@ -258,7 +258,7 @@ void ByteCodeGen::askForByteCode(JobContext* context, AstNode* node, uint32_t fl
         if (!extByteCode->byteCodeJob)
         {
             Job* dependentJob;
-            if (flags & ASKBC_WAIT_DONE)
+            if (flags.has(ASK_BC_WAIT_DONE))
                 dependentJob = job;
             else
                 dependentJob = job->dependentJob;
@@ -286,12 +286,12 @@ void ByteCodeGen::askForByteCode(JobContext* context, AstNode* node, uint32_t fl
             if (node->is(AstNodeKind::FuncDecl))
                 sourceFile->module->addByteCodeFunc(node->extByteCode()->bc);
 
-            if (flags & ASKBC_WAIT_DONE)
+            if (flags.has(ASK_BC_WAIT_DONE))
                 job->jobsToAdd.push_back(node->extByteCode()->byteCodeJob);
             else
                 g_ThreadMgr.addJob(node->extByteCode()->byteCodeJob);
         }
-        else if (flags & ASKBC_WAIT_DONE)
+        else if (flags.has(ASK_BC_WAIT_DONE))
         {
             ScopedLock lk1(extByteCode->byteCodeJob->mutexDependent);
             extByteCode->byteCodeJob->dependentJobs.add(job);
@@ -300,7 +300,7 @@ void ByteCodeGen::askForByteCode(JobContext* context, AstNode* node, uint32_t fl
         return;
     }
 
-    if (flags & ASKBC_WAIT_RESOLVED)
+    if (flags.has(ASK_BC_WAIT_RESOLVED))
     {
         SWAG_ASSERT(job);
         if (!node->hasSemFlag(SEMFLAG_BYTECODE_RESOLVED))

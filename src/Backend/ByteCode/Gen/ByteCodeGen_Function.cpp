@@ -369,7 +369,7 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
     // to be generated
     if (node->resolvedSymbolOverload()->node->hasAstFlag(AST_DEFINED_INTRINSIC))
     {
-        askForByteCode(context, node->resolvedSymbolOverload()->node, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
+        askForByteCode(context, node->resolvedSymbolOverload()->node, ASK_BC_WAIT_SEMANTIC_RESOLVED, context->bc);
         YIELD();
     }
 
@@ -1552,7 +1552,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     }
 
     // Be sure the referenced function has bytecode
-    askForByteCode(context, funcNode, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
+    askForByteCode(context, funcNode, ASK_BC_WAIT_SEMANTIC_RESOLVED, context->bc);
     YIELD();
 
     uint32_t numCallParams = allParams ? allParams->childCount() : 0;

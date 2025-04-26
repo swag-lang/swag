@@ -83,16 +83,18 @@ enum class SafetyMsg
     Count,
 };
 
-constexpr uint32_t ASKBC_WAIT_SEMANTIC_RESOLVED = 0x00000001;
-constexpr uint32_t ASKBC_WAIT_DONE              = 0x00000002;
-constexpr uint32_t ASKBC_WAIT_RESOLVED          = 0x00000004;
+using AskBcFlags                                   = Flags<uint32_t>;
+constexpr AskBcFlags ASK_BC_ZERO                   = 0x00000000;
+constexpr AskBcFlags ASK_BC_WAIT_SEMANTIC_RESOLVED = 0x00000001;
+constexpr AskBcFlags ASK_BC_WAIT_DONE              = 0x00000002;
+constexpr AskBcFlags ASK_BC_WAIT_RESOLVED          = 0x00000004;
 
 namespace ByteCodeGen
 {
     bool setupRuntime(const ByteCodeGenContext* context, const AstNode* node);
     bool setupByteCodeGenerated(ByteCodeGenContext* context, AstNode* node);
     bool setupByteCodeResolved(const ByteCodeGenContext* context, AstNode* node);
-    void askForByteCode(JobContext* context, AstNode* node, uint32_t flags, ByteCode* caller = nullptr);
+    void askForByteCode(JobContext* context, AstNode* node, AskBcFlags flags, ByteCode* caller = nullptr);
 
     void getDependantCalls(const AstNode* depNode, VectorNative<AstNode*>& dep);
     void collectLiteralsChildren(AstNode* node, VectorNative<AstNode*>* orderedChildren);
