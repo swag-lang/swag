@@ -270,6 +270,7 @@ void Semantic::waitOverloadCompleted(Job* job, const SymbolOverload* overload)
 void Semantic::waitFuncDeclFullResolve(Job* job, AstFuncDecl* funcDecl)
 {
     ScopedLock lk(funcDecl->funcMutex);
+    SWAG_ASSERT(job);
     if (!funcDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_FULL_RESOLVE))
     {
         funcDecl->dependentJobs.add(job);

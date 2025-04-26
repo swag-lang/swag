@@ -210,10 +210,8 @@ void ByteCodeGen::askForByteCode(JobContext* context, AstNode* node, AskBcFlags 
             // Need to wait for function full semantic resolve
             if (flags.has(ASK_BC_WAIT_SEMANTIC_RESOLVED))
             {
-                SWAG_ASSERT(job);
                 Semantic::waitFuncDeclFullResolve(job, funcDecl);
-                if (job->baseContext->result != ContextResult::Done)
-                    return;
+                YIELD_VOID();
             }
 
             ScopedLock lk(node->mutex);
@@ -221,6 +219,7 @@ void ByteCodeGen::askForByteCode(JobContext* context, AstNode* node, AskBcFlags 
             return;
         }
 
+        // Deal with inline mixin and macros not already done
         while (!funcDecl->pendingInline.empty())
         {
             const auto identifier = funcDecl->pendingInline.back();
@@ -229,7 +228,7 @@ void ByteCodeGen::askForByteCode(JobContext* context, AstNode* node, AskBcFlags 
                 context->baseJob->nodes.push_back(identifier);
             YIELD_VOID();
             funcDecl->pendingInline.pop_back();
-        }        
+        }
     }
 
     if (job)
@@ -243,8 +242,7 @@ void ByteCodeGen::askForByteCode(JobContext* context, AstNode* node, AskBcFlags 
         {
             SWAG_ASSERT(funcDecl);
             Semantic::waitFuncDeclFullResolve(job, funcDecl);
-            if (job->baseContext->result != ContextResult::Done)
-                return;
+            YIELD_VOID();
         }
     }
 
@@ -293,7 +291,7 @@ void ByteCodeGen::askForByteCode(JobContext* context, AstNode* node, AskBcFlags 
                 extByteCode->bc->name += node->token.text;
             }
 
-            if (node->is(AstNodeKind::FuncDecl))
+            if (funcDecl)
                 sourceFile->module->addByteCodeFunc(node->extByteCode()->bc);
 
             if (flags.has(ASK_BC_WAIT_DONE))
