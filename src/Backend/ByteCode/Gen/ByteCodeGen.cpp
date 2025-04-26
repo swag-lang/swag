@@ -194,14 +194,17 @@ void ByteCodeGen::askForByteCode(JobContext* context, AstNode* node, uint32_t fl
         return;
     const auto job = context->baseJob;
 
-    // If this is a foreign function, we do not need bytecode
     AstFuncDecl* funcDecl = nullptr;
     if (node->is(AstNodeKind::FuncDecl))
     {
         funcDecl = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+
+        // If the function does not have content, or if sematic was not done, then
+        // no need for bytecode
         if (funcDecl->content && funcDecl->content->hasAstFlag(AST_NO_SEMANTIC))
             return;
 
+        // If this is a foreign function, we do not need bytecode
         if (funcDecl->isForeign())
         {
             // Need to wait for function full semantic resolve

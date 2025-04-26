@@ -1551,7 +1551,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
         typeInfoFunc = castTypeInfo<TypeInfoFuncAttr>(typeVar, TypeInfoKind::LambdaClosure);
     }
 
-    // Be sure referenced function has bytecode
+    // Be sure the referenced function has bytecode
     askForByteCode(context, funcNode, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
     YIELD();
 
