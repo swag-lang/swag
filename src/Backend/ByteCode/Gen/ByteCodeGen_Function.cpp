@@ -2230,20 +2230,6 @@ bool ByteCodeGen::emitForeignCall(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGen::makeInline(ByteCodeGenContext* context, AstFuncDecl* funcDecl, AstNode* identifier)
-{
-    SWAG_CHECK(Semantic::makeInline(context, funcDecl, identifier));
-
-    // Create a semantic job to resolve the inline part, and wait for that to be finished
-    context->baseJob->setPending(JobWaitKind::MakeInline, nullptr, funcDecl, nullptr);
-    const auto inlineNode = identifier->lastChild();
-    SWAG_ASSERT(inlineNode->is(AstNodeKind::Inline));
-    const auto job = SemanticJob::newJob(context->baseJob->dependentJob, context->sourceFile, inlineNode, false);
-    job->addDependentJob(context->baseJob);
-    context->baseJob->jobsToAdd.push_back(job);
-    return true;
-}
-
 // ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitCastAs(ByteCodeGenContext* context)
 {

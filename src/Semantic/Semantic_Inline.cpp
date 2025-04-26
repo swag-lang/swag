@@ -39,7 +39,7 @@ bool Semantic::mustInline(const AstFuncDecl* funcDecl)
     return false;
 }
 
-bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* identifier)
+bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* identifier, bool fromSemantic)
 {
     CloneContext cloneContext;
 
@@ -123,8 +123,8 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
         parentNode = parentNode->parent;
     }
 
-    // If a function has generic parameters, then the block resolution of identifiers needs to be able to find the generic parameters,
-    // so we register all those generic parameters in a special scope (we cannot just register the scope of the function because
+    // If a function has generic parameters, then the block resolution of identifiers needs to be able to find the generic parameters.
+    // So we register all those generic parameters in a special scope (we cannot just register the scope of the function because
     // they are other stuff here)
     if (funcDecl->genericParameters)
     {
@@ -251,7 +251,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
     }
 
     // Need to reevaluate the identifier (if this is an identifier) because the makeInline can be called
-    // for something else, like a loop node for example (opCount). In that case, we let the specific node
+    // for something else (like a loop node, for example 'opCount'). In that case, we let the specific node
     // deal with the (re)evaluation.
     if (identifier->is(AstNodeKind::Identifier))
     {
@@ -265,7 +265,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
     }
 
     // Check used aliases
-    // Error if an alias has been defined, but not 'eaten' by the function
+    // Error if an alias has been defined but not 'eaten' by the function
     if (identifier->is(AstNodeKind::Identifier))
     {
         if (cloneContext.replaceNames.size() != cloneContext.usedReplaceNames.size())
@@ -302,13 +302,16 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
         }
     }
 
-    return true;
-}
+    if (fromSemantic)
+        context->result = ContextResult::NewChildren;
+    else
+    {
+        context->baseJob->setPending(JobWaitKind::MakeInline, nullptr, funcDecl, nullptr);
+        const auto job = SemanticJob::newJob(context->baseJob->dependentJob, context->sourceFile, inlineNode, false);
+        job->addDependentJob(context->baseJob);
+        context->baseJob->jobsToAdd.push_back(job);
+    }
 
-bool Semantic::makeInline(SemanticContext* context, AstFuncDecl* funcDecl, AstNode* identifier)
-{
-    SWAG_CHECK(makeInline(static_cast<JobContext*>(context), funcDecl, identifier));
-    context->result = ContextResult::NewChildren;
     return true;
 }
 
@@ -325,7 +328,7 @@ bool Semantic::makeInline(JobContext* context, AstIdentifier* identifier)
         YIELD();
 
         identifier->addAstFlag(AST_INLINED);
-        SWAG_CHECK(makeInline(context, funcDecl, identifier));
+        SWAG_CHECK(makeInline(context, funcDecl, identifier, true));
         context->result = ContextResult::NewChildren;
         YIELD();
     }

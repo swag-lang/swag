@@ -169,8 +169,7 @@ namespace Semantic
     bool           isCompilerContext(const AstNode* node);
     bool           isFunctionButNotACall(SemanticContext* context, AstNode* node, const SymbolName* symbol);
     bool           isMethod(const AstFuncDecl* funcNode);
-    bool           makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* identifier);
-    bool           makeInline(SemanticContext* context, AstFuncDecl* funcDecl, AstNode* identifier);
+    bool           makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* identifier, bool fromSemantic);
     bool           makeInline(JobContext* context, AstIdentifier* identifier);
     bool           needToCompleteSymbolNoLock(SemanticContext* context, const AstIdentifier* identifier, SymbolName* symbol, bool testOverloads);
     bool           needToWaitForSymbolNoLock(SemanticContext* context, const AstIdentifier* identifier, const SymbolName* symbol);

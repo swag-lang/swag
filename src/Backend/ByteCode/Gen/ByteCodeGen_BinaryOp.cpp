@@ -780,8 +780,8 @@ bool ByteCodeGen::emitUserOp(ByteCodeGenContext* context, AstNode* allParams, As
     if (Semantic::mustInline(funcDecl) && !node->hasSemFlag(SEMFLAG_EXEC_RET_STACK))
     {
         // Expand inline function. Do not expand an inline call inside a function marked as inline.
-        // The expansion will be done at the lowest level possible
-        // Remember: inline functions are also compiled as non inlined (mostly for compile-time execution
+        // The expansion will be done at the lowest level possible.
+        // Remember: inline functions are also compiled as non-inlined (mostly for compile-time execution
         // of calls), and we do not want the call to be inlined twice (one in the normal owner function, and one
         // again after the owner function has been duplicated).
         if (!Semantic::mustInline(node->ownerFct))
@@ -792,7 +792,7 @@ bool ByteCodeGen::emitUserOp(ByteCodeGenContext* context, AstNode* allParams, As
             if (!node->hasAstFlag(AST_INLINED))
             {
                 node->addAstFlag(AST_INLINED);
-                SWAG_CHECK(makeInline(context, funcDecl, node));
+                SWAG_CHECK(Semantic::makeInline(context, funcDecl, node, false));
                 return true;
             }
 
