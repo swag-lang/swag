@@ -94,7 +94,7 @@ namespace ByteCodeGen
     bool setupRuntime(const ByteCodeGenContext* context, const AstNode* node);
     bool setupByteCodeGenerated(ByteCodeGenContext* context, AstNode* node);
     bool setupByteCodeResolved(const ByteCodeGenContext* context, AstNode* node);
-    void askForByteCode(JobContext* context, AstNode* node, AskBcFlags flags, ByteCode* caller = nullptr);
+    void askForByteCode(JobContext* context, AstNode* node, AskBcFlags flags, bool fromSemantic, ByteCode* caller);
 
     void getDependantCalls(const AstNode* depNode, VectorNative<AstNode*>& dep);
     void collectLiteralsChildren(AstNode* node, VectorNative<AstNode*>* orderedChildren);

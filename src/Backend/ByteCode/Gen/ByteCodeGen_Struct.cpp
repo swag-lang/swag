@@ -44,9 +44,9 @@ void ByteCodeGen::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcD
         bc->isUsed = true;
 
     if (funcDecl)
-        askForByteCode(context, funcDecl, 0, context->bc);
+        askForByteCode(context, funcDecl, ASK_BC_ZERO, false, context->bc);
     else if (bc && bc->node)
-        askForByteCode(context, bc->node, 0, context->bc);
+        askForByteCode(context, bc->node, ASK_BC_ZERO, false, context->bc);
 
     if (pushParam)
     {
@@ -554,7 +554,7 @@ bool ByteCodeGen::generateStructOpInit(ByteCodeGenContext* context, TypeInfoStru
         // Content must have been solved ! where pb
         SWAG_ASSERT(!typeInfoStruct->opUserInitFct->content->hasAstFlag(AST_NO_SEMANTIC));
 
-        askForByteCode(context, typeInfoStruct->opUserInitFct, ASK_BC_WAIT_SEMANTIC_RESOLVED, context->bc);
+        askForByteCode(context, typeInfoStruct->opUserInitFct, ASK_BC_WAIT_SEMANTIC_RESOLVED, false, context->bc);
         YIELD();
     }
 
@@ -834,7 +834,7 @@ bool ByteCodeGen::generateStructOpDrop(ByteCodeGenContext* context, TypeInfoStru
         SWAG_ASSERT(!typeInfoStruct->opUserDropFct->content->hasAstFlag(AST_NO_SEMANTIC));
 
         needDrop = true;
-        askForByteCode(context, typeInfoStruct->opUserDropFct, ASK_BC_WAIT_SEMANTIC_RESOLVED, context->bc);
+        askForByteCode(context, typeInfoStruct->opUserDropFct, ASK_BC_WAIT_SEMANTIC_RESOLVED, false, context->bc);
         YIELD();
     }
 
@@ -946,7 +946,7 @@ bool ByteCodeGen::generateStructOpPostCopy(ByteCodeGenContext* context, TypeInfo
         SWAG_ASSERT(!typeInfoStruct->opUserPostCopyFct->content->hasAstFlag(AST_NO_SEMANTIC));
 
         needPostCopy = true;
-        askForByteCode(context, typeInfoStruct->opUserPostCopyFct, ASK_BC_WAIT_SEMANTIC_RESOLVED, context->bc);
+        askForByteCode(context, typeInfoStruct->opUserPostCopyFct, ASK_BC_WAIT_SEMANTIC_RESOLVED, false, context->bc);
         YIELD();
     }
 
@@ -1056,7 +1056,7 @@ bool ByteCodeGen::generateStructOpPostMove(ByteCodeGenContext* context, TypeInfo
         SWAG_ASSERT(!typeInfoStruct->opUserPostMoveFct->content->hasAstFlag(AST_NO_SEMANTIC));
 
         needPostMove = true;
-        askForByteCode(context, typeInfoStruct->opUserPostMoveFct, ASK_BC_WAIT_SEMANTIC_RESOLVED, context->bc);
+        askForByteCode(context, typeInfoStruct->opUserPostMoveFct, ASK_BC_WAIT_SEMANTIC_RESOLVED, false, context->bc);
         YIELD();
     }
 
