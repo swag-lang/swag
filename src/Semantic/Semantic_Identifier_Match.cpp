@@ -902,10 +902,19 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
         canInline = false;
     if (identifier->hasSpecFlag(AstIdentifier::SPEC_FLAG_NO_INLINE) && !funcDecl->hasAttribute(ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO))
         canInline = false;
-    // Do not expand an inline call inside a function marked as inline.
+
+    // Do not expand an inline call inside a function that will be inlined itself.
     // The expansion will be done at the lowest level possible
     if (canInline && mustInline(identifier->ownerFct))
+    {
         canInline = false;
+
+        // We register the identifier in the current function because it can happen that this decision
+        // will have to be changed later: if the function has a non-inlined version, then we must
+        // be sure that all identifiers have been inlined before generating the function bytecode.
+        // This is especially important if the identifier is a macro or a mixin.
+        identifier->ownerFct->pendingInline.push_back(identifier);
+    }
 
     if (canInline)
     {

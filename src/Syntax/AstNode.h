@@ -750,15 +750,16 @@ struct AstFuncDecl : AstNode
     bool        mustUserInline(bool forExport = false) const;
     Utf8        getCallName();
 
-    DependentJobs          dependentJobs;
-    Utf8                   fullnameForeignExport;
-    VectorNative<AstNode*> subDecl;
-    VectorNative<AstNode*> localGlobalVars;
-    VectorNative<AstNode*> localConstants;
-    Mutex                  funcMutex;
-    Token                  tokenName;
-    SourceLocation         implLoc;
-    VectorNative<AstNode*> constraints;
+    DependentJobs                dependentJobs;
+    Utf8                         fullnameForeignExport;
+    VectorNative<AstNode*>       subDecl;
+    VectorNative<AstNode*>       localGlobalVars;
+    VectorNative<AstNode*>       localConstants;
+    VectorNative<AstIdentifier*> pendingInline;
+    Mutex                        funcMutex;
+    Token                        tokenName;
+    SourceLocation               implLoc;
+    VectorNative<AstNode*>       constraints;
 
     AstNode*        captureParameters;
     AstNode*        parameters;

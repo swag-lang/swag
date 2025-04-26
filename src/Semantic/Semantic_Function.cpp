@@ -441,7 +441,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
     if (!funcNode->content)
         genByteCode = false;
     if (genByteCode)
-        ByteCodeGen::askForByteCode(context->baseJob, funcNode, 0);
+        askForByteCode(context, funcNode, 0);
 
     return true;
 }
@@ -2000,12 +2000,12 @@ bool Semantic::makeInline(SemanticContext* context, AstIdentifier* identifier)
     const auto returnType = typeFunc->concreteReturnType();
 
     // Need to wait for function full semantic resolve
-    Semantic::waitFuncDeclFullResolve(context->baseJob, funcDecl);
+    waitFuncDeclFullResolve(context->baseJob, funcDecl);
     YIELD();
 
     // First pass, we inline the function.
-    // The identifier for the function call will be re-resolved later when the content
-    // of the inline os done.
+    // The identifier for the function call will be resolved again later when the content
+    // of the inline is done.
     if (!identifier->hasAstFlag(AST_INLINED))
     {
         identifier->addAstFlag(AST_INLINED);

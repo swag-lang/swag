@@ -154,6 +154,7 @@ namespace Semantic
     bool           deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl* nodeParam, bool& lambdaExpr, bool& genericType);
     bool           derefConstant(SemanticContext* context, uint8_t* ptr, const SymbolOverload* overload, DataSegment* storageSegment);
     bool           derefConstantValue(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, DataSegment* storageSegment, uint8_t* ptr);
+    bool           askForByteCode(SemanticContext* context, AstNode* node, uint32_t flags, ByteCode* caller = nullptr);
     bool           doExecuteCompilerNode(SemanticContext* context, AstNode* node, bool onlyConstExpr);
     bool           evaluateConstExpression(SemanticContext* context, AstNode* node);
     bool           evaluateConstExpression(SemanticContext* context, AstNode* node1, AstNode* node2);

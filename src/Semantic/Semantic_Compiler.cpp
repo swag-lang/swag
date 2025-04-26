@@ -87,6 +87,25 @@ bool Semantic::executeCompilerNode(SemanticContext* context, AstNode* node, bool
     return doExecuteCompilerNode(context, node, onlyConstExpr);
 }
 
+bool Semantic::askForByteCode(SemanticContext* context, AstNode* node, uint32_t flags, ByteCode* caller)
+{
+    // If this is a foreign function, we do not need bytecode
+    if (node->is(AstNodeKind::FuncDecl))
+    {
+        /*const auto funcDecl = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+        while (!funcDecl->pendingInline.empty())
+        {
+            const auto identifier = funcDecl->pendingInline.back();
+            makeInline(context, identifier);
+            YIELD();
+            funcDecl->pendingInline.pop_back();
+        }*/
+    }
+
+    ByteCodeGen::askForByteCode(context->baseJob, node, flags, caller);
+    return true;
+}
+
 bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bool onlyConstExpr)
 {
     // No need to run, this is already baked
@@ -98,7 +117,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
 
     // Request to generate the corresponding bytecode
     {
-        ByteCodeGen::askForByteCode(context->baseJob, node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED);
+        askForByteCode(context, node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED);
         YIELD();
     }
 
@@ -163,7 +182,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
                 context->node->addExtraPointer(ExtraPointerKind::UserOp, nullptr);
                 SWAG_ASSERT(execParams.specReturnOpCount);
 
-                ByteCodeGen::askForByteCode(context->baseJob, execParams.specReturnOpCount->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
+                askForByteCode(context, execParams.specReturnOpCount->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
                 YIELD();
 
                 // opSlice
@@ -180,7 +199,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
                 context->node->addExtraPointer(ExtraPointerKind::UserOp, nullptr);
                 SWAG_ASSERT(execParams.specReturnOpSlice);
 
-                ByteCodeGen::askForByteCode(context->baseJob, execParams.specReturnOpSlice->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
+                askForByteCode(context, execParams.specReturnOpSlice->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
                 YIELD();
 
                 // Is the type of the slice supported ?
@@ -223,7 +242,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
                     execParams.specReturnOpPostMove = context->node->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
                     context->node->addExtraPointer(ExtraPointerKind::UserOp, nullptr);
                     SWAG_ASSERT(execParams.specReturnOpPostMove);
-                    ByteCodeGen::askForByteCode(context->baseJob, execParams.specReturnOpPostMove->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
+                    askForByteCode(context, execParams.specReturnOpPostMove->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
                     YIELD();
                 }
 
@@ -241,7 +260,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
                     execParams.specReturnOpDrop = context->node->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
                     context->node->addExtraPointer(ExtraPointerKind::UserOp, nullptr);
                     SWAG_ASSERT(execParams.specReturnOpDrop);
-                    ByteCodeGen::askForByteCode(context->baseJob, execParams.specReturnOpDrop->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
+                    askForByteCode(context, execParams.specReturnOpDrop->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
                     YIELD();
                 }
             }

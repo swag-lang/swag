@@ -1,7 +1,7 @@
 #global public
 #global namespace Debug
 
-#[Swag.Inline, Swag.Warning("Wrn0006", Swag.WarningLevel.Disable)]
+#[Swag.Macro, Swag.Warning("Wrn0006", Swag.WarningLevel.Disable)]
 func assert(expr: bool, message: string = null, loc = #callerlocation)
 {
     #if ASSERT

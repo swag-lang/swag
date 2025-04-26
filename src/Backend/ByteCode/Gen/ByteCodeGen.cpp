@@ -152,7 +152,7 @@ bool ByteCodeGen::setupByteCodeResolved(const ByteCodeGenContext* context, AstNo
                 {
                     constexpr ByteCodePrintOptions opt;
                     context->bc->print(opt);
-                }                
+                }
                 Report::internalError(funcNode, form("function [[%s]] does not release all registers !", funcNode->token.cstr()));
             }
             else if (context->bc->maxReservedRegisterRC < context->bc->availableRegistersRC.size())
@@ -161,7 +161,7 @@ bool ByteCodeGen::setupByteCodeResolved(const ByteCodeGenContext* context, AstNo
                 {
                     constexpr ByteCodePrintOptions opt;
                     context->bc->print(opt);
-                }                
+                }
                 Report::internalError(funcNode, form("function [[%s]] releases too many registers !", funcNode->token.cstr()));
             }
         }
@@ -192,8 +192,6 @@ void ByteCodeGen::askForByteCode(Job* job, AstNode* node, uint32_t flags, ByteCo
 {
     if (!node)
         return;
-
-    const auto sourceFile = node->token.sourceFile;
 
     // If this is a foreign function, we do not need bytecode
     AstFuncDecl* funcDecl = nullptr;
@@ -240,6 +238,7 @@ void ByteCodeGen::askForByteCode(Job* job, AstNode* node, uint32_t flags, ByteCo
         caller->dependentCalls.push_back_once(node);
 
     ScopedLock lk(node->mutex);
+    const auto sourceFile = node->token.sourceFile;
 
     // Need to generate bytecode, if not already done or running
     if (!node->hasSemFlag(SEMFLAG_BYTECODE_GENERATED))
