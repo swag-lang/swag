@@ -92,14 +92,16 @@ bool Semantic::askForByteCode(SemanticContext* context, AstNode* node, uint32_t 
     // If this is a foreign function, we do not need bytecode
     if (node->is(AstNodeKind::FuncDecl))
     {
-        /*const auto funcDecl = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+        const auto funcDecl = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
         while (!funcDecl->pendingInline.empty())
         {
             const auto identifier = funcDecl->pendingInline.back();
             makeInline(context, identifier);
+            if (context->result == ContextResult::NewChildren)
+                context->baseJob->nodes.push_back(identifier);
             YIELD();
             funcDecl->pendingInline.pop_back();
-        }*/
+        }
     }
 
     ByteCodeGen::askForByteCode(context->baseJob, node, flags, caller);

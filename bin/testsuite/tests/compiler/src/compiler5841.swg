@@ -1,5 +1,5 @@
 //#global testerror "Err0051"
-#global skip
+//#global skip
 
 var G = true
 
@@ -40,5 +40,5 @@ func toto()->A
 #test
 {
     const b = #run toto()
-    @print(b.drawingBegin)
+    @assert(b == "aa")
 }
