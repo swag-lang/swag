@@ -788,14 +788,8 @@ bool ByteCodeGen::emitUserOp(ByteCodeGenContext* context, AstNode* allParams, As
             // again after the owner function has been duplicated).
             if (!Semantic::mustInline(node->ownerFct))
             {
-                if (!node->hasAstFlag(AST_INLINED))
-                {
-                    Semantic::waitFuncDeclFullResolve(context->baseJob, funcDecl);
-                    YIELD();
-                    node->addAstFlag(AST_INLINED);
-                    SWAG_CHECK(Semantic::makeInline(context, funcDecl, node, false));
-                    YIELD();
-                }
+                SWAG_CHECK(Semantic::makeInline(context, funcDecl, node, false));
+                YIELD();
 
                 if (!node->hasSemFlag(SEMFLAG_RESOLVE_INLINED))
                 {

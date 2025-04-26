@@ -39,13 +39,20 @@ bool Semantic::mustInline(const AstFuncDecl* funcDecl)
     return false;
 }
 
-bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* identifier, bool fromSemantic)
+bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* node, bool fromSemantic)
 {
+    if (node->hasAstFlag(AST_INLINED))
+        return true;
+    
+    waitFuncDeclFullResolve(context->baseJob, funcDecl);
+    YIELD();
+    node->addAstFlag(AST_INLINED);
+
     CloneContext cloneContext;
 
     // Be sure this is not recursive
     uint32_t cpt         = 0;
-    auto     ownerInline = identifier->safeOwnerInline();
+    auto     ownerInline = node->safeOwnerInline();
     while (ownerInline)
     {
         if (ownerInline->func == funcDecl)
@@ -53,7 +60,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
             cpt++;
             if (g_CommandLine.limitInlineLevel && cpt > g_CommandLine.limitInlineLevel)
             {
-                const Diagnostic err{identifier, identifier->token, formErr(Err0501, identifier->token.cstr(), g_CommandLine.limitInlineLevel)};
+                const Diagnostic err{node, node->token, formErr(Err0501, node->token.cstr(), g_CommandLine.limitInlineLevel)};
                 return context->report(err);
             }
         }
@@ -62,16 +69,16 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
     }
 
     // The content will be inline in its separated syntax block
-    const auto inlineNode      = Ast::newInline(nullptr, identifier);
+    const auto inlineNode      = Ast::newInline(nullptr, node);
     inlineNode->attributeFlags = funcDecl->attributeFlags;
     inlineNode->func           = funcDecl;
-    inlineNode->scope          = identifier->ownerScope;
+    inlineNode->scope          = node->ownerScope;
     inlineNode->typeInfo       = TypeManager::concreteType(funcDecl->typeInfo);
 
-    if (identifier->hasOwnerTryCatchAssume())
+    if (node->hasOwnerTryCatchAssume())
     {
         inlineNode->allocateExtension(ExtensionKind::Owner);
-        inlineNode->extOwner()->ownerTryCatchAssume = identifier->ownerTryCatchAssume();
+        inlineNode->extOwner()->ownerTryCatchAssume = node->ownerTryCatchAssume();
     }
 
     if (funcDecl->hasExtMisc())
@@ -91,10 +98,10 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
     if (inlineNode->hasOwnerTryCatchAssume() &&
         inlineNode->func->typeInfo->hasFlag(TYPEINFO_CAN_THROW))
     {
-        // Reset emit from the modifier if it exists, as the inline block will deal with that
-        if (identifier->hasExtByteCode())
+        // Reset the emitting callback from the modifier if it exists, as the inline block will deal with that
+        if (node->hasExtByteCode())
         {
-            const auto extByteCode = identifier->extByteCode();
+            const auto extByteCode = node->extByteCode();
             if (extByteCode->byteCodeAfterFct == ByteCodeGen::emitTry)
                 extByteCode->byteCodeAfterFct = nullptr;
             else if (extByteCode->byteCodeAfterFct == ByteCodeGen::emitTryCatch)
@@ -139,17 +146,17 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
     }
 
     // A mixin behave exactly like if it is in the caller scope, so do not create a sub-scope for them
-    Scope* newScope = identifier->ownerScope;
+    Scope* newScope = node->ownerScope;
     if (!funcDecl->hasAttribute(ATTRIBUTE_MIXIN))
     {
         uint32_t numScopes = 0;
 
         {
-            SharedLock lk(identifier->ownerScope->mutex);
-            numScopes = identifier->ownerScope->childrenScopes.size();
+            SharedLock lk(node->ownerScope->mutex);
+            numScopes = node->ownerScope->childrenScopes.size();
         }
 
-        newScope          = Ast::newScope(inlineNode, form("__inline%d", numScopes), ScopeKind::Inline, identifier->ownerScope);
+        newScope          = Ast::newScope(inlineNode, form("__inline%d", numScopes), ScopeKind::Inline, node->ownerScope);
         inlineNode->scope = newScope;
     }
 
@@ -160,21 +167,21 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
     // Clone the function body
     cloneContext.parent         = inlineNode;
     cloneContext.ownerInline    = inlineNode;
-    cloneContext.ownerFct       = identifier->ownerFct;
-    cloneContext.ownerBreakable = identifier->safeOwnerBreakable();
+    cloneContext.ownerFct       = node->ownerFct;
+    cloneContext.ownerBreakable = node->safeOwnerBreakable();
     cloneContext.parentScope    = newScope;
-    cloneContext.forceFlags.add(identifier->flags.mask(AST_NO_BACKEND));
-    cloneContext.forceFlags.add(identifier->flags.mask(AST_IN_RUN_BLOCK));
-    cloneContext.forceFlags.add(identifier->flags.mask(AST_IN_DEFER));
+    cloneContext.forceFlags.add(node->flags.mask(AST_NO_BACKEND));
+    cloneContext.forceFlags.add(node->flags.mask(AST_IN_RUN_BLOCK));
+    cloneContext.forceFlags.add(node->flags.mask(AST_IN_DEFER));
     cloneContext.removeFlags.add(AST_R_VALUE);
     cloneContext.cloneFlags.add(CLONE_FORCE_OWNER_FCT | CLONE_INLINE);
 
     // Register all aliases
-    if (identifier->is(AstNodeKind::Identifier))
+    if (node->is(AstNodeKind::Identifier))
     {
         // Replace user aliases of the form #alias?
         // Can come from the identifier itself (for 'visit') or from call parameters (for macros/mixins)
-        const auto id = castAst<AstIdentifier>(identifier, AstNodeKind::Identifier);
+        const auto id = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
 
         int idx = 0;
         if (id->identifierExtension)
@@ -241,7 +248,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
     // Sub declarations in the inline block, like sub functions
     if (!funcDecl->subDecl.empty())
     {
-        PushErrCxtStep ec(context, identifier, ErrCxtStepKind::DuringInline, nullptr);
+        PushErrCxtStep ec(context, node, ErrCxtStepKind::DuringInline, nullptr);
 
         // Authorize a subfunction to access inline parameters, if possible
         // This will work for compile-time values, otherwise we will have an out-of-stack frame when generating the code
@@ -253,25 +260,25 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
     // Need to reevaluate the identifier (if this is an identifier) because the makeInline can be called
     // for something else (like a loop node, for example 'opCount'). In that case, we let the specific node
     // deal with the (re)evaluation.
-    if (identifier->is(AstNodeKind::Identifier))
+    if (node->is(AstNodeKind::Identifier))
     {
         // Do not reevaluate function parameters
-        const auto castId = castAst<AstIdentifier>(identifier, AstNodeKind::Identifier);
+        const auto castId = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
         if (castId->callParameters)
             castId->callParameters->addAstFlag(AST_NO_SEMANTIC);
 
-        identifier->semanticState = AstNodeResolveState::Enter;
-        identifier->bytecodeState = AstNodeResolveState::Enter;
+        node->semanticState = AstNodeResolveState::Enter;
+        node->bytecodeState = AstNodeResolveState::Enter;
     }
 
     // Check used aliases
     // Error if an alias has been defined but not 'eaten' by the function
-    if (identifier->is(AstNodeKind::Identifier))
+    if (node->is(AstNodeKind::Identifier))
     {
         if (cloneContext.replaceNames.size() != cloneContext.usedReplaceNames.size())
         {
-            PushErrCxtStep ec(context, identifier, ErrCxtStepKind::DuringInline, nullptr);
-            const auto     id = castAst<AstIdentifier>(identifier, AstNodeKind::Identifier);
+            PushErrCxtStep ec(context, node, ErrCxtStepKind::DuringInline, nullptr);
+            const auto     id = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
             for (auto& val : cloneContext.replaceNames | std::views::values)
             {
                 auto it = cloneContext.usedReplaceNames.find(val);
@@ -317,18 +324,9 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
 
 bool Semantic::makeInline(JobContext* context, AstIdentifier* identifier)
 {
-    // First pass, we inline the function.
-    // The identifier for the function call will be resolved again later when the content
-    // of the inline is done.
-    if (!identifier->hasAstFlag(AST_INLINED))
-    {
-        const auto funcDecl = castAst<AstFuncDecl>(identifier->resolvedSymbolOverload()->node, AstNodeKind::FuncDecl);
-        waitFuncDeclFullResolve(context->baseJob, funcDecl);
-        YIELD();
-        identifier->addAstFlag(AST_INLINED);
-        SWAG_CHECK(makeInline(context, funcDecl, identifier, true));
-        YIELD();
-    }
+    const auto funcDecl = castAst<AstFuncDecl>(identifier->resolvedSymbolOverload()->node, AstNodeKind::FuncDecl);
+    SWAG_CHECK(makeInline(context, funcDecl, identifier, true));
+    YIELD();
 
     const auto typeFunc   = castTypeInfo<TypeInfoFuncAttr>(identifier->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
     const auto returnType = typeFunc->concreteReturnType();
