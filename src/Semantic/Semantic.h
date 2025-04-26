@@ -170,6 +170,7 @@ namespace Semantic
     bool           isMethod(const AstFuncDecl* funcNode);
     bool           makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* identifier);
     bool           makeInline(SemanticContext* context, AstFuncDecl* funcDecl, AstNode* identifier);
+    bool           makeInline(SemanticContext* context, AstIdentifier* identifier);
     bool           needToCompleteSymbolNoLock(SemanticContext* context, const AstIdentifier* identifier, SymbolName* symbol, bool testOverloads);
     bool           needToWaitForSymbolNoLock(SemanticContext* context, const AstIdentifier* identifier, const SymbolName* symbol);
     bool           processLiteralString(SemanticContext* context);

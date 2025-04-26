@@ -1992,3 +1992,38 @@ bool Semantic::makeInline(SemanticContext* context, AstFuncDecl* funcDecl, AstNo
     context->result = ContextResult::NewChildren;
     return true;
 }
+
+bool Semantic::makeInline(SemanticContext* context, AstIdentifier* identifier)
+{
+    const auto funcDecl   = castAst<AstFuncDecl>(identifier->resolvedSymbolOverload()->node, AstNodeKind::FuncDecl);
+    const auto typeFunc   = castTypeInfo<TypeInfoFuncAttr>(identifier->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+    const auto returnType = TypeManager::concreteType(identifier->typeInfo);
+
+    // Need to wait for function full semantic resolve
+    Semantic::waitFuncDeclFullResolve(context->baseJob, funcDecl);
+    YIELD();
+
+    // First pass, we inline the function.
+    // The identifier for the function call will be re-resolved later when the content
+    // of the inline os done.
+    if (!identifier->hasAstFlag(AST_INLINED))
+    {
+        identifier->addAstFlag(AST_INLINED);
+        SWAG_CHECK(Semantic::makeInline(context, funcDecl, identifier));
+    }
+    else
+    {
+        SWAG_CHECK(Semantic::setupIdentifierRef(context, identifier));
+    }
+
+    identifier->byteCodeFct = ByteCodeGen::emitPassThrough;
+
+    if (returnType->isStruct())
+        identifier->addSemFlag(SEMFLAG_CONST_ASSIGN_INHERIT | SEMFLAG_CONST_ASSIGN);
+
+    if (typeFunc->returnNeedsStack())
+        identifier->addAstFlag(AST_TRANSIENT);
+
+    identifier->addAstFlag(AST_FUNC_INLINE_CALL);
+    return true;
+}
