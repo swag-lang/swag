@@ -1997,7 +1997,7 @@ bool Semantic::makeInline(SemanticContext* context, AstIdentifier* identifier)
 {
     const auto funcDecl   = castAst<AstFuncDecl>(identifier->resolvedSymbolOverload()->node, AstNodeKind::FuncDecl);
     const auto typeFunc   = castTypeInfo<TypeInfoFuncAttr>(identifier->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
-    const auto returnType = TypeManager::concreteType(identifier->typeInfo);
+    const auto returnType = typeFunc->concreteReturnType();
 
     // Need to wait for function full semantic resolve
     Semantic::waitFuncDeclFullResolve(context->baseJob, funcDecl);

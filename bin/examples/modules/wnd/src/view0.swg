@@ -235,8 +235,7 @@ func createView0(tabView: *Tab, view: *Wnd)
         slider0.sigChanged += func(wnd)
         {
             let val  = Format.toString("%", cast(s32) wnd.getValue())
-            let edit = cast(*EditBox) wnd.getTopView().getChildById("edit0")
-            Debug.assert(edit != null)
+            let edit = cast(*EditBox) assume wnd.getTopView().getChildById("edit0")
             edit.setText(val)
         }
 
@@ -245,8 +244,7 @@ func createView0(tabView: *Tab, view: *Wnd)
         edit0.sigLoseFocus += func(wnd)
         {
             let (val, ?, ?) = catch StrConv.parseS32(wnd.text)
-            let slider = cast(*Slider) wnd.getTopView().getChildById("slider0")
-            Debug.assert(slider != null)
+            let slider = cast(*Slider) assume wnd.getTopView().getChildById("slider0")
             slider.setValue(cast(f32) val)
         }
 

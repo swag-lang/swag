@@ -844,20 +844,19 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     }
 
     // The function call is constexpr if the function is, and all parameters are
-    const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(identifier->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
-    if (identifier->resolvedSymbolOverload()->node->hasAstFlag(AST_CONST_EXPR))
+    const auto typeFunc   = castTypeInfo<TypeInfoFuncAttr>(identifier->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+    const auto returnType = typeFunc->concreteReturnType();
+
+    // Be sure that the return type is compatible with a compile-time execution.
+    // Otherwise, we do not want the AST_CONST_EXPR_FLAG
+    if (overload->node->hasAstFlag(AST_CONST_EXPR))
     {
         if (identifier->callParameters)
             identifier->inheritAstFlagsAnd(identifier->callParameters, AST_CONST_EXPR);
         else
             identifier->addAstFlag(AST_CONST_EXPR);
-
-        // Be sure that the return type is compatible with a compile-time execution.
-        // Otherwise, we do not want the AST_CONST_EXPR_FLAG
         if (identifier->hasAstFlag(AST_CONST_EXPR))
         {
-            const auto returnType = typeFunc->concreteReturnType();
-
             // :CheckConstExprFuncReturnType
             if (returnType &&
                 !returnType->isString() &&
@@ -875,9 +874,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
         }
     }
 
-    const auto returnType = TypeManager::concreteType(identifier->typeInfo);
-
-    // Check return value
+    // Check return value discard
     if (!returnType->isVoid())
     {
         if (isStatementIdentifier(identifier))
@@ -891,10 +888,13 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
             identifier->addAstFlag(AST_DISCARD);
         }
     }
-    else if (returnType->isVoid() && identifier->hasAstFlag(AST_DISCARD))
+    else
     {
-        const Diagnostic err{identifier, identifier->token, toErr(Err0128)};
-        return context->report(err, Diagnostic::hereIs(overload));
+        if (identifier->hasAstFlag(AST_DISCARD))
+        {
+            const Diagnostic err{identifier, identifier->token, toErr(Err0128)};
+            return context->report(err, Diagnostic::hereIs(overload));
+        }
     }
 
     bool canInline = true;
@@ -906,7 +906,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     // The expansion will be done at the lowest level possible
     if (canInline && mustInline(identifier->ownerFct))
         canInline = false;
-    
+
     if (canInline)
     {
         SWAG_CHECK(makeInline(context, identifier));
@@ -914,14 +914,14 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
         return true;
     }
 
-    if(funcDecl->hasAttribute(ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO))
+    if (funcDecl->hasAttribute(ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO))
     {
         identifier->byteCodeFct = nullptr;
         return true;
     }
 
     identifier->addAstFlag(AST_FUNC_CALL);
-    
+
     // @print behaves like a normal function, so we want an emitCall in that case
     if (identifier->hasIntrinsicName() && identifier->token.isNot(TokenId::IntrinsicPrint))
     {

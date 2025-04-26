@@ -735,8 +735,6 @@ impl Tessellate
     mtd addEdgeEvent(ep, eq: *Point, t: *Triangle, point: *Point)
     {
         var triangle = t
-        Debug.assert(triangle != null, "EdgeEvent - null triangle")
-
         if isEdgeSideOfTriangle(triangle, ep, eq):
             return
 
@@ -794,12 +792,8 @@ impl Tessellate
 
     mtd flipEdgeEvent(ep, eq: *Point, tri: *Triangle, p: *Point)
     {
-        var t = tri
-        Debug.assert(t != null)
-
+        var t  = tri
         let ot = t.neighborAcross(p)
-        Debug.assert(ot != null, "FlipEdgeEvent - null neighbor across")
-
         let op = ot.oppositePoint(t, p)
 
         if inScanArea(p, t.pointCCW(p), t.pointCW(p), op)
@@ -863,15 +857,9 @@ impl Tessellate
     mtd flipScanEdgeEvent(ep, eq: *Point, flipTriangle: *Triangle, t: *Triangle, p: *Point)
     {
         let ot = t.neighborAcross(p)
-        Debug.assert(ot != null, "FlipScanEdgeEvent - null neighbor across")
-
         let op = ot.oppositePoint(t, p)
-        Debug.assert(op != null, "FlipScanEdgeEvent - null opposing point")
-
         let p1 = flipTriangle.pointCCW(eq)
         let p2 = flipTriangle.pointCW(eq)
-        Debug.assert(p1 != null and p2 != null, "FlipScanEdgeEvent - null on either of points")
-
         if inScanArea(eq, p1, p2, op):
             flipEdgeEvent(eq, op, ot, op)
         else
@@ -1021,7 +1009,7 @@ impl Tessellate
     mtd pointEvent(point: *Point)->*Node
     {
         let node = locateNode(point)
-        Debug.assert(node and node.point and node.next and node.next.point, "null node")
+        Debug.assert(node.next and node.next.point, "null node")
         let newNode = newFrontTriangle(point, node)
         if point.x <= node.point.x + Math.ConstF64.Epsilon:
             fill(node)
