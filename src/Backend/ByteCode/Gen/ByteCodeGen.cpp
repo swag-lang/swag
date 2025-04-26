@@ -220,6 +220,16 @@ void ByteCodeGen::askForByteCode(JobContext* context, AstNode* node, AskBcFlags 
             node->addSemFlag(SEMFLAG_BYTECODE_GENERATED | SEMFLAG_BYTECODE_RESOLVED);
             return;
         }
+
+        while (!funcDecl->pendingInline.empty())
+        {
+            const auto identifier = funcDecl->pendingInline.back();
+            Semantic::makeInline(context, identifier, fromSemantic);
+            if (context->result == ContextResult::NewChildren)
+                context->baseJob->nodes.push_back(identifier);
+            YIELD_VOID();
+            funcDecl->pendingInline.pop_back();
+        }        
     }
 
     if (job)

@@ -322,10 +322,10 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* n
     return true;
 }
 
-bool Semantic::makeInline(JobContext* context, AstIdentifier* identifier)
+bool Semantic::makeInline(JobContext* context, AstIdentifier* identifier, bool fromSemantic)
 {
     const auto funcDecl = castAst<AstFuncDecl>(identifier->resolvedSymbolOverload()->node, AstNodeKind::FuncDecl);
-    SWAG_CHECK(makeInline(context, funcDecl, identifier, true));
+    SWAG_CHECK(makeInline(context, funcDecl, identifier, fromSemantic));
     YIELD();
 
     const auto typeFunc   = castTypeInfo<TypeInfoFuncAttr>(identifier->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);

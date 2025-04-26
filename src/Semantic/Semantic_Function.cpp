@@ -412,7 +412,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
     if (!funcNode->content)
         genByteCode = false;
     if (genByteCode)
-        askForByteCode(context, funcNode, 0);
+        ByteCodeGen::askForByteCode(context, funcNode, ASK_BC_ZERO, true, nullptr);
 
     return true;
 }

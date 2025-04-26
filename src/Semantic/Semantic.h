@@ -155,7 +155,6 @@ namespace Semantic
     bool           deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl* nodeParam, bool& lambdaExpr, bool& genericType);
     bool           derefConstant(SemanticContext* context, uint8_t* ptr, const SymbolOverload* overload, DataSegment* storageSegment);
     bool           derefConstantValue(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, DataSegment* storageSegment, uint8_t* ptr);
-    bool           askForByteCode(SemanticContext* context, AstNode* node, AskBcFlags flags, ByteCode* caller = nullptr);
     bool           doExecuteCompilerNode(SemanticContext* context, AstNode* node, bool onlyConstExpr);
     bool           evaluateConstExpression(SemanticContext* context, AstNode* node);
     bool           evaluateConstExpression(SemanticContext* context, AstNode* node1, AstNode* node2);
@@ -171,7 +170,7 @@ namespace Semantic
     bool           isFunctionButNotACall(SemanticContext* context, AstNode* node, const SymbolName* symbol);
     bool           isMethod(const AstFuncDecl* funcNode);
     bool           makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* node, bool fromSemantic);
-    bool           makeInline(JobContext* context, AstIdentifier* identifier);
+    bool           makeInline(JobContext* context, AstIdentifier* identifier, bool fromSemantic);
     bool           needToCompleteSymbolNoLock(SemanticContext* context, const AstIdentifier* identifier, SymbolName* symbol, bool testOverloads);
     bool           needToWaitForSymbolNoLock(SemanticContext* context, const AstIdentifier* identifier, const SymbolName* symbol);
     bool           processLiteralString(SemanticContext* context);

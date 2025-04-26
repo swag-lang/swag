@@ -910,7 +910,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
 
     if (canInline)
     {
-        SWAG_CHECK(makeInline(context, identifier));
+        SWAG_CHECK(makeInline(context, identifier, true));
         YIELD();
         return true;
     }

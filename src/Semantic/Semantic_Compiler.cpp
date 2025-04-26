@@ -87,27 +87,6 @@ bool Semantic::executeCompilerNode(SemanticContext* context, AstNode* node, bool
     return doExecuteCompilerNode(context, node, onlyConstExpr);
 }
 
-bool Semantic::askForByteCode(SemanticContext* context, AstNode* node, AskBcFlags flags, ByteCode* caller)
-{
-    // If this is a foreign function, we do not need bytecode
-    if (node->is(AstNodeKind::FuncDecl))
-    {
-        const auto funcDecl = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
-        while (!funcDecl->pendingInline.empty())
-        {
-            const auto identifier = funcDecl->pendingInline.back();
-            makeInline(context, identifier);
-            if (context->result == ContextResult::NewChildren)
-                context->baseJob->nodes.push_back(identifier);
-            YIELD();
-            funcDecl->pendingInline.pop_back();
-        }
-    }
-
-    ByteCodeGen::askForByteCode(context, node, flags, true, caller);
-    return true;
-}
-
 bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bool onlyConstExpr)
 {
     // No need to run, this is already baked
@@ -119,7 +98,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
 
     // Request to generate the corresponding bytecode
     {
-        askForByteCode(context, node, ASK_BC_WAIT_DONE | ASK_BC_WAIT_RESOLVED);
+        ByteCodeGen::askForByteCode(context, node, ASK_BC_WAIT_DONE | ASK_BC_WAIT_RESOLVED, true, nullptr);
         YIELD();
     }
 
@@ -184,7 +163,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
                 context->node->addExtraPointer(ExtraPointerKind::UserOp, nullptr);
                 SWAG_ASSERT(execParams.specReturnOpCount);
 
-                askForByteCode(context, execParams.specReturnOpCount->node, ASK_BC_WAIT_DONE | ASK_BC_WAIT_RESOLVED | ASK_BC_WAIT_SEMANTIC_RESOLVED);
+                ByteCodeGen::askForByteCode(context, execParams.specReturnOpCount->node, ASK_BC_WAIT_DONE | ASK_BC_WAIT_RESOLVED | ASK_BC_WAIT_SEMANTIC_RESOLVED, true, nullptr);
                 YIELD();
 
                 // opSlice
@@ -201,7 +180,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
                 context->node->addExtraPointer(ExtraPointerKind::UserOp, nullptr);
                 SWAG_ASSERT(execParams.specReturnOpSlice);
 
-                askForByteCode(context, execParams.specReturnOpSlice->node, ASK_BC_WAIT_DONE | ASK_BC_WAIT_RESOLVED | ASK_BC_WAIT_SEMANTIC_RESOLVED);
+                ByteCodeGen::askForByteCode(context, execParams.specReturnOpSlice->node, ASK_BC_WAIT_DONE | ASK_BC_WAIT_RESOLVED | ASK_BC_WAIT_SEMANTIC_RESOLVED, true, nullptr);
                 YIELD();
 
                 // Is the type of the slice supported ?
@@ -244,7 +223,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
                     execParams.specReturnOpPostMove = context->node->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
                     context->node->addExtraPointer(ExtraPointerKind::UserOp, nullptr);
                     SWAG_ASSERT(execParams.specReturnOpPostMove);
-                    askForByteCode(context, execParams.specReturnOpPostMove->node, ASK_BC_WAIT_DONE | ASK_BC_WAIT_RESOLVED | ASK_BC_WAIT_SEMANTIC_RESOLVED);
+                    ByteCodeGen::askForByteCode(context, execParams.specReturnOpPostMove->node, ASK_BC_WAIT_DONE | ASK_BC_WAIT_RESOLVED | ASK_BC_WAIT_SEMANTIC_RESOLVED, true, nullptr);
                     YIELD();
                 }
 
@@ -262,7 +241,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
                     execParams.specReturnOpDrop = context->node->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
                     context->node->addExtraPointer(ExtraPointerKind::UserOp, nullptr);
                     SWAG_ASSERT(execParams.specReturnOpDrop);
-                    askForByteCode(context, execParams.specReturnOpDrop->node, ASK_BC_WAIT_DONE | ASK_BC_WAIT_RESOLVED | ASK_BC_WAIT_SEMANTIC_RESOLVED);
+                    ByteCodeGen::askForByteCode(context, execParams.specReturnOpDrop->node, ASK_BC_WAIT_DONE | ASK_BC_WAIT_RESOLVED | ASK_BC_WAIT_SEMANTIC_RESOLVED, true, nullptr);
                     YIELD();
                 }
             }
