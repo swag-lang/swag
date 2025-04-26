@@ -329,7 +329,6 @@ bool Semantic::makeInline(JobContext* context, AstIdentifier* identifier)
 
         identifier->addAstFlag(AST_INLINED);
         SWAG_CHECK(makeInline(context, funcDecl, identifier, true));
-        context->result = ContextResult::NewChildren;
         YIELD();
     }
 
