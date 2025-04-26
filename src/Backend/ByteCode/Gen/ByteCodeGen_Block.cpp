@@ -1189,7 +1189,7 @@ bool ByteCodeGen::emitIndex(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGen::emitLeaveScopeDrop(const ByteCodeGenContext* context, Scope* scope, const VectorNative<SymbolOverload*>* forceNoDrop)
+bool ByteCodeGen::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scope, const VectorNative<SymbolOverload*>* forceNoDrop)
 {
     if (!scope)
         return true;
@@ -1201,7 +1201,7 @@ bool ByteCodeGen::emitLeaveScopeDrop(const ByteCodeGenContext* context, Scope* s
     if (count == UINT32_MAX)
         return true;
 
-    // Need to wait for all the structures to be ok, in order to call the opDrop function
+    // Need to wait for all the structures to be ok, to call the opDrop function
     for (uint32_t i = count; i != UINT32_MAX; i--)
     {
         const auto one = table.structVarsToDrop[i];
@@ -1242,7 +1242,7 @@ bool ByteCodeGen::emitLeaveScopeDrop(const ByteCodeGenContext* context, Scope* s
             }
             else
             {
-                // Need to loop on every element of the array in order to initialize them
+                // Need to loop on every element of the array to initialize them
                 RegisterList r0 = reserveRegisterRC(context);
                 RegisterList r1 = reserveRegisterRC(context);
 

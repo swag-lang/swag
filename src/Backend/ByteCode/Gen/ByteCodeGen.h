@@ -92,7 +92,7 @@ namespace ByteCodeGen
     bool setupRuntime(const ByteCodeGenContext* context, const AstNode* node);
     bool setupByteCodeGenerated(ByteCodeGenContext* context, AstNode* node);
     bool setupByteCodeResolved(const ByteCodeGenContext* context, AstNode* node);
-    void askForByteCode(Job* job, AstNode* node, uint32_t flags, ByteCode* caller = nullptr);
+    void askForByteCode(JobContext* context, AstNode* node, uint32_t flags, ByteCode* caller = nullptr);
     bool makeInline(ByteCodeGenContext* context, AstFuncDecl* funcDecl, AstNode* identifier);
 
     void getDependantCalls(const AstNode* depNode, VectorNative<AstNode*>& dep);
@@ -110,8 +110,8 @@ namespace ByteCodeGen
     ByteCodeInstruction* emitInstruction(const ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0, uint32_t r1, uint32_t r2, uint32_t r3, const char* file, uint32_t line);
 
     bool emitDefaultParamValue(ByteCodeGenContext* context, AstNode* param, RegisterList& regList);
-    void emitOpCallUser(const ByteCodeGenContext* context, const TypeInfoStruct* typeStruct, EmitOpUserKind kind, bool pushParam = true, uint32_t offset = 0, uint32_t numParams = 1);
-    void emitOpCallUser(const ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc = nullptr, bool pushParam = true, uint32_t offset = 0, uint32_t numParams = 1);
+    void emitOpCallUser(ByteCodeGenContext* context, const TypeInfoStruct* typeStruct, EmitOpUserKind kind, bool pushParam = true, uint32_t offset = 0, uint32_t numParams = 1);
+    void emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc = nullptr, bool pushParam = true, uint32_t offset = 0, uint32_t numParams = 1);
     bool emitExpressionListBefore(ByteCodeGenContext* context);
     bool emitExpressionList(ByteCodeGenContext* context);
     bool emitLiteral(ByteCodeGenContext* context, AstNode* node, const TypeInfo* toType, RegisterList& regList);
@@ -243,7 +243,7 @@ namespace ByteCodeGen
     bool emitLocalVarDeclBefore(ByteCodeGenContext* context);
     bool emitLocalVarDecl(ByteCodeGenContext* context);
     void emitRetValRef(const ByteCodeGenContext* context, SymbolOverload* resolved, const RegisterList& r0, bool retVal, uint32_t stackOffset);
-    bool emitStructInit(const ByteCodeGenContext* context, const TypeInfoStruct* typeInfoStruct, uint32_t regOffset, bool retVal);
+    bool emitStructInit(ByteCodeGenContext* context, const TypeInfoStruct* typeInfoStruct, uint32_t regOffset, bool retVal);
     bool emitBreak(ByteCodeGenContext* context);
     bool emitFallThrough(ByteCodeGenContext* context);
     bool emitContinue(ByteCodeGenContext* context);
@@ -274,7 +274,7 @@ namespace ByteCodeGen
     bool emitIntrinsicMakeInterface(ByteCodeGenContext* context);
     bool emitUserOp(ByteCodeGenContext* context, AstNode* allParams = nullptr, AstNode* forNode = nullptr, bool freeRegisterParams = true);
     bool emitLeaveScope(ByteCodeGenContext* context);
-    bool emitLeaveScopeDrop(const ByteCodeGenContext* context, Scope* scope, const VectorNative<SymbolOverload*>* forceNoDrop = nullptr);
+    bool emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scope, const VectorNative<SymbolOverload*>* forceNoDrop = nullptr);
     bool emitDeferredStatements(ByteCodeGenContext* context, Scope* scope, bool forError);
     bool emitLeaveScopeReturn(ByteCodeGenContext* context, VectorNative<SymbolOverload*>* forceNoDrop, bool forError);
     bool computeLeaveScope(ByteCodeGenContext* context, Scope* scope, const VectorNative<SymbolOverload*>* forceNoDrop = nullptr, bool forError = false);
@@ -318,7 +318,7 @@ namespace ByteCodeGen
     void        emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, const AstArrayPointerSlicing* node);
 
     void generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct);
-    void emitOpCallUserArrayOfStruct(const ByteCodeGenContext* context, TypeInfo* typeVar, EmitOpUserKind kind, bool pushParam, uint32_t offset);
+    void emitOpCallUserArrayOfStruct(ByteCodeGenContext* context, TypeInfo* typeVar, EmitOpUserKind kind, bool pushParam, uint32_t offset);
     void emitOpCallUserFields(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct, EmitOpUserKind kind);
     bool generateStructOpInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct);
     bool generateStructOpDrop(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct);

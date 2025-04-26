@@ -504,7 +504,7 @@ bool ByteCodeGen::emitMakeLambda(ByteCodeGenContext* context)
     if (!funcNode->isForeign())
     {
         // Need to generate bytecode, if not already done or running
-        askForByteCode(context->baseJob, funcNode, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
+        askForByteCode(context, funcNode, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
         YIELD();
     }
 

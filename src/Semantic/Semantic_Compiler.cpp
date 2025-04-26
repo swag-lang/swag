@@ -104,7 +104,7 @@ bool Semantic::askForByteCode(SemanticContext* context, AstNode* node, uint32_t 
         }
     }
 
-    ByteCodeGen::askForByteCode(context->baseJob, node, flags, caller);
+    ByteCodeGen::askForByteCode(context, node, flags, caller);
     return true;
 }
 

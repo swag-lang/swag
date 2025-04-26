@@ -188,10 +188,11 @@ bool ByteCodeGen::skipNodes(ByteCodeGenContext* context, AstNode* node)
     return res != Ast::VisitResult::Stop;
 }
 
-void ByteCodeGen::askForByteCode(Job* job, AstNode* node, uint32_t flags, ByteCode* caller)
+void ByteCodeGen::askForByteCode(JobContext* context, AstNode* node, uint32_t flags, ByteCode* caller)
 {
     if (!node)
         return;
+    const auto job = context->baseJob;
 
     // If this is a foreign function, we do not need bytecode
     AstFuncDecl* funcDecl = nullptr;

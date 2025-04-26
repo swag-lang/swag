@@ -14,7 +14,7 @@
 #include "Wmf/Module.h"
 #include "Wmf/ModuleManager.h"
 
-void ByteCodeGen::emitOpCallUser(const ByteCodeGenContext* context, const TypeInfoStruct* typeStruct, EmitOpUserKind kind, bool pushParam, uint32_t offset, uint32_t numParams)
+void ByteCodeGen::emitOpCallUser(ByteCodeGenContext* context, const TypeInfoStruct* typeStruct, EmitOpUserKind kind, bool pushParam, uint32_t offset, uint32_t numParams)
 {
     switch (kind)
     {
@@ -33,7 +33,7 @@ void ByteCodeGen::emitOpCallUser(const ByteCodeGenContext* context, const TypeIn
     }
 }
 
-void ByteCodeGen::emitOpCallUser(const ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc, bool pushParam, uint32_t offset, uint32_t numParams)
+void ByteCodeGen::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc, bool pushParam, uint32_t offset, uint32_t numParams)
 {
     if (!funcDecl && !bc)
         return;
@@ -44,9 +44,9 @@ void ByteCodeGen::emitOpCallUser(const ByteCodeGenContext* context, AstFuncDecl*
         bc->isUsed = true;
 
     if (funcDecl)
-        askForByteCode(context->baseJob, funcDecl, 0, context->bc);
+        askForByteCode(context, funcDecl, 0, context->bc);
     else if (bc && bc->node)
-        askForByteCode(context->baseJob, bc->node, 0, context->bc);
+        askForByteCode(context, bc->node, 0, context->bc);
 
     if (pushParam)
     {
@@ -406,7 +406,7 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
     SWAG_ASSERT(structNode->hasSemFlag(SEMFLAG_STRUCT_OP_ALLOCATED));
 }
 
-void ByteCodeGen::emitOpCallUserArrayOfStruct(const ByteCodeGenContext* context, TypeInfo* typeVar, EmitOpUserKind kind, bool pushParam, uint32_t offset)
+void ByteCodeGen::emitOpCallUserArrayOfStruct(ByteCodeGenContext* context, TypeInfo* typeVar, EmitOpUserKind kind, bool pushParam, uint32_t offset)
 {
     SWAG_ASSERT(typeVar->isArrayOfStruct());
     const auto typeArray     = castTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
@@ -554,7 +554,7 @@ bool ByteCodeGen::generateStructOpInit(ByteCodeGenContext* context, TypeInfoStru
         // Content must have been solved ! where pb
         SWAG_ASSERT(!typeInfoStruct->opUserInitFct->content->hasAstFlag(AST_NO_SEMANTIC));
 
-        askForByteCode(context->baseJob, typeInfoStruct->opUserInitFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
+        askForByteCode(context, typeInfoStruct->opUserInitFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
         YIELD();
     }
 
@@ -834,7 +834,7 @@ bool ByteCodeGen::generateStructOpDrop(ByteCodeGenContext* context, TypeInfoStru
         SWAG_ASSERT(!typeInfoStruct->opUserDropFct->content->hasAstFlag(AST_NO_SEMANTIC));
 
         needDrop = true;
-        askForByteCode(context->baseJob, typeInfoStruct->opUserDropFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
+        askForByteCode(context, typeInfoStruct->opUserDropFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
         YIELD();
     }
 
@@ -946,7 +946,7 @@ bool ByteCodeGen::generateStructOpPostCopy(ByteCodeGenContext* context, TypeInfo
         SWAG_ASSERT(!typeInfoStruct->opUserPostCopyFct->content->hasAstFlag(AST_NO_SEMANTIC));
 
         needPostCopy = true;
-        askForByteCode(context->baseJob, typeInfoStruct->opUserPostCopyFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
+        askForByteCode(context, typeInfoStruct->opUserPostCopyFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
         YIELD();
     }
 
@@ -1056,7 +1056,7 @@ bool ByteCodeGen::generateStructOpPostMove(ByteCodeGenContext* context, TypeInfo
         SWAG_ASSERT(!typeInfoStruct->opUserPostMoveFct->content->hasAstFlag(AST_NO_SEMANTIC));
 
         needPostMove = true;
-        askForByteCode(context->baseJob, typeInfoStruct->opUserPostMoveFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
+        askForByteCode(context, typeInfoStruct->opUserPostMoveFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
         YIELD();
     }
 
@@ -1252,7 +1252,7 @@ void ByteCodeGen::emitRetValRef(const ByteCodeGenContext* context, SymbolOverloa
     }
 }
 
-bool ByteCodeGen::emitStructInit(const ByteCodeGenContext* context, const TypeInfoStruct* typeInfoStruct, uint32_t regOffset, bool retVal)
+bool ByteCodeGen::emitStructInit(ByteCodeGenContext* context, const TypeInfoStruct* typeInfoStruct, uint32_t regOffset, bool retVal)
 {
     const auto node     = context->node;
     const auto resolved = node->resolvedSymbolOverload();
@@ -1261,7 +1261,7 @@ bool ByteCodeGen::emitStructInit(const ByteCodeGenContext* context, const TypeIn
     if (typeInfoStruct->hasFlag(TYPEINFO_STRUCT_ALL_UNINITIALIZED))
         return true;
 
-    // Just clear the content of the structure
+    // Clear the content of the structure
     if (!typeInfoStruct->hasFlag(TYPEINFO_STRUCT_HAS_INIT_VALUES))
     {
         if (retVal)
