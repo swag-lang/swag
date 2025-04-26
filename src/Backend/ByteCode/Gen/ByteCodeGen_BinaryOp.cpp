@@ -8,6 +8,7 @@
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
+#pragma optimize("", off)
 
 bool ByteCodeGen::emitBinaryOpPlus(const ByteCodeGenContext* context, const TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
@@ -781,27 +782,19 @@ bool ByteCodeGen::emitUserOp(ByteCodeGenContext* context, AstNode* allParams, As
     {
         if (Semantic::mustInline(funcDecl))
         {
-            // Expand inline function. Do not expand an inline call inside a function marked as inline.
-            // The expansion will be done at the lowest level possible.
-            // Remember: inline functions are also compiled as non-inlined (mostly for compile-time execution
-            // of calls), and we do not want the call to be inlined twice (one in the normal owner function, and one
-            // again after the owner function has been duplicated).
-            if (!Semantic::mustInline(node->ownerFct))
+            SWAG_CHECK(Semantic::makeInline(context, funcDecl, node, false));
+            YIELD();
+
+            if (!node->hasSemFlag(SEMFLAG_RESOLVE_INLINED))
             {
-                SWAG_CHECK(Semantic::makeInline(context, funcDecl, node, false));
-                YIELD();
-
-                if (!node->hasSemFlag(SEMFLAG_RESOLVE_INLINED))
-                {
-                    node->addSemFlag(SEMFLAG_RESOLVE_INLINED);
-                    const auto back = node->lastChild();
-                    SWAG_ASSERT(back->is(AstNodeKind::Inline));
-                    context->baseJob->nodes.push_back(back);
-                    context->result = ContextResult::NewChildren;
-                }
-
-                return true;
+                node->addSemFlag(SEMFLAG_RESOLVE_INLINED);
+                const auto back = node->lastChild();
+                SWAG_ASSERT(back->is(AstNodeKind::Inline));
+                context->baseJob->nodes.push_back(back);
+                context->result = ContextResult::NewChildren;
             }
+
+            return true;
         }
     }
 

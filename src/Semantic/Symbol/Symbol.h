@@ -99,6 +99,7 @@ struct SymbolName
     bool is(SymbolKind what) const { return kind == what; }
     bool isNot(SymbolKind what) const { return kind != what; }
     bool hasFlag(SymbolFlags fl) const { return flags.has(fl); }
+    void addFlag(SymbolFlags fl) { flags.add(fl); }
 
     SharedMutex                   mutex;
     VectorNative<SymbolOverload*> overloads;

@@ -9,6 +9,7 @@
 #include "Syntax/AstFlags.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
+#pragma optimize("", off)
 
 bool Semantic::mustInline(const AstFuncDecl* funcDecl)
 {
@@ -43,9 +44,11 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* n
 {
     if (node->hasAstFlag(AST_INLINED))
         return true;
-    
+
     waitFuncDeclFullResolve(context->baseJob, funcDecl);
     YIELD();
+
+    funcDecl->resolvedSymbolName()->addFlag(SYMBOL_USED);
     node->addAstFlag(AST_INLINED);
 
     CloneContext cloneContext;

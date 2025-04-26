@@ -1231,7 +1231,7 @@ bool Semantic::setMatchResult(SemanticContext* context, AstIdentifierRef* identi
 
     // Mark as used
     if (symbol)
-        symbol->flags.add(SYMBOL_USED);
+        symbol->addFlag(SYMBOL_USED);
     if (dependentVar && dependentVar->resolvedSymbolName())
         dependentVar->resolvedSymbolName()->flags.add(SYMBOL_USED);
     if (dependentVar && dependentVar->resolvedSymbolOverload())

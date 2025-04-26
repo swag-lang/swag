@@ -7,6 +7,7 @@
 #include "Syntax/AstFlags.h"
 #include "Syntax/Parser/Parser.h"
 #include "Wmf/Module.h"
+#pragma optimize("", off)
 
 void AstNode::inheritAstFlagsOr(const AstNodeFlags& flag)
 {
