@@ -86,7 +86,7 @@ void Semantic::resolvePendingLambdaTyping(const SemanticContext* context, AstNod
         }
     }
 
-    // Replace every types inside the function
+    // Replace every type inside the function
     Ast::visit(funcDecl, [&](AstNode* p) {
         const auto it = typeDefinedFct->replaceTypes.find(p->token.text);
         if (it == typeDefinedFct->replaceTypes.end())
@@ -98,7 +98,7 @@ void Semantic::resolvePendingLambdaTyping(const SemanticContext* context, AstNod
         p->typeInfo = it->second.typeInfoReplace;
     });
 
-    // Set return type
+    // Set a return type
     if (typeUndefinedFct->returnType->isUndefined())
     {
         typeUndefinedFct->returnType = typeDefinedFct->returnType;
@@ -130,7 +130,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
     const auto typeInfoFunc = castTypeInfo<TypeInfoFuncAttr>(identifier->typeInfo, TypeInfoKind::FuncAttr);
 
     // :ClosureForceFirstParam
-    // Add a first dummy parameter in case of closure
+    // Add a first fake parameter in case of closure
     if (typeInfoFunc->isClosure() && !identifier->hasSpecFlag(AstIdentifier::SPEC_FLAG_CLOSURE_FIRST_PARAM))
     {
         const auto fcp = Ast::newFuncCallParam(nullptr, identifier->callParameters);
@@ -158,7 +158,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
         if (idx < typeInfoFunc->parameters.size() - 1 || !typeInfoFunc->hasFlag(TYPEINFO_VARIADIC | TYPEINFO_C_VARIADIC))
             i = nodeCall->indexParam;
 
-        // This is a lambda that was waiting for a match to have its types, and to continue solving its content
+        // This is a lambda waiting for a match to have its type and to continue solving its content
         if (nodeCall->typeInfo->isLambdaClosure() && nodeCall->typeInfo->declNode->hasSemFlag(SEMFLAG_PENDING_LAMBDA_TYPING))
         {
             resolvePendingLambdaTyping(context, nodeCall->typeInfo->declNode, oneMatch.solvedParameters[i]->typeInfo);
@@ -185,7 +185,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
             }
 
             // The UFCS parameter is a value, and we want a reference.
-            // Mark the symbol with OVERLOAD_HAS_MAKE_POINTER because it will avoid warning of non usage.
+            // Mark the symbol with OVERLOAD_HAS_MAKE_POINTER because it will avoid warning of non-usage.
             if (context->castFlagsResult.has(CAST_RESULT_FORCE_REF))
             {
                 const auto idRef    = identifier->identifierRef();
@@ -222,8 +222,8 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
             {
                 const auto front = nodeCall->firstChild();
 
-                // We have a compile-time value (like a literal), and we want a const ref, i.e. a pointer
-                // We need to create a temporary variable to store the value, in order to have an address.
+                // We have a compile-time value (like a literal), and we want a const ref, i.e., a pointer
+                // We need to create a temporary variable to store the value, to have an address.
                 if (front->hasFlagComputedValue() || nodeCall->typeInfo->isListArray())
                 {
                     const auto varNode = Ast::newVarDecl(form(R"(__7tmp_%d)", g_UniqueID.fetch_add(1)), nullptr, nodeCall);
@@ -338,7 +338,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
                 context->baseJob->nodes.push_back(idRef);
                 context->baseJob->nodes.push_back(varNode);
 
-                // If call is inlined, then the identifier will be reevaluated, and the new variable, which is a child,
+                // If the call is inlined, then the identifier will be reevaluated, and the new variable, which is a child,
                 // will be reevaluated too, so twice because of the push above. So we set a special flag to not reevaluate
                 // it twice.
                 varNode->addSemFlag(SEMFLAG_ONCE);
@@ -416,7 +416,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
                 context->baseJob->nodes.push_back(newParam);
                 context->baseJob->nodes.push_back(varNode);
 
-                // If call is inline, then the identifier will be reevaluated, so the new variable, which is a child of
+                // If the call is inline, then the identifier will be reevaluated, so the new variable, which is a child of
                 // that identifier, will be reevaluated too (so twice because of the push above).
                 // So we set a special flag to not reevaluate it twice.
                 varNode->addSemFlag(SEMFLAG_ONCE);
@@ -427,7 +427,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
     }
 
     // Deal with default values for structs and uncomputed values
-    // We need to add a temporary variable initialized with the default value, and reference
+    // We need to add a temporary variable initialized with the default value and reference
     // that temporary variable as a new function call parameter
     if (!typeInfoFunc->parameters.empty() && maxParams < typeInfoFunc->parameters.size())
     {
@@ -536,7 +536,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
                 context->baseJob->nodes.push_back(newParam);
                 context->baseJob->nodes.push_back(varNode);
 
-                // If call is inlined, then the identifier will be reevaluated, and the new variable, which is a child,
+                // If the call is inlined, then the identifier will be reevaluated, and the new variable, which is a child,
                 // will be reevaluated too, so twice because of the push above. So we set a special flag to not reevaluate
                 // it twice.
                 varNode->addSemFlag(SEMFLAG_ONCE);
@@ -948,7 +948,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
 
     SWAG_CHECK(Semantic::setupIdentifierRef(context, identifier));
 
-    // For a return by copy, need to reserve room on the stack for the return result
+    // For a return by copy, we need to reserve room on the stack for the return result
     // Order is important, because otherwise this could call isPlainOldData, which could be not resolved
     if (typeFunc->returnNeedsStack())
     {
@@ -1093,7 +1093,7 @@ bool Semantic::setSymbolMatchUsingVar(SemanticContext* context, AstIdentifierRef
 
         // We need to insert at the right place, but the identifier 'childParentIdx' can be the wrong one
         // if it's not a direct child of 'idRef'. So we need to find the direct child of 'idRef', which is
-        // also a parent if 'identifier', in order to get the right child index, and insert the 'using'
+        // also a parent if 'identifier', to get the right child index, and insert the 'using'
         // just before.
         const AstNode* newParent = identifier;
         while (newParent->parent != idRef)
@@ -1143,7 +1143,7 @@ bool Semantic::checkMatchResult(SemanticContext*        context,
                                 const SymbolOverload*   overload,
                                 AstNode*                prevNode)
 {
-    // Test x.toto with x not a struct (like a native type for example), but toto is known, so
+    // Test x.toto with x not a struct (like a native type, for example), but toto is known, so
     // no error was raised before
     if (symbol &&
         symbol->is(SymbolKind::Variable) &&
@@ -1158,9 +1158,9 @@ bool Semantic::checkMatchResult(SemanticContext*        context,
         return context->report(err);
     }
 
-    // If a variable on the left has only been used for scoping, and not evaluated as an UFCS source, then this is an
+    // If a variable on the left has only been used for scoping and not evaluated as an UFCS source, then this is an
     // error too, because it's too strange.
-    // x.toto() with toto taking no argument for example, but toto is 'in' x scope.
+    // x.toto() with toto taking no argument, for example, but toto is 'in' x scope.
     if (symbol &&
         symbol->is(SymbolKind::Function) &&
         identifierRef->startScope &&
@@ -1196,7 +1196,7 @@ bool Semantic::checkMatchResult(SemanticContext*        context,
         return context->report(err);
     }
 
-    // A.X and A is an array : missing index
+    // A.X and A is an array: missing index
     if (symbol &&
         symbol->is(SymbolKind::Variable) &&
         identifier->typeInfo->isArray() &&
@@ -1208,7 +1208,7 @@ bool Semantic::checkMatchResult(SemanticContext*        context,
         return context->report(err);
     }
 
-    // A.X and A is a slice : missing index
+    // A.X and A is a slice: missing index
     if (symbol &&
         symbol->is(SymbolKind::Variable) &&
         identifier->typeInfo->isSlice() &&
@@ -1314,7 +1314,7 @@ bool Semantic::setMatchResult(SemanticContext* context, AstIdentifierRef* identi
         identifier->addAstFlag(AST_L_VALUE | AST_R_VALUE);
     }
 
-    // Do not register a sub impl scope, for UFCS to use the real variable
+    // Do not register a sub impl scope for UFCS to use the real variable
     if (!overload->hasFlag(OVERLOAD_IMPL_IN_STRUCT))
     {
         identifierRef->setResolvedSymbol(symbol, overload);
@@ -1327,8 +1327,8 @@ bool Semantic::setMatchResult(SemanticContext* context, AstIdentifierRef* identi
     else if (overload->hasFlag(OVERLOAD_GENERIC) && !identifier->hasAstFlag(AST_FROM_GENERIC))
         identifier->addAstFlag(AST_GENERIC);
 
-    // Symbol is linked to a using var : insert the variable name before the symbol
-    // Except if symbol is a constant !
+    // Symbol is linked to a using var: insert the variable name before the symbol
+    // Except if the symbol is a constant!
     if (!overload->hasFlag(OVERLOAD_CONST_VALUE))
     {
         if (dependentVar && identifierRef->is(AstNodeKind::IdentifierRef) && symbol->isNot(SymbolKind::Function))
@@ -1671,9 +1671,9 @@ bool Semantic::dealWithMatchResults(SemanticContext*            context,
 {
     const bool justCheck = flags.has(MIP_JUST_CHECK);
 
-    // If to match an instance, we always need an automatic opCast, then we only keep generic matches in order
+    // If to match an instance, we always need an automatic opCast, then we only keep generic matches
     // to create an instance with the exact type.
-    // We only test the first match here, because the filtering of matches would have removed it if some other instances
+    // We only test the first match here because the filtering of matches would have removed it if some other instances
     // without autoOpCast are present.
     if (!matches.empty() && matches[0]->castFlagsResult.has(CAST_RESULT_GEN_AUTO_OP_CAST) && (!genericMatches.empty() || !genericMatchesSI.empty()))
     {
@@ -1734,7 +1734,7 @@ bool Semantic::dealWithMatchResults(SemanticContext*            context,
         return true;
     }
 
-    // One match, but want none !
+    // One match, but want none!
     /////////////////////////////////////////////////////////////////////
     if (matches.size() == 1 && flags.has(MIP_FOR_ZERO_GHOSTING))
     {
@@ -1765,7 +1765,7 @@ bool Semantic::dealWithMatchResults(SemanticContext*            context,
         return SemanticError::ambiguousGenericError(context, node, tryMatches, genericMatches);
     }
 
-    // We remove all generated nodes, because if they exist, they do not participate in the error
+    // We remove all generated nodes because if they exist, they do not participate in the error
     for (uint32_t i = 0; i < tryMatches.size() && tryMatches.size() != 1; i++)
     {
         if (tryMatches[i]->overload->node->hasAstFlag(AST_FROM_GENERIC))
@@ -1892,7 +1892,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
 
         forStruct = rawTypeInfo->isStruct() || rawTypeInfo->isInterface();
 
-        // The main deal ! Try the match
+        // The main deal! Try the match
         SWAG_CHECK(tryOneMatch(context, oneOverload, overload, rawTypeInfo, flags));
         YIELD();
 
@@ -1902,7 +1902,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
             YIELD();
         }
 
-        // For a function, sometime, we do not want call parameters
+        // For a function, sometimes, we do not want call parameters
         bool forcedFine = false;
 
         // Be sure this is not because of a generic error
@@ -1917,7 +1917,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
             }
         }
 
-        // We need () for a function call !
+        // We need () for a function call!
         const bool emptyParams = oneOverload.symMatchContext.parameters.empty() && !oneOverload.callParameters;
         if (!forcedFine && emptyParams && oneOverload.symMatchContext.result == MatchResult::Ok && symbol->is(SymbolKind::Function))
         {
@@ -1931,7 +1931,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
                 oneOverload.symMatchContext.result = MatchResult::Ok;
         }
 
-        // In case of errors, remember the 'best' signature in order to generate the best possible
+        // In case of errors, remember the 'best' signature to generate the best possible
         // accurate error. We find the longest match (the one that failed on the right most parameter)
         if (oneOverload.symMatchContext.result != MatchResult::Ok)
         {
@@ -1976,9 +1976,9 @@ bool Semantic::computeMatch(SemanticContext* context, AstIdentifier* identifier,
         toSolveOverload.clear();
 
         // Collect all overloads to solve. We collect also the number of overloads when the collect is done, in
-        // case that number changes (other thread) during the resolution. Because if the number of overloads differs
+        // case that number changes (another thread) during the resolution. Because if the number of overloads differs
         // at one point in the process (for a given symbol), then this will invalidate the resolution
-        // (number of overloads can change when instantiating a generic)
+        // (the number of overloads can change when instantiating a generic)
         for (const auto& p : symbolsMatch)
         {
             const auto symbol = p.symbol;
@@ -1995,7 +1995,7 @@ bool Semantic::computeMatch(SemanticContext* context, AstIdentifier* identifier,
             }
         }
 
-        // Can happen if a symbol is inside a disabled #if for example
+        // Can happen if a symbol is inside a disabled '#if', for example
         if (toSolveOverload.empty())
         {
             if (identifierRef->hasAstFlag(AST_SILENT_CHECK))
@@ -2011,7 +2011,7 @@ bool Semantic::computeMatch(SemanticContext* context, AstIdentifier* identifier,
             identifierRef->setResolvedSymbol(orgResolvedSymbolName, orgResolvedSymbolOverload);
             identifierRef->previousResolvedNode = orgPreviousResolvedNode;
 
-            // Is there a using variable associated with the symbol to solve ?
+            // Is there a using variable associated with the symbol to solve?
             AstNode* dependentVar     = nullptr;
             AstNode* dependentVarLeaf = nullptr;
             SWAG_CHECK(Semantic::getUsingVar(context, identifierRef, identifier, symbolOverload, &dependentVar, &dependentVarLeaf));
@@ -2095,7 +2095,7 @@ bool Semantic::computeMatch(SemanticContext* context, AstIdentifier* identifier,
                 context->result                     = ContextResult::NewChildren;
                 return true;
 
-            // The number of overloads for a given symbol has been changed by another thread, which
+            // Another thread has changed the number of overloads for a given symbol, which
             // means that we need to restart everything...
             case ContextResult::NewChildren:
                 context->result = ContextResult::Done;
