@@ -184,7 +184,7 @@ namespace Semantic
     bool           setState(SemanticContext* context, AstNode* node, AstNodeResolveState state);
     bool           setUnRef(AstNode* node);
     bool           setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, const AstNode* funcNode, AstNode* parameters, bool forGenerics);
-    bool           setupIdentifierRef(SemanticContext* context, AstNode* node);
+    bool           setupIdentifierRef(AstNode* node);
     bool           solveConstraints(SemanticContext* context, OneMatch* oneMatch, AstFuncDecl* funcDecl);
     bool           solveConstraints(SemanticContext* context, AstStruct* structDecl);
     bool           storeToSegment(JobContext* context, DataSegment* storageSegment, uint32_t storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);

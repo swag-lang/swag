@@ -866,7 +866,7 @@ bool Semantic::resolveIntrinsicLocation(SemanticContext* context)
 
     node->setFlagsValueIsComputed();
     ByteCodeGen::computeSourceLocation(context, locNode, &node->computedValue()->storageOffset, &node->computedValue()->storageSegment);
-    SWAG_CHECK(setupIdentifierRef(context, node));
+    SWAG_CHECK(setupIdentifierRef(node));
     return true;
 }
 
@@ -955,7 +955,7 @@ bool Semantic::resolveCompilerSpecialValue(SemanticContext* context)
             node->typeInfo = g_TypeMgr->makeConst(g_Workspace->swagScope.regTypeInfoSourceLoc);
             node->setFlagsValueIsComputed();
             ByteCodeGen::computeSourceLocation(context, node, &node->computedValue()->storageOffset, &node->computedValue()->storageSegment);
-            SWAG_CHECK(setupIdentifierRef(context, node));
+            SWAG_CHECK(setupIdentifierRef(node));
             return true;
 
         case TokenId::CompilerCallerLocation:
@@ -1157,7 +1157,7 @@ bool Semantic::resolveCompilerIntrinsicTypeOf(SemanticContext* context)
     SWAG_CHECK(resolveTypeAsExpression(context, expr, &node->typeInfo));
     YIELD();
     node->inheritComputedValue(expr);
-    SWAG_CHECK(setupIdentifierRef(context, node));
+    SWAG_CHECK(setupIdentifierRef(node));
     return true;
 }
 

@@ -141,9 +141,9 @@ bool Semantic::resolveIdentifierRef(SemanticContext* context)
     return true;
 }
 
-bool Semantic::setupIdentifierRef(SemanticContext*, AstNode* node)
+bool Semantic::setupIdentifierRef(AstNode* node)
 {
-    // If type of previous one was const, then we force this node to be const (cannot change it)
+    // If the type of the previous one was const, then we force this node to be const (cannot change it)
     if (node->parent->typeInfo && node->parent->typeInfo->isConst())
         node->addAstFlag(AST_CONST);
     const auto overload = node->resolvedSymbolOverload();
@@ -1063,7 +1063,7 @@ bool Semantic::waitForSymbols(SemanticContext* context, AstIdentifier* identifie
         // In case identifier is part of a reference, need to initialize it
         if (identifier != identifier->identifierRef()->lastChild())
         {
-            SWAG_CHECK(setupIdentifierRef(context, identifier));
+            SWAG_CHECK(setupIdentifierRef(identifier));
 
             // Be sure to setup constexpr
             if (identifier->typeInfo->isStruct() ||

@@ -1995,14 +1995,13 @@ bool Semantic::makeInline(SemanticContext* context, AstFuncDecl* funcDecl, AstNo
 
 bool Semantic::makeInline(SemanticContext* context, AstIdentifier* identifier)
 {
-    const auto funcDecl = castAst<AstFuncDecl>(identifier->resolvedSymbolOverload()->node, AstNodeKind::FuncDecl);
-
     // First pass, we inline the function.
     // The identifier for the function call will be resolved again later when the content
     // of the inline is done.
     if (!identifier->hasAstFlag(AST_INLINED))
     {
         // Need to wait for function full semantic resolve
+        const auto funcDecl = castAst<AstFuncDecl>(identifier->resolvedSymbolOverload()->node, AstNodeKind::FuncDecl);
         waitFuncDeclFullResolve(context->baseJob, funcDecl);
         YIELD();
 
@@ -2014,7 +2013,7 @@ bool Semantic::makeInline(SemanticContext* context, AstIdentifier* identifier)
     const auto typeFunc   = castTypeInfo<TypeInfoFuncAttr>(identifier->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
     const auto returnType = typeFunc->concreteReturnType();
 
-    SWAG_CHECK(Semantic::setupIdentifierRef(context, identifier));
+    SWAG_CHECK(Semantic::setupIdentifierRef(identifier));
     identifier->byteCodeFct = ByteCodeGen::emitPassThrough;
 
     if (returnType->isStruct())

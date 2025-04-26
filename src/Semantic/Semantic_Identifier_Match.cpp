@@ -678,7 +678,7 @@ bool Semantic::setSymbolMatchVar(SemanticContext* context, const OneMatch& oneMa
     }
 
     // Setup parent if necessary
-    SWAG_CHECK(Semantic::setupIdentifierRef(context, identifier));
+    SWAG_CHECK(Semantic::setupIdentifierRef(identifier));
 
     const auto typeInfo = TypeManager::concretePtrRefType(identifier->typeInfo);
 
@@ -946,7 +946,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     if (returnType->isStruct())
         identifier->addSemFlag(SEMFLAG_CONST_ASSIGN_INHERIT | SEMFLAG_CONST_ASSIGN);
 
-    SWAG_CHECK(Semantic::setupIdentifierRef(context, identifier));
+    SWAG_CHECK(Semantic::setupIdentifierRef(identifier));
 
     // For a return by copy, we need to reserve room on the stack for the return result
     // Order is important, because otherwise this could call isPlainOldData, which could be not resolved
@@ -962,7 +962,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
 bool Semantic::setSymbolMatchStruct(SemanticContext* context, OneMatch& oneMatch, AstIdentifierRef* identifierRef, AstIdentifier* identifier, const SymbolOverload* overload, TypeInfo* typeAlias)
 {
     if (!overload->hasFlag(OVERLOAD_IMPL_IN_STRUCT))
-        SWAG_CHECK(Semantic::setupIdentifierRef(context, identifier));
+        SWAG_CHECK(Semantic::setupIdentifierRef(identifier));
     identifierRef->startScope = castTypeInfo<TypeInfoStruct>(typeAlias)->scope;
 
     if (!identifier->callParameters)
@@ -1367,7 +1367,7 @@ bool Semantic::setMatchResult(SemanticContext* context, AstIdentifierRef* identi
     switch (symbolKind)
     {
         case SymbolKind::GenericType:
-            SWAG_CHECK(setupIdentifierRef(context, identifier));
+            SWAG_CHECK(setupIdentifierRef(identifier));
             break;
 
         case SymbolKind::Namespace:
@@ -1376,7 +1376,7 @@ bool Semantic::setMatchResult(SemanticContext* context, AstIdentifierRef* identi
             break;
 
         case SymbolKind::Enum:
-            SWAG_CHECK(setupIdentifierRef(context, identifier));
+            SWAG_CHECK(setupIdentifierRef(identifier));
             identifier->addAstFlag(AST_CONST_EXPR);
             break;
 
@@ -1387,7 +1387,7 @@ bool Semantic::setMatchResult(SemanticContext* context, AstIdentifierRef* identi
                 return context->report(err);
             }
 
-            SWAG_CHECK(setupIdentifierRef(context, identifier));
+            SWAG_CHECK(setupIdentifierRef(identifier));
             identifier->setFlagsValueIsComputed();
             identifier->addAstFlag(AST_R_VALUE);
             *identifier->computedValue() = identifier->resolvedSymbolOverload()->computedValue;
