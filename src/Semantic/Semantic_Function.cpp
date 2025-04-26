@@ -1993,7 +1993,7 @@ bool Semantic::makeInline(SemanticContext* context, AstFuncDecl* funcDecl, AstNo
     return true;
 }
 
-bool Semantic::makeInline(SemanticContext* context, AstIdentifier* identifier)
+bool Semantic::makeInline(JobContext* context, AstIdentifier* identifier)
 {
     // First pass, we inline the function.
     // The identifier for the function call will be resolved again later when the content
@@ -2006,14 +2006,15 @@ bool Semantic::makeInline(SemanticContext* context, AstIdentifier* identifier)
         YIELD();
 
         identifier->addAstFlag(AST_INLINED);
-        SWAG_CHECK(Semantic::makeInline(context, funcDecl, identifier));
+        SWAG_CHECK(makeInline(context, funcDecl, identifier));
+        context->result = ContextResult::NewChildren;
         YIELD();
     }
 
     const auto typeFunc   = castTypeInfo<TypeInfoFuncAttr>(identifier->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
     const auto returnType = typeFunc->concreteReturnType();
 
-    SWAG_CHECK(Semantic::setupIdentifierRef(identifier));
+    SWAG_CHECK(setupIdentifierRef(identifier));
     identifier->byteCodeFct = ByteCodeGen::emitPassThrough;
 
     if (returnType->isStruct())
