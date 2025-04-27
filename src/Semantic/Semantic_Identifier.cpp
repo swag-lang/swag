@@ -438,7 +438,7 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
                         result.push_back_once(subResult.front());
                     }
 
-                    // More that one possible type (at least two different enums with the same identical requested name in the function signature)
+                    // More than one possible type (at least two different enums with the same identical requested name in the function signature)
                     // We are not lucky...
                     else if (subResult.size() > 1)
                     {
@@ -500,28 +500,28 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
     if (!result.empty())
         return true;
 
-    // We go up in the hierarchy until we find a statement, or a contextual type to return
-    bool canScanChilds = true;
-    auto parent        = node->parent;
+    // We go up in the hierarchy until we find a statement or a contextual type to return
+    bool canScanChildren = true;
+    auto parent          = node->parent;
     while (parent)
     {
-        if (canScanChilds && (parent->is(AstNodeKind::BinaryOp) ||
-                              parent->is(AstNodeKind::FactorOp) ||
-                              parent->is(AstNodeKind::AffectOp) ||
-                              parent->is(AstNodeKind::VarDecl) ||
-                              parent->is(AstNodeKind::ConstDecl) ||
-                              parent->is(AstNodeKind::FuncDeclParam) ||
-                              parent->is(AstNodeKind::Switch)))
+        if (canScanChildren && (parent->is(AstNodeKind::BinaryOp) ||
+                                parent->is(AstNodeKind::FactorOp) ||
+                                parent->is(AstNodeKind::AffectOp) ||
+                                parent->is(AstNodeKind::VarDecl) ||
+                                parent->is(AstNodeKind::ConstDecl) ||
+                                parent->is(AstNodeKind::FuncDeclParam) ||
+                                parent->is(AstNodeKind::Switch)))
         {
             if (parent->isNot(AstNodeKind::FactorOp))
-                canScanChilds = false;
+                canScanChildren = false;
 
             SharedLock lk(parent->mutex);
             for (auto c : parent->children)
             {
                 auto typeInfoChild = c->typeInfo;
 
-                // Take first child of an expression list
+                // Take the first child of an expression list
                 if (c->is(AstNodeKind::ExpressionList))
                 {
                     const auto expr = castAst<AstExpressionList>(c, AstNodeKind::ExpressionList);
@@ -600,7 +600,7 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
     {
         bool getIt = false;
 
-        // This is a function, and first parameter matches the using var
+        // This is a function, and the first parameter matches the using var
         bool okForUFCS = false;
         if (symbol->is(SymbolKind::Function))
         {
@@ -717,7 +717,7 @@ bool Semantic::appendLastCodeStatement(SemanticContext* context, AstIdentifier* 
     {
         node->addSemFlag(SEMFLAG_LAST_PARAM_CODE);
 
-        // If last parameter is of type code, and the call last parameter is not, then take the next statement
+        // If the last parameter is of type code, and the call's last parameter is not, then take the next statement
         const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
         if (!typeFunc->parameters.empty() && typeFunc->parameters.back()->typeInfo->isCode())
         {
@@ -794,7 +794,7 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext*      context,
     }
 
     // @ClosureForceFirstParam
-    // A closure has always a first parameter of type *void
+    // A closure has always a first parameter of a type *void
     if (typeRef->isClosure() && identifier->callParameters)
     {
         if (!identifier->hasSpecFlag(AstIdentifier::SPEC_FLAG_CLOSURE_FIRST_PARAM))
@@ -847,7 +847,7 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext*      context,
             const auto oneParam = castAst<AstFuncCallParam>(callParameters->children[i], AstNodeKind::FuncCallParam);
             symMatchContext.parameters.push_back(oneParam);
 
-            // Be sure all interfaces of the structure have been solved, in case a cast to an interface is necessary to match
+            // Be sure all interfaces of the structure have been solved; in case a cast to an interface is necessary to match
             // a function
             // @WaitInterfaceReg
             const TypeInfoStruct* typeStruct = nullptr;
@@ -927,7 +927,7 @@ bool Semantic::solveConstraints(SemanticContext* context, OneMatch* oneMatch, As
     ScopedLock lk0(funcDecl->funcMutex);
     ScopedLock lk1(funcDecl->mutex);
 
-    // Be sure block has been solved
+    // Be sure the block has been solved
     if (!funcDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_PARTIAL_RESOLVE))
     {
         funcDecl->dependentJobs.add(context->baseJob);
@@ -1052,7 +1052,7 @@ bool Semantic::waitForSymbols(SemanticContext* context, AstIdentifier* identifie
         }
 
         // A using var need to wait for the corresponding struct (if this is a struct or pointer to struct) to
-        // have solve all its fields, in order for everything other "using" nodes to be registered before solving.
+        // have solved all its fields, in order for everything other "using" nodes to be registered before solving.
         waitStructStartSolve(context->baseJob, identifier, symbol->overloads[0]->typeInfo);
         YIELD();
 
@@ -1060,12 +1060,12 @@ bool Semantic::waitForSymbols(SemanticContext* context, AstIdentifier* identifie
         identifier->setResolvedSymbol(symbol, symbol->overloads[0]);
         identifier->typeInfo = identifier->resolvedSymbolOverload()->typeInfo;
 
-        // In case identifier is part of a reference, need to initialize it
+        // In case the identifier is part of a reference, need to initialize it
         if (identifier != identifier->identifierRef()->lastChild())
         {
             SWAG_CHECK(setupIdentifierRef(identifier));
 
-            // Be sure to setup constexpr
+            // Be sure to set up constexpr
             if (identifier->typeInfo->isStruct() ||
                 identifier->typeInfo->isNamespace() ||
                 identifier->typeInfo->isEnum())
@@ -1098,10 +1098,10 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         return true;
     }
 
-    // If previous identifier was generic, then stop evaluation
+    // If the previous identifier was generic, then stop evaluation
     if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->typeInfo->isKindGeneric())
     {
-        // Just take the generic type for now
+        // Take the generic type for now
         identifier->typeInfo    = g_TypeMgr->typeInfoUndefined;
         identifierRef->typeInfo = identifierRef->previousResolvedNode->typeInfo;
         return true;
@@ -1208,13 +1208,13 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         }
     }
 
-    // If one of my dependent symbol is not fully solved, we need to wait
+    // If one of my dependent symbols is not fully solved, we need to wait
     SWAG_CHECK(waitForSymbols(context, identifier, context->baseJob));
     if (symbolsMatch.empty())
         return true;
     YIELD();
 
-    // Do the actual match
+    // Do the match
     SWAG_CHECK(computeMatch(context, identifier, riFlags, symbolsMatch, identifierRef));
     YIELD();
 
