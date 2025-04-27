@@ -577,7 +577,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
 
         // We need to copy the register and not use it directly, because some code can change the register
         // after (like when dereferencing something)
-        SWAG_VERIFY(resolved->symRegisters.size() > 0, Report::internalError(context->node, form("emitIdentifier, identifier not generated [[%s]]", identifier->token.cstr()).cstr()));
+        SWAG_VERIFY(!resolved->symRegisters.empty(), Report::internalError(context->node, form("emitIdentifier, identifier not generated [[%s]]", identifier->token.cstr()).cstr()));
         SWAG_ASSERT(resolved->hasFlag(OVERLOAD_REG_INLINE));
         reserveRegisterRC(context, node->resultRegisterRc, resolved->symRegisters.size());
 
