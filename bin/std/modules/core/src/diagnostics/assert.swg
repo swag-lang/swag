@@ -11,7 +11,7 @@ func assert(expr: bool, message: string = null, loc = #callerlocation)
     }
 }
 
-#[Swag.Inline, Swag.Warning("Wrn0006", Swag.WarningLevel.Disable)]
+#[Swag.Macro, Swag.Warning("Wrn0006", Swag.WarningLevel.Disable)]
 func(what: string) safety(expr51: bool, message: string = null, loc = #callerlocation)
 {
     #if #safety(what)
@@ -21,7 +21,7 @@ func(what: string) safety(expr51: bool, message: string = null, loc = #callerloc
     }
 }
 
-#[Swag.Inline, Swag.Warning("Wrn0006", Swag.WarningLevel.Disable)]
+#[Swag.Macro, Swag.Warning("Wrn0006", Swag.WarningLevel.Disable)]
 func safetyBoundCheck(expr50: bool, message: string = null, loc = #callerlocation)
 {
     safety'("boundcheck")(expr50, message, loc)

@@ -151,7 +151,7 @@ AstNode* AstIdentifier::clone(CloneContext& context)
     // reevaluated again in the new context, so we remove the flag.
     if (newNode->callParameters)
         newNode->callParameters->removeAstFlag(AST_NO_SEMANTIC);
-    
+
     return newNode;
 }
 
@@ -1084,6 +1084,7 @@ AstInline::~AstInline()
         scope->release();
 }
 
+#pragma optimize("", off)
 AstNode* AstInline::clone(CloneContext& context)
 {
     const auto newNode = Ast::newNode<AstInline>();
@@ -1097,12 +1098,34 @@ AstNode* AstInline::clone(CloneContext& context)
 
     newNode->func = func;
 
-    // Is this correct? Seems a little weird, but that way we do not have to copy the parametersScope
-    // content, which is not really possible for now (12/07/2021) (no way to copy already registered symbols in the scope).
-    // Because it can happen that an inline block already solved is copied.
-    // For example, because of convertStructParamsToTmpVar, with inline calls as parameters: func(A{round(6)}) => round already inlined.
-    // I guess one day this will hit me in the face...
-    newNode->parametersScope = parametersScope;
+    // I'm not sure why i must not always clone parameters
+    if (parametersScope && !context.cloneFlags.has(CLONE_INLINE))
+        newNode->parametersScope = parametersScope;
+
+    // Clone inline parameters
+    // We want to have specific overloads for this copied inline block, otherwise they can share
+    // the same registers between functions, which is very bad.
+    else if (parametersScope)
+    {
+        newNode->parametersScope = Ast::newScope(newNode, "", ScopeKind::Statement, nullptr);
+        uint32_t remaining       = parametersScope->symTable.mapNames.count;
+        for (uint32_t i = 0; remaining && i < parametersScope->symTable.mapNames.allocated; i++)
+        {
+            const auto from = parametersScope->symTable.mapNames.buffer[i].symbolName;
+            if (!from)
+                continue;
+            remaining--;
+            SWAG_ASSERT(from->nodes.size() == 1);
+            SWAG_ASSERT(from->overloads.size() == 1);
+            const auto        over = from->overloads[0];
+            AddSymbolTypeInfo toAdd;
+            toAdd.node     = Ast::clone(over->node, nullptr);
+            toAdd.typeInfo = over->typeInfo;
+            toAdd.kind     = SymbolKind::Variable;
+            toAdd.flags    = OVERLOAD_VAR_INLINE | OVERLOAD_CONST_ASSIGN;
+            newNode->parametersScope->symTable.addSymbolTypeInfo(nullptr, toAdd);
+        }
+    }
 
     auto cloneContext        = context;
     cloneContext.parent      = newNode;
@@ -1172,7 +1195,7 @@ AstNode* AstCompilerSpecFunc::clone(CloneContext& context)
     if (newNode->childCount() > 1)
     {
         // We also want to replace the name of the function (and the reference to it) in case
-        // the block is in a mixin block, because in that case the function can be registered
+        // the block is in a mixin block. Because in that case the function can be registered
         // more than once in the same scope.
         const uint32_t id      = g_UniqueID.fetch_add(1);
         const Utf8     newName = R"(__cmpfunc)" + std::to_string(id);
