@@ -164,7 +164,7 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
         if (allParams->hasSemFlag(SEMFLAG_INVERSE_PARAMS))
             allParams->swap2Children();
 
-        // Simple case, every parameters are covered by the call, and there's no named param
+        // Simple case, every parameter is covered by the call, and there's no named param
         if (numFuncParams == numCallParams)
         {
             for (uint32_t i = 0; i < numCallParams; i++)

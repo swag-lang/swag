@@ -29,6 +29,7 @@ void SymbolOverload::setRegisters(const RegisterList& reg, OverloadFlags fl)
     {
         SWAG_ASSERT(!hasFlag(OVERLOAD_REG_PERSISTENT));
         flags.remove(OVERLOAD_REG_HINT);
+        //SWAG_ASSERT(symRegisters.empty() || symRegisters == reg);
     }
     else
     {

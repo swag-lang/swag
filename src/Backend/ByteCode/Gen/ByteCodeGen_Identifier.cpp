@@ -570,20 +570,22 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
         return true;
     }
 
-    // Reference to an inline parameter : the registers are directly stored in the overload symbol
+    // Reference to an inline parameter: the registers are directly stored in the overload symbol
     if (resolved->hasFlag(OVERLOAD_VAR_INLINE))
     {
         SWAG_CHECK(sameStackFrame(context, resolved));
 
-        // We need to copy register, and not use it directly, because the register can be changed by
-        // some code after (like when dereferencing something)
-        SWAG_VERIFY(resolved->symRegisters.size() > 0,
-                    Report::internalError(context->node, form("emitIdentifier, identifier not generated [[%s]]", identifier->token.cstr()).cstr()));
+        // We need to copy the register and not use it directly, because some code can change the register
+        // after (like when dereferencing something)
+        SWAG_VERIFY(resolved->symRegisters.size() > 0, Report::internalError(context->node, form("emitIdentifier, identifier not generated [[%s]]", identifier->token.cstr()).cstr()));
         SWAG_ASSERT(resolved->hasFlag(OVERLOAD_REG_INLINE));
         reserveRegisterRC(context, node->resultRegisterRc, resolved->symRegisters.size());
 
         for (uint32_t i = 0; i < node->resultRegisterRc.size(); i++)
+        {
+            SWAG_ASSERT(resolved->symRegisters[i] < context->bc->maxReservedRegisterRC);
             EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRc[i], resolved->symRegisters[i]);
+        }
 
         // :UFCSItfInlined
         // if we have something of the form vitf.call() where call is inlined.

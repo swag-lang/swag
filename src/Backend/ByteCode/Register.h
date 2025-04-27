@@ -55,6 +55,11 @@ struct RegisterList
         return countResults;
     }
 
+    bool empty() const
+    {
+        return countResults == 0;
+    }
+
     uint32_t operator[](uint32_t index) const
     {
         SWAG_ASSERT(index < countResults);
