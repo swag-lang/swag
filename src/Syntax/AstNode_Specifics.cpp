@@ -146,6 +146,12 @@ AstNode* AstIdentifier::clone(CloneContext& context)
         newNode->addAstFlag(AST_FROM_GENERIC | AST_FROM_GENERIC_REPLACE);
     }
 
+    // Semantic could have been disabled if the identifier has been inlined.
+    // If we duplicate such an identifier, we need to be sure that parameters are
+    // reevaluated again in the new context, so we remove the flag.
+    if (newNode->callParameters)
+        newNode->callParameters->removeAstFlag(AST_NO_SEMANTIC);
+    
     return newNode;
 }
 
