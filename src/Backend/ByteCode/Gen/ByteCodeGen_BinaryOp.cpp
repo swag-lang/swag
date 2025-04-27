@@ -787,6 +787,18 @@ bool ByteCodeGen::emitUserOp(ByteCodeGenContext* context, AstNode* allParams, As
 
             if (!node->hasSemFlag(SEMFLAG_RESOLVE_INLINED))
             {
+                // Deal with inline mixin and macros added by the makeInline semantic pass
+                if (node->ownerFct)
+                {
+                    while (!node->ownerFct->pendingInline.empty())
+                    {
+                        const auto identifier = node->ownerFct->pendingInline.back();
+                        Semantic::makeInline(context, identifier, false);
+                        YIELD();
+                        node->ownerFct->pendingInline.pop_back();
+                    }
+                }
+
                 node->addSemFlag(SEMFLAG_RESOLVE_INLINED);
                 const auto back = node->lastChild();
                 SWAG_ASSERT(back->is(AstNodeKind::Inline));
