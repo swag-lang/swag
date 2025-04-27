@@ -45,6 +45,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* n
     if (node->hasAstFlag(AST_INLINED))
         return true;
 
+    SWAG_RACE_CONDITION_READ(funcDecl->raceC);
     waitFuncDeclFullResolve(context->baseJob, funcDecl);
     YIELD();
 

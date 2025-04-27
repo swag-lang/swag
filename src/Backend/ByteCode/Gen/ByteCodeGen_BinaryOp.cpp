@@ -790,12 +790,16 @@ bool ByteCodeGen::emitUserOp(ByteCodeGenContext* context, AstNode* allParams, As
                 // Deal with inline mixin and macros added by the makeInline semantic pass
                 if (node->ownerFct)
                 {
-                    while (!node->ownerFct->pendingInline.empty())
+                    if (!funcDecl->pendingInline.empty())
                     {
-                        const auto identifier = node->ownerFct->pendingInline.back();
-                        Semantic::makeInline(context, identifier, false);
-                        YIELD();
-                        node->ownerFct->pendingInline.pop_back();
+                        SWAG_RACE_CONDITION_WRITE(node->ownerFct->raceC);
+                        while (!node->ownerFct->pendingInline.empty())
+                        {
+                            const auto identifier = node->ownerFct->pendingInline.back();
+                            Semantic::makeInline(context, identifier, false);
+                            YIELD();
+                            node->ownerFct->pendingInline.pop_back();
+                        }
                     }
                 }
 

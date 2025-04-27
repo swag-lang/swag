@@ -1097,10 +1097,10 @@ AstNode* AstInline::clone(CloneContext& context)
 
     newNode->func = func;
 
-    // Is this correct ? Seems a little wierd, but that way we do not have to copy the parametersScope
-    // content, which is not really possible for now (12/07/2021) (i.e. no way to copy already registered symbols in the scope).
+    // Is this correct? Seems a little weird, but that way we do not have to copy the parametersScope
+    // content, which is not really possible for now (12/07/2021) (no way to copy already registered symbols in the scope).
     // Because it can happen that an inline block already solved is copied.
-    // For example because of convertStructParamsToTmpVar, with inline calls as parameters: func(A{round(6)}) => round already inlined.
+    // For example, because of convertStructParamsToTmpVar, with inline calls as parameters: func(A{round(6)}) => round already inlined.
     // I guess one day this will hit me in the face...
     newNode->parametersScope = parametersScope;
 

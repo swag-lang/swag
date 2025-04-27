@@ -921,6 +921,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     // This is especially important if the identifier is a macro or a mixin.
     if (funcDecl->hasAttribute(ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO))
     {
+        SWAG_RACE_CONDITION_WRITE(identifier->ownerFct->raceC);
         identifier->ownerFct->pendingInline.push_back(identifier);
         identifier->byteCodeFct = nullptr;
         return true;
