@@ -271,7 +271,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
         paramNode->addAstFlag(AST_DECL_USING);
     }
 
-    // :QuestionAsParam
+    // @QuestionAsParam
     // Unused parameter
     Vector<Token> unnamedTokens;
     if (tokenParse.is(TokenId::SymQuestion) && acceptMissingType)
@@ -306,7 +306,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
                 AstVarDecl* otherVarNode = Ast::newVarDecl(tokenParse.token.text, this, parent, AstNodeKind::FuncDeclParam);
                 otherVarNode->addAstFlag(AST_GENERATED);
 
-                // :QuestionAsParam
+                // @QuestionAsParam
                 if (tokenParse.is(TokenId::SymQuestion) && acceptMissingType)
                 {
                     tokenParse.token.id   = TokenId::Identifier;
@@ -983,7 +983,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId, F
             if (funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_THROW))
             {
                 const auto node   = Ast::newNode<AstTryCatchAssume>(AstNodeKind::Try, this, funcNode);
-                funcNode->content = node; // :AutomaticTryContent
+                funcNode->content = node; // @AutomaticTryContent
                 node->semanticFct = Semantic::resolveTryBlock;
                 node->addSpecFlag(AstTryCatchAssume::SPEC_FLAG_GENERATED | AstTryCatchAssume::SPEC_FLAG_BLOCK);
                 ParserPushTryCatchAssume sc(this, node);
@@ -1152,7 +1152,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
         SWAG_CHECK(doFuncDeclParameters(funcNode, &funcNode->parameters, acceptMissingType, hasMissingType));
     }
 
-    // :ClosureForceFirstParam
+    // @ClosureForceFirstParam
     // Closure first parameter is a void* pointer that will point to the context
     if (typeInfo->isClosure())
     {
@@ -1322,7 +1322,7 @@ bool Parser::doLambdaExpression(AstNode* parent, ExprFlags exprFlags, AstNode** 
         setForceTakeAddress(identifierRef);
     }
 
-    // :DeduceLambdaType
+    // @DeduceLambdaType
     if (deduceMissingType && acceptMissingType && hasMissingType)
     {
         exprNode->addSpecFlag(AstMakePointer::SPEC_FLAG_DEP_TYPE);

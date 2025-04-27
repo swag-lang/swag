@@ -75,7 +75,7 @@ bool Semantic::executeCompilerNode(SemanticContext* context, AstNode* node, bool
         showContext = false;
 
     // Push a copy of the default context, in case the user code changes it (or push a new one)
-    // :PushDefaultCxt
+    // @PushDefaultCxt
     PushSwagContext cxt;
 
     if (showContext)
@@ -102,7 +102,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
         YIELD();
     }
 
-    // :CheckConstExprFuncReturnType
+    // @CheckConstExprFuncReturnType
     // Be sure we can deal with the type at compile time
     ExecuteNodeParams execParams;
     execParams.forConstExpr = onlyConstExpr;
@@ -183,7 +183,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
                 ByteCodeGen::askForByteCode(context, execParams.specReturnOpSlice->node, ASK_BC_WAIT_DONE | ASK_BC_WAIT_RESOLVED | ASK_BC_WAIT_SEMANTIC_RESOLVED, true, nullptr);
                 YIELD();
 
-                // Is the type of the slice supported ?
+                // Is the type of the slice supported?
                 const auto concreteType = TypeManager::concreteType(execParams.specReturnOpSlice->typeInfo);
                 if (concreteType->isSlice())
                 {
@@ -800,7 +800,7 @@ bool Semantic::resolveIntrinsicLocation(SemanticContext* context)
             }
         }
 
-        // :ForLocationInWhere
+        // @ForLocationInWhere
         if (locNode->is(AstNodeKind::IdentifierRef))
         {
             const auto id = castAst<AstIdentifier>(locNode->lastChild(), AstNodeKind::Identifier);
@@ -1203,7 +1203,7 @@ bool Semantic::resolveCompilerIntrinsicRunes(SemanticContext* context)
         cpt += offset;
     }
 
-    // :SliceLiteral
+    // @SliceLiteral
     const auto storageSegment             = getConstantSegFromContext(context->node);
     node->computedValue()->storageSegment = storageSegment;
 

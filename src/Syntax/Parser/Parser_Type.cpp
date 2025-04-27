@@ -252,8 +252,8 @@ bool Parser::doLambdaClosureType(AstTypeExpression* node, bool inTypeVarDecl)
         SWAG_CHECK(eatToken());
         SWAG_CHECK(eatToken());
 
-        // :ClosureForceFirstParam
-        // A closure always has at least one parameter : the capture context
+        // @ClosureForceFirstParam
+        // A closure always has at least one parameter: the capture context
         params                   = Ast::newNode<AstNode>(AstNodeKind::FuncDeclParams, this, node);
         node->parameters         = params;
         firstAddedType           = Ast::newTypeExpression(nullptr, params);
@@ -338,7 +338,7 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, ExprFlags expr
     name += form("%d", g_UniqueID.fetch_add(1));
     structNode->token.text = std::move(name);
 
-    // :SubDeclParent
+    // @SubDeclParent
     auto newParent = parent;
     while (newParent != sourceFile->astRoot && !newParent->hasAstFlag(AST_GLOBAL_NODE) && newParent->isNot(AstNodeKind::Namespace))
     {

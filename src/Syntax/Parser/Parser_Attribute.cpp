@@ -90,7 +90,7 @@ bool Parser::doAttrUse(AstNode* parent, AstNode** result, bool single)
             break;
     }
 
-    // :AttrUseLastChild
+    // @AttrUseLastChild
     SWAG_VERIFY(!attrBlockNode->children.empty(), error(attrBlockNode, toErr(Err0065)));
     const auto back = attrBlockNode->lastChild();
     back->allocateExtension(ExtensionKind::Semantic);

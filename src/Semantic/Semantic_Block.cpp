@@ -19,7 +19,7 @@ bool Semantic::resolveIf(SemanticContext* context)
     const auto node   = castAst<AstIf>(context->node, AstNodeKind::If);
     SWAG_CHECK(checkIsConcrete(context, node->boolExpression));
 
-    // :ConcreteRef
+    // @ConcreteRef
     node->boolExpression->typeInfo = getConcreteTypeUnRef(node->boolExpression, CONCRETE_ALL);
 
     {
@@ -62,7 +62,7 @@ bool Semantic::resolveWhile(SemanticContext* context)
     const auto node   = castAst<AstWhile>(context->node, AstNodeKind::While);
     SWAG_CHECK(checkIsConcrete(context, node->boolExpression));
 
-    // :ConcreteRef
+    // @ConcreteRef
     node->boolExpression->typeInfo = getConcreteTypeUnRef(node->boolExpression, CONCRETE_ALL);
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression, CAST_FLAG_AUTO_BOOL));
 
@@ -88,7 +88,7 @@ bool Semantic::resolveWhile(SemanticContext* context)
     node->boolExpression->setBcNotifyAfter(ByteCodeGen::emitWhileAfterExpr);
     node->block->setBcNotifyAfter(ByteCodeGen::emitLoopAfterBlock, ByteCodeGen::emitLeaveScope);
 
-    // :SpecPropagateReturn
+    // @SpecPropagateReturn
     if (node->breakableFlags.has(BREAKABLE_RETURN_IN_INFINITE_LOOP) && node->breakList.empty())
         propagateReturn(node->parent);
 
@@ -111,7 +111,7 @@ bool Semantic::resolveInlineBefore(SemanticContext* context)
     const auto func         = node->func;
     const auto typeInfoFunc = castTypeInfo<TypeInfoFuncAttr>(func->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
 
-    // :DirectInlineLocalVar
+    // @DirectInlineLocalVar
     // For a return by copy, need to reserve room on the stack for the return result
     if (typeInfoFunc->returnNeedsStack())
     {
@@ -139,7 +139,7 @@ bool Semantic::resolveInlineBefore(SemanticContext* context)
             // constant scope, not in the caller (for mixins)/inline scope.
             // This is a separated scope because mixins do not have their own scope, and we must have a
             // different symbol registration for each constant value
-            // :InlineUsingParam
+            // @InlineUsingParam
             bool              isConstant   = false;
             AstFuncCallParam* orgCallParam = nullptr;
             if (identifier && identifier->callParameters)
@@ -243,7 +243,7 @@ bool Semantic::resolveFor(SemanticContext* context)
     node->postStatement->setBcNotifyBefore(ByteCodeGen::emitForBeforePost);
     node->block->setBcNotifyAfter(ByteCodeGen::emitLoopAfterBlock, ByteCodeGen::emitLeaveScope);
 
-    // :SpecPropagateReturn
+    // @SpecPropagateReturn
     if (node->breakableFlags.has(BREAKABLE_RETURN_IN_INFINITE_LOOP) && node->breakList.empty())
         propagateReturn(node->parent);
 
@@ -260,7 +260,7 @@ bool Semantic::resolveSwitchAfterExpr(SemanticContext* context)
     // For a switch on an enum, force a 'using' for each case
     if (typeInfo->isEnum())
     {
-        // :AutoScope
+        // @AutoScope
         const auto typeEnum = castTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
         for (const auto switchCase : switchNode->cases)
         {
@@ -515,7 +515,7 @@ bool Semantic::resolveCase(SemanticContext* context)
             SWAG_CHECK(checkIsConcreteOrType(context, oneExpression));
             YIELD();
 
-            // switch with an expression : compare case with the switch expression
+            // switch with an expression: compare case with the switch expression
             if (caseNode->ownerSwitch->expression)
             {
                 auto typeInfo = TypeManager::concreteType(caseNode->ownerSwitch->expression->typeInfo);
@@ -532,7 +532,7 @@ bool Semantic::resolveCase(SemanticContext* context)
                 }
             }
 
-            // switch without an expression : a case is a boolean expression
+            // switch without an expression: a case is a boolean expression
             else
             {
                 SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, oneExpression->typeInfo, nullptr, oneExpression, CAST_FLAG_FOR_COMPARE | CAST_FLAG_AUTO_BOOL));
@@ -603,7 +603,7 @@ bool Semantic::resolveLoop(SemanticContext* context)
     if (!node->expression)
         node->block->setBcNotifyBefore(ByteCodeGen::emitLoopBeforeBlock);
 
-    // :SpecPropagateReturn
+    // @SpecPropagateReturn
     if (node->breakableFlags.has(BREAKABLE_RETURN_IN_INFINITE_LOOP) && node->breakList.empty())
         propagateReturn(node->parent);
 
@@ -633,7 +633,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         YIELD();
     }
 
-    // Struct type : convert to a opVisit call
+    // Struct type: convert to a opVisit call
     AstNode* newExpression = nullptr;
     if (typeInfo->isStruct())
     {
@@ -1050,7 +1050,7 @@ bool Semantic::resolveBreak(SemanticContext* context)
 {
     auto node = castAst<AstBreakContinue>(context->node, AstNodeKind::Break);
 
-    // Label has been defined : search the corresponding ScopeBreakable node
+    // Label has been defined: search the corresponding ScopeBreakable node
     if (!node->label.text.empty())
     {
         auto breakable = node->safeOwnerBreakable();

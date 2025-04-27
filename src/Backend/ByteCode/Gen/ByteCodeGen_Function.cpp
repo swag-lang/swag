@@ -49,7 +49,7 @@ bool ByteCodeGen::emitFuncCallParam(ByteCodeGenContext* context)
     // Special case when the parameter comes from an UFCS call that returns an interface.
     // In that case 'specUFCSNode' is the node that makes the call. The register will be
     // the object pointer of the returned interface.
-    // :SpecUFCSNode
+    // @SpecUFCSNode
     if (node->specUFCSNode)
     {
         node->typeInfo         = node->specUFCSNode->typeInfo;
@@ -62,7 +62,7 @@ bool ByteCodeGen::emitFuncCallParam(ByteCodeGenContext* context)
     // If we have a cast to an interface, be sure interface has been fully solved
     // Semantic will pass only if the interface has been registered in the struct, and not solved.
     // So we can reach that point and the interface is not done yet.
-    // :WaitInterfaceReg
+    // @WaitInterfaceReg
     if (node->typeInfoCast)
     {
         Semantic::waitAllStructInterfaces(context->baseJob, node->typeInfoCast);
@@ -137,7 +137,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
             }
             else if (returnType->isClosure())
             {
-                // :ConvertToClosure
+                // @ConvertToClosure
                 if (returnExpression->is(AstNodeKind::MakePointerLambda))
                 {
                     // Copy closure capture buffer
@@ -188,7 +188,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
             {
                 const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
 
-                // :ReturnStructByValue
+                // @ReturnStructByValue
                 if (typeFunc->returnStructByValue())
                 {
                     if (!typeFunc->returnType->hasFlag(TYPEINFO_STRUCT_EMPTY))
@@ -251,7 +251,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
                 RegisterList r1 = reserveRegisterRC(context);
                 EMIT_INST1(context, ByteCodeOp::CopyRRtoRA, r1);
 
-                // :ConvertToClosure
+                // @ConvertToClosure
                 if (child->is(AstNodeKind::MakePointerLambda))
                 {
                     EMIT_INST2(context, ByteCodeOp::SetAtPointer64, r1, child->resultRegisterRc[0]);
@@ -1174,7 +1174,7 @@ void ByteCodeGen::emitPostCallUFCS(ByteCodeGenContext* context)
 {
     AstNode* node = context->node;
 
-    // :SpecUFCSNode
+    // @SpecUFCSNode
     // Specific case. The function returns an interface, so it returns two registers.
     // But we want that interface to be also an UFCS parameter.
     // Ex: var cfg = @compiler().getBuildCfg()
@@ -1534,7 +1534,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     }
     else if (varNode->typeInfo->isArray())
     {
-        // :SilentCall
+        // @SilentCall
         auto typeArr = castTypeInfo<TypeInfoArray>(varNode->typeInfo, TypeInfoKind::Array);
         auto typeVar = TypeManager::concreteType(typeArr->finalType, CONCRETE_FORCE_ALIAS);
         typeInfoFunc = castTypeInfo<TypeInfoFuncAttr>(typeVar, TypeInfoKind::LambdaClosure);
@@ -1661,7 +1661,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
             }
             else
             {
-                // :VariadicAllocStackForAny
+                // @VariadicAllocStackForAny
                 const auto stack = child->extMisc()->stackOffset;
                 SWAG_ASSERT(stack != UINT32_MAX);
 
@@ -2051,7 +2051,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
                     SWAG_CHECK(emitTypeDeRef(context, node->resultRegisterRc, ptrPointer->pointedType));
                 }
 
-                // :ReturnStructByValue
+                // @ReturnStructByValue
                 else if (returnType->isStruct())
                 {
                     SWAG_ASSERT(returnType->sizeOf <= sizeof(void*));
@@ -2119,7 +2119,7 @@ bool ByteCodeGen::emitFuncDeclParams(ByteCodeGenContext* context)
     const auto funcNode = node->ownerFct;
     SWAG_ASSERT(funcNode);
 
-    // 3 pointers are already on that stack after BP : saved BP, BC and IP.
+    // 3 pointers are already on that stack after BP: saved BP, BC and IP.
     uint32_t offset = 3 * sizeof(void*);
 
     // Variadic parameter is the last one pushed on the stack

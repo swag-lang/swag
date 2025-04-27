@@ -67,7 +67,7 @@ bool FormatConcat::removeLastChar(uint8_t c)
 
     if (currentSP[-1] == c || c == 0)
     {
-        column--; // this is false, depends on 'c', but is it enough for the current usage ?
+        column--; // this is false, depends on 'c', but is it enough for the current usage?
         currentSP--;
         return true;
     }

@@ -49,7 +49,7 @@ void DataSegment::setup(SegmentKind myKind, Module* myModule)
     kind   = myKind;
     module = myModule;
 
-    // :DefaultSizeBuckets
+    // @DefaultSizeBuckets
     if (myModule->is(ModuleKind::BootStrap))
         granularity = 4 * 1024;
     else if (myModule->is(ModuleKind::Runtime))
@@ -66,7 +66,7 @@ void DataSegment::initFrom(DataSegment* other)
 
     if (other->totalCount)
     {
-        // :DefaultSizeBuckets
+        // @DefaultSizeBuckets
         // If this asserts, then we must increase the default granularity size in setup()
         SWAG_ASSERT(other->buckets.size() == 1);
         reserve(other->totalCount);
@@ -78,7 +78,7 @@ void DataSegment::initFrom(DataSegment* other)
 
     // We need pointers to be in the right segment, not the original one, because sometimes
     // we have to find back the offset from the pointer.
-    // :BackPtrOffset
+    // @BackPtrOffset
     for (const auto& it : other->initPtr)
     {
         // If this asserts, then this means that the bootstrap/runtime makes cross-references between
@@ -344,7 +344,7 @@ uint32_t DataSegment::addStringNoLock(const Utf8& str, uint8_t** resultPtr)
 {
     SWAG_RACE_CONDITION_WRITE_SEGMENT(raceC);
 
-    // Same string already there ?
+    // Same string already there?
     using P                                 = MapUtf8<CacheValue>;
     const std::pair<P::iterator, bool> iter = storedStrings.insert(P::value_type(str, {}));
     if (!iter.second)

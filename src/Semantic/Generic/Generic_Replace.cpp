@@ -55,7 +55,7 @@ bool Generic::replaceGenericParameters(OneMatch&                     match,
 
         SWAG_ASSERT(param->typeInfo);
 
-        // :GenericConcreteAlias
+        // @GenericConcreteAlias
         // In case of an alias, instantiate with the concrete type
         param->typeInfo = TypeManager::concreteType(param->typeInfo, CONCRETE_ALIAS);
 

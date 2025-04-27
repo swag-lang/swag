@@ -22,8 +22,8 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         return true;
     }
 
-    // :CheckConstExprFuncReturnType
-    // :opAffectConstExpr
+    // @CheckConstExprFuncReturnType
+    // @opAffectConstExpr
     // Result is on the stack. Store it in the compiler segment.
     if (node->hasSemFlag(SEMFLAG_EXEC_RET_STACK))
     {
@@ -264,7 +264,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     ByteCodeInstruction instTmp;
     bool                foreignCall = false;
 
-    // Direct call to a foreign function ?
+    // Direct call to a foreign function?
     if (!node->hasExtByteCode() || !node->extByteCode()->bc)
     {
         SWAG_ASSERT(node->isForeign());
@@ -312,7 +312,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
             g_RunContext->stack = params->inheritStack;
     }
 
-    // Params ?
+    // Params?
     if (params && !params->callParams.empty())
     {
         for (auto r : params->callParams)
@@ -337,7 +337,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
             g_RunContext->decSP(decSP);
             bc->dynStackSize += decSP;
 
-            // :opAffectConstExpr
+            // @opAffectConstExpr
             // Reserve room on the stack to store the result
             if (node->hasSemFlag(SEMFLAG_EXEC_RET_STACK))
                 g_RunContext->decSP(node->typeInfo->sizeOf);

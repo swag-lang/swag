@@ -186,7 +186,7 @@ bool ByteCodeGen::emitAffectEqual(ByteCodeGenContext* context, const RegisterLis
         // Because we copy the full capture block, but only capture fields are initialized
         SWAG_ASSERT(from);
 
-        // :ConvertToClosure
+        // @ConvertToClosure
         if (from->is(AstNodeKind::MakePointerLambda))
         {
             EMIT_INST2(context, ByteCodeOp::SetAtPointer64, r0, r1);

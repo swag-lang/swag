@@ -112,7 +112,7 @@ JobResult SemanticJob::execute()
         context.node    = node;
         context.result  = ContextResult::Done;
 
-        // To be sure that a bytecode job is not running on those nodes !
+        // To be sure that a bytecode job is not running on those nodes!
         SWAG_ASSERT(node->bytecodeState == AstNodeResolveState::Enter ||
                     node->bytecodeState == AstNodeResolveState::PostChildren ||
                     node->hasAstFlag(AST_COMPUTED_VALUE | AST_CONST_EXPR));

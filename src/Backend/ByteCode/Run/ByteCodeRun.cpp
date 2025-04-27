@@ -1554,7 +1554,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto module = context->jc.sourceFile->module;
 
-            // :SharedRuntimeBC
+            // @SharedRuntimeBC
             // As code in runtime is shared between modules, we cannot cache the pointer, because we could have
             // the cache initialized by one module, and used by another one, which is bad (because the first module
             // could be destroyed)
@@ -1573,7 +1573,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto module = context->jc.sourceFile->module;
 
-            // :SharedRuntimeBC
+            // @SharedRuntimeBC
             // As code in runtime is shared between modules, we cannot cache the pointer, because we could have
             // the cache initialized by one module, and used by another one, which is bad (because the first module
             // could be destroyed)
@@ -1592,7 +1592,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto module = context->jc.sourceFile->module;
 
-            // :SharedRuntimeBC
+            // @SharedRuntimeBC
             // As code in runtime is shared between modules, we cannot cache the pointer, because we could have
             // the cache initialized by one module, and used by another one, which is bad (because the first module
             // could be destroyed)
@@ -1611,7 +1611,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto module = context->jc.sourceFile->module;
 
-            // :SharedRuntimeBC
+            // @SharedRuntimeBC
             // As code in runtime is shared between modules, we cannot cache the pointer, because we could have
             // the cache initialized by one module, and used by another one, which is bad (because the first module
             // could be destroyed)
@@ -1631,7 +1631,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto module = context->jc.sourceFile->module;
 
-            // :SharedRuntimeBC
+            // @SharedRuntimeBC
             if (ip->node && ip->node->token.sourceFile && ip->node->token.sourceFile->hasFlag(FILE_RUNTIME))
                 registersRC[ip->a.u32].u64 = *module->bssSegment.address(ip->b.u32);
             else
@@ -1647,7 +1647,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto module = context->jc.sourceFile->module;
 
-            // :SharedRuntimeBC
+            // @SharedRuntimeBC
             if (ip->node && ip->node->token.sourceFile && ip->node->token.sourceFile->hasFlag(FILE_RUNTIME))
                 registersRC[ip->a.u32].u64 = *reinterpret_cast<uint16_t*>(module->bssSegment.address(ip->b.u32));
             else
@@ -1663,7 +1663,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto module = context->jc.sourceFile->module;
 
-            // :SharedRuntimeBC
+            // @SharedRuntimeBC
             if (ip->node && ip->node->token.sourceFile && ip->node->token.sourceFile->hasFlag(FILE_RUNTIME))
                 registersRC[ip->a.u32].u64 = *reinterpret_cast<uint32_t*>(module->bssSegment.address(ip->b.u32));
             else
@@ -1679,7 +1679,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto module = context->jc.sourceFile->module;
 
-            // :SharedRuntimeBC
+            // @SharedRuntimeBC
             if (ip->node && ip->node->token.sourceFile && ip->node->token.sourceFile->hasFlag(FILE_RUNTIME))
                 registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(module->bssSegment.address(ip->b.u32));
             else
@@ -1696,7 +1696,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto module = context->jc.sourceFile->module;
 
-            // :SharedRuntimeBC
+            // @SharedRuntimeBC
             if (ip->node && ip->node->token.sourceFile && ip->node->token.sourceFile->hasFlag(FILE_RUNTIME))
                 registersRC[ip->a.u32].u64 = *module->compilerSegment.address(ip->b.u32);
             else
@@ -1712,7 +1712,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto module = context->jc.sourceFile->module;
 
-            // :SharedRuntimeBC
+            // @SharedRuntimeBC
             if (ip->node && ip->node->token.sourceFile && ip->node->token.sourceFile->hasFlag(FILE_RUNTIME))
                 registersRC[ip->a.u32].u64 = *reinterpret_cast<uint16_t*>(module->compilerSegment.address(ip->b.u32));
             else
@@ -1728,7 +1728,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto module = context->jc.sourceFile->module;
 
-            // :SharedRuntimeBC
+            // @SharedRuntimeBC
             if (ip->node && ip->node->token.sourceFile && ip->node->token.sourceFile->hasFlag(FILE_RUNTIME))
                 registersRC[ip->a.u32].u64 = *reinterpret_cast<uint32_t*>(module->compilerSegment.address(ip->b.u32));
             else
@@ -1744,7 +1744,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto module = context->jc.sourceFile->module;
 
-            // :SharedRuntimeBC
+            // @SharedRuntimeBC
             if (ip->node && ip->node->token.sourceFile && ip->node->token.sourceFile->hasFlag(FILE_RUNTIME))
                 registersRC[ip->a.u32].u64 = *reinterpret_cast<uint64_t*>(module->compilerSegment.address(ip->b.u32));
             else
@@ -1761,7 +1761,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto module = context->jc.sourceFile->module;
 
-            // :SharedRuntimeBC
+            // @SharedRuntimeBC
             if (ip->node && ip->node->token.sourceFile && ip->node->token.sourceFile->hasFlag(FILE_RUNTIME))
             {
                 auto ptr = module->mutableSegment.address(ip->b.u32);
@@ -1794,7 +1794,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto module = context->jc.sourceFile->module;
 
-            // :SharedRuntimeBC
+            // @SharedRuntimeBC
             if (ip->node && ip->node->token.sourceFile && ip->node->token.sourceFile->hasFlag(FILE_RUNTIME))
             {
                 auto ptr = module->bssSegment.address(ip->b.u32);
@@ -1845,7 +1845,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             auto module = context->jc.sourceFile->module;
             auto offset = ip->b.u32;
 
-            // :SharedRuntimeBC
+            // @SharedRuntimeBC
             if (ip->node && ip->node->token.sourceFile && ip->node->token.sourceFile->hasFlag(FILE_RUNTIME))
                 registersRC[ip->a.u32].pointer = module->constantSegment.address(offset);
             else
@@ -1862,7 +1862,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             auto module = context->jc.sourceFile->module;
             auto offset = ip->b.u32;
 
-            // :SharedRuntimeBC
+            // @SharedRuntimeBC
             if (ip->node && ip->node->token.sourceFile && ip->node->token.sourceFile->hasFlag(FILE_RUNTIME))
                 registersRC[ip->a.u32].pointer = module->compilerSegment.address(offset);
             else
@@ -2909,7 +2909,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             auto module = context->jc.sourceFile->module;
             auto offset = ip->b.u32;
 
-            // :SharedRuntimeBC
+            // @SharedRuntimeBC
             if (ip->node && ip->node->token.sourceFile && ip->node->token.sourceFile->hasFlag(FILE_RUNTIME))
                 registersRC[ip->a.u32].pointer = module->constantSegment.address(offset);
             else

@@ -3149,7 +3149,7 @@ void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstru
                     break;
                 }
 
-                // IncPointer with src != dst, followed by one SetAtPointer
+                // IncPointer with src!= dst, followed by one SetAtPointer
                 // No need to do a nop, the optimizer will remove instruction if unused
                 // (safer that the version below)
                 if ((ip[1].op == ByteCodeOp::SetAtPointer8 ||
@@ -6182,7 +6182,7 @@ void ByteCodeOptimizer::reduceCmpJump(ByteCodeOptContext* context, ByteCodeInstr
 
                 break;
 
-            // Compare to != 0
+            // Compare to!= 0
             case ByteCodeOp::CompareOpNotEqual8:
                 if (ip->b.u8 == 0 &&
                     ip[1].op == ByteCodeOp::JumpIfFalse &&

@@ -40,7 +40,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
             ppCPU.directives += form("/EXPORT:%s ", funcName.cstr());
     }
 
-    // In order, starting at RSP, we have :
+    // In order, starting at RSP, we have:
     //
     // sizeStackCallParams to store function call parameters
     // ...padding to 16...

@@ -129,7 +129,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
 
     const auto typeInfoFunc = castTypeInfo<TypeInfoFuncAttr>(identifier->typeInfo, TypeInfoKind::FuncAttr);
 
-    // :ClosureForceFirstParam
+    // @ClosureForceFirstParam
     // Add a first fake parameter in case of closure
     if (typeInfoFunc->isClosure() && !identifier->hasSpecFlag(AstIdentifier::SPEC_FLAG_CLOSURE_FIRST_PARAM))
     {
@@ -282,7 +282,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
         }
 
         // If passing a closure
-        // :FctCallParamClosure
+        // @FctCallParamClosure
         const auto toTypeRef = TypeManager::concreteType(toType, CONCRETE_FORCE_ALIAS);
         auto       makePtrL  = nodeCall->children.empty() ? nullptr : nodeCall->firstChild();
 
@@ -349,7 +349,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
     }
 
     // Deal with opAffect automatic conversion
-    // :opAffectParam
+    // @opAffectParam
     for (uint32_t i = 0; i < maxParams; i++)
     {
         const auto nodeCall = castAst<AstFuncCallParam>(identifier->callParameters->children[i], AstNodeKind::FuncCallParam);
@@ -546,7 +546,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
         }
     }
 
-    // :VariadicAllocStackForAny
+    // @VariadicAllocStackForAny
     if (typeInfoFunc->hasFlag(TYPEINFO_VARIADIC))
     {
         const auto numFuncParams = typeInfoFunc->parameters.size();
@@ -857,7 +857,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
             identifier->addAstFlag(AST_CONST_EXPR);
         if (identifier->hasAstFlag(AST_CONST_EXPR))
         {
-            // :CheckConstExprFuncReturnType
+            // @CheckConstExprFuncReturnType
             if (returnType &&
                 !returnType->isString() &&
                 !returnType->isNativeIntegerOrRune() &&
@@ -1852,7 +1852,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
         const auto symbol      = overload->symbol;
         auto       rawTypeInfo = overload->typeInfo;
 
-        // :DupGen
+        // @DupGen
         TypeInfo* typeWasForced = nullptr;
         if (node && node->parent && node->parent->inSimpleReturn())
         {

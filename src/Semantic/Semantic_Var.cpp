@@ -108,7 +108,7 @@ void Semantic::setVarDeclResolve(AstVarDecl* varNode)
 
 bool Semantic::resolveVarDeclAfterType(SemanticContext* context)
 {
-    // :DeduceLambdaType
+    // @DeduceLambdaType
     resolveAfterKnownType(context);
 
     auto parent = context->node->parent;
@@ -130,7 +130,7 @@ bool Semantic::resolveVarDeclAfterType(SemanticContext* context)
         }
     }
 
-    // :AutoScope
+    // @AutoScope
     // Resolution of an affectation to an enum, without having to specify the enum name before
     // 'using', but just for affectation
     const auto typeInfo = varDecl->type->typeInfo->getConcreteAlias();
@@ -168,7 +168,7 @@ bool Semantic::resolveVarDeclAfter(SemanticContext* context)
         YIELD();
     }
 
-    // :opAffectConstExpr
+    // @opAffectConstExpr
     if (overload->hasFlag(OVERLOAD_STRUCT_AFFECT) &&
         overload->hasFlag(OVERLOAD_VAR_GLOBAL | OVERLOAD_VAR_STRUCT | OVERLOAD_CONSTANT))
     {
@@ -415,7 +415,7 @@ DataSegment* Semantic::getSegmentForVar(SemanticContext*, const AstVarDecl* varN
     return &module->mutableSegment;
 }
 
-// :DeduceLambdaType
+// @DeduceLambdaType
 TypeInfo* Semantic::getDeducedLambdaType(SemanticContext*, const AstMakePointer* node)
 {
     SWAG_ASSERT(node->hasSpecFlag(AstMakePointer::SPEC_FLAG_DEP_TYPE));
@@ -439,7 +439,7 @@ TypeInfo* Semantic::getDeducedLambdaType(SemanticContext*, const AstMakePointer*
     return result->getConcreteAlias();
 }
 
-// :DeduceLambdaType
+// @DeduceLambdaType
 bool Semantic::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl* nodeParam, bool& lambdaExpr, bool& genericType)
 {
     const auto mpl = nodeParam->ownerFct->makePointerLambda;
@@ -730,7 +730,7 @@ bool Semantic::resolveLocalVar(SemanticContext* context, AstVarDecl* node, Overl
     }
 
     // If this is a tuple unpacking, then we just compute the stack offset of the item
-    // inside the tuple, so we do not have to generate bytecode !
+    // inside the tuple, so we do not have to generate bytecode!
     if (node->assignment && node->assignment->hasAstFlag(AST_TUPLE_UNPACK))
     {
         node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
@@ -751,7 +751,7 @@ bool Semantic::resolveLocalVar(SemanticContext* context, AstVarDecl* node, Overl
         if (assignment && (assignment->is(AstNodeKind::Catch) || assignment->is(AstNodeKind::Try) || assignment->is(AstNodeKind::Assume)))
             assignment = assignment->firstChild();
 
-        // :DirectInlineLocalVar
+        // @DirectInlineLocalVar
         if (assignment &&
             assignment->is(AstNodeKind::IdentifierRef) &&
             !assignment->lastChild()->children.empty() &&
@@ -1123,7 +1123,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
                 SWAG_CHECK(TypeManager::makeCompatibles(context, node->type->typeInfo, nullptr, node->assignment, castFlags));
             YIELD();
 
-            // :ConcreteRef
+            // @ConcreteRef
             if (!leftConcreteType->isPointerRef() && TypeManager::concreteType(node->assignment->typeInfo)->isPointerRef())
                 setUnRef(node->assignment);
         }
@@ -1134,7 +1134,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
                 SWAG_CHECK(resolveUserOpAffect(context, leftConcreteType, rightConcreteType, node->type, node->assignment));
                 YIELD();
 
-                // :opAffectConstExpr
+                // @opAffectConstExpr
                 if (overFlags.has(OVERLOAD_VAR_STRUCT | OVERLOAD_VAR_GLOBAL | OVERLOAD_CONSTANT))
                 {
                     overFlags.add(OVERLOAD_INCOMPLETE | OVERLOAD_STRUCT_AFFECT);
@@ -1150,7 +1150,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
                 }
             }
 
-            // :opAffectConstExp
+            // @opAffectConstExp
             else if (overFlags.has(OVERLOAD_VAR_STRUCT | OVERLOAD_VAR_GLOBAL | OVERLOAD_CONSTANT))
                 overFlags.add(OVERLOAD_INCOMPLETE | OVERLOAD_STRUCT_AFFECT);
         }
@@ -1164,7 +1164,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         node->typeInfo = TypeManager::concreteType(node->assignment->typeInfo, CONCRETE_FUNC);
         SWAG_ASSERT(node->typeInfo);
 
-        // :opAffectConstExp
+        // @opAffectConstExp
         if (overFlags.has(OVERLOAD_VAR_STRUCT | OVERLOAD_VAR_GLOBAL | OVERLOAD_CONSTANT) && node->typeInfo->isStruct())
             overFlags.add(OVERLOAD_INCOMPLETE | OVERLOAD_STRUCT_AFFECT);
 
@@ -1203,7 +1203,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
             SWAG_CHECK(convertTypeListToArray(context, node, overFlags.has(OVERLOAD_CONSTANT), overFlags, castFlags));
         }
 
-        // :ConcreteRef
+        // @ConcreteRef
         if (node->typeInfo->isPointerRef() && setUnRef(node->assignment))
         {
             const auto typePointer = castTypeInfo<TypeInfoPointer>(node->typeInfo, TypeInfoKind::Pointer);
@@ -1302,7 +1302,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         }
     }
 
-    // We should have a type here !
+    // We should have a type here!
     SWAG_VERIFY(node->typeInfo, context->report({node, formErr(Err0782, Naming::kindName(node).cstr(), node->token.cstr())}));
 
     // Type should be a correct one

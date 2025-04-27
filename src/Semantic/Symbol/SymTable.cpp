@@ -283,7 +283,7 @@ void SymTable::disabledIfBlockOverloadNoLock(AstNode* node, SymbolName* symbol)
         symbol->dependentJobs.setRunning();
 
     // Some nodes will share their created scope
-    // We need to reset it in order to avoid a double free
+    // We need to reset it to avoid a double free
     switch (node->kind)
     {
         case AstNodeKind::EnumDecl:

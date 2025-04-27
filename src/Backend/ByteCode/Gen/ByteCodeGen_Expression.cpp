@@ -198,7 +198,7 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
             }
         }
 
-        // Must be called only on the real node !
+        // Must be called only on the real node!
         const auto listNode = castAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
 
         // If in a return expression, just push the caller retval
@@ -240,7 +240,7 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
             }
         }
 
-        // Default : assign to temporary storage
+        // Default: assign to temporary storage
         if (canDrop)
         {
             startOffset     = listNode->computedValue()->storageOffset;
@@ -290,7 +290,7 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
         }
         else
         {
-            // :ForceNoAffect
+            // @ForceNoAffect
             freeRegisterRC(context, node);
         }
     }
@@ -516,7 +516,7 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, const 
 
     if (typeInfo->isSlice())
     {
-        // :SliceLiteral
+        // @SliceLiteral
         reserveLinearRegisterRC2(context, regList);
         const auto slice        = static_cast<SwagSlice*>(node->computedValue()->getStorageAddr());
         const auto offsetValues = node->computedValue()->storageSegment->offset(static_cast<uint8_t*>(slice->buffer));

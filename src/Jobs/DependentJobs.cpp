@@ -4,7 +4,7 @@
 
 void DependentJobs::add(Job* job)
 {
-    // Add it once !
+    // Add it once!
 #ifdef SWAG_DEV_MODE
     for (const auto j : list)
         SWAG_ASSERT(j != job);

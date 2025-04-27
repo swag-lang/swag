@@ -116,7 +116,7 @@ JobResult FormatJob::execute()
     FormatContext context;
     context.setDefaultBeautify();
 
-    // Do it !
+    // Do it!
     if (!getFormattedCode(context, fileName, result))
         return JobResult::ReleaseJob;
 

@@ -1115,7 +1115,7 @@ bool Parser::doExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result
             node->semanticFct = Semantic::resolveCompilerRun;
             SWAG_CHECK(eatToken());
 
-            // :RunGeneratedExp
+            // @RunGeneratedExp
             if (tokenParse.is(TokenId::SymLeftCurly))
             {
                 *result = node;
@@ -1182,7 +1182,7 @@ bool Parser::doExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result
             break;
     }
 
-    // A ? B : C
+    // A? B: C
     if (tokenParse.is(TokenId::SymQuestion))
     {
         SWAG_CHECK(eatToken());
@@ -1608,7 +1608,7 @@ bool Parser::doSingleIdentifierAffect(AstNode* parent, AstNode** result, AstNode
     else
         SWAG_CHECK(doExpression(affectNode, EXPR_FLAG_NONE, &dummyResult));
 
-    // :DeduceLambdaType
+    // @DeduceLambdaType
     const auto back = affectNode->lastChild();
     if (back->is(AstNodeKind::MakePointerLambda) && back->hasSpecFlag(AstMakePointer::SPEC_FLAG_DEP_TYPE))
     {

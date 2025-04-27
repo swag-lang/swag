@@ -127,7 +127,7 @@ void Semantic::computeAccess(AstNode* node)
         return;
     node->addSemFlag(SEMFLAG_ACCESS_COMPUTED);
 
-    // The first will not lock, and this is normal !
+    // The first will not lock, and this is normal!
     doComputeAccess(node);
 }
 

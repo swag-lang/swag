@@ -13,7 +13,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, AstNode* leftNode, A
 
 bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, AstNode* toNode, AstNode* fromNode, CastFlags castFlags)
 {
-    // convert {...} expression list to a structure : this will create a variable, with parameters
+    // convert {...} expression list to a structure: this will create a variable, with parameters
     if (!castFlags.has(CAST_FLAG_NO_TUPLE_TO_STRUCT))
     {
         SWAG_ASSERT(fromNode->typeInfo);
@@ -96,7 +96,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
 
 bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, CastFlags castFlags)
 {
-    // convert {...} expression list to a structure : this will create a variable, with parameters
+    // convert {...} expression list to a structure: this will create a variable, with parameters
     const auto realFromType = concreteType(fromType, CONCRETE_ALIAS);
     const auto realToType   = concreteType(toType, CONCRETE_ALIAS);
     SWAG_ASSERT(realFromType && realToType);

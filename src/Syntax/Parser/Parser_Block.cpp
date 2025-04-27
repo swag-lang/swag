@@ -354,7 +354,7 @@ bool Parser::doFor(AstNode* parent, AstNode** result)
 
     ParserPushBreakable scopedBreakable(this, node);
 
-    // Pre statement. Do not call doScopedCurlyStatement in order to avoid
+    // Pre statement. Do not call doScopedCurlyStatement to avoid
     // creating a new scope in the case of for { var i = 0; var j = 0 } for example
     SWAG_CHECK(doVarDecl(node, &node->preStatement));
 
@@ -508,7 +508,7 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
         {
             Ast::addChildBack(node, node->expression);
 
-            // Missing ':' ?
+            // Missing ':'?
             if (node->expression->is(AstNodeKind::IdentifierRef) &&
                 node->expression->childCount() == 1 &&
                 node->expression->lastChild()->is(AstNodeKind::Identifier) &&

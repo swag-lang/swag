@@ -46,7 +46,7 @@ bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
 
                 // We do not want something like:
                 // PushRAParam R0
-                // R0 = ?
+                // R0 =?
                 // PushRAParam R0
                 //
                 // This could happen because of optimization passes.

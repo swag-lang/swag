@@ -1561,7 +1561,7 @@ bool ByteCodeOptimizer::optimizePassJump(ByteCodeOptContext* context)
                     context->setDirtyPass();
                 }
 
-                // If we have :
+                // If we have:
                 // 0: (jump if false) to 2
                 // 1: (jump) to whatever
                 // 2: ...
@@ -1601,7 +1601,7 @@ bool ByteCodeOptimizer::optimizePassJump(ByteCodeOptContext* context)
                     context->setDirtyPass();
                 }
 
-                // If we have :
+                // If we have:
                 // 0: (jump if true) to 2
                 // 1: (jump) to whatever
                 // 2: ...
@@ -2045,7 +2045,7 @@ namespace
                 }
             }
 
-            // Heuristic : too much values compared to the number of cases
+            // Heuristic: too much values compared to the number of cases
             // Comes from
             // TargetLoweringBase::getMinimumJumpTableEntries()
             // TargetLoweringBase::isSuitableForJumpTable in llvm

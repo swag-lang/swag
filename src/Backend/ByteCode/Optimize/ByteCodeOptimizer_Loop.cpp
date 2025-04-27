@@ -229,7 +229,7 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
                 continue;
             }
 
-            // Is the same instruction already moved out of loop ?
+            // Is the same instruction already moved out of loop?
             // In that case we will just use the corresponding register
             uint32_t newReg = 0;
             for (const auto& it1 : context->vecInstCopy)

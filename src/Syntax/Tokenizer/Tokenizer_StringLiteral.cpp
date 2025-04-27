@@ -2,7 +2,7 @@
 #include "Report/ErrorIds.h"
 #include "Syntax/Tokenizer/Tokenizer.h"
 
-// This function is used to 'align' text. This is the same rule as in swift : all blanks before the end mark ("@) will be removed
+// This function is used to 'align' text. This is the same rule as in swift: all blanks before the end mark ("@) will be removed
 // from every other lines.
 // This is necessary to be able to indent a multiline string in the code
 void Tokenizer::trimMultilineString(Utf8& text) const

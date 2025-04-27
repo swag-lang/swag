@@ -257,7 +257,7 @@ void Llvm::emitCopyVaargs(LlvmEncoder& pp)
     SWAG_ASSERT(allocVa);
 
     // We need to make all variadic parameters contiguous in stack, and point to that address
-    // Two cases here :
+    // Two cases here:
     // pushRVParams has something: then we have a typed param, of 1/2/4 bytes each
     // pushRVParams is empty: we make an array of registers
 

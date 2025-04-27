@@ -361,7 +361,7 @@ void Backend::getRangeFunctionIndexForJob(const BuildParameters& buildParameters
     const uint32_t range = size / (numPreCompileBuffers - 1);
 
     // First precompileIndex is dedicated to data and main
-    // :SegZeroIsData
+    // @SegZeroIsData
     if (precompileIndex == 0)
     {
         start = 0;
@@ -391,7 +391,7 @@ bool Backend::emitAllFunctionBodies(const BuildParameters& buildParameters, Job*
 
     // Put the bootstrap and the runtime in the first file
     const auto precompileIndex = buildParameters.precompileIndex;
-    if (precompileIndex == 1) // :SegZeroIsData
+    if (precompileIndex == 1) // @SegZeroIsData
     {
         SWAG_ASSERT(g_Workspace->bootstrapModule);
         addFunctionsToJob(g_Workspace->bootstrapModule, job, 0, g_Workspace->bootstrapModule->byteCodeFuncToGen.size());
@@ -407,7 +407,7 @@ bool Backend::emitAllFunctionBodies(const BuildParameters& buildParameters, Job*
 
 bool Backend::generateOutput(const BuildParameters& buildParameters) const
 {
-    // Do we need to generate the file ?
+    // Do we need to generate the file?
     if (!mustCompile)
         return true;
 

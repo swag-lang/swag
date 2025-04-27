@@ -196,7 +196,7 @@ bool Semantic::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, 
     {
         expression->typeInfo = getConcreteTypeUnRef(expression, CONCRETE_FUNC | CONCRETE_ALIAS);
 
-        // :SliceLiteral
+        // @SliceLiteral
         // Slice literal. This can happen for enum values
         if (expression->hasFlagComputedValue())
         {
@@ -298,7 +298,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
 
     if (typeInfo->isString())
     {
-        // :ConcreteRef
+        // @ConcreteRef
         expression->typeInfo = getConcreteTypeUnRef(expression, CONCRETE_FUNC | CONCRETE_ALIAS);
 
         node->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoU8, TYPEINFO_CONST | TYPEINFO_POINTER_ARITHMETIC);
@@ -324,7 +324,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
     }
     else if (typeInfo->isSlice())
     {
-        // :ConcreteRef
+        // @ConcreteRef
         expression->typeInfo = getConcreteTypeUnRef(expression, CONCRETE_FUNC | CONCRETE_ALIAS);
 
         const auto    ptrSlice = castTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
@@ -355,7 +355,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
     }
     else if (typeInfo->isArray())
     {
-        // :ConcreteRef
+        // @ConcreteRef
         expression->typeInfo = getConcreteTypeUnRef(expression, CONCRETE_FUNC | CONCRETE_ALIAS);
 
         const auto    ptrArray = castTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
@@ -381,7 +381,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
     }
     else if (typeInfo->isAny())
     {
-        // :ConcreteRef
+        // @ConcreteRef
         expression->typeInfo = getConcreteTypeUnRef(expression, CONCRETE_FUNC | CONCRETE_ALIAS);
 
         TypeInfoFlags ptrFlags = 0;
@@ -422,7 +422,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
     }
     else if (typeInfo->isInterface())
     {
-        // :ConcreteRef
+        // @ConcreteRef
         expression->typeInfo = getConcreteTypeUnRef(expression, CONCRETE_FUNC | CONCRETE_ALIAS);
 
         node->typeInfo    = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);

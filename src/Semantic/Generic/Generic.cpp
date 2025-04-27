@@ -134,7 +134,7 @@ bool Generic::instantiateGenericSymbol(SemanticContext* context, OneMatch& first
             matches.push_back(oneMatch);
             node->addAstFlag(AST_GENERIC);
 
-            // :DupGen
+            // @DupGen
             // We generate a new struct with the wanted generic parameters to have those names for replacement.
             auto newStructType = castTypeInfo<TypeInfoStruct>(firstMatch.symbolOverload->typeInfo, TypeInfoKind::Struct);
             if (newStructType->genericParameters.size() == genericParameters->childCount() && !genericParameters->children.empty())

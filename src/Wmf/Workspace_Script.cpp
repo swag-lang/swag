@@ -28,7 +28,7 @@ void Workspace::setScriptWorkspace(const Utf8& name)
         OS::exit(-1);
     }
 
-    // This is it. Build and run !
+    // This is it. Build and run!
     g_CommandLine.workspacePath = cacheWorkspace;
     setupPaths();
 
@@ -67,6 +67,6 @@ void Workspace::scriptCommand()
         OS::exit(-1);
     }
 
-    // This is it. Build and run !
+    // This is it. Build and run!
     g_Workspace->build();
 }

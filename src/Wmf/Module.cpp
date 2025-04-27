@@ -1122,7 +1122,7 @@ bool Module::compileString(const Utf8& text)
     const auto ip         = g_RunContext->ip != g_RunContext->bc->out ? g_RunContext->ip - 1 : g_RunContext->ip;
     const auto sourceFile = ip->node->token.sourceFile;
 
-    // Is it still possible to generate some code ?
+    // Is it still possible to generate some code?
     if (!acceptsCompileString)
     {
         Report::report({ip->node, ip->node->token, toErr(Err0086)});
@@ -1334,7 +1334,7 @@ void Module::logPass(ModuleBuildPass pass)
                 str = "Running ByteCode";
             break;
         case ModuleBuildPass::Output:
-            // if (backend->mustCompile && !g_CommandLine.genDoc)
+            // if (backend->mustCompile &&!g_CommandLine.genDoc)
             //    str = "Generating";
             break;
         case ModuleBuildPass::RunNative:

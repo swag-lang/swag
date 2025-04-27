@@ -292,7 +292,7 @@ bool SemanticError::warnWhereDoIf(SemanticContext* context)
         block               = caseNode->block;
         if (!caseNode->expressions.empty())
             expression = caseNode->expressions.back();
-        if (block->childCount() != 1 || block->firstChild()->isNot(AstNodeKind::If))
+        if (block->childCount()!= 1 || block->firstChild()->isNot(AstNodeKind::If))
             return true;*/
     }
 

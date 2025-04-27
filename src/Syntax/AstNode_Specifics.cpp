@@ -25,7 +25,7 @@ AstNode* AstVarDecl::clone(CloneContext& context)
     newNode->assignment       = findChildRef(assignment, newNode);
     newNode->genTypeComesFrom = genTypeComesFrom;
 
-    // Is there an alias ?
+    // Is there an alias?
     if (const auto it = context.replaceNames.find(newNode->token.text); it != context.replaceNames.end())
     {
         context.usedReplaceNames.insert(it->second);
@@ -105,7 +105,7 @@ AstNode* AstIdentifier::clone(CloneContext& context)
     const auto newNode = Ast::newNode<AstIdentifier>();
     newNode->copyFrom(context, this);
 
-    // Is there an alias ?
+    // Is there an alias?
     const auto itn = context.replaceNames.find(newNode->token.text);
     if (itn != context.replaceNames.end())
     {
@@ -129,7 +129,7 @@ AstNode* AstIdentifier::clone(CloneContext& context)
     const auto it = context.replaceTypes.find(newNode->token.text);
     if (it != context.replaceTypes.end())
     {
-        // :ForLocationInWhere
+        // @ForLocationInWhere
         if (it->second.fromNode)
         {
             newNode->allocateIdentifierExtension();
@@ -293,15 +293,15 @@ const Utf8& AstFuncDecl::getFullNameForeignImport() const
 
 bool AstFuncDecl::cloneSubDecl(ErrorContext* context, CloneContext& cloneContext, const AstNode* oldOwnerNode, AstFuncDecl* newFctNode, AstNode* refNode)
 {
-    // We need to duplicate sub declarations, and register the symbol in the new corresponding scope
+    // We need to duplicate sub declarations and register the symbol in the new corresponding scope
     for (auto f : subDecl)
     {
         ScopedLock lk(f->mutex);
 
-        // A sub declaration node has the root of the file as parent, but has the correct scope. We need to find
-        // the duplicated parent node that corresponds to the original one, in order to get the corresponding new
-        // scope (if a sub declaration is declared inside an if statement scope for example, we need the duplicated
-        // sub declaration to be registered in the corresponding new scope).
+        // A sub declaration node has the root of the file as a parent but has the correct scope. We need to find
+        // the duplicated parent node that corresponds to the original one to get the corresponding new
+        // scope. If a sub declaration is declared inside an if statement scope, for example, we need the duplicated
+        // sub declaration to be registered in the corresponding new scope.
         const auto newScopeNode = oldOwnerNode->findChildRefRec(f->ownerScope->owner, refNode);
         SWAG_ASSERT(newScopeNode);
         const auto subFuncScope = newScopeNode->ownerScope;
@@ -314,7 +314,7 @@ bool AstFuncDecl::cloneSubDecl(ErrorContext* context, CloneContext& cloneContext
         auto sub      = subF->is(AstNodeKind::AttrUse) ? castAst<AstAttrUse>(subF)->content : subF;
         sub->typeInfo = sub->typeInfo->clone();
 
-        // Be sure symbol is not already there. This can happen when using mixins
+        // Be sure the symbol is not already there. This can happen when using mixins
         const SymbolName* sym = nullptr;
         if (context)
             sym = subFuncScope->symTable.find(sub->token.text);
@@ -477,9 +477,9 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
         cloneContext.parentScope = bodyScope;
         newNode->content         = content->clone(cloneContext);
 
-        // Content can be an automatic try block in case of a throwable function
-        // But we want the scope to have the function statement as an owner
-        // :AutomaticTryContent
+        // Content can be an automatic try block in case of a throwable function,
+        // but we want the scope to have the function statement as an owner.
+        // @AutomaticTryContent
         if (newNode->content->is(AstNodeKind::Try))
         {
             SWAG_ASSERT(newNode->content->firstChild()->is(AstNodeKind::Statement) || newNode->content->firstChild()->is(AstNodeKind::Return));
@@ -526,8 +526,8 @@ AstNode* AstFuncCallParam::clone(CloneContext& context)
     const auto newNode = Ast::newNode<AstFuncCallParam>();
     newNode->copyFrom(context, this);
 
-    // :ReverseLiteralStruct
-    // Order of children is correct, so remove flag
+    // @ReverseLiteralStruct
+    // Order of children is correct, so remove the flag
     newNode->removeAstFlag(AST_REVERSE_SEMANTIC);
 
     newNode->resolvedParameter = resolvedParameter;
@@ -781,7 +781,7 @@ AstNode* AstTypeExpression::clone(CloneContext& context)
     newNode->parameters      = findChildRef(parameters, newNode);
     newNode->returnType      = findChildRef(returnType, newNode);
 
-    // :StructParamsNoSem
+    // @StructParamsNoSem
     // We need to revaluate the call parameters of the struct initialization, because inside we can have some
     // symbols, and we want them to be correctly found in the right function (inline).
     // Otherwise, we can have an out of frame error, because the original symbol is not in the same stack frame.
@@ -894,7 +894,7 @@ AstNode* AstImpl::clone(CloneContext& context)
     // If this is an interface implementation block, we need to register a sub scope with the name
     // of the interface in the instantiated struct scope.
     // All following functions must be in that sub scope.
-    // :SubScopeImplFor
+    // @SubScopeImplFor
     if (identifierFor)
     {
         const auto baseScope     = cloneContext.ownerStructScope;
@@ -902,7 +902,7 @@ AstNode* AstImpl::clone(CloneContext& context)
         cloneContext.parentScope = Ast::newScope(newNode, itfName, ScopeKind::Impl, baseScope);
         newNode->scope           = cloneContext.parentScope;
 
-        // :FakeImplForType
+        // @FakeImplForType
         const auto implTypeInfo  = makeType<TypeInfoStruct>();
         implTypeInfo->name       = itfName;
         implTypeInfo->structName = implTypeInfo->name;
@@ -928,7 +928,7 @@ AstNode* AstImpl::clone(CloneContext& context)
             newFunc->originalGeneric = c;
 
             // Resolution of 'impl' needs all functions to have their symbol registered in the 'impl' scope,
-            // in order to be able to wait for the resolution of all functions before solving the 'impl'
+            // to be able to wait for the resolution of all functions before solving the 'impl'
             // implementation.
             newNode->scope->symTable.registerSymbolName(nullptr, newFunc, SymbolKind::Function);
 
@@ -1042,7 +1042,7 @@ AstNode* AstReturn::clone(CloneContext& context)
     const auto newNode = Ast::newNode<AstReturn>();
     newNode->copyFrom(context, this);
 
-    // If return in an inline block has already been solved, we need this flag !
+    // If return in an inline block has already been solved, we need this flag!
     if (context.cloneFlags.has(CLONE_RAW))
         newNode->addSemFlag(semFlags.mask(SEMFLAG_EMBEDDED_RETURN));
 
@@ -1093,7 +1093,7 @@ AstNode* AstInline::clone(CloneContext& context)
     // If we clone an inline block after bytecode generation (this happens if we have a mixin inside an inline function
     // for example), then we do not want to copy the AST_NO_BYTECODE_CHILDREN (because we want the inline block to be
     // generated).
-    // :EmitInlineOnce
+    // @EmitInlineOnce
     newNode->removeAstFlag(AST_NO_BYTECODE_CHILDREN);
 
     newNode->func = func;

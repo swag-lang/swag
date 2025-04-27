@@ -175,7 +175,7 @@ void ScbeCpu::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vecto
 {
     // If a lambda is assigned to a closure, then we must not use the first parameter (the first
     // parameter is the capture context, which does not exist in a normal lambda function).
-    // But as this is dynamic, we need to have two call paths : one for the closure (normal call), and
+    // But as this is dynamic, we need to have two call paths: one for the closure (normal call), and
     // one for the lambda (omit first parameter)
     if (typeFuncBc && typeFuncBc->isClosure())
     {
@@ -187,7 +187,7 @@ void ScbeCpu::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vecto
         SWAG_ASSERT(cpuParams[idxParamContext].type == CpuPushParamType::CaptureContext);
 
         // First register is closure context, except if variadic, where we have 2 registers for the slice first
-        // :VariadicAndClosure
+        // @VariadicAndClosure
         emitCmpMemImm(cpuParams[idxParamContext].baseReg, cpuParams[idxParamContext].value, 0, OpBits::B64);
 
         // If zero, jump to parameters for a non closure call
@@ -203,7 +203,7 @@ void ScbeCpu::emitCallParameters(const TypeInfoFuncAttr* typeFuncBc, const Vecto
 
         // First register is closure, except if variadic, where we have 2 registers for the slice before.
         // We must remove it as we are in the "not closure" call path.
-        // :VariadicAndClosure
+        // @VariadicAndClosure
         auto params = cpuParams;
         params.erase(idxParamContext);
 
@@ -298,7 +298,7 @@ void ScbeCpu::emitJumpCondImm(CpuCondJump jumpType, uint32_t ipDest)
     CpuLabelToSolve label;
     label.ipDest = ipDest;
 
-    // Can we solve the label now ?
+    // Can we solve the label now?
     const auto it = cpuFct->labels.find(label.ipDest);
     if (it != cpuFct->labels.end())
     {

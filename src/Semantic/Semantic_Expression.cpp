@@ -73,7 +73,7 @@ bool Semantic::computeExpressionListTupleType(SemanticContext* context, AstNode*
 
         auto typeParam = TypeManager::makeParam();
 
-        // When generating parameters for a closure call, keep the reference if we want one !
+        // When generating parameters for a closure call, keep the reference if we want one!
         if (child->isNot(AstNodeKind::MakePointer) || !child->hasSpecFlag(AstMakePointer::SPEC_FLAG_TO_REF))
             typeParam->typeInfo = TypeManager::concretePtrRefType(child->typeInfo, CONCRETE_FUNC);
         else
@@ -114,7 +114,7 @@ bool Semantic::resolveExpressionListTuple(SemanticContext* context)
     node->byteCodeFct = ByteCodeGen::emitExpressionList;
 
     // If the literal tuple is not constant, then we need to reserve some space in the
-    // stack in order to store it.
+    // stack to store it.
     // Otherwise the tuple will come from the constant segment.
     if (!node->hasAstFlag(AST_CONST_EXPR) && node->ownerScope && node->ownerFct && node->typeInfo)
     {
@@ -161,9 +161,9 @@ bool Semantic::resolveExpressionListArray(SemanticContext* context)
     node->typeInfo    = typeInfo;
 
     // If the literal array is not constant, then we need to reserve some space in the
-    // stack in order to store it.
+    // stack to store it.
     // Otherwise the array will come from the constant segment.
-    // :ExprListArrayStorage
+    // @ExprListArrayStorage
     if (!node->hasAstFlag(AST_CONST_EXPR) && node->ownerScope && node->ownerFct)
     {
         allocateOnStack(node, node->typeInfo);

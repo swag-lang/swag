@@ -238,7 +238,7 @@ bool Semantic::resolveUnaryOp(SemanticContext* context)
             return SemanticError::notAllowedError(context, op, typeInfo, "because the enum is not marked with [[#[Swag.EnumFlags]]]");
     }
 
-    // :ConcreteRef
+    // @ConcreteRef
     child->typeInfo = getConcreteTypeUnRef(child, CONCRETE_ALL);
     typeInfo        = child->typeInfo;
 
@@ -262,7 +262,7 @@ bool Semantic::resolveUnaryOp(SemanticContext* context)
         op->typeInfo = typeInfo;
         op->addAstFlag(AST_TRANSIENT);
 
-        // :SpecFuncConstExpr
+        // @SpecFuncConstExpr
         if (op->hasSpecialFuncCall() && op->hasAstFlag(AST_CONST_EXPR))
         {
             if (!typeInfo->declNode->hasAttribute(ATTRIBUTE_CONSTEXPR))

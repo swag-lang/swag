@@ -77,7 +77,7 @@ bool Semantic::storeToSegment(JobContext* context, DataSegment* storageSegment, 
             ptrAny->value         = ptrStorage;
             storageSegment->addInitPtr(storageOffset, storageOffsetValue, constSegment->kind);
 
-            // :AnyTypeSegment
+            // @AnyTypeSegment
             SWAG_ASSERT(assignment->hasExtraPointer(ExtraPointerKind::AnyTypeSegment));
             const auto anyTypeSegment = assignment->extraPointer<DataSegment>(ExtraPointerKind::AnyTypeSegment);
             const auto anyTypeOffset  = assignment->extraValue(ExtraPointerKind::AnyTypeOffset);
@@ -131,7 +131,7 @@ bool Semantic::storeToSegment(JobContext* context, DataSegment* storageSegment, 
             ptrItf->data          = ptrStorage + assignment->extMisc()->castOffset;
             storageSegment->addInitPtr(storageOffset, storageOffsetValue + assignment->extMisc()->castOffset, constSegment->kind);
 
-            // :ItfIsConstantSeg
+            // @ItfIsConstantSeg
             SWAG_ASSERT(assignment->hasExtraPointer(ExtraPointerKind::CastItf));
             const auto castItf = assignment->extraPointer<TypeInfoParam>(ExtraPointerKind::CastItf);
             ptrItf->itable     = constSegment->address(castItf->offset);
@@ -569,7 +569,7 @@ bool Semantic::collectConstantAssignment(SemanticContext* context, DataSegment**
         node->assignment->computedValue()->storageOffset  = storageOffset;
         node->assignment->computedValue()->storageSegment = storageSegment;
     }
-    else if (node->assignment && typeInfo->isSlice() && node->assignment->typeInfoCast && node->assignment->typeInfoCast->isArray()) // :SliceLiteral
+    else if (node->assignment && typeInfo->isSlice() && node->assignment->typeInfoCast && node->assignment->typeInfoCast->isArray()) // @SliceLiteral
     {
         uint32_t storageOffsetValues;
         SWAG_CHECK(collectAssignment(context, storageSegment, storageOffsetValues, node, node->assignment->typeInfoCast));
@@ -616,7 +616,7 @@ bool Semantic::collectConstantAssignment(SemanticContext* context, DataSegment**
 
 bool Semantic::collectConstantSlice(SemanticContext* context, AstNode* assignNode, TypeInfo* assignType, DataSegment* storageSegment, uint32_t& storageOffset)
 {
-    // :SliceLiteral
+    // @SliceLiteral
     if (assignType->isListArray())
     {
         SwagSlice* slice;
@@ -657,7 +657,7 @@ bool Semantic::derefConstantValue(SemanticContext* context, AstNode* node, TypeI
         }
         else
         {
-            // :BackPtrOffset
+            // @BackPtrOffset
             node->computedValue()->storageOffset  = storageSegment->offset(*reinterpret_cast<uint8_t**>(ptr));
             node->computedValue()->storageSegment = storageSegment;
             setupIdentifierRef(node);

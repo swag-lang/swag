@@ -252,7 +252,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
     const auto module     = sourceFile->module;
     auto       funcNode   = castAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
 
-    // Only one main per module !
+    // Only one main per module!
     if (funcNode->hasAttribute(ATTRIBUTE_MAIN_FUNC))
     {
         ScopedLock lk(sourceFile->module->mutexFile);
@@ -378,7 +378,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
 
                     // We need to search the function (as a variable) in the interface
                     // If not found, then this is a normal function...
-                    const auto symbolName = typeInterface->findChildByNameNoLock(funcNode->token.text); // O(n) !
+                    const auto symbolName = typeInterface->findChildByNameNoLock(funcNode->token.text); // O(n)!
                     if (symbolName)
                     {
                         funcNode->fromItfSymbol = symbolName;
@@ -527,7 +527,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     {
         typeNode->typeInfo = g_TypeMgr->typeInfoVoid;
 
-        // :DeduceLambdaType
+        // @DeduceLambdaType
         if (funcNode->makePointerLambda &&
             funcNode->makePointerLambda->hasSpecFlag(AstMakePointer::SPEC_FLAG_DEP_TYPE) &&
             !funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA))
@@ -724,7 +724,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     if (funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA) && !funcNode->returnType->hasSpecFlag(AstFuncDecl::SPEC_FLAG_RETURN_DEFINED))
         shortLambda = true;
 
-    // :RunGeneratedExp
+    // @RunGeneratedExp
     bool mustDeduceReturnType = false;
     if (funcNode->hasAttribute(ATTRIBUTE_RUN_GENERATED_EXP))
         mustDeduceReturnType = true;
@@ -846,7 +846,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         }
     }
 
-    // Do we have capture parameters ? If it's the case, then we need to register all symbols as variables in the function scope
+    // Do we have capture parameters? If it's the case, then we need to register all symbols as variables in the function scope
     if (funcNode->captureParameters)
     {
         uint32_t storageOffset = 0;
@@ -1212,7 +1212,7 @@ bool Semantic::resolveFuncCallParam(SemanticContext* context)
     if (node->firstChild()->hasSemFlag(SEMFLAG_LITERAL_SUFFIX))
         node->addSemFlag(SEMFLAG_LITERAL_SUFFIX);
 
-    // Inherit the original type in case of computed values, in order to make the cast if necessary
+    // Inherit the original type in case of computed values, to make the cast if necessary
     if (node->hasAstFlag(AST_COMPUTED_VALUE | AST_OP_AFFECT_CAST))
         node->typeInfoCast = child->typeInfoCast;
 
@@ -1254,7 +1254,7 @@ bool Semantic::resolveRetVal(SemanticContext* context)
     const auto typeFct = castTypeInfo<TypeInfoFuncAttr>(fct->typeInfo, TypeInfoKind::FuncAttr);
     SWAG_VERIFY(typeFct->returnType && !typeFct->returnType->isVoid(), context->report({node, toErr(Err0342)}));
 
-    // :WaitForPOD
+    // @WaitForPOD
     if (typeFct->returnType->isStruct())
     {
         waitStructGenerated(context->baseJob, typeFct->returnType);
@@ -1528,7 +1528,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
         return context->report(err);
     }
 
-    // :WaitForPOD
+    // @WaitForPOD
     if (returnType->isStruct())
     {
         waitAllStructSpecialMethods(context->baseJob, returnType);
@@ -1592,7 +1592,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
         YIELD();
     }
 
-    // :opAffectParam
+    // @opAffectParam
     if (const auto userOp = child->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp))
     {
         if (userOp->symbol->name == g_LangSpec->name_opAffect || userOp->symbol->name == g_LangSpec->name_opAffectLiteral)

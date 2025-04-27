@@ -2243,10 +2243,10 @@ bool Llvm::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 getReturnResult(pp, returnType, ip->hasFlag(BCI_IMM_A), ip->a, allocR, allocResult);
                 [[fallthrough]];
             case ByteCodeOp::Ret:
-                // :OptimizedAwayDebugCrap
-                // Hack thanks to llvm in debug mode : we need to force the usage of function parameters until the very end of the function (i.e. each return),
-                // otherwise :
-                // - parameters not used in the function body will be removed by llvm (even without optim activated !)
+                // @OptimizedAwayDebugCrap
+                // Hack thanks to llvm in debug mode: we need to force the usage of function parameters until the very end of the function (i.e. each return),
+                // otherwise:
+                // - parameters not used in the function body will be removed by llvm (even without optim activated!)
                 // - a parameter will not be visible anymore ("optimized away") after its last usage.
                 // So we force a read/write of each parameter just before the "ret" to avoid that debug mess.
                 // RIDICULOUS !!

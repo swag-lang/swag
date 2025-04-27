@@ -675,9 +675,9 @@ namespace
             const uint32_t offsetStackParam = cpuFct->getStackOffsetParam(regParam);
             regCounter += typeParam->numRegisters();
 
-            // If we have 2 registers then we cannot create a symbol flagged as 'fIsParam' in order to really see it.
+            // If we have 2 registers then we cannot create a symbol flagged as 'fIsParam' to really see it.
             // But we also need to have one with the 'fIsParam' set to true, otherwise the callstack signature won't be correct.
-            // So we create two : on dummy variable with 'fIsParam' set to true for the signature, and another one without the flag to be
+            // So we create two: on dummy variable with 'fIsParam' set to true for the signature, and another one without the flag to be
             // able to see the value...
             if (typeParam->numRegisters() == 2)
             {

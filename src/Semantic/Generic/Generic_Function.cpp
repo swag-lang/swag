@@ -130,7 +130,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
         }
     }
 
-    // :GenericConcreteAlias
+    // @GenericConcreteAlias
     // Make all types concrete in case of simple aliases
     for (auto& val : cloneContext.replaceTypes | std::views::values)
     {
@@ -169,7 +169,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
         p = p->parent;
     Ast::addChildBack(p, cloneNode);
 
-    // :ContextCall
+    // @ContextCall
     // If we are calling the function in a struct context (struct.func), then add the struct as
     // an alternative scope
     if (context->node->is(AstNodeKind::Identifier))
@@ -275,7 +275,7 @@ bool Generic::instantiateDefaultGenericFunc(SemanticContext* context)
         }
     }
 
-    // :ContextCall
+    // @ContextCall
     // Get the contextual structure call if it exists
     if (context->node->is(AstNodeKind::Identifier))
     {

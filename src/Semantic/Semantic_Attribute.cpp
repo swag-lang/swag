@@ -308,7 +308,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                     continue;
             }
 
-            // Attribute on an attribute : usage
+            // Attribute on an attribute: usage
             if (forNode->is(AstNodeKind::AttrDecl))
             {
                 auto typeAttr = castTypeInfo<TypeInfoFuncAttr>(forNode->typeInfo, TypeInfoKind::FuncAttr);

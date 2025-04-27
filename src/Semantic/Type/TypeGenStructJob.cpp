@@ -228,13 +228,13 @@ bool TypeGenStructJob::computeStruct()
                 SWAG_CHECK(typeGen->genExportedTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->interfaces[param], genFlags));
                 SWAG_FORCE_ASSERT(realType->interfaces[param]->offset != UINT32_MAX);
 
-                // :ItfIsConstantSeg
+                // @ItfIsConstantSeg
                 const uint32_t fieldOffset = offsetof(ExportedTypeValue, value);
                 const uint32_t valueOffset = storageArray + fieldOffset;
                 storageSegment->addInitPtr(valueOffset, realType->interfaces[param]->offset, SegmentKind::Constant);
                 addrArray[param].value = module->constantSegment.address(realType->interfaces[param]->offset);
 
-                // :itableHeader
+                // @itableHeader
                 // Be sure to patch the exported struct type in the header, because resolveImplForType can be resolved after this,
                 // and we need it in case a bytecode is running
                 const auto ptrHeader = static_cast<const void**>(addrArray[param].value) - 1;

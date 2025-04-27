@@ -717,7 +717,7 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
             continue;
         }
 
-        // image ![](link)
+        // image![](link)
         if (*pz == '!' && pz[1] == '[' && !inCodeMode)
         {
             Utf8 name;
@@ -1031,7 +1031,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
                 tkn0.erase(tkn0.end());
             tableColCount = tkn0.size();
 
-            // Header ?
+            // Header?
             if (user.lines.size() > 2)
             {
                 Vector<Utf8> tkn1;

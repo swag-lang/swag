@@ -2302,11 +2302,11 @@ bool TypeManager::castSubExpressionList(SemanticContext* context, AstNode* child
         if (childJ->typeInfo != oldType)
             hasChanged = true;
 
-        // Collect array to slice : will need special treatment when collecting constants
+        // Collect array to slice: will need special treatment when collecting constants
         if (childJ->typeInfo->isListArray() && fieldJ->typeInfo->isSlice())
             childJ->addExtraPointer(ExtraPointerKind::CollectTypeInfo, fieldJ->typeInfo);
 
-        // We use castOffset to store the offset to the field, in order to collect later at the right position
+        // We use castOffset to store the offset to the field, to collect later at the right position
         // Note that offset is +1 to differentiate it from a "default" 0.
         childJ->allocateExtension(ExtensionKind::Misc);
         const auto newOffset = static_cast<uint32_t>(fieldJ->offset) + 1;
@@ -2379,7 +2379,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
         fromTypeList->sizeOf = newSizeof;
         fromNode->typeInfo   = fromTypeList;
 
-        // :ExprListArrayStorage
+        // @ExprListArrayStorage
         if (!fromNode->hasAstFlag(AST_CONST_EXPR) && fromNode->ownerScope && fromNode->ownerFct)
         {
             SWAG_ASSERT(fromNode->computedValue());
@@ -2409,7 +2409,7 @@ bool TypeManager::castToString(SemanticContext* context, TypeInfo* toType, TypeI
 
     if (castFlags.has(CAST_FLAG_EXPLICIT))
     {
-        // [..] u8 to string, this is possible !
+        // [..] u8 to string, this is possible!
         if (fromType->isSlice())
         {
             const auto fromTypeSlice = castTypeInfo<TypeInfoSlice>(fromType, TypeInfoKind::Slice);
@@ -2426,7 +2426,7 @@ bool TypeManager::castToString(SemanticContext* context, TypeInfo* toType, TypeI
             }
         }
 
-        // [] u8 to string, this is possible !
+        // [] u8 to string, this is possible!
         if (fromType->isArray())
         {
             const auto fromTypeArray = castTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
@@ -2467,7 +2467,7 @@ bool TypeManager::castToAny(SemanticContext* context, TypeInfo* toType, TypeInfo
     {
         if (toNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
         {
-            // :AnyValueOnStack
+            // @AnyValueOnStack
             // When casting something to any, we will copy the value to the stack to be sure
             // that the memory layout is correct, without relying on registers being contiguous, and not being reallocated (by an optimize pass).
             // See ByteCodeGen::emitCastToNativeAny
@@ -2490,7 +2490,7 @@ bool TypeManager::castToAny(SemanticContext* context, TypeInfo* toType, TypeInfo
 
     if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
     {
-        // :AnyValueOnStack
+        // @AnyValueOnStack
         // When casting something complex to any, we will copy the value to the stack to be sure
         // that the memory layout is correct, without relying on registers being contiguous, and not being reallocated (by an optimize pass).
         // See ByteCodeGen::emitCastToNativeAny
@@ -2571,7 +2571,7 @@ bool TypeManager::castFromAny(SemanticContext* context, TypeInfo* toType, TypeIn
 
     if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
     {
-        // :AnyValueOnStack
+        // @AnyValueOnStack
         // When casting something complex to any, we will copy the value to the stack to be sure
         // that the memory layout is correct, without relying on registers being contiguous, and not being reallocated (by an optimize pass).
         // See ByteCodeGen::emitCastToNativeAny
@@ -2643,7 +2643,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context,
             }
         }
 
-        // No using ! We're done
+        // No using! We're done
         if (castFlags.has(CAST_FLAG_FOR_GENERIC) && !it.typeStruct->hasFlag(TYPEINFO_STRUCT_TYPEINFO))
             return true;
 
@@ -2678,7 +2678,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context,
 
             if (typeStruct)
             {
-                // Ambiguous ! Two fields with a 'using' on the same struct
+                // Ambiguous! Two fields with a 'using' on the same struct
                 if (foundStruct)
                 {
                     const auto foundTypeStruct0 = foundStruct->getStructOrPointedStruct();
@@ -2785,7 +2785,7 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
     {
         if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
         {
-            // :AnyValueOnStack
+            // @AnyValueOnStack
             // We will copy the value to the stack to be sure that the memory layout is correct, without relying on
             // registers being contiguous, and not being reallocated (by an optimize pass).
             // This is the same problem when casting to 'any'.
@@ -2860,7 +2860,7 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
         if (fromType->isPointerNull())
             return castError(context, toType, fromType, fromNode, castFlags);
 
-        // Convert from pointer to ref : only if authorized
+        // Convert from pointer to ref: only if authorized
         if (!fromType->isPointerRef() && !castFlags.has(CAST_FLAG_EXPLICIT) && !castFlags.has(CAST_FLAG_PTR_REF))
             return castError(context, toType, fromType, fromNode, castFlags);
 
@@ -3056,7 +3056,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
             return true;
         }
 
-        // :PointerArithmetic
+        // @PointerArithmetic
         // Cannot cast from non arithmetic to arithmetic
         if (toType->isPointerArithmetic() && !fromType->isPointerArithmetic())
         {

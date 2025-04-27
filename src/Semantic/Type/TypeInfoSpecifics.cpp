@@ -758,7 +758,7 @@ bool TypeInfoFuncAttr::isSame(const TypeInfoFuncAttr* other, CastFlags castFlags
     if (genericParameters.size() != other->genericParameters.size())
     {
         // We want func's32(s32) to match func(T) when func(T) is generic
-        // This is necessary for lambdas. Perhaps that test is not enough !
+        // This is necessary for lambdas. Perhaps that test is not enough!
         if (flags.has(TYPEINFO_GENERIC) == other->flags.has(TYPEINFO_GENERIC) &&
             !flags.has(TYPEINFO_UNDEFINED) &&
             !other->hasFlag(TYPEINFO_UNDEFINED))

@@ -294,7 +294,7 @@ bool SemanticError::cannotMatchIdentifierError(SemanticContext* context, VectorN
                     oneMatch1->overload = nullptr;
 
                 // If this is a lambda call that comes from a struct, then this is ambiguous. Do we keep the error where the struct
-                // has been used to find the lambda and UFCS, or do we consider the struct is just there to find the lambda ?
+                // has been used to find the lambda and UFCS, or do we consider the struct is just there to find the lambda?
                 // We consider that UFCS of 'struct.lambda.call(struct)' has less priority than other errors
                 else if (oneMatch->ufcs && oneMatch->scope && oneMatch->scope->is(ScopeKind::Struct) && oneMatch->overload->symbol->is(SymbolKind::Variable))
                     oneMatch->overload = nullptr;

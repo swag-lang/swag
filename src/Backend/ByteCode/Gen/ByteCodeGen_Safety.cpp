@@ -498,7 +498,7 @@ void ByteCodeGen::emitSafetyCastAny(ByteCodeGenContext* context, const AstNode* 
 
     emitSafetyNotZero(context, exprNode->resultRegisterRc[1], 64, safetyMsg(SafetyMsg::CastAnyNull, toType));
 
-    // :AnyTypeSegment
+    // @AnyTypeSegment
     SWAG_ASSERT(exprNode->hasExtraPointer(ExtraPointerKind::AnyTypeSegment));
     const auto anyTypeSegment = exprNode->extraPointer<DataSegment>(ExtraPointerKind::AnyTypeSegment);
     const auto anyTypeOffset  = exprNode->extraValue(ExtraPointerKind::AnyTypeOffset);

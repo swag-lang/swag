@@ -429,7 +429,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
             }
         }
 
-        // 2 UFCS : priority to the first parameter that is not const
+        // 2 UFCS: priority to the first parameter that is not const
         if (curMatch->ufcs && over->typeInfo->isFuncAttr())
         {
             const auto typeFunc0 = castTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
@@ -642,7 +642,7 @@ bool Semantic::filterGenericMatches(const SemanticContext* context, VectorNative
     }
 
     // If there's one match, but we match with a untyped int conversion, and there's more than one
-    // generic match, we must remove the match in order to raise an error on multiple overloads, otherwise
+    // generic match, we must remove the match to raise an error on multiple overloads, otherwise
     // we can match or not with an untyped integer depending on instantiation order.
     if (matches.size() == 1 &&
         genMatches.size() > 1 &&

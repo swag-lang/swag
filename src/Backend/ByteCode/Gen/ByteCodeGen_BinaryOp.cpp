@@ -522,7 +522,7 @@ bool ByteCodeGen::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
     {
         // The result register will be stored in additionalRegisterRC of the left expression and retrieved
         // when evaluating the binary expression.
-        // :BinOpAndOr
+        // @BinOpAndOr
         if (left->resultRegisterRc.cannotFree)
             left->extMisc()->additionalRegisterRC = reserveRegisterRC(context);
         else
@@ -589,7 +589,7 @@ bool ByteCodeGen::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
     left->allocateExtension(ExtensionKind::Misc);
     if (left->extMisc()->additionalRegisterRC.size() == 0)
     {
-        // :BinOpAndOr
+        // @BinOpAndOr
         if (left->resultRegisterRc.cannotFree)
             left->extMisc()->additionalRegisterRC = reserveRegisterRC(context);
         else
@@ -697,7 +697,7 @@ bool ByteCodeGen::emitBinaryOp(ByteCodeGenContext* context)
             // So we take it as the result register.
             if (node->token.is(TokenId::KwdAnd) || node->token.is(TokenId::KwdOr))
             {
-                // :BinOpAndOr
+                // @BinOpAndOr
                 const auto front       = node->firstChild();
                 r2                     = front->extMisc()->additionalRegisterRC;
                 node->resultRegisterRc = front->extMisc()->additionalRegisterRC;

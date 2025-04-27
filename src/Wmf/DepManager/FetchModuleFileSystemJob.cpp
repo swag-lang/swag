@@ -66,7 +66,7 @@ JobResult FetchModuleFileSystemJob::execute()
     auto destPath = g_Workspace->dependenciesPath;
     destPath.append(dep->name.cstr());
 
-    // Collect list of already existing files in the dependency folder, in order to remove old ones if necessary
+    // Collect list of already existing files in the dependency folder, to remove old ones if necessary
     Vector<Utf8> dstFiles;
     OS::visitFilesRec(destPath, [&](const char* fileName) {
         const Path n    = fileName;

@@ -40,7 +40,7 @@ bool ByteCodeGen::emitCastToNativeAny(const ByteCodeGenContext* context, AstNode
     }
     else
     {
-        // :AnyValueOnStack
+        // @AnyValueOnStack
         // If inside a function, we copy the value to the stack, and address the stack as the any value.
         // That way, even if registers are changed, the memory layout remains correct.
         if (exprNode->ownerFct)
@@ -62,7 +62,7 @@ bool ByteCodeGen::emitCastToNativeAny(const ByteCodeGenContext* context, AstNode
     }
 
     // This is the type part.
-    // :AnyTypeSegment
+    // @AnyTypeSegment
     SWAG_ASSERT(exprNode->hasExtraPointer(ExtraPointerKind::AnyTypeSegment));
     const auto anyTypeSegment = exprNode->extraPointer<DataSegment>(ExtraPointerKind::AnyTypeSegment);
     const auto anyTypeOffset  = exprNode->extraValue(ExtraPointerKind::AnyTypeOffset);
@@ -111,7 +111,7 @@ bool ByteCodeGen::emitCastToInterface(const ByteCodeGenContext* context, AstNode
         inst->addFlag(BCI_IMM_B);
     }
 
-    // :ItfIsConstantSeg
+    // @ItfIsConstantSeg
     SWAG_ASSERT(exprNode->hasExtraPointer(ExtraPointerKind::CastItf));
     const auto castItf = exprNode->extraPointer<TypeInfoParam>(ExtraPointerKind::CastItf);
     emitMakeSegPointer(context, &node->token.sourceFile->module->constantSegment, castItf->offset, exprNode->resultRegisterRc[1]);
@@ -876,7 +876,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
             inst->addFlag(BCI_IMM_B);
         }
 
-        // The field is a pointer : need to dereference it
+        // The field is a pointer: need to dereference it
         if (exprNode->hasSemFlag(SEMFLAG_DEREF_USING))
             EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc);
 
@@ -944,7 +944,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
                 const auto r0 = reserveRegisterRC(context);
                 const auto r1 = reserveRegisterRC(context);
 
-                // :AnyTypeSegment
+                // @AnyTypeSegment
                 SWAG_ASSERT(exprNode->hasExtraPointer(ExtraPointerKind::AnyTypeSegment));
                 const auto anyTypeSegment = exprNode->extraPointer<DataSegment>(ExtraPointerKind::AnyTypeSegment);
                 const auto anyTypeOffset  = exprNode->extraValue(ExtraPointerKind::AnyTypeOffset);

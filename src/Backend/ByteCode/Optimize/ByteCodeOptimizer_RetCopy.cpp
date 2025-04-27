@@ -79,7 +79,7 @@ namespace
             ipOrg->b.u64 = ip->b.u64;
         }
 
-        // Is there a corresponding drop in the scope ?
+        // Is there a corresponding drop in the scope?
         const bool hasDrop = !sameStackOffset && ipOrg->node->ownerScope->symTable.structVarsToDrop.count > 0;
 
         // Remove opDrop to the old variable that is no more affected.
@@ -89,7 +89,7 @@ namespace
             removeOpDrop(context, ipOrg, ip, orgOffset);
 
         // Remove the MakeStackPointer
-        // NO ! The register can be necessary for some code after, especially if this is a CopyRRtoRA
+        // NO! The register can be necessary for some code after, especially if this is a CopyRRtoRA
         // ByteCodeOptimizer::setNop(context, ip);
 
         // Remove the memcpy
@@ -131,7 +131,7 @@ void ByteCodeOptimizer::registerParamsReg(ByteCodeOptContext* context, const Byt
 // then this is moved back to the variable of the caller if there's an affectation.
 // This pass will remove the unnecessary copy to the temporary variable, and will just pass the right callstack address
 // to the callee.
-// Pattern detected is :
+// Pattern detected is:
 //
 // MakeStackPointer X
 // (IncPointer64)
@@ -327,7 +327,7 @@ bool ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
                         ipOrg[2].a.u32 = ip->a.u32;
                     }
 
-                    // Is there a corresponding drop in the scope ?
+                    // Is there a corresponding drop in the scope?
                     const bool hasDrop = ipOrg->node->ownerScope->symTable.structVarsToDrop.count > 0;
 
                     // Remove opDrop to the old variable that is no more affected.

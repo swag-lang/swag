@@ -134,7 +134,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
     }
 
     // For an interface implementation, creates a sub scope named like the interface
-    // :SubScopeImplFor
+    // @SubScopeImplFor
     auto parentScope = newScope;
     if (implInterface)
     {
@@ -146,7 +146,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
         {
             subScope = Ast::newScope(implNode, itfName, ScopeKind::Impl, newScope, false);
 
-            // :FakeImplForType
+            // @FakeImplForType
             const auto typeInfo  = makeType<TypeInfoStruct>();
             typeInfo->name       = implNode->identifier->lastChild()->token.text;
             typeInfo->structName = typeInfo->name;
@@ -373,7 +373,7 @@ bool Parser::doInterfaceMtdDecl(AstNode* parent, AstNode** result)
         {
             subScope = Ast::newScope(stmt, "__default", ScopeKind::Impl, currentScope, false);
 
-            // :FakeImplForType
+            // @FakeImplForType
             const auto typeInfo  = makeType<TypeInfoStruct>();
             typeInfo->name       = "__default";
             typeInfo->structName = "__default";

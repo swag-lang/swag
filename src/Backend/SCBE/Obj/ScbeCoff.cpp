@@ -500,7 +500,7 @@ bool ScbeCoff::emitPostFunc(const BuildParameters& buildParameters, ScbeCpu& pp)
         // the content
         pp.postConcat.init();
 
-        // Warning ! Should be the last segment
+        // Warning! Should be the last segment
         const uint32_t csRelocOffset = tlsOffset + module->tlsSegment.totalCount;
 
         if (!pp.relocTableCSSection.table.empty())

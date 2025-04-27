@@ -8,7 +8,7 @@ bool FormatAst::outputStatement(FormatContext& context, AstNode* node)
 {
     const auto stmt = castAst<AstStatement>(node, AstNodeKind::Statement);
 
-    // Multi affectation a, b = ? is a syntax sugar for a special statement block
+    // Multi affectation a, b =? is a syntax sugar for a special statement block
     if (stmt->hasSpecFlag(AstStatement::SPEC_FLAG_MULTI_AFFECT))
     {
         bool first = true;

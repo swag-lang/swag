@@ -121,7 +121,7 @@ bool Semantic::resolveIdentifierRef(SemanticContext* context)
         node->inheritComputedValue(childBack);
     node->inheritAstFlagsOr(childBack, AST_L_VALUE | AST_R_VALUE | AST_TRANSIENT | AST_VALUE_GEN_TYPEINFO | AST_SIDE_EFFECTS);
 
-    // Symbol is in fact a constant value : no need for bytecode
+    // Symbol is in fact a constant value: no need for bytecode
     if (node->resolvedSymbolOverload() &&
         node->resolvedSymbolOverload()->hasFlag(OVERLOAD_CONST_VALUE))
     {
@@ -133,7 +133,7 @@ bool Semantic::resolveIdentifierRef(SemanticContext* context)
 
         node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
 
-        // If literal is stored in a data segment, then it's still a left value (we can take the address for example)
+        // If the literal is stored in a data segment, then it's still a left value (we can take the address, for example)
         if (!node->computedValue()->storageSegment || node->computedValue()->storageOffset == 0xFFFFFFFF)
             node->removeAstFlag(AST_L_VALUE);
     }
@@ -693,7 +693,7 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
         {
             if (symbol->is(SymbolKind::Function))
             {
-                // Be sure we have a missing parameter in order to try UFCS
+                // Be sure we have a missing parameter to try UFCS
                 const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
                 const bool canTry   = canTryUFCS(context, typeFunc, dependentVar, false);
                 YIELD();
@@ -793,7 +793,7 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext*      context,
         typeRef            = TypeManager::concreteType(typeArr->finalType, CONCRETE_FORCE_ALIAS);
     }
 
-    // :ClosureForceFirstParam
+    // @ClosureForceFirstParam
     // A closure has always a first parameter of type *void
     if (typeRef->isClosure() && identifier->callParameters)
     {
@@ -849,7 +849,7 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext*      context,
 
             // Be sure all interfaces of the structure have been solved, in case a cast to an interface is necessary to match
             // a function
-            // :WaitInterfaceReg
+            // @WaitInterfaceReg
             const TypeInfoStruct* typeStruct = nullptr;
             if (oneParam->typeInfo->isStruct())
                 typeStruct = castTypeInfo<TypeInfoStruct>(oneParam->typeInfo, TypeInfoKind::Struct);
@@ -1035,7 +1035,7 @@ bool Semantic::waitForSymbols(SemanticContext* context, AstIdentifier* identifie
             if (!needToWaitForSymbolNoLock(context, identifier, symbol))
                 continue;
 
-            // Can we make a partial match ?
+            // Can we make a partial match?
             if (needToCompleteSymbolNoLock(context, identifier, symbol, true))
             {
                 waitSymbolNoLock(job, symbol);
@@ -1218,7 +1218,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
     SWAG_CHECK(computeMatch(context, identifier, riFlags, symbolsMatch, identifierRef));
     YIELD();
 
-    // No match !
+    // No match!
     auto& matches = context->cacheMatches;
     if (matches.empty())
     {
@@ -1242,7 +1242,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         return true;
     }
 
-    // Deal with UFCS. Now that the match is done, we will change the AST in order to
+    // Deal with UFCS. Now that the match is done, we will change the AST to
     // add the UFCS parameters to the function call parameters
     const auto& match = matches[0];
     if (match->ufcs && !identifier->isForcedUFCS())

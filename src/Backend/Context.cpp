@@ -139,13 +139,13 @@ namespace
         byteCodeRun(true, byteCodePtr, vaList);
     }
 
-    // Callback stuff. This is tricky !
+    // Callback stuff. This is tricky!
     // The problem: we want an external library to be able to call a callback defined in swag.
     // When swag code is native, no problem.
     // The problem starts when that callback is bytecode, at compile time.
     // We need a way to associate a native function that will be called by the external library to a bytecode.
     //
-    // The only way I have found : make the native function generic (always the same parameters), and attach
+    // The only way I have found: make the native function generic (always the same parameters), and attach
     // the address of that function to bytecode. One native callback for one specific bytecode.
     // That's why we have here lots of native identical functions, which are dynamically associated to a bytecode
     // when calling @mkcallback

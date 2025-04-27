@@ -551,7 +551,7 @@ bool ByteCodeGen::generateStructOpInit(ByteCodeGenContext* context, TypeInfoStru
     // Need to wait for user function full semantic resolve
     if (typeInfoStruct->opUserInitFct)
     {
-        // Content must have been solved ! where pb
+        // Content must have been solved! where pb
         SWAG_ASSERT(!typeInfoStruct->opUserInitFct->content->hasAstFlag(AST_NO_SEMANTIC));
 
         askForByteCode(context, typeInfoStruct->opUserInitFct, ASK_BC_WAIT_SEMANTIC_RESOLVED, false, context->bc);
@@ -701,7 +701,7 @@ bool ByteCodeGen::generateStructOpInit(ByteCodeGenContext* context, TypeInfoStru
                 EMIT_INST2(&cxt, ByteCodeOp::SetAtPointer64, 0, 1);
                 EMIT_INST2(&cxt, ByteCodeOp::SetAtPointer64, 0, 2)->c.u32 = 8;
             }
-            // :opAffectConstExpr
+            // @opAffectConstExpr
             else if (typeVar->isStruct() &&
                      varDecl->resolvedSymbolOverload() &&
                      varDecl->resolvedSymbolOverload()->hasFlag(OVERLOAD_STRUCT_AFFECT) &&
@@ -830,7 +830,7 @@ bool ByteCodeGen::generateStructOpDrop(ByteCodeGenContext* context, TypeInfoStru
     bool needDrop = false;
     if (typeInfoStruct->opUserDropFct)
     {
-        // Content must have been solved ! where pb
+        // Content must have been solved! where pb
         SWAG_ASSERT(!typeInfoStruct->opUserDropFct->content->hasAstFlag(AST_NO_SEMANTIC));
 
         needDrop = true;
@@ -942,7 +942,7 @@ bool ByteCodeGen::generateStructOpPostCopy(ByteCodeGenContext* context, TypeInfo
     bool needPostCopy = false;
     if (typeInfoStruct->opUserPostCopyFct)
     {
-        // Content must have been solved ! where pb
+        // Content must have been solved! where pb
         SWAG_ASSERT(!typeInfoStruct->opUserPostCopyFct->content->hasAstFlag(AST_NO_SEMANTIC));
 
         needPostCopy = true;
@@ -1052,7 +1052,7 @@ bool ByteCodeGen::generateStructOpPostMove(ByteCodeGenContext* context, TypeInfo
     bool needPostMove = false;
     if (typeInfoStruct->opUserPostMoveFct)
     {
-        // Content must have been solved ! where pb
+        // Content must have been solved! where pb
         SWAG_ASSERT(!typeInfoStruct->opUserPostMoveFct->content->hasAstFlag(AST_NO_SEMANTIC));
 
         needPostMove = true;
@@ -1341,7 +1341,7 @@ void ByteCodeGen::emitStructParameters(ByteCodeGenContext* context, uint32_t reg
 
                 child->addAstFlag(AST_NO_LEFT_DROP);
 
-                // When generating parameters for a closure call, keep the reference if we want one !
+                // When generating parameters for a closure call, keep the reference if we want one!
                 auto       noRef = child->typeInfo;
                 const auto front = param->firstChild();
                 if (front->isNot(AstNodeKind::MakePointer) || !front->hasSpecFlag(AstMakePointer::SPEC_FLAG_TO_REF))

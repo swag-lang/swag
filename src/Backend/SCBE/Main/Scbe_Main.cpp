@@ -14,7 +14,7 @@ void Scbe::emitOS(ScbeCpu& pp)
     {
         SWAG_ASSERT(g_CommandLine.target.arch == SwagTargetArch::X86_64);
 
-        // :ChkStk Stack probing
+        // @ChkStk Stack probing
         // See SWAG_LIMIT_PAGE_STACK
         const auto cpuFct = pp.addFunction(R"(__chkstk)", CallConv::get(CallConvKind::X86_64), nullptr);
         concat.addString1("\x51");                            // push rcx  // NOLINT(modernize-raw-string-literal)

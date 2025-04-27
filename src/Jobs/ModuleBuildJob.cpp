@@ -41,7 +41,7 @@ void ModuleBuildJob::publishFilesToPublic(const Module* moduleToPublish)
     }
 
     OS::visitFiles(publicPath, [&](const char* filename) {
-        // Keep the generated file untouched !
+        // Keep the generated file untouched!
         if (moduleToPublish->backend->exportFileName == filename)
             return;
 
@@ -52,7 +52,7 @@ void ModuleBuildJob::publishFilesToPublic(const Module* moduleToPublish)
         if (publicFiles.contains(pubName))
             return;
 
-        // Otherwise, remove it !
+        // Otherwise, remove it!
         auto path = publicPath;
         path.append(filename);
         std::error_code err;
@@ -580,7 +580,7 @@ JobResult ModuleBuildJob::execute()
         module->sendCompilerMessage(CompilerMsgKind::PassBeforeRunByteCode, this);
 
         // Push a copy of the default context, in case the user code changes it (or push a new one)
-        // :PushDefaultCxt
+        // @PushDefaultCxt
         PushSwagContext cxt;
 
         // Setup runtime

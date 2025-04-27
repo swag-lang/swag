@@ -35,7 +35,7 @@ namespace
 void Workspace::setupUserTags()
 {
     // Command line tags
-    // Format is --tag:"TagName : type = value"
+    // Format is --tag:"TagName: type = value"
     for (auto& tag : g_CommandLine.tags)
     {
         OneTag oneTag;

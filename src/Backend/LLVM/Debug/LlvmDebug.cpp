@@ -410,7 +410,7 @@ llvm::DISubprogram* LlvmDebug::startFunction(const ByteCode* bc, AstFuncDecl** r
     if (resultDecl)
         *resultDecl = decl;
 
-    // Already created ?
+    // Already created?
     const auto it = mapScopes.find(decl->content->ownerScope);
     if (it != mapScopes.end())
         return reinterpret_cast<llvm::DISubprogram*>(it->second);
@@ -492,7 +492,7 @@ void LlvmDebug::startFunction(const BuildParameters& buildParameters, const Llvm
                 allocaParams.push_back(allocA);
             }
 
-            // :OptimizedAwayDebugCrap
+            // @OptimizedAwayDebugCrap
             // Parameters are "optimized away" by the debugger, most of the time.
             // The only way to have correct values seems to make a local copy of the parameter on the stack,
             // and make the debugger use that copy instead of the parameter.
@@ -510,7 +510,7 @@ void LlvmDebug::startFunction(const BuildParameters& buildParameters, const Llvm
         }
     }
 
-    // Allocate some temporary variables for each local 'retval', in order to make a copy of the return pointer
+    // Allocate some temporary variables for each local 'retval', to make a copy of the return pointer
     if (func->arg_size() > 0)
     {
         for (const auto localVar : bc->localVars)
@@ -699,7 +699,7 @@ llvm::DIScope* LlvmDebug::getOrCreateScope(llvm::DIFile* file, Scope* scope)
     SWAG_ASSERT(scope);
 
     // If this asserts triggers, this will crash at one point in llvm. This should never
-    // happen, so check the corresponding instruction !
+    // happen, so check the corresponding instruction!
     SWAG_ASSERT(scope->isNot(ScopeKind::Function));
 
     llvm::DIScope*       parent = file;
@@ -854,7 +854,7 @@ void LlvmDebug::createGlobalVariablesForSegment(const BuildParameters& buildPara
             auto constExpr = llvm::ConstantExpr::getGetElementPtr(type, var, {offset.begin(), offset.end()});
             // Convert to a pointer to bytes
             constExpr = llvm::ConstantExpr::getPointerCast(constExpr, PTR_I8_TY());
-            // Convert to int, in order to make an Add
+            // Convert to int, to make an Add
             constExpr = llvm::ConstantExpr::getPtrToInt(constExpr, I64_TY());
             // Add the byte offset
             constExpr = llvm::ConstantExpr::getAdd(constExpr, llvm::ConstantInt::get(llvm::Type::getInt64Ty(*pp.llvmContext), resolved->computedValue.storageOffset));

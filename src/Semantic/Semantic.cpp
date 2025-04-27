@@ -25,7 +25,7 @@ void Semantic::start(SemanticContext* context, SourceFile* sourceFile, AstNode* 
         {
             if (c->isNot(AstNodeKind::CompilerDependencies))
             {
-                c->addAstFlag(AST_NO_SEMANTIC); // :FirstPassCfgNoSem
+                c->addAstFlag(AST_NO_SEMANTIC); // @FirstPassCfgNoSem
                 c->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
             }
         }

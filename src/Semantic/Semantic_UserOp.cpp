@@ -680,7 +680,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
 
             const auto makePtrL = params[i];
 
-            // :ConcreteRef
+            // @ConcreteRef
             if (makePtrL->typeInfo->isPointerRef() && !toType->isPointerRef())
             {
                 setUnRef(makePtrL);
@@ -693,7 +693,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
             }
 
             // If passing a closure
-            // :FctCallParamClosure
+            // @FctCallParamClosure
             if (!(ropFlags & ROP_SIMPLE_CAST))
             {
                 const auto toTypeRef = toType->getConcreteAlias();

@@ -29,7 +29,7 @@ void Llvm::emitOS(const LlvmEncoder& pp)
             builder.CreateRet(builder.getInt32(1));
         }
 
-        // :ChkStk
+        // @ChkStk
         // See SWAG_LIMIT_PAGE_STACK
         // Stack probing. Must do it by hand to avoid linking with vc runtime on windows.
         // void __chkstk()
@@ -551,7 +551,7 @@ void Llvm::setFuncAttributes(const LlvmEncoder& pp, uint32_t numPreComp, const A
              !funcNode->token.sourceFile->hasFlag(FILE_BOOTSTRAP) &&
              !bc->isInDataSegment &&
              !funcNode->hasAttribute(ATTRIBUTE_SHARP_FUNC) &&
-             numPreComp == 2) // :SegZeroIsData
+             numPreComp == 2) // @SegZeroIsData
     {
         func->setLinkage(llvm::GlobalValue::InternalLinkage);
     }

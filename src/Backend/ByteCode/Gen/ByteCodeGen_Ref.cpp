@@ -104,7 +104,7 @@ bool ByteCodeGen::emitSliceRef(ByteCodeGenContext* context)
         node->access->addSemFlag(SEMFLAG_CAST1);
     }
 
-    // Slice is already dereferenced ? (from function parameter)
+    // Slice is already dereferenced? (from function parameter)
     if (node->array->resultRegisterRc.size() != 2)
     {
         ensureCanBeChangedRC(context, node->array->resultRegisterRc);
@@ -522,7 +522,7 @@ bool ByteCodeGen::emitMakeLambda(ByteCodeGenContext* context)
         bc->isInDataSegment = true;
     }
 
-    // :CaptureBlock
+    // @CaptureBlock
     // Block capture
     if (node->typeInfo->isClosure())
     {

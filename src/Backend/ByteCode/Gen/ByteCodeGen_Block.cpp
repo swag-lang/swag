@@ -312,7 +312,7 @@ bool ByteCodeGen::emitInline(ByteCodeGenContext* context)
     }
 
     // Be sure this is done only once
-    // :EmitInlineOnce
+    // @EmitInlineOnce
     node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
     return true;
 }
@@ -1332,7 +1332,7 @@ bool ByteCodeGen::emitLeaveScopeReturn(ByteCodeGenContext* context, VectorNative
     if (node->hasOwnerInline() && (node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN) || node->isNot(AstNodeKind::Return)))
     {
         // If the inline comes from a mixin, then the node->ownerInline->scope is the one the mixin is included
-        // inside. We do not want to release that scope, as we do not own it ! But we want to release all the
+        // inside. We do not want to release that scope, as we do not own it! But we want to release all the
         // scopes until that one (excluded)
         if (node->ownerInline()->func->hasAttribute(ATTRIBUTE_MIXIN))
         {

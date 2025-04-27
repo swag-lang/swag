@@ -81,7 +81,7 @@ void Llvm::getReturnResult(LlvmEncoder& pp, TypeInfo* returnType, bool imm, cons
             returnResult = builder.CreateIntToPtr(builder.CreateLoad(I64_TY(), GEP64(allocR, reg.u32)), llvmType);
         builder.CreateStore(returnResult, builder.CreatePointerCast(allocResult, llvmType->getPointerTo()));
     }
-    // :ReturnStructByValue
+    // @ReturnStructByValue
     else if (returnType->isStruct())
     {
         SWAG_ASSERT(returnType->sizeOf <= sizeof(void*));
@@ -143,7 +143,7 @@ void Llvm::emitRet(LlvmEncoder& pp, const TypeInfoFuncAttr* typeFuncBc, TypeInfo
             const auto llvmType = getLlvmType(pp, returnType);
             builder.CreateRet(builder.CreateLoad(llvmType, allocResult));
         }
-        // :ReturnStructByValue
+        // @ReturnStructByValue
         else if (returnType->isStruct())
         {
             SWAG_ASSERT(returnType->sizeOf <= sizeof(void*));
@@ -164,7 +164,7 @@ llvm::FunctionType* Llvm::getOrCreateFuncType(LlvmEncoder& pp, const TypeInfoFun
 {
     auto& context = *pp.llvmContext;
 
-    // Already done ?
+    // Already done?
     if (closureToLambda)
     {
         const auto it = pp.mapFctTypeForeignClosure.find(typeFuncBc);
@@ -188,7 +188,7 @@ llvm::FunctionType* Llvm::getOrCreateFuncType(LlvmEncoder& pp, const TypeInfoFun
     {
         llvmReturnType = VOID_TY();
     }
-    // :ReturnStructByValue
+    // @ReturnStructByValue
     else if (returnType->isStruct())
     {
         SWAG_ASSERT(returnType->sizeOf <= sizeof(void*));
@@ -287,7 +287,7 @@ bool Llvm::emitGetParam(LlvmEncoder& pp, const TypeInfoFuncAttr* typeFuncBc, uin
                 if (toAdd)
                     ra = builder.CreateLShr(ra, builder.getInt64(toAdd * 8));
 
-                // We need to mask in order to dereference only the correct value
+                // We need to mask to dereference only the correct value
                 if (param->sizeOf != static_cast<uint32_t>(deRefSize))
                 {
                     switch (deRefSize)
@@ -855,7 +855,7 @@ bool Llvm::emitLambdaCall(LlvmEncoder& pp, llvm::Value*& resultFuncCall)
             const auto blockClosure = llvm::BasicBlock::Create(context, "", pp.llvmFunc);
 
             // Test closure context pointer. If null, this is a lambda.
-            // :VariadicAndClosure
+            // @VariadicAndClosure
             auto rc = pp.pushRAParams[pp.pushRAParams.size() - 1];
             if (typeFuncCall->isFctVariadic())
                 rc = pp.pushRAParams[pp.pushRAParams.size() - 3];

@@ -107,7 +107,7 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
     {
         Diagnostic err{node, formErr(Err0484, overload->symbol->name.cstr(), overload->symbol->ownerTable->scope->name.cstr())};
 
-        // Missing self ?
+        // Missing self?
         if (node->childCount() <= 1 &&
             node->ownerStructScope &&
             node->ownerStructScope == context->node->ownerStructScope &&
@@ -359,7 +359,7 @@ bool Semantic::resolveType(SemanticContext* context, AstTypeExpression* typeNode
             typeNode->typeFromLiteral = TypeManager::literalTypeToType(typeNode->literalType);
         typeNode->typeInfo = typeNode->typeFromLiteral;
 
-        // Typed variadic ?
+        // Typed variadic?
         if (typeNode->typeInfo->isTypedVariadic())
         {
             SWAG_ASSERT(!typeNode->children.empty());

@@ -196,7 +196,7 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
         --currentJobsIO;
     }
 
-    // Do we need to wake up my parent job ?
+    // Do we need to wake up my parent job?
     bool wakeUpParent = false;
 
     // Only if the job is done
@@ -235,7 +235,7 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
         job->jobGroup->doneJob();
     }
 
-    // Is this the last job ?
+    // Is this the last job?
     if (doneWithJobs())
         condVarDone.notify_all();
 }

@@ -26,7 +26,7 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
         return true;
     }
 
-    // :PointerArithmetic
+    // @PointerArithmetic
     if (leftTypeInfo->isPointer())
     {
         node->typeInfo = leftTypeInfo;
@@ -50,7 +50,7 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
         return true;
     }
 
-    // :PointerArithmetic
+    // @PointerArithmetic
     if (rightTypeInfo->isPointer())
     {
         if (!rightTypeInfo->isPointerArithmetic() && !context->forDebugger)
@@ -212,7 +212,7 @@ bool Semantic::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, Ast
         return true;
     }
 
-    // :PointerArithmetic
+    // @PointerArithmetic
     if (leftTypeInfo->isPointer())
     {
         node->typeInfo = leftTypeInfo;
@@ -984,7 +984,7 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
     SWAG_CHECK(evaluateConstExpression(context, left, right));
     YIELD();
 
-    // Special case for enum : nothing is possible, except for flags
+    // Special case for enum: nothing is possible, except for flags
     TypeInfo* leftTypeInfo  = TypeManager::concreteType(left->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
     TypeInfo* rightTypeInfo = getConcreteTypeUnRef(right, CONCRETE_FUNC | CONCRETE_ALIAS);
     if (right->hasSemFlag(SEMFLAG_FROM_REF))
@@ -1012,7 +1012,7 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
             return context->report({node, formErr(Err0768, node->token.cstr(), rightTypeInfo->getDisplayNameC())});
     }
 
-    // :ConcreteRef
+    // @ConcreteRef
     leftTypeInfo  = getConcreteTypeUnRef(left, CONCRETE_ALL);
     rightTypeInfo = getConcreteTypeUnRef(right, CONCRETE_ALL);
     SWAG_ASSERT(leftTypeInfo);
@@ -1152,7 +1152,7 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
             return Report::internalError(context->node, "resolveFactorExpression, token not supported");
     }
 
-    // :SpecFuncConstExpr
+    // @SpecFuncConstExpr
     if (node->hasSpecialFuncCall() && node->hasAstFlag(AST_CONST_EXPR))
     {
         if (leftTypeInfo->isStruct() && !leftTypeInfo->declNode->hasAttribute(ATTRIBUTE_CONSTEXPR))
@@ -1330,7 +1330,7 @@ bool Semantic::resolveShiftExpression(SemanticContext* context)
     SWAG_CHECK(evaluateConstExpression(context, left, right));
     YIELD();
 
-    // :ConcreteRef
+    // @ConcreteRef
     left->typeInfo           = getConcreteTypeUnRef(left, CONCRETE_ALL);
     right->typeInfo          = getConcreteTypeUnRef(right, CONCRETE_ALL);
     const auto leftTypeInfo  = left->typeInfo;
@@ -1370,7 +1370,7 @@ bool Semantic::resolveShiftExpression(SemanticContext* context)
             return Report::internalError(context->node, "resolveShiftExpression, token not supported");
     }
 
-    // :SpecFuncConstExpr
+    // @SpecFuncConstExpr
     if (node->hasSpecialFuncCall() && node->hasAstFlag(AST_CONST_EXPR))
     {
         if (leftTypeInfo->isStruct() && !leftTypeInfo->declNode->hasAttribute(ATTRIBUTE_CONSTEXPR))
@@ -1393,7 +1393,7 @@ bool Semantic::resolveBoolExpression(SemanticContext* context)
     SWAG_CHECK(evaluateConstExpression(context, left, right));
     YIELD();
 
-    // :ConcreteRef
+    // @ConcreteRef
     auto leftTypeInfo  = getConcreteTypeUnRef(left, CONCRETE_ALL);
     auto rightTypeInfo = getConcreteTypeUnRef(right, CONCRETE_ALL);
     leftTypeInfo       = left->typeInfo;

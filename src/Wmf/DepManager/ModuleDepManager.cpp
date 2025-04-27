@@ -147,7 +147,7 @@ bool ModuleDepManager::fetchModuleCfgLocal(ModuleDependency* dep, Path& cfgFileP
     auto remotePath = dep->resolvedLocation;
     remotePath.append(SWAG_CFG_FILE);
 
-    // No cfg file, we are done, we need one !
+    // No cfg file, we are done, we need one!
     std::error_code err;
     if (!std::filesystem::exists(remotePath, err))
         return Report::report({dep->node, dep->tokenLocation, formErr(Err0728, SWAG_CFG_FILE, remotePath.cstr())});
@@ -284,7 +284,7 @@ bool ModuleDepManager::resolveModuleDependency(const Module* srcModule, ModuleDe
         dep->locationAutoResolved = true;
     }
 
-    // Module not here : add it.
+    // Module not here: add it.
     if (!dep->module)
     {
         dep->module       = Allocator::alloc<Module>();

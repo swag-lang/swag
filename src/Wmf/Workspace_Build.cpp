@@ -120,7 +120,7 @@ Module* Workspace::createModule(const Utf8& moduleName, const Path& modulePath, 
     const auto cfgModule = g_ModuleCfgMgr->getCfgModule(moduleName);
     if (cfgModule)
     {
-        // :GetCfgFileParams
+        // @GetCfgFileParams
         module->buildCfg                    = cfgModule->buildCfg;
         module->buildParameters.foreignLibs = cfgModule->buildParameters.foreignLibs;
         module->buildParameters.globalUsing = cfgModule->buildParameters.globalUsing;
@@ -129,7 +129,7 @@ Module* Workspace::createModule(const Utf8& moduleName, const Path& modulePath, 
         module->docComment                  = std::move(cfgModule->docComment);
     }
 
-    // Is this the module we want to build ?
+    // Is this the module we want to build?
     if (g_CommandLine.moduleName == moduleName)
     {
         filteredModule = module;
@@ -146,7 +146,7 @@ Module* Workspace::createModule(const Utf8& moduleName, const Path& modulePath, 
 
 void Workspace::addBootstrap()
 {
-    // Bootstrap will be compiled in the workspace scope, in order to be defined once
+    // Bootstrap will be compiled in the workspace scope, to be defined once
     // for all modules
     bootstrapModule       = Allocator::alloc<Module>();
     bootstrapModule->kind = ModuleKind::BootStrap;
@@ -181,7 +181,7 @@ void Workspace::addRuntimeFile(const char* fileName) const
 
 void Workspace::addRuntime()
 {
-    // Runtime will be compiled in the workspace scope, in order to be defined once
+    // Runtime will be compiled in the workspace scope, to be defined once
     // for all modules
     runtimeModule       = Allocator::alloc<Module>();
     runtimeModule->kind = ModuleKind::Runtime;
@@ -260,7 +260,7 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, const Job* depJob)
     AstNode* prevNodeLocal = prevJob->nodes.empty() ? prevJob->originalNode : prevJob->nodes.back();
     SWAG_ASSERT(prevNodeLocal);
 
-    // :JobNodeIsFile
+    // @JobNodeIsFile
     if (prevNodeLocal && prevNodeLocal->is(AstNodeKind::File))
         return nullptr;
 
@@ -396,7 +396,7 @@ void Workspace::errorPendingJobs(const Vector<PendingJob>& pendingJobs)
         if (node->token.sourceFile->module->hasCycleError)
             continue;
 
-        // Is there a dependency cycle ?
+        // Is there a dependency cycle?
         Set<Job*>          done;
         VectorNative<Job*> cycle;
         const bool         isCycle = errorPendingCycle(pendingJob, pendingJob->waitingJobs, done, cycle);
@@ -834,7 +834,7 @@ bool Workspace::build()
     g_CommandLine.userArgumentsSlice.buffer = g_CommandLine.userArgumentsStr.data();
     g_CommandLine.userArgumentsSlice.count  = g_CommandLine.userArgumentsStr.size();
 
-    // Build !
+    // Build!
     auto result = true;
 
     {

@@ -32,7 +32,7 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
         if (leftTypeInfo->isSlice())
         {
             // Can only be compared to null
-            // :ComparedToNull
+            // @ComparedToNull
             SWAG_ASSERT(right->typeInfoCast && right->typeInfoCast->isPointerNull());
             const auto slice             = static_cast<SwagSlice*>(left->computedValue()->getStorageAddr());
             node->computedValue()->reg.b = !slice->buffer;
@@ -42,7 +42,7 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
         if (leftTypeInfo->isInterface())
         {
             // Can only be compared to null
-            // :ComparedToNull
+            // @ComparedToNull
             SWAG_ASSERT(right->typeInfoCast && right->typeInfoCast->isPointerNull());
             const auto slice             = static_cast<SwagInterface*>(left->computedValue()->getStorageAddr());
             node->computedValue()->reg.b = !slice->itable;
@@ -63,7 +63,7 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
             // Can only be compared to null
             if (right->typeInfoCast)
             {
-                // :ComparedToNull
+                // @ComparedToNull
                 SWAG_ASSERT(right->typeInfoCast->isPointerNull());
                 node->computedValue()->reg.b = !anyType;
             }
@@ -440,7 +440,7 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
     SWAG_CHECK(evaluateConstExpression(context, left, right));
     YIELD();
 
-    // :ConcreteRef
+    // @ConcreteRef
     const auto leftTypeInfo  = getConcreteTypeUnRef(left, CONCRETE_ALL);
     const auto rightTypeInfo = getConcreteTypeUnRef(right, CONCRETE_ALL);
     SWAG_ASSERT(leftTypeInfo);
@@ -498,7 +498,7 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
         }
     }
 
-    // :ComparedToNull
+    // @ComparedToNull
     if (!rightTypeInfo->isPointerNull())
     {
         // Slice can only be compared to null
@@ -553,7 +553,7 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
     else
         node->typeInfo = g_TypeMgr->typeInfoBool;
 
-    // :ConcreteRef
+    // @ConcreteRef
     left->typeInfo  = getConcreteTypeUnRef(left, CONCRETE_FUNC | CONCRETE_ENUM);
     right->typeInfo = getConcreteTypeUnRef(right, CONCRETE_FUNC | CONCRETE_ENUM);
 

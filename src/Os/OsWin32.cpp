@@ -975,7 +975,7 @@ namespace OS
                 VectorNative<CpuReg>   unwindRegs;
                 VectorNative<uint32_t> unwindOffsetRegs;
 
-                // Fake emit in order to compute the unwind infos
+                // Fake emit to compute the unwind infos
                 g_GenFFI.emitPush(g_GenFFI.cc->ffiBaseRegister);
                 unwindRegs.push_back(g_GenFFI.cc->ffiBaseRegister);
                 unwindOffsetRegs.push_back(g_GenFFI.concat.totalCount());
@@ -1026,7 +1026,7 @@ namespace OS
             g_GenFFI.emitRet();
         }
 
-        // The real deal : make the call
+        // The real deal: make the call
         using FuncPtr  = void (*)();
         const auto ptr = reinterpret_cast<FuncPtr>(g_GenFFI.concat.firstBucket->data + startOffset);
         ptr();

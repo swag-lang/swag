@@ -35,7 +35,7 @@ bool Semantic::resolveMove(SemanticContext* context)
     return true;
 }
 
-// :DeduceLambdaType
+// @DeduceLambdaType
 // This function is called when the type has been identified, and there's a lambda waiting for it.
 // This will launch the evaluation of the lambda now that we can deduce some missing types (like parameters)
 bool Semantic::resolveAfterKnownType(SemanticContext* context)
@@ -234,7 +234,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
 
     SWAG_CHECK(checkIsConstAffect(context, left, right));
 
-    // :ConcreteRef
+    // @ConcreteRef
     TypeInfo* leftTypeInfo  = TypeManager::concreteType(left->typeInfo, CONCRETE_ALIAS);
     TypeInfo* rightTypeInfo = getConcreteTypeUnRef(right, CONCRETE_FUNC | CONCRETE_ALIAS);
     if (right->hasSemFlag(SEMFLAG_FROM_REF))
@@ -244,7 +244,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
     SWAG_ASSERT(leftTypeInfo);
     SWAG_ASSERT(rightTypeInfo);
 
-    // Special case for enum : nothing is possible, except for flags
+    // Special case for enum: nothing is possible, except for flags
     bool forEnumFlags = false;
     if (node->token.isNot(TokenId::SymEqual))
     {
@@ -292,7 +292,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
         return context->report(err);
     }
 
-    // Is this an array like affectation ?
+    // Is this an array like affectation?
     AstArrayPointerIndex* arrayNode = nullptr;
     if (left->is(AstNodeKind::IdentifierRef) && left->lastChild()->is(AstNodeKind::ArrayPointerIndex))
     {
@@ -324,7 +324,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
     SWAG_CHECK(evaluateConstExpression(context, right));
     YIELD();
 
-    // Cast from struct to interface : need to wait for all interfaces to be registered
+    // Cast from struct to interface: need to wait for all interfaces to be registered
     if (tokenId == TokenId::SymEqual)
     {
         if (leftTypeInfo->isInterface() && rightTypeInfo->isStruct())
@@ -491,7 +491,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
                 break;
             }
 
-            // :PointerArithmetic
+            // @PointerArithmetic
             if (leftTypeInfo->isPointer())
             {
                 if (!leftTypeInfo->isPointerArithmetic())

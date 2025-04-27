@@ -108,14 +108,14 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
     // User specific initialization with a right side
     if (node->assignment && !node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED))
     {
-        // :DirectInlineLocalVar
+        // @DirectInlineLocalVar
         // The local variable is using the storage from the inline call.
         // No need to make a copy
         if (node->hasSpecFlag(AstVarDecl::SPEC_FLAG_INLINE_STORAGE))
         {
             freeRegisterRC(context, node->assignment);
         }
-        // :ForceNoAffect
+        // @ForceNoAffect
         else if (node->assignment->resultRegisterRc.size())
         {
             if (!node->hasSemFlag(SEMFLAG_PRE_CAST))
@@ -202,7 +202,7 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
                     }
                     else
                     {
-                        // Need to loop on every element of the array in order to initialize them
+                        // Need to loop on every element of the array to initialize them
                         RegisterList r0;
                         reserveRegisterRC(context, r0, 2);
 

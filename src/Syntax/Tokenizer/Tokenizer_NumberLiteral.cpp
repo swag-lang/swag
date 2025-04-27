@@ -287,7 +287,7 @@ bool Tokenizer::doIntFloatLiteral(TokenParse& tokenParse, uint32_t c)
     }
     else if (tokenParse.literalValue.s64 < INT32_MIN || tokenParse.literalValue.s64 > INT32_MAX)
     {
-        // Can be a negative number ?
+        // Can be a negative number?
         if (tokenParse.literalValue.u64 > static_cast<uint64_t>(INT64_MAX) + 1)
             tokenParse.literalType = LiteralType::TypeUnsigned64;
         else

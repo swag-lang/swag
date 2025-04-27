@@ -554,7 +554,7 @@ void Parser::registerSubDecl(AstNode* subDecl)
 
                 // Only the last attribute of the block needs to have a semanticAfterFct, so
                 // we rest it, and we will set it later for the last child
-                // :AttrUseLastChild
+                // @AttrUseLastChild
                 if (child->hasExtSemantic())
                     child->extSemantic()->semanticAfterFct = nullptr;
 
@@ -572,7 +572,7 @@ void Parser::registerSubDecl(AstNode* subDecl)
     const auto orgParent = newParent;
     Ast::removeFromParent(subDecl);
 
-    // :SubDeclParent
+    // @SubDeclParent
     while (newParent != sourceFile->astRoot && !newParent->hasAstFlag(AST_GLOBAL_NODE) && newParent->isNot(AstNodeKind::Namespace))
         newParent = newParent->parent;
 
@@ -580,7 +580,7 @@ void Parser::registerSubDecl(AstNode* subDecl)
     if (newAttrUse)
     {
         // The last child must have the semanticAfterFct set
-        // :AttrUseLastChild
+        // @AttrUseLastChild
         const auto back = newAttrUse->lastChild();
         back->allocateExtension(ExtensionKind::Semantic);
         SWAG_ASSERT(!back->extSemantic()->semanticAfterFct);

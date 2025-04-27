@@ -51,7 +51,7 @@ bool Parser::testIsValidUserName(const AstNode* node) const
     if (node->hasAstFlag(AST_GENERATED))
         return true;
 
-    // An identifier that starts with '__' is reserved for internal usage !
+    // An identifier that starts with '__' is reserved for internal usage!
     if (!sourceFile->acceptsInternalStuff() && isGeneratedName(node->token.text))
         return false;
 
@@ -60,7 +60,7 @@ bool Parser::testIsValidUserName(const AstNode* node) const
 
 bool Parser::checkIsValidUserName(AstNode* node, const Token* loc) const
 {
-    // An identifier that starts with '__' is reserved for internal usage !
+    // An identifier that starts with '__' is reserved for internal usage!
     if (node->token.text == "_")
         return error(loc ? *loc : node->token, toErr(Err0512));
     if (!testIsValidUserName(node))
@@ -267,7 +267,7 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
                 {
                     if (tokenParse.is(TokenId::SymLeftParen))
                     {
-                        // :SilentCall
+                        // @SilentCall
                         SWAG_CHECK(eatToken());
                         identifier = Ast::newNode<AstIdentifier>(AstNodeKind::Identifier, this, parent);
                         identifier->inheritTokenLocation(tokenParse.token);

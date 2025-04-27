@@ -42,7 +42,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo,
 
     auto& mapPerSeg = getMapPerSeg(storageSegment);
 
-    // Already computed ?
+    // Already computed?
     const auto it = mapPerSeg.exportedTypes.find(typeName);
     if (it != mapPerSeg.exportedTypes.end())
     {

@@ -85,7 +85,7 @@ bool EnumerateModuleJob::dealWithFileToLoads(Module* theModule)
     {
         Path orgFilePath = n->token.text;
 
-        // Is this a simple file ?
+        // Is this a simple file?
         auto            filePath = orgFilePath;
         std::error_code err;
         if (!std::filesystem::exists(filePath, err))
@@ -128,7 +128,7 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
     if (!dealWithFileToLoads(theModule))
         return;
 
-    // Is the list of files already computed ?
+    // Is the list of files already computed?
     const auto it = g_Workspace->mapFirstPassModulesNames.find(path);
     if (it != g_Workspace->mapFirstPassModulesNames.end())
     {
@@ -407,7 +407,7 @@ JobResult EnumerateModuleJob::execute()
                 {
                     const auto cfgModule = g_ModuleCfgMgr->getCfgModule(mod->name);
 
-                    // :GetCfgFileParams
+                    // @GetCfgFileParams
                     for (const auto& fl : cfgModule->buildParameters.foreignLibs)
                         m->buildParameters.foreignLibs.insert(fl);
 

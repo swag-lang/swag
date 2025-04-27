@@ -9,7 +9,7 @@ void swagAssert(const char* expr, const char* file, int line);
 
 #define SWAG_IF_ASSERT(__expr) __expr
 
-#else // !SWAG_HAS_ASSERT
+#else //!SWAG_HAS_ASSERT
 
 #define SWAG_ASSERT(__expr) \
     do                      \

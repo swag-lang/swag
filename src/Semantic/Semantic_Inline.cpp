@@ -226,7 +226,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* n
         }
     }
 
-    // Clone !
+    // Clone!
     const auto newContent = funcDecl->content->clone(cloneContext);
 
     if (newContent->hasExtByteCode())

@@ -147,7 +147,7 @@ void Generic::deduceSubType(SymbolMatchContext&      context,
                 SWAG_ASSERT(false);
             }
 
-            // Array dimension was a generic symbol. Set the corresponding symbol in order to check its value
+            // Array dimension was a generic symbol. Set the corresponding symbol to check its value
             if (wantedArray->isGeneric() && wantedArray->hasFlag(TYPEINFO_GENERIC_COUNT))
             {
                 SWAG_ASSERT(wantedArray->sizeNode);
@@ -157,7 +157,7 @@ void Generic::deduceSubType(SymbolMatchContext&      context,
                 ComputedValue* cv = Allocator::alloc<ComputedValue>();
                 cv->reg.s64       = count;
 
-                // Constant already defined ?
+                // Constant already defined?
                 const auto& cstName = wantedArray->sizeNode->resolvedSymbolName()->name;
                 const auto  it      = context.genericReplaceValues.find(cstName);
                 if (it != context.genericReplaceValues.end())
@@ -272,7 +272,7 @@ void Generic::deduceSubType(SymbolMatchContext&      context,
 
 void Generic::deduceType(SymbolMatchContext& context, TypeInfo* wantedTypeInfo, TypeInfo* callTypeInfo, AstNode* callParameter, uint32_t idxParam, CastFlags castFlags)
 {
-    // Do we already have mapped the generic parameter to something ?
+    // Do we already have mapped the generic parameter to something?
     const auto it = context.genericReplaceTypes.find(wantedTypeInfo->name);
     if (it != context.genericReplaceTypes.end())
     {
@@ -340,7 +340,7 @@ void Generic::deduceType(SymbolMatchContext& context, TypeInfo* wantedTypeInfo, 
 
     auto regTypeInfo = callTypeInfo;
 
-    // :DupGen
+    // @DupGen
     if (wantedTypeInfo->isStruct() && callTypeInfo->isStruct())
     {
         const auto callStruct   = castTypeInfo<TypeInfoStruct>(callTypeInfo, TypeInfoKind::Struct);

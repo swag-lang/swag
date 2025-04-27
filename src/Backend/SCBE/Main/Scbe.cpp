@@ -124,7 +124,7 @@ JobResult Scbe::prepareOutput(const BuildParameters& buildParameters, int stage,
     if (pp.pass == BackendPreCompilePass::Init && buildParameters.precompileIndex == 0)
         module->startBuilding();
 
-    // Do we need to generate the file ?
+    // Do we need to generate the file?
     if (!mustCompile)
         return JobResult::ReleaseJob;
 

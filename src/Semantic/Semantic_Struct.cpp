@@ -100,7 +100,7 @@ bool Semantic::resolveImplForType(SemanticContext* context)
     const auto constSegment = nameStruct->computedValue()->storageSegment;
     SWAG_ASSERT(typeParamItf->offset);
 
-    // :itableHeader
+    // @itableHeader
     ScopedLock lk(typeStruct->mutex);
 
     {
@@ -200,7 +200,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
         const auto childFct = castAst<AstFuncDecl>(child, AstNodeKind::FuncDecl);
 
         // We need to search the function (as a variable) in the interface
-        auto itfSymbol = typeInterface->findChildByNameNoLock(child->token.text); // O(n) !
+        auto itfSymbol = typeInterface->findChildByNameNoLock(child->token.text); // O(n)!
 
         // Must be an 'impl' function
         if (!childFct->hasSpecFlag(AstFuncDecl::SPEC_FLAG_IMPL))
@@ -340,14 +340,14 @@ bool Semantic::resolveImplFor(SemanticContext* context)
     // - Then one pointer for interface functions
     // - One more void*
     // We have at least one room for a function, even if the interface is empty
-    // :itableHeader
+    // @itableHeader
     const auto     constSegment = getConstantSegFromContext(node);
     void**         ptrITable;
     constexpr int  sizeOfHeader = 2 * sizeof(void*);
     const uint32_t itableOffset = constSegment->reserve(sizeOfHeader + (std::max(numFctInterface, static_cast<uint32_t>(1)) * sizeof(void*)), reinterpret_cast<uint8_t**>(&ptrITable), sizeof(void*));
     auto           offset       = itableOffset;
 
-    // :itableHeader
+    // @itableHeader
     // The first value will be the concrete type to the interface
     // The second value will be the concrete type to the corresponding struct
     *ptrITable++ = nullptr;
@@ -391,7 +391,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
             node->ownerScope->addPublicNode(node);
     }
 
-    // :ItfIsConstantSeg
+    // @ItfIsConstantSeg
     // Setup constant segment offset. We put the offset to the start of the functions, not to the concrete type offset (0)
     typeParamItf->offset = itableOffset + sizeOfHeader;
     decreaseInterfaceCount(typeStruct);
@@ -532,7 +532,7 @@ bool Semantic::resolveInterface(SemanticContext* context)
     if (sourceFile->hasFlag(FILE_BOOTSTRAP))
         g_Workspace->swagScope.registerType(node->typeInfo);
 
-    // :BecauseOfThat
+    // @BecauseOfThat
     ScopedLock lk(node->mutex);
     node->addSemFlag(SEMFLAG_PRE_RESOLVE);
     node->setResolvedSymbolOverload(node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd));
@@ -581,7 +581,7 @@ void Semantic::decreaseMethodCount(const AstFuncDecl* funcNode, TypeInfoStruct* 
 
 bool Semantic::checkImplScopes(SemanticContext* context, AstImpl* node, const Scope* scopeImpl, const Scope* scope)
 {
-    // impl scope and corresponding identifier scope must be the same !
+    // impl scope and corresponding identifier scope must be the same!
     if (scopeImpl != scope)
     {
         Diagnostic err{node, node->token, formErr(Err0300, node->token.cstr())};
@@ -665,7 +665,7 @@ bool Semantic::preResolveGeneratedStruct(SemanticContext* context)
     }
 
     // We convert the {...} expression to a structure. As the structure can contain generic parameters,
-    // we need to copy them. But from the function or the structure ?
+    // we need to copy them. But from the function or the structure?
     // For now, we give the priority to the generic parameters from the function, if there are any
     // But this will not work in all cases
     if (!structNode->genericParameters)
@@ -773,7 +773,7 @@ bool Semantic::preResolveStructContent(SemanticContext* context)
     toAdd.kind     = symbolKind;
     toAdd.flags    = overFlags | OVERLOAD_INCOMPLETE;
 
-    // :BecauseOfThat
+    // @BecauseOfThat
     ScopedLock lk(node->mutex);
     node->addSemFlag(SEMFLAG_PRE_RESOLVE);
     node->setResolvedSymbol(toAdd.symbolName, node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd));
@@ -986,7 +986,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
     // If one of my children is incomplete, then we must wait
     for (auto child : children)
     {
-        // Waiting for myself !
+        // Waiting for myself!
         if (child->typeInfo == typeInfo)
         {
             Diagnostic err{node, node->getTokenName(), formErr(Err0507, node->token.cstr())};
@@ -1097,7 +1097,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
                     }
                 }
 
-                // :opAffectConstExpr
+                // @opAffectConstExpr
                 // Collect has already been simulated with an opAffect
                 else if (varDecl->assignment)
                 {
@@ -1317,7 +1317,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
     toAdd.kind     = SymbolKind::Struct;
 
     {
-        // :BecauseOfThat
+        // @BecauseOfThat
         ScopedLock lk(node->mutex);
         node->addSemFlag(SEMFLAG_PRE_RESOLVE);
         auto newOver = node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd);

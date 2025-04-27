@@ -145,7 +145,7 @@ bool Semantic::resolveMakePointerLambda(SemanticContext* context)
     node->typeInfo    = lambdaType;
     node->byteCodeFct = ByteCodeGen::emitMakeLambda;
 
-    // :CaptureBlock
+    // @CaptureBlock
     // Block capture
     if (node->lambda && node->lambda->captureParameters)
     {
@@ -240,7 +240,7 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
     }
 
     // If this is an array, then this is legit, the pointer will address the first
-    // element : need to find it's type
+    // element: need to find it's type
     else if (typeInfo->isArray())
     {
         while (typeInfo->isArray())
@@ -252,7 +252,7 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
         ptrFlags.add(TYPEINFO_POINTER_ARITHMETIC);
     }
 
-    // :PointerArithmetic
+    // @PointerArithmetic
     // Taking the address of an array element is ok for pointer arithmetic
     if (child->is(AstNodeKind::IdentifierRef))
     {
@@ -390,7 +390,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
     // Slicing of a pointer
     else if (typeVar->isPointer())
     {
-        // :PointerArithmetic
+        // @PointerArithmetic
         if (!typeVar->isPointerArithmetic())
         {
             Diagnostic err{node, node->token, toErr(Err0228)};
@@ -417,7 +417,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
     // Slicing of a struct with a special function
     else if (typeVar->isStruct())
     {
-        // Flatten all operator parameters : self, then all indexes
+        // Flatten all operator parameters: self, then all indexes
         node->structFlatParams.clear();
         node->structFlatParams.push_back(node->lowerBound);
         node->structFlatParams.push_back(node->upperBound);
@@ -579,7 +579,7 @@ bool Semantic::resolveArrayPointerIndex(SemanticContext* context)
             if (node->firstChild()->isNot(AstNodeKind::ArrayPointerIndex))
                 node->addSemFlag(SEMFLAG_FORCE_TAKE_ADDRESS);
 
-            // In order to resolve what's next, we need to fill the startScope of the identifier ref
+            // to resolve what's next, we need to fill the startScope of the identifier ref
             auto typeReturn = node->array->typeInfo;
 
             // There's a 'opIndex' function
@@ -778,7 +778,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
             {
                 // Flatten all indexes. self and value will be set before the call later
                 // Can be already done, so do not overwrite
-                // :StructFlatParamsDone
+                // @StructFlatParamsDone
                 if (arrayNode->structFlatParams.empty())
                 {
                     arrayNode->structFlatParams.push_back(arrayNode->access);
@@ -897,10 +897,10 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
         }
     }
 
-    // Do not set resolvedSymbolOverload() !
+    // Do not set resolvedSymbolOverload()!
     arrayNode->setResolvedSymbolName(arrayNode->array->resolvedSymbolName());
 
-    // Can we dereference at compile time ?
+    // Can we dereference at compile time?
     if (arrayType->isString())
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CAST_FLAG_TRY_COERCE | CAST_FLAG_INDEX));
@@ -1062,8 +1062,8 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
                 break;
             }
 
-            // Flatten all operator parameters : self, then all indexes
-            // :StructFlatParamsDone
+            // Flatten all operator parameters: self, then all indexes
+            // @StructFlatParamsDone
             arrayNode->structFlatParams.clear();
             arrayNode->structFlatParams.push_back(arrayNode->access);
 

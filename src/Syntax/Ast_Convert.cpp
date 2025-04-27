@@ -36,7 +36,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
 
     // The variable will be inserted after its reference (below), so we need to inverse the order of evaluation.
     // Seems a little bit like a hack. Not sure if this will always work.
-    // :ReverseLiteralStruct
+    // @ReverseLiteralStruct
     fromNode->parent->addAstFlag(AST_REVERSE_SEMANTIC);
 
     varNode->inheritTokenLocation(fromNode->token);
@@ -92,7 +92,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
         if (isNamed)
             oneParam->addExtraPointer(ExtraPointerKind::IsNamed, isNamed);
 
-        // If this is for a return, remember it, in order to make a move or a copy
+        // If this is for a return, remember it, to make a move or a copy
         if (typeStruct->isTuple() && fromNode->parent->is(AstNodeKind::Return))
             oneParam->autoTupleReturn = castAst<AstReturn>(fromNode->parent, AstNodeKind::Return);
     }
@@ -145,7 +145,7 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
     const auto sourceFile = context->sourceFile;
     const auto typeList   = castTypeInfo<TypeInfoList>(fromNode->typeInfo, TypeInfoKind::TypeListTuple);
 
-    // :SubDeclParent
+    // @SubDeclParent
     auto newParent = fromNode->parent;
     while (newParent != sourceFile->astRoot && !newParent->hasAstFlag(AST_GLOBAL_NODE) && newParent->isNot(AstNodeKind::Namespace))
     {
@@ -394,7 +394,7 @@ bool Ast::convertLiteralTupleToStructDecl(JobContext* context, AstNode* parent, 
 void Ast::convertTypeStructToStructDecl(JobContext* context, TypeInfoStruct* typeStruct)
 {
     // Generate some fake nodes
-    // This peace of code is necessary to solve something like :
+    // This peace of code is necessary to solve something like:
     // let s = [{1, 2}, {3, 4}]
     const auto structDecl        = newStructDecl(nullptr, nullptr);
     structDecl->originalParent   = typeStruct->declNode;
@@ -480,12 +480,12 @@ bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identi
     back->removeAstFlag(AST_NO_BYTECODE);
     back->addAstFlag(AST_IN_TYPE_VAR_DECLARATION);
 
-    // :StructParamsNoSem
+    // @StructParamsNoSem
     // Call parameters have already been evaluated, so do not reevaluate them again
     back->callParameters->addAstFlag(AST_NO_SEMANTIC);
     back->callParameters->addSemFlag(node->semFlags.mask(SEMFLAG_ACCESS_MASK));
 
-    // :DupGen :StructParamsNoSem
+    // @DupGen:StructParamsNoSem
     // Type has already been evaluated
     typeNode->identifier->addAstFlag(AST_NO_SEMANTIC);
     typeNode->identifier->addSemFlag(node->semFlags.mask(SEMFLAG_ACCESS_MASK));

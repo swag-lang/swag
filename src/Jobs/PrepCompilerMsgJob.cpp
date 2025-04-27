@@ -10,7 +10,7 @@ JobResult PrepCompilerMsgJob::execute()
 
     JobContext context;
     context.sourceFile = module->files.front();
-    context.node       = context.sourceFile->astRoot; // :JobNodeIsFile
+    context.node       = context.sourceFile->astRoot; // @JobNodeIsFile
     context.baseJob    = this;
     baseContext        = &context;
 

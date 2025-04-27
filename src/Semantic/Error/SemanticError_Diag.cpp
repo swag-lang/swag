@@ -343,7 +343,7 @@ namespace
             errorParam.addNote(note, false);
         }
 
-        // A more specific cast message ?
+        // A more specific cast message?
         if (addSpecificCastErr)
         {
             Utf8                      castMsg, castHint;
@@ -384,7 +384,7 @@ namespace
                 err->hint = castHint;
             }
 
-            // Is there an explicit cast possible ?
+            // Is there an explicit cast possible?
             if (!bi.castErrorFlags.has(CAST_FLAG_EXPLICIT) || bi.castErrorFlags.has(CAST_FLAG_COERCE))
             {
                 if (bi.castErrorToType && bi.castErrorFromType && !bi.castErrorToType->isGeneric())

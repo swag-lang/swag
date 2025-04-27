@@ -175,7 +175,7 @@ namespace
 
 bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstIdentifierRef* identifierRef, AstIdentifier* identifier)
 {
-    // What kind of thing to we search for ?
+    // What kind of thing to we search for?
     const auto pr1       = identifier->getParent(1);
     const auto pr2       = identifier->getParent(2);
     auto       searchFor = IdentifierSearchFor::Whatever;

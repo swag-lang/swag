@@ -78,7 +78,7 @@ bool ByteCodeRun::executeIsConstExprSI(const ByteCodeRunContext* context, const 
             return true;
     }
 
-    // The rest : flags
+    // The rest: flags
     /////////////////////////////////////////
     if (child->hasAstFlag(AST_COMPUTED_VALUE | AST_CONST_EXPR))
         return true;
@@ -88,7 +88,7 @@ bool ByteCodeRun::executeIsConstExprSI(const ByteCodeRunContext* context, const 
 
 void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, const ByteCodeInstruction* ip)
 {
-    // Is this constexpr ?
+    // Is this constexpr?
     const auto solved = reinterpret_cast<SymbolOverload*>(ip->d.pointer);
     if (!executeIsConstExprSI(context, ip))
     {

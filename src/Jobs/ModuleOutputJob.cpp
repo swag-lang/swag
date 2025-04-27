@@ -55,7 +55,7 @@ JobResult ModuleOutputJob::execute()
             backend->numPreCompileBuffers = module->byteCodeFunc.size() / std::max(perWorker, static_cast<uint32_t>(32));
         }
 
-        backend->numPreCompileBuffers = std::max(backend->numPreCompileBuffers, static_cast<uint32_t>(2)); // :SegZeroIsData
+        backend->numPreCompileBuffers = std::max(backend->numPreCompileBuffers, static_cast<uint32_t>(2)); // @SegZeroIsData
         backend->numPreCompileBuffers = std::min(backend->numPreCompileBuffers, MAX_PRECOMPILE_BUFFERS);
 
         for (uint32_t i = 0; i < backend->numPreCompileBuffers; i++)

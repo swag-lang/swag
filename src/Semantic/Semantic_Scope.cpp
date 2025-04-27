@@ -39,7 +39,7 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Collected
     SWAG_CHECK(Semantic::findEnumTypeInContext(context, identifierRef, typeEnum, hasEnum, testedOver));
     YIELD();
 
-    // More than one match : ambiguous
+    // More than one match: ambiguous
     if (typeEnum.size() > 1)
     {
         Diagnostic err{identifierRef, formErr(Err0021, identifier->token.cstr())};
@@ -59,7 +59,7 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Collected
         return context->report(err);
     }
 
-    // One single match : we are done
+    // One single match: we are done
     if (typeEnum.size() == 1)
     {
         identifierRef->startScope = typeEnum[0]->scope;
@@ -87,7 +87,7 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Collected
 
             Diagnostic err{identifierRef, formErr(Err0681, identifier->token.cstr())};
 
-            // Call to a function ?
+            // Call to a function?
             if (testedOver.size() == 1)
                 err.addNote(Diagnostic::hereIs(testedOver[0]));
 
@@ -124,7 +124,7 @@ bool Semantic::collectScopeHierarchy(SemanticContext*                 context,
                                      AstIdentifierRef*                identifierRef,
                                      AstIdentifier*                   identifier)
 {
-    // :AutoScope
+    // @AutoScope
     // Auto scoping depending on the context
     // We scan the parent hierarchy for an already defined type that can be used for scoping
     if (identifierRef->hasSpecFlag(AstIdentifierRef::SPEC_FLAG_AUTO_SCOPE) && !identifierRef->hasSpecFlag(AstIdentifierRef::SPEC_FLAG_WITH_SCOPE))
@@ -248,7 +248,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
             // If the types are completed between the collect and the waitTypeCompleted, then we won't find the missing hierarchies,
             // because we won't parse again.
             // So here, if we do not find symbols, then we restart until all types are completed.
-            // :TryAgainOnce
+            // @TryAgainOnce
             waitTypeCompleted(job, startScope->owner->typeInfo);
             YIELD();
         }
@@ -283,7 +283,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
         if (!symbolsMatch.empty())
             return true;
 
-        // :TryAgainOnce
+        // @TryAgainOnce
         for (const auto& sv : scopeHierarchy)
         {
             waitTypeCompleted(job, sv.scope->owner->typeInfo);
@@ -297,7 +297,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
         }
     }
 
-    // Error, no symbol !
+    // Error, no symbol!
     if (identifierRef->hasAstFlag(AST_SILENT_CHECK))
         return true;
     return SemanticError::unknownIdentifierError(context, identifierRef, identifier);
@@ -381,7 +381,7 @@ void Semantic::collectAlternativeScopeVars(const AstNode* startNode, VectorNativ
                             toAdd.push_back({.node = it0.node, .leafNode = it1.node, .scope = it1.scope, .flags = it1.flags});
                     }
 
-                    // If this is a struct that comes from a generic, we need to also register the generic scope in order
+                    // If this is a struct that comes from a generic, we need to also register the generic scope
                     // to be able to find generic functions to instantiate
                     SWAG_ASSERT(it0.scope->owner->typeInfo->isStruct());
                     const auto typeStruct = castTypeInfo<TypeInfoStruct>(it0.scope->owner->typeInfo, TypeInfoKind::Struct);
@@ -437,7 +437,7 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
                                                 IdentifierScopeUpMode            scopeUpMode,
                                                 TokenParse*                      scopeUpValue)
 {
-    // Add registered alternative scopes of the node of the owner scope
+    // Add registered alternative scopes of the owner scope
     if (startNode->ownerScope && startNode->ownerScope->owner)
     {
         const auto owner = startNode->ownerScope->owner;

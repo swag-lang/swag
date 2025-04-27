@@ -178,7 +178,7 @@ bool Semantic::setFirstParamUFCS(SemanticContext* context, AstIdentifierRef* ide
         {
             // Function that returns an interface, used as an UFCS.
             // Ex: var cfg = @compiler().getBuildCfg()
-            // :SpecUFCSNode
+            // @SpecUFCSNode
             identifierRef->previousResolvedNode->addAstFlag(AST_TO_UFCS);
             fctCallParam->specUFCSNode = identifierRef->previousResolvedNode;
             const auto id              = Ast::newIdentifier(idRef, form("__8tmp_%d", g_UniqueID.fetch_add(1)), nullptr, idRef);
@@ -186,7 +186,7 @@ bool Semantic::setFirstParamUFCS(SemanticContext* context, AstIdentifierRef* ide
         }
         else
         {
-            // Call from a lambda, on a variable : we need to keep the original variable, and put the UFCS one in its own identifier-ref
+            // Call from a lambda, on a variable: we need to keep the original variable, and put the UFCS one in its own identifier-ref
             // Copy all previous references to the one we want to pass as parameter
             // X.Y.call(...) => X.Y.call(X.Y, ...)
             for (const auto child : identifierRef->children)
@@ -229,7 +229,7 @@ bool Semantic::setFirstParamUFCS(SemanticContext* context, AstIdentifierRef* ide
                     copyChild->typeInfo = dependentVar->typeInfo;
 
                     // In case of a parameter of an inlined function, we will have to find the real OVERLOAD_VAR_INLINE variable
-                    // :InlineUsingParam
+                    // @InlineUsingParam
                     if (dependentVar->is(AstNodeKind::FuncDeclParam) && copyChild->hasOwnerInline() && copyChild->ownerInline()->parametersScope)
                     {
                         // Really, but REALLY not sure about that fix !! Seems really like a hack...

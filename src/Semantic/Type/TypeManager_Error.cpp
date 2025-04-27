@@ -240,7 +240,7 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, Vector<Utf8>& remarks, 
 
 bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags, CastErrorType castErrorType)
 {
-    // Last minute change : convert 'fromType' (struct) to 'toType' with an opCast
+    // Last minute change: convert 'fromType' (struct) to 'toType' with an opCast
     if (!castFlags.has(CAST_FLAG_NO_LAST_MINUTE))
     {
         if (tryOpCast(context, toType, fromType, fromNode, castFlags))
@@ -271,7 +271,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         if (!hint.empty())
             notes.push_back(Diagnostic::note(fromNode, hint));
 
-        // Is there an explicit cast possible ?
+        // Is there an explicit cast possible?
         if (!castFlags.has(CAST_FLAG_EXPLICIT) || castFlags.has(CAST_FLAG_COERCE))
         {
             if (makeCompatibles(context, toType, fromType, nullptr, nullptr, CAST_FLAG_EXPLICIT | CAST_FLAG_JUST_CHECK))

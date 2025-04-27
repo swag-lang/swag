@@ -120,7 +120,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
     if (toAffect.empty())
         return false;
 
-    // :opAffectParam
+    // @opAffectParam
     if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
     {
         fromNode->addAstFlag(AST_OP_AFFECT_CAST);

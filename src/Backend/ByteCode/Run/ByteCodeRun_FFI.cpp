@@ -24,7 +24,7 @@ void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc)
     if (!g_ModuleMgr->loadModule(moduleName))
     {
         // Perhaps the module is dependent on another module, so we need to be sure that our dependencies are
-        // all loaded : load all, from last to first (dependencies are added in reverse order, latest first)
+        // all loaded: load all, from last to first (dependencies are added in reverse order, latest first)
         SWAG_ASSERT(context->sourceFile);
         const auto module = context->sourceFile->module;
         for (const auto& dep : module->moduleDependencies)
