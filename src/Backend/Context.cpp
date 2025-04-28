@@ -174,7 +174,7 @@ namespace
 
     // If /OPT:ICF is enabled in the linker (COMDAT FOLDING), this will not work
     // as the linker will make only one __callback function, and all pointers in
-    // g_CallbackArr will be the same !!!
+    // g_CallbackArr will be the same!!!
 
     DECL_CB(a);
     DECL_CB(b);

@@ -2249,7 +2249,7 @@ bool Llvm::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
                 // - parameters not used in the function body will be removed by llvm (even without optim activated!)
                 // - a parameter will not be visible anymore ("optimized away") after its last usage.
                 // So we force a read/write of each parameter just before the "ret" to avoid that debug mess.
-                // RIDICULOUS !!
+                // RIDICULOUS!!
                 //
                 // If we request an optimized code, do not do that crap.
                 emitRet(pp, typeFunc, returnType, allocResult);

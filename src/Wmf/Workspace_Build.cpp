@@ -609,7 +609,7 @@ bool Workspace::buildRTModule(Module* module)
     ByteCodeOptimizer::optimize(nullptr, module, done);
     g_ThreadMgr.waitEndJobs();
 
-    // Errors !!!
+    // Errors!!!
     if (module->numErrors)
     {
         Report::error(module->is(ModuleKind::BootStrap) ? toErr(Fat0014) : toErr(Fat0015));

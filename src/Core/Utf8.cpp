@@ -391,17 +391,17 @@ void Utf8::replaceAll(char src, char dst)
 
 void Utf8::replaceAll(const Utf8& src, const Utf8& dst)
 {
-    bool recom = true;
-    while (recom)
+    bool reStart = true;
+    while (reStart)
     {
         Utf8 result;
-        recom = false;
+        reStart = false;
 
         uint32_t lastIt = 0;
         auto     it     = find(src);
         while (it != -1)
         {
-            recom = true;
+            reStart = true;
             result += Utf8(buffer + lastIt, it - lastIt);
             result += dst;
             lastIt = it + src.length();
@@ -529,14 +529,14 @@ void Utf8::toUni32(VectorNative<uint32_t>& uni, int maxChars) const
     uni.clear();
 
     unsigned    offset;
-    const char* pz    = buffer;
-    const auto  endpz = buffer + count;
-    while (pz != endpz)
+    const char* start = buffer;
+    const auto  end   = buffer + count;
+    while (start != end)
     {
         if (maxChars != -1 && uni.size() >= static_cast<size_t>(maxChars))
             return;
         uint32_t c;
-        pz = decodeUtf8(pz, c, offset);
+        start = decodeUtf8(start, c, offset);
         uni.push_back(c);
     }
 }
@@ -546,14 +546,14 @@ void Utf8::toUni16(VectorNative<uint16_t>& uni, int maxChars) const
     uni.clear();
 
     unsigned    offset;
-    const char* pz    = buffer;
-    const auto  endpz = buffer + count;
-    while (pz != endpz)
+    const char* start = buffer;
+    const auto  end   = buffer + count;
+    while (start != end)
     {
         if (maxChars != -1 && uni.size() >= static_cast<size_t>(maxChars))
             return;
         uint32_t c;
-        pz = decodeUtf8(pz, c, offset);
+        start = decodeUtf8(start, c, offset);
         uni.push_back(static_cast<uint16_t>(c));
     }
 }
@@ -718,17 +718,17 @@ void Utf8::replace(const char* src, const char* dst)
 {
     makeLocal();
     const uint32_t len    = static_cast<uint32_t>(strlen(src));
-    const uint32_t lenins = static_cast<uint32_t>(strlen(dst));
+    const uint32_t lenIns = static_cast<uint32_t>(strlen(dst));
     uint32_t       pos    = 0;
     while (true)
     {
-        const auto npos = find(src, pos);
-        if (npos == -1)
+        const auto nPos = find(src, pos);
+        if (nPos == -1)
             break;
-        pos = static_cast<uint32_t>(npos);
+        pos = static_cast<uint32_t>(nPos);
         remove(pos, len);
         insert(pos, dst);
-        pos += lenins;
+        pos += lenIns;
     }
 }
 
@@ -976,7 +976,7 @@ uint32_t Utf8::fuzzyCompare(const Utf8& str1, const Utf8& str2)
 
 #define MIN3(a, b, c) ((a) < (b) ? ((a) < (c) ? (a) : (c)) : ((b) < (c) ? (b) : (c)))
 
-    unsigned int       y, lastdiag;
+    unsigned int       y, lastDiag;
     const unsigned int s1Len = str1.length();
     const unsigned int s2Len = str2.length();
 
@@ -986,11 +986,11 @@ uint32_t Utf8::fuzzyCompare(const Utf8& str1, const Utf8& str2)
     for (unsigned int x = 1; x <= s2Len; x++)
     {
         column[0] = x;
-        for (y = 1, lastdiag = x - 1; y <= s1Len; y++)
+        for (y = 1, lastDiag = x - 1; y <= s1Len; y++)
         {
-            const unsigned int olddiag = column[y];
-            column[y]                  = MIN3(column[y] + 1, column[y - 1] + 1, lastdiag + (str1[y - 1] == str2[x - 1] ? 0 : 1));
-            lastdiag                   = olddiag;
+            const unsigned int oldDiag = column[y];
+            column[y]                  = MIN3(column[y] + 1, column[y - 1] + 1, lastDiag + (str1[y - 1] == str2[x - 1] ? 0 : 1));
+            lastDiag                   = oldDiag;
         }
     }
 

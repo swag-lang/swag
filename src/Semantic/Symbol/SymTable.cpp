@@ -130,13 +130,13 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
         return symbol->overloads[0];
     }
 
-    // If symbol was registered as a placeholder, and is no more, then replace its kind
+    // If the symbol was registered as a placeholder and is no more, then replace its kind
     if (symbol->is(SymbolKind::PlaceHolder) && toAdd.kind != SymbolKind::PlaceHolder)
         symbol->kind = toAdd.kind;
 
     SymbolOverload* overload = nullptr;
 
-    // Remove incomplete flag
+    // Remove the incomplete flag
     if (symbol->is(SymbolKind::TypeAlias) ||
         symbol->is(SymbolKind::Variable) ||
         symbol->is(SymbolKind::Struct) ||
@@ -178,7 +178,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
         overload = symbol->addOverloadNoLock(toAdd.node, toAdd.typeInfo, toAdd.computedValue);
         overload->flags.add(toAdd.flags);
 
-        // Register for dropping in end of scope, if necessary
+        // Register for dropping at the end of the scope, if necessary
         if (symbol->is(SymbolKind::Variable) &&
             !toAdd.flags.has(OVERLOAD_VAR_FUNC_PARAM | OVERLOAD_VAR_GLOBAL | OVERLOAD_TUPLE_UNPACK) &&
             !toAdd.computedValue)
@@ -200,7 +200,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
         overload->computedValue.storageSegment = toAdd.storageSegment;
     }
 
-    // One less overload. When this reached zero, this means we know every type for the same symbol,
+    // One less overload. When this reaches zero, this means we know every type for the same symbol,
     // and so we can wake up all jobs waiting for that symbol to be solved
     if (!toAdd.flags.has(OVERLOAD_INCOMPLETE) && !toAdd.flags.has(OVERLOAD_UNDEFINED))
     {
@@ -212,8 +212,8 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
         symbol->decreaseOverloadNoLock();
     }
 
-    // In case of an incomplete function, we can wake up jobs too when every overload have been covered,
-    // because an incomplete function doesn't yet know its return type, but we don't need it in order
+    // In case of an incomplete function, we can wake up jobs too when every overload has been covered,
+    // because an incomplete function doesn't yet know its return type, but we don't need it
     // to make a match
     if (symbol->overloads.size() == symbol->cptOverloadsInit &&
         (symbol->is(SymbolKind::Function) || symbol->is(SymbolKind::Struct)))
@@ -372,7 +372,7 @@ bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, con
     const auto overload = symbol->findOverload(typeInfo);
     if (overload)
     {
-        // This is fine to define an empty function multiple times, if the signatures are the same
+        // This is fine to define an empty function multiple times if the signatures are the same
         if (!node->isEmptyFct() &&
             !overload->node->isEmptyFct() &&
             !overload->hasFlag(OVERLOAD_UNDEFINED) &&

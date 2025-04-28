@@ -27,7 +27,7 @@ bool Semantic::resolveIf(SemanticContext* context)
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression, CAST_FLAG_AUTO_BOOL));
     }
 
-    // Do not generate backend if "if" is constant, and has already been evaluated
+    // Do not generate backend if 'if' is constant and has already been evaluated
     if (module->mustOptimizeSemantic(node) && node->boolExpression->hasFlagComputedValue())
     {
         node->boolExpression->addAstFlag(AST_NO_BYTECODE);
@@ -183,7 +183,7 @@ bool Semantic::resolveInlineBefore(SemanticContext* context)
     }
 
     // Sub declarations in an inline block have access to the 'parametersScope', so we must start resolving
-    // them only when we have are filling the parameters
+    // them only when we have filled the parameters
     resolveSubDecls(context, node->ownerFct);
 
     return true;
@@ -405,7 +405,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
             return context->report({back, back->token, toErr(Err0326)}, note);
         }
 
-        // When a switch is marked as complete, be sure every definition have been covered
+        // When a switch is marked as complete, be sure that every definition has been covered
         if (node->typeInfo->isEnum())
         {
             const auto                  typeEnum0 = castTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
@@ -515,7 +515,7 @@ bool Semantic::resolveCase(SemanticContext* context)
             SWAG_CHECK(checkIsConcreteOrType(context, oneExpression));
             YIELD();
 
-            // switch with an expression: compare case with the switch expression
+            // A 'switch' with an expression: compare the 'case' with the switch expression
             if (caseNode->ownerSwitch->expression)
             {
                 auto typeInfo = TypeManager::concreteType(caseNode->ownerSwitch->expression->typeInfo);
@@ -573,7 +573,7 @@ bool Semantic::resolveLoop(SemanticContext* context)
             SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, node->expression->typeInfo, nullptr, node->expression, CAST_FLAG_TRY_COERCE));
             node->typeInfo = node->expression->typeInfo;
 
-            // Do not evaluate loop if it's constant and 0
+            // Do not evaluate the loop if it's constant and 0
             if (module->mustOptimizeSemantic(node) && node->expression->hasFlagComputedValue())
             {
                 if (!node->expression->computedValue()->reg.u64)
@@ -633,7 +633,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         YIELD();
     }
 
-    // Struct type: convert to a opVisit call
+    // Struct type: convert to an 'opVisit' call
     AstNode* newExpression = nullptr;
     if (typeInfo->isStruct())
     {
@@ -968,7 +968,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         }
     });
 
-    // First child is the let in the statement, and first child of this is the loop node
+    // The first child is the 'let' in the statement, and the first child of this is the loop node
     auto loopNode = castAst<AstLoop>(node->lastChild()->lastChild(), AstNodeKind::Loop);
     loopNode->setOwnerBreakable(node->safeOwnerBreakable());
     Ast::removeFromParent(node->block);
@@ -1094,7 +1094,7 @@ bool Semantic::resolveFallThrough(SemanticContext* context)
     node->switchCase = castAst<AstSwitchCase>(parent, AstNodeKind::SwitchCase);
     SWAG_VERIFY(node->switchCase->caseIndex != UINT32_MAX, context->report({node, toErr(Err0328)}));
 
-    // 'fallthrough' cannot be used on the last case, this has no sens
+    // 'fallthrough' cannot be used on the last 'case', this has no sens
     const auto switchBlock = castAst<AstSwitch>(node->ownerBreakable(), AstNodeKind::Switch);
     SWAG_VERIFY(node->switchCase->caseIndex < switchBlock->cases.size() - 1, context->report({node, toErr(Err0327)}));
 

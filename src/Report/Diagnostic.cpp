@@ -622,7 +622,7 @@ void Diagnostic::collectSourceCode()
         if (countBlanks > MAX_INDENT_BLANKS)
             minBlanks = countBlanks - MAX_INDENT_BLANKS;
 
-        // Is error at the start of the line ?
+        // Is error at the start of the line?
         if (location0.line && location0.column - countBlanks == 0)
         {
             lineCodeNumPrev = location0.line;
@@ -825,7 +825,7 @@ void Diagnostic::printRanges(Log* log)
         const bool notEnoughRoomRight = mid + 3 + static_cast<int>(unFormat.length()) > static_cast<int>(g_CommandLine.errorRightColumn) || orgNumRanges >= 2;
         const bool enoughRoomLeft     = mid - 2 - static_cast<int>(unFormat.length()) >= 0;
 
-        // Can we stick the hint before the line reference ? (must be the last one)
+        // Can we stick the hint before the line reference? (must be the last one)
         if (ranges.size() == 1 && notEnoughRoomRight && enoughRoomLeft)
         {
             alignRangeColumn(log, curColumn, r.mid - 2 - static_cast<int>(unFormat.length()));

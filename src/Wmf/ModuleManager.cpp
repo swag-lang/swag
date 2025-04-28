@@ -149,7 +149,7 @@ bool ModuleManager::applyPatches(const Utf8& moduleName, void* moduleHandle)
 
     for (const auto& one : it->second)
     {
-        // Address is no more valid !!!
+        // Address is no more valid!!!
         if (one.segment->deleted)
             continue;
 

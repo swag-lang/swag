@@ -1761,7 +1761,7 @@ bool Semantic::dealWithMatchResults(SemanticContext*            context,
         return SemanticError::duplicatedSymbolError(context, node->token.sourceFile, node->token, symbol->kind, symbol->name, overload->symbol->kind, overload->node);
     }
 
-    // Success !!!
+    // Success!!!
     /////////////////////////////////////////////////////////////////////
     if (matches.size() == 1)
     {

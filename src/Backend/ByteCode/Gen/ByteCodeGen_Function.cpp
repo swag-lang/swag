@@ -1446,7 +1446,7 @@ bool ByteCodeGen::emitReturnByCopyAddress(const ByteCodeGenContext* context, Ast
     AstNode* parentReturn = testReturn ? testReturn->inSimpleReturn() : nullptr;
     if (parentReturn)
     {
-        // Must be the last expression in the return expression (no deref !)
+        // Must be the last expression in the return expression (no deref!)
         if (node->parent->isNot(AstNodeKind::IdentifierRef) || node == node->parent->lastChild())
         {
             if (node->hasOwnerInline())

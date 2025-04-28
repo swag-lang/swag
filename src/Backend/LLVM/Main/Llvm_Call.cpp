@@ -646,7 +646,7 @@ llvm::Value* Llvm::emitCall(LlvmEncoder&                  pp,
     auto       func  = modu.getOrInsertFunction(funcName.cstr(), typeF);
     const auto func1 = llvm::dyn_cast<llvm::Function>(func.getCallee());
 
-    // Why this can be null ????
+    // Why this can be null ???
     if (func1 && !localCall)
         func1->setDLLStorageClass(llvm::GlobalValue::DLLImportStorageClass);
 

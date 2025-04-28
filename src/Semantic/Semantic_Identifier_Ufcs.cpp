@@ -232,7 +232,7 @@ bool Semantic::setFirstParamUFCS(SemanticContext* context, AstIdentifierRef* ide
                     // @InlineUsingParam
                     if (dependentVar->is(AstNodeKind::FuncDeclParam) && copyChild->hasOwnerInline() && copyChild->ownerInline()->parametersScope)
                     {
-                        // Really, but REALLY not sure about that fix !! Seems really like a hack...
+                        // Really, but REALLY not sure about that fix!! Seems really like a hack...
                         if (!copyChild->isSameStackFrame(copyChild->resolvedSymbolOverload()))
                         {
                             const auto sym = copyChild->ownerInline()->parametersScope->symTable.find(dependentVar->resolvedSymbolOverload()->symbol->name);

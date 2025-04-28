@@ -397,7 +397,7 @@ bool Parser::generateAst()
     if (!tokenParse.comments.justBefore.empty() && sourceFile->module->is(ModuleKind::Config))
         module->docComment = TokenComments::toString(tokenParse.comments.justBefore);
 
-    // Parse !!!
+    // Parse!!!
     while (tokenParse.isNot(TokenId::EndOfFile))
         SWAG_CHECK(doTopLevelInstruction(sourceFile->astRoot, &dummyResult));
 
