@@ -215,7 +215,7 @@ bool ByteCodeGen::askForByteCode(JobContext* context, AstNode* node, AskBcFlags 
                 YIELD();
             }
 
-            ScopedLock lk(node->mutex);
+            ScopedLock lk(funcDecl->mutex);
             node->addSemFlag(SEMFLAG_BYTECODE_GENERATED | SEMFLAG_BYTECODE_RESOLVED);
             return true;
         }

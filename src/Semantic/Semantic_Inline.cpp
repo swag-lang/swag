@@ -47,6 +47,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* n
 
     waitFuncDeclFullResolve(context->baseJob, funcDecl);
     YIELD();
+    ScopedLock lkF(funcDecl->funcMutex);
 
     funcDecl->resolvedSymbolName()->addFlag(SYMBOL_USED);
     node->addAstFlag(AST_INLINED);
@@ -345,10 +346,7 @@ bool Semantic::makePendingInline(JobContext* context, AstIdentifier* identifier,
 
 bool Semantic::dealWithPendingInlines(JobContext* context, AstFuncDecl* funcDecl, bool fromSemantic)
 {
-    if (funcDecl->pendingInline.empty())
-        return true;
-
-    SWAG_RACE_CONDITION_WRITE(funcDecl->raceC);
+    ScopedLock lk(funcDecl->funcMutex);
     while (!funcDecl->pendingInline.empty())
     {
         const auto& pending       = funcDecl->pendingInline.back();

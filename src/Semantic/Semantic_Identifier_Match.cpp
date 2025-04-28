@@ -919,8 +919,6 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     // The expansion will be done at the lowest level possible
     if (canInline && !mustInline(identifier->ownerFct))
     {
-        if (identifier->ownerFct)
-            identifier->ownerFct->removePendingInline(identifier);
         SWAG_CHECK(makePendingInline(context, identifier, true));
         YIELD();
         return true;

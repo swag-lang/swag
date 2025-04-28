@@ -170,20 +170,8 @@ bool AstFuncDecl::mustUserInline(bool forExport) const
 
 void AstFuncDecl::addPendingInline(const AstPendingInline& pending)
 {
-    SWAG_RACE_CONDITION_WRITE(raceC);
+    ScopedLock lk(funcMutex);
     pendingInline.push_back(pending);
-}
-
-void AstFuncDecl::removePendingInline(const AstIdentifier* identifier)
-{
-    for (uint32_t i = 0; i < pendingInline.size(); i++)
-    {
-        if (pendingInline[i].identifier == identifier)
-        {
-            pendingInline.erase(i);
-            return;
-        }
-    }
 }
 
 Utf8 AstFuncDecl::getCallName()
