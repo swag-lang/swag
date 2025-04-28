@@ -325,7 +325,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* n
     return true;
 }
 
-bool Semantic::makeInline(JobContext* context, AstIdentifier* identifier, bool fromSemantic)
+bool Semantic::makePendingInline(JobContext* context, AstIdentifier* identifier, bool fromSemantic)
 {
     const auto funcDecl = castAst<AstFuncDecl>(identifier->resolvedSymbolOverload()->node, AstNodeKind::FuncDecl);
     SWAG_CHECK(makeInline(context, funcDecl, identifier, fromSemantic));
@@ -343,6 +343,26 @@ bool Semantic::makeInline(JobContext* context, AstIdentifier* identifier, bool f
     if (typeFunc->returnNeedsStack())
         identifier->addAstFlag(AST_TRANSIENT);
     identifier->addAstFlag(AST_FUNC_INLINE_CALL);
+
+    return true;
+}
+
+bool Semantic::dealWithPendingInlines(JobContext* context, AstFuncDecl* funcDecl, bool fromSemantic)
+{
+    if (!funcDecl->pendingInline.empty())
+    {
+        SWAG_RACE_CONDITION_WRITE(funcDecl->raceC);
+        while (!funcDecl->pendingInline.empty())
+        {
+            const auto& pending    = funcDecl->pendingInline.back();
+            const auto  identifier = pending.identifier;
+            SWAG_CHECK(makePendingInline(context, identifier, fromSemantic));
+            if (context->result == ContextResult::NewChildren)
+                context->baseJob->nodes.push_back(identifier);
+            YIELD();
+            funcDecl->pendingInline.pop_back();
+        }
+    }
 
     return true;
 }

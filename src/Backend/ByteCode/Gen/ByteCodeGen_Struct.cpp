@@ -14,29 +14,31 @@
 #include "Wmf/Module.h"
 #include "Wmf/ModuleManager.h"
 
-void ByteCodeGen::emitOpCallUser(ByteCodeGenContext* context, const TypeInfoStruct* typeStruct, EmitOpUserKind kind, bool pushParam, uint32_t offset, uint32_t numParams)
+bool ByteCodeGen::emitOpCallUser(ByteCodeGenContext* context, const TypeInfoStruct* typeStruct, EmitOpUserKind kind, bool pushParam, uint32_t offset, uint32_t numParams)
 {
     switch (kind)
     {
         case EmitOpUserKind::Init:
-            emitOpCallUser(context, typeStruct->opUserInitFct, typeStruct->opInit, pushParam, offset, numParams);
+            SWAG_CHECK(emitOpCallUser(context, typeStruct->opUserInitFct, typeStruct->opInit, pushParam, offset, numParams));
             break;
         case EmitOpUserKind::Drop:
-            emitOpCallUser(context, typeStruct->opUserDropFct, typeStruct->opDrop, pushParam, offset, numParams);
+            SWAG_CHECK(emitOpCallUser(context, typeStruct->opUserDropFct, typeStruct->opDrop, pushParam, offset, numParams));
             break;
         case EmitOpUserKind::PostCopy:
-            emitOpCallUser(context, typeStruct->opUserPostCopyFct, typeStruct->opPostCopy, pushParam, offset, numParams);
+            SWAG_CHECK(emitOpCallUser(context, typeStruct->opUserPostCopyFct, typeStruct->opPostCopy, pushParam, offset, numParams));
             break;
         case EmitOpUserKind::PostMove:
-            emitOpCallUser(context, typeStruct->opUserPostMoveFct, typeStruct->opPostMove, pushParam, offset, numParams);
+            SWAG_CHECK(emitOpCallUser(context, typeStruct->opUserPostMoveFct, typeStruct->opPostMove, pushParam, offset, numParams));
             break;
     }
+
+    return true;
 }
 
-void ByteCodeGen::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc, bool pushParam, uint32_t offset, uint32_t numParams)
+bool ByteCodeGen::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc, bool pushParam, uint32_t offset, uint32_t numParams)
 {
     if (!funcDecl && !bc)
-        return;
+        return true;
 
     if (funcDecl && funcDecl->resolvedSymbolName())
         funcDecl->resolvedSymbolName()->flags.add(SYMBOL_USED);
@@ -44,9 +46,9 @@ void ByteCodeGen::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcD
         bc->isUsed = true;
 
     if (funcDecl)
-        askForByteCode(context, funcDecl, ASK_BC_ZERO, false, context->bc);
+        SWAG_CHECK(askForByteCode(context, funcDecl, ASK_BC_ZERO, false, context->bc));
     else if (bc && bc->node)
-        askForByteCode(context, bc->node, ASK_BC_ZERO, false, context->bc);
+        SWAG_CHECK(askForByteCode(context, bc->node, ASK_BC_ZERO, false, context->bc));
 
     if (pushParam)
     {
@@ -85,6 +87,7 @@ void ByteCodeGen::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcD
     }
 
     EMIT_INST1(context, ByteCodeOp::IncSPPostCall, numParams * 8);
+    return true;
 }
 
 void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
@@ -554,7 +557,7 @@ bool ByteCodeGen::generateStructOpInit(ByteCodeGenContext* context, TypeInfoStru
         // Content must have been solved! where pb
         SWAG_ASSERT(!typeInfoStruct->opUserInitFct->content->hasAstFlag(AST_NO_SEMANTIC));
 
-        askForByteCode(context, typeInfoStruct->opUserInitFct, ASK_BC_WAIT_SEMANTIC_RESOLVED, false, context->bc);
+        SWAG_CHECK(askForByteCode(context, typeInfoStruct->opUserInitFct, ASK_BC_WAIT_SEMANTIC_RESOLVED, false, context->bc));
         YIELD();
     }
 
@@ -758,7 +761,7 @@ bool ByteCodeGen::generateStructOpInit(ByteCodeGenContext* context, TypeInfoStru
             const auto typeVarStruct = castTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
             SWAG_ASSERT(typeVarStruct->opInit || typeVarStruct->opUserInitFct);
             EMIT_INST1(&cxt, ByteCodeOp::PushRAParam, 0);
-            emitOpCallUser(&cxt, typeVarStruct->opUserInitFct, typeVarStruct->opInit, false);
+            SWAG_CHECK(emitOpCallUser(&cxt, typeVarStruct->opUserInitFct, typeVarStruct->opInit, false));
         }
         else
         {
@@ -834,7 +837,7 @@ bool ByteCodeGen::generateStructOpDrop(ByteCodeGenContext* context, TypeInfoStru
         SWAG_ASSERT(!typeInfoStruct->opUserDropFct->content->hasAstFlag(AST_NO_SEMANTIC));
 
         needDrop = true;
-        askForByteCode(context, typeInfoStruct->opUserDropFct, ASK_BC_WAIT_SEMANTIC_RESOLVED, false, context->bc);
+        SWAG_CHECK(askForByteCode(context, typeInfoStruct->opUserDropFct, ASK_BC_WAIT_SEMANTIC_RESOLVED, false, context->bc));
         YIELD();
     }
 
@@ -871,7 +874,7 @@ bool ByteCodeGen::generateStructOpDrop(ByteCodeGenContext* context, TypeInfoStru
         cxt.bc->node->addSemFlag(SEMFLAG_BYTECODE_RESOLVED | SEMFLAG_BYTECODE_GENERATED);
 
     // Call user function if defined
-    emitOpCallUser(&cxt, typeInfoStruct->opUserDropFct);
+    SWAG_CHECK(emitOpCallUser(&cxt, typeInfoStruct->opUserDropFct));
 
     // Call for each field
     emitOpCallUserFields(&cxt, typeInfoStruct, EmitOpUserKind::Drop);
@@ -946,7 +949,7 @@ bool ByteCodeGen::generateStructOpPostCopy(ByteCodeGenContext* context, TypeInfo
         SWAG_ASSERT(!typeInfoStruct->opUserPostCopyFct->content->hasAstFlag(AST_NO_SEMANTIC));
 
         needPostCopy = true;
-        askForByteCode(context, typeInfoStruct->opUserPostCopyFct, ASK_BC_WAIT_SEMANTIC_RESOLVED, false, context->bc);
+        SWAG_CHECK(askForByteCode(context, typeInfoStruct->opUserPostCopyFct, ASK_BC_WAIT_SEMANTIC_RESOLVED, false, context->bc));
         YIELD();
     }
 
@@ -986,7 +989,7 @@ bool ByteCodeGen::generateStructOpPostCopy(ByteCodeGenContext* context, TypeInfo
     emitOpCallUserFields(&cxt, typeInfoStruct, EmitOpUserKind::PostCopy);
 
     // Then call user function if defined
-    emitOpCallUser(&cxt, typeInfoStruct->opUserPostCopyFct);
+    SWAG_CHECK(emitOpCallUser(&cxt, typeInfoStruct->opUserPostCopyFct));
 
     EMIT_INST0(&cxt, ByteCodeOp::Ret);
     EMIT_INST0(&cxt, ByteCodeOp::End);
@@ -1056,7 +1059,7 @@ bool ByteCodeGen::generateStructOpPostMove(ByteCodeGenContext* context, TypeInfo
         SWAG_ASSERT(!typeInfoStruct->opUserPostMoveFct->content->hasAstFlag(AST_NO_SEMANTIC));
 
         needPostMove = true;
-        askForByteCode(context, typeInfoStruct->opUserPostMoveFct, ASK_BC_WAIT_SEMANTIC_RESOLVED, false, context->bc);
+        SWAG_CHECK(askForByteCode(context, typeInfoStruct->opUserPostMoveFct, ASK_BC_WAIT_SEMANTIC_RESOLVED, false, context->bc));
         YIELD();
     }
 
@@ -1097,7 +1100,7 @@ bool ByteCodeGen::generateStructOpPostMove(ByteCodeGenContext* context, TypeInfo
     emitOpCallUserFields(&cxt, typeInfoStruct, EmitOpUserKind::PostMove);
 
     // Then call user function if defined
-    emitOpCallUser(&cxt, typeInfoStruct->opUserPostMoveFct);
+    SWAG_CHECK(emitOpCallUser(&cxt, typeInfoStruct->opUserPostMoveFct));
 
     EMIT_INST0(&cxt, ByteCodeOp::Ret);
     EMIT_INST0(&cxt, ByteCodeOp::End);
@@ -1153,7 +1156,7 @@ bool ByteCodeGen::emitCopyStruct(ByteCodeGenContext* context, const RegisterList
         if (mustDrop)
         {
             EMIT_INST1(context, ByteCodeOp::PushRAParam, r0);
-            emitOpCallUser(context, typeInfoStruct->opUserDropFct, typeInfoStruct->opDrop, false);
+            SWAG_CHECK(emitOpCallUser(context, typeInfoStruct->opUserDropFct, typeInfoStruct->opDrop, false));
         }
     }
 
@@ -1175,7 +1178,7 @@ bool ByteCodeGen::emitCopyStruct(ByteCodeGenContext* context, const RegisterList
         if (typeInfoStruct->opPostCopy || typeInfoStruct->opUserPostCopyFct)
         {
             EMIT_INST1(context, ByteCodeOp::PushRAParam, r0);
-            emitOpCallUser(context, typeInfoStruct->opUserPostCopyFct, typeInfoStruct->opPostCopy, false);
+            SWAG_CHECK(emitOpCallUser(context, typeInfoStruct->opUserPostCopyFct, typeInfoStruct->opPostCopy, false));
         }
     }
 
@@ -1186,7 +1189,7 @@ bool ByteCodeGen::emitCopyStruct(ByteCodeGenContext* context, const RegisterList
         if (typeInfoStruct->opPostMove || typeInfoStruct->opUserPostMoveFct)
         {
             EMIT_INST1(context, ByteCodeOp::PushRAParam, r0);
-            emitOpCallUser(context, typeInfoStruct->opUserPostMoveFct, typeInfoStruct->opPostMove, false);
+            SWAG_CHECK(emitOpCallUser(context, typeInfoStruct->opUserPostMoveFct, typeInfoStruct->opPostMove, false));
         }
 
         // If the current scope contains a drop for that variable, then we remove it, because we have
@@ -1217,7 +1220,7 @@ bool ByteCodeGen::emitCopyStruct(ByteCodeGenContext* context, const RegisterList
             if ((typeInfoStruct->opInit || typeInfoStruct->opUserInitFct) && typeInfoStruct->hasFlag(TYPEINFO_STRUCT_HAS_INIT_VALUES))
             {
                 EMIT_INST1(context, ByteCodeOp::PushRAParam, r1);
-                emitOpCallUser(context, typeInfoStruct->opUserInitFct, typeInfoStruct->opInit, false);
+                SWAG_CHECK(emitOpCallUser(context, typeInfoStruct->opUserInitFct, typeInfoStruct->opInit, false));
             }
             else
             {
@@ -1289,7 +1292,7 @@ bool ByteCodeGen::emitStructInit(ByteCodeGenContext* context, const TypeInfoStru
         // Then call
         SWAG_ASSERT(typeInfoStruct->opInit || typeInfoStruct->opUserInitFct);
         EMIT_INST1(context, ByteCodeOp::PushRAParam, r0);
-        emitOpCallUser(context, typeInfoStruct->opUserInitFct, typeInfoStruct->opInit, false);
+        SWAG_CHECK(emitOpCallUser(context, typeInfoStruct->opUserInitFct, typeInfoStruct->opInit, false));
         freeRegisterRC(context, r0);
     }
 
@@ -1509,7 +1512,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
 
             EMIT_INST1(context, ByteCodeOp::PushRAParam, rExpr);
             SWAG_ASSERT(typeStruct->opInit || typeStruct->opUserInitFct);
-            emitOpCallUser(context, typeStruct->opUserInitFct, typeStruct->opInit, false);
+            SWAG_CHECK(emitOpCallUser(context, typeStruct->opUserInitFct, typeStruct->opInit, false));
 
             // Dynamic loop
             if (numToInit == 0)
@@ -1709,13 +1712,13 @@ bool ByteCodeGen::emitDropCopyMove(ByteCodeGenContext* context)
         switch (node->kind)
         {
             case AstNodeKind::Drop:
-                emitOpCallUser(context, typeStruct->opUserDropFct, typeStruct->opDrop, false);
+                SWAG_CHECK(emitOpCallUser(context, typeStruct->opUserDropFct, typeStruct->opDrop, false));
                 break;
             case AstNodeKind::PostCopy:
-                emitOpCallUser(context, typeStruct->opUserPostCopyFct, typeStruct->opPostCopy, false);
+                SWAG_CHECK(emitOpCallUser(context, typeStruct->opUserPostCopyFct, typeStruct->opPostCopy, false));
                 break;
             case AstNodeKind::PostMove:
-                emitOpCallUser(context, typeStruct->opUserPostMoveFct, typeStruct->opPostMove, false);
+                SWAG_CHECK(emitOpCallUser(context, typeStruct->opUserPostMoveFct, typeStruct->opPostMove, false));
                 break;
             default:
                 break;

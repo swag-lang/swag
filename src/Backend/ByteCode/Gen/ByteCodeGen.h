@@ -94,7 +94,7 @@ namespace ByteCodeGen
     bool setupRuntime(const ByteCodeGenContext* context, const AstNode* node);
     bool setupByteCodeGenerated(ByteCodeGenContext* context, AstNode* node);
     bool setupByteCodeResolved(const ByteCodeGenContext* context, AstNode* node);
-    void askForByteCode(JobContext* context, AstNode* node, AskBcFlags flags, bool fromSemantic, ByteCode* caller);
+    bool askForByteCode(JobContext* context, AstNode* node, AskBcFlags flags, bool fromSemantic, ByteCode* caller);
 
     void getDependantCalls(const AstNode* depNode, VectorNative<AstNode*>& dep);
     void collectLiteralsChildren(AstNode* node, VectorNative<AstNode*>* orderedChildren);
@@ -111,8 +111,8 @@ namespace ByteCodeGen
     ByteCodeInstruction* emitInstruction(const ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0, uint32_t r1, uint32_t r2, uint32_t r3, const char* file, uint32_t line);
 
     bool emitDefaultParamValue(ByteCodeGenContext* context, AstNode* param, RegisterList& regList);
-    void emitOpCallUser(ByteCodeGenContext* context, const TypeInfoStruct* typeStruct, EmitOpUserKind kind, bool pushParam = true, uint32_t offset = 0, uint32_t numParams = 1);
-    void emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc = nullptr, bool pushParam = true, uint32_t offset = 0, uint32_t numParams = 1);
+    bool emitOpCallUser(ByteCodeGenContext* context, const TypeInfoStruct* typeStruct, EmitOpUserKind kind, bool pushParam = true, uint32_t offset = 0, uint32_t numParams = 1);
+    bool emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc = nullptr, bool pushParam = true, uint32_t offset = 0, uint32_t numParams = 1);
     bool emitExpressionListBefore(ByteCodeGenContext* context);
     bool emitExpressionList(ByteCodeGenContext* context);
     bool emitLiteral(ByteCodeGenContext* context, AstNode* node, const TypeInfo* toType, RegisterList& regList);

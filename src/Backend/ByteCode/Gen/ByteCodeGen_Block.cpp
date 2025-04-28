@@ -1238,7 +1238,7 @@ bool ByteCodeGen::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scope, 
                 const auto   inst = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, r1);
                 inst->b.u64       = one.storageOffset;
                 EMIT_INST1(context, ByteCodeOp::PushRAParam, r1);
-                emitOpCallUser(context, one.typeStruct->opUserDropFct, one.typeStruct->opDrop, false);
+                SWAG_CHECK(emitOpCallUser(context, one.typeStruct->opUserDropFct, one.typeStruct->opDrop, false));
                 freeRegisterRC(context, r1);
             }
             else
@@ -1254,7 +1254,7 @@ bool ByteCodeGen::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scope, 
                 const auto seekJump = context->bc->numInstructions;
 
                 EMIT_INST1(context, ByteCodeOp::PushRAParam, r1);
-                emitOpCallUser(context, one.typeStruct->opUserDropFct, one.typeStruct->opDrop, false);
+                SWAG_CHECK(emitOpCallUser(context, one.typeStruct->opUserDropFct, one.typeStruct->opDrop, false));
 
                 inst        = EMIT_INST3(context, ByteCodeOp::IncPointer64, r1, 0, r1);
                 inst->b.u64 = one.typeStruct->sizeOf;
@@ -1273,7 +1273,7 @@ bool ByteCodeGen::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scope, 
             const auto inst = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, r0);
             inst->b.u64     = one.storageOffset;
             EMIT_INST1(context, ByteCodeOp::PushRAParam, r0);
-            emitOpCallUser(context, one.typeStruct->opUserDropFct, one.typeStruct->opDrop, false);
+            SWAG_CHECK(emitOpCallUser(context, one.typeStruct->opUserDropFct, one.typeStruct->opDrop, false));
             freeRegisterRC(context, r0);
         }
     }

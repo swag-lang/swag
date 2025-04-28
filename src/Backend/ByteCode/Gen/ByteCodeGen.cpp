@@ -189,10 +189,10 @@ bool ByteCodeGen::skipNodes(ByteCodeGenContext* context, AstNode* node)
     return res != Ast::VisitResult::Stop;
 }
 
-void ByteCodeGen::askForByteCode(JobContext* context, AstNode* node, AskBcFlags flags, bool fromSemantic, ByteCode* caller)
+bool ByteCodeGen::askForByteCode(JobContext* context, AstNode* node, AskBcFlags flags, bool fromSemantic, ByteCode* caller)
 {
     if (!node)
-        return;
+        return true;
     const auto job = context->baseJob;
 
     AstFuncDecl* funcDecl = nullptr;
@@ -203,7 +203,7 @@ void ByteCodeGen::askForByteCode(JobContext* context, AstNode* node, AskBcFlags 
         // If the function does not have content, or if sematic was not done, then
         // no need for bytecode
         if (funcDecl->content && funcDecl->content->hasAstFlag(AST_NO_SEMANTIC))
-            return;
+            return true;
 
         // If this is a foreign function, we do not need bytecode
         if (funcDecl->isForeign())
@@ -212,43 +212,30 @@ void ByteCodeGen::askForByteCode(JobContext* context, AstNode* node, AskBcFlags 
             if (flags.has(ASK_BC_WAIT_SEMANTIC_RESOLVED))
             {
                 Semantic::waitFuncDeclFullResolve(job, funcDecl);
-                YIELD_VOID();
+                YIELD();
             }
 
             ScopedLock lk(node->mutex);
             node->addSemFlag(SEMFLAG_BYTECODE_GENERATED | SEMFLAG_BYTECODE_RESOLVED);
-            return;
+            return true;
         }
 
-        // Deal with inline mixin and macros not already done
-        if (!funcDecl->pendingInline.empty())
-        {
-            SWAG_RACE_CONDITION_WRITE(funcDecl->raceC);
-            while (!funcDecl->pendingInline.empty())
-            {
-                const auto& pending    = funcDecl->pendingInline.back();
-                const auto  identifier = pending.identifier;
-                Semantic::makeInline(context, identifier, fromSemantic);
-                if (context->result == ContextResult::NewChildren)
-                    context->baseJob->nodes.push_back(identifier);
-                YIELD_VOID();
-                funcDecl->pendingInline.pop_back();
-            }
-        }
+        SWAG_CHECK(Semantic::dealWithPendingInlines(context, funcDecl, fromSemantic));
+        YIELD();
     }
 
     if (job)
     {
         // If true, then this is a simple recursive call
         if (node->hasExtByteCode() && node->extByteCode()->byteCodeJob == job)
-            return;
+            return true;
 
         // Need to wait for function full semantic resolve
         if (flags.has(ASK_BC_WAIT_SEMANTIC_RESOLVED))
         {
             SWAG_ASSERT(funcDecl);
             Semantic::waitFuncDeclFullResolve(job, funcDecl);
-            YIELD_VOID();
+            YIELD();
         }
     }
 
@@ -311,7 +298,7 @@ void ByteCodeGen::askForByteCode(JobContext* context, AstNode* node, AskBcFlags 
             extByteCode->byteCodeJob->dependentJobs.add(job);
         }
 
-        return;
+        return true;
     }
 
     if (flags.has(ASK_BC_WAIT_RESOLVED))
@@ -325,9 +312,11 @@ void ByteCodeGen::askForByteCode(JobContext* context, AstNode* node, AskBcFlags 
             ScopedLock lk1(extByteCode->byteCodeJob->mutexDependent);
             job->setPending(JobWaitKind::AskBcWaitResolve, nullptr, node, nullptr);
             extByteCode->byteCodeJob->dependentJobs.add(job);
-            return;
+            return true;
         }
     }
+
+    return true;
 }
 
 void ByteCodeGen::releaseByteCodeJob(AstNode* node)

@@ -98,7 +98,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
 
     // Request to generate the corresponding bytecode
     {
-        ByteCodeGen::askForByteCode(context, node, ASK_BC_WAIT_DONE | ASK_BC_WAIT_RESOLVED, true, nullptr);
+        SWAG_CHECK(ByteCodeGen::askForByteCode(context, node, ASK_BC_WAIT_DONE | ASK_BC_WAIT_RESOLVED, true, nullptr));
         YIELD();
     }
 
@@ -163,7 +163,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
                 context->node->addExtraPointer(ExtraPointerKind::UserOp, nullptr);
                 SWAG_ASSERT(execParams.specReturnOpCount);
 
-                ByteCodeGen::askForByteCode(context, execParams.specReturnOpCount->node, ASK_BC_WAIT_DONE | ASK_BC_WAIT_RESOLVED | ASK_BC_WAIT_SEMANTIC_RESOLVED, true, nullptr);
+                SWAG_CHECK(ByteCodeGen::askForByteCode(context, execParams.specReturnOpCount->node, ASK_BC_WAIT_DONE | ASK_BC_WAIT_RESOLVED | ASK_BC_WAIT_SEMANTIC_RESOLVED, true, nullptr));
                 YIELD();
 
                 // opSlice
@@ -180,7 +180,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
                 context->node->addExtraPointer(ExtraPointerKind::UserOp, nullptr);
                 SWAG_ASSERT(execParams.specReturnOpSlice);
 
-                ByteCodeGen::askForByteCode(context, execParams.specReturnOpSlice->node, ASK_BC_WAIT_DONE | ASK_BC_WAIT_RESOLVED | ASK_BC_WAIT_SEMANTIC_RESOLVED, true, nullptr);
+                SWAG_CHECK(ByteCodeGen::askForByteCode(context, execParams.specReturnOpSlice->node, ASK_BC_WAIT_DONE | ASK_BC_WAIT_RESOLVED | ASK_BC_WAIT_SEMANTIC_RESOLVED, true, nullptr));
                 YIELD();
 
                 // Is the type of the slice supported?
@@ -223,7 +223,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
                     execParams.specReturnOpPostMove = context->node->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
                     context->node->addExtraPointer(ExtraPointerKind::UserOp, nullptr);
                     SWAG_ASSERT(execParams.specReturnOpPostMove);
-                    ByteCodeGen::askForByteCode(context, execParams.specReturnOpPostMove->node, ASK_BC_WAIT_DONE | ASK_BC_WAIT_RESOLVED | ASK_BC_WAIT_SEMANTIC_RESOLVED, true, nullptr);
+                    SWAG_CHECK(ByteCodeGen::askForByteCode(context, execParams.specReturnOpPostMove->node, ASK_BC_WAIT_DONE | ASK_BC_WAIT_RESOLVED | ASK_BC_WAIT_SEMANTIC_RESOLVED, true, nullptr));
                     YIELD();
                 }
 
@@ -241,7 +241,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
                     execParams.specReturnOpDrop = context->node->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
                     context->node->addExtraPointer(ExtraPointerKind::UserOp, nullptr);
                     SWAG_ASSERT(execParams.specReturnOpDrop);
-                    ByteCodeGen::askForByteCode(context, execParams.specReturnOpDrop->node, ASK_BC_WAIT_DONE | ASK_BC_WAIT_RESOLVED | ASK_BC_WAIT_SEMANTIC_RESOLVED, true, nullptr);
+                    SWAG_CHECK(ByteCodeGen::askForByteCode(context, execParams.specReturnOpDrop->node, ASK_BC_WAIT_DONE | ASK_BC_WAIT_RESOLVED | ASK_BC_WAIT_SEMANTIC_RESOLVED, true, nullptr));
                     YIELD();
                 }
             }
