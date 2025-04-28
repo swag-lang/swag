@@ -338,8 +338,8 @@ void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneT
     if (node->is(AstNodeKind::Identifier))
     {
         const auto identifier = castAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
-        if (identifier->identifierRef()->startScope)
-            toCheck.push_back(identifier->identifierRef()->startScope->owner);
+        if (identifier->identifierRef()->previousScope)
+            toCheck.push_back(identifier->identifierRef()->previousScope->owner);
     }
 
     // Except that with using, B could be in fact in another struct than A.

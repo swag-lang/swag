@@ -195,8 +195,8 @@ bool Semantic::setFirstParamUFCS(SemanticContext* context, AstIdentifierRef* ide
 
                 // We want to generate bytecode for the expression on the left only if the lambda is dereferenced from a struct/itf
                 // Otherwise the left expression is only used for scoping
-                if (!identifierRef->startScope ||
-                    identifierRef->startScope != match.symbolOverload->node->ownerStructScope)
+                if (!identifierRef->previousScope ||
+                    identifierRef->previousScope != match.symbolOverload->node->ownerStructScope)
                 {
                     child->addAstFlag(AST_NO_BYTECODE);
                     copyChild->addAstFlag(AST_UFCS_FCT);

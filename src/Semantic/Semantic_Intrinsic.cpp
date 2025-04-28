@@ -465,8 +465,8 @@ bool Semantic::resolveIntrinsicKindOf(SemanticContext* context)
             node->inheritComputedValue(expr);
             node->addAstFlag(AST_VALUE_GEN_TYPEINFO);
             node->typeInfo = g_TypeMgr->typeInfoTypeType;
-            setupConst(node);
-            setupIdentifierRef(node);
+            setConst(node);
+            setIdentifierRefPrevious(node);
         }
         else
         {
@@ -476,8 +476,8 @@ bool Semantic::resolveIntrinsicKindOf(SemanticContext* context)
             YIELD();
             node->byteCodeFct = ByteCodeGen::emitIntrinsicKindOf;
             node->addAstFlag(AST_R_VALUE);
-            setupConst(node);
-            setupIdentifierRef(node);
+            setConst(node);
+            setIdentifierRefPrevious(node);
         }
 
         return true;
@@ -493,8 +493,8 @@ bool Semantic::resolveIntrinsicKindOf(SemanticContext* context)
         YIELD();
         node->byteCodeFct = ByteCodeGen::emitIntrinsicKindOf;
         node->addAstFlag(AST_R_VALUE);
-        setupConst(node);
-        setupIdentifierRef(node);
+        setConst(node);
+        setIdentifierRefPrevious(node);
         return true;
     }
 

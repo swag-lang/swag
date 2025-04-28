@@ -626,9 +626,9 @@ bool Semantic::setSymbolMatchVar(SemanticContext* context, const OneMatch& oneMa
     // wait for the struct container to be solved. We do not want the semantic to continue with
     // an unsolved struct, because that means that storageOffset has not been computed yet
     // (and in some cases we can go to the bytecode generation with the struct not solved).
-    if (overload->hasFlag(OVERLOAD_VAR_STRUCT) && identifier->identifierRef()->startScope)
+    if (overload->hasFlag(OVERLOAD_VAR_STRUCT) && identifier->identifierRef()->previousScope)
     {
-        const auto parentStructNode = identifier->identifierRef()->startScope->owner;
+        const auto parentStructNode = identifier->identifierRef()->previousScope->owner;
         waitStructOverloadDefined(context->baseJob, parentStructNode->typeInfo);
         YIELD();
         waitOverloadCompleted(context->baseJob, parentStructNode->resolvedSymbolOverload());
@@ -688,8 +688,8 @@ bool Semantic::setSymbolMatchVar(SemanticContext* context, const OneMatch& oneMa
     }
 
     // Setup parent if necessary
-    Semantic::setupConst(identifier);
-    Semantic::setupIdentifierRef(identifier);
+    Semantic::setConst(identifier);
+    Semantic::setIdentifierRefPrevious(identifier);
 
     const auto typeInfo = TypeManager::concretePtrRefType(identifier->typeInfo);
 
@@ -954,8 +954,8 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     if (returnType->isStruct())
         identifier->addSemFlag(SEMFLAG_CONST_ASSIGN_INHERIT | SEMFLAG_CONST_ASSIGN);
 
-    setupConst(identifier);
-    setupIdentifierRef(identifier);
+    setConst(identifier);
+    setIdentifierRefPrevious(identifier);
 
     // For a return by copy, we need to reserve room on the stack for the return result
     // Order is important, because otherwise this could call isPlainOldData, which could be not resolved
@@ -972,11 +972,11 @@ bool Semantic::setSymbolMatchStruct(SemanticContext* context, OneMatch& oneMatch
 {
     if (!overload->hasFlag(OVERLOAD_IMPL_IN_STRUCT))
     {
-        setupConst(identifier);
-        setupIdentifierRef(identifier);
+        setConst(identifier);
+        setIdentifierRefPrevious(identifier);
     }
     
-    identifierRef->startScope = castTypeInfo<TypeInfoStruct>(typeAlias)->scope;
+    identifierRef->previousScope = castTypeInfo<TypeInfoStruct>(typeAlias)->scope;
 
     if (!identifier->callParameters)
         identifier->addAstFlag(AST_CONST_EXPR);
@@ -1161,7 +1161,7 @@ bool Semantic::checkMatchResult(SemanticContext*        context,
     if (symbol &&
         symbol->is(SymbolKind::Variable) &&
         !overload->typeInfo->isLambdaClosure() &&
-        !identifierRef->startScope &&
+        !identifierRef->previousScope &&
         !identifier->isSilentCall() &&
         prevNode &&
         !prevNode->typeInfo->isPointerTo(TypeInfoKind::Struct) &&
@@ -1176,7 +1176,7 @@ bool Semantic::checkMatchResult(SemanticContext*        context,
     // x.toto() with toto taking no argument, for example, but toto is 'in' x scope.
     if (symbol &&
         symbol->is(SymbolKind::Function) &&
-        identifierRef->startScope &&
+        identifierRef->previousScope &&
         prevNode &&
         prevNode->resolvedSymbolName() &&
         (prevNode->resolvedSymbolName()->is(SymbolKind::Variable) || prevNode->resolvedSymbolName()->is(SymbolKind::Function)) &&
@@ -1189,17 +1189,17 @@ bool Semantic::checkMatchResult(SemanticContext*        context,
             const auto widthNode      = prevIdentifier->identifierExtension->fromAlternateVar;
             err.addNote(oneMatch.oneOverload->overload->node, oneMatch.oneOverload->overload->node->getTokenName(), formNte(Nte0169, prevNode->typeInfo->getDisplayNameC()));
             err.addNote(Diagnostic::hereIs(widthNode));
-            err.addNote(formNte(Nte0034, identifierRef->startScope->name.cstr()));
+            err.addNote(formNte(Nte0034, identifierRef->previousScope->name.cstr()));
             return context->report(err);
         }
 
-        if (oneMatch.oneOverload->scope == identifierRef->startScope)
+        if (oneMatch.oneOverload->scope == identifierRef->previousScope)
         {
             Diagnostic err{prevNode, formErr(Err0480, Naming::kindName(prevNode->resolvedSymbolName()->kind).cstr(), prevNode->token.cstr(), symbol->name.cstr())};
             err.addNote(identifier->token, formNte(Nte0169, prevNode->typeInfo->getDisplayNameC()));
             err.addNote(formNte(Nte0106, Naming::kindName(prevNode->resolvedSymbolName()->kind).cstr(), prevNode->token.cstr(), symbol->name.cstr()));
             err.addNote(Diagnostic::hereIs(oneMatch.oneOverload->overload));
-            err.addNote(formNte(Nte0042, Naming::kindName(prevNode->resolvedSymbolName()->kind).cstr(), identifierRef->startScope->name.cstr()));
+            err.addNote(formNte(Nte0042, Naming::kindName(prevNode->resolvedSymbolName()->kind).cstr(), identifierRef->previousScope->name.cstr()));
             return context->report(err);
         }
 
@@ -1380,18 +1380,18 @@ bool Semantic::setMatchResult(SemanticContext* context, AstIdentifierRef* identi
     switch (symbolKind)
     {
         case SymbolKind::GenericType:
-            setupConst(identifier);
-            setupIdentifierRef(identifier);
+            setConst(identifier);
+            setIdentifierRefPrevious(identifier);
             break;
 
         case SymbolKind::Namespace:
-            identifierRef->startScope = castTypeInfo<TypeInfoNamespace>(identifier->typeInfo, identifier->typeInfo->kind)->scope;
+            identifierRef->previousScope = castTypeInfo<TypeInfoNamespace>(identifier->typeInfo, identifier->typeInfo->kind)->scope;
             identifier->addAstFlag(AST_CONST_EXPR);
             break;
 
         case SymbolKind::Enum:
-            setupConst(identifier);
-            setupIdentifierRef(identifier);
+            setConst(identifier);
+            setIdentifierRefPrevious(identifier);
             identifier->addAstFlag(AST_CONST_EXPR);
             break;
 
@@ -1402,8 +1402,8 @@ bool Semantic::setMatchResult(SemanticContext* context, AstIdentifierRef* identi
                 return context->report(err);
             }
 
-            setupConst(identifier);
-            setupIdentifierRef(identifier);
+            setConst(identifier);
+            setIdentifierRefPrevious(identifier);
             identifier->setFlagsValueIsComputed();
             identifier->addAstFlag(AST_R_VALUE);
             *identifier->computedValue() = identifier->resolvedSymbolOverload()->computedValue;
@@ -2162,9 +2162,9 @@ bool Semantic::matchSharpSelf(SemanticContext* context, VectorNative<OneSymbolMa
             identifier->typeInfo                = g_TypeMgr->typeInfoVoid;
             identifierRef->previousResolvedNode = identifier;
             if (identifier->hasOwnerInline())
-                identifierRef->startScope = identifier->ownerInline()->parametersScope;
+                identifierRef->previousScope = identifier->ownerInline()->parametersScope;
             else
-                identifierRef->startScope = identifier->ownerFct->scope;
+                identifierRef->previousScope = identifier->ownerFct->scope;
             identifier->addAstFlag(AST_NO_BYTECODE);
             return true;
         }

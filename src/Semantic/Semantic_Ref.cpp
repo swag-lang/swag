@@ -608,7 +608,7 @@ bool Semantic::resolveArrayPointerIndex(SemanticContext* context)
             if (typeReturn->isStruct() || typeReturn->isInterface())
             {
                 const auto typeStruct = castTypeInfo<TypeInfoStruct>(typeReturn, TypeInfoKind::Struct, TypeInfoKind::Interface);
-                parent->startScope    = typeStruct->scope;
+                parent->previousScope    = typeStruct->scope;
             }
         }
 
@@ -943,8 +943,8 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
             }
 
             arrayNode->typeInfo = typePtr->pointedType;
-            setupConst(arrayNode);
-            setupIdentifierRef(arrayNode);
+            setConst(arrayNode);
+            setIdentifierRefPrevious(arrayNode);
 
             // Try to dereference as a constant if we can
             if (arrayNode->array->hasFlagComputedValue() && arrayNode->access->hasFlagComputedValue())
@@ -988,8 +988,8 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
             SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CAST_FLAG_TRY_COERCE | CAST_FLAG_INDEX));
             const auto typePtr  = castTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
             arrayNode->typeInfo = typePtr->pointedType;
-            setupConst(arrayNode);
-            setupIdentifierRef(arrayNode);
+            setConst(arrayNode);
+            setIdentifierRefPrevious(arrayNode);
 
             // Try to dereference as a constant if we can
             uint32_t     storageOffset  = UINT32_MAX;
@@ -1018,8 +1018,8 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
             SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CAST_FLAG_TRY_COERCE | CAST_FLAG_INDEX));
             const auto typeSlice = castTypeInfo<TypeInfoSlice>(arrayType, TypeInfoKind::Slice);
             arrayNode->typeInfo  = typeSlice->pointedType;
-            setupConst(arrayNode);
-            setupIdentifierRef(arrayNode);
+            setConst(arrayNode);
+            setIdentifierRefPrevious(arrayNode);
 
             // Try to dereference as a constant if we can
             if (arrayNode->access->hasFlagComputedValue())
@@ -1049,8 +1049,8 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
             SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CAST_FLAG_TRY_COERCE | CAST_FLAG_INDEX));
             const auto typeVariadic = castTypeInfo<TypeInfoVariadic>(arrayType, TypeInfoKind::TypedVariadic);
             arrayNode->typeInfo     = typeVariadic->rawType;
-            setupConst(arrayNode);
-            setupIdentifierRef(arrayNode);
+            setConst(arrayNode);
+            setIdentifierRefPrevious(arrayNode);
             break;
         }
 

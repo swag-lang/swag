@@ -62,7 +62,7 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Collected
     // One single match: we are done
     if (typeEnum.size() == 1)
     {
-        identifierRef->startScope = typeEnum[0]->scope;
+        identifierRef->previousScope = typeEnum[0]->scope;
         scopeHierarchy.clear();
         addCollectedScopeOnce(scopeHierarchy, typeEnum[0]->scope);
     }
@@ -225,7 +225,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
     const auto identifierCrc      = identifier->token.text.hash();
 
     // First, we search in the specified scope, if defined
-    const auto startScope = identifierRef->startScope;
+    const auto startScope = identifierRef->previousScope;
     if (startScope)
     {
         if (startScope->is(ScopeKind::Impl))

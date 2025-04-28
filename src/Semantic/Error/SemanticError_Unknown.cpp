@@ -21,8 +21,8 @@ namespace
         if (typeRef && typeRef->isTuple())
         {
             const auto err        = new Diagnostic{identifier, formErr(Err0684, identifier->token.cstr())};
-            const auto structNode = castAst<AstStruct>(identifierRef->startScope->owner, AstNodeKind::StructDecl);
-            const auto errNode    = structNode->originalParent ? structNode->originalParent : identifierRef->startScope->owner;
+            const auto structNode = castAst<AstStruct>(identifierRef->previousScope->owner, AstNodeKind::StructDecl);
+            const auto errNode    = structNode->originalParent ? structNode->originalParent : identifierRef->previousScope->owner;
             const auto note       = Diagnostic::note(errNode, toNte(Nte0202));
             notes.push_back(note);
             return err;
@@ -32,20 +32,20 @@ namespace
         if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->is(AstNodeKind::Identifier))
             prevIdentifier = castAst<AstIdentifier>(identifierRef->previousResolvedNode, AstNodeKind::Identifier);
 
-        const Utf8 whereScopeName = Naming::kindName(identifierRef->startScope->kind);
+        const Utf8 whereScopeName = Naming::kindName(identifierRef->previousScope->kind);
 
         Utf8 displayName;
-        if (!identifierRef->startScope->flags.has(SCOPE_FILE))
-            displayName = identifierRef->startScope->getDisplayFullName();
-        if (displayName.empty() && !identifierRef->startScope->name.empty())
-            displayName = identifierRef->startScope->name;
+        if (!identifierRef->previousScope->flags.has(SCOPE_FILE))
+            displayName = identifierRef->previousScope->getDisplayFullName();
+        if (displayName.empty() && !identifierRef->previousScope->name.empty())
+            displayName = identifierRef->previousScope->name;
         if (displayName.empty() && typeRef)
             displayName = typeRef->name;
         if (displayName.empty())
             return nullptr;
 
         Diagnostic* err;
-        const auto  typeWhere = identifierRef->startScope->owner->typeInfo;
+        const auto  typeWhere = identifierRef->previousScope->owner->typeInfo;
 
         if (prevIdentifier && prevIdentifier->identifierExtension && prevIdentifier->identifierExtension->alternateEnum)
         {
@@ -112,13 +112,13 @@ namespace
             err->addNote(prevIdentifier, Diagnostic::isType(prevIdentifier));
         }
 
-        switch (identifierRef->startScope->owner->kind)
+        switch (identifierRef->previousScope->owner->kind)
         {
             case AstNodeKind::StructDecl:
             case AstNodeKind::InterfaceDecl:
             case AstNodeKind::EnumDecl:
             {
-                const auto note = Diagnostic::hereIs(identifierRef->startScope->owner);
+                const auto note = Diagnostic::hereIs(identifierRef->previousScope->owner);
                 if (note)
                     notes.push_back(note);
                 break;
@@ -132,7 +132,7 @@ namespace
 
     bool badParentScope(const AstIdentifier* identifier, Vector<const Diagnostic*>& notes)
     {
-        if (identifier->identifierRef()->startScope || identifier == identifier->parent->firstChild())
+        if (identifier->identifierRef()->previousScope || identifier == identifier->parent->firstChild())
             return false;
 
         const auto prev = identifier->identifierRef()->children[identifier->childParentIdx() - 1];
@@ -224,7 +224,7 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
     Vector<const Diagnostic*> notes;
 
     // Special case with an intrinsic or a compiler function inside a scope
-    if (identifierRef->startScope && identifier->token.text[0] == '@')
+    if (identifierRef->previousScope && identifier->token.text[0] == '@')
     {
         err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0646, identifier->token.cstr())};
         if (identifier->childParentIdx())
@@ -232,7 +232,7 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
         return context->report(*err, notes);
     }
 
-    if (identifierRef->startScope && identifier->token.text[0] == '#')
+    if (identifierRef->previousScope && identifier->token.text[0] == '#')
     {
         err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0628, identifier->token.cstr())};
         if (identifier->childParentIdx())
@@ -246,8 +246,8 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
         auto& scopeHierarchy     = context->cacheScopeHierarchy;
         auto& scopeHierarchyVars = context->cacheScopeHierarchyVars;
         scopeHierarchy.clear();
-        if (identifierRef->startScope)
-            Semantic::addCollectedScopeOnce(scopeHierarchy, identifierRef->startScope);
+        if (identifierRef->previousScope)
+            Semantic::addCollectedScopeOnce(scopeHierarchy, identifierRef->previousScope);
         else
             Semantic::collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, identifier, COLLECT_ALL);
         const Utf8 appendMsg = findClosestMatchesMsg(identifier->token.text, scopeHierarchy, searchFor);
@@ -263,13 +263,13 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
             break;
 
         case IdentifierSearchFor::Variable:
-            if (pr2->is(AstNodeKind::AffectOp) && !identifierRef->startScope)
+            if (pr2->is(AstNodeKind::AffectOp) && !identifierRef->previousScope)
                 notes.push_back(Diagnostic::note(toNte(Nte0077)));
             break;
     }
 
     // Error in scope context
-    if (identifierRef->startScope)
+    if (identifierRef->previousScope)
     {
         const auto specDiag = unknownIdentifierInScope(identifierRef, identifier, notes);
         if (specDiag)

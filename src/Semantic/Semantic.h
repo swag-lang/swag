@@ -190,8 +190,8 @@ namespace Semantic
     bool           waitForSymbols(SemanticContext* context, AstIdentifier* identifier, Job* job);
     uint32_t       alignOf(const AstVarDecl* node);
     uint32_t       getMaxStackSize(AstNode* node);
-    void           setupConst(AstNode* node);
-    void           setupIdentifierRef(AstNode* node);
+    void           setConst(AstNode* node);
+    void           setIdentifierRefPrevious(AstNode* node);
     void           addSymbolMatch(VectorNative<OneSymbolMatch>& symbolsMatch, SymbolName* symName, Scope* scope, CollectedScopeFlags altFlags);
     void           allocateOnStack(AstNode* node, const TypeInfo* typeInfo);
     void           decreaseInterfaceCount(TypeInfoStruct* typeInfoStruct);

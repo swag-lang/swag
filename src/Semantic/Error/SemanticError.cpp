@@ -53,11 +53,11 @@ void SemanticError::commonErrorNotes(SemanticContext*, const VectorNative<OneTry
         const auto identifierRef = identifier->identifierRef();
         const auto overload      = tryMatches[0]->overload;
 
-        if (identifierRef->startScope &&
+        if (identifierRef->previousScope &&
             identifier->ownerStructScope &&
             tryMatches[0]->ufcs &&
             overload->node->ownerStructScope &&
-            overload->node->ownerStructScope->owner != identifierRef->startScope->owner)
+            overload->node->ownerStructScope->owner != identifierRef->previousScope->owner)
         {
             if (identifierRef->typeInfo)
             {
@@ -69,7 +69,7 @@ void SemanticError::commonErrorNotes(SemanticContext*, const VectorNative<OneTry
                 err->remarks.push_back(msg);
             }
 
-            for (const auto s : identifierRef->startScope->childrenScopes)
+            for (const auto s : identifierRef->previousScope->childrenScopes)
             {
                 if (s->is(ScopeKind::Impl) && s->symTable.find(node->token.text))
                 {

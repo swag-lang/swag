@@ -506,7 +506,7 @@ bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identi
     idNode->addAstFlag(AST_R_VALUE | AST_TRANSIENT);
 
     // Reset parsing
-    identifierRef->startScope = nullptr;
+    identifierRef->previousScope = nullptr;
 
     // The variable will be inserted after its reference (below), so we need to inverse the order of evaluation.
     // Seems a little bit like a hack. Not sure if this will always work.

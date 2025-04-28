@@ -802,7 +802,7 @@ bool Semantic::filterSymbols(SemanticContext* context, AstIdentifier* node)
             oneSymbol->isNot(SymbolKind::Struct) &&
             oneSymbol->isNot(SymbolKind::Enum) &&
             oneSymbol->ownerTable->scope->is(ScopeKind::Struct) &&
-            !identifierRef->startScope)
+            !identifierRef->previousScope)
         {
             bool toRemove = false;
 

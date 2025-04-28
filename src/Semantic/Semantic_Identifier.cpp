@@ -81,7 +81,7 @@ bool Semantic::preResolveIdentifierRef(SemanticContext* context)
     {
         node->typeInfo             = nullptr;
         node->previousResolvedNode = nullptr;
-        node->startScope           = nullptr;
+        node->previousScope        = nullptr;
     }
 
     return true;
@@ -141,7 +141,7 @@ bool Semantic::resolveIdentifierRef(SemanticContext* context)
     return true;
 }
 
-void Semantic::setupConst(AstNode* node)
+void Semantic::setConst(AstNode* node)
 {
     // If the type of the previous one was const, then we force this node to be const (cannot change it)
     if (node->parent->typeInfo && node->parent->typeInfo->isConst())
@@ -151,7 +151,7 @@ void Semantic::setupConst(AstNode* node)
         node->addSemFlag(SEMFLAG_CONST_ASSIGN);
 }
 
-void Semantic::setupIdentifierRef(AstNode* node)
+void Semantic::setIdentifierRefPrevious(AstNode* node)
 {
     if (node->parent->isNot(AstNodeKind::IdentifierRef))
         return;
@@ -166,7 +166,7 @@ void Semantic::setupIdentifierRef(AstNode* node)
     }
 
     identifierRef->previousResolvedNode = node;
-    identifierRef->startScope           = nullptr;
+    identifierRef->previousScope        = nullptr;
 
     const auto typeInfo  = TypeManager::concreteType(node->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
     auto       scopeType = typeInfo->getConcreteAlias();
@@ -193,8 +193,8 @@ void Semantic::setupIdentifierRef(AstNode* node)
     {
         case TypeInfoKind::Enum:
         {
-            identifierRef->startScope = castTypeInfo<TypeInfoEnum>(scopeType, TypeInfoKind::Enum)->scope;
-            node->typeInfo            = typeInfo;
+            identifierRef->previousScope = castTypeInfo<TypeInfoEnum>(scopeType, TypeInfoKind::Enum)->scope;
+            node->typeInfo               = typeInfo;
             break;
         }
         case TypeInfoKind::Pointer:
@@ -202,21 +202,21 @@ void Semantic::setupIdentifierRef(AstNode* node)
             const auto typePointer = castTypeInfo<TypeInfoPointer>(scopeType, TypeInfoKind::Pointer);
             const auto subType     = TypeManager::concreteType(typePointer->pointedType);
             if (subType->isStruct() || subType->isInterface())
-                identifierRef->startScope = castTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
+                identifierRef->previousScope = castTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
             node->typeInfo = typeInfo;
             break;
         }
 
         case TypeInfoKind::TypeListArray:
         case TypeInfoKind::TypeListTuple:
-            identifierRef->startScope = castTypeInfo<TypeInfoList>(scopeType, scopeType->kind)->scope;
-            node->typeInfo            = typeInfo;
+            identifierRef->previousScope = castTypeInfo<TypeInfoList>(scopeType, scopeType->kind)->scope;
+            node->typeInfo               = typeInfo;
             break;
 
         case TypeInfoKind::Interface:
         case TypeInfoKind::Struct:
-            identifierRef->startScope = castTypeInfo<TypeInfoStruct>(scopeType, scopeType->kind)->scope;
-            node->typeInfo            = typeInfo;
+            identifierRef->previousScope = castTypeInfo<TypeInfoStruct>(scopeType, scopeType->kind)->scope;
+            node->typeInfo               = typeInfo;
             break;
 
         case TypeInfoKind::Array:
@@ -224,7 +224,7 @@ void Semantic::setupIdentifierRef(AstNode* node)
             const auto typeArray = castTypeInfo<TypeInfoArray>(scopeType, TypeInfoKind::Array);
             const auto subType   = TypeManager::concreteType(typeArray->finalType);
             if (subType->isStruct())
-                identifierRef->startScope = castTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
+                identifierRef->previousScope = castTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
             node->typeInfo = typeInfo;
             break;
         }
@@ -234,7 +234,7 @@ void Semantic::setupIdentifierRef(AstNode* node)
             const auto typeSlice = castTypeInfo<TypeInfoSlice>(scopeType, TypeInfoKind::Slice);
             const auto subType   = TypeManager::concreteType(typeSlice->pointedType);
             if (subType->isStruct())
-                identifierRef->startScope = castTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
+                identifierRef->previousScope = castTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
             node->typeInfo = typeInfo;
             break;
         }
@@ -1063,8 +1063,8 @@ bool Semantic::waitForSymbols(SemanticContext* context, AstIdentifier* identifie
         // In case the identifier is part of a reference, need to initialize it
         if (identifier != identifier->identifierRef()->lastChild())
         {
-            setupConst(identifier);
-            setupIdentifierRef(identifier);
+            setConst(identifier);
+            setIdentifierRefPrevious(identifier);
 
             // Be sure to set up constexpr
             if (identifier->typeInfo->isStruct() ||
@@ -1095,7 +1095,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
     if (context->sourceFile && context->sourceFile->scopeFile && identifier->token.is(context->sourceFile->scopeFile->name))
     {
         SWAG_VERIFY(identifier == identifierRef->firstChild(), context->report({identifier, toErr(Err0744)}));
-        identifierRef->startScope = context->sourceFile->scopeFile;
+        identifierRef->previousScope = context->sourceFile->scopeFile;
         return true;
     }
 

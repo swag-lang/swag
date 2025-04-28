@@ -686,7 +686,7 @@ struct AstIdentifierRef : AstNode
     AstNode* clone(CloneContext& context);
     void     computeName();
 
-    Scope*   startScope;
+    Scope*   previousScope;
     AstNode* previousResolvedNode;
 };
 

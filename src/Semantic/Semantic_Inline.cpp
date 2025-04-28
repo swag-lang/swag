@@ -334,8 +334,8 @@ bool Semantic::makeInline(JobContext* context, AstIdentifier* identifier, bool f
     const auto typeFunc   = castTypeInfo<TypeInfoFuncAttr>(identifier->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
     const auto returnType = typeFunc->concreteReturnType();
 
-    setupConst(identifier);
-    setupIdentifierRef(identifier);
+    setConst(identifier);
+    setIdentifierRefPrevious(identifier);
     identifier->byteCodeFct = ByteCodeGen::emitPassThrough;
 
     if (returnType->isStruct())
