@@ -8,7 +8,7 @@ func(T) create(parent: *void = null, id: string = null)
 }
 
 #[Swag.Overload]
-func(T) create(parent: nl *void, name: string, position: Rectangle, id: string = null)
+func(T) create(parent: #null *void, name: string, position: Rectangle, id: string = null)
 {
 }
 

@@ -7,14 +7,14 @@ impl I for A {}
 impl I for B {}
 
 //#[Swag.PrintBc]
-func toto(i: nl I)
+func toto(i: #null I)
 {
     //#[Swag.Complete]
     switch i
     {
-    case A: 
+    case A:
         @print("ptr.a")
-    case B: 
+    case B:
         @print("ptr.v")
     }
 }

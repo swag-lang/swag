@@ -5,7 +5,7 @@
 func getArgs()->const [..] string => @args()
 
 // Get a given argument, or null
-func getArg(idx: u32)->nl string
+func getArg(idx: u32)->#null string
 {
     let args = @args()
     if idx >= @countof(args):

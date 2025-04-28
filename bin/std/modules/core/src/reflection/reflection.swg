@@ -136,7 +136,7 @@ internal var g_HashLock: Sync.RWLock
 }
 
 // Convert a crc to a registered typeinfo
-func crcToType(crc: u32)->nl typeinfo
+func crcToType(crc: u32)->#null typeinfo
 {
     Sync.sharedLock(&g_HashLock)
     let e = g_HashCrcToType.tryFind(crc)
@@ -146,7 +146,7 @@ func crcToType(crc: u32)->nl typeinfo
 }
 
 // Convert a crc to a registered typeinfo
-func nameToType(name: string)->nl typeinfo
+func nameToType(name: string)->#null typeinfo
 {
     Sync.sharedLock(&g_HashLock)
     let e = g_HashNameToType.tryFind(name)

@@ -51,7 +51,7 @@ struct Application
 internal impl Application
 {
     // Send and process an event
-    mtd sendEventPrivate(evt: IEvent, stopAt: nl *Wnd)
+    mtd sendEventPrivate(evt: IEvent, stopAt: #null *Wnd)
     {
         // Global hook events
         foreach hook in hookOnEvent:
@@ -93,7 +93,7 @@ internal impl Application
         }
     }
 
-    func skipDisabled(wnd: nl *Wnd)->nl *Wnd
+    func skipDisabled(wnd: #null *Wnd)->#null *Wnd
     {
         if !wnd:
             return null
@@ -469,7 +469,7 @@ internal impl Application
         sigFrame.call(self)
     }
 
-    public mtd doModalLoop(surface: nl *Surface, cb: func||(*Application) = null)->WndId
+    public mtd doModalLoop(surface: #null *Surface, cb: func||(*Application) = null)->WndId
     {
         inModalLoop += 1
         defer inModalLoop -= 1
@@ -688,7 +688,7 @@ impl Application
     }
 
     // Returns the window under the given point
-    mtd getWndAtMouse()->nl *Wnd
+    mtd getWndAtMouse()->#null *Wnd
     {
         var mousePos      = mouse.getPosition()
         let targetSurface = getSurfaceAt(mousePos.x, mousePos.y)
@@ -836,7 +836,7 @@ impl Application
     mtd disableHotKeys()
     {
         hotKeysDisabled = true
-    }    
+    }
 
     // Register a global os key action
     #[Swag.Overload]

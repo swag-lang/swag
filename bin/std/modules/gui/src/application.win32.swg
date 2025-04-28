@@ -99,7 +99,7 @@ impl Application
         }
     }
 
-    mtd getSurfaceAt(x, y: f32)->nl *Surface
+    mtd getSurfaceAt(x, y: f32)->#null *Surface
     {
         var pt: POINT
         pt.x = cast(s32) x

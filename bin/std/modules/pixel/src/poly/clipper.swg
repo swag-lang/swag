@@ -706,7 +706,7 @@ impl Transform
         }
     }
 
-    func getMaximaPair(e: *Edge)->nl *Edge
+    func getMaximaPair(e: *Edge)->#null *Edge
     {
         if (e.next.top == e.top) and !e.next.nextInLML:
             return e.next
@@ -1584,7 +1584,7 @@ impl Transform
         return true
     }
 
-    func parseFirstLeft(fl: *OutRec)->nl *OutRec
+    func parseFirstLeft(fl: *OutRec)->#null *OutRec
     {
         var firstLeft = fl
         while firstLeft and !firstLeft.pts:
@@ -1718,7 +1718,7 @@ impl Transform
         return e and e.top.y == y and !e.nextInLML
     }
 
-    func getMaximaPairEx(e: *Edge)->nl *Edge
+    func getMaximaPairEx(e: *Edge)->#null *Edge
     {
         let result = getMaximaPair(e)
         if result and (result.outIdx == Skip or
@@ -2142,7 +2142,7 @@ impl Transform
             return e2.curr.x < e1.curr.x
     }
 
-    mtd insertEdgeIntoAEL(edge: *Edge, startE: nl *Edge)
+    mtd insertEdgeIntoAEL(edge: *Edge, startE: #null *Edge)
     {
         var startEdge = startE
         if !activeEdges

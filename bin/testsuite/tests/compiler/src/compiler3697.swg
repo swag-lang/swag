@@ -1,4 +1,4 @@
-func write_chunk(chunk_type: TT, buf: nl const *u8, length: u64)
+func write_chunk(chunk_type: TT, buf: #null const *u8, length: u64)
 {
     @assert(chunk_type[0] == 73)
     @assert(chunk_type[1] == 72)

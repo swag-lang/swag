@@ -681,7 +681,7 @@ public impl MenuCtrl
 
     // Add a new item
     #[Swag.Overload]
-    mtd addItem(name: nl string, id: WndId, icon: Icon = {}, rightName: string = null, disabled = false, checked = false)
+    mtd addItem(name: #null string, id: WndId, icon: Icon = {}, rightName: string = null, disabled = false, checked = false)
     {
         with let mitem = items.newPtr()
         {
@@ -706,7 +706,7 @@ public impl MenuCtrl
 
     // Add a new popup item
     #[Swag.Overload]
-    mtd addPopup(name: nl string, popup: *MenuCtrl, icon: Icon = {}, id: WndId = null)
+    mtd addPopup(name: #null string, popup: *MenuCtrl, icon: Icon = {}, id: WndId = null)
     {
         with let mitem = items.newPtr()
         {

@@ -45,7 +45,7 @@ func __is(toType, fromType: const *TypeInfoStruct)->{offset: u32, yes: bool}
     return {0, false}
 }
 
-func @as(toType, fromType: const *TypeInfoStruct, ptr: *void)->nl *void
+func @as(toType, fromType: const *TypeInfoStruct, ptr: *void)->#null *void
 {
     let (offset, yes) = __is(toType, fromType)
     if !yes:
@@ -123,7 +123,7 @@ func @typecmp(typeA, typeB: typeinfo, cmpFlags: TypeCmpFlags)->bool
 
 ////////////////////////////////////////////////////////////
 
-func @itftableof(structType, itfType: const *TypeInfoStruct)->nl const *void
+func @itftableof(structType, itfType: const *TypeInfoStruct)->#null const *void
 {
     if !structType or !itfType:
         return null

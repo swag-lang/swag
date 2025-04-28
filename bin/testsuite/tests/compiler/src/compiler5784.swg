@@ -2,7 +2,7 @@
 //#global testerror "San0001"
 
 #[Swag.NoInline]
-func titi()->nl *s32
+func titi()->#null *s32
 {
     return null
 }

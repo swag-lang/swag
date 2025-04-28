@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-func toto()->nl any
+func toto()->#null any
 {
     return null
 }

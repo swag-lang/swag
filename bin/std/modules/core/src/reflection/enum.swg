@@ -16,7 +16,7 @@ func makeConcreteEnum(type: typeinfo)->typeinfo
 // Get information about a specific value in a given enum
 // Returns null if the value does not exist
 #[ConstExpr]
-func getEnumValue(type: typeinfo, name: string)->nl const *TypeValue
+func getEnumValue(type: typeinfo, name: string)->#null const *TypeValue
 {
     if !isEnum(type):
         return null

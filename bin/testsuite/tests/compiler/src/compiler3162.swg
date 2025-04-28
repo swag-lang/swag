@@ -3,7 +3,7 @@
 using Swag
 #foreignlib "ucrt"
 #[Foreign("ucrtbase", "__stdio_common_vsprintf")]
-func stdio_common_vsprintf(_Options: u64, buf: *void, buflen: u64, _Format: cstring, _Locale: nl *void, _ArgList: *void)->s32;
+func stdio_common_vsprintf(_Options: u64, buf: *void, buflen: u64, _Format: cstring, _Locale: #null *void, _ArgList: *void)->s32;
 
 func toto(x: cvarargs)
 {

@@ -1,4 +1,4 @@
-func toto()->nl const *u8
+func toto()->#null const *u8
 {
     let b = false
     var titi: const *u8

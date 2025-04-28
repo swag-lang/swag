@@ -302,8 +302,8 @@ private namespace Shell32Priv
     {
         func SHGetSpecialFolderPathA(hwnd: HWND, pszPath: LPSTR, csidl: s32, fCreate: BOOL)->BOOL;
         func SHGetSpecialFolderPathW(hwnd: HWND, pszPath: LPWSTR, csidl: s32, fCreate: BOOL)->BOOL;
-        func ExtractIconExA(lpszFile: LPCSTR, nIconIndex: s32, phiconLarge: nl *HICON, phiconSmall: nl *HICON, nIcons: UINT)->UINT;
-        func ExtractIconExW(lpszFile: LPCWSTR, nIconIndex: s32, phiconLarge: nl *HICON, phiconSmall: nl *HICON, nIcons: UINT)->UINT;
+        func ExtractIconExA(lpszFile: LPCSTR, nIconIndex: s32, phiconLarge: #null *HICON, phiconSmall: #null *HICON, nIcons: UINT)->UINT;
+        func ExtractIconExW(lpszFile: LPCWSTR, nIconIndex: s32, phiconLarge: #null *HICON, phiconSmall: #null *HICON, nIcons: UINT)->UINT;
         func SHGetStockIconInfo(siid: SHSTOCKICONID, uFlags: UINT, psii: SHSTOCKICONINFO)->SHSTDAPI;
         func Shell_NotifyIconA(dwMessage: DWORD, lpData: *NOTIFYICONDATAA)->BOOL;
         func Shell_NotifyIconW(dwMessage: DWORD, lpData: *NOTIFYICONDATAW)->BOOL;
@@ -332,7 +332,7 @@ private namespace Shell32Priv
     }
 
     #[Swag.Discardable]
-    func ExtractIconExA(lpszFile: LPCSTR, nIconIndex: s32, phiconLarge: nl *HICON, phiconSmall: nl *HICON, nIcons: UINT)->UINT throw
+    func ExtractIconExA(lpszFile: LPCSTR, nIconIndex: s32, phiconLarge: #null *HICON, phiconSmall: #null *HICON, nIcons: UINT)->UINT throw
     {
         let res = Shell32Priv.ExtractIconExA(lpszFile, nIconIndex, phiconLarge, phiconSmall, nIcons)
         if res == Swag.U32.Max:
@@ -341,7 +341,7 @@ private namespace Shell32Priv
     }
 
     #[Swag.Discardable]
-    func ExtractIconExW(lpszFile: LPCWSTR, nIconIndex: s32, phiconLarge: nl *HICON, phiconSmall: nl *HICON, nIcons: UINT)->UINT throw
+    func ExtractIconExW(lpszFile: LPCWSTR, nIconIndex: s32, phiconLarge: #null *HICON, phiconSmall: #null *HICON, nIcons: UINT)->UINT throw
     {
         let res = Shell32Priv.ExtractIconExW(lpszFile, nIconIndex, phiconLarge, phiconSmall, nIcons)
         if res == Swag.U32.Max:

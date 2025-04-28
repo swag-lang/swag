@@ -178,7 +178,7 @@ impl Label
     }
 
     #[Swag.Discardable]
-    func create(parent: *Wnd, name: nl string, position: Math.Rectangle = {}, id: WndId = null, flags: LabelFlags = .Zero)->*Label
+    func create(parent: *Wnd, name: #null string, position: Math.Rectangle = {}, id: WndId = null, flags: LabelFlags = .Zero)->*Label
     {
         Debug.assert(parent != null)
         var pos = position
@@ -191,7 +191,7 @@ impl Label
     }
 
     // Change the text
-    mtd setText(text: nl string)
+    mtd setText(text: #null string)
     {
         name = text
         invalidate()

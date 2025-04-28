@@ -8,14 +8,14 @@ impl I for B {}
 
 //#[Swag.PrintBc]
 #[Swag.Safety("", true)]
-func toto(i: nl I)
+func toto(i: #null I)
 {
     #[Swag.Complete]
     switch i
     {
-    case A: 
+    case A:
         @print("ptr.a")
-    case B: 
+    case B:
         @print("ptr.v")
     //case null:
       //  @print("ptr.v")

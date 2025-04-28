@@ -3,9 +3,9 @@
 
 //#[Swag.PrintGenBc]
 #[Swag.Sanity(true)]
-func titi(x: nl *s32, y: s32)
+func titi(x: #null *s32, y: s32)
 {
-    if !x: 
+    if !x:
         return
     dref x = 0
 

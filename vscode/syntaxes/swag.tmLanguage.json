@@ -8,7 +8,7 @@
     { "include": "#compiler-functions" },
     { "include": "#compiler-global" },
     { "include": "#compiler-statement" },
-    { "include": "#compiler-ret" },    
+    { "include": "#compiler-ret" },
     { "include": "#compiler-intrinsics" },
     { "include": "#compiler-keywords" },
     { "include": "#compiler-modifiers" },
@@ -29,7 +29,7 @@
     { "include": "#intrinsics-alias" },
     { "include": "#intrinsics-invalid" },
     { "include": "#intrinsics-literal" },
-    { "include": "#compiler-invalid" },    
+    { "include": "#compiler-invalid" },
     { "include": "#types" },
     { "include": "#strings" },
     { "include": "#var-decl" },
@@ -110,7 +110,7 @@
       "patterns": [
         {
           "name": "keyword.declaration",
-          "match": "\\b(let|var|const|nl)\\b"
+          "match": "\\b(let|var|const)\\b"
         }
       ]
     },
@@ -206,7 +206,7 @@
           "match": "(#)(defined|offsetof|typeof|alignof|sizeof|stringof|nameof|isconstexpr|location|decltype|hastag|gettag|runes|safety|include)"
         }
       ]
-    },        
+    },
     "compiler-keywords": {
       "patterns": [
         {
@@ -219,10 +219,10 @@
       "patterns": [
         {
           "name": "meta.preprocessor",
-          "match": "\\#(prom|over|nodrop|move|moveraw|bit|unconst|back|ref|constref)\\b"
+          "match": "\\#(prom|over|nodrop|move|moveraw|bit|unconst|back|ref|constref|null)\\b"
         }
       ]
-    },    
+    },
     "compiler-invalid": {
       "patterns": [
         {
@@ -295,7 +295,7 @@
               "name": "meta.preprocessor"
             }
           }
-        },        
+        },
         {
           "match": "\\b(defer)\\<(err|noerr)\\>",
           "captures": {
@@ -306,7 +306,7 @@
               "name": "meta.preprocessor"
             }
           }
-        },      
+        },
         {
           "match": "\\b(cast)\\<(bit|overflow|unconst)\\>",
           "captures": {
@@ -317,7 +317,7 @@
               "name": "meta.preprocessor"
             }
           }
-        },   
+        },
         {
           "match": "\\b(defer|where)\\<(\\w*)\\>",
           "captures": {
@@ -328,7 +328,7 @@
               "name": "invalid"
             }
           }
-        },             
+        },
         {
           "match": "\\b(cast)\\<(\\w*)\\>",
           "captures": {
@@ -339,7 +339,7 @@
               "name": "invalid"
             }
           }
-        }        
+        }
       ]
     },
     "function-call": {
@@ -475,8 +475,8 @@
         {
           "name": "string.quoted.single",
           "match": "'[^']'"
-        }  
-      ]      
+        }
+      ]
     },
     "operator-character": {
       "patterns": [

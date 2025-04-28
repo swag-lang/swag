@@ -364,7 +364,7 @@ bool FormatAst::outputTypeLambda(FormatContext& context, AstNode* node)
 
     if (typeNode->typeFlags.has(TYPE_FLAG_NULLABLE))
     {
-        concat->addString("nl");
+        concat->addString("#null");
         concat->addBlank();
     }
 

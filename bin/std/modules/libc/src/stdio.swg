@@ -63,13 +63,13 @@ var stderr: *FILE
 #if #os == Swag.TargetOs.Windows
 {
     #[Foreign(ForeignLib, "__stdio_common_vfprintf"), Discardable]
-    func stdio_common_vfprintf(_Options: u64, _Stream: *FILE, _Format: cstring, _Locale: nl *void, _ArgList: nl *void)->s32;
+    func stdio_common_vfprintf(_Options: u64, _Stream: *FILE, _Format: cstring, _Locale: #null *void, _ArgList: #null *void)->s32;
     #[Foreign(ForeignLib, "__stdio_common_vsprintf"), Discardable]
-    func stdio_common_vsprintf(_Options: u64, _Buffer: *u8, _BufferCount: size_t, _Format: cstring, _Locale: nl *void, _ArgList: nl *void)->s32;
+    func stdio_common_vsprintf(_Options: u64, _Buffer: *u8, _BufferCount: size_t, _Format: cstring, _Locale: #null *void, _ArgList: #null *void)->s32;
     #[Foreign(ForeignLib, "__stdio_common_vfscanf"), Discardable]
-    func stdio_common_vfscanf(_Options: u64, _Stream: *FILE, _Format: cstring, _Locale: nl *void, _ArgList: nl *void)->s32;
+    func stdio_common_vfscanf(_Options: u64, _Stream: *FILE, _Format: cstring, _Locale: #null *void, _ArgList: #null *void)->s32;
     #[Foreign(ForeignLib, "__stdio_common_vsscanf"), Discardable]
-    func stdio_common_vsscanf(_Options: u64, _Buffer: cstring, _BufferCount: size_t, _Format: cstring, _Locale: nl *void, _ArgList: nl *void)->s32;
+    func stdio_common_vsscanf(_Options: u64, _Buffer: cstring, _BufferCount: size_t, _Format: cstring, _Locale: #null *void, _ArgList: #null *void)->s32;
 
     #[Foreign(ForeignLib, "__acrt_iob_func")]
     func acrt_iob_func(index: u32)->*FILE;

@@ -1,6 +1,6 @@
 
 
-func(T) delete(addr: nl *T)
+func(T) delete(addr: #null *T)
 {
 }
 

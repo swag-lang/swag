@@ -122,14 +122,14 @@ impl IWnd for LibraryView
             {
                 .addItem(CmdIdDeleteCapture)
                 .addSeparator()
-                .addItem(CmdIdCaptureFileLocation)                
-                .addItem(CmdIdLinkedFileLocation)   
+                .addItem(CmdIdCaptureFileLocation)
+                .addItem(CmdIdLinkedFileLocation)
                 .addSeparator()
                 .addItem(CmdIdFileDetails)
             }
 
             discard menu.doModal(evt.surfacePos, autoDestroy: true)
-        }        
+        }
     }
 
     mtd impl onPaintEvent(evt: *PaintEvent)
@@ -144,13 +144,13 @@ impl IWnd for LibraryView
         var W: f32 = 0
         switch libWnd.previewSize
         {
-        case Small:  
+        case Small:
             H = 128
             W = H * 4.0 / 3.0
-        case Medium: 
+        case Medium:
             H = 256
             W = H * 4.0 / 3.0
-        case Big:    
+        case Big:
             H = 512
             W = H * 4.0 / 3.0
         }
@@ -165,7 +165,7 @@ impl IWnd for LibraryView
                 it.visible = false
             if y > spos.y + position.height:
                 it.visible = false
-            
+
             // Retrieve the loaded capture if it exists
             mutexLoaded.lock()
             let capture = it.capture
@@ -207,7 +207,7 @@ impl IWnd for LibraryView
 impl LibraryView
 {
     mtd updateRecent(capture: *Capture)
-    {   
+    {
         foreach &it in items
         {
             if capture.file == it.fi.fullname
@@ -225,11 +225,11 @@ impl LibraryView
 
     #[Swag.Overload]
     mtd loadOne(it: *LibraryItem)
-    {  
+    {
         let capture = catch Capture.load(it.fi.fullname)
         if !capture:
             return
-        
+
         capture.backImg.release()
         mutexLoaded.lock()
         it.capture = capture
@@ -251,7 +251,7 @@ impl LibraryView
                 if th.requestEnd
                 {
                     remain = false
-                    break       
+                    break
                 }
 
                 if it.capture:
@@ -266,12 +266,12 @@ impl LibraryView
 
                 loadOne(it)
                 break
-            }    
+            }
 
             if notVis:
                 loadOne(notVis)
 
-        }        
+        }
     }
 
     mtd fill() throw
@@ -321,7 +321,7 @@ impl LibraryView
         {
             thread.init(func|self|(th: Thread) { self.loadOne(th); })
             thread.start()
-        }   
+        }
 
         invalidate()
     }
@@ -337,15 +337,15 @@ impl LibraryWnd
         case Small:
             zoomBtn.name.set("small")
         case Medium:
-            zoomBtn.name.set("medium")            
+            zoomBtn.name.set("medium")
         case Big:
-            zoomBtn.name.set("big")            
+            zoomBtn.name.set("big")
         }
 
         invalidate()
     }
 
-    mtd getCapture()->nl *Capture
+    mtd getCapture()->#null *Capture
     {
         if view.focusItem < view.items.count:
             return view.items[view.focusItem].capture
@@ -367,12 +367,12 @@ impl LibraryWnd
     }
 
     mtd removeSelected()
-    {        
+    {
         foreach it, i in view.items
         {
             if view.selModel.isSelected(cast() i)
-            {           
-                g_Library.removeFile(it.fi.fullname)     
+            {
+                g_Library.removeFile(it.fi.fullname)
             }
         }
     }
@@ -382,16 +382,16 @@ impl LibraryWnd
         if listCtrl.getLineCount():
             return
         g_Library.onDeleteFile += func|self|(file)
-        {    
+        {
             foreach it, i in self.view.items
             {
                 if it.fi.fullname == file
-                {   
-                    self.view.selModel.select(cast() i, false)        
+                {
+                    self.view.selModel.select(cast() i, false)
                     self.view.items.removeAtOrdered(i)
                     break
                 }
-            }                    
+            }
         }
 
         let line = listCtrl.createLine("All Captures", Icon.from(&main.icons24, 4))
@@ -567,7 +567,7 @@ impl LibraryWnd
                 }
                 discard menu.doModal({pos.horzCenter(), pos.y}, .AnchorBottomCenter, autoDestroy: true)
             }
-        }        
+        }
 
         res.setPreviewSize(.Small)
         return res

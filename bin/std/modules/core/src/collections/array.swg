@@ -512,7 +512,7 @@ impl Array
 
     // Append a slice to the end of this instance
     #[Overload]
-    mtd add(values: nl const [..] T)
+    mtd add(values: #null const [..] T)
         where Reflection.canCopy(T)
     {
         var sliceCount = @countof(values)

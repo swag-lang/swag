@@ -119,7 +119,7 @@ impl RichString
     // ```swag
     // <b>this is bold</b> but this is normal <i>and this is italic</i>
     // ```swag
-    mtd set(text: nl string)
+    mtd set(text: #null string)
     {
         if raw == text and chunks.count:
             return
@@ -174,7 +174,7 @@ impl RichString
 
     // Get the url chunk at position 'at'.
     // If an url does not exists, returns 'null'.
-    mtd getUrlChunkAt(at: Math.Point)->nl *RichChunk
+    mtd getUrlChunkAt(at: Math.Point)->#null *RichChunk
     {
         if !hasUrl:
             return null

@@ -23,7 +23,7 @@ var g_Functions: Array'OneFunc
 
 #[Compiler]
 func getSig(typeFunc: const *Swag.TypeInfoFunc, namedArgs: bool)->String
-{    
+{
     var result: retval = "("
 
     foreach p, i in typeFunc.parameters
@@ -33,7 +33,7 @@ func getSig(typeFunc: const *Swag.TypeInfoFunc, namedArgs: bool)->String
         if namedArgs:
             result += Format.toString("p%: ", i)
         if p.pointedType.flags & .Nullable:
-            result += "nl "
+            result += "#null "
         result += p.pointedType.name
     }
 
@@ -69,7 +69,7 @@ func getSig(typeFunc: const *Swag.TypeInfoFunc, namedArgs: bool)->String
         builderVars.appendFormat("public func %", e.name)
         builderVars.appendString(getSig(typeFunc, true))
         builderVars.appendString("\n{\n")
-        builderVars.appendFormat("\treturn ext_%(", e.name)        
+        builderVars.appendFormat("\treturn ext_%(", e.name)
         foreach p, i in typeFunc.parameters
         {
             if i != 0:

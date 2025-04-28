@@ -202,7 +202,7 @@ impl ConcatBuffer
 
     // Append a slice of bytes to the buffer
     // If 'contiguous' is false, the slice will be divided in chunks if necessary
-    mtd addBytes(bytes: nl const [..] u8, contiguous = true)
+    mtd addBytes(bytes: #null const [..] u8, contiguous = true)
     {
         var num = @countof(bytes)
         if !num:
@@ -375,7 +375,7 @@ impl ConcatBuffer
 
     // Convert to a slice *only* if the buffer is linear, or return null.
     // See [[ConcatBuffer.makeLinear]]
-    mtd toSlice()->nl [..] u8
+    mtd toSlice()->#null [..] u8
     {
         if lastBucket == firstBucket:
             return @mkslice(firstBucket.datas, firstBucket.count)

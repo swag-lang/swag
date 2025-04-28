@@ -27,7 +27,7 @@ impl ITF1 for AA
     }
 }
 
-func interfaceOf(structType, itfType: const *Swag.TypeInfoStruct)->nl const *void
+func interfaceOf(structType, itfType: const *Swag.TypeInfoStruct)->#null const *void
 {
     for i in structType.interfaces
     {

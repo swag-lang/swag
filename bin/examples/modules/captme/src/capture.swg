@@ -614,13 +614,13 @@ impl Capture
             if f.mustClipToBound()
             {
                 pp.offset(rect.x, rect.y)
-                painter.pushClippingRect(pp)            
+                painter.pushClippingRect(pp)
                 paintForm(painter, clip, rect, f, zoom)
                 painter.popClippingRect()
             }
             else
-            {      
-                paintForm(painter, clip, rect, f, zoom)          
+            {
+                paintForm(painter, clip, rect, f, zoom)
             }
         }
 
@@ -733,7 +733,7 @@ impl Capture
         return bound
     }
 
-    mtd snap(x, y: nl *s32, right, bottom: bool, idxPt: u32 = 0, editForm: IForm = null)
+    mtd snap(x, y: #null *s32, right, bottom: bool, idxPt: u32 = 0, editForm: IForm = null)
     {
         const SnapToler = 10
 
@@ -1241,14 +1241,14 @@ impl Capture
     // SELECTION
     //////////////////////////////
 
-    mtd getSelectedBaseForm()->nl *BaseForm
+    mtd getSelectedBaseForm()->#null *BaseForm
     {
         if selection.count == 0:
             return null
         return cast(*BaseForm) @dataof(forms[selection.back()])
     }
 
-    mtd getSelectedFormType()->nl typeinfo
+    mtd getSelectedFormType()->#null typeinfo
     {
         if selection.count == 0:
             return null

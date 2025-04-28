@@ -74,7 +74,7 @@ internal impl TagBin
         freeSections.add(ptr)
     }
 
-    mtd canConvertType(toType, fromType: nl typeinfo)->bool
+    mtd canConvertType(toType, fromType: #null typeinfo)->bool
     {
         if toType == fromType:
             return true

@@ -68,7 +68,7 @@ struct MainWnd
     mdlFormText:        FormText
     mdlFormDraw:        FormDraw
     mdlHighlight:       IForm
-    mdlPixSel:          IForm    
+    mdlPixSel:          IForm
     mdlFavorite:        IForm
 }
 
@@ -217,7 +217,7 @@ impl MainWnd
 {
     mtd loadExternalImage(arg: string)
     {
-        let imgToLoad = catch Image.load(arg)            
+        let imgToLoad = catch Image.load(arg)
         if @err() != null
         {
             let str = Format.toString("Failed to load file: %", arg)
@@ -267,16 +267,16 @@ impl MainWnd
         case Favorites:
             return formToEditMode(mdlFavorite)
         case Highlight:
-            return formToEditMode(mdlHighlight)            
+            return formToEditMode(mdlHighlight)
         case PixSel:
-            return formToEditMode(mdlPixSel)             
+            return formToEditMode(mdlPixSel)
         }
 
         return editMode
     }
 
     mtd freezeSelection(freeze: bool)
-    {        
+    {
         if !freeze and embInfoFreeze
         {
             embInfoFreeze.destroy()
@@ -287,10 +287,10 @@ impl MainWnd
         {
             embInfoFreeze = EmbInfoCtrl.create(editWnd.view, "Selection is freezed", .Message, flags: .Bottom)
             embInfoFreeze.sigOnClose += func|self|(ctrl)
-            { 
-                self.freezeSel = false                   
+            {
+                self.freezeSel = false
                 self.embInfoFreeze = null
-            } 
+            }
 
             let capture = assume getCapture()
             capture.selection.clear()
@@ -301,8 +301,8 @@ impl MainWnd
             {
                 let p = cast(*BaseForm) @dataof(it)
                 p.freeze = true
-            }  
-        }                            
+            }
+        }
     }
 
     mtd updateState()
@@ -322,7 +322,7 @@ impl MainWnd
         }
     }
 
-    mtd getCapture()->nl *Capture
+    mtd getCapture()->#null *Capture
     {
         if libraryMode:
             return libWnd.getCapture()

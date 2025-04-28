@@ -574,7 +574,7 @@ bool Parser::doNullableTypeExpression(AstNode* parent, ExprFlags exprFlags, AstN
 {
     SourceLocation locNullable;
     bool           nullable = false;
-    if (tokenParse.is(TokenId::KwdNullable))
+    if (tokenParse.is(TokenId::ModifierNullable))
     {
         nullable    = true;
         locNullable = tokenParse.token.startLocation;

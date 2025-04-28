@@ -1,9 +1,9 @@
 impl MainWnd
 {
     mtd updateModel(f: IForm)
-    { 
+    {
         let form = cast(*BaseForm) @dataof(f)
-        
+
         if form.subKind == .Highlight:
             mdlHighlight = f
         elif form.subKind == .PixSel:
@@ -45,7 +45,7 @@ impl MainWnd
             mdlFavorite  = &mdlFormDraw
             mdlHighlight = &mdlFormDraw
             mdlPixSel    = &mdlFormDraw
-        }               
+        }
     }
 
     mtd updateEditMode(f: IForm)
@@ -136,8 +136,8 @@ impl MainWnd
         unreachable
     }
 
-    mtd editModeToModel(mode: EditMode)->nl IForm
-    {  
+    mtd editModeToModel(mode: EditMode)->#null IForm
+    {
         var formItf: IForm
 
         #[Swag.Complete]
@@ -165,13 +165,13 @@ impl MainWnd
             formItf = mdlHighlight
         case PixSel:
             formItf = mdlPixSel
-        }   
+        }
 
-        return formItf           
+        return formItf
     }
 
-    mtd newFormFromModel(mode: EditMode, clear = false)->nl IForm
-    {  
+    mtd newFormFromModel(mode: EditMode, clear = false)->#null IForm
+    {
         #[Swag.Complete]
         switch mode
         {
@@ -215,13 +215,13 @@ impl MainWnd
             return mdl
         case Favorites, Highlight, Selection, PixSel:
             break
-        }  
+        }
 
-        unreachable      
-    }    
+        unreachable
+    }
 
     func newFormFromForm(it: IForm)->*BaseForm
-    {  
+    {
         var mdlValue: *BaseForm
 
         #[Swag.Complete]
@@ -251,8 +251,8 @@ impl MainWnd
         case FormDraw as b:
             mdlValue = Memory.new'FormDraw()
             it.copy(mdlValue, b)
-        }   
+        }
 
-        return mdlValue           
+        return mdlValue
     }
 }

@@ -59,7 +59,7 @@ struct InvalidVersion
 
 // Make a string persistent for errors.
 // That kind of string can be stored in an error struct.
-func mkString(str: nl string)->nl string
+func mkString(str: #null string)->#null string
 {
     if str == null:
         return null

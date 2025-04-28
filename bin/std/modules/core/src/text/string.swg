@@ -578,7 +578,7 @@ impl String
     }
 
     // Convert a literal string to a String
-    func from(value: nl string)->String
+    func from(value: #null string)->String
     {
         var val: retval = value
         return val
@@ -650,7 +650,7 @@ impl String
 
     // Returns a new String in lower case
     #[Overload]
-    func toUpper(str: nl string, set = CharacterSet.Latin1)->String
+    func toUpper(str: #null string, set = CharacterSet.Latin1)->String
     {
         var result: retval = str
         result.makeUpper(set)
@@ -668,7 +668,7 @@ impl String
 
     // Returns a new String in lower case
     #[Overload]
-    func toLower(str: nl string, set = CharacterSet.Latin1)->String
+    func toLower(str: #null string, set = CharacterSet.Latin1)->String
     {
         var result: retval = str
         result.makeLower(set)

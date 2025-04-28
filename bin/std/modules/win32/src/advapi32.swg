@@ -32,7 +32,7 @@ const KEY_WOW64_RES          = 0x0300
 
 const REG_NONE                       = 0'u32 // No value type
 const REG_SZ                         = 1'u32 // Unicode nul terminated string
-const REG_EXPAND_SZ                  = 2'u32 // Unicode nul terminated string                                            
+const REG_EXPAND_SZ                  = 2'u32 // Unicode nul terminated string
 const REG_BINARY                     = 3'u32 // Free form binary
 const REG_DWORD                      = 4'u32 // 32-bit number
 const REG_DWORD_LITTLE_ENDIAN        = 4'u32 // 32-bit number (same as REG_DWORD)
@@ -47,7 +47,7 @@ const REG_QWORD_LITTLE_ENDIAN        = 11'u32 // 64-bit number (same as REG_QWOR
 
 #[Foreign("advapi32"), Swag.Discardable]
 {
-    func RegCreateKeyExA(hKey: HKEY, lpSubKey: LPCSTR, reserved: DWORD, lpClass: nl LPSTR, dwOptions: DWORD, samDesired: REGSAM, lpSecurityAttributes: nl const *SECURITY_ATTRIBUTES, hkResult: *HKEY, lpdwDisposition: LPDWORD)->LSTATUS;
-    func RegSetValueExA(hKey: HKEY, lpValueName: LPCSTR, reserved: DWORD, dwType : DWORD, lpData: nl const *BYTE, cbData: DWORD)->LSTATUS;    
+    func RegCreateKeyExA(hKey: HKEY, lpSubKey: LPCSTR, reserved: DWORD, lpClass: #null LPSTR, dwOptions: DWORD, samDesired: REGSAM, lpSecurityAttributes: #null const *SECURITY_ATTRIBUTES, hkResult: *HKEY, lpdwDisposition: LPDWORD)->LSTATUS;
+    func RegSetValueExA(hKey: HKEY, lpValueName: LPCSTR, reserved: DWORD, dwType : DWORD, lpData: #null const *BYTE, cbData: DWORD)->LSTATUS;
     func RegCloseKey(hKey: HKEY)->LSTATUS;
 }

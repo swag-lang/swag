@@ -132,7 +132,7 @@ internal impl Properties
         return gridColumnSize + gridMarginColumn * 0.5
     }
 
-    mtd hitTest(ptLoc: Math.Point)->nl *PropertiesItem
+    mtd hitTest(ptLoc: Math.Point)->#null *PropertiesItem
     {
         var pt = ptLoc + scrollWnd.getScrollPos()
         foreach item in items
@@ -240,7 +240,7 @@ internal impl Properties
 
             if mouseEvt.button != .Left:
                 break
-            
+
             // On column bar
             if prop.cursorSet
             {
@@ -271,9 +271,9 @@ internal impl Properties
 
             // Toggle checkbox
             elif prop.selItem.checkBox
-            {                    
+            {
                 prop.selItem.checkBox.toggle()
-            }            
+            }
 
         case MouseEvent as mouseEvt where mouseEvt.kind == .MouseReleased:
             prop.resizingColumn = false
@@ -490,7 +490,7 @@ internal impl Properties
         }
     }
 
-    mtd addItem(value: Swag.TypeValue, data: nl *u8, parentItem: nl *PropertiesItem, height: f32 = 0, flags = AddItemFlags.Name | AddItemFlags.Description)->*PropertiesItem
+    mtd addItem(value: Swag.TypeValue, data: #null *u8, parentItem: #null *PropertiesItem, height: f32 = 0, flags = AddItemFlags.Name | AddItemFlags.Description)->*PropertiesItem
     {
         var line: *Wnd
 

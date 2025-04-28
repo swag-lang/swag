@@ -1,7 +1,7 @@
 var G = 5
 
 #[Swag.NoInline]
-func toto()->nl *s32
+func toto()->#null *s32
 {
     return &G
 }

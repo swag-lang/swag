@@ -14,7 +14,7 @@ impl A
 }
 
 #[Swag.NoInline]
-func titi()->nl *A
+func titi()->#null *A
 {
     return null
 }

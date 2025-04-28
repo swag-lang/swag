@@ -4,7 +4,7 @@ func hasAttribute(value: typeinfo, attribute: typeinfo)->bool
 }
 
 var G = 0
-func beginSection(fct: nl *void, kind: s32, skipFat = false) throw
+func beginSection(fct: #null *void, kind: s32, skipFat = false) throw
 {
     G = 1
 }
@@ -12,7 +12,7 @@ func beginSection(fct: nl *void, kind: s32, skipFat = false) throw
 attr attrA();
 attr attrB();
 
-func readNative(fct: nl *void)->u32 throw
+func readNative(fct: #null *void)->u32 throw
 {
     return 0;
 }
@@ -23,7 +23,7 @@ struct SerializationError
 }
 
 //#[Swag.PrintBc]//, Swag.Optimize("", false)]
-func beginStruct(fct: nl *void, structType: typeinfo, _structData: nl const *u8)->bool throw
+func beginStruct(fct: #null *void, structType: typeinfo, _structData: #null const *u8)->bool throw
 {
     if  hasAttribute(structType, attrA) or
         hasAttribute(structType, attrB)

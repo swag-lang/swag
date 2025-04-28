@@ -141,7 +141,7 @@ impl Surface
     }
 
     // Set the surface title
-    mtd setTitle(name: nl string)
+    mtd setTitle(name: #null string)
     {
         wnd.name = name
         invalidate()
@@ -184,7 +184,7 @@ impl Surface
 
     // Returns the monitor corresponding to the surface position
     mtd getBestMonitor()->Env.Monitor
-    {  
+    {
         var result: retval
         var bestSurf = 0'f32
         let monitors = Env.getMonitors()
@@ -198,11 +198,11 @@ impl Surface
                 bestSurf = surf
                 result = m
             }
-        }        
+        }
 
         if bestSurf == 0:
-            result = monitors[0] 
-        return result     
+            result = monitors[0]
+        return result
     }
 
     // Constraint a window position to be inside the closest monitor
@@ -229,7 +229,7 @@ impl Surface
         }
 
         setPosition(np)
-    }    
+    }
 
     internal mtd createRT()
     {

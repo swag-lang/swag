@@ -18,9 +18,9 @@
     func glGetActiveUniform(program: GLuint, index: GLuint, maxLength: GLsizei, length: *GLsizei, size: *GLint, type: *GLenum, name: *GLchar);
     func glGetAttachedShaders(program: GLuint, maxCount: GLsizei, count: *GLsizei, shaders: *GLuint);
     func glGetAttribLocation(program: GLuint, name: const *GLchar)->GLint;
-    func glGetProgramInfoLog(program: GLuint, bufSize: GLsizei, length: nl *GLsizei, infoLog: *GLchar);
+    func glGetProgramInfoLog(program: GLuint, bufSize: GLsizei, length: #null *GLsizei, infoLog: *GLchar);
     func glGetProgramiv(program: GLuint, pname: GLenum, param: *GLint);
-    func glGetShaderInfoLog(shader: GLuint, bufSize: GLsizei, length: nl *GLsizei, infoLog: *GLchar);
+    func glGetShaderInfoLog(shader: GLuint, bufSize: GLsizei, length: #null *GLsizei, infoLog: *GLchar);
     func glGetShaderSource(obj: GLuint, maxLength: GLsizei, length: *GLsizei, source: *GLchar);
     func glGetShaderiv(shader: GLuint, pname: GLenum, param: *GLint);
     func glGetUniformLocation(program: GLuint, name: const *GLchar)->GLint;
@@ -33,7 +33,7 @@
     func glIsProgram(program: GLuint)->GLboolean;
     func glIsShader(shader: GLuint)->GLboolean;
     func glLinkProgram(program: GLuint);
-    func glShaderSource(shader: GLuint, count: GLsizei, str: *const *GLchar, length: nl const *GLint);
+    func glShaderSource(shader: GLuint, count: GLsizei, str: *const *GLchar, length: #null const *GLint);
     func glStencilFuncSeparate(frontfunc: GLenum, backfunc: GLenum, refr: GLint, mask: GLuint);
     func glStencilMaskSeparate(face: GLenum, mask: GLuint);
     func glStencilOpSeparate(face: GLenum, sfail: GLenum, dpfail: GLenum, dppass: GLenum);
@@ -94,7 +94,7 @@
     func glVertexAttrib4ubv(index: GLuint, v: const *GLubyte);
     func glVertexAttrib4uiv(index: GLuint, v: const *GLuint);
     func glVertexAttrib4usv(index: GLuint, v: const *GLushort);
-    func glVertexAttribPointer(index: GLuint, size: GLint, type: GLenum, normalized: GLboolean, stride: GLsizei, pointer: nl const *void);
+    func glVertexAttribPointer(index: GLuint, size: GLint, type: GLenum, normalized: GLboolean, stride: GLsizei, pointer: #null const *void);
 }
 
 const GL_BLEND_EQUATION_RGB               = GL_BLEND_EQUATION

@@ -1,7 +1,7 @@
 var G = 0
 
 //#[Swag.PrintBc]
-func toto(y: nl *u8, x: string)
+func toto(y: #null *u8, x: string)
 {
     let concatLength = @countof(x)
     if concatLength == 0:

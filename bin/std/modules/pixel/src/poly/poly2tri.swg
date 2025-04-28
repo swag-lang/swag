@@ -487,7 +487,7 @@ impl Triangle
 
 impl AdvancingFront
 {
-    mtd locatePoint(point: *Point)->nl *Node
+    mtd locatePoint(point: *Point)->#null *Node
     {
         let px   = point.x
         var node = searchNode

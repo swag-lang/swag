@@ -3,7 +3,7 @@
 
 //#[Swag.PrintGenBc]
 #[Swag.Sanity(true)]
-func mkString(str: nl string)->nl string
+func mkString(str: #null string)->#null string
 {
     if str == null:
         return null

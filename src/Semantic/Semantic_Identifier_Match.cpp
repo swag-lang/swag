@@ -928,7 +928,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     // will have to be changed later: if the function has a non-inlined version, then we must
     // be sure that all identifiers have been inlined before generating the function bytecode.
     // This is especially important if the identifier is a macro or a mixin.
-    if (canInline)
+    if (isMixinMacro)
     {
         AstPendingInline pendingInline;
         const auto       identifierRef = identifier->identifierRef();

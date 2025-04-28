@@ -8,21 +8,21 @@ impl A
 {
     #[Swag.Inline]
     #[Swag.Overload]
-    func(T) create(parent: nl *void, position: f32, id: Alias0 = null, hook: Alias1 = null)
+    func(T) create(parent: #null *void, position: f32, id: Alias0 = null, hook: Alias1 = null)
     {
         create(parent, "", position, hook: hook)
     }
 
     #[Swag.Inline]
     #[Swag.Overload]
-    func(T) create(parent: nl *void, name: string, position: f32, id: Alias0 = null, hook: Alias1 = null)
+    func(T) create(parent: #null *void, name: string, position: f32, id: Alias0 = null, hook: Alias1 = null)
     {
     }
 }
 
 impl B
 {
-    func create(parent: nl *void, name: string, position: f32, id: Alias0 = null)
+    func create(parent: #null *void, name: string, position: f32, id: Alias0 = null)
     {
         A.create'B(parent, position, id)
     }

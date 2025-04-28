@@ -4,7 +4,7 @@ using Swag
 
 // Returns the given attribute value, or null
 #[Overload, ConstExpr]
-func getAttributeValue(type: const *Swag.TypeValue, attribute: typeinfo, value: string)->nl any
+func getAttributeValue(type: const *Swag.TypeValue, attribute: typeinfo, value: string)->#null any
 {
     let attrib = getAttribute(type, attribute)
     if !attrib:
@@ -27,7 +27,7 @@ func(T) getAttributeValue(type: const *Swag.TypeValue, attribute: typeinfo, valu
 
 // Returns the given attribute value, or null
 #[Overload, ConstExpr]
-func getAttributeValue(type: typeinfo, attribute: typeinfo, value: string)->nl any
+func getAttributeValue(type: typeinfo, attribute: typeinfo, value: string)->#null any
 {
     let attrib = getAttribute(type, attribute)
     if !attrib:
@@ -37,7 +37,7 @@ func getAttributeValue(type: typeinfo, attribute: typeinfo, value: string)->nl a
 
 // Returns the given attribute value, or null
 #[Overload, ConstExpr]
-func getAttributeValue(attribute: const *Swag.Attribute, value: string)->nl any
+func getAttributeValue(attribute: const *Swag.Attribute, value: string)->#null any
 {
     foreach p in attribute.params where p.name == value:
         return p.value
@@ -56,7 +56,7 @@ func getAttributes(value: const *Swag.TypeValue, attribute: typeinfo)->Array'(co
 
 // Returns the given associated 'attribute' to 'value' or null
 #[Overload, ConstExpr]
-func getAttribute(value: const *Swag.TypeValue, attribute: typeinfo)->nl const *Swag.Attribute
+func getAttribute(value: const *Swag.TypeValue, attribute: typeinfo)->#null const *Swag.Attribute
 {
     foreach it in value.attributes where attribute == it.type:
         return it
@@ -98,7 +98,7 @@ func getAttributes(type: typeinfo, attribute: typeinfo)->Array'(const *Swag.Attr
 
 // Returns the given associated 'attribute' to 'type' or null
 #[Overload, ConstExpr]
-func getAttribute(type: typeinfo, attribute: typeinfo)->nl const *Swag.Attribute
+func getAttribute(type: typeinfo, attribute: typeinfo)->#null const *Swag.Attribute
 {
     switch type.kind
     {

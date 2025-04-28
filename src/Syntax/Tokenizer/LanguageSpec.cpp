@@ -351,7 +351,6 @@ void LanguageSpec::setupKeywords()
     keywords.add("var", TokenId::KwdVar);
     keywords.add("let", TokenId::KwdLet);
     keywords.add("const", TokenId::KwdConst);
-    keywords.add("nl", TokenId::KwdNullable);
     keywords.add("moveref", TokenId::KwdMoveRef);
 
     keywords.add("not", TokenId::KwdReserved);
@@ -396,6 +395,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("#back", TokenId::ModifierBack);
     keywords.add("#ref", TokenId::ModifierRef);
     keywords.add("#constref", TokenId::ModifierConstRef);
+    keywords.add("#null", TokenId::ModifierNullable);
 
     keywords.add("#cfg", TokenId::CompilerBuildCfg);
     keywords.add("#os", TokenId::CompilerOs);

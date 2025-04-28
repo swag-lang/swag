@@ -29,7 +29,7 @@ public func(T) addCodec()
 }
 
 // Find the codec that can treat the given encoding
-func getCodec(dstEncoding, srcEncoding: SoundFileEncoding)->nl *CodecDesc
+func getCodec(dstEncoding, srcEncoding: SoundFileEncoding)->#null *CodecDesc
 {
     var found: *CodecDesc
     foreach &codec in g_Codecs

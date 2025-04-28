@@ -99,7 +99,7 @@ func peekExecJob()->bool
     return true
 }
 
-func getJobToExec()->nl *Job
+func getJobToExec()->#null *Job
 {
     Sync.scopedLock(&g_mutexPendingJobs)
     if g_pendingJobs.isEmpty():
@@ -222,7 +222,7 @@ public func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = n
         visitSlice(oneJob.buffer, oneJob.offset, oneJob.userData)
     }
 
-    func visitSlice(buffer: [..] T, offset: u32, userData: nl *void)
+    func visitSlice(buffer: [..] T, offset: u32, userData: #null *void)
     {
         var scan    = @dataof(buffer)
         let countof = @countof(buffer)
@@ -294,7 +294,7 @@ public func parallelFor(count: u32, userData: *void = null, stmt: code)
         visitFor(oneJob.startIndex, oneJob.endIndex, oneJob.userData)
     }
 
-    func visitFor(startIndex, endIndex: u32, userData: nl *void)
+    func visitFor(startIndex, endIndex: u32, userData: #null *void)
     {
         var curIndex = startIndex
         for (endIndex - startIndex) + 1

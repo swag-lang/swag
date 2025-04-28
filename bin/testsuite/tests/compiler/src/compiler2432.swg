@@ -1,6 +1,6 @@
 //var G = 0
 
-func append(buf: nl *void, fmt: string, values: ...)
+func append(buf: #null *void, fmt: string, values: ...)
     verify
     {
         if !#isconstexpr(fmt): return true

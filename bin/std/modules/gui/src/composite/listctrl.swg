@@ -960,7 +960,7 @@ impl ListCtrl
 
     // Add one new line
     #[Swag.Overload]
-    mtd createLine(parentLine: nl *ListLine)->*ListLine
+    mtd createLine(parentLine: #null *ListLine)->*ListLine
     {
         Debug.assert(!isVirtual, "createLine cannot be called on a virtual list")
 
@@ -1071,7 +1071,7 @@ impl ListCtrl
     }
 
     // Get the line with the keyboard focus
-    mtd const getFocusLine()->nl *ListLine
+    mtd const getFocusLine()->#null *ListLine
     {
         if focusIndex >= lines.count:
             return null
@@ -1116,7 +1116,7 @@ impl ListCtrl
 
     // Returns a selected line
     // Mostly for singlesel mode
-    mtd const getSelectedLine()->nl *ListLine
+    mtd const getSelectedLine()->#null *ListLine
     {
         if isVirtual or selModel.isEmpty():
             return null

@@ -247,7 +247,7 @@ impl RegExp
         var result: retval
 
         if str == null:
-            return result        
+            return result
 
         var res     = str
         let end     = @dataof(str) + @countof(str)
@@ -276,19 +276,19 @@ impl RegExp
 
     // Find the first occurence in the string
     #[Swag.Overload]
-    public mtd grep(str: string)->nl string
+    public mtd grep(str: string)->#null string
     {
         if str == null:
-            return null        
+            return null
         clearMatch()
         return internalGrep(str)
     }
 
     // Try to match the start of the string, and returns the matched value or null.
-    public mtd partialMatch(str: string)->nl string
+    public mtd partialMatch(str: string)->#null string
     {
         if str == null:
-            return null        
+            return null
         let beg  = @dataof(str)
         let last = beg + @countof(str)
 
@@ -298,7 +298,7 @@ impl RegExp
         return null
     }
 
-    mtd internalGrep(str: string)->nl string
+    mtd internalGrep(str: string)->#null string
     {
         var beg  = @dataof(str)
         let last = beg + @countof(str)

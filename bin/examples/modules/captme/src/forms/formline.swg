@@ -8,7 +8,7 @@ struct FormLine
     endSize:            f32 = 4
     xa, ya, xb, yb:     f32
     xc, yc:             f32 = 10
-    
+
     #[Serialization.NoSerialize]
     {
         gizmo: GizmoPoints
@@ -142,7 +142,7 @@ impl IForm for FormLine
 
     mtd impl paint(painter: *Painter, cxt: FormPaintContext)
     {
-        var bSize = cxt.hitTest ? Math.max(borderSize, 5) : borderSize        
+        var bSize = cxt.hitTest ? Math.max(borderSize, 5) : borderSize
         bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, cxt, 8, 12)
         let sSize = cxt.quickMode ? adaptSize(startSize, MinCapSize, MaxCapSize, cxt, 1, 4) : startSize
         let eSize = cxt.quickMode ? adaptSize(endSize, MinCapSize, MaxCapSize, cxt, 1, 4) : endSize
@@ -157,7 +157,7 @@ impl IForm for FormLine
             }
 
             if cxt.quickMode
-            {    
+            {
                 xc = xa
                 yc = Math.abs(ya - yb) * 0.75
             }
@@ -187,7 +187,7 @@ impl IForm for FormLine
             painter.drawLine(xa * z, ya * z, xb * z, yb * z, pen)
     }
 
-    mtd impl setup(capt: nl *Capture)
+    mtd impl setup(capt: #null *Capture)
     {
         capture = capt
         gizmo.anchors.resize(3)

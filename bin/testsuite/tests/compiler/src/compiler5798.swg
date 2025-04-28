@@ -30,7 +30,7 @@ func getFileDirectoryIcon(name: string, isDirectory: bool, small = true)->Icon
 }
 
 #[Swag.NoInline]
-func getExtension(str: string)->nl string
+func getExtension(str: string)->#null string
 {
     if str == null: return null
     return ""

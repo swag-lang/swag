@@ -32,7 +32,7 @@ impl ConvertFormatFloat
     //     | G | 'E' for large exponents, 'f' otherwise
     // + 'precision'
     //     A number which is the precision of the fractional part
-    mtd setFormat(strFormat: nl string)
+    mtd setFormat(strFormat: #null string)
     {
         let buffer  = @dataof(strFormat)
         let countof = @countof(strFormat)
@@ -98,7 +98,7 @@ impl ConvertFormatInt
     //     The padding character, in ascii. It's mandatory before the next field
     // + 'width'
     //     The width of the output, in number of characters
-    mtd setFormat(strFormat: nl string)
+    mtd setFormat(strFormat: #null string)
     {
         let buffer  = @dataof(strFormat)
         let countof = @countof(strFormat)
@@ -147,7 +147,7 @@ impl ConvertFormatInt
 }
 
 // Convert a value to an utf8 string, and append the result in a ConcatBuffer
-func convertAny(buf: *ConcatBuffer, value: any, convFmt: ConvertFormat, strFormat: nl string)
+func convertAny(buf: *ConcatBuffer, value: any, convFmt: ConvertFormat, strFormat: #null string)
 {
     var valueData = @dataof(value)
     var type      = Reflection.makeConcreteAlias(@kindof(value))
@@ -297,7 +297,7 @@ func convertAny(buf: *ConcatBuffer, value: any, convFmt: ConvertFormat, strForma
 }
 
 // Convert a structure content to an utf8 string, and put the result in a ConcatBuffer
-func convertStruct(buf: *ConcatBuffer, value: any, convFmt: ConvertFormat, strFormat: nl string)
+func convertStruct(buf: *ConcatBuffer, value: any, convFmt: ConvertFormat, strFormat: #null string)
 {
     let kindof = cast(const *Swag.TypeInfoStruct) @kindof(value)
     Debug.assert(kindof.kind == TypeInfoKind.Struct, "this is not a structure")
@@ -458,7 +458,7 @@ func convertInt(buf: *ConcatBuffer, value: any, fmt: ConvertFormatInt)
 
 // Convert a float to an utf8 string, and put the result in a ConcatBuffer
 #[Swag.Overload]
-func convertFloat(buf: *ConcatBuffer, value: any, convFmt: ConvertFormat, strFormat: nl string)
+func convertFloat(buf: *ConcatBuffer, value: any, convFmt: ConvertFormat, strFormat: #null string)
 {
     Debug.assert(@kindof(value).flags & TypeInfoFlags.Float != 0, "value to convert is not a float")
 
@@ -469,7 +469,7 @@ func convertFloat(buf: *ConcatBuffer, value: any, convFmt: ConvertFormat, strFor
 
 // Convert an integer to an utf8 string, and put the result in a ConcatBuffer
 #[Swag.Overload]
-func convertInt(buf: *ConcatBuffer, value: any, convFmt: ConvertFormat, strFormat: nl string)
+func convertInt(buf: *ConcatBuffer, value: any, convFmt: ConvertFormat, strFormat: #null string)
 {
     Debug.assert(@kindof(value).flags & TypeInfoFlags.Integer != 0, "value to convert is not an integer")
 
@@ -499,7 +499,7 @@ func convertRune(buf: *ConcatBuffer, value: rune)
 
 // Templated version. Convert a value of type 'T'
 #[Swag.Warning("Wrn0006", .Disable)]
-func(T) convert(buf: *ConcatBuffer, value: T, convFmt: ConvertFormat, strFormat: nl string)
+func(T) convert(buf: *ConcatBuffer, value: T, convFmt: ConvertFormat, strFormat: #null string)
 {
     #if Reflection.isInteger(T)
     {

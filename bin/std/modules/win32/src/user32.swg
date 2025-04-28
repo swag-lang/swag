@@ -982,8 +982,8 @@ func GET_Y_LPARAM(lp: LPARAM) => cast(s32) HIWORD(lp)
     func PeekMessageA(lpMsg: *MSG, hWnd: HWND, wMsgFilterMin: UINT, wMsgFilterMax: UINT, wRemoveMsg: UINT)->BOOL;
     func PeekMessageW(lpMsg: *MSG, hWnd: HWND, wMsgFilterMin: UINT, wMsgFilterMax: UINT, wRemoveMsg: UINT)->BOOL;
     func PostQuitMessage(nExitCode: s32);
-    func SendMessageA(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT;    
-    func SendMessageW(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT;    
+    func SendMessageA(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT;
+    func SendMessageW(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT;
 
     func GetWindowLongPtrA(hWnd: HWND, nIndex: s32)->*LONG;
     func GetWindowLongPtrW(hWnd: HWND, nIndex: s32)->*LONG;
@@ -1043,7 +1043,7 @@ func GET_Y_LPARAM(lp: LPARAM) => cast(s32) HIWORD(lp)
     func BeginPaint(hWnd: HWND, lpPaint: *PAINTSTRUCT)->HDC;
     func EndPaint(hWnd: HWND, lpPaint: const *PAINTSTRUCT)->BOOL;
     func ReleaseDC(hWnd: HWND, hDC: HDC)->s32;
-    func InvalidateRect(hWnd: HWND, lpRect: nl const *RECT, bErase: BOOL)->BOOL;
+    func InvalidateRect(hWnd: HWND, lpRect: #null const *RECT, bErase: BOOL)->BOOL;
 
     func ScreenToClient(hWnd: HWND, lpPoint: *POINT)->BOOL;
     func ClientToScreen(hWnd: HWND, lpPoint: *POINT)->BOOL;
@@ -1056,7 +1056,7 @@ func GET_Y_LPARAM(lp: LPARAM) => cast(s32) HIWORD(lp)
     func SetWindowLongPtrA(hWnd: HWND, nIndex: s32, dwNewLong: *LONG)->*LONG;
     func SetWindowLongPtrW(hWnd: HWND, nIndex: s32, dwNewLong: *LONG)->*LONG;
 
-    func EnumDisplayMonitors(hdc: HDC, lprcClip: nl *RECT, lpfnEnum: const *void, dwData: LPARAM)->BOOL;
+    func EnumDisplayMonitors(hdc: HDC, lprcClip: #null *RECT, lpfnEnum: const *void, dwData: LPARAM)->BOOL;
     func EnumWindows(lpEnumFunc: const *void, lParam: LPARAM)->BOOL;
 }
 

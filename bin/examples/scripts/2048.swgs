@@ -174,7 +174,7 @@ func animate(wnd: *Wnd)
     }
 }
 
-func cellAt(x, y: s32, me: *Cell = null)->nl *Cell
+func cellAt(x, y: s32, me: *Cell = null)->#null *Cell
 {
     foreach &c in g_Cells
     {

@@ -7,7 +7,7 @@ func strlen(value: const ^u8)->u32
 
 //#[Swag.PrintBc]
 //#[Swag.optimizebc(0)]
-func toto(message: nl const ^u8)
+func toto(message: #null const ^u8)
 {
     var msg: string = message ? @mkstring(message, cast(u64) strlen(message)) : ""
 }

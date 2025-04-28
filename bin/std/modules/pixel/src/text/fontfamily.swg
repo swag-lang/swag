@@ -20,7 +20,7 @@ impl FontFamily
 {
     // Get the font corresponding to the style.
     // If not evailable, get another one.
-    mtd getFont(style: FontFamilyStyle)->nl *Font
+    mtd getFont(style: FontFamilyStyle)->#null *Font
     {
         switch style
         {

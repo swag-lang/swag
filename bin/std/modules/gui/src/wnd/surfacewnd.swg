@@ -114,7 +114,7 @@ impl IWnd for SurfaceWnd
                 surface.app.setFrameCursor(Cursor.from(.SizeNWSE))
             case Right | Top, Left | Bottom:
                 surface.app.setFrameCursor(Cursor.from(.SizeNESW))
-            }            
+            }
 
             if !movingSurface:
                 break
@@ -356,7 +356,7 @@ impl SurfaceWnd
         }
     }
 
-    mtd create(userView: nl *Wnd, hook: HookEvent)
+    mtd create(userView: #null *Wnd, hook: HookEvent)
     {
         computeStyle()
 

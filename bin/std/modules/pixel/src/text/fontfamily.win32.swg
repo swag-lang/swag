@@ -109,7 +109,7 @@ impl FontFamily
     }
 
     // Creates a typeface from a FontFamilyEnumerate and FontFamilyStyle
-    public func createTypeFace(enumerate: FontFamilyEnumerate, style: FontFamilyStyle)->nl *TypeFace throw
+    public func createTypeFace(enumerate: FontFamilyEnumerate, style: FontFamilyStyle)->#null *TypeFace throw
     {
         var logFont = enumerate.faces[cast(u64) style]
         if style == .Regular

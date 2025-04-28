@@ -10,7 +10,7 @@ struct ImageEncoder
 public interface IImageEncoder
 {
     mtd canEncode(filename: string)->bool;
-    mtd encode(buf: *ConcatBuffer, img: Image, opt: nl any) throw;
+    mtd encode(buf: *ConcatBuffer, img: Image, opt: #null any) throw;
 }
 
 public impl Image

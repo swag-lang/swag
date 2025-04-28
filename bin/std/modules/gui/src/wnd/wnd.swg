@@ -235,13 +235,13 @@ impl Wnd
     }
 
     #[Swag.Inline, Swag.Overload]
-    func(T) create(parent: nl *Wnd, position: Math.Rectangle, id: WndId = null, hook: HookEvent = null)->*T
+    func(T) create(parent: #null *Wnd, position: Math.Rectangle, id: WndId = null, hook: HookEvent = null)->*T
     {
         return create(parent, "", position, id: id, hook: hook)
     }
 
     #[Swag.Overload]
-    func(T) create(parent: nl *Wnd, name: nl string, position: Math.Rectangle, id: WndId = null, hook: HookEvent = null)->*T
+    func(T) create(parent: #null *Wnd, name: #null string, position: Math.Rectangle, id: WndId = null, hook: HookEvent = null)->*T
     {
         let res = Memory.new'T()
         res.isAllocated = true
@@ -942,7 +942,7 @@ impl Wnd
 
     // Get the child window at the given coordinate
     // Coordinate is expressed in the parent system
-    mtd getWndAt(x, y: f32, getDisabled, getHidden = false)->nl *Wnd
+    mtd getWndAt(x, y: f32, getDisabled, getHidden = false)->#null *Wnd
     {
         if !position.contains(x, y):
             return null
@@ -1002,7 +1002,7 @@ impl Wnd
     }
 
     // Retrieve the child with the given id
-    mtd getChildById(childId: string)->nl *Wnd
+    mtd getChildById(childId: string)->#null *Wnd
     {
         foreach c in childs
         {
@@ -1017,7 +1017,7 @@ impl Wnd
     }
 
     // Retrieve the parent with the given id
-    mtd getParentById(parentId: string)->nl *Wnd
+    mtd getParentById(parentId: string)->#null *Wnd
     {
         var p = parent
         while p
@@ -1124,7 +1124,7 @@ impl Wnd
     }
 
     // Get the id associated with a shortcut. null if none
-    mtd getKeyShortcut(mdf: Input.KeyModifiers, key: Input.Key)->nl WndId
+    mtd getKeyShortcut(mdf: Input.KeyModifiers, key: Input.Key)->#null WndId
     {
         foreach c in keyShortcuts
         {
