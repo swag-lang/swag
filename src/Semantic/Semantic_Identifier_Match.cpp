@@ -921,7 +921,6 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     {
         if (identifier->ownerFct)
             identifier->ownerFct->removePendingInline(identifier);
-
         SWAG_CHECK(makePendingInline(context, identifier, true));
         YIELD();
         return true;

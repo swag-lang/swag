@@ -180,7 +180,6 @@ void AstFuncDecl::removePendingInline(const AstIdentifier* identifier)
     {
         if (pendingInline[i].identifier == identifier)
         {
-            printf("x");
             pendingInline.erase(i);
             return;
         }
