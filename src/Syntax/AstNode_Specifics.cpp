@@ -1123,13 +1123,24 @@ AstNode* AstInline::clone(CloneContext& context)
             remaining--;
             SWAG_ASSERT(from->nodes.size() == 1);
             SWAG_ASSERT(from->overloads.size() == 1);
+
             const auto        over = from->overloads[0];
             AddSymbolTypeInfo toAdd;
             toAdd.node     = Ast::clone(over->node, nullptr);
             toAdd.typeInfo = over->typeInfo;
             toAdd.kind     = SymbolKind::Variable;
             toAdd.flags    = OVERLOAD_VAR_INLINE | OVERLOAD_CONST_ASSIGN;
-            newNode->parametersScope->symTable.addSymbolTypeInfo(nullptr, toAdd);
+
+            if (over->hasFlag(OVERLOAD_CONST_VALUE))
+            {
+                toAdd.aliasName      = over->symbol->name;
+                toAdd.computedValue  = &over->computedValue;
+                toAdd.storageOffset  = over->computedValue.storageOffset;
+                toAdd.storageSegment = over->computedValue.storageSegment;
+            }
+
+            const auto newOver       = newNode->parametersScope->symTable.addSymbolTypeInfo(nullptr, toAdd);
+            newOver->fromInlineParam = over->fromInlineParam;
         }
     }
 
