@@ -168,6 +168,25 @@ bool AstFuncDecl::mustUserInline(bool forExport) const
     return false;
 }
 
+void AstFuncDecl::addPendingInline(const AstPendingInline& pending)
+{
+    SWAG_RACE_CONDITION_WRITE(raceC);
+    pendingInline.push_back(pending);
+}
+
+void AstFuncDecl::removePendingInline(const AstIdentifier* identifier)
+{
+    for (uint32_t i = 0; i < pendingInline.size(); i++)
+    {
+        if (pendingInline[i].identifier == identifier)
+        {
+            printf("x");
+            pendingInline.erase(i);
+            return;
+        }
+    }
+}
+
 Utf8 AstFuncDecl::getCallName()
 {
     if (hasAttribute(ATTRIBUTE_FOREIGN | ATTRIBUTE_PUBLIC))

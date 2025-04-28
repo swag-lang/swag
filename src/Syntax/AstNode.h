@@ -755,6 +755,8 @@ struct AstFuncDecl : AstNode
     const char* getDisplayNameC() const;
     Utf8        getNameForUserCompiler() const;
     bool        mustUserInline(bool forExport = false) const;
+    void        addPendingInline(const AstPendingInline& pending);
+    void        removePendingInline(const AstIdentifier* identifier);
     Utf8        getCallName();
 
     DependentJobs                  dependentJobs;

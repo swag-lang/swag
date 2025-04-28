@@ -10,7 +10,7 @@ func assert(expr: code, str: string = "toto")
     //@print("after")
 }
 
-#[Swag.Inline]
+#[Swag.Macro]
 func xx(val: s32)->s32
 {
     return val

@@ -919,6 +919,9 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     // The expansion will be done at the lowest level possible
     if (canInline && !mustInline(identifier->ownerFct))
     {
+        if (identifier->ownerFct)
+            identifier->ownerFct->removePendingInline(identifier);
+
         SWAG_CHECK(makePendingInline(context, identifier, true));
         YIELD();
         return true;
@@ -934,10 +937,9 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
         pendingInline.identifier    = identifier;
         pendingInline.previousNode  = identifier->identifierRef()->previousNode;
         pendingInline.previousScope = identifier->identifierRef()->previousScope;
-        identifier->byteCodeFct     = nullptr;
+        identifier->ownerFct->addPendingInline(pendingInline);
 
-        SWAG_RACE_CONDITION_WRITE(identifier->ownerFct->raceC);
-        identifier->ownerFct->pendingInline.push_back(pendingInline);
+        identifier->byteCodeFct = nullptr;
     }
     else
     {
