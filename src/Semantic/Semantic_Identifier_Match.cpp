@@ -917,10 +917,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
 
     // Do not expand an inline call inside a function that will be inlined itself.
     // The expansion will be done at the lowest level possible
-    if (canInline && mustInline(identifier->ownerFct))
-        canInline = false;
-
-    if (canInline)
+    if (canInline && !mustInline(identifier->ownerFct))
     {
         SWAG_CHECK(makePendingInline(context, identifier, true));
         YIELD();
