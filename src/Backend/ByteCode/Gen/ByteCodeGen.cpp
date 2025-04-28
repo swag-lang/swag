@@ -226,7 +226,8 @@ void ByteCodeGen::askForByteCode(JobContext* context, AstNode* node, AskBcFlags 
             SWAG_RACE_CONDITION_WRITE(funcDecl->raceC);
             while (!funcDecl->pendingInline.empty())
             {
-                const auto identifier = funcDecl->pendingInline.back();
+                const auto& pending    = funcDecl->pendingInline.back();
+                const auto  identifier = pending.identifier;
                 Semantic::makeInline(context, identifier, fromSemantic);
                 if (context->result == ContextResult::NewChildren)
                     context->baseJob->nodes.push_back(identifier);

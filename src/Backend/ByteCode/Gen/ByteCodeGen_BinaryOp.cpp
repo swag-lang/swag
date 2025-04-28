@@ -795,7 +795,8 @@ bool ByteCodeGen::emitUserOp(ByteCodeGenContext* context, AstNode* allParams, As
                         SWAG_RACE_CONDITION_WRITE(node->ownerFct->raceC);
                         while (!node->ownerFct->pendingInline.empty())
                         {
-                            const auto identifier = node->ownerFct->pendingInline.back();
+                            const auto& pending    = node->ownerFct->pendingInline.back();
+                            const auto  identifier = pending.identifier;
                             Semantic::makeInline(context, identifier, false);
                             YIELD();
                             node->ownerFct->pendingInline.pop_back();

@@ -720,6 +720,11 @@ struct AstIdentifier : AstNode
     IdentifierExtension* identifierExtension;
 };
 
+struct AstPendingInline
+{
+    AstIdentifier* identifier;
+};
+
 struct AstFuncDecl : AstNode
 {
     static constexpr SpecFlags SPEC_FLAG_THROW                = 0x0001;
@@ -750,16 +755,16 @@ struct AstFuncDecl : AstNode
     bool        mustUserInline(bool forExport = false) const;
     Utf8        getCallName();
 
-    DependentJobs                dependentJobs;
-    Utf8                         fullnameForeignExport;
-    VectorNative<AstNode*>       subDecl;
-    VectorNative<AstNode*>       localGlobalVars;
-    VectorNative<AstNode*>       localConstants;
-    VectorNative<AstIdentifier*> pendingInline;
-    Mutex                        funcMutex;
-    Token                        tokenName;
-    SourceLocation               implLoc;
-    VectorNative<AstNode*>       constraints;
+    DependentJobs                  dependentJobs;
+    Utf8                           fullnameForeignExport;
+    VectorNative<AstNode*>         subDecl;
+    VectorNative<AstNode*>         localGlobalVars;
+    VectorNative<AstNode*>         localConstants;
+    VectorNative<AstPendingInline> pendingInline;
+    Mutex                          funcMutex;
+    Token                          tokenName;
+    SourceLocation                 implLoc;
+    VectorNative<AstNode*>         constraints;
 
     AstNode*        captureParameters;
     AstNode*        parameters;

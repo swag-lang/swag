@@ -933,7 +933,9 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     if (funcDecl->hasAttribute(ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO))
     {
         SWAG_RACE_CONDITION_WRITE(identifier->ownerFct->raceC);
-        identifier->ownerFct->pendingInline.push_back(identifier);
+        AstPendingInline pendingInline;
+        pendingInline.identifier = identifier;
+        identifier->ownerFct->pendingInline.push_back(pendingInline);
         identifier->byteCodeFct = nullptr;
         return true;
     }
@@ -975,7 +977,7 @@ bool Semantic::setSymbolMatchStruct(SemanticContext* context, OneMatch& oneMatch
         setConst(identifier);
         setIdentifierRefPrevious(identifier);
     }
-    
+
     identifierRef->previousScope = castTypeInfo<TypeInfoStruct>(typeAlias)->scope;
 
     if (!identifier->callParameters)
