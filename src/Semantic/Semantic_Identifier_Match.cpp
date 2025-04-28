@@ -954,8 +954,8 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     if (returnType->isStruct())
         identifier->addSemFlag(SEMFLAG_CONST_ASSIGN_INHERIT | SEMFLAG_CONST_ASSIGN);
 
-    Semantic::setupConst(identifier);
-    Semantic::setupIdentifierRef(identifier);
+    setupConst(identifier);
+    setupIdentifierRef(identifier);
 
     // For a return by copy, we need to reserve room on the stack for the return result
     // Order is important, because otherwise this could call isPlainOldData, which could be not resolved
