@@ -286,7 +286,7 @@ bool Generic::instantiateDefaultGenericFunc(SemanticContext* context)
             const auto concreteType = TypeManager::concreteType(idRef->resolvedSymbolOverload()->typeInfo);
             if (concreteType->isStruct())
             {
-                const auto contextualNode = idRef->previousResolvedNode;
+                const auto contextualNode = idRef->previousNode;
                 if (contextualNode)
                 {
                     const Diagnostic err{node->token.sourceFile, node->token, formErr(Err0081, node->token.cstr())};

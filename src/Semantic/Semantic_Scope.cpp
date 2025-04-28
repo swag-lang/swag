@@ -162,7 +162,7 @@ bool Semantic::collectScopeHierarchy(Scope*                           startScope
 
     // Only deal with previous scope if the previous node wants to
     bool addAlternative = true;
-    if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->hasSemFlag(SEMFLAG_FORCE_SCOPE))
+    if (identifierRef->previousNode && identifierRef->previousNode->hasSemFlag(SEMFLAG_FORCE_SCOPE))
         addAlternative = false;
 
     if (addAlternative)
@@ -253,9 +253,9 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
             YIELD();
         }
 
-        if (!identifierRef->previousResolvedNode && identifierRef->hasAstFlag(AST_SILENT_CHECK))
+        if (!identifierRef->previousNode && identifierRef->hasAstFlag(AST_SILENT_CHECK))
             return true;
-        if (!identifierRef->previousResolvedNode)
+        if (!identifierRef->previousNode)
             return SemanticError::unknownIdentifierError(context, identifierRef, identifier);
 
         identifier->addSemFlag(SEMFLAG_FORCE_UFCS);

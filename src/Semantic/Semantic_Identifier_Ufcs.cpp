@@ -58,7 +58,7 @@ bool Semantic::getUFCS(SemanticContext* context, const AstIdentifierRef* identif
 
     // If a variable is defined just before a function call, then this can be an UFCS (uniform function call syntax)
     const auto idRefSymbolName = identifierRef->resolvedSymbolName();
-    if (idRefSymbolName && identifierRef->previousResolvedNode)
+    if (idRefSymbolName && identifierRef->previousNode)
     {
         bool canTry = false;
 
@@ -70,21 +70,21 @@ bool Semantic::getUFCS(SemanticContext* context, const AstIdentifierRef* identif
             canTry = true;
         // Before was a function call
         else if (idRefSymbolName->is(SymbolKind::Function) &&
-                 identifierRef->previousResolvedNode &&
-                 identifierRef->previousResolvedNode->hasAstFlag(AST_FUNC_CALL))
+                 identifierRef->previousNode &&
+                 identifierRef->previousNode->hasAstFlag(AST_FUNC_CALL))
             canTry = true;
         // Before was an inlined function call
         else if (idRefSymbolName->is(SymbolKind::Function) &&
-                 identifierRef->previousResolvedNode &&
-                 identifierRef->previousResolvedNode->is(AstNodeKind::Identifier) &&
-                 !identifierRef->previousResolvedNode->children.empty() &&
-                 identifierRef->previousResolvedNode->firstChild()->is(AstNodeKind::FuncCallParams) &&
-                 identifierRef->previousResolvedNode->lastChild()->is(AstNodeKind::Inline))
+                 identifierRef->previousNode &&
+                 identifierRef->previousNode->is(AstNodeKind::Identifier) &&
+                 !identifierRef->previousNode->children.empty() &&
+                 identifierRef->previousNode->firstChild()->is(AstNodeKind::FuncCallParams) &&
+                 identifierRef->previousNode->lastChild()->is(AstNodeKind::Inline))
             canTry = true;
 
         if (canTry)
         {
-            SWAG_ASSERT(identifierRef->previousResolvedNode);
+            SWAG_ASSERT(identifierRef->previousNode);
             if (!node->callParameters)
             {
                 Diagnostic err{node, formErr(Err0439, Naming::kindName(overload).cstr(), node->token.cstr())};
@@ -93,10 +93,10 @@ bool Semantic::getUFCS(SemanticContext* context, const AstIdentifierRef* identif
             }
 
             const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
-            canTry              = canTryUFCS(context, typeFunc, identifierRef->previousResolvedNode, true);
+            canTry              = canTryUFCS(context, typeFunc, identifierRef->previousNode, true);
             YIELD();
             if (canTry)
-                *firstParamUFCS = identifierRef->previousResolvedNode;
+                *firstParamUFCS = identifierRef->previousNode;
         }
     }
 
@@ -106,17 +106,17 @@ bool Semantic::getUFCS(SemanticContext* context, const AstIdentifierRef* identif
 
         if (idRefSymbolName &&
             idRefSymbolName->is(SymbolKind::Function) &&
-            identifierRef->previousResolvedNode &&
-            identifierRef->previousResolvedNode->is(AstNodeKind::Identifier) &&
-            identifierRef->previousResolvedNode->hasAstFlag(AST_INLINED))
+            identifierRef->previousNode &&
+            identifierRef->previousNode->is(AstNodeKind::Identifier) &&
+            identifierRef->previousNode->hasAstFlag(AST_INLINED))
         {
             fine = true;
         }
 
         if (idRefSymbolName &&
             idRefSymbolName->is(SymbolKind::Function) &&
-            identifierRef->previousResolvedNode &&
-            identifierRef->previousResolvedNode->hasAstFlag(AST_FUNC_CALL))
+            identifierRef->previousNode &&
+            identifierRef->previousNode->hasAstFlag(AST_FUNC_CALL))
         {
             fine = true;
         }
@@ -125,7 +125,7 @@ bool Semantic::getUFCS(SemanticContext* context, const AstIdentifierRef* identif
         {
             if (idRefSymbolName && idRefSymbolName->isNot(SymbolKind::Variable))
             {
-                const auto subNode = identifierRef->previousResolvedNode ? identifierRef->previousResolvedNode : node;
+                const auto subNode = identifierRef->previousNode ? identifierRef->previousNode : node;
                 Diagnostic err{subNode, subNode->token, formErr(Err0205, idRefSymbolName->name.cstr(), Naming::aKindName(idRefSymbolName->kind).cstr())};
                 err.addNote(node->token, toNte(Nte0174));
                 return context->report(err);
@@ -147,15 +147,15 @@ bool Semantic::setFirstParamUFCS(SemanticContext* context, AstIdentifierRef* ide
     if (!node->callParameters)
         node->callParameters = Ast::newFuncCallParams(nullptr, node);
 
-    SWAG_CHECK(checkIsConcrete(context, identifierRef->previousResolvedNode));
+    SWAG_CHECK(checkIsConcrete(context, identifierRef->previousNode));
 
     // Insert variable in first position. Need to update child
     // rank of all brothers.
     node->callParameters->children.push_front(fctCallParam);
 
     fctCallParam->parent   = node->callParameters;
-    fctCallParam->typeInfo = identifierRef->previousResolvedNode->typeInfo;
-    fctCallParam->token    = identifierRef->previousResolvedNode->token;
+    fctCallParam->typeInfo = identifierRef->previousNode->typeInfo;
+    fctCallParam->token    = identifierRef->previousNode->token;
     fctCallParam->inheritTokenLocation(node->token);
     fctCallParam->byteCodeFct = ByteCodeGen::emitFuncCallParam;
     fctCallParam->inheritOwners(node->callParameters);
@@ -174,13 +174,13 @@ bool Semantic::setFirstParamUFCS(SemanticContext* context, AstIdentifierRef* ide
     const auto idRef = Ast::newIdentifierRef(nullptr, fctCallParam);
     if (symbol->is(SymbolKind::Variable))
     {
-        if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->hasAstFlag(AST_FUNC_CALL))
+        if (identifierRef->previousNode && identifierRef->previousNode->hasAstFlag(AST_FUNC_CALL))
         {
             // Function that returns an interface, used as an UFCS.
             // Ex: var cfg = @compiler().getBuildCfg()
             // @SpecUFCSNode
-            identifierRef->previousResolvedNode->addAstFlag(AST_TO_UFCS);
-            fctCallParam->specUFCSNode = identifierRef->previousResolvedNode;
+            identifierRef->previousNode->addAstFlag(AST_TO_UFCS);
+            fctCallParam->specUFCSNode = identifierRef->previousNode;
             const auto id              = Ast::newIdentifier(idRef, form("__8tmp_%d", g_UniqueID.fetch_add(1)), nullptr, idRef);
             id->addAstFlag(AST_NO_BYTECODE);
         }
@@ -202,7 +202,7 @@ bool Semantic::setFirstParamUFCS(SemanticContext* context, AstIdentifierRef* ide
                     copyChild->addAstFlag(AST_UFCS_FCT);
                 }
 
-                if (child == identifierRef->previousResolvedNode)
+                if (child == identifierRef->previousNode)
                 {
                     copyChild->addAstFlag(AST_TO_UFCS);
                     break;
@@ -212,11 +212,11 @@ bool Semantic::setFirstParamUFCS(SemanticContext* context, AstIdentifierRef* ide
     }
     else
     {
-        identifierRef->previousResolvedNode->addAstFlag(AST_UFCS_FCT);
+        identifierRef->previousNode->addAstFlag(AST_UFCS_FCT);
 
         // If UFCS comes from a using var, then we must make a reference to the using var in
         // the first call parameter
-        if (dependentVar == identifierRef->previousResolvedNode)
+        if (dependentVar == identifierRef->previousNode)
         {
             for (const auto child : dependentVar->children)
             {
@@ -265,7 +265,7 @@ bool Semantic::setFirstParamUFCS(SemanticContext* context, AstIdentifierRef* ide
             {
                 const auto copyChild = Ast::cloneRaw(child, idRef);
                 child->addAstFlag(AST_NO_BYTECODE);
-                if (child == identifierRef->previousResolvedNode)
+                if (child == identifierRef->previousNode)
                 {
                     copyChild->addAstFlag(AST_TO_UFCS);
                     copyChild->addAstFlag(AST_UFCS_FCT);
@@ -278,6 +278,6 @@ bool Semantic::setFirstParamUFCS(SemanticContext* context, AstIdentifierRef* ide
     idRef->inheritAstFlagsAnd(AST_CONST_EXPR);
     fctCallParam->inheritAstFlagsAnd(AST_CONST_EXPR);
 
-    identifierRef->previousResolvedNode->addAstFlag(AST_FROM_UFCS);
+    identifierRef->previousNode->addAstFlag(AST_FROM_UFCS);
     return true;
 }

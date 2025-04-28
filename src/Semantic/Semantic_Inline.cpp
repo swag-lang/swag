@@ -355,12 +355,18 @@ bool Semantic::dealWithPendingInlines(JobContext* context, AstFuncDecl* funcDecl
     SWAG_RACE_CONDITION_WRITE(funcDecl->raceC);
     while (!funcDecl->pendingInline.empty())
     {
-        const auto& pending    = funcDecl->pendingInline.back();
-        const auto  identifier = pending.identifier;
+        const auto& pending       = funcDecl->pendingInline.back();
+        const auto  identifier    = pending.identifier;
+        const auto  identifierRef = identifier->identifierRef();
+
+        identifierRef->previousNode  = pending.previousNode;
+        identifierRef->previousScope = pending.previousScope;
+
         SWAG_CHECK(makePendingInline(context, identifier, fromSemantic));
         if (context->result == ContextResult::NewChildren)
             context->baseJob->nodes.push_back(identifier);
         YIELD();
+
         funcDecl->pendingInline.pop_back();
     }
 

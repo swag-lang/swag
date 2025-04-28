@@ -612,7 +612,7 @@ bool Semantic::resolveArrayPointerIndex(SemanticContext* context)
             }
         }
 
-        parent->previousResolvedNode = node;
+        parent->previousNode = node;
     }
 
     return true;

@@ -29,8 +29,8 @@ namespace
         }
 
         const AstIdentifier* prevIdentifier = nullptr;
-        if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->is(AstNodeKind::Identifier))
-            prevIdentifier = castAst<AstIdentifier>(identifierRef->previousResolvedNode, AstNodeKind::Identifier);
+        if (identifierRef->previousNode && identifierRef->previousNode->is(AstNodeKind::Identifier))
+            prevIdentifier = castAst<AstIdentifier>(identifierRef->previousNode, AstNodeKind::Identifier);
 
         const Utf8 whereScopeName = Naming::kindName(identifierRef->previousScope->kind);
 

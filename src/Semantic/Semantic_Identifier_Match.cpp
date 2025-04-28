@@ -932,20 +932,24 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     // This is especially important if the identifier is a macro or a mixin.
     if (funcDecl->hasAttribute(ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO))
     {
-        SWAG_RACE_CONDITION_WRITE(identifier->ownerFct->raceC);
         AstPendingInline pendingInline;
-        pendingInline.identifier = identifier;
-        identifier->ownerFct->pendingInline.push_back(pendingInline);
-        identifier->byteCodeFct = nullptr;
-        return true;
-    }
+        pendingInline.identifier    = identifier;
+        pendingInline.previousNode  = identifier->identifierRef()->previousNode;
+        pendingInline.previousScope = identifier->identifierRef()->previousScope;
+        identifier->byteCodeFct     = nullptr;
 
-    if (identifier->hasIntrinsicName())
-        dealWithIntrinsic(context, identifier);
-    else if (funcDecl->isForeign())
-        identifier->byteCodeFct = ByteCodeGen::emitForeignCall;
+        SWAG_RACE_CONDITION_WRITE(identifier->ownerFct->raceC);
+        identifier->ownerFct->pendingInline.push_back(pendingInline);
+    }
     else
-        identifier->byteCodeFct = ByteCodeGen::emitCall;
+    {
+        if (identifier->hasIntrinsicName())
+            dealWithIntrinsic(context, identifier);
+        else if (funcDecl->isForeign())
+            identifier->byteCodeFct = ByteCodeGen::emitForeignCall;
+        else
+            identifier->byteCodeFct = ByteCodeGen::emitCall;
+    }
 
     setEmitTryCatchAssume(identifier, identifier->typeInfo);
     setConst(identifier);
@@ -954,7 +958,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     identifier->addAstFlag(AST_FUNC_CALL);
     if (returnType->isStruct())
         identifier->addSemFlag(SEMFLAG_CONST_ASSIGN_INHERIT | SEMFLAG_CONST_ASSIGN);
-    
+
     // For a return by copy, we need to reserve room on the stack for the return result
     // Order is important, because otherwise this could call isPlainOldData, which could be not resolved
     if (typeFunc->returnNeedsStack())
@@ -1249,7 +1253,7 @@ bool Semantic::setMatchResult(SemanticContext* context, AstIdentifierRef* identi
         dependentVar->resolvedSymbolOverload()->symbol->flags.add(SYMBOL_USED);
 
     // Verify that this match is possible
-    SWAG_CHECK(checkMatchResult(context, identifierRef, identifier, oneMatch, symbol, overload, identifierRef->previousResolvedNode));
+    SWAG_CHECK(checkMatchResult(context, identifierRef, identifier, oneMatch, symbol, overload, identifierRef->previousNode));
 
     // Reapply back the values of the match to the call parameter node
     for (const auto& pp : oneMatch.paramParameters)
@@ -1258,7 +1262,7 @@ bool Semantic::setMatchResult(SemanticContext* context, AstIdentifierRef* identi
         pp.param->resolvedParameter = pp.resolvedParameter;
     }
 
-    const auto prevNode = identifierRef->previousResolvedNode;
+    const auto prevNode = identifierRef->previousNode;
     if (prevNode && symbol->is(SymbolKind::Variable))
     {
         identifier->addAstFlag(AST_L_VALUE);
@@ -1278,7 +1282,7 @@ bool Semantic::setMatchResult(SemanticContext* context, AstIdentifierRef* identi
                 if (derefConstant(context, ptr, overload, prevNode->computedValue()->storageSegment))
                 {
                     prevNode->addAstFlag(AST_NO_BYTECODE);
-                    identifierRef->previousResolvedNode = context->node;
+                    identifierRef->previousNode = context->node;
                     identifier->setResolvedSymbol(overload->symbol, overload);
                     return true;
                 }
@@ -1298,7 +1302,7 @@ bool Semantic::setMatchResult(SemanticContext* context, AstIdentifierRef* identi
                 if (derefConstant(context, ptr, overload, arrayOver->computedValue.storageSegment))
                 {
                     prevNode->addAstFlag(AST_NO_BYTECODE);
-                    identifierRef->previousResolvedNode = context->node;
+                    identifierRef->previousNode = context->node;
                     identifier->setResolvedSymbol(overload->symbol, overload);
                     return true;
                 }
@@ -1311,12 +1315,12 @@ bool Semantic::setMatchResult(SemanticContext* context, AstIdentifierRef* identi
     {
         if (symbol->isNot(SymbolKind::GenericType))
         {
-            if (identifierRef->previousResolvedNode)
+            if (identifierRef->previousNode)
             {
-                if (identifierRef->previousResolvedNode->hasAstFlag(AST_R_VALUE))
+                if (identifierRef->previousNode->hasAstFlag(AST_R_VALUE))
                     identifier->addAstFlag(AST_L_VALUE | AST_R_VALUE);
                 else
-                    identifier->addAstFlag(identifierRef->previousResolvedNode->flags.mask(AST_L_VALUE));
+                    identifier->addAstFlag(identifierRef->previousNode->flags.mask(AST_L_VALUE));
             }
         }
     }
@@ -1394,9 +1398,9 @@ bool Semantic::setMatchResult(SemanticContext* context, AstIdentifierRef* identi
             break;
 
         case SymbolKind::EnumValue:
-            if (idRef && idRef->previousResolvedNode && idRef->previousResolvedNode->resolvedSymbolName()->is(SymbolKind::Variable))
+            if (idRef && idRef->previousNode && idRef->previousNode->resolvedSymbolName()->is(SymbolKind::Variable))
             {
-                const Diagnostic err{idRef->previousResolvedNode, formErr(Err0178, idRef->previousResolvedNode->typeInfo->getDisplayNameC())};
+                const Diagnostic err{idRef->previousNode, formErr(Err0178, idRef->previousNode->typeInfo->getDisplayNameC())};
                 return context->report(err);
             }
 
@@ -1979,7 +1983,7 @@ bool Semantic::computeMatch(SemanticContext* context, AstIdentifier* identifier,
 {
     const auto orgResolvedSymbolOverload = identifierRef->resolvedSymbolOverload();
     const auto orgResolvedSymbolName     = identifierRef->resolvedSymbolName();
-    const auto orgPreviousResolvedNode   = identifierRef->previousResolvedNode;
+    const auto orgPreviousResolvedNode   = identifierRef->previousNode;
     const auto isForcedUFCS              = identifier->isForcedUFCS();
     auto&      toSolveOverload           = context->cacheToSolveOverload;
     auto&      listTryMatch              = context->cacheListTryMatch;
@@ -2023,7 +2027,7 @@ bool Semantic::computeMatch(SemanticContext* context, AstIdentifier* identifier,
             const auto symbolOverload = oneOver.overload;
 
             identifierRef->setResolvedSymbol(orgResolvedSymbolName, orgResolvedSymbolOverload);
-            identifierRef->previousResolvedNode = orgPreviousResolvedNode;
+            identifierRef->previousNode = orgPreviousResolvedNode;
 
             // Is there a using variable associated with the symbol to solve?
             AstNode* dependentVar     = nullptr;
@@ -2100,12 +2104,12 @@ bool Semantic::computeMatch(SemanticContext* context, AstIdentifier* identifier,
         {
             case ContextResult::Pending:
                 identifierRef->setResolvedSymbol(orgResolvedSymbolName, orgResolvedSymbolOverload);
-                identifierRef->previousResolvedNode = orgPreviousResolvedNode;
+                identifierRef->previousNode = orgPreviousResolvedNode;
                 return true;
 
             case ContextResult::NewChildren1:
                 identifierRef->setResolvedSymbol(orgResolvedSymbolName, orgResolvedSymbolOverload);
-                identifierRef->previousResolvedNode = orgPreviousResolvedNode;
+                identifierRef->previousNode = orgPreviousResolvedNode;
                 context->result                     = ContextResult::NewChildren;
                 return true;
 
@@ -2158,7 +2162,7 @@ bool Semantic::matchSharpSelf(SemanticContext* context, VectorNative<OneSymbolMa
         {
             identifier->addSemFlag(SEMFLAG_FORCE_SCOPE);
             identifier->typeInfo                = g_TypeMgr->typeInfoVoid;
-            identifierRef->previousResolvedNode = identifier;
+            identifierRef->previousNode = identifier;
             if (identifier->hasOwnerInline())
                 identifierRef->previousScope = identifier->ownerInline()->parametersScope;
             else

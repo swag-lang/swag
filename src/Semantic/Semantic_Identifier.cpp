@@ -80,7 +80,7 @@ bool Semantic::preResolveIdentifierRef(SemanticContext* context)
     if (!node->hasSemFlag(SEMFLAG_TYPE_SOLVED))
     {
         node->typeInfo             = nullptr;
-        node->previousResolvedNode = nullptr;
+        node->previousNode = nullptr;
         node->previousScope        = nullptr;
     }
 
@@ -159,13 +159,13 @@ void Semantic::setIdentifierRefPrevious(AstNode* node)
 
     // If we cannot assign previous, and this was AST_IS_CONST_ASSIGN_INHERIT, then we cannot assign
     // this one either
-    if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->hasSemFlag(SEMFLAG_CONST_ASSIGN_INHERIT))
+    if (identifierRef->previousNode && identifierRef->previousNode->hasSemFlag(SEMFLAG_CONST_ASSIGN_INHERIT))
     {
         node->addSemFlag(SEMFLAG_CONST_ASSIGN);
         node->addSemFlag(SEMFLAG_CONST_ASSIGN_INHERIT);
     }
 
-    identifierRef->previousResolvedNode = node;
+    identifierRef->previousNode = node;
     identifierRef->previousScope        = nullptr;
 
     const auto typeInfo  = TypeManager::concreteType(node->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
@@ -689,7 +689,7 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
         dependentVarLeaf = dep.leafNode;
 
         // This way the UFCS can trigger even with an implicit 'using' var (typically for a 'using self')
-        if (!identifierRef->previousResolvedNode)
+        if (!identifierRef->previousNode)
         {
             if (symbol->is(SymbolKind::Function))
             {
@@ -700,7 +700,7 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
                 if (canTry)
                 {
                     identifierRef->setResolvedSymbol(dependentVar->resolvedSymbolOverload()->symbol, dependentVar->resolvedSymbolOverload());
-                    identifierRef->previousResolvedNode = dependentVar;
+                    identifierRef->previousNode = dependentVar;
                 }
             }
         }
@@ -1100,11 +1100,11 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
     }
 
     // If the previous identifier was generic, then stop evaluation
-    if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->typeInfo->isKindGeneric())
+    if (identifierRef->previousNode && identifierRef->previousNode->typeInfo->isKindGeneric())
     {
         // Take the generic type for now
         identifier->typeInfo    = g_TypeMgr->typeInfoUndefined;
-        identifierRef->typeInfo = identifierRef->previousResolvedNode->typeInfo;
+        identifierRef->typeInfo = identifierRef->previousNode->typeInfo;
         return true;
     }
 
@@ -1251,10 +1251,10 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         // Do not change AST if this is code inside a generic function
         if (!identifier->ownerFct || !identifier->ownerFct->hasAstFlag(AST_GENERIC))
         {
-            if (match->dependentVar && !identifierRef->previousResolvedNode)
+            if (match->dependentVar && !identifierRef->previousNode)
             {
                 identifierRef->setResolvedSymbol(match->dependentVar->resolvedSymbolOverload()->symbol, match->dependentVar->resolvedSymbolOverload());
-                identifierRef->previousResolvedNode = match->dependentVar;
+                identifierRef->previousNode = match->dependentVar;
             }
 
             SWAG_CHECK(setFirstParamUFCS(context, identifierRef, *match));

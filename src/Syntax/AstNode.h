@@ -687,7 +687,7 @@ struct AstIdentifierRef : AstNode
     void     computeName();
 
     Scope*   previousScope;
-    AstNode* previousResolvedNode;
+    AstNode* previousNode;
 };
 
 struct AstIdentifier : AstNode
@@ -722,7 +722,9 @@ struct AstIdentifier : AstNode
 
 struct AstPendingInline
 {
-    AstIdentifier* identifier;
+    AstIdentifier* identifier    = nullptr;
+    AstNode*       previousNode  = nullptr;
+    Scope*         previousScope = nullptr;
 };
 
 struct AstFuncDecl : AstNode
