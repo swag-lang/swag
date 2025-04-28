@@ -79,9 +79,9 @@ bool Semantic::preResolveIdentifierRef(SemanticContext* context)
     // stuff is reset
     if (!node->hasSemFlag(SEMFLAG_TYPE_SOLVED))
     {
-        node->typeInfo             = nullptr;
-        node->previousNode = nullptr;
-        node->previousScope        = nullptr;
+        node->typeInfo      = nullptr;
+        node->previousNode  = nullptr;
+        node->previousScope = nullptr;
     }
 
     return true;
@@ -143,12 +143,19 @@ bool Semantic::resolveIdentifierRef(SemanticContext* context)
 
 void Semantic::setConst(AstNode* node)
 {
-    // If the type of the previous one was const, then we force this node to be const (cannot change it)
     if (node->parent->typeInfo && node->parent->typeInfo->isConst())
         node->addAstFlag(AST_CONST);
     const auto overload = node->resolvedSymbolOverload();
     if (overload && overload->hasFlag(OVERLOAD_CONST_ASSIGN))
         node->addSemFlag(SEMFLAG_CONST_ASSIGN);
+
+    if (node->typeInfo->isFuncAttr() || node->typeInfo->isLambdaClosure())
+    {
+        const auto typeFunc   = castTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+        const auto returnType = typeFunc->concreteReturnType();
+        if (returnType->isStruct())
+            node->addSemFlag(SEMFLAG_CONST_ASSIGN_INHERIT | SEMFLAG_CONST_ASSIGN);
+    }
 }
 
 void Semantic::setIdentifierRefPrevious(AstNode* node)
@@ -165,8 +172,8 @@ void Semantic::setIdentifierRefPrevious(AstNode* node)
         node->addSemFlag(SEMFLAG_CONST_ASSIGN_INHERIT);
     }
 
-    identifierRef->previousNode = node;
-    identifierRef->previousScope        = nullptr;
+    identifierRef->previousNode  = node;
+    identifierRef->previousScope = nullptr;
 
     const auto typeInfo  = TypeManager::concreteType(node->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
     auto       scopeType = typeInfo->getConcreteAlias();
