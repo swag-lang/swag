@@ -933,9 +933,11 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     if (isMixinMacro)
     {
         AstPendingInline pendingInline;
-        pendingInline.identifier    = identifier;
-        pendingInline.previousNode  = identifier->identifierRef()->previousNode;
-        pendingInline.previousScope = identifier->identifierRef()->previousScope;
+        const auto       identifierRef = identifier->identifierRef();
+        pendingInline.identifier       = identifier;
+        pendingInline.previousNode     = identifierRef->previousNode;
+        pendingInline.previousScope    = identifierRef->previousScope;
+        pendingInline.identifierType   = identifier->typeInfo;
         identifier->ownerFct->addPendingInline(pendingInline);
     }
 

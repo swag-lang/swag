@@ -357,6 +357,7 @@ bool Semantic::dealWithPendingInlines(JobContext* context, AstFuncDecl* funcDecl
 
         identifierRef->previousNode  = pending.previousNode;
         identifierRef->previousScope = pending.previousScope;
+        identifier->typeInfo         = pending.identifierType;
 
         SWAG_CHECK(makePendingInline(context, identifier, fromSemantic));
         if (context->result == ContextResult::NewChildren)

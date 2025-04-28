@@ -722,9 +722,10 @@ struct AstIdentifier : AstNode
 
 struct AstPendingInline
 {
-    AstIdentifier* identifier    = nullptr;
-    AstNode*       previousNode  = nullptr;
-    Scope*         previousScope = nullptr;
+    AstIdentifier* identifier     = nullptr;
+    AstNode*       previousNode   = nullptr;
+    Scope*         previousScope  = nullptr;
+    TypeInfo*      identifierType = nullptr;
 };
 
 struct AstFuncDecl : AstNode
