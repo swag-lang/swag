@@ -21,7 +21,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     ownerScope       = context.parentScope ? context.parentScope : from->ownerScope;
     ownerFct         = context.ownerFct || context.cloneFlags.has(CLONE_FORCE_OWNER_FCT) ? context.ownerFct : from->ownerFct;
 
-    // We do not want a defer statement to have some defers in the same scope, otherwise it's infinite
+    // We do not want a 'defer' statement to have some 'defer' in the same scope, otherwise it's infinite
     if (context.ownerDeferScope)
     {
         context.ownerDeferScope->doneDefer.push_back(this);
@@ -61,7 +61,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         extOwner()->ownerBreakable = context.ownerBreakable ? context.ownerBreakable : from->ownerBreakable();
     }
 
-    // Replace a type by another one during generic instantiation
+    // Replace a type with another one during generic instantiation
     if (!context.cloneFlags.has(CLONE_INLINE))
     {
         typeInfo = Generic::replaceGenericTypes(context.replaceTypes, from->typeInfo);
@@ -163,8 +163,8 @@ void AstNode::cloneChildren(CloneContext& context, AstNode* from)
     const auto num       = from->childCount();
     for (uint32_t i = 0; i < num; i++)
     {
-        // Do not duplicate a struct if it's a child of something else (i.e. another struct), because
-        // in case of generics, we do want the normal generic stuff to be done (cloning)
+        // Do not duplicate a struct if it's a child of something else (i.e., another struct), because
+        // in the case of generics, we do want the normal generic stuff to be done (cloning)
         if (from->children[i]->isNot(AstNodeKind::StructDecl))
             from->children[i]->clone(context);
     }

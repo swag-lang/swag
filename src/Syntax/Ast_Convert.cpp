@@ -92,7 +92,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
         if (isNamed)
             oneParam->addExtraPointer(ExtraPointerKind::IsNamed, isNamed);
 
-        // If this is for a return, remember it, to make a move or a copy
+        // If this is for a return, remind it to make a move or a copy
         if (typeStruct->isTuple() && fromNode->parent->is(AstNodeKind::Return))
             oneParam->autoTupleReturn = castAst<AstReturn>(fromNode->parent, AstNodeKind::Return);
     }
@@ -243,7 +243,7 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
 
             // This is used for generic automatic deduction. We can use typeInfo->genericParameters, or we would
             // have to construct a struct AST with generic parameters too, and this is not possible as the struct
-            // is not generic in all cases (generic types used in the struct can come from the function for example).
+            // is not generic in all cases; generic types used in the struct can come from the function.
             if (p->typeInfo->isGeneric())
                 typeInfo->deducedGenericParameters.push_back(typeField);
 
@@ -329,7 +329,7 @@ bool Ast::convertLiteralTupleToStructDecl(JobContext* context, AstNode* assignme
 
         paramNode->type = convertTypeToTypeExpression(context, paramNode, subAffect, childType, !assignment->hasSpecFlag(AstExpressionList::SPEC_FLAG_FOR_CAPTURE));
 
-        // Special case for tuple capture. If type is null (type not compatible with tuple), put undefined,
+        // Special case for tuple capture. If the type is null (type not compatible with tuple), put undefined,
         // as we will catch the error later
         if (!paramNode->type && assignment->hasSpecFlag(AstExpressionList::SPEC_FLAG_FOR_CAPTURE))
         {
@@ -485,12 +485,13 @@ bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identi
     back->callParameters->addAstFlag(AST_NO_SEMANTIC);
     back->callParameters->addSemFlag(node->semFlags.mask(SEMFLAG_ACCESS_MASK));
 
-    // @DupGen:StructParamsNoSem
+    // @DupGen
+    // @StructParamsNoSem
     // Type has already been evaluated
     typeNode->identifier->addAstFlag(AST_NO_SEMANTIC);
     typeNode->identifier->addSemFlag(node->semFlags.mask(SEMFLAG_ACCESS_MASK));
 
-    // If this is in a return expression, then force the identifier type to be "retval"
+    // If this is in a return expression, then force the identifier type to be 'retval'
     if (node->parent && node->parent->inSimpleReturn())
         typeNode->typeFlags.add(TYPE_FLAG_IS_RETVAL);
 
