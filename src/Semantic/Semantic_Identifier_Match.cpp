@@ -940,8 +940,6 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
         return true;
     }
 
-    identifier->addAstFlag(AST_FUNC_CALL);
-
     if (identifier->hasIntrinsicName())
         dealWithIntrinsic(context, identifier);
     else if (funcDecl->isForeign())
@@ -949,16 +947,14 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     else
         identifier->byteCodeFct = ByteCodeGen::emitCall;
 
-    // Try/Assume
     setEmitTryCatchAssume(identifier, identifier->typeInfo);
-
-    // Setup parent if necessary
-    if (returnType->isStruct())
-        identifier->addSemFlag(SEMFLAG_CONST_ASSIGN_INHERIT | SEMFLAG_CONST_ASSIGN);
-
     setConst(identifier);
     setIdentifierRefPrevious(identifier);
 
+    identifier->addAstFlag(AST_FUNC_CALL);
+    if (returnType->isStruct())
+        identifier->addSemFlag(SEMFLAG_CONST_ASSIGN_INHERIT | SEMFLAG_CONST_ASSIGN);
+    
     // For a return by copy, we need to reserve room on the stack for the return result
     // Order is important, because otherwise this could call isPlainOldData, which could be not resolved
     if (typeFunc->returnNeedsStack())
