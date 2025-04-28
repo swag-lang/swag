@@ -331,18 +331,14 @@ bool Semantic::makePendingInline(JobContext* context, AstIdentifier* identifier,
     SWAG_CHECK(makeInline(context, funcDecl, identifier, fromSemantic));
     YIELD();
 
-    const auto typeFunc   = castTypeInfo<TypeInfoFuncAttr>(identifier->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
-    const auto returnType = typeFunc->concreteReturnType();
+    const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(identifier->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+    if (typeFunc->returnNeedsStack())
+        identifier->addAstFlag(AST_TRANSIENT);
+    identifier->addAstFlag(AST_FUNC_INLINE_CALL);
 
     setConst(identifier);
     setIdentifierRefPrevious(identifier);
     identifier->byteCodeFct = ByteCodeGen::emitPassThrough;
-
-    if (returnType->isStruct())
-        identifier->addSemFlag(SEMFLAG_CONST_ASSIGN_INHERIT | SEMFLAG_CONST_ASSIGN);
-    if (typeFunc->returnNeedsStack())
-        identifier->addAstFlag(AST_TRANSIENT);
-    identifier->addAstFlag(AST_FUNC_INLINE_CALL);
 
     return true;
 }

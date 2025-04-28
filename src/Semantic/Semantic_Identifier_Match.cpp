@@ -908,10 +908,11 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
         }
     }
 
-    bool canInline = true;
+    bool       canInline    = true;
+    const auto isMixinMacro = funcDecl->hasAttribute(ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO);
     if (!mustInline(funcDecl) || isFunctionButNotACall(context, identifier, overload->symbol))
         canInline = false;
-    if (identifier->hasSpecFlag(AstIdentifier::SPEC_FLAG_NO_INLINE) && !funcDecl->hasAttribute(ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO))
+    if (identifier->hasSpecFlag(AstIdentifier::SPEC_FLAG_NO_INLINE) && !isMixinMacro)
         canInline = false;
 
     // Do not expand an inline call inside a function that will be inlined itself.
@@ -930,7 +931,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     // will have to be changed later: if the function has a non-inlined version, then we must
     // be sure that all identifiers have been inlined before generating the function bytecode.
     // This is especially important if the identifier is a macro or a mixin.
-    if (funcDecl->hasAttribute(ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO))
+    if (isMixinMacro)
     {
         AstPendingInline pendingInline;
         pendingInline.identifier    = identifier;
@@ -954,7 +955,6 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     setEmitTryCatchAssume(identifier, identifier->typeInfo);
     setConst(identifier);
     setIdentifierRefPrevious(identifier);
-
     identifier->addAstFlag(AST_FUNC_CALL);
 
     // For a return by copy, we need to reserve room on the stack for the return result
@@ -2108,7 +2108,7 @@ bool Semantic::computeMatch(SemanticContext* context, AstIdentifier* identifier,
             case ContextResult::NewChildren1:
                 identifierRef->setResolvedSymbol(orgResolvedSymbolName, orgResolvedSymbolOverload);
                 identifierRef->previousNode = orgPreviousResolvedNode;
-                context->result                     = ContextResult::NewChildren;
+                context->result             = ContextResult::NewChildren;
                 return true;
 
             // Another thread has changed the number of overloads for a given symbol, which
@@ -2159,7 +2159,7 @@ bool Semantic::matchSharpSelf(SemanticContext* context, VectorNative<OneSymbolMa
         if (!identifier->callParameters && identifier != identifierRef->lastChild())
         {
             identifier->addSemFlag(SEMFLAG_FORCE_SCOPE);
-            identifier->typeInfo                = g_TypeMgr->typeInfoVoid;
+            identifier->typeInfo        = g_TypeMgr->typeInfoVoid;
             identifierRef->previousNode = identifier;
             if (identifier->hasOwnerInline())
                 identifierRef->previousScope = identifier->ownerInline()->parametersScope;
