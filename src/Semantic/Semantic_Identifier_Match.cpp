@@ -938,18 +938,16 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
         pendingInline.previousNode  = identifier->identifierRef()->previousNode;
         pendingInline.previousScope = identifier->identifierRef()->previousScope;
         identifier->ownerFct->addPendingInline(pendingInline);
+    }
 
+    if (isMixinMacro)
         identifier->byteCodeFct = nullptr;
-    }
+    else if (identifier->hasIntrinsicName())
+        dealWithIntrinsic(context, identifier);
+    else if (funcDecl->isForeign())
+        identifier->byteCodeFct = ByteCodeGen::emitForeignCall;
     else
-    {
-        if (identifier->hasIntrinsicName())
-            dealWithIntrinsic(context, identifier);
-        else if (funcDecl->isForeign())
-            identifier->byteCodeFct = ByteCodeGen::emitForeignCall;
-        else
-            identifier->byteCodeFct = ByteCodeGen::emitCall;
-    }
+        identifier->byteCodeFct = ByteCodeGen::emitCall;
 
     setEmitTryCatchAssume(identifier, identifier->typeInfo);
     setConst(identifier);
