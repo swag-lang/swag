@@ -33,7 +33,6 @@ void Semantic::sortParameters(AstNode* allParams)
 void Semantic::dealWithIntrinsic(const SemanticContext* context, AstIdentifier* identifier)
 {
     const auto module = context->sourceFile->module;
-
     switch (identifier->token.id)
     {
         case TokenId::IntrinsicAssert:
@@ -45,8 +44,19 @@ void Semantic::dealWithIntrinsic(const SemanticContext* context, AstIdentifier* 
                 if (param->hasFlagComputedValue() && param->computedValue()->reg.b)
                     identifier->addAstFlag(AST_NO_BYTECODE);
             }
+
+            identifier->byteCodeFct = ByteCodeGen::emitIntrinsic;
             break;
         }
+
+            // @print behaves like a normal function, so we want an emitCall in that case
+        case TokenId::IntrinsicPrint:
+            identifier->byteCodeFct = ByteCodeGen::emitCall;
+            break;
+
+        default:
+            identifier->byteCodeFct = ByteCodeGen::emitIntrinsic;
+            break;
     }
 }
 
@@ -929,12 +939,8 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
 
     identifier->addAstFlag(AST_FUNC_CALL);
 
-    // @print behaves like a normal function, so we want an emitCall in that case
-    if (identifier->hasIntrinsicName() && identifier->token.isNot(TokenId::IntrinsicPrint))
-    {
+    if (identifier->hasIntrinsicName())
         dealWithIntrinsic(context, identifier);
-        identifier->byteCodeFct = ByteCodeGen::emitIntrinsic;
-    }
     else if (funcDecl->isForeign())
         identifier->byteCodeFct = ByteCodeGen::emitForeignCall;
     else
