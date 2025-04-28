@@ -141,7 +141,7 @@ bool Semantic::resolveIdentifierRef(SemanticContext* context)
     return true;
 }
 
-bool Semantic::setupIdentifierRef(AstNode* node)
+void Semantic::setupConst(AstNode* node)
 {
     // If the type of the previous one was const, then we force this node to be const (cannot change it)
     if (node->parent->typeInfo && node->parent->typeInfo->isConst())
@@ -149,10 +149,12 @@ bool Semantic::setupIdentifierRef(AstNode* node)
     const auto overload = node->resolvedSymbolOverload();
     if (overload && overload->hasFlag(OVERLOAD_CONST_ASSIGN))
         node->addSemFlag(SEMFLAG_CONST_ASSIGN);
+}
 
+void Semantic::setupIdentifierRef(AstNode* node)
+{
     if (node->parent->isNot(AstNodeKind::IdentifierRef))
-        return true;
-
+        return;
     const auto identifierRef = castAst<AstIdentifierRef>(node->parent, AstNodeKind::IdentifierRef);
 
     // If we cannot assign previous, and this was AST_IS_CONST_ASSIGN_INHERIT, then we cannot assign
@@ -237,8 +239,6 @@ bool Semantic::setupIdentifierRef(AstNode* node)
             break;
         }
     }
-
-    return true;
 }
 
 bool Semantic::isFunctionButNotACall(SemanticContext*, AstNode* node, const SymbolName* symbol)
@@ -1063,7 +1063,8 @@ bool Semantic::waitForSymbols(SemanticContext* context, AstIdentifier* identifie
         // In case the identifier is part of a reference, need to initialize it
         if (identifier != identifier->identifierRef()->lastChild())
         {
-            SWAG_CHECK(setupIdentifierRef(identifier));
+            setupConst(identifier);
+            setupIdentifierRef(identifier);
 
             // Be sure to set up constexpr
             if (identifier->typeInfo->isStruct() ||

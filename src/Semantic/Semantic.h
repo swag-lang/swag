@@ -183,7 +183,6 @@ namespace Semantic
     bool           setState(SemanticContext* context, AstNode* node, AstNodeResolveState state);
     bool           setUnRef(AstNode* node);
     bool           setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, const AstNode* funcNode, AstNode* parameters, bool forGenerics);
-    bool           setupIdentifierRef(AstNode* node);
     bool           solveConstraints(SemanticContext* context, OneMatch* oneMatch, AstFuncDecl* funcDecl);
     bool           solveConstraints(SemanticContext* context, AstStruct* structDecl);
     bool           storeToSegment(JobContext* context, DataSegment* storageSegment, uint32_t storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
@@ -191,6 +190,8 @@ namespace Semantic
     bool           waitForSymbols(SemanticContext* context, AstIdentifier* identifier, Job* job);
     uint32_t       alignOf(const AstVarDecl* node);
     uint32_t       getMaxStackSize(AstNode* node);
+    void           setupConst(AstNode* node);
+    void           setupIdentifierRef(AstNode* node);
     void           addSymbolMatch(VectorNative<OneSymbolMatch>& symbolsMatch, SymbolName* symName, Scope* scope, CollectedScopeFlags altFlags);
     void           allocateOnStack(AstNode* node, const TypeInfo* typeInfo);
     void           decreaseInterfaceCount(TypeInfoStruct* typeInfoStruct);

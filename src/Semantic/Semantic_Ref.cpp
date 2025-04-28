@@ -943,6 +943,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
             }
 
             arrayNode->typeInfo = typePtr->pointedType;
+            setupConst(arrayNode);
             setupIdentifierRef(arrayNode);
 
             // Try to dereference as a constant if we can
@@ -987,6 +988,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
             SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CAST_FLAG_TRY_COERCE | CAST_FLAG_INDEX));
             const auto typePtr  = castTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
             arrayNode->typeInfo = typePtr->pointedType;
+            setupConst(arrayNode);
             setupIdentifierRef(arrayNode);
 
             // Try to dereference as a constant if we can
@@ -1016,6 +1018,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
             SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CAST_FLAG_TRY_COERCE | CAST_FLAG_INDEX));
             const auto typeSlice = castTypeInfo<TypeInfoSlice>(arrayType, TypeInfoKind::Slice);
             arrayNode->typeInfo  = typeSlice->pointedType;
+            setupConst(arrayNode);
             setupIdentifierRef(arrayNode);
 
             // Try to dereference as a constant if we can
@@ -1046,6 +1049,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
             SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CAST_FLAG_TRY_COERCE | CAST_FLAG_INDEX));
             const auto typeVariadic = castTypeInfo<TypeInfoVariadic>(arrayType, TypeInfoKind::TypedVariadic);
             arrayNode->typeInfo     = typeVariadic->rawType;
+            setupConst(arrayNode);
             setupIdentifierRef(arrayNode);
             break;
         }

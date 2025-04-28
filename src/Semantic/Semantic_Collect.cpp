@@ -660,6 +660,7 @@ bool Semantic::derefConstantValue(SemanticContext* context, AstNode* node, TypeI
             // @BackPtrOffset
             node->computedValue()->storageOffset  = storageSegment->offset(*reinterpret_cast<uint8_t**>(ptr));
             node->computedValue()->storageSegment = storageSegment;
+            setupConst(node);
             setupIdentifierRef(node);
             node->addAstFlag(AST_VALUE_GEN_TYPEINFO);
         }
@@ -707,6 +708,7 @@ bool Semantic::derefConstantValue(SemanticContext* context, AstNode* node, TypeI
         node->computedValue()->storageOffset  = storageSegment->offset(ptr);
         node->computedValue()->storageSegment = storageSegment;
         node->typeInfo                        = typeInfo;
+        setupConst(node);
         setupIdentifierRef(node);
         return true;
     }
