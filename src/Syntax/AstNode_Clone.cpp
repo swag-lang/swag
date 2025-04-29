@@ -103,8 +103,9 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         token.endLocation   = context.forceLocation->endLocation;
     }
 
-    semanticFct = from->semanticFct;
-    byteCodeFct = from->byteCodeFct;
+    semanticFct   = from->semanticFct;
+    byteCodeFct   = from->byteCodeFct;
+    bytecodeState = AstNodeResolveState::Enter;
 
     if (from->hasExtMisc())
     {
