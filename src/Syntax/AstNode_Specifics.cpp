@@ -180,7 +180,6 @@ void AstFuncDecl::removePendingInline(const AstIdentifier* node)
     {
         if (pendingInline[i].identifier == node)
         {
-            printf("x");
             pendingInline.erase(i);
             break;
         }
@@ -1103,7 +1102,6 @@ AstInline::~AstInline()
         scope->release();
 }
 
-#pragma optimize("", off)
 AstNode* AstInline::clone(CloneContext& context)
 {
     const auto newNode = Ast::newNode<AstInline>();

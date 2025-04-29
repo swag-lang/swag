@@ -8,7 +8,6 @@
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
-#pragma optimize("", off)
 
 bool ByteCodeGen::emitBinaryOpPlus(const ByteCodeGenContext* context, const TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {

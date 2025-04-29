@@ -10,7 +10,6 @@
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
 #include "Syntax/Naming.h"
-#pragma optimize("", off)
 
 // ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitIdentifierRef(ByteCodeGenContext* context)

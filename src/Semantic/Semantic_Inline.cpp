@@ -9,7 +9,6 @@
 #include "Syntax/AstFlags.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
-#pragma optimize("", off)
 
 bool Semantic::mustInline(const AstFuncDecl* funcDecl)
 {
@@ -353,6 +352,7 @@ bool Semantic::dealWithPendingInlines(JobContext* context, AstFuncDecl* funcDecl
         const auto  identifier    = pending.identifier;
         const auto  identifierRef = identifier->identifierRef();
 
+        const auto saveTypeRef       = identifierRef->typeInfo;
         identifierRef->previousNode  = pending.previousNode;
         identifierRef->previousScope = pending.previousScope;
         identifier->typeInfo         = pending.identifierType;
@@ -360,6 +360,9 @@ bool Semantic::dealWithPendingInlines(JobContext* context, AstFuncDecl* funcDecl
         SWAG_CHECK(makePendingInline(context, identifier, fromSemantic));
         if (context->result == ContextResult::NewChildren)
             context->baseJob->nodes.push_back(identifier);
+
+        identifierRef->typeInfo = saveTypeRef;
+
         YIELD();
 
         funcDecl->pendingInline.pop_back();

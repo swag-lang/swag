@@ -13,14 +13,14 @@ func assert(expr: code, str: string = "toto")
 #[Swag.Inline]
 func xx(val: s32)->s32
 {
-    G = 55
+    G = val
     return val
 }
 
 #[Swag.Macro]
 func xx1(val: s32)->s32
 {
-    G = 55
+    G = val
     return val
 }
 

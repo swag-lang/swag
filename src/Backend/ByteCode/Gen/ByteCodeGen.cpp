@@ -14,7 +14,6 @@
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Threading/ThreadManager.h"
 #include "Wmf/Module.h"
-#pragma optimize("", off)
 
 bool ByteCodeGen::setupRuntime(const ByteCodeGenContext* context, const AstNode* node)
 {

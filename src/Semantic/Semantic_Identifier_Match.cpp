@@ -11,7 +11,6 @@
 #include "Syntax/Naming.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
-#pragma optimize("", off)
 
 void Semantic::sortParameters(AstNode* allParams)
 {
@@ -918,12 +917,15 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
         canInline = false;
 
     bool mustDelay = false;
-    if (canInline)// && identifier->ownerFct)
+    if (canInline && identifier->ownerFct)
     {
         // Do not expand an inline call inside a function that will be inlined itself.
         // The expansion will be done at the lowest level possible
         if (mustInline(identifier->ownerFct))
             mustDelay = true;
+
+        // If the call is inside another function call, then we must delay in case we have
+        // a cast to a 'code' for a macro.
         //const auto call = identifier->findParent(AstNodeKind::Statement, AstNodeKind::FuncCallParam);
         //if (call && call->is(AstNodeKind::FuncCallParam))
         //    mustDelay = true;
