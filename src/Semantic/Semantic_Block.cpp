@@ -97,43 +97,46 @@ bool Semantic::resolveWhile(SemanticContext* context)
 
 bool Semantic::resolveInlineBefore(SemanticContext* context)
 {
-    const auto node = castAst<AstInline>(context->node, AstNodeKind::Inline);
+    const auto inlineNode = castAst<AstInline>(context->node, AstNodeKind::Inline);
 
     ErrorCxtStep expNode;
-    expNode.node = node->parent;
+    expNode.node = inlineNode->parent;
     expNode.type = ErrCxtStepKind::DuringInline;
     context->errCxtSteps.push_back(expNode);
 
-    if (node->hasSemFlag(SEMFLAG_RESOLVE_INLINED))
+    if (inlineNode->hasSemFlag(SEMFLAG_RESOLVE_INLINED))
         return true;
-    node->addSemFlag(SEMFLAG_RESOLVE_INLINED);
+    inlineNode->addSemFlag(SEMFLAG_RESOLVE_INLINED);
 
-    const auto func         = node->func;
-    const auto typeInfoFunc = castTypeInfo<TypeInfoFuncAttr>(func->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+    const auto funcDecl     = inlineNode->func;
+    const auto typeInfoFunc = castTypeInfo<TypeInfoFuncAttr>(funcDecl->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
 
     // @DirectInlineLocalVar
     // For a return by copy, need to reserve room on the stack for the return result
     if (typeInfoFunc->returnNeedsStack())
     {
-        node->addAstFlag(AST_TRANSIENT);
-        allocateOnStack(node, func->returnType->typeInfo);
+        inlineNode->addAstFlag(AST_TRANSIENT);
+        allocateOnStack(inlineNode, funcDecl->returnType->typeInfo);
     }
 
-    node->scope->startStackSize = node->ownerScope->startStackSize;
+    inlineNode->scope->startStackSize = inlineNode->ownerScope->startStackSize;
 
     // If we inline a throwable function, be sure the top level function is informed
     if (typeInfoFunc->hasFlag(TYPEINFO_CAN_THROW))
-        node->ownerFct->addSpecFlag(AstFuncDecl::SPEC_FLAG_REG_GET_CONTEXT);
+        inlineNode->ownerFct->addSpecFlag(AstFuncDecl::SPEC_FLAG_REG_GET_CONTEXT);
 
     // Register all function parameters as inline symbols
-    if (func->parameters)
+    if (funcDecl->parameters)
     {
+        if (inlineNode->ownerFct)
+            inlineNode->ownerFct->funcMutex.lock();
+
         const AstIdentifier* identifier = nullptr;
-        if (node->parent->is(AstNodeKind::Identifier))
-            identifier = castAst<AstIdentifier>(node->parent, AstNodeKind::Identifier);
-        for (uint32_t i = 0; i < func->parameters->childCount(); i++)
+        if (inlineNode->parent->is(AstNodeKind::Identifier))
+            identifier = castAst<AstIdentifier>(inlineNode->parent, AstNodeKind::Identifier);
+        for (uint32_t i = 0; i < funcDecl->parameters->childCount(); i++)
         {
-            const auto funcParam = func->parameters->children[i];
+            const auto funcParam = funcDecl->parameters->children[i];
 
             // If the call parameter of the inlined function is constant, then we register it in a specific
             // constant scope, not in the caller (for mixins)/inline scope.
@@ -161,7 +164,7 @@ bool Semantic::resolveInlineBefore(SemanticContext* context)
                     toAdd.storageOffset       = callParam->computedValue()->storageOffset;
                     toAdd.storageSegment      = callParam->computedValue()->storageSegment;
                     toAdd.aliasName           = funcParam->token.text;
-                    const auto overload       = node->parametersScope->symTable.addSymbolTypeInfo(context, toAdd);
+                    const auto overload       = inlineNode->parametersScope->symTable.addSymbolTypeInfo(context, toAdd);
                     overload->fromInlineParam = orgCallParam;
                     isConstant                = true;
                     break;
@@ -170,21 +173,24 @@ bool Semantic::resolveInlineBefore(SemanticContext* context)
 
             if (!isConstant)
             {
-                SWAG_ASSERT(node->parametersScope);
+                SWAG_ASSERT(inlineNode->parametersScope);
                 AddSymbolTypeInfo toAdd;
                 toAdd.node                = Ast::clone(funcParam, nullptr);
                 toAdd.typeInfo            = funcParam->typeInfo;
                 toAdd.kind                = SymbolKind::Variable;
                 toAdd.flags               = OVERLOAD_VAR_INLINE | OVERLOAD_CONST_ASSIGN;
-                const auto overload       = node->parametersScope->symTable.addSymbolTypeInfo(context, toAdd);
+                const auto overload       = inlineNode->parametersScope->symTable.addSymbolTypeInfo(context, toAdd);
                 overload->fromInlineParam = orgCallParam;
             }
         }
+
+        if (inlineNode->ownerFct)
+            inlineNode->ownerFct->funcMutex.unlock();
     }
 
     // Sub declarations in an inline block have access to the 'parametersScope', so we must start resolving
     // them only when we have filled the parameters
-    resolveSubDecls(context, node->ownerFct);
+    resolveSubDecls(context, inlineNode->ownerFct);
 
     return true;
 }
