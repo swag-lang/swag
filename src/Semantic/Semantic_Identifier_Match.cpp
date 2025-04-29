@@ -11,6 +11,7 @@
 #include "Syntax/Naming.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
+#pragma optimize("", off)
 
 void Semantic::sortParameters(AstNode* allParams)
 {
@@ -908,16 +909,27 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
         }
     }
 
-    bool       canInline    = true;
     const auto isMixinMacro = funcDecl->hasAttribute(ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO);
+
+    bool canInline = true;
     if (!mustInline(funcDecl) || isFunctionButNotACall(context, identifier, overload->symbol))
         canInline = false;
     if (identifier->hasSpecFlag(AstIdentifier::SPEC_FLAG_NO_INLINE) && !isMixinMacro)
         canInline = false;
 
-    // Do not expand an inline call inside a function that will be inlined itself.
-    // The expansion will be done at the lowest level possible
-    if (canInline && !mustInline(identifier->ownerFct))
+    bool mustDelay = false;
+    if (canInline)// && identifier->ownerFct)
+    {
+        // Do not expand an inline call inside a function that will be inlined itself.
+        // The expansion will be done at the lowest level possible
+        if (mustInline(identifier->ownerFct))
+            mustDelay = true;
+        //const auto call = identifier->findParent(AstNodeKind::Statement, AstNodeKind::FuncCallParam);
+        //if (call && call->is(AstNodeKind::FuncCallParam))
+        //    mustDelay = true;
+    }
+
+    if (canInline && !mustDelay)
     {
         SWAG_CHECK(makePendingInline(context, identifier, true));
         YIELD();
@@ -936,6 +948,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
         pendingInline.previousNode     = identifierRef->previousNode;
         pendingInline.previousScope    = identifierRef->previousScope;
         pendingInline.identifierType   = identifier->typeInfo;
+        SWAG_ASSERT(identifier->ownerFct);
         identifier->ownerFct->addPendingInline(pendingInline);
     }
 

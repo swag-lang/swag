@@ -174,6 +174,19 @@ void AstFuncDecl::addPendingInline(const AstPendingInline& pending)
     pendingInline.push_back(pending);
 }
 
+void AstFuncDecl::removePendingInline(const AstIdentifier* node)
+{
+    for (uint32_t i = 0; i < pendingInline.size(); i++)
+    {
+        if (pendingInline[i].identifier == node)
+        {
+            printf("x");
+            pendingInline.erase(i);
+            break;
+        }
+    }
+}
+
 Utf8 AstFuncDecl::getCallName()
 {
     if (hasAttribute(ATTRIBUTE_FOREIGN | ATTRIBUTE_PUBLIC))

@@ -13,11 +13,12 @@ struct ByteCodeGenJob final : Job
 
     enum class Pass
     {
+        Inline,
         Generate,
         WaitForDependenciesGenerated,
         ComputeDependenciesResolved,
     };
 
     ByteCodeGenContext context;
-    Pass               pass = Pass::Generate;
+    Pass               pass = Pass::Inline;
 };

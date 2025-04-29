@@ -219,9 +219,6 @@ bool ByteCodeGen::askForByteCode(JobContext* context, AstNode* node, AskBcFlags 
             node->addSemFlag(SEMFLAG_BYTECODE_GENERATED | SEMFLAG_BYTECODE_RESOLVED);
             return true;
         }
-
-        SWAG_CHECK(Semantic::dealWithPendingInlines(context, funcDecl, fromSemantic));
-        YIELD();
     }
 
     if (job)

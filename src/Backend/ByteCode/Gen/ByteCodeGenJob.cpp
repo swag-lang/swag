@@ -2,6 +2,8 @@
 #include "Backend/ByteCode/Gen/ByteCodeGenJob.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
+#include "Semantic/Semantic.h"
+#include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
 #include "Wmf/Module.h"
 
@@ -126,6 +128,21 @@ JobResult ByteCodeGenJob::execute()
 
     if (sourceFile->module->numErrors)
         return leaveJob(originalNode);
+
+    if (pass == Pass::Inline)
+    {
+        if (originalNode->is(AstNodeKind::FuncDecl))
+        {
+            const auto funcDecl = castAst<AstFuncDecl>(originalNode, AstNodeKind::FuncDecl);
+            context.result      = ContextResult::Done;
+            if (!Semantic::dealWithPendingInlines(&context, funcDecl, false))
+                return leaveJob(originalNode);
+            if (context.result != ContextResult::Done)
+                return JobResult::KeepJobAlive;
+        }
+
+        pass = Pass::Generate;
+    }
 
     if (pass == Pass::Generate)
     {
