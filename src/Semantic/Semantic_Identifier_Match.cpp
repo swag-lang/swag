@@ -11,6 +11,7 @@
 #include "Syntax/Naming.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
+#pragma optimize("", off)
 
 void Semantic::sortParameters(AstNode* allParams)
 {
@@ -906,6 +907,14 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
             const Diagnostic err{identifier, identifier->token, toErr(Err0128)};
             return context->report(err, Diagnostic::hereIs(overload));
         }
+    }
+
+    if (identifier->hasAstFlag(AST_INLINED))
+    {
+        setConst(identifier);
+        setIdentifierRefPrevious(identifier);
+        identifier->byteCodeFct = ByteCodeGen::emitPassThrough;
+        return true;
     }
 
     const auto isMixinMacro = funcDecl->hasAttribute(ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO);

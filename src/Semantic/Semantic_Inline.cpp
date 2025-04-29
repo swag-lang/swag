@@ -9,6 +9,7 @@
 #include "Syntax/AstFlags.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
+#pragma optimize("", off)
 
 bool Semantic::mustInline(const AstFuncDecl* funcDecl)
 {
