@@ -972,6 +972,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     else
         identifier->byteCodeFct = ByteCodeGen::emitCall;
 
+    // @PostSetIdentifier
     setEmitTryCatchAssume(identifier, identifier->typeInfo);
     setConst(identifier);
     setIdentifierRefPrevious(identifier);

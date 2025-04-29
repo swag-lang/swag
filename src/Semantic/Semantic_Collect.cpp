@@ -607,7 +607,7 @@ bool Semantic::collectConstantAssignment(SemanticContext* context, DataSegment**
     }
 
     node->inheritComputedValue(node->assignment);
-    SWAG_ASSERT(node->computedValue());
+    SWAG_ASSERT(node->hasComputedValue());
 
     *storageSegmentResult = storageSegment;
     *storageOffsetResult  = storageOffset;
