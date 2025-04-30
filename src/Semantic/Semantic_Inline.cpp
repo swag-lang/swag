@@ -454,12 +454,6 @@ bool Semantic::makePendingInline(JobContext* context, AstIdentifier* identifier,
     const auto funcDecl = castAst<AstFuncDecl>(identifier->resolvedSymbolOverload()->node, AstNodeKind::FuncDecl);
     SWAG_CHECK(makeInline(context, funcDecl, identifier, fromSemantic));
     YIELD();
-
-    // @PostSetIdentifier
-    setConst(identifier);
-    setIdentifierRefPrevious(identifier);
-    identifier->addAstFlag(AST_FUNC_INLINE_CALL);
-
     identifier->byteCodeFct = ByteCodeGen::emitPassThrough;
     return true;
 }

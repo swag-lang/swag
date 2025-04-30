@@ -936,8 +936,8 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
 
         // If the call is inside another function call, then we must delay in case we have
         // a cast to a 'code' for a macro.
-        //const auto call = identifier->findParent(AstNodeKind::Statement, AstNodeKind::FuncCallParam);
-        //if (call && call->is(AstNodeKind::FuncCallParam))
+        // const auto call = identifier->findParent(AstNodeKind::Statement, AstNodeKind::FuncCallParam);
+        // if (call && call->is(AstNodeKind::FuncCallParam))
         //    mustDelay = true;
     }
 
@@ -975,12 +975,13 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
         else
             identifier->byteCodeFct = ByteCodeGen::emitCall;
 
-        // @PostSetIdentifier
-        setEmitTryCatchAssume(identifier, identifier->typeInfo);
-        setConst(identifier);
-        setIdentifierRefPrevious(identifier);
         identifier->addAstFlag(AST_FUNC_CALL);
     }
+
+    // @PostSetIdentifier
+    setEmitTryCatchAssume(identifier, identifier->typeInfo);
+    setConst(identifier);
+    setIdentifierRefPrevious(identifier);
 
     // For a return by copy, we need to reserve room on the stack for the return result
     // Order is important, because otherwise this could call isPlainOldData, which could be not resolved
