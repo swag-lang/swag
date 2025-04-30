@@ -15,7 +15,6 @@
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 #include "Wmf/ModuleManager.h"
-#pragma optimize("", off)
 
 bool ByteCodeGen::emitLocalFuncDecl(ByteCodeGenContext* context)
 {
