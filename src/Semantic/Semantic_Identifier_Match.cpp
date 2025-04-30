@@ -688,8 +688,8 @@ bool Semantic::setSymbolMatchVar(SemanticContext* context, const OneMatch& oneMa
     }
 
     // Setup parent if necessary
-    Semantic::setConst(identifier);
-    Semantic::setIdentifierRefPrevious(identifier);
+    setConst(identifier);
+    setIdentifierRefPrevious(identifier);
 
     const auto typeInfo = TypeManager::concretePtrRefType(identifier->typeInfo);
 
@@ -734,7 +734,7 @@ bool Semantic::setSymbolMatchVar(SemanticContext* context, const OneMatch& oneMa
         setEmitTryCatchAssume(identifier, identifier->typeInfo);
 
         // Need to make all types compatible, in case a cast is necessary
-        SWAG_CHECK(Semantic::setSymbolMatchCallParams(context, oneMatch, identifier));
+        SWAG_CHECK(setSymbolMatchCallParams(context, oneMatch, identifier));
 
         // For a return by copy, need to reserve room on the stack for the return result
         if (funcType->returnNeedsStack())
@@ -821,7 +821,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     // Need to make all types compatible, in case a cast is necessary
     if (!identifier->ownerFct || !identifier->ownerFct->hasAstFlag(AST_GENERIC))
     {
-        SWAG_CHECK(Semantic::setSymbolMatchCallParams(context, oneMatch, identifier));
+        SWAG_CHECK(setSymbolMatchCallParams(context, oneMatch, identifier));
         YIELD();
     }
 
