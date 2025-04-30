@@ -1,4 +1,3 @@
-#global skip
 using Swag
 
 #[Swag.Macro, Swag.ConstExpr]

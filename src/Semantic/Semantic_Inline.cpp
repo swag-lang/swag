@@ -380,16 +380,17 @@ bool Semantic::dealWithPendingInlines(JobContext* context, VectorNative<JobPendi
 
 bool Semantic::dealWithPendingInlines(JobContext* context, AstNode* fromNode, bool fromSemantic)
 {
-    SWAG_CHECK(dealWithPendingInlines(context, context->baseJob->pendingInlines, fromSemantic));
-    YIELD();
-
     if (fromNode && fromNode->is(AstNodeKind::FuncDecl))
     {
         const auto funcDecl = castAst<AstFuncDecl>(fromNode, AstNodeKind::FuncDecl);
         ScopedLock lk(funcDecl->funcMutex);
+        for (const auto& p : funcDecl->pendingInlines)
+            context->baseJob->removePendingInline(p.identifier);
         SWAG_CHECK(dealWithPendingInlines(context, funcDecl->pendingInlines, fromSemantic));
         YIELD();
     }
 
+    SWAG_CHECK(dealWithPendingInlines(context, context->baseJob->pendingInlines, fromSemantic));
+    YIELD();
     return true;
 }

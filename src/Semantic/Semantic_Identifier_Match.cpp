@@ -912,7 +912,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     if (identifier->hasAstFlag(AST_INLINED))
     {
         if (typeFunc->returnNeedsStack())
-            identifier->addAstFlag(AST_TRANSIENT);        
+            identifier->addAstFlag(AST_TRANSIENT);
         setConst(identifier);
         setIdentifierRefPrevious(identifier);
         identifier->byteCodeFct = ByteCodeGen::emitPassThrough;
@@ -961,11 +961,10 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
         pendingInline.previousNode     = identifierRef->previousNode;
         pendingInline.previousScope    = identifierRef->previousScope;
         pendingInline.identifierType   = identifier->typeInfo;
-        
+
         if (identifier->ownerFct)
             identifier->ownerFct->addPendingInline(pendingInline);
-        else
-            context->baseJob->addPendingInline(pendingInline);
+        context->baseJob->addPendingInline(pendingInline);
     }
 
     if (isMixinMacro)
