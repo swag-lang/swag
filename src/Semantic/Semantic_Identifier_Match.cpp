@@ -911,6 +911,8 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
 
     if (identifier->hasAstFlag(AST_INLINED))
     {
+        if (typeFunc->returnNeedsStack())
+            identifier->addAstFlag(AST_TRANSIENT);        
         setConst(identifier);
         setIdentifierRefPrevious(identifier);
         identifier->byteCodeFct = ByteCodeGen::emitPassThrough;
@@ -926,7 +928,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
         canInline = false;
 
     bool mustDelay = false;
-    if (canInline && identifier->ownerFct)
+    if (canInline)
     {
         // Do not expand an inline call inside a function that will be inlined itself.
         // The expansion will be done at the lowest level possible
@@ -953,14 +955,17 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     // This is especially important if the identifier is a macro or a mixin.
     if (canInline)
     {
-        AstPendingInline pendingInline;
+        JobPendingInline pendingInline;
         const auto       identifierRef = identifier->identifierRef();
         pendingInline.identifier       = identifier;
         pendingInline.previousNode     = identifierRef->previousNode;
         pendingInline.previousScope    = identifierRef->previousScope;
         pendingInline.identifierType   = identifier->typeInfo;
-        SWAG_ASSERT(identifier->ownerFct);
-        identifier->ownerFct->addPendingInline(pendingInline);
+        
+        if (identifier->ownerFct)
+            identifier->ownerFct->addPendingInline(pendingInline);
+        else
+            context->baseJob->addPendingInline(pendingInline);
     }
 
     if (isMixinMacro)

@@ -8,6 +8,7 @@
 #include "Syntax/AstFlags.h"
 #include "Syntax/Tokenizer/Token.h"
 #include "Syntax/Tokenizer/TokenParse.h"
+#include "Threading/Job.h"
 #include "Threading/Mutex.h"
 
 struct AstAttrUse;
@@ -720,14 +721,6 @@ struct AstIdentifier : AstNode
     IdentifierExtension* identifierExtension;
 };
 
-struct AstPendingInline
-{
-    AstIdentifier* identifier     = nullptr;
-    AstNode*       previousNode   = nullptr;
-    Scope*         previousScope  = nullptr;
-    TypeInfo*      identifierType = nullptr;
-};
-
 struct AstFuncDecl : AstNode
 {
     static constexpr SpecFlags SPEC_FLAG_THROW                = 0x0001;
@@ -756,7 +749,7 @@ struct AstFuncDecl : AstNode
     const char* getDisplayNameC() const;
     Utf8        getNameForUserCompiler() const;
     bool        mustUserInline(bool forExport = false) const;
-    void        addPendingInline(const AstPendingInline& pending);
+    void        addPendingInline(const JobPendingInline& pending);
     void        removePendingInline(const AstIdentifier* node);
     Utf8        getCallName();
 
@@ -765,7 +758,7 @@ struct AstFuncDecl : AstNode
     VectorNative<AstNode*>         subDecl;
     VectorNative<AstNode*>         localGlobalVars;
     VectorNative<AstNode*>         localConstants;
-    VectorNative<AstPendingInline> pendingInline;
+    VectorNative<JobPendingInline> pendingInlines;
     Mutex                          funcMutex;
     Token                          tokenName;
     SourceLocation                 implLoc;

@@ -168,19 +168,19 @@ bool AstFuncDecl::mustUserInline(bool forExport) const
     return false;
 }
 
-void AstFuncDecl::addPendingInline(const AstPendingInline& pending)
+void AstFuncDecl::addPendingInline(const JobPendingInline& pending)
 {
     ScopedLock lk(funcMutex);
-    pendingInline.push_back(pending);
+    pendingInlines.push_back(pending);
 }
 
 void AstFuncDecl::removePendingInline(const AstIdentifier* node)
 {
-    for (uint32_t i = 0; i < pendingInline.size(); i++)
+    for (uint32_t i = 0; i < pendingInlines.size(); i++)
     {
-        if (pendingInline[i].identifier == node)
+        if (pendingInlines[i].identifier == node)
         {
-            pendingInline.erase(i);
+            pendingInlines.erase(i);
             break;
         }
     }

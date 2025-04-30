@@ -351,12 +351,11 @@ bool Semantic::makePendingInline(JobContext* context, AstIdentifier* identifier,
     return true;
 }
 
-bool Semantic::dealWithPendingInlines(JobContext* context, AstFuncDecl* funcDecl, bool fromSemantic)
+bool Semantic::dealWithPendingInlines(JobContext* context, VectorNative<JobPendingInline>& pendingInlines, bool fromSemantic)
 {
-    ScopedLock lk(funcDecl->funcMutex);
-    while (!funcDecl->pendingInline.empty())
+    while (!pendingInlines.empty())
     {
-        const auto& pending       = funcDecl->pendingInline.back();
+        const auto& pending       = pendingInlines.back();
         const auto  identifier    = pending.identifier;
         const auto  identifierRef = identifier->identifierRef();
 
@@ -373,7 +372,23 @@ bool Semantic::dealWithPendingInlines(JobContext* context, AstFuncDecl* funcDecl
 
         YIELD();
 
-        funcDecl->pendingInline.pop_back();
+        pendingInlines.pop_back();
+    }
+
+    return true;
+}
+
+bool Semantic::dealWithPendingInlines(JobContext* context, AstNode* fromNode, bool fromSemantic)
+{
+    SWAG_CHECK(dealWithPendingInlines(context, context->baseJob->pendingInlines, fromSemantic));
+    YIELD();
+
+    if (fromNode && fromNode->is(AstNodeKind::FuncDecl))
+    {
+        const auto funcDecl = castAst<AstFuncDecl>(fromNode, AstNodeKind::FuncDecl);
+        ScopedLock lk(funcDecl->funcMutex);
+        SWAG_CHECK(dealWithPendingInlines(context, funcDecl->pendingInlines, fromSemantic));
+        YIELD();
     }
 
     return true;

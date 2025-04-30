@@ -3,7 +3,8 @@
 #include "Report/ErrorContext.h"
 #include "Threading/Mutex.h"
 
-struct AstFuncDecl;
+struct AstIdentifier;
+struct Scope;
 struct AstNode;
 struct Diagnostic;
 struct JobGroup;
@@ -90,6 +91,14 @@ enum class JobWaitKind
     WaitPreResolve,
 };
 
+struct JobPendingInline
+{
+    AstIdentifier* identifier     = nullptr;
+    AstNode*       previousNode   = nullptr;
+    Scope*         previousScope  = nullptr;
+    TypeInfo*      identifierType = nullptr;
+};
+
 struct Job
 {
     virtual JobResult execute() = 0;
@@ -104,6 +113,9 @@ struct Job
     bool hasFlag(JobFlags fl) const { return flags.has(fl); }
     void addFlag(JobFlags fl) { flags.add(fl); }
     void removeFlag(JobFlags fl) { flags.remove(fl); }
+
+    void addPendingInline(const JobPendingInline& pending);
+    void removePendingInline(const AstIdentifier* node);
 
     SharedMutex            executeMutex;
     SharedMutex            mutexDependent;
@@ -120,12 +132,13 @@ struct Job
     JobContext* baseContext  = nullptr;
     JobGroup*   jobGroup     = nullptr;
 
-    VectorNative<Job*> waitingJobs;
-    SymbolName*        waitingSymbolSolved = nullptr;
-    AstNode*           waitingNode         = nullptr;
-    AstNode*           waitingHintNode     = nullptr;
-    TypeInfo*          waitingType         = nullptr;
-    JobWaitKind        waitingKind         = JobWaitKind::None;
+    VectorNative<Job*>             waitingJobs;
+    VectorNative<JobPendingInline> pendingInlines;
+    SymbolName*                    waitingSymbolSolved = nullptr;
+    AstNode*                       waitingNode         = nullptr;
+    AstNode*                       waitingHintNode     = nullptr;
+    TypeInfo*                      waitingType         = nullptr;
+    JobWaitKind                    waitingKind         = JobWaitKind::None;
 
     uint32_t waitingJobIndex = UINT32_MAX;
     uint32_t waitOnJobs      = 0;

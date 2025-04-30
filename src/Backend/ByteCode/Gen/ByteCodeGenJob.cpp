@@ -129,17 +129,15 @@ JobResult ByteCodeGenJob::execute()
     if (sourceFile->module->numErrors)
         return leaveJob(originalNode);
 
+    // Make all inlines, from the job's list, and from the function's list, if this is a function
     if (pass == Pass::Inline)
     {
-        if (originalNode->is(AstNodeKind::FuncDecl))
-        {
-            const auto funcDecl = castAst<AstFuncDecl>(originalNode, AstNodeKind::FuncDecl);
-            context.result      = ContextResult::Done;
-            if (!Semantic::dealWithPendingInlines(&context, funcDecl, false))
-                return leaveJob(originalNode);
-            if (context.result != ContextResult::Done)
-                return JobResult::KeepJobAlive;
-        }
+        context.result = ContextResult::Done;
+
+        if (!Semantic::dealWithPendingInlines(&context, originalNode, false))
+            return leaveJob(originalNode);
+        if (context.result != ContextResult::Done)
+            return JobResult::KeepJobAlive;
 
         pass = Pass::Generate;
     }

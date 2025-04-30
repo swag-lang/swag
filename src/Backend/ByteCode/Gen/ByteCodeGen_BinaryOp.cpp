@@ -786,12 +786,8 @@ bool ByteCodeGen::emitUserOp(ByteCodeGenContext* context, AstNode* allParams, As
 
             if (!node->hasSemFlag(SEMFLAG_RESOLVE_INLINED))
             {
-                if (node->ownerFct)
-                {
-                    SWAG_CHECK(Semantic::dealWithPendingInlines(context, node->ownerFct, false));
-                    YIELD();
-                }
-
+                SWAG_CHECK(Semantic::dealWithPendingInlines(context, node->ownerFct, false));
+                YIELD();
                 node->addSemFlag(SEMFLAG_RESOLVE_INLINED);
                 const auto back = node->lastChild();
                 SWAG_ASSERT(back->is(AstNodeKind::Inline));
