@@ -960,6 +960,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
             pendingInline.previousNode     = identifierRef->previousNode;
             pendingInline.previousScope    = identifierRef->previousScope;
             pendingInline.identifierType   = identifier->typeInfo;
+            identifier->addSpecFlag(AstIdentifier::SPEC_FLAG_IN_PENDING_INLINE);
 
             if (identifier->ownerFct)
                 identifier->ownerFct->addPendingInline(pendingInline);

@@ -700,6 +700,7 @@ struct AstIdentifier : AstNode
     static constexpr SpecFlags SPEC_FLAG_SILENT_CALL         = 0x0010;
     static constexpr SpecFlags SPEC_FLAG_NAME_ALIAS          = 0x0020;
     static constexpr SpecFlags SPEC_FLAG_SELF                = 0x0040;
+    static constexpr SpecFlags SPEC_FLAG_IN_PENDING_INLINE   = 0x0080;
 
     struct IdentifierExtension
     {

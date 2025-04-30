@@ -32,7 +32,6 @@ func tx(x: ...)
 }
 
 var G = 1
-//#[Swag.PrintBc]
 #test
 {
     toto(titi())
