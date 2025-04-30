@@ -416,7 +416,7 @@ void ByteCode::fillPrintInstruction(const ByteCodePrintOptions& options, const B
     {
         const auto funcNode = castAst<AstFuncDecl>(reinterpret_cast<AstNode*>(ip->a.pointer), AstNodeKind::FuncDecl);
         line.pretty += "// ";
-        line.pretty += Utf8::truncateDisplay(funcNode->token.text, 30);
+        line.pretty += Utf8::truncateDisplay(funcNode->getCallName(), 30);
         line.pretty += "()";
         line.pretty += " ";
     }
@@ -426,7 +426,7 @@ void ByteCode::fillPrintInstruction(const ByteCodePrintOptions& options, const B
         SWAG_ASSERT(bcCall);
 
         line.pretty += "// ";
-        line.pretty += bcCall->name;
+        line.pretty += bcCall->getCallName();
         line.pretty += "()";
 
         if (bcCall->node && bcCall->node->typeInfo)
