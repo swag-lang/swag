@@ -9,7 +9,6 @@
 #include "Syntax/AstFlags.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
-#pragma optimize("", off)
 
 bool Semantic::mustInline(const AstFuncDecl* funcDecl)
 {
@@ -60,17 +59,7 @@ bool Semantic::resolveInlineBefore(SemanticContext* context)
     if (typeInfoFunc->returnNeedsStack())
     {
         inlineNode->addAstFlag(AST_TRANSIENT);
-        if (inlineNode->parent->is(AstNodeKind::Identifier) &&
-            inlineNode->parent->hasSpecFlag(AstIdentifier::SPEC_FLAG_IN_PENDING_INLINE))
-        {
-            SWAG_ASSERT(inlineNode->parent->hasComputedValue());
-            inlineNode->allocateComputedValue();
-            inlineNode->computedValue()->storageOffset = inlineNode->parent->computedValue()->storageOffset;
-        }
-        else
-        {
-            allocateOnStack(inlineNode, funcDecl->returnType->typeInfo);
-        }
+        allocateOnStack(inlineNode, funcDecl->returnType->typeInfo);
     }
 
     inlineNode->scope->startStackSize = inlineNode->ownerScope->startStackSize;
@@ -459,56 +448,11 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* n
     return true;
 }
 
-bool Semantic::makePendingInline(JobContext* context, AstIdentifier* identifier, bool fromSemantic)
+bool Semantic::makeInline(JobContext* context, AstIdentifier* identifier, bool fromSemantic)
 {
     const auto funcDecl = castAst<AstFuncDecl>(identifier->resolvedSymbolOverload()->node, AstNodeKind::FuncDecl);
     SWAG_CHECK(makeInline(context, funcDecl, identifier, fromSemantic));
     YIELD();
     identifier->byteCodeFct = ByteCodeGen::emitPassThrough;
-    return true;
-}
-
-bool Semantic::dealWithPendingInlines(JobContext* context, VectorNative<JobPendingInline>& pendingInlines, bool fromSemantic)
-{
-    while (!pendingInlines.empty())
-    {
-        const auto& pending       = pendingInlines.back();
-        const auto  identifier    = pending.identifier;
-        const auto  identifierRef = identifier->identifierRef();
-
-        const auto saveTypeRef       = identifierRef->typeInfo;
-        identifierRef->previousNode  = pending.previousNode;
-        identifierRef->previousScope = pending.previousScope;
-        identifier->typeInfo         = pending.identifierType;
-
-        SWAG_CHECK(makePendingInline(context, identifier, fromSemantic));
-        if (context->result == ContextResult::NewChildren)
-            context->baseJob->nodes.push_back(identifier);
-
-        identifierRef->typeInfo = saveTypeRef;
-
-        YIELD();
-
-        identifier->removeSpecFlag(AstIdentifier::SPEC_FLAG_IN_PENDING_INLINE);
-        pendingInlines.pop_back();
-    }
-
-    return true;
-}
-
-bool Semantic::dealWithPendingInlines(JobContext* context, AstNode* fromNode, bool fromSemantic)
-{
-    if (fromNode && fromNode->is(AstNodeKind::FuncDecl))
-    {
-        const auto funcDecl = castAst<AstFuncDecl>(fromNode, AstNodeKind::FuncDecl);
-        ScopedLock lk(funcDecl->funcMutex);
-        for (const auto& p : funcDecl->pendingInlines)
-            context->baseJob->removePendingInline(p.identifier);
-        SWAG_CHECK(dealWithPendingInlines(context, funcDecl->pendingInlines, fromSemantic));
-        YIELD();
-    }
-
-    SWAG_CHECK(dealWithPendingInlines(context, context->baseJob->pendingInlines, fromSemantic));
-    YIELD();
     return true;
 }

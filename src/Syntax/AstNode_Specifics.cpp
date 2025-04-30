@@ -115,7 +115,6 @@ AstNode* AstIdentifier::clone(CloneContext& context)
 
     newNode->genericParameters = castAst<AstFuncCallParams>(findChildRef(genericParameters, newNode));
     newNode->callParameters    = castAst<AstFuncCallParams>(findChildRef(callParameters, newNode));
-    newNode->removeSpecFlag(SPEC_FLAG_IN_PENDING_INLINE);
 
     if (identifierExtension)
     {
@@ -167,24 +166,6 @@ bool AstFuncDecl::mustUserInline(bool forExport) const
     if (hasAttribute(ATTRIBUTE_INLINE))
         return true;
     return false;
-}
-
-void AstFuncDecl::addPendingInline(const JobPendingInline& pending)
-{
-    ScopedLock lk(funcMutex);
-    pendingInlines.push_back(pending);
-}
-
-void AstFuncDecl::removePendingInline(const AstIdentifier* node)
-{
-    for (uint32_t i = 0; i < pendingInlines.size(); i++)
-    {
-        if (pendingInlines[i].identifier == node)
-        {
-            pendingInlines.erase(i);
-            break;
-        }
-    }
 }
 
 Utf8 AstFuncDecl::getCallName()

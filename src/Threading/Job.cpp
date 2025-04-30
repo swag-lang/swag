@@ -34,20 +34,3 @@ void Job::setPending(JobWaitKind waitKind, SymbolName* symbolToWait, AstNode* no
     setPendingInfos(waitKind, symbolToWait, node, typeInfo);
     baseContext->result = ContextResult::Pending;
 }
-
-void Job::addPendingInline(const JobPendingInline& pending)
-{
-    pendingInlines.push_back(pending);
-}
-
-void Job::removePendingInline(const AstIdentifier* node)
-{
-    for (uint32_t i = 0; i < pendingInlines.size(); i++)
-    {
-        if (pendingInlines[i].identifier == node)
-        {
-            pendingInlines.erase(i);
-            break;
-        }
-    }
-}

@@ -926,47 +926,13 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     if (identifier->hasSpecFlag(AstIdentifier::SPEC_FLAG_NO_INLINE) && !isMixinMacro)
         canInline = false;
 
-    bool mustDelay = false;
     if (canInline)
     {
-        // Do not expand an inline call inside a function that will be inlined itself.
-        // The expansion will be done at the lowest level possible
-        if (mustInline(identifier->ownerFct))
-            mustDelay = true;
-
-        // If the call is inside another function call, then we must delay in case we have
-        // a cast to a 'code' for a macro.
-        // const auto call = identifier->findParent(AstNodeKind::Statement, AstNodeKind::FuncCallParam);
-        // if (call && call->is(AstNodeKind::FuncCallParam))
-        //    mustDelay = true;
-    }
-
-    if (canInline && !mustDelay)
-    {
-        SWAG_CHECK(makePendingInline(context, identifier, true));
+        SWAG_CHECK(makeInline(context, identifier, true));
         YIELD();
     }
     else
     {
-        // We register the identifier in the current function because it can happen that this decision
-        // will have to be changed later: if the function has a non-inlined version, then we must
-        // be sure that all identifiers have been inlined before generating the function bytecode.
-        // This is especially important if the identifier is a macro or a mixin.
-        if (canInline)
-        {
-            JobPendingInline pendingInline;
-            const auto       identifierRef = identifier->identifierRef();
-            pendingInline.identifier       = identifier;
-            pendingInline.previousNode     = identifierRef->previousNode;
-            pendingInline.previousScope    = identifierRef->previousScope;
-            pendingInline.identifierType   = identifier->typeInfo;
-            identifier->addSpecFlag(AstIdentifier::SPEC_FLAG_IN_PENDING_INLINE);
-
-            if (identifier->ownerFct)
-                identifier->ownerFct->addPendingInline(pendingInline);
-            context->baseJob->addPendingInline(pendingInline);
-        }
-
         if (isMixinMacro)
             identifier->byteCodeFct = nullptr;
         else if (identifier->hasIntrinsicName())

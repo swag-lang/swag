@@ -247,15 +247,6 @@ bool TypeManager::tryCode(SemanticContext* context, TypeInfo* toType, TypeInfo* 
         typeCode->content->addAstFlag(AST_NO_SEMANTIC);
         fromNode->typeInfo = typeCode;
         fromNode->addAstFlag(AST_NO_SEMANTIC | AST_NO_BYTECODE);
-
-        // Inline will be done at injection and must not be done before
-        Ast::visit(fromNode, [&](AstNode* node) {
-            if (node->is(AstNodeKind::Identifier))
-            {
-                const auto identifier = castAst<AstIdentifier>(node, AstNodeKind::Identifier);
-                node->ownerFct->removePendingInline(identifier);
-            }
-        });
     }
 
     return true;

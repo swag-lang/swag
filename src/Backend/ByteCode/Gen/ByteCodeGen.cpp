@@ -261,7 +261,6 @@ bool ByteCodeGen::askForByteCode(JobContext* context, AstNode* node, AskBcFlags 
                 dependentJob = job->dependentJob;
             extByteCode->byteCodeJob                      = ByteCodeGenJob::newJob(dependentJob, sourceFile, node);
             extByteCode->byteCodeJob->context.errCxtSteps = job->baseContext->errCxtSteps;
-            extByteCode->byteCodeJob->pendingInlines      = std::move(job->pendingInlines);
             if (!extByteCode->bc)
             {
                 extByteCode->bc             = Allocator::alloc<ByteCode>();

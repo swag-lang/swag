@@ -129,19 +129,6 @@ JobResult ByteCodeGenJob::execute()
     if (sourceFile->module->numErrors)
         return leaveJob(originalNode);
 
-    // Make all inlines, from the job's list, and from the function's list, if this is a function
-    if (pass == Pass::Inline)
-    {
-        context.result = ContextResult::Done;
-
-        if (!Semantic::dealWithPendingInlines(&context, originalNode, false))
-            return leaveJob(originalNode);
-        if (context.result != ContextResult::Done)
-            return JobResult::KeepJobAlive;
-
-        pass = Pass::Generate;
-    }
-
     if (pass == Pass::Generate)
     {
         if (sourceFile->hasFlag(FILE_RUNTIME))
