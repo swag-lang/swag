@@ -9,6 +9,7 @@
 #include "Syntax/AstFlags.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
+#pragma optimize("", off)
 
 bool Semantic::resolveInlineBefore(SemanticContext* context)
 {
@@ -31,7 +32,27 @@ bool Semantic::resolveInlineBefore(SemanticContext* context)
     if (typeInfoFunc->returnNeedsStack())
     {
         inlineNode->addAstFlag(AST_TRANSIENT);
-        allocateOnStack(inlineNode, funcDecl->returnType->typeInfo);
+
+        /*if (inlineNode->parent &&
+            inlineNode->parent->is(AstNodeKind::Identifier) &&
+            inlineNode->parent->hasComputedValue() &&
+            inlineNode->parent->computedValue()->storageOffset != UINT32_MAX)
+        {
+            inlineNode->allocateComputedValue();
+            inlineNode->computedValue()->storageOffset = inlineNode->parent->computedValue()->storageOffset;
+            const auto typeInfo = funcDecl->returnType->typeInfo; 
+            inlineNode->ownerScope->startStackSize += typeInfo->isStruct() ? std::max(typeInfo->sizeOf, static_cast<uint32_t>(8)) : typeInfo->sizeOf;
+            setOwnerMaxStackSize(inlineNode, inlineNode->ownerScope->startStackSize);
+        }
+        else*/
+        {
+            allocateOnStack(inlineNode, funcDecl->returnType->typeInfo);
+            if (inlineNode->parent && inlineNode->parent->is(AstNodeKind::Identifier))
+            {
+                inlineNode->parent->allocateComputedValue();
+                inlineNode->parent->computedValue()->storageOffset = inlineNode->computedValue()->storageOffset;
+            }
+        }
     }
 
     inlineNode->scope->startStackSize = inlineNode->ownerScope->startStackSize;
@@ -467,7 +488,7 @@ bool Semantic::makePendingInline(JobContext* context, AstIdentifier* identifier,
     if (typeFunc->returnNeedsStack())
     {
         identifier->addAstFlag(AST_TRANSIENT);
-        allocateOnStack(identifier, typeFunc->concreteReturnType());
+        //allocateOnStack(identifier, typeFunc->concreteReturnType());
     }
 
     identifier->byteCodeFct = ByteCodeGen::emitPassThrough;
