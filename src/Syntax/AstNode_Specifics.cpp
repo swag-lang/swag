@@ -115,6 +115,7 @@ AstNode* AstIdentifier::clone(CloneContext& context)
 
     newNode->genericParameters = castAst<AstFuncCallParams>(findChildRef(genericParameters, newNode));
     newNode->callParameters    = castAst<AstFuncCallParams>(findChildRef(callParameters, newNode));
+    newNode->removeSpecFlag(SPEC_FLAG_IN_PENDING_INLINE);
 
     if (identifierExtension)
     {

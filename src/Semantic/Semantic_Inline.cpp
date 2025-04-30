@@ -9,6 +9,7 @@
 #include "Syntax/AstFlags.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
+#pragma optimize("", off)
 
 bool Semantic::mustInline(const AstFuncDecl* funcDecl)
 {
@@ -59,7 +60,17 @@ bool Semantic::resolveInlineBefore(SemanticContext* context)
     if (typeInfoFunc->returnNeedsStack())
     {
         inlineNode->addAstFlag(AST_TRANSIENT);
-        allocateOnStack(inlineNode, funcDecl->returnType->typeInfo);
+        if (inlineNode->parent->is(AstNodeKind::Identifier) &&
+            inlineNode->parent->hasSpecFlag(AstIdentifier::SPEC_FLAG_IN_PENDING_INLINE))
+        {
+            SWAG_ASSERT(inlineNode->parent->hasComputedValue());
+            inlineNode->allocateComputedValue();
+            inlineNode->computedValue()->storageOffset = inlineNode->parent->computedValue()->storageOffset;
+        }
+        else
+        {
+            allocateOnStack(inlineNode, funcDecl->returnType->typeInfo);
+        }
     }
 
     inlineNode->scope->startStackSize = inlineNode->ownerScope->startStackSize;
@@ -478,6 +489,7 @@ bool Semantic::dealWithPendingInlines(JobContext* context, VectorNative<JobPendi
 
         YIELD();
 
+        identifier->removeSpecFlag(AstIdentifier::SPEC_FLAG_IN_PENDING_INLINE);
         pendingInlines.pop_back();
     }
 
