@@ -945,41 +945,42 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     {
         SWAG_CHECK(makePendingInline(context, identifier, true));
         YIELD();
-        return true;
     }
-
-    // We register the identifier in the current function because it can happen that this decision
-    // will have to be changed later: if the function has a non-inlined version, then we must
-    // be sure that all identifiers have been inlined before generating the function bytecode.
-    // This is especially important if the identifier is a macro or a mixin.
-    if (canInline)
-    {
-        JobPendingInline pendingInline;
-        const auto       identifierRef = identifier->identifierRef();
-        pendingInline.identifier       = identifier;
-        pendingInline.previousNode     = identifierRef->previousNode;
-        pendingInline.previousScope    = identifierRef->previousScope;
-        pendingInline.identifierType   = identifier->typeInfo;
-
-        if (identifier->ownerFct)
-            identifier->ownerFct->addPendingInline(pendingInline);
-        context->baseJob->addPendingInline(pendingInline);
-    }
-
-    if (isMixinMacro)
-        identifier->byteCodeFct = nullptr;
-    else if (identifier->hasIntrinsicName())
-        dealWithIntrinsic(context, identifier);
-    else if (funcDecl->isForeign())
-        identifier->byteCodeFct = ByteCodeGen::emitForeignCall;
     else
-        identifier->byteCodeFct = ByteCodeGen::emitCall;
+    {
+        // We register the identifier in the current function because it can happen that this decision
+        // will have to be changed later: if the function has a non-inlined version, then we must
+        // be sure that all identifiers have been inlined before generating the function bytecode.
+        // This is especially important if the identifier is a macro or a mixin.
+        if (canInline)
+        {
+            JobPendingInline pendingInline;
+            const auto       identifierRef = identifier->identifierRef();
+            pendingInline.identifier       = identifier;
+            pendingInline.previousNode     = identifierRef->previousNode;
+            pendingInline.previousScope    = identifierRef->previousScope;
+            pendingInline.identifierType   = identifier->typeInfo;
 
-    // @PostSetIdentifier
-    setEmitTryCatchAssume(identifier, identifier->typeInfo);
-    setConst(identifier);
-    setIdentifierRefPrevious(identifier);
-    identifier->addAstFlag(AST_FUNC_CALL);
+            if (identifier->ownerFct)
+                identifier->ownerFct->addPendingInline(pendingInline);
+            context->baseJob->addPendingInline(pendingInline);
+        }
+
+        if (isMixinMacro)
+            identifier->byteCodeFct = nullptr;
+        else if (identifier->hasIntrinsicName())
+            dealWithIntrinsic(context, identifier);
+        else if (funcDecl->isForeign())
+            identifier->byteCodeFct = ByteCodeGen::emitForeignCall;
+        else
+            identifier->byteCodeFct = ByteCodeGen::emitCall;
+
+        // @PostSetIdentifier
+        setEmitTryCatchAssume(identifier, identifier->typeInfo);
+        setConst(identifier);
+        setIdentifierRefPrevious(identifier);
+        identifier->addAstFlag(AST_FUNC_CALL);
+    }
 
     // For a return by copy, we need to reserve room on the stack for the return result
     // Order is important, because otherwise this could call isPlainOldData, which could be not resolved

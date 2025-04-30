@@ -455,20 +455,10 @@ bool Semantic::makePendingInline(JobContext* context, AstIdentifier* identifier,
     SWAG_CHECK(makeInline(context, funcDecl, identifier, fromSemantic));
     YIELD();
 
-    const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(identifier->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
-
     // @PostSetIdentifier
     setConst(identifier);
     setIdentifierRefPrevious(identifier);
     identifier->addAstFlag(AST_FUNC_INLINE_CALL);
-
-    // For a return by copy, we need to reserve room on the stack for the return result
-    // Order is important, because otherwise this could call isPlainOldData, which could be not resolved
-    if (typeFunc->returnNeedsStack())
-    {
-        identifier->addAstFlag(AST_TRANSIENT);
-        allocateOnStack(identifier, typeFunc->concreteReturnType());
-    }
 
     identifier->byteCodeFct = ByteCodeGen::emitPassThrough;
     return true;
