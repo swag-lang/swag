@@ -688,8 +688,8 @@ bool Semantic::setSymbolMatchVar(SemanticContext* context, const OneMatch& oneMa
     }
 
     // Setup parent if necessary
-    setConst(identifier);
-    setIdentifierRefPrevious(identifier);
+    Semantic::setConst(identifier);
+    Semantic::setIdentifierRefPrevious(identifier);
 
     const auto typeInfo = TypeManager::concretePtrRefType(identifier->typeInfo);
 
@@ -936,8 +936,8 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
 
         // If the call is inside another function call, then we must delay in case we have
         // a cast to a 'code' for a macro.
-        // const auto call = identifier->findParent(AstNodeKind::Statement, AstNodeKind::FuncCallParam);
-        // if (call && call->is(AstNodeKind::FuncCallParam))
+        //const auto call = identifier->findParent(AstNodeKind::Statement, AstNodeKind::FuncCallParam);
+        //if (call && call->is(AstNodeKind::FuncCallParam))
         //    mustDelay = true;
     }
 
