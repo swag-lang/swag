@@ -167,8 +167,15 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* n
     if (node->hasAstFlag(AST_INLINED))
         return true;
 
+    if (funcDecl == node->ownerFct) // Recursive
+    {
+        const Diagnostic err{node, node->token, formErr(Err0501, node->token.cstr(), g_CommandLine.limitInlineLevel)};
+        return context->report(err);
+    }
+
     waitFuncDeclFullResolve(context->baseJob, funcDecl);
     YIELD();
+
     ScopedLock lkF(funcDecl->funcMutex);
 
     funcDecl->resolvedSymbolName()->addFlag(SYMBOL_USED);
