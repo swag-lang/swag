@@ -3,7 +3,7 @@ impl A
 {
     mtd opDrop()
     {
-        @print(x)
+        @assert(x == 0)
     }
 }
 
@@ -16,7 +16,7 @@ func titi()->A
 #[Swag.Inline]
 func toto(v: A)
 {
-    @print(v.x)
+    @assert(v.x == 0)
 }
 
 #[Swag.Macro]
@@ -25,13 +25,20 @@ func tata(c: code)
     #inject c
 }
 
-#[Swag.PrintBc]
+#[Swag.NoInline]
+#[Swag.Optimize("", false)]
+func tx(x: ...)
+{
+}
+
+var G = 1
+//#[Swag.PrintBc]
 #test
 {
     toto(titi())
     tata()
     {
-        var v = 1
-        @print(v)
+        let v = 1
+        tx(v)
     }
 }
