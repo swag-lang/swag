@@ -138,7 +138,7 @@ namespace Semantic
     Diagnostic*    computeNonConstExprNote(AstNode* node);
     TypeInfo*      getConcreteTypeUnRef(AstNode* node, ToConcreteFlags concreteFlags);
     TypeInfo*      getDeducedLambdaType(SemanticContext* context, const AstMakePointer* node);
-    TypeInfoEnum*  findEnumTypeInContext(SemanticContext* context, TypeInfo* typeInfo);
+    TypeInfoEnum*  findEnumType(TypeInfo* typeInfo);
     Utf8           getSpecialOpSignature(const AstFuncDecl* node);
     bool           resolveConstantVar(SemanticContext* context, AstVarDecl* node, OverloadFlags overFlags, DataSegment*& storageSegment, uint32_t& storageOffset, bool isLocalConstant, bool isGeneric);
     bool           resolveGlobalVar(SemanticContext* context, AstVarDecl* node, OverloadFlags& overFlags, DataSegment*& storageSegment, uint32_t& storageOffset);

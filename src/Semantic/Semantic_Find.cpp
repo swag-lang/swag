@@ -8,7 +8,7 @@
 #include "Syntax/Ast.h"
 #include "Wmf/Module.h"
 
-TypeInfoEnum* Semantic::findEnumTypeInContext(SemanticContext*, TypeInfo* typeInfo)
+TypeInfoEnum* Semantic::findEnumType(TypeInfo* typeInfo)
 {
     while (true)
     {
@@ -118,7 +118,7 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
                     const auto foundName = typeStruct->scope->symTable.find(fctCallParam->token.text);
                     if (!foundName || foundName->overloads.empty())
                         continue;
-                    auto typeEnum = findEnumTypeInContext(context, foundName->overloads[0]->typeInfo);
+                    auto typeEnum = findEnumType(foundName->overloads[0]->typeInfo);
                     if (!typeEnum)
                         continue;
                     has.push_back_once({foundName->overloads[0]->node, typeEnum});
@@ -136,7 +136,7 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
                     VectorNative<TypeInfoEnum*> subResult;
                     for (const auto param : typeFunc->parameters)
                     {
-                        auto typeEnum = findEnumTypeInContext(context, param->typeInfo);
+                        auto typeEnum = findEnumType(param->typeInfo);
                         if (!typeEnum)
                             continue;
                         has.push_back_once({param->declNode, typeEnum});
@@ -172,7 +172,7 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
                             {
                                 if (!enumIdx)
                                 {
-                                    auto typeEnum = findEnumTypeInContext(context, concreteP);
+                                    auto typeEnum = findEnumType(concreteP);
                                     if (typeEnum)
                                         has.push_back_once({p->declNode, typeEnum});
                                     if (typeEnum && typeEnum->contains(node->token.text))
@@ -239,7 +239,7 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
                     typeInfoChild   = expr->firstChild()->typeInfo;
                 }
 
-                auto typeEnum = findEnumTypeInContext(context, typeInfoChild);
+                auto typeEnum = findEnumType(typeInfoChild);
                 if (typeEnum)
                 {
                     has.push_back_once({c, typeEnum});
@@ -251,7 +251,7 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
         else
         {
             SharedLock lk(parent->mutex);
-            auto       typeEnum = findEnumTypeInContext(context, parent->typeInfo);
+            auto       typeEnum = findEnumType(parent->typeInfo);
             if (typeEnum)
             {
                 has.push_back_once({parent, typeEnum});
