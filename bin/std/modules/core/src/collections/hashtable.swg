@@ -103,7 +103,7 @@ impl HashTable
 
     // alias0 is the key, and alias1 is the value
     #[Macro]
-    mtd(ptr: bool, back: bool) const opVisit(stmt: code void)
+    mtd(ptr: bool, back: bool) const opVisit(stmt: #block void)
     {
         if !count:
             return

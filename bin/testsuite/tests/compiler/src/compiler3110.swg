@@ -3,7 +3,7 @@
 struct ErrTiti{}
 
 #[Swag.Macro]
-func toto(stmt: code void)
+func toto(stmt: #block void)
 {
     #macro
     {

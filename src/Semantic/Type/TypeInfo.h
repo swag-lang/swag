@@ -540,7 +540,7 @@ struct TypeInfoAlias final : TypeInfo
 struct TypeInfoCode final : TypeInfo
 {
     TypeInfoCode() :
-        TypeInfo{"code", TypeInfoKind::Code}
+        TypeInfo{"#block", TypeInfoKind::Code}
     {
     }
 

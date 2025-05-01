@@ -126,7 +126,7 @@ impl Array
     // Visit every elements of the array.
     // Visiting by address and in reverse order is supported.
     #[Macro]
-    func(ptr: bool, back: bool) opVisit(using const self, stmt: code void)
+    func(ptr: bool, back: bool) opVisit(using const self, stmt: #block void)
     {
         if !count:
             return

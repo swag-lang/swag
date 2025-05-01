@@ -5,5 +5,5 @@ struct A {}
 impl A
 {
     #[Swag.Mixin]
-    mtd(a: bool, b: bool) opVisit(st: code void) {}
+    mtd(a: bool, b: bool) opVisit(st: #block void) {}
 }

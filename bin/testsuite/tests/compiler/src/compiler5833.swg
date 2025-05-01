@@ -1,5 +1,5 @@
 #[Swag.Macro]
-func assert(expr: code void)
+func assert(expr: #block void)
 {
     //@print("before")
     #inject expr

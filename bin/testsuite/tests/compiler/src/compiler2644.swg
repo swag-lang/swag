@@ -1,14 +1,14 @@
 var G = 0
 
 #[Swag.Macro]
-func titi(stmt: code void)
+func titi(stmt: #block void)
 {
     #inject stmt
     G *= 2
 }
 
 #[Swag.Macro]
-func toto(stmt: code void)
+func toto(stmt: #block void)
 {
     titi(stmt)
 }

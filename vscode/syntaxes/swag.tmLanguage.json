@@ -218,8 +218,8 @@
     "compiler-modifiers": {
       "patterns": [
         {
-          "name": "meta.preprocessor",
-          "match": "\\#(prom|over|nodrop|move|moveraw|bit|unconst|back|ref|constref|null)\\b"
+          "name": "entity.name.function.intrinsic",
+          "match": "\\#(prom|over|nodrop|move|moveraw|bit|unconst|back|ref|constref|null|block)\\b"
         }
       ]
     },
@@ -235,7 +235,7 @@
       "patterns": [
         {
           "name": "storage.type",
-          "match": "\\b(code|Self|self|any|void|rune|f32|f64|s8|s16|s32|s64|u8|u16|u32|u64|bool|string|cstring|cvarargs|typeinfo)\\b"
+          "match": "\\b(Self|self|any|void|rune|f32|f64|s8|s16|s32|s64|u8|u16|u32|u64|bool|string|cstring|cvarargs|typeinfo)\\b"
         }
       ]
     },

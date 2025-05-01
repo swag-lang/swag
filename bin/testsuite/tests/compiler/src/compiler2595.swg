@@ -1,7 +1,7 @@
 using Swag
 
 #[Macro]
-func toto(stmt: code void)
+func toto(stmt: #block void)
 {
     struct Point
     {

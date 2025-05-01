@@ -5,7 +5,7 @@ namespace AA
     }
 
     #[Swag.Macro]
-    func toto(stmt: code void)
+    func toto(stmt: #block void)
     {
         func titi()
         {

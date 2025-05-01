@@ -24,7 +24,7 @@ behavior, allowing it to be integrated seamlessly into the codebase.
 impl MyStruct
 {
     #[Swag.Macro]
-    func(ptr: bool, back: bool) opVisit(self, stmt: code void)
+    func(ptr: bool, back: bool) opVisit(self, stmt: #block void)
     {
         // The `ptr` and `back` parameters offer flexibility, allowing for reference-based
         // or reverse-order iterations.
@@ -106,7 +106,7 @@ For instance, you may want to foreach the fields in reverse order.
 impl MyStruct
 {
     #[Swag.Macro]
-    mtd(ptr: bool, back: bool) opVisitReverse(stmt: code void)
+    mtd(ptr: bool, back: bool) opVisitReverse(stmt: #block void)
     {
         // In this version, we foreach the fields in reverse order.
         for idx in 3
@@ -184,7 +184,7 @@ the struct's fields.
 impl SliceStruct
 {
     #[Swag.Macro]
-    func(ptr: bool, back: bool) opVisit(self, stmt: code void)
+    func(ptr: bool, back: bool) opVisit(self, stmt: #block void)
     {
         for idx in @countof(self.buffer)
         {

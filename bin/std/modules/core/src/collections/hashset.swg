@@ -67,7 +67,7 @@ impl HashSet
     }
 
     #[Macro]
-    mtd(ptr: bool, back: bool) const opVisit(stmt: code void)
+    mtd(ptr: bool, back: bool) const opVisit(stmt: #block void)
     {
         if !count:
             return

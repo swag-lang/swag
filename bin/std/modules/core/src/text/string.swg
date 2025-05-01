@@ -201,7 +201,7 @@ impl String
     // Visit the String runes
     // See [[Utf8.visitRunes]] for aliases
     #[Macro]
-    mtd(ptr: bool, back: bool) opVisitRunes(stmt: code void)
+    mtd(ptr: bool, back: bool) opVisitRunes(stmt: #block void)
     {
         #if ptr:
             #error "visiting runes by pointer is not supported"
@@ -214,7 +214,7 @@ impl String
     // * `#alias0` will contain the byte or the pointer to the byte
     // * `#alias1` will contain the byte index
     #[Macro]
-    mtd(ptr: bool, back: bool) opVisitBytes(stmt: code void)
+    mtd(ptr: bool, back: bool) opVisitBytes(stmt: #block void)
     {
         if !length:
             return
@@ -246,7 +246,7 @@ impl String
 
     // Default foreach, by bytes.
     #[Macro]
-    mtd(ptr: bool, back: bool) opVisit(stmt: code void)
+    mtd(ptr: bool, back: bool) opVisit(stmt: #block void)
     {
         opVisitBytes'(ptr, back)(|#alias0, #alias1| stmt)
     }

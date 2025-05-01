@@ -96,7 +96,7 @@ impl SelModel
     }
 
     #[Swag.Macro]
-    mtd(ptr: bool, back: bool) opVisit(stmt: code void)
+    mtd(ptr: bool, back: bool) opVisit(stmt: #block void)
     {
         #scope Up
         foreach &r in selection

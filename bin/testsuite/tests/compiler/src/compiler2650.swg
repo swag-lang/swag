@@ -1,5 +1,5 @@
 #[Swag.Macro]
-func toto(x: s64 = 666, stmt: code void)
+func toto(x: s64 = 666, stmt: #block void)
 {
     #inject stmt
 }

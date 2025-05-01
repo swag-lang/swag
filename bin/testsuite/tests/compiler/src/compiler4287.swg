@@ -1,7 +1,7 @@
 var G = 0
 
 #[Swag.Macro]
-func parse(stmt: code void)
+func parse(stmt: #block void)
 {
     for
     {

@@ -1,6 +1,6 @@
 //#global skip
 #[Swag.Macro]
-func Visit(str: const [..] u8, user: code void)
+func Visit(str: const [..] u8, user: #block void)
 {
     var ptr   = @dataof(str)
     var count = @countof(str)

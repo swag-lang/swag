@@ -136,7 +136,7 @@ bool TypeInfoCode::isSame(const TypeInfo* to, CastFlags castFlags) const
 
 void TypeInfoCode::computeWhateverName(Utf8& resName, ComputeNameKind nameKind)
 {
-    resName = "code";
+    resName = "#block";
     if (rawType)
     {
         resName += " ";

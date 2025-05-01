@@ -2,7 +2,7 @@
 #global testerror "Err0311"
 
 #[Swag.Mixin]
-func toto(x: code void)
+func toto(x: #block void)
 {
     #inject x
     #inject x

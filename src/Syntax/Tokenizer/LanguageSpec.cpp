@@ -519,7 +519,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("@cvaend", TokenId::IntrinsicCVaEnd);
     keywords.add("@cvaarg", TokenId::IntrinsicCVaArg);
 
-    keywords.add("code", TokenId::KwdCode);
+    keywords.add("#block", TokenId::KwdCode);
     keywords.add("cvarargs", TokenId::KwdCVarArgs);
 
     keywords.add("any", TokenId::NativeType);

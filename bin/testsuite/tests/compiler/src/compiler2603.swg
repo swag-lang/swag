@@ -2,7 +2,7 @@
 //#global testerror "Err0614"
 
 #[Swag.Macro]
-func(ptr: bool) opVisitToto(x: string, stmt: code void)
+func(ptr: bool) opVisitToto(x: string, stmt: #block void)
 {
     for x: #inject stmt
 }

@@ -1,5 +1,5 @@
 #[Swag.Macro]
-func titi(stmt: code void)
+func titi(stmt: #block void)
 {
     #inject stmt
 }

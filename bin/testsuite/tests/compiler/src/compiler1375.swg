@@ -28,7 +28,7 @@ func toto()
 }
 
 #[Swag.Macro]
-func changeContext(user: code void)
+func changeContext(user: #block void)
 {
     var savedCxt = @getcontext()
     var cxt: Context = dref savedCxt

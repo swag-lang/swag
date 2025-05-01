@@ -1,5 +1,5 @@
 #[Swag.Macro]
-public func(ptr: bool) toto3358(stmt: code void)
+public func(ptr: bool) toto3358(stmt: #block void)
 {
     titi3358(|#alias0| 10)
     {
@@ -8,6 +8,6 @@ public func(ptr: bool) toto3358(stmt: code void)
 }
 
 #[Swag.Macro]
-public func(ptr: bool) titi3358(stmt: code void)
+public func(ptr: bool) titi3358(stmt: #block void)
 {
 }

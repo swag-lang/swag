@@ -2,7 +2,7 @@
 #global testerror "Err0682"
 
 #[Swag.Macro]
-func toto(t: s32, x: code void)
+func toto(t: s32, x: #block void)
 {
     var xx = t
     @assert(t == 100)

@@ -8,7 +8,7 @@ var G = 0
 impl S
 {
     #[Swag.Macro, Swag.CalleeReturn]
-    func(ptr: bool, back: bool) opVisit(using self, stmt: code void)
+    func(ptr: bool, back: bool) opVisit(using self, stmt: #block void)
     {
         var #alias0 = 0
         #if #up ptr:

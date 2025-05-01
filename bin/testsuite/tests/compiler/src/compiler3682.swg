@@ -1,7 +1,7 @@
 //#global skip
 
 #[Swag.Macro]
-func toto(stmt: code void)
+func toto(stmt: #block void)
 {
     let a = 10
     #inject stmt

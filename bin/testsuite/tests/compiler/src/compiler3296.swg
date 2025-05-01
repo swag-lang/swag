@@ -1,7 +1,7 @@
 //#global skip
 /*
 #[Swag.Mixin]
-func TITI(stmt: code void)
+func TITI(stmt: #block void)
 {
     #ast
     {

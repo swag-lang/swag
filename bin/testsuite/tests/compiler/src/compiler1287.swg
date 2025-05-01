@@ -1,5 +1,5 @@
 #[Swag.Mixin]
-func toto(x: code void)
+func toto(x: #block void)
 {
     var cpt = 0
     for 10

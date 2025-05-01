@@ -57,7 +57,7 @@ The mixin can execute this code block multiple times using the `#inject` keyword
 #test
 {
     #[Swag.Mixin]
-    func doItTwice(what: code void)
+    func doItTwice(what: #block void)
     {
         #inject what                      // Executing the passed code block the first time
         #inject what                      // Executing the passed code block the second time
@@ -77,7 +77,7 @@ This provides a more natural syntax for passing code blocks.
 #test
 {
     #[Swag.Mixin]
-    func doItTwice(value: s32, what: code void)
+    func doItTwice(value: s32, what: #block void)
     {
         #inject what                      // Executing the passed code block the first time
         #inject what                      // Executing the passed code block the second time

@@ -1,5 +1,5 @@
 #[Swag.Macro]
-public func parse58(stmt: code void)
+public func parse58(stmt: #block void)
 {
     for
     {

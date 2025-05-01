@@ -5,7 +5,7 @@ struct A
 }
 
 #[Swag.Macro]
-func toto(x: s32, stmt: code void)
+func toto(x: s32, stmt: #block void)
 {
     for x
     {
@@ -26,7 +26,7 @@ impl A
     }
 
     #[Swag.Macro]
-    func(ptr: bool, back: bool) opVisit(using self, stmt: code void)
+    func(ptr: bool, back: bool) opVisit(using self, stmt: #block void)
     {
         toto(|#alias0| titi())
         {

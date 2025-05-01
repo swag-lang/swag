@@ -14,7 +14,7 @@ impl A
     }
 
     #[Swag.Macro]
-    func toto(using self, stmt: code void)
+    func toto(using self, stmt: #block void)
     {
         titi()
     }

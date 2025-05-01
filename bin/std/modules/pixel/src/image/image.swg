@@ -48,7 +48,7 @@ impl Image
     }
 
     #[Swag.Macro]
-    func(ptr: bool, back: bool) opVisit(using self, stmt: code void)
+    func(ptr: bool, back: bool) opVisit(using self, stmt: #block void)
     {
         var scan = pixels.buffer
         for width * height
@@ -141,7 +141,7 @@ impl Image
     // | y         | the pixel y coordinates
     // | userData  | as passed to the macro
     #[Swag.Macro]
-    mtd const visitPixels(userData: *void = null, stride: s32 = 1, stmt: code void)
+    mtd const visitPixels(userData: *void = null, stride: s32 = 1, stmt: #block void)
     {
         Debug.assert(stride > 0)
 

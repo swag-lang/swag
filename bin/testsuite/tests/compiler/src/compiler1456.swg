@@ -1,5 +1,5 @@
 #[Swag.Mixin]
-func toto(stmt: code void)
+func toto(stmt: #block void)
 {
     #scope up
     {

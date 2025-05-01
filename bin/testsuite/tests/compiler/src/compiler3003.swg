@@ -4,7 +4,7 @@ struct R
 }
 
 #[Swag.Macro]
-func vis(stmt: code void)
+func vis(stmt: #block void)
 {
     #inject stmt
 }

@@ -3,7 +3,7 @@ struct Array {}
 impl Array
 {
     #[Swag.Macro]
-    mtd(ptr: bool, back: bool) opVisit(stmt: code void)
+    mtd(ptr: bool, back: bool) opVisit(stmt: #block void)
     {
         for 7:
         #inject stmt

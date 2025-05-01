@@ -9,7 +9,7 @@ struct(T) Arr
 }
 
 #[Swag.Macro]
-func(T) toto(v: [..] T, stmt: code void)
+func(T) toto(v: [..] T, stmt: #block void)
 {
     func titi(val: *void)
     {

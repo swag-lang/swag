@@ -73,14 +73,14 @@ This allows the macro to interact with the caller's environment.
 
 
 /**
-# Macros with Code Parameters
-Macros can take `code` parameters, enabling you to pass and insert code blocks dynamically within the macro.
+# Macros with '#block' Parameters
+Macros can take `#block` parameters, enabling you to pass and insert code blocks dynamically within the macro.
 This feature is similar to mixins but within the macro's scope.
 */
 #test
 {
     #[Swag.Macro]
-    func myMacro(what: code void)
+    func myMacro(what: #block void)
     {
         #inject what                           // Inserts the provided code block
     }
@@ -103,15 +103,15 @@ This feature is similar to mixins but within the macro's scope.
 }
 
 /**
-# Typed Code Parameters
-A `code` parameter can be typed:
-* Use `code void` if a code *statement* is expected.
-* Use `code <type>` if a code *expression* returning a specific type is expected.
+# Typed '#block' Parameters
+A `#block` parameter can be typed:
+* Use `#block void` if a code *statement* is expected.
+* Use `#block <type>` if a code *expression* returning a specific type is expected.
 */
 #test
 {
     #[Swag.Macro]
-    func myMacro(what: code bool)   // Here we need a code expression that returns a 'bool' type
+    func myMacro(what: #block bool)   // Here we need a code expression that returns a 'bool' type
     {
         @assert(#inject what)
     }
@@ -135,7 +135,7 @@ This technique negates the need for the `#up` keyword when referencing the calle
 #test
 {
     #[Swag.Macro]
-    func myMacro(what: code void)
+    func myMacro(what: #block void)
     {
         var a = 666                            // Declare 'a' in the macro's own scope
 
@@ -162,7 +162,7 @@ This avoids the overhead associated with lambda calls, making macros a performan
 #test
 {
     #[Swag.Macro]
-    func repeat(count: s32, what: code void)
+    func repeat(count: s32, what: #block void)
     {
         var a = 0
         while a < count
@@ -199,7 +199,7 @@ By using a macro, you can define aliases for `break` and `continue` that allow y
 #test
 {
     #[Swag.Macro]
-    func repeatSquare(count: u32, what: code void)
+    func repeatSquare(count: u32, what: #block void)
     {
         // Define a label `Up` for the scope that will allow us to break out of the outermost loop
         #scope ScopeTarget
@@ -247,7 +247,7 @@ By using a macro, you can define aliases for `break` and `continue` that allow y
 #test
 {
     #[Swag.Macro]
-    func repeatSquare(count: u32, what: code void)
+    func repeatSquare(count: u32, what: #block void)
     {
         // Define a label `Outer` for the scope that will allow us to
         // break or continue from the outermost loop
@@ -306,7 +306,7 @@ These aliases allow you to define and access specific variables within a macro.
 #test
 {
     #[Swag.Macro]
-    func call(v: s32, stmt: code void)
+    func call(v: s32, stmt: #block void)
     {
         let #alias0 = v                        // Assign 'v' to '#alias0'
         let #alias1 = v * 2                    // Assign 'v * 2' to '#alias1'

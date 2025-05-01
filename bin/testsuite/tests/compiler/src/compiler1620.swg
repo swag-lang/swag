@@ -1,5 +1,5 @@
 #[Swag.Mixin]
-func mac(stmt: code void)
+func mac(stmt: #block void)
 {
     #inject stmt
 }

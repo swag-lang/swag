@@ -1,5 +1,5 @@
 #[Swag.Mixin, Swag.CalleeReturn]
-func mac(stmt: code void)
+func mac(stmt: #block void)
 {
     #inject stmt
 }
