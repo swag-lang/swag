@@ -554,6 +554,7 @@
     <ClCompile Include="..\src\Semantic\Semantic_Declaration.cpp" />
     <ClCompile Include="..\src\Semantic\Semantic_Enum.cpp" />
     <ClCompile Include="..\src\Semantic\Semantic_Expression.cpp" />
+    <ClCompile Include="..\src\Semantic\Semantic_Find.cpp" />
     <ClCompile Include="..\src\Semantic\Semantic_Function.cpp" />
     <ClCompile Include="..\src\Semantic\Semantic_Identifier.cpp" />
     <ClCompile Include="..\src\Semantic\Semantic_Identifier_Filter.cpp" />
