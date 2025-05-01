@@ -7,6 +7,7 @@
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Wmf/Module.h"
+#pragma optimize("", off)
 
 bool Semantic::findFuncCallInContext(SemanticContext* context, const AstNode* node, VectorNative<SymbolOverload*>& result)
 {
@@ -81,6 +82,65 @@ bool Semantic::findFuncCallInContext(SemanticContext* context, const AstNode* no
     return true;
 }
 
+bool Semantic::findFuncCallParamInContext(SemanticContext*                     context,
+                                          const AstFuncCallParam*              callParam,
+                                          const VectorNative<SymbolOverload*>& overloads,
+                                          VectorNative<TypeInfoParam*>&        result)
+{
+    result.clear();
+
+    for (const auto overload : overloads)
+    {
+        const auto concrete = overload->typeInfo->getConcreteAlias();
+        if (!concrete->isFuncAttr() && !concrete->isLambdaClosure())
+            continue;
+        const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(concrete, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+
+        // Named param
+        const auto isNamed = callParam->extraPointer<AstNode>(ExtraPointerKind::IsNamed);
+        if (isNamed)
+        {
+            for (const auto param : typeFunc->parameters)
+            {
+                if (param->name == isNamed->token.text)
+                {
+                    result.push_back(param);
+                }
+            }
+            
+            continue;
+        }
+
+        auto       paramIdx = callParam->childParentIdx();
+        const auto callFct  = castAst<AstIdentifier>(callParam->getParent(2), AstNodeKind::Identifier);
+
+        // Because of UFCS
+        if (!overload->symbol->is(SymbolKind::Attribute))
+        {
+            if (typeFunc->isMethod())
+                paramIdx++;
+
+            else if (callFct->childParentIdx() != 0)
+            {
+                const auto previousNode = callFct->identifierRef()->children[callFct->childParentIdx() - 1];
+                if (!previousNode->resolvedSymbolName())
+                    paramIdx++;
+                else if (previousNode->resolvedSymbolName()->isNot(SymbolKind::Namespace) &&
+                         previousNode->resolvedSymbolName()->isNot(SymbolKind::Struct))
+                {
+                    paramIdx++;
+                }
+            }
+        }
+
+        if (paramIdx >= typeFunc->parameters.size())
+            continue;
+        result.push_back(typeFunc->parameters[paramIdx]);
+    }
+
+    return true;
+}
+
 TypeInfoEnum* Semantic::findEnumType(TypeInfo* typeInfo)
 {
     while (true)
@@ -132,7 +192,7 @@ bool Semantic::findEnumTypeInCallContext(SemanticContext*                       
         return true;
 
     // If this is a parameter of a function call, we will try to deduce the type with a function signature
-    const auto fctCallParam = node->findParent(AstNodeKind::FuncCallParam);
+    const auto fctCallParam = castAst<AstFuncCallParam>(node->findParent(AstNodeKind::FuncCallParam), AstNodeKind::FuncCallParam);
     for (auto& overload : overloads)
     {
         testedOver.push_back(overload);
@@ -153,61 +213,17 @@ bool Semantic::findEnumTypeInCallContext(SemanticContext*                       
             continue;
         }
 
-        const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(concrete, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+        VectorNative<TypeInfoParam*> resultParams;
+        SWAG_CHECK(findFuncCallParamInContext(context, fctCallParam, overloads, resultParams));
 
-        // If there's only one corresponding type in the function, then take it
-        // If it's not the correct parameter, the match will not be done, so we do not really care here
-        VectorNative<TypeInfoEnum*> subResult;
-        for (const auto param : typeFunc->parameters)
+        for (const auto it : resultParams)
         {
-            auto typeEnum = findEnumType(param->typeInfo);
+            auto typeEnum = findEnumType(it->typeInfo);
             if (!typeEnum)
                 continue;
-            has.push_back_once({param->declNode, typeEnum});
+            has.push_back_once({it->declNode, typeEnum});
             if (typeEnum->contains(node->token.text))
-                subResult.push_back_once(typeEnum);
-        }
-
-        if (subResult.empty())
-            continue;
-
-        if (subResult.size() == 1)
-        {
-            result.push_back_once(subResult.front());
-            continue;
-        }
-
-        // More than one possible type (at least two different enums with the same identical requested name in the function signature)
-        // We are not lucky...
-        int enumIdx = 0;
-        for (uint32_t i = 0; i < fctCallParam->parent->childCount(); i++)
-        {
-            const auto child = fctCallParam->parent->children[i];
-            if (child == fctCallParam)
-                break;
-            if (child->typeInfo && child->typeInfo->getConcreteAlias()->isEnum())
-                enumIdx++;
-            else if (child->is(AstNodeKind::IdentifierRef) && child->hasSpecFlag(AstIdentifierRef::SPEC_FLAG_AUTO_SCOPE))
-                enumIdx++;
-        }
-
-        for (const auto p : typeFunc->parameters)
-        {
-            const auto concreteP = p->typeInfo->getConcreteAlias();
-            if (concreteP->isEnum())
-            {
-                if (!enumIdx)
-                {
-                    auto typeEnum = findEnumType(concreteP);
-                    if (typeEnum)
-                        has.push_back_once({p->declNode, typeEnum});
-                    if (typeEnum && typeEnum->contains(node->token.text))
-                        result.push_back_once(typeEnum);
-                    break;
-                }
-
-                enumIdx--;
-            }
+                result.push_back_once(typeEnum);
         }
     }
 

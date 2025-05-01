@@ -139,6 +139,7 @@ namespace Semantic
     TypeInfo*      getConcreteTypeUnRef(AstNode* node, ToConcreteFlags concreteFlags);
     TypeInfo*      getDeducedLambdaType(SemanticContext* context, const AstMakePointer* node);
     bool           findFuncCallInContext(SemanticContext* context, const AstNode* node, VectorNative<SymbolOverload*>& result);
+    bool           findFuncCallParamInContext(SemanticContext* context, const AstFuncCallParam* callParam, const VectorNative<SymbolOverload*>& overloads, VectorNative<TypeInfoParam*>& result);
     TypeInfoEnum*  findEnumType(TypeInfo* typeInfo);
     Utf8           getSpecialOpSignature(const AstFuncDecl* node);
     bool           resolveConstantVar(SemanticContext* context, AstVarDecl* node, OverloadFlags overFlags, DataSegment*& storageSegment, uint32_t& storageOffset, bool isLocalConstant, bool isGeneric);
