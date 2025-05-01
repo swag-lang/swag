@@ -232,22 +232,3 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
     context->castFlagsResult.add(CAST_RESULT_AUTO_OP_CAST);
     return true;
 }
-
-bool TypeManager::tryCode(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags)
-{
-    toType   = concretePtrRef(toType);
-    fromType = concretePtrRef(fromType);
-    if (!toType->isCode())
-        return false;
-
-    if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
-    {
-        const auto typeCode = makeType<TypeInfoCode>();
-        typeCode->content   = fromNode;
-        typeCode->content->addAstFlag(AST_NO_SEMANTIC);
-        fromNode->typeInfo = typeCode;
-        fromNode->addAstFlag(AST_NO_SEMANTIC | AST_NO_BYTECODE);
-    }
-
-    return true;
-}

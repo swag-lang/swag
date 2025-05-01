@@ -1,7 +1,7 @@
 var G = 0
 
 #[Swag.Macro]
-func assert(expr: code void)
+func assert(expr: code s32)
 {
     //@print("before")
     let b = #inject expr

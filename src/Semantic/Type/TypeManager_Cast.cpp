@@ -3257,7 +3257,7 @@ bool TypeManager::castToLambda(SemanticContext* context, TypeInfo* toType, TypeI
 
 bool TypeManager::castToClosure(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags)
 {
-    TypeInfoFuncAttr* toTypeLambda = castTypeInfo<TypeInfoFuncAttr>(toType, TypeInfoKind::LambdaClosure);
+    const auto toTypeLambda = castTypeInfo<TypeInfoFuncAttr>(toType, TypeInfoKind::LambdaClosure);
     if (castFlags.has(CAST_FLAG_EXPLICIT))
     {
         if (fromType->isPointerNull())
@@ -3270,6 +3270,51 @@ bool TypeManager::castToClosure(SemanticContext* context, TypeInfo* toType, Type
 
             return true;
         }
+    }
+
+    return castError(context, toType, fromType, fromNode, castFlags);
+}
+
+bool TypeManager::castToCode(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags)
+{
+    const auto toTypeCode = castTypeInfo<TypeInfoCode>(toType, TypeInfoKind::Code);
+    bool       isValid    = false;
+
+    TypeInfo* toTypeRaw   = fromType;
+    TypeInfo* fromTypeRaw = fromType;
+    if (!toTypeCode->rawType)
+        isValid = true;
+    else
+        toTypeRaw = toTypeCode->rawType;
+
+    if (fromType->isCode())
+    {
+        const auto fromTypeCode = castTypeInfo<TypeInfoCode>(fromType, TypeInfoKind::Code);
+        if (!fromTypeCode->rawType)
+            isValid = true;
+        else
+            fromTypeRaw = fromTypeCode->rawType;
+    }
+
+    if (!isValid)
+    {
+        toTypeRaw   = concretePtrRef(toTypeRaw);
+        fromTypeRaw = concretePtrRef(fromTypeRaw);
+        isValid     = fromTypeRaw->isSame(toTypeRaw, castFlags.with(CAST_FLAG_CAST));
+    }
+
+    if (isValid)
+    {
+        if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
+        {
+            const auto typeCode = makeType<TypeInfoCode>();
+            typeCode->content   = fromNode;
+            typeCode->content->addAstFlag(AST_NO_SEMANTIC);
+            fromNode->typeInfo = typeCode;
+            fromNode->addAstFlag(AST_NO_SEMANTIC | AST_NO_BYTECODE);
+        }
+
+        return true;
     }
 
     return castError(context, toType, fromType, fromNode, castFlags);

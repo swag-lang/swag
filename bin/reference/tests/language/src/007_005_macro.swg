@@ -74,7 +74,7 @@ This allows the macro to interact with the caller's environment.
 
 /**
 # Macros with Code Parameters
-Macros can take `code` parameters, enabling you to pass and insert code blocks dynamically within the macro.
+Macros can take `code` parameters, enabling you to pass and insert code blocks or expressions dynamically within the macro.
 This feature is similar to mixins but within the macro's scope.
 */
 #test
@@ -82,7 +82,7 @@ This feature is similar to mixins but within the macro's scope.
     #[Swag.Macro]
     func myMacro(what: code void)
     {
-        #inject what                            // Inserts the provided code block
+        #inject what                           // Inserts the provided code block
     }
 
     var a = 0
@@ -98,6 +98,22 @@ This feature is similar to mixins but within the macro's scope.
     }
 
     @assert(a == 2)                            // Verifies that 'a' has been incremented twice
+}
+
+/**
+# 'code" is typed
+'code' must be followed 'void' if a statement is requested, or it must be followed by the real waited type in case of an expression.
+*/
+#test
+{
+    #[Swag.Macro]
+    func myMacro(what: code bool)   // Here we need an expression that returns a 'bool' type
+    {
+        @assert(#inject what)
+    }
+
+    // The expression will be transformed by the compiler to a code expression, so it will only be evaluated after the injection, not at the call site.
+    myMacro(1 == 1)
 }
 
 /**

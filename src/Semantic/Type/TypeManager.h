@@ -87,7 +87,6 @@ struct TypeManager
 
     static bool tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags);
     static bool tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags);
-    static bool tryCode(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags);
 
     static bool castToNativeBool(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags);
     static bool castToNativeRune(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags);
@@ -116,6 +115,7 @@ struct TypeManager
     static bool castToInterface(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags);
     static bool castToLambda(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags);
     static bool castToClosure(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags);
+    static bool castToCode(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags);
     static bool castToSlice(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags);
     static bool makeCompatibles(SemanticContext* context, AstNode* leftNode, AstNode* rightNode, CastFlags castFlags = 0);
     static bool makeCompatibles(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, CastFlags castFlags = 0);

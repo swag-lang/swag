@@ -1,7 +1,7 @@
 #global testerror "Err0711"
 
 #[Swag.Macro]
-func assert(expr: code void)
+func assert(expr: code bool)
 {
     //@print("before")
     #inject expr

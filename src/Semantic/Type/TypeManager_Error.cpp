@@ -247,8 +247,6 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
             return true;
         if (tryOpAffect(context, toType, fromType, fromNode, castFlags))
             return true;
-        if (tryCode(context, toType, fromType, fromNode, castFlags))
-            return true;
     }
 
     // Remember, for caller
