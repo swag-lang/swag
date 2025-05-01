@@ -544,6 +544,7 @@ struct TypeInfoCode final : TypeInfo
     {
     }
 
+    void      computeWhateverName(Utf8& resName, ComputeNameKind nameKind);
     bool      isSame(const TypeInfo* to, CastFlags castFlags) const override;
     TypeInfo* clone() override;
 

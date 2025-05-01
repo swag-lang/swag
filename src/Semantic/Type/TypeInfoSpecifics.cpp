@@ -128,9 +128,20 @@ bool TypeInfoCode::isSame(const TypeInfo* to, CastFlags castFlags) const
         return true;
     if (!TypeInfo::isSame(to, castFlags))
         return false;
-    if (castFlags.has(CAST_FLAG_CAST))
+    const auto other = castTypeInfo<TypeInfoCode>(to, to->kind);
+    if (!rawType || !other->rawType)
         return true;
-    return rawType->isSame(to, castFlags);
+    return rawType->isSame(other->rawType, castFlags);
+}
+
+void TypeInfoCode::computeWhateverName(Utf8& resName, ComputeNameKind nameKind)
+{
+    resName = "code";
+    if (rawType)
+    {
+        resName += " ";
+        resName += rawType->computeWhateverName(nameKind);
+    }
 }
 
 TypeInfo* TypeInfoAlias::clone()

@@ -58,7 +58,7 @@ Utf8 Semantic::getSpecialOpSignature(const AstFuncDecl* node)
     else if (node->token.is(g_LangSpec->name_opIndexAssign))
         result += "[[func(op: string) opIndexAssign(self, index: WhateverType, value: WhateverType)]]";
     else if (node->token.text.startsWith(g_LangSpec->name_opVisit))
-        result += "[[func(ptr: bool, back: bool) opVisit(self, stmt: code)]]";
+        result += "[[func(ptr: bool, back: bool) opVisit(self, stmt: code void)]]";
     else
         result = "";
 
