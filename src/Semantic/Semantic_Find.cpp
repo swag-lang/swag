@@ -8,6 +8,55 @@
 #include "Syntax/Ast.h"
 #include "Wmf/Module.h"
 
+bool Semantic::findFuncCallInContext(SemanticContext* context, const AstNode* node, VectorNative<OneSymbolMatch>& symbolMatch)
+{
+    symbolMatch.clear();
+
+    auto findParent = node->parent;
+    while (findParent && findParent->isNot(AstNodeKind::FuncCallParam) && findParent->isNot(AstNodeKind::Statement))
+        findParent = findParent->parent;
+    if (!findParent || findParent->isNot(AstNodeKind::FuncCallParam))
+        return true;
+
+    // If this is a parameter of a function call, we will try to deduce the type with a function signature
+    if (findParent->isNot(AstNodeKind::FuncCallParam) ||
+        findParent->getParent(1)->isNot(AstNodeKind::FuncCallParams) ||
+        findParent->getParent(2)->isNot(AstNodeKind::Identifier))
+        return true;
+
+    const auto fctCallParam = castAst<AstFuncCallParam>(findParent);
+    const auto idref        = castAst<AstIdentifierRef>(fctCallParam->getParent(3), AstNodeKind::IdentifierRef);
+    const auto id           = castAst<AstIdentifier>(fctCallParam->getParent(2), AstNodeKind::Identifier);
+
+    g_SilentError++;
+    const auto found = findIdentifierInScopes(context, symbolMatch, idref, id);
+    g_SilentError--;
+    YIELD();
+
+    if (!found || symbolMatch.empty())
+        return true;
+
+    // Be sure symbols have been solved, because we need the types to be deduced
+    for (const auto& sm : symbolMatch)
+    {
+        const auto symbol = sm.symbol;
+        if (symbol->isNot(SymbolKind::Function) &&
+            symbol->isNot(SymbolKind::Variable) &&
+            symbol->isNot(SymbolKind::Attribute) &&
+            symbol->isNot(SymbolKind::Struct))
+            continue;
+
+        ScopedLock ls(symbol->mutex);
+        if (symbol->cptOverloads)
+        {
+            waitSymbolNoLock(context->baseJob, symbol);
+            return true;
+        }
+    }
+
+    return true;
+}
+
 TypeInfoEnum* Semantic::findEnumType(TypeInfo* typeInfo)
 {
     while (true)
