@@ -64,7 +64,7 @@ bool ByteCodeGen::emitStringRef(ByteCodeGenContext* context)
 bool ByteCodeGen::emitArrayRef(ByteCodeGenContext* context)
 {
     const auto node          = castAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
-    const auto typeArray     = TypeManager::concreteType(node->array->typeInfo, CONCRETE_FORCE_ALIAS);
+    const auto typeArray     = node->array->typeInfo->getConcreteAlias();
     const auto typeInfoArray = castTypeInfo<TypeInfoArray>(typeArray, TypeInfoKind::Array);
 
     if (!node->access->hasSemFlag(SEMFLAG_CAST1))
@@ -422,7 +422,7 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
             EMIT_INST3(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRc, node->access->resultRegisterRc, node->array->resultRegisterRc);
         }
 
-        const auto pointedType = TypeManager::concreteType(typeInfoArray->pointedType, CONCRETE_FORCE_ALIAS);
+        const auto pointedType = typeInfoArray->pointedType->getConcreteAlias();
 
         if (pointedType->isString())
             SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRc, pointedType));

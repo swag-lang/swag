@@ -491,7 +491,7 @@ void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch&
     }
     else if (declNode->is(AstNodeKind::VarDecl))
     {
-        const auto type           = TypeManager::concreteType(declNode->typeInfo, CONCRETE_FORCE_ALIAS);
+        const auto type           = declNode->typeInfo->getConcreteAlias();
         errorParam.destLambdaDecl = castAst<AstTypeExpression>(type->declNode, AstNodeKind::TypeLambda, AstNodeKind::TypeClosure);
         errorParam.destParameters = errorParam.destLambdaDecl->parameters;
     }

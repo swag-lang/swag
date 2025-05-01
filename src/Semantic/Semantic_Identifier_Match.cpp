@@ -293,7 +293,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
 
         // If passing a closure
         // @FctCallParamClosure
-        const auto toTypeRef = TypeManager::concreteType(toType, CONCRETE_FORCE_ALIAS);
+        const auto toTypeRef = toType->getConcreteAlias();
         auto       makePtrL  = nodeCall->children.empty() ? nullptr : nodeCall->firstChild();
 
         if (makePtrL && toTypeRef && toTypeRef->isClosure())
@@ -702,7 +702,7 @@ bool Semantic::setSymbolMatchVar(SemanticContext* context, const OneMatch& oneMa
     if (typeInfo->isLambdaClosure() && identifier->callParameters)
     {
         auto typeInfoRet = castTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::LambdaClosure)->returnType;
-        typeInfoRet      = TypeManager::concreteType(typeInfoRet, CONCRETE_FORCE_ALIAS);
+        typeInfoRet      = typeInfoRet->getConcreteAlias();
 
         // Check return value
         if (!typeInfoRet->isVoid())
@@ -1349,7 +1349,7 @@ bool Semantic::setMatchResult(SemanticContext* context, AstIdentifierRef* identi
     auto symbolKind = symbol->kind;
     if (symbol->is(SymbolKind::TypeAlias))
     {
-        typeAlias = TypeManager::concreteType(identifier->typeInfo, CONCRETE_FORCE_ALIAS);
+        typeAlias = identifier->typeInfo->getConcreteAlias();
         if (typeAlias->isStruct())
             symbolKind = SymbolKind::Struct;
         else if (typeAlias->isInterface())
@@ -1864,7 +1864,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
         TypeInfo* typeWasForced = nullptr;
         if (node && node->parent && node->parent->inSimpleReturn())
         {
-            rawTypeInfo = TypeManager::concreteType(rawTypeInfo, CONCRETE_FORCE_ALIAS);
+            rawTypeInfo = rawTypeInfo->getConcreteAlias();
             if (rawTypeInfo->isStruct())
             {
                 const auto fctTypeInfo = castTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
@@ -1890,7 +1890,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
         // parameters on the source symbol
         if (rawTypeInfo->isAlias())
         {
-            rawTypeInfo = TypeManager::concreteType(rawTypeInfo, CONCRETE_FORCE_ALIAS);
+            rawTypeInfo = rawTypeInfo->getConcreteAlias();
             if (rawTypeInfo->isStruct())
             {
                 const auto typeInfo = castTypeInfo<TypeInfoStruct>(rawTypeInfo, TypeInfoKind::Struct);

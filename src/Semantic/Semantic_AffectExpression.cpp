@@ -106,7 +106,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
         for (uint32_t i = left->children.count - 1; i != UINT32_MAX; i--)
         {
             const auto child     = left->children[i];
-            const auto typeChild = TypeManager::concreteType(child->typeInfo, CONCRETE_FORCE_ALIAS);
+            const auto typeChild = child->typeInfo->getConcreteAlias();
             if (!typeChild)
                 continue;
 

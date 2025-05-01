@@ -180,7 +180,7 @@ void Semantic::setIdentifierRefPrevious(AstNode* node)
     if (scopeType->isLambdaClosure())
     {
         const auto funcType = castTypeInfo<TypeInfoFuncAttr>(scopeType, TypeInfoKind::LambdaClosure);
-        scopeType           = TypeManager::concreteType(funcType->returnType, CONCRETE_FORCE_ALIAS);
+        scopeType           = funcType->returnType->getConcreteAlias();
     }
 
     if (!identifierRef->hasSemFlag(SEMFLAG_TYPE_SOLVED))
@@ -520,13 +520,13 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext*      context,
     const auto symbolKind     = symbol->kind;
     const auto callParameters = identifier->callParameters;
 
-    auto typeRef = TypeManager::concreteType(overload->typeInfo, CONCRETE_FORCE_ALIAS);
+    auto typeRef = overload->typeInfo->getConcreteAlias();
 
     if (identifier->isSilentCall())
     {
         SWAG_ASSERT(typeRef->isArray());
         const auto typeArr = castTypeInfo<TypeInfoArray>(overload->typeInfo, TypeInfoKind::Array);
-        typeRef            = TypeManager::concreteType(typeArr->finalType, CONCRETE_FORCE_ALIAS);
+        typeRef            = typeArr->finalType->getConcreteAlias();
     }
 
     // @ClosureForceFirstParam

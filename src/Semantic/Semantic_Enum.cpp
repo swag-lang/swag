@@ -158,7 +158,7 @@ bool Semantic::resolveEnumType(SemanticContext* context)
     if (enumNode->hasAttribute(ATTRIBUTE_INCOMPLETE))
         typeInfo->addFlag(TYPEINFO_INCOMPLETE);
 
-    rawTypeInfo = TypeManager::concreteType(rawTypeInfo, CONCRETE_FORCE_ALIAS);
+    rawTypeInfo = rawTypeInfo->getConcreteAlias();
     switch (rawTypeInfo->kind)
     {
         case TypeInfoKind::Generic:
@@ -269,7 +269,7 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
         return true;
 
     const auto   assignNode     = valNode->children.empty() ? nullptr : valNode->firstChild();
-    const auto   rawTypeInfo    = TypeManager::concreteType(typeEnum->rawType, CONCRETE_FORCE_ALIAS);
+    const auto   rawTypeInfo    = typeEnum->rawType->getConcreteAlias();
     uint32_t     storageOffset  = UINT32_MAX;
     DataSegment* storageSegment = nullptr;
     enumNode->allocateComputedValue();

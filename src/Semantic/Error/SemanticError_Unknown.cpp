@@ -158,7 +158,7 @@ namespace
         {
             const Diagnostic* note;
             const auto        kindName = Naming::aKindName(prev->resolvedSymbolName()->kind);
-            const auto        prevType = TypeManager::concreteType(prev->typeInfo, CONCRETE_FORCE_ALIAS);
+            const auto        prevType = prev->typeInfo->getConcreteAlias();
             if (prevType)
                 note = Diagnostic::note(prev, formNte(Nte0003, prev->token.cstr(), kindName.cstr(), prevType->getDisplayNameC()));
             else

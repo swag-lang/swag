@@ -982,7 +982,7 @@ bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNod
 
     // If the function returns a struct, register a type alias "retval". This way we can resolve an identifier
     // named retval for "var result: retval{xx, xxx}" syntax
-    const auto returnType = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_FORCE_ALIAS);
+    const auto returnType = funcNode->returnType->typeInfo->getConcreteAlias();
     if (returnType->isStruct())
     {
         const Utf8        retVal = g_LangSpec->name_retval;

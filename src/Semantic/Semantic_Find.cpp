@@ -68,7 +68,7 @@ bool Semantic::findFuncCallInContext(SemanticContext* context, const AstNode* no
         SharedLock lk(symbol->mutex);
         for (const auto overload : symbol->overloads)
         {
-            const auto concrete = TypeManager::concreteType(overload->typeInfo, CONCRETE_FORCE_ALIAS);
+            const auto concrete = overload->typeInfo->getConcreteAlias();
             if (concrete->isGeneric() || concrete->isFromGeneric())
                 continue;
             if (!concrete->isFuncAttr() && !concrete->isLambdaClosure() && !concrete->isStruct())
@@ -136,7 +136,7 @@ bool Semantic::findEnumTypeInCallContext(SemanticContext*                       
     for (auto& overload : overloads)
     {
         testedOver.push_back(overload);
-        const auto concrete = TypeManager::concreteType(overload->typeInfo, CONCRETE_FORCE_ALIAS);
+        const auto concrete = overload->typeInfo->getConcreteAlias();
 
         if (concrete->isStruct())
         {
@@ -193,7 +193,7 @@ bool Semantic::findEnumTypeInCallContext(SemanticContext*                       
 
         for (const auto p : typeFunc->parameters)
         {
-            const auto concreteP = TypeManager::concreteType(p->typeInfo, CONCRETE_FORCE_ALIAS);
+            const auto concreteP = p->typeInfo->getConcreteAlias();
             if (concreteP->isEnum())
             {
                 if (!enumIdx)
