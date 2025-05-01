@@ -168,44 +168,45 @@ bool Semantic::findEnumTypeInCallContext(SemanticContext*                       
                 subResult.push_back_once(typeEnum);
         }
 
+        if (subResult.empty())
+            continue;
+
         if (subResult.size() == 1)
         {
             result.push_back_once(subResult.front());
+            continue;
         }
 
         // More than one possible type (at least two different enums with the same identical requested name in the function signature)
         // We are not lucky...
-        else if (subResult.size() > 1)
+        int enumIdx = 0;
+        for (uint32_t i = 0; i < fctCallParam->parent->childCount(); i++)
         {
-            int enumIdx = 0;
-            for (uint32_t i = 0; i < fctCallParam->parent->childCount(); i++)
-            {
-                const auto child = fctCallParam->parent->children[i];
-                if (child == fctCallParam)
-                    break;
-                if (child->typeInfo && child->typeInfo->getConcreteAlias()->isEnum())
-                    enumIdx++;
-                else if (child->is(AstNodeKind::IdentifierRef) && child->hasSpecFlag(AstIdentifierRef::SPEC_FLAG_AUTO_SCOPE))
-                    enumIdx++;
-            }
+            const auto child = fctCallParam->parent->children[i];
+            if (child == fctCallParam)
+                break;
+            if (child->typeInfo && child->typeInfo->getConcreteAlias()->isEnum())
+                enumIdx++;
+            else if (child->is(AstNodeKind::IdentifierRef) && child->hasSpecFlag(AstIdentifierRef::SPEC_FLAG_AUTO_SCOPE))
+                enumIdx++;
+        }
 
-            for (const auto p : typeFunc->parameters)
+        for (const auto p : typeFunc->parameters)
+        {
+            const auto concreteP = TypeManager::concreteType(p->typeInfo, CONCRETE_FORCE_ALIAS);
+            if (concreteP->isEnum())
             {
-                const auto concreteP = TypeManager::concreteType(p->typeInfo, CONCRETE_FORCE_ALIAS);
-                if (concreteP->isEnum())
+                if (!enumIdx)
                 {
-                    if (!enumIdx)
-                    {
-                        auto typeEnum = findEnumType(concreteP);
-                        if (typeEnum)
-                            has.push_back_once({p->declNode, typeEnum});
-                        if (typeEnum && typeEnum->contains(node->token.text))
-                            result.push_back_once(typeEnum);
-                        break;
-                    }
-
-                    enumIdx--;
+                    auto typeEnum = findEnumType(concreteP);
+                    if (typeEnum)
+                        has.push_back_once({p->declNode, typeEnum});
+                    if (typeEnum && typeEnum->contains(node->token.text))
+                        result.push_back_once(typeEnum);
+                    break;
                 }
+
+                enumIdx--;
             }
         }
     }
