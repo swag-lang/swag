@@ -107,7 +107,7 @@ bool Semantic::findFuncCallParamInContext(SemanticContext*                     c
                     result.push_back(param);
                 }
             }
-            
+
             continue;
         }
 
@@ -191,8 +191,7 @@ bool Semantic::findEnumTypeInCallContext(SemanticContext*                       
     if (overloads.empty())
         return true;
 
-    // If this is a parameter of a function call, we will try to deduce the type with a function signature
-    const auto fctCallParam = castAst<AstFuncCallParam>(node->findParent(AstNodeKind::FuncCallParam), AstNodeKind::FuncCallParam);
+    const auto findParent = node->findParent(AstNodeKind::FuncCallParam);
     for (auto& overload : overloads)
     {
         testedOver.push_back(overload);
@@ -201,7 +200,7 @@ bool Semantic::findEnumTypeInCallContext(SemanticContext*                       
         if (concrete->isStruct())
         {
             const auto typeStruct = castTypeInfo<TypeInfoStruct>(concrete, TypeInfoKind::Struct);
-            const auto foundName  = typeStruct->scope->symTable.find(fctCallParam->token.text);
+            const auto foundName  = typeStruct->scope->symTable.find(findParent->token.text);
             if (!foundName || foundName->overloads.empty())
                 continue;
             auto typeEnum = findEnumType(foundName->overloads[0]->typeInfo);
@@ -212,19 +211,19 @@ bool Semantic::findEnumTypeInCallContext(SemanticContext*                       
                 result.push_back_once(typeEnum);
             continue;
         }
+    }
 
-        VectorNative<TypeInfoParam*> resultParams;
-        SWAG_CHECK(findFuncCallParamInContext(context, fctCallParam, overloads, resultParams));
-
-        for (const auto it : resultParams)
-        {
-            auto typeEnum = findEnumType(it->typeInfo);
-            if (!typeEnum)
-                continue;
-            has.push_back_once({it->declNode, typeEnum});
-            if (typeEnum->contains(node->token.text))
-                result.push_back_once(typeEnum);
-        }
+    VectorNative<TypeInfoParam*> resultParams;
+    const auto                   fctCallParam = castAst<AstFuncCallParam>(findParent, AstNodeKind::FuncCallParam);
+    SWAG_CHECK(findFuncCallParamInContext(context, fctCallParam, overloads, resultParams));
+    for (const auto it : resultParams)
+    {
+        auto typeEnum = findEnumType(it->typeInfo);
+        if (!typeEnum)
+            continue;
+        has.push_back_once({it->declNode, typeEnum});
+        if (typeEnum->contains(node->token.text))
+            result.push_back_once(typeEnum);
     }
 
     return true;
