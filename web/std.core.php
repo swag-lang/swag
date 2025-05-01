@@ -2314,7 +2314,7 @@
 <p>Move one element at the end of the array. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
 <p>Append a slice to the end of this instance. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, values: <span class="SKwd">nl</span> <span class="SKwd">const</span> [..] <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, values: <span class="SCmp">#null</span> <span class="SKwd">const</span> [..] <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2692,7 +2692,7 @@
 </p>
 <p>Visit every elements of the array. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>)</span></div>
 <p>Visiting by address and in reverse order is supported. </p>
 <p>
 <table class="api-item">
@@ -3647,7 +3647,7 @@
 </p>
 <p>Visit all the booleans. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4565,7 +4565,7 @@
 <span id="Core_Compress_Deflate_CompressionFlags"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Deflate.</span><span class="api-item-title-strong">CompressionFlags</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1095" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1096" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4590,7 +4590,7 @@
 <span id="Core_Compress_Deflate_CompressionLevel"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Deflate.</span><span class="api-item-title-strong">CompressionLevel</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1103" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1104" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4623,7 +4623,7 @@
 <span id="Core_Compress_Deflate_CompressionStrategy"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Deflate.</span><span class="api-item-title-strong">CompressionStrategy</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1112" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1113" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4656,7 +4656,7 @@
 <span id="Core_Compress_Deflate_compress"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Deflate.</span><span class="api-item-title-strong">compress</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1140" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1141" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4669,7 +4669,7 @@
 <span id="Core_Compress_Deflate_init"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Deflate.</span><span class="api-item-title-strong">init</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1128" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1129" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4682,7 +4682,7 @@
 <span id="Core_Compress_Deflate_opDrop"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Deflate.</span><span class="api-item-title-strong">opDrop</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1121" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1122" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4926,7 +4926,7 @@
 </table>
 </p>
 <p>Append a slice of bytes to the buffer If <span class="code-inline">contiguous</span> is false, the slice will be divided in chunks if necessary. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addBytes</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, bytes: <span class="SKwd">nl</span> <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, contiguous = <span class="SKwd">true</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addBytes</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, bytes: <span class="SCmp">#null</span> <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, contiguous = <span class="SKwd">true</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5095,7 +5095,7 @@
 </p>
 <p>Visit all valid buckets. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5591,7 +5591,8 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(what: <span class="STpe">string</span>) <span class="SFct">safety</span>(expr: <span class="STpe">bool</span>, message: <span class="STpe">string</span> = <span class="SKwd">null</span>, loc = <span class="SCmp">#callerlocation</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
+<span class="SKwd">func</span>(what: <span class="STpe">string</span>) <span class="SFct">safety</span>(expr51: <span class="STpe">bool</span>, message: <span class="STpe">string</span> = <span class="SKwd">null</span>, loc = <span class="SCmp">#callerlocation</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5603,7 +5604,8 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">safetyBoundCheck</span>(expr: <span class="STpe">bool</span>, message: <span class="STpe">string</span> = <span class="SKwd">null</span>, loc = <span class="SCmp">#callerlocation</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
+<span class="SKwd">func</span> <span class="SFct">safetyBoundCheck</span>(expr50: <span class="STpe">bool</span>, message: <span class="STpe">string</span> = <span class="SKwd">null</span>, loc = <span class="SCmp">#callerlocation</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6661,7 +6663,7 @@
 </table>
 </p>
 <p>Make a string persistent for errors. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">mkString</span>(str: <span class="SKwd">nl</span> <span class="STpe">string</span>)-&gt;<span class="STpe">string</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">mkString</span>(str: <span class="SCmp">#null</span> <span class="STpe">string</span>)-&gt;<span class="STpe">string</span></span></div>
 <p>That kind of string can be stored in an error struct. </p>
 <p>
 <table class="api-item">
@@ -7670,7 +7672,7 @@
 </p>
 <p>Call user code for each line. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span> <span class="SFct">readEachLines</span>(fullname: <span class="STpe">string</span>, encoding = <span class="SCst"><a href="#Core_File_TextEncoding">TextEncoding</a></span>.<span class="SCst"><a href="#Core_Utf8">Utf8</a></span>, stmt: <span class="STpe">code</span>) <span class="SKwd">throw</span></span></div>
+<span class="SKwd">func</span> <span class="SFct">readEachLines</span>(fullname: <span class="STpe">string</span>, encoding = <span class="SCst"><a href="#Core_File_TextEncoding">TextEncoding</a></span>.<span class="SCst"><a href="#Core_Utf8">Utf8</a></span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8273,7 +8275,7 @@
 </table>
 </p>
 <p>Update the hash value with <span class="code-inline">buffer</span> content. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, data: <span class="SKwd">nl</span> <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, data: <span class="SCmp">#null</span> <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8862,7 +8864,7 @@
 </table>
 </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9242,7 +9244,7 @@
 </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, slice: <span class="SKwd">const</span> [..] (<span class="SCst">K</span>, <span class="SCst">V</span>)
 {
-    k: <span class="SCst">K</span>, v: <span class="STpe">self</span>.<span class="SCst">V</span>
+    k: <span class="STpe">self</span>.<span class="SCst">K</span>, v: <span class="STpe">self</span>.<span class="SCst">V</span>
 }
 )</span></div>
 <p>
@@ -9319,7 +9321,7 @@
 </p>
 <p>alias0 is the key, and alias1 is the value. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11562,7 +11564,7 @@
 </p>
 <p>Do a for for in parallel chunks. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span> <span class="SFct">parallelFor</span>(count: <span class="STpe">u32</span>, userData: *<span class="STpe">void</span> = <span class="SKwd">null</span>, stmt: <span class="STpe">code</span>)</span></div>
+<span class="SKwd">func</span> <span class="SFct">parallelFor</span>(count: <span class="STpe">u32</span>, userData: *<span class="STpe">void</span> = <span class="SKwd">null</span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>)</span></div>
 <p>Exposed variables: - #alias0: current for index - #alias1: userData as passed to the macro </p>
 <p>
 <table class="api-item">
@@ -11577,7 +11579,7 @@
 </p>
 <p>Operate on a range in parallel chunks. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">parallelVisit</span>(range: [..] <span class="SCst">T</span>, offset: <span class="STpe">u32</span> = <span class="SNum">1</span>, userData: *<span class="STpe">void</span> = <span class="SKwd">null</span>, stmt: <span class="STpe">code</span>)</span></div>
+<span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">parallelVisit</span>(range: [..] <span class="SCst">T</span>, offset: <span class="STpe">u32</span> = <span class="SNum">1</span>, userData: *<span class="STpe">void</span> = <span class="SKwd">null</span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>)</span></div>
 <p>Exposed variables: - buffer: address of the element of the range to process - data:   userData as passed to the macro </p>
 <p>
 <table class="api-item">
@@ -12238,7 +12240,7 @@
 </p>
 <p>Visit every elements of the list. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>)</span></div>
 <ul>
 <li><span class="code-inline">#alias0</span> is the value</li>
 <li><span class="code-inline">#alias1</span> is the node</li>
@@ -13020,15 +13022,15 @@
 <td>Reverse all bits. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_rol">rol</a></span><span class="SCde">(<span class="STpe">u16</span>, <span class="STpe">u16</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_rol">rol</a></span><span class="SCde">(<span class="STpe">u16</span>, <span class="STpe">u8</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_rol">rol</a></span><span class="SCde">(<span class="STpe">u32</span>, <span class="STpe">u32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_rol">rol</a></span><span class="SCde">(<span class="STpe">u32</span>, <span class="STpe">u8</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_rol">rol</a></span><span class="SCde">(<span class="STpe">u64</span>, <span class="STpe">u64</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_rol">rol</a></span><span class="SCde">(<span class="STpe">u64</span>, <span class="STpe">u8</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -13036,15 +13038,15 @@
 <td>Rotate bits left. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_ror">ror</a></span><span class="SCde">(<span class="STpe">u16</span>, <span class="STpe">u16</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_ror">ror</a></span><span class="SCde">(<span class="STpe">u16</span>, <span class="STpe">u8</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_ror">ror</a></span><span class="SCde">(<span class="STpe">u32</span>, <span class="STpe">u32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_ror">ror</a></span><span class="SCde">(<span class="STpe">u32</span>, <span class="STpe">u8</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_ror">ror</a></span><span class="SCde">(<span class="STpe">u64</span>, <span class="STpe">u64</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_ror">ror</a></span><span class="SCde">(<span class="STpe">u64</span>, <span class="STpe">u8</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -16848,10 +16850,10 @@
 </table>
 </p>
 <p>Rotate bits left. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">rol</span>(x, y: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span>
-<span class="SKwd">func</span> <span class="SFct">rol</span>(x, y: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>
-<span class="SKwd">func</span> <span class="SFct">rol</span>(x, y: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>
-<span class="SKwd">func</span> <span class="SFct">rol</span>(x, y: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">rol</span>(x: <span class="STpe">u8</span>, y: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span>
+<span class="SKwd">func</span> <span class="SFct">rol</span>(x: <span class="STpe">u16</span>, y: <span class="STpe">u8</span>)-&gt;<span class="STpe">u16</span>
+<span class="SKwd">func</span> <span class="SFct">rol</span>(x: <span class="STpe">u32</span>, y: <span class="STpe">u8</span>)-&gt;<span class="STpe">u32</span>
+<span class="SKwd">func</span> <span class="SFct">rol</span>(x: <span class="STpe">u64</span>, y: <span class="STpe">u8</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -16864,10 +16866,10 @@
 </table>
 </p>
 <p>Rotate bits right. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ror</span>(x, y: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span>
-<span class="SKwd">func</span> <span class="SFct">ror</span>(x, y: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>
-<span class="SKwd">func</span> <span class="SFct">ror</span>(x, y: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>
-<span class="SKwd">func</span> <span class="SFct">ror</span>(x, y: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ror</span>(x: <span class="STpe">u8</span>, y: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span>
+<span class="SKwd">func</span> <span class="SFct">ror</span>(x: <span class="STpe">u16</span>, y: <span class="STpe">u8</span>)-&gt;<span class="STpe">u16</span>
+<span class="SKwd">func</span> <span class="SFct">ror</span>(x: <span class="STpe">u32</span>, y: <span class="STpe">u8</span>)-&gt;<span class="STpe">u32</span>
+<span class="SKwd">func</span> <span class="SFct">ror</span>(x: <span class="STpe">u64</span>, y: <span class="STpe">u8</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -17185,7 +17187,7 @@
 <span id="Core_Memory_align"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Memory.</span><span class="api-item-title-strong">align</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\memory\memory.swg#L57" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\memory\memory.swg#L63" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -17226,7 +17228,7 @@
 <span id="Core_Memory_clear"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Memory.</span><span class="api-item-title-strong">clear</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\memory\memory.swg#L34" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\memory\memory.swg#L39" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -17239,7 +17241,7 @@
 <span id="Core_Memory_compare"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Memory.</span><span class="api-item-title-strong">compare</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\memory\memory.swg#L20" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\memory\memory.swg#L23" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -17252,7 +17254,7 @@
 <span id="Core_Memory_copy"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Memory.</span><span class="api-item-title-strong">copy</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\memory\memory.swg#L6" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\memory\memory.swg#L7" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -17265,7 +17267,7 @@
 <span id="Core_Memory_copyOver"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Memory.</span><span class="api-item-title-strong">copyOver</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\memory\memory.swg#L13" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\memory\memory.swg#L15" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -17294,7 +17296,7 @@
 <span id="Core_Memory_equals"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Memory.</span><span class="api-item-title-strong">equals</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\memory\memory.swg#L28" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\memory\memory.swg#L32" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -17333,7 +17335,7 @@
 <span id="Core_Memory_freeTemp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Memory.</span><span class="api-item-title-strong">freeTemp</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\memory\memory.swg#L63" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\memory\memory.swg#L69" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -17362,13 +17364,13 @@
 <span id="Core_Memory_pushAllocator"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Memory.</span><span class="api-item-title-strong">pushAllocator</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\memory\memory.swg#L70" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\memory\memory.swg#L76" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Push a new allocator for the given block of code. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span> <span class="SFct">pushAllocator</span>(allocator: <span class="SCst">Swag</span>.<span class="SCst">IAllocator</span>, stmt: <span class="STpe">code</span>)</span></div>
+<span class="SKwd">func</span> <span class="SFct">pushAllocator</span>(allocator: <span class="SCst">Swag</span>.<span class="SCst">IAllocator</span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -17376,13 +17378,13 @@
 <span id="Core_Memory_pushTempAllocator"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Memory.</span><span class="api-item-title-strong">pushTempAllocator</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\memory\memory.swg#L87" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\memory\memory.swg#L93" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Push the temporary allocator for the given block of code. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span> <span class="SFct">pushTempAllocator</span>(stmt: <span class="STpe">code</span>)</span></div>
+<span class="SKwd">func</span> <span class="SFct">pushTempAllocator</span>(stmt: <span class="STpe">code</span> <span class="STpe">void</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -17403,7 +17405,7 @@
 <span id="Core_Memory_set"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Memory.</span><span class="api-item-title-strong">set</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\memory\memory.swg#L41" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\memory\memory.swg#L47" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22909,7 +22911,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Determin if a type can be serialized by a simple copy. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isPodFinal</span>(type: <span class="SKwd">nl</span> <span class="STpe">typeinfo</span>)-&gt;{raw:<span class="STpe">bool</span>,sizeof:<span class="STpe">u64</span>}</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isPodFinal</span>(type: <span class="SCmp">#null</span> <span class="STpe">typeinfo</span>)-&gt;{raw:<span class="STpe">bool</span>,sizeof:<span class="STpe">u64</span>}</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23048,7 +23050,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns true if the given slice contains the <span class="code-inline">value</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>, <span class="SCst">V</span>) <span class="SFct">contains</span>(values: <span class="SKwd">nl</span> <span class="SKwd">const</span> [..] <span class="SCst">T</span>, value: <span class="SCst">V</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>, <span class="SCst">V</span>) <span class="SFct">contains</span>(values: <span class="SCmp">#null</span> <span class="SKwd">const</span> [..] <span class="SCst">T</span>, value: <span class="SCst">V</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23061,7 +23063,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns true if the given slice contains the <span class="code-inline">value</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>, <span class="SCst">V</span>) <span class="SFct">containsSorted</span>(values: <span class="SKwd">nl</span> <span class="SKwd">const</span> [..] <span class="SCst">T</span>, value: <span class="SCst">V</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>, <span class="SCst">V</span>) <span class="SFct">containsSorted</span>(values: <span class="SCmp">#null</span> <span class="SKwd">const</span> [..] <span class="SCst">T</span>, value: <span class="SCst">V</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>The slice must be sorted in ascending order </p>
 <p>
 <table class="api-item">
@@ -23075,7 +23077,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns true if two slices are equal. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">equals</span>(dst, src: <span class="SKwd">nl</span> <span class="SKwd">const</span> [..] <span class="SCst">T</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">equals</span>(dst, src: <span class="SCmp">#null</span> <span class="SKwd">const</span> [..] <span class="SCst">T</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23088,7 +23090,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Find <span class="code-inline">value</span> in a slice by performing a linear search. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>, <span class="SCst">V</span>) <span class="SFct">findLinear</span>(values: <span class="SKwd">nl</span> <span class="SKwd">const</span> [..] <span class="SCst">T</span>, value: <span class="SCst">V</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>, <span class="SCst">V</span>) <span class="SFct">findLinear</span>(values: <span class="SCmp">#null</span> <span class="SKwd">const</span> [..] <span class="SCst">T</span>, value: <span class="SCst">V</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>O^n, but slice does not have to be sorted. Returns Swag.U64.Max if not found. </p>
 <p>
 <table class="api-item">
@@ -23102,7 +23104,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns true if the given slice contains the sub slice <span class="code-inline">value</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">findSlice</span>(values: <span class="SKwd">nl</span> <span class="SKwd">const</span> [..] <span class="SCst">T</span>, value: <span class="SKwd">const</span> [..] <span class="SCst">T</span>)-&gt;<span class="STpe">u32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">findSlice</span>(values: <span class="SCmp">#null</span> <span class="SKwd">const</span> [..] <span class="SCst">T</span>, value: <span class="SKwd">const</span> [..] <span class="SCst">T</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23115,7 +23117,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Find <span class="code-inline">value</span> in a slice by performing a binary search. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>, <span class="SCst">V</span>) <span class="SFct">findSorted</span>(values: <span class="SKwd">nl</span> <span class="SKwd">const</span> [..] <span class="SCst">T</span>, value: <span class="SCst">V</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>, <span class="SCst">V</span>) <span class="SFct">findSorted</span>(values: <span class="SCmp">#null</span> <span class="SKwd">const</span> [..] <span class="SCst">T</span>, value: <span class="SCst">V</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>The slice must be sorted in ascending order Returns Swag.U64.Max if not found. </p>
 <p>
 <table class="api-item">
@@ -23795,7 +23797,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Visit every elements of the array. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>)</span></div>
 <p>Visiting by pointer and in reverse order is supported </p>
 <p>
 <table class="api-item">
@@ -24214,7 +24216,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Set some format options with a given user string. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFormat</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, strFormat: <span class="SKwd">nl</span> <span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFormat</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, strFormat: <span class="SCmp">#null</span> <span class="STpe">string</span>)</span></div>
 <p>Format is <span class="code-inline">[+][fmt][precision]</span> </p>
 <div class="description-list-title"><p><span class="code-inline">+</span></p></div>
 <div class="description-list-block">
@@ -24285,7 +24287,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Set some format options with a given user string. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFormat</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, strFormat: <span class="SKwd">nl</span> <span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFormat</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, strFormat: <span class="SCmp">#null</span> <span class="STpe">string</span>)</span></div>
 <p>The format is <span class="code-inline">[+][fmt][padding][width]'</code> </p>
 <div class="description-list-title"><p><span class="code-inline">+'</code></p></div>
 <div class="description-list-block">
@@ -24503,7 +24505,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Append a string. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">appendString</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SKwd">nl</span> <span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">appendString</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SCmp">#null</span> <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24594,7 +24596,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Templated version. Convert a value of type <span class="code-inline">T</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">convert</span>(buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, value: <span class="SCst">T</span>, convFmt: <span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="SKwd">nl</span> <span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">convert</span>(buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, value: <span class="SCst">T</span>, convFmt: <span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="SCmp">#null</span> <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24607,7 +24609,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Convert a value to an utf8 string, and append the result in a ConcatBuffer. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convertAny</span>(buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, value: <span class="STpe">any</span>, convFmt: <span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="SKwd">nl</span> <span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convertAny</span>(buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, value: <span class="STpe">any</span>, convFmt: <span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="SCmp">#null</span> <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24634,7 +24636,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Convert a float to an utf8 string, and put the result in a ConcatBuffer. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convertFloat</span>(buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, value: <span class="STpe">any</span>, fmt: <span class="SCst"><a href="#Core_StrConv_ConvertFormatFloat">ConvertFormatFloat</a></span>)
-<span class="SKwd">func</span> <span class="SFct">convertFloat</span>(buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, value: <span class="STpe">any</span>, convFmt: <span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="SKwd">nl</span> <span class="STpe">string</span>)</span></div>
+<span class="SKwd">func</span> <span class="SFct">convertFloat</span>(buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, value: <span class="STpe">any</span>, convFmt: <span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="SCmp">#null</span> <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24648,7 +24650,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Convert an integer to an utf8 string, and put the result in a ConcatBuffer. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convertInt</span>(buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, value: <span class="STpe">any</span>, fmt: <span class="SCst"><a href="#Core_StrConv_ConvertFormatInt">ConvertFormatInt</a></span>)
-<span class="SKwd">func</span> <span class="SFct">convertInt</span>(buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, value: <span class="STpe">any</span>, convFmt: <span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="SKwd">nl</span> <span class="STpe">string</span>)</span></div>
+<span class="SKwd">func</span> <span class="SFct">convertInt</span>(buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, value: <span class="STpe">any</span>, convFmt: <span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="SCmp">#null</span> <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24674,7 +24676,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Convert a structure content to an utf8 string, and put the result in a ConcatBuffer. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convertStruct</span>(buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, value: <span class="STpe">any</span>, convFmt: <span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="SKwd">nl</span> <span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convertStruct</span>(buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, value: <span class="STpe">any</span>, convFmt: <span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="SCmp">#null</span> <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25477,7 +25479,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Convert a literal string to a String. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">from</span>(value: <span class="SKwd">nl</span> <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">from</span>(value: <span class="SCmp">#null</span> <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25800,7 +25802,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Default foreach, by bytes. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25814,7 +25816,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Visit the String utf8 bytes. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitBytes</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitBytes</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>)</span></div>
 <ul>
 <li><span class="code-inline">#alias0</span> will contain the byte or the pointer to the byte</li>
 <li><span class="code-inline">#alias1</span> will contain the byte index</li>
@@ -25832,7 +25834,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Visit the String runes See <a href="#Core_Utf8_visitRunes">Utf8.visitRunes</a> for aliases. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitRunes</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitRunes</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25912,7 +25914,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Returns a new String in lower case. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toLower</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, set = <span class="SCst"><a href="#Core_CharacterSet">CharacterSet</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span>
-<span class="SKwd">func</span> <span class="SFct">toLower</span>(str: <span class="SKwd">nl</span> <span class="STpe">string</span>, set = <span class="SCst"><a href="#Core_CharacterSet">CharacterSet</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
+<span class="SKwd">func</span> <span class="SFct">toLower</span>(str: <span class="SCmp">#null</span> <span class="STpe">string</span>, set = <span class="SCst"><a href="#Core_CharacterSet">CharacterSet</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25967,7 +25969,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <p>Returns a new String in upper case. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toUpper</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, set = <span class="SCst"><a href="#Core_CharacterSet">CharacterSet</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
 <p>Returns a new String in lower case. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toUpper</span>(str: <span class="SKwd">nl</span> <span class="STpe">string</span>, set = <span class="SCst"><a href="#Core_CharacterSet">CharacterSet</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toUpper</span>(str: <span class="SCmp">#null</span> <span class="STpe">string</span>, set = <span class="SCst"><a href="#Core_CharacterSet">CharacterSet</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26483,7 +26485,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Push a new execution context for the given block of code. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span> <span class="SFct">pushContext</span>(cxt: <span class="SCst">Swag</span>.<span class="SCst">Context</span>, stmt: <span class="STpe">code</span>)</span></div>
+<span class="SKwd">func</span> <span class="SFct">pushContext</span>(cxt: <span class="SCst">Swag</span>.<span class="SCst">Context</span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -29420,7 +29422,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Macro to foreach the unicode characters of the utf8 sequence. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span> <span class="SFct">visitRunes</span>(buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, stmt: <span class="STpe">code</span>)</span></div>
+<span class="SKwd">func</span> <span class="SFct">visitRunes</span>(buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>)</span></div>
 <ul>
 <li><span class="code-inline">#alias0</span> will contain the character</li>
 <li><span class="code-inline">#alias1</span> will contain the character index</li>
@@ -29538,7 +29540,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">toggle</span>(flags: &<span class="SCst">T</span>, value: <span class="SCst">T</span>)</span></div>
 <div class="swag-watermark">
-Generated on 12-01-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.41.0</div>
+Generated on 01-05-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.44.0</div>
 </div>
 </div>
 </div>

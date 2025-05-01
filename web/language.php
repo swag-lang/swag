@@ -868,8 +868,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SItr">#mix2</span> <span class="SCmt">// and more generally #mixinN</span></span></div>
 <h4 id="_002_000_code_structure_swg__002_007_keywords_swg">Miscellaneous Intrinsics </h4>
 <p>Intrinsic functions are prefixed with <span class="code-inline">@</span> and provide low-level operations that are often directly supported by the compiler or underlying hardware. These keywords offer specialized functionality that can be used during both compile time and runtime, depending on the context. </p>
-<div class="code-block"><span class="SCde"><span class="SItr">@spread</span>
-<span class="SItr">@kindof</span>
+<div class="code-block"><span class="SCde"><span class="SItr">@kindof</span>
 <span class="SItr">@countof</span>
 <span class="SItr">@dataof</span>
 <span class="SItr">@mkslice</span>
@@ -3171,7 +3170,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">func</span> <span class="SFct">retSomething</span>()-&gt;<span class="STpe">string</span>  =&gt; <span class="SStr">"string"</span>
-    <span class="SKwd">func</span> <span class="SFct">retNothing</span>()-&gt;<span class="SKwd">nl</span> <span class="STpe">string</span> =&gt; <span class="SKwd">null</span>
+    <span class="SKwd">func</span> <span class="SFct">retNothing</span>()-&gt;<span class="SCmp">#null</span> <span class="STpe">string</span> =&gt; <span class="SKwd">null</span>
 
     <span class="SCmt">// The 'where' clause is only evaluated if 'str' is not null.</span>
     <span class="SLgc">if</span> <span class="SKwd">let</span> str = <span class="SFct">retSomething</span>() <span class="SLgc">where</span> str[<span class="SNum">0</span>] == <span class="SStr">'s'</span>:
@@ -4625,7 +4624,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span> { <span class="SLgc">return</span> <span class="SNum">0</span>; }
 
     <span class="SCmt">// Called when @dataof is used, returns a pointer to the underlying data of type WhateverType</span>
-    <span class="SKwd">func</span> <span class="SFct">opData</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">nl</span> *<span class="SCst">WhateverType</span> { <span class="SLgc">return</span> <span class="SKwd">null</span>; }
+    <span class="SKwd">func</span> <span class="SFct">opData</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCmp">#null</span> *<span class="SCst">WhateverType</span> { <span class="SLgc">return</span> <span class="SKwd">null</span>; }
 
     <span class="SCmt">// Custom casting between the struct and another type, can be overloaded with different return types</span>
     <span class="SCmt">// Example usage: var x = cast(OneType) v</span>
@@ -4634,42 +4633,42 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst">AnotherType</span> { <span class="SLgc">return</span> <span class="SNum">0</span>; }
 
-    <span class="SCmt">// Compare the struct value with another, can be overloaded. </span>
+    <span class="SCmt">// Compare the struct value with another, can be overloaded.</span>
     <span class="SCmt">// Returns true if equal, otherwise false. Used in '==', '!=' operations.</span>
     <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst">OneType</span>)-&gt;<span class="STpe">bool</span> { <span class="SLgc">return</span> <span class="SKwd">false</span>; }
     <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst">AnotherType</span>)-&gt;<span class="STpe">bool</span> { <span class="SLgc">return</span> <span class="SKwd">false</span>; }
 
-    <span class="SCmt">// Compares the struct value with another, returns -1, 0, or 1. </span>
+    <span class="SCmt">// Compares the struct value with another, returns -1, 0, or 1.</span>
     <span class="SCmt">// Used in comparison operations like '&lt;', '&gt;', '&lt;=', '&gt;=', '&lt;=&gt;'.</span>
     <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span> <span class="SFct">opCmp</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst">OneType</span>)-&gt;<span class="STpe">s32</span> { <span class="SLgc">return</span> <span class="SNum">0</span>; }
     <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span> <span class="SFct">opCmp</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst">AnotherType</span>)-&gt;<span class="STpe">s32</span> { <span class="SLgc">return</span> <span class="SNum">0</span>; }
 
-    <span class="SCmt">// Assigns a value to the struct, can be overloaded. </span>
+    <span class="SCmt">// Assigns a value to the struct, can be overloaded.</span>
     <span class="SCmt">// This is triggered by the '=' operator.</span>
     <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst">OneType</span>) {}
     <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst">AnotherType</span>) {}
 
-    <span class="SCmt">// Assign a literal value with a specific suffix to the struct. </span>
+    <span class="SCmt">// Assign a literal value with a specific suffix to the struct.</span>
     <span class="SCmt">// This is a generic function and can be overloaded.</span>
     <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span>(suffix: <span class="STpe">string</span>) <span class="SFct">opAffectLiteral</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SCst">OneType</span>) {}
     <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span>(suffix: <span class="STpe">string</span>) <span class="SFct">opAffectLiteral</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SCst">AnotherType</span>) {}
 
-    <span class="SCmt">// Assign a value to a specific index in the struct. </span>
+    <span class="SCmt">// Assign a value to a specific index in the struct.</span>
     <span class="SCmt">// Can be overloaded, used by '[] =' syntax.</span>
     <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="SCst">OneType</span>, value: <span class="SCst">OneType</span>) {}
     <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="SCst">OneType</span>, value: <span class="SCst">AnotherType</span>) {}
 
-    <span class="SCmt">// Perform a binary operation, with 'op' representing the operator as a string. </span>
+    <span class="SCmt">// Perform a binary operation, with 'op' representing the operator as a string.</span>
     <span class="SCmt">// This is a generic function that can be overloaded.</span>
     <span class="SCmt">// Examples include '+', '-', '*', '/', '%', '|', '&', '^', '&lt;&lt;', '&gt;&gt;'</span>
     <span class="SAtr">#[Swag.Overload]</span>
@@ -4677,12 +4676,12 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst">AnotherType</span>)-&gt;<span class="STpe">Self</span> { <span class="SLgc">return</span> {<span class="SNum">1</span>, <span class="SNum">2</span>}; }
 
-    <span class="SCmt">// Perform a unary operation, with 'op' representing the operator as a string. </span>
+    <span class="SCmt">// Perform a unary operation, with 'op' representing the operator as a string.</span>
     <span class="SCmt">// This is a generic function.</span>
     <span class="SCmt">// Examples include '!', '-', '~'</span>
     <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">Self</span> { <span class="SLgc">return</span> {<span class="SNum">1</span>, <span class="SNum">2</span>}; }
 
-    <span class="SCmt">// Perform an assignment operation, with 'op' representing the operator as a string. </span>
+    <span class="SCmt">// Perform an assignment operation, with 'op' representing the operator as a string.</span>
     <span class="SCmt">// This is a generic function that can be overloaded.</span>
     <span class="SCmt">// Examples include '+=', '-=', '*=', '/=', '%=', '|=', '&=', '^=', '&lt;&lt;=', '&gt;&gt;='</span>
     <span class="SAtr">#[Swag.Overload]</span>
@@ -4690,20 +4689,20 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst">AnotherType</span>) {}
 
-    <span class="SCmt">// Assign a value to an indexed position with an operator, </span>
+    <span class="SCmt">// Assign a value to an indexed position with an operator,</span>
     <span class="SCmt">// 'op' represents the operator as a string. Can be overloaded.</span>
     <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opIndexAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="SCst">OneType</span>, value: <span class="SCst">OneType</span>) {}
     <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opIndexAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="SCst">OneType</span>, value: <span class="SCst">AnotherType</span>) {}
 
-    <span class="SCmt">// Called in a 'foreach' block to iterate over the struct's elements. </span>
+    <span class="SCmt">// Called in a 'foreach' block to iterate over the struct's elements.</span>
     <span class="SCmt">// Multiple versions can be defined by adding a name after 'opVisit'.</span>
     <span class="SAtr">#[Swag.Macro]</span>
     {
-        <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span>) {}
-        <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitWhatever</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span>) {}
-        <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitAnother</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span>) {}
+        <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>) {}
+        <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitWhatever</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>) {}
+        <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitAnother</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>) {}
     }
 }</span></div>
 
@@ -4847,8 +4846,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     z:     <span class="STpe">s32</span> = <span class="SNum">30</span>  <span class="SCmt">// Field 'z' initialized with default value 30</span>
 }</span></div>
 <h4 id="_006_000_structs_swg__006_008_custom_iteration_swg">Introduction to <span class="code-inline">opVisit</span> </h4>
-<p><span class="code-inline">opVisit</span> is a highly flexible macro used for iterating over the elements in a struct.  This macro is not confined to just the struct's fields; it can also be used to traverse  any data the struct contains, such as elements in dynamic arrays, internal buffers, or  complex object graphs. </p>
-<p>The <span class="code-inline">#[Swag.Macro]</span> attribute is mandatory when using <span class="code-inline">opVisit</span>. It defines the macro's  behavior, allowing it to be integrated seamlessly into the codebase. </p>
+<p><span class="code-inline">opVisit</span> is a highly flexible macro used for iterating over the elements in a struct. This macro is not confined to just the struct's fields; it can also be used to traverse any data the struct contains, such as elements in dynamic arrays, internal buffers, or complex object graphs. </p>
+<p>The <span class="code-inline">#[Swag.Macro]</span> attribute is mandatory when using <span class="code-inline">opVisit</span>. It defines the macro's behavior, allowing it to be integrated seamlessly into the codebase. </p>
 <p><span class="code-inline">opVisit</span> is a generic function that accepts two compile-time boolean parameters: </p>
 <ul>
 <li><span class="code-inline">ptr</span>: When set to <span class="code-inline">true</span>, elements are visited by pointer (address), enabling reference-based operations.</li>
@@ -4857,9 +4856,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">MyStruct</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
-    <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="STpe">self</span>, stmt: <span class="STpe">code</span>)
+    <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="STpe">self</span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>)
     {
-        <span class="SCmt">// The `ptr` and `back` parameters offer flexibility, allowing for reference-based </span>
+        <span class="SCmt">// The `ptr` and `back` parameters offer flexibility, allowing for reference-based</span>
         <span class="SCmt">// or reverse-order iterations.</span>
 
         <span class="SCmp">#if</span> ptr:
@@ -4925,11 +4924,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(cpt == <span class="SNum">3</span>)
 }</span></div>
 <h4 id="_006_000_structs_swg__006_008_custom_iteration_swg">Extending <span class="code-inline">opVisit</span>: Reverse Order Iteration </h4>
-<p>You can also implement different versions of <span class="code-inline">opVisit</span> to handle other data structures.  For instance, you may want to foreach the fields in reverse order. </p>
+<p>You can also implement different versions of <span class="code-inline">opVisit</span> to handle other data structures. For instance, you may want to foreach the fields in reverse order. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">MyStruct</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
-    <span class="SKwd">mtd</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitReverse</span>(stmt: <span class="STpe">code</span>)
+    <span class="SKwd">mtd</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitReverse</span>(stmt: <span class="STpe">code</span> <span class="STpe">void</span>)
     {
         <span class="SCmt">// In this version, we foreach the fields in reverse order.</span>
         <span class="SLgc">for</span> idx <span class="SLgc">in</span> <span class="SNum">3</span>
@@ -4954,7 +4953,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     }
 }</span></div>
 <h4 id="_006_000_structs_swg__006_008_custom_iteration_swg">Reverse Order Iteration </h4>
-<p>The <span class="code-inline">opVisitReverse</span> variant allows us to foreach the struct's fields in reverse order,  providing flexibility depending on the needs of your application. </p>
+<p>The <span class="code-inline">opVisitReverse</span> variant allows us to foreach the struct's fields in reverse order, providing flexibility depending on the needs of your application. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> myStruct = <span class="SCst">MyStruct</span>{}
@@ -4979,18 +4978,18 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(cpt == <span class="SNum">3</span>)
 }</span></div>
 <h4 id="_006_000_structs_swg__006_008_custom_iteration_swg">Visiting Elements in Dynamic Arrays </h4>
-<p>Beyond struct fields, <span class="code-inline">opVisit</span> can be designed to foreach elements in dynamic arrays, buffers,  or other types of data. The flexibility of <span class="code-inline">opVisit</span> means it can adapt to whatever data  structure the struct holds. </p>
+<p>Beyond struct fields, <span class="code-inline">opVisit</span> can be designed to foreach elements in dynamic arrays, buffers, or other types of data. The flexibility of <span class="code-inline">opVisit</span> means it can adapt to whatever data structure the struct holds. </p>
 <p>For example, consider a struct with a slice: </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">SliceStruct</span>
 {
     buffer: [] <span class="STpe">s32</span> = [<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>, <span class="SNum">4</span>, <span class="SNum">5</span>]  <span class="SCmt">// A dynamic array (slice) initialized with values</span>
 }</span></div>
 <h4 id="_006_000_structs_swg__006_008_custom_iteration_swg">Custom <span class="code-inline">opVisit</span> for Dynamic Arrays </h4>
-<p>You could define an <span class="code-inline">opVisit</span> that iterates over the elements of the <span class="code-inline">buffer</span> rather than  the struct's fields. </p>
+<p>You could define an <span class="code-inline">opVisit</span> that iterates over the elements of the <span class="code-inline">buffer</span> rather than the struct's fields. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">SliceStruct</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
-    <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="STpe">self</span>, stmt: <span class="STpe">code</span>)
+    <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="STpe">self</span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>)
     {
         <span class="SLgc">for</span> idx <span class="SLgc">in</span> <span class="SItr">@countof</span>(<span class="STpe">self</span>.buffer)
         {
@@ -5009,7 +5008,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     }
 }</span></div>
 <h4 id="_006_000_structs_swg__006_008_custom_iteration_swg">Iterating Over a Dynamic Array </h4>
-<p>This example shows how to foreach each element in a dynamic array (slice) and perform  operations such as summing the elements. </p>
+<p>This example shows how to foreach each element in a dynamic array (slice) and perform operations such as summing the elements. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> arrStruct = <span class="SCst">SliceStruct</span>{}
@@ -5648,14 +5647,14 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 }</span></div>
 
 <h3 id="_007_000_functions_swg__007_004_mixin_swg">Mixin </h3><h4 id="_007_000_functions_swg__007_004_mixin_swg">Introduction to Swag Mixins </h4>
-<p>A mixin in Swag is declared similarly to a function but with the attribute <span class="code-inline">#[Swag.Mixin]</span>.  Mixins allow injecting code into the caller's scope, manipulating variables, or executing code as if it were part of that scope. This documentation provides an overview of Swag Mixins with various examples, demonstrating their flexibility and use cases. </p>
+<p>A mixin in Swag is declared similarly to a function but with the attribute <span class="code-inline">#[Swag.Mixin]</span>. Mixins allow injecting code into the caller's scope, manipulating variables, or executing code as if it were part of that scope. This documentation provides an overview of Swag Mixins with various examples, demonstrating their flexibility and use cases. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Mixin]</span>
     <span class="SKwd">func</span> <span class="SFct">myMixin</span>() {}  <span class="SCmt">// Declaring a basic mixin with no functionality</span>
 }</span></div>
 <h4 id="_007_000_functions_swg__007_004_mixin_swg">Basic Example of a Mixin </h4>
-<p>A mixin function can directly modify variables in the caller's scope.  In this example, the mixin increments a variable <span class="code-inline">a</span> by 1 each time it is called. </p>
+<p>A mixin function can directly modify variables in the caller's scope. In this example, the mixin increments a variable <span class="code-inline">a</span> by 1 each time it is called. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Mixin]</span>
@@ -5685,11 +5684,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(a == <span class="SNum">3</span>)                     <span class="SCmt">// Verifies that 'a' has been incremented by 1 and 2</span>
 }</span></div>
 <h4 id="_007_000_functions_swg__007_004_mixin_swg">Mixins with Code Blocks </h4>
-<p>A mixin can accept a special parameter of type <span class="code-inline">code</span>, representing a Swag code block defined at the call site.  The mixin can execute this code block multiple times using the <span class="code-inline">#inject</span> keyword. </p>
+<p>A mixin can accept a special parameter of type <span class="code-inline">code</span>, representing a Swag code block defined at the call site. The mixin can execute this code block multiple times using the <span class="code-inline">#inject</span> keyword. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Mixin]</span>
-    <span class="SKwd">func</span> <span class="SFct">doItTwice</span>(what: <span class="STpe">code</span>)
+    <span class="SKwd">func</span> <span class="SFct">doItTwice</span>(what: <span class="STpe">code</span> <span class="STpe">void</span>)
     {
         <span class="SCmp">#inject</span> what                      <span class="SCmt">// Executing the passed code block the first time</span>
         <span class="SCmp">#inject</span> what                      <span class="SCmt">// Executing the passed code block the second time</span>
@@ -5705,7 +5704,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Mixin]</span>
-    <span class="SKwd">func</span> <span class="SFct">doItTwice</span>(value: <span class="STpe">s32</span>, what: <span class="STpe">code</span>)
+    <span class="SKwd">func</span> <span class="SFct">doItTwice</span>(value: <span class="STpe">s32</span>, what: <span class="STpe">code</span> <span class="STpe">void</span>)
     {
         <span class="SCmp">#inject</span> what                      <span class="SCmt">// Executing the passed code block the first time</span>
         <span class="SCmp">#inject</span> what                      <span class="SCmt">// Executing the passed code block the second time</span>
@@ -5723,7 +5722,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(a == <span class="SNum">12</span>)                     <span class="SCmt">// Verifies that 'a' was incremented as expected</span>
 }</span></div>
 <h4 id="_007_000_functions_swg__007_004_mixin_swg">Creating Aliases with Mixins </h4>
-<p>You can use the special name <span class="code-inline">#alias</span> to create a named alias for an identifier.  This enables flexible manipulation of variables through mixins. </p>
+<p>You can use the special name <span class="code-inline">#alias</span> to create a named alias for an identifier. This enables flexible manipulation of variables through mixins. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Mixin]</span>
@@ -5754,7 +5753,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(<span class="SItr">#alias0</span> == <span class="SNum">30</span>)               <span class="SCmt">// Verifies that '#alias0' was set to 30</span>
 }</span></div>
 <h4 id="_007_000_functions_swg__007_004_mixin_swg">Unique Variable Names with <span class="code-inline">#mix?</span> </h4>
-<p>Mixins can declare special variables named <span class="code-inline">#mix?</span>.  These variables receive a unique name each time the mixin is invoked, preventing naming conflicts and allowing multiple mixin invocations in the same scope. </p>
+<p>Mixins can declare special variables named <span class="code-inline">#mix?</span>. These variables receive a unique name each time the mixin is invoked, preventing naming conflicts and allowing multiple mixin invocations in the same scope. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> total: <span class="STpe">s32</span>
@@ -5781,13 +5780,13 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">func</span> <span class="SFct">myMacro</span>() {}
 }</span></div>
 <h4 id="_007_000_functions_swg__007_005_macro_swg">Macro Scope </h4>
-<p>Macros operate within their own scope, which is separate and isolated from the caller's scope.  This is different from mixins, which share the caller's scope.  The isolation provided by macros ensures that any variables defined inside the macro do not interfere  with or modify variables outside the macro, preventing potential naming conflicts. </p>
+<p>Macros operate within their own scope, which is separate and isolated from the caller's scope. This is different from mixins, which share the caller's scope. The isolation provided by macros ensures that any variables defined inside the macro do not interfere with or modify variables outside the macro, preventing potential naming conflicts. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
     <span class="SKwd">func</span> <span class="SFct">myMacro</span>()
     {
-        <span class="SCmt">// This variable 'a' is local to the macro and does not affect or interfere </span>
+        <span class="SCmt">// This variable 'a' is local to the macro and does not affect or interfere</span>
         <span class="SCmt">// with any 'a' outside the macro.</span>
 
         <span class="SKwd">var</span> a = <span class="SNum">666</span>     <span class="SCmt">// 'a' is confined to the macro's scope</span>
@@ -5796,7 +5795,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// Declare a variable 'a' in the outer scope and initialize it to 0.</span>
     <span class="SKwd">let</span> a = <span class="SNum">0</span>
 
-    <span class="SCmt">// Call the macro `myMacro()`. The macro defines its own 'a', but this does not </span>
+    <span class="SCmt">// Call the macro `myMacro()`. The macro defines its own 'a', but this does not</span>
     <span class="SCmt">// conflict with the outer 'a'.</span>
 
     <span class="SFct">myMacro</span>()          <span class="SCmt">// No conflict with the outer 'a'</span>
@@ -5811,8 +5810,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SAtr">#[Swag.Macro]</span>
     <span class="SKwd">func</span> <span class="SFct">myMacro</span>()
     {
-        <span class="SCmt">// Use `#up` to access and modify the variable `a` from the outer scope (the scope where the </span>
-        <span class="SCmt">// macro is called). Without `#up`, `a` would be assumed to be a variable within the macro's </span>
+        <span class="SCmt">// Use `#up` to access and modify the variable `a` from the outer scope (the scope where the</span>
+        <span class="SCmt">// macro is called). Without `#up`, `a` would be assumed to be a variable within the macro's</span>
         <span class="SCmt">// own scope (which might not exist).</span>
 
         <span class="SItr">#up</span> a += <span class="SNum">1</span>  <span class="SCmt">// Increments the outer 'a' by 1</span>
@@ -5835,31 +5834,57 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
-    <span class="SKwd">func</span> <span class="SFct">myMacro</span>(what: <span class="STpe">code</span>)
+    <span class="SKwd">func</span> <span class="SFct">myMacro</span>(what: <span class="STpe">code</span> <span class="STpe">void</span>)
     {
-        <span class="SCmp">#inject</span> what                            <span class="SCmt">// Inserts the provided code block</span>
+        <span class="SCmp">#inject</span> what                           <span class="SCmt">// Inserts the provided code block</span>
     }
 
     <span class="SKwd">var</span> a = <span class="SNum">0</span>
 
-    <span class="SFct">myMacro</span>(<span class="SItr">#code</span>
-    {
-        <span class="SItr">#up</span> a += <span class="SNum">1</span>                             <span class="SCmt">// Increment 'a' within the code block</span>
-    })
+    <span class="SCmt">// Use `#code` followed by a block or an expression to ensure what follows is treated</span>
+    <span class="SCmt">// as code and not immediately evaluated like a normal expression.</span>
+    <span class="SFct">myMacro</span>(<span class="SItr">#code</span> { <span class="SItr">#up</span> a += <span class="SNum">1</span>; })
 
+    <span class="SCmt">// If the last parameter of the macro is a `code` statement (`code void`),</span>
+    <span class="SCmt">// the statement that immediately follows the macro call is treated as its argument.</span>
+    <span class="SCmt">// This is equivalent to the example above.</span>
     <span class="SFct">myMacro</span>()
     {
-        <span class="SItr">#up</span> a += <span class="SNum">1</span>                             <span class="SCmt">// Alternative way to pass the code block directly</span>
+        <span class="SItr">#up</span> a += <span class="SNum">1</span>
     }
 
-    <span class="SItr">@assert</span>(a == <span class="SNum">2</span>)                            <span class="SCmt">// Verifies that 'a' has been incremented twice</span>
+    <span class="SItr">@assert</span>(a == <span class="SNum">2</span>)
+}</span></div>
+<h4 id="_007_000_functions_swg__007_005_macro_swg">Typed Code Parameters </h4>
+<p>A <span class="code-inline">code</span> parameter can be typed: </p>
+<ul>
+<li>Use <span class="code-inline">code void</span> if a code <i>statement</i> is expected.</li>
+<li>Use <span class="code-inline">code &lt;type&gt;</span> if a code <i>expression</i> returning a specific type is expected.</li>
+</ul>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SAtr">#[Swag.Macro]</span>
+    <span class="SKwd">func</span> <span class="SFct">myMacro</span>(what: <span class="STpe">code</span> <span class="STpe">bool</span>)   <span class="SCmt">// Here we need a code expression that returns a 'bool' type</span>
+    {
+        <span class="SItr">@assert</span>(<span class="SCmp">#inject</span> what)
+    }
+
+    <span class="SCmt">// The expression will be transformed by the compiler to a code expression,</span>
+    <span class="SCmt">// so it will only be evaluated after the injection, not at the call site.</span>
+    <span class="SFct">myMacro</span>(<span class="SNum">1</span> == <span class="SNum">1</span>)
+    <span class="SFct">myMacro</span>(<span class="SNum">3</span> &gt; <span class="SNum">2</span> <span class="SLgc">and</span> <span class="SNum">2</span> &lt; <span class="SNum">4</span>)
+    <span class="SFct">myMacro</span>(<span class="SKwd">true</span>)
+
+    <span class="SCmt">// Note that '#code" creates an untyped piece of code which can be used whatever</span>
+    <span class="SCmt">// the type of the argument is.</span>
+    <span class="SFct">myMacro</span>(<span class="SItr">#code</span> <span class="SKwd">true</span>)
 }</span></div>
 <h4 id="_007_000_functions_swg__007_005_macro_swg">Forcing Code into the Caller’s Scope with <span class="code-inline">#macro</span> </h4>
 <p>The <span class="code-inline">#macro</span> keyword can be used to ensure that the code within a macro operates in the caller's scope. This technique negates the need for the <span class="code-inline">#up</span> keyword when referencing the caller's variables. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
-    <span class="SKwd">func</span> <span class="SFct">myMacro</span>(what: <span class="STpe">code</span>)
+    <span class="SKwd">func</span> <span class="SFct">myMacro</span>(what: <span class="STpe">code</span> <span class="STpe">void</span>)
     {
         <span class="SKwd">var</span> a = <span class="SNum">666</span>                            <span class="SCmt">// Declare 'a' in the macro's own scope</span>
 
@@ -5882,7 +5907,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
-    <span class="SKwd">func</span> <span class="SFct">repeat</span>(count: <span class="STpe">s32</span>, what: <span class="STpe">code</span>)
+    <span class="SKwd">func</span> <span class="SFct">repeat</span>(count: <span class="STpe">s32</span>, what: <span class="STpe">code</span> <span class="STpe">void</span>)
     {
         <span class="SKwd">var</span> a = <span class="SNum">0</span>
         <span class="SLgc">while</span> a &lt; count
@@ -5915,11 +5940,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
-    <span class="SKwd">func</span> <span class="SFct">repeatSquare</span>(count: <span class="STpe">u32</span>, what: <span class="STpe">code</span>)
+    <span class="SKwd">func</span> <span class="SFct">repeatSquare</span>(count: <span class="STpe">u32</span>, what: <span class="STpe">code</span> <span class="STpe">void</span>)
     {
         <span class="SCmt">// Define a label `Up` for the scope that will allow us to break out of the outermost loop</span>
-        <span class="SCmp">#scope</span> <span class="SCst">ScopeTarget</span>                              
-        
+        <span class="SCmp">#scope</span> <span class="SCst">ScopeTarget</span>
+
         <span class="SCmt">// Outer for: this will run `count` times</span>
         <span class="SLgc">for</span> count
         {
@@ -5930,7 +5955,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
                 {
                     <span class="SCmt">// Injects the user code `what` here.</span>
                     <span class="SCmt">// The `#inject` directive replaces certain parts of the user code:</span>
-                    <span class="SCmt">// - `break` in the user code is replaced with `break to Up`, meaning it will break </span>
+                    <span class="SCmt">// - `break` in the user code is replaced with `break to Up`, meaning it will break</span>
                     <span class="SCmt">//   out of the `Up` scope (i.e., the outer `for`).</span>
                     <span class="SCmt">// - You can similarly redefine `continue` if needed.</span>
                     <span class="SCmp">#inject</span> <span class="SItr">#up</span> what =&gt; { <span class="SLgc">break</span> = <span class="SLgc">break</span> <span class="SLgc">to</span> <span class="SCst">ScopeTarget</span>; }
@@ -5950,7 +5975,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SLgc">if</span> a == <span class="SNum">10</span>:
             <span class="SCmt">// This `break` statement is replaced by `break to Up` due to the macro,</span>
             <span class="SCmt">// meaning it will exit the outermost `for`, not just the inner `for`.</span>
-            <span class="SLgc">break</span>  
+            <span class="SLgc">break</span>
     }
 
     <span class="SCmt">// Assertion to check if `a` is indeed 10 after the `for` exits</span>
@@ -5960,9 +5985,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
-    <span class="SKwd">func</span> <span class="SFct">repeatSquare</span>(count: <span class="STpe">u32</span>, what: <span class="STpe">code</span>)
+    <span class="SKwd">func</span> <span class="SFct">repeatSquare</span>(count: <span class="STpe">u32</span>, what: <span class="STpe">code</span> <span class="STpe">void</span>)
     {
-        <span class="SCmt">// Define a label `Outer` for the scope that will allow us to </span>
+        <span class="SCmt">// Define a label `Outer` for the scope that will allow us to</span>
         <span class="SCmt">// break or continue from the outermost loop</span>
         <span class="SCmp">#scope</span> <span class="SCst">Outer</span>
 
@@ -6003,19 +6028,19 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SLgc">if</span> a == <span class="SNum">8</span>:
             <span class="SLgc">break</span>
     }
-   
+
     <span class="SCmt">// Verifies that the loop exited when `a` reached 8</span>
-    <span class="SItr">@assert</span>(a == <span class="SNum">8</span>) 
+    <span class="SItr">@assert</span>(a == <span class="SNum">8</span>)
 
     <span class="SCmt">// Verifies that `b` was incremented 6 times, skipping increments when `a` was divisible by 3</span>
-    <span class="SItr">@assert</span>(b == <span class="SNum">6</span>) 
+    <span class="SItr">@assert</span>(b == <span class="SNum">6</span>)
 }</span></div>
 <h4 id="_007_000_functions_swg__007_005_macro_swg">Using Aliases in Macros </h4>
 <p>Special variables named <span class="code-inline">#alias&lt;num&gt;</span> can be used within macros, similar to mixins. These aliases allow you to define and access specific variables within a macro. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
-    <span class="SKwd">func</span> <span class="SFct">call</span>(v: <span class="STpe">s32</span>, stmt: <span class="STpe">code</span>)
+    <span class="SKwd">func</span> <span class="SFct">call</span>(v: <span class="STpe">s32</span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>)
     {
         <span class="SKwd">let</span> <span class="SItr">#alias0</span> = v                        <span class="SCmt">// Assign 'v' to '#alias0'</span>
         <span class="SKwd">let</span> <span class="SItr">#alias1</span> = v * <span class="SNum">2</span>                    <span class="SCmt">// Assign 'v * 2' to '#alias1'</span>
@@ -6053,7 +6078,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SFct">myFunction</span>(<span class="SKwd">true</span>, <span class="SNum">4</span>, <span class="SStr">"true"</span>, <span class="SNum">5.6</span>)   <span class="SCmt">// Passes 4, "true", and 5.6 as additional parameters.</span>
 }</span></div>
 <h4 id="_007_000_functions_swg__007_006_variadic_parameters_swg">Working with Variadic Parameters as Slices </h4>
-<p>When a function takes a variadic parameter, the <span class="code-inline">parameters</span> variable is treated as a slice of type  <span class="code-inline">any</span>. This feature allows the function to flexibly handle different types of arguments at runtime. </p>
+<p>When a function takes a variadic parameter, the <span class="code-inline">parameters</span> variable is treated as a slice of type <span class="code-inline">any</span>. This feature allows the function to flexibly handle different types of arguments at runtime. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">func</span> <span class="SFct">myFunction</span>(parameters: ...)
@@ -6096,7 +6121,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SFct">myFunction</span>(<span class="SKwd">true</span>, <span class="SNum">10</span>, <span class="SNum">20</span>, <span class="SNum">30</span>, <span class="SNum">40</span>)   <span class="SCmt">// Passes four integers.</span>
 }</span></div>
 <h4 id="_007_000_functions_swg__007_006_variadic_parameters_swg">Passing Variadic Parameters Between Functions </h4>
-<p>You can pass variadic parameters from one function to another, preserving their types and values. This technique is useful when you need to delegate tasks to other functions without losing the  variadic nature of the arguments. </p>
+<p>You can pass variadic parameters from one function to another, preserving their types and values. This technique is useful when you need to delegate tasks to other functions without losing the variadic nature of the arguments. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">func</span> <span class="SFct">A</span>(params: ...)
@@ -6117,28 +6142,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SFct">B</span>(<span class="SStr">"value"</span>, <span class="SKwd">true</span>)                   <span class="SCmt">// Passes the parameters to function A through B.</span>
 }</span></div>
-<h4 id="_007_000_functions_swg__007_006_variadic_parameters_swg">Spreading Arrays or Slices to Variadic Parameters </h4>
-<p>You can spread the contents of an array or slice into variadic parameters using <span class="code-inline">@spread</span>. This  feature is handy when you have a collection of values that you want to pass as individual arguments. </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
-{
-    <span class="SKwd">func</span> <span class="SFct">sum</span>(params: <span class="STpe">s32</span>...)-&gt;<span class="STpe">s32</span>
-    {
-        <span class="SCmt">// Variadic parameters can be iterated as they are slices.</span>
-        <span class="SKwd">var</span> total = <span class="SNum">0</span>
-        <span class="SLgc">foreach</span> v <span class="SLgc">in</span> params:
-            total += v
-        <span class="SLgc">return</span> total
-    }
-
-    <span class="SKwd">var</span> arr = [<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>, <span class="SNum">4</span>]
-    <span class="SKwd">let</span> res = <span class="SFct">sum</span>(<span class="SItr">@spread</span>(arr))        <span class="SCmt">// Equivalent to sum(1, 2, 3, 4).</span>
-    <span class="SItr">@assert</span>(res == <span class="SNum">1</span> + <span class="SNum">2</span> + <span class="SNum">3</span> + <span class="SNum">4</span>)
-
-    <span class="SKwd">let</span> res1 = <span class="SFct">sum</span>(<span class="SItr">@spread</span>(arr[<span class="SNum">1.</span>.<span class="SNum">3</span>])) <span class="SCmt">// Equivalent to sum(2, 3, 4).</span>
-    <span class="SItr">@assert</span>(res1 == <span class="SNum">2</span> + <span class="SNum">3</span> + <span class="SNum">4</span>)
-}</span></div>
 <h4 id="_007_000_functions_swg__007_006_variadic_parameters_swg">Advanced Example: Combining Variadic and Non-Variadic Parameters </h4>
-<p>This example demonstrates how to combine fixed parameters with variadic parameters and use them  together in a function. </p>
+<p>This example demonstrates how to combine fixed parameters with variadic parameters and use them together in a function. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">private</span> <span class="SKwd">func</span> <span class="SFct">print</span>()
 {
     <span class="SKwd">func</span> <span class="SFct">logMessage</span>(prefix: <span class="STpe">string</span>, messages: ...)
@@ -6153,13 +6158,13 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SFct">logMessage</span>(<span class="SStr">"Error: "</span>, <span class="SStr">"File not found"</span>, <span class="SStr">"Access denied"</span>, <span class="SStr">"Disk full"</span>)
 }</span></div>
 <h4 id="_007_000_functions_swg__007_006_variadic_parameters_swg">Example: Handling Different Types in Variadic Parameters </h4>
-<p>This example shows how to handle different types within a variadic function, such as summing  integers and concatenating strings. </p>
+<p>This example shows how to handle different types within a variadic function, such as summing integers and concatenating strings. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">func</span> <span class="SFct">processParameters</span>(params: ...)-&gt;<span class="STpe">s32</span>
     {
         <span class="SKwd">var</span> sum = <span class="SNum">0</span>
-        
+
         <span class="SLgc">foreach</span> p <span class="SLgc">in</span> params
         {
             <span class="SLgc">switch</span> <span class="SItr">@kindof</span>(p)
@@ -6168,10 +6173,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
                 sum += <span class="SNum">1</span>
             <span class="SLgc">case</span> <span class="STpe">string</span>:
                 sum += <span class="SNum">10</span>
-            }   
+            }
         }
 
-        <span class="SLgc">return</span> sum    
+        <span class="SLgc">return</span> sum
     }
 
     <span class="SKwd">let</span> result = <span class="SFct">processParameters</span>(<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SStr">"Hello, "</span>, <span class="SNum">3</span>, <span class="SStr">"World!"</span>)
@@ -6489,7 +6494,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 }</span></div>
 
 <h2 id="_008_000_intrinsics_swg">Intrinsics </h2><h3 id="_008_000_intrinsics_swg">Intrinsics in Swag </h3>
-<p>Intrinsics are built-in functions provided by the Swag compiler that offer low-level operations, often directly mapping to  specific machine instructions or providing essential compiler utilities. All intrinsics in Swag are prefixed with <span class="code-inline">@</span>,  which is reserved exclusively for these functions. </p>
+<p>Intrinsics are built-in functions provided by the Swag compiler that offer low-level operations, often directly mapping to specific machine instructions or providing essential compiler utilities. All intrinsics in Swag are prefixed with <span class="code-inline">@</span>, which is reserved exclusively for these functions. </p>
 <p>This document provides a categorized list of all intrinsics available in Swag. </p>
 <div class="code-block"><span class="SCde"><span class="SCmp">#global</span> skip</span></div>
 <h3 id="_008_000_intrinsics_swg">Base Intrinsics </h3>
@@ -6506,9 +6511,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SItr">@compilererror</span>()                                 <span class="SCmt">// Generates a compile-time error.</span>
 <span class="SItr">@compilerwarning</span>()                               <span class="SCmt">// Generates a compile-time warning.</span></span></div>
 <h3 id="_008_000_intrinsics_swg">Built-in Intrinsics </h3>
-<p>These intrinsics provide essential built-in operations related to type and memory management, typically for  low-level or performance-critical code. </p>
-<div class="code-block"><span class="SCde"><span class="SItr">@spread</span>()                   <span class="SCmt">// Expands a value into a wider context.</span>
-<span class="SItr">@init</span>()                     <span class="SCmt">// Initializes a variable or memory area.</span>
+<p>These intrinsics provide essential built-in operations related to type and memory management, typically for low-level or performance-critical code. </p>
+<div class="code-block"><span class="SCde"><span class="SItr">@init</span>()                     <span class="SCmt">// Initializes a variable or memory area.</span>
 <span class="SItr">@drop</span>()                     <span class="SCmt">// Destroys a variable or memory area.</span>
 <span class="SItr">@postmove</span>()                 <span class="SCmt">// Called after a move operation to handle post-move logic.</span>
 <span class="SItr">@postcopy</span>()                 <span class="SCmt">// Called after a copy operation to handle post-copy logic.</span>
@@ -6529,7 +6533,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SItr">#isconstexpr</span>()              <span class="SCmt">// Checks if an expression is a constant expression.</span>
 <span class="SItr">@itftableof</span>()               <span class="SCmt">// Returns the interface table for a given type.</span></span></div>
 <h3 id="_008_000_intrinsics_swg">Memory-related Intrinsics </h3>
-<p>These intrinsics offer memory management operations, allowing for fine-grained control over memory allocation,  deallocation, and manipulation. </p>
+<p>These intrinsics offer memory management operations, allowing for fine-grained control over memory allocation, deallocation, and manipulation. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@alloc</span>(size: <span class="STpe">u64</span>) -&gt; *<span class="STpe">void</span>;                         <span class="SCmt">// Allocates a block of memory of the given size.</span>
 <span class="SKwd">func</span> <span class="SItr">@realloc</span>(ptr: *<span class="STpe">void</span>, size: <span class="STpe">u64</span>) -&gt; *<span class="STpe">void</span>;           <span class="SCmt">// Reallocates a block of memory to a new size.</span>
 <span class="SKwd">func</span> <span class="SItr">@free</span>(ptr: *<span class="STpe">void</span>);                                  <span class="SCmt">// Frees a previously allocated block of memory.</span>
@@ -6539,7 +6543,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SKwd">func</span> <span class="SItr">@memcmp</span>(dst, src: <span class="SKwd">const</span> *<span class="STpe">void</span>, size: <span class="STpe">u64</span>) -&gt; <span class="STpe">s32</span>;   <span class="SCmt">// Compares two blocks of memory.</span>
 <span class="SKwd">func</span> <span class="SItr">@strlen</span>(value: <span class="SKwd">const</span> *<span class="STpe">u8</span>) -&gt; <span class="STpe">u64</span>;                   <span class="SCmt">// Returns the length of a null-terminated string.</span></span></div>
 <h3 id="_008_000_intrinsics_swg">Atomic Operations </h3>
-<p>Atomic operations provide thread-safe manipulation of variables in shared memory, ensuring data consistency  without the need for explicit locking mechanisms. </p>
+<p>Atomic operations provide thread-safe manipulation of variables in shared memory, ensuring data consistency without the need for explicit locking mechanisms. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@atomadd</span>(addr: *<span class="STpe">s8</span>, value: <span class="STpe">s8</span>) -&gt; <span class="STpe">s8</span>;
 <span class="SKwd">func</span> <span class="SItr">@atomadd</span>(addr: *<span class="STpe">s16</span>, value: <span class="STpe">s16</span>) -&gt; <span class="STpe">s16</span>;
 <span class="SKwd">func</span> <span class="SItr">@atomadd</span>(addr: *<span class="STpe">s32</span>, value: <span class="STpe">s32</span>) -&gt; <span class="STpe">s32</span>;
@@ -6594,7 +6598,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SKwd">func</span> <span class="SItr">@atomcmpxchg</span>(addr: *<span class="STpe">u32</span>, compareTo, exchangeWith: <span class="STpe">u32</span>) -&gt; <span class="STpe">u32</span>;
 <span class="SKwd">func</span> <span class="SItr">@atomcmpxchg</span>(addr: *<span class="STpe">u64</span>, compareTo, exchangeWith: <span class="STpe">u64</span>) -&gt; <span class="STpe">u64</span>;</span></div>
 <h3 id="_008_000_intrinsics_swg">Math Intrinsics </h3>
-<p>These intrinsics provide various mathematical operations, including trigonometric, logarithmic, and other common  functions, offering precise control over mathematical calculations in Swag programs. </p>
+<p>These intrinsics provide various mathematical operations, including trigonometric, logarithmic, and other common functions, offering precise control over mathematical calculations in Swag programs. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@sqrt</span>(value: <span class="STpe">f32</span>) -&gt; <span class="STpe">f32</span>;            <span class="SCmt">// Computes the square root of a 32-bit floating-point number.</span>
 <span class="SKwd">func</span> <span class="SItr">@sqrt</span>(value: <span class="STpe">f64</span>) -&gt; <span class="STpe">f64</span>;            <span class="SCmt">// Computes the square root of a 64-bit floating-point number.</span>
 
@@ -7974,23 +7978,23 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 }</span></div>
 
 <h3 id="_013_000_error_management_and_safety_swg__013_002_safety_swg">Safety </h3><h4 id="_013_000_error_management_and_safety_swg__013_002_safety_swg">Safety Checks in Swag </h4>
-<p>Swag provides various safety checks that can be enabled at different granularity levels—module,  function, or even individual instruction—using the <span class="code-inline">#[Swag.Safety]</span> attribute. </p>
-<p>These safety checks are designed to prevent common programming errors by triggering panics during  unsafe operations, such as overflows, invalid math operations, or out-of-bounds access. </p>
-<p>You can also configure safety checks globally based on the build configuration using  <span class="code-inline">buildCfg.safetyGuards</span>. </p>
+<p>Swag provides various safety checks that can be enabled at different granularity levels—module, function, or even individual instruction—using the <span class="code-inline">#[Swag.Safety]</span> attribute. </p>
+<p>These safety checks are designed to prevent common programming errors by triggering panics during unsafe operations, such as overflows, invalid math operations, or out-of-bounds access. </p>
+<p>You can also configure safety checks globally based on the build configuration using <span class="code-inline">buildCfg.safetyGuards</span>. </p>
 <div class="blockquote blockquote-note">
 <div class="blockquote-title-block"><i class="fa fa-info-circle"></i>  <span class="blockquote-title">Note</span></div><p> Swag offers four predefined build configurations: <span class="code-inline">debug</span>, <span class="code-inline">fast-debug</span>, <span class="code-inline">fast-compile</span>, and <span class="code-inline">release</span>. Safety checks are enabled by default in <span class="code-inline">debug</span> and <span class="code-inline">fast-debug</span>, but they are disabled in <span class="code-inline">fast-compile</span> and <span class="code-inline">release</span> for performance reasons. </p>
 </div>
 <h4 id="_013_000_error_management_and_safety_swg__013_002_safety_swg">Overflow Safety </h4>
 <div class="code-block"><span class="SAtr">#[Swag.Safety("overflow", true)]</span></div>
-<p>When overflow safety is enabled, Swag will panic if arithmetic operations overflow or if bits  are lost during an integer conversion. </p>
-<p>Operators that can cause overflows include: <span class="code-inline">+ - * &lt;&lt; &gt;&gt;</span> and their compound assignments <span class="code-inline">+= -= *= </code> &lt;&lt;= &gt;&gt;=<span class="code-inline">.</code> </p>
+<p>When overflow safety is enabled, Swag will panic if arithmetic operations overflow or if bits are lost during an integer conversion. </p>
+<p>Operators that can cause overflows include: <span class="code-inline">+ - * &lt;&lt; &gt;&gt;</span> and their compound assignments <span class="code-inline">+= -= *=</code> &lt;&lt;= &gt;&gt;=<span class="code-inline">.</code> </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> x = <span class="SNum">255</span>'<span class="STpe">u8</span>                                <span class="SCmt">// Initialize x with the maximum value for u8</span>
     <span class="SCmt">// x += 1                                      // Uncommenting this will cause a panic due to overflow</span>
 }</span></div>
 <h5 id="_013_000_error_management_and_safety_swg__013_002_safety_swg">Disabling Overflow Safety with <span class="code-inline">#over</span> </h5>
-<p>If an overflow is expected and should not cause a panic, the <span class="code-inline">#over</span> modifier can be used with the  operation to bypass the safety check. </p>
+<p>If an overflow is expected and should not cause a panic, the <span class="code-inline">#over</span> modifier can be used with the operation to bypass the safety check. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> x = <span class="SNum">255</span>'<span class="STpe">u8</span>                                <span class="SCmt">// Initialize x with the maximum value for u8</span>
@@ -7998,7 +8002,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(x == <span class="SNum">0</span>)                               <span class="SCmt">// Assert that x has wrapped around to 0</span>
 }</span></div>
 <h5 id="_013_000_error_management_and_safety_swg__013_002_safety_swg">Global Overflow Safety Control </h5>
-<p>To disable overflow safety checks globally within a scope, use <span class="code-inline">#[Swag.AllowOverflow(true)]</span>. This  prevents overflows from causing panics for all operations in the scope. </p>
+<p>To disable overflow safety checks globally within a scope, use <span class="code-inline">#[Swag.AllowOverflow(true)]</span>. This prevents overflows from causing panics for all operations in the scope. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.AllowOverflow(true)]</span>
 <span class="SFct">#test</span>
 {
@@ -8007,7 +8011,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(x == <span class="SNum">0</span>)                               <span class="SCmt">// Assert that x has wrapped around to 0</span>
 }</span></div>
 <h5 id="_013_000_error_management_and_safety_swg__013_002_safety_swg">Promoting Operations to Prevent Overflow </h5>
-<p>For operations involving 8-bit or 16-bit integers, you can use the <span class="code-inline">#prom</span> modifier to promote the  operation to 32-bit, thereby avoiding overflow by widening the operand types. </p>
+<p>For operations involving 8-bit or 16-bit integers, you can use the <span class="code-inline">#prom</span> modifier to promote the operation to 32-bit, thereby avoiding overflow by widening the operand types. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> x = <span class="SNum">255</span>'<span class="STpe">u8</span> + <span class="SCmp">#prom</span> <span class="SNum">1</span>                      <span class="SCmt">// Promote the addition to 32-bit to avoid overflow</span>
@@ -8015,15 +8019,15 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(<span class="SItr">#typeof</span>(x) == <span class="STpe">u32</span>)                    <span class="SCmt">// Assert that the type of x is u32</span>
 }</span></div>
 <h4 id="_013_000_error_management_and_safety_swg__013_002_safety_swg">Information Loss During Casting </h4>
-<p>Swag checks for potential information loss during type casting operations, such as when converting  between different integer types. </p>
+<p>Swag checks for potential information loss during type casting operations, such as when converting between different integer types. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> x1 = <span class="SNum">255</span>'<span class="STpe">u8</span>                               <span class="SCmt">// Initialize x1 with the maximum value for u8</span>
 
-    <span class="SCmt">// var y0 = cast(s8) x1                       // This would cause a panic because 255 cannot be </span>
+    <span class="SCmt">// var y0 = cast(s8) x1                       // This would cause a panic because 255 cannot be</span>
                                                   <span class="SCmt">// represented as s8</span>
 
-    <span class="SKwd">let</span> y1 = <span class="SKwd">cast</span>&lt;overflow&gt;(<span class="STpe">s8</span>) x1                    <span class="SCmt">// Use #over to bypass safety checks and allow this </span>
+    <span class="SKwd">let</span> y1 = <span class="SKwd">cast</span>&lt;overflow&gt;(<span class="STpe">s8</span>) x1                    <span class="SCmt">// Use #over to bypass safety checks and allow this</span>
                                                   <span class="SCmt">// cast</span>
     <span class="SItr">@assert</span>(y1 == -<span class="SNum">1</span>)                             <span class="SCmt">// Assert that y1 is -1 after wrapping</span>
 
@@ -8033,7 +8037,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(y2 == <span class="SNum">255</span>)                            <span class="SCmt">// Assert that y2 is 255 after wrapping</span>
 }</span></div>
 <h5 id="_013_000_error_management_and_safety_swg__013_002_safety_swg">Disabling Overflow Safety Globally </h5>
-<p>Safety checks for overflow can be globally disabled, allowing operations that would typically  panic due to overflow to proceed normally. </p>
+<p>Safety checks for overflow can be globally disabled, allowing operations that would typically panic due to overflow to proceed normally. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.AllowOverflow(true)]</span>
 <span class="SFct">#test</span>
 {
@@ -8045,7 +8049,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 }</span></div>
 <h4 id="_013_000_error_management_and_safety_swg__013_002_safety_swg">Dynamic Cast Type Safety </h4>
 <div class="code-block"><span class="SAtr">#[Swag.Safety("dyncast", true)]</span></div>
-<p>Swag will panic if a cast from the <span class="code-inline">any</span> type to another type is invalid, ensuring type safety  when working with dynamic types. </p>
+<p>Swag will panic if a cast from the <span class="code-inline">any</span> type to another type is invalid, ensuring type safety when working with dynamic types. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> x: <span class="STpe">any</span> = <span class="SStr">"1"</span>                              <span class="SCmt">// Initialize x with a string</span>
@@ -8056,7 +8060,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <p>Swag will also panic if casting from an interface to a pointer to struct that cannot be performed. </p>
 <h4 id="_013_000_error_management_and_safety_swg__013_002_safety_swg">Array Bounds Checking </h4>
 <div class="code-block"><span class="SAtr">#[Swag.Safety("boundcheck", true)]</span></div>
-<p>Swag will panic if an index is out of range when dereferencing a sized value such as an array, a  slice, or a string. </p>
+<p>Swag will panic if an index is out of range when dereferencing a sized value such as an array, a slice, or a string. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> x   = [<span class="SNum">0</span>, <span class="SNum">1</span>, <span class="SNum">2</span>]                           <span class="SCmt">// Initialize an array</span>
@@ -8091,7 +8095,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 }</span></div>
 <h4 id="_013_000_error_management_and_safety_swg__013_002_safety_swg">Math Safety </h4>
 <div class="code-block"><span class="SAtr">#[Swag.Safety("math", true)]</span></div>
-<p>Swag will panic if certain math operations are invalid, such as division by zero or invalid  arguments to math functions. </p>
+<p>Swag will panic if certain math operations are invalid, such as division by zero or invalid arguments to math functions. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> x = <span class="SNum">1</span>'<span class="STpe">f32</span>                                 <span class="SCmt">// Initialize x with a float value</span>
@@ -8100,7 +8104,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// @print(z)</span>
 }</span></div>
 <h5 id="_013_000_error_management_and_safety_swg__013_002_safety_swg">Checking Invalid Math Intrinsic Arguments </h5>
-<p>Swag also checks for invalid arguments passed to certain math intrinsics, causing a panic if the  arguments are unsupported or invalid. </p>
+<p>Swag also checks for invalid arguments passed to certain math intrinsics, causing a panic if the arguments are unsupported or invalid. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmt">// The following operations will panic if the arguments are invalid:</span>
@@ -8115,7 +8119,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 }</span></div>
 <h4 id="_013_000_error_management_and_safety_swg__013_002_safety_swg">Switch Safety </h4>
 <div class="code-block"><span class="SAtr">#[Swag.Safety("switch", true)]</span></div>
-<p>Swag will panic if a switch statement marked with <span class="code-inline">#[Swag.Complete]</span> does not cover all possible  cases, ensuring exhaustive pattern matching. </p>
+<p>Swag will panic if a switch statement marked with <span class="code-inline">#[Swag.Complete]</span> does not cover all possible cases, ensuring exhaustive pattern matching. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">enum</span> <span class="SCst">Color</span> { <span class="SCst">Red</span>, <span class="SCst">Green</span>, <span class="SCst">Blue</span> }               <span class="SCmt">// Define an enum with three values</span>
@@ -8135,7 +8139,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 }</span></div>
 <h4 id="_013_000_error_management_and_safety_swg__013_002_safety_swg">Boolean Safety </h4>
 <div class="code-block"><span class="SAtr">#[Swag.Safety("bool", true)]</span></div>
-<p>Swag will panic if a boolean value is not either <span class="code-inline">true</span> (1) or <span class="code-inline">false</span> (0), enforcing strict  boolean type safety. </p>
+<p>Swag will panic if a boolean value is not either <span class="code-inline">true</span> (1) or <span class="code-inline">false</span> (0), enforcing strict boolean type safety. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> b: <span class="STpe">u8</span> = <span class="SNum">2</span>                                 <span class="SCmt">// Initialize b with an invalid boolean value</span>
@@ -8143,7 +8147,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 }</span></div>
 <h4 id="_013_000_error_management_and_safety_swg__013_002_safety_swg">NaN Safety </h4>
 <div class="code-block"><span class="SAtr">#[Swag.Safety("nan", true)]</span></div>
-<p>Swag will panic if a floating-point <span class="code-inline">NaN</span> (Not a Number) is used in an operation, ensuring that  NaNs do not propagate through calculations. </p>
+<p>Swag will panic if a floating-point <span class="code-inline">NaN</span> (Not a Number) is used in an operation, ensuring that NaNs do not propagate through calculations. </p>
 
 <h2 id="_014_000_compile-time_evaluation_swg">Compile-time Evaluation </h2><p>One of the most powerful features of Swag is its ability to execute <b>everything</b> at compile-time.  This capability allows Swag to function not only as a compiled language but also as a scripting  language, where the compiler effectively acts as an interpreter. This flexibility enables developers  to leverage compile-time execution for tasks that traditionally require runtime evaluation,  resulting in more efficient and versatile code. </p>
 
@@ -9069,7 +9073,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <h4 id="_018_000_documentation_md__018_003_pages_md">Use Case </h4>
 <p><span class="code-inline">Swag.DocKind.Pages</span> mode is particularly useful for generating individual web pages, as demonstrated in the <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example directory</a>. This mode is ideal for creating standalone pages that can be linked together or accessed independently, making it a versatile option for web-based documentation projects. </p>
 <div class="swag-watermark">
-Generated on 12-01-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.41.0</div>
+Generated on 01-05-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.44.0</div>
 </div>
 </div>
 </div>

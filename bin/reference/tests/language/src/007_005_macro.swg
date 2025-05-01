@@ -74,7 +74,7 @@ This allows the macro to interact with the caller's environment.
 
 /**
 # Macros with Code Parameters
-Macros can take `code` parameters, enabling you to pass and insert code blocks or expressions dynamically within the macro.
+Macros can take `code` parameters, enabling you to pass and insert code blocks dynamically within the macro.
 This feature is similar to mixins but within the macro's scope.
 */
 #test
@@ -87,33 +87,44 @@ This feature is similar to mixins but within the macro's scope.
 
     var a = 0
 
-    myMacro(#code
-    {
-        #up a += 1                             // Increment 'a' within the code block
-    })
+    // Use `#code` followed by a block or an expression to ensure what follows is treated
+    // as code and not immediately evaluated like a normal expression.
+    myMacro(#code { #up a += 1; })
 
+    // If the last parameter of the macro is a `code` statement (`code void`),
+    // the statement that immediately follows the macro call is treated as its argument.
+    // This is equivalent to the example above.
     myMacro()
     {
-        #up a += 1                             // Alternative way to pass the code block directly
+        #up a += 1
     }
 
-    @assert(a == 2)                            // Verifies that 'a' has been incremented twice
+    @assert(a == 2)
 }
 
 /**
-# 'code" is typed
-'code' must be followed 'void' if a statement is requested, or it must be followed by the real waited type in case of an expression.
+# Typed Code Parameters
+A `code` parameter can be typed:
+* Use `code void` if a code *statement* is expected.
+* Use `code <type>` if a code *expression* returning a specific type is expected.
 */
 #test
 {
     #[Swag.Macro]
-    func myMacro(what: code bool)   // Here we need an expression that returns a 'bool' type
+    func myMacro(what: code bool)   // Here we need a code expression that returns a 'bool' type
     {
         @assert(#inject what)
     }
 
-    // The expression will be transformed by the compiler to a code expression, so it will only be evaluated after the injection, not at the call site.
+    // The expression will be transformed by the compiler to a code expression,
+    // so it will only be evaluated after the injection, not at the call site.
     myMacro(1 == 1)
+    myMacro(3 > 2 and 2 < 4)
+    myMacro(true)
+
+    // Note that '#code" creates an untyped piece of code which can be used whatever
+    // the type of the argument is.
+    myMacro(#code true)
 }
 
 /**

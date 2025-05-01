@@ -3463,7 +3463,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">stdio_common_vfprintf</span>(_Options: <span class="STpe">u64</span>, _Stream: *<span class="SCst"><a href="#Libc_FILE">FILE</a></span>, _Format: <span class="STpe">cstring</span>, _Locale: <span class="SKwd">nl</span> *<span class="STpe">void</span>, _ArgList: <span class="SKwd">nl</span> *<span class="STpe">void</span>)-&gt;<span class="STpe">s32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">stdio_common_vfprintf</span>(_Options: <span class="STpe">u64</span>, _Stream: *<span class="SCst"><a href="#Libc_FILE">FILE</a></span>, _Format: <span class="STpe">cstring</span>, _Locale: <span class="SCmp">#null</span> *<span class="STpe">void</span>, _ArgList: <span class="SCmp">#null</span> *<span class="STpe">void</span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3475,7 +3475,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">stdio_common_vfscanf</span>(_Options: <span class="STpe">u64</span>, _Stream: *<span class="SCst"><a href="#Libc_FILE">FILE</a></span>, _Format: <span class="STpe">cstring</span>, _Locale: <span class="SKwd">nl</span> *<span class="STpe">void</span>, _ArgList: <span class="SKwd">nl</span> *<span class="STpe">void</span>)-&gt;<span class="STpe">s32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">stdio_common_vfscanf</span>(_Options: <span class="STpe">u64</span>, _Stream: *<span class="SCst"><a href="#Libc_FILE">FILE</a></span>, _Format: <span class="STpe">cstring</span>, _Locale: <span class="SCmp">#null</span> *<span class="STpe">void</span>, _ArgList: <span class="SCmp">#null</span> *<span class="STpe">void</span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3487,7 +3487,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">stdio_common_vsprintf</span>(_Options: <span class="STpe">u64</span>, _Buffer: *<span class="STpe">u8</span>, _BufferCount: <a href="#Libc_size_t">size_t</a>, _Format: <span class="STpe">cstring</span>, _Locale: <span class="SKwd">nl</span> *<span class="STpe">void</span>, _ArgList: <span class="SKwd">nl</span> *<span class="STpe">void</span>)-&gt;<span class="STpe">s32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">stdio_common_vsprintf</span>(_Options: <span class="STpe">u64</span>, _Buffer: *<span class="STpe">u8</span>, _BufferCount: <a href="#Libc_size_t">size_t</a>, _Format: <span class="STpe">cstring</span>, _Locale: <span class="SCmp">#null</span> *<span class="STpe">void</span>, _ArgList: <span class="SCmp">#null</span> *<span class="STpe">void</span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3499,7 +3499,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">stdio_common_vsscanf</span>(_Options: <span class="STpe">u64</span>, _Buffer: <span class="STpe">cstring</span>, _BufferCount: <a href="#Libc_size_t">size_t</a>, _Format: <span class="STpe">cstring</span>, _Locale: <span class="SKwd">nl</span> *<span class="STpe">void</span>, _ArgList: <span class="SKwd">nl</span> *<span class="STpe">void</span>)-&gt;<span class="STpe">s32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">stdio_common_vsscanf</span>(_Options: <span class="STpe">u64</span>, _Buffer: <span class="STpe">cstring</span>, _BufferCount: <a href="#Libc_size_t">size_t</a>, _Format: <span class="STpe">cstring</span>, _Locale: <span class="SCmp">#null</span> *<span class="STpe">void</span>, _ArgList: <span class="SCmp">#null</span> *<span class="STpe">void</span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4161,7 +4161,7 @@
 </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">wctomb</span>(s: *<span class="STpe">u8</span>, wc: <a href="#Libc_wchar_t">wchar_t</a>)-&gt;<span class="STpe">s32</span></span></div>
 <div class="swag-watermark">
-Generated on 12-01-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.41.0</div>
+Generated on 01-05-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.44.0</div>
 </div>
 </div>
 </div>
