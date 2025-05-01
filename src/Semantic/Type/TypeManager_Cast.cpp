@@ -3277,7 +3277,7 @@ bool TypeManager::castToClosure(SemanticContext* context, TypeInfo* toType, Type
 
 bool TypeManager::castToCode(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags)
 {
-    const auto toTypeCode = castTypeInfo<TypeInfoCode>(toType, TypeInfoKind::Code);
+    const auto toTypeCode = castTypeInfo<TypeInfoCodeBlock>(toType, TypeInfoKind::CodeBlock);
     bool       isValid    = false;
 
     TypeInfo* toTypeRaw   = fromType;
@@ -3289,7 +3289,7 @@ bool TypeManager::castToCode(SemanticContext* context, TypeInfo* toType, TypeInf
 
     if (fromType->isCode())
     {
-        const auto fromTypeCode = castTypeInfo<TypeInfoCode>(fromType, TypeInfoKind::Code);
+        const auto fromTypeCode = castTypeInfo<TypeInfoCodeBlock>(fromType, TypeInfoKind::CodeBlock);
         if (!fromTypeCode->rawType)
             isValid = true;
         else
@@ -3307,7 +3307,7 @@ bool TypeManager::castToCode(SemanticContext* context, TypeInfo* toType, TypeInf
     {
         if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
         {
-            const auto typeCode = makeType<TypeInfoCode>();
+            const auto typeCode = makeType<TypeInfoCodeBlock>();
             typeCode->content   = fromNode;
             typeCode->content->addAstFlag(AST_NO_SEMANTIC);
             fromNode->typeInfo = typeCode;

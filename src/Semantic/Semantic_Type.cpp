@@ -327,11 +327,11 @@ bool Semantic::resolveType(SemanticContext* context, AstTypeExpression* typeNode
     }
 
     // Code
-    if (typeNode->typeFlags.has(TYPE_FLAG_IS_CODE))
+    if (typeNode->typeFlags.has(TYPE_FLAG_IS_CODE_BLOCK))
     {
         const auto typeP = typeNode->findParent(AstNodeKind::FuncDeclParam);
-        SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, formErr(Err0409, "#block")}));
-        const auto typeCode = castTypeInfo<TypeInfoCode>(g_TypeMgr->typeInfoCode->clone());
+        SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, toErr(Err0410)}));
+        const auto typeCode = castTypeInfo<TypeInfoCodeBlock>(g_TypeMgr->typeInfoCode->clone());
         typeCode->rawType   = typeNode->firstChild()->typeInfo;
         typeNode->typeInfo  = typeCode;
         return true;

@@ -126,8 +126,8 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo,
         case TypeInfoKind::Generic:
             typeStruct = swagScope.regTypeInfoGeneric;
             break;
-        case TypeInfoKind::Code:
-            typeStruct = swagScope.regTypeInfoCode;
+        case TypeInfoKind::CodeBlock:
+            typeStruct = swagScope.regTypeInfoCodeBlock;
             break;
         case TypeInfoKind::Alias:
             typeStruct = swagScope.regTypeInfoAlias;
@@ -369,11 +369,11 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo,
             break;
         }
 
-        case TypeInfoKind::Code:
+        case TypeInfoKind::CodeBlock:
         {
             SWAG_ASSERT(typeStruct->sizeOf >= sizeof(ExportedTypeInfoCode));
             const auto concreteType = reinterpret_cast<ExportedTypeInfoCode*>(exportedTypeInfoValue);
-            const auto realType     = castTypeInfo<TypeInfoCode>(typeInfo);
+            const auto realType     = castTypeInfo<TypeInfoCodeBlock>(typeInfo);
             SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->rawType, exportedTypeInfoValue, storageSegment, storageOffset, realType->rawType, genFlags));
             break;
         }

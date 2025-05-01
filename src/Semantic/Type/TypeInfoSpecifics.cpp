@@ -114,27 +114,27 @@ TypeInfo* TypeInfoNamespace::clone()
     return newType;
 }
 
-TypeInfo* TypeInfoCode::clone()
+TypeInfo* TypeInfoCodeBlock::clone()
 {
-    const auto newType = makeType<TypeInfoCode>();
+    const auto newType = makeType<TypeInfoCodeBlock>();
     newType->rawType   = rawType;
     newType->copyFrom(this);
     return newType;
 }
 
-bool TypeInfoCode::isSame(const TypeInfo* to, CastFlags castFlags) const
+bool TypeInfoCodeBlock::isSame(const TypeInfo* to, CastFlags castFlags) const
 {
     if (this == to)
         return true;
     if (!TypeInfo::isSame(to, castFlags))
         return false;
-    const auto other = castTypeInfo<TypeInfoCode>(to, to->kind);
+    const auto other = castTypeInfo<TypeInfoCodeBlock>(to, to->kind);
     if (!rawType || !other->rawType)
         return true;
     return rawType->isSame(other->rawType, castFlags);
 }
 
-void TypeInfoCode::computeWhateverName(Utf8& resName, ComputeNameKind nameKind)
+void TypeInfoCodeBlock::computeWhateverName(Utf8& resName, ComputeNameKind nameKind)
 {
     resName = "#block";
     if (rawType)

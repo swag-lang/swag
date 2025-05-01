@@ -495,7 +495,7 @@ bool Semantic::appendLastCodeStatement(SemanticContext* context, AstIdentifier* 
 
                         Ast::removeFromParent(brother);
                         Ast::addChildBack(codeNode, brother);
-                        const auto typeCode = makeType<TypeInfoCode>();
+                        const auto typeCode = makeType<TypeInfoCodeBlock>();
                         typeCode->content   = brother;
                         brother->addAstFlag(AST_NO_SEMANTIC);
                         fctCallParam->addSemFlag(SEMFLAG_AUTO_CODE_PARAM);

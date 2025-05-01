@@ -985,7 +985,7 @@ struct AstType : AstNode
 constexpr TypeFlags TYPE_FLAG_IS_ARRAY          = 0x0001;
 constexpr TypeFlags TYPE_FLAG_IS_SLICE          = 0x0002;
 constexpr TypeFlags TYPE_FLAG_IS_CONST          = 0x0004;
-constexpr TypeFlags TYPE_FLAG_IS_CODE           = 0x0008;
+constexpr TypeFlags TYPE_FLAG_IS_CODE_BLOCK           = 0x0008;
 constexpr TypeFlags TYPE_FLAG_FORCE_CONST       = 0x0010;
 constexpr TypeFlags TYPE_FLAG_IS_SELF           = 0x0020;
 constexpr TypeFlags TYPE_FLAG_IS_RETVAL         = 0x0040;

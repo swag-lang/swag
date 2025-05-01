@@ -152,7 +152,7 @@ struct TypeInfo
     bool isVariadic() const { return kind == TypeInfoKind::Variadic; }
     bool isTypedVariadic() const { return kind == TypeInfoKind::TypedVariadic; }
     bool isCVariadic() const { return kind == TypeInfoKind::CVariadic; }
-    bool isCode() const { return kind == TypeInfoKind::Code; }
+    bool isCode() const { return kind == TypeInfoKind::CodeBlock; }
     bool isLambdaClosure() const { return kind == TypeInfoKind::LambdaClosure; }
     bool isKindGeneric() const { return kind == TypeInfoKind::Generic; }
     bool isNative(NativeTypeKind native) const { return kind == TypeInfoKind::Native && nativeType == native; }
@@ -537,14 +537,14 @@ struct TypeInfoAlias final : TypeInfo
     TypeInfo* rawType = nullptr;
 };
 
-struct TypeInfoCode final : TypeInfo
+struct TypeInfoCodeBlock final : TypeInfo
 {
-    TypeInfoCode() :
-        TypeInfo{"#block", TypeInfoKind::Code}
+    TypeInfoCodeBlock() :
+        TypeInfo{"#block", TypeInfoKind::CodeBlock}
     {
     }
 
-    void      computeWhateverName(Utf8& resName, ComputeNameKind nameKind);
+    void      computeWhateverName(Utf8& resName, ComputeNameKind nameKind) override;
     bool      isSame(const TypeInfo* to, CastFlags castFlags) const override;
     TypeInfo* clone() override;
 

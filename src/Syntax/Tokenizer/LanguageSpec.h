@@ -146,7 +146,7 @@ struct LanguageSpec
     Utf8 name_TypeInfoArray;
     Utf8 name_TypeInfoSlice;
     Utf8 name_TypeInfoGeneric;
-    Utf8 name_TypeInfoCode;
+    Utf8 name_TypeInfoCodeBlock;
     Utf8 name_TypeInfoAlias;
     Utf8 name_TypeInfoNamespace;
 

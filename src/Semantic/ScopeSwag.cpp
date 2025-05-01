@@ -86,11 +86,11 @@ void ScopeSwag::registerType(TypeInfo* typeInfo)
         regTypeInfoGeneric->addFlag(TYPEINFO_STRUCT_TYPEINFO);
         SWAG_ASSERT(typeInfo->sizeOf == sizeof(ExportedTypeInfoGeneric));
     }
-    else if (typeInfo->name == g_LangSpec->name_TypeInfoCode)
+    else if (typeInfo->name == g_LangSpec->name_TypeInfoCodeBlock)
     {
-        SWAG_ASSERT(!regTypeInfoCode);
-        regTypeInfoCode = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-        regTypeInfoCode->addFlag(TYPEINFO_STRUCT_TYPEINFO);
+        SWAG_ASSERT(!regTypeInfoCodeBlock);
+        regTypeInfoCodeBlock = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+        regTypeInfoCodeBlock->addFlag(TYPEINFO_STRUCT_TYPEINFO);
         SWAG_ASSERT(typeInfo->sizeOf == sizeof(ExportedTypeInfoCode));
     }    
     else if (typeInfo->name == g_LangSpec->name_TypeInfoAlias)

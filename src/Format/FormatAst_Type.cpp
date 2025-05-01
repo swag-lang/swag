@@ -19,7 +19,7 @@ bool FormatAst::outputTypeExpression(FormatContext& context, AstNode* node)
 
 bool FormatAst::outputType(FormatContext& context, AstTypeExpression* node)
 {
-    if (node->typeFlags.has(TYPE_FLAG_IS_CODE))
+    if (node->typeFlags.has(TYPE_FLAG_IS_CODE_BLOCK))
     {
         concat->addString("#block");
         if (node->firstChild())

@@ -481,7 +481,7 @@ namespace Swag
         Struct            // The typeinfo is a [[TypeInfoStruct]]
         Generic           // The typeinfo is a [[TypeInfoGeneric]]
         Alias             // The typeinfo is a [[TypeInfoAlias]]
-        Code              // The typeinfo is a [[TypeInfo]]
+        CodeBlock         // The typeinfo is a [[TypeInfoCodeBlock]]
         Interface         // The typeinfo is a [[TypeInfoStruct]], but this is an interface
         Attribute         // The typeinfo is a [[TypeInfoFunc]], but this is an attribute
     }
@@ -603,7 +603,7 @@ namespace Swag
         rawType:        const *TypeInfo     // The underlying type
     }
 
-    struct TypeInfoCode
+    struct TypeInfoCodeBlock
     {
         using base:     TypeInfo
         rawType:        const *TypeInfo     // The underlying type

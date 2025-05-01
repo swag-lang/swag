@@ -633,14 +633,14 @@ bool Parser::doTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode** re
     }
 
     // Code
-    if (tokenParse.is(TokenId::KwdCode))
+    if (tokenParse.is(TokenId::ModifierCodeBlock))
     {
         const auto node = Ast::newTypeExpression(this, parent);
         *result         = node;
         result          = &dummyResult;
         node->typeInfo  = g_TypeMgr->typeInfoCode;
         node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
-        node->typeFlags.add(TYPE_FLAG_IS_CODE);
+        node->typeFlags.add(TYPE_FLAG_IS_CODE_BLOCK);
         SWAG_CHECK(eatToken());
         parent = node;
     }

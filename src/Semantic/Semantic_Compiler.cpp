@@ -447,7 +447,7 @@ bool Semantic::resolveCompilerInject(SemanticContext* context)
     node->byteCodeFct = ByteCodeGen::emitDebugNop;
     expr->addAstFlag(AST_NO_BYTECODE);
 
-    const auto typeCode = castTypeInfo<TypeInfoCode>(expr->typeInfo, TypeInfoKind::Code);
+    const auto typeCode = castTypeInfo<TypeInfoCodeBlock>(expr->typeInfo, TypeInfoKind::CodeBlock);
     SWAG_ASSERT(typeCode->content);
 
     CloneContext cloneContext;
@@ -1088,7 +1088,7 @@ bool Semantic::resolveCompilerIntrinsicStringOf(SemanticContext* context)
     {
         FormatAst     fmtAst;
         FormatContext fmtCxt;
-        const auto    typeCode = castTypeInfo<TypeInfoCode>(expr->typeInfo, TypeInfoKind::Code);
+        const auto    typeCode = castTypeInfo<TypeInfoCodeBlock>(expr->typeInfo, TypeInfoKind::CodeBlock);
         fmtAst.outputNode(fmtCxt, typeCode->content);
         node->computedValue()->text = fmtAst.getUtf8();
     }

@@ -198,7 +198,7 @@ struct TypeManager
     TypeInfoFuncAttr* typeInfoOpCall        = nullptr;
     TypeInfoFuncAttr* typeInfoModuleCall    = nullptr;
     TypeInfoFuncAttr* typeInfoOpCall2       = nullptr;
-    TypeInfoCode*     typeInfoCode          = nullptr;
+    TypeInfoCodeBlock*     typeInfoCode          = nullptr;
     TypeInfoSlice*    typeInfoSliceRunes    = nullptr;
     TypeInfoNative*   typeInfoCharacter     = nullptr;
 

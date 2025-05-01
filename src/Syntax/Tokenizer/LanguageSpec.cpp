@@ -120,7 +120,7 @@ void LanguageSpec::setupNames()
     name_TypeInfoArray     = "TypeInfoArray";
     name_TypeInfoSlice     = "TypeInfoSlice";
     name_TypeInfoGeneric   = "TypeInfoGeneric";
-    name_TypeInfoCode      = "TypeInfoCode";
+    name_TypeInfoCodeBlock = "TypeInfoCodeBlock";
     name_TypeInfoAlias     = "TypeInfoAlias";
     name_TypeInfoNamespace = "TypeInfoNamespace";
 
@@ -397,6 +397,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("#ref", TokenId::ModifierRef);
     keywords.add("#constref", TokenId::ModifierConstRef);
     keywords.add("#null", TokenId::ModifierNullable);
+    keywords.add("#block", TokenId::ModifierCodeBlock);
 
     keywords.add("#cfg", TokenId::CompilerBuildCfg);
     keywords.add("#os", TokenId::CompilerOs);
@@ -519,7 +520,6 @@ void LanguageSpec::setupKeywords()
     keywords.add("@cvaend", TokenId::IntrinsicCVaEnd);
     keywords.add("@cvaarg", TokenId::IntrinsicCVaArg);
 
-    keywords.add("#block", TokenId::KwdCode);
     keywords.add("cvarargs", TokenId::KwdCVarArgs);
 
     keywords.add("any", TokenId::NativeType);

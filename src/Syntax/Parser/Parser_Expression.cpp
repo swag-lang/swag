@@ -406,13 +406,13 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
             break;
 
         case TokenId::KwdConst:
-        case TokenId::KwdCode:
         case TokenId::KwdStruct:
         case TokenId::KwdUnion:
         case TokenId::NativeType:
         case TokenId::SymAsterisk:
         case TokenId::SymCircumflex:
         case TokenId::SymAmpersand:
+        case TokenId::ModifierCodeBlock:
             if (exprFlags.has(EXPR_FLAG_SIMPLE))
                 return invalidTokenError(InvalidTokenError::PrimaryExpression);
             SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_TYPE_EXPR, result));
@@ -1159,7 +1159,7 @@ bool Parser::doExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result
                 SWAG_CHECK(doScopedCurlyStatement(node, &dummyResult));
             else
                 SWAG_CHECK(doBoolExpression(node, exprFlags, &dummyResult));
-            const auto typeCode = makeType<TypeInfoCode>();
+            const auto typeCode = makeType<TypeInfoCodeBlock>();
             typeCode->content   = node->firstChild();
             typeCode->rawType   = nullptr;
             typeCode->content->addAstFlag(AST_NO_SEMANTIC);

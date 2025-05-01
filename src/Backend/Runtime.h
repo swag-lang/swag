@@ -358,7 +358,7 @@ enum class TypeInfoKind : uint8_t
     Struct,
     Generic,
     Alias,
-    Code,
+    CodeBlock,
     Interface,
     Attribute,
     // Only for export

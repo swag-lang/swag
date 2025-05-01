@@ -20,7 +20,7 @@ struct ScopeSwag
     TypeInfoStruct* regTypeInfoArray      = nullptr;
     TypeInfoStruct* regTypeInfoSlice      = nullptr;
     TypeInfoStruct* regTypeInfoGeneric    = nullptr;
-    TypeInfoStruct* regTypeInfoCode       = nullptr;
+    TypeInfoStruct* regTypeInfoCodeBlock       = nullptr;
     TypeInfoStruct* regTypeInfoAlias      = nullptr;
     TypeInfoStruct* regTypeInfoNamespace  = nullptr;
     TypeInfoStruct* regTypeInfoSourceLoc  = nullptr;

@@ -293,7 +293,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
                 break;
 
                 // Cast to code
-            case TypeInfoKind::Code:
+            case TypeInfoKind::CodeBlock:
                 SWAG_CHECK(castToCode(context, toType, fromType, fromNode, castFlags));
                 break;
 

@@ -71,7 +71,7 @@ void TypeManager::setup()
     typeInfoCString->name.setView("cstring", 7);
 
     // The rest
-    typeInfoCode          = new TypeInfoCode();
+    typeInfoCode          = new TypeInfoCodeBlock();
     typeInfoCode->rawType = typeInfoVoid;
 
     typeInfoOpCall             = new TypeInfoFuncAttr();
