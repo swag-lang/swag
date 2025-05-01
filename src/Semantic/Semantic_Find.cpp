@@ -9,7 +9,7 @@
 #include "Wmf/Module.h"
 #pragma optimize("", off)
 
-bool Semantic::findFuncCallInContext(SemanticContext* context, const AstNode* node, VectorNative<SymbolOverload*>& result)
+bool Semantic::findFuncCallInContext(SemanticContext* context, const AstNode* node, VectorNative<SymbolOverload*>& result, AstFuncCallParam** callParam)
 {
     result.clear();
 
@@ -28,6 +28,7 @@ bool Semantic::findFuncCallInContext(SemanticContext* context, const AstNode* no
     const auto fctCallParam = castAst<AstFuncCallParam>(findParent);
     const auto idref        = castAst<AstIdentifierRef>(fctCallParam->getParent(3), AstNodeKind::IdentifierRef);
     const auto id           = castAst<AstIdentifier>(fctCallParam->getParent(2), AstNodeKind::Identifier);
+    *callParam              = fctCallParam;
 
     VectorNative<OneSymbolMatch> symbolMatch;
     g_SilentError++;
@@ -189,7 +190,8 @@ bool Semantic::findEnumTypeInCallContext(SemanticContext*                       
                                          VectorNative<SymbolOverload*>&                    testedOver)
 {
     VectorNative<SymbolOverload*> overloads;
-    SWAG_CHECK(findFuncCallInContext(context, node, overloads));
+    AstFuncCallParam*             fctCallParam;
+    SWAG_CHECK(findFuncCallInContext(context, node, overloads, &fctCallParam));
     YIELD();
     if (overloads.empty())
         return true;
@@ -217,7 +219,6 @@ bool Semantic::findEnumTypeInCallContext(SemanticContext*                       
     }
 
     VectorNative<TypeInfoParam*> resultParams;
-    const auto                   fctCallParam = castAst<AstFuncCallParam>(findParent, AstNodeKind::FuncCallParam);
     SWAG_CHECK(findFuncCallParamInContext(context, fctCallParam, overloads, resultParams));
     for (const auto it : resultParams)
     {

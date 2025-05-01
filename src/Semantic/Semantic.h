@@ -139,7 +139,7 @@ namespace Semantic
     Diagnostic*    computeNonConstExprNote(AstNode* node);
     TypeInfo*      getConcreteTypeUnRef(AstNode* node, ToConcreteFlags concreteFlags);
     TypeInfo*      getDeducedLambdaType(SemanticContext* context, const AstMakePointer* node);
-    bool           findFuncCallInContext(SemanticContext* context, const AstNode* node, VectorNative<SymbolOverload*>& result);
+    bool           findFuncCallInContext(SemanticContext* context, const AstNode* node, VectorNative<SymbolOverload*>& result, AstFuncCallParam **callParam);
     bool           findFuncCallParamInContext(SemanticContext* context, const AstFuncCallParam* callParam, const VectorNative<SymbolOverload*>& overloads, VectorNative<TypeInfoParam*>& result);
     TypeInfoEnum*  findEnumType(TypeInfo* typeInfo);
     Utf8           getSpecialOpSignature(const AstFuncDecl* node);

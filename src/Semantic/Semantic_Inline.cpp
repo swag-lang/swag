@@ -20,16 +20,18 @@ bool Semantic::mustInline(SemanticContext* context, AstIdentifier* identifier, c
     if (identifier->hasSpecFlag(AstIdentifier::SPEC_FLAG_NO_INLINE) && !funcDecl->isMixinMacro())
         canInline = false;
 
+    // If we are inside a function call argument, which is meant to be converted to a code block,
+    // then we must not inline function calls. The inlining must be done later, at the #inject point.
     if (canInline)
     {
         VectorNative<SymbolOverload*> overloads;
-        SWAG_CHECK(Semantic::findFuncCallInContext(context, identifier, overloads));
+        AstFuncCallParam*             fctCallParam;
+        SWAG_CHECK(Semantic::findFuncCallInContext(context, identifier, overloads, &fctCallParam));
         YIELD();
         if (!overloads.empty())
         {
-            const auto                   callParam = castAst<AstFuncCallParam>(identifier->findParent(AstNodeKind::FuncCallParam), AstNodeKind::FuncCallParam);
             VectorNative<TypeInfoParam*> result;
-            SWAG_CHECK(Semantic::findFuncCallParamInContext(context, callParam, overloads, result));
+            SWAG_CHECK(Semantic::findFuncCallParamInContext(context, fctCallParam, overloads, result));
             YIELD();
             for (const auto it : result)
             {
