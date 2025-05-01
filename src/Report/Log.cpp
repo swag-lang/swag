@@ -230,7 +230,7 @@ Utf8 Log::format(const char* message, const LogWriteContext* logContext)
                     m += logContext->colorHighlight;
                 else if (curColor == colorToVTS(LogColor::White))
                     m += colorToVTS(LogColor::Gray);
-                else if (curColor == colorToVTS(LogColor::Gray))
+                else
                     m += colorToVTS(LogColor::Underline);
             }
 
