@@ -791,7 +791,7 @@ func compare(src, dst: const [..] u8, comparisonType = ComparisonType.Latin1)->s
 // * '#alias1' will contain the character index
 // * '#alias2' will contain the byte index of that character within the utf8 sequence
 #[Swag.Macro]
-func visitRunes(buffer: const [..] u8, stmt: code)
+func visitRunes(buffer: const [..] u8, stmt: code void)
 {
     var count = @countof(buffer)
     if !count:

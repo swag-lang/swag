@@ -1,5 +1,5 @@
 #[Swag.Macro]
-func toto(stmt: code)
+func toto(stmt: code void)
 {
     #inject stmt
 }

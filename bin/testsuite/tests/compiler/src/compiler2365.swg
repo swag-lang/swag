@@ -1,5 +1,5 @@
 #[Swag.Macro]
-public func macro2365(stmt: code)
+public func macro2365(stmt: code void)
 {
     #scope up
     for 10

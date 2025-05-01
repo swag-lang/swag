@@ -4,7 +4,7 @@ using Swag
 var G = 0
 
 #[Macro]
-func toto(cpt: s64, stmt: code)
+func toto(cpt: s64, stmt: code void)
 {
     //#[PrintBc]
     func titi()

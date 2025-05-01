@@ -124,8 +124,10 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo,
             typeStruct = swagScope.regTypeInfoSlice;
             break;
         case TypeInfoKind::Generic:
-        case TypeInfoKind::Code:
             typeStruct = swagScope.regTypeInfoGeneric;
+            break;
+        case TypeInfoKind::Code:
+            typeStruct = swagScope.regTypeInfoCode;
             break;
         case TypeInfoKind::Alias:
             typeStruct = swagScope.regTypeInfoAlias;
@@ -186,7 +188,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo,
     if (typeInfo->isNullable())
         exportedTypeInfoValue->flags |= static_cast<uint32_t>(ExportedTypeInfoFlags::Nullable);
 
-    // True by default, will be removed by struct if necessary
+    // True by default. Will be removed by struct if necessary
     exportedTypeInfoValue->flags |= static_cast<uint32_t>(ExportedTypeInfoFlags::CanCopy);
 
     // Register type and value
@@ -207,7 +209,7 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo,
     mapPerSeg.exportedTypes[typeName]                     = mapType;
     mapPerSeg.exportedTypesReverse[exportedTypeInfoValue] = typeInfo;
 
-    // Build pointer type to structure
+    // Build the pointer type to the structure
     typePtr->addFlag(TYPEINFO_CONST);
     typePtr->pointedType = typeStruct;
     typePtr->computeName();
@@ -363,6 +365,15 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext* context, TypeInfo* typeInfo,
             SWAG_ASSERT(typeStruct->sizeOf >= sizeof(ExportedTypeInfoVariadic));
             const auto concreteType = reinterpret_cast<ExportedTypeInfoVariadic*>(exportedTypeInfoValue);
             const auto realType     = castTypeInfo<TypeInfoVariadic>(typeInfo);
+            SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->rawType, exportedTypeInfoValue, storageSegment, storageOffset, realType->rawType, genFlags));
+            break;
+        }
+
+        case TypeInfoKind::Code:
+        {
+            SWAG_ASSERT(typeStruct->sizeOf >= sizeof(ExportedTypeInfoCode));
+            const auto concreteType = reinterpret_cast<ExportedTypeInfoCode*>(exportedTypeInfoValue);
+            const auto realType     = castTypeInfo<TypeInfoCode>(typeInfo);
             SWAG_CHECK(genExportedSubTypeInfo(context, &concreteType->rawType, exportedTypeInfoValue, storageSegment, storageOffset, realType->rawType, genFlags));
             break;
         }

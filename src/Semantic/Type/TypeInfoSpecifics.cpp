@@ -117,6 +117,7 @@ TypeInfo* TypeInfoNamespace::clone()
 TypeInfo* TypeInfoCode::clone()
 {
     const auto newType = makeType<TypeInfoCode>();
+    newType->rawType   = rawType;
     newType->copyFrom(this);
     return newType;
 }
@@ -129,7 +130,7 @@ bool TypeInfoCode::isSame(const TypeInfo* to, CastFlags castFlags) const
         return false;
     if (castFlags.has(CAST_FLAG_CAST))
         return true;
-    return false;
+    return rawType->isSame(to, castFlags);
 }
 
 TypeInfo* TypeInfoAlias::clone()

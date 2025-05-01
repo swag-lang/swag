@@ -466,7 +466,7 @@ void initErrors()
     SWAG_ERROR(Err0316, "misplaced block start                             $ cannot have [[':']] before [[{]]                                                                                                         $ a block should start with either [[':']] or [[{]], but not both");
     SWAG_ERROR(Err0317, "misplaced [[@cvastart]]                           $ expected the intrinsic [[@cvastart]] to be used in a function with a last parameter of type [[cvarargs]]                                 $ ");
     SWAG_ERROR(Err0318, "misplaced [[@kindof]]                             $ cannot apply [[@kindof]] to the type [[%s]]                                                                                              $ the [[@kindof]] intrinsic should be used on the type [[any]] or on an interface");
-    SWAG_ERROR(Err0319, nullptr);
+    SWAG_ERROR(Err0319, "invalid type declaration                          $ expected a type declaration after [[code]], found $$TKN$$ instead                                                                        $ [[code]] should be followed by a type or [[void]]");
     SWAG_ERROR(Err0320, "misplaced [[Self]] type                           $ cannot use [[Self]] outside of an [[impl]], [[struct]], or [[interface]] block                                                           $ [[Self]] is a reserved alias for the corresponding struct");
     SWAG_ERROR(Err0321, "misplaced [[alias]]                               $ cannot use [[alias]] on a struct member                                                                                                  $ ");
     SWAG_ERROR(Err0322, "misplaced [[break]]                               $ cannot use [[break]] outside of a breakable block such as [[loop]], [[visit]], [[for]], etc.                                             $ ");
@@ -1166,6 +1166,7 @@ void initErrors()
     SWAG_ERROR(Nte0225, "this implies a nullable value");
 
     SWAG_ERROR(Nte0016, nullptr);
+    SWAG_ERROR(Nte0226, nullptr);
 }
 
 Utf8 formErr(ErrorID idx, ...)

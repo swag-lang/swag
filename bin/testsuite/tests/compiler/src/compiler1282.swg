@@ -1,5 +1,5 @@
 #[Swag.Mixin]
-func toto(x: code)
+func toto(x: code void)
 {
     if #inject x:
         @assert(true)

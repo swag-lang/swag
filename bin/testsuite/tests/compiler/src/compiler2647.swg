@@ -1,5 +1,5 @@
 #[Swag.Macro]
-func(T) toto(v: T, stmt: code)
+func(T) toto(v: T, stmt: code void)
 {
     func titi(val: T)
     {

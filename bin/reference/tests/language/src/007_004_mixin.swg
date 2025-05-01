@@ -1,6 +1,6 @@
 /**
 # Introduction to Swag Mixins
-A mixin in Swag is declared similarly to a function but with the attribute `#[Swag.Mixin]`. 
+A mixin in Swag is declared similarly to a function but with the attribute `#[Swag.Mixin]`.
 Mixins allow injecting code into the caller's scope, manipulating variables, or executing code as if it were part of that scope.
 This documentation provides an overview of Swag Mixins with various examples, demonstrating their flexibility and use cases.
 */
@@ -13,7 +13,7 @@ This documentation provides an overview of Swag Mixins with various examples, de
 
 /**
 # Basic Example of a Mixin
-A mixin function can directly modify variables in the caller's scope. 
+A mixin function can directly modify variables in the caller's scope.
 In this example, the mixin increments a variable `a` by 1 each time it is called.
 */
 #test
@@ -51,13 +51,13 @@ This example demonstrates a mixin with an `increment` parameter that defaults to
 
 /**
 # Mixins with Code Blocks
-A mixin can accept a special parameter of type `code`, representing a Swag code block defined at the call site. 
+A mixin can accept a special parameter of type `code`, representing a Swag code block defined at the call site.
 The mixin can execute this code block multiple times using the `#inject` keyword.
 */
 #test
 {
     #[Swag.Mixin]
-    func doItTwice(what: code)
+    func doItTwice(what: code void)
     {
         #inject what                      // Executing the passed code block the first time
         #inject what                      // Executing the passed code block the second time
@@ -77,7 +77,7 @@ This provides a more natural syntax for passing code blocks.
 #test
 {
     #[Swag.Mixin]
-    func doItTwice(value: s32, what: code)
+    func doItTwice(value: s32, what: code void)
     {
         #inject what                      // Executing the passed code block the first time
         #inject what                      // Executing the passed code block the second time
@@ -97,7 +97,7 @@ This provides a more natural syntax for passing code blocks.
 
 /**
 # Creating Aliases with Mixins
-You can use the special name `#alias` to create a named alias for an identifier. 
+You can use the special name `#alias` to create a named alias for an identifier.
 This enables flexible manipulation of variables through mixins.
 */
 #test
@@ -132,7 +132,7 @@ This enables flexible manipulation of variables through mixins.
 
 /**
 # Unique Variable Names with `#mix?`
-Mixins can declare special variables named `#mix?`. 
+Mixins can declare special variables named `#mix?`.
 These variables receive a unique name each time the mixin is invoked, preventing naming conflicts and allowing multiple mixin invocations in the same scope.
 */
 #test

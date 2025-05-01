@@ -14,7 +14,7 @@ impl A
 }
 
 #[Swag.Macro]
-func toto(stmt: code)
+func toto(stmt: code void)
 {
     if true:
         return

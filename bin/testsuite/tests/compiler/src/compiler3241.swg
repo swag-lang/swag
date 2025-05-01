@@ -4,7 +4,7 @@ func tata(x: string)
 }
 
 #[Swag.Macro]
-func toto(x: code)
+func toto(x: code void)
 {
     #inject x
 }

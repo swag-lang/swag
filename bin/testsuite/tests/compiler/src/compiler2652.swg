@@ -1,5 +1,5 @@
 #[Swag.Macro]
-func toto(x, y: s64 = 666, stmt: code)
+func toto(x, y: s64 = 666, stmt: code void)
 {
     @assert(x == 444)
     @assert(y == 666)

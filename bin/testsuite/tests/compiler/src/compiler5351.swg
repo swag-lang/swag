@@ -4,7 +4,7 @@ struct String {}
 impl String
 {
     #[Swag.Macro]
-    mtd(a: bool, b: bool) opVisit(s: code)
+    mtd(a: bool, b: bool) opVisit(s: code void)
     {
         #macro
         {

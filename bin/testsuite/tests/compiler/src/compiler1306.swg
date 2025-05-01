@@ -1,5 +1,5 @@
 #[Swag.Macro]
-func toto(t: s32, x: code)
+func toto(t: s32, x: code void)
 {
     let xx = t
     @assert(t == 100)

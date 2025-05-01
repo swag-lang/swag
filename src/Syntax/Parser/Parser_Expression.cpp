@@ -1161,6 +1161,7 @@ bool Parser::doExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result
                 SWAG_CHECK(doBoolExpression(node, exprFlags, &dummyResult));
             const auto typeCode = makeType<TypeInfoCode>();
             typeCode->content   = node->firstChild();
+            typeCode->rawType   = g_TypeMgr->typeInfoVoid;
             typeCode->content->addAstFlag(AST_NO_SEMANTIC);
             node->typeInfo = typeCode;
             node->addAstFlag(AST_NO_BYTECODE);

@@ -8,12 +8,12 @@ struct MyStruct
 /**
 # Introduction to `opVisit`
 
-`opVisit` is a highly flexible macro used for iterating over the elements in a struct. 
-This macro is not confined to just the struct's fields; it can also be used to traverse 
-any data the struct contains, such as elements in dynamic arrays, internal buffers, or 
+`opVisit` is a highly flexible macro used for iterating over the elements in a struct.
+This macro is not confined to just the struct's fields; it can also be used to traverse
+any data the struct contains, such as elements in dynamic arrays, internal buffers, or
 complex object graphs.
 
-The `#[Swag.Macro]` attribute is mandatory when using `opVisit`. It defines the macro's 
+The `#[Swag.Macro]` attribute is mandatory when using `opVisit`. It defines the macro's
 behavior, allowing it to be integrated seamlessly into the codebase.
 
 `opVisit` is a generic function that accepts two compile-time boolean parameters:
@@ -24,9 +24,9 @@ behavior, allowing it to be integrated seamlessly into the codebase.
 impl MyStruct
 {
     #[Swag.Macro]
-    func(ptr: bool, back: bool) opVisit(self, stmt: code)
+    func(ptr: bool, back: bool) opVisit(self, stmt: code void)
     {
-        // The `ptr` and `back` parameters offer flexibility, allowing for reference-based 
+        // The `ptr` and `back` parameters offer flexibility, allowing for reference-based
         // or reverse-order iterations.
 
         #if ptr:
@@ -100,13 +100,13 @@ The same approach can be extended to foreach more complex data structures.
 /**
 # Extending `opVisit`: Reverse Order Iteration
 
-You can also implement different versions of `opVisit` to handle other data structures. 
+You can also implement different versions of `opVisit` to handle other data structures.
 For instance, you may want to foreach the fields in reverse order.
 */
 impl MyStruct
 {
     #[Swag.Macro]
-    mtd(ptr: bool, back: bool) opVisitReverse(stmt: code)
+    mtd(ptr: bool, back: bool) opVisitReverse(stmt: code void)
     {
         // In this version, we foreach the fields in reverse order.
         for idx in 3
@@ -134,7 +134,7 @@ impl MyStruct
 /**
 # Reverse Order Iteration
 
-The `opVisitReverse` variant allows us to foreach the struct's fields in reverse order, 
+The `opVisitReverse` variant allows us to foreach the struct's fields in reverse order,
 providing flexibility depending on the needs of your application.
 */
 #test
@@ -164,8 +164,8 @@ providing flexibility depending on the needs of your application.
 /**
 # Visiting Elements in Dynamic Arrays
 
-Beyond struct fields, `opVisit` can be designed to foreach elements in dynamic arrays, buffers, 
-or other types of data. The flexibility of `opVisit` means it can adapt to whatever data 
+Beyond struct fields, `opVisit` can be designed to foreach elements in dynamic arrays, buffers,
+or other types of data. The flexibility of `opVisit` means it can adapt to whatever data
 structure the struct holds.
 
 For example, consider a struct with a slice:
@@ -178,13 +178,13 @@ struct SliceStruct
 /**
 # Custom `opVisit` for Dynamic Arrays
 
-You could define an `opVisit` that iterates over the elements of the `buffer` rather than 
+You could define an `opVisit` that iterates over the elements of the `buffer` rather than
 the struct's fields.
 */
 impl SliceStruct
 {
     #[Swag.Macro]
-    func(ptr: bool, back: bool) opVisit(self, stmt: code)
+    func(ptr: bool, back: bool) opVisit(self, stmt: code void)
     {
         for idx in @countof(self.buffer)
         {
@@ -206,7 +206,7 @@ impl SliceStruct
 /**
 # Iterating Over a Dynamic Array
 
-This example shows how to foreach each element in a dynamic array (slice) and perform 
+This example shows how to foreach each element in a dynamic array (slice) and perform
 operations such as summing the elements.
 */
 #test

@@ -603,6 +603,12 @@ namespace Swag
         rawType:        const *TypeInfo     // The underlying type
     }
 
+    struct TypeInfoCode
+    {
+        using base:     TypeInfo
+        rawType:        const *TypeInfo     // The underlying type
+    }
+
     struct TypeInfoStruct
     {
         using base:      TypeInfo

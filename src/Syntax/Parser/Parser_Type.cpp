@@ -446,18 +446,22 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, ExprFlags exprFlags
             return true;
     }
 
-    Diagnostic err{sourceFile, tokenParse, toErr(Err0264)};
+    Diagnostic* err = nullptr;
+    if (node->parent->typeInfo && node->parent->typeInfo->isCode())
+        err = new Diagnostic{sourceFile, tokenParse, toErr(Err0319)};
+    else
+        err = new Diagnostic{sourceFile, tokenParse, toErr(Err0264)};
 
     if (tokenParse.is(TokenId::SymLeftParen))
-        err.addNote(toNte(Nte0055));
+        err->addNote(toNte(Nte0055));
     else if (tokenParse.is(TokenId::SymDotDotDot))
-        err.addNote(toNte(Nte0145));
+        err->addNote(toNte(Nte0145));
     else if (Tokenizer::isKeyword(tokenParse.token.id))
-        err.addNote(formNte(Nte0130, tokenParse.cstr()));
+        err->addNote(formNte(Nte0130, tokenParse.cstr()));
     else if (tokenParse.is(TokenId::CompilerIntrinsicTypeOf) || tokenParse.is(TokenId::IntrinsicKindOf))
-        err.addNote(toNte(Nte0053));
+        err->addNote(toNte(Nte0053));
 
-    return context->report(err);
+    return context->report(*err);
 }
 
 bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result)
@@ -595,17 +599,7 @@ bool Parser::doNullableTypeExpression(AstNode* parent, ExprFlags exprFlags, AstN
 
 bool Parser::doTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result)
 {
-    // Code
-    if (tokenParse.is(TokenId::KwdCode))
-    {
-        const auto node = Ast::newTypeExpression(this, parent);
-        *result         = node;
-        node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
-        node->typeInfo = g_TypeMgr->typeInfoCode;
-        node->typeFlags.add(TYPE_FLAG_IS_CODE);
-        SWAG_CHECK(eatToken());
-        return true;
-    }
+    SWAG_VERIFY(tokenParse.isNot(TokenId::KwdMethod), context->report({sourceFile, tokenParse.token, toErr(Err0339)}));
 
     // retval
     if (tokenParse.is(TokenId::KwdRetVal))
@@ -638,13 +632,24 @@ bool Parser::doTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode** re
         return true;
     }
 
-    SWAG_VERIFY(tokenParse.isNot(TokenId::KwdMethod), context->report({sourceFile, tokenParse.token, toErr(Err0339)}));
+    // Code
+    if (tokenParse.is(TokenId::KwdCode))
+    {
+        const auto node = Ast::newTypeExpression(this, parent);
+        *result         = node;
+        result          = &dummyResult;
+        node->typeInfo  = g_TypeMgr->typeInfoCode;
+        node->addAstFlag(AST_NO_BYTECODE_CHILDREN);
+        node->typeFlags.add(TYPE_FLAG_IS_CODE);
+        SWAG_CHECK(eatToken());
+        parent = node;
+    }
 
+    // Normal type
     if (tokenParse.is(TokenId::KwdFunc))
         SWAG_CHECK(doLambdaClosureType(parent, result, exprFlags.has(EXPR_FLAG_IN_VAR_DECL)));
     else
         SWAG_CHECK(doSubTypeExpression(parent, exprFlags, result));
-
     return true;
 }
 

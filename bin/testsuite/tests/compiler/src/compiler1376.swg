@@ -24,7 +24,7 @@ func toto()
 }
 
 #[Swag.Macro]
-func changeContext(user: code)
+func changeContext(user: code void)
 {
     let savedCxt = @getcontext()
     var newCxt: Context = dref savedCxt

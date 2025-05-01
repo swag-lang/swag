@@ -1,5 +1,5 @@
 #[Swag.Mixin]
-func toto(x: code)
+func toto(x: code void)
 {
     let AAA = #inject x
     @assert(AAA)

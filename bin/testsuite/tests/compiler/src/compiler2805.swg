@@ -1,7 +1,7 @@
 var G = 0
 
 #[Swag.Macro]
-func toto(stmt: code)
+func toto(stmt: code void)
 {
     #macro
     {

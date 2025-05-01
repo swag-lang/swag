@@ -2,7 +2,7 @@
 struct A {}
 impl A {
     #[Swag.Macro]
-    mtd(ptr: bool, back: bool) opVisit(stmt: code)
+    mtd(ptr: bool, back: bool) opVisit(stmt: code void)
     {
         #macro
         {

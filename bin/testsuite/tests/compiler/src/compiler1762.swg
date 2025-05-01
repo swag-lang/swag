@@ -1,7 +1,7 @@
 #test
 {
     #[Swag.Mixin]
-    func myMixin(what: code)
+    func myMixin(what: code void)
     {
         #inject what
     }

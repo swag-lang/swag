@@ -13,7 +13,7 @@ impl A
     }
 
     #[Swag.Macro]
-    func(ptr: bool) toto(using self, v: s32, stmt: code)
+    func(ptr: bool) toto(using self, v: s32, stmt: code void)
     {
         var x = v
     }

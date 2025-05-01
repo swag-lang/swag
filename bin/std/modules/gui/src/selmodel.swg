@@ -41,9 +41,9 @@ impl SelModel
                 select(i, select)
         }
         else
-        {   
+        {
             for i in end to start:
-                select(i, select)                     
+                select(i, select)
         }
     }
 
@@ -96,7 +96,7 @@ impl SelModel
     }
 
     #[Swag.Macro]
-    mtd(ptr: bool, back: bool) opVisit(stmt: code)
+    mtd(ptr: bool, back: bool) opVisit(stmt: code void)
     {
         #scope Up
         foreach &r in selection

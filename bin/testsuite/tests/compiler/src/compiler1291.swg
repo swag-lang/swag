@@ -1,5 +1,5 @@
 #[Swag.Macro]
-func Visit(user: code)
+func Visit(user: code void)
 {
     var c: rune
 	for 10

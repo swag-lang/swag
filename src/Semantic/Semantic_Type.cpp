@@ -331,7 +331,9 @@ bool Semantic::resolveType(SemanticContext* context, AstTypeExpression* typeNode
     {
         const auto typeP = typeNode->findParent(AstNodeKind::FuncDeclParam);
         SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, formErr(Err0409, "code")}));
-        typeNode->typeInfo = g_TypeMgr->typeInfoCode;
+        const auto typeCode = castTypeInfo<TypeInfoCode>(g_TypeMgr->typeInfoCode->clone());
+        typeCode->rawType   = typeNode->firstChild()->typeInfo;
+        typeNode->typeInfo  = typeCode;
         return true;
     }
 

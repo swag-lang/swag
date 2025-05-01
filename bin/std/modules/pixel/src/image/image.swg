@@ -48,7 +48,7 @@ impl Image
     }
 
     #[Swag.Macro]
-    func(ptr: bool, back: bool) opVisit(using self, stmt: code)
+    func(ptr: bool, back: bool) opVisit(using self, stmt: code void)
     {
         var scan = pixels.buffer
         for width * height
@@ -141,14 +141,14 @@ impl Image
     // | y         | the pixel y coordinates
     // | userData  | as passed to the macro
     #[Swag.Macro]
-    mtd const visitPixels(userData: *void = null, stride: s32 = 1, stmt: code)
+    mtd const visitPixels(userData: *void = null, stride: s32 = 1, stmt: code void)
     {
         Debug.assert(stride > 0)
 
         var p = {self, userData}
         Jobs.parallelVisit(|buffer, data| pixels.toSlice(), cast(u32) (bpp8 * stride), &p)
         {
-            if !data: 
+            if !data:
                 return
             let p = cast(*#decltype(p)) data
             #macro

@@ -1,5 +1,5 @@
 #[Swag.Macro]
-func pushContext(cxt: Swag.Context, stmt: code)
+func pushContext(cxt: Swag.Context, stmt: code void)
 {
     let prev = @getcontext()
     defer @setcontext(prev)

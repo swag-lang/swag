@@ -1,6 +1,6 @@
 #global testerror "Err0306"
 #[Swag.Macro]
-func toto(stmt: code)
+func toto(stmt: code void)
 {
     #macro
     {

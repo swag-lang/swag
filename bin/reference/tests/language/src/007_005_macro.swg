@@ -12,9 +12,9 @@ This attribute indicates that the function is intended to be a macro, which can 
 
 /**
 # Macro Scope
-Macros operate within their own scope, which is separate and isolated from the caller's scope. 
-This is different from mixins, which share the caller's scope. 
-The isolation provided by macros ensures that any variables defined inside the macro do not interfere 
+Macros operate within their own scope, which is separate and isolated from the caller's scope.
+This is different from mixins, which share the caller's scope.
+The isolation provided by macros ensures that any variables defined inside the macro do not interfere
 with or modify variables outside the macro, preventing potential naming conflicts.
 */
 #test
@@ -22,7 +22,7 @@ with or modify variables outside the macro, preventing potential naming conflict
     #[Swag.Macro]
     func myMacro()
     {
-        // This variable 'a' is local to the macro and does not affect or interfere 
+        // This variable 'a' is local to the macro and does not affect or interfere
         // with any 'a' outside the macro.
 
         var a = 666     // 'a' is confined to the macro's scope
@@ -31,7 +31,7 @@ with or modify variables outside the macro, preventing potential naming conflict
     // Declare a variable 'a' in the outer scope and initialize it to 0.
     let a = 0
 
-    // Call the macro `myMacro()`. The macro defines its own 'a', but this does not 
+    // Call the macro `myMacro()`. The macro defines its own 'a', but this does not
     // conflict with the outer 'a'.
 
     myMacro()          // No conflict with the outer 'a'
@@ -51,8 +51,8 @@ This allows the macro to interact with the caller's environment.
     #[Swag.Macro]
     func myMacro()
     {
-        // Use `#up` to access and modify the variable `a` from the outer scope (the scope where the 
-        // macro is called). Without `#up`, `a` would be assumed to be a variable within the macro's 
+        // Use `#up` to access and modify the variable `a` from the outer scope (the scope where the
+        // macro is called). Without `#up`, `a` would be assumed to be a variable within the macro's
         // own scope (which might not exist).
 
         #up a += 1  // Increments the outer 'a' by 1
@@ -80,7 +80,7 @@ This feature is similar to mixins but within the macro's scope.
 #test
 {
     #[Swag.Macro]
-    func myMacro(what: code)
+    func myMacro(what: code void)
     {
         #inject what                            // Inserts the provided code block
     }
@@ -108,7 +108,7 @@ This technique negates the need for the `#up` keyword when referencing the calle
 #test
 {
     #[Swag.Macro]
-    func myMacro(what: code)
+    func myMacro(what: code void)
     {
         var a = 666                            // Declare 'a' in the macro's own scope
 
@@ -135,7 +135,7 @@ This avoids the overhead associated with lambda calls, making macros a performan
 #test
 {
     #[Swag.Macro]
-    func repeat(count: s32, what: code)
+    func repeat(count: s32, what: code void)
     {
         var a = 0
         while a < count
@@ -172,11 +172,11 @@ By using a macro, you can define aliases for `break` and `continue` that allow y
 #test
 {
     #[Swag.Macro]
-    func repeatSquare(count: u32, what: code)
+    func repeatSquare(count: u32, what: code void)
     {
         // Define a label `Up` for the scope that will allow us to break out of the outermost loop
-        #scope ScopeTarget                              
-        
+        #scope ScopeTarget
+
         // Outer for: this will run `count` times
         for count
         {
@@ -187,7 +187,7 @@ By using a macro, you can define aliases for `break` and `continue` that allow y
                 {
                     // Injects the user code `what` here.
                     // The `#inject` directive replaces certain parts of the user code:
-                    // - `break` in the user code is replaced with `break to Up`, meaning it will break 
+                    // - `break` in the user code is replaced with `break to Up`, meaning it will break
                     //   out of the `Up` scope (i.e., the outer `for`).
                     // - You can similarly redefine `continue` if needed.
                     #inject #up what => { break = break to ScopeTarget; }
@@ -207,7 +207,7 @@ By using a macro, you can define aliases for `break` and `continue` that allow y
         if a == 10:
             // This `break` statement is replaced by `break to Up` due to the macro,
             // meaning it will exit the outermost `for`, not just the inner `for`.
-            break  
+            break
     }
 
     // Assertion to check if `a` is indeed 10 after the `for` exits
@@ -220,9 +220,9 @@ By using a macro, you can define aliases for `break` and `continue` that allow y
 #test
 {
     #[Swag.Macro]
-    func repeatSquare(count: u32, what: code)
+    func repeatSquare(count: u32, what: code void)
     {
-        // Define a label `Outer` for the scope that will allow us to 
+        // Define a label `Outer` for the scope that will allow us to
         // break or continue from the outermost loop
         #scope Outer
 
@@ -263,12 +263,12 @@ By using a macro, you can define aliases for `break` and `continue` that allow y
         if a == 8:
             break
     }
-   
+
     // Verifies that the loop exited when `a` reached 8
-    @assert(a == 8) 
+    @assert(a == 8)
 
     // Verifies that `b` was incremented 6 times, skipping increments when `a` was divisible by 3
-    @assert(b == 6) 
+    @assert(b == 6)
 }
 
 /**
@@ -279,7 +279,7 @@ These aliases allow you to define and access specific variables within a macro.
 #test
 {
     #[Swag.Macro]
-    func call(v: s32, stmt: code)
+    func call(v: s32, stmt: code void)
     {
         let #alias0 = v                        // Assign 'v' to '#alias0'
         let #alias1 = v * 2                    // Assign 'v * 2' to '#alias1'

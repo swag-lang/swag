@@ -1,7 +1,7 @@
 #global testerror "Err0487"
 
 #[Swag.Mixin]
-func toto(x: code)
+func toto(x: code void)
 {
     #macro
     {

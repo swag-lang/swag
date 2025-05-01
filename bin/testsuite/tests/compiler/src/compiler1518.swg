@@ -10,7 +10,7 @@ impl A
     func(T) titi(x, y: T) => 1'u32
 
     #[Swag.Macro]
-    func(ptr: bool) toto(using self, stmt: code)
+    func(ptr: bool) toto(using self, stmt: code void)
     {
         #assert ptr == true
         for idx in titi's32(1, 1)

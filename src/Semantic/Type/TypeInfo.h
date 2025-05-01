@@ -547,7 +547,8 @@ struct TypeInfoCode final : TypeInfo
     bool      isSame(const TypeInfo* to, CastFlags castFlags) const override;
     TypeInfo* clone() override;
 
-    AstNode* content = nullptr;
+    AstNode*  content = nullptr;
+    TypeInfo* rawType = nullptr;
 };
 
 template<typename T>

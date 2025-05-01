@@ -1,5 +1,5 @@
 #[Swag.Macro]
-func toto(stmt: code)
+func toto(stmt: code void)
 {
     let #alias0: s64 = 555
     let #alias1: s64 = 666

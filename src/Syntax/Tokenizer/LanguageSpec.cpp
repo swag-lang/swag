@@ -120,6 +120,7 @@ void LanguageSpec::setupNames()
     name_TypeInfoArray     = "TypeInfoArray";
     name_TypeInfoSlice     = "TypeInfoSlice";
     name_TypeInfoGeneric   = "TypeInfoGeneric";
+    name_TypeInfoCode      = "TypeInfoCode";
     name_TypeInfoAlias     = "TypeInfoAlias";
     name_TypeInfoNamespace = "TypeInfoNamespace";
 

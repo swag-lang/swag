@@ -6,7 +6,7 @@ struct AA
 impl AA
 {
     #[Swag.Macro]
-    func titi(using self, stmt: code)
+    func titi(using self, stmt: code void)
     {
         count = 0
         #macro

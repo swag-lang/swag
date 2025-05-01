@@ -28,7 +28,7 @@ impl List
     // * `#alias2` is the index
     // Visiting by pointer and in reverse order is supported
     #[Macro]
-    mtd(ptr: bool, back: bool) opVisit(stmt: code)
+    mtd(ptr: bool, back: bool) opVisit(stmt: code void)
     {
         #if back:
             var n = tail

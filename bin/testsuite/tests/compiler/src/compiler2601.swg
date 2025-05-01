@@ -3,7 +3,7 @@ using Swag
 var G = 0
 
 #[Macro]
-func toto(stmt: code)
+func toto(stmt: code void)
 {
     func titi(cpt: s32)
     {

@@ -1,7 +1,7 @@
 #global skip
 
 #[Swag.Mixin]
-func toto(stmt: code)
+func toto(stmt: code void)
 {
     for 5
     {

@@ -1,7 +1,7 @@
 //#global skip
 
 #[Swag.Macro]
-func parallelFor(count: u32, stmt: code)
+func parallelFor(count: u32, stmt: code void)
 {
     func visitFor()
     {

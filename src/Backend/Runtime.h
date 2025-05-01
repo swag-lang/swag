@@ -536,6 +536,12 @@ struct ExportedTypeInfoGeneric
     ExportedTypeInfo* rawType;
 };
 
+struct ExportedTypeInfoCode
+{
+    ExportedTypeInfo  base;
+    ExportedTypeInfo* rawType;
+};
+
 enum class CompilerMsgKind
 {
     PassAfterSemantic,

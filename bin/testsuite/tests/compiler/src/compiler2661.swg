@@ -1,7 +1,7 @@
 var G = 0
 
 #[Swag.Macro]
-func toto(stmt2: code)
+func toto(stmt2: code void)
 {
     func tata()
     {
@@ -12,7 +12,7 @@ func toto(stmt2: code)
 }
 
 #[Swag.Macro]
-func titi(stmt1: code)
+func titi(stmt1: code void)
 {
     toto()
     {
