@@ -7,7 +7,6 @@
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Wmf/Module.h"
-#pragma optimize("", off)
 
 bool Semantic::findFuncCallInContext(SemanticContext* context, const AstNode* node, VectorNative<SymbolOverload*>& result, AstFuncCallParam** callParam)
 {
