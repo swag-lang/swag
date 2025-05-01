@@ -1,8 +1,8 @@
-#global skip
+//#global skip
 var G = 0
 
 #[Swag.Macro]
-func assert(expr: code bool, str: string = "toto")
+func assert(expr: code s32, str: string = "toto")
 {
     //@print("before")
     let b = #inject expr

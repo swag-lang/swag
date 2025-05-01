@@ -51,8 +51,11 @@ bool Semantic::findFuncCallInContext(SemanticContext* context, const AstNode* no
         ScopedLock ls(symbol->mutex);
         if (symbol->cptOverloads)
         {
-            waitSymbolNoLock(context->baseJob, symbol);
-            return true;
+            if (symbol != node->resolvedSymbolName() || symbol->cptOverloads > 1)
+            {
+                waitSymbolNoLock(context->baseJob, symbol);
+                return true;
+            }
         }
     }
 

@@ -130,6 +130,7 @@ namespace Semantic
     void        setDefaultAccess(AstNode* node);
     void        setNodeAccess(AstNode* node);
 
+    bool           mustInline(SemanticContext* context, AstIdentifier* identifier, const SymbolOverload* overload, bool& canInline);
     bool           mustInline(const AstFuncDecl* funcDecl);
     AstFuncDecl*   getFunctionForReturn(AstNode* node);
     AstIdentifier* createTmpId(SemanticContext* context, AstNode* node, const Utf8& name);

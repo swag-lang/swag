@@ -10,6 +10,41 @@
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 
+bool Semantic::mustInline(SemanticContext* context, AstIdentifier* identifier, const SymbolOverload* overload, bool& canInline)
+{
+    const auto funcDecl = castAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
+
+    canInline = true;
+    if (!mustInline(funcDecl) || isFunctionButNotACall(context, identifier, overload->symbol))
+        canInline = false;
+    if (identifier->hasSpecFlag(AstIdentifier::SPEC_FLAG_NO_INLINE) && !funcDecl->isMixinMacro())
+        canInline = false;
+
+    if (canInline)
+    {
+        VectorNative<SymbolOverload*> overloads;
+        SWAG_CHECK(Semantic::findFuncCallInContext(context, identifier, overloads));
+        YIELD();
+        if (!overloads.empty())
+        {
+            const auto                   callParam = castAst<AstFuncCallParam>(identifier->findParent(AstNodeKind::FuncCallParam), AstNodeKind::FuncCallParam);
+            VectorNative<TypeInfoParam*> result;
+            SWAG_CHECK(Semantic::findFuncCallParamInContext(context, callParam, overloads, result));
+            YIELD();
+            for (const auto it : result)
+            {
+                if (it->typeInfo->isCode())
+                {
+                    canInline = false;
+                    break;
+                }
+            }
+        }
+    }
+
+    return true;
+}
+
 bool Semantic::mustInline(const AstFuncDecl* funcDecl)
 {
     if (!funcDecl)

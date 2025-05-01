@@ -751,6 +751,8 @@ struct AstFuncDecl : AstNode
     bool        mustUserInline(bool forExport = false) const;
     Utf8        getCallName();
 
+    bool isMixinMacro() const { return hasAttribute(ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO); }
+
     DependentJobs          dependentJobs;
     Utf8                   fullnameForeignExport;
     VectorNative<AstNode*> subDecl;
