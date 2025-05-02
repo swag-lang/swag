@@ -298,6 +298,16 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
             break;
         }
 
+        case TokenId::CompilerInject:
+        {
+            const auto node   = Ast::newNode<AstCompilerInject>(AstNodeKind::CompilerInject, this, parent);
+            node->semanticFct = Semantic::resolveCompilerInject;
+            *result = node;
+            SWAG_CHECK(eatToken());
+            SWAG_CHECK(doIdentifierRef(node, &dummyResult, IDENTIFIER_NO_PARAMS));
+            break;
+        }
+            
         case TokenId::CompilerType:
         {
             if (exprFlags.has(EXPR_FLAG_SIMPLE))
@@ -1139,15 +1149,6 @@ bool Parser::doExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result
             }
 
             SWAG_CHECK(doBoolExpression(node, exprFlags, &dummyResult));
-            boolExpression = node;
-            break;
-        }
-        case TokenId::CompilerInject:
-        {
-            const auto node   = Ast::newNode<AstCompilerInject>(AstNodeKind::CompilerInject, this, nullptr);
-            node->semanticFct = Semantic::resolveCompilerInject;
-            SWAG_CHECK(eatToken());
-            SWAG_CHECK(doIdentifierRef(node, &dummyResult, IDENTIFIER_NO_PARAMS));
             boolExpression = node;
             break;
         }
