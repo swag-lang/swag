@@ -1,7 +1,6 @@
 #global skip
-//#global skip
 #[Swag.Mixin]
-func safety(expr: code, message: string = null, loc = #callerlocation)
+func safety(expr: #block bool, message: string = null, loc = #callerlocation)
 {
     let b = #inject expr
     if !b:
