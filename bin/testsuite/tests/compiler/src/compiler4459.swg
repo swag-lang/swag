@@ -1,7 +1,7 @@
 #global testerror "Err0682"
 
 #[Swag.Macro]
-func toto(stmt: #block void)
+func toto(stmt: #code void)
 {
     #macro
     {

@@ -1,5 +1,5 @@
 #[Swag.Macro]
-func toto(x: #block void)
+func toto(x: #code void)
 {
     for 10
     {

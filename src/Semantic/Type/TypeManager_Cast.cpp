@@ -3300,7 +3300,7 @@ bool TypeManager::castToCode(SemanticContext* context, TypeInfo* toType, TypeInf
     {
         toTypeRaw   = concretePtrRef(toTypeRaw);
         fromTypeRaw = concretePtrRef(fromTypeRaw);
-        isValid     = fromTypeRaw->isSame(toTypeRaw, castFlags.with(CAST_FLAG_CAST));
+        isValid     = makeCompatibles(context, toTypeRaw, fromTypeRaw, nullptr, nullptr, castFlags.with(CAST_FLAG_TRY_COERCE));
     }
 
     if (isValid)

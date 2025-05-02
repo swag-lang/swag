@@ -1,7 +1,7 @@
 #global testerror "Err0561"
 
 #[Swag.Macro]
-func toto(x: #block bool)
+func toto(x: #code bool)
 {
 
 }

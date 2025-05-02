@@ -397,7 +397,6 @@ void LanguageSpec::setupKeywords()
     keywords.add("#ref", TokenId::ModifierRef);
     keywords.add("#constref", TokenId::ModifierConstRef);
     keywords.add("#null", TokenId::ModifierNullable);
-    keywords.add("#block", TokenId::ModifierCodeBlock);
 
     keywords.add("#cfg", TokenId::CompilerBuildCfg);
     keywords.add("#os", TokenId::CompilerOs);

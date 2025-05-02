@@ -633,7 +633,7 @@ bool Parser::doTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode** re
     }
 
     // Code
-    if (tokenParse.is(TokenId::ModifierCodeBlock))
+    if (tokenParse.is(TokenId::CompilerCode))
     {
         const auto node = Ast::newTypeExpression(this, parent);
         *result         = node;

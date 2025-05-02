@@ -3,7 +3,7 @@
 
 // Push a new execution context for the given block of code
 #[Swag.Macro]
-func pushContext(cxt: Swag.Context, stmt: #block void)
+func pushContext(cxt: Swag.Context, stmt: #code void)
 {
     var prev = @getcontext()
     defer @setcontext(prev)

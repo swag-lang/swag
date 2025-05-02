@@ -195,7 +195,7 @@
       "patterns": [
         {
           "name": "constant.character.escape",
-          "match": "(#)(tokenpos|curlocation|file|line|cfg|os|arch|cpu|module|backend|self|callerlocation|callerfunction|swagversion|swagrevision|swagbuildnum|swagos|code)"
+          "match": "(#)(tokenpos|curlocation|file|line|cfg|os|arch|cpu|module|backend|self|callerlocation|callerfunction|swagversion|swagrevision|swagbuildnum|swagos)"
         }
       ]
     },
@@ -211,7 +211,7 @@
       "patterns": [
         {
           "name": "entity.name.function.intrinsic",
-          "match": "(#)(up|type)"
+          "match": "(#)(up|type|code)"
         }
       ]
     },
@@ -219,7 +219,7 @@
       "patterns": [
         {
           "name": "entity.name.function.intrinsic",
-          "match": "\\#(prom|over|nodrop|move|moveraw|bit|unconst|back|ref|constref|null|block)\\b"
+          "match": "\\#(prom|over|nodrop|move|moveraw|bit|unconst|back|ref|constref|null)\\b"
         }
       ]
     },

@@ -1,7 +1,7 @@
 //#global skip
 
 #[Swag.Macro]
-func assert(expr: #block bool)
+func assert(expr: #code bool)
 {
     //@print("before")
     discard #inject expr

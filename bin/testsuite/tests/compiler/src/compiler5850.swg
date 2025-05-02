@@ -1,5 +1,5 @@
 #[Swag.Macro]
-func assert(expr: #block bool)
+func assert(expr: #code bool)
 {
     if !#inject expr:
         @assert(false)

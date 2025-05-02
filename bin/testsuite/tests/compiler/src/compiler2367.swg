@@ -1,5 +1,5 @@
 #[Swag.Macro]
-func toto(stmt: #block void)
+func toto(stmt: #code void)
 {
     #scope up
     for 10

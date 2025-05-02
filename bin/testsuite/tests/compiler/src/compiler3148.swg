@@ -5,6 +5,6 @@
 
 #test
 {
-    var x: #block void
+    var x: #code void
     //toto(6)
 }

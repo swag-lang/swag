@@ -1,7 +1,7 @@
 /*#test
 {
     #[Swag.Mixin]
-    func TITI(stmt: #block void)
+    func TITI(stmt: #code void)
     {
         #inject stmt
     }

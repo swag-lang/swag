@@ -3,7 +3,7 @@
 impl A {
 
     #[Swag.Macro]
-    mtd(x: bool, y: bool) opVisit01(s: #block void)
+    mtd(x: bool, y: bool) opVisit01(s: #code void)
     {
     }
 }*/

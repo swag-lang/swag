@@ -1,7 +1,7 @@
 //#global testerror "Err0060"
 
 #[Swag.Mixin]
-func toto(stmt: #block void)
+func toto(stmt: #code void)
 {
     for 5
     {

@@ -21,7 +21,7 @@ bool FormatAst::outputType(FormatContext& context, AstTypeExpression* node)
 {
     if (node->typeFlags.has(TYPE_FLAG_IS_CODE_BLOCK))
     {
-        concat->addString("#block");
+        concat->addString("#code");
         if (node->firstChild())
         {
             concat->addBlank();

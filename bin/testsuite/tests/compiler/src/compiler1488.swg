@@ -1,7 +1,7 @@
 #global testerror "Err0410"
 
 //#[Swag.Inline]
-func toto(x: #block void)
+func toto(x: #code void)
 {
 }
 

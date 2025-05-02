@@ -20,7 +20,7 @@ func toto(v: A)
 }
 
 #[Swag.Macro]
-func tata(c: #block void)
+func tata(c: #code void)
 {
     #inject c
 }

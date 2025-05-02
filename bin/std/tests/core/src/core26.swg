@@ -1,5 +1,5 @@
 #[Swag.Macro]
-func Visit(str: string, user: #block void)
+func Visit(str: string, user: #code void)
 {
     var ptr   = @dataof(str)
     var count = @countof(str)

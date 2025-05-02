@@ -1,7 +1,7 @@
 #global testerror "Err0319"
 
 #[Swag.Macro]
-func toto(x: #block)
+func toto(x: #code)
 {
     #inject x
     #inject x

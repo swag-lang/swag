@@ -422,7 +422,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
         case TokenId::SymAsterisk:
         case TokenId::SymCircumflex:
         case TokenId::SymAmpersand:
-        case TokenId::ModifierCodeBlock:
+        case TokenId::CompilerCode:
             if (exprFlags.has(EXPR_FLAG_SIMPLE))
                 return invalidTokenError(InvalidTokenError::PrimaryExpression);
             SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_TYPE_EXPR, result));

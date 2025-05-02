@@ -3,7 +3,7 @@
 var G = 0
 
 #[Swag.Macro]
-func parse(stmt: #block void)->s32
+func parse(stmt: #code void)->s32
 {
     #macro
     {

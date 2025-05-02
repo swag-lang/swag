@@ -11,7 +11,7 @@ impl AA
     }
 
     #[Swag.Macro]
-    func titi(using self, ptr: *void, stmt: #block void)
+    func titi(using self, ptr: *void, stmt: #code void)
     {
         func toto(ptr: *void)
         {

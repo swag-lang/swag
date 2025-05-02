@@ -76,7 +76,7 @@ func readAllLines(fullname: string, encoding = TextEncoding.Utf8)->Array'String 
 
 // Call user code for each line
 #[Swag.Macro]
-func readEachLines(fullname: string, encoding = TextEncoding.Utf8, stmt: #block void) throw
+func readEachLines(fullname: string, encoding = TextEncoding.Utf8, stmt: #code void) throw
 {
     var textReader: TextReader
     textReader.open(fullname, encoding)
