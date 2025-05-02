@@ -131,7 +131,7 @@ bool FormatAst::outputCompilerSpecialValue(FormatContext&, AstNode* node) const
 
 bool FormatAst::outputCompilerMixin(FormatContext& context, AstNode* node)
 {
-    const auto compilerMixin = castAst<AstCompilerMixin>(node, AstNodeKind::CompilerInject);
+    const auto compilerMixin = castAst<AstCompilerInject>(node, AstNodeKind::CompilerInject);
     if (node->hasAstFlag(AST_DISCARD))
     {
         concat->addString("discard");

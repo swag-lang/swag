@@ -157,7 +157,7 @@ bool Parser::doCompilerIfStatement(AstNode* parent, AstNode** result)
 
 bool Parser::doCompilerInject(AstNode* parent, AstNode** result)
 {
-    const auto node   = Ast::newNode<AstCompilerMixin>(AstNodeKind::CompilerInject, this, parent);
+    const auto node   = Ast::newNode<AstCompilerInject>(AstNodeKind::CompilerInject, this, parent);
     *result           = node;
     node->semanticFct = Semantic::resolveCompilerInject;
     node->token       = tokenParse.token;

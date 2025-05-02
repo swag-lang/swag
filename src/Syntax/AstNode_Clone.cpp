@@ -250,7 +250,7 @@ AstNode* AstNode::clone(CloneContext& context)
         case AstNodeKind::CompilerMacro:
             return clone<AstCompilerMacro>(this, context);
         case AstNodeKind::CompilerInject:
-            return clone<AstCompilerMixin>(this, context);
+            return clone<AstCompilerInject>(this, context);
         case AstNodeKind::Inline:
             return clone<AstInline>(this, context);
         case AstNodeKind::CompilerIfBlock:

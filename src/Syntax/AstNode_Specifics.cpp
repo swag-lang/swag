@@ -1070,11 +1070,17 @@ AstNode* AstCompilerMacro::clone(CloneContext& context)
     return newNode;
 }
 
-AstNode* AstCompilerMixin::clone(CloneContext& context)
+AstNode* AstCompilerInject::clone(CloneContext& context)
 {
-    const auto newNode = Ast::newNode<AstCompilerMixin>();
+    const auto newNode = Ast::newNode<AstCompilerInject>();
     newNode->copyFrom(context, this);
     newNode->replaceTokens = replaceTokens;
+
+    // If an injection has already been done because of inlining, we remove it,
+    // as it will be done again, in this new clone situation.
+    if (newNode->childCount() == 2)
+        newNode->children.pop_back();
+    
     return newNode;
 }
 

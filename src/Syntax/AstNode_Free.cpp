@@ -161,7 +161,7 @@ void AstNode::release()
             Allocator::free<AstCompilerMacro>(this);
             break;
         case AstNodeKind::CompilerInject:
-            Allocator::free<AstCompilerMixin>(this);
+            Allocator::free<AstCompilerInject>(this);
             break;
         case AstNodeKind::Inline:
             Allocator::free<AstInline>(this);

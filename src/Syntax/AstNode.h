@@ -1151,7 +1151,7 @@ struct AstCompilerMacro : AstNode
     Scope* scope;
 };
 
-struct AstCompilerMixin : AstNode
+struct AstCompilerInject : AstNode
 {
     AstNode* clone(CloneContext& context);
 

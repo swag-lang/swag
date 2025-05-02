@@ -430,7 +430,7 @@ bool Semantic::resolveCompilerMacro(SemanticContext* context)
 
 bool Semantic::resolveCompilerInject(SemanticContext* context)
 {
-    const auto node = castAst<AstCompilerMixin>(context->node, AstNodeKind::CompilerInject);
+    const auto node = castAst<AstCompilerInject>(context->node, AstNodeKind::CompilerInject);
 
     if (node->hasSemFlag(SEMFLAG_COMPILER_INSERT))
     {
@@ -465,6 +465,18 @@ bool Semantic::resolveCompilerInject(SemanticContext* context)
 
     if (node->hasAstFlag(AST_DISCARD))
         Ast::setDiscard(cloneContent);
+
+    // In case the injected code has references to parameters of an inlined function,
+    // we need to be sure that the parameter scope is covered
+    SWAG_ASSERT(node->ownerInline());
+    if (typeCode->content->ownerFct->hasAttribute(ATTRIBUTE_INLINE))
+    {
+        auto inlineNode = node->ownerInline();
+        while (inlineNode && inlineNode->func != typeCode->content->ownerFct && inlineNode->hasOwnerInline())
+            inlineNode = inlineNode->ownerInline();
+        if (inlineNode && inlineNode->parametersScope)
+            cloneContent->addAlternativeScope(inlineNode->parametersScope);
+    }
 
     cloneContent->addExtraPointer(ExtraPointerKind::AlternativeNode, typeCode->content->parent);
     cloneContent->addAlternativeScope(typeCode->content->parent->ownerScope);

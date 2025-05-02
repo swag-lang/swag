@@ -1144,7 +1144,7 @@ bool Parser::doExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result
         }
         case TokenId::CompilerInject:
         {
-            const auto node   = Ast::newNode<AstCompilerMixin>(AstNodeKind::CompilerInject, this, nullptr);
+            const auto node   = Ast::newNode<AstCompilerInject>(AstNodeKind::CompilerInject, this, nullptr);
             node->semanticFct = Semantic::resolveCompilerInject;
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doIdentifierRef(node, &dummyResult, IDENTIFIER_NO_PARAMS));

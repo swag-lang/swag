@@ -1,4 +1,4 @@
-#global skip
+//#global skip
 #[Swag.Mixin]
 func safety(expr: #block bool, message: string = null, loc = #callerlocation)
 {
