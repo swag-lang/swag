@@ -3458,6 +3458,7 @@ void ByteCodeOptimizer::reduceCast(ByteCodeOptContext* context, ByteCodeInstruct
         case ByteCodeOp::CastBool8:
             if (ip[1].op == ByteCodeOp::NegBool &&
                 ip[0].a.u32 == ip[1].b.u32 &&
+                ip[0].a.u32 != ip[0].b.u32 &&
                 !ip->hasFlag(BCI_IMM_B) &&
                 !ip[1].hasFlag(BCI_IMM_B | BCI_START_STMT))
             {
@@ -3472,6 +3473,7 @@ void ByteCodeOptimizer::reduceCast(ByteCodeOptContext* context, ByteCodeInstruct
         case ByteCodeOp::CastBool16:
             if (ip[1].op == ByteCodeOp::NegBool &&
                 ip[0].a.u32 == ip[1].b.u32 &&
+                ip[0].a.u32 != ip[0].b.u32 &&
                 !ip->hasFlag(BCI_IMM_B) &&
                 !ip[1].hasFlag(BCI_IMM_B | BCI_START_STMT))
             {
@@ -3486,6 +3488,7 @@ void ByteCodeOptimizer::reduceCast(ByteCodeOptContext* context, ByteCodeInstruct
         case ByteCodeOp::CastBool32:
             if (ip[1].op == ByteCodeOp::NegBool &&
                 ip[0].a.u32 == ip[1].b.u32 &&
+                ip[0].a.u32 != ip[0].b.u32 &&
                 !ip->hasFlag(BCI_IMM_B) &&
                 !ip[1].hasFlag(BCI_IMM_B | BCI_START_STMT))
             {
@@ -3500,6 +3503,7 @@ void ByteCodeOptimizer::reduceCast(ByteCodeOptContext* context, ByteCodeInstruct
         case ByteCodeOp::CastBool64:
             if (ip[1].op == ByteCodeOp::NegBool &&
                 ip[0].a.u32 == ip[1].b.u32 &&
+                ip[0].a.u32 != ip[0].b.u32 &&
                 !ip->hasFlag(BCI_IMM_B) &&
                 !ip[1].hasFlag(BCI_IMM_B | BCI_START_STMT))
             {
@@ -3508,6 +3512,7 @@ void ByteCodeOptimizer::reduceCast(ByteCodeOptContext* context, ByteCodeInstruct
                 ip[1].a.u32 = ip->b.u32;
                 ip[1].b.u64 = 0;
                 ip[1].addFlag(BCI_IMM_B);
+        
                 break;
             }
             break;
