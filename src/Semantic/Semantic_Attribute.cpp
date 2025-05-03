@@ -247,6 +247,7 @@ void Semantic::inheritAttributesFromOwnerFunc(AstNode* child)
 
     child->addAttribute(attributeFlags.mask(ATTRIBUTE_PRINT_BC));
     child->addAttribute(attributeFlags.mask(ATTRIBUTE_PRINT_BC_GEN));
+    child->addAttribute(attributeFlags.mask(ATTRIBUTE_PRINT_ASM));
     inheritAttributesFrom(child, attributeFlags, safetyOn, safetyOff);
 }
 
