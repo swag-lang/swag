@@ -432,13 +432,16 @@ bool Semantic::resolveCompilerInject(SemanticContext* context)
 {
     const auto node = castAst<AstCompilerInject>(context->node, AstNodeKind::CompilerInject);
 
-    if (node->hasSemFlag(SEMFLAG_COMPILER_INSERT))
+    if (node->hasSemFlag(SEMFLAG_COMPILER_INJECT))
     {
-        node->typeInfo = node->lastChild()->typeInfo;
+        const auto expr = node->lastChild();
+        node->typeInfo  = expr->typeInfo;
+        node->inheritAstFlagsAnd(AST_CONST_EXPR, AST_R_VALUE);
+        node->inheritComputedValue(expr);
         return true;
     }
 
-    node->addSemFlag(SEMFLAG_COMPILER_INSERT);
+    node->addSemFlag(SEMFLAG_COMPILER_INJECT);
 
     auto expr = node->firstChild();
     SWAG_VERIFY(expr->typeInfo->isCode(), context->report({expr, formErr(Err0549, expr->typeInfo->getDisplayNameC())}));
