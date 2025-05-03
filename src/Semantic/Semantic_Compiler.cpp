@@ -447,8 +447,17 @@ bool Semantic::resolveCompilerInject(SemanticContext* context)
     node->byteCodeFct = ByteCodeGen::emitDebugNop;
     expr->addAstFlag(AST_NO_BYTECODE);
 
-    const auto typeCode = castTypeInfo<TypeInfoCodeBlock>(expr->typeInfo, TypeInfoKind::CodeBlock);
-    SWAG_ASSERT(typeCode->content);
+    // If the content of the type is not defined, then this is a default value (hope so)
+    const auto typeCode        = castTypeInfo<TypeInfoCodeBlock>(expr->typeInfo, TypeInfoKind::CodeBlock);
+    auto       typeCodeContent = typeCode->content;
+    if (!typeCodeContent)
+    {
+        SWAG_ASSERT(expr->resolvedSymbolOverload());
+        auto param      = castAst<AstVarDecl>(expr->resolvedSymbolOverload()->node, AstNodeKind::FuncDeclParam);
+        typeCodeContent = param->assignment;
+    }
+
+    SWAG_ASSERT(typeCodeContent);
 
     CloneContext cloneContext;
     cloneContext.parent                 = node;
@@ -461,7 +470,7 @@ bool Semantic::resolveCompilerInject(SemanticContext* context)
     cloneContext.removeFlags            = AST_R_VALUE;
     cloneContext.ownerFct               = node->ownerFct;
     cloneContext.cloneFlags             = CLONE_INJECT;
-    const auto cloneContent             = typeCode->content->clone(cloneContext);
+    const auto cloneContent             = typeCodeContent->clone(cloneContext);
 
     if (node->hasAstFlag(AST_DISCARD))
         Ast::setDiscard(cloneContent);
@@ -469,17 +478,17 @@ bool Semantic::resolveCompilerInject(SemanticContext* context)
     // In case the injected code has references to parameters of an inlined function,
     // we need to be sure that the parameter scope is covered
     SWAG_ASSERT(node->ownerInline());
-    if (typeCode->content->ownerFct->hasAttribute(ATTRIBUTE_INLINE))
+    if (typeCodeContent->ownerFct->hasAttribute(ATTRIBUTE_INLINE))
     {
         auto inlineNode = node->ownerInline();
-        while (inlineNode && inlineNode->func != typeCode->content->ownerFct && inlineNode->hasOwnerInline())
+        while (inlineNode && inlineNode->func != typeCodeContent->ownerFct && inlineNode->hasOwnerInline())
             inlineNode = inlineNode->ownerInline();
         if (inlineNode && inlineNode->parametersScope)
             cloneContent->addAlternativeScope(inlineNode->parametersScope);
     }
 
-    cloneContent->addExtraPointer(ExtraPointerKind::AlternativeNode, typeCode->content->parent);
-    cloneContent->addAlternativeScope(typeCode->content->parent->ownerScope);
+    cloneContent->addExtraPointer(ExtraPointerKind::AlternativeNode, typeCodeContent->parent);
+    cloneContent->addAlternativeScope(typeCodeContent->parent->ownerScope);
     cloneContent->removeAstFlag(AST_NO_SEMANTIC | AST_NO_BYTECODE);
     node->typeInfo = cloneContent->typeInfo;
     context->baseJob->nodes.push_back(cloneContent);

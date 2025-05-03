@@ -242,7 +242,7 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
                     SWAG_ASSERT(symbol);
                     for (const auto overload : symbol->overloads)
                     {
-                        if (overload->hasFlag(OVERLOAD_VAR_INLINE))
+                        if (overload->hasFlag(OVERLOAD_VAR_INLINE) && !overload->typeInfo->isCode())
                         {
                             RegisterList rl;
                             SWAG_CHECK(emitDefaultParamValue(context, defaultParam, rl));
