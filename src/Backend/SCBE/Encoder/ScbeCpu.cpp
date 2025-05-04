@@ -134,7 +134,6 @@ void ScbeCpu::addFunction(const Utf8& funcName, const CallConv* ccFunc, ByteCode
         if (bc->node)
             cpuFct->node = castAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl);
         cpuFct->typeFunc = bc->getCallType();
-        SWAG_ASSERT(!bc->cpuFunc);
 
         // Calling convention, space for at least 'MAX_CALL_CONV_REGISTERS' parameters when calling a function.
         // (should ideally be reserved only if we have a call)
