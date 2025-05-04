@@ -948,12 +948,14 @@ namespace OS
         const auto returnType = TypeManager::concreteType(typeInfoFunc->returnType);
 
         g_GenFFI.cpu = &g_GenFFI;
-        g_GenFFI.cc  = CallConv::get(CallConvKind::Swag);
+        if (!g_GenFFI.cpuFct)
+            g_GenFFI.cpuFct = Allocator::alloc<CpuFunction>();
+        g_GenFFI.cpuFct->cc = CallConv::get(CallConvKind::Swag);
 
         uint32_t stackSize = sizeof(void*);
         stackSize += pushCPUParams.size() * sizeof(void*);
-        stackSize = std::max(stackSize, static_cast<uint32_t>(g_GenFFI.cc->paramsRegistersInteger.size() * sizeof(void*)));
-        stackSize = Math::align(stackSize, g_GenFFI.cc->stackAlign);
+        stackSize = std::max(stackSize, static_cast<uint32_t>(g_GenFFI.cpuFct->cc->paramsRegistersInteger.size() * sizeof(void*)));
+        stackSize = Math::align(stackSize, g_GenFFI.cpuFct->cc->stackAlign);
 
         static constexpr int JIT_SIZE_BUFFER = 16 * 1024;
         uint64_t             startOffset     = 0;
@@ -976,8 +978,8 @@ namespace OS
                 VectorNative<uint32_t> unwindOffsetRegs;
 
                 // Fake emit to compute the unwind infos
-                g_GenFFI.emitPush(g_GenFFI.cc->ffiBaseRegister);
-                unwindRegs.push_back(g_GenFFI.cc->ffiBaseRegister);
+                g_GenFFI.emitPush(g_GenFFI.cpuFct->cc->ffiBaseRegister);
+                unwindRegs.push_back(g_GenFFI.cpuFct->cc->ffiBaseRegister);
                 unwindOffsetRegs.push_back(g_GenFFI.concat.totalCount());
 
                 g_GenFFI.emitOpBinaryRegImm(CpuReg::Rsp, stackSize, CpuOp::SUB, OpBits::B64);
@@ -1006,23 +1008,23 @@ namespace OS
             startOffset = g_GenFFI.concat.currentSP - g_GenFFI.concat.firstBucket->data;
             SWAG_ASSERT(startOffset < JIT_SIZE_BUFFER);
 
-            g_GenFFI.emitPush(g_GenFFI.cc->ffiBaseRegister);
+            g_GenFFI.emitPush(g_GenFFI.cpuFct->cc->ffiBaseRegister);
             g_GenFFI.emitOpBinaryRegImm(CpuReg::Rsp, stackSize, CpuOp::SUB, OpBits::B64);
-            g_GenFFI.emitLoadRegImm(g_GenFFI.cc->ffiBaseRegister, reinterpret_cast<uint64_t>(context->sp), OpBits::B64);
+            g_GenFFI.emitLoadRegImm(g_GenFFI.cpuFct->cc->ffiBaseRegister, reinterpret_cast<uint64_t>(context->sp), OpBits::B64);
 
-            g_GenFFI.emitComputeCallParameters(typeInfoFunc, pushCPUParams, g_GenFFI.cc->ffiBaseRegister, 0, retCopyAddr);
+            g_GenFFI.emitComputeCallParameters(typeInfoFunc, pushCPUParams, g_GenFFI.cpuFct->cc->ffiBaseRegister, 0, retCopyAddr);
 
-            g_GenFFI.emitLoadRegImm(g_GenFFI.cc->computeRegI0, reinterpret_cast<uint64_t>(foreignPtr), OpBits::B64);
-            g_GenFFI.emitCallReg(g_GenFFI.cc->computeRegI0, typeInfoFunc->getCallConv());
+            g_GenFFI.emitLoadRegImm(g_GenFFI.cpuFct->cc->computeRegI0, reinterpret_cast<uint64_t>(foreignPtr), OpBits::B64);
+            g_GenFFI.emitCallReg(g_GenFFI.cpuFct->cc->computeRegI0, typeInfoFunc->getCallConv());
 
             if (!returnType->isVoid() && !retCopyAddr)
             {
-                g_GenFFI.emitLoadRegImm(g_GenFFI.cc->ffiBaseRegister, reinterpret_cast<uint64_t>(context->registersRR), OpBits::B64);
-                g_GenFFI.emitStoreCallResult(g_GenFFI.cc->ffiBaseRegister, 0, typeInfoFunc);
+                g_GenFFI.emitLoadRegImm(g_GenFFI.cpuFct->cc->ffiBaseRegister, reinterpret_cast<uint64_t>(context->registersRR), OpBits::B64);
+                g_GenFFI.emitStoreCallResult(g_GenFFI.cpuFct->cc->ffiBaseRegister, 0, typeInfoFunc);
             }
 
             g_GenFFI.emitOpBinaryRegImm(CpuReg::Rsp, stackSize, CpuOp::ADD, OpBits::B64);
-            g_GenFFI.emitPop(g_GenFFI.cc->ffiBaseRegister);
+            g_GenFFI.emitPop(g_GenFFI.cpuFct->cc->ffiBaseRegister);
             g_GenFFI.emitRet();
         }
 

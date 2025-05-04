@@ -8,6 +8,7 @@
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
+#pragma optimize("", off)
 
 ScbeDebugTypeIndex ScbeDebug::getTypeSlice(ScbeCpu& pp, const TypeInfo* typeInfo, TypeInfo* pointedType, ScbeDebugTypeIndex* value)
 {

@@ -20,7 +20,7 @@ struct Llvm final : Backend
     explicit Llvm(Module* mdl);
 
     JobResult prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob) override;
-    bool      emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc) override;
+    bool      emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildParameters& buildParameters, ByteCode* bc) override;
 
     static void createRuntime(LlvmEncoder& pp);
     static void generateObjFile(LlvmEncoder& pp);

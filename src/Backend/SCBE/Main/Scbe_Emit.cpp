@@ -81,7 +81,7 @@ void Scbe::emitIMMC(ScbeCpu& pp, CpuReg reg, OpBits numBitsSrc, OpBits numBitsDs
 
 void Scbe::emitShiftRightArithmetic(ScbeCpu& pp)
 {
-    const auto cc     = pp.cc;
+    const auto cc     = pp.cpuFct->cc;
     const auto ip     = pp.ip;
     const auto opBits = ScbeCpu::getOpBits(ip->op);
     if (!ip->hasFlag(BCI_IMM_A) && ip->hasFlag(BCI_IMM_B))
@@ -110,7 +110,7 @@ void Scbe::emitShiftRightArithmetic(ScbeCpu& pp)
 
 void Scbe::emitShiftRightEqArithmetic(ScbeCpu& pp)
 {
-    const auto cc     = pp.cc;
+    const auto cc     = pp.cpuFct->cc;
     const auto ip     = pp.ip;
     const auto opBits = ScbeCpu::getOpBits(ip->op);
     if (ip->hasFlag(BCI_IMM_B))
@@ -131,7 +131,7 @@ void Scbe::emitShiftRightEqArithmetic(ScbeCpu& pp)
 
 void Scbe::emitShiftLogical(ScbeCpu& pp, CpuOp op)
 {
-    const auto cc     = pp.cc;
+    const auto cc     = pp.cpuFct->cc;
     const auto ip     = pp.ip;
     const auto opBits = ScbeCpu::getOpBits(ip->op);
     if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 >= ScbeCpu::getNumBits(opBits))
@@ -158,7 +158,7 @@ void Scbe::emitShiftLogical(ScbeCpu& pp, CpuOp op)
 
 void Scbe::emitShiftEqLogical(ScbeCpu& pp, CpuOp op)
 {
-    const auto cc     = pp.cc;
+    const auto cc     = pp.cpuFct->cc;
     const auto ip     = pp.ip;
     const auto opBits = ScbeCpu::getOpBits(ip->op);
     if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 >= ScbeCpu::getNumBits(opBits))
@@ -199,7 +199,7 @@ void Scbe::emitOverflow(ScbeCpu& pp, const char* msg, bool isSigned)
 
 void Scbe::emitBinOp(ScbeCpu& pp, CpuOp op, CpuEmitFlags emitFlags)
 {
-    const auto cc     = pp.cc;
+    const auto cc     = pp.cpuFct->cc;
     const auto ip     = pp.ip;
     const auto isInt  = ScbeCpu::isInt(ip->op);
     const auto opBits = ScbeCpu::getOpBits(ip->op);
@@ -237,7 +237,7 @@ void Scbe::emitBinOpOverflow(ScbeCpu& pp, CpuOp op, SafetyMsg safetyMsg, TypeInf
 
 void Scbe::emitBinOpEq(ScbeCpu& pp, uint32_t offset, CpuOp op, CpuEmitFlags emitFlags)
 {
-    const auto cc     = pp.cc;
+    const auto cc     = pp.cpuFct->cc;
     const auto ip     = pp.ip;
     const auto isInt  = ScbeCpu::isInt(ip->op);
     const auto opBits = ScbeCpu::getOpBits(ip->op);
@@ -267,7 +267,7 @@ void Scbe::emitBinOpEqOverflow(ScbeCpu& pp, CpuOp op, SafetyMsg safetyMsg, TypeI
 
 void Scbe::emitBinOpEqLock(ScbeCpu& pp, CpuOp op)
 {
-    const auto cc     = pp.cc;
+    const auto cc     = pp.cpuFct->cc;
     const auto ip     = pp.ip;
     const auto opBits = ScbeCpu::getOpBits(ip->op);
     pp.emitLoadRegMem(cc->computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
@@ -277,7 +277,7 @@ void Scbe::emitBinOpEqLock(ScbeCpu& pp, CpuOp op)
 
 void Scbe::emitBinOpEqS(ScbeCpu& pp, CpuOp op)
 {
-    const auto cc     = pp.cc;
+    const auto cc     = pp.cpuFct->cc;
     const auto ip     = pp.ip;
     const auto isInt  = ScbeCpu::isInt(ip->op);
     const auto opBits = ScbeCpu::getOpBits(ip->op);
@@ -295,7 +295,7 @@ void Scbe::emitBinOpEqS(ScbeCpu& pp, CpuOp op)
 
 void Scbe::emitCompareOp(ScbeCpu& pp, CpuReg reg, CpuCond cond)
 {
-    const auto cc     = pp.cc;
+    const auto cc     = pp.cpuFct->cc;
     const auto ip     = pp.ip;
     const auto isInt  = ScbeCpu::isInt(ip->op);
     const auto opBits = ScbeCpu::getOpBits(ip->op);
@@ -325,7 +325,7 @@ void Scbe::emitAddSubMul64(ScbeCpu& pp, uint64_t mulValue, CpuOp op)
 {
     SWAG_ASSERT(op == CpuOp::ADD || op == CpuOp::SUB);
 
-    const auto cc    = pp.cc;
+    const auto cc    = pp.cpuFct->cc;
     const auto ip    = pp.ip;
     const auto value = ip->b.u64 * mulValue;
     if (ip->hasFlag(BCI_IMM_B) && value == 0 && ip->a.u32 == ip->c.u32)
@@ -384,7 +384,7 @@ void Scbe::emitInternalPanic(ScbeCpu& pp, const char* msg)
 
 void Scbe::emitJumpCmp(ScbeCpu& pp, CpuCondJump op, OpBits opBits)
 {
-    const auto cc    = pp.cc;
+    const auto cc    = pp.cpuFct->cc;
     const auto ip    = pp.ip;
     const auto isInt = ScbeCpu::isInt(ip->op);
     if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_C))
@@ -411,7 +411,7 @@ void Scbe::emitJumpCmp(ScbeCpu& pp, CpuCondJump op, OpBits opBits)
 
 void Scbe::emitJumpCmpAddr(ScbeCpu& pp, CpuCondJump op, CpuReg memReg, uint64_t memOffset, OpBits opBits)
 {
-    const auto cc = pp.cc;
+    const auto cc = pp.cpuFct->cc;
     const auto ip = pp.ip;
 
     if (ip->hasFlag(BCI_IMM_C))
@@ -429,7 +429,7 @@ void Scbe::emitJumpCmpAddr(ScbeCpu& pp, CpuCondJump op, CpuReg memReg, uint64_t 
 
 void Scbe::emitJumpCmp2(ScbeCpu& pp, CpuCondJump op1, CpuCondJump op2, OpBits opBits)
 {
-    const auto cc = pp.cc;
+    const auto cc = pp.cpuFct->cc;
     const auto ip = pp.ip;
 
     if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_C))
@@ -450,7 +450,7 @@ void Scbe::emitJumpCmp2(ScbeCpu& pp, CpuCondJump op1, CpuCondJump op2, OpBits op
 
 void Scbe::emitJumpCmp3(ScbeCpu& pp, CpuCondJump op1, CpuCondJump op2, OpBits opBits)
 {
-    const auto cc = pp.cc;
+    const auto cc = pp.cpuFct->cc;
     const auto ip = pp.ip;
 
     if (!ip->hasFlag(BCI_IMM_A | BCI_IMM_C))
@@ -471,7 +471,7 @@ void Scbe::emitJumpCmp3(ScbeCpu& pp, CpuCondJump op1, CpuCondJump op2, OpBits op
 
 void Scbe::emitJumpTable(ScbeCpu& pp)
 {
-    const auto cc     = pp.cc;
+    const auto cc     = pp.cpuFct->cc;
     const auto ip     = pp.ip;
     const auto opBits = ScbeCpu::getOpBits(ip->op);
 
@@ -495,7 +495,7 @@ void Scbe::emitJumpTable(ScbeCpu& pp)
 
 void Scbe::emitCopyVaargs(ScbeCpu& pp)
 {
-    const auto cc = pp.cc;
+    const auto cc = pp.cpuFct->cc;
     const auto ip = pp.ip;
     if (!pp.pushRVParams.empty())
     {
@@ -566,13 +566,13 @@ void Scbe::emitCopyVaargs(ScbeCpu& pp)
 
 void Scbe::emitClearMem(ScbeCpu& pp, CpuReg memReg, uint64_t memOffset, uint32_t count)
 {
-    const auto cc = pp.cc;
+    const auto cc = pp.cpuFct->cc;
     if (count >= 16)
     {
         pp.emitClearReg(cc->computeRegF0, OpBits::B32);
         while (count >= 16)
         {
-            pp.emitLoadMemReg(memReg, memOffset, pp.cc->computeRegF0, OpBits::B128);
+            pp.emitLoadMemReg(memReg, memOffset, pp.cpuFct->cc->computeRegF0, OpBits::B128);
             count -= 16;
             memOffset += 16;
         }
@@ -609,7 +609,7 @@ void Scbe::emitClearMem(ScbeCpu& pp, CpuReg memReg, uint64_t memOffset, uint32_t
 
 void Scbe::emitCopyMem(ScbeCpu& pp, CpuReg memRegDst, CpuReg memRegSrc, uint32_t count)
 {
-    const auto cc     = pp.cc;
+    const auto cc     = pp.cpuFct->cc;
     uint32_t   offset = 0;
 
     while (count >= 64)

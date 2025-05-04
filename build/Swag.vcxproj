@@ -253,6 +253,7 @@
     <ClInclude Include="..\src\Backend\SCBE\Debug\ScbeDebug.h" />
     <ClInclude Include="..\src\Backend\SCBE\Debug\ScbeDebugCodeView.h" />
     <ClInclude Include="..\src\Backend\SCBE\Encoder\Micro\Optimize\ScbeOptimizer.h" />
+    <ClInclude Include="..\src\Backend\SCBE\Encoder\Micro\Optimize\ScbeOptimizerJob.h" />
     <ClInclude Include="..\src\Backend\SCBE\Encoder\Micro\Optimize\StackRange.h" />
     <ClInclude Include="..\src\Backend\SCBE\Encoder\Micro\ScbeMicro.h" />
     <ClInclude Include="..\src\Backend\SCBE\Encoder\Micro\ScbeMicroInstruction.h" />
@@ -440,6 +441,7 @@
     <ClCompile Include="..\src\Backend\SCBE\Debug\ScbeDebug.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Debug\ScbeDebugCodeView.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Encoder\Micro\Optimize\ScbeOptimizer.cpp" />
+    <ClCompile Include="..\src\Backend\SCBE\Encoder\Micro\Optimize\ScbeOptimizerJob.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Encoder\Micro\Optimize\ScbeOptimizer_Alias.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Encoder\Micro\Optimize\ScbeOptimizer_DeadCode.cpp" />
     <ClCompile Include="..\src\Backend\SCBE\Encoder\Micro\Optimize\ScbeOptimizer_DeadStore.cpp" />

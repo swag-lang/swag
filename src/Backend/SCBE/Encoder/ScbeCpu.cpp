@@ -11,6 +11,7 @@
 #include "Semantic/Type/TypeInfo.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
+#pragma optimize("", off)
 
 void ScbeCpu::init(const BuildParameters& buildParameters)
 {
@@ -120,37 +121,41 @@ void ScbeCpu::emitLabel(uint32_t instructionIndex)
         cpuFct->labels[instructionIndex] = static_cast<int32_t>(concat.totalCount());
 }
 
-CpuFunction* ScbeCpu::addFunction(const Utf8& funcName, const CallConv* ccFunc, ByteCode* bc)
+void ScbeCpu::addFunction(const Utf8& funcName, const CallConv* ccFunc, ByteCode* bc)
 {
-    concat.align(16);
-
-    CpuFunction* cf  = Allocator::alloc<CpuFunction>();
-    cc               = ccFunc;
-    cf->cc           = ccFunc;
-    cf->bc           = bc;
-    cf->symbolIndex  = getOrAddSymbol(funcName, CpuSymbolKind::Function, concat.totalCount() - textSectionOffset)->index;
-    cf->startAddress = concat.totalCount();
+    cpuFct           = Allocator::alloc<CpuFunction>();
+    cpuFct->funcName = funcName;
+    cpuFct->pp       = Allocator::alloc<ScbeMicro>();
+    cpuFct->cc       = ccFunc;
+    cpuFct->bc       = bc;
 
     if (bc)
     {
         if (bc->node)
-            cf->node = castAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl);
-        cf->typeFunc = bc->getCallType();
+            cpuFct->node = castAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl);
+        cpuFct->typeFunc = bc->getCallType();
+        SWAG_ASSERT(!bc->cpuFunc);
 
-        // Calling convention, space for at least 'MAX_CALL_CONV_REGISTERS' parameters when calling a function
+        // Calling convention, space for at least 'MAX_CALL_CONV_REGISTERS' parameters when calling a function.
         // (should ideally be reserved only if we have a call)
         //
-        // Because of variadic parameters in fct calls, we need to add some extra room, in case we have to flatten them
+        // Because of variadic parameters in fct calls, we need to add some extra room, in case we have to flatten them.
         // We want to be sure to have the room to flatten the array of variadic (make all params contiguous). That's
         // why we multiply by 2.
         //
-        // Why 2 ?? magic number ??
-        cf->sizeStackCallParams = 2 * static_cast<uint32_t>(std::max(CallConv::MAX_CALL_CONV_REGISTERS, (bc->maxCallParams + 1)) * sizeof(void*));
-        cf->sizeStackCallParams = Math::align(cf->sizeStackCallParams, ccFunc->stackAlign);
+        // Why 2 ?? Magic number ??
+        cpuFct->sizeStackCallParams = 2 * static_cast<uint32_t>(std::max(CallConv::MAX_CALL_CONV_REGISTERS, (bc->maxCallParams + 1)) * sizeof(void*));
+        cpuFct->sizeStackCallParams = Math::align(cpuFct->sizeStackCallParams, ccFunc->stackAlign);
     }
 
-    functions.push_back(cf);
-    return cf;
+    functions.push_back(cpuFct);
+}
+
+void ScbeCpu::startFunction()
+{
+    concat.align(16);
+    cpuFct->symbolIndex  = getOrAddSymbol(cpuFct->funcName, CpuSymbolKind::Function, concat.totalCount() - textSectionOffset)->index;
+    cpuFct->startAddress = concat.totalCount();
 }
 
 void ScbeCpu::endFunction() const
@@ -174,8 +179,8 @@ RegisterSet ScbeCpu::getReadRegisters(ScbeMicroInstruction* inst)
     RegisterSet result;
     if (inst->isCall())
     {
-        result.append(cc->paramsRegistersIntegerSet);
-        result.append(cc->paramsRegistersFloatSet);
+        result.append(cpuFct->cc->paramsRegistersIntegerSet);
+        result.append(cpuFct->cc->paramsRegistersFloatSet);
     }
 
     if (inst->hasReadRegA())
@@ -193,10 +198,10 @@ RegisterSet ScbeCpu::getWriteRegisters(ScbeMicroInstruction* inst)
     RegisterSet result;
     if (inst->isCall())
     {
-        result.append(cc->volatileRegistersIntegerSet);
-        result.append(cc->volatileRegistersFloatSet);
-        result.add(cc->returnByRegisterInteger);
-        result.add(cc->returnByRegisterFloat);
+        result.append(cpuFct->cc->volatileRegistersIntegerSet);
+        result.append(cpuFct->cc->volatileRegistersFloatSet);
+        result.add(cpuFct->cc->returnByRegisterInteger);
+        result.add(cpuFct->cc->returnByRegisterFloat);
     }
     else
     {

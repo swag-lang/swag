@@ -10,6 +10,7 @@
 
 enum class ByteCodeOp : uint16_t;
 struct ScbeMicroInstruction;
+struct ScbeMicro;
 struct AstNode;
 
 enum class CpuPushParamType
@@ -200,6 +201,7 @@ struct CpuFunction
     bool     isStackOffsetReg(uint32_t offset) const { return offset >= getStackOffsetReg(0) && offset < getStackOffsetReg(bc->maxReservedRegisterRC); }
     bool     isStackOffsetTransient(uint32_t offset) const { return isStackOffsetLocalParam(offset) || isStackOffsetReg(offset) || isStackOffsetRT(offset) || isStackOffsetResult(offset); }
 
+    Utf8                          funcName;
     Map<uint32_t, int32_t>        labels;
     VectorNative<CpuLabelToSolve> labelsToSolve;
     RegisterSet                   usedRegs;
@@ -208,10 +210,12 @@ struct CpuFunction
     VectorNative<uint16_t>        unwind;
     Vector<ScbeDebugLines>        dbgLines;
 
+    ScbeMicro*        pp                      = nullptr;
     ByteCode*         bc                      = nullptr;
     AstFuncDecl*      node                    = nullptr;
     TypeInfoFuncAttr* typeFunc                = nullptr;
     const CallConv*   cc                      = nullptr;
+    ScbeCpu*          ppCPU                   = nullptr;
     uint32_t          symbolIndex             = 0;
     uint32_t          startAddress            = 0;
     uint32_t          endAddress              = 0;
@@ -232,12 +236,13 @@ struct ScbeCpu : BackendEncoder
 {
     void init(const BuildParameters& buildParameters) override;
 
-    CpuSymbol*   getOrAddSymbol(const Utf8& name, CpuSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);
-    CpuSymbol*   getOrAddString(const Utf8& str);
-    CpuSymbol*   getOrAddConstant(uint64_t value, OpBits opBits);
-    void         addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, uint16_t type);
-    CpuFunction* addFunction(const Utf8& funcName, const CallConv* ccFunc, ByteCode* bc);
-    void         endFunction() const;
+    CpuSymbol* getOrAddSymbol(const Utf8& name, CpuSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);
+    CpuSymbol* getOrAddString(const Utf8& str);
+    CpuSymbol* getOrAddConstant(uint64_t value, OpBits opBits);
+    void       addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, uint16_t type);
+    void       addFunction(const Utf8& funcName, const CallConv* ccFunc, ByteCode* bc);
+    void       startFunction();
+    void       endFunction() const;
 
     bool acceptsRegA(const ScbeMicroInstruction* inst, CpuReg reg);
     bool acceptsRegB(const ScbeMicroInstruction* inst, CpuReg reg);

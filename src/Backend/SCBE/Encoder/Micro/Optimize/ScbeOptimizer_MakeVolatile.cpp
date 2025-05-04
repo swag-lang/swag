@@ -8,7 +8,7 @@ void ScbeOptimizer::optimizePassMakeHwdRegVolatile(const ScbeMicro& out)
 {
     for (const auto vol : unusedVolatileInteger)
     {
-        for (const auto perm : out.cc->nonVolatileRegistersInteger)
+        for (const auto perm : out.cpuFct->cc->nonVolatileRegistersInteger)
         {
             if (!unusedNonVolatileInteger.contains(perm))
             {
@@ -21,12 +21,12 @@ void ScbeOptimizer::optimizePassMakeHwdRegVolatile(const ScbeMicro& out)
     for (auto inst = out.getFirstInstruction(); !inst->isEnd(); inst = ScbeMicro::getNextInstruction(inst))
     {
         if (inst->hasWriteRegA() &&
-            out.cc->nonVolatileRegistersInteger.contains(inst->regA))
+            out.cpuFct->cc->nonVolatileRegistersInteger.contains(inst->regA))
         {
             const auto readRegs = out.cpu->getReadRegisters(inst);
             if (!readRegs.contains(inst->regA))
             {
-                auto vol = out.cc->volatileRegistersIntegerSet;
+                auto vol = out.cpuFct->cc->volatileRegistersIntegerSet;
                 if (out.isFuncReturnRegister(vol.first()))
                     vol.erase(vol.first());
 

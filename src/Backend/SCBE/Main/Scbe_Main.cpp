@@ -16,7 +16,8 @@ void Scbe::emitOS(ScbeCpu& pp)
 
         // @ChkStk Stack probing
         // See SWAG_LIMIT_PAGE_STACK
-        const auto cpuFct = pp.addFunction(R"(__chkstk)", CallConv::get(CallConvKind::X86_64), nullptr);
+        pp.addFunction(R"(__chkstk)", CallConv::get(CallConvKind::X86_64), nullptr);
+        pp.startFunction();
         concat.addString1("\x51");                            // push rcx  // NOLINT(modernize-raw-string-literal)
         concat.addString1("\x50");                            // push rax  // NOLINT(modernize-raw-string-literal)
         concat.addStringN("\x48\x3d\x00\x10\x00\x00", 6);     // cmp rax, 1000h
@@ -32,7 +33,7 @@ void Scbe::emitOS(ScbeCpu& pp)
         concat.addString1("\x58");                            // pop rax  // NOLINT(modernize-raw-string-literal)
         concat.addString1("\x59");                            // pop rcx  // NOLINT(modernize-raw-string-literal)
         concat.addString1("\xc3");                            // ret
-        cpuFct->endAddress = concat.totalCount();
+        pp.cpuFct->endAddress = concat.totalCount();
 
         // int _DllMainCRTStartup(void*, int, void*)
         pp.getOrAddSymbol("_DllMainCRTStartup", CpuSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
@@ -66,7 +67,8 @@ void Scbe::emitMain(ScbeCpu& pp)
             return;
     }
 
-    pp.cpuFct = pp.addFunction(entryPoint, cc, nullptr);
+    pp.addFunction(entryPoint, cc, nullptr);
+    pp.startFunction();
     pp.cpuFct->unwindRegs.push_back(cc->nonVolatileRegistersInteger[0]);
     pp.emitEnter(0);
 
@@ -227,7 +229,8 @@ void Scbe::emitGetTypeTable(ScbeCpu& pp)
 
     const auto cc       = g_TypeMgr->typeInfoModuleCall->getCallConv();
     const auto thisInit = module->getGlobalPrivateFct(g_LangSpec->name_getTypeTable);
-    pp.cpuFct           = pp.addFunction(thisInit, cc, nullptr);
+    pp.addFunction(thisInit, cc, nullptr);
+    pp.startFunction();
     pp.emitEnter(0);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)
@@ -246,7 +249,8 @@ void Scbe::emitGlobalPreMain(ScbeCpu& pp)
 
     const auto& cc       = g_TypeMgr->typeInfoModuleCall->getCallConv();
     const auto  thisInit = module->getGlobalPrivateFct(g_LangSpec->name_globalPreMain);
-    pp.cpuFct            = pp.addFunction(thisInit, cc, nullptr);
+    pp.addFunction(thisInit, cc, nullptr);
+    pp.startFunction();
 
     pp.emitEnter(0);
 
@@ -284,7 +288,8 @@ void Scbe::emitGlobalInit(ScbeCpu& pp)
 
     const auto thisInit = module->getGlobalPrivateFct(g_LangSpec->name_globalInit);
     const auto cc       = g_TypeMgr->typeInfoModuleCall->getCallConv();
-    pp.cpuFct           = pp.addFunction(thisInit, cc, nullptr);
+    pp.addFunction(thisInit, cc, nullptr);
+    pp.startFunction();
 
     pp.cpuFct->unwindRegs.push_back(cc->nonVolatileRegistersInteger[0]);
     pp.emitEnter(0);
@@ -323,7 +328,7 @@ void Scbe::emitGlobalInit(ScbeCpu& pp)
             // Count types is stored as a uint64_t at the start of the address
             pp.emitLoadRegMem(cc->nonVolatileRegistersInteger[0], cc->returnByRegisterInteger, 0, OpBits::B64);
             pp.emitLoadMemReg(resReg, sizeof(uint64_t), cc->nonVolatileRegistersInteger[0], OpBits::B64);
-            pp.emitOpBinaryRegImm(pp.cc->returnByRegisterInteger, sizeof(uint64_t), CpuOp::ADD, OpBits::B64);
+            pp.emitOpBinaryRegImm(pp.cpuFct->cc->returnByRegisterInteger, sizeof(uint64_t), CpuOp::ADD, OpBits::B64);
             pp.emitLoadMemReg(resReg, 0, cc->returnByRegisterInteger, OpBits::B64);
         }
 
@@ -350,7 +355,8 @@ void Scbe::emitGlobalDrop(ScbeCpu& pp)
 
     const auto cc       = g_TypeMgr->typeInfoModuleCall->getCallConv();
     const auto thisDrop = module->getGlobalPrivateFct(g_LangSpec->name_globalDrop);
-    pp.cpuFct           = pp.addFunction(thisDrop, cc, nullptr);
+    pp.addFunction(thisDrop, cc, nullptr);
+    pp.startFunction();
     pp.emitEnter(0);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::Library)

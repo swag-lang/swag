@@ -2,12 +2,14 @@
 #include "BackendFunctionBodyJob.h"
 #include "Backend/Backend.h"
 #include "Backend/ByteCode/ByteCode.h"
+#include "Backend/SCBE/Main/Scbe.h"
 #include "Syntax/AstNode.h"
 #ifdef SWAG_STATS
 #include "Core/Timer.h"
 #include "Main/Statistics.h"
 #endif
 
+struct ScbeCpu;
 JobResult BackendFunctionBodyJob::execute()
 {
 #ifdef SWAG_STATS
@@ -15,14 +17,42 @@ JobResult BackendFunctionBodyJob::execute()
     Timer timer1{&g_Stats.prepOutputTimeJobGenFunc};
 #endif
 
-    for (const auto one : byteCodeFunc)
+    if (firstPass)
     {
-        if (one->node && one->node->hasAttribute(ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO | ATTRIBUTE_COMPILER))
-            continue;
+        cpuFunc.reserve(byteCodeFunc.size());
+        for (const auto one : byteCodeFunc)
+        {
+            if (one->node && one->node->hasAttribute(ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO | ATTRIBUTE_COMPILER))
+                continue;
+            // Do not emit a text function if we are not compiling a test executable
+            if (one->node && one->node->hasAttribute(ATTRIBUTE_TEST_FUNC) && buildParameters.compileType != Test)
+                continue;
 
-        // Emit the internal function
-        if (!backend->emitFunctionBody(buildParameters, one))
-            return JobResult::ReleaseJob;
+            if (!backend->emitFunctionBodyPass0(this, buildParameters, one))
+            {
+                jobsToAdd.clear();
+                return JobResult::ReleaseJob;
+            }
+
+            const auto ct              = buildParameters.compileType;
+            const auto precompileIndex = buildParameters.precompileIndex;
+            auto&      ppCPU           = backend->encoder<ScbeCpu>(ct, precompileIndex);
+            cpuFunc.push_back(ppCPU.cpuFct);
+        }
+
+        if (!jobsToAdd.empty())
+        {
+            firstPass = false;
+            return JobResult::KeepJobAlive;
+        }
+    }
+    else
+    {
+        for (const auto one : cpuFunc)
+        {
+            if (!backend->emitFunctionBodyPass1(one))
+                return JobResult::ReleaseJob;
+        }
     }
 
     return JobResult::ReleaseJob;

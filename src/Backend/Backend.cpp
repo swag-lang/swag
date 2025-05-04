@@ -23,7 +23,12 @@ JobResult Backend::prepareOutput(const BuildParameters& buildParameters, int sta
     return JobResult::ReleaseJob;
 }
 
-bool Backend::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc)
+bool Backend::emitFunctionBodyPass0(BackendFunctionBodyJob*, const BuildParameters&, ByteCode*)
+{
+    return false;
+}
+
+bool Backend::emitFunctionBodyPass1(CpuFunction*)
 {
     return false;
 }

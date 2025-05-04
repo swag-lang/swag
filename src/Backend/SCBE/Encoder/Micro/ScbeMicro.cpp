@@ -761,7 +761,7 @@ void ScbeMicro::postProcess() const
 
     for (const auto r : cpuFct->usedRegs)
     {
-        if (cc->nonVolatileRegistersIntegerSet.contains(r))
+        if (cpuFct->cc->nonVolatileRegistersIntegerSet.contains(r))
             cpuFct->unwindRegs.push_back(r);
     }
 }

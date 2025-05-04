@@ -21,7 +21,7 @@ void ScbeOptimizer::optimizePassSwap(const ScbeMicro& out)
             inst->op == ScbeMicroOp::LoadZeroExtRR ||
             inst->op == ScbeMicroOp::LoadSignedExtRR)
         {
-            if (out.cc->paramsRegistersInteger.contains(inst->regA) || out.cc->paramsRegistersFloat.contains(inst->regA))
+            if (out.cpuFct->cc->paramsRegistersInteger.contains(inst->regA) || out.cpuFct->cc->paramsRegistersFloat.contains(inst->regA))
                 toMove = nullptr;
             else
                 toMove = inst;

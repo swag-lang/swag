@@ -124,15 +124,15 @@ void ScbeCpu::emitLoadRegImm(CpuReg reg, uint64_t value, OpBits opBits, CpuEmitF
 
     if (result == CpuEncodeResult::Right2Reg)
     {
-        SWAG_ASSERT(reg != cc->computeRegI2);
-        emitLoadRegImm(cc->computeRegI2, value, opBits, emitFlags);
-        emitLoadRegReg(reg, cc->computeRegI2, opBits, emitFlags);
+        SWAG_ASSERT(reg != cpuFct->cc->computeRegI2);
+        emitLoadRegImm(cpuFct->cc->computeRegI2, value, opBits, emitFlags);
+        emitLoadRegReg(reg, cpuFct->cc->computeRegI2, opBits, emitFlags);
         return;
     }
 
     if (result == CpuEncodeResult::Right2Cst)
     {
-        SWAG_ASSERT(reg != cc->computeRegI2);
+        SWAG_ASSERT(reg != cpuFct->cc->computeRegI2);
         const auto sym = cpu->getOrAddConstant(value, opBits);
         emitLoadSymbolRelocValue(reg, sym->index, 0, opBits, emitFlags);
         return;
@@ -304,9 +304,9 @@ void ScbeCpu::emitLoadMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, 
 
     if (result == CpuEncodeResult::Right2Reg)
     {
-        SWAG_ASSERT(memReg != cc->computeRegI1);
-        emitLoadRegImm(cc->computeRegI1, value, OpBits::B64, emitFlags);
-        emitLoadMemReg(memReg, memOffset, cc->computeRegI1, OpBits::B64, emitFlags);
+        SWAG_ASSERT(memReg != cpuFct->cc->computeRegI1);
+        emitLoadRegImm(cpuFct->cc->computeRegI1, value, OpBits::B64, emitFlags);
+        emitLoadMemReg(memReg, memOffset, cpuFct->cc->computeRegI1, OpBits::B64, emitFlags);
         return;
     }
 
@@ -324,15 +324,15 @@ void ScbeCpu::emitCmpRegReg(CpuReg reg0, CpuReg reg1, OpBits opBits, CpuEmitFlag
 
     if (result == CpuEncodeResult::Right2Reg)
     {
-        if (reg0 != cc->computeRegF1)
+        if (reg0 != cpuFct->cc->computeRegF1)
         {
-            emitLoadRegReg(cc->computeRegF1, reg1, opBits, emitFlags);
-            emitCmpRegReg(reg0, cc->computeRegF1, opBits, emitFlags);
+            emitLoadRegReg(cpuFct->cc->computeRegF1, reg1, opBits, emitFlags);
+            emitCmpRegReg(reg0, cpuFct->cc->computeRegF1, opBits, emitFlags);
         }
         else
         {
-            emitLoadRegReg(cc->computeRegF2, reg1, opBits, emitFlags);
-            emitCmpRegReg(reg0, cc->computeRegF2, opBits, emitFlags);
+            emitLoadRegReg(cpuFct->cc->computeRegF2, reg1, opBits, emitFlags);
+            emitCmpRegReg(reg0, cpuFct->cc->computeRegF2, opBits, emitFlags);
         }
 
         return;
@@ -354,9 +354,9 @@ void ScbeCpu::emitCmpMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, OpBit
     {
         if (isFloat(reg))
         {
-            SWAG_ASSERT(reg != cc->computeRegF1);
-            emitLoadRegMem(cc->computeRegF1, memReg, memOffset, opBits, emitFlags);
-            emitCmpRegReg(cc->computeRegF1, reg, opBits, emitFlags);
+            SWAG_ASSERT(reg != cpuFct->cc->computeRegF1);
+            emitLoadRegMem(cpuFct->cc->computeRegF1, memReg, memOffset, opBits, emitFlags);
+            emitCmpRegReg(cpuFct->cc->computeRegF1, reg, opBits, emitFlags);
             return;
         }
     }
@@ -377,9 +377,9 @@ void ScbeCpu::emitCmpMemImm(CpuReg memReg, uint64_t memOffset, uint64_t value, O
 
     if (result == CpuEncodeResult::Right2Reg)
     {
-        SWAG_ASSERT(memReg != cc->computeRegI2);
-        emitLoadRegImm(cc->computeRegI2, value, opBits, emitFlags);
-        emitCmpMemReg(memReg, memOffset, cc->computeRegI2, opBits, emitFlags);
+        SWAG_ASSERT(memReg != cpuFct->cc->computeRegI2);
+        emitLoadRegImm(cpuFct->cc->computeRegI2, value, opBits, emitFlags);
+        emitCmpMemReg(memReg, memOffset, cpuFct->cc->computeRegI2, opBits, emitFlags);
         return;
     }
 
@@ -399,9 +399,9 @@ void ScbeCpu::emitCmpRegImm(CpuReg reg, uint64_t value, OpBits opBits, CpuEmitFl
 
     if (result == CpuEncodeResult::Right2Reg)
     {
-        SWAG_ASSERT(reg != cc->computeRegI1);
-        emitLoadRegImm(cc->computeRegI1, value, opBits, emitFlags);
-        emitCmpRegReg(reg, cc->computeRegI1, opBits, emitFlags);
+        SWAG_ASSERT(reg != cpuFct->cc->computeRegI1);
+        emitLoadRegImm(cpuFct->cc->computeRegI1, value, opBits, emitFlags);
+        emitCmpRegReg(reg, cpuFct->cc->computeRegI1, opBits, emitFlags);
         return;
     }
 
@@ -412,19 +412,19 @@ void ScbeCpu::emitSetCondReg(CpuReg reg, CpuCond cpuCond, CpuEmitFlags emitFlags
 {
     if (cpuCond == CpuCond::EP)
     {
-        SWAG_ASSERT(reg != cc->computeRegI2);
+        SWAG_ASSERT(reg != cpuFct->cc->computeRegI2);
         emitSetCondReg(reg, CpuCond::E, emitFlags);
-        emitSetCondReg(cc->computeRegI2, CpuCond::NP, emitFlags);
-        emitOpBinaryRegReg(reg, cc->computeRegI2, CpuOp::AND, OpBits::B8, emitFlags);
+        emitSetCondReg(cpuFct->cc->computeRegI2, CpuCond::NP, emitFlags);
+        emitOpBinaryRegReg(reg, cpuFct->cc->computeRegI2, CpuOp::AND, OpBits::B8, emitFlags);
         return;
     }
 
     if (cpuCond == CpuCond::NEP)
     {
-        SWAG_ASSERT(reg != cc->computeRegI2);
+        SWAG_ASSERT(reg != cpuFct->cc->computeRegI2);
         emitSetCondReg(reg, CpuCond::NE, emitFlags);
-        emitSetCondReg(cc->computeRegI2, CpuCond::P, emitFlags);
-        emitOpBinaryRegReg(reg, cc->computeRegI2, CpuOp::OR, OpBits::B8, emitFlags);
+        emitSetCondReg(cpuFct->cc->computeRegI2, CpuCond::P, emitFlags);
+        emitOpBinaryRegReg(reg, cpuFct->cc->computeRegI2, CpuOp::OR, OpBits::B8, emitFlags);
         return;
     }
 
@@ -464,10 +464,10 @@ void ScbeCpu::emitOpUnaryReg(CpuReg reg, CpuOp op, OpBits opBits, CpuEmitFlags e
 
     if (result == CpuEncodeResult::NotSupported)
     {
-        SWAG_ASSERT(reg == cc->computeRegF0);
+        SWAG_ASSERT(reg == cpuFct->cc->computeRegF0);
         emitLoadMemImm(CpuReg::Rsp, cpuFct->getStackOffsetFLT(), opBits == OpBits::B32 ? 0x80000000 : 0x80000000'00000000, OpBits::B64, emitFlags);
-        emitLoadRegMem(cc->computeRegF1, CpuReg::Rsp, cpuFct->getStackOffsetFLT(), opBits, emitFlags);
-        emitOpBinaryRegReg(cc->computeRegF0, cc->computeRegF1, CpuOp::FXOR, opBits, emitFlags);
+        emitLoadRegMem(cpuFct->cc->computeRegF1, CpuReg::Rsp, cpuFct->getStackOffsetFLT(), opBits, emitFlags);
+        emitOpBinaryRegReg(cpuFct->cc->computeRegF0, cpuFct->cc->computeRegF1, CpuOp::FXOR, opBits, emitFlags);
         return;
     }
 
@@ -492,7 +492,7 @@ void ScbeCpu::emitOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits 
 
     if (result == CpuEncodeResult::NotSupported && op == CpuOp::CVTU2F64)
     {
-        SWAG_ASSERT(regSrc != cc->computeRegI1);
+        SWAG_ASSERT(regSrc != cpuFct->cc->computeRegI1);
         CpuJump jump0, jump1;
         emitClearReg(regDst, OpBits::B32);
         emitCmpRegImm(regSrc, 0, OpBits::B64);
@@ -500,11 +500,11 @@ void ScbeCpu::emitOpBinaryRegReg(CpuReg regDst, CpuReg regSrc, CpuOp op, OpBits 
         emitOpBinaryRegReg(regDst, regSrc, CpuOp::CVTI2F, OpBits::B64, EMIT_B64);
         emitJump(jump1, CpuCondJump::JUMP, OpBits::B8);
         emitPatchJump(jump0);
-        emitLoadRegReg(cc->computeRegI1, regSrc, OpBits::B64);
+        emitLoadRegReg(cpuFct->cc->computeRegI1, regSrc, OpBits::B64);
         emitOpBinaryRegImm(regSrc, 1, CpuOp::AND, OpBits::B32, EMIT_Zero);
-        emitOpBinaryRegImm(cc->computeRegI1, 1, CpuOp::SHR, OpBits::B64, EMIT_Zero);
-        emitOpBinaryRegReg(cc->computeRegI1, regSrc, CpuOp::OR, OpBits::B64, EMIT_Zero);
-        emitOpBinaryRegReg(regDst, cc->computeRegI1, CpuOp::CVTI2F, OpBits::B64, EMIT_B64);
+        emitOpBinaryRegImm(cpuFct->cc->computeRegI1, 1, CpuOp::SHR, OpBits::B64, EMIT_Zero);
+        emitOpBinaryRegReg(cpuFct->cc->computeRegI1, regSrc, CpuOp::OR, OpBits::B64, EMIT_Zero);
+        emitOpBinaryRegReg(regDst, cpuFct->cc->computeRegI1, CpuOp::CVTI2F, OpBits::B64, EMIT_B64);
         emitOpBinaryRegReg(regDst, regDst, CpuOp::FADD, OpBits::B64, EMIT_Zero);
         emitPatchJump(jump1);
         return;
@@ -541,7 +541,7 @@ void ScbeCpu::emitOpBinaryRegMem(CpuReg regDst, CpuReg memReg, uint64_t memOffse
 
     if (result == CpuEncodeResult::Right2Reg)
     {
-        const auto r1 = isFloat(regDst) ? cc->computeRegF1 : cc->computeRegI1;
+        const auto r1 = isFloat(regDst) ? cpuFct->cc->computeRegF1 : cpuFct->cc->computeRegI1;
         SWAG_ASSERT(regDst != r1);
         SWAG_ASSERT(memReg != r1);
         emitLoadRegMem(r1, memReg, memOffset, opBits);
@@ -565,25 +565,25 @@ void ScbeCpu::emitOpBinaryMemReg(CpuReg memReg, uint64_t memOffset, CpuReg reg, 
     {
         if (isFloat(reg))
         {
-            SWAG_ASSERT(reg != cc->computeRegF2);
-            emitLoadRegMem(cc->computeRegF2, memReg, memOffset, opBits);
-            emitOpBinaryRegReg(cc->computeRegF2, reg, op, opBits, emitFlags);
-            emitLoadMemReg(memReg, memOffset, cc->computeRegF2, opBits);
+            SWAG_ASSERT(reg != cpuFct->cc->computeRegF2);
+            emitLoadRegMem(cpuFct->cc->computeRegF2, memReg, memOffset, opBits);
+            emitOpBinaryRegReg(cpuFct->cc->computeRegF2, reg, op, opBits, emitFlags);
+            emitLoadMemReg(memReg, memOffset, cpuFct->cc->computeRegF2, opBits);
         }
         else
         {
-            if (memReg == cc->computeRegI0)
+            if (memReg == cpuFct->cc->computeRegI0)
             {
-                SWAG_ASSERT(memReg != cc->computeRegI2);
-                emitLoadRegReg(cc->computeRegI2, memReg, OpBits::B64);
-                emitOpBinaryMemReg(cc->computeRegI2, memOffset, reg, op, opBits, emitFlags);
+                SWAG_ASSERT(memReg != cpuFct->cc->computeRegI2);
+                emitLoadRegReg(cpuFct->cc->computeRegI2, memReg, OpBits::B64);
+                emitOpBinaryMemReg(cpuFct->cc->computeRegI2, memOffset, reg, op, opBits, emitFlags);
             }
             else
             {
-                SWAG_ASSERT(reg != cc->computeRegI0);
-                emitLoadRegMem(cc->computeRegI0, memReg, memOffset, opBits);
-                emitOpBinaryRegReg(cc->computeRegI0, reg, op, opBits, emitFlags);
-                emitLoadMemReg(memReg, memOffset, cc->computeRegI0, opBits);
+                SWAG_ASSERT(reg != cpuFct->cc->computeRegI0);
+                emitLoadRegMem(cpuFct->cc->computeRegI0, memReg, memOffset, opBits);
+                emitOpBinaryRegReg(cpuFct->cc->computeRegI0, reg, op, opBits, emitFlags);
+                emitLoadMemReg(memReg, memOffset, cpuFct->cc->computeRegI0, opBits);
             }
         }
 
@@ -721,15 +721,15 @@ void ScbeCpu::emitOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp op, OpBits op
 
     if (result == CpuEncodeResult::Right2Reg)
     {
-        if (reg != cc->computeRegI1)
+        if (reg != cpuFct->cc->computeRegI1)
         {
-            emitLoadRegImm(cc->computeRegI1, value, opBits);
-            emitOpBinaryRegReg(reg, cc->computeRegI1, op, opBits, emitFlags);
+            emitLoadRegImm(cpuFct->cc->computeRegI1, value, opBits);
+            emitOpBinaryRegReg(reg, cpuFct->cc->computeRegI1, op, opBits, emitFlags);
         }
         else
         {
-            emitLoadRegImm(cc->computeRegI2, value, opBits);
-            emitOpBinaryRegReg(reg, cc->computeRegI2, op, opBits, emitFlags);
+            emitLoadRegImm(cpuFct->cc->computeRegI2, value, opBits);
+            emitOpBinaryRegReg(reg, cpuFct->cc->computeRegI2, op, opBits, emitFlags);
         }
 
         return;
@@ -777,9 +777,9 @@ void ScbeCpu::emitOpBinaryMemImm(CpuReg memReg, uint64_t memOffset, uint64_t val
 
     if (result == CpuEncodeResult::Right2Reg)
     {
-        SWAG_ASSERT(memReg != cc->computeRegI1);
-        emitLoadRegImm(cc->computeRegI1, value, opBits);
-        emitOpBinaryMemReg(memReg, memOffset, cc->computeRegI1, op, opBits, emitFlags);
+        SWAG_ASSERT(memReg != cpuFct->cc->computeRegI1);
+        emitLoadRegImm(cpuFct->cc->computeRegI1, value, opBits);
+        emitOpBinaryMemReg(memReg, memOffset, cpuFct->cc->computeRegI1, op, opBits, emitFlags);
         return;
     }
 

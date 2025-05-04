@@ -12,12 +12,8 @@
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 
-bool Llvm::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc)
+bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildParameters& buildParameters, ByteCode* bc)
 {
-    // Do not emit a text function if we are not compiling a test executable
-    if (bc->node && bc->node->hasAttribute(ATTRIBUTE_TEST_FUNC) && buildParameters.compileType != Test)
-        return true;
-
     const auto ct              = buildParameters.compileType;
     const auto precompileIndex = buildParameters.precompileIndex;
     auto&      pp              = encoder<LlvmEncoder>(ct, precompileIndex);

@@ -1042,8 +1042,8 @@ void ScbeOptimizer::reduceAliasHwdReg(const ScbeMicro& out, ScbeMicroInstruction
         case ScbeMicroOp::LoadRR:
             if (inst->regA == inst->regB)
                 break;
-            if (out.cc->nonVolatileRegistersInteger.contains(inst->regA) &&
-                out.cc->nonVolatileRegistersInteger.contains(inst->regB) &&
+            if (out.cpuFct->cc->nonVolatileRegistersInteger.contains(inst->regA) &&
+                out.cpuFct->cc->nonVolatileRegistersInteger.contains(inst->regB) &&
                 usedWriteRegs[inst->regA] == 1 &&
                 usedWriteRegs[inst->regB] <= 1)
             {
@@ -1052,8 +1052,8 @@ void ScbeOptimizer::reduceAliasHwdReg(const ScbeMicro& out, ScbeMicroInstruction
                 break;
             }
 
-            if (out.cc->volatileRegistersInteger.contains(inst->regA) &&
-                out.cc->volatileRegistersInteger.contains(inst->regB) &&
+            if (out.cpuFct->cc->volatileRegistersInteger.contains(inst->regA) &&
+                out.cpuFct->cc->volatileRegistersInteger.contains(inst->regB) &&
                 usedWriteRegs[inst->regA] == 1 &&
                 usedWriteRegs[inst->regB] <= 1 &&
                 !out.isFuncReturnRegister(inst->regA) &&
@@ -1070,8 +1070,8 @@ void ScbeOptimizer::reduceAliasHwdReg(const ScbeMicro& out, ScbeMicroInstruction
         case ScbeMicroOp::LoadZeroExtRR:
             if (inst->regA == inst->regB)
                 break;
-            if (out.cc->nonVolatileRegistersInteger.contains(inst->regA) &&
-                out.cc->nonVolatileRegistersInteger.contains(inst->regB) &&
+            if (out.cpuFct->cc->nonVolatileRegistersInteger.contains(inst->regA) &&
+                out.cpuFct->cc->nonVolatileRegistersInteger.contains(inst->regB) &&
                 usedWriteRegs[inst->regA] == 1 &&
                 usedWriteRegs[inst->regB] <= 1)
             {
@@ -1079,8 +1079,8 @@ void ScbeOptimizer::reduceAliasHwdReg(const ScbeMicro& out, ScbeMicroInstruction
                 break;
             }
 
-            if (out.cc->volatileRegistersInteger.contains(inst->regA) &&
-                out.cc->volatileRegistersInteger.contains(inst->regB) &&
+            if (out.cpuFct->cc->volatileRegistersInteger.contains(inst->regA) &&
+                out.cpuFct->cc->volatileRegistersInteger.contains(inst->regB) &&
                 usedWriteRegs[inst->regA] == 1 &&
                 usedWriteRegs[inst->regB] <= 1 &&
                 !out.isFuncReturnRegister(inst->regA) &&

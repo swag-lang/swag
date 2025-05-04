@@ -19,7 +19,8 @@ struct Scbe final : Backend
     Scbe();
 
     JobResult prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob) override;
-    bool      emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc) override;
+    bool      emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildParameters& buildParameters, ByteCode* bc) override;
+    bool      emitFunctionBodyPass1(CpuFunction* cpuFct) override;
     void      saveObjFile(const BuildParameters& buildParameters) const;
 
     static void createRuntime(ScbeCpu& pp);

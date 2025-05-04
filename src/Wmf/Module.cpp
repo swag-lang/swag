@@ -1247,6 +1247,7 @@ bool Module::filterFunctionsToEmit()
         SWAG_CHECK(SemanticError::warnUnusedFunction(this, bc));
         if (!bc->canEmit())
             continue;
+        SWAG_ASSERT(!byteCodeFuncToGen.contains(bc));
         byteCodeFuncToGen.push_back(bc);
     }
 

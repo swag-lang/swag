@@ -19,7 +19,7 @@ void ScbeOptimizer::optimizePassStackToHwdReg1(const ScbeMicro& out)
         bool hasRead  = false;
         bool hasWrite = false;
         auto next     = ScbeMicro::getNextInstruction(inst);
-        auto dispo    = out.cc->volatileRegistersIntegerSet;
+        auto dispo    = out.cpuFct->cc->volatileRegistersIntegerSet;
         while (next->op != ScbeMicroOp::End)
         {
             if (next->isRet() || next->isJump() || next->isJumpDest())
@@ -57,11 +57,11 @@ void ScbeOptimizer::optimizePassStackToHwdReg1(const ScbeMicro& out)
 
 void ScbeOptimizer::optimizePassParamsKeepHwdReg(const ScbeMicro& out)
 {
-    for (uint32_t i = 0; i < out.cc->paramsRegistersInteger.size(); ++i)
+    for (uint32_t i = 0; i < out.cpuFct->cc->paramsRegistersInteger.size(); ++i)
     {
         if (out.cpuFct->typeFunc->numParamsRegisters() <= i)
             break;
-        const auto r = out.cc->paramsRegistersInteger[i];
+        const auto r = out.cpuFct->cc->paramsRegistersInteger[i];
         if (usedWriteRegs.contains(r))
             continue;
         if (out.cpuFct->typeFunc->registerIdxToType(i)->isNativeFloat())

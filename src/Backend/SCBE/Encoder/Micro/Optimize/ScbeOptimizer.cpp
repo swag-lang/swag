@@ -338,8 +338,8 @@ void ScbeOptimizer::computeContextRegs(const ScbeMicro& out)
     usedWriteRegs.clear();
     unusedVolatileInteger.clear();
     unusedNonVolatileInteger.clear();
-    unusedVolatileInteger.append(out.cc->volatileRegistersIntegerSet);
-    unusedNonVolatileInteger.append(out.cc->nonVolatileRegistersIntegerSet);
+    unusedVolatileInteger.append(out.cpuFct->cc->volatileRegistersIntegerSet);
+    unusedNonVolatileInteger.append(out.cpuFct->cc->nonVolatileRegistersIntegerSet);
 
     auto inst = out.getFirstInstruction();
     while (!inst->isEnd())

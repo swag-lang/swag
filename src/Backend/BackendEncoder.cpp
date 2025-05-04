@@ -138,11 +138,11 @@ void BackendEncoder::maskValue(uint64_t& value, OpBits opBits)
 
 bool BackendEncoder::isFuncReturnRegister(CpuReg reg) const
 {
-    if (cpuFct->typeFunc->returnStructByValue() && reg == cc->returnByRegisterInteger)
+    if (cpuFct->typeFunc->returnStructByValue() && reg == cpuFct->cc->returnByRegisterInteger)
         return true;
-    if (cpuFct->typeFunc->returnByValue() && cpuFct->typeFunc->returnType->isNativeFloat() && reg == cc->returnByRegisterFloat)
+    if (cpuFct->typeFunc->returnByValue() && cpuFct->typeFunc->returnType->isNativeFloat() && reg == cpuFct->cc->returnByRegisterFloat)
         return true;
-    if (cpuFct->typeFunc->returnByValue() && !cpuFct->typeFunc->returnType->isNativeFloat() && reg == cc->returnByRegisterInteger)
+    if (cpuFct->typeFunc->returnByValue() && !cpuFct->typeFunc->returnType->isNativeFloat() && reg == cpuFct->cc->returnByRegisterInteger)
         return true;
     return false;
 }
@@ -151,12 +151,12 @@ bool BackendEncoder::isFuncParameterRegister(CpuReg reg) const
 {
     if (cpuFct->typeFunc->numParamsRegisters() == 0)
         return false;
-    if (!cc->paramsRegistersIntegerSet.contains(reg) && !cc->paramsRegistersFloatSet.contains(reg))
+    if (!cpuFct->cc->paramsRegistersIntegerSet.contains(reg) && !cpuFct->cc->paramsRegistersFloatSet.contains(reg))
         return false;
 
     for (uint32_t i = 0; i < cpuFct->typeFunc->numParamsRegisters(); i++)
     {
-        if (reg == cc->paramsRegistersInteger[i] || reg == cc->paramsRegistersFloat[i])
+        if (reg == cpuFct->cc->paramsRegistersInteger[i] || reg == cpuFct->cc->paramsRegistersFloat[i])
             return true;
     }
 

@@ -1,6 +1,9 @@
 #include "pch.h"
+
+#include "Backend/BackendFunctionBodyJob.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
+#include "Backend/SCBE/Encoder/Micro/Optimize/ScbeOptimizerJob.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Main/Scbe.h"
 #include "Report/Diagnostic.h"
@@ -10,27 +13,37 @@
 #include "Syntax/AstFlags.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
+#pragma optimize("", off)
 
-bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc)
+bool Scbe::emitFunctionBodyPass1(CpuFunction* cpuFct)
 {
-    // Do not emit a text function if we are not compiling a test executable
-    if (bc->node && bc->node->hasAttribute(ATTRIBUTE_TEST_FUNC) && buildParameters.compileType != Test)
-        return true;
+    auto& ppCPU  = *cpuFct->ppCPU;
+    ppCPU.cpuFct = cpuFct;
+    ppCPU.startFunction();
+    ppCPU.cpuFct->pp->encode(ppCPU);
+    ppCPU.endFunction();
+    Allocator::free(ppCPU.cpuFct->pp, sizeof(ScbeMicro));
+    ppCPU.cpuFct->pp = nullptr;
+    return true;
+}
 
-    const auto ct              = buildParameters.compileType;
-    const auto precompileIndex = buildParameters.precompileIndex;
-    auto&      ppCPU           = encoder<ScbeCpu>(ct, precompileIndex);
-    const auto typeFunc        = bc->getCallType();
-    const auto returnType      = typeFunc->concreteReturnType();
-    const bool debug           = buildParameters.buildCfg->backendDebugInfos;
-    const auto cc              = typeFunc->getCallConv();
-    bool       ok              = true;
+bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildParameters& buildParameters, ByteCode* bc)
+{
+    const auto  ct              = buildParameters.compileType;
+    const auto  precompileIndex = buildParameters.precompileIndex;
+    auto&       ppCPU           = encoder<ScbeCpu>(ct, precompileIndex);
+    const auto& funcName        = bc->getCallNameFromDecl();
+
+    const auto typeFunc   = bc->getCallType();
+    const auto returnType = typeFunc->concreteReturnType();
+    const bool debug      = buildParameters.buildCfg->backendDebugInfos;
+    const auto cc         = typeFunc->getCallConv();
+    bool       ok         = true;
 
     ppCPU.init(buildParameters);
     bc->markLabels();
 
     // Get function name
-    const auto&        funcName   = bc->getCallNameFromDecl();
     const AstFuncDecl* bcFuncNode = bc->node ? castAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl) : nullptr;
 
     // Export symbol
@@ -61,8 +74,7 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     const uint32_t sizeStack               = offsetFLT + 8;
 
     // Register function
-    ppCPU.cpuFct = ppCPU.addFunction(funcName, cc, bc);
-    ppCPU.cc     = cc;
+    ppCPU.addFunction(funcName, cc, bc);
     if (debug)
         ScbeDebug::setLocation(ppCPU.cpuFct, nullptr, 0);
 
@@ -71,12 +83,21 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
     ppCPU.cpuFct->offsetResult            = offsetResult;
     ppCPU.cpuFct->offsetByteCodeStack     = offsetByteCodeStack;
     ppCPU.cpuFct->offsetParamsAsRegisters = offsetParamsAsRegisters;
+    ppCPU.cpuFct->cc                      = cc;
+    ppCPU.cpuFct->ppCPU                   = &ppCPU;
 
-    ScbeMicro pp;
+    // Creates a job to optimize the result
+    ownerJob->scbeJob               = Allocator::alloc<ScbeOptimizerJob>();
+    ownerJob->scbeJob->module       = buildParameters.module;
+    ownerJob->scbeJob->dependentJob = ownerJob;
+    ownerJob->scbeJob->pp           = ppCPU.cpuFct->pp;
+    ownerJob->scbeJob->ppCpu        = &ppCPU;
+    ownerJob->jobsToAdd.push_back(ownerJob->scbeJob);
+
+    ScbeMicro& pp = *ppCPU.cpuFct->pp;
     pp.init(buildParameters);
     pp.cpu                  = &ppCPU;
     pp.cpuFct               = ppCPU.cpuFct;
-    pp.cc                   = ppCPU.cpuFct->cc;
     pp.symCOIndex           = ppCPU.symCOIndex;
     pp.symBSIndex           = ppCPU.symBSIndex;
     pp.symMSIndex           = ppCPU.symMSIndex;
@@ -2422,9 +2443,5 @@ bool Scbe::emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc
         }
     }
 
-    pp.process(ppCPU);
-    pp.encode(ppCPU);
-
-    ppCPU.endFunction();
     return ok;
 }

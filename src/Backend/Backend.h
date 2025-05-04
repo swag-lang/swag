@@ -31,7 +31,8 @@ struct Backend
     virtual ~Backend() = default;
 
     virtual JobResult prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob);
-    virtual bool      emitFunctionBody(const BuildParameters& buildParameters, ByteCode* bc);
+    virtual bool      emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildParameters& buildParameters, ByteCode* bc);
+    virtual bool      emitFunctionBodyPass1(CpuFunction* cpuFct);
 
     void        setMustCompile();
     bool        isUpToDate(uint64_t moreRecentSourceFile, bool invert = false);
