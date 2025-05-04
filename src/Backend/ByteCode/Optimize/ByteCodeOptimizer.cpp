@@ -627,7 +627,7 @@ bool ByteCodeOptimizer::optimize(Job* job, Module* module, bool& done)
     {
         module->optimNeedRestart.store(0);
 
-        // Divide so that each job has the quite same amount of bytecode to optimize
+        // Divide so that each job has quite the same amount of bytecode to optimize
         uint32_t totalInstructions = 0;
         for (const auto bc : module->byteCodeFunc)
         {
