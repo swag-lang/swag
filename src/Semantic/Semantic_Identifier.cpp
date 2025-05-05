@@ -286,13 +286,13 @@ bool Semantic::isFunctionButNotACall(SemanticContext*, AstNode* node, const Symb
                 if (pr2->hasAstFlag(AST_DEBUG_NODE) ||
                     pr2->is(AstNodeKind::TypeAlias) ||
                     pr2->is(AstNodeKind::NameAlias) ||
-                    pr2->is(AstNodeKind::CompilerIntrinsicDefined) ||
-                    pr2->is(AstNodeKind::CompilerIntrinsicLocation) ||
-                    (pr2->is(AstNodeKind::IntrinsicProp) && pr2->token.is(TokenId::CompilerIntrinsicStringOf)) ||
-                    (pr2->is(AstNodeKind::IntrinsicProp) && pr2->token.is(TokenId::CompilerIntrinsicNameOf)) ||
-                    (pr2->is(AstNodeKind::IntrinsicProp) && pr2->token.is(TokenId::CompilerIntrinsicRunes)) ||
-                    (pr2->is(AstNodeKind::IntrinsicProp) && pr2->token.is(TokenId::CompilerIntrinsicTypeOf)) ||
-                    (pr2->is(AstNodeKind::IntrinsicProp) && pr2->token.is(TokenId::CompilerIntrinsicDeclType)) ||
+                    pr2->is(AstNodeKind::CompilerDefined) ||
+                    pr2->is(AstNodeKind::CompilerLocation) ||
+                    (pr2->is(AstNodeKind::IntrinsicProp) && pr2->token.is(TokenId::CompilerStringOf)) ||
+                    (pr2->is(AstNodeKind::IntrinsicProp) && pr2->token.is(TokenId::CompilerNameOf)) ||
+                    (pr2->is(AstNodeKind::IntrinsicProp) && pr2->token.is(TokenId::CompilerRunes)) ||
+                    (pr2->is(AstNodeKind::IntrinsicProp) && pr2->token.is(TokenId::CompilerTypeOf)) ||
+                    (pr2->is(AstNodeKind::IntrinsicProp) && pr2->token.is(TokenId::CompilerDeclType)) ||
                     (pr2->is(AstNodeKind::IntrinsicProp) && pr2->token.is(TokenId::IntrinsicKindOf)))
                 {
                     return true;

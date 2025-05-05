@@ -369,7 +369,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("#message", TokenId::CompilerFuncMessage);
     keywords.add("#dependencies", TokenId::CompilerDependencies);
 
-    keywords.add("#include", TokenId::CompilerIntrinsicInclude);
+    keywords.add("#include", TokenId::CompilerInclude);
     keywords.add("#load", TokenId::CompilerLoad);
     keywords.add("#assert", TokenId::CompilerAssert);
     keywords.add("#print", TokenId::CompilerPrint);
@@ -417,20 +417,20 @@ void LanguageSpec::setupKeywords()
 
     keywords.add("#index", TokenId::CompilerIndex);
 
-    keywords.add("#defined", TokenId::CompilerIntrinsicDefined);
-    keywords.add("#offsetof", TokenId::CompilerIntrinsicOffsetOf);
-    keywords.add("#alignof", TokenId::CompilerIntrinsicAlignOf);
-    keywords.add("#sizeof", TokenId::CompilerIntrinsicSizeOf);
-    keywords.add("#typeof", TokenId::CompilerIntrinsicTypeOf);
-    keywords.add("#stringof", TokenId::CompilerIntrinsicStringOf);
-    keywords.add("#nameof", TokenId::CompilerIntrinsicNameOf);
-    keywords.add("#isconstexpr", TokenId::CompilerIntrinsicIsConstExpr);
-    keywords.add("#location", TokenId::CompilerIntrinsicLocation);
-    keywords.add("#decltype", TokenId::CompilerIntrinsicDeclType);
-    keywords.add("#hastag", TokenId::CompilerIntrinsicHasTag);
-    keywords.add("#gettag", TokenId::CompilerIntrinsicGetTag);
-    keywords.add("#runes", TokenId::CompilerIntrinsicRunes);
-    keywords.add("#safety", TokenId::CompilerIntrinsicSafety);
+    keywords.add("#defined", TokenId::CompilerDefined);
+    keywords.add("#offsetof", TokenId::CompilerOffsetOf);
+    keywords.add("#alignof", TokenId::CompilerAlignOf);
+    keywords.add("#sizeof", TokenId::CompilerSizeOf);
+    keywords.add("#typeof", TokenId::CompilerTypeOf);
+    keywords.add("#stringof", TokenId::CompilerStringOf);
+    keywords.add("#nameof", TokenId::CompilerNameOf);
+    keywords.add("#isconstexpr", TokenId::CompilerIsConstExpr);
+    keywords.add("#location", TokenId::CompilerLocation);
+    keywords.add("#decltype", TokenId::CompilerDeclType);
+    keywords.add("#hastag", TokenId::CompilerHasTag);
+    keywords.add("#gettag", TokenId::CompilerGetTag);
+    keywords.add("#runes", TokenId::CompilerRunes);
+    keywords.add("#safety", TokenId::CompilerSafety);
 
     keywords.add("@stringcmp", TokenId::IntrinsicStringCmp);
     keywords.add("@typecmp", TokenId::IntrinsicTypeCmp);

@@ -294,19 +294,19 @@ bool Parser::doIdentifierRef(AstNode* parent, AstNode** result, IdentifierFlags 
         case TokenId::CompilerCurLocation:
             SWAG_CHECK(doCompilerSpecialValue(identifierRef, &dummyResult));
             break;
-        case TokenId::CompilerIntrinsicLocation:
-            SWAG_CHECK(doCompilerIntrinsicLocation(identifierRef, &dummyResult));
+        case TokenId::CompilerLocation:
+            SWAG_CHECK(doCompilerLocation(identifierRef, &dummyResult));
             break;
 
-        case TokenId::CompilerIntrinsicSizeOf:
-        case TokenId::CompilerIntrinsicAlignOf:
-        case TokenId::CompilerIntrinsicOffsetOf:
-        case TokenId::CompilerIntrinsicTypeOf:
-        case TokenId::CompilerIntrinsicDeclType:
-        case TokenId::CompilerIntrinsicStringOf:
-        case TokenId::CompilerIntrinsicNameOf:
-        case TokenId::CompilerIntrinsicRunes:
-        case TokenId::CompilerIntrinsicIsConstExpr:
+        case TokenId::CompilerSizeOf:
+        case TokenId::CompilerAlignOf:
+        case TokenId::CompilerOffsetOf:
+        case TokenId::CompilerTypeOf:
+        case TokenId::CompilerDeclType:
+        case TokenId::CompilerStringOf:
+        case TokenId::CompilerNameOf:
+        case TokenId::CompilerRunes:
+        case TokenId::CompilerIsConstExpr:
             SWAG_CHECK(doIntrinsicProp(identifierRef, &dummyResult));
             break;
         case TokenId::IntrinsicKindOf:
@@ -485,7 +485,7 @@ bool Parser::doAlias(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken(TokenId::SymEqual, "to specify the aliased value"));
 
     AstNode* expr;
-    if (tokenParse.is(TokenId::CompilerIntrinsicDeclType))
+    if (tokenParse.is(TokenId::CompilerDeclType))
         SWAG_CHECK(doTypeExpression(node, EXPR_FLAG_ALIAS, &expr));
     else
         SWAG_CHECK(doSinglePrimaryExpression(node, EXPR_FLAG_ALIAS, &expr));

@@ -545,39 +545,39 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
     const auto node = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     switch (node->token.id)
     {
-        case TokenId::CompilerIntrinsicIsConstExpr:
-            SWAG_CHECK(resolveCompilerIntrinsicIsConstExpr(context));
+        case TokenId::CompilerIsConstExpr:
+            SWAG_CHECK(resolveCompilerIsConstExpr(context));
             return true;
 
-        case TokenId::CompilerIntrinsicSizeOf:
-            SWAG_CHECK(resolveCompilerIntrinsicSizeOf(context));
+        case TokenId::CompilerSizeOf:
+            SWAG_CHECK(resolveCompilerSizeOf(context));
             return true;
 
-        case TokenId::CompilerIntrinsicAlignOf:
-            SWAG_CHECK(resolveCompilerIntrinsicAlignOf(context));
+        case TokenId::CompilerAlignOf:
+            SWAG_CHECK(resolveCompilerAlignOf(context));
             return true;
 
-        case TokenId::CompilerIntrinsicOffsetOf:
-            SWAG_CHECK(resolveCompilerIntrinsicOffsetOf(context));
+        case TokenId::CompilerOffsetOf:
+            SWAG_CHECK(resolveCompilerOffsetOf(context));
             return true;
 
-        case TokenId::CompilerIntrinsicDeclType:
-            SWAG_CHECK(resolveCompilerIntrinsicDeclType(context));
+        case TokenId::CompilerDeclType:
+            SWAG_CHECK(resolveCompilerDeclType(context));
             return true;
 
-        case TokenId::CompilerIntrinsicTypeOf:
-            SWAG_CHECK(resolveCompilerIntrinsicTypeOf(context));
+        case TokenId::CompilerTypeOf:
+            SWAG_CHECK(resolveCompilerTypeOf(context));
             return true;
 
-        case TokenId::CompilerIntrinsicStringOf:
-            SWAG_CHECK(resolveCompilerIntrinsicStringOf(context));
+        case TokenId::CompilerStringOf:
+            SWAG_CHECK(resolveCompilerStringOf(context));
             return true;
-        case TokenId::CompilerIntrinsicNameOf:
-            SWAG_CHECK(resolveCompilerIntrinsicNameOf(context));
+        case TokenId::CompilerNameOf:
+            SWAG_CHECK(resolveCompilerNameOf(context));
             return true;
 
-        case TokenId::CompilerIntrinsicRunes:
-            SWAG_CHECK(resolveCompilerIntrinsicRunes(context));
+        case TokenId::CompilerRunes:
+            SWAG_CHECK(resolveCompilerRunes(context));
             return true;
 
         case TokenId::IntrinsicKindOf:

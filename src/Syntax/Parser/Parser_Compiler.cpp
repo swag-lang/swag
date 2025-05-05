@@ -11,11 +11,11 @@
 #include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
 
-bool Parser::doCompilerIntrinsicTag(AstNode* parent, AstNode** result)
+bool Parser::doCompilerTag(AstNode* parent, AstNode** result)
 {
     const auto node   = Ast::newNode<AstNode>(AstNodeKind::IntrinsicProp, this, parent);
     *result           = node;
-    node->semanticFct = Semantic::resolveCompilerIntrinsicTag;
+    node->semanticFct = Semantic::resolveCompilerTag;
 
     SWAG_CHECK(eatToken());
 
@@ -23,7 +23,7 @@ bool Parser::doCompilerIntrinsicTag(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, toErr(Err0425)));
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
 
-    if (node->token.is(TokenId::CompilerIntrinsicGetTag))
+    if (node->token.is(TokenId::CompilerGetTag))
     {
         SWAG_CHECK(eatToken(TokenId::SymComma, "to specify the second argument"));
         SWAG_CHECK(doTypeExpression(node, EXPR_FLAG_NONE, &dummyResult));
@@ -686,9 +686,9 @@ bool Parser::doCompilerSpecialValue(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool Parser::doCompilerIntrinsicLocation(AstNode* parent, AstNode** result)
+bool Parser::doCompilerLocation(AstNode* parent, AstNode** result)
 {
-    const auto exprNode = Ast::newNode<AstNode>(AstNodeKind::CompilerIntrinsicLocation, this, parent);
+    const auto exprNode = Ast::newNode<AstNode>(AstNodeKind::CompilerLocation, this, parent);
     *result             = exprNode;
     exprNode->addAstFlag(AST_NO_BYTECODE);
     SWAG_CHECK(eatToken());
@@ -704,9 +704,9 @@ bool Parser::doCompilerIntrinsicLocation(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool Parser::doCompilerIntrinsicDefined(AstNode* parent, AstNode** result)
+bool Parser::doCompilerDefined(AstNode* parent, AstNode** result)
 {
-    const auto exprNode = Ast::newNode<AstNode>(AstNodeKind::CompilerIntrinsicDefined, this, parent);
+    const auto exprNode = Ast::newNode<AstNode>(AstNodeKind::CompilerDefined, this, parent);
     *result             = exprNode;
     exprNode->addAstFlag(AST_NO_BYTECODE);
     SWAG_CHECK(eatToken());
@@ -723,9 +723,9 @@ bool Parser::doCompilerIntrinsicDefined(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool Parser::doCompilerIntrinsicInclude(AstNode* parent, AstNode** result)
+bool Parser::doCompilerInclude(AstNode* parent, AstNode** result)
 {
-    const auto exprNode = Ast::newNode<AstNode>(AstNodeKind::CompilerIntrinsicInclude, this, parent);
+    const auto exprNode = Ast::newNode<AstNode>(AstNodeKind::CompilerInclude, this, parent);
     *result             = exprNode;
     exprNode->addAstFlag(AST_NO_BYTECODE);
     SWAG_CHECK(eatToken());

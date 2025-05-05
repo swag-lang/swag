@@ -80,7 +80,7 @@ bool ByteCodeGen::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
 // ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitIntrinsicLocationSI(ByteCodeGenContext* context)
 {
-    const auto node  = castAst<AstNode>(context->node, AstNodeKind::CompilerIntrinsicLocation);
+    const auto node  = castAst<AstNode>(context->node, AstNodeKind::CompilerLocation);
     const auto front = node->firstChild();
 
     node->resultRegisterRc = reserveRegisterRC(context);

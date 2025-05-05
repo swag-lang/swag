@@ -408,7 +408,7 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, ExprFlags exprFlags
 
     switch (tokenParse.token.id)
     {
-        case TokenId::CompilerIntrinsicDeclType:
+        case TokenId::CompilerDeclType:
             SWAG_CHECK(doIdentifierRef(node, &node->identifier));
             return true;
 
@@ -458,7 +458,7 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, ExprFlags exprFlags
         err->addNote(toNte(Nte0145));
     else if (Tokenizer::isKeyword(tokenParse.token.id))
         err->addNote(formNte(Nte0130, tokenParse.cstr()));
-    else if (tokenParse.is(TokenId::CompilerIntrinsicTypeOf) || tokenParse.is(TokenId::IntrinsicKindOf))
+    else if (tokenParse.is(TokenId::CompilerTypeOf) || tokenParse.is(TokenId::IntrinsicKindOf))
         err->addNote(toNte(Nte0053));
 
     return context->report(*err);

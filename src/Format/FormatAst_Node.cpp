@@ -375,9 +375,9 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             }
             break;
 
-        case AstNodeKind::CompilerIntrinsicInclude:
-        case AstNodeKind::CompilerIntrinsicDefined:
-        case AstNodeKind::CompilerIntrinsicLocation:
+        case AstNodeKind::CompilerInclude:
+        case AstNodeKind::CompilerDefined:
+        case AstNodeKind::CompilerLocation:
             concat->addString(node->token.text);
             concat->addChar('(');
             SWAG_CHECK(outputNode(context, node->firstChild()));

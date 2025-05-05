@@ -137,7 +137,7 @@ struct Parser
     bool doGenericFuncCallArguments(AstNode* parent, AstFuncCallParams** result);
     bool doFuncCallArguments(AstNode* parent, AstFuncCallParams** result, TokenId closeToken);
     bool doFuncDeclParameterSelf(AstVarDecl* paramNode);
-    bool doCompilerIntrinsicTag(AstNode* parent, AstNode** result);
+    bool doCompilerTag(AstNode* parent, AstNode** result);
     bool doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind);
     bool doCompilerIf(AstNode* parent, AstNode** result);
     bool doCompilerMacro(AstNode* parent, AstNode** result);
@@ -152,10 +152,10 @@ struct Parser
     bool doCompilerForeignLib(AstNode* parent, AstNode** result);
     bool doCompilerGlobal(AstNode* parent, AstNode** result);
     bool doCompilerSpecialValue(AstNode* parent, AstNode** result);
-    bool doCompilerIntrinsicDefined(AstNode* parent, AstNode** result);
-    bool doCompilerIntrinsicLocation(AstNode* parent, AstNode** result);
+    bool doCompilerDefined(AstNode* parent, AstNode** result);
+    bool doCompilerLocation(AstNode* parent, AstNode** result);
     bool doCompilerDependencies(AstNode* parent);
-    bool doCompilerIntrinsicInclude(AstNode* parent, AstNode** result);
+    bool doCompilerInclude(AstNode* parent, AstNode** result);
     bool doCompilerLoad(AstNode* parent);
     bool doCompilerImport(AstNode* parent);
     bool doCompilerPlaceHolder(AstNode* parent);

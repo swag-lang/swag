@@ -194,9 +194,9 @@ bool Parser::doIntrinsicProp(AstNode* parent, AstNode** result)
 
     // One single parameter
     else if (node->token.is(TokenId::IntrinsicKindOf) ||
-             node->token.is(TokenId::CompilerIntrinsicTypeOf) ||
-             node->token.is(TokenId::CompilerIntrinsicSizeOf) ||
-             node->token.is(TokenId::CompilerIntrinsicDeclType))
+             node->token.is(TokenId::CompilerTypeOf) ||
+             node->token.is(TokenId::CompilerSizeOf) ||
+             node->token.is(TokenId::CompilerDeclType))
     {
         SWAG_CHECK(doExpression(node, EXPR_FLAG_TYPEOF, &dummyResult));
     }
@@ -245,12 +245,12 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
             SWAG_CHECK(doCompilerSpecialValue(parent, result));
             break;
 
-        case TokenId::CompilerIntrinsicDefined:
-            SWAG_CHECK(doCompilerIntrinsicDefined(parent, result));
+        case TokenId::CompilerDefined:
+            SWAG_CHECK(doCompilerDefined(parent, result));
             break;
 
-        case TokenId::CompilerIntrinsicInclude:
-            SWAG_CHECK(doCompilerIntrinsicInclude(parent, result));
+        case TokenId::CompilerInclude:
+            SWAG_CHECK(doCompilerInclude(parent, result));
             break;
 
         case TokenId::SymLeftParen:
@@ -322,23 +322,23 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
             SWAG_CHECK(doCompilerIndex(parent, result));
             break;
 
-        case TokenId::CompilerIntrinsicHasTag:
-        case TokenId::CompilerIntrinsicGetTag:
-        case TokenId::CompilerIntrinsicSafety:
-            SWAG_CHECK(doCompilerIntrinsicTag(parent, result));
+        case TokenId::CompilerHasTag:
+        case TokenId::CompilerGetTag:
+        case TokenId::CompilerSafety:
+            SWAG_CHECK(doCompilerTag(parent, result));
             break;
 
         case TokenId::CompilerSelf:
         case TokenId::CompilerCurLocation:
-        case TokenId::CompilerIntrinsicLocation:
-        case TokenId::CompilerIntrinsicSizeOf:
-        case TokenId::CompilerIntrinsicAlignOf:
-        case TokenId::CompilerIntrinsicOffsetOf:
-        case TokenId::CompilerIntrinsicIsConstExpr:
-        case TokenId::CompilerIntrinsicTypeOf:
-        case TokenId::CompilerIntrinsicStringOf:
-        case TokenId::CompilerIntrinsicNameOf:
-        case TokenId::CompilerIntrinsicRunes:
+        case TokenId::CompilerLocation:
+        case TokenId::CompilerSizeOf:
+        case TokenId::CompilerAlignOf:
+        case TokenId::CompilerOffsetOf:
+        case TokenId::CompilerIsConstExpr:
+        case TokenId::CompilerTypeOf:
+        case TokenId::CompilerStringOf:
+        case TokenId::CompilerNameOf:
+        case TokenId::CompilerRunes:
             SWAG_CHECK(doIdentifierRef(parent, result));
             break;
 

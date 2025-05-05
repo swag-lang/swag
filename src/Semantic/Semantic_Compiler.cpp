@@ -988,12 +988,12 @@ bool Semantic::resolveCompilerSpecialValue(SemanticContext* context)
         }                                                                        \
     } while (0)
 
-bool Semantic::resolveCompilerIntrinsicTag(SemanticContext* context)
+bool Semantic::resolveCompilerTag(SemanticContext* context)
 {
     const auto node = context->node;
     switch (node->token.id)
     {
-        case TokenId::CompilerIntrinsicSafety:
+        case TokenId::CompilerSafety:
         {
             auto front = node->firstChild();
             SWAG_CHECK(evaluateConstExpression(context, front));
@@ -1025,7 +1025,7 @@ bool Semantic::resolveCompilerIntrinsicTag(SemanticContext* context)
             return true;
         }
 
-        case TokenId::CompilerIntrinsicHasTag:
+        case TokenId::CompilerHasTag:
         {
             auto front = node->firstChild();
             SWAG_CHECK(evaluateConstExpression(context, front));
@@ -1039,7 +1039,7 @@ bool Semantic::resolveCompilerIntrinsicTag(SemanticContext* context)
             return true;
         }
 
-        case TokenId::CompilerIntrinsicGetTag:
+        case TokenId::CompilerGetTag:
         {
             auto       nameNode   = node->firstChild();
             const auto typeNode   = node->secondChild();
@@ -1085,7 +1085,7 @@ bool Semantic::resolveCompilerIntrinsicTag(SemanticContext* context)
     return true;
 }
 
-bool Semantic::resolveCompilerIntrinsicStringOf(SemanticContext* context)
+bool Semantic::resolveCompilerStringOf(SemanticContext* context)
 {
     const auto node     = context->node;
     auto       expr     = node->firstChild();
@@ -1127,7 +1127,7 @@ bool Semantic::resolveCompilerIntrinsicStringOf(SemanticContext* context)
     return true;
 }
 
-bool Semantic::resolveCompilerIntrinsicNameOf(SemanticContext* context)
+bool Semantic::resolveCompilerNameOf(SemanticContext* context)
 {
     const auto node = context->node;
     auto       expr = node->firstChild();
@@ -1149,7 +1149,7 @@ bool Semantic::resolveCompilerIntrinsicNameOf(SemanticContext* context)
     return true;
 }
 
-bool Semantic::resolveCompilerIntrinsicTypeOf(SemanticContext* context)
+bool Semantic::resolveCompilerTypeOf(SemanticContext* context)
 {
     const auto node     = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     auto       expr     = node->firstChild();
@@ -1167,7 +1167,7 @@ bool Semantic::resolveCompilerIntrinsicTypeOf(SemanticContext* context)
     return true;
 }
 
-bool Semantic::resolveCompilerIntrinsicDeclType(SemanticContext* context)
+bool Semantic::resolveCompilerDeclType(SemanticContext* context)
 {
     const auto node     = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     auto       expr     = node->firstChild();
@@ -1207,7 +1207,7 @@ bool Semantic::resolveCompilerIntrinsicDeclType(SemanticContext* context)
     return true;
 }
 
-bool Semantic::resolveCompilerIntrinsicRunes(SemanticContext* context)
+bool Semantic::resolveCompilerRunes(SemanticContext* context)
 {
     const auto node     = context->node;
     auto       expr     = node->firstChild();
@@ -1249,7 +1249,7 @@ bool Semantic::resolveCompilerIntrinsicRunes(SemanticContext* context)
     return true;
 }
 
-bool Semantic::resolveCompilerIntrinsicIsConstExpr(const SemanticContext* context)
+bool Semantic::resolveCompilerIsConstExpr(const SemanticContext* context)
 {
     const auto node = context->node;
     const auto expr = node->firstChild();
@@ -1270,7 +1270,7 @@ bool Semantic::resolveCompilerIntrinsicIsConstExpr(const SemanticContext* contex
     return true;
 }
 
-bool Semantic::resolveCompilerIntrinsicSizeOf(SemanticContext* context)
+bool Semantic::resolveCompilerSizeOf(SemanticContext* context)
 {
     const auto node = context->node;
     auto       expr = node->firstChild();
@@ -1284,7 +1284,7 @@ bool Semantic::resolveCompilerIntrinsicSizeOf(SemanticContext* context)
     return true;
 }
 
-bool Semantic::resolveCompilerIntrinsicAlignOf(SemanticContext* context)
+bool Semantic::resolveCompilerAlignOf(SemanticContext* context)
 {
     const auto node = context->node;
     auto       expr = node->firstChild();
@@ -1298,7 +1298,7 @@ bool Semantic::resolveCompilerIntrinsicAlignOf(SemanticContext* context)
     return true;
 }
 
-bool Semantic::resolveCompilerIntrinsicOffsetOf(SemanticContext* context)
+bool Semantic::resolveCompilerOffsetOf(SemanticContext* context)
 {
     const auto node = context->node;
     const auto expr = node->firstChild();
