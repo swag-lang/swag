@@ -129,7 +129,7 @@ bool FormatAst::outputCompilerSpecialValue(FormatContext&, AstNode* node) const
     return true;
 }
 
-bool FormatAst::outputCompilerMixin(FormatContext& context, AstNode* node)
+bool FormatAst::outputCompilerInject(FormatContext& context, AstNode* node)
 {
     const auto compilerMixin = castAst<AstCompilerInject>(node, AstNodeKind::CompilerInject);
     if (node->hasAstFlag(AST_DISCARD))

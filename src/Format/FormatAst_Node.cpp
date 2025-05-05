@@ -278,7 +278,7 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             break;
 
         case AstNodeKind::CompilerInject:
-            SWAG_CHECK(outputCompilerMixin(context, node));
+            SWAG_CHECK(outputCompilerInject(context, node));
             break;
 
         case AstNodeKind::CompilerPrint:

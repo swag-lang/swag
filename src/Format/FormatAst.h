@@ -140,7 +140,7 @@ struct FormatAst
     bool outputCompilerExport(FormatContext& context, AstNode* node) const;
     bool outputCompilerCode(FormatContext& context, AstNode* node);
     bool outputCompilerGlobal(FormatContext& context, const AstNode* node);
-    bool outputCompilerMixin(FormatContext& context, AstNode* node);
+    bool outputCompilerInject(FormatContext& context, AstNode* node);
     bool outputExpressionList(FormatContext& context, AstNode* node);
     bool outputLiteral(FormatContext& context, AstNode* node);
     bool outputLiteral(FormatContext& context, AstNode* node, TypeInfo* typeInfo, const ComputedValue& value);
