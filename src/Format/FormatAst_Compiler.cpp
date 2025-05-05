@@ -141,17 +141,14 @@ bool FormatAst::outputCompilerInject(FormatContext& context, AstNode* node)
     concat->addString("#inject");
     concat->addChar('(');
     SWAG_CHECK(outputNode(context, node->firstChild()));
-    concat->addChar(')');
 
     if (!compilerMixin->replaceTokens.empty())
     {
-        concat->addBlank();
-        concat->addString("=>");
-        concat->addBlank();
-        concat->addChar('{');
-        concat->addBlank();
         for (const auto m : compilerMixin->replaceTokens)
         {
+            concat->addChar(',');
+            concat->addBlank();
+            
             switch (m.first)
             {
                 case TokenId::KwdBreak:
@@ -169,12 +166,10 @@ bool FormatAst::outputCompilerInject(FormatContext& context, AstNode* node)
             concat->addChar('=');
             concat->addBlank();
             SWAG_CHECK(outputNode(context, m.second));
-            concat->addChar(';');
-            concat->addBlank();
         }
-        concat->addChar('}');
     }
 
+    concat->addChar(')');
     return true;
 }
 

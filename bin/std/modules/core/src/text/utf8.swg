@@ -814,7 +814,7 @@ func visitRunes(buffer: const [..] u8, stmt: #code void)
                 let #alias0 = #up c
                 let #alias1 = #up charIdx
                 let #alias2 = #up byteIdx
-                #inject(#up stmt) => { continue = break to Inside; }
+                #inject(#up stmt, continue = break to Inside)
             }
         }
 

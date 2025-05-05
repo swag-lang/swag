@@ -166,26 +166,21 @@ bool Parser::doCompilerInject(AstNode* parent, AstNode** result)
     auto startLoc = tokenParse.token.startLocation;
     SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, toErr(Err0425)));
     SWAG_CHECK(doIdentifierRef(node, &dummyResult));
-    SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
 
     // Replacement parameters
-    if (tokenParse.is(TokenId::SymEqualGreater))
+    if (tokenParse.is(TokenId::SymComma))
     {
         SWAG_CHECK(eatToken());
 
-        startLoc = tokenParse.token.startLocation;
         SWAG_VERIFY(node->hasOwnerBreakable(), error(tokenParse, toErr(Err0306)));
-        SWAG_CHECK(eatTokenError(TokenId::SymLeftCurly, toErr(Err0077)));
 
-        if (tokenParse.is(TokenId::SymRightCurly))
-            return error(tokenParse, toErr(Err0060));
         if (tokenParse.isNot(TokenId::KwdBreak) && tokenParse.isNot(TokenId::KwdContinue))
             return error(tokenParse, toErr(Err0120));
 
         node->allocateExtension(ExtensionKind::Owner);
 
         AstNode* stmt;
-        while (tokenParse.isNot(TokenId::SymRightCurly))
+        while (tokenParse.isNot(TokenId::SymRightParen))
         {
             auto tokenId = tokenParse.token.id;
             SWAG_CHECK(eatToken());
@@ -193,13 +188,14 @@ bool Parser::doCompilerInject(AstNode* parent, AstNode** result)
             SWAG_CHECK(doEmbeddedInstruction(nullptr, &stmt));
             node->replaceTokens[tokenId] = stmt;
             node->extOwner()->nodesToFree.push_back(stmt);
-            if (tokenParse.isNot(TokenId::SymRightCurly))
-                SWAG_CHECK(eatSemiCol("[[#inject]] replacement block"));
+            if (tokenParse.isNot(TokenId::SymRightParen))
+                SWAG_CHECK(eatToken(TokenId::SymComma, "[[#inject]] replacement block"));
         }
 
         SWAG_CHECK(eatFormat(node));
-        SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the [[#inject]] replacement block"));
     }
+
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
 
     return true;
 }

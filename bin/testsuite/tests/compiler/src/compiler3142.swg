@@ -5,7 +5,7 @@ func toto(stmt: #code void)
     {
         for 10
         {
-            #inject(stmt) => { break = @assert(false); }
+            #inject(stmt, break = @assert(false))
         }
     }
 }
@@ -18,7 +18,7 @@ func titi(stmt: #code void)
     {
         for 5
         {
-            #inject(stmt) => { break = break to Up; }
+            #inject(stmt, break = break to Up)
         }
     }
 }

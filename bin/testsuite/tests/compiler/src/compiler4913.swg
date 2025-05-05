@@ -1,4 +1,4 @@
-#global testerror "Err0060"
+/*#global testerror "Err0060"
 
 #[Swag.Mixin]
 func toto(stmt: #code void)
@@ -7,4 +7,4 @@ func toto(stmt: #code void)
     {
         #inject(stmt) => { }
     }
-}
+}*/

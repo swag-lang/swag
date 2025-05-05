@@ -207,7 +207,7 @@ void initErrors()
     SWAG_ERROR(Err0057, "duplicated instruction modifier                   $ cannot have more than one [[%s]] instruction modifier                                                                                    $ ");
     SWAG_ERROR(Err0058, "duplicated named argument                         $ cannot have more than one named argument [[%s]]                                                                                          $ ");
     SWAG_ERROR(Err0059, "duplicated operator                               $ cannot use the operator [['%s']] twice                                                                                                   $ expected an expression instead");
-    SWAG_ERROR(Err0060, "empty [[#inject]] replacement block               $ cannot have an empty [[#inject]] block                                                                                                   $ consider adding some content to the block, or removing it");
+    SWAG_ERROR(Err0060, nullptr);
     SWAG_ERROR(Err0061, "empty [[case]] statement                          $ cannot have an empty [[case]] statement                                                                                                  $ ");
     SWAG_ERROR(Err0062, "empty [[default]] statement                       $ cannot have an empty [[default]] statement                                                                                               $ ");
     SWAG_ERROR(Err0063, "empty [[switch]]                                  $ cannot have an empty [[switch]] body                                                                                                     $ consider adding some cases, or removing it");
