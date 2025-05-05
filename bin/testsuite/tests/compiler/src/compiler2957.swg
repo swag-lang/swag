@@ -10,6 +10,6 @@ func toto()->V
 }
 
 const C = #run toto()
-#assert C.x == 1
-#assert C.y == 2
-#assert C.z == 3
+#assert(C.x == 1)
+#assert(C.y == 2)
+#assert(C.z == 3)

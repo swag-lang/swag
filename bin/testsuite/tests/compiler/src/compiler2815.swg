@@ -6,5 +6,5 @@ func declare(name: string, value: s32)
 
 declare("myVar", 5)
 #placeholder myVar2
-#assert myVar2 == 5
+#assert(myVar2 == 5)
 */

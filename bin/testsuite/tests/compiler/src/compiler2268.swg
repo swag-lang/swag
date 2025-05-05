@@ -1,5 +1,5 @@
-#assert !#defined(TOIKTOI)
-#assert #defined(G)
+#assert(!#defined(TOIKTOI))
+#assert(#defined(G))
 var G = 0
 
 #if #defined(PRRRRR)
@@ -13,4 +13,4 @@ var G = 0
 }
 
 const Value = 1
-#assert Value1 == 1
+#assert(Value1 == 1)

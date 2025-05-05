@@ -2,7 +2,7 @@
 using Swag
 
 const StringSmallSize = 16'u64
-#assert #sizeof(String) == 56
+#assert(#sizeof(String) == 56)
 
 enum CharacterSet
 {

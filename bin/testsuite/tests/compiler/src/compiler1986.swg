@@ -1,6 +1,6 @@
 func(T) sort(values: [..] T)
 {
-    #assert #typeof(T) == s32
+    #assert(#typeof(T) == s32)
     @assert(@countof(values) == 4)
     @assert(values[0] == 1)
     @assert(values[3] == 10)

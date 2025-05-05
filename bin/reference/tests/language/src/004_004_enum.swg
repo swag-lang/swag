@@ -42,7 +42,7 @@ By default, an enum in Swag is of type `s32`, meaning the underlying storage for
     // 'type' here is a 'typeinfo' dedicated to the enum type.
     // In that case, 'type.rawType' represents the enum's underlying type.
     @assert(type.rawType == s32)
-    #assert #typeof(Values) == Values
+    #assert(#typeof(Values) == Values)
 }
 
 /**
@@ -59,8 +59,8 @@ You can specify a custom underlying type for an enum by appending it after the e
         C
     }
 
-    #assert #typeof(Values1).rawType == s64
-    #assert #typeof(Values1.A) == Values1
+    #assert(#typeof(Values1).rawType == s64)
+    #assert(#typeof(Values1.A) == Values1)
 }
 
 /**
@@ -77,9 +77,9 @@ Enum values, if not explicitly specified, start at 0 and increase by 1 for each 
         C
     }
 
-    #assert Value.A == 0
-    #assert Value.B == 1
-    #assert Value.C == 2
+    #assert(Value.A == 0)
+    #assert(Value.B == 1)
+    #assert(Value.C == 2)
 }
 
 /**
@@ -94,9 +94,9 @@ You can specify custom values for each enum element.
         C = 30
     }
 
-    #assert Value.A == 10
-    #assert Value.B == 20
-    #assert Value.C == 30
+    #assert(Value.A == 10)
+    #assert(Value.B == 20)
+    #assert(Value.C == 30)
 }
 
 /**
@@ -113,9 +113,9 @@ If you omit a value after assigning a specific one, it will be assigned the prev
         C // Will be 12
     }
 
-    #assert Value.A == 10
-    #assert Value.B == 11
-    #assert Value.C == 12
+    #assert(Value.A == 10)
+    #assert(Value.B == 11)
+    #assert(Value.C == 12)
 }
 
 /**
@@ -132,9 +132,9 @@ For non-integer types, you **must** specify the values explicitly, as they canno
         C = "string 3"
     }
 
-    #assert Value1.A == "string 1"
-    #assert Value1.B == "string 2"
-    #assert Value1.C == "string 3"
+    #assert(Value1.A == "string 1")
+    #assert(Value1.B == "string 2")
+    #assert(Value1.C == "string 3")
 
     enum Value2: f32
     {
@@ -143,9 +143,9 @@ For non-integer types, you **must** specify the values explicitly, as they canno
         C = 6.0
     }
 
-    #assert Value2.A == 1.0
-    #assert Value2.B == 3.14
-    #assert Value2.C == 6.0
+    #assert(Value2.A == 1.0)
+    #assert(Value2.B == 3.14)
+    #assert(Value2.C == 6.0)
 }
 
 /**
@@ -163,7 +163,7 @@ For non-integer types, you **must** specify the values explicitly, as they canno
     }
 
     @assert(@countof(Value) == 3)
-    #assert @countof(Value) == 3
+    #assert(@countof(Value) == 3)
 }
 
 /**
@@ -209,10 +209,10 @@ Enums can be used as flags if declared with the `#[Swag.EnumFlags]` attribute. F
         D   // Value is 8
     }
 
-    #assert MyFlags.A == 0b00000001
-    #assert MyFlags.B == 0b00000010
-    #assert MyFlags.C == 0b00000100
-    #assert MyFlags.D == 0b00001000
+    #assert(MyFlags.A == 0b00000001)
+    #assert(MyFlags.B == 0b00000010)
+    #assert(MyFlags.C == 0b00000100)
+    #assert(MyFlags.D == 0b00001000)
 
     let value = MyFlags.B | MyFlags.C
     @assert(value == 0b00000110)
@@ -233,10 +233,10 @@ You can define an enum where each value is associated with a const static array.
         B = [10, 20]
     }
 
-    #assert Value.A[0] == 1
-    #assert Value.A[1] == 2
-    #assert Value.B[0] == 10
-    #assert Value.B[1] == 20
+    #assert(Value.A[0] == 1)
+    #assert(Value.A[1] == 2)
+    #assert(Value.B[0] == 10)
+    #assert(Value.B[1] == 20)
 }
 
 /**
@@ -252,8 +252,8 @@ Similarly, you can define an enum where each value is associated with a const sl
         B = [10, 20, 30, 40]
     }
 
-    #assert @countof(Value.A) == 2
-    #assert @countof(Value.B) == 4
+    #assert(@countof(Value.A) == 2)
+    #assert(@countof(Value.B) == 4)
 
     let x = Value.A
     @assert(x[0] == 1)
@@ -485,7 +485,7 @@ The `foreach` statement offers a more structured way to iterate over an enum and
         case B:                           // Case for the value 'B'
             // Perform action for 'B'
             break
-        default:                          
+        default:
             // This should never be reached as we are covering all enum cases
             @assert(false)
         }

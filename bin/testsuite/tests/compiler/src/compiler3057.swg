@@ -4,4 +4,4 @@ struct AA
     y: s32
 }
 
-#assert @countof(#typeof(AA).fields) == 2
+#assert(@countof(#typeof(AA).fields) == 2)

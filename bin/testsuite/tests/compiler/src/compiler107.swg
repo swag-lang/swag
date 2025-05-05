@@ -15,4 +15,4 @@ enum B
 	Blue;
 }
 
-#assert A.Blue == 102;
+#assert(A.Blue == 102);

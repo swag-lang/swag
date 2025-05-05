@@ -7,4 +7,4 @@ const MyString: string = #run
         return cast(string) str
     }
 
-#assert MyString == "abc"
+#assert(MyString == "abc")

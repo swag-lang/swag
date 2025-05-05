@@ -11,5 +11,5 @@ enum MyErrors
     NotFound1
 }
 
-#assert MyErrors.NotFound == 100
-#assert MyErrors.NotFound1 == 101
+#assert(MyErrors.NotFound == 100)
+#assert(MyErrors.NotFound1 == 101)

@@ -9,7 +9,7 @@ impl AA
 {
     mtd(op: string) opAssign(t: T)
     {
-        #assert (op == "+=")
+        #assert((op == "+="))
         arr.add(t)
     }
 

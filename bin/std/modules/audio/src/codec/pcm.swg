@@ -79,7 +79,7 @@ impl ICodec for CodecPcmToPcm16
                     dst[0] = cast(s16) intS
                 }
                 #else:
-                    #assert false
+                    #assert(false)
 
                 dst += 1
                 src += TS

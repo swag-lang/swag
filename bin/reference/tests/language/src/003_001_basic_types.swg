@@ -115,6 +115,6 @@ You can use `#decltype` to create a type based on an expression. This is useful 
     @assert(#typeof(a) == #typeof(b)) // Verifies that 'a' and 'b' have the same type.
     @assert(#typeof(a) == s32)        // Verifies that the type of 'a' is 's32'.
 
-    #assert #typeof(a) == #typeof(b)  // Compile-time validation using '#assert'.
-    #assert #typeof(a) == s32
+    #assert(#typeof(a) == #typeof(b))  // Compile-time validation using '#assert'.
+    #assert(#typeof(a) == s32)
 }

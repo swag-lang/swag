@@ -7,7 +7,7 @@ where
     return #typeof(T) == f32
 }
 {
-    #assert #typeof(T) == f32
+    #assert(#typeof(T) == f32)
     G += 1
 }
 /*

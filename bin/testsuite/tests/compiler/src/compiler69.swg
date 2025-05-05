@@ -2,4 +2,4 @@
 ;
 
 #global testerror "Err0029";
-#assert !2;
+#assert(!2);

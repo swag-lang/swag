@@ -14,5 +14,5 @@
     }
 }
 
-#assert AA.T == 2
-#assert !#defined(AA.R)
+#assert(AA.T == 2)
+#assert(!#defined(AA.R))

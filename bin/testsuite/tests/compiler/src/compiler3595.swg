@@ -7,7 +7,7 @@ impl A
 {
     mtd opIndex(i: u64)->s32
     {
-        #assert #typeof(T).fullname == "s32"
+        #assert(#typeof(T).fullname == "s32")
         return 0
     }
 }

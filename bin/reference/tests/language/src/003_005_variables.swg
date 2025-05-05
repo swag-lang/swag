@@ -85,15 +85,15 @@ Below are examples demonstrating **type inference**.
 {
     let a = 1.5  // The type of 'a' is inferred to be 'f32' due to the floating-point literal.
     @assert(a == 1.5)
-    #assert #typeof(a) == f32
+    #assert(#typeof(a) == f32)
 
     let b = "string"  // The type of 'b' is inferred to be 'string'.
     @assert(b == "string")
-    #assert #typeof(b) == string
+    #assert(#typeof(b) == string)
 
     let c = 1.5'f64  // The type of 'c' is explicitly set to 'f64' using a suffix.
     @assert(c == 1.5)
-    #assert #typeof(c) == f64
+    #assert(#typeof(c) == f64)
 }
 
 /**
@@ -104,14 +104,14 @@ Type inference also applies when declaring multiple variables simultaneously.
     let a, b = true  // Both 'a' and 'b' are inferred to be of type 'bool'.
     @assert(a == true)
     @assert(b == true)
-    #assert #typeof(a) == #typeof(true)
-    #assert #typeof(b) == #typeof(a)
+    #assert(#typeof(a) == #typeof(true))
+    #assert(#typeof(b) == #typeof(a))
 
     let c = 1.5, d = "string"  // 'c' is inferred as 'f32', and 'd' as 'string'.
     @assert(c == 1.5)
     @assert(d == "string")
-    #assert #typeof(c) == f32
-    #assert #typeof(d) == string
+    #assert(#typeof(c) == f32)
+    #assert(#typeof(d) == string)
 }
 
 /**
@@ -119,7 +119,7 @@ Type inference also applies when declaring multiple variables simultaneously.
 Swag offers special keywords and attributes to manage variable storage and behavior beyond typical usage.
 
 ## Thread-Local Storage
-By tagging a global variable with `#[Swag.Tls]`, you can store it in thread-local storage. 
+By tagging a global variable with `#[Swag.Tls]`, you can store it in thread-local storage.
 Each thread will then have its own independent copy of the variable.
 */
 #[Swag.Tls]

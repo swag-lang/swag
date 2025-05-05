@@ -16,22 +16,19 @@ using Swag;
 	func main_f64 ()->f64 { return 1.5; }
 }
 
-#assert cast(s8) (main_f32()) == 1;
-#assert cast(s8) (1.5'f32 ) == 1;
-#assert cast(s8) (main_f64()) == 1;
-#assert cast(s8) (1.5'f64 ) == 1;
-
-#assert cast(s16) (main_f32()) == 1;
-#assert cast(s16) (1.5'f32 ) == 1;
-#assert cast(s16) (main_f64()) == 1;
-#assert cast(s16) (1.5'f64 ) == 1;
-
-#assert cast(s32) (main_f32()) == 1;
-#assert cast(s32) (1.5'f32 ) == 1;
-#assert cast(s32) (main_f64()) == 1;
-#assert cast(s32) (1.5'f64 ) == 1;
-
-#assert cast(s64) (main_f32()) == 1;
-#assert cast(s64) (1.5'f32 ) == 1;
-#assert cast(s64) (main_f64()) == 1;
-#assert cast(s64) (1.5'f64 ) == 1;
+#assert(cast(s8) (main_f32()) == 1);
+#assert(cast(s8) (1.5'f32 ) == 1);
+#assert(cast(s8) (main_f64()) == 1);
+#assert(cast(s8) (1.5'f64 ) == 1);
+#assert(cast(s16) (main_f32()) == 1);
+#assert(cast(s16) (1.5'f32 ) == 1);
+#assert(cast(s16) (main_f64()) == 1);
+#assert(cast(s16) (1.5'f64 ) == 1);
+#assert(cast(s32) (main_f32()) == 1);
+#assert(cast(s32) (1.5'f32 ) == 1);
+#assert(cast(s32) (main_f64()) == 1);
+#assert(cast(s32) (1.5'f64 ) == 1);
+#assert(cast(s64) (main_f32()) == 1);
+#assert(cast(s64) (1.5'f32 ) == 1);
+#assert(cast(s64) (main_f64()) == 1);
+#assert(cast(s64) (1.5'f64 ) == 1);

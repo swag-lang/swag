@@ -7,7 +7,7 @@ struct RGB{a, b, c: s32}
         {
             return RGB{1, 2, 3}
         }
-    #assert X.a == 1
-    #assert X.b == 2
-    #assert X.c == 3
+    #assert(X.a == 1)
+    #assert(X.b == 2)
+    #assert(X.c == 3)
 }

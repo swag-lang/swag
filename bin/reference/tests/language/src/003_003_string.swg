@@ -10,28 +10,28 @@ Strings can be compared directly for equality using the `==` operator.
 */
 #test
 {
-    const a = "this is a Chinese character: 是"           // String with a Chinese character
-    #assert a == "this is a Chinese character: 是"        // Assert equality between two identical strings
+    const a = "this is a Chinese character: 是"            // String with a Chinese character
+    #assert(a == "this is a Chinese character: 是")        // Assert equality between two identical strings
 
-    const b = "these are some Cyrillic characters: ӜИ"    // String with Cyrillic characters
-    #assert b == "these are some Cyrillic characters: ӜИ" // Assert equality for another string
+    const b = "these are some Cyrillic characters: ӜИ"     // String with Cyrillic characters
+    #assert(b == "these are some Cyrillic characters: ӜИ") // Assert equality for another string
 }
 
 /**
 # The 'rune' Type
-A `rune` represents a Unicode code point and is stored as a 32-bit value, ensuring 
+A `rune` represents a Unicode code point and is stored as a 32-bit value, ensuring
 it can accommodate any Unicode character.
 */
 #test
 {
-    const a: rune = '是'                             // Define a rune using a Chinese character
-    #assert a == '是'                                // Assert the rune matches the expected value
-    #assert #sizeof(a) == #sizeof(u32)               // Confirm the size of a rune is 32 bits (same as u32)
+    const a: rune = '是'                              // Define a rune using a Chinese character
+    #assert(a == '是')                                // Assert the rune matches the expected value
+    #assert(#sizeof(a) == #sizeof(u32))               // Confirm the size of a rune is 32 bits (same as u32)
 }
 
 /**
-> WARNING: Direct indexing of a string to retrieve a `rune` is not possible, except for ASCII strings. 
-> This is because Swag avoids the runtime overhead of UTF-8 decoding in string operations. However, 
+> WARNING: Direct indexing of a string to retrieve a `rune` is not possible, except for ASCII strings.
+> This is because Swag avoids the runtime overhead of UTF-8 decoding in string operations. However,
 > the `Std.Core` module provides utilities for working with UTF-8 encoded strings.
 */
 
@@ -46,13 +46,13 @@ UTF-8 encoding.
 
     // Retrieves the first byte of the string, which corresponds to the character 't'
     const b = a[0]
-    #assert b == 't'                                 // Assert the first byte is 't'
-    #assert #typeof(b) == #typeof(u8)                // Confirm the type is `u8` (byte)
+    #assert(b == 't')                                 // Assert the first byte is 't'
+    #assert(#typeof(b) == #typeof(u8))                // Confirm the type is `u8` (byte)
 
     // UTF-8 encoding affects indexing. 'X' is not at index 1 due to the multibyte encoding of the
     // preceding Chinese character.
-    const c = "是X是"                              
-    #assert c[1] != 'X'                              // Assert that the byte at index 1 is not 'X'
+    const c = "是X是"
+    #assert(c[1] != 'X')                              // Assert that the byte at index 1 is not 'X'
 }
 
 /**
@@ -62,10 +62,10 @@ Swag allows compile-time concatenation of strings and other values using the `++
 #test
 {
     const a = "the devil's number is " ++ 666       // Concatenation of a string with a number
-    #assert a == "the devil's number is 666"        // Assert the resulting string is as expected
+    #assert(a == "the devil's number is 666")       // Assert the resulting string is as expected
 
     const b = 666
-    let c   = "the devil's number is not " ++ (b + 1) ++ "!"  
+    let c   = "the devil's number is not " ++ (b + 1) ++ "!"
     @assert(c == "the devil's number is not 667!")  // Assert the concatenated string after arithmetic
 
     let d = "there are " ++ 4 ++ " apples in " ++ (2 * 2) ++ " baskets"
@@ -74,7 +74,7 @@ Swag allows compile-time concatenation of strings and other values using the `++
 
 /**
 # Null Strings
-A string can be `null` if it has not been initialized. This behavior can be used to 
+A string can be `null` if it has not been initialized. This behavior can be used to
 check whether a string has been assigned a value.
 */
 #test
@@ -189,10 +189,10 @@ Escape sequences can also be used to specify characters via their ASCII or Unico
 
     {
         const d = "\u2F46\u2F46"                   // Unicode escape sequences for two identical characters
-        #assert d == "⽆⽆"                         // Assert the resulting string matches expected characters
+        #assert(d == "⽆⽆")                       // Assert the resulting string matches expected characters
 
         const e = '\u2F46'                         // Unicode escape sequence as a rune literal
-        #assert e == '⽆'                           // Assert the rune matches the expected character
+        #assert(e == '⽆')                         // Assert the rune matches the expected character
     }
 }
 
@@ -208,8 +208,8 @@ A raw string is enclosed within `#` characters, which ensures that its content i
 #test
 {
     const a = #"\u2F46"#                           // Raw string containing a Unicode escape sequence
-    #assert a != "⽆"                               // Raw string does not interpret the escape sequence
-    #assert a == #"\u2F46"#                        // Raw string content matches the literal input
+    #assert(a != "⽆")                             // Raw string does not interpret the escape sequence
+    #assert(a == #"\u2F46"#)                       // Raw string content matches the literal input
 }
 
 /**
@@ -219,12 +219,12 @@ These two strings are equivalent, even though one uses escape sequences and the 
 {
     const a = "\\hello \\world"                    // String with escape sequences
     const b = #"\hello \world"#                    // Equivalent raw string
-    #assert a == b                                 // Assert both strings are identical
+    #assert(a == b)                                // Assert both strings are identical
 }
 
 /**
 # Multiline Raw Strings
-Raw strings can span multiple lines, and all leading spaces before the closing `"#` are 
+Raw strings can span multiple lines, and all leading spaces before the closing `"#` are
 removed from each line.
 */
 #test
@@ -249,7 +249,7 @@ before the closing `"#` are stripped from each line.
 
 /**
 # Multiline Strings
-Multiline strings start and end with `"""`. Unlike raw strings, they still process escape 
+Multiline strings start and end with `"""`. Unlike raw strings, they still process escape
 sequences.
 */
 #test
@@ -267,7 +267,7 @@ sequences.
 }
 
 /**
-In a multiline or raw string, ending a line with `\` prevents the following end of line (EOL) 
+In a multiline or raw string, ending a line with `\` prevents the following end of line (EOL)
 from being included in the string.
 */
 #test
@@ -285,14 +285,14 @@ from being included in the string.
 
 /**
 # #stringof and #nameof Intrinsics
-The `#stringof` intrinsic returns the string representation of a constant expression 
+The `#stringof` intrinsic returns the string representation of a constant expression
 at compile time.
 */
 #test
 {
     const X = 1
-    #assert #stringof(X) == "1"                    // The string representation of X is "1"
-    #assert #stringof(X + 10) == "11"              // Expression evaluation is also possible
+    #assert(#stringof(X) == "1")                    // The string representation of X is "1"
+    #assert(#stringof(X + 10) == "11")              // Expression evaluation is also possible
 }
 
 /**
@@ -301,5 +301,5 @@ The `#nameof` intrinsic returns the name of a variable, function, etc., as a str
 #test
 {
     const X = 1
-    #assert #nameof(X) == "X"                      // Returns the variable name "X"
+    #assert(#nameof(X) == "X")                      // Returns the variable name "X"
 }

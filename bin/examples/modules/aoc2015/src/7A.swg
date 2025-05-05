@@ -75,4 +75,4 @@ using Core
 
     return result
 }
-#assert a == 46065
+#assert(a == 46065)

@@ -20,6 +20,6 @@ enum XYZ: string
 const C = XYZ.XY.X
 const D = XYZ.XY.Y
 const E = XYZ.Z.Z
-#assert XYZ.XY.X == "1"
-#assert XYZ.XY.Y == "2"
-#assert XYZ.Z.Z  == "Z"
+#assert(XYZ.XY.X == "1")
+#assert(XYZ.XY.Y == "2")
+#assert(XYZ.Z.Z  == "Z")

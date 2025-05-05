@@ -13,7 +13,7 @@ impl Duration
         #elif op == "ms"
             val = v
         #else
-            #assert false
+            #assert(false)
     }*/
 }
 

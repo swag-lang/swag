@@ -228,7 +228,10 @@ bool Parser::doCompilerAssert(AstNode* parent, AstNode** result)
 
     ParserPushAstNodeFlags scopedFlags(this, AST_IN_RUN_BLOCK | AST_NO_BACKEND);
     SWAG_CHECK(eatToken());
+    const auto startLoc = tokenParse.token.startLocation;
+    SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, toErr(Err0425)));
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
     SWAG_CHECK(eatSemiCol("[[#assert]] expression"));
     return true;
 }

@@ -10,7 +10,7 @@ impl A
     mtd(ptr: bool, back: bool) opVisit(stmt: #code void)
     {
         @assert(x == 666)
-        #assert T == *s32
+        #assert(T == *s32)
     }
 }
 

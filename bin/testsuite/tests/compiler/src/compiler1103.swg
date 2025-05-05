@@ -8,4 +8,4 @@ impl Mwc
 	const m_hi = mult * 10
 }
 
-#assert Mwc.m_hi == 10
+#assert(Mwc.m_hi == 10)

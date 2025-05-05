@@ -5,4 +5,4 @@ struct TOTO
     y: s32
 }
 
-#assert #sizeof(TOTO) == 4
+#assert(#sizeof(TOTO) == 4)

@@ -27,8 +27,8 @@ You can create aliases for primitive types, making your code more readable and m
 
     var x: Float32 = 1.0                    // Equivalent to declaring 'var x: f32'
     var y: Float64 = 1.0                    // Equivalent to declaring 'var y: f64'
-    #assert #typeof(Float32) == f32
-    #assert #typeof(Float64) == f64
+    #assert(#typeof(Float32) == f32)
+    #assert(#typeof(Float64) == f64)
 }
 
 /**
@@ -39,7 +39,7 @@ In cases where you need to enforce type safety, Swag provides the `Swag.Strict` 
 {
     #[Swag.Strict]
     alias MyType = s32                  // 'MyType' is a distinct type, not interchangeable with 's32'
-    #assert #typeof(MyType) != s32
+    #assert(#typeof(MyType) != s32)
 
     let x: MyType = cast(MyType) 0          // Explicit cast is required to assign a value
     let y: s32 = cast(s32) x                // Casting back to 's32' also requires an explicit cast

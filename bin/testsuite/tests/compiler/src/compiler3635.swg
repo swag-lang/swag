@@ -8,4 +8,4 @@ struct XXX
     x: ArrayPtr'XXX
 }
 
-#assert #sizeof(XXX) == #sizeof(*void)
+#assert(#sizeof(XXX) == #sizeof(*void))

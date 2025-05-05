@@ -9,7 +9,7 @@ impl Duration
     mtd(op: string) opAffectLiteral(v: f32)
     {
         @assert(v == 5.0 or v == 6.0)
-        #assert op == "s" or op == "ms"
+        #assert(op == "s" or op == "ms")
     }
 }
 

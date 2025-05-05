@@ -8,24 +8,24 @@ and division. Modulus operation is also supported to get the remainder of a divi
     var x: s32 = 10
 
     // Addition: Increments x by 1
-    x = x + 1                                                              
+    x = x + 1
 
     // Subtraction: Decrements x by 1
-    x = x - 1                                                              
+    x = x - 1
 
     // Multiplication: Multiplies x by 2
-    x = x * 2                                                              
+    x = x * 2
 
     // Division: Divides x by 2
-    x = x / 2                                                              
+    x = x / 2
 
     // Modulus: Finds remainder when x is divided by 2
-    x = x % 2                                                              
+    x = x % 2
 }
 
 /**
 # Bitwise Operators
-Bitwise operators manipulate individual bits of integral types. These operators perform operations 
+Bitwise operators manipulate individual bits of integral types. These operators perform operations
 such as XOR, AND, OR, and bit shifting.
 */
 #test
@@ -33,24 +33,24 @@ such as XOR, AND, OR, and bit shifting.
     var x: s32 = 10
 
     // XOR: Bitwise XOR with 2
-    x = x ^ 2                                                              
+    x = x ^ 2
 
     // Bitwise AND: Applies a bitmask to retain only the least significant bit
-    x = x & 0b0000_0001's32                                                
+    x = x & 0b0000_0001's32
 
     // Bitwise OR: Sets the least significant bit to 1
-    x = x | cast(s32) 0b0000_0001                                          
+    x = x | cast(s32) 0b0000_0001
 
     // Shift Left: Shifts bits to the left by 1 position
-    x = x << 1                                                             
+    x = x << 1
 
     // Shift Right: Shifts bits to the right by 1 position
-    x = x >> 1                                                             
+    x = x >> 1
 }
 
 /**
 # Assignment Operators
-These operators perform the basic arithmetic or bitwise operation and assign the result directly 
+These operators perform the basic arithmetic or bitwise operation and assign the result directly
 to the left operand. The 'affect' versions of these operators make the code concise and clear.
 */
 #test
@@ -80,13 +80,13 @@ Unary operators operate on a single operand. These include logical NOT, bitwise 
     var z = 1
 
     // Invert boolean: Logical NOT
-    x = !x                                                               
+    x = !x
 
     // Invert bits: Bitwise NOT
-    y = ~y                                                               
+    y = ~y
 
     // Negation: Unary minus
-    z = -z                                                               
+    z = -z
 
     @assert(z == -1)
     @assert(x == false)
@@ -104,22 +104,22 @@ and relational operators.
         var a = false
 
         // Equal: Checks if two values are equal
-        a = 1 == 1 ? true : false                                        
+        a = 1 == 1 ? true : false
 
         // Not equal: Checks if two values are not equal
-        a = 1 != 1 ? true : false                                        
+        a = 1 != 1 ? true : false
 
         // Less than or equal: Checks if the left value is less than or equal to the right value
-        a = 1 <= 1 ? true : false                                        
+        a = 1 <= 1 ? true : false
 
         // Greater than or equal: Checks if the left value is greater than or equal to the right value
-        a = 1 >= 1 ? true : false                                        
+        a = 1 >= 1 ? true : false
 
         // Less than: Checks if the left value is less than the right value
-        a = 1 < 1 ? true : false                                         
+        a = 1 < 1 ? true : false
 
         // Greater than: Checks if the left value is greater than the right value
-        a = 1 > 1 ? true : false                                         
+        a = 1 > 1 ? true : false
     }
 
     {
@@ -136,7 +136,7 @@ and relational operators.
 
 /**
 # Logical Operators
-Logical operators evaluate expressions to return a boolean value. Swag uses 'and' and 'or' instead 
+Logical operators evaluate expressions to return a boolean value. Swag uses 'and' and 'or' instead
 of '&&' and '||' found in C/C++.
 */
 #test
@@ -148,7 +148,7 @@ of '&&' and '||' found in C/C++.
 
 /**
 # Ternary Operator
-The ternary operator tests an expression and returns one of two values depending on the result of 
+The ternary operator tests an expression and returns one of two values depending on the result of
 the test. The syntax is `A = Expression ? B : C`, where 'B' is returned if the expression is true,
 and 'C' is returned if the expression is false.
 */
@@ -165,7 +165,7 @@ and 'C' is returned if the expression is false.
 
 /**
 # Spaceshift Operator
-Operator '<=>' returns -1, 0, or 1 if the left expression is lower, equal, or greater than the right 
+Operator '<=>' returns -1, 0, or 1 if the left expression is lower, equal, or greater than the right
 expression, respectively. The returned type is 's32'.
 ```swag
 A <=> B == -1 if A < B
@@ -177,7 +177,7 @@ A <=> B == 1  if A > B
 {
     {
         let a = -1.5 <=> 2.31
-        #assert #typeof(a) == s32
+        #assert(#typeof(a) == s32)
         @assert(a == -1)
 
         @assert(-10 <=> 10 == -1)
@@ -197,7 +197,7 @@ A <=> B == 1  if A > B
 
 /**
 # Null-Coalescing Operator
-The operator 'orelse' returns the left expression if it is not null, otherwise it returns the right 
+The operator 'orelse' returns the left expression if it is not null, otherwise it returns the right
 expression.
 */
 
@@ -231,34 +231,34 @@ Works also for basic types like integers.
 
 /**
 # Type Promotion
-Unlike C, types are not promoted to 32 bits when dealing with 8 or 16-bit types. However, types will 
+Unlike C, types are not promoted to 32 bits when dealing with 8 or 16-bit types. However, types will
 be promoted if the two sides of an operation do not have the same type.
 */
 #test
 {
-    #assert #typeof(0'u8 + 1'u8) == u8
-    #assert #typeof(0'u8 + 1'u16) == u16 // Priority to bigger type
-    #assert #typeof(0'u8 + 1'u32) == u32
-    #assert #typeof(0'u8 + 1'u64) == u64
-    #assert #typeof(0'u8 + 1's8) == s8   // Priority to signed type
-    #assert #typeof(0'u8 + 1's16) == s16
-    #assert #typeof(0'u8 + 1's32) == s32
-    #assert #typeof(0'u8 + 1's64) == s64
-    #assert #typeof(0'u8 + 1'f32) == f32
-    #assert #typeof(0'u8 + 1'f64) == f64
+    #assert(#typeof(0'u8 + 1'u8) == u8)
+    #assert(#typeof(0'u8 + 1'u16) == u16) // Priority to bigger type
+    #assert(#typeof(0'u8 + 1'u32) == u32)
+    #assert(#typeof(0'u8 + 1'u64) == u64)
+    #assert(#typeof(0'u8 + 1's8) == s8)   // Priority to signed type
+    #assert(#typeof(0'u8 + 1's16) == s16)
+    #assert(#typeof(0'u8 + 1's32) == s32)
+    #assert(#typeof(0'u8 + 1's64) == s64)
+    #assert(#typeof(0'u8 + 1'f32) == f32)
+    #assert(#typeof(0'u8 + 1'f64) == f64)
 
-    #assert #typeof(0's8 + 1'u16) == u16 // Priority to bigger type also
+    #assert(#typeof(0's8 + 1'u16) == u16) // Priority to bigger type also
 }
 
 /**
-This means that an 8/16-bit operation (like an addition) can more easily overflow if you do not take 
-care. In that case, you can use the ` #prom` modifier on the operation, which will promote the type 
+This means that an 8/16-bit operation (like an addition) can more easily overflow if you do not take
+care. In that case, you can use the ` #prom` modifier on the operation, which will promote the type
 to at least 32 bits. The operation will be done accordingly.
 */
 #test
 {
-    #assert #typeof(255'u8 + #prom 1'u8) == u32
-    #assert 255'u8 + #prom 1'u8 == 256 // No overflow, because the operation is done in 32 bits.
+    #assert(#typeof(255'u8 + #prom 1'u8) == u32)
+    #assert(255'u8 + #prom 1'u8 == 256) // No overflow, because the operation is done in 32 bits.
 }
 
 /**

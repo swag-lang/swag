@@ -9,8 +9,8 @@
             return arr
         }
 
-    #assert PowerOfTwo[0] == 1
-    #assert PowerOfTwo[1] == 2
-    #assert PowerOfTwo[2] == 4
-    #assert PowerOfTwo[3] == 8
+    #assert(PowerOfTwo[0] == 1)
+    #assert(PowerOfTwo[1] == 2)
+    #assert(PowerOfTwo[2] == 4)
+    #assert(PowerOfTwo[3] == 8)
 }

@@ -4,4 +4,4 @@ func GEN()->string
     return "string"
 }
 
-#assert GEN()[0] == 's''u8
+#assert(GEN()[0] == 's''u8)

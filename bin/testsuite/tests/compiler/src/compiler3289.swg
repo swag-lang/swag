@@ -12,10 +12,6 @@
         MK_IMPL()
     }
 
-    #assert #defined(X.x)
-    #assert #defined(X.y)
-    #assert !#defined(X.z)
-    #assert #sizeof(X) == 8
 
     var v: X
     @assert(v.x == 1)

@@ -8,5 +8,5 @@ enum A: const [..] s32
 #test
 {
     const x = A.BB
-    #assert x == null
+    #assert(x == null)
 }

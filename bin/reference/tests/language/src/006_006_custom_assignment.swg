@@ -2,7 +2,7 @@
 # Custom Assignment Behavior with `opAffect`
 
 The `opAffect` method in Swag allows you to define custom assignment behaviors for your struct using the `=` operator.
-By overloading `opAffect`, you can handle assignments of different types, enabling you to specify how your struct should 
+By overloading `opAffect`, you can handle assignments of different types, enabling you to specify how your struct should
 behave when different types of values are assigned.
 */
 
@@ -15,13 +15,13 @@ impl Struct
 {
     // Overloaded `opAffect` to handle assignments of type `s32`
     #[Swag.Overload]
-    mtd opAffect(value: s32) { 
+    mtd opAffect(value: s32) {
         x, y = value  // Assign the provided `value` to both 'x' and 'y'
     }
 
     // Overloaded `opAffect` to handle assignments of type `bool`
     #[Swag.Overload]
-    mtd opAffect(value: bool) { 
+    mtd opAffect(value: bool) {
         x, y = value ? 1 : 0  // Assign 1 if `value` is true, otherwise 0, to both 'x' and 'y'
     }
 }
@@ -55,19 +55,19 @@ impl Struct
 {
     // Mark `opAffect` with `Swag.Complete` to ensure only one initialization step
     #[Swag.Complete, Swag.Overload]
-    mtd opAffect(value: u64) { 
+    mtd opAffect(value: u64) {
         x, y, z = cast(s32) value  // Convert `value` from u64 to s32 and assign it to 'x', 'y', and 'z'
     }
 
     // Implicit conversion example for u16 assignments
     #[Swag.Implicit, Swag.Overload]
-    mtd opAffect(value: u16) { 
+    mtd opAffect(value: u16) {
         x, y = cast(s32) value  // Convert `value` from u16 to s32 and assign it to 'x' and 'y'
     }
 }
 
 /**
-In this case, the struct `v` is directly initialized by `opAffect(u64)`, skipping the default initialization step. 
+In this case, the struct `v` is directly initialized by `opAffect(u64)`, skipping the default initialization step.
 This optimization leads to more efficient code by reducing unnecessary initializations.
 */
 #test
@@ -127,5 +127,5 @@ impl Vector2
 
 // Using `opAffect(f32)` to initialize a compile-time constant
 const One: Vector2 = 1.0
-#assert One.x == 1.0
-#assert One.y == 1.0
+#assert(One.x == 1.0)
+#assert(One.y == 1.0)

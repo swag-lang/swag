@@ -17,7 +17,7 @@ struct Evt1
     }
 }
 
-#assert #sizeof(Evt1) == 12
+#assert(#sizeof(Evt1) == 12)
 
 #test
 {

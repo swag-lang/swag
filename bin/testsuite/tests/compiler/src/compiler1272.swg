@@ -5,4 +5,4 @@ func toto()->bool
     return cast(bool) (x & 1)
 }
 
-#assert toto()
+#assert(toto())

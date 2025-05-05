@@ -19,7 +19,7 @@
 
 #test
 {
-    #assert Swag.F32.Nan != Swag.F32.Nan
+    #assert(Swag.F32.Nan != Swag.F32.Nan)
     let a = Swag.F32.Nan
     let c = a == a
     @assert(c == false)

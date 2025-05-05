@@ -1,7 +1,7 @@
 struct(T) Array
 {
     buffer: *T
-    #assert #sizeof(T) > 0
+    #assert(#sizeof(T) > 0)
 }
 
 struct Contribution

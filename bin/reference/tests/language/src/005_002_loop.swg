@@ -56,7 +56,7 @@ The `for` construct is versatile and can iterate over any collection type that s
 #test
 {
     var arr = [10, 20, 30, 40]        // Define an array with 4 elements
-    #assert @countof(arr) == 4        // Verify the array has 4 elements
+    #assert(@countof(arr) == 4)        // Verify the array has 4 elements
 
     var cpt = 0
     for arr:                          // Loop over the array's elements
@@ -145,7 +145,7 @@ The `for` construct supports iteration over a **range** of signed values, enabli
 
 /**
 # Looping Over a Range with `to`
-The `to` keyword defines a loop that iterates from one value to another, inclusive. 
+The `to` keyword defines a loop that iterates from one value to another, inclusive.
 
 > WARNING:
 > The start value must be less than or equal to the end value.
@@ -261,7 +261,7 @@ The `where` supports combining multiple logical expressions, allowing for comple
     var filteredSum = 0
 
     // Loop over the array, summing only even numbers greater than 15.
-    for i in arr 
+    for i in arr
         where arr[i] % 2 == 0 and arr[i] > 15
     {
         filteredSum += arr[i]         // Add the element values that meet the condition

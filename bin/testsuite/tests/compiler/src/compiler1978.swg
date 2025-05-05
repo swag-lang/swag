@@ -7,8 +7,8 @@ struct(K, V) HashTableEntry
 struct(K, V) HashTable
 {
     table:  *HashTableEntry'(K, V)
-    #assert #typeof(K) == AA
-    #assert #typeof(V) == u32
+    #assert(#typeof(K) == AA)
+    #assert(#typeof(V) == u32)
 }
 
 struct AA

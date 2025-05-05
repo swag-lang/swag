@@ -4,11 +4,11 @@
     {
         #if false
         {
-            #assert false
+            #assert(false)
         }
         #else
         {
-            #assert true
+            #assert(true)
         }
     }
 }

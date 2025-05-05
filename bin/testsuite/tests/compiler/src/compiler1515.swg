@@ -5,6 +5,6 @@
 {
     for 5
     {
-        #assert true
+        #assert(true)
     }
 }

@@ -5,7 +5,7 @@ func(T) create(data: *T)
         using outer: T
     }
 
-    #assert #typeof(Inner.outer) == Outer
+    #assert(#typeof(Inner.outer) == Outer)
     //#print #typeof(Inner.outer).name
 }
 

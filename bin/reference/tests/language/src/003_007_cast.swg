@@ -6,11 +6,11 @@ Explicit casting is necessary when you need to convert a value from one type to 
 {
     // 'x' is initialized as a floating-point number (f32 by default)
     let x = 1.0
-    #assert #typeof(x) == f32
+    #assert(#typeof(x) == f32)
 
     // 'y' is explicitly cast to a 32-bit signed integer (s32)
     let y = cast(s32) x
-    #assert #typeof(y) == s32
+    #assert(#typeof(y) == s32)
     @assert(y == 1)                            // The floating-point value 1.0 is cast to the integer value 1
 }
 
@@ -22,7 +22,7 @@ A `cast()` without an expression stands for `automatic cast`, allowing the compi
 {
     let x: f32 = 1.0
     let y: s32 = cast() x                       // Automatically cast 'x' to 's32'
-    #assert #typeof(y) == s32
+    #assert(#typeof(y) == s32)
     @assert(y == 1)
 }
 
@@ -50,8 +50,8 @@ The `bit` cast mode enables bit-level reinterpretation of a value's type without
     @assert(y == 0x3f800000)                   // 1.0 in IEEE 754 floating-point format equals 0x3f800000 in hex
 
     // Casting back to the original type should yield the original value
-    #assert cast<bit>(u32) 1.0 == 0x3f800000
-    #assert cast<bit>(f32) 0x3f800000 == 1.0   // Reinterpreting the bits back to 'f32' gives 1.0
+    #assert(cast<bit>(u32) 1.0 == 0x3f800000)
+    #assert(cast<bit>(f32) 0x3f800000 == 1.0)   // Reinterpreting the bits back to 'f32' gives 1.0
 }
 
 /**

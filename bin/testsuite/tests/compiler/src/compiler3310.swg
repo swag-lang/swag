@@ -11,8 +11,8 @@ impl Duration
 {
     mtd(suffix: string, T) opAffectLiteral(v: T)
     {
-        #assert suffix == "s"
-        #assert T == s32
+        #assert(suffix == "s")
+        #assert(T == s32)
         G = 1
     }
 }

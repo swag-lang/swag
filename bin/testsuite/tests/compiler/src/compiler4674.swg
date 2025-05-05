@@ -4,7 +4,7 @@
     {
         const vv: any = null
         @assert(@dataof(vv) == null)
-        #assert @dataof(vv) == null
+        #assert(@dataof(vv) == null)
     }
 
     {

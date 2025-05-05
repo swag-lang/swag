@@ -195,7 +195,7 @@ impl Image
         }
         #else
         {
-            #assert "invalid pixelCopy BPP"
+            #assert("invalid pixelCopy BPP")
         }
     }
 

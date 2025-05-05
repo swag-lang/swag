@@ -16,7 +16,7 @@ using Swag;
 	func main_f64 ()->f64 { return 1.0; }
 }
 
-#assert -1.0 == -1's8;
-#assert -1.0 == -1's16;
-#assert -1.0 == -1's32;
-#assert -1.0 == -1's64;
+#assert(-1.0 == -1's8)
+#assert(-1.0 == -1's16)
+#assert(-1.0 == -1's32)
+#assert(-1.0 == -1's64)

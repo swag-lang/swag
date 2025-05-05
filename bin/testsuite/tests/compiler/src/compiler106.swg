@@ -22,4 +22,4 @@ enum C: u32
 	Blue = 0x000000FF;
 }
 
-#assert C.Blue == 255;
+#assert(C.Blue == 255);

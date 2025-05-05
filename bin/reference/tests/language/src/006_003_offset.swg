@@ -1,9 +1,9 @@
 /**
 # Custom Field Layout with `Swag.Offset`
 
-You can force the layout of a field within a struct using the `Swag.Offset` attribute. 
-This allows you to manually specify the memory offset of a field, which can be useful 
-for creating custom memory layouts, such as overlapping fields or sharing memory space 
+You can force the layout of a field within a struct using the `Swag.Offset` attribute.
+This allows you to manually specify the memory offset of a field, which can be useful
+for creating custom memory layouts, such as overlapping fields or sharing memory space
 between different fields.
 */
 #test
@@ -19,7 +19,7 @@ between different fields.
     }
 
     // Although there are two fields defined, they occupy the same space, so the struct only uses 4 bytes.
-    #assert #sizeof(MyStruct) == 4
+    #assert(#sizeof(MyStruct) == 4)
 
     var v = MyStruct{}
     v.x = 666
@@ -31,7 +31,7 @@ between different fields.
 /**
 # Using `Swag.Offset` for Indexed Field Access
 
-In this example, `Swag.Offset` is used to reference a group of fields by index, 
+In this example, `Swag.Offset` is used to reference a group of fields by index,
 enabling indexed access to multiple fields through a single array.
 */
 #test

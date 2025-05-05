@@ -94,7 +94,7 @@ When you take the address of an array element, the resulting pointer is treated 
 
     // Pointer arithmetic is now enabled because 'ptr' is treated as pointing to multiple values
     ptr = ptr - 1                       // Move the pointer back to the first element
-    #assert #typeof(ptr) == ^s32        // The type of 'ptr' is now a pointer to multiple 's32' values
+    #assert(#typeof(ptr) == ^s32)        // The type of 'ptr' is now a pointer to multiple 's32' values
 }
 
 /**
@@ -111,14 +111,14 @@ When pointer arithmetic is enabled, you can dereference the pointer using an ind
     // Dereferencing by index to access the elements
     let value1 = ptr[0]                // Access the first element
     @assert(value1 == 1)               // Verify the first element's value is 1
-    #assert #typeof(value1) == s32     // Assert the type of value1 is 's32'
+    #assert(#typeof(value1) == s32)     // Assert the type of value1 is 's32'
 
     let value2 = ptr[1]                // Access the second element
     @assert(value2 == 2)               // Verify the second element's value is 2
-    #assert #typeof(value2) == s32     // Assert the type of value2 is 's32'
+    #assert(#typeof(value2) == s32)     // Assert the type of value2 is 's32'
 
     // Using 'dref' for the first element, equivalent to ptr[0]
     let value = dref ptr               // Dereference the pointer to access the first element
     @assert(value == 1)                // Verify the dereferenced value is 1
-    #assert #typeof(value) == s32      // Assert the type of the dereferenced value is 's32'
+    #assert(#typeof(value) == s32)      // Assert the type of the dereferenced value is 's32'
 }

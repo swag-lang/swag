@@ -19,4 +19,4 @@ public struct Evt2262
     }
 }
 
-#assert #sizeof(Evt2262) == 20
+#assert(#sizeof(Evt2262) == 20)

@@ -24,7 +24,7 @@ namespace Parse
     {
         func impl xoxo(using self)
         {
-            #assert #sizeof(Color) == 8
+            #assert(#sizeof(Color) == 8)
         }
     }
 }

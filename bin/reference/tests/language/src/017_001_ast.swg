@@ -65,14 +65,14 @@ The `#ast` block can be effectively used with generics, allowing for flexible an
     }
 
     var v: MyStruct'bool
-    #assert #typeof(v.x) == bool     // Asserts that the generated field 'x' is of type 'bool'.
-    #assert #typeof(v.y) == bool     // Asserts that the generated field 'y' is of type 'bool'.
-    #assert #typeof(v.z) == string   // Asserts that the static field 'z' is of type 'string'.
+    #assert(#typeof(v.x) == bool)     // Asserts that the generated field 'x' is of type 'bool'.
+    #assert(#typeof(v.y) == bool)     // Asserts that the generated field 'y' is of type 'bool'.
+    #assert(#typeof(v.z) == string)   // Asserts that the static field 'z' is of type 'string'.
 
     var v1: MyStruct'f64
-    #assert #typeof(v1.x) == f64     // Asserts that the generated field 'x' is of type 'f64'.
-    #assert #typeof(v1.y) == f64     // Asserts that the generated field 'y' is of type 'f64'.
-    #assert #typeof(v1.z) == string  // Asserts that the static field 'z' is of type 'string'.
+    #assert(#typeof(v1.x) == f64)     // Asserts that the generated field 'x' is of type 'f64'.
+    #assert(#typeof(v1.y) == f64)     // Asserts that the generated field 'y' is of type 'f64'.
+    #assert(#typeof(v1.z) == string)  // Asserts that the static field 'z' is of type 'string'.
 }
 
 /**
@@ -157,4 +157,4 @@ When generating global symbols that may be referenced elsewhere in the code, it 
 /**
 Here, thanks to the `#placeholder`, the `#assert` will wait for the symbol `myGeneratedConst` to be replaced with its actual value before performing the assertion.
 */
-#assert myGeneratedConst == 666 // Asserts that the generated constant 'myGeneratedConst' equals 666.
+#assert(myGeneratedConst == 666) // Asserts that the generated constant 'myGeneratedConst' equals 666.

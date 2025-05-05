@@ -14,4 +14,4 @@ func toto()->s32
 }
 
 const str = toto()
-#assert str == 111111111
+#assert(str == 111111111)

@@ -9,7 +9,7 @@ impl Duration
     #[Swag.Implicit]
     mtd(suffix: string) opAffectLiteral(v: f32)
     {
-        #assert false
+        #assert(false)
     }
 }
 

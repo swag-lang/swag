@@ -16,5 +16,5 @@ using Swag;
 	func main_f64 ()->f64 { return 1.0; }
 }
 
-#assert main_u8() == main_f32();
-#assert main_f32() == main_u8();
+#assert(main_u8() == main_f32())
+#assert(main_f32() == main_u8())

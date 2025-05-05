@@ -11,7 +11,7 @@ impl SigArray
 {
     mtd(op: string) opAssign(fn: T)
     {
-        #assert op == "+="
+        #assert(op == "+=")
         arr.add(fn)
     }
 

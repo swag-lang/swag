@@ -17,5 +17,5 @@ using Swag
 //#[Swag.PrintBc]
 #test
 {
-    #assert isInteger(s32)
+    #assert(isInteger(s32))
 }

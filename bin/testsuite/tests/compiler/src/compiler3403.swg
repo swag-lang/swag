@@ -1,7 +1,7 @@
 //#global testerror
 func(A) toto(x: {a:bool, b:A})
 {
-    #assert A == *f32
+    #assert(A == *f32)
 }
 
 #test

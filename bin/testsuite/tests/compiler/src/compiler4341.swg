@@ -1,6 +1,6 @@
 func(T) toto(x: T)
 {
-#assert #typeof(x) == s32
+#assert(#typeof(x) == s32)
 }
 
 #test
@@ -10,8 +10,8 @@ func(T) toto(x: T)
 
 func(T, V) titi(x: T, y: V)
 {
-#assert #typeof(x) == s32
-#assert #typeof(y) == f32
+#assert(#typeof(x) == s32)
+#assert(#typeof(y) == f32)
 }
 
 #test

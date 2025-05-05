@@ -4,12 +4,8 @@ enum AA: const [..] s32
     B = [10, 20, 30]
 }
 
-#assert @countof(AA.A) == 4
-#assert @countof(AA.B) == 3
-/*#assert AA.A[0, 0] == 1
-#assert AA.A[1, 1] == 2
-#assert AA.B[0, 0] == 10
-#assert AA.B[1, 1] == 20*/
+#assert(@countof(AA.A) == 4)
+#assert(@countof(AA.B) == 3)
 
 #test
 {

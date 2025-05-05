@@ -3,4 +3,4 @@ struct A { x: s32; }
 func toto()->A { return A{1}; }
 
 const C = #run toto()
-#assert C.x == 1
+#assert(C.x == 1)

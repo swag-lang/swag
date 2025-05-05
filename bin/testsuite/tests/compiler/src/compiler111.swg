@@ -2,4 +2,4 @@
 ;
 
 
-#assert #line == 5;
+#assert(#line == 5);

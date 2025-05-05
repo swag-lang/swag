@@ -301,14 +301,9 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
 
         case AstNodeKind::CompilerAssert:
             concat->addString("#assert");
-            concat->addBlank();
+            concat->addChar('(');
             SWAG_CHECK(outputNode(context, node->firstChild()));
-            if (node->childCount() > 1)
-            {
-                concat->addChar(',');
-                concat->addBlank();
-                SWAG_CHECK(outputNode(context, node->secondChild()));
-            }
+            concat->addChar(')');
             break;
 
         case AstNodeKind::For:

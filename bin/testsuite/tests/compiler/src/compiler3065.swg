@@ -11,4 +11,4 @@ func toto()->{a:AA, b:s32}
 }
 
 const X = toto()
-#assert X.item0.x == 2
+#assert(X.item0.x == 2)

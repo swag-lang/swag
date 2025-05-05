@@ -8,4 +8,4 @@ namespace StrConv
     }
 }
 
-#assert StrConv.IPokeValue.X == 10
+#assert(StrConv.IPokeValue.X == 10)

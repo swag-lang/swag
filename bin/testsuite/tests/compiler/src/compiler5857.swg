@@ -41,5 +41,4 @@ func(T) GEN()->String
     return toString()
 }
 
-//#assert cast(string) GEN'X() == "X"
-#assert GEN'X()[0] == 'x''u8
+#assert(GEN'X()[0] == 'x''u8)

@@ -10,5 +10,5 @@ func toto(x, y: V)->V
 }
 
 const C = #run toto({1, 2}, {10, 20})
-#assert C.x == 11
-#assert C.y == 22
+#assert(C.x == 11)
+#assert(C.y == 22)

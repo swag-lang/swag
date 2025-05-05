@@ -9,5 +9,5 @@ enum A: const [2] any
 #test
 {
     const x = A.BB
-    #assert x == null
+    #assert(x == null)
 }

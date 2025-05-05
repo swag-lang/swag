@@ -15,4 +15,4 @@ struct B
     using root1: A
 }
 
-//#assert #typeof(B) == B
+//#assert(#typeof(B) == B)

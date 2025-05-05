@@ -22,5 +22,5 @@
     }
 
     const A = #run init()
-    #assert A == 9
+    #assert(A == 9)
 }

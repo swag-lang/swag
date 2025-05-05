@@ -1,24 +1,24 @@
 /**
 # Slices in Swag
 
-A slice in Swag provides a dynamic view over a contiguous block of memory. Unlike static arrays, slices 
-can be resized or point to different segments of memory at runtime. A slice is composed of a pointer to 
+A slice in Swag provides a dynamic view over a contiguous block of memory. Unlike static arrays, slices
+can be resized or point to different segments of memory at runtime. A slice is composed of a pointer to
 the data buffer and a `u64` value that stores the number of elements in the slice.
 
-This design makes slices a powerful tool for working with subsets of data without the need to copy it, 
+This design makes slices a powerful tool for working with subsets of data without the need to copy it,
 enabling efficient manipulation of large datasets.
 */
 
 #test
 {
     var a: [..] bool  // Declare a slice of boolean values
-    #assert #sizeof(a) == #sizeof(*void) + #sizeof(u64)  // Ensure slice size includes pointer and element count
+    #assert(#sizeof(a) == #sizeof(*void) + #sizeof(u64))  // Ensure slice size includes pointer and element count
 }
 
 /**
 # Initializing Slices
 
-Slices can be initialized in a similar manner to arrays. By assigning an array literal to a slice, 
+Slices can be initialized in a similar manner to arrays. By assigning an array literal to a slice,
 the slice will reference the elements in the array.
 */
 
@@ -39,7 +39,7 @@ the slice will reference the elements in the array.
 /**
 # Accessing Slice Data
 
-At runtime, you can use `@dataof` to retrieve the address of the data buffer and `@countof` to 
+At runtime, you can use `@dataof` to retrieve the address of the data buffer and `@countof` to
 get the number of elements in the slice.
 */
 
@@ -95,7 +95,7 @@ For strings, the slice must be `const` because strings are immutable.
 /**
 # Slicing with the `..` Operator
 
-You can create a slice using the `..` operator instead of `@mkslice`. For instance, 
+You can create a slice using the `..` operator instead of `@mkslice`. For instance,
 you can slice a string.
 */
 
@@ -112,7 +112,7 @@ you can slice a string.
 /**
 # Inclusive and Exclusive Slicing
 
-By default, the upper limit in a slice is **inclusive**. To exclude the upper limit, use `..<` 
+By default, the upper limit in a slice is **inclusive**. To exclude the upper limit, use `..<`
 instead of `..`.
 */
 

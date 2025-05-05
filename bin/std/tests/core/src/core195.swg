@@ -2,7 +2,7 @@ using Core.Memory
 
 #test
 {
-    //#assert Reflection.hasDrop(std.File.FileInfo)
+    //#assert(Reflection.hasDrop(std.File.FileInfo))
 
     var dbg: Swag.DebugAllocator
     dbg.setup(@sysalloc())

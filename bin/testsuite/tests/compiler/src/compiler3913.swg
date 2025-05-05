@@ -9,5 +9,5 @@ struct(T) A
 {
     var a: A'(const [1] s32)
     var b: A'([1] s32)
-    #assert #typeof(b).name == "A'([1] s32)"
+    #assert(#typeof(b).name == "A'([1] s32)")
 }

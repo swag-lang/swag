@@ -2,7 +2,7 @@
 #test
 {
     var a: any = 42
-    #assert #typeof(a) == any
+    #assert(#typeof(a) == any)
     @assert(@kindof(a) == s32)
 
     let b = cast(s32) a

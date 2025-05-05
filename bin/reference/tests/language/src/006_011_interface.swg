@@ -124,7 +124,7 @@ An interface is a real type, with a size equivalent to 2 pointers: a pointer to 
     var pt3: Point3
     var itf  = cast(IReset) pt2
 
-    #assert #sizeof(itf) == 2 * #sizeof(*void)
+    #assert(#sizeof(itf) == 2 * #sizeof(*void))
 
     // You can retrieve the concrete type associated with an interface instance with '@kindof'.
     itf = cast(IReset) pt2
@@ -141,7 +141,7 @@ An interface is a real type, with a size equivalent to 2 pointers: a pointer to 
 
 /**
 # Default Implementation in Interfaces
-When you declare an interface, you can define a default implementation for each function. 
+When you declare an interface, you can define a default implementation for each function.
 If a struct does not redefine the function, then the default implementation will be called instead.
 */
 

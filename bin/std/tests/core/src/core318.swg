@@ -12,4 +12,4 @@ func GEN()->String
 
 #placeholder X
 const Y = X
-#assert Y == 555
+#assert(Y == 555)

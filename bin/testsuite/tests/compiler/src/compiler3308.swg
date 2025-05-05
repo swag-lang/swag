@@ -6,7 +6,7 @@ func(op: s32, T) toto(v: T)
     #elif op == 10:
         @assert(v == "string")
     #else:
-        #assert false
+        #assert(false)
     //@print(op, " ", v, "\n")
 }
 

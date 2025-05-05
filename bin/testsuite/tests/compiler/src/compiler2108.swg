@@ -4,8 +4,8 @@ struct AA
 }
 
 const v: AA{10, 20}
-#assert v.x == 10
-#assert v.y == 20
+#assert(v.x == 10)
+#assert(v.y == 20)
 
 var vv: AA = v
 

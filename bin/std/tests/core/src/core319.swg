@@ -9,9 +9,3 @@ func GEN()->String
     sb.appendFormat("const X = %")
     return sb.toString()
 }
-
-/*
-#ast cast(string) GEN()
-#placeholder X
-const Y = X
-#assert Y == 555*/

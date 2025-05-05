@@ -13,5 +13,5 @@
     }
 }
 
-#assert !#defined(AA.T)
-#assert #defined(AA.R)
+#assert(!#defined(AA.T))
+#assert(#defined(AA.R))

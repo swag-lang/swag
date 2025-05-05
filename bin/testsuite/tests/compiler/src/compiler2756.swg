@@ -5,4 +5,4 @@ enum AA: GG
     B
 }
 
-#assert AA.B == 1
+#assert(AA.B == 1)

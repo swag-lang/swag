@@ -5,7 +5,7 @@ struct A
     v: *~32 A
 }
 
-#assert #sizeof(A) == 8
+#assert(#sizeof(A) == 8)
 
 //#[Swag.PrintBc]
 #test

@@ -1,7 +1,7 @@
 ;
 
 //#[Swag.PrintBc]
-//#assert true
+//#assert(true)
 
 enum TOTO
 {

@@ -9,4 +9,4 @@ namespace std.diagnostics.Debug.os
     const A = 1
 }
 
-#assert std.os.A == 0
+#assert(std.os.A == 0)

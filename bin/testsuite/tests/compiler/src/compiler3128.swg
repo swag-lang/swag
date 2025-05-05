@@ -5,4 +5,4 @@ struct MyStruct
 }
 
 const X1 = MyStruct{y: "value"}
-#assert X1.y == "value"
+#assert(X1.y == "value")

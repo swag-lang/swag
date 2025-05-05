@@ -5,5 +5,5 @@ struct MyStruct
     z: bool
 }
 
-#assert #offsetof(MyStruct.z) == 8
-#assert #sizeof(MyStruct) == 9
+#assert(#offsetof(MyStruct.z) == 8)
+#assert(#sizeof(MyStruct) == 9)

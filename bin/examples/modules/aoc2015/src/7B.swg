@@ -35,4 +35,4 @@ using Core
 
     return result
 }
-#assert A == 14134
+#assert(A == 14134)

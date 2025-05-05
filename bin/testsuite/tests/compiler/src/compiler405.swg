@@ -1,7 +1,7 @@
 
 
 //#[Swag.PrintBc]
-//#assert true
+//#assert(true)
 
 #global testerror "Err0446";
 enum TOTO

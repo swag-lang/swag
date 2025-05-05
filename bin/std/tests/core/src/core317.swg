@@ -13,5 +13,5 @@ func(T) GEN()->String
     return sb.toString()
 }
 
-#assert cast(string) GEN'X() == "X"
-#assert GEN'X()[0] == 'X''u8
+#assert(cast(string) GEN'X() == "X")
+#assert(GEN'X()[0] == 'X''u8)

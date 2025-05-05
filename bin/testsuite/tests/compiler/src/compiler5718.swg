@@ -5,7 +5,7 @@ func toto()->s32
 
 #test
 {
-    #assert #typeof(toto).sizeof == #typeof(#type func()->s32).sizeof
-    #assert #typeof(toto).sizeof == 8
+    #assert(#typeof(toto).sizeof == #typeof(#type func()->s32).sizeof)
+    #assert(#typeof(toto).sizeof == 8)
     @assert(@typecmp(#typeof(toto), #type func()->s32, .UnScoped))
 }
