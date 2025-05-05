@@ -2,7 +2,7 @@
 #[Swag.Mixin]
 func safety(expr: #code bool, message: string = null, loc = #callerlocation)
 {
-    let b = #inject expr
+    let b = #inject(expr)
     if !b:
         @panic(message, loc)
     @assert(b)

@@ -4,7 +4,7 @@ func(safetyWhat: string) safety(expr: #code bool, message: string = null, loc = 
 {
     #if #safety(safetyWhat)
     {
-        let #mix0 = #inject #self.expr
+        let #mix0 = #inject(#self.expr)
         if !#mix0:
             @panic(#self.message, #self.loc)
         @assert(#mix0 == true)

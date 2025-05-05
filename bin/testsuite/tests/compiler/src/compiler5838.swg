@@ -5,7 +5,7 @@ var G = 0
 //func assert(expr: bool, str: string = "toto")
 func assert(expr: #code bool, str: string = "toto")
 {
-    let b = #inject expr
+    let b = #inject(expr)
     @assert(b)
 }
 
