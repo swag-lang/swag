@@ -44,7 +44,7 @@ Swag allows you to define named scopes using the `#scope` keyword. The `break` s
     var cpt = 0
 
     // Defining a scope named 'BigScope'
-    #scope BigScope
+    #scope(BigScope)
     {
         for 10
         {
@@ -67,7 +67,7 @@ The `continue` statement can be used with a named scope to restart the execution
 {
     var cpt = 0
 
-    #scope Loop
+    #scope(Loop)
     {
         cpt += 1
         if cpt == 5:
@@ -113,7 +113,7 @@ A scope in Swag can also be followed by a simple statement rather than a block, 
 */
 #test
 {
-    #scope Up
+    #scope(Up)
     for 10
     {
         for 10

@@ -1359,7 +1359,7 @@ impl RegExp
                 var cpt0, cpt1, cpt2: s32
                 var iminus = i - 1
 
-                #scope Loop
+                #scope(Loop)
                 while iminus != -1
                 {
                     switch uni32[iminus]
@@ -1392,7 +1392,7 @@ impl RegExp
                 cpt0, cpt1, cpt2 = 0
                 var iplus = i + 4
 
-                #scope Loop
+                #scope(Loop)
                 while iplus != uni32.count
                 {
                     switch uni32[iplus]

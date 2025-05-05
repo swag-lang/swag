@@ -201,7 +201,7 @@ By using a macro, you can define aliases for `break` and `continue` that allow y
     func repeatSquare(count: u32, what: #code void)
     {
         // Define a label `Up` for the scope that will allow us to break out of the outermost loop
-        #scope ScopeTarget
+        #scope(ScopeTarget)
 
         // Outer for: this will run `count` times
         for count
@@ -250,7 +250,7 @@ By using a macro, you can define aliases for `break` and `continue` that allow y
     {
         // Define a label `Outer` for the scope that will allow us to
         // break or continue from the outermost loop
-        #scope Outer
+        #scope(Outer)
 
         // Outer for: this will run `count` times
         for count

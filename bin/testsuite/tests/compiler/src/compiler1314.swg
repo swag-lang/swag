@@ -18,7 +18,7 @@ impl A
 {
     DROP = 0
     var cpt = 0
-    #scope outer
+    #scope(outer)
     {
         var x: A
         defer cpt += 1

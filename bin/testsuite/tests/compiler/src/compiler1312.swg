@@ -2,7 +2,7 @@
 #test
 {
     var cpt = 0
-    #scope outer
+    #scope(outer)
     {
         defer cpt = 1
         for 10:

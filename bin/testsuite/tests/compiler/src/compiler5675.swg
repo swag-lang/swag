@@ -1,6 +1,6 @@
 #test
 {
-    #scope Up
+    #scope(Up)
     for 5
     {
         break to Up

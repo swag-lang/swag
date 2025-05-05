@@ -109,13 +109,13 @@ impl HashTable
             return
 
         var remain = count
-        #scope Up
+        #scope(Up)
         for capacity
         {
             if table[#index].hash < HASH_FIRST:
                 continue
 
-            #scope Down
+            #scope(Down)
             #macro
             {
                 #if #up ptr

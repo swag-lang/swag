@@ -101,13 +101,13 @@ public impl BitArray
         let remainingBits = count
         var countBits     = 0'u64
 
-        #scope Up
+        #scope(Up)
         for idx in Math.max(count >> 5, 1)
         {
             var shift: u32 = 1
             for Math.min(remainingBits, 32)
             {
-                #scope Down
+                #scope(Down)
                 #macro
                 {
                     let #alias0 = cast(bool) (#up buffer[#up idx] & #up shift)

@@ -3,10 +3,10 @@
 #test
 {
 	var error = false
-    #scope Outer
+    #scope(Outer)
     for x in 10
     {
-        #scope Outer
+        #scope(Outer)
         for 20
         {
             break to Outer

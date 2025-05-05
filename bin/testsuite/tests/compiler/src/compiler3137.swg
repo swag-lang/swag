@@ -1,11 +1,11 @@
 #test
 {
     var x = 0
-    #scope A
+    #scope(A)
     {
         for 10
         {
-            #scope A
+            #scope(A)
             {
                 for 10
                 {

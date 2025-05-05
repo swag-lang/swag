@@ -7,7 +7,7 @@ impl S
     #[Swag.Macro, Swag.CalleeReturn]
     func(ptr: bool, back: bool) opVisitBytes(using self, stmt: #code void)
     {
-        #scope up
+        #scope(up)
         for 5
         {
             for 5

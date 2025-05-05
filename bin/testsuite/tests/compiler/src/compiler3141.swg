@@ -1,7 +1,7 @@
 #[Swag.Macro]
 func toto(stmt: #code void)
 {
-    #scope Up
+    #scope(Up)
     {
         for 10
         {

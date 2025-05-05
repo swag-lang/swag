@@ -133,10 +133,10 @@ struct Parser
     static bool isGeneratedName(const Utf8& name);
 
     bool doAnonymousStruct(AstNode* parent, AstNode** result, ExprFlags exprFlags, bool typeSpecified, bool isUnion);
-    bool doCompilerScopeBreakable(AstNode* parent, AstNode** result);
     bool doGenericFuncCallArguments(AstNode* parent, AstFuncCallParams** result);
     bool doFuncCallArguments(AstNode* parent, AstFuncCallParams** result, TokenId closeToken);
     bool doFuncDeclParameterSelf(AstVarDecl* paramNode);
+    bool doCompilerScope(AstNode* parent, AstNode** result);
     bool doCompilerTag(AstNode* parent, AstNode** result);
     bool doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind);
     bool doCompilerIf(AstNode* parent, AstNode** result);

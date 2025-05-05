@@ -101,7 +101,7 @@ func day5B()
         for var idx = 0; idx < ranges.count; idx += 1
         {
             let range = ranges[idx]
-            #scope Done
+            #scope(Done)
             {
                 foreach conv in convert[i]
                 {

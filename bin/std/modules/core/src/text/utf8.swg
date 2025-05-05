@@ -809,7 +809,7 @@ func visitRunes(buffer: const [..] u8, stmt: #code void)
 
         #macro
         {
-            #scope Inside
+            #scope(Inside)
             {
                 let #alias0 = #up c
                 let #alias1 = #up charIdx

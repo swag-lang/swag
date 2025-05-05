@@ -2,7 +2,7 @@
 #test
 {
     var error = false
-    #scope Outer
+    #scope(Outer)
     {
         for x in 10
         {

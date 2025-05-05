@@ -84,7 +84,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
         let pt = wnd.surfaceToLocal(mouseEvt.surfacePos)
 
         g_HotX, g_HotY = -1
-        #scope Big
+        #scope(Big)
         for i in NumElems
         {
             for j in NumElems

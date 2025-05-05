@@ -609,27 +609,6 @@ void Parser::registerSubDecl(AstNode* subDecl)
     }
 }
 
-bool Parser::doCompilerScopeBreakable(AstNode* parent, AstNode** result)
-{
-    const auto labelNode   = Ast::newNode<AstScopeBreakable>(AstNodeKind::ScopeBreakable, this, parent);
-    *result                = labelNode;
-    labelNode->semanticFct = Semantic::resolveScopeBreakable;
-
-    SWAG_CHECK(eatToken());
-    if (tokenParse.isNot(TokenId::SymLeftCurly))
-    {
-        labelNode->addSpecFlag(AstScopeBreakable::SPEC_FLAG_NAMED);
-        SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0610)));
-        labelNode->inheritTokenName(tokenParse.token);
-        labelNode->inheritTokenLocation(tokenParse.token);
-        SWAG_CHECK(eatToken());
-    }
-
-    ParserPushBreakable scoped(this, labelNode);
-    SWAG_CHECK(doEmbeddedInstruction(labelNode, &labelNode->block));
-    return true;
-}
-
 bool Parser::doLeftInstruction(AstNode* parent, AstNode** result, const AstWith* withNode)
 {
     switch (tokenParse.token.id)
@@ -883,7 +862,7 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         }
 
         case TokenId::CompilerScope:
-            SWAG_CHECK(doCompilerScopeBreakable(parent, result));
+            SWAG_CHECK(doCompilerScope(parent, result));
             break;
         case TokenId::KwdAlias:
             SWAG_CHECK(doAlias(parent, result));

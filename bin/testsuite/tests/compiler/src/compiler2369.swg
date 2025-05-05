@@ -3,7 +3,7 @@
     let cpt = 4
     for cpt
     {
-        #scope up
+        #scope(up)
         {
             @assert(#index == 0)
             return

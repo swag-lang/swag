@@ -17,7 +17,7 @@ impl IActionUI for ActionImage
         {
         case CmdIdTrimCapture, CmdIdResizeImage, CmdIdExpandImage,
              CmdIdExpandCapture, CmdIdRestoreOrg,
-             CmdIdFlipImage, CmdIdMirrorImage, 
+             CmdIdFlipImage, CmdIdMirrorImage,
              CmdIdRotateImageRight, CmdIdRotateImageLeft:
             return true
         }
@@ -40,7 +40,7 @@ impl IActionUI for ActionImage
         case CmdIdExpandImage:
             evt.setFlags |= .Name | .Disabled
             evt.name     = "Expand Image..."
-            evt.disabled = !capture            
+            evt.disabled = !capture
 
         case CmdIdExpandCapture:
             evt.setFlags |= .Name | .Disabled
@@ -75,7 +75,7 @@ impl IActionUI for ActionImage
         case CmdIdRotateImageLeft:
             evt.setFlags |= .Name | .Disabled
             evt.name     = "Rotate Image Left"
-            evt.disabled = !capture            
+            evt.disabled = !capture
         }
 
         return true
@@ -91,7 +91,7 @@ impl IActionUI for ActionImage
         case CmdIdResizeImage:
             main.resizeImage()
         case CmdIdExpandImage:
-            main.expandImage()            
+            main.expandImage()
 
         case CmdIdFlipImage:
             main.doProcessImage(CmdIdFlipImage)
@@ -99,12 +99,12 @@ impl IActionUI for ActionImage
             main.doProcessImage(CmdIdMirrorImage)
 
         case CmdIdRotateImageRight:
-            main.doProcessImage(CmdIdRotateImageRight)            
+            main.doProcessImage(CmdIdRotateImageRight)
         case CmdIdRotateImageLeft:
-            main.doProcessImage(CmdIdRotateImageLeft)                  
+            main.doProcessImage(CmdIdRotateImageLeft)
 
         case CmdIdExpandCapture:
-            main.expandCapture()    
+            main.expandCapture()
         case CmdIdTrimCapture:
             main.trimCapture()
 
@@ -136,7 +136,7 @@ impl MainWnd
         case CmdIdResizeImage:
             img.resize(w, h, .Bilinear)
         case CmdIdExpandImage:
-            img.expand(l, t, r, b)            
+            img.expand(l, t, r, b)
         case CmdIdFlipImage:
             img.flip()
         case CmdIdMirrorImage:
@@ -144,7 +144,7 @@ impl MainWnd
         case CmdIdRotateImageRight:
             img.turn(.T90)
         case CmdIdRotateImageLeft:
-            img.turn(.T270)            
+            img.turn(.T270)
         }
 
         let undo1 = capture.newUndo(.SetImage, serial)
@@ -165,7 +165,7 @@ impl MainWnd
             undo2.newImg   = img
             undo2.newSizeX = img.width - oldW
             undo2.newSizeY = img.height - oldH
-            capture.pushUndo(undo2)        
+            capture.pushUndo(undo2)
         }
     }
 
@@ -221,7 +221,7 @@ impl MainWnd
             return
 
         doProcessImage(CmdIdResizeImage, w: w, h: h)
-    }  
+    }
 
     mtd expandImage()
     {
@@ -339,7 +339,7 @@ impl MainWnd
         case 1, 2, 3: b += ch
         case 4, 5, 6: t += ch / 2; b += ch / 2
         case 7, 8, 9: t += ch
-        }        
+        }
 
         doProcessImage(CmdIdExpandImage, l, t, r, b)
     }
@@ -502,7 +502,7 @@ impl MainWnd
             }
         }
 
-        #scope Left
+        #scope(Left)
         for x in capture.backImg.width
         {
             if x + capture.backImagePos.x < 0:
@@ -518,7 +518,7 @@ impl MainWnd
             }
         }
 
-        #scope Right
+        #scope(Right)
         for #back x in capture.backImg.width
         {
             if x + capture.backImagePos.x >= capture.width:
@@ -534,7 +534,7 @@ impl MainWnd
             }
         }
 
-        #scope Up
+        #scope(Up)
         for y in capture.backImg.height
         {
             if y + capture.backImagePos.y < 0:
@@ -550,7 +550,7 @@ impl MainWnd
             }
         }
 
-        #scope Down
+        #scope(Down)
         for #back y in capture.backImg.height
         {
             if y + capture.backImagePos.y >= capture.height:

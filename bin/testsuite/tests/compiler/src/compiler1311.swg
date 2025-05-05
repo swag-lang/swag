@@ -3,7 +3,7 @@
 {
     var cpt = 0
 
-    #scope outer for x in 10
+    #scope(outer) for x in 10
     {
         cpt += 1
         for 10

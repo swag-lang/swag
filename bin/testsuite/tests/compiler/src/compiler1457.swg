@@ -1,7 +1,7 @@
 #test
 {
     var cpt = 0
-    #scope up
+    #scope(up)
     {
         for 5
         {

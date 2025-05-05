@@ -1,10 +1,10 @@
 #[Swag.Macro]
 public func macro2365(stmt: #code void)
 {
-    #scope up
+    #scope(up)
     for 10
     {
-        #scope down
+        #scope(down)
         #macro
         {
             #inject(#up stmt, break = break to up, continue = break to down)

@@ -98,7 +98,7 @@ impl SelModel
     #[Swag.Macro]
     mtd(ptr: bool, back: bool) opVisit(stmt: #code void)
     {
-        #scope Up
+        #scope(Up)
         foreach &r in selection
         {
             for i in r.start to r.end

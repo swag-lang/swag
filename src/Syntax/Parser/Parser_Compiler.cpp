@@ -163,7 +163,7 @@ bool Parser::doCompilerInject(AstNode* parent, AstNode** result)
     node->token       = tokenParse.token;
 
     SWAG_CHECK(eatToken());
-    auto startLoc = tokenParse.token.startLocation;
+    const auto startLoc = tokenParse.token.startLocation;
     SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, toErr(Err0425)));
     SWAG_CHECK(doIdentifierRef(node, &dummyResult));
 
@@ -679,6 +679,32 @@ bool Parser::doCompilerSpecialValue(AstNode* parent, AstNode** result)
     *result             = exprNode;
     SWAG_CHECK(eatToken());
     exprNode->semanticFct = Semantic::resolveCompilerSpecialValue;
+    return true;
+}
+
+bool Parser::doCompilerScope(AstNode* parent, AstNode** result)
+{
+    const auto labelNode   = Ast::newNode<AstScopeBreakable>(AstNodeKind::ScopeBreakable, this, parent);
+    *result                = labelNode;
+    labelNode->semanticFct = Semantic::resolveScopeBreakable;
+
+    SWAG_CHECK(eatToken());
+    if (tokenParse.is(TokenId::SymLeftParen))
+    {
+        const auto startLoc = tokenParse.token.startLocation;
+        SWAG_CHECK(eatToken());
+
+        labelNode->addSpecFlag(AstScopeBreakable::SPEC_FLAG_NAMED);
+        SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0610)));
+        labelNode->inheritTokenName(tokenParse.token);
+        labelNode->inheritTokenLocation(tokenParse.token);
+        SWAG_CHECK(eatToken());
+
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
+    }
+
+    ParserPushBreakable scoped(this, labelNode);
+    SWAG_CHECK(doEmbeddedInstruction(labelNode, &labelNode->block));
     return true;
 }
 

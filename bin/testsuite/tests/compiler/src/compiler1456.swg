@@ -1,7 +1,7 @@
 #[Swag.Mixin]
 func toto(stmt: #code void)
 {
-    #scope up
+    #scope(up)
     {
         for 5
         {

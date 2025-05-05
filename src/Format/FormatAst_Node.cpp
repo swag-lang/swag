@@ -490,8 +490,9 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             concat->addString("#scope");
             if (scopeDecl->hasSpecFlag(AstScopeBreakable::SPEC_FLAG_NAMED))
             {
-                concat->addBlank();
+                concat->addChar('(');
                 concat->addString(node->token.text);
+                concat->addChar(')');
             }
 
             concat->addEol();

@@ -34,10 +34,10 @@ impl List
             var n = tail
         #else:
             var n = head
-        #scope Up
+        #scope(Up)
         while n
         {
-            #scope Down
+            #scope(Down)
             #macro
             {
                 #if #up ptr:
