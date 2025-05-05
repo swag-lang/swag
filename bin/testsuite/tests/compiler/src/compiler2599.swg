@@ -7,7 +7,7 @@ func toto(stmt: #code void)
 {
     func titi()
     {
-        #inject stmt
+        #inject(stmt)
     }
 
     for 10: titi()

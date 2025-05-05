@@ -22,7 +22,7 @@ impl A
                 {
                     var #alias0 = cast(bool) (#up self.buffer[#up idx] & #up shift)
                     #up self.myTruc = #up idx + 1
-                    #inject #up stmt
+                    #inject(#up stmt)
                 }
             }
         }

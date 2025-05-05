@@ -10,7 +10,7 @@ func parse(stmt: #code void) throw
             return
         #macro
         {
-            #inject #up stmt
+            #inject(#up stmt)
         }
     }
 }

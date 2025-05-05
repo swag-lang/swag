@@ -7,7 +7,7 @@ func titi(x: s32, stmt: #code void)
     {
         func tata(x: s32)
         {
-            #inject stmt
+            #inject(stmt)
         }
 
         tata(x)

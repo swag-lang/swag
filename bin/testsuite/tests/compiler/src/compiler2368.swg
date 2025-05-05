@@ -4,6 +4,6 @@ func toto(stmt: #code void)
 {
     #macro
     {
-        #inject #up stmt => { break = break to up; }
+        #inject(#up stmt) => { break = break to up; }
     }
 }

@@ -163,16 +163,17 @@ bool Parser::doCompilerInject(AstNode* parent, AstNode** result)
     node->token       = tokenParse.token;
 
     SWAG_CHECK(eatToken());
-
-    // Code identifier
+    auto startLoc = tokenParse.token.startLocation;
+    SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, toErr(Err0425)));
     SWAG_CHECK(doIdentifierRef(node, &dummyResult));
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
 
     // Replacement parameters
     if (tokenParse.is(TokenId::SymEqualGreater))
     {
         SWAG_CHECK(eatToken());
 
-        const auto startLoc = tokenParse.token.startLocation;
+        startLoc = tokenParse.token.startLocation;
         SWAG_VERIFY(node->hasOwnerBreakable(), error(tokenParse, toErr(Err0306)));
         SWAG_CHECK(eatTokenError(TokenId::SymLeftCurly, toErr(Err0077)));
 
@@ -200,7 +201,6 @@ bool Parser::doCompilerInject(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the [[#inject]] replacement block"));
     }
 
-    SWAG_CHECK(eatSemiCol("[[#inject]] expression"));
     return true;
 }
 

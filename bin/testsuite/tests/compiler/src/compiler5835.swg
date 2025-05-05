@@ -4,7 +4,7 @@
 func assert(expr: #code bool)
 {
     //@print("before")
-    #inject expr
+    #inject(expr)
     //@print("after")
 }
 

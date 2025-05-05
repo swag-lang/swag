@@ -5,7 +5,7 @@ public func parse58(stmt: #code void)
     {
         #macro
         {
-            #inject #up stmt
+            #inject(#up stmt)
         }
     }
 

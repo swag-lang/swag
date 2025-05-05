@@ -3,7 +3,7 @@ func(T) toto(v: T, stmt: #code void)
 {
     func titi(val: T)
     {
-        #inject stmt
+        #inject(stmt)
     }
 
     titi(v)

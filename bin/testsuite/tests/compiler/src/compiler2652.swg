@@ -3,7 +3,7 @@ func toto(x, y: s64 = 666, stmt: #code void)
 {
     @assert(x == 444)
     @assert(y == 666)
-    #inject stmt
+    #inject(stmt)
 }
 
 #test

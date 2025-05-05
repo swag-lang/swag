@@ -7,7 +7,7 @@ func toto(stmt: #code void)
 {
     #macro
     {
-        #inject #up stmt
+        #inject(#up stmt)
     }
 }
 

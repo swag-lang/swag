@@ -24,7 +24,7 @@ impl BB
             {
                 #macro
                 {
-                    #inject #up stmt
+                    #inject(#up stmt)
                 }
             }
         }

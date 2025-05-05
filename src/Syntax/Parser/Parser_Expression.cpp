@@ -299,14 +299,8 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
         }
 
         case TokenId::CompilerInject:
-        {
-            const auto node   = Ast::newNode<AstCompilerInject>(AstNodeKind::CompilerInject, this, parent);
-            node->semanticFct = Semantic::resolveCompilerInject;
-            *result = node;
-            SWAG_CHECK(eatToken());
-            SWAG_CHECK(doIdentifierRef(node, &dummyResult, IDENTIFIER_NO_PARAMS));
+            SWAG_CHECK(doCompilerInject(parent, result));
             break;
-        }
             
         case TokenId::CompilerType:
         {

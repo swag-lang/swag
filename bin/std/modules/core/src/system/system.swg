@@ -11,6 +11,6 @@ func pushContext(cxt: Swag.Context, stmt: #code void)
     @setcontext(cxt)
     #macro
     {
-        #inject #up stmt
+        #inject(#up stmt)
     }
 }

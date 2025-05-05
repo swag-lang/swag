@@ -5,7 +5,7 @@ func toto(stmt: #code void)
 {
     for 5
     {
-        #inject stmt
+        #inject(stmt)
         {
 
         }

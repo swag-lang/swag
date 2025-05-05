@@ -139,8 +139,10 @@ bool FormatAst::outputCompilerInject(FormatContext& context, AstNode* node)
     }
 
     concat->addString("#inject");
-    concat->addBlank();
+    concat->addChar('(');
     SWAG_CHECK(outputNode(context, node->firstChild()));
+    concat->addChar(')');
+
     if (!compilerMixin->replaceTokens.empty())
     {
         concat->addBlank();

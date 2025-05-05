@@ -8,7 +8,7 @@ impl S
         for 4
         {
             let #alias0 = #index
-            #inject stmt
+            #inject(stmt)
         }
     }
 

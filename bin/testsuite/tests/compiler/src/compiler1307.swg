@@ -10,7 +10,7 @@ func toto(t: s32, x: #code void)
     #macro
     {
         var value = xx // error is here
-        #inject x
+        #inject(x)
     }
 }
 

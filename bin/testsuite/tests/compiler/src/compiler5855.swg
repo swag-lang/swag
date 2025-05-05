@@ -1,7 +1,7 @@
 #[Swag.Macro]
 func debugExpr(expr: #code any, res: string)
 {
-    let str = "[DEBUG] " ++ #stringof(expr) ++ " = " ++ #inject expr
+    let str = "[DEBUG] " ++ #stringof(expr) ++ " = " ++ #inject(expr)
     @assert(str == res)
 }
 

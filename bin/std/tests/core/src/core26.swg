@@ -12,7 +12,7 @@ func Visit(str: string, user: #code void)
         #macro
         {
             var value = #up c
-            #inject #up user
+            #inject(#up user)
         }
         ptr += eat
         count -= eat

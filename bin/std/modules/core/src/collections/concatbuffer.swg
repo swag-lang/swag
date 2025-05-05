@@ -54,7 +54,7 @@ impl ConcatBuffer
             #macro
             {
                 let #alias0 = #up b
-                #inject #up stmt
+                #inject(#up stmt)
             }
 
             b = b.next

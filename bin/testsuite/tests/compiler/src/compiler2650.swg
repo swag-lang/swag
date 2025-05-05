@@ -1,7 +1,7 @@
 #[Swag.Macro]
 func toto(x: s64 = 666, stmt: #code void)
 {
-    #inject stmt
+    #inject(stmt)
 }
 
 #test

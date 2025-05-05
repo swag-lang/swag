@@ -12,7 +12,7 @@ impl S
     {
         #macro
         {
-            #inject stmt
+            #inject(stmt)
         }
     }*/
 }

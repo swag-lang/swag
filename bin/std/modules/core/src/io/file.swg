@@ -87,7 +87,7 @@ func readEachLines(fullname: string, encoding = TextEncoding.Utf8, stmt: #code v
         #macro
         {
             var #alias0 = #ref &#up res
-            #inject #up stmt
+            #inject(#up stmt)
         }
     }
 }

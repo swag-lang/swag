@@ -3,7 +3,7 @@ func toto(x: #code void)
 {
     for 10
     {
-        #inject x
+        #inject(x)
     }
 }
 

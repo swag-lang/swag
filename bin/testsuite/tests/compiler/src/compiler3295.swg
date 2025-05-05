@@ -3,7 +3,7 @@
     #[Swag.Mixin]
     func TITI(stmt: #code void)
     {
-        #inject stmt
+        #inject(stmt)
     }
 
     TITI()

@@ -15,7 +15,7 @@ func toto(stmt: #code void)
     titi()
     #macro
     {
-        #inject #up stmt
+        #inject(#up stmt)
     }
 }
 

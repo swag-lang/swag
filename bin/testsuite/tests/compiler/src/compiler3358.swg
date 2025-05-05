@@ -3,7 +3,7 @@ public func(ptr: bool) toto3358(stmt: #code void)
 {
     titi3358(|#alias0| 10)
     {
-        #inject stmt
+        #inject(stmt)
     }
 }
 

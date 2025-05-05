@@ -129,7 +129,7 @@ impl StaticArray
                 #else:
                     let #alias0 = #up scan[0]
                 let #alias1 = #index
-                #inject #up stmt
+                #inject(#up stmt)
             }
         }
     }

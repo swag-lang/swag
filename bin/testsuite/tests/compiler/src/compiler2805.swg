@@ -7,7 +7,7 @@ func toto(stmt: #code void)
     {
         var x = 0's64
         defer G = 1
-        #inject #up stmt
+        #inject(#up stmt)
     }
 }
 

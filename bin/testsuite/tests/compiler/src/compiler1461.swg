@@ -14,7 +14,7 @@ impl S
     {
         for var x = down; x <= up; x += 1
         {
-            #inject stmt
+            #inject(stmt)
         }
     }
 }

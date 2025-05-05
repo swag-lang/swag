@@ -81,7 +81,7 @@ Macros can take `#code` parameters, enabling you to pass and insert code blocks 
     #[Swag.Macro]
     func myMacro(what: #code void)
     {
-        #inject what     // Inserts the provided code block
+        #inject(what)     // Inserts the provided code block
     }
 
     var a = 0
@@ -112,7 +112,7 @@ A `#code` parameter can be typed:
     #[Swag.Macro]
     func myMacro(what: #code bool)   // Here we need a code expression that returns a 'bool' type
     {
-        @assert(#inject what)
+        @assert(#inject(what))
     }
 
     // The expression will be transformed by the compiler to a code expression,
@@ -140,7 +140,7 @@ This technique negates the need for the `#up` keyword when referencing the calle
 
         #macro                                 // Ensures the following code operates in the caller's scope
         {
-            #inject #up what                    // References the caller's 'a'
+            #inject(#up what)                  // References the caller's 'a'
         }
     }
 
@@ -169,7 +169,7 @@ This avoids the overhead associated with lambda calls, making macros a performan
             #macro
             {
                 var index = #up a              // 'index' references 'a' from the caller's scope
-                #inject #up what                // Insert the provided code block
+                #inject(#up what)                // Insert the provided code block
             }
             a += 1
         }
@@ -216,7 +216,7 @@ By using a macro, you can define aliases for `break` and `continue` that allow y
                     // - `break` in the user code is replaced with `break to Up`, meaning it will break
                     //   out of the `Up` scope (i.e., the outer `for`).
                     // - You can similarly redefine `continue` if needed.
-                    #inject #up what => { break = break to ScopeTarget; }
+                    #inject(#up what) => { break = break to ScopeTarget; }
                 }
             }
         }
@@ -262,7 +262,7 @@ By using a macro, you can define aliases for `break` and `continue` that allow y
                 {
                     // `break` in the user code is replaced with `break to Outer`, exiting the outer loop.
                     // `continue` is replaced with `break`, skipping to the next iteration of the inner loop.
-                    #inject #up what => { break = break to Outer; continue = break; }
+                    #inject(#up what) => { break = break to Outer; continue = break; }
                 }
             }
         }
@@ -309,7 +309,7 @@ These aliases allow you to define and access specific variables within a macro.
     {
         let #alias0 = v                        // Assign 'v' to '#alias0'
         let #alias1 = v * 2                    // Assign 'v * 2' to '#alias1'
-        #inject stmt                            // Insert the provided code block
+        #inject(stmt)                            // Insert the provided code block
     }
 
     call(20)

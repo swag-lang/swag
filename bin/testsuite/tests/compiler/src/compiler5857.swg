@@ -10,7 +10,7 @@ func(what: string) safety(expr51: #code bool, message: string = null, loc = #cal
 {
     #if #safety(what)
     {
-        if !#inject expr51:
+        if !#inject(expr51):
             @panic(message, loc)
     }
 }

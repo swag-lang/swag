@@ -1,6 +1,6 @@
 #[Swag.Macro]
 func calculateSquare(num: #code s32) {
-    let result = #inject num * #inject num
+    let result = #inject(num) * #inject(num)
     let str = "Square of " ++ #stringof(num) ++ " is " ++ result
 }
 

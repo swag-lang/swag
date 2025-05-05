@@ -3,7 +3,7 @@
 #[Swag.Macro]
 func toto(stmt: #code void)
 {
-    #inject stmt
+    #inject(stmt)
 }
 
 //#[Swag.PrintBc]

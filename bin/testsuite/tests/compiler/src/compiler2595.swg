@@ -8,7 +8,7 @@ func toto(stmt: #code void)
         x, y: s32
     }
 
-    #inject #up stmt
+    #inject(#up stmt)
 }
 
 //#[Swag.PrintBc]

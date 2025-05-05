@@ -5,7 +5,7 @@ var G = 0
 func assert(expr: #code s32, str: string = "toto")
 {
     //@print("before")
-    let b = #inject expr
+    let b = #inject(expr)
     @assert(b == G)
     //@print("after")
 }

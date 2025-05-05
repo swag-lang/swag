@@ -22,7 +22,7 @@ func toto(v: A)
 #[Swag.Macro]
 func tata(c: #code void)
 {
-    #inject c
+    #inject(c)
 }
 
 #[Swag.NoInline]

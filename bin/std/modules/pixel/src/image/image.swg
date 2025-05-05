@@ -57,7 +57,7 @@ impl Image
             {
                 var #alias0 = #up scan
                 var #alias1 = #index
-                #inject #up stmt
+                #inject(#up stmt)
             }
 
             scan += bpp8
@@ -161,7 +161,7 @@ impl Image
                 let x     = cast(s32) index % image.width
                 let y     = cast(s32) index / image.width
 
-                #inject #up stmt
+                #inject(#up stmt)
             }
         }
     }

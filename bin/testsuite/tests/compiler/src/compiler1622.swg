@@ -1,7 +1,7 @@
 #[Swag.Mixin, Swag.CalleeReturn]
 func mac(stmt: #code void)
 {
-    #inject stmt
+    #inject(stmt)
 }
 
 func toto()->s32

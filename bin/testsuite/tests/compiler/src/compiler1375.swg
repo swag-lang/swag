@@ -36,7 +36,7 @@ func changeContext(user: #code void)
 
     #macro
     {
-        #inject #up user
+        #inject(#up user)
     }
 
     @setcontext(savedCxt)

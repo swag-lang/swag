@@ -4,8 +4,8 @@
 #[Swag.Mixin]
 func toto(x: #code void)
 {
-    #inject x
-    #inject x
+    #inject(x)
+    #inject(x)
 }
 
 //#[Swag.PrintBc]

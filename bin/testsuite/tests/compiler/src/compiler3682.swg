@@ -4,9 +4,9 @@
 func toto(stmt: #code void)
 {
     let a = 10
-    #inject stmt
-    #inject stmt
-    #inject stmt
+    #inject(stmt)
+    #inject(stmt)
+    #inject(stmt)
 }
 
 var G: s32

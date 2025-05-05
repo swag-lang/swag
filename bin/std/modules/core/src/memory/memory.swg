@@ -84,7 +84,7 @@ func pushAllocator(allocator: Swag.IAllocator, stmt: #code void)
 
     #macro
     {
-        #inject #up stmt
+        #inject(#up stmt)
     }
 }
 
@@ -101,6 +101,6 @@ func pushTempAllocator(stmt: #code void)
 
     #macro
     {
-        #inject #up stmt
+        #inject(#up stmt)
     }
 }

@@ -5,6 +5,6 @@ func toto(stmt: #code void)
 {
     for 5
     {
-        #inject stmt => { toto = titi; }
+        #inject(stmt) => { toto = titi; }
     }
 }

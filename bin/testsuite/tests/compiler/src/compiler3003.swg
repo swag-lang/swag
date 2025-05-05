@@ -6,7 +6,7 @@ struct R
 #[Swag.Macro]
 func vis(stmt: #code void)
 {
-    #inject stmt
+    #inject(stmt)
 }
 
 func toto()->R

@@ -5,7 +5,7 @@ func toto(x: #code void)
     for 10
     {
         cpt += 1
-        #inject x
+        #inject(x)
     }
 }
 

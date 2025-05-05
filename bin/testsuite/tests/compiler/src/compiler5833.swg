@@ -2,7 +2,7 @@
 func assert(expr: #code void)
 {
     //@print("before")
-    #inject expr
+    #inject(expr)
     //@print("after")
 }
 

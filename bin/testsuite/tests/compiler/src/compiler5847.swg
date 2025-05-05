@@ -3,8 +3,8 @@
 #[Swag.Macro]
 func toto(x: #code)
 {
-    #inject x
-    #inject x
+    #inject(x)
+    #inject(x)
 }
 
 //#[Swag.PrintBc]

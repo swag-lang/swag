@@ -34,7 +34,7 @@ func changeContext(user: #code void)
     {
         var cxt = &#up newCxt
 
-        #inject #up user
+        #inject(#up user)
     }
 
     @setcontext(savedCxt)

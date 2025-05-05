@@ -59,7 +59,7 @@ impl MyStruct
                 var #alias1 = #index
 
                 // Insert user-defined logic from the calling scope.
-                #inject #up stmt
+                #inject(#up stmt)
             }
         }
     }
@@ -125,7 +125,7 @@ impl MyStruct
                 }
 
                 var #alias1 = #index
-                #inject #up stmt
+                #inject(#up stmt)
             }
         }
     }
@@ -197,7 +197,7 @@ impl SliceStruct
                 var #alias1 = #index
 
                 // Insert the user-provided logic from the caller.
-                #inject #up stmt
+                #inject(#up stmt)
             }
         }
     }

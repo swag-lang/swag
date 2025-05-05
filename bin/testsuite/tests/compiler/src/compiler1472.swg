@@ -14,7 +14,7 @@ impl S
             #macro
             {
                 var #alias0 = #up v
-                #inject #up stmt
+                #inject(#up stmt)
             }
         }
     }

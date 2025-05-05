@@ -14,7 +14,7 @@ impl S
             #macro
             {
                 var value = 1
-                #inject #up stmt
+                #inject(#up stmt)
             }
         }
     }

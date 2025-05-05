@@ -14,7 +14,7 @@ public func(T) toto2648(v: [..] T, stmt: #code void)
     /*func titi(val: *void)
     {
         var ptr = cast(*ST'T) val
-        #inject stmt
+        #inject(stmt)
     }*/
 
     var v1: Arr'(ST'T)
