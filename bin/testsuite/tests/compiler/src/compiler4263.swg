@@ -2,4 +2,4 @@
 
 func titi()->string => "tata"
 
-#warning titi()
+#warning(titi())

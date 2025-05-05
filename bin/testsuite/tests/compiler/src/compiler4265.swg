@@ -1,3 +1,3 @@
 #global testerror "titi()"
 
-#error "titi()"
+#error("titi()")

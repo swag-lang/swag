@@ -16,7 +16,7 @@ impl Point
 		}
 		#else
 		{
-			#error "invalid operator"
+			#error("invalid operator")
 		}
 	}
 }

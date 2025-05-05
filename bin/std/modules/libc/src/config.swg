@@ -7,5 +7,5 @@
 }
 #else
 {
-    #error "unsupported os"
+    #error("unsupported os")
 }

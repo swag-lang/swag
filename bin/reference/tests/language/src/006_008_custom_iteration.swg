@@ -30,10 +30,10 @@ impl MyStruct
         // or reverse-order iterations.
 
         #if ptr:
-            #error "Visiting by pointer is not supported in this example."
+            #error("Visiting by pointer is not supported in this example.")
 
         #if back:
-            #error "Reverse visiting is not supported in this example."
+            #error("Reverse visiting is not supported in this example.")
 
         // Example of visiting the fields of `MyStruct`. This demonstrates a common use case of `opVisit`.
         for idx in 3

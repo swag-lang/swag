@@ -95,7 +95,7 @@ impl String
         #elif op == "-=":
             buffer[index] -= #over value
         #else:
-            #error "invalid operator '" ++ op ++ "'"
+            #error("invalid operator '" ++ op ++ "'")
     }
 
     mtd opIndexAffect(index: u64, value: u8)
@@ -111,7 +111,7 @@ impl String
             foreach v in value:
                 append(v)
         #else:
-            #error "invalid operator '" ++ op ++ "'"
+            #error("invalid operator '" ++ op ++ "'")
     }
 
     #[Overload]
@@ -121,7 +121,7 @@ impl String
             foreach v in value:
                 append(v)
         #else:
-            #error "invalid operator '" ++ op ++ "'"
+            #error("invalid operator '" ++ op ++ "'")
     }
 
     #[Overload]
@@ -131,7 +131,7 @@ impl String
             foreach v in value:
                 append(v)
         #else:
-            #error "invalid operator '" ++ op ++ "'"
+            #error("invalid operator '" ++ op ++ "'")
     }
 
     #[Overload]
@@ -140,7 +140,7 @@ impl String
         #if op == "+=":
             append(value)
         #else:
-            #error "invalid operator '" ++ op ++ "'"
+            #error("invalid operator '" ++ op ++ "'")
     }
 
     #[Overload]
@@ -149,7 +149,7 @@ impl String
         #if op == "+=":
             append(value)
         #else:
-            #error "invalid operator '" ++ op ++ "'"
+            #error("invalid operator '" ++ op ++ "'")
     }
 
     #[Overload]
@@ -158,7 +158,7 @@ impl String
         #if op == "+=":
             append(value)
         #else:
-            #error "invalid operator '" ++ op ++ "'"
+            #error("invalid operator '" ++ op ++ "'")
     }
 
     mtd opPostMove()
@@ -204,9 +204,9 @@ impl String
     mtd(ptr: bool, back: bool) opVisitRunes(stmt: #code void)
     {
         #if ptr:
-            #error "visiting runes by pointer is not supported"
+            #error("visiting runes by pointer is not supported")
         #if back:
-            #error "visiting runes in reverse order is not supported"
+            #error("visiting runes in reverse order is not supported")
         Utf8.visitRunes(|#alias0, #alias1, #alias2| toSlice(), stmt)
     }
 

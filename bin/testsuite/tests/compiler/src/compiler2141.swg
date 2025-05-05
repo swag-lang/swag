@@ -11,7 +11,7 @@ impl PointBase
         #if   op == "+="    { x += value; y += value; }
         #elif op == "-="    { x -= value; y -= value; }
         #elif op == "*="    { x *= value; y *= value; }
-        #else              : #error "unsupported assign operation '" ++ op ++ "'"
+        #else              : #error("unsupported assign operation '" ++ op ++ "'")
     }
 
     func(op: string) opBinary(using self, other: Self)->Self
@@ -19,7 +19,7 @@ impl PointBase
         #if   op == "+": return Self{x + other.x, y + other.y}
         #elif op == "-": return Self{x - other.x, y - other.y}
         #elif op == "*": return Self{x * other.x, y * other.y}
-        #else          : #error "unsupported binary operation '" ++ op ++ "'"
+        #else          : #error("unsupported binary operation '" ++ op ++ "'")
     }
 
     // Offset this Point by a given value

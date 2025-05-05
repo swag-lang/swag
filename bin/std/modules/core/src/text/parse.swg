@@ -537,6 +537,6 @@ func(T) toNum(str: string)->T throw
     #elif T == f64:
         return toF64(str)
     #else:
-        #error "invalid type"
+        #error("invalid type")
     return 0
 }

@@ -7,7 +7,7 @@ impl A
     #[Swag.Inline]
     mtd toto()
     {
-        #error "type [[" ++ #typeof(T).name ++ "]] is invalid"
+        #error("type [[" ++ #typeof(T).name ++ "]] is invalid")
     }
 }
 

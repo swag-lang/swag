@@ -22,7 +22,7 @@ func isThisDebug() => true
 // will exclude the code inside the block from the final compilation.
 #if isThisDebug() == false
 {
-    #error "this should not be called!"
+    #error("this should not be called!")
 }
 
 /**
@@ -90,7 +90,7 @@ func isEven(x: s32) -> bool
 // the error is not triggered, and the code compiles successfully.
 #if isEven(4) == false
 {
-    #error "4 should be even!"
+    #error("4 should be even!")
 }
 
 /**

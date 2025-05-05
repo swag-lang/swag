@@ -46,7 +46,7 @@ impl Point
             y /= other.y
         }
         #else:
-            #error "unsupported assign operation [[" ++ op ++ "]]"
+            #error("unsupported assign operation [[" ++ op ++ "]]")
     }
 
     #[Swag.Overload]
@@ -73,7 +73,7 @@ impl Point
             y /= value
         }
         #else:
-            #error "unsupported assign operation [[" ++ op ++ "]]"
+            #error("unsupported assign operation [[" ++ op ++ "]]")
     }
 
     #[Swag.Overload]
@@ -88,7 +88,7 @@ impl Point
         #elif op == "/":
             return Point{x / other.x, y / other.y}
         #else:
-            #error "unsupported binary operation [[" ++ op ++ "]]"
+            #error("unsupported binary operation [[" ++ op ++ "]]")
     }
 
     #[Swag.Overload]
@@ -103,7 +103,7 @@ impl Point
         #elif op == "/":
             return Point{x / value, y / value}
         #else:
-            #error "unsupported binary operation [[" ++ op ++ "]]"
+            #error("unsupported binary operation [[" ++ op ++ "]]")
     }
 
     mtd(op: string) const opUnary()->Self
@@ -117,7 +117,7 @@ impl Point
         }
         #else
         {
-            #error "unsupported unary operation [[" ++ op ++ "]]"
+            #error("unsupported unary operation [[" ++ op ++ "]]")
         }
     }
 

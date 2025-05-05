@@ -92,9 +92,9 @@ public impl BitArray
     mtd(ptr: bool, back: bool) opVisit(stmt: #code void)
     {
         #if ptr:
-            #error "visiting by pointer is not supported for BitArray"
+            #error("visiting by pointer is not supported for BitArray")
         #if back:
-            #error "visiting in reverse order is not supported for BitArray"
+            #error("visiting in reverse order is not supported for BitArray")
 
         if !count:
             return

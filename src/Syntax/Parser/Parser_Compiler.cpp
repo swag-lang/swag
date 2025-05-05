@@ -245,9 +245,12 @@ bool Parser::doCompilerError(AstNode* parent, AstNode** result)
     node->extSemantic()->semanticBeforeFct = Semantic::preResolveCompilerInstruction;
     node->semanticFct                      = Semantic::resolveCompilerError;
     node->token                            = tokenParse.token;
-    SWAG_CHECK(eatToken());
 
+    SWAG_CHECK(eatToken());
+    const auto startLoc = tokenParse.token.startLocation;
+    SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, toErr(Err0425)));
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
     SWAG_CHECK(eatSemiCol("[[#error]] expression"));
     return true;
 }
@@ -261,9 +264,12 @@ bool Parser::doCompilerWarning(AstNode* parent, AstNode** result)
     node->extSemantic()->semanticBeforeFct = Semantic::preResolveCompilerInstruction;
     node->semanticFct                      = Semantic::resolveCompilerWarning;
     node->token                            = tokenParse.token;
-    SWAG_CHECK(eatToken());
 
+    SWAG_CHECK(eatToken());
+    const auto startLoc = tokenParse.token.startLocation;
+    SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, toErr(Err0425)));
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
     SWAG_CHECK(eatSemiCol("[[#warning]] expression"));
     return true;
 }

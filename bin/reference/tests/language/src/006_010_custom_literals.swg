@@ -68,7 +68,7 @@ impl Duration
         // Handle unsupported or invalid suffixes
         #else:
             // Raise a compile-time error if an invalid suffix is encountered
-            #error "invalid duration literal suffix '" ++ suffix ++ "'"
+            #error("invalid duration literal suffix '" ++ suffix ++ "'")
     }
 }
 

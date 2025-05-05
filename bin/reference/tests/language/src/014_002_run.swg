@@ -17,7 +17,7 @@ func isThisRelease() => true
 // is excluded from the compilation process.
 #if #run isThisRelease() == false
 {
-    #error "this should not be called!"
+    #error("this should not be called!")
 }
 
 /**

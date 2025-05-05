@@ -24,6 +24,6 @@ const File = """
 }
 
 #if cfg_a != 10:
-    #error "toto"
+    #error("toto")
 #else:
     #assert(cfg_a == 10)

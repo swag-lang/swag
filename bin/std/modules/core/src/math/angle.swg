@@ -23,7 +23,7 @@ impl Angle
         #elif suffix == "deg":
             rad = toRadians(value)
         #else:
-            #error "invalid angle literal suffix [[" ++ suffix ++ "]]"
+            #error("invalid angle literal suffix [[" ++ suffix ++ "]]")
     }
 
     #[Inline]

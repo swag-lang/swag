@@ -51,8 +51,8 @@ during the build process.
 */
 #if false
 {
-    #error "this is an error"       // Raises a compile-time error if this block is reached.
-    #warning "this is a warning"    // Raises a compile-time warning if this block is reached.
+    #error("this is an error")       // Raises a compile-time error if this block is reached.
+    #warning("this is a warning")    // Raises a compile-time warning if this block is reached.
 }
 
 /**

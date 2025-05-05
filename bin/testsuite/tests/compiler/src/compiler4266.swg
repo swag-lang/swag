@@ -5,5 +5,5 @@ func isThisRelease()->bool
 
 #if #run isThisRelease() == false
 {
-    #warning "this should not be called !"
+    #warning("this should not be called !")
 }

@@ -164,7 +164,7 @@ impl JSon
         }
         #else
         {
-            #error "invalid type"
+            #error("invalid type")
         }
     }
 }

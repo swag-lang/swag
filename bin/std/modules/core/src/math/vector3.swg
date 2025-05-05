@@ -55,7 +55,7 @@ impl Vector3
             z /= other.z
         }
         #else:
-            #error "unsupported assign operation [[" ++ op ++ "]]"
+            #error("unsupported assign operation [[" ++ op ++ "]]")
     }
 
     #[Swag.Overload]
@@ -86,7 +86,7 @@ impl Vector3
             z /= value
         }
         #else:
-            #error "unsupported assign operation [[" ++ op ++ "]]"
+            #error("unsupported assign operation [[" ++ op ++ "]]")
     }
 
     #[Swag.Overload]
@@ -101,7 +101,7 @@ impl Vector3
         #elif op == "/":
             return Self{x / other.x, y / other.y, z / other.z}
         #else:
-            #error "unsupported binary operation [[" ++ op ++ "]]"
+            #error("unsupported binary operation [[" ++ op ++ "]]")
     }
 
     #[Swag.Overload]
@@ -116,7 +116,7 @@ impl Vector3
         #elif op == "/":
             return Self{x / value, y / value, z / value}
         #else:
-            #error "unsupported binary operation [[" ++ op ++ "]]"
+            #error("unsupported binary operation [[" ++ op ++ "]]")
     }
 
     mtd(op: string) opUnary()->Self
@@ -124,7 +124,7 @@ impl Vector3
         #if op == "-":
             return Self{-x, -y, -z}
         #else:
-            #error "unsupported unary operation [[" ++ op ++ "]]"
+            #error("unsupported unary operation [[" ++ op ++ "]]")
     }
 
     // Set content

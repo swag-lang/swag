@@ -49,7 +49,7 @@ impl Vector2
             y /= other.y
         }
         #else:
-            #error "unsupported assign operation [[" ++ op ++ "]]"
+            #error("unsupported assign operation [[" ++ op ++ "]]")
     }
 
     #[Swag.Overload, Swag.Inline]
@@ -76,7 +76,7 @@ impl Vector2
             y /= value
         }
         #else:
-            #error "unsupported assign operation [[" ++ op ++ "]]"
+            #error("unsupported assign operation [[" ++ op ++ "]]")
     }
 
     #[Swag.Overload, Swag.Inline]
@@ -91,7 +91,7 @@ impl Vector2
         #elif op == "/":
             return Self{x / other.x, y / other.y}
         #else:
-            #error "unsupported binary operation [[" ++ op ++ "]]"
+            #error("unsupported binary operation [[" ++ op ++ "]]")
     }
 
     #[Swag.Overload, Swag.Inline]
@@ -106,7 +106,7 @@ impl Vector2
         #elif op == "/":
             return Self{x / value, y / value}
         #else:
-            #error "unsupported binary operation [[" ++ op ++ "]]"
+            #error("unsupported binary operation [[" ++ op ++ "]]")
     }
 
     #[Swag.Inline]
@@ -115,7 +115,7 @@ impl Vector2
         #if op == "-":
             return Self{-x, -y}
         #else:
-            #error "unsupported unary operation [[" ++ op ++ "]]"
+            #error("unsupported unary operation [[" ++ op ++ "]]")
     }
 
     // Set content

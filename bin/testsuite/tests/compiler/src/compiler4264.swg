@@ -2,4 +2,4 @@
 
 func titi()->string => "tata"
 
-#error titi()
+#error(titi())

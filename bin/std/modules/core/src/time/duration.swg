@@ -28,7 +28,7 @@ impl Duration
         #elif suffix == "h":
             timeInSeconds = value * 3600.0
         #else:
-            #error "invalid duration literal suffix '" ++ suffix ++ "'"
+            #error("invalid duration literal suffix '" ++ suffix ++ "'")
     }
 
     #[Inline]

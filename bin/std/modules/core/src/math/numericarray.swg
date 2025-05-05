@@ -40,7 +40,7 @@ impl NumericArray
             #elif op == "/":
                 result.buf[i] = buf[i] / other.buf[i]
             #else:
-                #error "unsupported binary operation [[" ++ op ++ "]]"
+                #error("unsupported binary operation [[" ++ op ++ "]]")
         }
         return result
     }
@@ -59,7 +59,7 @@ impl NumericArray
             #elif (op == "/="):
                 buf[i] /= value
             #else:
-                #error "unsupported assign operation [[" ++ op ++ "]]"
+                #error("unsupported assign operation [[" ++ op ++ "]]")
         }
     }
 
@@ -77,7 +77,7 @@ impl NumericArray
             #elif (op == "/="):
                 buf[i] /= value.buf[i]
             #else:
-                #error "unsupported assign operation [[" ++ op ++ "]]"
+                #error("unsupported assign operation [[" ++ op ++ "]]")
         }
     }
 

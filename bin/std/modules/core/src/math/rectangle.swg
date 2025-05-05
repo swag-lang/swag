@@ -26,8 +26,8 @@ impl Rectangle
         #if op == "*":
             return {x*value, y*value, width*value, height*value}
         #else:
-            #error "unsupported binary operation [[" ++ op ++ "]]"
-    }    
+            #error("unsupported binary operation [[" ++ op ++ "]]")
+    }
 
     // Initialize the rectangle with two position
     mtd set(topLeft, bottomRight: Math.Point)
