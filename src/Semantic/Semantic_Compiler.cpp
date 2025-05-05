@@ -472,7 +472,7 @@ bool Semantic::resolveCompilerInject(SemanticContext* context)
     cloneContext.forceFlags             = AST_IN_MIXIN;
     cloneContext.removeFlags            = AST_R_VALUE;
     cloneContext.ownerFct               = node->ownerFct;
-    cloneContext.cloneFlags             = CLONE_INJECT;
+    cloneContext.cloneFlags             = CLONE_INJECT | CLONE_FORCE_OWNER_FCT;
     const auto cloneContent             = typeCodeContent->clone(cloneContext);
 
     if (node->hasAstFlag(AST_DISCARD))
