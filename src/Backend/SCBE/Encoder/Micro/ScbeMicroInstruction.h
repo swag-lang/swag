@@ -25,12 +25,35 @@ struct ScbeMicroInstruction
     bool hasReadMemA() const { return hasLeftOpFlag(MOF_READ_MEM); }
     bool hasReadMemB() const { return hasRightOpFlag(MOF_READ_MEM); }
 
-    bool hasReadRegA() const;
-    bool hasReadRegB() const;
-    bool hasReadRegC() const;
-    bool hasWriteRegA() const;
-    bool hasWriteRegB() const;
-    bool hasWriteRegC() const;
+    bool hasReadRegA() const
+    {
+        if (op == ScbeMicroOp::OpBinaryRR)
+        {
+            if (cpuOp == CpuOp::BSR || cpuOp == CpuOp::BSF || cpuOp == CpuOp::POPCNT)
+                return false;
+            if (cpuOp == CpuOp::CVTF2F || cpuOp == CpuOp::CVTF2I || cpuOp == CpuOp::CVTI2F || cpuOp == CpuOp::CVTU2F64)
+                return false;
+        }
+
+        return (hasLeftOpFlag(MOF_REG_A) && hasLeftOpFlag(MOF_READ_REG)) || (hasRightOpFlag(MOF_REG_A) && hasRightOpFlag(MOF_READ_REG));
+    }
+
+    bool hasWriteRegB() const
+    {
+        if (op == ScbeMicroOp::OpBinaryMR || op == ScbeMicroOp::OpBinaryRR)
+        {
+            if (cpuOp == CpuOp::XCHG)
+                return true;
+        }
+
+        return (hasLeftOpFlag(MOF_REG_B) && hasLeftOpFlag(MOF_WRITE_REG)) || (hasRightOpFlag(MOF_REG_B) && hasRightOpFlag(MOF_WRITE_REG));
+    }
+
+    bool hasReadRegB() const { return (hasLeftOpFlag(MOF_REG_B) && hasLeftOpFlag(MOF_READ_REG)) || (hasRightOpFlag(MOF_REG_B) && hasRightOpFlag(MOF_READ_REG)); }
+    bool hasReadRegC() const { return (hasLeftOpFlag(MOF_REG_C) && hasLeftOpFlag(MOF_READ_REG)) || (hasRightOpFlag(MOF_REG_C) && hasRightOpFlag(MOF_READ_REG)); }
+    bool hasWriteRegA() const { return (hasLeftOpFlag(MOF_REG_A) && hasLeftOpFlag(MOF_WRITE_REG)) || (hasRightOpFlag(MOF_REG_A) && hasRightOpFlag(MOF_WRITE_REG)); }
+    bool hasWriteRegC() const { return (hasLeftOpFlag(MOF_REG_C) && hasLeftOpFlag(MOF_WRITE_REG)) || (hasRightOpFlag(MOF_REG_C) && hasRightOpFlag(MOF_WRITE_REG)); }
+
     bool hasRegA() const { return (hasReadRegA() || hasWriteRegA()); }
     bool hasRegB() const { return (hasReadRegB() || hasWriteRegB()); }
     bool hasRegC() const { return (hasReadRegC() || hasWriteRegC()); }
