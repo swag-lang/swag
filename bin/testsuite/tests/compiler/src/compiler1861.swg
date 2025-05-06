@@ -11,7 +11,7 @@ func toto(ptr: const ^u8)
     toto(cast(const ^u8) "toto")
 }
 
-/*#foreignlib "user32"
+/*#foreignlib("user32")
 #[Swag.Foreign("user32")]
 func MessageBoxA(hwnd: *void, t: const *u8, t1: const *u8, flags: u32);
 

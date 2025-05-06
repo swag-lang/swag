@@ -260,12 +260,14 @@ bool Parser::doCompilerForeignLib(AstNode* parent, AstNode** result)
     const auto node   = Ast::newNode<AstNode>(AstNodeKind::CompilerForeignLib, this, parent);
     *result           = node;
     node->semanticFct = Semantic::resolveCompilerForeignLib;
-
     SWAG_CHECK(eatToken());
-    SWAG_VERIFY(tokenParse.is(TokenId::LiteralString), error(tokenParse, toErr(Err0415)));
 
+    const auto startLoc = tokenParse.token.startLocation;
+    SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, toErr(Err0425)));
+    SWAG_VERIFY(tokenParse.is(TokenId::LiteralString), error(tokenParse, toErr(Err0415)));
     AstNode* literal;
     SWAG_CHECK(doLiteral(node, &literal));
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
     SWAG_CHECK(eatSemiCol("[[#foreignlib]]"));
     return true;
 }

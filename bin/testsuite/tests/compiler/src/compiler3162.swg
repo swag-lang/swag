@@ -1,7 +1,7 @@
 #global #if #os == Swag.TargetOs.Windows
 
 using Swag
-#foreignlib "ucrt"
+#foreignlib("ucrt")
 #[Foreign("ucrtbase", "__stdio_common_vsprintf")]
 func stdio_common_vsprintf(_Options: u64, buf: *void, buflen: u64, _Format: cstring, _Locale: #null *void, _ArgList: *void)->s32;
 

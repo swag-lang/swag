@@ -1,5 +1,5 @@
 #global export
-#foreignlib "kernel32"
+#foreignlib("kernel32")
 using Swag
 
 alias ATOM          = const ^void

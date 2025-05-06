@@ -1,6 +1,6 @@
 #global export
 #global #if #os == Swag.TargetOs.Windows
-#foreignlib "xaudio2"
+#foreignlib("xaudio2")
 using Swag, Win32
 
 alias UINT32  = u32

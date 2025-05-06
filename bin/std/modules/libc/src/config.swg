@@ -2,7 +2,7 @@
 
 #if #os == Swag.TargetOs.Windows
 {
-    #foreignlib "ucrt"
+    #foreignlib("ucrt")
     const ForeignLib = "ucrtbase"
 }
 #else

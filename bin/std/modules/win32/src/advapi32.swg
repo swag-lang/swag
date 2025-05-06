@@ -1,5 +1,5 @@
 #global export
-#foreignlib "advapi32"
+#foreignlib("advapi32")
 using Swag
 
 alias ACCESS_MASK = DWORD

@@ -1,8 +1,8 @@
 #global #if #os == Swag.TargetOs.Windows
-#foreignlib "kernel32"
-#foreignlib "user32"
-#foreignlib "dbghelp"
-#foreignlib "ucrt"
+#foreignlib("kernel32")
+#foreignlib("user32")
+#foreignlib("dbghelp")
+#foreignlib("ucrt")
 
 ////////////////////////////////////////////////////////////
 namespace __Win32RT

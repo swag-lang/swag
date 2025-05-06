@@ -1,6 +1,6 @@
 #global export
 #global #if #os == Swag.TargetOs.Windows
-#foreignlib "opengl32"
+#foreignlib("opengl32")
 using Swag, Win32
 
 alias HGLRC = const *void

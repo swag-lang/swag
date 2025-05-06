@@ -1,5 +1,5 @@
 #global export
-#foreignlib "shell32"
+#foreignlib("shell32")
 using Swag
 
 alias SHSTDAPI = *void

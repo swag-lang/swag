@@ -96,7 +96,7 @@ in the external library. The library name should be provided as a string.
 
 Example:
 ```swag
-#foreignlib "windows.lib"
+#foreignlib("windows.lib")
 ```
 This example links the program with the "windows.lib" library, allowing the use of Windows
 API functions and resources defined within that library.

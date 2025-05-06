@@ -1,5 +1,5 @@
 #global export
-#foreignlib "iphlpapi"
+#foreignlib("iphlpapi")
 using Swag
 
 const MAX_ADAPTER_DESCRIPTION_LENGTH = 128
