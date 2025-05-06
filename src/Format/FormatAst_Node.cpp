@@ -288,21 +288,9 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             break;
 
         case AstNodeKind::CompilerError:
-            concat->addString("#error");
-            concat->addChar('(');
-            SWAG_CHECK(outputNode(context, node->firstChild()));
-            concat->addChar(')');
-            break;
-
         case AstNodeKind::CompilerWarning:
-            concat->addString("#warning");
-            concat->addChar('(');
-            SWAG_CHECK(outputNode(context, node->firstChild()));
-            concat->addChar(')');
-            break;
-
         case AstNodeKind::CompilerAssert:
-            concat->addString("#assert");
+            concat->addString(node->token.text);
             concat->addChar('(');
             SWAG_CHECK(outputNode(context, node->firstChild()));
             concat->addChar(')');
