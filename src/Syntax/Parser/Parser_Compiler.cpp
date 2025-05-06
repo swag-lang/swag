@@ -1,5 +1,4 @@
 #include "pch.h"
-
 #include "Format/FormatAst.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
@@ -731,10 +730,8 @@ bool Parser::doCompilerLocation(AstNode* parent, AstNode** result)
 
     const auto startLoc = tokenParse.token.startLocation;
     SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, formErr(Err0425, node->token.cstr())));
-
     ParserPushAstNodeFlags sc(this, AST_SILENT_CHECK);
     SWAG_CHECK(doIdentifierRef(node, &dummyResult, IDENTIFIER_NO_PARAMS));
-
     SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
     node->semanticFct = Semantic::resolveIntrinsicLocation;
     return true;
@@ -749,10 +746,8 @@ bool Parser::doCompilerDefined(AstNode* parent, AstNode** result)
 
     const auto startLoc = tokenParse.token.startLocation;
     SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, formErr(Err0425, node->token.cstr())));
-
     ParserPushAstNodeFlags sc(this, AST_SILENT_CHECK);
     SWAG_CHECK(doIdentifierRef(node, &dummyResult, IDENTIFIER_NO_PARAMS));
-
     SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
 
     node->semanticFct = Semantic::resolveIntrinsicDefined;
