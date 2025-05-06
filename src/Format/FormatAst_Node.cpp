@@ -29,6 +29,73 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
         case AstNodeKind::EmptyNode:
             break;
 
+        case AstNodeKind::CompilerRun:
+        case AstNodeKind::CompilerRunExpression:
+        case AstNodeKind::CompilerAst:
+            SWAG_CHECK(outputCompilerExpr(context, node));
+            break;
+
+        case AstNodeKind::CompilerMacro:
+            concat->addString("#macro");
+            SWAG_CHECK(outputNode(context, node->firstChild()));
+            break;
+
+        case AstNodeKind::CompilerInject:
+            SWAG_CHECK(outputCompilerInject(context, node));
+            break;
+
+        case AstNodeKind::CompilerSpecialValue:
+            SWAG_CHECK(outputCompilerSpecialValue(context, node));
+            break;
+
+        case AstNodeKind::CompilerDependencies:
+            concat->addString("#dependencies");
+            concat->addEol();
+            SWAG_CHECK(outputChildrenEol(context, node));
+            forceEOL = true;
+            break;
+
+        case AstNodeKind::CompilerInclude:
+        case AstNodeKind::CompilerDefined:
+        case AstNodeKind::CompilerLocation:
+        case AstNodeKind::CompilerPrint:
+        case AstNodeKind::CompilerError:
+        case AstNodeKind::CompilerWarning:
+        case AstNodeKind::CompilerAssert:
+        case AstNodeKind::CompilerForeignLib:
+            concat->addString(node->token.text);
+            concat->addChar('(');
+            SWAG_CHECK(outputNode(context, node->firstChild()));
+            concat->addChar(')');
+            break;
+
+        case AstNodeKind::CompilerPlaceHolder:
+            concat->addString("#placeholder");
+            concat->addBlank();
+            concat->addString(node->token.text);
+            concat->addBlank();
+            SWAG_CHECK(outputChildrenBlank(context, node));
+            forceEOL = true;
+            break;
+
+        case AstNodeKind::CompilerImport:
+            SWAG_CHECK(outputCompilerExport(context, node));
+            break;
+
+        case AstNodeKind::CompilerLoad:
+            concat->addString("#load");
+            concat->addBlank();
+            SWAG_CHECK(outputChildrenBlank(context, node));
+            break;
+
+        case AstNodeKind::CompilerCode:
+            SWAG_CHECK(outputCompilerCode(context, node));
+            break;
+
+        case AstNodeKind::CompilerGlobal:
+            SWAG_CHECK(outputCompilerGlobal(context, node));
+            break;
+
         case AstNodeKind::SwitchCaseBlock:
         case AstNodeKind::CompilerIfBlock:
         case AstNodeKind::StatementNoScope:
@@ -44,15 +111,6 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             break;
         case AstNodeKind::GetErr:
             concat->addString("@err");
-            break;
-
-        case AstNodeKind::CompilerLoad:
-            concat->addString("#load");
-            concat->addBlank();
-            SWAG_CHECK(outputChildrenBlank(context, node));
-            break;
-        case AstNodeKind::CompilerGlobal:
-            SWAG_CHECK(outputCompilerGlobal(context, node));
             break;
 
         case AstNodeKind::MoveRef:
@@ -74,23 +132,6 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
         case AstNodeKind::Unreachable:
             concat->addString("unreachable");
             forceEOL = true;
-            break;
-
-        case AstNodeKind::CompilerPlaceHolder:
-            concat->addString("#placeholder");
-            concat->addBlank();
-            concat->addString(node->token.text);
-            concat->addBlank();
-            SWAG_CHECK(outputChildrenBlank(context, node));
-            forceEOL = true;
-            break;
-
-        case AstNodeKind::CompilerImport:
-            SWAG_CHECK(outputCompilerExport(context, node));
-            break;
-
-        case AstNodeKind::CompilerCode:
-            SWAG_CHECK(outputCompilerCode(context, node));
             break;
 
         case AstNodeKind::With:
@@ -231,12 +272,6 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             SWAG_CHECK(outputExpressionList(context, node));
             break;
 
-        case AstNodeKind::CompilerRun:
-        case AstNodeKind::CompilerRunExpression:
-        case AstNodeKind::CompilerAst:
-            SWAG_CHECK(outputCompilerExpr(context, node));
-            break;
-
         case AstNodeKind::WhereConstraint:
         case AstNodeKind::VerifyConstraint:
             SWAG_CHECK(outputCompilerConstraints(context, {node}));
@@ -266,26 +301,6 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             SWAG_CHECK(outputNode(context, node->secondChild()));
             break;
 
-        case AstNodeKind::CompilerMacro:
-            concat->addString("#macro");
-            SWAG_CHECK(outputNode(context, node->firstChild()));
-            break;
-
-        case AstNodeKind::CompilerInject:
-            SWAG_CHECK(outputCompilerInject(context, node));
-            break;
-
-        case AstNodeKind::CompilerPrint:
-        case AstNodeKind::CompilerError:
-        case AstNodeKind::CompilerWarning:
-        case AstNodeKind::CompilerAssert:
-        case AstNodeKind::CompilerForeignLib:
-            concat->addString(node->token.text);
-            concat->addChar('(');
-            SWAG_CHECK(outputNode(context, node->firstChild()));
-            concat->addChar(')');
-            break;
-
         case AstNodeKind::For:
             SWAG_CHECK(outputFor(context, node));
             break;
@@ -300,10 +315,6 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
 
         case AstNodeKind::While:
             SWAG_CHECK(outputWhile(context, node));
-            break;
-
-        case AstNodeKind::CompilerSpecialValue:
-            SWAG_CHECK(outputCompilerSpecialValue(context, node));
             break;
 
         case AstNodeKind::TypeAlias:
@@ -348,15 +359,6 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
                 concat->addBlank();
                 SWAG_CHECK(outputNode(context, node->firstChild()));
             }
-            break;
-
-        case AstNodeKind::CompilerInclude:
-        case AstNodeKind::CompilerDefined:
-        case AstNodeKind::CompilerLocation:
-            concat->addString(node->token.text);
-            concat->addChar('(');
-            SWAG_CHECK(outputNode(context, node->firstChild()));
-            concat->addChar(')');
             break;
 
         case AstNodeKind::IntrinsicProp:
@@ -490,13 +492,6 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
         case AstNodeKind::TypeLambda:
         case AstNodeKind::TypeClosure:
             SWAG_CHECK(outputTypeLambda(context, node));
-            break;
-
-        case AstNodeKind::CompilerDependencies:
-            concat->addString("#dependencies");
-            concat->addEol();
-            SWAG_CHECK(outputChildrenEol(context, node));
-            forceEOL = true;
             break;
 
         case AstNodeKind::Impl:
