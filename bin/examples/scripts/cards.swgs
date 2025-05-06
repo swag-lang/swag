@@ -2,7 +2,7 @@
 #dependencies
 {
     // Here you can add your external dependencies
-    #import("gui", location="swag@std")
+    #import("gui", location: "swag@std")
 }
 
 using Core, Gui, Pixel

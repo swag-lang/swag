@@ -4,7 +4,7 @@
 #dependencies
 {
     // Here you can add your external dependencies
-    #import("core", location="swag@std")
+    #import("core", location: "swag@std")
 }
 
 using Core

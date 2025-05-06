@@ -874,7 +874,7 @@ bool Parser::doCompilerImport(AstNode* parent)
             SWAG_CHECK(eatToken());
             SWAG_VERIFY(tokenParse.token.is(g_LangSpec->name_location), context->report({sourceFile, tokenParse, toErr(Err0785)}));
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(eatToken(TokenId::SymEqual, "to specify the location"));
+            SWAG_CHECK(eatToken(TokenId::SymColon, "to specify the location"));
             SWAG_VERIFY(node->tokenLocation.text.empty(), error(tokenParse, toErr(Err0714)));
             SWAG_VERIFY(tokenParse.is(TokenId::LiteralString), error(tokenParse, toErr(Err0769)));
             node->tokenLocation = tokenParse.token;
@@ -885,7 +885,7 @@ bool Parser::doCompilerImport(AstNode* parent)
                 SWAG_CHECK(eatToken());
                 SWAG_VERIFY(tokenParse.token.is(g_LangSpec->name_location), context->report({sourceFile, tokenParse, toErr(Err0773)}));
                 SWAG_CHECK(eatToken());
-                SWAG_CHECK(eatToken(TokenId::SymEqual, "to specify the version"));
+                SWAG_CHECK(eatToken(TokenId::SymColon, "to specify the version"));
                 SWAG_VERIFY(node->tokenVersion.text.empty(), error(tokenParse, toErr(Err0716)));
                 SWAG_VERIFY(tokenParse.is(TokenId::LiteralString), error(tokenParse, toErr(Err0770)));
                 node->tokenVersion = tokenParse.token;

@@ -258,8 +258,7 @@ bool FormatAst::outputCompilerImport(FormatContext&, AstNode* node) const
         concat->addChar(',');
         concat->addBlank();        
         concat->addString("location");
-        concat->addBlank();
-        concat->addChar('=');
+        concat->addChar(':');
         concat->addBlank();
         concat->addChar('"');
         concat->addString(decl->tokenLocation.text);
@@ -270,8 +269,7 @@ bool FormatAst::outputCompilerImport(FormatContext&, AstNode* node) const
             concat->addChar(',');
             concat->addBlank();
             concat->addString("version");
-            concat->addBlank();
-            concat->addChar('=');
+            concat->addChar(':');
             concat->addBlank();
             concat->addChar('"');
             concat->addString(decl->tokenVersion.text);

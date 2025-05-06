@@ -33,10 +33,10 @@ So in our case, we need to import the module 'gui'. This module is used to creat
 {
     // The location "swag@std" tells swag that 'gui' is a standard module that is located
     // with the compiler.
-    #import("gui", location="swag@std")
+    #import("gui", location: "swag@std")
 
     // Import the audio module, from the same default location
-    #import("audio", location="swag@std")
+    #import("audio", location: "swag@std")
 
     // This is the optional '#run' block executed by the compiler before compiling the script itself.
     // We define it just to make the point because Flappy does not really need one.

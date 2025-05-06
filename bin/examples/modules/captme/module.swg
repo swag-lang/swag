@@ -2,7 +2,7 @@
 
 #dependencies
 {
-    #import("gui", location="swag@std")
+    #import("gui", location: "swag@std")
 
     #run
     {
