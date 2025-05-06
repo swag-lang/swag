@@ -3,7 +3,7 @@
 
 #dependencies
 {
-    #import "gui" location="swag@std"
+    #import("gui", location="swag@std")
 }
 
 using Core, Gui, Pixel
@@ -75,7 +75,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
         compute()
         return true
 
-    case PaintEvent as paintEvt:        
+    case PaintEvent as paintEvt:
         let painter  = paintEvt.bc.painter
         let renderer = paintEvt.bc.renderer
         renderer.updateTexture(g_Texture, g_Image.pixels.buffer)

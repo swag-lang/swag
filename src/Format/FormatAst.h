@@ -137,7 +137,7 @@ struct FormatAst
     bool outputCompilerIf(FormatContext& context, const Utf8& name, AstNode* node);
     bool outputCompilerConstraints(FormatContext& context, const VectorNative<AstNode*>& constraints);
     bool outputCompilerExpr(FormatContext& context, const AstNode* node);
-    bool outputCompilerExport(FormatContext& context, AstNode* node) const;
+    bool outputCompilerImport(FormatContext& context, AstNode* node) const;
     bool outputCompilerCode(FormatContext& context, AstNode* node);
     bool outputCompilerGlobal(FormatContext& context, const AstNode* node);
     bool outputCompilerInject(FormatContext& context, AstNode* node);

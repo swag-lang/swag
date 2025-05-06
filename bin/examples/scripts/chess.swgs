@@ -1,7 +1,7 @@
 // Swag script file
 #dependencies
 {
-    #import "gui" location="swag@std"
+    #import("gui", location="swag@std")
 }
 
 using Core, Gui, Pixel

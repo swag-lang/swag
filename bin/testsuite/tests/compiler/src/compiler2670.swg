@@ -1,2 +1,2 @@
 #global testerror "Err0304"
-#import "test_foreign"
+#import("test_foreign")

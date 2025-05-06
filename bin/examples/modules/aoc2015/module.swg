@@ -1,6 +1,6 @@
 #dependencies
 {
-    #import "core" location="swag@std"
+    #import("core", location="swag@std")
 
     #run
     {

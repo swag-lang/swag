@@ -6,8 +6,8 @@
 {
     #if #os == Swag.TargetOs.Windows
     {
-        #import "win32"
-        #import "xinput"
+        #import("win32")
+        #import("xinput")
     }
 
     #run

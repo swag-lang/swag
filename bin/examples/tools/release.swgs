@@ -2,7 +2,7 @@ using Core
 
 #dependencies
 {
-    #import "core" location="swag@std"
+    #import("core", location="swag@std")
 }
 
 func filter(file: File.FileInfo)->bool

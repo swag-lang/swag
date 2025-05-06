@@ -4,7 +4,7 @@
 #dependencies
 {
     // Here you can add your external dependencies
-    #import "core" location="swag@std"
+    #import("core", location="swag@std")
 }
 
 using Core
@@ -38,7 +38,7 @@ func replace(dst, src: string, inSwg, inCpp: &s32)
             if f.newContent[idx..idx+6] != dst[..6]
             {
                 Console.printf("% => % %\n", f.content[idx..idx+6], dst, f.name)
-                for i in 7: 
+                for i in 7:
                     f.newContent[idx+i] = dst[i]
                 f.changed = true
             }
@@ -74,11 +74,11 @@ func addFiles(folder: string, extension: string)
     foreach l in lines
     {
         l = Latin1.trim(l)
-        if !l.startsWith("SWAG_ERROR("): 
+        if !l.startsWith("SWAG_ERROR("):
             continue
         let what = l[11..13]
 
-        if what != "Err": 
+        if what != "Err":
             continue
 
         ids.findOrAdd(what).value += 1

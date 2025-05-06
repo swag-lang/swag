@@ -1,7 +1,7 @@
 #dependencies
 {
-    #import "core"
-    #import "libc"
+    #import("core")
+    #import("libc")
 
     #run
     {

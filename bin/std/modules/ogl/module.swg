@@ -1,9 +1,9 @@
 #dependencies
 {
-    #import "core"
+    #import("core")
     #if #os == Swag.TargetOs.Windows
     {
-        #import "gdi32"
+        #import("gdi32")
     }
 
     #run

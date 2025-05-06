@@ -302,9 +302,10 @@ JobResult Backend::generateExportFile(Job* ownerJob)
 
         for (const auto& dep : module->moduleDependencies)
         {
-            bufferSwg.addString("#import \"");
+            bufferSwg.addString("#import(\"");
             bufferSwg.addString(dep->name);
             bufferSwg.addChar('"');
+            bufferSwg.addChar(')');
             bufferSwg.addEol();
         }
 

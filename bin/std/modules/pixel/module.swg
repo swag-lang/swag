@@ -1,8 +1,8 @@
 #dependencies
 {
-    #import "core"
-    #import "ogl"
-    #import "freetype"
+    #import("core")
+    #import("ogl")
+    #import("freetype")
 
     #run
     {

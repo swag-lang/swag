@@ -1,6 +1,6 @@
 #dependencies
 {
-    #import "test_foreign"
+    #import("test_foreign")
 
     #run
     {

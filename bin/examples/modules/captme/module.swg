@@ -2,7 +2,7 @@
 
 #dependencies
 {
-    #import "gui" location="swag@std"
+    #import("gui", location="swag@std")
 
     #run
     {
@@ -20,5 +20,5 @@
 {
     let itf = @compiler()
     let cfg = itf.getBuildCfg()
-    cfg.resIcoFileName = Path.getDirectoryName(#file) ++ "/src/datas/appicon.ico"   
+    cfg.resIcoFileName = Path.getDirectoryName(#file) ++ "/src/datas/appicon.ico"
 }

@@ -2,7 +2,7 @@
 
 #dependencies
 {
-    #import "win32"
+    #import("win32")
 
     #run
     {

@@ -1,6 +1,6 @@
 #dependencies
 {
-    #import "audio"
+    #import("audio")
 
     #run
     {

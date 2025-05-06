@@ -6,8 +6,8 @@
 
 #dependencies
 {
-    #import "gui" location="swag@std"
-    #import "audio" location="swag@std"
+    #import("gui", location="swag@std")
+    #import("audio", location="swag@std")
 }
 
 using Gui, Core, Pixel
@@ -327,7 +327,7 @@ func loadBindTextures()
     g_DataPath = Path.combine(g_DataPath, "datas")
     g_DataPath = Path.combine(g_DataPath, "invaders")
 
-    assume 
+    assume
     {
         g_ExtraImg  = loadAndBindTexture("extra.png")
         g_RedImg    = loadAndBindTexture("red.png")
@@ -339,7 +339,7 @@ func loadBindTextures()
         g_SoundExplosion = loadSound("explosion.wav")
         g_SoundLaser     = loadSound("laser.wav")
         g_SoundMusic     = loadSound("music.wav")
-    
+
         g_Font = Font.create(Path.combine(g_DataPath, "pixeled.ttf"), 40)
     }
 }

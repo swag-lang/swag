@@ -2,7 +2,7 @@
 
 #dependencies
 {
-    #import "pixel"
+    #import("pixel")
 
     #run
     {

@@ -1,7 +1,7 @@
 #dependencies
 {
-    #import "core" location="swag@std"
-    #import "ogl" location="swag@std"
+    #import("core", location="swag@std")
+    #import("ogl", location="swag@std")
 
     #run
     {

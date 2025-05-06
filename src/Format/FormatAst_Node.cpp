@@ -80,7 +80,7 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             break;
 
         case AstNodeKind::CompilerImport:
-            SWAG_CHECK(outputCompilerExport(context, node));
+            SWAG_CHECK(outputCompilerImport(context, node));
             break;
 
         case AstNodeKind::CompilerCode:

@@ -244,35 +244,42 @@ bool FormatAst::outputCompilerExpr(FormatContext& context, const AstNode* node)
     return true;
 }
 
-bool FormatAst::outputCompilerExport(FormatContext&, AstNode* node) const
+bool FormatAst::outputCompilerImport(FormatContext&, AstNode* node) const
 {
     const auto decl = castAst<AstCompilerImport>(node, AstNodeKind::CompilerImport);
     concat->addString("#import");
-    concat->addBlank();
+    concat->addChar('(');
     concat->addChar('"');
     concat->addString(node->token.text);
     concat->addChar('"');
 
     if (!decl->tokenLocation.text.empty())
     {
-        concat->addBlank();
+        concat->addChar(',');
+        concat->addBlank();        
         concat->addString("location");
+        concat->addBlank();
         concat->addChar('=');
+        concat->addBlank();
         concat->addChar('"');
         concat->addString(decl->tokenLocation.text);
         concat->addChar('"');
+
+        if (!decl->tokenVersion.text.empty())
+        {
+            concat->addChar(',');
+            concat->addBlank();
+            concat->addString("version");
+            concat->addBlank();
+            concat->addChar('=');
+            concat->addBlank();
+            concat->addChar('"');
+            concat->addString(decl->tokenVersion.text);
+            concat->addChar('"');
+        }
     }
 
-    if (!decl->tokenVersion.text.empty())
-    {
-        concat->addBlank();
-        concat->addString("version");
-        concat->addChar('=');
-        concat->addChar('"');
-        concat->addString(decl->tokenVersion.text);
-        concat->addChar('"');
-    }
-
+    concat->addChar(')');
     concat->addEol();
     return true;
 }

@@ -1,4 +1,4 @@
-/*#import "icu"
+/*#import("icu")
 
 //#[Swag.PrintBc]
 #test

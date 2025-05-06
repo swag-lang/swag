@@ -933,8 +933,8 @@ void initErrors()
 
     SWAG_ERROR(Err0428, "type mismatch assign                              $ cannot initialize a struct member with a function pointer                                                                                $ ");
     SWAG_ERROR(Err0353, "file patch error                                  $ failed to patch icon in file [[%s]] : %s                                                                                                 $ ");
-    SWAG_ERROR(Err0785, nullptr);
-    SWAG_ERROR(Err0773, nullptr);
+    SWAG_ERROR(Err0785, "missing [[#import]] location                      $ expected the location as the second argument of [[#import]], found $$TKN$$ instead                                                       $ the second argument should be [[location=\"location\"]])");
+    SWAG_ERROR(Err0773, "missing [[#import]] version                       $ expected the version as the third argument of [[#import]], found $$TKN$$ instead                                                         $ the third argument should be [[version=\"version\"]])");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

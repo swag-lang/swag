@@ -29,9 +29,9 @@ voice.play(Loop)
 
 #dependencies
 {
-    #import "core"
+    #import("core")
     #if #os == Swag.TargetOs.Windows:
-        #import "xaudio2"
+        #import("xaudio2")
 
     #run
     {

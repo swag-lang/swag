@@ -1,6 +1,6 @@
 #dependencies
 {
-    #import "core"
+    #import("core")
 
     #run
     {

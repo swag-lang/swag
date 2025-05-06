@@ -856,6 +856,9 @@ bool Parser::doCompilerImport(AstNode* parent)
 
     const auto node = Ast::newNode<AstCompilerImport>(AstNodeKind::CompilerImport, this, parent);
     SWAG_CHECK(eatToken());
+
+    const auto startLoc = tokenParse.token.startLocation;
+    SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, toErr(Err0425)));
     SWAG_VERIFY(tokenParse.is(TokenId::LiteralString), context->report({sourceFile, tokenParse, toErr(Err0755)}));
     node->inheritTokenName(tokenParse.token);
     node->inheritTokenLocation(tokenParse.token);
@@ -866,35 +869,34 @@ bool Parser::doCompilerImport(AstNode* parent)
         sourceFile->hasFlag(FILE_SCRIPT) ||
         sourceFile->acceptsInternalStuff())
     {
-        while (true)
+        if (tokenParse.token.is(TokenId::SymComma))
         {
-            if (tokenParse.token.is(g_LangSpec->name_location))
-            {
-                SWAG_CHECK(eatToken());
-                SWAG_CHECK(eatToken(TokenId::SymEqual, "to specify the location"));
-                SWAG_VERIFY(node->tokenLocation.text.empty(), error(tokenParse, toErr(Err0714)));
-                SWAG_VERIFY(tokenParse.is(TokenId::LiteralString), error(tokenParse, toErr(Err0769)));
-                node->tokenLocation = tokenParse.token;
-                SWAG_CHECK(eatToken());
-                continue;
-            }
+            SWAG_CHECK(eatToken());
+            SWAG_VERIFY(tokenParse.token.is(g_LangSpec->name_location), context->report({sourceFile, tokenParse, toErr(Err0785)}));
+            SWAG_CHECK(eatToken());
+            SWAG_CHECK(eatToken(TokenId::SymEqual, "to specify the location"));
+            SWAG_VERIFY(node->tokenLocation.text.empty(), error(tokenParse, toErr(Err0714)));
+            SWAG_VERIFY(tokenParse.is(TokenId::LiteralString), error(tokenParse, toErr(Err0769)));
+            node->tokenLocation = tokenParse.token;
+            SWAG_CHECK(eatToken());
 
-            if (tokenParse.token.is(g_LangSpec->name_version))
+            if (tokenParse.token.is(TokenId::SymComma))
             {
+                SWAG_CHECK(eatToken());
+                SWAG_VERIFY(tokenParse.token.is(g_LangSpec->name_location), context->report({sourceFile, tokenParse, toErr(Err0773)}));
                 SWAG_CHECK(eatToken());
                 SWAG_CHECK(eatToken(TokenId::SymEqual, "to specify the version"));
                 SWAG_VERIFY(node->tokenVersion.text.empty(), error(tokenParse, toErr(Err0716)));
                 SWAG_VERIFY(tokenParse.is(TokenId::LiteralString), error(tokenParse, toErr(Err0770)));
                 node->tokenVersion = tokenParse.token;
                 SWAG_CHECK(eatToken());
-                continue;
             }
-
-            break;
         }
     }
 
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
     SWAG_CHECK(eatSemiCol("[[#import]] expression"));
+
     if (sourceFile->hasFlag(FILE_GENERATED) || sourceFile->module->is(ModuleKind::Config))
     {
         if (node->hasOwnerCompilerIfBlock())
