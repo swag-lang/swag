@@ -236,6 +236,40 @@ bool Parser::doCompilerAssert(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool Parser::doCompilerPrint(AstNode* parent, AstNode** result)
+{
+    const auto node = Ast::newNode<AstNode>(AstNodeKind::CompilerPrint, this, parent);
+    *result         = node;
+    node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
+    node->allocateExtension(ExtensionKind::Semantic);
+    node->extSemantic()->semanticBeforeFct = Semantic::preResolveCompilerInstruction;
+    node->semanticFct                      = Semantic::resolveCompilerPrint;
+    node->token                            = tokenParse.token;
+    SWAG_CHECK(eatToken());
+
+    const auto startLoc = tokenParse.token.startLocation;
+    SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, toErr(Err0425)));
+    SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
+    SWAG_CHECK(eatSemiCol("[[#print]] expression"));
+    return true;
+}
+
+bool Parser::doCompilerForeignLib(AstNode* parent, AstNode** result)
+{
+    const auto node   = Ast::newNode<AstNode>(AstNodeKind::CompilerForeignLib, this, parent);
+    *result           = node;
+    node->semanticFct = Semantic::resolveCompilerForeignLib;
+
+    SWAG_CHECK(eatToken());
+    SWAG_VERIFY(tokenParse.is(TokenId::LiteralString), error(tokenParse, toErr(Err0415)));
+
+    AstNode* literal;
+    SWAG_CHECK(doLiteral(node, &literal));
+    SWAG_CHECK(eatSemiCol("[[#foreignlib]]"));
+    return true;
+}
+
 bool Parser::doCompilerError(AstNode* parent, AstNode** result)
 {
     const auto node = Ast::newNode<AstNode>(AstNodeKind::CompilerError, this, parent);
@@ -360,37 +394,6 @@ bool Parser::doCompilerRunEmbedded(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatSemiCol("[[#run]] expression"));
     }
 
-    return true;
-}
-
-bool Parser::doCompilerPrint(AstNode* parent, AstNode** result)
-{
-    const auto node = Ast::newNode<AstNode>(AstNodeKind::CompilerPrint, this, parent);
-    *result         = node;
-    node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
-    node->allocateExtension(ExtensionKind::Semantic);
-    node->extSemantic()->semanticBeforeFct = Semantic::preResolveCompilerInstruction;
-    node->semanticFct                      = Semantic::resolveCompilerPrint;
-    node->token                            = tokenParse.token;
-    SWAG_CHECK(eatToken());
-
-    SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
-    SWAG_CHECK(eatSemiCol("[[#print]] expression"));
-    return true;
-}
-
-bool Parser::doCompilerForeignLib(AstNode* parent, AstNode** result)
-{
-    const auto node   = Ast::newNode<AstNode>(AstNodeKind::CompilerForeignLib, this, parent);
-    *result           = node;
-    node->semanticFct = Semantic::resolveCompilerForeignLib;
-
-    SWAG_CHECK(eatToken());
-    SWAG_VERIFY(tokenParse.is(TokenId::LiteralString), error(tokenParse, toErr(Err0415)));
-
-    AstNode* literal;
-    SWAG_CHECK(doLiteral(node, &literal));
-    SWAG_CHECK(eatSemiCol("[[#foreignlib]]"));
     return true;
 }
 

@@ -6,7 +6,7 @@ func(T) create(data: *T)
     }
 
     #assert(#typeof(Inner.outer) == Outer)
-    //#print #typeof(Inner.outer).name
+    //#print(#typeof(Inner.outer).name)
 }
 
 struct Outer

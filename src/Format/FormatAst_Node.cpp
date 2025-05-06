@@ -282,11 +282,6 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             break;
 
         case AstNodeKind::CompilerPrint:
-            concat->addString("#print");
-            concat->addBlank();
-            SWAG_CHECK(outputNode(context, node->firstChild()));
-            break;
-
         case AstNodeKind::CompilerError:
         case AstNodeKind::CompilerWarning:
         case AstNodeKind::CompilerAssert:

@@ -9,7 +9,7 @@ struct String1981
 
 func(T) titi(x: const &T)
 {
-    //#print #typeof(T).name
+    //#print(#typeof(T).name)
     #assert(#typeof(T).kind == Swag.TypeInfoKind.Struct)
 }
 

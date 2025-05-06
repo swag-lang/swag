@@ -9,7 +9,7 @@ func(T) checker()
 //#[Swag.PrintBc]
 func(T) toto()
 {
-    //#print "toto"
+    //#print("toto")
     #run
     {
         checker'T()

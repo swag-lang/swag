@@ -11,7 +11,7 @@ impl A
     {
         @assert(x == 666)
         //#assert(T == *s32)
-        #print T
+        #print(T)
     }*/
 
     mtd toto()
