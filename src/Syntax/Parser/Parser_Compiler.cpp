@@ -768,10 +768,8 @@ bool Parser::doCompilerInclude(AstNode* parent, AstNode** result)
 
     const auto startLoc = tokenParse.token.startLocation;
     SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, toErr(Err0425)));
-
     ParserPushAstNodeFlags sc(this, AST_SILENT_CHECK);
     SWAG_CHECK(doExpression(exprNode, EXPR_FLAG_NONE, &dummyResult));
-
     SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
 
     exprNode->semanticFct = Semantic::resolveCompilerInclude;
@@ -817,12 +815,17 @@ bool Parser::doCompilerLoad(AstNode* parent)
 
     const auto node = Ast::newNode<AstNode>(AstNodeKind::CompilerLoad, this, parent);
     SWAG_CHECK(eatToken());
+
+    const auto startLoc = tokenParse.token.startLocation;
+    SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, toErr(Err0425)));
     SWAG_VERIFY(tokenParse.is(TokenId::LiteralString), context->report({sourceFile, tokenParse, toErr(Err0756)}));
     node->inheritTokenName(tokenParse.token);
     node->inheritTokenLocation(tokenParse.token);
     SWAG_CHECK(eatToken());
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
 
     SWAG_CHECK(eatSemiCol("[[#load]] expression"));
+
     if (sourceFile->module->is(ModuleKind::Config))
     {
         if (node->hasOwnerCompilerIfBlock())

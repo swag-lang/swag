@@ -63,6 +63,7 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
         case AstNodeKind::CompilerWarning:
         case AstNodeKind::CompilerAssert:
         case AstNodeKind::CompilerForeignLib:
+        case AstNodeKind::CompilerLoad:
             concat->addString(node->token.text);
             concat->addChar('(');
             SWAG_CHECK(outputNode(context, node->firstChild()));
@@ -80,12 +81,6 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
 
         case AstNodeKind::CompilerImport:
             SWAG_CHECK(outputCompilerExport(context, node));
-            break;
-
-        case AstNodeKind::CompilerLoad:
-            concat->addString("#load");
-            concat->addBlank();
-            SWAG_CHECK(outputChildrenBlank(context, node));
             break;
 
         case AstNodeKind::CompilerCode:
