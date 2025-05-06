@@ -78,6 +78,7 @@ Utf8 Diagnostic::preprocess(const Utf8& textMsg)
     addArticle(replace, "with", "a", "an");
     addArticle(replace, "or", "a", "an");
     addArticle(replace, "and", "a", "an");
+    addArticle(replace, "missing", "a", "an");
 
     addArticle(replace, "after", "the", "the");
     addArticle(replace, "before", "the", "the");
