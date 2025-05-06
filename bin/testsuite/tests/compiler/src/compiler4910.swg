@@ -1,3 +1,3 @@
 #global testerror "Err0421"
 
-#placeholder 0
+#placeholder(0)

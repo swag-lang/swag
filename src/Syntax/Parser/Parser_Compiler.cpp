@@ -232,7 +232,7 @@ bool Parser::doCompilerAssert(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, toErr(Err0425)));
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
     SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
-    SWAG_CHECK(eatSemiCol("[[#assert]] expression"));
+    SWAG_CHECK(eatSemiCol("[[#assert]] directive"));
     return true;
 }
 
@@ -251,7 +251,7 @@ bool Parser::doCompilerPrint(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, toErr(Err0425)));
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
     SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
-    SWAG_CHECK(eatSemiCol("[[#print]] expression"));
+    SWAG_CHECK(eatSemiCol("[[#print]] directive"));
     return true;
 }
 
@@ -268,7 +268,7 @@ bool Parser::doCompilerForeignLib(AstNode* parent, AstNode** result)
     AstNode* literal;
     SWAG_CHECK(doLiteral(node, &literal));
     SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
-    SWAG_CHECK(eatSemiCol("[[#foreignlib]]"));
+    SWAG_CHECK(eatSemiCol("[[#foreignlib]] directive"));
     return true;
 }
 
@@ -287,7 +287,7 @@ bool Parser::doCompilerError(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, toErr(Err0425)));
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
     SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
-    SWAG_CHECK(eatSemiCol("[[#error]] expression"));
+    SWAG_CHECK(eatSemiCol("[[#error]] directive"));
     return true;
 }
 
@@ -306,7 +306,7 @@ bool Parser::doCompilerWarning(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, toErr(Err0425)));
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
     SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
-    SWAG_CHECK(eatSemiCol("[[#warning]] expression"));
+    SWAG_CHECK(eatSemiCol("[[#warning]] directive"));
     return true;
 }
 
@@ -363,7 +363,7 @@ bool Parser::doCompilerRunTopLevel(AstNode* parent, AstNode** result)
     node->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
     node->semanticFct = Semantic::resolveCompilerRun;
     SWAG_CHECK(doEmbeddedInstruction(node, &dummyResult));
-    SWAG_CHECK(eatSemiCol("[[#run]] statement"));
+    SWAG_CHECK(eatSemiCol("[[#run]] directive"));
     return true;
 }
 
@@ -824,7 +824,7 @@ bool Parser::doCompilerLoad(AstNode* parent)
     SWAG_CHECK(eatToken());
     SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
 
-    SWAG_CHECK(eatSemiCol("[[#load]] expression"));
+    SWAG_CHECK(eatSemiCol("[[#load]] directive"));
 
     if (sourceFile->module->is(ModuleKind::Config))
     {
@@ -895,7 +895,7 @@ bool Parser::doCompilerImport(AstNode* parent)
     }
 
     SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
-    SWAG_CHECK(eatSemiCol("[[#import]] expression"));
+    SWAG_CHECK(eatSemiCol("[[#import]] directive"));
 
     if (sourceFile->hasFlag(FILE_GENERATED) || sourceFile->module->is(ModuleKind::Config))
     {
@@ -911,12 +911,16 @@ bool Parser::doCompilerPlaceHolder(AstNode* parent)
 {
     const auto node = Ast::newNode<AstNode>(AstNodeKind::CompilerPlaceHolder, this, parent);
     SWAG_CHECK(eatToken());
+
+    const auto startLoc = tokenParse.token.startLocation;
+    SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, toErr(Err0425)));
     SWAG_VERIFY(tokenParse.is(TokenId::Identifier), error(tokenParse, toErr(Err0421)));
     node->inheritTokenName(tokenParse.token);
     node->inheritTokenLocation(tokenParse.token);
     SWAG_CHECK(eatToken());
-    SWAG_CHECK(eatFormat(node));
-    SWAG_CHECK(eatSemiCol("[[#placeholder]] expression"));
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
+    SWAG_CHECK(eatSemiCol("[[#placeholder]] directive"));
+
     currentScope->symTable.registerSymbolName(context, node, SymbolKind::PlaceHolder);
     return true;
 }

@@ -35,7 +35,7 @@ var toTreatCpt: u32
     }
 }
 
-#placeholder GG
+#placeholder(GG)
 
 #message(CompilerMsgMask.PassAfterSemantic)
 {

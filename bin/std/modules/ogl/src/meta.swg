@@ -48,7 +48,7 @@ func getSig(typeFunc: const *Swag.TypeInfoFunc, namedArgs: bool)->String
     return result
 }
 
-#placeholder glInitExtensions
+#placeholder(glInitExtensions)
 #message(CompilerMsgMask.PassAfterSemantic)
 {
     var builderVars: StringBuilder

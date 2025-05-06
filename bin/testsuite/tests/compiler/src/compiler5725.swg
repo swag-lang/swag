@@ -2,5 +2,5 @@
 
 #test
 {
-    #placeholder A
+    #placeholder(A)
 }

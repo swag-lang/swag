@@ -7,8 +7,8 @@ func mkVar(name: string, value: s32)
     }
 }
 
-//#placeholder titi
-//#placeholder tata
+//#placeholder(titi)
+//#placeholder(tata)
 
 #test
 {

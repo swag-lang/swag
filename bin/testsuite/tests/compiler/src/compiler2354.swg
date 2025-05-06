@@ -8,4 +8,4 @@ func mkVar(name: string, value: s32)
 
 mkVar("titi", 555)
 
-#placeholder titi
+#placeholder(titi)

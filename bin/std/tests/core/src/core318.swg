@@ -10,6 +10,6 @@ func GEN()->String
 
 #ast cast(string) GEN()
 
-#placeholder X
+#placeholder(X)
 const Y = X
 #assert(Y == 555)

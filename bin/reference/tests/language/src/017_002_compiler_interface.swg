@@ -1,23 +1,23 @@
 /**
-The `compileString()` function within the `@compiler()` interface is another method to compile 
-generated code. This function should be invoked at compile time, typically within a `#message` 
+The `compileString()` function within the `@compiler()` interface is another method to compile
+generated code. This function should be invoked at compile time, typically within a `#message`
 call.
- 
-Below is an example from the `Std.Ogl` module (an OpenGL wrapper), which utilizes `#message` to 
-identify functions annotated with a specific user attribute, `Ogl.Extension`, and subsequently 
+
+Below is an example from the `Std.Ogl` module (an OpenGL wrapper), which utilizes `#message` to
+identify functions annotated with a specific user attribute, `Ogl.Extension`, and subsequently
 generates code for each identified function.
 */
 
 /**
 First, we define a new attribute that can be associated with functions.
- 
+
 ```swag
 #[AttrUsage(AttributeUsage.Function)]
 attr Extension()
 ```
- 
+
 Example of applying the custom attribute to OpenGL functions.
- 
+
 ```swag
 #[Extension, Swag.PlaceHolder]
 {
@@ -33,7 +33,7 @@ Example of applying the custom attribute to OpenGL functions.
 
 /**
 The following will be used to track the functions with that specific attribute.
- 
+
 ```swag
 struct OneFunc
 {
@@ -48,7 +48,7 @@ var g_Functions: Array'OneFunc
 
 /**
 This `#message` will be called for each function of the `Ogl` module.
- 
+
 ```swag
 #message(CompilerMsgMask.SemFunctions)
 {
@@ -67,16 +67,16 @@ This `#message` will be called for each function of the `Ogl` module.
 
 /**
 We will generate a `glInitExtensions` global function, so we register it as a placeholder.
- 
+
 ```swag
-#placeholder glInitExtensions
+#placeholder(glInitExtensions)
 ```
 */
 
 /**
-This code is called once all functions of the module have been typed, and it handles the main 
+This code is called once all functions of the module have been typed, and it handles the main
 code generation process.
- 
+
 ```swag
 #message(CompilerMsgMask.PassAfterSemantic)
 {
@@ -116,7 +116,7 @@ code generation process.
         builderVars.appendString(");\n}\n\n")
 
         // Initialize the variable with the getExtensionAddress
-        builderInit.appendFormat("\text_% = cast(%) getExtensionAddress(@dataof(\"%\"))\n", 
+        builderInit.appendFormat("\text_% = cast(%) getExtensionAddress(@dataof(\"%\"))\n",
                                  e.name, typeFunc.name, e.name);
     }
 
