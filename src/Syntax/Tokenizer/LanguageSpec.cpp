@@ -596,6 +596,7 @@ void LanguageSpec::setupAttributesFlags()
 void LanguageSpec::setupIntrinsicConstants()
 {
     intrinsicConstants.insert("@err");
+    intrinsicConstants.insert("@args");
 }
 
 void LanguageSpec::setup()

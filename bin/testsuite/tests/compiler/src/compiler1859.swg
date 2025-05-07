@@ -112,8 +112,8 @@ func aaa(ptr: *s64)
             var ptr = @getcontext()
         }
 
-        /*print(cast(s64) @countof(@args()))
-        print(@args()[0])
+        /*print(cast(s64) @countof(@args))
+        print(@args[0])
         print("\n")*/
 
         {

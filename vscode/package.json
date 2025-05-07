@@ -2,7 +2,7 @@
   "name": "swag",
   "displayName": "Swag",
   "description": "Language support for the Swag programming language",
-  "version": "0.0.111",
+  "version": "0.0.112",
   "publisher": "swag-lang",
   "icon": "images/swag_icon.png",
   "license": "MIT",

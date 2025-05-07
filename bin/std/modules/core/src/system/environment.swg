@@ -2,12 +2,12 @@
 #global namespace Env
 
 // Get the program command line arguments as a [..] string
-func getArgs()->const [..] string => @args()
+func getArgs()->const [..] string => @args
 
 // Get a given argument, or null
 func getArg(idx: u32)->#null string
 {
-    let args = @args()
+    let args = @args
     if idx >= @countof(args):
         return null
     return args[idx]
@@ -16,13 +16,13 @@ func getArg(idx: u32)->#null string
 // Get a given argument, or null
 func hasArg(arg: string)->bool
 {
-    return Slice.contains(@args(), arg)
+    return Slice.contains(@args, arg)
 }
 
 // Get current executable
 func getExe()->string
 {
-    let args = @args()
+    let args = @args
     if @countof(args) == 0:
         return ""
     return args[0]

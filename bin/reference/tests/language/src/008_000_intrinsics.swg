@@ -21,7 +21,7 @@ func @setcontext(context: const *Swag.Context);  // Sets the current execution c
 func @isbytecode() -> bool;                      // Checks if the code is being executed as bytecode.
 func @compiler() -> Swag.ICompiler;              // Retrieves the current compiler interface.
 
-func @args() -> const [..] string;               // Returns the command-line arguments passed to the program.
+func @args -> const [..] string;               // Returns the command-line arguments passed to the program.
 @panic()                                         // Triggers a panic, stopping program execution.
 @compilererror()                                 // Generates a compile-time error.
 @compilerwarning()                               // Generates a compile-time warning.

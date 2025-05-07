@@ -1001,7 +1001,7 @@ void initErrors()
     SWAG_ERROR(Nte0060, "consider using [[var]] or [[const]] instead of [[let]] to declare a global variable or constant");
     SWAG_ERROR(Nte0061, "consider using [[where <expression>]] after this to replace the [[if]] statement");
     SWAG_ERROR(Nte0062, "consider using square brackets [[%s[%s]]] to access an element by index");
-    SWAG_ERROR(Nte0063, "consider using the [[@args()]] intrinsic to retrieve the program arguments");
+    SWAG_ERROR(Nte0063, "consider using the [[@args]] intrinsic value to retrieve the program arguments");
     SWAG_ERROR(Nte0064, "consider using the full name of the enum value");
     SWAG_ERROR(Nte0065, "consider using the syntax [[func %s(...) -> %s]] to declare a function with a return type");
     SWAG_ERROR(Nte0066, "consider using the syntax [[var %s: %s]] to declare a variable");
