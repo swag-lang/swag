@@ -72,6 +72,7 @@ func __catchErr()
 }
 
 // Returns the current raised error, or null if none
+#[Swag.Inline]
 func @err()->any
 {
     let cxt = @getcontext()
