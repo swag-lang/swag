@@ -97,9 +97,6 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
         case AstNodeKind::Index:
             concat->addString("@index");
             break;
-        case AstNodeKind::GetErr:
-            concat->addString("@err");
-            break;
 
         case AstNodeKind::MoveRef:
             concat->addString("moveref");

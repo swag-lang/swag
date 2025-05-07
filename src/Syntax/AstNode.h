@@ -181,7 +181,6 @@ enum class AstNodeKind : uint8_t
     FuncDeclParam,
     FuncDeclParams,
     FuncDeclType,
-    GetErr,
     Identifier,
     IdentifierRef,
     If,
