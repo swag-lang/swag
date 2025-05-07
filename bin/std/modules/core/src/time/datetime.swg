@@ -109,7 +109,7 @@ impl DateTime
     {
         let m: u32 = (month + 9) % 12
         let y: u32 = year - m / 10
-        var dn = 365 * y + #over y / 4 + #over y / 400 + #over (m * 306 + 5) / 10 + #over day - 1 - #over y / 100
+        var dn = 365 * y + #wrap y / 4 + #wrap y / 400 + #wrap (m * 306 + 5) / 10 + #wrap day - 1 - #wrap y / 100
         dn += 3
         return cast(DayOfWeek) (dn % 7)
     }

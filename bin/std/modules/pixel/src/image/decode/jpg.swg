@@ -616,7 +616,7 @@ impl Decoder
             if (dataPtr[8 * 1] | dataPtr[8 * 2] | dataPtr[8 * 3] | dataPtr[8 * 4] | dataPtr[8 * 5] | dataPtr[8 * 6] | dataPtr[8 * 7]) == 0
             {
                 var dcval = descale(cast(s32) dataPtr[0], Pass1Bits + 3)
-                dcval += #over 128
+                dcval += #wrap 128
                 dcval = Math.clamp(dcval, 0's16, 255's16)
                 let dcval8 = cast(u8) dcval
 
@@ -826,9 +826,9 @@ impl Decoder
                 let cb = s[64 + j]
                 let cr = s[128 + j]
 
-                d[2] = clamp(y + #over crr[cr])
-                d[1] = clamp(y + #over ((crg[cr] + cbg[cb]) >> 16))
-                d[0] = clamp(y + #over cbb[cb])
+                d[2] = clamp(y + #wrap crr[cr])
+                d[1] = clamp(y + #wrap ((crg[cr] + cbg[cb]) >> 16))
+                d[0] = clamp(y + #wrap cbb[cb])
                 d += 3
             }
 
@@ -896,14 +896,14 @@ impl Decoder
                     let bc = cbb[cb]
                     var yy = cast(s32) y[j << 1]
 
-                    d0[2] = clamp(yy + #over rc)
-                    d0[1] = clamp(yy + #over gc)
-                    d0[0] = clamp(yy + #over bc)
+                    d0[2] = clamp(yy + #wrap rc)
+                    d0[1] = clamp(yy + #wrap gc)
+                    d0[0] = clamp(yy + #wrap bc)
 
                     yy    = y[(j << 1) + 1]
-                    d0[5] = clamp(yy + #over rc)
-                    d0[4] = clamp(yy + #over gc)
-                    d0[3] = clamp(yy + #over bc)
+                    d0[5] = clamp(yy + #wrap rc)
+                    d0[4] = clamp(yy + #wrap gc)
+                    d0[3] = clamp(yy + #wrap bc)
 
                     d0 += 6
 
@@ -944,24 +944,24 @@ impl Decoder
                     let bc = cbb[cb]
                     var yy = cast(s32) y[j]
 
-                    d0[2] = clamp(yy + #over rc)
-                    d0[1] = clamp(yy + #over gc)
-                    d0[0] = clamp(yy + #over bc)
+                    d0[2] = clamp(yy + #wrap rc)
+                    d0[1] = clamp(yy + #wrap gc)
+                    d0[0] = clamp(yy + #wrap bc)
 
                     yy    = y[j + 1]
-                    d0[5] = clamp(yy + #over rc)
-                    d0[4] = clamp(yy + #over gc)
-                    d0[3] = clamp(yy + #over bc)
+                    d0[5] = clamp(yy + #wrap rc)
+                    d0[4] = clamp(yy + #wrap gc)
+                    d0[3] = clamp(yy + #wrap bc)
 
                     yy    = y[j + 8]
-                    d1[2] = clamp(yy + #over rc)
-                    d1[1] = clamp(yy + #over gc)
-                    d1[0] = clamp(yy + #over bc)
+                    d1[2] = clamp(yy + #wrap rc)
+                    d1[1] = clamp(yy + #wrap gc)
+                    d1[0] = clamp(yy + #wrap bc)
 
                     yy    = y[j + 8 + 1]
-                    d1[5] = clamp(yy + #over rc)
-                    d1[4] = clamp(yy + #over gc)
-                    d1[3] = clamp(yy + #over bc)
+                    d1[5] = clamp(yy + #wrap rc)
+                    d1[4] = clamp(yy + #wrap gc)
+                    d1[3] = clamp(yy + #wrap bc)
 
                     d0 += 6
                     d1 += 6
@@ -1950,10 +1950,10 @@ impl Decoder
                 let c = cast(u8) getBits1(8)
                 meta.value.add(c)
                 left -= 1
-            }            
+            }
 
             metaDatas.add(meta)
-        }        
+        }
     }
 
     mtd readSosMarker() throw

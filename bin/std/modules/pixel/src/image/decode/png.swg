@@ -349,22 +349,22 @@ impl Decoder
                 for i in inChannels:
                     destOff[i] = src[i]
                 for k in nk:
-                    destOff[inChannels + k] = cast<bit>(u8) (src[inChannels + k] + #over destOff[k])
+                    destOff[inChannels + k] = cast<bit>(u8) (src[inChannels + k] + #wrap destOff[k])
 
             case Up:
                 for k in rowStrideIn:
-                    destOff[k] = cast<bit>(u8) (src[k] + #over up[k])
+                    destOff[k] = cast<bit>(u8) (src[k] + #wrap up[k])
 
             case Average:
                 for i in inChannels
                 {
                     let avg = up[i] >> 1
-                    destOff[i] = cast<bit>(u8) (src[i] + #over avg)
+                    destOff[i] = cast<bit>(u8) (src[i] + #wrap avg)
                 }
                 for k in nk
                 {
                     let avg = cast(u8) ((cast(u16) up[inChannels + k] + cast(u16) destOff[k]) >> 1)
-                    destOff[inChannels + k] = cast<bit>(u8) (src[inChannels + k] + #over avg)
+                    destOff[inChannels + k] = cast<bit>(u8) (src[inChannels + k] + #wrap avg)
                 }
 
             case Paeth:
@@ -376,7 +376,7 @@ impl Decoder
                 for k in nk
                 {
                     let paeth = cast(u32) filterPaeth(destOff[k], up[inChannels + k], up[k])
-                    destOff[inChannels + k] = cast<bit>(u8) (src[inChannels + k] + #over paeth)
+                    destOff[inChannels + k] = cast<bit>(u8) (src[inChannels + k] + #wrap paeth)
                 }
             }
 

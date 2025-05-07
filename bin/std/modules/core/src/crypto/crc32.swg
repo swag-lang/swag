@@ -522,7 +522,7 @@ public impl Crc32
                     let four  = current[3]
                     current += 4
 
-                    #[Swag.AllowOverflow(true)]
+                    #[Swag.CanOverflow(true)]
                     cur = LookupTable[0, four & 0xFF] ^ LookupTable[1, (four >> 8) & 0xFF] ^
                           LookupTable[2, (four >> 16) & 0xFF] ^ LookupTable[3, (four >> 24) & 0xFF] ^
                           LookupTable[4, three & 0xFF] ^ LookupTable[5, (three >> 8) & 0xFF] ^
@@ -540,7 +540,7 @@ public impl Crc32
                     let four  = current[3]
                     current += 4
 
-                    #[Swag.AllowOverflow(true)]
+                    #[Swag.CanOverflow(true)]
                     cur = LookupTable[0, (four >> 24) & 0xFF] ^ LookupTable[1, (four >> 16) & 0xFF] ^
                           LookupTable[2, (four >> 8) & 0xFF] ^ LookupTable[3, four & 0xFF] ^
                           LookupTable[4, (three >> 24) & 0xFF] ^ LookupTable[5, (three >> 16) & 0xFF] ^

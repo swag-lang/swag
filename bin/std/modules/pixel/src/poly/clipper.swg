@@ -769,9 +769,9 @@ impl Transform
             }
             else
             {
-                maxRit = maximaList.count - #over 1
+                maxRit = maximaList.count - #wrap 1
                 while maxRit != Swag.U64.Max and maximaList.buffer[maxRit] > horzEdge.bot.x:
-                    maxRit = maxRit - #over 1
+                    maxRit = maxRit - #wrap 1
                 if maxRit != Swag.U64.Max and maximaList.buffer[maxRit] <= eLastHorz.top.x:
                     maxRit = Swag.U64.Max
             }
@@ -801,7 +801,7 @@ impl Transform
                         {
                             if horzEdge.outIdx >= 0 and !isOpen:
                                 addOutPt(horzEdge, IntPoint{maximaList.buffer[maxRit], horzEdge.bot.y})
-                            maxRit = maxRit - #over 1
+                            maxRit = maxRit - #wrap 1
                         }
                     }
                 }

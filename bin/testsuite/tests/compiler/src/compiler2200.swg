@@ -4,10 +4,10 @@
     {
         let x: u32 = 10'u8
         let y: s8 = -1
-        #[Swag.AllowOverflow(true)]
+        #[Swag.CanOverflow(true)]
         let z = x + y
         @assert(z == 9)
-        #[Swag.AllowOverflow(true)]
+        #[Swag.CanOverflow(true)]
         let z1 = 10'u32 + cast(u32) -1's8
         @assert(z1 == 9)
     }
@@ -15,10 +15,10 @@
     {
         let x: u32 = 10'u8
         let y: s8 = -1
-        #[Swag.AllowOverflow(true)]
+        #[Swag.CanOverflow(true)]
         let z = x - y
         @assert(z == 11)
-        #[Swag.AllowOverflow(true)]
+        #[Swag.CanOverflow(true)]
         let z1 = 10'u32 - cast(u32) -1's8
         @assert(z1 == 11)
     }

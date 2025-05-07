@@ -7,7 +7,7 @@
 
 #global namespace StrConv
 #global namespace Atod
-#global #[Swag.AllowOverflow(true)]
+#global #[Swag.CanOverflow(true)]
 using Globalization
 
 func exact(neg: bool, mantissa: u64, exponent: s64)->{ f: f64, ok: bool }

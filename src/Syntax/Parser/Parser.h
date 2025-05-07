@@ -51,7 +51,7 @@ enum class SyntaxStructType
     Interface,
 };
 
-constexpr ModifierFlags MODIFIER_OVERFLOW     = 0x00000001;
+constexpr ModifierFlags MODIFIER_WRAP         = 0x00000001;
 constexpr ModifierFlags MODIFIER_PROM         = 0x00000002;
 constexpr ModifierFlags MODIFIER_NO_LEFT_DROP = 0x00000004;
 constexpr ModifierFlags MODIFIER_MOVE         = 0x00000008;

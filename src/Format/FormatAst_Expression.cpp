@@ -100,10 +100,10 @@ bool FormatAst::outputAffectOp(FormatContext& context, AstNode* node, uint32_t m
     concat->addBlank();
     concat->addString(node->token.text);
 
-    if (node->hasSpecFlag(AstOp::SPEC_FLAG_OVERFLOW))
+    if (node->hasSpecFlag(AstOp::SPEC_FLAG_WRAP))
     {
         concat->addBlank();
-        concat->addString(g_LangSpec->name_sharp_over);
+        concat->addString(g_LangSpec->name_sharp_wrap);
     }
 
     if (node->hasSpecFlag(AstOp::SPEC_FLAG_PROM))
@@ -134,10 +134,10 @@ bool FormatAst::outputFactorOp(FormatContext& context, const AstNode* node)
     concat->addBlank();
     concat->addString(node->token.text);
 
-    if (node->hasSpecFlag(AstOp::SPEC_FLAG_OVERFLOW))
+    if (node->hasSpecFlag(AstOp::SPEC_FLAG_WRAP))
     {
         concat->addBlank();
-        concat->addString(g_LangSpec->name_sharp_over);
+        concat->addString(g_LangSpec->name_sharp_wrap);
     }
     if (node->hasSpecFlag(AstOp::SPEC_FLAG_PROM))
     {

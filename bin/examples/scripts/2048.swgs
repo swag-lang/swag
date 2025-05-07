@@ -163,13 +163,13 @@ func animate(wnd: *Wnd)
     if wasMoving and !g_IsMoving:
         randValue()
 
-    for var i = 0'u64; i < g_Cells.count; i += #over 1
+    for var i = 0'u64; i < g_Cells.count; i += #wrap 1
     {
         let c = #ref g_Cells[i]
         if c.remove
         {
             g_Cells.removeAt(i)
-            i -= #over 1
+            i -= #wrap 1
         }
     }
 }

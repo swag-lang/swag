@@ -392,7 +392,7 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("#index", State.Intrinsic)
 
         mapWords.add("#prom", State.Modifier)
-        mapWords.add("#over", State.Modifier)
+        mapWords.add("#wrap", State.Modifier)
         mapWords.add("#nodrop", State.Modifier)
         mapWords.add("#move", State.Modifier)
         mapWords.add("#moveraw", State.Modifier)

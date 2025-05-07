@@ -26,7 +26,7 @@ public struct Mt64
 
 public impl Mt64
 {
-    #[Swag.AllowOverflow(true), Swag.Overload]
+    #[Swag.CanOverflow(true), Swag.Overload]
     mtd seedU64(seed: u64)
     {
         mt[0] = seed
@@ -38,7 +38,7 @@ public impl Mt64
         }
     }
 
-    #[Swag.AllowOverflow(true), Swag.Overload]
+    #[Swag.CanOverflow(true), Swag.Overload]
     mtd seedU64(seed: const [..] u64)
     {
         let keyLength = @countof(seed)
@@ -78,7 +78,7 @@ public impl Mt64
         mt[0] = 1'u64 << 63
     }
 
-    #[Swag.AllowOverflow(true)]
+    #[Swag.CanOverflow(true)]
     mtd nextU64()->u64
     {
         if mti >= NN

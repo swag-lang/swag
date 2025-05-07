@@ -6,7 +6,7 @@
 */
 
 #global namespace StrConv
-#global #[Swag.AllowOverflow(true)]
+#global #[Swag.CanOverflow(true)]
 
 // A FloatExt represents an extended floating-point number, with more
 // precision than a float64. It does not try to save bits: the

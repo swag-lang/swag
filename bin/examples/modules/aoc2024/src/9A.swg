@@ -52,7 +52,7 @@ using Core
 func day9A()
 {
     //Time.Stopwatch.scopeMeasure()
-    
+
     let dataPath = Path.combine(Path.getDirectoryName(#curlocation.fileName), "9.txt")
     var line     = assume File.readAllText(dataPath)
 
@@ -61,7 +61,7 @@ func day9A()
     foreach t in line
     {
         let r = t - '0'
-        if #index & 1:        
+        if #index & 1:
             map.add({-1, r})
         else
         {
@@ -70,17 +70,17 @@ func day9A()
         }
     }
 
-    var last = map.count - #over 1
+    var last = map.count - #wrap 1
     for i in map
     {
-        if map[i].what != -1: 
+        if map[i].what != -1:
             continue
         while map[last].what == -1:
             last -= 1
         if i >= last:
             break
 
-        map[i].what = map[last].what       
+        map[i].what = map[last].what
 
         if map[i].num == map[last].num
         {
@@ -95,18 +95,18 @@ func day9A()
             map.insertAt(i + 1, {-1, n})
         }
         elif map[i].num < map[last].num
-        {            
+        {
             map[last].num -= map[i].num
         }
     }
-   
+
     var idx, total: u64
     foreach v, i in map
-    {  
-        if v.what == -1: 
+    {
+        if v.what == -1:
             break
-        for v.num      
-        {            
+        for v.num
+        {
             total += idx * v.what
             idx += 1
         }

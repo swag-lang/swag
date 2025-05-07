@@ -56,7 +56,7 @@ func day9BA()
         }
     }
 
-    var last = map.count - #over 1
+    var last = map.count - #wrap 1
     while toCheck
     {
         toCheck -= 1

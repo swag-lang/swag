@@ -32,25 +32,25 @@ Operators that can cause overflows include: `+ - * << >>` and their compound ass
 }
 
 /**
-## Disabling Overflow Safety with `#over`
+## Disabling Overflow Safety with `#wrap`
 
-If an overflow is expected and should not cause a panic, the `#over` modifier can be used with the
+If an overflow is expected and should not cause a panic, the `#wrap` modifier can be used with the
 operation to bypass the safety check.
 */
 #test
 {
     var x = 255'u8                                // Initialize x with the maximum value for u8
-    x += #over 1                                  // This will wrap around without causing a panic
+    x += #wrap 1                                  // This will wrap around without causing a panic
     @assert(x == 0)                               // Assert that x has wrapped around to 0
 }
 
 /**
 ## Global Overflow Safety Control
 
-To disable overflow safety checks globally within a scope, use `#[Swag.AllowOverflow(true)]`. This
+To disable overflow safety checks globally within a scope, use `#[Swag.CanOverflow(true)]`. This
 prevents overflows from causing panics for all operations in the scope.
 */
-#[Swag.AllowOverflow(true)]
+#[Swag.CanOverflow(true)]
 #test
 {
     var x = 255'u8                                // Initialize x with the maximum value for u8
@@ -84,13 +84,13 @@ between different integer types.
     // var y0 = cast(s8) x1                       // This would cause a panic because 255 cannot be
                                                   // represented as s8
 
-    let y1 = cast<overflow>(s8) x1                    // Use #over to bypass safety checks and allow this
+    let y1 = cast<overflow>(s8) x1                    // Use #wrap to bypass safety checks and allow this
                                                   // cast
     @assert(y1 == -1)                             // Assert that y1 is -1 after wrapping
 
     let x2 = -1's8                                // Initialize x2 with the minimum value for s8
     // var y2 = cast(u8) x2                       // This would cause a panic because x2 is negative
-    let y2 = cast<overflow>(u8) x2                    // Use #over to bypass safety checks
+    let y2 = cast<overflow>(u8) x2                    // Use #wrap to bypass safety checks
     @assert(y2 == 255)                            // Assert that y2 is 255 after wrapping
 }
 
@@ -100,7 +100,7 @@ between different integer types.
 Safety checks for overflow can be globally disabled, allowing operations that would typically
 panic due to overflow to proceed normally.
 */
-#[Swag.AllowOverflow(true)]
+#[Swag.CanOverflow(true)]
 #test
 {
     var x = 255'u8                                // Initialize x with the maximum value for u8

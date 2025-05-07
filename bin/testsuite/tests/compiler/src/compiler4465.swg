@@ -25,7 +25,7 @@
         var m = (month + 9) % 12
         var y = year - m/10
         //@print("x: ", 365*y)
-        var dn = 365*y + #over y/4 + #over y/400 + #over (m*306 + 5)/10 + #over day-1 - #over y/100
+        var dn = 365*y + #wrap y/4 + #wrap y/400 + #wrap (m*306 + 5)/10 + #wrap day-1 - #wrap y/100
         dn += 3
         //@print(dn % 7)
     }
@@ -38,7 +38,7 @@
         var m = (month + 9) % 12
         var y = year - m/10
         //@print("x: ", 365*y)
-        var dn = 365*y + #over y/4 + #over y/400 + #over (m*306 + 5)/10 + #over day-1 - #over y/100
+        var dn = 365*y + #wrap y/4 + #wrap y/400 + #wrap (m*306 + 5)/10 + #wrap day-1 - #wrap y/100
         dn += 3
         //@print(dn % 7)
     }

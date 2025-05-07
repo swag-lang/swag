@@ -1245,7 +1245,7 @@ struct AstCast : AstNode
 
 struct AstOp : AstNode
 {
-    static constexpr SpecFlags SPEC_FLAG_OVERFLOW = 0x0001;
+    static constexpr SpecFlags SPEC_FLAG_WRAP = 0x0001;
     static constexpr SpecFlags SPEC_FLAG_PROM     = 0x0002;
     static constexpr SpecFlags SPEC_FLAG_FMA      = 0x0004;
 

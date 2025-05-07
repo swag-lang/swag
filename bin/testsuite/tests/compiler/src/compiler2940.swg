@@ -3,5 +3,5 @@
 #test
 {
     var x = 0
-    x <<= #over 1
+    x <<= #wrap 1
 }

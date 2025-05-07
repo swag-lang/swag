@@ -77,7 +77,7 @@ func dateToTicks(year, month, day: u16)->Ticks
 
     let days = isLeapYear(year) ? @dataof(DaysToMonth366) : @dataof(DaysToMonth365)
     let y    = cast(u64) (year - 1)
-    let n    = y * 365 + #over y / 4 + #over y / 400 + #over days[month - 1] + #over day - 1 - #over y / 100
+    let n    = y * 365 + #wrap y / 4 + #wrap y / 400 + #wrap days[month - 1] + #wrap day - 1 - #wrap y / 100
     return n * TicksPerDay
 }
 

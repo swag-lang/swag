@@ -320,10 +320,10 @@ impl Encoder
                 hT[stdTable[posInTable]].value  = codevalue
                 hT[stdTable[posInTable]].length = cast(u8) k
                 posInTable += 1
-                codevalue += #over 1
+                codevalue += #wrap 1
             }
 
-            codevalue *= #over 2
+            codevalue *= #wrap 2
         }
     }
 

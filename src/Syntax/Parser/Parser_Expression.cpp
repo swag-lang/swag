@@ -301,7 +301,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
         case TokenId::CompilerInject:
             SWAG_CHECK(doCompilerInject(parent, result));
             break;
-            
+
         case TokenId::CompilerType:
         {
             if (exprFlags.has(EXPR_FLAG_SIMPLE))
@@ -645,14 +645,13 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
                 case TokenId::SymPlusEqual:
                 case TokenId::SymMinusEqual:
                 case TokenId::SymAsteriskEqual:
-                case TokenId::KwdCast:
                     break;
                 default:
                     return error(tokenParse, formErr(Err0647, tokenParse.cstr(), forNode.cstr()));
             }
 
-            SWAG_VERIFY(!mdfFlags.has(MODIFIER_OVERFLOW), error(tokenParse, formErr(Err0057, tokenParse.cstr())));
-            mdfFlags.add(MODIFIER_OVERFLOW);
+            SWAG_VERIFY(!mdfFlags.has(MODIFIER_WRAP), error(tokenParse, formErr(Err0057, tokenParse.cstr())));
+            mdfFlags.add(MODIFIER_WRAP);
             SWAG_CHECK(eatToken());
             continue;
         }
@@ -929,9 +928,9 @@ bool Parser::doFactorExpression(AstNode** parent, ExprFlags exprFlags, AstNode**
         // Modifiers
         ModifierFlags mdfFlags = 0;
         SWAG_CHECK(doModifiers(binaryNode->token, binaryNode->token.id, mdfFlags));
-        if (mdfFlags.has(MODIFIER_OVERFLOW))
+        if (mdfFlags.has(MODIFIER_WRAP))
         {
-            binaryNode->addSpecFlag(AstOp::SPEC_FLAG_OVERFLOW);
+            binaryNode->addSpecFlag(AstOp::SPEC_FLAG_WRAP);
             binaryNode->addAttribute(ATTRIBUTE_CAN_OVERFLOW_ON);
         }
 
@@ -1649,9 +1648,9 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith
             SWAG_CHECK(doModifiers(savedToken.token, savedToken.token.id, mdfFlags));
         }
 
-        if (mdfFlags.has(MODIFIER_OVERFLOW))
+        if (mdfFlags.has(MODIFIER_WRAP))
         {
-            opFlags.add(AstOp::SPEC_FLAG_OVERFLOW);
+            opFlags.add(AstOp::SPEC_FLAG_WRAP);
             opAttrFlags.add(ATTRIBUTE_CAN_OVERFLOW_ON);
         }
 

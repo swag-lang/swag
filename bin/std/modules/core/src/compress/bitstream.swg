@@ -87,7 +87,7 @@ impl BitStream
     mtd consumeBits(width: u8)
     {
         codeBuffer >>= width
-        numBits -= #over width
+        numBits -= #wrap width
     }
 
     #[Swag.Inline]

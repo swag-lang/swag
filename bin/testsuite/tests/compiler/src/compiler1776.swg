@@ -2,7 +2,7 @@
 #test
 {
 	let c = 0xFFFFFFFF_FFFFFFFF;
-    #[Swag.AllowOverflow(true)]
+    #[Swag.CanOverflow(true)]
 	let a = c << 56;
 	@assert(a == 0xFF000000_00000000);
 }
