@@ -37,5 +37,5 @@ func createFromHFONT() throw
 #test
 {
     catch createFromHFONT()
-    @assert(@err() == ErrToto)
+    @assert(@err == ErrToto)
 }

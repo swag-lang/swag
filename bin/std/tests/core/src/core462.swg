@@ -37,5 +37,5 @@ struct Toto2
     let x1   = catch dec.readAll'Toto2(buf.toSlice())
     defer Memory.delete(x1)
 
-    @assert(@err() != null)
+    @assert(@err != null)
 }

@@ -24,7 +24,7 @@ func toto() throw
 #test
 {
     catch toto()
-    @assert(@err() == Err)
-    let err = cast(Err) @err()
+    @assert(@err == Err)
+    let err = cast(Err) @err
     @assert(err.str == "toto")
 }

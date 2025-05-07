@@ -10,5 +10,5 @@ using Core
     }
     var x: EE = undefined
     discard catch StrConv.parseValue(&x, Swag, "B")
-    @assert(@err() == Errors.UnsupportedFormatError)
+    @assert(@err == Errors.UnsupportedFormatError)
 }

@@ -13,6 +13,6 @@ func toto() throw
 {
     catch toto()
     //@breakpoint()
-    let err = cast(s32) @err()
+    let err = cast(s32) @err
     //@print(err.x)
 }

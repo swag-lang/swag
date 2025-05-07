@@ -199,14 +199,14 @@ impl Decoder
                     let doIt = catch serializer.beginElement(field)
                     defer<noerr> serializer.endElement()
 
-                    if @err() != null and !(flags & .IgnoreStructFieldError):
-                        throw @err()
+                    if @err != null and !(flags & .IgnoreStructFieldError):
+                        throw @err
                     if !doIt:
                         continue
 
                     catch readValue(cast(^u8) data + field.offset, field.pointedType)
-                    if @err() != null and !(flags & .IgnoreStructFieldError):
-                        throw @err()
+                    if @err != null and !(flags & .IgnoreStructFieldError):
+                        throw @err
                 }
             }
 

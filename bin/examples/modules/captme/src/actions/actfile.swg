@@ -268,7 +268,7 @@ impl MainWnd
             return
 
         let img = catch Image.load(dlg.getSelectedName())
-        if @err() != null:
+        if @err != null:
             MessageDlg.error(surface, "Failed to load image")
         else:
             newCapture(img, dlg.getSelectedName())
@@ -292,7 +292,7 @@ impl MainWnd
         img.metaDatas.add(md)
 
         catch img.save(nameFile, optImg)
-        if @err() != null
+        if @err != null
         {
             MessageDlg.error(surface, "Failed to save file")
             return

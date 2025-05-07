@@ -21,5 +21,5 @@ func titi() throw
         titi()
     }
 
-    @assert(@err() == ErrTiti)
+    @assert(@err == ErrTiti)
 }

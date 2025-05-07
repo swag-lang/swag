@@ -180,10 +180,26 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
     SWAG_CHECK(eatToken());
     SWAG_CHECK(checkIsValidUserName(identifier));
 
-    if (isIntrinsic && tokenParse.isNot(TokenId::SymLeftParen))
+    if (isIntrinsic)
     {
-        const Diagnostic err{identifier, formErr(Err0439, "intrinsic", identifier->token.cstr())};
-        return context->report(err);
+        if (g_LangSpec->intrinsicConstants.contains(identifier->token.text))
+        {
+            if (tokenParse.is(TokenId::SymLeftParen))
+            {
+                const Diagnostic err{identifier, tokenParse.token, formErr(Err0786, identifier->token.cstr(), identifier->token.cstr())};
+                return context->report(err);
+            }
+
+            identifier->callParameters = Ast::newFuncCallParams(this, identifier);
+            identifier->callParameters->addAstFlag(AST_GENERATED);
+            return true;
+        }
+        
+        if (tokenParse.isNot(TokenId::SymLeftParen))
+        {
+            const Diagnostic err{identifier, formErr(Err0439, "intrinsic", identifier->token.cstr())};
+            return context->report(err);
+        }
     }
 
     // Replace "Self" with the corresponding struct name

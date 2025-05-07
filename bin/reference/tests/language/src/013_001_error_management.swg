@@ -1,5 +1,5 @@
 /**
-A function marked with 'throw' indicates that it can return an error by invoking the 'throw' keyword, followed by an error value. The error value is a struct, which encapsulates the error details. If an error occurs, the caller has the option to either halt execution and propagate the error using 'try', or handle the error explicitly using the '@err()' intrinsic.
+A function marked with 'throw' indicates that it can return an error by invoking the 'throw' keyword, followed by an error value. The error value is a struct, which encapsulates the error details. If an error occurs, the caller has the option to either halt execution and propagate the error using 'try', or handle the error explicitly using the '@err' intrinsic.
 
 > It's crucial to understand that these are **not** exceptions in the traditional sense. Consider 'throw' as a specialized form of 'return' that carries an error value.
 */
@@ -41,22 +41,22 @@ func count(name: string) -> u64 throw
 }
 
 /**
-# Handling Errors with `catch` and `@err()`
-When calling a function that can throw an error, it's essential to handle the error appropriately. This is where the `catch` keyword comes into play. The error can be 'caught' using `catch`, and its value can be tested (or ignored) using the `@err()` intrinsic. If an error is caught, it is dismissed, allowing the program to continue execution from the point where the error was handled.
+# Handling Errors with `catch` and `@err`
+When calling a function that can throw an error, it's essential to handle the error appropriately. This is where the `catch` keyword comes into play. The error can be 'caught' using `catch`, and its value can be tested (or ignored) using the `@err` intrinsic. If an error is caught, it is dismissed, allowing the program to continue execution from the point where the error was handled.
 */
 func myFunc()
 {
     // Attempt to call the `count()` function. If `count()` throws an error,
-    // `catch` will intercept it. The function will then return the default value 
+    // `catch` will intercept it. The function will then return the default value
     // of the return type (in this case, 0) and assign it to `cpt`.
     let cpt = catch count("fileName")
 
-    // Immediately after catching the error, use `@err()` to check if an error occurred.
-    if @err() != null
+    // Immediately after catching the error, use `@err` to check if an error occurred.
+    if @err != null
     {
-        // `@err()` returns an 'any' type, representing the caught error.
+        // `@err` returns an 'any' type, representing the caught error.
         // Here, we assert that the error is of type `MyError` to ensure correct error handling.
-        @assert(@err() == MyError)  // Validate that the error is indeed a `MyError`.
+        @assert(@err == MyError)  // Validate that the error is indeed a `MyError`.
 
         // Also, assert that the value returned by `count()` is the default value (0 in this case),
         // which happens when an error is thrown.
@@ -76,14 +76,14 @@ The `trycatch` construct provides an alternative way to handle errors. It allows
 */
 func myOtherFunc()
 {
-    // Attempt to call the `count()` function. If it throws an error, 
-    // `trycatch` catches the error, assigns the default value to `cpt1`, 
+    // Attempt to call the `count()` function. If it throws an error,
+    // `trycatch` catches the error, assigns the default value to `cpt1`,
     // and the function continues without propagating the error.
     var cpt1 = trycatch count("fileName")
 
     // The above `trycatch` block is equivalent to using `catch` followed by an error check:
     var cpt2 = catch count("filename")
-    if @err() != null:
+    if @err != null:
         return  // If an error is caught, exit the function silently
 }
 
@@ -107,10 +107,10 @@ func myFunc2() throw
 {
     // Call `count()` and catch any error that might be raised.
     var cpt = catch count("filename")
-    if @err() != null
+    if @err != null
     {
         // If an error is caught, re-throw the same error, propagating it to the caller.
-        throw @err()  // Re-throw the caught error
+        throw @err  // Re-throw the caught error
     }
 }
 
@@ -118,7 +118,7 @@ func myFunc2() throw
 # Forcing Panic with `assume`
 The `assume` keyword allows the caller to force a panic if an error occurs, rather than handling or propagating the error. This is useful in scenarios where you expect the code to run without errors, and any error should result in an immediate halt.
 
-> NOTE: 
+> NOTE:
 > In 'release' builds, the `assume` behavior can be disabled, which may lead to undefined behavior if an error occurs.
 */
 func myFunc3()
@@ -154,7 +154,7 @@ func myFunc4() throw
     }
 
     // Using 'catch' with a block to catch and dismiss errors, proceeding with execution without handling or propagating the error.
-    // In this context, checking '@err()' is irrelevant as the errors are dismissed.
+    // In this context, checking '@err' is irrelevant as the errors are dismissed.
     catch
     {
         var cpt4 = count("filename")
@@ -200,7 +200,7 @@ When a function is annotated with `throw`, any function calls within it that can
 
     // Catch the error raised by 'mySubFunc1' and confirm that it is of type 'MyError'.
     catch mySubFunc1()
-    @assert(@err() == MyError)  // Ensure the error is of type 'MyError'
+    @assert(@err == MyError)  // Ensure the error is of type 'MyError'
 }
 
 /**
@@ -215,7 +215,7 @@ struct SyntaxError
 }
 
 /**
-> WARNING: 
+> WARNING:
 > Ensure that references to external values (e.g., 'string', 'any') remain valid throughout the error's lifecycle. The runtime will manage complex types, so it's recommended to store such values in the heap or a dedicated allocator within the current context.
 */
 

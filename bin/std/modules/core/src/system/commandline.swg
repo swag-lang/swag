@@ -146,7 +146,7 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
             let rest = catch StrConv.parseValue(addr, typeField, allArgs[itp + 1])
             itp += 1
 
-            if @err() != null:
+            if @err != null:
                 throw SyntaxError{Errors.mkString(Format.toString("invalid value for option [[%]]", oneArg))}
             if @countof(rest):
                 throw SyntaxError{Errors.mkString(Format.toString("invalid value for option [[%]]", oneArg))}
@@ -183,7 +183,7 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
 
             if collect != null:
                 discard catch StrConv.parseValue(addr, typeField, collect.toString())
-            if @err() != null:
+            if @err != null:
                 throw SyntaxError{Errors.mkString(Format.toString("invalid value for option [[%]]", oneArg))}
         }
         else

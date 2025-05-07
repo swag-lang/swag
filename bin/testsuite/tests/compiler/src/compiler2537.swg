@@ -21,5 +21,5 @@ func titi()->AA throw
 #test
 {
     var x = catch titi()
-    @assert(@err() == ErrToto)
+    @assert(@err == ErrToto)
 }

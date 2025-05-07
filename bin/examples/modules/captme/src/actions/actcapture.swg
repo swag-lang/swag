@@ -180,7 +180,7 @@ impl MainWnd
             Threading.Thread.sleep(g_CaptureOptions.delay * 1000)
 
         var img     = catch screenShot(mode)
-        let isValid = @err() == null and img.width > 0 and img.height > 0
+        let isValid = @err == null and img.width > 0 and img.height > 0
 
         if (isValid and g_CaptureOptions.showEditorAfter) or !wasHidden
         {

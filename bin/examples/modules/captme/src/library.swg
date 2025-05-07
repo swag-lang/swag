@@ -41,7 +41,7 @@ impl Library
             if fi.fullname == name
             {
                 catch File.delete(name)
-                if @err() == null
+                if @err == null
                 {
                     files.removeAtOrdered(idx)
                     onDeleteFile.call(name)
@@ -55,7 +55,7 @@ impl Library
     mtd addFile(name: string)
     {
         var file = catch File.getFileInfo(name)
-        if @err() != null:
+        if @err != null:
             return
         files.add(file)
     }

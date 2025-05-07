@@ -3,7 +3,7 @@
 #[Swag.Safety("null", true)]
 func toto() throw
 {
-    throw @err()
+    throw @err
 }
 
 #test

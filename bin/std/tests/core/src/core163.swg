@@ -6,7 +6,7 @@ using Core.File
 {
     var loc = #curlocation
     var res = catch readAllLines(loc.fileName)
-    @assert(@err() == null)
+    @assert(@err == null)
     @assert(res.count > 5)
     @assert(res[0] == "//toto")
 

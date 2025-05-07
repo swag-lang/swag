@@ -293,21 +293,21 @@ If an error is raised inside the `divide` function, it will be propagated to the
 
 # Handling Errors with `catch`
 
-Instead of propagating errors, you can catch and handle them within the function using the `catch` keyword. When an error occurs, Swag provides the error through the `@err()` intrinsic, which can be checked and handled.
+Instead of propagating errors, you can catch and handle them within the function using the `catch` keyword. When an error occurs, Swag provides the error through the `@err` intrinsic, which can be checked and handled.
 */
 
 #test
 {
     let result = catch divide(10, 0)
-    if @err() != null {
-        print("Error: ", @err(), "\n")
+    if @err != null {
+        print("Error: ", @err, "\n")
     } else {
         print("Result: ", result, "\n")
     }
 }
 
 /**
-In this case, the `catch` keyword is used to trap the error and prevent it from being propagated. If an error occurs, it is available through `@err()`, and you can handle it gracefully.
+In this case, the `catch` keyword is used to trap the error and prevent it from being propagated. If an error occurs, it is available through `@err`, and you can handle it gracefully.
 
 # Dismissing Errors with `trycatch`
 

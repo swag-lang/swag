@@ -9,5 +9,5 @@ func toto()->s32 throw => titi()
 #test
 {
     discard catch toto()
-    @assert(@err() == Err)
+    @assert(@err == Err)
 }

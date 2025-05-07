@@ -15,7 +15,7 @@ func toto() throw
 #test
 {
     catch toto()
-    let err = cast(Err) @err()
+    let err = cast(Err) @err
     @assert(err.x == C)
     @assert(err.x.allocator != null)
 }

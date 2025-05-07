@@ -278,7 +278,7 @@ impl RecentWnd
         {
             let capture = catch addRecent(r.fullname, front: false)
             defer<err> Memory.delete(capture)
-            if @err() != null:
+            if @err != null:
                 continue
 
             if idx == 0

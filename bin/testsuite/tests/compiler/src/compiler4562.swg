@@ -8,5 +8,5 @@ func toto() throw
 #test
 {
     catch toto()
-    @assert(@err() == Err)
+    @assert(@err == Err)
 }

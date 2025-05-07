@@ -593,10 +593,16 @@ void LanguageSpec::setupAttributesFlags()
     attributesFlags.add("PlaceHolder", ATTRIBUTE_PLACEHOLDER);
 }
 
+void LanguageSpec::setupIntrinsicConstants()
+{
+    intrinsicConstants.insert("@err");
+}
+
 void LanguageSpec::setup()
 {
     setupNames();
     setupKeywords();
+    setupIntrinsicConstants();
     setupBcKeywords();
     setupNativeTypes();
     setupAttributesFlags();

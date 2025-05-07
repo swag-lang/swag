@@ -160,7 +160,7 @@ func addImage(image: Image)
 
         opt.compressionLevel = .NoCompression // We want best speed
         catch png.IImageEncoder.encode(&buffer, image, opt)
-        if @err() != null:
+        if @err != null:
             break
 
         let hglob = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, buffer.count())

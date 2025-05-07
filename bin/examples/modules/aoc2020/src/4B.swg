@@ -102,7 +102,7 @@ func day4B0()
                     pass |= 4
             case "hgt":
                 let val = catch StrConv.parseS32(res1[1])
-                if @err() != null:
+                if @err != null:
                     break
                 if val.eat == @countof(res1[1]):
                     break
@@ -117,14 +117,14 @@ func day4B0()
                 if @countof(res1[1]) != 7 or res1[1][0] != '#':
                     break
                 discard catch StrConv.parseX64(res1[1][1..])
-                if @err() == null:
+                if @err == null:
                     pass |= 16
             case "ecl":
                 if Slice.contains(["amb", "blu", "brn", "gry", "grn", "hzl", "oth"], res1[1]):
                     pass |= 32
             case "pid":
                 discard catch StrConv.toS32(res1[1])
-                if @err() == null and @countof(res1[1]) == 9:
+                if @err == null and @countof(res1[1]) == 9:
                     pass |= 64
             }
         }

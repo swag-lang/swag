@@ -13,5 +13,5 @@ func toto() throw
     var x: func() throw
     x = &toto
     try x()
-    @assert(@err() == ErrToto)
+    @assert(@err == ErrToto)
 }

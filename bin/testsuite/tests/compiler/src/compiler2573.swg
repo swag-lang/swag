@@ -9,11 +9,11 @@ func toto() throw
 func titi() throw
 {
     catch toto()
-    if @err() != null: throw ErrTiti{}
+    if @err != null: throw ErrTiti{}
 }
 
 #test
 {
     catch titi()
-    @assert(@err() != null)
+    @assert(@err != null)
 }

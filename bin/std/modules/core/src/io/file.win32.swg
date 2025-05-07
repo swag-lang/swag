@@ -34,7 +34,7 @@ func exists(fullName: string)->bool
         return false
     var winPath    = Utf16.toZeroTerminated(fullName)
     let attributes = catch GetFileAttributesW(@dataof(winPath))
-    if @err() != null:
+    if @err != null:
         return false
     if attributes == 0xFFFFFFFF:
         return false

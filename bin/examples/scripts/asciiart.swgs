@@ -31,7 +31,7 @@ func openImage(surface: *Surface)
         return
 
     g_Img = catch Image.load(dlg.getSelectedName())
-    if @err() != null:
+    if @err != null:
         MessageDlg.error(surface, "Failed to load image")
 }
 

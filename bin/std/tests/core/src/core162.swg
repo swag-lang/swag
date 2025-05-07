@@ -10,7 +10,7 @@ using Core.File
 
     {
         catch reader.open(loc.fileName)
-        @assert(@err() == null)
+        @assert(@err == null)
         defer reader.close()
 
         var res = reader.readToEnd()
@@ -21,7 +21,7 @@ using Core.File
 
     {
         catch reader.open(loc.fileName)
-        @assert(@err() == null)
+        @assert(@err == null)
         defer reader.close()
 
         var res: String

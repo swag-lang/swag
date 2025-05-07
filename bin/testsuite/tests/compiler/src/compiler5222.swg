@@ -16,7 +16,7 @@ func toto1() throw
 {
     catch toto()
 
-    let err = cast(Err) @err()
+    let err = cast(Err) @err
     var x: Err
     x.str = err.str
     throw x
@@ -25,6 +25,6 @@ func toto1() throw
 #test
 {
     catch toto1()
-    let err = cast(Err) @err()
+    let err = cast(Err) @err
     @assert(err.str == "coucou")
 }

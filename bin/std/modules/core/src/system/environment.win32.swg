@@ -39,7 +39,7 @@ public func getSpecialDirectory(what: SpecialDirectory)->String
 
     var result: retval
     catch Win32.SHGetSpecialFolderPathA(null, &a[0], v, FALSE)
-    if @err() == null
+    if @err == null
     {
         result = cast(string) @mkslice(&a[0], @strlen(&a[0]))
         Path.normalize(&result)
@@ -57,7 +57,7 @@ public func getMonitors()->Array'Monitor
     {
         var mi: MONITORINFO
         catch GetMonitorInfoA(hMonitor, &mi)
-        if @err() != null:
+        if @err != null:
             return TRUE
 
         var m:  Monitor
@@ -122,13 +122,13 @@ public func getMetric(what: Metrics)->s32
     #[Swag.Complete]
     switch what
     {
-    case DesktopX:  
-        return GetSystemMetrics(SM_XVIRTUALSCREEN)        
-    case DesktopY:  
-        return GetSystemMetrics(SM_YVIRTUALSCREEN)              
-    case DesktopWidth:  
+    case DesktopX:
+        return GetSystemMetrics(SM_XVIRTUALSCREEN)
+    case DesktopY:
+        return GetSystemMetrics(SM_YVIRTUALSCREEN)
+    case DesktopWidth:
         return GetSystemMetrics(SM_CXVIRTUALSCREEN)
-    case DesktopHeight:  
+    case DesktopHeight:
         return GetSystemMetrics(SM_CYVIRTUALSCREEN)
     }
 
@@ -161,7 +161,7 @@ public func registerApplication(appName, appFriendly: string)->bool
     }
 
     RegCloseKey(hKey)
-    return true    
+    return true
 }
 
 // Associate an extension to an executable
@@ -201,7 +201,7 @@ public func associateFileExtension(extension, appName, appPath: string)->bool
         return false
     }
 
-    RegCloseKey(hKey)    
+    RegCloseKey(hKey)
 
     /////
 
@@ -225,7 +225,7 @@ public func associateFileExtension(extension, appName, appPath: string)->bool
 
 var g_StoreArgs: String
 func getNativeArgs()->string
-{    
+{
     let ptr = GetCommandLineW()
     g_StoreArgs = Utf8.fromUtf16(@mkslice(ptr, Utf16.lengthZeroTerminated(ptr)))
 

@@ -14,6 +14,7 @@ struct LanguageSpec
     void setup();
     void setupNames();
     void setupKeywords();
+    void setupIntrinsicConstants();
     void setupBcKeywords();
     void setupNativeTypes();
     void setupAttributesFlags();
@@ -21,6 +22,7 @@ struct LanguageSpec
     LangHashTable<TokenId, 4096>       keywords;
     SetUtf8                            bcKeywords;
     SetUtf8                            bcConstants;
+    SetUtf8                            intrinsicConstants;
     LangHashTable<LiteralType, 64>     nativeTypes;
     LangHashTable<AttributeFlags, 256> attributesFlags;
 

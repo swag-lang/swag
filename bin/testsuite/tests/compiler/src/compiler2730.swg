@@ -9,7 +9,7 @@ func tata() throw
 func toto()
 {
     catch tata()
-    @assert(@err() == ErrTata)
+    @assert(@err == ErrTata)
 }
 
 func titi() throw
@@ -21,5 +21,5 @@ func titi() throw
 #test
 {
     catch titi()
-    @assert(@err() == ErrTiti)
+    @assert(@err == ErrTiti)
 }

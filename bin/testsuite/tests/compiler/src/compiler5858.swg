@@ -1,3 +1,5 @@
+#global testerror "Err0786"
+
 //#[Swag.PrintBc]
 #test
 {

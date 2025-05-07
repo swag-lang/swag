@@ -149,7 +149,7 @@ impl Application
         // Convert icon to image
         var img = catch Image.from(hIcon)
         defer catch DestroyIcon(hIcon)
-        if @err() != null:
+        if @err != null:
             return result
         img.resize(sizeIcon, sizeIcon)
 

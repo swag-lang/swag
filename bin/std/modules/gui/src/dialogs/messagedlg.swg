@@ -77,10 +77,10 @@ public impl MessageDlg
         w = Math.max(w, wl)
 
         if extension
-        { 
+        {
             var wl1 = extension.position.width + 2 * metrics.dialog_Padding
             wl1 += 2 * metrics.wnd_BorderSize
-            w = Math.max(w, wl1)                       
+            w = Math.max(w, wl1)
         }
 
         // Height
@@ -214,19 +214,19 @@ public impl MessageDlg
     }
 
     // Message box to show the current raised error.
-    // @err() must still contain the raised error.
+    // @err must still contain the raised error.
     func error(from: *Surface, message: string = null, options: MessageDlgOptions = {})
     {
         var txt: String = String.from(message)
         if !txt.isEmpty():
             txt += "\n"
 
-        if @err() != null
+        if @err != null
         {
-            switch @err()
+            switch @err
             {
             case Swag.SystemError:
-                let err = cast(Swag.SystemError) @err()
+                let err = cast(Swag.SystemError) @err
                 txt += err.message
             }
         }

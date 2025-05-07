@@ -25,8 +25,8 @@ struct Book
 {
     var rea: Decoder'Read.Xml
     let v    = catch rea.readAll'Book(FILE)
-    if @err() != null:
-        Console.print(@err())
+    if @err != null:
+        Console.print(@err)
     @assert(v.price == 44)
     @assert(v.publish_date.year == 2000)
     @assert(v.publish_date.month == 10)

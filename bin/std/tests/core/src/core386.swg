@@ -14,5 +14,5 @@ struct A
     enc.errorIfUnknown = true
     var v: A
     catch enc.writeAll(&buf, v)
-    @assert(@err() != null)
+    @assert(@err != null)
 }

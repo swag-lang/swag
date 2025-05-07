@@ -7,5 +7,5 @@ func toto() throw => titi()
 #test
 {
     discard catch toto()
-    @assert(@err() == Err)
+    @assert(@err == Err)
 }

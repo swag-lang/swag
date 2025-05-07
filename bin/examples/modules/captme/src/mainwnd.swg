@@ -218,7 +218,7 @@ impl MainWnd
     mtd loadExternalImage(arg: string)
     {
         let imgToLoad = catch Image.load(arg)
-        if @err() != null
+        if @err != null
         {
             let str = Format.toString("Failed to load file: %", arg)
             MessageDlg.error(surface, str)
@@ -413,7 +413,7 @@ impl MainWnd
         func registerHotKey(mdf: Input.KeyModifiers, key: Input.Key, wndId: WndId)
         {
             catch getApp().registerHotKey(mdf, key, wndId, self)
-            if @err() != null
+            if @err != null
             {
                 if !errorReg
                 {

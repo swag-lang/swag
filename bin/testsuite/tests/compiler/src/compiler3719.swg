@@ -24,5 +24,5 @@ func titi() throw
 #test
 {
     catch titi()
-    @assert(@err() == ErrRead)
+    @assert(@err == ErrRead)
 }
