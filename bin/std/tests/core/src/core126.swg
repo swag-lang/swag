@@ -4,7 +4,7 @@ using Core
 {
     var arr: Array'u32
     for 100:
-        arr.add(cast(u32) #index)
+        arr.add(cast(u32) @index)
     Slice.quickSort(@mkslice(arr.buffer, cast(u64) arr.count), func(x, y) => y <=> x)
     for i in arr
     {

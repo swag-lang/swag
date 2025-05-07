@@ -56,7 +56,7 @@ func day4B()
         {
             j.base.lambda = &jobEntry
             j.data        = j
-            j.start       = #index
+            j.start       = @index
             Jobs.scheduleJob(j)
         }
 

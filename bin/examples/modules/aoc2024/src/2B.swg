@@ -28,7 +28,7 @@ func day2B()
 
     var total = 0
     foreach l in lines
-    {   
+    {
         var first0 = Tokenize.split(l, ' ''u8)
         var first = first0
 
@@ -39,8 +39,8 @@ func day2B()
             var bad = false
             foreach v in first
             {
-                let a = assume StrConv.toS32(v)        
-                if #index
+                let a = assume StrConv.toS32(v)
+                if @index
                 {
                     let diff = a - prev
                     if @abs(diff) < 1 or @abs(diff) > 3:

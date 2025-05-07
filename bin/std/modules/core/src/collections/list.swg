@@ -47,7 +47,7 @@ impl List
                 #else:
                     let #alias0 = #up n.value
                 let #alias1 = #up n
-                let #alias2 = #index
+                let #alias2 = @index
 
                 #inject(#up stmt, break = break to Up, continue = break to Down)
             }

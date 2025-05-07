@@ -53,7 +53,7 @@ func day6A()
     {
         foreach<Bytes> c in l:
             map.add(c)
-        if #index == lines.count - 1 or lines[#index + 1].length == 0
+        if @index == lines.count - 1 or lines[@index + 1].length == 0
         {
             total += map.count
             map.clear()

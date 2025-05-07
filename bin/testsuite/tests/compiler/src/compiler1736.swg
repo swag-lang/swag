@@ -4,7 +4,7 @@
     var a = 0'u64
     foreach "ABC"
     {
-        a += #index
+        a += @index
     }
 
     @assert(a == 3)

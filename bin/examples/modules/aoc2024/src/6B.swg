@@ -126,7 +126,7 @@ func day6B()
         {
             if sx+dx < 0 or sx+dx >= w or sy+dy < 0 or sy+dy >= h
             {
-                arr.ref2(sx,sy,w) = what            
+                arr.ref2(sx,sy,w) = what
                 return false
             }
 
@@ -143,30 +143,30 @@ func day6B()
                     dx = 0
                     dy = 1
                     what = 'B'
-                }  
+                }
                 elif dx == 0 and dy == 1
                 {
                     dx = -1
                     dy = 0
                     what = 'C'
-                }  
+                }
                 else
                 {
                     dx = 0
                     dy = -1
                     what = 'D'
-                } 
+                }
 
-                continue                
+                continue
             }
 
             let r = #ref arr.ref2(sx,sy,w)
-            
+
             if first:
-                what = 'O'   
+                what = 'O'
             elif r == what:
-               return true            
-            r = what            
+               return true
+            r = what
 
             sx += dx
             sy += dy
@@ -186,7 +186,7 @@ func day6B()
             continue
 
         var arr1 = arr0
-        arr1[#index] = '#'
+        arr1[@index] = '#'
 
         if test(&arr1, sx, sy, false):
             total += 1

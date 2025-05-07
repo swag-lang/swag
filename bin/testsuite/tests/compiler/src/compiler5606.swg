@@ -4,6 +4,6 @@
 #test
 {
     foreach "5":
-        if #index == 0:
+        if @index == 0:
             @assert(true)
 }

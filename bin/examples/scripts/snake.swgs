@@ -23,7 +23,7 @@ func paintSnake(painter: *Painter)
         let y = p.y * ElemSize
 
         painter.fillCircle(x, y, ElemSize * scale, Argb.Black)
-        if #index == 0:
+        if @index == 0:
             painter.fillCircle(x, y, ElemSize * 0.45, Argb.Green)
         scale -= 0.025
         scale = Math.max(scale, 0.4)

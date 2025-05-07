@@ -1,6 +1,6 @@
 /**
 # Introduction to `foreach`
-The `foreach` statement is designed to iterate over all elements within a collection. It provides a streamlined 
+The `foreach` statement is designed to iterate over all elements within a collection. It provides a streamlined
 and efficient way to process each item in a collection, which can be an array, slice, string and even a struct.
 */
 
@@ -10,8 +10,8 @@ and efficient way to process each item in a collection, which can be an array, s
     // The current byte will be stored in the variable 'value'.
     foreach value in "ABC"
     {
-        // '#index' is available to store the loop index.
-        let a = #index                                     // Index of the current iteration
+        // '@index' is available to store the loop index.
+        let a = @index                                     // Index of the current iteration
         switch a
         {
         case 0:
@@ -26,7 +26,7 @@ and efficient way to process each item in a collection, which can be an array, s
 
 /**
 # Naming the Value and Index
-Both the **value** and the loop **index** can be named explicitly. This enhances code readability, 
+Both the **value** and the loop **index** can be named explicitly. This enhances code readability,
 especially in cases involving nested loops or complex data structures.
 */
 
@@ -49,7 +49,7 @@ especially in cases involving nested loops or complex data structures.
 
 /**
 # Using Default Aliases
-Both the **value** and the **index** are optional. If names are not explicitly provided, 
+Both the **value** and the **index** are optional. If names are not explicitly provided,
 the default aliases `#alias0` for the value and `#alias1` for the index can be used.
 */
 
@@ -58,7 +58,7 @@ the default aliases `#alias0` for the value and `#alias1` for the index can be u
     foreach "ABC"
     {
         let a = #alias1                                    // Default alias for the index
-        @assert(a == #index)                               // Ensure alias matches the index
+        @assert(a == @index)                               // Ensure alias matches the index
         switch a
         {
         case 0:
@@ -73,7 +73,7 @@ the default aliases `#alias0` for the value and `#alias1` for the index can be u
 
 /**
 # Reverse Order with `#back`
-To iterate over elements in reverse order, use the `#back` modifier. This is particularly useful 
+To iterate over elements in reverse order, use the `#back` modifier. This is particularly useful
 when processing a collection from the last element to the first.
 */
 
@@ -83,18 +83,18 @@ when processing a collection from the last element to the first.
     var cpt = 0
     foreach #back value in "ABC"
     {
-        // '#index' still stores the loop index, even in reverse order.
+        // '@index' still stores the loop index, even in reverse order.
         switch cpt
         {
         case 0:
             @assert(value == 'C')                          // First value should be 'C'
-            @assert(#index == 2)                           // Index should be 2
+            @assert(@index == 2)                           // Index should be 2
         case 1:
             @assert(value == 'B')                          // Second value should be 'B'
-            @assert(#index == 1)                           // Index should be 1
+            @assert(@index == 1)                           // Index should be 1
         case 2:
             @assert(value == 'A')                          // Third value should be 'A'
-            @assert(#index == 0)                           // Index should be 0
+            @assert(@index == 0)                           // Index should be 0
         }
 
         cpt += 1                                           // Increment the counter
@@ -103,7 +103,7 @@ when processing a collection from the last element to the first.
 
 /**
 # Visiting Arrays and Slices
-The `foreach` statement can be used to iterate over arrays or slices, 
+The `foreach` statement can be used to iterate over arrays or slices,
 enabling straightforward processing of each element.
 */
 
@@ -136,7 +136,7 @@ enabling straightforward processing of each element.
 
 /**
 # Modifying Elements with `&`
-By prefixing the value name with `&`, `foreach` allows you to visit elements by address, 
+By prefixing the value name with `&`, `foreach` allows you to visit elements by address,
 enabling in-place modification of the elements.
 */
 

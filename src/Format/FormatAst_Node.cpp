@@ -93,8 +93,9 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
         case AstNodeKind::ExplicitNoInit:
             concat->addString("undefined");
             break;
+            
         case AstNodeKind::Index:
-            concat->addString("#index");
+            concat->addString("@index");
             break;
         case AstNodeKind::GetErr:
             concat->addString("@err");

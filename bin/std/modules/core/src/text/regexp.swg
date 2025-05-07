@@ -504,7 +504,7 @@ impl RegExp
         // Backreference
         for 9
         {
-            backward(out, RuneGroup1 + #index, curState)
+            backward(out, RuneGroup1 + @index, curState)
         }
 
         if Unicode.isAscii(c)

@@ -389,7 +389,7 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("#code", State.Intrinsic)
         mapWords.add("#type", State.Intrinsic)
         mapWords.add("#up", State.Intrinsic)
-        mapWords.add("#index", State.Intrinsic)
+        mapWords.add("@index", State.Intrinsic)
 
         mapWords.add("#prom", State.Modifier)
         mapWords.add("#wrap", State.Modifier)

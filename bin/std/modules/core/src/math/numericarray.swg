@@ -102,7 +102,7 @@ impl NumericArray
         Debug.assert(@countof(values) == N)
         var result: retval
         for N:
-            result.buf[#index] = values[#index]
+            result.buf[@index] = values[@index]
         return result
     }
 

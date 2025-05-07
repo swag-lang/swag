@@ -44,7 +44,7 @@ var toTreatCpt: u32
 
     for toTreatCpt
     {
-        //@print(toTreat[#index])
+        //@print(toTreat[@index])
         //@print("\n")
     }
 }

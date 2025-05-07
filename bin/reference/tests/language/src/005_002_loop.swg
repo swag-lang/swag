@@ -16,15 +16,15 @@ The `for` expression dictates the number of iterations and is evaluated only **o
 }
 
 /**
-# Using `#index`
-Within a `for`, the compiler automatically provides the `#index` keyword, which holds the current iteration index, starting from 0.
+# Using `@index`
+Within a `for`, the compiler automatically provides the `@index` keyword, which holds the current iteration index, starting from 0.
 */
 #test
 {
     var cpt = 0'u64
     for 5                             // Loop 5 times
     {
-        cpt += #index                 // Add the current index value to 'cpt' in each iteration
+        cpt += @index                 // Add the current index value to 'cpt' in each iteration
     }
 
     @assert(cpt == 0 + 1 + 2 + 3 + 4) // Assert that 'cpt' equals the sum of the indices
@@ -42,7 +42,7 @@ Assigning a name to the `for` index can improve code readability and clarify the
     for i in 5                        // The `for` index is named 'i'
     {
         cpt += i                      // Use the named index 'i'
-        cpt1 += #index                // '#index' is still accessible and returns the same value as 'i'
+        cpt1 += @index                // '@index' is still accessible and returns the same value as 'i'
     }
 
     @assert(cpt == 0 + 1 + 2 + 3 + 4) // Confirm that 'cpt' equals the sum of indices
@@ -60,7 +60,7 @@ The `for` construct is versatile and can iterate over any collection type that s
 
     var cpt = 0
     for arr:                          // Loop over the array's elements
-        cpt += arr[#index]            // Add the current element's value to 'cpt'
+        cpt += arr[@index]            // Add the current element's value to 'cpt'
     @assert(cpt == 10 + 20 + 30 + 40) // Verify that 'cpt' equals the sum of the array elements
 }
 
@@ -89,11 +89,11 @@ To iterate in reverse order, append the `#back` modifier to the `for` statement.
     for #back 3
     {
         if cpt == 0:
-            @assert(#index == 2)     // First iteration, index should be 2
+            @assert(@index == 2)     // First iteration, index should be 2
         elif cpt == 1:
-            @assert(#index == 1)     // Second iteration, index should be 1
+            @assert(@index == 1)     // Second iteration, index should be 1
         elif cpt == 2:
-            @assert(#index == 0)     // Third iteration, index should be 0
+            @assert(@index == 0)     // Third iteration, index should be 0
 
         cpt += 1
     }
@@ -206,7 +206,7 @@ A `for` without an expression but with a block of code creates an infinite loop,
 {
     for
     {
-        if #index == 4:              // Use `#index` to break the for after 4 iterations
+        if @index == 4:              // Use `@index` to break the for after 4 iterations
             break
     }
 }

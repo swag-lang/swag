@@ -21,7 +21,7 @@ func day1B()
     foreach l in lines
     {
         one += catch StrConv.toU64(l)
-        if l.isEmpty() or #index == lines.count - 1
+        if l.isEmpty() or @index == lines.count - 1
         {
             switch
             {

@@ -118,7 +118,7 @@ A scope in Swag can also be followed by a simple statement rather than a block, 
     {
         for 10
         {
-            if #index == 5:
+            if @index == 5:
                 break to Up      // Exits to the 'Up' scope when the inner loop index equals 5
         }
 

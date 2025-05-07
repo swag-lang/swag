@@ -3,7 +3,7 @@ func(T) inc(x: T) => x * x
 func(T) map(values: [..] T, cb: func(T)->T)
 {
     for values:
-        values[#index] = cb(values[#index])
+        values[@index] = cb(values[@index])
 }
 
 #test

@@ -76,7 +76,7 @@ impl HashSet
         #scope(Up)
         for capacity
         {
-            if table[#index].hash < HASH_FIRST:
+            if table[@index].hash < HASH_FIRST:
                 continue
 
             #scope(Down)
@@ -84,15 +84,15 @@ impl HashSet
             {
                 #if #up ptr
                 {
-                    let #alias0 = &#up table[#index].key
+                    let #alias0 = &#up table[@index].key
                 }
                 #elif Reflection.isStruct(K)
                 {
-                    let #alias0 = cast(const &K) &#up table[#index].key
+                    let #alias0 = cast(const &K) &#up table[@index].key
                 }
                 #else
                 {
-                    let #alias0 = #up table[#index].key
+                    let #alias0 = #up table[@index].key
                 }
 
                 #inject(#up stmt, break = break to Up, continue = break to Down)
@@ -369,7 +369,7 @@ impl StrConv.IConvert for HashSet
         buf.addBytes("[")
         foreach k in dref self
         {
-            if #index:
+            if @index:
                 buf.addBytes(", ")
             StrConv.convert'K(buf, k, convFormat, strFormat)
         }

@@ -12,7 +12,7 @@ struct AA
     var t: AA
     for t.x
     {
-        if #index > 10:
+        if @index > 10:
             break;
     }
 }

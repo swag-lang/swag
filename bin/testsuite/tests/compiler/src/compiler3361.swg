@@ -11,7 +11,7 @@ func toto(x: s32, stmt: #code void)
     {
         #macro
         {
-            var #alias0 = #index
+            var #alias0 = @index
             #inject(#up stmt)
         }
     }

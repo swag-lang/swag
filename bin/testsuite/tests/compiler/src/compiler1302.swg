@@ -15,7 +15,7 @@ func toto(x: #code void)
     var cpt = 0'u64
     toto()
     {
-        cpt += #index
+        cpt += @index
     }
 
     @assert(cpt == 45)

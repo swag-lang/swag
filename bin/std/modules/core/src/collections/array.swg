@@ -41,7 +41,7 @@ impl Array
         #if Reflection.hasPostCopy(T)
         {
             for count:
-                buffer[#index] = #nodrop oldBuffer[#index]
+                buffer[@index] = #nodrop oldBuffer[@index]
         }
         #else
         {
@@ -152,7 +152,7 @@ impl Array
                     let #alias0 = cast(&T) #up scan
                 #else:
                     let #alias0 = #up scan[0]
-                let #alias1 = #index
+                let #alias1 = @index
                 #inject(#up stmt)
             }
         }
@@ -321,7 +321,7 @@ impl Array
         #if Reflection.hasDrop(T)
         {
             for count:
-                @drop(buffer + #index)
+                @drop(buffer + @index)
         }
 
         count = 0
@@ -532,7 +532,7 @@ impl Array
             var destPtr = buffer + oldCount
             for sliceCount
             {
-                dref destPtr = #nodrop values[#index]
+                dref destPtr = #nodrop values[@index]
                 destPtr += 1
             }
         }

@@ -4,7 +4,7 @@
     var a = 0'u32
     foreach "ABC"
     {
-        switch #index
+        switch @index
         {
             case 0: break
             case 1: break

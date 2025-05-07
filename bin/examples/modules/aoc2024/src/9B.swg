@@ -47,7 +47,7 @@ func day9BA()
     foreach t in line
     {
         let r = t - '0'
-        if #index & 1:
+        if @index & 1:
             map.add({-1, r})
         else
         {

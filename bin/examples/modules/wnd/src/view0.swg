@@ -326,7 +326,7 @@ func createView0(tabView: *Tab, view: *Wnd)
         for 5
         {
             let view0 = Wnd.create'Wnd(tab)
-            let n     = Format.toString("Tab%", #index == 0 ? 1568 : #index)
+            let n     = Format.toString("Tab%", @index == 0 ? 1568 : @index)
             tab.addItem(n, app.theme.getIcon24(ThemeIcons24.Search, 16), view0)
             Label.create(view0, n, {10, 10, 50, 30})
         }

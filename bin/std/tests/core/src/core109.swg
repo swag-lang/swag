@@ -4,7 +4,7 @@ using Core
 {
     var x: Array's32
     for 5:
-        x.add(cast(s32) #index)
+        x.add(cast(s32) @index)
 
     var total = 0
     foreach v in x:

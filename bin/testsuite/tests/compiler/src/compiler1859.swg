@@ -800,7 +800,7 @@ func aaa(ptr: *s64)
 
         {
             for 4
-                print(cast(s64) #index)
+                print(cast(s64) @index)
         }
 
         {

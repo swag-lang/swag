@@ -12,13 +12,13 @@ impl S
         for var v = down; v <= up; v += 1
         {
             let #alias0 = v
-            let #alias1 = #index
+            let #alias1 = @index
             #inject(stmt)
 
             /*#macro
             {
                 let alias0 = x
-                let alias1 = #index
+                let alias1 = @index
                 //#inject(#up stmt)
             }*/
         }

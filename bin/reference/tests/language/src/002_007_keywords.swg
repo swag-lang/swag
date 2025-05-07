@@ -164,7 +164,7 @@ Compiler instructions are prefixed with `#` and are reserved for specific operat
 #code
 #type
 #up
-#index
+@index
 
 #alias0
 #alias1

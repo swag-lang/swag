@@ -59,7 +59,7 @@ func day6B0()
         foreach<Bytes> c in l:
             count[c - 'a'] += 1
 
-        if #index == lines.count - 1 or lines[#index + 1].length == 0
+        if @index == lines.count - 1 or lines[@index + 1].length == 0
         {
             foreach c in count where c == num:
                 total += 1
@@ -93,7 +93,7 @@ func day6B1()
             interVal &= lineVal
         }
 
-        if #index == lines.count - 1 or lines[#index + 1].length == 0
+        if @index == lines.count - 1 or lines[@index + 1].length == 0
         {
             total += Math.countOnes(interVal)
             interVal = ~0

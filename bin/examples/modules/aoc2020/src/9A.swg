@@ -58,7 +58,7 @@ func day9A()
     foreach l in lines
     {
         let v1 = assume StrConv.toS32(l)
-        if #index < N
+        if @index < N
         {
             foreach v0 in val:
                 sum.add(v0 + v1)

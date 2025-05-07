@@ -17,12 +17,12 @@ func day4A()
 {
     for
     {
-        let str = Format.toString("yzbqklnj%", #index)
+        let str = Format.toString("yzbqklnj%", @index)
         let v   = Hash.Md5.compute(str)
         if v[0] == 0 and v[1] == 0 and (v[2] & 0xF0) == 0
         {
-            //Console.print("total: ", #index)
-            @assert(#index == 282749)
+            //Console.print("total: ", @index)
+            @assert(@index == 282749)
             break
         }
     }

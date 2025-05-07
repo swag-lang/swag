@@ -86,6 +86,6 @@ func quick(values: [..] s32, cb: func(s32, s32)->s32)
 #test
 {
     var arr: [12] s32
-    for @countof(arr): arr[#index] = cast(s32) #index
+    for @countof(arr): arr[@index] = cast(s32) @index
     quick(arr, func(x, y) => y <=> x)
 }

@@ -12,7 +12,7 @@ func(T) dec(x: *T)
 func(T) map(values: [..] T, cb: func(*T))
 {
     for values:
-        cb(&values[#index])
+        cb(&values[@index])
 }
 
 #test

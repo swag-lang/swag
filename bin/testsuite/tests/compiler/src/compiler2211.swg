@@ -18,10 +18,10 @@ impl A
 {
     for 4
     {
-        if #index == 0:
+        if @index == 0:
             continue // should not drop x !
         var x: A
-        if #index == 2:
+        if @index == 2:
             break
     }
 

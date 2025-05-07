@@ -1,8 +1,8 @@
 /**
 # `defer` Statement
-The `defer` statement allows you to specify an expression that will be automatically executed when the 
-current scope is exited. Since `defer` operates purely at compile time, the deferred expression is not 
-evaluated until the block of code in which it is defined is left. This feature is useful for managing 
+The `defer` statement allows you to specify an expression that will be automatically executed when the
+current scope is exited. Since `defer` operates purely at compile time, the deferred expression is not
+evaluated until the block of code in which it is defined is left. This feature is useful for managing
 resources, ensuring cleanup operations, and maintaining code clarity.
 */
 #test
@@ -16,8 +16,8 @@ resources, ensuring cleanup operations, and maintaining code clarity.
 
 /**
 # Defer in a Block
-The `defer` statement can also encapsulate multiple expressions within a block. This allows you to 
-group together operations that should all be executed upon exiting the scope, maintaining the integrity 
+The `defer` statement can also encapsulate multiple expressions within a block. This allows you to
+group together operations that should all be executed upon exiting the scope, maintaining the integrity
 of your logic and ensuring that all necessary actions are performed.
 */
 #test
@@ -36,9 +36,9 @@ of your logic and ensuring that all necessary actions are performed.
 
 /**
 # Defer with Control Flow
-The `defer` expression is executed whenever the scope is exited, including in the presence of control 
-flow statements like `return`, `break`, or `continue`. This behavior makes `defer` particularly 
-advantageous for scenarios that require guaranteed execution of specific operations, such as resource 
+The `defer` expression is executed whenever the scope is exited, including in the presence of control
+flow statements like `return`, `break`, or `continue`. This behavior makes `defer` particularly
+advantageous for scenarios that require guaranteed execution of specific operations, such as resource
 cleanup or ensuring that certain conditions are met, regardless of how the code block is terminated.
 */
 #test
@@ -59,8 +59,8 @@ cleanup or ensuring that certain conditions are met, regardless of how the code 
 
 /**
 # Defer Execution Order
-When multiple `defer` statements are declared, they are executed in the reverse order of their 
-declaration. This ensures that the most recently deferred operation occurs first upon scope exit, 
+When multiple `defer` statements are declared, they are executed in the reverse order of their
+declaration. This ensures that the most recently deferred operation occurs first upon scope exit,
 providing a predictable and manageable flow of operations.
 */
 #test
@@ -74,9 +74,9 @@ providing a predictable and manageable flow of operations.
 
 /**
 # Example: Defer for Resource Management
-A common use case for `defer` is in resource management, such as the creation and subsequent release 
-of resources. By placing the release logic immediately after the creation logic, the code becomes 
-more readable and ensures that resources are always properly managed, even in the event of an error or 
+A common use case for `defer` is in resource management, such as the creation and subsequent release
+of resources. By placing the release logic immediately after the creation logic, the code becomes
+more readable and ensures that resources are always properly managed, even in the event of an error or
 early exit.
 */
 #test
@@ -95,7 +95,7 @@ early exit.
             releaseResource(&resource)              // Release the resource when exiting the loop.
         }
 
-        if #index == 2:
+        if @index == 2:
             break      // Exit for early, defer block still ensures resource release.
     }
 
@@ -104,9 +104,9 @@ early exit.
 
 /**
 # Example: Defer in Error Handling
-In more complex functions, `defer` proves invaluable for ensuring that resources are cleaned up 
-reliably, even in the presence of errors or early returns. This pattern is essential for writing 
-robust, error-resilient code that gracefully handles failure scenarios while ensuring that all necessary 
+In more complex functions, `defer` proves invaluable for ensuring that resources are cleaned up
+reliably, even in the presence of errors or early returns. This pattern is essential for writing
+robust, error-resilient code that gracefully handles failure scenarios while ensuring that all necessary
 cleanup is performed.
 */
 #test

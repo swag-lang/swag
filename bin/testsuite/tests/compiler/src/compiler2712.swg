@@ -5,6 +5,6 @@
 {
     foreach s in tt
     {
-        @assert(s == #index)
+        @assert(s == @index)
     }
 }

@@ -415,7 +415,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("#swagbuildnum", TokenId::CompilerBuildNum);
     keywords.add("#swagos", TokenId::CompilerSwagOs);
 
-    keywords.add("#index", TokenId::CompilerIndex);
+    keywords.add("@index", TokenId::CompilerIndex);
 
     keywords.add("#defined", TokenId::CompilerDefined);
     keywords.add("#offsetof", TokenId::CompilerOffsetOf);

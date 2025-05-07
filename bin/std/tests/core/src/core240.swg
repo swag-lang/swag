@@ -7,8 +7,8 @@ using Core
 
     foreach &p, cpt in x
     {
-        var v   = #index
-        var str = Format.toString("%", #index)
+        var v   = @index
+        var str = Format.toString("%", @index)
         @assert(str == "0" or str == "1")
     }
 }

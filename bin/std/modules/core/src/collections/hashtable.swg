@@ -112,7 +112,7 @@ impl HashTable
         #scope(Up)
         for capacity
         {
-            if table[#index].hash < HASH_FIRST:
+            if table[@index].hash < HASH_FIRST:
                 continue
 
             #scope(Down)
@@ -120,19 +120,19 @@ impl HashTable
             {
                 #if #up ptr
                 {
-                    let #alias0 = &#up table[#index].key
-                    let #alias1 = &#up table[#index].value
+                    let #alias0 = &#up table[@index].key
+                    let #alias1 = &#up table[@index].value
                 }
                 #else
                 {
                     #if Reflection.isStruct(K):
-                        let #alias0 = cast(const &K) &#up table[#index].key
+                        let #alias0 = cast(const &K) &#up table[@index].key
                     #else:
-                        let #alias0 = #up table[#index].key
+                        let #alias0 = #up table[@index].key
                     #if Reflection.isStruct(V):
-                        let #alias1 = cast(const &V) &#up table[#index].value
+                        let #alias1 = cast(const &V) &#up table[@index].value
                     #else:
-                        let #alias1 = #up table[#index].value
+                        let #alias1 = #up table[@index].value
                 }
 
                 #inject(#up stmt, break = break to Up, continue = break to Down)
@@ -493,7 +493,7 @@ impl StrConv.IConvert for HashTable
         buf.addBytes("[")
         foreach k, v in dref self
         {
-            if #index:
+            if @index:
                 buf.addBytes(", ")
 
             buf.addBytes("key = ")

@@ -14,5 +14,5 @@ using Core
     }
 
     for x:
-        @assert(x[#index] == 666)
+        @assert(x[@index] == 666)
 }

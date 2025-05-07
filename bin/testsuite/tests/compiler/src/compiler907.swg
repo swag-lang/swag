@@ -3,7 +3,7 @@
 func arithmeticMean(numbers: f64...) -> f64 {
     var total: f64 = 0
     for numbers {
-        total += numbers[#index]
+        total += numbers[@index]
     }
     return total / @countof(numbers)
 }

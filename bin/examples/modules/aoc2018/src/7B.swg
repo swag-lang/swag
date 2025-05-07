@@ -79,7 +79,7 @@ func day7B()
                 continue
             w.tick -= 1
             if w.tick == 0:
-                done.add(#index)
+                done.add(@index)
         }
 
         var avail: Array'u8

@@ -632,24 +632,24 @@ bool Semantic::resolveVisit(SemanticContext* context)
         {
             content += R"(let )";
             content += alias0Name;
-            content += form(R"( = __addr%u + #index; )", id);
+            content += form(R"( = __addr%u + @index; )", id);
         }
         else if (pointedType->isStruct())
         {
             content += R"(let )";
             content += alias0Name;
-            content += form(R"( = #ref &__addr%u[#index]; )", id);
+            content += form(R"( = #ref &__addr%u[@index]; )", id);
         }
         else
         {
             content += R"(let )";
             content += alias0Name;
-            content += form(R"( = __addr%u[#index]; )", id);
+            content += form(R"( = __addr%u[@index]; )", id);
         }
 
         content += R"(let )";
         content += alias1Name;
-        content += R"( = #index;}})";
+        content += R"( = @index;}})";
     }
 
     // One dimensional array
@@ -672,24 +672,24 @@ bool Semantic::resolveVisit(SemanticContext* context)
         {
             content += R"(let )";
             content += alias0Name;
-            content += form(R"( = __addr%u + #index; )", id);
+            content += form(R"( = __addr%u + @index; )", id);
         }
         else if (pointedType->isStruct())
         {
             content += R"(let )";
             content += alias0Name;
-            content += form(R"( = #ref &__addr%u[#index]; )", id);
+            content += form(R"( = #ref &__addr%u[@index]; )", id);
         }
         else
         {
             content += R"(let )";
             content += alias0Name;
-            content += form(R"( = __addr%u[#index]; )", id);
+            content += form(R"( = __addr%u[@index]; )", id);
         }
 
         content += R"(let )";
         content += alias1Name;
-        content += R"( = #index;}})";
+        content += R"( = @index;}})";
     }
 
     // Slice
@@ -711,24 +711,24 @@ bool Semantic::resolveVisit(SemanticContext* context)
         {
             content += "let ";
             content += alias0Name;
-            content += form(R"( = __addr%u + #index; )", id);
+            content += form(R"( = __addr%u + @index; )", id);
         }
         else if (pointedType->isStruct())
         {
             content += R"(let )";
             content += alias0Name;
-            content += form(R"( = #ref &__addr%u[#index]; )", id);
+            content += form(R"( = #ref &__addr%u[@index]; )", id);
         }
         else
         {
             content += R"(let )";
             content += alias0Name;
-            content += form(R"( = __addr%u[#index]; )", id);
+            content += form(R"( = __addr%u[@index]; )", id);
         }
 
         content += R"(let )";
         content += alias1Name;
-        content += R"( = #index;}})";
+        content += R"( = @index;}})";
     }
 
     // String
@@ -747,18 +747,18 @@ bool Semantic::resolveVisit(SemanticContext* context)
         {
             content += R"(let )";
             content += alias0Name;
-            content += form(R"( = __addr%u + #index; )", id);
+            content += form(R"( = __addr%u + @index; )", id);
         }
         else
         {
             content += R"(let )";
             content += alias0Name;
-            content += form(R"( = __addr%u[#index]; )", id);
+            content += form(R"( = __addr%u[@index]; )", id);
         }
 
         content += R"(let )";
         content += alias1Name;
-        content += R"( = #index;}})";
+        content += R"( = @index;}})";
     }
 
     // Variadic
@@ -775,11 +775,11 @@ bool Semantic::resolveVisit(SemanticContext* context)
         firstAliasVar = 0;
         content += R"(let )";
         content += alias0Name;
-        content += form(R"( = %s[#index]; )", result.cstr());
+        content += form(R"( = %s[@index]; )", result.cstr());
 
         content += R"(let )";
         content += alias1Name;
-        content += R"( = #index;}})";
+        content += R"( = @index;}})";
     }
 
     // Enum
@@ -800,11 +800,11 @@ bool Semantic::resolveVisit(SemanticContext* context)
         content += alias0Name;
         content += R"( = dref cast(const* )";
         content += typeInfo->name;
-        content += form(R"() __addr%u.values[#index].value; )", id);
+        content += form(R"() __addr%u.values[@index].value; )", id);
 
         content += R"(let )";
         content += alias1Name;
-        content += R"( = #index;}})";
+        content += R"( = @index;}})";
     }
     else if (typeInfo->isPointer())
     {

@@ -22,7 +22,7 @@ func day1B()
         total += c == '(' ? 1 : -1
         if total == -1
         {
-            total = 1 + cast(s32) #index
+            total = 1 + cast(s32) @index
             break
         }
     }

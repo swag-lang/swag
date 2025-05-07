@@ -2,5 +2,5 @@
 
 #test
 {
-    if Swag.#index {}
+    if Swag.@index {}
 }

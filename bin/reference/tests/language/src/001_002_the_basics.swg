@@ -73,7 +73,7 @@ const CanPrint = false  // Must be set to 'true' to show the result of '@print'
 
 func print(x: ...)
 {
-    if CanPrint: 
+    if CanPrint:
         @print(x)
 }
 
@@ -150,7 +150,7 @@ Tuples allow you to group multiple values into a single compound value. The valu
 {
     let person = {"Alice", 30, true}
     let (name, age, isActive) = person
-    
+
     print(name, " is ", age, " years old. Active: ", isActive, "\n")
 
     // You can also access tuple elements by their index:
@@ -182,7 +182,7 @@ You can still use curly braces for control blocks if you prefer:
     let temperature = 30
     if temperature > 25 {
         print("It's hot!\n")
-    } 
+    }
     else {
         print("It's cool!\n")
     }
@@ -197,7 +197,7 @@ Swag also has flexible loop constructs like `for` and `while`:
     // Iterate 10 times
     for 10
     {
-        print("Iteration: ", #index, "\n")
+        print("Iteration: ", @index, "\n")
     }
 
     for var i: u32 = 0; i < 10; i += 2
@@ -206,7 +206,7 @@ Swag also has flexible loop constructs like `for` and `while`:
     }
 
     var countdown: u32 = 5
-    while countdown > 0 
+    while countdown > 0
     {
         print("T-minus ", countdown, "\n")
         countdown -= 1
@@ -251,7 +251,7 @@ Functions in Swag can return multiple values using tuples:
 
 #test
 {
-    func splitName() -> {x: string, y: string} 
+    func splitName() -> {x: string, y: string}
     {
         return {"a", "b"}
     }
@@ -271,9 +271,9 @@ Swag provides robust error handling mechanisms using `throw`, `try`, and `catch`
 In Swag, a function can signal that it might encounter an error by being annotated with the `throw` keyword. This indicates that the function might raise an error during execution, and any function calling it must use the `try` keyword to handle the potential error.
 */
 
-func divide(a: s32, b: s32) -> s32 throw 
+func divide(a: s32, b: s32) -> s32 throw
 {
-    if b == 0 
+    if b == 0
     {
         throw Swag.BaseError{"Division by zero!"}
     }
@@ -281,7 +281,7 @@ func divide(a: s32, b: s32) -> s32 throw
     return a / b
 }
 
-#test 
+#test
 {
     let result = try divide(10, 2)  // Propagates the error if one occurs
     print("Result: ", result, "\n") // Outputs 5
@@ -296,7 +296,7 @@ If an error is raised inside the `divide` function, it will be propagated to the
 Instead of propagating errors, you can catch and handle them within the function using the `catch` keyword. When an error occurs, Swag provides the error through the `@err()` intrinsic, which can be checked and handled.
 */
 
-#test 
+#test
 {
     let result = catch divide(10, 0)
     if @err() != null {
@@ -318,7 +318,7 @@ func safeDivide(a: s32, b: s32) -> s32 {
     return trycatch divide(a, b)
 }
 
-#test 
+#test
 {
     let result = safeDivide(10, 0)
     print("Result: ", result, "\n") // Outputs 0, the default value

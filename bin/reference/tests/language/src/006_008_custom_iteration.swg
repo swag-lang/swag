@@ -56,7 +56,7 @@ impl MyStruct
                 }
 
                 // `#alias1` holds the current index of the iteration.
-                var #alias1 = #index
+                var #alias1 = @index
 
                 // Insert user-defined logic from the calling scope.
                 #inject(#up stmt)
@@ -124,7 +124,7 @@ impl MyStruct
                     #alias0 = #up self.x  // Accessing field 'x' in reverse order
                 }
 
-                var #alias1 = #index
+                var #alias1 = @index
                 #inject(#up stmt)
             }
         }
@@ -194,7 +194,7 @@ impl SliceStruct
                 var #alias0 = #up self.buffer[#up idx]
 
                 // #alias1 represents the current index.
-                var #alias1 = #index
+                var #alias1 = @index
 
                 // Insert the user-provided logic from the caller.
                 #inject(#up stmt)

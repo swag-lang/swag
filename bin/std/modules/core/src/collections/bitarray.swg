@@ -80,7 +80,7 @@ public impl BitArray
 
         for Math.max(count >> 5, 1)
         {
-            if buffer[#index] != other.buffer[#index]:
+            if buffer[@index] != other.buffer[@index]:
                 return false
         }
 
@@ -201,7 +201,7 @@ public impl BitArray
         if !count:
             return
         for Math.max(count >> 5, 1):
-            buffer[#index] = ~buffer[#index]
+            buffer[@index] = ~buffer[@index]
     }
 
     // Performs the bitwise AND operation between the elements of the current 'BitArray' and the corresponding elements in the specified array.
@@ -212,7 +212,7 @@ public impl BitArray
         if !count:
             return
         for Math.max(count >> 5, 1):
-            buffer[#index] &= other.buffer[#index]
+            buffer[@index] &= other.buffer[@index]
     }
 
     // Performs the bitwise OR operation between the elements of the current 'BitArray' and the corresponding elements in the specified array.
@@ -223,7 +223,7 @@ public impl BitArray
         if !count:
             return
         for Math.max(count >> 5, 1):
-            buffer[#index] |= other.buffer[#index]
+            buffer[@index] |= other.buffer[@index]
     }
 
     // Performs the bitwise XOR operation between the elements of the current 'BitArray' and the corresponding elements in the specified array.
@@ -234,6 +234,6 @@ public impl BitArray
         if !count:
             return
         for Math.max(count >> 5, 1):
-            buffer[#index] ^= other.buffer[#index]
+            buffer[@index] ^= other.buffer[@index]
     }
 }

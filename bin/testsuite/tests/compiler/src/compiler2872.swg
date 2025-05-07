@@ -6,14 +6,14 @@
     var c = 0
     for #back y to x
     {
-        c += #index
+        c += @index
     }
     @assert(c == 10+9+8+7+6+5)
 
     c = 0
     for y to x
     {
-        c += #index
+        c += @index
     }
     @assert(c == 10+9+8+7+6+5)
 }

@@ -4,7 +4,7 @@ using Core
 {
     var h: HashSet'u64
     for 65:
-        h.add(#index)
+        h.add(@index)
 
     foreach v in h
     {

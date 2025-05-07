@@ -106,7 +106,7 @@ impl SelModel
                 #macro
                 {
                     let #alias0 = #up i
-                    let #alias1 = #index
+                    let #alias1 = @index
                     #inject(#up stmt, break = break to Up)
                 }
             }

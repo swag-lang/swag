@@ -174,7 +174,7 @@ func computeMoves()
 
         var moves: Array's8
 
-        let i = cast(s8) #index
+        let i = cast(s8) @index
         switch cell.piece
         {
         case Pawn:

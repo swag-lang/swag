@@ -58,7 +58,7 @@ impl IActionUI for ActionSelection
         case CmdIdFreeze:
             evt.setFlags |= .Name | .Checked | .Name
             evt.name    = "Freeze Selection"
-            evt.checked = main.freezeSel            
+            evt.checked = main.freezeSel
         }
 
         return true
@@ -74,7 +74,7 @@ impl IActionUI for ActionSelection
         case CmdIdSelectAll:
             capture.selection.clear()
             for capture.forms:
-                capture.selection.add(#index)
+                capture.selection.add(@index)
             capture.selectionHasChanged()
 
         case CmdIdDeSelectAll:

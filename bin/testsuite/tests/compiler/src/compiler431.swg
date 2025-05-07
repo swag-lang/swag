@@ -14,7 +14,7 @@ func len(buffer: const [..] u8)
 	for buffer
 	{
 		result += 1
-		total += cast(s32) buffer[#index]
+		total += cast(s32) buffer[@index]
 	}
 
 	@assert(total == 10)
