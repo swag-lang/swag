@@ -2,7 +2,7 @@
 #[Swag.Optimize("", false)]
 #test
 {
-    if @isbytecode()
+    if @isbytecode
     {
         let cfg = @compiler().getBuildCfg().safetyGuards
         @assert(#sizeof(cfg) == 2)

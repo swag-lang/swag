@@ -18,13 +18,19 @@ func @assert(value: bool);                       // Asserts that a condition is 
 func @breakpoint();                              // Triggers a breakpoint in the debugger.
 func @getcontext() -> *Swag.Context;             // Retrieves the current execution context.
 func @setcontext(context: const *Swag.Context);  // Sets the current execution context.
-func @isbytecode() -> bool;                      // Checks if the code is being executed as bytecode.
 func @compiler() -> Swag.ICompiler;              // Retrieves the current compiler interface.
 
-func @args -> const [..] string;               // Returns the command-line arguments passed to the program.
 @panic()                                         // Triggers a panic, stopping program execution.
 @compilererror()                                 // Generates a compile-time error.
 @compilerwarning()                               // Generates a compile-time warning.
+
+/**
+# Values Intrinsics
+*/
+
+@err:        any                    // The current raised error (null if none)
+@args:       const [..] string      // The command-line arguments passed to the program.
+@isbytecode: bool                   // True if the code is being executed as bytecode
 
 /**
 # Built-in Intrinsics

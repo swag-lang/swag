@@ -1,7 +1,7 @@
 /*#[Swag.Compiler, Swag.Inline]
 func set()
 {
-    @assert(@isbytecode())
+    @assert(@isbytecode)
 }
 
 //#[Swag.PrintBc]
@@ -12,7 +12,7 @@ func set()
     {
         #run
         {
-            @assert(@isbytecode())
+            @assert(@isbytecode)
             set()
         }
 

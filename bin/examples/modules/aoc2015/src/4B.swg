@@ -12,7 +12,7 @@ func day4B()
     #if #cfg == "release"
     {
 
-        if @isbytecode():
+        if @isbytecode:
             return
 
         //Time.Stopwatch.scopeMeasure()

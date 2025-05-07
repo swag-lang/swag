@@ -597,6 +597,7 @@ void LanguageSpec::setupIntrinsicConstants()
 {
     intrinsicConstants.insert("@err");
     intrinsicConstants.insert("@args");
+    intrinsicConstants.insert("@isbytecode");
 }
 
 void LanguageSpec::setup()

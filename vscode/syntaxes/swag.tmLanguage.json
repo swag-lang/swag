@@ -118,7 +118,7 @@
       "patterns": [
         {
           "name": "entity.name.function.intrinsic",
-          "match": "(@)(itftableof|modules|gvtd|stringcmp|dbgalloc|sysalloc|rtflags|typecmp|is|as|interfaceof|pinfos|getcontext|setcontext|compiler|isbytecode|print|compilererror|compilerwarning|breakpoint|assert|panic|init|drop|mkany|mkslice|mkstring|mkcallback|mkinterface|kindof|countof|dataof|postcopy|postmove|spread)\\b"
+          "match": "(@)(itftableof|modules|gvtd|stringcmp|dbgalloc|sysalloc|rtflags|typecmp|is|as|interfaceof|pinfos|getcontext|setcontext|compiler|print|compilererror|compilerwarning|breakpoint|assert|panic|init|drop|mkany|mkslice|mkstring|mkcallback|mkinterface|kindof|countof|dataof|postcopy|postmove|spread)\\b"
         }
       ]
     },
@@ -134,7 +134,7 @@
       "patterns": [
         {
           "name": "constant.character.escape",
-          "match": "(@)(index|err|args)\\b"
+          "match": "(@)(index|err|args|isbytecode)\\b"
         }
       ]
     },
