@@ -1,1 +1,1 @@
-const CFG: Swag.BuildCfg = #run dref @compiler().getBuildCfg()
+const CFG: Swag.BuildCfg = #run dref @compiler.getBuildCfg()

@@ -19,7 +19,7 @@ var g: Array'OneFunc
 
 #message(CompilerMsgMask.SemFunctions)
 {
-    let itf = @compiler()
+    let itf = @compiler
     let msg = itf.getMessage()
     if msg.type.kind != TypeInfoKind.Func:
         return
@@ -48,7 +48,7 @@ var g: Array'OneFunc
 
     builderFct.appendString("}\n")
 
-    let itf = @compiler()
+    let itf = @compiler
 
     var strVars = builderVars.toString()
     //Console.print("%\n", strVars)

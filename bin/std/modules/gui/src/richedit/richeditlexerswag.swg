@@ -229,7 +229,7 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("@as", State.Intrinsic)
         mapWords.add("@getcontext", State.Intrinsic)
         mapWords.add("@pinfos", State.Intrinsic)
-        mapWords.add("@isbytecode", State.Intrinsic)
+        mapWords.add("@bytecode", State.Intrinsic)
         mapWords.add("@compiler", State.Intrinsic)
         mapWords.add("@modules", State.Intrinsic)
         mapWords.add("@gvtd", State.Intrinsic)

@@ -67,5 +67,5 @@ enum Metrics
 {
     let str = getNativeArgs()
     if @countof(str):
-        @pinfos().args = str
+        @pinfos.args = str
 }

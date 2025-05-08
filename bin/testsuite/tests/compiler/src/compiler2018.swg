@@ -15,6 +15,6 @@ struct(T) toto
 {
     var x0: toto's32
     var x1: toto'f64
-    if @isbytecode:
+    if @bytecode:
         @assert(G == 2)
 }

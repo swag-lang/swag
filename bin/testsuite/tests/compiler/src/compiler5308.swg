@@ -2,7 +2,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    #if true and !@isbytecode
+    #if true and !@bytecode
     {
         @print("toto")
     }

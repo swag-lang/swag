@@ -767,7 +767,6 @@ namespace Swag
     }
 
     // These are the optimization levels for the backend.
-    // Only 'LLVM' backend uses this, as the 'X86_64' backend does not have an optimization pass.
     enum BuildCfgBackendOptim
     {
         O0     // No optimization
@@ -948,13 +947,14 @@ func @getcontext()->*Swag.Context;
 // Replace the current thread context.
 func @setcontext(context: const *Swag.Context);
 // Get information about the current process.
+
 func @pinfos()->*Swag.ProcessInfos;
-// Returns 'true' is the current execution is bytecode.
-func @isbytecode()->bool;
 // Returns the list of all loaded modules.
 func @modules()->const [..] Swag.Module;
 // Returns the list of all global variables.
 func @gvtd()->const [..] Swag.Gvtd;
+// Returns 'true' is the current execution is bytecode.
+func @bytecode()->bool;
 // Returns an [[ICompiler]] interface to communicate with the compiler.
 func @compiler()->Swag.ICompiler;
 

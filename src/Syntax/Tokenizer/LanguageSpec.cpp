@@ -441,7 +441,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("@args", TokenId::IntrinsicArguments);
     keywords.add("@compiler", TokenId::IntrinsicCompiler);
     keywords.add("@err", TokenId::IntrinsicGetErr);
-    keywords.add("@isbytecode", TokenId::IntrinsicIsByteCode);
+    keywords.add("@bytecode", TokenId::IntrinsicIsByteCode);
     keywords.add("@print", TokenId::IntrinsicPrint);
     keywords.add("@compilererror", TokenId::IntrinsicCompilerError);
     keywords.add("@compilerwarning", TokenId::IntrinsicCompilerWarning);
@@ -597,7 +597,12 @@ void LanguageSpec::setupIntrinsicConstants()
 {
     intrinsicConstants.insert("@err");
     intrinsicConstants.insert("@args");
-    intrinsicConstants.insert("@isbytecode");
+    intrinsicConstants.insert("@bytecode");
+    intrinsicConstants.insert("@compiler");
+    intrinsicConstants.insert("@pinfos");
+    intrinsicConstants.insert("@modules");
+    intrinsicConstants.insert("@gvtd");
+
 }
 
 void LanguageSpec::setup()

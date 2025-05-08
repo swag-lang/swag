@@ -10,7 +10,7 @@ var G: s32
 
 #message(Swag.CompilerMsgMask.SemTypes)
 {
-    let itf = @compiler()
+    let itf = @compiler
     let msg = itf.getMessage()
     @assert(msg.type != null)
     if msg.type.name == "S_AA3273": G += 1

@@ -18,7 +18,7 @@ func @assert(value: bool);                       // Asserts that a condition is 
 func @breakpoint();                              // Triggers a breakpoint in the debugger.
 func @getcontext() -> *Swag.Context;             // Retrieves the current execution context.
 func @setcontext(context: const *Swag.Context);  // Sets the current execution context.
-func @compiler() -> Swag.ICompiler;              // Retrieves the current compiler interface.
+func @compiler -> Swag.ICompiler;              // Retrieves the current compiler interface.
 
 @panic()                                         // Triggers a panic, stopping program execution.
 @compilererror()                                 // Generates a compile-time error.
@@ -30,7 +30,7 @@ func @compiler() -> Swag.ICompiler;              // Retrieves the current compil
 
 @err:        any                    // The current raised error (null if none)
 @args:       const [..] string      // The command-line arguments passed to the program.
-@isbytecode: bool                   // True if the code is being executed as bytecode
+@bytecode: bool                   // True if the code is being executed as bytecode
 
 /**
 # Built-in Intrinsics
@@ -55,7 +55,7 @@ low-level or performance-critical code.
 @mkany()                    // Creates a generic `any` type from a given value.
 @mkinterface()              // Creates an interface type from a given implementation.
 @mkcallback()               // Creates a callback from a given function pointer.
-@pinfos()                   // Retrieves program information.
+@pinfos                   // Retrieves program information.
 #isconstexpr()              // Checks if an expression is a constant expression.
 @itftableof()               // Returns the interface table for a given type.
 

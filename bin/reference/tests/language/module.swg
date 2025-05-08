@@ -2,7 +2,7 @@
 {
     #run
     {
-        let itf = @compiler()
+        let itf = @compiler
         let cfg = itf.getBuildCfg()
         cfg.moduleVersion       = 1
         cfg.moduleRevision      = 0

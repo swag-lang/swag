@@ -42,7 +42,7 @@ func titi()->A
 #[Swag.Optimize("", true)]
 #test
 {
-    if @isbytecode and @compiler().getBuildCfg().byteCodeOptimizeLevel > Swag.BuildCfgByteCodeOptim.O1
+    if @bytecode and @compiler.getBuildCfg().byteCodeOptimizeLevel > Swag.BuildCfgByteCodeOptim.O1
     {
         var x = titi()
         @assert(x.x == 1)

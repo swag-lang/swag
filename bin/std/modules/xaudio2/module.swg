@@ -6,7 +6,7 @@
 
     #run
     {
-        let itf = @compiler()
+        let itf = @compiler
         let cfg = itf.getBuildCfg()
         cfg.moduleVersion   = #swagversion
         cfg.moduleRevision  = #swagrevision

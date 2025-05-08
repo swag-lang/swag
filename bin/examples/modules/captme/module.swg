@@ -6,7 +6,7 @@
 
     #run
     {
-        let itf = @compiler()
+        let itf = @compiler
         let cfg = itf.getBuildCfg()
         cfg.moduleVersion  = 0
         cfg.moduleRevision = 0
@@ -18,7 +18,7 @@
 
 #message(Swag.CompilerMsgMask.PassBeforeOutput)
 {
-    let itf = @compiler()
+    let itf = @compiler
     let cfg = itf.getBuildCfg()
     cfg.resIcoFileName = Path.getDirectoryName(#file) ++ "/src/datas/appicon.ico"
 }

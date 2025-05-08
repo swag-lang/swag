@@ -5,7 +5,7 @@ using test_foreign
 {
     toto41()
 
-    var m = @modules()
+    var m = @modules
     @assert(@countof(m) == 2)
     @assert(@countof(m[0].types) > 0)
     @assert(@countof(m[1].types) > 0)

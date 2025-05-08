@@ -186,7 +186,7 @@ func __convertArgcArgv(args: const ^u8)
 func @args()->const [..] string
 {
     if __argc == 0:
-        __convertArgcArgv(@dataof(@pinfos().args))
+        __convertArgcArgv(@dataof(@pinfos.args))
     return @mkslice(&__argv[0], cast(u64) __argc)
 }
 
@@ -195,7 +195,7 @@ func @args()->const [..] string
 var __sysAlloc: SystemAllocator
 
 // Make a build configuration copy
-const __buildCfg = #run dref @compiler().getBuildCfg()
+const __buildCfg = #run dref @compiler.getBuildCfg()
 
 func @rtflags()  => @getcontext().runtimeFlags
 func @dbgalloc() => cast(*DebugAllocator) @getcontext().debugAllocator
@@ -234,7 +234,7 @@ func __closeRuntime()
 
 func __dropGlobalVariables()
 {
-    foreach g in @gvtd()
+    foreach g in @gvtd
     {
         var ptr = cast(^u8) g.ptr
         for x in g.count

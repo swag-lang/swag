@@ -71,7 +71,7 @@ BYTECODE_OP(IntrinsicArguments, OPF_WRITE_A | OPF_WRITE_B, "_ra_, _rb_ = @args()
 BYTECODE_OP(IntrinsicModules, OPF_WRITE_A | OPF_WRITE_B, "_ra_, _rb_ = @modules()")
 BYTECODE_OP(IntrinsicGvtd, OPF_WRITE_A | OPF_WRITE_B, "_ra_, _rb_ = @gvtd()")
 BYTECODE_OP(IntrinsicCompiler, OPF_WRITE_A | OPF_WRITE_B, "_ra_, _rb_ = @compiler()")
-BYTECODE_OP(IntrinsicIsByteCode, OPF_WRITE_A, "_ra_ = @isbytecode()")
+BYTECODE_OP(IntrinsicIsByteCode, OPF_WRITE_A, "_ra_ = @bytecode")
 BYTECODE_OP(IntrinsicMakeCallback, OPF_WRITE_A | OPF_READ_A, "_ra_ = @mkcallback(_ra_)")
 BYTECODE_OP(IntrinsicBcBreakpoint, 0, "@breakpoint()")
 

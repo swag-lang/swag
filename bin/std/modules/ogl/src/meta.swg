@@ -14,7 +14,7 @@ var g_Functions: Array'OneFunc
 
 #message(CompilerMsgMask.SemFunctions)
 {
-    let itf = @compiler()
+    let itf = @compiler
     let msg = itf.getMessage()
     if !Reflection.hasAttribute(msg.type, Extension):
         return
@@ -83,7 +83,7 @@ func getSig(typeFunc: const *Swag.TypeInfoFunc, namedArgs: bool)->String
         builderInit.appendFormat("\text_% = cast(func%) getExtensionAddress(@dataof(\"%\"))\n", e.name, getSig(typeFunc, false), e.name)
     }
 
-    let itf = @compiler()
+    let itf = @compiler
     var str = builderVars.toString()
     itf.compileString(str.toString())
 

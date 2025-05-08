@@ -1,5 +1,5 @@
 /**
-The `compileString()` function within the `@compiler()` interface is another method to compile
+The `compileString()` function within the `@compiler` interface is another method to compile
 generated code. This function should be invoked at compile time, typically within a `#message`
 call.
 
@@ -52,7 +52,7 @@ This `#message` will be called for each function of the `Ogl` module.
 ```swag
 #message(CompilerMsgMask.SemFunctions)
 {
-    let itf = @compiler()
+    let itf = @compiler
     var msg = itf.getMessage()
 
     // If the function does not have our attribute, ignore it
@@ -121,7 +121,7 @@ code generation process.
     }
 
     // Compile !!
-    let itf = @compiler()
+    let itf = @compiler
     var str = builderVars.toString()
     itf.compileString(str.toString())
 

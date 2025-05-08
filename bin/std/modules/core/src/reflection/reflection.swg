@@ -125,7 +125,7 @@ internal var g_HashLock: Sync.RWLock
 #premain
 {
     Sync.scopedLock(&g_HashLock)
-    foreach m in @pinfos().modules
+    foreach m in @pinfos.modules
     {
         foreach t in m.types
         {

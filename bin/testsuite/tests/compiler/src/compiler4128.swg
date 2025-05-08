@@ -1,5 +1,5 @@
 #global testerror "Err0685"
-#global #if @compiler().getBuilfCfg().byteCodeOptimizeLevel > 0
+#global #if @compiler.getBuilfCfg().byteCodeOptimizeLevel > 0
 
 #[Swag.Safety("math", false)]
 func toto(y: f32)

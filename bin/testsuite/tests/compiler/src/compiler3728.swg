@@ -1,4 +1,4 @@
 #test
 {
-    var x = @modules()
+    var x = @modules
 }

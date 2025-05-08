@@ -2,12 +2,12 @@
 #[Swag.Optimize("", false)]
 #test
 {
-    if @isbytecode
+    if @bytecode
     {
         var cfg: *Swag.BuildCfg
-        cfg = @compiler().getBuildCfg()
+        cfg = @compiler.getBuildCfg()
         //@print(cfg.debugAllocator)
-        let cfg1 = @compiler().getBuildCfg()
+        let cfg1 = @compiler.getBuildCfg()
         @assert(cfg == cfg1)
     }
 }

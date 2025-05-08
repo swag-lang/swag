@@ -2,7 +2,7 @@ using Core
 
 #test
 {
-    let x = @modules()
+    let x = @modules
     @assert(@countof(x) >= 4)
     var cpt = 0
     foreach m in x

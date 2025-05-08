@@ -11,7 +11,7 @@ struct A
 var G = 0
 #message(Swag.CompilerMsgMask.AttributeGen)
 {
-    let itf = @compiler()
+    let itf = @compiler
     let msg = itf.getMessage()
     if msg.type.kind != .Struct: return
 

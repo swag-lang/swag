@@ -5,7 +5,7 @@ var G: s32
 
 #message(Swag.CompilerMsgMask.SemGlobals)
 {
-    let itf = @compiler()
+    let itf = @compiler
     let msg = itf.getMessage()
     @assert(msg.type != null)
     if msg.name == "G1_3274": G += 1

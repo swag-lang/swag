@@ -43,7 +43,7 @@ So in our case, we need to import the module 'gui'. This module is used to creat
     #run
     {
         // Get the compiler interface to communicate with the compiler.
-        let itf = @compiler()
+        let itf = @compiler
 
         // Get the build configuration
         let cfg = itf.getBuildCfg()

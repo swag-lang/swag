@@ -2,6 +2,6 @@
 
 #test
 {
-    let itf = @compiler()
+    let itf = @compiler
     itf.compileString("const X = 1")
 }

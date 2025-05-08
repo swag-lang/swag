@@ -197,7 +197,7 @@ Intrinsic functions are prefixed with `@` and provide low-level operations that 
 @as
 @getcontext
 @pinfos
-@isbytecode
+@bytecode
 @compiler
 @modules
 @gvtd

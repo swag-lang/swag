@@ -17,6 +17,6 @@ struct(TTT) Soa
 {
     struct Test { x, y, z: f32; }
     var v: Soa'Test
-    if @isbytecode:
+    if @bytecode:
         @assert(G == 4)
 }

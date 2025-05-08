@@ -19,7 +19,7 @@ var toTreatCpt: u32
 //#[Swag.PrintBc]
 #message(CompilerMsgMask.SemFunctions)
 {
-    let itf = @compiler()
+    let itf = @compiler
     let msg = itf.getMessage()
     if msg.type.kind != TypeInfoKind.Func: return
 
@@ -39,7 +39,7 @@ var toTreatCpt: u32
 
 #message(CompilerMsgMask.PassAfterSemantic)
 {
-    let itf = @compiler()
+    let itf = @compiler
     itf.compileString("func GG() => 1234")
 
     for toTreatCpt
@@ -51,7 +51,7 @@ var toTreatCpt: u32
 
 #run
 {
-    //let itf = @compiler()
+    //let itf = @compiler
     //itf.compileString("#run @print(\"toto\")")
     //@assert(GG() == 1234)
 }

@@ -1,1 +1,1 @@
-const C = #run @compiler().getBuildCfg().backendKind
+const C = #run @compiler.getBuildCfg().backendKind

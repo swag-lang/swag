@@ -47,7 +47,7 @@ impl IWnd for MyView
 {
     var app: Gui.Application
     if Env.hasArg("swag.test"):
-        app.maxRunFrame = @isbytecode ? 2 : 10
+        app.maxRunFrame = @bytecode ? 2 : 10
 
     assume
     {
