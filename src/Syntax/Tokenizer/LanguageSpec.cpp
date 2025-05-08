@@ -602,6 +602,7 @@ void LanguageSpec::setupIntrinsicConstants()
     intrinsicConstants.insert("@pinfos");
     intrinsicConstants.insert("@modules");
     intrinsicConstants.insert("@gvtd");
+    intrinsicConstants.insert("@rtflags");
 
 }
 

@@ -226,7 +226,7 @@ func __closeRuntime()
     @getcontext().tempAllocator.release()
     @getcontext().errorAllocator.release()
 
-    if !(@rtflags() & .FromCompiler) and __buildCfg.debugAllocator:
+    if !(@rtflags & .FromCompiler) and __buildCfg.debugAllocator:
         @dbgalloc().printLeaks()
 
     __exit()

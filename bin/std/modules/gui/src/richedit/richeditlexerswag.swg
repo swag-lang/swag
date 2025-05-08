@@ -210,6 +210,16 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("#alias8", State.Intrinsic)
         mapWords.add("#alias9", State.Intrinsic)
 
+        mapWords.add("@rtflags", State.Intrinsic)
+        mapWords.add("@err", State.Intrinsic)
+        mapWords.add("@args", State.Intrinsic)
+        mapWords.add("@pinfos", State.Intrinsic)
+        mapWords.add("@bytecode", State.Intrinsic)
+        mapWords.add("@compiler", State.Intrinsic)
+        mapWords.add("@modules", State.Intrinsic)
+        mapWords.add("@gvtd", State.Intrinsic)
+        mapWords.add("@index", State.Intrinsic)
+
         mapWords.add("@kindof", State.Intrinsic)
         mapWords.add("@countof", State.Intrinsic)
         mapWords.add("@dataof", State.Intrinsic)
@@ -218,21 +228,13 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("@mkcallback", State.Intrinsic)
         mapWords.add("@mkany", State.Intrinsic)
         mapWords.add("@mkinterface", State.Intrinsic)
-        mapWords.add("@err", State.Intrinsic)
         mapWords.add("@dbgalloc", State.Intrinsic)
         mapWords.add("@sysalloc", State.Intrinsic)
-        mapWords.add("@args", State.Intrinsic)
         mapWords.add("@stringcmp", State.Intrinsic)
-        mapWords.add("@rtflags", State.Intrinsic)
         mapWords.add("@typecmp", State.Intrinsic)
         mapWords.add("@is", State.Intrinsic)
         mapWords.add("@as", State.Intrinsic)
         mapWords.add("@getcontext", State.Intrinsic)
-        mapWords.add("@pinfos", State.Intrinsic)
-        mapWords.add("@bytecode", State.Intrinsic)
-        mapWords.add("@compiler", State.Intrinsic)
-        mapWords.add("@modules", State.Intrinsic)
-        mapWords.add("@gvtd", State.Intrinsic)
         mapWords.add("@itftableof", State.Intrinsic)
 
         mapWords.add("@assert", State.Intrinsic)
@@ -272,7 +274,6 @@ impl IRichEditLexer for RichEditLexerSwag
 
         mapWords.add("Self", State.Type)
         mapWords.add("self", State.Type)
-        mapWords.add("code", State.Type)
         mapWords.add("cvarargs", State.Type)
 
         mapWords.add("any", State.Type)
@@ -389,7 +390,6 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("#code", State.Intrinsic)
         mapWords.add("#type", State.Intrinsic)
         mapWords.add("#up", State.Intrinsic)
-        mapWords.add("@index", State.Intrinsic)
 
         mapWords.add("#prom", State.Modifier)
         mapWords.add("#wrap", State.Modifier)
@@ -399,6 +399,7 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("#back", State.Modifier)
         mapWords.add("#ref", State.Modifier)
         mapWords.add("#constref", State.Modifier)
+        mapWords.add("#null", State.Modifier)
     }
 
     mtd impl insertRune(ed: *RichEditCtrl, ch: rune)->bool

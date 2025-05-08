@@ -164,7 +164,6 @@ Compiler instructions are prefixed with `#` and are reserved for specific operat
 #code
 #type
 #up
-@index
 
 #alias0
 #alias1
@@ -173,6 +172,18 @@ Compiler instructions are prefixed with `#` and are reserved for specific operat
 #mix1
 #mix2 // and more generally #mixinN
 ```
+
+# Intrinsic Values
+
+@err
+@index
+@args
+@pinfos
+@bytecode
+@compiler
+@modules
+@gvtd
+@rtflags
 
 # Miscellaneous Intrinsics
 Intrinsic functions are prefixed with `@` and provide low-level operations that are often directly supported by the compiler or underlying hardware. These keywords offer specialized functionality that can be used during both compile time and runtime, depending on the context.
@@ -186,21 +197,13 @@ Intrinsic functions are prefixed with `@` and provide low-level operations that 
 @mkcallback
 @mkany
 @mkinterface
-@err
 @dbgalloc
 @sysalloc
-@args
 @stringcmp
-@rtflags
 @typecmp
 @is
 @as
 @getcontext
-@pinfos
-@bytecode
-@compiler
-@modules
-@gvtd
 @itftableof
 
 @assert
