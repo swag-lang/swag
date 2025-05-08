@@ -396,7 +396,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
 
     // Now the full function has been solved, so we wakeup jobs depending on that
     SWAG_CHECK(setFullResolve(context, funcNode));
-
+    
     // Ask for bytecode
     bool genByteCode = true;
     if (funcNode->hasAttribute(ATTRIBUTE_TEST_FUNC) && !g_CommandLine.test)
@@ -407,7 +407,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
         genByteCode = false;
     if (funcNode->hasAstFlag(AST_GENERIC))
         genByteCode = false;
-    if (funcNode->hasAttribute(ATTRIBUTE_INLINE))
+    if (!funcNode->hasIntrinsicName() && funcNode->hasAttribute(ATTRIBUTE_INLINE))
         genByteCode = false;
     if (!funcNode->content)
         genByteCode = false;

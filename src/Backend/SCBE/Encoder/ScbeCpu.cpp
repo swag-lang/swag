@@ -11,7 +11,6 @@
 #include "Semantic/Type/TypeInfo.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
-#pragma optimize("", off)
 
 void ScbeCpu::init(const BuildParameters& buildParameters)
 {

@@ -826,7 +826,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     }
 
     // Be sure the call is valid
-    if (identifier->token.text[0] != '@' && !funcDecl->isForeign())
+    if (!identifier->hasIntrinsicName() && !funcDecl->isForeign())
     {
         const auto ownerFct = identifier->ownerFct;
         if (ownerFct)

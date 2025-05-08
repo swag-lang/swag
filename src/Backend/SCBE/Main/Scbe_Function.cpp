@@ -13,7 +13,6 @@
 #include "Syntax/AstFlags.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
-#pragma optimize("", off)
 
 bool Scbe::emitFunctionBodyPass1(CpuFunction* cpuFct)
 {

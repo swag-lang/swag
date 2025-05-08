@@ -189,7 +189,7 @@ bool ByteCode::canEmit() const
         return true;
 
     const auto funcNode = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
-
+    
     // Do we need to generate that function?
     if (funcNode->hasAttribute(ATTRIBUTE_COMPILER))
         return false;

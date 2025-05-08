@@ -38,7 +38,7 @@ bool Semantic::canHaveAccess(const AstNode* node)
         return false;
     if (node->token.sourceFile->hasFlag(FILE_FORCE_EXPORT) || node->token.sourceFile->imported)
         return false;
-    if (node->token.text[0] == '@')
+    if (node->hasIntrinsicName())
         return false;
     return true;
 }

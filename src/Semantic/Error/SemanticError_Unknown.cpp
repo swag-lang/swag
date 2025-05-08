@@ -224,7 +224,7 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
     Vector<const Diagnostic*> notes;
 
     // Special case with an intrinsic or a compiler function inside a scope
-    if (identifierRef->previousScope && identifier->token.text[0] == '@')
+    if (identifierRef->previousScope && identifier->hasIntrinsicName())
     {
         err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0646, identifier->token.cstr())};
         if (identifier->childParentIdx())

@@ -71,7 +71,7 @@ bool Semantic::executeCompilerNode(SemanticContext* context, AstNode* node, bool
     bool showContext = true;
     if (Parser::isGeneratedName(node->token.text))
         showContext = false;
-    if (node->token.text[0] == '@')
+    if (node->hasIntrinsicName())
         showContext = false;
 
     // Push a copy of the default context, in case the user code changes it (or push a new one)

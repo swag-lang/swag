@@ -191,7 +191,7 @@ JobResult ByteCodeGenJob::execute()
                         break;
                     }
 
-                    // Computed constexpr value. Just emit the result
+                    // Computed constexpr value. Emit the result
                     if (node->hasFlagComputedValue())
                     {
                         if (!ByteCodeGen::emitComputedValue(&context))
@@ -240,7 +240,7 @@ JobResult ByteCodeGenJob::execute()
     }
 
     // Wait for other dependent nodes to be generated
-    // That way we are sure that every one has registered dependent nodes, so the full dependency graph is completed
+    // That way we are sure that everyone has registered its dependent nodes, so the full dependency graph is completed
     // for the next pass
     if (pass == Pass::WaitForDependenciesGenerated)
     {
