@@ -15,7 +15,7 @@
 
 bool Parser::doCheckPublicInternalPrivate(const Token& tokenAttr) const
 {
-    // Check following instruction
+    // Check the following instruction
     switch (tokenParse.token.id)
     {
         case TokenId::SymLeftCurly:
@@ -113,21 +113,21 @@ bool Parser::doPrivate(AstNode* parent, AstNode** result)
 {
     SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(tokenParse, formErr(Err0359, tokenParse.cstr())));
 
-    auto       privName = tokenParse;
-    const auto attrUse  = Ast::newNode<AstAttrUse>(AstNodeKind::AttrUse, this, parent);
-    *result             = attrUse;
+    auto       privateName = tokenParse;
+    const auto attrUse     = Ast::newNode<AstAttrUse>(AstNodeKind::AttrUse, this, parent);
+    *result                = attrUse;
     attrUse->addAstFlag(AST_GENERATED | AST_GENERATED_USER);
     attrUse->attributeFlags = ATTRIBUTE_PRIVATE;
     SWAG_CHECK(eatToken());
 
-    SWAG_CHECK(doCheckPublicInternalPrivate(privName.token));
-    privName.token.id = TokenId::Identifier;
+    SWAG_CHECK(doCheckPublicInternalPrivate(privateName.token));
+    privateName.token.id = TokenId::Identifier;
     if (!sourceFile->privateId)
         sourceFile->privateId = g_UniqueID.fetch_add(1);
-    privName.token.text = form("__private%d", sourceFile->privateId);
+    privateName.token.text = form("__private%d", sourceFile->privateId);
 
     AstNode* namespaceNode;
-    SWAG_CHECK(doNamespaceOnName(attrUse, &namespaceNode, false, true, &privName.token));
+    SWAG_CHECK(doNamespaceOnName(attrUse, &namespaceNode, false, true, &privateName.token));
     namespaceNode->addAstFlag(AST_GENERATED | AST_GENERATED_USER);
     namespaceNode->addSpecFlag(AstNameSpace::SPEC_FLAG_PRIVATE);
 
@@ -234,7 +234,7 @@ bool Parser::doNamespace(AstNode* parent, AstNode** result, bool forGlobal, bool
     return true;
 }
 
-bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal, bool forUsing, const Token* privName)
+bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal, bool forUsing, const Token* privateName)
 {
     // There is only one swag namespace, defined in the bootstrap. So if we redeclared it
     // in runtime, use the one from the bootstrap
@@ -245,13 +245,13 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
     Scope*        newScope       = nullptr;
     AstNameSpace* namespaceNode  = nullptr;
     AstNameSpace* firstNameSpace = nullptr;
-    const bool    forPrivate     = privName != nullptr;
+    const bool    forPrivate     = privateName != nullptr;
 
     while (true)
     {
         namespaceNode = Ast::newNode<AstNameSpace>(AstNodeKind::Namespace, this, parent);
-        if (privName)
-            namespaceNode->token.text = privName->text;
+        if (privateName)
+            namespaceNode->token.text = privateName->text;
         if (!firstNameSpace)
             firstNameSpace = namespaceNode;
         else
@@ -597,7 +597,7 @@ void Parser::registerSubDecl(AstNode* subDecl)
 
     // We want to solve the sub-decl in the correct context, with all the previous nodes (inside the function)
     // solved, in case we make a reference to it (like in 5296, the #decltype).
-    // So we add a fake makePointerLambda which will authorise the solving of the corresponding sub-decl
+    // So we add a fake makePointerLambda which will authorize the solving of the corresponding sub-decl
     // when it is evaluated.
     if (orgSubDecl->isNot(AstNodeKind::FuncDecl) || !orgSubDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_IS_LAMBDA_EXPRESSION))
     {

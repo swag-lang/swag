@@ -184,7 +184,7 @@ struct Parser
     bool doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal);
     bool doNamespace(AstNode* parent, AstNode** result);
     bool doNamespace(AstNode* parent, AstNode** result, bool forGlobal, bool forUsing);
-    bool doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal, bool forUsing, const Token* privName = nullptr);
+    bool doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal, bool forUsing, const Token* privateName = nullptr);
     bool doEnumContent(AstNode* parent, AstNode** result);
     bool doSubEnumValue(AstNode* parent, AstNode** result);
     bool doEnumValue(AstNode* parent, AstNode** result);

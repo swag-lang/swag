@@ -1,5 +1,4 @@
 #include "pch.h"
-
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
 #include "Format/FormatAst.h"
 #include "Report/Diagnostic.h"
