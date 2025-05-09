@@ -46,8 +46,9 @@ alias va_list       = ^u8
 alias LPTHREAD_START_ROUTINE = func(*void)->DWORD
 alias WAITORTIMERCALLBACK    = func(*void, BOOL)
 
-const STD_INPUT_HANDLE  = cast<bit>(DWORD) -10
-const STD_OUTPUT_HANDLE = cast<bit>(DWORD) -11
+const STD_INPUT_HANDLE      = cast<bit>(DWORD) -10
+const STD_OUTPUT_HANDLE     = cast<bit>(DWORD) -11
+const ATTACH_PARENT_PROCESS = cast<bit>(DWORD) -1
 
 const FALSE = 0
 const TRUE  = 1
@@ -402,6 +403,9 @@ private namespace Win32Priv
 {
     #[Foreign("kernel32")]
     {
+        func AllocConsole()->BOOL;
+        func FreeConsole()->BOOL;
+        func AttachConsole(dwProcessId: DWORD)->BOOL;
         func SetConsoleTextAttribute(hConsoleOutput: HANDLE, wAttributes: WORD)->BOOL;
         func GetConsoleScreenBufferInfo(hConsoleOutput: HANDLE, lpConsoleScreenBufferInfo: *CONSOLE_SCREEN_BUFFER_INFO)->BOOL;
 
@@ -465,6 +469,24 @@ private namespace Win32Priv
 
 #[Inline]
 {
+    func AllocConsole() throw
+    {
+        if !Win32Priv.AllocConsole():
+            throwWinError(GetLastError())
+    }
+
+    func FreeConsole() throw
+    {
+        if !Win32Priv.FreeConsole():
+            throwWinError(GetLastError())
+    }
+
+    func AttachConsole(dwProcessId: DWORD) throw
+    {
+        if !Win32Priv.AttachConsole(dwProcessId):
+            throwWinError(GetLastError())
+    }
+
     func SetConsoleTextAttribute(hConsoleOutput: HANDLE, wAttributes: WORD) throw
     {
         if !Win32Priv.SetConsoleTextAttribute(hConsoleOutput, wAttributes):

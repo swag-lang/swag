@@ -36,6 +36,7 @@ var g_StdOutputCurAttr:  u16
 
 #init
 {
+    catch AttachConsole(ATTACH_PARENT_PROCESS)
     g_StdOutputHandle = GetStdHandle(STD_OUTPUT_HANDLE)
 
     var csbi: CONSOLE_SCREEN_BUFFER_INFO
@@ -47,6 +48,7 @@ var g_StdOutputCurAttr:  u16
 #drop
 {
     resetColor()
+    catch FreeConsole()
 }
 
 // Set the console foreground color

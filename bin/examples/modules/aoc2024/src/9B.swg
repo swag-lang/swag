@@ -111,7 +111,7 @@ func day9BB()
         return s * block_id
     }
 
-    Time.Stopwatch.scopeMeasure()
+    // Time.Stopwatch.scopeMeasure()
 
     let dataPath = Path.combine(Path.getDirectoryName(#curlocation.fileName), "9.txt")
     var line     = assume File.readAllText(dataPath)
