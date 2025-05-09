@@ -823,9 +823,8 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
             break;
         case TokenId::SymAttrStart:
         {
-            AstAttrUse* attrUse;
-            SWAG_CHECK(doAttrUse(parent, reinterpret_cast<AstNode**>(&attrUse)));
-            *result = attrUse;
+            SWAG_CHECK(doAttrUse(parent, result));
+            const auto attrUse = castAst<AstAttrUse>(*result, AstNodeKind::AttrUse);
             // We do not want a #[] to create a new scope when inside a function
             if (tokenParse.is(TokenId::SymLeftCurly))
                 SWAG_CHECK(doCurlyStatement(attrUse, &attrUse->content));
