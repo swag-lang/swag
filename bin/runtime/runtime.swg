@@ -123,7 +123,7 @@ func @typecmp(typeA, typeB: typeinfo, cmpFlags: TypeCmpFlags)->bool
 
 ////////////////////////////////////////////////////////////
 
-func @itftableof(structType, itfType: const *TypeInfoStruct)->#null const *void
+func @tableof(structType, itfType: const *TypeInfoStruct)->#null const *void
 {
     if !structType or !itfType:
         return null

@@ -368,7 +368,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
         case TokenId::IntrinsicAtomicXchg:
         case TokenId::IntrinsicAtomicCmpXchg:
         case TokenId::IntrinsicCVaArg:
-        case TokenId::IntrinsicItfTableOf:
+        case TokenId::IntrinsicTableOf:
         case TokenId::IntrinsicDbgAlloc:
         case TokenId::IntrinsicSysAlloc:
         case TokenId::IntrinsicRtFlags:

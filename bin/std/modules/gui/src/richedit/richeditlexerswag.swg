@@ -235,7 +235,7 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("@is", State.Intrinsic)
         mapWords.add("@as", State.Intrinsic)
         mapWords.add("@getcontext", State.Intrinsic)
-        mapWords.add("@itftableof", State.Intrinsic)
+        mapWords.add("@tableof", State.Intrinsic)
 
         mapWords.add("@assert", State.Intrinsic)
         mapWords.add("@breakpoint", State.Intrinsic)

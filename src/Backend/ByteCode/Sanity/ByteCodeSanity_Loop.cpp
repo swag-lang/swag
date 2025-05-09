@@ -1440,8 +1440,8 @@ bool ByteCodeSanity::loop()
 
                 /////////////////////////////////////////
 
-            case ByteCodeOp::IntrinsicItfTableOf:
-                SWAG_CHECK(checkNotNullArguments({ip->b.u32, ip->a.u32}, "@itfTableOf"));
+            case ByteCodeOp::IntrinsicTableOf:
+                SWAG_CHECK(checkNotNullArguments({ip->b.u32, ip->a.u32}, "@tableOf"));
                 SWAG_CHECK(STATE()->getRegister(rc, ip->c.u32));
                 rc->setUnknown();
                 SanityValue::setIps(ip, nullptr, nullptr, rc);

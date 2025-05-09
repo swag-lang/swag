@@ -2925,9 +2925,9 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             break;
         }
 
-        case ByteCodeOp::IntrinsicItfTableOf:
+        case ByteCodeOp::IntrinsicTableOf:
         {
-            auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_at_itftableof);
+            auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_at_tableof);
             context->push(registersRC[ip->b.u32].pointer);
             context->push(registersRC[ip->a.u32].pointer);
             localCall(context, bc, 2, ip->c.u32);

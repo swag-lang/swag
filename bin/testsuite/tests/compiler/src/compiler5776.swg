@@ -3,5 +3,5 @@
 #[Swag.Sanity(true)]
 #test
 {
-    let a = @itftableof(null, null)
+    let a = @tableof(null, null)
 }

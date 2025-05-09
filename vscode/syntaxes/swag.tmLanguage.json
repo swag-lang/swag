@@ -118,7 +118,7 @@
       "patterns": [
         {
           "name": "entity.name.function.intrinsic",
-          "match": "(@)(itftableof|stringcmp|dbgalloc|sysalloc|typecmp|is|as|interfaceof|getcontext|setcontext|print|compilererror|compilerwarning|breakpoint|assert|panic|init|drop|mkany|mkslice|mkstring|mkcallback|mkinterface|kindof|countof|dataof|postcopy|postmove)\\b"
+          "match": "(@)(tableof|stringcmp|dbgalloc|sysalloc|typecmp|is|as|getcontext|setcontext|print|compilererror|compilerwarning|breakpoint|assert|panic|init|drop|mkany|mkslice|mkstring|mkcallback|mkinterface|kindof|countof|dataof|postcopy|postmove)\\b"
         }
       ]
     },

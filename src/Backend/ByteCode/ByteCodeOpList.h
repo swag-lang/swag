@@ -46,7 +46,7 @@ BYTECODE_OP(ForeignCallPop48Param2, OPF_FOREIGN_CALL | OPF_READ_VAL64_A | OPF_RE
 
 BYTECODE_OP(MakeLambda, OPF_REG_ONLY | OPF_WRITE_A | OPF_READ_VAL64_B, "_ra_ = ")
 
-BYTECODE_OP(IntrinsicItfTableOf, OPF_READ_A | OPF_READ_B | OPF_WRITE_C, "_rc_ = @itftableof(_ra_, _rb_)")
+BYTECODE_OP(IntrinsicTableOf, OPF_READ_A | OPF_READ_B | OPF_WRITE_C, "_rc_ = @tableof(_ra_, _rb_)")
 BYTECODE_OP(IntrinsicCompilerError, OPF_READ_A | OPF_READ_B | OPF_READ_C, "@compilererror(_ra_, _rb_, _rc_)")
 BYTECODE_OP(IntrinsicCompilerWarning, OPF_READ_A | OPF_READ_B | OPF_READ_C, "@compilerwarning(_ra_, _rb_, _rc_)")
 BYTECODE_OP(IntrinsicPanic, OPF_READ_A | OPF_READ_B | OPF_READ_C, "@panic(_ra_, _rb_, _rc_)")

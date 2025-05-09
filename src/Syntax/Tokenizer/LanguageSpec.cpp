@@ -210,7 +210,7 @@ void LanguageSpec::setupNames()
     name_at_panic           = "@panic";
     name_at_compilererror   = "@compilererror";
     name_at_compilerwarning = "@compilerwarning";
-    name_at_itftableof      = "@itftableof";
+    name_at_tableof         = "@tableof";
     name_at_strcmp          = "@stringcmp";
     name_at_typecmp         = "@typecmp";
     name_at_is              = "@is";
@@ -415,8 +415,6 @@ void LanguageSpec::setupKeywords()
     keywords.add("#swagbuildnum", TokenId::CompilerBuildNum);
     keywords.add("#swagos", TokenId::CompilerSwagOs);
 
-    keywords.add("@index", TokenId::CompilerIndex);
-
     keywords.add("#defined", TokenId::CompilerDefined);
     keywords.add("#offsetof", TokenId::CompilerOffsetOf);
     keywords.add("#alignof", TokenId::CompilerAlignOf);
@@ -438,10 +436,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("@as", TokenId::IntrinsicAs);
     keywords.add("@getcontext", TokenId::IntrinsicGetContext);
     keywords.add("@setcontext", TokenId::IntrinsicSetContext);
-    keywords.add("@args", TokenId::IntrinsicArguments);
     keywords.add("@compiler", TokenId::IntrinsicCompiler);
-    keywords.add("@err", TokenId::IntrinsicGetErr);
-    keywords.add("@bytecode", TokenId::IntrinsicIsByteCode);
     keywords.add("@print", TokenId::IntrinsicPrint);
     keywords.add("@compilererror", TokenId::IntrinsicCompilerError);
     keywords.add("@compilerwarning", TokenId::IntrinsicCompilerWarning);
@@ -460,9 +455,14 @@ void LanguageSpec::setupKeywords()
     keywords.add("@mkany", TokenId::IntrinsicMakeAny);
     keywords.add("@mkinterface", TokenId::IntrinsicMakeInterface);
     keywords.add("@mkcallback", TokenId::IntrinsicMakeCallback);
-    keywords.add("@itftableof", TokenId::IntrinsicItfTableOf);
+    keywords.add("@tableof", TokenId::IntrinsicTableOf);
     keywords.add("@dbgalloc", TokenId::IntrinsicDbgAlloc);
     keywords.add("@sysalloc", TokenId::IntrinsicSysAlloc);
+    
+    keywords.add("@err", TokenId::IntrinsicGetErr);
+    keywords.add("@args", TokenId::IntrinsicArguments);
+    keywords.add("@bytecode", TokenId::IntrinsicIsByteCode);
+    keywords.add("@index", TokenId::CompilerIndex);
     keywords.add("@rtflags", TokenId::IntrinsicRtFlags);
     keywords.add("@pinfos", TokenId::IntrinsicGetProcessInfos);
     keywords.add("@modules", TokenId::IntrinsicModules);

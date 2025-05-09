@@ -555,12 +555,12 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
             freeRegisterRC(context, child1->resultRegisterRc[0]);
             break;
         }
-        case TokenId::IntrinsicItfTableOf:
+        case TokenId::IntrinsicTableOf:
         {
             auto child0            = callParams->firstChild();
             auto child1            = callParams->secondChild();
             node->resultRegisterRc = reserveRegisterRC(context);
-            EMIT_INST3(context, ByteCodeOp::IntrinsicItfTableOf, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
+            EMIT_INST3(context, ByteCodeOp::IntrinsicTableOf, child0->resultRegisterRc, child1->resultRegisterRc, node->resultRegisterRc);
             freeRegisterRC(context, child0);
             freeRegisterRC(context, child1);
             break;

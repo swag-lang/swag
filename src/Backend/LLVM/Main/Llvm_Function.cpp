@@ -594,9 +594,9 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-            case ByteCodeOp::IntrinsicItfTableOf:
+            case ByteCodeOp::IntrinsicTableOf:
             {
-                const auto result = emitCall(pp, g_LangSpec->name_at_itftableof, allocR, allocT, {ip->a.u32, ip->b.u32}, {});
+                const auto result = emitCall(pp, g_LangSpec->name_at_tableof, allocR, allocT, {ip->a.u32, ip->b.u32}, {});
                 builder.CreateStore(result, GEP64_PTR_PTR_I8(allocR, ip->c.u32));
                 break;
             }

@@ -57,7 +57,7 @@ low-level or performance-critical code.
 @mkcallback()               // Creates a callback from a given function pointer.
 @pinfos                   // Retrieves program information.
 #isconstexpr()              // Checks if an expression is a constant expression.
-@itftableof()               // Returns the interface table for a given type.
+@tableof()               // Returns the interface table for a given type.
 
 /**
 # Memory-related Intrinsics

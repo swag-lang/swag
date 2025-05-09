@@ -68,7 +68,7 @@ bool ByteCodeGen::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
     EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRc[0], params->firstChild()->resultRegisterRc);
 
     // Get interface itable pointer in the second result register
-    EMIT_INST3(context, ByteCodeOp::IntrinsicItfTableOf, params->secondChild()->resultRegisterRc, r0, node->resultRegisterRc[1]);
+    EMIT_INST3(context, ByteCodeOp::IntrinsicTableOf, params->secondChild()->resultRegisterRc, r0, node->resultRegisterRc[1]);
 
     freeRegisterRC(context, params->firstChild());
     freeRegisterRC(context, params->secondChild());

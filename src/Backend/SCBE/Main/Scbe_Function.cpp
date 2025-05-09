@@ -1816,8 +1816,8 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
             case ByteCodeOp::IntrinsicPanic:
                 emitInternalCallRAParams(pp, g_LangSpec->name_at_panic, {ip->a.u32, ip->b.u32, ip->c.u32});
                 break;
-            case ByteCodeOp::IntrinsicItfTableOf:
-                emitInternalCallRAParams(pp, g_LangSpec->name_at_itftableof, {ip->a.u32, ip->b.u32}, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32));
+            case ByteCodeOp::IntrinsicTableOf:
+                emitInternalCallRAParams(pp, g_LangSpec->name_at_tableof, {ip->a.u32, ip->b.u32}, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32));
                 break;
 
                 /////////////////////////////////////

@@ -37,6 +37,6 @@ impl I for A
 
     var itf1: TT
     itf1.obj = ptr.obj
-    itf1.itable = cast() @itftableof(t, t1)
+    itf1.itable = cast() @tableof(t, t1)
     @assert(ptr.itable == itf1.itable)
 }*/

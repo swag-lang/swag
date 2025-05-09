@@ -130,7 +130,7 @@ impl Decoder
             {
                 readTypeValue(typeVal, &itfType)
 
-                itf.itable = @itftableof(cast(const *Swag.TypeInfoStruct) objType, cast(const *Swag.TypeInfoStruct) itfType)
+                itf.itable = @tableof(cast(const *Swag.TypeInfoStruct) objType, cast(const *Swag.TypeInfoStruct) itfType)
 
                 typeVal.pointedType = objType
                 itf.obj             = Memory.new(objType)

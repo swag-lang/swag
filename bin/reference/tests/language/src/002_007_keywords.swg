@@ -204,7 +204,7 @@ Intrinsic functions are prefixed with `@` and provide low-level operations that 
 @is
 @as
 @getcontext
-@itftableof
+@tableof
 
 @assert
 @breakpoint
