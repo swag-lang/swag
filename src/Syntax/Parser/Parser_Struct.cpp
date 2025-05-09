@@ -73,7 +73,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
     const auto startLoc = tokenParse.token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the [[impl]] body"));
 
-    // Get existing scope or create a new one
+    // Get an existing scope or create a new one
     const auto& structName = identifierStruct->lastChild()->token.text;
     implNode->token.text   = structName;
 
@@ -115,14 +115,14 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
         }
     }
 
-    // Count number of interfaces
+    // Count the number of interfaces
     if (implInterface)
     {
         SWAG_ASSERT(scopeKind == ScopeKind::Struct);
         const auto typeStruct = castTypeInfo<TypeInfoStruct>(newScope->owner->typeInfo, TypeInfoKind::Struct);
 
-        // Register the 'impl for' block name, because we are not sure that the newScope will be the correct one
-        // (we will have to check in the semantic pass that what's after 'for' (the struct) is correct.
+        // Register the 'impl for' name because we are not sure that the newScope will be the correct one.
+        // We will have to check in the semantic pass that what's after 'for' (the struct) is correct.
         // See test 2909 for that kind of case...
         module->addImplForToSolve(typeStruct);
 
@@ -244,8 +244,8 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
     structNode->tokenName = tokenParse.token;
     SWAG_CHECK(checkIsValidUserName(structNode, &tokenParse.token));
 
-    // If name starts with "__", then this is generated, as a user identifier cannot start with those
-    // two characters
+    // If the name starts with "__", then this is generated, as a user identifier cannot start with those
+    // two characters.
     if (!sourceFile->hasFlag(FILE_FOR_FORMAT) && isGeneratedName(structNode->token.text))
         structNode->addAstFlag(AST_GENERATED);
 

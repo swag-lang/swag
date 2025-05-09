@@ -58,7 +58,7 @@ bool Parser::doGenericFuncCallArguments(AstNode* parent, AstFuncCallParams** res
             {
                 // This is ambiguous. Can be a literal array or an array type.
                 // If parameters are inside parentheses, then this means that we can differentiate between the 2 cases
-                // without the need of #type, as what follows a literal should be another parameter (,) or the closing parenthesis.
+                // without the need of #type, as what follows a literal should be another parameter ',' or the closing parenthesis.
                 // And this is a good idea to write Arr'([2] s32) instead of Arr'[2] s32 anyway. So this should remove some ambiguities.
                 tokenizer.saveState(tokenParse);
                 SWAG_CHECK(doExpressionListArray(param, &dummyResult));
@@ -422,7 +422,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
                 *hasMissingType = true;
         }
 
-        // Add attribute as the last child, to avoid messing around with the first FuncDeclParam node.
+        // Add the attribute as the last child to avoid messing around with the first FuncDeclParam node.
         if (attrUse)
         {
             paramNode->attrUse          = attrUse;
@@ -478,7 +478,7 @@ bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool accept
         const auto allParams = Ast::newFuncDeclParams(this, parent);
         *result              = allParams;
 
-        // Add 'using self' as the first parameter in case of a method
+        // Add 'using self' as the first parameter in the case of a method
         if (isMethod || isConstMethod)
         {
             const auto paramNode = Ast::newVarDecl("", this, allParams, AstNodeKind::FuncDeclParam);
@@ -765,7 +765,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId, F
         SWAG_CHECK(eatToken());
     }
 
-    // Register function name
+    // Register the function name
     const auto typeInfo   = makeType<TypeInfoFuncAttr>();
     typeInfo->declNode    = funcNode;
     auto newScope         = Ast::newScope(funcNode, funcNode->token.text, ScopeKind::Function, currentScope);
@@ -774,7 +774,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId, F
     const auto symbolName = currentScope->symTable.registerSymbolName(context, funcNode, SymbolKind::Function);
     funcNode->setResolvedSymbolName(symbolName);
 
-    // Store specific symbols for fast retrieve
+    // Store the specific symbols for fast retrieve
     if (funcNode->token.is(g_LangSpec->name_opAffect))
         currentScope->symbolOpAffect = symbolName;
     else if (funcNode->token.is(g_LangSpec->name_opAffectLiteral))
@@ -782,7 +782,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId, F
     else if (funcNode->token.is(g_LangSpec->name_opCast))
         currentScope->symbolOpCast = symbolName;
 
-    // Count number of methods to resolve
+    // Count the number of methods to resolve
     if (currentScope->is(ScopeKind::Struct) && !funcForCompiler)
     {
         const auto typeStruct = castTypeInfo<TypeInfoStruct>(currentScope->owner->typeInfo, TypeInfoKind::Struct);
@@ -895,7 +895,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId, F
         SWAG_CHECK(doWhereVerifyConstraint(funcNode));
     }
 
-    // If we have now a semicolon, then this is an empty function, like a forward decl in c++
+    // If now we have a semicolon, then this is an empty function, like a forward decl in c++
     if (tokenParse.is(TokenId::SymSemiColon))
     {
         SWAG_VERIFY(!funcForCompiler, error(tokenParse, formErr(Err0076, funcNode->getDisplayNameC())));
@@ -906,7 +906,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId, F
     if (isIntrinsic)
         funcNode->addAstFlag(AST_DEFINED_INTRINSIC);
 
-    // Content of function
+    // Content of the function
     {
         newScope = Ast::newScope(funcNode, funcNode->token.text, ScopeKind::FunctionBody, newScope);
         ParserPushScope scoped(this, newScope);
@@ -1221,12 +1221,12 @@ bool Parser::doLambdaExpression(AstNode* parent, ExprFlags exprFlags, AstNode** 
     bool acceptMissingType = false;
     bool deduceMissingType = false;
 
-    // We accept missing types if lambda is in a function call, because we can deduce them from the called
+    // We accept missing types if the lambda is in a function call, because we can deduce them from the called
     // function parameters
     if (exprFlags.has(EXPR_FLAG_IN_CALL))
         acceptMissingType = true;
 
-    // We accept missing types if lambda is in an affectation, because we can deduce them from the
+    // We accept missing types if the lambda is in an affectation, because we can deduce them from the
     // type on the left
     else if (parent->is(AstNodeKind::AffectOp))
     {
@@ -1234,7 +1234,7 @@ bool Parser::doLambdaExpression(AstNode* parent, ExprFlags exprFlags, AstNode** 
         deduceMissingType = true;
     }
 
-    // We accept missing types if lambda is in a variable declaration with a type, because we can deduce
+    // We accept missing types if the lambda is in a variable declaration with a type, because we can deduce
     // them from the type
     else if (exprFlags.has(EXPR_FLAG_IN_VAR_DECL_WITH_TYPE))
     {
@@ -1263,7 +1263,7 @@ bool Parser::doLambdaExpression(AstNode* parent, ExprFlags exprFlags, AstNode** 
     if (!lambda->ownerFct && lambdaDecl->captureParameters)
         return error(lambdaDecl, toErr(Err0383));
 
-    // Lambda sub function will be resolved by the owner function
+    // The owner function will resolve the lambda subfunction
     if (lambda->ownerFct)
         registerSubDecl(lambda);
     // If the lambda is created at global scope, register it as a normal function

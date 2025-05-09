@@ -185,7 +185,7 @@ bool Parser::doLambdaClosureParameters(AstTypeExpression* node, bool inTypeVarDe
                 typeExpr->allocateExtension(ExtensionKind::Semantic);
                 typeExpr->extSemantic()->semanticAfterFct = Semantic::resolveVarDeclAfterType;
 
-                // If we did not have specified a name, then this was not a type, but a name
+                // If we did not have a specified name, then this was not a type, but a name.
                 // ex: func(x = 1)
                 if (!namedParam)
                 {
@@ -525,7 +525,7 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
 
             node->typeFlags.add(TYPE_FLAG_IS_ARRAY);
 
-            // Size of array can be nothing
+            // The size of the array can be nothing
             if (tokenParse.is(TokenId::SymRightSquare))
             {
                 node->arrayDim = UINT8_MAX;
@@ -611,10 +611,10 @@ bool Parser::doTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode** re
         node->typeFlags.add(TYPE_FLAG_IS_RETVAL | TYPE_FLAG_IS_RETVAL_TYPE);
         SWAG_CHECK(eatToken());
 
-        // retval type can be followed by structure initializer, like a normal struct
+        // A 'retval' type can be followed by a structure initializer, like a normal struct.
         // In that case, we want the identifier pipeline to be called on it (to check
         // parameters like a normal struct).
-        // So we create an identifier, that will be matched with the type alias automatically
+        // So we create an identifier that will be matched with the type alias automatically
         // created in the function.
         if (Tokenizer::isJustAfterPrevious(tokenParse))
         {
