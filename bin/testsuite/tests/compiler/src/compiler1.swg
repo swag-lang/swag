@@ -6,10 +6,10 @@
 // kicked: 326884
 // tot:    493894
 
-// ave: 13
-// com: 10
+// ave: 30
+// com: 20
 // hor: 20
-// thr: 7
+// thr: 20
 // fan: 14
-// pol: 35
+// pol: 55
 // sci: 22
