@@ -755,8 +755,6 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         case TokenId::IntrinsicGetProcessInfos:
         case TokenId::IntrinsicDbgAlloc:
         case TokenId::IntrinsicSysAlloc:
-            SWAG_CHECK(doLeftInstruction(parent, result));
-            break;
 
         case TokenId::Identifier:
             SWAG_CHECK(doLeftInstruction(parent, result));
@@ -822,18 +820,8 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
             SWAG_CHECK(doCompilerAst(parent, result));
             break;
         case TokenId::SymAttrStart:
-        {
-            SWAG_CHECK(doAttrUse(parent, result));
-            const auto attrUse = castAst<AstAttrUse>(*result, AstNodeKind::AttrUse);
-            // We do not want a #[] to create a new scope when inside a function
-            if (tokenParse.is(TokenId::SymLeftCurly))
-                SWAG_CHECK(doCurlyStatement(attrUse, &attrUse->content));
-            else
-                SWAG_CHECK(doEmbeddedInstruction(attrUse, &attrUse->content));
-            if (attrUse->content)
-                attrUse->content->setOwnerAttrUse(attrUse);
+            SWAG_CHECK(doAttrStart(parent, result));
             break;
-        }
 
         case TokenId::KwdEnum:
             SWAG_CHECK(doEnum(parent, result));

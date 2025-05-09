@@ -250,6 +250,7 @@ struct Parser
     bool doContinue(AstNode* parent, AstNode** result);
     bool doArrayPointerIndex(AstNode** exprNode);
     bool doLeftInstruction(AstNode* parent, AstNode** result, const AstWith* withNode = nullptr);
+    bool doAttrStart(AstNode* parent, AstNode** result);
     bool doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFlags identifierFlags = 0, VarDeclFlags varDeclFlags = 0, const AstWith* withNode = nullptr);
     bool doLeftExpressionAffect(AstNode* parent, AstNode** result, const AstWith* withNode = nullptr);
     bool doMultiIdentifierAffect(AstNode* parent, AstNode** result, AstNode* leftNode, SpecFlags opFlags, const AttributeFlags& opAttrFlags, TokenParse& savedToken);

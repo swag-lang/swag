@@ -9,6 +9,20 @@
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/SourceFile.h"
 
+bool Parser::doAttrStart(AstNode* parent, AstNode** result)
+{
+    SWAG_CHECK(doAttrUse(parent, result));
+    const auto attrUse = castAst<AstAttrUse>(*result, AstNodeKind::AttrUse);
+    // We do not want a #[] to create a new scope when inside a function
+    if (tokenParse.is(TokenId::SymLeftCurly))
+        SWAG_CHECK(doCurlyStatement(attrUse, &attrUse->content));
+    else
+        SWAG_CHECK(doEmbeddedInstruction(attrUse, &attrUse->content));
+    if (attrUse->content)
+        attrUse->content->setOwnerAttrUse(attrUse);
+    return true;
+}
+
 bool Parser::doAttrDecl(AstNode* parent, AstNode** result)
 {
     const auto attrNode = Ast::newNode<AstAttrDecl>(AstNodeKind::AttrDecl, this, parent);
