@@ -105,10 +105,10 @@ bool Parser::doVarDeclMultiIdentifier(AstNode* parent, AstNode* leftNode, AstNod
         *result    = parentNode;
     }
 
-    // Declare first variable, and affect it
+    // Declare the first variable and affect it
     const auto front = castAst<AstIdentifierRef>(leftNode->firstChild(), AstNodeKind::IdentifierRef);
 
-    // Then declare all other variables, and assign them to the first one
+    // Then declare all other variables and assign them to the first one
     AstVarDecl* orgVarNode = nullptr;
     for (const auto child : leftNode->children)
     {
@@ -181,7 +181,7 @@ bool Parser::doVarDeclMultiIdentifierTuple(AstNode* parent, AstNode* leftNode, A
     orgVarNode->assignToken = assignToken.token;
     orgVarNode->addSpecFlag(varDeclFlags.has(VAR_DECL_FLAG_IS_LET) ? AstVarDecl::SPEC_FLAG_LET | AstVarDecl::SPEC_FLAG_CONST_ASSIGN : 0);
 
-    // This will avoid to initialize the tuple before the affectation
+    // This will avoid having to initialize the tuple before the affectation
     orgVarNode->addAstFlag(AST_HAS_FULL_STRUCT_PARAMETERS);
     orgVarNode->addAstFlag(AST_R_VALUE);
 
@@ -210,7 +210,7 @@ bool Parser::doVarDeclMultiIdentifierTuple(AstNode* parent, AstNode* leftNode, A
     {
         const auto child = leftNode->children[i];
 
-        // Ignore field if '?', otherwise check that this is a valid variable name
+        // Ignore the field if '?', otherwise check that this is a valid variable name
         SWAG_CHECK(checkIsSingleIdentifier(child, "as a variable name"));
         if (child->firstChild()->token.is("?"))
         {
