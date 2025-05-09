@@ -197,7 +197,7 @@ void Diagnostic::replaceTokenName(const Token& token)
 {
     if (Tokenizer::isKeyword(token.id))
         textMsg.replaceAll("$$TKN$$", form("keyword [[%s]]", token.cstr()));
-    else if (Tokenizer::isCompiler(token.id) || token.text.startsWith("#mix") || token.text.startsWith("#alias"))
+    else if (Tokenizer::isCompiler(token.id) || token.text.startsWith("#uniq") || token.text.startsWith("#alias"))
         textMsg.replaceAll("$$TKN$$", form("compiler instruction [[%s]]", token.cstr()));
     else if (Tokenizer::isIntrinsicReturn(token.id))
         textMsg.replaceAll("$$TKN$$", form("intrinsic [[%s]]", token.cstr()));

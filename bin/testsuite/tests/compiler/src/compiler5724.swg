@@ -2,5 +2,5 @@
 
 #test
 {
-    let #mix0 = 0
+    let #uniq0 = 0
 }

@@ -168,9 +168,9 @@ Compiler instructions are prefixed with `#` and are reserved for specific operat
 #alias0
 #alias1
 #alias2 // and more generally #aliasN
-#mix0
-#mix1
-#mix2 // and more generally #mixinN
+#uniq0
+#uniq1
+#uniq2 // and more generally #mixinN
 ```
 
 # Intrinsic Values

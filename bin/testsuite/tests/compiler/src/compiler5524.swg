@@ -3,8 +3,8 @@
 #[Swag.Mixin]
 func toto()
 {
-    var #mix: s32
-    #mix += 1
+    var #uniq: s32
+    #uniq += 1
 }
 
 #test

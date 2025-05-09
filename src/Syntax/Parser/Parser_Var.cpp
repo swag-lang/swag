@@ -40,15 +40,15 @@ bool Parser::checkIsValidVarName(AstNode* node, VarDeclFlags varDeclFlags) const
 
     if (node->token.text.length() >= 4)
     {
-        // #mix must be of the form #mixNUM
-        if (node->token.text.find(g_LangSpec->name_sharp_mix) == 0)
+        // #uniq must be of the form #uniqNUM
+        if (node->token.text.find(g_LangSpec->name_sharp_uniq) == 0)
         {
-            if (node->token.is(g_LangSpec->name_sharp_mix))
+            if (node->token.is(g_LangSpec->name_sharp_uniq))
                 return error(node->token, toErr(Err0420));
 
-            const char* pz  = node->token.text.buffer + 4;
+            const char* pz  = node->token.text.buffer + g_LangSpec->name_sharp_uniq.length();
             const auto  end = node->token.text.buffer + node->token.text.count;
-            int         num = 0;
+            uint32_t    num = 0;
             while (pz != end)
             {
                 if (!SWAG_IS_DIGIT(*pz))
@@ -61,7 +61,7 @@ bool Parser::checkIsValidVarName(AstNode* node, VarDeclFlags varDeclFlags) const
             if (num >= 10)
                 return error(node->token, formErr(Err0495, num));
             if (node->ownerFct)
-                node->ownerFct->addSpecFlag(AstFuncDecl::SPEC_FLAG_SPEC_MIXIN);
+                node->ownerFct->addSpecFlag(AstFuncDecl::SPEC_FLAG_HAS_UNIQ);
 
             return true;
         }
@@ -72,9 +72,9 @@ bool Parser::checkIsValidVarName(AstNode* node, VarDeclFlags varDeclFlags) const
             if (node->token.is(g_LangSpec->name_sharp_alias))
                 return error(node->token, toErr(Err0414));
 
-            const char* pz  = node->token.text.buffer + 6;
+            const char* pz  = node->token.text.buffer + g_LangSpec->name_sharp_alias.length();
             const auto  end = node->token.text.buffer + node->token.text.count;
-            int         num = 0;
+            uint32_t    num = 0;
             while (pz != end)
             {
                 if (!SWAG_IS_DIGIT(*pz))

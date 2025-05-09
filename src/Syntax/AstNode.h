@@ -729,7 +729,7 @@ struct AstFuncDecl : AstNode
     static constexpr SpecFlags SPEC_FLAG_FULL_RESOLVE         = 0x0010;
     static constexpr SpecFlags SPEC_FLAG_PARTIAL_RESOLVE      = 0x0020;
     static constexpr SpecFlags SPEC_FLAG_REG_GET_CONTEXT      = 0x0040;
-    static constexpr SpecFlags SPEC_FLAG_SPEC_MIXIN           = 0x0080;
+    static constexpr SpecFlags SPEC_FLAG_HAS_UNIQ           = 0x0080;
     static constexpr SpecFlags SPEC_FLAG_SHORT_FORM           = 0x0100;
     static constexpr SpecFlags SPEC_FLAG_SHORT_LAMBDA         = 0x0200;
     static constexpr SpecFlags SPEC_FLAG_RETURN_DEFINED       = 0x0400;

@@ -131,8 +131,8 @@ This enables flexible manipulation of variables through mixins.
 }
 
 /**
-# Unique Variable Names with `#mix?`
-Mixins can declare special variables named `#mix?`.
+# Unique Variable Names with `#uniq?`
+Mixins can declare special variables named `#uniq?`.
 These variables receive a unique name each time the mixin is invoked, preventing naming conflicts and allowing multiple mixin invocations in the same scope.
 */
 #test
@@ -142,8 +142,8 @@ These variables receive a unique name each time the mixin is invoked, preventing
     #[Swag.Mixin]
     func toScope()
     {
-        var #mix0: s32 = 1               // Declaring a unique variable named '#mix0'
-        total += #mix0                   // Adding the value of '#mix0' to 'total'
+        var #uniq0: s32 = 1               // Declaring a unique variable named '#uniq0'
+        total += #uniq0                   // Adding the value of '#uniq0' to 'total'
     }
 
     toScope()                            // First invocation of the mixin

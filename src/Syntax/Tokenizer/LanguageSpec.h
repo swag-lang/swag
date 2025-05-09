@@ -228,7 +228,7 @@ struct LanguageSpec
     Utf8 name_toplevel;
 
     Utf8 name_sharp_alias;
-    Utf8 name_sharp_mix;
+    Utf8 name_sharp_uniq;
     Utf8 name_at_drop;
     Utf8 name_at_postCopy;
     Utf8 name_at_postMove;

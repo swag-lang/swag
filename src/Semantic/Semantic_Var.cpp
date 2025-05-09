@@ -631,8 +631,8 @@ bool Semantic::checkForMissingInitialization(SemanticContext* context, AstVarDec
 
 bool Semantic::checkMixAlias(SemanticContext* context, AstVarDecl* node)
 {
-    // Check #mix
-    if (!node->hasAstFlag(AST_GENERATED) && !node->hasOwnerInline() && node->token.text.find(g_LangSpec->name_sharp_mix) == 0)
+    // Check #uniq
+    if (!node->hasAstFlag(AST_GENERATED) && !node->hasOwnerInline() && node->token.text.find(g_LangSpec->name_sharp_uniq) == 0)
     {
         auto ownerFct = node->ownerFct;
         while (ownerFct)
@@ -1109,7 +1109,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         // Except if this is an initializer list {...}
         if (!leftConcreteType->isStruct() || rightConcreteType->isInitializerList() || rightConcreteType->isTuple())
         {
-            // Cast from struct to interface : need to wait for all interfaces to be registered
+            // Cast from struct to interface: need to wait for all interfaces to be registered
             if (leftConcreteType->isInterface() && rightConcreteType->isStruct())
             {
                 waitAllStructInterfaces(context->baseJob, rightConcreteType);

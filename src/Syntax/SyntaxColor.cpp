@@ -616,7 +616,7 @@ Utf8 doSyntaxColor(const Utf8& line, SyntaxColorContext& context, bool force)
                 continue;
             }
 
-            if (identifier.startsWith("#alias") || identifier.startsWith("#mix"))
+            if (identifier.startsWith(g_LangSpec->name_sharp_alias) || identifier.startsWith(g_LangSpec->name_sharp_uniq))
             {
                 result += syntaxColorToVTS(SyntaxColor::SyntaxIntrinsic, mode);
                 result += identifier;

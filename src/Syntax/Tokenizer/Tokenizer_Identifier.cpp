@@ -45,7 +45,7 @@ bool Tokenizer::doIdentifier(TokenParse& tokenParse)
             return true;
         }
 
-        if (tokenParse.token.text.startsWith(g_LangSpec->name_sharp_mix))
+        if (tokenParse.token.text.startsWith(g_LangSpec->name_sharp_uniq))
         {
             tokenParse.token.id = TokenId::Identifier;
             return true;

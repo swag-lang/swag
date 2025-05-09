@@ -200,7 +200,7 @@ void LanguageSpec::setupNames()
     name_toplevel = "toplevel";
 
     name_sharp_alias = "#alias";
-    name_sharp_mix   = "#mix";
+    name_sharp_uniq  = "#uniq";
     name_sharp_self  = "#self";
 
     name_at_drop            = "@drop";
@@ -458,7 +458,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("@tableof", TokenId::IntrinsicTableOf);
     keywords.add("@dbgalloc", TokenId::IntrinsicDbgAlloc);
     keywords.add("@sysalloc", TokenId::IntrinsicSysAlloc);
-    
+
     keywords.add("@err", TokenId::IntrinsicGetErr);
     keywords.add("@args", TokenId::IntrinsicArguments);
     keywords.add("@bytecode", TokenId::IntrinsicIsByteCode);
@@ -603,7 +603,6 @@ void LanguageSpec::setupIntrinsicConstants()
     intrinsicConstants.insert("@modules");
     intrinsicConstants.insert("@gvtd");
     intrinsicConstants.insert("@rtflags");
-
 }
 
 void LanguageSpec::setup()

@@ -1,2 +1,2 @@
 #global testerror "Err0121"
-var #mix45AA = 0
+var #uniq45AA = 0
