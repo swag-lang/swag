@@ -72,24 +72,33 @@ void ScbeOptimizer::optimizePassAliasLoadRM(const ScbeMicro& out)
         if (inst->isJumpDest() || inst->isRet())
             mapRegInst.clear();
 
+        if (inst->op != ScbeMicroOp::CmpRR)
+        {
+            const auto           writeRegs = out.cpu->getWriteRegisters(inst);
+            VectorNative<CpuReg> toErase;
+            for (const auto r : writeRegs)
+            {
+                for (const auto& [r1, i] : mapRegInst)
+                {
+                    if (i->regB == r)
+                        toErase.push_back(r1);
+                }
+            }
+
+            for (const auto r1 : toErase)
+                mapRegInst.erase(r1);
+        }
+
         switch (inst->op)
         {
             case ScbeMicroOp::LoadRM:
-            {
                 mapRegInst[inst->regA] = inst;
                 mapRegInst.erase(inst->regB);
+                break;
 
-                VectorNative<CpuReg> toErase;
-                for (const auto& [r1, i] : mapRegInst)
-                {
-                    if (i->regB == inst->regA)
-                        toErase.push_back(r1);
-                }
-
-                for (const auto r1 : toErase)
-                    mapRegInst.erase(r1);
+            case ScbeMicroOp::LoadRR:
+                mapRegInst.erase(inst->regB);
                 continue;
-            }
 
             case ScbeMicroOp::CmpRR:
                 if (inst->regA != inst->regB && mapRegInst.contains(inst->regA))
