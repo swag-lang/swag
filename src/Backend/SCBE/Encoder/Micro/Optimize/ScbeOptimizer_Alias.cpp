@@ -59,6 +59,97 @@ void ScbeOptimizer::optimizePassAliasLoadRM(const ScbeMicro& out)
     }
 }
 
+void ScbeOptimizer::optimizePassAliasLoadRR(const ScbeMicro& out)
+{
+    mapRegInst.clear();
+
+    for (auto inst = out.getFirstInstruction(); !inst->isEnd(); inst = ScbeMicro::getNextInstruction(inst))
+    {
+        if (inst->isJump() && !inst->isJumpCond())
+            mapRegInst.clear();
+        if (inst->isJumpDest() || inst->isRet())
+            mapRegInst.clear();
+
+        if (inst->hasReadRegA() && !inst->hasWriteRegA())
+        {
+            if (mapRegInst.contains(inst->regA))
+            {
+                const auto prev = mapRegInst[inst->regA];
+                if (out.cpu->acceptsRegA(inst, prev->regB))
+                {
+                    if (inst->hasWriteMemA())
+                    {
+                        setRegA(out, inst, prev->regB);
+                    }
+                    else if (!inst->hasOpFlag(MOF_OPBITS_A) ||
+                             !prev->hasOpFlag(MOF_OPBITS_A) ||
+                             ScbeCpu::getNumBits(inst->opBitsA) <= ScbeCpu::getNumBits(prev->opBitsA))
+                    {
+                        setRegA(out, inst, prev->regB);
+                    }
+                }
+            }
+        }
+
+        if (inst->hasReadRegB() && !inst->hasWriteRegB())
+        {
+            if (mapRegInst.contains(inst->regB))
+            {
+                const auto prev = mapRegInst[inst->regB];
+                if (out.cpu->acceptsRegB(inst, prev->regB))
+                {
+                    if (inst->hasReadMemB())
+                    {
+                        setRegB(out, inst, prev->regB);
+                    }
+                    else if (!inst->hasOpFlag(MOF_OPBITS_A) ||
+                             !prev->hasOpFlag(MOF_OPBITS_A) ||
+                             ScbeCpu::getNumBits(inst->opBitsA) <= ScbeCpu::getNumBits(prev->opBitsA))
+                    {
+                        setRegB(out, inst, prev->regB);
+                    }
+                }
+            }
+        }
+
+        if (inst->hasReadRegC() && !inst->hasWriteRegC())
+        {
+            if (mapRegInst.contains(inst->regC))
+            {
+                const auto prev = mapRegInst[inst->regC];
+                if (out.cpu->acceptsRegC(inst, prev->regB))
+                {
+                    if (!inst->hasOpFlag(MOF_OPBITS_A) ||
+                        !prev->hasOpFlag(MOF_OPBITS_A) ||
+                        ScbeCpu::getNumBits(inst->opBitsA) <= ScbeCpu::getNumBits(prev->opBitsA))
+                    {
+                        setRegC(out, inst, prev->regB);
+                    }
+                }
+            }
+        }
+
+        const auto writeRegs = out.cpu->getWriteRegisters(inst);
+        for (const auto r : writeRegs)
+        {
+            mapRegInst.erase(r);
+
+            VectorNative<CpuReg> toErase;
+            for (const auto& [r1, i] : mapRegInst)
+            {
+                if (i->regB == r)
+                    toErase.push_back(r1);
+            }
+
+            for (const auto r1 : toErase)
+                mapRegInst.erase(r1);
+        }
+
+        if (inst->op == ScbeMicroOp::LoadRR)
+            mapRegInst[inst->regA] = inst;
+    }
+}
+
 void ScbeOptimizer::optimizePassAliasLoadAddrRM(const ScbeMicro& out)
 {
     mapRegInst.clear();
@@ -277,97 +368,6 @@ void ScbeOptimizer::optimizePassAliasSymbolReloc(const ScbeMicro& out)
             mapRegInst.erase(r);
 
         if (inst->op == ScbeMicroOp::SymbolRelocAddr || inst->op == ScbeMicroOp::SymbolRelocValue)
-            mapRegInst[inst->regA] = inst;
-    }
-}
-
-void ScbeOptimizer::optimizePassAliasLoadRR(const ScbeMicro& out)
-{
-    mapRegInst.clear();
-
-    for (auto inst = out.getFirstInstruction(); !inst->isEnd(); inst = ScbeMicro::getNextInstruction(inst))
-    {
-        if (inst->isJump() && !inst->isJumpCond())
-            mapRegInst.clear();
-        if (inst->isJumpDest() || inst->isRet())
-            mapRegInst.clear();
-
-        if (inst->hasReadRegA() && !inst->hasWriteRegA())
-        {
-            if (mapRegInst.contains(inst->regA))
-            {
-                const auto prev = mapRegInst[inst->regA];
-                if (out.cpu->acceptsRegA(inst, prev->regB))
-                {
-                    if (inst->hasWriteMemA())
-                    {
-                        setRegA(out, inst, prev->regB);
-                    }
-                    else if (!inst->hasOpFlag(MOF_OPBITS_A) ||
-                             !prev->hasOpFlag(MOF_OPBITS_A) ||
-                             ScbeCpu::getNumBits(inst->opBitsA) <= ScbeCpu::getNumBits(prev->opBitsA))
-                    {
-                        setRegA(out, inst, prev->regB);
-                    }
-                }
-            }
-        }
-
-        if (inst->hasReadRegB() && !inst->hasWriteRegB())
-        {
-            if (mapRegInst.contains(inst->regB))
-            {
-                const auto prev = mapRegInst[inst->regB];
-                if (out.cpu->acceptsRegB(inst, prev->regB))
-                {
-                    if (inst->hasReadMemB())
-                    {
-                        setRegB(out, inst, prev->regB);
-                    }
-                    else if (!inst->hasOpFlag(MOF_OPBITS_A) ||
-                             !prev->hasOpFlag(MOF_OPBITS_A) ||
-                             ScbeCpu::getNumBits(inst->opBitsA) <= ScbeCpu::getNumBits(prev->opBitsA))
-                    {
-                        setRegB(out, inst, prev->regB);
-                    }
-                }
-            }
-        }
-
-        if (inst->hasReadRegC() && !inst->hasWriteRegC())
-        {
-            if (mapRegInst.contains(inst->regC))
-            {
-                const auto prev = mapRegInst[inst->regC];
-                if (out.cpu->acceptsRegC(inst, prev->regB))
-                {
-                    if (!inst->hasOpFlag(MOF_OPBITS_A) ||
-                        !prev->hasOpFlag(MOF_OPBITS_A) ||
-                        ScbeCpu::getNumBits(inst->opBitsA) <= ScbeCpu::getNumBits(prev->opBitsA))
-                    {
-                        setRegC(out, inst, prev->regB);
-                    }
-                }
-            }
-        }
-
-        const auto writeRegs = out.cpu->getWriteRegisters(inst);
-        for (const auto r : writeRegs)
-        {
-            mapRegInst.erase(r);
-
-            VectorNative<CpuReg> toErase;
-            for (const auto& [r1, i] : mapRegInst)
-            {
-                if (i->regB == r)
-                    toErase.push_back(r1);
-            }
-
-            for (const auto r1 : toErase)
-                mapRegInst.erase(r1);
-        }
-
-        if (inst->op == ScbeMicroOp::LoadRR)
             mapRegInst[inst->regA] = inst;
     }
 }
