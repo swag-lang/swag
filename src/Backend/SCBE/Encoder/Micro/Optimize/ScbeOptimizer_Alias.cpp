@@ -3,8 +3,10 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
+#include "Wmf/SourceFile.h"
+#pragma optimize("", off)
 
-void ScbeOptimizer::optimizePassAliasLoadRM(const ScbeMicro& out)
+void ScbeOptimizer::optimizePassAliasInvLoadRM(const ScbeMicro& out)
 {
     mapRegInst.clear();
     for (auto inst = out.getFirstInstruction(); !inst->isEnd(); inst = ScbeMicro::getNextInstruction(inst))
@@ -55,6 +57,61 @@ void ScbeOptimizer::optimizePassAliasLoadRM(const ScbeMicro& out)
                 break;
 
             next = ScbeMicro::getNextInstruction(next);
+        }
+    }
+}
+
+void ScbeOptimizer::optimizePassAliasLoadRM(const ScbeMicro& out)
+{
+    mapRegInst.clear();
+
+    for (auto inst = out.getFirstInstruction(); !inst->isEnd(); inst = ScbeMicro::getNextInstruction(inst))
+    {
+        if (inst->isJump() && !inst->isJumpCond())
+            mapRegInst.clear();
+        if (inst->isJumpDest() || inst->isRet())
+            mapRegInst.clear();
+
+        switch (inst->op)
+        {
+            case ScbeMicroOp::LoadRM:
+            {
+                mapRegInst[inst->regA] = inst;
+                mapRegInst.erase(inst->regB);
+
+                VectorNative<CpuReg> toErase;
+                for (const auto& [r1, i] : mapRegInst)
+                {
+                    if (i->regB == inst->regA)
+                        toErase.push_back(r1);
+                }
+
+                for (const auto r1 : toErase)
+                    mapRegInst.erase(r1);
+                continue;
+            }
+
+            case ScbeMicroOp::CmpRR:
+                if (inst->regA != inst->regB && mapRegInst.contains(inst->regA))
+                {
+                    SWAG_ASSERT(inst->regA != inst->regB);
+                    const auto prev = mapRegInst[inst->regA];
+                    if (out.cpu->encodeCmpMemReg(prev->regB, prev->valueA, inst->regB, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero &&
+                        !hasReadRegAfter(out, inst, prev->regA))
+                    {
+                        setOp(out, inst, ScbeMicroOp::CmpMR);
+                        setRegA(out, inst, prev->regB);
+                        setValueA(out, inst, prev->valueA);
+                        mapRegInst.erase(prev->regA);
+                        ignore(out, prev);
+                        break;
+                    }
+                }
+                break;
+
+            default:
+                mapRegInst.clear();
+                break;
         }
     }
 }
