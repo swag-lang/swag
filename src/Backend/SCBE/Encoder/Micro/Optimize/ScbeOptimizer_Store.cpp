@@ -3,6 +3,7 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
+#pragma optimize("", off)
 
 void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
 {
@@ -76,6 +77,19 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
                     legitReg               = inst->regA;
                     mapValReg[stackOffset] = {inst->regA, inst->opBitsA};
                     mapRegVal[inst->regA]  = stackOffset;
+                    break;
+                }
+
+                break;
+
+            case ScbeMicroOp::LoadZeroExtRM:
+            case ScbeMicroOp::LoadSignedExtRM:
+                if (isStack)
+                {
+                    if (mapRegVal.contains(inst->regA))
+                        mapValReg.erase(mapRegVal[inst->regA]);
+                    mapValReg.erase(stackOffset);
+                    mapRegVal.erase(inst->regA);
                     break;
                 }
 

@@ -3,12 +3,15 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
+#include "Wmf/SourceFile.h"
+#pragma optimize("", off)
 
 void ScbeOptimizer::optimizePassStackToHwdReg(const ScbeMicro& out)
 {
+    return;
     for (auto inst = out.getFirstInstruction(); !inst->isEnd(); inst = ScbeMicro::getNextInstruction(inst))
     {
-        if (inst->op != ScbeMicroOp::LoadMR)
+        if (inst->op != ScbeMicroOp::LoadMR && inst->op != ScbeMicroOp::LoadMI)
             continue;
         
         const auto orgStack = inst->getStackOffsetWrite();
@@ -17,7 +20,6 @@ void ScbeOptimizer::optimizePassStackToHwdReg(const ScbeMicro& out)
         if (aliasStack.contains(orgStack))
             continue;
 
-        bool hasRead  = false;
         bool hasWrite = false;
         auto next     = ScbeMicro::getNextInstruction(inst);
         auto dispo    = out.cpuFct->cc->volatileRegistersIntegerSet;
@@ -25,14 +27,16 @@ void ScbeOptimizer::optimizePassStackToHwdReg(const ScbeMicro& out)
         {
             if (next->isRet() || next->isJump() || next->isJumpDest())
                 break;
-
-            const auto writeStack = next->getStackOffsetWrite();
-            hasWrite              = writeStack == orgStack;
-            if (hasWrite)
-                break;
-
-            const auto readStack = next->getStackOffsetRead();
-            hasRead              = readStack == orgStack;
+            
+            if (next->op == ScbeMicroOp::LoadMR || next->op == ScbeMicroOp::LoadMI)
+            {
+                const auto writeStack = next->getStackOffsetWrite();
+                if (writeStack == orgStack)
+                {
+                    hasWrite = true;
+                    break;
+                }
+            }
 
             const auto regs = out.cpu->getReadWriteRegisters(next);
             dispo.erase(regs);
@@ -42,13 +46,20 @@ void ScbeOptimizer::optimizePassStackToHwdReg(const ScbeMicro& out)
             next = ScbeMicro::getNextInstruction(next);
         }
 
-        if (!dispo.empty() && hasRead && hasWrite)
+        if (!dispo.empty() && hasWrite)
         {
             for (const auto r : dispo)
             {
-                if (!hasReadRegAfter(out, next, r))
+                if (!hasReadRegAfter(out, next - 1, r))
                 {
-                    memToReg(out, CpuReg::Rsp, orgStack, r, inst, next);
+                    if (out.cpuFct->bc->sourceFile->name.containsNoCase("tweak") &&
+                        out.cpuFct->bc->getPrintName().containsNoCase("parse"))
+                    {
+                        printf("%s\n", out.cpuFct->bc->getPrintName().cstr());
+                        //out.print();
+                        memToReg(out, CpuReg::Rsp, orgStack, r, inst, next);
+                        //out.print();
+                    }
                     break;
                 }
             }

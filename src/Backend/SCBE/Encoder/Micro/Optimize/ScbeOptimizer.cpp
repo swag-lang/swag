@@ -50,7 +50,7 @@ bool ScbeOptimizer::regToReg(const ScbeMicro& out, CpuReg regDst, CpuReg regSrc,
     return hasChanged;
 }
 
-bool ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOffset, CpuReg reg, ScbeMicroInstruction* start, ScbeMicroInstruction* end)
+bool ScbeOptimizer::memToReg(const ScbeMicro& out, CpuReg memReg, uint32_t memOffset, CpuReg reg, ScbeMicroInstruction* start, const ScbeMicroInstruction* end)
 {
     auto inst       = start ? start : out.getFirstInstruction();
     bool hasChanged = false;
@@ -512,6 +512,7 @@ void ScbeOptimizer::optimizeStep1(const ScbeMicro& out)
     optimizePassAliasSymbolReloc(out);
     optimizePassSwap(out);
     optimizePassReduceBits(out);
+    optimizePassStackToHwdReg(out);
 }
 
 void ScbeOptimizer::optimizeStep2(const ScbeMicro& out)
@@ -521,7 +522,6 @@ void ScbeOptimizer::optimizeStep2(const ScbeMicro& out)
     computeContextStack(out);
     solveLabels(out);
 
-    optimizePassStackToHwdReg(out);
     optimizePassDeadRegBeforeLeave(out);
     optimizePassReduce2(out);
 }

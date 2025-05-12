@@ -3,6 +3,8 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
+#include "Wmf/SourceFile.h"
+#pragma optimize("", off)
 
 void ScbeOptimizer::reduceNoOp(const ScbeMicro& out, ScbeMicroInstruction* inst, const ScbeMicroInstruction* next)
 {
@@ -625,7 +627,10 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
                 next->valueB  = inst->valueA;
                 next->opBitsA = inst->opBitsA;
                 next->opBitsB = inst->opBitsA;
-                swapInstruction(out, inst, next);
+                if (next->regA == inst->regA)
+                    ignore(out, inst);
+                else
+                    swapInstruction(out, inst, next);
                 break;
             }
 
@@ -641,7 +646,10 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
                 next->valueB  = 0;
                 next->opBitsA = inst->opBitsA;
                 next->opBitsB = inst->opBitsA;
-                swapInstruction(out, inst, next);
+                if (next->regA == inst->regA)
+                    ignore(out, inst);
+                else
+                    swapInstruction(out, inst, next);
                 break;
             }
 
@@ -658,7 +666,10 @@ void ScbeOptimizer::reduceLoadAddress(const ScbeMicro& out, ScbeMicroInstruction
                 next->valueB  = 0;
                 next->opBitsA = inst->opBitsA;
                 next->opBitsB = inst->opBitsA;
-                swapInstruction(out, inst, next);
+                if (next->regA == inst->regA)
+                    ignore(out, inst);
+                else
+                    swapInstruction(out, inst, next);
                 break;
             }
 
@@ -1058,6 +1069,7 @@ void ScbeOptimizer::reduceAliasHwdReg(const ScbeMicro& out, ScbeMicroInstruction
                 usedWriteRegs[inst->regB] <= 1 &&
                 !out.isFuncReturnRegister(inst->regA) &&
                 !out.isFuncParameterRegister(inst->regA) &&
+                (usedWriteRegs[inst->regB] == 0 || !out.isFuncReturnRegister(inst->regB)) &&
                 (usedWriteRegs[inst->regB] == 0 || !out.isFuncParameterRegister(inst->regB)))
             {
                 if (regToReg(out, inst->regB, inst->regA))
@@ -1085,6 +1097,7 @@ void ScbeOptimizer::reduceAliasHwdReg(const ScbeMicro& out, ScbeMicroInstruction
                 usedWriteRegs[inst->regB] <= 1 &&
                 !out.isFuncReturnRegister(inst->regA) &&
                 !out.isFuncParameterRegister(inst->regA) &&
+                (usedWriteRegs[inst->regB] == 0 || !out.isFuncReturnRegister(inst->regB)) &&
                 (usedWriteRegs[inst->regB] == 0 || !out.isFuncParameterRegister(inst->regB)))
             {
                 regToReg(out, inst->regB, inst->regA);
