@@ -4,12 +4,13 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
 
-void ScbeOptimizer::optimizePassStackToHwdReg1(const ScbeMicro& out)
+void ScbeOptimizer::optimizePassStackToHwdReg(const ScbeMicro& out)
 {
     for (auto inst = out.getFirstInstruction(); !inst->isEnd(); inst = ScbeMicro::getNextInstruction(inst))
     {
         if (inst->op != ScbeMicroOp::LoadMR)
             continue;
+        
         const auto orgStack = inst->getStackOffsetWrite();
         if (!out.cpuFct->isStackOffsetReg(orgStack))
             continue;
@@ -55,27 +56,7 @@ void ScbeOptimizer::optimizePassStackToHwdReg1(const ScbeMicro& out)
     }
 }
 
-void ScbeOptimizer::optimizePassParamsKeepHwdReg(const ScbeMicro& out)
-{
-    for (uint32_t i = 0; i < out.cpuFct->cc->paramsRegistersInteger.size(); ++i)
-    {
-        if (out.cpuFct->typeFunc->numParamsRegisters() <= i)
-            break;
-        const auto r = out.cpuFct->cc->paramsRegistersInteger[i];
-        if (usedWriteRegs.contains(r))
-            continue;
-        if (out.cpuFct->typeFunc->registerIdxToType(i)->isNativeFloat())
-            continue;
-
-        const auto offset = out.cpuFct->getStackOffsetParam(i);
-        if (aliasStack.contains(offset))
-            continue;
-
-        memToReg(out, CpuReg::Rsp, offset, r);
-    }
-}
-
-void ScbeOptimizer::optimizePassStackToHwdReg2(const ScbeMicro& out)
+void ScbeOptimizer::optimizePassStackToHwdRegGlobal(const ScbeMicro& out)
 {
     if (usedStack.empty())
         return;
@@ -157,5 +138,25 @@ void ScbeOptimizer::optimizePassStackToHwdReg2(const ScbeMicro& out)
                 }
             }
         }
+    }
+}
+
+void ScbeOptimizer::optimizePassParamsKeepHwdReg(const ScbeMicro& out)
+{
+    for (uint32_t i = 0; i < out.cpuFct->cc->paramsRegistersInteger.size(); ++i)
+    {
+        if (out.cpuFct->typeFunc->numParamsRegisters() <= i)
+            break;
+        const auto r = out.cpuFct->cc->paramsRegistersInteger[i];
+        if (usedWriteRegs.contains(r))
+            continue;
+        if (out.cpuFct->typeFunc->registerIdxToType(i)->isNativeFloat())
+            continue;
+
+        const auto offset = out.cpuFct->getStackOffsetParam(i);
+        if (aliasStack.contains(offset))
+            continue;
+
+        memToReg(out, CpuReg::Rsp, offset, r);
     }
 }
