@@ -3,7 +3,6 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
-#pragma optimize("", off)
 
 void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
 {
@@ -26,7 +25,7 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
 
         const auto stackOffset = inst->getStackOffset();
         auto       legitReg    = CpuReg::Max;
-        const auto isStack     = out.cpuFct->isStackOffsetTransient(stackOffset) || out.cpuFct->isStackOffsetBC(stackOffset);
+        const auto isStack     = out.cpuFct->isStackOffsetTransient(stackOffset);// || out.cpuFct->isStackOffsetBC(stackOffset);
 
         if (inst->op == ScbeMicroOp::LoadMR && isStack)
         {

@@ -3,12 +3,9 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
-#include "Wmf/SourceFile.h"
-#pragma optimize("", off)
 
 void ScbeOptimizer::optimizePassStackToHwdReg(const ScbeMicro& out)
 {
-    return;
     for (auto inst = out.getFirstInstruction(); !inst->isEnd(); inst = ScbeMicro::getNextInstruction(inst))
     {
         if (inst->op != ScbeMicroOp::LoadMR && inst->op != ScbeMicroOp::LoadMI)
@@ -52,14 +49,7 @@ void ScbeOptimizer::optimizePassStackToHwdReg(const ScbeMicro& out)
             {
                 if (!hasReadRegAfter(out, next - 1, r))
                 {
-                    if (out.cpuFct->bc->sourceFile->name.containsNoCase("tweak") &&
-                        out.cpuFct->bc->getPrintName().containsNoCase("parse"))
-                    {
-                        printf("%s\n", out.cpuFct->bc->getPrintName().cstr());
-                        //out.print();
-                        memToReg(out, CpuReg::Rsp, orgStack, r, inst, next);
-                        //out.print();
-                    }
+                    memToReg(out, CpuReg::Rsp, orgStack, r, inst, next);
                     break;
                 }
             }
