@@ -25,6 +25,10 @@ struct ScbeExploreContext
     VectorNative<ScbeMicroInstruction*> pending;
 };
 
+using ScbeOptimizerContextFlags                              = Flags<uint32_t>;
+constexpr ScbeOptimizerContextFlags OCF_ZERO                 = 0x00000000;
+constexpr ScbeOptimizerContextFlags OCF_INDIRECT_STACK_WRITE = 0x00000001;
+
 struct ScbeOptimizer
 {
     bool exploreAfter(const ScbeMicro& out, ScbeMicroInstruction* inst, const std::function<ScbeExploreReturn(const ScbeMicro&, const ScbeExploreContext&)>& callback);
@@ -94,6 +98,7 @@ struct ScbeOptimizer
     bool                                     passHasDoneSomething = false;
 
     // Context
+    ScbeOptimizerContextFlags             contextFlags = OCF_ZERO;
     ScbeExploreContext                    cxt;
     Map<uint32_t, uint32_t>               usedStack;
     Map<CpuReg, uint32_t>                 usedReadRegs;

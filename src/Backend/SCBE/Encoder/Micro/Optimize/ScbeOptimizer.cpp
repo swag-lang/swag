@@ -340,10 +340,20 @@ void ScbeOptimizer::computeContextRegs(const ScbeMicro& out)
     unusedNonVolatileInteger.clear();
     unusedVolatileInteger.append(out.cpuFct->cc->volatileRegistersIntegerSet);
     unusedNonVolatileInteger.append(out.cpuFct->cc->nonVolatileRegistersIntegerSet);
+    contextFlags.clear();
 
     auto inst = out.getFirstInstruction();
     while (!inst->isEnd())
     {
+        switch (inst->op)
+        {
+            case ScbeMicroOp::LoadMR:
+            case ScbeMicroOp::LoadMI:
+                if (inst->regA != CpuReg::Rsp)
+                    contextFlags.add(OCF_INDIRECT_STACK_WRITE);
+                break;
+        }
+
         const auto writeRegs = out.cpu->getWriteRegisters(inst);
         for (const auto r : writeRegs)
         {

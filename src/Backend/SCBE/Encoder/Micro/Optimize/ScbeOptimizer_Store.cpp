@@ -9,6 +9,19 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
     mapValReg.clear();
     mapRegVal.clear();
 
+    bool noStack = false;
+    for (auto inst = out.getFirstInstruction(); !inst->isEnd(); inst = ScbeMicro::getNextInstruction(inst))
+    {
+        if (inst->op == ScbeMicroOp::LoadMR || inst->op == ScbeMicroOp::LoadMI)
+        {
+            if (inst->regA != CpuReg::Rsp)
+            {
+                noStack = true;
+                break;
+            }
+        }
+    }
+
     for (auto inst = out.getFirstInstruction(); !inst->isEnd(); inst = ScbeMicro::getNextInstruction(inst))
     {
         if (inst->isJump() || inst->isJumpDest() || inst->isRet())
@@ -25,7 +38,13 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
 
         const auto stackOffset = inst->getStackOffset();
         auto       legitReg    = CpuReg::Max;
-        const auto isStack     = out.cpuFct->isStackOffsetTransient(stackOffset);// || out.cpuFct->isStackOffsetBC(stackOffset);
+        auto       isStack     = out.cpuFct->isStackOffsetTransient(stackOffset);
+
+        // Kind of a hack.
+        // Do not try to remove user stack storage if there's a writing with an indirect register.
+        // Because we don't know if it's a writing to the stack, and so we can be sure there's no aliasing.
+        if (out.cpuFct->isStackOffsetBC(stackOffset) && !contextFlags.has(OCF_INDIRECT_STACK_WRITE))
+            isStack = true;
 
         if (inst->op == ScbeMicroOp::LoadMR && isStack)
         {
