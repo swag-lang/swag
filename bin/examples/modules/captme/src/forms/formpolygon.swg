@@ -200,7 +200,8 @@ impl IForm for FormPolygon
                 dash  = .Dash
             }
 
-            bk.a = 0
+            bk.a = 5
+            borderColor = Argb.White
             painter.removeParams(.Antialiased)
         }
 
@@ -229,9 +230,6 @@ impl IForm for FormPolygon
 
         pen.joinStyle = joinStyle
         painter.drawPath(&linePath, pen)
-
-        if subKind == .PixSel:
-            painter.setParams(.Antialiased)
     }
 
     mtd impl setup(capt: *Capture)

@@ -197,7 +197,10 @@ impl IForm for FormDraw
                 dash  = .Dash
             }
 
+            borderColor = Argb.White
             painter.removeParams(.Antialiased)
+            backColor.a = 5
+            painter.fillPath(&pl, backColor)
         }
 
         var pen = Pen.createDash(dash, borderColor, bSize)
@@ -212,9 +215,6 @@ impl IForm for FormDraw
         }
 
         painter.drawPath(&pl, pen)
-
-        if subKind == .PixSel:
-            painter.setParams(.Antialiased)
     }
 
     mtd impl setup(capt: *Capture)

@@ -170,6 +170,7 @@ impl IForm for FormShape
         var bSize = cxt.hitTest ? Math.max(borderSize, 5) : borderSize
         bSize = adaptSize(bSize, MinBorderSize, MaxBorderSize, cxt)
         let rSize = adaptSize(roundSize, MinRoundSize, MaxRoundSize, cxt)
+        var bk = backColor
 
         if subKind == .PixSel
         {
@@ -184,6 +185,7 @@ impl IForm for FormShape
                 dash  = .Dash
             }
 
+            bk.a = 5
             borderColor = Argb.White
             painter.setAntialiased(false)
         }
@@ -194,59 +196,38 @@ impl IForm for FormShape
         pen.borderPos = .Inside
         var backBrush = Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)
 
-        var bk = backColor
         if cxt.quickMode and alpha != 100 and subKind == .Highlight:
             bk.a = cast(u8) Math.map(cast(f32) alpha, 0, 100, 0, 255)
 
-        if subKind == .PixSel
+        #[Swag.Complete]
+        switch kind
         {
-            #[Swag.Complete]
-            switch kind
-            {
-            case Ellipse:
-                let sizeX = pp.width * 0.5
-                let sizeY = pp.height * 0.5
-                painter.drawEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, pen)
+        case Ellipse:
+            let sizeX = pp.width * 0.5
+            let sizeY = pp.height * 0.5
+            if cxt.quickMode and alpha != 100 and subKind == .Highlight:
+                painter.fillEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, backBrush)
+            painter.fillEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, bk)
+            painter.drawEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, pen)
 
-            case Rectangle:
+        case Rectangle:
+            if borderColor.a and (pp.width <= 2 * bSize or pp.height < 2 * bSize):
+                painter.fillRect(pp, borderColor)
+            else
+            {
+                if cxt.quickMode and alpha != 100 and subKind == .Highlight:
+                    painter.fillRect(pp, backBrush)
+                painter.fillRect(pp, bk)
                 painter.drawRect(pp, pen)
-
-            case RoundRectangle:
-                painter.drawRoundRect(pp, rSize, rSize, pen)
             }
-        }
-        else
-        {
-            #[Swag.Complete]
-            switch kind
-            {
-            case Ellipse:
-                let sizeX = pp.width * 0.5
-                let sizeY = pp.height * 0.5
-                if cxt.quickMode and alpha != 100 and subKind == .Highlight:
-                    painter.fillEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, backBrush)
-                painter.fillEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, bk)
-                painter.drawEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, pen)
 
-            case Rectangle:
-                if borderColor.a and (pp.width <= 2 * bSize or pp.height < 2 * bSize):
-                    painter.fillRect(pp, borderColor)
-                else
-                {
-                    if cxt.quickMode and alpha != 100 and subKind == .Highlight:
-                        painter.fillRect(pp, backBrush)
-                    painter.fillRect(pp, bk)
-                    painter.drawRect(pp, pen)
-                }
-
-            case RoundRectangle:
-                var pp1 = pp
-                pp1.inflate(-bSize * 0.5)
-                if cxt.quickMode and alpha != 100 and subKind == .Highlight:
-                    painter.fillRoundRect(pp1, rSize, rSize, backBrush)
-                painter.fillRoundRect(pp1, rSize, rSize, bk)
-                painter.drawRoundRect(pp, rSize, rSize, pen)
-            }
+        case RoundRectangle:
+            var pp1 = pp
+            pp1.inflate(-bSize * 0.5)
+            if cxt.quickMode and alpha != 100 and subKind == .Highlight:
+                painter.fillRoundRect(pp1, rSize, rSize, backBrush)
+            painter.fillRoundRect(pp1, rSize, rSize, bk)
+            painter.drawRoundRect(pp, rSize, rSize, pen)
         }
     }
 
