@@ -179,7 +179,7 @@ impl IForm for FormPolygon
     mtd impl paint(painter: *Painter, cxt: FormPaintContext)
     {
         var dash  = dashStyle
-        var bSize = cxt.hitTest ? Math.max(borderSize, 5) : borderSize        
+        var bSize = cxt.hitTest ? Math.max(borderSize, 5) : borderSize
         bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, cxt)
 
         var backBrush = Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)
@@ -198,8 +198,8 @@ impl IForm for FormPolygon
             {
                 bSize = 2
                 dash  = .Dash
-            }            
-            
+            }
+
             bk.a = 0
             painter.removeParams(.Antialiased)
         }
@@ -229,6 +229,9 @@ impl IForm for FormPolygon
 
         pen.joinStyle = joinStyle
         painter.drawPath(&linePath, pen)
+
+        if subKind == .PixSel:
+            painter.setParams(.Antialiased)
     }
 
     mtd impl setup(capt: *Capture)

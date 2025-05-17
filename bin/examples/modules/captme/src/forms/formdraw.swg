@@ -212,6 +212,9 @@ impl IForm for FormDraw
         }
 
         painter.drawPath(&pl, pen)
+
+        if subKind == .PixSel:
+            painter.setParams(.Antialiased)
     }
 
     mtd impl setup(capt: *Capture)

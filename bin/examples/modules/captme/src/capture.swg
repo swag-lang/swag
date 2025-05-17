@@ -548,6 +548,7 @@ impl Capture
         {
             .setColorMaskColor()
             .setBlendingMode(.Alpha)
+            .setInterpolationMode(.Linear)
             .releaseRenderTarget(rt)
             .releaseRenderTarget(rt1)
             .releaseRenderTarget(rt2)
@@ -879,7 +880,7 @@ impl Capture
                 switch t
                 {
                 case FormText:
-                    .addItem(CmdEditText)
+                    .addItem(CmdIdEditText)
                     .addSeparator()
                 }
             }

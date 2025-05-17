@@ -1,6 +1,6 @@
 using Gui
 
-const CmdEditText           = "CmdEditText"
+const CmdIdEditText         = "CmdIdEditText"
 const CmdIdClearImageInside = "CmdIdClearImageInside"
 
 struct ActionEdit {}
@@ -10,7 +10,7 @@ impl IActionUI for ActionEdit
     {
         switch cxt.id
         {
-        case CmdEditText, CmdIdClearImageInside:
+        case CmdIdEditText, CmdIdClearImageInside:
             return true
         }
 
@@ -35,7 +35,7 @@ impl IActionUI for ActionEdit
 
         switch cxt.id
         {
-        case CmdEditText:
+        case CmdIdEditText:
             evt.setFlags |= .Disabled | .Name
             evt.disabled = !hasSel or !lastSelType or lastSelType != FormText
             evt.name     = "Edit"
@@ -75,7 +75,7 @@ impl IActionUI for ActionEdit
 
         switch cxt.id
         {
-        case CmdEditText:
+        case CmdIdEditText:
             let lastSel = cast(*FormText) @dataof(capture.forms[capture.selection.back()])
             discard main.propWnd.editText(lastSel.text)
             capture.selectionHasChanged()

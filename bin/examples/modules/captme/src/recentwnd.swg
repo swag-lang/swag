@@ -118,6 +118,7 @@ impl IWnd for RecentView
     {
         let colors = parent.getThemeColors()
 
+        painter.setParams(.Antialiased)
         painter.fillRoundRect(rect, 8, 8, colors.wnd_Bk)
 
         if texture.isValid()
@@ -164,7 +165,6 @@ impl IWnd for RecentView
         let painter    = evt.bc.painter
         var clientRect = getClientRectPadding()
 
-        painter.setParams(.Antialiased)
         var x = clientRect.x
         foreach item, idx in items
         {

@@ -406,6 +406,7 @@ impl MainWnd
         registerKeyShortcut(.Zero, .Right, CmdIdMoveSelRight)
         registerKeyShortcut(.Zero, .Down, CmdIdMoveSelBottom)
         registerKeyShortcut(.CtrlAlt, .O, CmdIdOptions)
+        registerKeyShortcut(.Zero, .F2, CmdIdEditText)
 
         var errorReg = false
 
