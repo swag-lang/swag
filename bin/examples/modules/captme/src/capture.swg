@@ -478,6 +478,14 @@ impl Capture
                 .unbindRenderTarget()
             }
         }
+        else
+        {
+            with painter
+            {
+                .setShader(&render.shaderSimple)
+                .setBlendingMode(.Alpha)
+            }
+        }
 
         // Paint resulting image
         with painter
@@ -552,6 +560,7 @@ impl Capture
             .releaseRenderTarget(rt)
             .releaseRenderTarget(rt1)
             .releaseRenderTarget(rt2)
+            .setAntialiased(true)
         }
 
         if snapMode:
