@@ -522,7 +522,8 @@ void ScbeOptimizer::optimizeStep1(const ScbeMicro& out)
     optimizePassAliasSymbolReloc(out);
     optimizePassSwap(out);
     optimizePassReduceBits(out);
-    optimizePassStackToHwdReg(out);
+    optimizePassStackToHwdRegFlat(out);
+    optimizePassStackToHwdRegLoop(out);
 }
 
 void ScbeOptimizer::optimizeStep2(const ScbeMicro& out)

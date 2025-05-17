@@ -3,14 +3,82 @@
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Semantic/Type/TypeInfo.h"
+#pragma optimize("", off)
 
-void ScbeOptimizer::optimizePassStackToHwdReg(const ScbeMicro& out)
+void ScbeOptimizer::optimizePassStackToHwdRegLoop(const ScbeMicro& out)
+{
+    uint32_t idx = 0;
+    for (auto inst = out.getFirstInstruction(); !inst->isEnd(); inst = ScbeMicro::getNextInstruction(inst), idx++)
+    {
+        if (!inst->isJump())
+            continue;
+        if (inst->jumpType != CpuCondJump::JUMP)
+            continue;
+        if (inst->valueB > idx)
+            continue;
+
+        bool       isValidLoop  = true;
+        const auto start        = out.getFirstInstruction() + inst->valueB;
+        const auto idxStartLoop = static_cast<uint64_t>(start - out.getFirstInstruction());
+
+        const auto end          = inst;
+        const auto afterLoop    = ScbeMicro::getNextInstruction(end);
+        const auto idxAfterLoop = static_cast<uint64_t>(afterLoop - out.getFirstInstruction());
+
+        auto dispo = out.cpuFct->cc->volatileRegistersIntegerSet;
+        auto scan  = start;
+        while (scan != end)
+        {
+            if (scan->op == ScbeMicroOp::JumpTable)
+            {
+                isValidLoop = false;
+                break;
+            }
+
+            if (scan->isJump() && scan->valueB > idxAfterLoop)
+            {
+                isValidLoop = false;
+                break;
+            }
+
+            if (scan->isJump() && scan->valueB < idxStartLoop)
+            {
+                isValidLoop = false;
+                break;
+            }
+
+            const auto regs = out.cpu->getReadWriteRegisters(scan);
+            dispo.erase(regs);
+            if (dispo.empty())
+            {
+                isValidLoop = false;
+                break;
+            }
+
+            scan = ScbeMicro::getNextInstruction(scan);
+        }
+
+        if (isValidLoop)
+        {
+            for (const auto r : dispo)
+            {
+                if (!hasReadRegAfter(out, afterLoop - 1, r))
+                {
+                    out.print();
+                    break;
+                }
+            }
+        }
+    }
+}
+
+void ScbeOptimizer::optimizePassStackToHwdRegFlat(const ScbeMicro& out)
 {
     for (auto inst = out.getFirstInstruction(); !inst->isEnd(); inst = ScbeMicro::getNextInstruction(inst))
     {
         if (inst->op != ScbeMicroOp::LoadMR && inst->op != ScbeMicroOp::LoadMI)
             continue;
-        
+
         const auto orgStack = inst->getStackOffsetWrite();
         if (!out.cpuFct->isStackOffsetReg(orgStack))
             continue;
@@ -24,7 +92,7 @@ void ScbeOptimizer::optimizePassStackToHwdReg(const ScbeMicro& out)
         {
             if (next->isRet() || next->isJump() || next->isJumpDest())
                 break;
-            
+
             if (next->op == ScbeMicroOp::LoadMR || next->op == ScbeMicroOp::LoadMI)
             {
                 const auto writeStack = next->getStackOffsetWrite();
