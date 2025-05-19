@@ -55,9 +55,12 @@ var g_App: Application
     }
 
     let name = Format.toString("Captme %.%.%", #swagversion, #swagrevision, #swagbuildnum)
-    Env.registerApplication("Captme.exe", name)
-    Env.associateFileExtension(".png", "Captme.exe", Env.getExe())
-    Env.associateFileExtension(".jpg", "Captme.exe", Env.getExe())
+    with Env
+    {
+        .registerApplication("Captme.exe", name)
+        .associateFileExtension(".png", "Captme.exe", Env.getExe())
+        .associateFileExtension(".jpg", "Captme.exe", Env.getExe())
+    }
 
     foreach arg in args
     {

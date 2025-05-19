@@ -64,7 +64,7 @@ void ScbeOptimizer::optimizePassStackToHwdRegLoop(const ScbeMicro& out)
             {
                 if (!hasReadRegAfter(out, afterLoop - 1, r))
                 {
-                    out.print();
+                    //out.print();
                     break;
                 }
             }
