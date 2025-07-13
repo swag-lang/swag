@@ -5,11 +5,11 @@ public struct ApplicationNative
 {
     fileSmallIconsImage:         Image
     fileSmallIconsImageList:     ImageList
-    mapFileSmallIcons:           HashTable'(string, s32)
+    mapFileSmallIcons:           HashTable'(String, s32)
 
     fileBigIconsImage:           Image
     fileBigIconsImageList:       ImageList
-    mapFileBigIcons:             HashTable'(string, s32)
+    mapFileBigIcons:             HashTable'(String, s32)
 
     hotKeysDisabled:             bool
 }
