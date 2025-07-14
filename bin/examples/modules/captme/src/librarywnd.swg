@@ -308,9 +308,7 @@ impl LibraryView
         items.reserve(res.count)
         foreach fi in res
         {
-            var item: LibraryItem
-            item.fi = fi
-            items.add(item)
+            items.add({fi: fi})
         }
 
         hotItem = Swag.U32.Max
