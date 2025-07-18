@@ -43,6 +43,7 @@ enum ThemeIcons24
     Duplicate
     Quit
     Link
+    Sort
 }
 
 enum ThemeIcons64

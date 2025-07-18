@@ -600,8 +600,7 @@ impl LibraryWnd
         }
 
         // Image Size
-        var ic = res.getTheme().getIcon24(.Search, 20)
-        with res.zoomBtn = IconButton.create(res.editZoomBar, ic, {0, 0, 120, 32})
+        with res.zoomBtn = IconButton.create(res.editZoomBar, res.getTheme().getIcon24(.Search), {0, 0, 120, 32})
         {
             .iconBtnFlags.add(.Center)
             .textPos  = .Right
@@ -621,7 +620,7 @@ impl LibraryWnd
         }
 
         // Sort
-        with res.sortBtn = IconButton.create(res.editZoomBar, ic, {0, 0, 120, 32})
+        with res.sortBtn = IconButton.create(res.editZoomBar, res.getTheme().getIcon24(.Sort), {0, 0, 120, 32})
         {
             .iconBtnFlags.add(.Center)
             .textPos  = .Right
