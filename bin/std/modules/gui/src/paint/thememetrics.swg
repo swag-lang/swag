@@ -43,9 +43,10 @@ struct ThemeMetrics
     slider_BoxSize:                        f32 = 18
     slider_StepSize:                       f32 = 8
 
-    menuPopup_Padding:                     f32 = 10
+    menuPopup_Padding:                     f32 = 12
     menuPopup_SpaceLines:                  f32 = 6
     menuPopup_ShadowSize:                  f32 = 10
+    menuPopup_IconMargin:                  f32 = 2
     menuPopup_IconTextMargin:              f32 = 6
     menuPopup_SeparatorHeight:             f32 = 8
 

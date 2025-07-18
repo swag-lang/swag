@@ -52,6 +52,14 @@ struct CommandStateEvent
         LongName
         ToolTip
         Hidden
+        RenderingHint
+    }
+
+    #[Swag.EnumFlags]
+    enum RenderingHint
+    {
+        Zero = 0
+        ExclusiveGroup
     }
 
     enum Kind
@@ -70,7 +78,8 @@ struct CommandStateEvent
     longName:       String
     shortcut:       String
     toolTip:        String
-    setFlags:       SetFlags = Zero
+    setFlags:       SetFlags
+    renderingHint:  RenderingHint
     disabled:       bool
     checked:        bool
     hidden:         bool

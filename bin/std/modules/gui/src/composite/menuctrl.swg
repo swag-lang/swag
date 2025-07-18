@@ -21,6 +21,7 @@ public struct PopupMenuItem
     popup:            *MenuCtrl
     pos:              f32
     size:             f32
+    rg:               CommandStateEvent.RenderingHint
     separator:        bool
     disabled:         bool
     checked:          bool
@@ -201,17 +202,27 @@ public impl IWnd for MenuCtrl
             theme.drawSubRect(painter, backPos, &rects.menuPopup_HotBk, i.aniSel.cur())
 
             // Icon
-            if i.checked
+            var iconPos = labelPos
+            iconPos.x += metrics.menuPopup_IconMargin
+            if i.checked or i.rg == .ExclusiveGroup
             {
-                var checkPos = labelPos
-                checkPos.y = labelPos.vertCenter() - i.size * 0.5
+                var checkPos = iconPos
+                checkPos.y = iconPos.vertCenter() - i.size * 0.5
                 checkPos.width, checkPos.height = i.size
-                theme.drawSubRect(painter, checkPos, &rects.btnCheck_CheckedMark, i.aniText.cur())
+
+                if i.rg == .ExclusiveGroup
+                {
+                    theme.drawSubRect(painter, checkPos, &rects.btnRadio_CheckedBorder, i.aniText.cur())
+                    if i.checked:
+                        theme.drawSubRect(painter, checkPos, &rects.btnRadio_CheckedMark, i.aniText.cur())
+                }
+                else:
+                    theme.drawSubRect(painter, checkPos, &rects.btnCheck_CheckedMark, i.aniText.cur())
             }
             elif i.icon.isValid()
             {
                 i.icon.sizeX, i.icon.sizeY = i.size - 4
-                i.icon.paint(painter, labelPos.x, labelPos.vertCenter() - i.icon.sizeY * 0.5, i.aniText.cur())
+                i.icon.paint(painter, iconPos.x, iconPos.vertCenter() - i.icon.sizeY * 0.5, i.aniText.cur())
             }
 
             labelPos.moveLeft(metrics.menuPopup_IconTextMargin + i.size)
@@ -420,6 +431,8 @@ impl MenuCtrl
                 i.rightName.set(evt.shortcut)
             if evt.setFlags & .Checked:
                 i.checked = evt.checked
+            if evt.setFlags & .RenderingHint:
+                i.rg = evt.renderingHint
         }
     }
 

@@ -42,23 +42,28 @@ impl IActionUI for ActionDelay
             }
 
         case CmdIdCaptureDelay0:
-            evt.setFlags |= .Name | .Checked
+            evt.setFlags |= .Name | .Checked | .RenderingHint
+            evt.renderingHint = .ExclusiveGroup
             evt.name    = "No Delay"
             evt.checked = g_CaptureOptions.delay == 0
         case CmdIdCaptureDelay1:
-            evt.setFlags |= .Name | .Checked
+            evt.setFlags |= .Name | .Checked | .RenderingHint
+            evt.renderingHint = .ExclusiveGroup
             evt.name    = "1 second"
             evt.checked = g_CaptureOptions.delay == 1
         case CmdIdCaptureDelay2:
-            evt.setFlags |= .Name | .Checked
+            evt.setFlags |= .Name | .Checked | .RenderingHint
+            evt.renderingHint = .ExclusiveGroup
             evt.name    = "2 seconds"
             evt.checked = g_CaptureOptions.delay == 2
         case CmdIdCaptureDelay5:
-            evt.setFlags |= .Name | .Checked
+            evt.setFlags |= .Name | .Checked | .RenderingHint
+            evt.renderingHint = .ExclusiveGroup
             evt.name    = "5 seconds"
             evt.checked = g_CaptureOptions.delay == 5
         case CmdIdCaptureDelay9:
-            evt.setFlags |= .Name | .Checked
+            evt.setFlags |= .Name | .Checked | .RenderingHint
+            evt.renderingHint = .ExclusiveGroup
             evt.name    = "9 seconds"
             evt.checked = g_CaptureOptions.delay == 9
         }

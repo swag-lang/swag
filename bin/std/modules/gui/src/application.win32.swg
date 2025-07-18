@@ -101,9 +101,7 @@ impl Application
 
     mtd getSurfaceAt(x, y: f32)->#null *Surface
     {
-        var pt: POINT
-        pt.x = cast(s32) x
-        pt.y = cast(s32) y
+        var pt: POINT{cast(s32) x, cast(s32) y}
         let hWnd = WindowFromPoint(pt)
         if hWnd == null:
             return null

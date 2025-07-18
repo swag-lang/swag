@@ -17,7 +17,7 @@ impl IActionUI for ActionRecentSize
         case CmdIdRecentSmall, CmdIdRecentMedium, CmdIdRecentBig:
             return true
         case CmdIdLibSmall, CmdIdLibMedium, CmdIdLibBig:
-            return true            
+            return true
         }
 
         return false
@@ -48,20 +48,23 @@ impl IActionUI for ActionRecentSize
             evt.icon    = Icon.from(&main.icons24, 2)
 
         case CmdIdLibSmall:
-            evt.setFlags |= .Name | .Checked
+            evt.setFlags |= .Name | .Checked | .RenderingHint
+            evt.renderingHint = .ExclusiveGroup
             evt.name = "Small view"
             evt.checked = main.libWnd.previewSize == .Small
 
         case CmdIdLibMedium:
-            evt.setFlags |= .Name | .Checked
+            evt.setFlags |= .Name | .Checked | .RenderingHint
+            evt.renderingHint = .ExclusiveGroup
             evt.name = "Medium view"
             evt.checked = main.libWnd.previewSize == .Medium
 
         case CmdIdLibBig:
-            evt.setFlags |= .Name | .Checked
+            evt.setFlags |= .Name | .Checked | .RenderingHint
+            evt.renderingHint = .ExclusiveGroup
             evt.name = "Big view"
             evt.checked = main.libWnd.previewSize == .Big
-      
+
         }
 
         return true
@@ -89,7 +92,7 @@ impl IActionUI for ActionRecentSize
             main.libWnd.setPreviewSize(.Medium)
 
         case CmdIdLibBig:
-            main.libWnd.setPreviewSize(.Big)   
+            main.libWnd.setPreviewSize(.Big)
         }
 
         return true

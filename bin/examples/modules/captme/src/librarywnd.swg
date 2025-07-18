@@ -16,7 +16,11 @@ struct LibraryWnd
     listCtrl:      *ListCtrl
     editZoomBar:   *Wnd
     zoomBtn:       *IconButton
+    sortBtn:       *IconButton
     previewSize:    PreviewSize
+
+    invertSort:     bool
+    sortMethod:     SortMethod
 }
 
 struct LibraryItem
@@ -34,6 +38,12 @@ impl LibraryItem
     {
         Memory.delete(capture)
     }
+}
+
+enum SortMethod
+{
+    Recent
+    FileSize
 }
 
 struct LibraryView
@@ -274,6 +284,27 @@ impl LibraryView
         }
     }
 
+    mtd sort()
+    {
+        items.sort(func|libWnd|(a, b)
+        {
+            var value: s32
+
+            #[Swag.Complete]
+            switch(libWnd.sortMethod)
+            {
+            case Recent:
+                value = b.fi.lastWriteTime <=> a.fi.lastWriteTime
+            case FileSize:
+                value = b.fi.size <=> a.fi.size
+            }
+
+            if libWnd.invertSort:
+                return -value
+            return value
+        })
+    }
+
     mtd fill() throw
     {
         if thread.isValid()
@@ -294,11 +325,6 @@ impl LibraryView
             }
         }
 
-        res.sort(func(a, b)
-        {
-            return b.lastWriteTime <=> a.lastWriteTime
-        })
-
         let renderer = getApp().getRenderer()
         foreach &it in items:
             renderer.removeTexture(&it.texture)
@@ -310,6 +336,8 @@ impl LibraryView
         {
             items.add({fi: fi})
         }
+
+        sort()
 
         hotItem = Swag.U32.Max
         selModel.unselectAll()
@@ -340,6 +368,30 @@ impl LibraryWnd
             zoomBtn.name.set("big")
         }
 
+        invalidate()
+    }
+
+    mtd setSortMethod(method: SortMethod)
+    {
+        sortMethod = method
+
+        #[Swag.Complete]
+        switch sortMethod
+        {
+        case Recent:
+            sortBtn.name.set("recent")
+        case FileSize:
+            sortBtn.name.set("filesize")
+        }
+
+        view.sort()
+        invalidate()
+    }
+
+    mtd setSortOrder(invert: bool)
+    {
+        invertSort = invert
+        view.sort()
         invalidate()
     }
 
@@ -540,19 +592,20 @@ impl LibraryWnd
         }
         res.listCtrl = list
 
-        // Bottom bar
+        // Top bar
         with res.editZoomBar = StackLayoutCtrl.create(res, .HorzCenter, {0, 0, 300, 32})
         {
-            .dockStyle       = .Bottom
+            .dockStyle       = .Top
             .backgroundStyle = .Window
         }
 
+        // Image Size
         var ic = res.getTheme().getIcon24(.Search, 20)
         with res.zoomBtn = IconButton.create(res.editZoomBar, ic, {0, 0, 120, 32})
         {
             .iconBtnFlags.add(.Center)
             .textPos  = .Right
-            .arrowPos = .RightUp
+            .arrowPos = .RightDown
             .sigPressed += func|res|(btn)
             {
                 var pos  = btn.getSurfaceRect()
@@ -563,11 +616,33 @@ impl LibraryWnd
                     .addItem(CmdIdLibMedium)
                     .addItem(CmdIdLibBig)
                 }
-                discard menu.doModal({pos.horzCenter(), pos.y}, .AnchorBottomCenter, autoDestroy: true)
+                discard menu.doModal({pos.horzCenter(), pos.bottom()}, .AnchorTopCenter, autoDestroy: true)
+            }
+        }
+
+        // Sort
+        with res.sortBtn = IconButton.create(res.editZoomBar, ic, {0, 0, 120, 32})
+        {
+            .iconBtnFlags.add(.Center)
+            .textPos  = .Right
+            .arrowPos = .RightDown
+            .sigPressed += func|res|(btn)
+            {
+                var pos  = btn.getSurfaceRect()
+                with var menu = MenuCtrl.createPopup(res)
+                {
+                    .menuCtrlFlags |= .NoKeyShortcuts
+                    .addItem(CmdIdLibSortRecent)
+                    .addItem(CmdIdLibSortFileSize)
+                    .addSeparator()
+                    .addItem(CmdIdLibSortInvert)
+                }
+                discard menu.doModal({pos.horzCenter(), pos.bottom()}, .AnchorTopCenter, autoDestroy: true)
             }
         }
 
         res.setPreviewSize(.Small)
+        res.setSortMethod(res.sortMethod)
         return res
     }
 }
