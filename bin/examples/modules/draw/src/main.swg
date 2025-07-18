@@ -19,7 +19,7 @@ namespace Res
 var g_ModeAA:       bool = true
 var g_PaintQuality: PaintQuality = Normal
 var g_Pattern:      bool = true
-var g_Page:         s32 = 7
+var g_Page:         s32 = 5
 var g_Angle:        f32 = 0
 const MaxPages      = 8
 

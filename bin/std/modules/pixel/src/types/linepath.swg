@@ -367,12 +367,20 @@ impl LinePath
         switch quality
         {
         case Draft:
-            minDist = 2
+            minDist = 1
         case Normal:
             minDist = 0.2
         }
 
         return minDist
+    }
+
+    mtd flattenLine(pos: Vector2)
+    {
+        bvMin = Vector2.min(bvMin, pos)
+        bvMax = Vector2.max(bvMax, pos)
+        polygon.add(pos)
+        endPosBuffer = pos
     }
 
     #[Swag.Overload]
@@ -430,142 +438,219 @@ impl LinePath
     mtd flattenCurve(p0, p1, p2, p3: Vector2, quality: PaintQuality)
     {
         let minDist = getFlattenDistance(quality)
+        let startPt = endPosBuffer
+        let endPt = p0 + p1 + p2 + p3  // Point at t=1
 
-        // We divide a segment by half until the computed point on the curve is close to the corresponding segment
-        var tmp: Array'{ factor: f32, pos: Vector2 }
-        tmp.add({0, endPosBuffer})
-        tmp.add({1, p0 + p1 + p2 + p3})
+        // Calculate optimal number of segments analytically
+        let numSegments = calculateCubicPolynomialSegments(p0, p1, p2, p3, startPt, endPt, minDist)
 
-        for var i = 0; i < tmp.count - 1; i += 1
+        if numSegments <= 1
         {
-            let t = (tmp[i].factor + tmp[i + 1].factor) * 0.5
-
-            var point: Vector2 = undefined
-            point = p0 * t * t * t
-            point += p1 * t * t
-            point += p2 * t
-            point += p3
-
-            let dist = point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
-            if dist < minDist:
-                continue
-
-            tmp.insertAt(cast(u64) i + 1, {t, point})
-            i -= 1
+            // Curve is flat enough, just draw direct line
+            flattenLine(endPt)
+            return
         }
 
-        for i in 1 until tmp.count:
-            flattenLine(tmp[i].pos)
+        let stepSize = 1.0 / numSegments
+
+        // Generate all points in one pass using optimized polynomial evaluation
+        for i in 1 to numSegments
+        {
+            let t = stepSize * i
+            let point = Math.Curve.evaluatePolynomial(p0, p1, p2, p3, t)
+            flattenLine(point)
+        }
     }
+
+    // Calculate optimal number of segments for cubic polynomial
+    mtd calculateCubicPolynomialSegments(p0, p1, p2, p3: Vector2, startPt, endPt: Vector2, tolerance: f32)->u32
+    {
+        // Calculate chord length
+        let chordLength = startPt.distance(endPt)
+
+        if chordLength < tolerance:
+            return 1  // Very short curve
+
+        // For cubic polynomials, we need to estimate maximum curvature
+        // Sample a few points to get an approximation of maximum deviation
+        var maxDeviation = 0.0
+
+        // Sample at critical points: t = 0.25, 0.5, 0.75
+        let samplePoints = [0.25, 0.5, 0.75]
+
+        foreach t in samplePoints
+        {
+            let point = Math.Curve.evaluatePolynomial(p0, p1, p2, p3, t)
+            let deviation = point.distanceToLine(startPt, endPt)
+            maxDeviation = Math.max(maxDeviation, deviation)
+        }
+
+        if maxDeviation < tolerance {
+            return 1  // Curve is already flat enough
+        }
+
+        // Estimate segments needed based on maximum deviation
+        // For cubic curves, use a conservative estimate
+        let segments = Math.ceil(Math.sqrt(maxDeviation / tolerance) * 3.0)
+
+        return cast(u32) Math.max(1, Math.min(segments, 1000))  // Reasonable bounds
+    }
+
+    ///////////////////////////////
 
     #[Swag.Overload]
     mtd flattenBezier(pos, p1: Vector2, quality: PaintQuality)
     {
+        let startPt = endPosBuffer
         let minDist = getFlattenDistance(quality)
-        var startPt = endPosBuffer
 
-        // We divide a segment by half until the computed point on the curve is close to the corresponding segment
-        var tmp: Array'{ factor: f32, pos: Vector2 }
-        tmp.add({0, endPosBuffer})
-        tmp.add({1, pos})
+        // Calculate optimal number of segments analytically
+        let numSegments = calculateQuadraticBezierSegments(startPt, p1, pos, minDist)
 
-        for var i = 0; i < tmp.count - 1; i += 1
+        if numSegments <= 1
         {
-            let t  = (tmp[i].factor + tmp[i + 1].factor) * 0.5
-            let it = 1.0 - t
-            let a1 = it * it
-            let a2 = 2.0 * t * it
-            let a3 = t * t
-
-            var point: Vector2 = undefined
-            point.x = a1 * startPt.x + a2 * p1.x + a3 * pos.x
-            point.y = a1 * startPt.y + a2 * p1.y + a3 * pos.y
-
-            let dist = point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
-            if dist < minDist:
-                continue
-
-            tmp.insertAt(cast(u64) i + 1, {t, point})
-            i -= 1
+            // Curve is flat enough, just draw direct line
+            flattenLine(pos)
+            return
         }
 
-        for i in 1 until tmp.count:
-            flattenLine(tmp[i].pos)
+        let stepSize = 1.0 / numSegments
+
+        // Generate all points in one pass using optimized quadratic Bézier evaluation
+        for i in 1 to numSegments
+        {
+            let t = stepSize * i
+            let point = Math.Curve.evaluateBezier(startPt, p1, pos, t)
+            flattenLine(point)
+        }
     }
+
+    // Calculate optimal number of segments for quadratic Bézier
+    mtd calculateQuadraticBezierSegments(p0, p1, p2: Vector2, tolerance: f32)->u32
+    {
+        // For quadratic Bézier, the maximum deviation occurs at the control point
+        // Calculate distance from control point to chord line
+        let deviation = p1.distanceToLine(p0, p2)
+
+        if deviation < tolerance:
+            return 1  // Curve is already flat enough
+
+        // For quadratic curves, the relationship is more direct
+        // Maximum error ≈ deviation / 8 per segment
+        // So segments needed ≈ sqrt(8 * deviation / tolerance)
+        let segments = Math.ceil(Math.sqrt(8.0 * deviation / tolerance))
+
+        return cast(u32) Math.max(1, Math.min(segments, 1000))  // Reasonable bounds
+    }
+
+    ///////////////////////////////
 
     #[Swag.Overload]
     mtd flattenBezier(pos, p1, p2: Vector2, quality: PaintQuality)
     {
+        let startPt = endPosBuffer
         let minDist = getFlattenDistance(quality)
-        var startPt = endPosBuffer
 
-        // We divide a segment by half until the computed point on the curve is close to the corresponding segment
-        var tmp: Array'{ factor: f32, pos: Vector2 }
-        tmp.add({0, endPosBuffer})
-        tmp.add({1, pos})
+        // Calculate optimal number of segments analytically
+        let numSegments = calculateBezierSegments(startPt, p1, p2, pos, minDist)
 
-        for var i = 0; i < tmp.count - 1; i += 1
+        if numSegments <= 1
         {
-            let t  = (tmp[i].factor + tmp[i + 1].factor) * 0.5
-            let it = 1.0 - t
-            let a1 = it * it * it
-            let a2 = 3.0 * t * it * it
-            let a3 = 3.0 * t * t * it
-            let a4 = t * t * t
-
-            var point: Vector2 = undefined
-            point.x = a1 * startPt.x + a2 * p1.x + a3 * p2.x + a4 * pos.x
-            point.y = a1 * startPt.y + a2 * p1.y + a3 * p2.y + a4 * pos.y
-
-            let dist = point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
-            if dist < minDist:
-                continue
-
-            tmp.insertAt(cast(u64) i + 1, {t, point})
-            i -= 1
+            // Curve is flat enough, just draw direct line
+            flattenLine(pos)
+            return
         }
 
-        for i in 1 until tmp.count:
-            flattenLine(tmp[i].pos)
+        let stepSize = 1.0 / numSegments
+
+        // Generate all points in one pass using optimized Bézier evaluation
+        for i in 1 to numSegments
+        {
+            let t = stepSize * i
+            let point = Math.Curve.evaluateBezier(startPt, p1, p2, pos, t)
+            flattenLine(point)
+        }
     }
+
+    // Calculate optimal number of segments using curvature analysis
+    mtd calculateBezierSegments(p0, p1, p2, p3: Vector2, tolerance: f32)->u32
+    {
+        // Calculate the maximum curvature using the control polygon method
+        // This is much faster than iterative subdivision
+
+        // Vector from start to end
+        let chord = Vector2{x: p3.x - p0.x, y: p3.y - p0.y}
+        let chordLength = chord.length()
+
+        if chordLength < tolerance:
+            return 1  // Very short curve
+
+        // Calculate maximum deviation of control points from chord
+        var maxDeviation = 0.0
+
+        // Distance from p1 to chord line
+        let dev1 = p1.distanceToLine(p0, p3)
+        maxDeviation = Math.max(maxDeviation, dev1)
+
+        // Distance from p2 to chord line
+        let dev2 = p2.distanceToLine(p0, p3)
+        maxDeviation = Math.max(maxDeviation, dev2)
+
+        if maxDeviation < tolerance {
+            return 1  // Curve is already flat enough
+        }
+
+        // Use the flatness criterion: segments ≈ sqrt(maxDeviation / tolerance)
+        let segments = Math.ceil(Math.sqrt(maxDeviation / tolerance) * 2.0)
+
+        return cast(u32) Math.max(1, Math.min(segments, 1000))  // Reasonable bounds
+    }
+
+    ///////////////////////////////
 
     mtd flattenArc(pos, p1, p2: Vector2, quality: PaintQuality)
     {
-        var endPos: Vector2 = undefined
-        endPos.x = pos.x + (Math.sin(p1.y) * p2.x)
-        endPos.y = pos.y + (-Math.cos(p1.y) * p2.y)
+        let angleSpan = p1.y - p1.x
+        let radius = Math.max(p2.x, p2.y)  // Use the larger radius component
 
-        let minDist = getFlattenDistance(quality)
+        // Calculate required number of segments analytically
+        let numSegments = calculateFlattenArcSegments(angleSpan, radius, quality)
 
-        // We divide a segment by half until the computed point on the curve is close to the corresponding segment
-        var tmp: Array'{ angle: f32, pos: Vector2 }
-        tmp.add({p1.x, endPosBuffer})
-        tmp.add({p1.y, endPos})
-
-        for var i = 0; i < tmp.count - 1; i += 1
+        if numSegments <= 1
         {
-            let angle = (tmp[i].angle + tmp[i + 1].angle) * 0.5
-            var point = pos
-            point.x += (Math.sin(angle) * p2.x)
-            point.y += -(Math.cos(angle) * p2.y)
-
-            let dist = point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
-            if dist < minDist:
-                continue
-
-            tmp.insertAt(cast(u64) i + 1, {angle, point})
-            i -= 1
+            // Arc is small enough, just draw direct line to end
+            let endPos = Vector2{x: pos.x + (Math.sin(p1.y) * p2.x), y: pos.y - (Math.cos(p1.y) * p2.y)}
+            flattenLine(endPos)
+            return
         }
 
-        for i in 1 until tmp.count:
-            flattenLine(tmp[i].pos)
+        let angleStep = angleSpan / numSegments
+
+        // Generate all points in one pass
+        for i in 1 to numSegments
+        {
+            let angle = p1.x + (angleStep * i)
+            let point = Vector2{x: pos.x + (Math.sin(angle) * p2.x), y: pos.y - (Math.cos(angle) * p2.y)}
+            flattenLine(point)
+        }
     }
 
-    mtd flattenLine(pos: Vector2)
+    // Calculate optimal number of segments based on arc properties
+    mtd calculateFlattenArcSegments(angleSpan: f32, radius: f32, quality: PaintQuality)->u32
     {
-        bvMin = Vector2.min(bvMin, pos)
-        bvMax = Vector2.max(bvMax, pos)
-        polygon.add(pos)
-        endPosBuffer = pos
+        let minDist = getFlattenDistance(quality)
+
+        // Use the sagitta formula: segments = ceil(angle / (2 * acos(1 - tolerance/radius)))
+        // This gives us the minimum segments needed to stay within tolerance
+        let tolerance = minDist
+        var maxAnglePerSegment = 2.0 * Math.acos(1.0 - tolerance / radius)
+
+        // Clamp to reasonable bounds
+        maxAnglePerSegment = Math.max(maxAnglePerSegment, 0.01)  // Minimum angle
+        maxAnglePerSegment = Math.min(maxAnglePerSegment, ConstF32.Pi / 4)  // Maximum angle (45°)
+
+        let numSegments = Math.ceil(Math.abs(angleSpan) / maxAnglePerSegment)
+
+        return cast(u32) Math.max(1, Math.min(numSegments, 1000))  // Reasonable bounds
     }
 }
