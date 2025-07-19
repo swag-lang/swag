@@ -234,7 +234,8 @@ impl IActionUI for ActionFile
             addLine(lt, "<b>File<b>", Format.toString("%", capture.file))
             if capture.linkedImage != null:
                 addLine(lt, "<b>Linked Image<b>", Format.toString("%", capture.linkedImage))
-            addLine(lt, "<b>Size<b>", Format.toString("%x%", capture.width, capture.height))
+            addLine(lt, "<b>Image Size<b>", Format.toString("%x%", capture.width, capture.height))
+            addLine(lt, "<b>File Size<b>", StrConv.toDisplaySize(catch File.getInfo(capture.file).size))
             lt.computeLayout()
             discard dlg.doModal()
         }
