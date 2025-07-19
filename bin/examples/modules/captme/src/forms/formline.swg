@@ -172,10 +172,15 @@ impl IForm for FormLine
 
         if bezier
         {
+            // Add an anchor the first time, when transforming from 'linear' to 'bezier'
             if gizmo.anchors.count == 2
             {
-                xc = Math.abs(xb - xa) * 0.25
-                yc = Math.abs(ya - yb)
+                var v = Math.Vector2{xb, yb} - Math.Vector2{xa, ya}
+                v *= 0.5
+                var vn = v.cross(1).toNormalizeSafe()
+                vn *= v.length() * 0.25
+                xc = v.x + vn.x
+                yc = v.y + vn.y
                 gizmo.anchors.resize(3)
             }
 
