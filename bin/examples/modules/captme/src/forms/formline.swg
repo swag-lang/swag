@@ -8,6 +8,9 @@ struct FormLine
     endSize:            f32 = 4
     xa, ya, xb, yb:     f32
     xc, yc:             f32 = 10
+    cacheCoords:        Math.Rectangle
+    cacheCoords2:       Math.Point
+    cacheBv:            Math.Rectangle
 
     #[Serialization.NoSerialize]
     {
@@ -106,11 +109,26 @@ impl IForm for FormLine
 
     mtd impl boundRect()->Math.Rectangle
     {
-        let x0 = Math.min(xa, xb)
-        let y0 = Math.min(ya, yb)
-        let x1 = Math.max(xa, xb)
-        let y1 = Math.max(ya, yb)
-        return Math.Rectangle{x0, y0, x1 - x0, y1 - y0}
+        if bezier
+        {
+            let newCoords = Math.Rectangle{xa, ya, xb, yb}
+            let newCoords2 = Math.Point{xc, yc}
+            if cacheCoords == newCoords and cacheCoords2 == newCoords2:
+                return cacheBv
+            cacheCoords = newCoords
+            cacheCoords2 = newCoords2
+            cacheBv = Math.Curve.getBezierBoundingBox({xa, ya}, {xb, yb}, {xa+xc, ya+yc})
+        }
+        else
+        {
+            let x0 = Math.min(xa, xb)
+            let y0 = Math.min(ya, yb)
+            let x1 = Math.max(xa, xb)
+            let y1 = Math.max(ya, yb)
+            cacheBv = Math.Rectangle{x0, y0, x1 - x0, y1 - y0}
+        }
+
+        return cacheBv
     }
 
     mtd impl mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
