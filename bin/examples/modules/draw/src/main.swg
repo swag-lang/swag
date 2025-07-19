@@ -557,6 +557,30 @@ func displayPage5(painter: *Pixel.Painter)
         pen.capBegScaleY = 2.5
         painter.drawPath(&lp, pen)
     }
+
+    {
+        var pen = Pen.createSolid(Argb.Red, 20)
+        painter.setTransform(trs)
+        painter.translateTransform(50, 50)
+        pen.brush.color   = Argb.Black
+        pen.begCapStyle = .ArrowAnchor
+        pen.endCapStyle   = .ArrowAnchor
+        painter.drawLine(200, 0, 250, 150, pen)
+    }
+
+    {
+        var lp: LinePath
+        lp.start(0, 0)
+        lp.bezierTo(100, 100, 0, 100)
+        var pen = Pen.createSolid(Argb.Red, 10)
+        pen.begCapStyle = .ArrowAnchor
+        pen.endCapStyle = .ArrowAnchor
+        pen.capEndScaleX = 5
+        pen.capEndScaleY = 2.5
+        pen.capBegScaleX = 5
+        pen.capBegScaleY = 2.5
+        painter.drawPath(&lp, pen)
+    }
 }
 
 func displayPage6(painter: *Pixel.Painter)

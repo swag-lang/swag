@@ -617,34 +617,6 @@ impl Painter
         }
     }
 
-    mtd drawLineBeginCap(using cxt: *Context)
-    {
-        if pen.begCapStyle == .None or penSize < 3:
-            return
-
-        var v1 = path.polygon.getPoint(0, cxt.offsetPath)
-        var v2 = path.polygon.getPoint(1, cxt.offsetPath)
-        var n  = v2 - v1
-        n.normalizeSafe()
-        var c = n.cross(1)
-        c *= penSize2
-        drawLineCap(pen.begCapStyle, v1, c, 1.0, dref pen, true)
-    }
-
-    mtd drawLineEndCap(using cxt: *Context)
-    {
-        if pen.endCapStyle == .None or penSize < 3:
-            return
-
-        var v1 = path.polygon.getPoint(path.polygon.points.count - 1, cxt.offsetPath)
-        var v2 = path.polygon.getPoint(path.polygon.points.count - 2, cxt.offsetPath)
-        var n  = v1 - v2
-        n.normalizeSafe()
-        var c = n.cross(1)
-        c *= penSize2
-        drawLineCap(pen.endCapStyle, v1, c, -1.0, dref pen, false)
-    }
-
     // Helper function to calculate how much of the line should be skipped for anchor caps
     func getAnchorSkipDistance(capStyle: LineCapStyle, pen: Pen, start: bool) -> f32
     {
@@ -731,6 +703,114 @@ impl Painter
         return {Math.Vector2.Zero, false}
     }
 
+    // Optimized version that returns both distance and point information
+    struct AnchorSkipInfo
+    {
+        distance: f32
+        adjustedPoint: Math.Vector2
+        pointIndex: u64
+        hasAdjustment: bool
+    }
+
+    // Enhanced function that calculates skip distance AND finds the corresponding point
+    func getAnchorSkipInfo(using cxt: *Context, capStyle: LineCapStyle, start: bool) -> AnchorSkipInfo
+    {
+        var info: AnchorSkipInfo
+        info.hasAdjustment = false
+
+        // Calculate skip distance
+        switch capStyle
+        {
+        case ArrowAnchor, ArrowAnchor2:
+            let scale = start ? pen.capBegScaleX : pen.capEndScaleX
+            info.distance = pen.size * 0.5 * scale
+
+        case SquareAnchor:
+            let scale = start ? pen.capBegScaleX : pen.capEndScaleX
+            info.distance = pen.size * 0.5 * scale
+
+        case RoundAnchor:
+            let scale = start ? pen.capBegScaleX : pen.capEndScaleX
+            info.distance = pen.size * 0.5 * scale
+
+        default:
+            info.distance = 0
+            return info
+        }
+
+        // If no skip distance needed, return early
+        if info.distance <= 0:
+            return info
+
+        let pointCount = path.polygon.points.count
+        if pointCount < 2:
+            return info
+
+        var accumulatedDistance = 0'f32
+
+        if start
+        {
+            let startPoint = path.polygon.getPoint(0, offsetPath)
+            var lastPoint = startPoint
+
+            for i in 1 until pointCount
+            {
+                let currentPoint = path.polygon.getPoint(i, offsetPath)
+                let segmentVec = currentPoint - lastPoint
+                let segmentLen = segmentVec.length()
+
+                if segmentLen > 0.01
+                {
+                    if accumulatedDistance + segmentLen >= info.distance
+                    {
+                        // Found the target segment - calculate adjusted point
+                        let remainingDist = info.distance - accumulatedDistance
+                        let ratio = remainingDist / segmentLen
+                        info.adjustedPoint = lastPoint + segmentVec * ratio
+                        info.pointIndex = i
+                        info.hasAdjustment = true
+                        return info
+                    }
+
+                    accumulatedDistance += segmentLen
+                    lastPoint = currentPoint
+                }
+            }
+        }
+        else  // from end
+        {
+            let endPoint = path.polygon.getPoint(pointCount - 1, offsetPath)
+            var lastPoint = endPoint
+
+            for #back i in 0 to pointCount - 2
+            {
+                let currentPoint = path.polygon.getPoint(i, offsetPath)
+                let segmentVec = lastPoint - currentPoint
+                let segmentLen = segmentVec.length()
+
+                if segmentLen > 0.01
+                {
+                    if accumulatedDistance + segmentLen >= info.distance
+                    {
+                        // Found the target segment - calculate adjusted point
+                        let remainingDist = info.distance - accumulatedDistance
+                        let ratio = remainingDist / segmentLen
+                        info.adjustedPoint = lastPoint - segmentVec * ratio
+                        info.pointIndex = i
+                        info.hasAdjustment = true
+                        return info
+                    }
+
+                    accumulatedDistance += segmentLen
+                    lastPoint = currentPoint
+                }
+            }
+        }
+
+        return info
+    }
+
+    // Simplified drawPath method using the optimized approach
     #[Swag.Overload]
     mtd drawPath(using cxt: *Context)
     {
@@ -743,71 +823,26 @@ impl Painter
         beginLine      = true
         firstLine      = true
 
-        // Calculate skip distances for anchor caps
-        let beginSkipDistance = getAnchorSkipDistance(pen.begCapStyle, dref pen, true)
-        let endSkipDistance = getAnchorSkipDistance(pen.endCapStyle, dref pen, false)
+        // Get skip information for both caps in one pass
+        let beginSkipInfo = getAnchorSkipInfo(cxt, pen.begCapStyle, true)
+        let endSkipInfo = getAnchorSkipInfo(cxt, pen.endCapStyle, false)
 
         var actualStartPoint = path.polygon.getPoint(0, cxt.offsetPath)
         var actualEndPoint = path.polygon.getPoint(path.polygon.points.count - 1, cxt.offsetPath)
         var startPointIndex = 0'u64
         var endPointIndex = path.polygon.points.count - 1
 
-        // Adjust start point if we need to skip distance for begin cap
-        if !path.isClosed and beginSkipDistance > 0
+        // Apply adjustments if needed
+        if !path.isClosed and beginSkipInfo.hasAdjustment
         {
-            let result = getPointAtDistance(cxt, true, beginSkipDistance)
-            if result.found
-            {
-                actualStartPoint = result.point
-
-                // Find the first point that's beyond our adjusted start
-                var accumulatedDistance = 0'f32
-                var lastPoint = path.polygon.getPoint(0, cxt.offsetPath)
-
-                for i in 1 until path.polygon.points.count
-                {
-                    let currentPoint = path.polygon.getPoint(i, cxt.offsetPath)
-                    let segTo = currentPoint - lastPoint
-                    let segmentLen = segTo.length()
-
-                    if accumulatedDistance + segmentLen >= beginSkipDistance
-                    {
-                        startPointIndex = i
-                        break
-                    }
-                    accumulatedDistance += segmentLen
-                    lastPoint = currentPoint
-                }
-            }
+            actualStartPoint = beginSkipInfo.adjustedPoint
+            startPointIndex = beginSkipInfo.pointIndex
         }
 
-        // Adjust end point if we need to skip distance for end cap
-        if !path.isClosed and endSkipDistance > 0
+        if !path.isClosed and endSkipInfo.hasAdjustment
         {
-            let result = getPointAtDistance(cxt, false, endSkipDistance)
-            if result.found
-            {
-                actualEndPoint = result.point
-
-                // Find the last point that's before our adjusted end
-                var accumulatedDistance = 0'f32
-                var lastPoint = path.polygon.getPoint(path.polygon.points.count - 1, cxt.offsetPath)
-
-                for #back i in 0 to path.polygon.points.count - 2
-                {
-                    let currentPoint = path.polygon.getPoint(i, cxt.offsetPath)
-                    let segTo = lastPoint - currentPoint
-                    let segmentLen = segTo.length()
-
-                    if accumulatedDistance + segmentLen >= endSkipDistance
-                    {
-                        endPointIndex = i
-                        break
-                    }
-                    accumulatedDistance += segmentLen
-                    lastPoint = currentPoint
-                }
-            }
+            actualEndPoint = endSkipInfo.adjustedPoint
+            endPointIndex = endSkipInfo.pointIndex
         }
 
         // Set starting position
@@ -820,7 +855,7 @@ impl Painter
             if pen.begCapStyle != .None
             {
                 var v1 = path.polygon.getPoint(0, cxt.offsetPath)
-                var v2 = path.polygon.getPoint(1, cxt.offsetPath)
+                var v2 = beginSkipInfo.hasAdjustment ? actualStartPoint : path.polygon.getPoint(1, cxt.offsetPath)
                 var n  = v2 - v1
                 n.normalizeSafe()
                 var c = n.cross(1)
@@ -832,7 +867,7 @@ impl Painter
             if pen.endCapStyle != .None
             {
                 var v1 = path.polygon.getPoint(path.polygon.points.count - 1, cxt.offsetPath)
-                var v2 = path.polygon.getPoint(path.polygon.points.count - 2, cxt.offsetPath)
+                var v2 = endSkipInfo.hasAdjustment ? actualEndPoint : path.polygon.getPoint(path.polygon.points.count - 2, cxt.offsetPath)
                 var n  = v1 - v2
                 n.normalizeSafe()
                 var c = n.cross(1)
@@ -844,31 +879,35 @@ impl Painter
         // Draw the line segments with proper start/end adjustment
         if path.polygon.points.count > 1
         {
-            // If we have an adjusted start point and it's different from the first polygon point
-            let startTo = actualStartPoint - path.polygon.getPoint(0, cxt.offsetPath)
-            if startPointIndex > 0 or startTo.length() > 0.01
+            // Draw intermediate segments
+            if startPointIndex < endPointIndex
             {
                 // Draw from adjusted start to the appropriate next point
                 if startPointIndex < path.polygon.points.count
                 {
                     let nextPoint = path.polygon.getPoint(startPointIndex, cxt.offsetPath)
-                    drawLine(cxt, nextPoint)
+                    let startTo = actualStartPoint - nextPoint
+                    if startTo.length() > 0.01:
+                        drawLine(cxt, nextPoint)
                 }
-            }
 
-            // Draw intermediate segments
-            for i in (startPointIndex + 1) to endPointIndex
-            {
-                if i < path.polygon.points.count
+                for i in (startPointIndex + 1) to endPointIndex
                 {
-                    var p = path.polygon.getPoint(i, cxt.offsetPath)
-                    drawLine(cxt, p)
+                    if i < path.polygon.points.count
+                    {
+                        var p = path.polygon.getPoint(i, cxt.offsetPath)
+                        drawLine(cxt, p)
+                    }
+                }
+
+                // Draw final segment to adjusted end point if needed
+                let endTo = actualEndPoint - path.polygon.getPoint(endPointIndex, cxt.offsetPath)
+                if endTo.length() > 0.01
+                {
+                    drawLine(cxt, actualEndPoint)
                 }
             }
-
-            // Draw final segment to adjusted end point if needed
-            let endTo = actualEndPoint - path.polygon.getPoint(endPointIndex, cxt.offsetPath)
-            if endTo.length() > 0.01
+            else
             {
                 drawLine(cxt, actualEndPoint)
             }
