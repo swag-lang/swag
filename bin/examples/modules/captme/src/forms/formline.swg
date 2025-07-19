@@ -142,8 +142,13 @@ impl IForm for FormLine
         {
             gizmo.anchors[0] = {xa * z, ya * z}
             gizmo.anchors[1] = {xb * z, yb * z}
-            if gizmo.anchors.count == 3:
+            if gizmo.anchors.count == 3
+            {
                 gizmo.anchors[2] = {(xa + xc) * z, (ya + yc) * z}
+                painter.drawLine(gizmo.anchors[0].x, gizmo.anchors[0].y, gizmo.anchors[2].x, gizmo.anchors[2].y, Argb.White, 2)
+                painter.drawLine(gizmo.anchors[1].x, gizmo.anchors[1].y, gizmo.anchors[2].x, gizmo.anchors[2].y, Argb.White, 2)
+            }
+
             gizmo.paint(null, painter, !flags.has(.Selected))
         }
     }

@@ -1,6 +1,6 @@
 struct GizmoPoints
 {
-    anchorSize:      f32 = 8
+    anchorSize:      f32 = 12
 
     startRect:       Math.Rectangle
     anchors:         Array'Math.Point
@@ -84,7 +84,7 @@ impl GizmoPoints
         foreach c in anchors
         {
             painter.fillCircle(c.x, c.y, anchorSize2, color)
-            painter.drawCircle(c.x, c.y, anchorSize2, Argb.Black, 1)
+            painter.drawCircle(c.x, c.y, anchorSize2, Argb.Black, anchorSize2 * 0.3)
         }
     }
 

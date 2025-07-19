@@ -3,7 +3,7 @@ struct GizmoRect
     paintSimpleBorder:     bool = true
     paintBigBorder:        bool = true
     roundShape:            bool = false
-    anchorSize:            f32 = 8
+    anchorSize:            f32 = 12
     trackChange:           bool = false
 
     rect:                  Math.Rectangle
@@ -165,7 +165,7 @@ impl GizmoRect
             }
 
             switch hotAnchor
-            {                
+            {
                 case 0, 7:
                     view.getApp().setFrameCursor(Cursor.from(.SizeNWSE))
                 case 1, 6:
@@ -222,12 +222,12 @@ impl GizmoRect
             if roundShape
             {
                 painter.fillCircle(c.horzCenter(), c.vertCenter(), anchorSize2, color)
-                painter.drawCircle(c.horzCenter(), c.vertCenter(), anchorSize2, Argb.Black, 1)
+                painter.drawCircle(c.horzCenter(), c.vertCenter(), anchorSize2, Argb.Black, anchorSize2 * 0.3)
             }
             else
             {
                 painter.fillRect(c, color)
-                painter.drawRect(c, Argb.Black, 1)
+                painter.drawRect(c, Argb.Black, anchorSize2 * 0.3)
             }
         }
     }
