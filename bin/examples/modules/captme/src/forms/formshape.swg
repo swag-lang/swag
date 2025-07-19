@@ -238,7 +238,6 @@ impl IForm for FormShape
         with gizmo
         {
             .roundShape        = true
-            .anchorSize        = 10
             .trackChange       = true
             .paintSimpleBorder = false
             .paintBigBorder    = true

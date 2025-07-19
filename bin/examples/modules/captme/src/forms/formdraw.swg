@@ -2,6 +2,7 @@ struct FormDraw
 {
     using base:     BaseForm
     points:         Array'Math.Vector2
+    anchorSize:     f32 = 12
 }
 
 impl FormDraw
@@ -146,17 +147,16 @@ impl IForm for FormDraw
     {
         if flags.has(.Hot | .Selected)
         {
-            const anchorSize = 8
             let anchorSize2  = anchorSize * 0.5
             let col          = subKind == .PixSel ? Argb.Yellow : Argb.White
             let color        = Color.getBlend(Argb.Black, col, (flags & .Hot) ? 0.8 : 1)
 
             let start = points[0] * z
             painter.fillCircle(start.x, start.y, anchorSize2, color)
-            painter.drawCircle(start.x, start.y, anchorSize2, Argb.Black, 1)
+            painter.drawCircle(start.x, start.y, anchorSize2, Argb.Black, anchorSize2 * 0.3)
             let end = points.back() * z
             painter.fillCircle(end.x, end.y, anchorSize2, color)
-            painter.drawCircle(end.x, end.y, anchorSize2, Argb.Black, 1)
+            painter.drawCircle(end.x, end.y, anchorSize2, Argb.Black, anchorSize2 * 0.3)
         }
     }
 
