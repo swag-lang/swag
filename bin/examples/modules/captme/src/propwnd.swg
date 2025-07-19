@@ -279,9 +279,9 @@ impl PropWnd
                 rect.inflate(-9, -9)
                 var cap = cast(LineCapStyle) cast(u64) btn.userData
                 var pen = Pen.createSolid(btn.getThemeColors().btnIcon_Icon, CapSize)
-                pen.beginCapStyle = cap
+                pen.begCapStyle = cap
                 pen.endCapStyle   = .None
-                var (w0, l0) = Painter.capStyleExtent(cap, CapSize, pen.capStartScaleX)
+                var (w0, l0) = Painter.capStyleExtent(cap, CapSize, pen.capBegScaleX)
                 rect.moveLeft(l0)
                 bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
             }
@@ -332,7 +332,7 @@ impl PropWnd
                 rect.inflate(-9, -9)
                 var cap = cast(LineCapStyle) cast(u64) btn.userData
                 var pen = Pen.createSolid(btn.getThemeColors().btnIcon_Icon, CapSize)
-                pen.beginCapStyle = .None
+                pen.begCapStyle = .None
                 pen.endCapStyle   = cap
                 var (w0, l0) = Painter.capStyleExtent(cap, CapSize, pen.capEndScaleX)
                 rect.moveRight(-l0)
@@ -607,9 +607,9 @@ impl PropWnd
             var rect   = pos
             rect.inflate(-9, -9)
             var pen = Pen.createSolid(btn.getThemeColors().btnIcon_Icon, CapSize)
-            pen.beginCapStyle = curSel.beginCap
+            pen.begCapStyle = curSel.beginCap
             pen.endCapStyle   = .None
-            var (w0, l0) = Painter.capStyleExtent(curSel.beginCap, CapSize, pen.capStartScaleX)
+            var (w0, l0) = Painter.capStyleExtent(curSel.beginCap, CapSize, pen.capBegScaleX)
             rect.moveLeft(l0)
             bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
         }
@@ -637,7 +637,7 @@ impl PropWnd
             var rect   = pos
             rect.inflate(-9, -9)
             var pen = Pen.createSolid(btn.getThemeColors().btnIcon_Icon, CapSize)
-            pen.beginCapStyle = .None
+            pen.begCapStyle = .None
             pen.endCapStyle   = curSel.endCap
             let (w0, l0) = Painter.capStyleExtent(curSel.endCap, CapSize, pen.capEndScaleX)
             rect.moveRight(-l0)
@@ -986,7 +986,7 @@ impl PropWnd
             return
         let curSelType = getSelectedFormType()
         if curSelType != FormShape and curSelType != FormText:
-            return            
+            return
         let curSel = getSelectedBaseForm()
 
         {
@@ -1009,7 +1009,7 @@ impl PropWnd
             {
                 let (v, ?, ?) = catch StrConv.parseS32(ed.text)
                 self.pushTypedValue(v, BaseForm, #nameof(BaseForm.y), true, true)
-            }   
+            }
         }
 
         {
@@ -1032,9 +1032,9 @@ impl PropWnd
             {
                 let (v, ?, ?) = catch StrConv.parseS32(ed.text)
                 self.pushTypedValue(v, BaseForm, #nameof(BaseForm.h), true, true)
-            }   
+            }
         }
-    }    
+    }
 
     mtd propBorderSize()
     {
@@ -1105,13 +1105,13 @@ impl PropWnd
         {
             self.pushTypedValue(cast<bit>(u32) slider.getValue(), BaseForm, #nameof(BaseForm.scale), false, true)
         }
-    }    
+    }
 
     mtd propRotate()
     {
         let curSelType = getSelectedFormType()
         if curSelType != FormText and curSelType != FormShape and curSelType != FormImage:
-            return       
+            return
         let curSel = cast(*FormText) getSelectedBaseForm()
         if curSel.subKind == .Highlight or curSel.subKind == .PixSel:
             return
@@ -1125,13 +1125,13 @@ impl PropWnd
         {
             self.pushTypedValue(cast<bit>(u32) slider.getValue(), BaseForm, #nameof(BaseForm.rotate), false, true)
         }
-    }     
+    }
 
     mtd propShadow()
     {
         let curSel = getSelectedBaseForm()
         if curSel.subKind == .PixSel:
-            return          
+            return
 
         let ctrl = ComboCtrl.create(mainLayout, "Shadow")
         ctrl.comboSize = 210
@@ -1156,7 +1156,7 @@ impl PropWnd
         slideX.slider.sigChanged += func|self|(sliderX)
         {
             self.pushTypedValue(cast<bit>(u32) sliderX.getValue(), BaseForm, #nameof(BaseForm.shadowOffsetX), false, true)
-        }        
+        }
 
         let sliderY = createSlider("Offset Y", -100, 100, cast() curSel.shadowOffsetY)
         sliderY.slider.sigStartChange += func|self|(sliderY)
@@ -1166,9 +1166,9 @@ impl PropWnd
         sliderY.slider.sigChanged += func|self|(sliderY)
         {
             self.pushTypedValue(cast<bit>(u32) sliderY.getValue(), BaseForm, #nameof(BaseForm.shadowOffsetY), false, true)
-        }  
-*/      
-    }         
+        }
+*/
+    }
 
     mtd propSmooth()
     {
@@ -1192,7 +1192,7 @@ impl PropWnd
                 self.pushTypedValue(cast() b, BaseForm, #nameof(BaseForm.bezier), true, true)
             }
         }
-    }     
+    }
 
     mtd propBoldSize()
     {

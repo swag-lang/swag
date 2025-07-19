@@ -51,12 +51,12 @@ struct Pen
     brush:                 Brush
 
     pattern:               Array'f32
-    dashBeginCapStyle:     DashCapStyle = None
+    dashBegCapStyle:       DashCapStyle = None
     dashEndCapStyle:       DashCapStyle = None
     borderPos:             BorderPos = None
 
-    capStartScaleX:        f32 = 2
-    capStartScaleY:        f32 = 2
+    capBegScaleX:          f32 = 2
+    capBegScaleY:          f32 = 2
     capEndScaleX:          f32 = 2
     capEndScaleY:          f32 = 2
 
@@ -65,7 +65,7 @@ struct Pen
 
     dashStyle:             DashStyle = None
     dashBlankScale:        f32 = 1.0
-    beginCapStyle:         LineCapStyle = Round
+    begCapStyle:           LineCapStyle = Round
     endCapStyle:           LineCapStyle = Round
     joinStyle:             JoinStyle = Miter
 }

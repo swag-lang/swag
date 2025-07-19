@@ -178,7 +178,7 @@ impl Painter
         if under != .None
         {
             var pen = Pen.createSolid(brush.color, Math.max(1, Math.floor(font.underlineSize)))
-            pen.beginCapStyle = .None
+            pen.begCapStyle = .None
             pen.endCapStyle   = .None
 
             canSetTexture0 = false

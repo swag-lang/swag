@@ -170,13 +170,13 @@ impl IForm for FormLine
         with var pen = Pen.createDash(dashStyle, borderColor, bSize)
         {
             .dashBlankScale    = 0.25
-            .beginCapStyle     = beginCap
+            .begCapStyle     = beginCap
             .endCapStyle       = endCap
-            .capStartScaleX    = sSize
+            .capBegScaleX    = sSize
             .capEndScaleX      = eSize
-            .capStartScaleY    = 2
+            .capBegScaleY    = 2
             .capEndScaleY      = 2
-            .dashBeginCapStyle = dashCap
+            .dashBegCapStyle = dashCap
             .dashEndCapStyle   = dashCap
         }
 

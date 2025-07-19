@@ -72,8 +72,8 @@ impl Painter
 
     mtd drawCapSquareAnchor(p1, d1: Math.Vector2, sens: f32, pen: Pen, start: bool)->Math.Vector2
     {
-        let sx = start ? pen.capStartScaleX : pen.capEndScaleX
-        let sy = start ? pen.capStartScaleY : pen.capEndScaleY
+        let sx = start ? pen.capBegScaleX : pen.capEndScaleX
+        let sy = start ? pen.capBegScaleY : pen.capEndScaleY
 
         var p = p1
         let d = d1 * sx
@@ -107,8 +107,8 @@ impl Painter
 
     mtd drawCapArrowAnchor2(p1, d1: Math.Vector2, sens: f32, pen: Pen, start: bool)->Math.Vector2
     {
-        let sx = start ? pen.capStartScaleX : pen.capEndScaleX
-        let sy = start ? pen.capStartScaleY : pen.capEndScaleY
+        let sx = start ? pen.capBegScaleX : pen.capEndScaleX
+        let sy = start ? pen.capBegScaleY : pen.capEndScaleY
         let sx2 = sx * sy * 2
 
         var p = p1
@@ -141,15 +141,15 @@ impl Painter
                 addEdgeAA(prim1, v0, v2)
                 addEdgeAA(prim1, v0, v1)
             }
-        }        
+        }
 
         return n - n.toNormalizeSafe()
     }
 
     mtd drawCapArrowAnchor(p1, d1: Math.Vector2, sens: f32, pen: Pen, start: bool)->Math.Vector2
     {
-        let sx = start ? pen.capStartScaleX : pen.capEndScaleX
-        let sy = start ? pen.capStartScaleY : pen.capEndScaleY
+        let sx = start ? pen.capBegScaleX : pen.capEndScaleX
+        let sy = start ? pen.capBegScaleY : pen.capEndScaleY
 
         var p = p1
         let d = d1 * sx
@@ -173,7 +173,7 @@ impl Painter
 
     mtd drawCapRoundAnchor(p, d: Math.Vector2, pen: Pen, start: bool)->Math.Vector2
     {
-        let sx = start ? pen.capStartScaleX : pen.capEndScaleX
+        let sx = start ? pen.capBegScaleX : pen.capEndScaleX
 
         let angle0 = Math.atan2(-d.y, -d.x)
         let angle1 = angle0 + Math.ConstF32.TwoPi
@@ -470,10 +470,10 @@ impl Painter
 
         // First line cap
         var flatBegin = !path.isClosed or pen.dashStyle != .None
-        if pen.dashStyle != .None and (!firstLine or path.isClosed) and beginLine and pen.dashBeginCapStyle != .None
+        if pen.dashStyle != .None and (!firstLine or path.isClosed) and beginLine and pen.dashBegCapStyle != .None
         {
             flatBegin = false
-            drawDashCap(cxt, pen.dashBeginCapStyle, prev, normal, 1.0)
+            drawDashCap(cxt, pen.dashBegCapStyle, prev, normal, 1.0)
         }
 
         // Joints
@@ -498,7 +498,7 @@ impl Painter
 
             // If we are starting a line, and the line does not have a cap before, then
             // we must AA the corresponding edge
-            if flatBegin and beginLine and (!firstLine or pen.beginCapStyle == .None or path.isClosed)
+            if flatBegin and beginLine and (!firstLine or pen.begCapStyle == .None or path.isClosed)
             {
                 addEdgeAA(prim1, v0, v3)
                 addEdgeAA(prim2, v0, v3)
@@ -638,7 +638,7 @@ impl Painter
 
     mtd drawLineBeginCap(using cxt: *Context)->Math.Vector2
     {
-        if pen.beginCapStyle == .None or penSize < 3:
+        if pen.begCapStyle == .None or penSize < 3:
             return Math.Vector2.Zero
 
         var v1 = path.polygon.getPoint(0, cxt.offsetPath)
@@ -647,7 +647,7 @@ impl Painter
         n.normalizeSafe()
         var c = n.cross(1)
         c *= penSize2
-        return drawLineCap(pen.beginCapStyle, v1, c, 1.0, dref pen, true)
+        return drawLineCap(pen.begCapStyle, v1, c, 1.0, dref pen, true)
     }
 
     mtd drawLineEndCap(using cxt: *Context)->Math.Vector2
