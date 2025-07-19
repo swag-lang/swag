@@ -280,7 +280,7 @@ impl Painter
             let angle = (sharedRoundTmp[i].factor + sharedRoundTmp[i + 1].factor) * 0.5
             point.x = center.x + (Math.cos(angle) * radius)
             point.y = center.y + (Math.sin(angle) * radius)
-            let dist = point.distanceToLine(sharedRoundTmp[i].pos, sharedRoundTmp[i + 1].pos)
+            let dist = Math.Geometry.distanceToLine(point, sharedRoundTmp[i].pos, sharedRoundTmp[i + 1].pos)
             if dist < minDist:
                 continue
 
@@ -615,92 +615,6 @@ impl Painter
             }
             break
         }
-    }
-
-    // Helper function to calculate how much of the line should be skipped for anchor caps
-    func getAnchorSkipDistance(capStyle: LineCapStyle, pen: Pen, start: bool) -> f32
-    {
-        switch capStyle
-        {
-        case ArrowAnchor, ArrowAnchor2:
-            let scale = start ? pen.capBegScaleX : pen.capEndScaleX
-            return pen.size * 0.5 * scale  // Skip distance based on arrow size
-
-        case SquareAnchor:
-            let scale = start ? pen.capBegScaleX : pen.capEndScaleX
-            return pen.size * 0.5 * scale  // Skip distance based on square size
-
-        case RoundAnchor:
-            let scale = start ? pen.capBegScaleX : pen.capEndScaleX
-            return pen.size * 0.5 * scale  // Skip distance based on circle radius
-        }
-
-        return 0
-    }
-
-    // Helper function to find the point at a specific distance from start/end of polygon
-    func getPointAtDistance(using cxt: *Context, fromStart: bool, distance: f32) -> {point: Math.Vector2, found: bool}
-    {
-        let pointCount = path.polygon.points.count
-        if pointCount < 2:
-            return {Math.Vector2.Zero, false}
-
-        var accumulatedDistance = 0'f32
-
-        if fromStart
-        {
-            let startPoint = path.polygon.getPoint(0, offsetPath)
-            var lastPoint = startPoint
-
-            for i in 1 until pointCount
-            {
-                let currentPoint = path.polygon.getPoint(i, offsetPath)
-                let segmentVec = currentPoint - lastPoint
-                let segmentLen = segmentVec.length()
-
-                if segmentLen > 0.01
-                {
-                    if accumulatedDistance + segmentLen >= distance
-                    {
-                        // The target distance falls within this segment
-                        let remainingDist = distance - accumulatedDistance
-                        let ratio = remainingDist / segmentLen
-                        let targetPoint = lastPoint + segmentVec * ratio
-                        return {targetPoint, true}
-                    }
-                    accumulatedDistance += segmentLen
-                    lastPoint = currentPoint
-                }
-            }
-        }
-        else
-        {
-            let endPoint = path.polygon.getPoint(pointCount - 1, offsetPath)
-            var lastPoint = endPoint
-
-            for #back i in 0 to pointCount - 2
-            {
-                let currentPoint = path.polygon.getPoint(i, offsetPath)
-                let segmentVec = lastPoint - currentPoint
-                let segmentLen = segmentVec.length()
-
-                if segmentLen > 0.01
-                {
-                    if accumulatedDistance + segmentLen >= distance
-                    {
-                        // The target distance falls within this segment
-                        let remainingDist = distance - accumulatedDistance
-                        let ratio = remainingDist / segmentLen
-                        let targetPoint = lastPoint - segmentVec * ratio
-                        return {targetPoint, true}
-                    }
-                    accumulatedDistance += segmentLen
-                    lastPoint = currentPoint
-                }
-            }
-        }
-
-        return {Math.Vector2.Zero, false}
     }
 
     // Optimized version that returns both distance and point information

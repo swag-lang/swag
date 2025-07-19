@@ -69,7 +69,7 @@ func day3B()
         var dj = 0'f32
         for j in t0.count - 1
         {
-            let (yes, pos) = Vector2.segSegIntersect(t1[i], t1[i + 1], t0[j], t0[j + 1])
+            let (yes, pos) = Geometry.segSegIntersect(t1[i], t1[i + 1], t0[j], t0[j + 1])
             if yes and !pos.isZero()
             {
                 let d0 = pos - t0[j]

@@ -143,7 +143,7 @@ func day3A1()
     {
         for j in t0.count - 1
         {
-            let (yes, pos) = Vector2.segSegIntersect(t1[i], t1[i + 1], t0[j], t0[j + 1])
+            let (yes, pos) = Geometry.segSegIntersect(t1[i], t1[i + 1], t0[j], t0[j + 1])
             if yes and !pos.isZero()
             {
                 let d = Math.abs(pos.x) + Math.abs(pos.y)

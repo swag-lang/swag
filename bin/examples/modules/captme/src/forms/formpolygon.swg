@@ -168,7 +168,7 @@ impl IForm for FormPolygon
 
     mtd impl isInside(pt: Math.Point)->bool
     {
-        return Math.Vector2.polyContains(points, {pt.x, pt.y})
+        return Math.Geometry.polyContains(points, {pt.x, pt.y})
     }
 
     mtd impl hitTest(pt: Math.Point, z: f32)->bool

@@ -53,7 +53,7 @@ impl Polygon
         let vva0 = v0 + n0
         let vvb1 = v2 + n1
         let vvb0 = v1 + n1
-        let (yes, intPos) = Vector2.lineLineIntersect(vva0, vva1, vvb0, vvb1)
+        let (yes, intPos) = Geometry.lineLineIntersect(vva0, vva1, vvb0, vvb1)
 
         var result: retval = v1
         if yes

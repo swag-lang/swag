@@ -99,7 +99,7 @@ impl BaseForm
                 let xx0 = painter.vertexBuffer[tri].pos
                 let xx1 = painter.vertexBuffer[tri + 1].pos
                 let xx2 = painter.vertexBuffer[tri + 2].pos
-                if pos.isInTriangle(xx0, xx1, xx2):
+                if Math.Geometry.isInTriangle(pos, xx0, xx1, xx2):
                     return true
             }
         }

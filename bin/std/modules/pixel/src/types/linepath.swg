@@ -463,7 +463,7 @@ impl LinePath
     }
 
     // Calculate optimal number of segments for cubic polynomial
-    mtd calculateCubicPolynomialSegments(p0, p1, p2, p3: Vector2, startPt, endPt: Vector2, tolerance: f32)->u32
+    func calculateCubicPolynomialSegments(p0, p1, p2, p3: Vector2, startPt, endPt: Vector2, tolerance: f32)->u32
     {
         // Calculate chord length
         let chordLength = startPt.distance(endPt)
@@ -480,8 +480,8 @@ impl LinePath
 
         foreach t in samplePoints
         {
-            let point = Math.Curve.evaluatePolynomial(p0, p1, p2, p3, t)
-            let deviation = point.distanceToLine(startPt, endPt)
+            let point = Curve.evaluatePolynomial(p0, p1, p2, p3, t)
+            let deviation = Geometry.distanceToLine(point, startPt, endPt)
             maxDeviation = Math.max(maxDeviation, deviation)
         }
 
@@ -526,11 +526,11 @@ impl LinePath
     }
 
     // Calculate optimal number of segments for quadratic Bézier
-    mtd calculateQuadraticBezierSegments(p0, p1, p2: Vector2, tolerance: f32)->u32
+    func calculateQuadraticBezierSegments(p0, p1, p2: Vector2, tolerance: f32)->u32
     {
         // For quadratic Bézier, the maximum deviation occurs at the control point
         // Calculate distance from control point to chord line
-        let deviation = p1.distanceToLine(p0, p2)
+        let deviation = Geometry.distanceToLine(p1, p0, p2)
 
         if deviation < tolerance:
             return 1  // Curve is already flat enough
@@ -573,7 +573,7 @@ impl LinePath
     }
 
     // Calculate optimal number of segments using curvature analysis
-    mtd calculateBezierSegments(p0, p1, p2, p3: Vector2, tolerance: f32)->u32
+    func calculateBezierSegments(p0, p1, p2, p3: Vector2, tolerance: f32)->u32
     {
         // Calculate the maximum curvature using the control polygon method
         // This is much faster than iterative subdivision
@@ -589,11 +589,11 @@ impl LinePath
         var maxDeviation = 0.0
 
         // Distance from p1 to chord line
-        let dev1 = p1.distanceToLine(p0, p3)
+        let dev1 = Geometry.distanceToLine(p1, p0, p3)
         maxDeviation = Math.max(maxDeviation, dev1)
 
         // Distance from p2 to chord line
-        let dev2 = p2.distanceToLine(p0, p3)
+        let dev2 = Geometry.distanceToLine(p2, p0, p3)
         maxDeviation = Math.max(maxDeviation, dev2)
 
         if maxDeviation < tolerance {

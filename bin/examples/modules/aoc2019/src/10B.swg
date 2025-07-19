@@ -93,7 +93,7 @@ func day10B()
             {
                 if k == i or k == j:
                     continue
-                let f = arr[k].pos.distanceToSegment(v0, v1)
+                let f = Math.Geometry.distanceToSegment(arr[k].pos, v0, v1)
                 if Math.isZeroEpsilon(f)
                 {
                     hit = true
