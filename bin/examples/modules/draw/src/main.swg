@@ -543,7 +543,7 @@ func displayPage5(painter: *Pixel.Painter)
 
     {
         painter.setTransform(trs)
-        painter.translateTransform(300, 300)
+        painter.translateTransform(0, 0)
 
         var lp: LinePath
         lp.start(0, 0)
@@ -556,6 +556,9 @@ func displayPage5(painter: *Pixel.Painter)
         pen.capBegScaleX = 5
         pen.capBegScaleY = 2.5
         painter.drawPath(&lp, pen)
+
+        let bv = Math.Curve.getBezierBoundingBox({0, 0}, {500, 0}, {250, 300})
+        painter.drawRect(bv, Pen.createSolid(Argb.Blue, 5))
     }
 
     {
@@ -580,6 +583,9 @@ func displayPage5(painter: *Pixel.Painter)
         pen.capBegScaleX = 5
         pen.capBegScaleY = 2.5
         painter.drawPath(&lp, pen)
+
+        let bv = Math.Curve.getBezierBoundingBox({0, 0}, {100, 100}, {0, 100})
+        painter.drawRect(bv, Pen.createSolid(Argb.Blue, 5))
     }
 }
 
