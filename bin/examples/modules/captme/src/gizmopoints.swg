@@ -22,6 +22,8 @@ impl GizmoPoints
         switch evt.kind
         {
         case MousePressed:
+            if moving:
+                return true
             if evt.button != .Left or hotAnchor == Swag.U32.Max:
                 break
             moving, firstMoving = true
@@ -32,9 +34,13 @@ impl GizmoPoints
         case MouseReleased:
             if moving
             {
-                moving, firstMoving = false
-                hotAnchor = Swag.U32.Max
-                view.releaseMouse()
+                if evt.button == .Left
+                {
+                    moving, firstMoving = false
+                    hotAnchor = Swag.U32.Max
+                    view.releaseMouse()
+                }
+
                 return true
             }
 
@@ -60,7 +66,6 @@ impl GizmoPoints
                     rect.width, rect.height = anchorSize
                     if rect.contains(pos)
                     {
-
                         hotAnchor = cast(u32) i
                         break
                     }

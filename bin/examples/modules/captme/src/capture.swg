@@ -970,11 +970,14 @@ impl Capture
             {
                 let selForm = forms[selection[0]]
                 let p       = cast(*BaseForm) @dataof(selForm)
-                if (!view.main.freezeSel or !p.freeze) and selForm.mouse(view, localPos, evt)
+                if !view.main.freezeSel or !p.freeze
                 {
-                    evt.accepted = true
-                    if evt.kind != .MouseLeave:
-                        return true
+                    if selForm.mouse(view, localPos, evt)
+                    {
+                        evt.accepted = true
+                        if evt.kind != .MouseLeave:
+                            return true
+                    }
                 }
             }
 
