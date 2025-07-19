@@ -70,7 +70,7 @@ impl Painter
         }
     }
 
-    mtd drawCapSquareAnchor(p1, d1: Math.Vector2, sens: f32, pen: Pen, start: bool)->Math.Vector2
+    mtd drawCapSquareAnchor(p1, d1: Math.Vector2, sens: f32, pen: Pen, start: bool)
     {
         let sx = start ? pen.capBegScaleX : pen.capEndScaleX
         let sy = start ? pen.capBegScaleY : pen.capEndScaleY
@@ -101,11 +101,9 @@ impl Painter
             addEdgeAA(prim2, v3, v2)
             addEdgeAA(prim2, v0, v1)
         }
-
-        return Math.Vector2.Zero
     }
 
-    mtd drawCapArrowAnchor2(p1, d1: Math.Vector2, sens: f32, pen: Pen, start: bool)->Math.Vector2
+    mtd drawCapArrowAnchor2(p1, d1: Math.Vector2, sens: f32, pen: Pen, start: bool)
     {
         let sx = start ? pen.capBegScaleX : pen.capEndScaleX
         let sy = start ? pen.capBegScaleY : pen.capEndScaleY
@@ -142,11 +140,9 @@ impl Painter
                 addEdgeAA(prim1, v0, v1)
             }
         }
-
-        return n - n.toNormalizeSafe()
     }
 
-    mtd drawCapArrowAnchor(p1, d1: Math.Vector2, sens: f32, pen: Pen, start: bool)->Math.Vector2
+    mtd drawCapArrowAnchor(p1, d1: Math.Vector2, sens: f32, pen: Pen, start: bool)
     {
         let sx = start ? pen.capBegScaleX : pen.capEndScaleX
         let sy = start ? pen.capBegScaleY : pen.capEndScaleY
@@ -167,11 +163,9 @@ impl Painter
             addEdgeAA(prim1, v0, v2)
             addEdgeAA(prim1, v0, v1)
         }
-
-        return n - n.toNormalizeSafe()
     }
 
-    mtd drawCapRoundAnchor(p, d: Math.Vector2, pen: Pen, start: bool)->Math.Vector2
+    mtd drawCapRoundAnchor(p, d: Math.Vector2, pen: Pen, start: bool)
     {
         let sx = start ? pen.capBegScaleX : pen.capEndScaleX
 
@@ -179,7 +173,6 @@ impl Painter
         let angle1 = angle0 + Math.ConstF32.TwoPi
         let radius = sx * d.length()
         drawRound(p, radius, angle0, angle1, pen)
-        return Math.Vector2.Zero
     }
 
     mtd drawCapRound(p, d: Math.Vector2, sens: f32, pen: Pen)
@@ -197,40 +190,28 @@ impl Painter
         drawRound(p, radius, angle0, angle1, pen)
     }
 
-    mtd drawLineCap(capStyle: LineCapStyle, p, d: Math.Vector2, sens: f32, pen: Pen, start: bool)->Math.Vector2
+    mtd drawLineCap(capStyle: LineCapStyle, p, d: Math.Vector2, sens: f32, pen: Pen, start: bool)
     {
         #[Swag.Complete]
         switch capStyle
         {
         case None:
-            return Math.Vector2.Zero
-
+            return
         case Triangle:
             drawCapTriangle(p, d, sens, pen)
-            return Math.Vector2.Zero
-
         case Round:
             drawCapRound(p, d, sens, pen)
-            return Math.Vector2.Zero
-
         case Square:
             drawCapSquare(p, d, sens, pen)
-            return Math.Vector2.Zero
-
         case SquareAnchor:
-            return drawCapSquareAnchor(p, d, sens, pen, start)
-
+            drawCapSquareAnchor(p, d, sens, pen, start)
         case ArrowAnchor:
-            return drawCapArrowAnchor(p, d, sens, pen, start)
-
+            drawCapArrowAnchor(p, d, sens, pen, start)
         case ArrowAnchor2:
-            return drawCapArrowAnchor2(p, d, sens, pen, start)
-
+            drawCapArrowAnchor2(p, d, sens, pen, start)
         case RoundAnchor:
-            return drawCapRoundAnchor(p, d, pen, start)
+            drawCapRoundAnchor(p, d, pen, start)
         }
-
-        return Math.Vector2.Zero
     }
 
     mtd drawDashCap(using cxt: *Context, capStyle: DashCapStyle, p, d: Math.Vector2, sens: f32)
@@ -636,10 +617,10 @@ impl Painter
         }
     }
 
-    mtd drawLineBeginCap(using cxt: *Context)->Math.Vector2
+    mtd drawLineBeginCap(using cxt: *Context)
     {
         if pen.begCapStyle == .None or penSize < 3:
-            return Math.Vector2.Zero
+            return
 
         var v1 = path.polygon.getPoint(0, cxt.offsetPath)
         var v2 = path.polygon.getPoint(1, cxt.offsetPath)
@@ -647,13 +628,13 @@ impl Painter
         n.normalizeSafe()
         var c = n.cross(1)
         c *= penSize2
-        return drawLineCap(pen.begCapStyle, v1, c, 1.0, dref pen, true)
+        drawLineCap(pen.begCapStyle, v1, c, 1.0, dref pen, true)
     }
 
-    mtd drawLineEndCap(using cxt: *Context)->Math.Vector2
+    mtd drawLineEndCap(using cxt: *Context)
     {
         if pen.endCapStyle == .None or penSize < 3:
-            return Math.Vector2.Zero
+            return
 
         var v1 = path.polygon.getPoint(path.polygon.points.count - 1, cxt.offsetPath)
         var v2 = path.polygon.getPoint(path.polygon.points.count - 2, cxt.offsetPath)
@@ -661,7 +642,93 @@ impl Painter
         n.normalizeSafe()
         var c = n.cross(1)
         c *= penSize2
-        return drawLineCap(pen.endCapStyle, v1, c, -1.0, dref pen, false)
+        drawLineCap(pen.endCapStyle, v1, c, -1.0, dref pen, false)
+    }
+
+    // Helper function to calculate how much of the line should be skipped for anchor caps
+    func getAnchorSkipDistance(capStyle: LineCapStyle, pen: Pen, start: bool) -> f32
+    {
+        switch capStyle
+        {
+        case ArrowAnchor, ArrowAnchor2:
+            let scale = start ? pen.capBegScaleX : pen.capEndScaleX
+            return pen.size * 0.5 * scale  // Skip distance based on arrow size
+
+        case SquareAnchor:
+            let scale = start ? pen.capBegScaleX : pen.capEndScaleX
+            return pen.size * 0.5 * scale  // Skip distance based on square size
+
+        case RoundAnchor:
+            let scale = start ? pen.capBegScaleX : pen.capEndScaleX
+            return pen.size * 0.5 * scale  // Skip distance based on circle radius
+        }
+
+        return 0
+    }
+
+    // Helper function to find the point at a specific distance from start/end of polygon
+    func getPointAtDistance(using cxt: *Context, fromStart: bool, distance: f32) -> {point: Math.Vector2, found: bool}
+    {
+        let pointCount = path.polygon.points.count
+        if pointCount < 2:
+            return {Math.Vector2.Zero, false}
+
+        var accumulatedDistance = 0'f32
+
+        if fromStart
+        {
+            let startPoint = path.polygon.getPoint(0, offsetPath)
+            var lastPoint = startPoint
+
+            for i in 1 until pointCount
+            {
+                let currentPoint = path.polygon.getPoint(i, offsetPath)
+                let segmentVec = currentPoint - lastPoint
+                let segmentLen = segmentVec.length()
+
+                if segmentLen > 0.01
+                {
+                    if accumulatedDistance + segmentLen >= distance
+                    {
+                        // The target distance falls within this segment
+                        let remainingDist = distance - accumulatedDistance
+                        let ratio = remainingDist / segmentLen
+                        let targetPoint = lastPoint + segmentVec * ratio
+                        return {targetPoint, true}
+                    }
+                    accumulatedDistance += segmentLen
+                    lastPoint = currentPoint
+                }
+            }
+        }
+        else
+        {
+            let endPoint = path.polygon.getPoint(pointCount - 1, offsetPath)
+            var lastPoint = endPoint
+
+            for #back i in 0 to pointCount - 2
+            {
+                let currentPoint = path.polygon.getPoint(i, offsetPath)
+                let segmentVec = lastPoint - currentPoint
+                let segmentLen = segmentVec.length()
+
+                if segmentLen > 0.01
+                {
+                    if accumulatedDistance + segmentLen >= distance
+                    {
+                        // The target distance falls within this segment
+                        let remainingDist = distance - accumulatedDistance
+                        let ratio = remainingDist / segmentLen
+                        let targetPoint = lastPoint - segmentVec * ratio
+                        return {targetPoint, true}
+                    }
+                    accumulatedDistance += segmentLen
+                    lastPoint = currentPoint
+                }
+            }
+        }
+
+        return {Math.Vector2.Zero, false}
     }
 
     #[Swag.Overload]
@@ -672,40 +739,142 @@ impl Painter
 
         penSize        = pen.size
         cxt.offsetPath = pen.plotOffset
+        penSize2       = penSize * 0.5
+        beginLine      = true
+        firstLine      = true
 
-        penSize2  = penSize * 0.5
-        prev      = path.polygon.getPoint(0, cxt.offsetPath)
-        beginLine = true
-        firstLine = true
+        // Calculate skip distances for anchor caps
+        let beginSkipDistance = getAnchorSkipDistance(pen.begCapStyle, dref pen, true)
+        let endSkipDistance = getAnchorSkipDistance(pen.endCapStyle, dref pen, false)
 
-        var offset0, offsetn: Math.Vector2
+        var actualStartPoint = path.polygon.getPoint(0, cxt.offsetPath)
+        var actualEndPoint = path.polygon.getPoint(path.polygon.points.count - 1, cxt.offsetPath)
+        var startPointIndex = 0'u64
+        var endPointIndex = path.polygon.points.count - 1
 
-        // Line caps. Draw them before the line, so that the line will overwrite them a
-        // little if necessary
-        if !path.isClosed
+        // Adjust start point if we need to skip distance for begin cap
+        if !path.isClosed and beginSkipDistance > 0
         {
-            offset0 = drawLineBeginCap(cxt)
-            offsetn = drawLineEndCap(cxt)
-            prev -= offset0
-        }
-
-        // Draw all except last point, because of potential offset for the last point
-        // (because of cap styles)
-        if path.polygon.points.count > 2
-        {
-            for i in 1 until path.polygon.points.count - 1
+            let result = getPointAtDistance(cxt, true, beginSkipDistance)
+            if result.found
             {
-                var p = path.polygon.getPoint(i, cxt.offsetPath)
-                drawLine(cxt, p)
+                actualStartPoint = result.point
+
+                // Find the first point that's beyond our adjusted start
+                var accumulatedDistance = 0'f32
+                var lastPoint = path.polygon.getPoint(0, cxt.offsetPath)
+
+                for i in 1 until path.polygon.points.count
+                {
+                    let currentPoint = path.polygon.getPoint(i, cxt.offsetPath)
+                    let segTo = currentPoint - lastPoint
+                    let segmentLen = segTo.length()
+
+                    if accumulatedDistance + segmentLen >= beginSkipDistance
+                    {
+                        startPointIndex = i
+                        break
+                    }
+                    accumulatedDistance += segmentLen
+                    lastPoint = currentPoint
+                }
             }
         }
 
-        // Last point
-        var p = path.polygon.getPoint(path.polygon.points.count - 1, cxt.offsetPath)
-        p -= offsetn
-        drawLine(cxt, p)
+        // Adjust end point if we need to skip distance for end cap
+        if !path.isClosed and endSkipDistance > 0
+        {
+            let result = getPointAtDistance(cxt, false, endSkipDistance)
+            if result.found
+            {
+                actualEndPoint = result.point
 
-        // AA end edge if no end cap
+                // Find the last point that's before our adjusted end
+                var accumulatedDistance = 0'f32
+                var lastPoint = path.polygon.getPoint(path.polygon.points.count - 1, cxt.offsetPath)
+
+                for #back i in 0 to path.polygon.points.count - 2
+                {
+                    let currentPoint = path.polygon.getPoint(i, cxt.offsetPath)
+                    let segTo = lastPoint - currentPoint
+                    let segmentLen = segTo.length()
+
+                    if accumulatedDistance + segmentLen >= endSkipDistance
+                    {
+                        endPointIndex = i
+                        break
+                    }
+                    accumulatedDistance += segmentLen
+                    lastPoint = currentPoint
+                }
+            }
+        }
+
+        // Set starting position
+        prev = actualStartPoint
+
+        // Draw line caps first (if not closed)
+        if !path.isClosed
+        {
+            // Draw begin cap
+            if pen.begCapStyle != .None
+            {
+                var v1 = path.polygon.getPoint(0, cxt.offsetPath)
+                var v2 = path.polygon.getPoint(1, cxt.offsetPath)
+                var n  = v2 - v1
+                n.normalizeSafe()
+                var c = n.cross(1)
+                c *= penSize2
+                drawLineCap(pen.begCapStyle, v1, c, 1.0, dref pen, true)
+            }
+
+            // Draw end cap
+            if pen.endCapStyle != .None
+            {
+                var v1 = path.polygon.getPoint(path.polygon.points.count - 1, cxt.offsetPath)
+                var v2 = path.polygon.getPoint(path.polygon.points.count - 2, cxt.offsetPath)
+                var n  = v1 - v2
+                n.normalizeSafe()
+                var c = n.cross(1)
+                c *= penSize2
+                drawLineCap(pen.endCapStyle, v1, c, -1.0, dref pen, false)
+            }
+        }
+
+        // Draw the line segments with proper start/end adjustment
+        if path.polygon.points.count > 1
+        {
+            // If we have an adjusted start point and it's different from the first polygon point
+            let startTo = actualStartPoint - path.polygon.getPoint(0, cxt.offsetPath)
+            if startPointIndex > 0 or startTo.length() > 0.01
+            {
+                // Draw from adjusted start to the appropriate next point
+                if startPointIndex < path.polygon.points.count
+                {
+                    let nextPoint = path.polygon.getPoint(startPointIndex, cxt.offsetPath)
+                    drawLine(cxt, nextPoint)
+                }
+            }
+
+            // Draw intermediate segments
+            for i in (startPointIndex + 1) to endPointIndex
+            {
+                if i < path.polygon.points.count
+                {
+                    var p = path.polygon.getPoint(i, cxt.offsetPath)
+                    drawLine(cxt, p)
+                }
+            }
+
+            // Draw final segment to adjusted end point if needed
+            let endTo = actualEndPoint - path.polygon.getPoint(endPointIndex, cxt.offsetPath)
+            if endTo.length() > 0.01
+            {
+                drawLine(cxt, actualEndPoint)
+            }
+        }
+
+        // Handle AA and closing as before...
         if !lastLineInvalid and !path.isClosed and (curState.paintParams & .Antialiased) and (pen.endCapStyle == .None)
         {
             let prim2p = vertexBuffer.buffer + prim2
@@ -713,8 +882,6 @@ impl Painter
             addEdgeAA(prim1, prim2p.pos, prim2t.pos)
             addEdgeAA(prim2, prim2p.pos, prim2t.pos)
         }
-
-        // Closing join between the end and the beginning in case of a closed path
         elif path.isClosed and !firstLine and !beginLine
         {
             drawJoin(cxt, prev, normal, normalFirst)
