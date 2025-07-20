@@ -231,7 +231,7 @@ impl Image
     }
 
     // Returns the color at the given coordinate
-    mtd getPixelColor(pixX, pixY: s32)->Color
+    mtd const getPixelColor(pixX, pixY: s32)->Color
     {
         var result: retval
         let x       = Math.clamp(pixX, 0, width - 1)

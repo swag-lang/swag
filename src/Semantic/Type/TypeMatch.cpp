@@ -25,6 +25,8 @@ namespace
         for (uint32_t i = 0; i < numParams; i++)
         {
             const auto callParameter = context.parameters[i];
+            if (!callParameter)
+                continue;
 
             if (callParameter->hasExtraPointer(ExtraPointerKind::IsNamed))
             {
