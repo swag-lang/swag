@@ -98,8 +98,15 @@ func resampleToGrayscale(image: Image, targetWidth, targetHeight: s32, output: ^
     }
 }
 
-func quickExtractHaarFeature(image: Image, windowSize: u32, output: ^f32)
+func quickExtractHaarFeature(image: Image, windowSize: u32)->HaarFeatures
 {
+    var features: retval
+
+    Debug.assert(Math.isPowerOf2(windowSize))
+    Debug.assert(windowSize >= 32)
+
+    features.coefficients.resize(windowSize * windowSize)
+
     // Fast grayscale resizing
     var grayData: Array'f32
     grayData.resize(windowSize * windowSize)
@@ -119,8 +126,9 @@ func quickExtractHaarFeature(image: Image, windowSize: u32, output: ^f32)
         }
     }
 
-    // Fast Haar transform (only 2 levels)
-    haarTransform2D(grayData.buffer, windowSize, output)
+    // 2D Haar transform
+    haarTransform2D(grayData.buffer, windowSize, features.coefficients.buffer)
+    return features
 }
 
 // Structure to store Haar coefficients
@@ -232,19 +240,14 @@ public func quickHaarCompareTo(one, two: Image, windowSize: u32 = 32)->f32
     Debug.assert(Math.isPowerOf2(windowSize))
     Debug.assert(windowSize >= 32)
 
-    var haar1: Array'f32
-    var haar2: Array'f32
-    haar1.resize(windowSize * windowSize)
-    haar2.resize(windowSize * windowSize)
-
-    one.quickExtractHaarFeature(windowSize, haar1.buffer)
-    two.quickExtractHaarFeature(windowSize, haar2.buffer)
+    let haar1 = one.quickExtractHaarFeature(windowSize)
+    let haar2 = two.quickExtractHaarFeature(windowSize)
 
     var norm1, norm2, correlation: f64
     for i in 0 until windowSize * windowSize
     {
-        let c1 = cast(f64) haar1[i]
-        let c2 = cast(f64) haar2[i]
+        let c1 = cast(f64) haar1.coefficients.buffer[i]
+        let c2 = cast(f64) haar2.coefficients.buffer[i]
         correlation += c1 * c2
         norm1 += c1 * c1
         norm2 += c2 * c2
