@@ -14,7 +14,7 @@ using Core, Pixel
     let res3 = ImageStatistics.quickHaarCompareTo(img1, img3)
     @assert(res3 < 0.6)
 
-    @print(res1, " ", res2, " ", res3)
+    //@print(res1, " ", res2, " ", res3)
 }
 
 #test
@@ -31,5 +31,5 @@ using Core, Pixel
     let res3 = ImageStatistics.haarCompareTo(img1, img3)
     @assert(res3 < 0.5)
 
-    @print(res1, " ", res2, " ", res3)
+    //@print(res1, " ", res2, " ", res3)
 }

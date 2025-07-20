@@ -98,39 +98,6 @@ func resampleToGrayscale(image: Image, targetWidth, targetHeight: s32, output: ^
     }
 }
 
-func quickExtractHaarFeature(image: Image, windowSize: u32)->HaarFeatures
-{
-    var features: retval
-
-    Debug.assert(Math.isPowerOf2(windowSize))
-    Debug.assert(windowSize >= 32)
-
-    features.coefficients.resize(windowSize * windowSize)
-
-    // Fast grayscale resizing
-    var grayData: Array'f32
-    grayData.resize(windowSize * windowSize)
-
-    let stepX = Math.max(1, image.width / windowSize)
-    let stepY = Math.max(1, image.height / windowSize)
-
-    for y in windowSize-1
-    {
-        for x in windowSize-1
-        {
-            let srcX = x * stepX
-            let srcY = y * stepY
-            let color = image.getPixelColor(srcX, srcY)
-            let gray = cast(f32) color.r * 0.299 + cast(f32) color.g * 0.587 + cast(f32) color.b * 0.114
-            grayData.buffer[y * windowSize + x] = gray
-        }
-    }
-
-    // 2D Haar transform
-    haarTransform2D(grayData.buffer, windowSize, features.coefficients.buffer)
-    return features
-}
-
 // Structure to store Haar coefficients
 public struct HaarFeatures
 {
@@ -139,14 +106,15 @@ public struct HaarFeatures
     levels:       s32           // Number of decomposition levels
 }
 
+// Extract Haar coefficients from the image
 public func extractHaarFeatures(image: Image, windowSize: u32 = 128)->HaarFeatures
 {
-    var features: retval
-
     Debug.assert(Math.isPowerOf2(windowSize))
     Debug.assert(windowSize >= 32)
 
-    // Determine optimal size (power of 2, max windowSizexwindowSize for speed)
+    var features: retval
+
+    // Determine optimal size
     let targetSize = Math.min(Math.roundUpToPowerOf2(cast(u32) Math.min(image.width, image.height)), windowSize)
     features.size = targetSize
     features.levels = cast() Math.log2(cast(f32) targetSize)  // Number of decomposition levels
@@ -234,17 +202,48 @@ public func haarCompareTo(one, two: Image, windowSize: u32 = 128)->f32
     return compareHaarCoefficients(haar1, haar2)
 }
 
-// Compare to another image with Haar coefficients, fast simplified version
-public func quickHaarCompareTo(one, two: Image, windowSize: u32 = 32)->f32
+// Extract Haar coefficients from the image
+public func quickExtractHaarFeature(image: Image, windowSize: u32 = 32)->HaarFeatures
 {
     Debug.assert(Math.isPowerOf2(windowSize))
     Debug.assert(windowSize >= 32)
 
-    let haar1 = one.quickExtractHaarFeature(windowSize)
-    let haar2 = two.quickExtractHaarFeature(windowSize)
+    var features: retval
+    features.coefficients.resize(windowSize * windowSize)
+    features.size = windowSize
+    features.levels = cast() Math.log2(cast(f32) windowSize)  // Number of decomposition levels
+
+    // Fast grayscale resizing
+    var grayData: Array'f32
+    grayData.resize(windowSize * windowSize)
+
+    let stepX = Math.max(1, image.width / windowSize)
+    let stepY = Math.max(1, image.height / windowSize)
+
+    for y in windowSize-1
+    {
+        for x in windowSize-1
+        {
+            let srcX = x * stepX
+            let srcY = y * stepY
+            let color = image.getPixelColor(srcX, srcY)
+            let gray = cast(f32) color.r * 0.299 + cast(f32) color.g * 0.587 + cast(f32) color.b * 0.114
+            grayData.buffer[y * windowSize + x] = gray
+        }
+    }
+
+    // 2D Haar transform
+    haarTransform2D(grayData.buffer, windowSize, features.coefficients.buffer)
+    return features
+}
+
+// Compare Haar coefficients with multiscale weights
+public func quickCompareHaarCoefficients(haar1, haar2: HaarFeatures)->f32
+{
+    Debug.assert(haar1.size == haar2.size, "Haar features must have same size")
 
     var norm1, norm2, correlation: f64
-    for i in 0 until windowSize * windowSize
+    for i in haar1.coefficients
     {
         let c1 = cast(f64) haar1.coefficients.buffer[i]
         let c2 = cast(f64) haar2.coefficients.buffer[i]
@@ -257,4 +256,15 @@ public func quickHaarCompareTo(one, two: Image, windowSize: u32 = 32)->f32
     if denominator > 1e-10:
         return cast(f32) Math.abs(correlation / denominator)
     return 1.0'f32
+}
+
+// Compare to another image with Haar coefficients, fast simplified version
+public func quickHaarCompareTo(one, two: Image, windowSize: u32 = 32)->f32
+{
+    Debug.assert(Math.isPowerOf2(windowSize))
+    Debug.assert(windowSize >= 32)
+
+    let haar1 = one.quickExtractHaarFeature(windowSize)
+    let haar2 = two.quickExtractHaarFeature(windowSize)
+    return quickCompareHaarCoefficients(haar1, haar2)
 }
