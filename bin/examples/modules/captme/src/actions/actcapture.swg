@@ -137,17 +137,25 @@ impl IActionUI for ActionCapture
 
 impl MainWnd
 {
-    mtd newCapture(img: Image, linked: string = null)
+    mtd newCapture(img: Image, linked: string = null, from: *Capture = null)
     {
         if !img.isValid():
             return
 
-        with let capture = Memory.new'Capture()
+        var capture = from
+        if !capture
         {
-            .changed = true
-            .width, .widthOrg = img.width
-            .height, .heightOrg = img.height
-            .backImg, .backImgOrg = img
+            with capture = Memory.new'Capture()
+            {
+                .width, .widthOrg = img.width
+                .height, .heightOrg = img.height
+                .backImg, .backImgOrg = img
+            }
+        }
+
+        with capture
+        {
+            .changed     = true
             .linkedImage = linked
             .file        = Library.newFileName()
         }
@@ -179,10 +187,8 @@ impl MainWnd
         if g_CaptureOptions.delay:
             Threading.Thread.sleep(g_CaptureOptions.delay * 1000)
 
-        var img     = catch screenShot(mode)
-        let isValid = @err == null and img.width > 0 and img.height > 0
-
-        if (isValid and g_CaptureOptions.showEditorAfter) or !wasHidden
+        let capture = catch screenShot(mode)
+        if (capture != null and g_CaptureOptions.showEditorAfter) or !wasHidden
         {
             if surface.isMinimized:
                 surface.showNormal()
@@ -190,12 +196,15 @@ impl MainWnd
                 surface.show()
         }
 
-        if !isValid:
+        if capture == null:
             return
 
-        if g_CaptureOptions.sendToEditor:
-            newCapture(img)
         if g_CaptureOptions.sendToClipboard:
-            Clipboard.addImage(img)
+            Clipboard.addImage(capture.backImg)
+
+        if g_CaptureOptions.sendToEditor:
+            newCapture(capture.backImg, null, capture)
+        else:
+            Memory.delete(capture)
     }
 }

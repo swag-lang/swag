@@ -638,6 +638,9 @@ impl LinePath
     // Calculate optimal number of segments based on arc properties
     mtd calculateFlattenArcSegments(angleSpan: f32, radius: f32, quality: PaintQuality)->u32
     {
+        if radius < 0.1:
+            return 1
+
         let minDist = getFlattenDistance(quality)
 
         // Use the sagitta formula: segments = ceil(angle / (2 * acos(1 - tolerance/radius)))

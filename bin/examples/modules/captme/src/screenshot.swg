@@ -21,7 +21,7 @@ private
     var g_ScreenWidth:  s32
     var g_ScreenHeight: s32
 
-    var g_Exit:     bool
+    var g_Exit: bool
     var g_GrabDone: bool
 
     var g_DesktopTexture:     Texture
@@ -61,8 +61,8 @@ impl IWnd for ScreenshotWnd
             g_StartGrabY = r.y
             g_EndGrabX   = r.right()
             g_EndGrabY   = r.bottom()
-        }     
-    }   
+        }
+    }
 
     mtd impl onKeyEvent(evt: *KeyEvent)
     {
@@ -75,8 +75,8 @@ impl IWnd for ScreenshotWnd
             {
                 if evt.kind == .KeyPressed
                 {
-                    autoGrab = true   
-                    testAutoGrab()       
+                    autoGrab = true
+                    testAutoGrab()
                 }
                 else
                 {
@@ -201,12 +201,129 @@ impl IWnd for ScreenshotWnd
     }
 }
 
-func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
+struct InPlaceEditWnd
+{
+    using wnd:  Wnd
+    editWnd:    *EditWnd
+}
+
+impl InPlaceEditWnd
+{
+    func create(capture: *Capture, rect: Math.Rectangle, main: *MainWnd, parent: *Wnd)->*InPlaceEditWnd
+    {
+        with let frame = Wnd.create'InPlaceEditWnd(parent)
+        {
+            .editWnd = EditWnd.create(main, frame)
+            .editWnd.setPosition(rect)
+            .editWnd.editView.dockStyle = .Center
+            .editWnd.editView.viewMargin = 0
+            .editWnd.editView.setCapture(capture)
+            .editWnd.editView.setZoom(1)
+            .editWnd.editView.setFocus()
+        }
+
+        return frame
+    }
+}
+
+impl IWnd for InPlaceEditWnd
+{
+    mtd impl onKeyEvent(evt: *KeyEvent)
+    {
+        if evt.kind == .KeyPressed and evt.key == .Escape:
+            g_Exit = true
+    }
+
+    mtd impl onPaintEvent(evt: *PaintEvent)
+    {
+        let painter = evt.bc.painter
+        painter.drawTexture(position, g_GrayDesktopTexture)
+    }
+}
+
+func captureRect(main: *MainWnd)->#null *Capture throw
+{
+    // Capture
+    ////////////////////////////////
+
+    g_App.disableHotKeys()
+    defer g_App.enableHotKeys()
+
+    var img = getDesktopImage()
+    g_DesktopTexture = g_App.renderer.addImage(img)
+    defer g_App.renderer.removeTexture(&g_DesktopTexture)
+
+    img.grayScale()
+    img.fade(Argb.Black, 0.6)
+    g_GrayDesktopTexture = g_App.renderer.addImage(img)
+    defer g_App.renderer.removeTexture(&g_GrayDesktopTexture)
+
+    g_Exit     = false
+    g_GrabDone = false
+
+    let sx = Env.getMetric(.DesktopX)
+    let sy = Env.getMetric(.DesktopY)
+    let sf  = catch g_App.createSurface(sx, sy, g_ScreenWidth, g_ScreenHeight, .Secondary | .TopMost | .NoShadow)
+    let captureWnd = Wnd.create'ScreenshotWnd(sf.wnd)
+    captureWnd.cursor = Cursor.from(CursorShape.Cross)
+    captureWnd.setPosition(0, 0, sf.position.width, sf.position.height)
+    captureWnd.SetCapture()
+
+    sf.setView(captureWnd)
+    sf.show()
+    sf.bringToTop()
+
+    while !g_Exit:
+        g_App.runFrame()
+
+    if !g_GrabDone
+    {
+        sf.destroy()
+        return null
+    }
+
+    // In place edition of capture image
+    ////////////////////////////////
+
+    var grabRect = getGrabRect()
+    let wGrab    = Math.max(grabRect.width, 8)
+    let hGrab    = Math.max(grabRect.height, 8)
+    var imgCrop  = getDesktopImage()
+    grabRect = {cast(s32) grabRect.x, cast(s32) grabRect.y, cast(s32) wGrab, cast(s32) hGrab}
+    imgCrop.crop(grabRect)
+
+    with let capture = Memory.new'Capture()
+    {
+        .width, .widthOrg = imgCrop.width
+        .height, .heightOrg = imgCrop.height
+        .backImg, .backImgOrg = imgCrop
+    }
+
+    let inPlaceMain = InPlaceEditWnd.create(capture, grabRect, main, sf.wnd)
+    sf.setView(inPlaceMain)
+    captureWnd.destroy()
+
+/*
+    g_Exit = false
+    g_GrabDone = false
+    while !g_Exit:
+        g_App.runFrame()
+
+    if !g_GrabDone
+    {
+        sf.destroy()
+        return null
+    }*/
+
+    inPlaceMain.editWnd.editView.capture = null
+    sf.destroy()
+    return capture
+}
+
+func screenShot(main: *MainWnd, captureMode: CaptureMode)->#null *Capture throw
 {
     startScreenshot()
     defer endScreenshot()
-
-    var result: retval
 
     g_ScreenWidth  = Env.getMetric(.DesktopWidth)
     g_ScreenHeight = Env.getMetric(.DesktopHeight)
@@ -221,7 +338,7 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
     {
         let r = getBackgroundWndRect()
         if r.isEmpty():
-            return result
+            return null
         g_StartGrabX = r.x
         g_StartGrabY = r.y
         g_EndGrabX   = r.right()
@@ -240,47 +357,22 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
     }
     else
     {
-        g_App.disableHotKeys()
-        defer g_App.enableHotKeys()
-
-        var img = getDesktopImage()
-        g_DesktopTexture = g_App.renderer.addImage(img)
-        defer g_App.renderer.removeTexture(&g_DesktopTexture)
-        
-        img.grayScale()
-        img.fade(Argb.Black, 0.6)
-        g_GrayDesktopTexture = g_App.renderer.addImage(img)
-        defer g_App.renderer.removeTexture(&g_GrayDesktopTexture)
-
-        g_Exit     = false
-        g_GrabDone = false
-
-        let sx = Env.getMetric(.DesktopX)
-        let sy = Env.getMetric(.DesktopY)
-        let sf  = catch g_App.createSurface(sx, sy, g_ScreenWidth, g_ScreenHeight, .Secondary | .TopMost | .NoShadow)
-        let wnd = Wnd.create'ScreenshotWnd(sf.wnd)
-        wnd.cursor = Cursor.from(CursorShape.Cross)
-        wnd.setPosition(0, 0, sf.position.width, sf.position.height)
-        wnd.SetCapture()
-
-        sf.setView(wnd)
-        sf.show()
-        sf.bringToTop()
-
-        while !g_Exit:
-            g_App.runFrame()
-
-        sf.destroy()
-
-        if !g_GrabDone:
-            return result
+        return captureRect(main)
     }
 
     // Grab
     let grabRect = getGrabRect()
     let wGrab    = Math.max(grabRect.width, 8)
     let hGrab    = Math.max(grabRect.height, 8)
-    result = getDesktopImage()
-    result.crop(cast(s32) grabRect.x, cast(s32) grabRect.y, cast(s32) wGrab, cast(s32) hGrab)
-    return result
+    var img      = getDesktopImage()
+    img.crop(cast(s32) grabRect.x, cast(s32) grabRect.y, cast(s32) wGrab, cast(s32) hGrab)
+
+    with let capture = Memory.new'Capture()
+    {
+        .width, .widthOrg = img.width
+        .height, .heightOrg = img.height
+        .backImg, .backImgOrg = img
+    }
+
+    return capture
 }
