@@ -55,7 +55,7 @@ func getWndRectAtPos(srf: *Surface, x, y: f32)->Math.Rectangle
     }
 
     if !g_Hit:
-        return {}    
+        return {}
 
     var r: RECT
     GetWindowRect(g_Hit, &r)
@@ -84,6 +84,9 @@ func getBackgroundWndRect()->Math.Rectangle
 
 func getDesktopImage()->Image throw
 {
+    startScreenshot()
+    defer endScreenshot()
+
     let hDesktopWnd = GetDesktopWindow()
     let hDesktopDC  = GetDC(hDesktopWnd)
 
