@@ -110,9 +110,6 @@ func captureRect(main: *MainWnd)->#null *Capture throw
 
 func screenShot(main: *MainWnd, captureMode: CaptureMode)->#null *Capture throw
 {
-    startScreenshot()
-    defer endScreenshot()
-
     g_ScreenWidth  = Env.getMetric(.DesktopWidth)
     g_ScreenHeight = Env.getMetric(.DesktopHeight)
 

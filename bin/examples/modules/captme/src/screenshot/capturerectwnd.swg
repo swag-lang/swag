@@ -131,7 +131,8 @@ impl IWnd for CaptureRectWnd
 
         let painter = evt.bc.painter
 
-        // Draw the gray image first
+        // Draw the desktop back ima
+        painter.setInterpolationMode(.Linear)
         painter.drawTexture(position, g_DesktopTexture)
 
         // Draw the normal desktop image inside the grab rectangle

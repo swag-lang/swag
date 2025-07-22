@@ -593,20 +593,23 @@ impl Capture
                 serialBackTexture += 1
             }
 
-            with var backRect: Math.Rectangle
-            {
-                .x      = (backImagePos.x * z) + x
-                .y      = (backImagePos.y * z) + y
-                .width  = backImg.width * z
-                .height = backImg.height * z
-            }
-
+            var backRect: Math.Rectangle
             if inPlaceEdit
             {
                 backRect.x = 0
                 backRect.y = 0
+                backRect.width = editView.position.width
+                backRect.height = editView.position.height
+            }
+            else
+            {
+                backRect.x      = (backImagePos.x * z) + x
+                backRect.y      = (backImagePos.y * z) + y
+                backRect.width  = backImg.width * z
+                backRect.height = backImg.height * z
             }
 
+            painter.setInterpolationMode(.Linear)
             painter.drawTexture(backRect, backTexture)
         }
     }

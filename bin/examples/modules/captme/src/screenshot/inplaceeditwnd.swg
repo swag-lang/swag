@@ -50,6 +50,12 @@ impl InPlaceEditWnd
             grabRect.width = .width
             grabRect.height = .height
 
+            let scale = Env.getDPIScale()
+            grabRect.x *= scale
+            grabRect.y *= scale
+            grabRect.width *= scale
+            grabRect.height *= scale
+
             .backImg.crop(grabRect)
             .backImgOrg = .backImg
 
@@ -65,7 +71,7 @@ impl InPlaceEditWnd
     mtd moveButtons()
     {
         let rect = getGrabRect()
-        editBtn.setPosition(rect.right() - 100, rect.bottom(), 100, 40)
+        editBtn.setPosition(rect.right() - 100, rect.bottom() + 4, 100, 24)
     }
 }
 

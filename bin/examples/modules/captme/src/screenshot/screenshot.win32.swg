@@ -62,16 +62,6 @@ func getWndRectAtPos(srf: *Surface, x, y: f32)->Math.Rectangle
     return Math.Rectangle{r.left, r.top, r.right - r.left, r.bottom - r.top}
 }
 
-func startScreenshot()
-{
-    g_Awareness = SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE)
-}
-
-func endScreenshot()
-{
-    defer discard SetThreadDpiAwarenessContext(g_Awareness)
-}
-
 func getBackgroundWndRect()->Math.Rectangle
 {
     let hit = GetForegroundWindow()
@@ -84,8 +74,8 @@ func getBackgroundWndRect()->Math.Rectangle
 
 func getDesktopImage()->Image throw
 {
-    startScreenshot()
-    defer endScreenshot()
+    let awareness = SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE)
+    defer discard SetThreadDpiAwarenessContext(awareness)
 
     let hDesktopWnd = GetDesktopWindow()
     let hDesktopDC  = GetDC(hDesktopWnd)

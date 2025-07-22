@@ -234,3 +234,14 @@ func getNativeArgs()->string
 
     return g_StoreArgs
 }
+
+// Returns the DPI scale
+public func getDPIScale()->f32
+{
+    let w0 = getMetric(.DesktopWidth)
+    let prev = SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE)
+    let w1 = getMetric(.DesktopWidth)
+    discard SetThreadDpiAwarenessContext(prev)
+    return cast(f32) w1 / cast(f32) w0
+}
+
