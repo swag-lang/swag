@@ -13,6 +13,7 @@ struct EditView
     zoom:           f32 = 1
     viewMargin:     f32 = 32
     firstPaint:     bool = true
+    inPlaceEdit:    bool
 }
 
 impl EditWnd
@@ -109,8 +110,17 @@ impl EditView
         var rect         = scroll.getClientScrollRect()
         captureRect.width  = capture.width * zoom
         captureRect.height = capture.height * zoom
-        captureRect.x      = rect.horzCenter() - captureRect.width * 0.5
-        captureRect.y      = rect.vertCenter() - captureRect.height * 0.5
+        if inPlaceEdit
+        {
+            captureRect.x = -capture.backImagePos.x
+            captureRect.y = -capture.backImagePos.y
+        }
+        else
+        {
+            captureRect.x = rect.horzCenter() - captureRect.width * 0.5
+            captureRect.y = rect.vertCenter() - captureRect.height * 0.5
+        }
+
         return captureRect
     }
 

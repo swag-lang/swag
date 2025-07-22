@@ -170,10 +170,22 @@ impl IWnd for ScreenshotWnd
         let painter = evt.bc.painter
 
         // Draw the gray image first
-        painter.drawTexture(position, g_GrayDesktopTexture)
+        painter.drawTexture(position, g_DesktopTexture)
 
         // Draw the normal desktop image inside the grab rectangle
-        painter.drawTexture(grabRect, grabRect, g_DesktopTexture)
+        let col: Color = {0, 0, 0, 200}
+        if !grabRect.isEmpty()
+        {
+            painter.fillRect(0, 0, grabRect.x, position.height, col)
+            painter.fillRect(grabRect.x, 0, grabRect.width, grabRect.y, col)
+            painter.fillRect(grabRect.right(), 0, position.width - grabRect.right(), position.bottom(), col)
+            painter.fillRect(grabRect.x, grabRect.bottom(), grabRect.width, position.bottom() - grabRect.bottom(), col)
+        }
+        else
+        {
+            painter.fillRect(position, col)
+        }
+
         painter.drawRect(grabRect, Argb.White)
 
         // Rectangles
@@ -209,17 +221,18 @@ struct InPlaceEditWnd
 
 impl InPlaceEditWnd
 {
-    func create(capture: *Capture, rect: Math.Rectangle, main: *MainWnd, parent: *Wnd)->*InPlaceEditWnd
+    func create(capture: *Capture, main: *MainWnd, parent: *Wnd)->*InPlaceEditWnd
     {
         with let frame = Wnd.create'InPlaceEditWnd(parent)
         {
             .editWnd = EditWnd.create(main, frame)
-            .editWnd.setPosition(rect)
+            .editWnd.dockStyle = .Center
             .editWnd.editView.dockStyle = .Center
             .editWnd.editView.viewMargin = 0
             .editWnd.editView.setCapture(capture)
             .editWnd.editView.setZoom(1)
             .editWnd.editView.setFocus()
+            .editWnd.editView.inPlaceEdit = true
         }
 
         return frame
@@ -233,12 +246,6 @@ impl IWnd for InPlaceEditWnd
         if evt.kind == .KeyPressed and evt.key == .Escape:
             g_Exit = true
     }
-
-    mtd impl onPaintEvent(evt: *PaintEvent)
-    {
-        let painter = evt.bc.painter
-        painter.drawTexture(position, g_GrayDesktopTexture)
-    }
 }
 
 func captureRect(main: *MainWnd)->#null *Capture throw
@@ -250,11 +257,12 @@ func captureRect(main: *MainWnd)->#null *Capture throw
     defer g_App.enableHotKeys()
 
     var img = getDesktopImage()
+    var imgBase = img
     g_DesktopTexture = g_App.renderer.addImage(img)
     defer g_App.renderer.removeTexture(&g_DesktopTexture)
 
-    img.grayScale()
-    img.fade(Argb.Black, 0.6)
+    //img.grayScale()
+    //img.fade(Argb.Black, 0.6)
     g_GrayDesktopTexture = g_App.renderer.addImage(img)
     defer g_App.renderer.removeTexture(&g_GrayDesktopTexture)
 
@@ -288,18 +296,17 @@ func captureRect(main: *MainWnd)->#null *Capture throw
     var grabRect = getGrabRect()
     let wGrab    = Math.max(grabRect.width, 8)
     let hGrab    = Math.max(grabRect.height, 8)
-    var imgCrop  = getDesktopImage()
-    grabRect = {cast(s32) grabRect.x, cast(s32) grabRect.y, cast(s32) wGrab, cast(s32) hGrab}
-    imgCrop.crop(grabRect)
-
     with let capture = Memory.new'Capture()
     {
-        .width, .widthOrg = imgCrop.width
-        .height, .heightOrg = imgCrop.height
-        .backImg, .backImgOrg = imgCrop
+        .width = cast(s32) wGrab
+        .height = cast(s32) hGrab
+        .backImg = imgBase
+        .backImagePos.x = -grabRect.x
+        .backImagePos.y = -grabRect.y
+        .inPlaceEdit = true
     }
 
-    let inPlaceMain = InPlaceEditWnd.create(capture, grabRect, main, sf.wnd)
+    let inPlaceMain = InPlaceEditWnd.create(capture, main, sf.wnd)
     sf.setView(inPlaceMain)
     captureWnd.destroy()
 
@@ -314,6 +321,27 @@ func captureRect(main: *MainWnd)->#null *Capture throw
         sf.destroy()
         return null
     }*/
+
+    if capture
+    {
+        with capture
+        {
+            grabRect.x = -.backImagePos.x
+            grabRect.y = -.backImagePos.y
+            grabRect.width = .width
+            grabRect.height = .height
+
+            imgBase.crop(grabRect)
+            .backImg, .backImgOrg = imgBase
+
+            .width, .widthOrg = cast(s32) .backImg.width
+            .height, .heightOrg = cast(s32) .backImg.height
+            .backImagePos = {}
+
+            .inPlaceEdit = false
+            .dirtyBackImg = true
+        }
+    }
 
     inPlaceMain.editWnd.editView.capture = null
     sf.destroy()

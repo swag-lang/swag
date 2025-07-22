@@ -56,6 +56,10 @@ struct Capture
         firstMouseMove:        bool
         dirtyBackImg:          bool
         drawSelRect:           bool
+
+        inPlaceEdit:           bool
+        inPlacePosX:           f32
+        inPlacePosY:           f32
     }
 }
 
@@ -595,6 +599,12 @@ impl Capture
                 .y      = (backImagePos.y * z) + y
                 .width  = backImg.width * z
                 .height = backImg.height * z
+            }
+
+            if inPlaceEdit
+            {
+                backRect.x = 0
+                backRect.y = 0
             }
 
             painter.drawTexture(backRect, backTexture)
