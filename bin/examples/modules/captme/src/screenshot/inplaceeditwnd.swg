@@ -2,9 +2,9 @@ using Core, Win32, Gdi32, Pixel
 
 struct InPlaceEditWnd
 {
-    using wnd:  Wnd
-    editWnd:    *EditWnd
-    stackHorz:  *StackLayoutCtrl
+    using wnd:     Wnd
+    editWnd:       *EditWnd
+    stackHorz:     *StackLayoutCtrl
 }
 
 impl InPlaceEditWnd
@@ -13,11 +13,11 @@ impl InPlaceEditWnd
     {
         with let frame = Wnd.create'InPlaceEditWnd(parent)
         {
-            .editWnd = EditWnd.create(main, frame)
+            .editWnd           = EditWnd.create(main, frame)
             .editWnd.dockStyle = .Center
             with let view = frame.editWnd.editView
             {
-                .dockStyle = .Center
+                .dockStyle  = .Center
                 .viewMargin = 0
                 .setCapture(capture)
                 .setZoom(1)
@@ -25,31 +25,30 @@ impl InPlaceEditWnd
                 .inPlaceEdit = true
             }
 
-            .stackHorz = StackLayoutCtrl.create(.editWnd.editView, .Right, {})
-            .stackHorz.backgroundStyle = .Dialog
-            .stackHorz.padding         = 5
+            .stackHorz         = StackLayoutCtrl.create(.editWnd.editView, .Right, {})
+            .stackHorz.padding = 5
 
-            let btnCancel = PushButton.create(.stackHorz, "Cancel", {0, 0, 100})
+            let btnCancel = PushButton.create(.stackHorz, "Cancel", {0, 0, 80})
             btnCancel.sigPressed += func(btn)
             {
-                g_Exit = true
+                g_Exit     = true
                 g_GrabDone = false
             }
 
-            let btnEdit = PushButton.create(.stackHorz, "Edit", {0, 0, 100})
+            let btnEdit = PushButton.create(.stackHorz, "Edit", {0, 0, 80})
             btnEdit.sigPressed += func|frame|(btn)
             {
                 frame.cropCapture()
-                g_Exit = true
+                g_Exit     = true
                 g_GrabDone = true
             }
 
-            let btnCopy = PushButton.create(.stackHorz, "Copy", {0, 0, 100})
+            let btnCopy = PushButton.create(.stackHorz, "Copy", {0, 0, 80})
             btnCopy.sigPressed += func|frame|(btn)
             {
                 frame.cropCapture()
                 Clipboard.addImage(frame.editWnd.editView.capture.backImg)
-                g_Exit = true
+                g_Exit     = true
                 g_GrabDone = false
             }
         }
@@ -64,9 +63,9 @@ impl InPlaceEditWnd
         var grabRect: Math.Rectangle
         with editWnd.editView.capture
         {
-            grabRect.x = -.backImagePos.x
-            grabRect.y = -.backImagePos.y
-            grabRect.width = .width
+            grabRect.x      = -.backImagePos.x
+            grabRect.y      = -.backImagePos.y
+            grabRect.width  = .width
             grabRect.height = .height
 
             let scale = Env.getDPIScale()
@@ -77,12 +76,11 @@ impl InPlaceEditWnd
 
             .backImg.crop(grabRect)
             .backImgOrg = .backImg
-
             .width, .widthOrg = cast(s32) .backImg.width
             .height, .heightOrg = cast(s32) .backImg.height
             .backImagePos = {}
 
-            .inPlaceEdit = false
+            .inPlaceEdit  = false
             .dirtyBackImg = true
         }
     }
@@ -90,8 +88,14 @@ impl InPlaceEditWnd
     mtd moveButtons()
     {
         var rect = getGrabRect()
-        rect.y += 4
-        stackHorz.setPosition(rect.x, rect.bottom(), rect.width, 40)
+        const H = 40.0
+
+        if rect.bottom() < g_ScreenHeight - H:
+            stackHorz.setPosition(rect.x, rect.bottom(), rect.width, H)
+        elif rect.y > H:
+            stackHorz.setPosition(rect.x, rect.y - H, rect.width, H)
+        else:
+            stackHorz.setPosition(rect.x, rect.bottom() - H, rect.width, H)
     }
 }
 
