@@ -12,16 +12,14 @@ enum CaptureMode
     ActiveWindow
 }
 
-var g_StartGrabX:   f32
-var g_StartGrabY:   f32
-var g_EndGrabX:     f32
-var g_EndGrabY:     f32
-var g_ScreenWidth:  s32
-var g_ScreenHeight: s32
-
-var g_Exit: bool
-var g_GrabDone: bool
-
+var g_StartGrabX:         f32
+var g_StartGrabY:         f32
+var g_EndGrabX:           f32
+var g_EndGrabY:           f32
+var g_ScreenWidth:        s32
+var g_ScreenHeight:       s32
+var g_Exit:               bool
+var g_GrabDone:           bool
 var g_DesktopTexture:     Texture
 var g_GrayDesktopTexture: Texture
 
@@ -35,6 +33,15 @@ func getGrabRect()->Math.Rectangle
     return result
 }
 
+func waitForCapture()->bool
+{
+    g_Exit     = false
+    g_GrabDone = false
+    while !g_Exit:
+        g_App.runFrame()
+    return g_GrabDone
+}
+
 func captureRect(main: *MainWnd)->#null *Capture throw
 {
     // Capture
@@ -43,17 +50,14 @@ func captureRect(main: *MainWnd)->#null *Capture throw
     g_App.disableHotKeys()
     defer g_App.enableHotKeys()
 
-    var img = getDesktopImage()
+    var img     = getDesktopImage()
     var imgBase = img
     g_DesktopTexture = g_App.renderer.addImage(img)
     defer g_App.renderer.removeTexture(&g_DesktopTexture)
 
-    g_Exit     = false
-    g_GrabDone = false
-
-    let sx = Env.getMetric(.DesktopX)
-    let sy = Env.getMetric(.DesktopY)
-    let sf  = catch g_App.createSurface(sx, sy, g_ScreenWidth, g_ScreenHeight, .Secondary | .TopMost | .NoShadow)
+    let sx         = Env.getMetric(.DesktopX)
+    let sy         = Env.getMetric(.DesktopY)
+    let sf         = catch g_App.createSurface(sx, sy, g_ScreenWidth, g_ScreenHeight, .Secondary | .TopMost | .NoShadow)
     let captureWnd = Wnd.create'CaptureRectWnd(sf.wnd)
     captureWnd.cursor = Cursor.from(CursorShape.Cross)
     captureWnd.setPosition(0, 0, sf.position.width, sf.position.height)
@@ -63,10 +67,7 @@ func captureRect(main: *MainWnd)->#null *Capture throw
     sf.show()
     sf.bringToTop()
 
-    while !g_Exit:
-        g_App.runFrame()
-
-    if !g_GrabDone
+    if !waitForCapture()
     {
         sf.destroy()
         return null
@@ -80,23 +81,18 @@ func captureRect(main: *MainWnd)->#null *Capture throw
     let hGrab    = Math.max(grabRect.height, 8)
     with let capture = Memory.new'Capture()
     {
-        .width = cast(s32) wGrab
-        .height = cast(s32) hGrab
-        .backImg = imgBase
+        .width          = cast(s32) wGrab
+        .height         = cast(s32) hGrab
+        .backImg        = imgBase
         .backImagePos.x = -grabRect.x
         .backImagePos.y = -grabRect.y
-        .inPlaceEdit = true
+        .inPlaceEdit    = true
     }
 
     let inPlaceMain = InPlaceEditWnd.create(capture, main, sf.wnd)
     sf.setView(inPlaceMain)
 
-    g_Exit = false
-    g_GrabDone = false
-    while !g_Exit:
-        g_App.runFrame()
-
-    if !g_GrabDone
+    if !waitForCapture()
     {
         sf.destroy()
         return null
@@ -154,7 +150,7 @@ func setGrabBounds(main: *MainWnd, captureMode: CaptureMode)->bool
         g_EndGrabY   = r.bottom()
 
     case .Screen0 to .Screen3:
-        let idx = cast(s32) captureMode - cast(s32) CaptureMode.Screen0
+        let idx  = cast(s32) captureMode - cast(s32) CaptureMode.Screen0
         let rect = main.monitors[idx].rectReal
         g_StartGrabX = rect.x
         g_StartGrabY = rect.y

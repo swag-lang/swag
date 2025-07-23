@@ -67,6 +67,10 @@ func getBackgroundWndRect()->Math.Rectangle
     let hit = GetForegroundWindow()
     if !hit:
         return {}
+
+    let awareness = SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE)
+    defer discard SetThreadDpiAwarenessContext(awareness)
+
     var r: RECT
     GetWindowRect(hit, &r)
     return Math.Rectangle{r.left, r.top, r.right - r.left, r.bottom - r.top}
