@@ -10,7 +10,6 @@ const CmdIdCaptureScreen2     = "CmdIdCaptureScreen2"
 const CmdIdCaptureScreen3     = "CmdIdCaptureScreen3"
 const CmdIdCaptureActiveWnd   = "CmdIdCaptureActiveWnd"
 const CmdIdCaptureHideEditor  = "CmdIdCaptureHideEditor"
-const CmdIdCaptureShowEditor  = "CmdIdCaptureShowEditor"
 const CmdIdCaptureToEditor    = "CmdIdCaptureToEditor"
 const CmdIdCaptureToClipboard = "CmdIdCaptureToClipboard"
 
@@ -21,7 +20,7 @@ impl IActionUI for ActionCapture
     {
         switch cxt.id
         {
-        case CmdIdCapture, CmdIdCaptureArea, CmdIdCaptureLastArea, CmdIdCaptureFullScreen, CmdIdCaptureScreen0, CmdIdCaptureScreen1, CmdIdCaptureScreen2, CmdIdCaptureScreen3, CmdIdCaptureActiveWnd, CmdIdCaptureHideEditor, CmdIdCaptureShowEditor, CmdIdCaptureToEditor, CmdIdCaptureToClipboard:
+        case CmdIdCapture, CmdIdCaptureArea, CmdIdCaptureLastArea, CmdIdCaptureFullScreen, CmdIdCaptureScreen0, CmdIdCaptureScreen1, CmdIdCaptureScreen2, CmdIdCaptureScreen3, CmdIdCaptureActiveWnd, CmdIdCaptureHideEditor, CmdIdCaptureToEditor, CmdIdCaptureToClipboard:
             return true
         }
 
@@ -76,11 +75,6 @@ impl IActionUI for ActionCapture
             evt.name     = "Hide Editor Before Capture"
             evt.checked  = g_CaptureOptions.hideEditorBefore
             evt.accepted = true
-        case CmdIdCaptureShowEditor:
-            evt.setFlags |= .Name | .Checked
-            evt.name     = "Show Editor After Capture"
-            evt.checked  = g_CaptureOptions.showEditorAfter
-            evt.accepted = true
         case CmdIdCaptureToEditor:
             evt.setFlags |= .Name | .Checked
             evt.name     = "Send Capture To Editor"
@@ -123,8 +117,6 @@ impl IActionUI for ActionCapture
 
         case CmdIdCaptureHideEditor:
             g_CaptureOptions.hideEditorBefore = !g_CaptureOptions.hideEditorBefore
-        case CmdIdCaptureShowEditor:
-            g_CaptureOptions.showEditorAfter = !g_CaptureOptions.showEditorAfter
         case CmdIdCaptureToEditor:
             g_CaptureOptions.sendToEditor = !g_CaptureOptions.sendToEditor
         case CmdIdCaptureToClipboard:
@@ -188,16 +180,16 @@ impl MainWnd
             Threading.Thread.sleep(g_CaptureOptions.delay * 1000)
 
         let capture = catch screenShot(mode)
-        if (capture != null and g_CaptureOptions.showEditorAfter) or !wasHidden
+        if !capture:
+            return
+
+        if g_CaptureOptions.sendToEditor or !wasHidden
         {
             if surface.isMinimized:
                 surface.showNormal()
             else:
                 surface.show()
         }
-
-        if capture == null:
-            return
 
         if g_CaptureOptions.sendToClipboard:
             Clipboard.addImage(capture.backImg)

@@ -488,7 +488,6 @@ impl MainWnd
 
             .addSeparator()
             .addItem(CmdIdCaptureHideEditor)
-            .addItem(CmdIdCaptureShowEditor)
 
             with let delayMenu = MenuCtrl.createPopup(captureMenu, owner: self)
             {

@@ -9,12 +9,9 @@ struct CaptureOptions
         #[Description("Temporarily hide the editor before starting the capture")]
         hideEditorBefore = true
 
-        #[Description("Reopen the editor after the capture is complete")]
-        showEditorAfter = true
-
         #[Description("Send the captured image to the editor")]
         sendToEditor = true
-    
+
         #[Description("Copy the captured image to the clipboard")]
         sendToClipboard = true
     }

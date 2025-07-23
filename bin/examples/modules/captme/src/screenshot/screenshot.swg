@@ -112,21 +112,24 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->#null *Capture throw
     g_ScreenWidth  = Env.getMetric(.DesktopWidth)
     g_ScreenHeight = Env.getMetric(.DesktopHeight)
 
+    var capture: *Capture
     if !setGrabBounds(main, captureMode):
-        return captureRect(main)
-
-    let grabRect = getGrabRect()
-    let wGrab    = Math.max(grabRect.width, 8)
-    let hGrab    = Math.max(grabRect.height, 8)
-
-    var img = getDesktopImage()
-    img.crop(cast(s32) grabRect.x, cast(s32) grabRect.y, cast(s32) wGrab, cast(s32) hGrab)
-
-    with let capture = Memory.new'Capture()
+        capture = captureRect(main)
+    else
     {
-        .width, .widthOrg = img.width
-        .height, .heightOrg = img.height
-        .backImg, .backImgOrg = img
+        let grabRect = getGrabRect()
+        let wGrab    = Math.max(grabRect.width, 8)
+        let hGrab    = Math.max(grabRect.height, 8)
+
+        var img = getDesktopImage()
+        img.crop(cast(s32) grabRect.x, cast(s32) grabRect.y, cast(s32) wGrab, cast(s32) hGrab)
+
+        with capture = Memory.new'Capture()
+        {
+            .width, .widthOrg = img.width
+            .height, .heightOrg = img.height
+            .backImg, .backImgOrg = img
+        }
     }
 
     return capture
