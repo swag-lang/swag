@@ -90,7 +90,6 @@ func captureRect(main: *MainWnd)->#null *Capture throw
 
     let inPlaceMain = InPlaceEditWnd.create(capture, main, sf.wnd)
     sf.setView(inPlaceMain)
-    captureWnd.destroy()
 
     g_Exit = false
     g_GrabDone = false
@@ -113,44 +112,14 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->#null *Capture throw
     g_ScreenWidth  = Env.getMetric(.DesktopWidth)
     g_ScreenHeight = Env.getMetric(.DesktopHeight)
 
-    if captureMode == .FullScreen
-    {
-        g_StartGrabX, g_StartGrabY = 0
-        g_EndGrabX = g_ScreenWidth
-        g_EndGrabY = g_ScreenHeight
-    }
-    elif captureMode == .ActiveWindow
-    {
-        let r = getBackgroundWndRect()
-        if r.isEmpty():
-            return null
-        g_StartGrabX = r.x
-        g_StartGrabY = r.y
-        g_EndGrabX   = r.right()
-        g_EndGrabY   = r.bottom()
-    }
-    elif captureMode >= .Screen0 and captureMode <= .Screen3
-    {
-        let idx = cast(s32) captureMode - cast(s32) CaptureMode.Screen0
-        g_StartGrabX = main.monitors[idx].rectReal.x
-        g_StartGrabY = main.monitors[idx].rectReal.y
-        g_EndGrabX   = g_StartGrabX + main.monitors[idx].rectReal.width
-        g_EndGrabY   = g_StartGrabY + main.monitors[idx].rectReal.height
-    }
-    elif captureMode == .LastArea and g_EndGrabX != g_StartGrabX and g_EndGrabY != g_StartGrabY
-    {
-    }
-    else
-    {
-        let capture = captureRect(main)
-        return capture
-    }
+    if !setGrabBounds(main, captureMode):
+        return captureRect(main)
 
-    // Grab
     let grabRect = getGrabRect()
     let wGrab    = Math.max(grabRect.width, 8)
     let hGrab    = Math.max(grabRect.height, 8)
-    var img      = getDesktopImage()
+
+    var img = getDesktopImage()
     img.crop(cast(s32) grabRect.x, cast(s32) grabRect.y, cast(s32) wGrab, cast(s32) hGrab)
 
     with let capture = Memory.new'Capture()
@@ -161,4 +130,41 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->#null *Capture throw
     }
 
     return capture
+}
+
+func setGrabBounds(main: *MainWnd, captureMode: CaptureMode)->bool
+{
+    switch captureMode
+    {
+    case .FullScreen:
+        g_StartGrabX, g_StartGrabY = 0
+        g_EndGrabX = g_ScreenWidth
+        g_EndGrabY = g_ScreenHeight
+
+    case .ActiveWindow:
+        let r = getBackgroundWndRect()
+        if r.isEmpty():
+            return false
+        g_StartGrabX = r.x
+        g_StartGrabY = r.y
+        g_EndGrabX   = r.right()
+        g_EndGrabY   = r.bottom()
+
+    case .Screen0 to .Screen3:
+        let idx = cast(s32) captureMode - cast(s32) CaptureMode.Screen0
+        let rect = main.monitors[idx].rectReal
+        g_StartGrabX = rect.x
+        g_StartGrabY = rect.y
+        g_EndGrabX   = rect.x + rect.width
+        g_EndGrabY   = rect.y + rect.height
+
+    case .LastArea:
+        if g_EndGrabX == g_StartGrabX or g_EndGrabY == g_StartGrabY:
+            return false
+
+    case .Area:
+        return false
+    }
+
+    return true
 }
