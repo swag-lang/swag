@@ -15,6 +15,7 @@ struct GizmoRect
     movingRect:            Math.Rectangle
     movingStart:           Math.Point
     sigChanged:            func||(*GizmoRect, bool, u32)
+    sigHasChanged:         func||()
 
     minSizeX:              f32 = 2
     minSizeY:              f32 = 2
@@ -50,6 +51,8 @@ impl GizmoRect
                     view.releaseMouse()
                     if !trackChange and sigChanged:
                         sigChanged(self, false, 0)
+                    if sigHasChanged:
+                        sigHasChanged()
                 }
 
                 return true

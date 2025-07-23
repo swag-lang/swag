@@ -29,30 +29,35 @@ impl InPlaceEditWnd
 
             .stackHorz         = StackLayoutCtrl.create(.editWnd.editView, .Right, {})
             .stackHorz.padding = 5
+        }
 
-            let btnCancel = PushButton.create(.stackHorz, "Cancel", {0, 0, 70})
-            btnCancel.sigPressed += func(btn)
-            {
-                g_Exit     = true
-                g_GrabDone = false
-            }
+        capture.gizmo.sigHasChanged = func|frame|()
+        {
+            frame.moveButtons()
+        }
 
-            let btnEdit = PushButton.create(.stackHorz, "Edit", {0, 0, 70})
-            btnEdit.sigPressed += func|frame|(btn)
-            {
-                frame.cropCapture()
-                g_Exit     = true
-                g_GrabDone = true
-            }
+        let btnCancel = PushButton.create(frame.stackHorz, "Cancel", {0, 0, 70})
+        btnCancel.sigPressed += func(btn)
+        {
+            g_Exit     = true
+            g_GrabDone = false
+        }
 
-            let btnCopy = PushButton.create(.stackHorz, "Copy", {0, 0, 70})
-            btnCopy.sigPressed += func|frame|(btn)
-            {
-                frame.cropCapture()
-                frame.capture.copyAll()
-                g_Exit     = true
-                g_GrabDone = false
-            }
+        let btnEdit = PushButton.create(frame.stackHorz, "Edit", {0, 0, 70})
+        btnEdit.sigPressed += func|frame|(btn)
+        {
+            frame.cropCapture()
+            g_Exit     = true
+            g_GrabDone = true
+        }
+
+        let btnCopy = PushButton.create(frame.stackHorz, "Copy", {0, 0, 70})
+        btnCopy.sigPressed += func|frame|(btn)
+        {
+            frame.cropCapture()
+            frame.capture.copyAll()
+            g_Exit     = true
+            g_GrabDone = false
         }
 
         frame.moveButtons()
@@ -89,7 +94,12 @@ impl InPlaceEditWnd
 
     mtd moveButtons()
     {
-        var rect = getGrabRect()
+        var rect: Math.Rectangle
+        rect.x      = -capture.backImagePos.x
+        rect.y      = -capture.backImagePos.y
+        rect.width  = capture.width
+        rect.height = capture.height
+
         const H = 40.0
 
         if rect.bottom() < g_ScreenHeight - H:
