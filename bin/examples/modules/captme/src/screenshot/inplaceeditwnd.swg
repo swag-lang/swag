@@ -5,6 +5,7 @@ struct InPlaceEditWnd
     using wnd:     Wnd
     editWnd:       *EditWnd
     stackHorz:     *StackLayoutCtrl
+    capture:       *Capture
 }
 
 impl InPlaceEditWnd
@@ -13,6 +14,7 @@ impl InPlaceEditWnd
     {
         with let frame = Wnd.create'InPlaceEditWnd(parent)
         {
+            .capture           = capture
             .editWnd           = EditWnd.create(main, frame)
             .editWnd.dockStyle = .Center
             with let view = frame.editWnd.editView
@@ -28,14 +30,14 @@ impl InPlaceEditWnd
             .stackHorz         = StackLayoutCtrl.create(.editWnd.editView, .Right, {})
             .stackHorz.padding = 5
 
-            let btnCancel = PushButton.create(.stackHorz, "Cancel", {0, 0, 80})
+            let btnCancel = PushButton.create(.stackHorz, "Cancel", {0, 0, 70})
             btnCancel.sigPressed += func(btn)
             {
                 g_Exit     = true
                 g_GrabDone = false
             }
 
-            let btnEdit = PushButton.create(.stackHorz, "Edit", {0, 0, 80})
+            let btnEdit = PushButton.create(.stackHorz, "Edit", {0, 0, 70})
             btnEdit.sigPressed += func|frame|(btn)
             {
                 frame.cropCapture()
@@ -43,11 +45,11 @@ impl InPlaceEditWnd
                 g_GrabDone = true
             }
 
-            let btnCopy = PushButton.create(.stackHorz, "Copy", {0, 0, 80})
+            let btnCopy = PushButton.create(.stackHorz, "Copy", {0, 0, 70})
             btnCopy.sigPressed += func|frame|(btn)
             {
                 frame.cropCapture()
-                Clipboard.addImage(frame.editWnd.editView.capture.backImg)
+                frame.capture.copyAll()
                 g_Exit     = true
                 g_GrabDone = false
             }
