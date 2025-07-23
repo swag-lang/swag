@@ -14,6 +14,9 @@ struct CaptureOptions
 
         #[Description("Copy the captured image to the clipboard")]
         sendToClipboard = true
+
+        #[Description("Edit captured area in place")]
+        inPlaceEdit = true
     }
 
     #[Description("Set the delay time, in seconds, before capturing"), Unit("s")]

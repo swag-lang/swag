@@ -503,6 +503,7 @@ impl MainWnd
             topMenu.addPopup("Capture", captureMenu)
 
             .addSeparator()
+            .addItem(CmdIdCaptureToInPlace)
             .addItem(CmdIdCaptureToEditor)
             .addItem(CmdIdCaptureToClipboard)
         }

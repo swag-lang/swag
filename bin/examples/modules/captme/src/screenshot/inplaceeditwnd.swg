@@ -46,7 +46,7 @@ impl InPlaceEditWnd
         let btnEdit = PushButton.create(frame.stackHorz, "Edit", {0, 0, 70})
         btnEdit.sigPressed += func|frame|(btn)
         {
-            frame.cropCapture()
+            InPlaceEditWnd.cropCapture(frame.capture)
             g_Exit     = true
             g_GrabDone = true
         }
@@ -54,7 +54,7 @@ impl InPlaceEditWnd
         let btnCopy = PushButton.create(frame.stackHorz, "Copy", {0, 0, 70})
         btnCopy.sigPressed += func|frame|(btn)
         {
-            frame.cropCapture()
+            InPlaceEditWnd.cropCapture(frame.capture)
             frame.capture.copyAll()
             g_Exit     = true
             g_GrabDone = false
@@ -65,10 +65,10 @@ impl InPlaceEditWnd
         return frame
     }
 
-    mtd cropCapture()
+    func cropCapture(capture: *Capture)
     {
         var grabRect: Math.Rectangle
-        with editWnd.editView.capture
+        with capture
         {
             grabRect.x      = -.backImagePos.x
             grabRect.y      = -.backImagePos.y

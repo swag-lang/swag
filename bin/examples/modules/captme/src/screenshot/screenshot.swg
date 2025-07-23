@@ -42,14 +42,14 @@ func waitForCapture()->bool
     return g_GrabDone
 }
 
-func performScreenCapture()->{img: Image, sf: *Surface} throw
+func performScreenCapture()->{ img: Image, sf: *Surface } throw
 {
     // Capture phase
     g_App.disableHotKeys()
     defer g_App.enableHotKeys()
 
     var result: retval
-    result.img = getDesktopImage()
+    result.img       = getDesktopImage()
     g_DesktopTexture = g_App.renderer.addImage(result.img)
     defer g_App.renderer.removeTexture(&g_DesktopTexture)
 
@@ -75,24 +75,28 @@ func performScreenCapture()->{img: Image, sf: *Surface} throw
     return result
 }
 
+// In place edition of capture image
 func performInPlaceEdit(img: Image, surface: *Surface, main: *MainWnd)->#null *Capture throw
 {
     if !surface:
         return null
 
-    // In place edition of capture image
     var grabRect = getGrabRect()
-    let wGrab = Math.max(grabRect.width, 8)
-    let hGrab = Math.max(grabRect.height, 8)
-
     with let capture = Memory.new'Capture()
     {
-        .width = cast(s32) wGrab
-        .height = cast(s32) hGrab
-        .backImg = img
+        .width          = cast(s32) grabRect.width
+        .height         = cast(s32) grabRect.height
+        .backImg        = img
         .backImagePos.x = -grabRect.x
         .backImagePos.y = -grabRect.y
-        .inPlaceEdit = true
+        .inPlaceEdit    = true
+    }
+
+    if !g_CaptureOptions.inPlaceEdit
+    {
+        InPlaceEditWnd.cropCapture(capture)
+        surface.destroy()
+        return capture
     }
 
     let inPlaceMain = InPlaceEditWnd.create(capture, main, surface.wnd)
@@ -113,34 +117,6 @@ func captureRect(main: *MainWnd)->#null *Capture throw
 {
     let (img, sf) = catch performScreenCapture()
     return catch performInPlaceEdit(img, sf, main)
-}
-
-func screenShot(main: *MainWnd, captureMode: CaptureMode)->#null *Capture throw
-{
-    g_ScreenWidth  = Env.getMetric(.DesktopWidth)
-    g_ScreenHeight = Env.getMetric(.DesktopHeight)
-
-    var capture: *Capture
-    if !setGrabBounds(main, captureMode):
-        capture = captureRect(main)
-    else
-    {
-        let grabRect = getGrabRect()
-        let wGrab    = Math.max(grabRect.width, 8)
-        let hGrab    = Math.max(grabRect.height, 8)
-
-        var img = getDesktopImage()
-        img.crop(cast(s32) grabRect.x, cast(s32) grabRect.y, cast(s32) wGrab, cast(s32) hGrab)
-
-        with capture = Memory.new'Capture()
-        {
-            .width, .widthOrg = img.width
-            .height, .heightOrg = img.height
-            .backImg, .backImgOrg = img
-        }
-    }
-
-    return capture
 }
 
 func setGrabBounds(main: *MainWnd, captureMode: CaptureMode)->bool
@@ -178,4 +154,57 @@ func setGrabBounds(main: *MainWnd, captureMode: CaptureMode)->bool
     }
 
     return true
+}
+
+func screenShot(main: *MainWnd, captureMode: CaptureMode) throw
+{
+    // Hide editor before capture
+    let surface   = main.surface
+    let wasHidden = surface.isHidden
+    if g_CaptureOptions.hideEditorBefore and !surface.isHidden and !surface.isMinimized:
+        surface.hide()
+
+    // Force a delay
+    if g_CaptureOptions.delay:
+        Threading.Thread.sleep(g_CaptureOptions.delay * 1000)
+
+    g_ScreenWidth  = Env.getMetric(.DesktopWidth)
+    g_ScreenHeight = Env.getMetric(.DesktopHeight)
+
+    // Capture
+    var capture: *Capture
+    if !setGrabBounds(main, captureMode):
+        capture = captureRect(main)
+    else
+    {
+        let grabRect = getGrabRect()
+        let wGrab    = Math.max(grabRect.width, 8)
+        let hGrab    = Math.max(grabRect.height, 8)
+
+        var img = getDesktopImage()
+        img.crop(cast(s32) grabRect.x, cast(s32) grabRect.y, cast(s32) wGrab, cast(s32) hGrab)
+
+        with capture = Memory.new'Capture()
+        {
+            .width, .widthOrg = img.width
+            .height, .heightOrg = img.height
+            .backImg, .backImgOrg = img
+        }
+
+        if g_CaptureOptions.sendToClipboard:
+            Clipboard.addImage(capture.backImg)
+        if !g_CaptureOptions.sendToEditor:
+            capture = null
+    }
+
+    if (capture or !wasHidden)
+    {
+        if surface.isMinimized:
+            surface.showNormal()
+        else:
+            surface.show()
+    }
+
+    if capture:
+        main.newCapture(capture.backImg, null, capture)
 }
