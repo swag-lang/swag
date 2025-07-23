@@ -4,9 +4,7 @@ struct InPlaceEditWnd
 {
     using wnd:  Wnd
     editWnd:    *EditWnd
-    copyBtn:    *IconButton
-    editBtn:    *IconButton
-    exitBtn:    *IconButton
+    stackHorz:  *StackLayoutCtrl
 }
 
 impl InPlaceEditWnd
@@ -17,21 +15,42 @@ impl InPlaceEditWnd
         {
             .editWnd = EditWnd.create(main, frame)
             .editWnd.dockStyle = .Center
-            .editWnd.editView.dockStyle = .Center
-            .editWnd.editView.viewMargin = 0
-            .editWnd.editView.setCapture(capture)
-            .editWnd.editView.setZoom(1)
-            .editWnd.editView.setFocus()
-            .editWnd.editView.inPlaceEdit = true
+            with let view = frame.editWnd.editView
+            {
+                .dockStyle = .Center
+                .viewMargin = 0
+                .setCapture(capture)
+                .setZoom(1)
+                .setFocus()
+                .inPlaceEdit = true
+            }
 
-            .editBtn = IconButton.create(.editWnd.editView, {}, {0, 0, 100, 20})
-            .editBtn.name ="Edit"
-            .editBtn.setForm(.Round)
-            .editBtn.sigPressed += func|frame|(btn)
+            .stackHorz = StackLayoutCtrl.create(.editWnd.editView, .Right, {})
+            .stackHorz.backgroundStyle = .Dialog
+            .stackHorz.padding         = 5
+
+            let btnCancel = PushButton.create(.stackHorz, "Cancel", {0, 0, 100})
+            btnCancel.sigPressed += func(btn)
+            {
+                g_Exit = true
+                g_GrabDone = false
+            }
+
+            let btnEdit = PushButton.create(.stackHorz, "Edit", {0, 0, 100})
+            btnEdit.sigPressed += func|frame|(btn)
             {
                 frame.cropCapture()
                 g_Exit = true
                 g_GrabDone = true
+            }
+
+            let btnCopy = PushButton.create(.stackHorz, "Copy", {0, 0, 100})
+            btnCopy.sigPressed += func|frame|(btn)
+            {
+                frame.cropCapture()
+                Clipboard.addImage(frame.editWnd.editView.capture.backImg)
+                g_Exit = true
+                g_GrabDone = false
             }
         }
 
@@ -70,8 +89,9 @@ impl InPlaceEditWnd
 
     mtd moveButtons()
     {
-        let rect = getGrabRect()
-        editBtn.setPosition(rect.right() - 100, rect.bottom() + 4, 100, 24)
+        var rect = getGrabRect()
+        rect.y += 4
+        stackHorz.setPosition(rect.x, rect.bottom(), rect.width, 40)
     }
 }
 

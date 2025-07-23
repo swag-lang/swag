@@ -180,16 +180,17 @@ impl MainWnd
             Threading.Thread.sleep(g_CaptureOptions.delay * 1000)
 
         let capture = catch screenShot(mode)
-        if !capture:
-            return
 
-        if g_CaptureOptions.sendToEditor or !wasHidden
+        if (capture and g_CaptureOptions.sendToEditor) or !wasHidden
         {
             if surface.isMinimized:
                 surface.showNormal()
             else:
                 surface.show()
         }
+
+        if !capture:
+            return
 
         if g_CaptureOptions.sendToClipboard:
             Clipboard.addImage(capture.backImg)

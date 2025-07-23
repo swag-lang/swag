@@ -42,65 +42,77 @@ func waitForCapture()->bool
     return g_GrabDone
 }
 
-func captureRect(main: *MainWnd)->#null *Capture throw
+func performScreenCapture()->{img: Image, sf: *Surface} throw
 {
-    // Capture
-    ////////////////////////////////
-
+    // Capture phase
     g_App.disableHotKeys()
     defer g_App.enableHotKeys()
 
-    var img     = getDesktopImage()
-    var imgBase = img
-    g_DesktopTexture = g_App.renderer.addImage(img)
+    var result: retval
+    result.img = getDesktopImage()
+    g_DesktopTexture = g_App.renderer.addImage(result.img)
     defer g_App.renderer.removeTexture(&g_DesktopTexture)
 
-    let sx         = Env.getMetric(.DesktopX)
-    let sy         = Env.getMetric(.DesktopY)
-    let sf         = catch g_App.createSurface(sx, sy, g_ScreenWidth, g_ScreenHeight, .Secondary | .TopMost | .NoShadow)
-    let captureWnd = Wnd.create'CaptureRectWnd(sf.wnd)
+    let sx = Env.getMetric(.DesktopX)
+    let sy = Env.getMetric(.DesktopY)
+
+    result.sf = catch g_App.createSurface(sx, sy, g_ScreenWidth, g_ScreenHeight, .Secondary | .TopMost | .NoShadow)
+    let captureWnd = Wnd.create'CaptureRectWnd(result.sf.wnd)
     captureWnd.cursor = Cursor.from(CursorShape.Cross)
-    captureWnd.setPosition(0, 0, sf.position.width, sf.position.height)
+    captureWnd.setPosition(0, 0, result.sf.position.width, result.sf.position.height)
     captureWnd.SetCapture()
 
-    sf.setView(captureWnd)
-    sf.show()
-    sf.bringToTop()
+    result.sf.setView(captureWnd)
+    result.sf.show()
+    result.sf.bringToTop()
 
     if !waitForCapture()
     {
-        sf.destroy()
-        return null
+        result.sf.destroy()
+        result.sf = null
     }
+
+    return result
+}
+
+func performInPlaceEdit(img: Image, surface: *Surface, main: *MainWnd)->#null *Capture throw
+{
+    if !surface:
+        return null
 
     // In place edition of capture image
-    ////////////////////////////////
-
     var grabRect = getGrabRect()
-    let wGrab    = Math.max(grabRect.width, 8)
-    let hGrab    = Math.max(grabRect.height, 8)
+    let wGrab = Math.max(grabRect.width, 8)
+    let hGrab = Math.max(grabRect.height, 8)
+
     with let capture = Memory.new'Capture()
     {
-        .width          = cast(s32) wGrab
-        .height         = cast(s32) hGrab
-        .backImg        = imgBase
+        .width = cast(s32) wGrab
+        .height = cast(s32) hGrab
+        .backImg = img
         .backImagePos.x = -grabRect.x
         .backImagePos.y = -grabRect.y
-        .inPlaceEdit    = true
+        .inPlaceEdit = true
     }
 
-    let inPlaceMain = InPlaceEditWnd.create(capture, main, sf.wnd)
-    sf.setView(inPlaceMain)
+    let inPlaceMain = InPlaceEditWnd.create(capture, main, surface.wnd)
+    surface.setView(inPlaceMain)
 
     if !waitForCapture()
     {
-        sf.destroy()
+        surface.destroy()
         return null
     }
 
     inPlaceMain.editWnd.editView.capture = null
-    sf.destroy()
+    surface.destroy()
     return capture
+}
+
+func captureRect(main: *MainWnd)->#null *Capture throw
+{
+    let (img, sf) = catch performScreenCapture()
+    return catch performInPlaceEdit(img, sf, main)
 }
 
 func screenShot(main: *MainWnd, captureMode: CaptureMode)->#null *Capture throw
