@@ -102,13 +102,26 @@ impl InPlaceEditWnd
         rect.height = capture.height
 
         const H = 40.0
+        const W = 250.0
+
+        var x = rect.x
+        var w = rect.width
+
+        if rect.width < W
+        {
+            x = rect.right() - W
+            w = rect.right() - x
+        }
+
+        x = Math.max(x, 20)
+        w = Math.max(w, W)
 
         if rect.bottom() < g_ScreenHeight - H:
-            stackHorz.setPosition(rect.x, rect.bottom(), rect.width, H)
+            stackHorz.setPosition(x, rect.bottom(), w, H)
         elif rect.y > H:
-            stackHorz.setPosition(rect.x, rect.y - H, rect.width, H)
+            stackHorz.setPosition(x, rect.y - H, w, H)
         else:
-            stackHorz.setPosition(rect.x, rect.bottom() - H, rect.width, H)
+            stackHorz.setPosition(x, rect.bottom() - H, w, H)
     }
 }
 
