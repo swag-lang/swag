@@ -87,6 +87,7 @@ impl InPlaceEditWnd
             .height, .heightOrg = cast(s32) .backImg.height
             .backImagePos = {}
 
+            .gizmo.sigHasChanged = null
             .inPlaceEdit  = false
             .dirtyBackImg = true
         }

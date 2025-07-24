@@ -121,6 +121,7 @@ impl EditView
             captureRect.y = rect.vertCenter() - captureRect.height * 0.5
         }
 
+        captureRect.round()
         return captureRect
     }
 

@@ -393,7 +393,7 @@ impl ColorPickerCtrl
             }
 
             .boxSize = 32
-            .sigChanged += func|picker|(pal) { picker.setColor(pal.selectedColor); }
+            .sigChanged += func|picker|(pal) { picker.setColorKeepAlpha(pal.selectedColor); }
         }
 
         return picker
@@ -431,6 +431,14 @@ impl ColorPickerCtrl
     mtd getColor()->Color
     {
         return color
+    }
+
+    // Set the selected color but does not change alpha
+    mtd setColorKeepAlpha(color: Color)
+    {
+        var col = #self.color
+        col.a = self.color.a
+        setColor(col)
     }
 
     // Set the selected color
