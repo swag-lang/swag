@@ -182,7 +182,7 @@ impl Image
 
     // Copy one pixel, depending on bpp
     #[Swag.Inline]
-    func(BPP: u8) copyPixel(pixDst, pixSrc: ^u8)
+    func(BPP: u8) copyPixelDirect(pixDst, pixSrc: ^u8)
     {
         #if BPP == 24
         {
@@ -199,8 +199,9 @@ impl Image
         }
     }
 
-    // Set pixel values depending on pixel format
-    func(PF: PixelFormat) setPixelRGBA8(pixDst: ^u8, r, g, b, _a: u8)
+    // Set pixel values at 'pixDst' depending on pixel format
+    // Destination is supped to be in RGBA8 format
+    func(PF: PixelFormat) convertToRGBA8(pixDst: ^u8, r, g, b, a: u8)
     {
         #if PF == .BGR8
         {
@@ -213,7 +214,7 @@ impl Image
             pixDst[0] = b
             pixDst[1] = g
             pixDst[2] = r
-            pixDst[3] = _a
+            pixDst[3] = a
         }
         #if PF == .RGB8
         {
@@ -226,40 +227,45 @@ impl Image
             pixDst[0] = r
             pixDst[1] = g
             pixDst[2] = b
-            pixDst[3] = _a
+            pixDst[3] = a
         }
     }
 
-    // Returns the color at the given coordinate
-    mtd const getPixelColor(pixX, pixY: s32)->Color
+    // Set pixel values depending on pixel format
+    #[Swag.Overload, Swag.Inline]
+    mtd(PF: PixelFormat) const getPixelColorDirect(pixX, pixY: s32)->Color
     {
         var result: retval
         let x       = Math.clamp(pixX, 0, width - 1)
         var y       = Math.clamp(pixY, 0, height - 1)
         y = height - y - 1
 
-        #[Swag.Complete]
-        switch pf
+        #if PF == .RGBA8
         {
-        case RGBA8:
             let pix = pixels.buffer + (x * 4) + (y * width * 4)
             result.r = pix[0]
             result.g = pix[1]
             result.b = pix[2]
             result.a = pix[3]
-        case RGB8:
+        }
+        #elif PF == .RGB8
+        {
             let pix = pixels.buffer + (x * 3) + (y * width * 3)
             result.r = pix[0]
             result.g = pix[1]
             result.b = pix[2]
             result.a = 255
-        case BGRA8:
+        }
+        #elif PF == .BGRA8
+        {
             let pix = pixels.buffer + (x * 4) + (y * width * 4)
             result.b = pix[0]
             result.g = pix[1]
             result.r = pix[2]
             result.a = pix[3]
-        case BGR8:
+        }
+        #elif PF == .BGR8
+        {
             let pix = pixels.buffer + (x * 3) + (y * width * 3)
             result.b = pix[0]
             result.g = pix[1]
@@ -268,5 +274,25 @@ impl Image
         }
 
         return result
+    }
+
+    // Returns the color at the given coordinate
+    #[Swag.Overload]
+    mtd const getPixelColor(pixX, pixY: s32)->Color
+    {
+        #[Swag.Complete]
+        switch pf
+        {
+        case RGBA8:
+            return getPixelColorDirect'RGBA8(pixX, pixY)
+        case RGB8:
+            return getPixelColorDirect'RGB8(pixX, pixY)
+        case BGRA8:
+            return getPixelColorDirect'BGRA8(pixX, pixY)
+        case BGR8:
+            return getPixelColorDirect'BGR8(pixX, pixY)
+        }
+
+        return {}
     }
 }

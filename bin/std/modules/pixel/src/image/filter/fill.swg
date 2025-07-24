@@ -15,7 +15,7 @@ impl Image
             var pix = pixels.buffer
             for x in width
             {
-                setPixelRGBA8'PF(pix, color.r, color.g, color.b, color.a)
+                convertToRGBA8'PF(pix, color.r, color.g, color.b, color.a)
                 pix += bpp8
             }
         }

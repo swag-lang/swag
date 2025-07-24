@@ -22,7 +22,7 @@ impl Image
                 var a       = 255'u8
                 if PF.bpp() == 32:
                     a = cast(u8) Math.lerp(cast(f32) color0.a, cast(f32) color1.a, factor0)
-                setPixelRGBA8'PF(pix, r, g, b, a)
+                convertToRGBA8'PF(pix, r, g, b, a)
                 pix += bpp8
             }
         }
@@ -65,7 +65,7 @@ impl Image
                 let colH1   = Color.getBlend(params.topLeft, params.topRight, factor0)
                 let colH0   = Color.getBlend(params.bottomLeft, params.bottomRight, factor0)
                 let col     = Color.getBlend(colH0, colH1, factor1)
-                setPixelRGBA8'PF(pix, col.r, col.g, col.b, col.a)
+                convertToRGBA8'PF(pix, col.r, col.g, col.b, col.a)
             }
         }
 

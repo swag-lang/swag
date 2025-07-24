@@ -33,7 +33,7 @@ impl Image
                    x >= params.x + srcImage.width or
                    ny >= params.y + srcImage.height
                 {
-                    copyPixel'BPP(pixDst, pix)
+                    copyPixelDirect'BPP(pixDst, pix)
                 }
                 else
                 {
@@ -46,7 +46,7 @@ impl Image
                     switch params.mode
                     {
                     case Copy:
-                        copyPixel'BPP(pixDst, pixSrc)
+                        copyPixelDirect'BPP(pixDst, pixSrc)
 
                     case AlphaBlend:
                         let bf = pixSrc[3] / 255.0

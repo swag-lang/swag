@@ -4,6 +4,7 @@
 #include "Semantic/Error/SemanticError.h"
 #include "Semantic/Semantic.h"
 #include "Semantic/Type/TypeManager.h"
+#include "Syntax/Ast.h"
 #include "Syntax/Naming.h"
 
 void SemanticError::ambiguousArguments(SemanticContext*, Diagnostic& err, VectorNative<OneMatch*>& matches)
@@ -105,8 +106,9 @@ bool SemanticError::ambiguousOverloadError(SemanticContext* context, AstNode* no
 
     Diagnostic err{node, node->token, formErr(Err0024, Naming::kindName(matches[0]->symbolOverload).cstr(), symbol->name.cstr())};
 
-    SetUtf8 here;
-    bool    first = true;
+    SetUtf8        here;
+    bool           first = true;
+    Set<TypeInfo*> doneGenerics;
     for (const auto match : matches)
     {
         const auto overload = match->symbolOverload;
@@ -114,7 +116,12 @@ bool SemanticError::ambiguousOverloadError(SemanticContext* context, AstNode* no
 
         if (overload->typeInfo->isFuncAttr() && overload->typeInfo->isFromGeneric())
         {
-            couldBe = formNte(Nte0072, overload->typeInfo->getDisplayNameC());
+            const auto nodeFunc = castAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
+            const auto typeGen = nodeFunc->originalGeneric->typeInfo;
+            if (doneGenerics.contains(typeGen))
+                continue;
+            doneGenerics.insert(typeGen);
+            couldBe = formNte(Nte0072, typeGen->getDisplayNameC());
         }
         else
         {

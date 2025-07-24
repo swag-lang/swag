@@ -339,7 +339,7 @@ impl Color
     }
 
     // Returns the distance between the other color
-    mtd getDistanceRgb(col: Color)->f32
+    mtd const getDistanceRgb(col: Color)->f32
     {
         let x1   = cast(f32) r - col.r
         let x2   = cast(f32) g - col.g
@@ -347,6 +347,13 @@ impl Color
         var dist = Math.sqrt((x1 * x1) + (x2 * x2) + (x3 * x3))
         dist /= 255 * 3
         return dist
+    }
+
+    // Returns the grayscale value
+    #[Inline]
+    mtd const getGrayScalef()->f32
+    {
+        return cast(f32) r * 0.299 + cast(f32) g * 0.587 + cast(f32) b * 0.114
     }
 }
 
