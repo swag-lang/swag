@@ -42,6 +42,3 @@ struct EditorOptions
     #[Opaque]
     editBackColor: Color = 0xFF2E2E2E
 }
-
-var g_CaptureOptions: CaptureOptions
-var g_EditorOptions: EditorOptions

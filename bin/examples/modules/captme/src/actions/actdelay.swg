@@ -23,11 +23,12 @@ impl IActionUI for ActionDelay
 
     mtd impl update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
+        let main = cast(*MainWnd) cxt.wnd
         switch cxt.id
         {
         case CmdIdCaptureDelay:
             evt.setFlags |= .Name
-            switch g_CaptureOptions.delay
+            switch main.captureOptions.delay
             {
             case 0:
                 evt.name = "Delay Before Capture"
@@ -45,27 +46,27 @@ impl IActionUI for ActionDelay
             evt.setFlags |= .Name | .Checked | .RenderingHint
             evt.renderingHint = .ExclusiveGroup
             evt.name    = "No Delay"
-            evt.checked = g_CaptureOptions.delay == 0
+            evt.checked = main.captureOptions.delay == 0
         case CmdIdCaptureDelay1:
             evt.setFlags |= .Name | .Checked | .RenderingHint
             evt.renderingHint = .ExclusiveGroup
             evt.name    = "1 second"
-            evt.checked = g_CaptureOptions.delay == 1
+            evt.checked = main.captureOptions.delay == 1
         case CmdIdCaptureDelay2:
             evt.setFlags |= .Name | .Checked | .RenderingHint
             evt.renderingHint = .ExclusiveGroup
             evt.name    = "2 seconds"
-            evt.checked = g_CaptureOptions.delay == 2
+            evt.checked = main.captureOptions.delay == 2
         case CmdIdCaptureDelay5:
             evt.setFlags |= .Name | .Checked | .RenderingHint
             evt.renderingHint = .ExclusiveGroup
             evt.name    = "5 seconds"
-            evt.checked = g_CaptureOptions.delay == 5
+            evt.checked = main.captureOptions.delay == 5
         case CmdIdCaptureDelay9:
             evt.setFlags |= .Name | .Checked | .RenderingHint
             evt.renderingHint = .ExclusiveGroup
             evt.name    = "9 seconds"
-            evt.checked = g_CaptureOptions.delay == 9
+            evt.checked = main.captureOptions.delay == 9
         }
 
         return true
@@ -73,18 +74,19 @@ impl IActionUI for ActionDelay
 
     mtd impl execute(cxt: ActionContext)->bool
     {
+        let main = cast(*MainWnd) cxt.wnd
         switch cxt.id
         {
         case CmdIdCaptureDelay0:
-            g_CaptureOptions.delay = 0
+            main.captureOptions.delay = 0
         case CmdIdCaptureDelay1:
-            g_CaptureOptions.delay = 1
+            main.captureOptions.delay = 1
         case CmdIdCaptureDelay2:
-            g_CaptureOptions.delay = 2
+            main.captureOptions.delay = 2
         case CmdIdCaptureDelay5:
-            g_CaptureOptions.delay = 5
+            main.captureOptions.delay = 5
         case CmdIdCaptureDelay9:
-            g_CaptureOptions.delay = 9
+            main.captureOptions.delay = 9
         }
 
         return true

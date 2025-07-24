@@ -77,22 +77,22 @@ impl IActionUI for ActionCapture
         case CmdIdCaptureHideEditor:
             evt.setFlags |= .Name | .Checked
             evt.name     = "Hide Editor Before Capture"
-            evt.checked  = g_CaptureOptions.hideEditorBefore
+            evt.checked  = main.captureOptions.hideEditorBefore
             evt.accepted = true
         case CmdIdCaptureToInPlace:
             evt.setFlags |= .Name | .Checked
             evt.name     = "Edit Captured Area In Place"
-            evt.checked  = g_CaptureOptions.inPlaceEdit
+            evt.checked  = main.captureOptions.inPlaceEdit
             evt.accepted = true
         case CmdIdCaptureToEditor:
             evt.setFlags |= .Name | .Checked
             evt.name     = "Send Capture To Editor"
-            evt.checked  = g_CaptureOptions.sendToEditor
+            evt.checked  = main.captureOptions.sendToEditor
             evt.accepted = true
         case CmdIdCaptureToClipboard:
             evt.setFlags |= .Name | .Checked
             evt.name     = "Send Capture To Clipboard"
-            evt.checked  = g_CaptureOptions.sendToClipboard
+            evt.checked  = main.captureOptions.sendToClipboard
             evt.accepted = true
         }
 
@@ -125,13 +125,13 @@ impl IActionUI for ActionCapture
             main.captureScreen(.Screen3)
 
         case CmdIdCaptureToInPlace:
-            g_CaptureOptions.inPlaceEdit = !g_CaptureOptions.inPlaceEdit
+            main.captureOptions.inPlaceEdit = !main.captureOptions.inPlaceEdit
         case CmdIdCaptureHideEditor:
-            g_CaptureOptions.hideEditorBefore = !g_CaptureOptions.hideEditorBefore
+            main.captureOptions.hideEditorBefore = !main.captureOptions.hideEditorBefore
         case CmdIdCaptureToEditor:
-            g_CaptureOptions.sendToEditor = !g_CaptureOptions.sendToEditor
+            main.captureOptions.sendToEditor = !main.captureOptions.sendToEditor
         case CmdIdCaptureToClipboard:
-            g_CaptureOptions.sendToClipboard = !g_CaptureOptions.sendToClipboard
+            main.captureOptions.sendToClipboard = !main.captureOptions.sendToClipboard
         }
 
         return true

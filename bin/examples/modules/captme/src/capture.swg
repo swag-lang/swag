@@ -183,7 +183,7 @@ impl Capture
         linkedUpToDate = false
         editView.invalidate()
         editView.main.captureHasChanged()
-        editView.main.recentWnd.updateRecent()
+        editView.main.updateRecent()
     }
 
     mtd save() throw

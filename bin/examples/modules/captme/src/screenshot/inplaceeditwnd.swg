@@ -12,11 +12,17 @@ impl InPlaceEditWnd
 {
     func create(capture: *Capture, main: *MainWnd, parent: *Wnd)->*InPlaceEditWnd
     {
+        // Generate a main window
+        let newMain = Wnd.create'MainWnd(main.parent, {})
+        newMain.inPlaceEdit = true
+
         with let frame = Wnd.create'InPlaceEditWnd(parent)
         {
             .capture           = capture
-            .editWnd           = EditWnd.create(main, frame)
+            .editWnd           = EditWnd.create(newMain, frame)
             .editWnd.dockStyle = .Center
+            newMain.editWnd    = .editWnd
+
             with let view = frame.editWnd.editView
             {
                 .dockStyle  = .Center
@@ -88,8 +94,10 @@ impl InPlaceEditWnd
             .backImagePos = {}
 
             .gizmo.sigHasChanged = null
-            .inPlaceEdit  = false
-            .dirtyBackImg = true
+            .inPlaceEdit         = false
+            .dirtyBackImg        = true
+
+            .selection.clear()
         }
     }
 

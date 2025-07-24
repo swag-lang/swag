@@ -29,6 +29,7 @@ struct MainWnd
 {
     using wnd:          Wnd
 
+    inPlaceEdit:        bool
     icons24:            ImageList
     icons48:            ImageList
     appIcon:            ImageList
@@ -58,6 +59,8 @@ struct MainWnd
     freezeSel:          bool
     libraryMode:        bool
     fileDlgState:       FileDlgState
+    captureOptions:     CaptureOptions
+    editorOptions:      EditorOptions
 
     mdlFormShape:       FormShape
     mdlFormImage:       FormImage
@@ -149,7 +152,7 @@ impl IWnd for MainWnd
         {
         case Close:
             evt.accepted = true
-            if g_EditorOptions.hideOnClose:
+            if editorOptions.hideOnClose:
                 surface.hide()
             else:
                 postCommandEvent(CmdIdExit)
@@ -180,6 +183,8 @@ impl IWnd for MainWnd
 
     mtd impl onSerializeStateEvent(evt: *SerializeStateEvent)
     {
+        if inPlaceEdit:
+            return
         catch
         {
             with evt.ser
@@ -190,8 +195,8 @@ impl IWnd for MainWnd
                 .serialize("MainWnd.fileDlgState", &fileDlgState)
                 .serialize("MainWnd.RightBar.Pane0", &quickStyleBar.items[0].size)
                 .serialize("MainWnd.RightBar.Pane1", &quickStyleBar.items[1].size)
-                .serialize("MainWnd.captureOptions", &g_CaptureOptions)
-                .serialize("MainWnd.editorOptions", &g_EditorOptions)
+                .serialize("MainWnd.captureOptions", &captureOptions)
+                .serialize("MainWnd.editorOptions", &editorOptions)
             }
         }
 
@@ -308,8 +313,10 @@ impl MainWnd
     mtd updateState()
     {
         updateCommandState()
-        propWnd.selectionHasChanged()
-        quickWnd.updateQuickStyles()
+        if propWnd:
+            propWnd.selectionHasChanged()
+        if quickWnd:
+            quickWnd.updateQuickStyles()
     }
 
     mtd captureHasChanged()
@@ -318,8 +325,15 @@ impl MainWnd
         if recentWnd
         {
             editToolBar.updateCommandState()
-            recentWnd.updateRecent()
+            updateRecent()
         }
+    }
+
+    mtd updateRecent()
+    {
+        if !recentWnd:
+            return
+        recentWnd.updateRecent()
     }
 
     mtd getCapture()->#null *Capture
@@ -625,7 +639,7 @@ impl MainWnd
 
         foreach c in icons
         {
-            if g_EditorOptions.showToolBarLabels
+            if editorOptions.showToolBarLabels
             {
                 c.iconBtnFlags.remove(.HideName)
                 c.position.width, c.position.height = 64
@@ -641,7 +655,7 @@ impl MainWnd
             }
         }
 
-        topBar.position.height = g_EditorOptions.showToolBarLabels ? 68 : 50
+        topBar.position.height = editorOptions.showToolBarLabels ? 68 : 50
         editWnd.sendResizeEvent()
         topBar.sendResizeEvent()
         editToolBar.sendResizeEvent()

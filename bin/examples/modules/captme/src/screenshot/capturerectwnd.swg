@@ -4,6 +4,7 @@ struct CaptureRectWnd
 {
     using wnd:        Wnd
 
+    main:             *MainWnd
     startGrab:        bool
     cancelGrag:       bool
     tryStartGrab:     bool
@@ -152,7 +153,7 @@ impl IWnd for CaptureRectWnd
         painter.drawRect(grabRect, Argb.White)
 
         // Rectangles
-        if g_CaptureOptions.drawCross and !autoGrab
+        if main.captureOptions.drawCross and !autoGrab
         {
             painter.drawLine(g_EndGrabX, 0, g_EndGrabX, cast() g_ScreenHeight, Argb.White)
             painter.drawLine(0, g_EndGrabY, cast() g_ScreenWidth, g_EndGrabY, Argb.White)

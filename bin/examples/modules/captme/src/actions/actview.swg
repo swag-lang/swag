@@ -18,12 +18,13 @@ impl IActionUI for ActionView
 
     mtd impl update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
+        let main = cast(*MainWnd) cxt.wnd
         switch cxt.id
         {
         case CmdIdViewClip:
             evt.setFlags |= .Name | .Disabled | .Checked
             evt.name     = "Hide Outside Box"
-            evt.checked  = g_EditorOptions.clipToSelection
+            evt.checked  = main.editorOptions.clipToSelection
         }
 
         return true
@@ -31,10 +32,11 @@ impl IActionUI for ActionView
 
     mtd impl execute(cxt: ActionContext)->bool
     {
+        let main = cast(*MainWnd) cxt.wnd
         switch cxt.id
         {
         case CmdIdViewClip:
-            g_EditorOptions.clipToSelection = !g_EditorOptions.clipToSelection
+            main.editorOptions.clipToSelection = !main.editorOptions.clipToSelection
         }
 
         return true

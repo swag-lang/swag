@@ -42,7 +42,7 @@ func waitForCapture()->bool
     return g_GrabDone
 }
 
-func performScreenCapture()->{ img: Image, sf: *Surface } throw
+func performScreenCapture(main: *MainWnd)->{ img: Image, sf: *Surface } throw
 {
     // Capture phase
     g_App.disableHotKeys()
@@ -56,8 +56,9 @@ func performScreenCapture()->{ img: Image, sf: *Surface } throw
     let sx = Env.getMetric(.DesktopX)
     let sy = Env.getMetric(.DesktopY)
 
-    result.sf = catch g_App.createSurface(sx, sy, g_ScreenWidth, g_ScreenHeight, .Secondary | .TopMost | .NoShadow)
+    result.sf = catch g_App.createSurface(sx, sy, g_ScreenWidth/2, g_ScreenHeight, .Secondary | .TopMost | .NoShadow)
     let captureWnd = Wnd.create'CaptureRectWnd(result.sf.wnd)
+    captureWnd.main = main
     captureWnd.cursor = Cursor.from(CursorShape.Cross)
     captureWnd.setPosition(0, 0, result.sf.position.width, result.sf.position.height)
     captureWnd.SetCapture()
@@ -92,7 +93,7 @@ func performInPlaceEdit(img: Image, surface: *Surface, main: *MainWnd)->#null *C
         .inPlaceEdit    = true
     }
 
-    if !g_CaptureOptions.inPlaceEdit
+    if !main.captureOptions.inPlaceEdit
     {
         InPlaceEditWnd.cropCapture(capture)
         surface.destroy()
@@ -115,7 +116,7 @@ func performInPlaceEdit(img: Image, surface: *Surface, main: *MainWnd)->#null *C
 
 func captureRect(main: *MainWnd)->#null *Capture throw
 {
-    let (img, sf) = catch performScreenCapture()
+    let (img, sf) = catch performScreenCapture(main)
     return catch performInPlaceEdit(img, sf, main)
 }
 
@@ -161,12 +162,12 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode) throw
     // Hide editor before capture
     let surface   = main.surface
     let wasHidden = surface.isHidden
-    if g_CaptureOptions.hideEditorBefore and !surface.isHidden and !surface.isMinimized:
+    if main.captureOptions.hideEditorBefore and !surface.isHidden and !surface.isMinimized:
         surface.hide()
 
     // Force a delay
-    if g_CaptureOptions.delay:
-        Threading.Thread.sleep(g_CaptureOptions.delay * 1000)
+    if main.captureOptions.delay:
+        Threading.Thread.sleep(main.captureOptions.delay * 1000)
 
     g_ScreenWidth  = Env.getMetric(.DesktopWidth)
     g_ScreenHeight = Env.getMetric(.DesktopHeight)
@@ -191,9 +192,9 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode) throw
             .backImg, .backImgOrg = img
         }
 
-        if g_CaptureOptions.sendToClipboard:
+        if main.captureOptions.sendToClipboard:
             Clipboard.addImage(capture.backImg)
-        if !g_CaptureOptions.sendToEditor:
+        if !main.captureOptions.sendToEditor:
             capture = null
     }
 
