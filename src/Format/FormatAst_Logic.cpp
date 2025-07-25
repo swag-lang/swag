@@ -95,7 +95,7 @@ bool FormatAst::outputVisit(FormatContext& context, AstNode* node)
         concat->addChar('>');
     }
 
-    if (visitNode->hasSpecFlag(AstVisit::SPEC_FLAG_BACK))
+    if (visitNode->hasSpecFlag(AstVisit::SPEC_FLAG_REVERSE))
     {
         concat->addBlank();
         concat->addString(g_LangSpec->name_sharp_reverse);

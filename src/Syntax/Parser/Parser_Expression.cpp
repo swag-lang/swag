@@ -717,8 +717,8 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
                     return error(tokenParse, formErr(Err0647, tokenParse.cstr(), forNode.cstr()));
             }
 
-            SWAG_VERIFY(!mdfFlags.has(MODIFIER_BACK), error(tokenParse, formErr(Err0057, tokenParse.cstr())));
-            mdfFlags.add(MODIFIER_BACK);
+            SWAG_VERIFY(!mdfFlags.has(MODIFIER_REVERSE), error(tokenParse, formErr(Err0057, tokenParse.cstr())));
+            mdfFlags.add(MODIFIER_REVERSE);
             SWAG_CHECK(eatToken());
             continue;
         }

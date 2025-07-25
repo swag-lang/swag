@@ -560,7 +560,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         auto child1      = Ast::newFuncCallParam(nullptr, callVisit->genericParameters);
         child1->typeInfo = g_TypeMgr->typeInfoBool;
         child1->setFlagsValueIsComputed();
-        child1->computedValue()->reg.b = node->hasSpecFlag(AstVisit::SPEC_FLAG_BACK);
+        child1->computedValue()->reg.b = node->hasSpecFlag(AstVisit::SPEC_FLAG_REVERSE);
         child1->addAstFlag(AST_NO_SEMANTIC);
 
         // Call with arguments
@@ -608,7 +608,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
     uint32_t id            = g_UniqueID.fetch_add(1);
 
     Utf8 visitBack;
-    if (node->hasSpecFlag(AstVisit::SPEC_FLAG_BACK))
+    if (node->hasSpecFlag(AstVisit::SPEC_FLAG_REVERSE))
         visitBack += g_LangSpec->name_sharp_reverse;
 
     // Multi dimensional array

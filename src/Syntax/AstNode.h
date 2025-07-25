@@ -927,7 +927,7 @@ struct AstLoop : AstBreakable
 struct AstVisit : AstNode
 {
     static constexpr SpecFlags SPEC_FLAG_WANT_POINTER = 0x0001;
-    static constexpr SpecFlags SPEC_FLAG_BACK         = 0x0002;
+    static constexpr SpecFlags SPEC_FLAG_REVERSE         = 0x0002;
 
     AstNode* clone(CloneContext& context);
 

@@ -396,8 +396,8 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
     // Reverse loop
     ModifierFlags mdfFlags = 0;
     SWAG_CHECK(doModifiers(node->token, node->token.id, mdfFlags, node));
-    if (mdfFlags.has(MODIFIER_BACK))
-        node->addSpecFlag(AstVisit::SPEC_FLAG_BACK);
+    if (mdfFlags.has(MODIFIER_REVERSE))
+        node->addSpecFlag(AstVisit::SPEC_FLAG_REVERSE);
 
     if (tokenParse.is(TokenId::SymAmpersand))
     {
@@ -479,7 +479,7 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
     // Reverse loop
     ModifierFlags mdfFlags = 0;
     SWAG_CHECK(doModifiers(node->token, node->token.id, mdfFlags));
-    if (mdfFlags.has(MODIFIER_BACK))
+    if (mdfFlags.has(MODIFIER_REVERSE))
         node->addSpecFlag(AstLoop::SPEC_FLAG_BACK);
 
     Utf8  name;

@@ -57,7 +57,7 @@ constexpr ModifierFlags MODIFIER_NO_LEFT_DROP = 0x00000004;
 constexpr ModifierFlags MODIFIER_MOVE         = 0x00000008;
 constexpr ModifierFlags MODIFIER_MOVE_RAW     = 0x00000010;
 constexpr ModifierFlags MODIFIER_UN_CONST     = 0x00000020;
-constexpr ModifierFlags MODIFIER_BACK         = 0x00000040;
+constexpr ModifierFlags MODIFIER_REVERSE      = 0x00000040;
 constexpr ModifierFlags MODIFIER_REF          = 0x00000080;
 constexpr ModifierFlags MODIFIER_CONST_REF    = 0x00000100;
 
