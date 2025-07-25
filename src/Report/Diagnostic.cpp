@@ -61,8 +61,8 @@ namespace
 
     void addArticle(Utf8& replace, const Utf8& verb, const Utf8& a, const Utf8& an)
     {
-        replace.replace(form("%s $$A$$ ", verb.cstr()), form(" %s %s ", verb.cstr(), a.cstr()));
-        replace.replace(form("%s $$AN$$ ", verb.cstr()), form(" %s %s ", verb.cstr(), an.cstr()));
+        replace.replace(form("%s $$A$$ ", verb.cstr()), form("%s %s ", verb.cstr(), a.cstr()));
+        replace.replace(form("%s $$AN$$ ", verb.cstr()), form("%s %s ", verb.cstr(), an.cstr()));
     }
 }
 
