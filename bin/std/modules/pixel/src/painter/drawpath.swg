@@ -696,7 +696,7 @@ impl Painter
             let endPoint = path.polygon.getPoint(pointCount - 1, offsetPath)
             var lastPoint = endPoint
 
-            for #back i in 0 to pointCount - 2
+            for #reverse i in 0 to pointCount - 2
             {
                 let currentPoint = path.polygon.getPoint(i, offsetPath)
                 let segmentVec = lastPoint - currentPoint

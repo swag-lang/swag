@@ -433,7 +433,7 @@ impl Undo
         case MoveToFront:
             capture.hotForm = Swag.U64.Max
             var dstIdx = cast(s32) (capture.forms.count - 1)
-            for #back i in selection
+            for #reverse i in selection
             {
                 let srcIdx = selection[i]
                 if srcIdx != dstIdx
@@ -468,7 +468,7 @@ impl Undo
 
         case MoveForward:
             capture.hotForm = Swag.U64.Max
-            for #back i in selection
+            for #reverse i in selection
             {
                 let srcIdx = selection[i]
                 if srcIdx != capture.forms.count - 1

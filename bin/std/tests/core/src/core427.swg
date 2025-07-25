@@ -4,7 +4,7 @@ using Core
 {
     var x:  Array's32 = [1, 2, 3, 4]
     var cpt = 0
-    foreach #back v in x
+    foreach #reverse v in x
     {
         if cpt == 0:
             @assert(v == 4)

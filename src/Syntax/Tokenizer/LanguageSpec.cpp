@@ -163,7 +163,7 @@ void LanguageSpec::setupNames()
     name_sharp_nodrop   = "#nodrop";
     name_sharp_move     = "#move";
     name_sharp_moveraw  = "#moveraw";
-    name_sharp_back     = "#back";
+    name_sharp_reverse  = "#reverse";
     name_sharp_ref      = "#ref";
     name_sharp_constref = "#constref";
 
@@ -393,7 +393,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("#nodrop", TokenId::ModifierNoDrop);
     keywords.add("#move", TokenId::ModifierMove);
     keywords.add("#moveraw", TokenId::ModifierMoveRaw);
-    keywords.add("#back", TokenId::ModifierBack);
+    keywords.add("#reverse", TokenId::ModifierReverse);
     keywords.add("#ref", TokenId::ModifierRef);
     keywords.add("#constref", TokenId::ModifierConstRef);
     keywords.add("#null", TokenId::ModifierNullable);

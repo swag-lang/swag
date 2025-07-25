@@ -89,7 +89,7 @@ internal impl FileDlg
         comboPathStr.clear()
 
         var all = Tokenize.split(curFolder.toString(), '/''rune)
-        for #back i in all
+        for #reverse i in all
         {
             var str: String
             for j in i + 1

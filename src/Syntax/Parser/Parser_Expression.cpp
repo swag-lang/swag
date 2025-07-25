@@ -706,7 +706,7 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
             continue;
         }
 
-        if (tokenParse.is(TokenId::ModifierBack))
+        if (tokenParse.is(TokenId::ModifierReverse))
         {
             switch (opId)
             {

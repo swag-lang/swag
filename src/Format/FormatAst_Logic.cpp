@@ -63,7 +63,7 @@ bool FormatAst::outputLoop(FormatContext& context, AstNode* node)
     if (loopNode->hasSpecFlag(AstLoop::SPEC_FLAG_BACK))
     {
         concat->addBlank();
-        concat->addString(g_LangSpec->name_sharp_back);
+        concat->addString(g_LangSpec->name_sharp_reverse);
     }
 
     if (loopNode->specificName)
@@ -98,7 +98,7 @@ bool FormatAst::outputVisit(FormatContext& context, AstNode* node)
     if (visitNode->hasSpecFlag(AstVisit::SPEC_FLAG_BACK))
     {
         concat->addBlank();
-        concat->addString(g_LangSpec->name_sharp_back);
+        concat->addString(g_LangSpec->name_sharp_reverse);
     }
 
     concat->addBlank();

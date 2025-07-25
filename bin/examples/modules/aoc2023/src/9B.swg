@@ -57,7 +57,7 @@ func day9B()
         }
 
         var prev: s64
-        foreach #back c in column
+        foreach #reverse c in column
         {
             let c1 = c - prev
             prev = c1

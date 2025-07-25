@@ -79,14 +79,14 @@ The `for` construct is versatile and can iterate over any collection type that s
 
 /**
 # Reverse Looping
-To iterate in reverse order, append the `#back` modifier to the `for` statement.
+To iterate in reverse order, append the `#reverse` modifier to the `for` statement.
 */
 #test
 {
     var cpt = 0
 
     // Loop in reverse order, starting from index 2 down to 0
-    for #back 3
+    for #reverse 3
     {
         if cpt == 0:
             @assert(@index == 2)     // First iteration, index should be 2
@@ -181,19 +181,19 @@ The `until` keyword enables iteration up to, but not including, the end value.
 
 /**
 # Reverse Range Looping
-When using ranges, you can also iterate in reverse order by adding the `#back` modifier after the for statement.
+When using ranges, you can also iterate in reverse order by adding the `#reverse` modifier after the for statement.
 */
 #test
 {
-    for #back 0 to 5                // Loop from 5 down to 0, inclusive
+    for #reverse 0 to 5                // Loop from 5 down to 0, inclusive
     {
     }
 
-    for #back -1 to 1               // Loop from 1 down to -1, inclusive
+    for #reverse -1 to 1               // Loop from 1 down to -1, inclusive
     {
     }
 
-    for #back -2 until 2            // Loop from 1 down to -2, excluding 2
+    for #reverse -2 until 2            // Loop from 1 down to -2, excluding 2
     {
     }
 }
@@ -303,7 +303,7 @@ The `where` clause can also be applied to loops over ranges, providing precise c
 
 /**
 # Combining `back` and `where`
-You can combine the `#back` modifier with the `where` clause to filter values while iterating in reverse order.
+You can combine the `#reverse` modifier with the `where` clause to filter values while iterating in reverse order.
 */
 #test
 {
@@ -311,7 +311,7 @@ You can combine the `#back` modifier with the `where` clause to filter values wh
     var reversedSum = 0
 
     // Loop through the array in reverse order, summing only even values.
-    for #back i in arr where arr[i] % 2 == 0
+    for #reverse i in arr where arr[i] % 2 == 0
     {
         reversedSum += arr[i]         // Add the even values to 'reversedSum'
     }

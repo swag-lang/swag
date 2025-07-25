@@ -609,7 +609,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
 
     Utf8 visitBack;
     if (node->hasSpecFlag(AstVisit::SPEC_FLAG_BACK))
-        visitBack += g_LangSpec->name_sharp_back;
+        visitBack += g_LangSpec->name_sharp_reverse;
 
     // Multi dimensional array
     if (typeInfo->isArray() && castTypeInfo<TypeInfoArray>(typeInfo)->pointedType->isArray())

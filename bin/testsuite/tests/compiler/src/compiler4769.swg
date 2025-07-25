@@ -1,7 +1,7 @@
 func toto(slice: const [..] s32)
 {
     var cpt = 0
-    foreach #back v in slice
+    foreach #reverse v in slice
     {
         if cpt == 0: @assert(v == 3)
         if cpt == 1: @assert(v == 2)

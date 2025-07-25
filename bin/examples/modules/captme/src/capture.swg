@@ -1250,7 +1250,7 @@ impl Capture
         var result: retval
         if !forms.count:
             return result
-        for #back i in forms
+        for #reverse i in forms
         {
             let f = forms[i]
             if !f.hitTest(localPos, editView.zoom):

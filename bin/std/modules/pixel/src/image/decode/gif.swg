@@ -383,7 +383,7 @@ impl Decoder
 
         if pf.hasAlpha()
         {
-            for #back j in 0 until fh
+            for #reverse j in 0 until fh
             {
                 for k in cast(u32) fw
                 {
@@ -401,7 +401,7 @@ impl Decoder
         }
         else
         {
-            for #back j in 0 until fh
+            for #reverse j in 0 until fh
             {
                 for k in fw
                 {

@@ -191,7 +191,7 @@ struct LanguageSpec
     Utf8 name_sharp_nodrop;
     Utf8 name_sharp_move;
     Utf8 name_sharp_moveraw;
-    Utf8 name_sharp_back;
+    Utf8 name_sharp_reverse;
     Utf8 name_sharp_ref;
     Utf8 name_sharp_constref;
 

@@ -28,7 +28,7 @@ using Core
     @assert(cpt == 5)
 
     cpt = 0
-    foreach #back v in list
+    foreach #reverse v in list
     {
         cpt += 1
         continue

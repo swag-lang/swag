@@ -72,8 +72,8 @@ the default aliases `#alias0` for the value and `#alias1` for the index can be u
 }
 
 /**
-# Reverse Order with `#back`
-To iterate over elements in reverse order, use the `#back` modifier. This is particularly useful
+# Reverse Order with `#reverse`
+To iterate over elements in reverse order, use the `#reverse` modifier. This is particularly useful
 when processing a collection from the last element to the first.
 */
 
@@ -81,7 +81,7 @@ when processing a collection from the last element to the first.
 {
     // Visiting each byte in the string "ABC" in reverse order.
     var cpt = 0
-    foreach #back value in "ABC"
+    foreach #reverse value in "ABC"
     {
         // '@index' still stores the loop index, even in reverse order.
         switch cpt

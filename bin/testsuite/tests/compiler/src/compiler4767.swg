@@ -1,6 +1,6 @@
 #test
 {
-    for #back 0
+    for #reverse 0
     {
         @assert(false)
     }
