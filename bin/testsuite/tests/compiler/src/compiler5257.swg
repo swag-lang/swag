@@ -11,7 +11,7 @@ impl A {
 #test
 {
     var x: A
-    foreach<01> x
+    foreach'01 x
     {
     }
 }

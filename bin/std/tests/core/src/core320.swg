@@ -3,7 +3,7 @@ using Core
 #test
 {
     var s: String = "あえ"
-    foreach<Runes> c, i in s
+    foreach'Runes c, i in s
     {
         switch i
         {

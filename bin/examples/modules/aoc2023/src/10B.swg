@@ -125,7 +125,7 @@ func day10B()
     var startX, startY: s64
     foreach l, line in lines
     {
-        foreach<Bytes> c, col in l
+        foreach'Bytes c, col in l
         {
             let one = #ref mp(cast(s64) col, cast(s64) line)
             switch c
@@ -190,7 +190,7 @@ func day10B()
     var total: u64
     foreach l, line in lines
     {
-        foreach<Bytes> c, col in l
+        foreach'Bytes c, col in l
         {
             let one = mp(cast(s64) col, cast(s64) line)
             if one & .Edge:

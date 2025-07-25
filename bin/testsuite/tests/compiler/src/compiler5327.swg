@@ -26,7 +26,7 @@ impl S
     {
     }
 
-    foreach<Bytes> #reverse c in s
+    foreach'Bytes #reverse c in s
     {
     }
 }

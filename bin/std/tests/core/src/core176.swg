@@ -5,7 +5,7 @@ using Core
 {
     var str: String = "toto"
     var cpt  = 0
-    foreach<Runes> str
+    foreach'Runes str
     {
         cpt += 1
     }
