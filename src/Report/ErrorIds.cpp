@@ -376,7 +376,7 @@ void initErrors()
     SWAG_ERROR(Err0226, "invalid pointer arithmetic                        $ cannot perform pointer arithmetic on a pointer to [[void]]                                                                               $ [[void]] does not have a valid size");
     SWAG_ERROR(Err0227, "invalid pointer arithmetic                        $ cannot perform pointer arithmetic with a non-integer type [[%s]]                                                                         $ ");
     SWAG_ERROR(Err0228, "invalid pointer arithmetic                        $ cannot perform pointer slicing                                                                                                           $ ");
-    SWAG_ERROR(Err0229, "invalid range                                     $ cannot have a lower bound [[%lld]] greater than the upper bound [[%lld]]                                                                 $ you can loop in reverse order with the [[for #reverse]] syntax");
+    SWAG_ERROR(Err0229, "invalid range                                     $ cannot have a lower bound [[%lld]] greater than the upper bound [[%lld]]                                                                 $ you can loop in reverse order with the [[#reverse]] modifier");
     SWAG_ERROR(Err0230, "invalid range type                                $ cannot use the type [[%s]] in a range expression                                                                                         $ expected an integer, a rune or a float value");
     SWAG_ERROR(Err0231, "invalid reference                                 $ expected a pointer type or a reference as the [[ref]] expression, found type [[%s]] instead                                              $ ");
     SWAG_ERROR(Err0232, "invalid return type                               $ cannot use [[void]] as a function return type                                                                                            $ consider removing the return type if you want the function to return nothing");
@@ -1149,7 +1149,7 @@ void initErrors()
     SWAG_ERROR(Nte0208, "this should be a function call or an affectation");
     SWAG_ERROR(Nte0209, "this should be associated with a [[%s]]");
     SWAG_ERROR(Nte0210, "this should be followed by an affectation or by arguments");
-    SWAG_ERROR(Nte0211, "this should be less than this");
+    SWAG_ERROR(Nte0211, "this should be greater than [[%lld]]");
     SWAG_ERROR(Nte0212, "this slice appears to be null or empty");
     SWAG_ERROR(Nte0213, "this string appears to be null or empty");
     SWAG_ERROR(Nte0214, "this suffix forces the literal to be converted to [[%s]]");

@@ -452,7 +452,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
         if (node->lowerBound->computedValue()->reg.u64 > node->upperBound->computedValue()->reg.u64)
         {
             Diagnostic err{node->lowerBound, formErr(Err0503, node->lowerBound->computedValue()->reg.u64, node->upperBound->computedValue()->reg.u64)};
-            err.addNote(node->upperBound, toNte(Nte0211));
+            err.addNote(node->upperBound, formNte(Nte0211, node->lowerBound->computedValue()->reg.u64));
             return context->report(err);
         }
     }
