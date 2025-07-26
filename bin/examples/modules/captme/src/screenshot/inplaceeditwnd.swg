@@ -1,11 +1,27 @@
 using Core, Win32, Gdi32, Pixel
 
+enum InPlaceEditMode
+{
+    Draw
+    Line
+    Circle
+    Rect
+    Arrow
+    Text
+    Marker
+}
+
 struct InPlaceEditWnd
 {
-    using wnd:     Wnd
-    editWnd:       *EditWnd
-    stackHorz:     *IconBar
-    capture:       *Capture
+    using wnd:            Wnd
+    editWnd:              *EditWnd
+    actionBar:            *IconBar
+    editBar:              *IconBar
+    capture:              *Capture
+    newMain:              *MainWnd
+    editMode:             InPlaceEditMode = .Arrow
+    editColor:            Color = Argb.Red
+    editColorHilight:     Color = Argb.Yellow
 }
 
 impl InPlaceEditWnd
@@ -13,7 +29,7 @@ impl InPlaceEditWnd
     func create(capture: *Capture, main: *MainWnd, parent: *Wnd)->*InPlaceEditWnd
     {
         // Generate a main window
-        let theme = main.getTheme()
+        let theme   = main.getTheme()
         let newMain = Wnd.create'MainWnd(main.parent, {})
         newMain.inPlaceEdit = true
 
@@ -22,6 +38,7 @@ impl InPlaceEditWnd
             .capture           = capture
             .editWnd           = EditWnd.create(newMain, frame)
             .editWnd.dockStyle = .Center
+            .newMain           = newMain
             newMain.editWnd    = .editWnd
 
             with let view = frame.editWnd.editView
@@ -34,11 +51,11 @@ impl InPlaceEditWnd
                 .inPlaceEdit = true
             }
 
-            .stackHorz         = IconBar.create(.editWnd.editView, 24, {})
-            .stackHorz.addItem(theme.getIcon24(ThemeIcons24.Copy), "copy")
-            .stackHorz.addItem(theme.getIcon24(ThemeIcons24.Edit), "edit")
-            .stackHorz.addItem(theme.getIcon24(ThemeIcons24.WndClose), "close")
-            .stackHorz.sigPressed += func|frame|(btn)
+            .actionBar = IconBar.create(.editWnd.editView, 24, {})
+            .actionBar.addItem(theme.getIcon24(ThemeIcons24.Copy), "copy")
+            .actionBar.addItem(theme.getIcon24(ThemeIcons24.Edit), "edit")
+            .actionBar.addItem(theme.getIcon24(ThemeIcons24.WndClose), "close")
+            .actionBar.sigPressed += func|frame|(btn)
             {
                 switch btn.id
                 {
@@ -57,7 +74,38 @@ impl InPlaceEditWnd
                 }
             }
 
-            .stackHorz.padding = 5
+            .editBar = IconBar.create(.editWnd.editView, 24, {})
+            .editBar.addCheckableItem(Icon.from(&main.icons48, 7), "draw")
+            .editBar.addCheckableItem(Icon.from(&main.icons48, 1), "line")
+            .editBar.addCheckableItem(Icon.from(&main.icons48, 19), "circle")
+            .editBar.addCheckableItem(Icon.from(&main.icons48, 20), "rect")
+            .editBar.addCheckableItem(Icon.from(&main.icons48, 3), "arrow")
+            .editBar.addCheckableItem(Icon.from(&main.icons48, 4), "text")
+            .editBar.addCheckableItem(Icon.from(&main.icons48, 9), "marker")
+            .editBar.setIconBarFlags(.Vertical)
+            .editBar.sigCheckChanged += func|frame|(btn)
+            {
+                switch btn.id
+                {
+                case "draw":
+                    frame.editMode = .Draw
+                case "line":
+                    frame.editMode = .Line
+                case "circle":
+                    frame.editMode = .Circle
+                case "rect":
+                    frame.editMode = .Rect
+                case "arrow":
+                    frame.editMode = .Arrow
+                case "text":
+                    frame.editMode = .Text
+                case "marker":
+                    frame.editMode = .Marker
+                }
+                frame.updateEditMode()
+            }
+
+            .actionBar.padding = 5
         }
 
         capture.gizmo.sigHasChanged = func|frame|()
@@ -66,6 +114,8 @@ impl InPlaceEditWnd
         }
 
         frame.moveButtons()
+        frame.updateEditMode()
+
         return frame
     }
 
@@ -99,6 +149,67 @@ impl InPlaceEditWnd
         }
     }
 
+    mtd updateEditMode()
+    {
+        var btn: *IconButton
+        btn = assume editBar.getButton("draw")
+        btn.setCheck(editMode == .Draw)
+        btn = assume editBar.getButton("line")
+        btn.setCheck(editMode == .Line)
+        btn = assume editBar.getButton("circle")
+        btn.setCheck(editMode == .Circle)
+        btn = assume editBar.getButton("rect")
+        btn.setCheck(editMode == .Rect)
+        btn = assume editBar.getButton("arrow")
+        btn.setCheck(editMode == .Arrow)
+        btn = assume editBar.getButton("text")
+        btn.setCheck(editMode == .Text)
+        btn = assume editBar.getButton("marker")
+        btn.setCheck(editMode == .Marker)
+
+        with newMain
+        {
+            switch editMode
+            {
+            case Draw:
+                .editMode                = .Draw
+                .mdlFormDraw.borderSize  = 8
+                .mdlFormDraw.borderColor = editColor
+            case Line:
+                .editMode                = .Line
+                .mdlFormLine.borderSize  = 8
+                .mdlFormLine.borderColor = editColor
+            case Circle:
+                .editMode                 = .Shape
+                .mdlFormShape.kind        = .Ellipse
+                .mdlFormShape.borderSize  = 8
+                .mdlFormShape.borderColor = editColor
+                .mdlFormShape.backColor   = 0
+            case Rect:
+                .editMode                 = .Shape
+                .mdlFormShape.kind        = .RoundRectangle
+                .mdlFormShape.borderSize  = 8
+                .mdlFormShape.borderColor = editColor
+                .mdlFormShape.backColor   = 0
+            case Arrow:
+                .editMode                 = .Arrow
+                .mdlFormArrow.borderSize  = 8
+                .mdlFormArrow.endSize     = 5
+                .mdlFormArrow.endCap      = .ArrowAnchor
+                .mdlFormArrow.borderColor = editColor
+            case Text:
+                .editMode             = .Text
+                .mdlFormText.fontSize = 48
+                .mdlFormText.text     = "A"
+            case Marker:
+                .editMode                  = .Draw
+                .mdlFormDraw.borderSize    = 30
+                .mdlFormDraw.borderColor   = editColorHilight
+                .mdlFormDraw.borderColor.a = 160
+            }
+        }
+    }
+
     mtd moveButtons()
     {
         var rect: Math.Rectangle
@@ -107,16 +218,30 @@ impl InPlaceEditWnd
         rect.width  = capture.width
         rect.height = capture.height
 
-        const H = 40.0
-        const W = 100.0
+        {
+            const H = 40.0
+            const W = 3 * 40.0
 
-        let x = Math.max(10, rect.right() - W)
-        if rect.bottom() < g_ScreenHeight - H:
-            stackHorz.setPosition(x, rect.bottom(), W, H)
-        elif rect.y > H:
-            stackHorz.setPosition(x, rect.y - H, W, H)
-        else:
-            stackHorz.setPosition(x, rect.bottom() - H, W, H)
+            let x = Math.max(10, rect.right() - W)
+            if rect.bottom() < g_ScreenHeight - H:
+                actionBar.setPosition(x, rect.bottom(), W, H)
+            elif rect.y > H:
+                actionBar.setPosition(x, rect.y - H, W, H)
+            else:
+                actionBar.setPosition(x, rect.bottom() - H, W, H)
+        }
+
+        {
+            const H = 7 * 40.0
+            const W = 40.0
+
+            if rect.right() < g_ScreenWidth - W:
+                editBar.setPosition(rect.right(), rect.bottom() - H, W, H)
+            elif rect.x > W:
+                editBar.setPosition(rect.x - W, rect.bottom() - H, W, H)
+            else:
+                editBar.setPosition(rect.right() - W, rect.bottom() - H, W, H)
+        }
     }
 }
 

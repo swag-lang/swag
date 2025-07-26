@@ -115,4 +115,13 @@ impl IconBar
         iconBarFlags.remove(remove)
         computeLayout()
     }
+
+    // Returns the button with the given id
+    mtd getButton(btnId: string)->#null *IconButton
+    {
+        let btn = getChildById(btnId)
+        if !btn:
+            return null
+        return cast(*IconButton) btn
+    }
 }
