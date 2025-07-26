@@ -161,7 +161,7 @@ impl IWnd for IconButton
             colorText    = isChecked ? colors.btnIcon_CheckedPressedText : colors.btnIcon_PressedText
             colorChecked = colors.btnIcon_CheckedPressedMark
         case isHot:
-            colorBk      = isChecked ? colors.btnIcon_CheckedHotBk : colors.btnIcon_HotBk
+            colorBk = isChecked ? colors.btnIcon_CheckedHotBk : colors.btnIcon_HotBk
             colorIcon    = isChecked ? colors.btnIcon_CheckedHotIcon : colors.btnIcon_HotIcon
             colorText    = isChecked ? colors.btnIcon_CheckedHotText : colors.btnIcon_HotText
             colorChecked = colors.btnIcon_CheckedHotMark
@@ -196,7 +196,12 @@ impl IWnd for IconButton
             case Right:
                 subRectBk = &rects.btnIcon_CheckedRight
             case Full:
-                subRectBk = &rects.btnIcon_CheckedFull
+                if form == .Square:
+                    subRectBk = &rects.btnIcon_CheckedSquare
+                elif form == .Round:
+                    subRectBk = &rects.btnIcon_CheckedRound
+                else:
+                    subRectBk = &rects.btnIcon_CheckedRoundSquare
             }
 
             theme.drawSubRect(bc.painter, clientRect, subRectBk, colorChecked)

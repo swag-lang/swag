@@ -4,7 +4,7 @@ struct InPlaceEditWnd
 {
     using wnd:     Wnd
     editWnd:       *EditWnd
-    stackHorz:     *StackLayoutCtrl
+    stackHorz:     *IconBar
     capture:       *Capture
 }
 
@@ -13,6 +13,7 @@ impl InPlaceEditWnd
     func create(capture: *Capture, main: *MainWnd, parent: *Wnd)->*InPlaceEditWnd
     {
         // Generate a main window
+        let theme = main.getTheme()
         let newMain = Wnd.create'MainWnd(main.parent, {})
         newMain.inPlaceEdit = true
 
@@ -33,7 +34,29 @@ impl InPlaceEditWnd
                 .inPlaceEdit = true
             }
 
-            .stackHorz         = StackLayoutCtrl.create(.editWnd.editView, .Right, {})
+            .stackHorz         = IconBar.create(.editWnd.editView, 24, {})
+            .stackHorz.addItem(theme.getIcon24(ThemeIcons24.Copy), "copy")
+            .stackHorz.addItem(theme.getIcon24(ThemeIcons24.Edit), "edit")
+            .stackHorz.addItem(theme.getIcon24(ThemeIcons24.WndClose), "close")
+            .stackHorz.sigPressed += func|frame|(btn)
+            {
+                switch btn.id
+                {
+                case "copy":
+                    InPlaceEditWnd.cropCapture(frame.capture)
+                    frame.capture.copyAll()
+                    g_Exit     = true
+                    g_GrabDone = false
+                case "close":
+                    g_Exit     = true
+                    g_GrabDone = false
+                case "edit":
+                    InPlaceEditWnd.cropCapture(frame.capture)
+                    g_Exit     = true
+                    g_GrabDone = true
+                }
+            }
+
             .stackHorz.padding = 5
         }
 
@@ -42,32 +65,7 @@ impl InPlaceEditWnd
             frame.moveButtons()
         }
 
-        let btnCancel = PushButton.create(frame.stackHorz, "Cancel", {0, 0, 70})
-        btnCancel.sigPressed += func(btn)
-        {
-            g_Exit     = true
-            g_GrabDone = false
-        }
-
-        let btnEdit = PushButton.create(frame.stackHorz, "Edit", {0, 0, 70})
-        btnEdit.sigPressed += func|frame|(btn)
-        {
-            InPlaceEditWnd.cropCapture(frame.capture)
-            g_Exit     = true
-            g_GrabDone = true
-        }
-
-        let btnCopy = PushButton.create(frame.stackHorz, "Copy", {0, 0, 70})
-        btnCopy.sigPressed += func|frame|(btn)
-        {
-            InPlaceEditWnd.cropCapture(frame.capture)
-            frame.capture.copyAll()
-            g_Exit     = true
-            g_GrabDone = false
-        }
-
         frame.moveButtons()
-
         return frame
     }
 
@@ -110,26 +108,15 @@ impl InPlaceEditWnd
         rect.height = capture.height
 
         const H = 40.0
-        const W = 250.0
+        const W = 100.0
 
-        var x = rect.x
-        var w = rect.width
-
-        if rect.width < W
-        {
-            x = rect.right() - W
-            w = rect.right() - x
-        }
-
-        x = Math.max(x, 20)
-        w = Math.max(w, W)
-
+        let x = Math.max(10, rect.right() - W)
         if rect.bottom() < g_ScreenHeight - H:
-            stackHorz.setPosition(x, rect.bottom(), w, H)
+            stackHorz.setPosition(x, rect.bottom(), W, H)
         elif rect.y > H:
-            stackHorz.setPosition(x, rect.y - H, w, H)
+            stackHorz.setPosition(x, rect.y - H, W, H)
         else:
-            stackHorz.setPosition(x, rect.bottom() - H, w, H)
+            stackHorz.setPosition(x, rect.bottom() - H, W, H)
     }
 }
 

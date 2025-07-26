@@ -18,6 +18,7 @@ struct IconBar
 
     sigUpdateState:      SigArray'func||(*CommandStateEvent)
     sigCheckChanged:     SigArray'func||(*IconButton)
+    sigPressed:          SigArray'func||(*IconButton)
 }
 
 impl IWnd for IconBar
@@ -71,6 +72,7 @@ impl IconBar
         b.iconBtnFlags.set(iconBtnFlags)
         b.id        = btnId
         b.dockStyle = .Left
+        b.setForm(.RoundSquare)
         computeLayout()
 
         if iconBtnFlags.has(.Checkable | .CheckableToggle)
@@ -78,6 +80,13 @@ impl IconBar
             b.sigCheckChanged += func|self|(btn)
             {
                 self.sigCheckChanged.call(btn)
+            }
+        }
+        else
+        {
+            b.sigPressed += func|self|(btn)
+            {
+                self.sigPressed.call(cast(*IconButton) btn)
             }
         }
 

@@ -44,6 +44,7 @@ enum ThemeIcons24
     Quit
     Link
     Sort
+    Edit
 }
 
 enum ThemeIcons64
