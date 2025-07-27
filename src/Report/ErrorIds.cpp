@@ -139,7 +139,7 @@ void initErrors()
     SWAG_ERROR(Wrn0004, "unchanged local variable        $ the variable [[%s]] is declared to its default value, and is never modified after that    $ are you sure this variable is necessary?");
     SWAG_ERROR(Wrn0005, "unreachable code                $ this code is not reachable and will never be executed                                     $ ");
     SWAG_ERROR(Wrn0006, "unused %s                       $ the %s [[%s]] is not used                                                                 $ ");
-    SWAG_ERROR(Wrn0007, "unecessary [[break]]            $ this [[break]] is not necessary                                                           $ a [[break]] is only required in an empty [[case]] block");
+    SWAG_ERROR(Wrn0007, "unnecessary [[break]]           $ this [[break]] is not necessary                                                           $ a [[break]] is only required in an empty [[case]] block");
     SWAG_ERROR(Wrn0008, "suggestion [[elif]]             $ the [[if]] statement after the [[else]] can be simplified by using a single [[elif]]      $ consider replacing [[else: if]] with [[elif]]");
     SWAG_ERROR(Wrn0009, "suggestion [[#elif]]            $ the [[#if]] statement after the [[#else]] can be simplified by using a single [[#elif]]   $ consider replacing [[#else: #if]] with [[#elif]]");
     SWAG_ERROR(Wrn0010, "suggestion [[where]]            $ the [[if]] statement can be simplified by using a [[where]] clause                        $ ");
