@@ -83,6 +83,7 @@ impl InPlaceEditWnd
             .editBar.addCheckableItem(Icon.from(&main.icons48, 4), "text")
             .editBar.addCheckableItem(Icon.from(&main.icons48, 9), "marker")
             .editBar.setIconBarFlags(.Vertical)
+
             .editBar.sigCheckChanged += func|frame|(btn)
             {
                 switch btn.id
@@ -102,10 +103,37 @@ impl InPlaceEditWnd
                 case "marker":
                     frame.editMode = .Marker
                 }
+
                 frame.updateEditMode()
             }
 
-            .actionBar.padding = 5
+            let btnColor = .editBar.addItem({}, "color")
+            btnColor.iconBtnFlags.add(.Popup)
+            btnColor.sigPaintIcon = func|frame|(btn, bc, pos)
+            {
+                bc.painter.setParams(.Antialiased)
+                var rect = pos
+                rect.inflate(-2)
+                var color = frame.editMode == .Marker ? frame.editColorHilight : frame.editColor
+                bc.painter.fillRoundRect(rect, 10, 10, color)
+            }
+
+            btnColor.sigShowPopup += func|frame|(btn)
+            {
+                var color = frame.editMode == .Marker ? frame.editColorHilight : frame.editColor
+                var picker = PropWnd.createColorPicker(cast(*IconButton) btn, color)
+                picker.sigChanged += func|picker, frame, btn|(pk)
+                {
+                    if frame.editMode == .Marker:
+                        frame.editColorHilight = picker.getColor()
+                    else:
+                        frame.editColor = picker.getColor()
+                    frame.updateEditMode()
+                    btn.invalidate()
+                }
+            }
+
+           .actionBar.padding = 5
         }
 
         capture.gizmo.sigHasChanged = func|frame|()

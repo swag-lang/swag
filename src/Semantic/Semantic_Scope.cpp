@@ -31,7 +31,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, AstIdentifierRef
     return findIdentifierInScopes(context, context->cacheSymbolsMatch, identifierRef, identifier);
 }
 
-bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<CollectedScope>& scopeHierarchy, AstIdentifierRef* identifierRef, const AstIdentifier* identifier)
+bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<CollectedScope>& scopeHierarchy, AstIdentifierRef* identifierRef, AstIdentifier* identifier)
 {
     VectorNative<TypeInfoEnum*>                      typeEnum;
     VectorNative<std::pair<AstNode*, TypeInfoEnum*>> hasEnum;
@@ -75,7 +75,7 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Collected
         {
             if (!hasEnum.empty())
             {
-                Diagnostic err{identifierRef, formErr(Err0675, identifier->token.cstr(), hasEnum[0].second->getDisplayNameC())};
+                Diagnostic err{identifier, formErr(Err0675, identifier->token.cstr(), hasEnum[0].second->getDisplayNameC())};
                 const auto closest = SemanticError::findClosestMatchesMsg(identifier->token.text, {{.scope = hasEnum[0].second->scope, .flags = 0}}, IdentifierSearchFor::Whatever);
                 if (!closest.empty())
                     err.addNote(closest);
@@ -85,7 +85,7 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Collected
                 return context->report(err);
             }
 
-            Diagnostic err{identifierRef, formErr(Err0681, identifier->token.cstr())};
+            Diagnostic err{identifier, formErr(Err0681, identifier->token.cstr())};
 
             // Call to a function?
             if (testedOver.size() == 1)

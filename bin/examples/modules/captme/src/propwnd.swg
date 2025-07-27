@@ -117,7 +117,7 @@ impl PropWnd
         return btn
     }
 
-    func createColorPicker(btn: *IconButton, color: Color)->*ColorPickerCtrl
+    public func createColorPicker(btn: *IconButton, color: Color)->*ColorPickerCtrl
     {
         let frame = btn.createAnchorPopup(356, 382)
         var pal:  Array'Color

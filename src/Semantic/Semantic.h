@@ -103,7 +103,7 @@ namespace Semantic
 
     bool collectAttributes(SemanticContext* context, AstNode* forNode, AttributeList* result);
     bool collectAttributes(SemanticContext* context, AstNode* forNode, AttributeList* result, AstAttrUse* attrUse);
-    bool collectAutoScope(SemanticContext* context, VectorNative<CollectedScope>& scopeHierarchy, AstIdentifierRef* identifierRef, const AstIdentifier* identifier);
+    bool collectAutoScope(SemanticContext* context, VectorNative<CollectedScope>& scopeHierarchy, AstIdentifierRef* identifierRef, AstIdentifier* identifier);
     bool collectScopeHierarchy(Scope* startScope, VectorNative<CollectedScope>& scopeHierarchy, VectorNative<CollectedScopeVar>& scopeHierarchyVars, VectorNative<OneSymbolMatch>& symbolsMatch, const AstIdentifierRef* identifierRef, const AstIdentifier* identifier, uint32_t identifierCrc);
     bool collectScopeHierarchy(SemanticContext* context, VectorNative<CollectedScope>& scopeHierarchy, VectorNative<CollectedScopeVar>& scopeHierarchyVars, AstIdentifierRef* identifierRef, AstIdentifier* identifier);
     bool collectScopeHierarchy(SemanticContext* context, VectorNative<CollectedScope>& scopes, VectorNative<CollectedScopeVar>& scopesVars, AstNode* startNode, CollectFlags flags, IdentifierScopeUpMode scopeUpMode = IdentifierScopeUpMode::None, TokenParse* scopeUpValue = nullptr);
