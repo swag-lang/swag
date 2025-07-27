@@ -8,6 +8,7 @@ interface IForm
     mtd boundRect()->Math.Rectangle;
     mtd moveForm(newPosX, newPosY: s32);
     mtd moveBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32);
+    mtd scaleBaseForm(scale: f32);
     mtd setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32);
     mtd movePoint(pt: u32, newPosX, newPosY: s32);
     mtd edit(evt: *MouseEvent, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool;

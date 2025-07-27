@@ -113,6 +113,14 @@ impl IForm for FormImage
         }
     }
 
+    mtd impl scaleBaseForm(val: f32)
+    {
+        x = cast(s32) (x * val)
+        y = cast(s32) (y * val)
+        w = cast(s32) (w * val)
+        h = cast(s32) (h * val)
+    }
+
     mtd impl setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
         if mustEditInside()

@@ -87,6 +87,14 @@ impl IForm for FormStep
         h += newSizeY
     }
 
+    mtd impl scaleBaseForm(val: f32)
+    {
+        x = cast(s32) (x * val)
+        y = cast(s32) (y * val)
+        w = cast(s32) (w * val)
+        h = cast(s32) (h * val)
+    }
+
     mtd impl setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
         if newSizeX < 0
@@ -221,7 +229,7 @@ impl IForm for FormStep
         let ht = (pathl.bvMax.y - pathl.bvMin.y) * z
         let x0 = pp.horzCenter() - (wt * 0.5)
         let y0 = pp.vertCenter() - (ht * 0.5)
-        
+
         let tt = painter.curState.transform
         with painter
         {

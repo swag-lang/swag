@@ -145,6 +145,9 @@ impl InPlaceEditWnd
             .inPlaceEdit         = false
             .dirtyBackImg        = true
 
+            foreach f in capture.forms:
+                f.scaleBaseForm(scale)
+
             .selection.clear()
         }
     }
@@ -220,27 +223,27 @@ impl InPlaceEditWnd
 
         {
             const H = 40.0
-            const W = 3 * 40.0
+            let w   = actionBar.position.width
 
-            let x = Math.max(10, rect.right() - W)
+            let x = Math.max(10, rect.right() - w)
             if rect.bottom() < g_ScreenHeight - H:
-                actionBar.setPosition(x, rect.bottom(), W, H)
+                actionBar.setPosition(x, rect.bottom(), w, H)
             elif rect.y > H:
-                actionBar.setPosition(x, rect.y - H, W, H)
+                actionBar.setPosition(x, rect.y - H, w, H)
             else:
-                actionBar.setPosition(x, rect.bottom() - H, W, H)
+                actionBar.setPosition(x, rect.bottom() - H, w, H)
         }
 
         {
-            const H = 7 * 40.0
+            let h   = editBar.position.height
             const W = 40.0
 
             if rect.right() < g_ScreenWidth - W:
-                editBar.setPosition(rect.right(), rect.bottom() - H, W, H)
+                editBar.setPosition(rect.right(), rect.bottom() - h, W, h)
             elif rect.x > W:
-                editBar.setPosition(rect.x - W, rect.bottom() - H, W, H)
+                editBar.setPosition(rect.x - W, rect.bottom() - h, W, h)
             else:
-                editBar.setPosition(rect.right() - W, rect.bottom() - H, W, H)
+                editBar.setPosition(rect.right() - W, rect.bottom() - h, W, h)
         }
     }
 }

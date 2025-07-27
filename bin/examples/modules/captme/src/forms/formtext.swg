@@ -80,9 +80,9 @@ impl IForm for FormText
         dstf.scale       = srcf.scale
     }
 
-    mtd impl mustClipToBound()->bool 
-    { 
-        return true 
+    mtd impl mustClipToBound()->bool
+    {
+        return true
     }
 
     mtd impl edit(evt: *MouseEvent, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
@@ -103,6 +103,14 @@ impl IForm for FormText
         y += newPosY
         w += newSizeX
         h += newSizeY
+    }
+
+    mtd impl scaleBaseForm(val: f32)
+    {
+        x = cast(s32) (x * val)
+        y = cast(s32) (y * val)
+        w = cast(s32) (w * val)
+        h = cast(s32) (h * val)
     }
 
     mtd impl setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)

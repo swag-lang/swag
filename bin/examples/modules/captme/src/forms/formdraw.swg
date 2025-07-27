@@ -77,6 +77,15 @@ impl IForm for FormDraw
         }
     }
 
+    mtd impl scaleBaseForm(val: f32)
+    {
+        foreach &pt in points
+        {
+            pt.x *= val
+            pt.y *= val
+        }
+    }
+
     mtd impl setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
         var rect  = boundRect()

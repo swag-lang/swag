@@ -77,6 +77,12 @@ impl IForm for FormLine
         ya, yb += newPosY
     }
 
+    mtd impl scaleBaseForm(scale: f32)
+    {
+        xa, xb *= #self.scale
+        ya, yb *= #self.scale
+    }
+
     mtd impl setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
         xa = newPosX

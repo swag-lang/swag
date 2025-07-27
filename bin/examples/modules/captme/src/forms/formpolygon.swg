@@ -90,6 +90,14 @@ impl IForm for FormPolygon
         }
     }
 
+    mtd impl scaleBaseForm(val: f32)
+    {
+        foreach &pt in points
+        {
+            pt.x, pt.y *= val
+        }
+    }
+
     mtd impl setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
         var rect = boundRect()

@@ -32,7 +32,7 @@ impl IWnd for IconBar
 
 impl IconBar
 {
-    internal mtd computeLayout()
+    mtd computeLayout()
     {
         foreach c in childs
         {
