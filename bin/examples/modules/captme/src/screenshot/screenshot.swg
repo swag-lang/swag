@@ -44,7 +44,6 @@ func waitForCapture()->bool
 
 func performScreenCapture(main: *MainWnd)->{ img: Image, sf: *Surface } throw
 {
-    // Capture phase
     g_App.disableHotKeys()
     defer g_App.enableHotKeys()
 

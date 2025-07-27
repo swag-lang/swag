@@ -31,10 +31,13 @@ impl InPlaceEditWnd
         // Generate a main window
         let theme   = main.getTheme()
         let newMain = Wnd.create'MainWnd(main.parent, {})
+        newMain.registerActions()
+        newMain.registerShortcuts()
         newMain.inPlaceEdit = true
 
         with let frame = Wnd.create'InPlaceEditWnd(parent)
         {
+            .owner             = newMain
             .capture           = capture
             .editWnd           = EditWnd.create(newMain, frame)
             .editWnd.dockStyle = .Center
@@ -280,6 +283,7 @@ impl IWnd for InPlaceEditWnd
 {
     mtd impl onKeyEvent(evt: *KeyEvent)
     {
+        evt.accepted = false
         if evt.kind == .KeyPressed and evt.key == .Escape:
             g_Exit = true
     }
