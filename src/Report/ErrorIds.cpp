@@ -930,7 +930,7 @@ void initErrors()
     SWAG_ERROR(Err0782, "unresolved variable type                          $ cannot deduce the type of %s [[%s]]                                                                                                      $ ");
     SWAG_ERROR(Err0783, "unsupported [[#nameof]] argument                  $ cannot evaluate the [[#nameof]] argument                                                                                                 $ ");
     SWAG_ERROR(Err0784, "unsupported [[#stringof]] argument                $ cannot evaluate the [[#stringof]] argument                                                                                               $ ");
-    SWAG_ERROR(Err0786, "invalid intrinsic arguments                       $ unexpected intrinsic value arguments for [[%s]]                                                                                          $ intrinsic [[%s]] is a value and not a function call; consider removing the [['(']]");
+    SWAG_ERROR(Err0786, "invalid intrinsic arguments                       $ unexpected intrinsic arguments for [[%s]]                                                                                                $ intrinsic [[%s]] is a value and not a function call; consider removing the [['(']]");
 
     SWAG_ERROR(Err0428, "type mismatch assign                              $ cannot initialize a struct member with a function pointer                                                                                $ ");
     SWAG_ERROR(Err0353, "file patch error                                  $ failed to patch icon in file [[%s]] : %s                                                                                                 $ ");

@@ -55,6 +55,7 @@ impl InPlaceEditWnd
             }
 
             .actionBar = IconBar.create(.editWnd.editView, 24, {})
+            .actionBar.addItem(theme.getIcon24(ThemeIcons24.Save), "save")
             .actionBar.addItem(theme.getIcon24(ThemeIcons24.Copy), "copy")
             .actionBar.addItem(theme.getIcon24(ThemeIcons24.Edit), "edit")
             .actionBar.addItem(theme.getIcon24(ThemeIcons24.WndClose), "close")
@@ -74,6 +75,9 @@ impl InPlaceEditWnd
                     InPlaceEditWnd.cropCapture(frame.capture)
                     g_Exit     = true
                     g_GrabDone = true
+                case "save":
+                    InPlaceEditWnd.cropCapture(frame.capture)
+                    frame.newMain.saveAsImage()
                 }
             }
 

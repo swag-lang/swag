@@ -279,12 +279,18 @@ impl MainWnd
     {
         var optImg: any
         var optPng: Png.EncodeOptions
+        var optJpg: Jpg.EncodeOptions
 
         if Path.getExtensionLowerCase(nameFile) == ".png"
         {
             optPng.compressionLevel = Compress.Deflate.CompressionLevel.BestSpeed
             optPng.filtering        = false
             optImg                  = optPng
+        }
+        elif Path.getExtensionLowerCase(nameFile) == ".jpg"
+        {
+            optJpg.quality = 95
+            optImg = optJpg
         }
 
         var md: ImageMetaData
@@ -302,7 +308,8 @@ impl MainWnd
         capture.changed        = true
         capture.linkedUpToDate = true
         catch capture.save()
-        recentWnd.updateRecent()
+        if recentWnd:
+            recentWnd.updateRecent()
 
         var txt = Format.toString("Image <i>%</i> has been saved", nameFile)
         discard EmbInfoCtrl.create(editWnd.view, txt, .Information, flags: .Bottom | .AutoHide)
@@ -330,11 +337,13 @@ impl MainWnd
         }
 
         let dlg = FileDlg.create(surface, opt)
+        if inPlaceEdit:
+            dlg.surface.setTopMost()
         if dlg.doModal() != Dialog.BtnOk:
             return
 
         Cursor.wait()
-        var img     = capture.toImage()
+        var img = capture.toImage()
         if linked:
             capture.linkedImage = dlg.getSelectedName()
         doSaveImage(capture, &img, dlg.getSelectedName())
