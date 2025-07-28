@@ -76,8 +76,13 @@ impl InPlaceEditWnd
                     g_Exit     = true
                     g_GrabDone = true
                 case "save":
+                    let fileName = frame.newMain.geteSaveAsImageName()
+                    if fileName.isEmpty():
+                        return
                     InPlaceEditWnd.cropCapture(frame.capture)
-                    frame.newMain.saveAsImage()
+                    frame.newMain.doSaveAsImage(fileName)
+                    g_Exit     = true
+                    g_GrabDone = false
                 }
             }
 

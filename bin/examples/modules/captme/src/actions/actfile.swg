@@ -317,6 +317,14 @@ impl MainWnd
 
     mtd saveAsImage(linked = false)
     {
+        let fileName = geteSaveAsImageName()
+        if fileName.isEmpty():
+            return
+        doSaveAsImage(fileName, linked)
+    }
+
+    mtd geteSaveAsImageName()->String
+    {
         let capture = assume getCapture()
 
         var opt: FileDlgOptions
@@ -340,13 +348,18 @@ impl MainWnd
         if inPlaceEdit:
             dlg.surface.setTopMost()
         if dlg.doModal() != Dialog.BtnOk:
-            return
+            return ""
+        return dlg.getSelectedName()
+    }
 
+    mtd doSaveAsImage(fileName: String, linked = false)
+    {
+        let capture = assume getCapture()
         Cursor.wait()
         var img = capture.toImage()
         if linked:
-            capture.linkedImage = dlg.getSelectedName()
-        doSaveImage(capture, &img, dlg.getSelectedName())
+            capture.linkedImage = fileName
+        doSaveImage(capture, &img, fileName)
     }
 
     mtd newImage()
