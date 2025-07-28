@@ -211,6 +211,20 @@ internal impl Surface
 
 impl Surface
 {
+    mtd applyNativeSurfaceFlags()
+    {
+        var exStyle = cast(u64) GetWindowLongPtrA(hWnd, GWL_EXSTYLE)
+        if flags & .Secondary:
+            exStyle |= WS_EX_TOOLWINDOW
+        else:
+            exStyle &= ~WS_EX_TOOLWINDOW
+        if flags & .TopMost:
+            exStyle |= WS_EX_TOPMOST
+        else:
+            exStyle &= ~WS_EX_TOPMOST
+        SetWindowLongPtrA(hWnd, GWL_EXSTYLE, cast(LONG_PTR) exStyle)
+    }
+
     // Send a custom message to the surface application with name 'surfaceID'
     func sendCustomMessage(surfaceID: string, id: u32, param: u64)->bool
     {
@@ -237,6 +251,12 @@ impl Surface
 
         position = clampPos
         catch SetWindowPos(hWnd, null, cast(s32) clampPos.x, cast(s32) clampPos.y, cast(s32) clampPos.width, cast(s32) clampPos.height, SWP_NOCOPYBITS | SWP_DEFERERASE | SWP_NOREDRAW | SWP_NOSENDCHANGING)
+    }
+
+    // Set the window as a topmost window (above all non topmost)
+    mtd setTopMost()
+    {
+        catch SetWindowPos(hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
     }
 
     // Bring the surface at the top of the Z order

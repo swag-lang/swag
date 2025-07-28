@@ -2,6 +2,9 @@
 LANGUAGE IDEAS ???
 ****************************************
 
+foreach m in [{"draw", .Draw}, {"line", .Line}, {"circle", .Circle}, {"rect", .Rect}, {"arrow", .Arrow}, {"text", .Text}, {"marker", .Marker}]
+foreach (a, b) in ... (detuple in for or foreach)
+
 -------------------------------------
 var lazy evaluation
 -------------------------------------
@@ -49,7 +52,7 @@ let (a, b) = Tokenize.split(str, ' ')
 5363
 affect slice content a[0..2] = [1, 2, 3]
 -------------------------------------
-case 0, 2, 4: 
+case 0, 2, 4:
 case 0 or 2 or 4:
 -------------------------------------
 

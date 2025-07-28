@@ -90,6 +90,7 @@ impl Surface
             wnd.padding.w = 0
         }
 
+        applyNativeSurfaceFlags()
         wnd.applySurfaceFlags()
         wnd.sendResizeEvent()
     }

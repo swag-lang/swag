@@ -123,7 +123,7 @@ impl InPlaceEditWnd
 
             btnColor.sigShowPopup += func|frame|(btn)
             {
-                var color = frame.editMode == .Marker ? frame.editColorHilight : frame.editColor
+                var color  = frame.editMode == .Marker ? frame.editColorHilight : frame.editColor
                 var picker = PropWnd.createColorPicker(cast(*IconButton) btn, color)
                 picker.sigChanged += func|picker, frame, btn|(pk)
                 {
@@ -136,7 +136,7 @@ impl InPlaceEditWnd
                 }
             }
 
-           .actionBar.padding = 5
+            .actionBar.padding = 5
         }
 
         capture.gizmo.sigHasChanged = func|frame|()
@@ -185,21 +185,14 @@ impl InPlaceEditWnd
 
     mtd updateEditMode()
     {
-        var btn: *IconButton
-        btn = assume editBar.getButton("draw")
-        btn.setCheck(editMode == .Draw)
-        btn = assume editBar.getButton("line")
-        btn.setCheck(editMode == .Line)
-        btn = assume editBar.getButton("circle")
-        btn.setCheck(editMode == .Circle)
-        btn = assume editBar.getButton("rect")
-        btn.setCheck(editMode == .Rect)
-        btn = assume editBar.getButton("arrow")
-        btn.setCheck(editMode == .Arrow)
-        btn = assume editBar.getButton("text")
-        btn.setCheck(editMode == .Text)
-        btn = assume editBar.getButton("marker")
-        btn.setCheck(editMode == .Marker)
+        with InPlaceEditMode
+        {
+            foreach m in [{"draw", .Draw}, {"line", .Line}, {"circle", .Circle}, {"rect", .Rect}, {"arrow", .Arrow}, {"text", .Text}, {"marker", .Marker}]
+            {
+                let btn = assume editBar.getButton(m.item0)
+                btn.setCheck(editMode == m.item1)
+            }
+        }
 
         with newMain
         {
@@ -236,21 +229,16 @@ impl InPlaceEditWnd
                 .mdlFormText.fontSize = 48
                 .mdlFormText.text     = "A"
             case Marker:
-                .editMode                  = .Draw
-                .mdlFormDraw.borderSize    = 30
-                .mdlFormDraw.borderColor   = editColorHilight
-                .mdlFormDraw.borderColor.a = 160
+                .editMode                = .Draw
+                .mdlFormDraw.borderSize  = 30
+                .mdlFormDraw.borderColor = editColorHilight.withAlpha(160)
             }
         }
     }
 
     mtd moveButtons()
     {
-        var rect: Math.Rectangle
-        rect.x      = -capture.backImagePos.x
-        rect.y      = -capture.backImagePos.y
-        rect.width  = capture.width
-        rect.height = capture.height
+        var rect: Math.Rectangle{-capture.backImagePos.x, -capture.backImagePos.y, capture.width, capture.height}
 
         {
             const H = 40.0

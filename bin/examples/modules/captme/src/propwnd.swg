@@ -717,19 +717,21 @@ impl PropWnd
         }
     }
 
-    mtd editText(curText: String)->String
+    func editText(main: *MainWnd, curText: String)->String
     {
-        with let dlg = EditDlg.createMultiLine(surface)
+        with let dlg = EditDlg.createMultiLine(main.surface)
         {
             .setMessage("Press Shift+Enter to add a new line")
             .setText(curText)
             .richEdit.selectAll()
             .surface.setTitle("Enter Text")
-            .surface.center(surface)
+            .surface.center(main.surface)
+            if main.inPlaceEdit:
+                .surface.setTopMost()
         }
         if dlg.doModal() != Dialog.BtnOk:
             return curText
-        let capture = assume self.main.getCapture()
+        let capture = assume main.getCapture()
         let undo    = capture.newUndo(.SetText)
         undo.text = dlg.getText()
         capture.pushUndo(undo)
@@ -787,9 +789,9 @@ impl PropWnd
         with let btnedt = IconButton.create(edt, getTheme().getIcon24(.More, 20), {0, 0, 20, 20})
         {
             .dockStyle = .Right
-            .sigPressed += func|self, edt|(btn)
+            .sigPressed += func|edt|(btn)
             {
-                let txt = self.editText(edt.text)
+                let txt = editText(g_Main, edt.text)
                 edt.setText(txt)
             }
         }

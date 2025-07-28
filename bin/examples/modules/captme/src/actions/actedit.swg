@@ -77,7 +77,7 @@ impl IActionUI for ActionEdit
         {
         case CmdIdEditText:
             let lastSel = cast(*FormText) @dataof(capture.forms[capture.selection.back()])
-            discard main.propWnd.editText(lastSel.text)
+            discard PropWnd.editText(main, lastSel.text)
             capture.selectionHasChanged()
 
         case CmdIdClearImageInside:

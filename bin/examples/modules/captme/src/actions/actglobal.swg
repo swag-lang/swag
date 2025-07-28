@@ -54,7 +54,8 @@ impl IActionUI for ActionGlobal
             main.surface.bringToTop()
 
         case CmdIdExit:
-            main.libWnd.requestClose()
+            if main.libWnd:
+                main.libWnd.requestClose()
             main.postQuitEvent()
 
         case CmdIdLibrary:
