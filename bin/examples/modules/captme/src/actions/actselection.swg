@@ -95,7 +95,7 @@ impl IActionUI for ActionSelection
             main.snap = !main.snap
 
         case CmdIdFreeze:
-            if main.freezeSel:
+²            if main.freezeSel:
                 main.freezeSelection(false)
             else:
                 main.freezeSelection(true)
