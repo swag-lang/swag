@@ -225,9 +225,12 @@ impl InPlaceEditWnd
                 .mdlFormArrow.endCap      = .ArrowAnchor
                 .mdlFormArrow.borderColor = editColor
             case Text:
-                .editMode             = .Text
-                .mdlFormText.fontSize = 48
-                .mdlFormText.text     = "A"
+                .editMode               = .Text
+                .mdlFormText.fontSize   = 40
+                .mdlFormText.borderSize = 3
+                .mdlFormText.text       = "A"
+                .mdlFormText.boldSize   = 2
+                .mdlFormText.backColor  = editColor
             case Marker:
                 .editMode                = .Draw
                 .mdlFormDraw.borderSize  = 30
