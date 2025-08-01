@@ -255,7 +255,7 @@ public impl Painter
 
         var path: LinePath
         path.start(points[0].x, points[0].y)
-        foreach pt in points:
+        foreach pt in points where @index:
             path.lineTo(pt.x, pt.y)
         path.close()
         fillPath(&path, brush)
