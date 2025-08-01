@@ -251,11 +251,17 @@ func createView0(tabView: *Tab, view: *Wnd)
         slider0.setValue(100)
     }
 
-    // Slider
+    // Circular
     {
         let circular = Circular.create(view, {450, 300})
         circular.setAngleRange(0'deg, 90'deg)
-        circular.setValue(0)
+        circular.setStepCount(5)
+    }
+
+    // Circular
+    {
+        let circular = Circular.create(view, {520, 300})
+        circular.setAngle(90'deg)
     }
 
     // SliderCtrl

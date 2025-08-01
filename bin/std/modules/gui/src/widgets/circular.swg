@@ -18,9 +18,6 @@ struct Circular
     using wnd:                 Wnd
 
     value:                     f32
-    value2:                    f32
-    min:                       f32
-    max:                       f32 = 1.0
     sliderFlags:               CircularFlags
     stepForm:                  CircularStepForm = .LittleLines
     startAngle:                f32 = 0
@@ -166,35 +163,16 @@ internal impl Circular
         radius  = Math.min(clientRect.width, clientRect.height) * radiusFactor
     }
 
-    mtd getAngleFromPosition(pos: Math.Point)->f32
-    {
-        let dx    = pos.x - centerX
-        let dy    = pos.y - centerY
-        var angle = Math.atan2(dy, dx)
-
-        // Normalize angle to our coordinate system
-        // Convert from standard math coordinates to our circular slider coordinates
-        angle = angle - startAngle
-
-        // Normalize to [0, 2Pi] range
-        while angle < 0:
-            angle += Math.ConstF32.TwoPi
-        while angle > Math.ConstF32.TwoPi:
-            angle -= Math.ConstF32.TwoPi
-
-        return angle
-    }
-
     mtd angleToValue(angle: f32)->f32
     {
-        let totalAngle = endAngle - startAngle
+        let totalAngle      = endAngle - startAngle
         var normalizedAngle = angle
 
         // For partial arcs, we need to find the closest valid angle
         if normalizedAngle > totalAngle
         {
             // Determine which boundary is closer
-            let distanceToEnd = normalizedAngle - totalAngle
+            let distanceToEnd   = normalizedAngle - totalAngle
             let distanceToStart = (Math.ConstF32.TwoPi - normalizedAngle)
 
             // If we're closer to the start (going around the circle), snap to 0
@@ -211,24 +189,43 @@ internal impl Circular
         return normalizedAngle / totalAngle
     }
 
-    mtd valueToAngle(val: f32)->f32
+    mtd const valueToAngle(val: f32)->f32
     {
         let totalAngle = endAngle - startAngle
         return startAngle + (val * totalAngle)
     }
 
-    mtd getPositionFromAngle(angle: f32)->Math.Vector2
+    mtd getAngleFromPosition(pos: Math.Point)->f32
     {
-        var result: retval
-        result.x = centerX + Math.cos(angle) * radius
-        result.y = centerY + Math.sin(angle) * radius
-        return result
+        let dx = pos.x - centerX
+        let dy = pos.y - centerY
+
+        // Utiliser atan2(dx, -dy) pour avoir 0° vers le haut et 90° vers la droite
+        // -dy car l'axe Y est inversé (vers le bas = positif)
+        var angle = Math.atan2(dx, -dy)
+
+        // Normaliser l'angle selon notre système de coordonnées
+        angle = angle - startAngle
+
+        // Normaliser dans la plage [0, 2π]
+        while angle < 0:
+            angle += Math.ConstF32.TwoPi
+        while angle > Math.ConstF32.TwoPi:
+            angle -= Math.ConstF32.TwoPi
+
+        return angle
     }
 
-    mtd drawCircularTrack(painter: *Painter, theme: *Theme, color: Color)
+    mtd getPositionFromAngle(angle: f32)->Math.Vector2
     {
-        let pen = Pen.createSolid(color, 2.0)
-        painter.drawCircle(centerX, centerY, radius, pen)
+        // Ajouter startAngle pour revenir au système de coordonnées global
+        let adjustedAngle = angle + startAngle
+
+        var result: retval
+        // Pour 0° vers le haut : x = sin(angle), y = -cos(angle)
+        result.x = centerX + Math.sin(adjustedAngle) * radius
+        result.y = centerY - Math.cos(adjustedAngle) * radius
+        return result
     }
 
     mtd drawStepLines(painter: *Painter, theme: *Theme, color: Color)
@@ -240,7 +237,7 @@ internal impl Circular
         let stepAngle  = totalAngle / cast(f32) (stepCount - 1)
         let pen        = Pen.createSolid(color, 1.5)
 
-        // Step line dimensions
+        // Dimensions des lignes d'étape
         let innerRadius = radius + stepInnerRadiusFactor
         let outerRadius = radius + stepOuterRadiusFactor
 
@@ -248,13 +245,20 @@ internal impl Circular
         {
             let angle = startAngle + stepAngle * cast(f32) i
 
-            // Calculate inner and outer positions for the step line
-            let innerPos = Math.Vector2{centerX + Math.cos(angle) * innerRadius, centerY + Math.sin(angle) * innerRadius}
-            let outerPos = Math.Vector2{centerX + Math.cos(angle) * outerRadius, centerY + Math.sin(angle) * outerRadius}
+            // Calculer les positions intérieure et extérieure pour la ligne d'étape
+            // Utiliser sin/cos cohérent avec getPositionFromAngle
+            let innerPos = Math.Vector2{centerX + Math.sin(angle) * innerRadius, centerY - Math.cos(angle) * innerRadius}
+            let outerPos = Math.Vector2{centerX + Math.sin(angle) * outerRadius, centerY - Math.cos(angle) * outerRadius}
 
-            // Draw the step line
+            // Dessiner la ligne d'étape
             painter.drawLine(innerPos, outerPos, pen)
         }
+    }
+
+    mtd drawCircularTrack(painter: *Painter, theme: *Theme, color: Color)
+    {
+        let pen = Pen.createSolid(color, 2.0)
+        painter.drawCircle(centerX, centerY, radius, pen)
     }
 
     mtd clamp(f: f32)->f32
@@ -342,22 +346,29 @@ internal impl Circular
 
 impl Circular
 {
-    mtd const getValue()->f32 => min + (max - min) * value
-
-    // Set the value
-    mtd setValue(f: f32)
+    // Set the current angle
+    mtd setAngle(f: Math.Angle)
     {
         startChange()
-        setInternalValue((f - min) / (max - min))
+
+        // Normalize the angle to the range [startAngle, endAngle]
+        var normalizedAngle = f.rad - startAngle
+
+        // Clamp to valid range
+        let totalAngle = endAngle - startAngle
+        normalizedAngle = Math.clamp(normalizedAngle, 0, totalAngle)
+
+        // Convert to normalized value (0-1)
+        value = normalizedAngle / totalAngle
+
         endChange()
     }
 
-    // Set the 'min', 'max' and 'steps' values
-    func setMinMax(self, min, max: f32)
+    // Get the angle
+    mtd const getAngle()->Math.Angle
     {
-        Debug.assert(min < max)
-        self.min = min
-        self.max = max
+        let currentAngle = valueToAngle(value)
+        return Math.Angle{rad: currentAngle}
     }
 
     // Set the angular range of the circular slider
