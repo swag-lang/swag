@@ -34,6 +34,7 @@ alias LARGE_INTEGER = s64
 alias DWORD64       = u64
 alias ULONG64       = u64
 alias PLONG         = *LONG
+alias LONG_PTR      = *LONG
 alias CHAR          = u8
 alias WCHAR         = u16
 alias LPSTR         = ^CHAR

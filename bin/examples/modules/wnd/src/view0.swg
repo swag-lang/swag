@@ -251,6 +251,13 @@ func createView0(tabView: *Tab, view: *Wnd)
         slider0.setValue(100)
     }
 
+    // Slider
+    {
+        let circular = Circular.create(view, {450, 300})
+        circular.setMinMax(-127, 128)
+        circular.setValue(0)
+    }
+
     // SliderCtrl
     {
         let sliderctrl = SliderCtrl.create(view, "Center", {370, 590, 250, 50})

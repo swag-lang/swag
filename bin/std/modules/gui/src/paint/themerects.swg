@@ -79,6 +79,8 @@ struct ThemeImageRects
     slider_Mark:                    ThemeImageRect = {{85, 169, 27, 27}, 13}
     slider_Step:                    ThemeImageRect = {{113, 169, 27, 27}, 13}
 
+    circular_Mark:                  ThemeImageRect = {{85, 169, 27, 27}, 13}
+
     tabItem_FlatSelected:           ThemeImageRect = {{57, 95, 27, 27}, 5}
     tabItem_RoundSelected:          ThemeImageRect = {{85, 95, 39, 25}, 10}
     tabItem_RoundHot:               ThemeImageRect = {{85, 95, 39, 25}, 10}

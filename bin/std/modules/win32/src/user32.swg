@@ -730,6 +730,8 @@ const GWLP_HWNDPARENT = -8
 const GWLP_USERDATA   = -21
 const GWLP_ID         = -12
 
+const GWL_EXSTYLE = -20
+
 const HWND_TOP       = cast(HWND) 0'u64
 const HWND_BOTTOM    = cast(HWND) 1'u64
 const HWND_TOPMOST   = cast(HWND) cast<bit>(u64) -1's64

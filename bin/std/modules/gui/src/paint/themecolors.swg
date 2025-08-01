@@ -223,6 +223,15 @@ struct ThemeColors
     slider_HilightStepBk:                 Color = Color.getDarker(Color.fromArgb(Blue), 0.1)
     slider_HotStepBk:                     Color = Color.getDarker(Color.fromArgb(White), 0.3)
 
+    circular_Bk:                          Color = Transparent
+    circular_DisabledBk:                  Color = Transparent
+    circular_Circle:                      Color = Blue
+    circular_DisabledCircle:              Color = Gray5
+    circular_Mark:                        Color = Blue
+    circular_HotMark:                     Color = White
+    circular_PressedMark:                 Color = White
+    circular_DisabledMark:                Color = Gray4
+
     tabItem_DisabledText:                 Color = Gray4
     tabItem_SelectedText:                 Color = White
     tabItem_UnSelectedText:               Color = Color.getDarker(Color.fromArgb(White), 0.3)
