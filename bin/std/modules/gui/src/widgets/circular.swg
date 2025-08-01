@@ -176,23 +176,35 @@ internal impl Circular
         // Convert from standard math coordinates to our circular slider coordinates
         angle = angle - startAngle
 
-        // Normalize to [0, 2π] range
+        // Normalize to [0, 2Pi] range
         while angle < 0:
-            angle += Math.ConstF32.Pi * 2
-        while angle > Math.ConstF32.Pi * 2:
-            angle -= Math.ConstF32.Pi * 2
+            angle += Math.ConstF32.TwoPi
+        while angle > Math.ConstF32.TwoPi:
+            angle -= Math.ConstF32.TwoPi
 
         return angle
     }
 
     mtd angleToValue(angle: f32)->f32
     {
-        let totalAngle      = endAngle - startAngle
+        let totalAngle = endAngle - startAngle
         var normalizedAngle = angle
 
-        // Clamp angle to valid range
-        if normalizedAngle > totalAngle:
-            normalizedAngle = totalAngle
+        // For partial arcs, we need to find the closest valid angle
+        if normalizedAngle > totalAngle
+        {
+            // Determine which boundary is closer
+            let distanceToEnd = normalizedAngle - totalAngle
+            let distanceToStart = (Math.ConstF32.TwoPi - normalizedAngle)
+
+            // If we're closer to the start (going around the circle), snap to 0
+            // Otherwise snap to the end
+            if distanceToStart < distanceToEnd:
+                normalizedAngle = 0
+            else:
+                normalizedAngle = totalAngle
+        }
+
         if normalizedAngle < 0:
             normalizedAngle = 0
 
@@ -215,27 +227,8 @@ internal impl Circular
 
     mtd drawCircularTrack(painter: *Painter, theme: *Theme, color: Color)
     {
-        // Draw the circular track arc
-        let trackRadius = radius * 0.9
-        let startPos    = getPositionFromAngle(startAngle)
-        let endPos      = getPositionFromAngle(endAngle)
-
-        // This would ideally use a proper arc drawing function
-        // For now, we'll approximate with a series of small lines
-        let segments  = 64
-        let angleStep = (endAngle - startAngle) / cast(f32) segments
-
-        let pen     = Pen.createSolid(color, 2.0)
-        var prevPos = getPositionFromAngle(startAngle)
-        for var i = 1; i <= segments; i += 1
-        {
-            let currentAngle = startAngle + angleStep * cast(f32) i
-            var currentPos   = getPositionFromAngle(currentAngle)
-
-            // Draw line segment (this would need proper painter line drawing)
-            painter.drawLine(prevPos, currentPos, pen)
-            prevPos = currentPos
-        }
+        let pen = Pen.createSolid(color, 2.0)
+        painter.drawCircle(centerX, centerY, radius, pen)
     }
 
     mtd drawStepLines(painter: *Painter, theme: *Theme, color: Color)
@@ -320,9 +313,9 @@ internal impl Circular
     mtd getPosBoxAt(val, size: f32)->Math.Rectangle
     {
         updateGeometry()
-        let angle = valueToAngle(val)
-        var pos   = getPositionFromAngle(angle)
 
+        let angle   = valueToAngle(val)
+        var pos     = getPositionFromAngle(angle)
         var result: retval
         result.x      = pos.x - (size * 0.5)
         result.y      = pos.y - (size * 0.5)
@@ -377,23 +370,22 @@ impl Circular
     }
 
     // Set the display stepForm (NoSteps or LittleLines)
-    func setStepForm(self, stepForm: CircularStepForm)
+    mtd setStepForm(form: CircularStepForm)
     {
-        if self.stepForm != stepForm
+        if stepForm != form
         {
-            self.stepForm = stepForm
-            self.invalidate()
+            stepForm = form
+            invalidate()
         }
     }
 
     // Set the number of step lines to display (only applies when stepForm is LittleLines)
     mtd setStepCount(count: u32)
     {
-        if self.stepCount != count
+        if stepCount != count
         {
-            self.stepCount = count
-            if self.stepForm == .LittleLines:
-                self.invalidate()
+            stepCount = count
+            invalidate()
         }
     }
 

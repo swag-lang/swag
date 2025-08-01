@@ -254,7 +254,7 @@ func createView0(tabView: *Tab, view: *Wnd)
     // Slider
     {
         let circular = Circular.create(view, {450, 300})
-        circular.setMinMax(-127, 128)
+        circular.setAngleRange(0'deg, 90'deg)
         circular.setValue(0)
     }
 
