@@ -44,6 +44,7 @@ struct ThemeMetrics
     slider_StepSize:                       f32 = 8
 
     circular_Size:                         f32 = 40
+    circular_MarkerSize:                   f32 = 5
 
     menuPopup_Padding:                     f32 = 12
     menuPopup_SpaceLines:                  f32 = 6

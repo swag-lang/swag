@@ -14,6 +14,13 @@ enum CircularStepForm
     Tick
 }
 
+enum CircularMarkerForm
+{
+    None   = 0
+    Circle
+    Needle
+}
+
 struct Circular
 {
     using wnd:                 Wnd
@@ -21,6 +28,7 @@ struct Circular
     value:                     f32
     sliderFlags:               CircularFlags
     stepForm:                  CircularStepForm = .Tick
+    markerForm:                CircularMarkerForm = .Circle
     startAngle:                f32 = 0
     endAngle:                  f32 = Math.ConstF32.TwoPi
     stepCount:                 u32 = 20
@@ -90,9 +98,8 @@ impl IWnd for Circular
             drawSteps(bc.painter, theme, colorStep)
 
         // Draw value marker
-        var posBox = getPosBox()
         aniMark.apply(self, colorMark)
-        theme.drawSubRect(bc.painter, posBox, &rects.circular_Mark, aniMark.cur())
+        drawValueMarker(bc.painter, theme, aniMark.cur())
     }
 
     mtd impl onMouseEvent(evt: *MouseEvent)
@@ -231,9 +238,63 @@ internal impl Circular
         return result
     }
 
+    // Main marker drawing dispatcher
+    mtd drawValueMarker(painter: *Painter, theme: *Theme, color: Color)
+    {
+        #[Swag.Complete]
+        switch markerForm
+        {
+        case .None:
+            return
+        case .Circle:
+            drawCircleMarker(painter, theme, color)
+        case .Needle:
+            drawNeedleMarker(painter, theme, color)
+        }
+    }
+
+    // Circle marker
+    mtd drawCircleMarker(painter: *Painter, theme: *Theme, color: Color)
+    {
+        let angle        = valueToAngle(value)
+        let pos          = getPositionFromAngle(angle)
+        let markerRadius = getThemeMetrics().circular_MarkerSize
+
+        let brush = Brush.createSolid(color)
+        let pen   = Pen.createSolid(color, 1.5)
+
+        // Draw filled circle with border
+        painter.fillCircle(pos.x, pos.y, markerRadius, brush)
+        painter.drawCircle(pos.x, pos.y, markerRadius, pen)
+    }
+
+    // Needle marker (line from center to current position)
+    mtd drawNeedleMarker(painter: *Painter, theme: *Theme, color: Color)
+    {
+        let angle     = valueToAngle(value)
+        let trackPos  = getPositionFromAngle(angle)
+        let centerPos = Math.Vector2{centerX, centerY}
+
+        // Create gradient pen for nice visual effect
+        let pen = Pen.createSolid(color, 2.5)
+
+        // Draw needle line from center to track
+        painter.drawLine(centerPos, trackPos, pen)
+
+        // Draw small circle at center as pivot point
+        let pivotRadius = 3.0
+        let brush       = Brush.createSolid(color)
+        painter.fillCircle(centerX, centerY, pivotRadius, brush)
+
+        // Draw small circle at track position as tip
+        let tipRadius = 2.0
+        painter.fillCircle(trackPos.x, trackPos.y, tipRadius, brush)
+    }
+
     // Main step drawing dispatcher
     mtd drawSteps(painter: *Painter, theme: *Theme, color: Color)
     {
+        #[Swag.Complete]
         switch stepForm
         {
         case .None:
@@ -261,7 +322,7 @@ internal impl Circular
         {
             let angle = startAngle + stepAngle * cast(f32) i
 
-            let pos   = Math.Vector2{centerX + Math.sin(angle) * dotDistance, centerY - Math.cos(angle) * dotDistance}
+            let pos = Math.Vector2{centerX + Math.sin(angle) * dotDistance, centerY - Math.cos(angle) * dotDistance}
             painter.fillCircle(pos.x, pos.y, dotRadius, brush)
         }
     }
@@ -326,7 +387,7 @@ internal impl Circular
         let dx         = pos.x - centerX
         let dy         = pos.y - centerY
         let distance   = Math.sqrt(dx * dx + dy * dy)
-        let trackWidth = getThemeMetrics().slider_BoxSize
+        let trackWidth = getThemeMetrics().circular_MarkerSize
 
         if Math.abs(distance - radius) <= trackWidth
         {
@@ -364,7 +425,7 @@ internal impl Circular
 
     mtd getPosBox()->Math.Rectangle
     {
-        return getPosBoxAt(value, getThemeMetrics().slider_BoxSize)
+        return getPosBoxAt(value, getThemeMetrics().circular_MarkerSize)
     }
 
     mtd startChange()

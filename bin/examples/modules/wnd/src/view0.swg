@@ -254,6 +254,8 @@ func createView0(tabView: *Tab, view: *Wnd)
     // Circular
     {
         let circular = Circular.create(view, {450, 300})
+        circular.markerForm = .Needle
+        circular.stepForm = .Dot
         circular.setAngleRange(0'deg, 90'deg)
         circular.setStepCount(5)
     }

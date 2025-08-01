@@ -245,4 +245,19 @@ public impl Painter
                 fillPath(p, brush)
         }
     }
+
+    // Fill the polygon with the given 'brush'
+    #[Swag.Overload]
+    mtd fillPolygon(points: [..] Math.Vector2, brush: Brush)
+    {
+        if @countof(points) < 3:
+            return
+
+        var path: LinePath
+        path.start(points[0].x, points[0].y)
+        foreach pt in points:
+            path.lineTo(pt.x, pt.y)
+        path.close()
+        fillPath(&path, brush)
+    }
 }
