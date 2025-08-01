@@ -4,20 +4,18 @@ using Core, Pixel
 #[Swag.EnumFlags]
 enum CircularFlags
 {
-    Zero       = 0
-    HilightBar
+    Zero = 0
 }
 
 struct Circular
 {
     using wnd:          Wnd
 
-    value:             f32
+    value:              f32
     value2:             f32
     min:                f32
     max:                f32 = 1.0
-    steps:              f32
-    sliderFlags         = CircularFlags.HilightBar
+    sliderFlags:        CircularFlags
     sigStartChange:     SigArray'func||(*Self)
     sigChanged:         SigArray'func||(*Self)
     sigEndChange:       SigArray'func||(*Self)
@@ -75,35 +73,9 @@ impl IWnd for Circular
         // Draw circular track
         drawCircularTrack(bc.painter, theme, colorCircle)
 
-        // Display steps
-        if steps > 0
-        {
-            if isHot or isMoving:
-                aniStep.apply(self, colors.slider_HotStepBk)
-            else:
-                aniStep.apply(self, colors.slider_StepBk)
-
-            let totalSteps = cast(s32) ((max - min) / steps)
-            for var i = 0; i <= totalSteps; i += 1
-            {
-                let stepValue = cast(f32) i / cast(f32) totalSteps
-                var posStep   = getPosBoxAt(stepValue, metrics.slider_StepSize)
-
-                var colorStep: Color = undefined
-                colorStep = aniStep.cur()
-                theme.drawSubRect(bc.painter, posStep, &rects.slider_Step, colorStep)
-            }
-        }
-
         // Draw value marker
-        aniMark.apply(self, colorMark)
-
-        // Draw arc to show current value if HilightBar flag is set
-        if sliderFlags & CircularFlags.HilightBar:
-            drawValueArc(bc.painter, theme, colors.circular_Mark)
-
-        // Draw mark
         var posBox = getPosBox()
+        aniMark.apply(self, colorMark)
         theme.drawSubRect(bc.painter, posBox, &rects.slider_Mark, aniMark.cur())
     }
 
@@ -247,36 +219,8 @@ internal impl Circular
         }
     }
 
-    mtd drawValueArc(painter: *Painter, theme: *Theme, color: Color)
-    {
-        if !hasValue:
-            return
-
-        let valueAngle = valueToAngle(value)
-        let segments   = cast(s32) (32 * value) + 1
-        let angleStep  = (valueAngle - startAngle) / cast(f32) segments
-
-        let pen     = Pen.createSolid(color, 3.0)
-        var prevPos = getPositionFromAngle(startAngle)
-        for var i = 1; i <= segments; i += 1
-        {
-            let currentAngle = startAngle + angleStep * cast(f32) i
-            var currentPos   = getPositionFromAngle(currentAngle)
-
-            // Draw highlighted arc segment
-            painter.drawLine(prevPos, currentPos, pen)
-            prevPos = currentPos
-        }
-    }
-
     mtd clamp(f: f32)->f32
     {
-        if steps > 0
-        {
-            let r = cast(s32) ((f / steps) + 0.5)
-            return r * steps
-        }
-
         return Math.clamp(f, 0, 1)
     }
 
@@ -286,7 +230,7 @@ internal impl Circular
         if fc == value and hasValue:
             return
         hasValue = true
-        value   = fc
+        value    = fc
         sigChanged.call(self)
         invalidate()
     }
@@ -371,14 +315,11 @@ impl Circular
     }
 
     // Set the 'min', 'max' and 'steps' values
-    func setMinMax(self, min, max: f32, steps: f32 = 0)
+    func setMinMax(self, min, max: f32)
     {
         Debug.assert(min < max)
-        if steps > 0:
-            Debug.assert(steps <= (max - min))
-        self.min   = min
-        self.max   = max
-        self.steps = steps
+        self.min = min
+        self.max = max
     }
 
     // Set the angular range of the circular slider
