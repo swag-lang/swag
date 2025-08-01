@@ -225,12 +225,14 @@ struct ThemeColors
 
     circular_Bk:                          Color = Transparent
     circular_DisabledBk:                  Color = Transparent
-    circular_Circle:                      Color = Blue
-    circular_DisabledCircle:              Color = Gray5
+    circular_Circle:                      Color = Gray1
+    circular_DisabledCircle:              Color = Gray1
     circular_Mark:                        Color = Blue
     circular_HotMark:                     Color = White
     circular_PressedMark:                 Color = White
     circular_DisabledMark:                Color = Gray4
+    circular_Step:                        Color = Gray1
+    circular_DisabledStep:                Color = Gray1
 
     tabItem_DisabledText:                 Color = Gray4
     tabItem_SelectedText:                 Color = White

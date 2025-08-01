@@ -7,31 +7,42 @@ enum CircularFlags
     Zero = 0
 }
 
+enum CircularStepForm
+{
+    NoSteps     = 0
+    LittleLines
+}
+
 struct Circular
 {
-    using wnd:          Wnd
+    using wnd:                 Wnd
 
-    value:              f32
-    value2:             f32
-    min:                f32
-    max:                f32 = 1.0
-    sliderFlags:        CircularFlags
-    sigStartChange:     SigArray'func||(*Self)
-    sigChanged:         SigArray'func||(*Self)
-    sigEndChange:       SigArray'func||(*Self)
+    value:                     f32
+    value2:                    f32
+    min:                       f32
+    max:                       f32 = 1.0
+    sliderFlags:               CircularFlags
+    stepForm:                  CircularStepForm = .LittleLines
+    startAngle:                f32 = 0
+    endAngle:                  f32 = Math.ConstF32.TwoPi
+    stepCount:                 u32 = 20
+    sigStartChange:            SigArray'func||(*Self)
+    sigChanged:                SigArray'func||(*Self)
+    sigEndChange:              SigArray'func||(*Self)
+    radiusFactor:              f32 = 0.35
+    stepInnerRadiusFactor:     f32 = 4
+    stepOuterRadiusFactor:     f32 = 6
 
-    isMoving:           bool
-    isPressed:          bool
-    isHot:              bool
-    hasValue:           bool
-    startAngle:         f32 = 0
-    endAngle:           f32 = Math.ConstF32.TwoPi
-    radius:             f32
-    centerX:            f32
-    centerY:            f32
+    isMoving:                  bool
+    isPressed:                 bool
+    isHot:                     bool
+    hasValue:                  bool
+    radius:                    f32
+    centerX:                   f32
+    centerY:                   f32
 
-    aniMark:            BlendColor
-    aniStep:            BlendColor
+    aniMark:                   BlendColor
+    aniStep:                   BlendColor
 }
 
 impl IWnd for Circular
@@ -47,17 +58,20 @@ impl IWnd for Circular
         var colorBk:     Color = undefined
         var colorCircle: Color = undefined
         var colorMark:   Color = undefined
+        var colorStep:   Color = undefined
 
         if bc.isDisabled
         {
             colorBk     = colors.circular_DisabledBk
             colorCircle = colors.circular_DisabledCircle
             colorMark   = colors.circular_DisabledMark
+            colorStep   = colors.circular_DisabledStep
         }
         else
         {
             colorBk     = colors.circular_Bk
             colorCircle = colors.circular_Circle
+            colorStep   = colors.circular_Step
             if isPressed:
                 colorMark = colors.circular_PressedMark
             elif isHot:
@@ -69,14 +83,19 @@ impl IWnd for Circular
         updateGeometry()
 
         var clientRect = getClientRect()
+        bc.painter.setAntialiased(true)
 
         // Draw circular track
         drawCircularTrack(bc.painter, theme, colorCircle)
 
+        // Draw steps if enabled
+        if stepForm == .LittleLines and stepCount > 0:
+            drawStepLines(bc.painter, theme, colorStep)
+
         // Draw value marker
         var posBox = getPosBox()
         aniMark.apply(self, colorMark)
-        theme.drawSubRect(bc.painter, posBox, &rects.slider_Mark, aniMark.cur())
+        theme.drawSubRect(bc.painter, posBox, &rects.circular_Mark, aniMark.cur())
     }
 
     mtd impl onMouseEvent(evt: *MouseEvent)
@@ -144,7 +163,7 @@ internal impl Circular
         var clientRect = getClientRect()
         centerX = clientRect.x + clientRect.width * 0.5
         centerY = clientRect.y + clientRect.height * 0.5
-        radius  = Math.min(clientRect.width, clientRect.height) * 0.35
+        radius  = Math.min(clientRect.width, clientRect.height) * radiusFactor
     }
 
     mtd getAngleFromPosition(pos: Math.Point)->f32
@@ -216,6 +235,32 @@ internal impl Circular
             // Draw line segment (this would need proper painter line drawing)
             painter.drawLine(prevPos, currentPos, pen)
             prevPos = currentPos
+        }
+    }
+
+    mtd drawStepLines(painter: *Painter, theme: *Theme, color: Color)
+    {
+        if stepCount <= 1:
+            return
+
+        let totalAngle = endAngle - startAngle
+        let stepAngle  = totalAngle / cast(f32) (stepCount - 1)
+        let pen        = Pen.createSolid(color, 1.5)
+
+        // Step line dimensions
+        let innerRadius = radius + stepInnerRadiusFactor
+        let outerRadius = radius + stepOuterRadiusFactor
+
+        for var i: u32 = 0; i < stepCount; i += 1
+        {
+            let angle = startAngle + stepAngle * cast(f32) i
+
+            // Calculate inner and outer positions for the step line
+            let innerPos = Math.Vector2{centerX + Math.cos(angle) * innerRadius, centerY + Math.sin(angle) * innerRadius}
+            let outerPos = Math.Vector2{centerX + Math.cos(angle) * outerRadius, centerY + Math.sin(angle) * outerRadius}
+
+            // Draw the step line
+            painter.drawLine(innerPos, outerPos, pen)
         }
     }
 
@@ -329,6 +374,27 @@ impl Circular
         Debug.assert((endAngle.rad - startAngle.rad) <= Math.ConstF32.TwoPi)
         self.startAngle = startAngle.rad
         self.endAngle   = endAngle.rad
+    }
+
+    // Set the display stepForm (NoSteps or LittleLines)
+    func setStepForm(self, stepForm: CircularStepForm)
+    {
+        if self.stepForm != stepForm
+        {
+            self.stepForm = stepForm
+            self.invalidate()
+        }
+    }
+
+    // Set the number of step lines to display (only applies when stepForm is LittleLines)
+    mtd setStepCount(count: u32)
+    {
+        if self.stepCount != count
+        {
+            self.stepCount = count
+            if self.stepForm == .LittleLines:
+                self.invalidate()
+        }
     }
 
     #[Swag.Discardable]
