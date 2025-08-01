@@ -9,8 +9,9 @@ enum CircularFlags
 
 enum CircularStepForm
 {
-    NoSteps     = 0
-    LittleLines
+    None = 0
+    Dot
+    Tick
 }
 
 struct Circular
@@ -19,15 +20,14 @@ struct Circular
 
     value:                     f32
     sliderFlags:               CircularFlags
-    stepForm:                  CircularStepForm = .LittleLines
+    stepForm:                  CircularStepForm = .Tick
     startAngle:                f32 = 0
     endAngle:                  f32 = Math.ConstF32.TwoPi
     stepCount:                 u32 = 20
     sigStartChange:            SigArray'func||(*Self)
     sigChanged:                SigArray'func||(*Self)
     sigEndChange:              SigArray'func||(*Self)
-    radiusFactor:              f32 = 0.35
-    stepInnerRadiusFactor:     f32 = 4
+    stepInnerRadiusFactor:     f32 = 2
     stepOuterRadiusFactor:     f32 = 6
 
     isMoving:                  bool
@@ -86,8 +86,8 @@ impl IWnd for Circular
         drawCircularTrack(bc.painter, theme, colorCircle)
 
         // Draw steps if enabled
-        if stepForm == .LittleLines and stepCount > 0:
-            drawStepLines(bc.painter, theme, colorStep)
+        if stepForm != .None and stepCount > 0:
+            drawSteps(bc.painter, theme, colorStep)
 
         // Draw value marker
         var posBox = getPosBox()
@@ -160,7 +160,10 @@ internal impl Circular
         var clientRect = getClientRect()
         centerX = clientRect.x + clientRect.width * 0.5
         centerY = clientRect.y + clientRect.height * 0.5
-        radius  = Math.min(clientRect.width, clientRect.height) * radiusFactor
+        radius  = Math.min(clientRect.width, clientRect.height) * 0.5
+        radius -= 2
+        if stepOuterRadiusFactor > 0:
+            radius -= stepOuterRadiusFactor
     }
 
     mtd angleToValue(angle: f32)->f32
@@ -228,16 +231,51 @@ internal impl Circular
         return result
     }
 
-    mtd drawStepLines(painter: *Painter, theme: *Theme, color: Color)
+    // Main step drawing dispatcher
+    mtd drawSteps(painter: *Painter, theme: *Theme, color: Color)
+    {
+        switch stepForm
+        {
+        case .None:
+            return
+        case .Dot:
+            drawStepDots(painter, theme, color)
+        case .Tick:
+            drawStepTicks(painter, theme, color)
+        }
+    }
+
+    // Dots implementation
+    mtd drawStepDots(painter: *Painter, theme: *Theme, color: Color)
+    {
+        if stepCount <= 1:
+            return
+
+        let totalAngle  = endAngle - startAngle
+        let stepAngle   = totalAngle / cast(f32) (stepCount - 1)
+        let brush       = Brush.createSolid(color)
+        let dotRadius   = (stepOuterRadiusFactor - stepInnerRadiusFactor) * 0.5
+        let dotDistance = radius + (stepOuterRadiusFactor + stepInnerRadiusFactor) * 0.5
+
+        for var i: u32 = 0; i < stepCount; i += 1
+        {
+            let angle = startAngle + stepAngle * cast(f32) i
+
+            let pos   = Math.Vector2{centerX + Math.sin(angle) * dotDistance, centerY - Math.cos(angle) * dotDistance}
+            painter.fillCircle(pos.x, pos.y, dotRadius, brush)
+        }
+    }
+
+    // Thick ticks implementation
+    mtd drawStepTicks(painter: *Painter, theme: *Theme, color: Color)
     {
         if stepCount <= 1:
             return
 
         let totalAngle = endAngle - startAngle
         let stepAngle  = totalAngle / cast(f32) (stepCount - 1)
-        let pen        = Pen.createSolid(color, 1.5)
+        let pen        = Pen.createSolid(color, 3.0)                // Thicker than Lines
 
-        // Dimensions des lignes d'étape
         let innerRadius = radius + stepInnerRadiusFactor
         let outerRadius = radius + stepOuterRadiusFactor
 
@@ -245,12 +283,8 @@ internal impl Circular
         {
             let angle = startAngle + stepAngle * cast(f32) i
 
-            // Calculer les positions intérieure et extérieure pour la ligne d'étape
-            // Utiliser sin/cos cohérent avec getPositionFromAngle
             let innerPos = Math.Vector2{centerX + Math.sin(angle) * innerRadius, centerY - Math.cos(angle) * innerRadius}
             let outerPos = Math.Vector2{centerX + Math.sin(angle) * outerRadius, centerY - Math.cos(angle) * outerRadius}
-
-            // Dessiner la ligne d'étape
             painter.drawLine(innerPos, outerPos, pen)
         }
     }
@@ -380,7 +414,7 @@ impl Circular
         self.endAngle   = endAngle.rad
     }
 
-    // Set the display stepForm (NoSteps or LittleLines)
+    // Set the display stepForm (NoSteps or Lines)
     mtd setStepForm(form: CircularStepForm)
     {
         if stepForm != form
@@ -390,7 +424,7 @@ impl Circular
         }
     }
 
-    // Set the number of step lines to display (only applies when stepForm is LittleLines)
+    // Set the number of step lines to display (only applies when stepForm is Lines)
     mtd setStepCount(count: u32)
     {
         if stepCount != count
