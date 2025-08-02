@@ -233,6 +233,7 @@ struct ThemeColors
     circular_DisabledMark:                Color = Gray4
     circular_Step:                        Color = Gray2
     circular_DisabledStep:                Color = Gray2
+    circular_RangeArc:                    Color = Blue
 
     tabItem_DisabledText:                 Color = Gray4
     tabItem_SelectedText:                 Color = White
