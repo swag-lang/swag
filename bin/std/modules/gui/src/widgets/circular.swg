@@ -26,35 +26,52 @@ struct Circular
 {
     using wnd:                 Wnd
 
-    value1:                    f32
-    value2:                    f32
-    circularFlags:             CircularFlags
-    stepForm:                  CircularStepForm = .Tick
-    markerForm:                CircularMarkerForm = .Circle
-    startAngle:                f32 = 0
-    endAngle:                  f32 = Math.ConstF32.TwoPi
-    stepCount:                 u32 = 20
-    sigStartChange:            SigArray'func||(*Self)
-    sigChanged:                SigArray'func||(*Self)
-    sigEndChange:              SigArray'func||(*Self)
-    stepInnerRadiusFactor:     f32 = 2
-    stepOuterRadiusFactor:     f32 = 6
+    // Main values (0.0 to 1.0 range)
+    value1:                    f32                              // Primary value (or left value in range mode)
+    value2:                    f32                              // Secondary value (right value in range mode)
 
-    isMoving:                  bool
-    isPressed1:                bool
-    isPressed2:                bool
-    isHot1:                    bool
-    isHot2:                    bool
-    hasValue1:                 bool
-    hasValue2:                 bool
-    radius:                    f32
-    centerX:                   f32
-    centerY:                   f32
-    correcMoving:              f32
+    // Configuration flags and visual settings
+    circularFlags:             CircularFlags                    // Control behavior flags (Range mode, etc.)
+    stepForm:                  CircularStepForm = .Tick         // Visual form of step indicators (None, Dot, Tick)
+    markerForm:                CircularMarkerForm = .Circle     // Visual form of value markers (None, Circle, Needle)
 
-    aniMark1:                  BlendColor
-    aniMark2:                  BlendColor
-    aniStep:                   BlendColor
+    // Angular configuration (in radians)
+    startAngle:                f32 = 0                          // Starting angle of the circular range (0 = top)
+    endAngle:                  f32 = Math.ConstF32.TwoPi        // Ending angle of the circular range (2π = full circle)
+
+    // Step visualization settings
+    stepCount:                 u32 = 20                         // Number of step indicators to draw
+    stepInnerRadiusFactor:     f32 = 2                          // Distance from main circle to inner edge of steps
+    stepOuterRadiusFactor:     f32 = 6                          // Distance from main circle to outer edge of steps
+    circleGap:                 f32 = 8                          // Gap between inner and outer circles (0 = single circle)
+
+    // Colors
+    rangeColor:                Color                            // Color for the range arc (when in range mode)
+
+    // Event signals
+    sigStartChange:            SigArray'func||(*Self)          // Fired when user starts changing value
+    sigChanged:                SigArray'func||(*Self)          // Fired when value changes
+    sigEndChange:              SigArray'func||(*Self)          // Fired when user finishes changing value
+
+    // Internal state tracking
+    isMoving:                  bool                             // True when user is dragging a marker
+    isPressed1:                bool                             // True when primary marker is being pressed
+    isPressed2:                bool                             // True when secondary marker is being pressed
+    isHot1:                    bool                             // True when mouse is hovering over primary marker
+    isHot2:                    bool                             // True when mouse is hovering over secondary marker
+    hasValue1:                 bool                             // True if primary value has been set
+    hasValue2:                 bool                             // True if secondary value has been set
+
+    // Calculated geometry (updated in updateGeometry())
+    radius:                    f32                              // Radius of the main circular track
+    centerX:                   f32                              // X coordinate of circle center
+    centerY:                   f32                              // Y coordinate of circle center
+    correcMoving:              f32                              // Movement correction factor
+
+    // Animation blending for smooth color transitions
+    aniMark1:                  BlendColor                       // Color animation for primary marker
+    aniMark2:                  BlendColor                       // Color animation for secondary marker
+    aniStep:                   BlendColor                       // Color animation for step indicators
 }
 
 impl IWnd for Circular
@@ -107,12 +124,12 @@ impl IWnd for Circular
         var clientRect = getClientRect()
         bc.painter.setAntialiased(true)
 
-        // Draw circular track
-        drawCircularTrack(bc.painter, theme, colorCircle)
-
         // Draw range arc if enabled
         if circularFlags.has(.Range):
-            drawRangeArc(bc.painter, theme, colors.circular_RangeArc)
+            drawRangeArc(bc.painter)
+
+        // Draw circular track
+        drawCircularTrack(bc.painter, theme, colorCircle)
 
         // Draw steps if enabled
         if stepForm != .None and stepCount > 0:
@@ -189,7 +206,7 @@ impl IWnd for Circular
                 else
                 {
                     correcMoving = 0
-                    // Détermine quel marqueur est le plus proche
+                    // Determine which marker is closest
                     let m = (value1 + value2) * 0.5
                     if normalizedValue <= m
                     {
@@ -270,14 +287,14 @@ internal impl Circular
         let dx = pos.x - centerX
         let dy = pos.y - centerY
 
-        // Utiliser atan2(dx, -dy) pour avoir 0° vers le haut et 90° vers la droite
-        // -dy car l'axe Y est inversé (vers le bas = positif)
+        // Use atan2(dx, -dy) to have 0° pointing up and 90° pointing right
+        // -dy because Y axis is inverted (down = positive)
         var angle = Math.atan2(dx, -dy)
 
-        // Normaliser l'angle selon notre système de coordonnées
+        // Normalize the angle according to our coordinate system
         angle = angle - startAngle
 
-        // Normaliser dans la plage [0, 2π]
+        // Normalize to range [0, 2π]
         while angle < 0:
             angle += Math.ConstF32.TwoPi
         while angle > Math.ConstF32.TwoPi:
@@ -288,20 +305,22 @@ internal impl Circular
 
     mtd getPositionFromAngle(angle: f32)->Math.Vector2
     {
-        // Ajouter startAngle pour revenir au système de coordonnées global
+        // Add startAngle to return to global coordinate system
         let adjustedAngle = angle + startAngle
 
         var result: retval
-        // Pour 0° vers le haut : x = sin(angle), y = -cos(angle)
+        // For 0° pointing up: x = sin(angle), y = -cos(angle)
         result.x = centerX + Math.sin(adjustedAngle) * radius
         result.y = centerY - Math.cos(adjustedAngle) * radius
         return result
     }
 
     // Range arc drawing
-    mtd drawRangeArc(painter: *Painter, theme: *Theme, color: Color)
+    mtd drawRangeArc(painter: *Painter)
     {
-        let pen = Pen.createSolid(color, 4.0)
+        let color    = rangeColor.a ? rangeColor : getThemeColors().circular_RangeArc
+        let penSize  = circleGap ? circleGap : 4.0
+        let pen      = Pen.createSolid(color, penSize)
         let startArc = valueToAngle(value1)
         let endArc   = valueToAngle(value2)
         painter.drawArc(centerX, centerY, radius, startArc, endArc, pen)
@@ -396,7 +415,7 @@ internal impl Circular
         }
     }
 
-    // Thick ticks implementation
+    // Tick marks implementation
     mtd drawStepTicks(painter: *Painter, theme: *Theme, color: Color)
     {
         if stepCount <= 1:
@@ -422,7 +441,9 @@ internal impl Circular
     mtd drawCircularTrack(painter: *Painter, theme: *Theme, color: Color)
     {
         let pen = Pen.createSolid(color, 2.0)
-        painter.drawCircle(centerX, centerY, radius, pen)
+        painter.drawCircle(centerX, centerY, radius - circleGap * 0.5, pen)
+        if circleGap != 0:
+            painter.drawCircle(centerX, centerY, radius + circleGap * 0.5, pen)
     }
 
     mtd clamp(f: f32)->f32
@@ -468,7 +489,7 @@ internal impl Circular
             isHot1, isHot2 = false
         }
 
-        // Check value2 first if range mode (comme dans le slider horizontal)
+        // Check value2 first if range mode (like in horizontal slider)
         if circularFlags.has(.Range)
         {
             var rect = getPosBox2()
@@ -596,7 +617,7 @@ impl Circular
         self.endAngle   = endAngle.rad
     }
 
-    // Set the display stepForm (NoSteps or Lines)
+    // Set the display stepForm (None, Dot, or Tick)
     mtd setStepForm(form: CircularStepForm)
     {
         if stepForm != form
@@ -606,7 +627,7 @@ impl Circular
         }
     }
 
-    // Set the number of step lines to display (only applies when stepForm is Lines)
+    // Set the number of step indicators to display (only applies when stepForm is Dot or Tick)
     mtd setStepCount(count: u32)
     {
         if stepCount != count
