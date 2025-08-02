@@ -100,6 +100,18 @@ impl PropWnd
         return ctrl
     }
 
+    #[Swag.Overload]
+    mtd createRotate(val: f32)->*Circular
+    {
+        with let ctrl = Circular.create(mainLayout)
+        {
+            .setMinMax(0, 360)
+            .setValue(val)
+        }
+
+        return ctrl
+    }
+
     func createArrowButton(stack: *Wnd, w, h: f32)->*IconButton
     {
         with let btn = IconButton.create(stack, {}, {0, 0, w, h})
@@ -1118,12 +1130,12 @@ impl PropWnd
         if curSel.subKind == .Highlight or curSel.subKind == .PixSel:
             return
 
-        let ctrl   = createSlider("Rotate", -180, 180, cast() curSel.rotate)
-        ctrl.slider.sigStartChange += func|self|(slider)
+        let ctrl   = createRotate(cast() curSel.rotate)
+        ctrl.sigStartChange += func|self|(slider)
         {
             self.pushTypedValue(cast<bit>(u32) slider.getValue(), BaseForm, #nameof(BaseForm.rotate), true, true)
         }
-        ctrl.slider.sigChanged += func|self|(slider)
+        ctrl.sigChanged += func|self|(slider)
         {
             self.pushTypedValue(cast<bit>(u32) slider.getValue(), BaseForm, #nameof(BaseForm.rotate), false, true)
         }

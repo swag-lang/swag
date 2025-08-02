@@ -520,7 +520,7 @@ impl Capture
         // Rotation
         painter.pushTransform()
 
-        if base.subKind != .Highlight and base.subKind != .PixSel and !Math.isZeroEpsilon(base.rotate)
+        if base.subKind != .Highlight and base.subKind != .PixSel and !quickMode and !Math.isZeroEpsilon(base.rotate)
         {
             painter.translateTransform(saveNoClipPos.horzCenter(), saveNoClipPos.vertCenter())
             paintRect.offset(-saveNoClipPos.horzCenter(), -saveNoClipPos.vertCenter())
