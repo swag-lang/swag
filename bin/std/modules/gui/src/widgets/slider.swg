@@ -9,6 +9,7 @@ enum SliderFlags
     HilightBar
     Vertical
     Integer
+    ShowSteps   // Display steps if defined
 }
 
 struct Slider
@@ -157,7 +158,7 @@ impl IWnd for Slider
         }
 
         // Display steps
-        if steps > 0
+        if steps > 0 and sliderFlags.has(.ShowSteps)
         {
             if isHot1 or isHot2 or isMoving
             {
@@ -490,7 +491,10 @@ impl Slider
         Debug.assert(steps < (max - min))
         self.min   = min
         self.max   = max
-        self.steps = steps
+        if steps > 0:
+            self.steps = steps / (max - min)  // Convert to normalized step size
+        else:
+            self.steps = 0
     }
 
     // Set left and right values, for a range

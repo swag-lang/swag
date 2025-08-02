@@ -4,8 +4,9 @@ using Core, Pixel
 #[Swag.EnumFlags]
 enum CircularFlags
 {
-    Zero  = 0
+    Zero    = 0
     Range
+    Integer
 }
 
 enum CircularStepForm
@@ -24,54 +25,59 @@ enum CircularMarkerForm
 
 struct Circular
 {
-    using wnd:                 Wnd
+    using wnd: Wnd
 
     // Main values (0.0 to 1.0 range)
-    value1:                    f32                              // Primary value (or left value in range mode)
-    value2:                    f32                              // Secondary value (right value in range mode)
+    value1:     f32     // Primary value (or left value in range mode)
+    value2:     f32     // Secondary value (right value in range mode)
+
+    // Value range (like in linear slider)
+    min:       f32           // Minimum value
+    max:       f32 = 1.0     // Maximum value
+    steps:     f32           // Step size (0 = no stepping)
 
     // Configuration flags and visual settings
-    circularFlags:             CircularFlags                    // Control behavior flags (Range mode, etc.)
-    stepForm:                  CircularStepForm = .Tick         // Visual form of step indicators (None, Dot, Tick)
-    markerForm:                CircularMarkerForm = .Circle     // Visual form of value markers (None, Circle, Needle)
+    circularFlags:     CircularFlags                    // Control behavior flags (Range, Integer, etc.)
+    stepForm:          CircularStepForm = .Tick         // Visual form of step indicators (None, Dot, Tick)
+    markerForm:        CircularMarkerForm = .Circle     // Visual form of value markers (None, Circle, Needle)
 
     // Angular configuration (in radians)
-    startAngle:                f32 = 0                          // Starting angle of the circular range (0 = top)
-    endAngle:                  f32 = Math.ConstF32.TwoPi        // Ending angle of the circular range (2π = full circle)
+    startAngle:     f32 = 0                       // Starting angle of the circular range (0 = top)
+    endAngle:       f32 = Math.ConstF32.TwoPi     // Ending angle of the circular range (2π = full circle)
 
     // Step visualization settings
-    stepCount:                 u32 = 20                         // Number of step indicators to draw
-    stepInnerRadiusFactor:     f32 = 2                          // Distance from main circle to inner edge of steps
-    stepOuterRadiusFactor:     f32 = 6                          // Distance from main circle to outer edge of steps
-    circleGap:                 f32 = 8                          // Gap between inner and outer circles (0 = single circle)
+    tickCount:                 u32 = 20     // Number of step indicators to draw
+    tickInnerRadiusFactor:     f32 = 2      // Distance from main circle to inner edge of ticks
+    tickOuterRadiusFactor:     f32 = 6      // Distance from main circle to outer edge of ticks
+    circleGap:                 f32 = 0      // Gap between inner and outer circles (0 = single circle)
 
     // Colors
-    rangeColor:                Color                            // Color for the range arc (when in range mode)
+    rangeColor: Color // Color for the range arc (when in range mode)
 
     // Event signals
-    sigStartChange:            SigArray'func||(*Self)          // Fired when user starts changing value
-    sigChanged:                SigArray'func||(*Self)          // Fired when value changes
-    sigEndChange:              SigArray'func||(*Self)          // Fired when user finishes changing value
+    sigStartChange:     SigArray'func||(*Self)     // Fired when user starts changing value
+    sigChanged:         SigArray'func||(*Self)     // Fired when value changes
+    sigEndChange:       SigArray'func||(*Self)     // Fired when user finishes changing value
 
     // Internal state tracking
-    isMoving:                  bool                             // True when user is dragging a marker
-    isPressed1:                bool                             // True when primary marker is being pressed
-    isPressed2:                bool                             // True when secondary marker is being pressed
-    isHot1:                    bool                             // True when mouse is hovering over primary marker
-    isHot2:                    bool                             // True when mouse is hovering over secondary marker
-    hasValue1:                 bool                             // True if primary value has been set
-    hasValue2:                 bool                             // True if secondary value has been set
+    isMoving:       bool     // True when user is dragging a marker
+    isPressed1:     bool     // True when primary marker is being pressed
+    isPressed2:     bool     // True when secondary marker is being pressed
+    isHot1:         bool     // True when mouse is hovering over primary marker
+    isHot2:         bool     // True when mouse is hovering over secondary marker
+    hasValue1:      bool     // True if primary value has been set
+    hasValue2:      bool     // True if secondary value has been set
 
     // Calculated geometry (updated in updateGeometry())
-    radius:                    f32                              // Radius of the main circular track
-    centerX:                   f32                              // X coordinate of circle center
-    centerY:                   f32                              // Y coordinate of circle center
-    correcMoving:              f32                              // Movement correction factor
+    radius:           f32     // Radius of the main circular track
+    centerX:          f32     // X coordinate of circle center
+    centerY:          f32     // Y coordinate of circle center
+    correcMoving:     f32     // Movement correction factor
 
     // Animation blending for smooth color transitions
-    aniMark1:                  BlendColor                       // Color animation for primary marker
-    aniMark2:                  BlendColor                       // Color animation for secondary marker
-    aniStep:                   BlendColor                       // Color animation for step indicators
+    aniMark1:     BlendColor     // Color animation for primary marker
+    aniMark2:     BlendColor     // Color animation for secondary marker
+    aniStep:      BlendColor     // Color animation for step indicators
 }
 
 impl IWnd for Circular
@@ -132,7 +138,7 @@ impl IWnd for Circular
         drawCircularTrack(bc.painter, theme, colorCircle)
 
         // Draw steps if enabled
-        if stepForm != .None and stepCount > 0:
+        if stepForm != .None and tickCount > 0:
             drawSteps(bc.painter, theme, colorStep)
 
         // Draw value1 marker
@@ -246,8 +252,8 @@ internal impl Circular
         centerY = clientRect.y + clientRect.height * 0.5
         radius  = Math.min(clientRect.width, clientRect.height) * 0.5
         radius -= 2
-        if stepOuterRadiusFactor > 0:
-            radius -= stepOuterRadiusFactor
+        if tickOuterRadiusFactor > 0:
+            radius -= tickOuterRadiusFactor
     }
 
     mtd angleToValue(angle: f32)->f32
@@ -397,16 +403,16 @@ internal impl Circular
     // Dots implementation
     mtd drawStepDots(painter: *Painter, theme: *Theme, color: Color)
     {
-        if stepCount <= 1:
+        if tickCount <= 1:
             return
 
         let totalAngle  = endAngle - startAngle
-        let stepAngle   = totalAngle / cast(f32) (stepCount - 1)
+        let stepAngle   = totalAngle / cast(f32) (tickCount - 1)
         let brush       = Brush.createSolid(color)
-        let dotRadius   = (stepOuterRadiusFactor - stepInnerRadiusFactor) * 0.5
-        let dotDistance = radius + (stepOuterRadiusFactor + stepInnerRadiusFactor) * 0.5
+        let dotRadius   = (tickOuterRadiusFactor - tickInnerRadiusFactor) * 0.5
+        let dotDistance = radius + (tickOuterRadiusFactor + tickInnerRadiusFactor) * 0.5
 
-        for var i: u32 = 0; i < stepCount; i += 1
+        for var i: u32 = 0; i < tickCount; i += 1
         {
             let angle = startAngle + stepAngle * cast(f32) i
 
@@ -418,17 +424,17 @@ internal impl Circular
     // Tick marks implementation
     mtd drawStepTicks(painter: *Painter, theme: *Theme, color: Color)
     {
-        if stepCount <= 1:
+        if tickCount <= 1:
             return
 
         let totalAngle = endAngle - startAngle
-        let stepAngle  = totalAngle / cast(f32) (stepCount - 1)
+        let stepAngle  = totalAngle / cast(f32) (tickCount - 1)
         let pen        = Pen.createSolid(color, 3.0)
 
-        let innerRadius = radius + stepInnerRadiusFactor
-        let outerRadius = radius + stepOuterRadiusFactor
+        let innerRadius = radius + tickInnerRadiusFactor
+        let outerRadius = radius + tickOuterRadiusFactor
 
-        for var i: u32 = 0; i < stepCount; i += 1
+        for var i: u32 = 0; i < tickCount; i += 1
         {
             let angle = startAngle + stepAngle * cast(f32) i
 
@@ -448,32 +454,44 @@ internal impl Circular
 
     mtd clamp(f: f32)->f32
     {
-        return Math.clamp(f, 0, 1)
+        if steps > 0
+        {
+            let r = cast(s32) ((f / steps) + 0.5)
+            return r * steps
+        }
+
+        if circularFlags.has(.Integer)
+        {
+            let val = Math.round((min + (max - min) * f))
+            return (val - min) / (max - min)
+        }
+
+        return f
     }
 
-    // Modified setValue methods that use this validation:
+    // Modified setValue methods that use the new clamp method:
     mtd setValue1(f: f32)
     {
-        let fc = clamp(f)
+        var fc = clamp(f)
+        if circularFlags.has(.Range):
+            fc = Math.min(fc, value2)
         if fc == value1 and hasValue1:
             return
-
         hasValue1 = true
         value1    = fc
-
         sigChanged.call(self)
         invalidate()
     }
 
     mtd setValue2(f: f32)
     {
-        let fc = clamp(f)
+        var fc = clamp(f)
+        if circularFlags.has(.Range):
+            fc = Math.max(fc, value1)
         if fc == value2 and hasValue2:
             return
-
         hasValue2 = true
         value2    = fc
-
         sigChanged.call(self)
         invalidate()
     }
@@ -547,9 +565,10 @@ internal impl Circular
 
 impl Circular
 {
+    // Updated getValue methods to return actual values instead of normalized values
     mtd const getValue()->f32      => getValueLeft()
-    mtd const getValueLeft()->f32  => value1
-    mtd const getValueRight()->f32 => value2
+    mtd const getValueLeft()->f32  => min + (max - min) * value1
+    mtd const getValueRight()->f32 => min + (max - min) * value2
 
     mtd setValue(f: f32)
     {
@@ -560,7 +579,7 @@ impl Circular
     mtd setValueLeft(f: f32)
     {
         startChange()
-        setValue1(f)
+        setValue1((f - min) / (max - min))
         endChange()
     }
 
@@ -568,7 +587,7 @@ impl Circular
     mtd setValueRight(f: f32)
     {
         startChange()
-        setValue2(f)
+        setValue2((f - min) / (max - min))
         endChange()
     }
 
@@ -577,35 +596,24 @@ impl Circular
     {
         Debug.assert(left < right)
         Debug.assert(circularFlags.has(.Range))
-        value1 = left
-        value2 = right
+        let diff = max - min
+        value1 = (left - min) / diff
+        value2 = (right - min) / diff
         setValue1(value1)
         setValue2(value2)
     }
 
-    // Set the current angle
-    mtd setAngle(f: Math.Angle)
+    // Set the min and max values, and optional steps
+    func setMinMax(self, min, max: f32, steps: f32 = 0)
     {
-        startChange()
-
-        // Normalize the angle to the range [startAngle, endAngle]
-        var normalizedAngle = f.rad - startAngle
-
-        // Clamp to valid range
-        let totalAngle = endAngle - startAngle
-        normalizedAngle = Math.clamp(normalizedAngle, 0, totalAngle)
-
-        // Convert to normalized value (0-1)
-        value1 = normalizedAngle / totalAngle
-
-        endChange()
-    }
-
-    // Get the angle
-    mtd const getAngle()->Math.Angle
-    {
-        let currentAngle = valueToAngle(value1)
-        return Math.Angle{rad: currentAngle}
+        Debug.assert(min < max)
+        Debug.assert(steps < (max - min))
+        self.min   = min
+        self.max   = max
+        if steps > 0:
+            self.steps = steps / (max - min)  // Convert to normalized step size
+        else:
+            self.steps = 0
     }
 
     // Set the angular range of the circular slider
@@ -630,9 +638,9 @@ impl Circular
     // Set the number of step indicators to display (only applies when stepForm is Dot or Tick)
     mtd setStepCount(count: u32)
     {
-        if stepCount != count
+        if tickCount != count
         {
-            stepCount = count
+            tickCount = count
             invalidate()
         }
     }

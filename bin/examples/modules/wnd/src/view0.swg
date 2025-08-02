@@ -217,6 +217,7 @@ func createView0(tabView: *Tab, view: *Wnd)
 
         slider = Slider.create(view, {10, 410})
         slider.setMinMax(0, 1, 0.1)
+        slider.sliderFlags.add(.ShowSteps)
         slider.setValue(0.55)
 
         slider = Slider.create(view, {10, 440})
@@ -231,7 +232,7 @@ func createView0(tabView: *Tab, view: *Wnd)
         let edit0 = EditBox.create(view, "0", {210, 464, 45}, id: "edit0")
         edit0.setForm(EditBoxForm.Transparent)
 
-        slider0.setMinMax(0, 255)
+        slider0.setMinMax(0, 255, 5)
         slider0.sigChanged += func(wnd)
         {
             let val  = Format.toString("%", cast(s32) wnd.getValue())
@@ -260,10 +261,17 @@ func createView0(tabView: *Tab, view: *Wnd)
         circular.setStepCount(5)
 
         circular = Circular.create(view, {1050, 100})
-        circular.setAngle(90'deg)
+        circular.setMinMax(0, 360)
+        circular.setValue(90)
 
         circular = Circular.create(view, {1050, 200, 80})
         circular.circularFlags.add(.Range)
+        circular.circleGap = 4
+
+        circular = Circular.create(view, {1050, 300, 80})
+        circular.circularFlags.add(.Integer)
+        circular.setMinMax(0, 360, 10)
+        circular.sigChanged += func(val) { @print(val.getValue(), " "); }
     }
 
     // SliderCtrl
