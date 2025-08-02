@@ -28,8 +28,6 @@ impl Painter
             return
         if Math.isZeroEpsilon(endAngle.rad - startAngle.rad):
             return
-        Debug.assert(endAngle.rad > startAngle.rad)
-
         sharedLinePath.setArc(centerX, centerY, radius, startAngle, endAngle)
         drawPath(&sharedLinePath, pen)
     }

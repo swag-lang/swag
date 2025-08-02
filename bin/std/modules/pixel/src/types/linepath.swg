@@ -278,7 +278,6 @@ public impl LinePath
         let cY = Math.round(centerY)
         let r  = Math.round(radius)
 
-        Debug.assert(endAngle.rad > startAngle.rad)
         var startPos = Math.Vector2{0, -r}
         startPos.rotate(startAngle)
         start(cX + startPos.x, cY + startPos.y)

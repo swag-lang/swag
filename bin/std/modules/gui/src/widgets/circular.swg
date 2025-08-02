@@ -172,18 +172,18 @@ impl IWnd for Circular
 
                 if isHot1
                 {
-                    isPressed1 = true
+                    isPressed1   = true
                     correcMoving = 0
                 }
                 elif isHot2
                 {
-                    isPressed2 = true
+                    isPressed2   = true
                     correcMoving = 0
                 }
                 elif !circularFlags.has(.Range)
                 {
                     correcMoving = 0
-                    isPressed1 = true
+                    isPressed1   = true
                     setValue1(normalizedValue)
                 }
                 else
@@ -237,8 +237,6 @@ internal impl Circular
     {
         let totalAngle      = endAngle - startAngle
         var normalizedAngle = angle
-
-        @print(angle, " ")
 
         // For partial arcs, we need to find the closest valid angle
         if normalizedAngle > totalAngle
@@ -304,11 +302,8 @@ internal impl Circular
     mtd drawRangeArc(painter: *Painter, theme: *Theme, color: Color)
     {
         let pen = Pen.createSolid(color, 4.0)
-
         let startArc = valueToAngle(value1)
         let endArc   = valueToAngle(value2)
-
-        // Dessiner l'arc entre les deux valeurs
         painter.drawArc(centerX, centerY, radius, startArc, endArc, pen)
     }
 
@@ -435,28 +430,29 @@ internal impl Circular
         return Math.clamp(f, 0, 1)
     }
 
+    // Modified setValue methods that use this validation:
     mtd setValue1(f: f32)
     {
-        var fc = clamp(Math.clamp(f, 0, 1))
-        if circularFlags.has(.Range):
-            fc = Math.min(fc, value2)
+        let fc = clamp(f)
         if fc == value1 and hasValue1:
             return
+
         hasValue1 = true
         value1    = fc
+
         sigChanged.call(self)
         invalidate()
     }
 
     mtd setValue2(f: f32)
     {
-        var fc = clamp(Math.clamp(f, 0, 1))
-        if circularFlags.has(.Range):
-            fc = Math.max(fc, value1)
+        let fc = clamp(f)
         if fc == value2 and hasValue2:
             return
+
         hasValue2 = true
         value2    = fc
+
         sigChanged.call(self)
         invalidate()
     }
@@ -500,10 +496,10 @@ internal impl Circular
         let angle   = valueToAngle(val)
         var pos     = getPositionFromAngle(angle)
         var result: retval
-        result.x      = pos.x - (size * 0.5)
-        result.y      = pos.y - (size * 0.5)
-        result.width  = size
-        result.height = size
+        result.x      = pos.x - size
+        result.y      = pos.y - size
+        result.width  = size * 2
+        result.height = size * 2
         return result
     }
 
