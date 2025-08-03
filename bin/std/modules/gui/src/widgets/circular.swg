@@ -85,10 +85,7 @@ impl IWnd for Circular
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
         let bc      = evt.bc
-        let theme   = getTheme()
-        let metrics = getThemeMetrics()
         let colors  = getThemeColors()
-        let rects   = getThemeRects()
 
         var colorBk:     Color = undefined
         var colorCircle: Color = undefined
@@ -127,7 +124,6 @@ impl IWnd for Circular
 
         updateGeometry()
 
-        var clientRect = getClientRect()
         bc.painter.setAntialiased(true)
 
         // Draw range arc if enabled
@@ -135,21 +131,21 @@ impl IWnd for Circular
             drawRangeArc(bc.painter)
 
         // Draw circular track
-        drawCircularTrack(bc.painter, theme, colorCircle)
+        drawCircularTrack(bc.painter, colorCircle)
 
         // Draw steps if enabled
         if stepForm != .None and tickCount > 0:
-            drawSteps(bc.painter, theme, colorStep)
+            drawSteps(bc.painter, colorStep)
 
         // Draw value1 marker
         aniMark1.apply(self, colorMark1)
-        drawValueMarker(bc.painter, theme, aniMark1.cur(), value1)
+        drawValueMarker(bc.painter, aniMark1.cur(), value1)
 
         // Draw value2 marker if range mode
         if circularFlags.has(.Range)
         {
             aniMark2.apply(self, colorMark2)
-            drawValueMarker(bc.painter, theme, aniMark2.cur(), value2)
+            drawValueMarker(bc.painter, aniMark2.cur(), value2)
         }
     }
 
@@ -333,7 +329,7 @@ internal impl Circular
     }
 
     // Main marker drawing dispatcher
-    mtd drawValueMarker(painter: *Painter, theme: *Theme, color: Color, value: f32)
+    mtd drawValueMarker(painter: *Painter, color: Color, value: f32)
     {
         #[Swag.Complete]
         switch markerForm
@@ -341,14 +337,14 @@ internal impl Circular
         case .None:
             return
         case .Circle:
-            drawCircleMarker(painter, theme, color, value)
+            drawCircleMarker(painter, color, value)
         case .Needle:
-            drawNeedleMarker(painter, theme, color, value)
+            drawNeedleMarker(painter, color, value)
         }
     }
 
     // Circle marker
-    mtd drawCircleMarker(painter: *Painter, theme: *Theme, color: Color, value: f32)
+    mtd drawCircleMarker(painter: *Painter, color: Color, value: f32)
     {
         let angle        = valueToAngle(value)
         let pos          = getPositionFromAngle(angle)
@@ -363,7 +359,7 @@ internal impl Circular
     }
 
     // Needle marker (line from center to current position)
-    mtd drawNeedleMarker(painter: *Painter, theme: *Theme, color: Color, value: f32)
+    mtd drawNeedleMarker(painter: *Painter, color: Color, value: f32)
     {
         let angle     = valueToAngle(value)
         let trackPos  = getPositionFromAngle(angle)
@@ -386,7 +382,7 @@ internal impl Circular
     }
 
     // Main step drawing dispatcher
-    mtd drawSteps(painter: *Painter, theme: *Theme, color: Color)
+    mtd drawSteps(painter: *Painter, color: Color)
     {
         #[Swag.Complete]
         switch stepForm
@@ -394,14 +390,14 @@ internal impl Circular
         case .None:
             return
         case .Dot:
-            drawStepDots(painter, theme, color)
+            drawStepDots(painter, color)
         case .Tick:
-            drawStepTicks(painter, theme, color)
+            drawStepTicks(painter, color)
         }
     }
 
     // Dots implementation
-    mtd drawStepDots(painter: *Painter, theme: *Theme, color: Color)
+    mtd drawStepDots(painter: *Painter, color: Color)
     {
         if tickCount <= 1:
             return
@@ -422,7 +418,7 @@ internal impl Circular
     }
 
     // Tick marks implementation
-    mtd drawStepTicks(painter: *Painter, theme: *Theme, color: Color)
+    mtd drawStepTicks(painter: *Painter, color: Color)
     {
         if tickCount <= 1:
             return
@@ -444,7 +440,7 @@ internal impl Circular
         }
     }
 
-    mtd drawCircularTrack(painter: *Painter, theme: *Theme, color: Color)
+    mtd drawCircularTrack(painter: *Painter, color: Color)
     {
         let pen = Pen.createSolid(color, 2.0)
         painter.drawCircle(centerX, centerY, radius - circleGap * 0.5, pen)

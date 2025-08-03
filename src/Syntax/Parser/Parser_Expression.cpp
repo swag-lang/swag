@@ -1340,7 +1340,7 @@ void Parser::setForceTakeAddress(AstNode* node)
     }
 }
 
-bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFlags identifierFlags, VarDeclFlags /*varDeclFlags*/, const AstWith* withNode)
+bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFlags identifierFlags, VarDeclFlags varDeclFlags, const AstWith* withNode)
 {
     switch (tokenParse.token.id)
     {
