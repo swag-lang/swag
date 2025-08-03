@@ -635,7 +635,7 @@ bool Semantic::setSymbolMatchVar(SemanticContext* context, const OneMatch& oneMa
         YIELD();
 
         // Check access
-        if (overload->node->hasAttribute(ATTRIBUTE_INTERNAL) && overload->node->ownerStructScope != context->node->ownerStructScope)
+        if (overload->node->hasAttribute(ATTRIBUTE_FIELD_INTERNAL) && overload->node->ownerStructScope != context->node->ownerStructScope)
         {
             const Diagnostic err{identifier, formErr(Err0255, overload->node->token.cstr())};
             return context->report(err);

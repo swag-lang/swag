@@ -577,7 +577,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
             const auto attrUse = Ast::newNode<AstAttrUse>(AstNodeKind::AttrUse, this, parent);
             *result            = attrUse;
             attrUse->addAstFlag(AST_GENERATED | AST_GENERATED_USER);
-            attrUse->attributeFlags = ATTRIBUTE_INTERNAL;
+            attrUse->attributeFlags = ATTRIBUTE_FIELD_INTERNAL;
             SWAG_CHECK(eatToken());
             AstNode* topStmt;
             SWAG_CHECK(doStructBody(attrUse, structType, &topStmt));

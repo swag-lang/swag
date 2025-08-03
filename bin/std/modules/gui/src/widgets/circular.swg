@@ -59,33 +59,36 @@ struct Circular
     sigChanged:         SigArray'func||(*Self)     // Fired when value changes
     sigEndChange:       SigArray'func||(*Self)     // Fired when user finishes changing value
 
-    // Internal state tracking
-    isMoving:       bool     // True when user is dragging a marker
-    isPressed1:     bool     // True when primary marker is being pressed
-    isPressed2:     bool     // True when secondary marker is being pressed
-    isHot1:         bool     // True when mouse is hovering over primary marker
-    isHot2:         bool     // True when mouse is hovering over secondary marker
-    hasValue1:      bool     // True if primary value has been set
-    hasValue2:      bool     // True if secondary value has been set
+    internal
+    {
+        // Internal state tracking
+        isMoving:       bool     // True when user is dragging a marker
+        isPressed1:     bool     // True when primary marker is being pressed
+        isPressed2:     bool     // True when secondary marker is being pressed
+        isHot1:         bool     // True when mouse is hovering over primary marker
+        isHot2:         bool     // True when mouse is hovering over secondary marker
+        hasValue1:      bool     // True if primary value has been set
+        hasValue2:      bool     // True if secondary value has been set
 
-    // Calculated geometry (updated in updateGeometry())
-    radius:           f32     // Radius of the main circular track
-    centerX:          f32     // X coordinate of circle center
-    centerY:          f32     // Y coordinate of circle center
-    correcMoving:     f32     // Movement correction factor
+        // Calculated geometry (updated in updateGeometry())
+        radius:           f32     // Radius of the main circular track
+        centerX:          f32     // X coordinate of circle center
+        centerY:          f32     // Y coordinate of circle center
+        correcMoving:     f32     // Movement correction factor
 
-    // Animation blending for smooth color transitions
-    aniMark1:     BlendColor     // Color animation for primary marker
-    aniMark2:     BlendColor     // Color animation for secondary marker
-    aniStep:      BlendColor     // Color animation for step indicators
+        // Animation blending for smooth color transitions
+        aniMark1:     BlendColor     // Color animation for primary marker
+        aniMark2:     BlendColor     // Color animation for secondary marker
+        aniStep:      BlendColor     // Color animation for step indicators
+    }
 }
 
 impl IWnd for Circular
 {
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        let bc      = evt.bc
-        let colors  = getThemeColors()
+        let bc     = evt.bc
+        let colors = getThemeColors()
 
         var colorBk:     Color = undefined
         var colorCircle: Color = undefined
@@ -561,7 +564,6 @@ internal impl Circular
 
 impl Circular
 {
-    // Updated getValue methods to return actual values instead of normalized values
     mtd const getValue()->f32      => getValueLeft()
     mtd const getValueLeft()->f32  => min + (max - min) * value1
     mtd const getValueRight()->f32 => min + (max - min) * value2
@@ -604,10 +606,10 @@ impl Circular
     {
         Debug.assert(min < max)
         Debug.assert(steps < (max - min))
-        self.min   = min
-        self.max   = max
+        self.min = min
+        self.max = max
         if steps > 0:
-            self.steps = steps / (max - min)  // Convert to normalized step size
+            self.steps = steps / (max - min) // Convert to normalized step size
         else:
             self.steps = 0
     }

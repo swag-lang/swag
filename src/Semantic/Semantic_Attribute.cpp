@@ -233,7 +233,7 @@ void Semantic::inheritAttributesFrom(AstNode* child, const AttributeFlags& attri
     INHERIT_ATTR(child, ATTRIBUTE_SANITY_ON | ATTRIBUTE_SANITY_OFF);
 
     if (!child->hasAstFlag(AST_INTERNAL))
-        INHERIT_ATTR(child, ATTRIBUTE_PUBLIC | ATTRIBUTE_INTERNAL | ATTRIBUTE_PRIVATE);
+        INHERIT_ATTR(child, ATTRIBUTE_ACCESS_MASK);
 }
 
 void Semantic::inheritAttributesFromOwnerFunc(AstNode* child)
