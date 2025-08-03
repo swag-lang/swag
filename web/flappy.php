@@ -148,17 +148,17 @@
 {
     <span class="SCmt">// The location "swag@std" tells swag that 'gui' is a standard module that is located</span>
     <span class="SCmt">// with the compiler.</span>
-    <span class="SCmp">#import</span> <span class="SStr">"gui"</span> location=<span class="SStr">"swag@std"</span>
+    <span class="SCmp">#import</span>(<span class="SStr">"gui"</span>, location: <span class="SStr">"swag@std"</span>)
 
     <span class="SCmt">// Import the audio module, from the same default location</span>
-    <span class="SCmp">#import</span> <span class="SStr">"audio"</span> location=<span class="SStr">"swag@std"</span>
+    <span class="SCmp">#import</span>(<span class="SStr">"audio"</span>, location: <span class="SStr">"swag@std"</span>)
 
     <span class="SCmt">// This is the optional '#run' block executed by the compiler before compiling the script itself.</span>
     <span class="SCmt">// We define it just to make the point because Flappy does not really need one.</span>
     <span class="SFct">#run</span>
     {
         <span class="SCmt">// Get the compiler interface to communicate with the compiler.</span>
-        <span class="SKwd">let</span> itf = <span class="SItr">@compiler</span>()
+        <span class="SKwd">let</span> itf = <span class="SItr">@compiler</span>
 
         <span class="SCmt">// Get the build configuration</span>
         <span class="SKwd">let</span> cfg = itf.<span class="SFct">getBuildCfg</span>()
@@ -565,7 +565,7 @@
     g_Font = <span class="SCst">Font</span>.<span class="SFct">create</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"FlappyBirdy.ttf"</span>), <span class="SNum">50</span>)
 }</span></div>
 <div class="swag-watermark">
-Generated on 01-05-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.44.0</div>
+Generated on 03-08-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.44.0</div>
 </div>
 </div>
 </div>

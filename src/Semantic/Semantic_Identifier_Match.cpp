@@ -620,7 +620,6 @@ namespace
     }
 }
 
-#pragma optimize("", off)
 bool Semantic::setSymbolMatchVar(SemanticContext* context, const OneMatch& oneMatch, AstIdentifierRef* idRef, AstIdentifier* identifier, SymbolOverload* overload)
 {
     // If this is a struct variable, and it's referenced (identifierRef has a startScope), then we

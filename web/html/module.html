@@ -124,7 +124,7 @@
 {
     <span class="SFct">#run</span>
     {
-        <span class="SKwd">let</span> itf = <span class="SItr">@compiler</span>()
+        <span class="SKwd">let</span> itf = <span class="SItr">@compiler</span>
         <span class="SKwd">let</span> cfg = itf.<span class="SFct">getBuildCfg</span>()
         cfg.moduleVersion  = <span class="SNum">1</span>
         cfg.moduleRevision = <span class="SNum">0</span>
@@ -142,7 +142,7 @@
     }
 }</span></div>
 <div class="swag-watermark">
-Generated on 01-05-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.44.0</div>
+Generated on 03-08-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.44.0</div>
 </div>
 </div>
 </div>

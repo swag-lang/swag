@@ -129,6 +129,7 @@
 <li><a href="#Pixel_Bmp">Bmp</a></li>
 <li><a href="#Pixel_Clipper">Clipper</a></li>
 <li><a href="#Pixel_Gif">Gif</a></li>
+<li><a href="#Pixel_ImageStatistics">ImageStatistics</a></li>
 <li><a href="#Pixel_Jpg">Jpg</a></li>
 <li><a href="#Pixel_Png">Png</a></li>
 <li><a href="#Pixel_Poly2Tri">Poly2Tri</a></li>
@@ -160,6 +161,10 @@
 <li><a href="#Pixel_Png_EncodeOptions">Png.EncodeOptions</a></li>
 <li><a href="#Pixel_Png_Encoder">Png.Encoder</a></li>
 <li><a href="#Pixel_Tga_Encoder">Tga.Encoder</a></li>
+</ul>
+<h4>image/stats</h4>
+<ul>
+<li><a href="#Pixel_ImageStatistics_HaarFeatures">HaarFeatures</a></li>
 </ul>
 <h4>painter</h4>
 <ul>
@@ -326,18 +331,19 @@
 <li><a href="#Pixel_Image_allocWorkingBuffer">Image.allocWorkingBuffer</a></li>
 <li><a href="#Pixel_Image_applyWorkingBuffer">Image.applyWorkingBuffer</a></li>
 <li><a href="#Pixel_Image_clear">Image.clear</a></li>
-<li><a href="#Pixel_Image_copyPixel">Image.copyPixel</a></li>
+<li><a href="#Pixel_Image_convertToRGBA8">Image.convertToRGBA8</a></li>
+<li><a href="#Pixel_Image_copyPixelDirect">Image.copyPixelDirect</a></li>
 <li><a href="#Pixel_Image_create">Image.create</a></li>
 <li><a href="#Pixel_Image_freeWorkingBuffer">Image.freeWorkingBuffer</a></li>
 <li><a href="#Pixel_Image_from">Image.from</a></li>
 <li><a href="#Pixel_Image_getPixelColor">Image.getPixelColor</a></li>
+<li><a href="#Pixel_Image_getPixelColorDirect">Image.getPixelColorDirect</a></li>
 <li><a href="#Pixel_Image_init">Image.init</a></li>
 <li><a href="#Pixel_Image_isValid">Image.isValid</a></li>
 <li><a href="#Pixel_Image_opDrop">Image.opDrop</a></li>
 <li><a href="#Pixel_Image_opPostCopy">Image.opPostCopy</a></li>
 <li><a href="#Pixel_Image_opVisit">Image.opVisit</a></li>
 <li><a href="#Pixel_Image_release">Image.release</a></li>
-<li><a href="#Pixel_Image_setPixelRGBA8">Image.setPixelRGBA8</a></li>
 <li><a href="#Pixel_Image_toHICON">Image.toHICON</a></li>
 <li><a href="#Pixel_Image_visitPixels">Image.visitPixels</a></li>
 <li><a href="#Pixel_ImageMetaData_isTag">ImageMetaData.isTag</a></li>
@@ -403,6 +409,15 @@
 <li><a href="#Pixel_Image_setAlpha">Image.setAlpha</a></li>
 <li><a href="#Pixel_Image_setChannel">Image.setChannel</a></li>
 <li><a href="#Pixel_Image_toApplyKernel">Image.toApplyKernel</a></li>
+</ul>
+<h4>image/stats</h4>
+<ul>
+<li><a href="#Pixel_ImageStatistics_compareHaarCoefficients">ImageStatistics.compareHaarCoefficients</a></li>
+<li><a href="#Pixel_ImageStatistics_extractHaarFeatures">ImageStatistics.extractHaarFeatures</a></li>
+<li><a href="#Pixel_ImageStatistics_haarCompareTo">ImageStatistics.haarCompareTo</a></li>
+<li><a href="#Pixel_ImageStatistics_quickCompareHaarCoefficients">ImageStatistics.quickCompareHaarCoefficients</a></li>
+<li><a href="#Pixel_ImageStatistics_quickExtractHaarFeature">ImageStatistics.quickExtractHaarFeature</a></li>
+<li><a href="#Pixel_ImageStatistics_quickHaarCompareTo">ImageStatistics.quickHaarCompareTo</a></li>
 </ul>
 <h4>image/transform</h4>
 <ul>
@@ -598,6 +613,9 @@
 <li><a href="#Pixel_Brush_createSolid">Brush.createSolid</a></li>
 <li><a href="#Pixel_Brush_createTexture">Brush.createTexture</a></li>
 <li><a href="#Pixel_Brush_createTiled">Brush.createTiled</a></li>
+<li><a href="#Pixel_Color_add">Color.add</a></li>
+<li><a href="#Pixel_Color_adjustBrightness">Color.adjustBrightness</a></li>
+<li><a href="#Pixel_Color_adjustSaturation">Color.adjustSaturation</a></li>
 <li><a href="#Pixel_Color_fromAbgr">Color.fromAbgr</a></li>
 <li><a href="#Pixel_Color_fromArgb">Color.fromArgb</a></li>
 <li><a href="#Pixel_Color_fromArgbf">Color.fromArgbf</a></li>
@@ -607,21 +625,31 @@
 <li><a href="#Pixel_Color_fromVector4">Color.fromVector4</a></li>
 <li><a href="#Pixel_Color_getBlend">Color.getBlend</a></li>
 <li><a href="#Pixel_Color_getBlendKeepAlpha">Color.getBlendKeepAlpha</a></li>
+<li><a href="#Pixel_Color_getComplementary">Color.getComplementary</a></li>
+<li><a href="#Pixel_Color_getContrastingColor">Color.getContrastingColor</a></li>
 <li><a href="#Pixel_Color_getDarker">Color.getDarker</a></li>
 <li><a href="#Pixel_Color_getDistanceRgb">Color.getDistanceRgb</a></li>
+<li><a href="#Pixel_Color_getGrayScalef">Color.getGrayScalef</a></li>
 <li><a href="#Pixel_Color_getLighter">Color.getLighter</a></li>
+<li><a href="#Pixel_Color_isDark">Color.isDark</a></li>
+<li><a href="#Pixel_Color_isLight">Color.isLight</a></li>
 <li><a href="#Pixel_Color_isOpaque">Color.isOpaque</a></li>
+<li><a href="#Pixel_Color_multiply">Color.multiply</a></li>
 <li><a href="#Pixel_Color_opAffect">Color.opAffect</a></li>
 <li><a href="#Pixel_Color_opEquals">Color.opEquals</a></li>
+<li><a href="#Pixel_Color_rotateHue">Color.rotateHue</a></li>
 <li><a href="#Pixel_Color_setArgb">Color.setArgb</a></li>
 <li><a href="#Pixel_Color_setArgbf">Color.setArgbf</a></li>
 <li><a href="#Pixel_Color_setHsl">Color.setHsl</a></li>
 <li><a href="#Pixel_Color_setRgb">Color.setRgb</a></li>
 <li><a href="#Pixel_Color_setRgbf">Color.setRgbf</a></li>
 <li><a href="#Pixel_Color_toArgbf">Color.toArgbf</a></li>
+<li><a href="#Pixel_Color_toGrayscale">Color.toGrayscale</a></li>
 <li><a href="#Pixel_Color_toHsl">Color.toHsl</a></li>
 <li><a href="#Pixel_Color_toRgbf">Color.toRgbf</a></li>
 <li><a href="#Pixel_Color_toVector4">Color.toVector4</a></li>
+<li><a href="#Pixel_Color_withAlpha">Color.withAlpha</a></li>
+<li><a href="#Pixel_Color_withAlphaf">Color.withAlphaf</a></li>
 <li><a href="#Pixel_Color_IPokeValue_poke">IPokeValue.poke</a></li>
 <li><a href="#Pixel_LinePath_arcTo">LinePath.arcTo</a></li>
 <li><a href="#Pixel_LinePath_bezierTo">LinePath.bezierTo</a></li>
@@ -2007,108 +2035,160 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_add">add</a></span></td>
+<td>Add colors with clamping. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_adjustBrightness">adjustBrightness</a></span></td>
+<td>Adjust brightness (-1.0 = black, 0.0 = no change, 1.0 = white). </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_adjustSaturation">adjustSaturation</a></span></td>
+<td>Adjust saturation (-1.0 = grayscale, 0.0 = no change, 1.0 = full saturation). </td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromAbgr">fromAbgr</a></span></td>
-<td>Create a new Color with specified values. </td>
+<td>Create a new Color from u32 ABGR value (reversed byte order). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromArgb">fromArgb</a></span><span class="SCde">(<span class="SCst">Argb</span>)</span></td>
-<td>Create a new Color with specified values. </td>
+<td>Create a new Color from Argb enum value. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromArgb">fromArgb</a></span><span class="SCde">(<span class="STpe">u32</span>)</span></td>
-<td>Create a new Color with specified values. </td>
+<td>Create a new Color from u32 ARGB value. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromArgb">fromArgb</a></span><span class="SCde">(<span class="STpe">u8</span>, <span class="SCst">Argb</span>)</span></td>
-<td>Create a new Color with specified values. </td>
+<td>Create a new Color from Argb enum value with custom alpha. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromArgb">fromArgb</a></span><span class="SCde">(<span class="STpe">u8</span>, <span class="STpe">u8</span>, <span class="STpe">u8</span>, <span class="STpe">u8</span>)</span></td>
-<td>Create a new Color with specified values. </td>
+<td>Create a new Color with specified ARGB values. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromArgbf">fromArgbf</a></span></td>
-<td>Create a new Color with specified values. </td>
+<td>Create a new Color with specified ARGB float values. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromHsl">fromHsl</a></span></td>
-<td>Create a new Color with specified values. </td>
+<td>Create a new Color from HSL values (hue, saturation, lightness). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromRgb">fromRgb</a></span></td>
-<td>Create a new Color with specified values. </td>
+<td>Create a new Color with specified RGB values and opaque alpha. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromRgbf">fromRgbf</a></span></td>
-<td>Create a new Color with specified values. </td>
+<td>Create a new Color with specified RGB float values and opaque alpha. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromVector4">fromVector4</a></span></td>
-<td>Create a new Color with specified values. </td>
+<td>Create a new Color from Math.Vector4 (w=alpha, x=red, y=green, z=blue). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_getBlend">getBlend</a></span></td>
-<td>Blend two colors. </td>
+<td>Blend two colors using linear interpolation (including alpha). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_getBlendKeepAlpha">getBlendKeepAlpha</a></span></td>
-<td>Blend two colors, keeping the alpha channel of <span class="code-inline">col0</span> untouched. </td>
+<td>Blend two colors using linear interpolation, keeping col0's alpha channel. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_getComplementary">getComplementary</a></span></td>
+<td>Get complementary color (opposite on color wheel). </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_getContrastingColor">getContrastingColor</a></span></td>
+<td>Get a contrasting color (black or white) for text readability. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_getDarker">getDarker</a></span></td>
-<td>Returns a darker color. </td>
+<td>Returns a darker version of the color by blending with black. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_getDistanceRgb">getDistanceRgb</a></span></td>
-<td>Returns the distance between the other color. </td>
+<td>Calculate the RGB distance between this color and another (normalized to [0, 1]). </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_getGrayScalef">getGrayScalef</a></span></td>
+<td>Calculate the perceived brightness using luminance formula. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_getLighter">getLighter</a></span></td>
-<td>Returns a lighter color. </td>
+<td>Returns a lighter version of the color by blending with white. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_isDark">isDark</a></span></td>
+<td>Check if the color is considered "dark" based on luminance. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_isLight">isLight</a></span></td>
+<td>Check if the color is considered "light" based on luminance. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_isOpaque">isOpaque</a></span></td>
 <td></td>
 </tr>
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_multiply">multiply</a></span></td>
+<td>Multiply color by another color (component-wise). </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_rotateHue">rotateHue</a></span></td>
+<td>Adjust hue by rotating around the color wheel. </td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_setArgb">setArgb</a></span></td>
-<td>Set all components. </td>
+<td>Set all ARGB components with u8 values (0-255). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_setArgbf">setArgbf</a></span></td>
-<td>Set all components with floats in the range [0 1]. </td>
+<td>Set all ARGB components with floats in the range [0, 1]. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_setHsl">setHsl</a></span></td>
-<td>Initialize color with hue, saturation, lightness. </td>
+<td>Set color from HSL values (hue, saturation, lightness in range [0, 1]). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_setRgb">setRgb</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Color</span>)</span></td>
-<td>Just set r, g and b components. </td>
+<td>Copy RGB components from another color. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_setRgb">setRgb</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u8</span>, <span class="STpe">u8</span>, <span class="STpe">u8</span>)</span></td>
-<td>Just set r, g and b components. </td>
+<td>Set RGB components with u8 values (0-255). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_setRgbf">setRgbf</a></span></td>
-<td>Set r,g,b with floats in the range [0 1]. </td>
+<td>Set RGB components with floats in the range [0, 1]. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_toArgbf">toArgbf</a></span></td>
-<td>Retrieve all components as floating point values between 0 and 1. </td>
+<td>Retrieve all ARGB components as floating point values between 0 and 1. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_toGrayscale">toGrayscale</a></span></td>
+<td>Convert to grayscale color preserving alpha. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_toHsl">toHsl</a></span></td>
-<td>Returns hue, saturation, lightness. </td>
+<td>Convert color to HSL values (hue, saturation, lightness in range [0, 1]). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_toRgbf">toRgbf</a></span></td>
-<td>Retrieve all components as floating point values between 0 and 1. </td>
+<td>Retrieve RGB components as floating point values between 0 and 1. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_toVector4">toVector4</a></span></td>
-<td>Get the color as a [Math.Vector4]. </td>
+<td>Convert color to a Math.Vector4 (w=alpha, x=red, y=green, z=blue). </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_withAlpha">withAlpha</a></span></td>
+<td>Create a color with modified alpha. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_withAlphaf">withAlphaf</a></span></td>
+<td>Create a color with modified alpha (float version). </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
@@ -2145,11 +2225,50 @@
 <span id="Pixel_Color_IPokeValue_poke"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IPokeValue.</span><span class="api-item-title-strong">poke</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L355" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L473" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">poke</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buf: <span class="STpe">string</span>)-&gt;<span class="STpe">string</span> <span class="SKwd">throw</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Pixel_Color_add"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">add</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L460" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Add colors with clamping. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(col0, col1: <span class="SCst"><a href="#Pixel_Color">Color</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Pixel_Color_adjustBrightness"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">adjustBrightness</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L401" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Adjust brightness (-1.0 = black, 0.0 = no change, 1.0 = white). </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">adjustBrightness</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, factor: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Pixel_Color_adjustSaturation"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">adjustSaturation</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L390" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Adjust saturation (-1.0 = grayscale, 0.0 = no change, 1.0 = full saturation). </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">adjustSaturation</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, factor: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2161,7 +2280,7 @@
 </tr>
 </table>
 </p>
-<p>Create a new Color with specified values. </p>
+<p>Create a new Color from u32 ABGR value (reversed byte order). </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromAbgr</span>(abgr: <span class="STpe">u32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
 <p>
 <table class="api-item">
@@ -2174,11 +2293,14 @@
 </tr>
 </table>
 </p>
-<p>Create a new Color with specified values. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromArgb</span>(a, r, g, b: <span class="STpe">u8</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span>
-<span class="SKwd">func</span> <span class="SFct">fromArgb</span>(argb: <span class="SCst"><a href="#Pixel_Argb">Argb</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span>
-<span class="SKwd">func</span> <span class="SFct">fromArgb</span>(alpha: <span class="STpe">u8</span>, argb: <span class="SCst"><a href="#Pixel_Argb">Argb</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span>
-<span class="SKwd">func</span> <span class="SFct">fromArgb</span>(argb: <span class="STpe">u32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
+<p>Create a new Color with specified ARGB values. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromArgb</span>(a, r, g, b: <span class="STpe">u8</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
+<p>Create a new Color from Argb enum value. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromArgb</span>(argb: <span class="SCst"><a href="#Pixel_Argb">Argb</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
+<p>Create a new Color from Argb enum value with custom alpha. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromArgb</span>(alpha: <span class="STpe">u8</span>, argb: <span class="SCst"><a href="#Pixel_Argb">Argb</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
+<p>Create a new Color from u32 ARGB value. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromArgb</span>(argb: <span class="STpe">u32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2190,7 +2312,7 @@
 </tr>
 </table>
 </p>
-<p>Create a new Color with specified values. </p>
+<p>Create a new Color with specified ARGB float values. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromArgbf</span>(a, r, g, b: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
 <p>
 <table class="api-item">
@@ -2203,7 +2325,7 @@
 </tr>
 </table>
 </p>
-<p>Create a new Color with specified values. </p>
+<p>Create a new Color from HSL values (hue, saturation, lightness). </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromHsl</span>(h, s, l: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
 <p>
 <table class="api-item">
@@ -2216,7 +2338,7 @@
 </tr>
 </table>
 </p>
-<p>Create a new Color with specified values. </p>
+<p>Create a new Color with specified RGB values and opaque alpha. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromRgb</span>(r, g, b: <span class="STpe">u8</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
 <p>
 <table class="api-item">
@@ -2229,7 +2351,7 @@
 </tr>
 </table>
 </p>
-<p>Create a new Color with specified values. </p>
+<p>Create a new Color with specified RGB float values and opaque alpha. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromRgbf</span>(r, g, b: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
 <p>
 <table class="api-item">
@@ -2242,7 +2364,7 @@
 </tr>
 </table>
 </p>
-<p>Create a new Color with specified values. </p>
+<p>Create a new Color from Math.Vector4 (w=alpha, x=red, y=green, z=blue). </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromVector4</span>(vec: <span class="SCst">Math</span>.<span class="SCst">Vector4</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
 <p>
 <table class="api-item">
@@ -2255,7 +2377,7 @@
 </tr>
 </table>
 </p>
-<p>Blend two colors. </p>
+<p>Blend two colors using linear interpolation (including alpha). </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getBlend</span>(col0, col1: <span class="SCst"><a href="#Pixel_Color">Color</a></span>, factor: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
 <p>
 <table class="api-item">
@@ -2268,8 +2390,34 @@
 </tr>
 </table>
 </p>
-<p>Blend two colors, keeping the alpha channel of <span class="code-inline">col0</span> untouched. </p>
+<p>Blend two colors using linear interpolation, keeping col0's alpha channel. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getBlendKeepAlpha</span>(col0, col1: <span class="SCst"><a href="#Pixel_Color">Color</a></span>, factor: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Pixel_Color_getComplementary"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">getComplementary</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L441" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Get complementary color (opposite on color wheel). </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getComplementary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Pixel_Color_getContrastingColor"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">getContrastingColor</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L368" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Get a contrasting color (black or white) for text readability. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getContrastingColor</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2281,7 +2429,7 @@
 </tr>
 </table>
 </p>
-<p>Returns a darker color. </p>
+<p>Returns a darker version of the color by blending with black. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getDarker</span>(col: <span class="SCst"><a href="#Pixel_Color">Color</a></span>, factor: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
 <p>
 <table class="api-item">
@@ -2294,8 +2442,21 @@
 </tr>
 </table>
 </p>
-<p>Returns the distance between the other color. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getDistanceRgb</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, col: <span class="SCst"><a href="#Pixel_Color">Color</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Calculate the RGB distance between this color and another (normalized to [0, 1]). </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getDistanceRgb</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, col: <span class="SCst"><a href="#Pixel_Color">Color</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Pixel_Color_getGrayScalef"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">getGrayScalef</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L375" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Calculate the perceived brightness using luminance formula. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getGrayScalef</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2307,8 +2468,34 @@
 </tr>
 </table>
 </p>
-<p>Returns a lighter color. </p>
+<p>Returns a lighter version of the color by blending with white. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getLighter</span>(col: <span class="SCst"><a href="#Pixel_Color">Color</a></span>, factor: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Pixel_Color_isDark"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">isDark</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L354" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Check if the color is considered "dark" based on luminance. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isDark</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Pixel_Color_isLight"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">isLight</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L361" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Check if the color is considered "light" based on luminance. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isLight</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2321,6 +2508,19 @@
 </table>
 </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isOpaque</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Pixel_Color_multiply"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">multiply</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L448" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Multiply color by another color (component-wise). </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">multiply</span>(col0, col1: <span class="SCst"><a href="#Pixel_Color">Color</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2353,6 +2553,19 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Pixel_Color_rotateHue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">rotateHue</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L412" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Adjust hue by rotating around the color wheel. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">rotateHue</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, degrees: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Pixel_Color_setArgb"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">setArgb</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -2360,7 +2573,7 @@
 </tr>
 </table>
 </p>
-<p>Set all components. </p>
+<p>Set all ARGB components with u8 values (0-255). </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setArgb</span>(<span class="STpe">self</span>, a, r, g, b: <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
@@ -2373,7 +2586,7 @@
 </tr>
 </table>
 </p>
-<p>Set all components with floats in the range [0 1]. </p>
+<p>Set all ARGB components with floats in the range [0, 1]. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setArgbf</span>(<span class="STpe">self</span>, a, r, g, b: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
@@ -2386,7 +2599,7 @@
 </tr>
 </table>
 </p>
-<p>Initialize color with hue, saturation, lightness. </p>
+<p>Set color from HSL values (hue, saturation, lightness in range [0, 1]). </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setHsl</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, h, s, l: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
@@ -2399,12 +2612,12 @@
 </tr>
 </table>
 </p>
-<p>Just set r, g and b components. </p>
+<p>Set RGB components with u8 values (0-255). </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setRgb</span>(<span class="STpe">self</span>, r, g, b: <span class="STpe">u8</span>)</span></div>
-<p>Alpha will be opaque. </p>
-<p>Just set r, g and b components. </p>
+<p>Alpha will be set to opaque (255). </p>
+<p>Copy RGB components from another color. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setRgb</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, rgb: <span class="SCst"><a href="#Pixel_Color">Color</a></span>)</span></div>
-<p>Alpha will be opaque. </p>
+<p>Alpha remains unchanged. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2416,9 +2629,9 @@
 </tr>
 </table>
 </p>
-<p>Set r,g,b with floats in the range [0 1]. </p>
+<p>Set RGB components with floats in the range [0, 1]. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setRgbf</span>(<span class="STpe">self</span>, r, g, b: <span class="STpe">f32</span>)</span></div>
-<p>Alpha will be opaque. </p>
+<p>Alpha will be set to opaque (255). </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2430,8 +2643,21 @@
 </tr>
 </table>
 </p>
-<p>Retrieve all components as floating point values between 0 and 1. </p>
+<p>Retrieve all ARGB components as floating point values between 0 and 1. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toArgbf</span>(<span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;{a:<span class="STpe">f32</span>,r:<span class="STpe">f32</span>,g:<span class="STpe">f32</span>,b:<span class="STpe">f32</span>}</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Pixel_Color_toGrayscale"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">toGrayscale</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L382" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Convert to grayscale color preserving alpha. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toGrayscale</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2443,7 +2669,7 @@
 </tr>
 </table>
 </p>
-<p>Returns hue, saturation, lightness. </p>
+<p>Convert color to HSL values (hue, saturation, lightness in range [0, 1]). </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toHsl</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;{h:<span class="STpe">f32</span>,s:<span class="STpe">f32</span>,l:<span class="STpe">f32</span>}</span></div>
 <p>
 <table class="api-item">
@@ -2456,7 +2682,7 @@
 </tr>
 </table>
 </p>
-<p>Retrieve all components as floating point values between 0 and 1. </p>
+<p>Retrieve RGB components as floating point values between 0 and 1. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toRgbf</span>(<span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;{r:<span class="STpe">f32</span>,g:<span class="STpe">f32</span>,b:<span class="STpe">f32</span>}</span></div>
 <p>
 <table class="api-item">
@@ -2469,8 +2695,34 @@
 </tr>
 </table>
 </p>
-<p>Get the color as a [Math.Vector4]. </p>
+<p>Convert color to a Math.Vector4 (w=alpha, x=red, y=green, z=blue). </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toVector4</span>(<span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Pixel_Color_withAlpha"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">withAlpha</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L427" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Create a color with modified alpha. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">withAlpha</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, alpha: <span class="STpe">u8</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Pixel_Color_withAlphaf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">withAlphaf</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L434" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Create a color with modified alpha (float version). </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">withAlphaf</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, alpha: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3762,7 +4014,11 @@
 <td>Change the contrast. <span class="code-inline">factor</span> is [-1, 1]. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_copyPixel">copyPixel</a></span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_convertToRGBA8">convertToRGBA8</a></span></td>
+<td>Set pixel values at <span class="code-inline">pixDst</span> depending on pixel format Destination is supped to be in RGBA8 format. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_copyPixelDirect">copyPixelDirect</a></span></td>
 <td>Copy one pixel, depending on bpp. </td>
 </tr>
 <tr>
@@ -3830,6 +4086,10 @@
 <td>Returns the color at the given coordinate. </td>
 </tr>
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_getPixelColorDirect">getPixelColorDirect</a></span></td>
+<td>Set pixel values depending on pixel format. </td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Image_grayScale">grayScale</a></span></td>
 <td>Transform image to grayscale, with a given factor. </td>
 </tr>
@@ -3892,10 +4152,6 @@
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Image_setPixelFormat">setPixelFormat</a></span></td>
 <td>Change image pixel format. </td>
-</tr>
-<tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Image_setPixelRGBA8">setPixelRGBA8</a></span></td>
-<td>Set pixel values depending on pixel format. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Image_toApplyKernel">toApplyKernel</a></span></td>
@@ -4450,7 +4706,20 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Pixel_Image_copyPixel"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Image.</span><span class="api-item-title-strong">copyPixel</span></span>
+<span id="Pixel_Image_convertToRGBA8"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Image.</span><span class="api-item-title-strong">convertToRGBA8</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L204" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Set pixel values at <span class="code-inline">pixDst</span> depending on pixel format Destination is supped to be in RGBA8 format. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">PF</span>: <span class="SCst"><a href="#Pixel_PixelFormat">PixelFormat</a></span>) <span class="SFct">convertToRGBA8</span>(pixDst: ^<span class="STpe">u8</span>, r, g, b, a: <span class="STpe">u8</span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Pixel_Image_copyPixelDirect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Image.</span><span class="api-item-title-strong">copyPixelDirect</span></span>
 </td>
 <td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L185" class="src">[src]</a></td>
@@ -4458,7 +4727,7 @@
 </table>
 </p>
 <p>Copy one pixel, depending on bpp. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">BPP</span>: <span class="STpe">u8</span>) <span class="SFct">copyPixel</span>(pixDst, pixSrc: ^<span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">BPP</span>: <span class="STpe">u8</span>) <span class="SFct">copyPixelDirect</span>(pixDst, pixSrc: ^<span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4637,12 +4906,25 @@
 <span id="Pixel_Image_getPixelColor"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Image.</span><span class="api-item-title-strong">getPixelColor</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L234" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L281" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Returns the color at the given coordinate. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getPixelColor</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, pixX, pixY: <span class="STpe">s32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getPixelColor</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, pixX, pixY: <span class="STpe">s32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Pixel_Image_getPixelColorDirect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Image.</span><span class="api-item-title-strong">getPixelColorDirect</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L236" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Set pixel values depending on pixel format. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">PF</span>: <span class="SCst"><a href="#Pixel_PixelFormat">PixelFormat</a></span>) <span class="SFct">getPixelColorDirect</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, pixX, pixY: <span class="STpe">s32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4809,7 +5091,7 @@
 </table>
 </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4888,19 +5170,6 @@
 </p>
 <p>Change image pixel format. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setPixelFormat</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newPf: <span class="SCst"><a href="#Pixel_PixelFormat">PixelFormat</a></span>)</span></div>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
-<span id="Pixel_Image_setPixelRGBA8"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Image.</span><span class="api-item-title-strong">setPixelRGBA8</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L203" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<p>Set pixel values depending on pixel format. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">PF</span>: <span class="SCst"><a href="#Pixel_PixelFormat">PixelFormat</a></span>) <span class="SFct">setPixelRGBA8</span>(pixDst: ^<span class="STpe">u8</span>, r, g, b, _a: <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5071,7 +5340,7 @@
 </p>
 <p>Macro to foreach all pixels of the image in parallel chunks. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span> <span class="SFct">visitPixels</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, userData: *<span class="STpe">void</span> = <span class="SKwd">null</span>, stride: <span class="STpe">s32</span> = <span class="SNum">1</span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>)</span></div>
+<span class="SKwd">func</span> <span class="SFct">visitPixels</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, userData: *<span class="STpe">void</span> = <span class="SKwd">null</span>, stride: <span class="STpe">s32</span> = <span class="SNum">1</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
 <p>Exported variables: </p>
 <table class="table-markdown">
 <tr><td> pix       </td><td> address of the pixel</td></tr>
@@ -5146,6 +5415,156 @@
 </p>
 <p>Convert the value to a slice. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSlice</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">const</span> [..] <span class="STpe">u8</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Pixel_ImageStatistics"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Pixel.</span><span class="api-item-title-strong">ImageStatistics</span></span>
+</td>
+</tr>
+</table>
+</p>
+<h3>Structs</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><a href="#Pixel_ImageStatistics_HaarFeatures"><span class="SCst">HaarFeatures</span></a></td>
+<td>Structure to store Haar coefficients. </td>
+</tr>
+</table>
+<h3>Functions</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_ImageStatistics_compareHaarCoefficients">compareHaarCoefficients</a></span></td>
+<td>Compare Haar coefficients with multiscale weights. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_ImageStatistics_extractHaarFeatures">extractHaarFeatures</a></span></td>
+<td>Extract Haar coefficients from the image. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_ImageStatistics_haarCompareTo">haarCompareTo</a></span></td>
+<td>Compare to another image with Haar coefficients. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_ImageStatistics_quickCompareHaarCoefficients">quickCompareHaarCoefficients</a></span></td>
+<td>Compare Haar coefficients with multiscale weights. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_ImageStatistics_quickExtractHaarFeature">quickExtractHaarFeature</a></span></td>
+<td>Extract Haar coefficients from the image. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_ImageStatistics_quickHaarCompareTo">quickHaarCompareTo</a></span></td>
+<td>Compare to another image with Haar coefficients, fast simplified version. </td>
+</tr>
+</table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Pixel_ImageStatistics_HaarFeatures"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">ImageStatistics.</span><span class="api-item-title-strong">HaarFeatures</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\stats\haar.swg#L102" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Structure to store Haar coefficients. </p>
+<table class="table-enumeration">
+<tr>
+<td>coefficients</td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SFct">Array</span>'(<span class="STpe">f32</span>)</span></td>
+<td>Multi-scale Haar coefficients. </td>
+</tr>
+<tr>
+<td>size</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td>Representation size (power of 2). </td>
+</tr>
+<tr>
+<td>levels</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td>Number of decomposition levels. </td>
+</tr>
+</table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Pixel_ImageStatistics_compareHaarCoefficients"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ImageStatistics.</span><span class="api-item-title-strong">compareHaarCoefficients</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\stats\haar.swg#L136" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Compare Haar coefficients with multiscale weights. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compareHaarCoefficients</span>(haar1, haar2: <span class="SCst"><a href="#Pixel_ImageStatistics_HaarFeatures">HaarFeatures</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Pixel_ImageStatistics_extractHaarFeatures"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ImageStatistics.</span><span class="api-item-title-strong">extractHaarFeatures</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\stats\haar.swg#L110" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Extract Haar coefficients from the image. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">extractHaarFeatures</span>(image: <span class="SCst"><a href="#Pixel_Image">Image</a></span>, windowSize: <span class="STpe">u32</span> = <span class="SNum">128</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_ImageStatistics">ImageStatistics</a></span>.<span class="SCst"><a href="#Pixel_ImageStatistics_HaarFeatures">HaarFeatures</a></span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Pixel_ImageStatistics_haarCompareTo"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ImageStatistics.</span><span class="api-item-title-strong">haarCompareTo</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\stats\haar.swg#L195" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Compare to another image with Haar coefficients. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">haarCompareTo</span>(one, two: <span class="SCst"><a href="#Pixel_Image">Image</a></span>, windowSize: <span class="STpe">u32</span> = <span class="SNum">128</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Pixel_ImageStatistics_quickCompareHaarCoefficients"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ImageStatistics.</span><span class="api-item-title-strong">quickCompareHaarCoefficients</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\stats\haar.swg#L241" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Compare Haar coefficients with multiscale weights. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">quickCompareHaarCoefficients</span>(haar1, haar2: <span class="SCst"><a href="#Pixel_ImageStatistics_HaarFeatures">HaarFeatures</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Pixel_ImageStatistics_quickExtractHaarFeature"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ImageStatistics.</span><span class="api-item-title-strong">quickExtractHaarFeature</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\stats\haar.swg#L206" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Extract Haar coefficients from the image. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">quickExtractHaarFeature</span>(image: <span class="SCst"><a href="#Pixel_Image">Image</a></span>, windowSize: <span class="STpe">u32</span> = <span class="SNum">32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_ImageStatistics">ImageStatistics</a></span>.<span class="SCst"><a href="#Pixel_ImageStatistics_HaarFeatures">HaarFeatures</a></span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Pixel_ImageStatistics_quickHaarCompareTo"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ImageStatistics.</span><span class="api-item-title-strong">quickHaarCompareTo</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\stats\haar.swg#L262" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Compare to another image with Haar coefficients, fast simplified version. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">quickHaarCompareTo</span>(one, two: <span class="SCst"><a href="#Pixel_Image">Image</a></span>, windowSize: <span class="STpe">u32</span> = <span class="SNum">32</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5583,7 +6002,7 @@
 <span id="Pixel_LinePath_flatten"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">LinePath.</span><span class="api-item-title-strong">flatten</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\linepath.swg#L317" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\linepath.swg#L316" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6401,6 +6820,10 @@
 <td>Fill the polygon with the given color. </td>
 </tr>
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_fillPolygon">fillPolygon</a></span><span class="SCde">(<span class="STpe">self</span>, [..] <span class="SCst">Vector2</span>, <span class="SKwd">const</span> &<span class="SCst">Brush</span>)</span></td>
+<td>Fill the polygon with the given <span class="code-inline">brush</span>. </td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Painter_fillRect">fillRect</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Rectangle</span>, <span class="SKwd">const</span> &<span class="SCst">Brush</span>)</span></td>
 <td></td>
 </tr>
@@ -6670,7 +7093,7 @@
 <span id="Pixel_Painter_capStyleExtent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Painter.</span><span class="api-item-title-strong">capStyleExtent</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawpath.swg#L814" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawpath.swg#L934" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6740,7 +7163,7 @@
 <span id="Pixel_Painter_drawCircle"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Painter.</span><span class="api-item-title-strong">drawCircle</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawcircle.swg#L39" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawcircle.swg#L37" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6754,7 +7177,7 @@
 <span id="Pixel_Painter_drawEllipse"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Painter.</span><span class="api-item-title-strong">drawEllipse</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawcircle.swg#L112" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawcircle.swg#L110" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6785,7 +7208,7 @@
 <span id="Pixel_Painter_drawPath"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Painter.</span><span class="api-item-title-strong">drawPath</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawpath.swg#L729" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawpath.swg#L849" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6920,7 +7343,7 @@
 <span id="Pixel_Painter_fillCircle"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Painter.</span><span class="api-item-title-strong">fillCircle</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawcircle.swg#L57" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawcircle.swg#L55" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6934,7 +7357,7 @@
 <span id="Pixel_Painter_fillEllipse"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Painter.</span><span class="api-item-title-strong">fillEllipse</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawcircle.swg#L145" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\drawcircle.swg#L143" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6975,7 +7398,8 @@
 <p>Fill the polygon with the given color. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fillPolygon</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, path: *<span class="SCst"><a href="#Pixel_LinePath">LinePath</a></span>, color: <span class="SCst"><a href="#Pixel_Color">Color</a></span>)</span></div>
 <p>Fill the polygon with the given <span class="code-inline">brush</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fillPolygon</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, path: *<span class="SCst"><a href="#Pixel_LinePath">LinePath</a></span>, brush: <span class="SCst"><a href="#Pixel_Brush">Brush</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fillPolygon</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, path: *<span class="SCst"><a href="#Pixel_LinePath">LinePath</a></span>, brush: <span class="SCst"><a href="#Pixel_Brush">Brush</a></span>)
+<span class="SKwd">func</span> <span class="SFct">fillPolygon</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, points: [..] <span class="SCst">Math</span>.<span class="SCst">Vector2</span>, brush: <span class="SCst"><a href="#Pixel_Brush">Brush</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7584,7 +8008,7 @@
 <td></td>
 </tr>
 <tr>
-<td>dashBeginCapStyle</td>
+<td>dashBegCapStyle</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_DashCapStyle">DashCapStyle</a></span></span></td>
 <td></td>
 </tr>
@@ -7599,12 +8023,12 @@
 <td></td>
 </tr>
 <tr>
-<td>capStartScaleX</td>
+<td>capBegScaleX</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
 <tr>
-<td>capStartScaleY</td>
+<td>capBegScaleY</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
@@ -7639,7 +8063,7 @@
 <td></td>
 </tr>
 <tr>
-<td>beginCapStyle</td>
+<td>begCapStyle</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Pixel_LineCapStyle">LineCapStyle</a></span></span></td>
 <td></td>
 </tr>
@@ -10359,7 +10783,7 @@
 </tr>
 </table>
 <div class="swag-watermark">
-Generated on 01-05-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.44.0</div>
+Generated on 03-08-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.44.0</div>
 </div>
 </div>
 </div>

@@ -169,7 +169,7 @@
 <li><a href="#Swag_TypeInfo">TypeInfo</a></li>
 <li><a href="#Swag_TypeInfoAlias">TypeInfoAlias</a></li>
 <li><a href="#Swag_TypeInfoArray">TypeInfoArray</a></li>
-<li><a href="#Swag_TypeInfoCode">TypeInfoCode</a></li>
+<li><a href="#Swag_TypeInfoCodeBlock">TypeInfoCodeBlock</a></li>
 <li><a href="#Swag_TypeInfoEnum">TypeInfoEnum</a></li>
 <li><a href="#Swag_TypeInfoFunc">TypeInfoFunc</a></li>
 <li><a href="#Swag_TypeInfoGeneric">TypeInfoGeneric</a></li>
@@ -266,10 +266,10 @@
 <h4></h4>
 <ul>
 <li><a href="#Swag_Align">Align</a></li>
-<li><a href="#Swag_AllowOverflow">AllowOverflow</a></li>
 <li><a href="#Swag_AttrMulti">AttrMulti</a></li>
 <li><a href="#Swag_AttrUsage">AttrUsage</a></li>
 <li><a href="#Swag_CalleeReturn">CalleeReturn</a></li>
+<li><a href="#Swag_CanOverflow">CanOverflow</a></li>
 <li><a href="#Swag_Compiler">Compiler</a></li>
 <li><a href="#Swag_Complete">Complete</a></li>
 <li><a href="#Swag_ConstExpr">ConstExpr</a></li>
@@ -330,6 +330,7 @@
 <li><a href="#@bitcountnz">@bitcountnz</a></li>
 <li><a href="#@bitcounttz">@bitcounttz</a></li>
 <li><a href="#@breakpoint">@breakpoint</a></li>
+<li><a href="#@bytecode">@bytecode</a></li>
 <li><a href="#@byteswap">@byteswap</a></li>
 <li><a href="#@ceil">@ceil</a></li>
 <li><a href="#@compiler">@compiler</a></li>
@@ -346,8 +347,6 @@
 <li><a href="#@getcontext">@getcontext</a></li>
 <li><a href="#@gvtd">@gvtd</a></li>
 <li><a href="#@is">@is</a></li>
-<li><a href="#@isbytecode">@isbytecode</a></li>
-<li><a href="#@itftableof">@itftableof</a></li>
 <li><a href="#@log">@log</a></li>
 <li><a href="#@log10">@log10</a></li>
 <li><a href="#@log2">@log2</a></li>
@@ -376,6 +375,7 @@
 <li><a href="#@stringcmp">@stringcmp</a></li>
 <li><a href="#@strlen">@strlen</a></li>
 <li><a href="#@sysalloc">@sysalloc</a></li>
+<li><a href="#@tableof">@tableof</a></li>
 <li><a href="#@tan">@tan</a></li>
 <li><a href="#@tanh">@tanh</a></li>
 <li><a href="#@trunc">@trunc</a></li>
@@ -742,7 +742,7 @@
 <span id="@assert"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@assert</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L943" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L942" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -949,12 +949,25 @@
 <span id="@breakpoint"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@breakpoint</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L945" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L944" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Stop a bytecode execution, and launch the bytecode debugger. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@breakpoint</span>()</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="@bytecode"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@bytecode</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L957" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns <span class="code-inline">true</span> is the current execution is bytecode. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@bytecode</span>()-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1003,7 +1016,7 @@
 <span id="@compilererror"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@compilererror</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime_err.swg#L148" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime_err.swg#L149" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1016,7 +1029,7 @@
 <span id="@compilerwarning"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@compilerwarning</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime_err.swg#L160" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime_err.swg#L161" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1067,7 +1080,7 @@
 <span id="@err"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@err</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime_err.swg#L75" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime_err.swg#L76" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1132,7 +1145,7 @@
 <span id="@getcontext"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@getcontext</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L947" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L946" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1145,7 +1158,7 @@
 <span id="@gvtd"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@gvtd</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L957" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L955" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1163,31 +1176,6 @@
 </table>
 </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@is</span>(toType, fromType: <span class="SKwd">const</span> *<span class="SCst"><a href="#Swag_TypeInfoStruct">TypeInfoStruct</a></span>)-&gt;<span class="STpe">bool</span></span></div>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
-<span id="@isbytecode"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@isbytecode</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L953" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<p>Returns <span class="code-inline">true</span> is the current execution is bytecode. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@isbytecode</span>()-&gt;<span class="STpe">bool</span></span></div>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
-<span id="@itftableof"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@itftableof</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime.swg#L126" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@itftableof</span>(structType, itfType: <span class="SKwd">const</span> *<span class="SCst"><a href="#Swag_TypeInfoStruct">TypeInfoStruct</a></span>)-&gt;<span class="SKwd">const</span> *<span class="STpe">void</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1328,7 +1316,7 @@
 <span id="@modules"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@modules</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L955" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L953" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1355,7 +1343,7 @@
 <span id="@panic"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@panic</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime_err.swg#L173" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime_err.swg#L174" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1372,7 +1360,6 @@
 </tr>
 </table>
 </p>
-<p>Get information about the current process. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@pinfos</span>()-&gt;*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_ProcessInfos">ProcessInfos</a></span></span></div>
 <p>
 <table class="api-item">
@@ -1477,7 +1464,7 @@
 <span id="@setcontext"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@setcontext</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L949" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L948" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1573,6 +1560,18 @@
 </table>
 </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@sysalloc</span>()-&gt;*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_SystemAllocator">SystemAllocator</a></span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="@tableof"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@tableof</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime.swg#L126" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@tableof</span>(structType, itfType: <span class="SKwd">const</span> *<span class="SCst"><a href="#Swag_TypeInfoStruct">TypeInfoStruct</a></span>)-&gt;<span class="SKwd">const</span> *<span class="STpe">void</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1740,7 +1739,7 @@
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><a href="#Swag_TypeInfoCode"><span class="SCst">TypeInfoCode</span></a></td>
+<td class="code-type"><a href="#Swag_TypeInfoCodeBlock"><span class="SCst">TypeInfoCodeBlock</span></a></td>
 <td></td>
 </tr>
 <tr>
@@ -1878,10 +1877,6 @@
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><a href="#Swag_AllowOverflow"><span class="SCst">AllowOverflow</span></a></td>
-<td></td>
-</tr>
-<tr>
 <td class="code-type"><a href="#Swag_AttrMulti"><span class="SCst">AttrMulti</span></a></td>
 <td></td>
 </tr>
@@ -1892,6 +1887,10 @@
 <tr>
 <td class="code-type"><a href="#Swag_CalleeReturn"><span class="SCst">CalleeReturn</span></a></td>
 <td>A <span class="code-inline">return</span> in the following inlined function must be done in the callee context. </td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Swag_CanOverflow"><span class="SCst">CanOverflow</span></a></td>
+<td></td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Swag_Compiler"><span class="SCst">Compiler</span></a></td>
@@ -2163,20 +2162,6 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Swag_AllowOverflow"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">AllowOverflow</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L185" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<div class="api-additional-infos"><b>Usage</b>: all 
-</div>
-<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SFct"><a href="#Swag_AllowOverflow">AllowOverflow</a></span>(value: <span class="STpe">bool</span>)</span></div>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
 <span id="Swag_AttrMulti"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">AttrMulti</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -2365,7 +2350,7 @@
 <span id="Swag_BuildCfg"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">BuildCfg</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L823" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L822" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2629,7 +2614,7 @@
 <span id="Swag_BuildCfgBackendOptim"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">BuildCfgBackendOptim</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L771" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L770" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2660,7 +2645,6 @@
 <td>Optim for size level 2. </td>
 </tr>
 </table>
-<p>Only <span class="code-inline">LLVM</span> backend uses this, as the <span class="code-inline">X86_64</span> backend does not have an optimization pass. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2740,7 +2724,7 @@
 <span id="Swag_BuildCfgDocKind"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">BuildCfgDocKind</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L781" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L780" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2769,7 +2753,7 @@
 <span id="Swag_BuildCfgGenDoc"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">BuildCfgGenDoc</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L790" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L789" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2918,7 +2902,7 @@
 <span id="Swag_CVaList"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">CVaList</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L936" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L935" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2948,6 +2932,20 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Swag_CanOverflow"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">CanOverflow</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L185" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="api-additional-infos"><b>Usage</b>: all 
+</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SFct"><a href="#Swag_CanOverflow">CanOverflow</a></span>(value: <span class="STpe">bool</span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Swag_Compiler"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">Compiler</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -2966,7 +2964,7 @@
 <span id="Swag_CompilerMessage"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">CompilerMessage</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L906" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L905" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3001,7 +2999,7 @@
 <span id="Swag_CompilerMsgKind"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">CompilerMsgKind</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L873" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L872" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3047,7 +3045,7 @@
 <span id="Swag_CompilerMsgMask"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">CompilerMsgMask</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L889" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L888" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3212,7 +3210,7 @@
 <tr>
 <td>curError</td>
 <td class="code-type"><span class="STpe">any</span></td>
-<td>The current raised error returns by @err(). </td>
+<td>The current raised error returns by @err. </td>
 </tr>
 <tr>
 <td>errorIndex</td>
@@ -3872,7 +3870,7 @@
 <span id="Swag_ICompiler"><span class="api-item-title-kind">interface</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">ICompiler</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L917" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L916" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4621,7 +4619,7 @@
 <span id="Swag_SourceCodeLocation"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">SourceCodeLocation</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L927" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L926" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4926,7 +4924,7 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Swag_TypeInfoCode"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">TypeInfoCode</span></span>
+<span id="Swag_TypeInfoCodeBlock"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Swag.</span><span class="api-item-title-strong">TypeInfoCodeBlock</span></span>
 </td>
 <td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\bootstrap.swg#L606" class="src">[src]</a></td>
@@ -5211,8 +5209,8 @@
 <td>The typeinfo is a <a href="#Swag_TypeInfoAlias">TypeInfoAlias</a>. </td>
 </tr>
 <tr>
-<td>Code</td>
-<td>The typeinfo is a <a href="#Swag_TypeInfo">TypeInfo</a>. </td>
+<td>CodeBlock</td>
+<td>The typeinfo is a <a href="#Swag_TypeInfoCodeBlock">TypeInfoCodeBlock</a>. </td>
 </tr>
 <tr>
 <td>Interface</td>
@@ -5670,7 +5668,7 @@
 </tr>
 </table>
 <div class="swag-watermark">
-Generated on 01-05-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.44.0</div>
+Generated on 03-08-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.44.0</div>
 </div>
 </div>
 </div>

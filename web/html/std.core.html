@@ -132,6 +132,7 @@
 <li><a href="#Core_CommandLine">CommandLine</a></li>
 <li><a href="#Core_Compress">Compress</a></li>
 <li><a href="#Core_Console">Console</a></li>
+<li><a href="#Core_Math_Curve">Curve</a></li>
 <li><a href="#Core_Debug">Debug</a></li>
 <li><a href="#Core_Debugger">Debugger</a></li>
 <li><a href="#Core_Directory">Directory</a></li>
@@ -140,6 +141,7 @@
 <li><a href="#Core_Errors">Errors</a></li>
 <li><a href="#Core_File">File</a></li>
 <li><a href="#Core_Format">Format</a></li>
+<li><a href="#Core_Math_Geometry">Geometry</a></li>
 <li><a href="#Core_Globalization">Globalization</a></li>
 <li><a href="#Core_Hardware">Hardware</a></li>
 <li><a href="#Core_Hash">Hash</a></li>
@@ -896,6 +898,17 @@
 <li><a href="#Core_Math_Angle_opAffect">Angle.opAffect</a></li>
 <li><a href="#Core_Math_Angle_opAffectLiteral">Angle.opAffectLiteral</a></li>
 <li><a href="#Core_Math_Angle_toDegrees">Angle.toDegrees</a></li>
+<li><a href="#Core_Math_Curve_evaluateBezier">Curve.evaluateBezier</a></li>
+<li><a href="#Core_Math_Curve_evaluatePolynomial">Curve.evaluatePolynomial</a></li>
+<li><a href="#Core_Math_Curve_getBezierBoundingBox">Curve.getBezierBoundingBox</a></li>
+<li><a href="#Core_Math_Geometry_distanceToLine">Geometry.distanceToLine</a></li>
+<li><a href="#Core_Math_Geometry_distanceToSegment">Geometry.distanceToSegment</a></li>
+<li><a href="#Core_Math_Geometry_isInEllipse">Geometry.isInEllipse</a></li>
+<li><a href="#Core_Math_Geometry_isInTriangle">Geometry.isInTriangle</a></li>
+<li><a href="#Core_Math_Geometry_lineLineIntersect">Geometry.lineLineIntersect</a></li>
+<li><a href="#Core_Math_Geometry_nearestPointsSegSeg">Geometry.nearestPointsSegSeg</a></li>
+<li><a href="#Core_Math_Geometry_polyContains">Geometry.polyContains</a></li>
+<li><a href="#Core_Math_Geometry_segSegIntersect">Geometry.segSegIntersect</a></li>
 <li><a href="#Core_Math_Int128_mul">Int128.mul</a></li>
 <li><a href="#Core_Math_Int128_opCast">Int128.opCast</a></li>
 <li><a href="#Core_Math_Int128_opCmp">Int128.opCmp</a></li>
@@ -1039,22 +1052,16 @@
 <li><a href="#Core_Math_Vector2_cross">Vector2.cross</a></li>
 <li><a href="#Core_Math_Vector2_distance">Vector2.distance</a></li>
 <li><a href="#Core_Math_Vector2_distanceSquared">Vector2.distanceSquared</a></li>
-<li><a href="#Core_Math_Vector2_distanceToLine">Vector2.distanceToLine</a></li>
-<li><a href="#Core_Math_Vector2_distanceToSegment">Vector2.distanceToSegment</a></li>
 <li><a href="#Core_Math_Vector2_dot">Vector2.dot</a></li>
 <li><a href="#Core_Math_Vector2_floor">Vector2.floor</a></li>
 <li><a href="#Core_Math_Vector2_isEqualEpsilon">Vector2.isEqualEpsilon</a></li>
-<li><a href="#Core_Math_Vector2_isInEllipse">Vector2.isInEllipse</a></li>
-<li><a href="#Core_Math_Vector2_isInTriangle">Vector2.isInTriangle</a></li>
 <li><a href="#Core_Math_Vector2_isZero">Vector2.isZero</a></li>
 <li><a href="#Core_Math_Vector2_isZeroEpsilon">Vector2.isZeroEpsilon</a></li>
 <li><a href="#Core_Math_Vector2_length">Vector2.length</a></li>
 <li><a href="#Core_Math_Vector2_lengthSquared">Vector2.lengthSquared</a></li>
 <li><a href="#Core_Math_Vector2_lerp">Vector2.lerp</a></li>
-<li><a href="#Core_Math_Vector2_lineLineIntersect">Vector2.lineLineIntersect</a></li>
 <li><a href="#Core_Math_Vector2_max">Vector2.max</a></li>
 <li><a href="#Core_Math_Vector2_min">Vector2.min</a></li>
-<li><a href="#Core_Math_Vector2_nearestPointsSegSeg">Vector2.nearestPointsSegSeg</a></li>
 <li><a href="#Core_Math_Vector2_negate">Vector2.negate</a></li>
 <li><a href="#Core_Math_Vector2_normalize">Vector2.normalize</a></li>
 <li><a href="#Core_Math_Vector2_normalizeSafe">Vector2.normalizeSafe</a></li>
@@ -1062,10 +1069,8 @@
 <li><a href="#Core_Math_Vector2_opAssign">Vector2.opAssign</a></li>
 <li><a href="#Core_Math_Vector2_opBinary">Vector2.opBinary</a></li>
 <li><a href="#Core_Math_Vector2_opUnary">Vector2.opUnary</a></li>
-<li><a href="#Core_Math_Vector2_polyContains">Vector2.polyContains</a></li>
 <li><a href="#Core_Math_Vector2_rotate">Vector2.rotate</a></li>
 <li><a href="#Core_Math_Vector2_round">Vector2.round</a></li>
-<li><a href="#Core_Math_Vector2_segSegIntersect">Vector2.segSegIntersect</a></li>
 <li><a href="#Core_Math_Vector2_set">Vector2.set</a></li>
 <li><a href="#Core_Math_Vector2_setLength">Vector2.setLength</a></li>
 <li><a href="#Core_Math_Vector2_setLengthSafe">Vector2.setLengthSafe</a></li>
@@ -1405,6 +1410,7 @@
 <li><a href="#Core_Env_exit">Env.exit</a></li>
 <li><a href="#Core_Env_getArg">Env.getArg</a></li>
 <li><a href="#Core_Env_getArgs">Env.getArgs</a></li>
+<li><a href="#Core_Env_getDPIScale">Env.getDPIScale</a></li>
 <li><a href="#Core_Env_getExe">Env.getExe</a></li>
 <li><a href="#Core_Env_getMetric">Env.getMetric</a></li>
 <li><a href="#Core_Env_getMonitors">Env.getMonitors</a></li>
@@ -2692,7 +2698,7 @@
 </p>
 <p>Visit every elements of the array. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
 <p>Visiting by address and in reverse order is supported. </p>
 <p>
 <table class="api-item">
@@ -3647,7 +3653,7 @@
 </p>
 <p>Visit all the booleans. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5095,7 +5101,7 @@
 </p>
 <p>Visit all valid buckets. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5447,7 +5453,7 @@
 <span id="Core_Console_printf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Console.</span><span class="api-item-title-strong">printf</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\diagnostics\console.win32.swg#L77" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\diagnostics\console.win32.swg#L79" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5473,7 +5479,7 @@
 <span id="Core_Console_prompt"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Console.</span><span class="api-item-title-strong">prompt</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\diagnostics\console.win32.swg#L105" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\diagnostics\console.win32.swg#L107" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5486,7 +5492,7 @@
 <span id="Core_Console_resetColor"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Console.</span><span class="api-item-title-strong">resetColor</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\diagnostics\console.win32.swg#L71" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\diagnostics\console.win32.swg#L73" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5499,7 +5505,7 @@
 <span id="Core_Console_setBackColor"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Console.</span><span class="api-item-title-strong">setBackColor</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\diagnostics\console.win32.swg#L62" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\diagnostics\console.win32.swg#L64" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5512,7 +5518,7 @@
 <span id="Core_Console_setTextColor"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Console.</span><span class="api-item-title-strong">setTextColor</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\diagnostics\console.win32.swg#L53" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\diagnostics\console.win32.swg#L55" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5579,7 +5585,7 @@
 </table>
 </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span> <span class="SFct">assert</span>(expr: <span class="STpe">bool</span>, message: <span class="STpe">string</span> = <span class="SKwd">null</span>, loc = <span class="SCmp">#callerlocation</span>)</span></div>
+<span class="SKwd">func</span> <span class="SFct">assert</span>(expr: <span class="SItr">#code</span> <span class="STpe">bool</span>, message: <span class="STpe">string</span> = <span class="SKwd">null</span>, loc = <span class="SCmp">#callerlocation</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5592,7 +5598,7 @@
 </table>
 </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(what: <span class="STpe">string</span>) <span class="SFct">safety</span>(expr51: <span class="STpe">bool</span>, message: <span class="STpe">string</span> = <span class="SKwd">null</span>, loc = <span class="SCmp">#callerlocation</span>)</span></div>
+<span class="SKwd">func</span>(what: <span class="STpe">string</span>) <span class="SFct">safety</span>(expr: <span class="SItr">#code</span> <span class="STpe">bool</span>, message: <span class="STpe">string</span> = <span class="SKwd">null</span>, loc = <span class="SCmp">#callerlocation</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5605,7 +5611,7 @@
 </table>
 </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span> <span class="SFct">safetyBoundCheck</span>(expr50: <span class="STpe">bool</span>, message: <span class="STpe">string</span> = <span class="SKwd">null</span>, loc = <span class="SCmp">#callerlocation</span>)</span></div>
+<span class="SKwd">func</span> <span class="SFct">safetyBoundCheck</span>(expr50: <span class="SItr">#code</span> <span class="STpe">bool</span>, message: <span class="STpe">string</span> = <span class="SKwd">null</span>, loc = <span class="SCmp">#callerlocation</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5961,11 +5967,15 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Env_getArg">getArg</a></span></td>
-<td>Get a given argument, or null. </td>
+<td></td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Env_getArgs">getArgs</a></span></td>
 <td>Get the program command line arguments as a [..] string. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Env_getDPIScale">getDPIScale</a></span></td>
+<td>Returns the DPI scale. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Env_getExe">getExe</a></span></td>
@@ -6244,7 +6254,6 @@
 </tr>
 </table>
 </p>
-<p>Get a given argument, or null. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getArg</span>(idx: <span class="STpe">u32</span>)-&gt;<span class="STpe">string</span></span></div>
 <p>
 <table class="api-item">
@@ -6259,6 +6268,19 @@
 </p>
 <p>Get the program command line arguments as a [..] string. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getArgs</span>()-&gt;<span class="SKwd">const</span> [..] <span class="STpe">string</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Env_getDPIScale"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Env.</span><span class="api-item-title-strong">getDPIScale</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\environment.win32.swg#L239" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns the DPI scale. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getDPIScale</span>()-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7672,7 +7694,7 @@
 </p>
 <p>Call user code for each line. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span> <span class="SFct">readEachLines</span>(fullname: <span class="STpe">string</span>, encoding = <span class="SCst"><a href="#Core_File_TextEncoding">TextEncoding</a></span>.<span class="SCst"><a href="#Core_Utf8">Utf8</a></span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>) <span class="SKwd">throw</span></span></div>
+<span class="SKwd">func</span> <span class="SFct">readEachLines</span>(fullname: <span class="STpe">string</span>, encoding = <span class="SCst"><a href="#Core_File_TextEncoding">TextEncoding</a></span>.<span class="SCst"><a href="#Core_Utf8">Utf8</a></span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8864,7 +8886,7 @@
 </table>
 </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9321,7 +9343,7 @@
 </p>
 <p>alias0 is the key, and alias1 is the value. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11564,7 +11586,7 @@
 </p>
 <p>Do a for for in parallel chunks. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span> <span class="SFct">parallelFor</span>(count: <span class="STpe">u32</span>, userData: *<span class="STpe">void</span> = <span class="SKwd">null</span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>)</span></div>
+<span class="SKwd">func</span> <span class="SFct">parallelFor</span>(count: <span class="STpe">u32</span>, userData: *<span class="STpe">void</span> = <span class="SKwd">null</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
 <p>Exposed variables: - #alias0: current for index - #alias1: userData as passed to the macro </p>
 <p>
 <table class="api-item">
@@ -11579,7 +11601,7 @@
 </p>
 <p>Operate on a range in parallel chunks. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">parallelVisit</span>(range: [..] <span class="SCst">T</span>, offset: <span class="STpe">u32</span> = <span class="SNum">1</span>, userData: *<span class="STpe">void</span> = <span class="SKwd">null</span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>)</span></div>
+<span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">parallelVisit</span>(range: [..] <span class="SCst">T</span>, offset: <span class="STpe">u32</span> = <span class="SNum">1</span>, userData: *<span class="STpe">void</span> = <span class="SKwd">null</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
 <p>Exposed variables: - buffer: address of the element of the range to process - data:   userData as passed to the macro </p>
 <p>
 <table class="api-item">
@@ -12240,7 +12262,7 @@
 </p>
 <p>Visit every elements of the list. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
 <ul>
 <li><span class="code-inline">#alias0</span> is the value</li>
 <li><span class="code-inline">#alias1</span> is the node</li>
@@ -13375,6 +13397,232 @@
 <td>Smallest value for floating-point precision comparisons. </td>
 </tr>
 </table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Curve"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Core.Math.</span><span class="api-item-title-strong">Curve</span></span>
+</td>
+</tr>
+</table>
+</p>
+<h3>Functions</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Curve_evaluateBezier">evaluateBezier</a></span><span class="SCde">(<span class="SKwd">const</span> &<span class="SCst">Vector2</span>, <span class="SKwd">const</span> &<span class="SCst">Vector2</span>, <span class="SKwd">const</span> &<span class="SCst">Vector2</span>, <span class="SKwd">const</span> &<span class="SCst">Vector2</span>, <span class="STpe">f32</span>)</span></td>
+<td>Optimized Bézier evaluation. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Curve_evaluateBezier">evaluateBezier</a></span><span class="SCde">(<span class="SKwd">const</span> &<span class="SCst">Vector2</span>, <span class="SKwd">const</span> &<span class="SCst">Vector2</span>, <span class="SKwd">const</span> &<span class="SCst">Vector2</span>, <span class="STpe">f32</span>)</span></td>
+<td>Optimized quadratic Bézier evaluation. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Curve_evaluatePolynomial">evaluatePolynomial</a></span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Curve_getBezierBoundingBox">getBezierBoundingBox</a></span><span class="SCde">(<span class="SKwd">const</span> &<span class="SCst">Vector2</span>, <span class="SKwd">const</span> &<span class="SCst">Vector2</span>, <span class="SKwd">const</span> &<span class="SCst">Vector2</span>)</span></td>
+<td>Get bounding box of quadratic Bézier curve (one control point). </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Curve_getBezierBoundingBox">getBezierBoundingBox</a></span><span class="SCde">(<span class="SKwd">const</span> &<span class="SCst">Vector2</span>, <span class="SKwd">const</span> &<span class="SCst">Vector2</span>, <span class="SKwd">const</span> &<span class="SCst">Vector2</span>, <span class="SKwd">const</span> &<span class="SCst">Vector2</span>)</span></td>
+<td>Get bounding box of cubic Bézier curve. </td>
+</tr>
+</table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Curve_evaluateBezier"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Curve.</span><span class="api-item-title-strong">evaluateBezier</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\curve.swg#L30" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Optimized quadratic Bézier evaluation. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">evaluateBezier</span>(start, end, ctrl: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, t: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<p>Optimized Bézier evaluation. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">evaluateBezier</span>(start, end, ctrl1, ctrl2: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, t: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Curve_evaluatePolynomial"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Curve.</span><span class="api-item-title-strong">evaluatePolynomial</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\curve.swg#L6" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">evaluatePolynomial</span>(p0, p1, p2, p3: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, t: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Curve_getBezierBoundingBox"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Curve.</span><span class="api-item-title-strong">getBezierBoundingBox</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\curve.swg#L124" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Get bounding box of cubic Bézier curve. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getBezierBoundingBox</span>(start, end, ctrl0, ctrl1: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span></span></div>
+<p>Get bounding box of quadratic Bézier curve (one control point). </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getBezierBoundingBox</span>(start, end, ctrl: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Geometry"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Core.Math.</span><span class="api-item-title-strong">Geometry</span></span>
+</td>
+</tr>
+</table>
+</p>
+<h3>Functions</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Geometry_distanceToLine">distanceToLine</a></span></td>
+<td>Returns the distance of the point to the given line. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Geometry_distanceToSegment">distanceToSegment</a></span></td>
+<td>Returns the distance of the point to the given segment. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Geometry_isInEllipse">isInEllipse</a></span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Geometry_isInTriangle">isInTriangle</a></span></td>
+<td>Returns true if the point <span class="code-inline">pt</span> is inside the triangle defined with 'a, b, c'. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Geometry_lineLineIntersect">lineLineIntersect</a></span></td>
+<td>Compute the intersection point of two lines. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Geometry_nearestPointsSegSeg">nearestPointsSegSeg</a></span></td>
+<td>Returns the minimal segment between two segments (and the minimal distance). </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Geometry_polyContains">polyContains</a></span></td>
+<td>Returns true if the given point is inside the polygon PNPoly by W. Randolph Franklin. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Geometry_segSegIntersect">segSegIntersect</a></span></td>
+<td>Compute the intersection point of two segments. </td>
+</tr>
+</table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Geometry_distanceToLine"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Geometry.</span><span class="api-item-title-strong">distanceToLine</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\geometry2.swg#L34" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns the distance of the point to the given line. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceToLine</span>(me, a, b: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Geometry_distanceToSegment"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Geometry.</span><span class="api-item-title-strong">distanceToSegment</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\geometry2.swg#L46" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns the distance of the point to the given segment. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceToSegment</span>(me, a, b: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Geometry_isInEllipse"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Geometry.</span><span class="api-item-title-strong">isInEllipse</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\geometry2.swg#L5" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isInEllipse</span>(me, center: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, radiusX, radiusY: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Geometry_isInTriangle"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Geometry.</span><span class="api-item-title-strong">isInTriangle</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\geometry2.swg#L11" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns true if the point <span class="code-inline">pt</span> is inside the triangle defined with 'a, b, c'. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isInTriangle</span>(me, a, b, c: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Geometry_lineLineIntersect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Geometry.</span><span class="api-item-title-strong">lineLineIntersect</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\geometry2.swg#L250" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Compute the intersection point of two lines. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lineLineIntersect</span>(start0, end0, start1, end1: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, epsilon: <span class="STpe">f32</span> = <span class="SCst"><a href="#Core_Math_ConstF32">ConstF32</a></span>.<span class="SCst">Epsilon</span>)-&gt;{yes:<span class="STpe">bool</span>,pos:<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>}</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Geometry_nearestPointsSegSeg"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Geometry.</span><span class="api-item-title-strong">nearestPointsSegSeg</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\geometry2.swg#L78" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns the minimal segment between two segments (and the minimal distance). </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nearestPointsSegSeg</span>(p0, p1, q0, q1: <span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;{a:<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>,b:<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>,dist:<span class="STpe">f32</span>}</span></div>
+<p style="white-space: break-spaces"><hr>
+</p>
+<p>David Eberly, Geometric Tools, Redmond WA 98052 Copyright (c) 1998-2022 Distributed under the Boost Software License, Version 1.0. https://www.boost.org/LICENSE_1_0.txt https://www.geometrictools.com/License/Boost/LICENSE_1_0.txt https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h </p>
+<p style="white-space: break-spaces"><hr>
+</p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Geometry_polyContains"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Geometry.</span><span class="api-item-title-strong">polyContains</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\geometry2.swg#L284" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns true if the given point is inside the polygon PNPoly by W. Randolph Franklin. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">polyContains</span>(poly: <span class="SFct"><a href="#Core_Array">Array</a></span>'<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, pt: <span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Geometry_segSegIntersect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Geometry.</span><span class="api-item-title-strong">segSegIntersect</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\geometry2.swg#L265" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Compute the intersection point of two segments. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">segSegIntersect</span>(start0, end0, start1, end1: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, epsilon: <span class="STpe">f32</span> = <span class="SCst"><a href="#Core_Math_ConstF32">ConstF32</a></span>.<span class="SCst">Epsilon</span>)-&gt;{yes:<span class="STpe">bool</span>,pos:<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>}</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14989,14 +15237,6 @@
 <td>Returns the square distance between two vectors. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_distanceToLine">distanceToLine</a></span></td>
-<td>Returns the distance of the point to the given line. </td>
-</tr>
-<tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_distanceToSegment">distanceToSegment</a></span></td>
-<td>Returns the distance of the point to the given segment. </td>
-</tr>
-<tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_dot">dot</a></span></td>
 <td>Returns the dot product between two vectors. </td>
 </tr>
@@ -15007,14 +15247,6 @@
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_isEqualEpsilon">isEqualEpsilon</a></span></td>
 <td>Returns true if this vector is equals to another with an epsilon. </td>
-</tr>
-<tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_isInEllipse">isInEllipse</a></span></td>
-<td>Returns true if the point <span class="code-inline">pt</span> is inside an ellipse. </td>
-</tr>
-<tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_isInTriangle">isInTriangle</a></span></td>
-<td>Returns true if the point <span class="code-inline">pt</span> is inside the triangle defined with 'a, b, c'. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_isZero">isZero</a></span></td>
@@ -15037,20 +15269,12 @@
 <td>Lerp one vector with another. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_lineLineIntersect">lineLineIntersect</a></span></td>
-<td>Compute the intersection point of two lines. </td>
-</tr>
-<tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_max">max</a></span></td>
 <td>Returns a vector which is the <span class="code-inline">min</span> of two vectors. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_min">min</a></span></td>
 <td>Returns a vector which is the <span class="code-inline">min</span> of two vectors. </td>
-</tr>
-<tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_nearestPointsSegSeg">nearestPointsSegSeg</a></span></td>
-<td>Returns the minimal segment between two segments (and the minimal distance). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_negate">negate</a></span></td>
@@ -15065,20 +15289,12 @@
 <td>Normalize this vector (set its length to 1) even if its length is almost null. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_polyContains">polyContains</a></span></td>
-<td>Returns true if the given point is inside the polygon PNPoly by W. Randolph Franklin. </td>
-</tr>
-<tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_rotate">rotate</a></span></td>
 <td>Rotate the vector by a given angle. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_round">round</a></span></td>
 <td>Math.round. </td>
-</tr>
-<tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_segSegIntersect">segSegIntersect</a></span></td>
-<td>Compute the intersection point of two segments. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_set">set</a></span></td>
@@ -15239,32 +15455,6 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Core_Math_Vector2_distanceToLine"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">distanceToLine</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2utils.swg#L36" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<p>Returns the distance of the point to the given line. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceToLine</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, a, b: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
-<span id="Core_Math_Vector2_distanceToSegment"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">distanceToSegment</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2utils.swg#L48" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<p>Returns the distance of the point to the given segment. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceToSegment</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, a, b: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
 <span id="Core_Math_Vector2_dot"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">dot</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -15300,32 +15490,6 @@
 </p>
 <p>Returns true if this vector is equals to another with an epsilon. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEqualEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>, eps = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SCst"><a href="#Core_Math_ConstF64">ConstF64</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
-<span id="Core_Math_Vector2_isInEllipse"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">isInEllipse</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2utils.swg#L7" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<p>Returns true if the point <span class="code-inline">pt</span> is inside an ellipse. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isInEllipse</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, center: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, radiusX, radiusY: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span></span></div>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
-<span id="Core_Math_Vector2_isInTriangle"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">isInTriangle</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2utils.swg#L13" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<p>Returns true if the point <span class="code-inline">pt</span> is inside the triangle defined with 'a, b, c'. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isInTriangle</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, a, b, c: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15395,19 +15559,6 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Core_Math_Vector2_lineLineIntersect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">lineLineIntersect</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2utils.swg#L252" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<p>Compute the intersection point of two lines. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lineLineIntersect</span>(start0, end0, start1, end1: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, epsilon: <span class="STpe">f32</span> = <span class="SCst"><a href="#Core_Math_ConstF32">ConstF32</a></span>.<span class="SCst">Epsilon</span>)-&gt;{yes:<span class="STpe">bool</span>,pos:<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>}</span></div>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
 <span id="Core_Math_Vector2_max"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">max</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -15430,24 +15581,6 @@
 </p>
 <p>Returns a vector which is the <span class="code-inline">min</span> of two vectors. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">min</span>(a, b: <span class="STpe">Self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
-<span id="Core_Math_Vector2_nearestPointsSegSeg"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">nearestPointsSegSeg</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2utils.swg#L80" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<p>Returns the minimal segment between two segments (and the minimal distance). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nearestPointsSegSeg</span>(p0, p1, q0, q1: <span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;{a:<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>,b:<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>,dist:<span class="STpe">f32</span>}</span></div>
-<p style="white-space: break-spaces"><hr>
-</p>
-<p>David Eberly, Geometric Tools, Redmond WA 98052 Copyright (c) 1998-2022 Distributed under the Boost Software License, Version 1.0. https://www.boost.org/LICENSE_1_0.txt https://www.geometrictools.com/License/Boost/LICENSE_1_0.txt https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h </p>
-<p style="white-space: break-spaces"><hr>
-</p>
 <p>
 <table class="api-item">
 <tr>
@@ -15541,19 +15674,6 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Core_Math_Vector2_polyContains"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">polyContains</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2utils.swg#L286" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<p>Returns true if the given point is inside the polygon PNPoly by W. Randolph Franklin. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">polyContains</span>(poly: <span class="SFct"><a href="#Core_Array">Array</a></span>'<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, pt: <span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">bool</span></span></div>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
 <span id="Core_Math_Vector2_rotate"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">rotate</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -15576,19 +15696,6 @@
 </p>
 <p>Math.round. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">round</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
-<span id="Core_Math_Vector2_segSegIntersect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">segSegIntersect</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2utils.swg#L267" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<p>Compute the intersection point of two segments. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">segSegIntersect</span>(start0, end0, start1, end1: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, epsilon: <span class="STpe">f32</span> = <span class="SCst"><a href="#Core_Math_ConstF32">ConstF32</a></span>.<span class="SCst">Epsilon</span>)-&gt;{yes:<span class="STpe">bool</span>,pos:<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>}</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -17370,7 +17477,7 @@
 </p>
 <p>Push a new allocator for the given block of code. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span> <span class="SFct">pushAllocator</span>(allocator: <span class="SCst">Swag</span>.<span class="SCst">IAllocator</span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>)</span></div>
+<span class="SKwd">func</span> <span class="SFct">pushAllocator</span>(allocator: <span class="SCst">Swag</span>.<span class="SCst">IAllocator</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -17384,7 +17491,7 @@
 </p>
 <p>Push the temporary allocator for the given block of code. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span> <span class="SFct">pushTempAllocator</span>(stmt: <span class="STpe">code</span> <span class="STpe">void</span>)</span></div>
+<span class="SKwd">func</span> <span class="SFct">pushTempAllocator</span>(stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23797,7 +23904,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Visit every elements of the array. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
 <p>Visiting by pointer and in reverse order is supported </p>
 <p>
 <table class="api-item">
@@ -25802,7 +25909,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Default foreach, by bytes. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25816,7 +25923,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Visit the String utf8 bytes. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitBytes</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitBytes</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
 <ul>
 <li><span class="code-inline">#alias0</span> will contain the byte or the pointer to the byte</li>
 <li><span class="code-inline">#alias1</span> will contain the byte index</li>
@@ -25834,7 +25941,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Visit the String runes See <a href="#Core_Utf8_visitRunes">Utf8.visitRunes</a> for aliases. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitRunes</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitRunes</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26485,7 +26592,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Push a new execution context for the given block of code. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span> <span class="SFct">pushContext</span>(cxt: <span class="SCst">Swag</span>.<span class="SCst">Context</span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>)</span></div>
+<span class="SKwd">func</span> <span class="SFct">pushContext</span>(cxt: <span class="SCst">Swag</span>.<span class="SCst">Context</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -29422,7 +29529,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Macro to foreach the unicode characters of the utf8 sequence. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span> <span class="SFct">visitRunes</span>(buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, stmt: <span class="STpe">code</span> <span class="STpe">void</span>)</span></div>
+<span class="SKwd">func</span> <span class="SFct">visitRunes</span>(buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
 <ul>
 <li><span class="code-inline">#alias0</span> will contain the character</li>
 <li><span class="code-inline">#alias1</span> will contain the character index</li>
@@ -29540,7 +29647,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">toggle</span>(flags: &<span class="SCst">T</span>, value: <span class="SCst">T</span>)</span></div>
 <div class="swag-watermark">
-Generated on 01-05-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.44.0</div>
+Generated on 03-08-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.44.0</div>
 </div>
 </div>
 </div>
