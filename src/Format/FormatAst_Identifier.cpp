@@ -3,6 +3,7 @@
 #include "Semantic/Semantic.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
+#include "Syntax/Tokenizer/LanguageSpec.h"
 
 bool FormatAst::outputIdentifier(const FormatContext& context, AstNode* node)
 {
@@ -45,7 +46,7 @@ bool FormatAst::outputIdentifier(const FormatContext& context, AstNode* node)
         beautifyAfter(context, identifier->genericParameters);
     }
 
-    if (identifier->callParameters)
+    if (identifier->callParameters && !g_LangSpec->intrinsicConstants.contains(identifier->token.text))
     {
         if (identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
             concat->addChar('{');

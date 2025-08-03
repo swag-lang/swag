@@ -1,85 +1,92 @@
 #global public
 using Core, Pixel
 
+// Specifies the visual geometry of the EditBox.
 enum EditBoxForm
 {
-    Square
-    Round
-    Flat
-    Transparent
+    Square          // Square corners and standard border
+    Round           // Rounded corners
+    Flat            // Flat borderless style
+    Transparent     // No background, transparent style
 }
 
+// Defines the type of input that the EditBox should accept and validate.
 enum EditBoxInputMode
 {
-    String
-    S64
-    U64
-    F64
-    X64
+    String     // Free‑form UTF‑8 text
+    S64        // Signed 64‑bit integer
+    U64        // Unsigned 64‑bit integer
+    F64        // 64‑bit floating‑point number
+    X64        // Unsigned 64‑bit hexadecimal
 }
 
+// Possible outcomes when validating the EditBox content.
 enum EditBoxCheckResult
 {
-    Incomplete
-    Valid
-    InvalidDismiss
-    InvalidShow
+    Incomplete         // Text is incomplete (e.g. "-" or "0x")
+    Valid              // Content is valid
+    InvalidDismiss     // Invalid but silently dismissed
+    InvalidShow        // Invalid and must be visually highlighted
 }
 
 #[Swag.EnumFlags]
+// Optional behaviour modifiers for the EditBox.
 enum EditBoxFlags
 {
-    Zero          = 0
-    AutoLoseFocus
-    ReadOnly
-    RightAlign
-    ClearButton
+    Zero          = 0     // No flags
+    AutoLoseFocus         // Automatically lose focus after Enter or Escape
+    ReadOnly              // Content cannot be edited
+    RightAlign            // Text is right‑aligned
+    ClearButton           // Show a clear ("x") button when content is not empty
 }
 
 struct EditBox
 {
-    using wnd:            Wnd
+    using wnd:            Wnd                                   // Base window interface
 
-    icon:                 Icon
-    text:                 String
-    originalText:         String
-    unit:                 String
-    form                  = EditBoxForm.Square
-    editBoxFlags          = EditBoxFlags.AutoLoseFocus
-    inputMode             = EditBoxInputMode.String
-    maxLength:            s32
-    rightMargin:          f32
+    icon:                 Icon                                  // Optional icon shown on the left
+    text:                 String                                // Current UTF‑8 text content
+    originalText:         String                                // Text captured when focus was gained
+    unit:                 String                                // Suffix unit (e.g. "kg")
+    form                  = EditBoxForm.Square                  // Visual form of the EditBox
+    editBoxFlags          = EditBoxFlags.AutoLoseFocus          // Active behaviour flags
+    inputMode             = EditBoxInputMode.String             // Current input mode
+    maxLength:            s32                                   // Maximum number of runes (0 = unlimited)
+    rightMargin:          f32                                   // Extra right margin inside the client rectangle
 
-    sigChanged:           SigArray'func||(*Self)
-    sigLoseFocus:         SigArray'func||(*Self)
-    sigEnterPressed:      SigArray'func||(*Self)
-    sigEscapePressed:     SigArray'func||(*Self)
-    sigCheckContent:      func||(*Self)->EditBoxCheckResult
+    sigChanged:           SigArray'func||(*Self)                // Emitted when the text changes
+    sigLoseFocus:         SigArray'func||(*Self)                // Emitted when the EditBox loses focus
+    sigEnterPressed:      SigArray'func||(*Self)                // Emitted when Enter is pressed
+    sigEscapePressed:     SigArray'func||(*Self)                // Emitted when Escape is pressed
+    sigCheckContent:      func||(*Self)->EditBoxCheckResult     // Optional custom validator
+
+    // Numeric bounds used when inputMode is S64/U64/X64/F64.
     using minMax: union
     {
-        minMaxS64:     { min: s64, max: s64 } = {Swag.S64.Min, Swag.S64.Max}
-        minMaxU64:     { min: u64, max: u64 } = {0, Swag.U64.Max}
-        minMaxF64:     { min: f64, max: f64 } = {-Swag.F64.Max, Swag.F64.Max}
+        minMaxS64:     { min: s64, max: s64 } = {Swag.S64.Min, Swag.S64.Max}      // Signed integer bounds
+        minMaxU64:     { min: u64, max: u64 } = {0, Swag.U64.Max}                 // Unsigned integer bounds
+        minMaxF64:     { min: f64, max: f64 } = {-Swag.F64.Max, Swag.F64.Max}     // Floating‑point bounds
     }
 
-    aniBk:              BlendColor{speed: 4}
-    aniBorder:          BlendColor{speed: 4}
+    aniBk:              BlendColor{speed: 4}     // Background colour animation
+    aniBorder:          BlendColor{speed: 4}     // Border colour animation
 
-    isInvalid:          bool
-    isHot:              bool
-    isDragging:         bool
-    selBeg, selEnd:     u64
-    timerCaret:         *Timer
-    clearBtn:           *IconButton
-    visibleCaret:       bool
-    posSelBeg:          f32
-    posSelEnd:          f32
-    scrollPosX:         f32
-    countRunes:         s32
+    isInvalid:          bool                     // True if current content is invalid
+    isHot:              bool                     // True while the mouse is hovering
+    isDragging:         bool                     // True while the user is selecting text
+    selBeg, selEnd:     u64                      // Selection start/end (byte indices)
+    timerCaret:         *Timer                   // Blinking‑caret timer
+    clearBtn:           *IconButton              // Optional clear button instance
+    visibleCaret:       bool                     // True when the caret should be visible
+    posSelBeg:          f32                      // X‑position of selection start in pixels
+    posSelEnd:          f32                      // X‑position of selection end in pixels
+    scrollPosX:         f32                      // Horizontal scroll offset
+    countRunes:         s32                      // Number of runes currently in text
 }
 
 impl IWnd for EditBox
 {
+    // Handles gaining and losing keyboard focus.
     mtd impl onFocusEvent(evt: *FocusEvent)
     {
         switch evt.kind
@@ -100,6 +107,7 @@ impl IWnd for EditBox
         }
     }
 
+    // Renders the EditBox, including background, border, text, selection and caret.
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
         let bc      = evt.bc
@@ -172,7 +180,7 @@ impl IWnd for EditBox
             clientRect.width -= icon.sizeX + metrics.iconText_Margin
         }
 
-        // name
+        // Placeholder note
         if !name.isEmpty() and text.isEmpty()
         {
             var format: RichStringFormat
@@ -238,6 +246,7 @@ impl IWnd for EditBox
         painter.translateTransform(scrollPosX, 0)
     }
 
+    // Processes mouse interaction with the EditBox (clicks, drags, hover, wheel).
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
         var pos = surfaceToLocal(evt.surfacePos)
@@ -289,6 +298,7 @@ impl IWnd for EditBox
         }
     }
 
+    // Blinking caret timer handler.
     mtd impl onTimerEvent(evt: *TimerEvent)
     {
         visibleCaret = !visibleCaret
@@ -297,6 +307,7 @@ impl IWnd for EditBox
         invalidateRect(pos)
     }
 
+    // Handles keyboard input (navigation, edition, clipboard shortcuts, etc.).
     mtd impl onKeyEvent(evt: *KeyEvent)
     {
         if evt.kind == .KeyPressed
@@ -321,6 +332,7 @@ impl IWnd for EditBox
 
 internal impl EditBox
 {
+    // Shows or hides the clear button based on current text and flags.
     mtd showHideClearButon()
     {
         if !editBoxFlags.has(.ClearButton):
@@ -345,6 +357,7 @@ internal impl EditBox
         }
     }
 
+    // Handles individual key presses as well as shortcut combinations.
     mtd keyPressed(key: Input.Key, mdf: Input.KeyModifiers)->bool
     {
         let ctrl  = mdf & .Control
@@ -467,6 +480,7 @@ internal impl EditBox
         return false
     }
 
+    // Inserts an arbitrary UTF‑8 string (after deleting the current selection).
     mtd insertString(str: #null string)
     {
         Utf8.visitRunes(|r| str)
@@ -475,6 +489,7 @@ internal impl EditBox
         }
     }
 
+    // Inserts a raw UTF‑8 slice without validation.
     mtd insertUtf8(s: string)
     {
         deleteSelectionPrivate()
@@ -483,6 +498,7 @@ internal impl EditBox
         countRunes += 1
     }
 
+    // Validates the current content according to inputMode or custom callback.
     mtd checkContent()->EditBoxCheckResult
     {
         var res = EditBoxCheckResult.Valid
@@ -539,19 +555,20 @@ internal impl EditBox
         return res
     }
 
+    // Inserts a single Unicode rune, performing maxLength and validation checks.
     mtd insertRune(r: rune)
     {
         if maxLength and countRunes == maxLength:
             return
 
-        // Convert rune to utf8
+        // Convert rune to UTF‑8.
         var utf8: [5] u8
         let cpt   = Utf8.fromUnicode(utf8, [r])
         if !cpt:
             return
         utf8[cpt] = 0
 
-        // Should we check the content ?
+        // Determine whether we need to validate the content.
         let mustValidate = sigCheckContent != null or inputMode != .String
         if !mustValidate
         {
@@ -578,11 +595,14 @@ internal impl EditBox
 
     #[Swag.Inline]
     {
+        // Returns the first byte of the current selection.
         mtd getSelBeg() => selBeg <= selEnd ? selBeg : selEnd
+        // Returns the last byte of the current selection.
         mtd getSelEnd() => selBeg <= selEnd ? selEnd : selBeg
     }
 
     #[Swag.Discardable]
+    // Deletes the current selection without emitting change notifications.
     mtd deleteSelectionPrivate()->bool
     {
         if selBeg == selEnd:
@@ -603,6 +623,7 @@ internal impl EditBox
         return true
     }
 
+    // Returns the client rectangle adjusted by padding and right margin.
     mtd getEditRect()->Math.Rectangle
     {
         var rect = getClientRectPadding()
@@ -610,6 +631,7 @@ internal impl EditBox
         return rect
     }
 
+    // Returns the left padding for text rendering (accounts for icon).
     mtd getTextMarginLeft()->f32
     {
         var rect = getEditRect()
@@ -618,6 +640,7 @@ internal impl EditBox
         return rect.x
     }
 
+    // Returns the padding vector for the current visual form.
     mtd getFormPadding()->Math.Vector4
     {
         #[Swag.Complete]
@@ -636,6 +659,7 @@ internal impl EditBox
         return {}
     }
 
+    // Forces the caret to become visible and restarts its blink timer.
     mtd forceVisibleCaret()
     {
         if timerCaret
@@ -645,6 +669,7 @@ internal impl EditBox
         }
     }
 
+    // Computes the caret rectangle in surface coordinates.
     mtd getCaretPos()->Math.Rectangle
     {
         var result: retval = undefined
@@ -677,6 +702,7 @@ internal impl EditBox
         return result
     }
 
+    // Converts an X mouse position into a byte index inside "text".
     mtd getByteIndexAtPos(xmouse: f32)->u64
     {
         if !text.length:
@@ -687,7 +713,7 @@ internal impl EditBox
 
         let fontR = getFont().regular
 
-        // Could be better, of course...
+        // Naïve incremental search. Could be improved for performance.
         if editBoxFlags.has(.RightAlign)
         {
             var clientRect = getEditRect()
@@ -739,6 +765,7 @@ internal impl EditBox
         return text.length
     }
 
+    // Updates cached caret and selection pixel positions.
     mtd computeCaretPos()
     {
         if getFocus() != self:
@@ -758,6 +785,7 @@ internal impl EditBox
         }
     }
 
+    // Moves caret left to the start of the previous word.
     mtd moveCaretLeftStartWord(sel: u64)->u64
     {
         if !sel:
@@ -782,6 +810,7 @@ internal impl EditBox
         return 0
     }
 
+    // Moves caret right to the end of the current/next word.
     mtd moveCaretRightEndWord(sel: u64)->u64
     {
         if sel == text.length:
@@ -799,6 +828,7 @@ internal impl EditBox
         return text.length
     }
 
+    // Moves caret left by one rune.
     mtd moveCaretLeft(sel: u64)->u64
     {
         if !sel:
@@ -808,6 +838,7 @@ internal impl EditBox
         return sel - eat
     }
 
+    // Moves caret right by one rune.
     mtd moveCaretRight(sel: u64)->u64
     {
         if sel == text.length:
@@ -817,6 +848,7 @@ internal impl EditBox
         return sel + eat
     }
 
+    // Clamps selection indices and triggers repaint.
     mtd checkSelection()
     {
         selBeg = Math.min(selBeg, text.length)
@@ -824,6 +856,7 @@ internal impl EditBox
         invalidate()
     }
 
+    // Emits sigChanged, recomputes caret, updates clear button and repaints.
     mtd notifyChanged()
     {
         sigChanged.call(self)
@@ -836,6 +869,7 @@ internal impl EditBox
 impl EditBox
 {
     #[Swag.Discardable]
+    // Factory method that creates a new EditBox instance.
     func create(parent: *Wnd, content: #null string, position: Math.Rectangle = {}, id: WndId = null)->*EditBox
     {
         Debug.assert(parent != null)
@@ -852,7 +886,7 @@ impl EditBox
         return res
     }
 
-    // Delete selected text
+    // Deletes the selected text.
     mtd deleteSelection()
     {
         if editBoxFlags.has(.ReadOnly):
@@ -861,7 +895,7 @@ impl EditBox
             notifyChanged()
     }
 
-    // Set current selection
+    // Sets the current selection.
     mtd setSelection(start, end: u64)
     {
         selBeg = start
@@ -870,20 +904,20 @@ impl EditBox
         computeCaretPos()
     }
 
-    // Select all text
+    // Selects the whole content.
     mtd selectAll()
     {
         setSelection(0, text.length)
     }
 
-    // Set the editbox note
+    // Defines the placeholder (note) text.
     mtd setNote(note: string)
     {
         name = note
         invalidate()
     }
 
-    // Set the editbox content, but: not notify change
+    // Assigns the EditBox content without emitting change notifications.
     mtd setTextSilent(str: string)
     {
         sigChanged.disable()
@@ -891,7 +925,7 @@ impl EditBox
         sigChanged.enable()
     }
 
-    // Set the editbox content
+    // Assigns the EditBox content and emits change notifications.
     mtd setText(str: #null string)
     {
         if text == str:
@@ -904,20 +938,19 @@ impl EditBox
         notifyChanged()
     }
 
-    // Get the associated text
+    // Returns the current text as a String.
     mtd getText()->string
     {
         return text.toString()
     }
 
-    // Restore the original text.
-    // The original text is the one stored when the editbox has gained the focus.
+    // Restores the text captured on focus gain.
     mtd restoreText()
     {
         setText(originalText)
     }
 
-    // Editbox will edit signed integers
+    // Configures the EditBox to accept signed 64‑bit integers.
     mtd setInputS64(min = Swag.S64.Min, max = Swag.S64.Max)
     {
         inputMode     = .S64
@@ -925,7 +958,7 @@ impl EditBox
         minMaxS64.max = max
     }
 
-    // Editbox will edit unsigned integers
+    // Configures the EditBox to accept unsigned 64‑bit integers.
     mtd setInputU64(min = 0'u64, max = Swag.U64.Max)
     {
         inputMode     = .U64
@@ -933,7 +966,7 @@ impl EditBox
         minMaxU64.max = max
     }
 
-    // Editbox will edit unsigned integers in hexadecimal form
+    // Configures the EditBox to accept hexadecimal unsigned 64‑bit integers.
     mtd setInputX64(min = 0'u64, max = Swag.U64.Max)
     {
         inputMode     = .X64
@@ -941,7 +974,7 @@ impl EditBox
         minMaxU64.max = max
     }
 
-    // Editbox will edit floating points
+    // Configures the EditBox to accept 64‑bit floating‑point numbers.
     mtd setInputF64(min = -Swag.F64.Max, max = Swag.F64.Max)
     {
         inputMode     = .F64
@@ -949,7 +982,7 @@ impl EditBox
         minMaxF64.max = max
     }
 
-    // Set the editbox form
+    // Sets the visual form of the EditBox.
     mtd setForm(form: EditBoxForm)
     {
         self.form = #self.form
@@ -970,7 +1003,6 @@ impl EditBox
         invalidate()
     }
 
-    // Returns true if the value is valid.
-    // Depends if the editbox has some max and min registered values.
+    // Returns true when the current content is valid.
     mtd isValid()->bool => !isInvalid
 }
