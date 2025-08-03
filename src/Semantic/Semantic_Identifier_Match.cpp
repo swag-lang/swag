@@ -620,6 +620,7 @@ namespace
     }
 }
 
+#pragma optimize("", off)
 bool Semantic::setSymbolMatchVar(SemanticContext* context, const OneMatch& oneMatch, AstIdentifierRef* idRef, AstIdentifier* identifier, SymbolOverload* overload)
 {
     // If this is a struct variable, and it's referenced (identifierRef has a startScope), then we
@@ -633,6 +634,13 @@ bool Semantic::setSymbolMatchVar(SemanticContext* context, const OneMatch& oneMa
         YIELD();
         waitOverloadCompleted(context->baseJob, parentStructNode->resolvedSymbolOverload());
         YIELD();
+
+        // Check access
+        if (overload->node->hasAttribute(ATTRIBUTE_INTERNAL) && overload->node->ownerStructScope != context->node->ownerStructScope)
+        {
+            const Diagnostic err{identifier, formErr(Err0255, overload->node->token.cstr())};
+            return context->report(err);
+        }
     }
 
     overload->flags.add(OVERLOAD_USED);

@@ -544,11 +544,11 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
             ParserPushAstNodeFlags scopedFlags(this, AST_STRUCT_MEMBER);
             auto                   savedToken = tokenParse;
             SWAG_VERIFY(structType != SyntaxStructType::Interface, context->report({parent, tokenParse.token, toErr(Err0351)}));
-            
+
             SWAG_CHECK(eatToken());
             const auto structNode = castAst<AstStruct>(parent->ownerStructScope->owner, AstNodeKind::StructDecl);
             structNode->addSpecFlag(AstStruct::SPEC_FLAG_HAS_USING);
-            
+
             AstNode* varDecl;
             SWAG_CHECK(doVarDecl(parent, &varDecl, AstNodeKind::VarDecl, VAR_DECL_FLAG_FOR_STRUCT));
             varDecl->addAstFlag(AST_DECL_USING);
@@ -566,6 +566,23 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
             SWAG_CHECK(doVarDecl(parent, &varDecl, AstNodeKind::ConstDecl, VAR_DECL_FLAG_FOR_STRUCT));
             FormatAst::inheritFormatBefore(this, varDecl, &savedToken);
             *result = varDecl;
+            break;
+        }
+
+        case TokenId::KwdInternal:
+        {
+            SWAG_VERIFY(structType != SyntaxStructType::Interface, error(tokenParse, toErr(Err0190)));
+            if (parent->ownerStructScope)
+                parent->ownerStructScope->owner->addAstFlag(AST_STRUCT_COMPOUND);
+            const auto attrUse = Ast::newNode<AstAttrUse>(AstNodeKind::AttrUse, this, parent);
+            *result            = attrUse;
+            attrUse->addAstFlag(AST_GENERATED | AST_GENERATED_USER);
+            attrUse->attributeFlags = ATTRIBUTE_INTERNAL;
+            SWAG_CHECK(eatToken());
+            AstNode* topStmt;
+            SWAG_CHECK(doStructBody(attrUse, structType, &topStmt));
+            attrUse->content = topStmt;
+            attrUse->content->setOwnerAttrUse(attrUse);
             break;
         }
 

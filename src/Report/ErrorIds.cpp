@@ -402,7 +402,7 @@ void initErrors()
     SWAG_ERROR(Err0252, "invalid type                                      $ cannot evaluate the type because it is generic                                                                                           $ ");
     SWAG_ERROR(Err0253, "invalid type                                      $ cannot have the type [[%s]] as the second parameter of [[%s]]                                                                            $ consider using [[opAssign]] if you want to make a copy");
     SWAG_ERROR(Err0254, "invalid type                                      $ cannot use a [[const]] version of the type [[%s]]                                                                                        $ ");
-    SWAG_ERROR(Err0255, nullptr);
+    SWAG_ERROR(Err0255, "forbidden access                                  $ cannot access the [[internal]] struct field [[%s]]                                                                                       $ ");
     SWAG_ERROR(Err0256, "invalid type                                      $ cannot use the type [[%s]] as a type for an attribute parameter                                                                          $ ");
     SWAG_ERROR(Err0257, "invalid type                                      $ cannot use the type [[%s]] as an argument to [[@cvaarg]]                                                                                 $ ");
     SWAG_ERROR(Err0258, "invalid type                                      $ expected [[bool]] as the generic parameter of [[%s]], found type [[%s]] instead                                                          $ ");
