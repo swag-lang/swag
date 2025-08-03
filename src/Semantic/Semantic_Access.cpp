@@ -220,8 +220,9 @@ namespace
 {
     AstNode* getErrorCulprit(AstNode* n, AstNode** onNode)
     {
-        if (!n)
+        if (!n || n->hasSemFlag(SEMFLAG_CAST3))
             return nullptr;
+        n->addSemFlag(SEMFLAG_CAST3);
         if (!Semantic::canInheritAccess(n))
             return nullptr;
 
