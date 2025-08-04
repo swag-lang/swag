@@ -1,43 +1,56 @@
 #global public
 using Swag, Core, Core.Errors, Core.StrConv
 
+// Represents a color with 8-bit ARGB components.
+// Provides utilities for color creation, conversion, and manipulation.
 #[ConstExpr, Core.Serialization.Final]
 struct Color
 {
     #if Core.BIG_ENDIAN
     {
-        a, r, g, b: u8
+        a, r, g, b: u8 // Alpha, red, green, blue components (0-255)
         #[Offset("a")]
-        argb: u32
+        argb: u32 // 32-bit ARGB representation
     }
     #else
     {
-        b, g, r, a: u8
+        b, g, r, a: u8 // Blue, green, red, alpha components (0-255)
         #[Offset("b")]
-        argb: u32
+        argb: u32 // 32-bit ARGB representation
     }
 }
 
 impl Color
 {
+    // Assignment operator for u32 ARGB value.
     #[Complete, Inline, ConstExpr, Overload]
     func opAffect(self, argb: u32) = self.argb = argb
+
+    // Assignment operator for 'Argb' enum value.
     #[Complete, Inline, Implicit, ConstExpr, Overload]
     func opAffect(self, argb: Argb) = self.argb = cast(u32) argb
+
+    // Assignment operator for color name string.
     #[Complete, Inline, ConstExpr, Overload]
     func opAffect(self, name: string) = self.argb = cast(u32) Argb.fromName(name)
 
+    // Equality comparison with u32 ARGB value.
     #[Inline, Overload]
     func opEquals(self, argb: u32) => self.argb == argb
+
+    // Equality comparison with 'Argb' enum value.
     #[Inline, Overload]
     func opEquals(self, argb: Argb) => self.argb == cast(u32) argb
+
+    // Equality comparison with another Color.
     #[Inline, Overload]
     func opEquals(self, other: Self) => self.argb == other.argb
 
+    // Check if the color is fully opaque.
     #[Inline]
     mtd const isOpaque() => a == 255
 
-    // Set all ARGB components with u8 values (0-255)
+    // Set all ARGB components with u8 values (0-255).
     #[Inline]
     func setArgb(self, a, r, g, b: u8)
     {
@@ -47,7 +60,7 @@ impl Color
         self.b = b
     }
 
-    // Set all ARGB components with floats in the range [0, 1]
+    // Set all ARGB components with floats in the range [0, 1].
     #[Inline]
     func setArgbf(self, a, r, g, b: f32)
     {
@@ -89,7 +102,7 @@ impl Color
         self.b = cast() (Math.clamp(b, 0, 1) * 255)
     }
 
-    // Retrieve all ARGB components as floating point values between 0 and 1
+    // Retrieve all ARGB components as floating point values between 0 and 1.
     #[Inline, ConstExpr]
     func toArgbf(const self)->{ a: f32, r: f32, g: f32, b: f32 }
     {
@@ -101,7 +114,7 @@ impl Color
         return result
     }
 
-    // Convert color to a Math.Vector4 (w=alpha, x=red, y=green, z=blue)
+    // Convert color to a Math.Vector4 (w=alpha, x=red, y=green, z=blue).
     #[Inline, ConstExpr]
     func toVector4(const self)->Math.Vector4
     {
@@ -113,7 +126,7 @@ impl Color
         return result
     }
 
-    // Retrieve RGB components as floating point values between 0 and 1
+    // Retrieve RGB components as floating point values between 0 and 1.
     #[Inline, ConstExpr]
     func toRgbf(const self)->{ r: f32, g: f32, b: f32 }
     {
@@ -124,7 +137,7 @@ impl Color
         return result
     }
 
-    // Create a new Color with specified RGB values and opaque alpha
+    // Create a new Color with specified RGB values and opaque alpha.
     #[Inline, ConstExpr]
     func fromRgb(r, g, b: u8)->Color
     {
@@ -133,7 +146,7 @@ impl Color
         return result
     }
 
-    // Create a new Color with specified RGB float values and opaque alpha
+    // Create a new Color with specified RGB float values and opaque alpha.
     #[Inline, ConstExpr]
     func fromRgbf(r, g, b: f32)->Color
     {
@@ -142,7 +155,7 @@ impl Color
         return result
     }
 
-    // Create a new Color with specified ARGB values
+    // Create a new Color with specified ARGB values.
     #[Inline, Overload, ConstExpr]
     func fromArgb(a, r, g, b: u8)->Color
     {
@@ -151,7 +164,7 @@ impl Color
         return result
     }
 
-    // Create a new Color from Argb enum value
+    // Create a new Color from 'Argb' enum value.
     #[Inline, Overload, ConstExpr]
     func fromArgb(argb: Argb)->Color
     {
@@ -159,7 +172,7 @@ impl Color
         return result
     }
 
-    // Create a new Color from Argb enum value with custom alpha
+    // Create a new Color from 'Argb' enum value with custom alpha.
     #[Inline, Overload, ConstExpr]
     func fromArgb(alpha: u8, argb: Argb)->Color
     {
@@ -168,7 +181,7 @@ impl Color
         return result
     }
 
-    // Create a new Color from u32 ARGB value
+    // Create a new Color from u32 ARGB value.
     #[Inline, Overload, ConstExpr]
     func fromArgb(argb: u32)->Color
     {
@@ -176,7 +189,7 @@ impl Color
         return result
     }
 
-    // Create a new Color from u32 ABGR value (reversed byte order)
+    // Create a new Color from u32 ABGR value (reversed byte order).
     #[Inline, ConstExpr]
     func fromAbgr(abgr: u32)->Color
     {
@@ -188,7 +201,7 @@ impl Color
         return result
     }
 
-    // Create a new Color with specified ARGB float values
+    // Create a new Color with specified ARGB float values.
     #[Inline, ConstExpr]
     func fromArgbf(a, r, g, b: f32)->Color
     {
@@ -197,7 +210,7 @@ impl Color
         return result
     }
 
-    // Create a new Color from Math.Vector4 (w=alpha, x=red, y=green, z=blue)
+    // Create a new Color from Math.Vector4 (w=alpha, x=red, y=green, z=blue).
     #[Inline, ConstExpr]
     func fromVector4(vec: Math.Vector4)->Color
     {
@@ -206,7 +219,7 @@ impl Color
         return result
     }
 
-    // Create a new Color from HSL values (hue, saturation, lightness)
+    // Create a new Color from HSL values (hue, saturation, lightness).
     #[Inline, ConstExpr]
     func fromHsl(h, s, l: f32)->Color
     {
@@ -215,9 +228,10 @@ impl Color
         return result
     }
 
-    // Set color from HSL values (hue, saturation, lightness in range [0, 1])
+    // Set color from HSL values (hue, saturation, lightness in range [0, 1]).
     mtd setHsl(h, s, l: f32)
     {
+        // Convert hue component to RGB color value.
         func hueToCol(m1, m2, hue: f32)->u8
         {
             var h = hue
@@ -259,7 +273,7 @@ impl Color
         }
     }
 
-    // Convert color to HSL values (hue, saturation, lightness in range [0, 1])
+    // Convert color to HSL values (hue, saturation, lightness in range [0, 1]).
     mtd const toHsl()->{ h: f32, s: f32, l: f32 }
     {
         var result: retval = undefined
@@ -300,7 +314,7 @@ impl Color
         return result
     }
 
-    // Blend two colors using linear interpolation, keeping col0's alpha channel
+    // Blend two colors using linear interpolation, keeping 'col0's alpha channel.
     #[ConstExpr]
     func getBlendKeepAlpha(col0, col1: Color, factor: f32)->Color
     {
@@ -312,7 +326,7 @@ impl Color
         return result
     }
 
-    // Blend two colors using linear interpolation (including alpha)
+    // Blend two colors using linear interpolation (including alpha).
     #[ConstExpr]
     func getBlend(col0, col1: Color, factor: f32)->Color
     {
@@ -324,21 +338,21 @@ impl Color
         return result
     }
 
-    // Returns a darker version of the color by blending with black
+    // Returns a darker version of the color by blending with black.
     #[ConstExpr]
     func getDarker(col: Color, factor: f32)->Color
     {
         return col.getBlendKeepAlpha(Color.fromArgb(Argb.Black), factor)
     }
 
-    // Returns a lighter version of the color by blending with white
+    // Returns a lighter version of the color by blending with white.
     #[ConstExpr]
     func getLighter(col: Color, factor: f32)->Color
     {
         return col.getBlendKeepAlpha(Color.fromArgb(Argb.White), factor)
     }
 
-    // Calculate the RGB distance between this color and another (normalized to [0, 1])
+    // Calculate the RGB distance between this color and another (normalized to [0, 1]).
     mtd const getDistanceRgb(col: Color)->f32
     {
         let x1   = cast(f32) r - col.r
@@ -349,35 +363,35 @@ impl Color
         return dist
     }
 
-    // Check if the color is considered "dark" based on luminance
+    // Check if the color is considered "dark" based on luminance.
     #[Inline]
     mtd const isDark()->bool
     {
         return getGrayScalef() < 0.5
     }
 
-    // Check if the color is considered "light" based on luminance
+    // Check if the color is considered "light" based on luminance.
     #[Inline]
     mtd const isLight()->bool
     {
         return getGrayScalef() >= 0.5
     }
 
-    // Get a contrasting color (black or white) for text readability
+    // Get a contrasting color (black or white) for text readability.
     #[Inline, ConstExpr]
     mtd const getContrastingColor()->Color
     {
         return isDark() ? Color.fromArgb(Argb.White) : Color.fromArgb(Argb.Black)
     }
 
-    // Calculate the perceived brightness using luminance formula
+    // Calculate the perceived brightness using luminance formula.
     #[Inline]
     mtd const getGrayScalef()->f32
     {
         return (cast(f32) r * 0.299 + cast(f32) g * 0.587 + cast(f32) b * 0.114) / 255.0
     }
 
-    // Convert to grayscale color preserving alpha
+    // Convert to grayscale color preserving alpha.
     #[Inline, ConstExpr]
     mtd const toGrayscale()->Color
     {
@@ -385,33 +399,33 @@ impl Color
         return Color.fromArgb(a, gray, gray, gray)
     }
 
-    // Adjust saturation (-1.0 = grayscale, 0.0 = no change, 1.0 = full saturation)
+    // Adjust saturation (-1.0 = grayscale, 0.0 = no change, 1.0 = full saturation).
     #[ConstExpr]
     mtd const adjustSaturation(factor: f32)->Color
     {
-        let hsl = toHsl()
-        let newS = Math.clamp(hsl.s + factor, 0.0, 1.0)
+        let hsl    = toHsl()
+        let newS   = Math.clamp(hsl.s + factor, 0.0, 1.0)
         var result = Color.fromHsl(hsl.h, newS, hsl.l)
         result.a = a // Preserve alpha
         return result
     }
 
-    // Adjust brightness (-1.0 = black, 0.0 = no change, 1.0 = white)
+    // Adjust brightness (-1.0 = black, 0.0 = no change, 1.0 = white).
     #[ConstExpr]
     mtd const adjustBrightness(factor: f32)->Color
     {
-        let hsl = toHsl()
-        let newL = Math.clamp(hsl.l + factor, 0.0, 1.0)
+        let hsl    = toHsl()
+        let newL   = Math.clamp(hsl.l + factor, 0.0, 1.0)
         var result = Color.fromHsl(hsl.h, hsl.s, newL)
         result.a = a // Preserve alpha
         return result
     }
 
-    // Adjust hue by rotating around the color wheel
+    // Adjust hue by rotating around the color wheel.
     #[ConstExpr]
     mtd const rotateHue(degrees: f32)->Color
     {
-        let hsl = toHsl()
+        let hsl  = toHsl()
         var newH = hsl.h + (degrees / 360.0)
         if newH > 1.0:
             newH -= 1.0
@@ -422,28 +436,28 @@ impl Color
         return result
     }
 
-    // Create a color with modified alpha
+    // Create a color with modified alpha.
     #[Inline, ConstExpr]
     mtd const withAlpha(alpha: u8)->Color
     {
         return fromArgb(alpha, r, g, b)
     }
 
-    // Create a color with modified alpha (float version)
+    // Create a color with modified alpha (float version).
     #[Inline, ConstExpr]
     mtd const withAlphaf(alpha: f32)->Color
     {
         return fromArgb(cast(u8) (Math.clamp(alpha, 0.0, 1.0) * 255), r, g, b)
     }
 
-    // Get complementary color (opposite on color wheel)
+    // Get complementary color (opposite on color wheel).
     #[ConstExpr]
     mtd const getComplementary()->Color
     {
         return rotateHue(180.0)
     }
 
-    // Multiply color by another color (component-wise)
+    // Multiply color by another color (component-wise).
     #[ConstExpr]
     func multiply(col0, col1: Color)->Color
     {
@@ -455,7 +469,7 @@ impl Color
         return result
     }
 
-    // Add colors with clamping
+    // Add colors with clamping.
     #[ConstExpr]
     func add(col0, col1: Color)->Color
     {
@@ -468,8 +482,11 @@ impl Color
     }
 }
 
+// Implementation of string parsing interface for Color values.
 impl Core.StrConv.IPokeValue for Color
 {
+    // Parse a Color from a string representation.
+    // Supports hex format (0x...), individual ARGB components, or named colors.
     mtd impl poke(buf: string)->string throw
     {
         var eat: u64
