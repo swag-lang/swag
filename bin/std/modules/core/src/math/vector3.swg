@@ -357,16 +357,16 @@ impl Vector3
 
     // Returns the cosine of the angle between this vector and 'other'.
     // Calculated using the dot product formula: dot(a,b) / (|a| * |b|).
-    mtd const cosAngle(other: Vector3)->f32
+    mtd const cosAngleTo(other: Vector3)->f32
     {
         return dot(other) / (length() * other.length())
     }
 
     // Returns the angle between this vector and 'other' in radians.
     // The result is in the range [0, π] using the arc cosine of the normalized dot product.
-    mtd const angle(other: Vector3)->f32
+    mtd const angleTo(other: Vector3)->f32
     {
-        return Math.acos(cosAngle(other))
+        return Math.acos(cosAngleTo(other))
     }
 
     // Perform linear interpolation between two vectors.
