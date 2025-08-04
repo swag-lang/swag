@@ -54,6 +54,47 @@ alias ConstF64 = Const'f64
     func interpQuintic(t: f32) => t * t * t * (t * (t * 6 - 15) + 10)
     func interpQuintic(t: f64) => t * t * t * (t * (t * 6 - 15) + 10)
 
+    // Perform smooth damping interpolation towards 'target'.
+    // Uses 'smoothTime' and 'deltaTime' for frame-rate independent smooth movement.
+    // 'currentVelocity' is modified to track the current rate of change.
+    // Based on Game Programming Gems 4 Chapter 1.10
+    func(T) smoothDamp(current, target: T, currentVelocity: &T, smoothTime, deltaTime: T)->T
+    {
+        // Clamp smoothTime to prevent division by zero and ensure stability
+        let smoothTimeActual = Math.max(0.0001, smoothTime)
+
+        // Calculate the omega (frequency) and zeta (damping coefficient)
+        let omega = 2.0 / smoothTimeActual
+        let x     = omega * deltaTime
+        let exp   = 1.0 / (1.0 + x + 0.48 * x * x + 0.235 * x * x * x)
+
+        // Calculate change and target offset
+        let change     = current - target
+        let originalTo = target
+
+        // Clamp maximum change (optional speed limit)
+        #if T == f32:
+            let maxChange = Swag.F32.Max * smoothTimeActual
+        #else:
+            let maxChange = Swag.F64.Max * smoothTimeActual
+        let clampedChange = Math.clamp(change, -maxChange, maxChange)
+        let newTarget     = current - clampedChange
+
+        // Calculate new velocity and position
+        let temp = (currentVelocity + omega * clampedChange) * deltaTime
+        currentVelocity = (currentVelocity - omega * temp) * exp
+        var result = newTarget + (clampedChange + temp) * exp
+
+        // Prevent overshooting
+        if (originalTo - current > 0.0) == (result > originalTo)
+        {
+            result          = originalTo
+            currentVelocity = (result - originalTo) / deltaTime
+        }
+
+        return result
+    }
+
     // Convert radians to degrees
     func toDegrees(x: f32) => x * 57.295779513082320876798154814105'f32
     func toRadians(x: f32) => x * 0.017453292519943295769236907684886'f32
@@ -70,9 +111,27 @@ alias ConstF64 = Const'f64
 
     // Check if 'x' is NaN (not a number)
     #[Swag.Safety("nan", false)]
-    func isNan(x: f32) => x != x
+    func isNaN(x: f32) => x != x
     #[Swag.Safety("nan", false)]
-    func isNan(x: f64) => x != x
+    func isNaN(x: f64) => x != x
+
+    // Returns true if the value is finite (not infinite and not NaN).
+    // A finite number is any real number that is not positive infinity, negative infinity, or NaN.
+    func isFinite(value: f32)->bool
+    {
+        let bits     = cast(u32) value
+        let exponent = (bits >> 23) & 0xFF     // Extract exponent bits
+        return exponent != 0xFF // Not infinity or NaN if exp != all 1s
+    }
+
+    // Returns true if the value is finite (not infinite and not NaN).
+    // A finite number is any real number that is not positive infinity, negative infinity, or NaN.
+    func isFinite(value: f64)->bool
+    {
+        let bits     = cast(u64) value
+        let exponent = (bits >> 52) & 0x7FF     // Extract exponent bits
+        return exponent != 0x7FF // Not infinity or NaN if exp != all 1s
+    }
 
     // Smoothstep interpolation between 'edge0' and 'edge1'
     func smoothstep(edge0, edge1, x: f32)->f32

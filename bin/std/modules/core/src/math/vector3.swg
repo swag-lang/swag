@@ -6,8 +6,7 @@
 #[Serialization.Final]
 struct Vector3
 {
-    x, y, z: f32
-     // X, Y, and Z components of the vector
+    x, y, z: f32 // X, Y, and Z components of the vector
 }
 
 impl Vector3
@@ -27,7 +26,7 @@ impl Vector3
 
     // Set all components to the same scalar value.
     // This allows assignment like 'vec = 5.0' to set all components to 5.0.
-    #[Swag.Complete]
+    #[Swag.Complete, Swag.Inline]
     mtd opAffect(value: f32)
     {
         x, y, z = value
@@ -35,7 +34,7 @@ impl Vector3
 
     // Compound assignment operators for vector-vector operations (+=, -=, *=, /=).
     // Performs component-wise operations with another vector.
-    #[Swag.Overload]
+    #[Swag.Overload, Swag.Inline]
     mtd(op: string) opAssign(other: Self)
     {
         #if op == "+="
@@ -68,7 +67,7 @@ impl Vector3
 
     // Compound assignment operators for vector-scalar operations (+=, -=, *=, /=).
     // Applies the scalar 'value' to all components of the vector.
-    #[Swag.Overload]
+    #[Swag.Overload, Swag.Inline]
     mtd(op: string) opAssign(value: f32)
     {
         #if op == "+="
@@ -101,8 +100,8 @@ impl Vector3
 
     // Binary operators for vector-vector operations (+, -, *, /).
     // Performs component-wise operations between two vectors and returns the result.
-    #[Swag.Overload]
-    mtd(op: string) opBinary(other: Self)->Self
+    #[Swag.Overload, Swag.Inline]
+    mtd(op: string) const opBinary(other: Self)->Self
     {
         #if op == "+":
             return Self{x + other.x, y + other.y, z + other.z}
@@ -118,8 +117,8 @@ impl Vector3
 
     // Binary operators for vector-scalar operations (+, -, *, /).
     // Applies the scalar 'value' to all components and returns the result.
-    #[Swag.Overload]
-    mtd(op: string) opBinary(value: f32)->Self
+    #[Swag.Overload, Swag.Inline]
+    mtd(op: string) const opBinary(value: f32)->Self
     {
         #if op == "+":
             return Self{x + value, y + value, z + value}
@@ -135,7 +134,8 @@ impl Vector3
 
     // Apply unary operations to the vector.
     // Currently supports negation (-) to return a vector with all components negated.
-    mtd(op: string) opUnary()->Self
+    #[Swag.Inline]
+    mtd(op: string) const opUnary()->Self
     {
         #if op == "-":
             return Self{-x, -y, -z}
@@ -155,18 +155,30 @@ impl Vector3
 
     // Returns the length (magnitude) of the vector.
     // Calculated using the Euclidean distance formula: sqrt(x² + y² + z²).
+    #[Swag.Inline]
     mtd const length()->f32 => sqrt((x * x) + (y * y) + (z * z))
 
     // Returns the squared length of the vector.
     // Faster than 'length()' when only comparing magnitudes since it avoids the square root operation.
+    #[Swag.Inline]
     mtd const lengthSquared()->f32 => (x * x) + (y * y) + (z * z)
 
     // Returns the dot product between this vector and 'other'.
     // The dot product is calculated as: (x₁ × x₂) + (y₁ × y₂) + (z₁ × z₂).
+    #[Swag.Inline]
     mtd const dot(other: Self)->f32 => (x * other.x) + (y * other.y) + (z * other.z)
+
+    // Returns the cross product between this vector and 'other'.
+    // The cross product produces a vector perpendicular to both input vectors.
+    #[Swag.Inline]
+    mtd const cross(other: Self)->Self
+    {
+        return Self{(y * other.z) - (z * other.y), (z * other.x) - (x * other.z), (x * other.y) - (y * other.x)}
+    }
 
     // Set all vector components to zero.
     // Equivalent to assigning the 'Zero' constant but modifies the current instance.
+    #[Swag.Inline]
     mtd clear()
     {
         x, y, z = 0
@@ -174,6 +186,7 @@ impl Vector3
 
     // Negate the vector in-place.
     // Multiplies all components by -1, effectively reversing the vector direction.
+    #[Swag.Inline]
     mtd negate()
     {
         x = -x
@@ -183,6 +196,7 @@ impl Vector3
 
     // Returns true if this vector is exactly zero.
     // Performs exact floating-point comparison, which may not work well with computed values.
+    #[Swag.Inline]
     mtd const isZero()->bool
     {
         return x == 0 and y == 0 and z == 0
@@ -192,7 +206,7 @@ impl Vector3
     // Uses 'eps' parameter to handle floating-point precision issues.
     mtd const isZeroEpsilon(eps = cast(f32) ConstF64.Epsilon)->bool
     {
-        return isZeroEpsilon(x, eps) and isZeroEpsilon(y, eps) and isZeroEpsilon(z, eps)
+        return Math.isZeroEpsilon(x, eps) and Math.isZeroEpsilon(y, eps) and Math.isZeroEpsilon(z, eps)
     }
 
     // Returns true if this vector is equal to 'other' within an epsilon tolerance.
@@ -314,6 +328,47 @@ impl Vector3
         return result
     }
 
+    // Apply floor function to all components in-place.
+    // Rounds each component down to the nearest integer value.
+    mtd floor()
+    {
+        x = Math.floor(x)
+        y = Math.floor(y)
+        z = Math.floor(z)
+    }
+
+    // Apply ceiling function to all components in-place.
+    // Rounds each component up to the nearest integer value.
+    mtd ceil()
+    {
+        x = Math.ceil(x)
+        y = Math.ceil(y)
+        z = Math.ceil(z)
+    }
+
+    // Apply rounding function to all components in-place.
+    // Rounds each component to the nearest integer value.
+    mtd round()
+    {
+        x = Math.round(x)
+        y = Math.round(y)
+        z = Math.round(z)
+    }
+
+    // Returns the cosine of the angle between this vector and 'other'.
+    // Calculated using the dot product formula: dot(a,b) / (|a| * |b|).
+    mtd const cosAngle(other: Self)->f32
+    {
+        return dot(other) / (length() * other.length())
+    }
+
+    // Returns the angle between this vector and 'other' in radians.
+    // The result is in the range [0, π] using the arc cosine of the normalized dot product.
+    mtd const angle(other: Self)->f32
+    {
+        return Math.acos(cosAngle(other))
+    }
+
     // Perform linear interpolation between two vectors.
     // Interpolates each component separately using the given 'factor' (0.0 to 1.0).
     // When 'factor' is 0.0, returns 'src'; when 1.0, returns 'dst'.
@@ -324,5 +379,168 @@ impl Vector3
         result.y = Math.lerp(src.y, dst.y, factor)
         result.z = Math.lerp(src.z, dst.z, factor)
         return result
+    }
+
+    // Clamp this vector's components between 'min' and 'max' values.
+    // Each component is independently clamped to stay within the specified range.
+    mtd clamp(min, max: Self)
+    {
+        x = Math.clamp(x, min.x, max.x)
+        y = Math.clamp(y, min.y, max.y)
+        z = Math.clamp(z, min.z, max.z)
+    }
+
+    // Returns a new vector with components clamped between 'min' and 'max' values.
+    // Each component is independently clamped to stay within the specified range.
+    mtd const toClamped(min, max: Self)->Self
+    {
+        return Self{Math.clamp(x, min.x, max.x), Math.clamp(y, min.y, max.y), Math.clamp(z, min.z, max.z)}
+    }
+
+    // Clamp this vector's length to be within 'minLength' and 'maxLength'.
+    // Preserves the vector's direction while constraining its magnitude.
+    mtd clampLength(minLength, maxLength: f32)
+    {
+        let len = length()
+        if len < minLength:
+            setLength(minLength)
+        elif len > maxLength:
+            setLength(maxLength)
+    }
+
+    // Returns a new vector with length clamped between 'minLength' and 'maxLength'.
+    // Preserves the vector's direction while constraining its magnitude.
+    mtd const toClampedLength(minLength, maxLength: f32)->Self
+    {
+        let len = length()
+        if len < minLength:
+            return toNormalize() * minLength
+        elif len > maxLength:
+            return toNormalize() * maxLength
+        return dref self
+    }
+
+    // Returns the absolute value of each component.
+    // Creates a new vector where each component is its absolute value.
+    mtd const abs()->Self
+    {
+        return Self{Math.abs(x), Math.abs(y), Math.abs(z)}
+    }
+
+    // Apply absolute value to all components in-place.
+    // Makes all components positive by removing their sign.
+    mtd makeAbs()
+    {
+        x = Math.abs(x)
+        y = Math.abs(y)
+        z = Math.abs(z)
+    }
+
+    // Project this vector onto 'other' vector.
+    // Returns the component of this vector in the direction of 'other'.
+    mtd const project(other: Self)->Self
+    {
+        let dotProduct    = dot(other)
+        let otherLengthSq = other.lengthSquared()
+        if Math.isZeroEpsilon(otherLengthSq):
+            return Zero
+        return other * (dotProduct / otherLengthSq)
+    }
+
+    // Reflect this vector across a surface with the given 'normal'.
+    // The 'normal' should be a unit vector pointing away from the surface.
+    mtd const reflect(normal: Self)->Self
+    {
+        return dref self - (normal * (2 * dot(normal)))
+    }
+
+    // Returns the component-wise sign of the vector (-1, 0, or 1 for each component).
+    // Each component becomes -1 if negative, 0 if zero, or 1 if positive.
+    mtd const sign()->Self
+    {
+        return Self{Math.sign(x), Math.sign(y), Math.sign(z)}
+    }
+
+    // Returns true if all components are finite (not infinite or NaN).
+    // Useful for validating vector values after calculations.
+    mtd const isFinite()->bool
+    {
+        return Math.isFinite(x) and Math.isFinite(y) and Math.isFinite(z)
+    }
+
+    // Returns true if any component is NaN (Not a Number).
+    // Useful for detecting invalid vector values after calculations.
+    mtd const isNaN()->bool
+    {
+        return Math.isNaN(x) or Math.isNaN(y) or Math.isNaN(z)
+    }
+
+    // Move this vector towards 'target' by a maximum distance of 'maxDistance'.
+    // If the distance to 'target' is less than 'maxDistance', moves directly to target.
+    mtd moveTowards(target: Self, maxDistance: f32)
+    {
+        let dir  = target - dref self
+        let dist = dir.length()
+        if dist <= maxDistance:
+            dref self = target
+        else:
+            dref self += dir * (maxDistance / dist)
+    }
+
+    // Returns a vector moved towards 'target' by a maximum distance of 'maxDistance'.
+    // If the distance to 'target' is less than 'maxDistance', returns the target directly.
+    mtd const toMoveTowards(target: Self, maxDistance: f32)->Self
+    {
+        let dir  = target - dref self
+        let dist = dir.length()
+        if dist <= maxDistance:
+            return target
+        return dref self + (dir * (maxDistance / dist))
+    }
+
+    // Perform smooth damping interpolation towards 'target'.
+    // Uses 'smoothTime' and 'deltaTime' for frame-rate independent smooth movement.
+    // 'currentVelocity' is modified to track the current rate of change.
+    func smoothDamp(current, target: Self, currentVelocity: *Self, smoothTime, deltaTime: f32)->Self
+    {
+        var result: retval = undefined
+        result.x = Math.smoothDamp(current.x, target.x, &currentVelocity.x, smoothTime, deltaTime)
+        result.y = Math.smoothDamp(current.y, target.y, &currentVelocity.y, smoothTime, deltaTime)
+        result.z = Math.smoothDamp(current.z, target.z, &currentVelocity.z, smoothTime, deltaTime)
+        return result
+    }
+
+    // Create a vector from spherical coordinates.
+    // 'theta' is azimuthal angle in radians, 'phi' is polar angle in radians, 'radius' is the distance from origin.
+    func fromSpherical(theta, phi, radius: f32)->Self
+    {
+        let sinPhi = Math.sin(phi)
+        return Self{radius * sinPhi * Math.cos(theta), radius * Math.cos(phi), radius * sinPhi * Math.sin(theta)}
+    }
+
+    // Convert this vector to spherical coordinates.
+    // Returns theta (azimuthal angle), phi (polar angle) in radians and radius (magnitude) as a tuple-like struct.
+    mtd const toSpherical()->{ theta: f32, phi: f32, radius: f32 }
+    {
+        let radius = length()
+        let phi    = Math.acos(y / radius)
+        let theta  = Math.atan2(z, x)
+        return {theta, phi, radius}
+    }
+
+    // Create a vector from cylindrical coordinates.
+    // 'theta' is the angle in radians, 'radius' is the distance from the z-axis, 'height' is the z-component.
+    func fromCylindrical(theta, radius, height: f32)->Self
+    {
+        return Self{radius * Math.cos(theta), height, radius * Math.sin(theta)}
+    }
+
+    // Convert this vector to cylindrical coordinates.
+    // Returns theta (angle in radians), radius (distance from z-axis) and height (z-component) as a tuple-like struct.
+    mtd const toCylindrical()->{ theta: f32, radius: f32, height: f32 }
+    {
+        let radius = Math.sqrt((x * x) + (z * z))
+        let theta  = Math.atan2(z, x)
+        return {theta, radius, y}
     }
 }
