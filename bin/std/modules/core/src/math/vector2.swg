@@ -380,11 +380,11 @@ impl Vector2
     // Perform linear interpolation between two vectors.
     // Interpolates each component separately using the given 'factor' (0.0 to 1.0).
     // When 'factor' is 0.0, returns 'src'; when 1.0, returns 'dst'.
-    func lerp(src, dst: Vector2, factor: f32)->Vector2
+    mtd lerpTo(dst: Vector2, factor: f32)->Vector2
     {
         var result: retval = undefined
-        result.x = Math.lerp(src.x, dst.x, factor)
-        result.y = Math.lerp(src.y, dst.y, factor)
+        result.x = Math.lerp(x, dst.x, factor)
+        result.y = Math.lerp(y, dst.y, factor)
         return result
     }
 

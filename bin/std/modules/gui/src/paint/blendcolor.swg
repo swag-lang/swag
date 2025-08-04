@@ -53,7 +53,7 @@ impl BlendColor
             destV.z = startVec4.z
         }
 
-        curVec4 = Math.Vector4.lerp(startV, destV, factor)
+        curVec4 = startV.lerpTo(destV, factor)
         factor += wnd.getApp().getDt() * speed
         wnd.invalidate()
     }
