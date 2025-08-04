@@ -1,48 +1,52 @@
-#global namespace Math.Curve
+#global namespace Math
+#global namespace Curve
 #global public
 
-// Optimized cubic polynomial evaluation
-// P(t) = p0*t³ + p1*t² + p2*t + p3
+// Evaluate a cubic polynomial at parameter 't'.
+// Uses Horner's method for efficient computation: P(t) = ((p0*t + p1)*t + p2)*t + p3.
 func evaluatePolynomial(p0, p1, p2, p3: Vector2, t: f32)->Vector2
 {
     // Using Horner's method: P(t) = ((p0*t + p1)*t + p2)*t + p3
     return Vector2{x: ((p0.x * t + p1.x) * t + p2.x) * t + p3.x, y: ((p0.y * t + p1.y) * t + p2.y) * t + p3.y}
 }
 
-// Optimized quadratic Bézier evaluation
+// Evaluate a quadratic Bézier curve at parameter 't'.
+// Formula: (1-t)²start + 2t(1-t)ctrl + t²end where 't' ranges from 0.0 to 1.0.
 #[Swag.Overload]
 func evaluateBezier(start, end, ctrl: Vector2, t: f32)->Vector2
 {
-    let it = 1.0 - t
+    let it  = 1.0 - t
     let it2 = it * it
-    let t2 = t * t
+    let t2  = t * t
 
     // Quadratic Bézier: (1-t)²start + 2t(1-t)end + t²P2
-    let a = it2           // (1-t)²
-    let b = 2.0 * t * it  // 2t(1-t)
-    let c = t2            // t²
+    let a = it2              // (1-t)²
+    let b = 2.0 * t * it     // 2t(1-t)
+    let c = t2               // t²
 
     return Vector2{x: a * start.x + b * end.x + c * ctrl.x, y: a * start.y + b * end.y + c * ctrl.y}
 }
 
-// Optimized Bézier evaluation
+// Evaluate a cubic Bézier curve at parameter 't'.
+// Formula: (1-t)³start + 3t(1-t)²ctrl1 + 3t²(1-t)ctrl2 + t³end where 't' ranges from 0.0 to 1.0.
 #[Swag.Overload]
 func evaluateBezier(start, end, ctrl1, ctrl2: Vector2, t: f32)->Vector2
 {
-    let it = 1.0 - t
-    let t2 = t * t
+    let it  = 1.0 - t
+    let t2  = t * t
     let it2 = it * it
 
     // Use Horner's method for more efficient computation
-    let a = it2 * it        // (1-t)³
-    let b = 3.0 * t * it2   // 3t(1-t)²
-    let c = 3.0 * t2 * it   // 3t²(1-t)
-    let d = t2 * t          // t³
+    let a = it2 * it          // (1-t)³
+    let b = 3.0 * t * it2     // 3t(1-t)²
+    let c = 3.0 * t2 * it     // 3t²(1-t)
+    let d = t2 * t            // t³
 
     return Vector2{x: a * start.x + b * end.x + c * ctrl1.x + d * ctrl2.x, y: a * start.y + b * end.y + c * ctrl1.y + d * ctrl2.y}
 }
 
-// Find roots of quadratic equation ax² + bx + c = 0
+// Find roots of quadratic equation ax² + bx + c = 0 within the range [0, 1].
+// Returns an array containing valid roots that fall within the parameter range.
 private func solveQuadratic(a: f32, b: f32, c: f32)->Array'f32
 {
     var roots: Array'f32
@@ -56,7 +60,8 @@ private func solveQuadratic(a: f32, b: f32, c: f32)->Array'f32
             if root >= 0.0 and root <= 1.0:
                 roots.add(root)
         }
-    } else
+    }
+    else
     {
         // Quadratic case
         let discriminant = b * b - 4.0 * a * c
@@ -76,7 +81,8 @@ private func solveQuadratic(a: f32, b: f32, c: f32)->Array'f32
     return roots
 }
 
-// Get bounding box of cubic Bézier curve
+// Calculate the axis-aligned bounding box of a cubic Bézier curve.
+// Finds extrema by solving the derivative equation and evaluating the curve at critical points.
 #[Swag.Overload]
 func getBezierBoundingBox(start, end, ctrl0, ctrl1: Vector2)->Rectangle
 {
@@ -110,7 +116,8 @@ func getBezierBoundingBox(start, end, ctrl0, ctrl1: Vector2)->Rectangle
     let cy = 3.0 * (ctrl0.y - start.y)
 
     let yRoots = solveQuadratic(ay, by, cy)
-    foreach t in yRoots {
+    foreach t in yRoots
+    {
         let point = evaluateBezier(start, ctrl0, ctrl1, end, t)
         minY = Math.min(minY, point.y)
         maxY = Math.max(maxY, point.y)
@@ -119,9 +126,10 @@ func getBezierBoundingBox(start, end, ctrl0, ctrl1: Vector2)->Rectangle
     return Rectangle{minX, minY, maxX - minX, maxY - minY}
 }
 
-// Get bounding box of quadratic Bézier curve (one control point)
+// Calculate the axis-aligned bounding box of a quadratic Bézier curve.
+// Finds extrema by solving the linear derivative equation for critical points.
 #[Swag.Overload]
-func getBezierBoundingBox(start, end, ctrl: Vector2) -> Rectangle
+func getBezierBoundingBox(start, end, ctrl: Vector2)->Rectangle
 {
     // Start with endpoints
     var minX = Math.min(start.x, end.x)

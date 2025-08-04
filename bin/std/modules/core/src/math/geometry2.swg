@@ -1,13 +1,16 @@
-#global namespace Math.Geometry
+#global namespace Math
+#global namespace Geometry
 #global public
 
-// Returns true if the point 'pt' is inside an ellipse
+// Test if a point is inside an ellipse.
+// Uses the standard ellipse equation: (x-cx)²/rx² + (y-cy)²/ry² ≤ 1.
 func isInEllipse(me, center: Vector2, radiusX, radiusY: f32)->bool
 {
     return (pow((me.x - center.x), 2) / pow(radiusX, 2)) + (pow((me.y - center.y), 2) / pow(radiusY, 2)) <= 1
 }
 
-// Returns true if the point 'pt' is inside the triangle defined with 'a, b, c'
+// Test if a point is inside a triangle using cross product method.
+// Uses barycentric coordinates by checking if all cross products have the same sign.
 func isInTriangle(me, a, b, c: Vector2)->bool
 {
     let ax  = c.x - b.x
@@ -30,7 +33,8 @@ func isInTriangle(me, a, b, c: Vector2)->bool
     return ((aCROSSbp >= 0) and (bCROSScp >= 0) and (cCROSSap >= 0)) or ((aCROSSbp <= 0) and (bCROSScp <= 0) and (cCROSSap <= 0))
 }
 
-// Returns the distance of the point to the given line
+// Calculate the perpendicular distance from a point to an infinite line.
+// Projects the point onto the line and returns the distance to the projection.
 func distanceToLine(me, a, b: Vector2)->f32
 {
     let toPt = me - a
@@ -42,7 +46,8 @@ func distanceToLine(me, a, b: Vector2)->f32
     return cross.length()
 }
 
-// Returns the distance of the point to the given segment
+// Calculate the shortest distance from a point to a line segment.
+// Handles endpoints by clamping the projection to the segment bounds.
 func distanceToSegment(me, a, b: Vector2)->f32
 {
     let ab = b - a
@@ -65,7 +70,8 @@ func distanceToSegment(me, a, b: Vector2)->f32
     return Math.abs(x1 * y2 - y1 * x2) / mod
 }
 
-// Returns the minimal segment between two segments (and the minimal distance)
+// Find the closest points between two line segments and their distance.
+// Implementation based on David Eberly's Geometric Tools library algorithm.
 //
 // ---
 // David Eberly, Geometric Tools, Redmond WA 98052
@@ -73,6 +79,7 @@ func distanceToSegment(me, a, b: Vector2)->f32
 // Distributed under the Boost Software License, Version 1.0.
 // https://www.boost.org/LICENSE_1_0.txt
 // https://www.geometrictools.com/License/Boost/LICENSE_1_0.txt
+// https://www.geometrictools.com/Documentation/DistanceSegments3D.pdf
 // https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h
 // ---
 func nearestPointsSegSeg(p0, p1, q0, q1: Math.Vector2)->{ a: Math.Vector2, b: Math.Vector2, dist: f32 }
@@ -225,6 +232,8 @@ func nearestPointsSegSeg(p0, p1, q0, q1: Math.Vector2)->{ a: Math.Vector2, b: Ma
     return result
 }
 
+// Calculate intersection coefficients for two infinite lines.
+// Returns parametric coefficients 'd0' and 'd1' where intersection = start + d * (end - start).
 internal func getLineLineIntersectCoefs(start0, end0, start1, end1: Vector2, epsilon: f32)->{ yes: bool, d0: f32, d1: f32 }
 {
     var result: retval
@@ -246,7 +255,8 @@ internal func getLineLineIntersectCoefs(start0, end0, start1, end1: Vector2, eps
     return result
 }
 
-// Compute the intersection point of two lines
+// Find the intersection point of two infinite lines.
+// Returns the intersection point if lines are not parallel, otherwise returns failure.
 func lineLineIntersect(start0, end0, start1, end1: Vector2, epsilon: f32 = ConstF32.Epsilon)->{ yes: bool, pos: Vector2 }
 {
     var result: retval
@@ -261,7 +271,8 @@ func lineLineIntersect(start0, end0, start1, end1: Vector2, epsilon: f32 = Const
     return result
 }
 
-// Compute the intersection point of two segments
+// Find the intersection point of two line segments.
+// Returns the intersection point only if it lies within both segment bounds.
 func segSegIntersect(start0, end0, start1, end1: Vector2, epsilon: f32 = ConstF32.Epsilon)->{ yes: bool, pos: Vector2 }
 {
     var result: retval
@@ -279,8 +290,8 @@ func segSegIntersect(start0, end0, start1, end1: Vector2, epsilon: f32 = ConstF3
     return result
 }
 
-// Returns true if the given point is inside the polygon
-// PNPoly by W. Randolph Franklin
+// Test if a point is inside a polygon using ray casting algorithm.
+// Implementation of the PNPoly algorithm by W. Randolph Franklin.
 func polyContains(poly: Array'Math.Vector2, pt: Math.Vector2)->bool
 {
     var c     = false
@@ -289,7 +300,7 @@ func polyContains(poly: Array'Math.Vector2, pt: Math.Vector2)->bool
     for poly.count
     {
         if ((verti.y > pt.y) != (vertj.y > pt.y)) and
-            (pt.x < (vertj.x - verti.x) * (pt.y - verti.y) / (vertj.y - verti.y) + verti.x)
+           (pt.x < (vertj.x - verti.x) * (pt.y - verti.y) / (vertj.y - verti.y) + verti.x)
         {
             c = !c
         }

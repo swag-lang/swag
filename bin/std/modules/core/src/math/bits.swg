@@ -2,6 +2,8 @@
 #global namespace Math
 using Swag
 
+// Lookup table for bit reversal of 8-bit values.
+// Each index contains the bit-reversed value of that index (e.g., Rev8Arr[0x01] = 0x80).
 internal const Rev8Arr: [256] u8 = [
     0x00, 0x80, 0x40, 0xc0, 0x20, 0xa0, 0x60, 0xe0, 0x10, 0x90, 0x50, 0xd0, 0x30, 0xb0, 0x70, 0xf0,
     0x08, 0x88, 0x48, 0xc8, 0x28, 0xa8, 0x68, 0xe8, 0x18, 0x98, 0x58, 0xd8, 0x38, 0xb8, 0x78, 0xf8,
@@ -22,73 +24,86 @@ internal const Rev8Arr: [256] u8 = [
 
 #[ConstExpr, Inline, Overload]
 {
-    // Returns the number of bits set to 0 from the left
+    // Returns the number of leading zero bits from the most significant bit.
+    // Counts consecutive zero bits starting from the left (most significant) side.
     func leadingZeros(x: u8)->u8   => @bitcountlz(x)
     func leadingZeros(x: u16)->u16 => @bitcountlz(x)
     func leadingZeros(x: u32)->u32 => @bitcountlz(x)
     func leadingZeros(x: u64)->u64 => @bitcountlz(x)
 
-    // Returns the number of bits set to 0 from the right
+    // Returns the number of trailing zero bits from the least significant bit.
+    // Counts consecutive zero bits starting from the right (least significant) side.
     func trailingZeros(x: u8)->u8   => @bitcounttz(x)
     func trailingZeros(x: u16)->u16 => @bitcounttz(x)
     func trailingZeros(x: u32)->u32 => @bitcounttz(x)
     func trailingZeros(x: u64)->u64 => @bitcounttz(x)
 
-    // Returns the number of bits set to 1
+    // Returns the total number of bits set to 1 in the value.
+    // Also known as population count or Hamming weight.
     func countOnes(x: u8)->u8   => @bitcountnz(x)
     func countOnes(x: u16)->u16 => @bitcountnz(x)
     func countOnes(x: u32)->u32 => @bitcountnz(x)
     func countOnes(x: u64)->u64 => @bitcountnz(x)
 
-    // Rotate bits left
+    // Rotate bits left by 'y' positions.
+    // Bits that overflow from the left side wrap around to the right side.
     func rol(x: u8, y: u8)  => @rol(x, y)
     func rol(x: u16, y: u8) => @rol(x, y)
     func rol(x: u32, y: u8) => @rol(x, y)
     func rol(x: u64, y: u8) => @rol(x, y)
 
-    // Rotate bits right
+    // Rotate bits right by 'y' positions.
+    // Bits that overflow from the right side wrap around to the left side.
     func ror(x: u8, y: u8)  => @ror(x, y)
     func ror(x: u16, y: u8) => @ror(x, y)
     func ror(x: u32, y: u8) => @ror(x, y)
     func ror(x: u64, y: u8) => @ror(x, y)
 
-    // Swap bytes
+    // Reverse the byte order of the value.
+    // Converts between little-endian and big-endian representations.
     func byteswap(x: u16) => @byteswap(x)
     func byteswap(x: u32) => @byteswap(x)
     func byteswap(x: u64) => @byteswap(x)
 }
 
-// Reverse all bits
+// Reverse all bits in an 8-bit value using lookup table.
+// Uses the precomputed 'Rev8Arr' table for optimal performance.
 #[ConstExpr, Overload]
 func reverse(x: u8)->u8
 {
     return Rev8Arr[x]
 }
 
+// Reverse all bits in a 16-bit value.
+// Splits the value into two bytes, reverses each using the lookup table, then recombines.
 #[ConstExpr, Overload]
 func reverse(x: u16)->u16
 {
     return cast(u16) Rev8Arr[x >> 8] | cast(u16) Rev8Arr[x & 0xFF] << 8
 }
 
+// Reverse all bits in a 32-bit value using bit manipulation.
+// Uses a series of parallel bit operations with magic constants for efficiency.
 #[ConstExpr, Overload, Safety("overflow", false)]
 func reverse(x: u32)->u32
 {
-    const m0 = 0x55555555
-    const m1 = 0x33333333
-    const m2 = 0x0f0f0f0f
+    const m0 = 0x55555555                            // Binary: 01010101... (alternating bits)
+    const m1 = 0x33333333                            // Binary: 00110011... (2-bit groups)
+    const m2 = 0x0f0f0f0f                            // Binary: 00001111... (4-bit groups)
     var v    = ((x >> 1) & m0) | ((x & m0) << 1)
     v = ((v >> 2) & m1) | ((v & m1) << 2)
     v = ((v >> 4) & m2) | ((v & m2) << 4)
     return @byteswap(v)
 }
 
+// Reverse all bits in a 64-bit value using bit manipulation.
+// Uses the same parallel bit operation technique as the 32-bit version with 64-bit constants.
 #[ConstExpr, Overload, Safety("overflow", false)]
 func reverse(x: u64)->u64
 {
-    const m0 = 0x55555555_55555555
-    const m1 = 0x33333333_33333333
-    const m2 = 0x0f0f0f0f_0f0f0f0f
+    const m0 = 0x55555555_55555555                   // Binary: 01010101... (alternating bits)
+    const m1 = 0x33333333_33333333                   // Binary: 00110011... (2-bit groups)
+    const m2 = 0x0f0f0f0f_0f0f0f0f                   // Binary: 00001111... (4-bit groups)
     var v    = ((x >> 1) & m0) | ((x & m0) << 1)
     v = ((v >> 2) & m1) | ((v & m1) << 2)
     v = ((v >> 4) & m2) | ((v & m2) << 4)
