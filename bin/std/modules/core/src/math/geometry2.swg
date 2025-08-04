@@ -283,11 +283,9 @@ func segSegIntersect(start0, end0, start1, end1: Vector2, epsilon: f32 = ConstF3
 // PNPoly by W. Randolph Franklin
 func polyContains(poly: Array'Math.Vector2, pt: Math.Vector2)->bool
 {
-    let i     = 0
-    let j     = cast(s32) poly.count - 1
     var c     = false
-    var verti = poly.buffer + i
-    var vertj = poly.buffer + j
+    var verti = poly.buffer
+    var vertj = poly.buffer + cast(s32) poly.count - 1
     for poly.count
     {
         if ((verti.y > pt.y) != (vertj.y > pt.y)) and

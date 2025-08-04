@@ -2651,7 +2651,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Circular_getValue">getValue</a></span></td>
-<td>Updated getValue methods to return actual values instead of normalized values. </td>
+<td></td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Circular_getValueLeft">getValueLeft</a></span></td>
@@ -2725,7 +2725,7 @@
 <span id="Gui_Circular_create"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Circular.</span><span class="api-item-title-strong">create</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L648" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L647" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2737,11 +2737,10 @@
 <span id="Gui_Circular_getValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Circular.</span><span class="api-item-title-strong">getValue</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L568" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L567" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Updated getValue methods to return actual values instead of normalized values. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getValue</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
@@ -2750,7 +2749,7 @@
 <span id="Gui_Circular_getValueLeft"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Circular.</span><span class="api-item-title-strong">getValueLeft</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L569" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L568" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2762,7 +2761,7 @@
 <span id="Gui_Circular_getValueRight"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Circular.</span><span class="api-item-title-strong">getValueRight</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L570" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L569" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2774,7 +2773,7 @@
 <span id="Gui_Circular_setAngleRange"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Circular.</span><span class="api-item-title-strong">setAngleRange</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L619" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L618" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2787,7 +2786,7 @@
 <span id="Gui_Circular_setMinMax"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Circular.</span><span class="api-item-title-strong">setMinMax</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L606" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L605" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2800,7 +2799,7 @@
 <span id="Gui_Circular_setRangeValues"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Circular.</span><span class="api-item-title-strong">setRangeValues</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L594" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L593" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2813,7 +2812,7 @@
 <span id="Gui_Circular_setStepCount"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Circular.</span><span class="api-item-title-strong">setStepCount</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L638" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L637" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2826,7 +2825,7 @@
 <span id="Gui_Circular_setStepForm"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Circular.</span><span class="api-item-title-strong">setStepForm</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L628" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L627" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2839,7 +2838,7 @@
 <span id="Gui_Circular_setValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Circular.</span><span class="api-item-title-strong">setValue</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L572" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L571" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2851,7 +2850,7 @@
 <span id="Gui_Circular_setValueLeft"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Circular.</span><span class="api-item-title-strong">setValueLeft</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L578" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L577" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2864,7 +2863,7 @@
 <span id="Gui_Circular_setValueRight"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Circular.</span><span class="api-item-title-strong">setValueRight</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L586" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L585" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22284,7 +22283,7 @@
 <p>Create a layout control. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {})-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_WrapLayoutCtrl">WrapLayoutCtrl</a></span></span></div>
 <div class="swag-watermark">
-Generated on 03-08-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.44.0</div>
+Generated on 04-08-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.44.0</div>
 </div>
 </div>
 </div>

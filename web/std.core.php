@@ -15182,7 +15182,7 @@
 <span id="Core_Math_Vector2"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">Vector2</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L5" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L7" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15202,63 +15202,63 @@
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_angle">angle</a></span></td>
-<td>Returns the angle with another vector. </td>
+<td>Returns the angle between this vector and <span class="code-inline">other</span> in radians. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_angle0To2Pi">angle0To2Pi</a></span></td>
-<td>Returns the angle with another vector in the range [0, 2Pi]. </td>
+<td>Returns the angle between this vector and <span class="code-inline">other</span> in the range [0, 2π]. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_ceil">ceil</a></span></td>
-<td>Math.ceil. </td>
+<td>Apply ceiling function to both components in-place. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_clear">clear</a></span></td>
-<td>Set the vector to zero. </td>
+<td>Set both vector components to zero. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_cosAngle">cosAngle</a></span></td>
-<td>Returns the cosine angle with another vector. </td>
+<td>Returns the cosine of the angle between this vector and <span class="code-inline">other</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_cross">cross</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Vector2</span>)</span></td>
-<td>Returns the Z signed length of the perpendicular vector. </td>
+<td>Returns the Z component of the cross product (scalar cross product in 2D). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_cross">cross</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>)</span></td>
-<td>Returns the perpendicular vector in the 2D plane. </td>
+<td>Returns the perpendicular vector in the 2D plane scaled by <span class="code-inline">axis</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_distance">distance</a></span></td>
-<td>Returns the distance between two vectors. </td>
+<td>Returns the Euclidean distance between this vector and <span class="code-inline">dest</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_distanceSquared">distanceSquared</a></span></td>
-<td>Returns the square distance between two vectors. </td>
+<td>Returns the squared distance between this vector and <span class="code-inline">dest</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_dot">dot</a></span></td>
-<td>Returns the dot product between two vectors. </td>
+<td>Returns the dot product between this vector and <span class="code-inline">other</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_floor">floor</a></span></td>
-<td>Math.floor. </td>
+<td>Apply floor function to both components in-place. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_isEqualEpsilon">isEqualEpsilon</a></span></td>
-<td>Returns true if this vector is equals to another with an epsilon. </td>
+<td>Returns true if this vector is equal to <span class="code-inline">other</span> within an epsilon tolerance. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_isZero">isZero</a></span></td>
-<td>Returns true if this vector is null. </td>
+<td>Returns true if this vector is exactly zero. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_isZeroEpsilon">isZeroEpsilon</a></span></td>
-<td>Returns true if this vector is null with an epsilon. </td>
+<td>Returns true if this vector is zero within an epsilon tolerance. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_length">length</a></span></td>
-<td>Return sthe length of the vector. </td>
+<td>Returns the length (magnitude) of the vector. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_lengthSquared">lengthSquared</a></span></td>
@@ -15266,82 +15266,82 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_lerp">lerp</a></span></td>
-<td>Lerp one vector with another. </td>
+<td>Perform linear interpolation between two vectors. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_max">max</a></span></td>
-<td>Returns a vector which is the <span class="code-inline">min</span> of two vectors. </td>
+<td>Returns a vector containing the maximum components of two vectors. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_min">min</a></span></td>
-<td>Returns a vector which is the <span class="code-inline">min</span> of two vectors. </td>
+<td>Returns a vector containing the minimum components of two vectors. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_negate">negate</a></span></td>
-<td>Negate the vector. </td>
+<td>Negate the vector in-place. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_normalize">normalize</a></span></td>
-<td>Normalize this vector (set its length to 1). </td>
+<td>Normalize this vector in-place to unit length. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_normalizeSafe">normalizeSafe</a></span></td>
-<td>Normalize this vector (set its length to 1) even if its length is almost null. </td>
+<td>Normalize this vector in-place safely. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_rotate">rotate</a></span></td>
-<td>Rotate the vector by a given angle. </td>
+<td>Rotate the vector by a given angle around the origin. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_round">round</a></span></td>
-<td>Math.round. </td>
+<td>Apply rounding function to both components in-place. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_set">set</a></span></td>
-<td>Set content. </td>
+<td>Set both components of the vector. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_setLength">setLength</a></span></td>
-<td>Set the vector length. </td>
+<td>Set the vector to the specified length. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_setLengthSafe">setLengthSafe</a></span></td>
-<td>Set the vector length. </td>
+<td>Set the vector to the specified length safely. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_toNormalize">toNormalize</a></span></td>
-<td>Returns this vector normalized. </td>
+<td>Returns this vector normalized to unit length without modifying the original. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_toNormalizeSafe">toNormalizeSafe</a></span></td>
-<td>Returns this vector normalized even if its length is almost null. </td>
+<td>Returns this vector normalized safely without modifying the original. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_opAffect">opAffect</a></span></td>
-<td></td>
+<td>Set both components to the same scalar value. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Vector2</span>)</span></td>
-<td></td>
+<td>Compound assignment operators for vector-vector operations (+=, -=, <i>=, /=).</i> </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>)</span></td>
-<td></td>
+<td>Compound assignment operators for vector-scalar operations (+=, -=, <i>=, /=).</i> </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_opBinary">opBinary</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Vector2</span>)</span></td>
-<td></td>
+<td>Binary operators for vector-vector operations (+, -, <i>, /).</i> </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_opBinary">opBinary</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>)</span></td>
-<td></td>
+<td>Binary operators for vector-scalar operations (+, -, <i>, /).</i> </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_opUnary">opUnary</a></span></td>
-<td></td>
+<td>Apply unary operations to the vector. </td>
 </tr>
 </table>
 <p>
@@ -15351,12 +15351,13 @@
 <span id="Core_Math_Vector2_angle"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">angle</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L323" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L365" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns the angle with another vector. </p>
+<p>Returns the angle between this vector and <span class="code-inline">other</span> in radians. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">angle</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>The result is in the range [0, π] using the arc cosine of the normalized dot product. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15364,12 +15365,13 @@
 <span id="Core_Math_Vector2_angle0To2Pi"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">angle0To2Pi</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L329" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L372" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns the angle with another vector in the range [0, 2Pi]. </p>
+<p>Returns the angle between this vector and <span class="code-inline">other</span> in the range [0, 2π]. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">angle0To2Pi</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Uses the cross product to determine the sign and adjust the angle accordingly. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15377,12 +15379,13 @@
 <span id="Core_Math_Vector2_ceil"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">ceil</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L292" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L330" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Math.ceil. </p>
+<p>Apply ceiling function to both components in-place. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ceil</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Rounds each component up to the nearest integer value. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15390,12 +15393,13 @@
 <span id="Core_Math_Vector2_clear"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">clear</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L158" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L180" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Set the vector to zero. </p>
+<p>Set both vector components to zero. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Equivalent to assigning the <span class="code-inline">Zero</span> constant but modifies the current instance. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15403,12 +15407,13 @@
 <span id="Core_Math_Vector2_cosAngle"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">cosAngle</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L317" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L358" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns the cosine angle with another vector. </p>
+<p>Returns the cosine of the angle between this vector and <span class="code-inline">other</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cosAngle</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Calculated using the dot product formula: dot(a,b) / (|a| * |b|). </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15416,15 +15421,16 @@
 <span id="Core_Math_Vector2_cross"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">cross</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L151" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L172" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns the perpendicular vector in the 2D plane. </p>
+<p>Returns the perpendicular vector in the 2D plane scaled by <span class="code-inline">axis</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cross</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, axis: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
-<p><span class="code-inline">axis</span> will give the sign of the result </p>
-<p>Returns the Z signed length of the perpendicular vector. </p>
+<p>The <span class="code-inline">axis</span> parameter determines the sign and scale of the result. </p>
+<p>Returns the Z component of the cross product (scalar cross product in 2D). </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cross</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Calculates the determinant of the 2x2 matrix formed by the two vectors. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15432,12 +15438,13 @@
 <span id="Core_Math_Vector2_distance"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">distance</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L191" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L218" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns the distance between two vectors. </p>
+<p>Returns the Euclidean distance between this vector and <span class="code-inline">dest</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distance</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, dest: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Calculated as the length of the difference vector between the two positions. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15445,12 +15452,13 @@
 <span id="Core_Math_Vector2_distanceSquared"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">distanceSquared</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L199" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L227" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns the square distance between two vectors. </p>
+<p>Returns the squared distance between this vector and <span class="code-inline">dest</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceSquared</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, dest: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Faster than <span class="code-inline">distance()</span> when only comparing distances since it avoids the square root operation. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15458,12 +15466,13 @@
 <span id="Core_Math_Vector2_dot"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">dot</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L139" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L159" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns the dot product between two vectors. </p>
+<p>Returns the dot product between this vector and <span class="code-inline">other</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">dot</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>The dot product is calculated as: (x₁ × x₂) + (y₁ × y₂). </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15471,12 +15480,13 @@
 <span id="Core_Math_Vector2_floor"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">floor</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L285" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L322" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Math.floor. </p>
+<p>Apply floor function to both components in-place. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">floor</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Rounds each component down to the nearest integer value. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15484,12 +15494,13 @@
 <span id="Core_Math_Vector2_isEqualEpsilon"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">isEqualEpsilon</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L185" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L211" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns true if this vector is equals to another with an epsilon. </p>
+<p>Returns true if this vector is equal to <span class="code-inline">other</span> within an epsilon tolerance. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEqualEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>, eps = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SCst"><a href="#Core_Math_ConstF64">ConstF64</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Compares each component separately using the specified <span class="code-inline">eps</span> tolerance. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15497,12 +15508,13 @@
 <span id="Core_Math_Vector2_isZero"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">isZero</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L173" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L197" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns true if this vector is null. </p>
+<p>Returns true if this vector is exactly zero. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZero</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Performs exact floating-point comparison, which may not work well with computed values. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15510,12 +15522,13 @@
 <span id="Core_Math_Vector2_isZeroEpsilon"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">isZeroEpsilon</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L179" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L204" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns true if this vector is null with an epsilon. </p>
+<p>Returns true if this vector is zero within an epsilon tolerance. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZeroEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, eps = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SCst"><a href="#Core_Math_ConstF64">ConstF64</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Uses <span class="code-inline">eps</span> parameter to handle floating-point precision issues. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15523,12 +15536,13 @@
 <span id="Core_Math_Vector2_length"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">length</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L131" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L149" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Return sthe length of the vector. </p>
+<p>Returns the length (magnitude) of the vector. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">length</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Calculated using the Euclidean distance formula: sqrt(x² + y²). </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15536,12 +15550,13 @@
 <span id="Core_Math_Vector2_lengthSquared"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">lengthSquared</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L135" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L154" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Returns the squared length of the vector. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lengthSquared</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Faster than <span class="code-inline">length()</span> when only comparing magnitudes since it avoids the square root operation. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15549,12 +15564,13 @@
 <span id="Core_Math_Vector2_lerp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">lerp</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L339" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L384" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Lerp one vector with another. </p>
+<p>Perform linear interpolation between two vectors. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lerp</span>(src, dst: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, factor: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<p>Interpolates each component separately using the given <span class="code-inline">factor</span> (0.0 to 1.0). When <span class="code-inline">factor</span> is 0.0, returns <span class="code-inline">src</span>; when 1.0, returns <span class="code-inline">dst</span>. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15562,12 +15578,13 @@
 <span id="Core_Math_Vector2_max"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">max</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L276" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L312" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns a vector which is the <span class="code-inline">min</span> of two vectors. </p>
+<p>Returns a vector containing the maximum components of two vectors. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">max</span>(a, b: <span class="STpe">Self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<p>Each component of the result is the larger of the corresponding components in <span class="code-inline">a</span> and <span class="code-inline">b</span>. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15575,12 +15592,13 @@
 <span id="Core_Math_Vector2_min"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">min</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L267" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L302" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns a vector which is the <span class="code-inline">min</span> of two vectors. </p>
+<p>Returns a vector containing the minimum components of two vectors. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">min</span>(a, b: <span class="STpe">Self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<p>Each component of the result is the smaller of the corresponding components in <span class="code-inline">a</span> and <span class="code-inline">b</span>. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15588,12 +15606,13 @@
 <span id="Core_Math_Vector2_negate"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">negate</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L165" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L188" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Negate the vector. </p>
+<p>Negate the vector in-place. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">negate</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Multiplies both components by -1, effectively reversing the vector direction. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15601,12 +15620,13 @@
 <span id="Core_Math_Vector2_normalize"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">normalize</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L207" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L236" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Normalize this vector (set its length to 1). </p>
+<p>Normalize this vector in-place to unit length. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">normalize</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Sets the vector's length to 1 while preserving its direction. Asserts that the vector is not zero. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15614,12 +15634,13 @@
 <span id="Core_Math_Vector2_normalizeSafe"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">normalizeSafe</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L242" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L275" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Normalize this vector (set its length to 1) even if its length is almost null. </p>
+<p>Normalize this vector in-place safely. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">normalizeSafe</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Sets the vector to unit length, or to zero if the original length is near zero. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15627,11 +15648,13 @@
 <span id="Core_Math_Vector2_opAffect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">opAffect</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L23" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L29" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Set both components to the same scalar value. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<p>This allows assignment like 'vec = 5.0' to set both components to 5.0. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15639,12 +15662,16 @@
 <span id="Core_Math_Vector2_opAssign"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">opAssign</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L29" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L37" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)
-<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<p>Compound assignment operators for vector-vector operations (+=, -=, <i>=, /=).</i> </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)</span></div>
+<p>Performs component-wise operations with another vector. </p>
+<p>Compound assignment operators for vector-scalar operations (+=, -=, <i>=, /=).</i> </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<p>Applies the scalar <span class="code-inline">value</span> to both components of the vector. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15652,12 +15679,16 @@
 <span id="Core_Math_Vector2_opBinary"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">opBinary</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L83" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L95" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>
-<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<p>Binary operators for vector-vector operations (+, -, <i>, /).</i> </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<p>Performs component-wise operations between two vectors and returns the result. </p>
+<p>Binary operators for vector-scalar operations (+, -, <i>, /).</i> </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<p>Applies the scalar <span class="code-inline">value</span> to both components and returns the result. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15665,11 +15696,13 @@
 <span id="Core_Math_Vector2_opUnary"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">opUnary</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L113" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L129" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Apply unary operations to the vector. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<p>Currently supports negation (-) to return a vector with both components negated. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15677,12 +15710,13 @@
 <span id="Core_Math_Vector2_rotate"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">rotate</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L306" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L346" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Rotate the vector by a given angle. </p>
+<p>Rotate the vector by a given angle around the origin. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">rotate</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, angle: <span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Angle">Angle</a></span>)</span></div>
+<p>Uses standard 2D rotation matrix transformation with the specified <span class="code-inline">angle</span>. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15690,12 +15724,13 @@
 <span id="Core_Math_Vector2_round"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">round</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L299" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L338" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Math.round. </p>
+<p>Apply rounding function to both components in-place. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">round</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Rounds each component to the nearest integer value. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15703,12 +15738,13 @@
 <span id="Core_Math_Vector2_set"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">set</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L123" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L140" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Set content. </p>
+<p>Set both components of the vector. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, x, y: <span class="STpe">f32</span>)</span></div>
+<p>Parameters <span class="code-inline">x</span> and <span class="code-inline">y</span> specify the new component values. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15716,12 +15752,13 @@
 <span id="Core_Math_Vector2_setLength"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">setLength</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L234" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L266" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Set the vector length. </p>
+<p>Set the vector to the specified length. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setLength</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newLength: <span class="STpe">f32</span>)</span></div>
+<p>First normalizes the vector, then scales it to <span class="code-inline">newLength</span>. Assumes the vector is not zero. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15729,12 +15766,13 @@
 <span id="Core_Math_Vector2_setLengthSafe"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">setLengthSafe</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L226" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L257" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Set the vector length. </p>
+<p>Set the vector to the specified length safely. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setLengthSafe</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newLength: <span class="STpe">f32</span>)</span></div>
+<p>First normalizes the vector safely, then scales it to <span class="code-inline">newLength</span>. Handles zero-length vectors. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15742,12 +15780,13 @@
 <span id="Core_Math_Vector2_toNormalize"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">toNormalize</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L217" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L247" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns this vector normalized. </p>
+<p>Returns this vector normalized to unit length without modifying the original. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalize</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<p>Creates a new vector with length 1 in the same direction. Asserts that the vector is not zero. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15755,12 +15794,13 @@
 <span id="Core_Math_Vector2_toNormalizeSafe"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">toNormalizeSafe</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L257" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L291" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns this vector normalized even if its length is almost null. </p>
+<p>Returns this vector normalized safely without modifying the original. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalizeSafe</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<p>Returns a unit vector in the same direction, or the zero vector if length is near zero. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15768,7 +15808,7 @@
 <span id="Core_Math_Vector3"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">Vector3</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L5" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L7" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15793,35 +15833,35 @@
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_clear">clear</a></span></td>
-<td>Set the vector to zero. </td>
+<td>Set all vector components to zero. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_distance">distance</a></span></td>
-<td>Returns the distance between two vectors. </td>
+<td>Returns the Euclidean distance between this vector and <span class="code-inline">dest</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_distanceSquared">distanceSquared</a></span></td>
-<td>Returns the square distance between two vectors. </td>
+<td>Returns the squared distance between this vector and <span class="code-inline">dest</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_dot">dot</a></span></td>
-<td>Returns the dot product between two vectors. </td>
+<td>Returns the dot product between this vector and <span class="code-inline">other</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_isEqualEpsilon">isEqualEpsilon</a></span></td>
-<td>Returns true if this vector is equals to another with an epsilon. </td>
+<td>Returns true if this vector is equal to <span class="code-inline">other</span> within an epsilon tolerance. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_isZero">isZero</a></span></td>
-<td>Returns true if this vector is null. </td>
+<td>Returns true if this vector is exactly zero. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_isZeroEpsilon">isZeroEpsilon</a></span></td>
-<td>Returns true if this vector is null with an epsilon. </td>
+<td>Returns true if this vector is zero within an epsilon tolerance. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_length">length</a></span></td>
-<td>Return sthe length of the vector. </td>
+<td>Returns the length (magnitude) of the vector. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_lengthSquared">lengthSquared</a></span></td>
@@ -15829,74 +15869,74 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_lerp">lerp</a></span></td>
-<td>Lerp one vector with another. </td>
+<td>Perform linear interpolation between two vectors. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_max">max</a></span></td>
-<td>Returns a vector which is the <span class="code-inline">min</span> of two vectors. </td>
+<td>Returns a vector containing the maximum components of two vectors. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_min">min</a></span></td>
-<td>Returns a vector which is the <span class="code-inline">min</span> of two vectors. </td>
+<td>Returns a vector containing the minimum components of two vectors. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_negate">negate</a></span></td>
-<td>Negate the vector. </td>
+<td>Negate the vector in-place. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_normalize">normalize</a></span></td>
-<td>Normalize this vector (set its length to 1). </td>
+<td>Normalize this vector in-place to unit length. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_normalizeSafe">normalizeSafe</a></span></td>
-<td>Normalize this vector (set its length to 1) even if its length is almost null. </td>
+<td>Normalize this vector in-place safely. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_set">set</a></span></td>
-<td>Set content. </td>
+<td>Set all three components of the vector. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_setLength">setLength</a></span></td>
-<td>Set the vector length. </td>
+<td>Set the vector to the specified length. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_setLengthSafe">setLengthSafe</a></span></td>
-<td>Set the vector length. </td>
+<td>Set the vector to the specified length safely. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_toNormalize">toNormalize</a></span></td>
-<td>Returns this vector normalized. </td>
+<td>Returns this vector normalized to unit length without modifying the original. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_toNormalizeSafe">toNormalizeSafe</a></span></td>
-<td>Returns this vector normalized even if its length is almost null. </td>
+<td>Returns this vector normalized safely without modifying the original. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_opAffect">opAffect</a></span></td>
-<td></td>
+<td>Set all components to the same scalar value. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Vector3</span>)</span></td>
-<td></td>
+<td>Compound assignment operators for vector-vector operations (+=, -=, <i>=, /=).</i> </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>)</span></td>
-<td></td>
+<td>Compound assignment operators for vector-scalar operations (+=, -=, <i>=, /=).</i> </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_opBinary">opBinary</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Vector3</span>)</span></td>
-<td></td>
+<td>Binary operators for vector-vector operations (+, -, <i>, /).</i> </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_opBinary">opBinary</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>)</span></td>
-<td></td>
+<td>Binary operators for vector-scalar operations (+, -, <i>, /).</i> </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_opUnary">opUnary</a></span></td>
-<td></td>
+<td>Apply unary operations to the vector. </td>
 </tr>
 </table>
 <p>
@@ -15906,12 +15946,13 @@
 <span id="Core_Math_Vector3_clear"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">clear</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L149" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L170" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Set the vector to zero. </p>
+<p>Set all vector components to zero. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Equivalent to assigning the <span class="code-inline">Zero</span> constant but modifies the current instance. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15919,12 +15960,13 @@
 <span id="Core_Math_Vector3_distance"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">distance</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L181" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L207" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns the distance between two vectors. </p>
+<p>Returns the Euclidean distance between this vector and <span class="code-inline">dest</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distance</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, dest: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Calculated as the length of the difference vector between the two positions. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15932,12 +15974,13 @@
 <span id="Core_Math_Vector3_distanceSquared"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">distanceSquared</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L190" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L217" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns the square distance between two vectors. </p>
+<p>Returns the squared distance between this vector and <span class="code-inline">dest</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceSquared</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, dest: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Faster than <span class="code-inline">distance()</span> when only comparing distances since it avoids the square root operation. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15945,12 +15988,13 @@
 <span id="Core_Math_Vector3_dot"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">dot</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L146" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L166" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns the dot product between two vectors. </p>
+<p>Returns the dot product between this vector and <span class="code-inline">other</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">dot</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>The dot product is calculated as: (x₁ × x₂) + (y₁ × y₂) + (z₁ × z₂). </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15958,12 +16002,13 @@
 <span id="Core_Math_Vector3_isEqualEpsilon"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">isEqualEpsilon</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L175" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L200" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns true if this vector is equals to another with an epsilon. </p>
+<p>Returns true if this vector is equal to <span class="code-inline">other</span> within an epsilon tolerance. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEqualEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>, eps = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SCst"><a href="#Core_Math_ConstF64">ConstF64</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Compares each component separately using the specified <span class="code-inline">eps</span> tolerance. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15971,12 +16016,13 @@
 <span id="Core_Math_Vector3_isZero"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">isZero</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L163" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L186" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns true if this vector is null. </p>
+<p>Returns true if this vector is exactly zero. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZero</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Performs exact floating-point comparison, which may not work well with computed values. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15984,12 +16030,13 @@
 <span id="Core_Math_Vector3_isZeroEpsilon"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">isZeroEpsilon</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L169" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L193" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns true if this vector is null with an epsilon. </p>
+<p>Returns true if this vector is zero within an epsilon tolerance. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZeroEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, eps = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SCst"><a href="#Core_Math_ConstF64">ConstF64</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Uses <span class="code-inline">eps</span> parameter to handle floating-point precision issues. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15997,12 +16044,13 @@
 <span id="Core_Math_Vector3_length"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">length</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L140" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L158" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Return sthe length of the vector. </p>
+<p>Returns the length (magnitude) of the vector. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">length</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Calculated using the Euclidean distance formula: sqrt(x² + y² + z²). </p>
 <p>
 <table class="api-item">
 <tr>
@@ -16010,12 +16058,13 @@
 <span id="Core_Math_Vector3_lengthSquared"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">lengthSquared</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L143" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L162" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Returns the squared length of the vector. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lengthSquared</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Faster than <span class="code-inline">length()</span> when only comparing magnitudes since it avoids the square root operation. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -16023,12 +16072,13 @@
 <span id="Core_Math_Vector3_lerp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">lerp</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L283" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L320" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Lerp one vector with another. </p>
+<p>Perform linear interpolation between two vectors. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lerp</span>(src, dst: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>, factor: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<p>Interpolates each component separately using the given <span class="code-inline">factor</span> (0.0 to 1.0). When <span class="code-inline">factor</span> is 0.0, returns <span class="code-inline">src</span>; when 1.0, returns <span class="code-inline">dst</span>. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -16036,12 +16086,13 @@
 <span id="Core_Math_Vector3_max"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">max</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L273" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L308" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns a vector which is the <span class="code-inline">min</span> of two vectors. </p>
+<p>Returns a vector containing the maximum components of two vectors. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">max</span>(a, b: <span class="STpe">Self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<p>Each component of the result is the larger of the corresponding components in <span class="code-inline">a</span> and <span class="code-inline">b</span>. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -16049,12 +16100,13 @@
 <span id="Core_Math_Vector3_min"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">min</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L263" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L297" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns a vector which is the <span class="code-inline">min</span> of two vectors. </p>
+<p>Returns a vector containing the minimum components of two vectors. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">min</span>(a, b: <span class="STpe">Self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<p>Each component of the result is the smaller of the corresponding components in <span class="code-inline">a</span> and <span class="code-inline">b</span>. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -16062,12 +16114,13 @@
 <span id="Core_Math_Vector3_negate"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">negate</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L155" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L177" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Negate the vector. </p>
+<p>Negate the vector in-place. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">negate</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Multiplies all components by -1, effectively reversing the vector direction. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -16075,12 +16128,13 @@
 <span id="Core_Math_Vector3_normalize"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">normalize</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L199" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L227" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Normalize this vector (set its length to 1). </p>
+<p>Normalize this vector in-place to unit length. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">normalize</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Sets the vector's length to 1 while preserving its direction. Asserts that the vector is not zero. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -16088,12 +16142,13 @@
 <span id="Core_Math_Vector3_normalizeSafe"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">normalizeSafe</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L237" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L269" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Normalize this vector (set its length to 1) even if its length is almost null. </p>
+<p>Normalize this vector in-place safely. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">normalizeSafe</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Sets the vector to unit length, or to zero if the original length is near zero. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -16101,11 +16156,13 @@
 <span id="Core_Math_Vector3_opAffect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">opAffect</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L25" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L31" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Set all components to the same scalar value. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<p>This allows assignment like 'vec = 5.0' to set all components to 5.0. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -16113,12 +16170,16 @@
 <span id="Core_Math_Vector3_opAssign"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">opAssign</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L31" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L39" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)
-<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<p>Compound assignment operators for vector-vector operations (+=, -=, <i>=, /=).</i> </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)</span></div>
+<p>Performs component-wise operations with another vector. </p>
+<p>Compound assignment operators for vector-scalar operations (+=, -=, <i>=, /=).</i> </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<p>Applies the scalar <span class="code-inline">value</span> to all components of the vector. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -16126,12 +16187,16 @@
 <span id="Core_Math_Vector3_opBinary"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">opBinary</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L93" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L105" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>
-<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<p>Binary operators for vector-vector operations (+, -, <i>, /).</i> </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<p>Performs component-wise operations between two vectors and returns the result. </p>
+<p>Binary operators for vector-scalar operations (+, -, <i>, /).</i> </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<p>Applies the scalar <span class="code-inline">value</span> to all components and returns the result. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -16139,11 +16204,13 @@
 <span id="Core_Math_Vector3_opUnary"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">opUnary</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L122" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L138" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Apply unary operations to the vector. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<p>Currently supports negation (-) to return a vector with all components negated. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -16151,12 +16218,13 @@
 <span id="Core_Math_Vector3_set"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">set</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L132" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L149" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Set content. </p>
+<p>Set all three components of the vector. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, x, y, z: <span class="STpe">f32</span>)</span></div>
+<p>Parameters <span class="code-inline">x</span>, <span class="code-inline">y</span>, and <span class="code-inline">z</span> specify the new component values. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -16164,12 +16232,13 @@
 <span id="Core_Math_Vector3_setLength"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">setLength</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L228" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L259" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Set the vector length. </p>
+<p>Set the vector to the specified length. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setLength</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newLength: <span class="STpe">f32</span>)</span></div>
+<p>First normalizes the vector, then scales it to <span class="code-inline">newLength</span>. Assumes the vector is not zero. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -16177,12 +16246,13 @@
 <span id="Core_Math_Vector3_setLengthSafe"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">setLengthSafe</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L219" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L249" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Set the vector length. </p>
+<p>Set the vector to the specified length safely. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setLengthSafe</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newLength: <span class="STpe">f32</span>)</span></div>
+<p>First normalizes the vector safely, then scales it to <span class="code-inline">newLength</span>. Handles zero-length vectors. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -16190,12 +16260,13 @@
 <span id="Core_Math_Vector3_toNormalize"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">toNormalize</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L210" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L239" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns this vector normalized. </p>
+<p>Returns this vector normalized to unit length without modifying the original. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalize</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<p>Creates a new vector with length 1 in the same direction. Asserts that the vector is not zero. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -16203,12 +16274,13 @@
 <span id="Core_Math_Vector3_toNormalizeSafe"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">toNormalizeSafe</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L253" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L286" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns this vector normalized even if its length is almost null. </p>
+<p>Returns this vector normalized safely without modifying the original. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalizeSafe</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<p>Returns a unit vector in the same direction, or the zero vector if length is near zero. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -16216,7 +16288,7 @@
 <span id="Core_Math_Vector4"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">Vector4</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L5" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L8" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16224,44 +16296,44 @@
 <tr>
 <td>x</td>
 <td class="code-type"><span class="STpe">f32</span></td>
-<td></td>
+<td>X component of the vector. </td>
 </tr>
 <tr>
 <td>y</td>
 <td class="code-type"><span class="STpe">f32</span></td>
-<td></td>
+<td>Y component of the vector. </td>
 </tr>
 <tr>
 <td>z</td>
 <td class="code-type"><span class="STpe">f32</span></td>
-<td></td>
+<td>Z component of the vector. </td>
 </tr>
 <tr>
 <td>w</td>
 <td class="code-type"><span class="STpe">f32</span></td>
-<td></td>
+<td>W component of the vector. </td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_clear">clear</a></span></td>
-<td>Set the vector to zero. </td>
+<td>Set all vector components to zero. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_lerp">lerp</a></span></td>
-<td>Lerp one vector with another. </td>
+<td>Perform linear interpolation between two vectors. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_opAffect">opAffect</a></span></td>
-<td></td>
+<td>Set all components to the same scalar value. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_opUnary">opUnary</a></span></td>
-<td></td>
+<td>Apply unary operations to the vector. </td>
 </tr>
 </table>
 <p>
@@ -16271,12 +16343,13 @@
 <span id="Core_Math_Vector4_clear"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">clear</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L30" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L41" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Set the vector to zero. </p>
+<p>Set all vector components to zero. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Equivalent to assigning the <span class="code-inline">Zero</span> constant but modifies the current instance. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -16284,12 +16357,13 @@
 <span id="Core_Math_Vector4_lerp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">lerp</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L36" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L49" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Lerp one vector with another. </p>
+<p>Perform linear interpolation between two vectors. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lerp</span>(src, dst: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>, factor: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
+<p>Interpolates each component separately using the given <span class="code-inline">factor</span> (0.0 to 1.0). When <span class="code-inline">factor</span> is 0.0, returns <span class="code-inline">src</span>; when 1.0, returns <span class="code-inline">dst</span>. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -16297,11 +16371,13 @@
 <span id="Core_Math_Vector4_opAffect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">opAffect</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L16" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L24" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Set all components to the same scalar value. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<p>This allows assignment like 'vec = 5.0' to set all components to 5.0. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -16309,11 +16385,13 @@
 <span id="Core_Math_Vector4_opUnary"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">opUnary</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L21" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L31" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Apply unary operations to the vector. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
+<p>Currently supports negation (-) to return a vector with all components negated. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -29647,7 +29725,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">toggle</span>(flags: &<span class="SCst">T</span>, value: <span class="SCst">T</span>)</span></div>
 <div class="swag-watermark">
-Generated on 03-08-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.44.0</div>
+Generated on 04-08-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.44.0</div>
 </div>
 </div>
 </div>
