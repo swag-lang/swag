@@ -214,7 +214,7 @@ impl Vector2
 
     // Returns the Euclidean distance between this vector and 'dest'.
     // Calculated as the length of the difference vector between the two positions.
-    mtd const distance(dest: Vector2)->f32
+    mtd const distanceTo(dest: Vector2)->f32
     {
         let xn = (x - dest.x)
         let yn = (y - dest.y)
@@ -223,7 +223,7 @@ impl Vector2
 
     // Returns the squared distance between this vector and 'dest'.
     // Faster than 'distance()' when only comparing distances since it avoids the square root operation.
-    mtd const distanceSquared(dest: Vector2)->f32
+    mtd const distanceToSquared(dest: Vector2)->f32
     {
         let xn = (x - dest.x)
         let yn = (y - dest.y)
@@ -243,7 +243,7 @@ impl Vector2
 
     // Returns this vector normalized to unit length without modifying the original.
     // Creates a new vector with length 1 in the same direction. Asserts that the vector is not zero.
-    mtd const toNormalize()->Vector2
+    mtd const toNormalized()->Vector2
     {
         var norm = sqrt((x * x) + (y * y))
         Debug.assert(!Math.isZeroEpsilon(norm))
@@ -287,7 +287,7 @@ impl Vector2
 
     // Returns this vector normalized safely without modifying the original.
     // Returns a unit vector in the same direction, or the zero vector if length is near zero.
-    mtd const toNormalizeSafe()->Vector2
+    mtd const toNormalizedSafe()->Vector2
     {
         var norm = sqrt((x * x) + (y * y))
         if Math.isZeroEpsilon(norm):
@@ -342,10 +342,10 @@ impl Vector2
 
     // Rotate the vector by a given angle around the origin.
     // Uses standard 2D rotation matrix transformation with the specified 'angle'.
-    mtd rotate(angle: Math.Angle)
+    mtd rotateBy(angle: Math.Angle)
     {
-        let s  = sin(angle.rad)
-        let c  = cos(angle.rad)
+        let s  = Math.sin(angle.rad)
+        let c  = Math.cos(angle.rad)
         let tx = x
         let ty = y
         x = (c * tx) - (s * ty)
@@ -416,19 +416,19 @@ impl Vector2
 
     // Returns a new vector with length clamped between 'minLength' and 'maxLength'.
     // Preserves the vector's direction while constraining its magnitude.
-    mtd const toClampedLength(minLength, maxLength: f32)->Vector2
+    mtd const clampedLength(minLength, maxLength: f32)->Vector2
     {
         let len = length()
         if len < minLength:
-            return toNormalize() * minLength
+            return toNormalized() * minLength
         elif len > maxLength:
-            return toNormalize() * maxLength
+            return toNormalized() * maxLength
         return dref self
     }
 
     // Returns the absolute value of each component.
     // Creates a new vector where each component is its absolute value.
-    mtd const abs()->Vector2
+    mtd const toAbs()->Vector2
     {
         return Vector2{Math.abs(x), Math.abs(y)}
     }
@@ -443,21 +443,21 @@ impl Vector2
 
     // Returns a vector perpendicular to this one (rotated 90 degrees counter-clockwise).
     // The perpendicular vector has the same length but is rotated 90° CCW.
-    mtd const perp()->Vector2
+    mtd const toPerp()->Vector2
     {
         return Vector2{-y, x}
     }
 
     // Returns a vector perpendicular to this one (rotated 90 degrees clockwise).
     // The perpendicular vector has the same length but is rotated 90° CW.
-    mtd const perpCW()->Vector2
+    mtd const toPerpCW()->Vector2
     {
         return Vector2{y, -x}
     }
 
     // Project this vector onto 'other' vector.
     // Returns the component of this vector in the direction of 'other'.
-    mtd const project(other: Vector2)->Vector2
+    mtd const toProject(other: Vector2)->Vector2
     {
         let dotProduct = dot(other)
         let otherLengthSq = other.lengthSquared()
@@ -468,14 +468,14 @@ impl Vector2
 
     // Reflect this vector across a surface with the given 'normal'.
     // The 'normal' should be a unit vector pointing away from the surface.
-    mtd const reflect(normal: Vector2)->Vector2
+    mtd const toReflect(normal: Vector2)->Vector2
     {
         return dref self - (normal * (2 * dot(normal)))
     }
 
     // Returns the component-wise sign of the vector (-1, 0, or 1 for each component).
     // Each component becomes -1 if negative, 0 if zero, or 1 if positive.
-    mtd const sign()->Vector2
+    mtd const toSign()->Vector2
     {
         return Vector2{Math.sign(x), Math.sign(y)}
     }
@@ -508,7 +508,7 @@ impl Vector2
 
     // Returns a vector moved towards 'target' by a maximum distance of 'maxDistance'.
     // If the distance to 'target' is less than 'maxDistance', returns the target directly.
-    mtd const toMoveTowards(target: Vector2, maxDistance: f32)->Vector2
+    mtd const toMovedTowards(target: Vector2, maxDistance: f32)->Vector2
     {
         let dir = target - dref self
         let dist = dir.length()
@@ -554,7 +554,7 @@ impl Vector2
     mtd setAngle(angle: f32)
     {
         let magnitude = length()
-        x = magnitude * cos(angle)
-        y = magnitude * sin(angle)
+        x = magnitude * Math.cos(angle)
+        y = magnitude * Math.sin(angle)
     }
 }

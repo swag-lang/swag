@@ -218,7 +218,7 @@ impl Vector3
 
     // Returns the Euclidean distance between this vector and 'dest'.
     // Calculated as the length of the difference vector between the two positions.
-    mtd const distance(dest: Vector3)->f32
+    mtd const distanceTo(dest: Vector3)->f32
     {
         let xn = (x - dest.x)
         let yn = (y - dest.y)
@@ -228,7 +228,7 @@ impl Vector3
 
     // Returns the squared distance between this vector and 'dest'.
     // Faster than 'distance()' when only comparing distances since it avoids the square root operation.
-    mtd const distanceSquared(dest: Vector3)->f32
+    mtd const distanceToSquared(dest: Vector3)->f32
     {
         let xn = (x - dest.x)
         let yn = (y - dest.y)
@@ -250,7 +250,7 @@ impl Vector3
 
     // Returns this vector normalized to unit length without modifying the original.
     // Creates a new vector with length 1 in the same direction. Asserts that the vector is not zero.
-    mtd const toNormalize()->Vector3
+    mtd const toNormalized()->Vector3
     {
         var norm = sqrt((x * x) + (y * y) + (z * z))
         Debug.assert(!Math.isZeroEpsilon(norm))
@@ -297,7 +297,7 @@ impl Vector3
 
     // Returns this vector normalized safely without modifying the original.
     // Returns a unit vector in the same direction, or the zero vector if length is near zero.
-    mtd const toNormalizeSafe()->Vector3
+    mtd const toNormalizedSafe()->Vector3
     {
         var norm = sqrt((x * x) + (y * y) + (z * z))
         if Math.isZeroEpsilon(norm):
@@ -410,19 +410,19 @@ impl Vector3
 
     // Returns a new vector with length clamped between 'minLength' and 'maxLength'.
     // Preserves the vector's direction while constraining its magnitude.
-    mtd const toClampedLength(minLength, maxLength: f32)->Vector3
+    mtd const clampedLength(minLength, maxLength: f32)->Vector3
     {
         let len = length()
         if len < minLength:
-            return toNormalize() * minLength
+            return toNormalized() * minLength
         elif len > maxLength:
-            return toNormalize() * maxLength
+            return toNormalized() * maxLength
         return dref self
     }
 
     // Returns the absolute value of each component.
     // Creates a new vector where each component is its absolute value.
-    mtd const abs()->Vector3
+    mtd const toAbs()->Vector3
     {
         return Vector3{Math.abs(x), Math.abs(y), Math.abs(z)}
     }
@@ -438,7 +438,7 @@ impl Vector3
 
     // Project this vector onto 'other' vector.
     // Returns the component of this vector in the direction of 'other'.
-    mtd const project(other: Vector3)->Vector3
+    mtd const toProject(other: Vector3)->Vector3
     {
         let dotProduct    = dot(other)
         let otherLengthSq = other.lengthSquared()
@@ -449,14 +449,14 @@ impl Vector3
 
     // Reflect this vector across a surface with the given 'normal'.
     // The 'normal' should be a unit vector pointing away from the surface.
-    mtd const reflect(normal: Vector3)->Vector3
+    mtd const toReflect(normal: Vector3)->Vector3
     {
         return dref self - (normal * (2 * dot(normal)))
     }
 
     // Returns the component-wise sign of the vector (-1, 0, or 1 for each component).
     // Each component becomes -1 if negative, 0 if zero, or 1 if positive.
-    mtd const sign()->Vector3
+    mtd const toSign()->Vector3
     {
         return Vector3{Math.sign(x), Math.sign(y), Math.sign(z)}
     }
@@ -489,7 +489,7 @@ impl Vector3
 
     // Returns a vector moved towards 'target' by a maximum distance of 'maxDistance'.
     // If the distance to 'target' is less than 'maxDistance', returns the target directly.
-    mtd const toMoveTowards(target: Vector3, maxDistance: f32)->Vector3
+    mtd const toMovedTowards(target: Vector3, maxDistance: f32)->Vector3
     {
         let dir  = target - dref self
         let dist = dir.length()

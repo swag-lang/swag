@@ -279,7 +279,7 @@ public impl LinePath
         let r  = Math.round(radius)
 
         var startPos = Math.Vector2{0, -r}
-        startPos.rotate(startAngle)
+        startPos.rotateBy(startAngle)
         start(cX + startPos.x, cY + startPos.y)
 
         var s = startAngle.rad
@@ -419,9 +419,9 @@ impl LinePath
         const Alpha   = 0.5
         const Tension = 0.0
 
-        let t01 = Math.pow(Vector2.distance(p0, p1), Alpha)
-        let t12 = Math.pow(Vector2.distance(p1, p2), Alpha)
-        let t23 = Math.pow(Vector2.distance(p2, p3), Alpha)
+        let t01 = Math.pow(Vector2.distanceTo(p0, p1), Alpha)
+        let t12 = Math.pow(Vector2.distanceTo(p1, p2), Alpha)
+        let t23 = Math.pow(Vector2.distanceTo(p2, p3), Alpha)
 
         let m1 = (1.0 - Tension) * (p2 - p1 + t12 * ((p1 - p0) / t01 - (p2 - p0) / (t01 + t12)))
         let m2 = (1.0 - Tension) * (p2 - p1 + t12 * ((p3 - p2) / t23 - (p3 - p1) / (t12 + t23)))
@@ -465,7 +465,7 @@ impl LinePath
     func calculateCubicPolynomialSegments(p0, p1, p2, p3: Vector2, startPt, endPt: Vector2, tolerance: f32)->u32
     {
         // Calculate chord length
-        let chordLength = startPt.distance(endPt)
+        let chordLength = startPt.distanceTo(endPt)
 
         if chordLength < tolerance:
             return 1  // Very short curve

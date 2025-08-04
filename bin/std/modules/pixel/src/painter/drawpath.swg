@@ -112,7 +112,7 @@ impl Painter
         var p = p1
         let d = d1 * sx
         let n = Math.Vector2{d.y * sens * sy, -d.x * sens * sy}
-        let n1 = n.toNormalize()
+        let n1 = n.toNormalized()
         p -= n
 
         {
@@ -416,7 +416,7 @@ impl Painter
 
     func drawMoveCursor(using cxt: *Context, pos: Math.Vector2)
     {
-        if pos.distance(path.endPoint) < 1
+        if pos.distanceTo(path.endPoint) < 1
         {
             prev = path.endPoint
             if path.isClosed:

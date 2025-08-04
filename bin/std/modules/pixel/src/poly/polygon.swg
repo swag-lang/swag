@@ -44,9 +44,9 @@ impl Polygon
         let v1 = points.buffer[i]
         let v2 = points.buffer[(i + 1) % count]
 
-        let tmp0 = Vector2.toNormalizeSafe(v1 - v0)
+        let tmp0 = Vector2.toNormalizedSafe(v1 - v0)
         let n0   = tmp0.cross(1)
-        let tmp1 = Vector2.toNormalizeSafe(v2 - v1)
+        let tmp1 = Vector2.toNormalizedSafe(v2 - v1)
         let n1   = tmp1.cross(1)
 
         let vva1 = v1 + n0
@@ -62,7 +62,7 @@ impl Polygon
         }
         else
         {
-            let n = Vector2.toNormalizeSafe(n0 + n1)
+            let n = Vector2.toNormalizedSafe(n0 + n1)
             result += (n * offset)
         }
 
@@ -280,7 +280,7 @@ impl Polygon
             return
 
         let n        = points.count - 1
-        let isClosed = points[0].distanceSquared(points.back()) < 0.5 * 0.5
+        let isClosed = points[0].distanceToSquared(points.back()) < 0.5 * 0.5
         if isClosed:
             points.count -= 1
 

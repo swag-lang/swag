@@ -183,7 +183,7 @@ impl IForm for FormLine
             {
                 var v = Math.Vector2{xb, yb} - Math.Vector2{xa, ya}
                 v *= 0.5
-                var vn = v.cross(1).toNormalizeSafe()
+                var vn = v.cross(1).toNormalizedSafe()
                 vn *= v.length() * 0.25
                 xc = v.x + vn.x
                 yc = v.y + vn.y
