@@ -24,7 +24,7 @@ impl Verlet
         var velocity = positionCurrent - positionOld
         positionOld     = positionCurrent
         positionCurrent = positionCurrent + velocity + (acceleration * dt * dt)
-        acceleration.clear()
+        acceleration.setZero()
     }
 
     mtd accelerate(acc: Vector2)

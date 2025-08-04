@@ -327,7 +327,7 @@ func createView0(tabView: *Tab, view: *Wnd)
         tab.viewForm = .Round
         frame.view   = tab
         frame.setFrameForm(FrameWndForm.Round)
-        frame.padding.clear()
+        frame.padding.setZero()
         tab.dockStyle = .Center
 
         let view0 = Wnd.create'Wnd(tab)

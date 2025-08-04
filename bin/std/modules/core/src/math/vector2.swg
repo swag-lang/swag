@@ -176,7 +176,7 @@ impl Vector2
     // Set both vector components to zero.
     // Equivalent to assigning the 'Zero' constant but modifies the current instance.
     #[Swag.Inline]
-    mtd clear()
+    mtd setZero()
     {
         x, y = 0
     }

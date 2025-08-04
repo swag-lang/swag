@@ -27,7 +27,7 @@ impl C
 
         speed += acc
         pos += speed * app.getDt()
-        acc.clear()
+        acc.setZero()
 
         var v = target - pos
         var d = v.length()

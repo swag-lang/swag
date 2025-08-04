@@ -183,7 +183,7 @@ impl Vector4
     // Set all vector components to zero.
     // Equivalent to assigning the 'Zero' constant but modifies the current instance.
     #[Swag.Inline]
-    mtd clear()
+    mtd setZero()
     {
         x, y, z, w = 0
     }

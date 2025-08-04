@@ -132,7 +132,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
                 counter += 1
             }
 
-            if lastPos.distance({mousePos.x, mousePos.y}) > 1
+            if lastPos.distanceTo({mousePos.x, mousePos.y}) > 1
             {
                 addInk(mousePos.x, mousePos.y, 25, currentColor)
                 lastPos = {mousePos.x, mousePos.y}

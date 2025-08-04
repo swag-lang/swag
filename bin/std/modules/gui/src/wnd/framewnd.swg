@@ -248,7 +248,7 @@ impl FrameWnd
         if frameFlags.has(.SmallShadow):
             invalidatePadding = -getThemeMetrics().frameWnd_SmallShadowSize
         else:
-            invalidatePadding.clear()
+            invalidatePadding.setZero()
     }
 
     // Set the frame wnd form
