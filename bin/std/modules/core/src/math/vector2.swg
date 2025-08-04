@@ -6,8 +6,7 @@
 #[Serialization.Final]
 struct Vector2
 {
-    x, y: f32
-     // X and Y components of the vector
+    x, y: f32 // X and Y components of the vector
 }
 
 impl Vector2
@@ -203,7 +202,7 @@ impl Vector2
     // Uses 'eps' parameter to handle floating-point precision issues.
     mtd const isZeroEpsilon(eps = cast(f32) ConstF64.Epsilon)->bool
     {
-        return isZeroEpsilon(x, eps) and isZeroEpsilon(y, eps)
+        return Math.isZeroEpsilon(x, eps) and Math.isZeroEpsilon(y, eps)
     }
 
     // Returns true if this vector is equal to 'other' within an epsilon tolerance.
