@@ -3,10 +3,10 @@ using Core
 //#[Swag.PrintBc]
 #test
 {
-    var h: HashTable'(UUID, string)
+    var h: HashTable'(GUID128, string)
 
-    var v1 = UUID.getRandom()
-    var v2 = UUID.getRandom()
+    var v1 = GUID128.getRandom()
+    var v2 = GUID128.getRandom()
 
     h.add(v1, "toto")
     h.add(v2, "titi")

@@ -44,4 +44,7 @@ impl Process
         Debug.assert(handle != null, "invalid process handle")
         catch WaitForSingleObject(handle, Win32.INFINITE)
     }
+
+    func getProcessId()->u64 => GetCurrentProcessId()
+    func getThreadId()->u64  => GetCurrentThreadId()
 }
