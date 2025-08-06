@@ -46,7 +46,6 @@ struct EditBox
 
     icon:                 Icon                                  // Optional icon shown on the left
     text:                 String                                // Current UTF‑8 text content
-    originalText:         String                                // Text captured when focus was gained
     unit:                 String                                // Suffix unit (e.g. "kg")
     form                  = EditBoxForm.Square                  // Visual form of the EditBox
     editBoxFlags          = EditBoxFlags.AutoLoseFocus          // Active behaviour flags
@@ -62,6 +61,8 @@ struct EditBox
 
     internal
     {
+        originalText: String // Text captured when focus was gained
+
         // Numeric bounds used when inputMode is S64/U64/X64/F64.
         using minMax: union
         {
@@ -887,18 +888,17 @@ internal impl EditBox
 
 impl EditBox
 {
-    #[Swag.Discardable]
     // Factory method that creates a new EditBox instance.
+    #[Swag.Discardable]
     func create(parent: *Wnd, content: #null string, position: Math.Rectangle = {}, id: WndId = null)->*EditBox
     {
-        Debug.assert(parent != null)
         var pos = position
         if pos.height == 0:
             pos.height = parent.getThemeMetrics().editBox_Height
         if pos.width == 0:
             pos.width = parent.getThemeMetrics().editBox_Width
-        let res = Wnd.create'EditBox(parent, null, pos, id)
 
+        let res = Wnd.create'EditBox(parent, null, pos, id)
         res.setForm(.Square)
         res.text          = content
         res.focusStrategy = .MousePressed
