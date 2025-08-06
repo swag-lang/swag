@@ -237,12 +237,11 @@ impl LibraryView
     #[Swag.Overload]
     mtd loadOne(it: *LibraryItem)
     {
-        let capture = catch Capture.load(it.fi.fullname)
+        let capture = catch Capture.load(it.fi.fullname, preview: true)
         if !capture:
             return
 
         capture.haar = ImageStatistics.quickExtractHaarFeatures(capture.preview, 64)
-        capture.backImg.release()
 
         mutexLoaded.lock()
         it.capture = capture

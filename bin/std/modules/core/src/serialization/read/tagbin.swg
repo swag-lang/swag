@@ -29,24 +29,28 @@ Supported attributes are :
 */
 struct TagBin
 {
-    stream:                ByteStream
-    options:               TagBinOptions
-    freeSections:          ArrayPtr'TagBinSection
-    sections:              ArrayPtr'TagBinSection
-    convertNextNative:     const *Swag.TypeInfoNative
-    convertValToArray:     bool
-    convertArrayToVal:     bool
+    ignoreElements:        Array'String // A list of element names that should be skipped
+    stream:                ByteStream                     // Input byte stream for reading serialized data
+    options:               TagBinOptions                  // Configuration options for deserialization behavior
+    freeSections:          ArrayPtr'TagBinSection         // Pool of reusable section objects for memory efficiency
+    sections:              ArrayPtr'TagBinSection         // Stack of active sections during deserialization
+    convertNextNative:     const *Swag.TypeInfoNative     // Type information for pending native type conversion
+    convertValToArray:     bool                           // Flag indicating next value should be converted to array
+    convertArrayToVal:     bool                           // Flag indicating next array should be converted to single value
 }
 
+// Section information for tracking deserialization state within structured data.
 struct TagBinSection
 {
+    // Map from field name CRC to stream position
     mapSeek:          HashTable'(u32, u64)
-    afterFatSeek:     u64
-    version:          u32
-    kind:             SectionKind
-    skipFat:          bool
+    afterFatSeek:     u64                      // Stream position after the section's fat table
+    version:          u32                      // Version number of this section
+    kind:             SectionKind              // Type of section (ordered, unordered, or raw)
+    skipFat:          bool                     // Whether to skip reading the fat table for this section
 }
 
+// Configuration options for controlling deserialization behavior.
 struct TagBinOptions
 {
     tryForward: bool // Accept to try to read a newest version, otherwise error
@@ -54,6 +58,8 @@ struct TagBinOptions
 
 internal impl TagBin
 {
+    // Create a new section for the deserialization stack.
+    // Returns a pointer to a section object, either reused from the free pool or newly allocated.
     mtd newSection()->*TagBinSection
     {
         if freeSections.count
@@ -68,12 +74,16 @@ internal impl TagBin
         return sections.addNewPtr()
     }
 
+    // Release the current section back to the free pool.
+    // Pops the most recent section from the active stack and returns it to the reuse pool.
     mtd releaseSection()
     {
         let ptr = sections.popBack()
         freeSections.add(ptr)
     }
 
+    // Check if type conversion is possible between 'fromType' and 'toType'.
+    // Sets up conversion flags and returns true if the conversion is supported.
     mtd canConvertType(toType, fromType: #null typeinfo)->bool
     {
         if toType == fromType:
@@ -207,11 +217,15 @@ internal impl TagBin
 
 impl TagBin
 {
+    // Initialize the deserializer with the given input byte array.
+    // Sets up the internal byte stream for reading from the provided data buffer.
     mtd startRead(input: const [..] u8) throw
     {
         stream = ByteStream.openRead(input)
     }
 
+    // Begin reading the root container of the serialized data.
+    // Validates the root signature to ensure the stream contains valid serialized data.
     mtd beginRoot() throw
     {
         let sig = stream.readNative'u32()
@@ -219,11 +233,15 @@ impl TagBin
             throw SerializationError{"invalid root signature"}
     }
 
+    // Finish reading the root container.
+    // Currently no cleanup is required, but this maintains the symmetric begin/end API.
     #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd endRoot() throw
     {
     }
 
+    // Begin reading a new section with the specified 'kind'.
+    // Optionally skips reading the fat table if 'skipFat' is true for performance optimization.
     mtd beginSection(kind: SectionKind, skipFat = false) throw
     {
         let sec = newSection()
@@ -239,7 +257,7 @@ impl TagBin
         let fatSeek  = stream.readNative'u64()
         var fatCount = stream.readNative'u64()
 
-        // We have a fat, but we: not want it !
+        // We have a fat, but we do not want it !
         if skipFat
         {
             sec.afterFatSeek = fatSeek
@@ -269,6 +287,8 @@ impl TagBin
         }
     }
 
+    // Finish reading the current section.
+    // Updates the stream position and releases the section back to the pool.
     mtd endSection() throw
     {
         let sec = sections.back()
@@ -282,6 +302,8 @@ impl TagBin
         releaseSection()
     }
 
+    // Begin reading a struct of the given 'structType'.
+    // Returns false for normal struct processing, true for special handling cases.
     mtd beginStruct(structType: typeinfo, _structData: const *u8)->bool throw
     {
         var sig = stream.readNative'u32()
@@ -329,11 +351,15 @@ impl TagBin
         return false
     }
 
+    // Finish reading the current struct.
+    // Closes the current section that was opened by 'beginStruct'.
     mtd endStruct() throw
     {
         endSection()
     }
 
+    // Begin reading a field element identified by 'val'.
+    // Returns true if the element exists in the stream and should be processed, false to skip it.
     mtd beginElement(val: TypeValue)->bool throw
     {
         Debug.assert(sections.count != 0, "Missing a previous 'beginSection' call")
@@ -345,7 +371,11 @@ impl TagBin
         if sec.kind == .Raw:
             return true
 
-        // If section is ordered, then we: not have a fat, but just elements
+        // If this name is in the ignore list, then skip it
+        if ignoreElements.contains(val.name):
+           return false
+
+        // If section is ordered, then we do not have a fat, but just elements
         // descriptors followed by values
         if sec.kind != .Ordered and !sec.skipFat
         {
@@ -376,7 +406,7 @@ impl TagBin
             stream.setSeek(ent.value)
         }
 
-        // Read te name signature. We should have the crc
+        // Read the name signature. We should have the crc
         let crcName = stream.readNative'u32()
         if crcName != reqCrcName:
             throw SerializationError{"bad field name", field: val}
@@ -394,7 +424,7 @@ impl TagBin
         if !streamType:
             throw SerializationError{"unknown field type", field: val}
 
-        // The type exists, but we: not have a way to convert it to the requested
+        // The type exists, but we do not have a way to convert it to the requested
         // type.
         if !canConvertType(val.pointedType, streamType):
             throw SerializationError{"cannot convert field type", field: val}
@@ -413,21 +443,29 @@ impl TagBin
         return true
     }
 
+    // Finish reading the current field element.
+    // Clears any pending native type conversion state.
     mtd endElement() throw
     {
         convertNextNative = null
     }
 
+    // Begin reading a value within the current context.
+    // Currently no special processing is required, but this maintains the symmetric API.
     #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd beginValue() throw
     {
     }
 
+    // Finish reading a value within the current context.
+    // Currently no cleanup is required, but this maintains the symmetric API.
     #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd endValue() throw
     {
     }
 
+    // Begin reading a sequence (array) of elements of type 'typeElem'.
+    // Updates 'countElem' with the actual number of elements and returns true for bulk reading optimization.
     mtd beginSequence(typeElem: typeinfo, data: *u8, countElem: *u64)->bool throw
     {
         let orgCount = dref countElem
@@ -506,11 +544,15 @@ impl TagBin
         return false
     }
 
+    // Finish reading the current sequence.
+    // Currently no cleanup is required, but this maintains the symmetric API.
     #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd endSequence() throw
     {
     }
 
+    // Advance to the next element in the current sequence.
+    // Decrements 'countElem' and returns false when no more elements remain.
     #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd toNextSequenceElement(countElem: *u64)->bool
     {
@@ -520,12 +562,16 @@ impl TagBin
         return true
     }
 
+    // Check if this serializer uses textual representation.
+    // Always returns false since this is a binary serializer.
     #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd isTextual()->bool
     {
         return false
     }
 
+    // Get the version number of the current section.
+    // Returns 0 if no sections are active, otherwise returns the version of the most recent section.
     mtd getVersion()->u32
     {
         if sections.isEmpty():
@@ -537,6 +583,8 @@ impl TagBin
     // VALUES
     /////////////////////////////////
 
+    // Read a native type value from the stream with automatic type conversion support.
+    // Handles string types specially and performs type conversions when 'convertNextNative' is set.
     mtd(NT) readNative()->NT throw
     {
         #if NT == Core.String

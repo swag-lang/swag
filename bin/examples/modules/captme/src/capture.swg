@@ -200,12 +200,19 @@ impl Capture
         File.writeAllBytes(file, buf)
     }
 
-    func load(file: string)->*Capture throw
+    func load(file: string, preview = false)->*Capture throw
     {
         var res = File.readAllBytes(file)
 
         var decoder: Decoder'Read.TagBin
         decoder.flags |= .IgnoreStructFieldError
+
+        if preview
+        {
+            decoder.serializer.ignoreElements.add("backImg")
+            decoder.serializer.ignoreElements.add("backImgOrg")
+        }
+
         let capture = decoder.readAll'Capture(res.toSlice())
         capture.file = file
 
