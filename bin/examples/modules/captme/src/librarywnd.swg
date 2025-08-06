@@ -292,6 +292,8 @@ impl LibraryView
         if items.isEmpty():
             return
 
+        Cursor.wait()
+
         if libWnd.sortMethod == .Similar
         {
             var titems: Array'*LibraryItem
