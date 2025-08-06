@@ -252,40 +252,41 @@ impl LibraryView
     #[Swag.Overload]
     mtd loadOne(th: Thread)
     {
-        var remain = true
-        while remain
+        // Work on a copy, as 'items' can be changed by sorting during loading
+        var copy: Array'*LibraryItem
+        foreach it in items:
+            copy.add(it)
+
+        for
         {
-            var notVis: *LibraryItem
+            var visItem, notVisItem: *LibraryItem
 
-            remain = false
-            foreach it in items
+            foreach it in copy
             {
-                if th.requestEnd
-                {
-                    remain = false
+                if th.requestEnd:
                     break
-                }
-
                 if it.capture:
                     continue
 
-                remain = true
-                if !it.visible
+                if it.visible
                 {
-                    notVis = it
-                    continue
+                    visItem = it
+                    break
                 }
 
-                loadOne(it)
-                break
+                if !notVisItem:
+                    notVisItem = it
             }
 
-            if notVis:
-                loadOne(notVis)
+            if visItem:
+                loadOne(visItem)
+            elif notVisItem:
+                loadOne(notVisItem)
+            else:
+                break
         }
     }
 
-    #[Swag.Optimize("", false)]
     mtd sort()
     {
         if items.isEmpty():
@@ -293,8 +294,10 @@ impl LibraryView
 
         if libWnd.sortMethod == .Similar
         {
-            var titems  = items
-            var nitems: ArrayPtr'LibraryItem
+            var titems: Array'*LibraryItem
+            foreach it in items:
+                titems.add(it)
+            var nitems: Array'*LibraryItem
 
             var toComp = titems.front()
             titems.removeAt(0)
@@ -333,11 +336,9 @@ impl LibraryView
             }
 
             mutexLoaded.lock()
-            foreach it in nitems:
-                items[@index] = it
+            foreach it, i in nitems:
+                items[i] = nitems[i]
             mutexLoaded.unlock()
-            titems.count = 0
-            nitems.count = 0
         }
         else
         {
