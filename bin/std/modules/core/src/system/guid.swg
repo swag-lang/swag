@@ -1,12 +1,15 @@
 #global public
 
+// Thread-local storage for random number generation and GUID counter.
 #[Swag.Tls]
 {
-    internal var g_Rng: Random.Mt64
-    internal var g_RngInit: bool
-    internal var g_Counter: u32
+    internal var g_Rng: Random.Mt64 // Mersenne Twister 64-bit random number generator
+    internal var g_RngInit: bool // Flag indicating whether the RNG has been initialized
+    internal var g_Counter: u32 // Thread-local counter for timestamp-based GUIDs
 }
 
+// Initialize the random number generator with high-entropy seed.
+// Uses multiple time-based and hardware-based entropy sources for better randomness.
 #[Swag.Inline]
 internal func initRng()
 {
@@ -21,17 +24,21 @@ internal func initRng()
     }
 }
 
+// A 128-bit Globally Unique Identifier structure.
+// Provides RFC 4122 compliant UUID generation and manipulation.
 struct GUID128
 {
     using guid: union
     {
-        val8:      [16] u8
-        val64:     [2] u64
+        val8:      [16] u8     // 16-byte array representation for byte-level operations
+        val64:     [2] u64     // 2 64-bit values for efficient comparison and storage
     }
 }
 
 impl GUID128
 {
+    // Compare two GUID128 instances for equality.
+    // Returns 'true' if both GUIDs have identical values.
     mtd opEquals(other: Self)->bool
     {
         return val64[0] == other.val64[0] and val64[1] == other.val64[1]
@@ -117,29 +124,41 @@ impl GUID128
     }
 }
 
+// String conversion interface implementation for GUID128.
+// Enables automatic string conversion in formatting contexts.
 impl StrConv.IConvert for GUID128
 {
+    // Convert the GUID to its string representation for display.
+    // Uses the standard UUID format with hyphens.
     mtd impl convert(buf: *ConcatBuffer, convFmt: StrConv.ConvertFormat, strFormat: string)
     {
         buf.addBytes(getString())
     }
 }
 
+// Hash interface implementation for GUID128.
+// Enables use of GUID128 as keys in hash tables and sets.
 impl Hash.IHash32 for GUID128
 {
+    // Compute a 32-bit hash value for the GUID.
+    // Uses CRC32 algorithm on the entire 16-byte GUID data.
     mtd const impl compute()->u32
     {
         return Hash.Crc32.compute(@mkslice(&val8[0], 16))
     }
 }
 
+// A 64-bit Globally Unique Identifier structure.
+// Provides compact GUID generation with multiple entropy strategies for different use cases.
 struct GUID64
 {
-    guid: u64
+    guid: u64 // 64-bit unique identifier value
 }
 
 impl GUID64
 {
+    // Compare two GUID64 instances for equality.
+    // Returns 'true' if both GUIDs have identical values.
     mtd opEquals(other: Self)->bool
     {
         return guid == other.guid
@@ -222,7 +241,7 @@ impl GUID64
     {
         Debug.assert(@countof(result) == 16)
 
-        const Tbl  = "0123456789ABCDEF"
+        const Tbl = "0123456789ABCDEF"
 
         // Convert each nibble to hex, starting from most significant
         // Unroll the loop for better performance
@@ -290,16 +309,24 @@ impl GUID64
     }
 }
 
+// String conversion interface implementation for GUID64.
+// Enables automatic string conversion in formatting contexts.
 impl StrConv.IConvert for GUID64
 {
+    // Convert the GUID to its hexadecimal string representation.
+    // Produces a 16-character uppercase hex string without separators.
     mtd impl convert(buf: *ConcatBuffer, convFmt: StrConv.ConvertFormat, strFormat: string)
     {
         buf.addBytes(getString())
     }
 }
 
+// Hash interface implementation for GUID64.
+// Enables use of GUID64 as keys in hash tables and sets.
 impl Hash.IHash32 for GUID64
 {
+    // Compute a 32-bit hash value for the GUID.
+    // Uses CRC32 algorithm on the 8-byte GUID data for consistent hashing.
     mtd const impl compute()->u32
     {
         return Hash.Crc32.compute(@mkslice(cast(const ^u8) &guid, #sizeof(u64)))
