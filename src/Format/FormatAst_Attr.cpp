@@ -126,6 +126,14 @@ bool FormatAst::outputAttrUse(FormatContext& context, AstAttrUse* node)
         return true;
     }
 
+    if (node->attributeFlags.has(ATTRIBUTE_FIELD_INTERNAL))
+    {
+        concat->addString("internal");
+        concat->addBlank();
+        SWAG_CHECK(outputNode(context, node->content));
+        return true;
+    }    
+
     if (node->hasAstFlag(AST_GLOBAL_NODE))
     {
         concat->addString("#global");

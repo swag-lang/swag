@@ -60,6 +60,7 @@ struct EditBox
     sigEscapePressed:     SigArray'func||(*Self)                // Emitted when Escape is pressed
     sigCheckContent:      func||(*Self)->EditBoxCheckResult     // Optional custom validator
 
+    internal
     {
         // Numeric bounds used when inputMode is S64/U64/X64/F64.
         using minMax: union
@@ -735,9 +736,9 @@ internal impl EditBox
         {
             var clientRect = getEditRect()
             clientRect.x -= getTextMarginRight()
-            let sizeX      = Painter.measureString(text, fontR).width
-            var lastWidth  = 0'f32
-            var diff       = 0'f32
+            let sizeX     = Painter.measureString(text, fontR).width
+            var lastWidth = 0'f32
+            var diff      = 0'f32
             for idx in 1 until text.length
             {
                 let str = @mkstring(text.buffer, idx)
