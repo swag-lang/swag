@@ -301,13 +301,10 @@ impl LibraryView
                 titems.add(it)
             var nitems: Array'*LibraryItem
 
-            var toComp = titems.front()
-            titems.removeAt(0)
-            nitems.add(toComp)
-
+            var toComp: *LibraryItem
             while !titems.isEmpty()
             {
-                if !toComp.capture
+                if !toComp or !toComp.capture
                 {
                     toComp = titems.front()
                     titems.removeAt(0)
