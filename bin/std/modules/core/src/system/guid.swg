@@ -6,9 +6,9 @@
     internal var g_RngInit: bool
 }
 
-struct UUID
+struct GUID
 {
-    using uuid: union
+    using guid: union
     {
         val8:      [16] u8
         val64:     [2] u64
@@ -29,15 +29,15 @@ internal func initRng()
     }
 }
 
-impl UUID
+impl GUID
 {
     mtd opEquals(other: Self)->bool
     {
         return val64[0] == other.val64[0] and val64[1] == other.val64[1]
     }
 
-    // Get a version 4 UUID (random)
-    func getRandom()->UUID
+    // Get a version 4 GUID (random)
+    func getRandom()->GUID
     {
         initRng()
         var result: retval = undefined
@@ -54,7 +54,7 @@ impl UUID
         val64[0], val64[1] = 0
     }
 
-    // Convert uuid to a string of the form xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx
+    // Convert guid to a string of the form xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx
     #[Swag.Safety("boundcheck", false), Swag.Overload]
     mtd toString(result: [..] u8)
     {
@@ -104,7 +104,7 @@ impl UUID
         result[35] = Tbl[(val8[15] >> 4)]
     }
 
-    // Convert uuid to a string
+    // Convert guid to a string
     #[Swag.Overload]
     mtd toString()->String
     {
@@ -116,7 +116,7 @@ impl UUID
     }
 }
 
-impl StrConv.IConvert for UUID
+impl StrConv.IConvert for GUID
 {
     mtd impl convert(buf: *ConcatBuffer, convFmt: StrConv.ConvertFormat, strFormat: string)
     {
@@ -124,7 +124,7 @@ impl StrConv.IConvert for UUID
     }
 }
 
-impl Hash.IHash32 for UUID
+impl Hash.IHash32 for GUID
 {
     mtd const impl compute()->u32
     {
