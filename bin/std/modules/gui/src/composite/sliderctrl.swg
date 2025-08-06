@@ -122,6 +122,12 @@ impl SliderCtrl
         slider.setValue(value)
     }
 
+    // Set the slider current value
+    mtd setValueNoChange(value: f32)
+    {
+        slider.setValueNoChange(value)
+    }
+
     // Get the slider current value
     mtd getValue()->f32
     {

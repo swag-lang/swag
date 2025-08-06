@@ -468,11 +468,16 @@ impl Slider
         setValueLeft(f)
     }
 
+    mtd setValueNoChange(f: f32)
+    {
+        setValue1((f - min) / (max - min))
+    }
+
     // Set the left value (in case of a range).
     mtd setValueLeft(f: f32)
     {
         startChange()
-        setValue1((f - min) / (max - min))
+        setValueNoChange(f)
         endChange()
     }
 

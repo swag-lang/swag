@@ -292,7 +292,7 @@ impl PropWnd
                 var cap = cast(LineCapStyle) cast(u64) btn.userData
                 var pen = Pen.createSolid(btn.getThemeColors().btnIcon_Icon, CapSize)
                 pen.begCapStyle = cap
-                pen.endCapStyle   = .None
+                pen.endCapStyle = .None
                 var (w0, l0) = Painter.capStyleExtent(cap, CapSize, pen.capBegScaleX)
                 rect.moveLeft(l0)
                 bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
@@ -345,7 +345,7 @@ impl PropWnd
                 var cap = cast(LineCapStyle) cast(u64) btn.userData
                 var pen = Pen.createSolid(btn.getThemeColors().btnIcon_Icon, CapSize)
                 pen.begCapStyle = .None
-                pen.endCapStyle   = cap
+                pen.endCapStyle = cap
                 var (w0, l0) = Painter.capStyleExtent(cap, CapSize, pen.capEndScaleX)
                 rect.moveRight(-l0)
                 bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
@@ -620,7 +620,7 @@ impl PropWnd
             rect.inflate(-9, -9)
             var pen = Pen.createSolid(btn.getThemeColors().btnIcon_Icon, CapSize)
             pen.begCapStyle = curSel.beginCap
-            pen.endCapStyle   = .None
+            pen.endCapStyle = .None
             var (w0, l0) = Painter.capStyleExtent(curSel.beginCap, CapSize, pen.capBegScaleX)
             rect.moveLeft(l0)
             bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
@@ -650,7 +650,7 @@ impl PropWnd
             rect.inflate(-9, -9)
             var pen = Pen.createSolid(btn.getThemeColors().btnIcon_Icon, CapSize)
             pen.begCapStyle = .None
-            pen.endCapStyle   = curSel.endCap
+            pen.endCapStyle = curSel.endCap
             let (w0, l0) = Painter.capStyleExtent(curSel.endCap, CapSize, pen.capEndScaleX)
             rect.moveRight(-l0)
             bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
@@ -1004,10 +1004,10 @@ impl PropWnd
         let curSel = getSelectedBaseForm()
 
         {
-            let l = StackLayoutCtrl.create(mainLayout, .HorzFit, {0, 0, 0, 40})
+            let l     = StackLayoutCtrl.create(mainLayout, .HorzFit, {0, 0, 0, 40})
             let edit0 = EditCtrl.create(l, "x", Format.toString("%", curSel.x), flags: .AutoLoseFocus)
             edit0.labelSize = 15
-            edit0.editSize = 0
+            edit0.editSize  = 0
             edit0.edit.setInputU64()
             edit0.edit.sigLoseFocus += func|self|(ed)
             {
@@ -1017,7 +1017,7 @@ impl PropWnd
 
             let edit1 = EditCtrl.create(l, "y", Format.toString("%", curSel.y), flags: .AutoLoseFocus)
             edit1.labelSize = 15
-            edit1.editSize = 0
+            edit1.editSize  = 0
             edit1.edit.setInputU64()
             edit1.edit.sigLoseFocus += func|self|(ed)
             {
@@ -1027,10 +1027,10 @@ impl PropWnd
         }
 
         {
-            let l = StackLayoutCtrl.create(mainLayout, .HorzFit, {0, 0, 0, 40})
+            let l     = StackLayoutCtrl.create(mainLayout, .HorzFit, {0, 0, 0, 40})
             let edit0 = EditCtrl.create(l, "w", Format.toString("%", curSel.w), flags: .AutoLoseFocus)
             edit0.labelSize = 15
-            edit0.editSize = 0
+            edit0.editSize  = 0
             edit0.edit.setInputU64(1, 10000)
             edit0.edit.sigLoseFocus += func|self|(ed)
             {
@@ -1040,7 +1040,7 @@ impl PropWnd
 
             let edit1 = EditCtrl.create(l, "h", Format.toString("%", curSel.h), flags: .AutoLoseFocus)
             edit1.labelSize = 15
-            edit1.editSize = 0
+            edit1.editSize  = 0
             edit1.edit.setInputU64(1, 10000)
             edit1.edit.sigLoseFocus += func|self|(ed)
             {
@@ -1130,14 +1130,29 @@ impl PropWnd
         if curSel.subKind == .Highlight or curSel.subKind == .PixSel:
             return
 
-        let ctrl   = createRotate(cast() curSel.rotate)
-        ctrl.sigStartChange += func|self|(slider)
+        let ctrl  = createRotate(cast() curSel.rotate)
+        let ctrl1 = createSlider("Rotate", 0, 360, cast() curSel.rotate)
+
+        ctrl.sigStartChange += func|self, ctrl1|(rotate)
+        {
+            self.pushTypedValue(cast<bit>(u32) rotate.getValue(), BaseForm, #nameof(BaseForm.rotate), true, true)
+            ctrl1.setValueNoChange(rotate.getValue())
+        }
+        ctrl.sigChanged += func|self, ctrl1|(rotate)
+        {
+            self.pushTypedValue(cast<bit>(u32) rotate.getValue(), BaseForm, #nameof(BaseForm.rotate), false, true)
+            ctrl1.setValueNoChange(rotate.getValue())
+        }
+
+        ctrl1.slider.sigStartChange += func|self, ctrl|(slider)
         {
             self.pushTypedValue(cast<bit>(u32) slider.getValue(), BaseForm, #nameof(BaseForm.rotate), true, true)
+            ctrl.setValueNoChange(slider.getValue())
         }
-        ctrl.sigChanged += func|self|(slider)
+        ctrl1.slider.sigChanged += func|self, ctrl|(slider)
         {
             self.pushTypedValue(cast<bit>(u32) slider.getValue(), BaseForm, #nameof(BaseForm.rotate), false, true)
+            ctrl.setValueNoChange(slider.getValue())
         }
     }
 
@@ -1161,7 +1176,7 @@ impl PropWnd
             }
         }
 
-/*
+        /*
         let slideX = createSlider("Offset X", -100, 100, cast() curSel.shadowOffsetX)
         slideX.slider.sigStartChange += func|self|(sliderX)
         {
@@ -1340,8 +1355,8 @@ impl PropWnd
     mtd propSep()
     {
         let sep = Wnd.create'Wnd(mainLayout, {0, 0, 0, 1})
-        sep.margin.y = 15
-        sep.margin.w = 8
+        sep.margin.y        = 15
+        sep.margin.w        = 8
         sep.backgroundStyle = .View
     }
 
