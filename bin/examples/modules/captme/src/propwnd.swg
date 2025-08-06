@@ -1111,6 +1111,8 @@ impl PropWnd
 
         let curSel = cast(*FormText) getSelectedBaseForm()
         let ctrl   = createSlider("Scale", 0, 100, cast() curSel.scale)
+        ctrl.edit.unit = "%"
+
         ctrl.slider.sigStartChange += func|self|(slider)
         {
             self.pushTypedValue(cast<bit>(u32) slider.getValue(), BaseForm, #nameof(BaseForm.scale), true, true)
@@ -1132,6 +1134,7 @@ impl PropWnd
 
         let ctrl  = createRotate(cast() curSel.rotate)
         let ctrl1 = createSlider("Rotate", 0, 360, cast() curSel.rotate)
+        ctrl1.edit.unit = "°"
 
         ctrl.sigStartChange += func|self, ctrl1|(rotate)
         {
@@ -1248,6 +1251,8 @@ impl PropWnd
             return
 
         let ctrl = createSlider("Opacity", 0, 100, cast() curSel.alpha)
+        ctrl.edit.unit = "%"
+
         ctrl.slider.sigStartChange += func|self|(slider)
         {
             self.pushTypedValue(cast(u32) slider.getValue(), BaseForm, #nameof(BaseForm.alpha), true, true)

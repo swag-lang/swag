@@ -60,28 +60,30 @@ struct EditBox
     sigEscapePressed:     SigArray'func||(*Self)                // Emitted when Escape is pressed
     sigCheckContent:      func||(*Self)->EditBoxCheckResult     // Optional custom validator
 
-    // Numeric bounds used when inputMode is S64/U64/X64/F64.
-    using minMax: union
     {
-        minMaxS64:     { min: s64, max: s64 } = {Swag.S64.Min, Swag.S64.Max}      // Signed integer bounds
-        minMaxU64:     { min: u64, max: u64 } = {0, Swag.U64.Max}                 // Unsigned integer bounds
-        minMaxF64:     { min: f64, max: f64 } = {-Swag.F64.Max, Swag.F64.Max}     // Floating‑point bounds
+        // Numeric bounds used when inputMode is S64/U64/X64/F64.
+        using minMax: union
+        {
+            minMaxS64:     { min: s64, max: s64 } = {Swag.S64.Min, Swag.S64.Max}      // Signed integer bounds
+            minMaxU64:     { min: u64, max: u64 } = {0, Swag.U64.Max}                 // Unsigned integer bounds
+            minMaxF64:     { min: f64, max: f64 } = {-Swag.F64.Max, Swag.F64.Max}     // Floating‑point bounds
+        }
+
+        aniBk:              BlendColor{speed: 4}     // Background colour animation
+        aniBorder:          BlendColor{speed: 4}     // Border colour animation
+
+        isInvalid:          bool                     // True if current content is invalid
+        isHot:              bool                     // True while the mouse is hovering
+        isDragging:         bool                     // True while the user is selecting text
+        selBeg, selEnd:     u64                      // Selection start/end (byte indices)
+        timerCaret:         *Timer                   // Blinking‑caret timer
+        clearBtn:           *IconButton              // Optional clear button instance
+        visibleCaret:       bool                     // True when the caret should be visible
+        posSelBeg:          f32                      // X‑position of selection start in pixels
+        posSelEnd:          f32                      // X‑position of selection end in pixels
+        scrollPosX:         f32                      // Horizontal scroll offset
+        countRunes:         s32                      // Number of runes currently in text
     }
-
-    aniBk:              BlendColor{speed: 4}     // Background colour animation
-    aniBorder:          BlendColor{speed: 4}     // Border colour animation
-
-    isInvalid:          bool                     // True if current content is invalid
-    isHot:              bool                     // True while the mouse is hovering
-    isDragging:         bool                     // True while the user is selecting text
-    selBeg, selEnd:     u64                      // Selection start/end (byte indices)
-    timerCaret:         *Timer                   // Blinking‑caret timer
-    clearBtn:           *IconButton              // Optional clear button instance
-    visibleCaret:       bool                     // True when the caret should be visible
-    posSelBeg:          f32                      // X‑position of selection start in pixels
-    posSelEnd:          f32                      // X‑position of selection end in pixels
-    scrollPosX:         f32                      // Horizontal scroll offset
-    countRunes:         s32                      // Number of runes currently in text
 }
 
 impl IWnd for EditBox
@@ -219,6 +221,7 @@ impl IWnd for EditBox
                 pos.x = pos.right() - sizeX + posSelBeg
             else:
                 pos.x += posSelBeg
+            pos.x -= getTextMarginRight()
             pos.y      = clientRect.vertCenter() - fontR.height * 0.5
             pos.height = fontR.height
             pos.width  = posSelEnd - posSelBeg
@@ -227,8 +230,11 @@ impl IWnd for EditBox
 
         // Content
         let y = clientRect.vertCenter() - fontR.height * 0.5
-        if editBoxFlags.has(.RightAlign):
-            clientRect.x = clientRect.right() - sizeX
+        if editBoxFlags.has(.RightAlign)
+        {
+            clientRect.x = clientRect.right() - sizeX - getTextMarginRight()
+        }
+
         bc.painter.drawString(clientRect.x, y, text, fontR, colorText)
 
         if !unit.isEmpty()
@@ -640,6 +646,16 @@ internal impl EditBox
         return rect.x
     }
 
+    // Returns the right padding for text rendering (accounts for 'unit').
+    mtd getTextMarginRight()->f32
+    {
+        if !editBoxFlags.has(.RightAlign):
+            return 0
+        if unit.isEmpty():
+            return 0
+        return Painter.measureString(unit, getFont().regular).width + getThemeMetrics().editBox_UnitMargin
+    }
+
     // Returns the padding vector for the current visual form.
     mtd getFormPadding()->Math.Vector4
     {
@@ -695,6 +711,7 @@ internal impl EditBox
             result.x = clientRect.right() - posSelEnd - 2
         }
 
+        result.x -= getTextMarginRight()
         result.height = fontR.height
         result.y      = clientRect.vertCenter() - result.height * 0.5
 
@@ -717,6 +734,7 @@ internal impl EditBox
         if editBoxFlags.has(.RightAlign)
         {
             var clientRect = getEditRect()
+            clientRect.x -= getTextMarginRight()
             let sizeX      = Painter.measureString(text, fontR).width
             var lastWidth  = 0'f32
             var diff       = 0'f32
