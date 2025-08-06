@@ -27,7 +27,7 @@ func startProcess(info: StartInfo)->Process throw
         builder.appendString(info.arguments)
     }
 
-    builder.zeroTerminated()
+    builder.zeroTerminate()
     var str = builder.toString()
 
     // Launch
@@ -45,6 +45,9 @@ impl Process
         catch WaitForSingleObject(handle, Win32.INFINITE)
     }
 
+    // Get current process ID
     func getProcessId()->u64 => GetCurrentProcessId()
+
+    // Get current thread ID
     func getThreadId()->u64  => GetCurrentThreadId()
 }

@@ -58,7 +58,7 @@ impl StringBuilder
     }
 
     // Force a ending 0
-    mtd zeroTerminated()
+    mtd zeroTerminate()
     {
         buffer.addNative(0'u8)
     }
