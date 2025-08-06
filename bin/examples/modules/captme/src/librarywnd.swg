@@ -9,18 +9,18 @@ enum PreviewSize
 
 struct LibraryWnd
 {
-    using wnd:     Wnd
+    using wnd:       Wnd
 
-    main:          *MainWnd
-    view:          *LibraryView
-    listCtrl:      *ListCtrl
-    editZoomBar:   *Wnd
-    zoomBtn:       *IconButton
-    sortBtn:       *IconButton
-    previewSize:    PreviewSize
+    main:            *MainWnd
+    view:            *LibraryView
+    listCtrl:        *ListCtrl
+    editZoomBar:     *Wnd
+    zoomBtn:         *IconButton
+    sortBtn:         *IconButton
+    previewSize:     PreviewSize
 
-    invertSort:     bool
-    sortMethod:     SortMethod
+    invertSort:      bool
+    sortMethod:      SortMethod
 }
 
 struct LibraryItem
@@ -44,6 +44,7 @@ enum SortMethod
 {
     Recent
     FileSize
+    Similar
 }
 
 struct LibraryView
@@ -52,7 +53,7 @@ struct LibraryView
     scrollWnd:       *ScrollWnd
     libWnd:          *LibraryWnd
     mainWnd:         *MainWnd
-    items:           Array'LibraryItem
+    items:           ArrayPtr'LibraryItem
     mutexLoaded:     Sync.Mutex
     thread:          Thread
     hotItem          = Swag.U32.Max
@@ -98,7 +99,7 @@ impl IWnd for LibraryView
         }
 
         let shiftPressed = Input.Keyboard.isKeyPressed(.Shift) or Input.Keyboard.isKeyPressed(.RShift)
-        let ctrlPressed = Input.Keyboard.isKeyPressed(.Control) or Input.Keyboard.isKeyPressed(.RControl)
+        let ctrlPressed  = Input.Keyboard.isKeyPressed(.Control) or Input.Keyboard.isKeyPressed(.RControl)
 
         if evt.kind == .MouseReleased and hotItem != Swag.U32.Max and evt.button == .Left
         {
@@ -118,7 +119,7 @@ impl IWnd for LibraryView
 
         if evt.kind == .MouseDoubleClick and focusItem < items.count and evt.button == .Left
         {
-            let item = &items[focusItem]
+            let item = items[focusItem]
             catch File.touch(item.fi.fullname)
             mainWnd.recentWnd.addRecent(item.fi.fullname, item.capture.preview, front: true, sel: true, linked: item.capture.linkedImage)
             mainWnd.recentWnd.setScrollPos(0, 0)
@@ -168,7 +169,7 @@ impl IWnd for LibraryView
         const Margin = 8.0
 
         let spos = scrollWnd.getScrollPos()
-        foreach &it, i in items
+        foreach it, i in items
         {
             it.visible = true
             if y + H < spos.y:
@@ -218,7 +219,7 @@ impl LibraryView
 {
     mtd updateRecent(capture: *Capture)
     {
-        foreach &it in items
+        foreach it in items
         {
             if capture.file == it.fi.fullname
             {
@@ -240,7 +241,9 @@ impl LibraryView
         if !capture:
             return
 
+        capture.haar = ImageStatistics.quickExtractHaarFeatures(capture.preview, 64)
         capture.backImg.release()
+
         mutexLoaded.lock()
         it.capture = capture
         mutexLoaded.unlock()
@@ -256,7 +259,7 @@ impl LibraryView
             var notVis: *LibraryItem
 
             remain = false
-            foreach &it in items
+            foreach it in items
             {
                 if th.requestEnd
                 {
@@ -280,29 +283,82 @@ impl LibraryView
 
             if notVis:
                 loadOne(notVis)
-
         }
     }
 
+    #[Swag.Optimize("", false)]
     mtd sort()
     {
-        items.sort(func|libWnd|(a, b)
-        {
-            var value: s32
+        if items.isEmpty():
+            return
 
-            #[Swag.Complete]
-            switch(libWnd.sortMethod)
+        if libWnd.sortMethod == .Similar
+        {
+            var titems  = items
+            var nitems: ArrayPtr'LibraryItem
+
+            var toComp = titems.front()
+            titems.removeAt(0)
+            nitems.add(toComp)
+
+            while !titems.isEmpty()
             {
-            case Recent:
-                value = b.fi.lastWriteTime <=> a.fi.lastWriteTime
-            case FileSize:
-                value = b.fi.size <=> a.fi.size
+                if !toComp.capture
+                {
+                    toComp = titems.front()
+                    titems.removeAt(0)
+                    nitems.add(toComp)
+                    continue
+                }
+
+                if titems.isEmpty():
+                    continue
+
+                var best:  f32
+                var bestI: u64
+                foreach it in titems where it.capture
+                {
+                    if toComp.capture.haar.size != it.capture.haar.size:
+                        continue
+                    let cur = ImageStatistics.quickCompareHaarCoefficients(toComp.capture.haar, it.capture.haar)
+                    if cur > best
+                    {
+                        best  = cur
+                        bestI = @index
+                    }
+                }
+
+                toComp = titems[bestI]
+                nitems.add(toComp)
+                titems.removeAt(bestI)
             }
 
-            if libWnd.invertSort:
-                return -value
-            return value
-        })
+            mutexLoaded.lock()
+            foreach it in nitems:
+                items[@index] = it
+            mutexLoaded.unlock()
+            titems.count = 0
+            nitems.count = 0
+        }
+        else
+        {
+            items.sort(func|libWnd|(a, b)
+            {
+                var value: s32
+
+                switch libWnd.sortMethod
+                {
+                case Recent:
+                    value = b.fi.lastWriteTime <=> a.fi.lastWriteTime
+                case FileSize:
+                    value = b.fi.size <=> a.fi.size
+                }
+
+                if libWnd.invertSort:
+                    return -value
+                return value
+            })
+        }
     }
 
     mtd fill() throw
@@ -326,7 +382,7 @@ impl LibraryView
         }
 
         let renderer = getApp().getRenderer()
-        foreach &it in items:
+        foreach it in items:
             renderer.removeTexture(&it.texture)
 
         // Add items
@@ -334,7 +390,8 @@ impl LibraryView
         items.reserve(res.count)
         foreach fi in res
         {
-            items.add({fi: fi})
+            let ptr = items.addNewPtr()
+            ptr.fi = fi
         }
 
         sort()
@@ -382,6 +439,8 @@ impl LibraryWnd
             sortBtn.name.set("recent")
         case FileSize:
             sortBtn.name.set("filesize")
+        case Similar:
+            sortBtn.name.set("similar")
         }
 
         view.sort()
@@ -607,7 +666,7 @@ impl LibraryWnd
             .arrowPos = .RightDown
             .sigPressed += func|res|(btn)
             {
-                var pos  = btn.getSurfaceRect()
+                var pos = btn.getSurfaceRect()
                 with var menu = MenuCtrl.createPopup(res)
                 {
                     .menuCtrlFlags |= .NoKeyShortcuts
@@ -627,12 +686,13 @@ impl LibraryWnd
             .arrowPos = .RightDown
             .sigPressed += func|res|(btn)
             {
-                var pos  = btn.getSurfaceRect()
+                var pos = btn.getSurfaceRect()
                 with var menu = MenuCtrl.createPopup(res)
                 {
                     .menuCtrlFlags |= .NoKeyShortcuts
                     .addItem(CmdIdLibSortRecent)
                     .addItem(CmdIdLibSortFileSize)
+                    .addItem(CmdIdLibSortSimilar)
                     .addSeparator()
                     .addItem(CmdIdLibSortInvert)
                 }

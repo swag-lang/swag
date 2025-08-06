@@ -2,6 +2,7 @@ using Gui
 
 const CmdIdLibSortRecent   = "CmdIdLibSortRecent"
 const CmdIdLibSortFileSize = "CmdIdLibSortFileSize"
+const CmdIdLibSortSimilar  = "CmdIdLibSortSimilar"
 const CmdIdLibSortInvert   = "CmdIdLibSortInvert"
 
 struct ActionLibSort {}
@@ -11,7 +12,7 @@ impl IActionUI for ActionLibSort
     {
         switch cxt.id
         {
-        case CmdIdLibSortRecent, CmdIdLibSortFileSize, CmdIdLibSortInvert:
+        case CmdIdLibSortRecent, CmdIdLibSortFileSize, CmdIdLibSortInvert, CmdIdLibSortSimilar:
             return true
         }
 
@@ -27,7 +28,7 @@ impl IActionUI for ActionLibSort
         case CmdIdLibSortRecent:
             evt.setFlags |= .Name | .Checked | .RenderingHint
             evt.renderingHint = .ExclusiveGroup
-            evt.name = "Write Order"
+            evt.name = "Write Time"
             evt.checked = main.libWnd.sortMethod == .Recent
 
         case CmdIdLibSortFileSize:
@@ -35,6 +36,12 @@ impl IActionUI for ActionLibSort
             evt.renderingHint = .ExclusiveGroup
             evt.name = "File Size"
             evt.checked = main.libWnd.sortMethod == .FileSize
+
+        case CmdIdLibSortSimilar:
+            evt.setFlags |= .Name | .Checked | .RenderingHint
+            evt.renderingHint = .ExclusiveGroup
+            evt.name = "Similarity"
+            evt.checked = main.libWnd.sortMethod == .Similar
 
         case CmdIdLibSortInvert:
             evt.setFlags |= .Name | .Checked
@@ -55,6 +62,8 @@ impl IActionUI for ActionLibSort
             main.libWnd.setSortMethod(.Recent)
         case CmdIdLibSortFileSize:
             main.libWnd.setSortMethod(.FileSize)
+        case CmdIdLibSortSimilar:
+            main.libWnd.setSortMethod(.Similar)
 
         case CmdIdLibSortInvert:
             main.libWnd.setSortOrder(!main.libWnd.invertSort)

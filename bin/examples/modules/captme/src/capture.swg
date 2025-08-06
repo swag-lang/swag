@@ -15,7 +15,6 @@ struct Capture
 {
     const MinSize            = 16
     const MaxSize            = 4096
-
     width, height:           s32
     backImg:                 Image
     widthOrg, heightOrg:     s32
@@ -60,6 +59,8 @@ struct Capture
         inPlaceEdit:           bool
         inPlacePosX:           f32
         inPlacePosY:           f32
+
+        haar:                  ImageStatistics.HaarFeatures
     }
 }
 
@@ -179,7 +180,7 @@ impl Capture
 
     mtd hasChanged()
     {
-        changed = true
+        changed        = true
         linkedUpToDate = false
         editView.invalidate()
         editView.main.captureHasChanged()
@@ -596,9 +597,9 @@ impl Capture
             var backRect: Math.Rectangle
             if inPlaceEdit
             {
-                backRect.x = 0
-                backRect.y = 0
-                backRect.width = editView.position.width
+                backRect.x      = 0
+                backRect.y      = 0
+                backRect.width  = editView.position.width
                 backRect.height = editView.position.height
             }
             else

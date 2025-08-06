@@ -61,9 +61,9 @@ func haarTransform1DVertical(data: ^f32, col: s32, length: s32, stride: s32)
 
 func resampleToGrayscale(image: Image, targetWidth, targetHeight: s32, output: ^f32)
 {
-    for y in targetHeight - 1
+    for y in targetHeight
     {
-        for x in targetWidth - 1
+        for x in targetWidth
         {
             // Bilinear sampling
             let srcX = cast(f32) (x * image.width) / cast(f32) targetWidth
@@ -178,10 +178,7 @@ public func compareHaarCoefficients(haar1, haar2: HaarFeatures)->f32
         totalWeight += weight
 
         // Move to next level
-        if level == 0:
-            offset = 1 // DC approximation (single pixel)
-        else:
-            offset += levelSize
+        offset += levelSize
         currentSize /= 2
     }
 
@@ -203,7 +200,7 @@ public func haarCompareTo(one, two: Image, windowSize: u32 = 128)->f32
 }
 
 // Extract Haar coefficients from the image
-public func quickExtractHaarFeature(image: Image, windowSize: u32 = 32)->HaarFeatures
+public func quickExtractHaarFeatures(image: Image, windowSize: u32 = 32)->HaarFeatures
 {
     Debug.assert(Math.isPowerOf2(windowSize))
     Debug.assert(windowSize >= 32)
@@ -220,9 +217,9 @@ public func quickExtractHaarFeature(image: Image, windowSize: u32 = 32)->HaarFea
     let stepX = Math.max(1, image.width / windowSize)
     let stepY = Math.max(1, image.height / windowSize)
 
-    for y in windowSize - 1
+    for y in windowSize
     {
-        for x in windowSize - 1
+        for x in windowSize
         {
             let srcX  = x * stepX
             let srcY  = y * stepY
@@ -264,7 +261,7 @@ public func quickHaarCompareTo(one, two: Image, windowSize: u32 = 32)->f32
     Debug.assert(Math.isPowerOf2(windowSize))
     Debug.assert(windowSize >= 32)
 
-    let haar1 = one.quickExtractHaarFeature(windowSize)
-    let haar2 = two.quickExtractHaarFeature(windowSize)
+    let haar1 = one.quickExtractHaarFeatures(windowSize)
+    let haar2 = two.quickExtractHaarFeatures(windowSize)
     return quickCompareHaarCoefficients(haar1, haar2)
 }
