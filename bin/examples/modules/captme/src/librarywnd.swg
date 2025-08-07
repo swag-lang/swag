@@ -728,7 +728,7 @@ impl LibraryWnd
         }
 
         // Filter
-        with res.filterBtn = IconButton.create(res.editZoomBar, res.getTheme().getIcon24(.Sort), {0, 0, 120, 32})
+        with res.filterBtn = IconButton.create(res.editZoomBar, res.getTheme().getIcon24(.Filter), {0, 0, 120, 32})
         {
             .name.set("Show")
             .iconBtnFlags.add(.Center)
