@@ -1,6 +1,7 @@
 #global export
 
-// Swap two values
+// Swaps the values of two variables.
+// Takes pointers to the two values to be swapped.
 #[Swag.Inline]
 func(T) swap(x, y: *T)
 {
@@ -9,7 +10,8 @@ func(T) swap(x, y: *T)
     dref y = #nodrop #move tmp
 }
 
-// Be sure that 'a' is lower or equal than 'b'
+// Ensures that the first value is less than or equal to the second value.
+// If the first value is greater than the second, their contents are swapped.
 #[Swag.Inline]
 func(T) orderMinMax(x, y: *T)
 {
@@ -17,7 +19,8 @@ func(T) orderMinMax(x, y: *T)
         swap(x, y)
 }
 
-// Be sure that 'a' is geater or equal than 'b'
+// Ensures that the first value is greater than or equal to the second value.
+// If the first value is less than the second, their contents are swapped.
 #[Swag.Inline]
 func(T) orderMaxMin(x, y: *T)
 {

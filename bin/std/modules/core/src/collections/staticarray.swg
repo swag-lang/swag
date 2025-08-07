@@ -1,43 +1,51 @@
 #global export
 using Swag
 
+// A stack-allocated array with a fixed capacity known at compile time.
+// It provides a similar interface to the dynamic 'Array' but does not allocate memory on the heap.
 struct(T, N: u64) StaticArray
 {
-    buffer:     [N] T
-    count:      u64
+    buffer:     [N] T // The fixed-size buffer that holds the elements.
+    count:      u64   // The number of valid elements currently in the array.
 }
 
 impl StaticArray
 {
+    // Returns the number of elements in the array.
     #[Inline]
     mtd opCount()->u64
     {
         return count
     }
 
+    // Returns a raw, constant pointer to the array's buffer.
     #[Inline]
     mtd opData()->const *T
     {
         return &buffer[0]
     }
 
+    // Ensures that if elements have destructors, they are called when the array goes out of scope.
     mtd opDrop()
     {
         free()
     }
 
+    // Allows the array to be implicitly cast to a mutable slice.
     #[Inline, Overload]
     mtd opCast()->[..] T
     {
         return toSlice()
     }
 
+    // Allows the array to be implicitly cast to an immutable slice.
     #[Inline, Overload]
     mtd opCast()->const [..] T
     {
         return toSlice()
     }
 
+    // Creates a slice from a sub-part of the array.
     #[Inline]
     mtd opSlice(lower, upper: u64)->[..] T
     {
@@ -47,6 +55,7 @@ impl StaticArray
         return @mkslice(&buffer[0] + lower, (upper + 1) - lower)
     }
 
+    // Returns a constant reference to the element at the specified index.
     #[Inline, Overload]
     mtd const opIndex(index: u64)->const &T
     {
@@ -54,6 +63,7 @@ impl StaticArray
         return &buffer[index]
     }
 
+    // Returns a mutable reference to the element at the specified index.
     #[Inline, Overload]
     mtd opIndex(index: u64)->&T
     {
@@ -61,6 +71,7 @@ impl StaticArray
         return &buffer[index]
     }
 
+    // Assigns a new value to the element at the specified index.
     #[Inline]
     mtd opIndexAffect(index: u64, value: T)
         where Reflection.canCopy(T)
@@ -69,6 +80,7 @@ impl StaticArray
         buffer[index] = value
     }
 
+    // Handles compound assignment operators (e.g., `+=`, `-=`) for elements.
     #[Inline]
     mtd(op: string) opIndexAssign(index: u64, value: T)
     {
@@ -76,7 +88,8 @@ impl StaticArray
         #ast "buffer[index] " ++ op ++ " value"
     }
 
-    // Initializes an Array that contains values copied from the specified array
+    // Replaces the content of the array with elements copied from a slice.
+    // Asserts if the slice is larger than the array's capacity.
     mtd opAffect(arr: const [..] T)
         where Reflection.canCopy(T)
     {
@@ -100,8 +113,9 @@ impl StaticArray
         count += countof
     }
 
-    // Visit every elements of the array.
-    // Visiting by pointer and in reverse order is supported
+    // Provides a way to iterate over each element in the array.
+    // This is a macro that accepts a code block to execute for each element.
+    // Visiting by pointer and in reverse order is supported.
     #[Macro]
     func(ptr: bool, back: bool) opVisit(using const self, stmt: #code void)
     {
@@ -134,7 +148,8 @@ impl StaticArray
         }
     }
 
-    // Free the array content
+    // Drops all elements in the array, setting its count to 0.
+    // This is equivalent to 'clear' for this type.
     mtd free()
     {
         if !count:
@@ -149,18 +164,19 @@ impl StaticArray
         count = 0
     }
 
-    // Returns true if the array is empty
+    // Returns 'true' if the array contains no elements.
     #[Inline]
     mtd const isEmpty() => count == 0
 
-    // Returns a slice
+    // Returns a mutable slice containing all valid elements of the array.
     #[Inline]
     mtd toSlice()->[..] T
     {
         return @mkslice(&buffer[0], count)
     }
 
-    // Change the number of valid elements in the array
+    // Changes the number of elements in the array to 'newCount'.
+    // Asserts if 'newCount' exceeds the static capacity.
     mtd resize(newCount: u64)
     {
         if newCount == count:
@@ -178,7 +194,8 @@ impl StaticArray
         }
     }
 
-    // Set the number of elements to 0
+    // Removes all elements from the array, setting its count to 0.
+    // This calls the destructor for each element if one exists.
     mtd clear()
     {
         #if Reflection.hasDrop(T)
@@ -190,7 +207,8 @@ impl StaticArray
         count = 0
     }
 
-    // Add a copy of one element at the end of the array
+    // Adds an element to the end of the array, but only if it's not already present.
+    // Asserts if the array is full.
     mtd addOnce(value: T)
         where Reflection.canCopy(T)
     {
@@ -201,7 +219,8 @@ impl StaticArray
         count += 1
     }
 
-    // Add a copy of one element at the end of the array
+    // Adds a copy of an element to the end of the array.
+    // Asserts if the array is full.
     #[Overload]
     mtd add(value: T)
         where Reflection.canCopy(T)
@@ -211,7 +230,8 @@ impl StaticArray
         count += 1
     }
 
-    // Move one element at the end of the array
+    // Moves an element to the end of the array.
+    // Asserts if the array is full.
     #[Overload]
     mtd add(value: &&T)
     {
@@ -220,8 +240,8 @@ impl StaticArray
         count += 1
     }
 
-    // Reserve room at the end of the array for 'num' elements.
-    // Does not initialize them. Returns the address of the first element
+    // Makes room for 'num' elements at the end of the array and returns a pointer to the new space.
+    // The new memory is not initialized. Asserts if the array does not have enough capacity.
     mtd emplaceAddress(num: u32 = 1)->^T
     {
         Debug.assert(count + num <= N, "the array is full")
@@ -229,8 +249,8 @@ impl StaticArray
         return buffer + count - num
     }
 
-    // Reserve room at the end of the array for 'num' elements.
-    // Returns the address of the first element
+    // Makes room for 'num' elements at the end of the array and returns a pointer to the new space.
+    // The new memory is default-initialized. Asserts if the array does not have enough capacity.
     mtd emplaceInitAddress(num: u32 = 1)->^T
     {
         Debug.assert(count + num <= N, "the array is full")
@@ -240,9 +260,8 @@ impl StaticArray
         return res
     }
 
-    // Insert a value at the given index.
-    // If 'index' is equal to 'count', then the value is added at the end of the array.
-    // Order is preserved.
+    // Inserts a copy of a value at a specific index, shifting existing elements to the right.
+    // Asserts if the array is full. Order is preserved.
     #[Overload]
     mtd insertAt(index: u64, value: T)
         where Reflection.canCopy(T)
@@ -266,9 +285,8 @@ impl StaticArray
         buffer[index] = #nodrop value
     }
 
-    // Move a value at the given index.
-    // If 'index' is equal to 'count', then the value is added at the end of the array.
-    // Order is preserved.
+    // Inserts a moved value at a specific index, shifting existing elements to the right.
+    // Asserts if the array is full. Order is preserved.
     #[Overload]
     mtd insertAt(index: u64, value: &&T)
     {
@@ -291,9 +309,8 @@ impl StaticArray
         buffer[index] = #nodrop #move value
     }
 
-    // Insert some values at the given index.
-    // If 'index' is equal to 'count', then the values are added at the end of the array.
-    // Order is preserved.
+    // Inserts elements from a slice at a specific index, shifting existing elements to the right.
+    // Asserts if the array does not have enough capacity. Order is preserved.
     #[Overload]
     mtd insertAt(index: u64, values: const [..] T)
         where Reflection.canCopy(T)
@@ -329,9 +346,8 @@ impl StaticArray
         }
     }
 
-    // Move some values at the given index.
-    // If 'index' is equal to 'count', then the values are moved at the end of the array.
-    // Order is preserved.
+    // Moves elements from a slice at a specific index, shifting existing elements to the right.
+    // Asserts if the array does not have enough capacity. Order is preserved.
     mtd emplaceAt(index: u64, values: [..] T)
         where Reflection.canCopy(T)
     {
@@ -366,7 +382,8 @@ impl StaticArray
         }
     }
 
-    // Append a slice to the end of this instance
+    // Appends all elements from a slice to the end of the array.
+    // Asserts if the array does not have enough capacity.
     #[Overload]
     mtd add(values: const [..] T)
         where Reflection.canCopy(T)
@@ -393,7 +410,8 @@ impl StaticArray
         }
     }
 
-    // Remove 'num' elements starting at 'index'
+    // Removes a specified number of elements starting from a given index.
+    // This is an unstable remove; the order of remaining elements is not preserved.
     #[Overload]
     mtd remove(index, num: u64)
     {
@@ -416,8 +434,8 @@ impl StaticArray
         count -= num
     }
 
-    // Remove the given 'value'
-    // If not found, does nothing
+    // Removes the first occurrence of a given value from the array.
+    // This is an unstable remove; order is not preserved. Does nothing if the value is not found.
     #[Overload]
     mtd(V) remove(value: V)
     {
@@ -427,8 +445,8 @@ impl StaticArray
         removeAt(idx)
     }
 
-    // Remove an element at 'index' by replacing it with the last element.
-    // Order is not preserved
+    // Removes the element at a given index by swapping it with the last element.
+    // This is very fast, but the order of elements is not preserved.
     mtd removeAt(index: u64)
     {
         Debug.assert(index < count, "index out of range")
@@ -439,8 +457,8 @@ impl StaticArray
             buffer[index] = #moveraw buffer[count]
     }
 
-    // Remove 'numValues' elements at 'index' by shifting all others.
-    // Order is preserved
+    // Removes one or more elements at a given index, shifting subsequent elements to the left.
+    // This is slower than 'removeAt', but preserves the order of the remaining elements.
     mtd removeAtOrdered(index: u64, numValues: u64 = 1)
     {
         if !numValues:
@@ -472,8 +490,8 @@ impl StaticArray
         }
     }
 
-    // Remove the given 'value'
-    // If not found, does nothing
+    // Removes the first occurrence of a given value, preserving the order of remaining elements.
+    // Does nothing if the value is not found.
     mtd(V) removeOrdered(value: V)
     {
         let idx = Slice.findLinear(toSlice(), value)
@@ -482,26 +500,26 @@ impl StaticArray
         removeAtOrdered(idx)
     }
 
-    // Returns true if the given 'value' is in the array
+    // Returns 'true' if the array contains the given value.
     mtd(V) contains(value: V)->bool
     {
         return Slice.findLinear(toSlice(), value) != Swag.U64.Max
     }
 
-    // Sort array
+    // Sorts the array in ascending order using the default comparison operator.
     #[Swag.Overload]
     mtd sort()
     {
         Slice.sort(toSlice(), func(x, y: T)->s32 => x <=> y)
     }
 
-    // Sort array in reverse order (from biggest to lowest value)
+    // Sorts the array in descending order.
     mtd sortReverse()
     {
         Slice.sort(toSlice(), func(x, y: T)->s32 => y <=> x)
     }
 
-    // Sort array
+    // Sorts the array using a custom comparison function.
     #[Swag.Overload]
     mtd sort(cb: func||(T, T)->s32)
     {
@@ -509,7 +527,8 @@ impl StaticArray
         Slice.sort(toSlice(), cb)
     }
 
-    // Returns a copy of the first element
+    // Returns a copy of the first element of the array.
+    // Asserts if the array is empty.
     mtd front()->T
     {
         Debug.assert(count > 0, "array is empty")
@@ -517,14 +536,16 @@ impl StaticArray
         return result
     }
 
-    // Returns the address of the first element
+    // Returns a pointer to the first element of the array.
+    // Asserts if the array is empty.
     mtd frontPtr()->*T
     {
         Debug.assert(count > 0, "array is empty")
         return &buffer[0]
     }
 
-    // Returns a copy of the last element
+    // Returns a copy of the last element of the array.
+    // Asserts if the array is empty.
     mtd back()->T
     {
         Debug.assert(count > 0, "array is empty")
@@ -532,14 +553,16 @@ impl StaticArray
         return result
     }
 
-    // Returns the address of the last element
+    // Returns a pointer to the last element of the array.
+    // Asserts if the array is empty.
     mtd backPtr()->*T
     {
         Debug.assert(count > 0, "array is empty")
         return &buffer[count - 1]
     }
 
-    // Returns a copy of the last element, and remove it from the array
+    // Removes the last element from the array and returns it.
+    // Asserts if the array is empty.
     mtd popBack()->T
     {
         Debug.assert(count > 0, "array is empty")
@@ -549,7 +572,8 @@ impl StaticArray
         return result
     }
 
-    // Remove the last element
+    // Removes the last element from the array.
+    // Asserts if the array is empty.
     mtd removeBack()
     {
         Debug.assert(count > 0, "array is empty")

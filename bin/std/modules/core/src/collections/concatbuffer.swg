@@ -1,48 +1,56 @@
 #global public
 
+// Represents a single memory block (a bucket) within a ConcatBuffer.
 struct ConcatBufferBucket
 {
-    datas:           ^u8
-    next:            *ConcatBufferBucket
-    count:           u64
-    size:            u64
-    countBefore:     u64
+    datas:           ^u8                 // Pointer to the raw memory of the bucket.
+    next:            *ConcatBufferBucket // Pointer to the next bucket in the chain.
+    count:           u64                 // Number of bytes used in this bucket.
+    size:            u64                 // Total allocated size of this bucket in bytes.
+    countBefore:     u64                 // Total number of bytes in all preceding buckets.
 }
 
+// Represents a position (seek) within a ConcatBuffer.
+// It holds both the bucket and the specific pointer within that bucket.
 struct ConcatBufferSeek
 {
-    bucket:     *ConcatBufferBucket
-    sp:         ^u8
+    bucket:     *ConcatBufferBucket // The bucket where the position is located.
+    sp:         ^u8                 // The exact memory address of the position.
 }
 
-// Represents a growable buffer, which is divided in buckets to avoid a copy/realloc when
-// the buffer needs to increase its size. This is the main difference with Array
+// Represents a growable buffer that is divided into buckets (chunks of memory).
+// This structure avoids large reallocations and copies when the buffer needs to grow,
+// making it efficient for building data piece by piece.
 struct ConcatBuffer
 {
-    allocator:           Swag.IAllocator
+    allocator:           Swag.IAllocator      // The allocator to use for all memory operations.
 
-    firstBucket:         *ConcatBufferBucket
-    curBucket:           *ConcatBufferBucket
-    lastBucket:          *ConcatBufferBucket
-    currentSP:           ^u8
-    granularity:         u64 = 1024
-    isAtEnd:             bool = true
-    viewFirstBucket:     ConcatBufferBucket
+    firstBucket:         *ConcatBufferBucket  // The first bucket in the chain.
+    curBucket:           *ConcatBufferBucket  // The bucket where the current seek pointer is located.
+    lastBucket:          *ConcatBufferBucket  // The last bucket in the chain.
+    currentSP:           ^u8                  // The current read/write pointer in the `curBucket`.
+    granularity:         u64 = 1024           // The default size for newly allocated buckets.
+    isAtEnd:             bool = true          // 'true' if the seek pointer is at the very end of the buffer.
+    viewFirstBucket:     ConcatBufferBucket   // A pre-allocated bucket used for views, to avoid a separate allocation.
 }
 
 impl ConcatBuffer
 {
+    // Returns the total number of bytes in the buffer.
     mtd opCount()->u64
     {
         return count()
     }
 
+    // Ensures all allocated memory is freed when the buffer goes out of scope.
     mtd opDrop()
     {
         release()
     }
 
-    // Visit all valid buckets
+    // Provides a way to iterate over each bucket in the buffer.
+    // This is a macro that accepts a code block to execute for each bucket.
+    // Alias: #alias0 for the bucket pointer.
     #[Swag.Macro]
     mtd(ptr: bool, back: bool) const opVisit(stmt: #code void)
     {
@@ -61,13 +69,14 @@ impl ConcatBuffer
         }
     }
 
-    // Returns the number of bytes
+    // Returns the total number of bytes currently stored in the buffer.
     mtd count()->u64
     {
         return lastBucket ? lastBucket.countBefore + lastBucket.count : 0
     }
 
-    // Be sure that there is enough room to store at least 'numBytes' bytes
+    // Ensures that there is enough room to store at least 'numBytes' more bytes.
+    // If the current bucket is full, a new one is allocated.
     mtd grow(numBytes: u64)
     {
         Debug.assert(isAtEnd)
@@ -119,22 +128,22 @@ impl ConcatBuffer
         currentSP        = lastBucket.datas
     }
 
-    // Associate an allocator with the buffer.
-    // The allocator can only be changed if the buffer has no pending buckets.
+    // Associates a specific allocator with the buffer.
+    // This can only be called when the buffer is empty.
     mtd setAllocator(alloc: Swag.IAllocator)
     {
         Debug.assert(firstBucket == null, "buffer is not empty")
         allocator = alloc
     }
 
-    // Set the granularity of datas when allocated new buckets. Minimum size is 4.
+    // Sets the minimum size for new buckets allocated by the buffer.
     mtd setBucketSize(size: u64)
     {
         Debug.assert(size >= 4)
         granularity = size
     }
 
-    // Release all allocated buffers
+    // Frees all memory associated with the buffer, including all buckets.
     mtd release()
     {
         if !firstBucket:
@@ -154,7 +163,8 @@ impl ConcatBuffer
         clear()
     }
 
-    // Clear the content without freing the buffers
+    // Clears the buffer's content without deallocating memory.
+    // This resets the buffer to be empty, allowing its allocated buckets to be reused.
     mtd clear()
     {
         if !firstBucket:
@@ -166,7 +176,7 @@ impl ConcatBuffer
         isAtEnd = true
     }
 
-    // Append one byte to the buffer
+    // Appends a native type (like u8, s32, f64) to the buffer.
     mtd(T) addNative(val: T)
     {
         if !isAtEnd
@@ -193,15 +203,15 @@ impl ConcatBuffer
         }
     }
 
-    // Append the content of a struct
+    // Appends the raw byte content of a struct to the buffer.
     #[Swag.Inline]
     mtd(T) addStruct(val: T)
     {
         addBytes(@mkslice(cast(const ^u8) &val, #sizeof(T)))
     }
 
-    // Append a slice of bytes to the buffer
-    // If 'contiguous' is false, the slice will be divided in chunks if necessary
+    // Appends a slice of bytes to the buffer.
+    // If 'contiguous' is false, the slice can be split across multiple buckets if necessary.
     mtd addBytes(bytes: #null const [..] u8, contiguous = true)
     {
         var num = @countof(bytes)
@@ -283,13 +293,13 @@ impl ConcatBuffer
         lastBucket.count += num
     }
 
-    // Get the linearized seek offset
+    // Calculates the absolute byte offset of a given seek position.
     func getOffset(seek: ConcatBufferSeek)->u64
     {
         return seek.bucket ? seek.bucket.countBefore + cast(u64) (seek.sp - seek.bucket.datas) : 0
     }
 
-    // Returns the current 'seek' in the buffer
+    // Returns a 'ConcatBufferSeek' representing the current position in the buffer.
     mtd getSeek()->ConcatBufferSeek
     {
         var result: retval
@@ -298,7 +308,7 @@ impl ConcatBuffer
         return result
     }
 
-    // Seek current write pointer
+    // Moves the current seek pointer forward by 'num' bytes.
     mtd moveSeek(num: u64)
     {
         var total = num
@@ -337,7 +347,7 @@ impl ConcatBuffer
         isAtEnd = currentSP == lastBucket.datas + lastBucket.count
     }
 
-    // Set the current 'seek'
+    // Sets the current read/write position to a given 'seek'.
     mtd setSeek(seek: ConcatBufferSeek)
     {
         if !seek.bucket
@@ -354,7 +364,7 @@ impl ConcatBuffer
         setIsAtEnd()
     }
 
-    // Set the end 'seek'
+    // Sets the end of the buffer to a given 'seek' position, effectively truncating it.
     mtd setEndSeek(seek: ConcatBufferSeek)
     {
         if !seek.bucket
@@ -373,8 +383,9 @@ impl ConcatBuffer
         }
     }
 
-    // Convert to a slice *only* if the buffer is linear, or return null.
-    // See [[ConcatBuffer.makeLinear]]
+    // Returns the buffer's content as a slice, but only if the buffer is 'linear'.
+    // A buffer is linear if it consists of a single bucket. Returns 'null' otherwise.
+    // See [[makeLinear]].
     mtd toSlice()->#null [..] u8
     {
         if lastBucket == firstBucket:
@@ -382,7 +393,8 @@ impl ConcatBuffer
         return null
     }
 
-    // Share 'data' with the firstBucket
+    // Initializes the buffer to use an external, existing slice of data as its first bucket.
+    // This is a "view" mode; the buffer does not own or free this data.
     mtd setFirstBucket(data: [..] u8)
     {
         Debug.assert(firstBucket == null)
@@ -393,9 +405,9 @@ impl ConcatBuffer
         currentSP = firstBucket.datas
     }
 
-    // Convert the buffer to a String.
-    // A copy will be made, so the buffer is still valid after the call.
-    // See [[ConcatBuffer.moveToString]]
+    // Converts the buffer to a 'String' by copying all its content.
+    // The buffer remains valid after this call.
+    // See [[moveToString]] for a more efficient version that avoids copying when possible.
     mtd toString(alloc: Swag.IAllocator = null)->String
     {
         var result: retval
@@ -431,8 +443,9 @@ impl ConcatBuffer
         return {rdata, rcount, rcapacity}
     }
 
-    // Move the content of the buffer to the String if possible.
-    // If a direct move is not possible because the buffer contains more than on bucket, then a copy will be made instead.
+    // Moves the buffer's content into a new 'String', invalidating the buffer.
+    // If the buffer is linear (one bucket), this is a fast operation that avoids copying.
+    // Otherwise, it falls back to copying the data.
     mtd moveToString()->String
     {
         // Make a copy, as we have more than one bucket
@@ -452,7 +465,8 @@ impl ConcatBuffer
         return result
     }
 
-    // linearize all buckets in one single big bucket
+    // Merges all buckets into a single, contiguous memory block.
+    // After this call, the buffer is guaranteed to be linear.
     mtd makeLinear()
     {
         // Already linear (and only one single bucket)

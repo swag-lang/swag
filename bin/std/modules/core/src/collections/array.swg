@@ -1,34 +1,40 @@
 #global export
 using Swag
 
-// This is a generic dynamic array.
+// A generic, dynamic array that can hold elements of any type.
+// It automatically manages memory and grows as needed.
 struct(T) Array
 {
-    allocator:     IAllocator     // Associated allocator
-    buffer:        ^T             // Memory block of all datas
-    count:         u64            // Number of valid datas
-    capacity:      u64            // Number of elements that can be stored in the buffer
+    allocator:     IAllocator // The allocator used for memory operations.
+    buffer:        ^T         // Pointer to the contiguous memory block holding the elements.
+    count:         u64        // The number of valid elements currently in the array.
+    capacity:      u64        // The total number of elements that can be stored in the allocated buffer.
 }
 
 impl Array
 {
+    // Returns the number of elements in the array.
     #[Inline]
     mtd opCount()->u64
     {
         return count
     }
 
+    // Returns a raw, constant pointer to the array's buffer.
     #[Inline]
     mtd opData()->const *T
     {
         return buffer
     }
 
+    // Ensures the allocated memory is freed when the array goes out of scope.
     mtd opDrop()
     {
         free()
     }
 
+    // Handles the deep copy of the array when it is copied.
+    // A new buffer is allocated and the content is copied over.
     mtd opPostCopy()
     {
         if buffer == null:
@@ -49,18 +55,21 @@ impl Array
         }
     }
 
+    // Allows the array to be implicitly cast to a mutable slice.
     #[Inline, Overload]
     mtd opCast()->[..] T
     {
         return toSlice()
     }
 
+    // Allows the array to be implicitly cast to an immutable slice.
     #[Inline, Overload]
     mtd const opCast()->const [..] T
     {
         return toSlice()
     }
 
+    // Creates a slice from a sub-part of the array.
     #[Inline]
     mtd opSlice(lower, upper: u64)->[..] T
     {
@@ -70,6 +79,7 @@ impl Array
         return @mkslice(buffer + lower, (upper + 1) - lower)
     }
 
+    // Returns a constant reference to the element at the specified index.
     #[Inline, Overload]
     mtd const opIndex(index: u64)->const &T
     {
@@ -77,6 +87,7 @@ impl Array
         return buffer + index
     }
 
+    // Returns a mutable reference to the element at the specified index.
     #[Inline, Overload]
     mtd opIndex(index: u64)->&T
     {
@@ -84,6 +95,7 @@ impl Array
         return buffer + index
     }
 
+    // Assigns a new value to the element at the specified index.
     #[Inline]
     mtd opIndexAffect(index: u64, value: T)
         where Reflection.canCopy(T)
@@ -92,6 +104,7 @@ impl Array
         buffer[index] = value
     }
 
+    // Handles compound assignment operators (e.g., `+=`, `-=`) for elements.
     #[Inline]
     mtd(op: string) opIndexAssign(index: u64, value: T)
     {
@@ -99,7 +112,7 @@ impl Array
         #ast "buffer[index] " ++ op ++ " value"
     }
 
-    // Initializes an Array that contains values copied from the specified array
+    // Replaces the content of the array with elements copied from a slice.
     mtd opAffect(arr: const [..] T)
         where Reflection.canCopy(T)
     {
@@ -123,8 +136,10 @@ impl Array
         count += countof
     }
 
-    // Visit every elements of the array.
-    // Visiting by address and in reverse order is supported.
+    // Provides a way to iterate over each element in the array.
+    // This is a macro that accepts a code block to execute for each element.
+    // Visiting by address and in reverse order is supported via parameters.
+    // Aliases: #alias0 for the element or a pointer to it, #alias1 for the index.
     #[Macro]
     func(ptr: bool, back: bool) opVisit(using const self, stmt: #code void)
     {
@@ -158,8 +173,8 @@ impl Array
         }
     }
 
-    // Returns a reference to a value given coordinate.
-    // This is to use the array as an array with 2 dimensions.
+    // Returns a mutable reference to an element using a single coordinate.
+    // This can be used to treat the array as a 1D grid.
     #[Inline]
     mtd ref1(x: u64)->&T
     {
@@ -167,8 +182,8 @@ impl Array
         return buffer + x
     }
 
-    // Returns a reference to a value given 2 coordinates and a width.
-    // This is to use the array as an array with 2 dimensions.
+    // Returns a mutable reference to an element using 2D coordinates and a width.
+    // This can be used to treat the array as a 2D grid.
     #[Inline]
     mtd ref2(x, y, w: u64)->&T
     {
@@ -176,6 +191,8 @@ impl Array
         return buffer + x + y * w
     }
 
+    // Reallocates the internal buffer to a new capacity.
+    // This is a low-level memory operation that handles moving existing elements.
     mtd realloc(newCapacity: u64)
     {
         if allocator == null:
@@ -205,7 +222,8 @@ impl Array
         capacity = newCapacity
     }
 
-    // Free the array content
+    // Frees the array's memory and resets its state.
+    // If elements have destructors, they are called.
     mtd free()
     {
         if !buffer:
@@ -222,7 +240,8 @@ impl Array
         count, capacity = 0
     }
 
-    // Create a temporary array
+    // Creates a new array that uses the temporary allocator.
+    // Useful for short-lived arrays to avoid heap fragmentation.
     #[Inline]
     func(TA) createTemp()->Array'TA
     {
@@ -231,7 +250,8 @@ impl Array
         return result
     }
 
-    // Create a working buffer
+    // Creates a new byte array of a given size.
+    // Often used for raw memory buffers.
     #[NotGeneric]
     func createBuffer(size: u64)->Array'u8
     {
@@ -240,26 +260,27 @@ impl Array
         return result
     }
 
-    // Returns true if the array is empty
+    // Returns 'true' if the array contains no elements.
     #[Inline]
     mtd const isEmpty() => count == 0
 
-    // Returns a slice
+    // Returns a mutable slice containing all elements of the array.
     #[Inline, Overload]
     mtd toSlice()->[..] T
     {
         return @mkslice(buffer, count)
     }
 
-    // Returns a slice
+    // Returns an immutable slice containing all elements of the array.
     #[Inline, Overload]
     mtd const toSlice()->const [..] T
     {
         return @mkslice(buffer, count)
     }
 
-    // Ensure the Array is big enough to store at least 'newCount' elements.
-    // The number of valid elements does not change. If you want the number of valid elements to be changed also, use [[growResize]] instead.
+    // Ensures the array has enough capacity to store at least 'newCount' elements.
+    // If the current capacity is insufficient, it will be increased.
+    // The element count remains unchanged. See also [[reserve]].
     mtd grow(newCount: u64)
     {
         if newCount <= capacity:
@@ -268,8 +289,8 @@ impl Array
         reserve(newCapacity)
     }
 
-    // Reserve room for 'newCapacity' elements without changing the array count.
-    // The number of valid elements does not change.
+    // Sets the array's capacity to at least 'newCapacity'.
+    // This does not change the number of elements in the array.
     mtd reserve(newCapacity: u64)
     {
         if !newCapacity
@@ -286,8 +307,8 @@ impl Array
         realloc(newCapacity)
     }
 
-    // Ensure that at least 'newCount' elements are present and initizalized in the array.
-    // This will grow the array if necessary.
+    // Ensures the array contains at least 'newCount' elements.
+    // If the current count is less than 'newCount', new elements are added and default-initialized.
     mtd growResize(newCount: u64)
     {
         if newCount <= count:
@@ -296,8 +317,9 @@ impl Array
         resize(newCount)
     }
 
-    // Change the number of valid elements in the array.
-    // This can be used to reduce or increase the number of valid elements.
+    // Changes the number of elements in the array to 'newCount'.
+    // If 'newCount' is greater than the current count, new elements are default-initialized.
+    // If 'newCount' is smaller, excess elements are dropped.
     mtd resize(newCount: u64)
     {
         if newCount == count:
@@ -315,7 +337,8 @@ impl Array
         }
     }
 
-    // Set the number of elements to 0
+    // Removes all elements from the array, setting its count to 0.
+    // This calls the destructor for each element if one exists, but does not deallocate memory.
     mtd clear()
     {
         #if Reflection.hasDrop(T)
@@ -327,14 +350,16 @@ impl Array
         count = 0
     }
 
-    // Fill the array with the given value
+    // Fills the entire array with the given value.
+    // All existing elements are overwritten.
     mtd fill(value: T)
     {
         for i in count:
             buffer[i] = value
     }
 
-    // Add a copy of one element at the end of the array
+    // Adds an element to the end of the array, but only if it's not already present.
+    // This is slower than 'add' due to the containment check.
     mtd addOnce(value: T)
         where Reflection.canCopy(T)
     {
@@ -345,7 +370,7 @@ impl Array
         count += 1
     }
 
-    // Add a copy of one element at the end of the array
+    // Adds a copy of an element to the end of the array.
     #[Overload]
     mtd add(value: T)
         where Reflection.canCopy(T)
@@ -355,7 +380,7 @@ impl Array
         count += 1
     }
 
-    // Move one element at the end of the array
+    // Moves an element to the end of the array.
     #[Overload]
     mtd add(value: &&T)
     {
@@ -364,8 +389,8 @@ impl Array
         count += 1
     }
 
-    // Reserve room at the end of the array for 'num' elements, but does not
-    // initialize them. Returns the address of the first element
+    // Reserves space for 'num' elements at the end of the array and returns a pointer to the start of the new space.
+    // The new memory is not initialized.
     mtd emplaceAddress(num: u32 = 1)->^T
     {
         grow(count + num)
@@ -373,8 +398,8 @@ impl Array
         return buffer + count - num
     }
 
-    // Reserve room at the end of the array for 'num' elements.
-    // Returns the address of the first element
+    // Reserves space for 'num' elements at the end of the array and returns a pointer to the start of the new space.
+    // The new memory is default-initialized.
     mtd emplaceInitAddress(num: u32 = 1)->^T
     {
         grow(count + num)
@@ -384,8 +409,7 @@ impl Array
         return res
     }
 
-    // Insert a value at the given index. If 'index' is equal to 'count', then
-    // the value is added at the end of the array.
+    // Inserts a copy of a value at a specific index, shifting existing elements to the right.
     // Order is preserved.
     #[Overload]
     mtd insertAt(index: u64, value: T)
@@ -410,8 +434,7 @@ impl Array
         buffer[index] = #nodrop value
     }
 
-    // Move a value at the given index. If 'index' is equal to 'count', then
-    // the value is added at the end of the array.
+    // Inserts a moved value at a specific index, shifting existing elements to the right.
     // Order is preserved.
     #[Overload]
     mtd insertAt(index: u64, value: &&T)
@@ -435,8 +458,7 @@ impl Array
         buffer[index] = #nodrop #move value
     }
 
-    // Insert some values at the given index. If 'index' is equal to 'count', then
-    // the values are added at the end of the array.
+    // Inserts elements from a slice at a specific index, shifting existing elements to the right.
     // Order is preserved.
     #[Overload]
     mtd insertAt(index: u64, values: const [..] T)
@@ -473,8 +495,7 @@ impl Array
         }
     }
 
-    // Move some values at the given index. If 'index' is equal to 'count', then
-    // the values are moved at the end of the array.
+    // Moves elements from a slice at a specific index, shifting existing elements to the right.
     // Order is preserved.
     mtd emplaceAt(index: u64, values: [..] T)
         where Reflection.canCopy(T)
@@ -510,7 +531,7 @@ impl Array
         }
     }
 
-    // Append a slice to the end of this instance
+    // Appends all elements from a slice to the end of the array.
     #[Overload]
     mtd add(values: #null const [..] T)
         where Reflection.canCopy(T)
@@ -542,7 +563,7 @@ impl Array
         }
     }
 
-    // Swap two elements
+    // Swaps two elements in the array by their indices.
     mtd swap(idx0, idx1: u64)
     {
         if idx0 == idx1:
@@ -552,7 +573,8 @@ impl Array
         swap(buffer + idx0, buffer + idx1)
     }
 
-    // Remove 'num' elements starting at 'index'
+    // Removes a specified number of elements starting from a given index.
+    // This is an unstable remove; the order of remaining elements is not preserved.
     #[Overload]
     mtd remove(index, num: u64)
     {
@@ -575,8 +597,8 @@ impl Array
         count -= num
     }
 
-    // Remove the given 'value'
-    // If not found, does nothing
+    // Removes the first occurrence of a given value from the array.
+    // This is an unstable remove; order is not preserved. Does nothing if the value is not found.
     #[Overload]
     mtd(V) remove(value: V)
     {
@@ -586,8 +608,8 @@ impl Array
         removeAt(idx)
     }
 
-    // Remove an element at 'index' by replacing it with the last element.
-    // Order is **not preserved**
+    // Removes the element at a given index by swapping it with the last element.
+    // This is very fast, but the order of elements is not preserved.
     mtd removeAt(index: u64)
     {
         Debug.safetyBoundCheck(index < count, "index out of range")
@@ -598,8 +620,8 @@ impl Array
             buffer[index] = #moveraw buffer[count]
     }
 
-    // Remove 'numValues' elements at 'index' by shifting all others.
-    // Order is preserved
+    // Removes one or more elements at a given index, shifting subsequent elements to the left.
+    // This is slower than 'removeAt', but preserves the order of the remaining elements.
     mtd removeAtOrdered(index: u64, numValues: u64 = 1)
     {
         if !numValues:
@@ -631,8 +653,8 @@ impl Array
         }
     }
 
-    // Remove the given 'value'
-    // If not found, does nothing
+    // Removes the first occurrence of a given value, preserving the order of remaining elements.
+    // Does nothing if the value is not found.
     mtd(V) removeOrdered(value: V)
     {
         let idx = Slice.findLinear(toSlice(), value)
@@ -641,26 +663,26 @@ impl Array
         removeAtOrdered(idx)
     }
 
-    // Returns true if the given 'value' is in the array
+    // Returns 'true' if the array contains the given value.
     mtd(V) contains(value: V)->bool
     {
         return Slice.findLinear(toSlice(), value) != Swag.U64.Max
     }
 
-    // Sort array
+    // Sorts the array in ascending order using the default comparison operator.
     #[Overload]
     mtd sort()
     {
         Slice.sort(toSlice(), func(x, y: T)->s32 => x <=> y)
     }
 
-    // Sort array in reverse order (from biggest to lowest value)
+    // Sorts the array in descending order.
     mtd sortReverse()
     {
         Slice.sort(toSlice(), func(x, y: T)->s32 => y <=> x)
     }
 
-    // Sort array
+    // Sorts the array using a custom comparison function.
     #[Overload]
     mtd sort(cb: func||(T, T)->s32)
     {
@@ -668,7 +690,8 @@ impl Array
         Slice.sort(toSlice(), cb)
     }
 
-    // Returns a copy of the first element
+    // Returns a copy of the first element of the array.
+    // Asserts if the array is empty.
     mtd front()->T
     {
         Debug.assert(count > 0, "array is empty")
@@ -676,14 +699,16 @@ impl Array
         return result
     }
 
-    // Returns the address of the first element
+    // Returns a pointer to the first element of the array.
+    // Asserts if the array is empty.
     mtd frontPtr()->*T
     {
         Debug.assert(count > 0, "array is empty")
         return buffer
     }
 
-    // Returns a copy of the last element
+    // Returns a copy of the last element of the array.
+    // Asserts if the array is empty.
     mtd back()->T
     {
         Debug.assert(count > 0, "array is empty")
@@ -691,14 +716,16 @@ impl Array
         return result
     }
 
-    // Returns the address of the last element
+    // Returns a pointer to the last element of the array.
+    // Asserts if the array is empty.
     mtd backPtr()->*T
     {
         Debug.assert(count > 0, "array is empty")
         return buffer + count - 1
     }
 
-    // Returns a copy of the last element, and remove it from the array
+    // Removes the last element from the array and returns it.
+    // Asserts if the array is empty.
     mtd popBack()->T
     {
         Debug.assert(count > 0, "array is empty")
@@ -708,7 +735,8 @@ impl Array
         return result
     }
 
-    // Remove the last element
+    // Removes the last element from the array.
+    // Asserts if the array is empty.
     mtd removeBack()
     {
         Debug.assert(count > 0, "array is empty")

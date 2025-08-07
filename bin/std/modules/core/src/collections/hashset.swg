@@ -1,46 +1,54 @@
 #global export
 using Swag
 
+// Represents a single entry within a HashSet.
 struct(K) HashSetEntry
 {
-    hash:     u32
-    key:      K
+    hash:     u32 // The cached hash of the key.
+    key:      K   // The key itself.
 }
 
-// A set of unique values.
+// A hash set implemented with an open-addressing hash table.
+// It stores a collection of unique keys, providing fast lookups, additions, and removals.
 struct(K) HashSet
 {
-    const HASH_FREE        = 0'u32
-    const HASH_DELETED     = 1'u32
-    const HASH_FIRST       = 2'u32
-    const HASH_MASK        = 2'u32
+    // Special hash values to indicate the state of a slot in the table.
+    const HASH_FREE        = 0'u32 // The slot is empty and has never been used.
+    const HASH_DELETED     = 1'u32 // The slot was previously occupied but has been deleted.
+    const HASH_FIRST       = 2'u32 // The first possible valid hash value.
+    const HASH_MASK        = 2'u32 // A mask to ensure that valid hashes are >= HASH_FIRST.
 
-    allocator:             IAllocator
-    table:                 ^HashSetEntry
-    count:                 u64               // Number of valid entries
-    capacity:              u64               // Number of total entries the table can hold
-    deleted:               u64               // Number of deleted entries
+    allocator:             IAllocator    // The allocator used for memory operations.
+    table:                 ^HashSetEntry // Pointer to the contiguous memory block for the hash table.
+    count:                 u64           // The number of valid elements currently in the set.
+    capacity:              u64           // The total number of slots in the hash table.
+    deleted:               u64           // The number of slots marked as deleted.
 }
 
 impl HashSet
 {
+    // Returns the number of elements in the set.
     #[Inline]
     mtd opCount()->u64
     {
         return count
     }
 
+    // Ensures the allocated memory is freed when the set goes out of scope.
     mtd opDrop()
     {
         free()
     }
 
+    // Replaces the content of the set with elements from a slice.
     mtd opAffect(slice: const [..] K)
     {
         foreach v in slice:
             add(v)
     }
 
+    // Handles the deep copy of the set when it is copied.
+    // A new table is allocated and all entries are copied over.
     mtd opPostCopy()
     {
         if !table:
@@ -66,6 +74,9 @@ impl HashSet
         table = newTable
     }
 
+    // Provides a way to iterate over each key in the set.
+    // This is a macro that accepts a code block to execute for each key.
+    // Alias: #alias0 for the key or a pointer to it.
     #[Macro]
     mtd(ptr: bool, back: bool) const opVisit(stmt: #code void)
     {
@@ -104,13 +115,16 @@ impl HashSet
         }
     }
 
+    // Computes the hash for a given key.
+    // Ensures the resulting hash is not one of the reserved values (FREE, DELETED).
     #[Inline]
     func hashKey(key: K)->u32
     {
         return Hash.hash32(key) | HASH_MASK
     }
 
-    // Free the hashset content.
+    // Frees the hash set's memory and resets its state.
+    // If keys have destructors, they are called.
     mtd free()
     {
         if !table:
@@ -131,6 +145,8 @@ impl HashSet
         count, capacity, deleted = 0
     }
 
+    // Checks if the table needs to be resized and triggers it if necessary.
+    // Growth happens when the load factor (including deleted slots) exceeds 75%.
     mtd grow()
     {
         // We need to trigger the growing of the table is there's not enough room
@@ -141,7 +157,7 @@ impl HashSet
         reserve(newCapacity)
     }
 
-    // Reserve 'newCapacity' elements in the set.
+    // Resizes the hash table to a new capacity, rehashing all existing elements.
     mtd reserve(newCapacity: u64)
     {
         let reqCapacity = Math.max(newCapacity, 32)
@@ -178,6 +194,8 @@ impl HashSet
         Memory.free(oldTable, oldCapacity * #sizeof(HashSetEntry), allocator)
     }
 
+    // Finds the correct index for a new key, handling collisions and deleted slots.
+    // Uses linear probing to find the next available slot.
     mtd getNewIndex(key: K, idx: u64, hashVal: u64)->u64
     {
         var firstFree    = Swag.U64.Max
@@ -205,7 +223,8 @@ impl HashSet
         return index
     }
 
-    // Add a new element.
+    // Adds a new key to the set by copying it.
+    // If the key already exists, does nothing. Returns a pointer to the entry.
     #[Discardable, Overload]
     mtd add(key: K)->*HashSetEntry
         where Reflection.canCopy(#typeof(K))
@@ -235,7 +254,8 @@ impl HashSet
         return table + index
     }
 
-    // Add a new element.
+    // Adds a new key to the set by moving it.
+    // If the key already exists, does nothing. Returns a pointer to the entry.
     #[Discardable, Overload]
     mtd add(key: &&K)->*HashSetEntry
     {
@@ -264,7 +284,7 @@ impl HashSet
         return table + index
     }
 
-    // Add a new element.
+    // Internal helper to add a new element with a pre-computed hash.
     #[Discardable]
     mtd emplaceInternal(hashVal: u32, key: &K)->*HashSetEntry
         where Reflection.canCopy(#typeof(K))
@@ -293,7 +313,8 @@ impl HashSet
         return table + index
     }
 
-    // Remove the given element if it exists.
+    // Removes a key from the set.
+    // If the key exists, its slot is marked as 'DELETED'. Does nothing if the key is not found.
     mtd remove(key: K)
     {
         if !table:
@@ -316,7 +337,7 @@ impl HashSet
         }
     }
 
-    // Returns true if the table contains the given element.
+    // Returns 'true' if the set contains the given key.
     mtd const contains(key: K)->bool
     {
         if !table:
@@ -335,7 +356,8 @@ impl HashSet
         return false
     }
 
-    // Remove all elements.
+    // Removes all elements from the set without deallocating the table memory.
+    // All slots are marked as 'FREE'.
     mtd clear()
     {
         // Need to put the 'hash' value of each entry to HASH_FREE
