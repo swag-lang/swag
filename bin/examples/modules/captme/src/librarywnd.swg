@@ -47,6 +47,8 @@ enum SortMethod
     Similar
 }
 
+var g_UpdatingLib: bool
+
 struct LibraryView
 {
     using wnd:       Wnd
@@ -62,6 +64,7 @@ struct LibraryView
     filterYear:      u64
     filterMonth:     u64
     filterDay:       u64
+    imgSpin:         *ImageRect
 }
 
 impl IWnd for LibraryView
@@ -145,6 +148,9 @@ impl IWnd for LibraryView
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
+        if !g_UpdatingLib:
+            imgSpin.hide()
+
         let painter    = evt.bc.painter
         var clientRect = getClientRectPadding()
 
@@ -285,6 +291,61 @@ impl LibraryView
             else:
                 break
         }
+
+        g_UpdatingLib = false
+    }
+
+    mtd sortSimilar()
+    {
+        var titems: Array'*LibraryItem
+        foreach it in items:
+            titems.add(it)
+        var nitems: Array'*LibraryItem
+
+        var toComp: *LibraryItem
+        if focusItem != Swag.U32.Max
+        {
+            toComp = titems[focusItem]
+            titems.removeAt(focusItem)
+            nitems.add(toComp)
+        }
+
+        while !titems.isEmpty()
+        {
+            if !toComp or !toComp.capture
+            {
+                toComp = titems.front()
+                titems.removeAt(0)
+                nitems.add(toComp)
+                continue
+            }
+
+            if titems.isEmpty():
+                continue
+
+            var best:  f32
+            var bestI: u64
+            foreach it in titems where it.capture
+            {
+                if toComp.capture.haar.size != it.capture.haar.size:
+                    continue
+                let cur = ImageStatistics.quickCompareHaarCoefficients(toComp.capture.haar, it.capture.haar)
+                if cur > best
+                {
+                    best  = cur
+                    bestI = @index
+                }
+            }
+
+            toComp = titems[bestI]
+            nitems.add(toComp)
+            titems.removeAt(bestI)
+        }
+
+        mutexLoaded.lock()
+        foreach it, i in nitems:
+            items[i] = nitems[i]
+        mutexLoaded.unlock()
     }
 
     mtd sort()
@@ -296,48 +357,7 @@ impl LibraryView
 
         if libWnd.sortMethod == .Similar
         {
-            var titems: Array'*LibraryItem
-            foreach it in items:
-                titems.add(it)
-            var nitems: Array'*LibraryItem
-
-            var toComp: *LibraryItem
-            while !titems.isEmpty()
-            {
-                if !toComp or !toComp.capture
-                {
-                    toComp = titems.front()
-                    titems.removeAt(0)
-                    nitems.add(toComp)
-                    continue
-                }
-
-                if titems.isEmpty():
-                    continue
-
-                var best:  f32
-                var bestI: u64
-                foreach it in titems where it.capture
-                {
-                    if toComp.capture.haar.size != it.capture.haar.size:
-                        continue
-                    let cur = ImageStatistics.quickCompareHaarCoefficients(toComp.capture.haar, it.capture.haar)
-                    if cur > best
-                    {
-                        best  = cur
-                        bestI = @index
-                    }
-                }
-
-                toComp = titems[bestI]
-                nitems.add(toComp)
-                titems.removeAt(bestI)
-            }
-
-            mutexLoaded.lock()
-            foreach it, i in nitems:
-                items[i] = nitems[i]
-            mutexLoaded.unlock()
+            sortSimilar()
         }
         else
         {
@@ -397,6 +417,9 @@ impl LibraryView
 
         hotItem = Swag.U32.Max
         selModel.unselectAll()
+
+        g_UpdatingLib = true
+        imgSpin.show()
 
         // Launch thread to read all captures
         try
@@ -656,6 +679,10 @@ impl LibraryWnd
             .dockStyle       = .Top
             .backgroundStyle = .Window
         }
+
+        view.imgSpin = ImageRect.create(res, {4, 4, 24, 24})
+        view.imgSpin.setMovie(view.getTheme().res.spin)
+        view.imgSpin.hide()
 
         // Image Size
         with res.zoomBtn = IconButton.create(res.editZoomBar, res.getTheme().getIcon24(.Search), {0, 0, 120, 32})
