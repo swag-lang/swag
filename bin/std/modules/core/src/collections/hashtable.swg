@@ -1,47 +1,55 @@
 #global export
 using Swag
 
+// Represents a single key-value pair entry within a HashTable.
 struct(K, V) HashTableEntry
 {
-    hash:      u32
-    key:       K
-    value:     V
+    hash:      u32 // The cached hash of the key.
+    key:       K   // The key.
+    value:     V   // The value associated with the key.
 }
 
-// Map a key to a value.
+// A hash table implemented with open-addressing that maps keys to values.
+// It provides fast lookups, additions, and removals of key-value pairs.
 struct(K, V) HashTable
 {
-    const HASH_FREE        = 0'u32
-    const HASH_DELETED     = 1'u32
-    const HASH_FIRST       = 2'u32
-    const HASH_MASK        = 2'u32
+    // Special hash values to indicate the state of a slot in the table.
+    const HASH_FREE        = 0'u32 // The slot is empty and has never been used.
+    const HASH_DELETED     = 1'u32 // The slot was previously occupied but has been deleted.
+    const HASH_FIRST       = 2'u32 // The first possible valid hash value.
+    const HASH_MASK        = 2'u32 // A mask to ensure that valid hashes are >= HASH_FIRST.
 
-    allocator:             IAllocator
-    table:                 ^HashTableEntry
-    count:                 u64                 // Number of valid entries
-    capacity:              u64                 // Number of total entries the table can hold
-    deleted:               u64                 // Number of deleted entries
+    allocator:             IAllocator      // The allocator used for memory operations.
+    table:                 ^HashTableEntry // Pointer to the contiguous memory block for the hash table.
+    count:                 u64             // The number of valid key-value pairs currently in the table.
+    capacity:              u64             // The total number of slots in the hash table.
+    deleted:               u64             // The number of slots marked as deleted.
 }
 
 impl HashTable
 {
+    // Returns the number of key-value pairs in the table.
     #[Inline]
     mtd opCount()->u64
     {
         return count
     }
 
+    // Ensures the allocated memory is freed when the table goes out of scope.
     mtd opDrop()
     {
         free()
     }
 
+    // Replaces the content of the table with key-value pairs from a slice.
     mtd opAffect(slice: const [..] { k: K, v: V })
     {
         foreach v in slice:
             add(v.k, v.v)
     }
 
+    // Handles the deep copy of the table when it is copied.
+    // A new table is allocated and all entries are copied over.
     mtd opPostCopy()
     {
         if !table:
@@ -68,6 +76,8 @@ impl HashTable
         table = newTable
     }
 
+    // Provides read-only access to the value associated with a key.
+    // Asserts if the key is not found.
     #[Overload]
     mtd const opIndex(key: K)->const &V
     {
@@ -80,6 +90,9 @@ impl HashTable
         return &d
     }
 
+    // Provides mutable access to the value associated with a key.
+    // If the key does not exist, this will exhibit undefined behavior. Use with caution.
+    // See [[opIndexAffect]] for safe insertion/update.
     #[Overload]
     mtd opIndex(key: K)->&V
     {
@@ -92,6 +105,7 @@ impl HashTable
         return &d
     }
 
+    // Assigns a value to a key, updating it if it exists or adding it if it doesn't.
     mtd opIndexAffect(key: K, val: V)
     {
         let it = tryFind(key)
@@ -101,7 +115,9 @@ impl HashTable
             add(key, val)
     }
 
-    // alias0 is the key, and alias1 is the value
+    // Provides a way to iterate over each key-value pair in the table.
+    // This is a macro that accepts a code block to execute for each pair.
+    // Aliases: #alias0 for the key, #alias1 for the value.
     #[Macro]
     mtd(ptr: bool, back: bool) const opVisit(stmt: #code void)
     {
@@ -144,13 +160,16 @@ impl HashTable
         }
     }
 
+    // Computes the hash for a given key.
+    // Ensures the resulting hash is not one of the reserved values (FREE, DELETED).
     #[Inline]
     func hashKey(key: K)->u32
     {
         return Hash.hash32(key) | HASH_MASK
     }
 
-    // Free the hashtable content.
+    // Frees the hash table's memory and resets its state.
+    // If keys or values have destructors, they are called.
     mtd free()
     {
         if !table:
@@ -171,6 +190,8 @@ impl HashTable
         count, capacity, deleted = 0
     }
 
+    // Checks if the table needs to be resized and triggers it if necessary.
+    // Growth happens when the load factor (including deleted slots) exceeds 75%.
     mtd grow()
     {
         // We need to trigger the growing of the table is there's not enough room
@@ -181,7 +202,7 @@ impl HashTable
         reserve(newCapacity)
     }
 
-    // Reserve 'newCapacity' elements in the table.
+    // Resizes the hash table to a new capacity, rehashing all existing elements.
     mtd reserve(newCapacity: u64)
     {
         let reqCapacity = Math.max(newCapacity, 32)
@@ -219,6 +240,8 @@ impl HashTable
         Memory.free(oldTable, oldCapacity * #sizeof(HashTableEntry), allocator)
     }
 
+    // Finds the correct index for a new key, handling collisions and deleted slots.
+    // Uses linear probing to find the next available slot.
     mtd getNewIndex(key: K, idx: u64, hashVal: u64)->u64
     {
         var firstFree    = Swag.U64.Max
@@ -246,8 +269,8 @@ impl HashTable
         return index
     }
 
-    // Add a new key value pair.
-    // If the key already exists, then the value will be replaced if 'updateValue' is true.
+    // Adds a new key-value pair to the table by copying them.
+    // If the key already exists, the value is updated if 'updateValue' is true.
     #[Discardable, Overload]
     mtd add(key: K, value: V, updateValue = true)->*HashTableEntry
         where Reflection.canCopy(#typeof(K)) and Reflection.canCopy(#typeof(V))
@@ -283,8 +306,8 @@ impl HashTable
         return table + index
     }
 
-    // Add a new key value pair.
-    // If the key already exists, then the value will be replaced if 'updateValue' is true.
+    // Adds a new key-value pair to the table, moving the value.
+    // If the key already exists, the value is updated if 'updateValue' is true.
     #[Discardable, Overload]
     mtd add(key: K, value: &&V, updateValue = true)->*HashTableEntry
         where Reflection.canCopy(#typeof(K))
@@ -320,7 +343,7 @@ impl HashTable
         return table + index
     }
 
-    // Use with care !
+    // Internal helper to add a new element with a pre-computed hash. Use with care.
     #[Discardable]
     mtd emplaceInternal(hashVal: u32, key: &K, value: &V)->*HashTableEntry
         where Reflection.canCopy(#typeof(K)) and Reflection.canCopy(#typeof(V))
@@ -354,7 +377,8 @@ impl HashTable
         return table + index
     }
 
-    // Remove the given key if it exists
+    // Removes a key-value pair from the table by key.
+    // If the key exists, its slot is marked as 'DELETED'. Does nothing if the key is not found.
     mtd remove(key: K)
     {
         if !table:
@@ -377,7 +401,7 @@ impl HashTable
         }
     }
 
-    // Returns true if the table contains the given key
+    // Returns 'true' if the table contains the given key.
     mtd const contains(key: K)->bool
     {
         if !table:
@@ -396,8 +420,8 @@ impl HashTable
         return false
     }
 
-    // Find the given key, and returns the corresponding entry.
-    // Returns null if the key is not there.
+    // Tries to find the entry for a given key.
+    // Returns a pointer to the 'HashTableEntry' if found, otherwise returns 'null'.
     mtd const tryFind(key: K)->#null *HashTableEntry
     {
         if !table:
@@ -416,8 +440,8 @@ impl HashTable
         return null
     }
 
-    // Find the given key, and returns the corresponding entry.
-    // Returns null if the key is not there.
+    // Finds the entry for a given key.
+    // Asserts and will likely crash if the key is not found. Use [[tryFind]] for safe searching.
     mtd const find(key: K)->*HashTableEntry
     {
         Debug.assert(table != null)
@@ -435,8 +459,8 @@ impl HashTable
         unreachable
     }
 
-    // Find the given key, and returns the corresponding value.
-    // If the key does not exist, then it will return 'val' instead
+    // Gets the value associated with a key.
+    // If the key does not exist, returns the provided default value 'val' instead.
     mtd const get(key: K, val: V)->V
     {
         let it = tryFind(key)
@@ -445,7 +469,8 @@ impl HashTable
         return it.value
     }
 
-    // Get the entry if it exists, or creates a new one with a default value
+    // Finds the entry for a key, or adds a new entry with a default-initialized value if not found.
+    // Returns a pointer to the existing or new entry.
     mtd findOrAdd(key: K)->*HashTableEntry
     {
         let it = tryFind(key)
@@ -455,7 +480,8 @@ impl HashTable
         return add(key, val)
     }
 
-    // Remove all elements
+    // Removes all elements from the table without deallocating the table memory.
+    // All slots are marked as 'FREE'.
     mtd clear()
     {
         // Need to put the 'hash' value of each entry to HASH_FREE

@@ -1,32 +1,38 @@
 #global export
 using Swag
 
+// Represents a single node in a doubly-linked 'List'.
 struct(T) ListEntry
 {
-    prev:      *ListEntry
-    next:      *ListEntry
-    value:     T
+    prev:      *ListEntry // Pointer to the previous node in the list.
+    next:      *ListEntry // Pointer to the next node in the list.
+    value:     T          // The value stored in the node.
 }
 
+// A generic, doubly-linked list.
+// Provides efficient insertion and deletion of elements.
 struct(T) List
 {
-    head:      *ListEntry
-    tail:      *ListEntry
-    count:     u64
+    head:      *ListEntry // Pointer to the first node in the list.
+    tail:      *ListEntry // Pointer to the last node in the list.
+    count:     u64        // The total number of elements in the list.
 }
 
 impl List
 {
+    // Ensures all nodes are deallocated when the list goes out of scope.
     mtd opDrop()
     {
         clear()
     }
 
-    // Visit every elements of the list
-    // * `#alias0` is the value
-    // * `#alias1` is the node
-    // * `#alias2` is the index
-    // Visiting by pointer and in reverse order is supported
+    // Provides a way to iterate over each element in the list.
+    // This is a macro that accepts a code block to execute for each element.
+    // Visiting by pointer and in reverse order is supported.
+    // Aliases:
+    // - #alias0: The value of the element.
+    // - #alias1: A pointer to the list node ('ListEntry').
+    // - #alias2: The index of the element.
     #[Macro]
     mtd(ptr: bool, back: bool) opVisit(stmt: #code void)
     {
@@ -59,7 +65,7 @@ impl List
         }
     }
 
-    // Clear all elements
+    // Removes and deallocates all elements from the list.
     mtd clear()
     {
         var n = head
@@ -74,7 +80,8 @@ impl List
         count = 0
     }
 
-    // Add a new element on front
+    // Adds a new element to the front of the list by copying the value.
+    // Returns a pointer to the newly created list node.
     #[Discardable, Overload]
     mtd addFront(value: T)->*ListEntry
     {
@@ -95,7 +102,8 @@ impl List
         return n
     }
 
-    // Add a new element on front
+    // Adds a new element to the front of the list by moving the value.
+    // Returns a pointer to the newly created list node.
     #[Discardable, Overload]
     mtd addFront(value: &&T)->*ListEntry
     {
@@ -116,7 +124,8 @@ impl List
         return n
     }
 
-    // Add a new element on front
+    // Adds a new element to the back of the list by copying the value.
+    // Returns a pointer to the newly created list node.
     #[Discardable, Overload]
     mtd addBack(value: T)->*ListEntry
     {
@@ -137,7 +146,8 @@ impl List
         return n
     }
 
-    // Add a new element on front
+    // Adds a new element to the back of the list by moving the value.
+    // Returns a pointer to the newly created list node.
     #[Discardable, Overload]
     mtd addBack(value: &&T)->*ListEntry
     {
@@ -158,7 +168,8 @@ impl List
         return n
     }
 
-    // Insert a node before the reference
+    // Inserts a new element before a specified node by copying the value.
+    // Returns a pointer to the newly created list node.
     #[Discardable, Overload]
     mtd insertBefore(node: *ListEntry, value: T)->*ListEntry
     {
@@ -176,6 +187,8 @@ impl List
         return n
     }
 
+    // Inserts a new element before a specified node by moving the value.
+    // Returns a pointer to the newly created list node.
     #[Discardable, Overload]
     mtd insertBefore(node: *ListEntry, value: &&T)->*ListEntry
     {
@@ -193,7 +206,8 @@ impl List
         return n
     }
 
-    // Insert a node before the reference
+    // Inserts a new element after a specified node by copying the value.
+    // Returns a pointer to the newly created list node.
     #[Discardable, Overload]
     mtd insertAfter(node: *ListEntry, value: T)->*ListEntry
     {
@@ -211,6 +225,8 @@ impl List
         return n
     }
 
+    // Inserts a new element after a specified node by moving the value.
+    // Returns a pointer to the newly created list node.
     #[Discardable, Overload]
     mtd insertAfter(node: *ListEntry, value: &&T)->*ListEntry
     {
