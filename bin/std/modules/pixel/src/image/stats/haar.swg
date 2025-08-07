@@ -3,12 +3,10 @@ using Core, Core.Math
 
 func haarTransform2D(data: ^f32, size: u32, output: ^f32)
 {
-    for i in size * size:
-        output[i] = data[i]
-
-    var currentSize = size
+    Memory.copy(output, data, size*size*#sizeof(f32))
 
     // Decompose by levels
+    var currentSize = size
     while currentSize > 1
     {
         for row in currentSize:
@@ -31,9 +29,9 @@ func haarTransform1D(data: ^f32, offset: s32, length: s32)
     let half = length / 2
 
     for i in half:
-        temp[i] = (data[offset + i * 2] + data[offset + i * 2 + 1]) * 0.5
+        temp[i] = (data[offset + i * 2] + data[offset + i * 2 + 1]) * 0.70710678118 // sqrt(2)/2 normalization
     for i in half:
-        temp[half + i] = (data[offset + i * 2] - data[offset + i * 2 + 1]) * 0.5
+        temp[half + i] = (data[offset + i * 2] - data[offset + i * 2 + 1]) * 0.70710678118
 
     for i in length:
         data[offset + i] = temp[i]
@@ -51,9 +49,9 @@ func haarTransform1DVertical(data: ^f32, col: s32, length: s32, stride: s32)
     let half = length / 2
 
     for i in half:
-        temp[i] = (data[col + i * 2 * stride] + data[col + (i * 2 + 1) * stride]) * 0.5
+        temp[i] = (data[col + i * 2 * stride] + data[col + (i * 2 + 1) * stride]) * 0.70710678118
     for i in half:
-        temp[half + i] = (data[col + i * 2 * stride] - data[col + (i * 2 + 1) * stride]) * 0.5
+        temp[half + i] = (data[col + i * 2 * stride] - data[col + (i * 2 + 1) * stride]) * 0.70710678118
 
     for i in length:
         data[col + i * stride] = temp[i]
@@ -61,6 +59,8 @@ func haarTransform1DVertical(data: ^f32, col: s32, length: s32, stride: s32)
 
 func resampleToGrayscale(image: Image, targetWidth, targetHeight: s32, output: ^f32)
 {
+    Debug.assert(targetWidth > 0 and targetHeight > 0, "Target dimensions must be positive")
+
     for y in targetHeight
     {
         for x in targetWidth
@@ -116,8 +116,8 @@ public func extractHaarFeatures(image: Image, windowSize: u32 = 128)->HaarFeatur
 
     // Determine optimal size
     let targetSize = Math.min(Math.roundUpToPowerOf2(cast(u32) Math.min(image.width, image.height)), windowSize)
-    features.size   = targetSize
-    features.levels = cast() Math.log2(cast(f32) targetSize) // Number of decomposition levels
+    features.size   = cast(s32) targetSize
+    features.levels = cast(s32) Math.log2(cast(f32) targetSize) // Number of decomposition levels
 
     // Total coefficients = size * size (all levels included)
     features.coefficients.resize(targetSize * targetSize)
@@ -125,7 +125,7 @@ public func extractHaarFeatures(image: Image, windowSize: u32 = 128)->HaarFeatur
     // Convert image to grayscale and resize
     var grayImage: Array'f32
     grayImage.resize(targetSize * targetSize)
-    image.resampleToGrayscale(targetSize, targetSize, grayImage.buffer)
+    image.resampleToGrayscale(cast(s32) targetSize, cast(s32) targetSize, grayImage.buffer)
 
     // 2D Haar transform
     haarTransform2D(grayImage.buffer, targetSize, features.coefficients.buffer)
@@ -141,34 +141,96 @@ public func compareHaarCoefficients(haar1, haar2: HaarFeatures)->f32
     var totalWeight:     f64 = 0.0
     let size             = haar1.size
 
-    // Traverse all decomposition levels
+    // Start from coarsest level (level 0) to finest
     var currentSize = size
-    var offset      = 0
-
 
     for level in haar1.levels
     {
-        let levelSize = currentSize * currentSize
+        // Calculate level bounds - in 2D Haar, each level has specific quadrant layout
+        var startX, startY, endX, endY: s32
 
-        // Weight according to level (more weight to low frequencies)
-        let weight = Math.pow(2.0, cast(f64) level) // 1, 2, 4, 8, ...
+        if level == 0
+        {
+            // DC component (single coefficient at top-left)
+            startX = 0; startY = 0; endX = 1; endY = 1
+        }
+        else
+        {
+            // For level i, we have 3 detail subbands: LH, HL, HH
+            let levelSize = size >> level  // Size at this level
+
+            // LH (horizontal details): top-right
+            startX = levelSize; startY = 0
+            endX = levelSize * 2; endY = levelSize
+
+            // Add HL (vertical details): bottom-left
+            let hlStartX = 0; let hlStartY = levelSize
+            let hlEndX = levelSize; let hlEndY = levelSize * 2
+
+            // Add HH (diagonal details): bottom-right
+            let hhStartX = levelSize; let hhStartY = levelSize
+            let hhEndX = levelSize * 2; let hhEndY = levelSize * 2
+        }
+
+        // Weight: higher for coarser levels (lower level numbers)
+        let weight = Math.pow(2.0, cast(f64) (haar1.levels - level))
 
         var levelSimilarity: f64 = 0.0
         var levelNorm1:      f64 = 0.0
         var levelNorm2:      f64 = 0.0
 
-        // Normalized correlation for this level
-        for i in offset until offset + levelSize
+        if level == 0
         {
-            let c1 = cast(f64) haar1.coefficients[i]
-            let c2 = cast(f64) haar2.coefficients[i]
+            // Just the DC component
+            let c1 = cast(f64) haar1.coefficients[0]
+            let c2 = cast(f64) haar2.coefficients[0]
+            levelSimilarity = c1 * c2
+            levelNorm1 = c1 * c1
+            levelNorm2 = c2 * c2
+        }
+        else
+        {
+            // Process all three detail subbands for this level
+            let levelSize = size >> level
 
-            levelSimilarity += c1 * c2
-            levelNorm1 += c1 * c1
-            levelNorm2 += c2 * c2
+            // LH subband
+            for y in startY until endY:
+                for x in startX until endX
+                {
+                    let idx = y * size + x
+                    let c1 = cast(f64) haar1.coefficients[idx]
+                    let c2 = cast(f64) haar2.coefficients[idx]
+                    levelSimilarity += c1 * c2
+                    levelNorm1 += c1 * c1
+                    levelNorm2 += c2 * c2
+                }
+
+            // HL subband
+            for y in levelSize until levelSize * 2:
+                for x in 0 until levelSize
+                {
+                    let idx = y * size + x
+                    let c1 = cast(f64) haar1.coefficients[idx]
+                    let c2 = cast(f64) haar2.coefficients[idx]
+                    levelSimilarity += c1 * c2
+                    levelNorm1 += c1 * c1
+                    levelNorm2 += c2 * c2
+                }
+
+            // HH subband
+            for y in levelSize until levelSize * 2:
+                for x in levelSize until levelSize * 2
+                {
+                    let idx = y * size + x
+                    let c1 = cast(f64) haar1.coefficients[idx]
+                    let c2 = cast(f64) haar2.coefficients[idx]
+                    levelSimilarity += c1 * c2
+                    levelNorm1 += c1 * c1
+                    levelNorm2 += c2 * c2
+                }
         }
 
-        // Normalize the correlation
+        // Normalize the correlation for this level
         let denominator = Math.sqrt(levelNorm1 * levelNorm2)
         if denominator > 1e-10:
             levelSimilarity = Math.abs(levelSimilarity / denominator)
@@ -177,13 +239,6 @@ public func compareHaarCoefficients(haar1, haar2: HaarFeatures)->f32
 
         totalSimilarity += levelSimilarity * weight
         totalWeight += weight
-
-        // Move to next level
-        if level == 0:
-            offset = 1  // DC approximation (single pixel)
-        else:
-            offset += levelSize
-        currentSize /= 2
     }
 
     if totalWeight > 0.0:
@@ -203,30 +258,31 @@ public func haarCompareTo(one, two: Image, windowSize: u32 = 128)->f32
     return compareHaarCoefficients(haar1, haar2)
 }
 
-// Extract Haar coefficients from the image
+// Extract Haar coefficients from the image (fast version)
 public func quickExtractHaarFeatures(image: Image, windowSize: u32 = 32)->HaarFeatures
 {
     Debug.assert(Math.isPowerOf2(windowSize))
     Debug.assert(windowSize >= 32)
+    Debug.assert(image.width > 0 and image.height > 0, "Image must have positive dimensions")
 
     var features: retval
     features.coefficients.resize(windowSize * windowSize)
-    features.size   = windowSize
-    features.levels = cast() Math.log2(cast(f32) windowSize) // Number of decomposition levels
+    features.size   = cast(s32) windowSize
+    features.levels = cast(s32) Math.log2(cast(f32) windowSize) // Number of decomposition levels
 
-    // Fast grayscale resizing
+    // Fast grayscale resizing with proper bounds checking
     var grayData: Array'f32
     grayData.resize(windowSize * windowSize)
 
-    let stepX = Math.max(1, image.width / windowSize)
-    let stepY = Math.max(1, image.height / windowSize)
+    let stepX = Math.max(1.0, cast(f32) image.width / cast(f32) windowSize)
+    let stepY = Math.max(1.0, cast(f32) image.height / cast(f32) windowSize)
 
     for y in windowSize
     {
+        let srcY  = Math.min(cast(s32) (cast(f32) y * stepY), image.height - 1)
         for x in windowSize
         {
-            let srcX  = x * stepX
-            let srcY  = y * stepY
+            let srcX  = Math.min(cast(s32) (cast(f32) x * stepX), image.width - 1)
             let color = image.getPixelColor(srcX, srcY)
             let gray  = color.getGrayScalef()
             grayData.buffer[y * windowSize + x] = gray
@@ -238,13 +294,15 @@ public func quickExtractHaarFeatures(image: Image, windowSize: u32 = 32)->HaarFe
     return features
 }
 
-// Compare Haar coefficients with multiscale weights
+// Compare Haar coefficients (simplified version)
 public func quickCompareHaarCoefficients(haar1, haar2: HaarFeatures)->f32
 {
     Debug.assert(haar1.size == haar2.size, "Haar features must have same size")
 
     var norm1, norm2, correlation: f64
-    for i in haar1.coefficients
+    let coeffCount = haar1.coefficients.count
+
+    for i in coeffCount  // Fixed: iterate over indices, not values
     {
         let c1 = cast(f64) haar1.coefficients[i]
         let c2 = cast(f64) haar2.coefficients[i]
