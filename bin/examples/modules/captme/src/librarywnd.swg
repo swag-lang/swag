@@ -9,18 +9,23 @@ enum PreviewSize
 
 struct LibraryWnd
 {
-    using wnd:       Wnd
+    using wnd:                      Wnd
 
-    main:            *MainWnd
-    view:            *LibraryView
-    listCtrl:        *ListCtrl
-    editZoomBar:     *Wnd
-    zoomBtn:         *IconButton
-    sortBtn:         *IconButton
-    previewSize:     PreviewSize
+    main:                           *MainWnd
+    view:                           *LibraryView
+    listCtrl:                       *ListCtrl
+    editZoomBar:                    *Wnd
+    zoomBtn:                        *IconButton
+    sortBtn:                        *IconButton
+    filterBtn:                      *IconButton
+    previewSize:                    PreviewSize
 
-    invertSort:      bool
-    sortMethod:      SortMethod
+    invertSort:                     bool
+    sortMethod:                     SortMethod
+    showUpToDateLinkedImage:        bool = true
+    showLinkedImage:                bool = true
+    showUnSavedLinkedImage:     bool = true
+    showUnLinkedImage:             bool = true
 }
 
 struct LibraryItem
@@ -188,6 +193,18 @@ impl IWnd for LibraryView
             let capture = it.capture
             mutexLoaded.unlock()
 
+            if capture
+            {
+                if !capture.linkedImage.isEmpty() and !libWnd.showLinkedImage:
+                    continue
+                if capture.linkedImage.isEmpty() and !libWnd.showUnLinkedImage:
+                    continue
+                if capture.linkedUpToDate and !capture.linkedImage.isEmpty() and !libWnd.showUpToDateLinkedImage:
+                    continue
+                if !capture.linkedUpToDate and !capture.linkedImage.isEmpty() and !libWnd.showUnSavedLinkedImage:
+                    continue
+            }
+
             // We have a capture but not yet a texture. Create it.
             if capture and !it.texture.isValid():
                 it.texture = evt.bc.renderer.addImage(capture.preview)
@@ -309,13 +326,6 @@ impl LibraryView
         var nitems: Array'*LibraryItem
 
         var toCompare: *LibraryItem
-        if focusItem != Swag.U32.Max
-        {
-            toCompare = remaining[focusItem]
-            remaining.removeAt(focusItem)
-            nitems.add(toCompare)
-        }
-
         while !remaining.isEmpty()
         {
             if !toCompare or !toCompare.capture
@@ -329,16 +339,16 @@ impl LibraryView
             if remaining.isEmpty():
                 continue
 
-            var best:  f32
-            var bestI: u64
+            var best:      f32
+            var bestI:     u64
             var foundMatch = false
             foreach it in remaining where it.capture and toCompare.capture.haar.size == it.capture.haar.size
             {
                 let similarity = ImageStatistics.quickCompareHaarCoefficients(toCompare.capture.haar, it.capture.haar)
                 if similarity > best
                 {
-                    best  = similarity
-                    bestI = @index
+                    best       = similarity
+                    bestI      = @index
                     foundMatch = true
                 }
             }
@@ -712,6 +722,29 @@ impl LibraryWnd
                     .addItem(CmdIdLibSortSimilar)
                     .addSeparator()
                     .addItem(CmdIdLibSortInvert)
+                }
+                discard menu.doModal({pos.horzCenter(), pos.bottom()}, .AnchorTopCenter, autoDestroy: true)
+            }
+        }
+
+        // Filter
+        with res.filterBtn = IconButton.create(res.editZoomBar, res.getTheme().getIcon24(.Sort), {0, 0, 120, 32})
+        {
+            .name.set("Show")
+            .iconBtnFlags.add(.Center)
+            .textPos  = .Right
+            .arrowPos = .RightDown
+            .sigPressed += func|res|(btn)
+            {
+                var pos = btn.getSurfaceRect()
+                with var menu = MenuCtrl.createPopup(res)
+                {
+                    .menuCtrlFlags |= .NoKeyShortcuts
+                    .addItem(CmdIdLibShowUpToDateLinkedImage)
+                    .addItem(CmdIdLibShowUnSavedLinkedImage)
+                    .addSeparator()
+                    .addItem(CmdIdLibShowLinkedImage)
+                    .addItem(CmdIdLibShowUnLinkedImage)
                 }
                 discard menu.doModal({pos.horzCenter(), pos.bottom()}, .AnchorTopCenter, autoDestroy: true)
             }

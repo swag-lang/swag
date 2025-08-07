@@ -28,20 +28,20 @@ impl IActionUI for ActionLibSort
         case CmdIdLibSortRecent:
             evt.setFlags |= .Name | .Checked | .RenderingHint
             evt.renderingHint = .ExclusiveGroup
-            evt.name = "Write Time"
-            evt.checked = main.libWnd.sortMethod == .Recent
+            evt.name          = "Write Time"
+            evt.checked       = main.libWnd.sortMethod == .Recent
 
         case CmdIdLibSortFileSize:
             evt.setFlags |= .Name | .Checked | .RenderingHint
             evt.renderingHint = .ExclusiveGroup
-            evt.name = "File Size"
-            evt.checked = main.libWnd.sortMethod == .FileSize
+            evt.name          = "File Size"
+            evt.checked       = main.libWnd.sortMethod == .FileSize
 
         case CmdIdLibSortSimilar:
             evt.setFlags |= .Name | .Checked | .RenderingHint
             evt.renderingHint = .ExclusiveGroup
-            evt.name = "Similarity"
-            evt.checked = main.libWnd.sortMethod == .Similar
+            evt.name          = "Similarity"
+            evt.checked       = main.libWnd.sortMethod == .Similar
 
         case CmdIdLibSortInvert:
             evt.setFlags |= .Name | .Checked
