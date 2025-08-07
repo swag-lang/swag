@@ -145,6 +145,7 @@ public func compareHaarCoefficients(haar1, haar2: HaarFeatures)->f32
     var currentSize = size
     var offset      = 0
 
+
     for level in haar1.levels
     {
         let levelSize = currentSize * currentSize
@@ -178,7 +179,10 @@ public func compareHaarCoefficients(haar1, haar2: HaarFeatures)->f32
         totalWeight += weight
 
         // Move to next level
-        offset += levelSize
+        if level == 0:
+            offset = 1  // DC approximation (single pixel)
+        else:
+            offset += levelSize
         currentSize /= 2
     }
 

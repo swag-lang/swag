@@ -209,8 +209,8 @@ impl Capture
 
         if preview
         {
-            decoder.serializer.ignoreElements.add("backImg")
-            decoder.serializer.ignoreElements.add("backImgOrg")
+            decoder.serializer.ignoreElements.add(#nameof(Capture.backImg))
+            decoder.serializer.ignoreElements.add(#nameof(Capture.backImgOrg))
         }
 
         let capture = decoder.readAll'Capture(res.toSlice())

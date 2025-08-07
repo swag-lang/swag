@@ -247,7 +247,7 @@ impl LibraryView
         if !capture:
             return
 
-        capture.haar = ImageStatistics.quickExtractHaarFeatures(capture.preview, 64)
+        capture.haar = ImageStatistics.extractHaarFeatures(capture.preview, 64)
 
         mutexLoaded.lock()
         it.capture = capture
@@ -300,6 +300,9 @@ impl LibraryView
         var titems: Array'*LibraryItem
         foreach it in items:
             titems.add(it)
+        if titems.isEmpty():
+            return
+
         var nitems: Array'*LibraryItem
 
         var toComp: *LibraryItem
@@ -329,7 +332,7 @@ impl LibraryView
             {
                 if toComp.capture.haar.size != it.capture.haar.size:
                     continue
-                let cur = ImageStatistics.quickCompareHaarCoefficients(toComp.capture.haar, it.capture.haar)
+                let cur = ImageStatistics.compareHaarCoefficients(toComp.capture.haar, it.capture.haar)
                 if cur > best
                 {
                     best  = cur
@@ -437,34 +440,16 @@ impl LibraryWnd
     mtd setPreviewSize(size: PreviewSize)
     {
         previewSize = size
-        switch size
-        {
-        case Small:
-            zoomBtn.name.set("small")
-        case Medium:
-            zoomBtn.name.set("medium")
-        case Big:
-            zoomBtn.name.set("big")
-        }
-
+        let sizeName = Reflection.getEnumName(PreviewSize, &previewSize, false)
+        zoomBtn.name.set(sizeName)
         invalidate()
     }
 
     mtd setSortMethod(method: SortMethod)
     {
         sortMethod = method
-
-        #[Swag.Complete]
-        switch sortMethod
-        {
-        case Recent:
-            sortBtn.name.set("recent")
-        case FileSize:
-            sortBtn.name.set("filesize")
-        case Similar:
-            sortBtn.name.set("similar")
-        }
-
+        let sortName = Reflection.getEnumName(SortMethod, &sortMethod, false)
+        sortBtn.name.set(sortName)
         view.sort()
         invalidate()
     }
