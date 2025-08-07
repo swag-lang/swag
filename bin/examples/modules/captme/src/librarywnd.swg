@@ -297,52 +297,58 @@ impl LibraryView
 
     mtd sortSimilar()
     {
-        var titems: Array'*LibraryItem
+        if items.isEmpty():
+            return
+
+        var remaining: Array'*LibraryItem
         foreach it in items:
-            titems.add(it)
-        if titems.isEmpty():
+            remaining.add(it)
+        if remaining.isEmpty():
             return
 
         var nitems: Array'*LibraryItem
 
-        var toComp: *LibraryItem
+        var toCompare: *LibraryItem
         if focusItem != Swag.U32.Max
         {
-            toComp = titems[focusItem]
-            titems.removeAt(focusItem)
-            nitems.add(toComp)
+            toCompare = remaining[focusItem]
+            remaining.removeAt(focusItem)
+            nitems.add(toCompare)
         }
 
-        while !titems.isEmpty()
+        while !remaining.isEmpty()
         {
-            if !toComp or !toComp.capture
+            if !toCompare or !toCompare.capture
             {
-                toComp = titems.front()
-                titems.removeAt(0)
-                nitems.add(toComp)
+                toCompare = remaining.front()
+                remaining.removeAt(0)
+                nitems.add(toCompare)
                 continue
             }
 
-            if titems.isEmpty():
+            if remaining.isEmpty():
                 continue
 
             var best:  f32
             var bestI: u64
-            foreach it in titems where it.capture
+            var foundMatch = false
+            foreach it in remaining where it.capture and toCompare.capture.haar.size == it.capture.haar.size
             {
-                if toComp.capture.haar.size != it.capture.haar.size:
-                    continue
-                let cur = ImageStatistics.compareHaarCoefficients(toComp.capture.haar, it.capture.haar)
-                if cur > best
+                let similarity = ImageStatistics.quickCompareHaarCoefficients(toCompare.capture.haar, it.capture.haar)
+                if similarity > best
                 {
-                    best  = cur
+                    best  = similarity
                     bestI = @index
+                    foundMatch = true
                 }
             }
 
-            toComp = titems[bestI]
-            nitems.add(toComp)
-            titems.removeAt(bestI)
+            if foundMatch
+            {
+                toCompare = remaining[bestI]
+                nitems.add(toCompare)
+                remaining.removeAt(bestI)
+            }
         }
 
         mutexLoaded.lock()
