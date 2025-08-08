@@ -3,33 +3,34 @@
 #global public
 using Swag
 
+// Options for customizing JSON formatting.
 struct JSonOptions
 {
-    indentLevel:     u32 = 4
-    saveBlanks:      bool
+    indentLevel:     u32 = 4     // Number of spaces per indentation level.
+    saveBlanks:      bool        // Whether to include indentation and line breaks.
 }
 
-/*
-A JSON writer.
-*/
+// A JSON writer.
 struct JSon
 {
-    options:           JSonOptions
-    output:            *ConcatBuffer
-    indent:            u32
-    fmtInt:            StrConv.ConvertFormatInt
-    fmtFloat:          StrConv.ConvertFormatFloat{fmt: 'g''u8}
-    lastSeekValue:     ConcatBufferSeek
+    options:           JSonOptions                                 // Formatting options.
+    output:            *ConcatBuffer                               // Output buffer for generated JSON.
+    indent:            u32                                         // Current indentation level.
+    fmtInt:            StrConv.ConvertFormatInt                    // Format used for converting integers.
+    fmtFloat:          StrConv.ConvertFormatFloat{fmt: 'g''u8}     // Format used for converting floating-point numbers.
+    lastSeekValue:     ConcatBufferSeek                            // Seek position used for rollback of trailing commas.
 }
 
 impl JSon
 {
+    // Returns true indicating this writer produces textual output.
     #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd isTextual()->bool
     {
         return true
     }
 
+    // Writes indentation based on the current indent level and settings.
     mtd writeIndent()
     {
         if !options.saveBlanks:
@@ -38,17 +39,21 @@ impl JSon
             output.addNative(' ''u8)
     }
 
+    // Initializes the JSON writer with the given output buffer.
     mtd startWrite(buf: *ConcatBuffer)
     {
         output = buf
     }
 
+    // Begins the root element (no-op for JSON).
     #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd beginRoot() {}
 
+    // Ends the root element (no-op for JSON).
     #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd endRoot() {}
 
+    // Begins a JSON array.
     mtd beginSequence(_typeElem: typeinfo, _data: const *void, _countElem: u64)->bool
     {
         output.addBytes("[")
@@ -63,6 +68,7 @@ impl JSon
         return false
     }
 
+    // Ends a JSON array.
     mtd endSequence()
     {
         output.setEndSeek(lastSeekValue)
@@ -77,6 +83,7 @@ impl JSon
         lastSeekValue = output.getSeek()
     }
 
+    // Begins a JSON object section.
     mtd beginSection(_kind: SectionKind)
     {
         output.addBytes("{")
@@ -89,6 +96,7 @@ impl JSon
         }
     }
 
+    // Ends a JSON object section.
     mtd endSection()
     {
         output.setEndSeek(lastSeekValue)
@@ -103,17 +111,20 @@ impl JSon
         lastSeekValue = output.getSeek()
     }
 
+    // Begins writing a struct (treated as a JSON object).
     mtd beginStruct(_structType: typeinfo, _structData: const *u8)->bool
     {
         beginSection(.Ordered)
         return false
     }
 
+    // Ends writing a struct.
     mtd endStruct()
     {
         endSection()
     }
 
+    // Begins a named JSON element (a key-value pair).
     mtd beginElement(val: TypeValue)
     {
         output.addNative('"''u8)
@@ -123,12 +134,15 @@ impl JSon
             output.addBytes(" ")
     }
 
+    // Ends a named JSON element (no-op).
     #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd endElement() {}
 
+    // Begins a JSON value (no-op).
     #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd beginValue() {}
 
+    // Ends a JSON value and appends a comma and optional newline.
     mtd endValue()
     {
         lastSeekValue = output.getSeek()
@@ -142,6 +156,7 @@ impl JSon
     // VALUES
     /////////////////////////////////
 
+    // Writes a native value (bool, float, int, string) as a JSON value.
     mtd(NT) writeNative(value: NT)
     {
         #if NT == bool

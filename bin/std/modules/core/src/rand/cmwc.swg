@@ -1,16 +1,17 @@
-// George Marsaglia's CMWC (complementary multiply with carry) generator.
 #global namespace Random
 #global public
 
+// George Marsaglia's CMWC (Complementary Multiply With Carry) 4096 random number generator.
 struct CMWC4096
 {
-    q:     [4096] u32
-    c:     u32
-    i:     u32 = 4096     // special invalid value (> 4095) to force the seed on first get
+    q:     [4096] u32     // State array of 4096 32-bit unsigned integers
+    c:     u32            // Carry value
+    i:     u32 = 4096     // Current index into the state array (initialized to an invalid value to trigger seeding)
 }
 
 impl CMWC4096
 {
+    // Seeds the generator with a 32-bit unsigned value.
     mtd seedU32(value: u32)
     {
         var rng: MWC
@@ -21,6 +22,7 @@ impl CMWC4096
         c = value % 809430660
     }
 
+    // Generates the next 32-bit unsigned random number.
     #[Swag.CanOverflow(true)]
     mtd nextU32()->u32
     {

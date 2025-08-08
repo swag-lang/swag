@@ -3,32 +3,36 @@
 #global public
 using Swag
 
+// Signatures used to tag different sections and elements in the binary serialization format
 enum TagBinSignatures: u32
 {
-    Root     = 0xC0DE0000
-    Fat      = 0xC0DE0001
-    Sequence = 0xC0DE0002
-    Version  = 0xC0DE0003
-    Raw      = 0xC0DE0004
-    UnRaw    = 0xC0DE0005
+    Root     = 0xC0DE0000 // Root element of the serialization structure
+    Fat      = 0xC0DE0001 // FAT table identifier for unordered sections
+    Sequence = 0xC0DE0002 // Start of a sequence (array or list)
+    Version  = 0xC0DE0003 // Indicates that a version number is present
+    Raw      = 0xC0DE0004 // Indicates raw POD data with no structure
+    UnRaw    = 0xC0DE0005 // Indicates non-POD structured data
 }
 
+// Internal state for a binary serialization section
 struct TagBinSection
 {
-    startSeek:     ConcatBufferSeek
-    mapSeek:       HashTable'(u32, ConcatBufferSeek)
-    kind:          SectionKind
+    startSeek:     ConcatBufferSeek                       // Seek position in the output buffer where the section starts
+    mapSeek:       HashTable'(u32, ConcatBufferSeek)      // Maps CRC keys to their position in the output buffer
+    kind:          SectionKind                            // Type of section (e.g., Raw or Unordered)
 }
 
+// Binary writer for serialized data with support for structured and raw output
 struct TagBin
 {
-    output:           *ConcatBuffer
-    freeSections:     ArrayPtr'TagBinSection
-    sections:         ArrayPtr'TagBinSection
+    output:           *ConcatBuffer                     // Output buffer where data is written
+    freeSections:     ArrayPtr'TagBinSection            // Pool of reusable section structures
+    sections:         ArrayPtr'TagBinSection            // Stack of currently active sections
 }
 
 internal impl TagBin
 {
+    // Creates or reuses a new section for writing
     mtd newSection()->*TagBinSection
     {
         if freeSections.count
@@ -42,6 +46,7 @@ internal impl TagBin
         return sections.addNewPtr()
     }
 
+    // Releases the most recently added section and recycles it
     mtd releaseSection()
     {
         let ptr = sections.popBack()
@@ -51,27 +56,32 @@ internal impl TagBin
 
 impl TagBin
 {
+    // Always returns true; indicates that output is textual (overridden stub)
     #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd isTextual()->bool
     {
         return true
     }
 
+    // Begins writing to a specified output buffer
     mtd startWrite(buf: *ConcatBuffer)
     {
         output = buf
     }
 
+    // Begins the root section of the serialization structure
     mtd beginRoot()
     {
         output.addNative(TagBinSignatures.Root)
     }
 
+    // Ends the root section and asserts that all subsections have been closed
     mtd endRoot()
     {
         Debug.assert(sections.isEmpty())
     }
 
+    // Begins a new section of the specified kind
     mtd beginSection(kind: SectionKind)
     {
         let sec = newSection()
@@ -86,6 +96,7 @@ impl TagBin
         }
     }
 
+    // Ends the current section and writes out any required metadata
     mtd endSection()
     {
         let sec = sections.back()
@@ -111,6 +122,7 @@ impl TagBin
         releaseSection()
     }
 
+    // Begins a new struct, writing versioning and section metadata
     mtd beginStruct(structType: typeinfo, _structData: const *u8)->bool
     {
         let (pod, ?) = Serialization.isPodFinal(structType)
@@ -136,11 +148,13 @@ impl TagBin
         return false
     }
 
+    // Ends the current struct section
     mtd endStruct()
     {
         endSection()
     }
 
+    // Begins a new element inside the current section and records its metadata
     mtd beginElement(val: TypeValue)
     {
         Debug.assert(sections.count != 0, "Missing a previous 'beginSection' call")
@@ -163,15 +177,19 @@ impl TagBin
         output.addNative(val.pointedType.crc)
     }
 
+    // Ends the current element (stubbed out)
     #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd endElement() {}
 
+    // Begins a value (stubbed out)
     #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd beginValue() {}
 
+    // Ends a value (stubbed out)
     #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd endValue() {}
 
+    // Begins a sequence and determines if elements can be written in bulk as raw data
     mtd beginSequence(typeElem: typeinfo, data: const *void, countElem: u64)->bool
     {
         output.addNative(TagBinSignatures.Sequence)
@@ -216,6 +234,7 @@ impl TagBin
         return false
     }
 
+    // Ends a sequence (stubbed out)
     #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd endSequence() {}
 
@@ -223,6 +242,7 @@ impl TagBin
     // VALUES
     /////////////////////////////////
 
+    // Writes a native value to the output buffer, with special handling for strings
     mtd(NT) writeNative(value: NT)
     {
         #if NT == string

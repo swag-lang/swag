@@ -1,38 +1,42 @@
 #global public
 
+// Flags to control the format of log output.
 #[Swag.EnumFlags]
 enum LogFlags
 {
-    Zero          = 0
+    Zero          = 0                                    // No flags set.
 
-    Prefix
-    Date
-    Time
-    ShortFileName                                                     // Exclusive with LongFileName
-    LongFileName
-    Line                                                              // Exclusive with FullLoc
-    FullLoc
+    Prefix                                                  // Include custom prefix in log output.
+    Date                                                    // Include date (YYYY/MM/DD).
+    Time                                                    // Include time (HH:MM:SS:ms).
+    ShortFileName                                           // Include only the file name (exclusive with LongFileName).
+    LongFileName                                            // Include full file path (exclusive with ShortFileName).
+    Line                                                    // Include only the start line number (exclusive with FullLoc).
+    FullLoc                                                 // Include full location (line/col start and end).
 
-    Default       = Prefix | Date | Time | LongFileName | FullLoc
+    Default       = Prefix | Date | Time | LongFileName | FullLoc   // Default logging configuration.
 }
 
+// Interface for writing log output.
 interface ILogWriter
 {
-    mtd print(text: string);
+    mtd print(text: string);                             // Print a string to the log destination.
 }
 
+// A thread-safe logger that supports multiple output writers and customizable formatting.
 struct Log
 {
-    lock:        Sync.Mutex
-    buf:         StrConv.StringBuilder
-    dt:          Time.DateTime
-    writers:     Array'ILogWriter
-    prefix:      string
-    flags:       LogFlags = Default
+    lock:        Sync.Mutex                              // Lock for thread-safe access.
+    buf:         StrConv.StringBuilder                   // Internal buffer for building log messages.
+    dt:          Time.DateTime                           // Cached date/time at the moment of log call.
+    writers:     Array'ILogWriter                        // Registered writer interfaces.
+    prefix:      string                                  // Optional prefix added to each log line.
+    flags:       LogFlags = Default                      // Bitwise flags controlling output format.
 }
 
 impl Log
 {
+    // Build the formatted log message header based on the current flags.
     internal mtd buildHeader(loc: Swag.SourceCodeLocation)
     {
         if flags & .Prefix and @countof(prefix)
@@ -73,56 +77,56 @@ impl Log
         }
     }
 
-    // Create a new log
+    // Create a new log instance.
     func create()->Log
     {
         var result: retval
         return result
     }
 
-    // Set the logger prefix
+    // Set the logger prefix.
     mtd setPrefix(prefix: string)
     {
         Sync.scopedLock(&lock)
         self.prefix = #self.prefix
     }
 
-    // Get the logger prefix
+    // Get the logger prefix.
     mtd getPrefix()->string
     {
         Sync.scopedLock(&lock)
         return prefix
     }
 
-    // Set the logger flags
+    // Set the logger flags.
     mtd setFlags(flags: LogFlags)
     {
         Sync.scopedLock(&lock)
         self.flags = #self.flags
     }
 
-    // Get the logger prefix
+    // Get the logger flags.
     mtd getFlags()->LogFlags
     {
         Sync.scopedLock(&lock)
         return flags
     }
 
-    // Register a new writer interface
+    // Register a new writer interface.
     mtd addWriter(writer: ILogWriter)
     {
         Sync.scopedLock(&lock)
         writers.add(writer)
     }
 
-    // Remove all writers
+    // Remove all registered writers.
     mtd clearWriters()
     {
         Sync.scopedLock(&lock)
         writers.clear()
     }
 
-    // Main print function
+    // Print a message to the log with an optional source location.
     mtd print(text: string, loc = #callerlocation)
     {
         // Get this first, to have the time of the call, before the lock

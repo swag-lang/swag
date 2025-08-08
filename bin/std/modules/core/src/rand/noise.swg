@@ -63,6 +63,7 @@ const PrimeX = 501125321
 const PrimeY = 1136930381
 const PrimeZ = 1720413743
 
+// Hashing function for 2D coordinates.
 #[Swag.Overload]
 func hash(seed: s32, xPrimed, yPrimed: s32)->s32
 {
@@ -71,6 +72,7 @@ func hash(seed: s32, xPrimed, yPrimed: s32)->s32
     return hash
 }
 
+// Hashing function for 3D coordinates.
 #[Swag.Overload]
 func hash(seed: s32, xPrimed, yPrimed, zPrimed: s32)->s32
 {
@@ -79,6 +81,7 @@ func hash(seed: s32, xPrimed, yPrimed, zPrimed: s32)->s32
     return hash
 }
 
+// Gradient dot product for 2D Perlin noise.
 #[Swag.Overload]
 func gradCoord(seed: s32, xPrimed, yPrimed: s32, xd, yd: f32)->f32
 {
@@ -92,6 +95,7 @@ func gradCoord(seed: s32, xPrimed, yPrimed: s32, xd, yd: f32)->f32
     return xd * xg + yd * yg
 }
 
+// Gradient dot product for 3D Perlin noise.
 #[Swag.Overload]
 func gradCoord(seed: s32, xPrimed, yPrimed, zPrimed: s32, xd, yd, zd: f32)->f32
 {
@@ -106,6 +110,7 @@ func gradCoord(seed: s32, xPrimed, yPrimed, zPrimed: s32, xd, yd, zd: f32)->f32
     return xd * xg + yd * yg + zd * zg
 }
 
+// Value coordinate generation for 2D value noise.
 #[Swag.Overload]
 func valCoord(seed: s32, xPrimed, yPrimed: s32)->f32
 {
@@ -115,6 +120,7 @@ func valCoord(seed: s32, xPrimed, yPrimed: s32)->f32
     return hash * (1 / 2147483648.0)
 }
 
+// Value coordinate generation for 3D value noise.
 #[Swag.Overload]
 func valCoord(seed: s32, xPrimed, yPrimed, zPrimed: s32)->f32
 {
@@ -124,7 +130,7 @@ func valCoord(seed: s32, xPrimed, yPrimed, zPrimed: s32)->f32
     return hash * (1 / 2147483648.0)
 }
 
-// Perlin noise.
+// Perlin noise in 2D.
 // Result range is [-1, 1]
 #[Swag.Overload]
 public func perlin(x, y: f32, seed: s32 = 1337)->f32
@@ -151,6 +157,8 @@ public func perlin(x, y: f32, seed: s32 = 1337)->f32
     return Math.clamp(Math.lerp(xf0, xf1, ys) * 1.4247691104677813, -1.0, 1.0)
 }
 
+// Perlin noise in 3D.
+// Result range is [-1, 1]
 #[Swag.Overload]
 public func perlin(x, y, z: f32, seed: s32 = 1337)->f32
 {
@@ -187,7 +195,7 @@ public func perlin(x, y, z: f32, seed: s32 = 1337)->f32
     return Math.clamp(Math.lerp(yf0, yf1, zs) * 0.964921414852142333984375, -1.0, 1.0)
 }
 
-// Value noise.
+// Value noise in 2D.
 // Result range is [-1, 1]
 #[Swag.Overload]
 func value(x, y: f32, seed: s32 = 1337)->f32
@@ -209,6 +217,8 @@ func value(x, y: f32, seed: s32 = 1337)->f32
     return Math.clamp(Math.lerp(xf0, xf1, ys), -1.0, 1.0)
 }
 
+// Value noise in 3D.
+// Result range is [-1, 1]
 #[Swag.Overload]
 func value(x, y, z: f32, seed: s32 = 1337)->f32
 {
