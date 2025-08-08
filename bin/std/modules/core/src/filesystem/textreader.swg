@@ -1,19 +1,21 @@
 #global namespace File
 
+// Text encoding formats supported for reading text files
 public enum TextEncoding
 {
-    Ascii
-    Utf8
+    Ascii     // ASCII encoding
+    Utf8      // UTF-8 encoding
 }
 
+// TextReader reads a text file from a FileStream with buffering and encoding support
 public struct TextReader
 {
-    stream:            FileStream
-    buffer:            Array'u8
-    encodingType       = TextEncoding.Utf8
-    byteSeek:          u64
-    bufferSize:        u64
-    checkPreamble:     bool
+    stream:            FileStream              // File stream used to read from disk
+    buffer:            Array'u8                // Internal byte buffer used for reading data
+    encodingType       = TextEncoding.Utf8     // Text encoding type (default is UTF-8)
+    byteSeek:          u64                     // Current byte offset in the buffer
+    bufferSize:        u64                     // Size of the buffer
+    checkPreamble:     bool                    // Indicates whether to check for a UTF-8 BOM on first read
 }
 
 impl TextReader
@@ -23,7 +25,7 @@ impl TextReader
         byteSeek = 0
 
         // First init. Fill force 4 bytes of the decode buffer to be 0 to
-        // read the bom
+        // read the BOM
         if checkPreamble
         {
             checkPreamble = false
@@ -48,7 +50,7 @@ impl TextReader
 
 public impl TextReader
 {
-    // Open the reader.
+    // Opens the reader with the specified text encoding (default is UTF-8)
     mtd open(fullname: string, encoding = TextEncoding.Utf8) throw
     {
         Debug.assert(!stream.isOpen())
@@ -63,14 +65,14 @@ public impl TextReader
         encodingType  = encoding
     }
 
-    // Close the reader.
+    // Closes the reader and the associated stream
     mtd close()
     {
         stream.close()
     }
 
-    // Read one line of text.
-    // Returns false if the end of the stream has been reached.
+    // Reads one line of text into the result string
+    // Returns false if the end of the stream has been reached
     #[Swag.Safety("boundcheck|overflow", false)]
     mtd readLine(result: &String)->bool
     {
@@ -118,7 +120,7 @@ public impl TextReader
             // + 1 because we eat the eol
             byteSeek += range + 1
 
-            // If we have an '\r', then eat the following '\n' if it exists
+            // If we have a '\r', then eat the following '\n' if it exists
             if dref ptr == '\r'
             {
                 if byteSeek == buffer.count:
@@ -133,7 +135,8 @@ public impl TextReader
         return true
     }
 
-    // Read from the current position to the end, and returns the corresponding utf8 string
+    // Reads from the current position to the end of the stream
+    // and returns the content as a UTF-8 string
     mtd readToEnd()->String
     {
         var result: retval

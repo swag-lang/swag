@@ -2,20 +2,22 @@
 #global public
 using Swag, Core.Errors
 
+// Represents a folder mapping to a specific structure type with its data
 struct Folder
 {
-    type:     typeinfo
-    data:     ^void
+    type:     typeinfo     // Type information of the structure
+    data:     ^void        // Pointer to the actual structure instance
 }
 
+// Represents a tweak file parser that can load configuration into registered folders
 struct TweakFile
 {
-    folders: Array'Folder
+    folders: Array'Folder // List of registered folders (structure instances) to fill
 }
 
 impl TweakFile
 {
-    // Register a new structure to be parsed
+    // Registers a new structure to be parsed as a folder
     mtd(T) registerFolder(folder: *T)
     {
         #if !Reflection.isStruct(T):
@@ -23,7 +25,7 @@ impl TweakFile
         folders.add({#typeof(T), folder})
     }
 
-    // Read and parse a file
+    // Reads and parses a tweak file from disk
     mtd parseFile(fileName: string) throw
     {
         var buf   = try File.readAllBytes(fileName)
@@ -31,7 +33,7 @@ impl TweakFile
         try parse(lines)
     }
 
-    // Parse a list of lines
+    // Parses tweak content from a string
     #[Overload]
     mtd parse(content: string) throw
     {
@@ -39,7 +41,7 @@ impl TweakFile
         try parse(lines)
     }
 
-    // Parse a list of lines
+    // Parses tweak content from an array of lines
     #[Overload]
     mtd parse(lines: Array'string) throw
     {
@@ -47,13 +49,14 @@ impl TweakFile
 
         struct Ref
         {
-            folder:     *Folder
-            src:        *TypeValue
-            dst:        *TypeValue
+            folder:     *Folder        // Folder where the reference is defined
+            src:        *TypeValue     // Source field that is being referenced
+            dst:        *TypeValue     // Destination field to copy to
         }
 
-        var refs:          Array'Ref
-        var currentFolder: *Folder
+        var refs:          Array'Ref     // Pending references to resolve
+        var currentFolder: *Folder       // Current folder being parsed
+
         foreach oneit, idx in lines
         {
             var one = Tokenize.eatSpaces(oneit)
@@ -62,7 +65,7 @@ impl TweakFile
             if one[0] == '#':
                 continue
 
-            // Folder
+            // Folder declaration line (starts with '/')
             if one[0] == '/'
             {
                 one = Tokenize.eatCount(one, 1)
@@ -87,13 +90,13 @@ impl TweakFile
             if !currentFolder:
                 currentFolder = folders.backPtr()
 
-            // Value
+            // Value declaration
             one = Tokenize.eatSpaces(one)
             let id = catch StrConv.parseIdentifier(one)
             if @err != null:
                 throw SyntaxError{"invalid value name", line: idx + 1}
 
-            // Search value into folder
+            // Search value in folder type
             let field = Reflection.getField(currentFolder.type, id)
             if !field:
                 throw SyntaxError{Errors.mkString(Format.toString("value [[%]] not found in folder [[%]]", id, currentFolder.type.name)), line: idx + 1}
@@ -102,6 +105,7 @@ impl TweakFile
             if !@countof(one):
                 throw SyntaxError{"missing value", line: idx + 1}
 
+            // Reference to another field using '$' syntax
             if one[0] == '$'
             {
                 one = Tokenize.eatCount(one, 1)
@@ -115,12 +119,12 @@ impl TweakFile
                 continue
             }
 
-            // Get value and poke it
+            // Parse and assign value to field
             one = catch StrConv.parseValue(cast(^u8) currentFolder.data + field.offset, field.pointedType, one)
             if @err != null:
                 throw SyntaxError{"invalid value", line: idx + 1}
 
-            // Be sure there's nothing left
+            // Ensure nothing invalid follows the value
             if @countof(one) and !Latin1.isSpace(one[0]) and one[0] != '#':
                 throw SyntaxError{"syntax error in value", line: idx + 1}
             one = Tokenize.eatSpaces(one)
@@ -128,7 +132,7 @@ impl TweakFile
                 throw SyntaxError{"invalid characters after value", line: idx + 1}
         }
 
-        // Do references in a second pass
+        // Resolve references in a second pass
         while refs.count
         {
             var toDo = 0'u64
