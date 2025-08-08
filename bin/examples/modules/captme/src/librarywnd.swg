@@ -269,7 +269,6 @@ impl LibraryView
         mutexLoaded.lock()
         it.capture = capture
         mutexLoaded.unlock()
-        postInvalidateEvent()
     }
 
     #[Swag.Overload]
@@ -280,6 +279,7 @@ impl LibraryView
         foreach it in items:
             copy.add(it)
 
+        var cptLoaded = 0
         for
         {
             var visItem, notVisItem: *LibraryItem
@@ -301,14 +301,24 @@ impl LibraryView
                     notVisItem = it
             }
 
-            if visItem:
+            if visItem
+            {
+                cptLoaded += 1
                 loadOne(visItem)
-            elif notVisItem:
+            }
+            elif notVisItem
+            {
+                cptLoaded += 1
                 loadOne(notVisItem)
+            }
             else:
                 break
+
+            if cptLoaded % 10 == 0:
+                postInvalidateEvent()
         }
 
+        postInvalidateEvent()
         g_UpdatingLib = false
     }
 
