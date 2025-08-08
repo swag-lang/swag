@@ -4,34 +4,33 @@
 #[Swag.EnumFlags]
 enum LogFlags
 {
-    Zero          = 0                                    // No flags set.
-
-    Prefix                                                  // Include custom prefix in log output.
-    Date                                                    // Include date (YYYY/MM/DD).
-    Time                                                    // Include time (HH:MM:SS:ms).
-    ShortFileName                                           // Include only the file name (exclusive with LongFileName).
-    LongFileName                                            // Include full file path (exclusive with ShortFileName).
-    Line                                                    // Include only the start line number (exclusive with FullLoc).
-    FullLoc                                                 // Include full location (line/col start and end).
-
-    Default       = Prefix | Date | Time | LongFileName | FullLoc   // Default logging configuration.
+    Zero          = 0                                                 // No flags set.
+    Prefix                                                            // Include custom prefix in log output.
+    Date                                                              // Include date (YYYY/MM/DD).
+    Time                                                              // Include time (HH:MM:SS:ms).
+    ShortFileName                                                     // Include only the file name (exclusive with LongFileName).
+    LongFileName                                                      // Include full file path (exclusive with ShortFileName).
+    Line                                                              // Include only the start line number (exclusive with FullLoc).
+    FullLoc                                                           // Include full location (line/col start and end).
+    Default       = Prefix | Date | Time | LongFileName | FullLoc     // Default logging configuration.
 }
 
 // Interface for writing log output.
 interface ILogWriter
 {
-    mtd print(text: string);                             // Print a string to the log destination.
+    mtd print(text: string);
+    // Print a string to the log destination.
 }
 
 // A thread-safe logger that supports multiple output writers and customizable formatting.
 struct Log
 {
-    lock:        Sync.Mutex                              // Lock for thread-safe access.
-    buf:         StrConv.StringBuilder                   // Internal buffer for building log messages.
-    dt:          Time.DateTime                           // Cached date/time at the moment of log call.
-    writers:     Array'ILogWriter                        // Registered writer interfaces.
-    prefix:      string                                  // Optional prefix added to each log line.
-    flags:       LogFlags = Default                      // Bitwise flags controlling output format.
+    lock:        Sync.Mutex                // Lock for thread-safe access.
+    buf:         StrConv.StringBuilder     // Internal buffer for building log messages.
+    dt:          Time.DateTime             // Cached date/time at the moment of log call.
+    writers:     Array'ILogWriter          // Registered writer interfaces.
+    prefix:      string                    // Optional prefix added to each log line.
+    flags:       LogFlags = Default        // Bitwise flags controlling output format.
 }
 
 impl Log
