@@ -1,27 +1,28 @@
 #global public
 #global namespace Time
 
-// Represents an interval of time, stored as a 64 bits integer
+// Represents an interval of time, stored as a 64-bit integer (in ticks)
 struct TimeSpan
 {
-    ticks: Ticks
+    ticks: Ticks // Duration represented in ticks
 }
 
 impl TimeSpan
 {
+    // Compares two TimeSpan values
     mtd opCmp(other: Self)->s32
     {
         return ticks <=> other.ticks
     }
 
-    // Returns the current date and time
+    // Returns the current time as a TimeSpan
     func now()->TimeSpan
     {
         var result: retval = from(DateTime.now())
         return result
     }
 
-    // Initialize the TimeSpan with the current date and time
+    // Sets the TimeSpan to the current time
     mtd setNow()
     {
         var dateTime = DateTime.now()
@@ -30,7 +31,7 @@ impl TimeSpan
         ticks += timeToTicks(hour, minute, second, millisecond)
     }
 
-    // Creates a TimeSpan with the given DateTime
+    // Creates a TimeSpan from a DateTime
     func from(dateTime: DateTime)->TimeSpan
     {
         var result: retval = undefined
@@ -40,7 +41,7 @@ impl TimeSpan
         return result
     }
 
-    // Converts a TimeSpan to a DateTime
+    // Converts the TimeSpan to a DateTime
     mtd toDateTime()->DateTime
     {
         var dateTime: retval = undefined
@@ -50,14 +51,14 @@ impl TimeSpan
         return dateTime
     }
 
-    // Add or remove the given amount of years to the TimeSpan
+    // Adds or subtracts a number of years to the TimeSpan
     mtd addYears(years: s32)
     {
         Debug.assert(-10000 <= years and years <= 10000, "overflow")
         addMonths(years * 12)
     }
 
-    // Add or remove the given amount of months to the TimeSpan
+    // Adds or subtracts a number of months to the TimeSpan
     mtd addMonths(months: s32)
     {
         Debug.assert(-120000 <= months and months <= 120000, "overflow")
@@ -81,7 +82,7 @@ impl TimeSpan
         ticks = dateToTicks(y, m, d) + (ticks % TicksPerDay)
     }
 
-    // Add or remove the given amount of days to the TimeSpan
+    // Adds or subtracts a number of days to the TimeSpan
     mtd addDays(days: s32)
     {
         if days > 0:
@@ -90,7 +91,7 @@ impl TimeSpan
             remove(cast(u32) -days, MillisPerDay)
     }
 
-    // Add or remove the given amount of hours to the TimeSpan
+    // Adds or subtracts a number of hours to the TimeSpan
     mtd addHours(hours: s32)
     {
         if hours > 0:
@@ -99,7 +100,7 @@ impl TimeSpan
             remove(cast(u32) -hours, MillisPerHour)
     }
 
-    // Add or remove the given amount of minutes to the TimeSpan
+    // Adds or subtracts a number of minutes to the TimeSpan
     mtd addMinutes(minutes: s32)
     {
         if minutes > 0:
@@ -108,7 +109,7 @@ impl TimeSpan
             remove(cast(u32) -minutes, MillisPerMinute)
     }
 
-    // Add or remove the given amount of minutes to the TimeSpan
+    // Adds or subtracts a number of seconds to the TimeSpan
     mtd addSeconds(seconds: s32)
     {
         if seconds > 0:
@@ -117,7 +118,7 @@ impl TimeSpan
             remove(cast(u32) -seconds, MillisPerSecond)
     }
 
-    // Add or remove the given amount of minutes to the TimeSpan
+    // Adds or subtracts a number of milliseconds to the TimeSpan
     mtd addMilliSeconds(milliSeconds: s32)
     {
         if milliSeconds > 0:
@@ -126,12 +127,18 @@ impl TimeSpan
             remove(cast(u32) -milliSeconds, 1)
     }
 
-    mtd totalDays()->f64         => ticks * (1.0'f64 / TicksPerDay)
-    mtd totalHours()->f64        => ticks * (1.0'f64 / TicksPerHour)
-    mtd totalMinutes()->f64      => ticks * (1.0'f64 / TicksPerMinute)
-    mtd totalSeconds()->f64      => ticks * (1.0'f64 / TicksPerSecond)
+    // Returns the total duration in days
+    mtd totalDays()->f64 => ticks * (1.0'f64 / TicksPerDay)
+    // Returns the total duration in hours
+    mtd totalHours()->f64 => ticks * (1.0'f64 / TicksPerHour)
+    // Returns the total duration in minutes
+    mtd totalMinutes()->f64 => ticks * (1.0'f64 / TicksPerMinute)
+    // Returns the total duration in seconds
+    mtd totalSeconds()->f64 => ticks * (1.0'f64 / TicksPerSecond)
+    // Returns the total duration in milliseconds
     mtd totalMilliSeconds()->f64 => ticks * (1.0'f64 / TicksPerMilliSecond)
 
+    // Adds a time interval to the current TimeSpan
     internal mtd add(value: u32, scale: u64)
     {
         var millis = value * scale
@@ -141,6 +148,7 @@ impl TimeSpan
         ticks += millis
     }
 
+    // Subtracts a time interval from the current TimeSpan
     internal mtd remove(value: u32, scale: u64)
     {
         var millis = value * scale

@@ -1,7 +1,7 @@
 #global public
 #global namespace Tokenize
 
-// Remove ""
+// Removes surrounding double quotes from the string, if present
 func eatQuotes(str: string)->string
 {
     let countof = @countof(str)
@@ -12,7 +12,7 @@ func eatQuotes(str: string)->string
     return str
 }
 
-// Eat 'count' bytes, and returns the remaining string
+// Eats 'count' bytes from the beginning of the string and returns the remaining string
 func eatCount(str: string, count: u64)->string
 {
     if str == null:
@@ -22,7 +22,7 @@ func eatCount(str: string, count: u64)->string
     return @mkstring(@dataof(str) + cpt, countof - cpt)
 }
 
-// Eat all spaces, and returns the remaining string (trim left)
+// Removes leading space characters from the string and returns the trimmed result
 func eatSpaces(str: string)->string
 {
     let countof = @countof(str)
@@ -35,7 +35,7 @@ func eatSpaces(str: string)->string
     return @mkstring(@dataof(str) + cpt, countof - cpt)
 }
 
-// Split the string into an array of lines
+// Splits the string into an array of lines using newline or carriage return as delimiters
 // Note that this returns an array of native strings, not copies.
 // All strings will be invalid if 'src' is destroyed
 func splitLines(src: string)->Array'string
@@ -67,7 +67,7 @@ func splitLines(src: string)->Array'string
     return result
 }
 
-// Split string into sub strings, given a byte separator
+// Splits the string into substrings using a byte as separator
 // Note that this returns an array of native strings, not copies.
 // All strings will be invalid if 'src' String is destroyed
 #[Swag.Overload]
@@ -118,7 +118,7 @@ func split(src: string, separator: u8, maxSplit: u32 = 0, removeEmpty = true)->A
     return result
 }
 
-// Split string into sub strings, given a string separator
+// Splits the string into substrings using another string as separator
 // Note that this returns an array of native strings, not copies.
 // All strings will be invalid if 'src' String is destroyed
 #[Swag.Overload]
@@ -173,7 +173,7 @@ func split(src: string, separator: string, maxSplit: u32 = 0, removeEmpty = true
     return result
 }
 
-// Split string into sub strings, given a rune separator
+// Splits the string into substrings using a rune as separator
 // Note that this returns an array of native strings, not copies.
 // All strings will be invalid if 'src' is destroyed
 #[Swag.Overload]
@@ -182,7 +182,7 @@ func split(src: string, separator: rune, maxSplit: u32 = 0, removeEmpty = true)-
     return splitAny(src, [separator], maxSplit, removeEmpty)
 }
 
-// Split string into sub strings, given an array of rune separators
+// Splits the string into substrings using any rune from the given array as separator
 // Note that this returns an array of native strings, not copies.
 // All strings will be invalid if 'src' String is destroyed
 func splitAny(src: string, separators: const [..] rune, maxSplit: u32 = 0, removeEmpty = true)->Array'string
@@ -239,7 +239,7 @@ func splitAny(src: string, separators: const [..] rune, maxSplit: u32 = 0, remov
     return result
 }
 
-// Returns the first substring of 'str' stopping at the first blank character
+// Returns the first substring of 'str' stopping at the first whitespace character
 func getToSpace(str: string)->string
 {
     let countof = @countof(str)
@@ -249,7 +249,7 @@ func getToSpace(str: string)->string
     return @mkstring(@dataof(str), cpt)
 }
 
-// Returns the first substring of 'str' containing only digits and letters
+// Returns the first substring of 'str' that contains only alphanumeric characters
 func getWhileAlnum(str: string)->string
 {
     let countof = @countof(str)
@@ -259,7 +259,8 @@ func getWhileAlnum(str: string)->string
     return @mkstring(@dataof(str), cpt)
 }
 
-// Returns a sub string starting at 'startByteIndex' and ending with 'delimiter'
+// Returns a substring of 'src' starting at 'startByteIndex' and ending at the first occurrence of 'delimiter'
+// Includes the delimiter if 'includeDelimiter' is true
 func getTo(src: string, delimiter: u8, startByteIndex = 0'u64, includeDelimiter = true)->string
 {
     var dataof = @dataof(src)
