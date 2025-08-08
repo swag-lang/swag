@@ -2,9 +2,9 @@
 #global namespace Path
 using Swag
 
-const DirectorySeparatorChar    = '/''u8
-const AltDirectorySeparatorChar = '\\''u8
-const VolumeSeparatorChar       = ':''u8
+const DirectorySeparatorChar    = '/''u8      // Default directory separator character
+const AltDirectorySeparatorChar = '\\''u8     // Alternate directory separator character
+const VolumeSeparatorChar       = ':''u8      // Volume separator character (e.g., 'C:')
 
 // Returns true if the given character is a directory separator
 #[Inline, ConstExpr]
@@ -24,8 +24,7 @@ func getRootName(fullname: string)->#null string
     return cast() @mkslice(@dataof(fullname), cast(u64) rootLength)
 }
 
-// Tests if the given path contains a root. A path is considered rooted
-// if it starts with a directory separator or a drive letter and a colon.
+// Returns true if the given path is rooted (starts with a separator or a drive letter and colon)
 #[ConstExpr]
 func isRooted(fullname: string)->bool
 {
@@ -92,7 +91,7 @@ func getFileName(fullname: string)->#null string
     return fullname
 }
 
-// Returns the path file name, null if not found
+// Returns the file name without its extension, null if not found
 #[ConstExpr]
 func getFileNameWithoutExtension(fullname: string)->#null string
 {
@@ -143,14 +142,14 @@ func getExtension(fullname: string)->#null string
     return null
 }
 
-// Returns the file name extension, including the '.' character, in lower case
+// Returns the file name extension in lower case, including the '.' character
 // Returns null if no extension was found
 func getExtensionLowerCase(fullname: string)->String
 {
     return String.toLower(getExtension(fullname))
 }
 
-// Returns true if the given file is of the given extension
+// Returns true if the given file has the specified extension (case-insensitive)
 func isExtension(fullname, extension: string)->bool
 {
     return getExtensionLowerCase(fullname) == String.toLower(extension)
@@ -178,8 +177,7 @@ func hasExtension(fullname: string)->bool
     return false
 }
 
-// Combine multiple paths into one, by adding a directory separator
-// between them if necessary
+// Combines multiple path segments into one, adding a directory separator between them if necessary
 func combine(fullnames: string...)->String
 {
     var result: retval
@@ -201,14 +199,13 @@ func combine(fullnames: string...)->String
     return result
 }
 
-// Returns true if the two paths are equal
+// Returns true if the two paths are equal (case-insensitive Latin1 comparison)
 func equals(path1, path2: string)->bool
 {
     return Utf8.compare(path1, path2, .Latin1NoCase) == 0
 }
 
-// Normalize path
-// '\' are replaced with '/' as this is the std norm for paths
+// Normalizes the path by replacing '\' with '/' to conform to standard path format
 func normalize(fullname: *String)
 {
     fullname.replace("\\", "/")

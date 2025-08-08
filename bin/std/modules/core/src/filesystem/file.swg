@@ -2,43 +2,47 @@
 #global namespace File
 using Core.Errors
 
+// Origin from which to calculate seek offset in a file stream
 enum SeekOrigin
 {
-    Begin
-    Current
-    End
+    Begin       // Seek from the beginning of the file
+    Current     // Seek from the current position
+    End         // Seek from the end of the file
 }
 
 #[Swag.EnumFlags]
+// File access permissions
 enum FileAccess
 {
-    Read
-    Write
-    ReadWrite = Read | Write
+    Read                         // Read access
+    Write                        // Write access
+    ReadWrite = Read | Write     // Read and write access
 }
 
+// File creation and opening behaviors
 enum FileMode
 {
-    Append
-    Create
-    CreateNew
-    Open
-    OpenOrCreate
-    Truncate
+    Append           // Opens the file if it exists and moves the seek to the end, or creates a new file
+    Create           // Creates a new file, overwriting if it already exists
+    CreateNew        // Creates a new file, throws if the file already exists
+    Open             // Opens an existing file
+    OpenOrCreate     // Opens the file if it exists, otherwise creates a new one
+    Truncate         // Opens an existing file and truncates its content to zero length
 }
 
 #[Swag.EnumFlags]
+// File sharing options
 enum FileShare
 {
-    Zero        = 0
-    Delete
-    Inheritable
-    Read
-    Write
-    ReadWrite   = Read | Write
+    Zero        = 0                // No sharing
+    Delete                         // Allows the file to be deleted by others
+    Inheritable                    // File handle is inheritable
+    Read                           // Allows shared read access
+    Write                          // Allows shared write access
+    ReadWrite   = Read | Write     // Allows shared read and write access
 }
 
-// Read a file, and store the result in an utf8 string.
+// Reads the entire content of a file into a UTF-8 string
 func readAllText(fullname: string, encoding = TextEncoding.Utf8, normalizeEol = false)->String throw
 {
     var textReader: TextReader
@@ -61,7 +65,7 @@ func readAllText(fullname: string, encoding = TextEncoding.Utf8, normalizeEol = 
     return textReader.readToEnd()
 }
 
-// Read all the lines of a file
+// Reads all lines from a file into an array of strings
 func readAllLines(fullname: string, encoding = TextEncoding.Utf8)->Array'String throw
 {
     var textReader: TextReader
@@ -74,7 +78,7 @@ func readAllLines(fullname: string, encoding = TextEncoding.Utf8)->Array'String 
     return result
 }
 
-// Call user code for each line
+// Executes user code for each line read from a file
 #[Swag.Macro]
 func readEachLines(fullname: string, encoding = TextEncoding.Utf8, stmt: #code void) throw
 {
@@ -92,7 +96,7 @@ func readEachLines(fullname: string, encoding = TextEncoding.Utf8, stmt: #code v
     }
 }
 
-// Read a file, and store the result in an array of bytes
+// Reads the entire content of a file into an array of bytes
 func readAllBytes(fullname: string)->Array'u8 throw
 {
     var stream = openRead(fullname)
@@ -104,7 +108,7 @@ func readAllBytes(fullname: string)->Array'u8 throw
     return result
 }
 
-// Write a file with the content of a slice of bytes
+// Writes the content of a byte slice to a file
 #[Swag.Discardable, Swag.Overload]
 func writeAllBytes(fullname: string, buffer: const [..] u8)->u64 throw
 {
@@ -112,7 +116,7 @@ func writeAllBytes(fullname: string, buffer: const [..] u8)->u64 throw
     return stream.write(@dataof(buffer), @countof(buffer))
 }
 
-// Write a file with the content of a 'ConcatBuffer'
+// Writes the content of a ConcatBuffer to a file
 #[Swag.Discardable, Swag.Overload]
 func writeAllBytes(fullname: string, buffer: ConcatBuffer)->u64 throw
 {
@@ -125,7 +129,7 @@ func writeAllBytes(fullname: string, buffer: ConcatBuffer)->u64 throw
     return total
 }
 
-// Write a file with the content of an array of string, one per line
+// Writes an array of strings to a file, one string per line
 #[Swag.Discardable]
 func writeAllLines(fullname: string, lines: Array'string)->u64 throw
 {
@@ -141,14 +145,14 @@ func writeAllLines(fullname: string, lines: Array'string)->u64 throw
     return total
 }
 
-// Duplicate a file
+// Creates a duplicate of an existing file
 func duplicate(newName, oldName: string) throw
 {
     var res = readAllBytes(oldName)
     writeAllBytes(newName, res.toSlice())
 }
 
-// Get informations about a file
+// Retrieves information about a specific file
 func getFileInfo(fullName: string)->FileInfo throw
 {
     var options: Directory.EnumerationOptions
