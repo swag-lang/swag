@@ -399,8 +399,10 @@ bool Parser::doInterfaceMtdDecl(AstNode* parent, AstNode** result)
 
         ParserPushScope ps(this, stmt->ownerScope);
         AstNode*        resultNode;
+
         SWAG_CHECK(doFuncDecl(stmt, &resultNode, TokenId::Invalid, FUNC_DECL_INTERFACE));
         funcNode = castAst<AstFuncDecl>(resultNode, AstNodeKind::FuncDecl);
+        FormatAst::inheritFormatBefore(this, funcNode, &savedToken);
         if (funcNode->content)
             funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_DEFAULT_IMPL);
     }

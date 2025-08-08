@@ -177,12 +177,15 @@ bool FormatAst::outputFuncDecl(FormatContext& context, AstNode* node, uint32_t m
     if (!funcDecl->content)
     {
         concat->addChar(';');
+        const auto to = node->extraPointer<TokenParse>(ExtraPointerKind::TokenParse);
+        if (to)
+            to->flags.remove(TOKEN_PARSE_SEMI_COL);
         beautifyAfter(context, funcDecl);
         concat->addEol();
         return true;
     }
 
-    // Content on same line
+    // Content on the same line
     if (!concat->eol &&
         context.keepSameLineFuncBody &&
         funcDecl->subDecl.empty() &&

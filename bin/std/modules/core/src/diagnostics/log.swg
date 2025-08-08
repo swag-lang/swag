@@ -18,8 +18,7 @@ enum LogFlags
 // Interface for writing log output.
 interface ILogWriter
 {
-    mtd print(text: string);
-    // Print a string to the log destination.
+    mtd print(text: string); // Print a string to the log destination.
 }
 
 // A thread-safe logger that supports multiple output writers and customizable formatting.
