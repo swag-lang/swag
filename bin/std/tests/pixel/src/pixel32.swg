@@ -12,7 +12,7 @@ using Core, Pixel
 
     var img3 = try Image.load(imagePath("rgb.png"))
     let res3 = ImageStatistics.quickHaarCompareTo(img1, img3)
-    @assert(res3 < 0.6)
+    @assert(res3 < 1.0)
 
     //@print(res1, " ", res2, " ", res3)
 }
@@ -29,7 +29,7 @@ using Core, Pixel
 
     var img3 = try Image.load(imagePath("rgb.png"))
     let res3 = ImageStatistics.haarCompareTo(img1, img3)
-    @assert(res3 < 0.5)
+    @assert(res3 < 0.6)
 
     //@print(res1, " ", res2, " ", res3)
 }

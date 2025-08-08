@@ -3,7 +3,7 @@ using Core, Core.Math
 
 func haarTransform2D(data: ^f32, size: u32, output: ^f32)
 {
-    Memory.copy(output, data, size*size*#sizeof(f32))
+    Memory.copy(output, data, size * size * #sizeof(f32))
 
     // Decompose by levels
     var currentSize = size
@@ -141,38 +141,8 @@ public func compareHaarCoefficients(haar1, haar2: HaarFeatures)->f32
     var totalWeight:     f64 = 0.0
     let size             = haar1.size
 
-    // Start from coarsest level (level 0) to finest
-    var currentSize = size
-
     for level in haar1.levels
     {
-        // Calculate level bounds - in 2D Haar, each level has specific quadrant layout
-        var startX, startY, endX, endY: s32
-
-        if level == 0
-        {
-            // DC component (single coefficient at top-left)
-            startX = 0; startY = 0; endX = 1; endY = 1
-        }
-        else
-        {
-            // For level i, we have 3 detail subbands: LH, HL, HH
-            let levelSize = size >> level  // Size at this level
-
-            // LH (horizontal details): top-right
-            startX = levelSize; startY = 0
-            endX = levelSize * 2; endY = levelSize
-
-            // Add HL (vertical details): bottom-left
-            let hlStartX = 0; let hlStartY = levelSize
-            let hlEndX = levelSize; let hlEndY = levelSize * 2
-
-            // Add HH (diagonal details): bottom-right
-            let hhStartX = levelSize; let hhStartY = levelSize
-            let hhEndX = levelSize * 2; let hhEndY = levelSize * 2
-        }
-
-        // Weight: higher for coarser levels (lower level numbers)
         let weight = Math.pow(2.0, cast(f64) (haar1.levels - level))
 
         var levelSimilarity: f64 = 0.0
@@ -181,61 +151,59 @@ public func compareHaarCoefficients(haar1, haar2: HaarFeatures)->f32
 
         if level == 0
         {
-            // Just the DC component
+            // DC component
             let c1 = cast(f64) haar1.coefficients[0]
             let c2 = cast(f64) haar2.coefficients[0]
             levelSimilarity = c1 * c2
-            levelNorm1 = c1 * c1
-            levelNorm2 = c2 * c2
+            levelNorm1      = c1 * c1
+            levelNorm2      = c2 * c2
         }
         else
         {
-            // Process all three detail subbands for this level
             let levelSize = size >> level
 
-            // LH subband
-            for y in startY until endY:
-                for x in startX until endX
+            // LH (horizontal details): top-right
+            for y in 0 until levelSize:
+                for x in levelSize until levelSize * 2
                 {
                     let idx = y * size + x
-                    let c1 = cast(f64) haar1.coefficients[idx]
-                    let c2 = cast(f64) haar2.coefficients[idx]
+                    let c1  = cast(f64) haar1.coefficients[idx]
+                    let c2  = cast(f64) haar2.coefficients[idx]
                     levelSimilarity += c1 * c2
                     levelNorm1 += c1 * c1
                     levelNorm2 += c2 * c2
                 }
 
-            // HL subband
+            // HL (vertical details): bottom-left
             for y in levelSize until levelSize * 2:
                 for x in 0 until levelSize
                 {
                     let idx = y * size + x
-                    let c1 = cast(f64) haar1.coefficients[idx]
-                    let c2 = cast(f64) haar2.coefficients[idx]
+                    let c1  = cast(f64) haar1.coefficients[idx]
+                    let c2  = cast(f64) haar2.coefficients[idx]
                     levelSimilarity += c1 * c2
                     levelNorm1 += c1 * c1
                     levelNorm2 += c2 * c2
                 }
 
-            // HH subband
+            // HH (diagonal details): bottom-right
             for y in levelSize until levelSize * 2:
                 for x in levelSize until levelSize * 2
                 {
                     let idx = y * size + x
-                    let c1 = cast(f64) haar1.coefficients[idx]
-                    let c2 = cast(f64) haar2.coefficients[idx]
+                    let c1  = cast(f64) haar1.coefficients[idx]
+                    let c2  = cast(f64) haar2.coefficients[idx]
                     levelSimilarity += c1 * c2
                     levelNorm1 += c1 * c1
                     levelNorm2 += c2 * c2
                 }
         }
 
-        // Normalize the correlation for this level
         let denominator = Math.sqrt(levelNorm1 * levelNorm2)
         if denominator > 1e-10:
             levelSimilarity = Math.abs(levelSimilarity / denominator)
         else:
-            levelSimilarity = 1.0 // No signal in this level
+            levelSimilarity = 1.0 // or 0.0, depending on how you want to treat no-signal
 
         totalSimilarity += levelSimilarity * weight
         totalWeight += weight
@@ -244,7 +212,7 @@ public func compareHaarCoefficients(haar1, haar2: HaarFeatures)->f32
     if totalWeight > 0.0:
         return cast(f32) (totalSimilarity / totalWeight)
 
-    return 1.0'f32
+    return 0.0'f32 // Considered more neutral than 1.0
 }
 
 // Compare to another image with Haar coefficients
@@ -279,7 +247,7 @@ public func quickExtractHaarFeatures(image: Image, windowSize: u32 = 32)->HaarFe
 
     for y in windowSize
     {
-        let srcY  = Math.min(cast(s32) (cast(f32) y * stepY), image.height - 1)
+        let srcY = Math.min(cast(s32) (cast(f32) y * stepY), image.height - 1)
         for x in windowSize
         {
             let srcX  = Math.min(cast(s32) (cast(f32) x * stepX), image.width - 1)
@@ -302,7 +270,7 @@ public func quickCompareHaarCoefficients(haar1, haar2: HaarFeatures)->f32
     var norm1, norm2, correlation: f64
     let coeffCount = haar1.coefficients.count
 
-    for i in coeffCount  // Fixed: iterate over indices, not values
+    for i in coeffCount // Fixed: iterate over indices, not values
     {
         let c1 = cast(f64) haar1.coefficients[i]
         let c2 = cast(f64) haar2.coefficients[i]
