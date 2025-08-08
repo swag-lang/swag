@@ -218,6 +218,7 @@ func displayPage1(painter: *Pixel.Painter)
 
     var trs = painter.getTransform()
     painter.translateTransform(50, 50)
+    painter.setAntialiased(false)
 
     var cpt, cptLines = 0
     foreach e in HatchStyle
