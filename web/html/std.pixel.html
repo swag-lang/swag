@@ -416,7 +416,7 @@
 <li><a href="#Pixel_ImageStatistics_extractHaarFeatures">ImageStatistics.extractHaarFeatures</a></li>
 <li><a href="#Pixel_ImageStatistics_haarCompareTo">ImageStatistics.haarCompareTo</a></li>
 <li><a href="#Pixel_ImageStatistics_quickCompareHaarCoefficients">ImageStatistics.quickCompareHaarCoefficients</a></li>
-<li><a href="#Pixel_ImageStatistics_quickExtractHaarFeature">ImageStatistics.quickExtractHaarFeature</a></li>
+<li><a href="#Pixel_ImageStatistics_quickExtractHaarFeatures">ImageStatistics.quickExtractHaarFeatures</a></li>
 <li><a href="#Pixel_ImageStatistics_quickHaarCompareTo">ImageStatistics.quickHaarCompareTo</a></li>
 </ul>
 <h4>image/transform</h4>
@@ -2001,10 +2001,11 @@
 <span id="Pixel_Color"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Pixel.</span><span class="api-item-title-strong">Color</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L5" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L7" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Represents a color with 8-bit ARGB components. </p>
 <table class="table-enumeration">
 <tr>
 <td>a</td>
@@ -2024,14 +2025,15 @@
 <tr>
 <td>b</td>
 <td class="code-type"><span class="STpe">u8</span></td>
-<td></td>
+<td>Blue, green, red, alpha components (0-255). </td>
 </tr>
 <tr>
 <td>argb</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td></td>
+<td>32-bit ARGB representation. </td>
 </tr>
 </table>
+<p>Provides utilities for color creation, conversion, and manipulation. </p>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
@@ -2052,7 +2054,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromArgb">fromArgb</a></span><span class="SCde">(<span class="SCst">Argb</span>)</span></td>
-<td>Create a new Color from Argb enum value. </td>
+<td>Create a new Color from <span class="code-inline">Argb</span> enum value. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromArgb">fromArgb</a></span><span class="SCde">(<span class="STpe">u32</span>)</span></td>
@@ -2060,7 +2062,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromArgb">fromArgb</a></span><span class="SCde">(<span class="STpe">u8</span>, <span class="SCst">Argb</span>)</span></td>
-<td>Create a new Color from Argb enum value with custom alpha. </td>
+<td>Create a new Color from <span class="code-inline">Argb</span> enum value with custom alpha. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromArgb">fromArgb</a></span><span class="SCde">(<span class="STpe">u8</span>, <span class="STpe">u8</span>, <span class="STpe">u8</span>, <span class="STpe">u8</span>)</span></td>
@@ -2092,7 +2094,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_getBlendKeepAlpha">getBlendKeepAlpha</a></span></td>
-<td>Blend two colors using linear interpolation, keeping col0's alpha channel. </td>
+<td>Blend two colors using linear interpolation, keeping <span class="code-inline">col0</span>s alpha channel. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_getComplementary">getComplementary</a></span></td>
@@ -2128,7 +2130,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_isOpaque">isOpaque</a></span></td>
-<td></td>
+<td>Check if the color is fully opaque. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_multiply">multiply</a></span></td>
@@ -2195,27 +2197,27 @@
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_opAffect">opAffect</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">Argb</span>)</span></td>
-<td></td>
+<td>Assignment operator for <span class="code-inline">Argb</span> enum value. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_opAffect">opAffect</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">string</span>)</span></td>
-<td></td>
+<td>Assignment operator for color name string. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_opAffect">opAffect</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u32</span>)</span></td>
-<td></td>
+<td>Assignment operator for u32 ARGB value. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_opEquals">opEquals</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">Argb</span>)</span></td>
-<td></td>
+<td>Equality comparison with <span class="code-inline">Argb</span> enum value. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_opEquals">opEquals</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Color</span>)</span></td>
-<td></td>
+<td>Equality comparison with another Color. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_opEquals">opEquals</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u32</span>)</span></td>
-<td></td>
+<td>Equality comparison with u32 ARGB value. </td>
 </tr>
 </table>
 <p>
@@ -2225,11 +2227,13 @@
 <span id="Pixel_Color_IPokeValue_poke"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IPokeValue.</span><span class="api-item-title-strong">poke</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L473" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L490" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Parse a Color from a string representation. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">poke</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buf: <span class="STpe">string</span>)-&gt;<span class="STpe">string</span> <span class="SKwd">throw</span></span></div>
+<p>Supports hex format (0x...), individual ARGB components, or named colors. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2237,7 +2241,7 @@
 <span id="Pixel_Color_add"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">add</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L460" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L474" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2250,7 +2254,7 @@
 <span id="Pixel_Color_adjustBrightness"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">adjustBrightness</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L401" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L415" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2263,7 +2267,7 @@
 <span id="Pixel_Color_adjustSaturation"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">adjustSaturation</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L390" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L404" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2276,7 +2280,7 @@
 <span id="Pixel_Color_fromAbgr"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">fromAbgr</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L181" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L194" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2289,15 +2293,15 @@
 <span id="Pixel_Color_fromArgb"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">fromArgb</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L156" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L169" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Create a new Color with specified ARGB values. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromArgb</span>(a, r, g, b: <span class="STpe">u8</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
-<p>Create a new Color from Argb enum value. </p>
+<p>Create a new Color from <span class="code-inline">Argb</span> enum value. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromArgb</span>(argb: <span class="SCst"><a href="#Pixel_Argb">Argb</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
-<p>Create a new Color from Argb enum value with custom alpha. </p>
+<p>Create a new Color from <span class="code-inline">Argb</span> enum value with custom alpha. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromArgb</span>(alpha: <span class="STpe">u8</span>, argb: <span class="SCst"><a href="#Pixel_Argb">Argb</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
 <p>Create a new Color from u32 ARGB value. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromArgb</span>(argb: <span class="STpe">u32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
@@ -2308,7 +2312,7 @@
 <span id="Pixel_Color_fromArgbf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">fromArgbf</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L193" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L206" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2321,7 +2325,7 @@
 <span id="Pixel_Color_fromHsl"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">fromHsl</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L211" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L224" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2334,7 +2338,7 @@
 <span id="Pixel_Color_fromRgb"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">fromRgb</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L129" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L142" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2347,7 +2351,7 @@
 <span id="Pixel_Color_fromRgbf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">fromRgbf</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L138" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L151" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2360,7 +2364,7 @@
 <span id="Pixel_Color_fromVector4"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">fromVector4</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L202" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L215" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2373,7 +2377,7 @@
 <span id="Pixel_Color_getBlend"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">getBlend</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L317" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L331" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2386,11 +2390,11 @@
 <span id="Pixel_Color_getBlendKeepAlpha"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">getBlendKeepAlpha</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L305" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L319" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Blend two colors using linear interpolation, keeping col0's alpha channel. </p>
+<p>Blend two colors using linear interpolation, keeping <span class="code-inline">col0</span>s alpha channel. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getBlendKeepAlpha</span>(col0, col1: <span class="SCst"><a href="#Pixel_Color">Color</a></span>, factor: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
 <p>
 <table class="api-item">
@@ -2399,7 +2403,7 @@
 <span id="Pixel_Color_getComplementary"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">getComplementary</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L441" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L455" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2412,7 +2416,7 @@
 <span id="Pixel_Color_getContrastingColor"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">getContrastingColor</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L368" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L382" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2425,7 +2429,7 @@
 <span id="Pixel_Color_getDarker"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">getDarker</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L329" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L343" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2438,7 +2442,7 @@
 <span id="Pixel_Color_getDistanceRgb"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">getDistanceRgb</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L342" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L356" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2451,7 +2455,7 @@
 <span id="Pixel_Color_getGrayScalef"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">getGrayScalef</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L375" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L389" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2464,7 +2468,7 @@
 <span id="Pixel_Color_getLighter"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">getLighter</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L336" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L350" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2477,7 +2481,7 @@
 <span id="Pixel_Color_isDark"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">isDark</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L354" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L368" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2490,7 +2494,7 @@
 <span id="Pixel_Color_isLight"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">isLight</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L361" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L375" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2503,10 +2507,11 @@
 <span id="Pixel_Color_isOpaque"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">isOpaque</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L38" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L51" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Check if the color is fully opaque. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isOpaque</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
@@ -2515,7 +2520,7 @@
 <span id="Pixel_Color_multiply"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">multiply</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L448" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L462" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2528,13 +2533,16 @@
 <span id="Pixel_Color_opAffect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">opAffect</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L26" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L31" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="STpe">self</span>, argb: <span class="STpe">u32</span>)
-<span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="STpe">self</span>, argb: <span class="SCst"><a href="#Pixel_Argb">Argb</a></span>)
-<span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="STpe">self</span>, name: <span class="STpe">string</span>)</span></div>
+<p>Assignment operator for u32 ARGB value. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="STpe">self</span>, argb: <span class="STpe">u32</span>)</span></div>
+<p>Assignment operator for <span class="code-inline">Argb</span> enum value. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="STpe">self</span>, argb: <span class="SCst"><a href="#Pixel_Argb">Argb</a></span>)</span></div>
+<p>Assignment operator for color name string. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="STpe">self</span>, name: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2542,13 +2550,16 @@
 <span id="Pixel_Color_opEquals"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">opEquals</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L33" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L43" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="STpe">self</span>, argb: <span class="STpe">u32</span>)-&gt;<span class="STpe">bool</span>
-<span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="STpe">self</span>, argb: <span class="SCst"><a href="#Pixel_Argb">Argb</a></span>)-&gt;<span class="STpe">bool</span>
-<span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Equality comparison with u32 ARGB value. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="STpe">self</span>, argb: <span class="STpe">u32</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Equality comparison with <span class="code-inline">Argb</span> enum value. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="STpe">self</span>, argb: <span class="SCst"><a href="#Pixel_Argb">Argb</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Equality comparison with another Color. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2556,7 +2567,7 @@
 <span id="Pixel_Color_rotateHue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">rotateHue</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L412" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L426" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2569,7 +2580,7 @@
 <span id="Pixel_Color_setArgb"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">setArgb</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L42" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L55" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2582,7 +2593,7 @@
 <span id="Pixel_Color_setArgbf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">setArgbf</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L52" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L65" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2595,7 +2606,7 @@
 <span id="Pixel_Color_setHsl"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">setHsl</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L219" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L232" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2608,7 +2619,7 @@
 <span id="Pixel_Color_setRgb"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">setRgb</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L74" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L87" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2625,7 +2636,7 @@
 <span id="Pixel_Color_setRgbf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">setRgbf</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L84" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L97" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2639,7 +2650,7 @@
 <span id="Pixel_Color_toArgbf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">toArgbf</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L94" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L107" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2652,7 +2663,7 @@
 <span id="Pixel_Color_toGrayscale"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">toGrayscale</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L382" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L396" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2665,7 +2676,7 @@
 <span id="Pixel_Color_toHsl"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">toHsl</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L263" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L277" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2678,7 +2689,7 @@
 <span id="Pixel_Color_toRgbf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">toRgbf</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L118" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L131" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2691,7 +2702,7 @@
 <span id="Pixel_Color_toVector4"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">toVector4</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L106" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L119" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2704,7 +2715,7 @@
 <span id="Pixel_Color_withAlpha"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">withAlpha</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L427" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L441" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2717,7 +2728,7 @@
 <span id="Pixel_Color_withAlphaf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">withAlphaf</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L434" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L448" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5447,11 +5458,11 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_ImageStatistics_quickCompareHaarCoefficients">quickCompareHaarCoefficients</a></span></td>
-<td>Compare Haar coefficients with multiscale weights. </td>
+<td>Compare Haar coefficients (simplified version). </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_ImageStatistics_quickExtractHaarFeature">quickExtractHaarFeature</a></span></td>
-<td>Extract Haar coefficients from the image. </td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_ImageStatistics_quickExtractHaarFeatures">quickExtractHaarFeatures</a></span></td>
+<td>Extract Haar coefficients from the image (fast version). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_ImageStatistics_quickHaarCompareTo">quickHaarCompareTo</a></span></td>
@@ -5520,7 +5531,7 @@
 <span id="Pixel_ImageStatistics_haarCompareTo"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ImageStatistics.</span><span class="api-item-title-strong">haarCompareTo</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\stats\haar.swg#L195" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\stats\haar.swg#L219" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5533,25 +5544,25 @@
 <span id="Pixel_ImageStatistics_quickCompareHaarCoefficients"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ImageStatistics.</span><span class="api-item-title-strong">quickCompareHaarCoefficients</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\stats\haar.swg#L241" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\stats\haar.swg#L266" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Compare Haar coefficients with multiscale weights. </p>
+<p>Compare Haar coefficients (simplified version). </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">quickCompareHaarCoefficients</span>(haar1, haar2: <span class="SCst"><a href="#Pixel_ImageStatistics_HaarFeatures">HaarFeatures</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Pixel_ImageStatistics_quickExtractHaarFeature"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ImageStatistics.</span><span class="api-item-title-strong">quickExtractHaarFeature</span></span>
+<span id="Pixel_ImageStatistics_quickExtractHaarFeatures"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ImageStatistics.</span><span class="api-item-title-strong">quickExtractHaarFeatures</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\stats\haar.swg#L206" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\stats\haar.swg#L230" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Extract Haar coefficients from the image. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">quickExtractHaarFeature</span>(image: <span class="SCst"><a href="#Pixel_Image">Image</a></span>, windowSize: <span class="STpe">u32</span> = <span class="SNum">32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_ImageStatistics">ImageStatistics</a></span>.<span class="SCst"><a href="#Pixel_ImageStatistics_HaarFeatures">HaarFeatures</a></span></span></div>
+<p>Extract Haar coefficients from the image (fast version). </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">quickExtractHaarFeatures</span>(image: <span class="SCst"><a href="#Pixel_Image">Image</a></span>, windowSize: <span class="STpe">u32</span> = <span class="SNum">32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_ImageStatistics">ImageStatistics</a></span>.<span class="SCst"><a href="#Pixel_ImageStatistics_HaarFeatures">HaarFeatures</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5559,7 +5570,7 @@
 <span id="Pixel_ImageStatistics_quickHaarCompareTo"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ImageStatistics.</span><span class="api-item-title-strong">quickHaarCompareTo</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\stats\haar.swg#L262" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\stats\haar.swg#L289" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10783,7 +10794,7 @@
 </tr>
 </table>
 <div class="swag-watermark">
-Generated on 04-08-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.44.0</div>
+Generated on 08-08-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.44.0</div>
 </div>
 </div>
 </div>

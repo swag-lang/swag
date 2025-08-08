@@ -205,6 +205,16 @@
 <ul>
 <li><a href="#Core_Log">Log</a></li>
 </ul>
+<h4>filesystem</h4>
+<ul>
+<li><a href="#Core_ByteStream">ByteStream</a></li>
+<li><a href="#Core_Directory_EnumerationOptions">EnumerationOptions</a></li>
+<li><a href="#Core_File_FileInfo">FileInfo</a></li>
+<li><a href="#Core_File_FileStream">FileStream</a></li>
+<li><a href="#Core_File_Folder">Folder</a></li>
+<li><a href="#Core_File_TextReader">TextReader</a></li>
+<li><a href="#Core_File_TweakFile">TweakFile</a></li>
+</ul>
 <h4>globalization</h4>
 <ul>
 <li><a href="#Core_Globalization_CultureInfo">CultureInfo</a></li>
@@ -219,16 +229,6 @@
 <li><a href="#Core_Input_KeyboardStateNative">KeyboardStateNative</a></li>
 <li><a href="#Core_Input_Mouse">Mouse</a></li>
 <li><a href="#Core_Input_MouseState">MouseState</a></li>
-</ul>
-<h4>io</h4>
-<ul>
-<li><a href="#Core_ByteStream">ByteStream</a></li>
-<li><a href="#Core_Directory_EnumerationOptions">EnumerationOptions</a></li>
-<li><a href="#Core_File_FileInfo">FileInfo</a></li>
-<li><a href="#Core_File_FileStream">FileStream</a></li>
-<li><a href="#Core_File_Folder">Folder</a></li>
-<li><a href="#Core_File_TextReader">TextReader</a></li>
-<li><a href="#Core_File_TweakFile">TweakFile</a></li>
 </ul>
 <h4>math</h4>
 <ul>
@@ -279,6 +279,8 @@
 <ul>
 <li><a href="#Core_Errors_BadParameterError">BadParameterError</a></li>
 <li><a href="#Core_Errors_FileNotFoundError">FileNotFoundError</a></li>
+<li><a href="#Core_GUID128">GUID128</a></li>
+<li><a href="#Core_GUID64">GUID64</a></li>
 <li><a href="#Core_Errors_InvalidFileNameError">InvalidFileNameError</a></li>
 <li><a href="#Core_Errors_InvalidFormatError">InvalidFormatError</a></li>
 <li><a href="#Core_Errors_InvalidVersion">InvalidVersion</a></li>
@@ -292,7 +294,6 @@
 <li><a href="#Core_Errors_SerializationError">SerializationError</a></li>
 <li><a href="#Core_Env_StartInfo">StartInfo</a></li>
 <li><a href="#Core_Errors_SyntaxError">SyntaxError</a></li>
-<li><a href="#Core_UUID">UUID</a></li>
 <li><a href="#Core_Errors_UnsupportedFormatError">UnsupportedFormatError</a></li>
 </ul>
 <h4>text</h4>
@@ -361,14 +362,7 @@
 <li><a href="#Core_Console_Color">Color</a></li>
 <li><a href="#Core_LogFlags">LogFlags</a></li>
 </ul>
-<h4>input</h4>
-<ul>
-<li><a href="#Core_Input_GamePadButton">GamePadButton</a></li>
-<li><a href="#Core_Input_Key">Key</a></li>
-<li><a href="#Core_Input_KeyModifiers">KeyModifiers</a></li>
-<li><a href="#Core_Input_MouseButton">MouseButton</a></li>
-</ul>
-<h4>io</h4>
+<h4>filesystem</h4>
 <ul>
 <li><a href="#Core_File_FileAccess">FileAccess</a></li>
 <li><a href="#Core_File_FileAttributes">FileAttributes</a></li>
@@ -376,6 +370,13 @@
 <li><a href="#Core_File_FileShare">FileShare</a></li>
 <li><a href="#Core_File_SeekOrigin">SeekOrigin</a></li>
 <li><a href="#Core_File_TextEncoding">TextEncoding</a></li>
+</ul>
+<h4>input</h4>
+<ul>
+<li><a href="#Core_Input_GamePadButton">GamePadButton</a></li>
+<li><a href="#Core_Input_Key">Key</a></li>
+<li><a href="#Core_Input_KeyModifiers">KeyModifiers</a></li>
+<li><a href="#Core_Input_MouseButton">MouseButton</a></li>
 </ul>
 <h4>rand</h4>
 <ul>
@@ -418,7 +419,7 @@
 <li><a href="#Core_BIG_ENDIAN">BIG_ENDIAN</a></li>
 <li><a href="#Core_WINDOWS">WINDOWS</a></li>
 </ul>
-<h4>io</h4>
+<h4>filesystem</h4>
 <ul>
 <li><a href="#Core_Path_AltDirectorySeparatorChar">AltDirectorySeparatorChar</a></li>
 <li><a href="#Core_Path_DirectorySeparatorChar">DirectorySeparatorChar</a></li>
@@ -474,13 +475,13 @@
 <li><a href="#Core_Time_TicksPerSecond">TicksPerSecond</a></li>
 </ul>
 <h3>Type Aliases</h3>
+<h4>filesystem</h4>
+<ul>
+<li><a href="#Core_File_FileHandle">FileHandle</a></li>
+</ul>
 <h4>input</h4>
 <ul>
 <li><a href="#Core_Input_VirtualKey">VirtualKey</a></li>
-</ul>
-<h4>io</h4>
-<ul>
-<li><a href="#Core_File_FileHandle">FileHandle</a></li>
 </ul>
 <h4>math</h4>
 <ul>
@@ -768,53 +769,7 @@
 <li><a href="#Core_Log_setFlags">Log.setFlags</a></li>
 <li><a href="#Core_Log_setPrefix">Log.setPrefix</a></li>
 </ul>
-<h4>globalization</h4>
-<ul>
-<li><a href="#Core_Globalization_getCultureInfo">Globalization.getCultureInfo</a></li>
-</ul>
-<h4>input</h4>
-<ul>
-<li><a href="#Core_Input_GamePad_clear">GamePad.clear</a></li>
-<li><a href="#Core_Input_GamePad_getPosition">GamePad.getPosition</a></li>
-<li><a href="#Core_Input_GamePad_isButtonJustPressed">GamePad.isButtonJustPressed</a></li>
-<li><a href="#Core_Input_GamePad_isButtonJustReleased">GamePad.isButtonJustReleased</a></li>
-<li><a href="#Core_Input_GamePad_isButtonPressed">GamePad.isButtonPressed</a></li>
-<li><a href="#Core_Input_GamePad_isButtonReleased">GamePad.isButtonReleased</a></li>
-<li><a href="#Core_Input_GamePad_isConnected">GamePad.isConnected</a></li>
-<li><a href="#Core_Input_GamePad_setVibration">GamePad.setVibration</a></li>
-<li><a href="#Core_Input_GamePad_update">GamePad.update</a></li>
-<li><a href="#Core_Input_GamePadState_clear">GamePadState.clear</a></li>
-<li><a href="#Core_Input_GamePadState_update">GamePadState.update</a></li>
-<li><a href="#Core_Input_getKeyName">Input.getKeyName</a></li>
-<li><a href="#Core_Input_getMousePos">Input.getMousePos</a></li>
-<li><a href="#Core_Input_setMousePos">Input.setMousePos</a></li>
-<li><a href="#Core_Input_showMouseCursor">Input.showMouseCursor</a></li>
-<li><a href="#Core_Input_Keyboard_clear">Keyboard.clear</a></li>
-<li><a href="#Core_Input_Keyboard_getPressedModifiers">Keyboard.getPressedModifiers</a></li>
-<li><a href="#Core_Input_Keyboard_isKeyJustPressed">Keyboard.isKeyJustPressed</a></li>
-<li><a href="#Core_Input_Keyboard_isKeyJustReleased">Keyboard.isKeyJustReleased</a></li>
-<li><a href="#Core_Input_Keyboard_isKeyPressed">Keyboard.isKeyPressed</a></li>
-<li><a href="#Core_Input_Keyboard_isKeyReleased">Keyboard.isKeyReleased</a></li>
-<li><a href="#Core_Input_Keyboard_keyToRune">Keyboard.keyToRune</a></li>
-<li><a href="#Core_Input_Keyboard_keyToVirtualKey">Keyboard.keyToVirtualKey</a></li>
-<li><a href="#Core_Input_Keyboard_update">Keyboard.update</a></li>
-<li><a href="#Core_Input_Keyboard_virtualKeyToKey">Keyboard.virtualKeyToKey</a></li>
-<li><a href="#Core_Input_KeyboardState_clear">KeyboardState.clear</a></li>
-<li><a href="#Core_Input_KeyboardState_update">KeyboardState.update</a></li>
-<li><a href="#Core_Input_Mouse_clear">Mouse.clear</a></li>
-<li><a href="#Core_Input_Mouse_getMove">Mouse.getMove</a></li>
-<li><a href="#Core_Input_Mouse_getPosition">Mouse.getPosition</a></li>
-<li><a href="#Core_Input_Mouse_getPreviousPos">Mouse.getPreviousPos</a></li>
-<li><a href="#Core_Input_Mouse_isButtonDoubleClick">Mouse.isButtonDoubleClick</a></li>
-<li><a href="#Core_Input_Mouse_isButtonJustPressed">Mouse.isButtonJustPressed</a></li>
-<li><a href="#Core_Input_Mouse_isButtonJustReleased">Mouse.isButtonJustReleased</a></li>
-<li><a href="#Core_Input_Mouse_isButtonPressed">Mouse.isButtonPressed</a></li>
-<li><a href="#Core_Input_Mouse_isButtonReleased">Mouse.isButtonReleased</a></li>
-<li><a href="#Core_Input_Mouse_update">Mouse.update</a></li>
-<li><a href="#Core_Input_MouseState_clear">MouseState.clear</a></li>
-<li><a href="#Core_Input_MouseState_update">MouseState.update</a></li>
-</ul>
-<h4>io</h4>
+<h4>filesystem</h4>
 <ul>
 <li><a href="#Core_ByteStream_getSeek">ByteStream.getSeek</a></li>
 <li><a href="#Core_ByteStream_isEof">ByteStream.isEof</a></li>
@@ -893,6 +848,52 @@
 <li><a href="#Core_File_TweakFile_parseFile">TweakFile.parseFile</a></li>
 <li><a href="#Core_File_TweakFile_registerFolder">TweakFile.registerFolder</a></li>
 </ul>
+<h4>globalization</h4>
+<ul>
+<li><a href="#Core_Globalization_getCultureInfo">Globalization.getCultureInfo</a></li>
+</ul>
+<h4>input</h4>
+<ul>
+<li><a href="#Core_Input_GamePad_clear">GamePad.clear</a></li>
+<li><a href="#Core_Input_GamePad_getPosition">GamePad.getPosition</a></li>
+<li><a href="#Core_Input_GamePad_isButtonJustPressed">GamePad.isButtonJustPressed</a></li>
+<li><a href="#Core_Input_GamePad_isButtonJustReleased">GamePad.isButtonJustReleased</a></li>
+<li><a href="#Core_Input_GamePad_isButtonPressed">GamePad.isButtonPressed</a></li>
+<li><a href="#Core_Input_GamePad_isButtonReleased">GamePad.isButtonReleased</a></li>
+<li><a href="#Core_Input_GamePad_isConnected">GamePad.isConnected</a></li>
+<li><a href="#Core_Input_GamePad_setVibration">GamePad.setVibration</a></li>
+<li><a href="#Core_Input_GamePad_update">GamePad.update</a></li>
+<li><a href="#Core_Input_GamePadState_clear">GamePadState.clear</a></li>
+<li><a href="#Core_Input_GamePadState_update">GamePadState.update</a></li>
+<li><a href="#Core_Input_getKeyName">Input.getKeyName</a></li>
+<li><a href="#Core_Input_getMousePos">Input.getMousePos</a></li>
+<li><a href="#Core_Input_setMousePos">Input.setMousePos</a></li>
+<li><a href="#Core_Input_showMouseCursor">Input.showMouseCursor</a></li>
+<li><a href="#Core_Input_Keyboard_clear">Keyboard.clear</a></li>
+<li><a href="#Core_Input_Keyboard_getPressedModifiers">Keyboard.getPressedModifiers</a></li>
+<li><a href="#Core_Input_Keyboard_isKeyJustPressed">Keyboard.isKeyJustPressed</a></li>
+<li><a href="#Core_Input_Keyboard_isKeyJustReleased">Keyboard.isKeyJustReleased</a></li>
+<li><a href="#Core_Input_Keyboard_isKeyPressed">Keyboard.isKeyPressed</a></li>
+<li><a href="#Core_Input_Keyboard_isKeyReleased">Keyboard.isKeyReleased</a></li>
+<li><a href="#Core_Input_Keyboard_keyToRune">Keyboard.keyToRune</a></li>
+<li><a href="#Core_Input_Keyboard_keyToVirtualKey">Keyboard.keyToVirtualKey</a></li>
+<li><a href="#Core_Input_Keyboard_update">Keyboard.update</a></li>
+<li><a href="#Core_Input_Keyboard_virtualKeyToKey">Keyboard.virtualKeyToKey</a></li>
+<li><a href="#Core_Input_KeyboardState_clear">KeyboardState.clear</a></li>
+<li><a href="#Core_Input_KeyboardState_update">KeyboardState.update</a></li>
+<li><a href="#Core_Input_Mouse_clear">Mouse.clear</a></li>
+<li><a href="#Core_Input_Mouse_getMove">Mouse.getMove</a></li>
+<li><a href="#Core_Input_Mouse_getPosition">Mouse.getPosition</a></li>
+<li><a href="#Core_Input_Mouse_getPreviousPos">Mouse.getPreviousPos</a></li>
+<li><a href="#Core_Input_Mouse_isButtonDoubleClick">Mouse.isButtonDoubleClick</a></li>
+<li><a href="#Core_Input_Mouse_isButtonJustPressed">Mouse.isButtonJustPressed</a></li>
+<li><a href="#Core_Input_Mouse_isButtonJustReleased">Mouse.isButtonJustReleased</a></li>
+<li><a href="#Core_Input_Mouse_isButtonPressed">Mouse.isButtonPressed</a></li>
+<li><a href="#Core_Input_Mouse_isButtonReleased">Mouse.isButtonReleased</a></li>
+<li><a href="#Core_Input_Mouse_update">Mouse.update</a></li>
+<li><a href="#Core_Input_MouseState_clear">MouseState.clear</a></li>
+<li><a href="#Core_Input_MouseState_update">MouseState.update</a></li>
+</ul>
 <h4>math</h4>
 <ul>
 <li><a href="#Core_Math_Angle_opAffect">Angle.opAffect</a></li>
@@ -934,7 +935,8 @@
 <li><a href="#Core_Math_interpHermite">Math.interpHermite</a></li>
 <li><a href="#Core_Math_interpQuintic">Math.interpQuintic</a></li>
 <li><a href="#Core_Math_isEqualEpsilon">Math.isEqualEpsilon</a></li>
-<li><a href="#Core_Math_isNan">Math.isNan</a></li>
+<li><a href="#Core_Math_isFinite">Math.isFinite</a></li>
+<li><a href="#Core_Math_isNaN">Math.isNaN</a></li>
 <li><a href="#Core_Math_isPowerOf2">Math.isPowerOf2</a></li>
 <li><a href="#Core_Math_isZeroEpsilon">Math.isZeroEpsilon</a></li>
 <li><a href="#Core_Math_lcm">Math.lcm</a></li>
@@ -966,6 +968,7 @@
 <li><a href="#Core_Math_sign">Math.sign</a></li>
 <li><a href="#Core_Math_sin">Math.sin</a></li>
 <li><a href="#Core_Math_sinh">Math.sinh</a></li>
+<li><a href="#Core_Math_smoothDamp">Math.smoothDamp</a></li>
 <li><a href="#Core_Math_smoothstep">Math.smoothstep</a></li>
 <li><a href="#Core_Math_sqrt">Math.sqrt</a></li>
 <li><a href="#Core_Math_tan">Math.tan</a></li>
@@ -997,11 +1000,20 @@
 <li><a href="#Core_Math_Point_round">Point.round</a></li>
 <li><a href="#Core_Math_Point_trunc">Point.trunc</a></li>
 <li><a href="#Core_Math_Rectangle_applyPadding">Rectangle.applyPadding</a></li>
+<li><a href="#Core_Math_Rectangle_area">Rectangle.area</a></li>
+<li><a href="#Core_Math_Rectangle_aspectRatio">Rectangle.aspectRatio</a></li>
 <li><a href="#Core_Math_Rectangle_bottom">Rectangle.bottom</a></li>
+<li><a href="#Core_Math_Rectangle_bottomLeft">Rectangle.bottomLeft</a></li>
+<li><a href="#Core_Math_Rectangle_bottomRight">Rectangle.bottomRight</a></li>
 <li><a href="#Core_Math_Rectangle_ceil">Rectangle.ceil</a></li>
 <li><a href="#Core_Math_Rectangle_center">Rectangle.center</a></li>
+<li><a href="#Core_Math_Rectangle_clampPoint">Rectangle.clampPoint</a></li>
 <li><a href="#Core_Math_Rectangle_clear">Rectangle.clear</a></li>
 <li><a href="#Core_Math_Rectangle_contains">Rectangle.contains</a></li>
+<li><a href="#Core_Math_Rectangle_createFittedWithin">Rectangle.createFittedWithin</a></li>
+<li><a href="#Core_Math_Rectangle_distanceToPoint">Rectangle.distanceToPoint</a></li>
+<li><a href="#Core_Math_Rectangle_expandToInclude">Rectangle.expandToInclude</a></li>
+<li><a href="#Core_Math_Rectangle_fitWithin">Rectangle.fitWithin</a></li>
 <li><a href="#Core_Math_Rectangle_getUnion">Rectangle.getUnion</a></li>
 <li><a href="#Core_Math_Rectangle_horzCenter">Rectangle.horzCenter</a></li>
 <li><a href="#Core_Math_Rectangle_inflate">Rectangle.inflate</a></li>
@@ -1017,23 +1029,34 @@
 <li><a href="#Core_Math_Rectangle_moveLeft">Rectangle.moveLeft</a></li>
 <li><a href="#Core_Math_Rectangle_moveRight">Rectangle.moveRight</a></li>
 <li><a href="#Core_Math_Rectangle_moveTop">Rectangle.moveTop</a></li>
+<li><a href="#Core_Math_Rectangle_normalize">Rectangle.normalize</a></li>
 <li><a href="#Core_Math_Rectangle_offset">Rectangle.offset</a></li>
 <li><a href="#Core_Math_Rectangle_opBinary">Rectangle.opBinary</a></li>
 <li><a href="#Core_Math_Rectangle_opEquals">Rectangle.opEquals</a></li>
+<li><a href="#Core_Math_Rectangle_perimeter">Rectangle.perimeter</a></li>
 <li><a href="#Core_Math_Rectangle_right">Rectangle.right</a></li>
 <li><a href="#Core_Math_Rectangle_round">Rectangle.round</a></li>
 <li><a href="#Core_Math_Rectangle_scale">Rectangle.scale</a></li>
 <li><a href="#Core_Math_Rectangle_set">Rectangle.set</a></li>
 <li><a href="#Core_Math_Rectangle_setBottom">Rectangle.setBottom</a></li>
 <li><a href="#Core_Math_Rectangle_setRight">Rectangle.setRight</a></li>
+<li><a href="#Core_Math_Rectangle_setSize">Rectangle.setSize</a></li>
 <li><a href="#Core_Math_Rectangle_setUnion">Rectangle.setUnion</a></li>
+<li><a href="#Core_Math_Rectangle_size">Rectangle.size</a></li>
+<li><a href="#Core_Math_Rectangle_toNormalized">Rectangle.toNormalized</a></li>
+<li><a href="#Core_Math_Rectangle_topLeft">Rectangle.topLeft</a></li>
+<li><a href="#Core_Math_Rectangle_topRight">Rectangle.topRight</a></li>
 <li><a href="#Core_Math_Rectangle_trunc">Rectangle.trunc</a></li>
 <li><a href="#Core_Math_Rectangle_vertCenter">Rectangle.vertCenter</a></li>
 <li><a href="#Core_Math_Transform2_createRotation">Transform2.createRotation</a></li>
 <li><a href="#Core_Math_Transform2_createScale">Transform2.createScale</a></li>
 <li><a href="#Core_Math_Transform2_createTranslation">Transform2.createTranslation</a></li>
+<li><a href="#Core_Math_Transform2_getTranslation">Transform2.getTranslation</a></li>
+<li><a href="#Core_Math_Transform2_isIdentity">Transform2.isIdentity</a></li>
 <li><a href="#Core_Math_Transform2_multiply">Transform2.multiply</a></li>
 <li><a href="#Core_Math_Transform2_setIdentity">Transform2.setIdentity</a></li>
+<li><a href="#Core_Math_Transform2_setTranslation">Transform2.setTranslation</a></li>
+<li><a href="#Core_Math_Transform2_transformPoint">Transform2.transformPoint</a></li>
 <li><a href="#Core_Math_Variant_checkValidType">Variant.checkValidType</a></li>
 <li><a href="#Core_Math_Variant_drop">Variant.drop</a></li>
 <li><a href="#Core_Math_Variant_get">Variant.get</a></li>
@@ -1044,24 +1067,31 @@
 <li><a href="#Core_Math_Variant_opPostCopy">Variant.opPostCopy</a></li>
 <li><a href="#Core_Math_Variant_opPostMove">Variant.opPostMove</a></li>
 <li><a href="#Core_Math_Variant_set">Variant.set</a></li>
-<li><a href="#Core_Math_Vector2_angle">Vector2.angle</a></li>
 <li><a href="#Core_Math_Vector2_angle0To2Pi">Vector2.angle0To2Pi</a></li>
+<li><a href="#Core_Math_Vector2_angleTo">Vector2.angleTo</a></li>
 <li><a href="#Core_Math_Vector2_ceil">Vector2.ceil</a></li>
-<li><a href="#Core_Math_Vector2_clear">Vector2.clear</a></li>
-<li><a href="#Core_Math_Vector2_cosAngle">Vector2.cosAngle</a></li>
+<li><a href="#Core_Math_Vector2_clamp">Vector2.clamp</a></li>
+<li><a href="#Core_Math_Vector2_clampLength">Vector2.clampLength</a></li>
+<li><a href="#Core_Math_Vector2_clampedLength">Vector2.clampedLength</a></li>
+<li><a href="#Core_Math_Vector2_cosAngleTo">Vector2.cosAngleTo</a></li>
 <li><a href="#Core_Math_Vector2_cross">Vector2.cross</a></li>
-<li><a href="#Core_Math_Vector2_distance">Vector2.distance</a></li>
-<li><a href="#Core_Math_Vector2_distanceSquared">Vector2.distanceSquared</a></li>
+<li><a href="#Core_Math_Vector2_distanceTo">Vector2.distanceTo</a></li>
+<li><a href="#Core_Math_Vector2_distanceToSquared">Vector2.distanceToSquared</a></li>
 <li><a href="#Core_Math_Vector2_dot">Vector2.dot</a></li>
 <li><a href="#Core_Math_Vector2_floor">Vector2.floor</a></li>
+<li><a href="#Core_Math_Vector2_fromPolar">Vector2.fromPolar</a></li>
 <li><a href="#Core_Math_Vector2_isEqualEpsilon">Vector2.isEqualEpsilon</a></li>
+<li><a href="#Core_Math_Vector2_isFinite">Vector2.isFinite</a></li>
+<li><a href="#Core_Math_Vector2_isNaN">Vector2.isNaN</a></li>
 <li><a href="#Core_Math_Vector2_isZero">Vector2.isZero</a></li>
 <li><a href="#Core_Math_Vector2_isZeroEpsilon">Vector2.isZeroEpsilon</a></li>
 <li><a href="#Core_Math_Vector2_length">Vector2.length</a></li>
 <li><a href="#Core_Math_Vector2_lengthSquared">Vector2.lengthSquared</a></li>
-<li><a href="#Core_Math_Vector2_lerp">Vector2.lerp</a></li>
+<li><a href="#Core_Math_Vector2_lerpTo">Vector2.lerpTo</a></li>
+<li><a href="#Core_Math_Vector2_makeAbs">Vector2.makeAbs</a></li>
 <li><a href="#Core_Math_Vector2_max">Vector2.max</a></li>
 <li><a href="#Core_Math_Vector2_min">Vector2.min</a></li>
+<li><a href="#Core_Math_Vector2_moveTowards">Vector2.moveTowards</a></li>
 <li><a href="#Core_Math_Vector2_negate">Vector2.negate</a></li>
 <li><a href="#Core_Math_Vector2_normalize">Vector2.normalize</a></li>
 <li><a href="#Core_Math_Vector2_normalizeSafe">Vector2.normalizeSafe</a></li>
@@ -1069,25 +1099,51 @@
 <li><a href="#Core_Math_Vector2_opAssign">Vector2.opAssign</a></li>
 <li><a href="#Core_Math_Vector2_opBinary">Vector2.opBinary</a></li>
 <li><a href="#Core_Math_Vector2_opUnary">Vector2.opUnary</a></li>
-<li><a href="#Core_Math_Vector2_rotate">Vector2.rotate</a></li>
+<li><a href="#Core_Math_Vector2_rotateBy">Vector2.rotateBy</a></li>
 <li><a href="#Core_Math_Vector2_round">Vector2.round</a></li>
 <li><a href="#Core_Math_Vector2_set">Vector2.set</a></li>
+<li><a href="#Core_Math_Vector2_setAngle">Vector2.setAngle</a></li>
 <li><a href="#Core_Math_Vector2_setLength">Vector2.setLength</a></li>
 <li><a href="#Core_Math_Vector2_setLengthSafe">Vector2.setLengthSafe</a></li>
-<li><a href="#Core_Math_Vector2_toNormalize">Vector2.toNormalize</a></li>
-<li><a href="#Core_Math_Vector2_toNormalizeSafe">Vector2.toNormalizeSafe</a></li>
-<li><a href="#Core_Math_Vector3_clear">Vector3.clear</a></li>
-<li><a href="#Core_Math_Vector3_distance">Vector3.distance</a></li>
-<li><a href="#Core_Math_Vector3_distanceSquared">Vector3.distanceSquared</a></li>
+<li><a href="#Core_Math_Vector2_setZero">Vector2.setZero</a></li>
+<li><a href="#Core_Math_Vector2_smoothDamp">Vector2.smoothDamp</a></li>
+<li><a href="#Core_Math_Vector2_toAbs">Vector2.toAbs</a></li>
+<li><a href="#Core_Math_Vector2_toAngle">Vector2.toAngle</a></li>
+<li><a href="#Core_Math_Vector2_toClamped">Vector2.toClamped</a></li>
+<li><a href="#Core_Math_Vector2_toMovedTowards">Vector2.toMovedTowards</a></li>
+<li><a href="#Core_Math_Vector2_toNormalized">Vector2.toNormalized</a></li>
+<li><a href="#Core_Math_Vector2_toNormalizedSafe">Vector2.toNormalizedSafe</a></li>
+<li><a href="#Core_Math_Vector2_toPerp">Vector2.toPerp</a></li>
+<li><a href="#Core_Math_Vector2_toPerpCW">Vector2.toPerpCW</a></li>
+<li><a href="#Core_Math_Vector2_toPolar">Vector2.toPolar</a></li>
+<li><a href="#Core_Math_Vector2_toProject">Vector2.toProject</a></li>
+<li><a href="#Core_Math_Vector2_toReflect">Vector2.toReflect</a></li>
+<li><a href="#Core_Math_Vector2_toSign">Vector2.toSign</a></li>
+<li><a href="#Core_Math_Vector3_angleTo">Vector3.angleTo</a></li>
+<li><a href="#Core_Math_Vector3_ceil">Vector3.ceil</a></li>
+<li><a href="#Core_Math_Vector3_clamp">Vector3.clamp</a></li>
+<li><a href="#Core_Math_Vector3_clampLength">Vector3.clampLength</a></li>
+<li><a href="#Core_Math_Vector3_clampedLength">Vector3.clampedLength</a></li>
+<li><a href="#Core_Math_Vector3_cosAngleTo">Vector3.cosAngleTo</a></li>
+<li><a href="#Core_Math_Vector3_cross">Vector3.cross</a></li>
+<li><a href="#Core_Math_Vector3_distanceTo">Vector3.distanceTo</a></li>
+<li><a href="#Core_Math_Vector3_distanceToSquared">Vector3.distanceToSquared</a></li>
 <li><a href="#Core_Math_Vector3_dot">Vector3.dot</a></li>
+<li><a href="#Core_Math_Vector3_floor">Vector3.floor</a></li>
+<li><a href="#Core_Math_Vector3_fromCylindrical">Vector3.fromCylindrical</a></li>
+<li><a href="#Core_Math_Vector3_fromSpherical">Vector3.fromSpherical</a></li>
 <li><a href="#Core_Math_Vector3_isEqualEpsilon">Vector3.isEqualEpsilon</a></li>
+<li><a href="#Core_Math_Vector3_isFinite">Vector3.isFinite</a></li>
+<li><a href="#Core_Math_Vector3_isNaN">Vector3.isNaN</a></li>
 <li><a href="#Core_Math_Vector3_isZero">Vector3.isZero</a></li>
 <li><a href="#Core_Math_Vector3_isZeroEpsilon">Vector3.isZeroEpsilon</a></li>
 <li><a href="#Core_Math_Vector3_length">Vector3.length</a></li>
 <li><a href="#Core_Math_Vector3_lengthSquared">Vector3.lengthSquared</a></li>
-<li><a href="#Core_Math_Vector3_lerp">Vector3.lerp</a></li>
+<li><a href="#Core_Math_Vector3_lerpTo">Vector3.lerpTo</a></li>
+<li><a href="#Core_Math_Vector3_makeAbs">Vector3.makeAbs</a></li>
 <li><a href="#Core_Math_Vector3_max">Vector3.max</a></li>
 <li><a href="#Core_Math_Vector3_min">Vector3.min</a></li>
+<li><a href="#Core_Math_Vector3_moveTowards">Vector3.moveTowards</a></li>
 <li><a href="#Core_Math_Vector3_negate">Vector3.negate</a></li>
 <li><a href="#Core_Math_Vector3_normalize">Vector3.normalize</a></li>
 <li><a href="#Core_Math_Vector3_normalizeSafe">Vector3.normalizeSafe</a></li>
@@ -1095,15 +1151,70 @@
 <li><a href="#Core_Math_Vector3_opAssign">Vector3.opAssign</a></li>
 <li><a href="#Core_Math_Vector3_opBinary">Vector3.opBinary</a></li>
 <li><a href="#Core_Math_Vector3_opUnary">Vector3.opUnary</a></li>
+<li><a href="#Core_Math_Vector3_round">Vector3.round</a></li>
 <li><a href="#Core_Math_Vector3_set">Vector3.set</a></li>
 <li><a href="#Core_Math_Vector3_setLength">Vector3.setLength</a></li>
 <li><a href="#Core_Math_Vector3_setLengthSafe">Vector3.setLengthSafe</a></li>
-<li><a href="#Core_Math_Vector3_toNormalize">Vector3.toNormalize</a></li>
-<li><a href="#Core_Math_Vector3_toNormalizeSafe">Vector3.toNormalizeSafe</a></li>
-<li><a href="#Core_Math_Vector4_clear">Vector4.clear</a></li>
-<li><a href="#Core_Math_Vector4_lerp">Vector4.lerp</a></li>
+<li><a href="#Core_Math_Vector3_setZero">Vector3.setZero</a></li>
+<li><a href="#Core_Math_Vector3_smoothDamp">Vector3.smoothDamp</a></li>
+<li><a href="#Core_Math_Vector3_toAbs">Vector3.toAbs</a></li>
+<li><a href="#Core_Math_Vector3_toClamped">Vector3.toClamped</a></li>
+<li><a href="#Core_Math_Vector3_toCylindrical">Vector3.toCylindrical</a></li>
+<li><a href="#Core_Math_Vector3_toMovedTowards">Vector3.toMovedTowards</a></li>
+<li><a href="#Core_Math_Vector3_toNormalized">Vector3.toNormalized</a></li>
+<li><a href="#Core_Math_Vector3_toNormalizedSafe">Vector3.toNormalizedSafe</a></li>
+<li><a href="#Core_Math_Vector3_toProject">Vector3.toProject</a></li>
+<li><a href="#Core_Math_Vector3_toReflect">Vector3.toReflect</a></li>
+<li><a href="#Core_Math_Vector3_toSign">Vector3.toSign</a></li>
+<li><a href="#Core_Math_Vector3_toSpherical">Vector3.toSpherical</a></li>
+<li><a href="#Core_Math_Vector4_angleTo">Vector4.angleTo</a></li>
+<li><a href="#Core_Math_Vector4_ceil">Vector4.ceil</a></li>
+<li><a href="#Core_Math_Vector4_clamp">Vector4.clamp</a></li>
+<li><a href="#Core_Math_Vector4_clampLength">Vector4.clampLength</a></li>
+<li><a href="#Core_Math_Vector4_clampedLength">Vector4.clampedLength</a></li>
+<li><a href="#Core_Math_Vector4_cosAngleTo">Vector4.cosAngleTo</a></li>
+<li><a href="#Core_Math_Vector4_distanceTo">Vector4.distanceTo</a></li>
+<li><a href="#Core_Math_Vector4_distanceToSquared">Vector4.distanceToSquared</a></li>
+<li><a href="#Core_Math_Vector4_dot">Vector4.dot</a></li>
+<li><a href="#Core_Math_Vector4_floor">Vector4.floor</a></li>
+<li><a href="#Core_Math_Vector4_fromVector2">Vector4.fromVector2</a></li>
+<li><a href="#Core_Math_Vector4_fromVector3">Vector4.fromVector3</a></li>
+<li><a href="#Core_Math_Vector4_isEqualEpsilon">Vector4.isEqualEpsilon</a></li>
+<li><a href="#Core_Math_Vector4_isFinite">Vector4.isFinite</a></li>
+<li><a href="#Core_Math_Vector4_isNaN">Vector4.isNaN</a></li>
+<li><a href="#Core_Math_Vector4_isZero">Vector4.isZero</a></li>
+<li><a href="#Core_Math_Vector4_isZeroEpsilon">Vector4.isZeroEpsilon</a></li>
+<li><a href="#Core_Math_Vector4_length">Vector4.length</a></li>
+<li><a href="#Core_Math_Vector4_lengthSquared">Vector4.lengthSquared</a></li>
+<li><a href="#Core_Math_Vector4_lerpTo">Vector4.lerpTo</a></li>
+<li><a href="#Core_Math_Vector4_makeAbs">Vector4.makeAbs</a></li>
+<li><a href="#Core_Math_Vector4_max">Vector4.max</a></li>
+<li><a href="#Core_Math_Vector4_min">Vector4.min</a></li>
+<li><a href="#Core_Math_Vector4_moveTowards">Vector4.moveTowards</a></li>
+<li><a href="#Core_Math_Vector4_negate">Vector4.negate</a></li>
+<li><a href="#Core_Math_Vector4_normalize">Vector4.normalize</a></li>
+<li><a href="#Core_Math_Vector4_normalizeSafe">Vector4.normalizeSafe</a></li>
 <li><a href="#Core_Math_Vector4_opAffect">Vector4.opAffect</a></li>
+<li><a href="#Core_Math_Vector4_opAssign">Vector4.opAssign</a></li>
+<li><a href="#Core_Math_Vector4_opBinary">Vector4.opBinary</a></li>
 <li><a href="#Core_Math_Vector4_opUnary">Vector4.opUnary</a></li>
+<li><a href="#Core_Math_Vector4_round">Vector4.round</a></li>
+<li><a href="#Core_Math_Vector4_set">Vector4.set</a></li>
+<li><a href="#Core_Math_Vector4_setLength">Vector4.setLength</a></li>
+<li><a href="#Core_Math_Vector4_setLengthSafe">Vector4.setLengthSafe</a></li>
+<li><a href="#Core_Math_Vector4_setZero">Vector4.setZero</a></li>
+<li><a href="#Core_Math_Vector4_smoothDamp">Vector4.smoothDamp</a></li>
+<li><a href="#Core_Math_Vector4_toAbs">Vector4.toAbs</a></li>
+<li><a href="#Core_Math_Vector4_toClamped">Vector4.toClamped</a></li>
+<li><a href="#Core_Math_Vector4_toMovedTowards">Vector4.toMovedTowards</a></li>
+<li><a href="#Core_Math_Vector4_toNormalized">Vector4.toNormalized</a></li>
+<li><a href="#Core_Math_Vector4_toNormalizedSafe">Vector4.toNormalizedSafe</a></li>
+<li><a href="#Core_Math_Vector4_toProject">Vector4.toProject</a></li>
+<li><a href="#Core_Math_Vector4_toReflect">Vector4.toReflect</a></li>
+<li><a href="#Core_Math_Vector4_toSign">Vector4.toSign</a></li>
+<li><a href="#Core_Math_Vector4_toVector3">Vector4.toVector3</a></li>
+<li><a href="#Core_Math_Vector4_xy">Vector4.xy</a></li>
+<li><a href="#Core_Math_Vector4_xyz">Vector4.xyz</a></li>
 </ul>
 <h4>memory</h4>
 <ul>
@@ -1421,16 +1532,30 @@
 <li><a href="#Core_Env_registerApplication">Env.registerApplication</a></li>
 <li><a href="#Core_Env_startProcess">Env.startProcess</a></li>
 <li><a href="#Core_Errors_mkString">Errors.mkString</a></li>
+<li><a href="#Core_GUID128_IConvert_convert">GUID128.IConvert.convert</a></li>
+<li><a href="#Core_GUID128_IHash32_compute">GUID128.IHash32.compute</a></li>
+<li><a href="#Core_GUID128_clear">GUID128.clear</a></li>
+<li><a href="#Core_GUID128_getRandom">GUID128.getRandom</a></li>
+<li><a href="#Core_GUID128_getString">GUID128.getString</a></li>
+<li><a href="#Core_GUID128_opEquals">GUID128.opEquals</a></li>
+<li><a href="#Core_GUID128_toString">GUID128.toString</a></li>
+<li><a href="#Core_GUID64_IConvert_convert">GUID64.IConvert.convert</a></li>
+<li><a href="#Core_GUID64_IHash32_compute">GUID64.IHash32.compute</a></li>
+<li><a href="#Core_GUID64_clear">GUID64.clear</a></li>
+<li><a href="#Core_GUID64_getHighEntropy">GUID64.getHighEntropy</a></li>
+<li><a href="#Core_GUID64_getRandom">GUID64.getRandom</a></li>
+<li><a href="#Core_GUID64_getString">GUID64.getString</a></li>
+<li><a href="#Core_GUID64_getTimestamp">GUID64.getTimestamp</a></li>
+<li><a href="#Core_GUID64_isNull">GUID64.isNull</a></li>
+<li><a href="#Core_GUID64_opEquals">GUID64.opEquals</a></li>
+<li><a href="#Core_GUID64_parse">GUID64.parse</a></li>
+<li><a href="#Core_GUID64_toString">GUID64.toString</a></li>
 <li><a href="#Core_Hardware_getMacAddress">Hardware.getMacAddress</a></li>
 <li><a href="#Core_Hardware_getProcessorCount">Hardware.getProcessorCount</a></li>
-<li><a href="#Core_UUID_IConvert_convert">IConvert.convert</a></li>
-<li><a href="#Core_UUID_IHash32_compute">IHash32.compute</a></li>
+<li><a href="#Core_Env_Process_getProcessId">Process.getProcessId</a></li>
+<li><a href="#Core_Env_Process_getThreadId">Process.getThreadId</a></li>
 <li><a href="#Core_Env_Process_waitForExit">Process.waitForExit</a></li>
 <li><a href="#Core_System_pushContext">System.pushContext</a></li>
-<li><a href="#Core_UUID_clear">UUID.clear</a></li>
-<li><a href="#Core_UUID_getRandom">UUID.getRandom</a></li>
-<li><a href="#Core_UUID_opEquals">UUID.opEquals</a></li>
-<li><a href="#Core_UUID_toString">UUID.toString</a></li>
 <li><a href="#Core_CommandLine_parse_parse_checkNext">parse.checkNext</a></li>
 </ul>
 <h4>text</h4>
@@ -1572,7 +1697,7 @@
 <li><a href="#Core_StrConv_StringBuilder_moveToString">StringBuilder.moveToString</a></li>
 <li><a href="#Core_StrConv_StringBuilder_setBucketSize">StringBuilder.setBucketSize</a></li>
 <li><a href="#Core_StrConv_StringBuilder_toString">StringBuilder.toString</a></li>
-<li><a href="#Core_StrConv_StringBuilder_zeroTerminated">StringBuilder.zeroTerminated</a></li>
+<li><a href="#Core_StrConv_StringBuilder_zeroTerminate">StringBuilder.zeroTerminate</a></li>
 <li><a href="#Core_Tokenize_eatCount">Tokenize.eatCount</a></li>
 <li><a href="#Core_Tokenize_eatQuotes">Tokenize.eatQuotes</a></li>
 <li><a href="#Core_Tokenize_eatSpaces">Tokenize.eatSpaces</a></li>
@@ -1789,17 +1914,17 @@
 <tr>
 <td id="Core_Path_AltDirectorySeparatorChar">AltDirectorySeparatorChar</td>
 <td class="code-type"><span class="STpe">u8</span></td>
-<td></td>
+<td>Alternate directory separator character. </td>
 </tr>
 <tr>
 <td id="Core_Path_DirectorySeparatorChar">DirectorySeparatorChar</td>
 <td class="code-type"><span class="STpe">u8</span></td>
-<td></td>
+<td>Default directory separator character. </td>
 </tr>
 <tr>
 <td id="Core_Path_VolumeSeparatorChar">VolumeSeparatorChar</td>
 <td class="code-type"><span class="STpe">u8</span></td>
-<td></td>
+<td>Volume separator character (e.g., <span class="code-inline">C:</span>). </td>
 </tr>
 <tr>
 <td id="Core_Random_NN">NN</td>
@@ -2042,254 +2167,255 @@
 <span id="Core_Array"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">Array</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L5" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L6" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>This is a generic dynamic array. </p>
+<p>A generic, dynamic array that can hold elements of any type. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SFct"><a href="#Core_Array">Array</a></span>(<span class="SCst">T</span>)</span></div>
 <table class="table-enumeration">
 <tr>
 <td>allocator</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Swag</span>.<span class="SCst">IAllocator</span></span></td>
-<td>Associated allocator. </td>
+<td>The allocator used for memory operations. </td>
 </tr>
 <tr>
 <td>buffer</td>
 <td class="code-type"><span class="SCde">^<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></td>
-<td>Memory block of all datas. </td>
+<td>Pointer to the contiguous memory block holding the elements. </td>
 </tr>
 <tr>
 <td>count</td>
 <td class="code-type"><span class="STpe">u64</span></td>
-<td>Number of valid datas. </td>
+<td>The number of valid elements currently in the array. </td>
 </tr>
 <tr>
 <td>capacity</td>
 <td class="code-type"><span class="STpe">u64</span></td>
-<td>Number of elements that can be stored in the buffer. </td>
+<td>The total number of elements that can be stored in the allocated buffer. </td>
 </tr>
 </table>
+<p>It automatically manages memory and grows as needed. </p>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_add">add</a></span><span class="SCde">(<span class="STpe">self</span>, &&<span class="SCst">T</span>)</span></td>
-<td>Move one element at the end of the array. </td>
+<td>Moves an element to the end of the array. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_add">add</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">T</span>)</span></td>
-<td>Add a copy of one element at the end of the array. </td>
+<td>Adds a copy of an element to the end of the array. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_add">add</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> [..] <span class="SCst">T</span>)</span></td>
-<td>Append a slice to the end of this instance. </td>
+<td>Appends all elements from a slice to the end of the array. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_addOnce">addOnce</a></span></td>
-<td>Add a copy of one element at the end of the array. </td>
+<td>Adds an element to the end of the array, but only if it's not already present. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_back">back</a></span></td>
-<td>Returns a copy of the last element. </td>
+<td>Returns a copy of the last element of the array. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_backPtr">backPtr</a></span></td>
-<td>Returns the address of the last element. </td>
+<td>Returns a pointer to the last element of the array. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_clear">clear</a></span></td>
-<td>Set the number of elements to 0. </td>
+<td>Removes all elements from the array, setting its count to 0. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_contains">contains</a></span></td>
-<td>Returns true if the given <span class="code-inline">value</span> is in the array. </td>
+<td>Returns <span class="code-inline">true</span> if the array contains the given value. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_createBuffer">createBuffer</a></span></td>
-<td>Create a working buffer. </td>
+<td>Creates a new byte array of a given size. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_createTemp">createTemp</a></span></td>
-<td>Create a temporary array. </td>
+<td>Creates a new array that uses the temporary allocator. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_emplaceAddress">emplaceAddress</a></span></td>
-<td>Reserve room at the end of the array for <span class="code-inline">num</span> elements, but does not initialize them. Returns the address of the first element. </td>
+<td>Reserves space for <span class="code-inline">num</span> elements at the end of the array and returns a pointer to the start of the new space. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_emplaceAt">emplaceAt</a></span></td>
-<td>Move some values at the given index. If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the values are moved at the end of the array. Order is preserved. </td>
+<td>Moves elements from a slice at a specific index, shifting existing elements to the right. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_emplaceInitAddress">emplaceInitAddress</a></span></td>
-<td>Reserve room at the end of the array for <span class="code-inline">num</span> elements. </td>
+<td>Reserves space for <span class="code-inline">num</span> elements at the end of the array and returns a pointer to the start of the new space. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_fill">fill</a></span></td>
-<td>Fill the array with the given value. </td>
+<td>Fills the entire array with the given value. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_free">free</a></span></td>
-<td>Free the array content. </td>
+<td>Frees the array's memory and resets its state. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_front">front</a></span></td>
-<td>Returns a copy of the first element. </td>
+<td>Returns a copy of the first element of the array. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_frontPtr">frontPtr</a></span></td>
-<td>Returns the address of the first element. </td>
+<td>Returns a pointer to the first element of the array. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_grow">grow</a></span></td>
-<td>Ensure the Array is big enough to store at least <span class="code-inline">newCount</span> elements. </td>
+<td>Ensures the array has enough capacity to store at least <span class="code-inline">newCount</span> elements. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_growResize">growResize</a></span></td>
-<td>Ensure that at least <span class="code-inline">newCount</span> elements are present and initizalized in the array. </td>
+<td>Ensures the array contains at least <span class="code-inline">newCount</span> elements. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_insertAt">insertAt</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>, &&<span class="SCst">T</span>)</span></td>
-<td>Move a value at the given index. If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the value is added at the end of the array. Order is preserved. </td>
+<td>Inserts a moved value at a specific index, shifting existing elements to the right. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_insertAt">insertAt</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>, <span class="SCst">T</span>)</span></td>
-<td>Insert a value at the given index. If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the value is added at the end of the array. Order is preserved. </td>
+<td>Inserts a copy of a value at a specific index, shifting existing elements to the right. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_insertAt">insertAt</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>, <span class="SKwd">const</span> [..] <span class="SCst">T</span>)</span></td>
-<td>Insert some values at the given index. If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the values are added at the end of the array. Order is preserved. </td>
+<td>Inserts elements from a slice at a specific index, shifting existing elements to the right. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_isEmpty">isEmpty</a></span></td>
-<td>Returns true if the array is empty. </td>
+<td>Returns <span class="code-inline">true</span> if the array contains no elements. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_popBack">popBack</a></span></td>
-<td>Returns a copy of the last element, and remove it from the array. </td>
+<td>Removes the last element from the array and returns it. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_realloc">realloc</a></span></td>
-<td></td>
+<td>Reallocates the internal buffer to a new capacity. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_ref1">ref1</a></span></td>
-<td>Returns a reference to a value given coordinate. </td>
+<td>Returns a mutable reference to an element using a single coordinate. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_ref2">ref2</a></span></td>
-<td>Returns a reference to a value given 2 coordinates and a width. </td>
+<td>Returns a mutable reference to an element using 2D coordinates and a width. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_remove">remove</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">V</span>)</span></td>
-<td>Remove the given <span class="code-inline">value</span> If not found, does nothing. </td>
+<td>Removes the first occurrence of a given value from the array. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_remove">remove</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>, <span class="STpe">u64</span>)</span></td>
-<td>Remove <span class="code-inline">num</span> elements starting at <span class="code-inline">index</span>. </td>
+<td>Removes a specified number of elements starting from a given index. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_removeAt">removeAt</a></span></td>
-<td>Remove an element at <span class="code-inline">index</span> by replacing it with the last element. </td>
+<td>Removes the element at a given index by swapping it with the last element. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_removeAtOrdered">removeAtOrdered</a></span></td>
-<td>Remove <span class="code-inline">numValues</span> elements at <span class="code-inline">index</span> by shifting all others. </td>
+<td>Removes one or more elements at a given index, shifting subsequent elements to the left. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_removeBack">removeBack</a></span></td>
-<td>Remove the last element. </td>
+<td>Removes the last element from the array. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_removeOrdered">removeOrdered</a></span></td>
-<td>Remove the given <span class="code-inline">value</span> If not found, does nothing. </td>
+<td>Removes the first occurrence of a given value, preserving the order of remaining elements. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_reserve">reserve</a></span></td>
-<td>Reserve room for <span class="code-inline">newCapacity</span> elements without changing the array count. </td>
+<td>Sets the array's capacity to at least <span class="code-inline">newCapacity</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_resize">resize</a></span></td>
-<td>Change the number of valid elements in the array. </td>
+<td>Changes the number of elements in the array to <span class="code-inline">newCount</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_sort">sort</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
-<td>Sort array. </td>
+<td>Sorts the array in ascending order using the default comparison operator. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_sort">sort</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">func</span>(*<span class="STpe">void</span>, <span class="SCst">T</span>, <span class="SCst">T</span>)-><span class="STpe">s32</span>)</span></td>
-<td>Sort array. </td>
+<td>Sorts the array using a custom comparison function. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_sortReverse">sortReverse</a></span></td>
-<td>Sort array in reverse order (from biggest to lowest value). </td>
+<td>Sorts the array in descending order. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_swap">swap</a></span></td>
-<td>Swap two elements. </td>
+<td>Swaps two elements in the array by their indices. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_toSlice">toSlice</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
-<td>Returns a slice. </td>
+<td>Returns a mutable slice containing all elements of the array. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_toSlice">toSlice</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
-<td>Returns a slice. </td>
+<td>Returns an immutable slice containing all elements of the array. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_opAffect">opAffect</a></span></td>
-<td>Initializes an Array that contains values copied from the specified array. </td>
+<td>Replaces the content of the array with elements copied from a slice. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_opCast">opCast</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
-<td></td>
+<td>Allows the array to be implicitly cast to a mutable slice. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_opCast">opCast</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
-<td></td>
+<td>Allows the array to be implicitly cast to an immutable slice. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_opCount">opCount</a></span></td>
-<td></td>
+<td>Returns the number of elements in the array. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_opData">opData</a></span></td>
-<td></td>
+<td>Returns a raw, constant pointer to the array's buffer. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_opDrop">opDrop</a></span></td>
-<td></td>
+<td>Ensures the allocated memory is freed when the array goes out of scope. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_opIndex">opIndex</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>)</span></td>
-<td></td>
+<td>Returns a mutable reference to the element at the specified index. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_opIndex">opIndex</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>)</span></td>
-<td></td>
+<td>Returns a constant reference to the element at the specified index. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_opIndexAffect">opIndexAffect</a></span></td>
-<td></td>
+<td>Assigns a new value to the element at the specified index. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_opIndexAssign">opIndexAssign</a></span></td>
-<td></td>
+<td>Handles compound assignment operators (e.g., <span class="code-inline">+=</span>, <span class="code-inline">-=</span>) for elements. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_opPostCopy">opPostCopy</a></span></td>
-<td></td>
+<td>Handles the deep copy of the array when it is copied. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_opSlice">opSlice</a></span></td>
-<td></td>
+<td>Creates a slice from a sub-part of the array. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_opVisit">opVisit</a></span></td>
-<td>Visit every elements of the array. </td>
+<td>Provides a way to iterate over each element in the array. </td>
 </tr>
 </table>
 <p>
@@ -2299,7 +2425,7 @@
 <span id="Core_Array_IConvert_convert"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IConvert.</span><span class="api-item-title-strong">convert</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L722" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L750" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2311,15 +2437,15 @@
 <span id="Core_Array_add"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">add</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L360" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L385" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Add a copy of one element at the end of the array. </p>
+<p>Adds a copy of an element to the end of the array. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
-<p>Move one element at the end of the array. </p>
+<p>Moves an element to the end of the array. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
-<p>Append a slice to the end of this instance. </p>
+<p>Appends all elements from a slice to the end of the array. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, values: <span class="SCmp">#null</span> <span class="SKwd">const</span> [..] <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
@@ -2328,12 +2454,13 @@
 <span id="Core_Array_addOnce"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">addOnce</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L338" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L363" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Add a copy of one element at the end of the array. </p>
+<p>Adds an element to the end of the array, but only if it's not already present. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addOnce</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
+<p>This is slower than <span class="code-inline">add</span> due to the containment check. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2341,12 +2468,13 @@
 <span id="Core_Array_back"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">back</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L687" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L712" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns a copy of the last element. </p>
+<p>Returns a copy of the last element of the array. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">back</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<p>Asserts if the array is empty. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2354,12 +2482,13 @@
 <span id="Core_Array_backPtr"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">backPtr</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L695" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L721" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns the address of the last element. </p>
+<p>Returns a pointer to the last element of the array. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">backPtr</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<p>Asserts if the array is empty. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2367,12 +2496,13 @@
 <span id="Core_Array_clear"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">clear</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L319" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L342" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Set the number of elements to 0. </p>
+<p>Removes all elements from the array, setting its count to 0. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>This calls the destructor for each element if one exists, but does not deallocate memory. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2380,11 +2510,11 @@
 <span id="Core_Array_contains"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">contains</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L645" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L667" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns true if the given <span class="code-inline">value</span> is in the array. </p>
+<p>Returns <span class="code-inline">true</span> if the array contains the given value. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">V</span>) <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SCst">V</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
@@ -2393,12 +2523,13 @@
 <span id="Core_Array_createBuffer"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">createBuffer</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L236" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L256" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Create a working buffer. </p>
+<p>Creates a new byte array of a given size. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createBuffer</span>(size: <span class="STpe">u64</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">u8</span>)</span></div>
+<p>Often used for raw memory buffers. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2406,12 +2537,13 @@
 <span id="Core_Array_createTemp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">createTemp</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L227" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L246" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Create a temporary array. </p>
+<p>Creates a new array that uses the temporary allocator. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">TA</span>) <span class="SFct">createTemp</span>()-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="SCst">TA</span>)</span></div>
+<p>Useful for short-lived arrays to avoid heap fragmentation. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2419,12 +2551,13 @@
 <span id="Core_Array_emplaceAddress"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">emplaceAddress</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L369" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L394" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Reserve room at the end of the array for <span class="code-inline">num</span> elements, but does not initialize them. Returns the address of the first element. </p>
+<p>Reserves space for <span class="code-inline">num</span> elements at the end of the array and returns a pointer to the start of the new space. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceAddress</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, num: <span class="STpe">u32</span> = <span class="SNum">1</span>)-&gt;^<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<p>The new memory is not initialized. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2432,12 +2565,13 @@
 <span id="Core_Array_emplaceAt"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">emplaceAt</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L479" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L500" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Move some values at the given index. If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the values are moved at the end of the array. Order is preserved. </p>
+<p>Moves elements from a slice at a specific index, shifting existing elements to the right. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceAt</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, values: [..] <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
+<p>Order is preserved. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2445,13 +2579,13 @@
 <span id="Core_Array_emplaceInitAddress"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">emplaceInitAddress</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L378" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L403" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Reserve room at the end of the array for <span class="code-inline">num</span> elements. </p>
+<p>Reserves space for <span class="code-inline">num</span> elements at the end of the array and returns a pointer to the start of the new space. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceInitAddress</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, num: <span class="STpe">u32</span> = <span class="SNum">1</span>)-&gt;^<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
-<p>Returns the address of the first element </p>
+<p>The new memory is default-initialized. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2459,12 +2593,13 @@
 <span id="Core_Array_fill"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">fill</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L331" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L355" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Fill the array with the given value. </p>
+<p>Fills the entire array with the given value. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fill</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
+<p>All existing elements are overwritten. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2472,12 +2607,13 @@
 <span id="Core_Array_free"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">free</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L209" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L227" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Free the array content. </p>
+<p>Frees the array's memory and resets its state. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>If elements have destructors, they are called. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2485,12 +2621,13 @@
 <span id="Core_Array_front"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">front</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L672" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L695" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns a copy of the first element. </p>
+<p>Returns a copy of the first element of the array. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">front</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<p>Asserts if the array is empty. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2498,12 +2635,13 @@
 <span id="Core_Array_frontPtr"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">frontPtr</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L680" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L704" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns the address of the first element. </p>
+<p>Returns a pointer to the first element of the array. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">frontPtr</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<p>Asserts if the array is empty. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2511,13 +2649,13 @@
 <span id="Core_Array_grow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">grow</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L263" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L284" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Ensure the Array is big enough to store at least <span class="code-inline">newCount</span> elements. </p>
+<p>Ensures the array has enough capacity to store at least <span class="code-inline">newCount</span> elements. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">grow</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newCount: <span class="STpe">u64</span>)</span></div>
-<p>The number of valid elements does not change. If you want the number of valid elements to be changed also, use [[growResize]] instead. </p>
+<p>If the current capacity is insufficient, it will be increased. The element count remains unchanged. See also [[reserve]]. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2525,13 +2663,13 @@
 <span id="Core_Array_growResize"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">growResize</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L291" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L312" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Ensure that at least <span class="code-inline">newCount</span> elements are present and initizalized in the array. </p>
+<p>Ensures the array contains at least <span class="code-inline">newCount</span> elements. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">growResize</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newCount: <span class="STpe">u64</span>)</span></div>
-<p>This will grow the array if necessary. </p>
+<p>If the current count is less than <span class="code-inline">newCount</span>, new elements are added and default-initialized. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2539,16 +2677,19 @@
 <span id="Core_Array_insertAt"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">insertAt</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L417" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L440" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Insert a value at the given index. If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the value is added at the end of the array. Order is preserved. </p>
+<p>Inserts a copy of a value at a specific index, shifting existing elements to the right. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAt</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
-<p>Move a value at the given index. If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the value is added at the end of the array. Order is preserved. </p>
+<p>Order is preserved. </p>
+<p>Inserts a moved value at a specific index, shifting existing elements to the right. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAt</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
-<p>Insert some values at the given index. If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the values are added at the end of the array. Order is preserved. </p>
+<p>Order is preserved. </p>
+<p>Inserts elements from a slice at a specific index, shifting existing elements to the right. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAt</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, values: <span class="SKwd">const</span> [..] <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
+<p>Order is preserved. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2556,11 +2697,11 @@
 <span id="Core_Array_isEmpty"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">isEmpty</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L245" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L265" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns true if the array is empty. </p>
+<p>Returns <span class="code-inline">true</span> if the array contains no elements. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEmpty</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
@@ -2569,11 +2710,11 @@
 <span id="Core_Array_opAffect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">opAffect</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L103" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L116" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Initializes an Array that contains values copied from the specified array. </p>
+<p>Replaces the content of the array with elements copied from a slice. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, arr: <span class="SKwd">const</span> [..] <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
@@ -2582,12 +2723,14 @@
 <span id="Core_Array_opCast"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">opCast</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L53" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L60" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;[..] <span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span>
-<span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">const</span> [..] <span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<p>Allows the array to be implicitly cast to a mutable slice. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;[..] <span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<p>Allows the array to be implicitly cast to an immutable slice. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">const</span> [..] <span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2595,10 +2738,11 @@
 <span id="Core_Array_opCount"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">opCount</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L16" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L18" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Returns the number of elements in the array. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
@@ -2607,10 +2751,11 @@
 <span id="Core_Array_opData"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">opData</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L22" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L25" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Returns a raw, constant pointer to the array's buffer. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opData</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">const</span> *<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
@@ -2619,10 +2764,11 @@
 <span id="Core_Array_opDrop"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">opDrop</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L27" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L31" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Ensures the allocated memory is freed when the array goes out of scope. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
@@ -2631,12 +2777,14 @@
 <span id="Core_Array_opIndex"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">opIndex</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L81" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L92" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>)-&gt;<span class="SKwd">const</span> &<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span>
-<span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>)-&gt;&<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<p>Returns a constant reference to the element at the specified index. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>)-&gt;<span class="SKwd">const</span> &<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<p>Returns a mutable reference to the element at the specified index. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>)-&gt;&<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2644,10 +2792,11 @@
 <span id="Core_Array_opIndexAffect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">opIndexAffect</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L88" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L100" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Assigns a new value to the element at the specified index. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
@@ -2656,10 +2805,11 @@
 <span id="Core_Array_opIndexAssign"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">opIndexAssign</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L96" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L109" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Handles compound assignment operators (e.g., <span class="code-inline">+=</span>, <span class="code-inline">-=</span>) for elements. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opIndexAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
@@ -2668,11 +2818,13 @@
 <span id="Core_Array_opPostCopy"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">opPostCopy</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L32" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L38" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Handles the deep copy of the array when it is copied. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>A new buffer is allocated and the content is copied over. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2680,10 +2832,11 @@
 <span id="Core_Array_opSlice"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">opSlice</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L65" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L74" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Creates a slice from a sub-part of the array. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opSlice</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, lower, upper: <span class="STpe">u64</span>)-&gt;[..] <span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
@@ -2692,14 +2845,14 @@
 <span id="Core_Array_opVisit"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">opVisit</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L129" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L144" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Visit every elements of the array. </p>
+<p>Provides a way to iterate over each element in the array. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
 <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
-<p>Visiting by address and in reverse order is supported. </p>
+<p>This is a macro that accepts a code block to execute for each element. Visiting by address and in reverse order is supported via parameters. Aliases: #alias0 for the element or a pointer to it, #alias1 for the index. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2707,12 +2860,13 @@
 <span id="Core_Array_popBack"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">popBack</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L702" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L729" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns a copy of the last element, and remove it from the array. </p>
+<p>Removes the last element from the array and returns it. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">popBack</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<p>Asserts if the array is empty. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2720,11 +2874,13 @@
 <span id="Core_Array_realloc"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">realloc</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L179" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L196" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Reallocates the internal buffer to a new capacity. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">realloc</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newCapacity: <span class="STpe">u64</span>)</span></div>
+<p>This is a low-level memory operation that handles moving existing elements. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2732,13 +2888,13 @@
 <span id="Core_Array_ref1"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">ref1</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L164" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L179" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns a reference to a value given coordinate. </p>
+<p>Returns a mutable reference to an element using a single coordinate. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ref1</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, x: <span class="STpe">u64</span>)-&gt;&<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
-<p>This is to use the array as an array with 2 dimensions. </p>
+<p>This can be used to treat the array as a 1D grid. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2746,13 +2902,13 @@
 <span id="Core_Array_ref2"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">ref2</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L173" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L188" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns a reference to a value given 2 coordinates and a width. </p>
+<p>Returns a mutable reference to an element using 2D coordinates and a width. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ref2</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, x, y, w: <span class="STpe">u64</span>)-&gt;&<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
-<p>This is to use the array as an array with 2 dimensions. </p>
+<p>This can be used to treat the array as a 2D grid. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2760,14 +2916,16 @@
 <span id="Core_Array_remove"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">remove</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L581" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L603" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Remove <span class="code-inline">num</span> elements starting at <span class="code-inline">index</span>. </p>
+<p>Removes a specified number of elements starting from a given index. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remove</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index, num: <span class="STpe">u64</span>)</span></div>
-<p>Remove the given <span class="code-inline">value</span> If not found, does nothing. </p>
+<p>This is an unstable remove; the order of remaining elements is not preserved. </p>
+<p>Removes the first occurrence of a given value from the array. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">V</span>) <span class="SFct">remove</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SCst">V</span>)</span></div>
+<p>This is an unstable remove; order is not preserved. Does nothing if the value is not found. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2775,13 +2933,13 @@
 <span id="Core_Array_removeAt"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">removeAt</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L591" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L613" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Remove an element at <span class="code-inline">index</span> by replacing it with the last element. </p>
+<p>Removes the element at a given index by swapping it with the last element. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeAt</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>)</span></div>
-<p>Order is <b>not preserved</b> </p>
+<p>This is very fast, but the order of elements is not preserved. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2789,13 +2947,13 @@
 <span id="Core_Array_removeAtOrdered"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">removeAtOrdered</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L603" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L625" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Remove <span class="code-inline">numValues</span> elements at <span class="code-inline">index</span> by shifting all others. </p>
+<p>Removes one or more elements at a given index, shifting subsequent elements to the left. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeAtOrdered</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, numValues: <span class="STpe">u64</span> = <span class="SNum">1</span>)</span></div>
-<p>Order is preserved </p>
+<p>This is slower than <span class="code-inline">removeAt</span>, but preserves the order of the remaining elements. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2803,12 +2961,13 @@
 <span id="Core_Array_removeBack"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">removeBack</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L712" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L740" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Remove the last element. </p>
+<p>Removes the last element from the array. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeBack</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Asserts if the array is empty. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2816,12 +2975,13 @@
 <span id="Core_Array_removeOrdered"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">removeOrdered</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L636" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L658" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Remove the given <span class="code-inline">value</span> If not found, does nothing. </p>
+<p>Removes the first occurrence of a given value, preserving the order of remaining elements. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">V</span>) <span class="SFct">removeOrdered</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SCst">V</span>)</span></div>
+<p>Does nothing if the value is not found. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2829,13 +2989,13 @@
 <span id="Core_Array_reserve"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">reserve</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L273" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L294" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Reserve room for <span class="code-inline">newCapacity</span> elements without changing the array count. </p>
+<p>Sets the array's capacity to at least <span class="code-inline">newCapacity</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reserve</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newCapacity: <span class="STpe">u64</span>)</span></div>
-<p>The number of valid elements does not change. </p>
+<p>This does not change the number of elements in the array. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2843,13 +3003,13 @@
 <span id="Core_Array_resize"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">resize</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L301" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L323" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Change the number of valid elements in the array. </p>
+<p>Changes the number of elements in the array to <span class="code-inline">newCount</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">resize</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newCount: <span class="STpe">u64</span>)</span></div>
-<p>This can be used to reduce or increase the number of valid elements. </p>
+<p>If <span class="code-inline">newCount</span> is greater than the current count, new elements are default-initialized. If <span class="code-inline">newCount</span> is smaller, excess elements are dropped. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2857,13 +3017,14 @@
 <span id="Core_Array_sort"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">sort</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L652" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L674" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Sort array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)
-<span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, cb: <span class="SKwd">func</span>||(<span class="STpe">self</span>.<span class="SCst">T</span>, <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;<span class="STpe">s32</span>)</span></div>
+<p>Sorts the array in ascending order using the default comparison operator. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Sorts the array using a custom comparison function. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, cb: <span class="SKwd">func</span>||(<span class="STpe">self</span>.<span class="SCst">T</span>, <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;<span class="STpe">s32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2871,11 +3032,11 @@
 <span id="Core_Array_sortReverse"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">sortReverse</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L658" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L680" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Sort array in reverse order (from biggest to lowest value). </p>
+<p>Sorts the array in descending order. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sortReverse</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
@@ -2884,11 +3045,11 @@
 <span id="Core_Array_swap"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">swap</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L546" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L567" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Swap two elements. </p>
+<p>Swaps two elements in the array by their indices. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">swap</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, idx0, idx1: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
@@ -2897,13 +3058,14 @@
 <span id="Core_Array_toSlice"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Array.</span><span class="api-item-title-strong">toSlice</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L249" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\array.swg#L269" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns a slice. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSlice</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;[..] <span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span>
-<span class="SKwd">func</span> <span class="SFct">toSlice</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">const</span> [..] <span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<p>Returns a mutable slice containing all elements of the array. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSlice</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;[..] <span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<p>Returns an immutable slice containing all elements of the array. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSlice</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">const</span> [..] <span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2911,10 +3073,11 @@
 <span id="Core_ArrayPtr"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">ArrayPtr</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\arrayptr.swg#L4" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\arrayptr.swg#L7" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>A specialized dynamic array for holding and owning pointers. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SFct"><a href="#Core_ArrayPtr">ArrayPtr</a></span>(<span class="SCst">T</span>)</span></div>
 <table class="table-enumeration">
 <tr>
@@ -2923,34 +3086,35 @@
 <td></td>
 </tr>
 </table>
+<p>This struct extends the base <span class="code-inline">Array</span> to correctly manage the lifecycle (allocation and deallocation) of the pointed-to objects. </p>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ArrayPtr_addNewPtr">addNewPtr</a></span></td>
-<td>Allocate a new pointer, and add it to the array. </td>
+<td>Allocates a new object, adds its pointer to the end of the array, and returns the pointer. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ArrayPtr_clear">clear</a></span></td>
-<td>Release content. </td>
+<td>Deallocates all objects pointed to by the elements in the array and clears the array. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ArrayPtr_deletePtr">deletePtr</a></span></td>
-<td>Delete one pointer allocated here. </td>
+<td>Deallocates the memory for a single given pointer. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ArrayPtr_newPtr">newPtr</a></span></td>
-<td>Allocate a new pointer by using the contextual allocator. </td>
+<td>Allocates memory for a new object of type T using the array's allocator. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ArrayPtr_opDrop">opDrop</a></span></td>
-<td></td>
+<td>Ensures that all pointed-to objects are deallocated when the array goes out of scope. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ArrayPtr_opPostCopy">opPostCopy</a></span></td>
-<td></td>
+<td>Handles the deep copy of the array and the objects it points to. </td>
 </tr>
 </table>
 <p>
@@ -2960,11 +3124,11 @@
 <span id="Core_ArrayPtr_addNewPtr"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ArrayPtr.</span><span class="api-item-title-strong">addNewPtr</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\arrayptr.swg#L47" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\arrayptr.swg#L57" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Allocate a new pointer, and add it to the array. </p>
+<p>Allocates a new object, adds its pointer to the end of the array, and returns the pointer. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addNewPtr</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_ArrayPtr">ArrayPtr</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
@@ -2973,12 +3137,13 @@
 <span id="Core_ArrayPtr_clear"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ArrayPtr.</span><span class="api-item-title-strong">clear</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\arrayptr.swg#L27" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\arrayptr.swg#L35" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Release content. </p>
+<p>Deallocates all objects pointed to by the elements in the array and clears the array. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>The array's count is set to 0, but the capacity is not changed. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2986,12 +3151,13 @@
 <span id="Core_ArrayPtr_deletePtr"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ArrayPtr.</span><span class="api-item-title-strong">deletePtr</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\arrayptr.swg#L35" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\arrayptr.swg#L44" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Delete one pointer allocated here. </p>
+<p>Deallocates the memory for a single given pointer. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">deletePtr</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, item: *<span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
+<p>The pointer is expected to have been allocated using this array's allocator. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2999,12 +3165,13 @@
 <span id="Core_ArrayPtr_newPtr"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ArrayPtr.</span><span class="api-item-title-strong">newPtr</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\arrayptr.swg#L41" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\arrayptr.swg#L51" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Allocate a new pointer by using the contextual allocator. </p>
+<p>Allocates memory for a new object of type T using the array's allocator. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">newPtr</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_ArrayPtr">ArrayPtr</a></span>.<span class="SCst">T</span></span></div>
+<p>Returns a pointer to the newly allocated memory. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -3012,10 +3179,11 @@
 <span id="Core_ArrayPtr_opDrop"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ArrayPtr.</span><span class="api-item-title-strong">opDrop</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\arrayptr.swg#L11" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\arrayptr.swg#L15" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Ensures that all pointed-to objects are deallocated when the array goes out of scope. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
@@ -3024,11 +3192,13 @@
 <span id="Core_ArrayPtr_opPostCopy"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ArrayPtr.</span><span class="api-item-title-strong">opPostCopy</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\arrayptr.swg#L16" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\arrayptr.swg#L23" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Handles the deep copy of the array and the objects it points to. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>When the array is copied, new memory is allocated for each element, and the content is copied over, ensuring the new array owns its own set of objects. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -3405,46 +3575,47 @@
 <span id="Core_BitArray"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">BitArray</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L5" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L7" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Manages a compact array of bit values, which are represented as booleans, where <span class="code-inline">true</span> indicates that the bit is on (1) and <span class="code-inline">false</span> indicates the bit is off (0). </p>
+<p>Manages a compact array of bit values. </p>
 <table class="table-enumeration">
 <tr>
 <td>buffer</td>
 <td class="code-type"><span class="SCde">^<span class="STpe">u32</span></span></td>
-<td></td>
+<td>Internal buffer storing the bits packed into 32-bit integers. </td>
 </tr>
 <tr>
 <td>allocator</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Swag</span>.<span class="SCst">IAllocator</span></span></td>
-<td></td>
+<td>The allocator used for memory operations. </td>
 </tr>
 <tr>
 <td>count</td>
 <td class="code-type"><span class="STpe">u64</span></td>
-<td></td>
+<td>The number of bits in the array. </td>
 </tr>
 <tr>
 <td>capacity</td>
 <td class="code-type"><span class="STpe">u64</span></td>
-<td></td>
+<td>The total allocated capacity in bytes. </td>
 </tr>
 </table>
+<p>Bits are represented as booleans, where <span class="code-inline">true</span> indicates the bit is on (1) and <span class="code-inline">false</span> indicates the bit is off (0). This structure is memory-efficient for storing a large number of boolean flags. </p>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_BitArray_andWith">andWith</a></span></td>
-<td>Performs the bitwise AND operation between the elements of the current <span class="code-inline">BitArray</span> and the corresponding elements in the specified array. </td>
+<td>Performs a bitwise AND operation between this array and another. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_BitArray_get">get</a></span></td>
-<td>Gets the value of the bit at a specific position. </td>
+<td>Returns the boolean value of the bit at a specific position. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_BitArray_invert">invert</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
-<td>Inverts all the bit values, so that elements set to <span class="code-inline">true</span> are changed to <span class="code-inline">false</span>, and elements set to <span class="code-inline">false</span> are changed to <span class="code-inline">true</span>. </td>
+<td>Inverts all bit values in the array. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_BitArray_invert">invert</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>)</span></td>
@@ -3452,15 +3623,15 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_BitArray_orWith">orWith</a></span></td>
-<td>Performs the bitwise OR operation between the elements of the current <span class="code-inline">BitArray</span> and the corresponding elements in the specified array. </td>
+<td>Performs a bitwise OR operation between this array and another. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_BitArray_reserve">reserve</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>)</span></td>
-<td>Reserve the given amount of bits. </td>
+<td>Reserves capacity for a given number of bits. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_BitArray_reserve">reserve</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>, <span class="STpe">bool</span>)</span></td>
-<td>Reserve the given amount of bits and set an initial value to all bits. </td>
+<td>Reserves capacity for a given number of bits and initializes them to a specific value. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_BitArray_set">set</a></span></td>
@@ -3468,34 +3639,34 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_BitArray_setAll">setAll</a></span></td>
-<td>Sets all bits to the specified value. </td>
+<td>Sets all bits in the array to the specified boolean value. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_BitArray_xorWith">xorWith</a></span></td>
-<td>Performs the bitwise XOR operation between the elements of the current <span class="code-inline">BitArray</span> and the corresponding elements in the specified array. </td>
+<td>Performs a bitwise XOR operation between this array and another. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_BitArray_opAffect">opAffect</a></span></td>
-<td>Initializes a <span class="code-inline">BitArray</span> that contains bit values copied from the specified array of booleans. </td>
+<td>Replaces the content of the bit array with values from a slice of booleans. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_BitArray_opCount">opCount</a></span></td>
-<td></td>
+<td>Returns the number of bits in the array. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_BitArray_opDrop">opDrop</a></span></td>
-<td></td>
+<td>Ensures the allocated memory is freed when the array goes out of scope. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_BitArray_opEquals">opEquals</a></span></td>
-<td>Compares two arrays, and returns <span class="code-inline">true</span> if they are equal. </td>
+<td>Compares this bit array with another one for equality. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_BitArray_opIndex">opIndex</a></span></td>
-<td>Gets the value of the bit at a specific position. </td>
+<td>Returns the boolean value of the bit at a specific position. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_BitArray_opIndexAffect">opIndexAffect</a></span></td>
@@ -3503,11 +3674,11 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_BitArray_opPostCopy">opPostCopy</a></span></td>
-<td></td>
+<td>Handles the deep copy of the array when it is copied. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_BitArray_opVisit">opVisit</a></span></td>
-<td>Visit all the booleans. </td>
+<td>Provides a way to iterate over each bit in the array. </td>
 </tr>
 </table>
 <p>
@@ -3517,13 +3688,13 @@
 <span id="Core_BitArray_andWith"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitArray.</span><span class="api-item-title-strong">andWith</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L209" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L224" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Performs the bitwise AND operation between the elements of the current <span class="code-inline">BitArray</span> and the corresponding elements in the specified array. </p>
+<p>Performs a bitwise AND operation between this array and another. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">andWith</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)</span></div>
-<p>The current <span class="code-inline">BitArray</span> will be modified to store the result of the bitwise AND operation. </p>
+<p>The current array is modified to store the result. Asserts that arrays are of the same size. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -3531,11 +3702,11 @@
 <span id="Core_BitArray_get"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitArray.</span><span class="api-item-title-strong">get</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L174" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L187" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Gets the value of the bit at a specific position. </p>
+<p>Returns the boolean value of the bit at a specific position. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">get</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
@@ -3544,14 +3715,16 @@
 <span id="Core_BitArray_invert"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitArray.</span><span class="api-item-title-strong">invert</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L199" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L214" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Inverts the value of the bit at a specific position. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">invert</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>)</span></div>
-<p>Inverts all the bit values, so that elements set to <span class="code-inline">true</span> are changed to <span class="code-inline">false</span>, and elements set to <span class="code-inline">false</span> are changed to <span class="code-inline">true</span>. </p>
+<p>Changes a <span class="code-inline">true</span> bit to <span class="code-inline">false</span> and a <span class="code-inline">false</span> bit to <span class="code-inline">true</span>. </p>
+<p>Inverts all bit values in the array. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">invert</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Bits set to <span class="code-inline">true</span> are changed to <span class="code-inline">false</span>, and vice versa. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -3559,11 +3732,11 @@
 <span id="Core_BitArray_opAffect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitArray.</span><span class="api-item-title-strong">opAffect</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L66" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L76" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Initializes a <span class="code-inline">BitArray</span> that contains bit values copied from the specified array of booleans. </p>
+<p>Replaces the content of the bit array with values from a slice of booleans. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, what: <span class="SKwd">const</span> [..] <span class="STpe">bool</span>)</span></div>
 <p>
 <table class="api-item">
@@ -3572,10 +3745,11 @@
 <span id="Core_BitArray_opCount"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitArray.</span><span class="api-item-title-strong">opCount</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L32" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L39" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Returns the number of bits in the array. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
@@ -3584,10 +3758,11 @@
 <span id="Core_BitArray_opDrop"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitArray.</span><span class="api-item-title-strong">opDrop</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L37" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L45" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Ensures the allocated memory is freed when the array goes out of scope. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
@@ -3596,12 +3771,13 @@
 <span id="Core_BitArray_opEquals"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitArray.</span><span class="api-item-title-strong">opEquals</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L76" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L87" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Compares two arrays, and returns <span class="code-inline">true</span> if they are equal. </p>
+<p>Compares this bit array with another one for equality. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Returns <span class="code-inline">true</span> if both arrays have the same bit count and all bits are identical. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -3609,11 +3785,11 @@
 <span id="Core_BitArray_opIndex"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitArray.</span><span class="api-item-title-strong">opIndex</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L54" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L64" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Gets the value of the bit at a specific position. </p>
+<p>Returns the boolean value of the bit at a specific position. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
@@ -3622,7 +3798,7 @@
 <span id="Core_BitArray_opIndexAffect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitArray.</span><span class="api-item-title-strong">opIndexAffect</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L60" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L70" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3635,11 +3811,13 @@
 <span id="Core_BitArray_opPostCopy"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitArray.</span><span class="api-item-title-strong">opPostCopy</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L42" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L52" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Handles the deep copy of the array when it is copied. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>A new buffer is allocated and the content is copied over. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -3647,13 +3825,14 @@
 <span id="Core_BitArray_opVisit"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitArray.</span><span class="api-item-title-strong">opVisit</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L92" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L105" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Visit all the booleans. </p>
+<p>Provides a way to iterate over each bit in the array. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
 <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
+<p>This is a macro that accepts a code block to execute for each bit. Aliases: #alias0 for the boolean value, #alias1 for the index. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -3661,13 +3840,13 @@
 <span id="Core_BitArray_orWith"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitArray.</span><span class="api-item-title-strong">orWith</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L220" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L235" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Performs the bitwise OR operation between the elements of the current <span class="code-inline">BitArray</span> and the corresponding elements in the specified array. </p>
+<p>Performs a bitwise OR operation between this array and another. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">orWith</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)</span></div>
-<p>The current BitArray will be modified to store the result of the bitwise OR operation. </p>
+<p>The current array is modified to store the result. Asserts that arrays are of the same size. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -3675,14 +3854,14 @@
 <span id="Core_BitArray_reserve"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitArray.</span><span class="api-item-title-strong">reserve</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L127" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L140" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Reserve the given amount of bits. </p>
+<p>Reserves capacity for a given number of bits. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reserve</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, maxBits: <span class="STpe">u64</span>)</span></div>
-<p>The bits will <b>not</b> be initialized. </p>
-<p>Reserve the given amount of bits and set an initial value to all bits. </p>
+<p>The allocated memory is not initialized. </p>
+<p>Reserves capacity for a given number of bits and initializes them to a specific value. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reserve</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, maxBits: <span class="STpe">u64</span>, initialValue: <span class="STpe">bool</span>)</span></div>
 <p>
 <table class="api-item">
@@ -3691,7 +3870,7 @@
 <span id="Core_BitArray_set"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitArray.</span><span class="api-item-title-strong">set</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L161" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L174" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3704,11 +3883,11 @@
 <span id="Core_BitArray_setAll"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitArray.</span><span class="api-item-title-strong">setAll</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L155" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L168" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Sets all bits to the specified value. </p>
+<p>Sets all bits in the array to the specified boolean value. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setAll</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">bool</span>)</span></div>
 <p>
 <table class="api-item">
@@ -3717,13 +3896,13 @@
 <span id="Core_BitArray_xorWith"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitArray.</span><span class="api-item-title-strong">xorWith</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L231" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\bitarray.swg#L246" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Performs the bitwise XOR operation between the elements of the current <span class="code-inline">BitArray</span> and the corresponding elements in the specified array. </p>
+<p>Performs a bitwise XOR operation between this array and another. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">xorWith</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)</span></div>
-<p>The current BitArray will be modified to store the result of the bitwise XOR operation. </p>
+<p>The current array is modified to store the result. Asserts that arrays are of the same size. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -3731,97 +3910,98 @@
 <span id="Core_ByteStream"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">ByteStream</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L3" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\bytestream.swg#L4" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>A stream for reading from or writing to a byte buffer. </p>
 <table class="table-enumeration">
 <tr>
 <td>readBuffer</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> [..] <span class="STpe">u8</span></span></td>
-<td></td>
+<td>Buffer used for reading. </td>
 </tr>
 <tr>
 <td>writeBuffer</td>
 <td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">u8</span>)</span></td>
-<td></td>
+<td>Buffer used for writing. </td>
 </tr>
 <tr>
 <td>seek</td>
 <td class="code-type"><span class="STpe">u64</span></td>
-<td></td>
+<td>Current read/write position. </td>
 </tr>
 <tr>
 <td>eof</td>
 <td class="code-type"><span class="STpe">bool</span></td>
-<td></td>
+<td>End-of-file flag for reads. </td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ByteStream_getSeek">getSeek</a></span></td>
-<td>Returns the seek value. </td>
+<td>Returns the current seek position. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ByteStream_isEof">isEof</a></span></td>
-<td>Returns true if end has been reached. </td>
+<td>Returns true if the end of the buffer was reached during reading. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ByteStream_length">length</a></span></td>
-<td>Returns length of associated slice. </td>
+<td>Returns the total length of the buffer (read or write). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ByteStream_moveSeek">moveSeek</a></span></td>
-<td>Seek to the next byte. </td>
+<td>Advances the seek by a specified offset (default is 1). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ByteStream_openRead">openRead</a></span></td>
-<td>Creates a byte stream to read from a slice. </td>
+<td>Creates a byte stream for reading from a buffer. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ByteStream_openWrite">openWrite</a></span></td>
-<td>Creates a byte stream to write to an array. </td>
+<td>Creates a byte stream for writing to a buffer. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ByteStream_peekU8">peekU8</a></span></td>
-<td>Read one byte and seek. </td>
+<td>Peeks at a single byte without consuming it. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ByteStream_readBytes">readBytes</a></span></td>
-<td>Read the given amount of bytes. </td>
+<td>Reads <span class="code-inline">count</span> bytes from the stream into <span class="code-inline">dest</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ByteStream_readData">readData</a></span></td>
-<td>Get the buffer of datas to read. </td>
+<td>Returns a pointer to the underlying read or write buffer. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ByteStream_readNative">readNative</a></span></td>
-<td>Read a <span class="code-inline">native</span> type value. </td>
+<td>Reads a native value of type <span class="code-inline">T</span> from the stream. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ByteStream_readU8">readU8</a></span></td>
-<td>Read one byte and seek. </td>
+<td>Reads and consumes a single byte. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ByteStream_remainReadToSlice">remainReadToSlice</a></span></td>
-<td>Returns a slice of the remaing bytes to read. </td>
+<td>Returns a slice of unread bytes from the current seek to the end. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ByteStream_remainReadToString">remainReadToString</a></span></td>
-<td>Returns a string of the remaing bytes to read. </td>
+<td>Returns a string of unread bytes from the current seek to the end. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ByteStream_setSeek">setSeek</a></span></td>
-<td>Seek to the given position. </td>
+<td>Sets the seek to a specific offset. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ByteStream_writeBytes">writeBytes</a></span></td>
-<td>Write the given amount of bytes. </td>
+<td>Writes a slice of bytes to the stream. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ByteStream_writeNative">writeNative</a></span></td>
-<td>Write a <span class="code-inline">native</span> type value. </td>
+<td>Writes a native value of type <span class="code-inline">T</span> to the stream. </td>
 </tr>
 </table>
 <p>
@@ -3831,11 +4011,11 @@
 <span id="Core_ByteStream_getSeek"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ByteStream.</span><span class="api-item-title-strong">getSeek</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L147" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\bytestream.swg#L148" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns the seek value. </p>
+<p>Returns the current seek position. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getSeek</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
@@ -3844,11 +4024,11 @@
 <span id="Core_ByteStream_isEof"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ByteStream.</span><span class="api-item-title-strong">isEof</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L54" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\bytestream.swg#L55" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns true if end has been reached. </p>
+<p>Returns true if the end of the buffer was reached during reading. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEof</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
@@ -3857,11 +4037,11 @@
 <span id="Core_ByteStream_length"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ByteStream.</span><span class="api-item-title-strong">length</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L42" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\bytestream.swg#L43" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns length of associated slice. </p>
+<p>Returns the total length of the buffer (read or write). </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">length</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
@@ -3870,11 +4050,11 @@
 <span id="Core_ByteStream_moveSeek"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ByteStream.</span><span class="api-item-title-strong">moveSeek</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L125" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\bytestream.swg#L126" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Seek to the next byte. </p>
+<p>Advances the seek by a specified offset (default is 1). </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveSeek</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, offset: <span class="STpe">u64</span> = <span class="SNum">1</span>)</span></div>
 <p>
 <table class="api-item">
@@ -3883,11 +4063,11 @@
 <span id="Core_ByteStream_openRead"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ByteStream.</span><span class="api-item-title-strong">openRead</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L14" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\bytestream.swg#L15" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Creates a byte stream to read from a slice. </p>
+<p>Creates a byte stream for reading from a buffer. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">openRead</span>(readBuffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_ByteStream">ByteStream</a></span></span></div>
 <p>
 <table class="api-item">
@@ -3896,11 +4076,11 @@
 <span id="Core_ByteStream_openWrite"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ByteStream.</span><span class="api-item-title-strong">openWrite</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L22" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\bytestream.swg#L23" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Creates a byte stream to write to an array. </p>
+<p>Creates a byte stream for writing to a buffer. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">openWrite</span>(writeBuffer: *<span class="SFct"><a href="#Core_Array">Array</a></span>'<span class="STpe">u8</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_ByteStream">ByteStream</a></span></span></div>
 <p>
 <table class="api-item">
@@ -3909,11 +4089,11 @@
 <span id="Core_ByteStream_peekU8"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ByteStream.</span><span class="api-item-title-strong">peekU8</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L117" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\bytestream.swg#L118" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Read one byte and seek. </p>
+<p>Peeks at a single byte without consuming it. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">peekU8</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u8</span></span></div>
 <p>
 <table class="api-item">
@@ -3922,11 +4102,11 @@
 <span id="Core_ByteStream_readBytes"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ByteStream.</span><span class="api-item-title-strong">readBytes</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L100" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\bytestream.swg#L101" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Read the given amount of bytes. </p>
+<p>Reads <span class="code-inline">count</span> bytes from the stream into <span class="code-inline">dest</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readBytes</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, dest: *<span class="STpe">u8</span>, count: <span class="STpe">u64</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
@@ -3935,11 +4115,11 @@
 <span id="Core_ByteStream_readData"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ByteStream.</span><span class="api-item-title-strong">readData</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L48" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\bytestream.swg#L49" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Get the buffer of datas to read. </p>
+<p>Returns a pointer to the underlying read or write buffer. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readData</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">const</span> ^<span class="STpe">u8</span></span></div>
 <p>
 <table class="api-item">
@@ -3948,11 +4128,11 @@
 <span id="Core_ByteStream_readNative"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ByteStream.</span><span class="api-item-title-strong">readNative</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L90" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\bytestream.swg#L91" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Read a <span class="code-inline">native</span> type value. </p>
+<p>Reads a native value of type <span class="code-inline">T</span> from the stream. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">readNative</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst">T</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
@@ -3961,11 +4141,11 @@
 <span id="Core_ByteStream_readU8"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ByteStream.</span><span class="api-item-title-strong">readU8</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L109" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\bytestream.swg#L110" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Read one byte and seek. </p>
+<p>Reads and consumes a single byte. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readU8</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u8</span></span></div>
 <p>
 <table class="api-item">
@@ -3974,11 +4154,11 @@
 <span id="Core_ByteStream_remainReadToSlice"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ByteStream.</span><span class="api-item-title-strong">remainReadToSlice</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L30" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\bytestream.swg#L31" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns a slice of the remaing bytes to read. </p>
+<p>Returns a slice of unread bytes from the current seek to the end. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remainReadToSlice</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">const</span> [..] <span class="STpe">u8</span></span></div>
 <p>
 <table class="api-item">
@@ -3987,11 +4167,11 @@
 <span id="Core_ByteStream_remainReadToString"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ByteStream.</span><span class="api-item-title-strong">remainReadToString</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L36" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\bytestream.swg#L37" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns a string of the remaing bytes to read. </p>
+<p>Returns a string of unread bytes from the current seek to the end. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remainReadToString</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">string</span></span></div>
 <p>
 <table class="api-item">
@@ -4000,11 +4180,11 @@
 <span id="Core_ByteStream_setSeek"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ByteStream.</span><span class="api-item-title-strong">setSeek</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L138" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\bytestream.swg#L139" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Seek to the given position. </p>
+<p>Sets the seek to a specific offset. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setSeek</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, offset: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
@@ -4013,11 +4193,11 @@
 <span id="Core_ByteStream_writeBytes"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ByteStream.</span><span class="api-item-title-strong">writeBytes</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L73" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\bytestream.swg#L74" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Write the given amount of bytes. </p>
+<p>Writes a slice of bytes to the stream. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeBytes</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, slice: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
@@ -4026,11 +4206,11 @@
 <span id="Core_ByteStream_writeNative"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ByteStream.</span><span class="api-item-title-strong">writeNative</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L60" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\bytestream.swg#L61" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Write a <span class="code-inline">native</span> type value. </p>
+<p>Writes a native value of type <span class="code-inline">T</span> to the stream. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">writeNative</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, val: <span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
@@ -4239,7 +4419,7 @@
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><a href="#Core_Compress_BitStream"><span class="SCst">BitStream</span></a></td>
-<td></td>
+<td>A structure for reading a bit stream, useful for decompressors or parsers. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_Compress_Deflate"><span class="SCst">Deflate</span></a></td>
@@ -4261,98 +4441,99 @@
 <span id="Core_Compress_BitStream"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Compress.</span><span class="api-item-title-strong">BitStream</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L4" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L5" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>A structure for reading a bit stream, useful for decompressors or parsers. </p>
 <table class="table-enumeration">
 <tr>
 <td>stream</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> [..] <span class="STpe">u8</span></span></td>
-<td></td>
+<td>Input byte stream. </td>
 </tr>
 <tr>
 <td>curByte</td>
 <td class="code-type"><span class="STpe">u64</span></td>
-<td></td>
+<td>Index of current byte being processed. </td>
 </tr>
 <tr>
 <td>codeBuffer</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td></td>
+<td>Bit buffer holding bits to be consumed. </td>
 </tr>
 <tr>
 <td>numBits</td>
 <td class="code-type"><span class="STpe">u8</span></td>
-<td></td>
+<td>Number of bits currently in the buffer. </td>
 </tr>
 <tr>
 <td>eof</td>
 <td class="code-type"><span class="STpe">bool</span></td>
-<td></td>
+<td>Flag to signal end-of-stream. </td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_consumeBits">consumeBits</a></span></td>
-<td></td>
+<td>Consumes <span class="code-inline">width</span> bits from the buffer (advances the bit position). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_curPtr">curPtr</a></span></td>
-<td></td>
+<td>Returns a pointer to the current byte in the stream. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_discardToNextByte">discardToNextByte</a></span></td>
-<td></td>
+<td>Discards bits to align to the next byte boundary. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_init">init</a></span></td>
-<td></td>
+<td>Initializes the bit stream with an input buffer. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_peek32">peek32</a></span></td>
-<td></td>
+<td>Peeks 4 bytes (little-endian) into <span class="code-inline">dest</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_peek32Be">peek32Be</a></span></td>
-<td></td>
+<td>Peeks 4 bytes (big-endian) into <span class="code-inline">dest</span>, auto-switches based on platform. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_peekBits">peekBits</a></span></td>
-<td></td>
+<td>Returns next <span class="code-inline">width</span> bits without consuming them (refills if needed). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_peekBitsNoRefill">peekBitsNoRefill</a></span></td>
-<td></td>
+<td>Like peekBits, but assumes enough bits are already available. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_peekBytes">peekBytes</a></span></td>
-<td></td>
+<td>Peeks <span class="code-inline">width</span> bytes into <span class="code-inline">dest</span>, consuming bits after each byte. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_readBits">readBits</a></span></td>
-<td></td>
+<td>Reads and consumes <span class="code-inline">width</span> bits from the buffer. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_readBitsNoRefill">readBitsNoRefill</a></span></td>
-<td></td>
+<td>Reads and consumes <span class="code-inline">width</span> bits without checking buffer availability. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_refill">refill</a></span></td>
-<td></td>
+<td>Refills the bit buffer until at least <span class="code-inline">width</span> bits are available. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_revert">revert</a></span></td>
-<td></td>
+<td>Reverts stream to last byte-aligned state (undo partial read). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_size">size</a></span></td>
-<td></td>
+<td>Returns the total size of the stream. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Compress_BitStream_startPtr">startPtr</a></span></td>
-<td></td>
+<td>Returns a pointer to the beginning of the stream. </td>
 </tr>
 </table>
 <p>
@@ -4362,10 +4543,11 @@
 <span id="Core_Compress_BitStream_consumeBits"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitStream.</span><span class="api-item-title-strong">consumeBits</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L87" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L101" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Consumes <span class="code-inline">width</span> bits from the buffer (advances the bit position). </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">consumeBits</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, width: <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
@@ -4374,10 +4556,11 @@
 <span id="Core_Compress_BitStream_curPtr"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitStream.</span><span class="api-item-title-strong">curPtr</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L25" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L29" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Returns a pointer to the current byte in the stream. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">curPtr</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">const</span> ^<span class="STpe">u8</span></span></div>
 <p>
 <table class="api-item">
@@ -4386,10 +4569,11 @@
 <span id="Core_Compress_BitStream_discardToNextByte"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitStream.</span><span class="api-item-title-strong">discardToNextByte</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L94" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L109" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Discards bits to align to the next byte boundary. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">discardToNextByte</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
@@ -4398,10 +4582,11 @@
 <span id="Core_Compress_BitStream_init"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitStream.</span><span class="api-item-title-strong">init</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L15" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L17" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Initializes the bit stream with an input buffer. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buf: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
@@ -4410,10 +4595,11 @@
 <span id="Core_Compress_BitStream_peek32"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitStream.</span><span class="api-item-title-strong">peek32</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L117" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L135" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Peeks 4 bytes (little-endian) into <span class="code-inline">dest</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">peek32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, dest: ^<span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
@@ -4422,10 +4608,11 @@
 <span id="Core_Compress_BitStream_peek32Be"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitStream.</span><span class="api-item-title-strong">peek32Be</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L129" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L148" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Peeks 4 bytes (big-endian) into <span class="code-inline">dest</span>, auto-switches based on platform. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">peek32Be</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, dest: ^<span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
@@ -4434,10 +4621,11 @@
 <span id="Core_Compress_BitStream_peekBits"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitStream.</span><span class="api-item-title-strong">peekBits</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L58" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L68" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Returns next <span class="code-inline">width</span> bits without consuming them (refills if needed). </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">peekBits</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, width: <span class="STpe">u8</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
@@ -4446,10 +4634,11 @@
 <span id="Core_Compress_BitStream_peekBitsNoRefill"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitStream.</span><span class="api-item-title-strong">peekBitsNoRefill</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L65" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L76" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Like peekBits, but assumes enough bits are already available. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">peekBitsNoRefill</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, width: <span class="STpe">u8</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
@@ -4458,10 +4647,11 @@
 <span id="Core_Compress_BitStream_peekBytes"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitStream.</span><span class="api-item-title-strong">peekBytes</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L107" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L124" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Peeks <span class="code-inline">width</span> bytes into <span class="code-inline">dest</span>, consuming bits after each byte. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">peekBytes</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, width: <span class="STpe">u8</span>, dest: ^<span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
@@ -4470,10 +4660,11 @@
 <span id="Core_Compress_BitStream_readBits"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitStream.</span><span class="api-item-title-strong">readBits</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L72" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L84" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Reads and consumes <span class="code-inline">width</span> bits from the buffer. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readBits</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, width: <span class="STpe">u8</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
@@ -4482,10 +4673,11 @@
 <span id="Core_Compress_BitStream_readBitsNoRefill"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitStream.</span><span class="api-item-title-strong">readBitsNoRefill</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L79" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L92" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Reads and consumes <span class="code-inline">width</span> bits without checking buffer availability. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readBitsNoRefill</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, width: <span class="STpe">u8</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
@@ -4494,10 +4686,11 @@
 <span id="Core_Compress_BitStream_refill"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitStream.</span><span class="api-item-title-strong">refill</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L30" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L36" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Refills the bit buffer until at least <span class="code-inline">width</span> bits are available. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">refill</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, width = <span class="SNum">24</span>'<span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
@@ -4506,10 +4699,11 @@
 <span id="Core_Compress_BitStream_revert"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitStream.</span><span class="api-item-title-strong">revert</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L99" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L115" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Reverts stream to last byte-aligned state (undo partial read). </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">revert</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
@@ -4518,10 +4712,11 @@
 <span id="Core_Compress_BitStream_size"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitStream.</span><span class="api-item-title-strong">size</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L28" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L33" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Returns the total size of the stream. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">size</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
@@ -4530,10 +4725,11 @@
 <span id="Core_Compress_BitStream_startPtr"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitStream.</span><span class="api-item-title-strong">startPtr</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L22" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L25" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Returns a pointer to the beginning of the stream. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startPtr</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">const</span> ^<span class="STpe">u8</span></span></div>
 <p>
 <table class="api-item">
@@ -4542,7 +4738,7 @@
 <span id="Core_Compress_Deflate"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Compress.</span><span class="api-item-title-strong">Deflate</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L151" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L150" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4571,7 +4767,7 @@
 <span id="Core_Compress_Deflate_CompressionFlags"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Deflate.</span><span class="api-item-title-strong">CompressionFlags</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1096" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1095" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4596,7 +4792,7 @@
 <span id="Core_Compress_Deflate_CompressionLevel"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Deflate.</span><span class="api-item-title-strong">CompressionLevel</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1104" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1103" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4629,7 +4825,7 @@
 <span id="Core_Compress_Deflate_CompressionStrategy"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Deflate.</span><span class="api-item-title-strong">CompressionStrategy</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1113" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1112" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4662,7 +4858,7 @@
 <span id="Core_Compress_Deflate_compress"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Deflate.</span><span class="api-item-title-strong">compress</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1141" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1140" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4675,7 +4871,7 @@
 <span id="Core_Compress_Deflate_init"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Deflate.</span><span class="api-item-title-strong">init</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1129" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1128" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4688,7 +4884,7 @@
 <span id="Core_Compress_Deflate_opDrop"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Deflate.</span><span class="api-item-title-strong">opDrop</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1122" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1121" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4779,145 +4975,146 @@
 <span id="Core_ConcatBuffer"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">ConcatBuffer</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L20" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L24" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Represents a growable buffer, which is divided in buckets to avoid a copy/realloc when the buffer needs to increase its size. This is the main difference with Array. </p>
+<p>Represents a growable buffer that is divided into buckets (chunks of memory). </p>
 <table class="table-enumeration">
 <tr>
 <td>allocator</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Swag</span>.<span class="SCst">IAllocator</span></span></td>
-<td></td>
+<td>The allocator to use for all memory operations. </td>
 </tr>
 <tr>
 <td>firstBucket</td>
 <td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Core_ConcatBufferBucket">ConcatBufferBucket</a></span></span></td>
-<td></td>
+<td>The first bucket in the chain. </td>
 </tr>
 <tr>
 <td>curBucket</td>
 <td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Core_ConcatBufferBucket">ConcatBufferBucket</a></span></span></td>
-<td></td>
+<td>The bucket where the current seek pointer is located. </td>
 </tr>
 <tr>
 <td>lastBucket</td>
 <td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Core_ConcatBufferBucket">ConcatBufferBucket</a></span></span></td>
-<td></td>
+<td>The last bucket in the chain. </td>
 </tr>
 <tr>
 <td>currentSP</td>
 <td class="code-type"><span class="SCde">^<span class="STpe">u8</span></span></td>
-<td></td>
+<td>The current read/write pointer in the <span class="code-inline">curBucket</span>. </td>
 </tr>
 <tr>
 <td>granularity</td>
 <td class="code-type"><span class="STpe">u64</span></td>
-<td></td>
+<td>The default size for newly allocated buckets. </td>
 </tr>
 <tr>
 <td>isAtEnd</td>
 <td class="code-type"><span class="STpe">bool</span></td>
-<td></td>
+<td><span class="code-inline">true</span> if the seek pointer is at the very end of the buffer. </td>
 </tr>
 <tr>
 <td>viewFirstBucket</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_ConcatBufferBucket">ConcatBufferBucket</a></span></span></td>
-<td></td>
+<td>A pre-allocated bucket used for views, to avoid a separate allocation. </td>
 </tr>
 </table>
+<p>This structure avoids large reallocations and copies when the buffer needs to grow, making it efficient for building data piece by piece. </p>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_addBytes">addBytes</a></span></td>
-<td>Append a slice of bytes to the buffer If <span class="code-inline">contiguous</span> is false, the slice will be divided in chunks if necessary. </td>
+<td>Appends a slice of bytes to the buffer. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_addNative">addNative</a></span></td>
-<td>Append one byte to the buffer. </td>
+<td>Appends a native type (like u8, s32, f64) to the buffer. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_addStruct">addStruct</a></span></td>
-<td>Append the content of a struct. </td>
+<td>Appends the raw byte content of a struct to the buffer. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_clear">clear</a></span></td>
-<td>Clear the content without freing the buffers. </td>
+<td>Clears the buffer's content without deallocating memory. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_count">count</a></span></td>
-<td>Returns the number of bytes. </td>
+<td>Returns the total number of bytes currently stored in the buffer. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_getOffset">getOffset</a></span></td>
-<td>Get the linearized seek offset. </td>
+<td>Calculates the absolute byte offset of a given seek position. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_getSeek">getSeek</a></span></td>
-<td>Returns the current <span class="code-inline">seek</span> in the buffer. </td>
+<td>Returns a <span class="code-inline">ConcatBufferSeek</span> representing the current position in the buffer. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_grow">grow</a></span></td>
-<td>Be sure that there is enough room to store at least <span class="code-inline">numBytes</span> bytes. </td>
+<td>Ensures that there is enough room to store at least <span class="code-inline">numBytes</span> more bytes. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_makeLinear">makeLinear</a></span></td>
-<td>linearize all buckets in one single big bucket. </td>
+<td>Merges all buckets into a single, contiguous memory block. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_moveSeek">moveSeek</a></span></td>
-<td>Seek current write pointer. </td>
+<td>Moves the current seek pointer forward by <span class="code-inline">num</span> bytes. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_moveToString">moveToString</a></span></td>
-<td>Move the content of the buffer to the String if possible. </td>
+<td>Moves the buffer's content into a new <span class="code-inline">String</span>, invalidating the buffer. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_release">release</a></span></td>
-<td>Release all allocated buffers. </td>
+<td>Frees all memory associated with the buffer, including all buckets. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_setAllocator">setAllocator</a></span></td>
-<td>Associate an allocator with the buffer. </td>
+<td>Associates a specific allocator with the buffer. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_setBucketSize">setBucketSize</a></span></td>
-<td>Set the granularity of datas when allocated new buckets. Minimum size is 4. </td>
+<td>Sets the minimum size for new buckets allocated by the buffer. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_setEndSeek">setEndSeek</a></span></td>
-<td>Set the end <span class="code-inline">seek</span>. </td>
+<td>Sets the end of the buffer to a given <span class="code-inline">seek</span> position, effectively truncating it. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_setFirstBucket">setFirstBucket</a></span></td>
-<td>Share <span class="code-inline">data</span> with the firstBucket. </td>
+<td>Initializes the buffer to use an external, existing slice of data as its first bucket. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_setSeek">setSeek</a></span></td>
-<td>Set the current <span class="code-inline">seek</span>. </td>
+<td>Sets the current read/write position to a given <span class="code-inline">seek</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_toSlice">toSlice</a></span></td>
-<td>Convert to a slice <i>only</i> if the buffer is linear, or return null. </td>
+<td>Returns the buffer's content as a slice, but only if the buffer is <span class="code-inline">linear</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_toString">toString</a></span></td>
-<td>Convert the buffer to a String. </td>
+<td>Converts the buffer to a <span class="code-inline">String</span> by copying all its content. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_opCount">opCount</a></span></td>
-<td></td>
+<td>Returns the total number of bytes in the buffer. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_opDrop">opDrop</a></span></td>
-<td></td>
+<td>Ensures all allocated memory is freed when the buffer goes out of scope. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_opVisit">opVisit</a></span></td>
-<td>Visit all valid buckets. </td>
+<td>Provides a way to iterate over each bucket in the buffer. </td>
 </tr>
 </table>
 <p>
@@ -4927,12 +5124,13 @@
 <span id="Core_ConcatBuffer_addBytes"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ConcatBuffer.</span><span class="api-item-title-strong">addBytes</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L205" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L215" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Append a slice of bytes to the buffer If <span class="code-inline">contiguous</span> is false, the slice will be divided in chunks if necessary. </p>
+<p>Appends a slice of bytes to the buffer. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addBytes</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, bytes: <span class="SCmp">#null</span> <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, contiguous = <span class="SKwd">true</span>)</span></div>
+<p>If <span class="code-inline">contiguous</span> is false, the slice can be split across multiple buckets if necessary. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -4940,11 +5138,11 @@
 <span id="Core_ConcatBuffer_addNative"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ConcatBuffer.</span><span class="api-item-title-strong">addNative</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L170" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L180" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Append one byte to the buffer. </p>
+<p>Appends a native type (like u8, s32, f64) to the buffer. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">addNative</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, val: <span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
@@ -4953,11 +5151,11 @@
 <span id="Core_ConcatBuffer_addStruct"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ConcatBuffer.</span><span class="api-item-title-strong">addStruct</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L198" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L208" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Append the content of a struct. </p>
+<p>Appends the raw byte content of a struct to the buffer. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">addStruct</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, val: <span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
@@ -4966,12 +5164,13 @@
 <span id="Core_ConcatBuffer_clear"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ConcatBuffer.</span><span class="api-item-title-strong">clear</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L158" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L168" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Clear the content without freing the buffers. </p>
+<p>Clears the buffer's content without deallocating memory. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>This resets the buffer to be empty, allowing its allocated buckets to be reused. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -4979,11 +5178,11 @@
 <span id="Core_ConcatBuffer_count"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ConcatBuffer.</span><span class="api-item-title-strong">count</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L65" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L73" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns the number of bytes. </p>
+<p>Returns the total number of bytes currently stored in the buffer. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">count</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
@@ -4992,11 +5191,11 @@
 <span id="Core_ConcatBuffer_getOffset"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ConcatBuffer.</span><span class="api-item-title-strong">getOffset</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L287" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L297" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Get the linearized seek offset. </p>
+<p>Calculates the absolute byte offset of a given seek position. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getOffset</span>(seek: <span class="SCst"><a href="#Core_ConcatBufferSeek">ConcatBufferSeek</a></span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
@@ -5005,11 +5204,11 @@
 <span id="Core_ConcatBuffer_getSeek"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ConcatBuffer.</span><span class="api-item-title-strong">getSeek</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L293" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L303" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns the current <span class="code-inline">seek</span> in the buffer. </p>
+<p>Returns a <span class="code-inline">ConcatBufferSeek</span> representing the current position in the buffer. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getSeek</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_ConcatBufferSeek">ConcatBufferSeek</a></span></span></div>
 <p>
 <table class="api-item">
@@ -5018,12 +5217,13 @@
 <span id="Core_ConcatBuffer_grow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ConcatBuffer.</span><span class="api-item-title-strong">grow</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L71" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L80" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Be sure that there is enough room to store at least <span class="code-inline">numBytes</span> bytes. </p>
+<p>Ensures that there is enough room to store at least <span class="code-inline">numBytes</span> more bytes. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">grow</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, numBytes: <span class="STpe">u64</span>)</span></div>
+<p>If the current bucket is full, a new one is allocated. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -5031,12 +5231,13 @@
 <span id="Core_ConcatBuffer_makeLinear"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ConcatBuffer.</span><span class="api-item-title-strong">makeLinear</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L456" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L470" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>linearize all buckets in one single big bucket. </p>
+<p>Merges all buckets into a single, contiguous memory block. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">makeLinear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>After this call, the buffer is guaranteed to be linear. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -5044,11 +5245,11 @@
 <span id="Core_ConcatBuffer_moveSeek"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ConcatBuffer.</span><span class="api-item-title-strong">moveSeek</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L302" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L312" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Seek current write pointer. </p>
+<p>Moves the current seek pointer forward by <span class="code-inline">num</span> bytes. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveSeek</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, num: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
@@ -5057,13 +5258,13 @@
 <span id="Core_ConcatBuffer_moveToString"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ConcatBuffer.</span><span class="api-item-title-strong">moveToString</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L436" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L449" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Move the content of the buffer to the String if possible. </p>
+<p>Moves the buffer's content into a new <span class="code-inline">String</span>, invalidating the buffer. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveToString</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
-<p>If a direct move is not possible because the buffer contains more than on bucket, then a copy will be made instead. </p>
+<p>If the buffer is linear (one bucket), this is a fast operation that avoids copying. Otherwise, it falls back to copying the data. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -5071,10 +5272,11 @@
 <span id="Core_ConcatBuffer_opCount"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ConcatBuffer.</span><span class="api-item-title-strong">opCount</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L35" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L40" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Returns the total number of bytes in the buffer. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
@@ -5083,10 +5285,11 @@
 <span id="Core_ConcatBuffer_opDrop"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ConcatBuffer.</span><span class="api-item-title-strong">opDrop</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L40" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L46" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Ensures all allocated memory is freed when the buffer goes out of scope. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
@@ -5095,13 +5298,14 @@
 <span id="Core_ConcatBuffer_opVisit"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ConcatBuffer.</span><span class="api-item-title-strong">opVisit</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L47" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L55" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Visit all valid buckets. </p>
+<p>Provides a way to iterate over each bucket in the buffer. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
 <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
+<p>This is a macro that accepts a code block to execute for each bucket. Alias: #alias0 for the bucket pointer. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -5109,11 +5313,11 @@
 <span id="Core_ConcatBuffer_release"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ConcatBuffer.</span><span class="api-item-title-strong">release</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L138" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L147" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Release all allocated buffers. </p>
+<p>Frees all memory associated with the buffer, including all buckets. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">release</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
@@ -5122,13 +5326,13 @@
 <span id="Core_ConcatBuffer_setAllocator"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ConcatBuffer.</span><span class="api-item-title-strong">setAllocator</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L124" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L133" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Associate an allocator with the buffer. </p>
+<p>Associates a specific allocator with the buffer. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setAllocator</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, alloc: <span class="SCst">Swag</span>.<span class="SCst">IAllocator</span>)</span></div>
-<p>The allocator can only be changed if the buffer has no pending buckets. </p>
+<p>This can only be called when the buffer is empty. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -5136,11 +5340,11 @@
 <span id="Core_ConcatBuffer_setBucketSize"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ConcatBuffer.</span><span class="api-item-title-strong">setBucketSize</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L131" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L140" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Set the granularity of datas when allocated new buckets. Minimum size is 4. </p>
+<p>Sets the minimum size for new buckets allocated by the buffer. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setBucketSize</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, size: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
@@ -5149,11 +5353,11 @@
 <span id="Core_ConcatBuffer_setEndSeek"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ConcatBuffer.</span><span class="api-item-title-strong">setEndSeek</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L358" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L368" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Set the end <span class="code-inline">seek</span>. </p>
+<p>Sets the end of the buffer to a given <span class="code-inline">seek</span> position, effectively truncating it. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setEndSeek</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, seek: <span class="SCst"><a href="#Core_ConcatBufferSeek">ConcatBufferSeek</a></span>)</span></div>
 <p>
 <table class="api-item">
@@ -5162,12 +5366,13 @@
 <span id="Core_ConcatBuffer_setFirstBucket"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ConcatBuffer.</span><span class="api-item-title-strong">setFirstBucket</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L386" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L398" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Share <span class="code-inline">data</span> with the firstBucket. </p>
+<p>Initializes the buffer to use an external, existing slice of data as its first bucket. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFirstBucket</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, data: [..] <span class="STpe">u8</span>)</span></div>
+<p>This is a "view" mode; the buffer does not own or free this data. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -5175,11 +5380,11 @@
 <span id="Core_ConcatBuffer_setSeek"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ConcatBuffer.</span><span class="api-item-title-strong">setSeek</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L341" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L351" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Set the current <span class="code-inline">seek</span>. </p>
+<p>Sets the current read/write position to a given <span class="code-inline">seek</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setSeek</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, seek: <span class="SCst"><a href="#Core_ConcatBufferSeek">ConcatBufferSeek</a></span>)</span></div>
 <p>
 <table class="api-item">
@@ -5188,13 +5393,13 @@
 <span id="Core_ConcatBuffer_toSlice"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ConcatBuffer.</span><span class="api-item-title-strong">toSlice</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L378" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L389" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Convert to a slice <i>only</i> if the buffer is linear, or return null. </p>
+<p>Returns the buffer's content as a slice, but only if the buffer is <span class="code-inline">linear</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSlice</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;[..] <span class="STpe">u8</span></span></div>
-<p>See <a href="#Core_ConcatBuffer_makeLinear">ConcatBuffer.makeLinear</a> </p>
+<p>A buffer is linear if it consists of a single bucket. Returns <span class="code-inline">null</span> otherwise. See [[makeLinear]]. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -5202,13 +5407,13 @@
 <span id="Core_ConcatBuffer_toString"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ConcatBuffer.</span><span class="api-item-title-strong">toString</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L399" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L411" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Convert the buffer to a String. </p>
+<p>Converts the buffer to a <span class="code-inline">String</span> by copying all its content. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, alloc: <span class="SCst">Swag</span>.<span class="SCst">IAllocator</span> = <span class="SKwd">null</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
-<p>A copy will be made, so the buffer is still valid after the call. See <a href="#Core_ConcatBuffer_moveToString">ConcatBuffer.moveToString</a> </p>
+<p>The buffer remains valid after this call. See [[moveToString]] for a more efficient version that avoids copying when possible. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -5216,7 +5421,7 @@
 <span id="Core_ConcatBufferBucket"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">ConcatBufferBucket</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L3" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L4" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5224,27 +5429,27 @@
 <tr>
 <td>datas</td>
 <td class="code-type"><span class="SCde">^<span class="STpe">u8</span></span></td>
-<td></td>
+<td>Pointer to the raw memory of the bucket. </td>
 </tr>
 <tr>
 <td>next</td>
 <td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Core_ConcatBufferBucket">ConcatBufferBucket</a></span></span></td>
-<td></td>
+<td>Pointer to the next bucket in the chain. </td>
 </tr>
 <tr>
 <td>count</td>
 <td class="code-type"><span class="STpe">u64</span></td>
-<td></td>
+<td>Number of bytes used in this bucket. </td>
 </tr>
 <tr>
 <td>size</td>
 <td class="code-type"><span class="STpe">u64</span></td>
-<td></td>
+<td>Total allocated size of this bucket in bytes. </td>
 </tr>
 <tr>
 <td>countBefore</td>
 <td class="code-type"><span class="STpe">u64</span></td>
-<td></td>
+<td>Total number of bytes in all preceding buckets. </td>
 </tr>
 </table>
 <p>
@@ -5254,22 +5459,24 @@
 <span id="Core_ConcatBufferSeek"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">ConcatBufferSeek</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L12" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L15" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Represents a position (seek) within a ConcatBuffer. </p>
 <table class="table-enumeration">
 <tr>
 <td>bucket</td>
 <td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Core_ConcatBufferBucket">ConcatBufferBucket</a></span></span></td>
-<td></td>
+<td>The bucket where the position is located. </td>
 </tr>
 <tr>
 <td>sp</td>
 <td class="code-type"><span class="SCde">^<span class="STpe">u8</span></span></td>
-<td></td>
+<td>The exact memory address of the position. </td>
 </tr>
 </table>
+<p>It holds both the bucket and the specific pointer within that bucket. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -5705,7 +5912,7 @@
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><a href="#Core_Directory_EnumerationOptions"><span class="SCst">EnumerationOptions</span></a></td>
-<td></td>
+<td>Options for customizing file and directory enumeration. </td>
 </tr>
 </table>
 <h3>Functions</h3>
@@ -5720,11 +5927,11 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Directory_enumerateDirectories">enumerateDirectories</a></span></td>
-<td>Get all the directories in the given directory. </td>
+<td>Gets all directories in the specified directory. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Directory_enumerateFiles">enumerateFiles</a></span></td>
-<td>Get all the files of the given directory. </td>
+<td>Gets all files in the specified directory. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Directory_exists">exists</a></span></td>
@@ -5754,50 +5961,51 @@
 <span id="Core_Directory_EnumerationOptions"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Directory.</span><span class="api-item-title-strong">EnumerationOptions</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\directory.swg#L4" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\directory.swg#L5" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Options for customizing file and directory enumeration. </p>
 <table class="table-enumeration">
 <tr>
 <td>matchExtension</td>
 <td class="code-type"><span class="STpe">string</span></td>
-<td></td>
+<td>Optional extension to match (e.g. ".txt"). </td>
 </tr>
 <tr>
 <td>matchFileName</td>
 <td class="code-type"><span class="STpe">string</span></td>
-<td></td>
+<td>Optional file name pattern to match. </td>
 </tr>
 <tr>
 <td>skipAttributes</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileAttributes">FileAttributes</a></span></span></td>
-<td></td>
+<td>Attributes to skip during enumeration. </td>
 </tr>
 <tr>
 <td>recurse</td>
 <td class="code-type"><span class="STpe">bool</span></td>
-<td></td>
+<td>Whether to recurse into subdirectories. </td>
 </tr>
 <tr>
 <td>wantFiles</td>
 <td class="code-type"><span class="STpe">bool</span></td>
-<td></td>
+<td>Whether to include files in the results. </td>
 </tr>
 <tr>
 <td>wantDirectories</td>
 <td class="code-type"><span class="STpe">bool</span></td>
-<td></td>
+<td>Whether to include directories in the results. </td>
 </tr>
 <tr>
 <td>wantSpecialDirectories</td>
 <td class="code-type"><span class="STpe">bool</span></td>
-<td></td>
+<td>Whether to include "." and ".." in the results. </td>
 </tr>
 <tr>
 <td>filterLambda</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst"></span><span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileInfo">FileInfo</a></span>)-&gt;<span class="STpe">bool</span></span></td>
-<td></td>
+<td>Optional lambda to filter results. </td>
 </tr>
 </table>
 <p>
@@ -5807,7 +6015,7 @@
 <span id="Core_Directory_create"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Directory.</span><span class="api-item-title-strong">create</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\directory.win32.swg#L6" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\directory.win32.swg#L6" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5819,7 +6027,7 @@
 <span id="Core_Directory_enumerate"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Directory.</span><span class="api-item-title-strong">enumerate</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\directory.win32.swg#L29" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\directory.win32.swg#L29" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5832,11 +6040,11 @@
 <span id="Core_Directory_enumerateDirectories"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Directory.</span><span class="api-item-title-strong">enumerateDirectories</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\directory.swg#L28" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\directory.swg#L29" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Get all the directories in the given directory. </p>
+<p>Gets all directories in the specified directory. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">enumerateDirectories</span>(dirName: <span class="STpe">string</span>, matchExtension: <span class="STpe">string</span> = <span class="SKwd">null</span>, recurse = <span class="SKwd">false</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileInfo">FileInfo</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
@@ -5845,11 +6053,11 @@
 <span id="Core_Directory_enumerateFiles"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Directory.</span><span class="api-item-title-strong">enumerateFiles</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\directory.swg#L18" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\directory.swg#L19" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Get all the files of the given directory. </p>
+<p>Gets all files in the specified directory. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">enumerateFiles</span>(dirName: <span class="STpe">string</span>, matchExtension: <span class="STpe">string</span> = <span class="SKwd">null</span>, recurse = <span class="SKwd">false</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileInfo">FileInfo</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
@@ -5858,7 +6066,7 @@
 <span id="Core_Directory_exists"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Directory.</span><span class="api-item-title-strong">exists</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\directory.win32.swg#L13" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\directory.win32.swg#L13" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5871,7 +6079,7 @@
 <span id="Core_Directory_getCurrent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Directory.</span><span class="api-item-title-strong">getCurrent</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\directory.win32.swg#L125" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\directory.win32.swg#L125" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5884,7 +6092,7 @@
 <span id="Core_Directory_getDrives"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Directory.</span><span class="api-item-title-strong">getDrives</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\directory.win32.swg#L150" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\directory.win32.swg#L150" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5897,7 +6105,7 @@
 <span id="Core_Directory_getVolumes"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Directory.</span><span class="api-item-title-strong">getVolumes</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\directory.win32.swg#L171" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\directory.win32.swg#L171" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5910,7 +6118,7 @@
 <span id="Core_Directory_setCurrent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Directory.</span><span class="api-item-title-strong">setCurrent</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\directory.win32.swg#L142" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\directory.win32.swg#L142" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6107,10 +6315,44 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Env_Process_getProcessId">getProcessId</a></span></td>
+<td>Get current process ID. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Env_Process_getThreadId">getThreadId</a></span></td>
+<td>Get current thread ID. </td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Env_Process_waitForExit">waitForExit</a></span></td>
 <td>Wait for the process to be done. </td>
 </tr>
 </table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Env_Process_getProcessId"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Process.</span><span class="api-item-title-strong">getProcessId</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\process.win32.swg#L49" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Get current process ID. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getProcessId</span>()-&gt;<span class="STpe">u64</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Env_Process_getThreadId"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Process.</span><span class="api-item-title-strong">getThreadId</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\process.win32.swg#L52" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Get current thread ID. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getThreadId</span>()-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6700,50 +6942,50 @@
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><a href="#Core_File_FileInfo"><span class="SCst">FileInfo</span></a></td>
-<td></td>
+<td>Represents metadata and properties of a file or directory. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_File_FileStream"><span class="SCst">FileStream</span></a></td>
-<td></td>
+<td>Represents an open file stream for reading, writing, or seeking. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_File_Folder"><span class="SCst">Folder</span></a></td>
-<td></td>
+<td>Represents a folder mapping to a specific structure type with its data. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_File_TextReader"><span class="SCst">TextReader</span></a></td>
-<td></td>
+<td>TextReader reads a text file from a FileStream with buffering and encoding support. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_File_TweakFile"><span class="SCst">TweakFile</span></a></td>
-<td></td>
+<td>Represents a tweak file parser that can load configuration into registered folders. </td>
 </tr>
 </table>
 <h3>Enums</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><a href="#Core_File_FileAccess"><span class="SCst">FileAccess</span></a></td>
-<td></td>
+<td>File access permissions. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_File_FileAttributes"><span class="SCst">FileAttributes</span></a></td>
-<td></td>
+<td>Attributes that define file or directory characteristics. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_File_FileMode"><span class="SCst">FileMode</span></a></td>
-<td></td>
+<td>File creation and opening behaviors. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_File_FileShare"><span class="SCst">FileShare</span></a></td>
-<td></td>
+<td>File sharing options. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_File_SeekOrigin"><span class="SCst">SeekOrigin</span></a></td>
-<td></td>
+<td>Origin from which to calculate seek offset in a file stream. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_File_TextEncoding"><span class="SCst">TextEncoding</span></a></td>
-<td></td>
+<td>Text encoding formats supported for reading text files. </td>
 </tr>
 </table>
 <h3>Functions</h3>
@@ -6754,7 +6996,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_File_duplicate">duplicate</a></span></td>
-<td>Duplicate a file. </td>
+<td>Creates a duplicate of an existing file. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_File_exists">exists</a></span></td>
@@ -6766,7 +7008,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_File_getFileInfo">getFileInfo</a></span></td>
-<td>Get informations about a file. </td>
+<td>Retrieves information about a specific file. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_File_getInfo">getInfo</a></span></td>
@@ -6786,19 +7028,19 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_File_readAllBytes">readAllBytes</a></span></td>
-<td>Read a file, and store the result in an array of bytes. </td>
+<td>Reads the entire content of a file into an array of bytes. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_File_readAllLines">readAllLines</a></span></td>
-<td>Read all the lines of a file. </td>
+<td>Reads all lines from a file into an array of strings. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_File_readAllText">readAllText</a></span></td>
-<td>Read a file, and store the result in an utf8 string. </td>
+<td>Reads the entire content of a file into a UTF-8 string. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_File_readEachLines">readEachLines</a></span></td>
-<td>Call user code for each line. </td>
+<td>Executes user code for each line read from a file. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_File_touch">touch</a></span></td>
@@ -6806,15 +7048,15 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_File_writeAllBytes">writeAllBytes</a></span><span class="SCde">(<span class="STpe">string</span>, <span class="SKwd">const</span> &<span class="SCst">ConcatBuffer</span>)</span></td>
-<td>Write a file with the content of a <span class="code-inline">ConcatBuffer</span>. </td>
+<td>Writes the content of a ConcatBuffer to a file. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_File_writeAllBytes">writeAllBytes</a></span><span class="SCde">(<span class="STpe">string</span>, <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></td>
-<td>Write a file with the content of a slice of bytes. </td>
+<td>Writes the content of a byte slice to a file. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_File_writeAllLines">writeAllLines</a></span></td>
-<td>Write a file with the content of an array of string, one per line. </td>
+<td>Writes an array of strings to a file, one string per line. </td>
 </tr>
 </table>
 <p>
@@ -6824,22 +7066,23 @@
 <span id="Core_File_FileAccess"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">FileAccess</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.swg#L13" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\file.swg#L15" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>File access permissions. </p>
 <table class="table-enumeration">
 <tr>
 <td>Read</td>
-<td></td>
+<td>Read access. </td>
 </tr>
 <tr>
 <td>Write</td>
-<td></td>
+<td>Write access. </td>
 </tr>
 <tr>
 <td>ReadWrite</td>
-<td></td>
+<td>Read and write access. </td>
 </tr>
 </table>
 <p>
@@ -6849,70 +7092,71 @@
 <span id="Core_File_FileAttributes"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">FileAttributes</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\fileattributes.swg#L5" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\fileattributes.swg#L6" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Attributes that define file or directory characteristics. </p>
 <table class="table-enumeration">
 <tr>
 <td>Zero</td>
-<td></td>
+<td>No attributes set. </td>
 </tr>
 <tr>
 <td>ReadOnly</td>
-<td></td>
+<td>File is read-only. </td>
 </tr>
 <tr>
 <td>Hidden</td>
-<td></td>
+<td>File is hidden. </td>
 </tr>
 <tr>
 <td>System</td>
-<td></td>
+<td>File is part of the operating system. </td>
 </tr>
 <tr>
 <td>Directory</td>
-<td></td>
+<td>Entry is a directory. </td>
 </tr>
 <tr>
 <td>Archive</td>
-<td></td>
+<td>File is marked for backup or removal. </td>
 </tr>
 <tr>
 <td>Device</td>
-<td></td>
+<td>Reserved for system use (rarely used). </td>
 </tr>
 <tr>
 <td>Normal</td>
-<td></td>
+<td>File has no other attributes set. </td>
 </tr>
 <tr>
 <td>Temporary</td>
-<td></td>
+<td>File is used for temporary storage. </td>
 </tr>
 <tr>
 <td>SparseFile</td>
-<td></td>
+<td>File is a sparse file. </td>
 </tr>
 <tr>
 <td>ReparsePoint</td>
-<td></td>
+<td>File contains a reparse point (e.g., symbolic link). </td>
 </tr>
 <tr>
 <td>Compressed</td>
-<td></td>
+<td>File is compressed. </td>
 </tr>
 <tr>
 <td>Offline</td>
-<td></td>
+<td>File data is not available immediately (e.g., archived). </td>
 </tr>
 <tr>
 <td>NotContentIndexed</td>
-<td></td>
+<td>File is excluded from content indexing. </td>
 </tr>
 <tr>
 <td>Encrypted</td>
-<td></td>
+<td>File is encrypted. </td>
 </tr>
 </table>
 <p>
@@ -6922,47 +7166,48 @@
 <span id="Core_File_FileInfo"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">FileInfo</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\fileinfo.swg#L5" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\fileinfo.swg#L6" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Represents metadata and properties of a file or directory. </p>
 <table class="table-enumeration">
 <tr>
 <td>fullname</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></td>
-<td></td>
+<td>Full path of the file or directory. </td>
 </tr>
 <tr>
 <td>attributes</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileAttributes">FileAttributes</a></span></span></td>
-<td></td>
+<td>Attributes describing the file (e.g., read-only, hidden). </td>
 </tr>
 <tr>
 <td>creationTime</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_Time">Time</a></span>.<span class="SCst"><a href="#Core_Time_DateTime">DateTime</a></span></span></td>
-<td></td>
+<td>Time the file or directory was created. </td>
 </tr>
 <tr>
 <td>lastAccessTime</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_Time">Time</a></span>.<span class="SCst"><a href="#Core_Time_DateTime">DateTime</a></span></span></td>
-<td></td>
+<td>Time the file or directory was last accessed. </td>
 </tr>
 <tr>
 <td>lastWriteTime</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_Time">Time</a></span>.<span class="SCst"><a href="#Core_Time_DateTime">DateTime</a></span></span></td>
-<td></td>
+<td>Time the file or directory was last modified. </td>
 </tr>
 <tr>
 <td>size</td>
 <td class="code-type"><span class="STpe">u64</span></td>
-<td></td>
+<td>Size of the file in bytes (0 for directories). </td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_File_FileInfo_isDirectory">isDirectory</a></span></td>
-<td></td>
+<td>Returns true if the file info represents a directory. </td>
 </tr>
 </table>
 <p>
@@ -6972,10 +7217,11 @@
 <span id="Core_File_FileInfo_isDirectory"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FileInfo.</span><span class="api-item-title-strong">isDirectory</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\fileinfo.swg#L18" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\fileinfo.swg#L20" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Returns true if the file info represents a directory. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isDirectory</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
@@ -6984,34 +7230,35 @@
 <span id="Core_File_FileMode"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">FileMode</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.swg#L20" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\file.swg#L23" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>File creation and opening behaviors. </p>
 <table class="table-enumeration">
 <tr>
 <td>Append</td>
-<td></td>
+<td>Opens the file if it exists and moves the seek to the end, or creates a new file. </td>
 </tr>
 <tr>
 <td>Create</td>
-<td></td>
+<td>Creates a new file, overwriting if it already exists. </td>
 </tr>
 <tr>
 <td>CreateNew</td>
-<td></td>
+<td>Creates a new file, throws if the file already exists. </td>
 </tr>
 <tr>
 <td>Open</td>
-<td></td>
+<td>Opens an existing file. </td>
 </tr>
 <tr>
 <td>OpenOrCreate</td>
-<td></td>
+<td>Opens the file if it exists, otherwise creates a new one. </td>
 </tr>
 <tr>
 <td>Truncate</td>
-<td></td>
+<td>Opens an existing file and truncates its content to zero length. </td>
 </tr>
 </table>
 <p>
@@ -7021,34 +7268,35 @@
 <span id="Core_File_FileShare"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">FileShare</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.swg#L31" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\file.swg#L35" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>File sharing options. </p>
 <table class="table-enumeration">
 <tr>
 <td>Zero</td>
-<td></td>
+<td>No sharing. </td>
 </tr>
 <tr>
 <td>Delete</td>
-<td></td>
+<td>Allows the file to be deleted by others. </td>
 </tr>
 <tr>
 <td>Inheritable</td>
-<td></td>
+<td>File handle is inheritable. </td>
 </tr>
 <tr>
 <td>Read</td>
-<td></td>
+<td>Allows shared read access. </td>
 </tr>
 <tr>
 <td>Write</td>
-<td></td>
+<td>Allows shared write access. </td>
 </tr>
 <tr>
 <td>ReadWrite</td>
-<td></td>
+<td>Allows shared read and write access. </td>
 </tr>
 </table>
 <p>
@@ -7058,35 +7306,36 @@
 <span id="Core_File_FileStream"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">FileStream</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.swg#L7" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\filestream.swg#L9" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Represents an open file stream for reading, writing, or seeking. </p>
 <table class="table-enumeration">
 <tr>
 <td>name</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></td>
-<td></td>
+<td>File name associated with the stream. </td>
 </tr>
 <tr>
 <td>handle</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileHandle">FileHandle</a></span></span></td>
-<td></td>
+<td>Platform-specific file handle. </td>
 </tr>
 <tr>
 <td>canRead</td>
 <td class="code-type"><span class="STpe">bool</span></td>
-<td></td>
+<td>True if the stream supports reading. </td>
 </tr>
 <tr>
 <td>canSeek</td>
 <td class="code-type"><span class="STpe">bool</span></td>
-<td></td>
+<td>True if the stream supports seeking. </td>
 </tr>
 <tr>
 <td>canWrite</td>
 <td class="code-type"><span class="STpe">bool</span></td>
-<td></td>
+<td>True if the stream supports writing. </td>
 </tr>
 </table>
 <h3>Functions</h3>
@@ -7105,7 +7354,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_File_FileStream_isOpen">isOpen</a></span></td>
-<td>Returns true if the stream is valid. </td>
+<td>Returns true if the stream is currently open and valid. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_File_FileStream_read">read</a></span></td>
@@ -7113,7 +7362,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_File_FileStream_readValue">readValue</a></span></td>
-<td>Read from the given file stream, and returns <span class="code-inline">true</span> if all bytes have been read. </td>
+<td>Reads a value of type <span class="code-inline">T</span> from the stream into <span class="code-inline">buffer</span>; returns true if read was successful. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_File_FileStream_setPosition">setPosition</a></span></td>
@@ -7142,7 +7391,7 @@
 <span id="Core_File_FileStream_close"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FileStream.</span><span class="api-item-title-strong">close</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L38" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\filestream.win32.swg#L38" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7155,7 +7404,7 @@
 <span id="Core_File_FileStream_getPosition"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FileStream.</span><span class="api-item-title-strong">getPosition</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L61" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\filestream.win32.swg#L61" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7168,7 +7417,7 @@
 <span id="Core_File_FileStream_getSize"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FileStream.</span><span class="api-item-title-strong">getSize</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L48" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\filestream.win32.swg#L48" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7181,11 +7430,11 @@
 <span id="Core_File_FileStream_isOpen"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FileStream.</span><span class="api-item-title-strong">isOpen</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.swg#L19" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\filestream.swg#L21" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns true if the stream is valid. </p>
+<p>Returns true if the stream is currently open and valid. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isOpen</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
@@ -7194,7 +7443,7 @@
 <span id="Core_File_FileStream_opDrop"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FileStream.</span><span class="api-item-title-strong">opDrop</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L8" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\filestream.win32.swg#L8" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7206,7 +7455,7 @@
 <span id="Core_File_FileStream_read"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FileStream.</span><span class="api-item-title-strong">read</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L14" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\filestream.win32.swg#L14" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7219,11 +7468,11 @@
 <span id="Core_File_FileStream_readValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FileStream.</span><span class="api-item-title-strong">readValue</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.swg#L25" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\filestream.swg#L27" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Read from the given file stream, and returns <span class="code-inline">true</span> if all bytes have been read. </p>
+<p>Reads a value of type <span class="code-inline">T</span> from the stream into <span class="code-inline">buffer</span>; returns true if read was successful. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">readValue</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buffer: *<span class="SCst">T</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
@@ -7232,7 +7481,7 @@
 <span id="Core_File_FileStream_setPosition"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FileStream.</span><span class="api-item-title-strong">setPosition</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L74" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\filestream.win32.swg#L74" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7245,7 +7494,7 @@
 <span id="Core_File_FileStream_skipPosition"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FileStream.</span><span class="api-item-title-strong">skipPosition</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L99" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\filestream.win32.swg#L99" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7258,7 +7507,7 @@
 <span id="Core_File_FileStream_write"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FileStream.</span><span class="api-item-title-strong">write</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L26" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\filestream.win32.swg#L26" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7271,20 +7520,21 @@
 <span id="Core_File_Folder"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">Folder</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\tweakfile.swg#L5" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\tweakfile.swg#L6" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Represents a folder mapping to a specific structure type with its data. </p>
 <table class="table-enumeration">
 <tr>
 <td>type</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span></span></td>
-<td></td>
+<td>Type information of the structure. </td>
 </tr>
 <tr>
 <td>data</td>
 <td class="code-type"><span class="SCde">^<span class="STpe">void</span></span></td>
-<td></td>
+<td>Pointer to the actual structure instance. </td>
 </tr>
 </table>
 <p>
@@ -7294,22 +7544,23 @@
 <span id="Core_File_SeekOrigin"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">SeekOrigin</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.swg#L5" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\file.swg#L6" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Origin from which to calculate seek offset in a file stream. </p>
 <table class="table-enumeration">
 <tr>
 <td>Begin</td>
-<td></td>
+<td>Seek from the beginning of the file. </td>
 </tr>
 <tr>
 <td>Current</td>
-<td></td>
+<td>Seek from the current position. </td>
 </tr>
 <tr>
 <td>End</td>
-<td></td>
+<td>Seek from the end of the file. </td>
 </tr>
 </table>
 <p>
@@ -7319,18 +7570,19 @@
 <span id="Core_File_TextEncoding"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">TextEncoding</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\textreader.swg#L3" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\textreader.swg#L4" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Text encoding formats supported for reading text files. </p>
 <table class="table-enumeration">
 <tr>
 <td>Ascii</td>
-<td></td>
+<td>ASCII encoding. </td>
 </tr>
 <tr>
 <td>Utf8</td>
-<td></td>
+<td>UTF-8 encoding. </td>
 </tr>
 </table>
 <p>
@@ -7340,59 +7592,60 @@
 <span id="Core_File_TextReader"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">TextReader</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\textreader.swg#L9" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\textreader.swg#L11" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>TextReader reads a text file from a FileStream with buffering and encoding support. </p>
 <table class="table-enumeration">
 <tr>
 <td>stream</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileStream">FileStream</a></span></span></td>
-<td></td>
+<td>File stream used to read from disk. </td>
 </tr>
 <tr>
 <td>buffer</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">u8</span>)</span></td>
-<td></td>
+<td>Internal byte buffer used for reading data. </td>
 </tr>
 <tr>
 <td>encodingType</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_TextEncoding">TextEncoding</a></span></span></td>
-<td></td>
+<td>Text encoding type (default is UTF-8). </td>
 </tr>
 <tr>
 <td>byteSeek</td>
 <td class="code-type"><span class="STpe">u64</span></td>
-<td></td>
+<td>Current byte offset in the buffer. </td>
 </tr>
 <tr>
 <td>bufferSize</td>
 <td class="code-type"><span class="STpe">u64</span></td>
-<td></td>
+<td>Size of the buffer. </td>
 </tr>
 <tr>
 <td>checkPreamble</td>
 <td class="code-type"><span class="STpe">bool</span></td>
-<td></td>
+<td>Indicates whether to check for a UTF-8 BOM on first read. </td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_File_TextReader_close">close</a></span></td>
-<td>Close the reader. </td>
+<td>Closes the reader and the associated stream. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_File_TextReader_open">open</a></span></td>
-<td>Open the reader. </td>
+<td>Opens the reader with the specified text encoding (default is UTF-8). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_File_TextReader_readLine">readLine</a></span></td>
-<td>Read one line of text. </td>
+<td>Reads one line of text into the result string Returns false if the end of the stream has been reached. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_File_TextReader_readToEnd">readToEnd</a></span></td>
-<td>Read from the current position to the end, and returns the corresponding utf8 string. </td>
+<td>Reads from the current position to the end of the stream and returns the content as a UTF-8 string. </td>
 </tr>
 </table>
 <p>
@@ -7402,11 +7655,11 @@
 <span id="Core_File_TextReader_close"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TextReader.</span><span class="api-item-title-strong">close</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\textreader.swg#L67" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\textreader.swg#L69" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Close the reader. </p>
+<p>Closes the reader and the associated stream. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">close</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
@@ -7415,11 +7668,11 @@
 <span id="Core_File_TextReader_open"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TextReader.</span><span class="api-item-title-strong">open</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\textreader.swg#L52" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\textreader.swg#L54" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Open the reader. </p>
+<p>Opens the reader with the specified text encoding (default is UTF-8). </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">open</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, fullname: <span class="STpe">string</span>, encoding = <span class="SCst"><a href="#Core_File_TextEncoding">TextEncoding</a></span>.<span class="SCst"><a href="#Core_Utf8">Utf8</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
@@ -7428,13 +7681,12 @@
 <span id="Core_File_TextReader_readLine"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TextReader.</span><span class="api-item-title-strong">readLine</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\textreader.swg#L75" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\textreader.swg#L77" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Read one line of text. </p>
+<p>Reads one line of text into the result string Returns false if the end of the stream has been reached. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readLine</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, result: &<span class="SCst"><a href="#Core_String">String</a></span>)-&gt;<span class="STpe">bool</span></span></div>
-<p>Returns false if the end of the stream has been reached. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -7442,11 +7694,11 @@
 <span id="Core_File_TextReader_readToEnd"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TextReader.</span><span class="api-item-title-strong">readToEnd</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\textreader.swg#L137" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\textreader.swg#L140" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Read from the current position to the end, and returns the corresponding utf8 string. </p>
+<p>Reads from the current position to the end of the stream and returns the content as a UTF-8 string. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readToEnd</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
 <p>
 <table class="api-item">
@@ -7455,34 +7707,35 @@
 <span id="Core_File_TweakFile"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">TweakFile</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\tweakfile.swg#L11" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\tweakfile.swg#L13" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Represents a tweak file parser that can load configuration into registered folders. </p>
 <table class="table-enumeration">
 <tr>
 <td>folders</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_Folder">Folder</a></span>)</span></td>
-<td></td>
+<td>List of registered folders (structure instances) to fill. </td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_File_TweakFile_parse">parse</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SFct">Array</span>'(<span class="STpe">string</span>))</span></td>
-<td>Parse a list of lines. </td>
+<td>Parses tweak content from an array of lines. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_File_TweakFile_parse">parse</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">string</span>)</span></td>
-<td>Parse a list of lines. </td>
+<td>Parses tweak content from a string. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_File_TweakFile_parseFile">parseFile</a></span></td>
-<td>Read and parse a file. </td>
+<td>Reads and parses a tweak file from disk. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_File_TweakFile_registerFolder">registerFolder</a></span></td>
-<td>Register a new structure to be parsed. </td>
+<td>Registers a new structure to be parsed as a folder. </td>
 </tr>
 </table>
 <p>
@@ -7492,13 +7745,14 @@
 <span id="Core_File_TweakFile_parse"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TweakFile.</span><span class="api-item-title-strong">parse</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\tweakfile.swg#L44" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\tweakfile.swg#L46" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Parse a list of lines. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">parse</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, content: <span class="STpe">string</span>) <span class="SKwd">throw</span>
-<span class="SKwd">func</span> <span class="SFct">parse</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, lines: <span class="SFct"><a href="#Core_Array">Array</a></span>'<span class="STpe">string</span>) <span class="SKwd">throw</span></span></div>
+<p>Parses tweak content from a string. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">parse</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, content: <span class="STpe">string</span>) <span class="SKwd">throw</span></span></div>
+<p>Parses tweak content from an array of lines. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">parse</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, lines: <span class="SFct"><a href="#Core_Array">Array</a></span>'<span class="STpe">string</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7506,11 +7760,11 @@
 <span id="Core_File_TweakFile_parseFile"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TweakFile.</span><span class="api-item-title-strong">parseFile</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\tweakfile.swg#L27" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\tweakfile.swg#L29" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Read and parse a file. </p>
+<p>Reads and parses a tweak file from disk. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">parseFile</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, fileName: <span class="STpe">string</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
@@ -7519,11 +7773,11 @@
 <span id="Core_File_TweakFile_registerFolder"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TweakFile.</span><span class="api-item-title-strong">registerFolder</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\tweakfile.swg#L19" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\tweakfile.swg#L21" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Register a new structure to be parsed. </p>
+<p>Registers a new structure to be parsed as a folder. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">registerFolder</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, folder: *<span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
@@ -7532,7 +7786,7 @@
 <span id="Core_File_delete"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">delete</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.win32.swg#L7" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\file.win32.swg#L7" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7545,11 +7799,11 @@
 <span id="Core_File_duplicate"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">duplicate</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.swg#L145" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\file.swg#L149" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Duplicate a file. </p>
+<p>Creates a duplicate of an existing file. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">duplicate</span>(newName, oldName: <span class="STpe">string</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
@@ -7558,7 +7812,7 @@
 <span id="Core_File_exists"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">exists</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.win32.swg#L31" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\file.win32.swg#L31" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7571,7 +7825,7 @@
 <span id="Core_File_getAttributes"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">getAttributes</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\fileattributes.win32.swg#L48" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\fileattributes.win32.swg#L48" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7584,11 +7838,11 @@
 <span id="Core_File_getFileInfo"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">getFileInfo</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.swg#L152" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\file.swg#L156" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Get informations about a file. </p>
+<p>Retrieves information about a specific file. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getFileInfo</span>(fullName: <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileInfo">FileInfo</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
@@ -7597,7 +7851,7 @@
 <span id="Core_File_getInfo"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">getInfo</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\fileinfo.win32.swg#L7" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\fileinfo.win32.swg#L7" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7610,7 +7864,7 @@
 <span id="Core_File_open"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">open</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.win32.swg#L47" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\file.win32.swg#L47" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7623,7 +7877,7 @@
 <span id="Core_File_openRead"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">openRead</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.win32.swg#L104" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\file.win32.swg#L104" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7636,7 +7890,7 @@
 <span id="Core_File_openWrite"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">openWrite</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.win32.swg#L110" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\file.win32.swg#L110" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7649,11 +7903,11 @@
 <span id="Core_File_readAllBytes"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">readAllBytes</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.swg#L96" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\file.swg#L100" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Read a file, and store the result in an array of bytes. </p>
+<p>Reads the entire content of a file into an array of bytes. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readAllBytes</span>(fullname: <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
@@ -7662,11 +7916,11 @@
 <span id="Core_File_readAllLines"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">readAllLines</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.swg#L65" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\file.swg#L69" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Read all the lines of a file. </p>
+<p>Reads all lines from a file into an array of strings. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readAllLines</span>(fullname: <span class="STpe">string</span>, encoding = <span class="SCst"><a href="#Core_File_TextEncoding">TextEncoding</a></span>.<span class="SCst"><a href="#Core_Utf8">Utf8</a></span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
@@ -7675,11 +7929,11 @@
 <span id="Core_File_readAllText"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">readAllText</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.swg#L42" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\file.swg#L46" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Read a file, and store the result in an utf8 string. </p>
+<p>Reads the entire content of a file into a UTF-8 string. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readAllText</span>(fullname: <span class="STpe">string</span>, encoding = <span class="SCst"><a href="#Core_File_TextEncoding">TextEncoding</a></span>.<span class="SCst"><a href="#Core_Utf8">Utf8</a></span>, normalizeEol = <span class="SKwd">false</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
@@ -7688,11 +7942,11 @@
 <span id="Core_File_readEachLines"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">readEachLines</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.swg#L79" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\file.swg#L83" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Call user code for each line. </p>
+<p>Executes user code for each line read from a file. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
 <span class="SKwd">func</span> <span class="SFct">readEachLines</span>(fullname: <span class="STpe">string</span>, encoding = <span class="SCst"><a href="#Core_File_TextEncoding">TextEncoding</a></span>.<span class="SCst"><a href="#Core_Utf8">Utf8</a></span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>) <span class="SKwd">throw</span></span></div>
 <p>
@@ -7702,7 +7956,7 @@
 <span id="Core_File_touch"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">touch</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.win32.swg#L15" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\file.win32.swg#L15" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7715,13 +7969,13 @@
 <span id="Core_File_writeAllBytes"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">writeAllBytes</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.swg#L117" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\file.swg#L121" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Write a file with the content of a slice of bytes. </p>
+<p>Writes the content of a byte slice to a file. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeAllBytes</span>(fullname: <span class="STpe">string</span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;<span class="STpe">u64</span> <span class="SKwd">throw</span></span></div>
-<p>Write a file with the content of a <span class="code-inline">ConcatBuffer</span>. </p>
+<p>Writes the content of a ConcatBuffer to a file. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeAllBytes</span>(fullname: <span class="STpe">string</span>, buffer: <span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>)-&gt;<span class="STpe">u64</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
@@ -7730,11 +7984,11 @@
 <span id="Core_File_writeAllLines"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">writeAllLines</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.swg#L130" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\file.swg#L134" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Write a file with the content of an array of string, one per line. </p>
+<p>Writes an array of strings to a file, one string per line. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeAllLines</span>(fullname: <span class="STpe">string</span>, lines: <span class="SFct"><a href="#Core_Array">Array</a></span>'<span class="STpe">string</span>)-&gt;<span class="STpe">u64</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
@@ -7886,6 +8140,354 @@
 </p>
 <p>Returns a formatted string stored in the temporary allocator. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toStringTemp</span>(fmt: <span class="STpe">string</span>, values: ...)-&gt;<span class="STpe">string</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_GUID128"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">GUID128</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L29" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>A 128-bit Globally Unique Identifier structure. </p>
+<table class="table-enumeration">
+<tr>
+<td>using guid</td>
+<td class="code-type"><span class="SCde">{val8:[<span class="SNum">16</span>] <span class="STpe">u8</span>,val64:[<span class="SNum">2</span>] <span class="STpe">u64</span>}</span></td>
+<td></td>
+</tr>
+</table>
+<p>Provides RFC 4122 compliant UUID generation and manipulation. </p>
+<h3>Functions</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_GUID128_clear">clear</a></span></td>
+<td>Clear id. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_GUID128_getRandom">getRandom</a></span></td>
+<td>Get a version 4 GUID128 (random). </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_GUID128_getString">getString</a></span></td>
+<td>Convert guid to a string. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_GUID128_toString">toString</a></span></td>
+<td>Convert guid to a string of the form xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx. </td>
+</tr>
+</table>
+<h3>Special Functions</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_GUID128_opEquals">opEquals</a></span></td>
+<td>Compare two GUID128 instances for equality. </td>
+</tr>
+</table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_GUID128_IConvert_convert"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IConvert.</span><span class="api-item-title-strong">convert</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L133" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Convert the GUID to its string representation for display. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convert</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, convFmt: <span class="SCst"><a href="#Core_StrConv">StrConv</a></span>.<span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="STpe">string</span>)</span></div>
+<p>Uses the standard UUID format with hyphens. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_GUID128_IHash32_compute"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IHash32.</span><span class="api-item-title-strong">compute</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L145" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Compute a 32-bit hash value for the GUID. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compute</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u32</span></span></div>
+<p>Uses CRC32 algorithm on the entire 16-byte GUID data. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_GUID128_clear"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">GUID128.</span><span class="api-item-title-strong">clear</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L60" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Clear id. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_GUID128_getRandom"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">GUID128.</span><span class="api-item-title-strong">getRandom</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L48" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Get a version 4 GUID128 (random). </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getRandom</span>()-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_GUID128">GUID128</a></span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_GUID128_getString"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">GUID128.</span><span class="api-item-title-strong">getString</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L117" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Convert guid to a string. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getString</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_GUID128_opEquals"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">GUID128.</span><span class="api-item-title-strong">opEquals</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L42" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Compare two GUID128 instances for equality. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Returns <span class="code-inline">true</span> if both GUIDs have identical values. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_GUID128_toString"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">GUID128.</span><span class="api-item-title-strong">toString</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L67" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Convert guid to a string of the form xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, result: [..] <span class="STpe">u8</span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_GUID64"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">GUID64</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L153" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>A 64-bit Globally Unique Identifier structure. </p>
+<table class="table-enumeration">
+<tr>
+<td>guid</td>
+<td class="code-type"><span class="STpe">u64</span></td>
+<td>64-bit unique identifier value. </td>
+</tr>
+</table>
+<p>Provides compact GUID generation with multiple entropy strategies for different use cases. </p>
+<h3>Functions</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_GUID64_clear">clear</a></span></td>
+<td>Clear GUID. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_GUID64_getHighEntropy">getHighEntropy</a></span></td>
+<td>Get a high-entropy GUID64 using multiple entropy sources. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_GUID64_getRandom">getRandom</a></span></td>
+<td>Get a fully random GUID64 using MT64. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_GUID64_getString">getString</a></span></td>
+<td>Convert guid to a string. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_GUID64_getTimestamp">getTimestamp</a></span></td>
+<td>Get a timestamp-based GUID64 with minimal collision risk Structure: 32-bit timestamp + 16-bit microseconds + 12-bit counter + 4-bit random. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_GUID64_isNull">isNull</a></span></td>
+<td>Check if GUID is null/empty. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_GUID64_parse">parse</a></span></td>
+<td>Parse GUID64 from hex string (with or without 0x prefix). </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_GUID64_toString">toString</a></span></td>
+<td>Convert GUID64 to hexadecimal string. </td>
+</tr>
+</table>
+<h3>Special Functions</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_GUID64_opEquals">opEquals</a></span></td>
+<td>Compare two GUID64 instances for equality. </td>
+</tr>
+</table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_GUID64_IConvert_convert"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IConvert.</span><span class="api-item-title-strong">convert</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L318" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Convert the GUID to its hexadecimal string representation. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convert</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, convFmt: <span class="SCst"><a href="#Core_StrConv">StrConv</a></span>.<span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="STpe">string</span>)</span></div>
+<p>Produces a 16-character uppercase hex string without separators. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_GUID64_IHash32_compute"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IHash32.</span><span class="api-item-title-strong">compute</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L330" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Compute a 32-bit hash value for the GUID. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compute</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u32</span></span></div>
+<p>Uses CRC32 algorithm on the 8-byte GUID data for consistent hashing. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_GUID64_clear"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">GUID64.</span><span class="api-item-title-strong">clear</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L228" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Clear GUID. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_GUID64_getHighEntropy"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">GUID64.</span><span class="api-item-title-strong">getHighEntropy</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L207" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Get a high-entropy GUID64 using multiple entropy sources. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getHighEntropy</span>()-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_GUID64">GUID64</a></span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_GUID64_getRandom"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">GUID64.</span><span class="api-item-title-strong">getRandom</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L197" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Get a fully random GUID64 using MT64. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getRandom</span>()-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_GUID64">GUID64</a></span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_GUID64_getString"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">GUID64.</span><span class="api-item-title-strong">getString</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L269" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Convert guid to a string. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getString</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_GUID64_getTimestamp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">GUID64.</span><span class="api-item-title-strong">getTimestamp</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L169" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Get a timestamp-based GUID64 with minimal collision risk Structure: 32-bit timestamp + 16-bit microseconds + 12-bit counter + 4-bit random. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTimestamp</span>()-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_GUID64">GUID64</a></span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_GUID64_isNull"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">GUID64.</span><span class="api-item-title-strong">isNull</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L234" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Check if GUID is null/empty. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isNull</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_GUID64_opEquals"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">GUID64.</span><span class="api-item-title-strong">opEquals</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L162" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Compare two GUID64 instances for equality. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Returns <span class="code-inline">true</span> if both GUIDs have identical values. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_GUID64_parse"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">GUID64.</span><span class="api-item-title-strong">parse</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L279" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Parse GUID64 from hex string (with or without 0x prefix). </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">parse</span>(str: <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_GUID64">GUID64</a></span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_GUID64_toString"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">GUID64.</span><span class="api-item-title-strong">toString</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L240" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Convert GUID64 to hexadecimal string. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, result: [..] <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8589,127 +9191,128 @@
 <span id="Core_HashSet"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">HashSet</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashset.swg#L11" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashset.swg#L13" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>A set of unique values. </p>
+<p>A hash set implemented with an open-addressing hash table. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SFct"><a href="#Core_HashSet">HashSet</a></span>(<span class="SCst">K</span>)</span></div>
 <table class="table-enumeration">
 <tr>
 <td>HASH_FREE</td>
 <td class="code-type"><span class="STpe">s32</span></td>
-<td></td>
+<td>The slot is empty and has never been used. </td>
 </tr>
 <tr>
 <td>HASH_DELETED</td>
 <td class="code-type"><span class="STpe">s32</span></td>
-<td></td>
+<td>The slot was previously occupied but has been deleted. </td>
 </tr>
 <tr>
 <td>HASH_FIRST</td>
 <td class="code-type"><span class="STpe">s32</span></td>
-<td></td>
+<td>The first possible valid hash value. </td>
 </tr>
 <tr>
 <td>HASH_MASK</td>
 <td class="code-type"><span class="STpe">s32</span></td>
-<td></td>
+<td>A mask to ensure that valid hashes are &gt;= HASH_FIRST. </td>
 </tr>
 <tr>
 <td>allocator</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Swag</span>.<span class="SCst">IAllocator</span></span></td>
-<td></td>
+<td>The allocator used for memory operations. </td>
 </tr>
 <tr>
 <td>table</td>
 <td class="code-type"><span class="SCde">^<span class="SCst"></span><span class="SFct"><a href="#Core_HashSetEntry">HashSetEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashSetEntry">HashSetEntry</a></span>.<span class="SCst">K</span>)</span></td>
-<td></td>
+<td>Pointer to the contiguous memory block for the hash table. </td>
 </tr>
 <tr>
 <td>count</td>
 <td class="code-type"><span class="STpe">u64</span></td>
-<td>Number of valid entries. </td>
+<td>The number of valid elements currently in the set. </td>
 </tr>
 <tr>
 <td>capacity</td>
 <td class="code-type"><span class="STpe">u64</span></td>
-<td>Number of total entries the table can hold. </td>
+<td>The total number of slots in the hash table. </td>
 </tr>
 <tr>
 <td>deleted</td>
 <td class="code-type"><span class="STpe">u64</span></td>
-<td>Number of deleted entries. </td>
+<td>The number of slots marked as deleted. </td>
 </tr>
 </table>
+<p>It stores a collection of unique keys, providing fast lookups, additions, and removals. </p>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashSet_add">add</a></span><span class="SCde">(<span class="STpe">self</span>, &&<span class="SCst">K</span>)</span></td>
-<td>Add a new element. </td>
+<td>Adds a new key to the set by moving it. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashSet_add">add</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">K</span>)</span></td>
-<td>Add a new element. </td>
+<td>Adds a new key to the set by copying it. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashSet_clear">clear</a></span></td>
-<td>Remove all elements. </td>
+<td>Removes all elements from the set without deallocating the table memory. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashSet_contains">contains</a></span></td>
-<td>Returns true if the table contains the given element. </td>
+<td>Returns <span class="code-inline">true</span> if the set contains the given key. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashSet_emplaceInternal">emplaceInternal</a></span></td>
-<td>Add a new element. </td>
+<td>Internal helper to add a new element with a pre-computed hash. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashSet_free">free</a></span></td>
-<td>Free the hashset content. </td>
+<td>Frees the hash set's memory and resets its state. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashSet_getNewIndex">getNewIndex</a></span></td>
-<td></td>
+<td>Finds the correct index for a new key, handling collisions and deleted slots. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashSet_grow">grow</a></span></td>
-<td></td>
+<td>Checks if the table needs to be resized and triggers it if necessary. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashSet_hashKey">hashKey</a></span></td>
-<td></td>
+<td>Computes the hash for a given key. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashSet_remove">remove</a></span></td>
-<td>Remove the given element if it exists. </td>
+<td>Removes a key from the set. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashSet_reserve">reserve</a></span></td>
-<td>Reserve <span class="code-inline">newCapacity</span> elements in the set. </td>
+<td>Resizes the hash table to a new capacity, rehashing all existing elements. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashSet_opAffect">opAffect</a></span></td>
-<td></td>
+<td>Replaces the content of the set with elements from a slice. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashSet_opCount">opCount</a></span></td>
-<td></td>
+<td>Returns the number of elements in the set. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashSet_opDrop">opDrop</a></span></td>
-<td></td>
+<td>Ensures the allocated memory is freed when the set goes out of scope. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashSet_opPostCopy">opPostCopy</a></span></td>
-<td></td>
+<td>Handles the deep copy of the set when it is copied. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashSet_opVisit">opVisit</a></span></td>
-<td></td>
+<td>Provides a way to iterate over each key in the set. </td>
 </tr>
 </table>
 <p>
@@ -8719,7 +9322,7 @@
 <span id="Core_HashSet_IConvert_convert"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IConvert.</span><span class="api-item-title-strong">convert</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashset.swg#L367" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashset.swg#L389" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8731,13 +9334,16 @@
 <span id="Core_HashSet_add"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashSet.</span><span class="api-item-title-strong">add</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashset.swg#L240" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashset.swg#L260" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Add a new element. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashSetEntry">HashSetEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashSetEntry">HashSetEntry</a></span>.<span class="SCst">K</span>)
-<span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: &&<span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashSetEntry">HashSetEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashSetEntry">HashSetEntry</a></span>.<span class="SCst">K</span>)</span></div>
+<p>Adds a new key to the set by copying it. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashSetEntry">HashSetEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashSetEntry">HashSetEntry</a></span>.<span class="SCst">K</span>)</span></div>
+<p>If the key already exists, does nothing. Returns a pointer to the entry. </p>
+<p>Adds a new key to the set by moving it. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: &&<span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashSetEntry">HashSetEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashSetEntry">HashSetEntry</a></span>.<span class="SCst">K</span>)</span></div>
+<p>If the key already exists, does nothing. Returns a pointer to the entry. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -8745,12 +9351,13 @@
 <span id="Core_HashSet_clear"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashSet.</span><span class="api-item-title-strong">clear</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashset.swg#L339" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashset.swg#L361" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Remove all elements. </p>
+<p>Removes all elements from the set without deallocating the table memory. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>All slots are marked as <span class="code-inline">FREE</span>. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -8758,11 +9365,11 @@
 <span id="Core_HashSet_contains"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashSet.</span><span class="api-item-title-strong">contains</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashset.swg#L320" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashset.swg#L341" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns true if the table contains the given element. </p>
+<p>Returns <span class="code-inline">true</span> if the set contains the given key. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
@@ -8771,11 +9378,11 @@
 <span id="Core_HashSet_emplaceInternal"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashSet.</span><span class="api-item-title-strong">emplaceInternal</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashset.swg#L269" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashset.swg#L289" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Add a new element. </p>
+<p>Internal helper to add a new element with a pre-computed hash. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceInternal</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, hashVal: <span class="STpe">u32</span>, key: &<span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashSetEntry">HashSetEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashSetEntry">HashSetEntry</a></span>.<span class="SCst">K</span>)</span></div>
 <p>
 <table class="api-item">
@@ -8784,12 +9391,13 @@
 <span id="Core_HashSet_free"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashSet.</span><span class="api-item-title-strong">free</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashset.swg#L114" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashset.swg#L128" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Free the hashset content. </p>
+<p>Frees the hash set's memory and resets its state. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>If keys have destructors, they are called. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -8797,11 +9405,13 @@
 <span id="Core_HashSet_getNewIndex"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashSet.</span><span class="api-item-title-strong">getNewIndex</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashset.swg#L181" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashset.swg#L199" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Finds the correct index for a new key, handling collisions and deleted slots. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getNewIndex</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>, idx: <span class="STpe">u64</span>, hashVal: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
+<p>Uses linear probing to find the next available slot. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -8809,11 +9419,13 @@
 <span id="Core_HashSet_grow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashSet.</span><span class="api-item-title-strong">grow</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashset.swg#L134" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashset.swg#L150" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Checks if the table needs to be resized and triggers it if necessary. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">grow</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Growth happens when the load factor (including deleted slots) exceeds 75%. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -8821,11 +9433,13 @@
 <span id="Core_HashSet_hashKey"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashSet.</span><span class="api-item-title-strong">hashKey</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashset.swg#L108" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashset.swg#L121" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Computes the hash for a given key. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">hashKey</span>(key: <span class="SCst">K</span>)-&gt;<span class="STpe">u32</span></span></div>
+<p>Ensures the resulting hash is not one of the reserved values (FREE, DELETED). </p>
 <p>
 <table class="api-item">
 <tr>
@@ -8833,10 +9447,11 @@
 <span id="Core_HashSet_opAffect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashSet.</span><span class="api-item-title-strong">opAffect</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashset.swg#L38" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashset.swg#L44" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Replaces the content of the set with elements from a slice. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, slice: <span class="SKwd">const</span> [..] <span class="STpe">self</span>.<span class="SCst">K</span>)</span></div>
 <p>
 <table class="api-item">
@@ -8845,10 +9460,11 @@
 <span id="Core_HashSet_opCount"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashSet.</span><span class="api-item-title-strong">opCount</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashset.swg#L28" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashset.swg#L32" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Returns the number of elements in the set. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
@@ -8857,10 +9473,11 @@
 <span id="Core_HashSet_opDrop"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashSet.</span><span class="api-item-title-strong">opDrop</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashset.swg#L33" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashset.swg#L38" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Ensures the allocated memory is freed when the set goes out of scope. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
@@ -8869,11 +9486,13 @@
 <span id="Core_HashSet_opPostCopy"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashSet.</span><span class="api-item-title-strong">opPostCopy</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashset.swg#L44" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashset.swg#L52" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Handles the deep copy of the set when it is copied. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>A new table is allocated and all entries are copied over. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -8881,12 +9500,14 @@
 <span id="Core_HashSet_opVisit"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashSet.</span><span class="api-item-title-strong">opVisit</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashset.swg#L70" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashset.swg#L81" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Provides a way to iterate over each key in the set. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
 <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
+<p>This is a macro that accepts a code block to execute for each key. Alias: #alias0 for the key or a pointer to it. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -8894,12 +9515,13 @@
 <span id="Core_HashSet_remove"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashSet.</span><span class="api-item-title-strong">remove</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashset.swg#L297" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashset.swg#L318" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Remove the given element if it exists. </p>
+<p>Removes a key from the set. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remove</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>)</span></div>
+<p>If the key exists, its slot is marked as <span class="code-inline">DELETED</span>. Does nothing if the key is not found. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -8907,11 +9529,11 @@
 <span id="Core_HashSet_reserve"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashSet.</span><span class="api-item-title-strong">reserve</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashset.swg#L145" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashset.swg#L161" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Reserve <span class="code-inline">newCapacity</span> elements in the set. </p>
+<p>Resizes the hash table to a new capacity, rehashing all existing elements. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reserve</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newCapacity: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
@@ -8920,21 +9542,22 @@
 <span id="Core_HashSetEntry"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">HashSetEntry</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashset.swg#L4" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashset.swg#L5" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Represents a single entry within a HashSet. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SFct"><a href="#Core_HashSetEntry">HashSetEntry</a></span>(<span class="SCst">K</span>)</span></div>
 <table class="table-enumeration">
 <tr>
 <td>hash</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td></td>
+<td>The cached hash of the key. </td>
 </tr>
 <tr>
 <td>key</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_HashSetEntry">HashSetEntry</a></span>.<span class="SCst">K</span></span></td>
-<td></td>
+<td>The key itself. </td>
 </tr>
 </table>
 <p>
@@ -8944,155 +9567,156 @@
 <span id="Core_HashTable"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">HashTable</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L12" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L14" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Map a key to a value. </p>
+<p>A hash table implemented with open-addressing that maps keys to values. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SFct"><a href="#Core_HashTable">HashTable</a></span>(<span class="SCst">K</span>, <span class="SCst">V</span>)</span></div>
 <table class="table-enumeration">
 <tr>
 <td>HASH_FREE</td>
 <td class="code-type"><span class="STpe">s32</span></td>
-<td></td>
+<td>The slot is empty and has never been used. </td>
 </tr>
 <tr>
 <td>HASH_DELETED</td>
 <td class="code-type"><span class="STpe">s32</span></td>
-<td></td>
+<td>The slot was previously occupied but has been deleted. </td>
 </tr>
 <tr>
 <td>HASH_FIRST</td>
 <td class="code-type"><span class="STpe">s32</span></td>
-<td></td>
+<td>The first possible valid hash value. </td>
 </tr>
 <tr>
 <td>HASH_MASK</td>
 <td class="code-type"><span class="STpe">s32</span></td>
-<td></td>
+<td>A mask to ensure that valid hashes are &gt;= HASH_FIRST. </td>
 </tr>
 <tr>
 <td>allocator</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Swag</span>.<span class="SCst">IAllocator</span></span></td>
-<td></td>
+<td>The allocator used for memory operations. </td>
 </tr>
 <tr>
 <td>table</td>
 <td class="code-type"><span class="SCde">^<span class="SCst"></span><span class="SFct"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">K</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">V</span>)</span></td>
-<td></td>
+<td>Pointer to the contiguous memory block for the hash table. </td>
 </tr>
 <tr>
 <td>count</td>
 <td class="code-type"><span class="STpe">u64</span></td>
-<td>Number of valid entries. </td>
+<td>The number of valid key-value pairs currently in the table. </td>
 </tr>
 <tr>
 <td>capacity</td>
 <td class="code-type"><span class="STpe">u64</span></td>
-<td>Number of total entries the table can hold. </td>
+<td>The total number of slots in the hash table. </td>
 </tr>
 <tr>
 <td>deleted</td>
 <td class="code-type"><span class="STpe">u64</span></td>
-<td>Number of deleted entries. </td>
+<td>The number of slots marked as deleted. </td>
 </tr>
 </table>
+<p>It provides fast lookups, additions, and removals of key-value pairs. </p>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_add">add</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">K</span>, &&<span class="SCst">V</span>, <span class="STpe">bool</span>)</span></td>
-<td>Add a new key value pair. </td>
+<td>Adds a new key-value pair to the table, moving the value. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_add">add</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">K</span>, <span class="SCst">V</span>, <span class="STpe">bool</span>)</span></td>
-<td>Add a new key value pair. </td>
+<td>Adds a new key-value pair to the table by copying them. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_clear">clear</a></span></td>
-<td>Remove all elements. </td>
+<td>Removes all elements from the table without deallocating the table memory. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_contains">contains</a></span></td>
-<td>Returns true if the table contains the given key. </td>
+<td>Returns <span class="code-inline">true</span> if the table contains the given key. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_emplaceInternal">emplaceInternal</a></span></td>
-<td>Use with care !. </td>
+<td>Internal helper to add a new element with a pre-computed hash. Use with care. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_find">find</a></span></td>
-<td>Find the given key, and returns the corresponding entry. </td>
+<td>Finds the entry for a given key. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_findOrAdd">findOrAdd</a></span></td>
-<td>Get the entry if it exists, or creates a new one with a default value. </td>
+<td>Finds the entry for a key, or adds a new entry with a default-initialized value if not found. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_free">free</a></span></td>
-<td>Free the hashtable content. </td>
+<td>Frees the hash table's memory and resets its state. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_get">get</a></span></td>
-<td>Find the given key, and returns the corresponding value. </td>
+<td>Gets the value associated with a key. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_getNewIndex">getNewIndex</a></span></td>
-<td></td>
+<td>Finds the correct index for a new key, handling collisions and deleted slots. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_grow">grow</a></span></td>
-<td></td>
+<td>Checks if the table needs to be resized and triggers it if necessary. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_hashKey">hashKey</a></span></td>
-<td></td>
+<td>Computes the hash for a given key. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_remove">remove</a></span></td>
-<td>Remove the given key if it exists. </td>
+<td>Removes a key-value pair from the table by key. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_reserve">reserve</a></span></td>
-<td>Reserve <span class="code-inline">newCapacity</span> elements in the table. </td>
+<td>Resizes the hash table to a new capacity, rehashing all existing elements. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_tryFind">tryFind</a></span></td>
-<td>Find the given key, and returns the corresponding entry. </td>
+<td>Tries to find the entry for a given key. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_opAffect">opAffect</a></span></td>
-<td></td>
+<td>Replaces the content of the table with key-value pairs from a slice. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_opCount">opCount</a></span></td>
-<td></td>
+<td>Returns the number of key-value pairs in the table. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_opDrop">opDrop</a></span></td>
-<td></td>
+<td>Ensures the allocated memory is freed when the table goes out of scope. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_opIndex">opIndex</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">K</span>)</span></td>
-<td></td>
+<td>Provides mutable access to the value associated with a key. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_opIndex">opIndex</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">K</span>)</span></td>
-<td></td>
+<td>Provides read-only access to the value associated with a key. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_opIndexAffect">opIndexAffect</a></span></td>
-<td></td>
+<td>Assigns a value to a key, updating it if it exists or adding it if it doesn't. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_opPostCopy">opPostCopy</a></span></td>
-<td></td>
+<td>Handles the deep copy of the table when it is copied. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_opVisit">opVisit</a></span></td>
-<td>alias0 is the key, and alias1 is the value. </td>
+<td>Provides a way to iterate over each key-value pair in the table. </td>
 </tr>
 </table>
 <p>
@@ -9102,7 +9726,7 @@
 <span id="Core_HashTable_IConvert_convert"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IConvert.</span><span class="api-item-title-strong">convert</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L491" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L517" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9114,16 +9738,16 @@
 <span id="Core_HashTable_add"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashTable.</span><span class="api-item-title-strong">add</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L289" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L312" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Add a new key value pair. </p>
+<p>Adds a new key-value pair to the table by copying them. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>, value: <span class="STpe">self</span>.<span class="SCst">V</span>, updateValue = <span class="SKwd">true</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">K</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">V</span>)</span></div>
-<p>If the key already exists, then the value will be replaced if <span class="code-inline">updateValue</span> is true. </p>
-<p>Add a new key value pair. </p>
+<p>If the key already exists, the value is updated if <span class="code-inline">updateValue</span> is true. </p>
+<p>Adds a new key-value pair to the table, moving the value. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>, value: &&<span class="STpe">self</span>.<span class="SCst">V</span>, updateValue = <span class="SKwd">true</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">K</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">V</span>)</span></div>
-<p>If the key already exists, then the value will be replaced if <span class="code-inline">updateValue</span> is true. </p>
+<p>If the key already exists, the value is updated if <span class="code-inline">updateValue</span> is true. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -9131,12 +9755,13 @@
 <span id="Core_HashTable_clear"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashTable.</span><span class="api-item-title-strong">clear</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L459" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L485" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Remove all elements. </p>
+<p>Removes all elements from the table without deallocating the table memory. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>All slots are marked as <span class="code-inline">FREE</span>. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -9144,11 +9769,11 @@
 <span id="Core_HashTable_contains"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashTable.</span><span class="api-item-title-strong">contains</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L381" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L405" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns true if the table contains the given key. </p>
+<p>Returns <span class="code-inline">true</span> if the table contains the given key. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
@@ -9157,11 +9782,11 @@
 <span id="Core_HashTable_emplaceInternal"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashTable.</span><span class="api-item-title-strong">emplaceInternal</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L325" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L348" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Use with care !. </p>
+<p>Internal helper to add a new element with a pre-computed hash. Use with care. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceInternal</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, hashVal: <span class="STpe">u32</span>, key: &<span class="STpe">self</span>.<span class="SCst">K</span>, value: &<span class="STpe">self</span>.<span class="SCst">V</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">K</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">V</span>)</span></div>
 <p>
 <table class="api-item">
@@ -9170,13 +9795,13 @@
 <span id="Core_HashTable_find"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashTable.</span><span class="api-item-title-strong">find</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L421" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L445" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Find the given key, and returns the corresponding entry. </p>
+<p>Finds the entry for a given key. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">find</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">K</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">V</span>)</span></div>
-<p>Returns null if the key is not there. </p>
+<p>Asserts and will likely crash if the key is not found. Use [[tryFind]] for safe searching. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -9184,12 +9809,13 @@
 <span id="Core_HashTable_findOrAdd"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashTable.</span><span class="api-item-title-strong">findOrAdd</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L449" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L474" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Get the entry if it exists, or creates a new one with a default value. </p>
+<p>Finds the entry for a key, or adds a new entry with a default-initialized value if not found. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">findOrAdd</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">K</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">V</span>)</span></div>
+<p>Returns a pointer to the existing or new entry. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -9197,12 +9823,13 @@
 <span id="Core_HashTable_free"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashTable.</span><span class="api-item-title-strong">free</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L154" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L173" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Free the hashtable content. </p>
+<p>Frees the hash table's memory and resets its state. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>If keys or values have destructors, they are called. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -9210,13 +9837,13 @@
 <span id="Core_HashTable_get"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashTable.</span><span class="api-item-title-strong">get</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L440" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L464" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Find the given key, and returns the corresponding value. </p>
+<p>Gets the value associated with a key. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">get</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>, val: <span class="STpe">self</span>.<span class="SCst">V</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_HashTable">HashTable</a></span>.<span class="SCst">V</span></span></div>
-<p>If the key does not exist, then it will return <span class="code-inline">val</span> instead </p>
+<p>If the key does not exist, returns the provided default value <span class="code-inline">val</span> instead. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -9224,11 +9851,13 @@
 <span id="Core_HashTable_getNewIndex"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashTable.</span><span class="api-item-title-strong">getNewIndex</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L222" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L245" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Finds the correct index for a new key, handling collisions and deleted slots. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getNewIndex</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>, idx: <span class="STpe">u64</span>, hashVal: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
+<p>Uses linear probing to find the next available slot. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -9236,11 +9865,13 @@
 <span id="Core_HashTable_grow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashTable.</span><span class="api-item-title-strong">grow</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L174" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L195" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Checks if the table needs to be resized and triggers it if necessary. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">grow</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Growth happens when the load factor (including deleted slots) exceeds 75%. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -9248,11 +9879,13 @@
 <span id="Core_HashTable_hashKey"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashTable.</span><span class="api-item-title-strong">hashKey</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L148" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L166" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Computes the hash for a given key. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">hashKey</span>(key: <span class="SCst">K</span>)-&gt;<span class="STpe">u32</span></span></div>
+<p>Ensures the resulting hash is not one of the reserved values (FREE, DELETED). </p>
 <p>
 <table class="api-item">
 <tr>
@@ -9260,10 +9893,11 @@
 <span id="Core_HashTable_opAffect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashTable.</span><span class="api-item-title-strong">opAffect</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L39" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L45" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Replaces the content of the table with key-value pairs from a slice. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, slice: <span class="SKwd">const</span> [..] (<span class="SCst">K</span>, <span class="SCst">V</span>)
 {
     k: <span class="STpe">self</span>.<span class="SCst">K</span>, v: <span class="STpe">self</span>.<span class="SCst">V</span>
@@ -9276,10 +9910,11 @@
 <span id="Core_HashTable_opCount"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashTable.</span><span class="api-item-title-strong">opCount</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L29" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L33" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Returns the number of key-value pairs in the table. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
@@ -9288,10 +9923,11 @@
 <span id="Core_HashTable_opDrop"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashTable.</span><span class="api-item-title-strong">opDrop</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L34" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L39" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Ensures the allocated memory is freed when the table goes out of scope. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
@@ -9300,12 +9936,16 @@
 <span id="Core_HashTable_opIndex"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashTable.</span><span class="api-item-title-strong">opIndex</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L84" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L97" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;<span class="SKwd">const</span> &<span class="SCst"></span><span class="SCst"><a href="#Core_HashTable">HashTable</a></span>.<span class="SCst">V</span>
-<span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;&<span class="SCst"></span><span class="SCst"><a href="#Core_HashTable">HashTable</a></span>.<span class="SCst">V</span></span></div>
+<p>Provides read-only access to the value associated with a key. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;<span class="SKwd">const</span> &<span class="SCst"></span><span class="SCst"><a href="#Core_HashTable">HashTable</a></span>.<span class="SCst">V</span></span></div>
+<p>Asserts if the key is not found. </p>
+<p>Provides mutable access to the value associated with a key. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;&<span class="SCst"></span><span class="SCst"><a href="#Core_HashTable">HashTable</a></span>.<span class="SCst">V</span></span></div>
+<p>If the key does not exist, this will exhibit undefined behavior. Use with caution. See [[opIndexAffect]] for safe insertion/update. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -9313,10 +9953,11 @@
 <span id="Core_HashTable_opIndexAffect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashTable.</span><span class="api-item-title-strong">opIndexAffect</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L95" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L109" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Assigns a value to a key, updating it if it exists or adding it if it doesn't. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>, val: <span class="STpe">self</span>.<span class="SCst">V</span>)</span></div>
 <p>
 <table class="api-item">
@@ -9325,11 +9966,13 @@
 <span id="Core_HashTable_opPostCopy"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashTable.</span><span class="api-item-title-strong">opPostCopy</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L45" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L53" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Handles the deep copy of the table when it is copied. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>A new table is allocated and all entries are copied over. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -9337,13 +9980,14 @@
 <span id="Core_HashTable_opVisit"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashTable.</span><span class="api-item-title-strong">opVisit</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L106" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L122" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>alias0 is the key, and alias1 is the value. </p>
+<p>Provides a way to iterate over each key-value pair in the table. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
 <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
+<p>This is a macro that accepts a code block to execute for each pair. Aliases: #alias0 for the key, #alias1 for the value. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -9351,12 +9995,13 @@
 <span id="Core_HashTable_remove"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashTable.</span><span class="api-item-title-strong">remove</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L358" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L382" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Remove the given key if it exists. </p>
+<p>Removes a key-value pair from the table by key. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remove</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>)</span></div>
+<p>If the key exists, its slot is marked as <span class="code-inline">DELETED</span>. Does nothing if the key is not found. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -9364,11 +10009,11 @@
 <span id="Core_HashTable_reserve"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashTable.</span><span class="api-item-title-strong">reserve</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L185" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L206" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Reserve <span class="code-inline">newCapacity</span> elements in the table. </p>
+<p>Resizes the hash table to a new capacity, rehashing all existing elements. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reserve</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newCapacity: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
@@ -9377,13 +10022,13 @@
 <span id="Core_HashTable_tryFind"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">HashTable.</span><span class="api-item-title-strong">tryFind</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L401" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L425" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Find the given key, and returns the corresponding entry. </p>
+<p>Tries to find the entry for a given key. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">tryFind</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">K</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">V</span>)</span></div>
-<p>Returns null if the key is not there. </p>
+<p>Returns a pointer to the <span class="code-inline">HashTableEntry</span> if found, otherwise returns <span class="code-inline">null</span>. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -9391,26 +10036,27 @@
 <span id="Core_HashTableEntry"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">HashTableEntry</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L4" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\hashtable.swg#L5" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Represents a single key-value pair entry within a HashTable. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SFct"><a href="#Core_HashTableEntry">HashTableEntry</a></span>(<span class="SCst">K</span>, <span class="SCst">V</span>)</span></div>
 <table class="table-enumeration">
 <tr>
 <td>hash</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td></td>
+<td>The cached hash of the key. </td>
 </tr>
 <tr>
 <td>key</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">K</span></span></td>
-<td></td>
+<td>The key. </td>
 </tr>
 <tr>
 <td>value</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">V</span></span></td>
-<td></td>
+<td>The value associated with the key. </td>
 </tr>
 </table>
 <p>
@@ -12096,76 +12742,78 @@
 <span id="Core_List"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">List</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\list.swg#L11" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\list.swg#L14" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>A generic, doubly-linked list. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SFct"><a href="#Core_List">List</a></span>(<span class="SCst">T</span>)</span></div>
 <table class="table-enumeration">
 <tr>
 <td>head</td>
 <td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></td>
-<td></td>
+<td>Pointer to the first node in the list. </td>
 </tr>
 <tr>
 <td>tail</td>
 <td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></td>
-<td></td>
+<td>Pointer to the last node in the list. </td>
 </tr>
 <tr>
 <td>count</td>
 <td class="code-type"><span class="STpe">u64</span></td>
-<td></td>
+<td>The total number of elements in the list. </td>
 </tr>
 </table>
+<p>Provides efficient insertion and deletion of elements. </p>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_List_addBack">addBack</a></span><span class="SCde">(<span class="STpe">self</span>, &&<span class="SCst">T</span>)</span></td>
-<td>Add a new element on front. </td>
+<td>Adds a new element to the back of the list by moving the value. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_List_addBack">addBack</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">T</span>)</span></td>
-<td>Add a new element on front. </td>
+<td>Adds a new element to the back of the list by copying the value. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_List_addFront">addFront</a></span><span class="SCde">(<span class="STpe">self</span>, &&<span class="SCst">T</span>)</span></td>
-<td>Add a new element on front. </td>
+<td>Adds a new element to the front of the list by moving the value. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_List_addFront">addFront</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">T</span>)</span></td>
-<td>Add a new element on front. </td>
+<td>Adds a new element to the front of the list by copying the value. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_List_clear">clear</a></span></td>
-<td>Clear all elements. </td>
+<td>Removes and deallocates all elements from the list. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_List_insertAfter">insertAfter</a></span><span class="SCde">(<span class="STpe">self</span>, *<span class="SFct">ListEntry</span>'(<span class="SCst">T</span>), &&<span class="SCst">T</span>)</span></td>
-<td></td>
+<td>Inserts a new element after a specified node by moving the value. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_List_insertAfter">insertAfter</a></span><span class="SCde">(<span class="STpe">self</span>, *<span class="SFct">ListEntry</span>'(<span class="SCst">T</span>), <span class="SCst">T</span>)</span></td>
-<td>Insert a node before the reference. </td>
+<td>Inserts a new element after a specified node by copying the value. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_List_insertBefore">insertBefore</a></span><span class="SCde">(<span class="STpe">self</span>, *<span class="SFct">ListEntry</span>'(<span class="SCst">T</span>), &&<span class="SCst">T</span>)</span></td>
-<td></td>
+<td>Inserts a new element before a specified node by moving the value. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_List_insertBefore">insertBefore</a></span><span class="SCde">(<span class="STpe">self</span>, *<span class="SFct">ListEntry</span>'(<span class="SCst">T</span>), <span class="SCst">T</span>)</span></td>
-<td>Insert a node before the reference. </td>
+<td>Inserts a new element before a specified node by copying the value. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_List_opDrop">opDrop</a></span></td>
-<td></td>
+<td>Ensures all nodes are deallocated when the list goes out of scope. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_List_opVisit">opVisit</a></span></td>
-<td>Visit every elements of the list. </td>
+<td>Provides a way to iterate over each element in the list. </td>
 </tr>
 </table>
 <p>
@@ -12175,13 +12823,16 @@
 <span id="Core_List_addBack"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">List.</span><span class="api-item-title-strong">addBack</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\list.swg#L142" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\list.swg#L152" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Add a new element on front. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addBack</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)
-<span class="SKwd">func</span> <span class="SFct">addBack</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></div>
+<p>Adds a new element to the back of the list by copying the value. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addBack</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></div>
+<p>Returns a pointer to the newly created list node. </p>
+<p>Adds a new element to the back of the list by moving the value. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addBack</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></div>
+<p>Returns a pointer to the newly created list node. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -12189,13 +12840,16 @@
 <span id="Core_List_addFront"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">List.</span><span class="api-item-title-strong">addFront</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\list.swg#L100" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\list.swg#L108" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Add a new element on front. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addFront</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)
-<span class="SKwd">func</span> <span class="SFct">addFront</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></div>
+<p>Adds a new element to the front of the list by copying the value. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addFront</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></div>
+<p>Returns a pointer to the newly created list node. </p>
+<p>Adds a new element to the front of the list by moving the value. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addFront</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></div>
+<p>Returns a pointer to the newly created list node. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -12203,11 +12857,11 @@
 <span id="Core_List_clear"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">List.</span><span class="api-item-title-strong">clear</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\list.swg#L63" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\list.swg#L69" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Clear all elements. </p>
+<p>Removes and deallocates all elements from the list. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
@@ -12216,13 +12870,16 @@
 <span id="Core_List_insertAfter"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">List.</span><span class="api-item-title-strong">insertAfter</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\list.swg#L215" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\list.swg#L231" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Insert a node before the reference. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAfter</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, node: *<span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)
-<span class="SKwd">func</span> <span class="SFct">insertAfter</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, node: *<span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></div>
+<p>Inserts a new element after a specified node by copying the value. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAfter</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, node: *<span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></div>
+<p>Returns a pointer to the newly created list node. </p>
+<p>Inserts a new element after a specified node by moving the value. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAfter</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, node: *<span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></div>
+<p>Returns a pointer to the newly created list node. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -12230,13 +12887,16 @@
 <span id="Core_List_insertBefore"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">List.</span><span class="api-item-title-strong">insertBefore</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\list.swg#L180" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\list.swg#L193" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Insert a node before the reference. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertBefore</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, node: *<span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)
-<span class="SKwd">func</span> <span class="SFct">insertBefore</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, node: *<span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></div>
+<p>Inserts a new element before a specified node by copying the value. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertBefore</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, node: *<span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></div>
+<p>Returns a pointer to the newly created list node. </p>
+<p>Inserts a new element before a specified node by moving the value. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertBefore</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, node: *<span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></div>
+<p>Returns a pointer to the newly created list node. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -12244,10 +12904,11 @@
 <span id="Core_List_opDrop"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">List.</span><span class="api-item-title-strong">opDrop</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\list.swg#L20" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\list.swg#L24" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Ensures all nodes are deallocated when the list goes out of scope. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
@@ -12256,19 +12917,14 @@
 <span id="Core_List_opVisit"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">List.</span><span class="api-item-title-strong">opVisit</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\list.swg#L31" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\list.swg#L37" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Visit every elements of the list. </p>
+<p>Provides a way to iterate over each element in the list. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
 <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
-<ul>
-<li><span class="code-inline">#alias0</span> is the value</li>
-<li><span class="code-inline">#alias1</span> is the node</li>
-<li><span class="code-inline">#alias2</span> is the index</li>
-</ul>
-<p>Visiting by pointer and in reverse order is supported </p>
+<p>This is a macro that accepts a code block to execute for each element. Visiting by pointer and in reverse order is supported. Aliases: - #alias0: The value of the element. - #alias1: A pointer to the list node (<span class="code-inline">ListEntry</span>). - #alias2: The index of the element. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -12276,26 +12932,27 @@
 <span id="Core_ListEntry"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">ListEntry</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\list.swg#L4" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\list.swg#L5" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Represents a single node in a doubly-linked <span class="code-inline">List</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>(<span class="SCst">T</span>)</span></div>
 <table class="table-enumeration">
 <tr>
 <td>prev</td>
 <td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></td>
-<td></td>
+<td>Pointer to the previous node in the list. </td>
 </tr>
 <tr>
 <td>next</td>
 <td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></td>
-<td></td>
+<td>Pointer to the next node in the list. </td>
 </tr>
 <tr>
 <td>value</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span></span></td>
-<td></td>
+<td>The value stored in the node. </td>
 </tr>
 </table>
 <p>
@@ -12542,7 +13199,7 @@
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><a href="#Core_Math_Angle"><span class="SCst">Angle</span></a></td>
-<td></td>
+<td>An angle representation struct that stores angles in radians. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_Math_Const"><span class="SCst">Const</span></a></td>
@@ -12566,11 +13223,11 @@
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_Math_Point"><span class="SCst">Point</span></a></td>
-<td>A simple Point with 2 coordinates X and Y. </td>
+<td>A simple 2D point struct with X and Y coordinates. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_Math_Rectangle"><span class="SCst">Rectangle</span></a></td>
-<td>A simple rectangle with 4 coordinates. </td>
+<td>A simple rectangle struct with position and dimensions. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_Math_Transform2"><span class="SCst">Transform2</span></a></td>
@@ -12653,11 +13310,11 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_bigEndianToNative">bigEndianToNative</a></span></td>
-<td>Convert a big endian integer to current arch native format. </td>
+<td>Convert a big-endian integer to the current architecture's native format. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_byteswap">byteswap</a></span><span class="SCde">(<span class="STpe">u16</span>)</span></td>
-<td>Swap bytes. </td>
+<td>Reverse the byte order of the value. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_byteswap">byteswap</a></span><span class="SCde">(<span class="STpe">u32</span>)</span></td>
@@ -12677,7 +13334,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_clamp">clamp</a></span></td>
-<td></td>
+<td>Clamp a value between a lower and upper bound. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_cos">cos</a></span><span class="SCde">(<span class="STpe">f32</span>)</span></td>
@@ -12709,7 +13366,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_countOnes">countOnes</a></span><span class="SCde">(<span class="STpe">u8</span>)</span></td>
-<td>Returns the number of bits set to 1. </td>
+<td>Returns the total number of bits set to 1 in the value. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_cubicLerp">cubicLerp</a></span><span class="SCde">(<span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
@@ -12796,11 +13453,19 @@
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_isNan">isNan</a></span><span class="SCde">(<span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_isFinite">isFinite</a></span><span class="SCde">(<span class="STpe">f32</span>)</span></td>
+<td>Returns true if the value is finite (not infinite and not NaN). </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_isFinite">isFinite</a></span><span class="SCde">(<span class="STpe">f64</span>)</span></td>
+<td>Returns true if the value is finite (not infinite and not NaN). </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_isNaN">isNaN</a></span><span class="SCde">(<span class="STpe">f32</span>)</span></td>
 <td>Check if <span class="code-inline">x</span> is NaN (not a number). </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_isNan">isNan</a></span><span class="SCde">(<span class="STpe">f64</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_isNaN">isNaN</a></span><span class="SCde">(<span class="STpe">f64</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -12845,7 +13510,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_leadingZeros">leadingZeros</a></span><span class="SCde">(<span class="STpe">u8</span>)</span></td>
-<td>Returns the number of bits set to 0 from the left. </td>
+<td>Returns the number of leading zero bits from the most significant bit. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_lerp">lerp</a></span><span class="SCde">(<span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
@@ -12857,7 +13522,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_littleEndianToNative">littleEndianToNative</a></span></td>
-<td>Convert a little endian integer to current arch native format. </td>
+<td>Convert a little-endian integer to the current architecture's native format. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_log">log</a></span><span class="SCde">(<span class="STpe">f32</span>)</span></td>
@@ -12909,15 +13574,15 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_max">max</a></span><span class="SCde">(<span class="SCst">T</span>, <span class="SCst">T</span>)</span></td>
-<td></td>
+<td>Return the larger of two values. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_max">max</a></span><span class="SCde">(<span class="SCst">T</span>, <span class="SCst">T</span>, <span class="SCst">T</span>)</span></td>
-<td></td>
+<td>Return the largest of three values. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_max">max</a></span><span class="SCde">(<span class="SCst">T</span>, <span class="SCst">T</span>, <span class="SCst">T</span>, <span class="SCst">T</span>)</span></td>
-<td></td>
+<td>Return the largest of four values. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_max">max</a></span><span class="SCde">(<span class="STpe">s16</span>, <span class="STpe">s16</span>)</span></td>
@@ -12953,15 +13618,15 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_min">min</a></span><span class="SCde">(<span class="SCst">T</span>, <span class="SCst">T</span>)</span></td>
-<td></td>
+<td>Return the smaller of two values. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_min">min</a></span><span class="SCde">(<span class="SCst">T</span>, <span class="SCst">T</span>, <span class="SCst">T</span>)</span></td>
-<td></td>
+<td>Return the smallest of three values. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_min">min</a></span><span class="SCde">(<span class="SCst">T</span>, <span class="SCst">T</span>, <span class="SCst">T</span>, <span class="SCst">T</span>)</span></td>
-<td></td>
+<td>Return the smallest of four values. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_min">min</a></span><span class="SCde">(<span class="STpe">s16</span>, <span class="STpe">s16</span>)</span></td>
@@ -13009,7 +13674,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_nativeToBigEndian">nativeToBigEndian</a></span></td>
-<td>Convert a native arch integer to a big endian. </td>
+<td>Convert a native architecture integer to big-endian format. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_pow">pow</a></span><span class="SCde">(<span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
@@ -13029,19 +13694,19 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_reverse">reverse</a></span><span class="SCde">(<span class="STpe">u16</span>)</span></td>
-<td></td>
+<td>Reverse all bits in a 16-bit value. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_reverse">reverse</a></span><span class="SCde">(<span class="STpe">u32</span>)</span></td>
-<td></td>
+<td>Reverse all bits in a 32-bit value using bit manipulation. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_reverse">reverse</a></span><span class="SCde">(<span class="STpe">u64</span>)</span></td>
-<td></td>
+<td>Reverse all bits in a 64-bit value using bit manipulation. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_reverse">reverse</a></span><span class="SCde">(<span class="STpe">u8</span>)</span></td>
-<td>Reverse all bits. </td>
+<td>Reverse all bits in an 8-bit value using lookup table. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_rol">rol</a></span><span class="SCde">(<span class="STpe">u16</span>, <span class="STpe">u8</span>)</span></td>
@@ -13057,7 +13722,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_rol">rol</a></span><span class="SCde">(<span class="STpe">u8</span>, <span class="STpe">u8</span>)</span></td>
-<td>Rotate bits left. </td>
+<td>Rotate bits left by <span class="code-inline">y</span> positions. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_ror">ror</a></span><span class="SCde">(<span class="STpe">u16</span>, <span class="STpe">u8</span>)</span></td>
@@ -13073,7 +13738,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_ror">ror</a></span><span class="SCde">(<span class="STpe">u8</span>, <span class="STpe">u8</span>)</span></td>
-<td>Rotate bits right. </td>
+<td>Rotate bits right by <span class="code-inline">y</span> positions. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_round">round</a></span><span class="SCde">(<span class="STpe">f32</span>)</span></td>
@@ -13148,6 +13813,10 @@
 <td></td>
 </tr>
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_smoothDamp">smoothDamp</a></span></td>
+<td>Perform smooth damping interpolation towards <span class="code-inline">target</span>. </td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_smoothstep">smoothstep</a></span><span class="SCde">(<span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
 <td>Smoothstep interpolation between <span class="code-inline">edge0</span> and <span class="code-inline">edge1</span>. </td>
 </tr>
@@ -13209,7 +13878,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_trailingZeros">trailingZeros</a></span><span class="SCde">(<span class="STpe">u8</span>)</span></td>
-<td>Returns the number of bits set to 0 from the right. </td>
+<td>Returns the number of trailing zero bits from the least significant bit. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_trunc">trunc</a></span><span class="SCde">(<span class="STpe">f32</span>)</span></td>
@@ -13227,33 +13896,35 @@
 <span id="Core_Math_Angle"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">Angle</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\angle.swg#L5" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\angle.swg#L7" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>An angle representation struct that stores angles in radians. </p>
 <table class="table-enumeration">
 <tr>
 <td>rad</td>
 <td class="code-type"><span class="STpe">f32</span></td>
-<td></td>
+<td>The angle value stored in radians. </td>
 </tr>
 </table>
+<p>Provides convenient conversion between radians and degrees with literal suffix support. </p>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Angle_toDegrees">toDegrees</a></span></td>
-<td></td>
+<td>Convert the angle from radians to degrees. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Angle_opAffect">opAffect</a></span></td>
-<td></td>
+<td>Assign a radian value directly to the angle. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Angle_opAffectLiteral">opAffectLiteral</a></span></td>
-<td></td>
+<td>Assign angle values with unit suffixes (rad or deg). </td>
 </tr>
 </table>
 <p>
@@ -13263,11 +13934,13 @@
 <span id="Core_Math_Angle_opAffect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Angle.</span><span class="api-item-title-strong">opAffect</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\angle.swg#L13" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\angle.swg#L17" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Assign a radian value directly to the angle. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, valueRad: <span class="STpe">f32</span>)</span></div>
+<p>Allows implicit conversion from floating-point values representing radians. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -13275,11 +13948,13 @@
 <span id="Core_Math_Angle_opAffectLiteral"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Angle.</span><span class="api-item-title-strong">opAffectLiteral</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\angle.swg#L19" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\angle.swg#L25" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Assign angle values with unit suffixes (rad or deg). </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(suffix: <span class="STpe">string</span>) <span class="SFct">opAffectLiteral</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<p>Supports literal syntax like <span class="code-inline">90</span>deg' or <span class="code-inline">1.57</span>rad' for convenient angle creation. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -13287,11 +13962,13 @@
 <span id="Core_Math_Angle_toDegrees"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Angle.</span><span class="api-item-title-strong">toDegrees</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\angle.swg#L30" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\angle.swg#L38" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Convert the angle from radians to degrees. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toDegrees</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Returns the angle value in degrees as a floating-point number. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -13410,11 +14087,11 @@
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Curve_evaluateBezier">evaluateBezier</a></span><span class="SCde">(<span class="SKwd">const</span> &<span class="SCst">Vector2</span>, <span class="SKwd">const</span> &<span class="SCst">Vector2</span>, <span class="SKwd">const</span> &<span class="SCst">Vector2</span>, <span class="SKwd">const</span> &<span class="SCst">Vector2</span>, <span class="STpe">f32</span>)</span></td>
-<td>Optimized Bézier evaluation. </td>
+<td>Evaluate a cubic Bézier curve at parameter <span class="code-inline">t</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Curve_evaluateBezier">evaluateBezier</a></span><span class="SCde">(<span class="SKwd">const</span> &<span class="SCst">Vector2</span>, <span class="SKwd">const</span> &<span class="SCst">Vector2</span>, <span class="SKwd">const</span> &<span class="SCst">Vector2</span>, <span class="STpe">f32</span>)</span></td>
-<td>Optimized quadratic Bézier evaluation. </td>
+<td>Evaluate a quadratic Bézier curve at parameter <span class="code-inline">t</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Curve_evaluatePolynomial">evaluatePolynomial</a></span></td>
@@ -13422,11 +14099,11 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Curve_getBezierBoundingBox">getBezierBoundingBox</a></span><span class="SCde">(<span class="SKwd">const</span> &<span class="SCst">Vector2</span>, <span class="SKwd">const</span> &<span class="SCst">Vector2</span>, <span class="SKwd">const</span> &<span class="SCst">Vector2</span>)</span></td>
-<td>Get bounding box of quadratic Bézier curve (one control point). </td>
+<td>Calculate the axis-aligned bounding box of a quadratic Bézier curve. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Curve_getBezierBoundingBox">getBezierBoundingBox</a></span><span class="SCde">(<span class="SKwd">const</span> &<span class="SCst">Vector2</span>, <span class="SKwd">const</span> &<span class="SCst">Vector2</span>, <span class="SKwd">const</span> &<span class="SCst">Vector2</span>, <span class="SKwd">const</span> &<span class="SCst">Vector2</span>)</span></td>
-<td>Get bounding box of cubic Bézier curve. </td>
+<td>Calculate the axis-aligned bounding box of a cubic Bézier curve. </td>
 </tr>
 </table>
 <p>
@@ -13436,14 +14113,16 @@
 <span id="Core_Math_Curve_evaluateBezier"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Curve.</span><span class="api-item-title-strong">evaluateBezier</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\curve.swg#L30" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\curve.swg#L33" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Optimized quadratic Bézier evaluation. </p>
+<p>Evaluate a quadratic Bézier curve at parameter <span class="code-inline">t</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">evaluateBezier</span>(start, end, ctrl: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, t: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
-<p>Optimized Bézier evaluation. </p>
+<p>Formula: (1-t)²start + 2t(1-t)ctrl + t²end where <span class="code-inline">t</span> ranges from 0.0 to 1.0. </p>
+<p>Evaluate a cubic Bézier curve at parameter <span class="code-inline">t</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">evaluateBezier</span>(start, end, ctrl1, ctrl2: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, t: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<p>Formula: (1-t)³start + 3t(1-t)²ctrl1 + 3t²(1-t)ctrl2 + t³end where <span class="code-inline">t</span> ranges from 0.0 to 1.0. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -13451,7 +14130,7 @@
 <span id="Core_Math_Curve_evaluatePolynomial"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Curve.</span><span class="api-item-title-strong">evaluatePolynomial</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\curve.swg#L6" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\curve.swg#L7" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -13463,14 +14142,16 @@
 <span id="Core_Math_Curve_getBezierBoundingBox"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Curve.</span><span class="api-item-title-strong">getBezierBoundingBox</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\curve.swg#L124" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\curve.swg#L132" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Get bounding box of cubic Bézier curve. </p>
+<p>Calculate the axis-aligned bounding box of a cubic Bézier curve. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getBezierBoundingBox</span>(start, end, ctrl0, ctrl1: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span></span></div>
-<p>Get bounding box of quadratic Bézier curve (one control point). </p>
+<p>Finds extrema by solving the derivative equation and evaluating the curve at critical points. </p>
+<p>Calculate the axis-aligned bounding box of a quadratic Bézier curve. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getBezierBoundingBox</span>(start, end, ctrl: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span></span></div>
+<p>Finds extrema by solving the linear derivative equation for critical points. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -13484,11 +14165,11 @@
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Geometry_distanceToLine">distanceToLine</a></span></td>
-<td>Returns the distance of the point to the given line. </td>
+<td>Calculate the perpendicular distance from a point to an infinite line. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Geometry_distanceToSegment">distanceToSegment</a></span></td>
-<td>Returns the distance of the point to the given segment. </td>
+<td>Calculate the shortest distance from a point to a line segment. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Geometry_isInEllipse">isInEllipse</a></span></td>
@@ -13496,23 +14177,23 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Geometry_isInTriangle">isInTriangle</a></span></td>
-<td>Returns true if the point <span class="code-inline">pt</span> is inside the triangle defined with 'a, b, c'. </td>
+<td>Test if a point is inside a triangle using cross product method. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Geometry_lineLineIntersect">lineLineIntersect</a></span></td>
-<td>Compute the intersection point of two lines. </td>
+<td>Find the intersection point of two infinite lines. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Geometry_nearestPointsSegSeg">nearestPointsSegSeg</a></span></td>
-<td>Returns the minimal segment between two segments (and the minimal distance). </td>
+<td>Find the closest points between two line segments and their distance. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Geometry_polyContains">polyContains</a></span></td>
-<td>Returns true if the given point is inside the polygon PNPoly by W. Randolph Franklin. </td>
+<td>Test if a point is inside a polygon using ray casting algorithm. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Geometry_segSegIntersect">segSegIntersect</a></span></td>
-<td>Compute the intersection point of two segments. </td>
+<td>Find the intersection point of two line segments. </td>
 </tr>
 </table>
 <p>
@@ -13522,12 +14203,13 @@
 <span id="Core_Math_Geometry_distanceToLine"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Geometry.</span><span class="api-item-title-strong">distanceToLine</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\geometry2.swg#L34" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\geometry2.swg#L38" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns the distance of the point to the given line. </p>
+<p>Calculate the perpendicular distance from a point to an infinite line. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceToLine</span>(me, a, b: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Projects the point onto the line and returns the distance to the projection. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -13535,12 +14217,13 @@
 <span id="Core_Math_Geometry_distanceToSegment"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Geometry.</span><span class="api-item-title-strong">distanceToSegment</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\geometry2.swg#L46" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\geometry2.swg#L51" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns the distance of the point to the given segment. </p>
+<p>Calculate the shortest distance from a point to a line segment. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceToSegment</span>(me, a, b: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Handles endpoints by clamping the projection to the segment bounds. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -13548,7 +14231,7 @@
 <span id="Core_Math_Geometry_isInEllipse"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Geometry.</span><span class="api-item-title-strong">isInEllipse</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\geometry2.swg#L5" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\geometry2.swg#L7" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -13560,12 +14243,13 @@
 <span id="Core_Math_Geometry_isInTriangle"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Geometry.</span><span class="api-item-title-strong">isInTriangle</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\geometry2.swg#L11" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\geometry2.swg#L14" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns true if the point <span class="code-inline">pt</span> is inside the triangle defined with 'a, b, c'. </p>
+<p>Test if a point is inside a triangle using cross product method. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isInTriangle</span>(me, a, b, c: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Uses barycentric coordinates by checking if all cross products have the same sign. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -13573,12 +14257,13 @@
 <span id="Core_Math_Geometry_lineLineIntersect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Geometry.</span><span class="api-item-title-strong">lineLineIntersect</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\geometry2.swg#L250" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\geometry2.swg#L260" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Compute the intersection point of two lines. </p>
+<p>Find the intersection point of two infinite lines. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lineLineIntersect</span>(start0, end0, start1, end1: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, epsilon: <span class="STpe">f32</span> = <span class="SCst"><a href="#Core_Math_ConstF32">ConstF32</a></span>.<span class="SCst">Epsilon</span>)-&gt;{yes:<span class="STpe">bool</span>,pos:<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>}</span></div>
+<p>Returns the intersection point if lines are not parallel, otherwise returns failure. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -13586,15 +14271,16 @@
 <span id="Core_Math_Geometry_nearestPointsSegSeg"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Geometry.</span><span class="api-item-title-strong">nearestPointsSegSeg</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\geometry2.swg#L78" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\geometry2.swg#L85" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns the minimal segment between two segments (and the minimal distance). </p>
+<p>Find the closest points between two line segments and their distance. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nearestPointsSegSeg</span>(p0, p1, q0, q1: <span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;{a:<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>,b:<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>,dist:<span class="STpe">f32</span>}</span></div>
+<p>Implementation based on David Eberly's Geometric Tools library algorithm. </p>
 <p style="white-space: break-spaces"><hr>
 </p>
-<p>David Eberly, Geometric Tools, Redmond WA 98052 Copyright (c) 1998-2022 Distributed under the Boost Software License, Version 1.0. https://www.boost.org/LICENSE_1_0.txt https://www.geometrictools.com/License/Boost/LICENSE_1_0.txt https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h </p>
+<p>David Eberly, Geometric Tools, Redmond WA 98052 Copyright (c) 1998-2022 Distributed under the Boost Software License, Version 1.0. https://www.boost.org/LICENSE_1_0.txt https://www.geometrictools.com/License/Boost/LICENSE_1_0.txt https://www.geometrictools.com/Documentation/DistanceSegments3D.pdf https://www.geometrictools.com/GTE/Mathematics/DistSegmentSegment.h </p>
 <p style="white-space: break-spaces"><hr>
 </p>
 <p>
@@ -13604,12 +14290,13 @@
 <span id="Core_Math_Geometry_polyContains"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Geometry.</span><span class="api-item-title-strong">polyContains</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\geometry2.swg#L284" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\geometry2.swg#L295" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns true if the given point is inside the polygon PNPoly by W. Randolph Franklin. </p>
+<p>Test if a point is inside a polygon using ray casting algorithm. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">polyContains</span>(poly: <span class="SFct"><a href="#Core_Array">Array</a></span>'<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, pt: <span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Implementation of the PNPoly algorithm by W. Randolph Franklin. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -13617,12 +14304,13 @@
 <span id="Core_Math_Geometry_segSegIntersect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Geometry.</span><span class="api-item-title-strong">segSegIntersect</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\geometry2.swg#L265" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\geometry2.swg#L276" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Compute the intersection point of two segments. </p>
+<p>Find the intersection point of two line segments. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">segSegIntersect</span>(start0, end0, start1, end1: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, epsilon: <span class="STpe">f32</span> = <span class="SCst"><a href="#Core_Math_ConstF32">ConstF32</a></span>.<span class="SCst">Epsilon</span>)-&gt;{yes:<span class="STpe">bool</span>,pos:<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>}</span></div>
+<p>Returns the intersection point only if it lies within both segment bounds. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -13952,87 +14640,88 @@
 <span id="Core_Math_Point"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">Point</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\point.swg#L6" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\point.swg#L7" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>A simple Point with 2 coordinates X and Y. </p>
+<p>A simple 2D point struct with X and Y coordinates. </p>
 <table class="table-enumeration">
 <tr>
 <td>x</td>
 <td class="code-type"><span class="STpe">f32</span></td>
-<td></td>
+<td>X coordinate of the point. </td>
 </tr>
 <tr>
 <td>y</td>
 <td class="code-type"><span class="STpe">f32</span></td>
-<td></td>
+<td>Y coordinate of the point. </td>
 </tr>
 </table>
+<p>Contains x and y components as 32-bit floating point values for representing positions in 2D space. </p>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Point_ceil">ceil</a></span></td>
-<td>Perform a Math.ceil operation on all the coordinates. </td>
+<td>Round both coordinates up to the next integer values. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Point_clear">clear</a></span></td>
-<td>Set Point to (0, 0). </td>
+<td>Set both coordinates to zero. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Point_isEqualEpsilon">isEqualEpsilon</a></span></td>
-<td>Check if two points are equal with an epsilon. </td>
+<td>Returns true if this point is equal to <span class="code-inline">other</span> within an epsilon tolerance. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Point_isZero">isZero</a></span></td>
-<td>Returns <span class="code-inline">true</span> if the Point is null. </td>
+<td>Returns true if this point is exactly at the origin. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Point_isZeroEpsilon">isZeroEpsilon</a></span></td>
-<td>Check for zero with an epsilon. </td>
+<td>Returns true if this point is at the origin within an epsilon tolerance. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Point_offset">offset</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>)</span></td>
-<td>Offset this Point by a given value. </td>
+<td>Offset both coordinates by the same scalar value. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Point_offset">offset</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
-<td>Offset this Point by a given value. </td>
+<td>Offset this point by separate x and y values. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Point_round">round</a></span></td>
-<td>Perform a Math.round operation on all the coordinates. </td>
+<td>Round both coordinates to the nearest integer values. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Point_trunc">trunc</a></span></td>
-<td>Perform a Math.trunc operation on all the coordinates. </td>
+<td>Truncate both coordinates to integer values. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Point_opAffect">opAffect</a></span></td>
-<td></td>
+<td>Set both coordinates to the same scalar value. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Point_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Point</span>)</span></td>
-<td></td>
+<td>Compound assignment operators for point-point operations (+=, -=, <i>=, /=).</i> </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Point_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>)</span></td>
-<td></td>
+<td>Compound assignment operators for point-scalar operations (+=, -=, <i>=, /=).</i> </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Point_opBinary">opBinary</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Point</span>)</span></td>
-<td></td>
+<td>Binary operators for point-point operations (+, -, <i>, /).</i> </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Point_opBinary">opBinary</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>)</span></td>
-<td></td>
+<td>Binary operators for point-scalar operations (+, -, <i>, /).</i> </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Point_opUnary">opUnary</a></span></td>
-<td></td>
+<td>Apply unary operations to the point. </td>
 </tr>
 </table>
 <p>
@@ -14042,12 +14731,13 @@
 <span id="Core_Math_Point_ceil"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Point.</span><span class="api-item-title-strong">ceil</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\point.swg#L178" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\point.swg#L198" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Perform a Math.ceil operation on all the coordinates. </p>
+<p>Round both coordinates up to the next integer values. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ceil</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Applies <span class="code-inline">Math.ceil</span> function to both x and y coordinates in-place. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14055,12 +14745,13 @@
 <span id="Core_Math_Point_clear"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Point.</span><span class="api-item-title-strong">clear</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\point.swg#L125" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\point.swg#L137" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Set Point to (0, 0). </p>
+<p>Set both coordinates to zero. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Equivalent to assigning the <span class="code-inline">Zero</span> constant but modifies the current instance. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14068,12 +14759,13 @@
 <span id="Core_Math_Point_isEqualEpsilon"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Point.</span><span class="api-item-title-strong">isEqualEpsilon</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\point.swg#L143" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\point.swg#L158" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Check if two points are equal with an epsilon. </p>
+<p>Returns true if this point is equal to <span class="code-inline">other</span> within an epsilon tolerance. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEqualEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Point">Point</a></span>, eps = <span class="SCst"><a href="#Core_Math_ConstF32">ConstF32</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Compares each coordinate separately using the specified <span class="code-inline">eps</span> tolerance. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14081,12 +14773,13 @@
 <span id="Core_Math_Point_isZero"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Point.</span><span class="api-item-title-strong">isZero</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\point.swg#L131" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\point.swg#L144" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns <span class="code-inline">true</span> if the Point is null. </p>
+<p>Returns true if this point is exactly at the origin. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZero</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Performs exact floating-point comparison, which may not work well with computed values. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14094,12 +14787,13 @@
 <span id="Core_Math_Point_isZeroEpsilon"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Point.</span><span class="api-item-title-strong">isZeroEpsilon</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\point.swg#L137" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\point.swg#L151" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Check for zero with an epsilon. </p>
+<p>Returns true if this point is at the origin within an epsilon tolerance. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZeroEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, eps = <span class="SCst"><a href="#Core_Math_ConstF32">ConstF32</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Uses <span class="code-inline">eps</span> parameter to handle floating-point precision issues. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14107,13 +14801,16 @@
 <span id="Core_Math_Point_offset"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Point.</span><span class="api-item-title-strong">offset</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\point.swg#L150" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\point.swg#L166" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Offset this Point by a given value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">offset</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)
-<span class="SKwd">func</span> <span class="SFct">offset</span>(<span class="STpe">self</span>, x, y: <span class="STpe">f32</span>)</span></div>
+<p>Offset both coordinates by the same scalar value. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">offset</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<p>Adds <span class="code-inline">value</span> to both x and y coordinates of this point. </p>
+<p>Offset this point by separate x and y values. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">offset</span>(<span class="STpe">self</span>, x, y: <span class="STpe">f32</span>)</span></div>
+<p>Adds the specified <span class="code-inline">x</span> and <span class="code-inline">y</span> offsets to the corresponding coordinates. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14121,11 +14818,13 @@
 <span id="Core_Math_Point_opAffect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Point.</span><span class="api-item-title-strong">opAffect</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\point.swg#L20" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\point.swg#L21" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Set both coordinates to the same scalar value. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<p>This allows assignment like 'point = 5.0' to set both coordinates to 5.0. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14133,12 +14832,16 @@
 <span id="Core_Math_Point_opAssign"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Point.</span><span class="api-item-title-strong">opAssign</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\point.swg#L26" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\point.swg#L29" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Point">Point</a></span>)
-<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<p>Compound assignment operators for point-point operations (+=, -=, <i>=, /=).</i> </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Point">Point</a></span>)</span></div>
+<p>Performs component-wise operations with another point. </p>
+<p>Compound assignment operators for point-scalar operations (+=, -=, <i>=, /=).</i> </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<p>Applies the scalar <span class="code-inline">value</span> to both coordinates of the point. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14146,12 +14849,16 @@
 <span id="Core_Math_Point_opBinary"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Point.</span><span class="api-item-title-strong">opBinary</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\point.swg#L80" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\point.swg#L87" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Point">Point</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span>
-<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<p>Binary operators for point-point operations (+, -, <i>, /).</i> </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Point">Point</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<p>Performs component-wise operations between two points and returns the result. </p>
+<p>Binary operators for point-scalar operations (+, -, <i>, /).</i> </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<p>Applies the scalar <span class="code-inline">value</span> to both coordinates and returns the result. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14159,11 +14866,13 @@
 <span id="Core_Math_Point_opUnary"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Point.</span><span class="api-item-title-strong">opUnary</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\point.swg#L109" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\point.swg#L120" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Apply unary operations to the point. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<p>Currently supports negation (-) to return a point with both coordinates negated. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14171,12 +14880,13 @@
 <span id="Core_Math_Point_round"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Point.</span><span class="api-item-title-strong">round</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\point.swg#L164" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\point.swg#L182" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Perform a Math.round operation on all the coordinates. </p>
+<p>Round both coordinates to the nearest integer values. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">round</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Applies <span class="code-inline">Math.round</span> function to both x and y coordinates in-place. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14184,12 +14894,13 @@
 <span id="Core_Math_Point_trunc"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Point.</span><span class="api-item-title-strong">trunc</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\point.swg#L171" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\point.swg#L190" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Perform a Math.trunc operation on all the coordinates. </p>
+<p>Truncate both coordinates to integer values. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">trunc</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Applies <span class="code-inline">Math.trunc</span> function to both x and y coordinates, removing fractional parts. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14197,11 +14908,11 @@
 <span id="Core_Math_Rectangle"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">Rectangle</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L6" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L7" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>A simple rectangle with 4 coordinates. </p>
+<p>A simple rectangle struct with position and dimensions. </p>
 <table class="table-enumeration">
 <tr>
 <td>x</td>
@@ -14224,170 +14935,239 @@
 <td>Rectangle height. </td>
 </tr>
 </table>
+<p>Represents an axis-aligned rectangle using top-left position and width/height dimensions. </p>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_applyPadding">applyPadding</a></span></td>
-<td>Add a padding (offset to each side). </td>
+<td>Apply padding to all sides of the rectangle. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_area">area</a></span></td>
+<td>Get the area of the rectangle. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_aspectRatio">aspectRatio</a></span></td>
+<td>Get the aspect ratio of the rectangle. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_bottom">bottom</a></span></td>
-<td>Bottom coordinate (y + height). </td>
+<td>Get the bottom edge coordinate. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_bottomLeft">bottomLeft</a></span></td>
+<td>Get the bottom-left corner point. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_bottomRight">bottomRight</a></span></td>
+<td>Get the bottom-right corner point. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_ceil">ceil</a></span></td>
-<td>Perform a Math.ceil operation on all the coordinates. </td>
+<td>Round all rectangle components up to the next integer values. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_center">center</a></span></td>
-<td>Central point. </td>
+<td>Get the center point of the rectangle. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_clampPoint">clampPoint</a></span></td>
+<td>Clamp a point to be within the rectangle bounds. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_clear">clear</a></span></td>
-<td>Set rectangle to (0, 0, 0, 0). </td>
+<td>Set all rectangle components to zero. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_contains">contains</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Point</span>)</span></td>
-<td>Determines if the specfied point is contained within the rectangular region. </td>
+<td>Test if the specified point is contained within the rectangle. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_contains">contains</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Rectangle</span>)</span></td>
-<td>Determines if the specfied rectangle is contained within the rectangular region. </td>
+<td>Test if the specified rectangle is entirely contained within this rectangle. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_contains">contains</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
-<td>Determines if the specfied point is contained within the rectangular region. </td>
+<td>Test if the specified coordinates are contained within the rectangle. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_createFittedWithin">createFittedWithin</a></span></td>
+<td>Create a rectangle that fits within bounds while maintaining aspect ratio. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_distanceToPoint">distanceToPoint</a></span></td>
+<td>Get the distance from a point to the rectangle. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_expandToInclude">expandToInclude</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Point</span>)</span></td>
+<td>Expand the rectangle to include a point. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_expandToInclude">expandToInclude</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Rectangle</span>)</span></td>
+<td>Expand the rectangle to include another rectangle. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_fitWithin">fitWithin</a></span></td>
+<td>Fit this rectangle within bounds while maintaining aspect ratio. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_getUnion">getUnion</a></span></td>
-<td>Creates a rectangle that represents the union between <span class="code-inline">a</span> and <span class="code-inline">b</span>. </td>
+<td>Create a rectangle representing the union of two rectangles. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_horzCenter">horzCenter</a></span></td>
-<td>Horizontal center coordinate (x + width / 2). </td>
+<td>Get the horizontal center coordinate. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_inflate">inflate</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>)</span></td>
-<td>Inflates the rectangle by the given <span class="code-inline">value</span>. </td>
+<td>Inflate the rectangle uniformly in all directions. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_inflate">inflate</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
-<td>Inflates the rectangle by the given amount in <span class="code-inline">x</span> and <span class="code-inline">y</span> directions. </td>
+<td>Inflate the rectangle by different amounts horizontally and vertically. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_intersect">intersect</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Rectangle</span>)</span></td>
-<td>Intersect this rectangle with another one. </td>
+<td>Intersect this rectangle with another rectangle in-place. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_intersect">intersect</a></span><span class="SCde">(<span class="SKwd">const</span> &<span class="SCst">Rectangle</span>, <span class="SKwd">const</span> &<span class="SCst">Rectangle</span>)</span></td>
-<td>Creates a rectangle that represents the intersetion between <span class="code-inline">a</span> and <span class="code-inline">b</span>. </td>
+<td>Create a rectangle representing the intersection of two rectangles. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_intersectWith">intersectWith</a></span></td>
-<td>Determines if this rectangle intersets with <span class="code-inline">rect</span>. </td>
+<td>Test if this rectangle intersects with another rectangle. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_isEmpty">isEmpty</a></span></td>
-<td>Returns true if this instance has a surface of zero (width or height are null). </td>
+<td>Returns true if the rectangle has zero area. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_isEmptyEpsilon">isEmptyEpsilon</a></span></td>
-<td>Returns true if this instance has a surface of zero (width and height are null). </td>
+<td>Returns true if the rectangle has zero area within epsilon tolerance. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_isEqualEpsilon">isEqualEpsilon</a></span></td>
-<td>Returns <span class="code-inline">true</span> if the two rectangles are equal, with an <span class="code-inline">epsilon</span>. </td>
+<td>Returns true if this rectangle equals <span class="code-inline">other</span> within epsilon tolerance. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_isNormalized">isNormalized</a></span></td>
-<td>Returns true if this instance has a positive or null surface (width and height greater or equal than zero). </td>
+<td>Returns true if the rectangle has non-negative dimensions. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_isZero">isZero</a></span></td>
-<td>Returns true if this instance is null. </td>
+<td>Returns true if all rectangle components are exactly zero. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_isZeroEpsilon">isZeroEpsilon</a></span></td>
-<td>Returns true if this instance is null with an epsilon. </td>
+<td>Returns true if all rectangle components are zero within epsilon tolerance. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_moveBottom">moveBottom</a></span></td>
-<td>Move the left coordinate, reducing the width. </td>
+<td>Extend the bottom edge downward by the specified amount. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_moveLeft">moveLeft</a></span></td>
-<td>Move the left coordinate, reducing the width. </td>
+<td>Move the left edge inward by the specified amount. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_moveRight">moveRight</a></span></td>
-<td>Move the left coordinate, reducing the width. </td>
+<td>Extend the right edge outward by the specified amount. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_moveTop">moveTop</a></span></td>
-<td>Move the left coordinate, reducing the width. </td>
+<td>Move the top edge downward by the specified amount. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_normalize">normalize</a></span></td>
+<td>Normalize the rectangle to ensure positive width and height. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_offset">offset</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Point</span>)</span></td>
-<td>Offset the rectangle position by a given value. </td>
+<td>Offset the rectangle position by a point vector. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_offset">offset</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>)</span></td>
-<td>Offset the rectangle position by a given value. </td>
+<td>Offset the rectangle position by the same amount in both directions. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_offset">offset</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
-<td>Offset the rectangle position by a x and y values. </td>
+<td>Offset the rectangle position by separate x and y amounts. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_perimeter">perimeter</a></span></td>
+<td>Get the perimeter of the rectangle. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_right">right</a></span></td>
-<td>Right coordinate (x + width). </td>
+<td>Get the right edge coordinate. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_round">round</a></span></td>
-<td>Perform a Math.round operation on all the coordinates. </td>
+<td>Round all rectangle components to the nearest integer values. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_scale">scale</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>)</span></td>
-<td>Multiply the width and height of the rectangle by a given <span class="code-inline">value</span>. </td>
+<td>Scale the rectangle dimensions uniformly. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_scale">scale</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
-<td>Multiply the width by <span class="code-inline">x</span> and the height by <span class="code-inline">y</span>. </td>
+<td>Scale the rectangle dimensions independently. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_set">set</a></span></td>
-<td>Initialize the rectangle with two position. </td>
+<td>Initialize the rectangle using two corner points. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_setBottom">setBottom</a></span></td>
-<td>Bottom coordinate (y + height). </td>
+<td>Set the bottom edge coordinate by adjusting the height. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_setRight">setRight</a></span></td>
-<td>Right coordinate (x + width). </td>
+<td>Set the right edge coordinate by adjusting the width. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_setSize">setSize</a></span></td>
+<td>Set the size of the rectangle. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_setUnion">setUnion</a></span></td>
-<td>Creates a rectangle that represents the union. </td>
+<td>Set this rectangle to the union with another rectangle. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_size">size</a></span></td>
+<td>Get the size of the rectangle as a point. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_toNormalized">toNormalized</a></span></td>
+<td>Get a normalized copy of the rectangle. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_topLeft">topLeft</a></span></td>
+<td>Get the top-left corner point. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_topRight">topRight</a></span></td>
+<td>Get the top-right corner point. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_trunc">trunc</a></span></td>
-<td>Perform a Math.trunc operation on all the coordinates. </td>
+<td>Truncate all rectangle components to integer values. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_vertCenter">vertCenter</a></span></td>
-<td>Vertical center coordinate (y + height / 2). </td>
+<td>Get the vertical center coordinate. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_opBinary">opBinary</a></span></td>
-<td></td>
+<td>Scale the rectangle by a scalar value. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_opEquals">opEquals</a></span></td>
-<td></td>
+<td>Check if this rectangle is exactly equal to another rectangle. </td>
 </tr>
 </table>
 <p>
@@ -14397,12 +15177,41 @@
 <span id="Core_Math_Rectangle_applyPadding"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">applyPadding</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L163" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L187" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Add a padding (offset to each side). </p>
+<p>Apply padding to all sides of the rectangle. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">applyPadding</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, padding: <span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)</span></div>
+<p>Uses Vector4 components as left, top, right, bottom padding values respectively. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Rectangle_area"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">area</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L362" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Get the area of the rectangle. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">area</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Calculated as width × height, may be negative for non-normalized rectangles. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Rectangle_aspectRatio"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">aspectRatio</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L377" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Get the aspect ratio of the rectangle. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">aspectRatio</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Returns width / height, or 0 if height is zero. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14410,12 +15219,41 @@
 <span id="Core_Math_Rectangle_bottom"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">bottom</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L77" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L88" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Bottom coordinate (y + height). </p>
+<p>Get the bottom edge coordinate. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">bottom</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Calculated as y + height. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Rectangle_bottomLeft"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">bottomLeft</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L428" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Get the bottom-left corner point. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">bottomLeft</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<p>Returns a Point at (x, y + height). </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Rectangle_bottomRight"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">bottomRight</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L436" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Get the bottom-right corner point. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">bottomRight</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<p>Returns a Point at (x + width, y + height). </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14423,12 +15261,13 @@
 <span id="Core_Math_Rectangle_ceil"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">ceil</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L246" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L280" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Perform a Math.ceil operation on all the coordinates. </p>
+<p>Round all rectangle components up to the next integer values. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ceil</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Applies <span class="code-inline">Math.ceil</span> function to all components in-place. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14436,12 +15275,27 @@
 <span id="Core_Math_Rectangle_center"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">center</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L56" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L64" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Central point. </p>
+<p>Get the center point of the rectangle. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">center</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<p>Returns a Point containing the horizontal and vertical center coordinates. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Rectangle_clampPoint"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">clampPoint</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L459" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Clamp a point to be within the rectangle bounds. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clampPoint</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, pt: <span class="SCst"><a href="#Core_Math_Point">Point</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<p>Returns the closest point inside or on the rectangle boundary. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14449,12 +15303,13 @@
 <span id="Core_Math_Rectangle_clear"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">clear</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L116" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L133" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Set rectangle to (0, 0, 0, 0). </p>
+<p>Set all rectangle components to zero. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Equivalent to assigning the <span class="code-inline">Zero</span> constant but modifies the current instance. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14462,15 +15317,78 @@
 <span id="Core_Math_Rectangle_contains"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">contains</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L263" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L299" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Determines if the specfied point is contained within the rectangular region. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">const</span> <span class="STpe">self</span>, x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span>
-<span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, pt: <span class="SCst"><a href="#Core_Math_Point">Point</a></span>)-&gt;<span class="STpe">bool</span></span></div>
-<p>Determines if the specfied rectangle is contained within the rectangular region. </p>
+<p>Test if the specified coordinates are contained within the rectangle. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">const</span> <span class="STpe">self</span>, x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Uses half-open interval [x, x+width) × [y, y+height) for containment test. </p>
+<p>Test if the specified point is contained within the rectangle. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, pt: <span class="SCst"><a href="#Core_Math_Point">Point</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Delegates to the coordinate-based <span class="code-inline">contains</span> method. </p>
+<p>Test if the specified rectangle is entirely contained within this rectangle. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, rect: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Returns true only if <span class="code-inline">rect</span> is completely inside the bounds of this rectangle. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Rectangle_createFittedWithin"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">createFittedWithin</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L493" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Create a rectangle that fits within bounds while maintaining aspect ratio. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createFittedWithin</span>(rect: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>, bounds: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span></span></div>
+<p>Returns a new rectangle scaled to fit inside <span class="code-inline">bounds</span> without distortion. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Rectangle_distanceToPoint"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">distanceToPoint</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L466" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Get the distance from a point to the rectangle. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceToPoint</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, pt: <span class="SCst"><a href="#Core_Math_Point">Point</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Returns 0 if the point is inside the rectangle, otherwise returns the shortest distance to the boundary. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Rectangle_expandToInclude"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">expandToInclude</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L503" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Expand the rectangle to include a point. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">expandToInclude</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, pt: <span class="SCst"><a href="#Core_Math_Point">Point</a></span>)</span></div>
+<p>Grows the rectangle if necessary to contain the specified point. </p>
+<p>Expand the rectangle to include another rectangle. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">expandToInclude</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)</span></div>
+<p>Grows the rectangle if necessary to contain the entire specified rectangle. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Rectangle_fitWithin"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">fitWithin</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L476" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Fit this rectangle within bounds while maintaining aspect ratio. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fitWithin</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, bounds: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)</span></div>
+<p>Scales the rectangle to fit inside <span class="code-inline">bounds</span> without distortion. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14478,12 +15396,13 @@
 <span id="Core_Math_Rectangle_getUnion"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">getUnion</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L309" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L350" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Creates a rectangle that represents the union between <span class="code-inline">a</span> and <span class="code-inline">b</span>. </p>
+<p>Create a rectangle representing the union of two rectangles. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getUnion</span>(a, b: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span></span></div>
+<p>Returns the smallest rectangle that completely contains both <span class="code-inline">a</span> and <span class="code-inline">b</span>. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14491,12 +15410,13 @@
 <span id="Core_Math_Rectangle_horzCenter"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">horzCenter</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L43" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L49" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Horizontal center coordinate (x + width / 2). </p>
+<p>Get the horizontal center coordinate. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">horzCenter</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Calculated as x + width / 2. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14504,14 +15424,16 @@
 <span id="Core_Math_Rectangle_inflate"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">inflate</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L188" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L215" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Inflates the rectangle by the given <span class="code-inline">value</span>. </p>
+<p>Inflate the rectangle uniformly in all directions. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">inflate</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
-<p>Inflates the rectangle by the given amount in <span class="code-inline">x</span> and <span class="code-inline">y</span> directions. </p>
+<p>Expands the rectangle by <span class="code-inline">value</span> on all sides, moving position and increasing dimensions. </p>
+<p>Inflate the rectangle by different amounts horizontally and vertically. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">inflate</span>(<span class="STpe">self</span>, x, y: <span class="STpe">f32</span>)</span></div>
+<p>Expands by <span class="code-inline">x</span> horizontally and <span class="code-inline">y</span> vertically on all sides. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14519,15 +15441,16 @@
 <span id="Core_Math_Rectangle_intersect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">intersect</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L277" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L315" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Intersect this rectangle with another one. </p>
+<p>Intersect this rectangle with another rectangle in-place. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">intersect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)</span></div>
-<p>Creates a rectangle that represents the intersetion between <span class="code-inline">a</span> and <span class="code-inline">b</span>. </p>
+<p>Modifies this rectangle to contain only the overlapping area with <span class="code-inline">other</span>. </p>
+<p>Create a rectangle representing the intersection of two rectangles. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">intersect</span>(a, b: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span></span></div>
-<p>If there is no intersection, Zero is returned. </p>
+<p>Returns the overlapping area between <span class="code-inline">a</span> and <span class="code-inline">b</span>, or <span class="code-inline">Zero</span> if no intersection exists. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14535,12 +15458,13 @@
 <span id="Core_Math_Rectangle_intersectWith"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">intersectWith</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L297" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L336" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Determines if this rectangle intersets with <span class="code-inline">rect</span>. </p>
+<p>Test if this rectangle intersects with another rectangle. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">intersectWith</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, rect: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Returns true if there is any overlap between the two rectangles. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14548,12 +15472,13 @@
 <span id="Core_Math_Rectangle_isEmpty"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">isEmpty</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L128" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L147" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns true if this instance has a surface of zero (width or height are null). </p>
+<p>Returns true if the rectangle has zero area. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEmpty</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>A rectangle is empty if either width or height is zero. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14561,12 +15486,13 @@
 <span id="Core_Math_Rectangle_isEmptyEpsilon"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">isEmptyEpsilon</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L213" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L243" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns true if this instance has a surface of zero (width and height are null). </p>
+<p>Returns true if the rectangle has zero area within epsilon tolerance. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEmptyEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, eps = <span class="SCst"><a href="#Core_Math_ConstF32">ConstF32</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Checks if both width and height are zero within the specified tolerance. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14574,12 +15500,13 @@
 <span id="Core_Math_Rectangle_isEqualEpsilon"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">isEqualEpsilon</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L219" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L250" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns <span class="code-inline">true</span> if the two rectangles are equal, with an <span class="code-inline">epsilon</span>. </p>
+<p>Returns true if this rectangle equals <span class="code-inline">other</span> within epsilon tolerance. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEqualEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>, eps = <span class="SCst"><a href="#Core_Math_ConstF32">ConstF32</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Compares all four components separately using the specified <span class="code-inline">eps</span> tolerance. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14587,12 +15514,13 @@
 <span id="Core_Math_Rectangle_isNormalized"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">isNormalized</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L134" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L154" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns true if this instance has a positive or null surface (width and height greater or equal than zero). </p>
+<p>Returns true if the rectangle has non-negative dimensions. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isNormalized</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>A normalized rectangle has width and height greater than or equal to zero. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14600,12 +15528,13 @@
 <span id="Core_Math_Rectangle_isZero"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">isZero</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L122" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L140" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns true if this instance is null. </p>
+<p>Returns true if all rectangle components are exactly zero. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZero</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Performs exact floating-point comparison, which may not work well with computed values. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14613,12 +15542,13 @@
 <span id="Core_Math_Rectangle_isZeroEpsilon"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">isZeroEpsilon</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L207" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L236" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns true if this instance is null with an epsilon. </p>
+<p>Returns true if all rectangle components are zero within epsilon tolerance. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZeroEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, eps = <span class="SCst"><a href="#Core_Math_ConstF32">ConstF32</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Uses <span class="code-inline">eps</span> parameter to handle floating-point precision issues. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14626,12 +15556,13 @@
 <span id="Core_Math_Rectangle_moveBottom"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">moveBottom</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L110" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L126" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Move the left coordinate, reducing the width. </p>
+<p>Extend the bottom edge downward by the specified amount. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveBottom</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<p>Increases <span class="code-inline">height</span> by <span class="code-inline">value</span>, extending the rectangle downward. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14639,12 +15570,13 @@
 <span id="Core_Math_Rectangle_moveLeft"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">moveLeft</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L90" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L103" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Move the left coordinate, reducing the width. </p>
+<p>Move the left edge inward by the specified amount. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveLeft</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<p>Increases <span class="code-inline">x</span> and decreases <span class="code-inline">width</span> by <span class="code-inline">value</span>, effectively shrinking from the left. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14652,12 +15584,13 @@
 <span id="Core_Math_Rectangle_moveRight"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">moveRight</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L97" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L111" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Move the left coordinate, reducing the width. </p>
+<p>Extend the right edge outward by the specified amount. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveRight</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<p>Increases <span class="code-inline">width</span> by <span class="code-inline">value</span>, extending the rectangle to the right. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14665,12 +15598,27 @@
 <span id="Core_Math_Rectangle_moveTop"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">moveTop</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L103" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L118" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Move the left coordinate, reducing the width. </p>
+<p>Move the top edge downward by the specified amount. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveTop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<p>Increases <span class="code-inline">y</span> and decreases <span class="code-inline">height</span> by <span class="code-inline">value</span>, effectively shrinking from the top. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Rectangle_normalize"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">normalize</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L386" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Normalize the rectangle to ensure positive width and height. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">normalize</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Adjusts position and dimensions if width or height are negative. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14678,16 +15626,19 @@
 <span id="Core_Math_Rectangle_offset"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">offset</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L156" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L179" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Offset the rectangle position by a given value. </p>
+<p>Offset the rectangle position by the same amount in both directions. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">offset</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, offsetXY: <span class="STpe">f32</span>)</span></div>
-<p>Offset the rectangle position by a x and y values. </p>
+<p>Adds <span class="code-inline">offsetXY</span> to both x and y coordinates without changing dimensions. </p>
+<p>Offset the rectangle position by separate x and y amounts. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">offset</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, offsetX, offsetY: <span class="STpe">f32</span>)</span></div>
-<p>Offset the rectangle position by a given value. </p>
+<p>Adds <span class="code-inline">offsetX</span> to x coordinate and <span class="code-inline">offsetY</span> to y coordinate. </p>
+<p>Offset the rectangle position by a point vector. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">offset</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, offset: <span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span>)</span></div>
+<p>Adds the point's x and y components to the rectangle's position. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14695,11 +15646,13 @@
 <span id="Core_Math_Rectangle_opBinary"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">opBinary</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L24" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L28" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Scale the rectangle by a scalar value. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span></span></div>
+<p>Multiplies all components (position and dimensions) by the given <span class="code-inline">value</span>. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14707,11 +15660,27 @@
 <span id="Core_Math_Rectangle_opEquals"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">opEquals</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L19" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L21" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Check if this rectangle is exactly equal to another rectangle. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Performs exact floating-point comparison of all four components. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Rectangle_perimeter"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">perimeter</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L370" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Get the perimeter of the rectangle. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">perimeter</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Calculated as 2 × (width + height). </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14719,12 +15688,13 @@
 <span id="Core_Math_Rectangle_right"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">right</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L63" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L72" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Right coordinate (x + width). </p>
+<p>Get the right edge coordinate. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">right</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Calculated as x + width. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14732,12 +15702,13 @@
 <span id="Core_Math_Rectangle_round"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">round</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L228" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L260" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Perform a Math.round operation on all the coordinates. </p>
+<p>Round all rectangle components to the nearest integer values. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">round</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Applies <span class="code-inline">Math.round</span> function to position and dimension components in-place. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14745,14 +15716,16 @@
 <span id="Core_Math_Rectangle_scale"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">scale</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L173" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L198" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Multiply the width and height of the rectangle by a given <span class="code-inline">value</span>. </p>
+<p>Scale the rectangle dimensions uniformly. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">scale</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
-<p>Multiply the width by <span class="code-inline">x</span> and the height by <span class="code-inline">y</span>. </p>
+<p>Multiplies both width and height by <span class="code-inline">value</span> without changing position. </p>
+<p>Scale the rectangle dimensions independently. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">scale</span>(<span class="STpe">self</span>, x, y: <span class="STpe">f32</span>)</span></div>
+<p>Multiplies width by <span class="code-inline">x</span> and height by <span class="code-inline">y</span> without changing position. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14760,12 +15733,13 @@
 <span id="Core_Math_Rectangle_set"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">set</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L33" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L38" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Initialize the rectangle with two position. </p>
+<p>Initialize the rectangle using two corner points. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, topLeft, bottomRight: <span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span>)</span></div>
+<p>Automatically handles the case where points are not in top-left/bottom-right order. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14773,12 +15747,13 @@
 <span id="Core_Math_Rectangle_setBottom"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">setBottom</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L84" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L96" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Bottom coordinate (y + height). </p>
+<p>Set the bottom edge coordinate by adjusting the height. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setBottom</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<p>Modifies <span class="code-inline">height</span> to make the bottom edge equal to <span class="code-inline">value</span>. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14786,12 +15761,27 @@
 <span id="Core_Math_Rectangle_setRight"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">setRight</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L70" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L80" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Right coordinate (x + width). </p>
+<p>Set the right edge coordinate by adjusting the width. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setRight</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<p>Modifies <span class="code-inline">width</span> to make the right edge equal to <span class="code-inline">value</span>. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Rectangle_setSize"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">setSize</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L451" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Set the size of the rectangle. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setSize</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newSize: <span class="SCst"><a href="#Core_Math_Point">Point</a></span>)</span></div>
+<p>Modifies width and height without changing position. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14799,12 +15789,69 @@
 <span id="Core_Math_Rectangle_setUnion"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">setUnion</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L303" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L343" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Creates a rectangle that represents the union. </p>
+<p>Set this rectangle to the union with another rectangle. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setUnion</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)</span></div>
+<p>Modifies this rectangle to be the smallest rectangle containing both this and <span class="code-inline">other</span>. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Rectangle_size"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">size</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L444" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Get the size of the rectangle as a point. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">size</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<p>Returns a Point containing width and height values. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Rectangle_toNormalized"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">toNormalized</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L402" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Get a normalized copy of the rectangle. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalized</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span></span></div>
+<p>Returns a new rectangle with positive width and height without modifying the original. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Rectangle_topLeft"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">topLeft</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L412" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Get the top-left corner point. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">topLeft</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<p>Returns a Point containing the x and y coordinates. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Rectangle_topRight"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">topRight</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L420" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Get the top-right corner point. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">topRight</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<p>Returns a Point at (x + width, y). </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14812,12 +15859,13 @@
 <span id="Core_Math_Rectangle_trunc"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">trunc</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L237" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L270" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Perform a Math.trunc operation on all the coordinates. </p>
+<p>Truncate all rectangle components to integer values. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">trunc</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Applies <span class="code-inline">Math.trunc</span> function to all components, removing fractional parts. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14825,12 +15873,13 @@
 <span id="Core_Math_Rectangle_vertCenter"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Rectangle.</span><span class="api-item-title-strong">vertCenter</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L50" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\rectangle.swg#L57" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Vertical center coordinate (y + height / 2). </p>
+<p>Get the vertical center coordinate. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">vertCenter</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Calculated as y + height / 2. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14838,7 +15887,7 @@
 <span id="Core_Math_Transform2"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">Transform2</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\transform2.swg#L4" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\transform2.swg#L5" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14846,7 +15895,7 @@
 <tr>
 <td>m11</td>
 <td class="code-type"><span class="STpe">f32</span></td>
-<td></td>
+<td>First row of the 2D transformation matrix. </td>
 </tr>
 <tr>
 <td>m12</td>
@@ -14856,7 +15905,7 @@
 <tr>
 <td>m21</td>
 <td class="code-type"><span class="STpe">f32</span></td>
-<td></td>
+<td>Second row of the 2D transformation matrix. </td>
 </tr>
 <tr>
 <td>m22</td>
@@ -14866,7 +15915,7 @@
 <tr>
 <td>m31</td>
 <td class="code-type"><span class="STpe">f32</span></td>
-<td></td>
+<td>Translation components of the transformation. </td>
 </tr>
 <tr>
 <td>m32</td>
@@ -14876,40 +15925,56 @@
 <tr>
 <td>m</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">2</span>,<span class="SNum">2</span>] <span class="STpe">f32</span></span></td>
-<td></td>
+<td>2x2 matrix view for rotation/scale components. </td>
 </tr>
 <tr>
 <td>tx</td>
 <td class="code-type"><span class="STpe">f32</span></td>
-<td></td>
+<td>Translation component along X-axis. </td>
 </tr>
 <tr>
 <td>ty</td>
 <td class="code-type"><span class="STpe">f32</span></td>
-<td></td>
+<td>Translation component along Y-axis. </td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Transform2_createRotation">createRotation</a></span></td>
-<td>Creates a rotation matix, with a given center of rotation. </td>
+<td>Creates a rotation matrix, with a given center of rotation. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Transform2_createScale">createScale</a></span></td>
-<td>Creates a scale matix, with a given center. </td>
+<td>Creates a scale matrix, with a given center. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Transform2_createTranslation">createTranslation</a></span></td>
-<td>Creates a translation matix. </td>
+<td>Creates a translation matrix. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Transform2_getTranslation">getTranslation</a></span></td>
+<td>Gets the translation components. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Transform2_isIdentity">isIdentity</a></span></td>
+<td>Checks if the transform is the identity matrix. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Transform2_multiply">multiply</a></span></td>
-<td>Multiply two matricies. </td>
+<td>Multiplies the current transform by another transformation matrix. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Transform2_setIdentity">setIdentity</a></span></td>
 <td>Set transform to identity. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Transform2_setTranslation">setTranslation</a></span></td>
+<td>Sets the translation components directly. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Transform2_transformPoint">transformPoint</a></span></td>
+<td>Applies the transform to a 2D point. </td>
 </tr>
 </table>
 <p>
@@ -14919,11 +15984,11 @@
 <span id="Core_Math_Transform2_createRotation"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Transform2.</span><span class="api-item-title-strong">createRotation</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\transform2.swg#L34" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\transform2.swg#L43" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Creates a rotation matix, with a given center of rotation. </p>
+<p>Creates a rotation matrix, with a given center of rotation. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createRotation</span>(angle: <span class="STpe">f32</span>, centerX, centerY: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Transform2">Transform2</a></span></span></div>
 <p>
 <table class="api-item">
@@ -14932,11 +15997,11 @@
 <span id="Core_Math_Transform2_createScale"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Transform2.</span><span class="api-item-title-strong">createScale</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\transform2.swg#L55" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\transform2.swg#L64" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Creates a scale matix, with a given center. </p>
+<p>Creates a scale matrix, with a given center. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createScale</span>(scaleX, scaleY: <span class="STpe">f32</span>, centerX, centerY: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Transform2">Transform2</a></span></span></div>
 <p>
 <table class="api-item">
@@ -14945,12 +16010,38 @@
 <span id="Core_Math_Transform2_createTranslation"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Transform2.</span><span class="api-item-title-strong">createTranslation</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\transform2.swg#L71" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\transform2.swg#L80" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Creates a translation matix. </p>
+<p>Creates a translation matrix. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createTranslation</span>(x, y: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Transform2">Transform2</a></span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Transform2_getTranslation"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Transform2.</span><span class="api-item-title-strong">getTranslation</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\transform2.swg#L103" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Gets the translation components. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTranslation</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Transform2_isIdentity"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Transform2.</span><span class="api-item-title-strong">isIdentity</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\transform2.swg#L35" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Checks if the transform is the identity matrix. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isIdentity</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14958,11 +16049,11 @@
 <span id="Core_Math_Transform2_multiply"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Transform2.</span><span class="api-item-title-strong">multiply</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\transform2.swg#L87" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\transform2.swg#L117" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Multiply two matricies. </p>
+<p>Multiplies the current transform by another transformation matrix. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">multiply</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, matrix2: <span class="SCst"><a href="#Core_Math_Transform2">Transform2</a></span>)</span></div>
 <p>
 <table class="api-item">
@@ -14971,12 +16062,38 @@
 <span id="Core_Math_Transform2_setIdentity"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Transform2.</span><span class="api-item-title-strong">setIdentity</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\transform2.swg#L23" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\transform2.swg#L24" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Set transform to identity. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setIdentity</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Transform2_setTranslation"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Transform2.</span><span class="api-item-title-strong">setTranslation</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\transform2.swg#L96" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Sets the translation components directly. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setTranslation</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, translation: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Transform2_transformPoint"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Transform2.</span><span class="api-item-title-strong">transformPoint</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\transform2.swg#L109" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Applies the transform to a 2D point. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">transformPoint</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, point: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15190,7 +16307,7 @@
 <tr>
 <td>x</td>
 <td class="code-type"><span class="STpe">f32</span></td>
-<td></td>
+<td>X and Y components of the vector. </td>
 </tr>
 <tr>
 <td>y</td>
@@ -15201,23 +16318,31 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_angle">angle</a></span></td>
-<td>Returns the angle between this vector and <span class="code-inline">other</span> in radians. </td>
-</tr>
-<tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_angle0To2Pi">angle0To2Pi</a></span></td>
 <td>Returns the angle between this vector and <span class="code-inline">other</span> in the range [0, 2π]. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_angleTo">angleTo</a></span></td>
+<td>Returns the angle between this vector and <span class="code-inline">other</span> in radians. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_ceil">ceil</a></span></td>
 <td>Apply ceiling function to both components in-place. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_clear">clear</a></span></td>
-<td>Set both vector components to zero. </td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_clamp">clamp</a></span></td>
+<td>Clamp this vector's components between <span class="code-inline">min</span> and <span class="code-inline">max</span> values. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_cosAngle">cosAngle</a></span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_clampLength">clampLength</a></span></td>
+<td>Clamp this vector's length to be within <span class="code-inline">minLength</span> and <span class="code-inline">maxLength</span>. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_clampedLength">clampedLength</a></span></td>
+<td>Returns a new vector with length clamped between <span class="code-inline">minLength</span> and <span class="code-inline">maxLength</span>. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_cosAngleTo">cosAngleTo</a></span></td>
 <td>Returns the cosine of the angle between this vector and <span class="code-inline">other</span>. </td>
 </tr>
 <tr>
@@ -15229,11 +16354,11 @@
 <td>Returns the perpendicular vector in the 2D plane scaled by <span class="code-inline">axis</span>. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_distance">distance</a></span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_distanceTo">distanceTo</a></span></td>
 <td>Returns the Euclidean distance between this vector and <span class="code-inline">dest</span>. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_distanceSquared">distanceSquared</a></span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_distanceToSquared">distanceToSquared</a></span></td>
 <td>Returns the squared distance between this vector and <span class="code-inline">dest</span>. </td>
 </tr>
 <tr>
@@ -15245,8 +16370,20 @@
 <td>Apply floor function to both components in-place. </td>
 </tr>
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_fromPolar">fromPolar</a></span></td>
+<td>Create a vector from polar coordinates. </td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_isEqualEpsilon">isEqualEpsilon</a></span></td>
 <td>Returns true if this vector is equal to <span class="code-inline">other</span> within an epsilon tolerance. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_isFinite">isFinite</a></span></td>
+<td>Returns true if all components are finite (not infinite or NaN). </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_isNaN">isNaN</a></span></td>
+<td>Returns true if any component is NaN (Not a Number). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_isZero">isZero</a></span></td>
@@ -15265,8 +16402,12 @@
 <td>Returns the squared length of the vector. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_lerp">lerp</a></span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_lerpTo">lerpTo</a></span></td>
 <td>Perform linear interpolation between two vectors. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_makeAbs">makeAbs</a></span></td>
+<td>Apply absolute value to both components in-place. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_max">max</a></span></td>
@@ -15275,6 +16416,10 @@
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_min">min</a></span></td>
 <td>Returns a vector containing the minimum components of two vectors. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_moveTowards">moveTowards</a></span></td>
+<td>Move this vector towards <span class="code-inline">target</span> by a maximum distance of <span class="code-inline">maxDistance</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_negate">negate</a></span></td>
@@ -15289,7 +16434,7 @@
 <td>Normalize this vector in-place safely. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_rotate">rotate</a></span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_rotateBy">rotateBy</a></span></td>
 <td>Rotate the vector by a given angle around the origin. </td>
 </tr>
 <tr>
@@ -15301,6 +16446,10 @@
 <td>Set both components of the vector. </td>
 </tr>
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_setAngle">setAngle</a></span></td>
+<td>Rotate this vector to face the specified <span class="code-inline">angle</span> in radians. </td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_setLength">setLength</a></span></td>
 <td>Set the vector to the specified length. </td>
 </tr>
@@ -15309,12 +16458,60 @@
 <td>Set the vector to the specified length safely. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_toNormalize">toNormalize</a></span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_setZero">setZero</a></span></td>
+<td>Set both vector components to zero. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_smoothDamp">smoothDamp</a></span></td>
+<td>Perform smooth damping interpolation towards <span class="code-inline">target</span>. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_toAbs">toAbs</a></span></td>
+<td>Returns the absolute value of each component. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_toAngle">toAngle</a></span></td>
+<td>Returns the angle of this vector in radians. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_toClamped">toClamped</a></span></td>
+<td>Returns a new vector with components clamped between <span class="code-inline">min</span> and <span class="code-inline">max</span> values. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_toMovedTowards">toMovedTowards</a></span></td>
+<td>Returns a vector moved towards <span class="code-inline">target</span> by a maximum distance of <span class="code-inline">maxDistance</span>. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_toNormalized">toNormalized</a></span></td>
 <td>Returns this vector normalized to unit length without modifying the original. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_toNormalizeSafe">toNormalizeSafe</a></span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_toNormalizedSafe">toNormalizedSafe</a></span></td>
 <td>Returns this vector normalized safely without modifying the original. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_toPerp">toPerp</a></span></td>
+<td>Returns a vector perpendicular to this one (rotated 90 degrees counter-clockwise). </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_toPerpCW">toPerpCW</a></span></td>
+<td>Returns a vector perpendicular to this one (rotated 90 degrees clockwise). </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_toPolar">toPolar</a></span></td>
+<td>Convert this vector to polar coordinates. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_toProject">toProject</a></span></td>
+<td>Project this vector onto <span class="code-inline">other</span> vector. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_toReflect">toReflect</a></span></td>
+<td>Reflect this vector across a surface with the given <span class="code-inline">normal</span>. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_toSign">toSign</a></span></td>
+<td>Returns the component-wise sign of the vector (-1, 0, or 1 for each component). </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
@@ -15348,30 +16545,30 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Core_Math_Vector2_angle"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">angle</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L365" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<p>Returns the angle between this vector and <span class="code-inline">other</span> in radians. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">angle</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
-<p>The result is in the range [0, π] using the arc cosine of the normalized dot product. </p>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
 <span id="Core_Math_Vector2_angle0To2Pi"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">angle0To2Pi</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L372" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L371" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Returns the angle between this vector and <span class="code-inline">other</span> in the range [0, 2π]. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">angle0To2Pi</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">angle0To2Pi</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Uses the cross product to determine the sign and adjust the angle accordingly. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector2_angleTo"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">angleTo</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L364" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns the angle between this vector and <span class="code-inline">other</span> in radians. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">angleTo</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>The result is in the range [0, π] using the arc cosine of the normalized dot product. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15379,7 +16576,7 @@
 <span id="Core_Math_Vector2_ceil"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">ceil</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L330" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L329" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15390,29 +16587,57 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Core_Math_Vector2_clear"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">clear</span></span>
+<span id="Core_Math_Vector2_clamp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">clamp</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L180" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L393" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Set both vector components to zero. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
-<p>Equivalent to assigning the <span class="code-inline">Zero</span> constant but modifies the current instance. </p>
+<p>Clamp this vector's components between <span class="code-inline">min</span> and <span class="code-inline">max</span> values. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clamp</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, min, max: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)</span></div>
+<p>Each component is independently clamped to stay within the specified range. </p>
 <p>
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Core_Math_Vector2_cosAngle"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">cosAngle</span></span>
+<span id="Core_Math_Vector2_clampLength"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">clampLength</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L358" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L408" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Clamp this vector's length to be within <span class="code-inline">minLength</span> and <span class="code-inline">maxLength</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clampLength</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, minLength, maxLength: <span class="STpe">f32</span>)</span></div>
+<p>Preserves the vector's direction while constraining its magnitude. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector2_clampedLength"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">clampedLength</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L419" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns a new vector with length clamped between <span class="code-inline">minLength</span> and <span class="code-inline">maxLength</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clampedLength</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, minLength, maxLength: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<p>Preserves the vector's direction while constraining its magnitude. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector2_cosAngleTo"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">cosAngleTo</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L357" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Returns the cosine of the angle between this vector and <span class="code-inline">other</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cosAngle</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cosAngleTo</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Calculated using the dot product formula: dot(a,b) / (|a| * |b|). </p>
 <p>
 <table class="api-item">
@@ -15421,7 +16646,7 @@
 <span id="Core_Math_Vector2_cross"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">cross</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L172" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L171" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15429,35 +16654,35 @@
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cross</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, axis: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p>The <span class="code-inline">axis</span> parameter determines the sign and scale of the result. </p>
 <p>Returns the Z component of the cross product (scalar cross product in 2D). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cross</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cross</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Calculates the determinant of the 2x2 matrix formed by the two vectors. </p>
 <p>
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Core_Math_Vector2_distance"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">distance</span></span>
+<span id="Core_Math_Vector2_distanceTo"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">distanceTo</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L218" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L217" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Returns the Euclidean distance between this vector and <span class="code-inline">dest</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distance</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, dest: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceTo</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, dest: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Calculated as the length of the difference vector between the two positions. </p>
 <p>
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Core_Math_Vector2_distanceSquared"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">distanceSquared</span></span>
+<span id="Core_Math_Vector2_distanceToSquared"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">distanceToSquared</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L227" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L226" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Returns the squared distance between this vector and <span class="code-inline">dest</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceSquared</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, dest: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceToSquared</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, dest: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Faster than <span class="code-inline">distance()</span> when only comparing distances since it avoids the square root operation. </p>
 <p>
 <table class="api-item">
@@ -15466,12 +16691,12 @@
 <span id="Core_Math_Vector2_dot"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">dot</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L159" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L158" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Returns the dot product between this vector and <span class="code-inline">other</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">dot</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">dot</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>The dot product is calculated as: (x₁ × x₂) + (y₁ × y₂). </p>
 <p>
 <table class="api-item">
@@ -15480,7 +16705,7 @@
 <span id="Core_Math_Vector2_floor"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">floor</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L322" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L321" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15491,16 +16716,58 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Core_Math_Vector2_fromPolar"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">fromPolar</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L533" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Create a vector from polar coordinates. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromPolar</span>(angle, radius: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<p><span class="code-inline">angle</span> is in radians, <span class="code-inline">radius</span> is the distance from origin. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Core_Math_Vector2_isEqualEpsilon"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">isEqualEpsilon</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L211" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L210" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Returns true if this vector is equal to <span class="code-inline">other</span> within an epsilon tolerance. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEqualEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>, eps = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SCst"><a href="#Core_Math_ConstF64">ConstF64</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEqualEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, eps = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SCst"><a href="#Core_Math_ConstF64">ConstF64</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Compares each component separately using the specified <span class="code-inline">eps</span> tolerance. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector2_isFinite"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">isFinite</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L485" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns true if all components are finite (not infinite or NaN). </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isFinite</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Useful for validating vector values after calculations. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector2_isNaN"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">isNaN</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L492" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns true if any component is NaN (Not a Number). </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isNaN</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Useful for detecting invalid vector values after calculations. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15508,7 +16775,7 @@
 <span id="Core_Math_Vector2_isZero"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">isZero</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L197" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L196" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15522,7 +16789,7 @@
 <span id="Core_Math_Vector2_isZeroEpsilon"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">isZeroEpsilon</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L204" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L203" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15536,7 +16803,7 @@
 <span id="Core_Math_Vector2_length"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">length</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L149" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L148" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15550,7 +16817,7 @@
 <span id="Core_Math_Vector2_lengthSquared"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">lengthSquared</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L154" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L153" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15561,16 +16828,30 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Core_Math_Vector2_lerp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">lerp</span></span>
+<span id="Core_Math_Vector2_lerpTo"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">lerpTo</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L384" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L383" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Perform linear interpolation between two vectors. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lerp</span>(src, dst: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, factor: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lerpTo</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, dst: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, factor: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p>Interpolates each component separately using the given <span class="code-inline">factor</span> (0.0 to 1.0). When <span class="code-inline">factor</span> is 0.0, returns <span class="code-inline">src</span>; when 1.0, returns <span class="code-inline">dst</span>. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector2_makeAbs"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">makeAbs</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L438" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Apply absolute value to both components in-place. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">makeAbs</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Makes both components positive by removing their sign. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15578,12 +16859,12 @@
 <span id="Core_Math_Vector2_max"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">max</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L312" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L311" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Returns a vector containing the maximum components of two vectors. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">max</span>(a, b: <span class="STpe">Self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">max</span>(a, b: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p>Each component of the result is the larger of the corresponding components in <span class="code-inline">a</span> and <span class="code-inline">b</span>. </p>
 <p>
 <table class="api-item">
@@ -15592,13 +16873,27 @@
 <span id="Core_Math_Vector2_min"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">min</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L302" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L301" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Returns a vector containing the minimum components of two vectors. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">min</span>(a, b: <span class="STpe">Self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">min</span>(a, b: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p>Each component of the result is the smaller of the corresponding components in <span class="code-inline">a</span> and <span class="code-inline">b</span>. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector2_moveTowards"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">moveTowards</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L499" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Move this vector towards <span class="code-inline">target</span> by a maximum distance of <span class="code-inline">maxDistance</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveTowards</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, target: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, maxDistance: <span class="STpe">f32</span>)</span></div>
+<p>If the distance to <span class="code-inline">target</span> is less than <span class="code-inline">maxDistance</span>, moves directly to target. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15606,7 +16901,7 @@
 <span id="Core_Math_Vector2_negate"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">negate</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L188" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L187" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15620,7 +16915,7 @@
 <span id="Core_Math_Vector2_normalize"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">normalize</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L236" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L235" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15634,7 +16929,7 @@
 <span id="Core_Math_Vector2_normalizeSafe"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">normalizeSafe</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L275" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L274" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15648,7 +16943,7 @@
 <span id="Core_Math_Vector2_opAffect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">opAffect</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L29" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L28" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15662,12 +16957,12 @@
 <span id="Core_Math_Vector2_opAssign"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">opAssign</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L37" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L36" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Compound assignment operators for vector-vector operations (+=, -=, <i>=, /=).</i> </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)</span></div>
 <p>Performs component-wise operations with another vector. </p>
 <p>Compound assignment operators for vector-scalar operations (+=, -=, <i>=, /=).</i> </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
@@ -15679,12 +16974,12 @@
 <span id="Core_Math_Vector2_opBinary"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">opBinary</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L95" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L94" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Binary operators for vector-vector operations (+, -, <i>, /).</i> </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p>Performs component-wise operations between two vectors and returns the result. </p>
 <p>Binary operators for vector-scalar operations (+, -, <i>, /).</i> </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
@@ -15696,7 +16991,7 @@
 <span id="Core_Math_Vector2_opUnary"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">opUnary</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L129" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L128" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15707,15 +17002,15 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Core_Math_Vector2_rotate"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">rotate</span></span>
+<span id="Core_Math_Vector2_rotateBy"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">rotateBy</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L346" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L345" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Rotate the vector by a given angle around the origin. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">rotate</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, angle: <span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Angle">Angle</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">rotateBy</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, angle: <span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Angle">Angle</a></span>)</span></div>
 <p>Uses standard 2D rotation matrix transformation with the specified <span class="code-inline">angle</span>. </p>
 <p>
 <table class="api-item">
@@ -15724,7 +17019,7 @@
 <span id="Core_Math_Vector2_round"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">round</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L338" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L337" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15738,7 +17033,7 @@
 <span id="Core_Math_Vector2_set"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">set</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L140" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L139" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15749,10 +17044,24 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Core_Math_Vector2_setAngle"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">setAngle</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L554" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Rotate this vector to face the specified <span class="code-inline">angle</span> in radians. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setAngle</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, angle: <span class="STpe">f32</span>)</span></div>
+<p>Preserves the vector's magnitude while changing its direction. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Core_Math_Vector2_setLength"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">setLength</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L266" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L265" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15766,7 +17075,7 @@
 <span id="Core_Math_Vector2_setLengthSafe"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">setLengthSafe</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L257" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L256" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15777,30 +17086,198 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Core_Math_Vector2_toNormalize"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">toNormalize</span></span>
+<span id="Core_Math_Vector2_setZero"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">setZero</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L247" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L179" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Set both vector components to zero. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setZero</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Equivalent to assigning the <span class="code-inline">Zero</span> constant but modifies the current instance. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector2_smoothDamp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">smoothDamp</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L523" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Perform smooth damping interpolation towards <span class="code-inline">target</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">smoothDamp</span>(current, target: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, currentVelocity: &<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, smoothTime, deltaTime: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<p>Uses <span class="code-inline">smoothTime</span> and <span class="code-inline">deltaTime</span> for frame-rate independent smooth movement. <span class="code-inline">currentVelocity</span> is modified to track the current rate of change. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector2_toAbs"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">toAbs</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L431" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns the absolute value of each component. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toAbs</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<p>Creates a new vector where each component is its absolute value. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector2_toAngle"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">toAngle</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L547" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns the angle of this vector in radians. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toAngle</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>The angle is measured from the positive X-axis, counter-clockwise. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector2_toClamped"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">toClamped</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L401" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns a new vector with components clamped between <span class="code-inline">min</span> and <span class="code-inline">max</span> values. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toClamped</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, min, max: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<p>Each component is independently clamped to stay within the specified range. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector2_toMovedTowards"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">toMovedTowards</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L511" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns a vector moved towards <span class="code-inline">target</span> by a maximum distance of <span class="code-inline">maxDistance</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toMovedTowards</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, target: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, maxDistance: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<p>If the distance to <span class="code-inline">target</span> is less than <span class="code-inline">maxDistance</span>, returns the target directly. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector2_toNormalized"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">toNormalized</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L246" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Returns this vector normalized to unit length without modifying the original. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalize</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalized</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p>Creates a new vector with length 1 in the same direction. Asserts that the vector is not zero. </p>
 <p>
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Core_Math_Vector2_toNormalizeSafe"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">toNormalizeSafe</span></span>
+<span id="Core_Math_Vector2_toNormalizedSafe"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">toNormalizedSafe</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L291" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L290" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Returns this vector normalized safely without modifying the original. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalizeSafe</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalizedSafe</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p>Returns a unit vector in the same direction, or the zero vector if length is near zero. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector2_toPerp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">toPerp</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L446" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns a vector perpendicular to this one (rotated 90 degrees counter-clockwise). </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toPerp</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<p>The perpendicular vector has the same length but is rotated 90° CCW. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector2_toPerpCW"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">toPerpCW</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L453" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns a vector perpendicular to this one (rotated 90 degrees clockwise). </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toPerpCW</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<p>The perpendicular vector has the same length but is rotated 90° CW. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector2_toPolar"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">toPolar</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L540" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Convert this vector to polar coordinates. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toPolar</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;{angle:<span class="STpe">f32</span>,radius:<span class="STpe">f32</span>}</span></div>
+<p>Returns angle in radians and radius (magnitude) as a tuple-like struct. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector2_toProject"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">toProject</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L460" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Project this vector onto <span class="code-inline">other</span> vector. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toProject</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<p>Returns the component of this vector in the direction of <span class="code-inline">other</span>. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector2_toReflect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">toReflect</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L471" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Reflect this vector across a surface with the given <span class="code-inline">normal</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toReflect</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, normal: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<p>The <span class="code-inline">normal</span> should be a unit vector pointing away from the surface. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector2_toSign"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">toSign</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L478" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns the component-wise sign of the vector (-1, 0, or 1 for each component). </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSign</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<p>Each component becomes -1 if negative, 0 if zero, or 1 if positive. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -15816,7 +17293,7 @@
 <tr>
 <td>x</td>
 <td class="code-type"><span class="STpe">f32</span></td>
-<td></td>
+<td>X, Y, and Z components of the vector. </td>
 </tr>
 <tr>
 <td>y</td>
@@ -15832,15 +17309,39 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_clear">clear</a></span></td>
-<td>Set all vector components to zero. </td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_angleTo">angleTo</a></span></td>
+<td>Returns the angle between this vector and <span class="code-inline">other</span> in radians. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_distance">distance</a></span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_ceil">ceil</a></span></td>
+<td>Apply ceiling function to all components in-place. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_clamp">clamp</a></span></td>
+<td>Clamp this vector's components between <span class="code-inline">min</span> and <span class="code-inline">max</span> values. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_clampLength">clampLength</a></span></td>
+<td>Clamp this vector's length to be within <span class="code-inline">minLength</span> and <span class="code-inline">maxLength</span>. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_clampedLength">clampedLength</a></span></td>
+<td>Returns a new vector with length clamped between <span class="code-inline">minLength</span> and <span class="code-inline">maxLength</span>. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_cosAngleTo">cosAngleTo</a></span></td>
+<td>Returns the cosine of the angle between this vector and <span class="code-inline">other</span>. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_cross">cross</a></span></td>
+<td>Returns the cross product between this vector and <span class="code-inline">other</span>. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_distanceTo">distanceTo</a></span></td>
 <td>Returns the Euclidean distance between this vector and <span class="code-inline">dest</span>. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_distanceSquared">distanceSquared</a></span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_distanceToSquared">distanceToSquared</a></span></td>
 <td>Returns the squared distance between this vector and <span class="code-inline">dest</span>. </td>
 </tr>
 <tr>
@@ -15848,8 +17349,28 @@
 <td>Returns the dot product between this vector and <span class="code-inline">other</span>. </td>
 </tr>
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_floor">floor</a></span></td>
+<td>Apply floor function to all components in-place. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_fromCylindrical">fromCylindrical</a></span></td>
+<td>Create a vector from cylindrical coordinates. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_fromSpherical">fromSpherical</a></span></td>
+<td>Create a vector from spherical coordinates. </td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_isEqualEpsilon">isEqualEpsilon</a></span></td>
 <td>Returns true if this vector is equal to <span class="code-inline">other</span> within an epsilon tolerance. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_isFinite">isFinite</a></span></td>
+<td>Returns true if all components are finite (not infinite or NaN). </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_isNaN">isNaN</a></span></td>
+<td>Returns true if any component is NaN (Not a Number). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_isZero">isZero</a></span></td>
@@ -15868,8 +17389,12 @@
 <td>Returns the squared length of the vector. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_lerp">lerp</a></span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_lerpTo">lerpTo</a></span></td>
 <td>Perform linear interpolation between two vectors. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_makeAbs">makeAbs</a></span></td>
+<td>Apply absolute value to all components in-place. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_max">max</a></span></td>
@@ -15878,6 +17403,10 @@
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_min">min</a></span></td>
 <td>Returns a vector containing the minimum components of two vectors. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_moveTowards">moveTowards</a></span></td>
+<td>Move this vector towards <span class="code-inline">target</span> by a maximum distance of <span class="code-inline">maxDistance</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_negate">negate</a></span></td>
@@ -15892,6 +17421,10 @@
 <td>Normalize this vector in-place safely. </td>
 </tr>
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_round">round</a></span></td>
+<td>Apply rounding function to all components in-place. </td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_set">set</a></span></td>
 <td>Set all three components of the vector. </td>
 </tr>
@@ -15904,12 +17437,52 @@
 <td>Set the vector to the specified length safely. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_toNormalize">toNormalize</a></span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_setZero">setZero</a></span></td>
+<td>Set all vector components to zero. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_smoothDamp">smoothDamp</a></span></td>
+<td>Perform smooth damping interpolation towards <span class="code-inline">target</span>. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_toAbs">toAbs</a></span></td>
+<td>Returns the absolute value of each component. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_toClamped">toClamped</a></span></td>
+<td>Returns a new vector with components clamped between <span class="code-inline">min</span> and <span class="code-inline">max</span> values. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_toCylindrical">toCylindrical</a></span></td>
+<td>Convert this vector to cylindrical coordinates. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_toMovedTowards">toMovedTowards</a></span></td>
+<td>Returns a vector moved towards <span class="code-inline">target</span> by a maximum distance of <span class="code-inline">maxDistance</span>. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_toNormalized">toNormalized</a></span></td>
 <td>Returns this vector normalized to unit length without modifying the original. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_toNormalizeSafe">toNormalizeSafe</a></span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_toNormalizedSafe">toNormalizedSafe</a></span></td>
 <td>Returns this vector normalized safely without modifying the original. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_toProject">toProject</a></span></td>
+<td>Project this vector onto <span class="code-inline">other</span> vector. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_toReflect">toReflect</a></span></td>
+<td>Reflect this vector across a surface with the given <span class="code-inline">normal</span>. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_toSign">toSign</a></span></td>
+<td>Returns the component-wise sign of the vector (-1, 0, or 1 for each component). </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_toSpherical">toSpherical</a></span></td>
+<td>Convert this vector to spherical coordinates. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
@@ -15943,43 +17516,127 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Core_Math_Vector3_clear"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">clear</span></span>
+<span id="Core_Math_Vector3_angleTo"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">angleTo</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L170" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L367" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Set all vector components to zero. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
-<p>Equivalent to assigning the <span class="code-inline">Zero</span> constant but modifies the current instance. </p>
+<p>Returns the angle between this vector and <span class="code-inline">other</span> in radians. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">angleTo</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>The result is in the range [0, π] using the arc cosine of the normalized dot product. </p>
 <p>
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Core_Math_Vector3_distance"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">distance</span></span>
+<span id="Core_Math_Vector3_ceil"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">ceil</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L207" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L342" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Apply ceiling function to all components in-place. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ceil</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Rounds each component up to the nearest integer value. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector3_clamp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">clamp</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L386" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Clamp this vector's components between <span class="code-inline">min</span> and <span class="code-inline">max</span> values. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clamp</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, min, max: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)</span></div>
+<p>Each component is independently clamped to stay within the specified range. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector3_clampLength"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">clampLength</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L402" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Clamp this vector's length to be within <span class="code-inline">minLength</span> and <span class="code-inline">maxLength</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clampLength</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, minLength, maxLength: <span class="STpe">f32</span>)</span></div>
+<p>Preserves the vector's direction while constraining its magnitude. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector3_clampedLength"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">clampedLength</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L413" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns a new vector with length clamped between <span class="code-inline">minLength</span> and <span class="code-inline">maxLength</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clampedLength</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, minLength, maxLength: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<p>Preserves the vector's direction while constraining its magnitude. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector3_cosAngleTo"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">cosAngleTo</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L360" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns the cosine of the angle between this vector and <span class="code-inline">other</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cosAngleTo</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Calculated using the dot product formula: dot(a,b) / (|a| * |b|). </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector3_cross"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">cross</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L174" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns the cross product between this vector and <span class="code-inline">other</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cross</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<p>The cross product produces a vector perpendicular to both input vectors. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector3_distanceTo"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">distanceTo</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L221" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Returns the Euclidean distance between this vector and <span class="code-inline">dest</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distance</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, dest: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceTo</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, dest: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Calculated as the length of the difference vector between the two positions. </p>
 <p>
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Core_Math_Vector3_distanceSquared"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">distanceSquared</span></span>
+<span id="Core_Math_Vector3_distanceToSquared"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">distanceToSquared</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L217" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L231" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Returns the squared distance between this vector and <span class="code-inline">dest</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceSquared</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, dest: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceToSquared</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, dest: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Faster than <span class="code-inline">distance()</span> when only comparing distances since it avoids the square root operation. </p>
 <p>
 <table class="api-item">
@@ -15988,13 +17645,55 @@
 <span id="Core_Math_Vector3_dot"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">dot</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L166" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L169" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Returns the dot product between this vector and <span class="code-inline">other</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">dot</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">dot</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>The dot product is calculated as: (x₁ × x₂) + (y₁ × y₂) + (z₁ × z₂). </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector3_floor"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">floor</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L333" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Apply floor function to all components in-place. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">floor</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Rounds each component down to the nearest integer value. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector3_fromCylindrical"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">fromCylindrical</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L533" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Create a vector from cylindrical coordinates. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromCylindrical</span>(theta, radius, height: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<p><span class="code-inline">theta</span> is the angle in radians, <span class="code-inline">radius</span> is the distance from the z-axis, <span class="code-inline">height</span> is the z-component. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector3_fromSpherical"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">fromSpherical</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L515" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Create a vector from spherical coordinates. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromSpherical</span>(theta, phi, radius: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<p><span class="code-inline">theta</span> is azimuthal angle in radians, <span class="code-inline">phi</span> is polar angle in radians, <span class="code-inline">radius</span> is the distance from origin. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -16002,13 +17701,41 @@
 <span id="Core_Math_Vector3_isEqualEpsilon"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">isEqualEpsilon</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L200" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L214" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Returns true if this vector is equal to <span class="code-inline">other</span> within an epsilon tolerance. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEqualEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>, eps = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SCst"><a href="#Core_Math_ConstF64">ConstF64</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEqualEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>, eps = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SCst"><a href="#Core_Math_ConstF64">ConstF64</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Compares each component separately using the specified <span class="code-inline">eps</span> tolerance. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector3_isFinite"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">isFinite</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L466" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns true if all components are finite (not infinite or NaN). </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isFinite</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Useful for validating vector values after calculations. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector3_isNaN"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">isNaN</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L473" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns true if any component is NaN (Not a Number). </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isNaN</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Useful for detecting invalid vector values after calculations. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -16016,7 +17743,7 @@
 <span id="Core_Math_Vector3_isZero"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">isZero</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L186" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L200" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16030,7 +17757,7 @@
 <span id="Core_Math_Vector3_isZeroEpsilon"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">isZeroEpsilon</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L193" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L207" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16044,7 +17771,7 @@
 <span id="Core_Math_Vector3_length"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">length</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L158" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L159" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16058,7 +17785,7 @@
 <span id="Core_Math_Vector3_lengthSquared"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">lengthSquared</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L162" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L164" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16069,16 +17796,30 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Core_Math_Vector3_lerp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">lerp</span></span>
+<span id="Core_Math_Vector3_lerpTo"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">lerpTo</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L320" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L375" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Perform linear interpolation between two vectors. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lerp</span>(src, dst: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>, factor: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lerpTo</span>(src, dst: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>, factor: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
 <p>Interpolates each component separately using the given <span class="code-inline">factor</span> (0.0 to 1.0). When <span class="code-inline">factor</span> is 0.0, returns <span class="code-inline">src</span>; when 1.0, returns <span class="code-inline">dst</span>. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector3_makeAbs"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">makeAbs</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L432" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Apply absolute value to all components in-place. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">makeAbs</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Makes all components positive by removing their sign. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -16086,12 +17827,12 @@
 <span id="Core_Math_Vector3_max"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">max</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L308" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L322" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Returns a vector containing the maximum components of two vectors. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">max</span>(a, b: <span class="STpe">Self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">max</span>(a, b: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
 <p>Each component of the result is the larger of the corresponding components in <span class="code-inline">a</span> and <span class="code-inline">b</span>. </p>
 <p>
 <table class="api-item">
@@ -16100,13 +17841,27 @@
 <span id="Core_Math_Vector3_min"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">min</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L297" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L311" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Returns a vector containing the minimum components of two vectors. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">min</span>(a, b: <span class="STpe">Self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">min</span>(a, b: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
 <p>Each component of the result is the smaller of the corresponding components in <span class="code-inline">a</span> and <span class="code-inline">b</span>. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector3_moveTowards"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">moveTowards</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L480" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Move this vector towards <span class="code-inline">target</span> by a maximum distance of <span class="code-inline">maxDistance</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveTowards</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, target: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>, maxDistance: <span class="STpe">f32</span>)</span></div>
+<p>If the distance to <span class="code-inline">target</span> is less than <span class="code-inline">maxDistance</span>, moves directly to target. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -16114,7 +17869,7 @@
 <span id="Core_Math_Vector3_negate"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">negate</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L177" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L190" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16128,7 +17883,7 @@
 <span id="Core_Math_Vector3_normalize"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">normalize</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L227" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L241" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16142,7 +17897,7 @@
 <span id="Core_Math_Vector3_normalizeSafe"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">normalizeSafe</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L269" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L283" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16156,7 +17911,7 @@
 <span id="Core_Math_Vector3_opAffect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">opAffect</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L31" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L30" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16170,12 +17925,12 @@
 <span id="Core_Math_Vector3_opAssign"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">opAssign</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L39" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L38" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Compound assignment operators for vector-vector operations (+=, -=, <i>=, /=).</i> </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)</span></div>
 <p>Performs component-wise operations with another vector. </p>
 <p>Compound assignment operators for vector-scalar operations (+=, -=, <i>=, /=).</i> </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
@@ -16187,15 +17942,15 @@
 <span id="Core_Math_Vector3_opBinary"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">opBinary</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L105" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L104" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Binary operators for vector-vector operations (+, -, <i>, /).</i> </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
 <p>Performs component-wise operations between two vectors and returns the result. </p>
 <p>Binary operators for vector-scalar operations (+, -, <i>, /).</i> </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
 <p>Applies the scalar <span class="code-inline">value</span> to all components and returns the result. </p>
 <p>
 <table class="api-item">
@@ -16209,8 +17964,22 @@
 </table>
 </p>
 <p>Apply unary operations to the vector. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
 <p>Currently supports negation (-) to return a vector with all components negated. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector3_round"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">round</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L351" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Apply rounding function to all components in-place. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">round</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Rounds each component to the nearest integer value. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -16232,7 +18001,7 @@
 <span id="Core_Math_Vector3_setLength"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">setLength</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L259" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L273" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16246,7 +18015,7 @@
 <span id="Core_Math_Vector3_setLengthSafe"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">setLengthSafe</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L249" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L263" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16257,30 +18026,170 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Core_Math_Vector3_toNormalize"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">toNormalize</span></span>
+<span id="Core_Math_Vector3_setZero"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">setZero</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L239" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L182" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Set all vector components to zero. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setZero</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Equivalent to assigning the <span class="code-inline">Zero</span> constant but modifies the current instance. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector3_smoothDamp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">smoothDamp</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L504" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Perform smooth damping interpolation towards <span class="code-inline">target</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">smoothDamp</span>(current, target: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>, currentVelocity: *<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>, smoothTime, deltaTime: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<p>Uses <span class="code-inline">smoothTime</span> and <span class="code-inline">deltaTime</span> for frame-rate independent smooth movement. <span class="code-inline">currentVelocity</span> is modified to track the current rate of change. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector3_toAbs"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">toAbs</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L425" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns the absolute value of each component. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toAbs</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<p>Creates a new vector where each component is its absolute value. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector3_toClamped"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">toClamped</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L395" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns a new vector with components clamped between <span class="code-inline">min</span> and <span class="code-inline">max</span> values. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toClamped</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, min, max: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<p>Each component is independently clamped to stay within the specified range. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector3_toCylindrical"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">toCylindrical</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L540" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Convert this vector to cylindrical coordinates. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toCylindrical</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;{theta:<span class="STpe">f32</span>,radius:<span class="STpe">f32</span>,height:<span class="STpe">f32</span>}</span></div>
+<p>Returns theta (angle in radians), radius (distance from z-axis) and height (z-component) as a tuple-like struct. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector3_toMovedTowards"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">toMovedTowards</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L492" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns a vector moved towards <span class="code-inline">target</span> by a maximum distance of <span class="code-inline">maxDistance</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toMovedTowards</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, target: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>, maxDistance: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<p>If the distance to <span class="code-inline">target</span> is less than <span class="code-inline">maxDistance</span>, returns the target directly. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector3_toNormalized"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">toNormalized</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L253" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Returns this vector normalized to unit length without modifying the original. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalize</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalized</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
 <p>Creates a new vector with length 1 in the same direction. Asserts that the vector is not zero. </p>
 <p>
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Core_Math_Vector3_toNormalizeSafe"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">toNormalizeSafe</span></span>
+<span id="Core_Math_Vector3_toNormalizedSafe"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">toNormalizedSafe</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L286" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L300" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Returns this vector normalized safely without modifying the original. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalizeSafe</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalizedSafe</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
 <p>Returns a unit vector in the same direction, or the zero vector if length is near zero. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector3_toProject"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">toProject</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L441" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Project this vector onto <span class="code-inline">other</span> vector. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toProject</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<p>Returns the component of this vector in the direction of <span class="code-inline">other</span>. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector3_toReflect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">toReflect</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L452" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Reflect this vector across a surface with the given <span class="code-inline">normal</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toReflect</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, normal: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<p>The <span class="code-inline">normal</span> should be a unit vector pointing away from the surface. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector3_toSign"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">toSign</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L459" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns the component-wise sign of the vector (-1, 0, or 1 for each component). </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSign</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<p>Each component becomes -1 if negative, 0 if zero, or 1 if positive. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector3_toSpherical"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">toSpherical</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L523" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Convert this vector to spherical coordinates. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSpherical</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;{theta:<span class="STpe">f32</span>,phi:<span class="STpe">f32</span>,radius:<span class="STpe">f32</span>}</span></div>
+<p>Returns theta (azimuthal angle), phi (polar angle) in radians and radius (magnitude) as a tuple-like struct. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -16296,33 +18205,201 @@
 <tr>
 <td>x</td>
 <td class="code-type"><span class="STpe">f32</span></td>
-<td>X component of the vector. </td>
+<td>X, Y, Z, and W components of the vector. </td>
 </tr>
 <tr>
 <td>y</td>
 <td class="code-type"><span class="STpe">f32</span></td>
-<td>Y component of the vector. </td>
+<td></td>
 </tr>
 <tr>
 <td>z</td>
 <td class="code-type"><span class="STpe">f32</span></td>
-<td>Z component of the vector. </td>
+<td></td>
 </tr>
 <tr>
 <td>w</td>
 <td class="code-type"><span class="STpe">f32</span></td>
-<td>W component of the vector. </td>
+<td></td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_clear">clear</a></span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_angleTo">angleTo</a></span></td>
+<td>Returns the angle between this vector and <span class="code-inline">other</span> in radians. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_ceil">ceil</a></span></td>
+<td>Apply ceiling function to all components in-place. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_clamp">clamp</a></span></td>
+<td>Clamp this vector's components between <span class="code-inline">min</span> and <span class="code-inline">max</span> values. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_clampLength">clampLength</a></span></td>
+<td>Clamp this vector's length to be within <span class="code-inline">minLength</span> and <span class="code-inline">maxLength</span>. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_clampedLength">clampedLength</a></span></td>
+<td>Returns a new vector with length clamped between <span class="code-inline">minLength</span> and <span class="code-inline">maxLength</span>. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_cosAngleTo">cosAngleTo</a></span></td>
+<td>Returns the cosine of the angle between this vector and <span class="code-inline">other</span>. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_distanceTo">distanceTo</a></span></td>
+<td>Returns the Euclidean distance between this vector and <span class="code-inline">dest</span>. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_distanceToSquared">distanceToSquared</a></span></td>
+<td>Returns the squared distance between this vector and <span class="code-inline">dest</span>. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_dot">dot</a></span></td>
+<td>Returns the dot product between this vector and <span class="code-inline">other</span>. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_floor">floor</a></span></td>
+<td>Apply floor function to all components in-place. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_fromVector2">fromVector2</a></span></td>
+<td>Create a Vector4 from Vector2 with specified Z and W components. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_fromVector3">fromVector3</a></span></td>
+<td>Create a Vector4 from Vector3 with specified W component. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_isEqualEpsilon">isEqualEpsilon</a></span></td>
+<td>Returns true if this vector is equal to <span class="code-inline">other</span> within an epsilon tolerance. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_isFinite">isFinite</a></span></td>
+<td>Returns true if all components are finite (not infinite or NaN). </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_isNaN">isNaN</a></span></td>
+<td>Returns true if any component is NaN (Not a Number). </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_isZero">isZero</a></span></td>
+<td>Returns true if this vector is exactly zero. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_isZeroEpsilon">isZeroEpsilon</a></span></td>
+<td>Returns true if this vector is zero within an epsilon tolerance. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_length">length</a></span></td>
+<td>Returns the length (magnitude) of the vector. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_lengthSquared">lengthSquared</a></span></td>
+<td>Returns the squared length of the vector. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_lerpTo">lerpTo</a></span></td>
+<td>Perform linear interpolation between two vectors. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_makeAbs">makeAbs</a></span></td>
+<td>Apply absolute value to all components in-place. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_max">max</a></span></td>
+<td>Returns a vector containing the maximum components of two vectors. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_min">min</a></span></td>
+<td>Returns a vector containing the minimum components of two vectors. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_moveTowards">moveTowards</a></span></td>
+<td>Move this vector towards <span class="code-inline">target</span> by a maximum distance of <span class="code-inline">maxDistance</span>. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_negate">negate</a></span></td>
+<td>Negate the vector in-place. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_normalize">normalize</a></span></td>
+<td>Normalize this vector in-place to unit length. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_normalizeSafe">normalizeSafe</a></span></td>
+<td>Normalize this vector in-place safely. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_round">round</a></span></td>
+<td>Apply rounding function to all components in-place. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_set">set</a></span></td>
+<td>Set all four components of the vector. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_setLength">setLength</a></span></td>
+<td>Set the vector to the specified length. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_setLengthSafe">setLengthSafe</a></span></td>
+<td>Set the vector to the specified length safely. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_setZero">setZero</a></span></td>
 <td>Set all vector components to zero. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_lerp">lerp</a></span></td>
-<td>Perform linear interpolation between two vectors. </td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_smoothDamp">smoothDamp</a></span></td>
+<td>Perform smooth damping interpolation towards <span class="code-inline">target</span>. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_toAbs">toAbs</a></span></td>
+<td>Returns the absolute value of each component. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_toClamped">toClamped</a></span></td>
+<td>Returns a new vector with components clamped between <span class="code-inline">min</span> and <span class="code-inline">max</span> values. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_toMovedTowards">toMovedTowards</a></span></td>
+<td>Returns a vector moved towards <span class="code-inline">target</span> by a maximum distance of <span class="code-inline">maxDistance</span>. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_toNormalized">toNormalized</a></span></td>
+<td>Returns this vector normalized to unit length without modifying the original. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_toNormalizedSafe">toNormalizedSafe</a></span></td>
+<td>Returns this vector normalized safely without modifying the original. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_toProject">toProject</a></span></td>
+<td>Project this vector onto <span class="code-inline">other</span> vector. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_toReflect">toReflect</a></span></td>
+<td>Reflect this vector across a surface with the given <span class="code-inline">normal</span>. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_toSign">toSign</a></span></td>
+<td>Returns the component-wise sign of the vector (-1, 0, or 1 for each component). </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_toVector3">toVector3</a></span></td>
+<td>Convert homogeneous coordinates to 3D by dividing x, y, z by w. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_xy">xy</a></span></td>
+<td>Extract the XY components as a Vector2, ignoring Z and W components. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_xyz">xyz</a></span></td>
+<td>Extract the XYZ components as a Vector3, ignoring the W component. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
@@ -16330,6 +18407,22 @@
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_opAffect">opAffect</a></span></td>
 <td>Set all components to the same scalar value. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Vector4</span>)</span></td>
+<td>Compound assignment operators for vector-vector operations (+=, -=, <i>=, /=).</i> </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>)</span></td>
+<td>Compound assignment operators for vector-scalar operations (+=, -=, <i>=, /=).</i> </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_opBinary">opBinary</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Vector4</span>)</span></td>
+<td>Binary operators for vector-vector operations (+, -, <i>, /).</i> </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_opBinary">opBinary</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>)</span></td>
+<td>Binary operators for vector-scalar operations (+, -, <i>, /).</i> </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_opUnary">opUnary</a></span></td>
@@ -16340,30 +18433,380 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Core_Math_Vector4_clear"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">clear</span></span>
+<span id="Core_Math_Vector4_angleTo"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">angleTo</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L41" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L383" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Set all vector components to zero. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
-<p>Equivalent to assigning the <span class="code-inline">Zero</span> constant but modifies the current instance. </p>
+<p>Returns the angle between this vector and <span class="code-inline">other</span> in radians. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">angleTo</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>The result is in the range [0, π] using the arc cosine of the normalized dot product. </p>
 <p>
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Core_Math_Vector4_lerp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">lerp</span></span>
+<span id="Core_Math_Vector4_ceil"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">ceil</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L49" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L356" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Apply ceiling function to all components in-place. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ceil</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Rounds each component up to the nearest integer value. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_clamp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">clamp</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L403" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Clamp this vector's components between <span class="code-inline">min</span> and <span class="code-inline">max</span> values. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clamp</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, min, max: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)</span></div>
+<p>Each component is independently clamped to stay within the specified range. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_clampLength"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">clampLength</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L420" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Clamp this vector's length to be within <span class="code-inline">minLength</span> and <span class="code-inline">maxLength</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clampLength</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, minLength, maxLength: <span class="STpe">f32</span>)</span></div>
+<p>Preserves the vector's direction while constraining its magnitude. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_clampedLength"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">clampedLength</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L431" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns a new vector with length clamped between <span class="code-inline">minLength</span> and <span class="code-inline">maxLength</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clampedLength</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, minLength, maxLength: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
+<p>Preserves the vector's direction while constraining its magnitude. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_cosAngleTo"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">cosAngleTo</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L376" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns the cosine of the angle between this vector and <span class="code-inline">other</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cosAngleTo</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Calculated using the dot product formula: dot(a,b) / (|a| * |b|). </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_distanceTo"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">distanceTo</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L226" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns the Euclidean distance between this vector and <span class="code-inline">dest</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceTo</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, dest: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Calculated as the length of the difference vector between the two positions. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_distanceToSquared"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">distanceToSquared</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L237" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns the squared distance between this vector and <span class="code-inline">dest</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceToSquared</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, dest: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Faster than <span class="code-inline">distance()</span> when only comparing distances since it avoids the square root operation. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_dot"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">dot</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L181" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns the dot product between this vector and <span class="code-inline">other</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">dot</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>The dot product is calculated as: (x₁ × x₂) + (y₁ × y₂) + (z₁ × z₂) + (w₁ × w₂). </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_floor"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">floor</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L346" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Apply floor function to all components in-place. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">floor</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Rounds each component down to the nearest integer value. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_fromVector2"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">fromVector2</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L565" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Create a Vector4 from Vector2 with specified Z and W components. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromVector2</span>(v: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, z, w: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
+<p>Useful for extending 2D coordinates to 4D space. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_fromVector3"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">fromVector3</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L558" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Create a Vector4 from Vector3 with specified W component. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromVector3</span>(v: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>, w: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
+<p>Commonly used for creating homogeneous coordinates from 3D positions. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_isEqualEpsilon"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">isEqualEpsilon</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L219" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns true if this vector is equal to <span class="code-inline">other</span> within an epsilon tolerance. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEqualEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>, eps = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SCst"><a href="#Core_Math_ConstF64">ConstF64</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Compares each component separately using the specified <span class="code-inline">eps</span> tolerance. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_isFinite"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">isFinite</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L485" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns true if all components are finite (not infinite or NaN). </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isFinite</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Useful for validating vector values after calculations. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_isNaN"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">isNaN</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L492" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns true if any component is NaN (Not a Number). </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isNaN</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Useful for detecting invalid vector values after calculations. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_isZero"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">isZero</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L205" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns true if this vector is exactly zero. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZero</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Performs exact floating-point comparison, which may not work well with computed values. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_isZeroEpsilon"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">isZeroEpsilon</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L212" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns true if this vector is zero within an epsilon tolerance. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZeroEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, eps = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SCst"><a href="#Core_Math_ConstF64">ConstF64</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Uses <span class="code-inline">eps</span> parameter to handle floating-point precision issues. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_length"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">length</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L171" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns the length (magnitude) of the vector. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">length</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Calculated using the Euclidean distance formula: sqrt(x² + y² + z² + w²). </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_lengthSquared"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">lengthSquared</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L176" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns the squared length of the vector. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lengthSquared</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Faster than <span class="code-inline">length()</span> when only comparing magnitudes since it avoids the square root operation. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_lerpTo"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">lerpTo</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L391" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Perform linear interpolation between two vectors. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lerp</span>(src, dst: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>, factor: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lerpTo</span>(src, dst: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>, factor: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
 <p>Interpolates each component separately using the given <span class="code-inline">factor</span> (0.0 to 1.0). When <span class="code-inline">factor</span> is 0.0, returns <span class="code-inline">src</span>; when 1.0, returns <span class="code-inline">dst</span>. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_makeAbs"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">makeAbs</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L450" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Apply absolute value to all components in-place. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">makeAbs</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Makes all components positive by removing their sign. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_max"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">max</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L334" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns a vector containing the maximum components of two vectors. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">max</span>(a, b: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
+<p>Each component of the result is the larger of the corresponding components in <span class="code-inline">a</span> and <span class="code-inline">b</span>. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_min"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">min</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L322" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns a vector containing the minimum components of two vectors. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">min</span>(a, b: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
+<p>Each component of the result is the smaller of the corresponding components in <span class="code-inline">a</span> and <span class="code-inline">b</span>. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_moveTowards"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">moveTowards</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L499" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Move this vector towards <span class="code-inline">target</span> by a maximum distance of <span class="code-inline">maxDistance</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveTowards</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, target: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>, maxDistance: <span class="STpe">f32</span>)</span></div>
+<p>If the distance to <span class="code-inline">target</span> is less than <span class="code-inline">maxDistance</span>, moves directly to target. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_negate"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">negate</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L194" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Negate the vector in-place. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">negate</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Multiplies all components by -1, effectively reversing the vector direction. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_normalize"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">normalize</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L248" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Normalize this vector in-place to unit length. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">normalize</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Sets the vector's length to 1 while preserving its direction. Asserts that the vector is not zero. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_normalizeSafe"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">normalizeSafe</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L293" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Normalize this vector in-place safely. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">normalizeSafe</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Sets the vector to unit length, or to zero if the original length is near zero. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -16371,7 +18814,7 @@
 <span id="Core_Math_Vector4_opAffect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">opAffect</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L24" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L33" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16382,16 +18825,288 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Core_Math_Vector4_opAssign"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">opAssign</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L41" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Compound assignment operators for vector-vector operations (+=, -=, <i>=, /=).</i> </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)</span></div>
+<p>Performs component-wise operations with another vector. </p>
+<p>Compound assignment operators for vector-scalar operations (+=, -=, <i>=, /=).</i> </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<p>Applies the scalar <span class="code-inline">value</span> to all components of the vector. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_opBinary"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">opBinary</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L115" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Binary operators for vector-vector operations (+, -, <i>, /).</i> </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
+<p>Performs component-wise operations between two vectors and returns the result. </p>
+<p>Binary operators for vector-scalar operations (+, -, <i>, /).</i> </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
+<p>Applies the scalar <span class="code-inline">value</span> to all components and returns the result. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Core_Math_Vector4_opUnary"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">opUnary</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L31" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L149" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Apply unary operations to the vector. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
 <p>Currently supports negation (-) to return a vector with all components negated. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_round"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">round</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L366" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Apply rounding function to all components in-place. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">round</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Rounds each component to the nearest integer value. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_set"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">set</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L160" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Set all four components of the vector. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, x, y, z, w: <span class="STpe">f32</span>)</span></div>
+<p>Parameters <span class="code-inline">x</span>, <span class="code-inline">y</span>, <span class="code-inline">z</span>, and <span class="code-inline">w</span> specify the new component values. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_setLength"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">setLength</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L282" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Set the vector to the specified length. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setLength</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newLength: <span class="STpe">f32</span>)</span></div>
+<p>First normalizes the vector, then scales it to <span class="code-inline">newLength</span>. Assumes the vector is not zero. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_setLengthSafe"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">setLengthSafe</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L271" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Set the vector to the specified length safely. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setLengthSafe</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newLength: <span class="STpe">f32</span>)</span></div>
+<p>First normalizes the vector safely, then scales it to <span class="code-inline">newLength</span>. Handles zero-length vectors. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_setZero"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">setZero</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L186" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Set all vector components to zero. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setZero</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Equivalent to assigning the <span class="code-inline">Zero</span> constant but modifies the current instance. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_smoothDamp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">smoothDamp</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L523" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Perform smooth damping interpolation towards <span class="code-inline">target</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">smoothDamp</span>(current, target: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>, currentVelocity: &<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>, smoothTime, deltaTime: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
+<p>Uses <span class="code-inline">smoothTime</span> and <span class="code-inline">deltaTime</span> for frame-rate independent smooth movement. <span class="code-inline">currentVelocity</span> is modified to track the current rate of change. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_toAbs"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">toAbs</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L443" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns the absolute value of each component. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toAbs</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
+<p>Creates a new vector where each component is its absolute value. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_toClamped"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">toClamped</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L413" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns a new vector with components clamped between <span class="code-inline">min</span> and <span class="code-inline">max</span> values. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toClamped</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, min, max: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
+<p>Each component is independently clamped to stay within the specified range. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_toMovedTowards"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">toMovedTowards</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L511" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns a vector moved towards <span class="code-inline">target</span> by a maximum distance of <span class="code-inline">maxDistance</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toMovedTowards</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, target: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>, maxDistance: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
+<p>If the distance to <span class="code-inline">target</span> is less than <span class="code-inline">maxDistance</span>, returns the target directly. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_toNormalized"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">toNormalized</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L261" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns this vector normalized to unit length without modifying the original. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalized</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
+<p>Creates a new vector with length 1 in the same direction. Asserts that the vector is not zero. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_toNormalizedSafe"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">toNormalizedSafe</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L311" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns this vector normalized safely without modifying the original. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalizedSafe</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
+<p>Returns a unit vector in the same direction, or the zero vector if length is near zero. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_toProject"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">toProject</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L460" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Project this vector onto <span class="code-inline">other</span> vector. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toProject</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
+<p>Returns the component of this vector in the direction of <span class="code-inline">other</span>. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_toReflect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">toReflect</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L471" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Reflect this vector across a surface with the given <span class="code-inline">normal</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toReflect</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, normal: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
+<p>The <span class="code-inline">normal</span> should be a unit vector pointing away from the surface. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_toSign"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">toSign</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L478" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns the component-wise sign of the vector (-1, 0, or 1 for each component). </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSign</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
+<p>Each component becomes -1 if negative, 0 if zero, or 1 if positive. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_toVector3"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">toVector3</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L535" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Convert homogeneous coordinates to 3D by dividing x, y, z by w. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toVector3</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<p>Returns a Vector3 representing the 3D position when w != 0. Handles w = 0 case safely. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_xy"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">xy</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L551" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Extract the XY components as a Vector2, ignoring Z and W components. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">xy</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<p>Useful for 2D projections or when using Vector4 for padding. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_Vector4_xyz"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">xyz</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L544" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Extract the XYZ components as a Vector3, ignoring the W component. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">xyz</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<p>Useful when Vector4 is used for color (RGBA) and you need just RGB. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -16399,7 +19114,7 @@
 <span id="Core_Math_abs"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">abs</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L164" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L223" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16416,7 +19131,7 @@
 <span id="Core_Math_acos"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">acos</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L143" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L202" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16429,7 +19144,7 @@
 <span id="Core_Math_asin"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">asin</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L141" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L200" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16442,7 +19157,7 @@
 <span id="Core_Math_atan"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">atan</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L145" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L204" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16455,7 +19170,7 @@
 <span id="Core_Math_atan2"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">atan2</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L121" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L180" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16468,12 +19183,13 @@
 <span id="Core_Math_bigEndianToNative"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">bigEndianToNative</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\helpers.swg#L20" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\helpers.swg#L40" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Convert a big endian integer to current arch native format. </p>
+<p>Convert a big-endian integer to the current architecture's native format. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">bigEndianToNative</span>(x: <span class="SCst">T</span>)-&gt;<span class="SCst">T</span></span></div>
+<p>On big-endian systems returns <span class="code-inline">x</span> unchanged, on little-endian systems performs byte swap. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -16481,13 +19197,14 @@
 <span id="Core_Math_byteswap"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">byteswap</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\bits.swg#L56" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\bits.swg#L64" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Swap bytes. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">byteswap</span>(x: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>
-<span class="SKwd">func</span> <span class="SFct">byteswap</span>(x: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>
+<p>Reverse the byte order of the value. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">byteswap</span>(x: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span></span></div>
+<p>Converts between little-endian and big-endian representations. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">byteswap</span>(x: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>
 <span class="SKwd">func</span> <span class="SFct">byteswap</span>(x: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
@@ -16496,7 +19213,7 @@
 <span id="Core_Math_ceil"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">ceil</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L157" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L216" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16509,11 +19226,13 @@
 <span id="Core_Math_clamp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">clamp</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\helpers.swg#L6" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\helpers.swg#L8" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Clamp a value between a lower and upper bound. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">clamp</span>(x, low, up: <span class="SCst">T</span>)-&gt;<span class="SCst">T</span></span></div>
+<p>Returns <span class="code-inline">low</span> if <span class="code-inline">x</span> &lt; <span class="code-inline">low</span>, <span class="code-inline">up</span> if <span class="code-inline">x</span> &gt; <span class="code-inline">up</span>, otherwise returns <span class="code-inline">x</span>. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -16521,7 +19240,7 @@
 <span id="Core_Math_cos"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">cos</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L129" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L188" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16534,7 +19253,7 @@
 <span id="Core_Math_cosh"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">cosh</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L136" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L195" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16547,13 +19266,14 @@
 <span id="Core_Math_countOnes"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">countOnes</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\bits.swg#L39" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\bits.swg#L44" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns the number of bits set to 1. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">countOnes</span>(x: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span>
-<span class="SKwd">func</span> <span class="SFct">countOnes</span>(x: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>
+<p>Returns the total number of bits set to 1 in the value. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">countOnes</span>(x: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span></span></div>
+<p>Also known as population count or Hamming weight. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">countOnes</span>(x: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>
 <span class="SKwd">func</span> <span class="SFct">countOnes</span>(x: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>
 <span class="SKwd">func</span> <span class="SFct">countOnes</span>(x: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
@@ -16577,7 +19297,7 @@
 <span id="Core_Math_exp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">exp</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L167" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L226" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16590,7 +19310,7 @@
 <span id="Core_Math_exp2"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">exp2</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L169" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L228" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16603,7 +19323,7 @@
 <span id="Core_Math_floor"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">floor</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L155" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L214" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16687,7 +19407,7 @@
 <span id="Core_Math_isEqualEpsilon"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">isEqualEpsilon</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L68" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L109" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16698,16 +19418,33 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Core_Math_isNan"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">isNan</span></span>
+<span id="Core_Math_isFinite"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">isFinite</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L73" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L120" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns true if the value is finite (not infinite and not NaN). </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isFinite</span>(value: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>A finite number is any real number that is not positive infinity, negative infinity, or NaN. </p>
+<p>Returns true if the value is finite (not infinite and not NaN). </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isFinite</span>(value: <span class="STpe">f64</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>A finite number is any real number that is not positive infinity, negative infinity, or NaN. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_isNaN"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">isNaN</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L114" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Check if <span class="code-inline">x</span> is NaN (not a number). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isNan</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span>
-<span class="SKwd">func</span> <span class="SFct">isNan</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isNaN</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span>
+<span class="SKwd">func</span> <span class="SFct">isNaN</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -16730,7 +19467,7 @@
 <span id="Core_Math_isZeroEpsilon"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">isZeroEpsilon</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L64" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L105" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16757,13 +19494,14 @@
 <span id="Core_Math_leadingZeros"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">leadingZeros</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\bits.swg#L27" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\bits.swg#L30" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns the number of bits set to 0 from the left. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">leadingZeros</span>(x: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span>
-<span class="SKwd">func</span> <span class="SFct">leadingZeros</span>(x: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>
+<p>Returns the number of leading zero bits from the most significant bit. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">leadingZeros</span>(x: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span></span></div>
+<p>Counts consecutive zero bits starting from the left (most significant) side. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">leadingZeros</span>(x: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>
 <span class="SKwd">func</span> <span class="SFct">leadingZeros</span>(x: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>
 <span class="SKwd">func</span> <span class="SFct">leadingZeros</span>(x: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
@@ -16787,12 +19525,13 @@
 <span id="Core_Math_littleEndianToNative"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">littleEndianToNative</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\helpers.swg#L40" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\helpers.swg#L62" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Convert a little endian integer to current arch native format. </p>
+<p>Convert a little-endian integer to the current architecture's native format. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">littleEndianToNative</span>(x: <span class="SCst">T</span>)-&gt;<span class="SCst">T</span></span></div>
+<p>On little-endian systems returns <span class="code-inline">x</span> unchanged, on big-endian systems performs byte swap. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -16800,7 +19539,7 @@
 <span id="Core_Math_log"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">log</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L148" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L207" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16813,7 +19552,7 @@
 <span id="Core_Math_log10"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">log10</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L152" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L211" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16826,7 +19565,7 @@
 <span id="Core_Math_log2"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">log2</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L150" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L209" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16891,7 +19630,7 @@
 <span id="Core_Math_map"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">map</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L91" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L150" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16905,14 +19644,20 @@
 <span id="Core_Math_max"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">max</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\helpers.swg#L11" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\helpers.swg#L18" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">max</span>(x, y: <span class="SCst">T</span>)-&gt;<span class="SCst">T</span>
-<span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">max</span>(x, y, z: <span class="SCst">T</span>)-&gt;<span class="SCst">T</span>
-<span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">max</span>(x, y, z, w: <span class="SCst">T</span>)-&gt;<span class="SCst">T</span>
-<span class="SKwd">func</span> <span class="SFct">max</span>(x, y: <span class="STpe">s8</span>)-&gt;<span class="STpe">s8</span>
+<p>Return the larger of two values. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">max</span>(x, y: <span class="SCst">T</span>)-&gt;<span class="SCst">T</span></span></div>
+<p>Generic implementation that works with any comparable type <span class="code-inline">T</span>. </p>
+<p>Return the largest of three values. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">max</span>(x, y, z: <span class="SCst">T</span>)-&gt;<span class="SCst">T</span></span></div>
+<p>Efficiently finds the maximum using nested comparisons. </p>
+<p>Return the largest of four values. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">max</span>(x, y, z, w: <span class="SCst">T</span>)-&gt;<span class="SCst">T</span></span></div>
+<p>Efficiently finds the maximum using nested comparisons. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">max</span>(x, y: <span class="STpe">s8</span>)-&gt;<span class="STpe">s8</span>
 <span class="SKwd">func</span> <span class="SFct">max</span>(x, y: <span class="STpe">s16</span>)-&gt;<span class="STpe">s16</span>
 <span class="SKwd">func</span> <span class="SFct">max</span>(x, y: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
 <span class="SKwd">func</span> <span class="SFct">max</span>(x, y: <span class="STpe">s64</span>)-&gt;<span class="STpe">s64</span>
@@ -16927,14 +19672,20 @@
 <span id="Core_Math_min"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">min</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\helpers.swg#L10" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\helpers.swg#L14" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">min</span>(x, y: <span class="SCst">T</span>)-&gt;<span class="SCst">T</span>
-<span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">min</span>(x, y, z: <span class="SCst">T</span>)-&gt;<span class="SCst">T</span>
-<span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">min</span>(x, y, z, w: <span class="SCst">T</span>)-&gt;<span class="SCst">T</span>
-<span class="SKwd">func</span> <span class="SFct">min</span>(x, y: <span class="STpe">s8</span>)-&gt;<span class="STpe">s8</span>
+<p>Return the smaller of two values. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">min</span>(x, y: <span class="SCst">T</span>)-&gt;<span class="SCst">T</span></span></div>
+<p>Generic implementation that works with any comparable type <span class="code-inline">T</span>. </p>
+<p>Return the smallest of three values. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">min</span>(x, y, z: <span class="SCst">T</span>)-&gt;<span class="SCst">T</span></span></div>
+<p>Efficiently finds the minimum using nested comparisons. </p>
+<p>Return the smallest of four values. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">min</span>(x, y, z, w: <span class="SCst">T</span>)-&gt;<span class="SCst">T</span></span></div>
+<p>Efficiently finds the minimum using nested comparisons. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">min</span>(x, y: <span class="STpe">s8</span>)-&gt;<span class="STpe">s8</span>
 <span class="SKwd">func</span> <span class="SFct">min</span>(x, y: <span class="STpe">s16</span>)-&gt;<span class="STpe">s16</span>
 <span class="SKwd">func</span> <span class="SFct">min</span>(x, y: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
 <span class="SKwd">func</span> <span class="SFct">min</span>(x, y: <span class="STpe">s64</span>)-&gt;<span class="STpe">s64</span>
@@ -16949,7 +19700,7 @@
 <span id="Core_Math_mulAdd"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">mulAdd</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L174" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L233" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16974,12 +19725,13 @@
 <span id="Core_Math_nativeToBigEndian"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">nativeToBigEndian</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\helpers.swg#L30" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\helpers.swg#L51" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Convert a native arch integer to a big endian. </p>
+<p>Convert a native architecture integer to big-endian format. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">nativeToBigEndian</span>(x: <span class="SCst">T</span>)-&gt;<span class="SCst">T</span></span></div>
+<p>On big-endian systems returns <span class="code-inline">x</span> unchanged, on little-endian systems performs byte swap. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -16987,7 +19739,7 @@
 <span id="Core_Math_pow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">pow</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L171" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L230" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -17000,7 +19752,7 @@
 <span id="Core_Math_powerOf10"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">powerOf10</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L104" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L163" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -17014,15 +19766,22 @@
 <span id="Core_Math_reverse"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">reverse</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\bits.swg#L69" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\bits.swg#L80" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Reverse all bits. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reverse</span>(x: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span>
-<span class="SKwd">func</span> <span class="SFct">reverse</span>(x: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>
-<span class="SKwd">func</span> <span class="SFct">reverse</span>(x: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>
-<span class="SKwd">func</span> <span class="SFct">reverse</span>(x: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
+<p>Reverse all bits in an 8-bit value using lookup table. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reverse</span>(x: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span></span></div>
+<p>Uses the precomputed <span class="code-inline">Rev8Arr</span> table for optimal performance. </p>
+<p>Reverse all bits in a 16-bit value. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reverse</span>(x: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span></span></div>
+<p>Splits the value into two bytes, reverses each using the lookup table, then recombines. </p>
+<p>Reverse all bits in a 32-bit value using bit manipulation. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reverse</span>(x: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span></span></div>
+<p>Uses a series of parallel bit operations with magic constants for efficiency. </p>
+<p>Reverse all bits in a 64-bit value using bit manipulation. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reverse</span>(x: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
+<p>Uses the same parallel bit operation technique as the 32-bit version with 64-bit constants. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -17030,13 +19789,14 @@
 <span id="Core_Math_rol"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">rol</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\bits.swg#L45" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\bits.swg#L51" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Rotate bits left. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">rol</span>(x: <span class="STpe">u8</span>, y: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span>
-<span class="SKwd">func</span> <span class="SFct">rol</span>(x: <span class="STpe">u16</span>, y: <span class="STpe">u8</span>)-&gt;<span class="STpe">u16</span>
+<p>Rotate bits left by <span class="code-inline">y</span> positions. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">rol</span>(x: <span class="STpe">u8</span>, y: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span></span></div>
+<p>Bits that overflow from the left side wrap around to the right side. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">rol</span>(x: <span class="STpe">u16</span>, y: <span class="STpe">u8</span>)-&gt;<span class="STpe">u16</span>
 <span class="SKwd">func</span> <span class="SFct">rol</span>(x: <span class="STpe">u32</span>, y: <span class="STpe">u8</span>)-&gt;<span class="STpe">u32</span>
 <span class="SKwd">func</span> <span class="SFct">rol</span>(x: <span class="STpe">u64</span>, y: <span class="STpe">u8</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
@@ -17046,13 +19806,14 @@
 <span id="Core_Math_ror"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">ror</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\bits.swg#L51" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\bits.swg#L58" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Rotate bits right. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ror</span>(x: <span class="STpe">u8</span>, y: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span>
-<span class="SKwd">func</span> <span class="SFct">ror</span>(x: <span class="STpe">u16</span>, y: <span class="STpe">u8</span>)-&gt;<span class="STpe">u16</span>
+<p>Rotate bits right by <span class="code-inline">y</span> positions. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ror</span>(x: <span class="STpe">u8</span>, y: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span></span></div>
+<p>Bits that overflow from the right side wrap around to the left side. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ror</span>(x: <span class="STpe">u16</span>, y: <span class="STpe">u8</span>)-&gt;<span class="STpe">u16</span>
 <span class="SKwd">func</span> <span class="SFct">ror</span>(x: <span class="STpe">u32</span>, y: <span class="STpe">u8</span>)-&gt;<span class="STpe">u32</span>
 <span class="SKwd">func</span> <span class="SFct">ror</span>(x: <span class="STpe">u64</span>, y: <span class="STpe">u8</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
@@ -17062,7 +19823,7 @@
 <span id="Core_Math_round"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">round</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L161" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L220" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -17133,7 +19894,7 @@
 <span id="Core_Math_sin"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">sin</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L127" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L186" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -17146,7 +19907,7 @@
 <span id="Core_Math_sinh"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">sinh</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L134" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L193" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -17156,10 +19917,24 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Core_Math_smoothDamp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">smoothDamp</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L61" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Perform smooth damping interpolation towards <span class="code-inline">target</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">smoothDamp</span>(current, target: <span class="SCst">T</span>, currentVelocity: &<span class="SCst">T</span>, smoothTime, deltaTime: <span class="SCst">T</span>)-&gt;<span class="SCst">T</span></span></div>
+<p>Uses <span class="code-inline">smoothTime</span> and <span class="code-inline">deltaTime</span> for frame-rate independent smooth movement. <span class="code-inline">currentVelocity</span> is modified to track the current rate of change. Based on Game Programming Gems 4 Chapter 1.10 </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Core_Math_smoothstep"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">smoothstep</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L78" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L137" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -17173,7 +19948,7 @@
 <span id="Core_Math_sqrt"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">sqrt</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L124" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L183" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -17186,7 +19961,7 @@
 <span id="Core_Math_tan"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">tan</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L131" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L190" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -17199,7 +19974,7 @@
 <span id="Core_Math_tanh"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">tanh</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L138" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L197" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -17212,7 +19987,7 @@
 <span id="Core_Math_toDegrees"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">toDegrees</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L58" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L99" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -17226,7 +20001,7 @@
 <span id="Core_Math_toRadians"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">toRadians</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L59" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L100" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -17239,13 +20014,14 @@
 <span id="Core_Math_trailingZeros"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">trailingZeros</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\bits.swg#L33" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\bits.swg#L37" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns the number of bits set to 0 from the right. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">trailingZeros</span>(x: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span>
-<span class="SKwd">func</span> <span class="SFct">trailingZeros</span>(x: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>
+<p>Returns the number of trailing zero bits from the least significant bit. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">trailingZeros</span>(x: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span></span></div>
+<p>Counts consecutive zero bits starting from the right (least significant) side. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">trailingZeros</span>(x: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>
 <span class="SKwd">func</span> <span class="SFct">trailingZeros</span>(x: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>
 <span class="SKwd">func</span> <span class="SFct">trailingZeros</span>(x: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
@@ -17255,7 +20031,7 @@
 <span id="Core_Math_trunc"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">trunc</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L159" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L218" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18176,11 +20952,11 @@
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Path_combine">combine</a></span></td>
-<td>Combine multiple paths into one, by adding a directory separator between them if necessary. </td>
+<td>Combines multiple path segments into one, adding a directory separator between them if necessary. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Path_equals">equals</a></span></td>
-<td>Returns true if the two paths are equal. </td>
+<td>Returns true if the two paths are equal (case-insensitive Latin1 comparison). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Path_getAbsolute">getAbsolute</a></span></td>
@@ -18196,7 +20972,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Path_getExtensionLowerCase">getExtensionLowerCase</a></span></td>
-<td>Returns the file name extension, including the <span class="code-inline">.</span> character, in lower case Returns null if no extension was found. </td>
+<td>Returns the file name extension in lower case, including the <span class="code-inline">.</span> character Returns null if no extension was found. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Path_getFileName">getFileName</a></span></td>
@@ -18204,7 +20980,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Path_getFileNameWithoutExtension">getFileNameWithoutExtension</a></span></td>
-<td>Returns the path file name, null if not found. </td>
+<td>Returns the file name without its extension, null if not found. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Path_getRootLength">getRootLength</a></span></td>
@@ -18224,11 +21000,11 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Path_isExtension">isExtension</a></span></td>
-<td>Returns true if the given file is of the given extension. </td>
+<td>Returns true if the given file has the specified extension (case-insensitive). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Path_isRooted">isRooted</a></span></td>
-<td>Tests if the given path contains a root. A path is considered rooted if it starts with a directory separator or a drive letter and a colon. </td>
+<td>Returns true if the given path is rooted (starts with a separator or a drive letter and colon). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Path_isValidFileName">isValidFileName</a></span></td>
@@ -18240,7 +21016,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Path_normalize">normalize</a></span></td>
-<td>Normalize path <span class="code-inline">' are replaced with </span>/' as this is the std norm for paths. </td>
+<td>Normalizes the path by replacing <span class="code-inline">' with </span>/' to conform to standard path format. </td>
 </tr>
 </table>
 <p>
@@ -18250,11 +21026,11 @@
 <span id="Core_Path_combine"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Path.</span><span class="api-item-title-strong">combine</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\path.swg#L183" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\path.swg#L181" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Combine multiple paths into one, by adding a directory separator between them if necessary. </p>
+<p>Combines multiple path segments into one, adding a directory separator between them if necessary. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">combine</span>(fullnames: <span class="STpe">string</span>...)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
 <p>
 <table class="api-item">
@@ -18263,11 +21039,11 @@
 <span id="Core_Path_equals"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Path.</span><span class="api-item-title-strong">equals</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\path.swg#L205" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\path.swg#L203" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns true if the two paths are equal. </p>
+<p>Returns true if the two paths are equal (case-insensitive Latin1 comparison). </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">equals</span>(path1, path2: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
@@ -18276,7 +21052,7 @@
 <span id="Core_Path_getAbsolute"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Path.</span><span class="api-item-title-strong">getAbsolute</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\path.win32.swg#L147" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\path.win32.swg#L147" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18289,7 +21065,7 @@
 <span id="Core_Path_getDirectoryName"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Path.</span><span class="api-item-title-strong">getDirectoryName</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\path.swg#L45" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\path.swg#L44" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18302,7 +21078,7 @@
 <span id="Core_Path_getExtension"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Path.</span><span class="api-item-title-strong">getExtension</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\path.swg#L126" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\path.swg#L125" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18315,11 +21091,11 @@
 <span id="Core_Path_getExtensionLowerCase"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Path.</span><span class="api-item-title-strong">getExtensionLowerCase</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\path.swg#L148" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\path.swg#L147" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns the file name extension, including the <span class="code-inline">.</span> character, in lower case Returns null if no extension was found. </p>
+<p>Returns the file name extension in lower case, including the <span class="code-inline">.</span> character Returns null if no extension was found. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getExtensionLowerCase</span>(fullname: <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
 <p>
 <table class="api-item">
@@ -18328,7 +21104,7 @@
 <span id="Core_Path_getFileName"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Path.</span><span class="api-item-title-strong">getFileName</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\path.swg#L72" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\path.swg#L71" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18341,11 +21117,11 @@
 <span id="Core_Path_getFileNameWithoutExtension"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Path.</span><span class="api-item-title-strong">getFileNameWithoutExtension</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\path.swg#L97" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\path.swg#L96" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns the path file name, null if not found. </p>
+<p>Returns the file name without its extension, null if not found. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getFileNameWithoutExtension</span>(fullname: <span class="STpe">string</span>)-&gt;<span class="STpe">string</span></span></div>
 <p>
 <table class="api-item">
@@ -18354,7 +21130,7 @@
 <span id="Core_Path_getRootLength"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Path.</span><span class="api-item-title-strong">getRootLength</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\path.win32.swg#L66" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\path.win32.swg#L66" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18367,7 +21143,7 @@
 <span id="Core_Path_getRootName"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Path.</span><span class="api-item-title-strong">getRootName</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\path.swg#L18" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\path.swg#L18" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18380,7 +21156,7 @@
 <span id="Core_Path_hasExtension"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Path.</span><span class="api-item-title-strong">hasExtension</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\path.swg#L161" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\path.swg#L160" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18393,7 +21169,7 @@
 <span id="Core_Path_isDirectorySeparator"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Path.</span><span class="api-item-title-strong">isDirectorySeparator</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\path.swg#L11" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\path.swg#L11" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18406,11 +21182,11 @@
 <span id="Core_Path_isExtension"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Path.</span><span class="api-item-title-strong">isExtension</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\path.swg#L154" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\path.swg#L153" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns true if the given file is of the given extension. </p>
+<p>Returns true if the given file has the specified extension (case-insensitive). </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isExtension</span>(fullname, extension: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
@@ -18419,11 +21195,11 @@
 <span id="Core_Path_isRooted"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Path.</span><span class="api-item-title-strong">isRooted</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\path.swg#L30" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\path.swg#L29" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Tests if the given path contains a root. A path is considered rooted if it starts with a directory separator or a drive letter and a colon. </p>
+<p>Returns true if the given path is rooted (starts with a separator or a drive letter and colon). </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isRooted</span>(fullname: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
@@ -18432,7 +21208,7 @@
 <span id="Core_Path_isValidFileName"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Path.</span><span class="api-item-title-strong">isValidFileName</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\path.win32.swg#L34" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\path.win32.swg#L34" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18445,7 +21221,7 @@
 <span id="Core_Path_isValidPathName"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Path.</span><span class="api-item-title-strong">isValidPathName</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\path.win32.swg#L7" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\path.win32.swg#L7" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18458,11 +21234,11 @@
 <span id="Core_Path_normalize"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Path.</span><span class="api-item-title-strong">normalize</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\path.swg#L212" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\filesystem\path.swg#L209" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Normalize path <span class="code-inline">' are replaced with </span>/' as this is the std norm for paths. </p>
+<p>Normalizes the path by replacing <span class="code-inline">' with </span>/' to conform to standard path format. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">normalize</span>(fullname: *<span class="SCst"><a href="#Core_String">String</a></span>)</span></div>
 <p>
 <table class="api-item">
@@ -21031,11 +23807,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_Serialization_Read_TagBinOptions"><span class="SCst">TagBinOptions</span></a></td>
-<td></td>
+<td>Configuration options for controlling deserialization behavior. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_Serialization_Read_TagBinSection"><span class="SCst">TagBinSection</span></a></td>
-<td></td>
+<td>Section information for tracking deserialization state within structured data. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_Serialization_Read_Xml"><span class="SCst">Xml</span></a></td>
@@ -21398,39 +24174,44 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <p>Binary serializer with forward/backward compatibility. </p>
 <table class="table-enumeration">
 <tr>
+<td>ignoreElements</td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span>)</span></td>
+<td>A list of element names that should be skipped. </td>
+</tr>
+<tr>
 <td>stream</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_ByteStream">ByteStream</a></span></span></td>
-<td></td>
+<td>Input byte stream for reading serialized data. </td>
 </tr>
 <tr>
 <td>options</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_Read">Read</a></span>.<span class="SCst"><a href="#Core_Serialization_Read_TagBinOptions">TagBinOptions</a></span></span></td>
-<td></td>
+<td>Configuration options for deserialization behavior. </td>
 </tr>
 <tr>
 <td>freeSections</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SFct"><a href="#Core_ArrayPtr">ArrayPtr</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_Read">Read</a></span>.<span class="SCst"><a href="#Core_Serialization_Write_TagBinSection">TagBinSection</a></span>)</span></td>
-<td></td>
+<td>Pool of reusable section objects for memory efficiency. </td>
 </tr>
 <tr>
 <td>sections</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SFct"><a href="#Core_ArrayPtr">ArrayPtr</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_Read">Read</a></span>.<span class="SCst"><a href="#Core_Serialization_Write_TagBinSection">TagBinSection</a></span>)</span></td>
-<td></td>
+<td>Stack of active sections during deserialization. </td>
 </tr>
 <tr>
 <td>convertNextNative</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfoNative</span></span></td>
-<td></td>
+<td>Type information for pending native type conversion. </td>
 </tr>
 <tr>
 <td>convertValToArray</td>
 <td class="code-type"><span class="STpe">bool</span></td>
-<td></td>
+<td>Flag indicating next value should be converted to array. </td>
 </tr>
 <tr>
 <td>convertArrayToVal</td>
 <td class="code-type"><span class="STpe">bool</span></td>
-<td></td>
+<td>Flag indicating next array should be converted to single value. </td>
 </tr>
 </table>
 <p>Changes that are supported from V to V+1 are : </p>
@@ -21459,71 +24240,71 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_beginElement">beginElement</a></span></td>
-<td></td>
+<td>Begin reading a field element identified by <span class="code-inline">val</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_beginRoot">beginRoot</a></span></td>
-<td></td>
+<td>Begin reading the root container of the serialized data. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_beginSection">beginSection</a></span></td>
-<td></td>
+<td>Begin reading a new section with the specified <span class="code-inline">kind</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_beginSequence">beginSequence</a></span></td>
-<td></td>
+<td>Begin reading a sequence (array) of elements of type <span class="code-inline">typeElem</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_beginStruct">beginStruct</a></span></td>
-<td></td>
+<td>Begin reading a struct of the given <span class="code-inline">structType</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_beginValue">beginValue</a></span></td>
-<td></td>
+<td>Begin reading a value within the current context. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_endElement">endElement</a></span></td>
-<td></td>
+<td>Finish reading the current field element. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_endRoot">endRoot</a></span></td>
-<td></td>
+<td>Finish reading the root container. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_endSection">endSection</a></span></td>
-<td></td>
+<td>Finish reading the current section. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_endSequence">endSequence</a></span></td>
-<td></td>
+<td>Finish reading the current sequence. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_endStruct">endStruct</a></span></td>
-<td></td>
+<td>Finish reading the current struct. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_endValue">endValue</a></span></td>
-<td></td>
+<td>Finish reading a value within the current context. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_getVersion">getVersion</a></span></td>
-<td></td>
+<td>Get the version number of the current section. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_isTextual">isTextual</a></span></td>
-<td></td>
+<td>Check if this serializer uses textual representation. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_readNative">readNative</a></span></td>
-<td></td>
+<td>Read a native type value from the stream with automatic type conversion support. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_startRead">startRead</a></span></td>
-<td></td>
+<td>Initialize the deserializer with the given input byte array. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Read_TagBin_toNextSequenceElement">toNextSequenceElement</a></span></td>
-<td></td>
+<td>Advance to the next element in the current sequence. </td>
 </tr>
 </table>
 <p>
@@ -21533,11 +24314,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBin_beginElement"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">beginElement</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L337" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L363" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Begin reading a field element identified by <span class="code-inline">val</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginElement</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, val: <span class="SCst">TypeValue</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<p>Returns true if the element exists in the stream and should be processed, false to skip it. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -21545,11 +24328,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBin_beginRoot"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">beginRoot</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L215" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L229" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Begin reading the root container of the serialized data. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginRoot</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<p>Validates the root signature to ensure the stream contains valid serialized data. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -21557,11 +24342,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBin_beginSection"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">beginSection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L227" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L245" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Begin reading a new section with the specified <span class="code-inline">kind</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, kind: <span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>, skipFat = <span class="SKwd">false</span>) <span class="SKwd">throw</span></span></div>
+<p>Optionally skips reading the fat table if <span class="code-inline">skipFat</span> is true for performance optimization. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -21569,11 +24356,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBin_beginSequence"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">beginSequence</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L431" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L469" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Begin reading a sequence (array) of elements of type <span class="code-inline">typeElem</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSequence</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, typeElem: <span class="STpe">typeinfo</span>, data: *<span class="STpe">u8</span>, countElem: *<span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<p>Updates <span class="code-inline">countElem</span> with the actual number of elements and returns true for bulk reading optimization. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -21581,11 +24370,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBin_beginStruct"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">beginStruct</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L285" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L307" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Begin reading a struct of the given <span class="code-inline">structType</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginStruct</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, structType: <span class="STpe">typeinfo</span>, _structData: <span class="SKwd">const</span> *<span class="STpe">u8</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<p>Returns false for normal struct processing, true for special handling cases. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -21593,11 +24384,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBin_beginValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">beginValue</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L422" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L456" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Begin reading a value within the current context. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginValue</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<p>Currently no special processing is required, but this maintains the symmetric API. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -21605,11 +24398,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBin_endElement"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">endElement</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L416" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L448" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Finish reading the current field element. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endElement</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<p>Clears any pending native type conversion state. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -21617,11 +24412,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBin_endRoot"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">endRoot</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L223" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L239" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Finish reading the root container. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endRoot</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<p>Currently no cleanup is required, but this maintains the symmetric begin/end API. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -21629,11 +24426,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBin_endSection"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">endSection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L272" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L292" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Finish reading the current section. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSection</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<p>Updates the stream position and releases the section back to the pool. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -21641,11 +24440,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBin_endSequence"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">endSequence</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L510" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L550" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Finish reading the current sequence. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSequence</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<p>Currently no cleanup is required, but this maintains the symmetric API. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -21653,11 +24454,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBin_endStruct"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">endStruct</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L332" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L356" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Finish reading the current struct. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endStruct</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<p>Closes the current section that was opened by <span class="code-inline">beginStruct</span>. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -21665,11 +24468,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBin_endValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">endValue</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L427" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L463" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Finish reading a value within the current context. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endValue</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<p>Currently no cleanup is required, but this maintains the symmetric API. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -21677,11 +24482,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBin_getVersion"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">getVersion</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L529" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L575" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Get the version number of the current section. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVersion</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u32</span></span></div>
+<p>Returns 0 if no sections are active, otherwise returns the version of the most recent section. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -21689,11 +24496,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBin_isTextual"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">isTextual</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L524" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L568" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Check if this serializer uses textual representation. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isTextual</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Always returns false since this is a binary serializer. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -21701,11 +24510,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBin_readNative"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">readNative</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L540" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L588" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Read a native type value from the stream with automatic type conversion support. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">NT</span>) <span class="SFct">readNative</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst">NT</span> <span class="SKwd">throw</span></span></div>
+<p>Handles string types specially and performs type conversions when <span class="code-inline">convertNextNative</span> is set. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -21713,11 +24524,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBin_startRead"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">startRead</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L210" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L222" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Initialize the deserializer with the given input byte array. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startRead</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, input: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
+<p>Sets up the internal byte stream for reading from the provided data buffer. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -21725,11 +24538,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBin_toNextSequenceElement"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">toNextSequenceElement</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L515" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L557" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Advance to the next element in the current sequence. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNextSequenceElement</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, countElem: *<span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Decrements <span class="code-inline">countElem</span> and returns false when no more elements remain. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -21737,10 +24552,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBinOptions"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Read.</span><span class="api-item-title-strong">TagBinOptions</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L50" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L54" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Configuration options for controlling deserialization behavior. </p>
 <table class="table-enumeration">
 <tr>
 <td>tryForward</td>
@@ -21755,10 +24571,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBinSection"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Read.</span><span class="api-item-title-strong">TagBinSection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L41" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L43" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Section information for tracking deserialization state within structured data. </p>
 <table class="table-enumeration">
 <tr>
 <td>mapSeek</td>
@@ -21768,22 +24585,22 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <tr>
 <td>afterFatSeek</td>
 <td class="code-type"><span class="STpe">u64</span></td>
-<td></td>
+<td>Stream position after the section's fat table. </td>
 </tr>
 <tr>
 <td>version</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td></td>
+<td>Version number of this section. </td>
 </tr>
 <tr>
 <td>kind</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span></span></td>
-<td></td>
+<td>Type of section (ordered, unordered, or raw). </td>
 </tr>
 <tr>
 <td>skipFat</td>
 <td class="code-type"><span class="STpe">bool</span></td>
-<td></td>
+<td>Whether to skip reading the fat table for this section. </td>
 </tr>
 </table>
 <p>
@@ -23471,195 +26288,197 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_StaticArray"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">StaticArray</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L4" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L6" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>A stack-allocated array with a fixed capacity known at compile time. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SFct"><a href="#Core_StaticArray">StaticArray</a></span>(<span class="SCst">T</span>, <span class="SCst">N</span>: <span class="STpe">u64</span>)</span></div>
 <table class="table-enumeration">
 <tr>
 <td>buffer</td>
 <td class="code-type"><span class="SCde">[?] <span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></td>
-<td></td>
+<td>The fixed-size buffer that holds the elements. </td>
 </tr>
 <tr>
 <td>count</td>
 <td class="code-type"><span class="STpe">u64</span></td>
-<td></td>
+<td>The number of valid elements currently in the array. </td>
 </tr>
 </table>
+<p>It provides a similar interface to the dynamic <span class="code-inline">Array</span> but does not allocate memory on the heap. </p>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_add">add</a></span><span class="SCde">(<span class="STpe">self</span>, &&<span class="SCst">T</span>)</span></td>
-<td>Move one element at the end of the array. </td>
+<td>Moves an element to the end of the array. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_add">add</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">T</span>)</span></td>
-<td>Add a copy of one element at the end of the array. </td>
+<td>Adds a copy of an element to the end of the array. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_add">add</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> [..] <span class="SCst">T</span>)</span></td>
-<td>Append a slice to the end of this instance. </td>
+<td>Appends all elements from a slice to the end of the array. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_addOnce">addOnce</a></span></td>
-<td>Add a copy of one element at the end of the array. </td>
+<td>Adds an element to the end of the array, but only if it's not already present. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_back">back</a></span></td>
-<td>Returns a copy of the last element. </td>
+<td>Returns a copy of the last element of the array. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_backPtr">backPtr</a></span></td>
-<td>Returns the address of the last element. </td>
+<td>Returns a pointer to the last element of the array. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_clear">clear</a></span></td>
-<td>Set the number of elements to 0. </td>
+<td>Removes all elements from the array, setting its count to 0. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_contains">contains</a></span></td>
-<td>Returns true if the given <span class="code-inline">value</span> is in the array. </td>
+<td>Returns <span class="code-inline">true</span> if the array contains the given value. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_emplaceAddress">emplaceAddress</a></span></td>
-<td>Reserve room at the end of the array for <span class="code-inline">num</span> elements. </td>
+<td>Makes room for <span class="code-inline">num</span> elements at the end of the array and returns a pointer to the new space. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_emplaceAt">emplaceAt</a></span></td>
-<td>Move some values at the given index. </td>
+<td>Moves elements from a slice at a specific index, shifting existing elements to the right. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_emplaceInitAddress">emplaceInitAddress</a></span></td>
-<td>Reserve room at the end of the array for <span class="code-inline">num</span> elements. </td>
+<td>Makes room for <span class="code-inline">num</span> elements at the end of the array and returns a pointer to the new space. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_free">free</a></span></td>
-<td>Free the array content. </td>
+<td>Drops all elements in the array, setting its count to 0. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_front">front</a></span></td>
-<td>Returns a copy of the first element. </td>
+<td>Returns a copy of the first element of the array. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_frontPtr">frontPtr</a></span></td>
-<td>Returns the address of the first element. </td>
+<td>Returns a pointer to the first element of the array. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_insertAt">insertAt</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>, &&<span class="SCst">T</span>)</span></td>
-<td>Move a value at the given index. </td>
+<td>Inserts a moved value at a specific index, shifting existing elements to the right. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_insertAt">insertAt</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>, <span class="SCst">T</span>)</span></td>
-<td>Insert a value at the given index. </td>
+<td>Inserts a copy of a value at a specific index, shifting existing elements to the right. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_insertAt">insertAt</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>, <span class="SKwd">const</span> [..] <span class="SCst">T</span>)</span></td>
-<td>Insert some values at the given index. </td>
+<td>Inserts elements from a slice at a specific index, shifting existing elements to the right. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_isEmpty">isEmpty</a></span></td>
-<td>Returns true if the array is empty. </td>
+<td>Returns <span class="code-inline">true</span> if the array contains no elements. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_popBack">popBack</a></span></td>
-<td>Returns a copy of the last element, and remove it from the array. </td>
+<td>Removes the last element from the array and returns it. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_remove">remove</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">V</span>)</span></td>
-<td>Remove the given <span class="code-inline">value</span> If not found, does nothing. </td>
+<td>Removes the first occurrence of a given value from the array. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_remove">remove</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>, <span class="STpe">u64</span>)</span></td>
-<td>Remove <span class="code-inline">num</span> elements starting at <span class="code-inline">index</span>. </td>
+<td>Removes a specified number of elements starting from a given index. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_removeAt">removeAt</a></span></td>
-<td>Remove an element at <span class="code-inline">index</span> by replacing it with the last element. </td>
+<td>Removes the element at a given index by swapping it with the last element. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_removeAtOrdered">removeAtOrdered</a></span></td>
-<td>Remove <span class="code-inline">numValues</span> elements at <span class="code-inline">index</span> by shifting all others. </td>
+<td>Removes one or more elements at a given index, shifting subsequent elements to the left. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_removeBack">removeBack</a></span></td>
-<td>Remove the last element. </td>
+<td>Removes the last element from the array. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_removeOrdered">removeOrdered</a></span></td>
-<td>Remove the given <span class="code-inline">value</span> If not found, does nothing. </td>
+<td>Removes the first occurrence of a given value, preserving the order of remaining elements. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_resize">resize</a></span></td>
-<td>Change the number of valid elements in the array. </td>
+<td>Changes the number of elements in the array to <span class="code-inline">newCount</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_sort">sort</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
-<td>Sort array. </td>
+<td>Sorts the array in ascending order using the default comparison operator. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_sort">sort</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">func</span>(*<span class="STpe">void</span>, <span class="SCst">T</span>, <span class="SCst">T</span>)-><span class="STpe">s32</span>)</span></td>
-<td>Sort array. </td>
+<td>Sorts the array using a custom comparison function. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_sortReverse">sortReverse</a></span></td>
-<td>Sort array in reverse order (from biggest to lowest value). </td>
+<td>Sorts the array in descending order. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_toSlice">toSlice</a></span></td>
-<td>Returns a slice. </td>
+<td>Returns a mutable slice containing all valid elements of the array. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opAffect">opAffect</a></span></td>
-<td>Initializes an Array that contains values copied from the specified array. </td>
+<td>Replaces the content of the array with elements copied from a slice. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opCast">opCast</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
-<td></td>
+<td>Allows the array to be implicitly cast to a mutable slice. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opCast">opCast</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
-<td></td>
+<td>Allows the array to be implicitly cast to an immutable slice. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opCount">opCount</a></span></td>
-<td></td>
+<td>Returns the number of elements in the array. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opData">opData</a></span></td>
-<td></td>
+<td>Returns a raw, constant pointer to the array's buffer. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opDrop">opDrop</a></span></td>
-<td></td>
+<td>Ensures that if elements have destructors, they are called when the array goes out of scope. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opIndex">opIndex</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>)</span></td>
-<td></td>
+<td>Returns a mutable reference to the element at the specified index. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opIndex">opIndex</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>)</span></td>
-<td></td>
+<td>Returns a constant reference to the element at the specified index. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opIndexAffect">opIndexAffect</a></span></td>
-<td></td>
+<td>Assigns a new value to the element at the specified index. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opIndexAssign">opIndexAssign</a></span></td>
-<td></td>
+<td>Handles compound assignment operators (e.g., <span class="code-inline">+=</span>, <span class="code-inline">-=</span>) for elements. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opSlice">opSlice</a></span></td>
-<td></td>
+<td>Creates a slice from a sub-part of the array. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opVisit">opVisit</a></span></td>
-<td>Visit every elements of the array. </td>
+<td>Provides a way to iterate over each element in the array. </td>
 </tr>
 </table>
 <p>
@@ -23669,16 +26488,19 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_StaticArray_add"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StaticArray.</span><span class="api-item-title-strong">add</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L216" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L236" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Add a copy of one element at the end of the array. </p>
+<p>Adds a copy of an element to the end of the array. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
-<p>Move one element at the end of the array. </p>
+<p>Asserts if the array is full. </p>
+<p>Moves an element to the end of the array. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
-<p>Append a slice to the end of this instance. </p>
+<p>Asserts if the array is full. </p>
+<p>Appends all elements from a slice to the end of the array. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, values: <span class="SKwd">const</span> [..] <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
+<p>Asserts if the array does not have enough capacity. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -23686,12 +26508,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_StaticArray_addOnce"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StaticArray.</span><span class="api-item-title-strong">addOnce</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L194" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L212" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Add a copy of one element at the end of the array. </p>
+<p>Adds an element to the end of the array, but only if it's not already present. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addOnce</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
+<p>Asserts if the array is full. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -23699,12 +26522,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_StaticArray_back"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StaticArray.</span><span class="api-item-title-strong">back</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L528" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L549" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns a copy of the last element. </p>
+<p>Returns a copy of the last element of the array. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">back</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
+<p>Asserts if the array is empty. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -23712,12 +26536,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_StaticArray_backPtr"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StaticArray.</span><span class="api-item-title-strong">backPtr</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L536" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L558" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns the address of the last element. </p>
+<p>Returns a pointer to the last element of the array. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">backPtr</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
+<p>Asserts if the array is empty. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -23725,12 +26550,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_StaticArray_clear"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StaticArray.</span><span class="api-item-title-strong">clear</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L182" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L199" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Set the number of elements to 0. </p>
+<p>Removes all elements from the array, setting its count to 0. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>This calls the destructor for each element if one exists. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -23738,11 +26564,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_StaticArray_contains"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StaticArray.</span><span class="api-item-title-strong">contains</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L486" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L504" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns true if the given <span class="code-inline">value</span> is in the array. </p>
+<p>Returns <span class="code-inline">true</span> if the array contains the given value. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">V</span>) <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SCst">V</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
@@ -23751,13 +26577,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_StaticArray_emplaceAddress"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StaticArray.</span><span class="api-item-title-strong">emplaceAddress</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L225" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L245" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Reserve room at the end of the array for <span class="code-inline">num</span> elements. </p>
+<p>Makes room for <span class="code-inline">num</span> elements at the end of the array and returns a pointer to the new space. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceAddress</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, num: <span class="STpe">u32</span> = <span class="SNum">1</span>)-&gt;^<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
-<p>Does not initialize them. Returns the address of the first element </p>
+<p>The new memory is not initialized. Asserts if the array does not have enough capacity. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -23765,13 +26591,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_StaticArray_emplaceAt"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StaticArray.</span><span class="api-item-title-strong">emplaceAt</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L335" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L351" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Move some values at the given index. </p>
+<p>Moves elements from a slice at a specific index, shifting existing elements to the right. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceAt</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, values: [..] <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
-<p>If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the values are moved at the end of the array. Order is preserved. </p>
+<p>Asserts if the array does not have enough capacity. Order is preserved. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -23779,13 +26605,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_StaticArray_emplaceInitAddress"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StaticArray.</span><span class="api-item-title-strong">emplaceInitAddress</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L234" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L254" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Reserve room at the end of the array for <span class="code-inline">num</span> elements. </p>
+<p>Makes room for <span class="code-inline">num</span> elements at the end of the array and returns a pointer to the new space. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceInitAddress</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, num: <span class="STpe">u32</span> = <span class="SNum">1</span>)-&gt;^<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
-<p>Returns the address of the first element </p>
+<p>The new memory is default-initialized. Asserts if the array does not have enough capacity. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -23793,12 +26619,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_StaticArray_free"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StaticArray.</span><span class="api-item-title-strong">free</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L138" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L153" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Free the array content. </p>
+<p>Drops all elements in the array, setting its count to 0. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>This is equivalent to <span class="code-inline">clear</span> for this type. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -23806,12 +26633,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_StaticArray_front"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StaticArray.</span><span class="api-item-title-strong">front</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L513" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L532" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns a copy of the first element. </p>
+<p>Returns a copy of the first element of the array. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">front</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
+<p>Asserts if the array is empty. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -23819,12 +26647,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_StaticArray_frontPtr"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StaticArray.</span><span class="api-item-title-strong">frontPtr</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L521" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L541" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns the address of the first element. </p>
+<p>Returns a pointer to the first element of the array. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">frontPtr</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
+<p>Asserts if the array is empty. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -23832,19 +26661,19 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_StaticArray_insertAt"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StaticArray.</span><span class="api-item-title-strong">insertAt</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L273" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L291" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Insert a value at the given index. </p>
+<p>Inserts a copy of a value at a specific index, shifting existing elements to the right. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAt</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
-<p>If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the value is added at the end of the array. Order is preserved. </p>
-<p>Move a value at the given index. </p>
+<p>Asserts if the array is full. Order is preserved. </p>
+<p>Inserts a moved value at a specific index, shifting existing elements to the right. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAt</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
-<p>If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the value is added at the end of the array. Order is preserved. </p>
-<p>Insert some values at the given index. </p>
+<p>Asserts if the array is full. Order is preserved. </p>
+<p>Inserts elements from a slice at a specific index, shifting existing elements to the right. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAt</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, values: <span class="SKwd">const</span> [..] <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
-<p>If <span class="code-inline">index</span> is equal to <span class="code-inline">count</span>, then the values are added at the end of the array. Order is preserved. </p>
+<p>Asserts if the array does not have enough capacity. Order is preserved. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -23852,11 +26681,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_StaticArray_isEmpty"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StaticArray.</span><span class="api-item-title-strong">isEmpty</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L154" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L169" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns true if the array is empty. </p>
+<p>Returns <span class="code-inline">true</span> if the array contains no elements. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEmpty</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
@@ -23865,12 +26694,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_StaticArray_opAffect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StaticArray.</span><span class="api-item-title-strong">opAffect</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L80" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L93" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Initializes an Array that contains values copied from the specified array. </p>
+<p>Replaces the content of the array with elements copied from a slice. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, arr: <span class="SKwd">const</span> [..] <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
+<p>Asserts if the slice is larger than the array's capacity. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -23878,12 +26708,14 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_StaticArray_opCast"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StaticArray.</span><span class="api-item-title-strong">opCast</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L30" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L36" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;[..] <span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span>
-<span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">const</span> [..] <span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
+<p>Allows the array to be implicitly cast to a mutable slice. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;[..] <span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
+<p>Allows the array to be implicitly cast to an immutable slice. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">const</span> [..] <span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23891,10 +26723,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_StaticArray_opCount"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StaticArray.</span><span class="api-item-title-strong">opCount</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L13" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L16" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Returns the number of elements in the array. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
@@ -23903,10 +26736,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_StaticArray_opData"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StaticArray.</span><span class="api-item-title-strong">opData</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L19" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L23" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Returns a raw, constant pointer to the array's buffer. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opData</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">const</span> *<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
@@ -23915,10 +26749,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_StaticArray_opDrop"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StaticArray.</span><span class="api-item-title-strong">opDrop</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L24" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L29" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Ensures that if elements have destructors, they are called when the array goes out of scope. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
@@ -23927,12 +26762,14 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_StaticArray_opIndex"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StaticArray.</span><span class="api-item-title-strong">opIndex</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L58" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L68" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>)-&gt;<span class="SKwd">const</span> &<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span>
-<span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>)-&gt;&<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
+<p>Returns a constant reference to the element at the specified index. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>)-&gt;<span class="SKwd">const</span> &<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
+<p>Returns a mutable reference to the element at the specified index. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>)-&gt;&<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23940,10 +26777,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_StaticArray_opIndexAffect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StaticArray.</span><span class="api-item-title-strong">opIndexAffect</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L65" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L76" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Assigns a new value to the element at the specified index. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
@@ -23952,10 +26790,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_StaticArray_opIndexAssign"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StaticArray.</span><span class="api-item-title-strong">opIndexAssign</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L73" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L85" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Handles compound assignment operators (e.g., <span class="code-inline">+=</span>, <span class="code-inline">-=</span>) for elements. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opIndexAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
@@ -23964,10 +26803,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_StaticArray_opSlice"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StaticArray.</span><span class="api-item-title-strong">opSlice</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L42" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L50" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Creates a slice from a sub-part of the array. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opSlice</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, lower, upper: <span class="STpe">u64</span>)-&gt;[..] <span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
@@ -23976,14 +26816,14 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_StaticArray_opVisit"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StaticArray.</span><span class="api-item-title-strong">opVisit</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L106" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L120" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Visit every elements of the array. </p>
+<p>Provides a way to iterate over each element in the array. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
 <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
-<p>Visiting by pointer and in reverse order is supported </p>
+<p>This is a macro that accepts a code block to execute for each element. Visiting by pointer and in reverse order is supported. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -23991,12 +26831,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_StaticArray_popBack"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StaticArray.</span><span class="api-item-title-strong">popBack</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L543" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L566" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns a copy of the last element, and remove it from the array. </p>
+<p>Removes the last element from the array and returns it. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">popBack</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
+<p>Asserts if the array is empty. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -24004,14 +26845,16 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_StaticArray_remove"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StaticArray.</span><span class="api-item-title-strong">remove</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L422" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L440" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Remove <span class="code-inline">num</span> elements starting at <span class="code-inline">index</span>. </p>
+<p>Removes a specified number of elements starting from a given index. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remove</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index, num: <span class="STpe">u64</span>)</span></div>
-<p>Remove the given <span class="code-inline">value</span> If not found, does nothing. </p>
+<p>This is an unstable remove; the order of remaining elements is not preserved. </p>
+<p>Removes the first occurrence of a given value from the array. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">V</span>) <span class="SFct">remove</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SCst">V</span>)</span></div>
+<p>This is an unstable remove; order is not preserved. Does nothing if the value is not found. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -24019,13 +26862,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_StaticArray_removeAt"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StaticArray.</span><span class="api-item-title-strong">removeAt</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L432" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L450" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Remove an element at <span class="code-inline">index</span> by replacing it with the last element. </p>
+<p>Removes the element at a given index by swapping it with the last element. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeAt</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>)</span></div>
-<p>Order is not preserved </p>
+<p>This is very fast, but the order of elements is not preserved. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -24033,13 +26876,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_StaticArray_removeAtOrdered"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StaticArray.</span><span class="api-item-title-strong">removeAtOrdered</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L444" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L462" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Remove <span class="code-inline">numValues</span> elements at <span class="code-inline">index</span> by shifting all others. </p>
+<p>Removes one or more elements at a given index, shifting subsequent elements to the left. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeAtOrdered</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, numValues: <span class="STpe">u64</span> = <span class="SNum">1</span>)</span></div>
-<p>Order is preserved </p>
+<p>This is slower than <span class="code-inline">removeAt</span>, but preserves the order of the remaining elements. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -24047,12 +26890,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_StaticArray_removeBack"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StaticArray.</span><span class="api-item-title-strong">removeBack</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L553" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L577" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Remove the last element. </p>
+<p>Removes the last element from the array. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeBack</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Asserts if the array is empty. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -24060,12 +26904,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_StaticArray_removeOrdered"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StaticArray.</span><span class="api-item-title-strong">removeOrdered</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L477" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L495" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Remove the given <span class="code-inline">value</span> If not found, does nothing. </p>
+<p>Removes the first occurrence of a given value, preserving the order of remaining elements. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">V</span>) <span class="SFct">removeOrdered</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SCst">V</span>)</span></div>
+<p>Does nothing if the value is not found. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -24073,12 +26918,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_StaticArray_resize"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StaticArray.</span><span class="api-item-title-strong">resize</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L164" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L180" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Change the number of valid elements in the array. </p>
+<p>Changes the number of elements in the array to <span class="code-inline">newCount</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">resize</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newCount: <span class="STpe">u64</span>)</span></div>
+<p>Asserts if <span class="code-inline">newCount</span> exceeds the static capacity. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -24086,13 +26932,14 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_StaticArray_sort"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StaticArray.</span><span class="api-item-title-strong">sort</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L493" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L511" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Sort array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)
-<span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, cb: <span class="SKwd">func</span>||(<span class="STpe">self</span>.<span class="SCst">T</span>, <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;<span class="STpe">s32</span>)</span></div>
+<p>Sorts the array in ascending order using the default comparison operator. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Sorts the array using a custom comparison function. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, cb: <span class="SKwd">func</span>||(<span class="STpe">self</span>.<span class="SCst">T</span>, <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;<span class="STpe">s32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24100,11 +26947,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_StaticArray_sortReverse"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StaticArray.</span><span class="api-item-title-strong">sortReverse</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L499" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L517" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Sort array in reverse order (from biggest to lowest value). </p>
+<p>Sorts the array in descending order. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sortReverse</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
@@ -24113,11 +26960,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_StaticArray_toSlice"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StaticArray.</span><span class="api-item-title-strong">toSlice</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L158" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\staticarray.swg#L173" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns a slice. </p>
+<p>Returns a mutable slice containing all valid elements of the array. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSlice</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;[..] <span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
@@ -24622,7 +27469,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td>Return the content as a string. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StrConv_StringBuilder_zeroTerminated">zeroTerminated</a></span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StrConv_StringBuilder_zeroTerminate">zeroTerminate</a></span></td>
 <td>Force a ending 0. </td>
 </tr>
 </table>
@@ -24760,7 +27607,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Core_StrConv_StringBuilder_zeroTerminated"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StringBuilder.</span><span class="api-item-title-strong">zeroTerminated</span></span>
+<span id="Core_StrConv_StringBuilder_zeroTerminate"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StringBuilder.</span><span class="api-item-title-strong">zeroTerminate</span></span>
 </td>
 <td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\stringbuilder.swg#L61" class="src">[src]</a></td>
@@ -24768,7 +27615,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Force a ending 0. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">zeroTerminated</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">zeroTerminate</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26991,7 +29838,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_Time_FrameTiming"><span class="SCst">FrameTiming</span></a></td>
-<td></td>
+<td>Holds timing information for frame-based updates. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_Time_Stopwatch"><span class="SCst">Stopwatch</span></a></td>
@@ -27010,11 +29857,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><a href="#Core_Time_DateTimeFormat"><span class="SCst">DateTimeFormat</span></a></td>
-<td></td>
+<td>Supported formats for converting DateTime to/from string. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_Time_DayOfWeek"><span class="SCst">DayOfWeek</span></a></td>
-<td></td>
+<td>Day of the week enumeration. </td>
 </tr>
 </table>
 <h3>Functions</h3>
@@ -27067,7 +29914,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_DateTime"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Time.</span><span class="api-item-title-strong">DateTime</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L35" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L39" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27076,56 +29923,56 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <tr>
 <td>year</td>
 <td class="code-type"><span class="STpe">u16</span></td>
-<td></td>
+<td>Year component (1 to 9999). </td>
 </tr>
 <tr>
 <td>month</td>
 <td class="code-type"><span class="STpe">u16</span></td>
-<td></td>
+<td>Month component (1 to 12). </td>
 </tr>
 <tr>
 <td>day</td>
 <td class="code-type"><span class="STpe">u16</span></td>
-<td></td>
+<td>Day component (1 to 31 depending on the month). </td>
 </tr>
 <tr>
 <td>hour</td>
 <td class="code-type"><span class="STpe">u16</span></td>
-<td></td>
+<td>Hour component (0 to 23). </td>
 </tr>
 <tr>
 <td>minute</td>
 <td class="code-type"><span class="STpe">u16</span></td>
-<td></td>
+<td>Minute component (0 to 59). </td>
 </tr>
 <tr>
 <td>second</td>
 <td class="code-type"><span class="STpe">u16</span></td>
-<td></td>
+<td>Second component (0 to 59). </td>
 </tr>
 <tr>
 <td>millisecond</td>
 <td class="code-type"><span class="STpe">u16</span></td>
-<td></td>
+<td>Millisecond component (0 to 999). </td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_DateTime_dayOfWeek">dayOfWeek</a></span></td>
-<td>Returns the day of week of the current date. </td>
+<td>Returns the day of the week for the current date. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_DateTime_dayOfWeekName">dayOfWeekName</a></span></td>
-<td>Returns the day of week name. </td>
+<td>Returns the name of the given day of the week. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_DateTime_isValid">isValid</a></span></td>
-<td>Returns true if this is a valid datatime. </td>
+<td>Returns true if this is a valid DateTime. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_DateTime_monthName">monthName</a></span></td>
-<td>Returns the month name. </td>
+<td>Returns the month name corresponding to a month number (1 to 12). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_DateTime_now">now</a></span></td>
@@ -27133,7 +29980,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_DateTime_parse">parse</a></span></td>
-<td>Convert a string to a DateTime with the given format. </td>
+<td>Converts a string to a DateTime using the expected format. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_DateTime_setNow">setNow</a></span></td>
@@ -27141,18 +29988,18 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_DateTime_toString">toString</a></span></td>
-<td>Convert to string. </td>
+<td>Converts the DateTime to a string using the given format. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_DateTime_opCmp">opCmp</a></span></td>
-<td></td>
+<td>Compares two DateTime values. Returns -1, 0, or 1. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_DateTime_opEquals">opEquals</a></span></td>
-<td></td>
+<td>Compares if two DateTime instances are equal. </td>
 </tr>
 </table>
 <p>
@@ -27162,26 +30009,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_DateTime_IConvert_convert"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IConvert.</span><span class="api-item-title-strong">convert</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L378" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L373" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Used when printing a date with <a href="#Core_Format_toString">Core.Format.toString</a>. </p>
+<p>Converts a DateTime to a string using a single-character format specifier (for use with Format.toString). </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convert</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, convFormat: <span class="SCst"><a href="#Core_StrConv">StrConv</a></span>.<span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="STpe">string</span>)</span></div>
-<table class="table-markdown">
-<tr><td> <span class="code-inline">a</span> </td><td> <span class="code-inline">DateTimeFormat.DateTime</span></td></tr>
-<tr><td> <span class="code-inline">b</span> </td><td> <span class="code-inline">DateTimeFormat.DateTimeMs</span></td></tr>
-<tr><td> <span class="code-inline">c</span> </td><td> <span class="code-inline">DateTimeFormat.DateTimeIso</span></td></tr>
-<tr><td> <span class="code-inline">d</span> </td><td> <span class="code-inline">DateTimeFormat.DateTimeIsoMs</span></td></tr>
-<tr><td> <span class="code-inline">e</span> </td><td> <span class="code-inline">DateTimeFormat.DateTimeIsoHM</span></td></tr>
-<tr><td> <span class="code-inline">f</span> </td><td> <span class="code-inline">DateTimeFormat.DateIso</span></td></tr>
-<tr><td> <span class="code-inline">g</span> </td><td> <span class="code-inline">DateTimeFormat.TimeIso</span></td></tr>
-<tr><td> <span class="code-inline">h</span> </td><td> <span class="code-inline">DateTimeFormat.TimeIsoMs</span></td></tr>
-<tr><td> <span class="code-inline">i</span> </td><td> <span class="code-inline">DateTimeFormat.TimeIsoHM</span></td></tr>
-<tr><td> <span class="code-inline">j</span> </td><td> <span class="code-inline">DateTimeFormat.Date'</code></td></tr>
-</table>
-<p><span class="code-inline"></span>'swag let myDate = DateTime.now() Console.print(Format.toString("%{a}", myDate)) </p>
-<div class="code-block"><span class="SCde">See [[Core.Time.DateTimeFormat]]</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27189,7 +30022,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_DateTime_ISerialize_postRead"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ISerialize.</span><span class="api-item-title-strong">postRead</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L354" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L365" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27201,10 +30034,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_DateTime_ISerialize_read"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ISerialize.</span><span class="api-item-title-strong">read</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L320" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L330" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Reads a DateTime from a textual encoder. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">read</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, decoder: <span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
@@ -27213,7 +30047,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_DateTime_ISerialize_readElement"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ISerialize.</span><span class="api-item-title-strong">readElement</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L344" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L355" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27225,10 +30059,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_DateTime_ISerialize_write"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ISerialize.</span><span class="api-item-title-strong">write</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L332" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L343" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Writes a DateTime to a textual encoder. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">write</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, encoder: <span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
@@ -27237,7 +30072,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_DateTime_ISerialize_writeElement"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ISerialize.</span><span class="api-item-title-strong">writeElement</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L349" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L360" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27249,11 +30084,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_DateTime_dayOfWeek"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">DateTime.</span><span class="api-item-title-strong">dayOfWeek</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L108" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L114" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns the day of week of the current date. </p>
+<p>Returns the day of the week for the current date. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">dayOfWeek</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Time">Time</a></span>.<span class="SCst"><a href="#Core_Time_DayOfWeek">DayOfWeek</a></span></span></div>
 <p>
 <table class="api-item">
@@ -27262,11 +30097,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_DateTime_dayOfWeekName"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">DateTime.</span><span class="api-item-title-strong">dayOfWeekName</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L125" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L131" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns the day of week name. </p>
+<p>Returns the name of the given day of the week. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">dayOfWeekName</span>(day: <span class="SCst"><a href="#Core_Time_DayOfWeek">DayOfWeek</a></span>)-&gt;<span class="STpe">string</span></span></div>
 <p>
 <table class="api-item">
@@ -27275,11 +30110,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_DateTime_isValid"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">DateTime.</span><span class="api-item-title-strong">isValid</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L88" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L94" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns true if this is a valid datatime. </p>
+<p>Returns true if this is a valid DateTime. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isValid</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
@@ -27288,11 +30123,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_DateTime_monthName"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">DateTime.</span><span class="api-item-title-strong">monthName</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L118" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L124" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns the month name. </p>
+<p>Returns the month name corresponding to a month number (1 to 12). </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">monthName</span>(month: <span class="STpe">u16</span>)-&gt;<span class="STpe">string</span></span></div>
 <p>
 <table class="api-item">
@@ -27314,10 +30149,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_DateTime_opCmp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">DateTime.</span><span class="api-item-title-strong">opCmp</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L54" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L60" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Compares two DateTime values. Returns -1, 0, or 1. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCmp</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Time_DateTime">DateTime</a></span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
@@ -27326,10 +30162,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_DateTime_opEquals"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">DateTime.</span><span class="api-item-title-strong">opEquals</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L49" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L54" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Compares if two DateTime instances are equal. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
@@ -27338,11 +30175,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_DateTime_parse"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">DateTime.</span><span class="api-item-title-strong">parse</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L159" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L168" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Convert a string to a DateTime with the given format. </p>
+<p>Converts a string to a DateTime using the expected format. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">parse</span>(str: <span class="STpe">string</span>, checkDate = <span class="SKwd">true</span>)-&gt;{value:<span class="SCst"></span><span class="SCst"><a href="#Core_Time">Time</a></span>.<span class="SCst"><a href="#Core_Time_DateTime">DateTime</a></span>,eat:<span class="STpe">u32</span>} <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
@@ -27364,11 +30201,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_DateTime_toString"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">DateTime.</span><span class="api-item-title-strong">toString</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L286" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L295" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Convert to string. </p>
+<p>Converts the DateTime to a string using the given format. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, fmt = <span class="SCst"><a href="#Core_Time_DateTimeFormat">DateTimeFormat</a></span>.<span class="SCst"><a href="#Core_Time_DateTime">DateTime</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
 <p>
 <table class="api-item">
@@ -27377,10 +30214,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_DateTimeFormat"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Time.</span><span class="api-item-title-strong">DateTimeFormat</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L19" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L23" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Supported formats for converting DateTime to/from string. </p>
 <table class="table-enumeration">
 <tr>
 <td>DateIso</td>
@@ -27400,27 +30238,27 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 <tr>
 <td>Date</td>
-<td><span class="code-inline">DAYOFWEEK MONTH DAY YYYY</span>. </td>
+<td>'DAYOFWEEK MONTH DAY YYYY'. </td>
 </tr>
 <tr>
 <td>DateTime</td>
-<td><span class="code-inline">DAYOFWEEK MONTH DAY YYYY HH:MM:SS</span>. </td>
+<td>'DAYOFWEEK MONTH DAY YYYY HH:MM:SS'. </td>
 </tr>
 <tr>
 <td>DateTimeMs</td>
-<td><span class="code-inline">DAYOFWEEK MONTH DAY YYYY HH:MM:SS.ZZZ</span>. </td>
+<td>'DAYOFWEEK MONTH DAY YYYY HH:MM:SS.ZZZ'. </td>
 </tr>
 <tr>
 <td>DateTimeIso</td>
-<td><span class="code-inline">YYYY-MM-DD HH:MM:SS</span>. </td>
+<td>'YYYY-MM-DD HH:MM:SS'. </td>
 </tr>
 <tr>
 <td>DateTimeIsoMs</td>
-<td><span class="code-inline">YYYY-MM-DD HH:MM:SS.ZZZ</span>. </td>
+<td>'YYYY-MM-DD HH:MM:SS.ZZZ'. </td>
 </tr>
 <tr>
 <td>DateTimeIsoHM</td>
-<td><span class="code-inline">YYYY-MM-DD HH:MM</span>. </td>
+<td>'YYYY-MM-DD HH:MM'. </td>
 </tr>
 </table>
 <p>
@@ -27430,38 +30268,39 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_DayOfWeek"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Time.</span><span class="api-item-title-strong">DayOfWeek</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L8" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.swg#L11" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Day of the week enumeration. </p>
 <table class="table-enumeration">
 <tr>
 <td>Sunday</td>
-<td></td>
+<td>Sunday. </td>
 </tr>
 <tr>
 <td>Monday</td>
-<td></td>
+<td>Monday. </td>
 </tr>
 <tr>
 <td>Tuesday</td>
-<td></td>
+<td>Tuesday. </td>
 </tr>
 <tr>
 <td>Wednesday</td>
-<td></td>
+<td>Wednesday. </td>
 </tr>
 <tr>
 <td>Thursday</td>
-<td></td>
+<td>Thursday. </td>
 </tr>
 <tr>
 <td>Friday</td>
-<td></td>
+<td>Friday. </td>
 </tr>
 <tr>
 <td>Saturday</td>
-<td></td>
+<td>Saturday. </td>
 </tr>
 </table>
 <p>
@@ -27562,20 +30401,21 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_FrameTiming"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Time.</span><span class="api-item-title-strong">FrameTiming</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\frametiming.swg#L4" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\frametiming.swg#L5" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Holds timing information for frame-based updates. </p>
 <table class="table-enumeration">
 <tr>
 <td>dtMin</td>
 <td class="code-type"><span class="STpe">f32</span></td>
-<td></td>
+<td>Minimum delta time allowed (in seconds). </td>
 </tr>
 <tr>
 <td>dtMax</td>
 <td class="code-type"><span class="STpe">f32</span></td>
-<td></td>
+<td>Maximum delta time allowed (in seconds). </td>
 </tr>
 <tr>
 <td>dt</td>
@@ -27590,27 +30430,27 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <tr>
 <td>prevTick</td>
 <td class="code-type"><span class="STpe">u64</span></td>
-<td></td>
+<td>Tick of the previous frame. </td>
 </tr>
 <tr>
 <td>paused</td>
 <td class="code-type"><span class="STpe">bool</span></td>
-<td></td>
+<td>Whether timing is currently paused. </td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_FrameTiming_pause">pause</a></span></td>
-<td>Pause frame timing & count. </td>
+<td>Pauses frame timing and frame count. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_FrameTiming_unpause">unpause</a></span></td>
-<td>Unpause frame timing & count. </td>
+<td>Resumes frame timing and resets the tick reference. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_FrameTiming_update">update</a></span></td>
-<td>Update frame timers. </td>
+<td>Updates the delta time and frame count. </td>
 </tr>
 </table>
 <p>
@@ -27620,11 +30460,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_FrameTiming_pause"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FrameTiming.</span><span class="api-item-title-strong">pause</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\frametiming.swg#L44" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\frametiming.swg#L45" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Pause frame timing & count. </p>
+<p>Pauses frame timing and frame count. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">pause</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
@@ -27633,11 +30473,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_FrameTiming_unpause"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FrameTiming.</span><span class="api-item-title-strong">unpause</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\frametiming.swg#L50" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\frametiming.swg#L51" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Unpause frame timing & count. </p>
+<p>Resumes frame timing and resets the tick reference. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">unpause</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
@@ -27646,11 +30486,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_FrameTiming_update"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FrameTiming.</span><span class="api-item-title-strong">update</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\frametiming.swg#L19" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\frametiming.swg#L20" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Update frame timers. </p>
+<p>Updates the delta time and frame count. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
 <p>
 <table class="api-item">
@@ -28535,127 +31375,6 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Split the string into an array of lines Note that this returns an array of native strings, not copies. All strings will be invalid if <span class="code-inline">src</span> is destroyed. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">splitLines</span>(src: <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">string</span>)</span></div>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
-<span id="Core_UUID"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">UUID</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\uuid.swg#L9" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<table class="table-enumeration">
-<tr>
-<td>using uuid</td>
-<td class="code-type"><span class="SCde">{val8:[<span class="SNum">16</span>] <span class="STpe">u8</span>,val64:[<span class="SNum">2</span>] <span class="STpe">u64</span>}</span></td>
-<td></td>
-</tr>
-</table>
-<h3>Functions</h3>
-<table class="table-enumeration">
-<tr>
-<td class="code-type"><span class="SFct"><a href="#Core_UUID_clear">clear</a></span></td>
-<td>Clear id. </td>
-</tr>
-<tr>
-<td class="code-type"><span class="SFct"><a href="#Core_UUID_getRandom">getRandom</a></span></td>
-<td>Get a version 4 UUID (random). </td>
-</tr>
-<tr>
-<td class="code-type"><span class="SFct"><a href="#Core_UUID_toString">toString</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
-<td>Convert uuid to a string. </td>
-</tr>
-<tr>
-<td class="code-type"><span class="SFct"><a href="#Core_UUID_toString">toString</a></span><span class="SCde">(<span class="STpe">self</span>, [..] <span class="STpe">u8</span>)</span></td>
-<td>Convert uuid to a string of the form xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx. </td>
-</tr>
-</table>
-<h3>Special Functions</h3>
-<table class="table-enumeration">
-<tr>
-<td class="code-type"><span class="SFct"><a href="#Core_UUID_opEquals">opEquals</a></span></td>
-<td></td>
-</tr>
-</table>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
-<span id="Core_UUID_IConvert_convert"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IConvert.</span><span class="api-item-title-strong">convert</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\uuid.swg#L121" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convert</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, convFmt: <span class="SCst"><a href="#Core_StrConv">StrConv</a></span>.<span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="STpe">string</span>)</span></div>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
-<span id="Core_UUID_IHash32_compute"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IHash32.</span><span class="api-item-title-strong">compute</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\uuid.swg#L129" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compute</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u32</span></span></div>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
-<span id="Core_UUID_clear"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">UUID.</span><span class="api-item-title-strong">clear</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\uuid.swg#L52" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<p>Clear id. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
-<span id="Core_UUID_getRandom"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">UUID.</span><span class="api-item-title-strong">getRandom</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\uuid.swg#L40" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<p>Get a version 4 UUID (random). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getRandom</span>()-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_UUID">UUID</a></span></span></div>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
-<span id="Core_UUID_opEquals"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">UUID.</span><span class="api-item-title-strong">opEquals</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\uuid.swg#L34" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">bool</span></span></div>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
-<span id="Core_UUID_toString"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">UUID.</span><span class="api-item-title-strong">toString</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\uuid.swg#L109" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<p>Convert uuid to a string of the form xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, result: [..] <span class="STpe">u8</span>)</span></div>
-<p>Convert uuid to a string. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -29656,12 +32375,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_orderMaxMin"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">orderMaxMin</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\algorithms\generic.swg#L22" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\algorithms\generic.swg#L25" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Be sure that <span class="code-inline">a</span> is geater or equal than <span class="code-inline">b</span>. </p>
+<p>Ensures that the first value is greater than or equal to the second value. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">orderMaxMin</span>(x, y: *<span class="SCst">T</span>)</span></div>
+<p>If the first value is less than the second, their contents are swapped. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -29669,12 +32389,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_orderMinMax"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">orderMinMax</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\algorithms\generic.swg#L14" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\algorithms\generic.swg#L16" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Be sure that <span class="code-inline">a</span> is lower or equal than <span class="code-inline">b</span>. </p>
+<p>Ensures that the first value is less than or equal to the second value. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">orderMinMax</span>(x, y: *<span class="SCst">T</span>)</span></div>
+<p>If the first value is greater than the second, their contents are swapped. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -29706,12 +32427,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_swap"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">swap</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\algorithms\generic.swg#L5" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\algorithms\generic.swg#L6" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Swap two values. </p>
+<p>Swaps the values of two variables. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">swap</span>(x, y: *<span class="SCst">T</span>)</span></div>
+<p>Takes pointers to the two values to be swapped. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -29725,7 +32447,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">toggle</span>(flags: &<span class="SCst">T</span>, value: <span class="SCst">T</span>)</span></div>
 <div class="swag-watermark">
-Generated on 04-08-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.44.0</div>
+Generated on 08-08-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.44.0</div>
 </div>
 </div>
 </div>

@@ -594,6 +594,7 @@
 <li><a href="#Gui_SliderCtrl_setMinMaxS64">SliderCtrl.setMinMaxS64</a></li>
 <li><a href="#Gui_SliderCtrl_setMinMaxU64">SliderCtrl.setMinMaxU64</a></li>
 <li><a href="#Gui_SliderCtrl_setValue">SliderCtrl.setValue</a></li>
+<li><a href="#Gui_SliderCtrl_setValueNoChange">SliderCtrl.setValueNoChange</a></li>
 <li><a href="#Gui_SplitterCtrl_IWnd_onMouseEvent">SplitterCtrl.IWnd.onMouseEvent</a></li>
 <li><a href="#Gui_SplitterCtrl_IWnd_onResizeEvent">SplitterCtrl.IWnd.onResizeEvent</a></li>
 <li><a href="#Gui_SplitterCtrl_addPane">SplitterCtrl.addPane</a></li>
@@ -799,6 +800,7 @@
 <li><a href="#Gui_Circular_setStepForm">Circular.setStepForm</a></li>
 <li><a href="#Gui_Circular_setValue">Circular.setValue</a></li>
 <li><a href="#Gui_Circular_setValueLeft">Circular.setValueLeft</a></li>
+<li><a href="#Gui_Circular_setValueNoChange">Circular.setValueNoChange</a></li>
 <li><a href="#Gui_Circular_setValueRight">Circular.setValueRight</a></li>
 <li><a href="#Gui_ColorPicker_IWnd_onMouseEvent">ColorPicker.IWnd.onMouseEvent</a></li>
 <li><a href="#Gui_ColorPicker_IWnd_onPaintEvent">ColorPicker.IWnd.onPaintEvent</a></li>
@@ -909,6 +911,7 @@
 <li><a href="#Gui_Slider_setRangeValues">Slider.setRangeValues</a></li>
 <li><a href="#Gui_Slider_setValue">Slider.setValue</a></li>
 <li><a href="#Gui_Slider_setValueLeft">Slider.setValueLeft</a></li>
+<li><a href="#Gui_Slider_setValueNoChange">Slider.setValueNoChange</a></li>
 <li><a href="#Gui_Slider_setValueRight">Slider.setValueRight</a></li>
 <li><a href="#Gui_Tab_IWnd_onMouseEvent">Tab.IWnd.onMouseEvent</a></li>
 <li><a href="#Gui_Tab_IWnd_onPaintEvent">Tab.IWnd.onPaintEvent</a></li>
@@ -2690,6 +2693,10 @@
 <td>Set the left value (in case of a range). </td>
 </tr>
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Gui_Circular_setValueNoChange">setValueNoChange</a></span></td>
+<td></td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Circular_setValueRight">setValueRight</a></span></td>
 <td>Set the right value (in case of a range). </td>
 </tr>
@@ -2725,7 +2732,7 @@
 <span id="Gui_Circular_create"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Circular.</span><span class="api-item-title-strong">create</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L647" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L652" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2773,7 +2780,7 @@
 <span id="Gui_Circular_setAngleRange"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Circular.</span><span class="api-item-title-strong">setAngleRange</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L618" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L623" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2786,7 +2793,7 @@
 <span id="Gui_Circular_setMinMax"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Circular.</span><span class="api-item-title-strong">setMinMax</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L605" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L610" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2799,7 +2806,7 @@
 <span id="Gui_Circular_setRangeValues"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Circular.</span><span class="api-item-title-strong">setRangeValues</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L593" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L598" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2812,7 +2819,7 @@
 <span id="Gui_Circular_setStepCount"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Circular.</span><span class="api-item-title-strong">setStepCount</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L637" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L642" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2825,7 +2832,7 @@
 <span id="Gui_Circular_setStepForm"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Circular.</span><span class="api-item-title-strong">setStepForm</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L627" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L632" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2850,7 +2857,7 @@
 <span id="Gui_Circular_setValueLeft"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Circular.</span><span class="api-item-title-strong">setValueLeft</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L577" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L582" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2860,10 +2867,22 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Gui_Circular_setValueNoChange"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Circular.</span><span class="api-item-title-strong">setValueNoChange</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L576" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setValueNoChange</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, f: <span class="STpe">f32</span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Gui_Circular_setValueRight"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Circular.</span><span class="api-item-title-strong">setValueRight</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L585" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\circular.swg#L590" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4724,11 +4743,6 @@
 <td>Current UTF‑8 text content. </td>
 </tr>
 <tr>
-<td>originalText</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">String</span></span></td>
-<td>Text captured when focus was gained. </td>
-</tr>
-<tr>
 <td>unit</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">String</span></span></td>
 <td>Suffix unit (e.g. "kg"). </td>
@@ -4782,81 +4796,6 @@
 <td>sigCheckContent</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Gui_EditBox">EditBox</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Gui_EditBoxCheckResult">EditBoxCheckResult</a></span></span></td>
 <td>Optional custom validator. </td>
-</tr>
-<tr>
-<td>using minMax</td>
-<td class="code-type"><span class="SCde">{minMaxS64:{min:<span class="STpe">s64</span>,max:<span class="STpe">s64</span>},minMaxU64:{min:<span class="STpe">u64</span>,max:<span class="STpe">u64</span>},minMaxF64:{min:<span class="STpe">f64</span>,max:<span class="STpe">f64</span>}}</span></td>
-<td></td>
-</tr>
-<tr>
-<td>aniBk</td>
-<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
-<td>Background colour animation. </td>
-</tr>
-<tr>
-<td>aniBorder</td>
-<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Gui_BlendColor">BlendColor</a></span></span></td>
-<td>Border colour animation. </td>
-</tr>
-<tr>
-<td>isInvalid</td>
-<td class="code-type"><span class="STpe">bool</span></td>
-<td>True if current content is invalid. </td>
-</tr>
-<tr>
-<td>isHot</td>
-<td class="code-type"><span class="STpe">bool</span></td>
-<td>True while the mouse is hovering. </td>
-</tr>
-<tr>
-<td>isDragging</td>
-<td class="code-type"><span class="STpe">bool</span></td>
-<td>True while the user is selecting text. </td>
-</tr>
-<tr>
-<td>selBeg</td>
-<td class="code-type"><span class="STpe">u64</span></td>
-<td>Selection start/end (byte indices). </td>
-</tr>
-<tr>
-<td>selEnd</td>
-<td class="code-type"><span class="STpe">u64</span></td>
-<td></td>
-</tr>
-<tr>
-<td>timerCaret</td>
-<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_Timer">Timer</a></span></span></td>
-<td>Blinking‑caret timer. </td>
-</tr>
-<tr>
-<td>clearBtn</td>
-<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Gui_IconButton">IconButton</a></span></span></td>
-<td>Optional clear button instance. </td>
-</tr>
-<tr>
-<td>visibleCaret</td>
-<td class="code-type"><span class="STpe">bool</span></td>
-<td>True when the caret should be visible. </td>
-</tr>
-<tr>
-<td>posSelBeg</td>
-<td class="code-type"><span class="STpe">f32</span></td>
-<td>X‑position of selection start in pixels. </td>
-</tr>
-<tr>
-<td>posSelEnd</td>
-<td class="code-type"><span class="STpe">f32</span></td>
-<td>X‑position of selection end in pixels. </td>
-</tr>
-<tr>
-<td>scrollPosX</td>
-<td class="code-type"><span class="STpe">f32</span></td>
-<td>Horizontal scroll offset. </td>
-</tr>
-<tr>
-<td>countRunes</td>
-<td class="code-type"><span class="STpe">s32</span></td>
-<td>Number of runes currently in text. </td>
 </tr>
 </table>
 <h3>Functions</h3>
@@ -4929,7 +4868,7 @@
 <span id="Gui_EditBox_IWnd_onFocusEvent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IWnd.</span><span class="api-item-title-strong">onFocusEvent</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L90" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L94" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4942,7 +4881,7 @@
 <span id="Gui_EditBox_IWnd_onKeyEvent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IWnd.</span><span class="api-item-title-strong">onKeyEvent</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L311" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L319" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4955,7 +4894,7 @@
 <span id="Gui_EditBox_IWnd_onMouseEvent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IWnd.</span><span class="api-item-title-strong">onMouseEvent</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L250" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L258" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4968,7 +4907,7 @@
 <span id="Gui_EditBox_IWnd_onPaintEvent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IWnd.</span><span class="api-item-title-strong">onPaintEvent</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L111" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L115" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4981,7 +4920,7 @@
 <span id="Gui_EditBox_IWnd_onTimerEvent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IWnd.</span><span class="api-item-title-strong">onTimerEvent</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L302" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L310" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4994,7 +4933,7 @@
 <span id="Gui_EditBox_create"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">EditBox.</span><span class="api-item-title-strong">create</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L873" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L893" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5007,7 +4946,7 @@
 <span id="Gui_EditBox_deleteSelection"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">EditBox.</span><span class="api-item-title-strong">deleteSelection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L890" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L909" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5020,7 +4959,7 @@
 <span id="Gui_EditBox_getText"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">EditBox.</span><span class="api-item-title-strong">getText</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L942" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L961" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5033,7 +4972,7 @@
 <span id="Gui_EditBox_isValid"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">EditBox.</span><span class="api-item-title-strong">isValid</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L1007" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L1026" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5046,7 +4985,7 @@
 <span id="Gui_EditBox_restoreText"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">EditBox.</span><span class="api-item-title-strong">restoreText</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L948" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L967" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5059,7 +4998,7 @@
 <span id="Gui_EditBox_selectAll"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">EditBox.</span><span class="api-item-title-strong">selectAll</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L908" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L927" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5072,7 +5011,7 @@
 <span id="Gui_EditBox_setForm"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">EditBox.</span><span class="api-item-title-strong">setForm</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L986" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L1005" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5085,7 +5024,7 @@
 <span id="Gui_EditBox_setInputF64"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">EditBox.</span><span class="api-item-title-strong">setInputF64</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L978" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L997" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5098,7 +5037,7 @@
 <span id="Gui_EditBox_setInputS64"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">EditBox.</span><span class="api-item-title-strong">setInputS64</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L954" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L973" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5111,7 +5050,7 @@
 <span id="Gui_EditBox_setInputU64"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">EditBox.</span><span class="api-item-title-strong">setInputU64</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L962" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L981" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5124,7 +5063,7 @@
 <span id="Gui_EditBox_setInputX64"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">EditBox.</span><span class="api-item-title-strong">setInputX64</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L970" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L989" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5137,7 +5076,7 @@
 <span id="Gui_EditBox_setNote"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">EditBox.</span><span class="api-item-title-strong">setNote</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L914" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L933" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5150,7 +5089,7 @@
 <span id="Gui_EditBox_setSelection"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">EditBox.</span><span class="api-item-title-strong">setSelection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L899" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L918" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5163,7 +5102,7 @@
 <span id="Gui_EditBox_setText"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">EditBox.</span><span class="api-item-title-strong">setText</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L929" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L948" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5176,7 +5115,7 @@
 <span id="Gui_EditBox_setTextSilent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">EditBox.</span><span class="api-item-title-strong">setTextSilent</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L921" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\editbox.swg#L940" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14822,6 +14761,10 @@
 <td>Set the left value (in case of a range). </td>
 </tr>
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Gui_Slider_setValueNoChange">setValueNoChange</a></span></td>
+<td></td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Gui_Slider_setValueRight">setValueRight</a></span></td>
 <td>Set the right value (in case of a range). </td>
 </tr>
@@ -14857,7 +14800,7 @@
 <span id="Gui_Slider_create"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Slider.</span><span class="api-item-title-strong">create</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L513" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L518" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14905,7 +14848,7 @@
 <span id="Gui_Slider_setMinMax"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Slider.</span><span class="api-item-title-strong">setMinMax</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L488" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L493" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14918,7 +14861,7 @@
 <span id="Gui_Slider_setRangeValues"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Slider.</span><span class="api-item-title-strong">setRangeValues</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L501" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L506" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14943,7 +14886,7 @@
 <span id="Gui_Slider_setValueLeft"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Slider.</span><span class="api-item-title-strong">setValueLeft</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L472" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L477" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14953,10 +14896,22 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Gui_Slider_setValueNoChange"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Slider.</span><span class="api-item-title-strong">setValueNoChange</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L471" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setValueNoChange</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, f: <span class="STpe">f32</span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Gui_Slider_setValueRight"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Slider.</span><span class="api-item-title-strong">setValueRight</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L480" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L485" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15036,6 +14991,10 @@
 <td class="code-type"><span class="SFct"><a href="#Gui_SliderCtrl_setValue">setValue</a></span></td>
 <td>Set the slider current value. </td>
 </tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Gui_SliderCtrl_setValueNoChange">setValueNoChange</a></span></td>
+<td>Set the slider current value. </td>
+</tr>
 </table>
 <p>
 <table class="api-item">
@@ -15069,7 +15028,7 @@
 <span id="Gui_SliderCtrl_getValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">SliderCtrl.</span><span class="api-item-title-strong">getValue</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\sliderctrl.swg#L126" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\sliderctrl.swg#L132" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15127,6 +15086,19 @@
 </p>
 <p>Set the slider current value. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setValue</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Gui_SliderCtrl_setValueNoChange"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">SliderCtrl.</span><span class="api-item-title-strong">setValueNoChange</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\composite\sliderctrl.swg#L126" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Set the slider current value. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setValueNoChange</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -16902,7 +16874,7 @@
 <span id="Gui_Theme_getIcon24"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Theme.</span><span class="api-item-title-strong">getIcon24</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\paint\themeicons.swg#L61" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\paint\themeicons.swg#L62" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16914,7 +16886,7 @@
 <span id="Gui_Theme_getIcon64"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Theme.</span><span class="api-item-title-strong">getIcon64</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\paint\themeicons.swg#L71" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\paint\themeicons.swg#L72" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -18781,6 +18753,10 @@
 <td>Edit</td>
 <td></td>
 </tr>
+<tr>
+<td>Filter</td>
+<td></td>
+</tr>
 </table>
 <p>
 <table class="api-item">
@@ -18789,7 +18765,7 @@
 <span id="Gui_ThemeIcons64"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Gui.</span><span class="api-item-title-strong">ThemeIcons64</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\paint\themeicons.swg#L50" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\paint\themeicons.swg#L51" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22283,7 +22259,7 @@
 <p>Create a layout control. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {})-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Gui_WrapLayoutCtrl">WrapLayoutCtrl</a></span></span></div>
 <div class="swag-watermark">
-Generated on 04-08-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.44.0</div>
+Generated on 08-08-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.44.0</div>
 </div>
 </div>
 </div>

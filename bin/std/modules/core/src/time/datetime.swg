@@ -2,55 +2,61 @@
 #global namespace Time
 using Errors
 
-const MonthNames     = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+// Names of the months used for formatting and parsing
+const MonthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+// Names of the days of the week used for formatting and parsing
 const DayOfWeekNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
 
+// Day of the week enumeration
 enum DayOfWeek
 {
-    Sunday    = 0
-    Monday    = 1
-    Tuesday   = 2
-    Wednesday = 3
-    Thursday  = 4
-    Friday    = 5
-    Saturday  = 6
+    Sunday    = 0     // Sunday
+    Monday    = 1     // Monday
+    Tuesday   = 2     // Tuesday
+    Wednesday = 3     // Wednesday
+    Thursday  = 4     // Thursday
+    Friday    = 5     // Friday
+    Saturday  = 6     // Saturday
 }
 
+// Supported formats for converting DateTime to/from string
 enum DateTimeFormat
 {
-    DateIso           // `YYYY-MM-DD`
-    TimeIso           // `HH:MM:SS`
-    TimeIsoMs         // `HH:MM:SS.ZZZ`
-    TimeIsoHM         // `HH:MM`
-    Date              // `DAYOFWEEK MONTH DAY YYYY`
-    DateTime          // `DAYOFWEEK MONTH DAY YYYY HH:MM:SS`
-    DateTimeMs        // `DAYOFWEEK MONTH DAY YYYY HH:MM:SS.ZZZ`
-    DateTimeIso       // `YYYY-MM-DD HH:MM:SS`
-    DateTimeIsoMs     // `YYYY-MM-DD HH:MM:SS.ZZZ`
-    DateTimeIsoHM     // `YYYY-MM-DD HH:MM`
+    DateIso           // 'YYYY-MM-DD'
+    TimeIso           // 'HH:MM:SS'
+    TimeIsoMs         // 'HH:MM:SS.ZZZ'
+    TimeIsoHM         // 'HH:MM'
+    Date              // 'DAYOFWEEK MONTH DAY YYYY'
+    DateTime          // 'DAYOFWEEK MONTH DAY YYYY HH:MM:SS'
+    DateTimeMs        // 'DAYOFWEEK MONTH DAY YYYY HH:MM:SS.ZZZ'
+    DateTimeIso       // 'YYYY-MM-DD HH:MM:SS'
+    DateTimeIsoMs     // 'YYYY-MM-DD HH:MM:SS.ZZZ'
+    DateTimeIsoHM     // 'YYYY-MM-DD HH:MM'
 }
 
 // Represents an instant in time, typically expressed as a date and time of day
 #[Serialization.Final]
 struct DateTime
 {
-    year:            u16
-    month:           u16
-    day:             u16
-    hour:            u16
-    minute:          u16
-    second:          u16
-    millisecond:     u16
+    year:            u16     // Year component (1 to 9999)
+    month:           u16     // Month component (1 to 12)
+    day:             u16     // Day component (1 to 31 depending on the month)
+    hour:            u16     // Hour component (0 to 23)
+    minute:          u16     // Minute component (0 to 59)
+    second:          u16     // Second component (0 to 59)
+    millisecond:     u16     // Millisecond component (0 to 999)
 }
 
 impl DateTime
 {
     #[Swag.Inline]
+    // Compares if two DateTime instances are equal
     mtd const opEquals(other: Self)->bool
     {
         return Memory.compare(self, other, cast(u64) #sizeof(Self)) == 0
     }
 
+    // Compares two DateTime values. Returns -1, 0, or 1.
     mtd const opCmp(other: DateTime)->s32
     {
         if year < other.year:
@@ -84,7 +90,7 @@ impl DateTime
         return 0
     }
 
-    // Returns true if this is a valid datatime
+    // Returns true if this is a valid DateTime
     mtd const isValid()->bool
     {
         if year == 0 or year > 9999:
@@ -104,7 +110,7 @@ impl DateTime
         return true
     }
 
-    // Returns the day of week of the current date
+    // Returns the day of the week for the current date
     mtd const dayOfWeek()->DayOfWeek
     {
         let m: u32 = (month + 9) % 12
@@ -114,19 +120,20 @@ impl DateTime
         return cast(DayOfWeek) (dn % 7)
     }
 
-    // Returns the month name
+    // Returns the month name corresponding to a month number (1 to 12)
     func monthName(month: u16)->string
     {
         Debug.assert(month >= 1 and month <= 12)
         return MonthNames[month - 1]
     }
 
-    // Returns the day of week name
+    // Returns the name of the given day of the week
     func dayOfWeekName(day: DayOfWeek)->string
     {
         return DayOfWeekNames[cast(u32) day]
     }
 
+    // Parses an 8-bit unsigned integer from the buffer and updates the consumed character count
     private func parseU8(buf: &string, eat: &u32)->u16 throw
     {
         let (year, eat0, ovf) = StrConv.parseU8(buf)
@@ -137,6 +144,7 @@ impl DateTime
         return year
     }
 
+    // Parses a 16-bit unsigned integer from the buffer and updates the consumed character count
     private func parseU16(buf: &string, eat: &u32)->u16 throw
     {
         let (year, eat0, ovf) = StrConv.parseU16(buf)
@@ -147,6 +155,7 @@ impl DateTime
         return year
     }
 
+    // Parses a separator character from the buffer and updates the consumed character count
     private func parseSep(buf: &string, sep: u8, eat: &u32) throw
     {
         if !@countof(buf) or buf[0] != sep:
@@ -155,7 +164,7 @@ impl DateTime
         eat += 1
     }
 
-    // Convert a string to a DateTime with the given format.
+    // Converts a string to a DateTime using the expected format
     func parse(str: string, checkDate = true)->{ value: DateTime, eat: u32 } throw
     {
         var result: retval
@@ -282,7 +291,7 @@ impl DateTime
         return result
     }
 
-    // Convert to string
+    // Converts the DateTime to a string using the given format
     mtd toString(fmt = DateTimeFormat.DateTime)->String
     {
         #[Swag.Complete]
@@ -317,6 +326,7 @@ impl DateTime
 
 impl Serialization.ISerialize for DateTime
 {
+    // Reads a DateTime from a textual encoder
     mtd impl read(decoder: Serialization.IDecoder)->bool throw
     {
         if decoder.isTextual()
@@ -329,6 +339,7 @@ impl Serialization.ISerialize for DateTime
         return false
     }
 
+    // Writes a DateTime to a textual encoder
     mtd impl write(encoder: Serialization.IEncoder)->bool throw
     {
         if encoder.isTextual()
@@ -358,23 +369,7 @@ impl Serialization.ISerialize for DateTime
 
 impl StrConv.IConvert for DateTime
 {
-    // Used when printing a date with [[Core.Format.toString]].
-    // | 'a' | `DateTimeFormat.DateTime`
-    // | 'b' | `DateTimeFormat.DateTimeMs`
-    // | 'c' | `DateTimeFormat.DateTimeIso`
-    // | 'd' | `DateTimeFormat.DateTimeIsoMs`
-    // | 'e' | `DateTimeFormat.DateTimeIsoHM`
-    // | 'f' | `DateTimeFormat.DateIso`
-    // | 'g' | `DateTimeFormat.TimeIso`
-    // | 'h' | `DateTimeFormat.TimeIsoMs`
-    // | 'i' | `DateTimeFormat.TimeIsoHM`
-    // | 'j' | `DateTimeFormat.Date'
-    //
-    // ``'swag
-    // let myDate = DateTime.now()
-    // Console.print(Format.toString("%{a}", myDate))
-    // ```
-    // See [[Core.Time.DateTimeFormat]]
+    // Converts a DateTime to a string using a single-character format specifier (for use with Format.toString)
     mtd impl convert(buf: *ConcatBuffer, convFormat: StrConv.ConvertFormat, strFormat: string)
     {
         var str: String

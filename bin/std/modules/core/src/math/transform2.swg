@@ -1,23 +1,24 @@
 #global namespace Math
 #global public
 
+// 2D transformation matrix structure
 struct Transform2
 {
-    m11, m12:     f32
-    m21, m22:     f32
-    m31, m32:     f32
+    m11, m12:     f32     // First row of the 2D transformation matrix
+    m21, m22:     f32     // Second row of the 2D transformation matrix
+    m31, m32:     f32     // Translation components of the transformation
 
     #[Swag.Offset("m11")]
-    m: [2, 2] f32
+    m: [2, 2] f32 // 2x2 matrix view for rotation/scale components
     #[Swag.Offset("m31")]
-    tx: f32
+    tx: f32 // Translation component along X-axis
     #[Swag.Offset("m32")]
-    ty: f32
+    ty: f32 // Translation component along Y-axis
 }
 
 impl Transform2
 {
-    const Identity: Transform2{1, 0, 0, 1, 0, 0}
+    const Identity: Transform2{1, 0, 0, 1, 0, 0} // Identity transform (no rotation, scale 1, no translation)
 
     // Set transform to identity
     mtd setIdentity()
@@ -30,7 +31,15 @@ impl Transform2
         m32 = 0
     }
 
-    // Creates a rotation matix, with a given center of rotation
+    // Checks if the transform is the identity matrix
+    mtd const isIdentity()->bool
+    {
+        return m11 == 1 and m12 == 0 and
+               m21 == 0 and m22 == 1 and
+               tx == 0 and ty == 0
+    }
+
+    // Creates a rotation matrix, with a given center of rotation
     func createRotation(angle: f32, centerX, centerY: f32)->Transform2
     {
         var result: retval = undefined
@@ -51,7 +60,7 @@ impl Transform2
         return result
     }
 
-    // Creates a scale matix, with a given center
+    // Creates a scale matrix, with a given center
     func createScale(scaleX, scaleY: f32, centerX, centerY: f32)->Transform2
     {
         var result: retval = undefined
@@ -67,7 +76,7 @@ impl Transform2
         return result
     }
 
-    // Creates a translation matix
+    // Creates a translation matrix
     func createTranslation(x, y: f32)->Transform2
     {
         var result: retval = undefined
@@ -83,7 +92,28 @@ impl Transform2
         return result
     }
 
-    // Multiply two matricies
+    // Sets the translation components directly
+    mtd setTranslation(translation: Vector2)
+    {
+        tx = translation.x
+        ty = translation.y
+    }
+
+    // Gets the translation components
+    mtd getTranslation()->Vector2
+    {
+        return Vector2{tx, ty}
+    }
+
+    // Applies the transform to a 2D point
+    mtd transformPoint(point: Vector2)->Vector2
+    {
+        let rx = point.x * m11 + point.y * m21 + tx
+        let ry = point.x * m12 + point.y * m22 + ty
+        return Vector2{rx, ry}
+    }
+
+    // Multiplies the current transform by another transformation matrix
     mtd multiply(matrix2: Transform2)
     {
         let sm11 = m11
