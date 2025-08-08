@@ -203,7 +203,7 @@ public func compareHaarCoefficients(haar1, haar2: HaarFeatures)->f32
         if denominator > 1e-10:
             levelSimilarity = Math.abs(levelSimilarity / denominator)
         else:
-            levelSimilarity = 1.0 // or 0.0, depending on how you want to treat no-signal
+            levelSimilarity = (levelNorm1 == 0.0 and levelNorm2 == 0.0) ? 1.0 : 0.0
 
         totalSimilarity += levelSimilarity * weight
         totalWeight += weight
@@ -282,7 +282,7 @@ public func quickCompareHaarCoefficients(haar1, haar2: HaarFeatures)->f32
     let denominator = Math.sqrt(norm1 * norm2)
     if denominator > 1e-10:
         return cast(f32) Math.abs(correlation / denominator)
-    return 1.0'f32
+    return (norm1 == 0.0 and norm2 == 0.0) ? 1.0'f32 : 0.0'f32
 }
 
 // Compare to another image with Haar coefficients, fast simplified version
