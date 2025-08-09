@@ -219,6 +219,9 @@ impl Capture
         foreach itf in capture.forms:
             itf.setup(capture)
 
+        //capture.changed = true
+        //capture.save()
+
         return capture
     }
 
