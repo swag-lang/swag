@@ -86,6 +86,9 @@ impl IActionUI for ActionImage
         let main    = cast(*MainWnd) cxt.wnd
         let capture = assume main.getCapture()
 
+        if !capture.backImgOriginal.isValid():
+            capture.backImgOriginal = capture.backImg
+
         switch cxt.id
         {
         case CmdIdResizeImage:
