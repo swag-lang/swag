@@ -216,8 +216,8 @@ public impl LinePath
         let r = l + w
         let b = t + h
 
-        var rX = Math.min(radiusX, (w * 0.5) - 2)
-        var rY = Math.min(radiusY, (h * 0.5) - 2)
+        var rX = Math.min(radiusX, (w * 0.5))
+        var rY = Math.min(radiusY, (h * 0.5))
         rX = Math.round(rX)
         rY = Math.round(rY)
 

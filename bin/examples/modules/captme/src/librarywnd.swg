@@ -279,7 +279,6 @@ impl LibraryView
         foreach it in items:
             copy.add(it)
 
-        var cptLoaded = 0
         for
         {
             var visItem, notVisItem: *LibraryItem
@@ -303,19 +302,15 @@ impl LibraryView
 
             if visItem
             {
-                cptLoaded += 1
                 loadOne(visItem)
+                postInvalidateEvent()
             }
             elif notVisItem
             {
-                cptLoaded += 1
                 loadOne(notVisItem)
             }
             else:
                 break
-
-            if cptLoaded % 10 == 0:
-                postInvalidateEvent()
         }
 
         postInvalidateEvent()
