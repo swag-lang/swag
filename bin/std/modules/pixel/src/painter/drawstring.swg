@@ -93,7 +93,7 @@ impl Painter
         var result: retval
         if !font:
             return result
-        let desc    = font.getGlyphDesc(c)
+        let desc = font.getGlyphDesc(c)
         result.x = desc.advanceX
         result.y = desc.shiftY + desc.height
         return result
@@ -179,7 +179,7 @@ impl Painter
         {
             var pen = Pen.createSolid(brush.color, Math.max(1, Math.floor(font.underlineSize)))
             pen.begCapStyle = .None
-            pen.endCapStyle   = .None
+            pen.endCapStyle = .None
 
             canSetTexture0 = false
             switch under
@@ -203,10 +203,10 @@ impl Painter
             {
                 setTextureFont(font, refr.atlasIndex)
 
-                let x1 = x + refr.shiftX
-                let y1 = y - refr.shiftY
-                let x2 = x1 + refr.width
-                let y2 = y1 + refr.height
+                let x1 = Math.round(x + refr.shiftX)
+                let y1 = Math.round(y - refr.shiftY)
+                let x2 = Math.round(x + refr.shiftX + refr.width)
+                let y2 = Math.round(y - refr.shiftY + refr.height)
 
                 let p1 = Math.Vector2{x1, y1}
                 let p2 = Math.Vector2{x2, y1}
@@ -221,7 +221,7 @@ impl Painter
                 discard pushTriangle(p1, p2, p3, uv1, uv2, uv3, brush.color)
                 discard pushTriangle(p3, p2, p4, uv3, uv2, uv4, brush.color)
 
-                x += refr.advanceX
+                x += Math.round(refr.advanceX)
             }
         }
         else
