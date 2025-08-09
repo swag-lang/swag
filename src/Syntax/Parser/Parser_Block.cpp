@@ -629,7 +629,7 @@ bool Parser::doDefer(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     // Defer mode
-    if (tokenParse.is(TokenId::SymLower))
+    if (tokenParse.is(TokenId::SymQuote))
     {
         const auto startLoc = tokenParse.token.startLocation;
         SWAG_CHECK(eatToken());
@@ -648,8 +648,6 @@ bool Parser::doDefer(AstNode* parent, AstNode** result)
         {
             return error(tokenParse, formErr(Err0668, tokenParse.cstr()));
         }
-
-        SWAG_CHECK(eatCloseToken(TokenId::SymGreater, startLoc, "after the [[defer]] mode"));
     }
 
     ParserPushAstNodeFlags scopedFlags(this, AST_IN_DEFER);

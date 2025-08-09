@@ -70,7 +70,7 @@ impl Decoder
         type = Reflection.makeConcreteEnum(type)
 
         serializer.beginValue()
-        defer<noerr> serializer.endValue()
+        defer'noerr serializer.endValue()
 
         // Native
         if type.kind == .Native
@@ -118,7 +118,7 @@ impl Decoder
             let itf = cast(*Swag.Interface) data
 
             serializer.beginSection(.Raw)
-            defer<noerr> serializer.endSection()
+            defer'noerr serializer.endSection()
 
             var objType, itfType: typeinfo
             var typeVal: TypeValue
@@ -156,7 +156,7 @@ impl Decoder
             {
                 var count     = 0'u64
                 let treated   = serializer.beginSequence(type, data, &count)
-                defer<noerr> serializer.endSequence()
+                defer'noerr serializer.endSequence()
 
                 if !treated
                 {
@@ -183,7 +183,7 @@ impl Decoder
             // Generic struct load
             let structType = cast(const *TypeInfoStruct) type
             let treated    = serializer.beginStruct(structType, data)
-            defer<noerr> serializer.endStruct()
+            defer'noerr serializer.endStruct()
             if treated:
                 return
 
@@ -197,7 +197,7 @@ impl Decoder
                 if !itf or !itf.readElement(field, cast(^u8) data + field.offset, idecoder)
                 {
                     let doIt = catch serializer.beginElement(field)
-                    defer<noerr> serializer.endElement()
+                    defer'noerr serializer.endElement()
 
                     if @err != null and !(flags & .IgnoreStructFieldError):
                         throw @err
@@ -223,7 +223,7 @@ impl Decoder
             let typeArr = cast(const *TypeInfoArray) type
             var count   = typeArr.count
             let treated = serializer.beginSequence(typeArr.pointedType, data, &count)
-            defer<noerr> serializer.endSequence()
+            defer'noerr serializer.endSequence()
             if treated:
                 return
 
@@ -259,7 +259,7 @@ impl Decoder
         start(input)
 
         let val = Memory.new'TR()
-        defer<err> Memory.delete(val)
+        defer'err Memory.delete(val)
 
         readValue(val, TR)
 
@@ -326,7 +326,7 @@ impl IDecoder for Decoder
 
         var cpt     = count
         let treated = serializer.beginSequence(u8, data, &cpt)
-        defer<noerr> serializer.endSequence()
+        defer'noerr serializer.endSequence()
 
         if !treated
         {

@@ -5,5 +5,5 @@
 
 #test
 {
-    defer<err> (a += 1
+    defer'err (a += 1
 }*/
