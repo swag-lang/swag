@@ -1,5 +1,6 @@
 using Gui
 
+const CmdIdSave                = "CmdIdSave"
 const CmdIdSaveAsImage         = "CmdIdSaveAsImage"
 const CmdIdSaveAsLinkedImage   = "CmdIdSaveAsLinkedImage"
 const CmdIdOpenImage           = "CmdIdOpenImage"
@@ -20,7 +21,7 @@ impl IActionUI for ActionFile
     {
         switch cxt.id
         {
-        case CmdIdSaveAsImage, CmdIdSaveAsLinkedImage, CmdIdOpenImage, CmdIdFileDetails,
+        case CmdIdSave, CmdIdSaveAsImage, CmdIdSaveAsLinkedImage, CmdIdOpenImage, CmdIdFileDetails,
              CmdIdUpdateLinkedImage, CmdIdUnlinkImage, CmdIdDupCapture, CmdIdDeleteCapture,
              CmdIdCaptureFileLocation, CmdIdLinkedFileLocation, CmdIdNewImage, CmdIdNewFromClipboard:
             return true
@@ -44,6 +45,15 @@ impl IActionUI for ActionFile
             evt.setFlags |= .Name | .Disabled
             evt.name     = "New From Clipboard"
             evt.disabled = !Clipboard.hasImage()
+
+        case CmdIdSave:
+            evt.setFlags |= .Name | .Disabled | .Icon
+            evt.name = "Save"
+            if main.libraryMode:
+                evt.disabled = !main.libWnd.hasSelected()
+            else:
+                evt.disabled = !capture
+            evt.icon = main.getTheme().getIcon24(.Save)
 
         case CmdIdSaveAsImage:
             evt.setFlags |= .Name | .Disabled | .Icon
@@ -124,6 +134,12 @@ impl IActionUI for ActionFile
 
         case CmdIdNewFromClipboard:
             main.newCapture(Clipboard.getImage())
+
+        case CmdIdSave:
+            if main.libraryMode:
+                main.libWnd.saveSelected()
+            else:
+                main.save()
 
         case CmdIdSaveAsImage:
             main.saveAsImage()
@@ -290,7 +306,7 @@ impl MainWnd
         elif Path.getExtensionLowerCase(nameFile) == ".jpg"
         {
             optJpg.quality = 95
-            optImg = optJpg
+            optImg         = optJpg
         }
 
         var md: ImageMetaData
@@ -313,6 +329,12 @@ impl MainWnd
 
         var txt = Format.toString("Image <i>%</i> has been saved", nameFile)
         discard EmbInfoCtrl.create(editWnd.view, txt, .Information, flags: .Bottom | .AutoHide)
+    }
+
+    mtd save()
+    {
+        let capture = assume getCapture()
+        catch capture.save()
     }
 
     mtd saveAsImage(linked = false)

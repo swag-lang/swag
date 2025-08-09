@@ -468,6 +468,7 @@ impl MainWnd
             .addSeparator()
             .addItem(CmdIdOpenImage)
             .addItem(CmdIdSaveAsImage)
+            .addItem(CmdIdSave)
             .addSeparator()
             .addItem(CmdIdSaveAsLinkedImage)
             .addItem(CmdIdUpdateLinkedImage)
