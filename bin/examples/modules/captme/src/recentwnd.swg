@@ -147,8 +147,11 @@ impl IWnd for RecentView
             var color: Color = Argb.White
             if !linkedUpToDate:
                 color = ColorYellow
-            painter.fillRoundRect({rect.x + 4, rect.y + 4, 24, 24}, 8, 8, colors.wnd_Bk)
-            painter.drawRoundRect({rect.x + 4, rect.y + 4, 24, 24}, 8, 8, color, 2)
+
+            var icon11 = Icon.from(&g_Main.icons48, 21)
+            icon11.sizeX, icon11.sizeY = 24
+            icon11.paint(painter, rect.x + 4, rect.y + 4, color)
+
             var icon = parent.getTheme().getIcon24(.Link)
             icon.sizeX, icon.sizeY = 16
             icon.paint(painter, rect.x + 8, rect.y + 8, color)
