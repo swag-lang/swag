@@ -95,19 +95,6 @@ impl LibraryWnd
         }
     }
 
-    mtd saveSelected()
-    {
-        Cursor.wait()
-
-        foreach it, i in view.items where it.capture
-        {
-            if view.selModel.isSelected(cast() i)
-            {
-                catch it.capture.save()
-            }
-        }
-    }
-
     mtd fill()
     {
         if listCtrl.getLineCount():

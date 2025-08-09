@@ -18,7 +18,7 @@ struct Capture
     width, height:           s32
     backImg:                 Image
     widthOrg, heightOrg:     s32
-    backImgOrg:              Image
+    backImgOriginal:         Image
 
     backImagePos:            Math.Point
     preview:                 Image
@@ -210,7 +210,7 @@ impl Capture
         if preview
         {
             decoder.serializer.ignoreElements.add(#nameof(Capture.backImg))
-            decoder.serializer.ignoreElements.add(#nameof(Capture.backImgOrg))
+            decoder.serializer.ignoreElements.add(#nameof(Capture.backImgOriginal))
         }
 
         let capture = decoder.readAll'Capture(res.toSlice())

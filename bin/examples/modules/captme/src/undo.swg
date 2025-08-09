@@ -254,7 +254,7 @@ impl Undo
         case RestoreOrg:
             with capture
             {
-                .backImg = .backImgOrg
+                .backImg = .backImgOriginal
                 .width   = .widthOrg
                 .height  = .heightOrg
                 .selection.clear()

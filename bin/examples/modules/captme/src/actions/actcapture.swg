@@ -152,7 +152,7 @@ impl MainWnd
             {
                 .width, .widthOrg = img.width
                 .height, .heightOrg = img.height
-                .backImg, .backImgOrg = img
+                .backImg = img
             }
         }
 

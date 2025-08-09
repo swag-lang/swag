@@ -176,7 +176,8 @@ impl InPlaceEditWnd
             grabRect.height *= scale
 
             .backImg.crop(grabRect)
-            .backImgOrg = .backImg
+            if .backImgOriginal.isValid():
+                .backImgOriginal = .backImg
             .width, .widthOrg = cast(s32) .backImg.width
             .height, .heightOrg = cast(s32) .backImg.height
             .backImagePos = {}

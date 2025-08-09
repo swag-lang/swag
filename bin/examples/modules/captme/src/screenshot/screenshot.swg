@@ -188,7 +188,7 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode) throw
         {
             .width, .widthOrg = img.width
             .height, .heightOrg = img.height
-            .backImg, .backImgOrg = img
+            .backImg = img
         }
 
         if main.captureOptions.sendToClipboard:

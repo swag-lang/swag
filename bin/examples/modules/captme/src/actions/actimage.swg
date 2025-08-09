@@ -55,7 +55,7 @@ impl IActionUI for ActionImage
         case CmdIdRestoreOrg:
             evt.setFlags |= .Name | .Disabled
             evt.name     = "Restore to Original"
-            evt.disabled = !capture or !capture.backImgOrg.isValid()
+            evt.disabled = !capture or !capture.backImgOriginal.isValid()
 
         case CmdIdFlipImage:
             evt.setFlags |= .Name | .Disabled

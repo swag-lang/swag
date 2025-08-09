@@ -24,8 +24,10 @@ impl IActionUI for ActionSelection
     mtd impl update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
         let main    = cast(*MainWnd) cxt.wnd
-        let capture = main.getCapture()
+        var capture = main.getCapture()
         let hasSel  = capture and capture.selection.count
+        if main.libraryMode:
+            capture = null
 
         switch cxt.id
         {

@@ -107,8 +107,6 @@ impl IWnd for LibraryView
                 .addItem(CmdIdCaptureFileLocation)
                 .addItem(CmdIdLinkedFileLocation)
                 .addSeparator()
-                .addItem(CmdIdSave)
-                .addSeparator()
                 .addItem(CmdIdFileDetails)
             }
 
