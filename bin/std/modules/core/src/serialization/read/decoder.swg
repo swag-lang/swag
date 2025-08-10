@@ -10,8 +10,8 @@ interface IDecoder
     mtd start(input: const [..] u8) throw;
     mtd end() throw;
 
-    mtd beginField(val: Swag.TypeValue)->bool throw;
-    mtd endField() throw;
+    mtd beginField(val: Swag.TypedValue)->bool throw;
+    mtd endField(val: Swag.TypedValue) throw;
     mtd beginSection(kind: SectionKind) throw;
     mtd endSection() throw;
 
@@ -57,14 +57,14 @@ struct(T) Decoder
 
 impl Decoder
 {
-    mtd readTypeValue(typeVal: TypeValue, data: ^void) throw
+    mtd readTypeValue(typedVal: TypedValue, data: ^void) throw
     {
-        discard serializer.beginElement(typeVal)
-        readValue(data, typeVal.pointedType)
-        serializer.endElement()
+        discard serializer.beginElement(typedVal)
+        readTypedContent(data, typedVal.pointedType)
+        serializer.endElement(typedVal)
     }
 
-    mtd readValue(data: ^void, dataType: typeinfo) throw
+    mtd readTypedContent(data: ^void, dataType: typeinfo) throw
     {
         var type = Reflection.makeConcreteAlias(dataType)
         type = Reflection.makeConcreteEnum(type)
@@ -121,7 +121,7 @@ impl Decoder
             defer'noerr serializer.endSection()
 
             var objType, itfType: typeinfo
-            var typeVal: TypeValue
+            var typeVal: TypedValue
             typeVal.pointedType = typeinfo
 
             readTypeValue(typeVal, &objType)
@@ -164,7 +164,7 @@ impl Decoder
                     while serializer.toNextSequenceElement(&count)
                     {
                         let bufArr = Reflection.appendValueStructArray(data, valueType)
-                        readValue(bufArr, valueType)
+                        readTypedContent(bufArr, valueType)
                     }
                 }
 
@@ -189,22 +189,20 @@ impl Decoder
 
             foreach field in structType.fields
             {
-                if Reflection.hasAttribute(field, NoSerialize):
-                    continue
-                if Reflection.hasAttribute(field.pointedType, NoSerialize):
+                if Reflection.hasAttribute(field, NoSerialize) or Reflection.hasAttribute(field.pointedType, NoSerialize):
                     continue
 
                 if !itf or !itf.readElement(field, cast(^u8) data + field.offset, idecoder)
                 {
                     let doIt = catch serializer.beginElement(field)
-                    defer'noerr serializer.endElement()
+                    defer'noerr serializer.endElement(field)
 
                     if @err != null and !(flags & .IgnoreStructFieldError):
                         throw @err
                     if !doIt:
                         continue
 
-                    catch readValue(cast(^u8) data + field.offset, field.pointedType)
+                    catch readTypedContent(cast(^u8) data + field.offset, field.pointedType)
                     if @err != null and !(flags & .IgnoreStructFieldError):
                         throw @err
                 }
@@ -230,7 +228,7 @@ impl Decoder
             var bufArr = cast(^u8) data
             for count
             {
-                readValue(bufArr, typeArr.pointedType)
+                readTypedContent(bufArr, typeArr.pointedType)
                 bufArr += typeArr.pointedType.sizeof
             }
 
@@ -261,7 +259,7 @@ impl Decoder
         let val = Memory.new'TR()
         defer'err Memory.delete(val)
 
-        readValue(val, TR)
+        readTypedContent(val, TR)
 
         end()
         return val
@@ -281,7 +279,7 @@ impl IDecoder for Decoder
         serializer.endRoot()
     }
 
-    mtd impl beginField(val: Swag.TypeValue)->bool throw
+    mtd impl beginField(val: Swag.TypedValue)->bool throw
     {
         if !serializer.beginElement(val):
             return false
@@ -289,10 +287,10 @@ impl IDecoder for Decoder
         return true
     }
 
-    mtd impl endField() throw
+    mtd impl endField(val: Swag.TypedValue) throw
     {
         serializer.endValue()
-        serializer.endElement()
+        serializer.endElement(val)
     }
 
     mtd impl beginSection(kind: SectionKind) throw
@@ -317,7 +315,7 @@ impl IDecoder for Decoder
 
     mtd impl read(data: *void, dataType: typeinfo) throw
     {
-        readValue(data, dataType)
+        readTypedContent(data, dataType)
     }
 
     mtd impl readBufferU8(count: u64)->*u8 throw

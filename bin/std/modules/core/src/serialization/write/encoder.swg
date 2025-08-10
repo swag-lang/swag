@@ -16,8 +16,8 @@ interface IEncoder
     mtd start(result: *ConcatBuffer) throw;
     mtd end() throw;
 
-    mtd beginField(val: Swag.TypeValue) throw;
-    mtd endField() throw;
+    mtd beginField(val: Swag.TypedValue) throw;
+    mtd endField(val: Swag.TypedValue) throw;
     mtd beginSection(kind: SectionKind) throw;
     mtd endSection() throw;
 
@@ -84,12 +84,12 @@ impl Encoder
         serializer.endRoot()
     }
 
-    // Write a given Swag.TypeValue.
-    mtd writeTypeValue(typeVal: TypeValue, data: const ^void) throw
+    // Write a given Swag.TypedValue.
+    mtd writeTypeValue(typeVal: TypedValue, data: const ^void) throw
     {
         serializer.beginElement(typeVal)
         writeValue(data, typeVal.pointedType)
-        serializer.endElement()
+        serializer.endElement(typeVal)
     }
 
     // Write a given value with a given type.
@@ -155,7 +155,7 @@ impl Encoder
                 itfType = itf.itable[cast<bit>(u64) -2's64]
             }
 
-            var typeVal: TypeValue
+            var typeVal: TypedValue
             typeVal.pointedType = typeinfo
             writeTypeValue(typeVal, &objType)
 
@@ -293,16 +293,16 @@ impl IEncoder for Encoder
         serializer.endRoot()
     }
 
-    mtd impl beginField(val: Swag.TypeValue) throw
+    mtd impl beginField(val: Swag.TypedValue) throw
     {
         serializer.beginElement(val)
         serializer.beginValue()
     }
 
-    mtd impl endField() throw
+    mtd impl endField(val: Swag.TypedValue) throw
     {
         serializer.endValue()
-        serializer.endElement()
+        serializer.endElement(val)
     }
 
     mtd impl beginSection(kind: SectionKind) throw

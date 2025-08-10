@@ -3,31 +3,41 @@
 #global public
 using Swag
 
+// Current tagbin version.
+const TagBinVersion = 0xFAFAFAFA
+
 // Signatures used to tag different sections and elements in the binary serialization format
 enum TagBinSignatures: u32
 {
-    Root     = 0xC0DE0000 // Root element of the serialization structure
-    Fat      = 0xC0DE0001 // FAT table identifier for unordered sections
-    Sequence = 0xC0DE0002 // Start of a sequence (array or list)
-    Version  = 0xC0DE0003 // Indicates that a version number is present
-    Raw      = 0xC0DE0004 // Indicates raw POD data with no structure
-    UnRaw    = 0xC0DE0005 // Indicates non-POD structured data
+    Root        = 0xC0DE0000     // Root element of the serialization structure
+    Fat         = 0xC0DE0001     // FAT table identifier for unordered sections
+    Sequence    = 0xC0DE0002     // Start of a sequence (array or list)
+    Version     = 0xC0DE0003     // Indicates that a version number is present
+    Raw         = 0xC0DE0004     // Indicates raw POD data with no structure
+    UnRaw       = 0xC0DE0005     // Indicates non-POD structured data
+}
+
+// Additionnal signature for each value, stored after the value description (crcs)
+enum TagBinValueSignature : u8
+{
+    Zero
 }
 
 // Internal state for a binary serialization section
 struct TagBinSection
 {
-    startSeek:     ConcatBufferSeek                       // Seek position in the output buffer where the section starts
-    mapSeek:       HashTable'(u32, ConcatBufferSeek)      // Maps CRC keys to their position in the output buffer
-    kind:          SectionKind                            // Type of section (e.g., Raw or Unordered)
+    startSeek:     ConcatBufferSeek                      // Seek position in the output buffer where the section starts
+    mapSeek:       HashTable'(u32, ConcatBufferSeek)
+    // Maps CRC keys to their position in the output buffer
+    kind: SectionKind // Type of section (e.g., Raw or Unordered)
 }
 
 // Binary writer for serialized data with support for structured and raw output
 struct TagBin
 {
-    output:           *ConcatBuffer                     // Output buffer where data is written
-    freeSections:     ArrayPtr'TagBinSection            // Pool of reusable section structures
-    sections:         ArrayPtr'TagBinSection            // Stack of currently active sections
+    output:           *ConcatBuffer              // Output buffer where data is written
+    freeSections:     ArrayPtr'TagBinSection     // Pool of reusable section structures
+    sections:         ArrayPtr'TagBinSection     // Stack of currently active sections
 }
 
 internal impl TagBin
@@ -73,6 +83,7 @@ impl TagBin
     mtd beginRoot()
     {
         output.addNative(TagBinSignatures.Root)
+        output.addNative(TagBinVersion)
     }
 
     // Ends the root section and asserts that all subsections have been closed
@@ -155,7 +166,7 @@ impl TagBin
     }
 
     // Begins a new element inside the current section and records its metadata
-    mtd beginElement(val: TypeValue)
+    mtd beginElement(val: TypedValue)
     {
         Debug.assert(sections.count != 0, "Missing a previous 'beginSection' call")
 
@@ -175,11 +186,12 @@ impl TagBin
         // Write element signature
         output.addNative(val.crc)
         output.addNative(val.pointedType.crc)
+        output.addNative(TagBinValueSignature.Zero)
     }
 
     // Ends the current element (stubbed out)
     #[Warning("Wrn0006", WarningLevel.Disable)]
-    mtd endElement() {}
+    mtd endElement(val: TypedValue) {}
 
     // Begins a value (stubbed out)
     #[Warning("Wrn0006", WarningLevel.Disable)]

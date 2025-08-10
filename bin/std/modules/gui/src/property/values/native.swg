@@ -151,7 +151,7 @@ impl Properties
         hasChanged(item)
     }
 
-    mtd constructNative(value: Swag.TypeValue, typeNative: const *Swag.TypeInfoNative, data: *u8, parentItem: *PropertiesItem)
+    mtd constructNative(value: Swag.TypedValue, typeNative: const *Swag.TypeInfoNative, data: *u8, parentItem: *PropertiesItem)
     {
         let item = addItem(value, data, parentItem)
 

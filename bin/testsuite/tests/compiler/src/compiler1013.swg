@@ -12,7 +12,7 @@ enum A
 #test
 {
 	let ptr = cast(const *TypeInfoEnum) #typeof(A.VAL)
-	let ptr1 = cast(const *TypeValue) ptr.values[0]
+	let ptr1 = cast(const *TypedValue) ptr.values[0]
 
 	//@print(ptr1.attributes[0].item0)
 	@assert(ptr1.attributes[0].type == #typeof(NC1))

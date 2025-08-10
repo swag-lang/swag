@@ -29,7 +29,8 @@ Supported attributes are :
 */
 struct TagBin
 {
-    ignoreElements:        Array'String // A list of element names that should be skipped
+    version:               u32                            // Version of the tagbin in the stream
+    ignoreElements:        Array'String                   // A list of element names that should be skipped
     stream:                ByteStream                     // Input byte stream for reading serialized data
     options:               TagBinOptions                  // Configuration options for deserialization behavior
     freeSections:          ArrayPtr'TagBinSection         // Pool of reusable section objects for memory efficiency
@@ -229,8 +230,9 @@ impl TagBin
     mtd beginRoot() throw
     {
         let sig = stream.readNative'u32()
-        if sig != Write.TagBinSignatures.Root:
-            throw SerializationError{"invalid root signature"}
+        //if sig != Write.TagBinSignatures.Root:
+        //    throw SerializationError{"invalid root signature"}
+        version = stream.readNative'u32()
     }
 
     // Finish reading the root container.
@@ -329,10 +331,10 @@ impl TagBin
 
             // Deal with version
             var skipFat = false
-            let version = Reflection.getAttributeValue(structType, Serialization.Version, "v")
-            if version != null
+            let structVersion = Reflection.getAttributeValue(structType, Serialization.Version, "v")
+            if structVersion != null
             {
-                let curVersion = cast(u32) version
+                let curVersion = cast(u32) structVersion
 
                 // The stream version is more recent than the code that tries to read it.
                 // Specific error, except if we want to try forward compatibility
@@ -360,9 +362,13 @@ impl TagBin
 
     // Begin reading a field element identified by 'val'.
     // Returns true if the element exists in the stream and should be processed, false to skip it.
-    mtd beginElement(val: TypeValue)->bool throw
+    mtd beginElement(val: TypedValue)->bool throw
     {
         Debug.assert(sections.count != 0, "Missing a previous 'beginSection' call")
+
+        // If this name is in the ignore list, then skip it
+        if ignoreElements.contains(val.name):
+            return false
 
         var reqCrcName = val.crc
         let sec        = sections.back()
@@ -371,13 +377,8 @@ impl TagBin
         if sec.kind == .Raw:
             return true
 
-        // If this name is in the ignore list, then skip it
-        if ignoreElements.contains(val.name):
-           return false
-
-        // If section is ordered, then we do not have a fat, but just elements
-        // descriptors followed by values
-        if sec.kind != .Ordered and !sec.skipFat
+        // If section is unordered, then we have a fat where each value has a descriptor
+        if sec.kind == .Unordered and !sec.skipFat
         {
             var ent = sec.mapSeek.tryFind(val.crc)
 
@@ -406,46 +407,51 @@ impl TagBin
             stream.setSeek(ent.value)
         }
 
-        // Read the name signature. We should have the crc
+        // Read the name signature.
         let crcName = stream.readNative'u32()
+
+        // We should have a matching crc
         if crcName != reqCrcName:
             throw SerializationError{"bad field name", field: val}
 
-        // Read type signature.
-        // If they match, we are done. The value will be right after this.
+        // Read the type signature.
         let crcType = stream.readNative'u32()
-        if crcType == val.pointedType.crc:
-            return true
 
-        // We try to find a registered type with the crc from the stream.
-        let streamType = Reflection.crcToType(crcType)
-
-        // The type from the stream does not exists anymore...
-        if !streamType:
-            throw SerializationError{"unknown field type", field: val}
-
-        // The type exists, but we do not have a way to convert it to the requested
-        // type.
-        if !canConvertType(val.pointedType, streamType):
-            throw SerializationError{"cannot convert field type", field: val}
-
-        // It's an array in the stream, but now we want a single value.
-        // Skip the sequence header
-        if convertArrayToVal
+        // If they do not match, we will try to convert the type from the one in the
+        // stream to the requested one
+        if crcType != val.pointedType.crc
         {
-            convertArrayToVal = false
-            let sig = stream.readNative'u32()
-            if sig != Write.TagBinSignatures.Sequence:
-                throw SerializationError{"stream is corrupted", field: val}
-            discard stream.readNative'u64()
+            // We try to find a registered type with the crc from the stream.
+            let streamType = Reflection.crcToType(crcType)
+
+            // The type from the stream does not exists anymore...
+            if !streamType:
+                throw SerializationError{"unknown field type", field: val}
+
+            // The type exists, but we do not have a way to convert it to the requested
+            // type.
+            if !canConvertType(val.pointedType, streamType):
+                throw SerializationError{"cannot convert field type", field: val}
+
+            // It's an array in the stream, but now we want a single value.
+            // Skip the sequence header
+            if convertArrayToVal
+            {
+                convertArrayToVal = false
+                let sig = stream.readNative'u32()
+                if sig != Write.TagBinSignatures.Sequence:
+                    throw SerializationError{"stream is corrupted", field: val}
+                discard stream.readNative'u64()
+            }
         }
 
+        discard stream.readNative'u8()
         return true
     }
 
     // Finish reading the current field element.
     // Clears any pending native type conversion state.
-    mtd endElement() throw
+    mtd endElement(_val: TypedValue) throw
     {
         convertNextNative = null
     }

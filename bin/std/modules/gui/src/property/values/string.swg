@@ -8,7 +8,7 @@ impl Properties
         hasChanged(item)
     }
 
-    mtd constructDynamicString(value: Swag.TypeValue, data: *u8, parentItem: *PropertiesItem)
+    mtd constructDynamicString(value: Swag.TypedValue, data: *u8, parentItem: *PropertiesItem)
     {
         let item = addItem(value, data, parentItem)
         with let ed = EditBox.create(item.line, dref cast(*String) data)
@@ -24,7 +24,7 @@ impl Properties
         item.editBox = ed
     }
 
-    mtd constructStaticString(value: Swag.TypeValue, data: *u8, parentItem: *PropertiesItem)
+    mtd constructStaticString(value: Swag.TypedValue, data: *u8, parentItem: *PropertiesItem)
     {
         let item = addItem(value, data, parentItem)
 

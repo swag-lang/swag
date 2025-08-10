@@ -18,7 +18,7 @@ impl Properties
         var newData = arrData.buffer
         for i in arrData.count
         {
-            var subValue: Swag.TypeValue
+            var subValue: Swag.TypedValue
             subValue.name        = Format.toString("%", i).toString()
             subValue.pointedType = valueType
             addValue(subValue, newData, item)
@@ -94,7 +94,7 @@ impl Properties
         hasChanged(item)
     }
 
-    mtd constructArray(value: Swag.TypeValue, data: *u8, parentItem: *PropertiesItem)
+    mtd constructArray(value: Swag.TypedValue, data: *u8, parentItem: *PropertiesItem)
     {
         let item           = addItem(value, data, parentItem)
         let numItemsBefore = items.count
@@ -108,7 +108,7 @@ impl Properties
 
         for i in arrData.count
         {
-            var subValue: Swag.TypeValue
+            var subValue: Swag.TypedValue
             subValue.name        = Format.toString("%", i).toString()
             subValue.pointedType = valueType
             addValue(subValue, newData, item)

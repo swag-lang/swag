@@ -58,7 +58,7 @@ struct Undo
     maxP:            s32
     pointIdx:        u32
     valU32:          u32
-    valRef:          const *Swag.TypeValue
+    valRef:          const *Swag.TypedValue
     mdlType:         typeinfo
     mdlValue:        *BaseForm
     text:            String

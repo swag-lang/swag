@@ -4,7 +4,7 @@ using Core, Pixel
 // To specialize the edition of a given struct.
 interface IPropertyValue
 {
-    mtd construct(list: *Properties, value: Swag.TypeValue, data: ^u8, parent: *PropertiesItem)->*PropertiesItem;
+    mtd construct(list: *Properties, value: Swag.TypedValue, data: ^u8, parent: *PropertiesItem)->*PropertiesItem;
 }
 
 // To notify a struct about properties changes
@@ -88,7 +88,7 @@ struct PropertiesItem
     line:               *Wnd
     data:               *u8
     type:               typeinfo
-    typeValue:          Swag.TypeValue
+    typeValue:          Swag.TypedValue
     parent:             *PropertiesItem
     flags:              ItemFlags
     userData0:          *void
@@ -490,7 +490,7 @@ internal impl Properties
         }
     }
 
-    mtd addItem(value: Swag.TypeValue, data: #null *u8, parentItem: #null *PropertiesItem, height: f32 = 0, flags = AddItemFlags.Name | AddItemFlags.Description)->*PropertiesItem
+    mtd addItem(value: Swag.TypedValue, data: #null *u8, parentItem: #null *PropertiesItem, height: f32 = 0, flags = AddItemFlags.Name | AddItemFlags.Description)->*PropertiesItem
     {
         var line: *Wnd
 
@@ -607,7 +607,7 @@ internal impl Properties
         return item
     }
 
-    mtd addValue(value: Swag.TypeValue, data: ^u8, parentItem: *PropertiesItem)
+    mtd addValue(value: Swag.TypedValue, data: ^u8, parentItem: *PropertiesItem)
     {
         // Value
         switch
@@ -620,7 +620,7 @@ internal impl Properties
             var newData = data
             for i in typeArr.count
             {
-                var subValue: Swag.TypeValue
+                var subValue: Swag.TypedValue
                 subValue.name        = Format.toString("%", i).toString()
                 subValue.pointedType = typeArr.pointedType
                 addValue(subValue, newData, item)
@@ -690,7 +690,7 @@ internal impl Properties
             let subCateg = Reflection.getAttributeValue(value, Properties.Category, "name")
             if subCateg != null
             {
-                var v:   Swag.TypeValue{name: cast(string) subCateg}
+                var v:   Swag.TypedValue{name: cast(string) subCateg}
                 let item = addItem(v, null, parentItem)
                 item.label.style.setFont(&fontCategory)
                 item.flags.add(.Category | .NoSeparator | .Expanded | .NoFocus)
@@ -777,7 +777,7 @@ impl Properties
         // Section
         if section != null
         {
-            var v: Swag.TypeValue{name: section}
+            var v: Swag.TypedValue{name: section}
             item = addItem(v, null, null)
             item.flags.add(.Section | .NoSeparator | .Expanded | .NoFocus)
             item.label.style.setFont(&fontSection)
@@ -788,7 +788,7 @@ impl Properties
         // Creates an empty parent item
         else
         {
-            var v: Swag.TypeValue
+            var v: Swag.TypedValue
             item = addItem(v, null, null, 0, .Zero)
             item.flags.add(.Section | .NoSeparator | .Expanded | .NoFocus)
         }

@@ -17,7 +17,7 @@ impl Properties
         hasChanged(item)
     }
 
-    mtd constructBool(value: Swag.TypeValue, data: *u8, parentItem: *PropertiesItem)
+    mtd constructBool(value: Swag.TypedValue, data: *u8, parentItem: *PropertiesItem)
     {
         let dispDesc = Reflection.getAttributeValue(value, Properties.Description, "desc")
         let item     = addItem(value, data, parentItem, flags: AddItemFlags.Name)

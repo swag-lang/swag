@@ -22,8 +22,8 @@ interface ISerialize
 {
     mtd read(decoder: IDecoder)->bool throw;
     mtd write(encoder: IEncoder)->bool throw;
-    mtd readElement(type: TypeValue, data: *void, decoder: IDecoder)->bool throw;
-    mtd writeElement(type: TypeValue, data: const *void, encoder: IEncoder)->bool throw;
+    mtd readElement(type: TypedValue, data: *void, decoder: IDecoder)->bool throw;
+    mtd writeElement(type: TypedValue, data: const *void, encoder: IEncoder)->bool throw;
     mtd postRead(data: *void, decoder: IDecoder) throw;
 }
 
@@ -88,7 +88,7 @@ impl Serializer
     #[Swag.Optimize("", false), Swag.Overload]
     mtd(MT) serialize(name: string, crc: u32, res: *MT) throw
     {
-        var value: Swag.TypeValue
+        var value: Swag.TypedValue
         value.name        = name
         value.crc         = crc
         value.pointedType = #typeof(MT)
@@ -96,7 +96,7 @@ impl Serializer
         if isWrite
         {
             encode.beginField(value)
-            defer'noerr encode.endField()
+            defer'noerr encode.endField(value)
 
             #if MT == s8:
                 encode.writeS8(dref res)
@@ -127,7 +127,7 @@ impl Serializer
         {
             if !decode.beginField(value):
                 return
-            defer'noerr decode.endField()
+            defer'noerr decode.endField(value)
 
             #if MT == s8:
                 dref res = decode.readS8()

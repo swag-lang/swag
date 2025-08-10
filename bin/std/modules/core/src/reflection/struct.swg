@@ -16,7 +16,7 @@ func isStructOfName(type: typeinfo, name: string)->bool
 // Get information about a specific method in a given struct.
 // Returns null if the method does not exist
 #[ConstExpr]
-func getMethod(type: typeinfo, name: string)->#null const *TypeValue
+func getMethod(type: typeinfo, name: string)->#null const *TypedValue
 {
     if !isStruct(type):
         return null
@@ -30,7 +30,7 @@ func getMethod(type: typeinfo, name: string)->#null const *TypeValue
 // Get information about a specific field in a given struct
 // Returns null if the field does not exist
 #[ConstExpr]
-func getField(type: typeinfo, name: string)->#null const *TypeValue
+func getField(type: typeinfo, name: string)->#null const *TypedValue
 {
     if !isStruct(type):
         return null
@@ -43,7 +43,7 @@ func getField(type: typeinfo, name: string)->#null const *TypeValue
 
 // Get a field value with a given runtime type.
 #[ConstExpr]
-func getFieldValue(dest: *void, type: const *TypeValue, src: *void, hardCast: bool = false)
+func getFieldValue(dest: *void, type: const *TypedValue, src: *void, hardCast: bool = false)
 {
     let patch = cast(^u8) src + type.offset
     switch type.pointedType
@@ -79,7 +79,7 @@ func getFieldValue(dest: *void, type: const *TypeValue, src: *void, hardCast: bo
 
 // Set a field value with a given runtime type.
 #[ConstExpr]
-func setFieldValue(dest: *void, type: const *TypeValue, src: const *void, hardCast: bool = false)
+func setFieldValue(dest: *void, type: const *TypedValue, src: const *void, hardCast: bool = false)
 {
     var patch = cast(^u8) dest + type.offset
     switch type.pointedType

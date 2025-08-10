@@ -66,7 +66,7 @@ public func getTypedValue(value: *void, type: typeinfo)->bool
     trycatch
     {
         decoder.start(data.toSlice())
-        decoder.readValue(value, type)
+        decoder.readTypedContent(value, type)
         decoder.end()
     }
 
