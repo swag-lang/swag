@@ -38,7 +38,7 @@ struct TagBin
 {
     compressionFlags:        Core.Compress.Deflate.CompressionFlags = .Zero
     compressionLevel:        Core.Compress.Deflate.CompressionLevel = .BestSpeed
-    compressionStrategy:     Core.Compress.Deflate.CompressionStrategy = .Rle
+    compressionStrategy:     Core.Compress.Deflate.CompressionStrategy = .Default
 
     internal
     {

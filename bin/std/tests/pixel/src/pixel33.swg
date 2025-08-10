@@ -13,10 +13,13 @@ struct AA
     var enc: Encoder'Write.TagBin
 
     var x:   AA
-    x.img = try Image.load(imagePath("haar1.png"))
+    x.img = try Image.load(imagePath("capture.png"))
 
     var buf: ConcatBuffer
+{
+    //Time.Stopwatch.scopeMeasure()
     try enc.writeAll(&buf, x)
+}
     buf.makeLinear()
     //@print(@countof(buf))
 
