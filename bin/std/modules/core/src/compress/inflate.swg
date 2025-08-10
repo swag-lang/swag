@@ -245,13 +245,12 @@ impl Inflate
     }
 
     // Decompress the associated stream
-    public mtd decompress(buf: const [..] u8, winSize: u32 = InflateMaxDistance)->Array'u8 throw
+    public mtd decompress(result: *Array'u8, buf: const [..] u8, winSize: u32 = InflateMaxDistance) throw
     {
         stream.init(buf)
         adler.init()
         windowSize = Math.min(winSize, InflateMaxDistance)
 
-        var result:       retval
         var repeatHt:     HuffmanTable
         var repeatZ:      HuffmanTable
         var codeLengthHt: HuffmanTable
@@ -280,7 +279,7 @@ impl Inflate
             case 1:
                 repeatHt.init(FixedLength)
                 repeatZ.init(FixedDist)
-                parseBlock(&repeatHt, &repeatZ, &result)
+                parseBlock(&repeatHt, &repeatZ, result)
 
             case 3:
                 throw InvalidFormatError{"invalid block type"}
@@ -345,13 +344,11 @@ impl Inflate
                     throw InvalidFormatError{"bad code lengths"}
                 repeatHt.init(lenCodes[0..hlit - 1])
                 repeatZ.init(lenCodes[hlit..ntot - 1])
-                parseBlock(&repeatHt, &repeatZ, &result)
+                parseBlock(&repeatHt, &repeatZ, result)
             }
 
             if final == 1:
                 break
         }
-
-        return result
     }
 }

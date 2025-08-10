@@ -9,17 +9,17 @@ const TagBinVersion = 0xFAFAFAFA
 // Signatures used to tag different sections and elements in the binary serialization format
 enum TagBinSignatures: u32
 {
-    Root        = 0xC0DE0000     // Root element of the serialization structure
-    Fat         = 0xC0DE0001     // FAT table identifier for unordered sections
-    Sequence    = 0xC0DE0002     // Start of a sequence (array or list)
-    Version     = 0xC0DE0003     // Indicates that a version number is present
-    Raw         = 0xC0DE0004     // Indicates raw POD data with no structure
-    UnRaw       = 0xC0DE0005     // Indicates non-POD structured data
+    Root     = 0xC0DE0000     // Root element of the serialization structure
+    Fat      = 0xC0DE0001     // FAT table identifier for unordered sections
+    Sequence = 0xC0DE0002     // Start of a sequence (array or list)
+    Version  = 0xC0DE0003     // Indicates that a version number is present
+    Raw      = 0xC0DE0004     // Indicates raw POD data with no structure
+    UnRaw    = 0xC0DE0005     // Indicates non-POD structured data
 }
 
 // Additionnal signature for each value, stored after the value description (crcs)
 #[Swag.EnumFlags]
-enum TagBinValueFlags : u8
+enum TagBinValueFlags: u8
 {
     Zero
     Compressed
@@ -29,9 +29,14 @@ enum TagBinValueFlags : u8
 struct TagBinSection
 {
     startSeek:     ConcatBufferSeek                      // Seek position in the output buffer where the section starts
-    mapSeek:       HashTable'(u32, ConcatBufferSeek)
-    // Maps CRC keys to their position in the output buffer
-    kind: SectionKind // Type of section (e.g., Raw or Unordered)
+    mapSeek:       HashTable'(u32, ConcatBufferSeek)     // Maps CRC keys to their position in the output buffer
+    kind:          SectionKind                           // Type of section (e.g., Raw or Unordered)
+}
+
+struct TagBinElemCtx
+{
+    compressed:     bool
+    tmpBuf:         *ConcatBuffer
 }
 
 // Binary writer for serialized data with support for structured and raw output
@@ -40,6 +45,9 @@ struct TagBin
     output:           *ConcatBuffer              // Output buffer where data is written
     freeSections:     ArrayPtr'TagBinSection     // Pool of reusable section structures
     sections:         ArrayPtr'TagBinSection     // Stack of currently active sections
+    outStack:         Array'*ConcatBuffer
+    elemStack:        Array'TagBinElemCtx
+    freeTmpBuf:       ArrayPtr'ConcatBuffer
 }
 
 internal impl TagBin
@@ -64,6 +72,24 @@ internal impl TagBin
         let ptr = sections.popBack()
         freeSections.add(ptr)
     }
+
+    mtd acquireTmpBuf()->*ConcatBuffer
+    {
+        if freeTmpBuf.count
+        {
+            let b = freeTmpBuf.popBack()
+            b.clear()
+            return b
+        }
+
+        return freeTmpBuf.newPtr()
+    }
+
+    mtd releaseTmpBuf(b: *ConcatBuffer)
+    {
+        b.clear()
+        freeTmpBuf.add(b)
+    }
 }
 
 impl TagBin
@@ -79,6 +105,8 @@ impl TagBin
     mtd startWrite(buf: *ConcatBuffer)
     {
         output = buf
+        outStack.clear()
+        elemStack.clear()
     }
 
     // Begins the root section of the serialization structure
@@ -172,9 +200,8 @@ impl TagBin
     {
         Debug.assert(sections.count != 0, "Missing a previous 'beginSection' call")
 
-        let sec = sections.back()
-
         // If section is raw, then we just have values without versionning
+        let sec = sections.back()
         if sec.kind == .Raw:
             return
 
@@ -193,11 +220,72 @@ impl TagBin
         if Reflection.hasAttribute(val, Compress) or Reflection.hasAttribute(val.pointedType, Compress):
             valSig.add(TagBinValueFlags.Compressed)
         output.addNative(valSig)
+
+        // If compressed, push a new ConcatBuffer that will collect all payload for this element
+        if valSig.has(.Compressed)
+        {
+            // push parent buffer on stack and switch current output
+            let tmp = acquireTmpBuf()
+            let ctx = TagBinElemCtx{compressed: true, tmpBuf: tmp}
+            elemStack.add(ctx)
+
+            // From now, write to this temporary output
+            outStack.add(output)
+            output = tmp
+        }
+        else
+        {
+            // track a non-compressed element to keep nesting consistent
+            elemStack.add({})
+        }
     }
 
     // Ends the current element (stubbed out)
     #[Warning("Wrn0006", WarningLevel.Disable)]
-    mtd endElement(val: TypedValue) {}
+    mtd endElement(val: TypedValue)
+    {
+        // If section is raw, then we just have values without versionning
+        let sec = sections.back()
+        if sec.kind == .Raw:
+            return
+
+        Debug.assert(elemStack.count != 0)
+        let ctx = elemStack.popBack()
+        if !ctx.compressed:
+            return
+
+        // We must have a previous buffer to append into
+        Debug.assert(outStack.count != 0)
+        let parentOut = outStack.popBack()
+
+        // Gather uncompressed bytes
+        let childBytes = ctx.tmpBuf.toString()
+
+        // Compress
+        var compressor: Core.Compress.Deflate
+        compressor.init()
+
+        var compressBuffer: Array'u8
+        catch compressor.compress(&compressBuffer, childBytes.toSlice())
+
+        if compressBuffer.count >= childBytes.length or @err != null
+        {
+            // No compression, just store input
+            parentOut.addNative(childBytes.length) // uncompressedSize
+            parentOut.addNative(childBytes.length) // compressedSize
+            parentOut.addBytes(childBytes)
+        }
+        else
+        {
+            parentOut.addNative(childBytes.length) // uncompressedSize
+            parentOut.addNative(compressBuffer.count) // compressedSize
+            parentOut.addBytes(compressBuffer.toSlice())
+        }
+
+        // Switch current 'output' back to parent and recycle tmp
+        output = parentOut
+        releaseTmpBuf(ctx.tmpBuf)
+    }
 
     // Begins a value (stubbed out)
     #[Warning("Wrn0006", WarningLevel.Disable)]

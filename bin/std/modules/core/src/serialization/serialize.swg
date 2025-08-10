@@ -18,6 +18,10 @@ attr Alias(name: string)
 #[AttrUsage(AttributeUsage.Struct | AttributeUsage.StructVariable)]
 attr NoSerialize()
 
+// Compress a struct or a field
+#[AttrUsage(AttributeUsage.Struct | AttributeUsage.StructVariable)]
+attr Compress()
+
 interface ISerialize
 {
     mtd read(decoder: IDecoder)->bool throw;

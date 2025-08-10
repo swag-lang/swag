@@ -13,7 +13,8 @@ using Core
     try comp.compress(&res, arr.toSlice())
 
     var decomp: Compress.Inflate
-    var res1    = try decomp.decompress(res.toSlice())
+    var res1:   Array'u8
+    try decomp.decompress(&res1, res.toSlice())
 
     @assert(res1.count == 100)
     foreach v, i in res1:

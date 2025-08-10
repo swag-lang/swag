@@ -59,8 +59,8 @@ impl ZLib
         // Compression level
         //var flevel = (flg >> 6) & 3
 
-        var result: retval
-        result = try decoder.decompress(bs.remainReadToSlice(), winSize)
+        var result: Array'u8
+        try decoder.decompress(&result, bs.remainReadToSlice(), winSize)
 
         // Now we should have the checksum
         decoder.stream.discardToNextByte()

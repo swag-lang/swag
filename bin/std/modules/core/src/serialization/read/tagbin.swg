@@ -3,6 +3,8 @@
 #global public
 using Swag, Core.Errors
 
+alias Buffer = Array'u8
+
 /*
 Binary serializer with forward/backward compatibility.
 Changes that are supported from V to V+1 are :
@@ -38,6 +40,10 @@ struct TagBin
     convertNextNative:     const *Swag.TypeInfoNative     // Type information for pending native type conversion
     convertValToArray:     bool                           // Flag indicating next value should be converted to array
     convertArrayToVal:     bool                           // Flag indicating next array should be converted to single value
+
+    outStack:              Array'{buf: const [..] u8, seek: u64}
+    elemStack:             Array'{compressed: bool, tmpBuf: *Buffer}
+    tmpPool:               ArrayPtr'Buffer
 }
 
 // Section information for tracking deserialization state within structured data.
@@ -81,6 +87,24 @@ internal impl TagBin
     {
         let ptr = sections.popBack()
         freeSections.add(ptr)
+    }
+
+    mtd acquireTmpBuf()->*Buffer
+    {
+        if tmpPool.count
+        {
+            let b = tmpPool.popBack()
+            b.clear()
+            return b
+        }
+
+        return tmpPool.newPtr()
+    }
+
+    mtd releaseTmpBuf(b: *Buffer)
+    {
+        b.clear()
+        tmpPool.add(b)
     }
 
     // Check if type conversion is possible between 'fromType' and 'toType'.
@@ -330,7 +354,7 @@ impl TagBin
             let streamVersion = stream.readNative'u32()
 
             // Deal with version
-            var skipFat = false
+            var skipFat       = false
             let structVersion = Reflection.getAttributeValue(structType, Serialization.Version, "v")
             if structVersion != null
             {
@@ -367,15 +391,21 @@ impl TagBin
         Debug.assert(sections.count != 0, "Missing a previous 'beginSection' call")
 
         // If this name is in the ignore list, then skip it
-        if ignoreElements.contains(val.name):
+        if ignoreElements.contains(val.name)
+        {
+            elemStack.add({false, null})
             return false
+        }
 
         var reqCrcName = val.crc
         let sec        = sections.back()
 
         // If section is raw, then we just have values without versionning
-        if sec.kind == .Raw:
+        if sec.kind == .Raw
+        {
+            elemStack.add({false, null})
             return true
+        }
 
         // If section is unordered, then we have a fat where each value has a descriptor
         if sec.kind == .Unordered and !sec.skipFat
@@ -400,8 +430,11 @@ impl TagBin
             }
 
             // The requested field is not there, just ignore it
-            if !ent:
+            if !ent
+            {
+                elemStack.add({false, null})
                 return false
+            }
 
             // Otherwise we seek to the field in the stream
             stream.setSeek(ent.value)
@@ -418,7 +451,35 @@ impl TagBin
         let crcType = stream.readNative'u32()
 
         // Read value flags
-        discard stream.readNative'u8()
+        let flags = stream.readNative'Write.TagBinValueFlags()
+        if flags.has(.Compressed)
+        {
+            let uncompressedSize = stream.readNative'u64()
+            let compressedSize   = stream.readNative'u64()
+            if uncompressedSize == compressedSize:
+                elemStack.add({false, null})
+            else
+            {
+                // push parent buffer on stack and switch current output
+                let decompressedBuffer = acquireTmpBuf()
+                decompressedBuffer.reserve(uncompressedSize)
+
+                // Here uncompress to 'tmp'
+                var decompressor: Core.Compress.Inflate
+                decompressor.decompress(decompressedBuffer, stream.remainReadToSlice())
+
+                // track this element context
+                elemStack.add({true, decompressedBuffer})
+
+                outStack.add({stream.readBuffer, stream.seek + compressedSize})
+                stream.readBuffer = decompressedBuffer.toSlice()
+                stream.seek       = 0
+            }
+        }
+        else
+        {
+            elemStack.add({false, null})
+        }
 
         // If they do not match, we will try to convert the type from the one in the
         // stream to the requested one
@@ -456,6 +517,20 @@ impl TagBin
     mtd endElement(_val: TypedValue) throw
     {
         convertNextNative = null
+
+        Debug.assert(elemStack.count != 0)
+        let ctx = elemStack.popBack()
+        if !ctx.compressed:
+            return
+
+        // We must have a previous buffer to append into
+        Debug.assert(outStack.count != 0)
+        let (parentOut, parentSeek) = outStack.popBack()
+
+        // Switch current 'output' back to parent and recycle tmp
+        stream.readBuffer = parentOut
+        stream.seek       = parentSeek
+        releaseTmpBuf(ctx.tmpBuf)
     }
 
     // Begin reading a value within the current context.

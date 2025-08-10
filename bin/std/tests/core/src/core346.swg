@@ -18,7 +18,8 @@ using Core
     try comp.compress(&res, arr.toSlice())
 
     var decomp: Compress.Inflate
-    var res1    = try decomp.decompress(res.toSlice())
+    var res1:   Array'u8
+    try decomp.decompress(&res1, res.toSlice())
 
     @assert(arr.count == res1.count)
     foreach v, i in arr
