@@ -111,7 +111,8 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
 
         if (countParams < maxCount)
         {
-            Diagnostic err{fromNode->lastChild(), formErr(Err0491, maxCount, countParams)};
+            const auto locNode = fromNode->childCount() ? fromNode->firstChild() : fromNode;
+            Diagnostic err{locNode, formErr(Err0491, maxCount, countParams)};
             const auto errNode = destStruct->originalParent ? destStruct->originalParent : destStruct;
             err.addNote(Diagnostic::note(errNode, toNte(Nte0202)));
             return context->report(err);
