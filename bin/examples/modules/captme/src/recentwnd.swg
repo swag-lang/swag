@@ -203,20 +203,21 @@ impl IWnd for RecentWnd
     mtd impl onTimerEvent(evt: *TimerEvent)
     {
         let capture = main.getCapture()
-        if !capture:
-            return
+        if capture and capture.changed
+        {
+            capture.computePreview()
+            let item = recentView.items[recentView.selected]
+            getApp().getRenderer().removeTexture(&item.preview)
+            item.preview = getApp().getRenderer().addImage(capture.preview)
+            invalidate()
 
-        capture.computePreview()
-        let item = recentView.items[recentView.selected]
-        getApp().getRenderer().removeTexture(&item.preview)
-        item.preview = getApp().getRenderer().addImage(capture.preview)
-        invalidate()
+            main.libWnd.view.updateRecent(capture)
 
-        main.libWnd.view.updateRecent(capture)
+            catch capture.save()
+        }
 
         getApp().deleteTimer(evt.timer)
         timer = null
-        catch capture.save()
     }
 }
 

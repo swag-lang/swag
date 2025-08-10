@@ -33,27 +33,21 @@ struct TagBinSection
     kind:          SectionKind                           // Type of section (e.g., Raw or Unordered)
 }
 
-struct TagBinElemCtx
-{
-    compressed:     bool
-    tmpBuf:         *ConcatBuffer
-}
-
 // Binary writer for serialized data with support for structured and raw output
 struct TagBin
 {
-    compressionFlags:        Core.Compress.Deflate.CompressionFlags = .Default
-    compressionLevel:        Core.Compress.Deflate.CompressionLevel = .Default
-    compressionStrategy:     Core.Compress.Deflate.CompressionStrategy = .Default
+    compressionFlags:        Core.Compress.Deflate.CompressionFlags = .Zero
+    compressionLevel:        Core.Compress.Deflate.CompressionLevel = .BestSpeed
+    compressionStrategy:     Core.Compress.Deflate.CompressionStrategy = .Rle
 
     internal
     {
         compressor:       Core.Compress.Deflate
-        output:           *ConcatBuffer              // Output buffer where data is written
-        freeSections:     ArrayPtr'TagBinSection     // Pool of reusable section structures
-        sections:         ArrayPtr'TagBinSection     // Stack of currently active sections
+        output:           *ConcatBuffer                                         // Output buffer where data is written
+        freeSections:     ArrayPtr'TagBinSection                                // Pool of reusable section structures
+        sections:         ArrayPtr'TagBinSection                                // Stack of currently active sections
         outStack:         Array'*ConcatBuffer
-        elemStack:        Array'TagBinElemCtx
+        elemStack:        Array'{ compressed: bool, tmpBuf: *ConcatBuffer }
         freeTmpBuf:       ArrayPtr'ConcatBuffer
     }
 }
@@ -234,8 +228,7 @@ impl TagBin
         {
             // push parent buffer on stack and switch current output
             let tmp = acquireTmpBuf()
-            let ctx = TagBinElemCtx{compressed: true, tmpBuf: tmp}
-            elemStack.add(ctx)
+            elemStack.add({compressed: true, tmpBuf: tmp})
 
             // From now, write to this temporary output
             outStack.add(output)
@@ -244,7 +237,7 @@ impl TagBin
         else
         {
             // track a non-compressed element to keep nesting consistent
-            elemStack.add({})
+            elemStack.add({false, null})
         }
     }
 
