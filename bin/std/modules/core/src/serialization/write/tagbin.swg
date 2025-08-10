@@ -42,12 +42,20 @@ struct TagBinElemCtx
 // Binary writer for serialized data with support for structured and raw output
 struct TagBin
 {
-    output:           *ConcatBuffer              // Output buffer where data is written
-    freeSections:     ArrayPtr'TagBinSection     // Pool of reusable section structures
-    sections:         ArrayPtr'TagBinSection     // Stack of currently active sections
-    outStack:         Array'*ConcatBuffer
-    elemStack:        Array'TagBinElemCtx
-    freeTmpBuf:       ArrayPtr'ConcatBuffer
+    compressionFlags:        Core.Compress.Deflate.CompressionFlags = .Default
+    compressionLevel:        Core.Compress.Deflate.CompressionLevel = .Default
+    compressionStrategy:     Core.Compress.Deflate.CompressionStrategy = .Default
+
+    internal
+    {
+        compressor:       Core.Compress.Deflate
+        output:           *ConcatBuffer              // Output buffer where data is written
+        freeSections:     ArrayPtr'TagBinSection     // Pool of reusable section structures
+        sections:         ArrayPtr'TagBinSection     // Stack of currently active sections
+        outStack:         Array'*ConcatBuffer
+        elemStack:        Array'TagBinElemCtx
+        freeTmpBuf:       ArrayPtr'ConcatBuffer
+    }
 }
 
 internal impl TagBin
@@ -262,8 +270,7 @@ impl TagBin
         let childBytes = ctx.tmpBuf.toString()
 
         // Compress
-        var compressor: Core.Compress.Deflate
-        compressor.init()
+        compressor.init(compressionLevel, compressionStrategy, compressionFlags)
 
         var compressBuffer: Array'u8
         catch compressor.compress(&compressBuffer, childBytes.toSlice())

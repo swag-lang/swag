@@ -82,8 +82,6 @@ private
 
     const LzCodeBufSize = 24 * 1024
     const LzHashBits    = 12
-    //const LzCodeBufSize  = 64 * 1024
-    //const LzHashBits     = 15
 
     const OutBufSize         = (LzCodeBufSize * 13) / 10
     const MaxHuffSymbols     = 288
@@ -146,12 +144,13 @@ private
     }
 }
 
+// Main structure representing a Deflate compression context
 #[Swag.Opaque]
 public struct Deflate
 {
-    state:         *Compressor
-    adler:         Hash.Adler32
-    initFlags:     CompressionFlags = Default
+    state:         *Compressor                    // Internal compressor state
+    adler:         Hash.Adler32                   // Adler-32 checksum calculator
+    initFlags:     CompressionFlags = Default     // Initialization flags (e.g. compute checksum)
 }
 
 impl Deflate
@@ -1091,31 +1090,34 @@ impl Deflate
 
 public impl Deflate
 {
+    // Flags controlling compression behavior
     #[Swag.EnumFlags]
     enum CompressionFlags
     {
-        Zero           = 0
-        ComputeAdler32
-        Default        = ComputeAdler32
+        Zero           = 0                  // No compression flags
+        ComputeAdler32                      // Compute Adler-32 checksum after compression
+        Default        = ComputeAdler32     // Default flag: computes Adler-32
     }
 
+    // Compression level to use (mapped to number of probes and strategies)
     #[Swag.Incomplete]
     enum CompressionLevel: u32
     {
-        NoCompression   = 0
-        BestSpeed       = 1
-        Default         = 6
-        BestCompression = 9
-        UberCompression = 10
+        NoCompression   = 0      // Disables compression (raw storage)
+        BestSpeed       = 1      // Fastest compression, less effective
+        Default         = 6      // Balanced default compression
+        BestCompression = 9      // High compression ratio, slower
+        UberCompression = 10     // Maximum compression effort
     }
 
+    // Strategy for compression to influence algorithm behavior
     enum CompressionStrategy
     {
-        Default
-        Filtered
-        HuffmanOnly
-        Rle
-        Fixed
+        Default         // Default compression strategy
+        Filtered        // Filter out potentially poor matches
+        HuffmanOnly     // Use only Huffman coding, no match search
+        Rle             // Run-length encoding
+        Fixed           // Use fixed Huffman codes
     }
 
     mtd opDrop()
