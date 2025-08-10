@@ -94,7 +94,10 @@ bool Parser::doGenericFuncCallArguments(AstNode* parent, AstFuncCallParams** res
     }
 
     if (multi)
+    {
+        FormatAst::inheritFormatAfter(this, callParams, &tokenParse);
         SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
+    }
 
     return true;
 }
