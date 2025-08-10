@@ -18,9 +18,11 @@ enum TagBinSignatures: u32
 }
 
 // Additionnal signature for each value, stored after the value description (crcs)
-enum TagBinValueSignature : u8
+#[Swag.EnumFlags]
+enum TagBinValueFlags : u8
 {
     Zero
+    Compressed
 }
 
 // Internal state for a binary serialization section
@@ -186,7 +188,11 @@ impl TagBin
         // Write element signature
         output.addNative(val.crc)
         output.addNative(val.pointedType.crc)
-        output.addNative(TagBinValueSignature.Zero)
+
+        var valSig: TagBinValueFlags = .Zero
+        if Reflection.hasAttribute(val, Compress) or Reflection.hasAttribute(val.pointedType, Compress):
+            valSig.add(TagBinValueFlags.Compressed)
+        output.addNative(valSig)
     }
 
     // Ends the current element (stubbed out)

@@ -230,8 +230,8 @@ impl TagBin
     mtd beginRoot() throw
     {
         let sig = stream.readNative'u32()
-        //if sig != Write.TagBinSignatures.Root:
-        //    throw SerializationError{"invalid root signature"}
+        if sig != Write.TagBinSignatures.Root:
+            throw SerializationError{"invalid root signature"}
         version = stream.readNative'u32()
     }
 
@@ -417,6 +417,9 @@ impl TagBin
         // Read the type signature.
         let crcType = stream.readNative'u32()
 
+        // Read value flags
+        discard stream.readNative'u8()
+
         // If they do not match, we will try to convert the type from the one in the
         // stream to the requested one
         if crcType != val.pointedType.crc
@@ -445,7 +448,6 @@ impl TagBin
             }
         }
 
-        discard stream.readNative'u8()
         return true
     }
 
