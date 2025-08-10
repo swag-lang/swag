@@ -17,7 +17,7 @@ enum TagBinSignatures: u32
     UnRaw    = 0xC0DE0005     // Indicates non-POD structured data
 }
 
-// Additionnal signature for each value, stored after the value description (crcs)
+// Additional signature for each value, stored after the value description (crcs)
 #[Swag.EnumFlags]
 enum TagBinValueFlags: u8
 {
@@ -109,6 +109,7 @@ impl TagBin
         output = buf
         outStack.clear()
         elemStack.clear()
+        sections.clear()
     }
 
     // Begins the root section of the serialization structure
@@ -168,7 +169,7 @@ impl TagBin
     // Begins a new struct, writing versioning and section metadata
     mtd beginStruct(structType: typeinfo, _structData: const *u8)->bool
     {
-        let (pod, ?) = Serialization.isPodFinal(structType)
+        let (pod, ?) = isPodFinal(structType)
         if pod
         {
             output.addNative(TagBinSignatures.Raw)
@@ -202,7 +203,7 @@ impl TagBin
     {
         Debug.assert(sections.count != 0, "Missing a previous 'beginSection' call")
 
-        // If section is raw, then we just have values without versionning
+        // If section is raw, then we just have values without versioning
         let sec = sections.back()
         if sec.kind == .Raw:
             return
@@ -245,7 +246,7 @@ impl TagBin
     #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd endElement(val: TypedValue)
     {
-        // If section is raw, then we just have values without versionning
+        // If section is raw, then we just have values without versioning
         let sec = sections.back()
         if sec.kind == .Raw:
             return
