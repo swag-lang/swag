@@ -16,10 +16,7 @@ struct Capture
     const MinSize            = 16
     const MaxSize            = 4096
     width, height:           s32
-
-    #[Serialization.Compress]
     backImg:                 Image
-
     widthOrg, heightOrg:     s32
     backImgOriginal:         Image
 
