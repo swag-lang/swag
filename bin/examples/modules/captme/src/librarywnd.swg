@@ -266,6 +266,20 @@ impl LibraryWnd
         catch view.fill()
     }
 
+    mtd registerActions()
+    {
+        registerAction'ActionLibSort()
+        registerAction'ActionLibFilter()
+        registerAction'ActionLibSel()
+
+        registerKeyShortcut(.Zero, .Left, CmdIdLibMoveSelLeft)
+        registerKeyShortcut(.Zero, .Right, CmdIdLibMoveSelRight)
+        registerKeyShortcut(.Zero, .Up, CmdIdLibMoveSelUp)
+        registerKeyShortcut(.Zero, .Down, CmdIdLibMoveSelDown)
+        registerKeyShortcut(.Zero, .Home, CmdIdLibMoveSelHome)
+        registerKeyShortcut(.Zero, .End, CmdIdLibMoveSelEnd)
+    }
+
     func create(parent: *MainWnd)->*LibraryWnd
     {
         with let res = Wnd.create'LibraryWnd(parent, "captme.librarywnd")
@@ -273,17 +287,7 @@ impl LibraryWnd
             .main            = parent
             .dockStyle       = .Center
             .backgroundStyle = .View
-
-            .registerAction'ActionLibSort()
-            .registerAction'ActionLibFilter()
-            .registerAction'ActionLibSel()
-
-            .registerKeyShortcut(.Zero, .Left, CmdIdLibMoveSelLeft)
-            .registerKeyShortcut(.Zero, .Right, CmdIdLibMoveSelRight)
-            .registerKeyShortcut(.Zero, .Up, CmdIdLibMoveSelUp)
-            .registerKeyShortcut(.Zero, .Down, CmdIdLibMoveSelDown)
-            .registerKeyShortcut(.Zero, .Home, CmdIdLibMoveSelHome)
-            .registerKeyShortcut(.Zero, .End, CmdIdLibMoveSelEnd)
+            .registerActions()
         }
 
         with let rightBar = Wnd.create'Wnd(res, {0, 0, 300, 0})
