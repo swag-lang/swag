@@ -2,6 +2,7 @@ using Threading, Time
 
 private var g_UpdatingLib: bool
 private var g_DirtyList: bool = true
+private const ItemMargin = 8.0
 
 struct LibraryItem
 {
@@ -131,23 +132,7 @@ impl IWnd for LibraryView
         var x = clientRect.x
         var y = clientRect.y
 
-        var H: f32 = 128.0
-        var W: f32 = 0
-        switch libWnd.previewSize
-        {
-        case Small:
-            H = 128
-            W = H * 4.0 / 3.0
-        case Medium:
-            H = 256
-            W = H * 4.0 / 3.0
-        case Big:
-            H = 512
-            W = H * 4.0 / 3.0
-        }
-
-        const Margin = 8.0
-
+        let (w, h) = getPreviewSize()
         if g_DirtyList
         {
             g_DirtyList = false
@@ -158,7 +143,7 @@ impl IWnd for LibraryView
         foreach it, i in items
         {
             it.visible = true
-            if y + H < spos.y:
+            if y + h < spos.y:
                 it.visible = false
             if y > spos.y + position.height:
                 it.visible = false
@@ -172,7 +157,7 @@ impl IWnd for LibraryView
             if capture and !it.texture.isValid():
                 it.texture = evt.bc.renderer.addImage(capture.preview)
 
-            it.rect = Math.Rectangle{x, y, W, H}
+            it.rect = Math.Rectangle{x, y, w, h}
             let selected = selModel.isSelected(cast() i)
 
             if capture:
@@ -189,20 +174,48 @@ impl IWnd for LibraryView
             }
 
             // Next item
-            x += W + Margin
-            if x + W + Margin >= clientRect.right()
+            x += w + ItemMargin
+            if x + w + ItemMargin >= clientRect.right()
             {
                 x = clientRect.x
-                y += H + Margin
+                y += h + ItemMargin
             }
         }
 
-        scrollWnd.setScrollSize(0, y + H + Margin)
+        scrollWnd.setScrollSize(0, y + h + ItemMargin)
     }
 }
 
 impl LibraryView
 {
+    mtd const numImagesPerLine()->u32
+    {
+        let (w, ?) = getPreviewSize()
+        var clientRect = getClientRectPadding()
+        let n          = clientRect.width / (w + ItemMargin)
+        return cast(u32) n
+    }
+
+    mtd const getPreviewSize()->{ w: f32, h: f32 }
+    {
+        var H: f32 = 128.0
+        var W: f32 = 0
+        switch libWnd.previewSize
+        {
+        case Small:
+            H = 128
+            W = H * 4.0 / 3.0
+        case Medium:
+            H = 256
+            W = H * 4.0 / 3.0
+        case Big:
+            H = 512
+            W = H * 4.0 / 3.0
+        }
+
+        return {W, H}
+    }
+
     mtd updateRecent(capture: *Capture)
     {
         foreach it in items
@@ -257,7 +270,7 @@ impl LibraryView
             return
 
         capture.haar = ImageStatistics.extractHaarFeatures(capture.preview, 64)
-        g_DirtyList = true
+        g_DirtyList  = true
 
         mutexLoaded.lock()
         it.capture = capture

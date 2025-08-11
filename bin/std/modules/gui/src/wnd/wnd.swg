@@ -618,13 +618,13 @@ impl Wnd
     }
 
     // Returns the client area
-    mtd getClientRect()->Math.Rectangle
+    mtd const getClientRect()->Math.Rectangle
     {
         return {0, 0, position.width, position.height}
     }
 
     // Returns the client area, with 'padding' applied
-    mtd getClientRectPadding()->Math.Rectangle
+    mtd const getClientRectPadding()->Math.Rectangle
     {
         var result: retval = getClientRect()
         result.applyPadding(padding)

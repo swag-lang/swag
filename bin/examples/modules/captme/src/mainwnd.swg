@@ -340,7 +340,7 @@ impl MainWnd
     {
         if libraryMode:
             return libWnd.getCapture()
-        return editWnd.editView.capture
+        return editWnd.getCapture()
     }
 
     mtd updateZoomDisplay()

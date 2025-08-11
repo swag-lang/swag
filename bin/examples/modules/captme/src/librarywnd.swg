@@ -118,10 +118,26 @@ impl LibraryWnd
 
     mtd moveSelTop()
     {
+        if view.items.isEmpty():
+            return
+        let n = view.numImagesPerLine()
+        if view.focusItem < n or view.focusItem == Swag.U32.Max:
+            return
+        view.focusItem -= n
+        view.setFocusItem(view.focusItem)
+        view.scrollToFocus()
     }
 
     mtd moveSelBottom()
     {
+        if view.items.isEmpty():
+            return
+        let n = view.numImagesPerLine()
+        if view.focusItem >= view.items.count - n or view.focusItem == Swag.U32.Max:
+            return
+        view.focusItem += n
+        view.setFocusItem(view.focusItem)
+        view.scrollToFocus()
     }
 
     mtd fill()
