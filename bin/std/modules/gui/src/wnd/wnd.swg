@@ -589,13 +589,13 @@ impl Wnd
     }
 
     // Convert a screen coordinate to a surface coordinate (relative to my surface)
-    mtd screenToSurface(pos: Math.Point)->Math.Point
+    mtd const screenToSurface(pos: Math.Point)->Math.Point
     {
         return {pos.x - surface.position.x, pos.y - surface.position.y}
     }
 
     // Convert a surface coordinate to a local coordinate (relative to me)
-    mtd surfaceToLocal(pos: Math.Point)->Math.Point
+    mtd const surfaceToLocal(pos: Math.Point)->Math.Point
     {
         var r = getSurfaceRect()
         return {pos.x - r.x, pos.y - r.y}
@@ -603,7 +603,7 @@ impl Wnd
 
     // Convert a local coordinate to a surface coordinate
     #[Swag.Overload]
-    mtd localToSurface(pos: Math.Point)->Math.Point
+    mtd const localToSurface(pos: Math.Point)->Math.Point
     {
         var r = getSurfaceRect()
         return {pos.x + r.x, pos.y + r.y}
@@ -611,7 +611,7 @@ impl Wnd
 
     // Convert a local coordinate to a surface coordinate
     #[Swag.Overload]
-    mtd localToSurface(pos: Math.Rectangle)->Math.Rectangle
+    mtd const localToSurface(pos: Math.Rectangle)->Math.Rectangle
     {
         var r = getSurfaceRect()
         return {pos.x + r.x, pos.y + r.y, pos.width, pos.height}
@@ -632,7 +632,7 @@ impl Wnd
     }
 
     // Get the wnd position in the surface
-    mtd getSurfaceRect()->Math.Rectangle
+    mtd const getSurfaceRect()->Math.Rectangle
     {
         var result: retval = position
         var p       = parent
@@ -649,7 +649,7 @@ impl Wnd
     }
 
     // Get the wnd position relative to a given parent
-    mtd getRectIn(wnd: *Wnd)->Math.Rectangle
+    mtd const getRectIn(wnd: *Wnd)->Math.Rectangle
     {
         var result: retval = position
         var p       = parent
