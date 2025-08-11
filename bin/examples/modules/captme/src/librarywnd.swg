@@ -94,6 +94,22 @@ impl LibraryWnd
         }
     }
 
+    mtd moveSelHome()
+    {
+        if view.items.isEmpty():
+            return
+        view.setFocusItem(0)
+        view.scrollToFocus()
+    }
+
+    mtd moveSelEnd()
+    {
+        if view.items.isEmpty():
+            return
+        view.setFocusItem(cast(u32) view.items.count - 1)
+        view.scrollToFocus()
+    }
+
     mtd moveSelLeft()
     {
         if view.items.isEmpty():
@@ -262,7 +278,12 @@ impl LibraryWnd
             .registerAction'ActionLibFilter()
             .registerAction'ActionLibSel()
 
+            .registerKeyShortcut(.Zero, .Left, CmdIdLibMoveSelLeft)
             .registerKeyShortcut(.Zero, .Right, CmdIdLibMoveSelRight)
+            .registerKeyShortcut(.Zero, .Up, CmdIdLibMoveSelUp)
+            .registerKeyShortcut(.Zero, .Down, CmdIdLibMoveSelDown)
+            .registerKeyShortcut(.Zero, .Home, CmdIdLibMoveSelHome)
+            .registerKeyShortcut(.Zero, .End, CmdIdLibMoveSelEnd)
         }
 
         with let rightBar = Wnd.create'Wnd(res, {0, 0, 300, 0})

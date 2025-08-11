@@ -49,7 +49,6 @@ impl IActionUI for ActionFlatten
         {
         case CmdIdFlatten:
             undo = capture.newUndo(.Flatten)
-
         case CmdIdFlattenAll:
             undo = capture.newUndo(.FlattenAll)
         }

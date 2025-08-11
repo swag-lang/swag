@@ -1,9 +1,11 @@
 using Gui
 
 const CmdIdLibMoveSelLeft   = "CmdIdMoveSelLeft"
-const CmdIdLibMoveSelTop    = "CmdIdMoveSelTop"
 const CmdIdLibMoveSelRight  = "CmdIdMoveSelRight"
-const CmdIdLibMoveSelBottom = "CmdIdMoveSelBottom"
+const CmdIdLibMoveSelUp     = "CmdIdMoveSelTop"
+const CmdIdLibMoveSelDown   = "CmdIdMoveSelBottom"
+const CmdIdLibMoveSelHome   = "CmdIdLibMoveSelHome"
+const CmdIdLibMoveSelEnd    = "CmdIdLibMoveSelEnd"
 
 struct ActionLibSel {}
 impl IActionUI for ActionLibSel
@@ -12,7 +14,8 @@ impl IActionUI for ActionLibSel
     {
         switch cxt.id
         {
-        case CmdIdLibMoveSelLeft, CmdIdLibMoveSelTop, CmdIdLibMoveSelRight, CmdIdLibMoveSelBottom:
+        case CmdIdLibMoveSelLeft, CmdIdLibMoveSelUp, CmdIdLibMoveSelRight, CmdIdLibMoveSelDown,
+             CmdIdLibMoveSelHome, CmdIdLibMoveSelEnd:
             return true
         }
 
@@ -26,7 +29,8 @@ impl IActionUI for ActionLibSel
 
         switch cxt.id
         {
-        case CmdIdLibMoveSelLeft, CmdIdLibMoveSelTop, CmdIdLibMoveSelRight, CmdIdLibMoveSelBottom:
+        case CmdIdLibMoveSelLeft, CmdIdLibMoveSelUp, CmdIdLibMoveSelRight, CmdIdLibMoveSelDown,
+             CmdIdLibMoveSelHome, CmdIdLibMoveSelEnd:
             evt.setFlags |= .Disabled
             evt.disabled = !hasSel
         }
@@ -42,12 +46,16 @@ impl IActionUI for ActionLibSel
         {
         case CmdIdLibMoveSelLeft:
             libWnd.moveSelLeft()
-        case CmdIdLibMoveSelTop:
+        case CmdIdLibMoveSelUp:
             libWnd.moveSelTop()
         case CmdIdLibMoveSelRight:
             libWnd.moveSelRight()
-        case CmdIdLibMoveSelBottom:
+        case CmdIdLibMoveSelDown:
             libWnd.moveSelBottom()
+        case CmdIdLibMoveSelHome:
+            libWnd.moveSelHome()
+        case CmdIdLibMoveSelEnd:
+            libWnd.moveSelEnd()
         }
 
         return true
