@@ -7,6 +7,7 @@ struct LibraryItem
     texture:     Texture
     rect:        Math.Rectangle
     visible:     bool
+    filtered:    bool
 }
 
 impl LibraryItem
@@ -142,9 +143,17 @@ impl IWnd for LibraryView
 
         const Margin = 8.0
 
+        filter()
+
         let spos = scrollWnd.getScrollPos()
         foreach it, i in items
         {
+            if it.filtered
+            {
+                it.visible = false
+                continue
+            }
+
             it.visible = true
             if y + H < spos.y:
                 it.visible = false
@@ -155,18 +164,6 @@ impl IWnd for LibraryView
             mutexLoaded.lock()
             let capture = it.capture
             mutexLoaded.unlock()
-
-            if capture
-            {
-                if !capture.linkedImage.isEmpty() and !libWnd.showLinkedImage:
-                    continue
-                if capture.linkedImage.isEmpty() and !libWnd.showUnLinkedImage:
-                    continue
-                if capture.linkedUpToDate and !capture.linkedImage.isEmpty() and !libWnd.showUpToDateLinkedImage:
-                    continue
-                if !capture.linkedUpToDate and !capture.linkedImage.isEmpty() and !libWnd.showUnSavedLinkedImage:
-                    continue
-            }
 
             // We have a capture but not yet a texture. Create it.
             if capture and !it.texture.isValid():
@@ -217,6 +214,31 @@ impl LibraryView
 
                 break
             }
+        }
+    }
+
+    mtd filter()
+    {
+        foreach it in items
+        {
+            it.filtered = true
+
+            mutexLoaded.lock()
+            let capture = it.capture
+            mutexLoaded.unlock()
+
+            if !capture:
+                continue
+            if !capture.linkedImage.isEmpty() and !libWnd.showLinkedImage:
+                continue
+            if capture.linkedImage.isEmpty() and !libWnd.showUnLinkedImage:
+                continue
+            if capture.linkedUpToDate and !capture.linkedImage.isEmpty() and !libWnd.showUpToDateLinkedImage:
+                continue
+            if !capture.linkedUpToDate and !capture.linkedImage.isEmpty() and !libWnd.showUnSavedLinkedImage:
+                continue
+
+            it.filtered = false
         }
     }
 
@@ -296,7 +318,7 @@ impl LibraryView
         var toCompare: *LibraryItem
         while !remaining.isEmpty()
         {
-            if !toCompare or !toCompare.capture
+            if !toCompare or !toCompare.capture or toCompare.filtered
             {
                 toCompare = remaining.front()
                 remaining.removeAt(0)
