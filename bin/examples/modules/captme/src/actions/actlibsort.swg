@@ -21,7 +21,7 @@ impl IActionUI for ActionLibSort
 
     mtd impl update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
-        let main = cast(*MainWnd) cxt.wnd
+        let libWnd = cast(*LibraryWnd) cxt.wnd
 
         switch cxt.id
         {
@@ -29,24 +29,24 @@ impl IActionUI for ActionLibSort
             evt.setFlags |= .Name | .Checked | .RenderingHint
             evt.renderingHint = .ExclusiveGroup
             evt.name          = "Write Time"
-            evt.checked       = main.libWnd.sortMethod == .Recent
+            evt.checked       = libWnd.sortMethod == .Recent
 
         case CmdIdLibSortFileSize:
             evt.setFlags |= .Name | .Checked | .RenderingHint
             evt.renderingHint = .ExclusiveGroup
             evt.name          = "File Size"
-            evt.checked       = main.libWnd.sortMethod == .FileSize
+            evt.checked       = libWnd.sortMethod == .FileSize
 
         case CmdIdLibSortSimilar:
             evt.setFlags |= .Name | .Checked | .RenderingHint
             evt.renderingHint = .ExclusiveGroup
             evt.name          = "Similarity"
-            evt.checked       = main.libWnd.sortMethod == .Similar
+            evt.checked       = libWnd.sortMethod == .Similar
 
         case CmdIdLibSortInvert:
             evt.setFlags |= .Name | .Checked
             evt.name    = "Invert Order"
-            evt.checked = main.libWnd.invertSort
+            evt.checked = libWnd.invertSort
         }
 
         return true
@@ -54,19 +54,19 @@ impl IActionUI for ActionLibSort
 
     mtd impl execute(cxt: ActionContext)->bool
     {
-        let main = cast(*MainWnd) cxt.wnd
+        let libWnd = cast(*LibraryWnd) cxt.wnd
 
         switch cxt.id
         {
         case CmdIdLibSortRecent:
-            main.libWnd.setSortMethod(.Recent)
+            libWnd.setSortMethod(.Recent)
         case CmdIdLibSortFileSize:
-            main.libWnd.setSortMethod(.FileSize)
+            libWnd.setSortMethod(.FileSize)
         case CmdIdLibSortSimilar:
-            main.libWnd.setSortMethod(.Similar)
+            libWnd.setSortMethod(.Similar)
 
         case CmdIdLibSortInvert:
-            main.libWnd.setSortOrder(!main.libWnd.invertSort)
+            libWnd.setSortOrder(!libWnd.invertSort)
         }
 
         return true

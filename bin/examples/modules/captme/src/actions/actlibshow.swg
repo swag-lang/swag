@@ -21,27 +21,27 @@ impl IActionUI for ActionLibFilter
 
     mtd impl update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
-        let main = cast(*MainWnd) cxt.wnd
+        let libWnd = cast(*LibraryWnd) cxt.wnd
 
         switch cxt.id
         {
         case CmdIdLibShowUpToDateLinkedImage:
             evt.setFlags |= .Name | .Checked
             evt.name    = "Up To Date Linked Image"
-            evt.checked = main.libWnd.showUpToDateLinkedImage
+            evt.checked = libWnd.showUpToDateLinkedImage
         case CmdIdLibShowUnSavedLinkedImage:
             evt.setFlags |= .Name | .Checked
             evt.name    = "UnSaved Linked Image"
-            evt.checked = main.libWnd.showUnSavedLinkedImage
+            evt.checked = libWnd.showUnSavedLinkedImage
 
         case CmdIdLibShowLinkedImage:
             evt.setFlags |= .Name | .Checked
             evt.name    = "Has Linked Image"
-            evt.checked = main.libWnd.showLinkedImage
+            evt.checked = libWnd.showLinkedImage
         case CmdIdLibShowUnLinkedImage:
             evt.setFlags |= .Name | .Checked
             evt.name    = "Doesn't Have Linked Image"
-            evt.checked = main.libWnd.showUnLinkedImage
+            evt.checked = libWnd.showUnLinkedImage
         }
 
         return true
@@ -49,23 +49,22 @@ impl IActionUI for ActionLibFilter
 
     mtd impl execute(cxt: ActionContext)->bool
     {
-        let main = cast(*MainWnd) cxt.wnd
+        let libWnd = cast(*LibraryWnd) cxt.wnd
 
         switch cxt.id
         {
         case CmdIdLibShowUpToDateLinkedImage:
-            main.libWnd.showUpToDateLinkedImage = !main.libWnd.showUpToDateLinkedImage
-            main.libWnd.invalidate()
+            libWnd.showUpToDateLinkedImage = !libWnd.showUpToDateLinkedImage
+            libWnd.view.filter()
         case CmdIdLibShowUnSavedLinkedImage:
-            main.libWnd.showUnSavedLinkedImage = !main.libWnd.showUnSavedLinkedImage
-            main.libWnd.invalidate()
-
+            libWnd.showUnSavedLinkedImage = !libWnd.showUnSavedLinkedImage
+            libWnd.view.filter()
         case CmdIdLibShowLinkedImage:
-            main.libWnd.showLinkedImage = !main.libWnd.showLinkedImage
-            main.libWnd.invalidate()
+            libWnd.showLinkedImage = !libWnd.showLinkedImage
+            libWnd.view.filter()
         case CmdIdLibShowUnLinkedImage:
-            main.libWnd.showUnLinkedImage = !main.libWnd.showUnLinkedImage
-            main.libWnd.invalidate()
+            libWnd.showUnLinkedImage = !libWnd.showUnLinkedImage
+            libWnd.view.filter()
         }
 
         return true

@@ -1,9 +1,9 @@
 using Gui
 
-const CmdIdLibMoveSelLeft    = "CmdIdMoveSelLeft"
-const CmdIdLibMoveSelTop     = "CmdIdMoveSelTop"
-const CmdIdLibMoveSelRight   = "CmdIdMoveSelRight"
-const CmdIdLibMoveSelBottom  = "CmdIdMoveSelBottom"
+const CmdIdLibMoveSelLeft   = "CmdIdMoveSelLeft"
+const CmdIdLibMoveSelTop    = "CmdIdMoveSelTop"
+const CmdIdLibMoveSelRight  = "CmdIdMoveSelRight"
+const CmdIdLibMoveSelBottom = "CmdIdMoveSelBottom"
 
 struct ActionLibSel {}
 impl IActionUI for ActionLibSel
@@ -21,10 +21,8 @@ impl IActionUI for ActionLibSel
 
     mtd impl update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
-        let main = cast(*MainWnd) cxt.wnd
-
-        let capture = main.getCapture()
-        let hasSel  = main.libraryMode and main.libWnd.view.focusItem != Swag.U32.Max
+        let libWnd = cast(*LibraryWnd) cxt.wnd
+        let hasSel = libWnd.view.focusItem != Swag.U32.Max
 
         switch cxt.id
         {
@@ -38,18 +36,18 @@ impl IActionUI for ActionLibSel
 
     mtd impl execute(cxt: ActionContext)->bool
     {
-        let main    = cast(*MainWnd) cxt.wnd
+        let libWnd = cast(*LibraryWnd) cxt.wnd
 
         switch cxt.id
         {
-        case CmdIdMoveSelLeft:
-            main.libWnd.moveSelLeft()
-        case CmdIdMoveSelTop:
-            main.libWnd.moveSelTop()
-        case CmdIdMoveSelRight:
-            main.libWnd.moveSelRight()
-        case CmdIdMoveSelBottom:
-            main.libWnd.moveSelBottom()
+        case CmdIdLibMoveSelLeft:
+            libWnd.moveSelLeft()
+        case CmdIdLibMoveSelTop:
+            libWnd.moveSelTop()
+        case CmdIdLibMoveSelRight:
+            libWnd.moveSelRight()
+        case CmdIdLibMoveSelBottom:
+            libWnd.moveSelBottom()
         }
 
         return true

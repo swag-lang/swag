@@ -1,13 +1,16 @@
 using Threading, Time
 
+private var g_UpdatingLib: bool
+private var g_DirtyList: bool = true
+
 struct LibraryItem
 {
-    fi:          File.FileInfo
-    capture:     *Capture
-    texture:     Texture
-    rect:        Math.Rectangle
-    visible:     bool
-    filtered:    bool
+    fi:           File.FileInfo
+    capture:      *Capture
+    texture:      Texture
+    rect:         Math.Rectangle
+    visible:      bool
+    filtered:     bool
 }
 
 impl LibraryItem
@@ -24,7 +27,8 @@ struct LibraryView
     scrollWnd:       *ScrollWnd
     libWnd:          *LibraryWnd
     mainWnd:         *MainWnd
-    items:           ArrayPtr'LibraryItem
+    allItems:        ArrayPtr'LibraryItem
+    items:           Array'*LibraryItem
     mutexLoaded:     Sync.Mutex
     thread:          Thread
     hotItem          = Swag.U32.Max
@@ -57,9 +61,6 @@ impl IWnd for LibraryView
         var ht = Swag.U32.Max
         foreach it, idx in items
         {
-            if it.filtered:
-                continue
-
             if it.rect.contains(pos)
             {
                 ht = cast(u32) idx
@@ -90,6 +91,7 @@ impl IWnd for LibraryView
 
             focusItem = hotItem
             invalidate()
+            setFocus()
         }
 
         if evt.kind == .MouseDoubleClick and focusItem < items.count and evt.button == .Left
@@ -146,17 +148,15 @@ impl IWnd for LibraryView
 
         const Margin = 8.0
 
-        filter()
+        if g_DirtyList
+        {
+            g_DirtyList = false
+            filter()
+        }
 
         let spos = scrollWnd.getScrollPos()
         foreach it, i in items
         {
-            if it.filtered
-            {
-                it.visible = false
-                continue
-            }
-
             it.visible = true
             if y + H < spos.y:
                 it.visible = false
@@ -222,7 +222,8 @@ impl LibraryView
 
     mtd filter()
     {
-        foreach it in items
+        items.clear()
+        foreach it in allItems
         {
             it.filtered = true
 
@@ -242,7 +243,10 @@ impl LibraryView
                 continue
 
             it.filtered = false
+            items.add(it)
         }
+
+        invalidate()
     }
 
     #[Swag.Overload]
@@ -253,6 +257,7 @@ impl LibraryView
             return
 
         capture.haar = ImageStatistics.extractHaarFeatures(capture.preview, 64)
+        g_DirtyList = true
 
         mutexLoaded.lock()
         it.capture = capture
@@ -260,11 +265,11 @@ impl LibraryView
     }
 
     #[Swag.Overload]
-    mtd loadOne(th: Thread)
+    mtd loadFiles(th: Thread)
     {
         // Work on a copy, as 'items' can be changed by sorting during loading
         var copy: Array'*LibraryItem
-        foreach it in items:
+        foreach it in allItems:
             copy.add(it)
 
         for
@@ -360,6 +365,26 @@ impl LibraryView
         mutexLoaded.unlock()
     }
 
+    mtd sortFiles()
+    {
+        items.sort(func|libWnd|(a, b)
+        {
+            var value: s32
+
+            switch libWnd.sortMethod
+            {
+            case Recent:
+                value = b.fi.lastWriteTime <=> a.fi.lastWriteTime
+            case FileSize:
+                value = b.fi.size <=> a.fi.size
+            }
+
+            if libWnd.invertSort:
+                return -value
+            return value
+        })
+    }
+
     mtd sort()
     {
         if items.isEmpty():
@@ -367,29 +392,12 @@ impl LibraryView
 
         Cursor.wait()
 
-        if libWnd.sortMethod == .Similar
-        {
+        if libWnd.sortMethod == .Similar:
             sortSimilar()
-        }
-        else
-        {
-            items.sort(func|libWnd|(a, b)
-            {
-                var value: s32
+        else:
+            sortFiles()
 
-                switch libWnd.sortMethod
-                {
-                case Recent:
-                    value = b.fi.lastWriteTime <=> a.fi.lastWriteTime
-                case FileSize:
-                    value = b.fi.size <=> a.fi.size
-                }
-
-                if libWnd.invertSort:
-                    return -value
-                return value
-            })
-        }
+        invalidate()
     }
 
     mtd fill() throw
@@ -417,18 +425,19 @@ impl LibraryView
             renderer.removeTexture(&it.texture)
 
         // Add items
-        items.clear()
-        items.reserve(res.count)
+        allItems.clear()
+        allItems.reserve(res.count)
         foreach fi in res
         {
-            let ptr = items.addNewPtr()
+            let ptr = allItems.addNewPtr()
             ptr.fi = fi
         }
 
+        filter()
         sort()
 
         hotItem = Swag.U32.Max
-        selModel.unselectAll()
+        clearSelection()
 
         g_UpdatingLib = true
         imgSpin.show()
@@ -436,10 +445,33 @@ impl LibraryView
         // Launch thread to read all captures
         try
         {
-            thread.init(func|self|(th: Thread) { self.loadOne(th); })
+            thread.init(func|self|(th: Thread) { self.loadFiles(th); })
             thread.start()
         }
 
         invalidate()
+    }
+
+    mtd clearSelection()
+    {
+        focusItem = Swag.U32.Max
+        selModel.unselectAll()
+    }
+
+    mtd setFocusItem(focus: u32)
+    {
+        selModel.unselectAll()
+        focusItem = focus
+        selModel.select(focusItem, focusItem, true)
+        invalidate()
+    }
+
+    mtd scrollToFocus()
+    {
+        if focusItem == Swag.U32.Max:
+            return
+        if items[focusItem].visible:
+            return
+        scrollWnd.setScrollPos(0, items[focusItem].rect.y - 4)
     }
 }

@@ -381,9 +381,6 @@ impl MainWnd
         registerAction'ActionAbout()
         registerAction'ActionOptions()
         registerAction'ActionView()
-        registerAction'ActionLibSort()
-        registerAction'ActionLibFilter()
-        registerAction'ActionLibSel()
     }
 
     mtd registerShortcuts()

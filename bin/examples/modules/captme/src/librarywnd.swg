@@ -35,8 +35,6 @@ struct LibraryWnd
     showUnLinkedImage:           bool = true
 }
 
-var g_UpdatingLib: bool
-
 impl LibraryWnd
 {
     mtd setPreviewSize(size: PreviewSize)
@@ -98,10 +96,24 @@ impl LibraryWnd
 
     mtd moveSelLeft()
     {
+        if view.items.isEmpty():
+            return
+        if view.focusItem == 0 or view.focusItem == Swag.U32.Max:
+            return
+        view.focusItem -= 1
+        view.setFocusItem(view.focusItem)
+        view.scrollToFocus()
     }
 
     mtd moveSelRight()
     {
+        if view.items.isEmpty():
+            return
+        if view.focusItem == view.items.count - 1 or view.focusItem == Swag.U32.Max:
+            return
+        view.focusItem += 1
+        view.setFocusItem(view.focusItem)
+        view.scrollToFocus()
     }
 
     mtd moveSelTop()
@@ -229,6 +241,12 @@ impl LibraryWnd
             .main            = parent
             .dockStyle       = .Center
             .backgroundStyle = .View
+
+            .registerAction'ActionLibSort()
+            .registerAction'ActionLibFilter()
+            .registerAction'ActionLibSel()
+
+            .registerKeyShortcut(.Zero, .Right, CmdIdLibMoveSelRight)
         }
 
         with let rightBar = Wnd.create'Wnd(res, {0, 0, 300, 0})
