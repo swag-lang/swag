@@ -57,6 +57,9 @@ impl IWnd for LibraryView
         var ht = Swag.U32.Max
         foreach it, idx in items
         {
+            if it.filtered:
+                continue
+
             if it.rect.contains(pos)
             {
                 ht = cast(u32) idx

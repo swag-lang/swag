@@ -16,23 +16,23 @@ enum SortMethod
 
 struct LibraryWnd
 {
-    using wnd:                      Wnd
+    using wnd:                   Wnd
 
-    main:                           *MainWnd
-    view:                           *LibraryView
-    listCtrl:                       *ListCtrl
-    editZoomBar:                    *Wnd
-    zoomBtn:                        *IconButton
-    sortBtn:                        *IconButton
-    filterBtn:                      *IconButton
-    previewSize:                    PreviewSize
+    main:                        *MainWnd
+    view:                        *LibraryView
+    listCtrl:                    *ListCtrl
+    editZoomBar:                 *Wnd
+    zoomBtn:                     *IconButton
+    sortBtn:                     *IconButton
+    filterBtn:                   *IconButton
+    previewSize:                 PreviewSize
 
-    invertSort:                     bool
-    sortMethod:                     SortMethod
-    showUpToDateLinkedImage:        bool = true
-    showLinkedImage:                bool = true
-    showUnSavedLinkedImage:     bool = true
-    showUnLinkedImage:             bool = true
+    invertSort:                  bool
+    sortMethod:                  SortMethod
+    showUpToDateLinkedImage:     bool = true
+    showLinkedImage:             bool = true
+    showUnSavedLinkedImage:      bool = true
+    showUnLinkedImage:           bool = true
 }
 
 var g_UpdatingLib: bool
@@ -88,11 +88,28 @@ impl LibraryWnd
     {
         foreach it, i in view.items
         {
-            if view.selModel.isSelected(cast() i)
-            {
+            if it.filtered:
+                continue
+
+            if view.selModel.isSelected(cast() i):
                 g_Library.removeFile(it.fi.fullname)
-            }
         }
+    }
+
+    mtd moveSelLeft()
+    {
+    }
+
+    mtd moveSelRight()
+    {
+    }
+
+    mtd moveSelTop()
+    {
+    }
+
+    mtd moveSelBottom()
+    {
     }
 
     mtd fill()

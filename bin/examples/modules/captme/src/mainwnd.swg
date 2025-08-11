@@ -383,6 +383,7 @@ impl MainWnd
         registerAction'ActionView()
         registerAction'ActionLibSort()
         registerAction'ActionLibFilter()
+        registerAction'ActionLibSel()
     }
 
     mtd registerShortcuts()
