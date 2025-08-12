@@ -1,7 +1,7 @@
 #global testerror "Err0255"
 struct A
 {
-    internal a5862: s32
+    private a5862: s32
 }
 
 #test
