@@ -1061,6 +1061,7 @@ bool Parser::doReturn(AstNode* parent, AstNode** result)
 
 bool Parser::doClosureCaptureBlock(TypeInfoFuncAttr* typeInfo, AstFuncCallParams* capture)
 {
+    ParserPushAstNodeFlags scopedFlags(this, AST_IN_CAPTURE_BLOCK);
     if (tokenParse.is(TokenId::SymVerticalVertical))
     {
         SWAG_CHECK(eatToken());

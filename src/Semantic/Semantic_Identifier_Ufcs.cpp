@@ -210,12 +210,14 @@ bool Semantic::setFirstParamUFCS(SemanticContext* context, AstIdentifierRef* ide
             }
         }
     }
+
+    // UFCS on a function call
     else
     {
         identifierRef->previousNode->addAstFlag(AST_UFCS_FCT);
 
-        // If UFCS comes from a using var, then we must make a reference to the using var in
-        // the first call parameter
+        // If the UFCS comes from a using var, then we must make a reference to that using var as
+        // the first call parameter of the following function
         if (dependentVar == identifierRef->previousNode)
         {
             for (const auto child : dependentVar->children)
@@ -223,7 +225,7 @@ bool Semantic::setFirstParamUFCS(SemanticContext* context, AstIdentifierRef* ide
                 const auto copyChild = Ast::newIdentifier(idRef, child->token.text.empty() ? dependentVar->token.text : child->token.text, nullptr, idRef);
                 copyChild->inheritOwners(fctCallParam);
                 copyChild->inheritAstFlagsOr(idRef, AST_IN_MIXIN);
-                if (!child->resolvedSymbolOverload())
+                if (!child->resolvedSymbolOverload() || dependentVar->hasAstFlag(AST_IN_CAPTURE_BLOCK))
                 {
                     copyChild->setResolvedSymbol(dependentVar->resolvedSymbolOverload()->symbol, dependentVar->resolvedSymbolOverload());
                     copyChild->typeInfo = dependentVar->typeInfo;

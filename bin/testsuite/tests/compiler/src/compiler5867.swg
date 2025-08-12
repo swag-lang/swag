@@ -1,11 +1,10 @@
-#global skip
 struct V2 {x: s32 = 1}
 
 impl V2
 {
     mtd titi()
     {
-        @print(x)
+        @assert(x == 10)
     }
 
     mtd toto()

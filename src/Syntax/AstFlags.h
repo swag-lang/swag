@@ -68,6 +68,7 @@ constexpr AstNodeFlagsV AST_SPEC_SEMANTIC3             = 0x04000000'00000000;
 constexpr AstNodeFlagsV AST_FUNC_CALL                  = 0x08000000'00000000;
 constexpr AstNodeFlagsV AST_GENERATED_EXCEPT_EXPORT    = 0x10000000'00000000;
 constexpr AstNodeFlagsV AST_FUNC_INLINE_CALL           = 0x20000000'00000000;
+constexpr AstNodeFlagsV AST_IN_CAPTURE_BLOCK           = 0x40000000'00000000;
 
 constexpr AstSemFlagsV SEMFLAG_VAR_DECL_STRUCT_PARAMETERS = 0x00000000'00000001;
 constexpr AstSemFlagsV SEMFLAG_VAR_DECL_REF_CALL          = 0x00000000'00000002;
