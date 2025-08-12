@@ -628,27 +628,12 @@ bool Parser::doDefer(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(eatToken());
 
-    // Defer mode
-    if (tokenParse.is(TokenId::SymQuote))
-    {
-        const auto startLoc = tokenParse.token.startLocation;
-        SWAG_CHECK(eatToken());
-
-        if (tokenParse.is(g_LangSpec->name_err))
-        {
-            SWAG_CHECK(eatToken());
-            node->deferKind = DeferKind::Error;
-        }
-        else if (tokenParse.is(g_LangSpec->name_noerr))
-        {
-            SWAG_CHECK(eatToken());
-            node->deferKind = DeferKind::NoError;
-        }
-        else
-        {
-            return error(tokenParse, formErr(Err0668, tokenParse.cstr()));
-        }
-    }
+    ModifierFlags mdfFlags = 0;
+    SWAG_CHECK(doModifiers(node->token, node->token.id, mdfFlags, node));
+    if (mdfFlags.has(MODIFIER_ERR))
+        node->deferKind = DeferKind::Error;
+    else if (mdfFlags.has(MODIFIER_NO_ERR))
+        node->deferKind = DeferKind::NoError;
 
     ParserPushAstNodeFlags scopedFlags(this, AST_IN_DEFER);
     SWAG_CHECK(doScopedStatement(node, node->token, &dummyResult, false));

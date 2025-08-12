@@ -166,9 +166,9 @@ void LanguageSpec::setupNames()
     name_sharp_reverse  = "#reverse";
     name_sharp_ref      = "#ref";
     name_sharp_constref = "#constref";
+    name_sharp_err      = "#err";
+    name_sharp_noerr    = "#noerr";
 
-    name_err     = "err";
-    name_noerr   = "noerr";
     name_bit     = "bit";
     name_unconst = "unconst";
 
@@ -397,6 +397,8 @@ void LanguageSpec::setupKeywords()
     keywords.add("#ref", TokenId::ModifierRef);
     keywords.add("#constref", TokenId::ModifierConstRef);
     keywords.add("#null", TokenId::ModifierNullable);
+    keywords.add("#err", TokenId::ModifierErr);
+    keywords.add("#noerr", TokenId::ModifierNoErr);
 
     keywords.add("#cfg", TokenId::CompilerBuildCfg);
     keywords.add("#os", TokenId::CompilerOs);

@@ -615,6 +615,38 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
     mdfFlags = 0;
     while (Tokenizer::isModifier(tokenParse.token.id))
     {
+        if (tokenParse.is(TokenId::ModifierErr))
+        {
+            switch (opId)
+            {
+                case TokenId::KwdDefer:
+                    break;
+                default:
+                    return error(tokenParse, formErr(Err0647, tokenParse.cstr(), forNode.cstr()));
+            }
+
+            SWAG_VERIFY(!mdfFlags.has(MODIFIER_ERR), error(tokenParse, formErr(Err0057, tokenParse.cstr())));
+            mdfFlags.add(MODIFIER_ERR);
+            SWAG_CHECK(eatToken());
+            continue;
+        }
+
+        if (tokenParse.is(TokenId::ModifierNoErr))
+        {
+            switch (opId)
+            {
+                case TokenId::KwdDefer:
+                    break;
+                default:
+                    return error(tokenParse, formErr(Err0647, tokenParse.cstr(), forNode.cstr()));
+            }
+
+            SWAG_VERIFY(!mdfFlags.has(MODIFIER_NO_ERR), error(tokenParse, formErr(Err0057, tokenParse.cstr())));
+            mdfFlags.add(MODIFIER_NO_ERR);
+            SWAG_CHECK(eatToken());
+            continue;
+        }        
+
         if (tokenParse.is(TokenId::ModifierPromote))
         {
             switch (opId)

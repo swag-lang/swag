@@ -17,7 +17,7 @@ impl Image
 
         var ppvBits: *u8
         let hbmp     = CreateDIBSection(null, &bi, cast() DIB_RGB_COLORS, &ppvBits, null, 0)
-        defer'noerr DeleteObject(cast() hbmp)
+        defer #noerr DeleteObject(cast() hbmp)
 
         Memory.copy(ppvBits, pixels.buffer, cast(u64) width * height * bpp8)
 

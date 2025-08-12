@@ -1,6 +1,6 @@
-#global testerror "Err0668"
+#global testerror "Err0673"
 
 #test
 {
-    defer'titi @print("a")
+    defer #titi @print("a")
 }

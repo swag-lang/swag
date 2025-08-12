@@ -3,6 +3,7 @@
 #include "Semantic/Semantic.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
+#include "Syntax/Tokenizer/LanguageSpec.h"
 
 bool FormatAst::outputStatement(FormatContext& context, AstNode* node)
 {
@@ -229,10 +230,12 @@ bool FormatAst::outputDefer(FormatContext& context, AstNode* node)
     switch (deferNode->deferKind)
     {
         case DeferKind::Error:
-            concat->addString("'err");
+            concat->addBlank();
+            concat->addString(g_LangSpec->name_sharp_err);
             break;
         case DeferKind::NoError:
-            concat->addString("'noerr");
+            concat->addBlank();
+            concat->addString(g_LangSpec->name_sharp_noerr);
             break;
     }
 

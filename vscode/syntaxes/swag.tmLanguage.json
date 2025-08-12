@@ -219,7 +219,7 @@
       "patterns": [
         {
           "name": "entity.name.function.intrinsic",
-          "match": "\\#(prom|wrap|nodrop|move|moveraw|bit|unconst|reverse|ref|constref|null)\\b"
+          "match": "\\#(prom|wrap|nodrop|move|moveraw|bit|unconst|reverse|ref|constref|null|err|noerr)\\b"
         }
       ]
     },
