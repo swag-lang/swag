@@ -70,7 +70,7 @@ namespace
         }
         else if (typeWhere->isStruct() && identifier->token.text.startsWith(g_LangSpec->name_opVisit))
         {
-            const auto visitNode = castAst<AstVisit>(identifier->findParent(AstNodeKind::Visit), AstNodeKind::Visit);
+            const auto visitNode = castAst<AstVisit>(identifier->findParent(AstNodeKind::ForEach), AstNodeKind::ForEach);
             const Utf8 variant{identifier->token.text.buffer + g_LangSpec->name_opVisit.length()};
             err = new Diagnostic{visitNode, visitNode->extraNameToken, formErr(Err0670, variant.cstr(), typeWhere->getDisplayNameC())};
         }

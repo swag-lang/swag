@@ -239,7 +239,7 @@ enum class AstNodeKind : uint8_t
     Unreachable,
     Using,
     VarDecl,
-    Visit,
+    ForEach,
     While,
     With,
 };

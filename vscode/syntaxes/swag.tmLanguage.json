@@ -29,6 +29,7 @@
     { "include": "#intrinsics-alias" },
     { "include": "#intrinsics-invalid" },
     { "include": "#intrinsics-literal" },
+    { "include": "#compiler-user" },
     { "include": "#compiler-invalid" },
     { "include": "#types" },
     { "include": "#strings" },
@@ -220,6 +221,14 @@
         {
           "name": "entity.name.function.intrinsic",
           "match": "\\#(prom|wrap|nodrop|move|moveraw|bit|unconst|reverse|ref|constref|null|err|noerr|bit|unconst)\\b"
+        }
+      ]
+    },
+    "compiler-user": {
+      "patterns": [
+        {
+          "name": "entity.name.function.intrinsic",
+          "match": "(#)[A-Z]\\w*"
         }
       ]
     },

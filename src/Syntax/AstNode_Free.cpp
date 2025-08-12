@@ -110,7 +110,7 @@ void AstNode::release()
         case AstNodeKind::Loop:
             Allocator::free<AstLoop>(this);
             break;
-        case AstNodeKind::Visit:
+        case AstNodeKind::ForEach:
             Allocator::free<AstVisit>(this);
             break;
         case AstNodeKind::Switch:

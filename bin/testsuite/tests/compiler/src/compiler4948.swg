@@ -1,7 +1,7 @@
-#global testerror "Err0134"
+#global testerror "Err0673"
 #test
 {
-    foreach'0 x: toto
+    foreach #0 x: toto
     {
     }
 }

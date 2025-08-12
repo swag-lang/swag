@@ -296,8 +296,8 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             SWAG_CHECK(outputFor(context, node));
             break;
 
-        case AstNodeKind::Visit:
-            SWAG_CHECK(outputVisit(context, node));
+        case AstNodeKind::ForEach:
+            SWAG_CHECK(outputForEach(context, node));
             break;
 
         case AstNodeKind::Loop:

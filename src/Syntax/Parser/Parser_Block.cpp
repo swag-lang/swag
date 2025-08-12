@@ -373,9 +373,9 @@ bool Parser::doFor(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool Parser::doVisit(AstNode* parent, AstNode** result)
+bool Parser::doForEach(AstNode* parent, AstNode** result)
 {
-    const auto node   = Ast::newNode<AstVisit>(AstNodeKind::Visit, this, parent);
+    const auto node   = Ast::newNode<AstVisit>(AstNodeKind::ForEach, this, parent);
     node->semanticFct = Semantic::resolveVisit;
     *result           = node;
 
@@ -383,10 +383,10 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     // Specialized name
-    if (tokenParse.is(TokenId::SymQuote))
+    if (tokenParse.is(TokenId::SharpIdentifier))
     {
-        const auto startLoc = tokenParse.token.startLocation;
-        SWAG_CHECK(eatToken());
+        tokenParse.token.text.remove(0, 1);
+        tokenParse.token.id = TokenId::Identifier;
         SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0134)));
         node->extraNameToken = tokenParse.token;
         SWAG_CHECK(eatToken());

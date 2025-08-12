@@ -11,6 +11,6 @@ impl A {
 #test
 {
     var x: A
-    foreach'Byte x
+    foreach #Byte x
     {}
 }

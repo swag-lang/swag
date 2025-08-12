@@ -50,7 +50,7 @@ func day8A()
 
         var maxLeft: u8
 
-        foreach'Bytes c, col in l
+        foreach #Bytes c, col in l
         {
             if col == 0 or col == l.length - 1:
                 continue

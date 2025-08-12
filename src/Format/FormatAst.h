@@ -164,7 +164,7 @@ struct FormatAst
 
     bool outputWhile(FormatContext& context, AstNode* node);
     bool outputLoop(FormatContext& context, AstNode* node);
-    bool outputVisit(FormatContext& context, AstNode* node);
+    bool outputForEach(FormatContext& context, AstNode* node);
     bool outputFor(FormatContext& context, AstNode* node);
     bool outputSwitch(FormatContext& context, AstNode* node);
     bool outputIf(FormatContext& context, const Utf8& name, AstNode* node);

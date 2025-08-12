@@ -214,7 +214,7 @@ AstNode* AstNode::clone(CloneContext& context)
             return clone<AstFor>(this, context);
         case AstNodeKind::Loop:
             return clone<AstLoop>(this, context);
-        case AstNodeKind::Visit:
+        case AstNodeKind::ForEach:
             return clone<AstVisit>(this, context);
         case AstNodeKind::Switch:
             return clone<AstSwitch>(this, context);

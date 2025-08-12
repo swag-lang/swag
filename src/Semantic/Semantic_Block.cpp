@@ -497,7 +497,7 @@ bool Semantic::resolveLoop(SemanticContext* context)
 bool Semantic::resolveVisit(SemanticContext* context)
 {
     auto job  = context->baseJob;
-    auto node = castAst<AstVisit>(context->node, AstNodeKind::Visit);
+    auto node = castAst<AstVisit>(context->node, AstNodeKind::ForEach);
 
     auto typeInfo = TypeManager::concretePtrRefType(node->expression->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
 
@@ -868,7 +868,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
                 x->ownerBreakable()->continueList.erase_unordered_by_val(castAst<AstBreakContinue>(x));
             x->setOwnerBreakable(loopNode);
         }
-        if (x->is(AstNodeKind::Visit))
+        if (x->is(AstNodeKind::ForEach))
             return Ast::VisitResult::Stop;
         return Ast::VisitResult::Continue;
     });

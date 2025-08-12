@@ -35,7 +35,7 @@ func day2A()
     foreach l in lines
     {
         var count: [26] s32
-        foreach'Bytes c in l:
+        foreach #Bytes c in l:
             count[c - 'a'] += 1
         Slice.sort(count[..], bigFirst: true)
         switch

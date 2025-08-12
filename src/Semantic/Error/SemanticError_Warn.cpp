@@ -270,9 +270,9 @@ bool SemanticError::warnWhereDoIf(SemanticContext* context)
         if (ifNode->elseBlock)
             return true;
     }
-    else if (node->is(AstNodeKind::Visit))
+    else if (node->is(AstNodeKind::ForEach))
     {
-        const auto visitNode = castAst<AstVisit>(node, AstNodeKind::Visit);
+        const auto visitNode = castAst<AstVisit>(node, AstNodeKind::ForEach);
         block                = visitNode->block;
         expression           = visitNode->expression;
         if (!block || block->isNot(AstNodeKind::Statement))

@@ -1,4 +1,4 @@
-#global testerror "Err0134"
+#global testerror "Err0673"
 /*struct A {}
 impl A {
 
@@ -11,7 +11,7 @@ impl A {
 #test
 {
     var x: A
-    foreach'01 x
+    foreach #01 x
     {
     }
 }

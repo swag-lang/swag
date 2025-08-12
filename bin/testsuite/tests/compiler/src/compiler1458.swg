@@ -26,7 +26,7 @@ impl S
     var x: S
 
     var cpt = 0
-    foreach'Bytes x
+    foreach #Bytes x
     {
         cpt += 1
         //@print("aa\n")

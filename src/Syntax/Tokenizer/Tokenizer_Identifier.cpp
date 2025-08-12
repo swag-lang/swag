@@ -51,6 +51,13 @@ bool Tokenizer::doIdentifier(TokenParse& tokenParse)
             return true;
         }
 
+        // A user specified compiler keyword always starts with an upper letter
+        if (tokenParse.token.text.length() > 1 && isupper(tokenParse.token.text[1]))
+        {
+            tokenParse.token.id = TokenId::SharpIdentifier;
+            return true;
+        }
+        
         tokenParse.token.endLocation = location;
         Diagnostic err{sourceFile, tokenParse, formErr(Err0673, tokenParse.cstr())};
 

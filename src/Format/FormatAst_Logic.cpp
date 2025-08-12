@@ -84,13 +84,14 @@ bool FormatAst::outputLoop(FormatContext& context, AstNode* node)
     return true;
 }
 
-bool FormatAst::outputVisit(FormatContext& context, AstNode* node)
+bool FormatAst::outputForEach(FormatContext& context, AstNode* node)
 {
-    const auto visitNode = castAst<AstVisit>(node, AstNodeKind::Visit);
+    const auto visitNode = castAst<AstVisit>(node, AstNodeKind::ForEach);
     concat->addString("foreach");
     if (!visitNode->extraNameToken.text.empty())
     {
-        concat->addChar('\'');
+        concat->addBlank();
+        concat->addChar('#');
         concat->addString(visitNode->extraNameToken.text);
     }
 
