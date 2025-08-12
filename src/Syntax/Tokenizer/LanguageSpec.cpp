@@ -388,7 +388,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("#type", TokenId::CompilerType);
 
     keywords.add("#prom", TokenId::ModifierPromote);
-    keywords.add("#wrap", TokenId::ModifierOver);
+    keywords.add("#wrap", TokenId::ModifierWrap);
     keywords.add("#nodrop", TokenId::ModifierNoDrop);
     keywords.add("#move", TokenId::ModifierMove);
     keywords.add("#moveraw", TokenId::ModifierMoveRaw);

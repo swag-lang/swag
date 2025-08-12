@@ -533,7 +533,7 @@ Utf8 doSyntaxColor(const Utf8& line, SyntaxColorContext& context, bool force)
             {
                 if (Tokenizer::isModifier(*it))
                 {
-                    result += syntaxColorToVTS(SyntaxColor::SyntaxCompiler, mode);
+                    result += syntaxColorToVTS(SyntaxColor::SyntaxIntrinsic, mode);
                     result += identifier;
                     result += syntaxColorToVTS(SyntaxColor::SyntaxDefault, mode);
                 }

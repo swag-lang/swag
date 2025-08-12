@@ -620,6 +620,8 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
             switch (opId)
             {
                 case TokenId::KwdCast:
+                    SWAG_VERIFY(!mdfFlags.has(MODIFIER_WRAP), error(tokenParse, formErr(Err0052, g_LangSpec->name_sharp_bit.cstr(), g_LangSpec->name_sharp_wrap.cstr())));
+                    SWAG_VERIFY(!mdfFlags.has(MODIFIER_UN_CONST), error(tokenParse, formErr(Err0052, g_LangSpec->name_sharp_bit.cstr(), g_LangSpec->name_sharp_unconst.cstr())));
                     break;
                 default:
                     return error(tokenParse, formErr(Err0647, tokenParse.cstr(), forNode.cstr()));
@@ -628,7 +630,7 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
             SWAG_VERIFY(!mdfFlags.has(MODIFIER_BIT), error(tokenParse, formErr(Err0057, tokenParse.cstr())));
             mdfFlags.add(MODIFIER_BIT);
             SWAG_CHECK(eatToken());
-            continue;            
+            continue;
         }
 
         if (tokenParse.is(TokenId::ModifierUnConst))
@@ -636,6 +638,8 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
             switch (opId)
             {
                 case TokenId::KwdCast:
+                    SWAG_VERIFY(!mdfFlags.has(MODIFIER_WRAP), error(tokenParse, formErr(Err0052, g_LangSpec->name_sharp_unconst.cstr(), g_LangSpec->name_sharp_wrap.cstr())));
+                    SWAG_VERIFY(!mdfFlags.has(MODIFIER_BIT), error(tokenParse, formErr(Err0052, g_LangSpec->name_sharp_unconst.cstr(), g_LangSpec->name_sharp_bit.cstr())));
                     break;
                 default:
                     return error(tokenParse, formErr(Err0647, tokenParse.cstr(), forNode.cstr()));
@@ -644,9 +648,9 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
             SWAG_VERIFY(!mdfFlags.has(MODIFIER_UN_CONST), error(tokenParse, formErr(Err0057, tokenParse.cstr())));
             mdfFlags.add(MODIFIER_UN_CONST);
             SWAG_CHECK(eatToken());
-            continue;            
-        }        
-        
+            continue;
+        }
+
         if (tokenParse.is(TokenId::ModifierErr))
         {
             switch (opId)
@@ -677,7 +681,7 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
             mdfFlags.add(MODIFIER_NO_ERR);
             SWAG_CHECK(eatToken());
             continue;
-        }        
+        }
 
         if (tokenParse.is(TokenId::ModifierPromote))
         {
@@ -699,17 +703,21 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
             continue;
         }
 
-        if (tokenParse.is(TokenId::ModifierOver))
+        if (tokenParse.is(TokenId::ModifierWrap))
         {
             switch (opId)
             {
+                case TokenId::KwdCast:
+                    SWAG_VERIFY(!mdfFlags.has(MODIFIER_BIT), error(tokenParse, formErr(Err0052, g_LangSpec->name_sharp_wrap.cstr(), g_LangSpec->name_sharp_bit.cstr())));
+                    SWAG_VERIFY(!mdfFlags.has(MODIFIER_UN_CONST), error(tokenParse, formErr(Err0052, g_LangSpec->name_sharp_wrap.cstr(), g_LangSpec->name_sharp_unconst.cstr())));
+                    break;
+
                 case TokenId::SymPlus:
                 case TokenId::SymMinus:
                 case TokenId::SymAsterisk:
                 case TokenId::SymPlusEqual:
                 case TokenId::SymMinusEqual:
                 case TokenId::SymAsteriskEqual:
-                case TokenId::KwdCast:
                     break;
                 default:
                     return error(tokenParse, formErr(Err0647, tokenParse.cstr(), forNode.cstr()));
@@ -742,13 +750,13 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
             switch (opId)
             {
                 case TokenId::SymEqual:
+                    SWAG_VERIFY(!mdfFlags.has(MODIFIER_CONST_REF), error(tokenParse, formErr(Err0052, g_LangSpec->name_sharp_ref.cstr(), g_LangSpec->name_sharp_constref.cstr())));
                     break;
                 default:
                     return error(tokenParse, formErr(Err0647, tokenParse.cstr(), forNode.cstr()));
             }
 
             SWAG_VERIFY(!mdfFlags.has(MODIFIER_REF), error(tokenParse, formErr(Err0057, tokenParse.cstr())));
-            SWAG_VERIFY(!mdfFlags.has(MODIFIER_CONST_REF), error(tokenParse, formErr(Err0052, "#ref", "#constref")));
             mdfFlags.add(MODIFIER_REF);
             SWAG_CHECK(eatToken());
             continue;
@@ -759,13 +767,13 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
             switch (opId)
             {
                 case TokenId::SymEqual:
+                    SWAG_VERIFY(!mdfFlags.has(MODIFIER_REF), error(tokenParse, formErr(Err0052, g_LangSpec->name_sharp_constref.cstr(), g_LangSpec->name_sharp_ref.cstr())));
                     break;
                 default:
                     return error(tokenParse, formErr(Err0647, tokenParse.cstr(), forNode.cstr()));
             }
 
             SWAG_VERIFY(!mdfFlags.has(MODIFIER_CONST_REF), error(tokenParse, formErr(Err0057, tokenParse.cstr())));
-            SWAG_VERIFY(!mdfFlags.has(MODIFIER_REF), error(tokenParse, formErr(Err0052, "#constref", "#ref")));
             mdfFlags.add(MODIFIER_CONST_REF);
             SWAG_CHECK(eatToken());
             continue;
@@ -793,13 +801,13 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
             switch (opId)
             {
                 case TokenId::SymEqual:
+                    SWAG_VERIFY(!mdfFlags.has(MODIFIER_MOVE_RAW), error(tokenParse, formErr(Err0052, g_LangSpec->name_sharp_move.cstr(), g_LangSpec->name_sharp_moveraw.cstr())));
                     break;
                 default:
                     return error(tokenParse, formErr(Err0647, tokenParse.cstr(), forNode.cstr()));
             }
 
             SWAG_VERIFY(!mdfFlags.has(MODIFIER_MOVE), error(tokenParse, formErr(Err0057, tokenParse.cstr())));
-            SWAG_VERIFY(!mdfFlags.has(MODIFIER_MOVE_RAW), error(tokenParse, formErr(Err0052, "#move", "#moveraw")));
             mdfFlags.add(MODIFIER_MOVE);
             SWAG_CHECK(eatToken());
             continue;
@@ -810,13 +818,13 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
             switch (opId)
             {
                 case TokenId::SymEqual:
+                    SWAG_VERIFY(!mdfFlags.has(MODIFIER_MOVE), error(tokenParse, formErr(Err0052, g_LangSpec->name_sharp_moveraw.cstr(), g_LangSpec->name_sharp_move.cstr())));
                     break;
                 default:
                     return error(tokenParse, formErr(Err0647, tokenParse.cstr(), forNode.cstr()));
             }
 
             SWAG_VERIFY(!mdfFlags.has(MODIFIER_MOVE_RAW), error(tokenParse, formErr(Err0057, tokenParse.cstr())));
-            SWAG_VERIFY(!mdfFlags.has(MODIFIER_MOVE), error(tokenParse, formErr(Err0052, "#moveraw", "#move")));
             mdfFlags.add(MODIFIER_MOVE_RAW);
             SWAG_CHECK(eatToken());
             continue;
