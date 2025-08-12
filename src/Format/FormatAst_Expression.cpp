@@ -239,21 +239,18 @@ bool FormatAst::outputCast(FormatContext& context, const AstNode* node)
 
     if (node->hasSpecFlag(AstCast::SPEC_FLAG_OVERFLOW))
     {
-        concat->addChar('<');
-        concat->addString(g_LangSpec->name_overflow);
-        concat->addChar('>');
+        concat->addString(g_LangSpec->name_sharp_wrap);
+        concat->addBlank();
     }
     else if (node->hasSpecFlag(AstCast::SPEC_FLAG_BIT))
     {
-        concat->addChar('<');
-        concat->addString(g_LangSpec->name_bit);
-        concat->addChar('>');
+        concat->addString(g_LangSpec->name_sharp_bit);
+        concat->addBlank();        
     }
     else if (node->hasSpecFlag(AstCast::SPEC_FLAG_UN_CONST))
     {
-        concat->addChar('<');
-        concat->addString(g_LangSpec->name_unconst);
-        concat->addChar('>');
+        concat->addString(g_LangSpec->name_sharp_unconst);
+        concat->addBlank();        
     }
 
     concat->addChar('(');

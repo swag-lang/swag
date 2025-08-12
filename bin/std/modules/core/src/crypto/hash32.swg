@@ -21,9 +21,9 @@ public func(T) hash32(value: T)->u32
     #elif Reflection.isStruct(T):
         return Hash.Crc32.compute(cast(const *u8) &value, #sizeof(T))
     #elif #sizeof(T) == 8:
-        return cast(u32) murmur3(cast<bit>(u64) value)
+        return cast(u32) murmur3(cast #bit (u64) value)
     #elif #sizeof(T) == 4:
-        return murmur3(cast<bit>(u32) value)
+        return murmur3(cast #bit (u32) value)
     #elif Reflection.isInteger(T):
         return murmur3(cast(u32) value)
     #else:

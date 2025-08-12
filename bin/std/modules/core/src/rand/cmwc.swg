@@ -39,7 +39,7 @@ impl CMWC4096
         var x = t + c
         if x < c:
             x, c += 1
-        let v = cast<bit>(u32) (r - x)
+        let v = cast #bit (u32) (r - x)
         q[i] = v
         return v
     }

@@ -6,8 +6,8 @@ alias LPCVOID=		const *void
 alias LPDWORD=		*DWORD
 alias LPOVERLAPPED= *DWORD
 
-const STD_INPUT_HANDLE 	= cast<bit>(DWORD) -10
-const STD_OUTPUT_HANDLE = cast<bit>(DWORD) -11
+const STD_INPUT_HANDLE 	= cast #bit (DWORD) -10
+const STD_OUTPUT_HANDLE = cast #bit (DWORD) -11
 
 #[Swag.Foreign("kernel32")]
 {

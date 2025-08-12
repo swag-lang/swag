@@ -812,7 +812,7 @@ void initErrors()
     SWAG_ERROR(Err0664, "unexpected type declaration                       $ cannot have a type declaration after an unnamed parameter                                                                                $ ");
     SWAG_ERROR(Err0665, "unexpected type suffix                            $ cannot have a type suffix after %s                                                                                                       $ ");
     SWAG_ERROR(Err0666, "unknown [[#global]] instruction                   $ cannot recognize [[%s]] as a valid [[#global]] instruction                                                                               $ ");
-    SWAG_ERROR(Err0667, "unknown [[cast]] mode                             $ cannot recognize [[%s]] as a valid [[cast]] mode                                                                                         $ the only acceptable mode are [[bit]] and [[unsafe]]");
+    SWAG_ERROR(Err0667, nullptr);
     SWAG_ERROR(Err0668, nullptr);
     SWAG_ERROR(Err0669, "unknown [[foreach]]                               $ cannot visit the type [[%s]]                                                                                                             $ cannot find [[opVisit]]");
     SWAG_ERROR(Err0670, "unknown [[foreach]] name                          $ cannot find the visit specialization name [[%s]] in [[%s]]                                                                               $ ");

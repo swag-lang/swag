@@ -1,5 +1,5 @@
 #global testerror "Err0166"
 #test
 {
-    let x = cast<bit>(*void) 0
+    let x = cast #bit (*void) 0
 }

@@ -17,7 +17,7 @@ namespace __Win32RT
     alias WCHAR   = u16
     alias BOOL    = u8
 
-    const STD_OUTPUT_HANDLE    = cast<bit>(u32) -11
+    const STD_OUTPUT_HANDLE    = cast #bit (u32) -11
     const MB_CANCELTRYCONTINUE = 0x00000006
     const MB_ICONERROR         = 0x00000010
     const IDCANCEL             = 2
@@ -276,7 +276,7 @@ func __tlsGetPtr(id: u64, size: u64, init: const *void)->*void
 ////////////////////////////////////////////////////////////
 func __exitError()
 {
-    __Win32RT.ExitProcess(cast<bit>(u32) -666)
+    __Win32RT.ExitProcess(cast #bit (u32) -666)
 }
 
 func __panicBox(msg, title: string)

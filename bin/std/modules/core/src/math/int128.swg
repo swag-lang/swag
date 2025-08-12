@@ -46,7 +46,7 @@ impl Int128
 
     mtd const opCast()->f64
     {
-        const Shift64: f64 = cast<bit>(f64) 0x43f0000000000000 // 18446744073709551616.0'f64 //2^64
+        const Shift64: f64 = cast #bit (f64) 0x43f0000000000000 // 18446744073709551616.0'f64 //2^64
         if hi < 0
         {
             if lo == 0:

@@ -615,6 +615,38 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
     mdfFlags = 0;
     while (Tokenizer::isModifier(tokenParse.token.id))
     {
+        if (tokenParse.is(TokenId::ModifierBit))
+        {
+            switch (opId)
+            {
+                case TokenId::KwdCast:
+                    break;
+                default:
+                    return error(tokenParse, formErr(Err0647, tokenParse.cstr(), forNode.cstr()));
+            }
+
+            SWAG_VERIFY(!mdfFlags.has(MODIFIER_BIT), error(tokenParse, formErr(Err0057, tokenParse.cstr())));
+            mdfFlags.add(MODIFIER_BIT);
+            SWAG_CHECK(eatToken());
+            continue;            
+        }
+
+        if (tokenParse.is(TokenId::ModifierUnConst))
+        {
+            switch (opId)
+            {
+                case TokenId::KwdCast:
+                    break;
+                default:
+                    return error(tokenParse, formErr(Err0647, tokenParse.cstr(), forNode.cstr()));
+            }
+
+            SWAG_VERIFY(!mdfFlags.has(MODIFIER_UN_CONST), error(tokenParse, formErr(Err0057, tokenParse.cstr())));
+            mdfFlags.add(MODIFIER_UN_CONST);
+            SWAG_CHECK(eatToken());
+            continue;            
+        }        
+        
         if (tokenParse.is(TokenId::ModifierErr))
         {
             switch (opId)
@@ -677,6 +709,7 @@ bool Parser::doModifiers(const Token& forNode, TokenId tokenId, ModifierFlags& m
                 case TokenId::SymPlusEqual:
                 case TokenId::SymMinusEqual:
                 case TokenId::SymAsteriskEqual:
+                case TokenId::KwdCast:
                     break;
                 default:
                     return error(tokenParse, formErr(Err0647, tokenParse.cstr(), forNode.cstr()));

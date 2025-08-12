@@ -216,26 +216,26 @@ namespace Swag
 
     namespace S8
     {
-        const Min = cast<bit>(s8) 0x80
-        const Max = cast<bit>(s8) 0x7F
+        const Min = cast #bit (s8) 0x80
+        const Max = cast #bit (s8) 0x7F
     }
 
     namespace S16
     {
-        const Min = cast<bit>(s16) 0x8000
-        const Max = cast<bit>(s16) 0x7FFF
+        const Min = cast #bit (s16) 0x8000
+        const Max = cast #bit (s16) 0x7FFF
     }
 
     namespace S32
     {
-        const Min = cast<bit>(s32) 0x80000000
-        const Max = cast<bit>(s32) 0x7FFFFFFF
+        const Min = cast #bit (s32) 0x80000000
+        const Max = cast #bit (s32) 0x7FFFFFFF
     }
 
     namespace S64
     {
-        const Min = cast<bit>(s64) 0x80000000_00000000
-        const Max = cast<bit>(s64) 0x7FFFFFFF_FFFFFFFF
+        const Min = cast #bit (s64) 0x80000000_00000000
+        const Max = cast #bit (s64) 0x7FFFFFFF_FFFFFFFF
     }
 
     namespace U8
@@ -266,9 +266,9 @@ namespace Swag
     {
         const Min      = 1.17549435082228750797e-38'f32
         const Max      = 3.40282346638528859812e+38'f32
-        const Nan      = cast<bit>(f32) 0x7F800001
-        const Inf      = cast<bit>(f32) 0x7F800000
-        const NegInf   = cast<bit>(f32) 0xFF800000
+        const Nan      = cast #bit (f32) 0x7F800001
+        const Inf      = cast #bit (f32) 0x7F800000
+        const NegInf   = cast #bit (f32) 0xFF800000
         const MantBits = 23
         const ExpBits  = 8
         const Bias     = -127
@@ -278,9 +278,9 @@ namespace Swag
     {
         const Min      = 2.2250738585072014e-308'f64
         const Max      = 1.79769313486231570815e+308'f64
-        const Nan      = cast<bit>(f64) 0x7ff8000000000001
-        const Inf      = cast<bit>(f64) 0x7ff0000000000000
-        const NegInf   = cast<bit>(f64) 0xfff0000000000000
+        const Nan      = cast #bit (f64) 0x7ff8000000000001
+        const Inf      = cast #bit (f64) 0x7ff0000000000000
+        const NegInf   = cast #bit (f64) 0xfff0000000000000
         const MantBits = 52
         const ExpBits  = 11
         const Bias     = -1023

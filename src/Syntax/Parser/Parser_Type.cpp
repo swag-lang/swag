@@ -660,35 +660,21 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
     node->semanticFct = Semantic::resolveExplicitCast;
     SWAG_CHECK(eatToken());
 
-    // Cast mode
-    if (tokenParse.is(TokenId::SymLower))
+    ModifierFlags mdfFlags = 0;
+    SWAG_CHECK(doModifiers(node->token, node->token.id, mdfFlags, node));
+    if (mdfFlags.has(MODIFIER_BIT))
     {
-        const auto startLoc = tokenParse.token.startLocation;
-        SWAG_CHECK(eatToken());
-
-        if (tokenParse.is(g_LangSpec->name_bit))
-        {
-            SWAG_CHECK(eatToken());
-            node->addSpecFlag(AstCast::SPEC_FLAG_BIT);
-            node->semanticFct = Semantic::resolveExplicitBitCast;
-        }
-        else if (tokenParse.is(g_LangSpec->name_overflow))
-        {
-            SWAG_CHECK(eatToken());
-            node->addSpecFlag(AstCast::SPEC_FLAG_OVERFLOW);
-            node->addAttribute(ATTRIBUTE_CAN_OVERFLOW_ON);
-        }
-        else if (tokenParse.is(g_LangSpec->name_unconst))
-        {
-            SWAG_CHECK(eatToken());
-            node->addSpecFlag(AstCast::SPEC_FLAG_UN_CONST);
-        }
-        else
-        {
-            return error(tokenParse, formErr(Err0667, tokenParse.cstr()));
-        }
-
-        SWAG_CHECK(eatCloseToken(TokenId::SymGreater, startLoc, "after the [[cast]] mode"));
+        node->addSpecFlag(AstCast::SPEC_FLAG_BIT);
+        node->semanticFct = Semantic::resolveExplicitBitCast;
+    }
+    else if (mdfFlags.has(MODIFIER_WRAP))
+    {
+        node->addSpecFlag(AstCast::SPEC_FLAG_OVERFLOW);
+        node->addAttribute(ATTRIBUTE_CAN_OVERFLOW_ON);
+    }
+    else if (mdfFlags.has(MODIFIER_UN_CONST))
+    {
+        node->addSpecFlag(AstCast::SPEC_FLAG_UN_CONST);
     }
 
     const auto startLoc = tokenParse.token.startLocation;

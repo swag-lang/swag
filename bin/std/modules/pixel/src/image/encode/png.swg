@@ -224,13 +224,13 @@ impl Encoder
     mtd writeMetaDatas(image: Image) throw
     {
         foreach md in image.metaDatas
-        {     
+        {
             if !md.tag.count or !md.value.count:
                 continue
-             writePtr = writeHeader(TypeTEXt, md.tag.count + 1 + md.value.count)   
-             Memory.copy(writePtr, md.tag.buffer, md.tag.count)   
+             writePtr = writeHeader(TypeTEXt, md.tag.count + 1 + md.value.count)
+             Memory.copy(writePtr, md.tag.buffer, md.tag.count)
              writePtr[md.tag.count] = 0
-             Memory.copy(writePtr + md.tag.count + 1, md.value.buffer, md.value.count)   
+             Memory.copy(writePtr + md.tag.count + 1, md.value.buffer, md.value.count)
              finishChunk()
         }
     }
@@ -503,7 +503,7 @@ impl Encoder
                 x = x - paeth(a, b, c)
             }
 
-            filtered[i] = cast<bit>(u8) x
+            filtered[i] = cast #bit (u8) x
         }
     }
 

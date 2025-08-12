@@ -119,14 +119,14 @@ public impl Sha256
         }
 
         bitlen += datalen * 8
-        data[63] = cast<bit>(u8) bitlen
-        data[62] = cast<bit>(u8) (bitlen >> 8)
-        data[61] = cast<bit>(u8) (bitlen >> 16)
-        data[60] = cast<bit>(u8) (bitlen >> 24)
-        data[59] = cast<bit>(u8) (bitlen >> 32)
-        data[58] = cast<bit>(u8) (bitlen >> 40)
-        data[57] = cast<bit>(u8) (bitlen >> 48)
-        data[56] = cast<bit>(u8) (bitlen >> 56)
+        data[63] = cast #bit (u8) bitlen
+        data[62] = cast #bit (u8) (bitlen >> 8)
+        data[61] = cast #bit (u8) (bitlen >> 16)
+        data[60] = cast #bit (u8) (bitlen >> 24)
+        data[59] = cast #bit (u8) (bitlen >> 32)
+        data[58] = cast #bit (u8) (bitlen >> 40)
+        data[57] = cast #bit (u8) (bitlen >> 48)
+        data[56] = cast #bit (u8) (bitlen >> 56)
         transform(data)
 
         Memory.copy(result, &state[0], #sizeof(state))

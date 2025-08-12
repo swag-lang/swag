@@ -29,14 +29,14 @@ const MaxMillis:   u64 = (DaysTo10000 * MillisPerDay)
 func nowMilliseconds()->u32
 {
     let ticks = nowPrecise() / (preciseFrequency() / 1000)
-    return cast<bit>(u32) ticks
+    return cast #bit (u32) ticks
 }
 
 // Returns the current time expressed in microseconds
 func nowMicroseconds()->u32
 {
     let ticks = nowPrecise() / (preciseFrequency() / 1000000)
-    return cast<bit>(u32) ticks
+    return cast #bit (u32) ticks
 }
 
 alias Ticks = u64

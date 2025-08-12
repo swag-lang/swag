@@ -355,7 +355,7 @@ impl Encoder
 
             for nr in -(nrupper - 1) to -nrlower
             {
-                let nof = cast<bit>(u64) cast(s64) nr
+                let nof = cast #bit (u64) cast(s64) nr
                 category[nof]       = cast(u8) cat
                 bitcode[nof].length = cast(u8) cat
                 bitcode[nof].value  = cast(u16) (nrupper - 1 + nr)
@@ -652,7 +652,7 @@ impl Encoder
             writeBits(hTDC[0])
         else
         {
-            let diffc = cast<bit>(u64) cast(s64) diff // If negative
+            let diffc = cast #bit (u64) cast(s64) diff // If negative
             writeBits(hTDC[category[diffc]])
             writeBits(bitcode[diffc])
         }
@@ -681,7 +681,7 @@ impl Encoder
                 nrzeroes = nrzeroes % 16
             }
 
-            let offc = cast<bit>(u64) cast(s64) du[i] // If negative
+            let offc = cast #bit (u64) cast(s64) du[i] // If negative
             writeBits(hTAC[nrzeroes * 16 + category[offc]])
             writeBits(bitcode[offc])
             i += 1

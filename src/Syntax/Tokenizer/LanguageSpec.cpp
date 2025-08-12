@@ -168,9 +168,8 @@ void LanguageSpec::setupNames()
     name_sharp_constref = "#constref";
     name_sharp_err      = "#err";
     name_sharp_noerr    = "#noerr";
-
-    name_bit     = "bit";
-    name_unconst = "unconst";
+    name_sharp_bit      = "#bit";
+    name_sharp_unconst  = "#unconst";
 
     name_boundcheck  = "boundcheck";
     name_overflow    = "overflow";
@@ -399,6 +398,8 @@ void LanguageSpec::setupKeywords()
     keywords.add("#null", TokenId::ModifierNullable);
     keywords.add("#err", TokenId::ModifierErr);
     keywords.add("#noerr", TokenId::ModifierNoErr);
+    keywords.add("#bit", TokenId::ModifierBit);
+    keywords.add("#unconst", TokenId::ModifierUnConst);
 
     keywords.add("#cfg", TokenId::CompilerBuildCfg);
     keywords.add("#os", TokenId::CompilerOs);

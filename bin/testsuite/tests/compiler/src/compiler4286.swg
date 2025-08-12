@@ -2,5 +2,5 @@
 
 #test
 {
-    var x = cast<bit>(s32) #wrap 5
+    var x = cast #bit (s32) #wrap 5
 }*/

@@ -38,7 +38,7 @@ impl BitStream
         while numBits <= width
         {
             // Detect and reset broken state (if buffer was empty and numBits was max)
-            if codeBuffer == 0 and numBits == cast<bit>(u8) -1:
+            if codeBuffer == 0 and numBits == cast #bit (u8) -1:
                 numBits = 0
 
             // If buffer is already full, prevent overflow
