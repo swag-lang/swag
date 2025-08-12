@@ -45,7 +45,17 @@ impl IActionUI for ActionLibSort
 
         case CmdIdLibSortInvert:
             evt.setFlags |= .Name | .Checked
-            evt.name    = "Invert Order"
+            if libWnd.sortMethod == .Recent:
+                evt.name = "Oldest First"
+            elif libWnd.sortMethod == .FileSize:
+                evt.name = "Smaller First"
+            else
+            {
+                evt.setFlags |= .Disabled
+                evt.disabled = true
+                evt.name = "Invert Order"
+            }
+
             evt.checked = libWnd.invertSort
         }
 
