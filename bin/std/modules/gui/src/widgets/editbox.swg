@@ -59,7 +59,7 @@ struct EditBox
     sigEscapePressed:     SigArray'func||(*Self)                // Emitted when Escape is pressed
     sigCheckContent:      func||(*Self)->EditBoxCheckResult     // Optional custom validator
 
-    internal
+    private
     {
         originalText: String // Text captured when focus was gained
 

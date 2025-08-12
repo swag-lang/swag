@@ -571,7 +571,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
             break;
         }
 
-        case TokenId::KwdInternal:
+        case TokenId::KwdPrivate:
         {
             SWAG_VERIFY(structType != SyntaxStructType::Interface, error(tokenParse, toErr(Err0190)));
             if (parent->ownerStructScope)
@@ -579,7 +579,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
             const auto attrUse = Ast::newNode<AstAttrUse>(AstNodeKind::AttrUse, this, parent);
             *result            = attrUse;
             attrUse->addAstFlag(AST_GENERATED | AST_GENERATED_USER);
-            attrUse->attributeFlags = ATTRIBUTE_FIELD_INTERNAL;
+            attrUse->attributeFlags = ATTRIBUTE_FIELD_PRIVATE;
             SWAG_CHECK(eatToken());
             AstNode* topStmt;
             SWAG_CHECK(doStructBody(attrUse, structType, &topStmt));

@@ -126,9 +126,9 @@ bool FormatAst::outputAttrUse(FormatContext& context, AstAttrUse* node)
         return true;
     }
 
-    if (node->attributeFlags.has(ATTRIBUTE_FIELD_INTERNAL))
+    if (node->attributeFlags.has(ATTRIBUTE_FIELD_PRIVATE))
     {
-        concat->addString("internal");
+        concat->addString("private");
         concat->addBlank();
         SWAG_CHECK(outputNode(context, node->content));
         return true;

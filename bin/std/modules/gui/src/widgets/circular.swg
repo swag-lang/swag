@@ -59,7 +59,7 @@ struct Circular
     sigChanged:         SigArray'func||(*Self)     // Fired when value changes
     sigEndChange:       SigArray'func||(*Self)     // Fired when user finishes changing value
 
-    internal
+    private
     {
         // Internal state tracking
         isMoving:       bool     // True when user is dragging a marker

@@ -51,7 +51,7 @@ namespace
             return false;
         if (!node->token.sourceFile)
             return false;
-        if (node->hasAttribute(ATTRIBUTE_FIELD_INTERNAL))
+        if (node->hasAttribute(ATTRIBUTE_FIELD_PRIVATE))
             return false;
 
         switch (node->kind)
@@ -752,7 +752,7 @@ void GenDoc::generateContentStruct(OneRef& c, AstNode* n0)
                 continue;
             if (!n1->hasAstFlag(AST_STRUCT_MEMBER))
                 continue;
-            if (n1->hasAttribute(ATTRIBUTE_FIELD_INTERNAL))
+            if (n1->hasAttribute(ATTRIBUTE_FIELD_PRIVATE))
                 continue;
             if (structVal->name.find("item") == 0)
                 continue;

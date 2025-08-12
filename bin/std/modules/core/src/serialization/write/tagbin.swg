@@ -40,7 +40,7 @@ struct TagBin
     compressionLevel:        Core.Compress.Deflate.CompressionLevel = .BestSpeed
     compressionStrategy:     Core.Compress.Deflate.CompressionStrategy = .Default
 
-    internal
+    private
     {
         compressor:       Core.Compress.Deflate
         output:           *ConcatBuffer                                         // Output buffer where data is written
