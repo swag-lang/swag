@@ -167,7 +167,7 @@ impl Properties
                 .flags.add(.NoSeparator)
             }
 
-            line.hookOnEvent = func|self, itemB|(wnd, evt) { return self.onItemEvent(itemB, wnd, evt); }
+            line.hookOnEvent = func|using self, itemB|(hwnd, evt) { return onItemEvent(itemB, hwnd, evt); }
 
             with let ed = CheckButton.create(line, "", {0, 0, gridLineHeight, 0})
             {
@@ -199,9 +199,9 @@ impl Properties
             }
 
             refreshEnumFlags(itemB)
-            itemB.checkBox.sigChanged += func|self, itemB|(ed)
+            itemB.checkBox.sigChanged += func|using self, itemB|(ed)
             {
-                self.validateEnumFlags(itemB)
+                validateEnumFlags(itemB)
             }
         }
     }
@@ -230,9 +230,9 @@ impl Properties
             ed.addItem(v.name)
 
         refreshEnum(item)
-        item.comboBox.sigChanged += func|self, item|(ed, n)
+        item.comboBox.sigChanged += func|using self, item|(ed, n)
         {
-            self.validateEnum(item)
+            validateEnum(item)
         }
     }
 }

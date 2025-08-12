@@ -690,19 +690,19 @@ impl QuickWnd
                 paintForm(bc.painter, cast(*QuickButton) btn)
             }
 
-            btn.sigRightPressed += func|self|(btn)
+            btn.sigRightPressed += func|using self|(btn)
             {
                 var rect = btn.getSurfaceRect()
-                self.btnPopup(btn, rect.center())
+                btnPopup(btn, rect.center())
             }
 
-            btn.sigCheckChanged += func|self, it|(btn)
+            btn.sigCheckChanged += func|using self, it|(btn)
             {
                 if !btn.isChecked:
                     return
-                self.main.updateModel(it)
+                main.updateModel(it)
 
-                var capture = assume self.main.getCapture()
+                var capture = assume main.getCapture()
                 if capture.selection.count
                 {
                     let mdlValue = MainWnd.newFormFromForm(it)
@@ -716,8 +716,8 @@ impl QuickWnd
                     capture.selection.clear()
                 }
 
-                self.updateSelection()
-                self.main.updateState()
+                updateSelection()
+                main.updateState()
             }
         }
 
@@ -773,13 +773,13 @@ impl QuickWnd
             layout.sendResizeEvent()
             setScrollSize(0, layout.resultHeight)
 
-            btn1.sigPressed += func|self, main|(btn)
+            btn1.sigPressed += func|using self, main|(btn)
             {
-                let mdl = self.main.newFormFromModel(main.getEditMode())
+                let mdl = main.newFormFromModel(main.getEditMode())
                 if mdl
                 {
-                    self.currentStyle.forms.add(mdl)
-                    self.updateQuickStyles()
+                    currentStyle.forms.add(mdl)
+                    updateQuickStyles()
                 }
             }
         }

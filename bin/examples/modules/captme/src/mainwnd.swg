@@ -291,10 +291,10 @@ impl MainWnd
         elif freeze and !embInfoFreeze
         {
             embInfoFreeze = EmbInfoCtrl.create(editWnd.view, "Selection is freezed", .Message, flags: .Bottom)
-            embInfoFreeze.sigOnClose += func|self|(ctrl)
+            embInfoFreeze.sigOnClose += func|using self|(ctrl)
             {
-                self.freezeSel = false
-                self.embInfoFreeze = null
+                freezeSel = false
+                embInfoFreeze = null
             }
 
             let capture = assume getCapture()

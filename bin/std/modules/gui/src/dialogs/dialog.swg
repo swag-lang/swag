@@ -146,9 +146,9 @@ impl Dialog
         {
             .form = isDefault ? .Default : .Strong
 
-            .sigPressed += func|self|(btn)
+            .sigPressed += func|using self|(btn)
             {
-                if !self.sigPressedButton or self.sigPressedButton(self, btn.id):
+                if !sigPressedButton or sigPressedButton(self, btn.id):
                     btn.getApp().exitModal(btn.id)
             }
 

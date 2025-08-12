@@ -160,14 +160,14 @@ impl LibraryWnd
     {
         if listCtrl.getLineCount():
             return
-        g_Library.onDeleteFile += func|self|(file)
+        g_Library.onDeleteFile += func|using self|(file)
         {
             foreach it, i in self.view.items
             {
                 if it.fi.fullname == file
                 {
-                    self.view.selModel.select(cast() i, false)
-                    self.view.items.removeAtOrdered(i)
+                    view.selModel.select(cast() i, false)
+                    view.items.removeAtOrdered(i)
                     break
                 }
             }

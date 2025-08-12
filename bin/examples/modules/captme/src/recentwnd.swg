@@ -249,21 +249,21 @@ impl RecentWnd
         loadDone = true
 
         g_Library.fill()
-        g_Library.onDeleteFile += func|self|(file)
+        g_Library.onDeleteFile += func|using self|(file)
         {
-            foreach it, i in self.recentView.items
+            foreach it, i in recentView.items
             {
                 if it.file == file
                 {
                     // Remove from recent
-                    self.recentView.items.deletePtr(it)
-                    self.recentView.items.removeAtOrdered(i)
+                    recentView.items.deletePtr(it)
+                    recentView.items.removeAtOrdered(i)
 
                     // Select new one
-                    if self.recentView.selected == i
+                    if recentView.selected == i
                     {
-                        self.recentView.selected = Swag.U64.Max
-                        self.recentView.select(i)
+                        recentView.selected = Swag.U64.Max
+                        recentView.select(i)
                     }
 
                     break

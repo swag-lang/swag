@@ -325,11 +325,11 @@ internal impl Tab
         foreach item in views:
             popup.addItem(item.name.raw, item.id, item.icon, item.userData0)
 
-        popup.sigSelected = func|self|(list, idx)
+        popup.sigSelected = func|using self|(list, idx)
         {
             if idx != Swag.U32.Max:
-                self.select(idx)
-            self.hidePopup()
+                select(idx)
+            hidePopup()
         }
 
         popup.show(x, y)
@@ -432,10 +432,10 @@ internal impl Tab
             {
                 buttonPopup      = IconButton.create(self, getTheme().getIcon24(ThemeIcons24.SortArrowDown), {})
                 buttonPopup.form = .Round
-                buttonPopup.sigPressed += func|self|(btn)
+                buttonPopup.sigPressed += func|using self|(btn)
                 {
                     var rect = btn.getSurfaceRect()
-                    self.showPopup(rect.x, rect.y + btn.position.height)
+                    showPopup(rect.x, rect.y + btn.position.height)
                 }
             }
 

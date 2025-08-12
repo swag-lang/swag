@@ -1150,10 +1150,10 @@ impl ListCtrl
             return res
         }
 
-        let cb = func|self, column, descentOrder|(a, b: *ListLine)->s32
+        let cb = func|using self, column, descentOrder|(a, b: *ListLine)->s32
         {
-            if self.sigSort:
-                return self.sigSort(a, b, column, descentOrder)
+            if sigSort:
+                return sigSort(a, b, column, descentOrder)
 
             if a.parent != b.parent
             {

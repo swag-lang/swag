@@ -55,9 +55,9 @@ impl Properties
         }
 
         item.checkBox = ed
-        ed.sigChanged += func|self, item|(ed)
+        ed.sigChanged += func|using self, item|(ed)
         {
-            self.validateBool(item)
+            validateBool(item)
         }
 
         refreshBool(item)

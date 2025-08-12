@@ -137,13 +137,13 @@ internal impl FileDlg
             treePathStr.add(v)
         }
 
-        treeCtrl.sigSelChanged += func|self|(list)
+        treeCtrl.sigSelChanged += func|using self|(list)
         {
             var line = list.getSelectedLine()
             if !line:
                 return
             var idx = cast(u64) line.userData0
-            self.setCurFolder(self.treePathStr[idx].toString())
+            setCurFolder(treePathStr[idx].toString())
         }
     }
 
@@ -547,9 +547,9 @@ impl FileDlg
             .surface.center(surface)
         }
 
-        dlg.sigPressedButton = func|self, dlg|(fdlg, id)
+        dlg.sigPressedButton = func|using self, dlg|(fdlg, btnid)
         {
-            if id != Dialog.BtnOk:
+            if btnid != Dialog.BtnOk:
                 return true
 
             var folderName = dlg.edit.text
@@ -569,7 +569,7 @@ impl FileDlg
                 return false
             }
 
-            var path = Path.combine(self.curFolder, folderName.toString())
+            var path = Path.combine(curFolder, folderName.toString())
             if Directory.exists(path)
             {
                 MessageDlg.error(dlg.surface, "Folder already exists")

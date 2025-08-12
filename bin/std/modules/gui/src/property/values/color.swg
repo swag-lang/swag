@@ -31,7 +31,7 @@ impl Properties
             .dockStyle = .Left
             .margin.z  = MarginBtn
             .setInputX64(0, opaque ? 0xFFFFFF : 0xFFFFFFFF)
-            .sigLoseFocus += func|self, color, item, opaque, keepAlpha|(ed)
+            .sigLoseFocus += func|using self, color, item, opaque, keepAlpha|(ed)
             {
                 var result = cast(u32) (catch StrConv.parseX64(ed.text).value & 0xFFFFFFFF)
                 if opaque:
@@ -39,7 +39,7 @@ impl Properties
                 elif keepAlpha:
                     result |= color.a << 24
                 color.argb = result
-                self.hasChanged(item)
+                hasChanged(item)
             }
         }
 
@@ -51,12 +51,12 @@ impl Properties
             bc.painter.fillRoundRect(pos, 5, 5, dref color)
         }
 
-        btn.sigShowPopup += func|self, color, item, opaque, keepAlpha|(btn)
+        btn.sigShowPopup += func|using self, color, item, opaque, keepAlpha|(btn)
         {
             if !btn:
                 return
             let frame = btn.createAnchorPopup(356, 382)
-            self.editPopup = frame
+            editPopup = frame
 
             var pal: Array'Color
             for i in 9:
@@ -68,7 +68,7 @@ impl Properties
 
             let picker = ColorPickerCtrl.createWithPalette(frame, {8, 54}, pal, flags)
             picker.setColor(color)
-            picker.sigChanged += func|self, color, item, opaque, keepAlpha|(pk)
+            picker.sigChanged += func|using self, color, item, opaque, keepAlpha|(pk)
             {
                 var result = pk.getColor().argb
                 if opaque:
@@ -76,13 +76,13 @@ impl Properties
                 elif keepAlpha:
                     result |= color.a << 24
                 color.argb = result
-                self.hasChanged(item)
+                hasChanged(item)
             }
         }
 
-        btn.sigHidePopup += func|self|(btn)
+        btn.sigHidePopup += func|using self|(btn)
         {
-            self.editPopup = null
+            editPopup = null
         }
 
         item.sigRefresh += func|ed, btn, color, editAlpha|(item)

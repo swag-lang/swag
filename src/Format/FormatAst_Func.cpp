@@ -272,6 +272,12 @@ bool FormatAst::outputClosureArguments(FormatContext& context, const AstFuncDecl
 
         first = false;
 
+        if (child->hasAstFlag(AST_DECL_USING))
+        {
+            concat->addString("using");
+            concat->addBlank();
+        }
+
         if (child->is(AstNodeKind::MakePointer))
         {
             concat->addChar('&');
