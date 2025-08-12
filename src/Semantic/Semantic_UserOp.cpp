@@ -134,6 +134,14 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
         return context->report(err);
     }
 
+    if (isOpVisit && name != g_LangSpec->name_opVisit && !isupper(name[7]))
+    {
+        auto start = node->tokenName.startLocation;
+        start.column += 7;
+        const Diagnostic err{node->token.sourceFile, start, node->getTokenName().endLocation, formErr(Err0382, node->token.cstr() + 7)};
+        return context->report(err);
+    }
+
     // Special function outside an impl block
     if (!parent)
     {

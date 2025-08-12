@@ -528,7 +528,7 @@ void initErrors()
     SWAG_ERROR(Err0379, "misplaced attribute                               $ cannot use this attribute here                                                                                                           $ ");
     SWAG_ERROR(Err0380, "misplaced attribute                               $ expected [[AttributeUsage.Gen]] to be associated with [[AttributeUsage.Struct]] or [[AttributeUsage.Enum]]                               $ ");
     SWAG_ERROR(Err0381, "misplaced block start                             $ cannot start a block with [['{']] after [[try]], [[assume]] or [[catch]]                                                                 $ ");
-    SWAG_ERROR(Err0382, nullptr);
+    SWAG_ERROR(Err0382, "invalid [[opVisit]] name                          $ cannot use [[%s]] as an [[opVisit]] variant                                                                                              $ it should start with an uppercase letter");
     SWAG_ERROR(Err0383, "misplaced closure                                 $ cannot define a closure in a global scope $ closures can only be defined within functions                                                $ ");
     SWAG_ERROR(Err0384, "misplaced compiler instruction                    $ cannot use [[#callerfunction]] outside of a function parameter                                                                           $ ");
     SWAG_ERROR(Err0385, "misplaced compiler instruction                    $ cannot use [[#callerlocation]] outside of a function parameter                                                                           $ ");
