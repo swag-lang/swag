@@ -121,7 +121,7 @@ bool Semantic::resolveMakePointerLambda(SemanticContext* context)
 {
     const auto node  = castAst<AstMakePointer>(context->node, AstNodeKind::MakePointerLambda, AstNodeKind::MakePointer);
     AstNode*   child = nullptr;
-
+    
     // When this is a closure, we have /capture params/ref to the function/capture block/ref to the capture block
     if (node->lambda && node->lambda->captureParameters)
         child = node->secondChild();

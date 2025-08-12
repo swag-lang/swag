@@ -416,7 +416,7 @@ namespace Semantic
     bool resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo, AstNode* left, AstNode* right);
     bool resolveUserOpCommutative(SemanticContext* context, const Utf8& name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right, uint32_t ropFlags = 0);
     bool resolveUsing(SemanticContext* context);
-    bool resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeInfo* typeInfoVar);
+    bool resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeInfo* typeInfoVar, AstNode* regNode = nullptr);
     bool resolveVarDecl(SemanticContext* context);
     bool resolveVarDeclAfter(SemanticContext* context);
     bool resolveVarDeclAfterAssign(SemanticContext* context);

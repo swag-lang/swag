@@ -11,10 +11,11 @@
 #include "Syntax/Naming.h"
 #include "Wmf/SourceFile.h"
 
-bool Semantic::resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeInfo* typeInfoVar)
+bool Semantic::resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeInfo* typeInfoVar, AstNode* regNode)
 {
-    auto       node    = context->node;
-    const auto regNode = node->ownerScope ? node->ownerScope->owner : node;
+    auto node = context->node;
+    if (!regNode)
+        regNode = node->ownerScope ? node->ownerScope->owner : node;
 
     SWAG_ASSERT(regNode);
     SWAG_VERIFY(node->ownerFct || node->ownerScope->is(ScopeKind::Struct), context->report({node, formErr(Err0348, Naming::kindName(node->ownerScope->kind).cstr())}));
