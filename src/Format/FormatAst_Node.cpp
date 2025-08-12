@@ -55,6 +55,13 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             forceEOL = true;
             break;
 
+        case AstNodeKind::CompilerPlaceHolder:
+            concat->addString("#placeholder");
+            concat->addChar('(');
+            concat->addString(node->token.text);
+            concat->addChar(')');
+            break;            
+
         case AstNodeKind::CompilerInclude:
         case AstNodeKind::CompilerDefined:
         case AstNodeKind::CompilerLocation:
@@ -64,7 +71,6 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
         case AstNodeKind::CompilerAssert:
         case AstNodeKind::CompilerForeignLib:
         case AstNodeKind::CompilerLoad:
-        case AstNodeKind::CompilerPlaceHolder:
             concat->addString(node->token.text);
             concat->addChar('(');
             SWAG_CHECK(outputNode(context, node->firstChild()));
