@@ -1070,7 +1070,7 @@ bool Parser::doClosureCaptureBlock(TypeInfoFuncAttr* typeInfo, AstFuncCallParams
     {
         {
             PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, [] { return toNte(Nte0009); });
-            SWAG_CHECK(eatToken(TokenId::SymVertical, "to start the [[closure]] capture block"));
+            SWAG_CHECK(eatToken(TokenId::SymVertical, "to start the closure capture block"));
         }
 
         while (tokenParse.isNot(TokenId::SymVertical))
@@ -1264,6 +1264,7 @@ bool Parser::doLambdaExpression(AstNode* parent, ExprFlags exprFlags, AstNode** 
 
     AstNode* lambda         = nullptr;
     bool     hasMissingType = false;
+    bool     isMethod       = tokenParse.is(TokenId::KwdMethod);
 
     {
         ParserPushBreakable sb(this, nullptr);
@@ -1279,6 +1280,9 @@ bool Parser::doLambdaExpression(AstNode* parent, ExprFlags exprFlags, AstNode** 
     lambdaDecl->addSpecFlag(AstFuncDecl::SPEC_FLAG_IS_LAMBDA_EXPRESSION);
     if (!lambda->ownerFct && lambdaDecl->captureParameters)
         return error(lambdaDecl, toErr(Err0383));
+
+    if (isMethod && !lambdaDecl->captureParameters)
+        return error(lambdaDecl, toErr(Err0667));
 
     // The owner function will resolve the lambda subfunction
     if (lambda->ownerFct)
@@ -1298,6 +1302,13 @@ bool Parser::doLambdaExpression(AstNode* parent, ExprFlags exprFlags, AstNode** 
         const auto cp = castAst<AstFuncCallParams>(lambdaDecl->captureParameters, AstNodeKind::FuncCallParams);
         Ast::addChildBack(exprNode, cp);
         cp->addAstFlag(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
+
+        // 'mtd' used as a lambda implies as 'using self' as the first capture argument
+        if (isMethod)
+        {
+            const auto selfId = Ast::newIdentifierRef("self", this, cp);
+            selfId->addAstFlag(AST_DECL_USING | AST_GENERATED | AST_IN_CAPTURE_BLOCK);
+        }
 
         // We want the lambda to be evaluated only once the captured block has been typed
         // See resolveCaptureFuncCallParams

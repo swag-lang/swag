@@ -486,7 +486,7 @@ void initErrors()
     SWAG_ERROR(Err0336, "misplaced [[moveref]]                             $ cannot use [[moveref]] on the type [[%s]]                                                                                                $ [[moveref]] should be used on a pointer or a reference");
     SWAG_ERROR(Err0337, "misplaced [[moveref]]                             $ expected [[moveref]] to be used before a function argument                                                                               $ ");
     SWAG_ERROR(Err0338, "misplaced [[mtd]]                                 $ cannot use [[mtd]] outside of a struct implementation block                                                                              $ consider replacing [[mtd]] with [[func]]");
-    SWAG_ERROR(Err0339, "misplaced [[mtd]]                                 $ cannot use [[mtd]] to declare a lambda type                                                                                              $ consider using [[func]] or [[closure]] instead");
+    SWAG_ERROR(Err0339, "misplaced [[mtd]]                                 $ cannot use [[mtd]] to declare a lambda type                                                                                              $ consider using [[func]] instead");
     SWAG_ERROR(Err0340, "misplaced [[mtd]] in enum                         $ cannot use [[mtd]] outside of a struct implementation block                                                                              $ consider replacing [[mtd]] with [[func]]");
     SWAG_ERROR(Err0341, "misplaced [[return]]                              $ cannot use [[return]] after [[=>]] as it is implicit                                                                                     $ consider removing it");
     SWAG_ERROR(Err0342, "misplaced [[retval]]                              $ cannot use the [[retval]] special type in a function that returns nothing                                                                $ ");
@@ -575,7 +575,7 @@ void initErrors()
     SWAG_ERROR(Err0426, "missing [[(]] before parameters                   $ expected [[(]] to start the list of parameters, found $$TKN$$ instead                                                                    $ ");
     SWAG_ERROR(Err0427, "missing [[:]]                                     $ expected [[in]] after the [[for]] variable name [[%s]]                                                                                   $ consider using the syntax [[for variable in count]]");
     SWAG_ERROR(Err0429, "missing [[case]] expression                       $ expected the [[case]] expression, found [[%s]] instead                                                                                   $ ");
-    SWAG_ERROR(Err0430, "missing [[closure]] capture variable              $ expected another capture variable between the [[comma]] ',' and [['|']]                                                                  $ consider adding another variable or removing the trailing comma");
+    SWAG_ERROR(Err0430, "missing capture variable                          $ expected another capture variable between the [[comma]] ',' and [['|']]                                                                  $ consider adding another variable or removing the trailing comma");
     SWAG_ERROR(Err0431, "missing [[foreach]] expression                    $ expected the element to visit before [[%s]]                                                                                              $ ");
     SWAG_ERROR(Err0432, "missing [[foreach]] variable                      $ expected another [[foreach]] variable name between the [[comma]] ',' and the [[colon]] ':'                                               $ the first [[foreach]] variable is the [[value]], the second one is the [[index]]");
     SWAG_ERROR(Err0433, "missing [[if]] boolean expression                 $ expected a boolean expression after [[if]], found $$TKN$$ instead                                                                        $ ");
@@ -812,7 +812,7 @@ void initErrors()
     SWAG_ERROR(Err0664, "unexpected type declaration                       $ cannot have a type declaration after an unnamed parameter                                                                                $ ");
     SWAG_ERROR(Err0665, "unexpected type suffix                            $ cannot have a type suffix after %s                                                                                                       $ ");
     SWAG_ERROR(Err0666, "unknown [[#global]] instruction                   $ cannot recognize [[%s]] as a valid [[#global]] instruction                                                                               $ ");
-    SWAG_ERROR(Err0667, nullptr);
+    SWAG_ERROR(Err0667, "misplaced [[mtd]]                                 $ cannot use [[mtd]] as a lambda without capture parameters                                                                                $ consider using [[func]] instead or declaring capture arguments between [[|...|]]");
     SWAG_ERROR(Err0668, nullptr);
     SWAG_ERROR(Err0669, "unknown [[foreach]]                               $ cannot visit the type [[%s]]                                                                                                             $ cannot find [[opVisit]]");
     SWAG_ERROR(Err0670, "unknown [[foreach]] name                          $ cannot find the visit specialization name [[%s]] in [[%s]]                                                                               $ ");
@@ -949,7 +949,7 @@ void initErrors()
     SWAG_ERROR(Nte0006, "[[%s]] is an array of type [[%s]], which does not have a sub-scope");
     SWAG_ERROR(Nte0007, "[[%s]] is interpreted as a type, not a generic value, due to the preceding [[var]]");
     SWAG_ERROR(Nte0008, "[[%s]] was found in [[%s]] because of a [[using]] field");
-    SWAG_ERROR(Nte0009, "[[closure]] should be followed by capture parameters enclosed in [[|...|]]");
+    SWAG_ERROR(Nte0009, "[[func]] should be followed by capture parameters enclosed in [[|...|]]");
     SWAG_ERROR(Nte0010, "[[discard]] cannot be used with an intrinsic, as an intrinsic result should always be utilized");
     SWAG_ERROR(Nte0012, "a [[bool]] type is expected because the [[if]] statement checks if the variable is [[true]] (non-zero) or [[false]] (zero)");
     SWAG_ERROR(Nte0013, "a [[let]] variable is immutable and cannot be modified");
@@ -993,7 +993,7 @@ void initErrors()
     SWAG_ERROR(Nte0052, "consider using [[?]] to unpack and discard a variable");
     SWAG_ERROR(Nte0053, "consider using [[#decltype]] to retrieve the type of an expression");
     SWAG_ERROR(Nte0054, "consider using [[const Value = #include(\"path\")]] to embed an external file in a constant byte array");
-    SWAG_ERROR(Nte0055, "consider using [[func(]] or [[closure(]] to declare a lambda type");
+    SWAG_ERROR(Nte0055, "consider using [[func(]] to declare a lambda type");
     SWAG_ERROR(Nte0056, "consider using [[func]] instead of [[mtd]] to avoid the implicit [[self]] parameter.");
     SWAG_ERROR(Nte0057, "consider using [[func]] to declare a function");
     SWAG_ERROR(Nte0058, "consider using [[mtd]] instead of [[func]] to implicitly include [[using self]] as the first parameter");

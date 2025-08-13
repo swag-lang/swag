@@ -450,6 +450,14 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
 
             break;
 
+        case TokenId::KwdMethod:
+            if (exprFlags.has(EXPR_FLAG_SIMPLE))
+                return invalidTokenError(InvalidTokenError::PrimaryExpression);
+            if (exprFlags.has(EXPR_FLAG_TYPEOF | EXPR_FLAG_ALIAS))
+                return invalidTokenError(InvalidTokenError::PrimaryExpression);
+            SWAG_CHECK(doLambdaExpression(parent, exprFlags, result));
+            break;
+
         case TokenId::KwdFunc:
             if (exprFlags.has(EXPR_FLAG_SIMPLE))
                 return invalidTokenError(InvalidTokenError::PrimaryExpression);
