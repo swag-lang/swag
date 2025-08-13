@@ -494,20 +494,20 @@ impl Crc32
 public impl Crc32
 {
     // Initialize the hashing sequence
-    mtd init()
+    mtd init(seed: u32 = 0)
     {
-        crc = 0
+        crc = seed
     }
 
     // Update the hash value with 'buffer' content
     mtd update(data: #null const [..] u8)
     {
-        var cur    = ~crc
         var length = @countof(data)
         if !length:
             return
         var current = cast(const ^u32) @dataof(data)
 
+        var cur           = ~crc
         const unroll      = 4
         const bytesAtOnce = 16 * unroll
         while length >= bytesAtOnce
