@@ -1068,11 +1068,7 @@ bool Parser::doClosureCaptureBlock(TypeInfoFuncAttr* typeInfo, AstFuncCallParams
     }
     else
     {
-        {
-            PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, [] { return toNte(Nte0009); });
-            SWAG_CHECK(eatToken(TokenId::SymVertical, "to start the closure capture block"));
-        }
-
+        SWAG_CHECK(eatToken(TokenId::SymVertical, "to start the closure capture block"));
         while (tokenParse.isNot(TokenId::SymVertical))
         {
             auto parentId = castAst<AstNode>(capture);

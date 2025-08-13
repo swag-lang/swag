@@ -207,7 +207,6 @@ void initErrors()
     SWAG_ERROR(Err0057, "duplicated instruction modifier                   $ cannot have more than one [[%s]] instruction modifier                                                                                    $ ");
     SWAG_ERROR(Err0058, "duplicated named argument                         $ cannot have more than one named argument [[%s]]                                                                                          $ ");
     SWAG_ERROR(Err0059, "duplicated operator                               $ cannot use the operator [['%s']] twice                                                                                                   $ expected an expression instead");
-    SWAG_ERROR(Err0060, nullptr);
     SWAG_ERROR(Err0061, "empty [[case]] statement                          $ cannot have an empty [[case]] statement                                                                                                  $ ");
     SWAG_ERROR(Err0062, "empty [[default]] statement                       $ cannot have an empty [[default]] statement                                                                                               $ ");
     SWAG_ERROR(Err0063, "empty [[switch]]                                  $ cannot have an empty [[switch]] body                                                                                                     $ consider adding some cases, or removing it");
@@ -813,7 +812,6 @@ void initErrors()
     SWAG_ERROR(Err0665, "unexpected type suffix                            $ cannot have a type suffix after %s                                                                                                       $ ");
     SWAG_ERROR(Err0666, "unknown [[#global]] instruction                   $ cannot recognize [[%s]] as a valid [[#global]] instruction                                                                               $ ");
     SWAG_ERROR(Err0667, "misplaced [[mtd]]                                 $ cannot use [[mtd]] as a lambda without capture parameters                                                                                $ consider using [[func]] instead or declaring capture arguments between [[|...|]]");
-    SWAG_ERROR(Err0668, nullptr);
     SWAG_ERROR(Err0669, "unknown [[foreach]]                               $ cannot visit the type [[%s]]                                                                                                             $ cannot find [[opVisit]]");
     SWAG_ERROR(Err0670, "unknown [[foreach]] name                          $ cannot find the visit specialization name [[%s]] in [[%s]]                                                                               $ ");
     SWAG_ERROR(Err0671, "unknown attribute                                 $ cannot find the attribute [[%s]]                                                                                                         $ ");
@@ -937,6 +935,9 @@ void initErrors()
     SWAG_ERROR(Err0785, "missing [[#import]] location                      $ expected the location as the second argument of [[#import]], found $$TKN$$ instead                                                       $ the second argument should be [[location:\"location\"]])");
     SWAG_ERROR(Err0773, "missing [[#import]] version                       $ expected the version as the third argument of [[#import]], found $$TKN$$ instead                                                         $ the third argument should be [[version:\"version\"]])");
 
+    SWAG_ERROR(Err0668, nullptr);
+    SWAG_ERROR(Err0060, nullptr);
+    
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -949,7 +950,6 @@ void initErrors()
     SWAG_ERROR(Nte0006, "[[%s]] is an array of type [[%s]], which does not have a sub-scope");
     SWAG_ERROR(Nte0007, "[[%s]] is interpreted as a type, not a generic value, due to the preceding [[var]]");
     SWAG_ERROR(Nte0008, "[[%s]] was found in [[%s]] because of a [[using]] field");
-    SWAG_ERROR(Nte0009, "[[func]] should be followed by capture parameters enclosed in [[|...|]]");
     SWAG_ERROR(Nte0010, "[[discard]] cannot be used with an intrinsic, as an intrinsic result should always be utilized");
     SWAG_ERROR(Nte0012, "a [[bool]] type is expected because the [[if]] statement checks if the variable is [[true]] (non-zero) or [[false]] (zero)");
     SWAG_ERROR(Nte0013, "a [[let]] variable is immutable and cannot be modified");
@@ -1166,6 +1166,7 @@ void initErrors()
     SWAG_ERROR(Nte0224, "%s [[%s]] does not accept a null value as %s");
     SWAG_ERROR(Nte0225, "this implies a nullable value");
 
+    SWAG_ERROR(Nte0009, nullptr);
     SWAG_ERROR(Nte0016, nullptr);
     SWAG_ERROR(Nte0226, nullptr);
 }
