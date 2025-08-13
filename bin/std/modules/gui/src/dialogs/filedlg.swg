@@ -205,6 +205,8 @@ impl FileDlg
     func create(from: *Surface, opt: FileDlgOptions = {})->*FileDlg
     {
         let dlg = Wnd.create'FileDlg()
+        dlg.fromSurface = from
+
         with let srf = dlg.createSurface(from, 100, 100, 700, 500)
         {
             .setSurfaceFlags(add: .Sizeable)

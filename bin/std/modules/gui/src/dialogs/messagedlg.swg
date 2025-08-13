@@ -22,6 +22,8 @@ public impl MessageDlg
     func create(from: *Surface, message: string, options: MessageDlgOptions)->*MessageDlg
     {
         let dlg = Wnd.create'MessageDlg()
+        dlg.fromSurface = from
+
         let srf = dlg.createSurface(from, 0, 0, 500, 300)
 
         let metrics = from.wnd.getThemeMetrics()

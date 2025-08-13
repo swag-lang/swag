@@ -6,6 +6,7 @@ struct Dialog
     wndBottom:            *StackLayoutCtrl
     buttons:              Array'(*PushButton)
     sigPressedButton:     func||(*Dialog, WndId)->bool
+    fromSurface:          *Surface
 }
 
 impl IWnd for Dialog
@@ -98,6 +99,7 @@ impl Dialog
         let srf = dlg.createSurface(from, 0, 0, width, height, flags)
         srf.setTitle(title)
         srf.center(from)
+        dlg.fromSurface = from
         return dlg
     }
 
@@ -135,6 +137,8 @@ impl Dialog
     {
         surface.bringToTop()
         surface.show()
+        if fromSurface and fromSurface.isTopMost():
+            surface.setTopMost()
         return surface.app.doModalLoop(surface)
     }
 

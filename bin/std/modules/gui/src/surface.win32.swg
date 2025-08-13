@@ -22,6 +22,7 @@ struct NativeSurface
 {
     hWnd:             HWND
     lastDeadChar:     WPARAM
+    topMost:          bool
 }
 
 internal func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
@@ -159,7 +160,7 @@ internal impl Surface
         // Create class
         #[Swag.Global]
         var doneClass: bool
-        let className = @dataof(Utf16.toZeroTerminated("Swag.Gui.Surface"))
+        let className   = @dataof(Utf16.toZeroTerminated("Swag.Gui.Surface"))
         let surfaceName = @dataof(Utf16.toZeroTerminated(result.surfaceID))
         if !doneClass
         {
@@ -186,8 +187,11 @@ internal impl Surface
         var winFlagsEx = 0'u32
         if flags & .Secondary:
             winFlagsEx |= WS_EX_TOOLWINDOW
-        if flags & .TopMost:
+        if flags & .TopMost
+        {
+            result.topMost = true
             winFlagsEx |= WS_EX_TOPMOST
+        }
 
         // Create window
         result.hWnd = cast(const *void) CreateWindowExW(winFlagsEx, className, surfaceName, winFlags, x, y, width, height, null, null, GetModuleHandleW(null), result)
@@ -256,7 +260,13 @@ impl Surface
     // Set the window as a topmost window (above all non topmost)
     mtd setTopMost()
     {
-        catch SetWindowPos(hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+        catch SetWindowPos(hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE)
+        topMost = true
+    }
+
+    mtd isTopMost()->bool
+    {
+        return topMost
     }
 
     // Bring the surface at the top of the Z order
