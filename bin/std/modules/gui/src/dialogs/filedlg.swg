@@ -452,7 +452,10 @@ impl FileDlg
 
         with dlg
         {
-            .setCurFolder(opt.openFolder)
+            if opt.openFolder:
+                .setCurFolder(opt.openFolder)
+            elif opt.state:
+                .setCurFolder(opt.state.curFolder)
             .listCtrl.sort(0)
 
             .editFile.setText(opt.editName)

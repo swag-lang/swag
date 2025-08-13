@@ -27,52 +27,53 @@ enum BottomSize
 
 struct MainWnd
 {
-    using wnd:          Wnd
+    using wnd:               Wnd
 
-    inPlaceEdit:        bool
-    icons24:            ImageList
-    icons48:            ImageList
-    appIcon:            ImageList
-    topBar:             *Wnd
-    editToolBar:        *Wnd
-    editWnd:            *EditWnd
-    quickWnd:           *QuickWnd
-    propWnd:            *PropWnd
-    libWnd:             *LibraryWnd
-    captureBtn:         *IconButton
-    libraryBtn:         *IconButton
-    zoomBtn:            *IconButton
-    sizeBtn:            *IconButton
-    recentWnd:          *RecentWnd
-    recentBar:          *Wnd
-    recentSizeBar:      *IconBar
-    quickStyleBar:      *SplitterCtrl
-    editZoomBar:        *StackLayoutCtrl
-    monitors:           Array'Env.Monitor
-    pixSelFillCol:      Color = Argb.White
-    firstShow           = true
-    embInfoFreeze:      *EmbInfoCtrl
+    inPlaceEdit:             bool
+    icons24:                 ImageList
+    icons48:                 ImageList
+    appIcon:                 ImageList
+    topBar:                  *Wnd
+    editToolBar:             *Wnd
+    editWnd:                 *EditWnd
+    quickWnd:                *QuickWnd
+    propWnd:                 *PropWnd
+    libWnd:                  *LibraryWnd
+    captureBtn:              *IconButton
+    libraryBtn:              *IconButton
+    zoomBtn:                 *IconButton
+    sizeBtn:                 *IconButton
+    recentWnd:               *RecentWnd
+    recentBar:               *Wnd
+    recentSizeBar:           *IconBar
+    quickStyleBar:           *SplitterCtrl
+    editZoomBar:             *StackLayoutCtrl
+    monitors:                Array'Env.Monitor
+    pixSelFillCol:           Color = Argb.White
+    firstShow                = true
+    embInfoFreeze:           *EmbInfoCtrl
 
-    editMode:           EditMode = .Shape
-    bottomSize:         BottomSize = Medium
-    snap:               bool
-    freezeSel:          bool
-    libraryMode:        bool
-    fileDlgState:       FileDlgState
-    captureOptions:     CaptureOptions
-    editorOptions:      EditorOptions
+    editMode:                EditMode = .Shape
+    bottomSize:              BottomSize = Medium
+    snap:                    bool
+    freezeSel:               bool
+    libraryMode:             bool
+    fileDlgState:            FileDlgState
+    fileDlgStateInPlace:     FileDlgState
+    captureOptions:          CaptureOptions
+    editorOptions:           EditorOptions
 
-    mdlFormShape:       FormShape
-    mdlFormImage:       FormImage
-    mdlFormStep:        FormStep
-    mdlFormArrow:       FormArrow
-    mdlFormLine:        FormLine
-    mdlFormPolygon:     FormPolygon
-    mdlFormText:        FormText
-    mdlFormDraw:        FormDraw
-    mdlHighlight:       IForm
-    mdlPixSel:          IForm
-    mdlFavorite:        IForm
+    mdlFormShape:            FormShape
+    mdlFormImage:            FormImage
+    mdlFormStep:             FormStep
+    mdlFormArrow:            FormArrow
+    mdlFormLine:             FormLine
+    mdlFormPolygon:          FormPolygon
+    mdlFormText:             FormText
+    mdlFormDraw:             FormDraw
+    mdlHighlight:            IForm
+    mdlPixSel:               IForm
+    mdlFavorite:             IForm
 }
 
 const Icons24 = #include("datas/icons24.png")
@@ -193,6 +194,7 @@ impl IWnd for MainWnd
                 .serialize("MainWnd.snap", &snap)
                 .serialize("MainWnd.bottomSize", &bottomSize)
                 .serialize("MainWnd.fileDlgState", &fileDlgState)
+                .serialize("MainWnd.fileDlgStateInPlace", &fileDlgStateInPlace)
                 .serialize("MainWnd.RightBar.Pane0", &quickStyleBar.items[0].size)
                 .serialize("MainWnd.RightBar.Pane1", &quickStyleBar.items[1].size)
                 .serialize("MainWnd.captureOptions", &captureOptions)
@@ -286,14 +288,14 @@ impl MainWnd
         {
             embInfoFreeze.destroy()
             embInfoFreeze = null
-            freezeSel = false
+            freezeSel     = false
         }
         elif freeze and !embInfoFreeze
         {
             embInfoFreeze = EmbInfoCtrl.create(editWnd.view, "Selection is freezed", .Message, flags: .Bottom)
             embInfoFreeze.sigOnClose += mtd||(ctrl)
             {
-                freezeSel = false
+                freezeSel     = false
                 embInfoFreeze = null
             }
 

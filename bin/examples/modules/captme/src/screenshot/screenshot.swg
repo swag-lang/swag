@@ -99,8 +99,11 @@ func performInPlaceEdit(img: Image, surface: *Surface, main: *MainWnd)->#null *C
         return capture
     }
 
-    let inPlaceMain = InPlaceEditWnd.create(capture, main, surface.wnd)
-    surface.setView(inPlaceMain)
+    let inPlaceWnd = InPlaceEditWnd.create(capture, main, surface.wnd)
+    surface.setView(inPlaceWnd)
+
+    inPlaceWnd.newMain.fileDlgState = main.fileDlgStateInPlace
+    defer main.fileDlgStateInPlace = inPlaceWnd.newMain.fileDlgState
 
     if !waitForCapture()
     {
@@ -108,7 +111,7 @@ func performInPlaceEdit(img: Image, surface: *Surface, main: *MainWnd)->#null *C
         return null
     }
 
-    inPlaceMain.editWnd.editView.capture = null
+    inPlaceWnd.editWnd.editView.capture = null
     surface.destroy()
     return capture
 }
