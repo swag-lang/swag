@@ -296,7 +296,10 @@ bool FormatAst::outputLambdaExpression(FormatContext& context, AstNode* node)
     const AstFuncDecl* funcDecl = castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
 
     // Closure capture parameters
-    concat->addString("func");
+    if (funcDecl->token.is(TokenId::KwdMethod))
+        concat->addString("mtd");
+    else
+        concat->addString("func");
     if (funcDecl->captureParameters)
         SWAG_CHECK(outputClosureArguments(context, funcDecl));
 

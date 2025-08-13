@@ -1,4 +1,4 @@
-struct V2 {x: s32 = 1}
+struct V2 { x: s32 = 1 }
 
 impl V2
 {
