@@ -8,15 +8,21 @@ public struct Crc64
     crc: u64
 }
 
+public enum Crc64Kind
+{
+    ECMA182
+    ISO
+    ISOXZ
+}
+
 impl Crc64
 {
-    // Lookup table for CRC-64-ECMA.
-    // This table is generated at compile time.
-    var LookUpTable: [256] u64 = undefined
+    var LookUpTableECMA: [256] u64 = undefined
+    var LookUpTableISO: [256] u64 = undefined
 
     // Generates the lookup LookUpTable for CRC-64-ECMA.
     #[Swag.Compiler]
-    func generateLookUpTable()
+    func generateLookUpTableECMA()
     {
         const POLY: u64 = 0xC96C5795D7870F42
 
@@ -35,19 +41,51 @@ impl Crc64
                 }
             }
 
-            LookUpTable[i] = crc
+            LookUpTableECMA[i] = crc
+        }
+    }
+
+    // Generates the lookup LookUpTable for ISO.
+    #[Swag.Compiler]
+    func generateLookUpTableISO()
+    {
+        const POLY: u64 = 0xD800000000000000
+
+        for i in 256
+        {
+            var crc: u64 = i
+            for j in 8
+            {
+                if crc & 1
+                {
+                    crc = (crc >> 1) ^ POLY
+                }
+                else
+                {
+                    crc >>= 1
+                }
+            }
+
+            LookUpTableISO[i] = crc
         }
     }
 
     // Initialize the hashing sequence
-    mtd init(seed: u64 = 0)
+    mtd init(kind: Crc64Kind)
     {
-        crc = seed
+        #[Swag.Complete]
+        switch kind
+        {
+        case ECMA182, ISO:
+            crc = 0
+        case ISOXZ:
+            crc = 0xFFFFFFFF_FFFFFFFF
+        }
     }
 
     // Computes the CRC-64 hash of the provided data.
     #[ConstExpr, Swag.Safety("", false)]
-    public mtd update(data: #null const [..] u8)
+    public mtd update(data: #null const [..] u8, kind: Crc64Kind)
     {
         let length = @countof(data)
         if length == 0:
@@ -57,30 +95,40 @@ impl Crc64
         var cur   = ~crc
 
         // Process 8 bytes at a time for better cache utilization
-        let blocks = length >> 3 // length / 8
+        let blocks = length >> 3
+
+        var table: ^u64
+        #[Swag.Complete]
+        switch kind
+        {
+        case ECMA182, ISOXZ:
+            table = LookUpTableECMA
+        case ISO:
+            table = LookUpTableISO
+        }
 
         // Unrolled loop for 8-byte blocks
         var i: u64 = 0
         while i < blocks
         {
-            let offset = i << 3 // i * 8
-            cur = LookUpTable[(cur ^ bytes[offset]) & 0xFF] ^ (cur >> 8)
-            cur = LookUpTable[(cur ^ bytes[offset + 1]) & 0xFF] ^ (cur >> 8)
-            cur = LookUpTable[(cur ^ bytes[offset + 2]) & 0xFF] ^ (cur >> 8)
-            cur = LookUpTable[(cur ^ bytes[offset + 3]) & 0xFF] ^ (cur >> 8)
-            cur = LookUpTable[(cur ^ bytes[offset + 4]) & 0xFF] ^ (cur >> 8)
-            cur = LookUpTable[(cur ^ bytes[offset + 5]) & 0xFF] ^ (cur >> 8)
-            cur = LookUpTable[(cur ^ bytes[offset + 6]) & 0xFF] ^ (cur >> 8)
-            cur = LookUpTable[(cur ^ bytes[offset + 7]) & 0xFF] ^ (cur >> 8)
+            let offset = i << 3
+            cur = table[(cur ^ bytes[offset]) & 0xFF] ^ (cur >> 8)
+            cur = table[(cur ^ bytes[offset + 1]) & 0xFF] ^ (cur >> 8)
+            cur = table[(cur ^ bytes[offset + 2]) & 0xFF] ^ (cur >> 8)
+            cur = table[(cur ^ bytes[offset + 3]) & 0xFF] ^ (cur >> 8)
+            cur = table[(cur ^ bytes[offset + 4]) & 0xFF] ^ (cur >> 8)
+            cur = table[(cur ^ bytes[offset + 5]) & 0xFF] ^ (cur >> 8)
+            cur = table[(cur ^ bytes[offset + 6]) & 0xFF] ^ (cur >> 8)
+            cur = table[(cur ^ bytes[offset + 7]) & 0xFF] ^ (cur >> 8)
             i += 1
         }
 
         // Process remaining bytes
-        let remaining_start = blocks << 3 // blocks * 8
+        let remaining_start = blocks << 3
         i = remaining_start
         while i < length
         {
-            cur = LookUpTable[(cur ^ bytes[i]) & 0xFF] ^ (cur >> 8)
+            cur = table[(cur ^ bytes[i]) & 0xFF] ^ (cur >> 8)
             i += 1
         }
 
@@ -89,17 +137,18 @@ impl Crc64
 
     // Returns the hash value for the given buffer
     #[Swag.ConstExpr]
-    public func compute(buffer: const [..] u8)->u64
+    public func compute(buffer: const [..] u8, kind = Crc64Kind.ECMA182)->u64
     {
         var v: Crc64
-        v.init()
-        v.update(buffer)
+        v.init(kind)
+        v.update(buffer, kind)
         return v.crc
     }
 }
 
-// Initialize the lookup LookUpTable at compile time.
+// Initialize the lookup LookUpTableECMA at compile time.
 #run
 {
-    Crc64.generateLookUpTable()
+    Crc64.generateLookUpTableECMA()
+    Crc64.generateLookUpTableISO()
 }
