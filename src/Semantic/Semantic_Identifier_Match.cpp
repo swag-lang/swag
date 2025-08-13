@@ -1348,7 +1348,7 @@ bool Semantic::setMatchResult(SemanticContext* context, AstIdentifierRef* identi
     }
 
     // If this is a typealias, find the right thing
-    auto typeAlias  = identifier->typeInfo;
+    auto typeAlias  = identifier->typeInfo->getConstAlias();
     auto symbolKind = symbol->kind;
     if (symbol->is(SymbolKind::TypeAlias))
     {

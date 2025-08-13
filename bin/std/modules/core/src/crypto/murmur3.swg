@@ -49,3 +49,57 @@ public func murmur3(a, b: u64)->u64
     nb ^= (nb >> 47)
     return nb * K
 }
+
+#[Safety("", false), Overload]
+public func murmur3(key: const ^u8, len: u64, seed: u64)->u64
+{
+    const m = 0xc6a4a7935bd1e995'u64
+    const r = 47
+
+    var h = seed ^ (len * m)
+
+    let data  = cast(const ^u64) key
+    let nblocks = len / 8
+
+    for i in nblocks
+    {
+        var k = data[i]
+        k *= m
+        k ^= k >> r
+        k *= m
+        h ^= k
+        h *= m
+    }
+
+    let data2 = cast(const ^u8) &data[nblocks]
+    switch len & 7
+    {
+    case 7:
+        h ^= cast(u64) data2[6] << 48
+        fallthrough
+    case 6:
+        h ^= cast(u64) data2[5] << 40
+        fallthrough
+    case 5:
+        h ^= cast(u64) data2[4] << 32
+        fallthrough
+    case 4:
+        h ^= cast(u64) data2[3] << 24
+        fallthrough
+    case 3:
+        h ^= cast(u64) data2[2] << 16
+        fallthrough
+    case 2:
+        h ^= cast(u64) data2[1] << 8
+        fallthrough
+    case 1:
+        h ^= cast(u64) data2[0]
+        h *= m
+    }
+
+    h ^= h >> r
+    h *= m
+    h ^= h >> r
+
+    return h
+}
