@@ -137,7 +137,7 @@ internal impl FileDlg
             treePathStr.add(v)
         }
 
-        treeCtrl.sigSelChanged += func|using self|(list)
+        treeCtrl.sigSelChanged += mtd||(list)
         {
             var line = list.getSelectedLine()
             if !line:
@@ -547,7 +547,7 @@ impl FileDlg
             .surface.center(surface)
         }
 
-        dlg.sigPressedButton = func|using self, dlg|(fdlg, btnid)
+        dlg.sigPressedButton = mtd|dlg|(fdlg, btnid)
         {
             if btnid != Dialog.BtnOk:
                 return true

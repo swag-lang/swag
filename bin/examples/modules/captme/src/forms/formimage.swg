@@ -476,7 +476,7 @@ impl IForm for FormImage
             .paintBigBorder    = true
         }
 
-        gizmo.sigChanged = func|using self|(g, first, hitMove)
+        gizmo.sigChanged = mtd||(g, first, hitMove)
         {
             g.apply(self, first, hitMove)
         }

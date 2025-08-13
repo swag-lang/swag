@@ -263,14 +263,14 @@ impl Properties
 
         if item.sliderBox
         {
-            item.sliderBox.sigChanged += func|using self, item|(ed)
+            item.sliderBox.sigChanged += mtd|item|(ed)
             {
                 validateNative(item)
             }
         }
         elif item.editBox
         {
-            item.editBox.sigLoseFocus += func|using self, item|(ed)
+            item.editBox.sigLoseFocus += mtd|item|(ed)
             {
                 if ed.isValid():
                     validateNative(item)

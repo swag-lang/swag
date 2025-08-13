@@ -249,7 +249,7 @@ impl RecentWnd
         loadDone = true
 
         g_Library.fill()
-        g_Library.onDeleteFile += func|using self|(file)
+        g_Library.onDeleteFile += mtd||(file)
         {
             foreach it, i in recentView.items
             {

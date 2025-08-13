@@ -77,14 +77,14 @@ impl IconBar
 
         if iconBtnFlags.has(.Checkable | .CheckableToggle)
         {
-            b.sigCheckChanged += func|using self|(btn)
+            b.sigCheckChanged += mtd||(btn)
             {
                 sigCheckChanged.call(btn)
             }
         }
         else
         {
-            b.sigPressed += func|using self|(btn)
+            b.sigPressed += mtd||(btn)
             {
                 sigPressed.call(cast(*IconButton) btn)
             }

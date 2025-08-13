@@ -226,7 +226,7 @@ impl IForm for FormLine
         capture = capt
         gizmo.anchors.resize(3)
 
-        gizmo.sigChanged = func|using self|(diff, pt, first)
+        gizmo.sigChanged = mtd||(diff, pt, first)
         {
             GizmoPoints.apply(self, diff, pt, first)
         }

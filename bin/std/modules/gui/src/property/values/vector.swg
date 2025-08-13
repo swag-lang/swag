@@ -22,7 +22,7 @@ impl Properties
             {
                 .dockStyle = .Left
                 .setInputF64()
-                .sigLoseFocus += func|using self, dataField, item|(ed)
+                .sigLoseFocus += mtd|dataField, item|(ed)
                 {
                     dref dataField = catch StrConv.toF32(ed.text)
                     hasChanged(item)

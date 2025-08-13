@@ -10,7 +10,7 @@ impl V2
     mtd toto()
     {
         var f: func||()
-        f = func|using self|()
+        f = mtd||()
         {
             titi()
         }

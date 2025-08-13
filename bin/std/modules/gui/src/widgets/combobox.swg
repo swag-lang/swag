@@ -167,7 +167,7 @@ internal impl ComboBox
                 popup.addItem(item.name.raw, item.id, item.icon, item.userData0, item.userData1)
         }
 
-        popup.sigSelected = func|using self|(list, idx)
+        popup.sigSelected = mtd||(list, idx)
         {
             if idx != Swag.U32.Max:
                 selectItem(idx)

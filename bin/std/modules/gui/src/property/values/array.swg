@@ -119,7 +119,7 @@ impl Properties
         let addBtn       = IconButton.create(parentForBtn, getTheme().getIcon24(ThemeIcons24.Plus, 20), {0, 0, 24, 24})
         addBtn.dockStyle = .Right
         addBtn.setForm(IconButtonForm.Round)
-        addBtn.sigPressed += func|using self, item|(btn)
+        addBtn.sigPressed += mtd|item|(btn)
         {
             appendArrayValue(item)
         }

@@ -291,7 +291,7 @@ impl MainWnd
         elif freeze and !embInfoFreeze
         {
             embInfoFreeze = EmbInfoCtrl.create(editWnd.view, "Selection is freezed", .Message, flags: .Bottom)
-            embInfoFreeze.sigOnClose += func|using self|(ctrl)
+            embInfoFreeze.sigOnClose += mtd||(ctrl)
             {
                 freezeSel = false
                 embInfoFreeze = null

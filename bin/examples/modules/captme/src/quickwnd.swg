@@ -690,13 +690,13 @@ impl QuickWnd
                 paintForm(bc.painter, cast(*QuickButton) btn)
             }
 
-            btn.sigRightPressed += func|using self|(btn)
+            btn.sigRightPressed += mtd||(btn)
             {
                 var rect = btn.getSurfaceRect()
                 btnPopup(btn, rect.center())
             }
 
-            btn.sigCheckChanged += func|using self, it|(btn)
+            btn.sigCheckChanged += mtd|it|(btn)
             {
                 if !btn.isChecked:
                     return
@@ -773,7 +773,7 @@ impl QuickWnd
             layout.sendResizeEvent()
             setScrollSize(0, layout.resultHeight)
 
-            btn1.sigPressed += func|using self, main|(btn)
+            btn1.sigPressed += mtd|main|(btn)
             {
                 let mdl = main.newFormFromModel(main.getEditMode())
                 if mdl

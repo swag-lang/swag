@@ -530,7 +530,7 @@ internal impl Properties
                 .extendFocus = gridLineMargin * 0.5
         }
 
-        line.hookOnEvent = func|using self, item|(wnd, evt) { return onItemEvent(item, #self.wnd, evt); }
+        line.hookOnEvent = mtd|item|(wnd, evt) { return onItemEvent(item, #self.wnd, evt); }
 
         // Name
         if flags.has(.Name)

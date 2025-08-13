@@ -55,7 +55,7 @@ impl Properties
         }
 
         item.checkBox = ed
-        ed.sigChanged += func|using self, item|(ed)
+        ed.sigChanged += mtd|item|(ed)
         {
             validateBool(item)
         }

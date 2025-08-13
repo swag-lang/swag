@@ -160,7 +160,7 @@ impl LibraryWnd
     {
         if listCtrl.getLineCount():
             return
-        g_Library.onDeleteFile += func|using self|(file)
+        g_Library.onDeleteFile += mtd||(file)
         {
             foreach it, i in self.view.items
             {

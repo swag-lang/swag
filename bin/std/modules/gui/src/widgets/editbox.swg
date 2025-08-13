@@ -353,7 +353,7 @@ internal impl EditBox
                 clearBtn           = IconButton.create(self, getTheme().getIcon24(ThemeIcons24.WndClose, 18), {0, 0, 24, 24})
                 clearBtn.dockStyle = .Right
                 clearBtn.setForm(IconButtonForm.Round)
-                clearBtn.sigPressed += func|using self|(btn) { setText(null); }
+                clearBtn.sigPressed += mtd||(btn) { setText(null); }
                 applyLayout()
             }
         }

@@ -18,7 +18,7 @@ impl Properties
                 .dockStyle = .CenterKeepSizeVert
             else:
                 .anchorStyle = .X
-            .sigLoseFocus += func|using self, item|(ed) { validateDynamicString(item); }
+            .sigLoseFocus += mtd|item|(ed) { validateDynamicString(item); }
         }
 
         item.editBox = ed

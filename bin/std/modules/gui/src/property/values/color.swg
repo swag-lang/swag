@@ -31,7 +31,7 @@ impl Properties
             .dockStyle = .Left
             .margin.z  = MarginBtn
             .setInputX64(0, opaque ? 0xFFFFFF : 0xFFFFFFFF)
-            .sigLoseFocus += func|using self, color, item, opaque, keepAlpha|(ed)
+            .sigLoseFocus += mtd|color, item, opaque, keepAlpha|(ed)
             {
                 var result = cast(u32) (catch StrConv.parseX64(ed.text).value & 0xFFFFFFFF)
                 if opaque:
@@ -51,7 +51,7 @@ impl Properties
             bc.painter.fillRoundRect(pos, 5, 5, dref color)
         }
 
-        btn.sigShowPopup += func|using self, color, item, opaque, keepAlpha|(btn)
+        btn.sigShowPopup += mtd|color, item, opaque, keepAlpha|(btn)
         {
             if !btn:
                 return
@@ -68,7 +68,7 @@ impl Properties
 
             let picker = ColorPickerCtrl.createWithPalette(frame, {8, 54}, pal, flags)
             picker.setColor(color)
-            picker.sigChanged += func|using self, color, item, opaque, keepAlpha|(pk)
+            picker.sigChanged += mtd|color, item, opaque, keepAlpha|(pk)
             {
                 var result = pk.getColor().argb
                 if opaque:
@@ -80,7 +80,7 @@ impl Properties
             }
         }
 
-        btn.sigHidePopup += func|using self|(btn)
+        btn.sigHidePopup += mtd||(btn)
         {
             editPopup = null
         }
