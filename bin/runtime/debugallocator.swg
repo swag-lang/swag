@@ -96,7 +96,7 @@ impl DebugAllocator
 
         if (ptrHeader.magic != MagicFree or ptrFooter.magic != MagicFree)
         {
-            self.mutex.unlock()
+            mutex.unlock()
             @panic("memory block corruption", #curlocation)
         }
 
@@ -120,7 +120,7 @@ impl DebugAllocator
         if (ptrHeader.magic != MagicAlloc and ptrHeader.magic != MagicFree) or
            (ptrFooter.magic != MagicAlloc and ptrFooter.magic != MagicFree)
         {
-            self.mutex.unlock()
+            mutex.unlock()
             @panic("memory block corruption", callerLoc)
         }
 
@@ -132,13 +132,13 @@ impl DebugAllocator
            (ptrHeader.prev and ptrHeader.prev.next != ptrHeader) or
            (ptrHeader.next and ptrHeader.next.prev != ptrHeader)
         {
-            self.mutex.unlock()
+            mutex.unlock()
             @panic("memory block corruption", callerLoc)
         }
 
         if (ptrHeader.magic == MagicFree and ptrHeader.magic == MagicFree)
         {
-            self.mutex.unlock()
+            mutex.unlock()
             let loc = ptrHeader.loc.fileName ? ptrHeader.loc : callerLoc
             @panic("memory block double free", loc)
         }
@@ -150,7 +150,7 @@ impl DebugAllocator
     mtd opDrop()
     {
         // Free all blocks in quarantine
-        while self.sizeFree > 0:
+        while sizeFree > 0:
             DebugAllocator.IAllocator.releaseLast(self)
     }
 
@@ -164,10 +164,10 @@ impl DebugAllocator
     // Output to the console the list of all allocated blocks (leaks)
     mtd printLeaks()
     {
-        if self.countAlloc == 0 or !self.detectLeaks:
+        if countAlloc == 0 or !detectLeaks:
             return
 
-        var scan = cast(*DebugAllocatorHeader) self.firstAlloc
+        var scan = cast(*DebugAllocatorHeader) firstAlloc
 
         @print("############################################\n")
         @print("Swag.DebugAllocator: Memory leaks detected !\n")
@@ -231,23 +231,23 @@ impl DebugAllocator
         if !addr:
             return
         let ptrHeader = cast(*DebugAllocatorHeader) (cast(^u8) addr - #sizeof(DebugAllocatorHeader))
-        self.checkIsAllocated(ptrHeader, callerLoc)
+        checkIsAllocated(ptrHeader, callerLoc)
     }
 
     // Check all allocated blocks
     mtd checkAllMemory()
     {
-        var ptrHeader = cast(*DebugAllocatorHeader) self.firstAlloc
+        var ptrHeader = cast(*DebugAllocatorHeader) firstAlloc
         while ptrHeader
         {
-            self.checkIsAllocated(ptrHeader)
+            checkIsAllocated(ptrHeader)
             ptrHeader = ptrHeader.next
         }
 
-        ptrHeader = cast(*DebugAllocatorHeader) self.firstFree
+        ptrHeader = cast(*DebugAllocatorHeader) firstFree
         while ptrHeader
         {
-            self.checkIsFreed(ptrHeader)
+            checkIsFreed(ptrHeader)
             ptrHeader = ptrHeader.next
         }
     }
@@ -260,7 +260,7 @@ impl IAllocator for DebugAllocator
         if !request.address:
             return
 
-        self.assertIsAllocated(request.address, request.callerLoc)
+        assertIsAllocated(request.address, request.callerLoc)
 
         let userAddr  = cast(^u8) request.address
         let ptrHeader = cast(*DebugAllocatorHeader) (userAddr - #sizeof(DebugAllocatorHeader))
@@ -277,7 +277,7 @@ impl IAllocator for DebugAllocator
             ptrHeader.next.prev = ptrHeader.prev
 
         // Stats
-        @assert(self.countAlloc > 0)
+        @assert(countAlloc > 0)
         countAlloc -= 1
         @assert(sizeAlloc >= ptrHeader.userSize)
         let userSize = ptrHeader.userSize
@@ -358,7 +358,7 @@ impl IAllocator for DebugAllocator
         if request.size == 0
         {
             if request.mode == .Realloc:
-                self.free(request)
+                free(request)
             request.address = null
             return
         }
@@ -394,7 +394,7 @@ impl IAllocator for DebugAllocator
 
         // Make the real allocation
         copyReq.size += toAddAlign + #sizeof(DebugAllocatorFooter)
-        self.allocator.req(&copyReq)
+        allocator.req(&copyReq)
 
         // This is the aligned returned user address
         var userAddr = cast(^u8) copyReq.address
@@ -408,7 +408,7 @@ impl IAllocator for DebugAllocator
         header.userSize   = request.size
         header.loc        = copyReq.callerLoc
         header.hint       = copyReq.hint
-        header.stackCount = self.captureAllocStack ? __captureStack(2, header.stack) : 0
+        header.stackCount = captureAllocStack ? __captureStack(2, header.stack) : 0
 
         // Setup footer
         let footer = cast(*DebugAllocatorFooter) (userAddr + request.size)

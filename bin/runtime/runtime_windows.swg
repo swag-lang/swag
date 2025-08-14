@@ -136,12 +136,12 @@ impl MutexRW
 {
     mtd lock()
     {
-        __Win32RT.AcquireSRWLockExclusive(&self.v)
+        __Win32RT.AcquireSRWLockExclusive(&v)
     }
 
     mtd unlock()
     {
-        __Win32RT.ReleaseSRWLockExclusive(&self.v)
+        __Win32RT.ReleaseSRWLockExclusive(&v)
     }
 }
 
