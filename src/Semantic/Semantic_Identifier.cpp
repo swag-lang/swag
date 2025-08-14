@@ -2,7 +2,6 @@
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
-#include "Report/Report.h"
 #include "Semantic/Error/SemanticError.h"
 #include "Semantic/Scope.h"
 #include "Semantic/SemanticJob.h"
@@ -890,7 +889,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         scopeHierarchyVars.clear();
         symbolsMatch.clear();
     }
-
+    
     if (symbolsMatch.empty())
     {
         if (identifier->isSilentCall())
