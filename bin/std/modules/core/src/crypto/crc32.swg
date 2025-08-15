@@ -1,4 +1,3 @@
-#global marked
 #global namespace Hash
 
 public struct Crc32
@@ -497,7 +496,7 @@ public impl Crc32
     // Initialize the hashing sequence
     mtd init(seed: u32 = 0)
     {
-        self.crc = seed
+        crc = seed
     }
 
     // Update the hash value with 'buffer' content
@@ -508,7 +507,7 @@ public impl Crc32
             return
         var current = cast(const ^u32) @dataof(data)
 
-        var cur           = ~self.crc
+        var cur           = ~crc
         const unroll      = 4
         const bytesAtOnce = 16 * unroll
         while length >= bytesAtOnce
@@ -564,7 +563,7 @@ public impl Crc32
             length -= 1
         }
 
-        self.crc = ~cur
+        crc = ~cur
     }
 
     // Returns the hash value for the given buffer

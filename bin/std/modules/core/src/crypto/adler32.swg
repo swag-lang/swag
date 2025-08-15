@@ -1,7 +1,6 @@
 // https://tools.ietf.org/html/rfc1950#section-9
 // https://github.com/madler/zlib/blob/master/adler32.c
 
-#global marked
 #global namespace Hash
 
 public struct Adler32
@@ -17,14 +16,14 @@ public impl Adler32
     // Initialize the hashing sequence
     mtd init()
     {
-        self.adler = 1
+        adler = 1
     }
 
     // Update the hash value with 'buffer' content
     mtd update(buffer: const [..] u8)
     {
-        var s1 = self.adler & 0xffff
-        var s2 = (self.adler >> 16) & 0xffff
+        var s1 = adler & 0xffff
+        var s2 = (adler >> 16) & 0xffff
 
         let countof = @countof(buffer)
         if !countof:
@@ -99,7 +98,7 @@ public impl Adler32
             }
         }
 
-        self.adler = s1 | (s2 << 16)
+        adler = s1 | (s2 << 16)
     }
 
     // Returns the adler32 hash value for the given buffer

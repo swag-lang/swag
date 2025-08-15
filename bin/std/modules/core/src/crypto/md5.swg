@@ -1,4 +1,3 @@
-#global marked
 #global namespace Hash
 #global #[Swag.CanOverflow(true)]
 
@@ -18,25 +17,25 @@ public impl Md5
     mtd final(digest: Digest)
     {
         var bits: [8] u8
-        encode(&bits[0], self.count, 8)
+        encode(&bits[0], count, 8)
 
-        let index  = (self.count[0] >> 3) & 0x3f
+        let index  = (count[0] >> 3) & 0x3f
         let padLen = (index < 56) ? (56 - index) : (120 - index)
 
-        self.update(@mkslice(&self.padding[0], padLen))
-        self.update(@mkslice(&bits[0], 8))
-        encode(&digest[0], self.state, 16)
+        update(@mkslice(&padding[0], padLen))
+        update(@mkslice(&bits[0], 8))
+        encode(&digest[0], state, 16)
     }
 
     // Initialize the hashing sequence
     mtd init()
     {
         @init(self, 1)
-        self.padding[0] = 0x80
-        self.state[0]   = 0x67452301
-        self.state[1]   = 0xefcdab89
-        self.state[2]   = 0x98badcfe
-        self.state[3]   = 0x10325476
+        padding[0] = 0x80
+        state[0]   = 0x67452301
+        state[1]   = 0xefcdab89
+        state[2]   = 0x98badcfe
+        state[3]   = 0x10325476
     }
 
     // Update the hash value with 'buffer' content
@@ -48,32 +47,32 @@ public impl Md5
         let input    = @dataof(data)
         let inputLen = cast(u32) @countof(data)
 
-        var index = (self.count[0] >> 3) & 0x3F
-        self.count[0] += inputLen << 3
-        if self.count[0] < inputLen << 3:
-            self.count[1] += 1
-        self.count[1] += inputLen >> 29
+        var index = (count[0] >> 3) & 0x3F
+        count[0] += inputLen << 3
+        if count[0] < inputLen << 3:
+            count[1] += 1
+        count[1] += inputLen >> 29
 
         var i       = 0'u32
         let partLen = 64 - index
         if inputLen >= partLen
         {
-            Memory.copy(&self.buffer[index], input, cast(u64) partLen)
-            transform(self.state, &self.buffer[0])
+            Memory.copy(&buffer[index], input, cast(u64) partLen)
+            transform(state, &buffer[0])
             i = partLen
             while i + 63 < inputLen
             {
-                transform(self.state, input + i)
+                transform(state, input + i)
                 i += 64
             }
 
             index = 0
         }
 
-        Memory.copy(&self.buffer[index], input + i, cast(u64) inputLen - i)
+        Memory.copy(&buffer[index], input + i, cast(u64) inputLen - i)
     }
 
-    // Returns the md5 value for the given self.buffer
+    // Returns the md5 value for the given buffer
     func compute(buffer: const [..] u8)->Digest
     {
         var v: Md5
