@@ -1,4 +1,3 @@
-#global marked
 #global public
 
 // Flags to control the format of log output.
@@ -38,41 +37,41 @@ impl Log
     // Build the formatted log message header based on the current flags.
     internal mtd buildHeader(loc: Swag.SourceCodeLocation)
     {
-        if self.flags & .Prefix and @countof(self.prefix)
+        if flags & .Prefix and @countof(prefix)
         {
-            self.buf.appendString(self.prefix)
-            self.buf.appendString(" ")
+            buf.appendString(prefix)
+            buf.appendString(" ")
         }
 
-        if self.flags & .Date
+        if flags & .Date
         {
-            self.buf.appendFormat("%/%{D02}/%{D02} ", self.dt.year, self.dt.month, self.dt.day)
+            buf.appendFormat("%/%{D02}/%{D02} ", dt.year, dt.month, dt.day)
         }
 
-        if self.flags & .Time
+        if flags & .Time
         {
-            self.buf.appendFormat("%{D02}:%{D02}:%{D02}:%{D03} ", self.dt.hour, self.dt.minute, self.dt.second, self.dt.millisecond)
+            buf.appendFormat("%{D02}:%{D02}:%{D02}:%{D03} ", dt.hour, dt.minute, dt.second, dt.millisecond)
         }
 
-        if self.flags & .ShortFileName
+        if flags & .ShortFileName
         {
-            self.buf.appendString(Path.getFileName(loc.fileName))
-            self.buf.appendString(self.flags & (.Line | .FullLoc) ? ":" : " ")
+            buf.appendString(Path.getFileName(loc.fileName))
+            buf.appendString(flags & (.Line | .FullLoc) ? ":" : " ")
         }
-        elif self.flags & .LongFileName
+        elif flags & .LongFileName
         {
-            self.buf.appendString(loc.fileName)
-            self.buf.appendString(self.flags & (.Line | .FullLoc) ? ":" : " ")
+            buf.appendString(loc.fileName)
+            buf.appendString(flags & (.Line | .FullLoc) ? ":" : " ")
         }
 
-        if self.flags & .Line
+        if flags & .Line
         {
-            self.buf.appendAny(loc.lineStart + 1)
-            self.buf.appendString(" ")
+            buf.appendAny(loc.lineStart + 1)
+            buf.appendString(" ")
         }
-        elif self.flags & .FullLoc
+        elif flags & .FullLoc
         {
-            self.buf.appendFormat("%:%:%:% ", loc.lineStart + 1, loc.colStart + 1, loc.lineEnd + 1, loc.colEnd + 1)
+            buf.appendFormat("%:%:%:% ", loc.lineStart + 1, loc.colStart + 1, loc.lineEnd + 1, loc.colEnd + 1)
         }
     }
 
@@ -86,71 +85,71 @@ impl Log
     // Set the logger prefix.
     mtd setPrefix(prefix: string)
     {
-        Sync.scopedLock(&self.lock)
+        Sync.scopedLock(&lock)
         self.prefix = #self.prefix
     }
 
     // Get the logger prefix.
     mtd getPrefix()->string
     {
-        Sync.scopedLock(&self.lock)
-        return self.prefix
+        Sync.scopedLock(&lock)
+        return prefix
     }
 
     // Set the logger flags.
     mtd setFlags(flags: LogFlags)
     {
-        Sync.scopedLock(&self.lock)
+        Sync.scopedLock(&lock)
         self.flags = #self.flags
     }
 
     // Get the logger flags.
     mtd getFlags()->LogFlags
     {
-        Sync.scopedLock(&self.lock)
-        return self.flags
+        Sync.scopedLock(&lock)
+        return flags
     }
 
     // Register a new writer interface.
     mtd addWriter(writer: ILogWriter)
     {
-        Sync.scopedLock(&self.lock)
-        self.writers.add(writer)
+        Sync.scopedLock(&lock)
+        writers.add(writer)
     }
 
     // Remove all registered writers.
     mtd clearWriters()
     {
-        Sync.scopedLock(&self.lock)
-        self.writers.clear()
+        Sync.scopedLock(&lock)
+        writers.clear()
     }
 
     // Print a message to the log with an optional source location.
     mtd print(text: string, loc = #callerlocation)
     {
         // Get this first, to have the time of the call, before the lock
-        if self.flags & (.Date | .Time):
-            self.dt = Time.DateTime.now()
+        if flags & (.Date | .Time):
+            dt = Time.DateTime.now()
 
-        Sync.scopedLock(&self.lock)
+        Sync.scopedLock(&lock)
 
         // Build log string
-        self.buf.clear()
-        self.buildHeader(loc)
-        self.buf.appendString(text)
+        buf.clear()
+        buildHeader(loc)
+        buf.appendString(text)
 
         // Output default result if no writers
-        if self.writers.isEmpty()
+        if writers.isEmpty()
         {
             Console.lock()
-            Console.println(self.buf.toString())
+            Console.println(buf.toString())
             Console.unlock()
             return
         }
 
         // Otherwise call all writers
-        var str = self.buf.toString()
-        foreach w in self.writers
+        var str = buf.toString()
+        foreach w in writers
         {
             w.print(str)
         }
