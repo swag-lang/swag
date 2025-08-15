@@ -1,3 +1,4 @@
+#global marked
 #global namespace Math
 #global namespace Geometry
 #global public
