@@ -3,6 +3,7 @@
     By Bob Jenkins, public domain.
 */
 
+#global marked
 #global namespace Hash
 using Swag
 

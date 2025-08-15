@@ -5,6 +5,7 @@
     CityHash, by Geoff Pike and Jyrki Alakuijala
 */
 
+#global marked
 #global namespace Hash
 
 public struct City32
@@ -21,7 +22,7 @@ impl City32
     #[Swag.Safety("overflow", false)]
     mtd len0to4(data: const [..] u8)
     {
-        var b = crc
+        var b = self.crc
         var c = 9'u32
         foreach v in data
         {
@@ -29,7 +30,7 @@ impl City32
             c ^= b
         }
 
-        crc = murmur3(murmur3(b, murmur3(cast(u32) @countof(data), c)))
+        self.crc = murmur3(murmur3(b, murmur3(cast(u32) @countof(data), c)))
     }
 
     #[Swag.Safety("overflow", false)]
@@ -37,14 +38,14 @@ impl City32
     {
         let s   = @dataof(data)
         let len = cast(u32) @countof(data)
-        var a   = len + crc
+        var a   = len + self.crc
         var b   = len * 5
         var c   = 9'u32
         let d   = b
         a += fetch(s)
         b += fetch(s + len - 4)
         c += fetch(s + ((len >> 1) & 4))
-        crc = murmur3(murmur3(c, murmur3(b, murmur3(a, d))))
+        self.crc = murmur3(murmur3(c, murmur3(b, murmur3(a, d))))
     }
 
     #[Swag.Safety("overflow", false)]
@@ -58,14 +59,14 @@ impl City32
         let d   = fetch(s + (len >> 1))
         let e   = fetch(s)
         let f   = fetch(s + len - 4)
-        let h   = crc + len
-        crc = murmur3(murmur3(f, murmur3(e, murmur3(d, murmur3(c, murmur3(b, murmur3(a, h)))))))
+        let h   = self.crc + len
+        self.crc = murmur3(murmur3(f, murmur3(e, murmur3(d, murmur3(c, murmur3(b, murmur3(a, h)))))))
     }
 
     // Initialize the hashing sequence
     public mtd init()
     {
-        crc = 0
+        self.crc = 0
     }
 
     // Update the hash value with 'buffer' content
@@ -77,14 +78,14 @@ impl City32
         switch
         {
         case len <= 4:
-            return len0to4(data)
+            return self.len0to4(data)
         case len <= 12:
-            return len5to12(data)
+            return self.len5to12(data)
         case len <= 24:
-            return len13to24(data)
+            return self.len13to24(data)
         }
 
-        let seed = crc
+        let seed = self.crc
         var s    = @dataof(data)
         var h    = len + seed
         var g    = C1 * len
@@ -151,7 +152,7 @@ impl City32
         h   = Math.ror(h + f, 19)
         h   = h * 5 + 0xe6546b64
         h   = Math.ror(h, 17) * C1
-        crc = h
+        self.crc = h
     }
 
     // Returns the hash value for the given buffer

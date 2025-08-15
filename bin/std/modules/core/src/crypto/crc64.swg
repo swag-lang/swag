@@ -1,3 +1,4 @@
+#global marked
 #global namespace Hash
 
 using Swag
@@ -77,9 +78,9 @@ impl Crc64
         switch kind
         {
         case ECMA182, ISO:
-            crc = 0
+            self.crc = 0
         case ISOXZ:
-            crc = 0xFFFFFFFF_FFFFFFFF
+            self.crc = 0xFFFFFFFF_FFFFFFFF
         }
     }
 
@@ -92,7 +93,7 @@ impl Crc64
             return
 
         let bytes = cast(const ^u8) @dataof(data)
-        var cur   = ~crc
+        var cur   = ~self.crc
 
         // Process 8 bytes at a time for better cache utilization
         let blocks = length >> 3
@@ -132,7 +133,7 @@ impl Crc64
             i += 1
         }
 
-        crc = ~cur
+        self.crc = ~cur
     }
 
     // Returns the hash value for the given buffer

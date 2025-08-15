@@ -1,3 +1,4 @@
+#global marked
 #global namespace Hash
 #global #[Swag.CanOverflow(true)]
 
@@ -51,14 +52,14 @@ impl Sha256
             i += 1
         }
 
-        var a = state[0]
-        var b = state[1]
-        var c = state[2]
-        var d = state[3]
-        var e = state[4]
-        var f = state[5]
-        var g = state[6]
-        var h = state[7]
+        var a = self.state[0]
+        var b = self.state[1]
+        var c = self.state[2]
+        var d = self.state[3]
+        var e = self.state[4]
+        var f = self.state[5]
+        var g = self.state[6]
+        var h = self.state[7]
 
         i = 0
         while i < 64
@@ -76,14 +77,14 @@ impl Sha256
             i += 1
         }
 
-        state[0] += a
-        state[1] += b
-        state[2] += c
-        state[3] += d
-        state[4] += e
-        state[5] += f
-        state[6] += g
-        state[7] += h
+        self.state[0] += a
+        self.state[1] += b
+        self.state[2] += c
+        self.state[3] += d
+        self.state[4] += e
+        self.state[5] += f
+        self.state[6] += g
+        self.state[7] += h
     }
 }
 
@@ -94,56 +95,56 @@ public impl Sha256
     // Finalize the computation
     mtd final(result: Digest)
     {
-        var i = datalen
-        if datalen < 56
+        var i = self.datalen
+        if self.datalen < 56
         {
-            data[i] = 0x80
+            self.data[i] = 0x80
             i += 1
             while i < 56
             {
-                data[i] = 0x00
+                self.data[i] = 0x00
                 i += 1
             }
         }
         else
         {
-            data[i] = 0x80
+            self.data[i] = 0x80
             i += 1
             while i < 64
             {
-                data[i] = 0x00
+                self.data[i] = 0x00
                 i += 1
             }
 
-            transform(data)
+            self.transform(self.data)
         }
 
-        bitlen += datalen * 8
-        data[63] = cast #bit (u8) bitlen
-        data[62] = cast #bit (u8) (bitlen >> 8)
-        data[61] = cast #bit (u8) (bitlen >> 16)
-        data[60] = cast #bit (u8) (bitlen >> 24)
-        data[59] = cast #bit (u8) (bitlen >> 32)
-        data[58] = cast #bit (u8) (bitlen >> 40)
-        data[57] = cast #bit (u8) (bitlen >> 48)
-        data[56] = cast #bit (u8) (bitlen >> 56)
-        transform(data)
+        self.bitlen += self.datalen * 8
+        self.data[63] = cast #bit (u8) self.bitlen
+        self.data[62] = cast #bit (u8) (self.bitlen >> 8)
+        self.data[61] = cast #bit (u8) (self.bitlen >> 16)
+        self.data[60] = cast #bit (u8) (self.bitlen >> 24)
+        self.data[59] = cast #bit (u8) (self.bitlen >> 32)
+        self.data[58] = cast #bit (u8) (self.bitlen >> 40)
+        self.data[57] = cast #bit (u8) (self.bitlen >> 48)
+        self.data[56] = cast #bit (u8) (self.bitlen >> 56)
+        self.transform(self.data)
 
-        Memory.copy(result, &state[0], #sizeof(state))
+        Memory.copy(result, &self.state[0], #sizeof(state))
     }
 
     // Initialize the hashing sequence
     mtd init()
     {
         @init(self, 1)
-        state[0] = 0x6a09e667
-        state[1] = 0xbb67ae85
-        state[2] = 0x3c6ef372
-        state[3] = 0xa54ff53a
-        state[4] = 0x510e527f
-        state[5] = 0x9b05688c
-        state[6] = 0x1f83d9ab
-        state[7] = 0x5be0cd19
+        self.state[0] = 0x6a09e667
+        self.state[1] = 0xbb67ae85
+        self.state[2] = 0x3c6ef372
+        self.state[3] = 0xa54ff53a
+        self.state[4] = 0x510e527f
+        self.state[5] = 0x9b05688c
+        self.state[6] = 0x1f83d9ab
+        self.state[7] = 0x5be0cd19
     }
 
     // Update the hash value with 'buffer' content
@@ -155,13 +156,13 @@ public impl Sha256
 
         for i in len
         {
-            data[datalen] = buf[i]
-            datalen += 1
-            if datalen == 64
+            self.data[self.datalen] = buf[i]
+            self.datalen += 1
+            if self.datalen == 64
             {
-                transform(data)
-                bitlen += 512
-                datalen = 0
+                self.transform(self.data)
+                self.bitlen += 512
+                self.datalen = 0
             }
         }
     }
