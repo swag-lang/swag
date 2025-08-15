@@ -1,4 +1,3 @@
-#global marked
 #global namespace Math
 #global namespace Curve
 #global public

@@ -1,4 +1,3 @@
-#global marked
 #global public
 #global namespace Math
 using Swag
@@ -17,7 +16,7 @@ impl Angle
     #[ConstExpr, Implicit, Inline]
     mtd opAffect(valueRad: f32)
     {
-        self.rad = valueRad
+        rad = valueRad
     }
 
     // Assign angle values with unit suffixes (rad or deg).
@@ -26,9 +25,9 @@ impl Angle
     mtd(suffix: string) opAffectLiteral(value: f32)
     {
         #if suffix == "rad":
-            self.rad = value
+            rad = value
         #elif suffix == "deg":
-            self.rad = toRadians(value)
+            rad = toRadians(value)
         #else:
             #error("invalid angle literal suffix [[" ++ suffix ++ "]]")
     }
@@ -36,5 +35,5 @@ impl Angle
     // Convert the angle from radians to degrees.
     // Returns the angle value in degrees as a floating-point number.
     #[Inline]
-    mtd const toDegrees()->f32 => toDegrees(self.rad)
+    mtd const toDegrees()->f32 => toDegrees(rad)
 }
