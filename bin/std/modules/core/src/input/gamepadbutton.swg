@@ -1,3 +1,4 @@
+#global marked
 #global namespace Input
 
 // Enumerates gamepad buttons
