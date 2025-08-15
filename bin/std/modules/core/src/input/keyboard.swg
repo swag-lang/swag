@@ -1,3 +1,4 @@
+#global marked
 #global public
 #global namespace Input
 
@@ -22,38 +23,38 @@ impl Keyboard
     // Compute current state of the keyboard (all keys)
     mtd update()
     {
-        previousState = currentState
-        currentState.update()
+        self.previousState = self.currentState
+        self.currentState.update()
 
         // Repetition
         let now = Time.nowMilliseconds()
         for i in @countof(Key)
         {
-            if !currentState.isKeyPressed(cast(Key) i)
+            if !self.currentState.isKeyPressed(cast(Key) i)
             {
-                pressedRepeat[i] = false
-                pressedTime[i]   = 0
+                self.pressedRepeat[i] = false
+                self.pressedTime[i]   = 0
             }
-            elif canRepeat
+            elif self.canRepeat
             {
                 // First pressed time
-                if !pressedTime[i]:
-                    pressedTime[i] = now
+                if !self.pressedTime[i]:
+                    self.pressedTime[i] = now
 
                 // First repetition
-                if !pressedRepeat[i]
+                if !self.pressedRepeat[i]
                 {
-                    if now - pressedTime[i] >= pressedRepeatStartTimeMs
+                    if now - self.pressedTime[i] >= self.pressedRepeatStartTimeMs
                     {
-                        pressedRepeat[i]         = true
-                        pressedTime[i]           = now
-                        previousState.pressed[i] = false
+                        self.pressedRepeat[i]         = true
+                        self.pressedTime[i]           = now
+                        self.previousState.pressed[i] = false
                     }
                 }
-                elif now - pressedTime[i] >= pressedRepeatTimeMs
+                elif now - self.pressedTime[i] >= self.pressedRepeatTimeMs
                 {
-                    pressedTime[i]           = now
-                    previousState.pressed[i] = false
+                    self.pressedTime[i]           = now
+                    self.previousState.pressed[i] = false
                 }
             }
         }
@@ -62,35 +63,35 @@ impl Keyboard
     // Reset the keyboard state
     mtd clear()
     {
-        previousState.clear()
-        currentState.clear()
-        Memory.clear(&pressedRepeat, #sizeof(pressedRepeat))
-        Memory.clear(&pressedTime, #sizeof(pressedTime))
+        self.previousState.clear()
+        self.currentState.clear()
+        Memory.clear(&self.pressedRepeat, #sizeof(self.pressedRepeat))
+        Memory.clear(&self.pressedTime, #sizeof(self.pressedTime))
     }
 
     // Determines whether given key is currently being pressed
     #[Swag.Overload]
     mtd isKeyPressed(key: Key)->bool
     {
-        return currentState.pressed[key]
+        return self.currentState.pressed[key]
     }
 
     // Determines whether given key has just been pressed
     mtd isKeyJustPressed(key: Key)->bool
     {
-        return currentState.pressed[key] and !previousState.pressed[key]
+        return self.currentState.pressed[key] and !self.previousState.pressed[key]
     }
 
     // Determines whether given key is currently being released
     mtd isKeyReleased(key: Key)->bool
     {
-        return !currentState.pressed[key]
+        return !self.currentState.pressed[key]
     }
 
     // Determines whether given key has just been released
     mtd isKeyJustReleased(key: Key)->bool
     {
-        return !currentState.pressed[key] and previousState.pressed[key]
+        return !self.currentState.pressed[key] and self.previousState.pressed[key]
     }
 
     // Returns the currently pressed key modifiers
