@@ -1,3 +1,4 @@
+#global marked
 #global #if WINDOWS
 #global public
 #global namespace File
@@ -7,7 +8,6 @@ impl enum FileAttributes
 {
     internal func fromDWORD(attributes: DWORD)->FileAttributes
     {
-        using FileAttributes
         if attributes == 0xFFFFFFFF:
             return Zero
 

@@ -1,3 +1,4 @@
+#global marked
 #global #if WINDOWS
 #global namespace Console
 using Win32
@@ -7,22 +8,21 @@ var g_ColorToWin: [@countof(Color)] u16 = undefined
 #[Swag.Compiler]
 func colorToWin()
 {
-    using Color
-    g_ColorToWin[Black]       = 0
-    g_ColorToWin[White]       = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY
-    g_ColorToWin[Gray]        = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE
-    g_ColorToWin[Red]         = FOREGROUND_RED | FOREGROUND_INTENSITY
-    g_ColorToWin[Green]       = FOREGROUND_GREEN | FOREGROUND_INTENSITY
-    g_ColorToWin[Blue]        = FOREGROUND_BLUE | FOREGROUND_INTENSITY
-    g_ColorToWin[Cyan]        = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY
-    g_ColorToWin[Magenta]     = FOREGROUND_BLUE | FOREGROUND_RED | FOREGROUND_INTENSITY
-    g_ColorToWin[Yellow]      = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY
-    g_ColorToWin[DarkRed]     = FOREGROUND_RED
-    g_ColorToWin[DarkGreen]   = FOREGROUND_GREEN
-    g_ColorToWin[DarkBlue]    = FOREGROUND_BLUE
-    g_ColorToWin[DarkCyan]    = FOREGROUND_BLUE | FOREGROUND_GREEN
-    g_ColorToWin[DarkMagenta] = FOREGROUND_BLUE | FOREGROUND_RED
-    g_ColorToWin[DarkYellow]  = FOREGROUND_RED | FOREGROUND_GREEN
+    g_ColorToWin[Color.Black]       = 0
+    g_ColorToWin[Color.White]       = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY
+    g_ColorToWin[Color.Gray]        = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE
+    g_ColorToWin[Color.Red]         = FOREGROUND_RED | FOREGROUND_INTENSITY
+    g_ColorToWin[Color.Green]       = FOREGROUND_GREEN | FOREGROUND_INTENSITY
+    g_ColorToWin[Color.Blue]        = FOREGROUND_BLUE | FOREGROUND_INTENSITY
+    g_ColorToWin[Color.Cyan]        = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_INTENSITY
+    g_ColorToWin[Color.Magenta]     = FOREGROUND_BLUE | FOREGROUND_RED | FOREGROUND_INTENSITY
+    g_ColorToWin[Color.Yellow]      = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY
+    g_ColorToWin[Color.DarkRed]     = FOREGROUND_RED
+    g_ColorToWin[Color.DarkGreen]   = FOREGROUND_GREEN
+    g_ColorToWin[Color.DarkBlue]    = FOREGROUND_BLUE
+    g_ColorToWin[Color.DarkCyan]    = FOREGROUND_BLUE | FOREGROUND_GREEN
+    g_ColorToWin[Color.DarkMagenta] = FOREGROUND_BLUE | FOREGROUND_RED
+    g_ColorToWin[Color.DarkYellow]  = FOREGROUND_RED | FOREGROUND_GREEN
 }
 
 var g_StdOutputHandle:   HANDLE

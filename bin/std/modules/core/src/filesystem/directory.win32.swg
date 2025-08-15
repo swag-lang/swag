@@ -1,3 +1,4 @@
+#global marked
 #global #if WINDOWS
 #global public
 #global namespace Directory
@@ -28,13 +29,12 @@ func exists(dirName: string)->bool
 // Enumerate a directory
 func enumerate(dirName: string, options: EnumerationOptions)->Array'(File.FileInfo) throw
 {
-    using File
     var result: retval
     if dirName == null:
         return result
 
     var findfile:  WIN32_FIND_DATAW
-    var fi:        FileInfo
+    var fi:        File.FileInfo
     var fileTime:  SYSTEMTIME
     var stackPath: Array'String
 
@@ -79,7 +79,7 @@ func enumerate(dirName: string, options: EnumerationOptions)->Array'(File.FileIn
             // Add file/folder to the result
             if mustAdd
             {
-                fi.attributes = FileAttributes.fromDWORD(findfile.dwFileAttributes)
+                fi.attributes = File.FileAttributes.fromDWORD(findfile.dwFileAttributes)
                 if !(fi.attributes & options.skipAttributes)
                 {
                     fi.fullname = Path.combine(toScan, filename.toString())

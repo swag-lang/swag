@@ -1,3 +1,4 @@
+#global marked
 #global public
 #global namespace File
 using Core.Errors

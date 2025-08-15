@@ -1,3 +1,4 @@
+#global marked
 #global public
 #global namespace File
 using Time
@@ -17,5 +18,5 @@ impl FileInfo
 {
     // Returns true if the file info represents a directory
     #[Swag.Inline]
-    mtd const isDirectory() => attributes.has(.Directory)
+    mtd const isDirectory() => self.attributes.has(.Directory)
 }

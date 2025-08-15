@@ -1,3 +1,5 @@
+#global marked
+#global marked
 #global #if WINDOWS
 #global public
 #global namespace File
