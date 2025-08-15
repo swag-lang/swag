@@ -1,4 +1,3 @@
-//#global marked
 struct A {}
 
 interface I

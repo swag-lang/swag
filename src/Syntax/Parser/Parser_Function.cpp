@@ -485,13 +485,13 @@ bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool accept
         if (isMethod || isConstMethod)
         {
             const auto paramNode = Ast::newVarDecl("", this, allParams, AstNodeKind::FuncDeclParam);
-            if (!isItfMethod && !sourceFile->hasFlag(FILE_MARKED))
+            if (!isItfMethod)
                 paramNode->addAstFlag(AST_DECL_USING);
             paramNode->addSpecFlag(AstVarDecl::SPEC_FLAG_GENERATED_SELF);
             paramNode->token.text = g_LangSpec->name_self;
             const auto typeNode   = Ast::newTypeExpression(nullptr, paramNode);
             typeNode->typeFlags.add(TYPE_FLAG_IS_SELF | TYPE_FLAG_IS_PTR | TYPE_FLAG_IS_SUB_TYPE);
-            if (!isItfMethod && !sourceFile->hasFlag(FILE_MARKED))
+            if (!isItfMethod)
                 typeNode->typeFlags.add(TYPE_FLAG_HAS_USING);
             if (isConstMethod)
                 typeNode->typeFlags.add(TYPE_FLAG_IS_CONST);

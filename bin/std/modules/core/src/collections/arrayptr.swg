@@ -1,4 +1,3 @@
-#global marked
 #global export
 using Swag
 
@@ -23,11 +22,11 @@ impl ArrayPtr
     // content is copied over, ensuring the new array owns its own set of objects.
     mtd opPostCopy()
     {
-        for i in self.count
+        for i in count
         {
-            let newPtr = Memory.new'T(self.allocator)
-            dref newPtr = dref self.buffer[i]
-            self.buffer[i]   = newPtr
+            let newPtr = Memory.new'T(allocator)
+            dref newPtr = dref buffer[i]
+            buffer[i]   = newPtr
         }
     }
 
@@ -36,29 +35,29 @@ impl ArrayPtr
     mtd clear()
     {
         foreach item in dref self:
-            Memory.delete(item, self.allocator)
-        self.count = 0
+            Memory.delete(item, allocator)
+        base.count = 0
     }
 
     // Deallocates the memory for a single given pointer.
     // The pointer is expected to have been allocated using this array's allocator.
     mtd deletePtr(item: *T)
     {
-        Memory.delete(item, self.allocator)
+        Memory.delete(item, allocator)
     }
 
     // Allocates memory for a new object of type T using the array's allocator.
     // Returns a pointer to the newly allocated memory.
     mtd newPtr()->*T
     {
-        return Memory.new'T(self.allocator)
+        return Memory.new'T(allocator)
     }
 
     // Allocates a new object, adds its pointer to the end of the array, and returns the pointer.
     mtd addNewPtr()->*T
     {
-        let ptr = self.newPtr()
-        self.add(ptr)
+        let ptr = newPtr()
+        add(ptr)
         return ptr
     }
 }
