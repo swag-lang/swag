@@ -1,9 +1,8 @@
-#global marked
 #global public
 #global namespace Math
 
 // A simple 2D point struct with X and Y coordinates.
-// Contains self.x and self.y components as 32-bit floating point values for representing positions in 2D space.
+// Contains x and y components as 32-bit floating point values for representing positions in 2D space.
 #[Serialization.Final]
 struct Point
 {
@@ -21,7 +20,7 @@ impl Point
     #[Swag.Complete]
     mtd opAffect(value: f32)
     {
-        self.x, self.y = value
+        x, y = value
     }
 
     // Compound assignment operators for point-point operations (+=, -=, *=, /=).
@@ -31,23 +30,23 @@ impl Point
     {
         #if op == "+="
         {
-            self.x += other.x
-            self.y += other.y
+            x += other.x
+            y += other.y
         }
         #elif op == "-="
         {
-            self.x -= other.x
-            self.y -= other.y
+            x -= other.x
+            y -= other.y
         }
         #elif op == "*="
         {
-            self.x *= other.x
-            self.y *= other.y
+            x *= other.x
+            y *= other.y
         }
         #elif op == "/="
         {
-            self.x /= other.x
-            self.y /= other.y
+            x /= other.x
+            y /= other.y
         }
         #else:
             #error("unsupported assign operation [[" ++ op ++ "]]")
@@ -60,23 +59,23 @@ impl Point
     {
         #if op == "+="
         {
-            self.x += value
-            self.y += value
+            x += value
+            y += value
         }
         #elif op == "-="
         {
-            self.x -= value
-            self.y -= value
+            x -= value
+            y -= value
         }
         #elif op == "*="
         {
-            self.x *= value
-            self.y *= value
+            x *= value
+            y *= value
         }
         #elif op == "/="
         {
-            self.x /= value
-            self.y /= value
+            x /= value
+            y /= value
         }
         #else:
             #error("unsupported assign operation [[" ++ op ++ "]]")
@@ -85,16 +84,16 @@ impl Point
     // Binary operators for point-point operations (+, -, *, /).
     // Performs component-wise operations between two points and returns the result.
     #[Swag.Overload]
-    mtd(op: string) const opBinary(other: Point)->Point
+    mtd(op: string) const opBinary(other: Point)->Self
     {
         #if op == "+":
-            return Point{self.x + other.x, self.y + other.y}
+            return Point{x + other.x, y + other.y}
         #elif op == "-":
-            return Point{self.x - other.x, self.y - other.y}
+            return Point{x - other.x, y - other.y}
         #elif op == "*":
-            return Point{self.x * other.x, self.y * other.y}
+            return Point{x * other.x, y * other.y}
         #elif op == "/":
-            return Point{self.x / other.x, self.y / other.y}
+            return Point{x / other.x, y / other.y}
         #else:
             #error("unsupported binary operation [[" ++ op ++ "]]")
     }
@@ -102,23 +101,23 @@ impl Point
     // Binary operators for point-scalar operations (+, -, *, /).
     // Applies the scalar 'value' to both coordinates and returns the result.
     #[Swag.Overload]
-    mtd(op: string) const opBinary(value: f32)->Point
+    mtd(op: string) const opBinary(value: f32)->Self
     {
         #if op == "+":
-            return Point{self.x + value, self.y + value}
+            return Point{x + value, y + value}
         #elif op == "-":
-            return Point{self.x - value, self.y - value}
+            return Point{x - value, y - value}
         #elif op == "*":
-            return Point{self.x * value, self.y * value}
+            return Point{x * value, y * value}
         #elif op == "/":
-            return Point{self.x / value, self.y / value}
+            return Point{x / value, y / value}
         #else:
             #error("unsupported binary operation [[" ++ op ++ "]]")
     }
 
     // Apply unary operations to the point.
     // Currently supports negation (-) to return a point with both coordinates negated.
-    mtd(op: string) const opUnary()->Point
+    mtd(op: string) const opUnary()->Self
     {
         var result: retval
         #if op == "-"
@@ -137,68 +136,68 @@ impl Point
     // Equivalent to assigning the 'Zero' constant but modifies the current instance.
     mtd clear()
     {
-        self.x, self.y = 0
+        x, y = 0
     }
 
     // Returns true if this point is exactly at the origin.
     // Performs exact floating-point comparison, which may not work well with computed values.
     mtd const isZero()->bool
     {
-        return self.x == 0 and self.y == 0
+        return x == 0 and y == 0
     }
 
     // Returns true if this point is at the origin within an epsilon tolerance.
     // Uses 'eps' parameter to handle floating-point precision issues.
     mtd const isZeroEpsilon(eps = ConstF32.Epsilon)->bool
     {
-        return isZeroEpsilon(self.x, eps) and isZeroEpsilon(self.y, eps)
+        return isZeroEpsilon(x, eps) and isZeroEpsilon(y, eps)
     }
 
     // Returns true if this point is equal to 'other' within an epsilon tolerance.
     // Compares each coordinate separately using the specified 'eps' tolerance.
     mtd const isEqualEpsilon(other: Point, eps = ConstF32.Epsilon)->bool
     {
-        return Math.isEqualEpsilon(self.x, other.x, eps) and Math.isEqualEpsilon(self.y, other.y, eps)
+        return Math.isEqualEpsilon(x, other.x, eps) and Math.isEqualEpsilon(y, other.y, eps)
     }
 
     // Offset both coordinates by the same scalar value.
-    // Adds 'value' to both self.x and self.y coordinates of this point.
+    // Adds 'value' to both x and y coordinates of this point.
     #[Swag.Overload]
     mtd offset(value: f32)
     {
-        self.x, self.y += value
+        x, y += value
     }
 
-    // Offset this point by separate self.x and self.y values.
+    // Offset this point by separate x and y values.
     // Adds the specified 'x' and 'y' offsets to the corresponding coordinates.
     #[Swag.Overload]
-    mtd offset(x, y: f32)
+    func offset(self, x, y: f32)
     {
         self.x += x
         self.y += y
     }
 
     // Round both coordinates to the nearest integer values.
-    // Applies 'Math.round' function to both self.x and self.y coordinates in-place.
+    // Applies 'Math.round' function to both x and y coordinates in-place.
     mtd round()
     {
-        self.x = Math.round(self.x)
-        self.y = Math.round(self.y)
+        x = Math.round(x)
+        y = Math.round(y)
     }
 
     // Truncate both coordinates to integer values.
-    // Applies 'Math.trunc' function to both self.x and self.y coordinates, removing fractional parts.
+    // Applies 'Math.trunc' function to both x and y coordinates, removing fractional parts.
     mtd trunc()
     {
-        self.x = Math.trunc(self.x)
-        self.y = Math.trunc(self.y)
+        x = Math.trunc(x)
+        y = Math.trunc(y)
     }
 
     // Round both coordinates up to the next integer values.
-    // Applies 'Math.ceil' function to both self.x and self.y coordinates in-place.
+    // Applies 'Math.ceil' function to both x and y coordinates in-place.
     mtd ceil()
     {
-        self.x = Math.ceil(self.x)
-        self.y = Math.ceil(self.y)
+        x = Math.ceil(x)
+        y = Math.ceil(y)
     }
 }

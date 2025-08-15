@@ -5,7 +5,6 @@
     See LICENCE.md for the corresponding licence.
 */
 
-#global marked
 #global public
 #global namespace Math
 using Swag
@@ -40,23 +39,23 @@ impl Int128
 {
     mtd const opCmp(other: Int128)->s32
     {
-        if self.hi != other.hi:
-            return self.hi <=> other.hi
-        return self.lo <=> other.lo
+        if hi != other.hi:
+            return hi <=> other.hi
+        return lo <=> other.lo
     }
 
     mtd const opCast()->f64
     {
         const Shift64: f64 = cast #bit (f64) 0x43f0000000000000 // 18446744073709551616.0'f64 //2^64
-        if self.hi < 0
+        if hi < 0
         {
-            if self.lo == 0:
-                return cast(f64) (self.hi * Shift64)
+            if lo == 0:
+                return cast(f64) (hi * Shift64)
             else:
-                return -cast(f64) (~self.lo + ~self.hi * Shift64)
+                return -cast(f64) (~lo + ~hi * Shift64)
         }
 
-        return cast(f64) (self.lo + self.hi * Shift64)
+        return cast(f64) (lo + hi * Shift64)
     }
 
     func mul(x, y: s64)->Int128
