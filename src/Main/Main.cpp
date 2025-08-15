@@ -44,6 +44,9 @@ int main(int argc, const char* argv[])
 
     // Command
     if (command != "build" &&
+#ifdef SWAG_DEV_MODE
+        command != "patch" &&
+#endif
         command != "run" &&
         command != "doc" &&
         command != "test" &&
@@ -86,6 +89,12 @@ int main(int argc, const char* argv[])
     {
         g_Workspace->build();
     }
+#ifdef SWAG_DEV_MODE    
+    else if (command == "patch")
+    {
+        g_Workspace->patch();
+    }
+#endif
     else if (command == "run")
     {
         g_CommandLine.run = true;
@@ -145,7 +154,7 @@ int main(int argc, const char* argv[])
     profiler();
 #endif
 
-    // To avoid freeing some stuff, and have a fast exit
+    // To avoid freeing some stuff and have a fast exit
     g_Exiting = true;
     OS::exit(g_Workspace->numErrors > 0 ? -1 : 0);
 

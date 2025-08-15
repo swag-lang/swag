@@ -58,6 +58,7 @@ struct CommandLine
 
 #ifdef SWAG_DEV_MODE
     bool forceFormat = false;
+    bool patchMode   = false;
     bool randomize   = false;
     int  randSeed    = 0;
 #endif

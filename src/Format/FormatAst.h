@@ -80,9 +80,9 @@ struct FormatAst
         tmpConcat.init(1024);
     }
 
-    void clear() const;
-    Utf8 getUtf8() const;
-    bool writeResult(const Path& fileName) const;
+    void        clear() const;
+    Utf8        getUtf8() const;
+    static bool writeResult(const Path& fileName, const Utf8& content);
 
     static void              inheritLastFormatAfter(const Parser* parser, AstNode* node);
     static void              inheritFormatBefore(const Parser* parser, AstNode* node, AstNode* other);

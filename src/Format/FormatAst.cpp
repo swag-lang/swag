@@ -359,7 +359,7 @@ bool FormatAst::collectChildrenToAlign(FormatContext&                       cont
     return true;
 }
 
-bool FormatAst::writeResult(const Path& fileName) const
+bool FormatAst::writeResult(const Path& fileName, const Utf8& content)
 {
     if (!g_CommandLine.output)
     {
@@ -379,7 +379,7 @@ bool FormatAst::writeResult(const Path& fileName) const
     }
 
     Vector<Utf8> lines;
-    Utf8::tokenize(getUtf8(), '\n', lines, true);
+    Utf8::tokenize(content, '\n', lines, true);
 
     bool start = true;
     for (auto& l : lines)

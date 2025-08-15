@@ -47,6 +47,9 @@ struct Workspace
     static void        computeWaitingJobs();
     static void        checkPendingJobs();
     bool               build();
+#ifdef SWAG_DEV_MODE    
+    bool               patch();
+#endif
     static Diagnostic* errorPendingJob(Job* prevJob, const Job* depJob);
     static bool        buildRTModule(Module* module);
     bool               buildTarget();

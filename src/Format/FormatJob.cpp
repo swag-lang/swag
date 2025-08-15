@@ -1,13 +1,12 @@
 #include "pch.h"
 #include "Format/FormatJob.h"
 #include "Format/FormatAst.h"
-#include "Report/Log.h"
 #include "Report/Report.h"
 #include "Syntax/Parser/Parser.h"
 #include "Syntax/SyntaxJob.h"
 #include "Wmf/Module.h"
 
-JobResult FormatJob::execute()
+bool FormatJob::getFormattedCode(FormatContext& context, const Path& fileName, Utf8& result)
 {
     Module     tmpModule;
     SourceFile tmpFile;
@@ -21,10 +20,8 @@ JobResult FormatJob::execute()
     tmpFile.flags.add(FILE_FOR_FORMAT);
 
     // Load source file
-    if (g_CommandLine.verboseStages)
-        g_Log.messageVerbose(form("[%s] -- loading file", fileName.cstr()));
     if (!tmpFile.load())
-        return JobResult::ReleaseJob;
+        return false;
 
     // Generate AST
     {
@@ -32,38 +29,38 @@ JobResult FormatJob::execute()
             g_SilentError++;
         SyntaxContext synContext;
         Parser        parser;
-        if (g_CommandLine.verboseStages)
-            g_Log.messageVerbose(form("[%s] -- generating AST", fileName.cstr()));
         parser.setup(&synContext, &tmpModule, &tmpFile, PARSER_TRACK_FORMAT);
         const bool ok = parser.generateAst();
         if (!g_CommandLine.verboseErrors)
             g_SilentError--;
         if (!ok)
-        {
-            if (g_CommandLine.verboseStages)
-                g_Log.messageVerbose(form("[%s] -- AST has errors ! Cancel", fileName.cstr()));
-            return JobResult::ReleaseJob;
-        }
+            return false;
     }
 
     if (tmpFile.hasFlag(FILE_NO_FORMAT))
-    {
-        if (g_CommandLine.verboseStages)
-            g_Log.messageVerbose(form("[%s] -- #global skip format detected ! Cancel", fileName.cstr()));
-        return JobResult::ReleaseJob;
-    }
-
-    if (g_CommandLine.verboseStages)
-        g_Log.messageVerbose(form("[%s] -- formatting", fileName.cstr()));
+        return false;
 
     // Format
+    FormatAst fmt;
+    if (!fmt.outputNode(context, tmpFile.astRoot))
+        return false;
+
+    result = fmt.concat->getUtf8();
+    return true;
+}
+
+JobResult FormatJob::execute()
+{
+    Utf8          result;
     FormatContext context;
     context.setDefaultBeautify();
 
-    FormatAst fmt;
-    if (!fmt.outputNode(context, tmpFile.astRoot))
+    // Do it!
+    if (!getFormattedCode(context, fileName, result))
         return JobResult::ReleaseJob;
-    if (!fmt.writeResult(fileName))
+
+    // Write file
+    if (!FormatAst::writeResult(fileName, result))
         return JobResult::ReleaseJob;
 
     return JobResult::ReleaseJob;

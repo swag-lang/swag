@@ -17,7 +17,10 @@ CommandLineArgument::CommandLineArgument(const char* commands, CommandLineType t
     for (auto& p : all)
     {
         if (p == "all" || p == "bu")
+        {
             cmdSet.push_back("build");
+            cmdSet.push_back("patch");
+        }
 
         if (p == "all" || p == "bu" || p == "ru")
             cmdSet.push_back("run");

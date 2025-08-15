@@ -2,6 +2,7 @@
 #include "Backend/Backend.h"
 #include "Backend/ByteCode/Optimize/ByteCodeOptimizer.h"
 #include "Core/Timer.h"
+#include "Format/FormatAst.h"
 #include "Jobs/EnumerateModuleJob.h"
 #include "Jobs/ModuleBuildJob.h"
 #include "Report/Diagnostic.h"
@@ -888,3 +889,23 @@ bool Workspace::build()
 
     return result;
 }
+
+#ifdef SWAG_DEV_MODE
+bool Workspace::patch()
+{
+    g_CommandLine.patchMode = true;
+
+    SWAG_CHECK(build());
+
+    const auto    f = g_Workspace->modules[3]->files[1];
+    FormatContext context;
+    context.setDefaultBeautify();
+    FormatAst fmt;
+    if (!fmt.outputNode(context, f->astRoot))
+        return false;
+    if (!FormatAst::writeResult(f->path.cstr(), fmt.getUtf8()))
+        return false;
+    return true;
+}
+
+#endif
