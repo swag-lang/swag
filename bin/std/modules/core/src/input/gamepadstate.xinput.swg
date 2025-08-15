@@ -6,26 +6,20 @@ using XInput, Win32, Core.Errors
 
 #run
 {
-    with GamePadButton
-    {
-        with GamePadState
-        {
-            .mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_A)]              = .A
-            .mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_B)]              = .B
-            .mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_X)]              = .X
-            .mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_Y)]              = .Y
-            .mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_LEFT_THUMB)]     = .LeftStick
-            .mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_RIGHT_THUMB)]    = .RightStick
-            .mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_START)]          = .Start
-            .mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_BACK)]           = .Back
-            .mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_LEFT_SHOULDER)]  = .LeftShoulder
-            .mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_RIGHT_SHOULDER)] = .RightShoulder
-            .mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_DPAD_UP)]        = .DPadUp
-            .mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_DPAD_DOWN)]      = .DPadDown
-            .mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_DPAD_LEFT)]      = .DPadLeft
-            .mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_DPAD_RIGHT)]     = .DPadRight
-        }
-    }
+    GamePadState.mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_A)]              = GamePadButton.A
+    GamePadState.mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_B)]              = GamePadButton.B
+    GamePadState.mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_X)]              = GamePadButton.X
+    GamePadState.mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_Y)]              = GamePadButton.Y
+    GamePadState.mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_LEFT_THUMB)]     = GamePadButton.LeftStick
+    GamePadState.mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_RIGHT_THUMB)]    = GamePadButton.RightStick
+    GamePadState.mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_START)]          = GamePadButton.Start
+    GamePadState.mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_BACK)]           = GamePadButton.Back
+    GamePadState.mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_LEFT_SHOULDER)]  = GamePadButton.LeftShoulder
+    GamePadState.mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_RIGHT_SHOULDER)] = GamePadButton.RightShoulder
+    GamePadState.mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_DPAD_UP)]        = GamePadButton.DPadUp
+    GamePadState.mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_DPAD_DOWN)]      = GamePadButton.DPadDown
+    GamePadState.mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_DPAD_LEFT)]      = GamePadButton.DPadLeft
+    GamePadState.mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_DPAD_RIGHT)]     = GamePadButton.DPadRight
 }
 
 impl GamePadState
@@ -52,15 +46,12 @@ impl GamePadState
             self.pressed[mapButtons[i]] = state.Gamepad.wButtons & cast(u16) (1 << i)
 
         // Move
-        with GamePadButton
-        {
-            self.position[.LeftStick].x    = state.Gamepad.sThumbLX / 32767.0'f32
-            self.position[.LeftStick].y    = state.Gamepad.sThumbLY / 32767.0'f32
-            self.position[.RightStick].x   = state.Gamepad.sThumbRX / 32767.0'f32
-            self.position[.RightStick].y   = state.Gamepad.sThumbRY / 32767.0'f32
-            self.position[.LeftTrigger].y  = state.Gamepad.bLeftTrigger / 255.0'f32
-            self.position[.RightTrigger].y = state.Gamepad.bRightTrigger / 255.0'f32
-        }
+        self.position[GamePadButton.LeftStick].x    = state.Gamepad.sThumbLX / 32767.0'f32
+        self.position[GamePadButton.LeftStick].y    = state.Gamepad.sThumbLY / 32767.0'f32
+        self.position[GamePadButton.RightStick].x   = state.Gamepad.sThumbRX / 32767.0'f32
+        self.position[GamePadButton.RightStick].y   = state.Gamepad.sThumbRY / 32767.0'f32
+        self.position[GamePadButton.LeftTrigger].y  = state.Gamepad.bLeftTrigger / 255.0'f32
+        self.position[GamePadButton.RightTrigger].y = state.Gamepad.bRightTrigger / 255.0'f32
 
         // Simulate pressed with #move
         #[Swag.Inline]
@@ -71,20 +62,17 @@ impl GamePadState
             return self.pressed[btn] ? SmallToler : BigToler
         }
 
-        with GamePadButton
-        {
-            self.pressed[.LeftThumbstickDown]  = self.position[.LeftStick].y < -getToler(self, .LeftThumbstickDown)
-            self.pressed[.LeftThumbstickUp]    = self.position[.LeftStick].y > getToler(self, .LeftThumbstickUp)
-            self.pressed[.LeftThumbstickLeft]  = self.position[.LeftStick].x < -getToler(self, .LeftThumbstickLeft)
-            self.pressed[.LeftThumbstickRight] = self.position[.LeftStick].x > getToler(self, .LeftThumbstickRight)
+        self.pressed[GamePadButton.LeftThumbstickDown]  = self.position[GamePadButton.LeftStick].y < -getToler(self, GamePadButton.LeftThumbstickDown)
+        self.pressed[GamePadButton.LeftThumbstickUp]    = self.position[GamePadButton.LeftStick].y > getToler(self, GamePadButton.LeftThumbstickUp)
+        self.pressed[GamePadButton.LeftThumbstickLeft]  = self.position[GamePadButton.LeftStick].x < -getToler(self, GamePadButton.LeftThumbstickLeft)
+        self.pressed[GamePadButton.LeftThumbstickRight] = self.position[GamePadButton.LeftStick].x > getToler(self, GamePadButton.LeftThumbstickRight)
 
-            self.pressed[.RightThumbstickDown]  = self.position[.RightStick].y < -getToler(self, .RightThumbstickDown)
-            self.pressed[.RightThumbstickUp]    = self.position[.RightStick].y > getToler(self, .RightThumbstickUp)
-            self.pressed[.RightThumbstickLeft]  = self.position[.RightStick].x < -getToler(self, .RightThumbstickLeft)
-            self.pressed[.RightThumbstickRight] = self.position[.RightStick].x > getToler(self, .RightThumbstickRight)
+        self.pressed[GamePadButton.RightThumbstickDown]  = self.position[GamePadButton.RightStick].y < -getToler(self, GamePadButton.RightThumbstickDown)
+        self.pressed[GamePadButton.RightThumbstickUp]    = self.position[GamePadButton.RightStick].y > getToler(self, GamePadButton.RightThumbstickUp)
+        self.pressed[GamePadButton.RightThumbstickLeft]  = self.position[GamePadButton.RightStick].x < -getToler(self, GamePadButton.RightThumbstickLeft)
+        self.pressed[GamePadButton.RightThumbstickRight] = self.position[GamePadButton.RightStick].x > getToler(self, GamePadButton.RightThumbstickRight)
 
-            self.pressed[.LeftTrigger]  = self.position[.LeftTrigger].y > getToler(self, .LeftTrigger)
-            self.pressed[.RightTrigger] = self.position[.RightTrigger].y > getToler(self, .RightTrigger)
-        }
+        self.pressed[GamePadButton.LeftTrigger]  = self.position[GamePadButton.LeftTrigger].y > getToler(self, GamePadButton.LeftTrigger)
+        self.pressed[GamePadButton.RightTrigger] = self.position[GamePadButton.RightTrigger].y > getToler(self, GamePadButton.RightTrigger)
     }
 }
