@@ -165,8 +165,10 @@ bool FormatAst::outputSwitch(FormatContext& context, AstNode* node)
         concat->addIndent(context.indent);
         if (c->expressions.empty())
         {
+            if (c->hasAstFlag(AST_GENERATED))
+                continue;
             beautifyBefore(context, c);
-            concat->addString("default");
+            concat->addString("default");            
         }
         else
         {
