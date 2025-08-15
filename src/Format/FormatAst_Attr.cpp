@@ -70,8 +70,19 @@ bool FormatAst::outputAttrUse(FormatContext& context, AstAttrUse* node)
     {
         concat->addString("#global");
         concat->addBlank();
-        bool hasSomething = true;
-        SWAG_CHECK(outputAttrUse(context, node, hasSomething));
+
+        if (node->attributeFlags.has(ATTRIBUTE_PUBLIC))
+            concat->addString("public");
+        else if (node->attributeFlags.has(ATTRIBUTE_PRIVATE))
+            concat->addString("private");
+        else if (node->attributeFlags.has(ATTRIBUTE_INTERNAL))
+            concat->addString("internal");
+        else
+        {
+            bool hasSomething = true;
+            SWAG_CHECK(outputAttrUse(context, node, hasSomething));
+        }
+        
         concat->addEol();
         concat->addIndent(context.indent);
         SWAG_CHECK(outputChildrenEol(context, node->content));
@@ -87,19 +98,19 @@ bool FormatAst::outputAttrUse(FormatContext& context, AstAttrUse* node)
         concat->addIndent(context.indent);
     }
     
-    if (node->attributeFlags.has(ATTRIBUTE_PUBLIC) && !node->hasAstFlag(AST_GLOBAL_NODE))
+    if (node->attributeFlags.has(ATTRIBUTE_PUBLIC) && node->hasAstFlag(AST_GENERATED_USER))
     {
         concat->addString("public");
         concat->addBlank();
     }
 
-    if (node->attributeFlags.has(ATTRIBUTE_PRIVATE) && !node->hasAstFlag(AST_GLOBAL_NODE))
+    if (node->attributeFlags.has(ATTRIBUTE_PRIVATE) && node->hasAstFlag(AST_GENERATED_USER))
     {
         concat->addString("private");
         concat->addBlank();
     }
 
-    if (node->attributeFlags.has(ATTRIBUTE_INTERNAL) && !node->hasAstFlag(AST_GLOBAL_NODE))
+    if (node->attributeFlags.has(ATTRIBUTE_INTERNAL) && node->hasAstFlag(AST_GENERATED_USER))
     {
         concat->addString("internal");
         concat->addBlank();
