@@ -1,4 +1,3 @@
-#global marked
 #global public
 #global namespace Input
 using Math
@@ -18,16 +17,16 @@ impl MouseState
     // Compute the actual state of the mouse
     mtd update()
     {
-        self.position = getMousePos()
+        position = getMousePos()
 
         foreach v in MouseButton
         {
-            let b = self.pressed[v]
-            self.pressed[v] = Mouse.isButtonPressed(v)
-            if !b and self.pressed[v]
+            let b = pressed[v]
+            pressed[v] = Mouse.isButtonPressed(v)
+            if !b and pressed[v]
             {
-                self.pressedTime[v] = Time.nowMilliseconds()
-                self.pressedPos[v]  = self.position
+                pressedTime[v] = Time.nowMilliseconds()
+                pressedPos[v]  = position
             }
         }
     }
@@ -35,7 +34,7 @@ impl MouseState
     // Reset the state to its default value
     mtd clear()
     {
-        Memory.clear(&self.pressed, #sizeof(self.pressed))
-        self.position = getMousePos()
+        Memory.clear(&pressed, #sizeof(pressed))
+        position = getMousePos()
     }
 }

@@ -1,4 +1,3 @@
-#global marked
 #global #if WINDOWS
 #global namespace Input
 using Win32
@@ -12,7 +11,7 @@ impl KeyboardStateNative
 {
     mtd updateNative()
     {
-        discard GetKeyboardState(self.nativeState)
+        discard GetKeyboardState(nativeState)
     }
 
     mtd isKeyPressed(key: Input.Key)->bool
@@ -20,6 +19,6 @@ impl KeyboardStateNative
         let vkey = Keyboard.mapKeyToVKey[key]
         if vkey == 0:
             return false
-        return self.nativeState[vkey] & 0x80 ? true : false
+        return nativeState[vkey] & 0x80 ? true : false
     }
 }

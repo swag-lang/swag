@@ -1,4 +1,3 @@
-#global marked
 #global public
 #global namespace Input
 
@@ -14,14 +13,14 @@ impl KeyboardState
     // Compute current keyboard state
     mtd update()
     {
-        self.updateNative()
+        updateNative()
         for i in @countof(Key):
-            self.pressed[i] = self.native.isKeyPressed(cast(Key) i)
+            pressed[i] = native.isKeyPressed(cast(Key) i)
     }
 
     // Reset keyboard state
     mtd clear()
     {
-        Memory.clear(&self.pressed, #sizeof(self.pressed))
+        Memory.clear(&pressed, #sizeof(pressed))
     }
 }
