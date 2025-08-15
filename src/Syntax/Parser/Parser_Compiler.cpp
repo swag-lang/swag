@@ -9,6 +9,7 @@
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
+#pragma optimize("", off)
 
 bool Parser::doCompilerTag(AstNode* parent, AstNode** result)
 {
@@ -626,22 +627,21 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
 
         if (!parserFlags.has(PARSER_TRACK_FORMAT))
         {
-            Ast::removeFromParent(resultNode);
-
             // We need to be sure that our parent is in the sourceFile->astAttrUse hierarchy.
-            // If #global #[???] has a #global protected before (for example), this is not the case.
             if (sourceFile->astAttrUse)
             {
+                Ast::removeFromParent(resultNode);
                 parent = sourceFile->astAttrUse;
                 Ast::addChildBack(parent, resultNode);
             }
-            else
+            else if (!g_CommandLine.dbgPatchMode)
             {
+                Ast::removeFromParent(resultNode);
                 parent = sourceFile->astRoot;
 
                 // Add front in case astRoot already has some children (if the #global comes after another one).
                 // We need #global attributes to be first in the file, before other #globals (namespaces, public etc...).
-                // Otherwise we can have a race condition between multiple globals.
+                // Otherwise, we can have a race condition between multiple globals.
                 Ast::addChildFront(parent, resultNode);
             }
         }

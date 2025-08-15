@@ -896,13 +896,19 @@ bool Workspace::patch()
 
     SWAG_CHECK(build());
 
-    const auto    f = g_Workspace->modules[3]->files[1];
-    FormatContext context;
-    context.setDefaultBeautify();
-    FormatAst fmt;
-    if (!fmt.outputNode(context, f->astRoot))
-        return false;
-    if (!FormatAst::writeResult(f->path.cstr(), fmt.getUtf8()))
-        return false;
+    for (const auto f: g_Workspace->modules[3]->files)
+    {
+        if (f->name != "atod.swg")
+            continue;
+        
+        FormatContext context;
+        context.setDefaultBeautify();
+        FormatAst fmt;
+        if (!fmt.outputNode(context, f->astRoot))
+            return false;
+        if (!FormatAst::writeResult(f->path.cstr(), fmt.getUtf8()))
+            return false;
+    }
+    
     return true;
 }
