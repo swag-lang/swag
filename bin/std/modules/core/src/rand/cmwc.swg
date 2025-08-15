@@ -1,4 +1,3 @@
-#global marked
 #global namespace Random
 #global public
 
@@ -17,31 +16,31 @@ impl CMWC4096
     {
         var rng: MWC
         rng.seedU32(value)
-        for idx in self.q:
-            self.q[idx] = rng.nextU32()
-        self.i = 4095
-        self.c = value % 809430660
+        for idx in q:
+            q[idx] = rng.nextU32()
+        i = 4095
+        c = value % 809430660
     }
 
     // Generates the next 32-bit unsigned random number.
     #[Swag.CanOverflow(true)]
     mtd nextU32()->u32
     {
-        const A = 18782'u64
-        const R = 0xfffffffe
+        const a = 18782'u64
+        const r = 0xfffffffe
 
         // Be sure we have seeded
-        if self.i > 4095:
-            self.seedU32(362436)
+        if i > 4095:
+            seedU32(362436)
 
-        self.i = (self.i + 1) & 4095
-        let t = A * self.q[self.i] + self.c
-        self.c = cast(u32) (t >> 32)
-        var x = t + self.c
-        if x < self.c:
-            x, self.c += 1
-        let v = cast #bit (u32) (R - x)
-        self.q[self.i] = v
+        i = (i + 1) & 4095
+        let t = a * q[i] + c
+        c = cast(u32) (t >> 32)
+        var x = t + c
+        if x < c:
+            x, c += 1
+        let v = cast #bit (u32) (r - x)
+        q[i] = v
         return v
     }
 }

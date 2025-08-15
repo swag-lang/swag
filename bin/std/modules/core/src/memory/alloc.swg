@@ -1,4 +1,3 @@
-#global marked
 #global public
 #global namespace Memory
 using Swag
