@@ -1,3 +1,4 @@
+#global marked
 #global namespace File
 #global public
 using Swag, Core.Errors
@@ -22,7 +23,7 @@ impl TweakFile
     {
         #if !Reflection.isStruct(T):
             #error("type should be a struct")
-        folders.add({#typeof(T), folder})
+        self.folders.add({#typeof(T), folder})
     }
 
     // Reads and parses a tweak file from disk
@@ -30,7 +31,7 @@ impl TweakFile
     {
         var buf   = try File.readAllBytes(fileName)
         var lines = Tokenize.splitLines(cast(string) buf.toSlice())
-        try parse(lines)
+        try self.parse(lines)
     }
 
     // Parses tweak content from a string
@@ -38,14 +39,14 @@ impl TweakFile
     mtd parse(content: string) throw
     {
         var lines = Tokenize.splitLines(content)
-        try parse(lines)
+        try self.parse(lines)
     }
 
     // Parses tweak content from an array of lines
     #[Overload]
     mtd parse(lines: Array'string) throw
     {
-        Debug.assert(!folders.isEmpty())
+        Debug.assert(!self.folders.isEmpty())
 
         struct Ref
         {
@@ -73,7 +74,7 @@ impl TweakFile
                 if @err != null:
                     throw SyntaxError{"invalid folder name", line: idx + 1}
 
-                foreach &folder in folders
+                foreach &folder in self.folders
                 {
                     if folder.type.name == folderName
                     {
@@ -88,7 +89,7 @@ impl TweakFile
             }
 
             if !currentFolder:
-                currentFolder = folders.backPtr()
+                currentFolder = self.folders.backPtr()
 
             // Value declaration
             one = Tokenize.eatSpaces(one)

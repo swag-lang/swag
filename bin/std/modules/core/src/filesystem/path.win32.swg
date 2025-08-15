@@ -1,3 +1,4 @@
+#global marked
 #global #if WINDOWS
 #global public
 #global namespace Path
@@ -67,7 +68,7 @@ func getRootLength(fullname: string)->u32
 {
     if fullname == null:
         return 0
-        
+
     func startsWithOrdinal(source, value: string)->bool
     {
         let sourceLength = @countof(source)
