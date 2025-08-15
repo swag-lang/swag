@@ -1,58 +1,13 @@
 #include "pch.h"
 #include "Format/FormatJob.h"
 #include "Format/FormatAst.h"
-#include "Report/ErrorIds.h"
 #include "Report/Log.h"
 #include "Report/Report.h"
 #include "Syntax/Parser/Parser.h"
 #include "Syntax/SyntaxJob.h"
 #include "Wmf/Module.h"
 
-bool FormatJob::writeResult(const Path& fileName, const Utf8& content)
-{
-    if (!g_CommandLine.output)
-    {
-        if (g_CommandLine.verboseStages)
-            g_Log.messageVerbose(form("[%s] -- Done (commandline --output:false)", fileName.cstr()));
-        return true;
-    }
-
-    if (g_CommandLine.verboseStages)
-        g_Log.messageVerbose(form("[%s] -- Writing file", fileName.cstr()));
-
-    FILE* f = nullptr;
-    if (fopen_s(&f, fileName, "wb"))
-    {
-        Report::errorOS(formErr(Err0732, fileName.cstr()));
-        return false;
-    }
-
-    Vector<Utf8> lines;
-    Utf8::tokenize(content, '\n', lines, true);
-
-    bool start = true;
-    for (auto& l : lines)
-    {
-        l.trimRight();
-
-        // Remove empty lines at the top of the file
-        if (l.empty() && start)
-            continue;
-
-        start = false;
-        (void) fwrite(l.data(), 1, l.length(), f);
-#ifdef _WIN32
-        (void) fputc('\r', f);
-#endif
-        (void) fputc('\n', f);
-    }
-
-    (void) fflush(f);
-    (void) fclose(f);
-    return true;
-}
-
-bool FormatJob::getFormattedCode(FormatContext& context, const Path& fileName, Utf8& result)
+JobResult FormatJob::execute()
 {
     Module     tmpModule;
     SourceFile tmpFile;
@@ -69,7 +24,7 @@ bool FormatJob::getFormattedCode(FormatContext& context, const Path& fileName, U
     if (g_CommandLine.verboseStages)
         g_Log.messageVerbose(form("[%s] -- loading file", fileName.cstr()));
     if (!tmpFile.load())
-        return false;
+        return JobResult::ReleaseJob;
 
     // Generate AST
     {
@@ -87,7 +42,7 @@ bool FormatJob::getFormattedCode(FormatContext& context, const Path& fileName, U
         {
             if (g_CommandLine.verboseStages)
                 g_Log.messageVerbose(form("[%s] -- AST has errors ! Cancel", fileName.cstr()));
-            return false;
+            return JobResult::ReleaseJob;
         }
     }
 
@@ -95,33 +50,20 @@ bool FormatJob::getFormattedCode(FormatContext& context, const Path& fileName, U
     {
         if (g_CommandLine.verboseStages)
             g_Log.messageVerbose(form("[%s] -- #global skip format detected ! Cancel", fileName.cstr()));
-        return false;
+        return JobResult::ReleaseJob;
     }
 
     if (g_CommandLine.verboseStages)
         g_Log.messageVerbose(form("[%s] -- formatting", fileName.cstr()));
 
     // Format
-    FormatAst fmt;
-    fmt.outputNode(context, tmpFile.astRoot);
-
-    // Get result
-    result = fmt.concat->getUtf8();
-    return true;
-}
-
-JobResult FormatJob::execute()
-{
-    Utf8          result;
     FormatContext context;
     context.setDefaultBeautify();
 
-    // Do it!
-    if (!getFormattedCode(context, fileName, result))
+    FormatAst fmt;
+    if (!fmt.outputNode(context, tmpFile.astRoot))
         return JobResult::ReleaseJob;
-
-    // Write file
-    if (!writeResult(fileName, result))
+    if (!fmt.writeResult(fileName))
         return JobResult::ReleaseJob;
 
     return JobResult::ReleaseJob;

@@ -1,5 +1,9 @@
 #include "pch.h"
 #include "Format/FormatAst.h"
+#include "Main/CommandLine.h"
+#include "Report/ErrorIds.h"
+#include "Report/Log.h"
+#include "Report/Report.h"
 #include "Semantic/Semantic.h"
 #include "Syntax/AstFlags.h"
 #include "Syntax/Parser/Parser.h"
@@ -352,5 +356,49 @@ bool FormatAst::collectChildrenToAlign(FormatContext&                       cont
         return false;
     }
 
+    return true;
+}
+
+bool FormatAst::writeResult(const Path& fileName) const
+{
+    if (!g_CommandLine.output)
+    {
+        if (g_CommandLine.verboseStages)
+            g_Log.messageVerbose(form("[%s] -- Done (commandline --output:false)", fileName.cstr()));
+        return true;
+    }
+
+    if (g_CommandLine.verboseStages)
+        g_Log.messageVerbose(form("[%s] -- Writing file", fileName.cstr()));
+
+    FILE* f = nullptr;
+    if (fopen_s(&f, fileName, "wb"))
+    {
+        Report::errorOS(formErr(Err0732, fileName.cstr()));
+        return false;
+    }
+
+    Vector<Utf8> lines;
+    Utf8::tokenize(getUtf8(), '\n', lines, true);
+
+    bool start = true;
+    for (auto& l : lines)
+    {
+        l.trimRight();
+
+        // Remove empty lines at the top of the file
+        if (l.empty() && start)
+            continue;
+
+        start = false;
+        (void) fwrite(l.data(), 1, l.length(), f);
+#ifdef _WIN32
+        (void) fputc('\r', f);
+#endif
+        (void) fputc('\n', f);
+    }
+
+    (void) fflush(f);
+    (void) fclose(f);
     return true;
 }
