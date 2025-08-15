@@ -203,14 +203,18 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
     }
 
     // Replace "Self" with the corresponding struct name
-    if (identifier->token.is(g_LangSpec->name_Self))
+    if (!sourceFile->hasFlag(FILE_MARKED))
     {
-        SWAG_VERIFY(parent->ownerStructScope, context->report({identifier, toErr(Err0320)}));
-        if (currentSelfStructScope)
-            identifier->token.text = currentSelfStructScope->name;
-        else
-            identifier->token.text = parent->ownerStructScope->name;
-        identifier->addSpecFlag(AstIdentifier::SPEC_FLAG_SELF);
+        if (identifier->token.is(g_LangSpec->name_Self))
+        {
+            SWAG_VERIFY(parent->ownerStructScope, context->report({identifier, toErr(Err0320)}));
+            if (currentSelfStructScope)
+                identifier->token.text = currentSelfStructScope->name;
+            else
+                identifier->token.text = parent->ownerStructScope->name;
+            identifier->addSpecFlag(AstIdentifier::SPEC_FLAG_SELF);
+        }
+    
     }
 
     // Generic arguments

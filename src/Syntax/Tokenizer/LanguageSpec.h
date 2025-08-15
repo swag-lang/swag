@@ -172,6 +172,7 @@ struct LanguageSpec
     Utf8 name_ptrvalue;
     Utf8 name_typeinfo;
 
+    Utf8 name_marked;
     Utf8 name_export;
     Utf8 name_generated;
     Utf8 name_skip;

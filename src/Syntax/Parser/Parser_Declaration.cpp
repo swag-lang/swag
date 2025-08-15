@@ -767,9 +767,13 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
             SWAG_CHECK(eatToken());
             break;
         case TokenId::KwdUsing:
+            if (sourceFile->hasFlag(FILE_MARKED))
+                return invalidTokenError(InvalidTokenError::EmbeddedInstruction);
             SWAG_CHECK(doUsing(parent, result, false));
             break;
         case TokenId::KwdWith:
+            if (sourceFile->hasFlag(FILE_MARKED))
+                return invalidTokenError(InvalidTokenError::EmbeddedInstruction);
             SWAG_CHECK(doWith(parent, result));
             break;
         case TokenId::KwdVar:

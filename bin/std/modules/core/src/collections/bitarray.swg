@@ -85,7 +85,7 @@ public impl BitArray
 
     // Compares this bit array with another one for equality.
     // Returns 'true' if both arrays have the same bit count and all bits are identical.
-    mtd opEquals(other: Self)->bool
+    mtd opEquals(other: BitArray)->bool
     {
         if self.count != other.count:
             return false
@@ -222,7 +222,7 @@ public impl BitArray
 
     // Performs a bitwise AND operation between this array and another.
     // The current array is modified to store the result. Asserts that arrays are of the same size.
-    mtd andWith(other: Self)
+    mtd andWith(other: BitArray)
     {
         Debug.assert(self.count == other.count)
         if !self.count:
@@ -233,7 +233,7 @@ public impl BitArray
 
     // Performs a bitwise OR operation between this array and another.
     // The current array is modified to store the result. Asserts that arrays are of the same size.
-    mtd orWith(other: Self)
+    mtd orWith(other: BitArray)
     {
         Debug.assert(self.count == other.count)
         if !self.count:
@@ -244,7 +244,7 @@ public impl BitArray
 
     // Performs a bitwise XOR operation between this array and another.
     // The current array is modified to store the result. Asserts that arrays are of the same size.
-    mtd xorWith(other: Self)
+    mtd xorWith(other: BitArray)
     {
         Debug.assert(self.count == other.count)
         if !self.count:

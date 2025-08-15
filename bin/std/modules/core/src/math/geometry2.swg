@@ -4,14 +4,14 @@
 
 // Test if a point is inside an ellipse.
 // Uses the standard ellipse equation: (x-cx)²/rx² + (y-cy)²/ry² ≤ 1.
-func isInEllipse(me, center: Vector2, radiusX, radiusY: f32)->bool
+func isInEllipse(pt, center: Vector2, radiusX, radiusY: f32)->bool
 {
-    return (pow((me.x - center.x), 2) / pow(radiusX, 2)) + (pow((me.y - center.y), 2) / pow(radiusY, 2)) <= 1
+    return (pow((pt.x - center.x), 2) / pow(radiusX, 2)) + (pow((pt.y - center.y), 2) / pow(radiusY, 2)) <= 1
 }
 
 // Test if a point is inside a triangle using cross product method.
 // Uses barycentric coordinates by checking if all cross products have the same sign.
-func isInTriangle(me, a, b, c: Vector2)->bool
+func isInTriangle(pt, a, b, c: Vector2)->bool
 {
     let ax  = c.x - b.x
     let ay  = c.y - b.y
@@ -19,12 +19,12 @@ func isInTriangle(me, a, b, c: Vector2)->bool
     let by  = a.y - c.y
     let cx  = b.x - a.x
     let cy  = b.y - a.y
-    let apx = me.x - a.x
-    let apy = me.y - a.y
-    let bpx = me.x - b.x
-    let bpy = me.y - b.y
-    let cpx = me.x - c.x
-    let cpy = me.y - c.y
+    let apx = pt.x - a.x
+    let apy = pt.y - a.y
+    let bpx = pt.x - b.x
+    let bpy = pt.y - b.y
+    let cpx = pt.x - c.x
+    let cpy = pt.y - c.y
 
     let aCROSSbp = ax * bpy - ay * bpx
     let cCROSSap = cx * apy - cy * apx
@@ -35,9 +35,9 @@ func isInTriangle(me, a, b, c: Vector2)->bool
 
 // Calculate the perpendicular distance from a point to an infinite line.
 // Projects the point onto the line and returns the distance to the projection.
-func distanceToLine(me, a, b: Vector2)->f32
+func distanceToLine(pt, a, b: Vector2)->f32
 {
-    let toPt = me - a
+    let toPt = pt - a
     var seg  = b - a
     seg.normalizeSafe()
     let dot = toPt.dot(seg)
@@ -48,11 +48,11 @@ func distanceToLine(me, a, b: Vector2)->f32
 
 // Calculate the shortest distance from a point to a line segment.
 // Handles endpoints by clamping the projection to the segment bounds.
-func distanceToSegment(me, a, b: Vector2)->f32
+func distanceToSegment(pt, a, b: Vector2)->f32
 {
     let ab = b - a
-    let be = me - b
-    let ae = me - a
+    let be = pt - b
+    let ae = pt - a
 
     let abbe = ab.dot(be)
     if abbe > 0:
