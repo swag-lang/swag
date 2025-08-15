@@ -304,7 +304,7 @@ impl RichEditView
         if !fontR:
             return 0
 
-        let meas = Painter.measureString(str, fontR)
+        let me = Painter.measureString(str, fontR)
 
         // Background rectangle
         if visible and strStyle.colBk.a
@@ -312,13 +312,13 @@ impl RichEditView
             var rect: Math.Rectangle
             rect.x      = x
             rect.y      = y
-            rect.width  = meas.width
+            rect.width  = me.width
             rect.height = ed.getXExtent().y
             painter.fillRect(rect, strStyle.colBk)
         }
 
         painter.drawString(x, y, str, fontR, strStyle.colFg, strStyle.underline)
-        return x + meas.width
+        return x + me.width
     }
 
     mtd paintLine(bc: *PaintContext, lineIndex: u64, py: f32, visible: bool)->f32

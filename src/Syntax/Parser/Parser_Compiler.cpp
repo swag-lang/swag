@@ -405,7 +405,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     /////////////////////////////////
-    if (tokenParse.token.is(g_LangSpec->name_marked))
+    if (tokenParse.token.is("marked"))
     {
         const auto globalDecl = Ast::newNode<AstCompilerGlobal>(AstNodeKind::CompilerGlobal, this, parent);
         FormatAst::inheritFormatBefore(this, globalDecl, &savedToken);

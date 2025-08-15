@@ -237,8 +237,9 @@ func __printString(message: string)
 {
     if !@dataof(message) or !@countof(message):
         return
+    using __Win32RT
     let len = cast(u32) @countof(message)
-    discard __Win32RT.WriteFile(__Win32RT.GetStdHandle(__Win32RT.STD_OUTPUT_HANDLE), @dataof(message), len, null, null)
+    discard WriteFile(GetStdHandle(STD_OUTPUT_HANDLE), @dataof(message), len, null, null)
 }
 
 ////////////////////////////////////////////////////////////
@@ -263,12 +264,13 @@ func __tlsGetValue(id: u64)->*void        => __Win32RT.TlsGetValue(cast(u32) id)
 ////////////////////////////////////////////////////////////
 func __tlsGetPtr(id: u64, size: u64, init: const *void)->*void
 {
-    var ptr = __Win32RT.TlsGetValue(cast(u32) id)
+    using __Win32RT
+    var ptr = TlsGetValue(cast(u32) id)
     if ptr:
         return ptr
     ptr = @alloc(size)
     @memcpy(ptr, init, size)
-    __Win32RT.TlsSetValue(cast(u32) id, ptr)
+    TlsSetValue(cast(u32) id, ptr)
     return ptr
 }
 
@@ -280,51 +282,55 @@ func __exitError()
 
 func __panicBox(msg, title: string)
 {
-    let result = __Win32RT.MessageBoxA(null, @dataof(msg), @dataof(title), __Win32RT.MB_ICONERROR | __Win32RT.MB_CANCELTRYCONTINUE)
+    using __Win32RT
+    let result = MessageBoxA(null, @dataof(msg), @dataof(title), MB_ICONERROR | MB_CANCELTRYCONTINUE)
     switch result
     {
-    case __Win32RT.IDCANCEL:
+    case IDCANCEL:
         __exitError()
-    case __Win32RT.IDTRYAGAIN:
-        __Win32RT.DebugBreak()
-    case __Win32RT.IDCONTINUE:
+    case IDTRYAGAIN:
+        DebugBreak()
+    case IDCONTINUE:
         break
     }
 }
 
 func __captureStack(skip: u32, wh: [..] *void)->u32
 {
-    let nb = __Win32RT.RtlCaptureStackBackTrace(skip + 1, cast() @countof(wh), cast() @dataof(wh), null)
+    using __Win32RT
+    let nb = RtlCaptureStackBackTrace(skip + 1, cast() @countof(wh), cast() @dataof(wh), null)
     return nb
 }
 
 var __logStackTraceInitDone = false
 func __logStackTrace(wh: [..] *void, startAfter: *Swag.SourceCodeLocation = null, printNoLine = true)
 {
+    using __Win32RT
+
     if !__logStackTraceInitDone
     {
-        if !__Win32RT.SymInitialize(__Win32RT.GetCurrentProcess(), null, __Win32RT.TRUE):
+        if !SymInitialize(GetCurrentProcess(), null, TRUE):
             return
         __logStackTraceInitDone = true
     }
 
     const SYM_LEN_NAME = 128
-    var sym:           [#sizeof(__Win32RT.SYMBOL_INFO) + SYM_LEN_NAME * #sizeof(__Win32RT.CHAR)] u8
-    var displacement:  __Win32RT.ULONG64
+    var sym:           [#sizeof(SYMBOL_INFO) + SYM_LEN_NAME * #sizeof(CHAR)] u8
+    var displacement:  ULONG64
 
-    let psym = cast(*__Win32RT.SYMBOL_INFO) sym
-    psym.SizeOfStruct = #sizeof(__Win32RT.SYMBOL_INFO)
+    let psym = cast(*SYMBOL_INFO) sym
+    psym.SizeOfStruct = #sizeof(SYMBOL_INFO)
     psym.MaxNameLen   = SYM_LEN_NAME
 
-    var line: __Win32RT.IMAGEHLP_LINE64
-    line.SizeOfStruct = #sizeof(__Win32RT.IMAGEHLP_LINE64)
+    var line: IMAGEHLP_LINE64
+    line.SizeOfStruct = #sizeof(IMAGEHLP_LINE64)
 
     var hasStarted = false
 
     for i in wh
     {
-        let hasSymbol = __Win32RT.SymFromAddr(__Win32RT.GetCurrentProcess(), cast(__Win32RT.ULONG64) cast(u64) wh[i], &displacement, psym)
-        let hasLine   = __Win32RT.SymGetLineFromAddr64(__Win32RT.GetCurrentProcess(), cast(__Win32RT.ULONG64) cast(u64) wh[i], cast() &displacement, &line)
+        let hasSymbol = SymFromAddr(GetCurrentProcess(), cast(ULONG64) cast(u64) wh[i], &displacement, psym)
+        let hasLine   = SymGetLineFromAddr64(GetCurrentProcess(), cast(ULONG64) cast(u64) wh[i], cast() &displacement, &line)
         let fileName  = hasLine ? @mkstring(line.FileName, @strlen(line.FileName)) : null
         if !hasLine and !printNoLine:
             continue

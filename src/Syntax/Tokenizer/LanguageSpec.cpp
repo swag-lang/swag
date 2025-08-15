@@ -144,7 +144,6 @@ void LanguageSpec::setupNames()
     name_ptrvalue  = "ptrvalue";
     name_typeinfo  = "typeinfo";
 
-    name_marked      = "marked";
     name_export      = "export";
     name_generated   = "generated";
     name_skip        = "skip";

@@ -204,7 +204,7 @@ bool Parser::doFuncDeclParameterSelf(AstVarDecl* paramNode)
         isConst               = true;
         SWAG_CHECK(eatToken());
 
-        if (tokenParse.isNot(TokenId::Identifier) || (tokenParse.token.isNot(g_LangSpec->name_self)))
+        if (tokenParse.isNot(TokenId::Identifier) || tokenParse.token.isNot(g_LangSpec->name_self))
         {
             const Diagnostic err{sourceFile, tokenParse, toErr(Err0323)};
             return context->report(err);
@@ -489,7 +489,7 @@ bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool accept
                 paramNode->addAstFlag(AST_DECL_USING);
             paramNode->addSpecFlag(AstVarDecl::SPEC_FLAG_GENERATED_SELF);
             paramNode->token.text = g_LangSpec->name_self;
-            const auto typeNode = Ast::newTypeExpression(nullptr, paramNode);
+            const auto typeNode   = Ast::newTypeExpression(nullptr, paramNode);
             typeNode->typeFlags.add(TYPE_FLAG_IS_SELF | TYPE_FLAG_IS_PTR | TYPE_FLAG_IS_SUB_TYPE);
             if (!isItfMethod && !sourceFile->hasFlag(FILE_MARKED))
                 typeNode->typeFlags.add(TYPE_FLAG_HAS_USING);
@@ -1302,7 +1302,7 @@ bool Parser::doLambdaExpression(AstNode* parent, ExprFlags exprFlags, AstNode** 
         // 'mtd' used as a lambda implies as 'using self' as the first capture argument
         if (isMethod)
         {
-            const auto selfId = Ast::newIdentifierRef(g_LangSpec->name_self, this, cp);
+            const auto selfId = Ast::newIdentifierRef("self", this, cp);
             selfId->addAstFlag(AST_DECL_USING | AST_GENERATED | AST_IN_CAPTURE_BLOCK);
         }
 

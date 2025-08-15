@@ -269,7 +269,7 @@ bool FormatAst::outputVarHeader(FormatContext& context, AstNode* node)
             concat->addString("var");
         concat->addBlank();
     }
-    
+
     const bool isSelf = varNode->token.is(g_LangSpec->name_self);
     if (isSelf && varNode->type && castAst<AstTypeExpression>(varNode->type)->typeFlags.has(TYPE_FLAG_IS_CONST))
     {
