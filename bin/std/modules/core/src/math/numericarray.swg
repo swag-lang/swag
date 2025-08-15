@@ -1,3 +1,4 @@
+#global marked
 #global export
 #global namespace Math
 using Swag
@@ -12,33 +13,33 @@ impl NumericArray
     #[Inline]
     mtd const opIndex(idx: u64)->T
     {
-        return buf[idx]
+        return self.buf[idx]
     }
 
-    mtd const opEquals(other: Self)->bool
+    mtd const opEquals(other: NumericArray)->bool
     {
-        for i in N
+        for i in NumericArray.N
         {
-            if buf[i] != other.buf[i]:
+            if self.buf[i] != other.buf[i]:
                 return false
         }
 
         return true
     }
 
-    mtd(op: string) const opBinary(other: Self)->Self
+    mtd(op: string) const opBinary(other: NumericArray)->NumericArray
     {
         var result: retval
-        for i in N
+        for i in NumericArray.N
         {
             #if op == "+":
-                result.buf[i] = buf[i] + other.buf[i]
+                result.buf[i] = self.buf[i] + other.buf[i]
             #elif op == "-":
-                result.buf[i] = buf[i] - other.buf[i]
+                result.buf[i] = self.buf[i] - other.buf[i]
             #elif op == "*":
-                result.buf[i] = buf[i] * other.buf[i]
+                result.buf[i] = self.buf[i] * other.buf[i]
             #elif op == "/":
-                result.buf[i] = buf[i] / other.buf[i]
+                result.buf[i] = self.buf[i] / other.buf[i]
             #else:
                 #error("unsupported binary operation [[" ++ op ++ "]]")
         }
@@ -48,34 +49,34 @@ impl NumericArray
     #[Overload]
     func(op: string) opAssign(using self, value: T)
     {
-        for i in N
+        for i in NumericArray.N
         {
             #if op == "+=":
-                buf[i] += value
+                self.buf[i] += value
             #elif (op == "-="):
-                buf[i] -= value
+                self.buf[i] -= value
             #elif (op == "*="):
-                buf[i] *= value
+                self.buf[i] *= value
             #elif (op == "/="):
-                buf[i] /= value
+                self.buf[i] /= value
             #else:
                 #error("unsupported assign operation [[" ++ op ++ "]]")
         }
     }
 
     #[Overload]
-    func(op: string) opAssign(using self, value: Self)
+    func(op: string) opAssign(using self, value: NumericArray)
     {
-        for i in N
+        for i in NumericArray.N
         {
             #if op == "+=":
-                buf[i] += value.buf[i]
+                self.buf[i] += value.buf[i]
             #elif (op == "-="):
-                buf[i] -= value.buf[i]
+                self.buf[i] -= value.buf[i]
             #elif (op == "*="):
-                buf[i] *= value.buf[i]
+                self.buf[i] *= value.buf[i]
             #elif (op == "/="):
-                buf[i] /= value.buf[i]
+                self.buf[i] /= value.buf[i]
             #else:
                 #error("unsupported assign operation [[" ++ op ++ "]]")
         }
@@ -84,22 +85,22 @@ impl NumericArray
     #[Safety("boundcheck", false), Complete, Overload]
     mtd opAffect(what: T)
     {
-        for i in N:
-            buf[i] = what
+        for i in NumericArray.N:
+            self.buf[i] = what
     }
 
     #[Safety("boundcheck", false), Complete, Overload]
     mtd opAffect(what: const [..] T)
     {
-        Debug.assert(@countof(what) == N)
-        for i in N:
-            buf[i] = what[i]
+        Debug.assert(@countof(what) == NumericArray.N)
+        for i in NumericArray.N:
+            self.buf[i] = what[i]
     }
 
     #[Safety("boundcheck", false)]
-    func from(values: T...)->Self
+    func from(values: T...)->NumericArray
     {
-        Debug.assert(@countof(values) == N)
+        Debug.assert(@countof(values) == NumericArray.N)
         var result: retval
         for N:
             result.buf[@index] = values[@index]
@@ -110,24 +111,24 @@ impl NumericArray
     #[Safety("boundcheck", false)]
     mtd set(values: T...)
     {
-        Debug.assert(@countof(values) == N)
-        for i in N:
-            buf[i] = values[i]
+        Debug.assert(@countof(values) == NumericArray.N)
+        for i in NumericArray.N:
+            self.buf[i] = values[i]
     }
 
     // Multiply & add
     #[Safety("boundcheck", false), Overload]
     mtd mulAdd(value1, value2: T)
     {
-        for i in N:
-            buf[i] = (buf[i] * value1) + value2
+        for i in NumericArray.N:
+            self.buf[i] = (buf[i] * value1) + value2
     }
 
     // Multiply & Add
     #[Safety("boundcheck", false), Overload]
-    mtd mulAdd(value1, value2: Self)
+    mtd mulAdd(value1, value2: NumericArray)
     {
-        for i in N:
-            buf[i] = (buf[i] * value1[i]) + value2.buf[i]
+        for i in NumericArray.N:
+            self.buf[i] = (buf[i] * value1[i]) + value2.buf[i]
     }
 }
