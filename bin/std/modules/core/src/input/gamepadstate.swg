@@ -1,4 +1,3 @@
-#global marked
 #global public
 #global namespace Input
 using Math
@@ -16,7 +15,7 @@ impl GamePadState
     // Reset state to its default value
     mtd clear()
     {
-        Memory.clear(&self.pressed, #sizeof(self.pressed))
-        Memory.clear(&self.position, #sizeof(self.position))
+        Memory.clear(&pressed, #sizeof(pressed))
+        Memory.clear(&position, #sizeof(position))
     }
 }

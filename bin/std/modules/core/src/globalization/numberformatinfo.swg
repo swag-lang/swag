@@ -1,4 +1,3 @@
-#global marked
 #global namespace Globalization
 
 // Provides culture-specific information for formatting and parsing numeric values.
