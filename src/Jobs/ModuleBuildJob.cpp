@@ -744,6 +744,8 @@ JobResult ModuleBuildJob::execute()
             // Do not run native tests or command in script mode, it's already done in bytecode
             if (g_CommandLine.scriptMode)
                 pass = ModuleBuildPass::Done;
+            else if (g_CommandLine.patchMode)
+                pass = ModuleBuildPass::Done;            
             else if (g_CommandLine.genDoc)
                 pass = ModuleBuildPass::GenerateDoc;
             else
