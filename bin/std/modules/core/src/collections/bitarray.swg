@@ -110,7 +110,7 @@ public impl BitArray
         #if back:
             #error("visiting in reverse order is not supported for BitArray")
 
-        if !self.count:
+        if !count:
             return
         let remainingBits = self.count
         var countBits     = 0'u64
@@ -124,7 +124,7 @@ public impl BitArray
                 #scope(Down)
                 #macro
                 {
-                    let #alias0 = cast(bool) (#up self.buffer[#up idx] & #up shift)
+                    let #alias0 = cast(bool) (#up buffer[#up idx] & #up shift)
                     let #alias1 = #up countBits
                     #inject(#up stmt, break = break to Up, continue = break to Down)
                 }
