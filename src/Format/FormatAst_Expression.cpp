@@ -239,16 +239,19 @@ bool FormatAst::outputCast(FormatContext& context, const AstNode* node)
 
     if (node->hasSpecFlag(AstCast::SPEC_FLAG_OVERFLOW))
     {
+        concat->addBlank();
         concat->addString(g_LangSpec->name_sharp_wrap);
         concat->addBlank();
     }
     else if (node->hasSpecFlag(AstCast::SPEC_FLAG_BIT))
     {
+        concat->addBlank();
         concat->addString(g_LangSpec->name_sharp_bit);
         concat->addBlank();        
     }
     else if (node->hasSpecFlag(AstCast::SPEC_FLAG_UN_CONST))
     {
+        concat->addBlank();
         concat->addString(g_LangSpec->name_sharp_unconst);
         concat->addBlank();        
     }
