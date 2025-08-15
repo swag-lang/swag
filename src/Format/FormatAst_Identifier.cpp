@@ -85,7 +85,7 @@ bool FormatAst::outputIdentifierRef(FormatContext& context, AstNode* node)
         concat->addBlank();
     }
 
-    if (node->hasSpecFlag(AstIdentifierRef::SPEC_FLAG_AUTO_SCOPE))
+    if (node->hasSpecFlag(AstIdentifierRef::SPEC_FLAG_AUTO_SCOPE | AstIdentifierRef::SPEC_FLAG_AUTO_WITH_SCOPE))
     {
         concat->addChar('.');
     }
@@ -95,10 +95,7 @@ bool FormatAst::outputIdentifierRef(FormatContext& context, AstNode* node)
     {
         const auto child = convertNode(context, it);
         if (!child)
-        {
-            first = false;
             continue;
-        }
 
         if (child->hasSpecFlag(AstIdentifier::SPEC_FLAG_SILENT_CALL))
         {

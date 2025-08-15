@@ -1470,6 +1470,7 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
                 {
                     prependWith = false;
                     SWAG_ASSERT(exprNode->is(AstNodeKind::IdentifierRef));
+                    exprNode->addSpecFlag(AstIdentifierRef::SPEC_FLAG_AUTO_WITH_SCOPE);
                     for (uint32_t wi = withNode->id.size() - 1; wi != UINT32_MAX; wi--)
                     {
                         const auto id = Ast::newIdentifier(castAst<AstIdentifierRef>(exprNode), withNode->id[wi], this, exprNode);

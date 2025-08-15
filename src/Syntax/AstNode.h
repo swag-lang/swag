@@ -680,8 +680,9 @@ struct AstVarDecl : AstNode
 
 struct AstIdentifierRef : AstNode
 {
-    static constexpr SpecFlags SPEC_FLAG_AUTO_SCOPE = 0x0001;
-    static constexpr SpecFlags SPEC_FLAG_WITH_SCOPE = 0x0002;
+    static constexpr SpecFlags SPEC_FLAG_AUTO_SCOPE      = 0x0001;
+    static constexpr SpecFlags SPEC_FLAG_WITH_SCOPE      = 0x0002;
+    static constexpr SpecFlags SPEC_FLAG_AUTO_WITH_SCOPE = 0x0004;
 
     AstNode* clone(CloneContext& context);
     void     computeName();
@@ -729,7 +730,7 @@ struct AstFuncDecl : AstNode
     static constexpr SpecFlags SPEC_FLAG_FULL_RESOLVE         = 0x0010;
     static constexpr SpecFlags SPEC_FLAG_PARTIAL_RESOLVE      = 0x0020;
     static constexpr SpecFlags SPEC_FLAG_REG_GET_CONTEXT      = 0x0040;
-    static constexpr SpecFlags SPEC_FLAG_HAS_UNIQ           = 0x0080;
+    static constexpr SpecFlags SPEC_FLAG_HAS_UNIQ             = 0x0080;
     static constexpr SpecFlags SPEC_FLAG_SHORT_FORM           = 0x0100;
     static constexpr SpecFlags SPEC_FLAG_SHORT_LAMBDA         = 0x0200;
     static constexpr SpecFlags SPEC_FLAG_RETURN_DEFINED       = 0x0400;
@@ -927,7 +928,7 @@ struct AstLoop : AstBreakable
 struct AstVisit : AstNode
 {
     static constexpr SpecFlags SPEC_FLAG_WANT_POINTER = 0x0001;
-    static constexpr SpecFlags SPEC_FLAG_REVERSE         = 0x0002;
+    static constexpr SpecFlags SPEC_FLAG_REVERSE      = 0x0002;
 
     AstNode* clone(CloneContext& context);
 
@@ -984,7 +985,7 @@ struct AstType : AstNode
 constexpr TypeFlags TYPE_FLAG_IS_ARRAY          = 0x0001;
 constexpr TypeFlags TYPE_FLAG_IS_SLICE          = 0x0002;
 constexpr TypeFlags TYPE_FLAG_IS_CONST          = 0x0004;
-constexpr TypeFlags TYPE_FLAG_IS_CODE_BLOCK           = 0x0008;
+constexpr TypeFlags TYPE_FLAG_IS_CODE_BLOCK     = 0x0008;
 constexpr TypeFlags TYPE_FLAG_FORCE_CONST       = 0x0010;
 constexpr TypeFlags TYPE_FLAG_IS_SELF           = 0x0020;
 constexpr TypeFlags TYPE_FLAG_IS_RETVAL         = 0x0040;
@@ -1245,8 +1246,8 @@ struct AstCast : AstNode
 struct AstOp : AstNode
 {
     static constexpr SpecFlags SPEC_FLAG_WRAP = 0x0001;
-    static constexpr SpecFlags SPEC_FLAG_PROM     = 0x0002;
-    static constexpr SpecFlags SPEC_FLAG_FMA      = 0x0004;
+    static constexpr SpecFlags SPEC_FLAG_PROM = 0x0002;
+    static constexpr SpecFlags SPEC_FLAG_FMA  = 0x0004;
 
     AstNode* clone(CloneContext& context);
 };

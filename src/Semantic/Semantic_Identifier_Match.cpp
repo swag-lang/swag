@@ -1091,6 +1091,7 @@ bool Semantic::setSymbolMatchUsingVar(SemanticContext* context, AstIdentifierRef
             }
 
             idNode->addSpecFlag(AstIdentifier::SPEC_FLAG_FROM_USING);
+            idNode->addAstFlag(AST_GENERATED);
         }
     }
     else
@@ -1109,6 +1110,7 @@ bool Semantic::setSymbolMatchUsingVar(SemanticContext* context, AstIdentifierRef
             newParent = newParent->parent;
 
         idNode->addSpecFlag(AstIdentifier::SPEC_FLAG_FROM_USING);
+        idNode->addAstFlag(AST_GENERATED);
 
         if (identifier->identifierExtension || dependentVar)
             idNode->allocateIdentifierExtension();
