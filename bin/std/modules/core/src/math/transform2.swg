@@ -1,4 +1,3 @@
-#global marked
 #global namespace Math
 #global public
 
@@ -24,38 +23,39 @@ impl Transform2
     // Set transform to identity
     mtd setIdentity()
     {
-        self.m11 = 1
-        self.m12 = 0
-        self.m21 = 0
-        self.m22 = 1
-        self.m31 = 0
-        self.m32 = 0
+        m11 = 1
+        m12 = 0
+        m21 = 0
+        m22 = 1
+        m31 = 0
+        m32 = 0
     }
 
     // Checks if the transform is the identity matrix
     mtd const isIdentity()->bool
     {
-        return self.m11 == 1 and self.m12 == 0 and
-               self.m21 == 0 and self.m22 == 1 and
-               self.tx == 0 and self.ty == 0
+        return m11 == 1 and m12 == 0 and
+               m21 == 0 and m22 == 1 and
+               tx == 0 and ty == 0
     }
 
     // Creates a rotation matrix, with a given center of rotation
     func createRotation(angle: f32, centerX, centerY: f32)->Transform2
     {
         var result: retval = undefined
+        using result
 
         let s  = Math.sin(angle)
         let c  = Math.cos(angle)
         let c1 = 1.0 - c
 
-        result.tx = (centerX * c1) + (centerY * s)
-        result.ty = (centerY * c1) - (centerX * s)
+        tx = (centerX * c1) + (centerY * s)
+        ty = (centerY * c1) - (centerX * s)
 
-        result.m11 = c
-        result.m12 = s
-        result.m21 = -s
-        result.m22 = c
+        m11 = c
+        m12 = s
+        m21 = -s
+        m22 = c
 
         return result
     }
@@ -64,13 +64,14 @@ impl Transform2
     func createScale(scaleX, scaleY: f32, centerX, centerY: f32)->Transform2
     {
         var result: retval = undefined
+        using result
 
-        result.m11 = scaleX
-        result.m12 = 0
-        result.m21 = 0
-        result.m22 = scaleY
-        result.tx  = centerX - scaleX * centerX
-        result.ty  = centerY - scaleY * centerY
+        m11 = scaleX
+        m12 = 0
+        m21 = 0
+        m22 = scaleY
+        tx  = centerX - scaleX * centerX
+        ty  = centerY - scaleY * centerY
 
         return result
     }
@@ -79,13 +80,14 @@ impl Transform2
     func createTranslation(x, y: f32)->Transform2
     {
         var result: retval = undefined
+        using result
 
-        result.m11 = 1
-        result.m12 = 0
-        result.m21 = 0
-        result.m22 = 1
-        result.tx  = x
-        result.ty  = y
+        m11 = 1
+        m12 = 0
+        m21 = 0
+        m22 = 1
+        tx  = x
+        ty  = y
 
         return result
     }
@@ -93,37 +95,37 @@ impl Transform2
     // Sets the translation components directly
     mtd setTranslation(translation: Vector2)
     {
-        self.tx = translation.x
-        self.ty = translation.y
+        tx = translation.x
+        ty = translation.y
     }
 
     // Gets the translation components
     mtd getTranslation()->Vector2
     {
-        return Vector2{self.tx, self.ty}
+        return Vector2{tx, ty}
     }
 
     // Applies the transform to a 2D point
     mtd transformPoint(point: Vector2)->Vector2
     {
-        let rx = point.x * self.m11 + point.y * self.m21 + self.tx
-        let ry = point.x * self.m12 + point.y * self.m22 + self.ty
+        let rx = point.x * m11 + point.y * m21 + tx
+        let ry = point.x * m12 + point.y * m22 + ty
         return Vector2{rx, ry}
     }
 
     // Multiplies the current transform by another transformation matrix
     mtd multiply(matrix2: Transform2)
     {
-        let sm11 = self.m11
-        self.m11 = sm11 * matrix2.m11 + self.m12 * matrix2.m21
-        self.m12 = sm11 * matrix2.m12 + self.m12 * matrix2.m22
+        let sm11 = m11
+        m11 = sm11 * matrix2.m11 + m12 * matrix2.m21
+        m12 = sm11 * matrix2.m12 + m12 * matrix2.m22
 
-        let sm21 = self.m21
-        self.m21 = sm21 * matrix2.m11 + self.m22 * matrix2.m21
-        self.m22 = sm21 * matrix2.m12 + self.m22 * matrix2.m22
+        let sm21 = m21
+        m21 = sm21 * matrix2.m11 + m22 * matrix2.m21
+        m22 = sm21 * matrix2.m12 + m22 * matrix2.m22
 
-        let stx = self.tx
-        self.tx = stx * matrix2.m11 + self.ty * matrix2.m21 + matrix2.tx
-        self.ty = stx * matrix2.m12 + self.ty * matrix2.m22 + matrix2.ty
+        let stx = tx
+        tx = stx * matrix2.m11 + ty * matrix2.m21 + matrix2.tx
+        ty = stx * matrix2.m12 + ty * matrix2.m22 + matrix2.ty
     }
 }
