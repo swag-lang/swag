@@ -43,13 +43,12 @@ struct PendingJob
 
 struct Workspace
 {
-    static void        errorPendingJobs(const Vector<PendingJob>& pendingJobs);
-    static void        computeWaitingJobs();
-    static void        checkPendingJobs();
-    bool               build();
-#ifdef SWAG_DEV_MODE    
-    bool               patch();
-#endif
+    static void errorPendingJobs(const Vector<PendingJob>& pendingJobs);
+    static void computeWaitingJobs();
+    static void checkPendingJobs();
+    bool        build();
+    bool        patch();
+
     static Diagnostic* errorPendingJob(Job* prevJob, const Job* depJob);
     static bool        buildRTModule(Module* module);
     bool               buildTarget();

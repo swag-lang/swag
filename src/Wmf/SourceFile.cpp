@@ -12,10 +12,8 @@
 
 void SourceFile::release() const
 {
-#ifdef SWAG_DEV_MODE
-    if (g_CommandLine.patchMode)
+    if (g_CommandLine.dbgPatchMode)
         return;
-#endif
     if (astRoot)
         astRoot->release();
     if (scopeFile)

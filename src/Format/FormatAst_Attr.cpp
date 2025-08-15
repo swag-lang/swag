@@ -66,74 +66,6 @@ bool FormatAst::outputAttrUse(FormatContext& context, AstNode* node, bool& hasSo
 
 bool FormatAst::outputAttrUse(FormatContext& context, AstAttrUse* node)
 {
-    if (node->attributeFlags.has(ATTRIBUTE_PUBLIC))
-    {
-        if (node->hasAstFlag(AST_GLOBAL_NODE))
-        {
-            concat->addString("#global");
-            concat->addBlank();
-            concat->addString("public");
-            concat->addEol();
-            concat->addIndent(context.indent);
-            SWAG_CHECK(outputChildrenEol(context, node->content));
-        }
-        else
-        {
-            concat->addString("public");
-            concat->addBlank();
-            SWAG_CHECK(outputNode(context, node->content));
-        }
-        return true;
-    }
-
-    if (node->attributeFlags.has(ATTRIBUTE_PRIVATE))
-    {
-        if (node->hasAstFlag(AST_GLOBAL_NODE))
-        {
-            concat->addString("#global");
-            concat->addBlank();
-            concat->addString("private");
-            concat->addEol();
-            concat->addIndent(context.indent);
-            SWAG_CHECK(outputChildrenEol(context, node->content));
-        }
-        else
-        {
-            concat->addString("private");
-            concat->addBlank();
-            SWAG_CHECK(outputNode(context, node->content));
-        }
-        return true;
-    }
-
-    if (node->attributeFlags.has(ATTRIBUTE_INTERNAL))
-    {
-        if (node->hasAstFlag(AST_GLOBAL_NODE))
-        {
-            concat->addString("#global");
-            concat->addBlank();
-            concat->addString("internal");
-            concat->addEol();
-            concat->addIndent(context.indent);
-            SWAG_CHECK(outputChildrenEol(context, node->content));
-        }
-        else
-        {
-            concat->addString("internal");
-            concat->addBlank();
-            SWAG_CHECK(outputNode(context, node->content));
-        }
-        return true;
-    }
-
-    if (node->attributeFlags.has(ATTRIBUTE_FIELD_PRIVATE))
-    {
-        concat->addString("private");
-        concat->addBlank();
-        SWAG_CHECK(outputNode(context, node->content));
-        return true;
-    }    
-
     if (node->hasAstFlag(AST_GLOBAL_NODE))
     {
         concat->addString("#global");
@@ -148,11 +80,37 @@ bool FormatAst::outputAttrUse(FormatContext& context, AstAttrUse* node)
 
     bool hasSomething = true;
     SWAG_CHECK(outputAttrUse(context, node, hasSomething));
-    if (!hasSomething)
-        return true;
-    beautifyAfter(context, node);
-    concat->addEol();
-    concat->addIndent(context.indent);
+    if (hasSomething)
+    {
+        beautifyAfter(context, node);
+        concat->addEol();
+        concat->addIndent(context.indent);
+    }
+    
+    if (node->attributeFlags.has(ATTRIBUTE_PUBLIC) && !node->hasAstFlag(AST_GLOBAL_NODE))
+    {
+        concat->addString("public");
+        concat->addBlank();
+    }
+
+    if (node->attributeFlags.has(ATTRIBUTE_PRIVATE) && !node->hasAstFlag(AST_GLOBAL_NODE))
+    {
+        concat->addString("private");
+        concat->addBlank();
+    }
+
+    if (node->attributeFlags.has(ATTRIBUTE_INTERNAL) && !node->hasAstFlag(AST_GLOBAL_NODE))
+    {
+        concat->addString("internal");
+        concat->addBlank();
+    }
+
+    if (node->attributeFlags.has(ATTRIBUTE_FIELD_PRIVATE))
+    {
+        concat->addString("private");
+        concat->addBlank();
+    }
+
     SWAG_CHECK(outputNode(context, node->content));
     return true;
 }

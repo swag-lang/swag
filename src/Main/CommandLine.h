@@ -55,10 +55,10 @@ struct CommandLine
     bool dbgCallStack        = false;
     bool dbgPrintBcExt       = false;
     bool dbgDevMode          = false;
+    bool dbgPatchMode        = false;
 
 #ifdef SWAG_DEV_MODE
     bool forceFormat = false;
-    bool patchMode   = false;
     bool randomize   = false;
     int  randSeed    = 0;
 #endif

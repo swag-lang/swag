@@ -890,10 +890,9 @@ bool Workspace::build()
     return result;
 }
 
-#ifdef SWAG_DEV_MODE
 bool Workspace::patch()
 {
-    g_CommandLine.patchMode = true;
+    g_CommandLine.dbgPatchMode = true;
 
     SWAG_CHECK(build());
 
@@ -907,5 +906,3 @@ bool Workspace::patch()
         return false;
     return true;
 }
-
-#endif
