@@ -225,34 +225,61 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
     const auto identifierCrc      = identifier->token.text.hash();
 
     // First, we search in the specified scope, if defined
-    const auto startScope = identifierRef->previousScope;
-    if (startScope)
+    if (identifierRef->previousScope)
     {
-        if (startScope->is(ScopeKind::Impl))
+        Vector<Scope*> startScopes;
+        startScopes.push_back(identifierRef->previousScope);
+
+        if (identifierRef->hasAstFlag(AST_IN_ITF_IMPL) &&
+            identifierRef->previousNode &&
+            identifierRef->previousNode->typeInfo &&
+            identifierRef->previousNode->typeInfo->isSelf())
         {
-            waitAllStructInterfaces(job, startScope->parentScope->owner->typeInfo);
-            YIELD();
+            auto scope = identifierRef->ownerScope;
+            while (scope && !scope->is(ScopeKind::Impl))
+                scope = scope->parentScope;
+            if (scope)
+                startScopes.push_back(scope);
         }
 
-        for (uint32_t i = 0; i < 2; i++)
+        for (const auto startScope : startScopes)
         {
-            SWAG_CHECK(collectScopeHierarchy(startScope, scopeHierarchy, scopeHierarchyVars, symbolsMatch, identifierRef, identifier, identifierCrc));
-            if (!symbolsMatch.empty())
-                return true;
+            if (startScope->is(ScopeKind::Impl) && startScope == identifierRef->previousScope)
+            {
+                waitAllStructInterfaces(job, startScope->parentScope->owner->typeInfo);
+                YIELD();
+            }
 
-            findSymbolsInHierarchy(scopeHierarchy, symbolsMatch, identifier, identifierCrc);
-            if (!symbolsMatch.empty())
-                return true;
+            VectorNative<OneSymbolMatch> tmpSymbolsMatch;
+            for (uint32_t i = 0; i < 2; i++)
+            {
+                SWAG_CHECK(collectScopeHierarchy(startScope, scopeHierarchy, scopeHierarchyVars, tmpSymbolsMatch, identifierRef, identifier, identifierCrc));
+                if (!tmpSymbolsMatch.empty())
+                    break;
 
-            // It can happen than types are not completed when collecting hierarchies, so we can miss some scopes (because of using).
-            // If the types are completed between the collect and the waitTypeCompleted, then we won't find the missing hierarchies,
-            // because we won't parse again.
-            // So here, if we do not find symbols, then we restart until all types are completed.
-            // @TryAgainOnce
-            waitTypeCompleted(job, startScope->owner->typeInfo);
-            YIELD();
+                findSymbolsInHierarchy(scopeHierarchy, tmpSymbolsMatch, identifier, identifierCrc);
+                if (!tmpSymbolsMatch.empty())
+                    break;
+
+                // It can happen that types are not completed when collecting hierarchies, so we can miss some scopes (because of using).
+                // If the types are completed between the collect and the waitTypeCompleted, then we won't find the missing hierarchies,
+                // because we won't parse again.
+                // So here, if we do not find symbols, then we restart until all types are completed.
+                // @TryAgainOnce
+                waitTypeCompleted(job, startScope->owner->typeInfo);
+                YIELD();
+            }
+
+            if (!tmpSymbolsMatch.empty())
+            {
+                for (const auto s: tmpSymbolsMatch)
+                    symbolsMatch.push_back_once(s);
+                continue;
+            }
         }
 
+        if (!symbolsMatch.empty())
+            return true;
         if (!identifierRef->previousNode && identifierRef->hasAstFlag(AST_SILENT_CHECK))
             return true;
         if (!identifierRef->previousNode)

@@ -175,7 +175,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
     {
         ParserPushScope        scoped(this, parentScope);
         ParserPushStructScope  scopedStruct(this, newScope);
-        ParserPushAstNodeFlags scopedFlags(this, AST_IN_IMPL);
+        ParserPushAstNodeFlags scopedFlags(this, AST_IN_IMPL | (implInterface ? AST_IN_ITF_IMPL : 0));
         while (tokenParse.isNot(TokenId::EndOfFile) && tokenParse.isNot(TokenId::SymRightCurly))
         {
             AstNode* topNode = nullptr;

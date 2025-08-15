@@ -1,3 +1,4 @@
+#global marked
 #global export
 using Swag
 
@@ -8,7 +9,7 @@ struct(T) Array
     allocator:     IAllocator // The allocator used for memory operations.
     buffer:        ^T         // Pointer to the contiguous memory block holding the elements.
     count:         u64        // The number of valid elements currently in the array.
-    capacity:      u64        // The total number of elements that can be stored in the allocated buffer.
+    capacity:      u64        // The total number of elements that can be stored in the allocated self.buffer.
 }
 
 impl Array
@@ -17,41 +18,41 @@ impl Array
     #[Inline]
     mtd opCount()->u64
     {
-        return count
+        return self.count
     }
 
-    // Returns a raw, constant pointer to the array's buffer.
+    // Returns a raw, constant pointer to the array's self.buffer.
     #[Inline]
     mtd opData()->const *T
     {
-        return buffer
+        return self.buffer
     }
 
     // Ensures the allocated memory is freed when the array goes out of scope.
     mtd opDrop()
     {
-        free()
+        self.free()
     }
 
     // Handles the deep copy of the array when it is copied.
-    // A new buffer is allocated and the content is copied over.
+    // A new self.buffer is allocated and the content is copied over.
     mtd opPostCopy()
     {
-        if buffer == null:
+        if self.buffer == null:
             return
 
-        let oldBuffer = buffer
-        buffer = null
-        realloc(count)
+        let oldBuffer = self.buffer
+        self.buffer = null
+        self.realloc(self.count)
 
         #if Reflection.hasPostCopy(T)
         {
-            for count:
-                buffer[@index] = #nodrop oldBuffer[@index]
+            for self.count:
+                self.buffer[@index] = #nodrop oldBuffer[@index]
         }
         #else
         {
-            Memory.copy(buffer, oldBuffer, #sizeof(T) * count)
+            Memory.copy(self.buffer, oldBuffer, #sizeof(T) * self.count)
         }
     }
 
@@ -59,14 +60,14 @@ impl Array
     #[Inline, Overload]
     mtd opCast()->[..] T
     {
-        return toSlice()
+        return self.toSlice()
     }
 
     // Allows the array to be implicitly cast to an immutable slice.
     #[Inline, Overload]
     mtd const opCast()->const [..] T
     {
-        return toSlice()
+        return self.toSlice()
     }
 
     // Creates a slice from a sub-part of the array.
@@ -74,25 +75,25 @@ impl Array
     mtd opSlice(lower, upper: u64)->[..] T
     {
         Debug.safetyBoundCheck(lower <= upper, "lower bound greater than upper bound")
-        Debug.safetyBoundCheck(lower < count, "lower bound out of range")
-        Debug.safetyBoundCheck(upper < count, "upper bound out of range")
-        return @mkslice(buffer + lower, (upper + 1) - lower)
+        Debug.safetyBoundCheck(lower < self.count, "lower bound out of range")
+        Debug.safetyBoundCheck(upper < self.count, "upper bound out of range")
+        return @mkslice(self.buffer + lower, (upper + 1) - lower)
     }
 
     // Returns a constant reference to the element at the specified index.
     #[Inline, Overload]
     mtd const opIndex(index: u64)->const &T
     {
-        Debug.safetyBoundCheck(index < count, "index out of range")
-        return buffer + index
+        Debug.safetyBoundCheck(index < self.count, "index out of range")
+        return self.buffer + index
     }
 
     // Returns a mutable reference to the element at the specified index.
     #[Inline, Overload]
     mtd opIndex(index: u64)->&T
     {
-        Debug.safetyBoundCheck(index < count, "index out of range")
-        return buffer + index
+        Debug.safetyBoundCheck(index < self.count, "index out of range")
+        return self.buffer + index
     }
 
     // Assigns a new value to the element at the specified index.
@@ -100,40 +101,40 @@ impl Array
     mtd opIndexAffect(index: u64, value: T)
         where Reflection.canCopy(T)
     {
-        Debug.safetyBoundCheck(index < count, "index out of range")
-        buffer[index] = value
+        Debug.safetyBoundCheck(index < self.count, "index out of range")
+        self.buffer[index] = value
     }
 
     // Handles compound assignment operators (e.g., `+=`, `-=`) for elements.
     #[Inline]
     mtd(op: string) opIndexAssign(index: u64, value: T)
     {
-        Debug.safetyBoundCheck(index < count, "index out of range")
-        #ast "buffer[index] " ++ op ++ " value"
+        Debug.safetyBoundCheck(index < self.count, "index out of range")
+        #ast "self.buffer[index] " ++ op ++ " value"
     }
 
     // Replaces the content of the array with elements copied from a slice.
     mtd opAffect(arr: const [..] T)
         where Reflection.canCopy(T)
     {
-        clear()
+        self.clear()
         var countof = @countof(arr)
         if !countof:
             return
         var dataof = @dataof(arr)
 
-        grow(countof)
+        self.grow(countof)
         #if Reflection.hasPostCopy(T)
         {
             for i in countof:
-                buffer[i] = #nodrop dataof[i]
+                self.buffer[i] = #nodrop dataof[i]
         }
         #else
         {
-            Memory.copy(buffer, dataof, #sizeof(T) * countof)
+            Memory.copy(self.buffer, dataof, #sizeof(T) * countof)
         }
 
-        count += countof
+        self.count += countof
     }
 
     // Provides a way to iterate over each element in the array.
@@ -148,11 +149,11 @@ impl Array
 
         // Little trick to avoid labels. That way a 'continue' in the user code will work correctly
         #if back:
-            var scan = buffer + count
+            var scan = self.buffer + self.count
         #else:
-            var scan = buffer - 1
+            var scan = self.buffer - 1
 
-        for count
+        for self.count
         {
             #if back:
                 scan -= 1
@@ -178,8 +179,8 @@ impl Array
     #[Inline]
     mtd ref1(x: u64)->&T
     {
-        Debug.safetyBoundCheck(x < count, "index out of range")
-        return buffer + x
+        Debug.safetyBoundCheck(x < self.count, "index out of range")
+        return self.buffer + x
     }
 
     // Returns a mutable reference to an element using 2D coordinates and a width.
@@ -187,57 +188,57 @@ impl Array
     #[Inline]
     mtd ref2(x, y, w: u64)->&T
     {
-        Debug.safetyBoundCheck(x + y * w < count, "index out of range")
-        return buffer + x + y * w
+        Debug.safetyBoundCheck(x + y * w < self.count, "index out of range")
+        return self.buffer + x + y * w
     }
 
-    // Reallocates the internal buffer to a new capacity.
+    // Reallocates the internal self.buffer to a new capacity.
     // This is a low-level memory operation that handles moving existing elements.
     mtd realloc(newCapacity: u64)
     {
-        if allocator == null:
-            allocator = @getcontext().allocator
+        if self.allocator == null:
+            self.allocator = @getcontext().allocator
 
         if newCapacity == 0
         {
-            Memory.free(buffer, capacity * #sizeof(T), allocator)
-            buffer   = null
-            capacity = 0
+            Memory.free(self.buffer, self.capacity * #sizeof(T), self.allocator)
+            self.buffer   = null
+            self.capacity = 0
             return
         }
 
-        let newBuffer = cast(^T) Memory.realloc(buffer, newCapacity * #sizeof(T), capacity * #sizeof(T), allocator)
+        let newBuffer = cast(^T) Memory.realloc(self.buffer, newCapacity * #sizeof(T), self.capacity * #sizeof(T), self.allocator)
 
-        // Need to call opPostMove on every existing element if the buffer has not been reallocated
+        // Need to call opPostMove on every existing element if the self.buffer has not been reallocated
         // in place
         #if Reflection.hasPostMove(T)
         {
-            if buffer and newBuffer != buffer
+            if self.buffer and newBuffer != self.buffer
             {
-                @postmove(newBuffer, count)
+                @postmove(newBuffer, self.count)
             }
         }
 
-        buffer   = newBuffer
-        capacity = newCapacity
+        self.buffer   = newBuffer
+        self.capacity = newCapacity
     }
 
     // Frees the array's memory and resets its state.
     // If elements have destructors, they are called.
     mtd free()
     {
-        if !buffer:
+        if !self.buffer:
             return
 
         // Need to drop every structs
         #if Reflection.hasDrop(T)
         {
-            @drop(buffer, count)
+            @drop(self.buffer, self.count)
         }
 
-        Memory.free(buffer, capacity * #sizeof(T), allocator)
-        buffer = null
-        count, capacity = 0
+        Memory.free(self.buffer, self.capacity * #sizeof(T), self.allocator)
+        self.buffer = null
+        self.count, self.capacity = 0
     }
 
     // Creates a new array that uses the temporary allocator.
@@ -251,7 +252,7 @@ impl Array
     }
 
     // Creates a new byte array of a given size.
-    // Often used for raw memory buffers.
+    // Often used for raw memory self.buffers.
     #[NotGeneric]
     func createBuffer(size: u64)->Array'u8
     {
@@ -262,31 +263,31 @@ impl Array
 
     // Returns 'true' if the array contains no elements.
     #[Inline]
-    mtd const isEmpty() => count == 0
+    mtd const isEmpty() => self.count == 0
 
     // Returns a mutable slice containing all elements of the array.
     #[Inline, Overload]
     mtd toSlice()->[..] T
     {
-        return @mkslice(buffer, count)
+        return @mkslice(self.buffer, self.count)
     }
 
     // Returns an immutable slice containing all elements of the array.
     #[Inline, Overload]
     mtd const toSlice()->const [..] T
     {
-        return @mkslice(buffer, count)
+        return @mkslice(self.buffer, self.count)
     }
 
     // Ensures the array has enough capacity to store at least 'newCount' elements.
     // If the current capacity is insufficient, it will be increased.
-    // The element count remains unchanged. See also [[reserve]].
+    // The element self.count remains unchanged. See also [[reserve]].
     mtd grow(newCount: u64)
     {
-        if newCount <= capacity:
+        if newCount <= self.capacity:
             return
-        let newCapacity = Math.max(capacity * 2, newCount)
-        reserve(newCapacity)
+        let newCapacity = Math.max(self.capacity * 2, newCount)
+        self.reserve(newCapacity)
     }
 
     // Sets the array's capacity to at least 'newCapacity'.
@@ -295,67 +296,67 @@ impl Array
     {
         if !newCapacity
         {
-            free()
-            buffer = null
-            count, capacity = 0
+            self.free()
+            self.buffer = null
+            self.count, self.capacity = 0
             return
         }
 
-        if newCapacity <= capacity:
+        if newCapacity <= self.capacity:
             return
 
-        realloc(newCapacity)
+        self.realloc(newCapacity)
     }
 
     // Ensures the array contains at least 'newCount' elements.
-    // If the current count is less than 'newCount', new elements are added and default-initialized.
+    // If the current self.count is less than 'newCount', new elements are added and default-initialized.
     mtd growResize(newCount: u64)
     {
-        if newCount <= count:
+        if newCount <= self.count:
             return
-        grow(newCount)
-        resize(newCount)
+        self.grow(newCount)
+        self.resize(newCount)
     }
 
     // Changes the number of elements in the array to 'newCount'.
-    // If 'newCount' is greater than the current count, new elements are default-initialized.
+    // If 'newCount' is greater than the current self.count, new elements are default-initialized.
     // If 'newCount' is smaller, excess elements are dropped.
     mtd resize(newCount: u64)
     {
-        if newCount == count:
+        if newCount == self.count:
             return
-        if newCount > count
+        if newCount > self.count
         {
-            grow(newCount)
-            @init(buffer + count, newCount - count)
-            count = newCount
+            self.grow(newCount)
+            @init(self.buffer + self.count, newCount - self.count)
+            self.count = newCount
         }
         else
         {
-            @drop(buffer + newCount, count - newCount)
-            count = newCount
+            @drop(self.buffer + newCount, self.count - newCount)
+            self.count = newCount
         }
     }
 
-    // Removes all elements from the array, setting its count to 0.
+    // Removes all elements from the array, setting its self.count to 0.
     // This calls the destructor for each element if one exists, but does not deallocate memory.
     mtd clear()
     {
         #if Reflection.hasDrop(T)
         {
-            for count:
-                @drop(buffer + @index)
+            for self.count:
+                @drop(self.buffer + @index)
         }
 
-        count = 0
+        self.count = 0
     }
 
     // Fills the entire array with the given value.
     // All existing elements are overwritten.
     mtd fill(value: T)
     {
-        for i in count:
-            buffer[i] = value
+        for i in self.count:
+            self.buffer[i] = value
     }
 
     // Adds an element to the end of the array, but only if it's not already present.
@@ -363,11 +364,11 @@ impl Array
     mtd addOnce(value: T)
         where Reflection.canCopy(T)
     {
-        if contains(value):
+        if self.contains(value):
             return
-        grow(count + 1)
-        buffer[count] = #nodrop value
-        count += 1
+        self.grow(self.count + 1)
+        self.buffer[self.count] = #nodrop value
+        self.count += 1
     }
 
     // Adds a copy of an element to the end of the array.
@@ -375,36 +376,36 @@ impl Array
     mtd add(value: T)
         where Reflection.canCopy(T)
     {
-        grow(count + 1)
-        buffer[count] = #nodrop value
-        count += 1
+        self.grow(self.count + 1)
+        self.buffer[self.count] = #nodrop value
+        self.count += 1
     }
 
     // Moves an element to the end of the array.
     #[Overload]
     mtd add(value: &&T)
     {
-        grow(count + 1)
-        buffer[count] = #nodrop #move value
-        count += 1
+        self.grow(self.count + 1)
+        self.buffer[self.count] = #nodrop #move value
+        self.count += 1
     }
 
     // Reserves space for 'num' elements at the end of the array and returns a pointer to the start of the new space.
     // The new memory is not initialized.
     mtd emplaceAddress(num: u32 = 1)->^T
     {
-        grow(count + num)
-        count += num
-        return buffer + count - num
+        self.grow(self.count + num)
+        self.count += num
+        return self.buffer + self.count - num
     }
 
     // Reserves space for 'num' elements at the end of the array and returns a pointer to the start of the new space.
     // The new memory is default-initialized.
     mtd emplaceInitAddress(num: u32 = 1)->^T
     {
-        grow(count + num)
-        count += num
-        var res = buffer + count - num
+        self.grow(self.count + num)
+        self.count += num
+        var res = self.buffer + self.count - num
         @init(res, num)
         return res
     }
@@ -415,23 +416,23 @@ impl Array
     mtd insertAt(index: u64, value: T)
         where Reflection.canCopy(T)
     {
-        Debug.safetyBoundCheck(index <= count, "index out of range")
-        if index == count:
-            return add(value)
-        grow(count + 1)
-        count += 1
+        Debug.safetyBoundCheck(index <= self.count, "index out of range")
+        if index == self.count:
+            return self.add(value)
+        self.grow(self.count + 1)
+        self.count += 1
 
         #if Reflection.hasPostMove(T)
         {
-            for var idx = count - 1; idx > index; idx -= 1:
-                buffer[idx] = #nodrop #moveraw buffer[idx - 1]
+            for var idx = self.count - 1; idx > index; idx -= 1:
+                self.buffer[idx] = #nodrop #moveraw self.buffer[idx - 1]
         }
         #else
         {
-            Memory.copyOver(buffer + index + 1, buffer + index, #sizeof(T) * (count - 1 - index))
+            Memory.copyOver(self.buffer + index + 1, self.buffer + index, #sizeof(T) * (self.count - 1 - index))
         }
 
-        buffer[index] = #nodrop value
+        self.buffer[index] = #nodrop value
     }
 
     // Inserts a moved value at a specific index, shifting existing elements to the right.
@@ -439,23 +440,23 @@ impl Array
     #[Overload]
     mtd insertAt(index: u64, value: &&T)
     {
-        Debug.safetyBoundCheck(index <= count, "index out of range")
-        if index == count:
-            return add(moveref value)
-        grow(count + 1)
-        count += 1
+        Debug.safetyBoundCheck(index <= self.count, "index out of range")
+        if index == self.count:
+            return self.add(moveref value)
+        self.grow(self.count + 1)
+        self.count += 1
 
         #if Reflection.hasPostMove(T)
         {
-            for var idx = count - 1; idx > index; idx -= 1:
-                buffer[idx] = #nodrop #moveraw buffer[idx - 1]
+            for var idx = self.count - 1; idx > index; idx -= 1:
+                self.buffer[idx] = #nodrop #moveraw self.buffer[idx - 1]
         }
         #else
         {
-            Memory.copyOver(buffer + index + 1, buffer + index, #sizeof(T) * (count - 1 - index))
+            Memory.copyOver(self.buffer + index + 1, self.buffer + index, #sizeof(T) * (self.count - 1 - index))
         }
 
-        buffer[index] = #nodrop #move value
+        self.buffer[index] = #nodrop #move value
     }
 
     // Inserts elements from a slice at a specific index, shifting existing elements to the right.
@@ -468,30 +469,30 @@ impl Array
         if !sliceCount:
             return
 
-        Debug.safetyBoundCheck(index <= count, "index out of range")
-        if index == count:
-            return add(values)
-        grow(count + sliceCount)
-        count += sliceCount
+        Debug.safetyBoundCheck(index <= self.count, "index out of range")
+        if index == self.count:
+            return self.add(values)
+        self.grow(self.count + sliceCount)
+        self.count += sliceCount
 
         #if Reflection.hasPostMove(T)
         {
-            for var idx = count - 1; idx >= index + sliceCount; idx -= 1:
-                buffer[idx] = #nodrop #moveraw buffer[idx - sliceCount]
+            for var idx = self.count - 1; idx >= index + sliceCount; idx -= 1:
+                self.buffer[idx] = #nodrop #moveraw self.buffer[idx - sliceCount]
         }
         #else
         {
-            Memory.copyOver(buffer + index + sliceCount, buffer + index, #sizeof(T) * (count - sliceCount - index))
+            Memory.copyOver(self.buffer + index + sliceCount, self.buffer + index, #sizeof(T) * (self.count - sliceCount - index))
         }
 
         #if Reflection.hasPostCopy(T)
         {
             for var idx = 0; idx < sliceCount; idx += 1:
-                buffer[index + idx] = #nodrop values[idx]
+                self.buffer[index + idx] = #nodrop values[idx]
         }
         #else
         {
-            Memory.copy(buffer + index, @dataof(values), #sizeof(T) * sliceCount)
+            Memory.copy(self.buffer + index, @dataof(values), #sizeof(T) * sliceCount)
         }
     }
 
@@ -504,30 +505,30 @@ impl Array
         if !sliceCount:
             return
 
-        Debug.safetyBoundCheck(index <= count, "index out of range")
-        if index == count:
-            return add(values)
-        grow(count + sliceCount)
-        count += sliceCount
+        Debug.safetyBoundCheck(index <= self.count, "index out of range")
+        if index == self.count:
+            return self.add(values)
+        self.grow(self.count + sliceCount)
+        self.count += sliceCount
 
         #if Reflection.hasPostMove(T)
         {
-            for var idx = count - 1; idx >= index + sliceCount; idx -= 1:
-                buffer[idx] = #nodrop #moveraw buffer[idx - sliceCount]
+            for var idx = self.count - 1; idx >= index + sliceCount; idx -= 1:
+                self.buffer[idx] = #nodrop #moveraw self.buffer[idx - sliceCount]
         }
         #else
         {
-            Memory.copyOver(buffer + index + @countof(values), buffer + index, #sizeof(T) * (count - sliceCount - index))
+            Memory.copyOver(self.buffer + index + @countof(values), self.buffer + index, #sizeof(T) * (self.count - sliceCount - index))
         }
 
         #if Reflection.hasPostMove(T)
         {
             for var idx = 0; idx < sliceCount; idx += 1:
-                buffer[index + idx] = #nodrop #move values[idx]
+                self.buffer[index + idx] = #nodrop #move values[idx]
         }
         #else
         {
-            Memory.copy(buffer + index, @dataof(values), #sizeof(T) * sliceCount)
+            Memory.copy(self.buffer + index, @dataof(values), #sizeof(T) * sliceCount)
         }
     }
 
@@ -541,16 +542,16 @@ impl Array
             return
 
         // Do not add myself if there's not enough room (because we will reallocate)
-        if count + sliceCount > capacity:
-            Debug.assert(@dataof(values) < buffer or @dataof(values) > buffer + capacity)
+        if self.count + sliceCount > self.capacity:
+            Debug.assert(@dataof(values) < self.buffer or @dataof(values) > self.buffer + self.capacity)
 
-        grow(count + sliceCount)
-        var oldCount = count
-        count += sliceCount
+        self.grow(self.count + sliceCount)
+        var oldCount = self.count
+        self.count += sliceCount
 
         #if Reflection.hasPostCopy(T)
         {
-            var destPtr = buffer + oldCount
+            var destPtr = self.buffer + oldCount
             for sliceCount
             {
                 dref destPtr = #nodrop values[@index]
@@ -559,7 +560,7 @@ impl Array
         }
         #else
         {
-            Memory.copy(buffer + oldCount, @dataof(values), sliceCount * #sizeof(T))
+            Memory.copy(self.buffer + oldCount, @dataof(values), sliceCount * #sizeof(T))
         }
     }
 
@@ -568,9 +569,9 @@ impl Array
     {
         if idx0 == idx1:
             return
-        Debug.safetyBoundCheck(idx0 < count, "index out of range")
-        Debug.safetyBoundCheck(idx1 < count, "index out of range")
-        swap(buffer + idx0, buffer + idx1)
+        Debug.safetyBoundCheck(idx0 < self.count, "index out of range")
+        Debug.safetyBoundCheck(idx1 < self.count, "index out of range")
+        swap(self.buffer + idx0, self.buffer + idx1)
     }
 
     // Removes a specified number of elements starting from a given index.
@@ -580,21 +581,21 @@ impl Array
     {
         if !num:
             return
-        Debug.safetyBoundCheck(index + num <= count, "index out of range")
+        Debug.safetyBoundCheck(index + num <= self.count, "index out of range")
 
         #if !Reflection.hasPostMove(T) and !Reflection.hasDrop(T)
         {
-            Memory.copyOver(buffer + index, buffer + index + num, (count - (index + num)) * #sizeof(T))
+            Memory.copyOver(self.buffer + index, self.buffer + index + num, (self.count - (index + num)) * #sizeof(T))
         }
         #else
         {
-            for i in count - num
+            for i in self.count - num
             {
-                buffer[index + i] = #moveraw buffer[index + num + i]
+                self.buffer[index + i] = #moveraw self.buffer[index + num + i]
             }
         }
 
-        count -= num
+        self.count -= num
     }
 
     // Removes the first occurrence of a given value from the array.
@@ -602,22 +603,22 @@ impl Array
     #[Overload]
     mtd(V) remove(value: V)
     {
-        let idx = Slice.findLinear(toSlice(), value)
+        let idx = Slice.findLinear(self.toSlice(), value)
         if idx == Swag.U64.Max:
             return
-        removeAt(idx)
+        self.removeAt(idx)
     }
 
     // Removes the element at a given index by swapping it with the last element.
     // This is very fast, but the order of elements is not preserved.
     mtd removeAt(index: u64)
     {
-        Debug.safetyBoundCheck(index < count, "index out of range")
-        count -= 1
-        if index == count:
-            @drop(buffer + count)
+        Debug.safetyBoundCheck(index < self.count, "index out of range")
+        self.count -= 1
+        if index == self.count:
+            @drop(self.buffer + self.count)
         else:
-            buffer[index] = #moveraw buffer[count]
+            self.buffer[index] = #moveraw self.buffer[self.count]
     }
 
     // Removes one or more elements at a given index, shifting subsequent elements to the left.
@@ -626,30 +627,30 @@ impl Array
     {
         if !numValues:
             return
-        Debug.safetyBoundCheck(index + numValues <= count, "index out of range")
-        count -= numValues
+        Debug.safetyBoundCheck(index + numValues <= self.count, "index out of range")
+        self.count -= numValues
 
         #if Reflection.hasDrop(T)
         {
             for idx in numValues:
-                @drop(buffer + index + idx)
+                @drop(self.buffer + index + idx)
         }
 
-        if index >= count:
+        if index >= self.count:
             return
 
         #if Reflection.hasPostMove(T)
         {
             var idx = index
-            for count - index
+            for self.count - index
             {
-                buffer[idx] = #nodrop #moveraw buffer[idx + numValues]
+                self.buffer[idx] = #nodrop #moveraw self.buffer[idx + numValues]
                 idx += 1
             }
         }
         #else
         {
-            Memory.copyOver(buffer + index, buffer + index + numValues, #sizeof(T) * (count - index))
+            Memory.copyOver(self.buffer + index, self.buffer + index + numValues, #sizeof(T) * (self.count - index))
         }
     }
 
@@ -657,29 +658,29 @@ impl Array
     // Does nothing if the value is not found.
     mtd(V) removeOrdered(value: V)
     {
-        let idx = Slice.findLinear(toSlice(), value)
+        let idx = Slice.findLinear(self.toSlice(), value)
         if idx == Swag.U64.Max:
             return
-        removeAtOrdered(idx)
+        self.removeAtOrdered(idx)
     }
 
     // Returns 'true' if the array contains the given value.
     mtd(V) contains(value: V)->bool
     {
-        return Slice.findLinear(toSlice(), value) != Swag.U64.Max
+        return Slice.findLinear(self.toSlice(), value) != Swag.U64.Max
     }
 
     // Sorts the array in ascending order using the default comparison operator.
     #[Overload]
     mtd sort()
     {
-        Slice.sort(toSlice(), func(x, y: T)->s32 => x <=> y)
+        Slice.sort(self.toSlice(), func(x, y: T)->s32 => x <=> y)
     }
 
     // Sorts the array in descending order.
     mtd sortReverse()
     {
-        Slice.sort(toSlice(), func(x, y: T)->s32 => y <=> x)
+        Slice.sort(self.toSlice(), func(x, y: T)->s32 => y <=> x)
     }
 
     // Sorts the array using a custom comparison function.
@@ -687,15 +688,15 @@ impl Array
     mtd sort(cb: func||(T, T)->s32)
     {
         Debug.assert(cb != null)
-        Slice.sort(toSlice(), cb)
+        Slice.sort(self.toSlice(), cb)
     }
 
     // Returns a copy of the first element of the array.
     // Asserts if the array is empty.
     mtd front()->T
     {
-        Debug.assert(count > 0, "array is empty")
-        let result: retval = buffer[0]
+        Debug.assert(self.count > 0, "array is empty")
+        let result: retval = self.buffer[0]
         return result
     }
 
@@ -703,16 +704,16 @@ impl Array
     // Asserts if the array is empty.
     mtd frontPtr()->*T
     {
-        Debug.assert(count > 0, "array is empty")
-        return buffer
+        Debug.assert(self.count > 0, "array is empty")
+        return self.buffer
     }
 
     // Returns a copy of the last element of the array.
     // Asserts if the array is empty.
     mtd back()->T
     {
-        Debug.assert(count > 0, "array is empty")
-        let result: retval = buffer[count - 1]
+        Debug.assert(self.count > 0, "array is empty")
+        let result: retval = self.buffer[self.count - 1]
         return result
     }
 
@@ -720,18 +721,18 @@ impl Array
     // Asserts if the array is empty.
     mtd backPtr()->*T
     {
-        Debug.assert(count > 0, "array is empty")
-        return buffer + count - 1
+        Debug.assert(self.count > 0, "array is empty")
+        return self.buffer + self.count - 1
     }
 
     // Removes the last element from the array and returns it.
     // Asserts if the array is empty.
     mtd popBack()->T
     {
-        Debug.assert(count > 0, "array is empty")
+        Debug.assert(self.count > 0, "array is empty")
         var result: retval = undefined
-        result = #nodrop #moveraw buffer[count - 1]
-        count -= 1
+        result = #nodrop #moveraw self.buffer[self.count - 1]
+        self.count -= 1
         return result
     }
 
@@ -739,9 +740,9 @@ impl Array
     // Asserts if the array is empty.
     mtd removeBack()
     {
-        Debug.assert(count > 0, "array is empty")
-        @drop(buffer + count - 1)
-        count -= 1
+        Debug.assert(self.count > 0, "array is empty")
+        @drop(self.buffer + self.count - 1)
+        self.count -= 1
     }
 }
 
@@ -750,11 +751,11 @@ impl StrConv.IConvert for Array
     mtd impl convert(buf: *ConcatBuffer, convFmt: StrConv.ConvertFormat, strFormat: string)
     {
         buf.addBytes("[")
-        for i in count
+        for i in self.count
         {
             if i:
                 buf.addBytes(", ")
-            StrConv.convert'T(buf, buffer[i], convFmt, strFormat)
+            StrConv.convert'T(buf, self.buffer[i], convFmt, strFormat)
         }
         buf.addBytes("]")
     }

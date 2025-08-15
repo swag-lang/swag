@@ -407,8 +407,14 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
     /////////////////////////////////
     if (tokenParse.token.is("marked"))
     {
+        const auto globalDecl = Ast::newNode<AstCompilerGlobal>(AstNodeKind::CompilerGlobal, this, parent);
+        FormatAst::inheritFormatBefore(this, globalDecl, &savedToken);
+        const auto idRef = Ast::newIdentifierRef(tokenParse.token.text, this, globalDecl);
+        idRef->addAstFlag(AST_NO_SEMANTIC);
+
         sourceFile->addFlag(FILE_MARKED);
         SWAG_CHECK(eatToken());
+        SWAG_CHECK(eatSemiCol("[[#global marked]]"));
     }
 
     /////////////////////////////////

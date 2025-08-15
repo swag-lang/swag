@@ -1,3 +1,4 @@
+#global marked
 #global namespace Swag
 
 // Will be put just before the returned address
@@ -96,18 +97,18 @@ impl DebugAllocator
 
         if (ptrHeader.magic != MagicFree or ptrFooter.magic != MagicFree)
         {
-            mutex.unlock()
+            self.mutex.unlock()
             @panic("memory block corruption", #curlocation)
         }
 
         if ptrHeader.allocId == 0 or
            ptrHeader.userSize == 0 or
            ptrHeader.stackCount > @countof(ptrHeader.stack) or
-           (!ptrHeader.prev and firstFree != ptrHeader) or
+           (!ptrHeader.prev and self.firstFree != ptrHeader) or
            (ptrHeader.prev and ptrHeader.prev.next != ptrHeader) or
            (ptrHeader.next and ptrHeader.next.prev != ptrHeader)
         {
-            mutex.unlock()
+            self.mutex.unlock()
             @panic("memory block corruption", #curlocation)
         }
     }
@@ -120,25 +121,25 @@ impl DebugAllocator
         if (ptrHeader.magic != MagicAlloc and ptrHeader.magic != MagicFree) or
            (ptrFooter.magic != MagicAlloc and ptrFooter.magic != MagicFree)
         {
-            mutex.unlock()
+            self.mutex.unlock()
             @panic("memory block corruption", callerLoc)
         }
 
         if ptrHeader.allocId == 0 or
            ptrHeader.userSize == 0 or
            ptrHeader.stackCount > @countof(ptrHeader.stack) or
-           (ptrHeader.magic == MagicAlloc and !ptrHeader.prev and firstAlloc != ptrHeader) or
-           (ptrHeader.magic == MagicFree and !ptrHeader.prev and firstFree != ptrHeader) or
+           (ptrHeader.magic == MagicAlloc and !ptrHeader.prev and self.firstAlloc != ptrHeader) or
+           (ptrHeader.magic == MagicFree and !ptrHeader.prev and self.firstFree != ptrHeader) or
            (ptrHeader.prev and ptrHeader.prev.next != ptrHeader) or
            (ptrHeader.next and ptrHeader.next.prev != ptrHeader)
         {
-            mutex.unlock()
+            self.mutex.unlock()
             @panic("memory block corruption", callerLoc)
         }
 
         if (ptrHeader.magic == MagicFree and ptrHeader.magic == MagicFree)
         {
-            mutex.unlock()
+            self.mutex.unlock()
             let loc = ptrHeader.loc.fileName ? ptrHeader.loc : callerLoc
             @panic("memory block double free", loc)
         }
@@ -150,7 +151,7 @@ impl DebugAllocator
     mtd opDrop()
     {
         // Free all blocks in quarantine
-        while sizeFree > 0:
+        while self.sizeFree > 0:
             DebugAllocator.IAllocator.releaseLast(self)
     }
 
@@ -164,23 +165,23 @@ impl DebugAllocator
     // Output to the console the list of all allocated blocks (leaks)
     mtd printLeaks()
     {
-        if countAlloc == 0 or !detectLeaks:
+        if self.countAlloc == 0 or !self.detectLeaks:
             return
 
-        var scan = cast(*DebugAllocatorHeader) firstAlloc
+        var scan = cast(*DebugAllocatorHeader) self.firstAlloc
 
         @print("############################################\n")
         @print("Swag.DebugAllocator: Memory leaks detected !\n")
         @print("--------------------------------------------\n")
-        @print(countAlloc, " block(s) for a total of ")
-        printDisplaySize(sizeAlloc)
+        @print(self.countAlloc, " block(s) for a total of ")
+        printDisplaySize(self.sizeAlloc)
         @print("\n")
         @print("############################################\n")
 
         var cpt = 0
         while scan
         {
-            checkIsAllocated(scan)
+            self.checkIsAllocated(scan)
 
             // One leak
             @print("--------------------------------------------\n")
@@ -209,12 +210,12 @@ impl DebugAllocator
 
             // Clamp
             cpt += 1
-            if showMaxLeaks and cpt >= showMaxLeaks
+            if self.showMaxLeaks and cpt >= self.showMaxLeaks
             {
                 @print("--------------------------------------------\n")
                 @print("\x1b[91m")
                 @print("... too many leaks (")
-                @print(countAlloc)
+                @print(self.countAlloc)
                 @print(")...\n")
                 @print("\x1b[97m")
                 break
@@ -231,23 +232,23 @@ impl DebugAllocator
         if !addr:
             return
         let ptrHeader = cast(*DebugAllocatorHeader) (cast(^u8) addr - #sizeof(DebugAllocatorHeader))
-        checkIsAllocated(ptrHeader, callerLoc)
+        self.checkIsAllocated(ptrHeader, callerLoc)
     }
 
     // Check all allocated blocks
     mtd checkAllMemory()
     {
-        var ptrHeader = cast(*DebugAllocatorHeader) firstAlloc
+        var ptrHeader = cast(*DebugAllocatorHeader) self.firstAlloc
         while ptrHeader
         {
-            checkIsAllocated(ptrHeader)
+            self.checkIsAllocated(ptrHeader)
             ptrHeader = ptrHeader.next
         }
 
-        ptrHeader = cast(*DebugAllocatorHeader) firstFree
+        ptrHeader = cast(*DebugAllocatorHeader) self.firstFree
         while ptrHeader
         {
-            checkIsFreed(ptrHeader)
+            self.checkIsFreed(ptrHeader)
             ptrHeader = ptrHeader.next
         }
     }
@@ -260,7 +261,7 @@ impl IAllocator for DebugAllocator
         if !request.address:
             return
 
-        assertIsAllocated(request.address, request.callerLoc)
+        self.assertIsAllocated(request.address, request.callerLoc)
 
         let userAddr  = cast(^u8) request.address
         let ptrHeader = cast(*DebugAllocatorHeader) (userAddr - #sizeof(DebugAllocatorHeader))
@@ -277,12 +278,12 @@ impl IAllocator for DebugAllocator
             ptrHeader.next.prev = ptrHeader.prev
 
         // Stats
-        @assert(countAlloc > 0)
-        countAlloc -= 1
-        @assert(sizeAlloc >= ptrHeader.userSize)
+        @assert(self.countAlloc > 0)
+        self.countAlloc -= 1
+        @assert(self.sizeAlloc >= ptrHeader.userSize)
         let userSize = ptrHeader.userSize
-        sizeAlloc -= userSize
-        sizeFree += userSize
+        self.sizeAlloc -= userSize
+        self.sizeFree += userSize
 
         // Fill the user memory area with garbage
         @memset(userAddr, FreeByte, userSize)
@@ -297,43 +298,43 @@ impl IAllocator for DebugAllocator
 
         // Link to the start of the free list
         ptrHeader.prev = null
-        ptrHeader.next = firstFree
-        if firstFree:
-            firstFree.prev = ptrHeader
-        firstFree = ptrHeader
-        if !lastFree:
-            lastFree = firstFree
+        ptrHeader.next = self.firstFree
+        if self.firstFree:
+            self.firstFree.prev = ptrHeader
+        self.firstFree = ptrHeader
+        if !self.lastFree:
+            self.lastFree = self.firstFree
 
         // Purge oldest memory blocks if necessary, until we are in the quarantine
         // budget again
-        while sizeFree > (maxFreeSize << 10):
-            releaseLast()
+        while self.sizeFree > (self.maxFreeSize << 10):
+            self.releaseLast()
     }
 
     mtd releaseLast()
     {
-        if !lastFree:
+        if !self.lastFree:
             return
 
-        let ptrHeader = lastFree
-        checkIsFreed(ptrHeader)
+        let ptrHeader = self.lastFree
+        self.checkIsFreed(ptrHeader)
 
         // Stats
         let userSize = ptrHeader.userSize
-        @assert(userSize <= sizeFree)
-        sizeFree -= userSize
+        @assert(userSize <= self.sizeFree)
+        self.sizeFree -= userSize
 
         // Unlink from list
-        if lastFree.prev
+        if self.lastFree.prev
         {
-            lastFree.prev.next = null
-            lastFree           = lastFree.prev
+            self.lastFree.prev.next = null
+            self.lastFree           = self.lastFree.prev
         }
         else
         {
-            @assert(firstFree == lastFree)
-            @assert(firstFree == ptrHeader)
-            lastFree, firstFree = null
+            @assert(self.firstFree == self.lastFree)
+            @assert(self.firstFree == ptrHeader)
+            self.lastFree, self.firstFree = null
         }
 
         let freeAddr = ptrHeader.allocAddr
@@ -349,7 +350,7 @@ impl IAllocator for DebugAllocator
         req.mode    = .Free
         req.address = freeAddr
         req.size    = freeSize
-        allocator.req(&req)
+        self.allocator.req(&req)
     }
 
     mtd alloc(request: *AllocatorRequest)
@@ -358,7 +359,7 @@ impl IAllocator for DebugAllocator
         if request.size == 0
         {
             if request.mode == .Realloc:
-                free(request)
+                self.free(request)
             request.address = null
             return
         }
@@ -394,7 +395,7 @@ impl IAllocator for DebugAllocator
 
         // Make the real allocation
         copyReq.size += toAddAlign + #sizeof(DebugAllocatorFooter)
-        allocator.req(&copyReq)
+        self.allocator.req(&copyReq)
 
         // This is the aligned returned user address
         var userAddr = cast(^u8) copyReq.address
@@ -408,7 +409,7 @@ impl IAllocator for DebugAllocator
         header.userSize   = request.size
         header.loc        = copyReq.callerLoc
         header.hint       = copyReq.hint
-        header.stackCount = captureAllocStack ? __captureStack(2, header.stack) : 0
+        header.stackCount = self.captureAllocStack ? __captureStack(2, header.stack) : 0
 
         // Setup footer
         let footer = cast(*DebugAllocatorFooter) (userAddr + request.size)
@@ -434,7 +435,7 @@ impl IAllocator for DebugAllocator
         header.allocId = self.nextId
 
         // To but a breakpoint on a given allocator id
-        if header.allocId == breakOnAllocId
+        if header.allocId == self.breakOnAllocId
         {
             @assert(false)
         }
@@ -449,29 +450,29 @@ impl IAllocator for DebugAllocator
 
     mtd impl req(request: *AllocatorRequest)
     {
-        @assert(allocator != null)
-        mutex.lock()
-        defer mutex.unlock()
+        @assert(self.allocator != null)
+        self.mutex.lock()
+        defer self.mutex.unlock()
 
         switch request.mode
         {
         case Free:
-            free(request)
+            self.free(request)
 
         case FreeAll:
-            allocator.req(request)
-            firstAlloc = null
-            countAlloc, sizeAlloc = 0
+            self.allocator.req(request)
+            self.firstAlloc = null
+            self.countAlloc, self.sizeAlloc = 0
 
         case Realloc:
-            assertIsAllocated(request.address, request.callerLoc)
+            self.assertIsAllocated(request.address, request.callerLoc)
             fallthrough
 
         case Alloc:
-            alloc(request)
+            self.alloc(request)
 
         case AssertIsAllocated:
-            assertIsAllocated(request.address, request.callerLoc)
+            self.assertIsAllocated(request.address, request.callerLoc)
         }
     }
 }

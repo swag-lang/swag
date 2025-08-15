@@ -1,3 +1,4 @@
+#global marked
 #global #if #os == Swag.TargetOs.Windows
 #foreignlib("kernel32")
 #foreignlib("user32")
@@ -136,12 +137,12 @@ impl MutexRW
 {
     mtd lock()
     {
-        __Win32RT.AcquireSRWLockExclusive(&v)
+        __Win32RT.AcquireSRWLockExclusive(&self.v)
     }
 
     mtd unlock()
     {
-        __Win32RT.ReleaseSRWLockExclusive(&v)
+        __Win32RT.ReleaseSRWLockExclusive(&self.v)
     }
 }
 
