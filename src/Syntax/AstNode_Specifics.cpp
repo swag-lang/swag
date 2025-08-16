@@ -1080,7 +1080,7 @@ AstNode* AstCompilerInject::clone(CloneContext& context)
     // as it will be done again, in this new clone situation.
     if (newNode->childCount() == 2)
         newNode->children.pop_back();
-    
+
     return newNode;
 }
 
@@ -1307,8 +1307,10 @@ AstNode* AstRefSubDecl::clone(CloneContext& context)
 {
     const auto newNode = Ast::newNode<AstRefSubDecl>();
     newNode->copyFrom(context, this);
-    newNode->refSubDecl = refSubDecl;
+    newNode->refSubDecl    = refSubDecl;
+    newNode->refTopSubDecl = refTopSubDecl;
     context.nodeRefsToUpdate.push_back({.node = newNode, .ref = &newNode->refSubDecl});
+    context.nodeRefsToUpdate.push_back({.node = newNode, .ref = &newNode->refTopSubDecl});
     return newNode;
 }
 

@@ -526,7 +526,10 @@ void Parser::registerSubDecl(AstNode* subDecl)
 
     // If parent is an attribute, then we will move it with the sub-decl
     if (subDecl->parent->is(AstNodeKind::AttrUse))
-        subDecl = subDecl->parent;
+    {
+        while (subDecl->parent->is(AstNodeKind::AttrUse))
+            subDecl = subDecl->parent;
+    }
 
     // Else if we are in an attr-use block, we need to duplicate each of them, in order
     // for the sub-decl to have its own attr-use
@@ -594,6 +597,7 @@ void Parser::registerSubDecl(AstNode* subDecl)
     }
 
     Ast::addChildBack(newParent, subDecl);
+    subDecl->addAstFlag(AST_GENERATED);
 
     // We want to solve the sub-decl in the correct context, with all the previous nodes (inside the function)
     // solved, in case we make a reference to it (like in 5296, the #decltype).
@@ -601,10 +605,12 @@ void Parser::registerSubDecl(AstNode* subDecl)
     // when it is evaluated.
     if (orgSubDecl->isNot(AstNodeKind::FuncDecl) || !orgSubDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_IS_LAMBDA_EXPRESSION))
     {
+        ParserPushFreezeFormat ff(this);
         const auto solver   = Ast::newNode<AstRefSubDecl>(AstNodeKind::RefSubDecl, this, orgParent);
         solver->semanticFct = Semantic::resolveSubDeclRef;
-        solver->addAstFlag(AST_GENERATED | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
-        solver->refSubDecl = orgSubDecl;
+        solver->addAstFlag(AST_GENERATED | AST_GENERATED_USER | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
+        solver->refSubDecl    = orgSubDecl;
+        solver->refTopSubDecl = subDecl;
         orgSubDecl->addAstFlag(AST_NO_SEMANTIC | AST_SPEC_SEMANTIC3 | AST_SPEC_SEMANTIC_HAS3);
     }
 }

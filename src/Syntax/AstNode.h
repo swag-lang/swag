@@ -1280,6 +1280,7 @@ struct AstRefSubDecl : AstNode
     AstNode* clone(CloneContext& context);
 
     AstNode* refSubDecl;
+    AstNode* refTopSubDecl;
 };
 
 struct AstSubstBreakContinue : AstNode

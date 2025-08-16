@@ -493,6 +493,15 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             SWAG_CHECK(outputNamespace(context, node));
             break;
 
+        case AstNodeKind::RefSubDecl:
+        {
+            const auto subDecl = castAst<AstRefSubDecl>(node, AstNodeKind::RefSubDecl);
+            subDecl->refTopSubDecl->addAstFlag(AST_GENERATED_USER);
+            SWAG_CHECK(outputNode(context, subDecl->refTopSubDecl));
+            subDecl->refTopSubDecl->removeAstFlag(AST_GENERATED_USER);
+            break;
+        }
+
         default:
             return Report::internalError(node, "FormatAst::outputNode, unknown node kind");
     }
