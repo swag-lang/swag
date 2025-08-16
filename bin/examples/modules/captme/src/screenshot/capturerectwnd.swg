@@ -17,7 +17,7 @@ impl IWnd for CaptureRectWnd
     mtd testAutoGrab()
     {
         let pt = Input.getMousePos()
-        let r = getWndRectAtPos(surface, pt.x, pt.y)
+        let r  = getWndRectAtPos(surface, pt.x, pt.y)
         if !r.isEmpty()
         {
             g_StartGrabX = r.x
@@ -59,9 +59,9 @@ impl IWnd for CaptureRectWnd
         switch evt.kind
         {
         case MousePressed where evt.button == .Right:
-            startGrab = false
+            startGrab    = false
             tryStartGrab = false
-            cancelGrag = true
+            cancelGrag   = true
 
         case MousePressed where evt.button == .Left:
             tryStartGrab = true
@@ -74,7 +74,7 @@ impl IWnd for CaptureRectWnd
             }
 
             g_GrabDone = startGrab or autoGrab
-            g_Exit = true
+            g_Exit     = true
 
         case MouseMove where tryStartGrab:
             g_EndGrabX = evt.surfacePos.x

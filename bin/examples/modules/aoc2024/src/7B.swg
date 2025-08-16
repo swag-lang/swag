@@ -33,7 +33,7 @@ Determine which equations could possibly be true. What is their total calibratio
 
 using Core
 
-func appendNumbers(a, b: u64)->u64 
+func appendNumbers(a, b: u64)->u64
 {
     return a * Math.powerOf10(cast(f32) b) + b
 }
@@ -54,22 +54,24 @@ func day7B()
         func checkMath(target: u64, resin: u64, operands: [..] u64, operator: u8)->bool
         {
             var result: u64
-            if operator == '+': 
-                result = resin + operands[0] 
-            elif operator == '*': 
-                result = resin * operands[0]               
+            if operator == '+':
+                result = resin + operands[0]
+            elif operator == '*':
+                result = resin * operands[0]
             else:
                 result = appendNumbers(resin, operands[0])
 
-            if result > target:         return false
-            if @countof(operands) == 1: return target == result
+            if result > target:
+                return false
+            if @countof(operands) == 1:
+                return target == result
 
-            return checkMath(target, result, operands[1..], '+') or 
+            return checkMath(target, result, operands[1..], '+') or
                    checkMath(target, result, operands[1..], '*') or
                    checkMath(target, result, operands[1..], '|')
         }
 
-        if checkMath(res, vals[0], vals[1..], '+') or 
+        if checkMath(res, vals[0], vals[1..], '+') or
            checkMath(res, vals[0], vals[1..], '*') or
            checkMath(res, vals[0], vals[1..], '|'):
             total += res

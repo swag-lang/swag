@@ -49,5 +49,5 @@ impl Process
     func getProcessId()->u64 => GetCurrentProcessId()
 
     // Get current thread ID
-    func getThreadId()->u64  => GetCurrentThreadId()
+    func getThreadId()->u64 => GetCurrentThreadId()
 }

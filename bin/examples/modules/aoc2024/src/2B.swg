@@ -30,13 +30,13 @@ func day2B()
     foreach l in lines
     {
         var first0 = Tokenize.split(l, ' ''u8)
-        var first = first0
+        var first  = first0
 
         var tor = 0
         for
         {
             var prev = 0, ls = 0
-            var bad = false
+            var bad  = false
             foreach v in first
             {
                 let a = assume StrConv.toS32(v)

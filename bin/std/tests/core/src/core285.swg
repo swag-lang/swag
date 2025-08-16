@@ -1,10 +1,7 @@
 using Core
 
 #[Swag.ConstExpr]
-struct AA
-{
-    x, y: s32
-}
+struct AA { x, y: s32 }
 
 #[Swag.ConstExpr]
 func toto()->Array'AA

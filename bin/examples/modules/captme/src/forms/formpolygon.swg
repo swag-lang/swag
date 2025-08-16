@@ -137,10 +137,10 @@ impl IForm for FormPolygon
 
         var result: retval
 
-        var x0    = Swag.F32.Max
-        var y0    = Swag.F32.Max
-        var x1    = 0'f32
-        var y1    = 0'f32
+        var x0 = Swag.F32.Max
+        var y0 = Swag.F32.Max
+        var x1 = 0'f32
+        var y1 = 0'f32
         foreach &pt in points
         {
             x0 = Math.min(x0, pt.x)
@@ -208,7 +208,7 @@ impl IForm for FormPolygon
                 dash  = .Dash
             }
 
-            bk.a = 5
+            bk.a        = 5
             borderColor = Argb.White
             painter.removeParams(.Antialiased)
         }

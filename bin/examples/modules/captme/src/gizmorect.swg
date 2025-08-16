@@ -169,14 +169,14 @@ impl GizmoRect
 
             switch hotAnchor
             {
-                case 0, 7:
-                    view.getApp().setFrameCursor(Cursor.from(.SizeNWSE))
-                case 1, 6:
-                    view.getApp().setFrameCursor(Cursor.from(.SizeNS))
-                case 2, 5:
-                    view.getApp().setFrameCursor(Cursor.from(.SizeNESW))
-                case 3, 4:
-                    view.getApp().setFrameCursor(Cursor.from(.SizeWE))
+            case 0, 7:
+                view.getApp().setFrameCursor(Cursor.from(.SizeNWSE))
+            case 1, 6:
+                view.getApp().setFrameCursor(Cursor.from(.SizeNS))
+            case 2, 5:
+                view.getApp().setFrameCursor(Cursor.from(.SizeNESW))
+            case 3, 4:
+                view.getApp().setFrameCursor(Cursor.from(.SizeWE))
             }
 
             if hotAnchor != Swag.U32.Max:

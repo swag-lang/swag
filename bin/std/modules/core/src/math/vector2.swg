@@ -459,7 +459,7 @@ impl Vector2
     // Returns the component of this vector in the direction of 'other'.
     mtd const toProject(other: Vector2)->Vector2
     {
-        let dotProduct = dot(other)
+        let dotProduct    = dot(other)
         let otherLengthSq = other.lengthSquared()
         if Math.isZeroEpsilon(otherLengthSq):
             return Zero
@@ -498,7 +498,7 @@ impl Vector2
     // If the distance to 'target' is less than 'maxDistance', moves directly to target.
     mtd moveTowards(target: Vector2, maxDistance: f32)
     {
-        let dir = target - dref self
+        let dir  = target - dref self
         let dist = dir.length()
         if dist <= maxDistance:
             dref self = target
@@ -510,7 +510,7 @@ impl Vector2
     // If the distance to 'target' is less than 'maxDistance', returns the target directly.
     mtd const toMovedTowards(target: Vector2, maxDistance: f32)->Vector2
     {
-        let dir = target - dref self
+        let dir  = target - dref self
         let dist = dir.length()
         if dist <= maxDistance:
             return target
@@ -537,7 +537,7 @@ impl Vector2
 
     // Convert this vector to polar coordinates.
     // Returns angle in radians and radius (magnitude) as a tuple-like struct.
-    mtd const toPolar()->{angle: f32, radius: f32}
+    mtd const toPolar()->{ angle: f32, radius: f32 }
     {
         return {Math.atan2(y, x), length()}
     }

@@ -105,13 +105,13 @@ impl Painter
 
     mtd drawCapArrowAnchor2(p1, d1: Math.Vector2, sens: f32, pen: Pen, start: bool)
     {
-        let sx = start ? pen.capBegScaleX : pen.capEndScaleX
-        let sy = start ? pen.capBegScaleY : pen.capEndScaleY
+        let sx  = start ? pen.capBegScaleX : pen.capEndScaleX
+        let sy  = start ? pen.capBegScaleY : pen.capEndScaleY
         let sx2 = sx * sy * 2
 
-        var p = p1
-        let d = d1 * sx
-        let n = Math.Vector2{d.y * sens * sy, -d.x * sens * sy}
+        var p  = p1
+        let d  = d1 * sx
+        let n  = Math.Vector2{d.y * sens * sy, -d.x * sens * sy}
         let n1 = n.toNormalized()
         p -= n
 
@@ -620,14 +620,14 @@ impl Painter
     // Optimized version that returns both distance and point information
     struct AnchorSkipInfo
     {
-        distance: f32
-        adjustedPoint: Math.Vector2
-        pointIndex: u64
-        hasAdjustment: bool
+        distance:          f32
+        adjustedPoint:     Math.Vector2
+        pointIndex:        u64
+        hasAdjustment:     bool
     }
 
     // Enhanced function that calculates skip distance AND finds the corresponding point
-    func getAnchorSkipInfo(using cxt: *Context, capStyle: LineCapStyle, start: bool) -> AnchorSkipInfo
+    func getAnchorSkipInfo(using cxt: *Context, capStyle: LineCapStyle, start: bool)->AnchorSkipInfo
     {
         var info: AnchorSkipInfo
         info.hasAdjustment = false
@@ -665,13 +665,13 @@ impl Painter
         if start
         {
             let startPoint = path.polygon.getPoint(0, offsetPath)
-            var lastPoint = startPoint
+            var lastPoint  = startPoint
 
             for i in 1 until pointCount
             {
                 let currentPoint = path.polygon.getPoint(i, offsetPath)
-                let segmentVec = currentPoint - lastPoint
-                let segmentLen = segmentVec.length()
+                let segmentVec   = currentPoint - lastPoint
+                let segmentLen   = segmentVec.length()
 
                 if segmentLen > 0.01
                 {
@@ -679,9 +679,9 @@ impl Painter
                     {
                         // Found the target segment - calculate adjusted point
                         let remainingDist = info.distance - accumulatedDistance
-                        let ratio = remainingDist / segmentLen
+                        let ratio         = remainingDist / segmentLen
                         info.adjustedPoint = lastPoint + segmentVec * ratio
-                        info.pointIndex = i
+                        info.pointIndex    = i
                         info.hasAdjustment = true
                         return info
                     }
@@ -691,16 +691,16 @@ impl Painter
                 }
             }
         }
-        else  // from end
+        else
         {
-            let endPoint = path.polygon.getPoint(pointCount - 1, offsetPath)
+            let endPoint  = path.polygon.getPoint(pointCount - 1, offsetPath)
             var lastPoint = endPoint
 
             for #reverse i in 0 to pointCount - 2
             {
                 let currentPoint = path.polygon.getPoint(i, offsetPath)
-                let segmentVec = lastPoint - currentPoint
-                let segmentLen = segmentVec.length()
+                let segmentVec   = lastPoint - currentPoint
+                let segmentLen   = segmentVec.length()
 
                 if segmentLen > 0.01
                 {
@@ -708,9 +708,9 @@ impl Painter
                     {
                         // Found the target segment - calculate adjusted point
                         let remainingDist = info.distance - accumulatedDistance
-                        let ratio = remainingDist / segmentLen
+                        let ratio         = remainingDist / segmentLen
                         info.adjustedPoint = lastPoint - segmentVec * ratio
-                        info.pointIndex = i
+                        info.pointIndex    = i
                         info.hasAdjustment = true
                         return info
                     }
@@ -739,24 +739,24 @@ impl Painter
 
         // Get skip information for both caps in one pass
         let beginSkipInfo = getAnchorSkipInfo(cxt, pen.begCapStyle, true)
-        let endSkipInfo = getAnchorSkipInfo(cxt, pen.endCapStyle, false)
+        let endSkipInfo   = getAnchorSkipInfo(cxt, pen.endCapStyle, false)
 
         var actualStartPoint = path.polygon.getPoint(0, cxt.offsetPath)
-        var actualEndPoint = path.polygon.getPoint(path.polygon.points.count - 1, cxt.offsetPath)
-        var startPointIndex = 0'u64
-        var endPointIndex = path.polygon.points.count - 1
+        var actualEndPoint   = path.polygon.getPoint(path.polygon.points.count - 1, cxt.offsetPath)
+        var startPointIndex  = 0'u64
+        var endPointIndex    = path.polygon.points.count - 1
 
         // Apply adjustments if needed
         if !path.isClosed and beginSkipInfo.hasAdjustment
         {
             actualStartPoint = beginSkipInfo.adjustedPoint
-            startPointIndex = beginSkipInfo.pointIndex
+            startPointIndex  = beginSkipInfo.pointIndex
         }
 
         if !path.isClosed and endSkipInfo.hasAdjustment
         {
             actualEndPoint = endSkipInfo.adjustedPoint
-            endPointIndex = endSkipInfo.pointIndex
+            endPointIndex  = endSkipInfo.pointIndex
         }
 
         // Set starting position
@@ -800,7 +800,7 @@ impl Painter
                 if startPointIndex < path.polygon.points.count
                 {
                     let nextPoint = path.polygon.getPoint(startPointIndex, cxt.offsetPath)
-                    let startTo = actualStartPoint - nextPoint
+                    let startTo   = actualStartPoint - nextPoint
                     if startTo.length() > 0.01:
                         drawLine(cxt, nextPoint)
                 }

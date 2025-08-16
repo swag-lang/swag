@@ -186,7 +186,7 @@ impl Surface
     // Returns the monitor corresponding to the surface position
     mtd getBestMonitor()->Env.Monitor
     {
-        var result: retval
+        var result:  retval
         var bestSurf = 0'f32
         let monitors = Env.getMonitors()
         foreach m in monitors
@@ -197,7 +197,7 @@ impl Surface
             if surf > bestSurf
             {
                 bestSurf = surf
-                result = m
+                result   = m
             }
         }
 

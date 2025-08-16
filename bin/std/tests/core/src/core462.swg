@@ -1,10 +1,7 @@
 using Core, Core.Serialization
 
 #[Final]
-struct AA
-{
-    x, y, z: f32
-}
+struct AA { x, y, z: f32 }
 
 struct Toto1
 {
@@ -12,10 +9,7 @@ struct Toto1
 }
 
 #[Alias("AA")]
-struct BB
-{
-    x, y, z: f32
-}
+struct BB { x, y, z: f32 }
 
 struct Toto2
 {

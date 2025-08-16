@@ -312,7 +312,7 @@ impl RecentWnd
         if !capture:
             return
 
-        let item            = recentView.items[recentView.selected]
+        let item = recentView.items[recentView.selected]
         item.linked         = capture.linkedImage
         item.linkedUpToDate = capture.linkedUpToDate
         invalidate()

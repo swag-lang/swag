@@ -18,7 +18,7 @@ func __concreteAlias(type1: typeinfo)->typeinfo
     return __concreteAlias(typeAlias.rawType)
 }
 
-func __is(toType, fromType: const *TypeInfoStruct)->{offset: u32, yes: bool}
+func __is(toType, fromType: const *TypeInfoStruct)->{ offset: u32, yes: bool }
 {
     if @typecmp(toType, fromType, .Strict):
         return {0, true}
@@ -35,7 +35,7 @@ func __is(toType, fromType: const *TypeInfoStruct)->{offset: u32, yes: bool}
         }
         elif ft.pointedType.kind == .Pointer
         {
-            let ptr = cast(const *Swag.TypeInfoPointer) ft.pointedType
+            let ptr        = cast(const *Swag.TypeInfoPointer) ft.pointedType
             let typeStruct = cast(const *Swag.TypeInfoStruct) ptr.pointedType
             if @typecmp(toType, typeStruct, .Strict):
                 return {ft.offset, true}

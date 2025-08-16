@@ -388,7 +388,7 @@ func paintCell(painter: *Pixel.Painter, index: s8)
 
 func paintBoard(paintEvt: *PaintEvent)
 {
-    let painter  = paintEvt.bc.painter
+    let painter = paintEvt.bc.painter
 
     let s = BoardSize
     let b = BorderSize
@@ -446,8 +446,8 @@ func paintBoard(paintEvt: *PaintEvent)
 
 func paintStates(paintEvt: *PaintEvent)
 {
-    let painter  = paintEvt.bc.painter
-    var str:     String
+    let painter = paintEvt.bc.painter
+    var str:    String
 
     var y = BoardWithBorderSize + 12
     str = Format.toString("% player turn", g_Game.whiteTurn ? "White" : "Black")

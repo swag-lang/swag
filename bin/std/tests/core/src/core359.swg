@@ -1,9 +1,6 @@
 using Core, Core.Serialization
 
-struct Toto
-{
-    x, y, z: f32
-}
+struct Toto { x, y, z: f32 }
 
 //#[Swag.PrintBc]
 #test

@@ -172,15 +172,15 @@ internal impl Application
             mouseEnterWnd = targetWnd
         }
 
-        evt.modifiers  = keyb.getPressedModifiers()
+        evt.modifiers = keyb.getPressedModifiers()
 
         // Move
         if targetWnd
         {
             var move = mouse.getMove()
             evt.surfacePos = targetWnd.screenToSurface(mousePos)
-            evt.kind = .MouseMove
-            evt.move = move
+            evt.kind       = .MouseMove
+            evt.move       = move
             targetWnd.sendEvent(&evt)
             if Math.abs(move.x) >= 0.5 or Math.abs(move.y) >= 0.5:
                 ToolTip.resetTimer(evt.surfacePos)

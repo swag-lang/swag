@@ -23,8 +23,8 @@ impl IActionUI for ActionView
         {
         case CmdIdViewClip:
             evt.setFlags |= .Name | .Disabled | .Checked
-            evt.name     = "Hide Outside Box"
-            evt.checked  = main.editorOptions.clipToSelection
+            evt.name    = "Hide Outside Box"
+            evt.checked = main.editorOptions.clipToSelection
         }
 
         return true

@@ -38,7 +38,6 @@ struct EditorOptions
     #[Description("Minimize the editor instead of closing it")]
     hideOnClose = true
 
-    #[Description("Specify the background color of the capture editing window")]
-    #[Opaque]
+    #[Description("Specify the background color of the capture editing window"), Opaque]
     editBackColor: Color = 0xFF2E2E2E
 }

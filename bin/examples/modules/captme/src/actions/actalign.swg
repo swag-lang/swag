@@ -6,9 +6,9 @@ const CmdIdAlignRight   = "CmdIdAlignRight"
 const CmdIdAlignTop     = "CmdIdAlignTop"
 const CmdIdAlignMiddle  = "CmdIdAlignMiddle"
 const CmdIdAlignBottom  = "CmdIdAlignBottom"
-const CmdIdSendToFront = "CmdIdSendToFront"
+const CmdIdSendToFront  = "CmdIdSendToFront"
 const CmdIdSendToBack   = "CmdIdSendToBack"
-const CmdIdMoveForward = "CmdIdMoveForward"
+const CmdIdMoveForward  = "CmdIdMoveForward"
 const CmdIdMoveBackward = "CmdIdMoveBackward"
 
 struct ActionMoveSel {}

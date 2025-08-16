@@ -363,7 +363,8 @@ namespace ResizeTools
         var f = {imgDst, imgSrc, contrib: &contrib}
         Jobs.parallelFor(|index, data| cast(u32) imgDst.width, &f)
         {
-            if !data: return
+            if !data:
+                return
             let params = cast(*#decltype(f)) data
             scaleCol(params.imgDst, params.imgSrc, cast(s64) index, params.contrib)
         }
@@ -379,7 +380,8 @@ namespace ResizeTools
         var f = {imgDst, imgSrc, contrib: &contrib}
         Jobs.parallelFor(|index, data| cast(u32) imgDst.height, &f)
         {
-            if !data: return
+            if !data:
+                return
             let params = cast(*#decltype(f)) data
             scaleRow(params.imgDst, params.imgSrc, cast(s64) index, params.contrib)
         }

@@ -1,9 +1,6 @@
 using Core
 
-struct Pt
-{
-    x, y: s32
-}
+struct Pt { x, y: s32 }
 
 impl Hash.IHash32 for Pt
 {

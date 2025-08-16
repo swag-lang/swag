@@ -156,9 +156,9 @@ impl IForm for FormDraw
     {
         if flags.has(.Hot | .Selected)
         {
-            let anchorSize2  = anchorSize * 0.5
-            let col          = subKind == .PixSel ? Argb.Yellow : Argb.White
-            let color        = Color.getBlend(Argb.Black, col, (flags & .Hot) ? 0.8 : 1)
+            let anchorSize2 = anchorSize * 0.5
+            let col         = subKind == .PixSel ? Argb.Yellow : Argb.White
+            let color       = Color.getBlend(Argb.Black, col, (flags & .Hot) ? 0.8 : 1)
 
             let start = points[0] * z
             painter.fillCircle(start.x, start.y, anchorSize2, color)

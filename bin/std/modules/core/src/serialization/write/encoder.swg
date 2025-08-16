@@ -190,8 +190,8 @@ impl Encoder
             let valueType = Reflection.getStructArrayType(type)
             if valueType
             {
-                let ptrArr    = cast(const *Array) data
-                let treated   = serializer.beginSequence(type, data, ptrArr.count)
+                let ptrArr  = cast(const *Array) data
+                let treated = serializer.beginSequence(type, data, ptrArr.count)
                 defer serializer.endSequence()
 
                 if !treated

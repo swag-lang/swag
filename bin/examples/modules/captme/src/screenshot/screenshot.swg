@@ -57,7 +57,7 @@ func performScreenCapture(main: *MainWnd)->{ img: Image, sf: *Surface } throw
 
     result.sf = catch g_App.createSurface(sx, sy, g_ScreenWidth, g_ScreenHeight, .Secondary | .TopMost | .NoShadow)
     let captureWnd = Wnd.create'CaptureRectWnd(result.sf.wnd)
-    captureWnd.main = main
+    captureWnd.main   = main
     captureWnd.cursor = Cursor.from(CursorShape.Cross)
     captureWnd.setPosition(0, 0, result.sf.position.width, result.sf.position.height)
     captureWnd.SetCapture()

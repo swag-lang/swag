@@ -5,7 +5,7 @@ struct EditCtrl
 {
     using frameWnd:     FrameWnd
     labelSize:          f32 = 60
-    editSize:           f32 = 60        // 0 to fit to parent size
+    editSize:           f32 = 60     // 0 to fit to parent size
 
     label:              *Label
     edit:               *EditBox

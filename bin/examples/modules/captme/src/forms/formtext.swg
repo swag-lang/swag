@@ -187,7 +187,7 @@ impl IForm for FormText
         let z     = cxt.z
 
         let boundRect = boundRect() * z
-        var pp = boundRect
+        var pp        = boundRect
         pp.inflate(-bSize * 0.5)
 
         if text.isEmpty()
@@ -344,7 +344,7 @@ impl IForm for FormText
             }
 
             var pl: LinePathList
-            let tt = painter.curState.transform
+            let tt  = painter.curState.transform
 
             // Border
             if !Math.isZeroEpsilon(bSize) and borderColor.a

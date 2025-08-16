@@ -56,7 +56,7 @@ func day9A()
     let dataPath = Path.combine(Path.getDirectoryName(#curlocation.fileName), "9.txt")
     var line     = assume File.readAllText(dataPath)
 
-    var map: Array'{what, num: s64}
+    var map: Array'{ what, num: s64 }
     var cpt: s64
     foreach t in line
     {
@@ -90,7 +90,7 @@ func day9A()
         elif map[i].num > map[last].num
         {
             let n = map[i].num - map[last].num
-            map[i].num = map[last].num
+            map[i].num     = map[last].num
             map[last].what = -1
             map.insertAt(i + 1, {-1, n})
         }

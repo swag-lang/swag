@@ -82,9 +82,9 @@ func day5A()
     let dataPath = Path.combine(Path.getDirectoryName(#curlocation.fileName), "5.txt")
     let lines    = assume File.readAllLines(dataPath)
 
-    var first = true
+    var first  = true
     var order: HashTable'(s32, Array's32)
-    var total = 0
+    var total  = 0
 
     foreach f in lines
     {
@@ -100,11 +100,11 @@ func day5A()
             order.findOrAdd(assume StrConv.toS32(split[0])).value.add(assume StrConv.toS32(split[1]))
         }
         else
-        {   
-            let split = Tokenize.split(f, ',''u8)   
+        {
+            let split = Tokenize.split(f, ',''u8)
 
             var ok = true
-            for i in split         
+            for i in split
             {
                 let v0 = assume StrConv.toS32(split[i])
 

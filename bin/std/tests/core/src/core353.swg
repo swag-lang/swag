@@ -1,10 +1,7 @@
 using Core, Core.Serialization
 
 #[NoSerialize]
-struct V2
-{
-    x, y: f32
-}
+struct V2 { x, y: f32 }
 
 struct Toto
 {

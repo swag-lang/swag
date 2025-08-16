@@ -6,12 +6,8 @@ struct AA
     bb: BB
 }
 
-
 #[Alias("AA"), Final]
-struct BB
-{
-    x, y, z: s32
-}
+struct BB { x, y, z: s32 }
 
 //#[Swag.PrintBc]
 #test

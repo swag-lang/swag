@@ -49,13 +49,15 @@ func day7A()
         func checkMath(target: s64, resin: s64, operands: [..] s64, operator: u8)->bool
         {
             var result: s64
-            if operator == '+': 
-                result = resin + operands[0] 
-            else: 
-                result = resin * operands[0]               
+            if operator == '+':
+                result = resin + operands[0]
+            else:
+                result = resin * operands[0]
 
-            if result > target:         return false
-            if @countof(operands) == 1: return target == result
+            if result > target:
+                return false
+            if @countof(operands) == 1:
+                return target == result
 
             return checkMath(target, result, operands[1..], '+') or checkMath(target, result, operands[1..], '*')
         }

@@ -1,9 +1,6 @@
 using Core
 
-struct X
-{
-    a, b, c: s32
-}
+struct X { a, b, c: s32 }
 
 #[Swag.Compiler, Swag.ConstExpr]
 func(T) GEN()->String

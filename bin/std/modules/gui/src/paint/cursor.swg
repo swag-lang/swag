@@ -38,7 +38,7 @@ impl Cursor
 
     // Destroy the cursor
     mtd destroy()
-    {     
-        native.cursor = null   
+    {
+        native.cursor = null
     }
 }

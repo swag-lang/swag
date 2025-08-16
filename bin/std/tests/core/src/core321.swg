@@ -23,10 +23,7 @@ impl SoaTest
 
 #test
 {
-    struct Test
-    {
-        x, y, z: f32
-    }
+    struct Test { x, y, z: f32 }
 
     var v: SoaTest'Test
     v.x.reserve(10)

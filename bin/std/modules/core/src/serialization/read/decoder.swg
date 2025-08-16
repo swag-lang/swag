@@ -154,8 +154,8 @@ impl Decoder
             let valueType = Reflection.getStructArrayType(type)
             if valueType
             {
-                var count     = 0'u64
-                let treated   = serializer.beginSequence(type, data, &count)
+                var count   = 0'u64
+                let treated = serializer.beginSequence(type, data, &count)
                 defer #noerr serializer.endSequence()
 
                 if !treated

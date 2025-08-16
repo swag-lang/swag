@@ -38,7 +38,7 @@ impl IActionUI for ActionCopyPaste
             evt.setFlags |= .Disabled | .Name | .Icon
             evt.disabled = !hasSel
             evt.name     = "Cut"
-            evt.icon     = main.getTheme().getIcon24(.Cut)            
+            evt.icon     = main.getTheme().getIcon24(.Cut)
 
         case CmdIdPaste:
             evt.setFlags |= .Disabled | .Name | .Icon

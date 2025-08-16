@@ -28,8 +28,8 @@ impl Properties
     attr SliderMinMax(min, max: f32)
 
     // Color edition, force an opaque color
-    attr Opaque()    
+    attr Opaque()
 
     // Color edition, keep the original alpha value
-    attr KeepAlpha()     
+    attr KeepAlpha()
 }

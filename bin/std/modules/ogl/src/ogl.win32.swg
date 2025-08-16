@@ -3,7 +3,7 @@
 #foreignlib("opengl32")
 using Swag, Win32
 
-alias HGLRC = const *void
+alias HGLRC               = const *void
 alias getExtensionAddress = wglGetProcAddress
 
 #[Foreign("opengl32")]

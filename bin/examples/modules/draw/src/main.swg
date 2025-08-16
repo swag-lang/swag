@@ -51,37 +51,37 @@ func displayPage0(painter: *Pixel.Painter)
     {
         painter.setTransform(trs)
         painter.translateTransform(50, 50)
-        pen.brush.color   = Argb.Black
+        pen.brush.color = Argb.Black
         pen.begCapStyle = .None
-        pen.endCapStyle   = .None
+        pen.endCapStyle = .None
         painter.drawLine(0, 0, 0, 150, pen)
 
         pen.begCapStyle = .Square
-        pen.endCapStyle   = .Square
+        pen.endCapStyle = .Square
         painter.drawLine(100, 0, 150, 150, pen)
 
         pen.begCapStyle = .Round
-        pen.endCapStyle   = .Round
+        pen.endCapStyle = .Round
         painter.drawLine(200, 0, 250, 150, pen)
 
         pen.begCapStyle     = .ArrowAnchor
-        pen.endCapStyle       = .ArrowAnchor
+        pen.endCapStyle     = .ArrowAnchor
         pen.dashBegCapStyle = .Round
-        pen.dashEndCapStyle   = .Round
+        pen.dashEndCapStyle = .Round
         painter.drawLine(300, 0, 350, 150, pen)
 
         pen.begCapStyle     = .SquareAnchor
-        pen.endCapStyle       = .SquareAnchor
+        pen.endCapStyle     = .SquareAnchor
         pen.dashBegCapStyle = .Triangle
-        pen.dashEndCapStyle   = .Triangle
-        pen.brush.color       = Color.fromArgb(0x5f, Argb.Black)
+        pen.dashEndCapStyle = .Triangle
+        pen.brush.color     = Color.fromArgb(0x5f, Argb.Black)
         painter.drawLine(400, 0, 450, 150, pen)
     }
 
     painter.drawLine(500, 0, 550, 150, Argb.Brown, 2)
 
     pen.dashBegCapStyle = .Round
-    pen.dashEndCapStyle   = .Round
+    pen.dashEndCapStyle = .Round
     painter.setTransform(trs)
     painter.translateTransform(50, 250)
     pen.brush.color = Argb.Blue
@@ -121,7 +121,7 @@ func displayPage0(painter: *Pixel.Painter)
     path.lineTo(100, 50)
     path.lineTo(0, 50)
     pen.begCapStyle = .Round
-    pen.endCapStyle   = .Round
+    pen.endCapStyle = .Round
 
     painter.setTransform(trs)
     painter.translateTransform(50, 500)
@@ -558,8 +558,8 @@ func displayPage5(painter: *Pixel.Painter)
         lp.start(0, 0)
         lp.bezierTo(500, 0, 250, 300)
         var pen = Pen.createSolid(Argb.Red, 10)
-        pen.begCapStyle = .ArrowAnchor
-        pen.endCapStyle = .ArrowAnchor
+        pen.begCapStyle  = .ArrowAnchor
+        pen.endCapStyle  = .ArrowAnchor
         pen.capEndScaleX = 5
         pen.capEndScaleY = 2.5
         pen.capBegScaleX = 5
@@ -574,9 +574,9 @@ func displayPage5(painter: *Pixel.Painter)
         var pen = Pen.createSolid(Argb.Red, 20)
         painter.setTransform(trs)
         painter.translateTransform(50, 50)
-        pen.brush.color   = Argb.Black
+        pen.brush.color = Argb.Black
         pen.begCapStyle = .ArrowAnchor
-        pen.endCapStyle   = .ArrowAnchor
+        pen.endCapStyle = .ArrowAnchor
         painter.drawLine(200, 0, 250, 150, pen)
     }
 
@@ -585,8 +585,8 @@ func displayPage5(painter: *Pixel.Painter)
         lp.start(0, 0)
         lp.bezierTo(100, 100, 0, 100)
         var pen = Pen.createSolid(Argb.Red, 10)
-        pen.begCapStyle = .ArrowAnchor
-        pen.endCapStyle = .ArrowAnchor
+        pen.begCapStyle  = .ArrowAnchor
+        pen.endCapStyle  = .ArrowAnchor
         pen.capEndScaleX = 5
         pen.capEndScaleY = 2.5
         pen.capBegScaleX = 5

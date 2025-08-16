@@ -136,10 +136,7 @@ var g_Ghosts: [4] Ghost = [
     {11.5, 16, GhostColor.BLUE},
     {15.5, 16, GhostColor.YELLOW}]
 
-struct Dest
-{
-    x, y: s32
-}
+struct Dest { x, y: s32 }
 
 struct Pacman
 {

@@ -72,7 +72,7 @@ impl EmbInfoCtrl
                 .textColor = colors.embInfo_InformationText.argb
             case Message:
                 .icon = theme.getIcon64(.Information, 28)
-                .style.addStyleSheetColors(Format.toString("wnd_Bk 0x%{X}", colors.embInfo_MessageBk.argb))                
+                .style.addStyleSheetColors(Format.toString("wnd_Bk 0x%{X}", colors.embInfo_MessageBk.argb))
                 .textColor = colors.embInfo_MessageText.argb
             }
 
@@ -86,8 +86,8 @@ impl EmbInfoCtrl
 
         with let btn = IconButton.create(ctrl.label, theme.getIcon24(.WndClose, 18), {0, 0, 32, 32})
         {
-            .margin    = 5
-            .dockStyle = .Right
+            .margin       = 5
+            .dockStyle    = .Right
             .forceFgColor = ctrl.label.textColor
             .sigPressed += func|ctrl|(btn)
             {

@@ -117,13 +117,13 @@ impl IForm for FormLine
     {
         if bezier
         {
-            let newCoords = Math.Rectangle{xa, ya, xb, yb}
+            let newCoords  = Math.Rectangle{xa, ya, xb, yb}
             let newCoords2 = Math.Point{xc, yc}
             if cacheCoords == newCoords and cacheCoords2 == newCoords2:
                 return cacheBv
-            cacheCoords = newCoords
+            cacheCoords  = newCoords
             cacheCoords2 = newCoords2
-            cacheBv = Math.Curve.getBezierBoundingBox({xa, ya}, {xb, yb}, {xa+xc, ya+yc})
+            cacheBv      = Math.Curve.getBezierBoundingBox({xa, ya}, {xb, yb}, {xa + xc, ya + yc})
         }
         else
         {
@@ -203,15 +203,15 @@ impl IForm for FormLine
 
         with var pen = Pen.createDash(dashStyle, borderColor, bSize)
         {
-            .dashBlankScale    = 0.25
+            .dashBlankScale  = 0.25
             .begCapStyle     = beginCap
-            .endCapStyle       = endCap
+            .endCapStyle     = endCap
             .capBegScaleX    = sSize
-            .capEndScaleX      = eSize
+            .capEndScaleX    = eSize
             .capBegScaleY    = 2
-            .capEndScaleY      = 2
+            .capEndScaleY    = 2
             .dashBegCapStyle = dashCap
-            .dashEndCapStyle   = dashCap
+            .dashEndCapStyle = dashCap
         }
 
         let z = cxt.z

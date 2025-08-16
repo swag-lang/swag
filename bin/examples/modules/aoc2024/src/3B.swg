@@ -25,9 +25,9 @@ func day3B()
     let dataPath = Path.combine(Path.getDirectoryName(#curlocation.fileName), "3.txt")
     let line     = assume File.readAllText(dataPath)
 
-    var r = assume Parser.RegExp.create(#"(mul\(\d+,\d+\))|(do\(\))|(don't\(\))"#)
-    let d = r.grepAll(line)
-    var total = 0
+    var r      = assume Parser.RegExp.create(#"(mul\(\d+,\d+\))|(do\(\))|(don't\(\))"#)
+    let d      = r.grepAll(line)
+    var total  = 0
     var enable = true
 
     foreach v in d

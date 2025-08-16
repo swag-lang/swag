@@ -47,27 +47,27 @@ enum BorderPos
 
 struct Pen
 {
-    size:                  f32 = 1
-    brush:                 Brush
+    size:                f32 = 1
+    brush:               Brush
 
-    pattern:               Array'f32
-    dashBegCapStyle:       DashCapStyle = None
-    dashEndCapStyle:       DashCapStyle = None
-    borderPos:             BorderPos = None
+    pattern:             Array'f32
+    dashBegCapStyle:     DashCapStyle = None
+    dashEndCapStyle:     DashCapStyle = None
+    borderPos:           BorderPos = None
 
-    capBegScaleX:          f32 = 2
-    capBegScaleY:          f32 = 2
-    capEndScaleX:          f32 = 2
-    capEndScaleY:          f32 = 2
+    capBegScaleX:        f32 = 2
+    capBegScaleY:        f32 = 2
+    capEndScaleX:        f32 = 2
+    capEndScaleY:        f32 = 2
 
-    joinMiterLimit:        f32 = 3
-    plotOffset:            f32
+    joinMiterLimit:      f32 = 3
+    plotOffset:          f32
 
-    dashStyle:             DashStyle = None
-    dashBlankScale:        f32 = 1.0
-    begCapStyle:           LineCapStyle = Round
-    endCapStyle:           LineCapStyle = Round
-    joinStyle:             JoinStyle = Miter
+    dashStyle:           DashStyle = None
+    dashBlankScale:      f32 = 1.0
+    begCapStyle:         LineCapStyle = Round
+    endCapStyle:         LineCapStyle = Round
+    joinStyle:           JoinStyle = Miter
 }
 
 impl Pen

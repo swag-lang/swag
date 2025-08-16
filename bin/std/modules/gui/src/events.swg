@@ -43,7 +43,7 @@ struct CommandStateEvent
     #[Swag.EnumFlags]
     enum SetFlags
     {
-        Zero     = 0
+        Zero          = 0
         Disabled
         Icon
         Shortcut
@@ -58,7 +58,7 @@ struct CommandStateEvent
     #[Swag.EnumFlags]
     enum RenderingHint
     {
-        Zero = 0
+        Zero           = 0
         ExclusiveGroup
     }
 
@@ -68,21 +68,21 @@ struct CommandStateEvent
         ApplyCommandState
     }
 
-    using base:     Event
-    kind:           Kind
-    id:             WndId
-    source:         *Wnd
+    using base:        Event
+    kind:              Kind
+    id:                WndId
+    source:            *Wnd
 
-    icon:           Icon
-    name:           String
-    longName:       String
-    shortcut:       String
-    toolTip:        String
-    setFlags:       SetFlags
-    renderingHint:  RenderingHint
-    disabled:       bool
-    checked:        bool
-    hidden:         bool
+    icon:              Icon
+    name:              String
+    longName:          String
+    shortcut:          String
+    toolTip:           String
+    setFlags:          SetFlags
+    renderingHint:     RenderingHint
+    disabled:          bool
+    checked:           bool
+    hidden:            bool
 }
 
 impl IEvent for CommandStateEvent

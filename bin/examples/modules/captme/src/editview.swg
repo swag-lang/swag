@@ -1,13 +1,13 @@
 struct EditView
 {
-    using wnd:      Wnd
-    main:           *MainWnd
-    scroll:         *ScrollWnd
-    capture:        *Capture
-    zoom:           f32 = 1
-    viewMargin:     f32 = 32
-    firstPaint:     bool = true
-    inPlaceEdit:    bool
+    using wnd:       Wnd
+    main:            *MainWnd
+    scroll:          *ScrollWnd
+    capture:         *Capture
+    zoom:            f32 = 1
+    viewMargin:      f32 = 32
+    firstPaint:      bool = true
+    inPlaceEdit:     bool
 }
 
 impl IWnd for EditView
@@ -57,7 +57,7 @@ impl IWnd for EditView
 
         // Capture content
         let captureRect = getCaptureRect()
-        var clip = rect
+        var clip        = rect
         clip.inflate(100, 100)
         capture.paint(painter, clip, captureRect)
 

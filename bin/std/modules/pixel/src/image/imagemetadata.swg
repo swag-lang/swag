@@ -3,9 +3,9 @@ using Core
 
 struct ImageMetaData
 {
-    sig:    u32
-    tag:    Array'u8
-    value:  Array'u8
+    sig:       u32
+    tag:       Array'u8
+    value:     Array'u8
 }
 
 impl ImageMetaData
@@ -20,7 +20,7 @@ impl ImageMetaData
 
     // Convert the value to a slice
     mtd toSlice()->const [..] u8
-    {        
+    {
         return value.toSlice()
     }
 }

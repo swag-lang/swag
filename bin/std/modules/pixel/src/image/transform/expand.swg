@@ -2,7 +2,7 @@ using Core
 
 impl Image
 {
-    mtd const getWH(l, t, r, b: s32) -> {w, h: s32}
+    mtd const getWH(l, t, r, b: s32)->{ w, h: s32 }
     {
         let cw = width + l + r
         let ch = height + t + b
@@ -20,16 +20,20 @@ impl Image
         let srcY = t < 0 ? -t : 0
 
         var srcW = width8
-        if l < 0: srcW += l * bpp8
-        if r < 0: srcW += r * bpp8
+        if l < 0:
+            srcW += l * bpp8
+        if r < 0:
+            srcW += r * bpp8
 
         var srcH = height
-        if t < 0: srcH += t
-        if b < 0: srcH += b
+        if t < 0:
+            srcH += t
+        if b < 0:
+            srcH += b
 
         var dstPix = dstImage.pixels.buffer + dstY * dstImage.width8
         dstPix += dstX * bpp8
-        
+
         for cy in srcH
         {
             var srcPix = pixels.buffer + (srcY + cy) * width8

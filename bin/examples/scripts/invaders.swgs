@@ -49,10 +49,7 @@ struct Alien
     dead:     bool
 }
 
-struct Player
-{
-    x, y: f32
-}
+struct Player { x, y: f32 }
 
 struct Laser
 {

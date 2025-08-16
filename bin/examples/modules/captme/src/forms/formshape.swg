@@ -178,7 +178,7 @@ impl IForm for FormShape
         var bSize = cxt.hitTest ? Math.max(borderSize, 5) : borderSize
         bSize = adaptSize(bSize, MinBorderSize, MaxBorderSize, cxt)
         let rSize = adaptSize(roundSize, MinRoundSize, MaxRoundSize, cxt)
-        var bk = backColor
+        var bk    = backColor
 
         if subKind == .PixSel
         {
@@ -193,7 +193,7 @@ impl IForm for FormShape
                 dash  = .Dash
             }
 
-            bk.a = 5
+            bk.a        = 5
             borderColor = Argb.White
             painter.setAntialiased(false)
         }

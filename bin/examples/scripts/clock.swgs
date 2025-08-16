@@ -13,7 +13,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
     switch evt
     {
     case PaintEvent as paintEvt:
-        let painter  = paintEvt.bc.painter
+        let painter = paintEvt.bc.painter
 
         let centerX = wnd.position.width * 0.5
         let centerY = wnd.position.height * 0.5

@@ -18,7 +18,7 @@ public enum Crc64Kind
 impl Crc64
 {
     var LookUpTableECMA: [256] u64 = undefined
-    var LookUpTableISO: [256] u64 = undefined
+    var LookUpTableISO:  [256] u64 = undefined
 
     // Generates the lookup LookUpTable for CRC-64-ECMA.
     #[Swag.Compiler]

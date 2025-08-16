@@ -96,7 +96,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
     switch evt
     {
     case PaintEvent as paintEvt:
-        let painter  = paintEvt.bc.painter
+        let painter = paintEvt.bc.painter
         painter.clear(Argb.Gray)
         painter.setParams(.Antialiased)
         painter.fillCircle(PositionC.x, PositionC.y, RadC, Argb.Black)

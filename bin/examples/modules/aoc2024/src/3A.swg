@@ -25,8 +25,8 @@ func day3A()
     let dataPath = Path.combine(Path.getDirectoryName(#curlocation.fileName), "3.txt")
     let line     = assume File.readAllText(dataPath)
 
-    var r = assume Parser.RegExp.create(#"mul\(\d+,\d+\)"#)
-    let d = r.grepAll(line)
+    var r     = assume Parser.RegExp.create(#"mul\(\d+,\d+\)"#)
+    let d     = r.grepAll(line)
     var total = 0
     foreach v in d
     {

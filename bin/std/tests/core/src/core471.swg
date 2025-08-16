@@ -1,9 +1,6 @@
 using Core, Core.Hash
 
-struct MyStruct115
-{
-    x, y: s32
-}
+struct MyStruct115 { x, y: s32 }
 
 impl IHash32 for MyStruct115
 {
@@ -13,10 +10,7 @@ impl IHash32 for MyStruct115
     }
 }
 
-struct MyStruct115_64
-{
-    x, y: s32
-}
+struct MyStruct115_64 { x, y: s32 }
 
 impl IHash64 for MyStruct115_64
 {

@@ -40,10 +40,7 @@ private
         bf:                u8
     }
 
-    struct ColorRGB
-    {
-        b, g, r: u8
-    }
+    struct ColorRGB { b, g, r: u8 }
 
     struct BitString
     {

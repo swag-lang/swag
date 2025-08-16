@@ -1,9 +1,6 @@
 using Core, Core.Serialization
 
-struct Toto1
-{
-    x, y, z: s32
-}
+struct Toto1 { x, y, z: s32 }
 
 struct Toto2
 {

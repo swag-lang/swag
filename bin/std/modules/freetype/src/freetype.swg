@@ -126,11 +126,7 @@ struct FT_FaceRec
     finternal:               FT_Face_Internal
 }
 
-struct FT_BBox
-{
-    xMin, yMin:     FT_Pos
-    xMax, yMax:     FT_Pos
-}
+struct FT_BBox { xMin, yMin: FT_Pos, xMax, yMax: FT_Pos }
 
 struct FT_Generic
 {
@@ -167,11 +163,7 @@ struct FT_Vector
     y:     FT_Pos
 }
 
-struct FT_Matrix
-{
-    xx, xy:     FT_Fixed
-    yx, yy:     FT_Fixed
-}
+struct FT_Matrix { xx, xy: FT_Fixed, yx, yy: FT_Fixed }
 
 struct FT_GlyphSlotRec
 {

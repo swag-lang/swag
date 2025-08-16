@@ -39,5 +39,5 @@ impl Painter
         sharedLinePath.start(startX, startY)
         sharedLinePath.bezierTo(endX, endY, ptX, ptY)
         drawPath(&sharedLinePath, pen)
-    }    
+    }
 }

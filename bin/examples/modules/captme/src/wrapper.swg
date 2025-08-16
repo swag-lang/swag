@@ -24,12 +24,12 @@ impl MainWnd
             mdlFormStep    = dref b
             mdlFormStep.ws = b.w
             mdlFormStep.hs = b.h
-            mdlFavorite = &mdlFormStep
+            mdlFavorite    = &mdlFormStep
         case FormArrow as b:
             mdlFormArrow = dref b
             mdlFavorite  = &mdlFormArrow
         case FormLine as b:
-            mdlFormLine = dref b
+            mdlFormLine  = dref b
             mdlFavorite  = &mdlFormLine
             mdlHighlight = &mdlFormLine
         case FormPolygon as b:
@@ -41,7 +41,7 @@ impl MainWnd
             mdlFormText = dref b
             mdlFavorite = &mdlFormText
         case FormDraw as b:
-            mdlFormDraw = dref b
+            mdlFormDraw  = dref b
             mdlFavorite  = &mdlFormDraw
             mdlHighlight = &mdlFormDraw
             mdlPixSel    = &mdlFormDraw

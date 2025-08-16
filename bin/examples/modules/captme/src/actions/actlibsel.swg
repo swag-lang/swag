@@ -1,11 +1,11 @@
 using Gui
 
-const CmdIdLibMoveSelLeft   = "CmdIdMoveSelLeft"
-const CmdIdLibMoveSelRight  = "CmdIdMoveSelRight"
-const CmdIdLibMoveSelUp     = "CmdIdMoveSelTop"
-const CmdIdLibMoveSelDown   = "CmdIdMoveSelBottom"
-const CmdIdLibMoveSelHome   = "CmdIdLibMoveSelHome"
-const CmdIdLibMoveSelEnd    = "CmdIdLibMoveSelEnd"
+const CmdIdLibMoveSelLeft  = "CmdIdMoveSelLeft"
+const CmdIdLibMoveSelRight = "CmdIdMoveSelRight"
+const CmdIdLibMoveSelUp    = "CmdIdMoveSelTop"
+const CmdIdLibMoveSelDown  = "CmdIdMoveSelBottom"
+const CmdIdLibMoveSelHome  = "CmdIdLibMoveSelHome"
+const CmdIdLibMoveSelEnd   = "CmdIdLibMoveSelEnd"
 
 struct ActionLibSel {}
 impl IActionUI for ActionLibSel

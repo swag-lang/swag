@@ -671,7 +671,7 @@ func lastIndexOf(src: const [..] u8, what: string, comparisonType = ComparisonTy
 // Return true if the string starts with 'str'
 func startsWith(src: const [..] u8, str: string, comparisonType = ComparisonType.Latin1)->bool
 {
-    let length  = @countof(src)
+    let length = @countof(src)
     if !length:
         return false
     let countof = @countof(str)
@@ -684,7 +684,7 @@ func startsWith(src: const [..] u8, str: string, comparisonType = ComparisonType
 // Return true if the string ends with 'str'
 func endsWith(src: const [..] u8, str: string, comparisonType = ComparisonType.Latin1)->bool
 {
-    let length  = @countof(src)
+    let length = @countof(src)
     if !length:
         return false
     let countof = @countof(str)

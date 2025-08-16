@@ -48,7 +48,8 @@ func genInit()
     // Sort solutions from best to worst
     g_Gen[0].all.sort(func(x, y)
     {
-        if !x or !y: return 0
+        if !x or !y:
+            return 0
         return x.score <=> y.score
     })
 
@@ -256,7 +257,8 @@ func genGo()->*u8
     // Mutate
     g_Gen[nextGenIdx].all.sort(func(x, y)
     {
-        if !x or !y: return 0
+        if !x or !y:
+            return 0
         return x.score <=> y.score
     })
 
@@ -271,7 +273,8 @@ func genGo()->*u8
     // Sort solutions from best to worst
     g_Gen[g_CurGen].all.sort(func(x, y)
     {
-        if !x or !y: return 0
+        if !x or !y:
+            return 0
         return x.score <=> y.score
     })
 

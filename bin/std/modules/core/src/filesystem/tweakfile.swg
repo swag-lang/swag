@@ -49,7 +49,7 @@ impl TweakFile
 
         struct Ref
         {
-            folder:     *Folder        // Folder where the reference is defined
+            folder:     *Folder         // Folder where the reference is defined
             src:        *TypedValue     // Source field that is being referenced
             dst:        *TypedValue     // Destination field to copy to
         }

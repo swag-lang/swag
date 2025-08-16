@@ -4,18 +4,18 @@ using Swag
 // Represents a single node in a doubly-linked 'List'.
 struct(T) ListEntry
 {
-    prev:      *ListEntry // Pointer to the previous node in the list.
-    next:      *ListEntry // Pointer to the next node in the list.
-    value:     T          // The value stored in the node.
+    prev:      *ListEntry     // Pointer to the previous node in the list.
+    next:      *ListEntry     // Pointer to the next node in the list.
+    value:     T              // The value stored in the node.
 }
 
 // A generic, doubly-linked list.
 // Provides efficient insertion and deletion of elements.
 struct(T) List
 {
-    head:      *ListEntry // Pointer to the first node in the list.
-    tail:      *ListEntry // Pointer to the last node in the list.
-    count:     u64        // The total number of elements in the list.
+    head:      *ListEntry     // Pointer to the first node in the list.
+    tail:      *ListEntry     // Pointer to the last node in the list.
+    count:     u64            // The total number of elements in the list.
 }
 
 impl List

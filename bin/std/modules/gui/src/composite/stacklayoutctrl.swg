@@ -3,24 +3,24 @@ using Core
 
 enum StackLayoutKind
 {
-    Top             // From top to bottom
-    Bottom          // From bottom to top
-    Left            // From left to right
-    Right           // From right to left
-    HorzCenter      // Center horizontally
+    Top                      // From top to bottom
+    Bottom                   // From bottom to top
+    Left                     // From left to right
+    Right                    // From right to left
+    HorzCenter               // Center horizontally
     HorzCenterVertCenter
-    VertCenter      // Center vertically
-    HorzFit         // From left to right; fit the available room
-    VertFit         // From top to bottom; fit the available room
+    VertCenter               // Center vertically
+    HorzFit                  // From left to right; fit the available room
+    VertFit                  // From top to bottom; fit the available room
 }
 
 struct StackLayoutCtrl
 {
-    using wnd:      Wnd
+    using wnd:        Wnd
 
-    layoutKind:     StackLayoutKind = Top
-    spacing:        f32 = 5
-    fitToContent:   bool
+    layoutKind:       StackLayoutKind = Top
+    spacing:          f32 = 5
+    fitToContent:     bool
 }
 
 impl IWnd for StackLayoutCtrl
@@ -34,7 +34,7 @@ impl IWnd for StackLayoutCtrl
         }
 
         if layoutKind == .HorzFit
-        {   
+        {
             var w = position.width
             w -= spacing * cast(s32) childs.count - 1
             w /= cast(s32) childs.count
@@ -44,10 +44,10 @@ impl IWnd for StackLayoutCtrl
             }
         }
         elif layoutKind == .VertFit
-        {   
+        {
             var h = position.height
             h -= spacing * cast(s32) childs.count - 1
-            h /= cast(s32) childs.count            
+            h /= cast(s32) childs.count
             foreach c in childs
             {
                 c.position.height = h

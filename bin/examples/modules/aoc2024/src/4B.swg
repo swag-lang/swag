@@ -44,18 +44,18 @@ func day4B()
         if b == 'M' and c == 'A' and d == 'S':
             cpt += 1
         elif b == 'S' and c == 'A' and d == 'M':
-            cpt += 1            
+            cpt += 1
 
-        return cpt == 2            
+        return cpt == 2
     }
 
     var total = 0
-    for y in 0 until lines.count-2
+    for y in 0 until lines.count - 2
     {
-        for x in 0 until lines[y].length-2
-        {            
-            if test(lines[y][x], lines[y][x+2], lines[y+1][x+1], lines[y+2][x], lines[y+2][x+2]):
-                total += 1             
+        for x in 0 until lines[y].length - 2
+        {
+            if test(lines[y][x], lines[y][x + 2], lines[y + 1][x + 1], lines[y + 2][x], lines[y + 2][x + 2]):
+                total += 1
         }
     }
 

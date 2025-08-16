@@ -6,18 +6,9 @@ const EXIT_FAILURE = 1
 
 alias wchar_t = u16
 
-struct div_t
-{
-    quot, rem: s32
-}
-struct ldiv_t
-{
-    quot, rem: s32
-}
-struct lldiv_t
-{
-    quot, rem: s64
-}
+struct div_t { quot, rem: s32 }
+struct ldiv_t { quot, rem: s32 }
+struct lldiv_t { quot, rem: s64 }
 
 #[Foreign(ForeignLib)]
 {

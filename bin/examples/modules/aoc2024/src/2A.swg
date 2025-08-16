@@ -52,7 +52,7 @@ func day2A()
         let first = Tokenize.split(l, ' ''u8)
 
         var prev = 0, ls = 0
-        var bad = false
+        var bad  = false
         foreach v in first
         {
             let a = assume StrConv.toS32(v)

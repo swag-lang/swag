@@ -67,7 +67,7 @@ func day8B()
             var ax = antenna0.x
             var ay = antenna0.y
             while ax >= 0 and ay >= 0 and ax < w and ay < h
-            {                
+            {
                 antinodes.add({cast(u32) ax, cast(u32) ay})
                 ax -= dx
                 ay -= dy

@@ -554,7 +554,7 @@ impl Decoder
                         var md: ImageMetaData
                         md.tag = cast(string) chunk.datas[..<len]
                         if len != @countof(chunk.datas) - 1:
-                            md.value = cast(string) chunk.datas[len+1..]
+                            md.value = cast(string) chunk.datas[len + 1..]
                         result.metaDatas.add(md)
                     }
                 }

@@ -5,10 +5,10 @@ using Swag
 // It automatically manages memory and grows as needed.
 struct(T) Array
 {
-    allocator:     IAllocator // The allocator used for memory operations.
-    buffer:        ^T         // Pointer to the contiguous memory block holding the elements.
-    count:         u64        // The number of valid elements currently in the array.
-    capacity:      u64        // The total number of elements that can be stored in the allocated self.buffer.
+    allocator:     IAllocator     // The allocator used for memory operations.
+    buffer:        ^T             // Pointer to the contiguous memory block holding the elements.
+    count:         u64            // The number of valid elements currently in the array.
+    capacity:      u64            // The total number of elements that can be stored in the allocated self.buffer.
 }
 
 impl Array

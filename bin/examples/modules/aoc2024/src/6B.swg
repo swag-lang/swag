@@ -118,54 +118,54 @@ func day6B()
 
     func test(arr: *Array'u8, sx0, sy0: s32, first: bool)->bool
     {
-        var sx = sx0
-        var sy = sy0
+        var sx   = sx0
+        var sy   = sy0
         var dx = 0, dy = -1
         var what = 'D''u8
         for
         {
-            if sx+dx < 0 or sx+dx >= w or sy+dy < 0 or sy+dy >= h
+            if sx + dx < 0 or sx + dx >= w or sy + dy < 0 or sy + dy >= h
             {
-                arr.ref2(sx,sy,w) = what
+                arr.ref2(sx, sy, w) = what
                 return false
             }
 
-            if arr.ref2(sx+dx,sy+dy,w) == '#'
+            if arr.ref2(sx + dx, sy + dy, w) == '#'
             {
                 if dx == 0 and dy == -1
                 {
-                    dx = 1
-                    dy = 0
+                    dx   = 1
+                    dy   = 0
                     what = 'A'
                 }
                 elif dx == 1 and dy == 0
                 {
-                    dx = 0
-                    dy = 1
+                    dx   = 0
+                    dy   = 1
                     what = 'B'
                 }
                 elif dx == 0 and dy == 1
                 {
-                    dx = -1
-                    dy = 0
+                    dx   = -1
+                    dy   = 0
                     what = 'C'
                 }
                 else
                 {
-                    dx = 0
-                    dy = -1
+                    dx   = 0
+                    dy   = -1
                     what = 'D'
                 }
 
                 continue
             }
 
-            let r = #ref arr.ref2(sx,sy,w)
+            let r = #ref arr.ref2(sx, sy, w)
 
             if first:
                 what = 'O'
             elif r == what:
-               return true
+                return true
             r = what
 
             sx += dx

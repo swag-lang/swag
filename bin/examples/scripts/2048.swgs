@@ -288,8 +288,8 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
         randValue()
 
     case PaintEvent as paintEvt:
-        let painter  = paintEvt.bc.painter
-        var rect     = wnd.getClientRect()
+        let painter = paintEvt.bc.painter
+        var rect    = wnd.getClientRect()
 
         painter.fillRect(rect, Color.fromRgb(43, 43, 43))
 

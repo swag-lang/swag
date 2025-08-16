@@ -15,7 +15,7 @@ impl PaintImage
 {
     internal func onEvent(wnd: *Wnd, evt: IEvent)->bool
     {
-        if !(evt is PaintEvent):
+        if !evt is PaintEvent:
             return false
 
         let pt = cast(*PaintImage) wnd.surface.userData

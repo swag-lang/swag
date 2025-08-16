@@ -4,9 +4,9 @@ using Swag
 // Represents a single key-value pair entry within a HashTable.
 struct(K, V) HashTableEntry
 {
-    hash:      u32 // The cached hash of the key.
-    key:       K   // The key.
-    value:     V   // The value associated with the key.
+    hash:      u32     // The cached hash of the key.
+    key:       K       // The key.
+    value:     V       // The value associated with the key.
 }
 
 // A hash table implemented with open-addressing that maps keys to values.
@@ -14,16 +14,16 @@ struct(K, V) HashTableEntry
 struct(K, V) HashTable
 {
     // Special hash values to indicate the state of a slot in the table.
-    const HASH_FREE        = 0'u32 // The slot is empty and has never been used.
-    const HASH_DELETED     = 1'u32 // The slot was previously occupied but has been deleted.
-    const HASH_FIRST       = 2'u32 // The first possible valid hash value.
-    const HASH_MASK        = 2'u32 // A mask to ensure that valid hashes are >= HASH_FIRST.
+    const HASH_FREE        = 0'u32             // The slot is empty and has never been used.
+    const HASH_DELETED     = 1'u32             // The slot was previously occupied but has been deleted.
+    const HASH_FIRST       = 2'u32             // The first possible valid hash value.
+    const HASH_MASK        = 2'u32             // A mask to ensure that valid hashes are >= HASH_FIRST.
 
-    allocator:             IAllocator      // The allocator used for memory operations.
-    table:                 ^HashTableEntry // Pointer to the contiguous memory block for the hash table.
-    count:                 u64             // The number of valid key-value pairs currently in the table.
-    capacity:              u64             // The total number of slots in the hash table.
-    deleted:               u64             // The number of slots marked as deleted.
+    allocator:             IAllocator          // The allocator used for memory operations.
+    table:                 ^HashTableEntry     // Pointer to the contiguous memory block for the hash table.
+    count:                 u64                 // The number of valid key-value pairs currently in the table.
+    capacity:              u64                 // The total number of slots in the hash table.
+    deleted:               u64                 // The number of slots marked as deleted.
 }
 
 impl HashTable

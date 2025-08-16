@@ -6,9 +6,9 @@ public func isPodFinal(type: #null typeinfo)->{ raw: bool, sizeof: u64 }
     if type != null
     {
         if Reflection.isInteger(type) or
-        Reflection.isFloat(type) or
-        Reflection.isBool(type) or
-        Reflection.isRune(type)
+           Reflection.isFloat(type) or
+           Reflection.isBool(type) or
+           Reflection.isRune(type)
         {
             return {true, type.sizeof}
         }

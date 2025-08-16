@@ -36,8 +36,8 @@ func getWndRectAtPos(srf: *Surface, x, y: f32)->Math.Rectangle
     g_HitTest.x = cast() x
     g_HitTest.y = cast() y
 
-    g_Hit     = null
-    g_Ignore  = srf.hWnd
+    g_Hit    = null
+    g_Ignore = srf.hWnd
     EnumWindows(cast() &enumProc, 0)
     if !g_Hit:
         return {}

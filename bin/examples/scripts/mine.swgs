@@ -129,9 +129,9 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
         setup()
 
     case MouseEvent as mouseEvt where mouseEvt.kind == .MousePressed:
-        var pos      = wnd.surfaceToLocal(mouseEvt.surfacePos)
-        var x        = cast(s32) (pos.x / CellSize)
-        var y        = cast(s32) (pos.y / CellSize)
+        var pos = wnd.surfaceToLocal(mouseEvt.surfacePos)
+        var x   = cast(s32) (pos.x / CellSize)
+        var y   = cast(s32) (pos.y / CellSize)
         x, y -= 1
         if x < 0 or x >= GridSize or y < 0 or y >= GridSize:
             break

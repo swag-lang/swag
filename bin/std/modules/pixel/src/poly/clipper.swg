@@ -61,10 +61,7 @@ enum Direction
     LeftToRight
 }
 
-public struct IntPoint
-{
-    x, y: CInt
-}
+public struct IntPoint { x, y: CInt }
 
 struct IntRect
 {

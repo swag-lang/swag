@@ -129,8 +129,8 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
         }
 
     case PaintEvent as paintEvt:
-        let painter  = paintEvt.bc.painter
-        let dt       = wnd.getApp().getDt()
+        let painter = paintEvt.bc.painter
+        let dt      = wnd.getApp().getDt()
 
         painter.setAntialiased(true)
         wnd.invalidate()

@@ -249,8 +249,8 @@ impl RegExp
         if str == null:
             return result
 
-        var res     = str
-        let end     = @dataof(str) + @countof(str)
+        var res = str
+        let end = @dataof(str) + @countof(str)
         clearMatch()
 
         for

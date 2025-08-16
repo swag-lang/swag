@@ -45,28 +45,28 @@ impl IActionUI for ActionDelay
         case CmdIdCaptureDelay0:
             evt.setFlags |= .Name | .Checked | .RenderingHint
             evt.renderingHint = .ExclusiveGroup
-            evt.name    = "No Delay"
-            evt.checked = main.captureOptions.delay == 0
+            evt.name          = "No Delay"
+            evt.checked       = main.captureOptions.delay == 0
         case CmdIdCaptureDelay1:
             evt.setFlags |= .Name | .Checked | .RenderingHint
             evt.renderingHint = .ExclusiveGroup
-            evt.name    = "1 second"
-            evt.checked = main.captureOptions.delay == 1
+            evt.name          = "1 second"
+            evt.checked       = main.captureOptions.delay == 1
         case CmdIdCaptureDelay2:
             evt.setFlags |= .Name | .Checked | .RenderingHint
             evt.renderingHint = .ExclusiveGroup
-            evt.name    = "2 seconds"
-            evt.checked = main.captureOptions.delay == 2
+            evt.name          = "2 seconds"
+            evt.checked       = main.captureOptions.delay == 2
         case CmdIdCaptureDelay5:
             evt.setFlags |= .Name | .Checked | .RenderingHint
             evt.renderingHint = .ExclusiveGroup
-            evt.name    = "5 seconds"
-            evt.checked = main.captureOptions.delay == 5
+            evt.name          = "5 seconds"
+            evt.checked       = main.captureOptions.delay == 5
         case CmdIdCaptureDelay9:
             evt.setFlags |= .Name | .Checked | .RenderingHint
             evt.renderingHint = .ExclusiveGroup
-            evt.name    = "9 seconds"
-            evt.checked = main.captureOptions.delay == 9
+            evt.name          = "9 seconds"
+            evt.checked       = main.captureOptions.delay == 9
         }
 
         return true

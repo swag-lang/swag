@@ -9,7 +9,7 @@ enum SliderFlags
     HilightBar
     Vertical
     Integer
-    ShowSteps   // Display steps if defined
+    ShowSteps          // Display steps if defined
 }
 
 struct Slider
@@ -494,10 +494,10 @@ impl Slider
     {
         Debug.assert(min < max)
         Debug.assert(steps < (max - min))
-        self.min   = min
-        self.max   = max
+        self.min = min
+        self.max = max
         if steps > 0:
-            self.steps = steps / (max - min)  // Convert to normalized step size
+            self.steps = steps / (max - min) // Convert to normalized step size
         else:
             self.steps = 0
     }

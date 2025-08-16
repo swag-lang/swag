@@ -796,7 +796,7 @@ impl ListCtrl
         // Adapt header to the frame container
         list.hookOnEvent = func(wnd, evt)
         {
-            if !(evt is ResizeEvent):
+            if !evt is ResizeEvent:
                 return false
 
             var list   = cast(*ListCtrl) wnd
@@ -1124,7 +1124,7 @@ impl ListCtrl
         let res   = idxLineToIdxList.tryFind(range.start)
         if !res:
             return null
-        let idx   = res.value
+        let idx = res.value
         return lines[idx]
     }
 
@@ -1234,8 +1234,8 @@ impl ListCtrl
         var cptIdx     = 0'u32
         while tmp.count
         {
-            let toI       = tmp.popBack()
-            let res       = idxLineToIdxList.tryFind(toI.index)
+            let toI = tmp.popBack()
+            let res = idxLineToIdxList.tryFind(toI.index)
             if !res:
                 continue
             let idxInsert = res.value

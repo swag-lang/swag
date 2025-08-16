@@ -116,15 +116,14 @@ func day6A()
     }
 
     @assert(arr.count != 0)
-
     var dx = 0, dy = -1
     var total = 1
     for
     {
-        if sx+dx < 0 or sx+dx >= w or sy+dy < 0 or sy+dy >= h:
+        if sx + dx < 0 or sx + dx >= w or sy + dy < 0 or sy + dy >= h:
             break
 
-        if arr.ref2(sx+dx,sy+dy,w) == '#'
+        if arr.ref2(sx + dx, sy + dy, w) == '#'
         {
             if dx == 0 and dy == -1
             {
@@ -135,28 +134,28 @@ func day6A()
             {
                 dx = 0
                 dy = 1
-            }  
+            }
             elif dx == 0 and dy == 1
             {
                 dx = -1
                 dy = 0
-            }  
+            }
             else
             {
                 dx = 0
                 dy = -1
-            }    
+            }
 
-            continue                
+            continue
         }
 
         sx += dx
         sy += dy
 
-        if arr.ref2(sx,sy,w) != 'O'
+        if arr.ref2(sx, sy, w) != 'O'
         {
             total += 1
-            arr.ref2(sx,sy,w) = 'O'
+            arr.ref2(sx, sy, w) = 'O'
         }
     }
 

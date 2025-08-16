@@ -225,7 +225,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
         g_Rect = wnd.getClientRect()
 
     case PaintEvent as paintEvt:
-        let painter  = paintEvt.bc.painter
+        let painter = paintEvt.bc.painter
 
         // This is the elapsed time between two 'frames', in seconds.
         g_Dt = wnd.getApp().getDt()

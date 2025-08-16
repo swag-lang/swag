@@ -92,10 +92,7 @@ struct PaintState
     colorMask:             ColorMask
 }
 
-struct ColorMask
-{
-    r, g, b, a: bool
-}
+struct ColorMask { r, g, b, a: bool }
 
 struct Command
 {

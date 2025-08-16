@@ -12,7 +12,6 @@ var g_App: Application
         Clipboard.addString(arg)
         if Surface.sendCustomMessage("Captme", 1, 0):
             return
-
     }
 
     try Jobs.setNumWorkers()
@@ -68,12 +67,10 @@ var g_App: Application
             continue
         if !Image.canLoad(arg):
             continue
-            Console.print(arg)
+        Console.print(arg)
         mainWnd.loadExternalImage(arg)
         break
     }
 
     g_App.run()
 }
-
-

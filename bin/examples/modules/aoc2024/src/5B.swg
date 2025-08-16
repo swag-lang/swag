@@ -37,11 +37,11 @@ func day5B()
             order.findOrAdd(assume StrConv.toS32(split[0])).value.add(assume StrConv.toS32(split[1]))
         }
         else
-        {   
+        {
             var split = Slice.map(Tokenize.split(f, ',''u8).toSlice(), func(x) => assume StrConv.toS32(x))
 
             var ok = true
-            for i in split         
+            for i in split
             {
                 let v0 = split[i]
 
@@ -54,7 +54,7 @@ func day5B()
                         ok = false
                         break
                     }
-                   
+
                     if let r1 = order.tryFind(v1) where r1.value.contains(v0)
                     {
                         ok = false
@@ -66,9 +66,9 @@ func day5B()
             if !ok
             {
                 split.sort(func(x, y)
-                {                   
+                {
                     if let r0 = order.tryFind(x) where r0.value.contains(y):
-                        return -1                                        
+                        return -1
                     if let r1 = order.tryFind(y) where r1.value.contains(x):
                         return 1
 

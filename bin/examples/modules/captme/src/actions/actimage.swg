@@ -130,7 +130,7 @@ impl MainWnd
         capture.serialUndo += 1
         let serial = capture.serialUndo
 
-        var img = capture.backImg
+        var img  = capture.backImg
         let oldW = img.width
         let oldH = img.height
 
@@ -332,16 +332,22 @@ impl MainWnd
 
         switch g_ResizeMode
         {
-        case 1, 4, 7: r += cw
-        case 2, 5, 8: l += cw / 2; r += cw / 2
-        case 3, 6, 9: l += cw
+        case 1, 4, 7:
+            r += cw
+        case 2, 5, 8:
+            l += cw / 2; r += cw / 2
+        case 3, 6, 9:
+            l += cw
         }
 
         switch g_ResizeMode
         {
-        case 1, 2, 3: b += ch
-        case 4, 5, 6: t += ch / 2; b += ch / 2
-        case 7, 8, 9: t += ch
+        case 1, 2, 3:
+            b += ch
+        case 4, 5, 6:
+            t += ch / 2; b += ch / 2
+        case 7, 8, 9:
+            t += ch
         }
 
         doProcessImage(CmdIdExpandImage, l, t, r, b)

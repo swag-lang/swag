@@ -5,10 +5,7 @@ using Core, Core.File
     const TXT = "b $a\na 666"
     var tf:   TweakFile
 
-    struct A
-    {
-        a, b: String
-    }
+    struct A { a, b: String }
 
     var v: A
     tf.registerFolder(&v)

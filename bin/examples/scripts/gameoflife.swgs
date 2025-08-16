@@ -22,8 +22,8 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
         if leftPressed or rightPressed
         {
             let pos = wnd.surfaceToLocal(mouseEvt.surfacePos)
-            let x = cast(s32) (pos.x / cellSize)
-            let y = cast(s32) (pos.y / cellSize)
+            let x   = cast(s32) (pos.x / cellSize)
+            let y   = cast(s32) (pos.y / cellSize)
             if x < 1 or x >= GridSize - 1 or y < 1 or y >= GridSize - 1:
                 break
             g_Grid[g_CurGen, x, y] = leftPressed ? true : false
@@ -42,8 +42,8 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
         }
 
     case PaintEvent as paintEvt:
-        let painter  = paintEvt.bc.painter
-        let nextGen  = (g_CurGen + 1) % 2
+        let painter = paintEvt.bc.painter
+        let nextGen = (g_CurGen + 1) % 2
 
         // Compute next generation, except if user is painting
         if !leftPressed and !rightPressed

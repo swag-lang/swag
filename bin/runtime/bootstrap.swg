@@ -460,7 +460,6 @@ namespace Swag
         UnScoped = 2
     }
 
-
     // The kind of the typeinfo.
     enum TypeInfoKind: u8
     {
@@ -555,7 +554,7 @@ namespace Swag
     #[EnumFlags]
     enum TypeValueFlags
     {
-        Zero = 0
+        Zero     = 0
         AutoName
         HasUsing
     }
@@ -612,18 +611,18 @@ namespace Swag
     struct TypeInfoStruct
     {
         using base:      TypeInfo
-        opInit:          func(*void)              // Pointer to the function to initialize an instance of that struct
-        opDrop:          func(*void)              // Pointer to the function to drop an instance of that struct
-        opPostCopy:      func(*void)              // Pointer to the function to call after a copy
-        opPostMove:      func(*void)              // Pointer to the function to call after a move
-        structName:      string                   // User name of the struct
-        fromGeneric:     const *TypeInfo          // If it comes from a generic instantiation, this is the original generic struct
+        opInit:          func(*void)               // Pointer to the function to initialize an instance of that struct
+        opDrop:          func(*void)               // Pointer to the function to drop an instance of that struct
+        opPostCopy:      func(*void)               // Pointer to the function to call after a copy
+        opPostMove:      func(*void)               // Pointer to the function to call after a move
+        structName:      string                    // User name of the struct
+        fromGeneric:     const *TypeInfo           // If it comes from a generic instantiation, this is the original generic struct
         generics:        const [..] TypedValue     // Generic parameters
         fields:          const [..] TypedValue     // All the fields
         usingFields:     const [..] TypedValue     // All the fields marked with 'using'
         methods:         const [..] TypedValue     // All the methods, if exported
         interfaces:      const [..] TypedValue     // All the interfaces
-        attributes:      const [..] Attribute     // All the attributes
+        attributes:      const [..] Attribute      // All the attributes
     }
 
     struct TypeInfoFunc
@@ -631,16 +630,16 @@ namespace Swag
         using base:     TypeInfo
         generics:       const [..] TypedValue     // Generic parameters
         parameters:     const [..] TypedValue     // Parameters
-        returnType:     const *TypeInfo          // The return type, or 'null'
-        attributes:     const [..] Attribute     // All the attributes
+        returnType:     const *TypeInfo           // The return type, or 'null'
+        attributes:     const [..] Attribute      // All the attributes
     }
 
     struct TypeInfoEnum
     {
         using base:     TypeInfo
         values:         const [..] TypedValue     // All the values
-        rawType:        const *TypeInfo          // The underlying enum type
-        attributes:     const [..] Attribute     // All the attributes
+        rawType:        const *TypeInfo           // The underlying enum type
+        attributes:     const [..] Attribute      // All the attributes
     }
 
     struct TypeInfoArray
@@ -736,7 +735,7 @@ namespace Swag
     // 'SCBE' backend specific options
     struct BuildCfgBackendSCBE
     {
-        unrollMemLimit: u32     // Maximum number of bytes to unroll memset/cpy in optimize mode
+        unrollMemLimit: u32 // Maximum number of bytes to unroll memset/cpy in optimize mode
     }
 
     // The kind of native backend to generate.

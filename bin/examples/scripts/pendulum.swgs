@@ -79,7 +79,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
         }
 
     case PaintEvent as paintEvt:
-        let painter  = paintEvt.bc.painter
+        let painter = paintEvt.bc.painter
 
         var num1 = -g * (2 * m1 + m2) * sin(a1)
         var num2 = -m2 * g * sin(a1 - 2 * a2)

@@ -1,9 +1,9 @@
 using Gui
 
-const CmdIdLibShowUpToDateLinkedImage    = "CmdIdLibShowUpToDateLinkedImage"
-const CmdIdLibShowLinkedImage            = "CmdIdLibShowLinkedImage"
-const CmdIdLibShowUnSavedLinkedImage = "CmdIdLibShowUnSavedLinkedImage"
-const CmdIdLibShowUnLinkedImage         = "CmdIdLibShowUnLinkedImage"
+const CmdIdLibShowUpToDateLinkedImage = "CmdIdLibShowUpToDateLinkedImage"
+const CmdIdLibShowLinkedImage         = "CmdIdLibShowLinkedImage"
+const CmdIdLibShowUnSavedLinkedImage  = "CmdIdLibShowUnSavedLinkedImage"
+const CmdIdLibShowUnLinkedImage       = "CmdIdLibShowUnLinkedImage"
 
 struct ActionLibFilter {}
 impl IActionUI for ActionLibFilter

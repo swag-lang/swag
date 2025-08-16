@@ -2,8 +2,8 @@ var g_Library: Library
 
 struct Library
 {
-    files:          Array'File.FileInfo
-    onDeleteFile:   SigArray'func||(string)
+    files:            Array'File.FileInfo
+    onDeleteFile:     SigArray'func||(string)
 }
 
 impl Library

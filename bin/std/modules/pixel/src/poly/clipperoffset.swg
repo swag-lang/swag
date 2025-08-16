@@ -10,10 +10,7 @@ using Core
 
 const DefaultArcTolerance = 0.25'f64
 
-struct DoublePoint
-{
-    x, y: f64
-}
+struct DoublePoint { x, y: f64 }
 
 struct Offset
 {

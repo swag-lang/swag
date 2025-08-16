@@ -500,7 +500,7 @@ internal impl Properties
         {
             let stk = StackLayoutCtrl.create(edView, .Top, {0, 0, position.width, height orelse gridLineHeight})
             stk.fitToContent = true
-            line = stk
+            line             = stk
         }
 
         with line

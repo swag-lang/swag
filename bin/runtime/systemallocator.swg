@@ -52,9 +52,9 @@ impl IAllocator for SystemAllocator
             if userPtr != realPtr + #sizeof(*void):
                 userPtr += alignment
 
-            storePtr                       = cast(^^void) userPtr
+            storePtr                         = cast(^^void) userPtr
             storePtr[cast #bit (u64) -1's64] = realPtr
-            request.address                = userPtr
+            request.address                  = userPtr
         }
     }
 }

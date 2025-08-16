@@ -53,7 +53,7 @@ impl IActionUI for ActionLibSort
             {
                 evt.setFlags |= .Disabled
                 evt.disabled = true
-                evt.name = "Invert Order"
+                evt.name     = "Invert Order"
             }
 
             evt.checked = libWnd.invertSort
