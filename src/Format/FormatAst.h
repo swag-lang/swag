@@ -50,6 +50,7 @@ struct FormatContext
     bool     keepSameLineFuncBody                   = false;
     bool     keepSameLineAffect                     = false;
     bool     keepSameCodeBlock                      = false;
+    bool     convertConcat                          = true;
 
     void setDefaultBeautify()
     {
@@ -62,6 +63,7 @@ struct FormatContext
         keepSameLineFuncBody                   = true;
         keepSameLineAffect                     = true;
         keepSameCodeBlock                      = true;
+        convertConcat                          = false;
     }
 };
 

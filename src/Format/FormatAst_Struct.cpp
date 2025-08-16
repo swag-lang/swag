@@ -41,9 +41,11 @@ bool FormatAst::outputStructDecl(FormatContext& context, AstStruct* node)
         return true;
     }
 
+    const bool mustConcat = node->hasAttribute(ATTRIBUTE_OPAQUE) && context.convertConcat;
+
     // If we need to export as opaque, and the struct has init values, then we add the
     // #[Swag.ExportType] attribute
-    if (node->hasAttribute(ATTRIBUTE_OPAQUE))
+    if (mustConcat)
     {
         const auto typeStruct = castTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
         SWAG_ASSERT(typeStruct);
@@ -68,7 +70,7 @@ bool FormatAst::outputStructDecl(FormatContext& context, AstStruct* node)
         SWAG_ASSERT(node->is(AstNodeKind::StructDecl));
 
         if (context.keepSameLineStruct)
-            sameLine = node->constraints.empty() && !node->hasAttribute(ATTRIBUTE_OPAQUE) && !hasEOLInside(node->content);
+            sameLine = node->constraints.empty() && !mustConcat && !hasEOLInside(node->content);
 
         if (!sameLine)
             concat->addIndent(context.indent);
@@ -112,8 +114,8 @@ bool FormatAst::outputStructDecl(FormatContext& context, AstStruct* node)
     concat->addEol();
     concat->addIndent(context.indent);
 
-    // Opaque export. Just simulate structure with the correct size.
-    if (node->hasAttribute(ATTRIBUTE_OPAQUE))
+    // Opaque export. Simulate the structure with the correct size.
+    if (mustConcat)
     {
         concat->addChar('{');
         concat->addEol();

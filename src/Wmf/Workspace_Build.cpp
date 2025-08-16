@@ -896,19 +896,20 @@ bool Workspace::patch()
 
     SWAG_CHECK(build());
 
-    for (const auto f: g_Workspace->modules[3]->files)
+    for (const auto f : g_Workspace->modules[3]->files)
     {
-        if (f->name != "commandline.swg")
+        if (f->name != "regexp.swg")
             continue;
-        
+
         FormatContext context;
         context.setDefaultBeautify();
+
         FormatAst fmt;
         if (!fmt.outputNode(context, f->astRoot))
             return false;
         if (!FormatAst::writeResult(f->path.cstr(), fmt.getUtf8()))
             return false;
     }
-    
+
     return true;
 }
