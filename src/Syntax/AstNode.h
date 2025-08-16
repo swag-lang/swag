@@ -1215,6 +1215,7 @@ struct AstTryCatchAssume : AstReturn
     static constexpr SpecFlags SPEC_FLAG_BLOCK         = 0x0001;
     static constexpr SpecFlags SPEC_FLAG_GENERATED     = 0x0002;
     static constexpr SpecFlags SPEC_FLAG_THROW_GET_ERR = 0x0004;
+    static constexpr SpecFlags SPEC_FLAG_DISCARD       = 0x0008;
 
     AstNode* clone(CloneContext& context);
 

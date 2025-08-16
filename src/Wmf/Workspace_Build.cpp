@@ -898,7 +898,7 @@ bool Workspace::patch()
 
     for (const auto f : g_Workspace->modules[3]->files)
     {
-        if (f->name != "regexp.swg")
+        if (f->name != "environment.win32.swg")
             continue;
 
         FormatContext context;

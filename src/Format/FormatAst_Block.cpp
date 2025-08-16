@@ -247,36 +247,38 @@ bool FormatAst::outputDefer(FormatContext& context, AstNode* node)
 
 bool FormatAst::outputTryAssume(FormatContext& context, const AstNode* node)
 {
-    if (node->hasSpecFlag(AstTryCatchAssume::SPEC_FLAG_GENERATED) && node->hasSpecFlag(AstTryCatchAssume::SPEC_FLAG_BLOCK))
+    const auto tryAssume = castAst<AstTryCatchAssume>(node, AstNodeKind::Try, AstNodeKind::Assume);
+    if (tryAssume->hasSpecFlag(AstTryCatchAssume::SPEC_FLAG_GENERATED) && tryAssume->hasSpecFlag(AstTryCatchAssume::SPEC_FLAG_BLOCK))
     {
         context.indent++;
-        outputChildrenEol(context, node->firstChild());
+        outputChildrenEol(context, tryAssume->firstChild());
         context.indent--;
         return true;
     }
 
-    if (node->hasAstFlag(AST_DISCARD))
+    if (tryAssume->hasAstFlag(AST_DISCARD) || tryAssume->hasSpecFlag(AstTryCatchAssume::SPEC_FLAG_DISCARD))
     {
         concat->addString("discard");
         concat->addBlank();
     }
 
-    concat->addString(node->token.text);
+    concat->addString(tryAssume->token.text);
     concat->addBlank();
-    SWAG_CHECK(outputNode(context, node->firstChild()));
+    SWAG_CHECK(outputNode(context, tryAssume->firstChild()));
     return true;
 }
 
 bool FormatAst::outputCatch(FormatContext& context, const AstNode* node)
 {
-    if (node->hasAstFlag(AST_DISCARD))
+    const auto tryCatch = castAst<AstTryCatchAssume>(node, AstNodeKind::Catch, AstNodeKind::TryCatch);
+    if (tryCatch->hasAstFlag(AST_DISCARD) || tryCatch->hasSpecFlag(AstTryCatchAssume::SPEC_FLAG_DISCARD))
     {
         concat->addString("discard");
         concat->addBlank();
     }
 
-    concat->addString(node->token.text);
+    concat->addString(tryCatch->token.text);
     concat->addBlank();
-    SWAG_CHECK(outputNode(context, node->firstChild()));
+    SWAG_CHECK(outputNode(context, tryCatch->firstChild()));
     return true;
 }
