@@ -190,6 +190,7 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
                 return context->report(err);
             }
 
+            ParserPushFreezeFormat ff(this);
             identifier->callParameters = Ast::newFuncCallParams(this, identifier);
             identifier->callParameters->addAstFlag(AST_GENERATED);
             return true;
