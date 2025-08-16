@@ -498,7 +498,7 @@ bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identi
 
     // And make a reference to that variable
     const auto identifierRef = identifier->identifierRef();
-    identifierRef->addExtraPointer(ExtraPointerKind::ExportNode, identifier);
+    identifierRef->addExtraPointer(ExtraPointerKind::ExportNode, typeNode->identifier);
 
     identifierRef->allocateExtension(ExtensionKind::Owner);
     for (auto c : identifierRef->children)

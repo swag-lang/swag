@@ -964,6 +964,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     return true;
 }
 
+#pragma optimize("", off)
 bool Semantic::setSymbolMatchStruct(SemanticContext* context, OneMatch& oneMatch, AstIdentifierRef* identifierRef, AstIdentifier* identifier, const SymbolOverload* overload, TypeInfo* typeAlias)
 {
     if (!overload->hasFlag(OVERLOAD_IMPL_IN_STRUCT))
@@ -1001,10 +1002,13 @@ bool Semantic::setSymbolMatchStruct(SemanticContext* context, OneMatch& oneMatch
             const auto varNode = castAst<AstVarDecl>(pr2, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
             if (varNode->assignment == identifier->parent && !varNode->type)
             {
-                // Optim if we have var = Struct{}
-                // In that case, no need to generate a temporary variable. We just consider Struct{} as the type definition
-                // of 'var'
-                canOptimAffect = true;
+                if (!g_CommandLine.dbgPatchMode)
+                {
+                    // Optim if we have var = Struct{}
+                    // In that case, no need to generate a temporary variable. We just consider Struct{} as the type definition
+                    // of 'var'
+                    canOptimAffect = true;
+                }
             }
         }
     }
