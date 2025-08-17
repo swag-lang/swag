@@ -633,7 +633,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
                 parent = sourceFile->astAttrUse;
                 Ast::addChildBack(parent, resultNode);
             }
-            else if (!g_CommandLine.dbgPatchMode)
+            else if (!g_CommandLine.patchMode)
             {
                 Ast::removeFromParent(resultNode);
                 parent = sourceFile->astRoot;

@@ -892,14 +892,14 @@ bool Workspace::build()
 
 bool Workspace::patch()
 {
-    g_CommandLine.dbgPatchMode = true;
+    g_CommandLine.patchMode = true;
 
     SWAG_CHECK(build());
 
     for (const auto f : g_Workspace->modules[3]->files)
     {
-        if (f->name != "treat.swg")
-            continue;
+        //if (f->name != "treat.swg")
+        //    continue;
 
         FormatContext context;
         context.setDefaultBeautify();

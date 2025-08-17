@@ -23,6 +23,7 @@ struct CommandLine
     bool      scriptRun     = true;
     bool      scriptCommand = false;
     bool      genDoc        = false;
+    bool      patchMode     = false;
 
     // Stats
 #ifdef SWAG_STATS
@@ -55,7 +56,6 @@ struct CommandLine
     bool dbgCallStack        = false;
     bool dbgPrintBcExt       = false;
     bool dbgDevMode          = false;
-    bool dbgPatchMode        = false;
 
 #ifdef SWAG_DEV_MODE
     bool forceFormat = false;

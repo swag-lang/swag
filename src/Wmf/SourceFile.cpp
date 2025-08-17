@@ -12,7 +12,7 @@
 
 void SourceFile::release() const
 {
-    if (g_CommandLine.dbgPatchMode)
+    if (g_CommandLine.patchMode)
         return;
     if (astRoot)
         astRoot->release();

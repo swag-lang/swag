@@ -976,6 +976,9 @@ bool Module::mustEmitSafety(const AstNode* node, SafetyFlags what, bool compileT
 
 bool Module::mustOptimizeSemantic(const AstNode* node) const
 {
+    if (g_CommandLine.patchMode)
+        return false;
+    
     if (!node)
         return buildCfg.byteCodeOptimizeLevel > BuildCfgByteCodeOptim::O1;
 

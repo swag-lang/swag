@@ -1001,7 +1001,7 @@ bool Semantic::setSymbolMatchStruct(SemanticContext* context, OneMatch& oneMatch
             const auto varNode = castAst<AstVarDecl>(pr2, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
             if (varNode->assignment == identifier->parent && !varNode->type)
             {
-                if (!g_CommandLine.dbgPatchMode)
+                if (!g_CommandLine.patchMode)
                 {
                     // Optim if we have var = Struct{}
                     // In that case, no need to generate a temporary variable. We just consider Struct{} as the type definition
