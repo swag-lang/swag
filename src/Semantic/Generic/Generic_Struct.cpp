@@ -151,7 +151,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     }
 
     const auto structNode = castAst<AstStruct>(sourceNode->clone(cloneContext), AstNodeKind::StructDecl);
-    structNode->addAstFlag(AST_FROM_GENERIC | AST_GENERATED);
+    structNode->addAstFlag(AST_FROM_GENERIC);
     structNode->content->removeAstFlag(AST_NO_SEMANTIC);
     Ast::addChildBack(sourceNode->parent, structNode);
 
