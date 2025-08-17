@@ -67,7 +67,7 @@ AstNode* FormatAst::convertNode(FormatContext&, AstNode* node)
         return nullptr;
     if (node->is(AstNodeKind::Inline))
         return nullptr;
-    if (node->hasAstFlag(AST_FROM_GENERIC))
+    if (node->hasAstFlag(AST_FROM_GENERIC | AST_GENERATED_GENERIC_PARAM))
         return nullptr;
 
     return node;

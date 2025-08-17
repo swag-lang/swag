@@ -152,8 +152,6 @@ bool FormatAst::outputType(FormatContext& context, AstTypeExpression* node)
 
 bool FormatAst::outputGenericParameters(FormatContext& context, AstNode* node)
 {
-    concat->addChar('(');
-
     bool first = true;
     for (const auto it : node->children)
     {
@@ -165,6 +163,10 @@ bool FormatAst::outputGenericParameters(FormatContext& context, AstNode* node)
         {
             concat->addChar(',');
             concat->addBlank();
+        }
+        else
+        {
+            concat->addChar('(');
         }
 
         const auto varDecl = castAst<AstVarDecl>(child, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
@@ -199,7 +201,8 @@ bool FormatAst::outputGenericParameters(FormatContext& context, AstNode* node)
         first = false;
     }
 
-    concat->addChar(')');
+    if (!first)
+        concat->addChar(')');
     return true;
 }
 
