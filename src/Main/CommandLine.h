@@ -34,8 +34,8 @@ struct CommandLine
     uint32_t statsFreqCount = 100;
     bool     profile        = false;
     Utf8     profileFilter;
-    int      profileChildsLevel = 0;
-    float    profileMinTime     = 0.00001f;
+    int      profileChildLevel = 0;
+    float    profileMinTime    = 0.00001f;
 #endif
 
     // Input

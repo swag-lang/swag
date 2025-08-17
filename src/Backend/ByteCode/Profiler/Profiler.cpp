@@ -76,7 +76,7 @@ namespace
 
     void printChildren(const ByteCode* bc, int level)
     {
-        if (level >= g_CommandLine.profileChildsLevel)
+        if (level >= g_CommandLine.profileChildLevel)
             return;
 
         level++;
