@@ -964,7 +964,6 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     return true;
 }
 
-#pragma optimize("", off)
 bool Semantic::setSymbolMatchStruct(SemanticContext* context, OneMatch& oneMatch, AstIdentifierRef* identifierRef, AstIdentifier* identifier, const SymbolOverload* overload, TypeInfo* typeAlias)
 {
     if (!overload->hasFlag(OVERLOAD_IMPL_IN_STRUCT))

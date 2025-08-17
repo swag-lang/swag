@@ -9,7 +9,6 @@
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
-#pragma optimize("", off)
 
 bool Parser::doCompilerTag(AstNode* parent, AstNode** result)
 {

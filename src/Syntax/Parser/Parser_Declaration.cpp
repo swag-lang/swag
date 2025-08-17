@@ -92,7 +92,11 @@ bool Parser::doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal)
     }
     else
     {
-        topStmt = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, attrUse);
+        {
+            ParserPushFreezeFormat ff(this);
+            topStmt = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, attrUse);
+        }
+        
         attrUse->addAstFlag(AST_GLOBAL_NODE);
         topStmt->addAstFlag(AST_GLOBAL_NODE);
         while (tokenParse.isNot(TokenId::EndOfFile))
