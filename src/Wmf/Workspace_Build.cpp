@@ -898,7 +898,7 @@ bool Workspace::patch()
 
     for (const auto f : g_Workspace->modules[3]->files)
     {
-        if (f->name != "vector4.swg")
+        if (f->name != "console.win32.swg")
             continue;
 
         FormatContext context;

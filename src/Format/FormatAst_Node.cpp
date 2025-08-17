@@ -502,9 +502,6 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             break;
         }
 
-        case AstNodeKind::Inline:
-            break;
-
         default:
             return Report::internalError(node, "FormatAst::outputNode, unknown node kind");
     }

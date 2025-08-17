@@ -65,6 +65,8 @@ AstNode* FormatAst::convertNode(FormatContext&, AstNode* node)
 
     if (node->hasAstFlag(AST_GENERATED) && !node->hasAstFlag(AST_GENERATED_USER))
         return nullptr;
+    if (node->is(AstNodeKind::Inline))
+        return nullptr;
 
     return node;
 }
