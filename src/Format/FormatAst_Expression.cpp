@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Format/FormatAst.h"
+#include "Report/Report.h"
 #include "Semantic/Semantic.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
@@ -118,10 +119,10 @@ bool FormatAst::outputAffectOp(FormatContext& context, AstNode* node, uint32_t m
     return true;
 }
 
-bool FormatAst::outputFactorOp(FormatContext& context, const AstNode* node)
+bool FormatAst::outputFactorOp(FormatContext& context, AstNode* node)
 {
-    if (node->childCount() < 2)
-        return false;
+    if(node->childCount() < 2)
+        return Report::internalError(node, "FormatAst::outputFactorOp, invalid AST");
 
     if (!context.countFactorOp)
         context.startFactorOpColumn = concat->column;

@@ -151,7 +151,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     }
 
     const auto structNode = castAst<AstStruct>(sourceNode->clone(cloneContext), AstNodeKind::StructDecl);
-    structNode->addAstFlag(AST_FROM_GENERIC);
+    structNode->addAstFlag(AST_FROM_GENERIC | AST_GENERATED);
     structNode->content->removeAstFlag(AST_NO_SEMANTIC);
     Ast::addChildBack(sourceNode->parent, structNode);
 
@@ -200,7 +200,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
         SWAG_ASSERT(itf->declNode);
         auto newItf       = itf->declNode->clone(cloneContext);
         typeItf->declNode = newItf;
-        newItf->addAstFlag(AST_FROM_GENERIC);
+        newItf->addAstFlag(AST_FROM_GENERIC | AST_GENERATED);
         structNode->extOwner()->nodesToFree.push_back(newItf);
 
         const auto implJob = SemanticJob::newJob(context->baseJob->dependentJob, context->sourceFile, newItf, false);

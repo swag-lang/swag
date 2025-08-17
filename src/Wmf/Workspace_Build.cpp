@@ -898,7 +898,7 @@ bool Workspace::patch()
 
     for (const auto f : g_Workspace->modules[3]->files)
     {
-        if (f->name != "errors.win32.swg")
+        if (f->name != "vector4.swg")
             continue;
 
         FormatContext context;
@@ -906,9 +906,8 @@ bool Workspace::patch()
 
         FormatAst fmt;
         if (!fmt.outputNode(context, f->astRoot))
-            return false;
-        if (!FormatAst::writeResult(f->path.cstr(), fmt.getUtf8()))
-            return false;
+            continue;
+        FormatAst::writeResult(f->path.cstr(), fmt.getUtf8());
     }
 
     return true;

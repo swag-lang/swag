@@ -23,7 +23,7 @@ void Generic::instantiateSpecialFunc(SemanticContext* context, Job* structJob, C
     }
     else
     {
-        newFunc->addAstFlag(AST_FROM_GENERIC);
+        newFunc->addAstFlag(AST_FROM_GENERIC | AST_GENERATED);
         newFunc->content->removeAstFlag(AST_NO_SEMANTIC);
     }
 
