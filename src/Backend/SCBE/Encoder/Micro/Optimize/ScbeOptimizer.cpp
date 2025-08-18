@@ -261,8 +261,8 @@ void ScbeOptimizer::setRegB(const ScbeMicro& out, ScbeMicroInstruction* inst, Cp
     if (inst->regB != reg)
     {
         SWAG_ASSERT(!ScbeCpu::isFloat(reg) || (inst->op != ScbeMicroOp::LoadRM &&
-                                               inst->op != ScbeMicroOp::LoadZeroExtRM &&
-                                               inst->op != ScbeMicroOp::LoadSignedExtRM));
+            inst->op != ScbeMicroOp::LoadZeroExtRM &&
+            inst->op != ScbeMicroOp::LoadSignedExtRM));
         inst->regB = reg;
         setDirtyPass();
     }

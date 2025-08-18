@@ -362,14 +362,14 @@ void Utf8::makeUpper()
 {
     makeLocal();
     for (uint32_t i = 0; i < count; i++)
-        buffer[i] = static_cast<char>(toupper(buffer[i]));
+        buffer[i]   = static_cast<char>(toupper(buffer[i]));
 }
 
 void Utf8::makeLower()
 {
     makeLocal();
     for (uint32_t i = 0; i < count; i++)
-        buffer[i] = static_cast<char>(tolower(buffer[i]));
+        buffer[i]   = static_cast<char>(tolower(buffer[i]));
 }
 
 bool Utf8::compareNoCase(const Utf8& txt1) const
@@ -981,7 +981,7 @@ uint32_t Utf8::fuzzyCompare(const Utf8& str1, const Utf8& str2)
     const unsigned int s2Len = str2.length();
 
     const auto column = new unsigned int[s1Len + 1];
-    for (y = 1; y <= s1Len; y++)
+    for (y        = 1; y <= s1Len; y++)
         column[y] = y;
     for (unsigned int x = 1; x <= s2Len; x++)
     {

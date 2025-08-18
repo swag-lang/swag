@@ -365,7 +365,7 @@ bool FormatAst::outputFuncCallParams(FormatContext& context, AstNode* node)
     // must keep the empty line
     if (!funcCallParams->childCount() || !funcCallParams->lastChild()->hasSemFlag(SEMFLAG_AUTO_CODE_PARAM))
         concat->removeLastChar('\n');
-    
+
     return true;
 }
 
@@ -472,12 +472,12 @@ bool FormatAst::outputChildrenFuncDecl(FormatContext& context, AstNode* node, ui
 
     VectorNative<AstNode*> nodes;
     if (!collectChildrenToAlign(context, STOP_CMT_BEFORE | STOP_EMPTY_LINE_BEFORE, node, start, nodes, processed, [](const AstNode* inNode) {
-            if (inNode->kind != AstNodeKind::FuncDecl)
-                return true;
-            if (!inNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_FORM | AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA))
-                return true;
-            return false;
-        }))
+        if (inNode->kind != AstNodeKind::FuncDecl)
+            return true;
+        if (!inNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_FORM | AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA))
+            return true;
+        return false;
+    }))
         return true;
 
     uint32_t maxLenSignature = 0;

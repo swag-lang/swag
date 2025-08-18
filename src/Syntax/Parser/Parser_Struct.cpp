@@ -540,7 +540,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
             SWAG_CHECK(doInterfaceMtdDecl(parent, result));
             break;
 
-            // Using on a struct member
+        // Using on a struct member
         case TokenId::KwdUsing:
         {
             ParserPushAstNodeFlags scopedFlags(this, AST_STRUCT_MEMBER);

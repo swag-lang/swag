@@ -896,18 +896,18 @@ bool Workspace::patch()
 
     SWAG_CHECK(build());
 
-    for (const auto m: g_Workspace->modules)
+    for (const auto m : g_Workspace->modules)
     {
         if (m->is(ModuleKind::Dependency))
             continue;
         if (m->is(ModuleKind::Config))
-            continue;        
-            
+            continue;
+
         for (const auto f : m->files)
         {
             if (!f->astRoot)
                 continue;
-            
+
             FormatContext context;
             context.setDefaultBeautify();
 

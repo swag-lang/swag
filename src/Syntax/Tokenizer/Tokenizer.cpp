@@ -37,11 +37,11 @@ void Tokenizer::setup(ErrorContext* errorCxt, SourceFile* file)
     curBuffer       = sourceFile->buffer + sourceFile->offsetStartBuffer;
     endBuffer       = sourceFile->buffer + sourceFile->bufferSize;
 
-    for (int i = 'a'; i <= static_cast<int>('z'); i++)
+    for (int i       = 'a'; i <= static_cast<int>('z'); i++)
         idLetters[i] = true;
-    for (int i = 'A'; i <= static_cast<int>('Z'); i++)
+    for (int i       = 'A'; i <= static_cast<int>('Z'); i++)
         idLetters[i] = true;
-    for (int i = '0'; i <= static_cast<int>('9'); i++)
+    for (int i       = '0'; i <= static_cast<int>('9'); i++)
         idLetters[i] = true;
 
     idLetters[static_cast<int>('_')] = true;

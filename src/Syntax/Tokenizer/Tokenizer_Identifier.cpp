@@ -57,7 +57,7 @@ bool Tokenizer::doIdentifier(TokenParse& tokenParse)
             tokenParse.token.id = TokenId::SharpIdentifier;
             return true;
         }
-        
+
         tokenParse.token.endLocation = location;
         Diagnostic err{sourceFile, tokenParse, formErr(Err0673, tokenParse.cstr())};
 

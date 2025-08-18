@@ -396,7 +396,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
 
     // Now the full function has been solved, so we wakeup jobs depending on that
     SWAG_CHECK(setFullResolve(context, funcNode));
-    
+
     // Ask for bytecode
     bool genByteCode = true;
     if (funcNode->hasAttribute(ATTRIBUTE_TEST_FUNC) && !g_CommandLine.test)
@@ -1099,7 +1099,7 @@ bool Semantic::resolveCaptureFuncCallParams(SemanticContext* context)
                 c = c->firstChild();
             SWAG_CHECK(resolveUsingVar(context, c, typeField, makeLambda->lambda));
         }
-        
+
         if (typeField->isArray())
         {
             const auto typeArray = castTypeInfo<TypeInfoArray>(typeField, TypeInfoKind::Array);
@@ -1577,8 +1577,8 @@ bool Semantic::resolveReturn(SemanticContext* context)
             if (nodeErr->is(AstNodeKind::FuncDeclType) && !funcNode->returnType->children.empty())
                 nodeErr = funcNode->returnType->firstChild();
             PushErrCxtStep ec{context, nodeErr, ErrCxtStepKind::Note, [returnType] {
-                                  return formNte(Nte0149, returnType->getDisplayNameC());
-                              }};
+                return formNte(Nte0149, returnType->getDisplayNameC());
+            }};
             SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, castFlags));
             YIELD();
         }

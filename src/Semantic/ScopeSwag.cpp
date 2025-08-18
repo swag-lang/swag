@@ -92,7 +92,7 @@ void ScopeSwag::registerType(TypeInfo* typeInfo)
         regTypeInfoCodeBlock = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
         regTypeInfoCodeBlock->addFlag(TYPEINFO_STRUCT_TYPEINFO);
         SWAG_ASSERT(typeInfo->sizeOf == sizeof(ExportedTypeInfoCode));
-    }    
+    }
     else if (typeInfo->name == g_LangSpec->name_TypeInfoAlias)
     {
         SWAG_ASSERT(!regTypeInfoAlias);

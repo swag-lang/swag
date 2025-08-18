@@ -30,6 +30,7 @@ struct BcDbgCommandArg
 };
 
 using BcDbgCommandCB = std::function<BcDbgCommandResult(ByteCodeRunContext*, const BcDbgCommandArg&)>;
+
 struct BcDbgCommand
 {
     const char* category;
@@ -106,7 +107,7 @@ struct ByteCodeDebugger
         {
             return *static_cast<const T*>(addr);
         }
-        SWAG_EXCEPT(SWAG_EXCEPTION_EXECUTE_HANDLER)
+        SWAG_EXCEPT (SWAG_EXCEPTION_EXECUTE_HANDLER)
         {
             return 0;
         }

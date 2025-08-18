@@ -95,7 +95,7 @@ struct Job
 {
     virtual JobResult execute() = 0;
     virtual void      release();
-    virtual ~Job() = default;
+    virtual           ~Job() = default;
 
     void addDependentJob(Job* job);
     void addDependentJobOnce(Job* job);

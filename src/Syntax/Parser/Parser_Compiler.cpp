@@ -486,7 +486,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
         else
         {
             tokenParse.comments = savedToken.comments;
-            tokenParse.flags = savedToken.flags;
+            tokenParse.flags    = savedToken.flags;
             SWAG_CHECK(doPublicInternal(parent, result, true));
         }
     }

@@ -66,12 +66,12 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
                     break;
 
                 case ErrCxtStepKind::DuringInline:
-                    exp.hide   = doneInline;
+                    exp.hide = doneInline;
                     doneInline = true;
                     break;
 
                 case ErrCxtStepKind::DuringCompileTime:
-                    exp.hide     = doneCompTime;
+                    exp.hide = doneCompTime;
                     doneCompTime = true;
                     break;
 
@@ -116,17 +116,17 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
                 case ErrCxtStepKind::Note:
                     break;
                 case ErrCxtStepKind::DuringGeneric:
-                    msg             = formNte(Nte0093, name.cstr());
+                    msg = formNte(Nte0093, name.cstr());
                     exp.locIsToken  = true;
                     exp.fromContext = true;
                     break;
                 case ErrCxtStepKind::DuringInline:
-                    msg             = formNte(Nte0094, name.cstr());
+                    msg = formNte(Nte0094, name.cstr());
                     exp.locIsToken  = true;
                     exp.fromContext = true;
                     break;
                 case ErrCxtStepKind::DuringCompileTime:
-                    msg             = formNte(Nte0089, name.cstr());
+                    msg = formNte(Nte0089, name.cstr());
                     exp.locIsToken  = true;
                     exp.fromContext = true;
                     break;
@@ -139,7 +139,7 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
                     exp.fromContext = true;
                     break;
                 case ErrCxtStepKind::DuringVerify:
-                    msg             = formNte(Nte0090, name.cstr());
+                    msg = formNte(Nte0090, name.cstr());
                     exp.locIsToken  = true;
                     exp.fromContext = true;
                     break;

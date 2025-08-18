@@ -407,47 +407,47 @@ bool Semantic::resolveLiteral(SemanticContext* context)
     switch (node->token.id)
     {
         case TokenId::KwdTrue:
-            node->token.id       = TokenId::LiteralNumber;
+            node->token.id = TokenId::LiteralNumber;
             node->literalType    = LiteralType::TypeBool;
             node->literalValue.b = true;
             break;
         case TokenId::KwdFalse:
-            node->token.id       = TokenId::LiteralNumber;
+            node->token.id = TokenId::LiteralNumber;
             node->literalType    = LiteralType::TypeBool;
             node->literalValue.b = false;
             break;
         case TokenId::KwdNull:
-            node->token.id             = TokenId::LiteralNumber;
+            node->token.id = TokenId::LiteralNumber;
             node->literalType          = LiteralType::TypeNull;
             node->literalValue.pointer = nullptr;
             break;
         case TokenId::CompilerFile:
-            node->token.id    = TokenId::LiteralString;
+            node->token.id = TokenId::LiteralString;
             node->literalType = LiteralType::TypeString;
             node->token.text  = sourceFile->path;
             break;
         case TokenId::CompilerModule:
-            node->token.id    = TokenId::LiteralString;
+            node->token.id = TokenId::LiteralString;
             node->literalType = LiteralType::TypeString;
             node->token.text  = sourceFile->module ? sourceFile->module->name : Utf8("?");
             break;
         case TokenId::CompilerLine:
-            node->token.id         = TokenId::LiteralNumber;
+            node->token.id = TokenId::LiteralNumber;
             node->literalType      = LiteralType::TypeUntypedInt;
             node->literalValue.u32 = node->token.startLocation.line + 1;
             break;
         case TokenId::CompilerBuildVersion:
-            node->token.id         = TokenId::LiteralNumber;
+            node->token.id = TokenId::LiteralNumber;
             node->literalType      = LiteralType::TypeSigned32;
             node->literalValue.s32 = SWAG_BUILD_VERSION;
             break;
         case TokenId::CompilerBuildRevision:
-            node->token.id         = TokenId::LiteralNumber;
+            node->token.id = TokenId::LiteralNumber;
             node->literalType      = LiteralType::TypeSigned32;
             node->literalValue.s32 = SWAG_BUILD_REVISION;
             break;
         case TokenId::CompilerBuildNum:
-            node->token.id         = TokenId::LiteralNumber;
+            node->token.id = TokenId::LiteralNumber;
             node->literalType      = LiteralType::TypeSigned32;
             node->literalValue.s32 = SWAG_BUILD_NUM;
             break;

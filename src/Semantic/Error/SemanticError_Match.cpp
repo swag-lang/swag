@@ -289,21 +289,21 @@ bool SemanticError::cannotMatchIdentifierError(SemanticContext* context, VectorN
                 if (oneMatch->ufcs && oneMatch->symMatchContext.badSignatureInfos.badSignatureParameterIdx > 0)
                     oneMatch1->overload = nullptr;
 
-                // If the UFCS has failed because of const, takes the UFCS error
+                    // If the UFCS has failed because of const, takes the UFCS error
                 else if (oneMatch->ufcs && oneMatch->symMatchContext.badSignatureInfos.badSignatureParameterIdx == 0 && oneMatch->symMatchContext.badSignatureInfos.castErrorType == CastErrorType::Const)
                     oneMatch1->overload = nullptr;
 
-                // If this is a lambda call that comes from a struct, then this is ambiguous. Do we keep the error where the struct
-                // has been used to find the lambda and UFCS, or do we consider the struct is just there to find the lambda?
-                // We consider that UFCS of 'struct.lambda.call(struct)' has less priority than other errors
+                    // If this is a lambda call that comes from a struct, then this is ambiguous. Do we keep the error where the struct
+                    // has been used to find the lambda and UFCS, or do we consider the struct is just there to find the lambda?
+                    // We consider that UFCS of 'struct.lambda.call(struct)' has less priority than other errors
                 else if (oneMatch->ufcs && oneMatch->scope && oneMatch->scope->is(ScopeKind::Struct) && oneMatch->overload->symbol->is(SymbolKind::Variable))
                     oneMatch->overload = nullptr;
 
-                // Otherwise, if with UFCS we do not have enough argument, we use UFCS in priority
+                    // Otherwise, if with UFCS we do not have enough argument, we use UFCS in priority
                 else if (oneMatch->ufcs && oneMatch1->symMatchContext.result == MatchResult::NotEnoughArguments)
                     oneMatch1->overload = nullptr;
 
-                // Otherwise we remove the UFCS error and take the other one
+                    // Otherwise we remove the UFCS error and take the other one
                 else if (oneMatch->ufcs)
                     oneMatch->overload = nullptr;
 

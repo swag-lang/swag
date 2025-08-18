@@ -928,10 +928,10 @@ namespace
             if (myPrecedence < rightPrecedence && myPrecedence != -1 && rightPrecedence != -1)
                 shuffle = true;
 
-            // If operation is not associative, then we need to shuffle
-            //
-            // 2 - 1 - 1 needs to be treated as (2 - 1) - 1 and not 2 - (2 - 1)
-            //
+                // If operation is not associative, then we need to shuffle
+                //
+                // 2 - 1 - 1 needs to be treated as (2 - 1) - 1 and not 2 - (2 - 1)
+                //
             else if (!isAssociative(factor->token.id) && myPrecedence == rightPrecedence)
                 shuffle = true;
 
@@ -1813,11 +1813,11 @@ bool Parser::doDropCopyMove(AstNode* parent, AstNode** result)
             break;
         case TokenId::IntrinsicPostCopy:
             node->token.text = g_LangSpec->name_at_postCopy;
-            node->kind       = AstNodeKind::PostCopy;
+            node->kind = AstNodeKind::PostCopy;
             break;
         case TokenId::IntrinsicPostMove:
             node->token.text = g_LangSpec->name_at_postMove;
-            node->kind       = AstNodeKind::PostMove;
+            node->kind = AstNodeKind::PostMove;
             break;
     }
 

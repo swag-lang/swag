@@ -188,19 +188,19 @@ struct TypeManager
     TypeInfoPointer* typeInfoNull    = nullptr;
     TypeInfoPointer* typeInfoCString = nullptr;
 
-    TypeInfoPointer*  typeInfoTypeType      = nullptr;
-    TypeInfoVariadic* typeInfoVariadic      = nullptr;
-    TypeInfoVariadic* typeInfoTypedVariadic = nullptr;
-    TypeInfoVariadic* typeInfoCVariadic     = nullptr;
-    TypeInfoNative*   typeInfoUntypedInt    = nullptr;
-    TypeInfoNative*   typeInfoUntypedBinHex = nullptr;
-    TypeInfoNative*   typeInfoUntypedFloat  = nullptr;
-    TypeInfoFuncAttr* typeInfoOpCall        = nullptr;
-    TypeInfoFuncAttr* typeInfoModuleCall    = nullptr;
-    TypeInfoFuncAttr* typeInfoOpCall2       = nullptr;
-    TypeInfoCodeBlock*     typeInfoCode          = nullptr;
-    TypeInfoSlice*    typeInfoSliceRunes    = nullptr;
-    TypeInfoNative*   typeInfoCharacter     = nullptr;
+    TypeInfoPointer*   typeInfoTypeType      = nullptr;
+    TypeInfoVariadic*  typeInfoVariadic      = nullptr;
+    TypeInfoVariadic*  typeInfoTypedVariadic = nullptr;
+    TypeInfoVariadic*  typeInfoCVariadic     = nullptr;
+    TypeInfoNative*    typeInfoUntypedInt    = nullptr;
+    TypeInfoNative*    typeInfoUntypedBinHex = nullptr;
+    TypeInfoNative*    typeInfoUntypedFloat  = nullptr;
+    TypeInfoFuncAttr*  typeInfoOpCall        = nullptr;
+    TypeInfoFuncAttr*  typeInfoModuleCall    = nullptr;
+    TypeInfoFuncAttr*  typeInfoOpCall2       = nullptr;
+    TypeInfoCodeBlock* typeInfoCode          = nullptr;
+    TypeInfoSlice*     typeInfoSliceRunes    = nullptr;
+    TypeInfoNative*    typeInfoCharacter     = nullptr;
 
     TypeInfoNative* promoteMatrix[static_cast<int>(NativeTypeKind::Count)][static_cast<int>(NativeTypeKind::Count)] = {{nullptr}};
 };

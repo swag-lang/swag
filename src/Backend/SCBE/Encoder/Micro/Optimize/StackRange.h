@@ -64,8 +64,8 @@ struct StackRange
 
         while (left <= right)
         {
-            const uint32_t mid       = left + (right - left) / 2;
-            const auto& [start, end] = ranges[mid];
+            const uint32_t mid          = left + (right - left) / 2;
+            const auto&    [start, end] = ranges[mid];
 
             if (rangeEnd < start && mid == 0)
                 return false;

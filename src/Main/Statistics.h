@@ -69,11 +69,11 @@ struct Stats
     std::atomic<uint32_t> countOpFreq[static_cast<int>(ByteCodeOp::End) + 1][static_cast<int>(ByteCodeOp::End) + 1] = {{0}};
 
 #ifdef SWAG_DEV_MODE
-    std::atomic<uint32_t> countTypesByKind[50] = {0};
+std::atomic<uint32_t> countTypesByKind[50] = {0};
 #endif
 
-    void print() const;
-    void printFreq();
+void print() const;
+void printFreq();
 };
 
 extern Stats g_Stats;

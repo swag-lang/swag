@@ -157,7 +157,7 @@ void ByteCodeSanityState::setStackIps(void* addr, uint32_t sizeOf, bool clear)
     }
 }
 
-void ByteCodeSanityState ::updateStackIps(void* addr, uint32_t sizeOf, const SanityValue* from)
+void ByteCodeSanityState::updateStackIps(void* addr, uint32_t sizeOf, const SanityValue* from)
 {
     const auto offset = static_cast<uint32_t>(static_cast<uint8_t*>(addr) - stack.data());
     SWAG_ASSERT(offset + sizeOf <= stackKind.size());

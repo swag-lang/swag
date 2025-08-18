@@ -560,7 +560,7 @@ void ByteCodeOptimizer::computeJumpAndNop(ByteCodeOptContext* context)
 
     context->jumps.reserve(context->bc->numJumps);
     context->nops.reserve(context->bc->numDebugNop);
-    context->bc->numJumps     = 0;
+    context->bc->numJumps    = 0;
     context->bc->numDebugNop = 0;
 
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
@@ -572,7 +572,7 @@ void ByteCodeOptimizer::computeJumpAndNop(ByteCodeOptContext* context)
             context->nops.push_back(ip);
     }
 
-    context->bc->numJumps     = context->jumps.size();
+    context->bc->numJumps    = context->jumps.size();
     context->bc->numDebugNop = context->nops.size();
 
     // Mark all instructions which are a jump destination

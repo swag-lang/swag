@@ -386,6 +386,7 @@ struct AstNode
         SharedLock lk(mutex);
         return children.empty() ? nullptr : children.front();
     }
+
     AstNode* secondChildSafe() const
     {
         SharedLock lk(mutex);
@@ -1335,6 +1336,7 @@ struct AstFile : AstNode
         SharedLock lk(mutex);
         return stackSize;
     }
+
     void setStackSize(uint32_t size)
     {
         ScopedLock lk(mutex);

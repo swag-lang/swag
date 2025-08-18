@@ -280,8 +280,8 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
         YIELD();
 
         PushErrCxtStep ec{context, enumNode->type, ErrCxtStepKind::Note, [rawTypeInfo] {
-                              return formNte(Nte0148, rawTypeInfo->getDisplayNameC());
-                          }};
+            return formNte(Nte0148, rawTypeInfo->getDisplayNameC());
+        }};
 
         if (rawTypeInfo->isArray())
         {

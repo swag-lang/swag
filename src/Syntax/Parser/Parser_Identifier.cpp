@@ -195,7 +195,7 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
             identifier->callParameters->addAstFlag(AST_GENERATED);
             return true;
         }
-        
+
         if (tokenParse.isNot(TokenId::SymLeftParen))
         {
             const Diagnostic err{identifier, formErr(Err0439, "intrinsic", identifier->token.cstr())};

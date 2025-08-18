@@ -358,8 +358,8 @@ struct VectorNative
         allocated = other.allocated;
         buffer    = other.buffer;
 
-        other.count = other.allocated = 0;
-        other.buffer                  = nullptr;
+        other.count  = other.allocated = 0;
+        other.buffer = nullptr;
         return *this;
     }
 

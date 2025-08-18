@@ -161,7 +161,7 @@ bool BackendEncoder::isFuncParameterRegister(CpuReg reg) const
     }
 
     if (cpuFct->typeFunc->returnByAddress() &&
-        cpuFct->typeFunc->numParamsRegisters() < cpuFct->cc->paramsRegistersInteger.size() && 
+        cpuFct->typeFunc->numParamsRegisters() < cpuFct->cc->paramsRegistersInteger.size() &&
         reg == cpuFct->cc->paramsRegistersInteger[cpuFct->typeFunc->numParamsRegisters()])
     {
         return true;

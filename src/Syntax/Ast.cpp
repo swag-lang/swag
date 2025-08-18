@@ -32,7 +32,7 @@ void Ast::initNewNode(AstNodeKind kind, AstNode* node, Parser* parser, AstNode* 
         if (parent->ownerFct)
             parent->ownerFct->nodeCounts++;
 
-        // Some flags are inherited from the parent, whatever...
+        // Some flags are inherited from the parent regardless.
         node->addAstFlag(parent->flags.mask(AST_NO_BACKEND | AST_IN_RUN_BLOCK | AST_IN_MIXIN));
 
         ScopedLock lk(parent->mutex);

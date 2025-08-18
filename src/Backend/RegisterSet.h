@@ -23,7 +23,7 @@ struct RegisterSet
     void erase(RegisterSet other)
     {
         regs &= ~other.regs;
-    }    
+    }
 
     bool contains(CpuReg reg) const
     {

@@ -667,67 +667,67 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId, F
         {
             case TokenId::CompilerFuncTest:
                 funcNode->token.text = "__test" + std::to_string(id);
-                funcNode->tokenName  = funcNode->token;
+                funcNode->tokenName = funcNode->token;
                 funcNode->addAttribute(ATTRIBUTE_TEST_FUNC | ATTRIBUTE_SHARP_FUNC);
                 break;
             case TokenId::CompilerFuncInit:
                 funcNode->token.text = "__init" + std::to_string(id);
-                funcNode->tokenName  = funcNode->token;
+                funcNode->tokenName = funcNode->token;
                 funcNode->addAttribute(ATTRIBUTE_INIT_FUNC | ATTRIBUTE_SHARP_FUNC);
                 break;
             case TokenId::CompilerFuncDrop:
                 funcNode->token.text = "__drop" + std::to_string(id);
-                funcNode->tokenName  = funcNode->token;
+                funcNode->tokenName = funcNode->token;
                 funcNode->addAttribute(ATTRIBUTE_DROP_FUNC | ATTRIBUTE_SHARP_FUNC);
                 break;
             case TokenId::CompilerFuncPreMain:
                 funcNode->token.text = "__premain" + std::to_string(id);
-                funcNode->tokenName  = funcNode->token;
+                funcNode->tokenName = funcNode->token;
                 funcNode->addAttribute(ATTRIBUTE_PREMAIN_FUNC | ATTRIBUTE_SHARP_FUNC);
                 break;
             case TokenId::CompilerRun:
                 funcNode->token.text = "__run" + std::to_string(id);
-                funcNode->tokenName  = funcNode->token;
+                funcNode->tokenName = funcNode->token;
                 funcNode->addAttribute(ATTRIBUTE_RUN_FUNC | ATTRIBUTE_COMPILER | ATTRIBUTE_SHARP_FUNC);
                 break;
             case TokenId::CompilerGeneratedRun:
                 funcNode->token.text = "__run" + std::to_string(id);
-                funcNode->tokenName  = funcNode->token;
+                funcNode->tokenName = funcNode->token;
                 funcNode->addAstFlag(AST_GENERATED);
                 funcNode->addAttribute(ATTRIBUTE_RUN_GENERATED_FUNC | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_COMPILER | ATTRIBUTE_SHARP_FUNC);
                 break;
             case TokenId::CompilerGeneratedRunExp:
                 funcNode->token.text = "__run" + std::to_string(id);
-                funcNode->tokenName  = funcNode->token;
+                funcNode->tokenName = funcNode->token;
                 funcNode->addAstFlag(AST_GENERATED);
                 funcNode->addAttribute(ATTRIBUTE_RUN_GENERATED_EXP | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_COMPILER | ATTRIBUTE_SHARP_FUNC);
                 break;
             case TokenId::CompilerFuncMain:
                 funcNode->token.text = "__main" + std::to_string(id);
-                funcNode->tokenName  = funcNode->token;
+                funcNode->tokenName = funcNode->token;
                 funcNode->addAttribute(ATTRIBUTE_MAIN_FUNC | ATTRIBUTE_SHARP_FUNC);
                 break;
             case TokenId::CompilerFuncMessage:
                 funcNode->token.text = "__message" + std::to_string(id);
-                funcNode->tokenName  = funcNode->token;
+                funcNode->tokenName = funcNode->token;
                 funcNode->addAttribute(ATTRIBUTE_MESSAGE_FUNC | ATTRIBUTE_COMPILER | ATTRIBUTE_SHARP_FUNC);
                 ++module->numCompilerFunctions;
                 break;
             case TokenId::CompilerAst:
                 funcNode->token.text = "__ast" + std::to_string(id);
-                funcNode->tokenName  = funcNode->token;
+                funcNode->tokenName = funcNode->token;
                 funcNode->addAstFlag(AST_GENERATED);
                 funcNode->addAttribute(ATTRIBUTE_AST_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_SHARP_FUNC);
                 break;
             case TokenId::KwdWhere:
                 funcNode->token.text = "__where" + std::to_string(id);
-                funcNode->tokenName  = funcNode->token;
+                funcNode->tokenName = funcNode->token;
                 funcNode->addAstFlag(AST_GENERATED);
                 funcNode->addAttribute(ATTRIBUTE_MATCH_WHERE_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_SHARP_FUNC);
                 break;
             case TokenId::KwdVerify:
                 funcNode->token.text = "__verify" + std::to_string(id);
-                funcNode->tokenName  = funcNode->token;
+                funcNode->tokenName = funcNode->token;
                 funcNode->addAstFlag(AST_GENERATED);
                 funcNode->addAttribute(ATTRIBUTE_MATCH_WHERE_FUNC | ATTRIBUTE_CONSTEXPR | ATTRIBUTE_COMPILER | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_SHARP_FUNC);
                 break;
@@ -1239,8 +1239,8 @@ bool Parser::doLambdaExpression(AstNode* parent, ExprFlags exprFlags, AstNode** 
     if (exprFlags.has(EXPR_FLAG_IN_CALL))
         acceptMissingType = true;
 
-    // We accept missing types if the lambda is in an affectation, because we can deduce them from the
-    // type on the left
+        // We accept missing types if the lambda is in an affectation, because we can deduce them from the
+        // type on the left
     else if (parent->is(AstNodeKind::AffectOp))
     {
         acceptMissingType = true;
@@ -1283,7 +1283,7 @@ bool Parser::doLambdaExpression(AstNode* parent, ExprFlags exprFlags, AstNode** 
     // The owner function will resolve the lambda subfunction
     if (lambda->ownerFct)
         registerSubDecl(lambda);
-    // If the lambda is created at global scope, register it as a normal function
+        // If the lambda is created at global scope, register it as a normal function
     else
         Ast::addChildBack(sourceFile->astRoot, lambda);
 

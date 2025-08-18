@@ -30,52 +30,52 @@ void Llvm::createRuntime(LlvmEncoder& pp)
     // SwagErrorValue
     {
         llvm::Type* members[] = {
-            PTR_I8_TY(), // value
-            PTR_I8_TY(), // value
-            I32_TY(),    // pushUsedAlloc
-            I32_TY(),    // pushTraceIndex
-            I32_TY(),    // pushHasError
-            I32_TY()};   // padding
+        PTR_I8_TY(), // value
+        PTR_I8_TY(), // value
+        I32_TY(), // pushUsedAlloc
+        I32_TY(), // pushTraceIndex
+        I32_TY(), // pushHasError
+        I32_TY()}; // padding
         pp.errorTy = llvm::StructType::create(context, members, "SwagErrorValue");
     }
 
     // SwagScratchAllocator
     {
         llvm::Type* members[] = {
-            pp.interfaceTy, // ScratchAllocator allocator
-            PTR_I8_TY(),    // ScratchAllocator block
-            I64_TY(),       // ScratchAllocator capacity
-            I64_TY(),       // ScratchAllocator used
-            I64_TY(),       // ScratchAllocator maxUsed
-            PTR_I8_TY(),    // ScratchAllocator firstLeak
-            I64_TY(),       // ScratchAllocator totalLeak
-            I64_TY()};      // ScratchAllocator maxLeak
+        pp.interfaceTy, // ScratchAllocator allocator
+        PTR_I8_TY(), // ScratchAllocator block
+        I64_TY(), // ScratchAllocator capacity
+        I64_TY(), // ScratchAllocator used
+        I64_TY(), // ScratchAllocator maxUsed
+        PTR_I8_TY(), // ScratchAllocator firstLeak
+        I64_TY(), // ScratchAllocator totalLeak
+        I64_TY()}; // ScratchAllocator maxLeak
         pp.scratchTy = llvm::StructType::create(context, members, "SwagScratchAllocator");
     }
 
     // SwagContext
     {
         llvm::Type* members[] = {
-            pp.interfaceTy,                                                 // allocator
-            I64_TY(),                                                       // flags
-            pp.scratchTy,                                                   // tempAllocator
-            pp.scratchTy,                                                   // errorAllocator
-            PTR_I8_TY(),                                                    // debugAllocator
-            I64_TY(),                                                       // runtimeFlags
-            I64_TY(),                                                       // user0
-            I64_TY(),                                                       // user1
-            I64_TY(),                                                       // user2
-            I64_TY(),                                                       // user3
-            llvm::ArrayType::get(I8_TY(), SWAG_MAX_TRACES * sizeof(void*)), // traces
-            llvm::ArrayType::get(pp.errorTy, SWAG_MAX_ERRORS),              // errors
-            llvm::ArrayType::get(I8_TY(), sizeof(SwagSourceCodeLocation)),  // exceptionLoc
-            llvm::ArrayType::get(I8_TY(), 4 * sizeof(void*)),               // exceptionParams
-            PTR_I8_TY(),                                                    // panic
-            PTR_I8_TY(),                                                    // curError
-            PTR_I8_TY(),                                                    // curError
-            I32_TY(),                                                       // errorIndex
-            I32_TY(),                                                       // traceIndex
-            I32_TY(),                                                       // hasError
+        pp.interfaceTy, // allocator
+        I64_TY(), // flags
+        pp.scratchTy, // tempAllocator
+        pp.scratchTy, // errorAllocator
+        PTR_I8_TY(), // debugAllocator
+        I64_TY(), // runtimeFlags
+        I64_TY(), // user0
+        I64_TY(), // user1
+        I64_TY(), // user2
+        I64_TY(), // user3
+        llvm::ArrayType::get(I8_TY(), SWAG_MAX_TRACES * sizeof(void*)), // traces
+        llvm::ArrayType::get(pp.errorTy, SWAG_MAX_ERRORS), // errors
+        llvm::ArrayType::get(I8_TY(), sizeof(SwagSourceCodeLocation)), // exceptionLoc
+        llvm::ArrayType::get(I8_TY(), 4 * sizeof(void*)), // exceptionParams
+        PTR_I8_TY(), // panic
+        PTR_I8_TY(), // curError
+        PTR_I8_TY(), // curError
+        I32_TY(), // errorIndex
+        I32_TY(), // traceIndex
+        I32_TY(), // hasError
         };
 
         static_assert(sizeof(SwagContext) == 1600);
@@ -86,8 +86,8 @@ void Llvm::createRuntime(LlvmEncoder& pp)
     // SwagSlice
     {
         llvm::Type* members[] = {
-            PTR_I8_TY(),
-            I64_TY(),
+        PTR_I8_TY(),
+        I64_TY(),
         };
         pp.sliceTy = llvm::StructType::create(context, members, "SwagSlice");
         SWAG_ASSERT(pp.sliceTy->isSized());
@@ -96,8 +96,8 @@ void Llvm::createRuntime(LlvmEncoder& pp)
     // swag_alloctor_t
     {
         llvm::Type* params[] = {
-            PTR_I64_TY(),
-            PTR_I64_TY(),
+        PTR_I64_TY(),
+        PTR_I64_TY(),
         };
         pp.allocatorTy = llvm::FunctionType::get(VOID_TY(), params, false);
     }
@@ -105,7 +105,7 @@ void Llvm::createRuntime(LlvmEncoder& pp)
     // byteCodeRun
     {
         llvm::Type* params[] = {
-            PTR_I8_TY(),
+        PTR_I8_TY(),
         };
         pp.bytecodeRunTy = llvm::FunctionType::get(VOID_TY(), params, true);
     }
@@ -113,7 +113,7 @@ void Llvm::createRuntime(LlvmEncoder& pp)
     // makeCallback
     {
         llvm::Type* params[] = {
-            PTR_I8_TY(),
+        PTR_I8_TY(),
         };
         pp.makeCallbackTy = llvm::FunctionType::get(PTR_I8_TY(), params, false);
     }
@@ -121,13 +121,13 @@ void Llvm::createRuntime(LlvmEncoder& pp)
     // SwagProcessInfo
     {
         llvm::Type* members[] = {
-            pp.sliceTy,
-            pp.sliceTy,
-            I64_TY(),
-            pp.contextTy->getPointerTo(),
-            pp.bytecodeRunTy->getPointerTo(),
-            pp.makeCallbackTy->getPointerTo(),
-            I32_TY(),
+        pp.sliceTy,
+        pp.sliceTy,
+        I64_TY(),
+        pp.contextTy->getPointerTo(),
+        pp.bytecodeRunTy->getPointerTo(),
+        pp.makeCallbackTy->getPointerTo(),
+        I32_TY(),
         };
         pp.processInfosTy = llvm::StructType::create(context, members, "SwagProcessInfo");
         SWAG_ASSERT(pp.processInfosTy->isSized());
@@ -138,7 +138,7 @@ void Llvm::createRuntime(LlvmEncoder& pp)
     {
         pp.mainContext       = new llvm::GlobalVariable(modu, pp.contextTy, false, llvm::GlobalValue::WeakAnyLinkage, llvm::ConstantAggregateZero::get(pp.contextTy), "swag_mainContext");
         pp.defaultAllocTable = new llvm::GlobalVariable(modu, pp.allocatorTy->getPointerTo(), false, llvm::GlobalValue::WeakAnyLinkage, llvm::ConstantPointerNull::get(pp.allocatorTy->getPointerTo()), "swag_defaultAllocTable");
-        pp.processInfos =
+        pp.processInfos      =
         new llvm::GlobalVariable(modu, pp.processInfosTy, false, llvm::GlobalValue::WeakAnyLinkage, llvm::ConstantAggregateZero::get(pp.processInfosTy), "swag_processInfos");
         pp.symTlsThreadLocalId = new llvm::GlobalVariable(modu, I64_TY(), false, llvm::GlobalValue::WeakAnyLinkage, llvm::ConstantInt::get(I64_TY(), 0), "swag_tls_threadLocalId");
     }
@@ -287,7 +287,7 @@ void Llvm::generateObjFile(LlvmEncoder& pp)
     switch (g_CommandLine.target.os)
     {
         case SwagTargetOs::Windows:
-            osName     = llvm::Triple::getOSTypeName(llvm::Triple::Win32);
+            osName = llvm::Triple::getOSTypeName(llvm::Triple::Win32);
             vendorName = llvm::Triple::getVendorTypeName(llvm::Triple::PC);
             abiName    = llvm::Triple::getEnvironmentTypeName(llvm::Triple::MSVC);
             break;

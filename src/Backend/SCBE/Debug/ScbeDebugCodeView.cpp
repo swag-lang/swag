@@ -45,7 +45,7 @@ namespace
         const auto patchRecordOffset = concat.totalCount();
         concat.addU16(S_COMPILE3); // Record kind enum (SymRecordKind or TypeRecordKind)
 
-        concat.addU32(0);    // Flags/Language (C)
+        concat.addU32(0); // Flags/Language (C)
         concat.addU16(0xD0); // CPU Type (X64)
 
         // Front end version
@@ -198,7 +198,7 @@ namespace
 
                 // lfFuncId
                 case LF_FUNC_ID:
-                    concat.addU32(0);                // ParentScope
+                    concat.addU32(0); // ParentScope
                     concat.addU32(f->lfFuncId.type); // @type
                     emitTruncatedString(pp, f->node->token.text);
                     break;
@@ -274,10 +274,10 @@ namespace
                 case LF_STRUCTURE:
                     concat.addU16(f->lfStructure.memberCount);
                     concat.addU16(f->lfStructure.forward ? 0x80 : 0); // properties
-                    concat.addU32(f->lfStructure.fieldList);          // field
-                    concat.addU32(f->lfStructure.derivedList);        // derivedFrom
-                    concat.addU32(0);                                 // vTableShape
-                    concat.addU16(LF_ULONG);                          // LF_ULONG
+                    concat.addU32(f->lfStructure.fieldList); // field
+                    concat.addU32(f->lfStructure.derivedList); // derivedFrom
+                    concat.addU32(0); // vTableShape
+                    concat.addU16(LF_ULONG); // LF_ULONG
                     concat.addU32(f->lfStructure.sizeOf);
                     emitTruncatedString(pp, f->name);
                     break;
@@ -439,13 +439,13 @@ namespace
         const auto checkSymIndex = getFileChecksum(mapFileNames, arrFileNames, stringTable, sourceFile);
 
         const auto numLines = lines.size();
-        concat.addU32(checkSymIndex);     // File index in checksum buffer (in bytes!)
-        concat.addU32(numLines);          // NumLines
+        concat.addU32(checkSymIndex); // File index in checksum buffer (in bytes!)
+        concat.addU32(numLines); // NumLines
         concat.addU32(12 + numLines * 8); // Code size block in bytes (12 + number of lines * 8)
         for (const auto& line : lines)
         {
             concat.addU32(line.byteOffset - startByteIndex); // Offset in bytes from the start of the section
-            concat.addU32(line.line);                        // Line number
+            concat.addU32(line.line); // Line number
         }
 
         *patchLTCount = concat.totalCount() - patchLTOffset;
@@ -514,8 +514,8 @@ namespace
             emitEndRecord(pp);
 
             emitStartRecord(pp, S_DEFRANGE_REGISTER_REL);
-            concat.addU16(R_RSP);                   // Register
-            concat.addU16(0);                       // Flags
+            concat.addU16(R_RSP); // Register
+            concat.addU16(0); // Flags
             if (overload->hasFlag(OVERLOAD_RETVAL)) // Offset to register
                 concat.addU32(f->getStackOffsetParam(typeFunc->numParamsRegisters()));
             else
@@ -549,8 +549,8 @@ namespace
         // Header
         /////////////////////////////////
         emitStartRecord(pp, S_BLOCK32);
-        concat.addU32(0);                                       // Parent = 0;
-        concat.addU32(0);                                       // End = 0;
+        concat.addU32(0); // Parent = 0;
+        concat.addU32(0); // End = 0;
         concat.addU32(scope->backendEnd - scope->backendStart); // CodeSize;
         emitSecRel(pp, f->symbolIndex, pp.symCOIndex, scope->backendStart);
         emitTruncatedString(pp, "");
@@ -801,7 +801,7 @@ namespace
 
             emitStartRecord(pp, S_DEFRANGE_REGISTER_REL);
             concat.addU16(R_R12); // Register
-            concat.addU16(0);     // Flags
+            concat.addU16(0); // Flags
             concat.addU32(overload->computedValue.storageOffset);
             emitSecRel(pp, cpuFct->symbolIndex, pp.symCOIndex);
             concat.addU16(static_cast<uint16_t>(cpuFct->endAddress - cpuFct->startAddress)); // Range
@@ -848,13 +848,13 @@ namespace
             // Proc ID
             /////////////////////////////////
             emitStartRecord(pp, S_LPROC32_ID);
-            concat.addU32(0);                                         // Parent = 0
-            concat.addU32(0);                                         // End = 0
-            concat.addU32(0);                                         // Next = 0
+            concat.addU32(0); // Parent = 0
+            concat.addU32(0); // End = 0
+            concat.addU32(0); // Next = 0
             concat.addU32(cpuFct->endAddress - cpuFct->startAddress); // CodeSize = 0
-            concat.addU32(0);                                         // DbgStart = 0
-            concat.addU32(0);                                         // DbgEnd = 0
-            concat.addU32(tr->index);                                 // FuncID type index
+            concat.addU32(0); // DbgStart = 0
+            concat.addU32(0); // DbgEnd = 0
+            concat.addU32(tr->index); // FuncID type index
             emitSecRel(pp, cpuFct->symbolIndex, pp.symCOIndex);
             concat.addU8(0); // ProcSymFlags Flags = ProcSymFlags::None
             auto scopedName = ScbeDebug::getScopedName(cpuFct->node);
@@ -865,12 +865,12 @@ namespace
             /////////////////////////////////
             emitStartRecord(pp, S_FRAMEPROC);
             concat.addU32(cpuFct->frameSize); // FrameSize
-            concat.addU32(0);                 // Padding
-            concat.addU32(0);                 // Offset of padding
-            concat.addU32(0);                 // Bytes of callee saved registers
-            concat.addU32(0);                 // Exception handler offset
-            concat.addU32(0);                 // Exception handler section
-            concat.addU32(0);                 // Flags (defines frame register)
+            concat.addU32(0); // Padding
+            concat.addU32(0); // Offset of padding
+            concat.addU32(0); // Bytes of callee saved registers
+            concat.addU32(0); // Exception handler offset
+            concat.addU32(0); // Exception handler section
+            concat.addU32(0); // Flags (defines frame register)
             emitEndRecord(pp);
 
             // Capture parameters

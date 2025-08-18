@@ -64,10 +64,10 @@ bool FormatAst::outputChildrenAffectEqual(FormatContext& context, AstNode* node,
 
     VectorNative<AstNode*> nodes;
     if (!collectChildrenToAlign(context, STOP_CMT_BEFORE | STOP_EMPTY_LINE_BEFORE, node, start, nodes, processed, [](const AstNode* inNode) {
-            if (inNode->kind != AstNodeKind::AffectOp || inNode->token.text != "=")
-                return true;
-            return false;
-        }))
+        if (inNode->kind != AstNodeKind::AffectOp || inNode->token.text != "=")
+            return true;
+        return false;
+    }))
         return true;
 
     uint32_t maxLenName = 0;
@@ -121,7 +121,7 @@ bool FormatAst::outputAffectOp(FormatContext& context, AstNode* node, uint32_t m
 
 bool FormatAst::outputFactorOp(FormatContext& context, AstNode* node)
 {
-    if(node->childCount() < 2)
+    if (node->childCount() < 2)
         return Report::internalError(node, "FormatAst::outputFactorOp, invalid AST");
 
     if (!context.countFactorOp)
@@ -248,13 +248,13 @@ bool FormatAst::outputCast(FormatContext& context, const AstNode* node)
     {
         concat->addBlank();
         concat->addString(g_LangSpec->name_sharp_bit);
-        concat->addBlank();        
+        concat->addBlank();
     }
     else if (node->hasSpecFlag(AstCast::SPEC_FLAG_UN_CONST))
     {
         concat->addBlank();
         concat->addString(g_LangSpec->name_sharp_unconst);
-        concat->addBlank();        
+        concat->addBlank();
     }
 
     concat->addChar('(');

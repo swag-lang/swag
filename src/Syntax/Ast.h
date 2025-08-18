@@ -70,7 +70,7 @@ namespace Ast
     void constructNode(T* node)
     {
         memset(node, 0, sizeof(T));
-        ::new (node) T;
+        ::new(node) T;
     }
 
     template<typename T>

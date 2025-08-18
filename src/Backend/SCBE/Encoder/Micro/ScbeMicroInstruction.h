@@ -76,6 +76,7 @@ struct ScbeMicroInstruction
     uint32_t getStackOffset() const;
 
     Utf8 name;
+
     union
     {
         uint64_t        valueA;

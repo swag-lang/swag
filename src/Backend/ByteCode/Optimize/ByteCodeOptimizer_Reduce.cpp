@@ -3512,7 +3512,7 @@ void ByteCodeOptimizer::reduceCast(ByteCodeOptContext* context, ByteCodeInstruct
                 ip[1].a.u32 = ip->b.u32;
                 ip[1].b.u64 = 0;
                 ip[1].addFlag(BCI_IMM_B);
-        
+
                 break;
             }
             break;

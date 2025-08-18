@@ -50,15 +50,15 @@ bool FormatAst::outputChildrenVar(FormatContext& context, AstNode* node, uint32_
     {
         PushConcatFormatTmp fmt{this, context};
         if (!collectChildrenToAlign(context, flags, node, start, nodes, processed, [&](const AstNode* n) {
-                if (n->kind != AstNodeKind::VarDecl && n->kind != AstNodeKind::ConstDecl)
-                    return true;
-                const auto var = castAst<AstVarDecl>(n);
-                tmpConcat.clear();
-                SWAG_CHECK(outputNode(fmt.cxt, var->type));
-                if (tmpConcat.totalEol > 1)
-                    return true;
-                return false;
-            }))
+            if (n->kind != AstNodeKind::VarDecl && n->kind != AstNodeKind::ConstDecl)
+                return true;
+            const auto var = castAst<AstVarDecl>(n);
+            tmpConcat.clear();
+            SWAG_CHECK(outputNode(fmt.cxt, var->type));
+            if (tmpConcat.totalEol > 1)
+                return true;
+            return false;
+        }))
             return true;
     }
 

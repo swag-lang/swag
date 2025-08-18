@@ -1107,9 +1107,9 @@ AstNode* AstInline::clone(CloneContext& context)
     if (parametersScope && !context.cloneFlags.has(CLONE_INLINE))
         newNode->parametersScope = parametersScope;
 
-    // Clone inline parameters
-    // We want to have specific overloads for this copied inline block, otherwise they can share
-    // the same registers between functions, which is very bad.
+        // Clone inline parameters
+        // We want to have specific overloads for this copied inline block, otherwise they can share
+        // the same registers between functions, which is very bad.
     else if (parametersScope)
     {
         newNode->parametersScope = Ast::newScope(newNode, "", ScopeKind::Statement, nullptr);

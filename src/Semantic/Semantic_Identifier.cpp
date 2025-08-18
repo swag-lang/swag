@@ -216,13 +216,13 @@ void Semantic::setIdentifierRefPrevious(AstNode* node)
         case TypeInfoKind::TypeListArray:
         case TypeInfoKind::TypeListTuple:
             identifierRef->previousScope = castTypeInfo<TypeInfoList>(scopeType, scopeType->kind)->scope;
-            node->typeInfo               = typeInfo;
+            node->typeInfo = typeInfo;
             break;
 
         case TypeInfoKind::Interface:
         case TypeInfoKind::Struct:
             identifierRef->previousScope = castTypeInfo<TypeInfoStruct>(scopeType, scopeType->kind)->scope;
-            node->typeInfo               = typeInfo;
+            node->typeInfo = typeInfo;
             break;
 
         case TypeInfoKind::Array:
@@ -352,11 +352,11 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
         if (dep.scope == symScope || dep.scope->getFullName() == symScope->getFullName())
             getIt = true;
 
-        // The symbol scope is an 'impl' inside a struct (impl for)
+            // The symbol scope is an 'impl' inside a struct (impl for)
         else if (symScope->is(ScopeKind::Impl) && symScope->parentScope == dep.scope)
             getIt = true;
 
-        // For mtd sub functions and UFCS
+            // For mtd sub functions and UFCS
         else if (okForUFCS)
         {
             hasUFCS = true;
@@ -889,7 +889,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         scopeHierarchyVars.clear();
         symbolsMatch.clear();
     }
-    
+
     if (symbolsMatch.empty())
     {
         if (identifier->isSilentCall())

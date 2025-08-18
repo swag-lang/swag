@@ -155,7 +155,7 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, const ByteC
         {
             case NativeTypeKind::String:
                 registersRC[ip->a.u32].pointer = reinterpret_cast<uint8_t*>(child->computedValue()->text.buffer);
-                registersRC[ip->b.u32].u64     = child->computedValue()->text.length();
+                registersRC[ip->b.u32].u64 = child->computedValue()->text.length();
                 return;
 
             case NativeTypeKind::S8:

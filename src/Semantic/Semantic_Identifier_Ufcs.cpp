@@ -65,15 +65,15 @@ bool Semantic::getUFCS(SemanticContext* context, const AstIdentifierRef* identif
         // Before was a variable
         if (idRefSymbolName->is(SymbolKind::Variable))
             canTry = true;
-        // Before was an enum value
+            // Before was an enum value
         else if (idRefSymbolName->is(SymbolKind::EnumValue))
             canTry = true;
-        // Before was a function call
+            // Before was a function call
         else if (idRefSymbolName->is(SymbolKind::Function) &&
                  identifierRef->previousNode &&
                  identifierRef->previousNode->hasAstFlag(AST_FUNC_CALL))
             canTry = true;
-        // Before was an inlined function call
+            // Before was an inlined function call
         else if (idRefSymbolName->is(SymbolKind::Function) &&
                  identifierRef->previousNode &&
                  identifierRef->previousNode->is(AstNodeKind::Identifier) &&

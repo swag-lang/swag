@@ -168,7 +168,7 @@ bool FormatAst::outputSwitch(FormatContext& context, AstNode* node)
             if (c->hasAstFlag(AST_GENERATED))
                 continue;
             beautifyBefore(context, c);
-            concat->addString("default");            
+            concat->addString("default");
         }
         else
         {

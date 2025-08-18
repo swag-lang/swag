@@ -45,7 +45,7 @@ struct Vector : std::vector<T, StdAllocator<T>>
     void release() noexcept
     {
         this->~Vector<T>();
-        ::new (this) Vector;
+        ::new(this) Vector;
     }
 
     void append(const Vector& other)

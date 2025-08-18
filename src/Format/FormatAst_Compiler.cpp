@@ -148,7 +148,7 @@ bool FormatAst::outputCompilerInject(FormatContext& context, AstNode* node)
         {
             concat->addChar(',');
             concat->addBlank();
-            
+
             switch (m.first)
             {
                 case TokenId::KwdBreak:
@@ -256,7 +256,7 @@ bool FormatAst::outputCompilerImport(FormatContext&, AstNode* node) const
     if (!decl->tokenLocation.text.empty())
     {
         concat->addChar(',');
-        concat->addBlank();        
+        concat->addBlank();
         concat->addString("location");
         concat->addChar(':');
         concat->addBlank();

@@ -28,6 +28,7 @@ namespace
                inst->op == ScbeMicroOp::LoadSignedExtRM;
     }
 }
+
 void ScbeOptimizer::optimizePassDeadHdwReg2(const ScbeMicro& out)
 {
     auto inst = out.getFirstInstruction();

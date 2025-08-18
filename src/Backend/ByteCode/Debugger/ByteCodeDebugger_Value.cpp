@@ -226,7 +226,7 @@ void ByteCodeDebugger::appendLiteralValue(ByteCodeRunContext* context, Utf8& res
     {
         appendLiteralValueProtected(context, result, fmt, addr);
     }
-    SWAG_EXCEPT(SWAG_EXCEPTION_EXECUTE_HANDLER)
+    SWAG_EXCEPT (SWAG_EXCEPTION_EXECUTE_HANDLER)
     {
         result = "<error>";
     }
@@ -563,7 +563,7 @@ void ByteCodeDebugger::appendTypedValue(ByteCodeRunContext* context, Utf8& resul
     {
         appendTypedValueProtected(context, result, resultLight, res, level, indent);
     }
-    SWAG_EXCEPT(SWAG_EXCEPTION_EXECUTE_HANDLER)
+    SWAG_EXCEPT (SWAG_EXCEPTION_EXECUTE_HANDLER)
     {
         result += "<error>";
     }

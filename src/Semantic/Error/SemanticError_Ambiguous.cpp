@@ -117,7 +117,7 @@ bool SemanticError::ambiguousOverloadError(SemanticContext* context, AstNode* no
         if (overload->typeInfo->isFuncAttr() && overload->typeInfo->isFromGeneric())
         {
             const auto nodeFunc = castAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
-            const auto typeGen = nodeFunc->originalGeneric->typeInfo;
+            const auto typeGen  = nodeFunc->originalGeneric->typeInfo;
             if (doneGenerics.contains(typeGen))
                 continue;
             doneGenerics.insert(typeGen);

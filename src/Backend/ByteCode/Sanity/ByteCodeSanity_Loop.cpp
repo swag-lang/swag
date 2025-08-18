@@ -193,7 +193,7 @@ bool ByteCodeSanity::loop()
             case ByteCodeOp::Nop:
                 break;
 
-                /////////////////////////////////////////
+            /////////////////////////////////////////
 
             case ByteCodeOp::DecSPBP:
             case ByteCodeOp::IncSPPostCall:
@@ -296,7 +296,7 @@ bool ByteCodeSanity::loop()
                 SanityValue::setIps(ip, ra);
                 break;
 
-                /////////////////////////////////////////
+            /////////////////////////////////////////
 
             case ByteCodeOp::CopyRAtoRT:
                 SWAG_CHECK(STATE()->getRegister(ra, ip->a.u32));
@@ -438,7 +438,7 @@ bool ByteCodeSanity::loop()
                 pushParams.clear();
                 break;
 
-                /////////////////////////////////////////
+            /////////////////////////////////////////
 
             case ByteCodeOp::Jump:
                 ip->dynFlags.add(BCID_SAN_PASS);
@@ -526,7 +526,7 @@ bool ByteCodeSanity::loop()
                 }
                 break;
 
-                /////////////////////////////////////////
+            /////////////////////////////////////////
 
             case ByteCodeOp::CopyRBtoRA64:
                 SWAG_CHECK(STATE()->getRegister(ra, ip->a.u32));
@@ -1438,7 +1438,7 @@ bool ByteCodeSanity::loop()
                 SanityValue::setIps(ip, ra, rb);
                 break;
 
-                /////////////////////////////////////////
+            /////////////////////////////////////////
 
             case ByteCodeOp::IntrinsicTableOf:
                 SWAG_CHECK(checkNotNullArguments({ip->b.u32, ip->a.u32}, "@tableOf"));
@@ -1666,7 +1666,7 @@ bool ByteCodeSanity::loop()
                 }
                 break;
 
-                /////////////////////////////////////////
+            /////////////////////////////////////////
 
             case ByteCodeOp::AffectOpPlusEqS8:
                 BINOP_EQ_OVF(int8_t, +=, s8, addWillOverflow, "+=", g_TypeMgr->typeInfoS8);

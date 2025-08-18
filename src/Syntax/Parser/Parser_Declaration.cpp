@@ -96,7 +96,7 @@ bool Parser::doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal)
             ParserPushFreezeFormat ff(this);
             topStmt = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, attrUse);
         }
-        
+
         attrUse->addAstFlag(AST_GLOBAL_NODE);
         topStmt->addAstFlag(AST_GLOBAL_NODE);
         while (tokenParse.isNot(TokenId::EndOfFile))
@@ -610,8 +610,8 @@ void Parser::registerSubDecl(AstNode* subDecl)
     if (orgSubDecl->isNot(AstNodeKind::FuncDecl) || !orgSubDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_IS_LAMBDA_EXPRESSION))
     {
         ParserPushFreezeFormat ff(this);
-        const auto solver   = Ast::newNode<AstRefSubDecl>(AstNodeKind::RefSubDecl, this, orgParent);
-        solver->semanticFct = Semantic::resolveSubDeclRef;
+        const auto             solver = Ast::newNode<AstRefSubDecl>(AstNodeKind::RefSubDecl, this, orgParent);
+        solver->semanticFct           = Semantic::resolveSubDeclRef;
         solver->addAstFlag(AST_GENERATED | AST_GENERATED_USER | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);
         solver->refSubDecl    = orgSubDecl;
         solver->refTopSubDecl = subDecl;

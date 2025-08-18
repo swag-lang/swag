@@ -413,7 +413,7 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, ExprFlags exprFlags
             return true;
 
         case TokenId::NativeType:
-            node->literalType       = tokenParse.literalType;
+            node->literalType = tokenParse.literalType;
             node->token.endLocation = tokenParse.token.endLocation;
             SWAG_CHECK(eatToken());
             return true;

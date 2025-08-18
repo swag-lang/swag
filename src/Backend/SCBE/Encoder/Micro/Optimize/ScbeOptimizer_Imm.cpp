@@ -9,7 +9,7 @@ namespace
     {
         ScbeCpu::maskValue(valueA, opBits);
         ScbeCpu::maskValue(valueB, opBits);
-        
+
         switch (op)
         {
             case CpuOp::SHL:
@@ -51,27 +51,27 @@ namespace
         switch (next->jumpType)
         {
             case CpuCondJump::JZ:
-                alwaysTrue  = value == curValue;
+                alwaysTrue = value == curValue;
                 alwaysFalse = value != curValue;
                 break;
             case CpuCondJump::JNZ:
-                alwaysTrue  = value != curValue;
+                alwaysTrue = value != curValue;
                 alwaysFalse = value == curValue;
                 break;
             case CpuCondJump::JGE:
-                alwaysTrue  = value >= curValue;
+                alwaysTrue = value >= curValue;
                 alwaysFalse = value < curValue;
                 break;
             case CpuCondJump::JLE:
-                alwaysTrue  = value <= curValue;
+                alwaysTrue = value <= curValue;
                 alwaysFalse = value > curValue;
                 break;
             case CpuCondJump::JG:
-                alwaysTrue  = value > curValue;
+                alwaysTrue = value > curValue;
                 alwaysFalse = value <= curValue;
                 break;
             case CpuCondJump::JL:
-                alwaysTrue  = value < curValue;
+                alwaysTrue = value < curValue;
                 alwaysFalse = value >= curValue;
                 break;
         }

@@ -28,7 +28,7 @@ static constexpr uint32_t MAX_PRECOMPILE_BUFFERS = 1024;
 struct Backend
 {
     explicit Backend(Module* mdl);
-    virtual ~Backend() = default;
+    virtual  ~Backend() = default;
 
     virtual JobResult prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob);
     virtual bool      emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildParameters& buildParameters, ByteCode* bc);

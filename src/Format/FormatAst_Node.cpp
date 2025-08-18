@@ -60,7 +60,7 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             concat->addChar('(');
             concat->addString(node->token.text);
             concat->addChar(')');
-            break;            
+            break;
 
         case AstNodeKind::CompilerInclude:
         case AstNodeKind::CompilerDefined:
@@ -99,7 +99,7 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
         case AstNodeKind::ExplicitNoInit:
             concat->addString("undefined");
             break;
-            
+
         case AstNodeKind::Index:
             concat->addString("@index");
             break;

@@ -89,7 +89,7 @@ int main(int argc, const char* argv[])
     {
         g_Workspace->build();
     }
-#ifdef SWAG_DEV_MODE    
+#ifdef SWAG_DEV_MODE
     else if (command == "patch")
     {
         g_Workspace->patch();

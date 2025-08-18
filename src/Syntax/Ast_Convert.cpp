@@ -463,8 +463,8 @@ bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identi
     if (identifier->parent->parent->is(AstNodeKind::ConstDecl))
         varNode->kind = AstNodeKind::ConstDecl;
 
-    // At global scope, this should be a constant declaration, not a variable, as we cannot assign a global variable to
-    // another global variable at compile time
+        // At global scope, this should be a constant declaration, not a variable, as we cannot assign a global variable to
+        // another global variable at compile time
     else if (identifier->ownerScope->isGlobalOrImpl())
         varNode->kind = AstNodeKind::ConstDecl;
 

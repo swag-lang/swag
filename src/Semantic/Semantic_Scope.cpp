@@ -272,7 +272,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
 
             if (!tmpSymbolsMatch.empty())
             {
-                for (const auto s: tmpSymbolsMatch)
+                for (const auto s : tmpSymbolsMatch)
                     symbolsMatch.push_back_once(s);
                 continue;
             }

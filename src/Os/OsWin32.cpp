@@ -31,10 +31,10 @@ namespace
 #pragma pack(push, 8)
     struct ThreadNameInfo
     {
-        DWORD  dwType;     // Must be 0x1000.
-        LPCSTR szName;     // Pointer to name (in user address space).
+        DWORD  dwType; // Must be 0x1000.
+        LPCSTR szName; // Pointer to name (in user address space).
         DWORD  dwThreadID; // Thread ID (-1=caller thread).
-        DWORD  dwFlags;    // Reserved for future use, must be zero.
+        DWORD  dwFlags; // Reserved for future use, must be zero.
     };
 #pragma pack(pop)
 
@@ -50,7 +50,7 @@ namespace
         {
             RaiseException(MS_VC_EXCEPTION, 0, sizeof(info) / sizeof(ULONG_PTR), reinterpret_cast<ULONG_PTR*>(&info));
         }
-        SWAG_EXCEPT(SWAG_EXCEPTION_EXECUTE_HANDLER)
+        SWAG_EXCEPT (SWAG_EXCEPTION_EXECUTE_HANDLER)
         {
         }
     }

@@ -2065,7 +2065,7 @@ namespace
             const auto patchCompiler       = reinterpret_cast<uint32_t*>(addrCompiler);
 
             // Set table to default jump
-            for (uint32_t i = 0; i < range + 1; i++)
+            for (uint32_t i      = 0; i < range + 1; i++)
                 patchCompiler[i] = static_cast<uint32_t>(defaultIp - ipStart) - 1;
 
             // Then register each value

@@ -139,7 +139,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::IncPointer64:
             {
@@ -170,7 +170,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::DeRef8:
             case ByteCodeOp::DeRef16:
@@ -201,7 +201,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::Mul64byVB64:
             {
@@ -218,7 +218,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::GetFromMutableSeg8:
             case ByteCodeOp::GetFromMutableSeg16:
@@ -233,7 +233,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::GetFromBssSeg8:
             case ByteCodeOp::GetFromBssSeg16:
@@ -248,7 +248,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::SetZeroStack8:
             case ByteCodeOp::SetZeroStack16:
@@ -268,7 +268,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                ///////////////////////////////////////////
+            ///////////////////////////////////////////
 
             case ByteCodeOp::SetZeroAtPointer8:
             case ByteCodeOp::SetZeroAtPointer16:
@@ -299,7 +299,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                ///////////////////////////////////////////
+            ///////////////////////////////////////////
 
             case ByteCodeOp::ClearRR8:
             case ByteCodeOp::ClearRR16:
@@ -323,7 +323,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::MakeMutableSegPointer:
             {
@@ -375,7 +375,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::GetFromStack8:
             case ByteCodeOp::GetFromStack16:
@@ -391,7 +391,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::GetFromStack8x2:
             case ByteCodeOp::GetFromStack16x2:
@@ -411,7 +411,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::GetIncFromStack64:
             {
@@ -440,7 +440,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::CopyStack8:
             case ByteCodeOp::CopyStack16:
@@ -455,7 +455,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::IntrinsicDbgAlloc:
             {
@@ -500,7 +500,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::MemCpy8:
             case ByteCodeOp::MemCpy16:
@@ -514,7 +514,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::IntrinsicMemCpy:
             {
@@ -601,7 +601,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::SetImmediate32:
             case ByteCodeOp::SetImmediate64:
@@ -612,7 +612,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::CopyRBtoRA8:
             case ByteCodeOp::CopyRBtoRA16:
@@ -638,7 +638,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::ClearRA:
             {
@@ -677,7 +677,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::DecrementRA32:
             case ByteCodeOp::DecrementRA64:
@@ -697,7 +697,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::MulAddVC64:
             {
@@ -720,7 +720,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::SetAtPointer8:
             case ByteCodeOp::SetAtPointer16:
@@ -735,7 +735,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::SetAtStackPointer8:
             case ByteCodeOp::SetAtStackPointer16:
@@ -749,7 +749,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::SetAtStackPointer8x2:
             case ByteCodeOp::SetAtStackPointer16x2:
@@ -766,7 +766,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::BinOpPlusS8:
             case ByteCodeOp::BinOpPlusS16:
@@ -822,7 +822,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::BinOpMinusS8:
             case ByteCodeOp::BinOpMinusS16:
@@ -878,7 +878,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::BinOpMulS8:
             case ByteCodeOp::BinOpMulS16:
@@ -934,7 +934,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::BinOpXor8:
             case ByteCodeOp::BinOpXor16:
@@ -950,7 +950,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::BinOpShiftLeftS8:
             case ByteCodeOp::BinOpShiftLeftU8:
@@ -966,7 +966,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::BinOpShiftRightS8:
             case ByteCodeOp::BinOpShiftRightS16:
@@ -988,7 +988,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::BinOpModuloS8:
             case ByteCodeOp::BinOpModuloS16:
@@ -1009,7 +1009,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::BinOpDivS8:
             case ByteCodeOp::BinOpDivS16:
@@ -1042,7 +1042,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::BinOpBitmaskAnd8:
             case ByteCodeOp::BinOpBitmaskAnd16:
@@ -1058,7 +1058,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::BinOpBitmaskOr8:
             case ByteCodeOp::BinOpBitmaskOr16:
@@ -1074,7 +1074,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::AffectOpMinusEqS8:
             case ByteCodeOp::AffectOpMinusEqS16:
@@ -1163,7 +1163,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::AffectOpPlusEqS8:
             case ByteCodeOp::AffectOpPlusEqS16:
@@ -1252,7 +1252,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::AffectOpMulEqS8:
             case ByteCodeOp::AffectOpMulEqS16:
@@ -1341,7 +1341,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::AffectOpDivEqS8:
             case ByteCodeOp::AffectOpDivEqS16:
@@ -1405,7 +1405,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::AffectOpModuloEqS8:
             case ByteCodeOp::AffectOpModuloEqS16:
@@ -1446,7 +1446,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::AffectOpAndEq8:
             case ByteCodeOp::AffectOpAndEq16:
@@ -1462,7 +1462,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::AffectOpOrEq8:
             case ByteCodeOp::AffectOpOrEq16:
@@ -1478,7 +1478,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::AffectOpXorEq8:
             case ByteCodeOp::AffectOpXorEq16:
@@ -1494,7 +1494,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::AffectOpShiftLeftEqS8:
             case ByteCodeOp::AffectOpShiftLeftEqU8:
@@ -1510,7 +1510,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::AffectOpShiftRightEqS8:
             case ByteCodeOp::AffectOpShiftRightEqS16:
@@ -1532,7 +1532,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::CompareOpGreaterS8:
             case ByteCodeOp::CompareOpGreaterS16:
@@ -1722,7 +1722,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::CompareOp3Way8:
             case ByteCodeOp::CompareOp3Way16:
@@ -1756,7 +1756,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::JumpDyn8:
             case ByteCodeOp::JumpDyn16:
@@ -1797,7 +1797,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::Jump:
             {
@@ -1807,7 +1807,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::JumpIfTrue:
             {
@@ -1850,7 +1850,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::JumpIfZero8:
             case ByteCodeOp::JumpIfZero16:
@@ -1867,7 +1867,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::JumpIfNotZero8:
             case ByteCodeOp::JumpIfNotZero16:
@@ -1884,7 +1884,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::JumpIfNotEqual8:
             case ByteCodeOp::JumpIfNotEqual16:
@@ -1916,7 +1916,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::JumpIfEqual8:
             case ByteCodeOp::JumpIfEqual16:
@@ -1948,7 +1948,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::IncJumpIfEqual64:
             {
@@ -1965,7 +1965,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::JumpIfStackEqual8:
             case ByteCodeOp::JumpIfStackEqual16:
@@ -1983,7 +1983,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::JumpIfStackNotEqual8:
             case ByteCodeOp::JumpIfStackNotEqual16:
@@ -2001,7 +2001,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::JumpIfDeRefEqual8:
             case ByteCodeOp::JumpIfDeRefEqual16:
@@ -2021,7 +2021,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::JumpIfDeRefNotEqual8:
             case ByteCodeOp::JumpIfDeRefNotEqual16:
@@ -2041,7 +2041,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::JumpIfLowerS8:
             case ByteCodeOp::JumpIfLowerS16:
@@ -2089,7 +2089,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::JumpIfLowerEqS8:
             case ByteCodeOp::JumpIfLowerEqS16:
@@ -2137,7 +2137,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::JumpIfGreaterEqS8:
             case ByteCodeOp::JumpIfGreaterEqS16:
@@ -2185,7 +2185,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::JumpIfGreaterS8:
             case ByteCodeOp::JumpIfGreaterS16:
@@ -2233,7 +2233,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::CopyRAtoRRRet:
                 getReturnResult(pp, returnType, ip->hasFlag(BCI_IMM_A), ip->a, allocR, allocResult);
@@ -2252,7 +2252,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 blockIsClosed = true;
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::IntrinsicCompilerError:
             {
@@ -2405,7 +2405,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::InternalFailedAssume:
                 emitCall(pp, g_LangSpec->name_priv_failedAssume, allocR, allocT, {ip->a.u32}, {});
@@ -2491,7 +2491,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitCall(pp, g_LangSpec->name_priv_stackTrace, allocR, allocT, {ip->a.u32}, {});
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::NegBool:
             {
@@ -2524,7 +2524,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::InvertU8:
             case ByteCodeOp::InvertU16:
@@ -2539,7 +2539,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::ClearMaskU32:
             case ByteCodeOp::ClearMaskU64:
@@ -2551,7 +2551,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::CastBool8:
             case ByteCodeOp::CastBool16:
@@ -2779,7 +2779,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::CopyRAtoRR:
                 getReturnResult(pp, returnType, ip->hasFlag(BCI_IMM_A), ip->a, allocR, allocResult);
@@ -2837,7 +2837,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitRT2ToRegisters(pp, ip->a.u32, ip->b.u32, allocR, allocRR);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::GetParam8:
             case ByteCodeOp::GetParam16:
@@ -2859,7 +2859,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 SWAG_CHECK(emitGetParam(pp, typeFunc, ip->a.u32, ip->b.mergeU64U32.high, 0, ip->d.u64));
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::GetParam64DeRef8:
             case ByteCodeOp::GetParam64DeRef16:
@@ -2871,7 +2871,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::GetIncParam64DeRef8:
             case ByteCodeOp::GetIncParam64DeRef16:
@@ -2883,7 +2883,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::ZeroToTrue:
             {
@@ -2930,7 +2930,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::PushRVParam:
                 pp.pushRVParams.push_back({ip->a.u32, ip->b.u32});
@@ -2955,13 +2955,13 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 pp.pushRAParams.push_back(ip->d.u32);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::CopySPVaargs:
                 emitCopyVaargs(pp);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::MakeLambda:
             {
@@ -3000,7 +3000,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::LocalCall:
             case ByteCodeOp::LocalCallPop:
@@ -3052,7 +3052,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 pp.pushRVParams.clear();
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::IntrinsicMulAddF32:
             case ByteCodeOp::IntrinsicMulAddF64:
@@ -3066,7 +3066,7 @@ bool Llvm::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::IntrinsicS8x1:
             case ByteCodeOp::IntrinsicS16x1:

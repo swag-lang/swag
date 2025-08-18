@@ -113,7 +113,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
             // Get the ITable pointer
             if (node->hasAstFlag(AST_FROM_UFCS))
                 EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc)->c.u64 = resolved->computedValue.storageOffset + 8;
-            // Get the structure pointer
+                // Get the structure pointer
             else
                 EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc)->c.u64 = resolved->computedValue.storageOffset;
 

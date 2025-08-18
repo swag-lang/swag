@@ -68,7 +68,7 @@ AstNode* Semantic::prepareParamsForCall(AstNode* allParams, AstNode& tempParams,
     tempParams.inheritTokenLocation(allParams->token);
     tempParams.inheritOwners(allParams);
     tempParams.addAstFlag(AST_MUST_SORT_CHILDREN);
-    
+
     {
         ScopedLock lk(allParams->mutex);
         tempParams.children = allParams->children;
@@ -105,7 +105,7 @@ void Semantic::dealWithIntrinsic(const SemanticContext* context, AstIdentifier* 
             break;
         }
 
-            // @print behaves like a normal function, so we want an emitCall in that case
+        // @print behaves like a normal function, so we want to use emitCall in that case
         case TokenId::IntrinsicPrint:
             identifier->byteCodeFct = ByteCodeGen::emitCall;
             break;
@@ -942,8 +942,8 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
                 !returnType->isNativeFloat() &&
                 !returnType->isBool() &&
                 !returnType->isPointerToTypeInfo() &&
-                !returnType->isStruct() &&  // Treated later (as errors)
-                !returnType->isArray() &&   // Treated later (as errors)
+                !returnType->isStruct() && // Treated later (as errors)
+                !returnType->isArray() && // Treated later (as errors)
                 !returnType->isClosure() && // Treated later (as errors)
                 !identifier->hasSemFlag(SEMFLAG_EXEC_RET_STACK))
             {

@@ -349,7 +349,7 @@ void Generic::deduceType(SymbolMatchContext& context, TypeInfo* wantedTypeInfo, 
             !callStruct->genericParameters.empty())
         {
             const auto newStructType = castTypeInfo<TypeInfoStruct>(callStruct->clone());
-            for (uint32_t i = 0; i < callStruct->genericParameters.size(); i++)
+            for (uint32_t i                               = 0; i < callStruct->genericParameters.size(); i++)
                 newStructType->genericParameters[i]->name = wantedStruct->genericParameters[i]->typeInfo->name;
             regTypeInfo = newStructType;
         }

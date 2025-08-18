@@ -25,7 +25,7 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
         {
             case ByteCodeOp::ClearRA:
                 regsRW[ip->a.u32] = 0;
-                regs[ip->a.u32]   = ip;
+                regs[ip->a.u32] = ip;
                 ip->removeFlag(BCI_IMM_C);
                 ip->removeFlag(BCI_IMM_D);
                 break;
@@ -65,14 +65,14 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
 
             case ByteCodeOp::SetImmediate32:
                 regsRW[ip->a.u32] = ip->b.u32;
-                regs[ip->a.u32]   = ip;
+                regs[ip->a.u32] = ip;
                 ip->removeFlag(BCI_IMM_C);
                 ip->removeFlag(BCI_IMM_D);
                 break;
 
             case ByteCodeOp::SetImmediate64:
                 regsRW[ip->a.u32] = ip->b.u64;
-                regs[ip->a.u32]   = ip;
+                regs[ip->a.u32] = ip;
                 ip->removeFlag(BCI_IMM_C);
                 ip->removeFlag(BCI_IMM_D);
                 break;

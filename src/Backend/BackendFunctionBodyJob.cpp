@@ -10,6 +10,7 @@
 #endif
 
 struct ScbeCpu;
+
 JobResult BackendFunctionBodyJob::execute()
 {
 #ifdef SWAG_STATS

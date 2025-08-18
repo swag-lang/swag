@@ -26,7 +26,7 @@ namespace
                     return *static_cast<uint64_t*>(addr);
             }
         }
-        SWAG_EXCEPT(SWAG_EXCEPTION_EXECUTE_HANDLER)
+        SWAG_EXCEPT (SWAG_EXCEPTION_EXECUTE_HANDLER)
         {
             err = true;
             return 0;

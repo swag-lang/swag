@@ -132,7 +132,7 @@ void ModuleManager::addPatchFuncAddress(DataSegment* seg, void** patchAddress, A
         *patchAddress = g_SwagPatchMarker;
 #endif
 
-        if (const auto it = patchOffsets.find(moduleName); it == patchOffsets.end())
+        if (const auto it            = patchOffsets.find(moduleName); it == patchOffsets.end())
             patchOffsets[moduleName] = {newPatch};
         else
             it->second.push_back(newPatch);

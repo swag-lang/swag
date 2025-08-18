@@ -133,7 +133,7 @@ namespace
             case CpuOp::NOT:
                 return "not";
             case CpuOp::BSWAP:
-                return "bswap";                
+                return "bswap";
             case CpuOp::POPCNT:
                 return "popcnt";
             case CpuOp::MULADD:
@@ -184,26 +184,26 @@ namespace
             return "";
 
         static constexpr const char* GENERAL_REGS[][5] = {
-            {"al", "ax", "eax", "rax", "..."},
-            {"bl", "bx", "ebx", "rbx", "..."},
-            {"cl", "cx", "ecx", "rcx", "..."},
-            {"dl", "dx", "edx", "rdx", "..."},
-            {"r8b", "r8w", "r8d", "r8", "..."},
-            {"r9b", "r9w", "r9d", "r9", "..."},
-            {"r10b", "r10w", "r10d", "r10", "..."},
-            {"r11b", "r11w", "r11d", "r11", "..."},
-            {"r12b", "r12w", "r12d", "r12", "..."},
-            {"r13b", "r13w", "r13d", "r13", "..."},
-            {"r14b", "r14w", "r14d", "r14", "..."},
-            {"r15b", "r15w", "r15d", "r15", "..."},
-            {"xmm0", "xmm0", "xmm0", "xmm0", "xmm0"},
-            {"xmm1", "xmm1", "xmm1", "xmm1", "xmm1"},
-            {"xmm2", "xmm2", "xmm2", "xmm2", "xmm2"},
-            {"xmm3", "xmm3", "xmm3", "xmm3", "xmm3"},
-            {"sil", "si", "esi", "rsi", "..."},
-            {"dil", "di", "edi", "rdi", "..."},
-            {"spl", "sp", "esp", "rsp", "..."},
-            {"bpl", "bp", "ebp", "rbp", "..."},
+        {"al", "ax", "eax", "rax", "..."},
+        {"bl", "bx", "ebx", "rbx", "..."},
+        {"cl", "cx", "ecx", "rcx", "..."},
+        {"dl", "dx", "edx", "rdx", "..."},
+        {"r8b", "r8w", "r8d", "r8", "..."},
+        {"r9b", "r9w", "r9d", "r9", "..."},
+        {"r10b", "r10w", "r10d", "r10", "..."},
+        {"r11b", "r11w", "r11d", "r11", "..."},
+        {"r12b", "r12w", "r12d", "r12", "..."},
+        {"r13b", "r13w", "r13d", "r13", "..."},
+        {"r14b", "r14w", "r14d", "r14", "..."},
+        {"r15b", "r15w", "r15d", "r15", "..."},
+        {"xmm0", "xmm0", "xmm0", "xmm0", "xmm0"},
+        {"xmm1", "xmm1", "xmm1", "xmm1", "xmm1"},
+        {"xmm2", "xmm2", "xmm2", "xmm2", "xmm2"},
+        {"xmm3", "xmm3", "xmm3", "xmm3", "xmm3"},
+        {"sil", "si", "esi", "rsi", "..."},
+        {"dil", "di", "edi", "rdi", "..."},
+        {"spl", "sp", "esp", "rsp", "..."},
+        {"bpl", "bp", "ebp", "rbp", "..."},
         };
 
         const auto numBytes = static_cast<int>(std::log2(ScbeCpu::getNumBits(opBits) / 8));

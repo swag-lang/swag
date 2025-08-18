@@ -298,11 +298,11 @@ bool Semantic::checkAccess(JobContext* context, AstNode* node)
 
     const auto accessCulprit = culprit->hasSemFlag(SEMFLAG_ACCESS_PRIVATE) ? "private" : "internal";
     const auto msg           = formErr(Err0296,
-                                       Naming::kindName(node).cstr(),
-                                       node->token.cstr(),
-                                       Naming::kindName(culprit).cstr(),
-                                       culprit->token.cstr(),
-                                       accessCulprit);
+                             Naming::kindName(node).cstr(),
+                             node->token.cstr(),
+                             Naming::kindName(culprit).cstr(),
+                             culprit->token.cstr(),
+                             accessCulprit);
 
     Diagnostic err{node, node->getTokenName(), msg};
     if (onNode == culprit)

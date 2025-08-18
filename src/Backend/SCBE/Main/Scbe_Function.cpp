@@ -179,7 +179,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 pp.emitNop();
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::MulAddVC64:
                 pp.emitLoadRegMem(cc->computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
@@ -195,7 +195,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 pp.emitOpBinaryMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), ip->b.u64, CpuOp::ADD, opBits);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::ClearRA:
                 pp.emitLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B64);
@@ -216,7 +216,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 pp.emitLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->d.u32), 0, OpBits::B64);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::CopyRBtoRA8:
             case ByteCodeOp::CopyRBtoRA16:
@@ -234,7 +234,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, OpBits::B64);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::CastBool8:
             case ByteCodeOp::CastBool16:
@@ -377,7 +377,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegF0, OpBits::B64);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::BinOpShiftLeftS8:
             case ByteCodeOp::BinOpShiftLeftU8:
@@ -390,7 +390,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitShiftLogical(pp, CpuOp::SHL);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::BinOpShiftRightS8:
             case ByteCodeOp::BinOpShiftRightS16:
@@ -405,7 +405,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitShiftLogical(pp, CpuOp::SHR);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::BinOpXor8:
             case ByteCodeOp::BinOpXor16:
@@ -414,7 +414,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitBinOp(pp, CpuOp::XOR);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::BinOpMulS8:
             case ByteCodeOp::BinOpMulS16:
@@ -446,7 +446,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitBinOp(pp, CpuOp::MUL);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::BinOpModuloS8:
             case ByteCodeOp::BinOpModuloS16:
@@ -461,7 +461,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitBinOp(pp, CpuOp::MOD);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::BinOpDivS8:
             case ByteCodeOp::BinOpDivS16:
@@ -480,7 +480,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitBinOp(pp, CpuOp::FDIV);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::BinOpPlusS8:
             case ByteCodeOp::BinOpPlusS16:
@@ -508,7 +508,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitBinOp(pp, CpuOp::ADD);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::BinOpMinusS8:
             case ByteCodeOp::BinOpMinusS16:
@@ -535,7 +535,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
             case ByteCodeOp::BinOpMinusF64_Safe:
                 emitBinOp(pp, CpuOp::FSUB);
                 break;
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::BinOpBitmaskAnd8:
             case ByteCodeOp::BinOpBitmaskAnd16:
@@ -544,7 +544,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitBinOp(pp, CpuOp::AND);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::BinOpBitmaskOr8:
             case ByteCodeOp::BinOpBitmaskOr16:
@@ -553,7 +553,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitBinOp(pp, CpuOp::OR);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::AffectOpShiftLeftEqS8:
             case ByteCodeOp::AffectOpShiftLeftEqU8:
@@ -566,7 +566,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitShiftEqLogical(pp, CpuOp::SHL);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::AffectOpShiftRightEqS8:
             case ByteCodeOp::AffectOpShiftRightEqS16:
@@ -581,7 +581,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitShiftEqLogical(pp, CpuOp::SHR);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::AffectOpXorEq8:
             case ByteCodeOp::AffectOpXorEq16:
@@ -590,7 +590,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitBinOpEq(pp, 0, CpuOp::XOR);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::AffectOpOrEq8:
             case ByteCodeOp::AffectOpOrEq16:
@@ -599,7 +599,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitBinOpEq(pp, 0, CpuOp::OR);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::AffectOpAndEq8:
             case ByteCodeOp::AffectOpAndEq16:
@@ -608,7 +608,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitBinOpEq(pp, 0, CpuOp::AND);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::AffectOpMulEqS8:
             case ByteCodeOp::AffectOpMulEqS16:
@@ -657,7 +657,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitBinOpEqS(pp, CpuOp::FMUL);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::AffectOpDivEqS8:
             case ByteCodeOp::AffectOpDivEqS16:
@@ -693,7 +693,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitBinOpEqS(pp, CpuOp::FDIV);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::AffectOpModuloEqS8:
             case ByteCodeOp::AffectOpModuloEqS16:
@@ -721,7 +721,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitBinOpEqS(pp, CpuOp::MOD);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::AffectOpPlusEqS8:
             case ByteCodeOp::AffectOpPlusEqS16:
@@ -764,7 +764,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitBinOpEqS(pp, CpuOp::FADD);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::AffectOpMinusEqS8:
             case ByteCodeOp::AffectOpMinusEqS16:
@@ -807,7 +807,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitBinOpEqS(pp, CpuOp::FSUB);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::ZeroToTrue:
                 pp.emitCmpMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B32);
@@ -836,7 +836,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, OpBits::B8);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::CompareOpGreaterS8:
             case ByteCodeOp::CompareOpGreaterS16:
@@ -873,7 +873,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, OpBits::B8);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::CompareOpLowerS8:
             case ByteCodeOp::CompareOpLowerS16:
@@ -911,7 +911,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, OpBits::B8);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::CompareOp3Way8:
             case ByteCodeOp::CompareOp3Way16:
@@ -938,7 +938,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, OpBits::B32);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::CompareOpEqual8:
             case ByteCodeOp::CompareOpEqual16:
@@ -953,7 +953,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, OpBits::B8);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::CompareOpNotEqual8:
             case ByteCodeOp::CompareOpNotEqual16:
@@ -968,7 +968,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, OpBits::B8);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::IntrinsicDbgAlloc:
                 emitInternalCallRAParams(pp, g_LangSpec->name_at_dbgalloc, {}, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32));
@@ -992,7 +992,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitInternalCallRAParams(pp, g_LangSpec->name_at_as, {ip->a.u32, ip->b.u32, ip->c.u32}, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->d.u32));
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::NegBool:
                 pp.emitLoadRegMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B8);
@@ -1021,7 +1021,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegF0, opBits);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::InvertU8:
             case ByteCodeOp::InvertU16:
@@ -1038,7 +1038,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 }
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::JumpDyn8:
             case ByteCodeOp::JumpDyn16:
@@ -1047,7 +1047,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitJumpTable(pp);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::JumpIfTrue:
                 pp.emitCmpMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 0, OpBits::B8);
@@ -1088,7 +1088,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 pp.emitJumpCondImm(CpuCondJump::JUMP, pp.ipIndex + ip->b.s32 + 1);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::JumpIfNotEqual8:
                 emitJumpCmp(pp, CpuCondJump::JNZ, OpBits::B8);
@@ -1109,7 +1109,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitJumpCmp2(pp, CpuCondJump::JP, CpuCondJump::JNZ, OpBits::B64);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::JumpIfEqual8:
                 emitJumpCmp(pp, CpuCondJump::JZ, OpBits::B8);
@@ -1134,7 +1134,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitJumpCmp(pp, CpuCondJump::JZ, OpBits::B64);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::JumpIfStackEqual8:
                 emitJumpCmpAddr(pp, CpuCondJump::JZ, CpuReg::Rsp, pp.cpuFct->getStackOffsetBC() + ip->a.u32, OpBits::B8);
@@ -1200,7 +1200,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitJumpCmpAddr(pp, CpuCondJump::JNZ, cc->computeRegI1, ip->d.u32, OpBits::B64);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::JumpIfLowerS8:
             case ByteCodeOp::JumpIfLowerS16:
@@ -1219,7 +1219,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitJumpCmp(pp, CpuCondJump::JB, opBits);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::JumpIfLowerEqS8:
             case ByteCodeOp::JumpIfLowerEqS16:
@@ -1239,7 +1239,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitJumpCmp(pp, CpuCondJump::JBE, opBits);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::JumpIfGreaterS8:
             case ByteCodeOp::JumpIfGreaterS16:
@@ -1259,7 +1259,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitJumpCmp(pp, CpuCondJump::JA, opBits);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::JumpIfGreaterEqS8:
             case ByteCodeOp::JumpIfGreaterEqS16:
@@ -1279,7 +1279,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitJumpCmp(pp, CpuCondJump::JAE, opBits);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::DecrementRA32:
             case ByteCodeOp::DecrementRA64:
@@ -1291,7 +1291,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 pp.emitOpBinaryMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), 1, CpuOp::ADD, OpBits::B64);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::DeRef8:
             case ByteCodeOp::DeRef16:
@@ -1312,7 +1312,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, OpBits::B64);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::GetFromBssSeg8:
             case ByteCodeOp::GetFromBssSeg16:
@@ -1334,7 +1334,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, OpBits::B64);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::GetFromStack8:
             case ByteCodeOp::GetFromStack16:
@@ -1351,7 +1351,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, OpBits::B64);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::GetFromStack8x2:
             case ByteCodeOp::GetFromStack16x2:
@@ -1364,7 +1364,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, OpBits::B64);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::GetIncFromStack64DeRef8:
             case ByteCodeOp::GetIncFromStack64DeRef16:
@@ -1376,7 +1376,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, OpBits::B64);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::CopyStack8:
             case ByteCodeOp::CopyStack16:
@@ -1387,7 +1387,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetBC() + ip->a.u32, cc->computeRegI0, opBits);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::ClearMaskU32:
             case ByteCodeOp::ClearMaskU64:
@@ -1403,7 +1403,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, opBits);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::SetZeroAtPointer8:
             case ByteCodeOp::SetZeroAtPointer16:
@@ -1439,7 +1439,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitInternalCallCPUParams(pp, g_LangSpec->name_memset, pp.pushParams);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::ClearRR8:
             case ByteCodeOp::ClearRR16:
@@ -1472,7 +1472,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 break;
             }
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::SetZeroStack8:
             case ByteCodeOp::SetZeroStack16:
@@ -1497,7 +1497,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 }
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::SetAtPointer8:
             case ByteCodeOp::SetAtPointer16:
@@ -1514,7 +1514,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 }
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::SetAtStackPointer8:
             case ByteCodeOp::SetAtStackPointer16:
@@ -1530,7 +1530,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 }
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::SetAtStackPointer8x2:
             case ByteCodeOp::SetAtStackPointer16x2:
@@ -1554,7 +1554,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 }
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::MakeStackPointer:
                 pp.emitLoadAddressMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetBC() + ip->b.u32, OpBits::B64);
@@ -1571,7 +1571,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetRT(0), cc->computeRegI0, OpBits::B64);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::MakeMutableSegPointer:
                 pp.emitLoadSymRelocAddress(cc->computeRegI0, pp.symMSIndex, ip->b.u32);
@@ -1588,7 +1588,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
             case ByteCodeOp::MakeCompilerSegPointer:
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::IncPointer64:
                 emitAddSubMul64(pp, 1, CpuOp::ADD);
@@ -1600,7 +1600,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitAddSubMul64(pp, ip->d.u64, CpuOp::ADD);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::Mul64byVB64:
                 pp.emitOpBinaryMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), ip->b.u64, CpuOp::IMUL, OpBits::B64);
@@ -1609,7 +1609,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 pp.emitOpBinaryMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), ip->b.u64, CpuOp::IDIV, OpBits::B64);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::SetImmediate32:
             case ByteCodeOp::SetImmediate64:
@@ -1617,7 +1617,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 pp.emitLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), ip->b.u64, opBits);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::MemCpy8:
             case ByteCodeOp::MemCpy16:
@@ -1629,7 +1629,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitCopyMem(pp, cc->computeRegI0, cc->computeRegI1, ScbeCpu::getNumBits(opBits) / 8);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::IntrinsicMemCpy:
                 if (ip->hasFlag(BCI_IMM_C) &&
@@ -1820,7 +1820,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitInternalCallRAParams(pp, g_LangSpec->name_at_tableof, {ip->a.u32, ip->b.u32}, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32));
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::CopyRAtoRR:
                 if (ip->hasFlag(BCI_IMM_A))
@@ -1890,7 +1890,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitCopyVaargs(pp);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::PushRVParam:
                 pp.pushRVParams.push_back({ip->a.u32, ip->b.u32});
@@ -1915,7 +1915,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 pp.pushRAParams.push_back(ip->d.u32);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::GetParam8:
             case ByteCodeOp::GetParam16:
@@ -1932,7 +1932,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitGetParam(pp, ip->a.u32, ip->b.mergeU64U32.high, OpBits::B64, ip->d.u64);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::GetParam64DeRef8:
             case ByteCodeOp::GetParam64DeRef16:
@@ -1942,7 +1942,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitGetParam(pp, ip->a.u32, ip->b.mergeU64U32.high, OpBits::B64, 0, opBits);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::GetIncParam64DeRef8:
             case ByteCodeOp::GetIncParam64DeRef16:
@@ -1952,7 +1952,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitGetParam(pp, ip->a.u32, ip->b.mergeU64U32.high, OpBits::B64, ip->d.u64, opBits);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::MakeLambda:
                 emitMakeLambda(pp);
@@ -1962,7 +1962,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitMakeCallback(pp);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::LocalCall:
             case ByteCodeOp::LocalCallPop:
@@ -2008,7 +2008,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 emitLambdaCall(pp);
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::IncSPPostCall:
             case ByteCodeOp::IncSPPostCallCond:
@@ -2046,7 +2046,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 pp.emitLeave();
                 break;
 
-                /////////////////////////////////////
+            /////////////////////////////////////
 
             case ByteCodeOp::IntrinsicMulAddF32:
             case ByteCodeOp::IntrinsicMulAddF64:

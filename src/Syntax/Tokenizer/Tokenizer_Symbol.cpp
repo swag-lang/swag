@@ -24,7 +24,7 @@ bool Tokenizer::doSymbol(TokenParse& tokenParse, uint32_t c)
             tokenParse.token.id = TokenId::SymRightSquare;
             return true;
         case '{':
-            lastOpenLeftCurly   = tokenParse.token.startLocation;
+            lastOpenLeftCurly = tokenParse.token.startLocation;
             tokenParse.token.id = TokenId::SymLeftCurly;
             return true;
         case '}':

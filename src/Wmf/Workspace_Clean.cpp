@@ -73,10 +73,11 @@ void Workspace::cleanScript()
 
     // Clean all folders of the form 'SWAG_SCRIPT_WORKSPACE-??'
     OS::visitFolders(cacheFolder, [&](const char* folder) {
-                         auto path = cacheFolder;
-                         path.append(folder);
-                         g_Log.messageHeaderCentered("Cleaning", path);
-                         cleanFolderContent(path); }, form("%s-*", SWAG_SCRIPT_WORKSPACE).cstr());
+        auto path = cacheFolder;
+        path.append(folder);
+        g_Log.messageHeaderCentered("Cleaning", path);
+        cleanFolderContent(path);
+    }, form("%s-*", SWAG_SCRIPT_WORKSPACE).cstr());
 }
 
 void Workspace::cleanCommand()

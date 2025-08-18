@@ -756,7 +756,7 @@ bool Semantic::preResolveStructContent(SemanticContext* context)
             symbolKind = SymbolKind::Struct;
             break;
         case AstNodeKind::InterfaceDecl:
-            symbolKind     = SymbolKind::Interface;
+            symbolKind = SymbolKind::Interface;
             typeInfo->kind = TypeInfoKind::Interface;
             break;
         default:
@@ -951,7 +951,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
         node->packing = 0;
     else
     {
-        if (auto value = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Pack, g_LangSpec->name_value))
+        if (auto value    = typeInfo->attributes.getValue(g_LangSpec->name_Swag_Pack, g_LangSpec->name_value))
             node->packing = value->reg.u8;
     }
 

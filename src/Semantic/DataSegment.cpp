@@ -12,31 +12,31 @@ void DataSegment::getNames(const char** name, const char** shortName, SegmentKin
     switch (kind)
     {
         case SegmentKind::Compiler:
-            *name      = "compiler segment";
+            *name = "compiler segment";
             *shortName = "cmp";
             break;
         case SegmentKind::Tls:
-            *name      = "tls segment";
+            *name = "tls segment";
             *shortName = "tls";
             break;
         case SegmentKind::Data:
-            *name      = "data segment";
+            *name = "data segment";
             *shortName = "dat";
             break;
         case SegmentKind::Bss:
-            *name      = "bss segment";
+            *name = "bss segment";
             *shortName = "bss";
             break;
         case SegmentKind::Constant:
-            *name      = "constant segment";
+            *name = "constant segment";
             *shortName = "cst";
             break;
         case SegmentKind::Global:
-            *name      = "global segment";
+            *name = "global segment";
             *shortName = "glb";
             break;
         case SegmentKind::String:
-            *name      = "string segment";
+            *name = "string segment";
             *shortName = "str";
             break;
         case SegmentKind::Me:
@@ -314,19 +314,19 @@ uint32_t DataSegment::addComputedValueNoLock(const TypeInfo* typeInfo, const Com
     switch (typeInfo->sizeOf)
     {
         case 1:
-            *addr                               = computedValue.reg.u8;
+            *addr = computedValue.reg.u8;
             storedValues8[computedValue.reg.u8] = {.offset = storageOffset, .addr = addr};
             break;
         case 2:
-            *reinterpret_cast<uint16_t*>(addr)    = computedValue.reg.u16;
+            *reinterpret_cast<uint16_t*>(addr) = computedValue.reg.u16;
             storedValues16[computedValue.reg.u16] = {.offset = storageOffset, .addr = addr};
             break;
         case 4:
-            *reinterpret_cast<uint32_t*>(addr)    = computedValue.reg.u32;
+            *reinterpret_cast<uint32_t*>(addr) = computedValue.reg.u32;
             storedValues32[computedValue.reg.u32] = {.offset = storageOffset, .addr = addr};
             break;
         case 8:
-            *reinterpret_cast<uint64_t*>(addr)    = computedValue.reg.u64;
+            *reinterpret_cast<uint64_t*>(addr) = computedValue.reg.u64;
             storedValues64[computedValue.reg.u64] = {.offset = storageOffset, .addr = addr};
             break;
     }

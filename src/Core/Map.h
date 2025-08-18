@@ -12,7 +12,7 @@ struct Map : std::unordered_map<K, V, std::hash<K>, std::equal_to<>, StdAllocato
     void release()
     {
         this->~Map<K, V>();
-        ::new (this) Map;
+        ::new(this) Map;
     }
 };
 
@@ -27,7 +27,7 @@ struct MapUtf8 : std::unordered_map<Utf8, V, HashUtf8, std::equal_to<Utf8>, StdA
     void release()
     {
         this->~MapUtf8<V>();
-        ::new (this) MapUtf8;
+        ::new(this) MapUtf8;
     }
 };
 
@@ -47,6 +47,6 @@ struct MapPath : std::unordered_map<Path, V, HashPath, std::equal_to<Path>, StdA
     void release()
     {
         this->~MapPath<V>();
-        ::new (this) MapPath;
+        ::new(this) MapPath;
     }
 };

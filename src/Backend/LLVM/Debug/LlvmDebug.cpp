@@ -33,14 +33,14 @@ void LlvmDebug::setup(Llvm* m, llvm::Module* module)
     exportFile          = dbgBuilder->createFile(m->exportFileName.cstr(), expPath.parent_path().cstr());
     const Utf8 compiler = form("swag %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
     compileUnit         = dbgBuilder->createCompileUnit(llvm::dwarf::DW_LANG_C99,
-                                                        mainFile,
-                                                        compiler.cstr(),
-                                                        isOptimized,
-                                                        "",
-                                                        0,
-                                                        "",
-                                                        llvm::DICompileUnit::DebugEmissionKind::FullDebug,
-                                                        0);
+                                                mainFile,
+                                                compiler.cstr(),
+                                                isOptimized,
+                                                "",
+                                                0,
+                                                "",
+                                                llvm::DICompileUnit::DebugEmissionKind::FullDebug,
+                                                0);
 
     module->addModuleFlag(llvm::Module::Warning, "Debug Info Version", llvm::DEBUG_METADATA_VERSION);
 #ifdef _WIN32
