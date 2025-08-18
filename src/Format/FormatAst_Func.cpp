@@ -360,7 +360,12 @@ bool FormatAst::outputFuncCallParams(FormatContext& context, AstNode* node)
     }
 
     SWAG_CHECK(outputChildrenChar(context, node, ',', 0, 0));
-    concat->removeLastChar('\n');
+
+    // When generating a code param that has been appended from then next statement, then we
+    // must keep the empty line
+    if (!funcCallParams->childCount() || !funcCallParams->lastChild()->hasSemFlag(SEMFLAG_AUTO_CODE_PARAM))
+        concat->removeLastChar('\n');
+    
     return true;
 }
 
