@@ -805,7 +805,8 @@ struct AstAttrUse : AstNode
 
 struct AstFuncCallParams : AstNode
 {
-    static constexpr SpecFlags SPEC_FLAG_CALL_FOR_STRUCT = 0x0001;
+    static constexpr SpecFlags SPEC_FLAG_CALL_FOR_STRUCT            = 0x0001;
+    static constexpr SpecFlags SPEC_FLAG_CALL_FOR_STRUCT_WAS_ASSIGN = 0x0002;
 
     AstNode* clone(CloneContext& context);
 

@@ -28,7 +28,7 @@ void Workspace::computeModuleName(const Path& path, Utf8& moduleName, Path& modu
     const auto parent    = path.parent_path().filename();
     const auto cFileName = path.filename();
 
-    // Be sure module name is valid
+    // Be sure the module name is valid
     Utf8 errorStr;
     if (!Module::isValidName(cFileName, errorStr))
     {
@@ -622,7 +622,7 @@ bool Workspace::buildRTModule(Module* module)
 
 bool Workspace::buildTarget()
 {
-    // Load as much files as we can during setup stage
+    // Load as many files as we can during the setup stage
     // to void wasting some cores
     //////////////////////////////////////////////////
 
@@ -890,6 +890,7 @@ bool Workspace::build()
     return result;
 }
 
+#pragma optimize("", off)
 bool Workspace::patch()
 {
     g_CommandLine.patchMode = true;
@@ -907,6 +908,9 @@ bool Workspace::patch()
         {
             if (!f->astRoot)
                 continue;
+
+            //if (f->name != "clipperoffset.swg")
+            //    continue;
 
             FormatContext context;
             context.setDefaultBeautify();

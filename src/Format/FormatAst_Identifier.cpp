@@ -48,6 +48,13 @@ bool FormatAst::outputIdentifier(const FormatContext& context, AstNode* node)
 
     if (identifier->callParameters && !g_LangSpec->intrinsicConstants.contains(identifier->token.text))
     {
+        if (identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT_WAS_ASSIGN))
+        {
+            concat->addBlank();
+            concat->addChar('=');
+            concat->addBlank();
+        }
+
         if (identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
             concat->addChar('{');
         else
