@@ -81,20 +81,20 @@ constexpr uint16_t R_RSP = 335;
 
 struct CV_LVARFLAGS
 {
-    unsigned short fIsParam : 1; // variable is a parameter
-    unsigned short fAddrTaken : 1; // address is taken
-    unsigned short fCompGenx : 1; // variable is compiler generated
+    unsigned short fIsParam     : 1; // variable is a parameter
+    unsigned short fAddrTaken   : 1; // address is taken
+    unsigned short fCompGenx    : 1; // variable is compiler generated
     unsigned short fIsAggregate : 1; // the symbol is splitted in temporaries,
     // which are treated by compiler as
     // independent entities
     unsigned short fIsAggregated : 1; // Counterpart of fIsAggregate - tells
     // that it is a part of a fIsAggregate symbol
-    unsigned short fIsAliased : 1; // variable has multiple simultaneous lifetimes
-    unsigned short fIsAlias : 1; // represents one of the multiple simultaneous lifetimes
-    unsigned short fIsRetValue : 1; // represents a function return value
+    unsigned short fIsAliased      : 1; // variable has multiple simultaneous lifetimes
+    unsigned short fIsAlias        : 1; // represents one of the multiple simultaneous lifetimes
+    unsigned short fIsRetValue     : 1; // represents a function return value
     unsigned short fIsOptimizedOut : 1; // variable has no lifetimes
-    unsigned short fIsEnregGlob : 1; // variable is an enregistered global
-    unsigned short fIsEnregStat : 1; // variable is an enregistered static
+    unsigned short fIsEnregGlob    : 1; // variable is an enregistered global
+    unsigned short fIsEnregStat    : 1; // variable is an enregistered static
 
     unsigned short unused : 5; // must be zero
 };

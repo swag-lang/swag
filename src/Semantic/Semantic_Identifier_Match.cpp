@@ -942,8 +942,8 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
                 !returnType->isNativeFloat() &&
                 !returnType->isBool() &&
                 !returnType->isPointerToTypeInfo() &&
-                !returnType->isStruct() && // Treated later (as errors)
-                !returnType->isArray() && // Treated later (as errors)
+                !returnType->isStruct() &&  // Treated later (as errors)
+                !returnType->isArray() &&   // Treated later (as errors)
                 !returnType->isClosure() && // Treated later (as errors)
                 !identifier->hasSemFlag(SEMFLAG_EXEC_RET_STACK))
             {

@@ -32,10 +32,10 @@ void Llvm::createRuntime(LlvmEncoder& pp)
         llvm::Type* members[] = {
         PTR_I8_TY(), // value
         PTR_I8_TY(), // value
-        I32_TY(), // pushUsedAlloc
-        I32_TY(), // pushTraceIndex
-        I32_TY(), // pushHasError
-        I32_TY()}; // padding
+        I32_TY(),    // pushUsedAlloc
+        I32_TY(),    // pushTraceIndex
+        I32_TY(),    // pushHasError
+        I32_TY()};   // padding
         pp.errorTy = llvm::StructType::create(context, members, "SwagErrorValue");
     }
 
@@ -43,39 +43,39 @@ void Llvm::createRuntime(LlvmEncoder& pp)
     {
         llvm::Type* members[] = {
         pp.interfaceTy, // ScratchAllocator allocator
-        PTR_I8_TY(), // ScratchAllocator block
-        I64_TY(), // ScratchAllocator capacity
-        I64_TY(), // ScratchAllocator used
-        I64_TY(), // ScratchAllocator maxUsed
-        PTR_I8_TY(), // ScratchAllocator firstLeak
-        I64_TY(), // ScratchAllocator totalLeak
-        I64_TY()}; // ScratchAllocator maxLeak
+        PTR_I8_TY(),    // ScratchAllocator block
+        I64_TY(),       // ScratchAllocator capacity
+        I64_TY(),       // ScratchAllocator used
+        I64_TY(),       // ScratchAllocator maxUsed
+        PTR_I8_TY(),    // ScratchAllocator firstLeak
+        I64_TY(),       // ScratchAllocator totalLeak
+        I64_TY()};      // ScratchAllocator maxLeak
         pp.scratchTy = llvm::StructType::create(context, members, "SwagScratchAllocator");
     }
 
     // SwagContext
     {
         llvm::Type* members[] = {
-        pp.interfaceTy, // allocator
-        I64_TY(), // flags
-        pp.scratchTy, // tempAllocator
-        pp.scratchTy, // errorAllocator
-        PTR_I8_TY(), // debugAllocator
-        I64_TY(), // runtimeFlags
-        I64_TY(), // user0
-        I64_TY(), // user1
-        I64_TY(), // user2
-        I64_TY(), // user3
+        pp.interfaceTy,                                                 // allocator
+        I64_TY(),                                                       // flags
+        pp.scratchTy,                                                   // tempAllocator
+        pp.scratchTy,                                                   // errorAllocator
+        PTR_I8_TY(),                                                    // debugAllocator
+        I64_TY(),                                                       // runtimeFlags
+        I64_TY(),                                                       // user0
+        I64_TY(),                                                       // user1
+        I64_TY(),                                                       // user2
+        I64_TY(),                                                       // user3
         llvm::ArrayType::get(I8_TY(), SWAG_MAX_TRACES * sizeof(void*)), // traces
-        llvm::ArrayType::get(pp.errorTy, SWAG_MAX_ERRORS), // errors
-        llvm::ArrayType::get(I8_TY(), sizeof(SwagSourceCodeLocation)), // exceptionLoc
-        llvm::ArrayType::get(I8_TY(), 4 * sizeof(void*)), // exceptionParams
-        PTR_I8_TY(), // panic
-        PTR_I8_TY(), // curError
-        PTR_I8_TY(), // curError
-        I32_TY(), // errorIndex
-        I32_TY(), // traceIndex
-        I32_TY(), // hasError
+        llvm::ArrayType::get(pp.errorTy, SWAG_MAX_ERRORS),              // errors
+        llvm::ArrayType::get(I8_TY(), sizeof(SwagSourceCodeLocation)),  // exceptionLoc
+        llvm::ArrayType::get(I8_TY(), 4 * sizeof(void*)),               // exceptionParams
+        PTR_I8_TY(),                                                    // panic
+        PTR_I8_TY(),                                                    // curError
+        PTR_I8_TY(),                                                    // curError
+        I32_TY(),                                                       // errorIndex
+        I32_TY(),                                                       // traceIndex
+        I32_TY(),                                                       // hasError
         };
 
         static_assert(sizeof(SwagContext) == 1600);

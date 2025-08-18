@@ -10,10 +10,10 @@
 
 enum class ModRMMode : uint8_t
 {
-    Memory = 0b00,
-    Displacement8 = 0b01,
+    Memory         = 0b00,
+    Displacement8  = 0b01,
     Displacement32 = 0b10,
-    Register = 0b11,
+    Register       = 0b11,
 };
 
 constexpr auto REX_REG_NONE  = static_cast<CpuReg>(255);
@@ -34,27 +34,27 @@ constexpr uint8_t SIB_NO_BASE = 0b101;
 
 enum class X64Reg : uint8_t
 {
-    Rax = 0b000000,
-    Rbx = 0b000011,
-    Rcx = 0b000001,
-    Rdx = 0b000010,
-    Rsp = 0b000100,
-    Rbp = 0b000101,
-    Rsi = 0b000110,
-    Rdi = 0b000111,
-    R8 = 0b001000,
-    R9 = 0b001001,
-    R10 = 0b001010,
-    R11 = 0b001011,
-    R12 = 0b001100,
-    R13 = 0b001101,
-    R14 = 0b001110,
-    R15 = 0b001111,
+    Rax  = 0b000000,
+    Rbx  = 0b000011,
+    Rcx  = 0b000001,
+    Rdx  = 0b000010,
+    Rsp  = 0b000100,
+    Rbp  = 0b000101,
+    Rsi  = 0b000110,
+    Rdi  = 0b000111,
+    R8   = 0b001000,
+    R9   = 0b001001,
+    R10  = 0b001010,
+    R11  = 0b001011,
+    R12  = 0b001100,
+    R13  = 0b001101,
+    R14  = 0b001110,
+    R15  = 0b001111,
     Xmm0 = 0b100000,
     Xmm1 = 0b100001,
     Xmm2 = 0b100010,
     Xmm3 = 0b100011,
-    Rip = 0b110000
+    Rip  = 0b110000
 };
 
 namespace

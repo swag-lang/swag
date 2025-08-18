@@ -46,7 +46,7 @@ constexpr AttrUsageFlags ATTR_USAGE_ALL        = 0x04000000;
 
 enum class ContextFlags : uint64_t
 {
-    Test = 0x00000000'00000001,
+    Test     = 0x00000000'00000001,
     ByteCode = 0x00000000'00000002,
 };
 
@@ -175,7 +175,7 @@ enum class SwagTargetOs : uint32_t
 
 enum class SwagRuntimeFlags : uint64_t
 {
-    Zero = 0x00000000'00000000,
+    Zero         = 0x00000000'00000000,
     FromCompiler = 0x00000000'00000001,
 };
 
@@ -389,25 +389,25 @@ enum class NativeTypeKind : uint8_t
 
 enum class ExportedTypeInfoFlags : uint32_t
 {
-    None = 0x00000000,
-    PointerTypeInfo = 0x00000001,
-    Integer = 0x00000002,
-    Float = 0x00000004,
-    Unsigned = 0x00000008,
-    HasPostCopy = 0x00000010,
-    HasPostMove = 0x00000020,
-    HasDrop = 0x00000040,
-    Strict = 0x00000080,
-    CanCopy = 0x00000100,
-    Tuple = 0x00000200,
-    CString = 0x00000400,
-    Generic = 0x00000800,
-    PointerRef = 0x00001000,
-    PointerMoveRef = 0x00002000,
+    None              = 0x00000000,
+    PointerTypeInfo   = 0x00000001,
+    Integer           = 0x00000002,
+    Float             = 0x00000004,
+    Unsigned          = 0x00000008,
+    HasPostCopy       = 0x00000010,
+    HasPostMove       = 0x00000020,
+    HasDrop           = 0x00000040,
+    Strict            = 0x00000080,
+    CanCopy           = 0x00000100,
+    Tuple             = 0x00000200,
+    CString           = 0x00000400,
+    Generic           = 0x00000800,
+    PointerRef        = 0x00001000,
+    PointerMoveRef    = 0x00002000,
     PointerArithmetic = 0x00004000,
-    Character = 0x00008000,
-    Const = 0x00010000,
-    Nullable = 0x00020000,
+    Character         = 0x00008000,
+    Const             = 0x00010000,
+    Nullable          = 0x00020000,
 };
 
 struct ExportedTypeInfo
@@ -435,7 +435,7 @@ struct ExportedAttribute
 
 enum class ExportedTypeValueFlags : uint32_t
 {
-    Zero = 0x00000000,
+    Zero     = 0x00000000,
     AutoName = 0x00000001,
     HasUsing = 0x00000002,
 };
@@ -557,15 +557,15 @@ enum class CompilerMsgKind
 
 enum class CompilerMsgKindMask : uint64_t
 {
-    PassAfterSemantic = 1 << static_cast<uint32_t>(CompilerMsgKind::PassAfterSemantic),
+    PassAfterSemantic     = 1 << static_cast<uint32_t>(CompilerMsgKind::PassAfterSemantic),
     PassBeforeRunByteCode = 1 << static_cast<uint32_t>(CompilerMsgKind::PassBeforeRunByteCode),
-    PassBeforeOutput = 1 << static_cast<uint32_t>(CompilerMsgKind::PassBeforeOutput),
-    PassAllDone = 1 << static_cast<uint32_t>(CompilerMsgKind::PassAllDone),
-    SemFunctions = 1 << static_cast<uint32_t>(CompilerMsgKind::SemFunctions),
-    SemTypes = 1 << static_cast<uint32_t>(CompilerMsgKind::SemTypes),
-    SemGlobals = 1 << static_cast<uint32_t>(CompilerMsgKind::SemGlobals),
-    AttributeGen = 1 << static_cast<uint32_t>(CompilerMsgKind::AttributeGen),
-    All = 0xFFFFFFFFFFFFFFFF,
+    PassBeforeOutput      = 1 << static_cast<uint32_t>(CompilerMsgKind::PassBeforeOutput),
+    PassAllDone           = 1 << static_cast<uint32_t>(CompilerMsgKind::PassAllDone),
+    SemFunctions          = 1 << static_cast<uint32_t>(CompilerMsgKind::SemFunctions),
+    SemTypes              = 1 << static_cast<uint32_t>(CompilerMsgKind::SemTypes),
+    SemGlobals            = 1 << static_cast<uint32_t>(CompilerMsgKind::SemGlobals),
+    AttributeGen          = 1 << static_cast<uint32_t>(CompilerMsgKind::AttributeGen),
+    All                   = 0xFFFFFFFFFFFFFFFF,
 };
 
 struct ExportedCompilerMessage

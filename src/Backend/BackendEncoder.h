@@ -21,10 +21,10 @@ enum class BackendPreCompilePass
 enum class OpBits : uint8_t
 {
     Zero = 0,
-    B8 = 8,
-    B16 = 16,
-    B32 = 32,
-    B64 = 64,
+    B8   = 8,
+    B16  = 16,
+    B32  = 32,
+    B64  = 64,
     B128 = 128,
 };
 
