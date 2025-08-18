@@ -896,18 +896,26 @@ bool Workspace::patch()
 
     SWAG_CHECK(build());
 
-    for (const auto f : g_Workspace->modules[3]->files)
+    for (const auto m: g_Workspace->modules)
     {
-        if (f->name != "utf8.swg")
+        if (m->is(ModuleKind::Dependency))
             continue;
+        if (m->is(ModuleKind::Config))
+            continue;        
+            
+        for (const auto f : m->files)
+        {
+            if (!f->astRoot)
+                continue;
+            
+            FormatContext context;
+            context.setDefaultBeautify();
 
-        FormatContext context;
-        context.setDefaultBeautify();
-
-        FormatAst fmt;
-        if (!fmt.outputNode(context, f->astRoot))
-            continue;
-        FormatAst::writeResult(f->path.cstr(), fmt.getUtf8());
+            FormatAst fmt;
+            if (!fmt.outputNode(context, f->astRoot))
+                continue;
+            FormatAst::writeResult(f->path.cstr(), fmt.getUtf8());
+        }
     }
 
     return true;
