@@ -284,7 +284,7 @@ bool FormatAst::outputChildrenChar(FormatContext& context, AstNode* node, char b
         if (!child)
             continue;
 
-        if (!first)
+        if (!first && !child->hasSemFlag(SEMFLAG_AUTO_CODE_PARAM))
         {
             if (betweenChar)
                 concat->addChar(betweenChar);

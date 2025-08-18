@@ -44,6 +44,52 @@
 	<s:String x:Key="/Default/CodeStyle/Naming/CppNaming/Abbreviations/=DBG/@EntryIndexedValue">DBG</s:String>
 	<s:String x:Key="/Default/CodeStyle/Naming/CppNaming/Abbreviations/=Fct/@EntryIndexedValue">Fct</s:String>
 	<s:String x:Key="/Default/CodeStyle/Naming/CppNaming/Abbreviations/=VTS/@EntryIndexedValue">VTS</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=AE/@EntryIndexedValue">AE</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=BC/@EntryIndexedValue">BC</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=BE/@EntryIndexedValue">BE</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=CB/@EntryIndexedValue">CB</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=CPU/@EntryIndexedValue">CPU</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=CU/@EntryIndexedValue">CU</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=DBG/@EntryIndexedValue">DBG</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=EOL/@EntryIndexedValue">EOL</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=EP/@EntryIndexedValue">EP</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=Fct/@EntryIndexedValue">Fct</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=FFI/@EntryIndexedValue">FFI</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=FLT/@EntryIndexedValue">FLT</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=GE/@EntryIndexedValue">GE</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=IC/@EntryIndexedValue">IC</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=ID/@EntryIndexedValue">ID</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=IMMA/@EntryIndexedValue">IMMA</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=IMMB/@EntryIndexedValue">IMMB</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=IMMC/@EntryIndexedValue">IMMC</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=IMMD/@EntryIndexedValue">IMMD</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=IO/@EntryIndexedValue">IO</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=IR/@EntryIndexedValue">IR</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=LE/@EntryIndexedValue">LE</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=LLVM/@EntryIndexedValue">LLVM</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=LT/@EntryIndexedValue">LT</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=NA/@EntryIndexedValue">NA</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=NE/@EntryIndexedValue">NE</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=NEP/@EntryIndexedValue">NEP</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=OS/@EntryIndexedValue">OS</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=RA/@EntryIndexedValue">RA</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=RB/@EntryIndexedValue">RB</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=RBRA/@EntryIndexedValue">RBRA</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=RC/@EntryIndexedValue">RC</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=REX/@EntryIndexedValue">REX</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=RM/@EntryIndexedValue">RM</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=RR/@EntryIndexedValue">RR</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=RSP/@EntryIndexedValue">RSP</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=RT/@EntryIndexedValue">RT</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=RV/@EntryIndexedValue">RV</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=RW/@EntryIndexedValue">RW</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=SCBE/@EntryIndexedValue">SCBE</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=SI/@EntryIndexedValue">SI</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=SP/@EntryIndexedValue">SP</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=TLS/@EntryIndexedValue">TLS</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=UFCS/@EntryIndexedValue">UFCS</s:String>
+	<s:String x:Key="/Default/CodeStyle/Naming/CppNamingOptions/Abbreviations/=VTS/@EntryIndexedValue">VTS</s:String>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EFeature_002EServices_002ECpp_002ECodeStyle_002ENaming_002ECppNamingOptionsMigration/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=bcid/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=constref/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=cstr/@EntryIndexedValue">True</s:Boolean>

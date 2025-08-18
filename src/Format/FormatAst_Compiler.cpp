@@ -290,15 +290,7 @@ bool FormatAst::outputCompilerCode(FormatContext& context, AstNode* node)
         concat->addChar(')');
         concat->addEol();
         concat->addIndent(context.indent);
-        concat->addChar('{');
-        concat->addEol();
-        concat->addIndent(context.indent);
         SWAG_CHECK(outputNode(context, node->firstChild()));
-        concat->addEol();
-        concat->addIndent(context.indent);
-        concat->addChar('}');
-        concat->addEol();
-        concat->addIndent(context.indent);
     }
     else
     {
