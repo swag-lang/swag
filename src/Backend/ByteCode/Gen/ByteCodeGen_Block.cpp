@@ -156,16 +156,10 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
     if (func->parameters)
     {
         const auto numFuncParams = func->parameters->childCount();
-
-        // Sort children by parameter index
-        Semantic::sortParameters(allParams);
-
-        // Or invert in case of commutative operator
-        if (allParams->hasSemFlag(SEMFLAG_INVERSE_PARAMS))
-        {
-            SWAG_ASSERT(allParams->childCount() >= 2);
-            std::swap(allParams->children[0], allParams->children[1]);
-        }
+        AstNode    sortedParams;
+        AstNode*   usedParams = Semantic::prepareParamsForCall(allParams, sortedParams, true, numCallParams);
+        if (!usedParams)
+            usedParams = allParams;
 
         // Simple case, every parameter is covered by the call, and there's no named param
         if (numFuncParams == numCallParams)
@@ -173,7 +167,7 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
             for (uint32_t i = 0; i < numCallParams; i++)
             {
                 const auto funcParam = castAst<AstVarDecl>(func->parameters->children[i], AstNodeKind::FuncDeclParam);
-                const auto callParam = allParams->children[i];
+                const auto callParam = usedParams->children[i];
                 const auto symbol    = node->parametersScope->symTable.find(funcParam->token.text);
                 SWAG_ASSERT(symbol);
                 for (const auto overload : symbol->overloads)
@@ -195,14 +189,14 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
         }
         else
         {
-            // Determine if this parameter has been covered by the call
+            // Determine if the call has covered this parameter
             for (uint32_t i = 0; i < numFuncParams; i++)
             {
                 const auto funcParam = castAst<AstVarDecl>(func->parameters->children[i], AstNodeKind::FuncDeclParam);
                 bool       covered   = false;
                 for (uint32_t j = 0; j < numCallParams; j++)
                 {
-                    const auto callParam = castAst<AstFuncCallParam>(allParams->children[j], AstNodeKind::FuncCallParam);
+                    const auto callParam = castAst<AstFuncCallParam>(usedParams->children[j], AstNodeKind::FuncCallParam);
                     if (callParam->indexParam == i)
                     {
                         if (callParam->typeInfo->isCode())

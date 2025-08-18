@@ -11,6 +11,7 @@
 #include "Syntax/Naming.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
+#pragma optimize("", off)
 
 void Semantic::sortParameters(AstNode* allParams)
 {
@@ -28,6 +29,61 @@ void Semantic::sortParameters(AstNode* allParams)
     });
 
     allParams->removeAstFlag(AST_MUST_SORT_CHILDREN);
+}
+
+AstNode* Semantic::prepareParamsForCall(AstNode* allParams, AstNode& tempParams, bool considerInverseSwap, uint32_t numCallParams)
+{
+    if (!allParams)
+        return nullptr;
+
+    // Determine how many parameters to consider
+    if (numCallParams == UINT32_MAX)
+        numCallParams = allParams->childCount();
+
+    bool needSort = false;
+    if (allParams->hasAstFlag(AST_MUST_SORT_CHILDREN))
+    {
+        const auto cnt = std::min<uint32_t>(numCallParams, allParams->childCount());
+        for (uint32_t j = 0; j < cnt; j++)
+        {
+            if (allParams->children[j]->is(AstNodeKind::FuncCallParam))
+            {
+                const auto cp = castAst<AstFuncCallParam>(allParams->children[j], AstNodeKind::FuncCallParam);
+                if (cp->indexParam != j)
+                {
+                    needSort = true;
+                    break;
+                }
+            }
+        }
+    }
+
+    const bool needSwap = considerInverseSwap && allParams->hasSemFlag(SEMFLAG_INVERSE_PARAMS);
+
+    if (!needSort && !needSwap)
+        return allParams;
+
+    // Build a shallow copy into tempParams
+    Ast::constructNode(&tempParams);
+    tempParams.inheritTokenLocation(allParams->token);
+    tempParams.inheritOwners(allParams);
+    tempParams.addAstFlag(AST_MUST_SORT_CHILDREN);
+    
+    {
+        ScopedLock lk(allParams->mutex);
+        tempParams.children = allParams->children;
+    }
+
+    if (needSort)
+        sortParameters(&tempParams);
+
+    if (needSwap)
+    {
+        SWAG_ASSERT(tempParams.childCount() >= 2);
+        std::swap(tempParams.children[0], tempParams.children[1]);
+    }
+
+    return &tempParams;
 }
 
 void Semantic::dealWithIntrinsic(const SemanticContext* context, AstIdentifier* identifier)
@@ -158,11 +214,15 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
         node->typeInfo = g_TypeMgr->typeInfoNull;
     }
 
-    sortParameters(identifier->callParameters);
-    const auto maxParams = identifier->callParameters->childCount();
+    AstNode  sortedParams;
+    AstNode* usedParams = Semantic::prepareParamsForCall(identifier->callParameters, sortedParams, false);
+    if (!usedParams)
+        usedParams = identifier->callParameters;
+
+    const auto maxParams = usedParams->childCount();
     for (uint32_t idx = 0; idx < maxParams; idx++)
     {
-        const auto nodeCall = castAst<AstFuncCallParam>(identifier->callParameters->children[idx], AstNodeKind::FuncCallParam);
+        const auto nodeCall = castAst<AstFuncCallParam>(usedParams->children[idx], AstNodeKind::FuncCallParam);
 
         size_t i = idx;
         if (idx < typeInfoFunc->parameters.size() - 1 || !typeInfoFunc->hasFlag(TYPEINFO_VARIADIC | TYPEINFO_C_VARIADIC))
@@ -1015,11 +1075,15 @@ bool Semantic::setSymbolMatchStruct(SemanticContext* context, OneMatch& oneMatch
     // Need to make all types compatible, in case a cast is necessary
     if (identifier->callParameters)
     {
-        sortParameters(identifier->callParameters);
-        const auto maxParams = identifier->callParameters->childCount();
+        // Prepare params without mutating AST (no inverse swap here)
+        AstNode  sortedParams;
+        AstNode* usedParams = Semantic::prepareParamsForCall(identifier->callParameters, sortedParams, false);
+        if (!usedParams)
+            usedParams = identifier->callParameters;
+        const auto maxParams = usedParams->childCount();
         for (uint32_t i = 0; i < maxParams; i++)
         {
-            const auto   nodeCall = castAst<AstFuncCallParam>(identifier->callParameters->children[i], AstNodeKind::FuncCallParam);
+            const auto   nodeCall = castAst<AstFuncCallParam>(usedParams->children[i], AstNodeKind::FuncCallParam);
             const size_t idx      = nodeCall->indexParam;
             if (idx < oneMatch.solvedParameters.size() && oneMatch.solvedParameters[idx])
             {

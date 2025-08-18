@@ -1556,11 +1556,15 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     YIELD();
 
     uint32_t numCallParams = allParams ? allParams->childCount() : 0;
+    AstNode  sortedParams;
+    AstNode* usedParams = Semantic::prepareParamsForCall(allParams, sortedParams, true, numCallParams);
+    if (!usedParams)
+        usedParams = allParams;
 
     // For a untyped variadic, we need to store all parameters as 'any'
     // So we must generate one type per parameter
     Vector<uint32_t> storageOffsetsVariadicTypes;
-    if (allParams && typeInfoFunc->hasFlag(TYPEINFO_VARIADIC))
+    if (usedParams && typeInfoFunc->hasFlag(TYPEINFO_VARIADIC))
     {
         auto  numFuncParams  = typeInfoFunc->parameters.size();
         auto  module         = context->sourceFile->module;
@@ -1570,7 +1574,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
         // We must export one type per parameter
         for (int i = static_cast<int>(numCallParams - 1); i >= static_cast<int>(numFuncParams - 1); i--)
         {
-            auto     child        = allParams->children[i];
+            auto     child        = usedParams->children[i];
             auto     concreteType = TypeManager::concreteType(child->typeInfo, CONCRETE_FUNC);
             uint32_t storageOffset;
             context->baseJob = context->baseJob;
@@ -1609,25 +1613,10 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
 
     uint32_t maxCallParams = typeInfoFunc->numReturnRegisters();
 
-    // Sort children by parameter index
-    if (allParams && allParams->hasAstFlag(AST_MUST_SORT_CHILDREN))
-    {
-        std::ranges::sort(allParams->children, [](AstNode* n1, AstNode* n2) {
-            const auto p1 = castAst<AstFuncCallParam>(n1, AstNodeKind::FuncCallParam);
-            const auto p2 = castAst<AstFuncCallParam>(n2, AstNodeKind::FuncCallParam);
-            return p1->indexParam < p2->indexParam;
-        });
-    }
-    else if (allParams && allParams->hasSemFlag(SEMFLAG_INVERSE_PARAMS))
-    {
-        SWAG_ASSERT(allParams->childCount() == 2);
-        std::swap(allParams->children[0], allParams->children[1]);
-    }
-
     // For an untyped variadic, we need to store all parameters as 'any'
     uint32_t               preCallStack = 0;
     VectorNative<uint32_t> toFree;
-    if (allParams && typeInfoFunc->hasFlag(TYPEINFO_VARIADIC))
+    if (usedParams && typeInfoFunc->hasFlag(TYPEINFO_VARIADIC))
     {
         auto     numFuncParams  = typeInfoFunc->parameters.size();
         auto     numVariadic    = (numCallParams - numFuncParams) + 1;
@@ -1636,7 +1625,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
 
         for (int i = static_cast<int>(numCallParams - 1); i >= static_cast<int>(numFuncParams - 1); i--)
         {
-            auto child     = allParams->children[i];
+            auto child     = usedParams->children[i];
             auto typeParam = TypeManager::concreteType(child->typeInfo, CONCRETE_FUNC);
 
             // Be sure to point to the first register of the type, if it has many
@@ -1696,7 +1685,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
             bool covered = false;
             for (uint32_t j = 0; j < numCallParams; j++)
             {
-                auto param = castAst<AstFuncCallParam>(allParams->children[j], AstNodeKind::FuncCallParam);
+                auto param = castAst<AstFuncCallParam>(usedParams->children[j], AstNodeKind::FuncCallParam);
                 if (param->indexParam == i)
                 {
                     if (param->hasExtMisc() && !param->extMisc()->additionalRegisterRC.cannotFree)
@@ -1796,8 +1785,8 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
         VectorNative<uint32_t> accParams;
         for (uint32_t i = numCallParams - 1; i != UINT32_MAX; i--)
         {
-            auto param = allParams->children[i];
-            if (param->resultRegisterRc.size() == 0)
+            auto param = usedParams->children[i];
+            if (param->resultRegisterRc.empty())
                 continue;
             if (!param->typeInfo)
                 continue;
@@ -2018,7 +2007,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     }
     else
     {
-        SWAG_ASSERT(varNodeRegisters.size() > 0);
+        SWAG_ASSERT(!varNodeRegisters.empty());
         auto inst                            = EMIT_INST1(context, ByteCodeOp::LambdaCall, varNodeRegisters);
         inst->b.pointer                      = reinterpret_cast<uint8_t*>(typeInfoFunc);
         inst->numVariadicParams              = static_cast<uint8_t>(numVariadic);
