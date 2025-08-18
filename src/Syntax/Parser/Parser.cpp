@@ -115,7 +115,7 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
 
 bool Parser::eatFormat(AstNode* parent)
 {
-    if (!parserFlags.has(PARSER_TRACK_FORMAT))
+    if (!parserFlags.has(PARSER_TRACK_FORMAT | PARSER_TRACK_DOCUMENTATION))
         return true;
     if (tokenParse.comments.before.empty() &&
         tokenParse.comments.justBefore.empty() &&
