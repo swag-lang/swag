@@ -1621,7 +1621,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     else if (allParams && allParams->hasSemFlag(SEMFLAG_INVERSE_PARAMS))
     {
         SWAG_ASSERT(allParams->childCount() == 2);
-        allParams->swap2Children();
+        std::swap(allParams->children[0], allParams->children[1]);
     }
 
     // For an untyped variadic, we need to store all parameters as 'any'

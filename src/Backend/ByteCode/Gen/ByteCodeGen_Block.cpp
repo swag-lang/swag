@@ -162,7 +162,10 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
 
         // Or invert in case of commutative operator
         if (allParams->hasSemFlag(SEMFLAG_INVERSE_PARAMS))
-            allParams->swap2Children();
+        {
+            SWAG_ASSERT(allParams->childCount() >= 2);
+            std::swap(allParams->children[0], allParams->children[1]);
+        }
 
         // Simple case, every parameter is covered by the call, and there's no named param
         if (numFuncParams == numCallParams)

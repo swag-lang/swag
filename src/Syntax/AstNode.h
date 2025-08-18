@@ -375,7 +375,6 @@ struct AstNode
     AstNode* findParentAttrUse(const Utf8& name) const;
     AstNode* findParent(TokenId tkn) const;
     uint32_t childParentIdx() const;
-    void     swap2Children();
 
     AstNode* firstChild() const { return children.empty() ? nullptr : children.front(); }
     AstNode* secondChild() const { return children.size() < 2 ? nullptr : children[1]; }
