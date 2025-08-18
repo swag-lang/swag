@@ -909,8 +909,8 @@ bool Workspace::patch()
             if (!f->astRoot)
                 continue;
 
-            if (f->name != "resize.swg")
-                continue;
+            //if (f->name != "jpg.swg")
+            //    continue;
 
             FormatContext context;
             context.setDefaultBeautify();

@@ -201,7 +201,10 @@ bool FormatAst::outputVarContent(FormatContext& context, AstNode* node, uint32_t
         }
         else
         {
+            if (context.alignVarDecl)
+                concat->alignToColumn(startColumn + maxLenName + alignTypeBanks);
             concat->addBlank();
+            
             concat->addChar('=');
             concat->addBlank();
             const auto typeExpr = castAst<AstTypeExpression>(varNode->type, AstNodeKind::TypeExpression);
