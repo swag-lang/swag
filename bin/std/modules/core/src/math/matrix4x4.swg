@@ -4,7 +4,7 @@
 #[Serialization.Final]
 struct Matrix4x4
 {
-    m: [4, 4] f32
+    m:   [4, 4] f32
 }
 
 impl Matrix4x4

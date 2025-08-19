@@ -48,17 +48,17 @@ struct AA
     color: Color
 
     #[Name("Vector2")]
-    v2: Math.Vector2{11.5, 22}
+    v2:  Math.Vector2{11.5, 22}
 
     #[Name("Vector3"), Description("This is a vector3.")]
-    v3: Math.Vector3{11.5, 22, 33}
+    v3:  Math.Vector3{11.5, 22, 33}
 
     v4:       Math.Vector4{11.5, 22, 33}
     pt:       Math.Point{11.5, 22}
     rect:     Math.Rectangle{1, 2, 3, 4}
 
     #[Description("This is something that needs to be done except if it not has: be done, and this is it.")]
-    xb: bool = true
+    xb:  bool = true
     #[Description("This is something that needs to be done.")]
     xb1: bool = true
 

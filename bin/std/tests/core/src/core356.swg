@@ -2,7 +2,7 @@ using Core, Core.Serialization
 
 struct Toto
 {
-    a: typeinfo
+    a:   typeinfo
 }
 
 #test

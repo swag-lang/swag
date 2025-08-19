@@ -4,7 +4,7 @@ struct AA { x, y, z: f32 }
 
 struct Toto1
 {
-    x: [4] AA
+    x:   [4] AA
 }
 
 #[Alias("AA"), Final]
@@ -12,7 +12,7 @@ struct BB { x, y, z: f32 }
 
 struct Toto2
 {
-    x: BB
+    x:   BB
 }
 
 //#[Swag.PrintBc]

@@ -3,7 +3,7 @@ using Core
 const C = "totototototototototototototototototototototototototototototototototototototototo"
 struct Err
 {
-    x: String
+    x:   String
 }
 
 func toto() throw

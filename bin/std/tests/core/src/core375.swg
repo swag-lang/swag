@@ -2,12 +2,12 @@ using Core, Core.Serialization, Core.Math
 
 struct Toto1
 {
-    x: f32
+    x:   f32
 }
 
 struct Toto2
 {
-    x: [4] f32
+    x:   [4] f32
 }
 
 //#[Swag.PrintBc]

@@ -5,7 +5,7 @@ struct V2 { x, y: f32 }
 
 struct Toto
 {
-    v2: V2
+    v2:  V2
 }
 
 #test

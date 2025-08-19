@@ -2,7 +2,7 @@ using Core, Core.Serialization
 
 struct AA
 {
-    x: s32
+    x:   s32
 }
 
 const FILE = """

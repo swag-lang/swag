@@ -23,7 +23,7 @@ func day3A()
     {
         x, y: s32
         #[Swag.Offset("x")]
-        v: u64
+        v:   u64
     }
 
     var pos: Pos

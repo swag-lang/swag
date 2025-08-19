@@ -4,12 +4,12 @@ struct AA { x, y, z: f32 }
 
 struct Toto1
 {
-    x: [4] AA
+    x:   [4] AA
 }
 
 struct Toto2
 {
-    x: AA
+    x:   AA
 }
 
 //#[Swag.PrintBc]

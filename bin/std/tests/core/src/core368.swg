@@ -3,7 +3,7 @@ using Core, Core.Serialization, Core.Math
 #[Version(1)]
 struct Toto1
 {
-    x: f32
+    x:   f32
 }
 
 //#[Swag.PrintBc]

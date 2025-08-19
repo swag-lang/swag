@@ -2,7 +2,7 @@ using Core, Swag
 
 struct Defined
 {
-    xx: s32
+    xx:  s32
 }
 
 struct TT

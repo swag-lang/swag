@@ -53,15 +53,20 @@ struct FormatContext
     bool        outputBlankLines    = false;
     bool        beautifyAfter       = true;
     bool        canConcatStatement  = false;
-    bool        convertConcat       = true;
+    bool        convertOpaque       = true;
     FormatStyle style;
 
     void setDefaultBeautify()
     {
         outputComments   = true;
         outputBlankLines = true;
-        convertConcat    = false;
+        convertOpaque    = false;
 
+        style.alignVarDecl                           = true;
+        style.alignEnumValue                         = true;
+        style.alignAffectEqual                       = true;
+        style.alignShortFunc                         = true;
+        style.alignTypeAlias                         = true;
         style.addBlanksBeforeAlignedLastLineComments = 4;
         style.alignStructVarTypeAddBlanks            = 4;
         style.keepSameLineStruct                     = true;

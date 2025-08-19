@@ -2,7 +2,7 @@ using Core, Core.Serialization, Core.Math
 
 struct Toto1
 {
-    x: Array'Vector4
+    x:   Array'Vector4
 }
 
 //#[Swag.PrintBc]

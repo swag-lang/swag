@@ -96,7 +96,7 @@ struct ColorMask { r, g, b, a: bool }
 
 struct Command
 {
-    id: CommandId = undefined
+    id:  CommandId = undefined
 
     using params: union
     {

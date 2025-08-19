@@ -3,7 +3,7 @@ using Core, Core.Serialization
 struct AA
 {
     #[Compress]
-    bb: BB
+    bb:  BB
 }
 
 #[Alias("AA"), Final]

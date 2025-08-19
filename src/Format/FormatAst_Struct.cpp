@@ -41,7 +41,7 @@ bool FormatAst::outputStructDecl(FormatContext& context, AstStruct* node)
         return true;
     }
 
-    const bool mustConcat = node->hasAttribute(ATTRIBUTE_OPAQUE) && context.convertConcat;
+    const bool mustConcat = node->hasAttribute(ATTRIBUTE_OPAQUE) && context.convertOpaque;
 
     // If we need to export as opaque, and the struct has init values, then we add the
     // #[Swag.ExportType] attribute

@@ -2,13 +2,13 @@ using Core, Core.Serialization, Core.Math
 
 struct Toto1
 {
-    x: f32
+    x:   f32
 }
 
 struct Toto2
 {
     #[Serialization.Alias("x")]
-    y: f32
+    y:   f32
 }
 
 //#[Swag.PrintBc]

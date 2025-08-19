@@ -10,7 +10,7 @@ enum ARGB
 
 struct Toto
 {
-    e: ARGB = A
+    e:   ARGB = A
 }
 
 #test

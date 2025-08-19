@@ -4,7 +4,7 @@ struct V2 { x, y: f32 }
 
 struct Toto
 {
-    v2: Array'V2
+    v2:  Array'V2
 }
 
 #test

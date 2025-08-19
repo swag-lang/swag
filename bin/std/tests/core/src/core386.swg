@@ -3,7 +3,7 @@ using Core.Serialization.Write
 
 struct A
 {
-    v: *void
+    v:   *void
 }
 
 //#[Swag.PrintBc]
