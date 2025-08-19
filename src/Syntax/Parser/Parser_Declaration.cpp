@@ -550,7 +550,10 @@ void Parser::registerSubDecl(AstNode* subDecl)
             if (testParent->isNot(AstNodeKind::AttrUse))
                 break;
             if (!newAttrUse)
+            {
                 newAttrUse = Ast::newNode<AstAttrUse>(AstNodeKind::AttrUse, this, subDecl->parent);
+                newAttrUse->addAstFlag(AST_GENERATED);
+            }
 
             // Clone all attributes
             CloneContext cloneContext;
