@@ -187,7 +187,7 @@ bool FormatAst::outputFuncDecl(FormatContext& context, AstNode* node, uint32_t m
 
     // Content on the same line
     if (!concat->eol &&
-        context.keepSameLineFuncBody &&
+        context.style.keepSameLineFuncBody &&
         funcDecl->subDecl.empty() &&
         funcDecl->content &&
         (funcDecl->content->is(AstNodeKind::Statement) || funcDecl->content->is(AstNodeKind::Try) || funcDecl->content->is(AstNodeKind::Assume)) &&
@@ -324,7 +324,7 @@ bool FormatAst::outputLambdaExpression(FormatContext& context, AstNode* node)
     else
     {
         FormatContext cxt{context};
-        cxt.canConcatStatement = context.keepSameLineFuncBody;
+        cxt.canConcatStatement = context.style.keepSameLineFuncBody;
         concat->addBlank();
         SWAG_CHECK(outputNode(cxt, funcDecl->content));
     }
@@ -391,7 +391,7 @@ bool FormatAst::outputTypeLambda(FormatContext& context, AstNode* node)
         concat->addString("func||");
 
     FormatContext cxt{context};
-    cxt.alignVarDecl = false;
+    cxt.style.alignVarDecl = false;
     SWAG_CHECK(outputFuncDeclParameters(cxt, typeNode->parameters, false));
 
     if (typeNode->returnType)
@@ -467,7 +467,7 @@ bool FormatAst::outputDropCopyMove(FormatContext& context, AstNode* node)
 bool FormatAst::outputChildrenFuncDecl(FormatContext& context, AstNode* node, uint32_t start, uint32_t& processed)
 {
     processed = 0;
-    if (!context.alignShortFunc)
+    if (!context.style.alignShortFunc)
         return true;
 
     VectorNative<AstNode*> nodes;

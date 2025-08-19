@@ -172,7 +172,7 @@ TokenParse* FormatAst::getOrCreateTokenParse(AstNode* node)
 void FormatAst::addEOLOrSemi(const FormatContext& context, const AstNode* child) const
 {
     const auto parse = getTokenParse(child);
-    if (context.keepSameLineAffect && parse && !parse->flags.has(TOKEN_PARSE_EOL_AFTER) && parse->flags.has(TOKEN_PARSE_SEMI_COL))
+    if (context.style.keepSameLineAffect && parse && !parse->flags.has(TOKEN_PARSE_EOL_AFTER) && parse->flags.has(TOKEN_PARSE_SEMI_COL))
     {
         concat->addChar(';');
         concat->addBlank();
@@ -196,7 +196,7 @@ bool FormatAst::outputChildrenEol(FormatContext& context, AstNode* node, uint32_
         if (child->kind == AstNodeKind::TypeAlias)
         {
             FormatContext cxt{context};
-            cxt.alignTypeAlias = true;
+            cxt.style.alignTypeAlias = true;
 
             uint32_t processed = 0;
             SWAG_CHECK(outputChildrenTypeAlias(cxt, node, i, processed));
@@ -210,7 +210,7 @@ bool FormatAst::outputChildrenEol(FormatContext& context, AstNode* node, uint32_
         if (child->kind == AstNodeKind::FuncDecl)
         {
             FormatContext cxt{context};
-            cxt.alignShortFunc = true;
+            cxt.style.alignShortFunc = true;
 
             uint32_t processed = 0;
             SWAG_CHECK(outputChildrenFuncDecl(cxt, node, i, processed));
@@ -224,7 +224,7 @@ bool FormatAst::outputChildrenEol(FormatContext& context, AstNode* node, uint32_
         if (child->kind == AstNodeKind::EnumValue)
         {
             FormatContext cxt{context};
-            cxt.alignEnumValue = true;
+            cxt.style.alignEnumValue = true;
 
             uint32_t processed = 0;
             SWAG_CHECK(outputChildrenEnumValues(cxt, node, i, processed));
@@ -238,7 +238,7 @@ bool FormatAst::outputChildrenEol(FormatContext& context, AstNode* node, uint32_
         if (child->kind == AstNodeKind::VarDecl || child->kind == AstNodeKind::ConstDecl)
         {
             FormatContext cxt{context};
-            cxt.alignVarDecl = true;
+            cxt.style.alignVarDecl = true;
 
             uint32_t processed = 0;
             SWAG_CHECK(outputChildrenVar(cxt, node, i, processed));
@@ -252,7 +252,7 @@ bool FormatAst::outputChildrenEol(FormatContext& context, AstNode* node, uint32_
         if (child->is(AstNodeKind::AffectOp) && child->token.is("="))
         {
             FormatContext cxt{context};
-            cxt.alignAffectEqual = true;
+            cxt.style.alignAffectEqual = true;
 
             uint32_t processed = 0;
             SWAG_CHECK(outputChildrenAffectEqual(cxt, node, i, processed));

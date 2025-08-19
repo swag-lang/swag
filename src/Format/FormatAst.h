@@ -26,18 +26,8 @@ using CollectFlags = Flags<uint32_t>;
 constexpr CollectFlags STOP_CMT_BEFORE        = 0x00000001;
 constexpr CollectFlags STOP_EMPTY_LINE_BEFORE = 0x00000002;
 
-struct FormatContext
+struct FormatStyle
 {
-    uint32_t indent              = 0;
-    uint32_t countFactorOp       = 0;
-    uint32_t startFactorOpColumn = 0;
-    uint32_t countBinaryOp       = 0;
-    uint32_t startBinaryOpColumn = 0;
-    bool     outputComments      = false;
-    bool     outputBlankLines    = false;
-    bool     beautifyAfter       = true;
-    bool     canConcatStatement  = false;
-
     bool     alignVarDecl                           = false;
     bool     alignEnumValue                         = false;
     bool     alignAffectEqual                       = false;
@@ -50,20 +40,35 @@ struct FormatContext
     bool     keepSameLineFuncBody                   = false;
     bool     keepSameLineAffect                     = false;
     bool     keepSameCodeBlock                      = false;
-    bool     convertConcat                          = true;
+};
+
+struct FormatContext
+{
+    uint32_t    indent              = 0;
+    uint32_t    countFactorOp       = 0;
+    uint32_t    startFactorOpColumn = 0;
+    uint32_t    countBinaryOp       = 0;
+    uint32_t    startBinaryOpColumn = 0;
+    bool        outputComments      = false;
+    bool        outputBlankLines    = false;
+    bool        beautifyAfter       = true;
+    bool        canConcatStatement  = false;
+    bool        convertConcat       = true;
+    FormatStyle style;
 
     void setDefaultBeautify()
     {
-        outputComments                         = true;
-        outputBlankLines                       = true;
-        addBlanksBeforeAlignedLastLineComments = 4;
-        alignStructVarTypeAddBlanks            = 4;
-        keepSameLineStruct                     = true;
-        keepSameLineEnum                       = true;
-        keepSameLineFuncBody                   = true;
-        keepSameLineAffect                     = true;
-        keepSameCodeBlock                      = true;
-        convertConcat                          = false;
+        outputComments   = true;
+        outputBlankLines = true;
+        convertConcat    = false;
+
+        style.addBlanksBeforeAlignedLastLineComments = 4;
+        style.alignStructVarTypeAddBlanks            = 4;
+        style.keepSameLineStruct                     = true;
+        style.keepSameLineEnum                       = true;
+        style.keepSameLineFuncBody                   = true;
+        style.keepSameLineAffect                     = true;
+        style.keepSameCodeBlock                      = true;
     }
 };
 

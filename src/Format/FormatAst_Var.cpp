@@ -8,7 +8,7 @@
 bool FormatAst::outputChildrenMultiVar(const FormatContext& context, AstNode* node)
 {
     FormatContext cxt{context};
-    cxt.alignVarDecl = false;
+    cxt.style.alignVarDecl = false;
 
     bool first = true;
     for (const auto child : node->children)
@@ -38,7 +38,7 @@ bool FormatAst::outputChildrenMultiVar(const FormatContext& context, AstNode* no
 bool FormatAst::outputChildrenVar(FormatContext& context, AstNode* node, uint32_t start, uint32_t& processed)
 {
     processed = 0;
-    if (!context.alignVarDecl)
+    if (!context.style.alignVarDecl)
         return true;
 
     VectorNative<AstNode*> nodes;
@@ -113,7 +113,7 @@ bool FormatAst::outputChildrenVar(FormatContext& context, AstNode* node, uint32_
         if (i != nodes.size() - 1 && nodes[i + 1]->hasSpecFlag(AstVarDecl::SPEC_FLAG_EXTRA_DECL))
         {
             FormatContext cxt{context};
-            cxt.alignVarDecl = false;
+            cxt.style.alignVarDecl = false;
             SWAG_CHECK(outputVar(cxt, child, maxLenName, maxLenType));
         }
         else
@@ -125,7 +125,7 @@ bool FormatAst::outputChildrenVar(FormatContext& context, AstNode* node, uint32_
             child = nodes[i];
 
             FormatContext cxt{context};
-            cxt.alignVarDecl = false;
+            cxt.style.alignVarDecl = false;
             concat->addChar(',');
             concat->addBlank();
             const auto varNode = castAst<AstVarDecl>(child, AstNodeKind::VarDecl, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
@@ -177,7 +177,7 @@ bool FormatAst::outputVarContent(FormatContext& context, AstNode* node, uint32_t
     const bool isSelf  = varNode->token.is(g_LangSpec->name_self);
     inheritLastFormatAfter(nullptr, varNode);
 
-    const uint32_t alignTypeBanks = node->hasAstFlag(AST_STRUCT_MEMBER) ? context.alignStructVarTypeAddBlanks : 0;
+    const uint32_t alignTypeBanks = node->hasAstFlag(AST_STRUCT_MEMBER) ? context.style.alignStructVarTypeAddBlanks : 0;
 
     SWAG_CHECK(outputVarName(context, varNode));
 
@@ -191,7 +191,7 @@ bool FormatAst::outputVarContent(FormatContext& context, AstNode* node, uint32_t
                 if (!varNode->hasSpecFlag(AstVarDecl::SPEC_FLAG_PRIVATE_NAME))
                 {
                     concat->addChar(':');
-                    if (context.alignVarDecl)
+                    if (context.style.alignVarDecl)
                         concat->alignToColumn(startColumn + maxLenName + alignTypeBanks);
                     concat->addBlank();
                 }
@@ -201,7 +201,7 @@ bool FormatAst::outputVarContent(FormatContext& context, AstNode* node, uint32_t
         }
         else
         {
-            if (context.alignVarDecl)
+            if (context.style.alignVarDecl)
                 concat->alignToColumn(startColumn + maxLenName + alignTypeBanks);
             concat->addBlank();
             
@@ -220,7 +220,7 @@ bool FormatAst::outputVarContent(FormatContext& context, AstNode* node, uint32_t
 
     if (varNode->assignment)
     {
-        if (context.alignVarDecl)
+        if (context.style.alignVarDecl)
             concat->alignToColumn(startColumn + maxLenName + alignTypeBanks);
         concat->addBlank();
         concat->addChar('=');
@@ -235,8 +235,8 @@ bool FormatAst::outputVarContent(FormatContext& context, AstNode* node, uint32_t
     }
 
     // Align comment only if the type didn't output some eol
-    if (concat->totalEol == totalEol && context.alignVarDecl && maxLenName && maxLenType)
-        concat->alignToColumn(startColumn + maxLenName + maxLenType + context.addBlanksBeforeAlignedLastLineComments);
+    if (concat->totalEol == totalEol && context.style.alignVarDecl && maxLenName && maxLenType)
+        concat->alignToColumn(startColumn + maxLenName + maxLenType + context.style.addBlanksBeforeAlignedLastLineComments);
 
     beautifyAfter(context, varNode);
     return true;

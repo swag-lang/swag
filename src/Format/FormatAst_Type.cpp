@@ -209,7 +209,7 @@ bool FormatAst::outputGenericParameters(FormatContext& context, AstNode* node)
 bool FormatAst::outputChildrenTypeAlias(FormatContext& context, AstNode* node, uint32_t start, uint32_t& processed)
 {
     processed = 0;
-    if (!context.alignTypeAlias)
+    if (!context.style.alignTypeAlias)
         return true;
 
     VectorNative<AstNode*> nodes;

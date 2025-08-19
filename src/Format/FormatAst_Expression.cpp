@@ -59,7 +59,7 @@ bool FormatAst::outputArrayPointerIndex(FormatContext& context, AstNode* node)
 bool FormatAst::outputChildrenAffectEqual(FormatContext& context, AstNode* node, uint32_t start, uint32_t& processed)
 {
     processed = 0;
-    if (!context.alignAffectEqual)
+    if (!context.style.alignAffectEqual)
         return true;
 
     VectorNative<AstNode*> nodes;

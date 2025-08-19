@@ -295,7 +295,7 @@ bool FormatAst::outputCompilerCode(FormatContext& context, AstNode* node)
     else
     {
         FormatContext cxt{context};
-        cxt.canConcatStatement = context.keepSameCodeBlock;
+        cxt.canConcatStatement = context.style.keepSameCodeBlock;
         concat->addString("#code");
         concat->addBlank();
         SWAG_CHECK(outputNode(cxt, node->firstChild()));

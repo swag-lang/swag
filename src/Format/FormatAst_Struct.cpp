@@ -21,7 +21,7 @@ bool FormatAst::outputStructDeclContent(FormatContext& context, AstNode* node)
 bool FormatAst::outputTupleDeclContent(const FormatContext& context, AstNode* node)
 {
     FormatContext cxt{context};
-    cxt.alignVarDecl = false;
+    cxt.style.alignVarDecl = false;
     concat->addChar('{');
     if (!node->children.empty())
         concat->addBlank();
@@ -69,7 +69,7 @@ bool FormatAst::outputStructDecl(FormatContext& context, AstStruct* node)
     {
         SWAG_ASSERT(node->is(AstNodeKind::StructDecl));
 
-        if (context.keepSameLineStruct)
+        if (context.style.keepSameLineStruct)
             sameLine = node->constraints.empty() && !mustConcat && !hasEOLInside(node->content);
 
         if (!sameLine)
