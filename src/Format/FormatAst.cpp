@@ -204,7 +204,7 @@ bool FormatAst::outputChildrenEol(FormatContext& context, AstNode* node, uint32_
             }
         }
 
-        if (child->kind == AstNodeKind::FuncDecl)
+        if (child->kind == AstNodeKind::FuncDecl || child->kind == AstNodeKind::RefSubDecl)
         {
             uint32_t processed = 0;
             SWAG_CHECK(outputChildrenFuncDecl(context, node, i, processed));

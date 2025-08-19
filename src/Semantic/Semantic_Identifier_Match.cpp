@@ -11,7 +11,6 @@
 #include "Syntax/Naming.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
-#pragma optimize("", off)
 
 void Semantic::sortParameters(AstNode* allParams)
 {

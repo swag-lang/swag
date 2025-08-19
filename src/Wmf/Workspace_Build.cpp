@@ -890,7 +890,6 @@ bool Workspace::build()
     return result;
 }
 
-#pragma optimize("", off)
 bool Workspace::patch()
 {
     g_CommandLine.patchMode = true;

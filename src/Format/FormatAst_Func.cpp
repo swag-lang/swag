@@ -464,6 +464,23 @@ bool FormatAst::outputDropCopyMove(FormatContext& context, AstNode* node)
     return true;
 }
 
+namespace
+{
+    AstFuncDecl* getFuncDecl(AstNode* node)
+    {
+        if (node->is(AstNodeKind::RefSubDecl))
+        {
+            const auto refSubDecl = castAst<AstRefSubDecl>(node, AstNodeKind::RefSubDecl);
+            return castAst<AstFuncDecl>(refSubDecl->refSubDecl, AstNodeKind::FuncDecl);
+        }
+
+        if (node->isNot(AstNodeKind::FuncDecl))
+            return nullptr;
+
+        return castAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+    }
+}
+
 bool FormatAst::outputChildrenFuncDecl(FormatContext& context, AstNode* node, uint32_t start, uint32_t& processed)
 {
     processed = 0;
@@ -471,10 +488,11 @@ bool FormatAst::outputChildrenFuncDecl(FormatContext& context, AstNode* node, ui
         return true;
 
     VectorNative<AstNode*> nodes;
-    if (!collectChildrenToAlign(context, STOP_CMT_BEFORE | STOP_EMPTY_LINE_BEFORE, node, start, nodes, processed, [](const AstNode* inNode) {
-        if (inNode->kind != AstNodeKind::FuncDecl)
+    if (!collectChildrenToAlign(context, STOP_CMT_BEFORE | STOP_EMPTY_LINE_BEFORE, node, start, nodes, processed, [](AstNode* inNode) {
+        const auto func = getFuncDecl(inNode);
+        if (!func)
             return true;
-        if (!inNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_FORM | AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA))
+        if (!func->hasSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_FORM | AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA))
             return true;
         return false;
     }))
@@ -486,7 +504,8 @@ bool FormatAst::outputChildrenFuncDecl(FormatContext& context, AstNode* node, ui
         PushConcatFormatTmp fmt{this, context};
         for (const auto child : nodes)
         {
-            const auto funcDecl = castAst<AstFuncDecl>(child, AstNodeKind::FuncDecl);
+            const auto funcDecl = getFuncDecl(child);
+            SWAG_ASSERT(funcDecl);
             tmpConcat.clear();
             SWAG_CHECK(outputFuncSignature(fmt.cxt, funcDecl, funcDecl->genericParameters, funcDecl->parameters, nullptr));
             maxLenSignature = std::max(maxLenSignature, tmpConcat.length());
@@ -496,7 +515,8 @@ bool FormatAst::outputChildrenFuncDecl(FormatContext& context, AstNode* node, ui
     for (const auto child : nodes)
     {
         concat->addIndent(context.indent);
-        SWAG_CHECK(outputFuncDecl(context, child, maxLenSignature));
+        const auto funcDecl = getFuncDecl(child);
+        SWAG_CHECK(outputFuncDecl(context, funcDecl, maxLenSignature));
         concat->addEol();
     }
 
