@@ -68,6 +68,9 @@ bool Semantic::computeExpressionListTupleType(SemanticContext* context, AstNode*
     node->addAstFlag(AST_CONST_EXPR | AST_R_VALUE);
     for (const auto child : node->children)
     {
+        if (!child->typeInfo)
+            continue;
+        
         if (!typeInfo->subTypes.empty())
             typeInfo->name += ", ";
 
