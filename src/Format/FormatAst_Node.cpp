@@ -309,20 +309,8 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             break;
 
         case AstNodeKind::TypeAlias:
-            SWAG_CHECK(outputTypeAlias(context, node));
-            break;
-
         case AstNodeKind::NameAlias:
-            concat->addString("alias");
-            concat->addBlank();
-            concat->addString(node->token.text);
-            concat->addBlank();
-            concat->addChar('=');
-            concat->addBlank();
-            if (node->lastChild()->resolvedSymbolName())
-                concat->addString(node->lastChild()->resolvedSymbolName()->getFullName());
-            else
-                SWAG_CHECK(outputNode(context, node->lastChild()));
+            SWAG_CHECK(outputTypeAlias(context, node));
             break;
 
         case AstNodeKind::ConstDecl:

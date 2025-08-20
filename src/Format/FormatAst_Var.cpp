@@ -50,7 +50,7 @@ bool FormatAst::outputChildrenVar(FormatContext& context, AstNode* node, uint32_
     {
         PushConcatFormatTmp fmt{this, context};
         if (!collectChildrenToAlign(context, flags, node, start, nodes, processed, [&](const AstNode* n) {
-            if (n->kind != AstNodeKind::VarDecl && n->kind != AstNodeKind::ConstDecl)
+            if (n->isNot(AstNodeKind::VarDecl) && n->isNot(AstNodeKind::ConstDecl))
                 return true;
             const auto var = castAst<AstVarDecl>(n);
             tmpConcat.clear();

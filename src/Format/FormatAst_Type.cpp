@@ -214,7 +214,7 @@ bool FormatAst::outputChildrenTypeAlias(FormatContext& context, AstNode* node, u
 
     VectorNative<AstNode*> nodes;
     if (!collectChildrenToAlign(context, STOP_CMT_BEFORE | STOP_EMPTY_LINE_BEFORE, node, start, nodes, processed, [](const AstNode* inNode) {
-        if (inNode->kind != AstNodeKind::TypeAlias)
+        if (inNode->isNot(AstNodeKind::TypeAlias) && inNode->isNot(AstNodeKind::NameAlias)) 
             return true;
         return false;
     }))

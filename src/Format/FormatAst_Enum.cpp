@@ -13,7 +13,7 @@ bool FormatAst::outputChildrenEnumValues(FormatContext& context, AstNode* node, 
 
     VectorNative<AstNode*> nodes;
     if (!collectChildrenToAlign(context, STOP_CMT_BEFORE, node, start, nodes, processed, [](const AstNode* inNode) {
-        if (inNode->kind != AstNodeKind::EnumValue)
+        if (inNode->isNot(AstNodeKind::EnumValue))
             return true;
         if (inNode->hasSpecFlag(AstEnumValue::SPEC_FLAG_HAS_USING))
             return true;

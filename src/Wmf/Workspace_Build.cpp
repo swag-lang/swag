@@ -908,8 +908,8 @@ bool Workspace::patch()
             if (!f->astRoot)
                 continue;
 
-            //if (f->name != "meta.swg")
-            //    continue;
+            if (f->name != "ogl.win32.swg")
+                continue;
 
             FormatContext context;
             context.setDefaultBeautify();
