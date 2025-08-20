@@ -115,7 +115,7 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
 
 bool Parser::eatFormat(AstNode* parent)
 {
-    if (!parserFlags.has(PARSER_TRACK_FORMAT | PARSER_TRACK_DOCUMENTATION))
+    if (!parserFlags.has(PARSER_TRACK_FORMAT | PARSER_TRACK_PATCH))
         return true;
     if (tokenParse.comments.before.empty() &&
         tokenParse.comments.justBefore.empty() &&
@@ -280,7 +280,7 @@ void Parser::setup(ErrorContext* errorCxt, Module* mdl, SourceFile* file, Parser
     sourceFile = file;
 
     parserFlags = flags;
-    if (parserFlags.has(PARSER_TRACK_FORMAT | PARSER_TRACK_DOCUMENTATION))
+    if (parserFlags.has(PARSER_TRACK_FORMAT | PARSER_TRACK_DOCUMENTATION | PARSER_TRACK_PATCH))
         tokenizer.tokenizeFlags.add(TOKENIZER_TRACK_COMMENTS);
     if (parserFlags.has(PARSER_TRACK_FORMAT))
         tokenizer.tokenizeFlags.add(TOKENIZER_TRACK_FORMAT);

@@ -93,6 +93,7 @@ constexpr VarDeclFlags VAR_DECL_FLAG_IS_LET     = 0x00000002;
 constexpr ParserFlags PARSER_DEFAULT             = 0x00000000;
 constexpr ParserFlags PARSER_TRACK_DOCUMENTATION = 0x00000001;
 constexpr ParserFlags PARSER_TRACK_FORMAT        = 0x00000002;
+constexpr ParserFlags PARSER_TRACK_PATCH         = 0x00000004;
 
 constexpr FuncDeclFlags FUNC_DECL_ZERO      = 0x00000000;
 constexpr FuncDeclFlags FUNC_DECL_INTERFACE = 0x00000001;

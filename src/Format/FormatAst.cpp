@@ -93,7 +93,7 @@ void FormatAst::inheritFormatBefore(const Parser* parser, AstNode* node, AstNode
 {
     if (other == node || !other)
         return;
-    if (!parser->parserFlags.has(PARSER_TRACK_FORMAT) && !parser->parserFlags.has(PARSER_TRACK_DOCUMENTATION))
+    if (!parser->parserFlags.has(PARSER_TRACK_FORMAT | PARSER_TRACK_DOCUMENTATION | PARSER_TRACK_PATCH))
         return;
     inheritFormatBefore(parser, node, getTokenParse(other));
 }
@@ -102,7 +102,7 @@ void FormatAst::inheritFormatAfter(const Parser* parser, AstNode* node, AstNode*
 {
     if (other == node || !other)
         return;
-    if (parser && !parser->parserFlags.has(PARSER_TRACK_FORMAT) && !parser->parserFlags.has(PARSER_TRACK_DOCUMENTATION))
+    if (parser && !parser->parserFlags.has(PARSER_TRACK_FORMAT | PARSER_TRACK_DOCUMENTATION | PARSER_TRACK_PATCH))
         return;
     inheritFormatAfter(parser, node, getTokenParse(other));
 }
@@ -113,7 +113,7 @@ void FormatAst::inheritFormatBefore(const Parser* parser, AstNode* node, TokenPa
         return;
     if (!tokenParse)
         return;
-    if (!parser->parserFlags.has(PARSER_TRACK_FORMAT) && !parser->parserFlags.has(PARSER_TRACK_DOCUMENTATION))
+    if (!parser->parserFlags.has(PARSER_TRACK_FORMAT | PARSER_TRACK_DOCUMENTATION | PARSER_TRACK_PATCH))
         return;
 
     if (tokenParse->flags.has(TOKEN_PARSE_BLANK_LINE_BEFORE) ||
@@ -132,7 +132,7 @@ void FormatAst::inheritFormatAfter(const Parser* parser, AstNode* node, TokenPar
 {
     if (!tokenParse)
         return;
-    if (parser && !parser->parserFlags.has(PARSER_TRACK_FORMAT) && !parser->parserFlags.has(PARSER_TRACK_DOCUMENTATION))
+    if (parser && !parser->parserFlags.has(PARSER_TRACK_FORMAT | PARSER_TRACK_DOCUMENTATION | PARSER_TRACK_PATCH))
         return;
 
     if (tokenParse->flags.has(TOKEN_PARSE_EOL_AFTER) ||
