@@ -1133,6 +1133,7 @@ bool Module::compileString(const Utf8& text)
     }
 
     const auto parent = Ast::newNode<AstStatement>(AstNodeKind::StatementNoScope, nullptr, sourceFile->astRoot);
+    parent->addAstFlag(AST_GENERATED);
 
     JobContext jobContext;
     Parser     parser;
