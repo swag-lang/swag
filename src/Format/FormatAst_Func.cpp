@@ -471,7 +471,7 @@ namespace
         if (node->is(AstNodeKind::RefSubDecl))
         {
             const auto refSubDecl = castAst<AstRefSubDecl>(node, AstNodeKind::RefSubDecl);
-            return castAst<AstFuncDecl>(refSubDecl->refSubDecl, AstNodeKind::FuncDecl);
+            return castAst<AstFuncDecl>(refSubDecl->refTopSubDecl, AstNodeKind::FuncDecl);
         }
 
         if (node->isNot(AstNodeKind::FuncDecl))
