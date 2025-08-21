@@ -14,11 +14,11 @@ impl PointBase
         #else              : #error("unsupported assign operation '" ++ op ++ "'")
     }
 
-    func(op: string) opBinary(using self, other: Self)->Self
+    func(op: string) opBinary(using self, other: PointBase)->PointBase
     {
-        #if   op == "+": return Self{x + other.x, y + other.y}
-        #elif op == "-": return Self{x - other.x, y - other.y}
-        #elif op == "*": return Self{x * other.x, y * other.y}
+        #if   op == "+": return PointBase{x + other.x, y + other.y}
+        #elif op == "-": return PointBase{x - other.x, y - other.y}
+        #elif op == "*": return PointBase{x * other.x, y * other.y}
         #else          : #error("unsupported binary operation '" ++ op ++ "'")
     }
 

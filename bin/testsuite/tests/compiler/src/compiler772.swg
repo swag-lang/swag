@@ -17,7 +17,7 @@ struct Point
 
 impl Point
 {
-	func opAffect(self, other: Self)
+	func opAffect(self, other: Point)
 	{
 		//self.x = other
 		//self.y = other + 1

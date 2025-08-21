@@ -1,7 +1,7 @@
 struct V {}
 impl V
 {
-    mtd(op: string) const opBinary(other: const &V)->Self
+    mtd(op: string) const opBinary(other: const &V)->V
     {
         return V{}
     }

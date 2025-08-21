@@ -7,7 +7,7 @@ struct SliderCtrl
     labelSize:          f32 = 60
     editSize:           f32 = 60
 
-    sigChanged:         SigArray'func||(*Self)
+    sigChanged:         SigArray'func||(*SliderCtrl)
 
     label:              *Label
     slider:             *Slider

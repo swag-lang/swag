@@ -35,8 +35,8 @@ struct Header
     form                  = HeaderForm.Flat
     headerFlags           = HeaderFlags.Clickable
     marginItems:          f32 = 5
-    sigLayoutChanged:     func||(*Self)
-    sigClicked:           func||(*Self, u32)
+    sigLayoutChanged:     func||(*Header)
+    sigClicked:           func||(*Header, u32)
 
     items:                ArrayPtr'HeaderItem
     hotIdx                = Swag.U32.Max

@@ -5,7 +5,7 @@ struct(T, N: u32) NumericArray
 
 impl NumericArray
 {
-    func from(values: T...)->Self
+    func from(values: T...)->NumericArray
     {
         var result: retval
         for N: result.buf[@index] = values[@index]

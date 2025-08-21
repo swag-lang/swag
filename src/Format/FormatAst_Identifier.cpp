@@ -23,11 +23,7 @@ bool FormatAst::outputIdentifier(const FormatContext& context, AstNode* node)
         concat->addBlank();
     }
 
-    if (identifier->hasSpecFlag(AstIdentifier::SPEC_FLAG_SELF))
-        concat->addString("Self");
-    else
-        concat->addString(node->token.text);
-
+    concat->addString(node->token.text);
     if (identifier->genericParameters)
     {
         concat->addChar('\'');

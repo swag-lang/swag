@@ -2,7 +2,7 @@
 struct A { x: s32; }
 impl A
 {
-    mtd(op: string) opUnary()->Self
+    mtd(op: string) opUnary()->A
     {
         return {2}
     }

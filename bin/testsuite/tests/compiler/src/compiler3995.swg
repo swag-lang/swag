@@ -5,7 +5,7 @@ struct V
 
 impl V
 {
-    mtd opEquals(other: Self)->bool
+    mtd opEquals(other: V)->bool
     {
         return x == other.x and y == other.y
     }

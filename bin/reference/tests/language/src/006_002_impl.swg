@@ -1,17 +1,17 @@
 /**
 # Struct Methods and Constants
 
-In Swag, structs can encapsulate methods and constants within them using the `impl` block. 
-This encapsulation allows for better organization and modularity of the code, keeping 
+In Swag, structs can encapsulate methods and constants within them using the 'impl' block.
+This encapsulation allows for better organization and modularity of the code, keeping
 the functionality related to the struct within the struct itself.
 */
 
 #[Swag.ExportType("methods")]           // This attribute enables method reflection for this struct type
 struct MyStruct
 {
-    x:     s32 = 5   // Field 'x' with a default value of 5                          
-    y:     s32 = 10  // Field 'y' with a default value of 10                         
-    z:     s32 = 20  // Field 'z' with a default value of 20                         
+    x:     s32 = 5   // Field 'x' with a default value of 5
+    y:     s32 = 10  // Field 'y' with a default value of 10
+    z:     s32 = 20  // Field 'z' with a default value of 20
 }
 
 impl MyStruct
@@ -22,7 +22,7 @@ impl MyStruct
 }
 
 /**
-To access the constant or the function, use the `MyStruct` namespace.
+To access the constant or the function, use the 'MyStruct' namespace.
 */
 #test
 {
@@ -31,31 +31,30 @@ To access the constant or the function, use the `MyStruct` namespace.
 }
 
 /**
-# Multiple `impl` Blocks
+# Multiple 'impl' Blocks
 
-Swag allows multiple `impl` blocks for a single struct. This feature helps organize 
-methods logically. Within an `impl` block, `self` and `Self` are defined to refer to 
+Swag allows multiple 'impl' blocks for a single struct. This feature helps organize
+methods logically. Within an 'impl' block, 'self' are defined to refer to
 the current instance and the struct type, respectively.
 */
 
 impl MyStruct
 {
-    // 'self' is implicitly defined as 'var self: Self', where 'Self' refers to 'MyStruct'
+    // 'self' is implicitly defined as 'var self: MyStruct'
     func returnX(using self) => x       // Method to return 'x', using 'self' implicitly
 
     func returnY(self)       => self.y  // Method to return 'y', explicitly using 'self'
-
-    // 'Self' refers to the type 'MyStruct', used here as a type alias
-    func returnZ(me: Self) => me.z      // Method to return 'z', using 'me' as a type alias for 'Self'
+    
+    func returnZ(me: MyStruct) => me.z      // Method to return 'z', using 'me' as a type alias for 'Self'
 }
 
 /**
 # Method Syntax Sugar
 
-Swag provides syntactic sugar for method definitions. If you use `mtd` (method) instead 
-of `func`, the first parameter is implicitly `using self`. If you use `mtd const`, 
-it becomes `const using self`. This feature simplifies method definitions, 
-especially for common cases where `self` is required.
+Swag provides syntactic sugar for method definitions. If you use 'mtd' (method) instead
+of 'func', the first parameter is implicitly 'using self'. If you use 'mtd const',
+it becomes 'const using self'. This feature simplifies method definitions,
+especially for common cases where 'self' is required.
 */
 
 impl MyStruct
@@ -77,8 +76,8 @@ impl MyStruct
 /**
 # Method Reflection
 
-To enable reflection on methods within an `impl` block, the struct must be annotated with 
-`#[Swag.ExportType("methods")]`. By default, methods are not exported for reflection, 
+To enable reflection on methods within an 'impl' block, the struct must be annotated with
+'#[Swag.ExportType("methods")]'. By default, methods are not exported for reflection,
 but with this annotation, they can be accessed programmatically.
 */
 #test

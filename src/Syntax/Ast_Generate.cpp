@@ -40,7 +40,7 @@ bool Ast::generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInf
     content += form("mtd const opEquals(o: %s)->bool\n{\n", typeRightStruct->structName.cstr());
     if (!hasStruct)
     {
-        content += "return @memcmp(cast(const ^void) self, cast(const ^void) &o, #sizeof(Self)) == 0\n";
+        content += form("return @memcmp(cast(const ^void) self, cast(const ^void) &o, #sizeof(%s)) == 0\n", typeLeftStruct->structName.cstr());
     }
     else
     {

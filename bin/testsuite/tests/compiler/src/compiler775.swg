@@ -20,7 +20,7 @@ impl Point
 	}
 
 	//#[Swag.PrintBc]
-	func(op: string) opBinary(self, other: Self)->Point
+	func(op: string) opBinary(self, other: self)->Point
 	{
 		return Point(self.x + other.x, self.y + other.y) // #move
 	}

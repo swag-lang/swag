@@ -26,7 +26,7 @@ func gen(type: const *Swag.TypeInfoStruct)->String
 
 impl Employee
 {
-    mtd opEquals(other: Self)->bool
+    mtd opEquals(other: Employee)->bool
     {
         #ast
         {

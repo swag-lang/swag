@@ -31,7 +31,7 @@ struct ColorPicker
     hue, sat, lum:     f32
     a, r, g, b:        f32
     mode               = ColorPickerMode.SaturationLightness
-    sigChanged:        SigArray'func||(*Self)
+    sigChanged:        SigArray'func||(*ColorPicker)
 
     dirty:             bool = true
     isMoving:          bool

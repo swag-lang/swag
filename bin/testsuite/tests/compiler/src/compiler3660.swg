@@ -2,7 +2,7 @@
 struct A { x: u32; }
 impl A
 {
-    mtd(op: string) opBinary(value: u32)->Self
+    mtd(op: string) opBinary(value: u32)->A
     {
         return {value}
     }

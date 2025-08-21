@@ -21,7 +21,7 @@ struct ComboBox
     kind                = ComboBoxKind.Select
     minWidthPopup:      f32 = 100
     maxHeightPopup:     f32 = 300
-    sigChanged:         SigArray'func||(*Self, u32)
+    sigChanged:         SigArray'func||(*ComboBox, u32)
 
     editBox:            *EditBox
     isHot:              bool

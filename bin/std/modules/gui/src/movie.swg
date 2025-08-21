@@ -14,7 +14,7 @@ struct Movie
     mustLoop:            bool = true
     inPause:             bool
     playFreq:            f32 = 0.05
-    sigFrameChanged:     SigArray'func||(*Self)
+    sigFrameChanged:     SigArray'func||(*Movie)
 
     numFrames:           s32
     frameIndex:          s32

@@ -84,7 +84,7 @@ impl Point
     // Binary operators for point-point operations (+, -, *, /).
     // Performs component-wise operations between two points and returns the result.
     #[Swag.Overload]
-    mtd(op: string) const opBinary(other: Point)->Self
+    mtd(op: string) const opBinary(other: Point)->Point
     {
         #if op == "+":
             return Point{x + other.x, y + other.y}
@@ -101,7 +101,7 @@ impl Point
     // Binary operators for point-scalar operations (+, -, *, /).
     // Applies the scalar 'value' to both coordinates and returns the result.
     #[Swag.Overload]
-    mtd(op: string) const opBinary(value: f32)->Self
+    mtd(op: string) const opBinary(value: f32)->Point
     {
         #if op == "+":
             return Point{x + value, y + value}
@@ -117,7 +117,7 @@ impl Point
 
     // Apply unary operations to the point.
     // Currently supports negation (-) to return a point with both coordinates negated.
-    mtd(op: string) const opUnary()->Self
+    mtd(op: string) const opUnary()->Point
     {
         var result: retval
         #if op == "-"

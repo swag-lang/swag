@@ -9,17 +9,17 @@ var GG1: ST
 
 impl ST
 {
-    func opEquals(using const self, other: Self)->bool
+    func opEquals(using const self, other: ST)->bool
     {
         return self.x == other.x
     }
 
-    func opCmp(using const self, other: Self)->s32
+    func opCmp(using const self, other: ST)->s32
     {
         return self.x - other.x
     }
 
-    func(op: string) opBinary(using const self, other: Self)->ST
+    func(op: string) opBinary(using const self, other: ST)->ST
     {
         #if op == "+"
         {

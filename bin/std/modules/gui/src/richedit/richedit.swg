@@ -39,8 +39,8 @@ struct RichEditCtrl
     lexer:                       IRichEditLexer
     form                         = RichEditForm.RichEditCtrl
     sigIsReadOnly:               SigArray'func||(*bool)
-    sigChanged:                  SigArray'func||(*Self)
-    sigModified:                 SigArray'func||(*Self)
+    sigChanged:                  SigArray'func||(*RichEditCtrl)
+    sigModified:                 SigArray'func||(*RichEditCtrl)
     bkColorModel:                String
 
     styles:                      [256] RichEditRuneStyle

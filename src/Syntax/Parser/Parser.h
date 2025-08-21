@@ -277,7 +277,6 @@ struct Parser
     AstFuncDecl*        currentFct             = nullptr;
     AstBreakable*       currentBreakable       = nullptr;
     Scope*              currentStructScope     = nullptr;
-    Scope*              currentSelfStructScope = nullptr;
     AstCompilerIfBlock* currentCompilerIfBlock = nullptr;
     AstTryCatchAssume*  currentTryCatchAssume  = nullptr;
     AstInline*          currentInline          = nullptr;

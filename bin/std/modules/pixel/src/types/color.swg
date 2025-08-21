@@ -44,7 +44,7 @@ impl Color
 
     // Equality comparison with another Color.
     #[Inline, Overload]
-    func opEquals(self, other: Self) => self.argb == other.argb
+    func opEquals(self, other: Color) => self.argb == other.argb
 
     // Check if the color is fully opaque.
     #[Inline]

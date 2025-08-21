@@ -15,7 +15,7 @@ impl NumericArray
         return buf[idx]
     }
 
-    mtd const opEquals(other: Self)->bool
+    mtd const opEquals(other: NumericArray)->bool
     {
         for i in N
         {
@@ -26,7 +26,7 @@ impl NumericArray
         return true
     }
 
-    mtd(op: string) const opBinary(other: Self)->Self
+    mtd(op: string) const opBinary(other: NumericArray)->NumericArray
     {
         var result: retval
         for i in N
@@ -64,7 +64,7 @@ impl NumericArray
     }
 
     #[Overload]
-    func(op: string) opAssign(using self, value: Self)
+    func(op: string) opAssign(using self, value: NumericArray)
     {
         for i in N
         {
@@ -97,7 +97,7 @@ impl NumericArray
     }
 
     #[Safety("boundcheck", false)]
-    func from(values: T...)->Self
+    func from(values: T...)->NumericArray
     {
         Debug.assert(@countof(values) == N)
         var result: retval
@@ -125,7 +125,7 @@ impl NumericArray
 
     // Multiply & Add
     #[Safety("boundcheck", false), Overload]
-    mtd mulAdd(value1, value2: Self)
+    mtd mulAdd(value1, value2: NumericArray)
     {
         for i in N:
             buf[i] = (buf[i] * value1[i]) + value2.buf[i]

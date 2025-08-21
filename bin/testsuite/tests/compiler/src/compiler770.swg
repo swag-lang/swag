@@ -9,7 +9,7 @@ var cpt: s32 = 0
 
 impl Point
 {
-	/*func opAffect(self, other: Self)
+	/*func opAffect(self, other: self)
 	{
 		self.x = other.x + 1
 		self.y = other.y + 1

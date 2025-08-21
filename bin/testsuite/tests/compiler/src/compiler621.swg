@@ -1,4 +1,5 @@
-#global testerror "Err0320"
-func toto(x: Self)
+/*#global testerror "Err0320"
+func toto(x: self)
 {
 }
+*/

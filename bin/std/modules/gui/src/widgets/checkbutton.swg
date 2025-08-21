@@ -22,7 +22,7 @@ struct CheckButton
 
     checked              = ButtonCheckState.UnChecked
     checkButtonFlags     = CheckButtonFlags.Zero
-    sigChanged:          SigArray'func||(*Self)
+    sigChanged:          SigArray'func||(*CheckButton)
 }
 
 impl IWnd for CheckButton

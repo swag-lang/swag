@@ -6,8 +6,8 @@ struct Vector
 impl Vector
 {
     #[Swag.Inline]
-    mtd(op: string) opBinary(other: Vector)->Vector => Self{x-other.x, y-other.y}
-    //mtd tt(other: Vector)->Vector => Self{x-other.x, y-other.y}
+    mtd(op: string) opBinary(other: Vector)->Vector => Vector{x-other.x, y-other.y}
+    //mtd tt(other: Vector)->Vector => Vector{x-other.x, y-other.y}
 }
 
 #[Swag.Optimize("", false)]

@@ -50,9 +50,9 @@ Utf8 Semantic::getSpecialOpSignature(const AstFuncDecl* node)
     else if (node->token.is(g_LangSpec->name_opIndexAffect))
         result += "[[func opIndexAffect(self, index: WhateverType, value: WhateverType)]]";
     else if (node->token.is(g_LangSpec->name_opBinary))
-        result += "[[func(op: string) opBinary(self, other: WhateverType) -> Self]]";
+        result += "[[func(op: string) opBinary(self, other: WhateverType) -> MyStruct]]";
     else if (node->token.is(g_LangSpec->name_opUnary))
-        result += "[[func(op: string) opUnary(self) -> Self]]";
+        result += "[[func(op: string) opUnary(self) -> MyStruct]]";
     else if (node->token.is(g_LangSpec->name_opAssign))
         result += "[[func(op: string) opAssign(self, value: WhateverType)]]";
     else if (node->token.is(g_LangSpec->name_opIndexAssign))

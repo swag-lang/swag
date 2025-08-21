@@ -131,24 +131,6 @@ struct ParserPushStructScope
     Scope*  savedStruct;
 };
 
-struct ParserPushSelfStructScope
-{
-    explicit ParserPushSelfStructScope(Parser* parser, Scope* structScope) :
-        savedParser(parser)
-    {
-        savedStruct                         = parser->currentSelfStructScope;
-        savedParser->currentSelfStructScope = structScope;
-    }
-
-    ~ParserPushSelfStructScope()
-    {
-        savedParser->currentSelfStructScope = savedStruct;
-    }
-
-    Parser* savedParser;
-    Scope*  savedStruct;
-};
-
 struct ParserPushFreezeFormat
 {
     explicit ParserPushFreezeFormat(Parser* parser) :

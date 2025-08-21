@@ -2,7 +2,7 @@
 
 struct A
 {
-    fct: func(*Self)
+    fct: func(*A)
 }
 
 #test

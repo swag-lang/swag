@@ -10,7 +10,7 @@ struct TimeSpan
 impl TimeSpan
 {
     // Compares two TimeSpan values
-    mtd opCmp(other: Self)->s32
+    mtd opCmp(other: TimeSpan)->s32
     {
         return ticks <=> other.ticks
     }

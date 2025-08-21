@@ -9,7 +9,7 @@ struct PalettePicker
     palPos:            Array'Math.Rectangle
     boxSize:           s32 = 24
     boxMargin:         s32 = 3
-    sigChanged:        SigArray'func||(*Self)
+    sigChanged:        SigArray'func||(*PalettePicker)
     hotIdx:            s32 = Swag.S32.Max
 }
 

@@ -22,12 +22,12 @@ struct X
 
 impl X
 {
-    func toto(using const self, xx: Self)
+    func toto(using const self, xx: X)
     {
 
     }
 
-    func toto1(using const self, xx: Self)
+    func toto1(using const self, xx: X)
     {
 
     }

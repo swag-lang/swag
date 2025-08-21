@@ -59,10 +59,10 @@ struct IconButton
     textPos              = IconButtonTextPos.Bottom
     forceFgColor:        Color
 
-    sigHidePopup:        SigArray'func||(*Self)
-    sigShowPopup:        SigArray'func||(*Self)
-    sigCheckChanged:     SigArray'func||(*Self)
-    sigPaintIcon:        func||(*Self, *PaintContext, Math.Rectangle)
+    sigHidePopup:        SigArray'func||(*IconButton)
+    sigShowPopup:        SigArray'func||(*IconButton)
+    sigCheckChanged:     SigArray'func||(*IconButton)
+    sigPaintIcon:        func||(*IconButton, *PaintContext, Math.Rectangle)
 
     aniBk:               BlendColor
     isChecked:           bool

@@ -42,7 +42,7 @@ struct Properties
     listNameMarginAfter:      s32 = 0
     listDescMarginAfter:      s32 = 5
 
-    sigChanged:               SigArray'func||(*Self, *PropertiesItem)
+    sigChanged:               SigArray'func||(*Properties, *PropertiesItem)
 
     leftMargin:               s32 = 15
     rightMargin:              s32 = 15
@@ -103,8 +103,8 @@ struct PropertiesItem
     comboBox:           *ComboBox
     sliderBox:          *SliderCtrl
 
-    sigResize:          SigArray'func||(*Self)
-    sigRefresh:         SigArray'func||(*Self)
+    sigResize:          SigArray'func||(*PropertiesItem)
+    sigRefresh:         SigArray'func||(*PropertiesItem)
 
     ntfyItf:            IPropertyNotify
 

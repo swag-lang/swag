@@ -6,7 +6,7 @@ struct ToggleButton
     using button:     Button
 
     isToggled:        bool
-    sigChanged:       func(*Self)
+    sigChanged:       func(*ToggleButton)
 
     aniBk:            BlendColor
     aniBorder:        BlendColor

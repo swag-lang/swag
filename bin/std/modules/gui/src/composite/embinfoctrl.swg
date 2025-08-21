@@ -22,7 +22,7 @@ struct EmbInfoCtrl
     using frameWnd:     FrameWnd
     label:              *Label
     ctrlFlags:          EmbInfoCtrlFlags = .Zero
-    sigOnClose:         SigArray'func||(*Self)
+    sigOnClose:         SigArray'func||(*EmbInfoCtrl)
     timer:              *Timer
 }
 

@@ -21,7 +21,7 @@ impl Thing
     }
 
 #[Swag.NoInline]
-    mtd(op: string) opBinary(other: Self)->Self
+    mtd(op: string) opBinary(other: Thing)->Thing
     {
         return {number + other.number}
     }

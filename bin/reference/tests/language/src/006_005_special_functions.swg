@@ -82,14 +82,14 @@ impl Struct
     // This is a generic function that can be overloaded.
     // Examples include '+', '-', '*', '/', '%', '|', '&', '^', '<<', '>>'
     #[Swag.Overload]
-    func(op: string) opBinary(using self, other: OneType)->Self { return {1, 2}; }
+    func(op: string) opBinary(using self, other: OneType)->Struct { return {1, 2}; }
     #[Swag.Overload]
-    func(op: string) opBinary(using self, other: AnotherType)->Self { return {1, 2}; }
+    func(op: string) opBinary(using self, other: AnotherType)->Struct { return {1, 2}; }
 
     // Perform a unary operation, with 'op' representing the operator as a string.
     // This is a generic function.
     // Examples include '!', '-', '~'
-    func(op: string) opUnary(using self)->Self { return {1, 2}; }
+    func(op: string) opUnary(using self)->Struct { return {1, 2}; }
 
     // Perform an assignment operation, with 'op' representing the operator as a string.
     // This is a generic function that can be overloaded.

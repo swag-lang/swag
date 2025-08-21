@@ -24,7 +24,7 @@ struct A
 
     var sb: StringBuilder
     sb.appendFormat("impl % {\n", msg.type.name)
-    sb.appendString("mtd opEquals(other: Self)->bool {\n")
+    sb.appendFormat("mtd opEquals(other: %)->bool {\n", msg.type.name)
     sb.appendString("\treturn ")
 
     foreach f in types.fields

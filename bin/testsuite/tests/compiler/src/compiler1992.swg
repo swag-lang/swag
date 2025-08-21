@@ -6,7 +6,7 @@ struct A
 var G = 0
 impl A
 {
-    func opCmp(using self, other: Self)->s32
+    func opCmp(using self, other: A)->s32
     {
         G += 1
         return x <=> other.x

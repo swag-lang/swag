@@ -22,9 +22,9 @@ struct Slider
     max:                f32 = 1.0
     steps:              f32
     sliderFlags         = SliderFlags.HilightBar
-    sigStartChange:     SigArray'func||(*Self)
-    sigChanged:         SigArray'func||(*Self)
-    sigEndChange:       SigArray'func||(*Self)
+    sigStartChange:     SigArray'func||(*Slider)
+    sigChanged:         SigArray'func||(*Slider)
+    sigEndChange:       SigArray'func||(*Slider)
 
     isMoving:           bool
     isPressed1:         bool

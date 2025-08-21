@@ -20,8 +20,8 @@ public struct ScrollWnd
     scrollSize:               Math.Point
     scrollWndFlags            = ScrollWndFlags.Zero
 
-    sigScrollPosChanged:      SigArray'func||(*Self, Math.Point, Math.Point)
-    sigScrollSizeChanged:     SigArray'func||(*Self, Math.Point, Math.Point)
+    sigScrollPosChanged:      SigArray'func||(*ScrollWnd, Math.Point, Math.Point)
+    sigScrollSizeChanged:     SigArray'func||(*ScrollWnd, Math.Point, Math.Point)
 
     oldMouseCapture:          *Wnd
 

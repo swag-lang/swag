@@ -53,11 +53,11 @@ struct EditBox
     maxLength:            s32                                   // Maximum number of runes (0 = unlimited)
     rightMargin:          f32                                   // Extra right margin inside the client rectangle
 
-    sigChanged:           SigArray'func||(*Self)                // Emitted when the text changes
-    sigLoseFocus:         SigArray'func||(*Self)                // Emitted when the EditBox loses focus
-    sigEnterPressed:      SigArray'func||(*Self)                // Emitted when Enter is pressed
-    sigEscapePressed:     SigArray'func||(*Self)                // Emitted when Escape is pressed
-    sigCheckContent:      func||(*Self)->EditBoxCheckResult     // Optional custom validator
+    sigChanged:           SigArray'func||(*EditBox)                // Emitted when the text changes
+    sigLoseFocus:         SigArray'func||(*EditBox)                // Emitted when the EditBox loses focus
+    sigEnterPressed:      SigArray'func||(*EditBox)                // Emitted when Enter is pressed
+    sigEscapePressed:     SigArray'func||(*EditBox)                // Emitted when Escape is pressed
+    sigCheckContent:      func||(*EditBox)->EditBoxCheckResult     // Optional custom validator
 
     private
     {

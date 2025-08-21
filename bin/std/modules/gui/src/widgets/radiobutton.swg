@@ -6,7 +6,7 @@ struct RadioButton
     using button:        Button
     checked:             bool
     radioButtonFlags     = RadioButtonFlags.Zero
-    sigChanged:          SigArray'func||(*Self)
+    sigChanged:          SigArray'func||(*RadioButton)
 }
 
 #[Swag.EnumFlags]

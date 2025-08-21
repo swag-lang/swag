@@ -360,9 +360,8 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, ExprFlags expr
     structNode->scope   = newScope;
 
     {
-        ParserPushSelfStructScope sf(this, parent->ownerStructScope);
-        ParserPushScope           sc(this, structNode->scope);
-        ParserPushStructScope     ss(this, structNode->scope);
+        ParserPushScope       sc(this, structNode->scope);
+        ParserPushStructScope ss(this, structNode->scope);
 
         const auto startLoc = tokenParse.token.startLocation;
         SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the [[tuple]] body"));

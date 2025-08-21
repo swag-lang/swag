@@ -32,7 +32,6 @@ void LanguageSpec::setupNames()
     name_swag = "swag";
     name_Swag = "Swag";
     name_self = "self";
-    name_Self = "Self";
 
     name_opInitGenerated     = "opInitGenerated";
     name_opDropGenerated     = "opDropGenerated";

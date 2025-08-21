@@ -422,7 +422,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
         node->structFlatParams.push_back(node->lowerBound);
         node->structFlatParams.push_back(node->upperBound);
 
-        // Self in first position
+        // 'self' in first position
         node->structFlatParams.push_front(node->array);
 
         // Resolve call
@@ -1081,7 +1081,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
                 child = arrayChild->array;
             }
 
-            // Self in first position
+            // 'self' in first position
             arrayNode->structFlatParams.push_front(arrayNode->array);
 
             // Resolve call

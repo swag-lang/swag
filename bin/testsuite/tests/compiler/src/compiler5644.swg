@@ -1,7 +1,8 @@
-#global testerror "Err0320"
+/*#global testerror "Err0320"
 
 #test
 {
-    var Self = 0
+    var self = 0
 }
 
+*/

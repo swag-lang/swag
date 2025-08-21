@@ -6,7 +6,7 @@ struct IntPoint
 impl IntPoint
 {
     #[Swag.NoInline]
-    mtd opEquals(other: Self)->bool
+    mtd opEquals(other: IntPoint)->bool
     {
         return Y == other.Y
     }

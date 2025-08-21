@@ -23,7 +23,7 @@ struct ColorPickerCtrl
 {
     using frameWnd:     FrameWnd
 
-    sigChanged:         SigArray'func||(*Self)
+    sigChanged:         SigArray'func||(*ColorPickerCtrl)
     oldColor:           Color
     color:              Color
     pickerFlags         = ColorPickerFlags.All

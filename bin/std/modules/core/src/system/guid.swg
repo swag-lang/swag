@@ -39,7 +39,7 @@ impl GUID128
 {
     // Compare two GUID128 instances for equality.
     // Returns 'true' if both GUIDs have identical values.
-    mtd opEquals(other: Self)->bool
+    mtd opEquals(other: GUID128)->bool
     {
         return val64[0] == other.val64[0] and val64[1] == other.val64[1]
     }
@@ -159,7 +159,7 @@ impl GUID64
 {
     // Compare two GUID64 instances for equality.
     // Returns 'true' if both GUIDs have identical values.
-    mtd opEquals(other: Self)->bool
+    mtd opEquals(other: GUID64)->bool
     {
         return guid == other.guid
     }

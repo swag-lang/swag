@@ -66,14 +66,14 @@ struct ListCtrl
     selectionMode           = ListSelectionMode.Single
     leftTextMargin:         f32
 
-    sigSelChanged:          SigArray'func||(*Self)
-    sigCheckChanged:        SigArray'func||(*Self)
-    sigRightClick:          SigArray'func||(*Self, Math.Point)
-    sigLeftDoubleClick:     SigArray'func||(*Self, Math.Point)
-    sigExpand:              SigArray'func||(*Self, *ListLine)
-    sigCollapse:            SigArray'func||(*Self, *ListLine)
-    sigKeyPressed:          SigArray'func||(*Self, *KeyEvent)
-    sigVirtualFill:         func(*Self, *ListLine, u32)
+    sigSelChanged:          SigArray'func||(*ListCtrl)
+    sigCheckChanged:        SigArray'func||(*ListCtrl)
+    sigRightClick:          SigArray'func||(*ListCtrl, Math.Point)
+    sigLeftDoubleClick:     SigArray'func||(*ListCtrl, Math.Point)
+    sigExpand:              SigArray'func||(*ListCtrl, *ListLine)
+    sigCollapse:            SigArray'func||(*ListCtrl, *ListLine)
+    sigKeyPressed:          SigArray'func||(*ListCtrl, *KeyEvent)
+    sigVirtualFill:         func(*ListCtrl, *ListLine, u32)
     sigSort:                func(*ListLine, *ListLine, u32, bool)->s32
 
     toFreeLines:            ArrayPtr'ListLine

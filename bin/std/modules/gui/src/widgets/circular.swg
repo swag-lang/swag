@@ -55,9 +55,9 @@ struct Circular
     rangeColor: Color // Color for the range arc (when in range mode)
 
     // Event signals
-    sigStartChange:     SigArray'func||(*Self)     // Fired when user starts changing value
-    sigChanged:         SigArray'func||(*Self)     // Fired when value changes
-    sigEndChange:       SigArray'func||(*Self)     // Fired when user finishes changing value
+    sigStartChange:     SigArray'func||(*Circular)     // Fired when user starts changing value
+    sigChanged:         SigArray'func||(*Circular)     // Fired when value changes
+    sigEndChange:       SigArray'func||(*Circular)     // Fired when user finishes changing value
 
     private
     {

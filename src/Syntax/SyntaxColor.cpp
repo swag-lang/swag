@@ -640,7 +640,7 @@ Utf8 doSyntaxColor(const Utf8& line, SyntaxColorContext& context, bool force)
                 continue;
             }
 
-            if (identifier == g_LangSpec->name_self || identifier == g_LangSpec->name_Self)
+            if (identifier == g_LangSpec->name_self)
             {
                 result += syntaxColorToVTS(SyntaxColor::SyntaxType, mode);
                 result += identifier;
