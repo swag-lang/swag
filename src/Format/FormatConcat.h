@@ -12,6 +12,7 @@ struct FormatConcat : Concat
     void addIndent(uint32_t num);
     void addBlankLine();
     void addEol();
+    void addSingleEol();
     void addU32Str(uint32_t value);
     void addString(const std::string_view& view);
     void addString(const char* v, uint32_t len);
@@ -19,10 +20,11 @@ struct FormatConcat : Concat
     void addChar(uint8_t c);
     bool removeLastChar(uint8_t c);
 
-    uint32_t totalEol = 0;
-    uint32_t eol      = 1;
-    uint32_t blank    = 0;
-    uint32_t column   = 0;
-    uint32_t indent   = 0;
-    uint32_t noEol    = 0;
+    uint32_t totalEol  = 0;
+    uint32_t eol       = 1;
+    uint32_t blank     = 0;
+    uint32_t column    = 0;
+    uint32_t indent    = 0;
+    uint32_t noEol     = 0;
+    bool     singleEol = false;
 };

@@ -17,8 +17,9 @@ void FormatConcat::addChar(uint8_t c)
     }
     else if (!SWAG_IS_BLANK(c))
     {
-        eol   = 0;
-        blank = 0;
+        eol       = 0;
+        blank     = 0;
+        singleEol = false;
     }
     else
         blank++;
@@ -42,9 +43,17 @@ void FormatConcat::addEol()
     addChar('\n');
 }
 
+void FormatConcat::addSingleEol()
+{
+    if (eol || noEol)
+        return;
+    addChar('\n');
+    singleEol = true;
+}
+
 void FormatConcat::addBlankLine()
 {
-    if (eol == 1)
+    if (eol == 1 && !singleEol)
         addChar('\n');
 }
 
@@ -137,11 +146,12 @@ void FormatConcat::clear()
 {
     Concat::clear();
 
-    totalEol = 0;
-    eol      = 0;
-    blank    = 0;
-    column   = 0;
-    noEol    = 0;
+    totalEol  = 0;
+    eol       = 0;
+    blank     = 0;
+    column    = 0;
+    noEol     = 0;
+    singleEol = false;
 }
 
 Utf8 FormatConcat::getUtf8() const

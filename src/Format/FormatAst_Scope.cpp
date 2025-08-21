@@ -115,7 +115,7 @@ bool FormatAst::outputScopeBlock(FormatContext& context, Module* module, const S
 {
     concat->addIndent(context.indent);
     concat->addChar('{');
-    concat->addEol();
+    concat->addSingleEol();
     context.indent++;
     SWAG_CHECK(outputScopeContentAndChildren(context, module, scope));
     context.indent--;
@@ -190,7 +190,7 @@ bool FormatAst::outputScope(FormatContext& context, Module* module, Scope* scope
 
         concat->addIndent(context.indent);
         concat->addChar('{');
-        concat->addEol();
+        concat->addSingleEol();
 
         context.indent++;
         SWAG_CHECK(outputScopeContent(context, module, scope));
