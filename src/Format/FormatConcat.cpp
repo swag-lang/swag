@@ -57,7 +57,7 @@ void FormatConcat::addBlankLine()
         addChar('\n');
 }
 
-bool FormatConcat::removeLastChar(uint8_t c)
+bool FormatConcat::moveToEnd()
 {
     if (currentSP == lastBucket->data)
     {
@@ -74,9 +74,27 @@ bool FormatConcat::removeLastChar(uint8_t c)
         currentSP  = lastBucket->data + lastBucket->countBytes;
     }
 
+    return true;
+}
+
+bool FormatConcat::removeLastChar(uint8_t c)
+{
+    SWAG_CHECK(moveToEnd());
     if (currentSP[-1] == c || c == 0)
     {
         column--; // this is false, depends on 'c', but is it enough for the current usage?
+        currentSP--;
+        return true;
+    }
+
+    return false;
+}
+
+bool FormatConcat::removeLastBlankLine()
+{
+    SWAG_CHECK(moveToEnd());
+    if (currentSP[-1] == '\n' && currentSP[-2] == '\n')
+    {
         currentSP--;
         return true;
     }

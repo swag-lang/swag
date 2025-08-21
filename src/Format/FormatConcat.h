@@ -18,7 +18,9 @@ struct FormatConcat : Concat
     void addString(const char* v, uint32_t len);
     void addStringFormat(const char* format, ...);
     void addChar(uint8_t c);
+    bool moveToEnd();
     bool removeLastChar(uint8_t c);
+    bool removeLastBlankLine();
 
     uint32_t totalEol  = 0;
     uint32_t eol       = 1;
