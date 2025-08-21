@@ -140,8 +140,8 @@ impl IAllocator for ScratchAllocator
         {
             let oldAddress = request.address
             request.address = me.block + usedAlign
-            me.used       = usedAlign + request.size
-            me.maxUsed    = @max(me.maxUsed, me.used)
+            me.used         = usedAlign + request.size
+            me.maxUsed      = @max(me.maxUsed, me.used)
             if oldAddress:
                 @memcpy(request.address, oldAddress, request.oldSize)
             return
@@ -157,7 +157,7 @@ impl IAllocator for ScratchAllocator
             leak.prev = ptr
         ptr.prev        = null
         ptr.next        = me.firstLeak
-        me.firstLeak  = ptr
+        me.firstLeak    = ptr
         ptr.size        = totalSize
         request.address = ptr + 1 // user block is after the header
         me.totalLeak += request.size

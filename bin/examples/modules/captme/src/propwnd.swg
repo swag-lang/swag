@@ -475,7 +475,7 @@ impl PropWnd
         }
 
         let btn = createArrowButton(stack, BtnColorWidth, BtnColorHeight)
-        btn.name = "Fill"
+        btn.name         = "Fill"
         btn.sigPaintIcon = func|me|(btn, bc, pos)
         {
             bc.painter.setParams(.Antialiased)
@@ -525,7 +525,7 @@ impl PropWnd
             return
 
         let btn = createArrowButton(stack, BtnColorWidth, BtnColorHeight)
-        btn.name = "Shape"
+        btn.name         = "Shape"
         btn.sigPaintIcon = func|me|(btn, bc, pos)
         {
             bc.painter.setParams(.Antialiased)
@@ -563,7 +563,7 @@ impl PropWnd
             return
 
         let btn = createArrowButton(stack, BtnColorWidth, BtnColorHeight)
-        btn.name = "Shape"
+        btn.name         = "Shape"
         btn.sigPaintIcon = func|me|(btn, bc, pos)
         {
             bc.painter.setParams(.Antialiased)
@@ -601,7 +601,7 @@ impl PropWnd
             return
 
         let btn = createArrowButton(stack, BtnStyleWidth, BtnStyleHeight)
-        btn.name = "Start"
+        btn.name         = "Start"
         btn.sigPaintIcon = func|me|(btn, bc, pos)
         {
             bc.painter.setParams(.Antialiased)
@@ -630,7 +630,7 @@ impl PropWnd
             return
 
         let btn = createArrowButton(stack, BtnStyleWidth, BtnStyleHeight)
-        btn.name = "End"
+        btn.name         = "End"
         btn.sigPaintIcon = func|me|(btn, bc, pos)
         {
             bc.painter.setParams(.Antialiased)
@@ -663,7 +663,7 @@ impl PropWnd
             return
 
         let btn = createArrowButton(stack, BtnStyleWidth, BtnStyleHeight)
-        btn.name = "Dash"
+        btn.name         = "Dash"
         btn.sigPaintIcon = func|me|(btn, bc, pos)
         {
             bc.painter.setParams(.Antialiased)

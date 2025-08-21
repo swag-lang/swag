@@ -42,16 +42,16 @@ enum EditBoxFlags
 
 struct EditBox
 {
-    using wnd:            Wnd                                   // Base window interface
+    using wnd:            Wnd                                      // Base window interface
 
-    icon:                 Icon                                  // Optional icon shown on the left
-    text:                 String                                // Current UTF‑8 text content
-    unit:                 String                                // Suffix unit (e.g. "kg")
-    form                  = EditBoxForm.Square                  // Visual form of the EditBox
-    editBoxFlags          = EditBoxFlags.AutoLoseFocus          // Active behaviour flags
-    inputMode             = EditBoxInputMode.String             // Current input mode
-    maxLength:            s32                                   // Maximum number of runes (0 = unlimited)
-    rightMargin:          f32                                   // Extra right margin inside the client rectangle
+    icon:                 Icon                                     // Optional icon shown on the left
+    text:                 String                                   // Current UTF‑8 text content
+    unit:                 String                                   // Suffix unit (e.g. "kg")
+    form                  = EditBoxForm.Square                     // Visual form of the EditBox
+    editBoxFlags          = EditBoxFlags.AutoLoseFocus             // Active behaviour flags
+    inputMode             = EditBoxInputMode.String                // Current input mode
+    maxLength:            s32                                      // Maximum number of runes (0 = unlimited)
+    rightMargin:          f32                                      // Extra right margin inside the client rectangle
 
     sigChanged:           SigArray'func||(*EditBox)                // Emitted when the text changes
     sigLoseFocus:         SigArray'func||(*EditBox)                // Emitted when the EditBox loses focus

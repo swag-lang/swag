@@ -51,8 +51,8 @@ impl PaintImage
     {
         surface          = assume app.createSurface(0, 0, 1, 1, hook: &onEvent)
         surface.userData = me
-        me.w           = #me.w
-        me.h           = #me.h
+        me.w             = #me.w
+        me.h             = #me.h
     }
 
     // Draw to an image by calling the func

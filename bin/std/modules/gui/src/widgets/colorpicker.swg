@@ -449,7 +449,7 @@ impl ColorPicker
 
         if #me.a >= 0 and me.a != #me.a
         {
-            me.a  = #me.a
+            me.a    = #me.a
             changed = true
         }
 
@@ -481,7 +481,7 @@ impl ColorPicker
     mtd setMode(mode: ColorPickerMode)
     {
         me.mode = #me.mode
-        dirty     = true
+        dirty   = true
         invalidate()
     }
 }
