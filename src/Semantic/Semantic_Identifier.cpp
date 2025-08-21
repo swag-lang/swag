@@ -406,7 +406,7 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
 
         if (dependentVar)
         {
-            if (dep.node->isGeneratedSelf())
+            if (dep.node->isGeneratedMe())
             {
                 Diagnostic err{dependentVar, formErr(Err0019, dependentVar->typeInfo->getDisplayNameC())};
                 err.addNote(dep.node->ownerFct, dep.node->ownerFct->token, toNte(Nte0138));

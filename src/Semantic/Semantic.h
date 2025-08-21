@@ -221,7 +221,7 @@ namespace Semantic
     bool     doSimpleMatch(SemanticContext* context, VectorNative<OneMatch*>& matches, OneTryMatch* const& oneMatch, OneTryMatch& oneOverload);
     bool     matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, MatchIdParamsFlags flags = 0);
     bool     matchRetval(SemanticContext* context, VectorNative<OneSymbolMatch>& symbolsMatch, const AstIdentifier* identifier);
-    bool     matchSharpSelf(SemanticContext* context, VectorNative<OneSymbolMatch>& symbolsMatch, AstIdentifierRef* identifierRef, AstIdentifier* identifier);
+    bool     matchSharpMe(SemanticContext* context, VectorNative<OneSymbolMatch>& symbolsMatch, AstIdentifierRef* identifierRef, AstIdentifier* identifier);
     bool     needToWaitForSymbol(Job* job, SymbolName* symbol);
     bool     registerMatch(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& tryMatches, VectorNative<OneMatch*>& matches, VectorNative<OneMatch*>& genericMatches, VectorNative<OneMatch*>& genericMatchesSI, OneTryMatch& oneOverload, TypeInfo* typeWasForced);
     bool     setMatchResult(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch);

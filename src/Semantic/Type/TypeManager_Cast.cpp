@@ -2617,7 +2617,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context,
             ok = true;
             if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
             {
-                if (toType->isSelf())
+                if (toType->isMe())
                 {
                     if (it.offset)
                     {
@@ -3106,7 +3106,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
     // Struct/Interface to pointer
     if (fromType->isStruct() || fromType->isInterface())
     {
-        if (castFlags.has(CAST_FLAG_EXPLICIT) || toTypePointer->isSelf() || toTypePointer->isConst() || castFlags.has(CAST_FLAG_UFCS))
+        if (castFlags.has(CAST_FLAG_EXPLICIT) || toTypePointer->isMe() || toTypePointer->isConst() || castFlags.has(CAST_FLAG_UFCS))
         {
             // to *void or *structure
             if (toTypePointer->isPointerNull() ||

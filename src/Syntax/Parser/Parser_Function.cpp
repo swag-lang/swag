@@ -195,7 +195,7 @@ bool Parser::doFuncCallArguments(AstNode* parent, AstFuncCallParams** result, To
     return true;
 }
 
-bool Parser::doFuncDeclParameterSelf(AstVarDecl* paramNode)
+bool Parser::doFuncDeclParameterMe(AstVarDecl* paramNode)
 {
     bool isConst = false;
     if (tokenParse.is(TokenId::KwdConst))
@@ -220,7 +220,7 @@ bool Parser::doFuncDeclParameterSelf(AstVarDecl* paramNode)
     if (paramNode->ownerStructScope->is(ScopeKind::Enum))
     {
         const auto typeNode = Ast::newTypeExpression(nullptr, paramNode);
-        typeNode->typeFlags.add(TYPE_FLAG_IS_SELF);
+        typeNode->typeFlags.add(TYPE_FLAG_IS_ME);
         if (paramNode->hasAstFlag(AST_DECL_USING))
             typeNode->typeFlags.add(TYPE_FLAG_HAS_USING);
         typeNode->identifier = Ast::newIdentifierRef(paramNode->ownerStructScope->name, this, typeNode);
@@ -231,7 +231,7 @@ bool Parser::doFuncDeclParameterSelf(AstVarDecl* paramNode)
         SWAG_VERIFY(paramNode->ownerStructScope->is(ScopeKind::Struct), error(tokenParse, toErr(Err0345)));
         const auto typeNode = Ast::newTypeExpression(nullptr, paramNode);
         typeNode->typeFlags.add(isConst ? TYPE_FLAG_IS_CONST : 0);
-        typeNode->typeFlags.add(TYPE_FLAG_IS_SELF | TYPE_FLAG_IS_PTR | TYPE_FLAG_IS_SUB_TYPE);
+        typeNode->typeFlags.add(TYPE_FLAG_IS_ME | TYPE_FLAG_IS_PTR | TYPE_FLAG_IS_SUB_TYPE);
         if (paramNode->hasAstFlag(AST_DECL_USING))
             typeNode->typeFlags.add(TYPE_FLAG_HAS_USING);
         typeNode->identifier = Ast::newIdentifierRef(paramNode->ownerStructScope->name, this, typeNode);
@@ -292,7 +292,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
     // 'me'
     if (tokenParse.is(TokenId::KwdConst) || paramNode->token.is(g_LangSpec->name_me))
     {
-        SWAG_CHECK(doFuncDeclParameterSelf(paramNode));
+        SWAG_CHECK(doFuncDeclParameterMe(paramNode));
     }
     else
     {
@@ -487,10 +487,10 @@ bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool accept
             const auto paramNode = Ast::newVarDecl("", this, allParams, AstNodeKind::FuncDeclParam);
             if (!isItfMethod)
                 paramNode->addAstFlag(AST_DECL_USING);
-            paramNode->addSpecFlag(AstVarDecl::SPEC_FLAG_GENERATED_SELF);
+            paramNode->addSpecFlag(AstVarDecl::SPEC_FLAG_GENERATED_ME);
             paramNode->token.text = g_LangSpec->name_me;
             const auto typeNode   = Ast::newTypeExpression(nullptr, paramNode);
-            typeNode->typeFlags.add(TYPE_FLAG_IS_SELF | TYPE_FLAG_IS_PTR | TYPE_FLAG_IS_SUB_TYPE);
+            typeNode->typeFlags.add(TYPE_FLAG_IS_ME | TYPE_FLAG_IS_PTR | TYPE_FLAG_IS_SUB_TYPE);
             if (!isItfMethod)
                 typeNode->typeFlags.add(TYPE_FLAG_HAS_USING);
             if (isConstMethod)
@@ -1302,8 +1302,8 @@ bool Parser::doLambdaExpression(AstNode* parent, ExprFlags exprFlags, AstNode** 
         // 'mtd' used as a lambda implies as 'using me' as the first capture argument
         if (isMethod)
         {
-            const auto selfId = Ast::newIdentifierRef("me", this, cp);
-            selfId->addAstFlag(AST_DECL_USING | AST_GENERATED | AST_IN_CAPTURE_BLOCK);
+            const auto meId = Ast::newIdentifierRef(g_LangSpec->name_me, this, cp);
+            meId->addAstFlag(AST_DECL_USING | AST_GENERATED | AST_IN_CAPTURE_BLOCK);
         }
 
         // We want the lambda to be evaluated only once the captured block has been typed

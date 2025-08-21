@@ -288,9 +288,9 @@ bool AstNode::isConstantFalse() const
     return hasFlagComputedValue() && !computedValue()->reg.b;
 }
 
-bool AstNode::isGeneratedSelf() const
+bool AstNode::isGeneratedMe() const
 {
-    return is(AstNodeKind::FuncDeclParam) && hasSpecFlag(AstVarDecl::SPEC_FLAG_GENERATED_SELF);
+    return is(AstNodeKind::FuncDeclParam) && hasSpecFlag(AstVarDecl::SPEC_FLAG_GENERATED_ME);
 }
 
 bool AstNode::isEmptyFct()

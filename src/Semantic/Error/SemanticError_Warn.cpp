@@ -191,7 +191,7 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, const Scope* s
             if (funcDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_IS_LAMBDA_EXPRESSION))
                 continue;
 
-            if (front->isGeneratedSelf())
+            if (front->isGeneratedMe())
             {
                 if (funcDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_IMPL | AstFuncDecl::SPEC_FLAG_DEFAULT_IMPL))
                     continue;

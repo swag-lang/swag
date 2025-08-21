@@ -2201,7 +2201,7 @@ bool Semantic::matchRetval(SemanticContext* context, VectorNative<OneSymbolMatch
     return true;
 }
 
-bool Semantic::matchSharpSelf(SemanticContext* context, VectorNative<OneSymbolMatch>& symbolsMatch, AstIdentifierRef* identifierRef, AstIdentifier* identifier)
+bool Semantic::matchSharpMe(SemanticContext* context, VectorNative<OneSymbolMatch>& symbolsMatch, AstIdentifierRef* identifierRef, AstIdentifier* identifier)
 {
     SWAG_VERIFY(identifier->ownerFct, context->report({identifier, toErr(Err0310)}));
     AstNode* parent = identifier;

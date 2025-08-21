@@ -246,7 +246,7 @@ bool ByteCodeSanity::checkNotNullArguments(VectorNative<uint32_t> pushParams, co
                     SWAG_ASSERT(funcDecl->parameters);
 
                     const auto childParam = funcDecl->parameters->children[idx];
-                    if (childParam->isGeneratedSelf())
+                    if (childParam->isGeneratedMe())
                     {
                         msg = formNte(Nte0224, "function", funcDecl->token.cstr(), "an implicit UFCS first argument");
                         err->addNote(funcDecl, funcDecl->getTokenName(), msg);

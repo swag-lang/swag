@@ -286,7 +286,7 @@ bool TypeInfo::isMethod() const
     const auto param = ptr->parameters[0];
     if (!param->typeInfo->isPointer())
         return false;
-    if (!param->typeInfo->isSelf())
+    if (!param->typeInfo->isMe())
         return false;
     if (!param->typeInfo->hasFlag(TYPEINFO_HAS_USING))
         return false;

@@ -112,7 +112,7 @@ namespace
             else
                 err->remarks.push_back(formNte(Nte0088, destParam->token.cstr(), destParam->typeInfo->getDisplayNameC()));
 
-            if (note && !destParam->isGeneratedSelf())
+            if (note && !destParam->isGeneratedMe())
                 note->addNote(destParam, "missing");
 
             if (err->remarks.size() > 3)
@@ -361,7 +361,7 @@ namespace
 
                 if (errorParam.oneTry->dependentVar)
                 {
-                    if (errorParam.oneTry->dependentVar->isGeneratedSelf())
+                    if (errorParam.oneTry->dependentVar->isGeneratedMe())
                     {
                         errorParam.addNote(Diagnostic::note(castMsg));
                     }
@@ -400,7 +400,7 @@ namespace
         {
             errorParam.addNote(Diagnostic::hereIs(overload));
         }
-        else if (destParamNode->isGeneratedSelf())
+        else if (destParamNode->isGeneratedMe())
         {
             SWAG_ASSERT(errorParam.destFuncDecl);
             errorParam.addNote(Diagnostic::hereIs(errorParam.destFuncDecl));

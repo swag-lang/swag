@@ -26,7 +26,7 @@ Utf8 Naming::kindName(const SymbolName* symbol, const AstNode* node, const TypeI
         return "closure";
     }
 
-    if (node->isGeneratedSelf())
+    if (node->isGeneratedMe())
     {
         article = "an";
         return "implicit parameter";

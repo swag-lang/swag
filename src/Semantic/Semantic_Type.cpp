@@ -117,9 +117,9 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
             {
                 const auto nodeFct = castAst<AstFuncDecl>(node->ownerFct, AstNodeKind::FuncDecl);
                 const auto typeFct = castTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
-                if (typeFct->parameters.empty() || !typeFct->parameters[0]->typeInfo->isSelf())
+                if (typeFct->parameters.empty() || !typeFct->parameters[0]->typeInfo->isMe())
                     err.addNote(node->ownerFct, node->ownerFct->token, toNte(Nte0058));
-                else if (!typeFct->parameters.empty() && typeFct->parameters[0]->typeInfo->isSelf() && !typeFct->parameters[0]->typeInfo->hasFlag(TYPEINFO_HAS_USING))
+                else if (!typeFct->parameters.empty() && typeFct->parameters[0]->typeInfo->isMe() && !typeFct->parameters[0]->typeInfo->hasFlag(TYPEINFO_HAS_USING))
                     err.addNote(nodeFct->parameters->firstChild(), toNte(Nte0029));
                 else
                     err.addNote(toNte(Nte0071));
@@ -415,8 +415,8 @@ bool Semantic::resolveType(SemanticContext* context, AstTypeExpression* typeNode
     if (typeNode->typeFlags.has(TYPE_FLAG_IS_PTR))
     {
         auto ptrFlags = typeNode->typeInfo->flags.mask(TYPEINFO_GENERIC);
-        if (typeNode->typeFlags.has(TYPE_FLAG_IS_SELF))
-            ptrFlags.add(TYPEINFO_IS_SELF);
+        if (typeNode->typeFlags.has(TYPE_FLAG_IS_ME))
+            ptrFlags.add(TYPEINFO_IS_ME);
         if (typeNode->typeFlags.has(TYPE_FLAG_HAS_USING))
             ptrFlags.add(TYPEINFO_HAS_USING);
         if (typeNode->typeFlags.has(TYPE_FLAG_IS_CONST))

@@ -174,7 +174,7 @@ bool FormatAst::outputVarName(FormatContext&, const AstVarDecl* varNode) const
 bool FormatAst::outputVarContent(FormatContext& context, AstNode* node, uint32_t startColumn, uint32_t maxLenName, uint32_t maxLenType)
 {
     const auto varNode = castAst<AstVarDecl>(node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl, AstNodeKind::FuncDeclParam);
-    const bool isSelf  = varNode->token.is(g_LangSpec->name_me);
+    const bool isMe    = varNode->token.is(g_LangSpec->name_me);
     inheritLastFormatAfter(nullptr, varNode);
 
     const uint32_t alignTypeBanks = node->hasAstFlag(AST_STRUCT_MEMBER) ? context.style.alignStructVarTypeAddBlanks : 0;
@@ -186,7 +186,7 @@ bool FormatAst::outputVarContent(FormatContext& context, AstNode* node, uint32_t
     {
         if (!varNode->type->hasAstFlag(AST_GENERATED) || varNode->type->hasAstFlag(AST_GENERATED_USER))
         {
-            if (!isSelf)
+            if (!isMe)
             {
                 if (!varNode->hasSpecFlag(AstVarDecl::SPEC_FLAG_PRIVATE_NAME))
                 {
@@ -273,8 +273,8 @@ bool FormatAst::outputVarHeader(FormatContext& context, AstNode* node)
         concat->addBlank();
     }
 
-    const bool isSelf = varNode->token.is(g_LangSpec->name_me);
-    if (isSelf && varNode->type && castAst<AstTypeExpression>(varNode->type)->typeFlags.has(TYPE_FLAG_IS_CONST))
+    const bool isMe = varNode->token.is(g_LangSpec->name_me);
+    if (isMe && varNode->type && castAst<AstTypeExpression>(varNode->type)->typeFlags.has(TYPE_FLAG_IS_CONST))
     {
         concat->addString("const");
         concat->addBlank();

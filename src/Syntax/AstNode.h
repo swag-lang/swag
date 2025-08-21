@@ -343,7 +343,7 @@ struct AstNode
     bool isSameStackFrame(const SymbolOverload* overload) const;
     bool isSpecialFunctionName() const;
     bool isSpecialFunctionGenerated() const;
-    bool isGeneratedSelf() const;
+    bool isGeneratedMe() const;
     bool isEmptyFct();
     bool isForeign() const;
     bool isSilentCall() const;
@@ -655,7 +655,7 @@ struct AstVarDecl : AstNode
     static constexpr SpecFlags SPEC_FLAG_LET_TO_CONST     = 0x0002;
     static constexpr SpecFlags SPEC_FLAG_INLINE_STORAGE   = 0x0004;
     static constexpr SpecFlags SPEC_FLAG_UNNAMED          = 0x0008;
-    static constexpr SpecFlags SPEC_FLAG_GENERATED_SELF   = 0x0010;
+    static constexpr SpecFlags SPEC_FLAG_GENERATED_ME   = 0x0010;
     static constexpr SpecFlags SPEC_FLAG_GENERIC_TYPE     = 0x0020;
     static constexpr SpecFlags SPEC_FLAG_GENERIC_CONSTANT = 0x0040;
     static constexpr SpecFlags SPEC_FLAG_POST_STACK       = 0x0080;
@@ -987,7 +987,7 @@ constexpr TypeFlags TYPE_FLAG_IS_SLICE          = 0x0002;
 constexpr TypeFlags TYPE_FLAG_IS_CONST          = 0x0004;
 constexpr TypeFlags TYPE_FLAG_IS_CODE_BLOCK     = 0x0008;
 constexpr TypeFlags TYPE_FLAG_FORCE_CONST       = 0x0010;
-constexpr TypeFlags TYPE_FLAG_IS_SELF           = 0x0020;
+constexpr TypeFlags TYPE_FLAG_IS_ME           = 0x0020;
 constexpr TypeFlags TYPE_FLAG_IS_RETVAL         = 0x0040;
 constexpr TypeFlags TYPE_FLAG_HAS_USING         = 0x0080;
 constexpr TypeFlags TYPE_FLAG_IS_REF            = 0x0100;

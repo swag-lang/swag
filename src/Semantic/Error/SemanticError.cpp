@@ -38,7 +38,7 @@ void SemanticError::commonErrorNotes(SemanticContext*, const VectorNative<OneTry
     if (node->is(AstNodeKind::Identifier) &&
         tryMatches.size() == 1 &&
         tryMatches[0]->dependentVar &&
-        !tryMatches[0]->dependentVar->isGeneratedSelf())
+        !tryMatches[0]->dependentVar->isGeneratedMe())
     {
         const auto msg  = formNte(Nte0144, tryMatches[0]->overload->symbol->getFullName().cstr());
         const auto note = Diagnostic::note(tryMatches[0]->dependentVar, tryMatches[0]->dependentVar->token, msg);
@@ -116,7 +116,7 @@ bool SemanticError::duplicatedSymbolError(ErrorContext* context,
 
     Diagnostic err{sourceFile, token, formErr(Err0004, what.cstr(), Naming::kindName(thisKind).cstr(), thisName.cstr(), as.cstr())};
 
-    if (otherSymbolDecl->isGeneratedSelf())
+    if (otherSymbolDecl->isGeneratedMe())
         err.addNote(otherSymbolDecl->ownerFct, otherSymbolDecl->ownerFct->token, toNte(Nte0156));
     else
         err.addNote(otherSymbolDecl, otherSymbolDecl->getTokenName(), toNte(Nte0194));

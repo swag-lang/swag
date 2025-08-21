@@ -99,7 +99,7 @@ bool Parser::doLambdaClosureParameters(AstTypeExpression* node, bool inTypeVarDe
             curIsAlone = false;
             SWAG_VERIFY(currentStructScope, error(tokenParse, toErr(Err0345)));
             typeExpr = Ast::newTypeExpression(nullptr, params);
-            typeExpr->typeFlags.add(TYPE_FLAG_IS_SELF | TYPE_FLAG_IS_PTR | TYPE_FLAG_IS_SUB_TYPE);
+            typeExpr->typeFlags.add(TYPE_FLAG_IS_ME | TYPE_FLAG_IS_PTR | TYPE_FLAG_IS_SUB_TYPE);
             typeExpr->token.endLocation = tokenParse.token.endLocation;
             SWAG_CHECK(eatToken());
             typeExpr->identifier = Ast::newIdentifierRef(currentStructScope->name, this, typeExpr);
@@ -264,7 +264,7 @@ bool Parser::doLambdaClosureType(AstTypeExpression* node, bool inTypeVarDecl)
         if (inTypeVarDecl)
         {
             Utf8 nameVar;
-            if (firstAddedType->typeFlags.has(TYPE_FLAG_IS_SELF))
+            if (firstAddedType->typeFlags.has(TYPE_FLAG_IS_ME))
             {
                 firstAddedType->token.text = g_LangSpec->name_me;
                 nameVar                    = g_LangSpec->name_me;
@@ -275,8 +275,8 @@ bool Parser::doLambdaClosureType(AstTypeExpression* node, bool inTypeVarDecl)
             }
 
             const auto param = Ast::newVarDecl(nameVar, this, params, AstNodeKind::FuncDeclParam);
-            if (firstAddedType->typeFlags.has(TYPE_FLAG_IS_SELF))
-                param->addSpecFlag(AstVarDecl::SPEC_FLAG_GENERATED_SELF);
+            if (firstAddedType->typeFlags.has(TYPE_FLAG_IS_ME))
+                param->addSpecFlag(AstVarDecl::SPEC_FLAG_GENERATED_ME);
 
             param->addExtraPointer(ExtraPointerKind::ExportNode, firstAddedType);
             param->addAstFlag(AST_GENERATED | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDREN);

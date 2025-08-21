@@ -96,7 +96,7 @@ bool Semantic::filterMatchesDirect(SemanticContext* context, VectorNative<OneMat
 
         // Do not match 'me'
         if (overSym->is(SymbolKind::Function) &&
-            context->node->hasAttribute(ATTRIBUTE_MATCH_SELF_OFF))
+            context->node->hasAttribute(ATTRIBUTE_MATCH_ME_OFF))
         {
             if (node->hasOwnerInline())
             {
@@ -391,14 +391,14 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
         if (!curMatch->ufcs && over->typeInfo->isFuncAttr())
         {
             const auto typeFunc0 = castTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
-            if (!typeFunc0->parameters.empty() && typeFunc0->parameters[0]->typeInfo->isSelf())
+            if (!typeFunc0->parameters.empty() && typeFunc0->parameters[0]->typeInfo->isMe())
             {
                 for (uint32_t j = 0; j < countMatches; j++)
                 {
                     if (matches[j]->symbolOverload->typeInfo->isFuncAttr())
                     {
                         const auto typeFunc1 = castTypeInfo<TypeInfoFuncAttr>(matches[j]->symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
-                        if (typeFunc1->parameters.empty() || !typeFunc1->parameters[0]->typeInfo->isSelf())
+                        if (typeFunc1->parameters.empty() || !typeFunc1->parameters[0]->typeInfo->isMe())
                         {
                             curMatch->remove = true;
                             break;
@@ -412,14 +412,14 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
         if (curMatch->ufcs && over->typeInfo->isFuncAttr())
         {
             const auto typeFunc0 = castTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
-            if (typeFunc0->parameters.empty() || !typeFunc0->parameters[0]->typeInfo->isSelf())
+            if (typeFunc0->parameters.empty() || !typeFunc0->parameters[0]->typeInfo->isMe())
             {
                 for (uint32_t j = 0; j < countMatches; j++)
                 {
                     if (matches[j]->symbolOverload->typeInfo->isFuncAttr())
                     {
                         const auto typeFunc1 = castTypeInfo<TypeInfoFuncAttr>(matches[j]->symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
-                        if (!typeFunc1->parameters.empty() && typeFunc1->parameters[0]->typeInfo->isSelf())
+                        if (!typeFunc1->parameters.empty() && typeFunc1->parameters[0]->typeInfo->isMe())
                         {
                             curMatch->remove = true;
                             break;

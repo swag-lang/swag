@@ -139,7 +139,7 @@ struct Parser
     bool doAnonymousStruct(AstNode* parent, AstNode** result, ExprFlags exprFlags, bool typeSpecified, bool isUnion);
     bool doGenericFuncCallArguments(AstNode* parent, AstFuncCallParams** result);
     bool doFuncCallArguments(AstNode* parent, AstFuncCallParams** result, TokenId closeToken);
-    bool doFuncDeclParameterSelf(AstVarDecl* paramNode);
+    bool doFuncDeclParameterMe(AstVarDecl* paramNode);
     bool doCompilerScope(AstNode* parent, AstNode** result);
     bool doCompilerTag(AstNode* parent, AstNode** result);
     bool doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind);

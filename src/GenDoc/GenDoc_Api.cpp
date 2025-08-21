@@ -184,7 +184,7 @@ void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint
                             continue;
                         if (!firstParam)
                             parameters += ", ";
-                        if (varNode->typeInfo && varNode->typeInfo->isSelf())
+                        if (varNode->typeInfo && varNode->typeInfo->isMe())
                             parameters += g_LangSpec->name_me;
                         else if (varNode->typeInfo)
                             parameters += varNode->typeInfo->name;

@@ -106,7 +106,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
             return true;
         }
 
-        // Convert struct to static array
+        // Convert struct to a static array
         ExecuteNodeParams opParams;
 
         // Make a copy of the returned struct, as we will lose the memory

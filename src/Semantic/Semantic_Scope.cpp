@@ -213,9 +213,9 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
     }
 
     // #me
-    if (identifier->token.is(g_LangSpec->name_sharp_self))
+    if (identifier->token.is(g_LangSpec->name_sharp_me))
     {
-        SWAG_CHECK(matchSharpSelf(context, symbolsMatch, identifierRef, identifier));
+        SWAG_CHECK(matchSharpMe(context, symbolsMatch, identifierRef, identifier));
         return true;
     }
 
@@ -233,7 +233,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
         if (identifierRef->hasAstFlag(AST_IN_ITF_IMPL) &&
             identifierRef->previousNode &&
             identifierRef->previousNode->typeInfo &&
-            identifierRef->previousNode->typeInfo->isSelf())
+            identifierRef->previousNode->typeInfo->isMe())
         {
             auto scope = identifierRef->ownerScope;
             while (scope && !scope->is(ScopeKind::Impl))
