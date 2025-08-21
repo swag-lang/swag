@@ -6,6 +6,7 @@
 #include "Syntax/AstFlags.h"
 #include "Syntax/Parser/Parser.h"
 #include "Syntax/SyntaxColor.h"
+#include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
 
@@ -184,7 +185,7 @@ void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint
                         if (!firstParam)
                             parameters += ", ";
                         if (varNode->typeInfo && varNode->typeInfo->isSelf())
-                            parameters += "self";
+                            parameters += g_LangSpec->name_me;
                         else if (varNode->typeInfo)
                             parameters += varNode->typeInfo->name;
                         else

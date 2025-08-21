@@ -83,7 +83,7 @@ private
             var sizes:    [HuffmanMaxBits + 1] u16
             var nextCode: [HuffmanMaxBits] u16
 
-            @init(self, 1)
+            @init(me, 1)
             foreach v in codeLengths:
                 sizes[v] += 1
             sizes[0] = 0

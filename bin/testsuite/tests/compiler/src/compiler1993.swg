@@ -9,17 +9,17 @@ var GInit = 0
 
 impl A
 {
-    func opDrop(self)
+    func opDrop(me)
     {
         GDrop += 1
     }
 
-    func opPostMove(self)
+    func opPostMove(me)
     {
         GMove += 1
     }
 
-    func opPostCopy(self)
+    func opPostCopy(me)
     {
         @assert(false)
     }

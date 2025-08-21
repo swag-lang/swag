@@ -24,7 +24,7 @@ impl GamePad
         if !newConnected
         {
             if connected:
-                clear(self)
+                clear(me)
             connected = false
         }
         else

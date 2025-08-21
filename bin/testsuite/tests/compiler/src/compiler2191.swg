@@ -5,16 +5,16 @@ public struct A2191
 
 public impl A2191
 {
-    func toto(using self)
+    func toto(using me)
     {
         titi()
     }
 
-    func tata(using self)
+    func tata(using me)
     {
     }
 
-    func titi(using self)
+    func titi(using me)
     {
         tata()
     }

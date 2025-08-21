@@ -14,7 +14,7 @@ impl ArrayPtr
     // Ensures that all pointed-to objects are deallocated when the array goes out of scope.
     mtd opDrop()
     {
-        ArrayPtr.clear(self)
+        ArrayPtr.clear(me)
     }
 
     // Handles the deep copy of the array and the objects it points to.
@@ -34,7 +34,7 @@ impl ArrayPtr
     // The array's count is set to 0, but the capacity is not changed.
     mtd clear()
     {
-        foreach item in dref self:
+        foreach item in dref me:
             Memory.delete(item, allocator)
         base.count = 0
     }

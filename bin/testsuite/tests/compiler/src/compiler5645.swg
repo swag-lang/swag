@@ -2,6 +2,6 @@
 
 #test
 {
-    var self = 0
-    self = 1
+    var me = 0
+    me = 1
 }

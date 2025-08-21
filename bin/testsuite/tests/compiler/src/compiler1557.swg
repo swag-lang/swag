@@ -8,12 +8,12 @@ var G = 0
 
 impl A
 {
-    /*func fct(using self)
+    /*func fct(using me)
     {
         var ptr : TTX
     }*/
 
-    func opDrop(using self)
+    func opDrop(using me)
     {
         G = 1
         var ptr : TTX

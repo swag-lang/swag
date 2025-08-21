@@ -193,13 +193,13 @@ TypeInfo* TypeInfo::getFinalType()
 
 TypeInfoStruct* TypeInfo::getStructOrPointedStruct() const
 {
-    const auto self = getConcreteAlias();
-    if (self->kind == TypeInfoKind::Struct)
-        return castTypeInfo<TypeInfoStruct>(self, TypeInfoKind::Struct);
+    const auto me = getConcreteAlias();
+    if (me->kind == TypeInfoKind::Struct)
+        return castTypeInfo<TypeInfoStruct>(me, TypeInfoKind::Struct);
 
-    if (self->kind == TypeInfoKind::Pointer)
+    if (me->kind == TypeInfoKind::Pointer)
     {
-        const auto typePointer = castTypeInfo<TypeInfoPointer>(self, TypeInfoKind::Pointer);
+        const auto typePointer = castTypeInfo<TypeInfoPointer>(me, TypeInfoKind::Pointer);
         const auto pointed     = typePointer->pointedType->getConcreteAlias();
         if (pointed->isStruct())
             return castTypeInfo<TypeInfoStruct>(pointed, TypeInfoKind::Struct);

@@ -215,7 +215,7 @@ impl Voice
             var buffer: XAUDIO2_BUFFER
             buffer.pAudioData = ptrBuffer
             buffer.audioBytes = cast() sizeBuffer
-            buffer.pContext   = self
+            buffer.pContext   = me
             let hr = handle.vtbl.submitSourceBuffer(handle, &buffer, null)
             if hr != S_OK:
                 throw SystemError{"submitSourceBuffer", errorID: cast(u64) hr}

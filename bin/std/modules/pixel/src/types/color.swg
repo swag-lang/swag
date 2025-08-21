@@ -24,27 +24,27 @@ impl Color
 {
     // Assignment operator for u32 ARGB value.
     #[Complete, Inline, ConstExpr, Overload]
-    func opAffect(self, argb: u32) = self.argb = argb
+    func opAffect(me, argb: u32) = me.argb = argb
 
     // Assignment operator for 'Argb' enum value.
     #[Complete, Inline, Implicit, ConstExpr, Overload]
-    func opAffect(self, argb: Argb) = self.argb = cast(u32) argb
+    func opAffect(me, argb: Argb) = me.argb = cast(u32) argb
 
     // Assignment operator for color name string.
     #[Complete, Inline, ConstExpr, Overload]
-    func opAffect(self, name: string) = self.argb = cast(u32) Argb.fromName(name)
+    func opAffect(me, name: string) = me.argb = cast(u32) Argb.fromName(name)
 
     // Equality comparison with u32 ARGB value.
     #[Inline, Overload]
-    func opEquals(self, argb: u32) => self.argb == argb
+    func opEquals(me, argb: u32) => me.argb == argb
 
     // Equality comparison with 'Argb' enum value.
     #[Inline, Overload]
-    func opEquals(self, argb: Argb) => self.argb == cast(u32) argb
+    func opEquals(me, argb: Argb) => me.argb == cast(u32) argb
 
     // Equality comparison with another Color.
     #[Inline, Overload]
-    func opEquals(self, other: Color) => self.argb == other.argb
+    func opEquals(me, other: Color) => me.argb == other.argb
 
     // Check if the color is fully opaque.
     #[Inline]
@@ -52,33 +52,33 @@ impl Color
 
     // Set all ARGB components with u8 values (0-255).
     #[Inline]
-    func setArgb(self, a, r, g, b: u8)
+    func setArgb(me, a, r, g, b: u8)
     {
-        self.a = a
-        self.r = r
-        self.g = g
-        self.b = b
+        me.a = a
+        me.r = r
+        me.g = g
+        me.b = b
     }
 
     // Set all ARGB components with floats in the range [0, 1].
     #[Inline]
-    func setArgbf(self, a, r, g, b: f32)
+    func setArgbf(me, a, r, g, b: f32)
     {
-        self.a = cast() (Math.clamp(a, 0, 1) * 255)
-        self.r = cast() (Math.clamp(r, 0, 1) * 255)
-        self.g = cast() (Math.clamp(g, 0, 1) * 255)
-        self.b = cast() (Math.clamp(b, 0, 1) * 255)
+        me.a = cast() (Math.clamp(a, 0, 1) * 255)
+        me.r = cast() (Math.clamp(r, 0, 1) * 255)
+        me.g = cast() (Math.clamp(g, 0, 1) * 255)
+        me.b = cast() (Math.clamp(b, 0, 1) * 255)
     }
 
     // Set RGB components with u8 values (0-255).
     // Alpha will be set to opaque (255).
     #[Inline, Overload]
-    func setRgb(self, r, g, b: u8)
+    func setRgb(me, r, g, b: u8)
     {
-        self.a = 255
-        self.r = r
-        self.g = g
-        self.b = b
+        me.a = 255
+        me.r = r
+        me.g = g
+        me.b = b
     }
 
     // Copy RGB components from another color.
@@ -86,54 +86,54 @@ impl Color
     #[Inline, Overload]
     mtd setRgb(rgb: Color)
     {
-        self.r = rgb.r
-        self.g = rgb.g
-        self.b = rgb.b
+        me.r = rgb.r
+        me.g = rgb.g
+        me.b = rgb.b
     }
 
     // Set RGB components with floats in the range [0, 1].
     // Alpha will be set to opaque (255).
     #[Inline]
-    func setRgbf(self, r, g, b: f32)
+    func setRgbf(me, r, g, b: f32)
     {
-        self.a = 255
-        self.r = cast() (Math.clamp(r, 0, 1) * 255)
-        self.g = cast() (Math.clamp(g, 0, 1) * 255)
-        self.b = cast() (Math.clamp(b, 0, 1) * 255)
+        me.a = 255
+        me.r = cast() (Math.clamp(r, 0, 1) * 255)
+        me.g = cast() (Math.clamp(g, 0, 1) * 255)
+        me.b = cast() (Math.clamp(b, 0, 1) * 255)
     }
 
     // Retrieve all ARGB components as floating point values between 0 and 1.
     #[Inline, ConstExpr]
-    func toArgbf(const self)->{ a: f32, r: f32, g: f32, b: f32 }
+    func toArgbf(const me)->{ a: f32, r: f32, g: f32, b: f32 }
     {
         var result: retval = undefined
-        result.a = self.a / 255.0
-        result.r = self.r / 255.0
-        result.g = self.g / 255.0
-        result.b = self.b / 255.0
+        result.a = me.a / 255.0
+        result.r = me.r / 255.0
+        result.g = me.g / 255.0
+        result.b = me.b / 255.0
         return result
     }
 
     // Convert color to a Math.Vector4 (w=alpha, x=red, y=green, z=blue).
     #[Inline, ConstExpr]
-    func toVector4(const self)->Math.Vector4
+    func toVector4(const me)->Math.Vector4
     {
         var result: retval = undefined
-        result.w = self.a / 255.0
-        result.x = self.r / 255.0
-        result.y = self.g / 255.0
-        result.z = self.b / 255.0
+        result.w = me.a / 255.0
+        result.x = me.r / 255.0
+        result.y = me.g / 255.0
+        result.z = me.b / 255.0
         return result
     }
 
     // Retrieve RGB components as floating point values between 0 and 1.
     #[Inline, ConstExpr]
-    func toRgbf(const self)->{ r: f32, g: f32, b: f32 }
+    func toRgbf(const me)->{ r: f32, g: f32, b: f32 }
     {
         var result: retval = undefined
-        result.r = self.r / 255.0
-        result.g = self.g / 255.0
-        result.b = self.b / 255.0
+        result.r = me.r / 255.0
+        result.g = me.g / 255.0
+        result.b = me.b / 255.0
         return result
     }
 

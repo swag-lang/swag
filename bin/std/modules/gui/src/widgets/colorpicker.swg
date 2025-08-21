@@ -397,7 +397,7 @@ impl IWnd for ColorPicker
                 }
 
                 computeXY()
-                sigChanged.call(self)
+                sigChanged.call(me)
                 invalidate()
             }
 
@@ -447,9 +447,9 @@ impl ColorPicker
             changed = true
         }
 
-        if #self.a >= 0 and self.a != #self.a
+        if #me.a >= 0 and me.a != #me.a
         {
-            self.a  = #self.a
+            me.a  = #me.a
             changed = true
         }
 
@@ -457,7 +457,7 @@ impl ColorPicker
         {
             dirty = true
             invalidate()
-            sigChanged.call(self)
+            sigChanged.call(me)
         }
     }
 
@@ -468,7 +468,7 @@ impl ColorPicker
         (a, r, g, b) = col.toArgbf()
         dirty = true
         invalidate()
-        sigChanged.call(self)
+        sigChanged.call(me)
     }
 
     // Returns the selected color
@@ -480,7 +480,7 @@ impl ColorPicker
     // Set the color picker box mode
     mtd setMode(mode: ColorPickerMode)
     {
-        self.mode = #self.mode
+        me.mode = #me.mode
         dirty     = true
         invalidate()
     }

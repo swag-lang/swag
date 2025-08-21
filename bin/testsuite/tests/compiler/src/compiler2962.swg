@@ -5,7 +5,7 @@ public struct V2962
 
 public impl V2962
 {
-    func toto(using self, angle: f32 = 0, pos1: V2962 = {1, 1})
+    func toto(using me, angle: f32 = 0, pos1: V2962 = {1, 1})
     {
     }
 }

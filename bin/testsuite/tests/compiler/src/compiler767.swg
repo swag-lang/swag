@@ -10,7 +10,7 @@ struct Point
 
 impl Point
 {
-	func opPostCopy(self)
+	func opPostCopy(me)
 	{
 		//@print("postcopy!\n")
 		test = 1

@@ -162,13 +162,13 @@ impl IWnd for Slider
         {
             if isHot1 or isHot2 or isMoving
             {
-                aniStep1.apply(self, colors.slider_HotStepBk)
-                aniStep2.apply(self, colors.slider_HotStepBk)
+                aniStep1.apply(me, colors.slider_HotStepBk)
+                aniStep2.apply(me, colors.slider_HotStepBk)
             }
             else
             {
-                aniStep1.apply(self, colors.slider_StepBk)
-                aniStep2.apply(self, colors.slider_HilightStepBk)
+                aniStep1.apply(me, colors.slider_StepBk)
+                aniStep2.apply(me, colors.slider_HilightStepBk)
             }
 
             for var x = 0'f32; x < 1 + steps; x += steps
@@ -187,13 +187,13 @@ impl IWnd for Slider
         }
 
         // Box value1
-        aniMark1.apply(self, colorMark1)
+        aniMark1.apply(me, colorMark1)
         theme.drawSubRect(bc.painter, posBox1, &rects.slider_Mark, aniMark1.cur())
 
         // Box value2
         if sliderFlags.has(.Range)
         {
-            aniMark2.apply(self, colorMark2)
+            aniMark2.apply(me, colorMark2)
             theme.drawSubRect(bc.painter, posBox2, &rects.slider_Mark, aniMark2.cur())
         }
     }
@@ -352,7 +352,7 @@ internal impl Slider
             return
         hasValue1 = true
         value1    = fc
-        sigChanged.call(self)
+        sigChanged.call(me)
         invalidate()
     }
 
@@ -365,7 +365,7 @@ internal impl Slider
             return
         hasValue2 = true
         value2    = fc
-        sigChanged.call(self)
+        sigChanged.call(me)
         invalidate()
     }
 
@@ -448,12 +448,12 @@ internal impl Slider
 
     mtd startChange()
     {
-        sigStartChange.call(self)
+        sigStartChange.call(me)
     }
 
     mtd endChange()
     {
-        sigEndChange.call(self)
+        sigEndChange.call(me)
     }
 }
 
@@ -490,16 +490,16 @@ impl Slider
     }
 
     // Set the 'min', 'max' and 'steps' values
-    func setMinMax(self, min, max: f32, steps: f32 = 0)
+    func setMinMax(me, min, max: f32, steps: f32 = 0)
     {
         Debug.assert(min < max)
         Debug.assert(steps < (max - min))
-        self.min = min
-        self.max = max
+        me.min = min
+        me.max = max
         if steps > 0:
-            self.steps = steps / (max - min) // Convert to normalized step size
+            me.steps = steps / (max - min) // Convert to normalized step size
         else:
-            self.steps = 0
+            me.steps = 0
     }
 
     // Set left and right values, for a range

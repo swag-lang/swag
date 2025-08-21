@@ -10,10 +10,10 @@ enum RGBRGB
 impl RGBRGB
 {
     var GLOBAL = 0
-    func isRed(self)->bool
+    func isRed(me)->bool
     {
-        GLOBAL += cast(s32) self
-        return self == R
+        GLOBAL += cast(s32) me
+        return me == R
     }
 }
 

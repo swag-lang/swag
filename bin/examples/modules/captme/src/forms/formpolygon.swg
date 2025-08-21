@@ -181,7 +181,7 @@ impl IForm for FormPolygon
 
     mtd impl hitTest(pt: Math.Point, z: f32)->bool
     {
-        return BaseForm.drawHitTest(self, pt, z)
+        return BaseForm.drawHitTest(me, pt, z)
     }
 
     mtd impl paint(painter: *Painter, cxt: FormPaintContext)
@@ -245,7 +245,7 @@ impl IForm for FormPolygon
         capture          = capt
         gizmo.sigChanged = mtd||(diff, pt, first)
         {
-            GizmoPoints.apply(self, diff, pt, first)
+            GizmoPoints.apply(me, diff, pt, first)
         }
     }
 }

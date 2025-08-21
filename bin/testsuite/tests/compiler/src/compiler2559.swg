@@ -5,7 +5,7 @@ struct AA
 
 impl AA
 {
-    /*func opPostCopy(self)
+    /*func opPostCopy(me)
     {
 @print("copy")
     }*/

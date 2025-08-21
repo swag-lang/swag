@@ -187,7 +187,7 @@ impl RegExp
     public mtd compile(expr: string, ignoreCase = false) throw
     {
         clear()
-        self.ignoreCase = #self.ignoreCase
+        me.ignoreCase = #me.ignoreCase
         preprocess(expr)
         nfaBuild()
         dfaBuild()
@@ -218,7 +218,7 @@ impl RegExp
     #[Swag.Overload]
     public mtd match(expr, str: string, ignoreCase = false)->bool throw
     {
-        compile(expr, #self.ignoreCase)
+        compile(expr, #me.ignoreCase)
         return match(str)
     }
 

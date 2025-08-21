@@ -211,7 +211,7 @@ impl Decoder
 {
     mtd init(buffer: const [..] u8) throw
     {
-        @init(self, 1)
+        @init(me, 1)
         stream    = @dataof(buffer)
         streamLen = cast(s32) @countof(buffer)
 
@@ -1508,7 +1508,7 @@ impl Decoder
                 for mcuBlock in blocksPerMcu
                 {
                     let componentId = mcuOrg[mcuBlock]
-                    fn(self, componentId, blockMcutX[componentId] + blockMcuOfsX, blockMcutY[componentId] + blockMcuOfsY)
+                    fn(me, componentId, blockMcutX[componentId] + blockMcuOfsX, blockMcutY[componentId] + blockMcuOfsY)
 
                     if compsInScan == 1:
                         blockMcutX[componentId] += 1

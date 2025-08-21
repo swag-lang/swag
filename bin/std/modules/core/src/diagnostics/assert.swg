@@ -7,7 +7,7 @@ func assert(expr: #code bool, message: string = null, loc = #callerlocation)
     #if ASSERT
     {
         if !#inject(expr):
-            @panic(#self.message, #self.loc)
+            @panic(#me.message, #me.loc)
     }
 }
 

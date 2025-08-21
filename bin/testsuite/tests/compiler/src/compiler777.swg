@@ -10,11 +10,11 @@ var cpt: s32 = 0
 
 impl Point
 {
-	func opPostCopy(self)
+	func opPostCopy(me)
 	{
 	}
 
-	func opPostMove(self)
+	func opPostMove(me)
 	{
 		cpt += 1
 	}

@@ -130,11 +130,11 @@ internal impl RichEditCtrl
     mtd setModified(mdf: bool)
     {
         if mdf:
-            sigChanged.call(self)
+            sigChanged.call(me)
         if modified == mdf:
             return
         modified = mdf
-        sigModified.call(self)
+        sigModified.call(me)
     }
 
     mtd resetModified()
@@ -285,10 +285,10 @@ impl RichEditCtrl
     // Set form
     mtd setForm(form: RichEditForm)
     {
-        self.form = #self.form
+        me.form = #me.form
         let colors = getThemeColors()
 
-        switch self.form
+        switch me.form
         {
         case RichEditCtrl:
             style.setFont(parent.getTheme().res.fontDefaultFs)
@@ -365,7 +365,7 @@ impl RichEditCtrl
         if c == '\n' and mdf.equals(.Zero) and richEdFlags.has(.AutoLoseFocus):
             return
 
-        if lexer and lexer.insertRune(self, c):
+        if lexer and lexer.insertRune(me, c):
             return
 
         insertRune(c)
@@ -387,7 +387,7 @@ impl RichEditCtrl
     mtd setLexer(lex: IRichEditLexer)
     {
         lexer = lex
-        lexer.setup(self)
+        lexer.setup(me)
     }
 
     // Lex the full text

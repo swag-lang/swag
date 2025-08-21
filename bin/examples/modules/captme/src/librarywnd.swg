@@ -162,7 +162,7 @@ impl LibraryWnd
             return
         g_Library.onDeleteFile += mtd||(file)
         {
-            foreach it, i in self.view.items
+            foreach it, i in me.view.items
             {
                 if it.fi.fullname == file
                 {

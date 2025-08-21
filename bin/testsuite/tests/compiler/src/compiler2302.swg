@@ -9,7 +9,7 @@ struct AA
 
 impl AA
 {
-    func toto(self)
+    func toto(me)
     {
         x.alloc(null)
     }

@@ -5,9 +5,9 @@ struct AA
 
 impl AA
 {
-    func opIndexAffect(self, idx: u64, v: bool)
+    func opIndexAffect(me, idx: u64, v: bool)
     {
-        @assert(self.x == 555)
+        @assert(me.x == 555)
     }
 }
 

@@ -44,7 +44,7 @@ impl IWnd for Label
 
         case MousePressed:
             if evt.button == .Left and hotChunk:
-                sigUrlClicked.call(self, hotChunk.slice)
+                sigUrlClicked.call(me, hotChunk.slice)
             else:
                 evt.accepted = false
 

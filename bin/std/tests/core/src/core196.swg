@@ -6,7 +6,7 @@ var G = 0
 
 impl IAllocator for My
 {
-    func impl req(self, req: *AllocatorRequest)
+    func impl req(me, req: *AllocatorRequest)
     {
         var sys: SystemAllocator
         let itf  = cast(IAllocator) sys

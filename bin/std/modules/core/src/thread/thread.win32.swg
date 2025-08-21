@@ -66,12 +66,12 @@ impl Thread
         elif tempAllocSize != 0:
             context.tempAllocator.setCapacity(cast(u64) tempAllocSize, context.allocator)
 
-        handle     = try CreateThread(null, 0, @mkcallback(&threadEntry), self, CREATE_SUSPENDED, &id)
+        handle     = try CreateThread(null, 0, @mkcallback(&threadEntry), me, CREATE_SUSPENDED, &id)
         userLambda = lambda
         requestEnd = false
 
-        self.userParam = #self.userParam
-        try setPriority(#self.priority)
+        me.userParam = #me.userParam
+        try setPriority(#me.priority)
     }
 
     // Resume the given thread, if it was paused
@@ -86,10 +86,10 @@ impl Thread
     {
         Debug.assert(isValid())
 
-        let newPrio = #self.priority
-        if self.priority == newPrio:
+        let newPrio = #me.priority
+        if me.priority == newPrio:
             return
-        self.priority = newPrio
+        me.priority = newPrio
 
         var wprio = 0
         #[Swag.Complete]

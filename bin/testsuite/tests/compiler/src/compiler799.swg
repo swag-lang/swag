@@ -7,7 +7,7 @@ struct Utf8
 
 impl Utf8
 {
-	func reserveSize(self)
+	func reserveSize(me)
 	{
 		size = 0
 	}

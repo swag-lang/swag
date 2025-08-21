@@ -1281,7 +1281,7 @@ bool ByteCodeGen::emitStructInit(ByteCodeGenContext* context, const TypeInfoStru
     }
     else
     {
-        // Push self
+        // Push me
         RegisterList r0 = reserveRegisterRC(context);
         emitRetValRef(context, resolved, r0, retVal, resolved->computedValue.storageOffset);
 

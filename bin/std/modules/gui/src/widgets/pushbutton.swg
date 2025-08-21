@@ -142,16 +142,16 @@ impl IWnd for PushButton
 
         // Background
         var clientRect = getClientRect()
-        aniBk.apply(self, colorBk)
+        aniBk.apply(me, colorBk)
         theme.drawSubRect(bc.painter, clientRect, subRectBk, aniBk.cur())
 
         // Border
-        aniBorder.apply(self, colorBorder)
+        aniBorder.apply(me, colorBorder)
         theme.drawSubRect(bc.painter, clientRect, subRectBorder, aniBorder.cur())
 
         // Content
         var format: RichStringFormat
-        aniText.apply(self, colorText)
+        aniText.apply(me, colorText)
         theme.setTextColors(&format, aniText.cur())
         format.horzAlignment = .Center
         format.vertAlignment = .Center

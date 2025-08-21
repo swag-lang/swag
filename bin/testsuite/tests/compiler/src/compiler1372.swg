@@ -16,7 +16,7 @@ namespace std
 
     impl String1372
     {
-        func free(using self)
+        func free(using me)
         {
             if !buffer:
                 return
@@ -26,7 +26,7 @@ namespace std
             allocator.req(&req)
         }
 
-        func realloc(using self, newSize: u32)
+        func realloc(using me, newSize: u32)
         {
             if allocator == null:
                 allocator = @getcontext().allocator

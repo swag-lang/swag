@@ -11,7 +11,7 @@ struct(T) B
 
 impl B
 {
-    func emplace(using self, x: T)
+    func emplace(using me, x: T)
     {
         var y = #move x
     }

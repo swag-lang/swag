@@ -6,7 +6,7 @@ struct AA
 impl AA
 {
     #[Swag.Inline]
-    func titi(using self)->{a: f32, b: f32}
+    func titi(using me)->{a: f32, b: f32}
     {
         var _a = cast(f32) x / 10
         var _b = cast(f32) y / 10

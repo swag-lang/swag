@@ -5,12 +5,12 @@ struct AA
 
 interface IHash
 {
-    func hash(self)->u32;
+    func hash(me)->u32;
 }
 
 impl IHash for AA
 {
-    func impl hash(using self)->u32
+    func impl hash(using me)->u32
     {
         return val
     }

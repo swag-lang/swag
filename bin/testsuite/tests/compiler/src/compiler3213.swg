@@ -5,7 +5,7 @@ struct Base
 
 interface IBase
 {
-    func toCheck(self)->s32;
+    func toCheck(me)->s32;
 }
 
 impl IBase for Base

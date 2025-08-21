@@ -301,7 +301,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
         if (!arrayType->isStruct())
             arrayNode = nullptr;
 
-        // Add self and value in list of parameters
+        // Add me and value in list of parameters
         if (arrayNode)
         {
             if (!node->hasSemFlag(SEMFLAG_FLAT_PARAMS))

@@ -176,7 +176,7 @@ impl IForm for FormDraw
 
     mtd impl hitTest(pt: Math.Point, z: f32)->bool
     {
-        return BaseForm.drawHitTest(self, pt, z)
+        return BaseForm.drawHitTest(me, pt, z)
     }
 
     mtd impl paint(painter: *Painter, cxt: FormPaintContext)

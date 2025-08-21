@@ -5,8 +5,8 @@ struct(T) Arr
 
 interface IT
 {
-    func toto(self);
-    func toto1(self);
+    func toto(me);
+    func toto1(me);
 }
 
 var G: s32 = 0
@@ -14,13 +14,13 @@ var G: s32 = 0
 impl IT for Arr
 {
     //#[Swag.PrintBc]
-    func impl toto(self)
+    func impl toto(me)
     {
         G += 1
         @assert(#typeof(T) == s32)
     }
 
-    func impl toto1(self)
+    func impl toto1(me)
     {
         G += 10
         @assert(#typeof(T) == f64)

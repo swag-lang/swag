@@ -80,7 +80,7 @@ impl IWnd for SplitterCtrl
             {
                 var rect = getBarRect(hotIdx)
                 moving = true
-                surface.app.captureMouse(self)
+                surface.app.captureMouse(me)
                 if isVertical():
                     correctMoving = local.y - rect.y
                 else:
@@ -174,7 +174,7 @@ impl IWnd for SplitterCtrl
             if isHot or !splitterFlags.has(.HideBars)
             {
                 var colorBar = isHot ? colors.splitView_BarHot : colors.splitView_Bar
-                items[idx].aniBar.apply(self, colorBar)
+                items[idx].aniBar.apply(me, colorBar)
                 if isVertical()
                 {
                     let rectBar = isHot ? &rects.splitView_HorzBarHotBk : &rects.splitView_HorzBarBk
@@ -421,14 +421,14 @@ impl SplitterCtrl
     #[Swag.Discardable]
     mtd addPane(pane: *Wnd, paneSize: f32 = 100, title = false)->*SplitterItem
     {
-        pane.setParent(self)
+        pane.setParent(me)
         numVisiblePanes += 1
 
         let item = items.newPtr()
         item.view = pane
         if title
         {
-            with let label = Label.create(self, "")
+            with let label = Label.create(me, "")
             {
                 .backgroundStyle = .Window
                 .style.addStyleSheetColors("wnd_Bk $dlg_BtnBarBk")

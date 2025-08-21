@@ -4,7 +4,7 @@ struct A
 
 impl A
 {
-    func(op: string) opBinary(self, other: A)->A
+    func(op: string) opBinary(me, other: A)->A
     {
         return A{}
     }

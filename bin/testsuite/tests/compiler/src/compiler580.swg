@@ -9,9 +9,9 @@ struct Point
 
 impl Point
 {
-	func opEquals(self, other: s32)->bool
+	func opEquals(me, other: s32)->bool
 	{
-		return self.x == other and self.y == other
+		return me.x == other and me.y == other
 	}
 }
 

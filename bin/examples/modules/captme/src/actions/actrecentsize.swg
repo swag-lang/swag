@@ -102,8 +102,8 @@ impl MainWnd
 {
     mtd setBottomSize(bottomSize: BottomSize)
     {
-        self.bottomSize = #self.bottomSize
-        switch self.bottomSize
+        me.bottomSize = #me.bottomSize
+        switch me.bottomSize
         {
         case Small:
             recentBar.resize(0, 80)

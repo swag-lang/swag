@@ -4,12 +4,12 @@ struct AA
 
 interface BB
 {
-    func fct(self);
+    func fct(me);
 }
 
 impl BB for AA
 {
-    func impl fct(using self)
+    func impl fct(using me)
     {
 
     }

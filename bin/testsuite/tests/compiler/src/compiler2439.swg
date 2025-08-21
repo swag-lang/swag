@@ -12,7 +12,7 @@ var G = 0
 
 impl A
 {
-    func opEquals(using self, o: B)->bool
+    func opEquals(using me, o: B)->bool
     {
         G += 1
         return v == o.v
@@ -21,7 +21,7 @@ impl A
 
 impl B
 {
-    func opEquals(using self, o: string)->bool
+    func opEquals(using me, o: string)->bool
     {
         return false
     }

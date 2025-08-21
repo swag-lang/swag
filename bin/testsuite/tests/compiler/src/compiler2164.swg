@@ -18,7 +18,7 @@ var G: s32 = 0
 
 impl B
 {
-    func close(using self)
+    func close(using me)
     {
         G += 1
         @assert(G == 1)

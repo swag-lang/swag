@@ -6,12 +6,12 @@ struct Point
 
 impl Point
 {
-	func opIndexAffect(self, i: u64, v: s32)
+	func opIndexAffect(me, i: u64, v: s32)
 	{
         if(i == 0):
-            self.x = v;
+            me.x = v;
         else:
-            self.y = v;
+            me.y = v;
 	}
 }
 

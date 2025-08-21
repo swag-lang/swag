@@ -10,7 +10,7 @@ struct BB
 
 impl AA
 {
-    func opDrop(using self)
+    func opDrop(using me)
     {
         xxx = 4
     }

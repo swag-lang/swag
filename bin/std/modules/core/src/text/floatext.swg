@@ -141,8 +141,8 @@ impl FloatExt
             // An exact integer
             mant >>= cast(u32) -exp
             exp          = 0
-            result.lower = dref self
-            result.upper = dref self
+            result.lower = dref me
+            result.upper = dref me
             return result
         }
 
@@ -432,7 +432,7 @@ impl FloatExt
             return true
         }
 
-        if exp == 0 and dref lower == dref self and dref lower == dref upper
+        if exp == 0 and dref lower == dref me and dref lower == dref upper
         {
             // an exact integer.
             var buf: [24] u8
@@ -477,7 +477,7 @@ impl FloatExt
             lower.exp = upper.exp
         }
 
-        let exp10 = frexp10Many(lower, self, upper)
+        let exp10 = frexp10Many(lower, me, upper)
 
         // Take a Safety margin due to rounding in frexp10Many, but we lose precision.
         upper.mant += 1

@@ -7,20 +7,20 @@ var G = 0
 
 impl AA
 {
-    func titi(using self)
+    func titi(using me)
     {
         G += 1
     }
 
-    func toto(using self)
+    func toto(using me)
     {
         var x: func(*AA)
         x = &titi
-        x(self)
+        x(me)
 
         var y: #decltype(&titi)
         y = &titi
-        y(self)
+        y(me)
     }
 }
 

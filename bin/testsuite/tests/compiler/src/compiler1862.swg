@@ -1,11 +1,11 @@
 impl enum RGB
 {
-    func isRed(self)->bool
+    func isRed(me)->bool
     {
-        return self == R
+        return me == R
     }
 
-    func isBlue(self)->bool => self == B
+    func isBlue(me)->bool => me == B
 }
 
 #test

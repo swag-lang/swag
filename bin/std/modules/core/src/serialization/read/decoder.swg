@@ -172,7 +172,7 @@ impl Decoder
             }
 
             // A structure with an implementation of ISerialize
-            let idecoder = cast(IDecoder) self
+            let idecoder = cast(IDecoder) me
             let itf      = @mkinterface(data, type, ISerialize)
             if itf != null
             {

@@ -7,7 +7,7 @@ struct AA
 impl AA
 {
     //#[Swag.PrintBc]
-    func opPostMove(using self)
+    func opPostMove(using me)
     {
     }
 }

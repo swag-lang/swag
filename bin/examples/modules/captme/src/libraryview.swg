@@ -107,7 +107,7 @@ impl IWnd for LibraryView
 
         if evt.kind == .MousePressed and evt.button == .Right and focusItem < items.count
         {
-            with let menu = MenuCtrl.createPopup(self)
+            with let menu = MenuCtrl.createPopup(me)
             {
                 .addItem(CmdIdDeleteCapture)
                 .addSeparator()
@@ -161,9 +161,9 @@ impl IWnd for LibraryView
             let selected = selModel.isSelected(cast() i)
 
             if capture:
-                RecentView.IWnd.paintRecent(self, painter, it.texture, it.rect, i == hotItem, selected, capture.linkedUpToDate, capture.linkedImage)
+                RecentView.IWnd.paintRecent(me, painter, it.texture, it.rect, i == hotItem, selected, capture.linkedUpToDate, capture.linkedImage)
             else:
-                RecentView.IWnd.paintRecent(self, painter, it.texture, it.rect, i == hotItem, selected, false, null)
+                RecentView.IWnd.paintRecent(me, painter, it.texture, it.rect, i == hotItem, selected, false, null)
 
             // Waiting for texture
             if !it.texture.isValid()

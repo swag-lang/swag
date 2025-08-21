@@ -9,10 +9,10 @@ struct toto
 
 impl toto
 {
-	func fff(self)
+	func fff(me)
 	{
-		@assert(self.x == 100)
-		@assert(self.y == 200)
+		@assert(me.x == 100)
+		@assert(me.y == 200)
 	}
 }
 

@@ -14,10 +14,10 @@ impl enum PixelFormat
 {
     // Returns the bpp (bits per pixel) of the given pixel format
     #[ConstExpr]
-    func bpp(self)->u8
+    func bpp(me)->u8
     {
         #[Complete]
-        switch self
+        switch me
         {
         case BGR8:
             return 24
@@ -34,10 +34,10 @@ impl enum PixelFormat
 
     // Returns the number of image channels
     #[ConstExpr]
-    func channels(self)->u8
+    func channels(me)->u8
     {
         #[Complete]
-        switch self
+        switch me
         {
         case BGR8:
             return 3
@@ -54,10 +54,10 @@ impl enum PixelFormat
 
     // Returns the bit depth of each channel
     #[ConstExpr]
-    func bitDepth(self)->u8
+    func bitDepth(me)->u8
     {
         #[Complete]
-        switch self
+        switch me
         {
         case BGR8:
             return 8
@@ -74,10 +74,10 @@ impl enum PixelFormat
 
     // Returns true if the given pixel format has an alpha channel
     #[ConstExpr]
-    func hasAlpha(self)->bool
+    func hasAlpha(me)->bool
     {
         #[Complete]
-        switch self
+        switch me
         {
         case BGR8:
             return false

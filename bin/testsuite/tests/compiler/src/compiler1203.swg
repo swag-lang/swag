@@ -6,9 +6,9 @@ struct A
 impl A
 {
     #[Swag.Complete, Swag.Inline]
-    func opAffect(self, v: u32)
+    func opAffect(me, v: u32)
     {
-        self.x = v
+        me.x = v
     }
 }
 

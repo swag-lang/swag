@@ -337,7 +337,7 @@ struct VectorNative
         return *this;
     }
 
-    VectorNative& operator=(const VectorNative& other) // NOLINT(bugprone-unhandled-self-assignment)
+    VectorNative& operator=(const VectorNative& other) // NOLINT(bugprone-unhandled-me-assignment)
     {
         SWAG_RACE_CONDITION_WRITE_VECTOR(raceC);
         if (this == &other)

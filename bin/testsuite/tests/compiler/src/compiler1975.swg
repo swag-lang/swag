@@ -24,7 +24,7 @@ impl HashTable
         G += #sizeof(K)
     }
 
-    func grow(self)
+    func grow(me)
     {
         /*@print(#typeof(K).name)
         @print(#typeof(V).name)

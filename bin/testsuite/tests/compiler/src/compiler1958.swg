@@ -5,23 +5,23 @@ struct A
 
 interface I
 {
-    func toto(self);
-    func toto1(self);
+    func toto(me);
+    func toto1(me);
 }
 
 impl I for A
 {
-    func impl toto(self)
+    func impl toto(me)
     {
         /*@print("toto ")
-        @print(cast(s64) self.x)
+        @print(cast(s64) me.x)
         @print("\n")*/
     }
 
-    func impl toto1(self)
+    func impl toto1(me)
     {
         /*@print("toto1 ")
-        @print(cast(s64) self.x)
+        @print(cast(s64) me.x)
         @print("\n")*/
     }
 }

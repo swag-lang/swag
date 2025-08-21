@@ -9,7 +9,7 @@ var G: s32
 
 impl A
 {
-    func opPostMove(using self)
+    func opPostMove(using me)
     {
         G += 1
         @assert(x == 20)

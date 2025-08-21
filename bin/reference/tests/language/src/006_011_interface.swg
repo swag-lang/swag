@@ -21,10 +21,10 @@ Here we declare an interface 'IReset', with two functions `set` and `reset`.
 */
 interface IReset
 {
-    // The first parameter must be 'self'
-    func set(self, val: f32);
+    // The first parameter must be 'me'
+    func set(me, val: f32);
 
-    // You can also use the 'mtd' declaration to avoid specifying the 'self' yourself
+    // You can also use the 'mtd' declaration to avoid specifying the 'me' yourself
     mtd reset();
 }
 
@@ -44,9 +44,9 @@ impl IReset for Point2
     }
 
     // Don't forget that 'mtd' is just syntactic sugar. 'func' still works.
-    func impl reset(self)
+    func impl reset(me)
     {
-        self.x, self.y = 0   // Reset x and y to 0
+        me.x, me.y = 0   // Reset x and y to 0
     }
 
     // Note that you can also declare 'normal' functions or methods in an 'impl' block.

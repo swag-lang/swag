@@ -10,12 +10,12 @@ struct T
 impl T
 {
     #[Swag.Overload]
-    func opAffect(using self, val: u32)
+    func opAffect(using me, val: u32)
     {
     }
 
     #[Swag.Overload]
-    func opAffect(using self, val: A)
+    func opAffect(using me, val: A)
     {
     }
 }

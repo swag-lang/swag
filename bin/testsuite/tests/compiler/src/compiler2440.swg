@@ -10,7 +10,7 @@ struct B
 
 impl A
 {
-    func opCmp(using self, o: B)->s32
+    func opCmp(using me, o: B)->s32
     {
         return v <=> o.v
     }

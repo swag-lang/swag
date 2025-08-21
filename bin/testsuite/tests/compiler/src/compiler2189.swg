@@ -6,16 +6,16 @@ struct P
 impl P
 {
     #[Swag.Inline]
-    func opAffect(using self, v: u8)
+    func opAffect(using me, v: u8)
     {
         a = v
     }
 
     #[Swag.Inline]
-    func toFloat(using self) -> {a: f32}
+    func toFloat(using me) -> {a: f32}
     {
         var result: retval = undefined
-        result.a = self.a / 255'f32
+        result.a = me.a / 255'f32
         return result
     }
 }

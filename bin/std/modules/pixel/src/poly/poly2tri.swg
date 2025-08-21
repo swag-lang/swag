@@ -150,15 +150,15 @@ impl Edge
             }
         }
 
-        q.edges.add(self)
+        q.edges.add(me)
         if p.border[0]:
-            p.border[1] = self
+            p.border[1] = me
         else:
-            p.border[0] = self
+            p.border[0] = me
         if q.border[0]:
-            q.border[1] = self
+            q.border[1] = me
         else:
-            q.border[0] = self
+            q.border[0] = me
     }
 }
 
@@ -449,17 +449,17 @@ impl Triangle
         if t.contains(points[1], points[2])
         {
             neighbors[0] = t
-            t.markNeighbor(points[1], points[2], self)
+            t.markNeighbor(points[1], points[2], me)
         }
         elif t.contains(points[0], points[2])
         {
             neighbors[1] = t
-            t.markNeighbor(points[0], points[2], self)
+            t.markNeighbor(points[0], points[2], me)
         }
         elif t.contains(points[0], points[1])
         {
             neighbors[2] = t
-            t.markNeighbor(points[0], points[1], self)
+            t.markNeighbor(points[0], points[1], me)
         }
     }
 
@@ -684,7 +684,7 @@ impl Tessellate
         }
 
         Debug.assert(polyStart != points.count, "no points !")
-        initEdges(self, points[polyStart..points.count - 1])
+        initEdges(me, points[polyStart..points.count - 1])
     }
 
     // Register a polygon as a polyline

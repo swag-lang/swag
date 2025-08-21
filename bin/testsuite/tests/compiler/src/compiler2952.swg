@@ -6,10 +6,10 @@ struct V2
 impl V2
 {
     #[Swag.Inline]
-    func set(using self, x, y: f32)
+    func set(using me, x, y: f32)
     {
-        self.x = #self.x
-        self.y = #self.y
+        me.x = #me.x
+        me.y = #me.y
     }
 }
 

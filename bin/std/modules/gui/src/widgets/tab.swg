@@ -185,8 +185,8 @@ impl IWnd for Tab
             break
         }
 
-        v.aniImg.apply(self, colorImg)
-        v.aniBorder.apply(self, colorBorder)
+        v.aniImg.apply(me, colorImg)
+        v.aniBorder.apply(me, colorBorder)
 
         if subRect:
             theme.drawSubRect(painter, labelPos, subRect, v.aniImg.cur())
@@ -194,7 +194,7 @@ impl IWnd for Tab
             theme.drawSubRect(painter, labelPos, subRectBorder, v.aniBorder.cur())
 
         var format: RichStringFormat
-        v.aniText.apply(self, colorText)
+        v.aniText.apply(me, colorText)
         theme.setTextColors(&format, v.aniText.cur())
         format.horzAlignment = .Center
         format.vertAlignment = .Center
@@ -321,7 +321,7 @@ internal impl Tab
 {
     mtd showPopup(x, y: f32)
     {
-        popup = PopupListCtrl.create(self)
+        popup = PopupListCtrl.create(me)
         foreach item in views:
             popup.addItem(item.name.raw, item.id, item.icon, item.userData0)
 
@@ -430,7 +430,7 @@ internal impl Tab
             // Create a button if there are too many items for the given size
             if !buttonPopup
             {
-                buttonPopup      = IconButton.create(self, getTheme().getIcon24(ThemeIcons24.SortArrowDown), {})
+                buttonPopup      = IconButton.create(me, getTheme().getIcon24(ThemeIcons24.SortArrowDown), {})
                 buttonPopup.form = .Round
                 buttonPopup.sigPressed += mtd||(btn)
                 {
@@ -529,7 +529,7 @@ impl Tab
                 view.wndFlags &= ~.Hidden
             else:
                 view.wndFlags |= .Hidden
-            view.setParent(self)
+            view.setParent(me)
         }
 
         let item = views.newPtr()
@@ -560,7 +560,7 @@ impl Tab
         if views[selectedIdx].view:
             views[selectedIdx].view.wndFlags &= ~.Hidden
 
-        sigSelChanged.call(self)
+        sigSelChanged.call(me)
 
         sendResizeEvent()
         invalidate()

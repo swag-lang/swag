@@ -219,7 +219,7 @@ impl FrameWnd
     #[Swag.Discardable]
     mtd(T) createView(hook: HookEvent = null)->*T
     {
-        view                 = Wnd.create'T(self, "", position, hook: hook)
+        view                 = Wnd.create'T(me, "", position, hook: hook)
         view.backgroundStyle = .Transparent
         sendResizeEvent()
         return cast(*T) view
@@ -229,7 +229,7 @@ impl FrameWnd
     {
         if view:
             view.destroy()
-        what.setParent(self)
+        what.setParent(me)
         view = what
         sendResizeEvent()
     }
@@ -254,12 +254,12 @@ impl FrameWnd
     // Set the frame wnd form
     mtd setFrameForm(form: FrameWndForm)
     {
-        if frameForm == #self.form:
+        if frameForm == #me.form:
             return
-        frameForm = #self.form
+        frameForm = #me.form
 
         #[Swag.Complete]
-        switch self.frameForm
+        switch me.frameForm
         {
         case Square:
             wndFlags.add(.PostChildsPaint)

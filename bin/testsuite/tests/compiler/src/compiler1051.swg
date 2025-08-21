@@ -31,7 +31,7 @@ var G: s32 = 0
 
 impl Point
 {
-	func opDrop(self)
+	func opDrop(me)
 	{
 		G += 1
 	}

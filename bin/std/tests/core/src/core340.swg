@@ -3,7 +3,7 @@ using Core
 
 interface I
 {
-    x: func(self)
+    x: func(me)
 }
 
 func toto()

@@ -12,11 +12,11 @@ struct Point
 
 impl Point
 {
-    func contains(self, x: f32)
+    func contains(me, x: f32)
     {
     }
 
-    func toto(using self)
+    func toto(using me)
     {
         contains(0'f32)
     }

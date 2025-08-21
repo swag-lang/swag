@@ -147,7 +147,7 @@ impl CheckButton
             checked = .UnChecked
         else:
             checked = .Checked
-        sigChanged.call(self)
+        sigChanged.call(me)
         postCommandEvent(id)
     }
 

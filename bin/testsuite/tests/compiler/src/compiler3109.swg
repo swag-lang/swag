@@ -1,6 +1,6 @@
 interface Itf
 {
-    func toto(self);
+    func toto(me);
 }
 
 struct AA
@@ -13,6 +13,6 @@ impl Itf for AA
     mtd impl toto()
     {
         mtd YYY() => 666
-        @print(YYY(self))
+        @print(YYY(me))
     }
 }

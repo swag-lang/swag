@@ -1,11 +1,11 @@
 interface ITF0
 {
-    func toto(self);
+    func toto(me);
 }
 
 interface ITF1
 {
-    func toto(self);
+    func toto(me);
 }
 
 struct AA
@@ -14,14 +14,14 @@ struct AA
 
 impl ITF0 for AA
 {
-    func impl toto(self)
+    func impl toto(me)
     {
     }
 }
 
 impl ITF1 for AA
 {
-    func impl toto(self)
+    func impl toto(me)
     {
     }
 }

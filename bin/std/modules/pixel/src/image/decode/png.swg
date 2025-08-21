@@ -608,7 +608,7 @@ impl Decoder
         // Paletted, no transparency
         if inChannels == 1 and seenPLTE and !seenTRSN
         {
-            var pm = {dstPixels, dec: self}
+            var pm = {dstPixels, dec: me}
             result.visitPixels(&pm)
             {
                 let params = cast(*#decltype(pm)) userData
@@ -627,7 +627,7 @@ impl Decoder
         // Paletted, transparency
         elif inChannels == 1 and seenPLTE and seenTRSN
         {
-            var pm = {dstPixels, dec: self}
+            var pm = {dstPixels, dec: me}
             result.visitPixels(&pm)
             {
                 let params = cast(*#decltype(pm)) userData

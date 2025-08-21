@@ -34,33 +34,33 @@ To access the constant or the function, use the 'MyStruct' namespace.
 # Multiple 'impl' Blocks
 
 Swag allows multiple 'impl' blocks for a single struct. This feature helps organize
-methods logically. Within an 'impl' block, 'self' are defined to refer to
+methods logically. Within an 'impl' block, 'me' are defined to refer to
 the current instance and the struct type, respectively.
 */
 
 impl MyStruct
 {
-    // 'self' is implicitly defined as 'var self: MyStruct'
-    func returnX(using self) => x       // Method to return 'x', using 'self' implicitly
+    // 'me' is implicitly defined as 'var me: MyStruct'
+    func returnX(using me) => x         // Method to return 'x', using 'me' implicitly
 
-    func returnY(self)       => self.y  // Method to return 'y', explicitly using 'self'
-    
-    func returnZ(me: MyStruct) => me.z      // Method to return 'z', using 'me' as a type alias for 'Self'
+    func returnY(me)       => me.y      // Method to return 'y', explicitly using 'me'
+
+    func returnZ(self: MyStruct) => self.z  // Method to return 'z'
 }
 
 /**
 # Method Syntax Sugar
 
 Swag provides syntactic sugar for method definitions. If you use 'mtd' (method) instead
-of 'func', the first parameter is implicitly 'using self'. If you use 'mtd const',
-it becomes 'const using self'. This feature simplifies method definitions,
-especially for common cases where 'self' is required.
+of 'func', the first parameter is implicitly 'using me'. If you use 'mtd const',
+it becomes 'const using me'. This feature simplifies method definitions,
+especially for common cases where 'me' is required.
 */
 
 impl MyStruct
 {
-    mtd methodReturnX()          => x  // Equivalent to 'func methodReturnX(using self) => x'
-    func funcReturnX(using self) => x  // Explicitly using 'self' to return 'x'
+    mtd methodReturnX()          => x  // Equivalent to 'func methodReturnX(using me) => x'
+    func funcReturnX(using me) => x  // Explicitly using 'me' to return 'x'
 }
 
 #test

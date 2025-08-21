@@ -118,14 +118,14 @@ public impl Voice
     {
         if hasState(.Playing):
             return
-        self.playFlags = #self.playFlags
+        me.playFlags = #me.playFlags
         playNative()
         setState(.Playing)
 
         if !hasState(.PlayedOnce)
         {
             setState(.PlayedOnce)
-            g_Driver.updateVoice(self, .UpdateBuffers)
+            g_Driver.updateVoice(me, .UpdateBuffers)
         }
     }
 
@@ -155,7 +155,7 @@ public impl Voice
         if hasState(.PendingDestroy):
             return
         setState(.PendingDestroy)
-        g_Driver.updateVoice(self, .Destroy)
+        g_Driver.updateVoice(me, .Destroy)
     }
 
     // Returns true if the voice is currently playing

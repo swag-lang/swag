@@ -4,7 +4,7 @@ struct AA
 
 impl AA
 {
-    func titi(using self)->s32
+    func titi(using me)->s32
     {
         return 820856226
     }
@@ -18,7 +18,7 @@ struct BB
 impl BB
 {
     #[Swag.Inline]
-    func toto(using self)->s32
+    func toto(using me)->s32
     {
         return v.titi()
     }

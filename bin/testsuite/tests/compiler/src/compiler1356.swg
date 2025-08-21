@@ -1,6 +1,6 @@
 interface TOTO
 {
-	func print(self, x: bool);
+	func print(me, x: bool);
 }
 
 struct TITI
@@ -20,7 +20,7 @@ var G = 0
 impl TOTO for TITI
 {
     //#[Swag.PrintBc]
-    func impl print(using self, tt: bool)
+    func impl print(using me, tt: bool)
     {
         @assert(val == 666)
         G += 1
@@ -30,7 +30,7 @@ impl TOTO for TITI
 impl TOTO for TATA
 {
     //#[Swag.PrintBc]
-    func impl print(using self, tt: bool)
+    func impl print(using me, tt: bool)
     {
         @assert(val == "TATA")
         G += 1

@@ -5,7 +5,7 @@ struct AA
 
 impl AA
 {
-    func opCmp(using self, x: s32)->s32
+    func opCmp(using me, x: s32)->s32
     {
         return vv <=> x
     }

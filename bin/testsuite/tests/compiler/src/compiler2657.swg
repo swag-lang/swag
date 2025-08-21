@@ -10,8 +10,8 @@ impl Image
 
     }
 
-    func fill(using self, x: AA)
+    func fill(using me, x: AA)
     {
-        var f = {x, self}
+        var f = {x, me}
     }
 }

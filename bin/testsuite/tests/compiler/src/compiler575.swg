@@ -8,8 +8,8 @@ struct Point
 
 impl Point
 {
-	func opEquals(self, other: Point, x: s32) -> bool
+	func opEquals(me, other: Point, x: s32) -> bool
 	{
-		return self.x == other.x and self.y == other.y
+		return me.x == other.x and me.y == other.y
 	}
 }

@@ -6,7 +6,7 @@ impl T
 {
     mtd opDrop()
     {
-        @assert(self == &G)
+        @assert(me == &G)
     }
 }
 

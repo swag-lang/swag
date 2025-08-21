@@ -36,7 +36,7 @@ impl Voice
 
     mtd closeBuffer()
     {
-        closeData(self)
+        closeData(me)
     }
 
     mtd createCodec() throw

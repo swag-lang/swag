@@ -6,7 +6,7 @@ struct(T, N: u32) NumericArray
 impl NumericArray
 {
     //#[Swag.PrintBc]
-    func set(using self, value: T)
+    func set(using me, value: T)
     {
         #ast "var a = value"
         @assert(a == 3.14)

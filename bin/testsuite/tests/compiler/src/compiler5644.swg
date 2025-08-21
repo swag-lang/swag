@@ -2,7 +2,7 @@
 
 #test
 {
-    var self = 0
+    var me = 0
 }
 
 */

@@ -63,17 +63,17 @@ impl GamePadState
             return pressed[btn] ? SmallToler : BigToler
         }
 
-        pressed[LeftThumbstickDown]  = position[LeftStick].y < -getToler(self, LeftThumbstickDown)
-        pressed[LeftThumbstickUp]    = position[LeftStick].y > getToler(self, LeftThumbstickUp)
-        pressed[LeftThumbstickLeft]  = position[LeftStick].x < -getToler(self, LeftThumbstickLeft)
-        pressed[LeftThumbstickRight] = position[LeftStick].x > getToler(self, LeftThumbstickRight)
+        pressed[LeftThumbstickDown]  = position[LeftStick].y < -getToler(me, LeftThumbstickDown)
+        pressed[LeftThumbstickUp]    = position[LeftStick].y > getToler(me, LeftThumbstickUp)
+        pressed[LeftThumbstickLeft]  = position[LeftStick].x < -getToler(me, LeftThumbstickLeft)
+        pressed[LeftThumbstickRight] = position[LeftStick].x > getToler(me, LeftThumbstickRight)
 
-        pressed[RightThumbstickDown]  = position[RightStick].y < -getToler(self, RightThumbstickDown)
-        pressed[RightThumbstickUp]    = position[RightStick].y > getToler(self, RightThumbstickUp)
-        pressed[RightThumbstickLeft]  = position[RightStick].x < -getToler(self, RightThumbstickLeft)
-        pressed[RightThumbstickRight] = position[RightStick].x > getToler(self, RightThumbstickRight)
+        pressed[RightThumbstickDown]  = position[RightStick].y < -getToler(me, RightThumbstickDown)
+        pressed[RightThumbstickUp]    = position[RightStick].y > getToler(me, RightThumbstickUp)
+        pressed[RightThumbstickLeft]  = position[RightStick].x < -getToler(me, RightThumbstickLeft)
+        pressed[RightThumbstickRight] = position[RightStick].x > getToler(me, RightThumbstickRight)
 
-        pressed[LeftTrigger]  = position[LeftTrigger].y > getToler(self, LeftTrigger)
-        pressed[RightTrigger] = position[RightTrigger].y > getToler(self, RightTrigger)
+        pressed[LeftTrigger]  = position[LeftTrigger].y > getToler(me, LeftTrigger)
+        pressed[RightTrigger] = position[RightTrigger].y > getToler(me, RightTrigger)
     }
 }

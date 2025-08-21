@@ -406,7 +406,7 @@ impl IForm for FormText
 
         gizmo.sigChanged = mtd||(g, first, hitMove)
         {
-            g.apply(self, first, hitMove)
+            g.apply(me, first, hitMove)
         }
     }
 }

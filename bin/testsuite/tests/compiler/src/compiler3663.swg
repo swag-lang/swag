@@ -1,6 +1,6 @@
 interface I
 {
-    func toto(self);
+    func toto(me);
 }
 
 //#[Swag.PrintBc]

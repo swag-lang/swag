@@ -97,13 +97,13 @@ impl IWnd for EditBox
         {
         case SetFocus:
             originalText = text
-            timerCaret   = surface.app.addTimer(500'ms, self)
+            timerCaret   = surface.app.addTimer(500'ms, me)
             visibleCaret = true
             computeCaretPos()
             invalidate()
 
         case KillFocus:
-            sigLoseFocus.call(self)
+            sigLoseFocus.call(me)
             surface.app.deleteTimer(timerCaret)
             timerCaret   = null
             visibleCaret = false
@@ -165,8 +165,8 @@ impl IWnd for EditBox
             colorBk     = colors.edit_Bk
         }
 
-        aniBk.apply(self, colorBk)
-        aniBorder.apply(self, colorBorder)
+        aniBk.apply(me, colorBk)
+        aniBorder.apply(me, colorBorder)
 
         var clientRect = getClientRect()
         if form != .Transparent:
@@ -350,7 +350,7 @@ internal impl EditBox
         {
             if !clearBtn
             {
-                clearBtn           = IconButton.create(self, getTheme().getIcon24(ThemeIcons24.WndClose, 18), {0, 0, 24, 24})
+                clearBtn           = IconButton.create(me, getTheme().getIcon24(ThemeIcons24.WndClose, 18), {0, 0, 24, 24})
                 clearBtn.dockStyle = .Right
                 clearBtn.setForm(IconButtonForm.Round)
                 clearBtn.sigPressed += mtd||(btn) { setText(null); }
@@ -417,13 +417,13 @@ internal impl EditBox
             }
 
         case Return:
-            sigEnterPressed.call(self)
+            sigEnterPressed.call(me)
             if editBoxFlags.has(.AutoLoseFocus):
                 getTopView().setFocus()
             return true
 
         case Escape:
-            sigEscapePressed.call(self)
+            sigEscapePressed.call(me)
             if editBoxFlags.has(.AutoLoseFocus):
                 getTopView().setFocus()
             return true
@@ -512,7 +512,7 @@ internal impl EditBox
         var res = EditBoxCheckResult.Valid
         if sigCheckContent
         {
-            res = sigCheckContent(self)
+            res = sigCheckContent(me)
         }
         else
         {
@@ -788,7 +788,7 @@ internal impl EditBox
     // Updates cached caret and selection pixel positions.
     mtd computeCaretPos()
     {
-        if getFocus() != self:
+        if getFocus() != me:
             return
 
         let fontR = getFont().regular
@@ -879,7 +879,7 @@ internal impl EditBox
     // Emits sigChanged, recomputes caret, updates clear button and repaints.
     mtd notifyChanged()
     {
-        sigChanged.call(self)
+        sigChanged.call(me)
         computeCaretPos()
         showHideClearButon()
         invalidate()
@@ -1004,10 +1004,10 @@ impl EditBox
     // Sets the visual form of the EditBox.
     mtd setForm(form: EditBoxForm)
     {
-        self.form = #self.form
+        me.form = #me.form
 
         #[Swag.Complete]
-        switch self.form
+        switch me.form
         {
         case Square:
             setAllPaddings(getThemeMetrics().editBox_SquarePadding)

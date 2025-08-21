@@ -9,7 +9,7 @@ struct(T) B
 impl B
 {
     #[Swag.Safety("", true)]
-    func toto(using self)
+    func toto(using me)
     {
         xxx[0] = 0
     }

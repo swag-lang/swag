@@ -7,14 +7,14 @@ impl Toto
 {
     #[Swag.Implicit]
 	#[Swag.Overload]
-	func opCast(using self)->s32
+	func opCast(using me)->s32
 	{
         return x + y
 	}
 
     #[Swag.Implicit]
 	#[Swag.Overload]
-	func opCast(using self)->string
+	func opCast(using me)->string
 	{
         return "x + y"
 	}

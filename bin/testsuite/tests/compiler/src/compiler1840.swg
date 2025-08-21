@@ -7,12 +7,12 @@ var G: s64 = 0
 
 interface IPrintable
 {
-    func print(self);
+    func print(me);
 }
 
 impl IPrintable for Point
 {
-    func impl print(using self)
+    func impl print(using me)
     {
         G = 666
     }

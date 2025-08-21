@@ -10,13 +10,13 @@ impl A
     mtd opPostCopy()
     {
         G0 += 1
-        //@print("copy ", self, "\n")
+        //@print("copy ", me, "\n")
     }
 
     mtd opDrop()
     {
         G1 += 1
-        //@print("drop ", self, "\n")
+        //@print("drop ", me, "\n")
     }
 }
 

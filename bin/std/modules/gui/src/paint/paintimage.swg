@@ -50,9 +50,9 @@ impl PaintImage
     public mtd init(w, h: s32)
     {
         surface          = assume app.createSurface(0, 0, 1, 1, hook: &onEvent)
-        surface.userData = self
-        self.w           = #self.w
-        self.h           = #self.h
+        surface.userData = me
+        me.w           = #me.w
+        me.h           = #me.h
     }
 
     // Draw to an image by calling the func

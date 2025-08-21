@@ -22,48 +22,48 @@ impl ScratchAllocator
     // Free a block, if possible.
     mtd free(addr: *void, size: u64)
     {
-        @assert(self.allocator != null)
+        @assert(me.allocator != null)
         var req: AllocatorRequest
         req.mode    = .Free
         req.address = addr
         req.size    = size
-        self.allocator.req(&req)
+        me.allocator.req(&req)
     }
 
     // Allocate a block
     mtd alloc(size: u64, alignment: u32 = 0)->*void
     {
-        @assert(self.allocator != null)
+        @assert(me.allocator != null)
         var req: AllocatorRequest
         req.mode      = .Alloc
         req.size      = size
         req.alignment = alignment
-        self.allocator.req(&req)
+        me.allocator.req(&req)
         return req.address
     }
 
     // Release the allocated block
     mtd release()
     {
-        self.freeAll()
+        me.freeAll()
 
-        if self.block
+        if me.block
         {
-            self.free(self.block, self.capacity)
-            self.block = null
+            me.free(me.block, me.capacity)
+            me.block = null
         }
     }
 
     // Release all memory
     mtd freeAll()
     {
-        self.used = 0
-        while self.firstLeak
+        me.used = 0
+        while me.firstLeak
         {
-            let p = cast(*LeakHeader) self.firstLeak
+            let p = cast(*LeakHeader) me.firstLeak
             let n = p.next
-            self.free(p, p.size)
-            self.firstLeak = n
+            me.free(p, p.size)
+            me.firstLeak = n
         }
     }
 
@@ -71,16 +71,16 @@ impl ScratchAllocator
     // be called at an early stage
     mtd setCapacity(newCapacity: u64, allocator: IAllocator)
     {
-        @assert(#self.allocator != null)
-        self.release()
-        self.allocator = #self.allocator
-        self.capacity  = newCapacity
+        @assert(#me.allocator != null)
+        me.release()
+        me.allocator = #me.allocator
+        me.capacity  = newCapacity
 
         var req: AllocatorRequest
         req.mode = AllocatorMode.Alloc
-        req.size = self.capacity
-        self.allocator.req(&req)
-        self.block = req.address
+        req.size = me.capacity
+        me.allocator.req(&req)
+        me.block = req.address
     }
 }
 
@@ -93,16 +93,16 @@ impl IAllocator for ScratchAllocator
 
         // If this is the last allocated block in the buffer, we can free it
         // by changing the allocated used size
-        let ptr = (self.block + self.used) - request.size
+        let ptr = (me.block + me.used) - request.size
         if ptr == request.address
         {
             request.address = null
-            self.used -= request.size
+            me.used -= request.size
             return
         }
 
         // If the pointer is in the buffer, then we are done. We cannot free.
-        if request.address >= self.block and request.address < self.block + self.capacity
+        if request.address >= me.block and request.address < me.block + me.capacity
         {
             request.address = null
             return
@@ -113,13 +113,13 @@ impl IAllocator for ScratchAllocator
         var leak = cast(^LeakHeader) request.address
         leak -= 1
         if !leak.prev:
-            self.firstLeak = leak.next
+            me.firstLeak = leak.next
         else:
             leak.prev.next = leak.next
         if leak.next:
             leak.next.prev = leak.prev
-        self.totalLeak -= leak.size - #sizeof(LeakHeader)
-        self.free(leak, leak.size)
+        me.totalLeak -= leak.size - #sizeof(LeakHeader)
+        me.free(leak, leak.size)
         request.address = null
     }
 
@@ -129,19 +129,19 @@ impl IAllocator for ScratchAllocator
         if request.size == 0
         {
             if request.mode == .Realloc:
-                self.free(request)
+                me.free(request)
             request.address = null
             return
         }
 
         // Allocate in the buffer if there is enough room
-        let usedAlign = align(self.used, request.alignment)
-        if usedAlign + request.size <= self.capacity
+        let usedAlign = align(me.used, request.alignment)
+        if usedAlign + request.size <= me.capacity
         {
             let oldAddress = request.address
-            request.address = self.block + usedAlign
-            self.used       = usedAlign + request.size
-            self.maxUsed    = @max(self.maxUsed, self.used)
+            request.address = me.block + usedAlign
+            me.used       = usedAlign + request.size
+            me.maxUsed    = @max(me.maxUsed, me.used)
             if oldAddress:
                 @memcpy(request.address, oldAddress, request.oldSize)
             return
@@ -151,32 +151,32 @@ impl IAllocator for ScratchAllocator
         // We prepend a LeakHeader to the user block, and linked it in
         // the chained list of leak allocations (at the first position)
         let totalSize = request.size + #sizeof(LeakHeader)
-        let ptr       = cast(^LeakHeader) self.alloc(totalSize, request.alignment)
-        let leak      = cast(^LeakHeader) self.firstLeak
+        let ptr       = cast(^LeakHeader) me.alloc(totalSize, request.alignment)
+        let leak      = cast(^LeakHeader) me.firstLeak
         if leak:
             leak.prev = ptr
         ptr.prev        = null
-        ptr.next        = self.firstLeak
-        self.firstLeak  = ptr
+        ptr.next        = me.firstLeak
+        me.firstLeak  = ptr
         ptr.size        = totalSize
         request.address = ptr + 1 // user block is after the header
-        self.totalLeak += request.size
-        self.maxLeak = @max(self.maxLeak, self.totalLeak)
+        me.totalLeak += request.size
+        me.maxLeak = @max(me.maxLeak, me.totalLeak)
     }
 
     mtd impl req(request: *AllocatorRequest)
     {
-        @assert(self.block != null)
+        @assert(me.block != null)
         switch request.mode
         {
         case Free:
-            self.free(request)
+            me.free(request)
 
         case FreeAll:
-            self.freeAll()
+            me.freeAll()
 
         case Realloc, Alloc:
-            self.alloc(request)
+            me.alloc(request)
         }
     }
 }

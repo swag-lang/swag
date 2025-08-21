@@ -24,7 +24,7 @@ behavior, allowing it to be integrated seamlessly into the codebase.
 impl MyStruct
 {
     #[Swag.Macro]
-    func(ptr: bool, back: bool) opVisit(self, stmt: #code void)
+    func(ptr: bool, back: bool) opVisit(me, stmt: #code void)
     {
         // The `ptr` and `back` parameters offer flexibility, allowing for reference-based
         // or reverse-order iterations.
@@ -48,11 +48,11 @@ impl MyStruct
                 switch #up idx
                 {
                 case 0:
-                    #alias0 = #up self.x  // Accessing field 'x'
+                    #alias0 = #up me.x  // Accessing field 'x'
                 case 1:
-                    #alias0 = #up self.y  // Accessing field 'y'
+                    #alias0 = #up me.y  // Accessing field 'y'
                 case 2:
-                    #alias0 = #up self.z  // Accessing field 'z'
+                    #alias0 = #up me.z  // Accessing field 'z'
                 }
 
                 // `#alias1` holds the current index of the iteration.
@@ -117,11 +117,11 @@ impl MyStruct
                 switch #up idx
                 {
                 case 0:
-                    #alias0 = #up self.z  // Accessing field 'z' in reverse order
+                    #alias0 = #up me.z  // Accessing field 'z' in reverse order
                 case 1:
-                    #alias0 = #up self.y  // Accessing field 'y' in reverse order
+                    #alias0 = #up me.y  // Accessing field 'y' in reverse order
                 case 2:
-                    #alias0 = #up self.x  // Accessing field 'x' in reverse order
+                    #alias0 = #up me.x  // Accessing field 'x' in reverse order
                 }
 
                 var #alias1 = @index
@@ -184,14 +184,14 @@ the struct's fields.
 impl SliceStruct
 {
     #[Swag.Macro]
-    func(ptr: bool, back: bool) opVisit(self, stmt: #code void)
+    func(ptr: bool, back: bool) opVisit(me, stmt: #code void)
     {
-        for idx in @countof(self.buffer)
+        for idx in @countof(me.buffer)
         {
             #macro
             {
                 // #alias0 represents the value of the current buffer element.
-                var #alias0 = #up self.buffer[#up idx]
+                var #alias0 = #up me.buffer[#up idx]
 
                 // #alias1 represents the current index.
                 var #alias1 = @index

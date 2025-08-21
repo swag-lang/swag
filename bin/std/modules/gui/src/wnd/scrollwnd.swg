@@ -241,7 +241,7 @@ public impl IWnd for ScrollWnd
             var colBk = colors.scrollBar_HotBk
             if !isHotBarV:
                 colBk.a = 0
-            aniBkBarV.apply(self, colBk)
+            aniBkBarV.apply(me, colBk)
             theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BkV, aniBkBarV.cur())
 
             if needV
@@ -257,7 +257,7 @@ public impl IWnd for ScrollWnd
                 else:
                     colorBox = colors.scrollBar_Box
                 clientRect.inflate(-metrics.scrollBar_BoxPadding)
-                aniBoxV.apply(self, colorBox)
+                aniBoxV.apply(me, colorBox)
                 theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BoxV, aniBoxV.cur())
             }
         }
@@ -275,7 +275,7 @@ public impl IWnd for ScrollWnd
             var colBk = colors.scrollBar_HotBk
             if !isHotBarH:
                 colBk.a = 0
-            aniBkBarH.apply(self, colBk)
+            aniBkBarH.apply(me, colBk)
             theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BkV, aniBkBarH.cur())
 
             if needH
@@ -291,7 +291,7 @@ public impl IWnd for ScrollWnd
                 else:
                     colorBox = colors.scrollBar_Box
                 clientRect.inflate(-metrics.scrollBar_BoxPadding)
-                aniBoxH.apply(self, colorBox)
+                aniBoxH.apply(me, colorBox)
                 theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BoxH, aniBoxH.cur())
             }
         }
@@ -488,7 +488,7 @@ public impl ScrollWnd
             return newSP
         var oldPos = view.scrollPos
         view.scrollPos = newSP
-        sigScrollPosChanged.call(self, oldPos, newSP)
+        sigScrollPosChanged.call(me, oldPos, newSP)
         computeLayout()
         return newSP
     }
@@ -517,7 +517,7 @@ public impl ScrollWnd
         var oldScrollSize = scrollSize
         scrollSize = {x, y}
         setScrollPos(view.scrollPos.x, view.scrollPos.y)
-        sigScrollSizeChanged.call(self, oldScrollSize, scrollSize)
+        sigScrollSizeChanged.call(me, oldScrollSize, scrollSize)
         sendResizeEvent()
     }
 

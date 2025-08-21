@@ -6,7 +6,7 @@ struct B
 
 impl B
 {
-    func toto(using self)
+    func toto(using me)
     {
         var xxx = 0
     }

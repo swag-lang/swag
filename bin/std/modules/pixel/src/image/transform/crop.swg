@@ -4,11 +4,11 @@ impl Image
 {
     mtd const doCrop(dstImage: *Image, x, y, w, h: s32)
     {
-        var f = {x, y: height - y - h, self}
+        var f = {x, y: height - y - h, me}
         dstImage.visitPixels(&f, stride: w)
         {
             let params = cast(*#decltype(f)) userData
-            var srcPix = params.self.pixels.buffer + (y + params.y) * params.self.width8
+            var srcPix = params.me.pixels.buffer + (y + params.y) * params.me.width8
             srcPix += cast(u64) (params.x * image.bpp8)
             Memory.copy(pix, srcPix, cast(u64) image.width8)
         }

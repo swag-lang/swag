@@ -5,7 +5,7 @@ struct AA
 
 impl AA
 {
-    func opAffect(using self, x: u32)
+    func opAffect(using me, x: u32)
     {
         //@print("affect\n")
         v = x

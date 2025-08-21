@@ -55,9 +55,9 @@ impl IconBar
     {
         Debug.assert(parent != null)
         var pos = position
-        pos.height = #self.iconSize
+        pos.height = #me.iconSize
         let res = Wnd.create'IconBar(parent, null, pos, id)
-        res.iconSize = #self.iconSize
+        res.iconSize = #me.iconSize
         return res
     }
 
@@ -68,7 +68,7 @@ impl IconBar
         var iconT = icon
         iconT.sizeX, iconT.sizeY = iconSize
         let size = iconSize + 2 * iconPadding
-        let b    = IconButton.create(self, iconT, {0, 0, size, size})
+        let b    = IconButton.create(me, iconT, {0, 0, size, size})
         b.iconBtnFlags.set(iconBtnFlags)
         b.id        = btnId
         b.dockStyle = .Left

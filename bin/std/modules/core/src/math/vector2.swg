@@ -138,8 +138,8 @@ impl Vector2
     #[Swag.Inline]
     mtd set(x, y: f32)
     {
-        self.x = #self.x
-        self.y = #self.y
+        me.x = #me.x
+        me.y = #me.y
     }
 
     // Returns the length (magnitude) of the vector.
@@ -423,7 +423,7 @@ impl Vector2
             return toNormalized() * minLength
         elif len > maxLength:
             return toNormalized() * maxLength
-        return dref self
+        return dref me
     }
 
     // Returns the absolute value of each component.
@@ -470,7 +470,7 @@ impl Vector2
     // The 'normal' should be a unit vector pointing away from the surface.
     mtd const toReflect(normal: Vector2)->Vector2
     {
-        return dref self - (normal * (2 * dot(normal)))
+        return dref me - (normal * (2 * dot(normal)))
     }
 
     // Returns the component-wise sign of the vector (-1, 0, or 1 for each component).
@@ -498,23 +498,23 @@ impl Vector2
     // If the distance to 'target' is less than 'maxDistance', moves directly to target.
     mtd moveTowards(target: Vector2, maxDistance: f32)
     {
-        let dir  = target - dref self
+        let dir  = target - dref me
         let dist = dir.length()
         if dist <= maxDistance:
-            dref self = target
+            dref me = target
         else:
-            dref self += dir * (maxDistance / dist)
+            dref me += dir * (maxDistance / dist)
     }
 
     // Returns a vector moved towards 'target' by a maximum distance of 'maxDistance'.
     // If the distance to 'target' is less than 'maxDistance', returns the target directly.
     mtd const toMovedTowards(target: Vector2, maxDistance: f32)->Vector2
     {
-        let dir  = target - dref self
+        let dir  = target - dref me
         let dist = dir.length()
         if dist <= maxDistance:
             return target
-        return dref self + (dir * (maxDistance / dist))
+        return dref me + (dir * (maxDistance / dist))
     }
 
     // Perform smooth damping interpolation towards 'target'.

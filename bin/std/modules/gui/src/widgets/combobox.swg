@@ -88,9 +88,9 @@ impl IWnd for ComboBox
             colorText   = colors.comboBox_Text
         }
 
-        aniBk.apply(self, colorBk)
-        aniBorder.apply(self, colorBorder)
-        aniText.apply(self, colorText)
+        aniBk.apply(me, colorBk)
+        aniBorder.apply(me, colorBorder)
+        aniText.apply(me, colorText)
 
         var clientRect = getClientRect()
         theme.drawSubRect(painter, clientRect, subRectBk, aniBk.cur())
@@ -153,7 +153,7 @@ internal impl ComboBox
 {
     mtd showPopup()
     {
-        popup                = PopupListCtrl.create(self)
+        popup                = PopupListCtrl.create(me)
         popup.minWidthPopup  = minWidthPopup
         popup.maxHeightPopup = maxHeightPopup
         popup.simFitY        = true
@@ -226,11 +226,11 @@ impl ComboBox
         let item = items.newPtr()
         with item
         {
-            .name      = #self.name
-            .icon      = #self.icon
-            .id        = #self.id
-            .userData0 = #self.userData0
-            .userData1 = #self.userData1
+            .name      = #me.name
+            .icon      = #me.icon
+            .id        = #me.id
+            .userData0 = #me.userData0
+            .userData1 = #me.userData1
         }
 
         if item.icon.isValid():
@@ -270,12 +270,12 @@ impl ComboBox
         // Notify
         if selectedIdx < items.count
         {
-            sigChanged.call(self, selectedIdx)
+            sigChanged.call(me, selectedIdx)
             postCommandEvent(items[selectedIdx].id)
         }
         else
         {
-            sigChanged.call(self, Swag.U32.Max)
+            sigChanged.call(me, Swag.U32.Max)
         }
 
         if editBox

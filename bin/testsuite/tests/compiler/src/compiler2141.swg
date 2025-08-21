@@ -6,7 +6,7 @@ struct(T) PointBase
 
 impl PointBase
 {
-    func(op: string) opAssign(using self, value: T)
+    func(op: string) opAssign(using me, value: T)
     {
         #if   op == "+="    { x += value; y += value; }
         #elif op == "-="    { x -= value; y -= value; }
@@ -14,7 +14,7 @@ impl PointBase
         #else              : #error("unsupported assign operation '" ++ op ++ "'")
     }
 
-    func(op: string) opBinary(using self, other: PointBase)->PointBase
+    func(op: string) opBinary(using me, other: PointBase)->PointBase
     {
         #if   op == "+": return PointBase{x + other.x, y + other.y}
         #elif op == "-": return PointBase{x - other.x, y - other.y}
@@ -24,14 +24,14 @@ impl PointBase
 
     // Offset this Point by a given value
     #[Swag.Overload]
-    func offset(using self, value: T)
+    func offset(using me, value: T)
     {
         x, y += value
     }
 
     // Offset this Point by a given value
     #[Swag.Overload]
-    func offset(using self, valueX, valueY: T)
+    func offset(using me, valueX, valueY: T)
     {
         x += valueX
         y += valueY

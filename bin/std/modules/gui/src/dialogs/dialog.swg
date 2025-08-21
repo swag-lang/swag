@@ -107,7 +107,7 @@ impl Dialog
     mtd createSurface(from: *Surface, x, y: s32, width = 512, height = 300, flags = SurfaceFlags.Zero)->*Surface
     {
         let surfaceFlags = SurfaceFlags.BigCaption | SurfaceFlags.Secondary | flags
-        let srf          = assume from.app.createSurface(x, y, width, height, surfaceFlags, self)
+        let srf          = assume from.app.createSurface(x, y, width, height, surfaceFlags, me)
         srf.wnd.view.backgroundStyle = .Dialog
 
         let metrics = getThemeMetrics()
@@ -146,20 +146,20 @@ impl Dialog
     #[Swag.Discardable]
     mtd addButton(str: string, id: WndId, isDefault: bool = false)->*PushButton
     {
-        with let btn = PushButton.create(wndBottom, str, {}, #self.id)
+        with let btn = PushButton.create(wndBottom, str, {}, #me.id)
         {
             .form = isDefault ? .Default : .Strong
 
             .sigPressed += mtd||(btn)
             {
-                if !sigPressedButton or sigPressedButton(self, btn.id):
+                if !sigPressedButton or sigPressedButton(me, btn.id):
                     btn.getApp().exitModal(btn.id)
             }
 
             buttons.add(btn)
         }
 
-        if #self.id == BtnCancel or #self.id == BtnNo:
+        if #me.id == BtnCancel or #me.id == BtnNo:
             surface.setSurfaceFlags(add: .CloseBtn)
 
         return btn
@@ -167,7 +167,7 @@ impl Dialog
 
     mtd validateId(btnId: WndId)
     {
-        if !sigPressedButton or sigPressedButton(self, btnId):
+        if !sigPressedButton or sigPressedButton(me, btnId):
             getApp().exitModal(btnId)
     }
 }

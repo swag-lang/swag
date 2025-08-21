@@ -8,9 +8,9 @@ struct A
 impl A
 {
     #[Inline]
-    func right(self)->s64
+    func right(me)->s64
     {
-        return self.x + self.x
+        return me.x + me.x
     }
 }
 

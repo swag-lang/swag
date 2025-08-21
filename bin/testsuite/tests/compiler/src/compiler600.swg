@@ -9,25 +9,25 @@ struct Point
 
 impl Point
 {
-	func(op: string) opAssign(self, what: s32)
+	func(op: string) opAssign(me, what: s32)
 	{
 		if op == "*="
 		{
-			self.x = what
-			self.y = what
+			me.x = what
+			me.y = what
 		}
-		
+
 		if op == "+="
 		{
-			self.x += what
-			self.y += what
+			me.x += what
+			me.y += what
 		}
-		
+
 		if op == "-="
 		{
-			self.x -= what
-			self.y -= what
-		}			
+			me.x -= what
+			me.y -= what
+		}
 	}
 }
 
@@ -39,8 +39,8 @@ impl Point
 	@assert(pt.y == 10)
 	pt += 5
 	@assert(pt.x == 15)
-	@assert(pt.y == 15)	
+	@assert(pt.y == 15)
 	pt -= 4
 	@assert(pt.x == 11)
-	@assert(pt.y == 11)	
+	@assert(pt.y == 11)
 }

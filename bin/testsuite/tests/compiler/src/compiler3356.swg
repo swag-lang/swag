@@ -7,7 +7,7 @@ impl A
 {
     mtd toto(x: s32)
     {
-        self.x = #self.x
+        me.x = #me.x
     }
 }
 

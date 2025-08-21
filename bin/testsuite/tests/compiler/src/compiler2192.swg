@@ -6,7 +6,7 @@ struct A
 
 impl A
 {
-    func opSlice(using self, lower, upper: u64)->u64
+    func opSlice(using me, lower, upper: u64)->u64
     {
         return lower + upper
     }

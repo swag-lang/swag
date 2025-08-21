@@ -8,9 +8,9 @@ var cpt: s32 = 0
 
 impl Point
 {
-	func opPostMove(self)
+	func opPostMove(me)
 	{
-		@assert(self.x == 1)
+		@assert(me.x == 1)
 		cpt += 1
 	}
 }

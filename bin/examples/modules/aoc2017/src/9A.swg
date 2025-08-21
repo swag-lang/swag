@@ -10,7 +10,7 @@ In a futile attempt to clean up the garbage, some program has canceled some of t
 
 You don't see any characters that deviate from these rules. Outside garbage, you only find well-formed groups, and garbage always terminates according to the rules above.
 
-Here are some self-contained pieces of garbage:
+Here are some me-contained pieces of garbage:
 
 <>, empty garbage.
 <random characters>, garbage containing random characters.

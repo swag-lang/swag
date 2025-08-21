@@ -5,11 +5,11 @@ struct A
 
 impl A
 {
-    func toto(using self)
+    func toto(using me)
     {
         x = 0
     }
-    
+
     func tata()
     {
         var pt: A

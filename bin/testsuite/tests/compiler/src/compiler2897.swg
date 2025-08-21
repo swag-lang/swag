@@ -6,7 +6,7 @@ struct A
 
 impl A
 {
-    func opIndex(using const self, idx: u64) => 666
+    func opIndex(using const me, idx: u64) => 666
 }
 
 #test

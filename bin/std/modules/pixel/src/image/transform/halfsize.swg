@@ -4,7 +4,7 @@ impl Image
 {
     mtd const doHalfSize(dstImage: *Image)
     {
-        var f = {img: self}
+        var f = {img: me}
         dstImage.visitPixels(&f)
         {
             let data       = cast(*#decltype(f)) userData

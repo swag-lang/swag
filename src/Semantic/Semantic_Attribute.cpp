@@ -586,7 +586,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                             else
                                 flags.remove(ATTRIBUTE_MATCH_WHERE_OFF);
                         }
-                        else if (w == g_LangSpec->name_self)
+                        else if (w == g_LangSpec->name_me)
                         {
                             if (!attrValue->reg.b)
                                 flags.add(ATTRIBUTE_MATCH_SELF_OFF);

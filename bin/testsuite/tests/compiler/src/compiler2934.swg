@@ -5,7 +5,7 @@ struct AA
 
 impl AA
 {
-    func opEquals(using self, x: s32) => x == 6
+    func opEquals(using me, x: s32) => x == 6
 }
 
 #test

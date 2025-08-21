@@ -3,7 +3,7 @@ struct A {}
 impl A
 {
     /* coucou */
-    func toto(self = {})
+    func toto(me = {})
     {
     }
 }

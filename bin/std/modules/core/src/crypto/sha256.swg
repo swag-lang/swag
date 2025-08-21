@@ -135,7 +135,7 @@ public impl Sha256
     // Initialize the hashing sequence
     mtd init()
     {
-        @init(self, 1)
+        @init(me, 1)
         state[0] = 0x6a09e667
         state[1] = 0xbb67ae85
         state[2] = 0x3c6ef372

@@ -11,12 +11,12 @@ namespace Parse
 {
     interface IParse
     {
-        xoxo: func(self)
+        xoxo: func(me)
     }
 
     impl IParse for Drawing.Color
     {
-        func xoxo(using self)
+        func xoxo(using me)
         {
         }
     }

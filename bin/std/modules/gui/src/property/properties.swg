@@ -121,7 +121,7 @@ impl IWnd for Properties
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
         var colorBar = cursorSet ? getThemeColors().splitView_BarHot : getThemeColors().prop_GridColumn
-        aniBar.apply(self, colorBar)
+        aniBar.apply(me, colorBar)
     }
 }
 
@@ -152,12 +152,12 @@ internal impl Properties
     {
         ToolTip.hide(item.line)
 
-        let menu = MenuCtrl.createPopup(self)
+        let menu = MenuCtrl.createPopup(me)
         var scan = item
         while scan
         {
             if scan.ntfyItf:
-                scan.ntfyItf.fillPopupMenu(self, item, menu)
+                scan.ntfyItf.fillPopupMenu(me, item, menu)
             scan = scan.parent
         }
 
@@ -440,9 +440,9 @@ internal impl Properties
         {
             if scan.ntfyItf
             {
-                if !scan.ntfyItf.isItemVisible(self, item):
+                if !scan.ntfyItf.isItemVisible(me, item):
                     result.visible = false
-                if !scan.ntfyItf.isItemEnabled(self, item):
+                if !scan.ntfyItf.isItemEnabled(me, item):
                     result.enable = false
             }
 
@@ -530,7 +530,7 @@ internal impl Properties
                 .extendFocus = gridLineMargin * 0.5
         }
 
-        line.hookOnEvent = mtd|item|(wnd, evt) { return onItemEvent(item, #self.wnd, evt); }
+        line.hookOnEvent = mtd|item|(wnd, evt) { return onItemEvent(item, #me.wnd, evt); }
 
         // Name
         if flags.has(.Name)
@@ -661,7 +661,7 @@ internal impl Properties
             let iprop = @mkinterface(data, value.pointedType, IPropertyValue)
             if iprop != null
             {
-                let item = iprop.construct(self, value, data, parentItem)
+                let item = iprop.construct(me, value, data, parentItem)
                 Debug.assert(item != null)
                 item.sigRefresh.call(item)
             }
@@ -813,14 +813,14 @@ impl Properties
     mtd hasChanged(item: *PropertiesItem)
     {
         refresh()
-        sigChanged.call(self, item)
+        sigChanged.call(me, item)
 
         // Notify all the hierarchy
         var scan = item
         while scan
         {
             if scan.ntfyItf:
-                scan.ntfyItf.itemHasChanged(self, item)
+                scan.ntfyItf.itemHasChanged(me, item)
             scan = scan.parent
         }
 

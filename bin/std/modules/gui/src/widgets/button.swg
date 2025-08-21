@@ -89,7 +89,7 @@ impl Button
             elif evt.button == .Right
             {
                 if isIn:
-                    sigRightPressed.call(self)
+                    sigRightPressed.call(me)
             }
 
         case MouseReleased:
@@ -105,7 +105,7 @@ impl Button
                 {
                     isPressed, isPressing = false
                     if isIn:
-                        sigPressed.call(self)
+                        sigPressed.call(me)
                     invalidate()
                 }
 

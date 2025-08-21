@@ -5,12 +5,12 @@ struct Point
 
 interface IPrintable
 {
-    func print(self);
+    func print(me);
 }
 
 impl IPrintable for Point
 {
-    func impl print(using self)
+    func impl print(using me)
     {
         @print(x)
     }

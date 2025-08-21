@@ -11,7 +11,7 @@ impl Properties
         let valueType        = assume Reflection.getStructArrayType(item.type)
         let arrData          = cast(*Array'u8) item.data
         let countItemsBefore = items.count
-        let itemIdx          = Slice.findLinear(self.items.toSlice(), item)
+        let itemIdx          = Slice.findLinear(me.items.toSlice(), item)
         let insertItemIdx    = itemIdx + item.numChilds + 1
 
         // Reconstruct all items (add the end)
@@ -47,7 +47,7 @@ impl Properties
         // Update state of all newly added items
         item.numChilds = numAddedChilds
         for i in item.numChilds:
-            updateItemState(self.items[itemIdx + i + 1])
+            updateItemState(me.items[itemIdx + i + 1])
     }
 
     mtd refreshArray(item: *PropertiesItem)

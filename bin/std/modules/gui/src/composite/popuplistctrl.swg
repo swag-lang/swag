@@ -168,9 +168,9 @@ impl IWnd for PopupListView
                 colorCheck = colors.popupList_HotCheckMark
             }
 
-            i.aniSel.apply(self, colorSel)
-            i.aniText.apply(self, colorText)
-            i.aniCheck.apply(self, colorCheck)
+            i.aniSel.apply(me, colorSel)
+            i.aniText.apply(me, colorText)
+            i.aniCheck.apply(me, colorCheck)
 
             theme.drawSubRect(painter, labelPos, &rects.selectionBox_Bk, i.aniSel.cur())
             labelPos.moveLeft(metrics.popupList_Padding)
@@ -252,11 +252,11 @@ impl PopupListCtrl
         let item = items.newPtr()
         with item
         {
-            .name      = #self.name
-            .icon      = #self.icon
-            .id        = #self.id
-            .userData0 = #self.userData0
-            .userData1 = #self.userData1
+            .name      = #me.name
+            .icon      = #me.icon
+            .id        = #me.id
+            .userData0 = #me.userData0
+            .userData1 = #me.userData1
         }
 
         if item.icon.isValid():

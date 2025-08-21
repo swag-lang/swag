@@ -105,8 +105,8 @@ public impl IWnd for MenuCtrl
                 colorRightText = colors.popupItem_HotRightText
             }
 
-            i.aniSel.apply(self, colorSel)
-            i.aniText.apply(self, colorText)
+            i.aniSel.apply(me, colorSel)
+            i.aniText.apply(me, colorText)
 
             var backPos = labelPos
             backPos.x -= metrics.menuBar_SpaceBetween * 0.5
@@ -191,9 +191,9 @@ public impl IWnd for MenuCtrl
                 colorRightText = colors.popupItem_HotRightText
             }
 
-            i.aniSel.apply(self, colorSel)
-            i.aniText.apply(self, colorText)
-            i.aniRightText.apply(self, colorRightText)
+            i.aniSel.apply(me, colorSel)
+            i.aniText.apply(me, colorText)
+            i.aniRightText.apply(me, colorRightText)
 
             var backPos = labelPos
             backPos.y -= metrics.menuPopup_SpaceLines * 0.5
@@ -282,7 +282,7 @@ public impl IWnd for MenuCtrl
             if !bar
             {
                 if !timer:
-                    timer = surface.app.addTimer(300'ms, self)
+                    timer = surface.app.addTimer(300'ms, me)
                 timer.restart()
             }
 
@@ -350,7 +350,7 @@ impl MenuCtrl
 {
     mtd setEndModal(result: WndId)
     {
-        var p = self
+        var p = me
         while p.ownerMenu
         {
             p.hide()
@@ -361,7 +361,7 @@ impl MenuCtrl
         p.endModalResult = result
 
         if onValidateResult and result != null:
-            onValidateResult(self, result)
+            onValidateResult(me, result)
 
         if bar
         {
@@ -578,7 +578,7 @@ impl MenuCtrl
             if i.hidden:
                 continue
             if onComputeItem:
-                onComputeItem(self, i)
+                onComputeItem(me, i)
             i.pos = x + metrics.menuBar_SpaceBetween * 0.5
             fake.drawRichString({0, 0, 512, 0}, &i.name, rsf)
             i.size = i.name.boundRect.width
@@ -611,7 +611,7 @@ impl MenuCtrl
                 continue
 
             if onComputeItem:
-                onComputeItem(self, i)
+                onComputeItem(me, i)
             if idx:
                 position.height += metrics.menuPopup_SpaceLines
             i.pos = position.height
@@ -661,7 +661,7 @@ public impl MenuCtrl
     {
         with let res = Wnd.create'MenuCtrl(parent.getTopView(), null, {}, id)
         {
-            .owner = owner orelse #self.parent
+            .owner = owner orelse #me.parent
             .setAllPaddings(.getThemeMetrics().menuPopup_Padding)
             .wndFlags |= .Hidden
         }
@@ -689,7 +689,7 @@ public impl MenuCtrl
     #[Swag.Overload]
     mtd addItem(id: WndId)
     {
-        self.addItem(null, #self.id)
+        me.addItem(null, #me.id)
     }
 
     // Add a new item
@@ -698,9 +698,9 @@ public impl MenuCtrl
     {
         with let mitem = items.newPtr()
         {
-            .name      = #self.name
-            .icon      = #self.icon
-            .id        = #self.id
+            .name      = #me.name
+            .icon      = #me.icon
+            .id        = #me.id
             .rightName = rightName
             .disabled  = disabled
             .checked   = checked
@@ -714,7 +714,7 @@ public impl MenuCtrl
     #[Swag.Overload]
     mtd addPopup(popup: *MenuCtrl, id: WndId)
     {
-        self.addPopup(null, popup, id: #self.id)
+        me.addPopup(null, popup, id: #me.id)
     }
 
     // Add a new popup item
@@ -723,13 +723,13 @@ public impl MenuCtrl
     {
         with let mitem = items.newPtr()
         {
-            .name  = #self.name
-            .icon  = #self.icon
-            .popup = #self.popup
-            .id    = #self.id
+            .name  = #me.name
+            .icon  = #me.icon
+            .popup = #me.popup
+            .id    = #me.id
         }
 
-        popup.ownerMenu = self
+        popup.ownerMenu = me
         items.add(mitem)
         dirtyLayout = true
     }

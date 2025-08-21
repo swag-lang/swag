@@ -9,9 +9,9 @@ struct Point
 
 impl Point
 {
-	func opDrop(self)
+	func opDrop(me)
 	{
-		@assert(self.x == 1)
+		@assert(me.x == 1)
 		G += 1
 	}
 }

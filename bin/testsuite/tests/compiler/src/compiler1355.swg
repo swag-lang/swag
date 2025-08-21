@@ -1,6 +1,6 @@
 struct TOTO
 {
-	print: func(self, bool)
+	print: func(me, bool)
     CPT: s32 = 666
 }
 

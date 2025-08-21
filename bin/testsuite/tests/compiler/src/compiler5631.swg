@@ -1,5 +1,5 @@
 /*#test
 {
-    @print(#nameof(#self))
+    @print(#nameof(#me))
 }
 */

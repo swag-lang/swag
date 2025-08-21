@@ -423,7 +423,7 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
         dependentVar     = dep.node;
         dependentVarLeaf = dep.leafNode;
 
-        // This way the UFCS can trigger even with an implicit 'using' var (typically for a 'using self')
+        // This way the UFCS can trigger even with an implicit 'using' var (typically for a 'using me')
         if (!identifierRef->previousNode)
         {
             if (symbol->is(SymbolKind::Function))
@@ -906,7 +906,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
             YIELD();
         }
 
-        // Because of #self
+        // Because of #me
         if (identifier->hasSemFlag(SEMFLAG_FORCE_SCOPE))
             return true;
 

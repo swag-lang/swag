@@ -272,7 +272,7 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("opIndex", State.FunctionSpecOp)
         mapWords.add("opIndexAssign", State.FunctionSpecOp)
 
-        mapWords.add("self", State.Type)
+        mapWords.add("me", State.Type)
         mapWords.add("cvarargs", State.Type)
 
         mapWords.add("any", State.Type)
@@ -374,7 +374,7 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("#arch", State.Compiler)
         mapWords.add("#cpu", State.Compiler)
         mapWords.add("#backend", State.Compiler)
-        mapWords.add("#self", State.Compiler)
+        mapWords.add("#me", State.Compiler)
         mapWords.add("#module", State.Compiler)
         mapWords.add("#file", State.Compiler)
         mapWords.add("#line", State.Compiler)

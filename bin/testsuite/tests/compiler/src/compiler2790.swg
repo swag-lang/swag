@@ -3,7 +3,7 @@
 interface AA
 {
     //#[Swag.Discardable]
-    func fb(self)->s32;
+    func fb(me)->s32;
 }
 
 struct BB
@@ -13,7 +13,7 @@ struct BB
 
 impl AA for BB
 {
-    func impl fb(self)->s32
+    func impl fb(me)->s32
     {
         return 666
     }

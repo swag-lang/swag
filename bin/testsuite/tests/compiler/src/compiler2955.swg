@@ -6,7 +6,7 @@ struct Color
 impl Color
 {
     //#[Swag.Implicit]
-    func opAffect(using self, v: bool)
+    func opAffect(using me, v: bool)
     {
         b = v
     }
@@ -15,7 +15,7 @@ impl Color
 struct Painter{}
 impl Painter
 {
-    func draw(using self, col: Color, size: f32)
+    func draw(using me, col: Color, size: f32)
     {
         @assert(col.b == true)
     }

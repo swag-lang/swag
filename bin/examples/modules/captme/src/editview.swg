@@ -18,7 +18,7 @@ impl IWnd for EditView
         if !capture:
             return
 
-        if capture.mouse(self, evt)
+        if capture.mouse(me, evt)
         {
             invalidate()
             evt.accepted = true
@@ -173,7 +173,7 @@ impl EditView
             Memory.delete(capture)
         capture = c
         if capture:
-            capture.setup(self)
+            capture.setup(me)
         if main:
             main.captureHasChanged()
         invalidate()

@@ -17,12 +17,12 @@ namespace Parse
 {
     interface IParse
     {
-        func xoxo(self);
+        func xoxo(me);
     }
 
     impl IParse for Drawing.Color
     {
-        func impl xoxo(using self)
+        func impl xoxo(using me)
         {
             #assert(#sizeof(Color) == 8)
         }

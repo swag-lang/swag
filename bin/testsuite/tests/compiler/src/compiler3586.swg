@@ -5,7 +5,7 @@ struct A
 
 interface I
 {
-    func toto(self);
+    func toto(me);
 }
 
 func(T) titi()

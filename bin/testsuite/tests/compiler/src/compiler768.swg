@@ -32,11 +32,11 @@ struct Point1
 impl Point
 {
 	//#[Swag.waitsem(100)]
-	func opPostCopy(self)
+	func opPostCopy(me)
 	{
 		//@print("postcopy!\n")
 		test += 1
-		self.x = 2
-		self.y = 4
+		me.x = 2
+		me.y = 4
 	}
 }

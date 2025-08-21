@@ -95,7 +95,7 @@ impl IWnd for RecentView
                 select(hotItem)
                 if evt.button == .Right
                 {
-                    with let menu = MenuCtrl.createPopup(self)
+                    with let menu = MenuCtrl.createPopup(me)
                     {
                         .addItem(CmdIdDupCapture)
                         .addItem(CmdIdDeleteCapture)
@@ -175,7 +175,7 @@ impl IWnd for RecentView
 
             var rect = Math.Rectangle{x, clientRect.y, w, clientRect.height}
             item.rect = rect
-            paintRecent(self, painter, item.preview, rect, idx == hotItem, idx == selected, item.linkedUpToDate, item.linked)
+            paintRecent(me, painter, item.preview, rect, idx == hotItem, idx == selected, item.linkedUpToDate, item.linked)
             x = rect.right() + RecentPadding
         }
 
@@ -306,7 +306,7 @@ impl RecentWnd
 
         if timer:
             getApp().deleteTimer(timer)
-        timer = getApp().addTimer(1's, self)
+        timer = getApp().addTimer(1's, me)
 
         let capture = main.getCapture()
         if !capture:

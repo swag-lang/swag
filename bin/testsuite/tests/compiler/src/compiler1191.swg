@@ -5,8 +5,8 @@ struct Color
 
 impl Color
 {
-    func toto(self, _b: u32)
+    func toto(me, _b: u32)
     {
-        self.b = _b
+        me.b = _b
     }
 }

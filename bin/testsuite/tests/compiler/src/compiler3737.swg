@@ -5,7 +5,7 @@ struct A
 
 interface I
 {
-    func x(self);
+    func x(me);
 }
 
 impl I for A

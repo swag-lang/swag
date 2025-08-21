@@ -10,7 +10,7 @@ struct Point
 //#[Swag.PrintBc]
 impl Point
 {
-	func(op: string) opAssign(self, v: s32)
+	func(op: string) opAssign(me, v: s32)
 	{
 		#if(op == "+=")
 		{

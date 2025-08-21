@@ -107,7 +107,7 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
     {
         Diagnostic err{node, formErr(Err0484, overload->symbol->name.cstr(), overload->symbol->ownerTable->scope->name.cstr())};
 
-        // Missing self?
+        // Missing 'me' ?
         if (node->childCount() <= 1 &&
             node->ownerStructScope &&
             node->ownerStructScope == context->node->ownerStructScope &&

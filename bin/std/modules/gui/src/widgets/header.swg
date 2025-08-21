@@ -163,7 +163,7 @@ impl IWnd for Header
             {
                 let (hit, ?) = hitTest(evt.surfacePos)
                 if hit == hotIdx:
-                    sigClicked(self, items[hotIdx].column)
+                    sigClicked(me, items[hotIdx].column)
             }
 
             if moving or clicked
@@ -401,7 +401,7 @@ impl Header
             return
         item.width = move
         if sigLayoutChanged:
-            sigLayoutChanged(self)
+            sigLayoutChanged(me)
         invalidate()
     }
 }

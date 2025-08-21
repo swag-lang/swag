@@ -9,20 +9,20 @@ var cpt: s32 = 0
 
 impl Point
 {
-	func opPostCopy(self)
+	func opPostCopy(me)
 	{
 		@assert(false)
 	}
 
-	func opPostMove(self)
+	func opPostMove(me)
 	{
 		cpt += 1
 	}
 
 	//#[Swag.PrintBc]
-	func(op: string) opBinary(self, other: self)->Point
+	func(op: string) opBinary(me, other: me)->Point
 	{
-		return Point(self.x + other.x, self.y + other.y) // #move
+		return Point(me.x + other.x, me.y + other.y) // #move
 	}
 }
 

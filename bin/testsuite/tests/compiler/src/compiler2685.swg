@@ -6,17 +6,17 @@ struct AA
 impl AA
 {
     #[Swag.Implicit, Swag.Complete]
-    func opAffect(using self, p: s64)
+    func opAffect(using me, p: s64)
     {
         x = p
     }
 
-    func toto(using self, v: AA)
+    func toto(using me, v: AA)
     {
         @assert(v.x == 2)
     }
 
-    func toto1(using self)
+    func toto1(using me)
     {
         toto(2's64)
     }

@@ -8,9 +8,9 @@ struct Point
 
 impl Point
 {
-	/*func opEqual(self, other: Point)->bool
+	/*func opEqual(me, other: Point)->bool
 	{
-		return self.x == other.x and self.y == other.y
+		return me.x == other.x and me.y == other.y
 	}*/
 }
 

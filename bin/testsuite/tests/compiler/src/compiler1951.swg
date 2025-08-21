@@ -6,15 +6,15 @@ var GG = 0
 
 impl Foozle
 {
-    func add(self, x: A)
+    func add(me, x: A)
     {
         GG = 1
     }
 
-    func(G) add1(self, x: G)
+    func(G) add1(me, x: G)
     {
         let t: A = cast(A) x
-        self.add(t)
+        me.add(t)
     }
 }
 

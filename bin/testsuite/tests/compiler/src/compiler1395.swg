@@ -12,9 +12,9 @@ struct DateTime
 
 impl DateTime
 {
-    func opEquals(self, other: DateTime)->bool
+    func opEquals(me, other: DateTime)->bool
     {
-        return @memcmp(self, other, cast(u64) #sizeof(DateTime)) == 0
+        return @memcmp(me, other, cast(u64) #sizeof(DateTime)) == 0
     }
 }
 

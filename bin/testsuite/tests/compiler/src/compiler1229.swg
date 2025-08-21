@@ -13,7 +13,7 @@ namespace std.math
 
 	impl Vector2
 	{
-		func isZeroEpsilon(using self, eps: Float = cast(Float) 1)->bool
+		func isZeroEpsilon(using me, eps: Float = cast(Float) 1)->bool
 		{
 			return isZeroEpsilon(x, eps)
 		}

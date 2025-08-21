@@ -5,12 +5,12 @@ struct AA
 
 impl AA
 {
-    func opDrop(self)
+    func opDrop(me)
     {
         var a = 0
     }
 
-    func opPostMove(self)
+    func opPostMove(me)
     {
         var a = 0
     }

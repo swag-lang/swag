@@ -9,11 +9,11 @@ struct Point
 
 impl Point
 {
-	func opIndex(self, i: u64)->s32
+	func opIndex(me, i: u64)->s32
 	{
 		if(i == 0):
-			return self.x
-		return self.y
+			return me.x
+		return me.y
 	}
 }
 

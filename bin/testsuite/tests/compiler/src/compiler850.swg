@@ -7,7 +7,7 @@ struct Point
 
 impl Point
 {
-	func opDrop(self, x: s32)
+	func opDrop(me, x: s32)
 	{
 	}
 }

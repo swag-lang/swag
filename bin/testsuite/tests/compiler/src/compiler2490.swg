@@ -6,7 +6,7 @@ struct AA
 
 interface BB
 {
-    func fct(self);
+    func fct(me);
 }
 
 #test

@@ -20,7 +20,7 @@ impl A
     #[Swag.Inline]
     mtd newCommand()
     {
-        assert(self.drawingBegin)
+        assert(me.drawingBegin)
     }
 
     mtd toto()

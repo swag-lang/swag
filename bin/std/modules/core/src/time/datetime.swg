@@ -53,7 +53,7 @@ impl DateTime
     // Compares if two DateTime instances are equal
     mtd const opEquals(other: DateTime)->bool
     {
-        return Memory.compare(self, other, cast(u64) #sizeof(DateTime)) == 0
+        return Memory.compare(me, other, cast(u64) #sizeof(DateTime)) == 0
     }
 
     // Compares two DateTime values. Returns -1, 0, or 1.
@@ -332,7 +332,7 @@ impl Serialization.ISerialize for DateTime
         if decoder.isTextual()
         {
             let val = decoder.readString()
-            dref self = parse(val).value
+            dref me = parse(val).value
             return true
         }
 

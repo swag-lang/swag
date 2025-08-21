@@ -1,6 +1,6 @@
 interface Print
 {
-    func toto(self)->s32;
+    func toto(me)->s32;
 }
 
 struct A
@@ -10,7 +10,7 @@ struct A
 
 impl Print for A
 {
-    func impl toto(using self)->s32
+    func impl toto(using me)->s32
     {
         @assert(x == 666)
         return 667

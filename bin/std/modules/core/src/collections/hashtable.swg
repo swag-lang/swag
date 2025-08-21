@@ -517,7 +517,7 @@ impl StrConv.IConvert for HashTable
     mtd impl convert(buf: *ConcatBuffer, convFmt: StrConv.ConvertFormat, strFormat: string)
     {
         buf.addBytes("[")
-        foreach k, v in dref self
+        foreach k, v in dref me
         {
             if @index:
                 buf.addBytes(", ")

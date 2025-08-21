@@ -6,11 +6,11 @@ struct A
 impl A
 {
     #[Swag.Macro]
-    func toto(using self)
+    func toto(using me)
     {
         #macro
         {
-            #up self.myTruc = 666
+            #up me.myTruc = 666
         }
     }
 }

@@ -7,7 +7,7 @@ struct Utf8
 
 impl Utf8
 {
-	func reserveSize(using self, newSize: u64)
+	func reserveSize(using me, newSize: u64)
 	{
 		if(size >= newSize):
 			return;
@@ -20,10 +20,10 @@ impl Utf8
 		buffer = cast(*u8) newPtr
 	}
 
-	func opAffect(using self, from: string)
+	func opAffect(using me, from: string)
 	{
 		length = @countof(from)
-		self.reserveSize(length + 1)
+		me.reserveSize(length + 1)
 		@memcpy(buffer, @dataof(from), length + 1)
 	}
 }

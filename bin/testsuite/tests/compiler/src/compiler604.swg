@@ -9,7 +9,7 @@ struct Point
 
 impl Point
 {
-	func(op: string) opAssign(self, pt: s32)
+	func(op: string) opAssign(me, pt: s32)
 	{
 	}
 }

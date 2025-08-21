@@ -10,7 +10,7 @@ struct B
 
 impl A
 {
-    func(op: string) opBinary(using self, o: B)->A
+    func(op: string) opBinary(using me, o: B)->A
     {
         #if op == "+":
             return {v + o.v}

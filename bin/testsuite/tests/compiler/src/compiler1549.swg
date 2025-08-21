@@ -9,7 +9,7 @@ struct Y
 
 impl Y
 {
-    func toto(using self)
+    func toto(using me)
     {
         G += 1
     }

@@ -96,7 +96,7 @@ impl IWnd for MainWnd
             .addSeparator()
             .addItem(CmdIdExit)
 
-            .owner        = self
+            .owner        = me
             .paintByFrame = true
             .dockStyle    = .Center
             .padding      = 10
@@ -431,14 +431,14 @@ impl MainWnd
         #[Swag.Mixin]
         func registerHotKey(mdf: Input.KeyModifiers, key: Input.Key, wndId: WndId)
         {
-            catch getApp().registerHotKey(mdf, key, wndId, self)
+            catch getApp().registerHotKey(mdf, key, wndId, me)
             if @err != null
             {
                 if !errorReg
                 {
                     var msg = Format.toString("Cannot register global shortcut '%'. ", Input.getKeyName(mdf, key))
                     msg += "Another running application is probably already using it !"
-                    discard EmbInfoCtrl.create(self.editWnd, msg, .Critical)
+                    discard EmbInfoCtrl.create(me.editWnd, msg, .Critical)
                 }
 
                 errorReg = true
@@ -453,7 +453,7 @@ impl MainWnd
 
     mtd createTopMenu()
     {
-        with let topMenu = MenuCtrl.createBar(parent, owner: self)
+        with let topMenu = MenuCtrl.createBar(parent, owner: me)
         {
             .bringToFront()
             .dockStyle       = .Top
@@ -461,7 +461,7 @@ impl MainWnd
             .backgroundStyle = .Transparent
         }
 
-        with let fileMenu = MenuCtrl.createPopup(parent, owner: self)
+        with let fileMenu = MenuCtrl.createPopup(parent, owner: me)
         {
             .addItem(CmdIdNewImage)
             .addItem(CmdIdNewFromClipboard)
@@ -479,7 +479,7 @@ impl MainWnd
             topMenu.addPopup("File", fileMenu)
         }
 
-        with let captureMenu = MenuCtrl.createPopup(parent, owner: self)
+        with let captureMenu = MenuCtrl.createPopup(parent, owner: me)
         {
             .addItem(CmdIdCaptureArea)
             .addItem(CmdIdCaptureLastArea)
@@ -504,7 +504,7 @@ impl MainWnd
             .addSeparator()
             .addItem(CmdIdCaptureHideEditor)
 
-            with let delayMenu = MenuCtrl.createPopup(captureMenu, owner: self)
+            with let delayMenu = MenuCtrl.createPopup(captureMenu, owner: me)
             {
                 .addItem(CmdIdCaptureDelay0)
                 .addSeparator()
@@ -523,7 +523,7 @@ impl MainWnd
             .addItem(CmdIdCaptureToClipboard)
         }
 
-        with let editMenu = MenuCtrl.createPopup(parent, owner: self)
+        with let editMenu = MenuCtrl.createPopup(parent, owner: me)
         {
             .addItem(CmdIdUndo)
             .addItem(CmdIdRedo)
@@ -542,7 +542,7 @@ impl MainWnd
             topMenu.addPopup("Edit", editMenu)
         }
 
-        with let imageMenu = MenuCtrl.createPopup(parent, owner: self)
+        with let imageMenu = MenuCtrl.createPopup(parent, owner: me)
         {
             .addItem(CmdIdCopyAsImage)
             .addSeparator()
@@ -562,7 +562,7 @@ impl MainWnd
             topMenu.addPopup("Image", imageMenu)
         }
 
-        with let viewMenu = MenuCtrl.createPopup(parent, owner: self)
+        with let viewMenu = MenuCtrl.createPopup(parent, owner: me)
         {
             .addItem(CmdIdZoomIn)
             .addItem(CmdIdZoomOut)
@@ -574,7 +574,7 @@ impl MainWnd
             topMenu.addPopup("View", viewMenu)
         }
 
-        with let helpMenu = MenuCtrl.createPopup(parent, owner: self)
+        with let helpMenu = MenuCtrl.createPopup(parent, owner: me)
         {
             .addItem(CmdIdOptions)
             .addItem(CmdIdAbout)
@@ -588,7 +588,7 @@ impl MainWnd
         {
             with let b = IconButton.create(editToolBar, {}, position: {0, 0, 60, 64})
             {
-                .id = #self.id
+                .id = #me.id
                 .style.addStyleSheetColors("btnIcon_CheckedBk    $btnIcon_HotBk")
                 .style.addStyleSheetColors("btnIcon_CheckedHotBk $btnIcon_HotBk")
                 if canCheck:

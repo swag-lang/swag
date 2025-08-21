@@ -6,13 +6,13 @@ struct(T) AA
 impl AA
 {
     #[Swag.Overload]
-    func opCast(using self)->const [..] T
+    func opCast(using me)->const [..] T
     {
         return @mkslice(ptr, 0)
     }
 
     #[Swag.Overload]
-    func opCast(using self)->[..] T
+    func opCast(using me)->[..] T
     {
         return @mkslice(ptr, 0)
     }

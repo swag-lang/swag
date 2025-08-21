@@ -5,7 +5,7 @@ struct(T) C1914
 
 impl C1914
 {
-    func toto(using self)
+    func toto(using me)
     {
         x, y = 10
     }

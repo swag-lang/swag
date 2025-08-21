@@ -5,7 +5,7 @@ struct A
 
 impl A
 {
-    func opAffect(using self, t: [1] bool)
+    func opAffect(using me, t: [1] bool)
     {
         @assert(t[0] == true)
     }

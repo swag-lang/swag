@@ -24,7 +24,7 @@ public impl Image
         if nw == width and nh == height:
             return
         allocWorkingBuffer(nw, nh, pf)
-        ResizeTools.doResize(workingBuffer, self, mode)
+        ResizeTools.doResize(workingBuffer, me, mode)
         applyWorkingBuffer()
     }
 
@@ -37,13 +37,13 @@ public impl Image
         let nh = newHeight orelse cast(s32) (newWidth * (height / cast(f32) width))
         if nw == width and nh == height
         {
-            var result: retval = dref self
+            var result: retval = dref me
             return result
         }
 
         using ResizeTools
         var result: retval = create(nw, nh, pf)
-        ResizeTools.doResize(&result, self, mode)
+        ResizeTools.doResize(&result, me, mode)
         return result
     }
 }

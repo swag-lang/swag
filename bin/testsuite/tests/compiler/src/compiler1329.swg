@@ -2,7 +2,7 @@
 
 interface toto
 {
-    func print(self) = &titi;
+    func print(me) = &titi;
 }
 
 func titi()

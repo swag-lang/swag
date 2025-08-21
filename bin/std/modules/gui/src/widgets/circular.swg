@@ -141,13 +141,13 @@ impl IWnd for Circular
             drawSteps(bc.painter, colorStep)
 
         // Draw value1 marker
-        aniMark1.apply(self, colorMark1)
+        aniMark1.apply(me, colorMark1)
         drawValueMarker(bc.painter, aniMark1.cur(), value1)
 
         // Draw value2 marker if range mode
         if circularFlags.has(.Range)
         {
-            aniMark2.apply(self, colorMark2)
+            aniMark2.apply(me, colorMark2)
             drawValueMarker(bc.painter, aniMark2.cur(), value2)
         }
     }
@@ -478,7 +478,7 @@ internal impl Circular
             return
         hasValue1 = true
         value1    = fc
-        sigChanged.call(self)
+        sigChanged.call(me)
         invalidate()
     }
 
@@ -491,7 +491,7 @@ internal impl Circular
             return
         hasValue2 = true
         value2    = fc
-        sigChanged.call(self)
+        sigChanged.call(me)
         invalidate()
     }
 
@@ -553,12 +553,12 @@ internal impl Circular
 
     mtd startChange()
     {
-        sigStartChange.call(self)
+        sigStartChange.call(me)
     }
 
     mtd endChange()
     {
-        sigEndChange.call(self)
+        sigEndChange.call(me)
     }
 }
 
@@ -607,25 +607,25 @@ impl Circular
     }
 
     // Set the min and max values, and optional steps
-    func setMinMax(self, min, max: f32, steps: f32 = 0)
+    func setMinMax(me, min, max: f32, steps: f32 = 0)
     {
         Debug.assert(min < max)
         Debug.assert(steps < (max - min))
-        self.min = min
-        self.max = max
+        me.min = min
+        me.max = max
         if steps > 0:
-            self.steps = steps / (max - min) // Convert to normalized step size
+            me.steps = steps / (max - min) // Convert to normalized step size
         else:
-            self.steps = 0
+            me.steps = 0
     }
 
     // Set the angular range of the circular slider
-    func setAngleRange(self, startAngle, endAngle: Math.Angle)
+    func setAngleRange(me, startAngle, endAngle: Math.Angle)
     {
         Debug.assert(endAngle.rad > startAngle.rad)
         Debug.assert((endAngle.rad - startAngle.rad) <= Math.ConstF32.TwoPi)
-        self.startAngle = startAngle.rad
-        self.endAngle   = endAngle.rad
+        me.startAngle = startAngle.rad
+        me.endAngle   = endAngle.rad
     }
 
     // Set the display stepForm (None, Dot, or Tick)

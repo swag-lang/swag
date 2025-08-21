@@ -149,7 +149,7 @@ impl PolyNode
     {
         let cnt = cast(u32) childs.count
         childs.add(child)
-        child.parent = self
+        child.parent = me
         child.index  = cnt
     }
 }

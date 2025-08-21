@@ -5,7 +5,7 @@ struct Mwc
 
 impl Mwc
 {
-	func next(using self)->u32
+	func next(using me)->u32
 	{
 		val += 1
 		return val
@@ -20,8 +20,8 @@ struct(T = Mwc) Random
 impl Random
 {
 	using Swag
-	func nextU32(using self)->u32 => rng.next()
-	//func nextF32(using self)->f32 => rng.next() / cast(f32) u32_max
+	func nextU32(using me)->u32 => rng.next()
+	//func nextF32(using me)->f32 => rng.next() / cast(f32) u32_max
 }
 
 #test

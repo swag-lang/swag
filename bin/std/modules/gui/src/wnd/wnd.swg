@@ -269,7 +269,7 @@ impl Wnd
         Debug.assert(!isPendingDestroy)
         foreach c in childs:
             c.destroyNow()
-        surface.app.destroyWnd(self)
+        surface.app.destroyWnd(me)
     }
 
     // Destroy the window
@@ -281,7 +281,7 @@ impl Wnd
         isPendingDestroy = true
         foreach c in childs:
             c.destroy()
-        surface.app.postDestroy.add(self)
+        surface.app.postDestroy.add(me)
         invalidate()
 
         if parent and !parent.isPendingDestroy:
@@ -314,7 +314,7 @@ impl Wnd
 
             // Add the window at the back, or before the first topmost window
             if !who.childs.count:
-                who.childs.add(self)
+                who.childs.add(me)
             else
             {
                 var idxToInsert = who.childs.count
@@ -325,7 +325,7 @@ impl Wnd
                         idxToInsert = who.childs.count
                 }
 
-                who.childs.insertAt(idxToInsert, self)
+                who.childs.insertAt(idxToInsert, me)
             }
 
             who.invalidate()
@@ -366,7 +366,7 @@ impl Wnd
         if wndFlags.has(.Hidden):
             return
         wndFlags.add(.Hidden)
-        getApp().unregisterWnd(self)
+        getApp().unregisterWnd(me)
         parent.invalidate()
     }
 
@@ -386,7 +386,7 @@ impl Wnd
             wndFlags.add(.Disabled)
 
             // Check global state
-            if getApp().keybFocusWnd == self:
+            if getApp().keybFocusWnd == me:
                 getTopView().setFocus()
         }
 
@@ -402,7 +402,7 @@ impl Wnd
     // Returns true if window and all its parents are visible
     mtd isVisible(onlyMe = false)->bool
     {
-        var toCheck = self
+        var toCheck = me
         while toCheck
         {
             if toCheck.wndFlags.has(.Hidden):
@@ -425,7 +425,7 @@ impl Wnd
     // Returns true if window, and all its parents, are enabled
     mtd isEnabled(onlyMe = false)->bool
     {
-        var toCheck = self
+        var toCheck = me
         while toCheck
         {
             if toCheck.wndFlags.has(.Disabled):
@@ -452,7 +452,7 @@ impl Wnd
     mtd computeStyle()
     {
         if surface:
-            style.compute(self, &surface.app.style)
+            style.compute(me, &surface.app.style)
     }
 
     mtd paint(bc: *PaintContext)
@@ -716,24 +716,24 @@ impl Wnd
     mtd bringToFront()
     {
         Debug.assert(parent != null)
-        if parent.childs.front() == self:
+        if parent.childs.front() == me:
             return
 
-        let idx = Slice.findLinear(parent.childs.toSlice(), self)
+        let idx = Slice.findLinear(parent.childs.toSlice(), me)
         Debug.assert(idx != Swag.U64.Max)
 
         parent.childs.removeAtOrdered(idx)
-        parent.childs.insertAt(0, self)
+        parent.childs.insertAt(0, me)
     }
 
     // Force the window to be the last painted (on top of siblings)
     mtd bringToTop()
     {
         Debug.assert(parent != null)
-        if parent.childs.back() == self:
+        if parent.childs.back() == me:
             return
 
-        let idx = Slice.findLinear(parent.childs.toSlice(), self)
+        let idx = Slice.findLinear(parent.childs.toSlice(), me)
         Debug.assert(idx != Swag.U64.Max)
 
         // Put the window at the back, or before the first topmost window
@@ -966,10 +966,10 @@ impl Wnd
                 return res
         }
 
-        return self
+        return me
     }
 
-    // Returns true if 'child' is in the child hieararchy of 'self'
+    // Returns true if 'child' is in the child hieararchy of 'me'
     mtd isParentOf(child: *Wnd)->bool
     {
         if !child:
@@ -977,7 +977,7 @@ impl Wnd
         var p = child.parent
         while p
         {
-            if p == self:
+            if p == me:
                 return true
             p = p.parent
         }
@@ -985,7 +985,7 @@ impl Wnd
         return false
     }
 
-    // Returns true if 'child' is in the owner/child hieararchy of 'self'
+    // Returns true if 'child' is in the owner/child hieararchy of 'me'
     mtd isOwnerOf(child: *Wnd)->bool
     {
         if !child:
@@ -993,7 +993,7 @@ impl Wnd
         var p = child.getOwner()
         while p
         {
-            if p == self:
+            if p == me:
                 return true
             p = p.getOwner()
         }
@@ -1036,7 +1036,7 @@ impl Wnd
 
     mtd captureMouse()
     {
-        surface.app.captureMouse(self)
+        surface.app.captureMouse(me)
     }
 
     mtd releaseMouse()
@@ -1056,7 +1056,7 @@ impl Wnd
     // Set the keyboard focus
     mtd setFocus()
     {
-        if surface.app.keybFocusWnd == self:
+        if surface.app.keybFocusWnd == me:
             return
         if !isEnabled():
             return
@@ -1066,7 +1066,7 @@ impl Wnd
         // Ask the window with the current focus if we can steal it
         if last
         {
-            var evt = FocusEvent{kind: FocusEvent.Kind.CanKillFocus, other: self}
+            var evt = FocusEvent{kind: FocusEvent.Kind.CanKillFocus, other: me}
             last.sendEvent(&evt)
             if !evt.canChangeFocus:
                 return
@@ -1082,7 +1082,7 @@ impl Wnd
 
         if last
         {
-            var evt = FocusEvent{kind: FocusEvent.Kind.KillFocus, other: self}
+            var evt = FocusEvent{kind: FocusEvent.Kind.KillFocus, other: me}
             last.sendEvent(&evt)
             last.invalidate()
 
@@ -1092,7 +1092,7 @@ impl Wnd
         surface.setFocus()
 
         var evt = FocusEvent{kind: FocusEvent.Kind.SetFocus, other: last}
-        surface.app.keybFocusWnd = self
+        surface.app.keybFocusWnd = me
         sendEvent(&evt)
         invalidate()
 
@@ -1106,7 +1106,7 @@ impl Wnd
     }
 
     // Returns true if the window has the keyboard focus
-    mtd hasFocus()->bool => surface.app.keybFocusWnd == self
+    mtd hasFocus()->bool => surface.app.keybFocusWnd == me
 
     // Register a keyboard shortcut
     mtd registerKeyShortcut(mdf: Input.KeyModifiers, key: Input.Key, wndId: WndId)
@@ -1164,7 +1164,7 @@ impl Wnd
     // Register a new timer for the given 'target'
     mtd addTimer(time: Time.Duration)->*Timer
     {
-        return getApp().addTimer(time, self)
+        return getApp().addTimer(time, me)
     }
 
     mtd postQuitEvent()
@@ -1175,7 +1175,7 @@ impl Wnd
     mtd postEvent(evt: IEvent)
     {
         let ptr = evt as Event
-        ptr.target = self
+        ptr.target = me
         surface.app.postEvent(evt)
     }
 
@@ -1188,7 +1188,7 @@ impl Wnd
     mtd sendEvent(evt: IEvent)
     {
         let ptr = evt as Event
-        ptr.target = self
+        ptr.target = me
         surface.app.sendEvent(evt)
     }
 
@@ -1229,7 +1229,7 @@ impl Wnd
             return
         let evt = Event.create'CommandEvent()
         evt.id     = cmdId
-        evt.source = self
+        evt.source = me
         postEvent(evt)
     }
 
@@ -1237,7 +1237,7 @@ impl Wnd
     {
         var eat = false
         if hookOnEvent:
-            eat = hookOnEvent(self, evt)
+            eat = hookOnEvent(me, evt)
         if !eat:
             itf.onEvent(evt)
     }
@@ -1291,7 +1291,7 @@ impl Wnd
         // User will fill the state
         evtState.kind   = .ComputeCommandState
         evtState.id     = cmdId
-        evtState.source = self
+        evtState.source = me
         sendEvent(&evtState)
 
         // Is there a keyboard shortcut or a global hot key ?
@@ -1343,7 +1343,7 @@ impl Wnd
     internal mtd updateAction(evt: *CommandStateEvent)->bool
     {
         var cxt: ActionContext
-        cxt.wnd = self
+        cxt.wnd = me
         cxt.id  = evt.id
 
         foreach act in actions
@@ -1362,7 +1362,7 @@ impl Wnd
     internal mtd executeAction(evt: *CommandEvent)->bool
     {
         var cxt: ActionContext
-        cxt.wnd = self
+        cxt.wnd = me
         cxt.id  = evt.id
 
         foreach act in actions
@@ -1387,7 +1387,7 @@ impl Wnd
         var evt: SerializeStateEvent
         evt.accepted = false
         evt.ser      = ser
-        evt.target   = self
+        evt.target   = me
         processEvent(&evt)
 
         if !evt.accepted

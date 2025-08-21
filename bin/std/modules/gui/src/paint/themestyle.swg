@@ -76,7 +76,7 @@ impl ThemeStyle
         // Ask user
         var evt = ThemeEvent{}
         evt.accepted = false
-        evt.style    = self
+        evt.style    = me
         evt.parent   = parent
         owner.sendEvent(&evt)
 

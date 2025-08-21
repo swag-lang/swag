@@ -6,13 +6,13 @@ struct Point
 
 impl Point
 {
-	func(op: string) opUnary(self)->Point
+	func(op: string) opUnary(me)->Point
 	{
 		var pt: Point
 		#if op == "-"
 		{
-			pt.x = -self.x
-			pt.y = -self.y
+			pt.x = -me.x
+			pt.y = -me.y
 			return pt
 		}
 

@@ -4,7 +4,7 @@ struct AA {}
 impl AA
 {
     #[Swag.Inline]
-    func opEquals(using self, x: string) => x == "6"
+    func opEquals(using me, x: string) => x == "6"
 }
 
 #test

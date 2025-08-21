@@ -5,19 +5,19 @@ struct AA
 
 interface BB
 {
-    func toto(self, x: *u8);
+    func toto(me, x: *u8);
 }
 
 impl AA
 {
-    func toto(using self, v: u64, a: s32 = 0)
+    func toto(using me, v: u64, a: s32 = 0)
     {
     }
 }
 
 impl BB for AA
 {
-    func impl toto(using self, ptr: *u8)
+    func impl toto(using me, ptr: *u8)
     {
         toto(0)
     }

@@ -8,7 +8,7 @@ struct Point
 
 impl Point
 {
-	func opEquals(self, other: Point)
+	func opEquals(me, other: Point)
 	{
 	}
 }

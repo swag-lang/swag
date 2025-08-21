@@ -9,10 +9,10 @@ struct point
 
 impl point
 {
-	/*func opInit(self)
+	/*func opInit(me)
 	{
-		self.x = 10
-		self.y = 20
+		me.x = 10
+		me.y = 20
 		@print("toto\n")
 	}*/
 }

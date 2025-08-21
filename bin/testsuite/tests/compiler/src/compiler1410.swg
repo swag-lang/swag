@@ -6,7 +6,7 @@ impl A
 {
     func toto()
     {
-        func titi(self)
+        func titi(me)
         {
         }
     }

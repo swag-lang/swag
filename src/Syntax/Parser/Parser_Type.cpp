@@ -67,7 +67,7 @@ bool Parser::doLambdaClosureParameters(AstTypeExpression* node, bool inTypeVarDe
             {
                 tokenizer.restoreState(tokenParse);
             }
-            else if (tokenName.token.is(g_LangSpec->name_self))
+            else if (tokenName.token.is(g_LangSpec->name_me))
             {
                 const Diagnostic err(sourceFile, tokenParse.token, toErr(Err0663));
                 return context->report(err);
@@ -93,8 +93,8 @@ bool Parser::doLambdaClosureParameters(AstTypeExpression* node, bool inTypeVarDe
 
         AstTypeExpression* typeExpr = nullptr;
 
-        // self
-        if (tokenParse.token.is(g_LangSpec->name_self))
+        // me
+        if (tokenParse.token.is(g_LangSpec->name_me))
         {
             curIsAlone = false;
             SWAG_VERIFY(currentStructScope, error(tokenParse, toErr(Err0345)));
@@ -266,8 +266,8 @@ bool Parser::doLambdaClosureType(AstTypeExpression* node, bool inTypeVarDecl)
             Utf8 nameVar;
             if (firstAddedType->typeFlags.has(TYPE_FLAG_IS_SELF))
             {
-                firstAddedType->token.text = g_LangSpec->name_self;
-                nameVar                    = g_LangSpec->name_self;
+                firstAddedType->token.text = g_LangSpec->name_me;
+                nameVar                    = g_LangSpec->name_me;
             }
             else
             {

@@ -1,6 +1,6 @@
 interface ErrorId
 {
-    func toString(self)->string;
+    func toString(me)->string;
 }
 
 struct ErrorString
@@ -10,7 +10,7 @@ struct ErrorString
 
 impl ErrorId for ErrorString
 {
-    func impl toString(using self)->string
+    func impl toString(using me)->string
     {
         return err
     }

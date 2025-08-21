@@ -16,7 +16,7 @@ impl BitStream
     // Initializes the bit stream with an input buffer
     mtd init(buf: const [..] u8)
     {
-        @init(self, 1)
+        @init(me, 1)
         stream = buf
     }
 

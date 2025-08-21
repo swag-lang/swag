@@ -40,7 +40,7 @@ bool Ast::generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInf
     content += form("mtd const opEquals(o: %s)->bool\n{\n", typeRightStruct->structName.cstr());
     if (!hasStruct)
     {
-        content += form("return @memcmp(cast(const ^void) self, cast(const ^void) &o, #sizeof(%s)) == 0\n", typeLeftStruct->structName.cstr());
+        content += form("return @memcmp(cast(const ^void) me, cast(const ^void) &o, #sizeof(%s)) == 0\n", typeLeftStruct->structName.cstr());
     }
     else
     {
@@ -139,7 +139,7 @@ bool Ast::generateMissingInterfaceFct(SemanticContext*            context,
         content += "func impl ";
         content += missingNode->name;
 
-        content += "(using self";
+        content += "(using me";
         const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(missingNode->typeInfo, TypeInfoKind::LambdaClosure);
         for (uint32_t i = 1; i < typeFunc->parameters.size(); i++)
         {
@@ -157,7 +157,7 @@ bool Ast::generateMissingInterfaceFct(SemanticContext*            context,
             content += typeBaseInterface->name;
             content += ".__default.";
             content += missingNode->name;
-            content += form("(cast(*%s) self", typeBaseInterface->name.cstr());
+            content += form("(cast(*%s) me", typeBaseInterface->name.cstr());
             for (uint32_t i = 1; i < typeFunc->parameters.size(); i++)
             {
                 content += ", ";
@@ -166,7 +166,7 @@ bool Ast::generateMissingInterfaceFct(SemanticContext*            context,
         }
         else
         {
-            content += "self.";
+            content += "me.";
             content += itfRef.fieldRef;
             content += ".";
             content += typeBaseInterface->name;

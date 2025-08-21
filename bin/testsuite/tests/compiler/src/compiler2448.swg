@@ -1,6 +1,6 @@
 interface Error
 {
-    func toString(self)->string;
+    func toString(me)->string;
 }
 
 struct MyError
@@ -15,7 +15,7 @@ func toto()->Error
 
 impl Error for MyError
 {
-    func impl toString(using self) => "XX"
+    func impl toString(using me) => "XX"
 }
 
 var err: MyError

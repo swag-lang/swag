@@ -6,20 +6,20 @@ struct Point
 
 impl Point
 {
-	func(op: string) opBinary(self, other: Point)->Point
+	func(op: string) opBinary(me, other: Point)->Point
 	{
 		var pt: Point
 		#if op == "+"
 		{
-			pt.x = self.x + other.x
-			pt.y = self.y + other.y
+			pt.x = me.x + other.x
+			pt.y = me.y + other.y
 			return pt
 		}
 
 		#if op == "-"
 		{
-			pt.x = self.x - other.x
-			pt.y = self.y - other.y
+			pt.x = me.x - other.x
+			pt.y = me.y - other.y
 			return pt
 		}
 

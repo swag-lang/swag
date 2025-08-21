@@ -6,16 +6,16 @@ struct A
 var G = 0
 impl A
 {
-    func titi(using self)
+    func titi(using me)
     {
         G = 1
     }
 
-    func toto(using self)
+    func toto(using me)
     {
-        var fn: func(self)
+        var fn: func(me)
         fn = &titi
-        fn(self)
+        fn(me)
     }
 }
 

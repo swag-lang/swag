@@ -6,7 +6,7 @@ struct RNG
 
 impl RNG
 {
-	func call(using self, x: s32)
+	func call(using me, x: s32)
 	{
 		//@print(cast(s64) x)
 	}
@@ -21,7 +21,7 @@ struct(T) toto
 impl toto
 {
 	//#[Swag.public]
-	func toto1(using self, x: s32) => rng.call(x);
+	func toto1(using me, x: s32) => rng.call(x);
 }
 
 #test

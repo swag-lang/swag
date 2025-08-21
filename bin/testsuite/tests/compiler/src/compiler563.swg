@@ -9,7 +9,7 @@ struct point
 
 impl point
 {
-	func opInit(self)
+	func opInit(me)
 	{
 	}
 }

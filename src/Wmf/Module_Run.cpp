@@ -111,20 +111,20 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
 
         // Make a copy of the returned struct, as we will lose the memory
         const auto selfSize = Allocator::alignSize(realType->sizeOf);
-        auto       self     = Allocator::alloc(selfSize);
-        std::copy_n(runContext->registersRR[0].pointer, realType->sizeOf, static_cast<uint8_t*>(self));
+        auto       me     = Allocator::alloc(selfSize);
+        std::copy_n(runContext->registersRR[0].pointer, realType->sizeOf, static_cast<uint8_t*>(me));
 
         // Call opPostMove if defined
         if (params->specReturnOpPostMove)
         {
             opParams.callParams.clear();
-            opParams.callParams.push_back(reinterpret_cast<uint64_t>(self));
+            opParams.callParams.push_back(reinterpret_cast<uint64_t>(me));
             SWAG_CHECK(executeNode(sourceFile, params->specReturnOpPostMove->node, callerContext, &opParams));
         }
 
         // Get number of elements by calling 'opCount'
         SWAG_ASSERT(params->specReturnOpCount);
-        opParams.callParams.push_back(reinterpret_cast<uint64_t>(self));
+        opParams.callParams.push_back(reinterpret_cast<uint64_t>(me));
         SWAG_CHECK(executeNode(sourceFile, params->specReturnOpCount->node, callerContext, &opParams));
         const auto count = runContext->registersRR[0].u64;
         if (!count)
@@ -135,7 +135,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         opParams.callParams.clear();
         opParams.callParams.push_back(count - 1);
         opParams.callParams.push_back(0);
-        opParams.callParams.push_back(reinterpret_cast<uint64_t>(self));
+        opParams.callParams.push_back(reinterpret_cast<uint64_t>(me));
         SWAG_CHECK(executeNode(sourceFile, params->specReturnOpSlice->node, callerContext, &opParams));
         if (!runContext->registersRR[0].u64 || !runContext->registersRR[1].u64)
             return callerContext->report({node, formErr(Err0032, realType->getDisplayNameC())});
@@ -190,11 +190,11 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         if (params->specReturnOpDrop)
         {
             opParams.callParams.clear();
-            opParams.callParams.push_back(reinterpret_cast<uint64_t>(self));
+            opParams.callParams.push_back(reinterpret_cast<uint64_t>(me));
             SWAG_CHECK(executeNode(sourceFile, params->specReturnOpDrop->node, callerContext, &opParams));
         }
 
-        Allocator::free(self, selfSize);
+        Allocator::free(me, selfSize);
         return true;
     }
 

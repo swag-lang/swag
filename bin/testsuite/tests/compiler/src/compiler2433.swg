@@ -1,7 +1,7 @@
 func append()
     where
     {
-        @assert(#stringof(#self) == "__compiler2433.append")
+        @assert(#stringof(#me) == "__compiler2433.append")
         return true
     }
 {

@@ -1,7 +1,7 @@
 interface IIncrementable
 {
-    func decr(self);
-    func done(self)->bool;
+    func decr(me);
+    func done(me)->bool;
 }
 
 //#[Swag.PrintBc]

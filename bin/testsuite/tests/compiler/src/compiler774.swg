@@ -1,13 +1,13 @@
 /*
 impl Point
 {
-	func opPostCopy(self)
+	func opPostCopy(me)
 	{
 		@assert(false)
 	}
 
 	//#[Swag.semsleep(100)]
-	func opPostMove(self)
+	func opPostMove(me)
 	{
 		cpt += 1
 	}

@@ -10,7 +10,7 @@ struct(T) A
 
 impl A
 {
-    func titi(self)
+    func titi(me)
     {
         var x: s32
         toto(x)

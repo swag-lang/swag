@@ -9,15 +9,15 @@ var cpt: s32 = 0
 
 impl Point
 {
-	/*func opAffect(self, other: self)
+	/*func opAffect(me, other: me)
 	{
-		self.x = other.x + 1
-		self.y = other.y + 1
+		me.x = other.x + 1
+		me.y = other.y + 1
 	}*/
 
-	func opPostMove(self)
+	func opPostMove(me)
 	{
-		@assert(self.x == 1)
+		@assert(me.x == 1)
 		cpt += 1
 	}
 }

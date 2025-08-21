@@ -14,7 +14,7 @@ impl I for A
 
     mtd impl alloc(r: *AllocatorRequest)
     {
-        self.free5873(r)
+        me.free5873(r)
     }
 }
 

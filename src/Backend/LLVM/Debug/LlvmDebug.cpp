@@ -594,7 +594,7 @@ void LlvmDebug::startFunction(const BuildParameters& buildParameters, const Llvm
                 }
 
                 llvm::DINode::DIFlags flags = llvm::DINode::FlagZero;
-                if (typeParam->isSelf() && child->token.is(g_LangSpec->name_self))
+                if (typeParam->isSelf() && child->token.is(g_LangSpec->name_me))
                     flags |= llvm::DINode::FlagObjectPointer;
 
                 llvm::DILocalVariable* var = dbgBuilder->createParameterVariable(scope, child->token.cstr(), idxParam + 1, file, loc.line + 1, type, !isOptimized, flags);

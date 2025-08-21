@@ -9,9 +9,9 @@ struct point
 
 impl point
 {
-	func toto(self)
+	func toto(me)
 	{
-		@assert(self.x == 60)
+		@assert(me.x == 60)
 	}
 }
 

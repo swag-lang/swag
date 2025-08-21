@@ -94,7 +94,7 @@ bool Semantic::filterMatchesDirect(SemanticContext* context, VectorNative<OneMat
             }
         }
 
-        // Do not match "self"
+        // Do not match 'me'
         if (overSym->is(SymbolKind::Function) &&
             context->node->hasAttribute(ATTRIBUTE_MATCH_SELF_OFF))
         {
@@ -387,7 +387,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
             }
         }
 
-        // If we didn't match with UFCS, then priority to a match that do not start with 'self'
+        // If we didn't match with UFCS, then priority to a match that do not start with 'me'
         if (!curMatch->ufcs && over->typeInfo->isFuncAttr())
         {
             const auto typeFunc0 = castTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
@@ -408,7 +408,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
             }
         }
 
-        // If we did match with UFCS, then priority to a match that starts with 'self'
+        // If we did match with UFCS, then priority to a match that starts with 'me'
         if (curMatch->ufcs && over->typeInfo->isFuncAttr())
         {
             const auto typeFunc0 = castTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);

@@ -15,7 +15,7 @@ func(T) titi(x: const &T)
 
 /*impl Array
 {
-    func add(self, x: K)
+    func add(me, x: K)
     {
         #assert(#typeof(K).kind == Swag.TypeInfoKind.Struct)
         titi(x)

@@ -5,7 +5,7 @@ struct A
 
 impl A
 {
-    func(op: string) opBinary(using self, o: s32)->A
+    func(op: string) opBinary(using me, o: s32)->A
     {
         #if op == "+":
             return {v + o}

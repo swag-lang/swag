@@ -5,7 +5,7 @@ struct S
 impl S
 {
     #[Swag.Macro]
-    func visitBytes(using self, stmt: #code void)
+    func visitBytes(using me, stmt: #code void)
     {
         #macro
         {

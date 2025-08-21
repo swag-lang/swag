@@ -29,8 +29,8 @@ public impl Bus
         destroyNative()
 
         Sync.scopedLock(&g_Driver.mutexBuses)
-        g_Driver.buses.remove(self)
-        Memory.delete(self)
+        g_Driver.buses.remove(me)
+        Memory.delete(me)
     }
 
     // Set the playing bus volume in DB.

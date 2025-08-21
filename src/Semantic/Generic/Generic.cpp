@@ -114,7 +114,7 @@ bool Generic::instantiateGenericSymbol(SemanticContext* context, OneMatch& first
         }
 
         // The new struct is no more generic without generic parameters.
-        // It happens each time we reference a generic struct without generic parameters, like impl 'Array', #typeof(Array), self* Array or even
+        // It happens each time we reference a generic struct without generic parameters, like impl 'Array', #typeof(Array), me* Array or even
         // a variable type (in that case we will try later to instantiate it with default generic parameters).
         // So we match a generic struct as a normal match without instantiation (for now).
         else if (!node->hasAstFlag(AST_GENERIC))

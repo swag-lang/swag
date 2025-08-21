@@ -6,7 +6,7 @@ struct AA
 impl AA
 {
     #[Swag.Macro]
-    func(ptr: bool, back: bool) opVisit(using self, stmt: #code void)
+    func(ptr: bool, back: bool) opVisit(using me, stmt: #code void)
     {
         #macro
         {

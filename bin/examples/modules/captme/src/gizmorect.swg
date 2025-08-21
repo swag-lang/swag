@@ -50,7 +50,7 @@ impl GizmoRect
                     hotAnchor = Swag.U32.Max
                     view.releaseMouse()
                     if !trackChange and sigChanged:
-                        sigChanged(self, false, 0)
+                        sigChanged(me, false, 0)
                     if sigHasChanged:
                         sigHasChanged()
                 }
@@ -70,7 +70,7 @@ impl GizmoRect
             {
                 var hitMove = 0'u32
                 if firstMoving and sigChanged and trackChange:
-                    sigChanged(self, true, 0)
+                    sigChanged(me, true, 0)
 
                 firstMoving = false
 
@@ -155,7 +155,7 @@ impl GizmoRect
                 }
 
                 if trackChange and sigChanged:
-                    sigChanged(self, false, hitMove)
+                    sigChanged(me, false, hitMove)
             }
             else
             {

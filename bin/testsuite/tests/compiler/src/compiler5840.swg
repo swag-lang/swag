@@ -4,9 +4,9 @@ func(safetyWhat: string) safety(expr: #code bool, message: string = null, loc = 
 {
     #if #safety(safetyWhat)
     {
-        let #uniq0 = #inject(#self.expr)
+        let #uniq0 = #inject(#me.expr)
         if !#uniq0:
-            @panic(#self.message, #self.loc)
+            @panic(#me.message, #me.loc)
         @assert(#uniq0 == true)
     }
 }

@@ -53,9 +53,9 @@ impl IWnd for ToggleButton
         subRectBorder = &rects.btnToggle_Border
         subRectMark   = &rects.btnToggle_Mark
 
-        aniBk.apply(self, colorBk)
-        aniBorder.apply(self, colorBorder)
-        aniMark.apply(self, colorMark)
+        aniBk.apply(me, colorBk)
+        aniBorder.apply(me, colorBorder)
+        aniMark.apply(me, colorMark)
 
         // Box
         var clientRect = getClientRect()
@@ -77,7 +77,7 @@ impl IWnd for ToggleButton
         {
             isToggled = !isToggled
             if sigChanged:
-                sigChanged(self)
+                sigChanged(me)
             postCommandEvent(id)
         }
     }

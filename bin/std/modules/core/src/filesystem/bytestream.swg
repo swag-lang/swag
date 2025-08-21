@@ -15,7 +15,7 @@ public impl ByteStream
     func openRead(readBuffer: const [..] u8)->ByteStream
     {
         var result: retval
-        result.readBuffer = #self.readBuffer
+        result.readBuffer = #me.readBuffer
         return result
     }
 

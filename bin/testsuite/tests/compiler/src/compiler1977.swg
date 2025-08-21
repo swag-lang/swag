@@ -14,7 +14,7 @@ struct(K, V) HashTable
 
 impl HashTable
 {
-    func grow(self)
+    func grow(me)
     {
         /*@print(#typeof(K).name)
         @print(#typeof(V).name)

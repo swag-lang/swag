@@ -8,14 +8,14 @@ struct Point
 
 impl Point
 {
-	func(op: string) opIndexAssign(self, i: f32, v: s32)
+	func(op: string) opIndexAssign(me, i: f32, v: s32)
 	{
 		#if op == "="
 		{
 			if(i == 0):
-				self.x = v;
+				me.x = v;
 			else:
-				self.y = v;
+				me.y = v;
 		}
 
 	}

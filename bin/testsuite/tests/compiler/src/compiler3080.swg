@@ -1,6 +1,6 @@
 interface AA
 {
-    func toto(self);
+    func toto(me);
 }
 
 struct BB
@@ -11,12 +11,12 @@ struct BB
 var G: s32
 impl AA for BB
 {
-    func titi(using self)
+    func titi(using me)
     {
         G = x
     }
 
-    func impl toto(using self)
+    func impl toto(using me)
     {
         titi()
     }

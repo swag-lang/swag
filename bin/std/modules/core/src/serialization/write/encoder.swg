@@ -211,7 +211,7 @@ impl Encoder
             let itf = @mkinterface(data, type, ISerialize)
             if itf != null
             {
-                if itf.write(cast(IEncoder) self):
+                if itf.write(cast(IEncoder) me):
                     return
             }
 
@@ -230,7 +230,7 @@ impl Encoder
                 if Reflection.hasAttribute(field.pointedType, NoSerialize):
                     continue
 
-                if !itf or !itf.writeElement(field, cast(const ^u8) data + field.offset, cast(IEncoder) self)
+                if !itf or !itf.writeElement(field, cast(const ^u8) data + field.offset, cast(IEncoder) me)
                 {
                     writeTypeValue(field, cast(const ^u8) data + field.offset)
                 }
@@ -267,9 +267,9 @@ impl Encoder
     mtd writeAll(result: *ConcatBuffer, value: any) throw
     {
         Debug.assert(Reflection.isStruct(@kindof(value)))
-        start(self, result)
+        start(me, result)
         writeValue(@dataof(value), @kindof(value))
-        end(self)
+        end(me)
     }
 }
 

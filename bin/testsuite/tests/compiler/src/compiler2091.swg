@@ -4,7 +4,7 @@ struct(T) AA
 
 impl AA
 {
-    func toto(using self)->{a: T}
+    func toto(using me)->{a: T}
     {
         alias RR = {a: T}
         return RR{50}

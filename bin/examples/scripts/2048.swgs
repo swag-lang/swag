@@ -174,11 +174,11 @@ func animate(wnd: *Wnd)
     }
 }
 
-func cellAt(x, y: s32, me: *Cell = null)->#null *Cell
+func cellAt(x, y: s32, self: *Cell = null)->#null *Cell
 {
     foreach &c in g_Cells
     {
-        if c == me:
+        if c == self:
             continue
         if c.x == x and c.y == y:
             return c

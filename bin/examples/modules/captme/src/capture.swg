@@ -196,7 +196,7 @@ impl Capture
         var buf:     ConcatBuffer
         var encoder: Encoder'Write.TagBin
 
-        encoder.writeAll(&buf, dref self)
+        encoder.writeAll(&buf, dref me)
         File.writeAllBytes(file, buf)
     }
 
@@ -313,7 +313,7 @@ impl Capture
 
         foreach &itf, idx in res
         {
-            itf.setup(self)
+            itf.setup(me)
             var bound = itf.boundRect()
             if idx == 0:
                 boundRect = bound
@@ -1218,7 +1218,7 @@ impl Capture
                 let mode = editView.main.getEditMode()
                 let itf  = editView.main.newFormFromModel(mode, clear: true)
                 if itf:
-                    itf.setup(self)
+                    itf.setup(me)
                 let base = cast(*BaseForm) @dataof(itf)
                 if base and editView.main.editMode == .PixSel:
                     base.subKind = .PixSel
@@ -1384,7 +1384,7 @@ impl Capture
 
     mtd pushUndo(u: *Undo)
     {
-        u.capture = self
+        u.capture = me
 
         // Remove no more relevant undos
         let countUndo = nextUndo

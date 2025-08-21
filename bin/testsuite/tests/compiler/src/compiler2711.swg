@@ -6,7 +6,7 @@ struct AA
 impl AA
 {
     #[Swag.Inline]
-    func opCast(using self)->s64 => 666
+    func opCast(using me)->s64 => 666
 }
 
 //#[Swag.PrintBc]

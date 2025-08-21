@@ -10,7 +10,7 @@ struct S
 impl S
 {
     #[Swag.Macro]
-    func opVisit(using self, stmt: #code void)
+    func opVisit(using me, stmt: #code void)
     {
         for var x = down; x <= up; x += 1
         {

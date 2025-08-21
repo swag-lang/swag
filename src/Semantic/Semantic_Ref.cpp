@@ -417,12 +417,12 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
     // Slicing of a struct with a special function
     else if (typeVar->isStruct())
     {
-        // Flatten all operator parameters: self, then all indexes
+        // Flatten all operator parameters: me, then all indexes
         node->structFlatParams.clear();
         node->structFlatParams.push_back(node->lowerBound);
         node->structFlatParams.push_back(node->upperBound);
 
-        // 'self' in first position
+        // 'me' in first position
         node->structFlatParams.push_front(node->array);
 
         // Resolve call
@@ -776,7 +776,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
             // Only the top level ArrayPointerIndex node will deal with the call
             if (arrayNode->parent->isNot(AstNodeKind::ArrayPointerIndex))
             {
-                // Flatten all indexes. self and value will be set before the call later
+                // Flatten all indexes. me and value will be set before the call later
                 // Can be already done, so do not overwrite
                 // @StructFlatParamsDone
                 if (arrayNode->structFlatParams.empty())
@@ -1066,7 +1066,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
                 break;
             }
 
-            // Flatten all operator parameters: self, then all indexes
+            // Flatten all operator parameters: me, then all indexes
             // @StructFlatParamsDone
             arrayNode->structFlatParams.clear();
             arrayNode->structFlatParams.push_back(arrayNode->access);
@@ -1081,7 +1081,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
                 child = arrayChild->array;
             }
 
-            // 'self' in first position
+            // 'me' in first position
             arrayNode->structFlatParams.push_front(arrayNode->array);
 
             // Resolve call

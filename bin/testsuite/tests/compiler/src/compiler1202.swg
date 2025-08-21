@@ -4,5 +4,5 @@ struct A
 
 impl A
 {
-    func opEquals(self, v: u32) => true
+    func opEquals(me, v: u32) => true
 }

@@ -8,7 +8,7 @@ struct Color
 
 impl Color
 {
-    func toto(using self, b: u32)
+    func toto(using me, b: u32)
     {
         a = b
     }

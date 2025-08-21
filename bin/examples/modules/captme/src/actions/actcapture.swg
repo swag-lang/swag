@@ -183,6 +183,6 @@ impl MainWnd
 
     mtd captureScreen(mode: CaptureMode)
     {
-        catch screenShot(self, mode)
+        catch screenShot(me, mode)
     }
 }

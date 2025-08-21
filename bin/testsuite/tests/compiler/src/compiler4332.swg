@@ -5,6 +5,6 @@ impl A
 {
     func toto()
     {
-        var x: func(self: *A)
+        var x: func(me: *A)
     }
 }

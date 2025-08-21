@@ -10,7 +10,7 @@ impl A
     func(T) titi(x, y: T) => 1'u32
 
     #[Swag.Macro]
-    func(ptr: bool) toto(using self, stmt: #code void)
+    func(ptr: bool) toto(using me, stmt: #code void)
     {
         #assert(ptr == true)
         for idx in titi's32(1, 1)
@@ -20,8 +20,8 @@ impl A
             {
                 #macro
                 {
-                    var #alias0 = cast(bool) (#up self.buffer[#up idx] & #up shift)
-                    #up self.myTruc = #up idx + 1
+                    var #alias0 = cast(bool) (#up me.buffer[#up idx] & #up shift)
+                    #up me.myTruc = #up idx + 1
                     #inject(#up stmt)
                 }
             }

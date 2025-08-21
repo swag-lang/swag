@@ -9,7 +9,7 @@ func toto(x: string)
 {
     G += 1
 
-    #[Match("self|where", false)]
+    #[Match("me|where", false)]
     toto(x)
 }
 

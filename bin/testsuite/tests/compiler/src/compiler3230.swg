@@ -5,7 +5,7 @@ struct CC { using p: BB; }
 
 impl CC
 {
-    func toto(using self)
+    func toto(using me)
     {
         p.p.z = 0
     }

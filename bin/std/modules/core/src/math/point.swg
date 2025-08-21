@@ -171,10 +171,10 @@ impl Point
     // Offset this point by separate x and y values.
     // Adds the specified 'x' and 'y' offsets to the corresponding coordinates.
     #[Swag.Overload]
-    func offset(self, x, y: f32)
+    func offset(me, x, y: f32)
     {
-        self.x += x
-        self.y += y
+        me.x += x
+        me.y += y
     }
 
     // Round both coordinates to the nearest integer values.

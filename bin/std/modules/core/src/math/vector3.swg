@@ -148,9 +148,9 @@ impl Vector3
     #[Swag.Inline]
     mtd set(x, y, z: f32)
     {
-        self.x = #self.x
-        self.y = #self.y
-        self.z = #self.z
+        me.x = #me.x
+        me.y = #me.y
+        me.z = #me.z
     }
 
     // Returns the length (magnitude) of the vector.
@@ -417,7 +417,7 @@ impl Vector3
             return toNormalized() * minLength
         elif len > maxLength:
             return toNormalized() * maxLength
-        return dref self
+        return dref me
     }
 
     // Returns the absolute value of each component.
@@ -451,7 +451,7 @@ impl Vector3
     // The 'normal' should be a unit vector pointing away from the surface.
     mtd const toReflect(normal: Vector3)->Vector3
     {
-        return dref self - (normal * (2 * dot(normal)))
+        return dref me - (normal * (2 * dot(normal)))
     }
 
     // Returns the component-wise sign of the vector (-1, 0, or 1 for each component).
@@ -479,23 +479,23 @@ impl Vector3
     // If the distance to 'target' is less than 'maxDistance', moves directly to target.
     mtd moveTowards(target: Vector3, maxDistance: f32)
     {
-        let dir  = target - dref self
+        let dir  = target - dref me
         let dist = dir.length()
         if dist <= maxDistance:
-            dref self = target
+            dref me = target
         else:
-            dref self += dir * (maxDistance / dist)
+            dref me += dir * (maxDistance / dist)
     }
 
     // Returns a vector moved towards 'target' by a maximum distance of 'maxDistance'.
     // If the distance to 'target' is less than 'maxDistance', returns the target directly.
     mtd const toMovedTowards(target: Vector3, maxDistance: f32)->Vector3
     {
-        let dir  = target - dref self
+        let dir  = target - dref me
         let dist = dir.length()
         if dist <= maxDistance:
             return target
-        return dref self + (dir * (maxDistance / dist))
+        return dref me + (dir * (maxDistance / dist))
     }
 
     // Perform smooth damping interpolation towards 'target'.

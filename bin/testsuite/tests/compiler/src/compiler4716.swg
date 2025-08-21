@@ -5,10 +5,10 @@ struct A
 
 struct AI
 {
-	call: func(me: *A, x: s32 = 0)
+	call: func(me1: *A, x: s32 = 0)
 }
 
-func myCall(me: *A, x: s32)
+func myCall(me1: *A, x: s32)
 {
 }
 
@@ -16,7 +16,7 @@ func myCall(me: *A, x: s32)
 {
 	var a: A
 	var ai: AI
-	
+
 	a.tbl = &ai
 	a.tbl.call = &myCall
 	a.tbl.call(&a)

@@ -8,10 +8,10 @@ struct Point
 
 impl Point
 {
-	func opPostMove(self)
+	func opPostMove(me)
 	{
-		self.x = 0
-		self.y = 0
+		me.x = 0
+		me.y = 0
 	}
 }
 

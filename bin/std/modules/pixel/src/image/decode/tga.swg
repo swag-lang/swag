@@ -106,12 +106,12 @@ impl Decoder
 
 public impl IImageDecoder for Decoder
 {
-    func impl canDecode(using self, fileName: string)->bool
+    func impl canDecode(using me, fileName: string)->bool
     {
         return Path.getExtensionLowerCase(fileName) == ".tga"
     }
 
-    func impl decode(using self, buffer: const [..] u8, options: DecodeOptions)->Image throw
+    func impl decode(using me, buffer: const [..] u8, options: DecodeOptions)->Image throw
     {
         var dataof  = @dataof(buffer)
         let countof = @countof(buffer)

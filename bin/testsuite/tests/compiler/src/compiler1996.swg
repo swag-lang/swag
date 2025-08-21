@@ -1,4 +1,4 @@
 interface ConvertFormatInt
 {
-    func toto(self, a: const *u32);
+    func toto(me, a: const *u32);
 }

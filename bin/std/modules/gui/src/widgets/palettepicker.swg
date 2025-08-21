@@ -83,7 +83,7 @@ impl IWnd for PalettePicker
             if evt.button == .Left and hotIdx != Swag.S32.Max
             {
                 selectedColor = pal[hotIdx]
-                sigChanged.call(self)
+                sigChanged.call(me)
                 evt.accepted = true
             }
 

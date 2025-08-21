@@ -76,8 +76,8 @@ impl IWnd for IconButton
         if !popup:
             return
 
-        getApp().unregisterHookEvents(self)
-        sigHidePopup.call(self)
+        getApp().unregisterHookEvents(me)
+        sigHidePopup.call(me)
         popup.destroy()
         popup     = null
         isChecked = false
@@ -91,7 +91,7 @@ impl IWnd for IconButton
 
         if let ptr = evt as MouseEvent where ptr.kind == .MousePressed
         {
-            if ptr.target == self or ptr.target == popup:
+            if ptr.target == me or ptr.target == popup:
                 return
             if ptr.target and popup.isParentOf(ptr.target):
                 return
@@ -180,7 +180,7 @@ impl IWnd for IconButton
 
         // Background
         var clientRect = getClientRect()
-        aniBk.apply(self, colorBk)
+        aniBk.apply(me, colorBk)
         theme.drawSubRect(bc.painter, clientRect, subRectBk, aniBk.cur())
 
         if isChecked and checkedForm != .None
@@ -415,7 +415,7 @@ impl IWnd for IconButton
         // Icon
         if sigPaintIcon
         {
-            sigPaintIcon(self, bc, pos)
+            sigPaintIcon(me, bc, pos)
         }
         elif name.isEmpty() or iconBtnFlags.has(.HideName)
         {
@@ -453,7 +453,7 @@ impl IWnd for IconButton
             {
                 isChecked = !isChecked
                 postCommandEvent(id)
-                sigCheckChanged.call(self)
+                sigCheckChanged.call(me)
             }
             elif iconBtnFlags.has(.Checkable)
             {
@@ -461,7 +461,7 @@ impl IWnd for IconButton
                 {
                     isChecked = true
                     postCommandEvent(id)
-                    sigCheckChanged.call(self)
+                    sigCheckChanged.call(me)
                 }
             }
             else
@@ -474,9 +474,9 @@ impl IWnd for IconButton
             {
                 if !popup
                 {
-                    sigShowPopup.call(self)
+                    sigShowPopup.call(me)
                     if popup:
-                        getApp().registerHookEvents(self)
+                        getApp().registerHookEvents(me)
                 }
             }
         }
@@ -517,7 +517,7 @@ impl IconButton
     // Set the button form
     mtd setForm(form: IconButtonForm)
     {
-        self.form = #self.form
+        me.form = #me.form
         invalidate()
     }
 
@@ -533,7 +533,7 @@ impl IconButton
 
         with let frame = Wnd.create'FrameWnd(topView, {pt.x, pt.y, w, h})
         {
-            .owner = self
+            .owner = me
             .setFrameForm(.Round)
             .setFrameFlags(.SmallShadow)
             .style.addStyleSheetColors("frameWnd_Border $frameWnd_PopupBorder")

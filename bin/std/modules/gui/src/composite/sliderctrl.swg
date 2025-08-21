@@ -46,7 +46,7 @@ impl SliderCtrl
 
         with let ctrl = Wnd.create'SliderCtrl(parent, pos, id)
         {
-            .label                   = Label.create(ctrl, #self.name, {})
+            .label                   = Label.create(ctrl, #me.name, {})
             .label.vertAlignmentText = .Center
             .label.horzAlignmentText = .Right
 

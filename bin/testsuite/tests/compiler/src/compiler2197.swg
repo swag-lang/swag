@@ -6,7 +6,7 @@ struct CStr
 
 impl CStr
 {
-    func opDrop(using self)
+    func opDrop(using me)
     {
         //@print("XXXXXdropXXXXX\n")
         //@assert(buffer != null)

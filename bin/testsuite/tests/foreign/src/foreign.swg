@@ -82,7 +82,7 @@ public struct tcf_Point
 
 public impl tcf_Point
 {
-    func set(using self)
+    func set(using me)
     {
         x = 444
         y = 555
@@ -185,12 +185,12 @@ public namespace tcf
 
     public interface ITcf
     {
-        func call(self)->u32;
+        func call(me)->u32;
     }
 
     public impl ITcf for AA
     {
-        func impl call(self)->u32
+        func impl call(me)->u32
         {
             return 666
         }

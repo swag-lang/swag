@@ -156,7 +156,7 @@ impl GridLayoutCtrl
     // Window can cover multiple columns and rows.
     mtd setColRowChild(child: *Wnd, col, row: s32, spanH, spanV: s32 = 1)
     {
-        Debug.assert(child.parent == self)
+        Debug.assert(child.parent == me)
         Debug.assert(col + spanH <= numColumns and row + spanV <= numRows)
         Debug.assert(spanH and spanV)
 

@@ -9,35 +9,35 @@ var GG1: ST
 
 impl ST
 {
-    func opEquals(using const self, other: ST)->bool
+    func opEquals(using const me, other: ST)->bool
     {
-        return self.x == other.x
+        return me.x == other.x
     }
 
-    func opCmp(using const self, other: ST)->s32
+    func opCmp(using const me, other: ST)->s32
     {
-        return self.x - other.x
+        return me.x - other.x
     }
 
-    func(op: string) opBinary(using const self, other: ST)->ST
+    func(op: string) opBinary(using const me, other: ST)->ST
     {
         #if op == "+"
         {
             /*var res: ST
-            res.x = self.x + other.x
+            res.x = me.x + other.x
             return res*/
-            return ST{self.x + other.x}
+            return ST{me.x + other.x}
         }
         #else
             return 0
     }
 
-    func(op: string) opUnary(using const self)->ST
+    func(op: string) opUnary(using const me)->ST
     {
         #if op == "-"
         {
             var res: ST
-            res.x = -self.x
+            res.x = -me.x
             return res
         }
         #else

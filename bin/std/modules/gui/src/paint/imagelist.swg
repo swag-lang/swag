@@ -20,9 +20,9 @@ impl ImageList
     // Initialize image list
     mtd set(texture: Texture, fsx, fsy: s32 = 0, cpt: s32 = 0)
     {
-        self.texture = #self.texture
-        frameSizeX   = fsx orelse #self.texture.width
-        frameSizeY   = fsy orelse #self.texture.height
-        totalFrames  = cpt orelse (self.texture.width / frameSizeX) * (self.texture.height / frameSizeY)
+        me.texture = #me.texture
+        frameSizeX   = fsx orelse #me.texture.width
+        frameSizeY   = fsy orelse #me.texture.height
+        totalFrames  = cpt orelse (me.texture.width / frameSizeX) * (me.texture.height / frameSizeY)
     }
 }

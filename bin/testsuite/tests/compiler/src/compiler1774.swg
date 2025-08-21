@@ -1,6 +1,6 @@
 interface A
 {
-    func x(self);
+    func x(me);
 }
 
 struct X
@@ -10,7 +10,7 @@ struct X
 
 impl A for X
 {
-    func impl x(using self)
+    func impl x(using me)
     {
 
     }

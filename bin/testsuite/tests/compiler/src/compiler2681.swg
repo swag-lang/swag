@@ -5,13 +5,13 @@ struct AA
 
 impl AA
 {
-    func titi(using self, ptr: *AA)
+    func titi(using me, ptr: *AA)
     {
         @assert(ptr.x == 10)
         ptr.x = 666
     }
 
-    func toto(using self)->AA
+    func toto(using me)->AA
     {
         var result: retval = create()
         titi(&result)

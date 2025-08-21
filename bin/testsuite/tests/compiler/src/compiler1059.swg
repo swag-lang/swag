@@ -18,7 +18,7 @@ impl Array
 		@getcontext().allocator.req(&request)
 	}
 
-	func validateCount(using self, newCount: u32)
+	func validateCount(using me, newCount: u32)
 	{
 		if newCount < size:
 			return
@@ -44,9 +44,9 @@ impl Array
 		buffer = cast() newBuffer
 	}
 
-	func add(using self, value: T)
+	func add(using me, value: T)
 	{
-		validateCount(self, count + 1)
+		validateCount(me, count + 1)
 		buffer[count] = value
 		count += 1
 	}

@@ -1,6 +1,6 @@
 interface IPrintable
 {
-	func print(self);
+	func print(me);
 }
 
 struct TITI
@@ -13,7 +13,7 @@ var G = 0
 impl IPrintable for TITI
 {
     //#[Swag.PrintBc]
-    func impl print(using self)
+    func impl print(using me)
     {
         @assert(val == 666)
         G = 555

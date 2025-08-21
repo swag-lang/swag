@@ -117,7 +117,7 @@ impl StaticArray
     // This is a macro that accepts a code block to execute for each element.
     // Visiting by pointer and in reverse order is supported.
     #[Macro]
-    func(ptr: bool, back: bool) opVisit(using const self, stmt: #code void)
+    func(ptr: bool, back: bool) opVisit(using const me, stmt: #code void)
     {
         if !count:
             return

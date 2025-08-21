@@ -48,7 +48,7 @@ impl Image
     }
 
     #[Swag.Macro]
-    func(ptr: bool, back: bool) opVisit(using self, stmt: #code void)
+    func(ptr: bool, back: bool) opVisit(using me, stmt: #code void)
     {
         var scan = pixels.buffer
         for width * height
@@ -69,15 +69,15 @@ impl Image
     // This gives the opportunity to set the pixels with an external buffer
     mtd init(width, height: s32, pf: PixelFormat)
     {
-        self.pixels.clear()
-        self.width  = #self.width
-        self.height = #self.height
-        self.pf     = #self.pf
+        me.pixels.clear()
+        me.width  = #me.width
+        me.height = #me.height
+        me.pf     = #me.pf
 
-        bpp    = self.pf.bpp()
+        bpp    = me.pf.bpp()
         bpp8   = cast(u8) (bpp >> 3)
-        width8 = self.width * bpp8
-        size   = cast(u64) (self.width * self.height * bpp8)
+        width8 = me.width * bpp8
+        size   = cast(u64) (me.width * me.height * bpp8)
     }
 
     // Allocate pixels
@@ -145,7 +145,7 @@ impl Image
     {
         Debug.assert(stride > 0)
 
-        var p = {self, userData}
+        var p = {me, userData}
         Jobs.parallelVisit(|buffer, data| pixels.toSlice(), cast(u32) (bpp8 * stride), &p)
         {
             if !data:
@@ -153,7 +153,7 @@ impl Image
             let p = cast(*#decltype(p)) data
             #macro
             {
-                let image    = #up p.self
+                let image    = #up p.me
                 let userData = #up p.userData
                 let pix      = #up buffer
 
@@ -169,8 +169,8 @@ impl Image
     // Release the content of the image
     mtd release()
     {
-        @drop(self, 1)
-        @init(self, 1)
+        @drop(me, 1)
+        @init(me, 1)
     }
 
     // Clear the content of the image

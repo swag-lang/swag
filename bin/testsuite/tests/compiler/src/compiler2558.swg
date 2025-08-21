@@ -5,7 +5,7 @@ struct AA
 
 impl AA
 {
-    func opCast(self)->s32
+    func opCast(me)->s32
     {
         return 0
     }

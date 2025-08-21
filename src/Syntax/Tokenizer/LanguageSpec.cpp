@@ -31,7 +31,7 @@ void LanguageSpec::setupNames()
 
     name_swag = "swag";
     name_Swag = "Swag";
-    name_self = "self";
+    name_me   = "me";
 
     name_opInitGenerated     = "opInitGenerated";
     name_opDropGenerated     = "opDropGenerated";
@@ -199,7 +199,7 @@ void LanguageSpec::setupNames()
 
     name_sharp_alias = "#alias";
     name_sharp_uniq  = "#uniq";
-    name_sharp_self  = "#self";
+    name_sharp_self  = "#me";
 
     name_at_drop            = "@drop";
     name_at_postCopy        = "@postCopy";
@@ -408,7 +408,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("#module", TokenId::CompilerModule);
     keywords.add("#file", TokenId::CompilerFile);
     keywords.add("#line", TokenId::CompilerLine);
-    keywords.add("#self", TokenId::CompilerSelf);
+    keywords.add("#me", TokenId::CompilerSelf);
     keywords.add("#curlocation", TokenId::CompilerCurLocation);
     keywords.add("#callerlocation", TokenId::CompilerCallerLocation);
     keywords.add("#callerfunction", TokenId::CompilerCallerFunction);

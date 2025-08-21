@@ -5,7 +5,7 @@ struct AA
 
 impl AA
 {
-    func opDrop(using self)
+    func opDrop(using me)
     {
         //@print("drop\n")
     }

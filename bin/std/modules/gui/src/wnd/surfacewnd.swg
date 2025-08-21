@@ -94,7 +94,7 @@ impl IWnd for SurfaceWnd
         case MouseMove:
             if surface.isMaximized:
                 break
-            if getApp().mouseEnterWnd != self:
+            if getApp().mouseEnterWnd != me:
                 break
 
             if !movingSurface and surface.flags.has(.Sizeable)
@@ -309,7 +309,7 @@ impl SurfaceWnd
         {
             if !minimizeBtn
             {
-                with minimizeBtn = IconButton.create(self, theme.getIcon24(ThemeIcons24.WndMinimize), {0, 0, 0, 0})
+                with minimizeBtn = IconButton.create(me, theme.getIcon24(ThemeIcons24.WndMinimize), {0, 0, 0, 0})
                 {
                     .sigPressed += &onMinimize
                 }
@@ -325,7 +325,7 @@ impl SurfaceWnd
         {
             if !maximizeBtn
             {
-                with maximizeBtn = IconButton.create(self, theme.getIcon24(ThemeIcons24.WndMaximize), {0, 0, 0, 0})
+                with maximizeBtn = IconButton.create(me, theme.getIcon24(ThemeIcons24.WndMaximize), {0, 0, 0, 0})
                 {
                     .sigPressed += &onMaximize
                 }
@@ -341,7 +341,7 @@ impl SurfaceWnd
         {
             if !closeBtn
             {
-                with closeBtn = IconButton.create(self, theme.getIcon24(ThemeIcons24.WndClose), {0, 0, 0, 0})
+                with closeBtn = IconButton.create(me, theme.getIcon24(ThemeIcons24.WndClose), {0, 0, 0, 0})
                 {
                     .sigPressed += &onClose
                     .style.addStyleSheetColors(#nameof(ThemeColors.btnIcon_HotBk) ++ " $" ++ #nameof(ThemeColors.wnd_BtnCloseBk))
@@ -364,7 +364,7 @@ impl SurfaceWnd
         {
             view             = userView
             view.hookOnEvent = hook
-            view.setParent(self)
+            view.setParent(me)
         }
         else
         {

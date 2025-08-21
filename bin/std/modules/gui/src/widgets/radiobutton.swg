@@ -109,7 +109,7 @@ impl IWnd for RadioButton
         if processMouseEvent(evt) and !checked
         {
             checked = true
-            sigChanged.call(self)
+            sigChanged.call(me)
             postCommandEvent(id)
         }
     }
@@ -132,9 +132,9 @@ impl RadioButton
     // Set the checked state
     mtd setChecked(checked: bool)
     {
-        if self.checked == #self.checked:
+        if me.checked == #me.checked:
             return
-        self.checked = #self.checked
+        me.checked = #me.checked
         invalidate()
     }
 }

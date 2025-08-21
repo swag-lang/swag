@@ -7,7 +7,7 @@ impl Toto
 {
     #[Swag.Implicit]
     #[Swag.Inline]
-	func opCast(using self)->string
+	func opCast(using me)->string
 	{
         return "x + y"
 	}

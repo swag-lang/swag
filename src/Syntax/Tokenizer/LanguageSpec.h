@@ -60,7 +60,7 @@ struct LanguageSpec
 
     Utf8 name_swag;
     Utf8 name_Swag;
-    Utf8 name_self;
+    Utf8 name_me;
 
     Utf8 name_Complete;
     Utf8 name_AttrUsage;

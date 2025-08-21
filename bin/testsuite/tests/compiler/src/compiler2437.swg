@@ -5,12 +5,12 @@ struct A
 
 impl A
 {
-    func opEquals(using self, o: s32)->bool
+    func opEquals(using me, o: s32)->bool
     {
         return o == 666
     }
 
-    func opCmp(using self, o: s32)->s32
+    func opCmp(using me, o: s32)->s32
     {
         return v <=> o
     }

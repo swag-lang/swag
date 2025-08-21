@@ -133,7 +133,7 @@ impl QuickWnd
 
     mtd btnPopup(btn: #null *Button, pos: Math.Point)
     {
-        let menu = MenuCtrl.createPopup(self)
+        let menu = MenuCtrl.createPopup(me)
         menu.addItem("Remove Quick Style", "0", disabled: !btn)
         menu.addSeparator()
         menu.addItem(CmdIdResetQuickStyle)

@@ -6,12 +6,12 @@ struct TOTO
 
 interface Itf
 {
-    func print(self);
+    func print(me);
 }
 
 impl Itf for TOTO
 {
-    func impl print(self)
+    func impl print(me)
     {
     }
 }

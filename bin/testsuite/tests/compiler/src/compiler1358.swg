@@ -2,7 +2,7 @@
 
 interface TOTO
 {
-	func print(self, b: bool);
+	func print(me, b: bool);
 }
 
 struct TITI
@@ -13,7 +13,7 @@ struct TITI
 impl TOTO for TITI
 {
     //#[Swag.PrintBc]
-    func impl print(using self, b: bool)
+    func impl print(using me, b: bool)
     {
     }
 }

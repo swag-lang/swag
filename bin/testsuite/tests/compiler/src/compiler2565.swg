@@ -9,7 +9,7 @@ struct AA
 
 impl AA
 {
-    func opEquals(self, other: AA)->bool
+    func opEquals(me, other: AA)->bool
     {
         throw ErrTiti{}
         return true

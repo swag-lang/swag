@@ -3,7 +3,7 @@ struct A {}
 
 impl A
 {
-    func toto(self: *A)
+    func toto(me: *A)
     {
     }
 }

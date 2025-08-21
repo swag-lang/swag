@@ -57,8 +57,8 @@ impl RichEditLine
         var srcI = 0'u64
         for var i = insIndex; i < insIndex + @countof(runes); i += 1
         {
-            self.chars.insertAt(i, #self.runes[srcI])
-            self.styles.insertAt(i, #self.styles[srcI])
+            me.chars.insertAt(i, #me.runes[srcI])
+            me.styles.insertAt(i, #me.styles[srcI])
             srcI += 1
         }
     }

@@ -4,7 +4,7 @@ struct Pt { x, y: s32 }
 
 impl Hash.IHash32 for Pt
 {
-    func impl compute(const self)->u32 => 555
+    func impl compute(const me)->u32 => 555
 }
 
 #test

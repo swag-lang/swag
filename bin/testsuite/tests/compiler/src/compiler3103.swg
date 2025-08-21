@@ -1,6 +1,6 @@
 interface TOTO
 {
-	func print(self);
+	func print(me);
 }
 
 struct TITI
@@ -12,7 +12,7 @@ const COMPILE = false
 {
     impl TOTO for TITI
     {
-        func print(using self)
+        func print(using me)
         {
         }
     }

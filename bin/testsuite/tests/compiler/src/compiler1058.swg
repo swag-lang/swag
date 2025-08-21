@@ -9,13 +9,13 @@ struct(T) Array
 
 impl Array
 {
-	func validateCount(self, newCount: u32)
+	func validateCount(me, newCount: u32)
 	{
 	}
 
-	func add(using self, value: T)
+	func add(using me, value: T)
 	{
-		validateCount(self, self.count + 1)
+		validateCount(me, me.count + 1)
 	}
 }
 

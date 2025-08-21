@@ -71,7 +71,7 @@ public impl Image
         // Encode
         let itf     = @mkinterface(ptrEncoder, found.type, IImageEncoder)
         var result: ConcatBuffer
-        itf.encode(&result, dref self, options)
+        itf.encode(&result, dref me, options)
         File.writeAllBytes(fileName, result)
     }
 }

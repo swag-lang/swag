@@ -102,7 +102,7 @@ impl ListLine
     mtd isParentOf(other: *ListLine)->bool
     {
         var l = other.parent
-        while l and l != self:
+        while l and l != me:
             l = l.parent
         return l ? true : false
     }
@@ -865,7 +865,7 @@ impl ListCtrl
             return
         selModel.unselectAll()
         invalidate()
-        sigSelChanged.call(self)
+        sigSelChanged.call(me)
     }
 
     // Returns
@@ -897,7 +897,7 @@ impl ListCtrl
         selModel.select(idxLine, select)
         invalidate()
 
-        sigSelChanged.call(self)
+        sigSelChanged.call(me)
     }
 
     // Select a range of lines
@@ -918,7 +918,7 @@ impl ListCtrl
 
         invalidate()
 
-        sigSelChanged.call(self)
+        sigSelChanged.call(me)
     }
 
     // Compute global layout, once all lines have been added
@@ -986,7 +986,7 @@ impl ListCtrl
     mtd createLine(name: string, icon: Icon = {}, parentLine: *ListLine = null)->*ListLine
     {
         let line = createLine(parentLine)
-        line.setItem(0, #self.name, #self.icon)
+        line.setItem(0, #me.name, #me.icon)
         return line
     }
 
@@ -1005,7 +1005,7 @@ impl ListCtrl
     mtd addColumn(name: string, width: f32 = 100, icon: Icon = {})
     {
         Debug.assert(header != null)
-        header.addItem(#self.name, width, #self.icon)
+        header.addItem(#me.name, width, #me.icon)
     }
 
     // Set the column width
@@ -1221,7 +1221,7 @@ impl ListCtrl
         if !line.canExpand() or line.expanded:
             return
         line.expanded = true
-        sigExpand.call(self, line)
+        sigExpand.call(me, line)
 
         var tmp: Array'(*ListLine)
         tmp.add(line)
@@ -1266,7 +1266,7 @@ impl ListCtrl
         if !line.canExpand() or !line.expanded:
             return
         line.expanded = false
-        sigCollapse.call(self, line)
+        sigCollapse.call(me, line)
 
         var tmp: Array'(*ListLine)
         tmp.add(line)

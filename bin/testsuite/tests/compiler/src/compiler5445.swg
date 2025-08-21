@@ -28,7 +28,7 @@ func toto(other: Vector2)
 //#[Swag.PrintBc]
 #test
 {
-    var me: Vector2//{1}
+    var me1: Vector2//{1}
     //@breakpoint()
     toto({1})
 }

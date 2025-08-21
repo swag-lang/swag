@@ -5,8 +5,8 @@ struct Argb
 
 impl Argb
 {
-    func set(self, a: u8)
+    func set(me, a: u8)
     {
-        self.a = a
+        me.a = a
     }
 }

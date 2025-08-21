@@ -53,7 +53,7 @@ impl EmbInfoCtrl
         {
             .wndFlags.add(.NoScroll)
             .dockStyle = flags.has(.Top) ? .Top : .Bottom
-            .label     = Label.create(ctrl, #self.name, {})
+            .label     = Label.create(ctrl, #me.name, {})
             .ctrlFlags = flags
         }
 

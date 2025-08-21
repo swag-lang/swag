@@ -4,7 +4,7 @@ struct(T) Array
 
 impl Array
 {
-	func add(using self, value: T)
+	func add(using me, value: T)
 	{
 	}
 }

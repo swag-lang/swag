@@ -71,7 +71,7 @@ internal impl Movie
             }
         }
 
-        sigFrameChanged.call(self)
+        sigFrameChanged.call(me)
     }
 }
 
@@ -161,7 +161,7 @@ impl Movie
             break
         }
 
-        sigFrameChanged.call(self)
+        sigFrameChanged.call(me)
     }
 
     // Set/Reset pause state

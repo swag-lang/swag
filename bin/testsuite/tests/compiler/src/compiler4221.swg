@@ -14,7 +14,7 @@ impl I for A
 
     mtd impl call()->s32
     {
-        @assert(self == &x)
+        @assert(me == &x)
         return 666
     }
 }

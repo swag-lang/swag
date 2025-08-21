@@ -1,6 +1,6 @@
 interface I
 {
-    func toto(self);
+    func toto(me);
 }
 
 struct(T) A {}
@@ -15,7 +15,7 @@ impl I for A
 
     mtd impl toto()
     {
-        titi's32(self)
+        titi's32(me)
     }
 }
 

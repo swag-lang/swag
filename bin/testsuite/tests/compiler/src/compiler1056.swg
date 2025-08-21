@@ -7,7 +7,7 @@ struct(T) Array
 
 impl Array
 {
-	func add(using self)
+	func add(using me)
 	{
 		count += 1
 	}

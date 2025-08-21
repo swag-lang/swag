@@ -24,7 +24,7 @@ bool Parser::checkIsValidVarName(AstNode* node, VarDeclFlags varDeclFlags) const
             return error(identifier->callParameters, formErr(Err0189, identifier->token.cstr(), "a variable name"));
     }
 
-    if (node->token.text == g_LangSpec->name_self)
+    if (node->token.text == g_LangSpec->name_me)
         return error(node->token, toErr(Err0269));
 
     // Special field name starts with 'item' followed by a number

@@ -62,7 +62,7 @@ impl IForm for FormLine
 
         var xbu = 0
         var ybu = 0
-        capture.snap(&xbu, &ybu, true, true, 1, cast(IForm) self)
+        capture.snap(&xbu, &ybu, true, true, 1, cast(IForm) me)
         xb += xbu
         yb += ybu
 
@@ -79,8 +79,8 @@ impl IForm for FormLine
 
     mtd impl scaleBaseForm(scale: f32)
     {
-        xa, xb *= #self.scale
-        ya, yb *= #self.scale
+        xa, xb *= #me.scale
+        ya, yb *= #me.scale
     }
 
     mtd impl setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
@@ -166,7 +166,7 @@ impl IForm for FormLine
 
     mtd impl hitTest(pt: Math.Point, z: f32)->bool
     {
-        return BaseForm.drawHitTest(self, pt, z)
+        return BaseForm.drawHitTest(me, pt, z)
     }
 
     mtd impl paint(painter: *Painter, cxt: FormPaintContext)
@@ -228,7 +228,7 @@ impl IForm for FormLine
 
         gizmo.sigChanged = mtd||(diff, pt, first)
         {
-            GizmoPoints.apply(self, diff, pt, first)
+            GizmoPoints.apply(me, diff, pt, first)
         }
     }
 }

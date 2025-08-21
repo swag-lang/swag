@@ -6,7 +6,7 @@ struct A
 impl A
 {
     #[Swag.Macro]
-    func toto(using self)
+    func toto(using me)
     {
         if !myTruc:
             return

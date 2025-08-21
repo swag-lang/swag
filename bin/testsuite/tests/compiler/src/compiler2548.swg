@@ -5,27 +5,27 @@ struct AA
 
 impl AA
 {
-    func opDrop(using self)
+    func opDrop(using me)
     {
         @free(x)
         /*@print("x ")
         @print(cast(s64) cast(u64) x)
         @print(" drop ")
-        @print(cast(s64) cast(u64) self)
+        @print(cast(s64) cast(u64) me)
         @print("\n")*/
     }
 
-    func opPostCopy(using self)
+    func opPostCopy(using me)
     {
         x = @alloc(10)
         /*@print("x ")
         @print(cast(s64) cast(u64) x)
         @print(" copy ")
-        @print(cast(s64) cast(u64) self)
+        @print(cast(s64) cast(u64) me)
         @print("\n")*/
     }
 
-    /*func opPostMove(using self)
+    /*func opPostMove(using me)
     {
         @print("move\n")
     }*/

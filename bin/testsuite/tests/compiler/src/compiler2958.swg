@@ -8,7 +8,7 @@ struct V
 
 impl V
 {
-    func opDrop(self){}
+    func opDrop(me){}
 }
 
 func toto()->V

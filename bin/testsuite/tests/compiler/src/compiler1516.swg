@@ -7,7 +7,7 @@ var G : s32 = 0
 
 impl A
 {
-    func opDrop(using self)
+    func opDrop(using me)
     {
         G += 1
     }

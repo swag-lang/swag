@@ -114,7 +114,7 @@ internal impl ColorPickerCtrl
         editH.setText(t)
 
         staticRes.invalidate()
-        sigChanged.call(self)
+        sigChanged.call(me)
     }
 
     mtd updateAll()
@@ -402,8 +402,8 @@ impl ColorPickerCtrl
     // Change the display mode
     mtd setMode(mode: ColorPickerViewMode)
     {
-        self.mode = #self.mode
-        switch self.mode
+        me.mode = #me.mode
+        switch me.mode
         {
         case SaturationLightness:
             pickBox.setMode(.SaturationLightness)
@@ -436,15 +436,15 @@ impl ColorPickerCtrl
     // Set the selected color but does not change alpha
     mtd setColorKeepAlpha(color: Color)
     {
-        var col = #self.color
-        col.a = self.color.a
+        var col = #me.color
+        col.a = me.color.a
         setColor(col)
     }
 
     // Set the selected color
     mtd setColor(color: Color)
     {
-        var col = #self.color
+        var col = #me.color
         if !pickerFlags.has(.Alpha):
             col.a = 255
 
@@ -453,13 +453,13 @@ impl ColorPickerCtrl
             oldColor     = col
             oldColorDone = true
         }
-        elif self.color == col
+        elif me.color == col
         {
             return
         }
 
-        self.color = col
-        sigChanged.call(self)
+        me.color = col
+        sigChanged.call(me)
 
         updateAll()
     }

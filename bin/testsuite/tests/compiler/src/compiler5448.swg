@@ -2,7 +2,7 @@ var G = 0
 
 interface Toto
 {
-    func print(self)
+    func print(me)
     {
         G = 1
     }

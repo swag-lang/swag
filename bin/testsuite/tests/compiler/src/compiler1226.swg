@@ -11,7 +11,7 @@ func normalize()->Vector2
 
 impl Vector2
 {
-	func toto(self)
+	func toto(me)
 	{
 	}
 }

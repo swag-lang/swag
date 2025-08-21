@@ -2,12 +2,12 @@ using Core
 
 interface IGen
 {
-    func fn(self);
+    func fn(me);
 }
 
 impl IGen for Core.String
 {
-    func impl fn(self) {}
+    func impl fn(me) {}
 }
 
 #assert(Reflection.hasInterface(#typeof(Core.String), IGen))

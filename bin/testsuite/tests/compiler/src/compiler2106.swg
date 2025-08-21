@@ -13,12 +13,12 @@ typeset EventLogger
 
 impl typeset EventLogger
 {
-    func log(self)
+    func log(me)
     {
-        //@print(@kindof(self).name)
+        //@print(@kindof(me).name)
         //@print("\n")
 
-        switch @kindof(self)
+        switch @kindof(me)
         {
         case login: G += 1
         case viewMedia: G += 2

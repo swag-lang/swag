@@ -9,12 +9,12 @@ struct iter
 
 impl iter
 {
-	func next(self)->s32
+	func next(me)->s32
 	{
-		if(self.value != self.end)
+		if(me.value != me.end)
 		{
-			self.value += 1
-			return 0//self.arr[self.value - 1]
+			me.value += 1
+			return 0//me.arr[me.value - 1]
 		}
 
 		return 0
@@ -27,7 +27,7 @@ struct Array
 
 impl Array
 {
-	func getIter(self)->iter
+	func getIter(me)->iter
 	{
 		var ret: iter
 		ret.end = 10

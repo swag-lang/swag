@@ -4,5 +4,5 @@ struct A {}
 
 impl A
 {
-    mtd toto(self) {}
+    mtd toto(me) {}
 }

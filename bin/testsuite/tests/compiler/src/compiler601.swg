@@ -9,12 +9,12 @@ struct Point
 
 impl Point
 {
-	func(op: string) opAssign(self, pt: Point)
+	func(op: string) opAssign(me, pt: Point)
 	{
 		if op == "="
 		{
-			self.x = pt.x
-			self.y = pt.y
+			me.x = pt.x
+			me.y = pt.y
 		}
 		else
 		{

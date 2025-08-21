@@ -643,7 +643,7 @@ impl String
     #[Overload]
     mtd toUpper(set = CharacterSet.Latin1)->String
     {
-        var result: retval = dref self
+        var result: retval = dref me
         result.makeUpper(set)
         return result
     }
@@ -661,7 +661,7 @@ impl String
     #[Overload]
     mtd toLower(set = CharacterSet.Latin1)->String
     {
-        var result: retval = dref self
+        var result: retval = dref me
         result.makeLower(set)
         return result
     }
@@ -694,7 +694,7 @@ impl String
 
 impl Hash.IHash32 for String
 {
-    func impl compute(using const self)->u32
+    func impl compute(using const me)->u32
     {
         return Hash.Crc32.compute(@mkslice(buffer, length))
     }

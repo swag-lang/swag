@@ -5,8 +5,8 @@ struct AA
 
 impl AA
 {
-    func toto(using self, x: s32)
+    func toto(using me, x: s32)
     {
-        self.x = #self.x
+        me.x = #me.x
     }
 }

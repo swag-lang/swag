@@ -152,7 +152,7 @@ Compiler instructions are prefixed with `#` and are reserved for specific operat
 #module
 #file
 #line
-#self
+#me
 #curlocation
 #callerlocation
 #callerfunction

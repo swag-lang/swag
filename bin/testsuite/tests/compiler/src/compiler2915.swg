@@ -6,7 +6,7 @@ struct AA
 impl AA
 {
     var ppp = 0
-    func toto(using self)
+    func toto(using me)
     {
         ppp += 1
         for

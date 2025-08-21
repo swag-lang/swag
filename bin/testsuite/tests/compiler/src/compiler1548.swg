@@ -7,7 +7,7 @@ struct(T) X
 
 /*impl X
 {
-    func titi(using self)
+    func titi(using me)
     {
         buffer[0].toto()
     }
@@ -20,7 +20,7 @@ struct Y
 
 impl Y
 {
-    func toto(using self)
+    func toto(using me)
     {
 
     }

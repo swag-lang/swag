@@ -88,11 +88,11 @@ struct TT
 
 impl TT
 {
-	func opCmp(self, other: TT)->s32
+	func opCmp(me, other: TT)->s32
 	{
-		if self.x < other.x
+		if me.x < other.x
 			return -1
-		if self.x > other.x
+		if me.x > other.x
 			return 1
 		return 0
 	}

@@ -45,9 +45,9 @@ func day7B()
         let n = r1.grepAll(l)
         if n.count == 1:
             continue
-        let me = set.find(n[0])
+        let self = set.find(n[0])
         foreach v in n[1..]:
-            me.value.childs.add(v)
+            self.value.childs.add(v)
     }
 
     func sum(w: Pile)->u64

@@ -138,11 +138,11 @@ public impl TypeFace
 
     internal mtd transform(size, embolden: u32 = 0, forceBold, forceItalic = false) throw
     {
-        var emb = self.forceBold or #self.forceBold ? Math.max(1, size / forceBoldDiv) : 0
+        var emb = me.forceBold or #me.forceBold ? Math.max(1, size / forceBoldDiv) : 0
         emb += embolden
         if emb:
             FT_Outline_Embolden(&face.glyph.outline, cast(FT_Pos) emb * 64)
-        if self.forceItalic or #self.forceItalic:
+        if me.forceItalic or #me.forceItalic:
             FT_GlyphSlot_Oblique(face.glyph)
     }
 
@@ -151,7 +151,7 @@ public impl TypeFace
     {
         FT_Set_Pixel_Sizes(face, 0, size)
         FT_Load_Char(face, cast(FT_ULong) c, FT_LOAD_DEFAULT)
-        transform(size, 0, #self.forceBold, #self.forceItalic)
+        transform(size, 0, #me.forceBold, #me.forceItalic)
         FT_Render_Glyph(face.glyph, .FT_RENDER_MODE_NORMAL)
         return &face.glyph.bitmap
     }

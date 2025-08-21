@@ -97,17 +97,17 @@ impl Keyboard
     mtd getPressedModifiers()->KeyModifiers
     {
         var modifiers: Input.KeyModifiers = .Zero
-        if self.isKeyPressed(Input.Key.LShift):
+        if me.isKeyPressed(Input.Key.LShift):
             modifiers |= .Shift
-        if self.isKeyPressed(Input.Key.RShift):
+        if me.isKeyPressed(Input.Key.RShift):
             modifiers |= .Shift
-        if self.isKeyPressed(Input.Key.LControl):
+        if me.isKeyPressed(Input.Key.LControl):
             modifiers |= .Control
-        if self.isKeyPressed(Input.Key.RControl):
+        if me.isKeyPressed(Input.Key.RControl):
             modifiers |= .Control
-        if self.isKeyPressed(Input.Key.LMenu):
+        if me.isKeyPressed(Input.Key.LMenu):
             modifiers |= .Alt
-        if self.isKeyPressed(Input.Key.RMenu):
+        if me.isKeyPressed(Input.Key.RMenu):
             modifiers |= .Alt
         return modifiers
     }

@@ -9,9 +9,9 @@ struct toto
 
 impl toto
 {
-	func fff(self)
+	func fff(me)
 	{
-		//@print(self.x)
+		//@print(me.x)
 	}
 }
 

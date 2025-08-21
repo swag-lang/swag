@@ -15,7 +15,7 @@ impl I for A
     mtd impl call()
     {
         G += 1
-        @assert(self == &x)
+        @assert(me == &x)
     }
 }
 

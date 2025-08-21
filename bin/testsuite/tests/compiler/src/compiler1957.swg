@@ -5,7 +5,7 @@ struct A
 
 impl A
 {
-    func opPostCopy(self)
+    func opPostCopy(me)
     {
         @assert(false)
     }

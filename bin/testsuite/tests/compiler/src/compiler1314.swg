@@ -6,7 +6,7 @@ var DROP: u32
 
 impl A
 {
-    func opDrop(using self)
+    func opDrop(using me)
     {
         DROP += 1
         //@print("drop\n")

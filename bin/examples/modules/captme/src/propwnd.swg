@@ -65,7 +65,7 @@ impl PropWnd
         if !capture or !capture.selection.count
         {
             let form   = getSelectedBaseForm()
-            let field  = assume Reflection.getField(#self.type, #self.name)
+            let field  = assume Reflection.getField(#me.type, #me.name)
             var valU32 = val
             Reflection.setFieldValue(form, field, &valU32, true)
         }
@@ -78,8 +78,8 @@ impl PropWnd
             let undo = capture.newUndo(.SetTypedValue)
             undo.valU32 = val
             if !common:
-                undo.mdlType = #self.type
-            undo.valRef = Reflection.getField(#self.type, #self.name)
+                undo.mdlType = #me.type
+            undo.valRef = Reflection.getField(#me.type, #me.name)
             capture.pushUndo(undo)
         }
 
@@ -90,7 +90,7 @@ impl PropWnd
     #[Swag.Overload]
     mtd createSlider(name: string, minv, maxv: s64, val: f32)->*SliderCtrl
     {
-        with let ctrl = SliderCtrl.create(mainLayout, #self.name)
+        with let ctrl = SliderCtrl.create(mainLayout, #me.name)
         {
             .setMinMaxS64(minv, maxv)
             .dockStyle = .Top
@@ -175,7 +175,6 @@ impl PropWnd
             if curSel.kind == i:
                 btn0.isChecked = true
 
-            let me = self
             btn0.sigPaintIcon = func|me|(btn, bc, pos)
             {
                 bc.painter.setParams(.Antialiased)
@@ -222,7 +221,6 @@ impl PropWnd
             let btn0 = IconButton.create(frame.view, {})
             btn0.userData = cast(*void) cast(u64) i
             btn0.setForm(.RoundSquare)
-            let me = self
             btn0.sigPaintIcon = func|me|(btn, bc, pos)
             {
                 bc.painter.setParams(.Antialiased)
@@ -282,7 +280,6 @@ impl PropWnd
             btn0.setForm(.RoundSquare)
             btn0.isChecked = curSel.beginCap == i
 
-            let me = self
             btn0.sigPaintIcon = func|me|(btn, bc, pos)
             {
                 bc.painter.setParams(.Antialiased)
@@ -335,7 +332,6 @@ impl PropWnd
             btn0.setForm(.RoundSquare)
             btn0.isChecked = curSel.endCap == i
 
-            let me = self
             btn0.sigPaintIcon = func|me|(btn, bc, pos)
             {
                 bc.painter.setParams(.Antialiased)
@@ -391,7 +387,6 @@ impl PropWnd
             btn0.setForm(.RoundSquare)
             btn0.isChecked = curSel.dashStyle == i
 
-            let me = self
             btn0.sigPaintIcon = func|me|(btn, bc, pos)
             {
                 bc.painter.setParams(.Antialiased)
@@ -434,7 +429,6 @@ impl PropWnd
             btn.name = "Outline"
         }
 
-        let me = self
         btn.sigPaintIcon = func|me|(btn, bc, pos)
         {
             bc.painter.setParams(.Antialiased)
@@ -482,7 +476,6 @@ impl PropWnd
 
         let btn = createArrowButton(stack, BtnColorWidth, BtnColorHeight)
         btn.name = "Fill"
-        let me = self
         btn.sigPaintIcon = func|me|(btn, bc, pos)
         {
             bc.painter.setParams(.Antialiased)
@@ -533,7 +526,6 @@ impl PropWnd
 
         let btn = createArrowButton(stack, BtnColorWidth, BtnColorHeight)
         btn.name = "Shape"
-        let me = self
         btn.sigPaintIcon = func|me|(btn, bc, pos)
         {
             bc.painter.setParams(.Antialiased)
@@ -572,7 +564,6 @@ impl PropWnd
 
         let btn = createArrowButton(stack, BtnColorWidth, BtnColorHeight)
         btn.name = "Shape"
-        let me = self
         btn.sigPaintIcon = func|me|(btn, bc, pos)
         {
             bc.painter.setParams(.Antialiased)
@@ -611,7 +602,6 @@ impl PropWnd
 
         let btn = createArrowButton(stack, BtnStyleWidth, BtnStyleHeight)
         btn.name = "Start"
-        let me = self
         btn.sigPaintIcon = func|me|(btn, bc, pos)
         {
             bc.painter.setParams(.Antialiased)
@@ -641,7 +631,6 @@ impl PropWnd
 
         let btn = createArrowButton(stack, BtnStyleWidth, BtnStyleHeight)
         btn.name = "End"
-        let me = self
         btn.sigPaintIcon = func|me|(btn, bc, pos)
         {
             bc.painter.setParams(.Antialiased)
@@ -675,7 +664,6 @@ impl PropWnd
 
         let btn = createArrowButton(stack, BtnStyleWidth, BtnStyleHeight)
         btn.name = "Dash"
-        let me = self
         btn.sigPaintIcon = func|me|(btn, bc, pos)
         {
             bc.painter.setParams(.Antialiased)
@@ -892,7 +880,7 @@ impl PropWnd
 
             .sigUpdateState += mtd||(evt)
             {
-                var curSel = cast(*FormText) self.getSelectedBaseForm()
+                var curSel = cast(*FormText) me.getSelectedBaseForm()
                 evt.setFlags.add(.Checked)
                 evt.accepted = true
 
@@ -915,7 +903,7 @@ impl PropWnd
 
             .sigCheckChanged += mtd||(btn)
             {
-                var capture = self.main.getCapture()
+                var capture = me.main.getCapture()
                 switch btn.id
                 {
                 case CmdIdTextHLeft:

@@ -6,7 +6,7 @@ struct R
 impl R
 {
     #[Swag.Inline]
-    func Y(using self)->s32
+    func Y(using me)->s32
     {
         return x + 1
     }

@@ -1,6 +1,6 @@
 interface I
 {
-    func toto3746(self);
+    func toto3746(me);
 }
 
 struct(T) A {}
@@ -15,7 +15,7 @@ impl I for A
 
     mtd impl toto3746()
     {
-        self.titi3746's32()
+        me.titi3746's32()
     }
 }
 

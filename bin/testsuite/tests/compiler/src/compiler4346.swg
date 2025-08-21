@@ -10,7 +10,7 @@ impl Point
 {
     mtd(X2, Y2) mixup(other: Point'(X2, Y2)) -> Point'(X1, Y2)
     {
-        return Point'(X1, Y2){x: self.x, y: other.y}
+        return Point'(X1, Y2){x: me.x, y: other.y}
     }
 }
 

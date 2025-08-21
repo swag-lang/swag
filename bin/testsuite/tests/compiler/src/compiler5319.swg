@@ -21,7 +21,7 @@ impl X
 {
     mtd opDrop()
     {
-        //X.clear(self)
+        //X.clear(me)
     }
 
     mtd clear()

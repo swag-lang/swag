@@ -14,15 +14,15 @@ struct AA
 
 impl AA
 {
-    func opDrop(self)
+    func opDrop(me)
     {
     }
 
-    func opPostCopy(self)
+    func opPostCopy(me)
     {
     }
 
-    func opPostMove(self)
+    func opPostMove(me)
     {
     }
 }

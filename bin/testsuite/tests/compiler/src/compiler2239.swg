@@ -5,7 +5,7 @@ struct Pt
 
 impl Pt
 {
-    func opAffect(using self, other: s64)
+    func opAffect(using me, other: s64)
     {
         x = other
     }

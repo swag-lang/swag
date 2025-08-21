@@ -6,11 +6,11 @@ struct CStr
 impl CStr
 {
     //#[Swag.PrintBc]
-    func opDrop(self)
+    func opDrop(me)
     {
     }
 
-    func opPostMove(self)
+    func opPostMove(me)
     {
     }
 }

@@ -203,10 +203,10 @@ impl Rectangle
     // Scale the rectangle dimensions independently.
     // Multiplies width by 'x' and height by 'y' without changing position.
     #[Swag.Overload]
-    func scale(self, x, y: f32)
+    func scale(me, x, y: f32)
     {
-        self.width *= x
-        self.height *= y
+        me.width *= x
+        me.height *= y
     }
 
     // Inflate the rectangle uniformly in all directions.
@@ -223,12 +223,12 @@ impl Rectangle
     // Inflate the rectangle by different amounts horizontally and vertically.
     // Expands by 'x' horizontally and 'y' vertically on all sides.
     #[Swag.Overload]
-    func inflate(self, x, y: f32)
+    func inflate(me, x, y: f32)
     {
-        self.x -= x
-        self.y -= y
-        self.width += x * 2
-        self.height += y * 2
+        me.x -= x
+        me.y -= y
+        me.width += x * 2
+        me.height += y * 2
     }
 
     // Returns true if all rectangle components are zero within epsilon tolerance.
@@ -288,9 +288,9 @@ impl Rectangle
     // Test if the specified coordinates are contained within the rectangle.
     // Uses half-open interval [x, x+width) × [y, y+height) for containment test.
     #[Swag.Overload]
-    func contains(const self, x, y: f32)->bool
+    func contains(const me, x, y: f32)->bool
     {
-        return (x >= self.x and x < self.x + self.width) and (y >= self.y and y < self.y + self.height)
+        return (x >= me.x and x < me.x + me.width) and (y >= me.y and y < me.y + me.height)
     }
 
     // Test if the specified point is contained within the rectangle.
@@ -314,7 +314,7 @@ impl Rectangle
     #[Swag.Overload]
     mtd intersect(other: Rectangle)
     {
-        dref self = intersect(dref self, other)
+        dref me = intersect(dref me, other)
     }
 
     // Create a rectangle representing the intersection of two rectangles.
@@ -342,7 +342,7 @@ impl Rectangle
     // Modifies this rectangle to be the smallest rectangle containing both this and 'other'.
     mtd setUnion(other: Rectangle)
     {
-        dref self = getUnion(dref self, other)
+        dref me = getUnion(dref me, other)
     }
 
     // Create a rectangle representing the union of two rectangles.
@@ -401,7 +401,7 @@ impl Rectangle
     // Returns a new rectangle with positive width and height without modifying the original.
     mtd const toNormalized()->Rectangle
     {
-        var result = dref self
+        var result = dref me
         result.normalize()
         return result
     }

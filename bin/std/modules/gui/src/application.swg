@@ -466,7 +466,7 @@ internal impl Application
 
         deletePointers()
 
-        sigFrame.call(self)
+        sigFrame.call(me)
     }
 
     public mtd doModalLoop(surface: #null *Surface, cb: func||(*Application) = null)->WndId
@@ -490,7 +490,7 @@ internal impl Application
         {
             runFrame()
             if cb:
-                cb(self)
+                cb(me)
         }
 
         if surface:
@@ -571,7 +571,7 @@ impl Application
     mtd createSurface(x, y, width, height: s32, flags = SurfaceFlags.OverlappedWindow, view: *Wnd = null, hook: HookEvent = null, surfaceID: string = null)->*Surface throw
     {
         let surface = Memory.new'Surface()
-        surface.app       = self
+        surface.app       = me
         surface.position  = {x, y, width, height}
         surface.surfaceID = surfaceID
 
@@ -721,7 +721,7 @@ impl Application
     mtd postQuitEvent(quitCode: s32 = 0)
     {
         let evt = Event.create'QuitEvent()
-        evt.quitCode = #self.quitCode
+        evt.quitCode = #me.quitCode
         postEvent(evt)
     }
 

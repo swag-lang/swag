@@ -7,10 +7,10 @@ struct point
 impl point
 {
 	//#[Swag.PrintBc]
-	func set(self, _x: s32, _y: s32)
+	func set(me, _x: s32, _y: s32)
 	{
-		self.x = _x
-		self.y = _y
+		me.x = _x
+		me.y = _y
 	}
 }
 

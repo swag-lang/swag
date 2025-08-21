@@ -6,12 +6,12 @@ struct AA
 
 impl AA
 {
-    func opDrop(self)
+    func opDrop(me)
     {
         //@print("drop")
     }
 
-    func opPostMove(self)
+    func opPostMove(me)
     {
         //@print("move")
     }

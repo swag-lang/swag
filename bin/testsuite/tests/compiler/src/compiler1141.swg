@@ -7,7 +7,7 @@ namespace std.crypto
 
 	impl Mwc
 	{
-		func seed(using self, _seed: u32)
+		func seed(using me, _seed: u32)
 		{
 			x = _seed
 		}

@@ -61,7 +61,7 @@ impl IForm for FormShape
 
         var xbu = 0
         var ybu = 0
-        capture.snap(&xbu, &ybu, true, true, 0, cast(IForm) self)
+        capture.snap(&xbu, &ybu, true, true, 0, cast(IForm) me)
         xb += xbu
         yb += ybu
 
@@ -169,7 +169,7 @@ impl IForm for FormShape
 
     mtd impl hitTest(pt: Math.Point, z: f32)->bool
     {
-        return BaseForm.drawHitTest(self, pt, z)
+        return BaseForm.drawHitTest(me, pt, z)
     }
 
     mtd impl paint(painter: *Painter, cxt: FormPaintContext)
@@ -253,7 +253,7 @@ impl IForm for FormShape
 
         gizmo.sigChanged = mtd||(g, first, hitMove)
         {
-            g.apply(self, first, hitMove)
+            g.apply(me, first, hitMove)
         }
     }
 }

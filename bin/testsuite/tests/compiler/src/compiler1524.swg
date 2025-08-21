@@ -3,12 +3,12 @@ var G: s32
 struct X
 {
     x: s32 = 666
-    y: bool   
+    y: bool
 }
 
 impl X
 {
-    func toto(using const self)
+    func toto(using const me)
     {
         G = x
     }

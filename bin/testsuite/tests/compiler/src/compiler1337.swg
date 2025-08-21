@@ -2,8 +2,8 @@
 
 interface TOTO
 {
-	func print(self);
-    func print1(self, x: s32);
+	func print(me);
+    func print1(me, x: s32);
 }
 
 struct TITI
@@ -12,7 +12,7 @@ struct TITI
 
 impl TOTO for TITI
 {
-	func impl print(using self)
+	func impl print(using me)
 	{
 	}
 }

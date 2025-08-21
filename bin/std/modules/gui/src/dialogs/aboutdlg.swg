@@ -81,6 +81,6 @@ public impl AboutDlg
     mtd doModal(from: *Surface)
     {
         surface.center(from)
-        discard Dialog.doModal(self)
+        discard Dialog.doModal(me)
     }
 }
