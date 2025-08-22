@@ -80,11 +80,16 @@ impl Image
         size   = cast(u64) (me.width * me.height * bpp8)
     }
 
-    // Allocate pixels
+    // Allocate pixels.
+    // Pixels will not be initialized.
     mtd allocPixels()
     {
         Debug.assert(size != 0)
-        pixels.resize(size)
+
+        // Do not use pixels.resize to avoid initializing all the pixels
+        // Pixels are not defined after a call to 'allocPixels', as design
+        pixels.grow(size)
+        pixels.count = size
     }
 
     // Allocate a computing buffer with current image size
