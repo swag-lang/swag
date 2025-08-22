@@ -338,6 +338,8 @@ struct BuildCfg
     SwagSlice      resAppIcoFileName;
     SwagSlice      resAppName;
     SwagSlice      resAppDescription;
+    SwagSlice      resAppCompany;
+    SwagSlice      resAppCopyright; 
     BuildCfgGenDoc genDoc;
 };
 

@@ -162,7 +162,7 @@ bool BackendLinker::link(const BuildParameters& buildParameters, const Vector<Ut
             g_Log.messageVerbose(one);
     }
 
-    Utf8 outFileName;
+    Path outFileName;
     switch (buildParameters.buildCfg->backendKind)
     {
         case BuildCfgBackendKind::Executable:
@@ -223,10 +223,10 @@ bool BackendLinker::link(const BuildParameters& buildParameters, const Vector<Ut
     return result;
 }
 
-bool BackendLinker::patchExecutable(const Utf8& fileName, const BuildCfg* buildCfg)
+bool BackendLinker::patchExecutable(const Path& fileName, const BuildCfg* buildCfg)
 {
     Utf8 error;
-    if (!OS::patchExecutable(fileName.toWString(), buildCfg, error))
+    if (!OS::patchExecutable(fileName, buildCfg, error))
     {
         Report::errorOS(formErr(Err0353, fileName.cstr(), error.cstr()));
         return false;

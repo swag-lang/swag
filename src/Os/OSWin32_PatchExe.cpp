@@ -116,21 +116,8 @@ namespace
     // - VS_FIXEDFILEINFO
     // - StringFileInfo / 040904B0 with common fields
     // - VarFileInfo / Translation (0409, 1200)
-    std::vector<BYTE> createVersionInfo(const BuildCfg* buildCfg)
+    std::vector<BYTE> createVersionInfo(const Path& moduleFileName, const BuildCfg* buildCfg)
     {
-        const Utf8 appName{buildCfg->resAppName};
-        const Utf8 appDescription{buildCfg->resAppDescription};
-        const Utf8 appVersion = form("%d.%d.%d.0", buildCfg->moduleVersion, buildCfg->moduleRevision, buildCfg->moduleBuildNum);
-
-        const std::wstring productName      = !appName.empty() ? appName.toWString() : L"Application";
-        const std::wstring fileDescription  = !appDescription.empty() ? appDescription.toWString() : productName;
-        const std::wstring fileVersion      = appVersion.toWString();
-        const std::wstring productVersion   = appVersion.toWString();
-        const std::wstring companyName      = L"";
-        const std::wstring copyright        = L"";
-        const std::wstring internalName     = productName;
-        const std::wstring originalFilename = productName + L".exe";
-
         // Pre-allocate a generous buffer (we’ll shrink to fit).
         std::vector<BYTE> versionData(4096, 0);
         BYTE*             ptr      = versionData.data();
@@ -215,10 +202,24 @@ namespace
         beginKeyedBlock(L"040904B0", 1, stHdr, stStart);
 
         // Common string fields
+        const Utf8 appName{buildCfg->resAppName};
+        const Utf8 appDescription{buildCfg->resAppDescription};
+        const Utf8 appCompany{buildCfg->resAppCompany};
+        const Utf8 appCopyright{buildCfg->resAppCopyright};
+        const Utf8 appVersion = form("%d.%d.%d.0", buildCfg->moduleVersion, buildCfg->moduleRevision, buildCfg->moduleBuildNum);
+
+        const std::wstring productName      = !appName.empty() ? appName.toWString() : L"Application";
+        const std::wstring fileDescription  = !appDescription.empty() ? appDescription.toWString() : productName;
+        const std::wstring fileVersion      = appVersion.toWString();
+        const std::wstring productVersion   = appVersion.toWString();
+        const std::wstring companyName      = appCompany.toWString();
+        const std::wstring copyright        = appCopyright.toWString();
+        const std::wstring originalFilename = moduleFileName.filename().toWString();
+
         writeStringEntry(L"CompanyName", companyName);
         writeStringEntry(L"FileDescription", fileDescription);
         writeStringEntry(L"FileVersion", fileVersion);
-        writeStringEntry(L"InternalName", internalName);
+        writeStringEntry(L"InternalName", productName);
         writeStringEntry(L"LegalCopyright", copyright);
         writeStringEntry(L"OriginalFilename", originalFilename);
         writeStringEntry(L"ProductName", productName);
@@ -267,7 +268,7 @@ namespace
 
 namespace OS
 {
-    bool patchExecutable(const std::wstring& filename, const BuildCfg* buildCfg, Utf8& error)
+    bool patchExecutable(const Path& moduleFileName, const BuildCfg* buildCfg, Utf8& error)
     {
         // Early exit if nothing to do
         if (buildCfg->resAppIcoFileName.count == 0 &&
@@ -275,7 +276,7 @@ namespace OS
             buildCfg->resAppDescription.count == 0)
             return true;
 
-        const auto handle = BeginUpdateResourceW(filename.c_str(), FALSE);
+        const auto handle = BeginUpdateResourceW(moduleFileName.toWString().c_str(), FALSE);
         if (!handle)
         {
             error = "cannot begin resource update";
@@ -399,7 +400,7 @@ namespace OS
         // ---- VERSION INFO PATCHING ----
         if (result)
         {
-            std::vector<BYTE> versionInfo = createVersionInfo(buildCfg);
+            std::vector<BYTE> versionInfo = createVersionInfo(moduleFileName, buildCfg);
             if (!versionInfo.empty())
             {
                 // Try US English first, then neutral as a fallback.

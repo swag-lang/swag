@@ -862,6 +862,8 @@ namespace Swag
         resAppIcoFileName:             string                               // For an executable, the associated icon file name
         resAppName:                    string                               // For an executable, the associated application name
         resAppDescription:             string                               // For an executable, the associated application description
+        resAppCompany:                 string                               // For an executable, the associated company name
+        resAppCopyright:               string                               // For an executable, the associated copyright notice
         genDoc:                        BuildCfgGenDoc                       // Parameters for document generation
     }
 

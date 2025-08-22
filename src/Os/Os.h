@@ -48,7 +48,7 @@ namespace OS
     Utf8 getLastErrorAsString();
     void errorBox(const char* title, const char* expr);
     void assertBox(const char* expr, const char* file, int line);
-    bool patchExecutable(const std::wstring& filename, const BuildCfg* buildCfg, Utf8& error);
+    bool patchExecutable(const Path& moduleFileName, const BuildCfg* buildCfg, Utf8& error);
 
     void visitFiles(const char* folder, const std::function<void(const char*)>& user);
     void visitFolders(const char* folder, const std::function<void(const char*)>& user, const char* match = "*");
