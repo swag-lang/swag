@@ -859,7 +859,9 @@ namespace Swag
         backendSCBE:                   BuildCfgBackendSCBE                  // Specific SCBE options
 
         repoPath:                      string                               // Repository access path to the module
-        resIcoFileName:                string                               // For an executable, the associated icon file name
+        resAppIcoFileName:             string                               // For an executable, the associated icon file name
+        resAppName:                    string                               // For an executable, the associated application name
+        resAppDescription:             string                               // For an executable, the associated application description
         genDoc:                        BuildCfgGenDoc                       // Parameters for document generation
     }
 

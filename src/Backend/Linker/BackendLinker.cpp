@@ -214,7 +214,7 @@ bool BackendLinker::link(const BuildParameters& buildParameters, const Vector<Ut
 
     oo.unlock();
 
-    if (!patchIcon(outFileName, buildParameters.buildCfg))
+    if (!patchExecutable(outFileName, buildParameters.buildCfg))
     {
         g_Workspace->numErrors += 1;
         buildParameters.module->numErrors += 1;
@@ -223,14 +223,14 @@ bool BackendLinker::link(const BuildParameters& buildParameters, const Vector<Ut
     return result;
 }
 
-bool BackendLinker::patchIcon(const Utf8& fileName, const BuildCfg* buildCfg)
+bool BackendLinker::patchExecutable(const Utf8& fileName, const BuildCfg* buildCfg)
 {
-    if (!buildCfg->resIcoFileName.count)
-        return true;
+    const Utf8 iconName{buildCfg->resAppIcoFileName};
+    const Utf8 appName{buildCfg->resAppName};
+    const Utf8 appDescription{buildCfg->resAppDescription};
 
-    const Utf8 f{buildCfg->resIcoFileName};
-    Utf8       error;
-    if (!OS::patchIcon(fileName.toWString(), f.toWString(), error))
+    Utf8 error;
+    if (!OS::patchExecutable(fileName.toWString(), iconName.toWString(), appName.toWString(), appDescription.toWString(), error))
     {
         Report::errorOS(formErr(Err0353, fileName.cstr(), error.cstr()));
         return false;

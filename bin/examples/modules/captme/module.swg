@@ -20,5 +20,8 @@
 {
     let itf = @compiler
     let cfg = itf.getBuildCfg()
-    cfg.resIcoFileName = Path.getDirectoryName(#file) ++ "/src/datas/appicon.ico"
+    cfg.resAppIcoFileName = Path.getDirectoryName(#file) ++ "/src/datas/appicon.ico"
+
+    let name = Format.toString("Captme %.%.%", #swagversion, #swagrevision, #swagbuildnum)
+    cfg.resAppName = name.toString()
 }

@@ -143,26 +143,35 @@ var g_SysInfo: SYSTEM_INFO
 }
 
 // Register an application in the system
-#[Swag.Discardable]
-public func registerApplication(appName, appFriendly: string)->bool
+public func registerApplication(appName, appFriendly: string)
 {
     var hKey: HKEY
 
     let commandKey = Format.toString("Software\\Classes\\Applications\\%", appName)
-    if RegCreateKeyExA(HKEY_CURRENT_USER, commandKey.buffer, 0, null, 0, KEY_SET_VALUE, null, &hKey, null) != ERROR_SUCCESS
+    if RegCreateKeyExA(HKEY_CURRENT_USER, commandKey.buffer, 0, null, 0, KEY_SET_VALUE, null, &hKey, null) == ERROR_SUCCESS
     {
-        return false
-    }
-
-    var command = Format.toString("%", appFriendly)
-    if RegSetValueExA(hKey, @dataof("FriendlyAppName"), 0, REG_SZ, command.buffer, cast(u32) (command.length + 1)) != ERROR_SUCCESS
-    {
+        RegSetValueExA(hKey, null, 0, REG_SZ, @dataof(appFriendly), cast(u32) (@countof(appFriendly) + 1))
+        RegSetValueExA(hKey, @dataof("FriendlyAppName"), 0, REG_SZ, @dataof(appFriendly), cast(u32) (@countof(appFriendly) + 1))
         RegCloseKey(hKey)
-        return false
     }
 
-    RegCloseKey(hKey)
-    return true
+    // Register the application properly
+    let regAppKey = Format.toString("Software\\RegisteredApplications")
+    if RegCreateKeyExA(HKEY_CURRENT_USER, @dataof(regAppKey), 0, null, 0, KEY_SET_VALUE, null, &hKey, null) == ERROR_SUCCESS
+    {
+        var capabilitiesPath = Format.toString("Software\\Classes\\Applications\\%\\Capabilities", appName)
+        RegSetValueExA(hKey, @dataof(appFriendly), 0, REG_SZ, capabilitiesPath.buffer, cast(u32) (capabilitiesPath.length + 1))
+        RegCloseKey(hKey)
+    }
+
+    // Create capabilities key
+    let capKey = Format.toString("Software\\Classes\\Applications\\%\\Capabilities", appName)
+    if RegCreateKeyExA(HKEY_CURRENT_USER, @dataof(capKey), 0, null, 0, KEY_SET_VALUE, null, &hKey, null) == ERROR_SUCCESS
+    {
+        RegSetValueExA(hKey, @dataof("ApplicationName"), 0, REG_SZ, @dataof(appFriendly), cast(u32) (@countof(appFriendly) + 1))
+        //RegSetValueExA(hKey, @dataof("ApplicationDescription"), 0, REG_SZ, @dataof(appDescription), cast(u32) (@countof(appDescription) + 1))
+        RegCloseKey(hKey)
+    }
 }
 
 // Associate an extension to an executable

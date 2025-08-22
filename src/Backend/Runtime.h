@@ -335,7 +335,9 @@ struct BuildCfg
 
     // Resources
     SwagSlice      repoPath;
-    SwagSlice      resIcoFileName;
+    SwagSlice      resAppIcoFileName;
+    SwagSlice      resAppName;
+    SwagSlice      resAppDescription;
     BuildCfgGenDoc genDoc;
 };
 
