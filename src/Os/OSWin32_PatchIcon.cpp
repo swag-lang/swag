@@ -1,5 +1,6 @@
 #include "pch.h"
 #ifdef WIN32
+#include "Backend/Runtime.h"
 #include "Os/Os.h"
 #pragma optimize("", off)
 
@@ -115,12 +116,16 @@ namespace
     // - VS_FIXEDFILEINFO
     // - StringFileInfo / 040904B0 with common fields
     // - VarFileInfo / Translation (0409, 1200)
-    std::vector<BYTE> createVersionInfo(const std::wstring& appName, const std::wstring& appDescription)
+    std::vector<BYTE> createVersionInfo(const BuildCfg* buildCfg)
     {
-        const std::wstring productName      = !appName.empty() ? appName : L"Application";
-        const std::wstring fileDescription  = !appDescription.empty() ? appDescription : productName;
-        const std::wstring fileVersion      = L"1.0.0.0";
-        const std::wstring productVersion   = L"1.0.0.0";
+        const Utf8 appName{buildCfg->resAppName};
+        const Utf8 appDescription{buildCfg->resAppDescription};
+        const Utf8 appVersion = form("%d.%d.%d.0", buildCfg->moduleVersion, buildCfg->moduleRevision, buildCfg->moduleBuildNum);
+
+        const std::wstring productName      = !appName.empty() ? appName.toWString() : L"Application";
+        const std::wstring fileDescription  = !appDescription.empty() ? appDescription.toWString() : productName;
+        const std::wstring fileVersion      = appVersion.toWString();
+        const std::wstring productVersion   = appVersion.toWString();
         const std::wstring companyName      = L"";
         const std::wstring copyright        = L"";
         const std::wstring internalName     = productName;
@@ -144,10 +149,10 @@ namespace
         auto* fixedInfo               = reinterpret_cast<VS_FIXEDFILEINFO_CUSTOM*>(ptr);
         fixedInfo->dwSignature        = 0xFEEF04BD;
         fixedInfo->dwStrucVersion     = 0x00010000;
-        fixedInfo->dwFileVersionMS    = MAKELONG(0, 1); // 1.0
-        fixedInfo->dwFileVersionLS    = MAKELONG(0, 0);
-        fixedInfo->dwProductVersionMS = MAKELONG(0, 1); // 1.0
-        fixedInfo->dwProductVersionLS = MAKELONG(0, 0);
+        fixedInfo->dwFileVersionMS    = MAKELONG(buildCfg->moduleRevision, buildCfg->moduleVersion);
+        fixedInfo->dwFileVersionLS    = MAKELONG(0, buildCfg->moduleBuildNum);
+        fixedInfo->dwProductVersionMS = MAKELONG(buildCfg->moduleRevision, buildCfg->moduleVersion);
+        fixedInfo->dwProductVersionLS = MAKELONG(0, buildCfg->moduleBuildNum);
         fixedInfo->dwFileFlagsMask    = VS_FFI_FILEFLAGSMASK;
         fixedInfo->dwFileFlags        = 0;
         fixedInfo->dwFileOS           = VOS_NT_WINDOWS32;
@@ -262,13 +267,12 @@ namespace
 
 namespace OS
 {
-    bool patchExecutable(const std::wstring& filename,
-                         const std::wstring& icoFileName,
-                         const std::wstring& appName,
-                         const std::wstring& appDescription,
-                         Utf8&               error)
+    bool patchExecutable(const std::wstring& filename, const BuildCfg* buildCfg, Utf8& error)
     {
-        if (icoFileName.empty() && appName.empty() && appDescription.empty())
+        // Early exit if nothing to do
+        if (buildCfg->resAppIcoFileName.count == 0 &&
+            buildCfg->resAppName.count == 0 &&
+            buildCfg->resAppDescription.count == 0)
             return true;
 
         const auto handle = BeginUpdateResourceW(filename.c_str(), FALSE);
@@ -281,9 +285,11 @@ namespace OS
         bool result = true;
 
         // ---- ICON PATCHING ----
-        if (!icoFileName.empty())
+        const Utf8         appIcoFileName8{buildCfg->resAppIcoFileName};
+        const std::wstring appIcoFileName = appIcoFileName8.toWString();
+        if (!appIcoFileName.empty())
         {
-            const auto file = CreateFileW(icoFileName.c_str(),
+            const auto file = CreateFileW(appIcoFileName.c_str(),
                                           GENERIC_READ,
                                           FILE_SHARE_READ,
                                           nullptr,
@@ -391,9 +397,9 @@ namespace OS
         }
 
         // ---- VERSION INFO PATCHING ----
-        if (result && (!appName.empty() || !appDescription.empty()))
+        if (result)
         {
-            std::vector<BYTE> versionInfo = createVersionInfo(appName, appDescription);
+            std::vector<BYTE> versionInfo = createVersionInfo(buildCfg);
             if (!versionInfo.empty())
             {
                 // Try US English first, then neutral as a fallback.

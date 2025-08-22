@@ -225,12 +225,8 @@ bool BackendLinker::link(const BuildParameters& buildParameters, const Vector<Ut
 
 bool BackendLinker::patchExecutable(const Utf8& fileName, const BuildCfg* buildCfg)
 {
-    const Utf8 iconName{buildCfg->resAppIcoFileName};
-    const Utf8 appName{buildCfg->resAppName};
-    const Utf8 appDescription{buildCfg->resAppDescription};
-
     Utf8 error;
-    if (!OS::patchExecutable(fileName.toWString(), iconName.toWString(), appName.toWString(), appDescription.toWString(), error))
+    if (!OS::patchExecutable(fileName.toWString(), buildCfg, error))
     {
         Report::errorOS(formErr(Err0353, fileName.cstr(), error.cstr()));
         return false;
