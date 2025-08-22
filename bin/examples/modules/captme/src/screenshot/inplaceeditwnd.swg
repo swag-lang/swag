@@ -55,10 +55,12 @@ impl InPlaceEditWnd
             }
 
             .actionBar = IconBar.create(.editWnd.editView, 24, {})
-            .actionBar.addItem(theme.getIcon24(ThemeIcons24.Save), "save")
-            .actionBar.addItem(theme.getIcon24(ThemeIcons24.Copy), "copy")
-            .actionBar.addItem(theme.getIcon24(ThemeIcons24.Edit), "edit")
-            .actionBar.addItem(theme.getIcon24(ThemeIcons24.WndClose), "close")
+
+            .actionBar.addItem(theme.getIcon24(ThemeIcons24.Save), "save").toolTip      = "Save capture as image file"
+            .actionBar.addItem(theme.getIcon24(ThemeIcons24.Copy), "copy").toolTip      = "Copy image to clipboard"
+            .actionBar.addItem(theme.getIcon24(ThemeIcons24.Edit), "edit").toolTip      = "Open in Captme editor"
+            .actionBar.addItem(theme.getIcon24(ThemeIcons24.WndClose), "close").toolTip = "Cancel and discard capture"
+
             .actionBar.sigPressed += func|frame|(btn)
             {
                 switch btn.id
@@ -87,13 +89,14 @@ impl InPlaceEditWnd
             }
 
             .editBar = IconBar.create(.editWnd.editView, 24, {})
-            .editBar.addCheckableItem(Icon.from(&main.icons48, 7), "draw")
-            .editBar.addCheckableItem(Icon.from(&main.icons48, 1), "line")
-            .editBar.addCheckableItem(Icon.from(&main.icons48, 19), "circle")
-            .editBar.addCheckableItem(Icon.from(&main.icons48, 20), "rect")
-            .editBar.addCheckableItem(Icon.from(&main.icons48, 3), "arrow")
-            .editBar.addCheckableItem(Icon.from(&main.icons48, 4), "text")
-            .editBar.addCheckableItem(Icon.from(&main.icons48, 9), "marker")
+
+            .editBar.addCheckableItem(Icon.from(&main.icons48, 7), "draw").toolTip    = "Free draw tool"
+            .editBar.addCheckableItem(Icon.from(&main.icons48, 1), "line").toolTip    = "Draw straight line"
+            .editBar.addCheckableItem(Icon.from(&main.icons48, 19), "circle").toolTip = "Draw circle or ellipse"
+            .editBar.addCheckableItem(Icon.from(&main.icons48, 20), "rect").toolTip   = "Draw rectangle or square"
+            .editBar.addCheckableItem(Icon.from(&main.icons48, 3), "arrow").toolTip   = "Draw arrow"
+            .editBar.addCheckableItem(Icon.from(&main.icons48, 4), "text").toolTip    = "Add text annotation"
+            .editBar.addCheckableItem(Icon.from(&main.icons48, 9), "marker").toolTip  = "Highlight with marker"
             .editBar.setIconBarFlags(.Vertical)
 
             .editBar.sigCheckChanged += func|frame|(btn)
