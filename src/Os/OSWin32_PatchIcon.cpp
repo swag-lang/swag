@@ -37,17 +37,17 @@ namespace
 
 #pragma pack(push, 2)
     // ReSharper disable once CppInconsistentNaming
-    // FIXED: Corrected GRPICONENTRY structure
+    // Correct GRPICONENTRY structure for RT_GROUP_ICON
     struct GRPICONENTRY
     {
         BYTE  width;
         BYTE  height;
         BYTE  colourCount;
         BYTE  reserved;
-        WORD  planes;     // Changed from BYTE to WORD
-        WORD  bitCount;   // Changed from BYTE to WORD  
-        DWORD bytesInRes; // This is the full DWORD size
-        WORD  id;         // Resource ID
+        WORD  planes;     // WORD per Win32 GRPICONDIR
+        WORD  bitCount;   // WORD per Win32 GRPICONDIR
+        DWORD bytesInRes; // DWORD size of the RT_ICON data
+        WORD  id;         // Resource ID of the RT_ICON
     };
 
     // ReSharper disable once CppInconsistentNaming
@@ -74,7 +74,7 @@ namespace
         WORD  wLength;
         WORD  wValueLength;
         WORD  wType;
-        WCHAR szKey[1]; // Variable length key
+        WCHAR szKey[1]; // Variable-length key follows this field
     };
 #pragma pack(pop)
 
@@ -95,7 +95,7 @@ namespace
         DWORD dwFileDateLS;
     };
 
-    // Helper function to align pointer to 4-byte boundary
+    // Align pointer to an N-byte boundary (default: 4)
     BYTE* alignPointer(BYTE* ptr, size_t alignment = 4)
     {
         const uintptr_t addr    = reinterpret_cast<uintptr_t>(ptr);
@@ -103,18 +103,20 @@ namespace
         return reinterpret_cast<BYTE*>(aligned);
     }
 
-    // Helper function to write a wide string and return new position
+    // Write a NUL-terminated wide string and return the new position
     BYTE* writeWideString(BYTE* ptr, const std::wstring& str)
     {
-        const size_t len = (str.length() + 1) * sizeof(WCHAR);
-        memcpy(ptr, str.c_str(), len);
-        return ptr + len;
+        const size_t lenBytes = (str.length() + 1) * sizeof(WCHAR);
+        memcpy(ptr, str.c_str(), lenBytes);
+        return ptr + lenBytes;
     }
 
-    // FIXED: Helper function to create version information structure
+    // Build a minimal but valid VS_VERSION_INFO block:
+    // - VS_FIXEDFILEINFO
+    // - StringFileInfo / 040904B0 with common fields
+    // - VarFileInfo / Translation (0409, 1200)
     std::vector<BYTE> createVersionInfo(const std::wstring& appName, const std::wstring& appDescription)
     {
-        // Use the provided name/description or fallback values
         const std::wstring productName      = !appName.empty() ? appName : L"Application";
         const std::wstring fileDescription  = !appDescription.empty() ? appDescription : productName;
         const std::wstring fileVersion      = L"1.0.0.0";
@@ -124,53 +126,27 @@ namespace
         const std::wstring internalName     = productName;
         const std::wstring originalFilename = productName + L".exe";
 
-        // Calculate required size more accurately
-        size_t estimatedSize = 0;
-        estimatedSize += sizeof(VersionInfoHeader);
-        estimatedSize += sizeof(VS_FIXEDFILEINFO_CUSTOM);
-        estimatedSize += 200; // StringFileInfo header + padding
-        estimatedSize += 200; // StringTable header + padding
-
-        // Add size for each string entry (header + key + value + padding)
-        auto addStringSize = [&](const std::wstring& key, const std::wstring& value) {
-            estimatedSize += sizeof(StringInfoHeader) - sizeof(WCHAR); // Header minus placeholder
-            estimatedSize += (key.length() + 1) * sizeof(WCHAR);       // Key
-            estimatedSize += (value.length() + 1) * sizeof(WCHAR);     // Value
-            estimatedSize += 32;                                       // Padding for alignment
-        };
-
-        addStringSize(L"ProductName", productName);
-        addStringSize(L"FileDescription", fileDescription);
-        addStringSize(L"FileVersion", fileVersion);
-        addStringSize(L"ProductVersion", productVersion);
-        addStringSize(L"InternalName", internalName);
-        addStringSize(L"OriginalFilename", originalFilename);
-        if (!companyName.empty())
-            addStringSize(L"CompanyName", companyName);
-        if (!copyright.empty())
-            addStringSize(L"LegalCopyright", copyright);
-
-        std::vector<BYTE> versionData(estimatedSize, 0);
+        // Pre-allocate a generous buffer (we’ll shrink to fit).
+        std::vector<BYTE> versionData(4096, 0);
         BYTE*             ptr      = versionData.data();
         const BYTE*       startPtr = ptr;
 
-        // Root VS_VERSION_INFO header
-        auto rootHeader          = reinterpret_cast<VersionInfoHeader*>(ptr);
-        rootHeader->wValueLength = sizeof(VS_FIXEDFILEINFO_CUSTOM);
-        rootHeader->wType        = 0; // Binary
+        // --- Root: VS_VERSION_INFO ---
+        auto* rootHeader         = reinterpret_cast<VersionInfoHeader*>(ptr);
+        rootHeader->wLength      = 0;                                                  // backfilled later
+        rootHeader->wValueLength = static_cast<WORD>(sizeof(VS_FIXEDFILEINFO_CUSTOM)); // BYTES for root
+        rootHeader->wType        = 0;                                                  // Binary
         wcscpy_s(rootHeader->szKey, L"VS_VERSION_INFO");
         ptr += sizeof(VersionInfoHeader);
 
-        // Align to 4-byte boundary
-        ptr = alignPointer(ptr, 4);
-
-        // VS_FIXEDFILEINFO - FIXED VALUES
-        const auto fixedInfo          = reinterpret_cast<VS_FIXEDFILEINFO_CUSTOM*>(ptr);
+        // Align then write VS_FIXEDFILEINFO
+        ptr                           = alignPointer(ptr, 4);
+        auto* fixedInfo               = reinterpret_cast<VS_FIXEDFILEINFO_CUSTOM*>(ptr);
         fixedInfo->dwSignature        = 0xFEEF04BD;
         fixedInfo->dwStrucVersion     = 0x00010000;
-        fixedInfo->dwFileVersionMS    = MAKELONG(0, 1); // Version 1.0.0.0
+        fixedInfo->dwFileVersionMS    = MAKELONG(0, 1); // 1.0
         fixedInfo->dwFileVersionLS    = MAKELONG(0, 0);
-        fixedInfo->dwProductVersionMS = MAKELONG(0, 1);
+        fixedInfo->dwProductVersionMS = MAKELONG(0, 1); // 1.0
         fixedInfo->dwProductVersionLS = MAKELONG(0, 0);
         fixedInfo->dwFileFlagsMask    = VS_FFI_FILEFLAGSMASK;
         fixedInfo->dwFileFlags        = 0;
@@ -180,74 +156,106 @@ namespace
         fixedInfo->dwFileDateMS       = 0;
         fixedInfo->dwFileDateLS       = 0;
         ptr += sizeof(VS_FIXEDFILEINFO_CUSTOM);
-
-        // Align to a 4-byte boundary
         ptr = alignPointer(ptr, 4);
 
-        // StringFileInfo header
-        const BYTE* stringFileInfoStart    = ptr;
-        const auto  stringFileInfoHeader   = reinterpret_cast<StringInfoHeader*>(ptr);
-        stringFileInfoHeader->wValueLength = 0; // No direct value
-        stringFileInfoHeader->wType        = 1; // Text
-        ptr += sizeof(StringInfoHeader) - sizeof(WCHAR);
-        ptr = writeWideString(ptr, L"StringFileInfo");
-        ptr = alignPointer(ptr, 4);
+        // Helper to start a "string-style" header block (key written separately)
+        auto beginKeyedBlock = [&](const wchar_t* key, WORD type, /*out*/ StringInfoHeader*& hdr, const BYTE*& blockStart) {
+            blockStart        = ptr;
+            hdr               = reinterpret_cast<StringInfoHeader*>(ptr);
+            hdr->wLength      = 0;    // backfilled
+            hdr->wValueLength = 0;    // depends on block type
+            hdr->wType        = type; // 1=text, 0=binary
+            ptr += sizeof(StringInfoHeader) - sizeof(WCHAR);
+            ptr = writeWideString(ptr, key);
+            ptr = alignPointer(ptr, 4);
+        };
 
-        // StringTable header (using language ID 040904b0 = US English, Unicode)
-        const BYTE* stringTableStart    = ptr;
-        const auto  stringTableHeader   = reinterpret_cast<StringInfoHeader*>(ptr);
-        stringTableHeader->wValueLength = 0; // No direct value
-        stringTableHeader->wType        = 1; // Text
-        ptr += sizeof(StringInfoHeader) - sizeof(WCHAR);
-        ptr = writeWideString(ptr, L"040904b0"); // US English, Unicode
-        ptr = alignPointer(ptr, 4);
+        // Helper to end a keyed block by backfilling its wLength
+        auto endKeyedBlock = [&](StringInfoHeader* hdr, const BYTE* blockStart) {
+            hdr->wLength = static_cast<WORD>(ptr - blockStart);
+        };
 
-        // Helper lambda to write string entries with proper alignment
-        auto writeStringEntry = [&](const std::wstring& key, const std::wstring& value) -> bool {
+        // Helper to write a String entry (key/value)
+        auto writeStringEntry = [&](const std::wstring& key, const std::wstring& value) {
             if (value.empty())
-                return false; // Skip empty values
+                return; // skip empties
 
-            const BYTE* entryStart    = ptr;
-            const auto  entryHeader   = reinterpret_cast<StringInfoHeader*>(ptr);
-            entryHeader->wValueLength = static_cast<WORD>((value.length() + 1) * sizeof(WCHAR));
-            entryHeader->wType        = 1; // Text
+            const BYTE* entryStart = ptr;
+            auto*       entry      = reinterpret_cast<StringInfoHeader*>(ptr);
+            entry->wLength         = 0; // backfilled
+            // IMPORTANT: For String entries, wValueLength is in WCHARs (not bytes)
+            entry->wValueLength = static_cast<WORD>(value.length() + 1);
+            entry->wType        = 1; // text
             ptr += sizeof(StringInfoHeader) - sizeof(WCHAR);
 
-            // Write key
+            // key
             ptr = writeWideString(ptr, key);
             ptr = alignPointer(ptr, 4);
 
-            // Write value  
+            // value (NUL-terminated wide string)
             ptr = writeWideString(ptr, value);
             ptr = alignPointer(ptr, 4);
 
-            // Update entry length
-            entryHeader->wLength = static_cast<WORD>(ptr - entryStart);
-            return true;
+            entry->wLength = static_cast<WORD>(ptr - entryStart);
         };
 
-        // Write string entries - ORDER MATTERS
-        writeStringEntry(L"CompanyName", companyName.empty() ? L" " : companyName); // Use space if empty
+        // --- StringFileInfo ---
+        StringInfoHeader* sfiHdr = nullptr;
+        const BYTE*       sfiStart;
+        beginKeyedBlock(L"StringFileInfo", 1, sfiHdr, sfiStart);
+
+        // --- StringTable "040904B0" (US English, Unicode) ---
+        StringInfoHeader* stHdr = nullptr;
+        const BYTE*       stStart;
+        beginKeyedBlock(L"040904B0", 1, stHdr, stStart);
+
+        // Common string fields
+        writeStringEntry(L"CompanyName", companyName);
         writeStringEntry(L"FileDescription", fileDescription);
         writeStringEntry(L"FileVersion", fileVersion);
         writeStringEntry(L"InternalName", internalName);
-        writeStringEntry(L"LegalCopyright", copyright.empty() ? L" " : copyright); // Use space if empty
+        writeStringEntry(L"LegalCopyright", copyright);
         writeStringEntry(L"OriginalFilename", originalFilename);
         writeStringEntry(L"ProductName", productName);
         writeStringEntry(L"ProductVersion", productVersion);
 
-        // Update StringTable length
-        stringTableHeader->wLength = static_cast<WORD>(ptr - stringTableStart);
+        // Close StringTable and StringFileInfo
+        endKeyedBlock(stHdr, stStart);
+        endKeyedBlock(sfiHdr, sfiStart);
 
-        // Update StringFileInfo length  
-        stringFileInfoHeader->wLength = static_cast<WORD>(ptr - stringFileInfoStart);
+        // --- VarFileInfo ---
+        StringInfoHeader* vfiHdr = nullptr;
+        const BYTE*       vfiStart;
+        // VarFileInfo is a text-keyed block with binary value children; wType here is typically 1 (per samples),
+        // while child 'Translation' uses wType=0 and wValueLength in BYTES.
+        beginKeyedBlock(L"VarFileInfo", 1, vfiHdr, vfiStart);
 
-        // Update root header length
-        rootHeader->wLength = static_cast<WORD>(ptr - startPtr);
+        // Child: "Translation" with binary value (LANG=0x0409, CP=1200 (0x04B0))
+        const BYTE* varStart   = ptr;
+        auto*       varEntry   = reinterpret_cast<StringInfoHeader*>(ptr);
+        varEntry->wLength      = 0; // backfilled
+        varEntry->wValueLength = 4; // BYTES (two WORDs)
+        varEntry->wType        = 0; // binary
+        ptr += sizeof(StringInfoHeader) - sizeof(WCHAR);
+        ptr = writeWideString(ptr, L"Translation");
+        ptr = alignPointer(ptr, 4);
 
-        // Resize vector to actual used size
+        // value: two WORDs -> language, codepage
+        *reinterpret_cast<WORD*>(ptr)     = 0x0409; // US English
+        *reinterpret_cast<WORD*>(ptr + 2) = 0x04B0; // Unicode (1200)
+        ptr += 4;
+        ptr = alignPointer(ptr, 4);
+
+        varEntry->wLength = static_cast<WORD>(ptr - varStart);
+
+        // Close VarFileInfo
+        endKeyedBlock(vfiHdr, vfiStart);
+
+        // Backfill root length and shrink buffer to fit
+        auto* rootHdr    = reinterpret_cast<VersionInfoHeader*>(const_cast<BYTE*>(startPtr));
+        rootHdr->wLength = static_cast<WORD>(ptr - startPtr);
+
         versionData.resize(ptr - startPtr);
-
         return versionData;
     }
 }
@@ -258,7 +266,7 @@ namespace OS
                          const std::wstring& icoFileName,
                          const std::wstring& appName,
                          const std::wstring& appDescription,
-                         Utf8&               error) // Changed from Utf8& to std::string&
+                         Utf8&               error)
     {
         if (icoFileName.empty() && appName.empty() && appDescription.empty())
             return true;
@@ -272,10 +280,16 @@ namespace OS
 
         bool result = true;
 
-        // Icon processing
+        // ---- ICON PATCHING ----
         if (!icoFileName.empty())
         {
-            const auto file = CreateFileW(icoFileName.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+            const auto file = CreateFileW(icoFileName.c_str(),
+                                          GENERIC_READ,
+                                          FILE_SHARE_READ,
+                                          nullptr,
+                                          OPEN_EXISTING,
+                                          FILE_ATTRIBUTE_NORMAL,
+                                          nullptr);
             if (file == INVALID_HANDLE_VALUE)
             {
                 error = "cannot open icon file";
@@ -283,9 +297,10 @@ namespace OS
                 return false;
             }
 
-            DWORD       bytes;
+            DWORD       bytes = 0;
             ICONVAL     icon;
             ICONHEADER& header = icon.header;
+
             if (!ReadFile(file, &header, 3 * sizeof(WORD), &bytes, nullptr))
             {
                 CloseHandle(file);
@@ -327,14 +342,13 @@ namespace OS
 
             CloseHandle(file);
 
-            // Create a group icon header
+            // Build RT_GROUP_ICON
             icon.grpHeader.resize(3 * sizeof(WORD) + header.count * sizeof(GRPICONENTRY));
-            const auto pGrpHeader = reinterpret_cast<GRPICONHEADER*>(icon.grpHeader.data());
-            pGrpHeader->reserved  = 0;
-            pGrpHeader->type      = 1;
-            pGrpHeader->count     = header.count;
+            auto* pGrpHeader     = reinterpret_cast<GRPICONHEADER*>(icon.grpHeader.data());
+            pGrpHeader->reserved = 0;
+            pGrpHeader->type     = 1;
+            pGrpHeader->count    = header.count;
 
-            // FIXED: Correct assignment with proper data types
             for (WORD i = 0; i < header.count; ++i)
             {
                 GRPICONENTRY* entry = pGrpHeader->entries + i;
@@ -345,11 +359,16 @@ namespace OS
                 entry->planes       = header.entries[i].planes;
                 entry->bitCount     = header.entries[i].bitCount;
                 entry->bytesInRes   = header.entries[i].bytesInRes;
-                entry->id           = i + 1;
+                entry->id           = static_cast<WORD>(i + 1);
             }
 
-            // Update icon resources
-            if (!UpdateResourceW(handle, RT_GROUP_ICON, MAKEINTRESOURCEW(1), MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL), icon.grpHeader.data(), static_cast<DWORD>(icon.grpHeader.size())))
+            // Update group icon and individual icons
+            if (!UpdateResourceW(handle,
+                                 RT_GROUP_ICON,
+                                 MAKEINTRESOURCEW(1),
+                                 MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL),
+                                 icon.grpHeader.data(),
+                                 static_cast<DWORD>(icon.grpHeader.size())))
             {
                 result = false;
                 error  = "failed to update group icon resource";
@@ -357,7 +376,12 @@ namespace OS
 
             for (size_t i = 0; i < icon.header.count && result; ++i)
             {
-                if (!UpdateResourceW(handle, RT_ICON, MAKEINTRESOURCEW(i + 1), MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL), icon.images[i].data(), static_cast<DWORD>(icon.images[i].size())))
+                if (!UpdateResourceW(handle,
+                                     RT_ICON,
+                                     MAKEINTRESOURCEW(static_cast<UINT>(i + 1)),
+                                     MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL),
+                                     icon.images[i].data(),
+                                     static_cast<DWORD>(icon.images[i].size())))
                 {
                     result = false;
                     error  = "failed to update icon resource";
@@ -366,22 +390,36 @@ namespace OS
             }
         }
 
-        // ENHANCED: Add version information with better error reporting
+        // ---- VERSION INFO PATCHING ----
         if (result && (!appName.empty() || !appDescription.empty()))
         {
             std::vector<BYTE> versionInfo = createVersionInfo(appName, appDescription);
             if (!versionInfo.empty())
             {
-                // Try with US English first, then fall back to neutral
-                if (!UpdateResourceW(handle, RT_VERSION, MAKEINTRESOURCEW(1), MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US), versionInfo.data(), static_cast<DWORD>(versionInfo.size())))
+                // Try US English first, then neutral as a fallback.
+                if (!UpdateResourceW(handle,
+                                     RT_VERSION,
+                                     MAKEINTRESOURCEW(1),
+                                     MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US),
+                                     versionInfo.data(),
+                                     static_cast<DWORD>(versionInfo.size())))
                 {
-                    // Fallback to neutral language
-                    if (!UpdateResourceW(handle, RT_VERSION, MAKEINTRESOURCEW(1), MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL), versionInfo.data(), static_cast<DWORD>(versionInfo.size())))
+                    if (!UpdateResourceW(handle,
+                                         RT_VERSION,
+                                         MAKEINTRESOURCEW(1),
+                                         MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL),
+                                         versionInfo.data(),
+                                         static_cast<DWORD>(versionInfo.size())))
                     {
                         result = false;
                         error  = "failed to update version resource";
                     }
                 }
+            }
+            else
+            {
+                result = false;
+                error  = "failed to build version resource";
             }
         }
 
