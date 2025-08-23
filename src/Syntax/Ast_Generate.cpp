@@ -191,7 +191,7 @@ bool Ast::generateMissingInterfaceFct(SemanticContext*            context,
 
         Parser parser;
         parser.setup(context, context->sourceFile->module, context->sourceFile, PARSER_DEFAULT);
-        SWAG_CHECK(parser.constructEmbeddedAst(content, node, node, CompilerAstKind::MissingInterfaceMtd, true));
+        SWAG_CHECK(parser.constructEmbeddedAst(content, node, node, CompilerAstKind::MissingInterfaceMtd, false));
 
         for (uint32_t i = numChildren; i < node->childCount(); i++)
             context->baseJob->nodes.push_back(node->children[i]);
