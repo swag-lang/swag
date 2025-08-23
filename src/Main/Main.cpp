@@ -44,9 +44,7 @@ int main(int argc, const char* argv[])
 
     // Command
     if (command != "build" &&
-#ifdef SWAG_DEV_MODE
         command != "patch" &&
-#endif
         command != "run" &&
         command != "doc" &&
         command != "test" &&
@@ -89,12 +87,10 @@ int main(int argc, const char* argv[])
     {
         g_Workspace->build();
     }
-#ifdef SWAG_DEV_MODE
     else if (command == "patch")
     {
         g_Workspace->patch();
     }
-#endif
     else if (command == "run")
     {
         g_CommandLine.run = true;
