@@ -311,8 +311,11 @@ impl MainWnd
         if recentWnd:
             recentWnd.updateRecent()
 
-        var txt = Format.toString("Image <i>%</i> has been saved", nameFile)
-        discard EmbInfoCtrl.create(editWnd.view, txt, .Information, flags: .Bottom | .AutoHide)
+        var txt = Format.toString("Image <url>%</url> has been saved", nameFile)
+        let emb = EmbInfoCtrl.create(editWnd.view, txt, .Information, flags: .Bottom | .AutoHide)
+        emb.label.sigUrlClicked += func(lbl, msg) {
+            Env.locateInExplorer(msg)
+        }
     }
 
     mtd saveAsImage(linked = false)

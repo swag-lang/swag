@@ -97,6 +97,8 @@ impl IWnd for RecentView
                 {
                     with let menu = MenuCtrl.createPopup(me)
                     {
+                        .addItem(CmdIdUpdateLinkedImage)
+                        .addSeparator()
                         .addItem(CmdIdDupCapture)
                         .addItem(CmdIdDeleteCapture)
                         .addSeparator()
