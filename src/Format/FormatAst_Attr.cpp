@@ -88,7 +88,11 @@ bool FormatAst::outputAttrUse(FormatContext& context, AstAttrUse* node)
         SWAG_CHECK(outputChildrenEol(context, node->content));
         return true;
     }
-
+    
+    auto loopNode = castAst<AstAttrUse>(node, AstNodeKind::AttrUse);
+    if (convertNode(context, loopNode->content) == nullptr)
+        return true;
+    
     bool hasSomething = true;
     SWAG_CHECK(outputAttrUse(context, node, hasSomething));
     if (hasSomething)
@@ -98,7 +102,6 @@ bool FormatAst::outputAttrUse(FormatContext& context, AstAttrUse* node)
         concat->addIndent(context.indent);
     }
 
-    auto loopNode = castAst<AstAttrUse>(node, AstNodeKind::AttrUse);
     while (loopNode->content && loopNode->content->is(AstNodeKind::AttrUse))
         loopNode = castAst<AstAttrUse>(loopNode->content, AstNodeKind::AttrUse);
 
