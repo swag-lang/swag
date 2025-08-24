@@ -360,7 +360,7 @@ bool Parser::generateAst()
         currentScope = parentScope;
     sourceFile->astRoot->ownerScope = currentScope;
 
-    // Make a copy of all #global using of the config file
+    // Make a copy of all '#global using' of the config file
     if (!sourceFile->hasFlag(FILE_CFG) && !sourceFile->imported && !sourceFile->hasFlag(FILE_EMBEDDED))
     {
         for (const auto s : module->buildParameters.globalUsing)
@@ -374,6 +374,7 @@ bool Parser::generateAst()
             node->token.sourceFile = sourceFile;
         }
     }
+    // Make a copy of all '#global using' of imported embedded modules
     else if (sourceFile->hasFlag(FILE_EMBEDDED))
     {
         for (const auto s : sourceFile->globalUsingEmbedded)
@@ -381,6 +382,7 @@ bool Parser::generateAst()
             CloneContext cxt;
             cxt.parent             = sourceFile->astRoot;
             cxt.parentScope        = currentScope;
+            cxt.forceFlags         = AST_GENERATED;
             cxt.removeFlags        = AST_NO_SEMANTIC; // because of @FirstPassCfgNoSem
             const auto node        = s->clone(cxt);
             node->token.sourceFile = sourceFile;
