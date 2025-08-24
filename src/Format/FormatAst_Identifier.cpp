@@ -80,6 +80,7 @@ bool FormatAst::outputIdentifier(const FormatContext& context, AstNode* node)
     return true;
 }
 
+#pragma optimize("", off)
 bool FormatAst::outputIdentifierRef(FormatContext& context, AstNode* node)
 {
     if (node->hasAstFlag(AST_DISCARD))
@@ -94,8 +95,17 @@ bool FormatAst::outputIdentifierRef(FormatContext& context, AstNode* node)
     }
 
     bool first = true;
+    //int a = 0;
     for (const auto it : node->children)
     {
+        /*a++;
+        if (it->token.text == "me" && it->hasAstFlag(AST_GENERATED))
+        {
+            if (a != node->children.size())
+            if (!node->children[a]->resolvedSymbolName() || !node->children[a]->resolvedSymbolName()->is(SymbolKind::GenericType))
+                concat->addString("me.");
+        }*/
+        
         const auto child = convertNode(context, it);
         if (!child)
             continue;
