@@ -119,6 +119,20 @@ bool FormatAst::outputType(FormatContext& context, AstTypeExpression* node)
     if (node->identifier)
     {
         SWAG_CHECK(outputNode(context, node->identifier));
+
+        if (node->identifier->is(AstNodeKind::IdentifierRef) && convertNode(context, node->identifier) != node->identifier)
+        {
+            const auto identifier = castAst<AstIdentifier>(node->identifier->firstChild(), AstNodeKind::Identifier);
+            if (identifier->callParameters && identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT_WAS_ASSIGN))
+            {
+                concat->addBlank();
+                concat->addChar('=');
+                concat->addBlank();
+                concat->addChar('{');
+                SWAG_CHECK(outputNode(context, identifier->callParameters));
+                concat->addChar('}');
+            }
+        }
     }
     else if (node->literalType == LiteralType::TypeType)
     {
@@ -214,7 +228,7 @@ bool FormatAst::outputChildrenTypeAlias(FormatContext& context, AstNode* node, u
 
     VectorNative<AstNode*> nodes;
     if (!collectChildrenToAlign(context, STOP_CMT_BEFORE | STOP_EMPTY_LINE_BEFORE, node, start, nodes, processed, [](const AstNode* inNode) {
-        if (inNode->isNot(AstNodeKind::TypeAlias) && inNode->isNot(AstNodeKind::NameAlias)) 
+        if (inNode->isNot(AstNodeKind::TypeAlias) && inNode->isNot(AstNodeKind::NameAlias))
             return true;
         return false;
     }))
