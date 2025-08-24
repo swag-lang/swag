@@ -8,35 +8,46 @@
 #global namespace Clipper
 using Core
 
-const DefaultArcTolerance = 0.25'f64
+const DefaultArcTolerance = 0.25'f64 // Default tolerance for arc approximation in polygon offsetting
 
-struct DoublePoint { x, y: f64 }
+// Used internally for high precision geometric calculations during offsetting operations.
+struct DoublePoint
+{
+    x, y: f64
 
+}
+
+// Polygon offset processor for creating parallel curves and outlines.
+// Handles the creation of offset polygons with different join types and miter limits.
 struct Offset
 {
-    miterLimit:       f64 = 2
-    arcTolerance:     f64 = DefaultArcTolerance
-    destPolys:        ClipperPaths
-    srcPoly:          ClipperPath
-    destPoly:         ClipperPath
-    normals:          Array'DoublePoint
-    deltaVal:         f64
-    sinaVal:          f64
-    sinVal:           f64
-    cosVal:           f64
-    miterLim:         f64
-    stepsPerRad:      f64
-    lowest:           IntPoint = {-1, 0}
-    polyNodes:        PolyNode
+    miterLimit:       f64 = 2                       // Maximum ratio of miter length to offset distance before square join is used
+    arcTolerance:     f64 = DefaultArcTolerance     // Maximum allowed distance between true arc and approximating line segments
+    destPolys:        ClipperPaths                  // Output collection of offset polygons
+    srcPoly:          ClipperPath                   // Current source polygon being processed
+    destPoly:         ClipperPath                   // Current destination polygon being built
+    normals:          Array'DoublePoint             // Unit normal vectors for each edge of the source polygon
+    deltaVal:         f64                           // Current offset distance (positive for outward, negative for inward)
+    sinaVal:          f64                           // Sine of angle between adjacent edge normals
+    sinVal:           f64                           // Sine value for arc step calculations
+    cosVal:           f64                           // Cosine value for arc step calculations
+    miterLim:         f64                           // Computed miter limit threshold for join type switching
+    stepsPerRad:      f64                           // Number of steps per radian for arc approximation
+    lowest:           IntPoint = {-1, 0}            // Index of polygon and vertex with lowest Y coordinate (leftmost if tied)
+    polyNodes:        PolyNode                      // Tree structure holding all input polygons with their join types
 }
 
 impl Offset
 {
+    // Clean up resources when the offset processor is destroyed.
+    // Ensures all dynamically allocated polygon nodes are properly freed.
     mtd opDrop()
     {
         clear()
     }
 
+    // Clear all stored polygons and reset the processor state.
+    // Deallocates all polygon nodes and resets the lowest point tracking.
     mtd clear()
     {
         foreach node in polyNodes.childs:
@@ -45,6 +56,8 @@ impl Offset
         lowest.x = -1
     }
 
+    // Add a polygon path to be processed with the specified join type.
+    // Removes duplicate points and tracks the bottommost point for orientation determination.
     mtd addPath(path: ClipperPath, joinType: JoinType)
     {
         var highI = path.count - 1
@@ -89,6 +102,8 @@ impl Offset
         }
     }
 
+    // Execute the offset operation and return the resulting polygons.
+    // Processes all added paths with the specified 'delta' offset distance.
     mtd execute(solution: *ClipperPaths, delta: f64, reverseNeg: bool = false)
     {
         solution.clear()
@@ -120,6 +135,8 @@ impl Offset
         }
     }
 
+    // Calculate the signed area of a polygon.
+    // Returns positive area for counter-clockwise polygons, negative for clockwise.
     func area(poly: ClipperPath)->f64
     {
         let size = cast(s32) poly.count
@@ -140,12 +157,16 @@ impl Offset
         return -a * 0.5
     }
 
+    // Determine the orientation of a polygon based on its signed area.
+    // Returns true for counter-clockwise (positive area), false for clockwise.
     #[Swag.Inline]
     func orientation(poly: ClipperPath)->bool
     {
         return area(poly) >= 0
     }
 
+    // Ensure all polygons have consistent orientation for proper offsetting.
+    // Reverses polygon vertex order if the bottommost polygon has incorrect orientation.
     mtd fixOrientations()
     {
         if lowest.x >= 0 and !orientation(polyNodes.childs[lowest.x].contour)
@@ -155,6 +176,8 @@ impl Offset
         }
     }
 
+    // Calculate the unit normal vector perpendicular to the line segment from 'pt1' to 'pt2'.
+    // The normal points to the left of the line direction (counter-clockwise 90° rotation).
     func getUnitNormal(pt1, pt2: const &IntPoint)->DoublePoint
     {
         var result: retval
@@ -171,9 +194,13 @@ impl Offset
         return result
     }
 
+    // Round a floating-point value to the nearest integer for coordinate conversion.
+    // Used to convert double precision calculations back to integer coordinates.
     #[Swag.Inline]
     func cround(val: f64) => cast(CInt) Math.round(val)
 
+    // Perform the actual offset operation on all added polygons.
+    // Calculates offset parameters and processes each polygon with appropriate join handling.
     mtd doOffset(delta: f64)
     {
         using Math
@@ -275,6 +302,8 @@ impl Offset
         }
     }
 
+    // Process a single vertex offset with appropriate join handling.
+    // Determines the offset position based on adjacent edge normals and join type.
     mtd offsetPoint(j: s32, ptrk: *s32, jointype: JoinType)
     {
         let k = dref ptrk
@@ -330,6 +359,8 @@ impl Offset
         dref ptrk = j
     }
 
+    // Create a square join between two offset edges.
+    // Extends the offset lines and connects them with a perpendicular segment.
     mtd doSquare(j, k: s32)
     {
         let kN = normals[k]
@@ -346,6 +377,8 @@ impl Offset
         destPoly.add(IntPoint{r1, r2})
     }
 
+    // Create a miter join by extending offset edges until they intersect.
+    // Used when the miter length is within acceptable limits.
     mtd doMiter(j, k: s32, r: f64)
     {
         let kN = normals[k]
@@ -358,6 +391,8 @@ impl Offset
         destPoly.add(IntPoint{r1, r2})
     }
 
+    // Create a rounded join by approximating a circular arc.
+    // Connects offset edges with line segments that approximate the curve.
     mtd doRound(j, k: s32)
     {
         var kN = normals[k]
