@@ -9,6 +9,28 @@
 bool FormatAst::outputLiteral(FormatContext& context, AstNode* node)
 {
     const auto literalNode = castAst<AstLiteral>(node, AstNodeKind::Literal);
+    switch (literalNode->compilerTokenId)
+    {
+        case TokenId::CompilerFile:
+            concat->addString("#file");
+            return true;
+        case TokenId::CompilerModule:
+            concat->addString("#module");
+            return true;
+        case TokenId::CompilerLine:
+            concat->addString("#line");
+            return true;
+        case TokenId::CompilerBuildVersion:
+            concat->addString("#swagversion");
+            return true;
+        case TokenId::CompilerBuildRevision:
+            concat->addString("#swagrevision");
+            return true;
+        case TokenId::CompilerBuildNum:
+            concat->addString("#swagbuildnum");
+            return true;
+    }
+
     if (literalNode->literalType == LiteralType::TypeStringRaw)
         concat->addString(R"(#")");
     else if (literalNode->literalType == LiteralType::TypeString || literalNode->literalType == LiteralType::TypeStringEscape)

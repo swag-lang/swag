@@ -1370,8 +1370,9 @@ AstNode* AstLiteral::clone(CloneContext& context)
 {
     const auto newNode = Ast::newNode<AstLiteral>();
     newNode->copyFrom(context, this);
-    newNode->literalType  = literalType;
-    newNode->literalValue = literalValue;
+    newNode->literalType     = literalType;
+    newNode->literalValue    = literalValue;
+    newNode->compilerTokenId = compilerTokenId;
     return newNode;
 }
 
