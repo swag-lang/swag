@@ -1,3 +1,4 @@
+#global marked
 #global public
 using Swag, Core, Core.Serialization
 
@@ -151,7 +152,7 @@ impl Image
         Debug.assert(stride > 0)
 
         var p = {me, userData}
-        Jobs.parallelVisit(|buffer, data| pixels.toSlice(), cast(u32) (bpp8 * stride), &p)
+        Jobs.parallelVisit(|buffer, data| me.pixels.toSlice(), cast(u32) (me.bpp8 * stride), &p)
         {
             if !data:
                 return
@@ -241,13 +242,13 @@ impl Image
     mtd(PF: PixelFormat) const getPixelColorDirect(pixX, pixY: s32)->Color
     {
         var result: retval
-        let x       = Math.clamp(pixX, 0, width - 1)
-        var y       = Math.clamp(pixY, 0, height - 1)
-        y = height - y - 1
+        let x       = Math.clamp(pixX, 0, me.width - 1)
+        var y       = Math.clamp(pixY, 0, me.height - 1)
+        y = me.height - y - 1
 
         #if PF == .RGBA8
         {
-            let pix = pixels.buffer + (x * 4) + (y * width * 4)
+            let pix = me.pixels.buffer + (x * 4) + (y * me.width * 4)
             result.r = pix[0]
             result.g = pix[1]
             result.b = pix[2]
@@ -255,7 +256,7 @@ impl Image
         }
         #elif PF == .RGB8
         {
-            let pix = pixels.buffer + (x * 3) + (y * width * 3)
+            let pix = me.pixels.buffer + (x * 3) + (y * me.width * 3)
             result.r = pix[0]
             result.g = pix[1]
             result.b = pix[2]
@@ -263,7 +264,7 @@ impl Image
         }
         #elif PF == .BGRA8
         {
-            let pix = pixels.buffer + (x * 4) + (y * width * 4)
+            let pix = me.pixels.buffer + (x * 4) + (y * me.width * 4)
             result.b = pix[0]
             result.g = pix[1]
             result.r = pix[2]
@@ -271,7 +272,7 @@ impl Image
         }
         #elif PF == .BGR8
         {
-            let pix = pixels.buffer + (x * 3) + (y * width * 3)
+            let pix = me.pixels.buffer + (x * 3) + (y * me.width * 3)
             result.b = pix[0]
             result.g = pix[1]
             result.r = pix[2]

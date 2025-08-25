@@ -1,3 +1,4 @@
+#global marked
 using Core
 
 impl Image
@@ -12,10 +13,10 @@ impl Image
         #[Swag.Mixin]
         func(PF: PixelFormat) doIt()
         {
-            var pix = pixels.buffer
-            for x in width
+            var pix = me.pixels.buffer
+            for x in me.width
             {
-                let factor0 = x / cast(f32) width
+                let factor0 = x / cast(f32) me.width
                 let b       = cast(u8) Math.lerp(cast(f32) color0.b, cast(f32) color1.b, factor0)
                 let g       = cast(u8) Math.lerp(cast(f32) color0.g, cast(f32) color1.g, factor0)
                 let r       = cast(u8) Math.lerp(cast(f32) color0.r, cast(f32) color1.r, factor0)
@@ -23,7 +24,7 @@ impl Image
                 if PF.bpp() == 32:
                     a = cast(u8) Math.lerp(cast(f32) color0.a, cast(f32) color1.a, factor0)
                 convertToRGBA8'PF(pix, r, g, b, a)
-                pix += bpp8
+                pix += me.bpp8
             }
         }
 
@@ -57,7 +58,7 @@ impl Image
         #[Swag.Mixin]
         func(PF: PixelFormat) doIt()
         {
-            visitPixels(&f)
+            me.visitPixels(&f)
             {
                 let params  = cast(*#decltype(f)) userData
                 let factor0 = x / cast(f32) image.width

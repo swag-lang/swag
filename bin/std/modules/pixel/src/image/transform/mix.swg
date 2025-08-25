@@ -1,3 +1,4 @@
+#global marked
 using Core
 
 impl Image
@@ -17,7 +18,7 @@ impl Image
         #[Swag.Mixin]
         func(BPP: u8) doIt()
         {
-            visitPixels(&f)
+            me.visitPixels(&f)
             {
                 let params   = cast(*#decltype(f)) userData
                 let dstImage = cast(*Image) params.dstImage

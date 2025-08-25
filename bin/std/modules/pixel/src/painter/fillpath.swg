@@ -1,3 +1,4 @@
+#global marked
 using Core, Core.Math
 
 public impl Painter
@@ -20,29 +21,29 @@ public impl Painter
         foreach i in p.triangles.triIndices
         {
             let tri  = p.triangles.triangles[i]
-            let prim = pushTriangle(tri.points[0].v, tri.points[1].v, tri.points[2].v, brush.color)
-            if curState.paintParams & .Antialiased
+            let prim = me.pushTriangle(tri.points[0].v, tri.points[1].v, tri.points[2].v, brush.color)
+            if me.curState.paintParams & .Antialiased
             {
                 var e = tri.points[0].border[0]
                 if e:
-                    addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
+                    me.addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
                 e = tri.points[0].border[1]
                 if e:
-                    addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
+                    me.addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
 
                 e = tri.points[1].border[0]
                 if e:
-                    addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
+                    me.addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
                 e = tri.points[1].border[1]
                 if e:
-                    addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
+                    me.addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
 
                 e = tri.points[2].border[0]
                 if e:
-                    addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
+                    me.addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
                 e = tri.points[2].border[1]
                 if e:
-                    addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
+                    me.addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
             }
         }
     }
@@ -197,7 +198,7 @@ public impl Painter
             if (p.polygon.isClockwise or serial != p.serial) and flush
             {
                 serial = p.serial
-                fillPath(dirty ? &tess : null, flush, pathList.bvMin, pathList.bvMax, brush)
+                me.fillPath(dirty ? &me.tess : null, flush, pathList.bvMin, pathList.bvMax, brush)
                 flush = null
             }
 
@@ -205,7 +206,7 @@ public impl Painter
             {
                 flush = p
                 if dirty:
-                    tess.addPolyLine(p.polygon)
+                    me.tess.addPolyLine(p.polygon)
             }
         }
 
@@ -242,7 +243,7 @@ public impl Painter
             path.polygon.isClockwise = true
             var res = path.polygon.getClean()
             foreach p in res.paths:
-                fillPath(p, brush)
+                me.fillPath(p, brush)
         }
     }
 

@@ -1,3 +1,4 @@
+#global marked
 using Core
 
 public enum DrawPathListMode
@@ -888,7 +889,7 @@ public impl Painter
         if mode == .Separate
         {
             foreach p in pathList.paths:
-                drawPath(p, pen)
+                me.drawPath(p, pen)
             return
         }
 
@@ -910,7 +911,7 @@ public impl Painter
             cxt.pen  = &pen
             if pen.dashStyle != .None:
                 preparePattern(&cxt)
-            drawPath(&cxt)
+            me.drawPath(&cxt)
         }
 
         me.stopOverlapMode()

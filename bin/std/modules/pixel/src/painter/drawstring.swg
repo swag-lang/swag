@@ -1,3 +1,4 @@
+#global marked
 #global public
 using Core
 
@@ -201,7 +202,7 @@ impl Painter
         {
             foreach refr in arr
             {
-                setTextureFont(font, refr.atlasIndex)
+                me.setTextureFont(font, refr.atlasIndex)
 
                 let x1 = Math.round(x + refr.shiftX)
                 let y1 = Math.round(y - refr.shiftY)
@@ -218,8 +219,8 @@ impl Painter
                 let uv3 = Math.Vector2{refr.uv.x, refr.uv.y + refr.uv.height}
                 let uv4 = Math.Vector2{refr.uv.x + refr.uv.width, refr.uv.y + refr.uv.height}
 
-                discard pushTriangle(p1, p2, p3, uv1, uv2, uv3, brush.color)
-                discard pushTriangle(p3, p2, p4, uv3, uv2, uv4, brush.color)
+                discard me.pushTriangle(p1, p2, p3, uv1, uv2, uv3, brush.color)
+                discard me.pushTriangle(p3, p2, p4, uv3, uv2, uv4, brush.color)
 
                 x += Math.round(refr.advanceX)
             }
@@ -228,7 +229,7 @@ impl Painter
         {
             foreach refr in arr
             {
-                setTextureFont(font, refr.atlasIndex)
+                me.setTextureFont(font, refr.atlasIndex)
 
                 let x1 = Math.round(x + refr.shiftX * zoom)
                 let y1 = Math.round(y - refr.shiftY * zoom)
@@ -245,8 +246,8 @@ impl Painter
                 let uv3 = Math.Vector2{refr.uv.x, refr.uv.y + refr.uv.height}
                 let uv4 = Math.Vector2{refr.uv.x + refr.uv.width, refr.uv.y + refr.uv.height}
 
-                discard pushTriangle(p1, p2, p3, uv1, uv2, uv3, brush.color)
-                discard pushTriangle(p3, p2, p4, uv3, uv2, uv4, brush.color)
+                discard me.pushTriangle(p1, p2, p3, uv1, uv2, uv3, brush.color)
+                discard me.pushTriangle(p3, p2, p4, uv3, uv2, uv4, brush.color)
 
                 x += Math.round(refr.advanceX * zoom)
             }
@@ -257,7 +258,7 @@ impl Painter
     }
 
     // Recompute the layout for a given rectangle
-    mtd computeLayout(pos: Math.Rectangle, text: *RichString, format: RichStringFormat)
+    func computeLayout(pos: Math.Rectangle, text: *RichString, format: RichStringFormat)
     {
         Debug.assert(format.font.regular != null, "invalid default font")
         text.layoutRect = pos
@@ -470,7 +471,7 @@ impl Painter
 
         // Recompute layout if rectangle has changed
         if text.layoutRect != pos or forceCompute:
-            me.computeLayout(pos, text, format)
+            computeLayout(pos, text, format)
 
         // Clipping
         if format.flags & .Clip
@@ -501,7 +502,7 @@ impl Painter
             if c.isHotUrl:
                 under = .Underline
 
-            drawString(c.pos.x, c.pos.y, c.slice, c.font, brush, under)
+            me.drawString(c.pos.x, c.pos.y, c.slice, c.font, brush, under)
         }
 
         // Restore clipping to its previous value

@@ -1,3 +1,4 @@
+#global marked
 using Core
 
 impl Image
@@ -12,11 +13,11 @@ impl Image
         #[Swag.Mixin]
         func(PF: PixelFormat) fillFirstLine()
         {
-            var pix = pixels.buffer
-            for x in width
+            var pix = me.pixels.buffer
+            for x in me.width
             {
                 convertToRGBA8'PF(pix, color.r, color.g, color.b, color.a)
-                pix += bpp8
+                pix += me.bpp8
             }
         }
 

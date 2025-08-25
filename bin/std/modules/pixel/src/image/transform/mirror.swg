@@ -1,3 +1,4 @@
+#global marked
 using Core
 
 impl Image
@@ -9,7 +10,7 @@ impl Image
         #[Swag.Mixin]
         func(BPP: u8) doIt()
         {
-            visitPixels(f)
+            me.visitPixels(f)
             {
                 let dstImage = cast(*Image) userData
                 var pixDst   = dstImage.pixels.buffer + (image.width - x - 1) * image.bpp8

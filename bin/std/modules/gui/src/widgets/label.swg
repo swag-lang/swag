@@ -210,10 +210,9 @@ impl Label
     {
         if labelFlags.has(.AutoHeight)
         {
-            var painter: Painter{fake: true}
-            var sf       = getStringFormat(false)
+            var sf = getStringFormat(false)
             name.compute()
-            painter.computeLayout(position, &name, sf)
+            Painter.computeLayout(position, &name, sf)
             position.height = name.boundRect.height
         }
     }
