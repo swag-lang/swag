@@ -22,7 +22,7 @@ impl Image
 {
     // Returns true if the image is valid
     #[Swag.Inline]
-    mtd const isValid() => pixels.buffer != null
+    mtd const isValid() => me.pixels.buffer != null
 
     // Creates a new image
     func create(width, height: s32, pf: PixelFormat, buffer: const [..] u8 = null)->Image
@@ -39,12 +39,12 @@ impl Image
 
     mtd opDrop()
     {
-        Memory.delete'Image(workingBuffer)
+        Memory.delete'Image(me.workingBuffer)
     }
 
     mtd opPostCopy()
     {
-        workingBuffer = null
+        me.workingBuffer = null
     }
 
     #[Swag.Macro]
@@ -74,67 +74,67 @@ impl Image
         me.height = #me.height
         me.pf     = #me.pf
 
-        bpp    = me.pf.bpp()
-        bpp8   = cast(u8) (bpp >> 3)
-        width8 = me.width * bpp8
-        size   = cast(u64) (me.width * me.height * bpp8)
+        me.bpp    = me.pf.bpp()
+        me.bpp8   = cast(u8) (me.bpp >> 3)
+        me.width8 = me.width * me.bpp8
+        me.size   = cast(u64) (me.width * me.height * me.bpp8)
     }
 
     // Allocate pixels.
     // Pixels will not be initialized.
     mtd allocPixels()
     {
-        Debug.assert(size != 0)
+        Debug.assert(me.size != 0)
 
         // Do not use pixels.resize to avoid initializing all the pixels
         // Pixels are not defined after a call to 'allocPixels', as design
-        pixels.grow(size)
-        pixels.count = size
+        me.pixels.grow(me.size)
+        me.pixels.count = me.size
     }
 
     // Allocate a computing buffer with current image size
     #[Swag.Overload]
     mtd allocWorkingBuffer()
     {
-        allocWorkingBuffer(width, height, pf)
+        me.allocWorkingBuffer(me.width, me.height, me.pf)
     }
 
     // Allocate a computing buffer with new sizes
     #[Swag.Overload]
     mtd allocWorkingBuffer(newWidth, newHeight: s32, newPf: PixelFormat)
     {
-        if workingBuffer and
-           newWidth == workingBuffer.width and
-           newHeight == workingBuffer.height and
-           newPf == workingBuffer.pf
+        if me.workingBuffer and
+           newWidth == me.workingBuffer.width and
+           newHeight == me.workingBuffer.height and
+           newPf == me.workingBuffer.pf
         {
             return
         }
 
-        freeWorkingBuffer()
-        workingBuffer      = Memory.new'Image()
-        dref workingBuffer = Image.create(newWidth, newHeight, newPf)
+        me.freeWorkingBuffer()
+        me.workingBuffer      = Memory.new'Image()
+        dref me.workingBuffer = Image.create(newWidth, newHeight, newPf)
     }
 
     // Free the working buffer if allocated
     mtd freeWorkingBuffer()
     {
-        Memory.delete(workingBuffer)
-        workingBuffer = null
+        Memory.delete(me.workingBuffer)
+        me.workingBuffer = null
     }
 
     // Replace the current image content with the working buffer
     mtd applyWorkingBuffer()
     {
-        Debug.assert(workingBuffer != null)
-        swap(&pf, &workingBuffer.pf)
-        swap(&pixels, &workingBuffer.pixels)
-        swap(&width, &workingBuffer.width)
-        swap(&height, &workingBuffer.height)
-        swap(&bpp, &workingBuffer.bpp)
-        swap(&bpp8, &workingBuffer.bpp8)
-        swap(&size, &workingBuffer.size)
-        swap(&width8, &workingBuffer.width8)
+        Debug.assert(me.workingBuffer != null)
+        swap(&me.pf, &me.workingBuffer.pf)
+        swap(&me.pixels, &me.workingBuffer.pixels)
+        swap(&me.width, &me.workingBuffer.width)
+        swap(&me.height, &me.workingBuffer.height)
+        swap(&me.bpp, &me.workingBuffer.bpp)
+        swap(&me.bpp8, &me.workingBuffer.bpp8)
+        swap(&me.size, &me.workingBuffer.size)
+        swap(&me.width8, &me.workingBuffer.width8)
     }
 
     // Macro to foreach all pixels of the image in parallel chunks.
@@ -181,8 +181,8 @@ impl Image
     // Clear the content of the image
     mtd clear()
     {
-        Debug.assert(pixels.buffer != null)
-        Memory.clear(pixels.buffer, size)
+        Debug.assert(me.pixels.buffer != null)
+        Memory.clear(me.pixels.buffer, me.size)
     }
 
     // Copy one pixel, depending on bpp
@@ -286,16 +286,16 @@ impl Image
     mtd const getPixelColor(pixX, pixY: s32)->Color
     {
         #[Swag.Complete]
-        switch pf
+        switch me.pf
         {
         case RGBA8:
-            return getPixelColorDirect'RGBA8(pixX, pixY)
+            return me.getPixelColorDirect'RGBA8(pixX, pixY)
         case RGB8:
-            return getPixelColorDirect'RGB8(pixX, pixY)
+            return me.getPixelColorDirect'RGB8(pixX, pixY)
         case BGRA8:
-            return getPixelColorDirect'BGRA8(pixX, pixY)
+            return me.getPixelColorDirect'BGRA8(pixX, pixY)
         case BGR8:
-            return getPixelColorDirect'BGR8(pixX, pixY)
+            return me.getPixelColorDirect'BGR8(pixX, pixY)
         }
 
         return {}

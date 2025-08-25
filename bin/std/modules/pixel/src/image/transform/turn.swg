@@ -53,7 +53,7 @@ impl Image
             }
         }
 
-        switch bpp
+        switch me.bpp
         {
         case 24:
             doIt'24()
@@ -67,26 +67,26 @@ impl Image
     // Turn image by a given predefined angle
     public mtd turn(angle: TurnAngle)
     {
-        Debug.assert(pixels.buffer != null)
+        Debug.assert(me.pixels.buffer != null)
         if angle == .T180:
-            allocWorkingBuffer()
+            me.allocWorkingBuffer()
         else:
-            allocWorkingBuffer(height, width, pf)
-        doTurn(workingBuffer, angle)
-        applyWorkingBuffer()
+            me.allocWorkingBuffer(me.height, me.width, me.pf)
+        me.doTurn(me.workingBuffer, angle)
+        me.applyWorkingBuffer()
     }
 
     // Turn image by a given predefined angle
     public mtd const toTurn(angle: TurnAngle)->Image
     {
-        Debug.assert(pixels.buffer != null)
+        Debug.assert(me.pixels.buffer != null)
 
         var result: retval
         if angle == .T180:
-            result = create(width, height, pf)
+            result = create(me.width, me.height, me.pf)
         else:
-            result = create(height, width, pf)
-        doTurn(&result, angle)
+            result = create(me.height, me.width, me.pf)
+        me.doTurn(&result, angle)
         return result
     }
 }

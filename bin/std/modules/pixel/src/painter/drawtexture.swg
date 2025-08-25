@@ -9,17 +9,17 @@ impl Painter
     {
         if width == 0 or height == 0 or color.a == 0:
             return
-        sharedSolidBrush.color   = color
-        sharedSolidBrush.type    = BrushType.Texture
-        sharedSolidBrush.texture = texture
-        sharedSolidBrush.uvMode  = .Fill
-        fillRect(x, y, width, height, sharedSolidBrush)
+        me.sharedSolidBrush.color   = color
+        me.sharedSolidBrush.type    = BrushType.Texture
+        me.sharedSolidBrush.texture = texture
+        me.sharedSolidBrush.uvMode  = .Fill
+        me.fillRect(x, y, width, height, me.sharedSolidBrush)
     }
 
     #[Swag.Overload]
     mtd drawTexture(rect: Math.Rectangle, texture: Texture, color: Color = Argb.White)
     {
-        drawTexture(rect.x, rect.y, rect.width, rect.height, texture, color)
+        me.drawTexture(rect.x, rect.y, rect.width, rect.height, texture, color)
     }
 
     #[Swag.Overload]
@@ -27,11 +27,11 @@ impl Painter
     {
         if color.a == 0:
             return
-        sharedSolidBrush.color   = color
-        sharedSolidBrush.type    = BrushType.Texture
-        sharedSolidBrush.texture = texture
-        sharedSolidBrush.uvMode  = .Fill
-        fillRect(x, y, cast(f32) texture.width, cast(f32) texture.height, sharedSolidBrush)
+        me.sharedSolidBrush.color   = color
+        me.sharedSolidBrush.type    = BrushType.Texture
+        me.sharedSolidBrush.texture = texture
+        me.sharedSolidBrush.uvMode  = .Fill
+        me.fillRect(x, y, cast(f32) texture.width, cast(f32) texture.height, me.sharedSolidBrush)
     }
 
     // Draw a portion of an image
@@ -40,18 +40,18 @@ impl Painter
     {
         if srcRect.isEmpty() or width == 0 or height == 0 or color.a == 0:
             return
-        sharedSolidBrush.color   = color
-        sharedSolidBrush.type    = BrushType.Texture
-        sharedSolidBrush.texture = texture
-        sharedSolidBrush.uvMode  = .FillSubRect
-        sharedSolidBrush.uvRect  = srcRect
-        fillRect(x, y, width, height, sharedSolidBrush)
+        me.sharedSolidBrush.color   = color
+        me.sharedSolidBrush.type    = BrushType.Texture
+        me.sharedSolidBrush.texture = texture
+        me.sharedSolidBrush.uvMode  = .FillSubRect
+        me.sharedSolidBrush.uvRect  = srcRect
+        me.fillRect(x, y, width, height, me.sharedSolidBrush)
     }
 
     #[Swag.Overload]
     mtd drawTexture(dstRect, srcRect: Math.Rectangle, texture: Texture, color: Color = Argb.White)
     {
-        drawTexture(dstRect.x, dstRect.y, dstRect.width, dstRect.height, srcRect, texture, color)
+        me.drawTexture(dstRect.x, dstRect.y, dstRect.width, dstRect.height, srcRect, texture, color)
     }
 
     #[Swag.Overload]
@@ -59,11 +59,11 @@ impl Painter
     {
         if srcRect.isEmpty() or color.a == 0:
             return
-        sharedSolidBrush.color   = color
-        sharedSolidBrush.type    = BrushType.Texture
-        sharedSolidBrush.texture = texture
-        sharedSolidBrush.uvMode  = .FillSubRect
-        sharedSolidBrush.uvRect  = srcRect
-        fillRect(x, y, srcRect.width, srcRect.height, sharedSolidBrush)
+        me.sharedSolidBrush.color   = color
+        me.sharedSolidBrush.type    = BrushType.Texture
+        me.sharedSolidBrush.texture = texture
+        me.sharedSolidBrush.uvMode  = .FillSubRect
+        me.sharedSolidBrush.uvRect  = srcRect
+        me.fillRect(x, y, srcRect.width, srcRect.height, me.sharedSolidBrush)
     }
 }

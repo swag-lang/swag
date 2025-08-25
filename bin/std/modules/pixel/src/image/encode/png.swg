@@ -159,66 +159,66 @@ impl Encoder
 
     mtd writeData(buf: const ^u8, bytes: u32)
     {
-        stream.addBytes(@mkslice(buf, bytes))
+        me.stream.addBytes(@mkslice(buf, bytes))
     }
 
     #[Swag.Overload]
     mtd writeU32(val: u32)
     {
         var v = Math.nativeToBigEndian(val)
-        stream.addBytes(@mkslice(cast(const ^u8) &v, 4))
+        me.stream.addBytes(@mkslice(cast(const ^u8) &v, 4))
     }
 
     mtd writeHeader(chunkType: const [4] u8, chunkLength: u64)->^u8
     {
         let total = chunkLength + 8 + 4
-        stream.grow(total)
+        me.stream.grow(total)
 
-        currentChunk.length = cast(u32) chunkLength
-        writeU32(currentChunk.length)
+        me.currentChunk.length = cast(u32) chunkLength
+        me.writeU32(me.currentChunk.length)
 
-        Memory.copy(&currentChunk.type, chunkType, 4)
-        writeData(currentChunk.type, 4)
+        Memory.copy(&me.currentChunk.type, chunkType, 4)
+        me.writeData(me.currentChunk.type, 4)
 
-        crc.init()
-        crc.update(null)
-        crc.update(chunkType)
-        currentChunk.crc = crc.crc
+        me.crc.init()
+        me.crc.update(null)
+        me.crc.update(chunkType)
+        me.currentChunk.crc = me.crc.crc
 
-        let dataPtr = stream.currentSP
-        stream.moveSeek(chunkLength)
+        let dataPtr = me.stream.currentSP
+        me.stream.moveSeek(chunkLength)
 
         return dataPtr
     }
 
     mtd finishChunk()
     {
-        crc.update(@mkslice(writePtr, currentChunk.length))
-        currentChunk.crc = crc.crc
-        writeU32(currentChunk.crc)
+        me.crc.update(@mkslice(me.writePtr, me.currentChunk.length))
+        me.currentChunk.crc = me.crc.crc
+        me.writeU32(me.currentChunk.crc)
     }
 
     mtd writeChunk(chunkType: const [4] u8, buf: const *u8, length: u64)
     {
-        writePtr = writeHeader(chunkType, length)
+        me.writePtr = me.writeHeader(chunkType, length)
         if length:
-            Memory.copy(writePtr, buf, length)
-        finishChunk()
+            Memory.copy(me.writePtr, buf, length)
+        me.finishChunk()
     }
 
     mtd writeChunksBeforeIDat() throw
     {
-        writeData(PngSignature, 8)
+        me.writeData(PngSignature, 8)
 
-        var dst = &tmpBuf[0]
-        writeU32(dst, ihdr.width)
-        writeU32(dst + 4, ihdr.height)
-        dst[8]  = ihdr.bitDepth
-        dst[9]  = cast(u8) ihdr.colorType
-        dst[10] = ihdr.compressionMethod
-        dst[11] = ihdr.filterMethod
-        dst[12] = ihdr.interlaceMethod
-        writeChunk(TypeIHdr, dst, 13)
+        var dst = &me.tmpBuf[0]
+        writeU32(dst, me.ihdr.width)
+        writeU32(dst + 4, me.ihdr.height)
+        dst[8]  = me.ihdr.bitDepth
+        dst[9]  = cast(u8) me.ihdr.colorType
+        dst[10] = me.ihdr.compressionMethod
+        dst[11] = me.ihdr.filterMethod
+        dst[12] = me.ihdr.interlaceMethod
+        me.writeChunk(TypeIHdr, dst, 13)
     }
 
     mtd writeMetaDatas(image: Image) throw
@@ -240,7 +240,7 @@ impl Encoder
         if !width:
             throw UnsupportedFormatError{"SPNG_EINTERNAL"}
 
-        var res = cast(u64) numChannels() * ihdr.bitDepth
+        var res = cast(u64) me.numChannels() * me.ihdr.bitDepth
         if res > Swag.U64.Max / width:
             throw UnsupportedFormatError{"SPNG_EOVERFLOW"}
         res = res * width
@@ -257,7 +257,7 @@ impl Encoder
 
     mtd numChannels()->s32
     {
-        switch ihdr.colorType
+        switch me.ihdr.colorType
         {
         case Color:
             return 3
@@ -270,66 +270,66 @@ impl Encoder
 
     mtd calculateSubImages() throw
     {
-        if ihdr.interlaceMethod == 1
+        if me.ihdr.interlaceMethod == 1
         {
-            subimage[0].width  = (ihdr.width + 7) >> 3
-            subimage[0].height = (ihdr.height + 7) >> 3
-            subimage[1].width  = (ihdr.width + 3) >> 3
-            subimage[1].height = (ihdr.height + 7) >> 3
-            subimage[2].width  = (ihdr.width + 3) >> 2
-            subimage[2].height = (ihdr.height + 3) >> 3
-            subimage[3].width  = (ihdr.width + 1) >> 2
-            subimage[3].height = (ihdr.height + 3) >> 2
-            subimage[4].width  = (ihdr.width + 1) >> 1
-            subimage[4].height = (ihdr.height + 1) >> 2
-            subimage[5].width  = ihdr.width >> 1
-            subimage[5].height = (ihdr.height + 1) >> 1
-            subimage[6].width  = ihdr.width
-            subimage[6].height = ihdr.height >> 1
+            me.subimage[0].width  = (me.ihdr.width + 7) >> 3
+            me.subimage[0].height = (me.ihdr.height + 7) >> 3
+            me.subimage[1].width  = (me.ihdr.width + 3) >> 3
+            me.subimage[1].height = (me.ihdr.height + 7) >> 3
+            me.subimage[2].width  = (me.ihdr.width + 3) >> 2
+            me.subimage[2].height = (me.ihdr.height + 3) >> 3
+            me.subimage[3].width  = (me.ihdr.width + 1) >> 2
+            me.subimage[3].height = (me.ihdr.height + 3) >> 2
+            me.subimage[4].width  = (me.ihdr.width + 1) >> 1
+            me.subimage[4].height = (me.ihdr.height + 1) >> 2
+            me.subimage[5].width  = me.ihdr.width >> 1
+            me.subimage[5].height = (me.ihdr.height + 1) >> 1
+            me.subimage[6].width  = me.ihdr.width
+            me.subimage[6].height = me.ihdr.height >> 1
         }
         else
         {
-            subimage[0].width  = ihdr.width
-            subimage[0].height = ihdr.height
+            me.subimage[0].width  = me.ihdr.width
+            me.subimage[0].height = me.ihdr.height
         }
 
         for i in 6
         {
-            if subimage[i].width == 0 or subimage[i].height == 0:
+            if me.subimage[i].width == 0 or me.subimage[i].height == 0:
                 continue
 
-            subimage[i].scanlineWidth = calculateScanlineWidth(subimage[i].width)
-            if subimage[widestPass].scanlineWidth < subimage[i].scanlineWidth:
-                widestPass = i
-            lastPass = i
+            me.subimage[i].scanlineWidth = me.calculateScanlineWidth(me.subimage[i].width)
+            if me.subimage[me.widestPass].scanlineWidth < me.subimage[i].scanlineWidth:
+                me.widestPass = i
+            me.lastPass = i
         }
     }
 
     mtd finishIDat() throw
     {
         var zlib: Compress.ZLib
-        var cmp   = zlib.compress(bufferToCompress.toSlice(), userOptions.compressionLevel)
+        var cmp   = zlib.compress(me.bufferToCompress.toSlice(), me.userOptions.compressionLevel)
 
-        writePtr = writeHeader(TypeIDat, cmp.count)
-        Memory.copy(writePtr, cmp.buffer, cmp.count)
-        bufferToCompress.count = 0
+        me.writePtr = me.writeHeader(TypeIDat, cmp.count)
+        Memory.copy(me.writePtr, cmp.buffer, cmp.count)
+        me.bufferToCompress.count = 0
 
-        finishChunk()
+        me.finishChunk()
     }
 
     mtd writeIDatBytes(sl: ^u8, len: u32) throw
     {
-        bufferToCompress.add(@mkslice(sl, len))
+        me.bufferToCompress.add(@mkslice(sl, len))
     }
 
     mtd encodeRow(row: ^u8)->bool throw
     {
-        let pass = rowInfo.pass
+        let pass = me.rowInfo.pass
 
-        if !ihdr.interlaceMethod or pass == 6:
-            return encodeScanLine(row)
+        if !me.ihdr.interlaceMethod or pass == 6:
+            return me.encodeScanLine(row)
 
-        let bitDepth = ihdr.bitDepth
+        let bitDepth = me.ihdr.bitDepth
         if bitDepth < 8
         {
             let samplesPerByte = 8 / bitDepth
@@ -338,9 +338,9 @@ impl Encoder
             var shiftAmount    = initialShift
 
             let row_uc = row
-            Memory.clear(scanline, cast(u64) subimage[pass].scanlineWidth)
+            Memory.clear(me.scanline, cast(u64) me.subimage[pass].scanlineWidth)
 
-            for k in subimage[pass].width
+            for k in me.subimage[pass].width
             {
                 let ioffset = Adam7StartX[pass] + k * Adam7DeltaX[pass]
 
@@ -349,35 +349,35 @@ impl Encoder
                 sample = sample & mask
                 sample = sample << shiftAmount
 
-                scanline[0] |= sample
+                me.scanline[0] |= sample
 
                 shiftAmount -= bitDepth
 
                 if shiftAmount > 7
                 {
                     shiftAmount = initialShift
-                    scanline += 1
+                    me.scanline += 1
                 }
             }
 
-            return encodeScanLine(scanline)
+            return me.encodeScanLine(me.scanline)
         }
 
-        for k in subimage[pass].width
+        for k in me.subimage[pass].width
         {
-            let ioffset = (Adam7StartX[pass] + k * Adam7DeltaX[pass]) * pixelSize
-            Memory.copy(scanline + k * pixelSize, row + ioffset, pixelSize)
+            let ioffset = (Adam7StartX[pass] + k * Adam7DeltaX[pass]) * me.pixelSize
+            Memory.copy(me.scanline + k * me.pixelSize, row + ioffset, me.pixelSize)
         }
 
-        return encodeScanLine(scanline)
+        return me.encodeScanLine(me.scanline)
     }
 
     mtd getBestFilter(size: u32)->Filter
     {
-        if encodeFlags.filterChoice == .Disabled:
+        if me.encodeFlags.filterChoice == .Disabled:
             return .None
 
-        let chl = cast(s32) encodeFlags.filterChoice
+        let chl = cast(s32) me.encodeFlags.filterChoice
         if !(chl & (chl - 1))
         {
             for i in 5
@@ -398,7 +398,7 @@ impl Encoder
             if !(chl & flag):
                 continue
 
-            sum             = filterSum(size, cast(Filter) i)
+            sum             = me.filterSum(size, cast(Filter) i)
             filterScores[i] = Math.abs(sum)
             if filterScores[i] < bestScore
             {
@@ -434,20 +434,20 @@ impl Encoder
 
         for i in size
         {
-            if i >= bytesPerPixel
+            if i >= me.bytesPerPixel
             {
-                a = scanline[i - bytesPerPixel]
-                b = prevScanline[i]
-                c = prevScanline[i - bytesPerPixel]
+                a = me.scanline[i - me.bytesPerPixel]
+                b = me.prevScanline[i]
+                c = me.prevScanline[i - me.bytesPerPixel]
             }
             else
             {
                 a = 0
-                b = prevScanline[i]
+                b = me.prevScanline[i]
                 c = 0
             }
 
-            var x = cast(s32) scanline[i]
+            var x = cast(s32) me.scanline[i]
 
             switch filter
             {
@@ -475,20 +475,20 @@ impl Encoder
         for i in size
         {
             var a, b, c: s32
-            if i >= bytesPerPixel
+            if i >= me.bytesPerPixel
             {
-                a = scanline[i - bytesPerPixel]
-                b = prevScanline[i]
-                c = prevScanline[i - bytesPerPixel]
+                a = me.scanline[i - me.bytesPerPixel]
+                b = me.prevScanline[i]
+                c = me.prevScanline[i - me.bytesPerPixel]
             }
             else
             {
                 a = 0
-                b = prevScanline[i]
+                b = me.prevScanline[i]
                 c = 0
             }
 
-            var x = cast(s32) scanline[i]
+            var x = cast(s32) me.scanline[i]
 
             switch filter
             {
@@ -509,57 +509,57 @@ impl Encoder
 
     mtd encodeScanLine(sl: ^u8)->bool throw
     {
-        let pass = rowInfo.pass
+        let pass = me.rowInfo.pass
 
-        let scanlineWidth = subimage[pass].scanlineWidth
-        if sl != scanline
+        let scanlineWidth = me.subimage[pass].scanlineWidth
+        if sl != me.scanline
         {
-            if swapRB and bytesPerPixel == 3
+            if me.swapRB and me.bytesPerPixel == 3
             {
                 for var i = 0; i < scanlineWidth - 1; i += 3
                 {
-                    scanline[i]     = sl[i + 2]
-                    scanline[i + 1] = sl[i + 1]
-                    scanline[i + 2] = sl[i]
+                    me.scanline[i]     = sl[i + 2]
+                    me.scanline[i + 1] = sl[i + 1]
+                    me.scanline[i + 2] = sl[i]
                 }
             }
-            elif swapRB and bytesPerPixel == 4
+            elif me.swapRB and me.bytesPerPixel == 4
             {
                 for var i = 0; i < scanlineWidth - 1; i += 4
                 {
-                    scanline[i]     = sl[i + 2]
-                    scanline[i + 1] = sl[i + 1]
-                    scanline[i + 2] = sl[i]
-                    scanline[i + 3] = sl[i + 3]
+                    me.scanline[i]     = sl[i + 2]
+                    me.scanline[i + 1] = sl[i + 1]
+                    me.scanline[i + 2] = sl[i]
+                    me.scanline[i + 3] = sl[i + 3]
                 }
             }
             else
             {
-                Memory.copy(scanline, sl, cast(u64) scanlineWidth - 1)
+                Memory.copy(me.scanline, sl, cast(u64) scanlineWidth - 1)
             }
         }
 
-        let requiresPrevious = encodeFlags.filterChoice & (.Up | .Average | .Paeth)
-        if !rowInfo.scanlineIdx and requiresPrevious:
-            Memory.clear(prevScanline, cast(u64) scanlineWidth)
+        let requiresPrevious = me.encodeFlags.filterChoice & (.Up | .Average | .Paeth)
+        if !me.rowInfo.scanlineIdx and requiresPrevious:
+            Memory.clear(me.prevScanline, cast(u64) scanlineWidth)
 
-        var filtered_sl = filteredScanline
-        let filter      = getBestFilter(scanlineWidth - 1)
+        var filtered_sl = me.filteredScanline
+        let filter      = me.getBestFilter(scanlineWidth - 1)
         if filter == .None:
-            filtered_sl = scanline
+            filtered_sl = me.scanline
         filtered_sl -= 1
         filtered_sl[0] = cast(u8) filter
         filtered_sl += 1
 
         if filter:
-            filterScanline(filtered_sl, scanlineWidth - 1, filter)
+            me.filterScanline(filtered_sl, scanlineWidth - 1, filter)
 
-        writeIDatBytes(filtered_sl - 1, scanlineWidth)
+        me.writeIDatBytes(filtered_sl - 1, scanlineWidth)
 
-        swap(&prevScanline, &scanline)
-        if updateRowInfo()
+        swap(&me.prevScanline, &me.scanline)
+        if me.updateRowInfo()
         {
-            finishIDat()
+            me.finishIDat()
             return true
         }
 
@@ -568,19 +568,19 @@ impl Encoder
 
     mtd updateRowInfo()->bool
     {
-        let interlacing = ihdr.interlaceMethod
-        let ri          = &rowInfo
-        var sub         = subimage
+        let interlacing = me.ihdr.interlaceMethod
+        let ri          = &me.rowInfo
+        var sub         = me.subimage
 
         if ri.scanlineIdx == sub[ri.pass].height - 1
         {
-            if ri.pass == lastPass:
+            if ri.pass == me.lastPass:
                 return true
 
             ri.scanlineIdx = 0
             ri.pass += 1
 
-            while (!sub[ri.pass].width or !sub[ri.pass].height) and (ri.pass < lastPass):
+            while (!sub[ri.pass].width or !sub[ri.pass].height) and (ri.pass < me.lastPass):
                 ri.pass += 1
         }
         else
@@ -614,7 +614,7 @@ public impl IImageEncoder for Encoder
         if @dataof(options) != null
         {
             Debug.assert(@kindof(options) == EncodeOptions)
-            userOptions = dref cast(*EncodeOptions) @dataof(options)
+            me.userOptions = dref cast(*EncodeOptions) @dataof(options)
         }
 
         // unsupported pixel format
@@ -623,49 +623,49 @@ public impl IImageEncoder for Encoder
         if image.width == 0 or image.height == 0:
             throw UnsupportedFormatError{"unsupported size"}
 
-        swapRB = image.pf == .BGR8 or image.pf == .BGRA8
+        me.swapRB = image.pf == .BGR8 or image.pf == .BGRA8
 
-        stream = result
+        me.stream = result
 
-        stored.ihdr    = true
-        ihdr.width     = image.width
-        ihdr.height    = image.height
-        ihdr.bitDepth  = 8
-        ihdr.colorType = .Color
+        me.stored.ihdr    = true
+        me.ihdr.width     = image.width
+        me.ihdr.height    = image.height
+        me.ihdr.bitDepth  = 8
+        me.ihdr.colorType = .Color
         if image.bpp == 32:
-            ihdr.colorType |= .Alpha
+            me.ihdr.colorType |= .Alpha
 
-        writeChunksBeforeIDat()
-        writeMetaDatas(image)
-        calculateSubImages()
+        me.writeChunksBeforeIDat()
+        me.writeMetaDatas(image)
+        me.calculateSubImages()
 
-        bytesPerPixel = numChannels() * (ihdr.bitDepth / 8)
-        var scanlineBufSize = subimage[widestPass].scanlineWidth
+        me.bytesPerPixel = me.numChannels() * (me.ihdr.bitDepth / 8)
+        var scanlineBufSize = me.subimage[me.widestPass].scanlineWidth
         scanlineBufSize += 32
 
-        scanlineBuf         = Memory.alloc(cast(u64) scanlineBufSize)
-        prevScanlineBuf     = Memory.alloc(cast(u64) scanlineBufSize)
-        filteredScanlineBuf = Memory.alloc(cast(u64) scanlineBufSize)
-        defer Memory.free(scanlineBuf, cast(u64) scanlineBufSize)
-        defer Memory.free(prevScanlineBuf, cast(u64) scanlineBufSize)
-        defer Memory.free(filteredScanlineBuf, cast(u64) scanlineBufSize)
+        me.scanlineBuf         = Memory.alloc(cast(u64) scanlineBufSize)
+        me.prevScanlineBuf     = Memory.alloc(cast(u64) scanlineBufSize)
+        me.filteredScanlineBuf = Memory.alloc(cast(u64) scanlineBufSize)
+        defer Memory.free(me.scanlineBuf, cast(u64) scanlineBufSize)
+        defer Memory.free(me.prevScanlineBuf, cast(u64) scanlineBufSize)
+        defer Memory.free(me.filteredScanlineBuf, cast(u64) scanlineBufSize)
 
-        scanline         = scanlineBuf + 16
-        prevScanline     = prevScanlineBuf + 16
-        filteredScanline = filteredScanlineBuf + 16
+        me.scanline         = me.scanlineBuf + 16
+        me.prevScanline     = me.prevScanlineBuf + 16
+        me.filteredScanline = me.filteredScanlineBuf + 16
 
-        pixelSize = image.bpp
-        if userOptions.filtering and userOptions.compressionLevel != .NoCompression:
-            encodeFlags.filterChoice = .All
+        me.pixelSize = image.bpp
+        if me.userOptions.filtering and me.userOptions.compressionLevel != .NoCompression:
+            me.encodeFlags.filterChoice = .All
 
         for
         {
-            let ioffset = (image.height - rowInfo.rowNum - 1) * image.width * image.bpp8
-            if encodeRow(image.pixels.buffer + ioffset):
+            let ioffset = (image.height - me.rowInfo.rowNum - 1) * image.width * image.bpp8
+            if me.encodeRow(image.pixels.buffer + ioffset):
                 break
         }
 
-        discard writeHeader(TypeIEnd, 0)
-        finishChunk()
+        discard me.writeHeader(TypeIEnd, 0)
+        me.finishChunk()
     }
 }

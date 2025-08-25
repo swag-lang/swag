@@ -101,27 +101,30 @@ bool FormatAst::outputIdentifierRef(FormatContext& context, AstNode* node)
     {
         if (g_CommandLine.patchMode)
         {
-            idx++;
-            if (it->token.text == "me" && it->hasAstFlag(AST_GENERATED))
+            if (!node->hasSpecFlag(AstIdentifierRef::SPEC_FLAG_AUTO_SCOPE | AstIdentifierRef::SPEC_FLAG_AUTO_WITH_SCOPE))
             {
-                if (idx != node->children.size() &&
-                    (!node->children[idx]->resolvedSymbolName() || !node->children[idx]->resolvedSymbolName()->is(SymbolKind::GenericType)))
+                idx++;
+                if (it->token.text == "me" && it->hasAstFlag(AST_GENERATED))
                 {
-                    concat->addString("me.");
+                    if (idx != node->children.size() &&
+                        (!node->children[idx]->resolvedSymbolName() || !node->children[idx]->resolvedSymbolName()->is(SymbolKind::GenericType)))
+                    {
+                        concat->addString("me.");
+                    }
                 }
-            }
-            else if (idx == 1 &&
-                     it->resolvedSymbolName() &&
-                     it->resolvedSymbolName()->is(SymbolKind::Function) &&
-                     it->is(AstNodeKind::Identifier))
-            {
-                const auto id = castAst<AstIdentifier>(it, AstNodeKind::Identifier);
-                if (id->callParameters &&
-                    !id->callParameters->children.empty() &&
-                    id->callParameters->firstChild()->hasAstFlag(AST_GENERATED) &&
-                    id->callParameters->firstChild()->token.text == "me")
+                else if (idx == 1 &&
+                         it->resolvedSymbolName() &&
+                         it->resolvedSymbolName()->is(SymbolKind::Function) &&
+                         it->is(AstNodeKind::Identifier))
                 {
-                    concat->addString("me.");
+                    const auto id = castAst<AstIdentifier>(it, AstNodeKind::Identifier);
+                    if (id->callParameters &&
+                        !id->callParameters->children.empty() &&
+                        id->callParameters->firstChild()->hasAstFlag(AST_GENERATED) &&
+                        id->callParameters->firstChild()->token.text == "me")
+                    {
+                        concat->addString("me.");
+                    }
                 }
             }
         }

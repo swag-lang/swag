@@ -59,7 +59,7 @@ impl Image
             }
         }
 
-        switch bpp
+        switch me.bpp
         {
         case 24:
             doIt'24()
@@ -73,20 +73,20 @@ impl Image
     // Mix with another image
     public mtd mix(srcImage: Image, x, y: s32, mode = MixMode.Copy)
     {
-        Debug.assert(pf == srcImage.pf, "mismatched pixel format")
-        Debug.assert(pixels.buffer != null)
-        allocWorkingBuffer()
-        doMix(workingBuffer, srcImage, x, y, mode)
-        applyWorkingBuffer()
+        Debug.assert(me.pf == srcImage.pf, "mismatched pixel format")
+        Debug.assert(me.pixels.buffer != null)
+        me.allocWorkingBuffer()
+        me.doMix(me.workingBuffer, srcImage, x, y, mode)
+        me.applyWorkingBuffer()
     }
 
     // Mix with another image
     public mtd const toMix(srcImage: Image, x, y: s32, mode = MixMode.Copy)->Image
     {
-        Debug.assert(pixels.buffer != null)
-        Debug.assert(pf == srcImage.pf, "mismatched pixel format")
-        var result: retval = create(width, height, pf)
-        doMix(&result, srcImage, x, y, mode)
+        Debug.assert(me.pixels.buffer != null)
+        Debug.assert(me.pf == srcImage.pf, "mismatched pixel format")
+        var result: retval = create(me.width, me.height, me.pf)
+        me.doMix(&result, srcImage, x, y, mode)
         return result
     }
 }

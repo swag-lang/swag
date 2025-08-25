@@ -13,12 +13,12 @@ impl Painter
             return
         Debug.assert(endAngle.rad > startAngle.rad)
 
-        sharedSolidPen.brush.type  = .SolidColor
-        sharedSolidPen.brush.color = color
-        sharedSolidPen.size        = penSize
+        me.sharedSolidPen.brush.type  = .SolidColor
+        me.sharedSolidPen.brush.color = color
+        me.sharedSolidPen.size        = penSize
 
-        sharedLinePath.setArc(centerX, centerY, radius, startAngle, endAngle)
-        drawPath(&sharedLinePath, sharedSolidPen)
+        me.sharedLinePath.setArc(centerX, centerY, radius, startAngle, endAngle)
+        me.drawPath(&me.sharedLinePath, me.sharedSolidPen)
     }
 
     #[Swag.Overload]
@@ -28,8 +28,8 @@ impl Painter
             return
         if Math.isZeroEpsilon(endAngle.rad - startAngle.rad):
             return
-        sharedLinePath.setArc(centerX, centerY, radius, startAngle, endAngle)
-        drawPath(&sharedLinePath, pen)
+        me.sharedLinePath.setArc(centerX, centerY, radius, startAngle, endAngle)
+        me.drawPath(&me.sharedLinePath, pen)
     }
 
     // Draw an empty circle
@@ -38,16 +38,16 @@ impl Painter
     {
         if radius == 0 or color.a == 0:
             return
-        sharedSolidPen.brush.type  = .SolidColor
-        sharedSolidPen.brush.color = color
-        sharedSolidPen.size        = penSize
-        drawCircle(centerX, centerY, radius, sharedSolidPen)
+        me.sharedSolidPen.brush.type  = .SolidColor
+        me.sharedSolidPen.brush.color = color
+        me.sharedSolidPen.size        = penSize
+        me.drawCircle(centerX, centerY, radius, me.sharedSolidPen)
     }
 
     #[Swag.Overload]
     mtd drawCircle(centerX, centerY: f32, radius: f32, pen: Pen)
     {
-        drawEllipse(centerX, centerY, radius, radius, pen)
+        me.drawEllipse(centerX, centerY, radius, radius, pen)
     }
 
     // Draw a solid circle
@@ -56,8 +56,8 @@ impl Painter
     {
         if radius == 0 or brush.color.a == 0:
             return
-        sharedLinePath.setEllipse(centerX, centerY, radius, radius)
-        fillPath(&sharedLinePath, brush)
+        me.sharedLinePath.setEllipse(centerX, centerY, radius, radius)
+        me.fillPath(&me.sharedLinePath, brush)
     }
 
     #[Swag.Overload]
@@ -65,10 +65,10 @@ impl Painter
     {
         if radius == 0 or color.a == 0:
             return
-        sharedSolidBrush.type  = .SolidColor
-        sharedSolidBrush.color = color
-        sharedLinePath.setEllipse(centerX, centerY, radius, radius)
-        fillPath(&sharedLinePath, sharedSolidBrush)
+        me.sharedSolidBrush.type  = .SolidColor
+        me.sharedSolidBrush.color = color
+        me.sharedLinePath.setEllipse(centerX, centerY, radius, radius)
+        me.fillPath(&me.sharedLinePath, me.sharedSolidBrush)
     }
 
     // Draw an empty ellipse
@@ -77,10 +77,10 @@ impl Painter
     {
         if radiusX == 0 or radiusY == 0 or color.a == 0 or penSize == 0:
             return
-        sharedSolidPen.brush.type  = .SolidColor
-        sharedSolidPen.brush.color = color
-        sharedSolidPen.size        = penSize
-        drawEllipse(centerX, centerY, radiusX, radiusY, sharedSolidPen)
+        me.sharedSolidPen.brush.type  = .SolidColor
+        me.sharedSolidPen.brush.color = color
+        me.sharedSolidPen.size        = penSize
+        me.drawEllipse(centerX, centerY, radiusX, radiusY, me.sharedSolidPen)
     }
 
     #[Swag.Overload]
@@ -102,20 +102,20 @@ impl Painter
             rY -= pen.size * 0.5
         }
 
-        sharedLinePath.setEllipseRaw(centerX, centerY, rX, rY)
-        drawPath(&sharedLinePath, pen)
+        me.sharedLinePath.setEllipseRaw(centerX, centerY, rX, rY)
+        me.drawPath(&me.sharedLinePath, pen)
     }
 
     #[Swag.Overload]
     mtd drawEllipse(rect: Math.Rectangle, color: Color, penSize: f32 = 1)
     {
-        drawEllipse(rect.horzCenter(), rect.vertCenter(), rect.width * 0.5, rect.height * 0.5, color, penSize)
+        me.drawEllipse(rect.horzCenter(), rect.vertCenter(), rect.width * 0.5, rect.height * 0.5, color, penSize)
     }
 
     #[Swag.Overload]
     mtd drawEllipse(rect: Math.Rectangle, pen: Pen)
     {
-        drawEllipse(rect.horzCenter(), rect.vertCenter(), rect.width * 0.5, rect.height * 0.5, pen)
+        me.drawEllipse(rect.horzCenter(), rect.vertCenter(), rect.width * 0.5, rect.height * 0.5, pen)
     }
 
     // Draw a solid ellipse
@@ -124,8 +124,8 @@ impl Painter
     {
         if radiusX == 0 or radiusY == 0 or brush.color.a == 0:
             return
-        sharedLinePath.setEllipseRaw(centerX, centerY, radiusX, radiusY)
-        fillPath(&sharedLinePath, brush)
+        me.sharedLinePath.setEllipseRaw(centerX, centerY, radiusX, radiusY)
+        me.fillPath(&me.sharedLinePath, brush)
     }
 
     #[Swag.Overload]
@@ -133,21 +133,21 @@ impl Painter
     {
         if radiusX == 0 or radiusY == 0 or color.a == 0:
             return
-        sharedSolidBrush.type  = .SolidColor
-        sharedSolidBrush.color = color
-        sharedLinePath.setEllipse(centerX, centerY, radiusX, radiusY)
-        fillPath(&sharedLinePath, sharedSolidBrush)
+        me.sharedSolidBrush.type  = .SolidColor
+        me.sharedSolidBrush.color = color
+        me.sharedLinePath.setEllipse(centerX, centerY, radiusX, radiusY)
+        me.fillPath(&me.sharedLinePath, me.sharedSolidBrush)
     }
 
     #[Swag.Overload]
     mtd fillEllipse(rect: Math.Rectangle, brush: Brush)
     {
-        fillEllipse(rect.horzCenter(), rect.vertCenter(), rect.width * 0.5, rect.height * 0.5, brush)
+        me.fillEllipse(rect.horzCenter(), rect.vertCenter(), rect.width * 0.5, rect.height * 0.5, brush)
     }
 
     #[Swag.Overload]
     mtd fillEllipse(rect: Math.Rectangle, color: Color)
     {
-        fillEllipse(rect.horzCenter(), rect.vertCenter(), rect.width * 0.5, rect.height * 0.5, color)
+        me.fillEllipse(rect.horzCenter(), rect.vertCenter(), rect.width * 0.5, rect.height * 0.5, color)
     }
 }

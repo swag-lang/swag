@@ -59,7 +59,7 @@ public impl Font
 
     mtd opDrop()
     {
-        foreach k, v in unicodeRef:
+        foreach k, v in me.unicodeRef:
             Memory.delete(v)
     }
 
@@ -130,21 +130,21 @@ public impl Font
         // Already there ?
         if c < 128
         {
-            if asciiRef[cast(u32) c].atlasIndex >= 0:
-                return &asciiRef[cast(u32) c]
+            if me.asciiRef[cast(u32) c].atlasIndex >= 0:
+                return &me.asciiRef[cast(u32) c]
         }
         else
         {
-            let entry = unicodeRef.tryFind(c)
+            let entry = me.unicodeRef.tryFind(c)
             if entry:
                 return entry.value
         }
 
         // Render the glyph
-        let bmp = assume typeFace.renderGlyph(c, size, forceBold, forceItalic)
+        let bmp = assume me.typeFace.renderGlyph(c, me.size, me.forceBold, me.forceItalic)
 
         // Creates a new atlas if this is the first time, or if the last atlas is full
-        var atlas = atlases.count ? &atlases.buffer[atlases.count - 1] : null
+        var atlas = me.atlases.count ? &me.atlases.buffer[me.atlases.count - 1] : null
         if atlas
         {
             if atlas.curX + bmp.width > atlas.width
@@ -165,12 +165,12 @@ public impl Font
         {
             var newAtlas: GlyphAtlas
             newAtlas.bpp    = 1
-            newAtlas.width  = Math.roundUpToPowerOf2(size * 4) * newAtlas.bpp
-            newAtlas.height = Math.roundUpToPowerOf2(size * 4)
+            newAtlas.width  = Math.roundUpToPowerOf2(me.size * 4) * newAtlas.bpp
+            newAtlas.height = Math.roundUpToPowerOf2(me.size * 4)
             newAtlas.datas.resize(cast(u64) newAtlas.width * newAtlas.height)
             Memory.clear(newAtlas.datas.buffer, newAtlas.datas.count)
-            atlases.add(newAtlas)
-            atlas = &atlases.buffer[atlases.count - 1]
+            me.atlases.add(newAtlas)
+            atlas = &me.atlases.buffer[me.atlases.count - 1]
         }
 
         let x = atlas.curX
@@ -192,17 +192,17 @@ public impl Font
         // Setup GlyphDesc
         var refr: *GlyphDesc
         if c < 128:
-            refr = &asciiRef[cast(u32) c]
+            refr = &me.asciiRef[cast(u32) c]
         else
         {
             refr = Memory.new'GlyphDesc()
-            unicodeRef.add(c, refr)
+            me.unicodeRef.add(c, refr)
         }
 
         refr.width  = bmp.width
         refr.height = bmp.rows
 
-        let glyph = typeFace.face.glyph
+        let glyph = me.typeFace.face.glyph
         refr.advanceX = glyph.advance.x / 64.0
         refr.advanceY = glyph.advance.y / 64.0
         refr.shiftX   = glyph.bitmap_left
@@ -216,9 +216,9 @@ public impl Font
         refr.uv.height = refr.height / heightf
         refr.width /= atlas.bpp
 
-        refr.atlasIndex = cast(u32) (atlases.count - 1)
+        refr.atlasIndex = cast(u32) (me.atlases.count - 1)
 
-        dirty       = true
+        me.dirty    = true
         atlas.dirty = true
 
         return refr

@@ -43,7 +43,7 @@ public impl Image
     // Save the image to a file
     mtd save(fileName: string, options: any = null) throw
     {
-        Debug.assert(pixels.buffer != null, "image is invalid")
+        Debug.assert(me.pixels.buffer != null, "image is invalid")
 
         // Find the encoder that can treat 'fileName'
         var found: *ImageEncoder

@@ -48,7 +48,7 @@ impl Color
 
     // Check if the color is fully opaque.
     #[Inline]
-    mtd const isOpaque() => a == 255
+    mtd const isOpaque() => me.a == 255
 
     // Set all ARGB components with u8 values (0-255).
     #[Inline]
@@ -259,17 +259,17 @@ impl Color
 
         if _s == 0
         {
-            r = cast(u8) (255 * _l)
-            g = r
-            b = r
+            me.r = cast(u8) (255 * _l)
+            me.g = me.r
+            me.b = me.r
         }
         else
         {
             let m2 = _l < 0.5 ? _l * (1 + _s) : (_l + _s) - (_l * _s)
             let m1 = 2 * _l - m2
-            r = hueToCol(m1, m2, _h + (1.0 / 3.0))
-            g = hueToCol(m1, m2, _h)
-            b = hueToCol(m1, m2, _h - (1.0 / 3.0))
+            me.r = hueToCol(m1, m2, _h + (1.0 / 3.0))
+            me.g = hueToCol(m1, m2, _h)
+            me.b = hueToCol(m1, m2, _h - (1.0 / 3.0))
         }
     }
 
@@ -278,7 +278,7 @@ impl Color
     {
         var result: retval = undefined
 
-        let (rf, gf, bf) = toRgbf()
+        let (rf, gf, bf) = me.toRgbf()
         let max = Math.max(rf, gf, bf)
         let min = Math.min(rf, gf, bf)
         result.l = (max + min) * 0.5
@@ -355,9 +355,9 @@ impl Color
     // Calculate the RGB distance between this color and another (normalized to [0, 1]).
     mtd const getDistanceRgb(col: Color)->f32
     {
-        let x1   = cast(f32) r - col.r
-        let x2   = cast(f32) g - col.g
-        let x3   = cast(f32) b - col.b
+        let x1   = cast(f32) me.r - col.r
+        let x2   = cast(f32) me.g - col.g
+        let x3   = cast(f32) me.b - col.b
         var dist = Math.sqrt((x1 * x1) + (x2 * x2) + (x3 * x3))
         dist /= Math.sqrt(255.0 * 255.0 * 3.0) // Normalize to [0, 1]
         return dist
@@ -367,46 +367,46 @@ impl Color
     #[Inline]
     mtd const isDark()->bool
     {
-        return getGrayScalef() < 0.5
+        return me.getGrayScalef() < 0.5
     }
 
     // Check if the color is considered "light" based on luminance.
     #[Inline]
     mtd const isLight()->bool
     {
-        return getGrayScalef() >= 0.5
+        return me.getGrayScalef() >= 0.5
     }
 
     // Get a contrasting color (black or white) for text readability.
     #[Inline, ConstExpr]
     mtd const getContrastingColor()->Color
     {
-        return isDark() ? Color.fromArgb(Argb.White) : Color.fromArgb(Argb.Black)
+        return me.isDark() ? Color.fromArgb(Argb.White) : Color.fromArgb(Argb.Black)
     }
 
     // Calculate the perceived brightness using luminance formula.
     #[Inline]
     mtd const getGrayScalef()->f32
     {
-        return (cast(f32) r * 0.299 + cast(f32) g * 0.587 + cast(f32) b * 0.114) / 255.0
+        return (cast(f32) me.r * 0.299 + cast(f32) me.g * 0.587 + cast(f32) me.b * 0.114) / 255.0
     }
 
     // Convert to grayscale color preserving alpha.
     #[Inline, ConstExpr]
     mtd const toGrayscale()->Color
     {
-        let gray = cast(u8) getGrayScalef() * 255
-        return Color.fromArgb(a, gray, gray, gray)
+        let gray = cast(u8) me.getGrayScalef() * 255
+        return Color.fromArgb(me.a, gray, gray, gray)
     }
 
     // Adjust saturation (-1.0 = grayscale, 0.0 = no change, 1.0 = full saturation).
     #[ConstExpr]
     mtd const adjustSaturation(factor: f32)->Color
     {
-        let hsl    = toHsl()
+        let hsl    = me.toHsl()
         let newS   = Math.clamp(hsl.s + factor, 0.0, 1.0)
         var result = Color.fromHsl(hsl.h, newS, hsl.l)
-        result.a = a // Preserve alpha
+        result.a = me.a // Preserve alpha
         return result
     }
 
@@ -414,10 +414,10 @@ impl Color
     #[ConstExpr]
     mtd const adjustBrightness(factor: f32)->Color
     {
-        let hsl    = toHsl()
+        let hsl    = me.toHsl()
         let newL   = Math.clamp(hsl.l + factor, 0.0, 1.0)
         var result = Color.fromHsl(hsl.h, hsl.s, newL)
-        result.a = a // Preserve alpha
+        result.a = me.a // Preserve alpha
         return result
     }
 
@@ -425,14 +425,14 @@ impl Color
     #[ConstExpr]
     mtd const rotateHue(degrees: f32)->Color
     {
-        let hsl  = toHsl()
+        let hsl  = me.toHsl()
         var newH = hsl.h + (degrees / 360.0)
         if newH > 1.0:
             newH -= 1.0
         elif newH < 0.0:
             newH += 1.0
         var result = Color.fromHsl(newH, hsl.s, hsl.l)
-        result.a = a // Preserve alpha
+        result.a = me.a // Preserve alpha
         return result
     }
 
@@ -440,21 +440,21 @@ impl Color
     #[Inline, ConstExpr]
     mtd const withAlpha(alpha: u8)->Color
     {
-        return fromArgb(alpha, r, g, b)
+        return fromArgb(alpha, me.r, me.g, me.b)
     }
 
     // Create a color with modified alpha (float version).
     #[Inline, ConstExpr]
     mtd const withAlphaf(alpha: f32)->Color
     {
-        return fromArgb(cast(u8) (Math.clamp(alpha, 0.0, 1.0) * 255), r, g, b)
+        return fromArgb(cast(u8) (Math.clamp(alpha, 0.0, 1.0) * 255), me.r, me.g, me.b)
     }
 
     // Get complementary color (opposite on color wheel).
     #[ConstExpr]
     mtd const getComplementary()->Color
     {
-        return rotateHue(180.0)
+        return me.rotateHue(180.0)
     }
 
     // Multiply color by another color (component-wise).
@@ -498,32 +498,32 @@ impl Core.StrConv.IPokeValue for Color
 
         if buf[0] == '0' and buf[1] | 32 == 'x'
         {
-            (argb, eat, ovf) = try parseU32(one)
+            (me.argb, eat, ovf) = try parseU32(one)
             if ovf:
                 throw OverflowError{}
             one = Tokenize.eatCount(one, eat)
         }
         elif Latin1.isDigit(buf[0])
         {
-            (a, eat, ovf) = try parseU8(one)
+            (me.a, eat, ovf) = try parseU8(one)
             if ovf:
                 throw OverflowError{}
             one = Tokenize.eatCount(one, eat)
 
             one = Tokenize.eatSpaces(one)
-            (r, eat, ovf) = try parseU8(one)
+            (me.r, eat, ovf) = try parseU8(one)
             if ovf:
                 throw OverflowError{}
             one = Tokenize.eatCount(one, eat)
 
             one = Tokenize.eatSpaces(one)
-            (g, eat, ovf) = try parseU8(one)
+            (me.g, eat, ovf) = try parseU8(one)
             if ovf:
                 throw OverflowError{}
             one = Tokenize.eatCount(one, eat)
 
             one = Tokenize.eatSpaces(one)
-            (b, eat, ovf) = try parseU8(one)
+            (me.b, eat, ovf) = try parseU8(one)
             if ovf:
                 throw OverflowError{}
             one = Tokenize.eatCount(one, eat)
@@ -531,8 +531,8 @@ impl Core.StrConv.IPokeValue for Color
         else
         {
             let id = try parseIdentifier(one)
-            one  = Tokenize.eatCount(one, @countof(id))
-            argb = cast(u32) Argb.fromName(id)
+            one     = Tokenize.eatCount(one, @countof(id))
+            me.argb = cast(u32) Argb.fromName(id)
         }
 
         return one

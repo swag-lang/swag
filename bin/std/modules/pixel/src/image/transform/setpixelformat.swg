@@ -5,12 +5,12 @@ impl Image
     mtd const doRGB8(dstImage: *Image)
     {
         #[Swag.Complete]
-        switch pf
+        switch me.pf
         {
         case RGB8:
             break
         case RGBA8:
-            visitPixels(dstImage)
+            me.visitPixels(dstImage)
             {
                 let dstImage = cast(*Image) userData
                 let pixDst   = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
@@ -19,7 +19,7 @@ impl Image
                 pixDst[2] = pix[2]
             }
         case BGR8, BGRA8:
-            visitPixels(dstImage)
+            me.visitPixels(dstImage)
             {
                 let dstImage = cast(*Image) userData
                 let pixDst   = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
@@ -33,12 +33,12 @@ impl Image
     mtd const doRGBA8(dstImage: *Image)
     {
         #[Swag.Complete]
-        switch pf
+        switch me.pf
         {
         case RGBA8:
             break
         case BGRA8:
-            visitPixels(dstImage)
+            me.visitPixels(dstImage)
             {
                 let dstImage = cast(*Image) userData
                 let pixDst   = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
@@ -48,7 +48,7 @@ impl Image
                 pixDst[3] = pix[3]
             }
         case RGB8:
-            visitPixels(dstImage)
+            me.visitPixels(dstImage)
             {
                 let dstImage = cast(*Image) userData
                 let pixDst   = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
@@ -58,7 +58,7 @@ impl Image
                 pixDst[3] = 255
             }
         case BGR8:
-            visitPixels(dstImage)
+            me.visitPixels(dstImage)
             {
                 let dstImage = cast(*Image) userData
                 let pixDst   = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
@@ -73,12 +73,12 @@ impl Image
     mtd const doBGR8(dstImage: *Image)
     {
         #[Swag.Complete]
-        switch pf
+        switch me.pf
         {
         case BGR8:
             break
         case BGRA8:
-            visitPixels(dstImage)
+            me.visitPixels(dstImage)
             {
                 let dstImage = cast(*Image) userData
                 let pixDst   = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
@@ -87,7 +87,7 @@ impl Image
                 pixDst[2] = pix[2]
             }
         case RGB8, RGBA8:
-            visitPixels(dstImage)
+            me.visitPixels(dstImage)
             {
                 let dstImage = cast(*Image) userData
                 let pixDst   = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
@@ -101,12 +101,12 @@ impl Image
     mtd const doBGRA8(dstImage: *Image)
     {
         #[Swag.Complete]
-        switch pf
+        switch me.pf
         {
         case BGRA8:
             break
         case BGR8:
-            visitPixels(dstImage)
+            me.visitPixels(dstImage)
             {
                 let dstImage = cast(*Image) userData
                 let pixDst   = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
@@ -116,7 +116,7 @@ impl Image
                 pixDst[3] = 255
             }
         case RGB8:
-            visitPixels(dstImage)
+            me.visitPixels(dstImage)
             {
                 let dstImage = cast(*Image) userData
                 let pixDst   = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
@@ -126,7 +126,7 @@ impl Image
                 pixDst[3] = 255
             }
         case RGBA8:
-            visitPixels(dstImage)
+            me.visitPixels(dstImage)
             {
                 let dstImage = cast(*Image) userData
                 let pixDst   = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
@@ -144,39 +144,39 @@ impl Image
         switch dstImage.pf
         {
         case RGB8:
-            doRGB8(dstImage)
+            me.doRGB8(dstImage)
         case RGBA8:
-            doRGBA8(dstImage)
+            me.doRGBA8(dstImage)
         case BGR8:
-            doBGR8(dstImage)
+            me.doBGR8(dstImage)
         case BGRA8:
-            doBGRA8(dstImage)
+            me.doBGRA8(dstImage)
         }
     }
 
     // Change image pixel format
     public mtd setPixelFormat(newPf: PixelFormat)
     {
-        Debug.assert(pixels.buffer != null)
+        Debug.assert(me.pixels.buffer != null)
 
-        if newPf == pf:
+        if newPf == me.pf:
             return
 
-        allocWorkingBuffer(width, height, newPf)
-        doChangePf(workingBuffer)
-        applyWorkingBuffer()
+        me.allocWorkingBuffer(me.width, me.height, newPf)
+        me.doChangePf(me.workingBuffer)
+        me.applyWorkingBuffer()
     }
 
     // Change image pixel format
     public mtd const toSetPixelFormat(newPf: PixelFormat)->Image
     {
-        Debug.assert(pixels.buffer != null)
+        Debug.assert(me.pixels.buffer != null)
 
-        if newPf == pf:
+        if newPf == me.pf:
             return dref me
 
-        var result: retval = create(width, height, newPf)
-        doChangePf(&result)
+        var result: retval = create(me.width, me.height, newPf)
+        me.doChangePf(&result)
         return result
     }
 }

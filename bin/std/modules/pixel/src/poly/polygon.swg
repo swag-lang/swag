@@ -22,13 +22,13 @@ impl Polygon
     #[Swag.Inline, Swag.Overload]
     mtd getPoint(i: u64)->&Vector2
     {
-        return points.buffer + i
+        return me.points.buffer + i
     }
 
     #[Swag.Inline, Swag.Overload]
     mtd const getPoint(i: u64)->const &Vector2
     {
-        return points.buffer + i
+        return me.points.buffer + i
     }
 
     // Get the given point, with an optional offset
@@ -36,13 +36,13 @@ impl Polygon
     mtd getPoint(i: u64, offset: f32)->Vector2
     {
         if Math.isZeroEpsilon(offset):
-            return points.buffer[i]
+            return me.points.buffer[i]
 
-        let count = points.count - 1
+        let count = me.points.count - 1
 
-        let v0 = points.buffer[(i + count - 1) % count]
-        let v1 = points.buffer[i]
-        let v2 = points.buffer[(i + 1) % count]
+        let v0 = me.points.buffer[(i + count - 1) % count]
+        let v1 = me.points.buffer[i]
+        let v2 = me.points.buffer[(i + 1) % count]
 
         let tmp0 = Vector2.toNormalizedSafe(v1 - v0)
         let n0   = tmp0.cross(1)
@@ -73,10 +73,10 @@ impl Polygon
     mtd normalizeDist(dist: f32, closed: bool = true)
     {
         var i = 0'u64
-        while i < (closed ? points.count : points.count - 1)
+        while i < (closed ? me.points.count : me.points.count - 1)
         {
             defer i += 1
-            var v      = points[(i + 1) % points.count] - points[i]
+            var v      = me.points[(i + 1) % me.points.count] - me.points[i]
             let d      = v.length()
             var divide = cast(s32) (d / dist)
             if divide > 0
@@ -84,8 +84,8 @@ impl Polygon
                 v /= cast(f32) (divide + 1)
                 while divide > 0
                 {
-                    var np = points[i] + v
-                    points.insertAt(i + 1, np)
+                    var np = me.points[i] + v
+                    me.points.insertAt(i + 1, np)
                     divide -= 1
                     i += 1
                 }
@@ -96,17 +96,17 @@ impl Polygon
     // Clear all points
     mtd clear()
     {
-        area        = 0
-        isClockwise = false
-        isConvex    = true
-        totalLen    = 0
-        points.clear()
+        me.area        = 0
+        me.isClockwise = false
+        me.isConvex    = true
+        me.totalLen    = 0
+        me.points.clear()
     }
 
     // Add a new point
     mtd add(v: Vector2)
     {
-        points.add(v)
+        me.points.add(v)
     }
 
     // Fast expand polygon by a given amount
@@ -115,21 +115,21 @@ impl Polygon
     {
         if Math.isZeroEpsilon(value):
             return
-        if !points.count:
+        if !me.points.count:
             return
 
         var copy: Array'Vector2
-        copy.reserve(points.count)
+        copy.reserve(me.points.count)
 
-        for i in points.count:
-            copy.add(getPoint(i, value))
+        for i in me.points.count:
+            copy.add(me.getPoint(i, value))
 
-        points = #move copy
+        me.points = #move copy
     }
 
     internal mtd storeClipperResult(res: Clipper.ClipperPath)
     {
-        clear()
+        me.clear()
         if !res.count:
             return
 
@@ -140,10 +140,10 @@ impl Polygon
         }
 
         // Closed path needs last point to be the same as the first one
-        var v0 = getPoint(0)
-        add(v0)
+        var v0 = me.getPoint(0)
+        me.add(v0)
 
-        compute()
+        me.compute()
     }
 
     #[Swag.Overload]
@@ -151,7 +151,7 @@ impl Polygon
     {
         if Math.isZeroEpsilon(value):
             return
-        if !points.count:
+        if !me.points.count:
             return
 
         var joinType = Clipper.JoinType.Square
@@ -170,7 +170,7 @@ impl Polygon
 
         // Register path
         var path: Clipper.ClipperPath
-        foreach pt in points:
+        foreach pt in me.points:
             path.add(Clipper.IntPoint{cast(s64) (pt.x * ClipperScaleCoords), cast(s64) (pt.y * ClipperScaleCoords)})
         off.addPath(path, joinType)
 
@@ -184,21 +184,21 @@ impl Polygon
     {
         var res: Clipper.ClipperPaths
 
-        offset(&res, value, joinStyle, toler)
-        clear()
+        me.offset(&res, value, joinStyle, toler)
+        me.clear()
         if res.count:
-            storeClipperResult(res[0])
+            me.storeClipperResult(res[0])
     }
 
     // Slow but quality offset with a joinStyle
     mtd getOffset(value: f32, joinStyle: JoinStyle, toler: f32 = 0.5)->LinePathList
     {
         var result: retval
-        result.bvMin = bvMin
-        result.bvMax = bvMax
+        result.bvMin = me.bvMin
+        result.bvMax = me.bvMax
 
         var res: Clipper.ClipperPaths
-        offset(&res, value, joinStyle, toler)
+        me.offset(&res, value, joinStyle, toler)
 
         foreach p in res
         {
@@ -215,16 +215,16 @@ impl Polygon
     #[Swag.Overload]
     internal mtd clean(res: *Clipper.ClipperPaths)
     {
-        if !points.count:
+        if !me.points.count:
             return
 
         var trf: Clipper.Transform
         trf.strictSimple  = true
-        trf.reverseOutput = !isClockwise
+        trf.reverseOutput = !me.isClockwise
 
         // Register path
         var path: Clipper.ClipperPath
-        foreach pt in points:
+        foreach pt in me.points:
             path.add(Clipper.IntPoint{cast(s64) (pt.x * ClipperScaleCoords), cast(s64) (pt.y * ClipperScaleCoords)})
         trf.addPath(&path, .Subject)
 
@@ -237,21 +237,21 @@ impl Polygon
     mtd clean()
     {
         var res: Clipper.ClipperPaths
-        clean(&res)
-        clear()
+        me.clean(&res)
+        me.clear()
         if res.count:
-            storeClipperResult(res[0])
+            me.storeClipperResult(res[0])
     }
 
     // Clean polygon by removing bad/unecessary points
     mtd getClean()->LinePathList
     {
         var result: retval
-        result.bvMin = bvMin
-        result.bvMax = bvMax
+        result.bvMin = me.bvMin
+        result.bvMax = me.bvMax
 
         var res: Clipper.ClipperPaths
-        clean(&res)
+        me.clean(&res)
 
         foreach p in res
         {
@@ -271,32 +271,32 @@ impl Polygon
     // Call it once the polygon contains all its points
     mtd compute()
     {
-        area        = 0
-        isClockwise = false
-        isConvex    = true
-        totalLen    = 0
+        me.area        = 0
+        me.isClockwise = false
+        me.isConvex    = true
+        me.totalLen    = 0
 
-        if !points.count:
+        if !me.points.count:
             return
 
-        let n        = points.count - 1
-        let isClosed = points[0].distanceToSquared(points.back()) < 0.5 * 0.5
+        let n        = me.points.count - 1
+        let isClosed = me.points[0].distanceToSquared(me.points.back()) < 0.5 * 0.5
         if isClosed:
-            points.count -= 1
+            me.points.count -= 1
 
         var q = 0
         var p = n - 1
 
-        bvMin = points[0]
-        bvMax = points[0]
+        me.bvMin = me.points[0]
+        me.bvMax = me.points[0]
 
         var first = true
         var lastC = 0'f32
         while q < n
         {
             // Convex
-            let v  = points.buffer[(q + 2) % points.count] - points.buffer[(q + 1) % points.count]
-            let v1 = points.buffer[(q + 1) % points.count] - points.buffer[(q + 0) % points.count]
+            let v  = me.points.buffer[(q + 2) % me.points.count] - me.points.buffer[(q + 1) % me.points.count]
+            let v1 = me.points.buffer[(q + 1) % me.points.count] - me.points.buffer[(q + 0) % me.points.count]
             let c  = v.cross(v1)
             if first
             {
@@ -305,21 +305,21 @@ impl Polygon
             }
             elif !Math.isZeroEpsilon(c) and !Math.isZeroEpsilon(lastC) and Math.sign(c) != Math.sign(lastC)
             {
-                isConvex = false
+                me.isConvex = false
             }
 
-            bvMin = Vector2.min(bvMin, points[p])
-            bvMax = Vector2.max(bvMax, points[p])
+            me.bvMin = Vector2.min(me.bvMin, me.points[p])
+            me.bvMax = Vector2.max(me.bvMax, me.points[p])
 
             // Area
-            area += points[p].x * points[q].y - points[q].x * points[p].y
-            totalLen += v1.length()
+            me.area += me.points[p].x * me.points[q].y - me.points[q].x * me.points[p].y
+            me.totalLen += v1.length()
             p = q
             q += 1
         }
 
         if isClosed:
-            points.count += 1
-        isClockwise = area >= 0
+            me.points.count += 1
+        me.isClockwise = me.area >= 0
     }
 }

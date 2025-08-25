@@ -39,11 +39,11 @@ impl Image
     mtd doKernel(dstImage: *Image, kernel: Kernel)
     {
         // unsupported pixel format
-        if pf.channels() < 3 or pf.bitDepth() != 8:
+        if me.pf.channels() < 3 or me.pf.bitDepth() != 8:
             return
 
         var f = {kernel, dstImage}
-        visitPixels(&f)
+        me.visitPixels(&f)
         {
             let params     = cast(*#decltype(f)) userData
             let kernelSize = params.kernel[0] / 2
@@ -113,18 +113,18 @@ impl Image
     // Apply a kernel to the image
     public mtd applyKernel(kernel: Kernel)
     {
-        Debug.assert(pixels.buffer != null)
-        allocWorkingBuffer()
-        doKernel(workingBuffer, kernel)
-        applyWorkingBuffer()
+        Debug.assert(me.pixels.buffer != null)
+        me.allocWorkingBuffer()
+        me.doKernel(me.workingBuffer, kernel)
+        me.applyWorkingBuffer()
     }
 
     // Apply a kernel to the image
     public mtd toApplyKernel(kernel: Kernel)->Image
     {
-        Debug.assert(pixels.buffer != null)
-        var result: retval = create(width, height, pf)
-        doKernel(&result, kernel)
+        Debug.assert(me.pixels.buffer != null)
+        var result: retval = create(me.width, me.height, me.pf)
+        me.doKernel(&result, kernel)
         return result
     }
 }

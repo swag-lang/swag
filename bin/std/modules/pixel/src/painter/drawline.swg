@@ -7,7 +7,7 @@ impl Painter
     #[Swag.Overload]
     mtd drawLine(start, end: Math.Vector2, pen: Pen)
     {
-        drawLine(start.x, start.y, end.x, end.y, pen)
+        me.drawLine(start.x, start.y, end.x, end.y, pen)
     }
 
     #[Swag.Overload]
@@ -15,10 +15,10 @@ impl Painter
     {
         if (startX == endX and startY == endY) or color.a == 0 or penSize == 0:
             return
-        sharedSolidPen.brush.type  = .SolidColor
-        sharedSolidPen.brush.color = color
-        sharedSolidPen.size        = penSize
-        drawLine(startX, startY, endX, endY, sharedSolidPen)
+        me.sharedSolidPen.brush.type  = .SolidColor
+        me.sharedSolidPen.brush.color = color
+        me.sharedSolidPen.size        = penSize
+        me.drawLine(startX, startY, endX, endY, me.sharedSolidPen)
     }
 
     #[Swag.Overload]
@@ -26,9 +26,9 @@ impl Painter
     {
         if (startX == endX and startY == endY) or pen.brush.color.a == 0 or pen.size == 0:
             return
-        sharedLinePath.start(startX, startY)
-        sharedLinePath.lineTo(endX, endY)
-        drawPath(&sharedLinePath, pen)
+        me.sharedLinePath.start(startX, startY)
+        me.sharedLinePath.lineTo(endX, endY)
+        me.drawPath(&me.sharedLinePath, pen)
     }
 
     #[Swag.Overload]
@@ -36,8 +36,8 @@ impl Painter
     {
         if (startX == endX and startY == endY) or pen.brush.color.a == 0 or pen.size == 0:
             return
-        sharedLinePath.start(startX, startY)
-        sharedLinePath.bezierTo(endX, endY, ptX, ptY)
-        drawPath(&sharedLinePath, pen)
+        me.sharedLinePath.start(startX, startY)
+        me.sharedLinePath.bezierTo(endX, endY, ptX, ptY)
+        me.drawPath(&me.sharedLinePath, pen)
     }
 }

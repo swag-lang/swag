@@ -9,16 +9,16 @@ impl Painter
     {
         if width == 0 or height == 0 or color.a == 0 or penSize == 0:
             return
-        sharedSolidPen.brush.type  = .SolidColor
-        sharedSolidPen.brush.color = color
-        sharedSolidPen.size        = penSize
-        drawRect(left, top, width, height, sharedSolidPen)
+        me.sharedSolidPen.brush.type  = .SolidColor
+        me.sharedSolidPen.brush.color = color
+        me.sharedSolidPen.size        = penSize
+        me.drawRect(left, top, width, height, me.sharedSolidPen)
     }
 
     #[Swag.Overload]
     mtd drawRect(rect: Math.Rectangle, color: Color, penSize: f32 = 1)
     {
-        drawRect(rect.x, rect.y, rect.width, rect.height, color, penSize)
+        me.drawRect(rect.x, rect.y, rect.width, rect.height, color, penSize)
     }
 
     #[Swag.Overload]
@@ -32,7 +32,7 @@ impl Painter
         var w = Math.round(width)
         var h = Math.round(height)
 
-        let aa = curState.paintParams & .Antialiased
+        let aa = me.curState.paintParams & .Antialiased
 
         #[Swag.Complete]
         switch pen.borderPos
@@ -59,14 +59,14 @@ impl Painter
             h += 1.0
         }
 
-        sharedLinePath.setRectRaw(l, t, w, h)
-        drawPath(&sharedLinePath, pen)
+        me.sharedLinePath.setRectRaw(l, t, w, h)
+        me.drawPath(&me.sharedLinePath, pen)
     }
 
     #[Swag.Overload]
     mtd drawRect(rect: Math.Rectangle, pen: Pen)
     {
-        drawRect(rect.x, rect.y, rect.width, rect.height, pen)
+        me.drawRect(rect.x, rect.y, rect.width, rect.height, pen)
     }
 
     // Draw a filled rectangle
@@ -81,7 +81,7 @@ impl Painter
         var w = Math.round(width)
         var h = Math.round(height)
 
-        let aa = curState.paintParams & .Antialiased
+        let aa = me.curState.paintParams & .Antialiased
         if aa
         {
             l -= 0.5
@@ -90,14 +90,14 @@ impl Painter
             h += 1
         }
 
-        sharedLinePath.setRectRaw(l, t, w, h)
-        fillPath(&sharedLinePath, brush)
+        me.sharedLinePath.setRectRaw(l, t, w, h)
+        me.fillPath(&me.sharedLinePath, brush)
     }
 
     #[Swag.Overload]
     mtd fillRect(rect: Math.Rectangle, brush: Brush)
     {
-        fillRect(rect.x, rect.y, rect.width, rect.height, brush)
+        me.fillRect(rect.x, rect.y, rect.width, rect.height, brush)
     }
 
     #[Swag.Overload]
@@ -105,15 +105,15 @@ impl Painter
     {
         if width == 0 or height == 0 or color.a == 0:
             return
-        sharedSolidBrush.color = color
-        sharedSolidBrush.type  = .SolidColor
-        fillRect(left, top, width, height, sharedSolidBrush)
+        me.sharedSolidBrush.color = color
+        me.sharedSolidBrush.type  = .SolidColor
+        me.fillRect(left, top, width, height, me.sharedSolidBrush)
     }
 
     #[Swag.Overload]
     mtd fillRect(rect: Math.Rectangle, color: Color)
     {
-        fillRect(rect.x, rect.y, rect.width, rect.height, color)
+        me.fillRect(rect.x, rect.y, rect.width, rect.height, color)
     }
 
     // Draw an empty round rectangle
@@ -122,10 +122,10 @@ impl Painter
     {
         if width == 0 or height == 0 or color.a == 0 or penSize == 0:
             return
-        sharedSolidPen.brush.type  = .SolidColor
-        sharedSolidPen.brush.color = color
-        sharedSolidPen.size        = penSize
-        drawRoundRect(left, top, width, height, radiusX, radiusY, sharedSolidPen)
+        me.sharedSolidPen.brush.type  = .SolidColor
+        me.sharedSolidPen.brush.color = color
+        me.sharedSolidPen.size        = penSize
+        me.drawRoundRect(left, top, width, height, radiusX, radiusY, me.sharedSolidPen)
     }
 
     #[Swag.Overload]
@@ -139,7 +139,7 @@ impl Painter
         var w = Math.round(width)
         var h = Math.round(height)
 
-        let aa = curState.paintParams & .Antialiased
+        let aa = me.curState.paintParams & .Antialiased
 
         #[Swag.Complete]
         switch pen.borderPos
@@ -166,23 +166,23 @@ impl Painter
             h += 1.0
         }
 
-        sharedLinePath.setRoundRect(l, t, w, h, radiusX, radiusY)
-        drawPath(&sharedLinePath, pen)
+        me.sharedLinePath.setRoundRect(l, t, w, h, radiusX, radiusY)
+        me.drawPath(&me.sharedLinePath, pen)
     }
 
     #[Swag.Overload]
     mtd drawRoundRect(rect: Math.Rectangle, radiusX, radiusY: f32, pen: Pen)
     {
-        drawRoundRect(rect.x, rect.y, rect.width, rect.height, radiusX, radiusY, pen)
+        me.drawRoundRect(rect.x, rect.y, rect.width, rect.height, radiusX, radiusY, pen)
     }
 
     #[Swag.Overload]
     mtd drawRoundRect(rect: Math.Rectangle, radiusX, radiusY: f32, color: Color, penSize: f32 = 1)
     {
-        sharedSolidPen.brush.type  = .SolidColor
-        sharedSolidPen.brush.color = color
-        sharedSolidPen.size        = penSize
-        drawRoundRect(rect.x, rect.y, rect.width, rect.height, radiusX, radiusY, sharedSolidPen)
+        me.sharedSolidPen.brush.type  = .SolidColor
+        me.sharedSolidPen.brush.color = color
+        me.sharedSolidPen.size        = penSize
+        me.drawRoundRect(rect.x, rect.y, rect.width, rect.height, radiusX, radiusY, me.sharedSolidPen)
     }
 
     // Draw a filled round rectangle
@@ -191,8 +191,8 @@ impl Painter
     {
         if width == 0 or height == 0 or brush.color.a == 0:
             return
-        sharedLinePath.setRoundRect(left, top, width, height, radiusX, radiusY)
-        fillPath(&sharedLinePath, brush)
+        me.sharedLinePath.setRoundRect(left, top, width, height, radiusX, radiusY)
+        me.fillPath(&me.sharedLinePath, brush)
     }
 
     #[Swag.Overload]
@@ -200,8 +200,8 @@ impl Painter
     {
         if rect.width == 0 or rect.height == 0 or brush.color.a == 0:
             return
-        sharedLinePath.setRoundRect(rect.x, rect.y, rect.width, rect.height, radiusX, radiusY)
-        fillPath(&sharedLinePath, brush)
+        me.sharedLinePath.setRoundRect(rect.x, rect.y, rect.width, rect.height, radiusX, radiusY)
+        me.fillPath(&me.sharedLinePath, brush)
     }
 
     #[Swag.Overload]
@@ -209,14 +209,14 @@ impl Painter
     {
         if width == 0 or height == 0 or color.a == 0:
             return
-        sharedSolidBrush.type  = .SolidColor
-        sharedSolidBrush.color = color
-        fillRoundRect(left, top, width, height, radiusX, radiusY, sharedSolidBrush)
+        me.sharedSolidBrush.type  = .SolidColor
+        me.sharedSolidBrush.color = color
+        me.fillRoundRect(left, top, width, height, radiusX, radiusY, me.sharedSolidBrush)
     }
 
     #[Swag.Overload]
     mtd fillRoundRect(rect: Math.Rectangle, radiusX, radiusY: f32, color: Color)
     {
-        fillRoundRect(rect.x, rect.y, rect.width, rect.height, radiusX, radiusY, color)
+        me.fillRoundRect(rect.x, rect.y, rect.width, rect.height, radiusX, radiusY, color)
     }
 }

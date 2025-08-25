@@ -131,7 +131,7 @@ impl Painter
         var ms = measureString(text, font)
         var yr = y - (ms.height * 0.5 * zoom)
         yr -= (font.ascent - ms.ascent) * zoom
-        drawString(x - (ms.width * 0.5 * zoom), yr, text, font, color, under, zoom)
+        me.drawString(x - (ms.width * 0.5 * zoom), yr, text, font, color, under, zoom)
     }
 
     // Draw a simple string
@@ -140,9 +140,9 @@ impl Painter
     {
         if @countof(text) == 0 or color.a == 0:
             return
-        sharedSolidBrush.type  = .SolidColor
-        sharedSolidBrush.color = color
-        drawString(left, top, text, font, sharedSolidBrush, under, zoom)
+        me.sharedSolidBrush.type  = .SolidColor
+        me.sharedSolidBrush.color = color
+        me.drawString(left, top, text, font, me.sharedSolidBrush, under, zoom)
     }
 
     // Draw a simple string
@@ -151,7 +151,7 @@ impl Painter
     {
         if @countof(text) == 0 or brush.color.a == 0:
             return
-        if fake:
+        if me.fake:
             return
 
         var arr = getGlyphs(text, font)
@@ -166,13 +166,13 @@ impl Painter
         if under != .None or brush.type != .SolidColor:
             ms = measureString(text, font)
 
-        startFont()
+        me.startFont()
 
         // Set brush main texture
         if brush.type != .SolidColor:
-            setTexture0({x, y - ms.ascent * zoom}, {x + ms.width * zoom, y + ms.height * zoom}, brush)
+            me.setTexture0({x, y - ms.ascent * zoom}, {x + ms.width * zoom, y + ms.height * zoom}, brush)
         else:
-            resetTexture0()
+            me.resetTexture0()
 
         // Underline
         if under != .None
@@ -181,21 +181,21 @@ impl Painter
             pen.begCapStyle = .None
             pen.endCapStyle = .None
 
-            canSetTexture0 = false
+            me.canSetTexture0 = false
             switch under
             {
             case Strikeout:
                 let yUnder = y - (ms.ascent * zoom / 2)
-                drawLine(x, yUnder, x + ms.width * zoom, yUnder, pen)
+                me.drawLine(x, yUnder, x + ms.width * zoom, yUnder, pen)
             case Underline:
                 let yUnder = y - font.underlinePos
-                drawLine(x, yUnder, x + ms.width * zoom, yUnder, pen)
+                me.drawLine(x, yUnder, x + ms.width * zoom, yUnder, pen)
             }
 
-            canSetTexture0 = true
+            me.canSetTexture0 = true
         }
 
-        updateFont(font)
+        me.updateFont(font)
 
         if zoom == 1
         {
@@ -252,8 +252,8 @@ impl Painter
             }
         }
 
-        resetTextureFont()
-        endFont()
+        me.resetTextureFont()
+        me.endFont()
     }
 
     // Recompute the layout for a given rectangle
@@ -470,15 +470,15 @@ impl Painter
 
         // Recompute layout if rectangle has changed
         if text.layoutRect != pos or forceCompute:
-            computeLayout(pos, text, format)
+            me.computeLayout(pos, text, format)
 
         // Clipping
         if format.flags & .Clip
         {
-            pushClippingRect(pos)
-            if curState.clippingRect.isEmpty()
+            me.pushClippingRect(pos)
+            if me.curState.clippingRect.isEmpty()
             {
-                popClippingRect()
+                me.popClippingRect()
                 return
             }
         }
@@ -506,6 +506,6 @@ impl Painter
 
         // Restore clipping to its previous value
         if format.flags & .Clip:
-            popClippingRect()
+            me.popClippingRect()
     }
 }

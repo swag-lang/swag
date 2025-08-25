@@ -6,7 +6,7 @@ impl Image
     public mtd fillGradient2(color0, color1: Color)
     {
         // unsupported pixel format
-        if pf.channels() < 3 or pf.bitDepth() != 8:
+        if me.pf.channels() < 3 or me.pf.bitDepth() != 8:
             return
 
         #[Swag.Mixin]
@@ -27,7 +27,7 @@ impl Image
             }
         }
 
-        switch pf
+        switch me.pf
         {
         case BGR8:
             doIt'BGR8()
@@ -41,7 +41,7 @@ impl Image
             Debug.assert(false)
         }
 
-        visitPixels(stride: width)
+        me.visitPixels(stride: me.width)
         {
             Memory.copy(pix, image.pixels.buffer, cast(u64) image.width * image.bpp8)
         }
@@ -51,7 +51,7 @@ impl Image
     public mtd fillGradient4(topLeft, topRight, bottomLeft, bottomRight: Color)
     {
         // unsupported pixel format
-        if pf.channels() < 3 or pf.bitDepth() != 8:
+        if me.pf.channels() < 3 or me.pf.bitDepth() != 8:
             return
 
         #[Swag.Mixin]
@@ -70,7 +70,7 @@ impl Image
         }
 
         var f = {topLeft, topRight, bottomLeft, bottomRight}
-        switch pf
+        switch me.pf
         {
         case BGR8:
             doIt'BGR8()

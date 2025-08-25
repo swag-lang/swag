@@ -18,7 +18,7 @@ impl Image
             }
         }
 
-        switch bpp
+        switch me.bpp
         {
         case 24:
             doIt'24()
@@ -32,18 +32,18 @@ impl Image
     // Flip image horizontally
     public mtd mirror()
     {
-        Debug.assert(pixels.buffer != null)
-        allocWorkingBuffer()
-        doMirror(workingBuffer)
-        applyWorkingBuffer()
+        Debug.assert(me.pixels.buffer != null)
+        me.allocWorkingBuffer()
+        me.doMirror(me.workingBuffer)
+        me.applyWorkingBuffer()
     }
 
     // Flip image horizontally
     public mtd const toMirror()->Image
     {
-        Debug.assert(pixels.buffer != null)
-        var result: retval = create(width, height, pf)
-        doMirror(&result)
+        Debug.assert(me.pixels.buffer != null)
+        var result: retval = create(me.width, me.height, me.pf)
+        me.doMirror(&result)
         return result
     }
 }

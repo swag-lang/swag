@@ -5,8 +5,8 @@ public impl Painter
     #[Swag.Overload]
     internal mtd fillPath(t: *Poly2Tri.Tessellate, p: *LinePath, bvMin, bvMax: Vector2, brush: Brush)
     {
-        setTexture0(bvMin, bvMax, brush)
-        resetTextureFont()
+        me.setTexture0(bvMin, bvMax, brush)
+        me.resetTextureFont()
 
         // Triangulation
         if p.triangles.triIndices.count == 0
@@ -53,15 +53,15 @@ public impl Painter
     {
         if !pathList.paths.count:
             return
-        sharedSolidBrush.type  = .SolidColor
-        sharedSolidBrush.color = color
-        fillPath(pathList, sharedSolidBrush)
+        me.sharedSolidBrush.type  = .SolidColor
+        me.sharedSolidBrush.color = color
+        me.fillPath(pathList, me.sharedSolidBrush)
     }
 
     #[Swag.Overload]
     mtd fillPath(path: *LinePath, brush: Brush)
     {
-        path.flatten(curState.paintQuality)
+        path.flatten(me.curState.paintQuality)
         if Math.isZeroEpsilon(path.polygon.totalLen):
             return
 
@@ -70,8 +70,8 @@ public impl Painter
         // Convex shape : faster
         if polygon.isConvex
         {
-            setTexture0(path.bvMin, path.bvMax, brush)
-            resetTextureFont()
+            me.setTexture0(path.bvMin, path.bvMax, brush)
+            me.resetTextureFont()
 
             let count = path.polygon.points.count - 1
 
@@ -81,12 +81,12 @@ public impl Painter
                 let v0   = polygon.getPoint(0)
                 let v1   = polygon.getPoint(1)
                 let v2   = polygon.getPoint(2)
-                let prim = pushTriangle(v0, v1, v2, brush.color)
-                if curState.paintParams & .Antialiased
+                let prim = me.pushTriangle(v0, v1, v2, brush.color)
+                if me.curState.paintParams & .Antialiased
                 {
-                    addEdgeAA(prim, v0, v1)
-                    addEdgeAA(prim, v1, v2)
-                    addEdgeAA(prim, v2, v0)
+                    me.addEdgeAA(prim, v0, v1)
+                    me.addEdgeAA(prim, v1, v2)
+                    me.addEdgeAA(prim, v2, v0)
                 }
             }
 
@@ -97,18 +97,18 @@ public impl Painter
                 let v1    = polygon.getPoint(1)
                 let v2    = polygon.getPoint(2)
                 let v3    = polygon.getPoint(3)
-                let prim0 = pushTriangle(v0, v1, v2, brush.color)
-                let prim1 = pushTriangle(v0, v2, v3, brush.color)
-                if curState.paintParams & .Antialiased
+                let prim0 = me.pushTriangle(v0, v1, v2, brush.color)
+                let prim1 = me.pushTriangle(v0, v2, v3, brush.color)
+                if me.curState.paintParams & .Antialiased
                 {
-                    addEdgeAA(prim0, v0, v1)
-                    addEdgeAA(prim0, v1, v2)
-                    addEdgeAA(prim0, v2, v3)
-                    addEdgeAA(prim0, v3, v0)
-                    addEdgeAA(prim1, v0, v1)
-                    addEdgeAA(prim1, v1, v2)
-                    addEdgeAA(prim1, v2, v3)
-                    addEdgeAA(prim1, v3, v0)
+                    me.addEdgeAA(prim0, v0, v1)
+                    me.addEdgeAA(prim0, v1, v2)
+                    me.addEdgeAA(prim0, v2, v3)
+                    me.addEdgeAA(prim0, v3, v0)
+                    me.addEdgeAA(prim1, v0, v1)
+                    me.addEdgeAA(prim1, v1, v2)
+                    me.addEdgeAA(prim1, v2, v3)
+                    me.addEdgeAA(prim1, v3, v0)
                 }
             }
 
@@ -121,15 +121,15 @@ public impl Painter
                 {
                     let v0   = polygon.getPoint(i)
                     let v1   = polygon.getPoint((i + 1) % count)
-                    let prim = pushTriangle(center, v0, v1, brush.color)
+                    let prim = me.pushTriangle(center, v0, v1, brush.color)
 
-                    if curState.paintParams & .Antialiased
+                    if me.curState.paintParams & .Antialiased
                     {
                         let v2 = polygon.getPoint((i + 2) % count)
                         let vp = polygon.getPoint((i + count - 1) % count)
-                        addEdgeAA(prim, v0, v1)
-                        addEdgeAA(prim, v1, v2)
-                        addEdgeAA(prim, vp, v0)
+                        me.addEdgeAA(prim, v0, v1)
+                        me.addEdgeAA(prim, v1, v2)
+                        me.addEdgeAA(prim, vp, v0)
                     }
                 }
             }
@@ -138,18 +138,18 @@ public impl Painter
         // Non convex shape: complex painting (triangulation)
         else
         {
-            sharedLinePathList.paths.add(path)
-            fillPath(&sharedLinePathList, brush)
-            sharedLinePathList.paths.count = 0
+            me.sharedLinePathList.paths.add(path)
+            me.fillPath(&me.sharedLinePathList, brush)
+            me.sharedLinePathList.paths.count = 0
         }
     }
 
     #[Swag.Overload]
     mtd fillPath(path: *LinePath, color: Color)
     {
-        sharedSolidBrush.type  = .SolidColor
-        sharedSolidBrush.color = color
-        fillPath(path, sharedSolidBrush)
+        me.sharedSolidBrush.type  = .SolidColor
+        me.sharedSolidBrush.color = color
+        me.fillPath(path, me.sharedSolidBrush)
     }
 
     // Fill a list of paths.
@@ -158,7 +158,7 @@ public impl Painter
     mtd fillPath(pathList: *LinePathList, brush: Brush)
     {
         // Flatten all paths
-        pathList.flatten(curState.paintQuality)
+        pathList.flatten(me.curState.paintQuality)
 
         var flush: *LinePath
 
@@ -210,7 +210,7 @@ public impl Painter
         }
 
         if flush:
-            fillPath(dirty ? &tess : null, flush, pathList.bvMin, pathList.bvMax, brush)
+            me.fillPath(dirty ? &me.tess : null, flush, pathList.bvMin, pathList.bvMax, brush)
     }
 
     // Fill the polygon with the given color
@@ -220,9 +220,9 @@ public impl Painter
         if color.a == 0:
             return
 
-        sharedSolidBrush.type  = .SolidColor
-        sharedSolidBrush.color = color
-        fillPolygon(path, sharedSolidBrush)
+        me.sharedSolidBrush.type  = .SolidColor
+        me.sharedSolidBrush.color = color
+        me.fillPolygon(path, me.sharedSolidBrush)
     }
 
     // Fill the polygon with the given 'brush'
@@ -232,10 +232,10 @@ public impl Painter
         if brush.color.a == 0:
             return
 
-        path.flatten(curState.paintQuality)
+        path.flatten(me.curState.paintQuality)
         if path.polygon.isConvex
         {
-            fillPath(path, brush)
+            me.fillPath(path, brush)
         }
         else
         {
@@ -258,6 +258,6 @@ public impl Painter
         foreach pt in points where @index:
             path.lineTo(pt.x, pt.y)
         path.close()
-        fillPath(&path, brush)
+        me.fillPath(&path, brush)
     }
 }

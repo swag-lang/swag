@@ -9,17 +9,17 @@ impl Image
     {
         var bi: BITMAPINFO
         bi.bmiHeader.biSize        = #sizeof(BITMAPINFOHEADER)
-        bi.bmiHeader.biWidth       = width
-        bi.bmiHeader.biHeight      = height
+        bi.bmiHeader.biWidth       = me.width
+        bi.bmiHeader.biHeight      = me.height
         bi.bmiHeader.biPlanes      = 1
-        bi.bmiHeader.biBitCount    = bpp
+        bi.bmiHeader.biBitCount    = me.bpp
         bi.bmiHeader.biCompression = BI_RGB
 
         var ppvBits: *u8
         let hbmp     = CreateDIBSection(null, &bi, cast() DIB_RGB_COLORS, &ppvBits, null, 0)
         defer #noerr DeleteObject(cast() hbmp)
 
-        Memory.copy(ppvBits, pixels.buffer, cast(u64) width * height * bpp8)
+        Memory.copy(ppvBits, me.pixels.buffer, cast(u64) me.width * me.height * me.bpp8)
 
         var ii: ICONINFO
         ii.fIcon    = TRUE

@@ -89,7 +89,7 @@ impl LocalMinimum
 {
     mtd opCmp(other: LocalMinimum)->s32
     {
-        return other.y <=> y
+        return other.y <=> me.y
     }
 }
 
@@ -147,8 +147,8 @@ impl PolyNode
 {
     mtd addChild(child: *PolyNode)
     {
-        let cnt = cast(u32) childs.count
-        childs.add(child)
+        let cnt = cast(u32) me.childs.count
+        me.childs.add(child)
         child.parent = me
         child.index  = cnt
     }
@@ -189,20 +189,20 @@ impl Transform
 {
     public mtd opDrop()
     {
-        foreach it in edgeList:
+        foreach it in me.edgeList:
             Memory.delete(it.item0, it.item1)
     }
 
     mtd execute(clipT: ClipType, solution: *ClipperPaths, subjFillT, clipFillT: PolyFillType)
     {
-        subjFillType  = subjFillT
-        clipFillType  = clipFillT
-        clipType      = clipT
-        usingPolyTree = false
+        me.subjFillType  = subjFillT
+        me.clipFillType  = clipFillT
+        me.clipType      = clipT
+        me.usingPolyTree = false
 
-        executeInternal()
-        buildResult(solution)
-        disposeAllOutRecs()
+        me.executeInternal()
+        me.buildResult(solution)
+        me.disposeAllOutRecs()
     }
 
     mtd addPath(pg: *ClipperPath, polyType: PolyType)
@@ -217,17 +217,17 @@ impl Transform
 
         var edges  = Memory.new'Edge(cast(u64) highI + 1)
         var isFlat = true
-        edgeList.add({edges, cast(u64) highI + 1})
+        me.edgeList.add({edges, cast(u64) highI + 1})
 
         // 1. Basic (first) edge initialization ...
         edges[1].curr = pg.buffer[1]
-        rangeTest(pg.buffer[0])
-        rangeTest(pg.buffer[highI])
+        me.rangeTest(pg.buffer[0])
+        me.rangeTest(pg.buffer[highI])
         initEdge(&edges[0], &edges[1], &edges[highI], pg.buffer[0])
         initEdge(&edges[highI], &edges[0], &edges[highI - 1], pg.buffer[highI])
         for #reverse i in 1 until highI
         {
-            rangeTest(pg.buffer[i])
+            me.rangeTest(pg.buffer[i])
             initEdge(&edges[i], &edges[i + 1], &edges[i - 1], pg.buffer[i])
         }
 
@@ -251,8 +251,8 @@ impl Transform
             if e.prev == e.next:
                 break
 
-            if slopesEqual(e.prev.curr, e.curr, e.next.curr) and
-               (!preserveCollinear or !pt2IsBetweenPt1AndPt3(e.prev.curr, e.curr, e.next.curr))
+            if me.slopesEqual(e.prev.curr, e.curr, e.next.curr) and
+               (!me.preserveCollinear or !pt2IsBetweenPt1AndPt3(e.prev.curr, e.curr, e.next.curr))
             {
                 if e == eStart:
                     eStart = e.next
@@ -320,19 +320,19 @@ impl Transform
                 locMin.leftBound.windDelta = 1
             locMin.rightBound.windDelta = -locMin.leftBound.windDelta
 
-            e = processBound(locMin.leftBound, leftBoundIsForward)
+            e = me.processBound(locMin.leftBound, leftBoundIsForward)
             if e.outIdx == Skip:
-                e = processBound(e, leftBoundIsForward)
+                e = me.processBound(e, leftBoundIsForward)
 
-            var e2 = processBound(locMin.rightBound, !leftBoundIsForward)
+            var e2 = me.processBound(locMin.rightBound, !leftBoundIsForward)
             if e2.outIdx == Skip:
-                e2 = processBound(e2, !leftBoundIsForward)
+                e2 = me.processBound(e2, !leftBoundIsForward)
 
             if locMin.leftBound.outIdx == Skip:
                 locMin.leftBound = null
             elif locMin.rightBound.outIdx == Skip:
                 locMin.rightBound = null
-            minimaList.add(locMin)
+            me.minimaList.add(locMin)
             if !leftBoundIsForward:
                 e = e2
         }
@@ -386,13 +386,13 @@ impl Transform
         j.outPt1 = op1
         j.outPt2 = op2
         j.offPt  = offPt
-        joinList.add(j)
+        me.joinList.add(j)
     }
 
     #[Swag.Overload]
     mtd slopesEqual(e1: *Edge, e2: *Edge)->bool
     {
-        if useFullRange
+        if me.useFullRange
         {
             var v1 = Math.Int128.mul(e1.top.y - e1.bot.y, e2.top.x - e2.bot.x)
             var v2 = Math.Int128.mul(e1.top.x - e1.bot.x, e2.top.y - e2.bot.y)
@@ -405,7 +405,7 @@ impl Transform
     #[Swag.Overload]
     mtd slopesEqual(pt1, pt2, pt3: IntPoint)->bool
     {
-        if useFullRange
+        if me.useFullRange
         {
             var v1 = Math.Int128.mul(pt1.y - pt2.y, pt2.x - pt3.x)
             var v2 = Math.Int128.mul(pt1.x - pt2.x, pt2.y - pt3.y)
@@ -418,7 +418,7 @@ impl Transform
     #[Swag.Overload]
     mtd slopesEqual(pt1, pt2, pt3, pt4: IntPoint)->bool
     {
-        if useFullRange
+        if me.useFullRange
         {
             var v1 = Math.Int128.mul(pt1.y - pt2.y, pt3.x - pt4.x)
             var v2 = Math.Int128.mul(pt1.x - pt2.x, pt3.y - pt4.y)
@@ -441,7 +441,7 @@ impl Transform
     {
         if pt.x > LoRange or pt.y > LoRange or -pt.x > LoRange or -pt.y > LoRange
         {
-            useFullRange = true
+            me.useFullRange = true
             if pt.x > HiRange or pt.y > HiRange or -pt.x > HiRange or -pt.y > HiRange:
                 Debug.assert(false, "Coordinate outside allowed range")
         }
@@ -521,8 +521,8 @@ impl Transform
 
                 var locMin = LocalMinimum{y: e.bot.y, rightBound: e}
                 e.windDelta = 0
-                result      = processBound(e, nextIsForward)
-                minimaList.add(locMin)
+                result      = me.processBound(e, nextIsForward)
+                me.minimaList.add(locMin)
             }
 
             return result
@@ -601,32 +601,32 @@ impl Transform
 
     mtd popScanbeam(res: *CInt)->bool
     {
-        if !scanBeamList.count:
+        if !me.scanBeamList.count:
             return false
 
-        let y = scanBeamList.popBack()
+        let y = me.scanBeamList.popBack()
         dref res = y
-        while scanBeamList.count and y == scanBeamList.back():
-            scanBeamList.count -= 1
+        while me.scanBeamList.count and y == me.scanBeamList.back():
+            me.scanBeamList.count -= 1
 
         return true
     }
 
     mtd insertScanbeam(y: CInt)
     {
-        scanBeamList.add(y)
-        scanBeamList.sort()
+        me.scanBeamList.add(y)
+        me.scanBeamList.sort()
     }
 
     mtd reset()
     {
-        currentLM = 0
-        if currentLM == minimaList.count:
+        me.currentLM = 0
+        if me.currentLM == me.minimaList.count:
             return
-        minimaList.sort()
+        me.minimaList.sort()
 
-        scanBeamList.clear()
-        foreach lm in minimaList
+        me.scanBeamList.clear()
+        foreach lm in me.minimaList
         {
             insertScanbeam(lm.y)
             var e = lm.leftBound
@@ -646,26 +646,26 @@ impl Transform
             }
         }
 
-        activeEdges = null
-        currentLM   = 0
+        me.activeEdges = null
+        me.currentLM   = 0
     }
 
     #[Swag.Inline]
     mtd localMinimaPending()->bool
     {
-        return currentLM != minimaList.count
+        return me.currentLM != me.minimaList.count
     }
 
     mtd deleteFromSEL(e: *Edge)
     {
         let selPrev = e.prevInSEL
         let selNext = e.nextInSEL
-        if !selPrev and !selNext and e != sortedEdges:
+        if !selPrev and !selNext and e != me.sortedEdges:
             return
         if selPrev:
             selPrev.nextInSEL = selNext
         else:
-            sortedEdges = selNext
+            me.sortedEdges = selNext
         if selNext:
             selNext.prevInSEL = selPrev
         e.nextInSEL, e.prevInSEL = null
@@ -673,18 +673,18 @@ impl Transform
 
     mtd popEdgeFromSEL(edge: **Edge)->bool
     {
-        if !sortedEdges:
+        if !me.sortedEdges:
             return false
-        dref edge = sortedEdges
-        deleteFromSEL(sortedEdges)
+        dref edge = me.sortedEdges
+        me.deleteFromSEL(me.sortedEdges)
         return true
     }
 
     mtd processHorizontals()
     {
         var horzEdge: *Edge
-        while popEdgeFromSEL(&horzEdge):
-            processHorizontal(horzEdge)
+        while me.popEdgeFromSEL(&horzEdge):
+            me.processHorizontal(horzEdge)
     }
 
     func getHorzDirection(horzEdge: *Edge, dir: *Direction, left, right: *CInt)
@@ -719,7 +719,7 @@ impl Transform
 
     mtd getLastOutPt(e: *Edge)->*OutPt
     {
-        let outRec = polyOuts[e.outIdx]
+        let outRec = me.polyOuts[e.outIdx]
         if e.side == .Left:
             return outRec.pts
         else:
@@ -732,7 +732,7 @@ impl Transform
         j.outPt1 = op
         j.outPt2 = null
         j.offPt  = offPt
-        ghostJoinList.add(j)
+        me.ghostJoinList.add(j)
     }
 
     mtd processHorizontal(hE: *Edge)
@@ -754,22 +754,22 @@ impl Transform
             eMaxPair = getMaximaPair(eLastHorz)
 
         var maxIt, maxRit: u64
-        if maximaList.count > 0
+        if me.maximaList.count > 0
         {
             if dir == .LeftToRight
             {
                 maxIt = 0
-                while maxIt != maximaList.count and maximaList.buffer[maxIt] <= horzEdge.bot.x:
+                while maxIt != me.maximaList.count and me.maximaList.buffer[maxIt] <= horzEdge.bot.x:
                     maxIt += 1
-                if maxIt != maximaList.count and maximaList.buffer[maxIt] >= eLastHorz.top.x:
-                    maxIt = maximaList.count
+                if maxIt != me.maximaList.count and me.maximaList.buffer[maxIt] >= eLastHorz.top.x:
+                    maxIt = me.maximaList.count
             }
             else
             {
-                maxRit = maximaList.count - #wrap 1
-                while maxRit != Swag.U64.Max and maximaList.buffer[maxRit] > horzEdge.bot.x:
+                maxRit = me.maximaList.count - #wrap 1
+                while maxRit != Swag.U64.Max and me.maximaList.buffer[maxRit] > horzEdge.bot.x:
                     maxRit = maxRit - #wrap 1
-                if maxRit != Swag.U64.Max and maximaList.buffer[maxRit] <= eLastHorz.top.x:
+                if maxRit != Swag.U64.Max and me.maximaList.buffer[maxRit] <= eLastHorz.top.x:
                     maxRit = Swag.U64.Max
             }
         }
@@ -781,23 +781,23 @@ impl Transform
             var e          = getNextInAEL(horzEdge, dir)
             while e
             {
-                if maximaList.count > 0
+                if me.maximaList.count > 0
                 {
                     if dir == .LeftToRight
                     {
-                        while maxIt != maximaList.count and maximaList.buffer[maxIt] < e.curr.x
+                        while maxIt != me.maximaList.count and me.maximaList.buffer[maxIt] < e.curr.x
                         {
                             if horzEdge.outIdx >= 0 and !isOpen:
-                                addOutPt(horzEdge, IntPoint{maximaList.buffer[maxIt], horzEdge.bot.y})
+                                me.addOutPt(horzEdge, IntPoint{me.maximaList.buffer[maxIt], horzEdge.bot.y})
                             maxIt += 1
                         }
                     }
                     else
                     {
-                        while maxRit != Swag.U64.Max and maximaList.buffer[maxRit] > e.curr.x
+                        while maxRit != Swag.U64.Max and me.maximaList.buffer[maxRit] > e.curr.x
                         {
                             if horzEdge.outIdx >= 0 and !isOpen:
-                                addOutPt(horzEdge, IntPoint{maximaList.buffer[maxRit], horzEdge.bot.y})
+                                me.addOutPt(horzEdge, IntPoint{me.maximaList.buffer[maxRit], horzEdge.bot.y})
                             maxRit = maxRit - #wrap 1
                         }
                     }
@@ -810,108 +810,108 @@ impl Transform
 
                 if horzEdge.outIdx >= 0 and !isOpen
                 {
-                    op1 = addOutPt(horzEdge, e.curr)
-                    var eNextHorz = sortedEdges
+                    op1 = me.addOutPt(horzEdge, e.curr)
+                    var eNextHorz = me.sortedEdges
                     while eNextHorz
                     {
                         if eNextHorz.outIdx >= 0 and
                            horzSegmentsOverlap(horzEdge.bot.x, horzEdge.top.x, eNextHorz.bot.x, eNextHorz.top.x)
                         {
-                            let op2 = getLastOutPt(eNextHorz)
-                            addJoin(op2, op1, eNextHorz.top)
+                            let op2 = me.getLastOutPt(eNextHorz)
+                            me.addJoin(op2, op1, eNextHorz.top)
                         }
 
                         eNextHorz = eNextHorz.nextInSEL
                     }
 
-                    addGhostJoin(op1, horzEdge.bot)
+                    me.addGhostJoin(op1, horzEdge.bot)
                 }
 
                 if e == eMaxPair and isLastHorz and eMaxPair
                 {
                     if horzEdge.outIdx >= 0:
-                        addLocalMaxPoly(horzEdge, eMaxPair, horzEdge.top)
-                    deleteFromAEL(horzEdge)
-                    deleteFromAEL(eMaxPair)
+                        me.addLocalMaxPoly(horzEdge, eMaxPair, horzEdge.top)
+                    me.deleteFromAEL(horzEdge)
+                    me.deleteFromAEL(eMaxPair)
                     return
                 }
 
                 if dir == .LeftToRight
                 {
                     let pt = IntPoint{e.curr.x, horzEdge.curr.y}
-                    intersectEdges(horzEdge, e, pt)
+                    me.intersectEdges(horzEdge, e, pt)
                 }
                 else
                 {
                     let pt = IntPoint{e.curr.x, horzEdge.curr.y}
-                    intersectEdges(e, horzEdge, pt)
+                    me.intersectEdges(e, horzEdge, pt)
                 }
 
                 let eNext = getNextInAEL(e, dir)
-                swapPositionsInAEL(horzEdge, e)
+                me.swapPositionsInAEL(horzEdge, e)
                 e = eNext
             }
 
             if !horzEdge.nextInLML or !isHorizontal(horzEdge.nextInLML):
                 break
-            updateEdgeIntoAEL(&horzEdge)
+            me.updateEdgeIntoAEL(&horzEdge)
             if horzEdge.outIdx >= 0:
-                addOutPt(horzEdge, horzEdge.bot)
+                me.addOutPt(horzEdge, horzEdge.bot)
             getHorzDirection(horzEdge, &dir, &horzLeft, &horzRight)
         }
 
         if horzEdge.outIdx >= 0 and !op1
         {
-            op1 = getLastOutPt(horzEdge)
-            var eNextHorz = sortedEdges
+            op1 = me.getLastOutPt(horzEdge)
+            var eNextHorz = me.sortedEdges
             while eNextHorz
             {
                 if eNextHorz.outIdx >= 0 and
                    horzSegmentsOverlap(horzEdge.bot.x, horzEdge.top.x, eNextHorz.bot.x, eNextHorz.top.x)
                 {
-                    let op2 = getLastOutPt(eNextHorz)
-                    addJoin(op2, op1, eNextHorz.top)
+                    let op2 = me.getLastOutPt(eNextHorz)
+                    me.addJoin(op2, op1, eNextHorz.top)
                 }
 
                 eNextHorz = eNextHorz.nextInSEL
             }
 
-            addGhostJoin(op1, horzEdge.top)
+            me.addGhostJoin(op1, horzEdge.top)
         }
 
         if horzEdge.nextInLML
         {
             if horzEdge.outIdx >= 0
             {
-                op1 = addOutPt(horzEdge, horzEdge.top)
-                updateEdgeIntoAEL(&horzEdge)
+                op1 = me.addOutPt(horzEdge, horzEdge.top)
+                me.updateEdgeIntoAEL(&horzEdge)
                 if horzEdge.windDelta == 0:
                     return
                 let ePrev = horzEdge.prevInAEL
                 let eNext = horzEdge.nextInAEL
                 if ePrev and ePrev.curr.x == horzEdge.bot.x and
                    ePrev.curr.y == horzEdge.bot.y and ePrev.windDelta != 0 and
-                   ePrev.outIdx >= 0 and ePrev.curr.y > ePrev.top.y and slopesEqual(horzEdge, ePrev)
+                   ePrev.outIdx >= 0 and ePrev.curr.y > ePrev.top.y and me.slopesEqual(horzEdge, ePrev)
                 {
-                    let op2 = addOutPt(ePrev, horzEdge.bot)
-                    addJoin(op1, op2, horzEdge.top)
+                    let op2 = me.addOutPt(ePrev, horzEdge.bot)
+                    me.addJoin(op1, op2, horzEdge.top)
                 }
                 elif eNext and eNext.curr.x == horzEdge.bot.x and
                      eNext.curr.y == horzEdge.bot.y and eNext.windDelta != 0 and
-                     eNext.outIdx >= 0 and eNext.curr.y > eNext.top.y and slopesEqual(horzEdge, eNext)
+                     eNext.outIdx >= 0 and eNext.curr.y > eNext.top.y and me.slopesEqual(horzEdge, eNext)
                 {
-                    let op2 = addOutPt(eNext, horzEdge.bot)
-                    addJoin(op1, op2, horzEdge.top)
+                    let op2 = me.addOutPt(eNext, horzEdge.bot)
+                    me.addJoin(op1, op2, horzEdge.top)
                 }
             }
             else:
-                updateEdgeIntoAEL(&horzEdge)
+                me.updateEdgeIntoAEL(&horzEdge)
         }
         else
         {
             if horzEdge.outIdx >= 0:
-                addOutPt(horzEdge, horzEdge.top)
-            deleteFromAEL(horzEdge)
+                me.addOutPt(horzEdge, horzEdge.top)
+            me.deleteFromAEL(horzEdge)
         }
     }
 
@@ -924,7 +924,7 @@ impl Transform
         if aelPrev:
             aelPrev.nextInAEL = e.nextInLML
         else:
-            activeEdges = e.nextInLML
+            me.activeEdges = e.nextInLML
         if aelNext:
             aelNext.prevInAEL = e.nextInLML
         e.nextInLML.side      = e.side
@@ -936,7 +936,7 @@ impl Transform
         e.prevInAEL           = aelPrev
         e.nextInAEL           = aelNext
         if !isHorizontal(e):
-            insertScanbeam(e.top.y)
+            me.insertScanbeam(e.top.y)
         dref ed = e
     }
 
@@ -990,21 +990,21 @@ impl Transform
         }
 
         if !edge1.prevInAEL:
-            activeEdges = edge1
+            me.activeEdges = edge1
         elif !edge2.prevInAEL:
-            activeEdges = edge2
+            me.activeEdges = edge2
     }
 
     mtd deleteFromAEL(e: *Edge)
     {
         let aelPrev = e.prevInAEL
         let aelNext = e.nextInAEL
-        if !aelPrev and !aelNext and e != activeEdges:
+        if !aelPrev and !aelNext and e != me.activeEdges:
             return
         if aelPrev:
             aelPrev.nextInAEL = aelNext
         else:
-            activeEdges = aelNext
+            me.activeEdges = aelNext
         if aelNext:
             aelNext.prevInAEL = aelPrev
         e.nextInAEL = null
@@ -1013,41 +1013,41 @@ impl Transform
 
     mtd clearJoins()
     {
-        foreach p in joinList:
+        foreach p in me.joinList:
             Memory.delete(p)
-        joinList.clear()
+        me.joinList.clear()
     }
 
     mtd clearGhostJoins()
     {
-        foreach p in ghostJoinList:
+        foreach p in me.ghostJoinList:
             Memory.delete(p)
-        ghostJoinList.clear()
+        me.ghostJoinList.clear()
     }
 
     mtd executeInternal()
     {
-        reset()
-        maximaList.clear()
-        sortedEdges = null
+        me.reset()
+        me.maximaList.clear()
+        me.sortedEdges = null
 
         var botY, topY: CInt
-        if !popScanbeam(&botY):
+        if !me.popScanbeam(&botY):
             return
 
-        insertLocalMinimaIntoAEL(botY)
-        while popScanbeam(&topY) or localMinimaPending()
+        me.insertLocalMinimaIntoAEL(botY)
+        while me.popScanbeam(&topY) or me.localMinimaPending()
         {
-            processHorizontals()
-            clearGhostJoins()
-            processIntersections(topY)
-            processEdgesAtTopOfScanbeam(topY)
+            me.processHorizontals()
+            me.clearGhostJoins()
+            me.processIntersections(topY)
+            me.processEdgesAtTopOfScanbeam(topY)
             botY = topY
-            insertLocalMinimaIntoAEL(botY)
+            me.insertLocalMinimaIntoAEL(botY)
         }
 
         // Fix orientations
-        foreach outRec in polyOuts
+        foreach outRec in me.polyOuts
         {
             if !outRec.pts or outRec.isOpen:
                 continue
@@ -1055,10 +1055,10 @@ impl Transform
                 reversePolyPtLinks(outRec.pts)
         }
 
-        if joinList.count:
-            joinCommonEdges()
+        if me.joinList.count:
+            me.joinCommonEdges()
 
-        foreach outRec in polyOuts
+        foreach outRec in me.polyOuts
         {
             if !outRec.pts:
                 continue
@@ -1068,16 +1068,16 @@ impl Transform
                 fixupOutPolygon(outRec)
         }
 
-        if strictSimple:
-            doSimplePolygons()
+        if me.strictSimple:
+            me.doSimplePolygons()
 
-        clearJoins()
-        clearGhostJoins()
+        me.clearJoins()
+        me.clearGhostJoins()
     }
 
     mtd doSimplePolygons()
     {
-        foreach outrec in polyOuts
+        foreach outrec in me.polyOuts
         {
             var op = outrec.pts
             if !op or outrec.isOpen:
@@ -1168,7 +1168,7 @@ impl Transform
     {
         outrec.bottomPt = null
         var pp          = outrec.pts
-        let preserveCol = preserveCollinear or strictSimple
+        let preserveCol = me.preserveCollinear or me.strictSimple
 
         var lastOK: *OutPt
         for
@@ -1181,7 +1181,7 @@ impl Transform
             }
 
             if (pp.pt == pp.next.pt) or (pp.pt == pp.prev.pt) or
-               (slopesEqual(pp.prev.pt, pp.pt, pp.next.pt) and
+               (me.slopesEqual(pp.prev.pt, pp.pt, pp.next.pt) and
                (!preserveCol or !pt2IsBetweenPt1AndPt3(pp.prev.pt, pp.pt, pp.next.pt)))
             {
                 lastOK = null
@@ -1206,9 +1206,9 @@ impl Transform
 
     mtd getOutRec(idx: s32)->*OutRec
     {
-        var outrec = polyOuts[idx]
-        while outrec != polyOuts[outrec.idx]:
-            outrec = polyOuts[outrec.idx]
+        var outrec = me.polyOuts[idx]
+        while outrec != me.polyOuts[outrec.idx]:
+            outrec = me.polyOuts[outrec.idx]
         return outrec
     }
 
@@ -1311,26 +1311,26 @@ impl Transform
         op1b = op1.next
         while (op1b.pt == op1.pt) and (op1b != op1):
             op1b = op1b.next
-        let reverse1 = ((op1b.pt.y > op1.pt.y) or !slopesEqual(op1.pt, op1b.pt, j.offPt))
+        let reverse1 = ((op1b.pt.y > op1.pt.y) or !me.slopesEqual(op1.pt, op1b.pt, j.offPt))
         if reverse1
         {
             op1b = op1.prev
             while (op1b.pt == op1.pt) and (op1b != op1):
                 op1b = op1b.prev
-            if (op1b.pt.y > op1.pt.y) or !slopesEqual(op1.pt, op1b.pt, j.offPt):
+            if (op1b.pt.y > op1.pt.y) or !me.slopesEqual(op1.pt, op1b.pt, j.offPt):
                 return false
         }
 
         op2b = op2.next
         while (op2b.pt == op2.pt) and (op2b != op2):
             op2b = op2b.next
-        let reverse2 = ((op2b.pt.y > op2.pt.y) or !slopesEqual(op2.pt, op2b.pt, j.offPt))
+        let reverse2 = ((op2b.pt.y > op2.pt.y) or !me.slopesEqual(op2.pt, op2b.pt, j.offPt))
         if reverse2
         {
             op2b = op2.prev
             while (op2b.pt == op2.pt) and (op2b != op2):
                 op2b = op2b.prev
-            if (op2b.pt.y > op2.pt.y) or !slopesEqual(op2.pt, op2b.pt, j.offPt):
+            if (op2b.pt.y > op2.pt.y) or !me.slopesEqual(op2.pt, op2b.pt, j.offPt):
                 return false
         }
 
@@ -1592,7 +1592,7 @@ impl Transform
     mtd fixupFirstLefts2(innerOutRec, outerOutRec: *OutRec)
     {
         let orfl = outerOutRec.firstLeft
-        foreach outRec in polyOuts
+        foreach outRec in me.polyOuts
         {
             if !outRec.pts or outRec == outerOutRec or outRec == innerOutRec:
                 continue
@@ -1610,7 +1610,7 @@ impl Transform
 
     mtd fixupFirstLefts1(oldOutRec, newOutRec: *OutRec)
     {
-        foreach outRec in polyOuts
+        foreach outRec in me.polyOuts
         {
             let firstLeft = parseFirstLeft(outRec.firstLeft)
             if outRec.pts and firstLeft == oldOutRec
@@ -1623,7 +1623,7 @@ impl Transform
 
     mtd fixupFirstLefts3(oldOutRec, newOutRec: *OutRec)
     {
-        foreach outRec in polyOuts
+        foreach outRec in me.polyOuts
         {
             let firstLeft = parseFirstLeft(outRec.firstLeft)
             if outRec.pts and firstLeft == oldOutRec:
@@ -1633,7 +1633,7 @@ impl Transform
 
     mtd joinCommonEdges()
     {
-        foreach join in joinList
+        foreach join in me.joinList
         {
             let outRec1 = getOutRec(join.outPt1.idx)
             var outRec2 = getOutRec(join.outPt2.idx)
@@ -1736,30 +1736,30 @@ impl Transform
         if !eMaxPair
         {
             if e.outIdx >= 0:
-                addOutPt(e, e.top)
-            deleteFromAEL(e)
+                me.addOutPt(e, e.top)
+            me.deleteFromAEL(e)
             return
         }
 
         var eNext = e.nextInAEL
         while eNext and eNext != eMaxPair
         {
-            intersectEdges(e, eNext, e.top)
-            swapPositionsInAEL(e, eNext)
+            me.intersectEdges(e, eNext, e.top)
+            me.swapPositionsInAEL(e, eNext)
             eNext = e.nextInAEL
         }
 
         if e.outIdx == Unassigned and eMaxPair.outIdx == Unassigned
         {
-            deleteFromAEL(e)
-            deleteFromAEL(eMaxPair)
+            me.deleteFromAEL(e)
+            me.deleteFromAEL(eMaxPair)
         }
         elif e.outIdx >= 0 and eMaxPair.outIdx >= 0
         {
             if e.outIdx >= 0:
-                addLocalMaxPoly(e, eMaxPair, e.top)
-            deleteFromAEL(e)
-            deleteFromAEL(eMaxPair)
+                me.addLocalMaxPoly(e, eMaxPair, e.top)
+            me.deleteFromAEL(e)
+            me.deleteFromAEL(eMaxPair)
         }
         else
         {
@@ -1769,7 +1769,7 @@ impl Transform
 
     mtd processEdgesAtTopOfScanbeam(topY: CInt)
     {
-        var e = activeEdges
+        var e = me.activeEdges
         while e
         {
             // 1. process maxima, treating them as if they're 'bent' horizontal edges,
@@ -1783,12 +1783,12 @@ impl Transform
 
             if isMaximaEdge
             {
-                if strictSimple:
-                    maximaList.add(e.top.x)
+                if me.strictSimple:
+                    me.maximaList.add(e.top.x)
                 let ePrev = e.prevInAEL
-                doMaxima(e)
+                me.doMaxima(e)
                 if !ePrev:
-                    e = activeEdges
+                    e = me.activeEdges
                 else:
                     e = ePrev.nextInAEL
             }
@@ -1797,10 +1797,10 @@ impl Transform
                 // 2. promote horizontal edges, otherwise update curr.x and curr.y ...
                 if isIntermediate(e, topY) and isHorizontal(e.nextInLML)
                 {
-                    updateEdgeIntoAEL(&e)
+                    me.updateEdgeIntoAEL(&e)
                     if e.outIdx >= 0:
-                        addOutPt(e, e.bot)
-                    addEdgeToSEL(e)
+                        me.addOutPt(e, e.bot)
+                    me.addEdgeToSEL(e)
                 }
                 else
                 {
@@ -1810,16 +1810,16 @@ impl Transform
 
                 // When StrictlySimple and 'e' is being touched by another edge, then
                 // make sure both edges have a vertex here ...
-                if strictSimple
+                if me.strictSimple
                 {
                     let ePrev = e.prevInAEL
                     if (e.outIdx >= 0) and (e.windDelta != 0) and ePrev and (ePrev.outIdx >= 0) and
                        (ePrev.curr.x == e.curr.x) and (ePrev.windDelta != 0)
                     {
                         let pt  = e.curr
-                        let op  = addOutPt(ePrev, pt)
-                        let op2 = addOutPt(e, pt)
-                        addJoin(op, op2, pt)
+                        let op  = me.addOutPt(ePrev, pt)
+                        let op2 = me.addOutPt(e, pt)
+                        me.addJoin(op, op2, pt)
                     }
                 }
 
@@ -1828,40 +1828,40 @@ impl Transform
         }
 
         // 3. Process horizontals at the top of the scanbeam ...
-        maximaList.sort()
-        processHorizontals()
-        maximaList.clear()
+        me.maximaList.sort()
+        me.processHorizontals()
+        me.maximaList.clear()
 
         // 4. Promote intermediate vertices ...
-        e = activeEdges
+        e = me.activeEdges
         while e
         {
             if isIntermediate(e, topY)
             {
                 var op: *OutPt
                 if e.outIdx >= 0:
-                    op = addOutPt(e, e.top)
-                updateEdgeIntoAEL(&e)
+                    op = me.addOutPt(e, e.top)
+                me.updateEdgeIntoAEL(&e)
 
                 let ePrev = e.prevInAEL
                 let eNext = e.nextInAEL
                 if ePrev and ePrev.curr.x == e.bot.x and
                    ePrev.curr.y == e.bot.y and op and
                    ePrev.outIdx >= 0 and ePrev.curr.y > ePrev.top.y and
-                   slopesEqual(e.curr, e.top, ePrev.curr, ePrev.top) and
+                   me.slopesEqual(e.curr, e.top, ePrev.curr, ePrev.top) and
                    (e.windDelta != 0) and (ePrev.windDelta != 0)
                 {
-                    let op2 = addOutPt(ePrev, e.bot)
-                    addJoin(op, op2, e.top)
+                    let op2 = me.addOutPt(ePrev, e.bot)
+                    me.addJoin(op, op2, e.top)
                 }
                 elif eNext and eNext.curr.x == e.bot.x and
                      eNext.curr.y == e.bot.y and op and
                      eNext.outIdx >= 0 and eNext.curr.y > eNext.top.y and
-                     slopesEqual(e.curr, e.top, eNext.curr, eNext.top) and
+                     me.slopesEqual(e.curr, e.top, eNext.curr, eNext.top) and
                      (e.windDelta != 0) and (eNext.windDelta != 0)
                 {
-                    let op2 = addOutPt(eNext, e.bot)
-                    addJoin(op, op2, e.top)
+                    let op2 = me.addOutPt(eNext, e.bot)
+                    me.addJoin(op, op2, e.top)
                 }
             }
 
@@ -1871,25 +1871,25 @@ impl Transform
 
     mtd processIntersections(topY: CInt)
     {
-        if !activeEdges:
+        if !me.activeEdges:
             return
 
-        buildIntersectList(topY)
-        let ilSize = intersectList.count
+        me.buildIntersectList(topY)
+        let ilSize = me.intersectList.count
         if ilSize == 0:
             return
-        if ilSize == 1 or fixupIntersectionOrder():
-            processIntersectList()
-        sortedEdges = null
+        if ilSize == 1 or me.fixupIntersectionOrder():
+            me.processIntersectList()
+        me.sortedEdges = null
     }
 
     mtd buildIntersectList(topY: CInt)
     {
-        if !activeEdges:
+        if !me.activeEdges:
             return
 
-        var e = activeEdges
-        sortedEdges = e
+        var e = me.activeEdges
+        me.sortedEdges = e
         while e
         {
             e.prevInSEL = e.prevInAEL
@@ -1902,22 +1902,22 @@ impl Transform
         while isModified
         {
             isModified = false
-            e          = sortedEdges
+            e          = me.sortedEdges
             while e.nextInSEL
             {
                 let eNext = e.nextInSEL
                 if e.curr.x > eNext.curr.x
                 {
                     var pt: IntPoint
-                    intersectPoint(e, eNext, &pt)
+                    me.intersectPoint(e, eNext, &pt)
                     if pt.y < topY:
                         pt = IntPoint{topX(e, topY), topY}
                     let newNode = Memory.new'IntersectNode()
                     newNode.edge1 = e
                     newNode.edge2 = eNext
                     newNode.pt    = pt
-                    intersectList.add(newNode)
-                    swapPositionsInSEL(e, eNext)
+                    me.intersectList.add(newNode)
+                    me.swapPositionsInSEL(e, eNext)
                     isModified = true
                 }
                 else:
@@ -1929,13 +1929,13 @@ impl Transform
             e.prevInSEL.nextInSEL = null
         }
 
-        sortedEdges = null
+        me.sortedEdges = null
     }
 
     mtd copyAELToSEL()
     {
-        var e = activeEdges
-        sortedEdges = e
+        var e = me.activeEdges
+        me.sortedEdges = e
         while e
         {
             e.prevInSEL = e.prevInAEL
@@ -1951,21 +1951,21 @@ impl Transform
 
     mtd fixupIntersectionOrder()->bool
     {
-        copyAELToSEL()
-        intersectList.sort()
-        for i in intersectList
+        me.copyAELToSEL()
+        me.intersectList.sort()
+        for i in me.intersectList
         {
-            if !edgesAdjacent(intersectList[i])
+            if !edgesAdjacent(me.intersectList[i])
             {
                 var j = i + 1
-                while j < intersectList.count and !edgesAdjacent(intersectList[j]):
+                while j < me.intersectList.count and !edgesAdjacent(me.intersectList[j]):
                     j += 1
-                if j == intersectList.count:
+                if j == me.intersectList.count:
                     return false
-                swap(intersectList.buffer + i, intersectList.buffer + j)
+                swap(me.intersectList.buffer + i, me.intersectList.buffer + j)
             }
 
-            swapPositionsInSEL(intersectList[i].edge1, intersectList[i].edge2)
+            me.swapPositionsInSEL(me.intersectList[i].edge1, me.intersectList[i].edge2)
         }
 
         return true
@@ -1973,14 +1973,14 @@ impl Transform
 
     mtd processIntersectList()
     {
-        foreach iNode in intersectList
+        foreach iNode in me.intersectList
         {
             intersectEdges(iNode.edge1, iNode.edge2, iNode.pt)
             swapPositionsInAEL(iNode.edge1, iNode.edge2)
             Memory.delete(iNode)
         }
 
-        intersectList.clear()
+        me.intersectList.clear()
     }
 
     mtd swapPositionsInSEL(edge1, edge2: *Edge)
@@ -2035,9 +2035,9 @@ impl Transform
         }
 
         if !edge1.prevInSEL:
-            sortedEdges = edge1
+            me.sortedEdges = edge1
         elif !edge2.prevInSEL:
-            sortedEdges = edge2
+            me.sortedEdges = edge2
     }
 
     mtd intersectPoint(edge1, edge2: *Edge, ip: *IntPoint)
@@ -2108,10 +2108,10 @@ impl Transform
 
     mtd popLocalMinima(y: CInt, locMin: *const *LocalMinimum)->bool
     {
-        if currentLM == minimaList.count or minimaList[currentLM].y != y:
+        if me.currentLM == me.minimaList.count or me.minimaList[me.currentLM].y != y:
             return false
-        dref locMin = minimaList[currentLM]
-        currentLM += 1
+        dref locMin = me.minimaList[me.currentLM]
+        me.currentLM += 1
         return true
     }
 
@@ -2142,23 +2142,23 @@ impl Transform
     mtd insertEdgeIntoAEL(edge: *Edge, startE: #null *Edge)
     {
         var startEdge = startE
-        if !activeEdges
+        if !me.activeEdges
         {
             edge.prevInAEL = null
             edge.nextInAEL = null
-            activeEdges    = edge
+            me.activeEdges = edge
         }
-        elif !startEdge and e2InsertsBeforeE1(activeEdges, edge)
+        elif !startEdge and e2InsertsBeforeE1(me.activeEdges, edge)
         {
-            edge.prevInAEL        = null
-            edge.nextInAEL        = activeEdges
-            activeEdges.prevInAEL = edge
-            activeEdges           = edge
+            edge.prevInAEL           = null
+            edge.nextInAEL           = me.activeEdges
+            me.activeEdges.prevInAEL = edge
+            me.activeEdges           = edge
         }
         else
         {
             if !startEdge:
-                startEdge = activeEdges
+                startEdge = me.activeEdges
             while startEdge.nextInAEL and !e2InsertsBeforeE1(startEdge.nextInAEL, edge):
                 startEdge = startEdge.nextInAEL
             edge.nextInAEL = startEdge.nextInAEL
@@ -2172,15 +2172,15 @@ impl Transform
     mtd isEvenOddFillType(edge: *Edge)->bool
     {
         if edge.polyType == .Subject:
-            return subjFillType == .EvenOdd
-        return clipFillType == .EvenOdd
+            return me.subjFillType == .EvenOdd
+        return me.clipFillType == .EvenOdd
     }
 
     mtd isEvenOddAltFillType(edge: *Edge)->bool
     {
         if edge.polyType == .Subject:
-            return clipFillType == .EvenOdd
-        return subjFillType == .EvenOdd
+            return me.clipFillType == .EvenOdd
+        return me.subjFillType == .EvenOdd
     }
 
     mtd setWindingCount(edge: *Edge)
@@ -2194,21 +2194,21 @@ impl Transform
         {
             if edge.windDelta == 0
             {
-                let pft = edge.polyType == .Subject ? subjFillType : clipFillType
+                let pft = edge.polyType == .Subject ? me.subjFillType : me.clipFillType
                 edge.windCnt = (pft == .Negative ? -1 : 1)
             }
             else:
                 edge.windCnt = edge.windDelta
             edge.windCnt2 = 0
-            e             = activeEdges
+            e             = me.activeEdges
         }
-        elif edge.windDelta == 0 and clipType != .Union
+        elif edge.windDelta == 0 and me.clipType != .Union
         {
             edge.windCnt  = 1
             edge.windCnt2 = e.windCnt2
             e             = e.nextInAEL
         }
-        elif isEvenOddFillType(edge)
+        elif me.isEvenOddFillType(edge)
         {
             if edge.windDelta == 0
             {
@@ -2255,7 +2255,7 @@ impl Transform
             e             = e.nextInAEL
         }
 
-        if isEvenOddAltFillType(edge)
+        if me.isEvenOddAltFillType(edge)
         {
             while e != edge
             {
@@ -2279,13 +2279,13 @@ impl Transform
         var pft, pft2: PolyFillType = undefined
         if edge.polyType == .Subject
         {
-            pft  = subjFillType
-            pft2 = clipFillType
+            pft  = me.subjFillType
+            pft2 = me.clipFillType
         }
         else
         {
-            pft  = clipFillType
-            pft2 = subjFillType
+            pft  = me.clipFillType
+            pft2 = me.subjFillType
         }
 
         switch pft
@@ -2304,7 +2304,7 @@ impl Transform
                 return false
         }
 
-        switch clipType
+        switch me.clipType
         {
         case Intersection:
             switch pft2
@@ -2375,8 +2375,8 @@ impl Transform
     mtd createOutRec()->*OutRec
     {
         let result = Memory.new'OutRec()
-        polyOuts.add(result)
-        result.idx = cast(s32) (polyOuts.count - 1)
+        me.polyOuts.add(result)
+        result.idx = cast(s32) (me.polyOuts.count - 1)
         return result
     }
 
@@ -2403,7 +2403,7 @@ impl Transform
         }
         else
         {
-            outrec.firstLeft = polyOuts[eTmp.outIdx]
+            outrec.firstLeft = me.polyOuts[eTmp.outIdx]
             outrec.isHole    = !outrec.firstLeft.isHole
         }
     }
@@ -2413,7 +2413,7 @@ impl Transform
     {
         if e.outIdx < 0
         {
-            let outRec = createOutRec()
+            let outRec = me.createOutRec()
             outRec.isOpen = e.windDelta == 0
             let newOp = Memory.new'OutPt()
             outRec.pts = newOp
@@ -2422,13 +2422,13 @@ impl Transform
             newOp.next = newOp
             newOp.prev = newOp
             if !outRec.isOpen:
-                setHoleState(e, outRec)
+                me.setHoleState(e, outRec)
             e.outIdx = outRec.idx
             return newOp
         }
         else
         {
-            let outRec = polyOuts[e.outIdx]
+            let outRec = me.polyOuts[e.outIdx]
             let op     = outRec.pts
 
             let toFront = (e.side == .Left)
@@ -2458,7 +2458,7 @@ impl Transform
 
         if isHorizontal(e2) or (e1.dx > e2.dx)
         {
-            result    = addOutPt(e1, pt)
+            result    = me.addOutPt(e1, pt)
             e2.outIdx = e1.outIdx
             e1.side   = .Left
             e2.side   = .Right
@@ -2470,7 +2470,7 @@ impl Transform
         }
         else
         {
-            result    = addOutPt(e2, pt)
+            result    = me.addOutPt(e2, pt)
             e1.outIdx = e2.outIdx
             e1.side   = .Right
             e2.side   = .Left
@@ -2488,10 +2488,10 @@ impl Transform
             if xPrev == xE and
                (e.windDelta != 0) and
                (prevE.windDelta != 0) and
-               slopesEqual(IntPoint{xPrev, pt.y}, prevE.top, IntPoint{xE, pt.y}, e.top)
+               me.slopesEqual(IntPoint{xPrev, pt.y}, prevE.top, IntPoint{xE, pt.y}, e.top)
             {
-                let outPt = addOutPt(prevE, pt)
-                addJoin(result, outPt, e.top)
+                let outPt = me.addOutPt(prevE, pt)
+                me.addJoin(result, outPt, e.top)
             }
         }
 
@@ -2500,18 +2500,18 @@ impl Transform
 
     mtd addEdgeToSEL(edge: *Edge)
     {
-        if !sortedEdges
+        if !me.sortedEdges
         {
-            sortedEdges    = edge
+            me.sortedEdges = edge
             edge.prevInSEL = null
             edge.nextInSEL = null
         }
         else
         {
-            edge.nextInSEL        = sortedEdges
-            edge.prevInSEL        = null
-            sortedEdges.prevInSEL = edge
-            sortedEdges           = edge
+            edge.nextInSEL           = me.sortedEdges
+            edge.prevInSEL           = null
+            me.sortedEdges.prevInSEL = edge
+            me.sortedEdges           = edge
         }
     }
 
@@ -2679,8 +2679,8 @@ impl Transform
 
     mtd appendPolygon(e1, e2: *Edge)
     {
-        let outRec1 = polyOuts[e1.outIdx]
-        let outRec2 = polyOuts[e2.outIdx]
+        let outRec1 = me.polyOuts[e1.outIdx]
+        let outRec2 = me.polyOuts[e2.outIdx]
 
         var holeStateRec: *OutRec
         if outRec1RightOfOutRec2(outRec1, outRec2):
@@ -2752,7 +2752,7 @@ impl Transform
         e1.outIdx = Unassigned
         e2.outIdx = Unassigned
 
-        var e = activeEdges
+        var e = me.activeEdges
         while e
         {
             if e.outIdx == obsoleteIdx
@@ -2770,9 +2770,9 @@ impl Transform
 
     mtd addLocalMaxPoly(e1, e2: *Edge, pt: IntPoint)
     {
-        addOutPt(e1, pt)
+        me.addOutPt(e1, pt)
         if e2.windDelta == 0:
-            addOutPt(e2, pt)
+            me.addOutPt(e2, pt)
 
         if e1.outIdx == e2.outIdx
         {
@@ -2780,9 +2780,9 @@ impl Transform
             e2.outIdx = Unassigned
         }
         elif e1.outIdx < e2.outIdx:
-            appendPolygon(e1, e2)
+            me.appendPolygon(e1, e2)
         else:
-            appendPolygon(e2, e1)
+            me.appendPolygon(e2, e1)
     }
 
     func swapSides(edge1, edge2: *Edge)
@@ -2806,7 +2806,7 @@ impl Transform
 
         if e1.polyType == e2.polyType
         {
-            if isEvenOddFillType(e1)
+            if me.isEvenOddFillType(e1)
             {
                 let oldE1WindCnt = e1.windCnt
                 e1.windCnt = e2.windCnt
@@ -2826,11 +2826,11 @@ impl Transform
         }
         else
         {
-            if !isEvenOddFillType(e2):
+            if !me.isEvenOddFillType(e2):
                 e1.windCnt2 += e2.windDelta
             else:
                 e1.windCnt2 = (e1.windCnt2 == 0) ? 1 : 0
-            if !isEvenOddFillType(e1):
+            if !me.isEvenOddFillType(e1):
                 e2.windCnt2 -= e1.windDelta
             else:
                 e2.windCnt2 = (e2.windCnt2 == 0) ? 1 : 0
@@ -2839,24 +2839,24 @@ impl Transform
         var e1FillType, e2FillType, e1FillType2, e2FillType2: PolyFillType = undefined
         if e1.polyType == .Subject
         {
-            e1FillType  = subjFillType
-            e1FillType2 = clipFillType
+            e1FillType  = me.subjFillType
+            e1FillType2 = me.clipFillType
         }
         else
         {
-            e1FillType  = clipFillType
-            e1FillType2 = subjFillType
+            e1FillType  = me.clipFillType
+            e1FillType2 = me.subjFillType
         }
 
         if e2.polyType == .Subject
         {
-            e2FillType  = subjFillType
-            e2FillType2 = clipFillType
+            e2FillType  = me.subjFillType
+            e2FillType2 = me.clipFillType
         }
         else
         {
-            e2FillType  = clipFillType
-            e2FillType2 = subjFillType
+            e2FillType  = me.clipFillType
+            e2FillType2 = me.subjFillType
         }
 
         var e1Wc, e2Wc: CInt
@@ -2882,14 +2882,14 @@ impl Transform
 
         if e1Contributing and e2Contributing
         {
-            if (e1Wc != 0 and e1Wc != 1) or (e2Wc != 0 and e2Wc != 1) or (e1.polyType != e2.polyType and clipType != .Xor)
+            if (e1Wc != 0 and e1Wc != 1) or (e2Wc != 0 and e2Wc != 1) or (e1.polyType != e2.polyType and me.clipType != .Xor)
             {
-                addLocalMaxPoly(e1, e2, pt)
+                me.addLocalMaxPoly(e1, e2, pt)
             }
             else
             {
-                addOutPt(e1, pt)
-                addOutPt(e2, pt)
+                me.addOutPt(e1, pt)
+                me.addOutPt(e2, pt)
                 swapSides(e1, e2)
                 swapPolyIndexes(e1, e2)
             }
@@ -2898,7 +2898,7 @@ impl Transform
         {
             if e2Wc == 0 or e2Wc == 1
             {
-                addOutPt(e1, pt)
+                me.addOutPt(e1, pt)
                 swapSides(e1, e2)
                 swapPolyIndexes(e1, e2)
             }
@@ -2907,7 +2907,7 @@ impl Transform
         {
             if e1Wc == 0 or e1Wc == 1
             {
-                addOutPt(e2, pt)
+                me.addOutPt(e2, pt)
                 swapSides(e1, e2)
                 swapPolyIndexes(e1, e2)
             }
@@ -2937,24 +2937,24 @@ impl Transform
 
             if e1.polyType != e2.polyType
             {
-                addLocalMinPoly(e1, e2, pt)
+                me.addLocalMinPoly(e1, e2, pt)
             }
             elif e1Wc == 1 and e2Wc == 1
             {
-                switch clipType
+                switch me.clipType
                 {
                 case Intersection:
                     if e1Wc2 > 0 and e2Wc2 > 0:
-                        addLocalMinPoly(e1, e2, pt)
+                        me.addLocalMinPoly(e1, e2, pt)
                 case Union:
                     if e1Wc2 <= 0 and e2Wc2 <= 0:
-                        addLocalMinPoly(e1, e2, pt)
+                        me.addLocalMinPoly(e1, e2, pt)
                 case Difference:
                     if ((e1.polyType == .Clip) and (e1Wc2 > 0) and (e2Wc2 > 0)) or
                        ((e1.polyType == .Subject) and (e1Wc2 <= 0) and (e2Wc2 <= 0)):
-                        addLocalMinPoly(e1, e2, pt)
+                        me.addLocalMinPoly(e1, e2, pt)
                 case Xor:
-                    addLocalMinPoly(e1, e2, pt)
+                    me.addLocalMinPoly(e1, e2, pt)
                 }
             }
             else:
@@ -2965,7 +2965,7 @@ impl Transform
     mtd insertLocalMinimaIntoAEL(botY: CInt)
     {
         var lm: const *LocalMinimum
-        while popLocalMinima(botY, &lm)
+        while me.popLocalMinima(botY, &lm)
         {
             let lb = lm.leftBound
             let rb = lm.rightBound
@@ -2973,77 +2973,77 @@ impl Transform
             var op1: *OutPt
             if !lb
             {
-                insertEdgeIntoAEL(rb, null)
-                setWindingCount(rb)
-                if isContributing(rb):
-                    op1 = addOutPt(rb, rb.bot)
+                me.insertEdgeIntoAEL(rb, null)
+                me.setWindingCount(rb)
+                if me.isContributing(rb):
+                    op1 = me.addOutPt(rb, rb.bot)
             }
             elif !rb
             {
-                insertEdgeIntoAEL(lb, null)
-                setWindingCount(lb)
-                if isContributing(lb):
-                    op1 = addOutPt(lb, lb.bot)
-                insertScanbeam(lb.top.y)
+                me.insertEdgeIntoAEL(lb, null)
+                me.setWindingCount(lb)
+                if me.isContributing(lb):
+                    op1 = me.addOutPt(lb, lb.bot)
+                me.insertScanbeam(lb.top.y)
             }
             else
             {
-                insertEdgeIntoAEL(lb, null)
-                insertEdgeIntoAEL(rb, lb)
-                setWindingCount(lb)
+                me.insertEdgeIntoAEL(lb, null)
+                me.insertEdgeIntoAEL(rb, lb)
+                me.setWindingCount(lb)
                 rb.windCnt  = lb.windCnt
                 rb.windCnt2 = lb.windCnt2
-                if isContributing(lb):
-                    op1 = addLocalMinPoly(lb, rb, lb.bot)
-                insertScanbeam(lb.top.y)
+                if me.isContributing(lb):
+                    op1 = me.addLocalMinPoly(lb, rb, lb.bot)
+                me.insertScanbeam(lb.top.y)
             }
 
             if rb
             {
                 if isHorizontal(rb)
                 {
-                    addEdgeToSEL(rb)
+                    me.addEdgeToSEL(rb)
                     if rb.nextInLML:
-                        insertScanbeam(rb.nextInLML.top.y)
+                        me.insertScanbeam(rb.nextInLML.top.y)
                 }
                 else:
-                    insertScanbeam(rb.top.y)
+                    me.insertScanbeam(rb.top.y)
             }
 
             if !lb or !rb:
                 continue
 
             //if any output polygons share an edge, they'll need joining later ...
-            if op1 and isHorizontal(rb) and ghostJoinList.count > 0 and (rb.windDelta != 0)
+            if op1 and isHorizontal(rb) and me.ghostJoinList.count > 0 and (rb.windDelta != 0)
             {
-                for i in ghostJoinList.count
+                for i in me.ghostJoinList.count
                 {
-                    let jr = ghostJoinList[i]
+                    let jr = me.ghostJoinList[i]
                     if horzSegmentsOverlap(jr.outPt1.pt.x, jr.offPt.x, rb.bot.x, rb.top.x):
-                        addJoin(jr.outPt1, op1, jr.offPt)
+                        me.addJoin(jr.outPt1, op1, jr.offPt)
                 }
             }
 
             if lb.outIdx >= 0 and lb.prevInAEL and
                lb.prevInAEL.curr.x == lb.bot.x and
                lb.prevInAEL.outIdx >= 0 and
-               slopesEqual(lb.prevInAEL.bot, lb.prevInAEL.top, lb.curr, lb.top) and
+               me.slopesEqual(lb.prevInAEL.bot, lb.prevInAEL.top, lb.curr, lb.top) and
                (lb.windDelta != 0) and (lb.prevInAEL.windDelta != 0)
             {
-                let op2 = addOutPt(lb.prevInAEL, lb.bot)
-                addJoin(op1, op2, lb.top)
+                let op2 = me.addOutPt(lb.prevInAEL, lb.bot)
+                me.addJoin(op1, op2, lb.top)
             }
 
             if lb.nextInAEL != rb
             {
                 if rb.outIdx >= 0 and
                    rb.prevInAEL.outIdx >= 0 and
-                   slopesEqual(rb.prevInAEL.curr, rb.prevInAEL.top, rb.curr, rb.top) and
+                   me.slopesEqual(rb.prevInAEL.curr, rb.prevInAEL.top, rb.curr, rb.top) and
                    (rb.windDelta != 0) and
                    (rb.prevInAEL.windDelta != 0)
                 {
-                    let op2 = addOutPt(rb.prevInAEL, rb.bot)
-                    addJoin(op1, op2, rb.top)
+                    let op2 = me.addOutPt(rb.prevInAEL, rb.bot)
+                    me.addJoin(op1, op2, rb.top)
                 }
 
                 var e = lb.nextInAEL
@@ -3051,7 +3051,7 @@ impl Transform
                 {
                     while e != rb
                     {
-                        intersectEdges(rb, e, lb.curr)
+                        me.intersectEdges(rb, e, lb.curr)
                         e = e.nextInAEL
                     }
                 }
@@ -3079,13 +3079,13 @@ impl Transform
 
     mtd buildResult(polys: *ClipperPaths)
     {
-        polys.reserve(polyOuts.count)
-        for i in polyOuts
+        polys.reserve(me.polyOuts.count)
+        for i in me.polyOuts
         {
-            if !polyOuts[i].pts:
+            if !me.polyOuts[i].pts:
                 continue
 
-            var p   = polyOuts[i].pts.prev
+            var p   = me.polyOuts[i].pts.prev
             let cnt = pointCount(p)
             if cnt < 2:
                 continue
@@ -3104,9 +3104,9 @@ impl Transform
 
     mtd disposeAllOutRecs()
     {
-        for i in polyOuts:
-            disposeOutRec(i)
-        polyOuts.clear()
+        for i in me.polyOuts:
+            me.disposeOutRec(i)
+        me.polyOuts.clear()
     }
 
     func disposeOutPts(pts: *OutPt)
@@ -3126,11 +3126,11 @@ impl Transform
 
     mtd disposeOutRec(index: u64)
     {
-        let outRec = polyOuts[index]
+        let outRec = me.polyOuts[index]
         if outRec.pts:
             disposeOutPts(outRec.pts)
         Memory.delete(outRec)
-        polyOuts[index] = null
+        me.polyOuts[index] = null
     }
 
     mtd getBounds()->IntRect
@@ -3138,18 +3138,18 @@ impl Transform
         var result: retval
 
         var lm = 0'u64
-        if lm == minimaList.count:
+        if lm == me.minimaList.count:
             return result
 
-        result.left   = minimaList[lm].leftBound.bot.x
-        result.top    = minimaList[lm].leftBound.bot.y
-        result.right  = minimaList[lm].leftBound.bot.x
-        result.bottom = minimaList[lm].leftBound.bot.y
+        result.left   = me.minimaList[lm].leftBound.bot.x
+        result.top    = me.minimaList[lm].leftBound.bot.y
+        result.right  = me.minimaList[lm].leftBound.bot.x
+        result.bottom = me.minimaList[lm].leftBound.bot.y
 
-        while lm != minimaList.count
+        while lm != me.minimaList.count
         {
-            result.bottom = Math.max(result.bottom, minimaList[lm].leftBound.bot.y)
-            var e = minimaList[lm].leftBound
+            result.bottom = Math.max(result.bottom, me.minimaList[lm].leftBound.bot.y)
+            var e = me.minimaList[lm].leftBound
             for
             {
                 let bottomE = e
@@ -3167,8 +3167,8 @@ impl Transform
                 result.left  = Math.min(result.left, e.top.x)
                 result.right = Math.max(result.right, e.top.x)
                 result.top   = Math.min(result.top, e.top.y)
-                if bottomE == minimaList[lm].leftBound:
-                    e = minimaList[lm].rightBound
+                if bottomE == me.minimaList[lm].leftBound:
+                    e = me.minimaList[lm].rightBound
                 else:
                     break
             }

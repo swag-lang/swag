@@ -44,14 +44,14 @@ impl RichString
 {
     mtd opEquals(other: string)->bool
     {
-        return raw == other
+        return me.raw == other
     }
 
     // We need to recompute chunks, as they contains slices
     mtd opPostCopy()
     {
-        chunks.clear()
-        set(raw)
+        me.chunks.clear()
+        me.set(me.raw)
     }
 
     #[Swag.Mixin]
@@ -92,18 +92,18 @@ impl RichString
     }
 
     #[Swag.Inline]
-    mtd opCount() => raw.length
+    mtd opCount() => me.raw.length
     #[Swag.Inline]
-    mtd opAffect(str: string) = set(str)
+    mtd opAffect(str: string) = me.set(str)
 
     // Returns 'true' if the string is empty.
     #[Swag.Inline]
-    mtd isEmpty() => raw.length == 0
+    mtd isEmpty() => me.raw.length == 0
 
     // Force the string to be repainted.
     mtd invalidate()
     {
-        layoutRect.clear()
+        me.layoutRect.clear()
     }
 
     // Associate a string.
@@ -121,10 +121,10 @@ impl RichString
     // ```swag
     mtd set(text: #null string)
     {
-        if raw == text and chunks.count:
+        if me.raw == text and me.chunks.count:
             return
-        raw   = text
-        dirty = true
+        me.raw   = text
+        me.dirty = true
     }
 
     // Transform the given string to a naked one.
@@ -176,9 +176,9 @@ impl RichString
     // If an url does not exists, returns 'null'.
     mtd getUrlChunkAt(at: Math.Point)->#null *RichChunk
     {
-        if !hasUrl:
+        if !me.hasUrl:
             return null
-        foreach &c in chunks
+        foreach &c in me.chunks
         {
             if !c.isUrl:
                 continue
@@ -199,15 +199,15 @@ impl RichString
     // will only be recomputed if it's dirty (the text has changed) or if 'force' is true.
     mtd compute(force = false)
     {
-        if !dirty or force:
+        if !me.dirty or force:
             return
 
-        dirty  = false
-        hasUrl = false
-        chunks.clear()
-        layoutRect.clear()
+        me.dirty  = false
+        me.hasUrl = false
+        me.chunks.clear()
+        me.layoutRect.clear()
 
-        var count = raw.length
+        var count = me.raw.length
         if !count:
             return
 
@@ -225,7 +225,7 @@ impl RichString
         colorFg.add(0)
         under.add(UnderlineStyle.None)
 
-        var scan = raw.buffer
+        var scan = me.raw.buffer
         while count
         {
             var sl = @mkslice(scan, count)
@@ -347,8 +347,8 @@ impl RichString
         }
 
         // Remaining chunk
-        Debug.assert(startChunk <= raw.length)
-        if startChunk < raw.length:
-            addChunk(raw.length)
+        Debug.assert(startChunk <= me.raw.length)
+        if startChunk < me.raw.length:
+            addChunk(me.raw.length)
     }
 }

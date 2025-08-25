@@ -73,39 +73,39 @@ impl Decoder
 {
     mtd seek(len: u64) throw
     {
-        if len > streamLen:
+        if len > me.streamLen:
             throw InvalidFormatError{"read error"}
-        stream += len
-        streamLen -= len
+        me.stream += len
+        me.streamLen -= len
     }
 
     mtd read(dest: *u8, len: u64) throw
     {
-        if len > streamLen:
+        if len > me.streamLen:
             throw InvalidFormatError{"read error"}
-        Memory.copy(dest, stream, len)
-        stream += len
-        streamLen -= len
+        Memory.copy(dest, me.stream, len)
+        me.stream += len
+        me.streamLen -= len
     }
 
     #[Swag.Inline]
     mtd readU8()->u8 throw
     {
-        if streamLen < 1:
+        if me.streamLen < 1:
             throw InvalidFormatError{"read error"}
-        let res = stream[0]
-        stream += 1
-        streamLen -= 1
+        let res = me.stream[0]
+        me.stream += 1
+        me.streamLen -= 1
         return res
     }
 
     mtd readU16()->u16 throw
     {
-        if streamLen < 2:
+        if me.streamLen < 2:
             throw InvalidFormatError{"read error"}
-        let res = cast(u16) (stream[0] + (cast(u16) stream[1] << 8))
-        stream += 2
-        streamLen -= 2
+        let res = cast(u16) (me.stream[0] + (cast(u16) me.stream[1] << 8))
+        me.stream += 2
+        me.streamLen -= 2
         return res
     }
 
@@ -113,38 +113,38 @@ impl Decoder
     {
         for
         {
-            let size = readU8()
+            let size = me.readU8()
             if !size:
                 break
-            seek(cast() size)
+            me.seek(cast() size)
         }
     }
 
     mtd readPlainTextExt() throw
     {
         // Discard plain text metadata.
-        seek(13)
+        me.seek(13)
         // Discard plain text sub-blocks.
-        discardSubBlocks()
+        me.discardSubBlocks()
     }
 
     mtd readGraphicControlExt() throw
     {
         // Discard block size (always 0x04)
-        seek(1)
-        let rdit = readU8()
-        gce.disposal     = (rdit >> 2) & 3
-        gce.input        = rdit & 2
-        gce.transparency = rdit & 1
-        gce.delay        = readU16()
-        gce.tindex       = readU8()
+        me.seek(1)
+        let rdit = me.readU8()
+        me.gce.disposal     = (rdit >> 2) & 3
+        me.gce.input        = rdit & 2
+        me.gce.transparency = rdit & 1
+        me.gce.delay        = me.readU16()
+        me.gce.tindex       = me.readU8()
         // Skip block terminator
-        seek(1)
+        me.seek(1)
     }
 
     mtd readCommentExt() throw
     {
-        discardSubBlocks()
+        me.discardSubBlocks()
     }
 
     mtd readApplicationExt() throw
@@ -153,39 +153,39 @@ impl Decoder
         var app_auth_code: [3] u8
 
         // Discard block size (always 0x0B)
-        seek(1)
+        me.seek(1)
         // Application Identifier
-        read(app_id, 8)
+        me.read(app_id, 8)
         // Application Authentication Code
-        read(app_auth_code, 3)
+        me.read(app_auth_code, 3)
 
         if !Memory.compare(app_id, @dataof("NETSCAPE"), @countof(app_id))
         {
             // Discard block size (0x03) and constant byte (0x01).
-            seek(2)
-            loopCount = readU16()
+            me.seek(2)
+            me.loopCount = me.readU16()
             // Skip block terminator.
-            seek(1)
+            me.seek(1)
         }
         else
         {
-            discardSubBlocks()
+            me.discardSubBlocks()
         }
     }
 
     mtd readExt() throw
     {
-        let label = readU8()
+        let label = me.readU8()
         switch label
         {
         case 0x01:
-            readPlainTextExt()
+            me.readPlainTextExt()
         case 0xF9:
-            readGraphicControlExt()
+            me.readGraphicControlExt()
         case 0xFE:
-            readCommentExt()
+            me.readCommentExt()
         case 0xFF:
-            readApplicationExt()
+            me.readApplicationExt()
         default:
             throw UnsupportedFormatError{Errors.mkString(Format.toString("unknown extension: %", label))}
         }
@@ -193,11 +193,11 @@ impl Decoder
 
     mtd initTable(keySize: s32)
     {
-        table.bulk     = Math.max(1 << (keySize + 1), 0x100's32)
-        table.nentries = (1 << keySize) + 2
-        table.entries.resize(table.bulk)
+        me.table.bulk     = Math.max(1 << (keySize + 1), 0x100's32)
+        me.table.nentries = (1 << keySize) + 2
+        me.table.entries.resize(me.table.bulk)
         for key in 1 << keySize:
-            table.entries[key] = {1, 0xFFF, cast(u8) key}
+            me.table.entries[key] = {1, 0xFFF, cast(u8) key}
     }
 
     mtd getKey(keySize: s32, subLen, shift, byte: *u8)->u16 throw
@@ -212,12 +212,12 @@ impl Decoder
                 // Update byte.
                 if dref subLen == 0
                 {
-                    dref subLen = readU8() // Must be nonzero!
+                    dref subLen = me.readU8() // Must be nonzero!
                     if dref subLen == 0:
                         return 0x1000
                 }
 
-                dref byte = readU8()
+                dref byte = me.readU8()
                 dref subLen -= 1
             }
 
@@ -233,15 +233,15 @@ impl Decoder
 
     mtd addEntry(length: u16, prefix: u16, suffix: u8)->s32
     {
-        if table.nentries == table.bulk
+        if me.table.nentries == me.table.bulk
         {
-            table.bulk *= 2
-            table.entries.resize(cast(u64) table.bulk)
+            me.table.bulk *= 2
+            me.table.entries.resize(cast(u64) me.table.bulk)
         }
 
-        table.entries[table.nentries] = {length, prefix, suffix}
-        table.nentries += 1
-        if (table.nentries & (table.nentries - 1)) == 0:
+        me.table.entries[me.table.nentries] = {length, prefix, suffix}
+        me.table.nentries += 1
+        if (me.table.nentries & (me.table.nentries - 1)) == 0:
             return 1
         return 0
     }
@@ -268,29 +268,29 @@ impl Decoder
 
     mtd readImageData(interlace: u8) throw
     {
-        var byte    = readU8()
+        var byte    = me.readU8()
         var keySize = cast(s32) byte
         if keySize < 2 or keySize > 8:
             throw InvalidFormatError{"invalid frame"}
 
-        let start       = cast(u64) (stream - streamStart)
-        let remainStart = streamLen
-        discardSubBlocks()
-        let end       = cast(u64) (stream - streamStart)
-        let remainEnd = streamLen
-        stream    = streamStart + start
-        streamLen = remainStart
+        let start       = cast(u64) (me.stream - me.streamStart)
+        let remainStart = me.streamLen
+        me.discardSubBlocks()
+        let end       = cast(u64) (me.stream - me.streamStart)
+        let remainEnd = me.streamLen
+        me.stream    = me.streamStart + start
+        me.streamLen = remainStart
 
         let clear = 1 << keySize
         let stop  = clear + 1
-        initTable(keySize)
+        me.initTable(keySize)
         keySize += 1
         let initKeySize = keySize
         var subLen, shift = 0'u8
-        var key         = getKey(keySize, &subLen, &shift, &byte)     // clear code
+        var key         = me.getKey(keySize, &subLen, &shift, &byte)     // clear code
         var frmOff      = 0
         var ret         = 0
-        let frmSize     = cast(u32) fw * fh
+        let frmSize     = cast(u32) me.fw * me.fh
         var tableIsFull = 0
         var strLen      = 0'u16
 
@@ -299,67 +299,67 @@ impl Decoder
         {
             if key == clear
             {
-                keySize        = initKeySize
-                table.nentries = (1 << (keySize - 1)) + 2
-                tableIsFull    = 0
+                keySize           = initKeySize
+                me.table.nentries = (1 << (keySize - 1)) + 2
+                tableIsFull       = 0
             }
             elif !tableIsFull
             {
-                ret = addEntry(cast(u16) (strLen + 1), key, entry.suffix)
-                if table.nentries == 0x1000
+                ret = me.addEntry(cast(u16) (strLen + 1), key, entry.suffix)
+                if me.table.nentries == 0x1000
                 {
                     ret         = 0
                     tableIsFull = 1
                 }
             }
 
-            key = getKey(keySize, &subLen, &shift, &byte)
+            key = me.getKey(keySize, &subLen, &shift, &byte)
             if key == clear:
                 continue
             if key == stop or key == 0x1000:
                 break
             if ret == 1:
                 keySize += 1
-            entry  = table.entries.buffer[key]
+            entry  = me.table.entries.buffer[key]
             strLen = entry.length
             for i in strLen
             {
                 let p = frmOff + entry.length - 1
-                let x = p % fw
-                var y = p / fw
+                let x = p % me.fw
+                var y = p / me.fw
                 if interlace:
-                    y = interlacedLineIndex(cast(s32) fh, y)
-                frame[(fy + y) * width + fx + x] = entry.suffix
+                    y = interlacedLineIndex(cast(s32) me.fh, y)
+                me.frame[(me.fy + y) * me.width + me.fx + x] = entry.suffix
                 if entry.prefix == 0xFFF:
                     break
-                entry = table.entries.buffer[entry.prefix]
+                entry = me.table.entries.buffer[entry.prefix]
             }
 
             frmOff += strLen
-            if key < table.nentries - 1 and !tableIsFull:
-                table.entries[table.nentries - 1].suffix = entry.suffix
+            if key < me.table.nentries - 1 and !tableIsFull:
+                me.table.entries[me.table.nentries - 1].suffix = entry.suffix
         }
 
         if key == stop:
-            subLen = readU8() // Must be zero!
-        stream    = streamStart + end
-        streamLen = remainEnd
+            subLen = me.readU8() // Must be zero!
+        me.stream    = me.streamStart + end
+        me.streamLen = remainEnd
     }
 
     mtd readImage() throw
     {
         // Image descriptor
-        fx = readU16()
-        fy = readU16()
-        if fx >= width or fy >= height:
+        me.fx = me.readU16()
+        me.fy = me.readU16()
+        if me.fx >= me.width or me.fy >= me.height:
             throw InvalidFormatError{"invalid frame size"}
 
-        fw = readU16()
-        fh = readU16()
-        fw = Math.min(fw, cast(u16) (width - fx))
-        fh = Math.min(fh, cast(u16) (height - fy))
+        me.fw = me.readU16()
+        me.fh = me.readU16()
+        me.fw = Math.min(me.fw, cast(u16) (me.width - me.fx))
+        me.fh = Math.min(me.fh, cast(u16) (me.height - me.fy))
 
-        let fisrz     = readU8()
+        let fisrz     = me.readU8()
         let interlace = fisrz & 0x40
 
         // Ignore Sort Flag
@@ -367,53 +367,53 @@ impl Decoder
         if fisrz & 0x80
         {
             /* Read LCT */
-            lct.size = 1 << ((fisrz & 0x07) + 1)
-            read(lct.colors, 3'u64 * lct.size)
-            palette = &lct
+            me.lct.size = 1 << ((fisrz & 0x07) + 1)
+            me.read(me.lct.colors, 3'u64 * me.lct.size)
+            me.palette = &me.lct
         }
         else:
-            palette = &gct
+            me.palette = &me.gct
 
-        readImageData(interlace)
+        me.readImageData(interlace)
     }
 
     mtd renderFrame(buffer: ^u8, pf: PixelFormat)
     {
-        var i = cast(u32) fy * width + fx
+        var i = cast(u32) me.fy * me.width + me.fx
 
         if pf.hasAlpha()
         {
-            for #reverse j in 0 until fh
+            for #reverse j in 0 until me.fh
             {
-                for k in cast(u32) fw
+                for k in cast(u32) me.fw
                 {
-                    let index = frame[(fy + j) * cast(u32) width + (fx + k)]
-                    let color = &palette.colors[index * 3'u32]
+                    let index = me.frame[(me.fy + j) * cast(u32) me.width + (me.fx + k)]
+                    let color = &me.palette.colors[index * 3'u32]
                     let b     = buffer + (i + k) * 4
                     b[0] = color[0]
                     b[1] = color[1]
                     b[2] = color[2]
-                    b[3] = index == gce.tindex ? 0'u8 : 0xFF'u8
+                    b[3] = index == me.gce.tindex ? 0'u8 : 0xFF'u8
                 }
 
-                i += width
+                i += me.width
             }
         }
         else
         {
-            for #reverse j in 0 until fh
+            for #reverse j in 0 until me.fh
             {
-                for k in fw
+                for k in me.fw
                 {
-                    let index = frame[(fy + j) * width + (fx + k)]
-                    let color = &palette.colors[index * 3]
+                    let index = me.frame[(me.fy + j) * me.width + (me.fx + k)]
+                    let color = &me.palette.colors[index * 3]
                     let b     = buffer + (i + k) * 4
                     b[0] = color[0]
                     b[1] = color[1]
                     b[2] = color[2]
                 }
 
-                i += width
+                i += me.width
             }
         }
     }
@@ -421,19 +421,19 @@ impl Decoder
     #[Swag.Overload]
     mtd getFrame(decodePixels: bool)->s32 throw
     {
-        var sep = readU8()
+        var sep = me.readU8()
         while sep != ','
         {
             if sep == ';':
                 return 0
             if sep != '!':
                 throw InvalidFormatError{"invalid format"}
-            readExt()
-            sep = readU8()
+            me.readExt()
+            sep = me.readU8()
         }
 
         if decodePixels:
-            readImage()
+            me.readImage()
         return 1
     }
 }
@@ -443,74 +443,74 @@ public impl Decoder
     // Initialize the decoder
     mtd init(buffer: const [..] u8, decodePixels: bool) throw
     {
-        initDone = true
-        streamStart, stream = @dataof(buffer)
-        streamLen = @countof(buffer)
+        me.initDone = true
+        me.streamStart, me.stream = @dataof(buffer)
+        me.streamLen = @countof(buffer)
 
         // Header
         var sigver: [3] u8
-        read(sigver, 3)
+        me.read(sigver, 3)
         if Memory.compare(sigver, @dataof("GIF"), 3) != 0:
             throw InvalidFormatError{"invalid signature"}
 
         // Version
-        read(sigver, 3)
+        me.read(sigver, 3)
         if Memory.compare(sigver, @dataof("89a"), 3) != 0:
             throw InvalidFormatError{"invalid version"}
 
         // Width x Height
-        width  = readU16()
-        height = readU16()
+        me.width  = me.readU16()
+        me.height = me.readU16()
 
         // FDSZ
         var fdsz: u8
-        read(&fdsz, 1)
+        me.read(&fdsz, 1)
         if !(fdsz & 0x80):
             throw UnsupportedFormatError{"no global color table"}
 
         // Color space's depth
-        depth = cast() (((fdsz >> 4) & 7) + 1)
+        me.depth = cast() (((fdsz >> 4) & 7) + 1)
 
         // Ignore sort flag
         // GCT Size
-        gct.size = 1 << ((fdsz & 0x07) + 1)
+        me.gct.size = 1 << ((fdsz & 0x07) + 1)
 
         // Background color index
-        bgIndex = readU8()
+        me.bgIndex = me.readU8()
 
         // Aspect ratio
-        discard readU8()
+        discard me.readU8()
 
-        read(gct.colors, 3'u64 * gct.size)
-        palette = &gct
+        me.read(me.gct.colors, 3'u64 * me.gct.size)
+        me.palette = &me.gct
 
         if decodePixels
         {
-            let size = cast(u64) width * cast(u64) height
-            frame.resize(4 * size)
-            Memory.set(frame.buffer, bgIndex, size)
-            canvas = &frame.buffer[size]
+            let size = cast(u64) me.width * cast(u64) me.height
+            me.frame.resize(4 * size)
+            Memory.set(me.frame.buffer, me.bgIndex, size)
+            me.canvas = &me.frame.buffer[size]
 
-            let bgcolor = &palette.colors[bgIndex * 3'u32]
+            let bgcolor = &me.palette.colors[me.bgIndex * 3'u32]
             if bgcolor[0] or bgcolor[1] or bgcolor[2]
             {
                 for i in size:
-                    Memory.copy(&canvas[i * 3], bgcolor, 3)
+                    Memory.copy(&me.canvas[i * 3], bgcolor, 3)
             }
         }
 
-        animStart  = cast(u64) (stream - streamStart)
-        animRemain = streamLen
+        me.animStart  = cast(u64) (me.stream - me.streamStart)
+        me.animRemain = me.streamLen
 
-        discard getFrame(decodePixels)
+        discard me.getFrame(decodePixels)
     }
 
     // Create an image for the current frame
     #[Swag.Overload]
     mtd getFrame(image: *Image, decodePixels = true)
     {
-        Debug.assert(initDone)
-        image.init(width, height, gce.transparency ? PixelFormat.RGBA8 : PixelFormat.RGB8)
+        Debug.assert(me.initDone)
+        image.init(me.width, me.height, me.gce.transparency ? PixelFormat.RGBA8 : PixelFormat.RGB8)
         if !decodePixels:
             return
         image.allocPixels()
@@ -519,17 +519,17 @@ public impl Decoder
     // Get the next frame. Returns false if we have reached the end
     mtd nextFrame(img: *Image)->bool throw
     {
-        Debug.assert(initDone)
-        if reachEnd:
+        Debug.assert(me.initDone)
+        if me.reachEnd:
             return false
 
-        if !getFrame(true)
+        if !me.getFrame(true)
         {
-            reachEnd = true
+            me.reachEnd = true
             return false
         }
 
-        renderFrame(img.pixels.buffer, img.pf)
+        me.renderFrame(img.pixels.buffer, img.pf)
         return true
     }
 
@@ -537,25 +537,25 @@ public impl Decoder
     // As Gif does not store it, we need to go threw all images (!)
     mtd getNumFrames()->s32 throw
     {
-        Debug.assert(initDone)
-        if numFrames:
-            return numFrames
+        Debug.assert(me.initDone)
+        if me.numFrames:
+            return me.numFrames
 
-        numFrames = 1
-        while getFrame(true):
-            numFrames += 1
+        me.numFrames = 1
+        while me.getFrame(true):
+            me.numFrames += 1
 
-        rewind()
-        return numFrames
+        me.rewind()
+        return me.numFrames
     }
 
     // Restart at frame 0
     mtd rewind()
     {
-        Debug.assert(initDone)
-        reachEnd  = false
-        stream    = streamStart + animStart
-        streamLen = animRemain
+        Debug.assert(me.initDone)
+        me.reachEnd  = false
+        me.stream    = me.streamStart + me.animStart
+        me.streamLen = me.animRemain
     }
 }
 
@@ -569,14 +569,14 @@ public impl IImageDecoder for Decoder
 
     mtd impl decode(buffer: const [..] u8, options: DecodeOptions)->Image throw
     {
-        init(buffer, options.decodePixels)
+        me.init(buffer, options.decodePixels)
 
         var result: retval
-        getFrame(&result, options.decodePixels)
+        me.getFrame(&result, options.decodePixels)
         if !options.decodePixels:
             return result
 
-        renderFrame(result.pixels.buffer, result.pf)
+        me.renderFrame(result.pixels.buffer, result.pf)
         return result
     }
 }

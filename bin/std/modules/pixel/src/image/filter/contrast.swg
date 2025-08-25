@@ -6,7 +6,7 @@ impl Image
     public mtd contrast(factor: f32 = 0.5)
     {
         // unsupported pixel format
-        if pf.channels() < 3 or pf.bitDepth() != 8:
+        if me.pf.channels() < 3 or me.pf.bitDepth() != 8:
             return
 
         let level    = Math.clamp(factor, -1, 1) + 1.0
@@ -15,7 +15,7 @@ impl Image
             convArr[i] = cast(u8) Math.clamp(((i - 128) * level) + 128, 0, 255)
 
         let f = &convArr[0]
-        visitPixels(f)
+        me.visitPixels(f)
         {
             let arr = cast(^u8) userData
             pix[0] = arr[pix[0]]

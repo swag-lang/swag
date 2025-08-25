@@ -12,12 +12,12 @@ impl LinePathList
 {
     mtd opDrop()
     {
-        clear()
+        me.clear()
     }
 
     mtd opPostCopy()
     {
-        foreach p, i in paths
+        foreach p, i in me.paths
         {
             var ptr = Memory.new'LinePath()
             dref ptr = dref p
@@ -26,21 +26,21 @@ impl LinePathList
     }
 
     #[Swag.Inline]
-    mtd count() => paths.count
+    mtd count() => me.paths.count
 
     // Remove all internal line paths
     mtd clear()
     {
-        foreach p in paths:
+        foreach p in me.paths:
             Memory.delete(p)
-        paths.clear()
+        me.paths.clear()
     }
 
     // Returns a new path
     mtd newPath()->*LinePath
     {
         let ptr = Memory.new'LinePath()
-        paths.add(ptr)
+        me.paths.add(ptr)
         return ptr
     }
 
@@ -48,9 +48,9 @@ impl LinePathList
     mtd flatten(quality: PaintQuality)
     {
         // Flatten all path, and compute BV
-        bvMin = Vector2.Max
-        bvMax = Vector2.NegMax
-        foreach p in paths
+        me.bvMin = Vector2.Max
+        me.bvMax = Vector2.NegMax
+        foreach p in me.paths
         {
             p.flatten(quality)
             bvMin = Vector2.min(bvMin, p.bvMin)
@@ -66,7 +66,7 @@ impl LinePathList
         if Math.isZeroEpsilon(value):
             return
 
-        foreach p in paths
+        foreach p in me.paths
         {
             let v = p.polygon.isClockwise ? value : -value
             p.polygon.offset(v)
@@ -83,7 +83,7 @@ impl LinePathList
 
         var newList: LinePathList
 
-        foreach p in paths
+        foreach p in me.paths
         {
             let v = p.polygon.isClockwise ? value : -value
 
@@ -92,9 +92,9 @@ impl LinePathList
             res.paths.count = 0
         }
 
-        clear()
-        paths = #move newList.paths
-        clean()
+        me.clear()
+        me.paths = #move newList.paths
+        me.clean()
     }
 
     // Clean all paths
@@ -103,14 +103,14 @@ impl LinePathList
     {
         var newList: LinePathList
 
-        foreach p in paths
+        foreach p in me.paths
         {
             var res = p.polygon.getClean()
             newList.paths.add(res.paths.toSlice())
             res.paths.count = 0
         }
 
-        clear()
-        paths = #move newList.paths
+        me.clear()
+        me.paths = #move newList.paths
     }
 }
