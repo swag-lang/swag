@@ -674,56 +674,56 @@ impl TagBin
         #if NT == Core.String
         {
             var result: retval
-            let count   = cast(u64) stream.readNative'u32()
+            let count   = cast(u64) me.stream.readNative'u32()
             result.reserve(count)
-            stream.readBytes(result.buffer, count)
+            me.stream.readBytes(result.buffer, count)
             result.length = count
             return result
         }
         #else
         {
-            if convertNextNative
+            if me.convertNextNative
             {
                 #[Swag.Safety("", false)]
-                switch convertNextNative.nativeKind
+                switch me.convertNextNative.nativeKind
                 {
                 case Bool:
-                    let v = stream.readNative'bool()
+                    let v = me.stream.readNative'bool()
                     return cast(NT) v
                 case U8:
-                    let v = stream.readNative'u8()
+                    let v = me.stream.readNative'u8()
                     return cast(NT) v
                 case U16:
-                    let v = stream.readNative'u16()
+                    let v = me.stream.readNative'u16()
                     return cast(NT) v
                 case U32, Rune:
-                    let v = stream.readNative'u32()
+                    let v = me.stream.readNative'u32()
                     return cast(NT) v
                 case U64:
-                    let v = stream.readNative'u64()
+                    let v = me.stream.readNative'u64()
                     return cast(NT) v
                 case S8:
-                    let v = stream.readNative's8()
+                    let v = me.stream.readNative's8()
                     return cast(NT) v
                 case S16:
-                    let v = stream.readNative's16()
+                    let v = me.stream.readNative's16()
                     return cast(NT) v
                 case S32:
-                    let v = stream.readNative's32()
+                    let v = me.stream.readNative's32()
                     return cast(NT) v
                 case S64:
-                    let v = stream.readNative's64()
+                    let v = me.stream.readNative's64()
                     return cast(NT) v
                 case F32:
-                    let v = stream.readNative'f32()
+                    let v = me.stream.readNative'f32()
                     return cast(NT) v
                 case F64:
-                    let v = stream.readNative'f64()
+                    let v = me.stream.readNative'f64()
                     return cast(NT) v
                 }
             }
 
-            return stream.readNative'NT()
+            return me.stream.readNative'NT()
         }
     }
 }

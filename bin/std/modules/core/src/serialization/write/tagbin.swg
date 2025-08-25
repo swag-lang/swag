@@ -355,12 +355,12 @@ impl TagBin
     {
         #if NT == string
         {
-            output.addNative(cast(u32) @countof(value))
-            output.addBytes(value)
+            me.output.addNative(cast(u32) @countof(value))
+            me.output.addBytes(value)
         }
         #else
         {
-            output.addNative(value)
+            me.output.addNative(value)
         }
     }
 }
