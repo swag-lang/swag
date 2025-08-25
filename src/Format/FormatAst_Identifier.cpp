@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Format/FormatAst.h"
+#include "Main/CommandLine.h"
 #include "Semantic/Semantic.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
@@ -95,17 +96,36 @@ bool FormatAst::outputIdentifierRef(FormatContext& context, AstNode* node)
     }
 
     bool first = true;
-    //int a = 0;
+    int  idx   = 0;
     for (const auto it : node->children)
     {
-        /*a++;
-        if (it->token.text == "me" && it->hasAstFlag(AST_GENERATED))
+        if (g_CommandLine.patchMode)
         {
-            if (a != node->children.size())
-            if (!node->children[a]->resolvedSymbolName() || !node->children[a]->resolvedSymbolName()->is(SymbolKind::GenericType))
-                concat->addString("me.");
-        }*/
-        
+            idx++;
+            if (it->token.text == "me" && it->hasAstFlag(AST_GENERATED))
+            {
+                if (idx != node->children.size() &&
+                    (!node->children[idx]->resolvedSymbolName() || !node->children[idx]->resolvedSymbolName()->is(SymbolKind::GenericType)))
+                {
+                    concat->addString("me.");
+                }
+            }
+            else if (idx == 1 &&
+                     it->resolvedSymbolName() &&
+                     it->resolvedSymbolName()->is(SymbolKind::Function) &&
+                     it->is(AstNodeKind::Identifier))
+            {
+                const auto id = castAst<AstIdentifier>(it, AstNodeKind::Identifier);
+                if (id->callParameters &&
+                    !id->callParameters->children.empty() &&
+                    id->callParameters->firstChild()->hasAstFlag(AST_GENERATED) &&
+                    id->callParameters->firstChild()->token.text == "me")
+                {
+                    concat->addString("me.");
+                }
+            }
+        }
+
         const auto child = convertNode(context, it);
         if (!child)
             continue;
