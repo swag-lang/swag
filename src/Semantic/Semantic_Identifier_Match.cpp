@@ -214,7 +214,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
     }
 
     AstNode  sortedParams;
-    AstNode* usedParams = Semantic::prepareParamsForCall(identifier->callParameters, sortedParams, false);
+    AstNode* usedParams = prepareParamsForCall(identifier->callParameters, sortedParams, false);
     if (!usedParams)
         usedParams = identifier->callParameters;
 
@@ -1076,7 +1076,7 @@ bool Semantic::setSymbolMatchStruct(SemanticContext* context, OneMatch& oneMatch
     {
         // Prepare params without mutating AST (no inverse swap here)
         AstNode  sortedParams;
-        AstNode* usedParams = Semantic::prepareParamsForCall(identifier->callParameters, sortedParams, false);
+        AstNode* usedParams = prepareParamsForCall(identifier->callParameters, sortedParams, false);
         if (!usedParams)
             usedParams = identifier->callParameters;
         const auto maxParams = usedParams->childCount();

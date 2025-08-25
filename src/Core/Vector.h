@@ -57,8 +57,8 @@ struct Vector : std::vector<T, StdAllocator<T>>
 template<typename K, typename V>
 struct VectorMap : Vector<std::pair<K, V>>
 {
-    using It      = typename Vector<std::pair<K, V>>::iterator;
-    using ConstIt = typename Vector<std::pair<K, V>>::const_iterator;
+    using It      = Vector<std::pair<K, V>>::iterator;
+    using ConstIt = Vector<std::pair<K, V>>::const_iterator;
 
     ConstIt find(const K& key) const
     {

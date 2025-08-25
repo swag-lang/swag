@@ -16,7 +16,6 @@ struct AstNode;
 struct AstStruct;
 struct AstTryCatchAssume;
 struct AstTypeExpression;
-struct AstTypeExpression;
 struct AstVarDecl;
 struct AstWith;
 struct JobContext;
