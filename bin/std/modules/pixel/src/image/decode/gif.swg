@@ -2,6 +2,7 @@
 // This code is based on "gifdec" (https://github.com/lecram/gifdec)
 // The original code has been modified for Swag
 
+#global marked
 #global namespace Gif
 using Swag, Core, Core.Errors
 

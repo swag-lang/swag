@@ -1,3 +1,4 @@
+#global marked
 #global namespace Jpg
 using Core
 
@@ -429,11 +430,11 @@ impl Encoder
     {
         foreach md in me.srcImage.metaDatas
         {
-            writeWord(0xFFE0'u16 + cast(u16) md.sig)
-            writeWord(3 + cast(u16) md.tag.count + cast(u16) md.value.count)
-            writeBytes(md.tag.toSlice())
-            writeByte(0)
-            writeBytes(md.value.toSlice())
+            me.writeWord(0xFFE0'u16 + cast(u16) md.sig)
+            me.writeWord(3 + cast(u16) md.tag.count + cast(u16) md.value.count)
+            me.writeBytes(md.tag.toSlice())
+            me.writeByte(0)
+            me.writeBytes(md.value.toSlice())
         }
     }
 

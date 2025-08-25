@@ -1,3 +1,4 @@
+#global marked
 #global namespace Tga
 using Core, Core.Errors
 

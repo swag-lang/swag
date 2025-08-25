@@ -1,3 +1,4 @@
+#global marked
 #global namespace Jpg
 using Swag, Core, Core.Errors
 

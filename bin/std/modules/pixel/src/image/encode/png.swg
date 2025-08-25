@@ -5,6 +5,7 @@
     See LICENCE.md for the corresponding licence.
 */
 
+#global marked
 #global namespace Png
 using Core, Core.Errors
 
@@ -227,11 +228,11 @@ impl Encoder
         {
             if !md.tag.count or !md.value.count:
                 continue
-            writePtr = writeHeader(TypeTEXt, md.tag.count + 1 + md.value.count)
-            Memory.copy(writePtr, md.tag.buffer, md.tag.count)
-            writePtr[md.tag.count] = 0
-            Memory.copy(writePtr + md.tag.count + 1, md.value.buffer, md.value.count)
-            finishChunk()
+            me.writePtr = me.writeHeader(TypeTEXt, md.tag.count + 1 + md.value.count)
+            Memory.copy(me.writePtr, md.tag.buffer, md.tag.count)
+            me.writePtr[md.tag.count] = 0
+            Memory.copy(me.writePtr + md.tag.count + 1, md.value.buffer, md.value.count)
+            me.finishChunk()
         }
     }
 
