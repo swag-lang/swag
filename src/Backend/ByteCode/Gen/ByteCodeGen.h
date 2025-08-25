@@ -94,7 +94,7 @@ namespace ByteCodeGen
     bool setupRuntime(const ByteCodeGenContext* context, const AstNode* node);
     bool setupByteCodeGenerated(ByteCodeGenContext* context, AstNode* node);
     bool setupByteCodeResolved(const ByteCodeGenContext* context, AstNode* node);
-    bool askForByteCode(JobContext* context, AstNode* node, AskBcFlags flags, bool fromSemantic, ByteCode* caller);
+    bool askForByteCode(const JobContext* context, AstNode* node, AskBcFlags flags, bool fromSemantic, ByteCode* caller);
 
     void getDependantCalls(const AstNode* depNode, VectorNative<AstNode*>& dep);
     void collectLiteralsChildren(AstNode* node, VectorNative<AstNode*>* orderedChildren);
@@ -277,7 +277,7 @@ namespace ByteCodeGen
     bool emitLeaveScope(ByteCodeGenContext* context);
     bool emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scope, const VectorNative<SymbolOverload*>* forceNoDrop = nullptr);
     bool emitDeferredStatements(ByteCodeGenContext* context, Scope* scope, bool forError);
-    bool emitLeaveScopeReturn(ByteCodeGenContext* context, VectorNative<SymbolOverload*>* forceNoDrop, bool forError);
+    bool emitLeaveScopeReturn(ByteCodeGenContext* context, const VectorNative<SymbolOverload*>* forceNoDrop, bool forError);
     bool computeLeaveScope(ByteCodeGenContext* context, Scope* scope, const VectorNative<SymbolOverload*>* forceNoDrop = nullptr, bool forError = false);
     bool emitConditionalOpAfterExpr(ByteCodeGenContext* context);
     bool emitConditionalOpAfterIfTrue(ByteCodeGenContext* context);

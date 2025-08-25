@@ -1317,7 +1317,7 @@ bool ByteCodeGen::emitDeferredStatements(ByteCodeGenContext* context, Scope* sco
     return true;
 }
 
-bool ByteCodeGen::emitLeaveScopeReturn(ByteCodeGenContext* context, VectorNative<SymbolOverload*>* forceNoDrop, bool forError)
+bool ByteCodeGen::emitLeaveScopeReturn(ByteCodeGenContext* context, const VectorNative<SymbolOverload*>* forceNoDrop, bool forError)
 {
     const auto node     = context->node;
     const auto funcNode = node->ownerFct;

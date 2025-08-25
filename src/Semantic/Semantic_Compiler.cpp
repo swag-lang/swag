@@ -456,8 +456,8 @@ bool Semantic::resolveCompilerInject(SemanticContext* context)
     if (!typeCodeContent)
     {
         SWAG_ASSERT(expr->resolvedSymbolOverload());
-        auto param      = castAst<AstVarDecl>(expr->resolvedSymbolOverload()->node, AstNodeKind::FuncDeclParam);
-        typeCodeContent = param->assignment;
+        const auto param = castAst<AstVarDecl>(expr->resolvedSymbolOverload()->node, AstNodeKind::FuncDeclParam);
+        typeCodeContent  = param->assignment;
     }
 
     SWAG_ASSERT(typeCodeContent);
@@ -788,6 +788,7 @@ bool Semantic::resolveCompilerInclude(SemanticContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveIntrinsicLocation(SemanticContext* context)
 {
     const auto node    = context->node;

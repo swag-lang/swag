@@ -229,8 +229,8 @@ bool TypeGenStructJob::computeStruct()
                 SWAG_FORCE_ASSERT(realType->interfaces[param]->offset != UINT32_MAX);
 
                 // @ItfIsConstantSeg
-                const uint32_t fieldOffset = offsetof(ExportedTypeValue, value);
-                const uint32_t valueOffset = storageArray + fieldOffset;
+                constexpr uint32_t fieldOffset = offsetof(ExportedTypeValue, value);
+                const uint32_t     valueOffset = storageArray + fieldOffset;
                 storageSegment->addInitPtr(valueOffset, realType->interfaces[param]->offset, SegmentKind::Constant);
                 addrArray[param].value = module->constantSegment.address(realType->interfaces[param]->offset);
 

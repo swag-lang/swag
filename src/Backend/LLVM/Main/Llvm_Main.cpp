@@ -71,7 +71,7 @@ void Llvm::emitMain(LlvmEncoder& pp)
     auto&       context         = *pp.llvmContext;
     auto&       builder         = *pp.builder;
     auto&       modu            = *pp.llvmModule;
-    auto        module          = pp.module;
+    const auto  module          = pp.module;
     const auto& buildParameters = pp.buildParams;
 
     emitOS(pp);

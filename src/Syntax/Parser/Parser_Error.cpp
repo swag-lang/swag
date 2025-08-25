@@ -4,7 +4,6 @@
 #include "Semantic/Error/SemanticError.h"
 #include "Syntax/Ast.h"
 #include "Syntax/Parser/Parser.h"
-#include "Wmf/Module.h"
 
 bool Parser::error(AstNode* node, const Utf8& msg, const char* help, const char* hint) const
 {

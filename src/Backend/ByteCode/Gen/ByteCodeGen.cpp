@@ -188,7 +188,7 @@ bool ByteCodeGen::skipNodes(ByteCodeGenContext* context, AstNode* node)
     return res != Ast::VisitResult::Stop;
 }
 
-bool ByteCodeGen::askForByteCode(JobContext* context, AstNode* node, AskBcFlags flags, bool fromSemantic, ByteCode* caller)
+bool ByteCodeGen::askForByteCode(const JobContext* context, AstNode* node, AskBcFlags flags, bool fromSemantic, ByteCode* caller)
 {
     if (!node)
         return true;

@@ -1264,9 +1264,9 @@ bool Parser::doLambdaExpression(AstNode* parent, ExprFlags exprFlags, AstNode** 
     const auto exprNode   = Ast::newNode<AstMakePointer>(AstNodeKind::MakePointerLambda, this, parent);
     exprNode->semanticFct = Semantic::resolveMakePointerLambda;
 
-    AstNode* lambda         = nullptr;
-    bool     hasMissingType = false;
-    bool     isMethod       = tokenParse.is(TokenId::KwdMethod);
+    AstNode*   lambda         = nullptr;
+    bool       hasMissingType = false;
+    const bool isMethod       = tokenParse.is(TokenId::KwdMethod);
 
     {
         ParserPushBreakable sb(this, nullptr);

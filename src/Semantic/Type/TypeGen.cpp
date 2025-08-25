@@ -439,7 +439,7 @@ void* TypeGen::genExportedSlice(JobContext*, uint32_t sizeOf, DataSegment* stora
     return addrDst;
 }
 
-bool TypeGen::genExportedAny(JobContext* context, SwagAny* ptrAny, DataSegment* storageSegment, uint32_t storageOffset, ComputedValue& computedValue, TypeInfo* typeInfo, GenExportFlags genFlags)
+bool TypeGen::genExportedAny(JobContext* context, SwagAny* ptrAny, DataSegment* storageSegment, uint32_t storageOffset, const ComputedValue& computedValue, TypeInfo* typeInfo, GenExportFlags genFlags)
 {
     ptrAny->value = nullptr;
 

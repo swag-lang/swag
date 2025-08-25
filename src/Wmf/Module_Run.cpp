@@ -14,7 +14,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
 {
     if (params && params->forDebugger)
     {
-        if (!node->resultRegisterRc.size())
+        if (node->resultRegisterRc.empty())
             return true;
         runContext->registersRR[0].pointer = runContext->registers.buffer[node->resultRegisterRc[0]].pointer;
         if (node->resultRegisterRc.size() > 1)
@@ -39,7 +39,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
     }
 
     // Transform result to a literal value
-    if (!node->resultRegisterRc.size())
+    if (node->resultRegisterRc.empty())
         return true;
 
     const auto realType = TypeManager::concreteType(node->typeInfo);

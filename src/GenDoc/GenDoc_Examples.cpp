@@ -56,8 +56,8 @@ bool GenDoc::processSourceFile(const Path& fileName, int titleLevel)
         Utf8 code;
         while (i < lines.size())
         {
-            auto& l        = lines[i++];
-            Utf8  lineTrim = l;
+            const auto& l        = lines[i++];
+            Utf8        lineTrim = l;
             lineTrim.trim();
             if (lineTrim.startsWith("/**"))
                 break;

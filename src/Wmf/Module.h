@@ -45,9 +45,7 @@ struct SourceLocation;
 struct SymTable;
 struct TypeInfoStruct;
 struct Utf8;
-struct Utf8;
 struct Workspace;
-enum class ModuleBuildPass;
 
 enum class GlobalVarKind
 {

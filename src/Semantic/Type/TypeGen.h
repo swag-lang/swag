@@ -58,7 +58,7 @@ struct TypeGen
     bool         genExportedSubTypeInfo(JobContext* context, ExportedTypeInfo** resultPtr, void* exportedValue, DataSegment* storageSegment, uint32_t storageOffset, TypeInfo* typeInfo, GenExportFlags genFlags);
     static void* genExportedSlice(JobContext* context, uint32_t sizeOf, void* exportedValue, DataSegment* storageSegment, uint32_t storageOffset, void** result, uint32_t& storageArray);
     static void* genExportedSlice(JobContext* context, uint32_t sizeOf, DataSegment* storageSegment, uint32_t storageOffset, void** result, uint32_t& storageArray);
-    bool         genExportedAny(JobContext* context, SwagAny* ptrAny, DataSegment* storageSegment, uint32_t storageOffset, ComputedValue& computedValue, TypeInfo* typeInfo, GenExportFlags genFlags);
+    bool         genExportedAny(JobContext* context, SwagAny* ptrAny, DataSegment* storageSegment, uint32_t storageOffset, const ComputedValue& computedValue, TypeInfo* typeInfo, GenExportFlags genFlags);
     bool         genExportedAttributes(JobContext* context, AttributeList& attributes, void* exportedTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, SwagSlice* result, GenExportFlags genFlags);
     static bool  genExportedString(JobContext* context, SwagSlice* result, const Utf8& str, DataSegment* storageSegment, uint32_t offsetInBuffer);
     bool         genExportedStruct(const JobContext* context, const Utf8& typeName, ExportedTypeInfo* exportedTypeInfoValue, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t storageOffset, GenExportFlags genFlags);

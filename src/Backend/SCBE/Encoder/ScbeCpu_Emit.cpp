@@ -329,7 +329,7 @@ void ScbeCpu::emitLabels()
 {
     for (auto& toSolve : cpuFct->labelsToSolve)
     {
-        auto it = cpuFct->labels.find(toSolve.ipDest);
+        const auto it = cpuFct->labels.find(toSolve.ipDest);
         SWAG_ASSERT(it != cpuFct->labels.end());
         emitPatchJump(toSolve.jump, it->second);
     }
