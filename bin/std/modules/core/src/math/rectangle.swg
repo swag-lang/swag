@@ -29,7 +29,7 @@ impl Rectangle
     mtd(op: string) const opBinary(value: f32)->Rectangle
     {
         #if op == "*":
-            return {x * value, y * value, width * value, height * value}
+            return {me.x * value, me.y * value, me.width * value, me.height * value}
         #else:
             #error("unsupported binary operation [[" ++ op ++ "]]")
     }

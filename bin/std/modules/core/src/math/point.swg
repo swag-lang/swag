@@ -31,23 +31,23 @@ impl Point
     {
         #if op == "+="
         {
-            x += other.x
-            y += other.y
+            me.x += other.x
+            me.y += other.y
         }
         #elif op == "-="
         {
-            x -= other.x
-            y -= other.y
+            me.x -= other.x
+            me.y -= other.y
         }
         #elif op == "*="
         {
-            x *= other.x
-            y *= other.y
+            me.x *= other.x
+            me.y *= other.y
         }
         #elif op == "/="
         {
-            x /= other.x
-            y /= other.y
+            me.x /= other.x
+            me.y /= other.y
         }
         #else:
             #error("unsupported assign operation [[" ++ op ++ "]]")
@@ -60,23 +60,23 @@ impl Point
     {
         #if op == "+="
         {
-            x += value
-            y += value
+            me.x += value
+            me.y += value
         }
         #elif op == "-="
         {
-            x -= value
-            y -= value
+            me.x -= value
+            me.y -= value
         }
         #elif op == "*="
         {
-            x *= value
-            y *= value
+            me.x *= value
+            me.y *= value
         }
         #elif op == "/="
         {
-            x /= value
-            y /= value
+            me.x /= value
+            me.y /= value
         }
         #else:
             #error("unsupported assign operation [[" ++ op ++ "]]")
@@ -105,13 +105,13 @@ impl Point
     mtd(op: string) const opBinary(value: f32)->Point
     {
         #if op == "+":
-            return Point{x + value, y + value}
+            return Point{me.x + value, me.y + value}
         #elif op == "-":
-            return Point{x - value, y - value}
+            return Point{me.x - value, me.y - value}
         #elif op == "*":
-            return Point{x * value, y * value}
+            return Point{me.x * value, me.y * value}
         #elif op == "/":
-            return Point{x / value, y / value}
+            return Point{me.x / value, me.y / value}
         #else:
             #error("unsupported binary operation [[" ++ op ++ "]]")
     }
@@ -123,8 +123,8 @@ impl Point
         var result: retval
         #if op == "-"
         {
-            result.x = -x
-            result.y = -y
+            result.x = -me.x
+            result.y = -me.y
             return result
         }
         #else

@@ -26,9 +26,9 @@ impl Angle
     mtd(suffix: string) opAffectLiteral(value: f32)
     {
         #if suffix == "rad":
-            rad = value
+            me.rad = value
         #elif suffix == "deg":
-            rad = toRadians(value)
+            me.rad = toRadians(value)
         #else:
             #error("invalid angle literal suffix [[" ++ suffix ++ "]]")
     }

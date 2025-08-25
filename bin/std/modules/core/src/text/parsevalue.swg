@@ -1,3 +1,4 @@
+#global marked
 #global namespace StrConv
 using Swag, Core.Errors
 

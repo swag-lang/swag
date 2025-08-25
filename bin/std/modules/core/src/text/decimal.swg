@@ -5,6 +5,7 @@
     See LICENCE.md for the corresponding licence.
 */
 
+#global marked
 #global namespace StrConv
 #global #[Swag.CanOverflow(true)]
 using Globalization, Errors

@@ -5,6 +5,7 @@
     See LICENCE.md for the corresponding licence.
 */
 
+#global marked
 #global namespace Unicode
 
 const TableWhiteSpace: [] Range = [

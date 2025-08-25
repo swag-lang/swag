@@ -1,3 +1,4 @@
+#global marked
 #global namespace Jobs
 using Threading, Swag
 
