@@ -1,3 +1,4 @@
+#global marked
 #global namespace Random
 
 #[Swag.Tls]

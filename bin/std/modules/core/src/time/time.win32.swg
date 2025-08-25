@@ -1,3 +1,4 @@
+#global marked
 #global #if WINDOWS
 #global namespace Time
 using Win32

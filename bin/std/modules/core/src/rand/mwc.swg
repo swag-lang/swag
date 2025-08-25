@@ -1,4 +1,5 @@
 // George Marsaglia's MWC (multiply with carry) generator.
+#global marked
 #global namespace Random
 #global public
 
