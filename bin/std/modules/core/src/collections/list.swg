@@ -1,3 +1,4 @@
+#global marked
 #global export
 using Swag
 
@@ -23,7 +24,7 @@ impl List
     // Ensures all nodes are deallocated when the list goes out of scope.
     mtd opDrop()
     {
-        clear()
+        me.clear()
     }
 
     // Provides a way to iterate over each element in the list.
@@ -37,9 +38,9 @@ impl List
     mtd(ptr: bool, back: bool) opVisit(stmt: #code void)
     {
         #if back:
-            var n = tail
+            var n = me.tail
         #else:
-            var n = head
+            var n = me.head
         #scope(Up)
         while n
         {
@@ -68,7 +69,7 @@ impl List
     // Removes and deallocates all elements from the list.
     mtd clear()
     {
-        var n = head
+        var n = me.head
         while n
         {
             let next = n.next
@@ -76,8 +77,8 @@ impl List
             n = next
         }
 
-        head, tail = null
-        count = 0
+        me.head, me.tail = null
+        me.count = 0
     }
 
     // Adds a new element to the front of the list by copying the value.
@@ -87,16 +88,16 @@ impl List
     {
         let n = Memory.new'ListEntry()
         n.value = value
-        count += 1
+        me.count += 1
 
-        if head
+        if me.head
         {
-            n.next = head
-            head.prev, head = n
+            n.next = me.head
+            me.head.prev, me.head = n
         }
         else
         {
-            head, tail = n
+            me.head, me.tail = n
         }
 
         return n
@@ -109,16 +110,16 @@ impl List
     {
         let n = Memory.new'ListEntry()
         n.value = #move value
-        count += 1
+        me.count += 1
 
-        if head
+        if me.head
         {
-            n.next = head
-            head.prev, head = n
+            n.next = me.head
+            me.head.prev, me.head = n
         }
         else
         {
-            head, tail = n
+            me.head, me.tail = n
         }
 
         return n
@@ -131,16 +132,16 @@ impl List
     {
         let n = Memory.new'ListEntry()
         n.value = value
-        count += 1
+        me.count += 1
 
-        if tail
+        if me.tail
         {
-            n.prev = tail
-            tail.next, tail = n
+            n.prev = me.tail
+            me.tail.next, me.tail = n
         }
         else
         {
-            head, tail = n
+            me.head, me.tail = n
         }
 
         return n
@@ -153,16 +154,16 @@ impl List
     {
         let n = Memory.new'ListEntry()
         n.value = #move value
-        count += 1
+        me.count += 1
 
-        if tail
+        if me.tail
         {
-            n.prev = tail
-            tail.next, tail = n
+            n.prev = me.tail
+            me.tail.next, me.tail = n
         }
         else
         {
-            head, tail = n
+            me.head, me.tail = n
         }
 
         return n
@@ -175,12 +176,12 @@ impl List
     {
         let n = Memory.new'ListEntry()
         n.value = value
-        count += 1
+        me.count += 1
 
         n.next = node
         n.prev = node.prev
         if !n.prev:
-            head = n
+            me.head = n
         else:
             n.prev.next = n
         node.prev = n
@@ -194,12 +195,12 @@ impl List
     {
         let n = Memory.new'ListEntry()
         n.value = #move value
-        count += 1
+        me.count += 1
 
         n.next = node
         n.prev = node.prev
         if !n.prev:
-            head = n
+            me.head = n
         else:
             n.prev.next = n
         node.prev = n
@@ -213,12 +214,12 @@ impl List
     {
         let n = Memory.new'ListEntry()
         n.value = value
-        count += 1
+        me.count += 1
 
         n.prev = node
         n.next = node.next
         if !n.next:
-            tail = n
+            me.tail = n
         else:
             n.next.prev = n
         node.next = n
@@ -232,12 +233,12 @@ impl List
     {
         let n = Memory.new'ListEntry()
         n.value = #move value
-        count += 1
+        me.count += 1
 
         n.prev = node
         n.next = node.next
         if !n.next:
-            tail = n
+            me.tail = n
         else:
             n.next.prev = n
         node.next = n
