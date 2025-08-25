@@ -4,6 +4,7 @@
     domain. The author hereby disclaims copyright to this source code.
 */
 
+#global marked
 #global namespace Hash
 using Swag
 
